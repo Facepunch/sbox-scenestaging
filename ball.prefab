@@ -1,0 +1,710 @@
+{
+  "SchemaVersion": 1,
+  "Name": null,
+  "Description": null,
+  "Root": {
+    "Guid": "2abf1682-f82b-49d9-b33c-aac134885ef1",
+    "Class": "GameObject",
+    "Entities": [
+      {
+        "Guid": "46096d16-5b00-4bfc-bfc6-5b5d030af819",
+        "Class": "GameObject",
+        "Entities": [
+          {
+            "Guid": "2c3372f2-7dec-427d-959d-ce7780f0629b",
+            "Class": "GameObject",
+            "Entities": [],
+            "Components": [
+              {
+                "Guid": "707c863f-c7a4-42fe-b1aa-1bb33fd89330",
+                "Class": "ModelComponentMate",
+                "Keys": {
+                  "_name": {
+                    "JsonValue": "\u0022ModelComponent\u0022"
+                  },
+                  "_tags": {
+                    "JsonValue": []
+                  },
+                  "_json": {
+                    "Value": "0"
+                  },
+                  "Model": {
+                    "Type": "Sandbox.Model",
+                    "JsonValue": "models/addons/ball/pool_ball.vmdl"
+                  },
+                  "Tint": {
+                    "Type": "Color",
+                    "JsonValue": "0,0,0,1"
+                  },
+                  "ScalingFloatValue": {
+                    "Type": "System.Single",
+                    "JsonValue": 32
+                  },
+                  "MaterialOverride": {
+                    "Type": "Sandbox.Material",
+                    "JsonValue": "materials/default/white.vmat"
+                  }
+                }
+              }
+            ],
+            "Keys": {
+              "_name": {
+                "JsonValue": "Pupil"
+              },
+              "_localposition": {
+                "JsonValue": "0.859852,0.02100256,0.436141"
+              },
+              "_localrotation": {
+                "JsonValue": "0,-53.4756,0"
+              },
+              "_scale": {
+                "JsonValue": 0.7
+              },
+              "_tags": {
+                "JsonValue": "yellow poop"
+              }
+            }
+          }
+        ],
+        "Components": [
+          {
+            "Guid": "861ae75a-4009-4289-ba75-3e27edbc1e09",
+            "Class": "ModelComponentMate",
+            "Keys": {
+              "_name": {
+                "JsonValue": "\u0022ModelComponent\u0022"
+              },
+              "_tags": {
+                "JsonValue": []
+              },
+              "_json": {
+                "Value": "0"
+              },
+              "Model": {
+                "Type": "Sandbox.Model",
+                "JsonValue": "models/addons/ball/pool_ball.vmdl"
+              },
+              "Tint": {
+                "Type": "Color",
+                "JsonValue": "1,1,1,1"
+              },
+              "ScalingFloatValue": {
+                "Type": "System.Single",
+                "JsonValue": 32
+              },
+              "MaterialOverride": {
+                "Type": "Sandbox.Material",
+                "JsonValue": "materials/default/white.vmat"
+              }
+            }
+          }
+        ],
+        "Keys": {
+          "_name": {
+            "JsonValue": "Left Eye"
+          },
+          "_localposition": {
+            "JsonValue": "4.404413,-5.543283,12.3341"
+          },
+          "_localrotation": {
+            "JsonValue": "0,-53.4756,0"
+          },
+          "_scale": {
+            "JsonValue": 1.25
+          },
+          "_tags": {
+            "JsonValue": "yellow poop"
+          }
+        }
+      },
+      {
+        "Guid": "6b4147ed-662d-48ce-9462-0e92b4eb2ab4",
+        "Class": "GameObject",
+        "Entities": [
+          {
+            "Guid": "8259ba38-0718-4280-af3c-3cb7eb2dfbc4",
+            "Class": "GameObject",
+            "Entities": [],
+            "Components": [
+              {
+                "Guid": "1c20d62d-a8bc-4062-bfb4-e2fd1a56c356",
+                "Class": "ModelComponentMate",
+                "Keys": {
+                  "_name": {
+                    "JsonValue": "\u0022ModelComponent\u0022"
+                  },
+                  "_tags": {
+                    "JsonValue": []
+                  },
+                  "_json": {
+                    "Value": "0"
+                  },
+                  "Model": {
+                    "Type": "Sandbox.Model",
+                    "JsonValue": "models/addons/ball/pool_ball.vmdl"
+                  },
+                  "Tint": {
+                    "Type": "Color",
+                    "JsonValue": "0,0,0,1"
+                  },
+                  "ScalingFloatValue": {
+                    "Type": "System.Single",
+                    "JsonValue": 32
+                  },
+                  "MaterialOverride": {
+                    "Type": "Sandbox.Material",
+                    "JsonValue": "materials/default/white.vmat"
+                  }
+                }
+              }
+            ],
+            "Keys": {
+              "_name": {
+                "JsonValue": "Pupil"
+              },
+              "_localposition": {
+                "JsonValue": "0.7883919,0.2646188,0.5477064"
+              },
+              "_localrotation": {
+                "JsonValue": "0,-53.4756,0"
+              },
+              "_scale": {
+                "JsonValue": 0.7
+              },
+              "_tags": {
+                "JsonValue": "yellow poop"
+              }
+            }
+          }
+        ],
+        "Components": [
+          {
+            "Guid": "bc1073ab-e24b-434a-a965-50b853906d04",
+            "Class": "ModelComponentMate",
+            "Keys": {
+              "_name": {
+                "JsonValue": "\u0022ModelComponent\u0022"
+              },
+              "_tags": {
+                "JsonValue": []
+              },
+              "_json": {
+                "Value": "0"
+              },
+              "Model": {
+                "Type": "Sandbox.Model",
+                "JsonValue": "models/addons/ball/pool_ball.vmdl"
+              },
+              "Tint": {
+                "Type": "Color",
+                "JsonValue": "1,1,1,1"
+              },
+              "ScalingFloatValue": {
+                "Type": "System.Single",
+                "JsonValue": 0
+              },
+              "MaterialOverride": {
+                "Type": "Sandbox.Material",
+                "JsonValue": "materials/white.vmat"
+              }
+            }
+          }
+        ],
+        "Keys": {
+          "_name": {
+            "JsonValue": "Right Eye"
+          },
+          "_localposition": {
+            "JsonValue": "7.651438,-1.633924,12.78009"
+          },
+          "_localrotation": {
+            "JsonValue": "0,0,0"
+          },
+          "_scale": {
+            "JsonValue": 1
+          },
+          "_tags": {
+            "JsonValue": ""
+          }
+        }
+      },
+      {
+        "Guid": "64e8778b-57e4-4c18-8842-05ca2839d701",
+        "Class": "GameObject",
+        "Entities": [],
+        "Components": [
+          {
+            "Guid": "16ae1b81-59cc-4608-a8fb-20f33b41a7cc",
+            "Class": "ModelComponentMate",
+            "Keys": {
+              "_name": {
+                "JsonValue": "\u0022ModelComponent\u0022"
+              },
+              "_tags": {
+                "JsonValue": []
+              },
+              "_json": {
+                "Value": "0"
+              },
+              "Model": {
+                "Type": "Sandbox.Model",
+                "JsonValue": "assets/untitled_7.vmdl"
+              },
+              "Tint": {
+                "Type": "Color",
+                "JsonValue": "0.4604,0.04103,0.04103,1"
+              },
+              "ScalingFloatValue": {
+                "Type": "System.Single",
+                "JsonValue": 9.9
+              },
+              "MaterialOverride": {
+                "Type": "Sandbox.Material",
+                "JsonValue": "materials/white.vmat"
+              }
+            }
+          }
+        ],
+        "Keys": {
+          "_name": {
+            "JsonValue": "Mouth"
+          },
+          "_localposition": {
+            "JsonValue": "7.61825,-4.404281,6.023817"
+          },
+          "_localrotation": {
+            "JsonValue": "81.8526,-35.7398,-6.3243"
+          },
+          "_scale": {
+            "JsonValue": 0.55
+          },
+          "_tags": {
+            "JsonValue": ""
+          }
+        }
+      },
+      {
+        "Guid": "f048abdd-6e2a-428c-b14f-2e656a8f1438",
+        "Class": "GameObject",
+        "Entities": [],
+        "Components": [
+          {
+            "Guid": "0117d7ed-35b5-4ecb-b14b-4d3cfd097cb0",
+            "Class": "ModelComponentMate",
+            "Keys": {
+              "_name": {
+                "JsonValue": "\u0022ModelComponent\u0022"
+              },
+              "_tags": {
+                "JsonValue": []
+              },
+              "_json": {
+                "Value": "0"
+              },
+              "Model": {
+                "Type": "Sandbox.Model",
+                "JsonValue": "assets/untitled_7.vmdl"
+              },
+              "Tint": {
+                "Type": "Color",
+                "JsonValue": "0.24752,0.09651,0.05392,1"
+              },
+              "ScalingFloatValue": {
+                "Type": "System.Single",
+                "JsonValue": 9.9
+              },
+              "MaterialOverride": {
+                "Type": "Sandbox.Material",
+                "JsonValue": "materials/dev/primary_white.vmat"
+              }
+            }
+          }
+        ],
+        "Keys": {
+          "_name": {
+            "JsonValue": "Ear"
+          },
+          "_localposition": {
+            "JsonValue": "-1.067086,-8.518637,13.68918"
+          },
+          "_localrotation": {
+            "JsonValue": "-0,-13.9305,-10.1376"
+          },
+          "_scale": {
+            "JsonValue": 0.7
+          },
+          "_tags": {
+            "JsonValue": ""
+          }
+        }
+      },
+      {
+        "Guid": "88b361e6-2bab-447e-87c5-2f4452f8aeea",
+        "Class": "GameObject",
+        "Entities": [],
+        "Components": [
+          {
+            "Guid": "2527c6a9-d2f3-4104-9134-e510abd2fa75",
+            "Class": "ModelComponentMate",
+            "Keys": {
+              "_name": {
+                "JsonValue": "\u0022ModelComponent\u0022"
+              },
+              "_tags": {
+                "JsonValue": []
+              },
+              "_json": {
+                "Value": "0"
+              },
+              "Model": {
+                "Type": "Sandbox.Model",
+                "JsonValue": "assets/untitled_7.vmdl"
+              },
+              "Tint": {
+                "Type": "Color",
+                "JsonValue": "0.18812,0.07189,0.03911,1"
+              },
+              "ScalingFloatValue": {
+                "Type": "System.Single",
+                "JsonValue": 9.9
+              },
+              "MaterialOverride": {
+                "Type": "Sandbox.Material",
+                "JsonValue": "materials/dev/primary_white.vmat"
+              }
+            }
+          }
+        ],
+        "Keys": {
+          "_name": {
+            "JsonValue": "Ear"
+          },
+          "_localposition": {
+            "JsonValue": "7.199725,5.140158,12.23406"
+          },
+          "_localrotation": {
+            "JsonValue": "-14.7796,-37.2213,0.1224"
+          },
+          "_scale": {
+            "JsonValue": 0.7
+          },
+          "_tags": {
+            "JsonValue": ""
+          }
+        }
+      },
+      {
+        "Guid": "8f3978bd-e5bf-403d-ac0a-640ecb767bb7",
+        "Class": "GameObject",
+        "Entities": [],
+        "Components": [
+          {
+            "Guid": "a5ff5e9b-b2bb-4ed7-b240-c513e2379b48",
+            "Class": "ModelComponentMate",
+            "Keys": {
+              "_name": {
+                "JsonValue": "\u0022ModelComponent\u0022"
+              },
+              "_tags": {
+                "JsonValue": []
+              },
+              "_json": {
+                "Value": "0"
+              },
+              "Model": {
+                "Type": "Sandbox.Model",
+                "JsonValue": "assets/untitled_7.vmdl"
+              },
+              "Tint": {
+                "Type": "Color",
+                "JsonValue": "0.18812,0.07189,0.03911,1"
+              },
+              "ScalingFloatValue": {
+                "Type": "System.Single",
+                "JsonValue": 9.9
+              },
+              "MaterialOverride": {
+                "Type": "Sandbox.Material",
+                "JsonValue": "materials/dev/primary_white.vmat"
+              }
+            }
+          }
+        ],
+        "Keys": {
+          "_name": {
+            "JsonValue": "Nose"
+          },
+          "_localposition": {
+            "JsonValue": "5.646595,-3.153916,12.31705"
+          },
+          "_localrotation": {
+            "JsonValue": "-13.5363,-109.5337,-28.3541"
+          },
+          "_scale": {
+            "JsonValue": 0.7
+          },
+          "_tags": {
+            "JsonValue": ""
+          }
+        }
+      },
+      {
+        "Guid": "8f56b4b5-6696-4a31-a7f6-0310b9fbcbeb",
+        "Class": "GameObject",
+        "Entities": [],
+        "Components": [
+          {
+            "Guid": "b4ecd49d-3cc8-4ce5-aa47-91451cec5ebd",
+            "Class": "ModelComponentMate",
+            "Keys": {
+              "_name": {
+                "JsonValue": "\u0022ModelComponent\u0022"
+              },
+              "_tags": {
+                "JsonValue": []
+              },
+              "_json": {
+                "Value": "0"
+              },
+              "Model": {
+                "Type": "Sandbox.Model",
+                "JsonValue": "assets/untitled_7.vmdl"
+              },
+              "Tint": {
+                "Type": "Color",
+                "JsonValue": "0.4604,0.04103,0.04103,1"
+              },
+              "ScalingFloatValue": {
+                "Type": "System.Single",
+                "JsonValue": 9.9
+              },
+              "MaterialOverride": {
+                "Type": "Sandbox.Material",
+                "JsonValue": "materials/white.vmat"
+              }
+            }
+          }
+        ],
+        "Keys": {
+          "_name": {
+            "JsonValue": "Mouth"
+          },
+          "_localposition": {
+            "JsonValue": "8.030227,-4.597802,8.22602"
+          },
+          "_localrotation": {
+            "JsonValue": "52.4589,-30.6489,-1.4697"
+          },
+          "_scale": {
+            "JsonValue": 0.55
+          },
+          "_tags": {
+            "JsonValue": ""
+          }
+        }
+      },
+      {
+        "Guid": "800aef4f-1f4c-47a0-bab8-2d44312617eb",
+        "Class": "GameObject",
+        "Entities": [],
+        "Components": [
+          {
+            "Guid": "7599573f-5a48-46ba-88be-f4a80f981419",
+            "Class": "SphereColliderComponent",
+            "Keys": {
+              "Radius": {
+                "Type": "System.Single",
+                "JsonValue": 2.7999992
+              },
+              "_name": {
+                "JsonValue": "New SphereColliderComponent"
+              },
+              "_tags": {
+                "JsonValue": []
+              },
+              "Surface": {
+                "Type": "Sandbox.Surface",
+                "JsonValue": "bouncy.surface"
+              }
+            }
+          }
+        ],
+        "Keys": {
+          "_name": {
+            "JsonValue": "Physics Ball"
+          },
+          "_localposition": {
+            "JsonValue": "-2.56213,-10.70385,14.05709"
+          },
+          "_localrotation": {
+            "JsonValue": "0,0,0"
+          },
+          "_scale": {
+            "JsonValue": 1
+          },
+          "_tags": {
+            "JsonValue": ""
+          }
+        }
+      },
+      {
+        "Guid": "a9610a96-8618-4f78-91d3-89cde0507931",
+        "Class": "GameObject",
+        "Entities": [],
+        "Components": [
+          {
+            "Guid": "335fc772-c26c-43c1-8f4a-1b9bc3359f55",
+            "Class": "SphereColliderComponent",
+            "Keys": {
+              "Radius": {
+                "Type": "System.Single",
+                "JsonValue": 2.7999992
+              },
+              "_name": {
+                "JsonValue": "New SphereColliderComponent"
+              },
+              "_tags": {
+                "JsonValue": []
+              },
+              "Surface": {
+                "Type": "Sandbox.Surface",
+                "JsonValue": "surfaces/plastic.sheet.surface"
+              }
+            }
+          }
+        ],
+        "Keys": {
+          "_name": {
+            "JsonValue": "Physics Ball"
+          },
+          "_localposition": {
+            "JsonValue": "8.781915,6.950358,12.30151"
+          },
+          "_localrotation": {
+            "JsonValue": "0,0,0"
+          },
+          "_scale": {
+            "JsonValue": 1
+          },
+          "_tags": {
+            "JsonValue": ""
+          }
+        }
+      },
+      {
+        "Guid": "caacef2e-550b-47ec-895a-e24c06082e8c",
+        "Class": "GameObject",
+        "Entities": [],
+        "Components": [
+          {
+            "Guid": "59eef42e-0426-4287-b4f9-df0d6ec6bc57",
+            "Class": "SphereColliderComponent",
+            "Keys": {
+              "Radius": {
+                "Type": "System.Single",
+                "JsonValue": 10.15
+              },
+              "_name": {
+                "JsonValue": "New SphereColliderComponent"
+              },
+              "_tags": {
+                "JsonValue": []
+              },
+              "Surface": {
+                "Type": "Sandbox.Surface",
+                "JsonValue": "bouncy.surface"
+              }
+            }
+          }
+        ],
+        "Keys": {
+          "_name": {
+            "JsonValue": "Physics Ball"
+          },
+          "_localposition": {
+            "JsonValue": "0,0,10.02072"
+          },
+          "_localrotation": {
+            "JsonValue": "0,0,0"
+          },
+          "_scale": {
+            "JsonValue": 1
+          },
+          "_tags": {
+            "JsonValue": ""
+          }
+        }
+      }
+    ],
+    "Components": [
+      {
+        "Guid": "fe1a26f2-5ac9-4e66-9743-b2f0c3a63584",
+        "Class": "ModelComponentMate",
+        "Keys": {
+          "_name": {
+            "JsonValue": "\u0022ModelComponent\u0022"
+          },
+          "_tags": {
+            "JsonValue": []
+          },
+          "_json": {
+            "Value": "0"
+          },
+          "Model": {
+            "Type": "Sandbox.Model",
+            "JsonValue": "models/citizen_props/beachball.vmdl"
+          },
+          "Tint": {
+            "Type": "Color",
+            "JsonValue": "0.17822,0.07775,0.04941,1"
+          },
+          "ScalingFloatValue": {
+            "Type": "System.Single",
+            "JsonValue": 34534544
+          },
+          "MaterialOverride": {
+            "Type": "Sandbox.Material",
+            "JsonValue": "materials/dev/primary_white.vmat"
+          }
+        }
+      },
+      {
+        "Guid": "2a8a36fb-b4f5-4625-8536-672be1b2a187",
+        "Class": "PhysicsComponent",
+        "Keys": {
+          "Static": {
+            "Type": "System.Boolean",
+            "JsonValue": false
+          },
+          "Gravity": {
+            "Type": "System.Boolean",
+            "JsonValue": false
+          },
+          "_name": {
+            "JsonValue": "New PhysicsComponent"
+          },
+          "_tags": {
+            "JsonValue": []
+          }
+        }
+      }
+    ],
+    "Keys": {
+      "_name": {
+        "JsonValue": "Big Head"
+      },
+      "_localposition": {
+        "JsonValue": "0,0,-2.282009"
+      },
+      "_localrotation": {
+        "JsonValue": "0,0,0"
+      },
+      "_scale": {
+        "JsonValue": 1
+      },
+      "_tags": {
+        "JsonValue": ""
+      }
+    }
+  }
+}
