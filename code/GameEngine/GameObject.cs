@@ -104,14 +104,22 @@ public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	internal void PostPhysics()
 	{
+		//Gizmo.Draw.LineSphere( new Sphere( WorldTransform.Position, 3 ) );
+
 		foreach ( var component in Components )
 		{
 			component.PostPhysics();
+		}
+
+		foreach ( var child in Children )
+		{
+			child.PostPhysics();
 		}
 	}
 
 	internal void PreRender()
 	{
+
 		foreach ( var component in Components )
 		{
 			component.PreRender();
