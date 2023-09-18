@@ -50,7 +50,9 @@ public class Scene
 
 		TickPhysics();
 
-		NavigationMesh?.DrawGizmos();
+		
+
+		DrawNavmesh();
 	}
 
 	void TickPhysics()
@@ -66,6 +68,42 @@ public class Scene
 		{
 
 			e.PostPhysics();
+		}
+	}
+
+	void DrawNavmesh()
+	{
+		foreach ( var area in NavigationMesh.areas.Values )
+		{
+			Gizmo.Draw.Color = Color.White;
+
+			var c = area.Vertices.Count;
+			for ( int i = 0; i < c; i++ )
+			{
+				Gizmo.Draw.Line( area.Vertices[i], area.Vertices[(i + 1) % c] );
+			}
+
+			Gizmo.Draw.Line( area.Center, area.Center + area.Normal * 10.0f );
+
+			foreach( var connect in area.Connections )
+			{
+				if ( connect.twoWay == false )
+					continue;
+
+				var a = area.Center;
+				var b = connect.Target.Center;
+				var delta = b - a;
+				a += delta * 0.1f;
+				b += delta * -0.1f;
+
+				Gizmo.Draw.Color = connect.twoWay ? Color.White : Color.Red;
+
+				Gizmo.Draw.Line( a, b );
+				Gizmo.Draw.LineBBox( new BBox( b, 5 ) );
+				//Gizmo.Draw.SolidCone( a, delta.Normal * 10.0f, 2.0f, 4 );
+			}
+
+			
 		}
 	}
 
