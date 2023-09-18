@@ -52,13 +52,18 @@
 
         var map = new Map( "maps/datacore", new SceneMapLoader(Scene.Active.SceneWorld, Scene.Active.PhysicsWorld) );
 
+
+        Scene.Active.NavigationMesh = new NavigationMesh();
+
+        //  Scene.Active.NavigationMesh.Load( "maps/datacore.nav");
+
         //new SceneMap( world, "maps/scenemaps/menu_avatar/avatar_menu_map" );
 
-      //  for (int i = 0; i < 10000; i++)
-      //  {
-      //      var model = new SceneModel(Scene.Active.SceneWorld, "models/rust_props/small_junk/apple.vmdl", Transform.Zero);
-      //      model.Position = Vector3.Up * 500 + (Vector3.Random * 2000);
-       // }
+        //  for (int i = 0; i < 10000; i++)
+        //  {
+        //      var model = new SceneModel(Scene.Active.SceneWorld, "models/rust_props/small_junk/apple.vmdl", Transform.Zero);
+        //      model.Position = Vector3.Up * 500 + (Vector3.Random * 2000);
+        // }
     }
 
     public override bool WantsMouseInput() => false;
@@ -81,6 +86,10 @@
 
         var speed = 310;
         if (Input.Down("run")) speed = 5000;
+        if ( Input.Pressed( "attack2") )
+        {
+            Scene.Active.NavigationMesh.Generate(Scene.Active.PhysicsWorld);
+        }
 
         if ( Input.Pressed("attack1") )
         {

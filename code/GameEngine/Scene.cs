@@ -9,6 +9,7 @@ public class Scene
 	public SceneWorld SceneWorld { get; set; }
 	public SceneWorld DebugSceneWorld => gizmoInstance.World;
 	public PhysicsWorld PhysicsWorld { get; set; }
+	public NavigationMesh NavigationMesh { get; set; }
 
 	public HashSet<GameObject> All = new HashSet<GameObject>();
 
@@ -48,6 +49,8 @@ public class Scene
 		using var giz = gizmoInstance.Push();
 
 		TickPhysics();
+
+		NavigationMesh?.DrawGizmos();
 	}
 
 	void TickPhysics()
