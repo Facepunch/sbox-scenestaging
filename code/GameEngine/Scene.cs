@@ -99,40 +99,20 @@ public class Scene
 		p.StartPoint = All.Reverse().Skip( 1 ).FirstOrDefault()?.Transform.Position ?? Camera.Main.Position + Camera.Main.Rotation.Forward * 500;
 		p.EndPoint = All.Reverse().FirstOrDefault()?.Transform.Position ?? Camera.Main.Position + Camera.Main.Rotation.Forward * 500;
 		p.Build();
-		var points = p.Build();
 
 		Gizmo.Draw.Color = Color.White;
-		Gizmo.Draw.ScreenText( $"Built Time: {p.Milliseconds:0.00}ms", 100 );
+		Gizmo.Draw.ScreenText( $"Built Time: {p.GenerationMilliseconds:0.00}ms", 100 );
 
 		Gizmo.Draw.LineThickness = 3;
 
-		if ( p.StartNode is not null )
+		for ( int i=0; i< p.Segments.Count-1; i++ )
 		{
 			Gizmo.Draw.Color = Color.Green;
+			Gizmo.Draw.Line( p.Segments[i].Position, p.Segments[i+1].Position );
+			Gizmo.Draw.LineSphere( new Sphere( p.Segments[i].Position, 3 ) );
 
-			var c = p.StartNode.Vertices.Count;
-			for ( int i = 0; i < c; i++ )
-			{
-				Gizmo.Draw.Line( p.StartNode.Vertices[i], p.StartNode.Vertices[(i + 1) % c] );
-			}
-		}
-
-		if ( p.EndNode is not null )
-		{
-			Gizmo.Draw.Color = Color.Cyan;
-
-			var c = p.EndNode.Vertices.Count;
-			for ( int i = 0; i < c; i++ )
-			{
-				Gizmo.Draw.Line( p.EndNode.Vertices[i], p.EndNode.Vertices[(i + 1) % c] );
-			}
-		}
-
-		for ( int i=0; i< points.Count-1; i++ )
-		{
-			Gizmo.Draw.Color = Color.Green;
-			Gizmo.Draw.Line( points[i], points[i+1] );
-			Gizmo.Draw.LineSphere( new Sphere( points[i], 3 ) );
+			//Gizmo.Draw.Color = Color.White;
+			//Gizmo.Draw.ScreenText( $"{p.Segments[i].Distance:n0}", Camera.Main.ToScreen( p.Segments[i].Position + Vector3.Up * 10 ) );
 		}
 	}
 
