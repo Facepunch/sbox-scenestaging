@@ -1,6 +1,14 @@
 ﻿using Sandbox;
+using Sandbox.Internal;
+using System;
 using System.Collections.Generic;
-using static Sandbox.Gizmo;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Reflection.PortableExecutable;
+using System.Runtime.InteropServices;
+using static Sandbox.Input;
 
 public class Scene
 {
@@ -73,37 +81,58 @@ public class Scene
 
 	void DrawNavmesh()
 	{
+		if ( NavigationMesh is null )
+			return;
+
 		foreach ( var area in NavigationMesh.areas.Values )
 		{
-			Gizmo.Draw.Color = Color.White;
+			Gizmo.Draw.Color = Color.White.WithAlpha( 0.03f );
 
 			var c = area.Vertices.Count;
 			for ( int i = 0; i < c; i++ )
 			{
 				Gizmo.Draw.Line( area.Vertices[i], area.Vertices[(i + 1) % c] );
 			}
+		}
 
-			Gizmo.Draw.Line( area.Center, area.Center + area.Normal * 10.0f );
+		var p = new NavigationPath( NavigationMesh );
+		p.StartPoint = All.Reverse().Skip( 1 ).FirstOrDefault()?.Transform.Position ?? Camera.Main.Position + Camera.Main.Rotation.Forward * 500;
+		p.EndPoint = All.Reverse().FirstOrDefault()?.Transform.Position ?? Camera.Main.Position + Camera.Main.Rotation.Forward * 500;
+		p.Build();
+		var points = p.Build();
 
-			foreach( var connect in area.Connections )
+		Gizmo.Draw.Color = Color.White;
+		Gizmo.Draw.ScreenText( $"Built Time: {p.Milliseconds:0.00}ms", 100 );
+
+		Gizmo.Draw.LineThickness = 3;
+
+		if ( p.StartNode is not null )
+		{
+			Gizmo.Draw.Color = Color.Green;
+
+			var c = p.StartNode.Vertices.Count;
+			for ( int i = 0; i < c; i++ )
 			{
-				if ( connect.twoWay == false )
-					continue;
-
-				var a = area.Center;
-				var b = connect.Target.Center;
-				var delta = b - a;
-				a += delta * 0.1f;
-				b += delta * -0.1f;
-
-				Gizmo.Draw.Color = connect.twoWay ? Color.White : Color.Red;
-
-				Gizmo.Draw.Line( a, b );
-				Gizmo.Draw.LineBBox( new BBox( b, 5 ) );
-				//Gizmo.Draw.SolidCone( a, delta.Normal * 10.0f, 2.0f, 4 );
+				Gizmo.Draw.Line( p.StartNode.Vertices[i], p.StartNode.Vertices[(i + 1) % c] );
 			}
+		}
 
-			
+		if ( p.EndNode is not null )
+		{
+			Gizmo.Draw.Color = Color.Cyan;
+
+			var c = p.EndNode.Vertices.Count;
+			for ( int i = 0; i < c; i++ )
+			{
+				Gizmo.Draw.Line( p.EndNode.Vertices[i], p.EndNode.Vertices[(i + 1) % c] );
+			}
+		}
+
+		for ( int i=0; i< points.Count-1; i++ )
+		{
+			Gizmo.Draw.Color = Color.Green;
+			Gizmo.Draw.Line( points[i], points[i+1] );
+			Gizmo.Draw.LineSphere( new Sphere( points[i], 3 ) );
 		}
 	}
 
