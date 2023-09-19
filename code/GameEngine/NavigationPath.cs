@@ -33,22 +33,23 @@ public class NavigationPath
 	/// <summary>
 	/// The individual segments of the path
 	/// </summary>
-	public List<Segment> Segments = new List<Segment>( 256 );
+	public List<Segment> Segments = new List<Segment>( 128 );
 
 	private NavigationMesh navigationMesh;
-	private NavigationMesh.Node startNode;
-	private NavigationMesh.Node endNode;
 
 	public NavigationPath( NavigationMesh navigationMesh )
 	{
 		this.navigationMesh = navigationMesh;
 	}
 
+	/// <summary>
+	/// Build the path. Plenty of opportunity for optimization here.
+	/// </summary>
 	public void Build()
 	{
 		var sw = Stopwatch.StartNew();
 
-		//	AllowPathSmoothing = RealTime.Now % 2 > 1;
+		AllowPathSmoothing = RealTime.Now % 2 > 1;
 		Segments.Clear();
 
 		// clean up
@@ -60,10 +61,10 @@ public class NavigationPath
 		HashSet<NavigationMesh.Node> open = new HashSet<NavigationMesh.Node>( 64 );
 
 		// todo - sppeed up using 
-		startNode = FindClosestNode( StartPoint );
-		endNode = FindClosestNode( EndPoint );
+		var startNode = FindClosestNode( StartPoint );
+		var endNode = FindClosestNode( EndPoint );
 
-		if ( startNode == endNode )
+		if ( startNode == endNode || endNode is null || startNode is null )
 		{
 			// Build trivial path
 			return;
@@ -84,7 +85,7 @@ public class NavigationPath
 
 			if ( node == endNode )
 			{
-				FinishBuilding();
+				FinishBuilding( endNode );
 				break;
 			}
 
@@ -92,7 +93,8 @@ public class NavigationPath
 			{
 				if ( connection.Target.Path.Closed ) continue;
 
-				var score = ScoreFor( node.Path.Position, connection, out var position );
+				Vector3 position = connection.Target.Center;
+				var score = ScoreFor( connection, position );
 				var distanceFromParent = position.Distance( node.Path.Position );
 				score += distanceFromParent + currentCost;
 
@@ -110,33 +112,32 @@ public class NavigationPath
 		GenerationMilliseconds = sw.Elapsed.TotalMilliseconds;
 	}
 
-	void FinishBuilding()
+	/// <summary>
+	/// The path is complete - lets build the segments
+	/// </summary>
+	void FinishBuilding( NavigationMesh.Node finalNode )
 	{
-		var p = endNode;
-		Vector3 previousPosition = endNode.ClosestPoint( EndPoint );
+		var p = finalNode;
+		Vector3 previousPosition = p.ClosestPoint( EndPoint );
 
 		Segments.Add( new Segment { Node = p, Position = previousPosition } );
 
 		while ( p is not null )
 		{
-			var s = new Segment();
-			s.Node = p;
-			s.Position = p.Path.Position;
-			s.Distance = p.Path.DistanceFromStart;
-			s.Connection = p.Path.Connection;
+			var s = new Segment
+			{
+				Node = p,
+				Position = p.Path.Position,
+				Distance = p.Path.DistanceFromStart,
+				Connection = p.Path.Connection
+			};
 
 			if ( p.Path.Parent is NavigationMesh.Node next )
 			{
 				var nextPos = next.Path.Position;
 
-				if ( AllowPathSimplify && Vector3.DistanceBetween( previousPosition, nextPos ) < 64 && Vector3.DistanceBetween( previousPosition, s.Position ) < 64 )
+				if ( AllowPathSimplify && Vector3.DistanceBetween( previousPosition, nextPos ) < 32 && Vector3.DistanceBetween( previousPosition, s.Position ) < 32 )
 					goto next;
-
-				if ( AllowPathSmoothing )
-				{
-					previousPosition = (previousPosition + nextPos) * 0.5f;
-					s.Position = p.Path.Connection.Line.ClosestPoint( previousPosition );
-				}
 			}
 
 			previousPosition = s.Position;
@@ -150,7 +151,7 @@ public class NavigationPath
 
 		if ( AllowPathSmoothing )
 		{
-			for ( int iteration = 0; iteration < 4; iteration++ )
+			for ( int iteration = 0; iteration < 2; iteration++ )
 				for ( int i = 1; i < Segments.Count - 1; i++ )
 				{
 					var before = Segments[i - 1].Position;
@@ -158,19 +159,18 @@ public class NavigationPath
 
 					if ( Segments[i].Connection.Line.ClosestPoint( new Ray( before, (after - before).Normal ), out var pol ) )
 					{
-						Segments[i].Position = pol;
+						Segments[i].Position = Vector3.Lerp( Segments[i].Position, pol, 0.5f );
 					}
 				}
 		}
 	}
 
-	private float ScoreFor( in Vector3 parentPosition, in NavigationMesh.Node.Connection connection, out Vector3 position )
+	/// <summary>
+	/// Get the score for this area
+	/// </summary>
+	protected virtual float ScoreFor( in NavigationMesh.Node.Connection connection, Vector3 position )
 	{
-		position = connection.Line.Center;
-
-		var g = EndPoint.Distance( position );
-
-		return g;
+		return EndPoint.DistanceSquared( position );
 	}
 
 	NavigationMesh.Node FindClosestNode( Vector3 position )
@@ -179,6 +179,9 @@ public class NavigationPath
 		return navigationMesh.areas.Values.Where( x => x.Center.z < position.z + 64 ).OrderBy( x => x.Distance( position ) ).FirstOrDefault();
 	}
 
+	/// <summary>
+	/// A segment of path
+	/// </summary>
 	public class Segment
 	{
 		public NavigationMesh.Node Node;
