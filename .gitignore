@@ -6,7 +6,7 @@
 .vs/*
 .vscode/*
 *.csproj
-obj/*
+obj
 Properties/*
 code/obj/*
 code/Properties/*
@@ -16,3 +16,4 @@ code/Properties/*
 *.*_c
 *.los
 *.vpk
+*launchSettings.json
