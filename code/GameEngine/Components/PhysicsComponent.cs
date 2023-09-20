@@ -45,7 +45,7 @@ public class PhysicsComponent : GameObjectComponent
 
 		foreach( var c in GameObject.Components.Concat( GameObject.Children.SelectMany( x => x.Components ) ).OfType<PhysicsComponent.IBodyModifier>() )
 		{
-			c.ModifyBody( _body );
+			c.ModifyBody( _body ); 
 		}
 	}
 

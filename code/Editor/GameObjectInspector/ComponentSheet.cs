@@ -127,7 +127,7 @@ file class ComponentHeader : Widget
 		row = row.Shrink( 22, 0, 0, 0 );
 
 		Paint.SetPen( Theme.Blue.WithAlpha( opacity ) );
-		Paint.DrawIcon( row, TargetObject.TypeIcon ?? "category", 18, TextFlag.LeftCenter );
+		Paint.DrawIcon( row, TargetObject.TypeIcon ?? "category", 18, TextFlag.LeftCenter ); 
 
 		row = row.Shrink( 26, 0, 0, 0 );
 

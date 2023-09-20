@@ -86,6 +86,9 @@ public class ModelComponentMate : GameObjectComponent
 
 	protected override void OnPreRender()
 	{
+		if ( _sceneObject is null )
+			return;
+
 		_sceneObject.Transform = GameObject.WorldTransform;
 	}
 

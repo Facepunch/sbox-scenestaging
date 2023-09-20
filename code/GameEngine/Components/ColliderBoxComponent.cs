@@ -1,18 +1,18 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
 
-[Title( "Sphere Collider" )]
+[Title( "Collider - Box" )]
 [Category( "Physics" )]
-[Icon( "panorama_fish_eye", "red", "white" )]
-public class SphereColliderComponent : GameObjectComponent, PhysicsComponent.IBodyModifier
+[Icon( "check_box_outline_blank", "red", "white" )]
+public class ColliderBoxComponent : GameObjectComponent, PhysicsComponent.IBodyModifier
 {
-	[Property] public float Radius { get; set; } = 10.0f;
+	[Property] public Vector3 Scale { get; set; } = 10.0f;
 	[Property] public Surface Surface { get; set; }
 
 	public override void DrawGizmos()
 	{
 		Gizmo.Draw.Color = Color.White.WithAlpha( Gizmo.IsChildSelected ? 0.5f : 0.1f );
-		Gizmo.Draw.LineSphere( new Sphere( 0, Radius ) );
+		Gizmo.Draw.LineBBox( new BBox( Scale * -0.5f, Scale * 0.5f ) );
 	}
 
 	public override void OnEnabled()
@@ -30,7 +30,11 @@ public class SphereColliderComponent : GameObjectComponent, PhysicsComponent.IBo
 		var tx = body.Transform.ToLocal( GameObject.WorldTransform );
 
 		// todo position relative to body
-		var shape = body.AddSphereShape( tx.Position, Radius );
-		shape.SurfaceMaterial = Surface.ResourceName;
+		var shape = body.AddBoxShape( tx.Position, tx.Rotation, Scale * 0.5f );
+
+		if ( Surface is not null )
+		{
+			shape.SurfaceMaterial = Surface.ResourceName;
+		}
 	}
 }

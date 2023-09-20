@@ -597,23 +597,20 @@
         "Entities": [],
         "Components": [
           {
-            "Guid": "59eef42e-0426-4287-b4f9-df0d6ec6bc57",
-            "Class": "SphereColliderComponent",
+            "Guid": "2dfb4af7-7ba0-4f1f-97bf-ca3f552b7944",
+            "Class": "ColliderBoxComponent",
             "Keys": {
-              "Radius": {
-                "Type": "System.Single",
-                "JsonValue": 10.6
-              },
-              "_name": {
-                "JsonValue": "New SphereColliderComponent"
-              },
-              "_tags": {
-                "JsonValue": []
+              "Scale": {
+                "Type": "Vector3",
+                "JsonValue": "13.55,17.45,16.4"
               },
               "Surface": {
-                "Type": "Sandbox.Surface",
-                "JsonValue": "bouncy.surface"
-              }
+                "Type": "Sandbox.Surface"
+              },
+              "_name": {
+                "JsonValue": "New ColliderBoxComponent"
+              },
+              "_tags": {}
             }
           }
         ],
@@ -622,7 +619,7 @@
             "JsonValue": "Physics Ball"
           },
           "_localposition": {
-            "JsonValue": "0,0,9.727051"
+            "JsonValue": "0,0.75,10.77705"
           },
           "_localrotation": {
             "JsonValue": "0,0,0"
