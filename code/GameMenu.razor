@@ -39,8 +39,6 @@
         // sun.SkyColor = Color.White * 0.5f + Color.Cyan * 0.025f;
         // sun.ShadowTextureResolution = 1024;
 
-        Log.Info($"Loaded {Camera.Main} {Camera.Main.World}");
-
         _ = LoadMapAsync();
     }
 
@@ -54,6 +52,7 @@
 
 
         Scene.Active.NavigationMesh = new NavigationMesh();
+        Scene.Active.NavigationMesh.Generate( Scene.Active.PhysicsWorld );
 
         //  Scene.Active.NavigationMesh.Load( "maps/datacore.nav");
 
@@ -86,7 +85,8 @@
 
         var speed = 310;
         if (Input.Down("run")) speed = 5000;
-        if ( Input.Pressed( "attack2") )
+
+        if ( Input.Pressed( "jump") )
         {
             Scene.Active.NavigationMesh.Generate(Scene.Active.PhysicsWorld);
         }
@@ -103,8 +103,6 @@
 
             var phys = instance.GetComponent<PhysicsComponent>();
             phys.Velocity = Camera.Main.Rotation.Forward * 1000;
-
-            Log.Info( instance );
         }
 
         velocity += viewAngles.ToRotation() * move * RealTime.Delta * speed;

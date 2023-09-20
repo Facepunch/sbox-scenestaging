@@ -59,7 +59,10 @@ public class PhysicsComponent : GameObjectComponent
 	{
 		if ( _body is null ) return;
 
-		GameObject.WorldTransform = _body.Transform;
+		var bt = _body.Transform;
+
+		var wt = GameObject.WorldTransform;
+		GameObject.WorldTransform = bt.WithScale( wt.Scale );
 	}
 
 }

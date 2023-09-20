@@ -11,6 +11,9 @@ public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 	public string Name { get; set; }
 
 	[Property]
+	public bool Enabled { get; set; }
+
+	[Property]
 	public Transform Transform { get; set; }
 
 	public Transform WorldTransform
@@ -32,13 +35,12 @@ public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 		}
 	}
 
-	public HashSet<GameObjectComponent> Components = new HashSet<GameObjectComponent>();
+	public List<GameObjectComponent> Components = new List<GameObjectComponent>();
 
 	public T GetComponent<T>( bool allowInactive = false ) where T : GameObjectComponent
 	{
 		return Components.OfType<T>().FirstOrDefault();
 	}
-
 
 	GameObject _parent;
 
@@ -48,6 +50,8 @@ public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 		set
 		{
 			if ( _parent == value ) return;
+
+			var oldParent = _parent;
 
 			if ( _parent is not null )
 			{
@@ -59,6 +63,11 @@ public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 			if ( _parent is not null )
 			{
 				_parent.Children.Add( this );
+			}
+
+			if ( Scene is not null )
+			{
+				Scene.OnParentChanged( this, oldParent, _parent );
 			}
 		}
 	}

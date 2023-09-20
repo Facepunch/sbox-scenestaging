@@ -10,10 +10,12 @@ using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using static Sandbox.Input;
 
+[GameResource( "Scene", "scene", "A scene", Icon = "perm_media" )]
 public class Scene
 {
 	public static Scene Active { get; set; }
 
+	public string Name { get; set; } = "New Scene";
 	public SceneWorld SceneWorld { get; set; }
 	public SceneWorld DebugSceneWorld => gizmoInstance.World;
 	public PhysicsWorld PhysicsWorld { get; set; }
@@ -101,7 +103,7 @@ public class Scene
 		p.Build();
 
 		Gizmo.Draw.Color = Color.White;
-		Gizmo.Draw.ScreenText( $"Built Time: {p.GenerationMilliseconds:0.00}ms", 100 );
+		Gizmo.Draw.ScreenText( $"Path Build Time: {p.GenerationMilliseconds:0.00}ms", 100 ); 
 
 		Gizmo.Draw.LineThickness = 3;
 
@@ -116,4 +118,16 @@ public class Scene
 		}
 	}
 
+	internal void OnParentChanged( GameObject gameObject, GameObject oldParent, GameObject parent )
+	{
+		if ( oldParent == null )
+		{
+			All.Remove( gameObject );
+		}
+
+		if ( parent == null )
+		{
+			All.Add( gameObject );
+		}
+	}
 }

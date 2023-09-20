@@ -15,7 +15,7 @@ public abstract class GameObjectComponent : IPrefabObject.Component
 
 	public virtual void OnEnabled() { }
 
-	public virtual void OnDisabled() { }
+	public virtual void OnDisabled() { } 
 
 	protected virtual void OnPostPhysics() { }
 	internal void PostPhysics() { OnPostPhysics(); }

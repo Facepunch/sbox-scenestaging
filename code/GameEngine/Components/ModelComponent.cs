@@ -7,14 +7,34 @@ using Sandbox.Diagnostics;
 public class ModelComponentMate : GameObjectComponent
 {
 	[Property] public Model Model { get; set; }
-	[Property] public Color Tint { get; set; } = Color.White;
-	[Property] public float ScalingFloatValue { get; set; }
+
+
+	Color _tint = Color.White;
+
+	[Property]
+	public Color Tint
+	{
+		get => _tint;
+		set
+		{
+			if ( _tint == value ) return;
+
+			_tint = value;
+
+			if ( _sceneObject is not null )
+			{
+				_sceneObject.ColorTint = Tint;
+			}
+		}
+	}
+
 	[Property] public Material MaterialOverride { get; set; }
 
 	public string TestString { get; set; }
 
 	SceneObject _sceneObject;
 	public SceneObject SceneObject => _sceneObject;
+
 
 	public override void DrawGizmos()
 	{

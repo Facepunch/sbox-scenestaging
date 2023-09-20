@@ -26,6 +26,7 @@ public static class PrefabSystem
 
 		var instance = targetType.Create<GameObject>();
 
+		instance.Name = e.GetValue( "_name", "Untitled Object" );
 		instance.Transform = transform;
 
 		foreach( var entry in e.Components )
@@ -44,6 +45,7 @@ public static class PrefabSystem
 			var child = Create( entry, childTx );
 			if ( child is null ) continue;
 
+			child.Scene = Scene.Active;
 			child.Parent = instance;
 		}
 
@@ -60,7 +62,7 @@ public static class PrefabSystem
 		{
 			Log.Warning( "Couldn't create GameObjectComponent!" );
 			return;
-		}
+		} 
 
 		foreach ( var prop in targetType.Properties.Where( x =>x.HasAttribute<PropertyAttribute>() ) )
 		{
