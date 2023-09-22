@@ -34,9 +34,10 @@ public partial class SceneTreeWidget : Widget
 	[EditorEvent.Frame]
 	public void CheckForChanges()
 	{
-	//	Log.Info( $"{_lastScene} / {Scene.Active} / {_lastScene == Scene.Active}" );
-
 		if ( _lastScene == Scene.Active ) return;
+
+		Log.Info( $"{_lastScene} / {Scene.Active} / {_lastScene == Scene.Active}" );
+
 		_lastScene = Scene.Active;
 
 		TreeView.Clear();

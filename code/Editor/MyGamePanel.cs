@@ -59,7 +59,7 @@ public partial class PanelInspectorWidget : Widget
 		{
 			Cursor = Gizmo.HasHovered ? CursorShape.Finger : CursorShape.Arrow;
 
-			Gizmo.Draw.ScreenText( $"Scene Yeah Oh Hum: [{Scene.Active}]", 10, flags: TextFlag.LeftCenter );
+			Gizmo.Draw.ScreenText( $"Scene Poop: [{Scene.Active}]", 10, flags: TextFlag.LeftCenter );
 
 			if ( Scene.Active is not null )
 			{

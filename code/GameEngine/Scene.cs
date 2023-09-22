@@ -88,12 +88,12 @@ public class Scene
 
 		foreach ( var area in NavigationMesh.areas.Values )
 		{
-			Gizmo.Draw.Color = Color.White.WithAlpha( 0.03f );
+			Gizmo.Draw.Color = Color.Cyan.WithAlpha( 0.2f );
+			Gizmo.Draw.LineThickness = 3;
 
-			var c = area.Vertices.Count;
-			for ( int i = 0; i < c; i++ )
+			foreach ( var triangle in area.Triangles )
 			{
-				Gizmo.Draw.Line( area.Vertices[i], area.Vertices[(i + 1) % c] );
+				Gizmo.Draw.SolidTriangle( triangle );
 			}
 		}
 
@@ -103,15 +103,15 @@ public class Scene
 		p.Build();
 
 		Gizmo.Draw.Color = Color.White;
-		Gizmo.Draw.ScreenText( $"Path Build Time: {p.GenerationMilliseconds:0.00}ms", 100 ); 
+		Gizmo.Draw.ScreenText( $"Path Build: {p.GenerationMilliseconds:0.00}ms", 100 ); 
 
 		Gizmo.Draw.LineThickness = 3;
 
 		for ( int i=0; i< p.Segments.Count-1; i++ )
 		{
-			Gizmo.Draw.Color = Color.Green;
+			Gizmo.Draw.Color = Color.Cyan;
 			Gizmo.Draw.Line( p.Segments[i].Position, p.Segments[i+1].Position );
-			Gizmo.Draw.LineSphere( new Sphere( p.Segments[i].Position, 3 ) );
+			Gizmo.Draw.LineSphere( new Sphere( p.Segments[i].Position, 1 ) );
 
 			//Gizmo.Draw.Color = Color.White;
 			//Gizmo.Draw.ScreenText( $"{p.Segments[i].Distance:n0}", Camera.Main.ToScreen( p.Segments[i].Position + Vector3.Up * 10 ) );
