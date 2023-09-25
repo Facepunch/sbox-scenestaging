@@ -52,7 +52,7 @@ public partial class ComponentSheet : Widget
 
 		var ps = new ControlSheet();
 
-		foreach( var prop in props.OrderBy( x => x.DisplayName ) )
+		foreach( var prop in props.OrderBy( x => x.SourceLine ).ThenBy( x => x.DisplayName ) )
 		{
 			ps.AddRow( prop );
 		}

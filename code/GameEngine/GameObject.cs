@@ -1,20 +1,21 @@
 ﻿using Sandbox;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 
 public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 {
-	internal Scene Scene { get; set; }
+	public Scene Scene { get; set; }
 
 	[Property]
-	public string Name { get; set; }
+	public string Name { get; set; } = "Untitled Object";
 
 	[Property]
-	public bool Enabled { get; set; }
+	public bool Enabled { get; set; } = true;
 
 	[Property]
-	public Transform Transform { get; set; }
+	public Transform Transform { get; set; } = Transform.Zero;
 
 	public Transform WorldTransform
 	{
@@ -138,5 +139,50 @@ public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 		{
 			child.PreRender();
 		}
+	}
+
+	public T AddComponent<T>( bool enabled = true ) where T : GameObjectComponent, new()
+	{
+		var t = new T();
+
+		t.GameObject = this;
+		Components.Add( t );
+
+		t.Enabled = enabled;
+
+		return t;
+	}
+
+	public GameObjectComponent AddComponent( TypeDescription type, bool enabled = true )
+	{
+		if ( !type.TargetType.IsAssignableTo( typeof( GameObjectComponent ) ) )
+			return null;
+
+		var t = type.Create<GameObjectComponent>( null );
+
+		t.GameObject = this;
+		Components.Add( t );
+
+		t.Enabled = enabled;
+
+		return t;
+	}
+
+	internal void DrawGizmos()
+	{
+		foreach ( var component in Components )
+		{
+			component.DrawGizmos();
+		}
+
+		foreach ( var child in Children )
+		{
+			child.DrawGizmos();
+		}
+	}
+
+	internal void Tick()
+	{
+
 	}
 }

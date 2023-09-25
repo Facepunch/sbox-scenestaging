@@ -37,6 +37,23 @@ public partial class SceneNode : TreeNode<Scene>
 
 	public override void OnPaint( VirtualWidget item )
 	{
+		var fullSpanRect = item.Rect;
+		fullSpanRect.Left = 0;
+		fullSpanRect.Right = TreeView.Width;
+
+		if ( item.Selected )
+		{
+			Paint.ClearPen();
+			Paint.SetBrush( Theme.Blue.WithAlpha( 0.4f ) );
+			Paint.DrawRect( fullSpanRect );
+
+			Paint.SetPen( Color.White );
+		}
+		else
+		{
+			Paint.SetPen( Theme.ControlText );
+		}
+
 		var r = item.Rect;
 		Paint.SetPen( Theme.ControlText );
 
@@ -48,5 +65,34 @@ public partial class SceneNode : TreeNode<Scene>
 	}
 
 	public override int ValueHash => HashCode.Combine( Value?.All.Count );
+
+
+	public override void OnKeyPress( KeyEvent e )
+	{
+		base.OnKeyPress( e );
+
+		if ( e.Key == KeyCode.Delete || e.Key == KeyCode.Backspace )
+		{
+
+		}
+	}
+
+	public override bool OnContextMenu()
+	{
+		var m = new Menu();
+
+		GameObjectNode.CreateObjectMenu( m, go =>
+		{
+			Value.Register( go );
+			TreeView.Open( this );
+			TreeView.SelectItem( go );
+		} );
+
+		m.OpenAtCursor();
+
+		return true;
+	}
+
+
 }
 

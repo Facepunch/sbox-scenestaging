@@ -9,6 +9,32 @@ public abstract class GameObjectComponent : IPrefabObject.Component
 	[JsonIgnore]
 	public GameObject GameObject { get; internal set; }
 
+	bool _enabled = false;
+
+	public bool Enabled
+	{
+		get => _enabled;
+
+		set
+		{
+			if ( _enabled == value ) return;
+
+			_enabled = value;
+
+			if ( GameObject is null || GameObject.Scene is null )
+				return;
+
+			if ( _enabled )
+			{
+				OnEnabled();
+			}
+			else
+			{
+				OnDisabled();
+			}
+		}
+	}
+
 	public string Name { get; set; }
 
 	public virtual void DrawGizmos() { }

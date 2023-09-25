@@ -7,22 +7,6 @@ using System.Linq;
 using System;
 using Sandbox;
 
-public class MyOtherWidget : Widget
-{
-	public MyOtherWidget( Widget parent ) : base( parent )
-	{
-		var go = new GameObject();
-		//Log.Info( Scene.Active );
-	}
-
-	[EditorEvent.Frame]
-	public static void EditorFrame()
-	{
-		//var log = new Logger( "faker" );
-		//log.Info( $"FRAME Scene: {Scene.Active}" );
-	} 
-}
-
 [Dock( "Editor", "My Game Panel", "web_asset" )]
 public partial class PanelInspectorWidget : Widget
 {
@@ -47,7 +31,7 @@ public partial class PanelInspectorWidget : Widget
 	}
 
 	[EditorEvent.Frame]
-	public void Tick()
+	public void Ticker()
 	{
 		CustomCamera.World = Camera.Main.World;
 		CustomCamera.FieldOfView = 80;
@@ -59,7 +43,7 @@ public partial class PanelInspectorWidget : Widget
 		{
 			Cursor = Gizmo.HasHovered ? CursorShape.Finger : CursorShape.Arrow;
 
-			Gizmo.Draw.ScreenText( $"Scene Poop: [{Scene.Active}]", 10, flags: TextFlag.LeftCenter );
+			Gizmo.Draw.ScreenText( $"Scene Feet: [{Scene.Active}]", 10, flags: TextFlag.LeftCenter );
 
 			if ( Scene.Active is not null )
 			{
@@ -81,11 +65,6 @@ public partial class PanelInspectorWidget : Widget
 				}
 			}
 		}
-	}
-
-	public void Boop()
-	{
-		
 	}
 }
 

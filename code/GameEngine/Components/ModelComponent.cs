@@ -4,9 +4,24 @@ using Sandbox.Diagnostics;
 [Title( "Model Renderer" )]
 [Category( "Rendering" )]
 [Icon( "visibility", "red", "white" )]
-public class ModelComponentMate : GameObjectComponent
+public class ModelComponent : GameObjectComponent
 {
-	[Property] public Model Model { get; set; }
+	Model _model;
+
+	[Property] public Model Model 
+	{
+		get => _model;
+		set
+		{
+			if ( _model == value ) return;
+			_model = value;
+
+			if ( _sceneObject is not null )
+			{
+				_sceneObject.Model = _model;
+			}
+		}
+	}
 
 
 	Color _tint = Color.White;
@@ -28,7 +43,21 @@ public class ModelComponentMate : GameObjectComponent
 		}
 	}
 
-	[Property] public Material MaterialOverride { get; set; }
+	Material _material;
+	[Property] public Material MaterialOverride
+	{
+		get => _material;
+		set
+		{
+			if ( _material == value ) return;
+			_material = value;
+
+			if ( _sceneObject is not null )
+			{
+				_sceneObject.SetMaterialOverride( _material );
+			}
+		}
+	}
 
 	public string TestString { get; set; }
 
@@ -38,41 +67,37 @@ public class ModelComponentMate : GameObjectComponent
 
 	public override void DrawGizmos()
 	{
-		if ( Model is not null )
-		{
-			_sceneObject = Gizmo.Draw.Model( Model, Transform.Zero );
-		}
-		else
-		{
-			_sceneObject = Gizmo.Draw.Model( "models/dev/box.vmdl", Transform.Zero );
-		}
+		if ( Model is null )
+			return;
 
-		_sceneObject.ColorTint = Tint;
-		_sceneObject.SetMaterialOverride( MaterialOverride );
+		using var scope = Gizmo.Scope( $"{GetHashCode()}", GameObject.Transform );
 
-		var bounds = _sceneObject.Model.Bounds;
+		var bounds = Model.Bounds;
 
 		// todo - hitbox.model()
 		Gizmo.Hitbox.BBox( bounds );
 
+		Gizmo.Draw.Color = Color.White.WithAlpha( 0.1f );
+
 		if ( Gizmo.IsHovered )
 		{
-			Gizmo.Draw.LineBBox( bounds );
+			Gizmo.Draw.Color = Color.White.WithAlpha( 0.4f );
 		}
 
 		if ( Gizmo.IsSelected )
 		{
-			Gizmo.Draw.LineBBox( bounds );
+			Gizmo.Draw.Color = Color.White.WithAlpha( 0.9f );
 		}
 
-		//Gizmo.Draw.LineSphere( new Sphere( PunchLocation, 1 ) );
+		Gizmo.Draw.LineBBox( bounds );
 	}
 
 	public override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
+		Assert.NotNull( Scene );
 
-		_sceneObject = new SceneObject( Camera.Main.World, Model );
+		_sceneObject = new SceneObject( Scene.SceneWorld, Model ?? Model.Load( "models/dev/box.vmdl" ) );
 		_sceneObject.Transform = GameObject.WorldTransform;
 		_sceneObject.SetMaterialOverride( MaterialOverride );
 		_sceneObject.ColorTint = Tint;
@@ -86,7 +111,7 @@ public class ModelComponentMate : GameObjectComponent
 
 	protected override void OnPreRender()
 	{
-		if ( _sceneObject is null )
+		if ( !_sceneObject.IsValid() )
 			return;
 
 		_sceneObject.Transform = GameObject.WorldTransform;

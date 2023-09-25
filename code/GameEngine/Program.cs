@@ -8,9 +8,6 @@ public static class Program
 		var scene = new Scene();
 		Scene.Active = scene;
 
-		Scene.Active.SceneWorld = new SceneWorld();
-		Scene.Active.PhysicsWorld = new PhysicsWorld();
-
 		//  Camera.Main = new Camera();
 		Camera.Main.World = Scene.Active.SceneWorld;
 		Camera.Main.Position = 0;
@@ -41,8 +38,11 @@ public static class Program
 	static Angles viewAngles;
 
 	[Event( "frame" )]
-	public static void FrameTick()
+	public static void FramePofop()
 	{
+		if ( !GameManager.IsPlaying )
+			return;
+
 		Scene.Active.Tick();
 		Scene.Active.PreRender();
 

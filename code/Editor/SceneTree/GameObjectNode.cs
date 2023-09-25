@@ -116,5 +116,69 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 		base.OnDrop( ev );
 	}
+
+	public override bool OnContextMenu()
+	{
+		var m = new Menu();
+
+		CreateObjectMenu( m, go =>
+		{
+			go.Parent = Value;
+			TreeView.Open( this );
+			TreeView.SelectItem( go );
+		} );
+
+		m.OpenAtCursor();
+
+		return true;
+	}
+
+	public static void CreateObjectMenu( Menu menu, Action<GameObject> then )
+	{
+		menu.AddOption( "Create Empty", "category", () =>
+		{
+			var go = new GameObject();
+			go.Name = "Object";
+			then( go );
+		} );
+
+		{
+			var submenu = menu.AddMenu( "3D Object" );
+
+			submenu.AddOption( "Cube", "category", () =>
+			{
+				var go = new GameObject();
+				go.Name = "Cube";
+
+				var model = go.AddComponent<ModelComponent>();
+				model.Model = Model.Load( "models/dev/box.vmdl" );
+
+				then( go );
+			} );
+
+			submenu.AddOption( "Sphere", "category", () =>
+			{
+				var go = new GameObject();
+				go.Name = "Sphere";
+
+				var model = go.AddComponent<ModelComponent>();
+				model.Model = Model.Load( "models/dev/sphere.vmdl" );
+
+				then( go );
+			} );
+
+
+			submenu.AddOption( "Plane", "category", () =>
+			{
+				var go = new GameObject();
+				go.Name = "Plane";
+
+				var model = go.AddComponent<ModelComponent>();
+				model.Model = Model.Load( "models/dev/plane.vmdl" );
+
+				then( go );
+			} );
+		}
+	}
 }
 

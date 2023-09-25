@@ -14,7 +14,7 @@ public class GameObjectInspector : Widget
 	public GameObjectInspector( Widget parent, GameObject target ) : base( parent )
 	{
 		TargetObject = target;
-		SerializedObject = TypeLibrary.GetSerializedObject( target );
+		SerializedObject = EditorTypeLibrary.GetSerializedObject( target );
 
 		Layout = Layout.Column();
 
@@ -25,6 +25,26 @@ public class GameObjectInspector : Widget
 		Layout.Add( new ComponentList( target.Components ) );
 
 		Layout.AddStretchCell();
+
+		var footer = Layout.AddRow();
+		footer.Margin = 8;
+		footer.AddStretchCell();
+		footer.Add( new Button.Primary( "Add Component", "add" ) { Clicked = AddComponentDialog } );
+	}
+
+	/// <summary>
+	/// Pop up a window to add a component to this entity
+	/// </summary>
+	public void AddComponentDialog()
+	{
+		var s = new ComponentTypeSelector();
+
+		s.OnSelectionFinished += t =>
+		{
+			TargetObject.AddComponent( t );
+		};
+		s.DoneButton.Text = "Add New Component";
+		s.OpenBelowCursor( 16 );
 	}
 }
 
@@ -46,7 +66,7 @@ public class ComponentList : Widget
 
 		foreach ( var o in componentList )
 		{
-			var serialized = TypeLibrary.GetSerializedObject( o );
+			var serialized = EditorTypeLibrary.GetSerializedObject( o );
 			var sheet = new ComponentSheet( serialized );
 			Layout.Add( sheet );
 			Layout.AddSeparator();
