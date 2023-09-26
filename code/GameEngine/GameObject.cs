@@ -36,6 +36,11 @@ public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 		}
 	}
 
+	public override string ToString()
+	{
+		return $"GO - {Name}";
+	}
+
 	public List<GameObjectComponent> Components = new List<GameObjectComponent>();
 
 	public T GetComponent<T>( bool allowInactive = false ) where T : GameObjectComponent

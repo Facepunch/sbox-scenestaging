@@ -7,16 +7,7 @@ public static class EditorScene
 
 	internal static Gizmo.Instance GizmoInstance { get; private set; }
 
-	public static bool IsSelected( object obj ) => GizmoInstance.IsSelected( obj );
-	public static void Select( object obj, bool clear = true )
-	{
-		GizmoInstance.SelectObject( obj, clear );
-	}
-
-	static void ClearSelection()
-	{
-		GizmoInstance.ClearSelection();
-	}
+	public static SelectionSystem Selection => GizmoInstance.Selection;
 
 	static EditorScene()
 	{

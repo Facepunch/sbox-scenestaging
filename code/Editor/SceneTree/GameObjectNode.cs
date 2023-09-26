@@ -37,11 +37,11 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 	}
 
-	public override int ValueHash => HashCode.Combine( Value, Value.Children.Count, Value.Name, EditorScene.IsSelected( Value ) );
+	public override int ValueHash => HashCode.Combine( Value, Value.Children.Count, Value.Name );
 
 	public override void OnPaint( VirtualWidget item )
 	{
-		var selected = EditorScene.IsSelected( Value );
+		var selected = item.Selected;
 
 		var fullSpanRect = item.Rect;
 		fullSpanRect.Left = 0;

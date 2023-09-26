@@ -25,17 +25,9 @@ public partial class SceneTreeWidget : Widget
 	{
 		Layout.Clear( true );
 		TreeView = Layout.Add( new TreeView( this ), 1 );
-		TreeView.ItemSelected += OnItemSelected;
+		TreeView.Selection = EditorScene.Selection;
 		_lastScene = null;
 		CheckForChanges(); 
-	}
-
-	private void OnItemSelected( object obj )
-	{
-		if ( obj is TreeNode tn )
-			obj = tn.Value;
-
-		EditorScene.Select( obj, true );
 	}
 
 	Scene _lastScene;
