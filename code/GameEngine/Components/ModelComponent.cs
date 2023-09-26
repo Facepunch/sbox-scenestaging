@@ -70,8 +70,6 @@ public class ModelComponent : GameObjectComponent
 		if ( Model is null )
 			return;
 
-		using var scope = Gizmo.Scope( $"{GetHashCode()}", GameObject.Transform );
-
 		var bounds = Model.Bounds;
 
 		// todo - hitbox.model()

@@ -29,7 +29,7 @@ public class CameraComponent : GameObjectComponent
 		if ( sceneCamera is null )
 			return;
 
-		using var scope = Gizmo.Scope( $"{GetHashCode()}", new Transform( GameObject.Transform.Position ) );
+		using var scope = Gizmo.Scope( $"{GetHashCode()}" );
 
 		sceneCamera.Position = GameObject.Transform.Position;
 		sceneCamera.Rotation = GameObject.Transform.Rotation;

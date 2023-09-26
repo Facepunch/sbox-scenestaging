@@ -12,7 +12,7 @@ public partial class SceneViewWidget : Widget
 {
 	NativeRenderingWidget Renderer;
 	SceneCamera Camera;
-	Gizmo.Instance GizmoInstance;
+	
 
 	public SceneViewWidget( Widget parent ) : base( parent )
 	{
@@ -26,8 +26,8 @@ public partial class SceneViewWidget : Widget
 		Layout = Layout.Column();
 		Layout.Add( Renderer );
 
-		GizmoInstance = new Gizmo.Instance();
-		Camera.Worlds.Add( GizmoInstance.World );
+		
+		Camera.Worlds.Add( EditorScene.GizmoInstance.World );
 	}
 
 	[EditorEvent.Frame]
@@ -42,30 +42,30 @@ public partial class SceneViewWidget : Widget
 		Camera.ClearFlags = ClearFlags.Color | ClearFlags.Depth | ClearFlags.Stencil;
 		Camera.BackgroundColor = "#557685";
 
-		GizmoInstance.FirstPersonCamera( Camera, Renderer );
-		GizmoInstance.UpdateInputs( Camera, Renderer );
+		EditorScene.GizmoInstance.FirstPersonCamera( Camera, Renderer );
+		EditorScene.GizmoInstance.UpdateInputs( Camera, Renderer );
 
 		if ( activeScene is null )
 			return;
 
 		activeScene.SceneWorld.AmbientLightColor = Color.Black;
 
-		using ( GizmoInstance.Push() )
+		using ( EditorScene.GizmoInstance.Push() )
 		{
 			Cursor = Gizmo.HasHovered ? CursorShape.Finger : CursorShape.Arrow;
-			activeScene.DrawGizmos();
 			activeScene.Tick();
 			activeScene.PreRender();
 
-			foreach ( var obj in activeScene.All )
+			activeScene.DrawGizmos();
+
+			if ( Gizmo.HasClicked && Gizmo.HasHovered )
 			{
-				using ( Gizmo.Scope( $"obj{obj.GetHashCode()}", obj.Transform.WithRotation( Rotation.Identity ) ) )
-				{
-					if ( Gizmo.Control.Position( "position", obj.Transform.Position, out var position, obj.Transform.Rotation ) )
-					{
-						obj.Transform = obj.Transform.WithPosition( position );
-					}
-				}
+			
+			}
+
+			if ( Gizmo.HasClicked && !Gizmo.HasHovered )
+			{
+				Gizmo.Select();
 			}
 		}
 	}

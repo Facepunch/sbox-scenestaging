@@ -5,8 +5,23 @@ public static class EditorScene
 	public static Scene Active { get; set; }
 	public static Scene[] All { get; set; }
 
+	internal static Gizmo.Instance GizmoInstance { get; private set; }
+
+	public static bool IsSelected( object obj ) => GizmoInstance.IsSelected( obj );
+	public static void Select( object obj, bool clear = true )
+	{
+		GizmoInstance.SelectObject( obj, clear );
+	}
+
+	static void ClearSelection()
+	{
+		GizmoInstance.ClearSelection();
+	}
+
 	static EditorScene()
 	{
+		GizmoInstance = new Gizmo.Instance();
+
 		Active = new Scene();
 		Active.Name = "Untitled Scene";
 		Active.IsEditor = true;

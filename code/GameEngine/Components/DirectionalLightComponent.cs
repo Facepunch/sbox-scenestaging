@@ -16,7 +16,7 @@ public class DirectionalLightComponent : GameObjectComponent
 
 	public override void DrawGizmos()
 	{
-		using var scope = Gizmo.Scope( $"{GetHashCode()}", GameObject.Transform );
+		using var scope = Gizmo.Scope( $"light-{GetHashCode()}" );
 
 		var fwd = Vector3.Forward;
 
@@ -31,6 +31,9 @@ public class DirectionalLightComponent : GameObjectComponent
 
 			Gizmo.Draw.Line( off, off + fwd * 30 );
 		}
+
+	//	Gizmo.Transform = Transform.Zero;
+	//	Gizmo.Draw.Sprite( GameObject.Transform.Position, 10, Texture.Load( FileSystem.Mounted, "/editor/directional_light.png" ) );
 
 	}
 

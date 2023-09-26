@@ -37,15 +37,17 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 	}
 
-	public override int ValueHash => HashCode.Combine( Value, Value.Children.Count, Value.Name );
+	public override int ValueHash => HashCode.Combine( Value, Value.Children.Count, Value.Name, EditorScene.IsSelected( Value ) );
 
 	public override void OnPaint( VirtualWidget item )
 	{
+		var selected = EditorScene.IsSelected( Value );
+
 		var fullSpanRect = item.Rect;
 		fullSpanRect.Left = 0;
 		fullSpanRect.Right = TreeView.Width;
 
-		if ( item.Selected )
+		if ( selected )
 		{
 			//item.PaintBackground( Color.Transparent, 3 );
 			Paint.ClearPen();
@@ -65,11 +67,11 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		var r = item.Rect;
 		r.Left += 4;
 		 
-		if ( !item.Selected ) Paint.SetPen( Theme.Blue );
+		if ( !selected ) Paint.SetPen( Theme.Blue );
 		Paint.DrawIcon( r, "circle", 14, TextFlag.LeftCenter );
 		r.Left += 22;
 
-		Paint.SetPen( item.Selected ? Theme.White : Theme.ControlText );
+		Paint.SetPen( selected ? Theme.White : Theme.ControlText );
 		Paint.SetDefaultFont( 9 );
 		Paint.DrawText( r, name, TextFlag.LeftCenter );
 	}

@@ -170,14 +170,31 @@ public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	internal void DrawGizmos()
 	{
-		foreach ( var component in Components )
+		using ( Gizmo.ObjectScope( this, Transform ) )
 		{
-			component.DrawGizmos();
-		}
+			if ( Gizmo.IsSelected )
+			{
+				if ( Gizmo.Control.Position( "position", Vector3.Zero, out var position ) )
+				{
+					Transform = Transform.WithPosition( Transform.Position + position * Transform.Rotation );
+				}
+			}
 
-		foreach ( var child in Children )
-		{
-			child.DrawGizmos();
+			foreach ( var component in Components )
+			{
+				component.DrawGizmos();
+			}
+
+			if ( Gizmo.WasClicked )
+			{
+				Gizmo.Select();
+			}
+
+			foreach ( var child in Children )
+			{
+				child.DrawGizmos();
+			}
+
 		}
 	}
 

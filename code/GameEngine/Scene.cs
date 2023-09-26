@@ -88,7 +88,7 @@ public class Scene
 
 	public void DrawGizmos()
 	{
-		foreach ( var e in All )
+		foreach( var e in All )
 		{
 			e.DrawGizmos();
 		}
