@@ -18,23 +18,6 @@
       ]
     },
     {
-      "Id": "1ebf2b9f-f717-4cdb-85f7-85f31310a3e4",
-      "Name": "Sunlight",
-      "Enabled": true,
-      "Position": "-52.35,6.45,56.7",
-      "Rotation": "0.1102694,0.3486685,-0.2806526,0.8874148",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "DirectionalLightComponent",
-          "__enabled": true,
-          "LightColor": "0.79205,0.86959,0.93564,1",
-          "Shadows": true,
-          "SkyColor": "0.02757,0.03335,0.04455,1"
-        }
-      ]
-    },
-    {
       "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
       "Name": "Cube",
       "Enabled": true,
@@ -55,7 +38,7 @@
       "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
       "Name": "Cube",
       "Enabled": true,
-      "Position": "-397.3489,-350.6976,-1.2197",
+      "Position": "-349.6256,-333.7433,-1.2205",
       "Rotation": "0,0,0.009162664,0.999958",
       "Scale": "1,1,1",
       "Components": [
@@ -208,7 +191,7 @@
       "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
       "Name": "Cube",
       "Enabled": true,
-      "Position": "-255.7623,91.6992,-4.9292",
+      "Position": "-259.2356,50.6664,-4.9293",
       "Rotation": "0,0,0.8343674,0.5512087",
       "Scale": "1,1,1",
       "Components": [
@@ -320,6 +303,98 @@
           "MaterialOverride": null,
           "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
           "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "ad61cd8e-b8db-4d53-ad5d-1d92d8208a73",
+      "Name": "Point Light",
+      "Enabled": true,
+      "Position": "-231.4456,312.7728,153.8908",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0,0.0765,0.09901,1",
+          "Radius": 1618.45
+        }
+      ]
+    },
+    {
+      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
+      "Name": "Spot Light",
+      "Enabled": true,
+      "Position": "313.4948,-15.2287,115.0273",
+      "Rotation": "0,0.9987631,0,0.04972083",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 2.9499998,
+          "ConeInner": 1,
+          "ConeOuter": 26.55,
+          "LightColor": "44.29,44.29,44.29,1",
+          "Radius": 868.55005
+        }
+      ]
+    },
+    {
+      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
+      "Name": "Spot Light",
+      "Enabled": true,
+      "Position": "-295.4084,151.478,45.1196",
+      "Rotation": "0.009279268,0.03273769,-0.2725423,0.9615419",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 1,
+          "ConeInner": 15.75,
+          "ConeOuter": 84.9,
+          "LightColor": "0.83663,0.07869,0.07869,1",
+          "Radius": 832.5499
+        }
+      ]
+    },
+    {
+      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
+      "Name": "Spot Light",
+      "Enabled": true,
+      "Position": "-454.6291,-108.5722,53.7213",
+      "Rotation": "0.9279775,0.3109482,0.1947102,-0.06524501",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 5.8,
+          "ConeInner": 1,
+          "ConeOuter": 32.699997,
+          "LightColor": "321.7822,905.0496,1000,1",
+          "Radius": 868.55005
+        }
+      ]
+    },
+    {
+      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
+      "Name": "Spot Light",
+      "Enabled": true,
+      "Position": "-456.3969,-157.33,70.9175",
+      "Rotation": "0,0,-0.5056576,0.8627343",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 22.599998,
+          "ConeInner": 2.0999994,
+          "ConeOuter": 43.35,
+          "LightColor": "0.85949,6.13921,0,1",
+          "Radius": 761.74994
         }
       ]
     }
