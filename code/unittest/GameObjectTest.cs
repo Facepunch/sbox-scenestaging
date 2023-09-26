@@ -9,9 +9,16 @@ public class GameObjectTest
 	[TestMethod]
 	public void SerializeSingle()
 	{
+		Assert.IsNotNull( TypeLibrary, "TypeLibrary hasn't been mocked" );
+		Assert.IsNotNull( TypeLibrary.GetType<ModelComponent>(), "TypeLibrary hasn't been given the game assembly" );
+
 		var go1 = new GameObject();
 		go1.Name = "My Game Object";
 		go1.Transform = new Transform( Vector3.Up, Rotation.Identity, 10 );
+
+		var model = go1.AddComponent<ModelComponent>();
+		model.Model = Model.Load( "models/dev/box.vmdl" );
+		model.Tint = Color.Red;
 
 		var node = go1.Serialize();
 
@@ -24,6 +31,10 @@ public class GameObjectTest
 		Assert.AreEqual( go1.Name, go2.Name );
 		Assert.AreEqual( go1.Enabled, go2.Enabled );
 		Assert.AreEqual( go1.Transform, go2.Transform );
+		Assert.AreEqual( go1.Components.Count, go2.Components.Count );
+		Assert.AreEqual( go1.GetComponent<ModelComponent>().Model, go2.GetComponent<ModelComponent>().Model );
+		Assert.AreEqual( go1.GetComponent<ModelComponent>().Tint, go2.GetComponent<ModelComponent>().Tint );
+		Assert.AreEqual( go1.GetComponent<ModelComponent>().MaterialOverride, go2.GetComponent<ModelComponent>().MaterialOverride );
 	}
 
 	[TestMethod]
@@ -42,6 +53,8 @@ public class GameObjectTest
 			child.Name = $"Child {i}";
 			child.Transform = new Transform( Vector3.Random * 1000 );
 			child.Parent = go1;
+
+			child.AddComponent<ModelComponent>();
 		}
 
 		timer.Dispose();

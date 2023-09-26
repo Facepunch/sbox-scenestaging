@@ -1,7 +1,9 @@
 ﻿using Sandbox;
+using System;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-public abstract class GameObjectComponent : IPrefabObject.Component
+public abstract partial class GameObjectComponent : IPrefabObject.Component
 {
 	[JsonIgnore]
 	public Scene Scene => GameObject.Scene;

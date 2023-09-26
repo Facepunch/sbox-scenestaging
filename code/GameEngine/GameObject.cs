@@ -61,11 +61,6 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	public List<GameObjectComponent> Components = new List<GameObjectComponent>();
 
-	public T GetComponent<T>( bool allowInactive = false ) where T : GameObjectComponent
-	{
-		return Components.OfType<T>().FirstOrDefault();
-	}
-
 	GameObject _parent;
 
 	public GameObject Parent 
@@ -174,6 +169,15 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		t.Enabled = enabled;
 
 		return t;
+	}
+
+	public T GetComponent<T>( bool enabledOnly = true ) where T : GameObjectComponent
+	{
+		var q = Components.OfType<T>();
+
+		if ( enabledOnly ) q = q.Where( x => x.Enabled );
+
+		return q.FirstOrDefault();
 	}
 
 	public GameObjectComponent AddComponent( TypeDescription type, bool enabled = true )

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
 public sealed partial class GameObject
 {
@@ -26,6 +25,25 @@ public sealed partial class GameObject
 		if ( Components.Any() )
 		{
 			var components = new JsonArray();
+
+			Sandbox.Utility.Parallel.ForEach( Components, component =>
+			{
+				try
+				{
+					var result = component.Serialize();
+					if ( result is null ) return;
+
+					lock ( components )
+					{
+						components.Add( result );
+					}
+				}
+				catch ( System.Exception e )
+				{
+					Log.Warning( e, $"Exception when serializing Component" );
+				}
+			} );
+
 			json.Add( "Components", components );
 		}
 
@@ -33,7 +51,7 @@ public sealed partial class GameObject
 		{
 			var children = new JsonArray();
 
-			Parallel.ForEach( Children, child =>
+			Sandbox.Utility.Parallel.ForEach( Children, child =>
 			{
 				try
 				{
@@ -67,7 +85,7 @@ public sealed partial class GameObject
 
 		if ( node["Children"] is JsonArray childArray )
 		{
-			Parallel.ForEach( childArray, child =>
+			Sandbox.Utility.Parallel.ForEach( childArray, child =>
 			{
 				if ( child is not JsonObject jso )
 					return;
@@ -78,6 +96,24 @@ public sealed partial class GameObject
 				lock ( this )
 				{
 					go.Parent = this;
+				}
+
+			} );
+		}
+
+		if ( node["Components"] is JsonArray componentArray )
+		{
+			Sandbox.Utility.Parallel.ForEach( componentArray, component =>
+			{
+				if ( component is not JsonObject jso )
+					return;
+
+				var componentType = TypeLibrary.GetType( (string)jso["__type"] );
+				
+				lock ( this )
+				{
+					var c = this.AddComponent( componentType );
+					c.Deserialize( jso );
 				}
 
 			} );

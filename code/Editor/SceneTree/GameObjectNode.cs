@@ -3,6 +3,8 @@ using Editor;
 using Sandbox;
 using System;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 public partial class GameObjectNode : TreeNode<GameObject>
 {
@@ -113,6 +115,17 @@ public partial class GameObjectNode : TreeNode<GameObject>
 	{
 		var m = new Menu();
 
+		m.AddOption( "Cut", action: Cut );
+		m.AddOption( "Copy", action: Cut );
+		m.AddOption( "Paste", action: Paste );
+		m.AddOption( "Paste As Child", action: PasteAsChild );
+		m.AddSeparator();
+		//m.AddOption( "rename", action: Delete );
+		//m.AddOption( "duplicate", action: Delete );
+		m.AddOption( "Delete", action: Delete );
+
+		m.AddSeparator();
+
 		CreateObjectMenu( m, go =>
 		{
 			go.Parent = Value;
@@ -120,9 +133,70 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			TreeView.SelectItem( go );
 		} );
 
+		// cut
+		// copy
+		// paste 
+		// paste as child
+		// --
+		// rename
+		// duplicate
+		// delete
+
+		m.AddSeparator();
+		m.AddOption( "Properties..", action: OpenPropertyWindow );
+
 		m.OpenAtCursor();
 
 		return true;
+	}
+
+	void Cut()
+	{
+		Copy();
+		Delete();
+	}
+
+	void Copy()
+	{
+		var json = Value.Serialize();
+		EditorUtility.Clipboard.Copy( json.ToString() );
+	}
+
+	void Paste()
+	{
+		var text = EditorUtility.Clipboard.Paste();
+		if ( JsonNode.Parse( text ) is JsonObject jso )
+		{
+			var go = new GameObject();
+			go.Deserialize( jso );
+			go.Parent = Value.Parent;
+
+			TreeView.SelectItem( go );
+		}
+	}
+
+	void PasteAsChild()
+	{
+		var text = EditorUtility.Clipboard.Paste();
+		if ( JsonNode.Parse( text ) is JsonObject jso )
+		{
+			var go = new GameObject();
+			go.Deserialize( jso );
+			go.Parent = Value;
+
+			TreeView.Open( this );
+			TreeView.SelectItem( go );
+		}
+	}
+
+	void Delete()
+	{
+		Value.Destroy();
+	}
+
+	void OpenPropertyWindow()
+	{
+
 	}
 
 	public static void CreateObjectMenu( Menu menu, Action<GameObject> then )
