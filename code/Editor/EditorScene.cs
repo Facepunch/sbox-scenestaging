@@ -1,4 +1,5 @@
-﻿using Sandbox;
+﻿using Editor;
+using Sandbox;
 
 public static class EditorScene
 {
@@ -41,6 +42,18 @@ public static class EditorScene
 			var model = go.AddComponent<ModelComponent>();
 			model.Model = Model.Load( "models/dev/sphere.vmdl" );
 		}
+	}
+
+	[EditorForAssetType( "scene" )]
+	public static void LoadFromScene( SceneSource resource )
+	{
+		Active = new Scene();
+		Active.Name = resource.ResourceName.ToTitleCase();
+		Active.IsEditor = true;
+
+		Active.Load( resource );
+
+		All = new[] { Active };
 	}
 
 	public static Scene GetAppropriateScene()

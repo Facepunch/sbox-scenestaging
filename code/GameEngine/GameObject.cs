@@ -18,7 +18,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	[Property]
 	public bool Enabled { get; set; } = true;
 
-	Transform _transform;
+	Transform _transform = Transform.Zero;
 
 	[Property]
 	public Transform Transform 

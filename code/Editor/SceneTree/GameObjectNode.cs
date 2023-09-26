@@ -116,7 +116,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		var m = new Menu();
 
 		m.AddOption( "Cut", action: Cut );
-		m.AddOption( "Copy", action: Cut );
+		m.AddOption( "Copy", action: Copy );
 		m.AddOption( "Paste", action: Paste );
 		m.AddOption( "Paste As Child", action: PasteAsChild );
 		m.AddSeparator();
@@ -167,7 +167,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		var text = EditorUtility.Clipboard.Paste();
 		if ( JsonNode.Parse( text ) is JsonObject jso )
 		{
-			var go = new GameObject();
+			var go = Value.Scene.CreateObject();
 			go.Deserialize( jso );
 			go.Parent = Value.Parent;
 

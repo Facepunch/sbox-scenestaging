@@ -1,0 +1,327 @@
+{
+  "GameObjects": [
+    {
+      "Id": "ae899b58-4cb8-469b-929e-b9cee784d98c",
+      "Name": "Plane",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "10,10,10",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "models/rust_props/remnant_container/concrete_a_cont.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "1ebf2b9f-f717-4cdb-85f7-85f31310a3e4",
+      "Name": "Sunlight",
+      "Enabled": true,
+      "Position": "-52.35,6.45,56.7",
+      "Rotation": "0.1102694,0.3486685,-0.2806526,0.8874148",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "0.79205,0.86959,0.93564,1",
+          "Shadows": true,
+          "SkyColor": "0.02757,0.03335,0.04455,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-393.2265,-425.3183,-1.2198",
+      "Rotation": "0,-0,-0.2739593,0.9617413",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/barricades/barricade.stone.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-397.3489,-350.6976,-1.2197",
+      "Rotation": "0,0,0.009162664,0.999958",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/barricades/barricade.stone.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-487.3505,-494.6768,-1.8954",
+      "Rotation": "0,-0,-0.707107,0.7071065",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-498.7296,-137.6851,-1.7549",
+      "Rotation": "-0.01110677,-0.01110674,-0.7070202,0.7070188",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-483.7231,222.7822,-11.5867",
+      "Rotation": "0.009255753,0.009255728,-0.7070475,0.707045",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-672.6313,222.7825,-11.5867",
+      "Rotation": "0.009255753,0.009255728,-0.7070475,0.707045",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-667.9079,-297.8436,-209.1437",
+      "Rotation": "0.01302657,-0.001283034,-0.9950992,-0.09801131",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-961.2297,28.5256,-218.3443",
+      "Rotation": "0.08655088,0.1002591,0.6819781,0.7192796",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-395.6563,405.8358,-38.1059",
+      "Rotation": "0,0,0.009162664,0.999958",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/rubble_piles/rubble_pile_9x9.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-625.9832,544.8216,-38.1059",
+      "Rotation": "0,0,0.009162664,0.999958",
+      "Scale": "1.5,1.5,1.5",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/rubble_piles/rubble_pile_9x9.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-255.7623,91.6992,-4.9292",
+      "Rotation": "0,0,0.8343674,0.5512087",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/tires/tire_stack_c.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-399.1765,-252.4252,-0.0276",
+      "Rotation": "0,0,0.8343674,0.5512087",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/concrete_debris/concrete_debris_b.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-96.026,354.4538,-3.3535",
+      "Rotation": "0,-0,-0.3226781,0.9465088",
+      "Scale": "2,2,2",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/concrete_debris/concrete_debris_b.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-285.9511,557.0157,-0.027",
+      "Rotation": "0,0,0.4198495,0.9075937",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/shipping_containers/shipping_container_900_b.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-375.5695,-484.208,1.3438",
+      "Rotation": "0,0,0.6883554,0.7253736",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-257.6477,-490.3877,0.9858",
+      "Rotation": "0,0,0.6883554,0.7253736",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-139.2377,-496.593,1.908",
+      "Rotation": "0,0,0.6883554,0.7253736",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    }
+  ]
+}

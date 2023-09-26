@@ -3,8 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-[GameResource( "Scene", "scene", "A scene", Icon = "perm_media" )]
-public class Scene
+public sealed class Scene
 {
 	public static Scene Active { get; set; }
 	public bool IsEditor { get; set; }
@@ -13,6 +12,7 @@ public class Scene
 	public SceneWorld DebugSceneWorld => gizmoInstance.World;
 	public PhysicsWorld PhysicsWorld { get; private set; }
 	public NavigationMesh NavigationMesh { get; set; }
+	public SceneSource Source { get; private set; }
 
 	public HashSet<GameObject> All = new HashSet<GameObject>();
 
@@ -169,6 +169,20 @@ public class Scene
 			o.Enabled = false;
 			All.Remove( o );
 			deleteList.Remove( o );
+		}
+	}
+
+	public void Load( SceneSource resource )
+	{
+		Source = resource;
+
+		if ( resource.GameObjects is not null )
+		{
+			foreach( var json in resource.GameObjects )
+			{
+				var go = CreateObject();
+				go.Deserialize( json );
+			}
 		}
 	}
 }

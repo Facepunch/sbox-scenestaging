@@ -1,5 +1,6 @@
 ﻿
 using Editor;
+using Sandbox;
 using System;
 using System.Linq;
 
@@ -81,6 +82,10 @@ public partial class SceneNode : TreeNode<Scene>
 	{
 		var m = new Menu();
 
+		m.AddOption( "Save", action: () => SaveScene( Value, false ) ).Enabled = Value.Source is not null;
+		m.AddOption( "Save Scene As..", action: () => SaveScene( Value, true ) );
+		m.AddSeparator();
+
 		GameObjectNode.CreateObjectMenu( m, go =>
 		{
 			Value.Register( go );
@@ -91,6 +96,46 @@ public partial class SceneNode : TreeNode<Scene>
 		m.OpenAtCursor();
 
 		return true;
+	}
+
+	public static void SaveScene( Scene scene, bool saveAs )
+	{
+		var saveLocation = "";
+
+		var a = new SceneSource();
+		a.GameObjects = scene.All.Select( x => x.Serialize() ).ToArray();
+
+		if ( scene.Source is not null )
+		{
+			var asset = AssetSystem.FindByPath( scene.Source.ResourcePath );
+			if ( asset is not null )
+			{
+				saveLocation = asset.AbsolutePath;
+			}
+		}
+
+		if ( saveAs )
+		{
+			var lastDirectory = Cookie.GetString( "LastSaveSceneLocation", "" );
+
+			var fd = new FileDialog( null );
+			fd.Title = $"Save Scene As..";
+			fd.Directory = lastDirectory;
+			fd.DefaultSuffix = $".scene";
+			fd.SelectFile( saveLocation );
+			fd.SetFindFile();
+			fd.SetModeSave();
+			fd.SetNameFilter( $"Scene File (*.scene)" );
+
+			if ( !fd.Execute() )
+				return;
+
+			saveLocation = fd.SelectedFile;
+		}
+
+		var sceneAsset = AssetSystem.CreateResource( "scene", saveLocation );
+		sceneAsset.SaveToDisk( a );
+		
 	}
 
 
