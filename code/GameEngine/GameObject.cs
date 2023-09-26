@@ -2,11 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
+public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 {
 	public Scene Scene { get; set; }
+
+	public string Id { get; private set; }
 
 	[Property]
 	public string Name { get; set; } = "Untitled Object";
@@ -14,8 +18,22 @@ public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 	[Property]
 	public bool Enabled { get; set; } = true;
 
+	Transform _transform;
+
 	[Property]
-	public Transform Transform { get; set; } = Transform.Zero;
+	public Transform Transform 
+	{
+		get => _transform;
+		set
+		{
+			_transform = value;
+		}
+	}
+
+	public GameObject()
+	{
+		Id = Guid.NewGuid().ToString();
+	}
 
 	public Transform WorldTransform
 	{
@@ -59,9 +77,9 @@ public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 			var oldParent = _parent;
 
-			if ( _parent is not null )
+			if ( oldParent is not null )
 			{
-				_parent.Children.Remove( this );
+				oldParent.Children.Remove( this );
 			}
 
 			_parent = value;
@@ -206,5 +224,10 @@ public sealed class GameObject : IPrefabObject, IPrefabObject.Extendible
 	internal void Tick()
 	{
 
+	}
+
+	public void Destroy()
+	{
+		Scene?.QueueDelete( this );
 	}
 }

@@ -57,6 +57,7 @@ public class Scene
 		using var giz = gizmoInstance.Push();
 
 		TickObjects();
+		ProcessDeletes();
 		TickPhysics();
 
 		DrawNavmesh();
@@ -149,5 +150,25 @@ public class Scene
 		var go = new GameObject();
 		Register( go );
 		return go;
+	}
+
+	HashSet<GameObject> deleteList = new();
+
+	internal void QueueDelete( GameObject gameObject )
+	{
+		deleteList.Add( gameObject );
+	}
+
+	internal void ProcessDeletes()
+	{
+		if ( deleteList.Count == 0 )
+			return;
+
+		foreach( var o in deleteList.ToArray() )
+		{
+			o.Enabled = false;
+			All.Remove( o );
+			deleteList.Remove( o );
+		}
 	}
 }
