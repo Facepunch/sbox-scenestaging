@@ -76,16 +76,6 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		Paint.DrawText( r, name, TextFlag.LeftCenter );
 	}
 
-	public override void OnSelectionChanged( bool state )
-	{
-		base.OnSelectionChanged( state );
-
-		if ( state )
-		{
-			EditorUtility.InspectorObject = Value;
-		}
-	}
-
 	public override bool OnDragStart()
 	{
 		var drag = new Drag( TreeView );

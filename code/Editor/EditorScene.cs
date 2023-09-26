@@ -33,9 +33,11 @@ public static class EditorScene
 			go.AddComponent<DirectionalLightComponent>();
 		}
 
+		for ( int i=0; i<1000; i++ )
 		{
 			var go = Active.CreateObject();
 			go.Name = "Sphere Object";
+			go.Transform = new Transform( Vector3.Random * 1000 );
 			var model = go.AddComponent<ModelComponent>();
 			model.Model = Model.Load( "models/dev/sphere.vmdl" );
 		}

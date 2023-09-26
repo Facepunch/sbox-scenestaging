@@ -77,17 +77,21 @@ public class ModelComponent : GameObjectComponent
 
 		Gizmo.Draw.Color = Color.White.WithAlpha( 0.1f );
 
-		if ( Gizmo.IsHovered )
-		{
-			Gizmo.Draw.Color = Color.White.WithAlpha( 0.4f );
-		}
-
 		if ( Gizmo.IsSelected )
 		{
 			Gizmo.Draw.Color = Color.White.WithAlpha( 0.9f );
+			Gizmo.Draw.LineBBox( bounds );
+		}
+		
+		if ( Gizmo.IsHovered )
+		{
+			Gizmo.Draw.Color = Color.White.WithAlpha( 0.4f );
+			Gizmo.Draw.LineBBox( bounds );
 		}
 
-		Gizmo.Draw.LineBBox( bounds );
+
+
+		
 	}
 
 	public override void OnEnabled()

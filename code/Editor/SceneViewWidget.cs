@@ -30,9 +30,18 @@ public partial class SceneViewWidget : Widget
 		Camera.Worlds.Add( EditorScene.GizmoInstance.World );
 	}
 
+	int selectionHash = 0;
+
 	[EditorEvent.Frame]
 	public void Ticker()
 	{
+		if ( selectionHash != EditorScene.Selection.GetHashCode() )
+		{
+			// todo - multiselect
+			EditorUtility.InspectorObject = EditorScene.Selection.LastOrDefault();
+			selectionHash = EditorScene.Selection.GetHashCode();
+		}
+
 		var activeScene = EditorScene.GetAppropriateScene();
 
 		Camera.World = activeScene?.SceneWorld;
