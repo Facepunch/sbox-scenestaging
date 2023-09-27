@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -76,7 +77,7 @@ public sealed partial class GameObject
 
 	public void Deserialize( JsonObject node )
 	{
-		Id = node["Id"].ToString() ?? Id;
+		Id = node["Id"].Deserialize<Guid>();
 		Name = node["Name"].ToString() ?? Name;
 		Enabled = (bool)(node["Enabled"] ?? Enabled);
 		_transform.Position = node["Position"].Deserialize<Vector3>();

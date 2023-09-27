@@ -1,4 +1,5 @@
 ﻿using Sandbox;
+using System.Linq;
 using System.Threading.Tasks;
 
 public static class Program
@@ -8,17 +9,10 @@ public static class Program
 		var scene = new Scene();
 		Scene.Active = scene;
 
-		//  Camera.Main = new Camera();
-		Camera.Main.World = Scene.Active.SceneWorld;
-		Camera.Main.Position = 0;
-		Camera.Main.ZNear = 1;
-		Camera.Main.Tonemap.Enabled = true;
-		Camera.Main.Tonemap.MinExposure = 0.1f;
-		Camera.Main.Tonemap.MaxExposure = 2.0f;
-		Camera.Main.Tonemap.Rate = 1.0f;
-		Camera.Main.Tonemap.Fade = 1.0f;
+		//Camera.Main = new Camera();
 
-		_ = LoadMapAsync();
+
+	//	_ = LoadMapAsync();
 	}
 
 	static async Task LoadMapAsync()
@@ -46,6 +40,17 @@ public static class Program
 		Scene.Active.Tick();
 		Scene.Active.PreRender();
 
+		var camera = Scene.Active.All.Select( x => x.GetComponent<CameraComponent>() )
+									.OfType<CameraComponent>()
+									.FirstOrDefault();
+
+		if ( camera is not null )
+		{
+			camera.UpdateCamera( Camera.Main );
+		}
+
+		return;
+
 		Vector3 move = 0;
 		if ( Input.Down( "Forward" ) ) move += Vector3.Forward;
 		if ( Input.Down( "Backward" ) ) move -= Vector3.Forward;
@@ -70,8 +75,10 @@ public static class Program
 			var prefab = ResourceLibrary.Get<Prefab>( "ball.prefab" );
 			var instance = PrefabSystem.Spawn( prefab, spawnTx );
 
+			Log.Info( $"Spawned {instance}" );
+
 			var phys = instance.GetComponent<PhysicsComponent>();
-			phys.Velocity = Camera.Main.Rotation.Forward * 1000;
+			phys.Velocity = Camera.Main.Rotation.Forward * 100;
 		}
 
 		velocity += viewAngles.ToRotation() * move * RealTime.Delta * speed;
@@ -80,11 +87,6 @@ public static class Program
 
 		viewAngles += Input.AnalogLook;
 
-		Camera.Main.Worlds.Add( Scene.Active.DebugSceneWorld );
-		Camera.Main.Position += velocity * RealTime.Delta;
-		Camera.Main.Rotation = viewAngles.ToRotation();
-		Camera.Main.ZNear = 1;
-		Camera.Main.ZFar = 50000;
-		Camera.Main.FieldOfView = 90;
+
 	}
 }

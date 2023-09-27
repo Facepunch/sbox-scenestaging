@@ -13,7 +13,6 @@ public partial class SceneViewWidget : Widget
 	NativeRenderingWidget Renderer;
 	SceneCamera Camera;
 	
-
 	public SceneViewWidget( Widget parent ) : base( parent )
 	{
 		Camera = new SceneCamera();
@@ -26,7 +25,6 @@ public partial class SceneViewWidget : Widget
 		Layout = Layout.Column();
 		Layout.Add( Renderer );
 
-		
 		Camera.Worlds.Add( EditorScene.GizmoInstance.World );
 	}
 

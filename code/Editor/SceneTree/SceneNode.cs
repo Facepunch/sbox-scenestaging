@@ -102,8 +102,7 @@ public partial class SceneNode : TreeNode<Scene>
 	{
 		var saveLocation = "";
 
-		var a = new SceneSource();
-		a.GameObjects = scene.All.Select( x => x.Serialize() ).ToArray();
+		var a = scene.Save();
 
 		if ( scene.Source is not null )
 		{

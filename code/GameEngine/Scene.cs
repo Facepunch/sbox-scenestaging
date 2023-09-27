@@ -47,14 +47,27 @@ public sealed class Scene
 		}
 	}
 
+
 	public void Tick()
 	{
+		if ( IsEditor )
+		{
+			ProcessDeletes();
+			return;
+		}
+
 		{
 			// Tell it to use the main camera
 			gizmoInstance.Input.Camera = Sandbox.Camera.Main;
 		}
 
 		using var giz = gizmoInstance.Push();
+
+		if ( GameManager.IsPaused )
+		{
+			ProcessDeletes();
+			return;
+		}
 
 		TickObjects();
 		ProcessDeletes();
@@ -166,6 +179,7 @@ public sealed class Scene
 
 		foreach( var o in deleteList.ToArray() )
 		{
+			o.Parent = null;
 			o.Enabled = false;
 			All.Remove( o );
 			deleteList.Remove( o );
@@ -184,5 +198,12 @@ public sealed class Scene
 				go.Deserialize( json );
 			}
 		}
+	}
+
+	public SceneSource Save()
+	{
+		var a = new SceneSource();
+		a.GameObjects = All.Select( x => x.Serialize() ).ToArray();
+		return a;
 	}
 }

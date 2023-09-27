@@ -208,6 +208,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			then( go );
 		} );
 
+		// 3d obj
 		{
 			var submenu = menu.AddMenu( "3D Object" );
 
@@ -244,6 +245,19 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 				then( go );
 			} );
+		}
+
+		{
+			menu.AddOption( "Camera", "category", () =>
+			{
+				var go = new GameObject();
+				go.Name = "Camera";
+
+				var cam = go.AddComponent<CameraComponent>();
+
+				then( go );
+			} );
+
 		}
 	}
 }

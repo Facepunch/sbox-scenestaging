@@ -24,7 +24,7 @@ public static class PrefabSystem
 		var targetType = TypeLibrary.GetType( e.Class );
 		if ( targetType is null ) return null;
 
-		var instance = targetType.Create<GameObject>();
+		var instance = new GameObject();
 
 		instance.Name = e.GetValue( "_name", "Untitled Object" );
 		instance.Transform = transform;
@@ -55,9 +55,14 @@ public static class PrefabSystem
 	private static void CreateComponent( Prefab.Entry entry, GameObject gameObject )
 	{
 		var targetType = TypeLibrary.GetType<GameObjectComponent>( entry.Class );
-		if ( targetType is null ) return;
+		if ( targetType is null )
+		{
+			Log.Warning( $"Unknown component '{entry.Class}'" );
+			return;
+		}
 
 		var instance = targetType.Create<GameObjectComponent>();
+		instance.Enabled = true;
 		if ( instance == null )
 		{
 			Log.Warning( "Couldn't create GameObjectComponent!" );

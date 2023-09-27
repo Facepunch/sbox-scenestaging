@@ -1,5 +1,6 @@
 ﻿using Editor;
 using Sandbox;
+using System.Linq;
 
 public static class EditorScene
 {
@@ -34,7 +35,7 @@ public static class EditorScene
 			go.AddComponent<DirectionalLightComponent>();
 		}
 
-		for ( int i=0; i<1000; i++ )
+		for ( int i = 0; i < 1000; i++ )
 		{
 			var go = Active.CreateObject();
 			go.Name = "Sphere Object";
@@ -60,5 +61,65 @@ public static class EditorScene
 	{
 		if ( GameManager.IsPlaying ) return Scene.Active;
 		return EditorScene.Active;
+	}
+
+	public static void Play()
+	{
+		var current = EditorScene.Active.Save();
+
+		GameManager.IsPlaying = true;
+
+		Scene.Active = new Scene();
+		Scene.Active.Load( current );
+
+		Camera.Main.World = Scene.Active.SceneWorld;
+		Camera.Main.Worlds.Clear();
+		Camera.Main.Worlds.Add( Scene.Active.DebugSceneWorld );
+		Camera.Main.Position = 0;
+		Camera.Main.ZNear = 1;
+		Camera.Main.Tonemap.Enabled = true;
+		Camera.Main.Tonemap.MinExposure = 0.1f;
+		Camera.Main.Tonemap.MaxExposure = 2.0f;
+		Camera.Main.Tonemap.Rate = 1.0f;
+		Camera.Main.Tonemap.Fade = 1.0f;
+
+		EditorWindow.DockManager.RaiseDock( "GameFrame" );
+	}
+
+	public static void Stop()
+	{
+		GameManager.IsPlaying = false;
+
+		Camera.Main.World = GetAppropriateScene().SceneWorld;
+		Camera.Main.Worlds.Clear();
+		Camera.Main.Position = 0;
+		Camera.Main.ZNear = 1;
+		Camera.Main.Tonemap.Enabled = true;
+		Camera.Main.Tonemap.MinExposure = 0.1f;
+		Camera.Main.Tonemap.MaxExposure = 2.0f;
+		Camera.Main.Tonemap.Rate = 1.0f;
+		Camera.Main.Tonemap.Fade = 1.0f;
+
+		EditorWindow.DockManager.RaiseDock( "Scene" );
+
+	}
+
+	/// <summary>
+	/// Called once a frame to keep the game camera in sync with the main camera in the editor scene
+	/// </summary>
+	[EditorEvent.Frame]
+	public static void UpdateGameCamera()
+	{
+		if ( GameManager.IsPlaying ) return;
+		if ( EditorScene.Active is null ) return;
+
+		var camera = EditorScene.Active.All.Select( x => x.GetComponent<CameraComponent>() )
+							.OfType<CameraComponent>()
+							.FirstOrDefault();
+
+		if ( camera is not null )
+		{
+			camera.UpdateCamera( Camera.Main );
+		}
 	}
 }

@@ -10,7 +10,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 {
 	public Scene Scene { get; set; }
 
-	public string Id { get; private set; }
+	public Guid Id { get; private set; }
 
 	[Property]
 	public string Name { get; set; } = "Untitled Object";
@@ -32,7 +32,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	public GameObject()
 	{
-		Id = Guid.NewGuid().ToString();
+		Id = Guid.NewGuid();
 	}
 
 	public Transform WorldTransform
@@ -209,6 +209,8 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 			foreach ( var component in Components )
 			{
+				using var scope = Gizmo.Scope();
+
 				component.DrawGizmos();
 			}
 

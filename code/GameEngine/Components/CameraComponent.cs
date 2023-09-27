@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
+using System;
 using System.Linq;
 
 [Title( "Camera" )]
@@ -31,8 +32,8 @@ public class CameraComponent : GameObjectComponent
 
 		using var scope = Gizmo.Scope( $"{GetHashCode()}" );
 
-		sceneCamera.Position = GameObject.Transform.Position;
-		sceneCamera.Rotation = GameObject.Transform.Rotation;
+		sceneCamera.Position = Vector3.Zero;
+		sceneCamera.Rotation = Rotation.Identity;
 		sceneCamera.FieldOfView = FieldOfView;
 		sceneCamera.BackgroundColor = BackgroundColor;
 
@@ -59,6 +60,26 @@ public class CameraComponent : GameObjectComponent
 		Gizmo.Draw.Line( tr.Forward * ZFar, br.Forward * ZFar );
 		Gizmo.Draw.Line( br.Forward * ZFar, bl.Forward * ZFar );
 		Gizmo.Draw.Line( bl.Forward * ZFar, tl.Forward * ZFar );
+	}
+
+	public void UpdateCamera( SceneCamera camera )
+	{
+		var scene = GameObject.Scene;
+		if ( scene is null )
+		{
+			Log.Warning( $"Trying to update camera from {this} but has no scene" );
+			return;
+		}
+
+		camera.World = scene.SceneWorld;
+		camera.Worlds.Clear();
+		camera.Worlds.Add( scene.DebugSceneWorld );
+		camera.Position = GameObject.WorldTransform.Position;
+		camera.Rotation = GameObject.WorldTransform.Rotation;
+		camera.ZNear = ZNear;
+		camera.ZFar = ZFar;
+		camera.FieldOfView = FieldOfView;
+		camera.BackgroundColor = BackgroundColor;
 	}
 
 }

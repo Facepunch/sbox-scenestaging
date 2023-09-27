@@ -397,6 +397,112 @@
           "Radius": 761.74994
         }
       ]
+    },
+    {
+      "Id": "7563abcc-b564-4521-9aa1-b1d0552e8a92",
+      "Name": "Camera",
+      "Enabled": true,
+      "Position": "275.0523,85.1241,69.6273",
+      "Rotation": "-0.04168968,-0.003940752,-0.9946889,0.09402386",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0,0.7,1,1",
+          "ClearFlags": "Color, Depth, Stencil",
+          "FieldOfView": 42.750004,
+          "ZFar": 5996.1,
+          "ZNear": 20.35
+        }
+      ]
+    },
+    {
+      "Id": "1cf20169-a7de-40eb-b514-69b17dc68bbd",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-117.0236,0,256.2163",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "1cf20169-a7de-40eb-b514-69b17dc68bbd",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-117.0236,-109.0445,329.2191",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "1cf20169-a7de-40eb-b514-69b17dc68bbd",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-117.0236,22.9639,426.3412",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
     }
   ]
 }

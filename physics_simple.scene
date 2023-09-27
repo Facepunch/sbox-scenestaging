@@ -1,0 +1,73 @@
+{
+  "GameObjects": [
+    {
+      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "33,0,31.7002",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ],
+      "Children": [
+        {
+          "Id": "df7409b9-23a1-4b3e-9b88-779349a154c1",
+          "Name": "Object",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "55.4718,-124.3322,91.5952",
+      "Rotation": "0,-0.8712135,0,-0.4909044",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "Name": "Camera",
+      "Enabled": true,
+      "Position": "-232.2785,134.2822,96.802",
+      "Rotation": "0.008479088,0.05957715,-0.140646,0.9882295",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.30205,0.58789,0.71782,1",
+          "ClearFlags": "Color, Depth, Stencil",
+          "FieldOfView": 60,
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    }
+  ]
+}
