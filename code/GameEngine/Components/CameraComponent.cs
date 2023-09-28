@@ -32,6 +32,8 @@ public class CameraComponent : GameObjectComponent
 
 		using var scope = Gizmo.Scope( $"{GetHashCode()}" );
 
+		Gizmo.Transform = Gizmo.Transform.WithScale( 1 );
+
 		sceneCamera.Position = Vector3.Zero;
 		sceneCamera.Rotation = Rotation.Identity;
 		sceneCamera.FieldOfView = FieldOfView;

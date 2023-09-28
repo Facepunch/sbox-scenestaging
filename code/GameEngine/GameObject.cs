@@ -82,6 +82,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			if ( _parent is not null )
 			{
 				_parent.Children.Add( this );
+				Scene = _parent.Scene;
 			}
 
 			if ( Scene is not null )
@@ -171,13 +172,31 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		return t;
 	}
 
-	public T GetComponent<T>( bool enabledOnly = true ) where T : GameObjectComponent
+	public T GetComponent<T>( bool enabledOnly = true, bool deep = false ) where T : GameObjectComponent
+	{
+		return GetComponents<T>( enabledOnly, deep ).FirstOrDefault();
+	}
+	
+	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) where T : GameObjectComponent
 	{
 		var q = Components.OfType<T>();
-
 		if ( enabledOnly ) q = q.Where( x => x.Enabled );
 
-		return q.FirstOrDefault();
+		foreach ( var c in q )
+		{
+			yield return c;
+		}
+
+		if ( deep )
+		{
+			foreach ( var child in Children )
+			{
+				foreach( var found in child.GetComponents<T>( enabledOnly, deep ) )
+				{
+					yield return found;
+				}
+			}
+		}
 	}
 
 	public GameObjectComponent AddComponent( TypeDescription type, bool enabled = true )
@@ -231,6 +250,8 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	void DrawTransformGizmos( Transform parentTransform )
 	{
+		using var scope = Gizmo.Scope();
+
 		var tx = Transform;
 
 		// use the local position but get rid of local rotation and local scale

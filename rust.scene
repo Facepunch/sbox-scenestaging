@@ -191,7 +191,7 @@
       "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
       "Name": "Cube",
       "Enabled": true,
-      "Position": "-259.2356,50.6664,-4.9293",
+      "Position": "-270.1299,46.0195,-4.9293",
       "Rotation": "0,0,0.8343674,0.5512087",
       "Scale": "1,1,1",
       "Components": [
@@ -399,25 +399,6 @@
       ]
     },
     {
-      "Id": "7563abcc-b564-4521-9aa1-b1d0552e8a92",
-      "Name": "Camera",
-      "Enabled": true,
-      "Position": "275.0523,85.1241,69.6273",
-      "Rotation": "-0.04168968,-0.003940752,-0.9946889,0.09402386",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "CameraComponent",
-          "__enabled": true,
-          "BackgroundColor": "0,0.7,1,1",
-          "ClearFlags": "Color, Depth, Stencil",
-          "FieldOfView": 42.750004,
-          "ZFar": 5996.1,
-          "ZNear": 20.35
-        }
-      ]
-    },
-    {
       "Id": "1cf20169-a7de-40eb-b514-69b17dc68bbd",
       "Name": "Cube",
       "Enabled": true,
@@ -433,16 +414,16 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
-        },
-        {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "Scale": "50,50,50",
           "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -455,6 +436,13 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "Scale": "50,50,50",
@@ -465,13 +453,6 @@
           "__enabled": true,
           "Gravity": true,
           "Static": false
-        },
-        {
-          "__type": "ModelComponent",
-          "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
         }
       ]
     },
@@ -480,9 +461,16 @@
       "Name": "Cube",
       "Enabled": true,
       "Position": "-117.0236,22.9639,426.3412",
-      "Rotation": "0,0,0,1",
+      "Rotation": "-0.489298,-0.2021326,0.8477919,0.03128633",
       "Scale": "1,1,1",
       "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
@@ -494,13 +482,44 @@
           "__enabled": true,
           "Gravity": true,
           "Static": false
+        }
+      ],
+      "Children": [
+        {
+          "Id": "461f69b6-3d26-4fb8-b10d-d5350416020f",
+          "Name": "Sphere",
+          "Enabled": true,
+          "Position": "-31.4945,35.6044,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "MaterialOverride": null,
+              "Model": "models/dev/sphere.vmdl",
+              "Tint": "1,1,1,1"
+            }
+          ]
         },
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
+          "Id": "7563abcc-b564-4521-9aa1-b1d0552e8a92",
+          "Name": "Camera",
+          "Enabled": true,
+          "Position": "-207.9,-0.45,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "CameraComponent",
+              "__enabled": true,
+              "BackgroundColor": "0,0.7,1,1",
+              "ClearFlags": "Color, Depth, Stencil",
+              "FieldOfView": 42.750004,
+              "ZFar": 5996.1,
+              "ZNear": 20.35
+            }
+          ]
         }
       ]
     }

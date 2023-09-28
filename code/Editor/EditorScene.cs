@@ -106,9 +106,7 @@ public static class EditorScene
 		if ( EditorScene.Active is null ) return;
 		if ( Camera.Main is null ) return;
 
-		var camera = EditorScene.Active.All.Select( x => x.GetComponent<CameraComponent>() )
-							.OfType<CameraComponent>()
-							.FirstOrDefault();
+		var camera = EditorScene.Active.FindAllComponents<CameraComponent>( false ).FirstOrDefault();
 
 		if ( camera is not null )
 		{

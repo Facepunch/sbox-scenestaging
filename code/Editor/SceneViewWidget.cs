@@ -12,7 +12,8 @@ public partial class SceneViewWidget : Widget
 {
 	NativeRenderingWidget Renderer;
 	SceneCamera Camera;
-	
+	SceneViewToolbar SceneToolbar;
+
 	public SceneViewWidget( Widget parent ) : base( parent )
 	{
 		Camera = new SceneCamera();
@@ -23,6 +24,7 @@ public partial class SceneViewWidget : Widget
 		Renderer.Camera = Camera;
 
 		Layout = Layout.Column();
+		SceneToolbar = Layout.Add( new SceneViewToolbar( this ) );
 		Layout.Add( Renderer );
 
 		Camera.Worlds.Add( EditorScene.GizmoInstance.World );
@@ -31,6 +33,7 @@ public partial class SceneViewWidget : Widget
 	int selectionHash = 0;
 
 	[EditorEvent.Frame]
+	public void Frame()
 	{
 		if ( !Visible )
 			return;
@@ -51,6 +54,8 @@ public partial class SceneViewWidget : Widget
 		Camera.ClearFlags = ClearFlags.Color | ClearFlags.Depth | ClearFlags.Stencil;
 		Camera.BackgroundColor = "#557685";
 
+		SceneToolbar.SceneInstance = EditorScene.GizmoInstance;
+
 		EditorScene.GizmoInstance.FirstPersonCamera( Camera, Renderer );
 		EditorScene.GizmoInstance.UpdateInputs( Camera, Renderer );
 
@@ -58,8 +63,6 @@ public partial class SceneViewWidget : Widget
 			return;
 
 		activeScene.SceneWorld.AmbientLightColor = Color.Black;
-
-		EditorScene.GizmoInstance.Debug = true;
 
 		using ( EditorScene.GizmoInstance.Push() )
 		{
@@ -82,3 +85,17 @@ public partial class SceneViewWidget : Widget
 	}
 }
 
+public class SceneViewToolbar : SceneToolbar
+{
+	public SceneViewToolbar( Widget parent) : base( parent )
+	{
+
+	}
+
+	public override void BuildToolbar()
+	{
+		AddGizmoModes();
+		AddSeparator();
+		AddAdvancedDropdown();
+	}
+}

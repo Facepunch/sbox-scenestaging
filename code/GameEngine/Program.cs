@@ -40,9 +40,9 @@ public static class Program
 		Scene.Active.Tick();
 		Scene.Active.PreRender();
 
-		var camera = Scene.Active.All.Select( x => x.GetComponent<CameraComponent>() )
-									.OfType<CameraComponent>()
-									.FirstOrDefault();
+		var camera = Scene.Active.FindAllComponents<CameraComponent>( true ).FirstOrDefault();
+
+		Log.Info( camera );
 
 		if ( camera is not null )
 		{

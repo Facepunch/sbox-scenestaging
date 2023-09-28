@@ -1,4 +1,5 @@
-﻿using Sandbox;
+﻿using Microsoft.VisualBasic;
+using Sandbox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -205,5 +206,18 @@ public sealed class Scene
 		var a = new SceneSource();
 		a.GameObjects = All.Select( x => x.Serialize() ).ToArray();
 		return a;
+	}
+
+	public IEnumerable<T> FindAllComponents<T>( bool includeDisabled = false ) where T : GameObjectComponent
+	{
+		// array rent?
+		List<T> found = new List<T>();
+
+		foreach( var go in All )
+		{
+			found.AddRange( go.GetComponents<T>( includeDisabled, true ) );
+		}
+
+		return found;
 	}
 }
