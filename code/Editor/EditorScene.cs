@@ -90,17 +90,9 @@ public static class EditorScene
 	{
 		GameManager.IsPlaying = false;
 
-		Camera.Main.World = GetAppropriateScene().SceneWorld;
-		Camera.Main.Worlds.Clear();
-		Camera.Main.Position = 0;
-		Camera.Main.ZNear = 1;
-		Camera.Main.Tonemap.Enabled = true;
-		Camera.Main.Tonemap.MinExposure = 0.1f;
-		Camera.Main.Tonemap.MaxExposure = 2.0f;
-		Camera.Main.Tonemap.Rate = 1.0f;
-		Camera.Main.Tonemap.Fade = 1.0f;
-
 		EditorWindow.DockManager.RaiseDock( "Scene" );
+
+		UpdateGameCamera();
 
 	}
 
@@ -112,6 +104,7 @@ public static class EditorScene
 	{
 		if ( GameManager.IsPlaying ) return;
 		if ( EditorScene.Active is null ) return;
+		if ( Camera.Main is null ) return;
 
 		var camera = EditorScene.Active.All.Select( x => x.GetComponent<CameraComponent>() )
 							.OfType<CameraComponent>()
