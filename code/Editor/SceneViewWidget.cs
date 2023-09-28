@@ -31,7 +31,6 @@ public partial class SceneViewWidget : Widget
 	int selectionHash = 0;
 
 	[EditorEvent.Frame]
-	public void Ticker()
 	{
 		if ( selectionHash != EditorScene.Selection.GetHashCode() )
 		{
@@ -56,6 +55,8 @@ public partial class SceneViewWidget : Widget
 			return;
 
 		activeScene.SceneWorld.AmbientLightColor = Color.Black;
+
+		EditorScene.GizmoInstance.Debug = true;
 
 		using ( EditorScene.GizmoInstance.Push() )
 		{
