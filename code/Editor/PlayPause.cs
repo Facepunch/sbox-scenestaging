@@ -8,7 +8,6 @@ internal class PlayPauseWidget : Widget
 	public static void OnBuildHeaderToolbar( HeadBarEvent e )
 	{
 		new PlayPauseWidget( e.Center.AddRow() );
-		new PlayPauseWidget( e.Center.AddRow() );
 	}
 
 	public PlayPauseWidget( Layout layout ) : base( null )
