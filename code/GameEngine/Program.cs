@@ -32,7 +32,7 @@ public static class Program
 	static Angles viewAngles;
 
 	[Event( "frame" )]
-	public static void FramePofop()
+	public static void Frame()
 	{
 		if ( !GameManager.IsPlaying )
 			return;

@@ -197,24 +197,26 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	internal void DrawGizmos()
 	{
+		var parentTx = Gizmo.Transform;
+
 		using ( Gizmo.ObjectScope( this, Transform ) )
 		{
 			if ( Gizmo.IsSelected )
 			{
-				if ( Gizmo.Control.Position( "position", Vector3.Zero, out var position ) )
-				{
-					Transform = Transform.WithPosition( Transform.Position + position * Transform.Rotation );
-				}
+				DrawTransformGizmos( parentTx );
 			}
+
+			bool clicked = Gizmo.WasClicked;
 
 			foreach ( var component in Components )
 			{
 				using var scope = Gizmo.Scope();
 
 				component.DrawGizmos();
+				clicked |= Gizmo.WasClicked;
 			}
 
-			if ( Gizmo.WasClicked )
+			if ( clicked )
 			{
 				Gizmo.Select();
 			}
@@ -225,6 +227,42 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			}
 
 		}
+	}
+
+	void DrawTransformGizmos( Transform parentTransform )
+	{
+		var tx = Transform;
+
+		// use the local position but get rid of local rotation and local scale
+		Gizmo.Transform = parentTransform.Add( tx.Position, false );
+
+		Gizmo.Hitbox.DepthBias = 0.1f;
+
+		if ( Gizmo.Settings.EditMode == "position" )
+		{
+			if ( Gizmo.Control.Position( "position", tx.Position, out var newPos, tx.Rotation ) )
+			{
+				tx.Position = newPos;
+			}
+		}
+
+		if ( Gizmo.Settings.EditMode == "rotation" )
+		{
+			if ( Gizmo.Control.Rotate( "rotation", tx.Rotation, out var newRotation ) )
+			{
+				tx.Rotation = newRotation;
+			}
+		}
+
+		if ( Gizmo.Settings.EditMode == "scale" )
+		{
+			if ( Gizmo.Control.Scale( "scale", tx.Scale, out var newScale ) )
+			{
+				tx.Scale = newScale.Clamp( 0.001f, 100.0f );
+			}
+		}
+
+		Transform = tx;
 	}
 
 	internal void Tick()

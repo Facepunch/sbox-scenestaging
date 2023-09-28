@@ -13,8 +13,11 @@ public class ColliderBoxComponent : GameObjectComponent, PhysicsComponent.IBodyM
 
 	public override void DrawGizmos()
 	{
-		Gizmo.Draw.LineThickness = 10;
-		Gizmo.Draw.Color = Color.White.WithAlpha( Gizmo.IsChildSelected ? 0.5f : 0.1f );
+		if ( !Gizmo.IsSelected && !Gizmo.IsHovered )
+			return;
+
+		Gizmo.Draw.LineThickness = 1;
+		Gizmo.Draw.Color = Gizmo.Colors.Green.WithAlpha( Gizmo.IsSelected ? 1.0f : 0.2f );
 		Gizmo.Draw.LineBBox( new BBox( Scale * -0.5f, Scale * 0.5f ) );
 	}
 

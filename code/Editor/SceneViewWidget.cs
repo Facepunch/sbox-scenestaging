@@ -32,6 +32,9 @@ public partial class SceneViewWidget : Widget
 
 	[EditorEvent.Frame]
 	{
+		if ( !Visible )
+			return;
+
 		if ( selectionHash != EditorScene.Selection.GetHashCode() )
 		{
 			// todo - multiselect
