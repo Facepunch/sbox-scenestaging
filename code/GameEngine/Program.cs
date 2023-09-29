@@ -42,8 +42,6 @@ public static class Program
 
 		var camera = Scene.Active.FindAllComponents<CameraComponent>( true ).FirstOrDefault();
 
-		Log.Info( camera );
-
 		if ( camera is not null )
 		{
 			camera.UpdateCamera( Camera.Main );

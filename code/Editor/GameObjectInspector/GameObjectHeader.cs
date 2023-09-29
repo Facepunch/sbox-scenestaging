@@ -54,7 +54,10 @@ class GameObjectHeader : Widget
 			} );
 
 			var tags = targetObject.GetProperty( "Tags" );
-			w.Bind( "Value" ).From( () => tags.As.String, x => tags.As.String = x );
+			if ( tags is not null )
+			{
+				w.Bind( "Value" ).From( () => tags.As.String, x => tags.As.String = x );
+			}
 			Layout.Add( w );
 		}
 

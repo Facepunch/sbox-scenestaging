@@ -18,6 +18,25 @@
       ]
     },
     {
+      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
+      "Name": "Spot Light",
+      "Enabled": true,
+      "Position": "-456.3969,-157.33,70.9175",
+      "Rotation": "0,0,-0.5056576,0.8627343",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 22.599998,
+          "ConeInner": 2.0999994,
+          "ConeOuter": 43.35,
+          "LightColor": "0.85949,6.13921,0,1",
+          "Radius": 761.74994
+        }
+      ]
+    },
+    {
       "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
       "Name": "Cube",
       "Enabled": true,
@@ -31,6 +50,25 @@
           "MaterialOverride": null,
           "Model": "models/rust_props/barricades/barricade.stone.vmdl",
           "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
+      "Name": "Spot Light",
+      "Enabled": true,
+      "Position": "313.4948,-15.2287,115.0273",
+      "Rotation": "0,0.9987631,0,0.04972083",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 2.9499998,
+          "ConeInner": 1,
+          "ConeOuter": 26.55,
+          "LightColor": "44.29,44.29,44.29,1",
+          "Radius": 868.55005
         }
       ]
     },
@@ -52,6 +90,25 @@
       ]
     },
     {
+      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
+      "Name": "Spot Light",
+      "Enabled": true,
+      "Position": "-454.6291,-108.5722,53.7213",
+      "Rotation": "0.9279775,0.3109482,0.1947102,-0.06524501",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 5.8,
+          "ConeInner": 1,
+          "ConeOuter": 32.699997,
+          "LightColor": "321.7822,905.0496,1000,1",
+          "Radius": 868.55005
+        }
+      ]
+    },
+    {
       "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
       "Name": "Cube",
       "Enabled": true,
@@ -65,6 +122,25 @@
           "MaterialOverride": null,
           "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
           "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
+      "Name": "Spot Light",
+      "Enabled": true,
+      "Position": "-295.4084,151.478,45.1196",
+      "Rotation": "0.009279268,0.03273769,-0.2725423,0.9615419",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 1,
+          "ConeInner": 15.75,
+          "ConeOuter": 84.9,
+          "LightColor": "0.83663,0.07869,0.07869,1",
+          "Radius": 832.5499
         }
       ]
     },
@@ -191,23 +267,6 @@
       "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
       "Name": "Cube",
       "Enabled": true,
-      "Position": "-270.1299,46.0195,-4.9293",
-      "Rotation": "0,0,0.8343674,0.5512087",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "ModelComponent",
-          "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/rust_props/tires/tire_stack_c.vmdl",
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
-      "Name": "Cube",
-      "Enabled": true,
       "Position": "-399.1765,-252.4252,-0.0276",
       "Rotation": "0,0,0.8343674,0.5512087",
       "Scale": "1,1,1",
@@ -323,82 +382,6 @@
       ]
     },
     {
-      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
-      "Name": "Spot Light",
-      "Enabled": true,
-      "Position": "313.4948,-15.2287,115.0273",
-      "Rotation": "0,0.9987631,0,0.04972083",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "SpotLightComponent",
-          "__enabled": true,
-          "Attenuation": 2.9499998,
-          "ConeInner": 1,
-          "ConeOuter": 26.55,
-          "LightColor": "44.29,44.29,44.29,1",
-          "Radius": 868.55005
-        }
-      ]
-    },
-    {
-      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
-      "Name": "Spot Light",
-      "Enabled": true,
-      "Position": "-295.4084,151.478,45.1196",
-      "Rotation": "0.009279268,0.03273769,-0.2725423,0.9615419",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "SpotLightComponent",
-          "__enabled": true,
-          "Attenuation": 1,
-          "ConeInner": 15.75,
-          "ConeOuter": 84.9,
-          "LightColor": "0.83663,0.07869,0.07869,1",
-          "Radius": 832.5499
-        }
-      ]
-    },
-    {
-      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
-      "Name": "Spot Light",
-      "Enabled": true,
-      "Position": "-454.6291,-108.5722,53.7213",
-      "Rotation": "0.9279775,0.3109482,0.1947102,-0.06524501",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "SpotLightComponent",
-          "__enabled": true,
-          "Attenuation": 5.8,
-          "ConeInner": 1,
-          "ConeOuter": 32.699997,
-          "LightColor": "321.7822,905.0496,1000,1",
-          "Radius": 868.55005
-        }
-      ]
-    },
-    {
-      "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
-      "Name": "Spot Light",
-      "Enabled": true,
-      "Position": "-456.3969,-157.33,70.9175",
-      "Rotation": "0,0,-0.5056576,0.8627343",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "SpotLightComponent",
-          "__enabled": true,
-          "Attenuation": 22.599998,
-          "ConeInner": 2.0999994,
-          "ConeOuter": 43.35,
-          "LightColor": "0.85949,6.13921,0,1",
-          "Radius": 761.74994
-        }
-      ]
-    },
-    {
       "Id": "1cf20169-a7de-40eb-b514-69b17dc68bbd",
       "Name": "Cube",
       "Enabled": true,
@@ -436,17 +419,17 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
         },
         {
           "__type": "ColliderBoxComponent",
@@ -457,31 +440,19 @@
       ]
     },
     {
-      "Id": "1cf20169-a7de-40eb-b514-69b17dc68bbd",
+      "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
       "Name": "Cube",
       "Enabled": true,
-      "Position": "-117.0236,22.9639,426.3412",
-      "Rotation": "-0.489298,-0.2021326,0.8477919,0.03128633",
+      "Position": "-270.1299,46.0195,-4.9293",
+      "Rotation": "0,0,0.8343674,0.5512087",
       "Scale": "1,1,1",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
+          "Model": "models/rust_props/tires/tire_stack_c.vmdl",
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "Scale": "50,50,50",
-          "Surface": null
-        },
-        {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
         }
       ],
       "Children": [
@@ -501,7 +472,38 @@
               "Tint": "1,1,1,1"
             }
           ]
+        }
+      ]
+    },
+    {
+      "Id": "1cf20169-a7de-40eb-b514-69b17dc68bbd",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-117.0236,22.9639,426.3412",
+      "Rotation": "-0.489298,-0.2021326,0.8477919,0.03128633",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
         },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ],
+      "Children": [
         {
           "Id": "7563abcc-b564-4521-9aa1-b1d0552e8a92",
           "Name": "Camera",

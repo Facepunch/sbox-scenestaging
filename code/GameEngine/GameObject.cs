@@ -121,7 +121,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		}
 	}
 
-	public HashSet<GameObject> Children { get; } = new HashSet<GameObject>();
+	public List<GameObject> Children { get; } = new List<GameObject>();
 
 	/// <summary>
 	/// Is this gameobject active. For it to be active, it needs to be enabled, all of its ancestors
@@ -395,5 +395,26 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		}
 
 		return false;
+	}
+
+	public void AddSibling( GameObject go, bool before )
+	{
+		go.Parent = Parent;
+
+		if ( go.Parent is null )
+		{
+			Scene.All.Remove( go );
+
+			var targetIndex = Scene.All.IndexOf( this );
+			if ( !before ) targetIndex++;
+			Scene.All.Insert( targetIndex, go );
+		}
+		else
+		{
+			go.Parent.Children.Remove( go );
+			var targetIndex = go.Parent.Children.IndexOf( this );
+			if ( !before ) targetIndex++;
+			go.Parent.Children.Insert( targetIndex, go );
+		}
 	}
 }

@@ -15,7 +15,7 @@ public sealed class Scene
 	public NavigationMesh NavigationMesh { get; set; }
 	public SceneSource Source { get; private set; }
 
-	public HashSet<GameObject> All = new HashSet<GameObject>();
+	public List<GameObject> All = new List<GameObject>();
 
 	Gizmo.Instance gizmoInstance = new Gizmo.Instance();
 
@@ -28,7 +28,11 @@ public sealed class Scene
 	public void Register( GameObject o )
 	{
 		o.Scene = this;
-		All.Add( o );
+
+		if ( !All.Contains( o ) )
+		{
+			All.Add( o );
+		}
 
 		o.OnCreate();
 	}
@@ -111,6 +115,7 @@ public sealed class Scene
 
 	void DrawNavmesh()
 	{
+		/*
 		if ( NavigationMesh is null )
 			return;
 
@@ -144,6 +149,7 @@ public sealed class Scene
 			//Gizmo.Draw.Color = Color.White;
 			//Gizmo.Draw.ScreenText( $"{p.Segments[i].Distance:n0}", Camera.Main.ToScreen( p.Segments[i].Position + Vector3.Up * 10 ) );
 		}
+		*/
 	}
 
 	internal void OnParentChanged( GameObject gameObject, GameObject oldParent, GameObject parent )

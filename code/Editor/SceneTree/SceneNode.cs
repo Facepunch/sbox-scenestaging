@@ -1,12 +1,13 @@
 ﻿
 using Editor;
+using Editor.PanelInspector;
 using Sandbox;
 using System;
 using System.Linq;
 
 public partial class SceneNode : TreeNode<Scene>
 {
-	public SceneNode( Scene scene ) : base ( scene )
+	public SceneNode( Scene scene ) : base( scene )
 	{
 
 	}
@@ -15,25 +16,7 @@ public partial class SceneNode : TreeNode<Scene>
 
 	protected override void BuildChildren()
 	{
-		var children = Children.ToList();
-
-		foreach ( var child in Value.All )
-		{
-			var c = children.OfType<GameObjectNode>().FirstOrDefault( x => x.Value == child );
-			if ( c == null )
-			{
-				AddItem( new GameObjectNode( child ) );
-			}
-			else
-			{
-				children.Remove( c );
-			}  
-		}
-
-		foreach ( var child in children )
-		{
-			RemoveItem( child ); 
-		} 
+		SetChildren( Value.All, x => new GameObjectNode( x ) );
 	}
 
 	public override void OnPaint( VirtualWidget item )
@@ -65,7 +48,20 @@ public partial class SceneNode : TreeNode<Scene>
 		Paint.DrawText( r, $"{Value.Name}", TextFlag.LeftCenter );
 	}
 
-	public override int ValueHash => HashCode.Combine( Value?.All.Count );
+	public override int ValueHash
+	{
+		get
+		{
+			HashCode hc = new HashCode();
+
+			foreach ( var val in Value.All )
+			{
+				hc.Add( val );
+			}
+
+			return hc.ToHashCode();
+		}
+	}
 
 
 	public override void OnKeyPress( KeyEvent e )

@@ -2,48 +2,45 @@
 using Editor;
 using Sandbox;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using static Editor.BaseItemWidget;
 
 public partial class GameObjectNode : TreeNode<GameObject>
 {
 	public GameObjectNode( GameObject o ) : base ( o )
 	{
-
+		Height = 18;
 	}
 
 	public override bool HasChildren => Value.Children.Any();
 
 	protected override void BuildChildren()
 	{
-		var children = Children.ToList();
-
-		foreach ( var child in Value.Children )
-		{
-			var c = children.OfType<GameObjectNode>().FirstOrDefault( x => x.Value == child );
-			if ( c == null )
-			{
-				AddItem( new GameObjectNode( child ) );
-			}
-			else
-			{
-				children.Remove( c );
-			}
-		}
-
-		foreach ( var child in children )
-		{
-			RemoveItem( child );
-		}
-
+		SetChildren( Value.Children, x => new GameObjectNode( x ) );
 	}
 
-	public override int ValueHash => HashCode.Combine( Value, Value.Children.Count, Value.Name );
+	public override int ValueHash
+	{
+		get
+		{
+			HashCode hc = new HashCode();
+			hc.Add( Value.Name );
+
+			foreach ( var val in Value.Children )
+			{
+				hc.Add( val );
+			}
+
+			return hc.ToHashCode();
+		}
+	}
 
 	public override void OnPaint( VirtualWidget item )
 	{
-		var selected = item.Selected || item.Pressed;
+		var selected = item.Selected || item.Pressed || item.Dragging;
 
 		var fullSpanRect = item.Rect;
 		fullSpanRect.Left = 0;
@@ -52,6 +49,39 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		float opacity = 0.9f;
 
 		if ( !Value.Active ) opacity *= 0.5f;
+
+		//
+		// If there's a drag and drop happening, fade out nodes that aren't possible
+		//
+		if ( TreeView.IsBeingDroppedOn && (TreeView.CurrentItemDragEvent.Data.Object is not GameObject go || Value.IsAncestor( go ) )  )
+		{
+			opacity *= 0.23f;
+		}
+
+		if ( item.Dropping )
+		{
+			Paint.ClearPen();
+			Paint.SetBrush( Theme.Blue.WithAlpha( 0.2f ) );
+
+			if( TreeView.CurrentItemDragEvent.DropEdge.HasFlag( ItemEdge.Top ) )
+			{
+				var droprect = item.Rect;
+				droprect.Top -= 1;
+				droprect.Height = 2;
+				Paint.DrawRect( droprect, 2 );
+			}
+			else if ( TreeView.CurrentItemDragEvent.DropEdge.HasFlag( ItemEdge.Bottom ) )
+			{
+				var droprect = item.Rect;
+				droprect.Top = droprect.Bottom - 1;
+				droprect.Height = 2;
+				Paint.DrawRect( droprect, 2 );
+			}
+			else
+			{
+				Paint.DrawRect( item.Rect, 2 );
+			}
+		}
 
 		if ( selected )
 		{
@@ -85,34 +115,40 @@ public partial class GameObjectNode : TreeNode<GameObject>
 	public override bool OnDragStart()
 	{
 		var drag = new Drag( TreeView );
-		//drag.Data.Text = Json.Serialize( Value.Serialize() );
 		drag.Data.Object = Value;
 		drag.Execute();
 
 		return true;
 	}
 
-	public override void OnDragHover( Widget.DragEvent ev )
+	public override DropAction OnDragDrop( ItemDragEvent e )
 	{
-		if ( ev.Data.Object is GameObject go )
+		if ( e.Data.Object is GameObject go )
 		{
-			ev.Action = DropAction.Move;
-			return;
+			// can't parent to an ancesor
+			if ( go == Value || Value.IsAncestor( go ) )
+				return DropAction.Ignore;
+
+			if ( e.IsDrop )
+			{
+				if ( e.DropEdge.HasFlag( ItemEdge.Top ) )
+				{
+					Value.AddSibling( go, true );
+				}
+				else if ( e.DropEdge.HasFlag( ItemEdge.Bottom ) )
+				{
+					Value.AddSibling( go, false );
+				}
+				else
+				{
+					go.Parent = Value;
+				}
+			}
+
+			return DropAction.Move;
 		}
 
-		base.OnDragHover( ev );
-	}
-
-	public override void OnDrop( Widget.DragEvent ev )
-	{
-		if ( ev.Data.Object is GameObject go )
-		{
-			ev.Action = DropAction.Move;
-			go.Parent = Value;
-			return;
-		}
-
-		base.OnDrop( ev );
+		return DropAction.Ignore;
 	}
 
 	public override bool OnContextMenu()
