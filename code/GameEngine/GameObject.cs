@@ -87,6 +87,12 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		{
 			if ( _parent == value ) return;
 
+			if ( value is not null )
+			{
+				if ( value.IsAncestor( this ) )
+					return;
+			}
+
 			var oldParent = _parent;
 
 			if ( oldParent is not null )
@@ -371,5 +377,23 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		{
 			child.DestroyRecursive();
 		}
+	}
+
+
+	public bool IsDescendant( GameObject o )
+	{
+		return o.IsAncestor( this );
+	}
+
+	public bool IsAncestor( GameObject o )
+	{
+		if ( o == this ) return true;
+
+		if ( Parent is not null )
+		{
+			return Parent.IsAncestor( o );
+		}
+
+		return false;
 	}
 }
