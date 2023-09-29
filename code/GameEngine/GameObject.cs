@@ -16,7 +16,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	public string Name { get; set; } = "Untitled Object";
 
 
-	bool _enabled;
+	bool _enabled = true;
 
 	/// <summary>
 	/// Is this gameobject enabled?
@@ -101,6 +101,9 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 				_parent.Children.Add( this );
 				Scene = _parent.Scene;
 			}
+
+			if ( isDestroying )
+				return;
 
 			if ( Scene is not null )
 			{
@@ -318,8 +321,12 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	}
 
+	bool isDestroying;
+	bool isDestroyed;
+
 	public void Destroy()
 	{
+		isDestroying = true;
 		Scene?.QueueDelete( this );
 	}
 
@@ -333,6 +340,36 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		foreach ( var child in Children )
 		{
 			child.OnEnableStateChanged();
+		}
+	}
+
+	public void DestroyImmediate()
+	{
+		bool isRoot = Parent == null;
+		var scene = Scene;
+
+		DestroyRecursive();
+
+		if ( isRoot && scene is not null )
+		{
+			scene.Remove( this );
+		}
+	}
+
+	/// <summary>
+	/// We are now disconnected from the scene, we can tell all of our children to disconnect too.
+	/// </summary>
+	void DestroyRecursive()
+	{
+		isDestroying = true;
+		Parent = null;
+		Enabled = false;
+		Scene = null;
+		isDestroyed = true;
+
+		foreach ( var child in Children )
+		{
+			child.DestroyRecursive();
 		}
 	}
 }

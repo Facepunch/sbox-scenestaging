@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
 
-namespace MyTests;
-
 public class ScopeTimer
 {
 	private readonly Stopwatch stopwatch = new Stopwatch();

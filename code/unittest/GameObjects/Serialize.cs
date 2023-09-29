@@ -1,10 +1,9 @@
 using Sandbox;
-using System.Linq;
 
-namespace MyTests;
+namespace GameObjects;
 
 [TestClass]
-public class GameObjectTest
+public class SerializeTest
 {
 	[TestMethod]
 	public void SerializeSingle()
@@ -47,7 +46,7 @@ public class GameObjectTest
 
 		int childrenCount = 150000;
 
-		for ( int i = 0; i< childrenCount; i++ )
+		for ( int i = 0; i < childrenCount; i++ )
 		{
 			var child = new GameObject();
 			child.Name = $"Child {i}";
@@ -78,6 +77,6 @@ public class GameObjectTest
 		Assert.AreEqual( go1.Transform, go2.Transform );
 		Assert.AreEqual( go2.Children.Count, childrenCount );
 
-		
+
 	}
 }

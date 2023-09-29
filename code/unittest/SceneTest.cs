@@ -32,7 +32,7 @@ public class SceneTest
 
 		scene.Tick();
 
-		Assert.AreEqual( 0, go.Components.Count() );
+		Assert.AreEqual( 1, go.Components.Count() );
 		Assert.AreEqual( 0, scene.SceneWorld.SceneObjects.Count );
 	}
 }

@@ -159,9 +159,9 @@ public sealed class Scene
 		}
 	}
 
-	public GameObject CreateObject()
+	public GameObject CreateObject( bool enabled = true )
 	{
-		var go = new GameObject();
+		var go = new GameObject() { Enabled = enabled };
 		Register( go );
 		return go;
 	}
@@ -180,9 +180,7 @@ public sealed class Scene
 
 		foreach( var o in deleteList.ToArray() )
 		{
-			o.Parent = null;
-			o.Enabled = false;
-			All.Remove( o );
+			o.DestroyImmediate();
 			deleteList.Remove( o );
 		}
 	}
@@ -219,5 +217,13 @@ public sealed class Scene
 		}
 
 		return found;
+	}
+
+	internal void Remove( GameObject gameObject )
+	{
+		if ( !All.Remove( gameObject ) )
+		{
+			Log.Warning( "Scene.Remove - gameobject wasn't in All!" );
+		}
 	}
 }
