@@ -414,16 +414,16 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "Scale": "50,50,50",
-          "Surface": null
-        },
-        {
           "__type": "PhysicsComponent",
           "__enabled": true,
           "Gravity": true,
           "Static": false
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
         }
       ]
     },
@@ -443,16 +443,16 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "Scale": "50,50,50",
-          "Surface": null
-        },
-        {
           "__type": "PhysicsComponent",
           "__enabled": true,
           "Gravity": true,
           "Static": false
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
         }
       ]
     },

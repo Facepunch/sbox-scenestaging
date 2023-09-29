@@ -11,6 +11,7 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 	[JsonIgnore]
 	public GameObject GameObject { get; internal set; }
 
+	bool _enabledState;
 	bool _enabled = false;
 
 	public bool Enabled
@@ -22,18 +23,7 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 			if ( _enabled == value ) return;
 
 			_enabled = value;
-
-			if ( GameObject is null || GameObject.Scene is null )
-				return;
-
-			if ( _enabled )
-			{
-				OnEnabled();
-			}
-			else
-			{
-				OnDisabled();
-			}
+			OnEnableStateChanged();
 		}
 	}
 
@@ -50,4 +40,21 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 
 	protected virtual void OnPreRender() { }
 	internal virtual void PreRender() { OnPreRender(); }
+
+	internal void OnEnableStateChanged()
+	{
+		var state = _enabled && Scene is not null && GameObject is not null && GameObject.Active;
+		if ( state  == _enabledState ) return;
+
+		_enabledState = state;
+
+		if ( _enabledState )
+		{
+			OnEnabled();
+		}
+		else
+		{
+			OnDisabled();
+		}
+	}
 }

@@ -15,8 +15,25 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	[Property]
 	public string Name { get; set; } = "Untitled Object";
 
+
+	bool _enabled;
+
+	/// <summary>
+	/// Is this gameobject enabled?
+	/// </summary>
 	[Property]
-	public bool Enabled { get; set; } = true;
+	public bool Enabled 
+	{
+		get => _enabled;
+		set
+		{
+			if ( _enabled == value )
+				return;
+
+			_enabled = value;
+			OnEnableStateChanged();
+		}
+	}
 
 	Transform _transform = Transform.Zero;
 
@@ -89,11 +106,19 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			{
 				Scene.OnParentChanged( this, oldParent, _parent );
 			}
+
+			// different parent - active state could have changed
+			OnEnableStateChanged();
 		}
 	}
 
 	public HashSet<GameObject> Children { get; } = new HashSet<GameObject>();
 
+	/// <summary>
+	/// Is this gameobject active. For it to be active, it needs to be enabled, all of its ancestors
+	/// need to be enabled, and it needs to be in a scene.
+	/// </summary>
+	public bool Active => Enabled && Scene is not null && (Parent?.Active ?? true);
 
 	internal void OnCreate()
 	{
@@ -216,6 +241,8 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	internal void DrawGizmos()
 	{
+		if ( !Active ) return;
+
 		var parentTx = Gizmo.Transform;
 
 		using ( Gizmo.ObjectScope( this, Transform ) )
@@ -294,5 +321,18 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	public void Destroy()
 	{
 		Scene?.QueueDelete( this );
+	}
+
+	void OnEnableStateChanged()
+	{
+		foreach( var component in Components )
+		{
+			component.OnEnableStateChanged();
+		}
+
+		foreach ( var child in Children )
+		{
+			child.OnEnableStateChanged();
+		}
 	}
 }

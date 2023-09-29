@@ -49,18 +49,22 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		fullSpanRect.Left = 0;
 		fullSpanRect.Right = TreeView.Width;
 
+		float opacity = 0.9f;
+
+		if ( !Value.Active ) opacity *= 0.5f;
+
 		if ( selected )
 		{
 			//item.PaintBackground( Color.Transparent, 3 );
 			Paint.ClearPen();
-			Paint.SetBrush( Theme.Blue.WithAlpha( 0.4f ) );
+			Paint.SetBrush( Theme.Blue.WithAlpha( 0.4f * opacity ) );
 			Paint.DrawRect( fullSpanRect );
 
-			Paint.SetPen( Color.White );
+			Paint.SetPen( Color.White.WithAlpha( opacity ) );
 		}
 		else
 		{
-			Paint.SetPen( Theme.ControlText );
+			Paint.SetPen( Theme.ControlText.WithAlpha( opacity ) );
 		}
 
 		var name = Value.Name;
@@ -69,11 +73,11 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		var r = item.Rect;
 		r.Left += 4;
 		 
-		if ( !selected ) Paint.SetPen( Theme.Blue );
+		if ( !selected ) Paint.SetPen( Theme.Blue.WithAlpha( opacity ).Saturate( opacity - 1.0f ) );
 		Paint.DrawIcon( r, "circle", 14, TextFlag.LeftCenter );
 		r.Left += 22;
 
-		Paint.SetPen( selected ? Theme.White : Theme.ControlText );
+		Paint.SetPen( selected ? Theme.White.WithAlpha( opacity ) : Theme.ControlText.WithAlpha( opacity ) );
 		Paint.SetDefaultFont( 9 );
 		Paint.DrawText( r, name, TextFlag.LeftCenter );
 	}
