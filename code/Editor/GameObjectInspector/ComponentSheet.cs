@@ -70,16 +70,39 @@ file class ComponentHeader : Widget
 {
 	SerializedObject TargetObject { get; init; }
 
+	Layout expanderRect;
+	Layout iconRect;
+	Layout textRect;
+
 	public ComponentHeader( SerializedObject target, Widget parent ) : base( parent )
 	{
 		TargetObject = target;
 
-		FixedHeight = 26;
+		var enabled = ControlWidget.Create( TargetObject.GetProperty( "Enabled" ) );
+		enabled.FixedWidth = 18;
+		enabled.FixedHeight = 18;
 
-		ContentMargins = 6;
+		FixedHeight = 22;
+
+		ContentMargins = 0;
 		Layout = Layout.Row();
-		Layout.Spacing = 8;
-		Layout.AddStretchCell();
+
+		expanderRect = Layout.AddRow();
+		expanderRect.AddSpacingCell( 22 );
+
+		iconRect = Layout.AddRow();
+		iconRect.AddSpacingCell( 22 );
+
+		Layout.AddSpacingCell( 4 );
+
+		// icon
+
+		Layout.Add( enabled );
+
+		Layout.AddSpacingCell( 8 );
+
+		// text 
+		textRect = Layout.AddColumn( 1 );
 	}
 
 	protected override void OnPaint()
@@ -113,27 +136,21 @@ file class ComponentHeader : Widget
 			Paint.SetBrushRadial( new Vector2( 64, 0 ), 256, Theme.Blue.WithAlpha( 0.08f ), Theme.Blue.WithAlpha( 0.03f ) );
 			Paint.DrawRect( LocalRect, 0 );
 
-			Paint.SetPen( Theme.Black.WithAlpha( 0.5f ), 2 );
+			Paint.SetPen( Theme.Black.WithAlpha( 0.4f ), 2 );
 			Paint.DrawLine( LocalRect.BottomLeft, LocalRect.BottomRight );
 		}
 
 		var row = LocalRect;
 
-		row = row.Shrink( 8, 0, 0, 0 );
-
 		Paint.SetPen( Theme.White.WithAlpha( opacity * 0.5f ) );
-		Paint.DrawIcon( row, expanded ? "keyboard_arrow_down" : "chevron_right", 16, TextFlag.LeftCenter );
-
-		row = row.Shrink( 22, 0, 0, 0 );
+		Paint.DrawIcon( expanderRect.InnerRect, expanded ? "keyboard_arrow_down" : "chevron_right", 16, TextFlag.Center );
 
 		Paint.SetPen( Theme.Blue.WithAlpha( opacity ) );
-		Paint.DrawIcon( row, TargetObject.TypeIcon ?? "category", 18, TextFlag.LeftCenter ); 
-
-		row = row.Shrink( 26, 0, 0, 0 );
+		Paint.DrawIcon( iconRect.InnerRect, TargetObject.TypeIcon ?? "category", 14, TextFlag.Center ); 
 
 		Paint.SetPen( Theme.Blue.Lighten( 0.1f ).WithAlpha( (expanded ? 0.9f : 0.6f) * opacity ) );
 		Paint.SetDefaultFont( 8, 1000, false );
-		Paint.DrawText( row, TargetObject.TypeTitle, TextFlag.LeftCenter );
+		Paint.DrawText( textRect.InnerRect, TargetObject.TypeTitle, TextFlag.LeftCenter );
 	}
 
 	protected override void OnContextMenu( ContextMenuEvent e )
