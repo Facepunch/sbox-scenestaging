@@ -12,14 +12,15 @@ public partial class ComponentSheet : Widget
 	SerializedObject TargetObject;
 	Layout Content;
 
-	public ComponentSheet( SerializedObject target ) : base( null )
+	public ComponentSheet( SerializedObject target, Action contextMenu ) : base( null )
 	{
 		Name = "ComponentSheet";
 		TargetObject = target;
 		Layout = Layout.Column();
 		SetSizeMode( SizeMode.Default, SizeMode.CanShrink );
 
-		Layout.Add( new ComponentHeader( TargetObject, this ) );
+		var header = Layout.Add( new ComponentHeader( TargetObject, this ) );
+		header.MouseRightPress += contextMenu;
 
 		Content = Layout.AddColumn();
 		Frame();
@@ -64,6 +65,7 @@ public partial class ComponentSheet : Widget
 	{
 		//TargetObject.IsChanged();
 	}
+
 }
 
 file class ComponentHeader : Widget

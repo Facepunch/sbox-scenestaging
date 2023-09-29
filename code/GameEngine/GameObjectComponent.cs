@@ -57,4 +57,14 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 			OnDisabled();
 		}
 	}
+
+	public void Destroy()
+	{
+		GameObject.Components.Remove( this );
+	}
+
+	public virtual void Reset()
+	{
+
+	}
 }

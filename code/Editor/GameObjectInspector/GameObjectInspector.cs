@@ -1,5 +1,6 @@
 ﻿using Editor.EntityPrefabEditor;
 using Sandbox;
+using System;
 using System.Collections.Generic;
 
 namespace Editor.Inspectors;
@@ -43,9 +44,6 @@ public class GameObjectInspector : Widget
 		Layout.AddStretchCell();
 
 		var footer = Layout.AddRow();
-		footer.Margin = 8;
-		footer.AddStretchCell();
-		footer.Add( new Button.Primary( "Add Component", "add" ) { Clicked = AddComponentDialog } );
 	////	footer.Margin = 8;
 	//	footer.AddStretchCell();
 	//	footer.Add( new Button.Primary( "Add Component", "add" ) { Clicked = AddComponentDialog } );
@@ -54,7 +52,12 @@ public class GameObjectInspector : Widget
 	/// <summary>
 	/// Pop up a window to add a component to this entity
 	/// </summary>
+	public void AddComponentDialog( Button source )
 	{
+		var s = new ComponentTypeSelector( this );
+		s.OnSelect += ( t ) => TargetObject.AddComponent( t );
+		s.OpenAt( source.ScreenRect.BottomLeft );
+		s.FixedWidth = source.Width;
 	}
 }
 
@@ -67,7 +70,8 @@ public class ComponentList : Widget
 		componentList = components;
 		Layout = Layout.Column();
 
-		Rebuild();
+		hashCode = -1;
+		Frame();
 	}
 
 	void Rebuild()
@@ -77,9 +81,38 @@ public class ComponentList : Widget
 		foreach ( var o in componentList )
 		{
 			var serialized = EditorTypeLibrary.GetSerializedObject( o );
-			var sheet = new ComponentSheet( serialized );
+			var sheet = new ComponentSheet( serialized, () => OpenContextMenu( o ) );
 			Layout.Add( sheet );
 			Layout.AddSeparator();
 		}
+	}
+
+	void OpenContextMenu( GameObjectComponent component )
+	{
+		var menu = new Menu( this );
+
+		menu.AddOption( "Reset", action: () => component.Reset() );
+		menu.AddSeparator();
+		menu.AddOption( "Remove Component", action: () => component.Destroy() );
+		menu.AddOption( "Copy To Clipboard" );
+		menu.AddOption( "Paste As New" );
+		menu.AddOption( "Paste Values" );
+		menu.AddOption( "Open In Window.." );
+
+		menu.OpenAtCursor();
+
+	}
+
+	int hashCode;
+
+	[EditorEvent.Frame]
+	public void Frame()
+	{
+		var hash = componentList.Count;
+
+		if ( hashCode == hash ) return;
+
+		hashCode = hash;
+		Rebuild();
 	}
 }

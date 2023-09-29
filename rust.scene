@@ -390,11 +390,10 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "PhysicsComponent",
@@ -403,10 +402,11 @@
           "Static": false
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "Scale": "50,50,50",
-          "Surface": null
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
         }
       ]
     },
@@ -419,17 +419,17 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
-        },
-        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
         },
         {
           "__type": "ColliderBoxComponent",
@@ -476,11 +476,30 @@
       ]
     },
     {
+      "Id": "7563abcc-b564-4521-9aa1-b1d0552e8a92",
+      "Name": "Camera",
+      "Enabled": true,
+      "Position": "280.0198,-226.7577,135.2636",
+      "Rotation": "-0.09939483,0.02436552,0.966144,0.2368393",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0,0.7,1,1",
+          "ClearFlags": "Color, Depth, Stencil",
+          "FieldOfView": 70.05,
+          "ZFar": 5996.1,
+          "ZNear": 20.800001
+        }
+      ]
+    },
+    {
       "Id": "1cf20169-a7de-40eb-b514-69b17dc68bbd",
       "Name": "Cube",
       "Enabled": true,
       "Position": "-117.0236,22.9639,426.3412",
-      "Rotation": "-0.489298,-0.2021326,0.8477919,0.03128633",
+      "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
         {
@@ -501,27 +520,6 @@
           "__enabled": true,
           "Scale": "50,50,50",
           "Surface": null
-        }
-      ],
-      "Children": [
-        {
-          "Id": "7563abcc-b564-4521-9aa1-b1d0552e8a92",
-          "Name": "Camera",
-          "Enabled": true,
-          "Position": "-207.9,-0.45,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Components": [
-            {
-              "__type": "CameraComponent",
-              "__enabled": true,
-              "BackgroundColor": "0,0.7,1,1",
-              "ClearFlags": "Color, Depth, Stencil",
-              "FieldOfView": 42.750004,
-              "ZFar": 5996.1,
-              "ZNear": 20.35
-            }
-          ]
         }
       ]
     }
