@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using Sandbox.Helpers;
+using System;
 using System.Linq;
 using System.Reflection;
 using static Sandbox.Event;
@@ -9,23 +10,25 @@ namespace Editor.EntityPrefabEditor;
 /// <summary>
 /// A popup dialog to select an entity type
 /// </summary>
-public partial class ComponentTypeSelector : Editor.Widgets.SelectionDialog<TypeDescription>
+public partial class ComponentTypeSelector : PopupWidget
 {
 	string currentCategory;
 	string searchString;
 	ListView listView;
 
+	public Action<TypeDescription> OnSelect { get; set; }
+
 	const string NoCategoryName = "Uncategorized";
 
-	public ComponentTypeSelector()
+	public ComponentTypeSelector( Widget parent ) : base( parent )
 	{
 		WindowTitle = "Select Component Type..";
 		
 		FixedWidth = 260;
-		FixedHeight = 500;
+		FixedHeight = 300;
 		currentCategory = null;
 
-		AddSearchHeader();
+		DeleteOnClose = true;
 
 		listView = new ListView();
 
@@ -43,16 +46,8 @@ public partial class ComponentTypeSelector : Editor.Widgets.SelectionDialog<Type
 
 			if ( x is TypeDescription type )
 			{
-				SelectItem( type );
-				OnSelectionComplete();
-			}
-		};
-
-		listView.ItemActivated += ( x ) =>
-		{
-			if ( x is TypeDescription type )
-			{
-				OnSelectionComplete();
+				OnSelect( type );
+				Destroy();
 			}
 		};
 
@@ -65,25 +60,27 @@ public partial class ComponentTypeSelector : Editor.Widgets.SelectionDialog<Type
 		listView.ItemHoverEnter += ( o ) => Cursor = CursorShape.Finger;
 		listView.ItemHoverLeave += ( o ) => Cursor = CursorShape.Arrow;
 
-		SearchField.ForwardNavigationEvents = listView;
+		//SearchField.ForwardNavigationEvents = listView;
 
-		OnSearchFilter = ( t ) =>
-		{
-			searchString = t;
-			UpdateItems();
-		};
+		//OnSearchFilter = ( t ) =>
+		//{
+		//	searchString = t;
+		//	UpdateItems();
+		//};
 
-		BodyLayout.Add( listView, 1 );
-		BodyLayout.Margin = 0;
+		Layout = Layout.Column();
+		Layout.Add( listView, 1 );
+		Layout.Margin = 0;
 
 		UpdateItems();
 	}
 
 	protected override void OnPaint()
 	{
-		Paint.ClearPen();
-		Paint.SetBrush( Theme.ControlBackground.Lighten( 0.2f ) );
-		Paint.DrawRect( listView.LocalRect, 5 );
+		Paint.Antialiasing = true;
+		Paint.SetPen( Theme.WidgetBackground.Darken( 0.4f ), 1 );
+		Paint.SetBrush( Theme.WidgetBackground );
+		Paint.DrawRect( listView.LocalRect.Shrink( 1 ), 3 );
 	}
 
 	void UpdateItems()

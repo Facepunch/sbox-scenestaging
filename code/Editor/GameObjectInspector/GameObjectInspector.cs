@@ -24,27 +24,37 @@ public class GameObjectInspector : Widget
 		Layout.AddSeparator();
 		Layout.Add( new ComponentList( target.Components ) );
 
+		//
+		// Add component
+		//
+		{
+			var row = Layout.AddRow();
+			row.AddStretchCell();
+			row.Margin = 16;
+			var button = row.Add( new Button( "Add Component", "add" ) );
+			button.FixedWidth = 230;
+			button.Clicked = () => AddComponentDialog( button );
+			row.AddStretchCell();
+		}
+
+
+		
+
 		Layout.AddStretchCell();
 
 		var footer = Layout.AddRow();
 		footer.Margin = 8;
 		footer.AddStretchCell();
 		footer.Add( new Button.Primary( "Add Component", "add" ) { Clicked = AddComponentDialog } );
+	////	footer.Margin = 8;
+	//	footer.AddStretchCell();
+	//	footer.Add( new Button.Primary( "Add Component", "add" ) { Clicked = AddComponentDialog } );
 	}
 
 	/// <summary>
 	/// Pop up a window to add a component to this entity
 	/// </summary>
-	public void AddComponentDialog()
 	{
-		var s = new ComponentTypeSelector();
-
-		s.OnSelectionFinished += t =>
-		{
-			TargetObject.AddComponent( t );
-		};
-		s.DoneButton.Text = "Add New Component";
-		s.OpenBelowCursor( 16 );
 	}
 }
 
