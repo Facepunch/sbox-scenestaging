@@ -43,7 +43,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 	public override void OnPaint( VirtualWidget item )
 	{
-		var selected = item.Selected;
+		var selected = item.Selected || item.Pressed;
 
 		var fullSpanRect = item.Rect;
 		fullSpanRect.Left = 0;
