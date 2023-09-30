@@ -67,7 +67,13 @@ public partial class SceneViewWidget : Widget
 		using ( EditorScene.GizmoInstance.Push() )
 		{
 			Cursor = Gizmo.HasHovered ? CursorShape.Finger : CursorShape.Arrow;
-			activeScene.Tick();
+			
+			// pump the loop if they're not pumping it
+			if ( !GameManager.IsPlaying )
+			{
+				activeScene.Tick();
+			}
+
 			activeScene.PreRender();
 
 			activeScene.DrawGizmos();
