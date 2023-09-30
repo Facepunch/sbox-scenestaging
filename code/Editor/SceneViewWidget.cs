@@ -35,15 +35,15 @@ public partial class SceneViewWidget : Widget
 	[EditorEvent.Frame]
 	public void Frame()
 	{
-		if ( !Visible )
-			return;
-
 		if ( selectionHash != EditorScene.Selection.GetHashCode() )
 		{
 			// todo - multiselect
 			EditorUtility.InspectorObject = EditorScene.Selection.LastOrDefault();
 			selectionHash = EditorScene.Selection.GetHashCode();
 		}
+
+		if ( !Visible )
+			return;
 
 		var activeScene = EditorScene.GetAppropriateScene();
 

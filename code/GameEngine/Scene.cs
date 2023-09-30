@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using Sandbox;
+using Sandbox.Physics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,9 @@ public sealed class Scene
 	{
 		SceneWorld = new SceneWorld();
 		PhysicsWorld = new PhysicsWorld();
+
+		var settings = new CollisionRules();
+		PhysicsWorld.SetCollisionRules( settings );
 	}
 
 	public void Register( GameObject o )
@@ -199,7 +203,7 @@ public sealed class Scene
 		{
 			foreach( var json in resource.GameObjects )
 			{
-				var go = CreateObject();
+				var go = CreateObject( false );
 				go.Deserialize( json );
 			}
 		}

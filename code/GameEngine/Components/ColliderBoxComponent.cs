@@ -10,6 +10,7 @@ public class ColliderBoxComponent : GameObjectComponent, PhysicsComponent.IBodyM
 	[Property] public Surface Surface { get; set; }
 
 	PhysicsShape shape;
+	PhysicsBody ownBody;
 
 	public override void DrawGizmos()
 	{
@@ -24,20 +25,45 @@ public class ColliderBoxComponent : GameObjectComponent, PhysicsComponent.IBodyM
 	public override void OnEnabled()
 	{
 
-	}
+		Assert.IsNull( ownBody );
+		Assert.IsNull( shape );
 
-	public override void OnDisabled()
-	{
+		var tx = GameObject.WorldTransform;
+		PhysicsBody physicsBody = null;
 
-	}
+		// is there a physics body?
+		var body = GameObject.GetComponentInParent<PhysicsComponent>();
+		if ( body is not null )
+		{
+			physicsBody = body.GetBody();
 
-	public void ModifyBody( PhysicsBody body )
-	{
-		var tx = body.Transform.ToLocal( GameObject.WorldTransform );
+			//
+			if ( physicsBody is null )
+			{
+				Log.Warning( $"{this}: PhysicsBody from {body} was null" );
+				return;
+			}
+
+		}
+		
+		if ( physicsBody is null )
+		{
+			physicsBody = new PhysicsBody( Scene.PhysicsWorld );
+			physicsBody.BodyType = PhysicsBodyType.Keyframed;
+			physicsBody.UseController = true;
+			physicsBody.GameObject = GameObject;
+			physicsBody.Transform = GameObject.WorldTransform;
+			physicsBody.GravityEnabled = false;
+			ownBody = physicsBody;
+		}
+
+		tx = physicsBody.Transform.ToLocal( tx );
 
 		// todo position relative to body
-		shape = body.AddBoxShape( tx.Position, tx.Rotation, Scale * 0.5f );
+		shape = physicsBody.AddBoxShape( tx.Position, tx.Rotation, Scale * 0.5f * tx.Scale );
 		if ( shape is null ) return;
+
+		shape.AddTag( "solid" );
 
 		if ( Surface is not null )
 		{
@@ -45,11 +71,34 @@ public class ColliderBoxComponent : GameObjectComponent, PhysicsComponent.IBodyM
 		}
 	}
 
+	public override void OnDisabled()
+	{
+		//shape?.Body?.RemoveShape( shape );
+		shape = null;
+
+		ownBody?.Remove();
+		ownBody = null;
+	}
+
+	public void ModifyBody( PhysicsBody body )
+	{
+
+	}
+
 	protected override void OnPreRender()
 	{
-		if ( shape is null )
-			return;
-
+		if ( ownBody  is not null )
+		{
+			//GameObject.Transform = ownBody.Transform;
+		}
 		
+	}
+
+	protected override void OnPostPhysics()
+	{
+		if ( ownBody is not null )
+		{
+			ownBody.Transform = GameObject.WorldTransform;
+		}
 	}
 }

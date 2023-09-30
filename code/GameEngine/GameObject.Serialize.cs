@@ -75,11 +75,17 @@ public sealed partial class GameObject
 		return json;
 	}
 
+	public void Fdff()
+	{
+
+	}
+
 	public void Deserialize( JsonObject node )
 	{
+		bool _enabled = (bool)(node["Enabled"] ?? Enabled);
+
 		Id = node["Id"].Deserialize<Guid>();
 		Name = node["Name"].ToString() ?? Name;
-		Enabled = (bool)(node["Enabled"] ?? Enabled);
 		_transform.Position = node["Position"].Deserialize<Vector3>();
 		_transform.Rotation = node["Rotation"].Deserialize<Rotation>();
 		_transform.Scale = node["Scale"].Deserialize<Vector3>().x;
@@ -119,5 +125,8 @@ public sealed partial class GameObject
 
 			} );
 		}
+
+		// enable it last
+		Enabled = _enabled;
 	}
 }

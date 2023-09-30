@@ -417,4 +417,20 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			go.Parent.Children.Insert( targetIndex, go );
 		}
 	}
+
+	/// <summary>
+	/// Find component on this gameobject, or its parents
+	/// </summary>
+	public T GetComponentInParent<T>( bool enabledOnly = true ) where T: GameObjectComponent
+	{
+		var t = GetComponent<T>( enabledOnly, false );
+		if ( t is not null ) return t;
+
+		if ( Parent is not null )
+		{
+			return Parent.GetComponentInParent<T>( enabledOnly );
+		}
+
+		return null;
+	}
 }

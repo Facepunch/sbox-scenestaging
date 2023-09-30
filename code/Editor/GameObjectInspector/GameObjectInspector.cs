@@ -38,9 +38,6 @@ public class GameObjectInspector : Widget
 			row.AddStretchCell();
 		}
 
-
-		
-
 		Layout.AddStretchCell();
 
 		var footer = Layout.AddRow();

@@ -17,6 +17,12 @@ public class PhysicsComponent : GameObjectComponent
 
 	PhysicsBody _body;
 
+	internal PhysicsBody GetBody()
+	{
+		OnEnableStateChanged();
+		return _body;
+	}
+
 	public Vector3 Velocity
 	{
 		set => _body.Velocity = value;
@@ -43,10 +49,10 @@ public class PhysicsComponent : GameObjectComponent
 	//	_body.Velocity = Vector3.Up * 0.01f;
 		_body.Transform = GameObject.WorldTransform;
 
-		foreach( var c in GameObject.Components.Concat( GameObject.Children.SelectMany( x => x.Components ) ).OfType<PhysicsComponent.IBodyModifier>() )
-		{
-			c.ModifyBody( _body ); 
-		}
+		//foreach( var c in GameObject.Components.Concat( GameObject.Children.SelectMany( x => x.Components ) ).OfType<PhysicsComponent.IBodyModifier>() )
+		//{
+		//	c.ModifyBody( _body ); 
+		//}
 	}
 
 	public override void OnDisabled()
