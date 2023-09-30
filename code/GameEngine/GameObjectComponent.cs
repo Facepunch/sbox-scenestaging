@@ -36,10 +36,16 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 	public virtual void OnDisabled() { } 
 
 	protected virtual void OnPostPhysics() { }
-	internal void PostPhysics() { OnPostPhysics(); }
+	internal void PostPhysics() 
+	{
+		ExceptionWrap( "OnPostPhysics", OnPostPhysics );
+	}
 
 	protected virtual void OnPreRender() { }
-	internal virtual void PreRender() { OnPreRender(); }
+	internal virtual void PreRender() 
+	{
+		ExceptionWrap( "OnPreRender", OnPreRender );
+	}
 
 	internal void OnEnableStateChanged()
 	{
@@ -50,11 +56,11 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 
 		if ( _enabledState )
 		{
-			OnEnabled();
+			ExceptionWrap( "OnEnabled", OnEnabled );
 		}
 		else
 		{
-			OnDisabled();
+			ExceptionWrap( "OnDisabled", OnDisabled );
 		}
 	}
 
@@ -66,5 +72,17 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 	public virtual void Reset()
 	{
 
+	}
+
+	void ExceptionWrap( string name, Action a )
+	{
+		try
+		{
+			a();
+		}
+		catch (System.Exception e ) 
+		{
+			Log.Error( e, $"Exception when calling '{name}' on {this}" );
+		}
 	}
 }
