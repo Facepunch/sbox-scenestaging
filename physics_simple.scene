@@ -5,21 +5,21 @@
       "Name": "Surface",
       "Enabled": true,
       "Position": "1420.439,0,-1500",
-      "Rotation": "0,-0.04361941,0,0.9990482",
+      "Rotation": "0,-0.1387412,0,0.9903287",
       "Scale": "10,10,10",
       "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/primary_white.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "Tint": "0.05882,0.13725,0.49412,1"
+        },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "Scale": "100,100,1",
           "Surface": null
-        },
-        {
-          "__type": "ModelComponent",
-          "__enabled": true,
-          "MaterialOverride": "materials/generic/floor_dirt_b.vmat",
-          "Model": "models/dev/plane.vmdl",
-          "Tint": "1,1,1,1"
         }
       ],
       "Children": [
@@ -32,17 +32,17 @@
           "Scale": "1,1,1",
           "Components": [
             {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "MaterialOverride": "materials/dev/primary_white.vmat",
+              "Model": "models/dev/plane.vmdl",
+              "Tint": "0.06127,0.13935,0.49505,1"
+            },
+            {
               "__type": "ColliderBoxComponent",
               "__enabled": true,
               "Scale": "100,100,1",
               "Surface": null
-            },
-            {
-              "__type": "ModelComponent",
-              "__enabled": true,
-              "MaterialOverride": "materials/generic/floor_dirt_b.vmat",
-              "Model": "models/dev/plane.vmdl",
-              "Tint": "1,1,1,1"
             }
           ]
         }
@@ -53,15 +53,15 @@
       "Name": "Directional Light",
       "Enabled": true,
       "Position": "55.4718,-124.3322,91.5952",
-      "Rotation": "0.28366,0.9307106,-0.06731506,0.2208698",
+      "Rotation": "-0.5276809,0.09922918,0.8290949,0.1559103",
       "Scale": "1,1,1",
       "Components": [
         {
           "__type": "DirectionalLightComponent",
           "__enabled": true,
-          "LightColor": "0.66832,0.50329,0.47642,1",
+          "LightColor": "0.92574,0.79106,0.68743,1",
           "Shadows": true,
-          "SkyColor": "0.07124,0.08646,0.09406,1"
+          "SkyColor": "0.17327,0.16133,0.15268,1"
         }
       ]
     },
@@ -76,11 +76,11 @@
         {
           "__type": "CameraComponent",
           "__enabled": true,
-          "BackgroundColor": "0.30205,0.58789,0.71782,1",
+          "BackgroundColor": "0.25292,0.26086,0.29703,1",
           "ClearFlags": "Color, Depth, Stencil",
-          "FieldOfView": 85.65,
-          "ZFar": 10000,
-          "ZNear": 10
+          "FieldOfView": 85.5,
+          "ZFar": 2136.4,
+          "ZNear": 1050.7
         }
       ]
     },
@@ -93,10 +93,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "Scale": "50,50,50",
-          "Surface": null
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
         },
         {
           "__type": "PhysicsComponent",
@@ -105,11 +106,10 @@
           "Static": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
+          "Scale": "50,50,50",
+          "Surface": null
         }
       ]
     },
@@ -122,17 +122,17 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "Scale": "50,50,50",
-          "Surface": null
-        },
-        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "PhysicsComponent",
@@ -151,12 +151,6 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "Scale": "50,50,50",
-          "Surface": null
-        },
-        {
           "__type": "PhysicsComponent",
           "__enabled": true,
           "Gravity": true,
@@ -168,6 +162,12 @@
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
         }
       ]
     },
@@ -180,12 +180,6 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
-        },
-        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
@@ -197,6 +191,12 @@
           "__enabled": true,
           "Scale": "50,50,50",
           "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -238,6 +238,13 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "Scale": "50,50,50",
@@ -248,13 +255,6 @@
           "__enabled": true,
           "Gravity": true,
           "Static": false
-        },
-        {
-          "__type": "ModelComponent",
-          "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
         }
       ]
     },
@@ -267,10 +267,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "Scale": "50,50,50",
-          "Surface": null
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
         },
         {
           "__type": "PhysicsComponent",
@@ -279,11 +280,10 @@
           "Static": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
+          "Scale": "50,50,50",
+          "Surface": null
         }
       ]
     },
@@ -325,16 +325,16 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "Scale": "50,50,50",
-          "Surface": null
-        },
-        {
           "__type": "PhysicsComponent",
           "__enabled": true,
           "Gravity": true,
           "Static": false
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -354,6 +354,13 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
           "__type": "PhysicsComponent",
           "__enabled": true,
           "Gravity": true,
@@ -364,13 +371,6 @@
           "__enabled": true,
           "Scale": "50,50,50",
           "Surface": null
-        },
-        {
-          "__type": "ModelComponent",
-          "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
         }
       ]
     },
@@ -383,6 +383,13 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "Scale": "50,50,50",
@@ -393,13 +400,6 @@
           "__enabled": true,
           "Gravity": true,
           "Static": false
-        },
-        {
-          "__type": "ModelComponent",
-          "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
         }
       ]
     },
@@ -412,12 +412,6 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "Scale": "50,50,50",
-          "Surface": null
-        },
-        {
           "__type": "PhysicsComponent",
           "__enabled": true,
           "Gravity": true,
@@ -429,6 +423,12 @@
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
         }
       ]
     },
@@ -441,12 +441,6 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
-        },
-        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
@@ -458,6 +452,12 @@
           "__enabled": true,
           "Scale": "50,50,50",
           "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -478,9 +478,9 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
-          "MaterialOverride": "materials/generic/floor_pavement_tile_a.vmat",
+          "MaterialOverride": "materials/dev/primary_white.vmat",
           "Model": "models/dev/sphere.vmdl",
-          "Tint": "1,1,1,1"
+          "Tint": "0.85149,0.12688,0.04637,1"
         },
         {
           "__type": "ColliderSphereComponent",
@@ -499,23 +499,43 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "ColliderSphereComponent",
-          "__enabled": true,
-          "Radius": 32.8,
-          "Surface": null
-        },
-        {
           "__type": "PhysicsComponent",
           "__enabled": true,
           "Gravity": true,
           "Static": false
         },
         {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "Radius": 32.8,
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
-          "MaterialOverride": "materials/generic/wall_brick_new.vmat",
+          "MaterialOverride": "materials/dev/primary_white.vmat",
           "Model": "models/dev/sphere.vmdl",
-          "Tint": "1,1,1,1"
+          "Tint": "0.19158,0.63861,0,1"
+        }
+      ]
+    },
+    {
+      "Id": "b3b5ece6-cd1b-4b4d-9b36-cc88982a751d",
+      "Name": "Spot Light",
+      "Enabled": true,
+      "Position": "1223.259,-803.9999,-1087.162",
+      "Rotation": "-0.1064454,0.2939645,0.588666,0.7454708",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 1,
+          "ConeInner": 71.55,
+          "ConeOuter": 45.45,
+          "Cookie": "materials/effects/lightcookie.vtex",
+          "LightColor": "197.47,197.47,197.47,1",
+          "Radius": 3000
         }
       ]
     }

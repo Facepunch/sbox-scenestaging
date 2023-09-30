@@ -1,34 +1,16 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
 
-[Title( "Collider - Box" )]
-[Category( "Physics" )]
-[Icon( "check_box_outline_blank", "red", "white" )]
-public class ColliderBoxComponent : GameObjectComponent, PhysicsComponent.IBodyModifier
+public abstract class ColliderBaseComponent : GameObjectComponent
 {
-	[Property] public Vector3 Scale { get; set; } = 50;
-	[Property] public Surface Surface { get; set; }
-
 	PhysicsShape shape;
 	PhysicsBody ownBody;
 
-	public override void DrawGizmos()
-	{
-		if ( !Gizmo.IsSelected && !Gizmo.IsHovered )
-			return;
-
-		Gizmo.Draw.LineThickness = 1;
-		Gizmo.Draw.Color = Gizmo.Colors.Green.WithAlpha( Gizmo.IsSelected ? 1.0f : 0.2f );
-		Gizmo.Draw.LineBBox( new BBox( Scale * -0.5f, Scale * 0.5f ) );
-	}
-
 	public override void OnEnabled()
 	{
-
 		Assert.IsNull( ownBody );
 		Assert.IsNull( shape );
 
-		var tx = GameObject.WorldTransform;
 		PhysicsBody physicsBody = null;
 
 		// is there a physics body?
@@ -57,41 +39,19 @@ public class ColliderBoxComponent : GameObjectComponent, PhysicsComponent.IBodyM
 			ownBody = physicsBody;
 		}
 
-		tx = physicsBody.Transform.ToLocal( tx );
-
-		// todo position relative to body
-		shape = physicsBody.AddBoxShape( tx.Position, tx.Rotation, Scale * 0.5f * tx.Scale );
-		if ( shape is null ) return;
-
-		shape.AddTag( "solid" );
-
-		if ( Surface is not null )
-		{
-			shape.SurfaceMaterial = Surface.ResourceName;
-		}
+		shape = CreatePhysicsShape( physicsBody );
 	}
+
+	protected abstract PhysicsShape CreatePhysicsShape( PhysicsBody targetBody );
 
 	public override void OnDisabled()
 	{
 		//shape?.Body?.RemoveShape( shape );
+		shape?.Remove();
 		shape = null;
 
 		ownBody?.Remove();
 		ownBody = null;
-	}
-
-	public void ModifyBody( PhysicsBody body )
-	{
-
-	}
-
-	protected override void OnPreRender()
-	{
-		if ( ownBody  is not null )
-		{
-			//GameObject.Transform = ownBody.Transform;
-		}
-		
 	}
 
 	protected override void OnPostPhysics()

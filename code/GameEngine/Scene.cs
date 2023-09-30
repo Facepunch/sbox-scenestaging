@@ -25,8 +25,8 @@ public sealed class Scene
 		SceneWorld = new SceneWorld();
 		PhysicsWorld = new PhysicsWorld();
 
-		var settings = new CollisionRules();
-		PhysicsWorld.SetCollisionRules( settings );
+		//var settings = new CollisionRules();
+		//PhysicsWorld.SetCollisionRules( settings );
 	}
 
 	public void Register( GameObject o )
