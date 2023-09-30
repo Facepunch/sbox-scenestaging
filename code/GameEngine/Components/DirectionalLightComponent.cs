@@ -45,6 +45,12 @@ public class DirectionalLightComponent : GameObjectComponent
 		_sceneObject = new SceneSunLight( Scene.SceneWorld, GameObject.Transform.Rotation, Color.White );
 		_sceneObject.Transform = GameObject.WorldTransform;
 		_sceneObject.ShadowsEnabled = true;
+		_sceneObject.ShadowCascadeCount = 3;
+
+		// garry: I dunno if any of this works, just trying to make them look less shit
+		_sceneObject.SetShadowCascadeResolution( 0, 1024 * 2 );
+		_sceneObject.SetShadowCascadeResolution( 1, 1024 * 4 );
+		_sceneObject.SetShadowCascadeResolution( 2, 1024 * 8 );
 	}
 
 	public override void OnDisabled()
@@ -63,10 +69,10 @@ public class DirectionalLightComponent : GameObjectComponent
 		_sceneObject.LightColor = LightColor;
 		_sceneObject.SkyColor = SkyColor;
 
-		_sceneObject.ShadowCascadeCount = 3;
-		_sceneObject.SetShadowCascadeDistance( 0, 200 );
-		_sceneObject.SetShadowCascadeDistance( 1, 500 );
-		_sceneObject.SetShadowCascadeDistance( 2, 5000 );
+
+		_sceneObject.SetShadowCascadeDistance( 0, 300 );
+		_sceneObject.SetShadowCascadeDistance( 1, 600 );
+		_sceneObject.SetShadowCascadeDistance( 2, 4000 );
 	}
 
 }

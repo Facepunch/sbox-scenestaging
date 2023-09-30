@@ -14,6 +14,7 @@ public class SpotLightComponent : GameObjectComponent
 	[Property] public float ConeOuter { get; set; } = 45;
 	[Property] public float ConeInner { get; set; } = 15;
 	[Property] public float Attenuation { get; set; } = 1.0f;
+	[Property] public Texture Cookie { get; set; }
 
 	public override void DrawGizmos()
 	{
@@ -57,6 +58,8 @@ public class SpotLightComponent : GameObjectComponent
 		_sceneObject.ConeInner = ConeInner;
 		_sceneObject.ConeOuter = ConeOuter;
 		_sceneObject.QuadraticAttenuation = Attenuation;
+		_sceneObject.LightCookie = Cookie;
+		_sceneObject.ShadowTextureResolution = 4096;
 		////_sceneObject.FallOff = 0.1f;
 		//_sceneObject.SkyColor = SkyColor;
 
