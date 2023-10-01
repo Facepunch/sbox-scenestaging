@@ -51,6 +51,10 @@ public class DirectionalLightComponent : GameObjectComponent
 		_sceneObject.SetShadowCascadeResolution( 0, 1024 * 2 );
 		_sceneObject.SetShadowCascadeResolution( 1, 1024 * 4 );
 		_sceneObject.SetShadowCascadeResolution( 2, 1024 * 8 );
+
+		_sceneObject.SetShadowCascadeDistance( 0, 300 );
+		_sceneObject.SetShadowCascadeDistance( 1, 600 );
+		_sceneObject.SetShadowCascadeDistance( 2, 4000 );
 	}
 
 	public override void OnDisabled()
@@ -64,15 +68,12 @@ public class DirectionalLightComponent : GameObjectComponent
 		if ( !_sceneObject.IsValid() )
 			return;
 
-		_sceneObject.Transform = GameObject.WorldTransform;
+		_sceneObject.Transform = GameObject.WorldTransform.WithScale( 1 );
 		_sceneObject.ShadowsEnabled = Shadows;
 		_sceneObject.LightColor = LightColor;
 		_sceneObject.SkyColor = SkyColor;
 
 
-		_sceneObject.SetShadowCascadeDistance( 0, 300 );
-		_sceneObject.SetShadowCascadeDistance( 1, 600 );
-		_sceneObject.SetShadowCascadeDistance( 2, 4000 );
 	}
 
 }
