@@ -14,6 +14,12 @@
           "MaterialOverride": "models/rust_props/remnant_container/concrete_a_cont.vmat",
           "Model": "models/dev/plane.vmdl",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "100,100,1",
+          "Surface": null
         }
       ]
     },
@@ -31,6 +37,7 @@
           "Attenuation": 22.599998,
           "ConeInner": 2.0999994,
           "ConeOuter": 43.35,
+          "Cookie": null,
           "LightColor": "0.85949,6.13921,0,1",
           "Radius": 761.74994
         }
@@ -67,6 +74,7 @@
           "Attenuation": 2.9499998,
           "ConeInner": 1,
           "ConeOuter": 26.55,
+          "Cookie": null,
           "LightColor": "44.29,44.29,44.29,1",
           "Radius": 868.55005
         }
@@ -76,7 +84,7 @@
       "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
       "Name": "Cube",
       "Enabled": true,
-      "Position": "-349.6256,-333.7433,-1.2205",
+      "Position": "-349.6256,-333.7433,-1.71",
       "Rotation": "0,0,0.009162664,0.999958",
       "Scale": "1,1,1",
       "Components": [
@@ -103,6 +111,7 @@
           "Attenuation": 5.8,
           "ConeInner": 1,
           "ConeOuter": 32.699997,
+          "Cookie": null,
           "LightColor": "321.7822,905.0496,1000,1",
           "Radius": 868.55005
         }
@@ -139,6 +148,7 @@
           "Attenuation": 1,
           "ConeInner": 15.75,
           "ConeOuter": 84.9,
+          "Cookie": null,
           "LightColor": "0.83663,0.07869,0.07869,1",
           "Radius": 832.5499
         }
@@ -390,16 +400,16 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "Scale": "50,50,50",
-          "Surface": null
-        },
-        {
           "__type": "PhysicsComponent",
           "__enabled": true,
           "Gravity": true,
           "Static": false
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -419,13 +429,6 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
-        },
-        {
           "__type": "PhysicsComponent",
           "__enabled": true,
           "Gravity": true,
@@ -436,6 +439,13 @@
           "__enabled": true,
           "Scale": "50,50,50",
           "Surface": null
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
         }
       ]
     },
