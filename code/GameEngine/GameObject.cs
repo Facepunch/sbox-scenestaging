@@ -433,4 +433,43 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 		return null;
 	}
+
+	IEnumerable<GameObject> GetSiblings()
+	{
+		if ( Parent is not null )
+		{
+			return Parent.Children.Where( x => x != this );
+		}
+
+		return Scene.All.Where( x => x != this );
+	}
+
+	// todo - this should be internal
+	public void MakeNameUnique()
+	{
+		var names = GetSiblings().Select( x => x.Name ).ToHashSet();
+
+		if ( !names.Contains( Name ) )
+			return;
+
+		var targetName = Name;
+
+		// todo regex (number)
+
+		if ( targetName.Contains( '(') )
+		{
+			targetName = targetName.Substring( 0, targetName.LastIndexOf( '(' ) ).Trim();
+		}
+
+		for ( int i=1; i<500; i++ )
+		{
+			var indexedName = $"{targetName} ({i})";
+
+			if ( !names.Contains( indexedName ) )
+			{
+				Name = indexedName;
+				return;
+			}
+		}
+	}
 }

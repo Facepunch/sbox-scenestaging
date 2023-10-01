@@ -155,13 +155,13 @@ public partial class GameObjectNode : TreeNode<GameObject>
 	{
 		var m = new Menu();
 
-		m.AddOption( "Cut", action: Cut );
-		m.AddOption( "Copy", action: Copy );
-		m.AddOption( "Paste", action: Paste );
-		m.AddOption( "Paste As Child", action: PasteAsChild );
+		m.AddOption( "Cut", action: SceneEditorMenus.Cut );
+		m.AddOption( "Copy", action: SceneEditorMenus.Copy );
+		m.AddOption( "Paste", action: SceneEditorMenus.Paste );
+		m.AddOption( "Paste As Child", action: SceneEditorMenus.PasteAsChild );
 		m.AddSeparator();
 		//m.AddOption( "rename", action: Delete );
-		//m.AddOption( "duplicate", action: Delete );
+		m.AddOption( "Duplicate", action: SceneEditorMenus.Duplicate );
 		m.AddOption( "Delete", action: Delete );
 
 		m.AddSeparator();
@@ -200,19 +200,6 @@ public partial class GameObjectNode : TreeNode<GameObject>
 	{
 		var json = Value.Serialize();
 		EditorUtility.Clipboard.Copy( json.ToString() );
-	}
-
-	void Paste()
-	{
-		var text = EditorUtility.Clipboard.Paste();
-		if ( JsonNode.Parse( text ) is JsonObject jso )
-		{
-			var go = Value.Scene.CreateObject();
-			go.Deserialize( jso );
-			go.Parent = Value.Parent;
-
-			TreeView.SelectItem( go );
-		}
 	}
 
 	void PasteAsChild()

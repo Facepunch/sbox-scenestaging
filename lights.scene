@@ -82,42 +82,10 @@
       ]
     },
     {
-      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
-      "Name": "Point Light",
-      "Enabled": true,
-      "Position": "-289.02,0,23.902",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "PointLightComponent",
-          "__enabled": true,
-          "LightColor": "0.67583,0.20821,0.87624,1",
-          "Radius": 4000
-        }
-      ]
-    },
-    {
-      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
-      "Name": "Point Light",
-      "Enabled": true,
-      "Position": "-317.6411,344.5769,23.902",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "PointLightComponent",
-          "__enabled": true,
-          "LightColor": "0.67583,0.87624,0.20821,1",
-          "Radius": 4000
-        }
-      ]
-    },
-    {
       "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
       "Name": "Cube",
       "Enabled": true,
-      "Position": "-143.6294,168.5418,18.474",
+      "Position": "319.2033,194.7106,20.1494",
       "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
       "Scale": "1,1,1",
       "Components": [
@@ -132,10 +100,10 @@
     },
     {
       "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
-      "Name": "Cube",
+      "Name": "Cube (1)",
       "Enabled": true,
-      "Position": "273.1762,-171.994,18.4747",
-      "Rotation": "0,0,0,1",
+      "Position": "144.8313,186.542,20.1499",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
       "Scale": "1,1,1",
       "Components": [
         {
@@ -149,10 +117,10 @@
     },
     {
       "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
-      "Name": "Cube",
+      "Name": "Cube (2)",
       "Enabled": true,
-      "Position": "12.3674,-171.994,18.4747",
-      "Rotation": "0,0,0,1",
+      "Position": "-78.672,191.8208,20.1501",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
       "Scale": "1,1,1",
       "Components": [
         {
@@ -166,17 +134,323 @@
     },
     {
       "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
-      "Name": "Cube",
+      "Name": "Cube (3)",
       "Enabled": true,
-      "Position": "-283.931,-171.994,-1.1121",
-      "Rotation": "0.00000002693541,-0.0000000000000001707012,0.4519012,0.8920689",
+      "Position": "-253.8958,193.171,23.3586",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
       "Scale": "1,1,1",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
-          "Model": "models/gothic_cabinet_01.vmdl",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (4)",
+      "Enabled": true,
+      "Position": "-424.1659,196.4963,20.1508",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (5)",
+      "Enabled": true,
+      "Position": "-682.8494,191.7664,20.1502",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (6)",
+      "Enabled": true,
+      "Position": "-903.2849,179.482,20.1504",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (7)",
+      "Enabled": true,
+      "Position": "-484.9999,349.1656,20.1508",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (8)",
+      "Enabled": true,
+      "Position": "-253.954,346.5734,20.1506",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (9)",
+      "Enabled": true,
+      "Position": "-355.72,284.3123,20.1505",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (10)",
+      "Enabled": true,
+      "Position": "-224.9919,60.1768,20.1505",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (11)",
+      "Enabled": true,
+      "Position": "-343.0952,-32.3657,20.1506",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (12)",
+      "Enabled": true,
+      "Position": "-518.0451,48.8037,20.1502",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (13)",
+      "Enabled": true,
+      "Position": "-768.89,30.3407,16.8557",
+      "Rotation": "0.00000003942272,0.00000000000000130118,0.6614033,0.7500311",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (14)",
+      "Enabled": true,
+      "Position": "-648.6597,31.015,20.1498",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (15)",
+      "Enabled": true,
+      "Position": "-41.2668,317.9574,20.15",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (16)",
+      "Enabled": true,
+      "Position": "246.6794,336.4896,20.1501",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (17)",
+      "Enabled": true,
+      "Position": "205.5042,32.463,20.1512",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (18)",
+      "Enabled": true,
+      "Position": "21.3015,42.5948,20.1511",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (19)",
+      "Enabled": true,
+      "Position": "-811.1019,357.9958,20.1511",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (20)",
+      "Enabled": true,
+      "Position": "-618.5155,308.0811,20.1501",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube (21)",
+      "Enabled": true,
+      "Position": "-861.9931,-15.3253,20.15",
+      "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
           "Tint": "1,1,1,1"
         }
       ]
@@ -216,6 +490,104 @@
       ]
     },
     {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "230.5045,387.9044,18.4747",
+      "Rotation": "0.00000002049778,0.0000000000000003706746,0.3438958,0.9390084",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Name": "Point Light",
+      "Enabled": true,
+      "Position": "-591.5596,344.5769,23.902",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0.18812,0.18812,0.18812,1",
+          "Radius": 4000
+        }
+      ]
+    },
+    {
+      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Name": "Point Light",
+      "Enabled": true,
+      "Position": "-591.5596,32.6809,23.902",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0.20821,0.87624,0.27501,1",
+          "Radius": 4000
+        }
+      ]
+    },
+    {
+      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Name": "Point Light",
+      "Enabled": true,
+      "Position": "-821.889,32.6809,23.902",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0.87624,0.20821,0.78272,1",
+          "Radius": 4000
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-568.529,183.1583,-1.1111",
+      "Rotation": "0.00000005712069,0.000000000000002476852,0.958326,0.2856807",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/gothic_cabinet_01.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Name": "Point Light",
+      "Enabled": true,
+      "Position": "-839.2606,334.2061,23.902",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0.20821,0.54223,0.87624,1",
+          "Radius": 4000
+        }
+      ]
+    },
+    {
       "Id": "52692dc1-f2e3-45ce-84d0-3ba52eb9f83a",
       "Name": "Camera",
       "Enabled": true,
@@ -235,6 +607,38 @@
       ]
     },
     {
+      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Name": "Point Light",
+      "Enabled": true,
+      "Position": "-317.6411,344.5769,23.902",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0.67583,0.87624,0.20821,1",
+          "Radius": 4000
+        }
+      ]
+    },
+    {
+      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Name": "Point Light",
+      "Enabled": true,
+      "Position": "-317.6411,344.5769,222.9267",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0.67583,0.87624,0.20821,1",
+          "Radius": 4000
+        }
+      ]
+    },
+    {
       "Id": "1fd8ab22-ecc5-4abe-8c78-29785965c1ac",
       "Name": "Object",
       "Enabled": true,
@@ -248,6 +652,73 @@
           "LightColor": "0.02475,0.01017,0.00123,1",
           "Shadows": true,
           "SkyColor": "0,0,0,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-568.529,183.1583,-1.1111",
+      "Rotation": "0.00000005712069,0.000000000000002476852,0.958326,0.2856807",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/gothic_cabinet_01.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-568.529,183.1583,-1.1111",
+      "Rotation": "0.00000005712069,0.000000000000002476852,0.958326,0.2856807",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/gothic_cabinet_01.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-568.529,183.1583,-1.1111",
+      "Rotation": "0.00000005712069,0.000000000000002476852,0.958326,0.2856807",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/gothic_cabinet_01.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Name": "Point Light",
+      "Enabled": true,
+      "Position": "-289.02,0,23.902",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0.67583,0.20821,0.87624,1",
+          "Radius": 4000
         }
       ]
     }
