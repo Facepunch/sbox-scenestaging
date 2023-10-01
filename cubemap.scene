@@ -1,0 +1,275 @@
+{
+  "GameObjects": [
+    {
+      "Id": "472d0946-e074-498c-a0ab-ed7d1f2c5bab",
+      "Name": "Plane",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "20,20,20",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_nonmetal_rough40.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "Tint": "0.07717,0.11386,0.05468,1"
+        }
+      ]
+    },
+    {
+      "Id": "474b400b-6665-4f50-9b0a-92b6f5284bf1",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "0,0,90.2498",
+      "Rotation": "0.4351622,0.4351622,-0.5573454,0.5573453",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "0.12376,0.12376,0.12376,1",
+          "Shadows": true,
+          "SkyColor": "0.24752,0.24752,0.24752,1"
+        }
+      ]
+    },
+    {
+      "Id": "08d35d17-142b-4866-b59b-b7975382c240",
+      "Name": "Cubemap",
+      "Enabled": true,
+      "Position": "-27.6358,-93.9376,118.2533",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "EnvmapComponent",
+          "__enabled": true,
+          "Bounds": {},
+          "Projection": "Box",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "TintColor": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Name": "Sphere",
+      "Enabled": true,
+      "Position": "0,5.5857,31.6791",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough00.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Name": "Sphere (1)",
+      "Enabled": true,
+      "Position": "0,-71.6163,31.6791",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough10.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Name": "Sphere (2)",
+      "Enabled": true,
+      "Position": "0,-150.9186,31.6791",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Name": "Sphere (3)",
+      "Enabled": true,
+      "Position": "0,-219.83,31.6791",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough30.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Name": "Sphere (4)",
+      "Enabled": true,
+      "Position": "0,-287.1465,31.6791",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough40.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Name": "Sphere (5)",
+      "Enabled": true,
+      "Position": "0,-356.8394,31.6791",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough50.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Name": "Sphere (6)",
+      "Enabled": true,
+      "Position": "92.2343,-356.8394,31.6791",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough60.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Name": "Sphere (7)",
+      "Enabled": true,
+      "Position": "92.2343,-286.5769,31.6791",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough70.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Name": "Sphere (8)",
+      "Enabled": true,
+      "Position": "92.2343,-220.3471,31.6791",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough80.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Name": "Sphere (9)",
+      "Enabled": true,
+      "Position": "92.2343,-151.6272,31.6791",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough90.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Name": "Sphere (10)",
+      "Enabled": true,
+      "Position": "92.2343,-76.6578,31.6791",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_nonmetal_rough00.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "4e26ef17-030b-4450-8224-4a0ef520b2ab",
+      "Name": "Point Light",
+      "Enabled": true,
+      "Position": "-24.9382,-40.7385,96.7141",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0,0.77267,1,1",
+          "Radius": 10000
+        }
+      ]
+    },
+    {
+      "Id": "4e26ef17-030b-4450-8224-4a0ef520b2ab",
+      "Name": "Point Light (1)",
+      "Enabled": true,
+      "Position": "-29.9482,-388.2371,150.4988",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "1,0.34,0,1",
+          "Radius": 10000
+        }
+      ]
+    }
+  ]
+}

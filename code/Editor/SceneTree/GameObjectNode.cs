@@ -274,6 +274,43 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			} );
 		}
 
+		// 3d obj
+		{
+			var submenu = menu.AddMenu( "Light" );
+
+			submenu.AddOption( "Directional Light", "category", () =>
+			{
+				var go = new GameObject();
+				go.Name = "Directional Light";
+				go.WorldTransform = new Transform( 0, Rotation.LookAt( Vector3.Down + Vector3.Right * 0.25f ) );
+
+				var model = go.AddComponent<DirectionalLightComponent>();
+
+				then( go );
+			} );
+
+			submenu.AddOption( "Point Light", "category", () =>
+			{
+				var go = new GameObject();
+				go.Name = "Point Light";
+
+				var model = go.AddComponent<PointLightComponent>();
+
+				then( go );
+			} );
+
+
+			submenu.AddOption( "Spot Light", "category", () =>
+			{
+				var go = new GameObject();
+				go.Name = "Spot Light";
+
+				var model = go.AddComponent<SpotLightComponent>();
+
+				then( go );
+			} );
+		}
+
 		{
 			menu.AddOption( "Camera", "category", () =>
 			{
