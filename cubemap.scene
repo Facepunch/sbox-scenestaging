@@ -46,7 +46,8 @@
           "__type": "EnvmapComponent",
           "__enabled": true,
           "Bounds": {
-            "Size": "2000,2000,2000"
+            "Mins": "-1000,-1000,-1000",
+            "Maxs": "1000,1000,1000"
           },
           "Projection": "Box",
           "Texture": "textures/cubemaps/default2.vtex",
