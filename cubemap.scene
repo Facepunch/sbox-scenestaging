@@ -38,14 +38,17 @@
       "Id": "08d35d17-142b-4866-b59b-b7975382c240",
       "Name": "Cubemap",
       "Enabled": true,
-      "Position": "-27.6358,-93.9376,118.2533",
+      "Position": "50.6053,-174.802,99.9689",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
         {
           "__type": "EnvmapComponent",
           "__enabled": true,
-          "Bounds": {},
+          "Bounds": {
+            "Center": "-250,0,0",
+            "Size": "1500,1000,1000"
+          },
           "Projection": "Box",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1"
@@ -56,7 +59,7 @@
       "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
       "Name": "Sphere",
       "Enabled": true,
-      "Position": "0,5.5857,31.6791",
+      "Position": "0,-1.9958,31.6791",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
