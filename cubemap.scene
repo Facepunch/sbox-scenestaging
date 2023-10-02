@@ -38,7 +38,7 @@
       "Id": "08d35d17-142b-4866-b59b-b7975382c240",
       "Name": "Cubemap",
       "Enabled": true,
-      "Position": "50.6053,-174.802,99.9689",
+      "Position": "50.6053,-174.802,104.6461",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -46,8 +46,7 @@
           "__type": "EnvmapComponent",
           "__enabled": true,
           "Bounds": {
-            "Center": "-250,0,0",
-            "Size": "1500,1000,1000"
+            "Size": "2000,2000,2000"
           },
           "Projection": "Box",
           "Texture": "textures/cubemaps/default2.vtex",
