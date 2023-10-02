@@ -9,6 +9,19 @@ public class ModelComponent : GameObjectComponent
 {
 	Model _model;
 
+	public BBox Bounds
+	{
+		get
+		{
+			if ( _sceneObject is not null )
+			{
+				return _sceneObject.Bounds;
+			}
+
+			return new BBox( GameObject.WorldTransform.Position, 16 );
+		}
+	}
+
 	[Property] public Model Model 
 	{
 		get => _model;

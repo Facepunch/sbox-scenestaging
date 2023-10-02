@@ -6,6 +6,7 @@ using Sandbox.Internal;
 using System.Linq;
 using System;
 using Sandbox;
+using System.Threading.Tasks;
 
 [Dock( "Editor", "Scene", "grid_4x4" )]
 public partial class SceneViewWidget : Widget
@@ -32,6 +33,9 @@ public partial class SceneViewWidget : Widget
 
 	int selectionHash = 0;
 
+	Vector3? cameraTargetPosition;
+	Vector3 cameraVelocity;
+
 	[EditorEvent.Frame]
 	public void Frame()
 	{
@@ -56,7 +60,23 @@ public partial class SceneViewWidget : Widget
 
 		SceneToolbar.SceneInstance = EditorScene.GizmoInstance;
 
-		EditorScene.GizmoInstance.FirstPersonCamera( Camera, Renderer );
+		if ( cameraTargetPosition is not null )
+		{
+			var pos = Vector3.SmoothDamp( Camera.Position, cameraTargetPosition.Value, ref cameraVelocity, 0.3f, RealTime.Delta );
+			Camera.Position = pos;
+
+			if ( cameraTargetPosition.Value.Distance( pos ) < 0.1f )
+			{
+				cameraTargetPosition = null;
+			}
+
+		}
+
+		if( EditorScene.GizmoInstance.FirstPersonCamera( Camera, Renderer ) )
+		{
+			cameraTargetPosition = null;
+		}
+
 		EditorScene.GizmoInstance.UpdateInputs( Camera, Renderer );
 
 		if ( activeScene is null )
@@ -87,6 +107,23 @@ public partial class SceneViewWidget : Widget
 			{
 				Gizmo.Select();
 			}
+		}
+	}
+
+
+	[Event( "scene.frame" )]
+	public void FrameOn( BBox target )
+	{
+		var distance = MathX.SphereCameraDistance( target.Size.Length, Camera.FieldOfView ) * 1.0f;
+		var targetPos = target.Center + distance * Camera.Rotation.Backward;
+
+		if ( Camera.Position.Distance( targetPos ) < 1.0f )
+		{
+			cameraTargetPosition = target.Center + distance * 2.0f * Camera.Rotation.Backward;
+		}
+		else
+		{
+			cameraTargetPosition = targetPos;
 		}
 	}
 }

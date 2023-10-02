@@ -1,5 +1,6 @@
 ﻿
 using Editor;
+using Sandbox;
 using System.Linq;
 using System.Text.Json.Nodes;
 
@@ -92,5 +93,32 @@ public static class SceneEditorMenus
 		{
 			entry.Destroy();
 		}
+	}
+
+	[Menu( "Editor", "Scene/Frame", Shortcut = "f" )]
+	public static void Frame()
+	{
+		var bbox = new BBox();
+
+		int i = 0;
+		foreach ( var entry in EditorScene.Selection.OfType<GameObject>() )
+		{
+			if ( i++ == 0 )
+			{
+				bbox = new BBox( entry.WorldTransform.Position, 16 );
+			}
+
+			// get the bounding box of the selected objects
+			bbox = bbox.AddBBox( new BBox( entry.WorldTransform.Position, 16 ) );
+
+			foreach ( var model in entry.GetComponents<ModelComponent>( true, true ) )
+			{
+				bbox = bbox.AddBBox( model.Bounds );
+			}
+
+
+		}
+
+		EditorEvent.Run( "scene.frame", bbox );
 	}
 }
