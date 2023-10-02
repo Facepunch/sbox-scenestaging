@@ -66,7 +66,12 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 		set
 		{
-			// todo - local to parent etc
+			if ( Parent is not null )
+			{
+				Transform = Parent.WorldTransform.ToLocal( value );
+				return;
+			}
+
 			Transform = value;
 		}
 	}
@@ -397,9 +402,9 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		return false;
 	}
 
-	public void AddSibling( GameObject go, bool before )
+	public void AddSibling( GameObject go, bool before, bool keepWorldPosition = true )
 	{
-		go.Parent = Parent;
+		go.SetParent( Parent, keepWorldPosition );
 
 		if ( go.Parent is null )
 		{
@@ -416,6 +421,22 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			if ( !before ) targetIndex++;
 			go.Parent.Children.Insert( targetIndex, go );
 		}
+	}
+
+	public void SetParent( GameObject value, bool keepWorldPosition = true )
+	{
+		if ( Parent == value ) return;
+
+		if ( keepWorldPosition )
+		{
+			var wp = WorldTransform;
+			Parent = value;
+			WorldTransform = wp;
+		}
+		else
+		{
+			Parent = value;
+		}		
 	}
 
 	/// <summary>

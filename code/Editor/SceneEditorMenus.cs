@@ -59,7 +59,7 @@ public static class SceneEditorMenus
 		{
 			var go = EditorScene.Active.CreateObject();
 			go.Deserialize( jso );
-			go.Parent = selected;
+			go.SetParent( selected );
 			go.MakeNameUnique();
 
 			// treeview - open parent selected somehow

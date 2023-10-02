@@ -141,7 +141,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 				}
 				else
 				{
-					go.Parent = Value;
+					go.SetParent( Value, true );
 				}
 			}
 
@@ -162,7 +162,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		m.AddSeparator();
 		//m.AddOption( "rename", action: Delete );
 		m.AddOption( "Duplicate", action: SceneEditorMenus.Duplicate );
-		m.AddOption( "Delete", action: Delete );
+		m.AddOption( "Delete", action: SceneEditorMenus.Delete );
 
 		m.AddSeparator();
 
@@ -190,40 +190,9 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		return true;
 	}
 
-	void Cut()
-	{
-		Copy();
-		Delete();
-	}
-
-	void Copy()
-	{
-		var json = Value.Serialize();
-		EditorUtility.Clipboard.Copy( json.ToString() );
-	}
-
-	void PasteAsChild()
-	{
-		var text = EditorUtility.Clipboard.Paste();
-		if ( JsonNode.Parse( text ) is JsonObject jso )
-		{
-			var go = new GameObject();
-			go.Deserialize( jso );
-			go.Parent = Value;
-
-			TreeView.Open( this );
-			TreeView.SelectItem( go );
-		}
-	}
-
-	void Delete()
-	{
-		Value.Destroy();
-	}
-
 	void OpenPropertyWindow()
 	{
-
+		Log.Info( "TODO: OpenPropertyWindow" );
 	}
 
 	public static void CreateObjectMenu( Menu menu, Action<GameObject> then )
