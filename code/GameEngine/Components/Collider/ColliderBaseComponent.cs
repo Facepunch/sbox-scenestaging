@@ -32,9 +32,9 @@ public abstract class ColliderBaseComponent : GameObjectComponent
 		{
 			physicsBody = new PhysicsBody( Scene.PhysicsWorld );
 			physicsBody.BodyType = PhysicsBodyType.Keyframed;
-			physicsBody.UseController = true;
 			physicsBody.GameObject = GameObject;
 			physicsBody.Transform = GameObject.WorldTransform;
+			physicsBody.UseController = true;
 			physicsBody.GravityEnabled = false;
 			ownBody = physicsBody;
 		}
@@ -56,9 +56,6 @@ public abstract class ColliderBaseComponent : GameObjectComponent
 
 	protected override void OnPostPhysics()
 	{
-		if ( ownBody is not null )
-		{
-			ownBody.Transform = GameObject.WorldTransform;
-		}
+		ownBody?.Move( GameObject.WorldTransform, Time.Delta * 4.0f );
 	}
 }
