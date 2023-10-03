@@ -112,7 +112,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			if ( _parent is not null )
 			{
 				_parent.Children.Add( this );
-				Scene = _parent.Scene;
+				MoveToScene( _parent.Scene );
 			}
 
 			if ( isDestroying )
@@ -331,6 +331,9 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	internal void Tick()
 	{
+		if ( !Enabled )
+			return;
+
 		OnUpdate();
 
 		foreach ( var child in Children )
@@ -391,7 +394,6 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		}
 	}
 
-
 	public bool IsDescendant( GameObject o )
 	{
 		return o.IsAncestor( this );
@@ -411,6 +413,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	public void AddSibling( GameObject go, bool before, bool keepWorldPosition = true )
 	{
+		go.MoveToScene( Scene );
 		go.SetParent( Parent, keepWorldPosition );
 
 		if ( go.Parent is null )
@@ -420,6 +423,8 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			var targetIndex = Scene.All.IndexOf( this );
 			if ( !before ) targetIndex++;
 			Scene.All.Insert( targetIndex, go );
+
+			go.OnEnableStateChanged();
 		}
 		else
 		{
@@ -427,6 +432,20 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			var targetIndex = go.Parent.Children.IndexOf( this );
 			if ( !before ) targetIndex++;
 			go.Parent.Children.Insert( targetIndex, go );
+		}
+	}
+
+	private void MoveToScene( Scene scene )
+	{
+		if ( Scene == scene )
+			return;
+
+		// todo tell old scene we're no longer on it?
+		Scene = scene;
+
+		foreach( var child in Children )
+		{
+			child.MoveToScene( scene );
 		}
 	}
 
@@ -507,5 +526,18 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		{
 			c.InternalUpdate();
 		}
+	}
+
+	/// <summary>
+	/// Find a GameObject by Guid
+	/// </summary>
+	public GameObject FindObjectByGuid( Guid guid )
+	{
+		if ( guid == Id )
+			return this;
+
+		return Children.Select( x => x.FindObjectByGuid( guid ) )
+								.Where( x => x is not null )
+								.FirstOrDefault();
 	}
 }

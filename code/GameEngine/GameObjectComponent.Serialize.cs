@@ -5,10 +5,11 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using static GameObject;
 
 public abstract partial class GameObjectComponent
 { 
-	public JsonNode Serialize()
+	public JsonNode Serialize( SerializeOptions options = null )
 	{
 		var t = TypeLibrary.GetType( GetType() );
 		if ( t is null )
@@ -52,9 +53,36 @@ public abstract partial class GameObjectComponent
 			var v = node[ prop.Name ];
 			if ( v is null ) continue;
 
-			prop.SetValue( this, Json.FromNode( v, prop.PropertyType ) );
+			try
+			{
+				DeserializeProperty( prop, v );
+			}
+			catch ( System.Exception e )
+			{
+				Log.Warning( e, $"Error when deserializing {this}.{prop.Name} ({e.Message})" );
+			}
 		}
 
 		Enabled = (bool) (node["__enabled"] ?? true);
+	}
+
+	private void DeserializeProperty( PropertyDescription prop, JsonNode node )
+	{
+		if ( prop.PropertyType == typeof( GameObject ) )
+		{
+			string guidString = node.Deserialize<string>();
+
+			Log.Info( $"DeserializeProperty {this}.{prop.Name} ({guidString})" );
+
+			if ( Guid.TryParse( guidString, out Guid guid ) )
+			{
+				onAwake += () => prop.SetValue( this, Scene.FindObjectByGuid( guid ) );
+				return;
+			}
+
+			throw new System.Exception( $"Couldn't parse '{guidString}' as object guid" );
+		}
+
+		prop.SetValue( this, Json.FromNode( node, prop.PropertyType ) );
 	}
 }

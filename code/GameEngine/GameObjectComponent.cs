@@ -11,6 +11,11 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 	[JsonIgnore]
 	public GameObject GameObject { get; internal set; }
 
+	/// <summary>
+	/// Internal functions to be called when the object wakes up
+	/// </summary>
+	Action onAwake;
+
 	bool _enabledState;
 	bool _enabled = false;
 
@@ -49,6 +54,8 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 
 	internal virtual void InternalUpdate() 
 	{
+		if ( !Enabled ) return;
+
 		ExceptionWrap( "Update", Update );
 	}
 
@@ -58,6 +65,9 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 		if ( state  == _enabledState ) return;
 
 		_enabledState = state;
+
+		onAwake?.Invoke();
+		onAwake = null;
 
 		if ( _enabledState )
 		{

@@ -236,4 +236,19 @@ public sealed class Scene
 			Log.Warning( "Scene.Remove - gameobject wasn't in All!" );
 		}
 	}
+
+	/// <summary>
+	/// Find a GameObject by Guid
+	/// </summary>
+	public GameObject FindObjectByGuid( Guid guid )
+	{
+		var o =  All.Select( x => x.FindObjectByGuid( guid ) ).Where( x => x is not null ).FirstOrDefault();
+
+		if ( o is null )
+		{
+			Log.Warning( $"Couldn't find object with guid {guid}" );
+		}
+
+		return o;
+	}
 }

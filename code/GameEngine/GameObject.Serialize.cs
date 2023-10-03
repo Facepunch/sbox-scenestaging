@@ -1,18 +1,67 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
 public sealed partial class GameObject
 {
+	public class SerializeOptions
+	{
+		Dictionary<Guid, Guid> GuidTranslation { get; } = new Dictionary<Guid, Guid>();
+
+		public Guid CollectGameObjectGuid( Guid oldGuid )
+		{
+			var n = Guid.NewGuid();
+			GuidTranslation[oldGuid] = n;
+			return n;
+		}
+
+		/// <summary>
+		/// Cascade into every part of json and replace any instance of the collected guids
+		/// with another guid.
+		/// </summary>
+		public void ReplaceGuids( JsonObject json )
+		{
+			foreach( var entry in json.ToArray() )
+			{
+				if ( entry.Value is null )
+					continue;
+
+				if ( entry.Value is JsonValue value && value.TryGetValue<Guid>( out var guid ) )
+				{
+					if ( GuidTranslation.TryGetValue( guid, out var newGuid ) )
+					{
+						json[ entry.Key ] = JsonValue.Create( newGuid );
+					}
+
+					continue;
+				}
+
+				if ( entry.Value is JsonArray array )
+				{
+					foreach( var item in array )
+					{
+						if ( item is JsonObject jso )
+						{
+							ReplaceGuids( jso );
+						}
+					}
+				}
+			}
+		}
+	}
+
 	//
 	// For flexibility purposes, we serialize the GameObject manually
 	// into a JsonObject. I haven't benchmarked this, but I assume it's okay.
 	//
 
-	public JsonObject Serialize()
+	public JsonObject Serialize( SerializeOptions options = null )
 	{
+		options?.CollectGameObjectGuid( Id );
+
 		var json = new JsonObject
 		{
 			{ "Id", Id },
@@ -31,7 +80,7 @@ public sealed partial class GameObject
 			{
 				try
 				{
-					var result = component.Serialize();
+					var result = component.Serialize( options );
 					if ( result is null ) continue;
 
 					components.Add( result );
@@ -53,7 +102,7 @@ public sealed partial class GameObject
 			{
 				try
 				{
-					var result = child.Serialize();
+					var result = child.Serialize( options );
 
 					if ( result is not null )
 					{

@@ -9,9 +9,11 @@ public static class SceneEditorMenus
 	[Menu( "Editor", "Scene/Cut", Shortcut = "Ctrl+X" )]
 	public static void Cut()
 	{
+		var options = new GameObject.SerializeOptions();
 		var go = EditorScene.Selection.First() as GameObject;
+		var json = go.Serialize( options );
+		options.ReplaceGuids( json );
 
-		var json = go.Serialize();
 		EditorUtility.Clipboard.Copy( json.ToString() );
 	}
 
@@ -19,9 +21,11 @@ public static class SceneEditorMenus
 	[Menu( "Editor", "Scene/Copy", Shortcut = "Ctrl+C" )]
 	public static void Copy()
 	{
+		var options = new GameObject.SerializeOptions();
 		var go = EditorScene.Selection.First() as GameObject;
+		var json = go.Serialize( options );
+		options.ReplaceGuids( json );
 
-		var json = go.Serialize();
 		EditorUtility.Clipboard.Copy( json.ToString() );
 	}
 
@@ -73,14 +77,17 @@ public static class SceneEditorMenus
 	[Menu( "Editor", "Scene/Duplicate", Shortcut = "Ctrl+D" )]
 	public static void Duplicate()
 	{
+		var options = new GameObject.SerializeOptions();
 		var source = EditorScene.Selection.First() as GameObject;
-		var json = source.Serialize();
+		var json = source.Serialize( options );
 
-		var go = EditorScene.Active.CreateObject();
+		options.ReplaceGuids( json );
+
+		var go = new GameObject();
 		go.Deserialize( json );
+		go.WorldTransform = source.WorldTransform;
 
 		source.AddSibling( go, false );
-		go.MakeNameUnique();
 
 		EditorScene.Selection.Clear();
 		EditorScene.Selection.Add( go );
@@ -115,8 +122,6 @@ public static class SceneEditorMenus
 			{
 				bbox = bbox.AddBBox( model.Bounds );
 			}
-
-
 		}
 
 		EditorEvent.Run( "scene.frame", bbox );
