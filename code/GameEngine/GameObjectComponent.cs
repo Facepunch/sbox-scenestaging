@@ -47,6 +47,11 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 		ExceptionWrap( "OnPreRender", OnPreRender );
 	}
 
+	internal virtual void InternalUpdate() 
+	{
+		ExceptionWrap( "Update", Update );
+	}
+
 	internal void OnEnableStateChanged()
 	{
 		var state = _enabled && Scene is not null && GameObject is not null && GameObject.Active;

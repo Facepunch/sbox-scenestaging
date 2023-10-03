@@ -1,7 +1,9 @@
 ﻿using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -329,7 +331,12 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	internal void Tick()
 	{
+		OnUpdate();
 
+		foreach ( var child in Children )
+		{
+			child.Tick();
+		}
 	}
 
 	bool isDestroying;
@@ -491,6 +498,14 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 				Name = indexedName;
 				return;
 			}
+		}
+	}
+
+	void OnUpdate()
+	{
+		foreach( var c in Components )
+		{
+			c.InternalUpdate();
 		}
 	}
 }
