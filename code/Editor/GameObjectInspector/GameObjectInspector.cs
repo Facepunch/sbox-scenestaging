@@ -95,6 +95,18 @@ public class ComponentList : Widget
 		menu.AddOption( "Paste As New" );
 		menu.AddOption( "Paste Values" );
 		menu.AddOption( "Open In Window.." );
+		menu.AddSeparator();
+
+		var t = EditorTypeLibrary.GetType( component.GetType() );
+		if ( t.SourceFile is not null )
+		{
+			Log.Info( component.GetType() );
+			Log.Info( t.FullName );
+			Log.Info( t.SourceFile );
+
+			var filename = System.IO.Path.GetFileName( t.SourceFile );
+			menu.AddOption( $"Open {filename}..", action: () => CodeEditor.OpenFile( t.SourceFile, t.SourceLine ) );
+		}
 
 		menu.OpenAtCursor();
 
