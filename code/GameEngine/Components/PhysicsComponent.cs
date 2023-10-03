@@ -1,6 +1,7 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 [Title( "Rigid Body" )]
 [Category( "Physics" )]
@@ -25,6 +26,7 @@ public class PhysicsComponent : GameObjectComponent
 
 	public Vector3 Velocity
 	{
+		get => _body.Velocity;
 		set => _body.Velocity = value;
 	}
 
@@ -44,7 +46,7 @@ public class PhysicsComponent : GameObjectComponent
 		_body.UseController = false;
 		_body.BodyType = PhysicsBodyType.Dynamic;
 		_body.GameObject = GameObject;
-		_body.GravityEnabled = true;
+		_body.GravityEnabled = Gravity;
 		_body.Sleeping = false;
 	//	_body.Velocity = Vector3.Up * 0.01f;
 		_body.Transform = GameObject.WorldTransform;
@@ -64,6 +66,8 @@ public class PhysicsComponent : GameObjectComponent
 	protected override void OnPostPhysics()
 	{
 		if ( _body is null ) return;
+
+		_body.GravityEnabled = Gravity;
 
 		var bt = _body.Transform;
 

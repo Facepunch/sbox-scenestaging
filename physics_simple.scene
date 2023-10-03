@@ -11,9 +11,7 @@
         {
           "__type": "EnvmapComponent",
           "__enabled": true,
-          "Bounds": {
-            "Size": "4000,4000,4000"
-          },
+          "Bounds": {},
           "Projection": "Box",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1"
@@ -326,7 +324,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
+          "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
           "__type": "ColliderBoxComponent",
@@ -419,7 +417,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
+          "Tint": "0.85644,0.12719,0.57932,1"
         }
       ]
     },
@@ -732,7 +730,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
+          "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
           "__type": "ColliderBoxComponent",
@@ -862,7 +860,7 @@
       "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
       "Name": "Cube (19)",
       "Enabled": true,
-      "Position": "686.7393,176.8109,-1498.417",
+      "Position": "686.7393,176.8109,-1473.943",
       "Rotation": "-0.00000003254731,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -935,7 +933,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
+          "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
           "__type": "ColliderBoxComponent",
@@ -1007,7 +1005,123 @@
       "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
       "Name": "Cube (24)",
       "Enabled": true,
-      "Position": "686.7393,-235.9503,-1498.417",
+      "Position": "686.7393,-239.8307,-1443.393",
+      "Rotation": "-0.2430982,-0.08640327,0.323563,0.9103538",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": false,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "0.2934,0.81188,0.209,0.48"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Name": "Cube (25)",
+      "Enabled": true,
+      "Position": "686.7393,-239.8307,-1382.343",
+      "Rotation": "0.07870866,-0.2586703,0.2802613,0.9210581",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": false,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "0.29412,0.81176,0.20784,0.47843"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Name": "Cube (26)",
+      "Enabled": true,
+      "Position": "686.7393,-239.8307,-1320.379",
+      "Rotation": "-0.1145911,-0.2151414,0.4559259,0.8559871",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": false,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "0.29412,0.81176,0.20784,0.47843"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Name": "Cube (27)",
+      "Enabled": true,
+      "Position": "710.5922,-239.8307,-1268.59",
+      "Rotation": "-0.000000006061102,0.0000000129868,0.3990127,0.9169455",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": false,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "0.29412,0.81176,0.20784,0.47843"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Name": "Cube (28)",
+      "Enabled": true,
+      "Position": "686.7393,-239.8307,-1213.068",
       "Rotation": "-0.00000003254731,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -1078,7 +1192,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
-          "MaterialOverride": null,
+          "MaterialOverride": "materials/dev/dev_metal_rough10.vmat",
           "Model": "models/dev/box.vmdl",
           "Tint": "1,1,1,1"
         },
@@ -1103,7 +1217,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "Tint": "1,1,1,1"
+          "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
           "__type": "PhysicsComponent",
@@ -1194,9 +1308,9 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
-          "MaterialOverride": "materials/default.vmat",
+          "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
           "Model": "models/dev/sphere.vmdl",
-          "Tint": "0.85149,0.12688,0.04637,1"
+          "Tint": "1,0.1,0,1"
         },
         {
           "__type": "ColliderSphereComponent",
@@ -1272,7 +1386,7 @@
         {
           "__type": "ColliderSphereComponent",
           "__enabled": true,
-          "Radius": 37,
+          "Radius": 32.65,
           "Surface": null
         }
       ],
@@ -1281,7 +1395,7 @@
           "Id": "d4bf7131-47d4-4c42-a15c-21e29f845e65",
           "Name": "Sphere (1)",
           "Enabled": true,
-          "Position": "-14.7931,1.8168,7.8176",
+          "Position": "-9.6927,1.8168,17.1128",
           "Rotation": "0,0,0,1",
           "Scale": "0.6,0.6,0.6",
           "Components": [
@@ -1291,6 +1405,12 @@
               "MaterialOverride": null,
               "Model": "models/dev/sphere.vmdl",
               "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "ColliderSphereComponent",
+              "__enabled": true,
+              "Radius": 33.85,
+              "Surface": null
             }
           ],
           "Children": [
@@ -1332,6 +1452,27 @@
           "Cookie": "materials/effects/lightcookie.vtex",
           "LightColor": "197.47,197.47,197.47,1",
           "Radius": 3000
+        }
+      ]
+    },
+    {
+      "Id": "eed1d0da-fb94-44c7-b17b-638cddf71838",
+      "Name": "Cubemap",
+      "Enabled": true,
+      "Position": "1099.505,-0.0033,-1162.002",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "EnvmapComponent",
+          "__enabled": true,
+          "Bounds": {
+            "Mins": "-5120,-5120,-5120",
+            "Maxs": "5120,5120,5120"
+          },
+          "Projection": "Box",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "TintColor": "1,1,1,1"
         }
       ]
     }
