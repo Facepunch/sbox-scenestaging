@@ -835,7 +835,7 @@
       "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
       "Name": "Cube (19)",
       "Enabled": true,
-      "Position": "686.7393,176.8109,-1473.943",
+      "Position": "686.7393,176.8109,-1404.687",
       "Rotation": "-0.00000003254731,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -1182,6 +1182,11 @@
           "__enabled": true,
           "Scale": "50,50,50",
           "Surface": null
+        },
+        {
+          "__type": "TurretComponent",
+          "__enabled": true,
+          "Gun": "99f1f39f-e65f-4356-aeaa-41294019720a"
         }
       ],
       "Children": [
