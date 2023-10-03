@@ -52,9 +52,9 @@ public partial class SceneViewWidget : Widget
 		var activeScene = EditorScene.GetAppropriateScene();
 
 		Camera.World = activeScene?.SceneWorld;
-		Camera.ZNear = 1;
-		Camera.ZFar = 10000;
-		Camera.FieldOfView = 90;
+		Camera.ZNear = EditorScene.GizmoInstance.Settings.CameraZNear;
+		Camera.ZFar = EditorScene.GizmoInstance.Settings.CameraZFar;
+		Camera.FieldOfView = EditorScene.GizmoInstance.Settings.CameraFieldOfView;
 		Camera.ClearFlags = ClearFlags.Color | ClearFlags.Depth | ClearFlags.Stencil;
 		Camera.BackgroundColor = "#557685";
 
@@ -69,7 +69,6 @@ public partial class SceneViewWidget : Widget
 			{
 				cameraTargetPosition = null;
 			}
-
 		}
 
 		if( EditorScene.GizmoInstance.FirstPersonCamera( Camera, Renderer ) )
@@ -82,7 +81,14 @@ public partial class SceneViewWidget : Widget
 		if ( activeScene is null )
 			return;
 
+		var sceneCamera = activeScene.FindAllComponents<CameraComponent>().FirstOrDefault();
+
 		activeScene.SceneWorld.AmbientLightColor = Color.Black;
+
+		if ( sceneCamera is not null )
+		{
+			Camera.BackgroundColor = sceneCamera.BackgroundColor;
+		}
 
 		using ( EditorScene.GizmoInstance.Push() )
 		{
@@ -139,6 +145,9 @@ public class SceneViewToolbar : SceneToolbar
 	{
 		AddGizmoModes();
 		AddSeparator();
+		AddCameraDropdown();
+		AddSeparator();
 		AddAdvancedDropdown();
+		
 	}
 }
