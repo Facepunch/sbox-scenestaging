@@ -9,48 +9,6 @@ public sealed partial class GameObject
 {
 	public class SerializeOptions
 	{
-		Dictionary<Guid, Guid> GuidTranslation { get; } = new Dictionary<Guid, Guid>();
-
-		public Guid CollectGameObjectGuid( Guid oldGuid )
-		{
-			var n = Guid.NewGuid();
-			GuidTranslation[oldGuid] = n;
-			return n;
-		}
-
-		/// <summary>
-		/// Cascade into every part of json and replace any instance of the collected guids
-		/// with another guid.
-		/// </summary>
-		public void ReplaceGuids( JsonObject json )
-		{
-			foreach( var entry in json.ToArray() )
-			{
-				if ( entry.Value is null )
-					continue;
-
-				if ( entry.Value is JsonValue value && value.TryGetValue<Guid>( out var guid ) )
-				{
-					if ( GuidTranslation.TryGetValue( guid, out var newGuid ) )
-					{
-						json[ entry.Key ] = JsonValue.Create( newGuid );
-					}
-
-					continue;
-				}
-
-				if ( entry.Value is JsonArray array )
-				{
-					foreach( var item in array )
-					{
-						if ( item is JsonObject jso )
-						{
-							ReplaceGuids( jso );
-						}
-					}
-				}
-			}
-		}
 	}
 
 	//
@@ -60,8 +18,6 @@ public sealed partial class GameObject
 
 	public JsonObject Serialize( SerializeOptions options = null )
 	{
-		options?.CollectGameObjectGuid( Id );
-
 		var json = new JsonObject
 		{
 			{ "Id", Id },

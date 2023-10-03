@@ -72,8 +72,6 @@ public abstract partial class GameObjectComponent
 		{
 			string guidString = node.Deserialize<string>();
 
-			Log.Info( $"DeserializeProperty {this}.{prop.Name} ({guidString})" );
-
 			if ( Guid.TryParse( guidString, out Guid guid ) )
 			{
 				onAwake += () => prop.SetValue( this, Scene.FindObjectByGuid( guid ) );
