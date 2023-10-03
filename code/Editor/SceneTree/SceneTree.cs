@@ -20,7 +20,7 @@ public partial class SceneTreeWidget : Widget
 		BuildUI();
 	}
 
-	[Event.Hotload]
+	// [Event.Hotload] 
 	public void BuildUI()
 	{
 		Layout.Clear( true );
