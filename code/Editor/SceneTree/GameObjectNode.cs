@@ -195,6 +195,11 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		Log.Info( "TODO: OpenPropertyWindow" );
 	}
 
+	public override void OnActivated()
+	{
+		SceneEditorMenus.Frame();
+	}
+
 	public static void CreateObjectMenu( Menu menu, Action<GameObject> then )
 	{
 		menu.AddOption( "Create Empty", "category", () =>
