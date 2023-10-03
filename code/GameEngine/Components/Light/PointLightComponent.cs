@@ -41,7 +41,7 @@ public class PointLightComponent : GameObjectComponent
 		if ( !_sceneObject.IsValid() )
 			return;
 
-		_sceneObject.Transform = GameObject.Transform;
+		_sceneObject.Transform = GameObject.WorldTransform;
 		_sceneObject.LightColor = LightColor;
 		_sceneObject.Radius = Radius;
 	}
