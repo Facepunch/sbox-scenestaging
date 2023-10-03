@@ -121,4 +121,18 @@ public static class SceneEditorMenus
 
 		EditorEvent.Run( "scene.frame", bbox );
 	}
+
+
+	[Menu( "Editor", "Scene/Align To View" )]
+	public static void AlignToView()
+	{
+		if ( !SceneViewWidget.Current.IsValid() )
+			return;
+
+		foreach ( var entry in EditorScene.Selection.OfType<GameObject>() )
+		{
+			entry.WorldTransform = new Transform( SceneViewWidget.Current.Camera.Position, SceneViewWidget.Current.Camera.Rotation );
+
+		}
+	}
 }

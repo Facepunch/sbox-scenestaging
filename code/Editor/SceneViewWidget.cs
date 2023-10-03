@@ -11,8 +11,10 @@ using System.Threading.Tasks;
 [Dock( "Editor", "Scene", "grid_4x4" )]
 public partial class SceneViewWidget : Widget
 {
+	public static SceneViewWidget Current { get; private set; }
+
 	NativeRenderingWidget Renderer;
-	SceneCamera Camera;
+	public SceneCamera Camera;
 	SceneViewToolbar SceneToolbar;
 
 	public SceneViewWidget( Widget parent ) : base( parent )
@@ -48,6 +50,8 @@ public partial class SceneViewWidget : Widget
 
 		if ( !Visible )
 			return;
+
+		Current = this;
 
 		var activeScene = EditorScene.GetAppropriateScene();
 
