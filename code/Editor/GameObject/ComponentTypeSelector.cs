@@ -2,8 +2,8 @@
 using Sandbox.Helpers;
 using System;
 using System.Linq;
-using System.Reflection;
-using static Sandbox.Event;
+using System.Numerics;
+using System.Threading.Tasks;
 
 namespace Editor.EntityPrefabEditor;
 
@@ -23,7 +23,7 @@ public partial class ComponentTypeSelector : PopupWidget
 	public ComponentTypeSelector( Widget parent ) : base( parent )
 	{
 		WindowTitle = "Select Component Type..";
-		
+
 		FixedWidth = 260;
 		FixedHeight = 300;
 		currentCategory = null;
@@ -34,22 +34,8 @@ public partial class ComponentTypeSelector : PopupWidget
 
 		listView.Margin = 0;
 		listView.ItemSize = new Vector2( -1, 23 );
-		listView.ItemSelected += x =>
-		{
-			if ( x is string category )
-			{
-				if ( currentCategory == category ) currentCategory = null;
-				else currentCategory = category;
-				UpdateItems();
-				return;
-			}
-
-			if ( x is TypeDescription type )
-			{
-				OnSelect( type );
-				Destroy();
-			}
-		};
+		listView.ItemClicked += ItemSelect;
+		listView.ItemActivated += ItemSelect;
 
 		listView.ItemPaint = PaintItem;
 		listView.OnPaintOverride = () =>
@@ -60,19 +46,49 @@ public partial class ComponentTypeSelector : PopupWidget
 		listView.ItemHoverEnter += ( o ) => Cursor = CursorShape.Finger;
 		listView.ItemHoverLeave += ( o ) => Cursor = CursorShape.Arrow;
 
-		//SearchField.ForwardNavigationEvents = listView;
+		var SearchField = new LineEdit( this );
+		SearchField.MinimumHeight = 22;
+		SearchField.PlaceholderText = "Search..";
+		SearchField.ForwardNavigationEvents = listView;
 
-		//OnSearchFilter = ( t ) =>
-		//{
-		//	searchString = t;
-		//	UpdateItems();
-		//};
+		SearchField.TextEdited += ( t ) =>
+		{
+			searchString = t;
+			UpdateItems();
+		};
 
 		Layout = Layout.Column();
+		Layout.Add( SearchField );
 		Layout.Add( listView, 1 );
 		Layout.Margin = 0;
 
 		UpdateItems();
+
+		SearchField.Focus();
+	}
+
+	void ItemSelect( object x )
+	{
+		if ( x is string category )
+		{
+			// LOL what am I fucking doing
+			if ( category == "__cc__" )
+			{
+				_ = CreateNewComponent();
+				return;
+			}
+
+			if ( currentCategory == category ) currentCategory = null;
+			else currentCategory = category;
+			UpdateItems();
+			return;
+		}
+
+		if ( x is TypeDescription type )
+		{
+			OnSelect( type );
+			Destroy();
+		}
 	}
 
 	protected override void OnPaint()
@@ -90,14 +106,19 @@ public partial class ComponentTypeSelector : PopupWidget
 		// entity components
 		var types = EditorTypeLibrary.GetTypes<IPrefabObject.Component>().Where( x => !x.IsAbstract );
 
-		// listView.SetItems( entityTypes.Where( x => x.Title.Contains( searchString, StringComparison.OrdinalIgnoreCase ) ) );
+		if ( !string.IsNullOrWhiteSpace( searchString ) )
+		{
+			listView.SetItems( types.Where( x => x.Title.Contains( searchString, StringComparison.OrdinalIgnoreCase ) ) );
+			return;
+		}
 
-		if ( currentCategory  == null )
+		if ( currentCategory == null )
 		{
 			var categories = types.Select( x => string.IsNullOrWhiteSpace( x.Group ) ? NoCategoryName : x.Group ).Distinct().OrderBy( x => x ).ToArray();
 			if ( categories.Length > 1 )
 			{
 				listView.SetItems( categories );
+				listView.AddItem( "__cc__" );
 				return;
 			}
 		}
@@ -116,6 +137,8 @@ public partial class ComponentTypeSelector : PopupWidget
 
 	private void PaintItem( VirtualWidget obj )
 	{
+		obj.PaintBackground( Color.Transparent, 2.0f );
+
 		bool highlight = obj.Hovered;
 		Paint.SetPen( obj.GetForegroundColor() );
 
@@ -136,6 +159,21 @@ public partial class ComponentTypeSelector : PopupWidget
 
 		if ( obj.Object is string categoryTitle )
 		{
+			// LOL what am I fucking doing
+			if ( categoryTitle == "__cc__" )
+			{
+				var rect = obj.Rect.Shrink( 12, 2 );
+
+				Paint.SetPen( Theme.Green.WithAlpha( highlight ? 1.0f : 0.7f ) );
+				Paint.DrawIcon( new Rect( rect.Position, rect.Height ), "note_add", rect.Height, TextFlag.Center );
+				rect.Left += rect.Height + 6;
+
+				Paint.SetDefaultFont( 8 );
+				Paint.SetPen( Theme.ControlText.WithAlpha( highlight ? 1.0f : 0.5f ) );
+				Paint.DrawText( rect, "New Component..", TextFlag.LeftCenter );
+				return;
+			}
+
 			Paint.SetPen( Theme.ControlText.WithAlpha( highlight ? 1.0f : 0.5f ) );
 
 			var r = obj.Rect.Shrink( 12, 2 );
@@ -147,7 +185,7 @@ public partial class ComponentTypeSelector : PopupWidget
 
 		if ( obj.Object is TypeDescription type )
 		{
-			
+
 			var r = obj.Rect.Shrink( 12, 2 );
 
 			Helpers.PaintComponentIcon( type, new Rect( r.Position, r.Height ).Shrink( 2 ), highlight ? 1.0f : 0.7f );
@@ -163,5 +201,74 @@ public partial class ComponentTypeSelector : PopupWidget
 			//Paint.SetPen( obj.GetForegroundColor().WithAlpha( 0.5f ) );
 			//Paint.DrawText( r, $"{type.ClassName}, {type.FullName}", TextFlag.LeftBottom );
 		}
+	}
+
+	/// <summary>
+	/// We're creating a new component..
+	/// </summary>
+	async Task CreateNewComponent()
+	{
+		var codePath = LocalProject.CurrentGame.GetCodePath();
+
+		var fd = new FileDialog( null );
+		fd.Title = "Create new component..";
+		fd.Directory = codePath;
+		fd.DefaultSuffix = ".cs";
+		fd.SelectFile( $"MyComponent.cs" );
+		fd.SetFindFile();
+		fd.SetModeSave();
+		fd.SetNameFilter( "Cs File (*.cs)" );
+
+		if ( !fd.Execute() )
+			return;
+
+		var componentName = System.IO.Path.GetFileNameWithoutExtension( fd.SelectedFile );
+
+		if ( !System.IO.File.Exists( fd.SelectedFile ) )
+		{
+			var defaultComponent = $$"""
+				using Sandbox;
+
+				public sealed class {{componentName}} : GameObjectComponent
+				{
+					public override void Update()
+					{
+						
+					}
+				}
+
+				""";
+
+			System.IO.File.WriteAllText( fd.SelectedFile, defaultComponent );
+		}
+
+		// give it half a second, should do it
+		await Task.Delay( 500 );
+
+		// open it in the code editor
+		CodeEditor.OpenFile( fd.SelectedFile );
+
+		// we just wrote a file, lets wait until its compiled and loaded
+		await EditorUtility.Projects.WaitForCompiles();
+
+		var componentType = EditorTypeLibrary.GetType<GameObjectComponent>( componentName );
+		if ( componentType is null )
+		{
+			Log.Warning( $"Couldn't find target component type {componentName}" );
+
+			componentType = EditorTypeLibrary.GetType( componentName );
+			Log.Warning( $"Couldn't find target component type {componentType}" );
+
+			foreach ( var t in EditorTypeLibrary.GetTypes<GameObjectComponent>() )
+			{
+				Log.Info( $"{t}" );
+			}
+		}
+		else
+		{
+			OnSelect( componentType );
+		}
+
+		Destroy();
 	}
 }

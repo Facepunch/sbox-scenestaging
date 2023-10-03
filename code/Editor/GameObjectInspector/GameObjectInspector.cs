@@ -53,7 +53,7 @@ public class GameObjectInspector : Widget
 	{
 		var s = new ComponentTypeSelector( this );
 		s.OnSelect += ( t ) => TargetObject.AddComponent( t );
-		s.OpenAt( source.ScreenRect.BottomLeft );
+		s.OpenAt( source.ScreenRect.BottomLeft, animateOffset: new Vector2( 0, -4 ) );
 		s.FixedWidth = source.Width;
 	}
 }

@@ -85,4 +85,19 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 			Log.Error( e, $"Exception when calling '{name}' on {this}" );
 		}
 	}
+
+	public virtual void Update()
+	{
+
+	}
+
+	public virtual void FixedUpdate()
+	{
+
+	}
+
+	public virtual void EditorUpdate()
+	{
+
+	}
 }
