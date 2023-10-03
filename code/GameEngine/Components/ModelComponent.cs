@@ -84,23 +84,20 @@ public class ModelComponent : GameObjectComponent
 		if ( Model is null )
 			return;
 
-		var bounds = Model.Bounds;
-
-		// todo - hitbox.model()
-		Gizmo.Hitbox.BBox( bounds );
+		Gizmo.Hitbox.Model( Model );
 
 		Gizmo.Draw.Color = Color.White.WithAlpha( 0.1f );
 
 		if ( Gizmo.IsSelected )
 		{
 			Gizmo.Draw.Color = Color.White.WithAlpha( 0.9f );
-			Gizmo.Draw.LineBBox( bounds );
+			Gizmo.Draw.LineBBox( Model.Bounds );
 		}
 		
 		if ( Gizmo.IsHovered )
 		{
 			Gizmo.Draw.Color = Color.White.WithAlpha( 0.4f );
-			Gizmo.Draw.LineBBox( bounds );
+			Gizmo.Draw.LineBBox( Model.Bounds );
 		}
 
 
