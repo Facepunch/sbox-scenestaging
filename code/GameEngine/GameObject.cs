@@ -378,7 +378,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		Scene = null;
 		isDestroyed = true;
 
-		foreach ( var child in Children )
+		foreach ( var child in Children.ToArray() )
 		{
 			child.DestroyRecursive();
 		}

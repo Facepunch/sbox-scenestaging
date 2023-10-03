@@ -92,25 +92,26 @@ public sealed partial class GameObject
 
 		if ( node["Children"] is JsonArray childArray )
 		{
-			Sandbox.Utility.Parallel.ForEach( childArray, child =>
+			foreach( var child in  childArray )
 			{
 				if ( child is not JsonObject jso )
 					return;
 
 				var go = new GameObject();
-				go.Deserialize( jso );
-
+				
 				lock ( this )
 				{
 					go.Parent = this;
 				}
 
-			} );
+				go.Deserialize( jso );
+
+			}
 		}
 
 		if ( node["Components"] is JsonArray componentArray )
 		{
-			Sandbox.Utility.Parallel.ForEach( componentArray, component =>
+			foreach( var component in componentArray )
 			{
 				if ( component is not JsonObject jso )
 					return;
@@ -123,7 +124,7 @@ public sealed partial class GameObject
 					c.Deserialize( jso );
 				}
 
-			} );
+			}
 		}
 
 		// enable it last
