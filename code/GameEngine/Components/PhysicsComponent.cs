@@ -8,11 +8,6 @@ using System.Text.Json.Serialization;
 [Icon( "panorama_fish_eye", "red", "white" )]
 public class PhysicsComponent : GameObjectComponent
 {
-	public interface IBodyModifier
-	{
-		void ModifyBody( PhysicsBody body );
-	}
-
 	[Property] public bool Static { get; set; } = false;
 	[Property] public bool Gravity { get; set; } = true;
 
