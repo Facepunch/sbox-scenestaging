@@ -104,7 +104,8 @@ public partial class ComponentTypeSelector : PopupWidget
 		listView.Clear();
 
 		// entity components
-		var types = EditorTypeLibrary.GetTypes<IPrefabObject.Component>().Where( x => !x.IsAbstract );
+		var types = EditorTypeLibrary.GetTypes<GameObjectComponent>().Where( x => !x.IsAbstract );
+
 
 		if ( !string.IsNullOrWhiteSpace( searchString ) )
 		{
@@ -137,6 +138,7 @@ public partial class ComponentTypeSelector : PopupWidget
 
 	private void PaintItem( VirtualWidget obj )
 	{
+
 		obj.PaintBackground( Color.Transparent, 2.0f );
 
 		bool highlight = obj.Hovered;
