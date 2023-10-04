@@ -120,6 +120,51 @@ public partial class SceneViewWidget : Widget
 		}
 	}
 
+	[Event( "scene.open" )]
+	public void SceneOpened()
+	{
+		var activeScene = EditorScene.GetAppropriateScene();
+		if ( activeScene is null )
+			return;
+
+		// ideally we should allow multiple scene windows
+		// and we should be saving the last camera setup per scene, per camera
+		// and then we could restore them here.
+
+		var cam = activeScene.FindAllComponents<CameraComponent>().FirstOrDefault();
+		if ( cam is not null )
+		{
+			Camera.Position = cam.GameObject.WorldTransform.Position;
+			Camera.Rotation = cam.GameObject.WorldTransform.Rotation;
+		}
+		else
+		{
+			Camera.Position = Vector3.Backward * 2000 + Vector3.Up * 2000 + Vector3.Left * 2000;
+			Camera.Rotation = Rotation.LookAt( -Camera.Position );
+
+			var bbox = new BBox();
+
+			int i = 0;
+			foreach ( var entry in activeScene.All )
+			{
+				if ( i++ == 0 )
+				{
+					bbox = new BBox( entry.WorldTransform.Position, 16 );
+				}
+
+				// get the bounding box of the selected objects
+				bbox = bbox.AddBBox( new BBox( entry.WorldTransform.Position, 16 ) );
+
+				foreach ( var model in entry.GetComponents<ModelComponent>( true, true ) )
+				{
+					bbox = bbox.AddBBox( model.Bounds );
+				}
+			}
+
+			FrameOn( bbox );
+		}
+	}
+
 
 	[Event( "scene.frame" )]
 	public void FrameOn( BBox target )

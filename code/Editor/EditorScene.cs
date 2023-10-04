@@ -1,5 +1,6 @@
 ﻿using Editor;
 using Sandbox;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 public static class EditorScene
@@ -117,6 +118,8 @@ public static class EditorScene
 		// TODO: Unsaved changes test
 		//
 
+		Prefab = null;
+
 		Active = new Scene();
 		using ( Active.Push() )
 		{
@@ -127,6 +130,9 @@ public static class EditorScene
 
 			All = new[] { Active };
 			UpdateEditorTitle();
+
+			EditorEvent.Run( "scene.open" );
+			EditorWindow.DockManager.RaiseDock( "Scene" );
 		}
 	}
 
@@ -143,7 +149,7 @@ public static class EditorScene
 
 		Prefab = new Scene();
 
-		new SceneSunLight( Prefab.SceneWorld, Rotation.From( 80, 45, 0 ), Color.White );
+		new SceneSunLight( Prefab.SceneWorld, Rotation.From( 80, 45, 0 ), Color.White * 0.5f );
 
 		using ( Prefab.Push() )
 		{
@@ -154,6 +160,7 @@ public static class EditorScene
 			UpdateEditorTitle();
 
 			EditorWindow.DockManager.RaiseDock( "Scene" );
+			EditorEvent.Run( "scene.open" );
 		}
 	}
 
