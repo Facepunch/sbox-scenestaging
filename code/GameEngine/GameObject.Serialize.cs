@@ -18,6 +18,9 @@ public sealed partial class GameObject
 
 	public JsonObject Serialize( SerializeOptions options = null )
 	{
+		if ( Flags.HasFlag( GameObjectFlags.NotSaved ) )
+			return null;
+
 		var json = new JsonObject
 		{
 			{ "Id", Id },

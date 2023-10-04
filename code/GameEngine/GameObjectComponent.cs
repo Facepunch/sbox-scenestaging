@@ -5,11 +5,11 @@ using System.Text.Json.Serialization;
 
 public abstract partial class GameObjectComponent : IPrefabObject.Component
 {
-	[JsonIgnore]
 	public Scene Scene => GameObject.Scene;
 
-	[JsonIgnore]
 	public GameObject GameObject { get; internal set; }
+
+	public GameObjectFlags Flags { get; set; } = GameObjectFlags.None;
 
 	/// <summary>
 	/// Internal functions to be called when the object wakes up

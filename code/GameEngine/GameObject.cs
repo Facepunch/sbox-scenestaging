@@ -3,10 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
+
+public enum GameObjectFlags
+{
+	None = 0,
+
+	/// <summary>
+	/// Hide this object in heirachy/inspector
+	/// </summary>
+	Hidden = 1,
+
+	/// <summary>
+	/// Don't save this object to disk, or when duplicating
+	/// </summary>
+	NotSaved = 2,
+}
 
 public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 {
@@ -18,13 +29,15 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	public string Name { get; set; } = "Untitled Object";
 
 
+	public GameObjectFlags Flags { get; set; } = GameObjectFlags.None;
+
 	bool _enabled = true;
 
 	/// <summary>
 	/// Is this gameobject enabled?
 	/// </summary>
 	[Property]
-	public bool Enabled 
+	public bool Enabled
 	{
 		get => _enabled;
 		set
@@ -40,7 +53,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	Transform _transform = Transform.Zero;
 
 	[Property]
-	public Transform Transform 
+	public Transform Transform
 	{
 		get => _transform;
 		set
@@ -87,7 +100,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	GameObject _parent;
 
-	public GameObject Parent 
+	public GameObject Parent
 	{
 		get => _parent;
 		set
@@ -138,7 +151,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	internal void OnCreate()
 	{
-		foreach( var component in Components )
+		foreach ( var component in Components )
 		{
 			if ( component is GameObjectComponent goc )
 			{
@@ -148,7 +161,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			component.OnEnabled();
 		}
 
-		foreach( var child in Children )
+		foreach ( var child in Children )
 		{
 			child.OnCreate();
 		}
@@ -195,7 +208,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			component.PreRender();
 		}
 
-		foreach( var child in Children )
+		foreach ( var child in Children )
 		{
 			child.PreRender();
 		}
@@ -217,7 +230,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	{
 		return GetComponents<T>( enabledOnly, deep ).FirstOrDefault();
 	}
-	
+
 	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) where T : GameObjectComponent
 	{
 		var q = Components.OfType<T>();
@@ -232,7 +245,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		{
 			foreach ( var child in Children )
 			{
-				foreach( var found in child.GetComponents<T>( enabledOnly, deep ) )
+				foreach ( var found in child.GetComponents<T>( enabledOnly, deep ) )
 				{
 					yield return found;
 				}
@@ -353,7 +366,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	void OnEnableStateChanged()
 	{
-		foreach( var component in Components )
+		foreach ( var component in Components )
 		{
 			component.OnEnableStateChanged();
 		}
@@ -443,7 +456,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		// todo tell old scene we're no longer on it?
 		Scene = scene;
 
-		foreach( var child in Children )
+		foreach ( var child in Children )
 		{
 			child.MoveToScene( scene );
 		}
@@ -462,13 +475,13 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		else
 		{
 			Parent = value;
-		}		
+		}
 	}
 
 	/// <summary>
 	/// Find component on this gameobject, or its parents
 	/// </summary>
-	public T GetComponentInParent<T>( bool enabledOnly = true ) where T: GameObjectComponent
+	public T GetComponentInParent<T>( bool enabledOnly = true ) where T : GameObjectComponent
 	{
 		var t = GetComponent<T>( enabledOnly, false );
 		if ( t is not null ) return t;
@@ -503,12 +516,12 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 		// todo regex (number)
 
-		if ( targetName.Contains( '(') )
+		if ( targetName.Contains( '(' ) )
 		{
 			targetName = targetName.Substring( 0, targetName.LastIndexOf( '(' ) ).Trim();
 		}
 
-		for ( int i=1; i<500; i++ )
+		for ( int i = 1; i < 500; i++ )
 		{
 			var indexedName = $"{targetName} ({i})";
 
@@ -522,7 +535,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	void OnUpdate()
 	{
-		foreach( var c in Components )
+		foreach ( var c in Components )
 		{
 			c.InternalUpdate();
 		}
