@@ -4,7 +4,7 @@ using Sandbox.Diagnostics;
 public abstract class ColliderBaseComponent : GameObjectComponent
 {
 	PhysicsShape shape;
-	PhysicsBody ownBody;
+	protected PhysicsBody ownBody;
 
 	public override void OnEnabled()
 	{
