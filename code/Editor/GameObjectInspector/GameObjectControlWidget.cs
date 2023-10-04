@@ -1,4 +1,6 @@
-﻿using Sandbox;
+﻿using Microsoft.VisualBasic;
+using Sandbox;
+using System.Linq;
 using static Editor.Button;
 
 namespace Editor;
@@ -51,21 +53,49 @@ public class GameObjectControlWidget : ControlWidget
 
 	public override void OnDragHover( DragEvent ev )
 	{
+		ev.Action = DropAction.Ignore;
+
 		if ( ev.Data.Object is GameObject go )
 		{
 			ev.Action = DropAction.Link;
 			return;
 		}
 
-		ev.Action = DropAction.Ignore;
+		if ( ev.Data.HasFileOrFolder )
+		{
+			var asset = AssetSystem.FindByPath( ev.Data.Files.First() );
+			if ( asset is null ) return;
+			if ( asset.AssetType.FileExtension != PrefabFile.FileExtension ) return;
+
+			if ( asset.TryLoadResource( out PrefabFile prefabFile ) )
+			{
+				ev.Action = DropAction.Link;
+				return;
+			}
+		}
+
 	}
 
 	public override void OnDragDrop( DragEvent ev )
 	{
+
 		if ( ev.Data.Object is GameObject go )
 		{
 			SerializedProperty.SetValue( go );
 			return;
+		}
+
+		if ( ev.Data.HasFileOrFolder )
+		{
+			var asset = AssetSystem.FindByPath( ev.Data.Files.First() );
+			if ( asset is null ) return;
+			if ( asset.AssetType.FileExtension != PrefabFile.FileExtension ) return;
+
+			if ( asset.TryLoadResource( out PrefabFile prefabFile ) )
+			{
+				SerializedProperty.SetValue( prefabFile.GameObject );
+				return;
+			}
 		}
 	}
 }
