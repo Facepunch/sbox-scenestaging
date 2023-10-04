@@ -21,7 +21,25 @@ public enum GameObjectFlags
 
 public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 {
-	public Scene Scene { get; set; }
+
+	Scene _scene;
+
+	public Scene Scene 
+	{
+		get => _scene;
+		set
+		{
+			if ( _scene == value )
+				return;
+
+			_scene = value;
+
+			foreach ( var child in Children )
+			{
+				child.Scene = _scene;
+			}
+		}
+	}
 
 	public Guid Id { get; private set; }
 
