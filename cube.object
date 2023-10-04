@@ -1,0 +1,32 @@
+{
+  "RootObject": {
+    "Id": "eb731597-deb2-4274-b369-2519d81e3362",
+    "Name": "Cube",
+    "Enabled": true,
+    "Position": "1176.732,335.3265,-1586.788",
+    "Rotation": "0,0,0,1",
+    "Scale": "0.5,0.5,0.5",
+    "Components": [
+      {
+        "__type": "ModelComponent",
+        "__enabled": true,
+        "MaterialOverride": null,
+        "Model": "models/dev/box.vmdl",
+        "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "PhysicsComponent",
+        "__enabled": true,
+        "Gravity": true,
+        "Static": false
+      },
+      {
+        "__type": "ColliderBoxComponent",
+        "__enabled": true,
+        "Scale": "50,50,50",
+        "Surface": null
+      }
+    ]
+  },
+  "GameObject": null
+}

@@ -1722,25 +1722,25 @@
               "Scale": "0.2,0.2,0.2"
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "Name": "Camera",
+      "Enabled": true,
+      "Position": "1756.701,921.0959,-802.6239",
+      "Rotation": "0.3148696,0.1640211,-0.8291076,0.4318968",
+      "Scale": "1,1,1",
+      "Components": [
         {
-          "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
-          "Name": "Camera",
-          "Enabled": true,
-          "Position": "-264.5458,7.6017,175.9572",
-          "Rotation": "0.005453837,0.2143695,-0.02484127,0.9764215",
-          "Scale": "1,1,1",
-          "Components": [
-            {
-              "__type": "CameraComponent",
-              "__enabled": true,
-              "BackgroundColor": "0.25292,0.26086,0.29703,1",
-              "ClearFlags": "Color, Depth, Stencil",
-              "FieldOfView": 85.5,
-              "ZFar": 10000,
-              "ZNear": 1
-            }
-          ]
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.25292,0.26086,0.29703,1",
+          "ClearFlags": "Color, Depth, Stencil",
+          "FieldOfView": 85.5,
+          "ZFar": 10000,
+          "ZNear": 1
         }
       ]
     }

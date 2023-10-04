@@ -38,7 +38,7 @@ public sealed class Scene
 			All.Add( o );
 		}
 
-		o.OnCreate();
+		o.OnEnableStateChanged();
 	}
 
 	public void Unregister( GameObject o )

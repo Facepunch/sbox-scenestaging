@@ -177,8 +177,6 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			{
 				goc.GameObject = this;
 			}
-
-			component.OnEnabled();
 		}
 
 		foreach ( var child in Children )
@@ -384,10 +382,11 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		Scene?.QueueDelete( this );
 	}
 
-	void OnEnableStateChanged()
+	internal void OnEnableStateChanged()
 	{
 		foreach ( var component in Components )
 		{
+			component.GameObject = this;
 			component.OnEnableStateChanged();
 		}
 
