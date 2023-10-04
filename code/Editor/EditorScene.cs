@@ -46,7 +46,7 @@ public static class EditorScene
 	}
 
 	[EditorForAssetType( "scene" )]
-	public static void LoadFromScene( SceneSource resource )
+	public static void LoadFromScene( SceneFile resource )
 	{
 		Active = new Scene();
 		Active.Name = resource.ResourceName.ToTitleCase();

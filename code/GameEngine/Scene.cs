@@ -14,7 +14,7 @@ public sealed class Scene
 	public SceneWorld DebugSceneWorld => gizmoInstance.World;
 	public PhysicsWorld PhysicsWorld { get; private set; }
 	public NavigationMesh NavigationMesh { get; set; }
-	public SceneSource Source { get; private set; }
+	public SceneFile Source { get; private set; }
 
 	public List<GameObject> All = new List<GameObject>();
 
@@ -88,9 +88,9 @@ public sealed class Scene
 	public void TickObjects()
 	{
 
-		foreach ( var e in All )
+		for ( int i=0; i < All.Count; i++ )
 		{
-			e.Tick();
+			All[i].Tick();
 		}
 	}
 
@@ -195,7 +195,7 @@ public sealed class Scene
 		}
 	}
 
-	public void Load( SceneSource resource )
+	public void Load( SceneFile resource )
 	{
 		Source = resource;
 
@@ -209,9 +209,9 @@ public sealed class Scene
 		}
 	}
 
-	public SceneSource Save()
+	public SceneFile Save()
 	{
-		var a = new SceneSource();
+		var a = new SceneFile();
 		a.GameObjects = All.Select( x => x.Serialize() ).ToArray();
 		return a;
 	}
