@@ -1,5 +1,8 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -59,8 +62,44 @@ public class MapComponent : GameObjectComponent
 
 }
 
+[Title( "Map Objects" )]
+[Category( "World" )]
+[Icon( "visibility", "red", "white" )]
+public class MapObjectComponent : GameObjectComponent
+{
+	List<SceneObject> objects = new List<SceneObject>();
 
-file class MapComponentMapLoader : MapLoader
+	public Action RecreateMapObjects;
+
+	internal void AddSceneObjects( IEnumerable<SceneObject> sceneObjects )
+	{
+		objects.AddRange( sceneObjects );
+	}
+
+	public override void OnEnabled()
+	{
+		RecreateMapObjects?.Invoke();
+
+		if ( !objects.Any() )
+		{
+			GameObject.Name += $" (empty)";
+		}
+	}
+
+	public override void OnDisabled()
+	{
+		foreach( var obj in objects )
+		{
+			obj.Delete();
+		}
+
+		objects.Clear();
+	}
+}
+
+
+
+file class MapComponentMapLoader : SceneMapLoader
 {
 	MapComponent map;
 
@@ -75,9 +114,30 @@ file class MapComponentMapLoader : MapLoader
 		go.Flags |= GameObjectFlags.NotSaved;
 		go.Name = $"{kv.TypeName}";
 		go.WorldTransform = kv.Transform;
+
+		//
+		// ideal situation here is that we look at the entities and create them
+		// via components. Like for a spotlight we create a SpotLightComponent.
+		// but that's a lot of work right now so lets just do this crazy hack
+		// to allow the created SceneObjects be viewed as gameobject compoonents
+		// and be turned on and off.. but nothing else.
+		//
+
+		var c = go.AddComponent<MapObjectComponent>();
+
+		c.RecreateMapObjects += () =>
+		{
+			SceneObjects.Clear();
+			base.CreateObject( kv );
+
+			if ( SceneObjects.Count > 0 )
+			{
+				c.AddSceneObjects( SceneObjects );
+			}
+		};
+
 		go.SetParent( map.GameObject, true );
 
-
-		go.Name += " (unhandled)";
+		//go.Name += " (unhandled)";
 	}
 }
