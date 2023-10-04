@@ -1,0 +1,29 @@
+{
+  "RootObject": {
+    "Id": "052f8587-4e59-43b3-ba20-54fda4662373",
+    "Name": "Bullet",
+    "Enabled": true,
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Children": [
+      {
+        "Id": "31695fab-bd51-43d3-8c3c-7e57c16f5772",
+        "Name": "Sphere",
+        "Enabled": true,
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "0.2,0.2,0.2",
+        "Components": [
+          {
+            "__type": "ModelComponent",
+            "__enabled": true,
+            "MaterialOverride": null,
+            "Model": "models/dev/sphere.vmdl",
+            "Tint": "1,1,1,1"
+          }
+        ]
+      }
+    ]
+  }
+}

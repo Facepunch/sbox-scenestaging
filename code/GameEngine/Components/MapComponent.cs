@@ -64,7 +64,8 @@ public class MapComponent : GameObjectComponent
 
 [Title( "Map Objects" )]
 [Category( "World" )]
-[Icon( "visibility", "red", "white" )]
+[Tag( "development" )]
+[Icon( "maps_home_work" )]
 public class MapObjectComponent : GameObjectComponent
 {
 	List<SceneObject> objects = new List<SceneObject>();

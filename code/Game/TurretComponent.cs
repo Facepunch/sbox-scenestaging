@@ -4,6 +4,8 @@ using System;
 public sealed class TurretComponent : GameObjectComponent
 {
 	[Property] GameObject Gun { get; set; }
+	[Property] GameObject Bullet { get; set; }
+	[Property] GameObject Muzzle { get; set; }
 
 	float turretYaw;
 	float turretPitch;
@@ -14,7 +16,7 @@ public sealed class TurretComponent : GameObjectComponent
 		turretYaw -= Input.MouseDelta.x * 0.1f;
 		turretPitch += Input.MouseDelta.y * 0.1f;
 		turretPitch = turretPitch.Clamp( -30, 30 );
-		Gun.Transform = Gun.Transform.WithRotation( Rotation.From( 0, turretYaw, turretPitch ) );
+		Gun.Transform = Gun.Transform.WithRotation( Rotation.From( turretPitch, turretYaw, 0  ) );
 
 		// drive tank
 		Vector3 movement = 0;
@@ -35,5 +37,17 @@ public sealed class TurretComponent : GameObjectComponent
 		}
 
 		GameObject.Transform = new Transform( pos, rot, 1 );
+
+		if ( Input.Down( "Attack1" ) )
+		{
+			var json = Bullet.Serialize();
+
+			SceneUtility.MakeGameObjectsUnique( json );
+			var go = new GameObject();
+			go.Deserialize( json );
+			go.Transform = Muzzle.WorldTransform;
+
+			Scene.Register( go );
+		}
 	}
 }
