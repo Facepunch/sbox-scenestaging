@@ -183,6 +183,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		// delete
 
 		m.AddSeparator();
+		m.AddOption( "Convert To Prefab..", action: ConvertToPrefab );
 		m.AddOption( "Properties..", action: OpenPropertyWindow );
 
 		m.OpenAtCursor();
@@ -193,6 +194,32 @@ public partial class GameObjectNode : TreeNode<GameObject>
 	void OpenPropertyWindow()
 	{
 		Log.Info( "TODO: OpenPropertyWindow" );
+	}
+
+	void ConvertToPrefab()
+	{
+		var saveLocation = "";
+
+		var a = Value.GetAsPrefab();
+
+		var lastDirectory = Cookie.GetString( "LastSavePrefabLocation", "" );
+
+		var fd = new FileDialog( null );
+		fd.Title = $"Save Scene As..";
+		fd.Directory = lastDirectory;
+		fd.DefaultSuffix = $".{PrefabFile.FileExtension}";
+		fd.SelectFile( saveLocation );
+		fd.SetFindFile();
+		fd.SetModeSave();
+		fd.SetNameFilter( $"Prefab File (*.{PrefabFile.FileExtension})" );
+
+		if ( !fd.Execute() )
+			return;
+
+		saveLocation = fd.SelectedFile;
+
+		var sceneAsset = AssetSystem.CreateResource( PrefabFile.FileExtension, saveLocation );
+		sceneAsset.SaveToDisk( a );
 	}
 
 	public override void OnActivated()

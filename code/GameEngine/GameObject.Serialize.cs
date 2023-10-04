@@ -129,4 +129,11 @@ public sealed partial class GameObject
 		// enable it last
 		Enabled = _enabled;
 	}
+
+	public PrefabFile GetAsPrefab()
+	{
+		var a = new PrefabFile();
+		a.RootObject = Serialize();
+		return a;
+	}
 }
