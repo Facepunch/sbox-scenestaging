@@ -32,8 +32,15 @@ public abstract partial class GameObjectComponent
 			{
 				if ( value is GameObject go )
 				{
-					// todo: if this is a prefab, not in the scene, we need to handle that too!
-					json.Add( prop.Name, go.Id );
+					if ( go.PrefabSource is not null )
+					{
+						json.Add( prop.Name, go.PrefabSource.ResourcePath );
+					}
+					else
+					{
+						// todo: if this is a prefab, not in the scene, we need to handle that too!
+						json.Add( prop.Name, go.Id );
+					}
 				}
 				continue;
 			}
@@ -75,6 +82,12 @@ public abstract partial class GameObjectComponent
 			if ( Guid.TryParse( guidString, out Guid guid ) )
 			{
 				onAwake += () => prop.SetValue( this, Scene.FindObjectByGuid( guid ) );
+				return;
+			}
+
+			if ( ResourceLibrary.TryGet( guidString, out PrefabFile prefabFile ) )
+			{
+				prop.SetValue( this, prefabFile.GameObject );
 				return;
 			}
 

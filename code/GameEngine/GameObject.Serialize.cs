@@ -18,6 +18,9 @@ public sealed partial class GameObject
 
 	public JsonObject Serialize( SerializeOptions options = null )
 	{
+		if ( PrefabSource is not null )
+			return PrefabSource.RootObject;
+
 		if ( Flags.HasFlag( GameObjectFlags.NotSaved ) )
 			return null;
 
@@ -119,10 +122,11 @@ public sealed partial class GameObject
 					return;
 
 				var componentType = TypeLibrary.GetType( (string)jso["__type"] );
+				if ( componentType is null )
+					return;
 				
 				var c = this.AddComponent( componentType );
 				c.Deserialize( jso );
-
 			}
 		}
 

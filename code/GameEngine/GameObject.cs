@@ -28,6 +28,8 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	[Property]
 	public string Name { get; set; } = "Untitled Object";
 
+	public PrefabFile PrefabSource { get; set; }
+
 
 	public GameObjectFlags Flags { get; set; } = GameObjectFlags.None;
 
