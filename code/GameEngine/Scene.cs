@@ -1,9 +1,11 @@
 ﻿using Microsoft.VisualBasic;
 using Sandbox;
 using Sandbox.Physics;
+using Sandbox.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 public sealed class Scene
 {
@@ -16,9 +18,9 @@ public sealed class Scene
 	public NavigationMesh NavigationMesh { get; set; }
 	public SceneFile Source { get; private set; }
 
-	public List<GameObject> All = new List<GameObject>();
+	public List<GameObject> All = new ();
 
-	Gizmo.Instance gizmoInstance = new Gizmo.Instance();
+	Gizmo.Instance gizmoInstance = new ();
 
 	public Scene()
 	{
@@ -31,20 +33,17 @@ public sealed class Scene
 
 	public void Register( GameObject o )
 	{
-		o.Scene = this;
-
 		if ( !All.Contains( o ) )
 		{
 			All.Add( o );
 		}
 
-		o.OnEnableStateChanged();
+		SceneUtility.ActivateGameObject( o );
 	}
 
 	public void Unregister( GameObject o )
 	{
 		o.OnDestroy();
-		o.Scene = null;
 		All.Remove( o );
 	}
 
@@ -87,7 +86,6 @@ public sealed class Scene
 
 	public void TickObjects()
 	{
-
 		for ( int i=0; i < All.Count; i++ )
 		{
 			All[i].Tick();
@@ -119,41 +117,7 @@ public sealed class Scene
 
 	void DrawNavmesh()
 	{
-		/*
-		if ( NavigationMesh is null )
-			return;
 
-		foreach ( var area in NavigationMesh.areas.Values )
-		{
-			Gizmo.Draw.Color = Color.Cyan.WithAlpha( 0.2f );
-			Gizmo.Draw.LineThickness = 3;
-
-			foreach ( var triangle in area.Triangles )
-			{
-				Gizmo.Draw.SolidTriangle( triangle );
-			}
-		}
-
-		var p = new NavigationPath( NavigationMesh );
-		p.StartPoint = All.Reverse().Skip( 1 ).FirstOrDefault()?.Transform.Position ?? Camera.Main.Position + Camera.Main.Rotation.Forward * 500;
-		p.EndPoint = All.Reverse().FirstOrDefault()?.Transform.Position ?? Camera.Main.Position + Camera.Main.Rotation.Forward * 500;
-		p.Build();
-
-		Gizmo.Draw.Color = Color.White;
-		Gizmo.Draw.ScreenText( $"Path Builder: {p.GenerationMilliseconds:0.00}ms", 100 );
-
-		Gizmo.Draw.LineThickness = 3;
-
-		for ( int i = 0; i < p.Segments.Count - 1; i++ )
-		{
-			Gizmo.Draw.Color = Color.Cyan;
-			Gizmo.Draw.Line( p.Segments[i].Position, p.Segments[i + 1].Position );
-			Gizmo.Draw.LineSphere( new Sphere( p.Segments[i].Position, 1 ) );
-
-			//Gizmo.Draw.Color = Color.White;
-			//Gizmo.Draw.ScreenText( $"{p.Segments[i].Distance:n0}", Camera.Main.ToScreen( p.Segments[i].Position + Vector3.Up * 10 ) );
-		}
-		*/
 	}
 
 	internal void OnParentChanged( GameObject gameObject, GameObject oldParent, GameObject parent )
@@ -171,9 +135,13 @@ public sealed class Scene
 
 	public GameObject CreateObject( bool enabled = true )
 	{
-		var go = new GameObject() { Enabled = enabled };
-		Register( go );
-		return go;
+		using ( Push() )
+		{
+			var go = GameObject.Create( enabled );
+			go.Enabled = enabled;
+			Register( go );
+			return go;
+		}
 	}
 
 	HashSet<GameObject> deleteList = new();
@@ -198,6 +166,8 @@ public sealed class Scene
 	public void Load( SceneFile resource )
 	{
 		Source = resource;
+
+		using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
 
 		if ( resource.GameObjects is not null )
 		{
@@ -250,5 +220,19 @@ public sealed class Scene
 		}
 
 		return o;
+	}
+
+	/// <summary>
+	/// Push this scene as the active scene, for a scope
+	/// </summary>
+	public IDisposable Push()
+	{
+		var old = Active;
+		Active = this;
+
+		return DisposeAction.Create( () =>
+		{
+			Active = old;
+		} );
 	}
 }

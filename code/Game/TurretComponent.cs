@@ -20,8 +20,8 @@ public sealed class TurretComponent : GameObjectComponent
 
 		// drive tank
 		Vector3 movement = 0;
-		if ( Input.Down( "Forward" ) ) movement += GameObject.Transform.Rotation.Forward;
-		if ( Input.Down( "backward" ) ) movement += GameObject.Transform.Rotation.Backward;
+		if ( Input.Down( "Forward" ) ) movement += GameObject.WorldTransform.Forward;
+		if ( Input.Down( "backward" ) ) movement += GameObject.WorldTransform.Backward;
 
 		var rot = GameObject.Transform.Rotation;
 		var pos = GameObject.Transform.Position + movement * Time.Delta * 100.0f;
@@ -38,16 +38,15 @@ public sealed class TurretComponent : GameObjectComponent
 
 		GameObject.Transform = new Transform( pos, rot, 1 );
 
-		if ( Input.Down( "Attack1" ) )
+		if ( Input.Pressed( "Attack1" ) )
 		{
-			var json = Bullet.Serialize();
+			var obj = SceneUtility.Instantiate( Bullet, Muzzle.WorldTransform.Position, Muzzle.WorldTransform.Rotation );
+			var physics = obj.GetComponent<PhysicsComponent>( true, true );
+			if ( physics is not null )
+			{
+				physics.Velocity = Muzzle.WorldTransform.Rotation.Forward * 2000.0f;
+			}
 
-			SceneUtility.MakeGameObjectsUnique( json );
-			var go = new GameObject();
-			go.Deserialize( json );
-			go.Transform = Muzzle.WorldTransform;
-
-			Scene.Register( go );
 		}
 	}
 }

@@ -24,7 +24,7 @@ public static class PrefabSystem
 		var targetType = TypeLibrary.GetType( e.Class );
 		if ( targetType is null ) return null;
 
-		var instance = new GameObject();
+		var instance = GameObject.Create();
 
 		instance.Name = e.GetValue( "_name", "Untitled Object" );
 		instance.Transform = transform;
@@ -45,7 +45,6 @@ public static class PrefabSystem
 			var child = Create( entry, childTx );
 			if ( child is null ) continue;
 
-			child.Scene = Scene.Active;
 			child.Parent = instance;
 		}
 

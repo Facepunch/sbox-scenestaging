@@ -51,7 +51,7 @@ public class MapComponent : GameObjectComponent
 
 		foreach( var body in loadedMap.PhysicsGroup.Bodies )
 		{
-			var go = new GameObject();
+			var go = GameObject.Create();
 			go.Flags |= GameObjectFlags.NotSaved;
 			go.Name = "World Physics";
 			var co = go.AddComponent<ColliderMapComponent>();
@@ -111,7 +111,7 @@ file class MapComponentMapLoader : SceneMapLoader
 
 	protected override void CreateObject( ObjectEntry kv )
 	{
-		var go = new GameObject();
+		var go = GameObject.Create();
 		go.Flags |= GameObjectFlags.NotSaved;
 		go.Name = $"{kv.TypeName}";
 		go.WorldTransform = kv.Transform;

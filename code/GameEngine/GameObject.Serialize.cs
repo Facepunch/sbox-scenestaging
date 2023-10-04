@@ -90,8 +90,6 @@ public sealed partial class GameObject
 
 	public void Deserialize( JsonObject node )
 	{
-		bool _enabled = (bool)(node["Enabled"] ?? Enabled);
-
 		Id = node["Id"].Deserialize<Guid>();
 		Name = node["Name"].ToString() ?? Name;
 		_transform.Position = node["Position"].Deserialize<Vector3>();
@@ -105,7 +103,7 @@ public sealed partial class GameObject
 				if ( child is not JsonObject jso )
 					return;
 
-				var go = new GameObject();
+				var go = GameObject.Create();
 				
 				go.Parent = this;
 
@@ -130,8 +128,8 @@ public sealed partial class GameObject
 			}
 		}
 
-		// enable it last
-		Enabled = _enabled;
+		Enabled = (bool)(node["Enabled"] ?? Enabled);
+		UpdateEnabledStatus();
 	}
 
 	public PrefabFile GetAsPrefab()

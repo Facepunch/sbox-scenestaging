@@ -1,4 +1,5 @@
 ﻿using Sandbox;
+using Sandbox.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,22 +25,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	Scene _scene;
 
-	public Scene Scene 
-	{
-		get => _scene;
-		set
-		{
-			if ( _scene == value )
-				return;
-
-			_scene = value;
-
-			foreach ( var child in Children )
-			{
-				child.Scene = _scene;
-			}
-		}
-	}
+	public Scene Scene => _scene;
 
 	public Guid Id { get; private set; }
 
@@ -66,7 +52,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 				return;
 
 			_enabled = value;
-			OnEnableStateChanged();
+			UpdateEnabledStatus();
 		}
 	}
 
@@ -78,13 +64,28 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		get => _transform;
 		set
 		{
+			if ( _transform == value )
+				return;
+
 			_transform = value;
+			OnLocalTransformChanged?.Invoke( value );
 		}
 	}
 
-	public GameObject()
+	private GameObject( bool enabled, string name, Scene scene )
 	{
+		_enabled = enabled;
+		_scene = Scene.Active;
 		Id = Guid.NewGuid();
+		Name = name;
+	}
+
+	public static GameObject Create( bool enabled = true, string name = "GameObject" )
+	{
+		if ( Scene.Active is null )
+			throw new System.ArgumentNullException( "Trying to create a GameObject without an active scene" );
+
+		return new GameObject( enabled, name, Scene.Active );
 	}
 
 	public Transform WorldTransform
@@ -110,6 +111,8 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			Transform = value;
 		}
 	}
+
+	public Action<Transform> OnLocalTransformChanged;
 
 	public override string ToString()
 	{
@@ -144,8 +147,8 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 			if ( _parent is not null )
 			{
+				Assert.True( Scene == _parent.Scene, "Can't parent to a gameobject in a different scene" );
 				_parent.Children.Add( this );
-				MoveToScene( _parent.Scene );
 			}
 
 			if ( isDestroying )
@@ -155,9 +158,6 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			{
 				Scene.OnParentChanged( this, oldParent, _parent );
 			}
-
-			// different parent - active state could have changed
-			OnEnableStateChanged();
 		}
 	}
 
@@ -240,7 +240,6 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		Components.Add( t );
 
 		t.Enabled = enabled;
-
 		return t;
 	}
 
@@ -252,7 +251,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) where T : GameObjectComponent
 	{
 		var q = Components.OfType<T>();
-		if ( enabledOnly ) q = q.Where( x => x.Enabled );
+		if ( enabledOnly ) q = q.Where( x => x.Active );
 
 		foreach ( var c in q )
 		{
@@ -382,17 +381,21 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		Scene?.QueueDelete( this );
 	}
 
-	internal void OnEnableStateChanged()
+	/// <summary>
+	/// Should be called whenever we change anything that we suspect might
+	/// cause the active status to change on us, or our components.
+	/// </summary>
+	internal void UpdateEnabledStatus()
 	{
 		foreach ( var component in Components )
 		{
 			component.GameObject = this;
-			component.OnEnableStateChanged();
+			component.UpdateEnabledStatus();
 		}
 
 		foreach ( var child in Children )
 		{
-			child.OnEnableStateChanged();
+			child.UpdateEnabledStatus();
 		}
 	}
 
@@ -417,7 +420,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		isDestroying = true;
 		Parent = null;
 		Enabled = false;
-		Scene = null;
+		_scene = null;
 		isDestroyed = true;
 
 		foreach ( var child in Children.ToArray() )
@@ -445,7 +448,6 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	public void AddSibling( GameObject go, bool before, bool keepWorldPosition = true )
 	{
-		go.MoveToScene( Scene );
 		go.SetParent( Parent, keepWorldPosition );
 
 		if ( go.Parent is null )
@@ -455,8 +457,6 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			var targetIndex = Scene.All.IndexOf( this );
 			if ( !before ) targetIndex++;
 			Scene.All.Insert( targetIndex, go );
-
-			go.OnEnableStateChanged();
 		}
 		else
 		{
@@ -464,20 +464,6 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			var targetIndex = go.Parent.Children.IndexOf( this );
 			if ( !before ) targetIndex++;
 			go.Parent.Children.Insert( targetIndex, go );
-		}
-	}
-
-	private void MoveToScene( Scene scene )
-	{
-		if ( Scene == scene )
-			return;
-
-		// todo tell old scene we're no longer on it?
-		Scene = scene;
-
-		foreach ( var child in Children )
-		{
-			child.MoveToScene( scene );
 		}
 	}
 
@@ -503,7 +489,8 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	public T GetComponentInParent<T>( bool enabledOnly = true ) where T : GameObjectComponent
 	{
 		var t = GetComponent<T>( enabledOnly, false );
-		if ( t is not null ) return t;
+		if ( t is not null )
+			return t;
 
 		if ( Parent is not null )
 		{

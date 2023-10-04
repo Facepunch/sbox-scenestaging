@@ -15,7 +15,6 @@ public class PhysicsComponent : GameObjectComponent
 
 	internal PhysicsBody GetBody()
 	{
-		OnEnableStateChanged();
 		return _body;
 	}
 
@@ -37,26 +36,29 @@ public class PhysicsComponent : GameObjectComponent
 
 		_body = new PhysicsBody( Scene.Active.PhysicsWorld );
 		
-		//_body.Mass = 1;
 		_body.UseController = false;
 		_body.BodyType = PhysicsBodyType.Dynamic;
 		_body.GameObject = GameObject;
 		_body.GravityEnabled = Gravity;
 		_body.Sleeping = false;
-	//	_body.Velocity = Vector3.Up * 0.01f;
 		_body.Transform = GameObject.WorldTransform;
 
-		//foreach( var c in GameObject.Components.Concat( GameObject.Children.SelectMany( x => x.Components ) ).OfType<PhysicsComponent.IBodyModifier>() )
-		//{
-		//	c.ModifyBody( _body ); 
-		//}
+		GameObject.OnLocalTransformChanged += OnLocalTransformChanged;
+
+		UpdateColliders();
 	}
 
 	public override void OnDisabled()
 	{
+		GameObject.OnLocalTransformChanged -= OnLocalTransformChanged;
+
 		_body.Remove();
 		_body = null;
+
+		UpdateColliders();
 	}
+
+	bool isUpdatingPositionFromPhysics;
 
 	protected override void OnPostPhysics()
 	{
@@ -66,8 +68,31 @@ public class PhysicsComponent : GameObjectComponent
 
 		var bt = _body.Transform;
 
+		isUpdatingPositionFromPhysics = true;
 		var wt = GameObject.WorldTransform;
 		GameObject.WorldTransform = bt.WithScale( wt.Scale );
+		isUpdatingPositionFromPhysics = false;
+	}
+
+	void OnLocalTransformChanged( Transform newTransform )
+	{
+		if ( isUpdatingPositionFromPhysics ) return;
+
+		if ( _body is not null )
+		{
+			_body.Transform = GameObject.WorldTransform;
+		}
+	}
+
+	/// <summary>
+	/// Tell child colliders that our physics have changed
+	/// </summary>
+	void UpdateColliders()
+	{
+		foreach( var c in GameObject.GetComponents<ColliderBaseComponent>( true, true ) )
+		{
+			c.OnPhysicsChanged();
+		}
 	}
 
 }

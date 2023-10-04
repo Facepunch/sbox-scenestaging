@@ -3,7 +3,7 @@ using System;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-public abstract partial class GameObjectComponent : IPrefabObject.Component
+public abstract partial class GameObjectComponent
 {
 	public Scene Scene => GameObject.Scene;
 
@@ -28,8 +28,14 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 			if ( _enabled == value ) return;
 
 			_enabled = value;
-			OnEnableStateChanged();
+
+			SceneUtility.ActivateComponent( this );
 		}
+	}
+
+	public bool Active
+	{
+		get => _enabledState;
 	}
 
 	public string Name { get; set; }
@@ -59,7 +65,7 @@ public abstract partial class GameObjectComponent : IPrefabObject.Component
 		ExceptionWrap( "Update", Update );
 	}
 
-	internal void OnEnableStateChanged()
+	internal void UpdateEnabledStatus()
 	{
 		var state = _enabled && Scene is not null && GameObject is not null && GameObject.Active;
 		if ( state  == _enabledState ) return;

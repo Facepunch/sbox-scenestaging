@@ -1,9 +1,13 @@
 ﻿using Sandbox;
+using Sandbox.Diagnostics;
+using Sandbox.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -84,6 +88,86 @@ public static class SceneUtility
 		return node;
 	}
 
+	/// <summary>
+	/// Create a unique copy of the passed in GameObject
+	/// </summary>
+	public static GameObject Instantiate( GameObject bullet, Transform transform )
+	{
+		using var spawnScope = DeferInitializationScope( "Instantiate" );
+
+		var json = bullet.Serialize();
+
+		MakeGameObjectsUnique( json );
+		var go = GameObject.Create();
+		go.Deserialize( json );
+		go.Transform = transform;
+
+		Scene.Active.Register( go );
+
+		return go;
+	}
+
+	/// <summary>
+	/// Create a unique copy of the passed in GameObject
+	/// </summary>
+	public static GameObject Instantiate( GameObject bullet ) => Instantiate( bullet, bullet.Transform );
+
+	/// <summary>
+	/// Create a unique copy of the passed in GameObject
+	/// </summary>
+	public static GameObject Instantiate( GameObject bullet, Vector3 position, Quaternion rotation ) => Instantiate( bullet, new Transform( position, rotation, bullet.Transform.Scale ) );
 
 
+	static HashSet<GameObject> spawnList;
+
+	/// <summary>
+	/// Create a scope in which all created gameobjects only become enabled at the end.
+	/// This is useful if you have situation where you're spawning a prefab with lots of 
+	/// connections, and want everything deserialized and existing before activating.
+	/// </summary>
+	public static IDisposable DeferInitializationScope( string scopeName )
+	{
+		var lastSpawnList = spawnList;
+		spawnList = new();
+
+		return DisposeAction.Create( () =>
+		{
+			var sw = spawnList;
+			spawnList = lastSpawnList;
+
+			foreach ( var o in sw )
+			{
+				o.UpdateEnabledStatus();
+			}
+
+			sw.Clear();
+			sw = null;
+		} );
+	}
+
+	internal static void ActivateGameObject( GameObject o )
+	{
+		Assert.NotNull( o.Scene );
+
+		if ( spawnList is not null )
+		{
+			spawnList.Add( o );
+			return;
+		}
+
+		o.UpdateEnabledStatus();
+	}
+
+	internal static void ActivateComponent( GameObjectComponent o )
+	{
+		if ( o.GameObject is null || o.Scene is null ) return;
+
+		if ( spawnList is null )
+		{
+			o.UpdateEnabledStatus();
+			return;
+		}
+
+		ActivateGameObject( o.GameObject );
+	}
 }

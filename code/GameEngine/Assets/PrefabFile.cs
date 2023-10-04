@@ -8,6 +8,7 @@ public class PrefabFile : GameResource
 
 	public JsonObject RootObject { get; set; }
 
+	 Scene PrefabScene { get; set; }
 	public GameObject GameObject { get; private set; }
 
 	protected override void PostLoad()
@@ -17,12 +18,13 @@ public class PrefabFile : GameResource
 
 	protected override void PostReload()
 	{
-		Log.Info( "PostReload" );
-		// clear etc
-		GameObject ??= new GameObject();
-		GameObject.Deserialize( RootObject );
-		GameObject.PrefabSource = this;
+		PrefabScene ??= new Scene();
 
-		Log.Info( $"GameObject = {GameObject}" );
+		using ( PrefabScene.Push() )
+		{
+			GameObject ??= GameObject.Create();
+			GameObject.Deserialize( RootObject );
+			GameObject.PrefabSource = this;
+		}
 	}
 }

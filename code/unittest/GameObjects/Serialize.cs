@@ -11,7 +11,9 @@ public class SerializeTest
 		Assert.IsNotNull( TypeLibrary, "TypeLibrary hasn't been mocked" );
 		Assert.IsNotNull( TypeLibrary.GetType<ModelComponent>(), "TypeLibrary hasn't been given the game assembly" );
 
-		var go1 = new GameObject();
+		using var scope =  new Scene().Push();
+
+		var go1 = GameObject.Create	();
 		go1.Name = "My Game Object";
 		go1.Transform = new Transform( Vector3.Up, Rotation.Identity, 10 );
 
@@ -23,7 +25,7 @@ public class SerializeTest
 
 		System.Console.WriteLine( node );
 
-		var go2 = new GameObject();
+		var go2 = GameObject.Create();
 		go2.Deserialize( node );
 
 		Assert.AreEqual( go1.Id, go2.Id );
@@ -39,8 +41,10 @@ public class SerializeTest
 	[TestMethod]
 	public void SerializeWithChildren()
 	{
+		using var scope = new Scene().Push();
+
 		var timer = new ScopeTimer( "Creation" );
-		var go1 = new GameObject();
+		var go1 = GameObject.Create();
 		go1.Name = "My Game Object";
 		go1.Transform = new Transform( Vector3.Up, Rotation.Identity, 10 );
 
@@ -48,7 +52,7 @@ public class SerializeTest
 
 		for ( int i = 0; i < childrenCount; i++ )
 		{
-			var child = new GameObject();
+			var child = GameObject.Create();
 			child.Name = $"Child {i}";
 			child.Transform = new Transform( Vector3.Random * 1000 );
 			child.Parent = go1;
@@ -66,7 +70,7 @@ public class SerializeTest
 		timer = new ScopeTimer( "Deserialize" );
 		//System.Console.WriteLine( node );
 
-		var go2 = new GameObject();
+		var go2 = GameObject.Create();
 		go2.Deserialize( node );
 
 		timer.Dispose();

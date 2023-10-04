@@ -58,4 +58,11 @@ public abstract class ColliderBaseComponent : GameObjectComponent
 	{
 		ownBody?.Move( GameObject.WorldTransform, Time.Delta * 4.0f );
 	}
+
+	public void OnPhysicsChanged()
+	{
+		Log.Info( "Physics Changed" );
+		OnDisabled();
+		OnEnabled();
+	}
 }

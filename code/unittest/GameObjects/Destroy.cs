@@ -10,6 +10,7 @@ public class DestroyTests
 	public void Destroy()
 	{
 		var scene = new Scene();
+		using var sceneScope = scene.Push();
 
 		var go = scene.CreateObject();
 
@@ -43,9 +44,10 @@ public class DestroyTests
 	public void Destroy_Child()
 	{
 		var scene = new Scene();
+		using var sceneScope = scene.Push();
 
 		var parent = scene.CreateObject();
-		var go = new GameObject();
+		var go = GameObject.Create();
 		go.Parent = parent;
 
 		Assert.IsTrue( go.Enabled );
@@ -81,8 +83,10 @@ public class DestroyTests
 	public void Destroy_With_Child()
 	{
 		var scene = new Scene();
+		using var sceneScope = scene.Push();
+
 		var parent = scene.CreateObject();
-		var go = new GameObject();
+		var go = GameObject.Create();
 		go.Parent = parent;
 
 		Assert.IsTrue( go.Enabled );
@@ -127,8 +131,10 @@ public class DestroyTests
 	public void Destroy_With_Child_Immediate()
 	{
 		var scene = new Scene();
+		using var sceneScope = scene.Push();
+
 		var parent = scene.CreateObject();
-		var go = new GameObject();
+		var go = GameObject.Create();
 		go.Parent = parent;
 
 		Assert.IsTrue( go.Enabled );
@@ -162,9 +168,10 @@ public class DestroyTests
 	public void Destroy_Child_immediate()
 	{
 		var scene = new Scene();
+		using var sceneScope = scene.Push();
 
 		var parent = scene.CreateObject();
-		var go = new GameObject();
+		var go = GameObject.Create();
 		go.Parent = parent;
 
 		Assert.IsTrue( go.Enabled );
@@ -190,6 +197,7 @@ public class DestroyTests
 	public void Destroy_Immediate()
 	{
 		var scene = new Scene();
+		using var sceneScope = scene.Push();
 
 		var go = scene.CreateObject();
 
