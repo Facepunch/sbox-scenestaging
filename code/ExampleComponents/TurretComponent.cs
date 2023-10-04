@@ -10,6 +10,8 @@ public sealed class TurretComponent : BaseComponent
 	[Property] GameObject Bullet { get; set; }
 	[Property] GameObject SecondaryBullet { get; set; }
 	[Property] GameObject Muzzle { get; set; }
+	
+	[Property] public Action<TurretComponent> OnShoot { get; set; }
 
 	[Property] ModelRenderer GunModel { get; set; }
 	[Property] Gradient GunColorGradient { get; set; }
@@ -17,7 +19,7 @@ public sealed class TurretComponent : BaseComponent
 
 	float turretYaw;
 	float turretPitch;
-
+	
 	TimeSince timeSinceLastSecondary;
 
 	TimeSince timeSincePrimary = 10;
