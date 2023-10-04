@@ -33,16 +33,28 @@ public class GameObjectControlWidget : ControlWidget
 
 	protected override void PaintControl()
 	{
+		var rect = LocalRect.Shrink( 6, 0 );
 		var go = SerializedProperty.GetValue<GameObject>();
 		if ( go is null )
 		{
 			Paint.SetPen( Theme.ControlText.WithAlpha( 0.3f ) );
-			Paint.DrawText( LocalRect.Shrink( 8, 2 ), "None (GameObject)", TextFlag.LeftCenter );
+			Paint.DrawIcon( rect, "radio_button_unchecked", 14, TextFlag.LeftCenter );
+			rect.Left += 22;
+			Paint.DrawText( rect, "None (GameObject)", TextFlag.LeftCenter );
+		}
+		else if ( go.PrefabSource is not null && go.Parent is null )
+		{
+			Paint.SetPen( Theme.Blue );
+			Paint.DrawIcon( rect, "panorama_wide_angle_select", 14, TextFlag.LeftCenter );
+			rect.Left += 22;
+			Paint.DrawText( rect, go.Name, TextFlag.LeftCenter );
 		}
 		else
 		{
-			Paint.SetPen( Theme.ControlText );
-			Paint.DrawText( LocalRect.Shrink( 8, 2 ), SerializedProperty.As.String, TextFlag.LeftCenter );
+			Paint.SetPen( Theme.Green );
+			Paint.DrawIcon( rect, "panorama_wide_angle_select", 14, TextFlag.LeftCenter );
+			rect.Left += 22;
+			Paint.DrawText( rect, go.Name, TextFlag.LeftCenter );
 		}
 	}
 
