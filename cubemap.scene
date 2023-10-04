@@ -273,6 +273,25 @@
           "Radius": 10000
         }
       ]
+    },
+    {
+      "Id": "e65e36fd-b242-4432-b564-8faebeb35732",
+      "Name": "Camera",
+      "Enabled": true,
+      "Position": "-168.5737,7.0671,352.5934",
+      "Rotation": "-0.1503301,-0.4222043,0.2998586,-0.8421574",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "Color, Depth, Stencil",
+          "FieldOfView": 75.75,
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
     }
   ]
 }

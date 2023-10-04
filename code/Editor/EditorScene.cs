@@ -4,6 +4,7 @@ using System.Linq;
 
 public static class EditorScene
 {
+	public static Scene Prefab { get; set; }
 	public static Scene Active { get; set; }
 	public static Scene[] All { get; set; }
 
@@ -45,21 +46,11 @@ public static class EditorScene
 		}
 	}
 
-	[EditorForAssetType( "scene" )]
-	public static void LoadFromScene( SceneFile resource )
-	{
-		Active = new Scene();
-		Active.Name = resource.ResourceName.ToTitleCase();
-		Active.IsEditor = true;
-
-		Active.Load( resource );
-
-		All = new[] { Active };
-	}
-
 	public static Scene GetAppropriateScene()
 	{
+		if ( Prefab is not null ) return Prefab;
 		if ( GameManager.IsPlaying ) return Scene.Active;
+		
 		return EditorScene.Active;
 	}
 
@@ -76,6 +67,7 @@ public static class EditorScene
 		Camera.Main.Worlds.Clear();
 		Camera.Main.Worlds.Add( Scene.Active.DebugSceneWorld );
 		Camera.Main.Position = 0;
+		Camera.Main.Rotation = Rotation.From( 0, 0, 0 );
 		Camera.Main.ZNear = 1;
 		Camera.Main.Tonemap.Enabled = true;
 		Camera.Main.Tonemap.MinExposure = 0.1f;
@@ -112,5 +104,79 @@ public static class EditorScene
 		{
 			camera.UpdateCamera( Camera.Main );
 		}
+	}
+
+	/// <summary>
+	/// This is called when the user wants to open a new scene
+	/// </summary>
+
+	[EditorForAssetType( "scene" )]
+	public static void LoadFromScene( SceneFile resource )
+	{
+		// 
+		// TODO: Unsaved changes test
+		//
+
+		Active = new Scene();
+		using ( Active.Push() )
+		{
+			Active.Name = resource.ResourceName.ToTitleCase();
+			Active.IsEditor = true;
+
+			Active.Load( resource );
+
+			All = new[] { Active };
+			UpdateEditorTitle();
+		}
+	}
+
+	/// <summary>
+	/// This is called when the user wants to open a new scene
+	/// </summary>
+
+	[EditorForAssetType( PrefabFile.FileExtension )]
+	public static void LoadFromPrefab( PrefabFile resource )
+	{
+		// 
+		// TODO: Unsaved changes test
+		//
+
+		Prefab = new Scene();
+
+		new SceneSunLight( Prefab.SceneWorld, Rotation.From( 80, 45, 0 ), Color.White );
+
+		using ( Prefab.Push() )
+		{
+			Prefab.Name = resource.ResourceName.ToTitleCase();
+			Prefab.IsEditor = true;
+
+			Prefab.Load( resource );
+			UpdateEditorTitle();
+
+			EditorWindow.DockManager.RaiseDock( "Scene" );
+		}
+	}
+
+	public static void ClosePrefabScene()
+	{
+		Prefab = null;
+		UpdateEditorTitle();
+	}
+
+	static void UpdateEditorTitle()
+	{
+		if ( Prefab is not null )
+		{
+			EditorWindow.UpdateEditorTitle( Prefab.Name );
+			return;
+		}
+
+		if ( Active is not null )
+		{
+			EditorWindow.UpdateEditorTitle( Active.Name );
+			return;
+		}
+
+		EditorWindow.UpdateEditorTitle( "Smile Face" );
 	}
 }

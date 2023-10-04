@@ -1,18 +1,18 @@
 {
   "RootObject": {
-    "Id": "eb731597-deb2-4274-b369-2519d81e3362",
+    "Id": "3dd17e02-45d4-46eb-a834-cfa3c0b6098a",
     "Name": "Cube",
     "Enabled": true,
-    "Position": "1176.732,335.3265,-1586.788",
+    "Position": "1197.774,319.2115,-1586.788",
     "Rotation": "0,0,0,1",
     "Scale": "0.5,0.5,0.5",
     "Components": [
       {
         "__type": "ModelComponent",
-        "__enabled": true,
+        "__enabled": false,
         "MaterialOverride": null,
         "Model": "models/dev/box.vmdl",
-        "Tint": "1,1,1,1"
+        "Tint": "0.85644,0.12719,0.57932,1"
       },
       {
         "__type": "PhysicsComponent",
@@ -23,10 +23,28 @@
       {
         "__type": "ColliderBoxComponent",
         "__enabled": true,
-        "Scale": "50,50,50",
+        "Scale": "99.5,23.45,23.9",
         "Surface": null
       }
+    ],
+    "Children": [
+      {
+        "Id": "564b31ee-4bff-4071-9b96-b993ae8d09cf",
+        "Name": "Cube",
+        "Enabled": true,
+        "Position": "-47.6424,0,-0",
+        "Rotation": "-0.00000002089541,0.707107,0.0000000208954,0.7071065",
+        "Scale": "61.45,61.45,61.45",
+        "Components": [
+          {
+            "__type": "ModelComponent",
+            "__enabled": true,
+            "MaterialOverride": null,
+            "Model": "ammo/9x21mm/patron_9x21_sp13_full_lod0.vmdl",
+            "Tint": "0.79208,0.39604,0,1"
+          }
+        ]
+      }
     ]
-  },
-  "GameObject": null
+  }
 }

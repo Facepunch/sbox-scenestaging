@@ -1,22 +1,20 @@
 ﻿
 using Editor;
-using Editor.PanelInspector;
-using Sandbox;
 using System;
 using System.Linq;
 
-public partial class SceneNode : TreeNode<Scene>
+public partial class PrefabNode : GameObjectNode
 {
-	public SceneNode( Scene scene ) : base( scene )
+	public PrefabNode( GameObject go ) : base( go )
 	{
 
 	}
 
-	public override bool HasChildren => Value.All.Any();
+	public override bool HasChildren => Value.Children.Any();
 
 	protected override void BuildChildren()
 	{
-		SetChildren( Value.All, x => new GameObjectNode( x ) );
+		SetChildren( Value.Children, x => new GameObjectNode( x ) );
 	}
 
 	public override void OnPaint( VirtualWidget item )
@@ -54,7 +52,7 @@ public partial class SceneNode : TreeNode<Scene>
 		{
 			HashCode hc = new HashCode();
 
-			foreach ( var val in Value.All )
+			foreach ( var val in Value.Children )
 			{
 				hc.Add( val );
 			}
@@ -78,32 +76,28 @@ public partial class SceneNode : TreeNode<Scene>
 	{
 		var m = new Menu();
 
-		m.AddOption( "Save", action: () => SaveScene( Value, false ) ).Enabled = Value.SourceSceneFile is not null;
-		m.AddOption( "Save Scene As..", action: () => SaveScene( Value, true ) );
+		m.AddOption( "Save", action: () => Save( Value, false ) );
+		m.AddOption( "Save Scene As..", action: () => Save( Value, true ) );
 
 		m.AddSeparator();
 
-		GameObjectNode.CreateObjectMenu( m, go =>
-		{
-			Value.Register( go );
-			TreeView.Open( this );
-			TreeView.SelectItem( go );
-		} );
+		AddGameObjectMenuItems( m );
 
 		m.OpenAtCursor();
 
 		return true;
 	}
 
-	public static void SaveScene( Scene scene, bool saveAs )
+	public static void Save( GameObject obj, bool saveAs )
 	{
+		var scene = obj.Scene;
 		var saveLocation = "";
 
-		var a = scene.Save();
+		var a = obj.GetAsPrefab();
 
-		if ( scene.SourceSceneFile is not null )
+		if ( scene.SourcePrefabFile is not null )
 		{
-			var asset = AssetSystem.FindByPath( scene.SourceSceneFile.ResourcePath );
+			var asset = AssetSystem.FindByPath( scene.SourcePrefabFile.ResourcePath );
 			if ( asset is not null )
 			{
 				saveLocation = asset.AbsolutePath;
@@ -115,13 +109,13 @@ public partial class SceneNode : TreeNode<Scene>
 			var lastDirectory = Cookie.GetString( "LastSaveSceneLocation", "" );
 
 			var fd = new FileDialog( null );
-			fd.Title = $"Save Scene As..";
+			fd.Title = $"Save Prefab As..";
 			fd.Directory = lastDirectory;
-			fd.DefaultSuffix = $".scene";
+			fd.DefaultSuffix = $".object";
 			fd.SelectFile( saveLocation );
 			fd.SetFindFile();
 			fd.SetModeSave();
-			fd.SetNameFilter( $"Scene File (*.scene)" );
+			fd.SetNameFilter( $"Prefab (*.object)" );
 
 			if ( !fd.Execute() )
 				return;
@@ -129,9 +123,9 @@ public partial class SceneNode : TreeNode<Scene>
 			saveLocation = fd.SelectedFile;
 		}
 
-		var sceneAsset = AssetSystem.CreateResource( "scene", saveLocation );
+		var sceneAsset = AssetSystem.CreateResource( "object", saveLocation );
 		sceneAsset.SaveToDisk( a );
-		
+
 	}
 
 

@@ -16,7 +16,9 @@ public sealed class Scene
 	public SceneWorld DebugSceneWorld => gizmoInstance.World;
 	public PhysicsWorld PhysicsWorld { get; private set; }
 	public NavigationMesh NavigationMesh { get; set; }
-	public SceneFile Source { get; private set; }
+
+	public SceneFile SourceSceneFile { get; private set; }
+	public PrefabFile SourcePrefabFile { get; private set; }
 
 	public List<GameObject> All = new ();
 
@@ -165,7 +167,7 @@ public sealed class Scene
 
 	public void Load( SceneFile resource )
 	{
-		Source = resource;
+		SourceSceneFile = resource;
 
 		using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
 
@@ -178,6 +180,20 @@ public sealed class Scene
 			}
 		}
 	}
+
+	public void Load( PrefabFile resource )
+	{
+		SourcePrefabFile = resource;
+
+		using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
+
+		if ( resource.RootObject is not null )
+		{
+			var go = CreateObject( false );
+			go.Deserialize( resource.RootObject );
+		}
+	}
+
 
 	public SceneFile Save()
 	{

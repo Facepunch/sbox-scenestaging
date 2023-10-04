@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 [GameResource( "Prefab 2", PrefabFile.FileExtension, "A prefab", Icon = "ballot" )]
 public class PrefabFile : GameResource
@@ -8,7 +9,10 @@ public class PrefabFile : GameResource
 
 	public JsonObject RootObject { get; set; }
 
-	 Scene PrefabScene { get; set; }
+	[JsonIgnore]
+	Scene PrefabScene { get; set; }
+
+	[JsonIgnore]
 	public GameObject GameObject { get; private set; }
 
 	protected override void PostLoad()

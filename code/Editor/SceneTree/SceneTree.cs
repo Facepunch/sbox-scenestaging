@@ -8,10 +8,13 @@ using System;
 using Sandbox;
 
 
-[Dock( "Editor", "Hierachy", "list" )]
+[Dock( "Editor", "Hierarchy", "list" )]
 public partial class SceneTreeWidget : Widget
 {
 	TreeView TreeView;
+
+	Layout Header;
+	Layout Footer;
 
 	public SceneTreeWidget( Widget parent ) : base( parent )
 	{
@@ -20,12 +23,14 @@ public partial class SceneTreeWidget : Widget
 		BuildUI();
 	}
 
-	// [Event.Hotload] 
+	[Event.Hotload] 
 	public void BuildUI()
 	{
 		Layout.Clear( true );
+		Header = Layout.AddColumn();
 		TreeView = Layout.Add( new TreeView( this ), 1 );
 		TreeView.Selection = EditorScene.Selection;
+		Footer = Layout.AddColumn();
 		_lastScene = null;
 		CheckForChanges(); 
 	}
@@ -41,12 +46,25 @@ public partial class SceneTreeWidget : Widget
 
 		_lastScene = activeScene;
 
+		Header.Clear( true );
 		TreeView.Clear();
 
-		if ( _lastScene is not null )
+		if ( _lastScene is null )
+			return;
+
+		if (  _lastScene.IsEditor && _lastScene.SourcePrefabFile is not null )
 		{
-			var sceneNode = TreeView.AddItem( new SceneNode( _lastScene ) );
-			TreeView.Open( sceneNode );
+			Header.Add( new Button( _lastScene.SourcePrefabFile.ResourceName ) { Clicked = () => { EditorScene.ClosePrefabScene(); } } );
+
+			var node = TreeView.AddItem( new PrefabNode( _lastScene.All.First() ) );
+			TreeView.Open( node );
+
+			return;
+		}
+		else
+		{ 
+			var node = TreeView.AddItem( new SceneNode( _lastScene ) );
+			TreeView.Open( node );
 		}
 	}
 }
