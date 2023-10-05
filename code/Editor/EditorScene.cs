@@ -6,6 +6,7 @@ using System.Linq;
 
 public static class EditorScene
 {
+	public static string PlayMode { get; set; } = "scene";
 	public static Scene Prefab { get; set; }
 	public static Scene Active { get; set; }
 	public static Scene[] All { get; set; }
@@ -58,12 +59,18 @@ public static class EditorScene
 
 	public static void Play()
 	{
-		var current = EditorScene.Active.Save();
-
 		GameManager.IsPlaying = true;
 
-		Scene.Active = new Scene();
-		Scene.Active.Load( current );
+		if ( PlayMode == "scene" )
+		{
+			var current = EditorScene.Active.Save();
+			Scene.Active = new Scene();
+			Scene.Active.Load( current );
+		}
+		else
+		{
+			Program.Main();
+		}
 
 		Camera.Main.World = Scene.Active.SceneWorld;
 		Camera.Main.Worlds.Clear();

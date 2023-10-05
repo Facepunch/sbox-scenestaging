@@ -5,16 +5,14 @@ public static class Program
 {
 	public static void Main()
 	{
-		//	if ( Application.IsEditor )
-		//		return;
+		//
+		// In the future this won't exist, we'll have an option for "default scene"
+		// and when you press play it'll load that.
+		//
 
-		Log.Info( "Loading Scene.." );
 		Scene.Active = new Scene();
 		Scene.Active.LoadFromFile( "turret.scene" );
 
-		Log.Info( "Playing.." );
 		GameManager.IsPlaying = true;
 	}
-
-
 }
