@@ -1,14 +1,4 @@
-﻿
-using Editor;
-using Editor.PanelInspector;
-using Sandbox.Diagnostics;
-using Sandbox.Internal;
-using System.Linq;
-using System;
-using Sandbox;
-
-
-[Dock( "Editor", "Hierarchy", "list" )]
+﻿[Dock( "Editor", "Hierarchy", "list" )]
 public partial class SceneTreeWidget : Widget
 {
 	TreeView TreeView;
@@ -23,7 +13,7 @@ public partial class SceneTreeWidget : Widget
 		BuildUI();
 	}
 
-	[Event.Hotload] 
+	[Event.Hotload]
 	public void BuildUI()
 	{
 		Layout.Clear( true );
@@ -32,7 +22,7 @@ public partial class SceneTreeWidget : Widget
 		TreeView.Selection = EditorScene.Selection;
 		Footer = Layout.AddColumn();
 		_lastScene = null;
-		CheckForChanges(); 
+		CheckForChanges();
 	}
 
 	Scene _lastScene;
@@ -49,10 +39,12 @@ public partial class SceneTreeWidget : Widget
 		Header.Clear( true );
 		TreeView.Clear();
 
+		Header.Add( new OpenSceneList( this ) );
+
 		if ( _lastScene is null )
 			return;
 
-		if (  _lastScene.IsEditor && _lastScene.SourcePrefabFile is not null )
+		if ( _lastScene.IsEditor && _lastScene.SourcePrefabFile is not null )
 		{
 			Header.Add( new Button( _lastScene.SourcePrefabFile.ResourceName ) { Clicked = () => { EditorScene.ClosePrefabScene(); } } );
 
@@ -62,7 +54,7 @@ public partial class SceneTreeWidget : Widget
 			return;
 		}
 		else
-		{ 
+		{
 			var node = TreeView.AddItem( new SceneNode( _lastScene ) );
 			TreeView.Open( node );
 		}

@@ -1,15 +1,8 @@
-﻿using Editor;
-using Sandbox;
-using Sandbox.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-
-public static class EditorScene
+﻿public static class EditorScene
 {
 	public static string PlayMode { get; set; } = "scene";
-	public static Scene Prefab { get; set; }
 	public static Scene Active { get; set; }
-	public static Scene[] All { get; set; }
+	public static List<Scene> OpenScenes { get; set; } = new();
 
 	internal static Gizmo.Instance GizmoInstance { get; private set; }
 
@@ -19,11 +12,18 @@ public static class EditorScene
 	{
 		GizmoInstance = new Gizmo.Instance();
 
+		NewScene();
+	}
+
+	public static void NewScene()
+	{
 		Active = new Scene();
 		Active.Name = "Untitled Scene";
 		Active.IsEditor = true;
 
-		All = new[] { Active };
+		OpenScenes.Add( Active );
+
+		// create default scene
 
 		{
 			var go = Active.CreateObject();
@@ -39,23 +39,17 @@ public static class EditorScene
 			go.AddComponent<DirectionalLightComponent>();
 		}
 
-		for ( int i = 0; i < 1000; i++ )
-		{
-			var go = Active.CreateObject();
-			go.Name = "Sphere Object";
-			go.Transform = new Transform( Vector3.Random * 1000 );
-			var model = go.AddComponent<ModelComponent>();
-			model.Model = Model.Load( "models/dev/sphere.vmdl" );
-		}
+		EditorEvent.Run( "scene.open" );
 	}
 
 	public static Scene GetAppropriateScene()
 	{
-		if ( Prefab is not null ) return Prefab;
 		if ( GameManager.IsPlaying ) return Scene.Active;
-		
+
 		return EditorScene.Active;
 	}
+
+	static Scene previousActiveScene;
 
 	public static void Play()
 	{
@@ -71,6 +65,10 @@ public static class EditorScene
 		{
 			Program.Main();
 		}
+
+		// switch editor to active scene
+		previousActiveScene = EditorScene.Active;
+		EditorScene.Active = Scene.Active;
 
 		Camera.Main.World = Scene.Active.SceneWorld;
 		Camera.Main.Worlds.Clear();
@@ -90,6 +88,16 @@ public static class EditorScene
 	public static void Stop()
 	{
 		GameManager.IsPlaying = false;
+		Scene.Active = null;
+
+		if ( OpenScenes.Contains( previousActiveScene ) )
+		{
+			EditorScene.Active = previousActiveScene;
+		}
+		else
+		{
+			EditorScene.Active = OpenScenes.FirstOrDefault();
+		}
 
 		EditorWindow.DockManager.RaiseDock( "Scene" );
 
@@ -122,12 +130,13 @@ public static class EditorScene
 	[EditorForAssetType( "scene" )]
 	public static void LoadFromScene( SceneFile resource )
 	{
-		Assert.NotNull( resource );
+		Assert.NotNull( resource, "SceneFile should not be null" );
+
 		// 
 		// TODO: Unsaved changes test
 		//
 
-		Prefab = null;
+		// is this scene already in OpenScenes?
 
 		Active = new Scene();
 		using ( Active.Push() )
@@ -137,7 +146,8 @@ public static class EditorScene
 
 			Active.Load( resource );
 
-			All = new[] { Active };
+			OpenScenes.Add( Active );
+
 			UpdateEditorTitle();
 
 			EditorEvent.Run( "scene.open" );
@@ -156,16 +166,16 @@ public static class EditorScene
 		// TODO: Unsaved changes test
 		//
 
-		Prefab = new Scene();
+		Active = new Scene();
 
-		new SceneSunLight( Prefab.SceneWorld, Rotation.From( 80, 45, 0 ), Color.White * 0.5f );
+		new SceneSunLight( Active.SceneWorld, Rotation.From( 80, 45, 0 ), Color.White * 0.5f );
 
-		using ( Prefab.Push() )
+		using ( Active.Push() )
 		{
-			Prefab.Name = resource.ResourceName.ToTitleCase();
-			Prefab.IsEditor = true;
-
-			Prefab.Load( resource );
+			Active.Name = resource.ResourceName.ToTitleCase();
+			Active.IsEditor = true;
+			OpenScenes.Add( Active );
+			Active.Load( resource );
 			UpdateEditorTitle();
 
 			EditorWindow.DockManager.RaiseDock( "Scene" );
@@ -175,18 +185,11 @@ public static class EditorScene
 
 	public static void ClosePrefabScene()
 	{
-		Prefab = null;
-		UpdateEditorTitle();
+		// TODO
 	}
 
 	static void UpdateEditorTitle()
 	{
-		if ( Prefab is not null )
-		{
-			EditorWindow.UpdateEditorTitle( Prefab.Name );
-			return;
-		}
-
 		if ( Active is not null )
 		{
 			EditorWindow.UpdateEditorTitle( Active.Name );

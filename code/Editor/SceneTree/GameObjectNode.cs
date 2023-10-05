@@ -1,16 +1,9 @@
-﻿
-using Editor;
-using Sandbox;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Nodes;
+﻿using System;
 using static Editor.BaseItemWidget;
 
 public partial class GameObjectNode : TreeNode<GameObject>
 {
-	public GameObjectNode( GameObject o ) : base ( o )
+	public GameObjectNode( GameObject o ) : base( o )
 	{
 		Height = 18;
 	}
@@ -53,7 +46,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		//
 		// If there's a drag and drop happening, fade out nodes that aren't possible
 		//
-		if ( TreeView.IsBeingDroppedOn && (TreeView.CurrentItemDragEvent.Data.Object is not GameObject go || Value.IsAncestor( go ) )  )
+		if ( TreeView.IsBeingDroppedOn && (TreeView.CurrentItemDragEvent.Data.Object is not GameObject go || Value.IsAncestor( go )) )
 		{
 			opacity *= 0.23f;
 		}
@@ -63,7 +56,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			Paint.ClearPen();
 			Paint.SetBrush( Theme.Blue.WithAlpha( 0.2f ) );
 
-			if( TreeView.CurrentItemDragEvent.DropEdge.HasFlag( ItemEdge.Top ) )
+			if ( TreeView.CurrentItemDragEvent.DropEdge.HasFlag( ItemEdge.Top ) )
 			{
 				var droprect = item.Rect;
 				droprect.Top -= 1;
@@ -102,7 +95,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 		var r = item.Rect;
 		r.Left += 4;
-		 
+
 		if ( !selected ) Paint.SetPen( Theme.Blue.WithAlpha( opacity ).Saturate( opacity - 1.0f ) );
 		Paint.DrawIcon( r, "circle", 14, TextFlag.LeftCenter );
 		r.Left += 22;

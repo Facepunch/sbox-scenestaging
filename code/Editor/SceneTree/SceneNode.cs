@@ -1,9 +1,4 @@
-﻿
-using Editor;
-using Editor.PanelInspector;
-using Sandbox;
-using System;
-using System.Linq;
+﻿using System;
 
 public partial class SceneNode : TreeNode<Scene>
 {
@@ -131,7 +126,7 @@ public partial class SceneNode : TreeNode<Scene>
 
 		var sceneAsset = AssetSystem.CreateResource( "scene", saveLocation );
 		sceneAsset.SaveToDisk( a );
-		
+
 	}
 
 
