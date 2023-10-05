@@ -17,6 +17,8 @@ public partial class SceneTreeWidget : Widget
 	public void BuildUI()
 	{
 		Layout.Clear( true );
+		Layout.Add( new OpenSceneList( this ) );
+		Header = Layout.AddColumn();
 		Header = Layout.AddColumn();
 		TreeView = Layout.Add( new TreeView( this ), 1 );
 		TreeView.Selection = EditorScene.Selection;
@@ -39,15 +41,11 @@ public partial class SceneTreeWidget : Widget
 		Header.Clear( true );
 		TreeView.Clear();
 
-		Header.Add( new OpenSceneList( this ) );
-
 		if ( _lastScene is null )
 			return;
 
 		if ( _lastScene.IsEditor && _lastScene.SourcePrefabFile is not null )
 		{
-			Header.Add( new Button( _lastScene.SourcePrefabFile.ResourceName ) { Clicked = () => { EditorScene.ClosePrefabScene(); } } );
-
 			var node = TreeView.AddItem( new PrefabNode( _lastScene.All.First() ) );
 			TreeView.Open( node );
 

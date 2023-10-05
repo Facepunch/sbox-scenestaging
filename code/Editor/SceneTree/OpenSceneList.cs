@@ -7,6 +7,8 @@ public partial class OpenSceneList : Widget
 	{
 		MinimumHeight = Theme.RowHeight;
 		Layout = Layout.Row();
+		Layout.Margin = new Sandbox.UI.Margin( 2, 2, 2, 2 );
+		Layout.Spacing = 2;
 	}
 
 	public void BuildUI()
@@ -26,19 +28,16 @@ public partial class OpenSceneList : Widget
 		Layout.AddStretchCell();
 	}
 
+	protected override void OnPaint()
+	{
+		Paint.ClearPen();
+		Paint.SetBrush( Theme.ControlBackground );
+		Paint.DrawRect( LocalRect, 5 );
+	}
+
 	void AddSceneButton( Scene scene )
 	{
-		var b = Layout.Add( new Button( scene.Name ) );
-
-		b.Clicked = () =>
-		{
-			EditorScene.Active = scene;
-		};
-
-		if ( EditorScene.Active == scene )
-		{
-			b.SetStyles( "background-color: red;" );
-		}
+		Layout.Add( new SceneTabButton( scene ) );
 	}
 
 	int rebuildHash;
@@ -53,7 +52,6 @@ public partial class OpenSceneList : Widget
 			hash.Add( scene );
 		}
 
-		hash.Add( EditorScene.Active );
 		hash.Add( Scene.Active );
 
 		if ( rebuildHash == hash.ToHashCode() ) return;

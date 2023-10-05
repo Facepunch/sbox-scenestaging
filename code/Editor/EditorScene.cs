@@ -183,9 +183,23 @@
 		}
 	}
 
-	public static void ClosePrefabScene()
+	public static void CloseScene( Scene scene )
 	{
-		// TODO
+		// SAVE CHANGES???
+
+		if ( scene == Active )
+		{
+			var index = OpenScenes.IndexOf( scene );
+			if ( index >= 0 && OpenScenes.Count > 1 )
+			{
+				if ( index > 0 ) index--;
+				else index++;
+
+				Active = OpenScenes[index];
+			}
+		}
+
+		OpenScenes.Remove( scene );
 	}
 
 	static void UpdateEditorTitle()
