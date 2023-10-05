@@ -26,25 +26,6 @@
         "Scale": "50,50,50",
         "Surface": null
       }
-    ],
-    "Children": [
-      {
-        "Id": "196376bd-0a10-4b32-b74d-cd37011140b9",
-        "Name": "Directional Light",
-        "Enabled": true,
-        "Position": "0,0,0",
-        "Rotation": "0.4351622,0.4351622,-0.5573454,0.5573453",
-        "Scale": "1,1,1",
-        "Components": [
-          {
-            "__type": "DirectionalLightComponent",
-            "__enabled": true,
-            "LightColor": "0.91373,0.98039,1,1",
-            "Shadows": true,
-            "SkyColor": "0.05882,0.07451,0.08235,1"
-          }
-        ]
-      }
     ]
   }
 }
