@@ -270,4 +270,14 @@ public sealed class Scene
 
 		Load( file );
 	}
+
+	/// <summary>
+	/// This is slow, and somewhat innacurate. Don't call it every frame!
+	/// </summary>
+	public BBox GetBounds()
+	{
+		var renderers = All.SelectMany( x => x.GetComponents<ModelComponent>() );
+
+		return BBox.FromBoxes( renderers.Select( x => x.Bounds ) );
+	}
 }

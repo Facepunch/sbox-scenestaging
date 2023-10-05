@@ -9,8 +9,38 @@ public class DirectionalLightComponent : GameObjectComponent
 {
 	SceneSunLight _sceneObject;
 
-	[Property] public Color LightColor { get; set; } = "#E9FAFF";
-	[Property] public Color SkyColor { get; set; } = "#0F1315";
+
+	Color _lightColor = "#E9FAFF";
+	[Property] public Color LightColor
+	{
+		get => _lightColor;
+		set
+		{
+			if ( _lightColor == value ) return;
+			_lightColor = value;
+
+			if ( _sceneObject.IsValid() )
+			{
+				_sceneObject.LightColor = LightColor;
+			}
+		}
+	}
+
+	Color _skyColor = "#0F1315";
+	[Property] public Color SkyColor 
+	{
+		get => _skyColor;
+		set
+		{
+			if ( _skyColor  == value ) return;
+			_skyColor = value;
+
+			if ( _sceneObject.IsValid() )
+			{
+				_sceneObject.SkyColor = _skyColor;
+			}
+		}
+	}
 
 	[Property] public bool Shadows { get; set; } = true;
 
@@ -46,6 +76,8 @@ public class DirectionalLightComponent : GameObjectComponent
 		_sceneObject.Transform = GameObject.WorldTransform;
 		_sceneObject.ShadowsEnabled = true;
 		_sceneObject.ShadowCascadeCount = 3;
+		_sceneObject.LightColor = LightColor;
+		_sceneObject.SkyColor = SkyColor;
 
 		// garry: I dunno if any of this works, just trying to make them look less shit
 		_sceneObject.SetShadowCascadeResolution( 0, 1024 * 2 );
@@ -70,8 +102,7 @@ public class DirectionalLightComponent : GameObjectComponent
 
 		_sceneObject.Transform = GameObject.WorldTransform.WithScale( 1 );
 		_sceneObject.ShadowsEnabled = Shadows;
-		_sceneObject.LightColor = LightColor;
-		_sceneObject.SkyColor = SkyColor;
+
 
 
 	}

@@ -142,24 +142,7 @@ public partial class SceneViewWidget : Widget
 			Camera.Position = Vector3.Backward * 2000 + Vector3.Up * 2000 + Vector3.Left * 2000;
 			Camera.Rotation = Rotation.LookAt( -Camera.Position );
 
-			var bbox = new BBox();
-
-			int i = 0;
-			foreach ( var entry in activeScene.All )
-			{
-				if ( i++ == 0 )
-				{
-					bbox = new BBox( entry.WorldTransform.Position, 16 );
-				}
-
-				// get the bounding box of the selected objects
-				bbox = bbox.AddBBox( new BBox( entry.WorldTransform.Position, 16 ) );
-
-				foreach ( var model in entry.GetComponents<ModelComponent>( true, true ) )
-				{
-					bbox = bbox.AddBBox( model.Bounds );
-				}
-			}
+			var bbox = activeScene.GetBounds();
 
 			FrameOn( bbox );
 		}
