@@ -10,8 +10,10 @@ public sealed class TurretComponent : BaseComponent
 	[Property] GameObject Bullet { get; set; }
 	[Property] GameObject SecondaryBullet { get; set; }
 	[Property] GameObject Muzzle { get; set; }
+
+	public delegate void ShootHandler( TurretComponent turret, GameObject bullet );
 	
-	[Property] public Action<TurretComponent> OnShoot { get; set; }
+	[Property] public ShootHandler OnShoot { get; set; }
 
 	[Property] ModelRenderer GunModel { get; set; }
 	[Property] Gradient GunColorGradient { get; set; }
@@ -78,6 +80,8 @@ public sealed class TurretComponent : BaseComponent
 
 			Stats.Increment( "balls_fired", 1 );
 
+			OnShoot?.Invoke( this, obj );
+			
 			// Testing sound
 			Sound.FromWorld( "rust_smg.shoot", Transform.Position );
 			timeSincePrimary = 0;
