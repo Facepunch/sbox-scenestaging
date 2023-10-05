@@ -1,28 +1,30 @@
 {
   "RootObject": {
-    "Id": "052f8587-4e59-43b3-ba20-54fda4662373",
+    "Id": "abf72244-1fcc-4837-8df0-b51d2f170a05",
     "Name": "Bullet",
     "Enabled": true,
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
-    "Scale": "1,1,1",
-    "Children": [
+    "Scale": "0.6,0.6,0.6",
+    "Components": [
       {
-        "Id": "31695fab-bd51-43d3-8c3c-7e57c16f5772",
-        "Name": "Sphere",
-        "Enabled": true,
-        "Position": "0,0,0",
-        "Rotation": "0,0,0,1",
-        "Scale": "0.2,0.2,0.2",
-        "Components": [
-          {
-            "__type": "ModelComponent",
-            "__enabled": true,
-            "MaterialOverride": null,
-            "Model": "models/dev/sphere.vmdl",
-            "Tint": "1,1,1,1"
-          }
-        ]
+        "__type": "ModelComponent",
+        "__enabled": true,
+        "MaterialOverride": "materials/default.vmat",
+        "Model": "models/dev/sphere.vmdl",
+        "Tint": "0.36881,0.73762,0,1"
+      },
+      {
+        "__type": "ColliderSphereComponent",
+        "__enabled": true,
+        "Radius": 34.15,
+        "Surface": null
+      },
+      {
+        "__type": "PhysicsComponent",
+        "__enabled": true,
+        "Gravity": false,
+        "Static": false
       }
     ]
   }

@@ -320,6 +320,93 @@
       ]
     },
     {
+      "Id": "5df98436-300e-40f3-a7f8-37f68a2a4881",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "686.7393,393.245,-1612.719",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "2601cbbd-94dc-4332-ac4a-3024d5cb692b",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "686.7393,466.1223,-1612.719",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "4c7639d6-4a94-4ef3-8fb2-084cc2799525",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "686.7393,538.7812,-1612.719",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
       "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
       "Name": "Cube (2)",
       "Enabled": true,
@@ -1074,6 +1161,64 @@
       ]
     },
     {
+      "Id": "7f61f3f6-fde6-405a-a1e1-4c5c4b1a9672",
+      "Name": "Cube (14)",
+      "Enabled": true,
+      "Position": "686.7393,357.9727,-1563.041",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "0.85644,0.12719,0.57932,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "2d7b6ae5-7598-4502-9ebe-bb2083f618bd",
+      "Name": "Cube (14)",
+      "Enabled": true,
+      "Position": "686.7393,504.4504,-1563.041",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "0.85644,0.12719,0.57932,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
       "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
       "Name": "Cube (15)",
       "Enabled": true,
@@ -1136,6 +1281,35 @@
       "Name": "Cube (17)",
       "Enabled": true,
       "Position": "686.7393,286.9323,-1563.041",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "fce310f2-ba63-4b3b-a4e3-0ba557fbab69",
+      "Name": "Cube (17)",
+      "Enabled": true,
+      "Position": "686.7393,429.4614,-1563.041",
       "Rotation": "-0.00000003254731,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -1281,6 +1455,267 @@
       "Name": "Cube (22)",
       "Enabled": true,
       "Position": "686.7393,-68.0729,-1498.417",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "71f9fca2-8bcd-4a5f-ad5e-a8a56bd7739c",
+      "Name": "Cube (22)",
+      "Enabled": true,
+      "Position": "686.7393,329.0835,-1498.417",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "7bf06558-a359-47a0-b6f3-5087084bbd76",
+      "Name": "Cube (22)",
+      "Enabled": true,
+      "Position": "686.7393,407.8695,-1498.417",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "241b6558-60a6-4b65-a575-98c8daebb8b2",
+      "Name": "Cube (22)",
+      "Enabled": true,
+      "Position": "686.7393,479.6847,-1498.417",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "887c7246-c53a-4c57-8ff0-7ab57fe8670c",
+      "Name": "Cube (22)",
+      "Enabled": true,
+      "Position": "686.7393,444.2884,-1427.168",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "4b96cc95-3822-4ca6-9204-3a9912dd45ee",
+      "Name": "Cube (22)",
+      "Enabled": true,
+      "Position": "686.7393,368.6415,-1427.168",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,0.38,0,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "72fcb66e-4664-4801-85c6-5783134cd7a9",
+      "Name": "Cube (22)",
+      "Enabled": true,
+      "Position": "686.7393,289.921,-1427.168",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "eb935124-2f21-4157-a493-b055bd8e40ab",
+      "Name": "Cube (22)",
+      "Enabled": true,
+      "Position": "686.7393,340.3432,-1375.437",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "49e1f034-5d14-461c-881e-f9b998340cd3",
+      "Name": "Cube (22)",
+      "Enabled": true,
+      "Position": "686.7393,410.9009,-1375.437",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "8f68d8ca-8672-4d42-8e8c-45df5acd4cc8",
+      "Name": "Cube (22)",
+      "Enabled": true,
+      "Position": "686.7393,370.0432,-1319.666",
       "Rotation": "-0.00000003254731,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -1544,9 +1979,10 @@
         {
           "__type": "TurretComponent",
           "__enabled": true,
-          "Bullet": "cube.object",
+          "Bullet": "bullet.object",
           "Gun": "99e832d5-87ef-4bd1-a3c2-39ba2c536618",
-          "Muzzle": "432c5a69-3822-4504-a15f-5d7b652de9fc"
+          "Muzzle": "432c5a69-3822-4504-a15f-5d7b652de9fc",
+          "SecondaryBullet": "cube.object"
         }
       ],
       "Children": [

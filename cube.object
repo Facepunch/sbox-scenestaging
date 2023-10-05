@@ -1,11 +1,11 @@
 {
   "RootObject": {
-    "Id": "9734629b-ce50-4501-82cb-d489fa10eeb3",
+    "Id": "72db4630-bea2-4db5-928b-99d615834a99",
     "Name": "Cube",
     "Enabled": true,
     "Position": "1197.774,319.2115,-1586.788",
     "Rotation": "0,0,0,1",
-    "Scale": "0.5,0.5,0.5",
+    "Scale": "0.3,0.3,0.3",
     "Components": [
       {
         "__type": "ModelComponent",
@@ -17,7 +17,7 @@
       {
         "__type": "PhysicsComponent",
         "__enabled": true,
-        "Gravity": false,
+        "Gravity": true,
         "Static": false
       },
       {

@@ -1,14 +1,18 @@
 using Sandbox;
+using Sandbox.Services;
 using System;
 
 public sealed class TurretComponent : GameObjectComponent
 {
 	[Property] GameObject Gun { get; set; }
 	[Property] GameObject Bullet { get; set; }
+	[Property] GameObject SecondaryBullet { get; set; }
 	[Property] GameObject Muzzle { get; set; }
 
 	float turretYaw;
 	float turretPitch;
+
+	TimeSince timeSinceLastSecondary;
 
 	public override void Update()
 	{
@@ -45,6 +49,22 @@ public sealed class TurretComponent : GameObjectComponent
 			if ( physics is not null )
 			{
 				physics.Velocity = Muzzle.WorldTransform.Rotation.Forward * 2000.0f;
+			}
+
+			Stats.Increment( "balls_fired", 1 );
+		}
+
+		if ( Input.Down( "Attack2" ) && timeSinceLastSecondary > 0.02f )
+		{
+			Stats.Increment( "cubes_fired", 1 );
+
+			timeSinceLastSecondary = 0;
+
+			var obj = SceneUtility.Instantiate( SecondaryBullet, Muzzle.WorldTransform.Position, Muzzle.WorldTransform.Rotation );
+			var physics = obj.GetComponent<PhysicsComponent>( true, true );
+			if ( physics is not null )
+			{
+				physics.Velocity = Muzzle.WorldTransform.Rotation.Forward * 300.0f;
 			}
 
 		}
