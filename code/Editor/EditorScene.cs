@@ -1,5 +1,6 @@
 ﻿using Editor;
 using Sandbox;
+using Sandbox.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -114,6 +115,7 @@ public static class EditorScene
 	[EditorForAssetType( "scene" )]
 	public static void LoadFromScene( SceneFile resource )
 	{
+		Assert.NotNull( resource );
 		// 
 		// TODO: Unsaved changes test
 		//

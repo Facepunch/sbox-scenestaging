@@ -124,6 +124,8 @@ public sealed partial class GameObject
 					return;
 				
 				var c = this.AddComponent( componentType );
+				if ( c is null ) continue;
+				
 				c.Deserialize( jso );
 			}
 		}

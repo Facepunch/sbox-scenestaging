@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using Sandbox;
+using Sandbox.Diagnostics;
 using Sandbox.Physics;
 using Sandbox.Utility;
 using System;
@@ -167,7 +168,11 @@ public sealed class Scene
 
 	public void Load( SceneFile resource )
 	{
+		Assert.NotNull( resource );
+
 		SourceSceneFile = resource;
+
+		using var sceneScope = Push();
 
 		using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
 
@@ -250,5 +255,19 @@ public sealed class Scene
 		{
 			Active = old;
 		} );
+	}
+
+	public void LoadFromFile( string filename )
+	{
+		// Clean Scene
+
+		var file = ResourceLibrary.Get<SceneFile>( filename );
+		if ( file is null )
+		{
+			Log.Warning( $"LoadFromFile: Couldn't find {filename}" );
+			return;
+		}
+
+		Load( file );
 	}
 }
