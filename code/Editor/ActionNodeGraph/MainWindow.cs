@@ -45,6 +45,11 @@ public partial class MainWindow : DockWindow
 			WindowTitle = "Graph View"
 		};
 
+		View.SetHandleConfig( typeof( OutputSignal ), new HandleConfig { Color = Theme.White, Name = "Signal" } );
+		View.SetHandleConfig( typeof( Task ), new HandleConfig { Color = Theme.White, Name = "Signal" } );
+		View.SetHandleConfig( typeof( GameObject ), new HandleConfig { Color = Theme.Green } );
+		View.SetHandleConfig( typeof( GameObjectComponent ), new HandleConfig { Color = Theme.Blue } );
+
 		foreach ( var nodeDefinition in EditorNodeLibrary.All.Values )
 		{
 			View.AddNodeType( new ActionNodeType( nodeDefinition ) );
@@ -54,6 +59,17 @@ public partial class MainWindow : DockWindow
 		Size = new Vector2( 1280, 720 );
 
 		RebuildUI();
+	}
+
+	[EditorEvent.Frame]
+	public void Frame()
+	{
+		var updated = Graph.Update();
+
+		if ( updated.Any() )
+		{
+			View.UpdateConnections( updated );
+		}
 	}
 
 	[Event.Hotload]

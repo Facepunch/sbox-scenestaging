@@ -34,6 +34,8 @@ public sealed class ActionControlWidget : ControlWidget
 {
 	public Button Button { get; }
 
+	private MainWindow _openWindow;
+
 	public ActionControlWidget( SerializedProperty property ) : base( property )
 	{
 		Button = new Button( "Open In Editor", "account_tree", this );
@@ -42,18 +44,14 @@ public sealed class ActionControlWidget : ControlWidget
 
 	private void Button_Clicked()
 	{
-		var json = SerializedProperty.As.String;
+		var action = SerializedProperty.GetValue<Delegate>();
 		ActionJig jig;
 
 		try
 		{
-			var func = JsonSerializer.Deserialize(
-				SerializedProperty.As.String,
-				SerializedProperty.PropertyType,
-				EditorJsonOptions );
-			jig = (ActionJig)func;
+			jig = action == null ? null : (ActionJig) action;
 		}
-		catch
+		catch ( InvalidCastException )
 		{
 			jig = null;
 		}
@@ -63,11 +61,17 @@ public sealed class ActionControlWidget : ControlWidget
 		var name = SerializedProperty.DisplayName;
 		var window = MainWindow.Open( jig, name );
 
+		if ( _openWindow == window )
+		{
+			return;
+		}
+
+		_openWindow = window;
+
 		window.Saved += () =>
 		{
-			SerializedProperty.As.String = JsonSerializer.Serialize(
-				jig.AsDelegate( SerializedProperty.PropertyType ),
-				EditorJsonOptions );
+			SerializedProperty.SetValue( jig.AsDelegate( SerializedProperty.PropertyType ) );
+			SerializedProperty.Parent.NoteChanged( SerializedProperty );
 		};
 	}
 

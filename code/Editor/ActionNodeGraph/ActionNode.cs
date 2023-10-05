@@ -73,40 +73,64 @@ public class ActionNode : INode
 			where TDef : class, IParameterDefinition
 		{
 			return new PlugCollection(
-				() => getParams().Keys,
-				name => new ActionPlug<T, TDef>( node, getParams()[name] ) );
+				typeof(T) == typeof(Node.Input)
+					? () => getParams().Values.Select( x => (Node.Input)(object)x )
+						.SelectMany( x =>
+							x.LinkArray?
+								.Select( ( _, i ) => (x.Name, (int?)i) )
+								.Concat( new (string, int?)[] { (x.Name, x.LinkArray.Count) } ) ??
+							new (string, int?)[] { (x.Name, null) } )
+					: () => getParams().Keys.Select( x => (x, (int?)null) ),
+				key => new ActionPlug<T, TDef>( node, getParams()[key.Name], key.Index ) );
 		}
 
-		private readonly Func<IEnumerable<string>> _getKeys;
-		private readonly Func<string, IPlug> _createPlug;
+		private readonly Func<IEnumerable<(string Name, int? Index)>> _getKeys;
+		private readonly Func<(string Name, int? Index), IActionPlug> _createPlug;
 
-		private readonly Dictionary<string, IPlug> _plugs = new();
+		private readonly Dictionary<(string Name, int? Index), IActionPlug> _plugs = new();
 
-		private PlugCollection( Func<IEnumerable<string>> getKeys, Func<string, IPlug> createPlug )
+		private PlugCollection( Func<IEnumerable<(string Name, int? Index)>> getKeys, Func<(string Name, int? Index), IActionPlug> createPlug )
 		{
 			_getKeys = getKeys;
 			_createPlug = createPlug;
 		}
 
-		public void Update()
+		public bool Update()
 		{
-			var keys = _getKeys().ToHashSet();
+			var keys = _getKeys().ToArray();
+			var changed = false;
 
 			foreach ( var key in _plugs.Keys.Where( x => !keys.Contains( x ) ).ToArray() )
 			{
+				Log.Info( $"Removed {key}" );
 				_plugs.Remove( key );
+				changed = true;
 			}
 
 			foreach ( var key in keys )
 			{
-				if ( !_plugs.ContainsKey( key ) )
+				if ( _plugs.TryGetValue( key, out var plug ) )
 				{
+					if ( plug.LastType != plug.Type )
+					{
+						Log.Info( $"Changed {key}" );
+						plug.LastType = plug.Type;
+						changed = true;
+					}
+				}
+				else
+				{
+					Log.Info( $"Added {key}" );
 					_plugs[key] = _createPlug( key );
+					changed = true;
 				}
 			}
+
+			return changed;
 		}
 
-		public IPlug this[ string name ] => _plugs[name];
+		public IPlug this[ string name, int? index ] => _plugs[(name, index)];
+		public IPlug this[ string name ] => _plugs[(name, null)];
 
 		IEnumerator<IPlug> IEnumerable<IPlug>.GetEnumerator() => _plugs.Values.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => _plugs.Values.GetEnumerator();
@@ -118,7 +142,11 @@ public class ActionNode : INode
 
 	void INode.OnPaint( Rect rect )
 	{
-
+		if ( Node.HasErrors() )
+		{
+			Paint.SetBrush( Color.Red.WithAlpha( 0.25f ) );
+			Paint.DrawRect( rect, 5f );
+		}
 	}
 
 	NodeUI INode.CreateUI( GraphView view )
@@ -147,19 +175,34 @@ public class ActionNode : INode
 		Update();
 	}
 
+	public void MarkDirty()
+	{
+		Graph.MarkDirty( this );
+	}
+
 	public void Update()
 	{
-		Inputs.Update();
-		Outputs.Update();
+		if ( Inputs.Update() | Outputs.Update() )
+		{
+			PlugsChanged?.Invoke();
+		}
 	}
 }
 
-public class ActionPlug<T, TDef> : IPlug
+public interface IActionPlug : IPlug
+{
+	Type LastType { get; set; }
+}
+
+public class ActionPlug<T, TDef> : IActionPlug
 	where T : Node.Parameter<TDef>
 	where TDef : class, IParameterDefinition
 {
 	public ActionNode Node { get; }
 	public T Parameter { get; }
+	public int? Index { get; set; }
+
+	public Type LastType { get; set; }
 
 	INode IPlug.Node => Node;
 
@@ -169,19 +212,36 @@ public class ActionPlug<T, TDef> : IPlug
 
 	public DisplayInfo DisplayInfo => new()
 	{
-		Name = Parameter.Display.Title,
+		Name = Index == null ? Parameter.Display.Title
+			: $"{Parameter.Display.Title}[{Index}]",
 		Description = Parameter.Display.Description
 	};
 
-	public ActionPlug( ActionNode node, T parameter )
+	public ActionPlug( ActionNode node, T parameter, int? index )
 	{
 		Node = node;
 		Parameter = parameter;
+		Index = index;
+
+		LastType = Type;
 	}
 
 	public ValueEditor CreateEditor( NodeUI node, Plug plug )
 	{
-		// TODO
+		if ( Parameter is not Node.Input input )
+		{
+			return null;
+		}
+
+		if ( Type == typeof( float ) )
+		{
+			var slider = new FloatEditor( plug ) { Title = DisplayInfo.Name, Node = node };
+			slider.Bind( "Value" ).From( input, "Value" );
+			return slider;
+		}
+
+		// TODO: int, bool, string, ...
+
 		return null;
 	}
 
@@ -194,26 +254,79 @@ public class ActionPlug<T, TDef> : IPlug
 				return null;
 			}
 
-			if ( input.Link is not { } link )
+			if ( Index is null && input.Link is { } link )
+			{
+				return Node.Graph.FindNode( link.Source.Node )?.Outputs[link.Source.Name];
+			}
+
+			if ( Index is not {} index || input.LinkArray is not { } links )
 			{
 				return null;
 			}
+
+			if ( index < 0 || index >= links.Count )
+			{
+				return null;
+			}
+
+			link = links[index];
 
 			return Node.Graph.FindNode( link.Source.Node )?.Outputs[link.Source.Name];
 		}
 		set
 		{
-			if ( value is not ActionPlug<Node.Output, OutputDefinition> { Parameter: {} output } )
-			{
-				return;
-			}
-
 			if ( Parameter is not Node.Input input )
 			{
 				return;
 			}
 
-			input.SetLink( output );
+			if ( value is null )
+			{
+				if ( Index is null || Index is 0 && input.LinkArray?.Count == 1 )
+				{
+					input.ClearLinks();
+				}
+				else
+				{
+					input.SetLinks( (input.LinkArray ?? Array.Empty<Link>())
+						.Select( ( x, i ) => i == Index ? null : x.Source )
+						.Where( x => x != null )
+						.ToArray() );
+				}
+
+				Node.MarkDirty();
+				return;
+			}
+
+			if ( value is not ActionPlug<Node.Output, OutputDefinition> { Parameter: {} output } )
+			{
+				return;
+			}
+
+			if ( !input.IsArray || value.Type.IsArray && (Index is null || Index is 0 && input.LinkArray?.Count == 1) )
+			{
+				input.SetLink( output );
+				Node.MarkDirty();
+				return;
+			}
+
+			Index ??= 0;
+
+			var links = (input.LinkArray! ?? Array.Empty<Link>())
+				.Select( x => x.Source )
+				.ToList();
+
+			if ( Index == links.Count )
+			{
+				links.Add( output );
+			}
+			else
+			{
+				links[Index ?? 0] = output;
+			}
+
+			input.SetLinks( links );
+			Node.MarkDirty();
 		}
 	}
 }

@@ -14,6 +14,7 @@ public partial class ActionGraph : IGraph
 
 	private Dictionary<Node, ActionNode> NodeDict { get; } = new Dictionary<Node, ActionNode>();
 	private Dictionary<string, ActionNode> NodeIdDict { get; } = new Dictionary<string, ActionNode>();
+	private HashSet<ActionNode> DirtyNodes { get; } = new HashSet<ActionNode>();
 
 	public IEnumerable<INode> Nodes => NodeDict.Values;
 
@@ -39,6 +40,11 @@ public partial class ActionGraph : IGraph
 		NodeIdDict.Remove( node.Identifier );
 
 		actionNode.Node.Remove();
+	}
+
+	internal void MarkDirty( ActionNode node )
+	{
+		DirtyNodes.Add( node );
 	}
 
 	public ActionNode FindNode( Node node ) => NodeDict.TryGetValue( node, out var editorNode ) ? editorNode : null;
@@ -82,5 +88,26 @@ public partial class ActionGraph : IGraph
 			NodeDict.Remove( node );
 			NodeIdDict.Remove( editorNode.Identifier );
 		}
+	}
+
+	public IReadOnlyList<INode> Update()
+	{
+		var messages = Jig.Messages;
+
+		if ( DirtyNodes.Count == 0 )
+		{
+			return Array.Empty<INode>();
+		}
+
+		var dirty = DirtyNodes.ToArray();
+
+		foreach ( var actionNode in dirty )
+		{
+			actionNode.Update();
+		}
+
+		DirtyNodes.Clear();
+
+		return dirty;
 	}
 }
