@@ -1,16 +1,9 @@
-﻿using Sandbox;
-using Sandbox.Diagnostics;
+﻿using Sandbox.Diagnostics;
 using Sandbox.Utility;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 
 public static class SceneUtility
 {
@@ -21,7 +14,7 @@ public static class SceneUtility
 	/// </summary>
 	public static void MakeGameObjectsUnique( JsonObject json )
 	{
-		Dictionary<Guid, Guid> translate = new ();
+		Dictionary<Guid, Guid> translate = new();
 
 		//
 		// Find all guids with "Id" as their name. Add them to translate 
@@ -34,7 +27,7 @@ public static class SceneUtility
 			if ( v.TryGetValue<Guid>( out var guid ) )
 			{
 				translate[guid] = Guid.NewGuid();
-			}		
+			}
 
 			return v;
 		} );
@@ -58,7 +51,7 @@ public static class SceneUtility
 
 		if ( node is JsonObject jsonObject )
 		{
-			foreach( var entry in jsonObject )
+			foreach ( var entry in jsonObject )
 			{
 				var key = entry.Key;
 				var newValue = WalkJsonValues( entry.Value, onValue, key );
@@ -67,13 +60,13 @@ public static class SceneUtility
 				deferred += () =>
 				{
 					jsonObject[key] = newValue;
-				};				
+				};
 			}
 		}
 
 		if ( node is JsonArray array )
 		{
-			foreach( var a in array )
+			foreach ( var a in array )
 			{
 				WalkJsonValues( a, onValue );
 			}
@@ -158,7 +151,7 @@ public static class SceneUtility
 		o.UpdateEnabledStatus();
 	}
 
-	internal static void ActivateComponent( GameObjectComponent o )
+	internal static void ActivateComponent( BaseComponent o )
 	{
 		if ( o.GameObject is null || o.Scene is null ) return;
 

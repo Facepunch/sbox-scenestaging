@@ -119,7 +119,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		return $"GO - {Name}";
 	}
 
-	public List<GameObjectComponent> Components = new List<GameObjectComponent>();
+	public List<BaseComponent> Components = new List<BaseComponent>();
 
 	GameObject _parent;
 
@@ -173,7 +173,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	{
 		foreach ( var component in Components )
 		{
-			if ( component is GameObjectComponent goc )
+			if ( component is BaseComponent goc )
 			{
 				goc.GameObject = this;
 			}
@@ -191,7 +191,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		{
 			component.OnDisabled();
 
-			if ( component is GameObjectComponent goc )
+			if ( component is BaseComponent goc )
 			{
 				goc.GameObject = null;
 			}
@@ -232,7 +232,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		}
 	}
 
-	public T AddComponent<T>( bool enabled = true ) where T : GameObjectComponent, new()
+	public T AddComponent<T>( bool enabled = true ) where T : BaseComponent, new()
 	{
 		var t = new T();
 
@@ -243,12 +243,12 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		return t;
 	}
 
-	public T GetComponent<T>( bool enabledOnly = true, bool deep = false ) where T : GameObjectComponent
+	public T GetComponent<T>( bool enabledOnly = true, bool deep = false ) where T : BaseComponent
 	{
 		return GetComponents<T>( enabledOnly, deep ).FirstOrDefault();
 	}
 
-	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) where T : GameObjectComponent
+	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) where T : BaseComponent
 	{
 		var q = Components.OfType<T>();
 		if ( enabledOnly ) q = q.Where( x => x.Active );
@@ -270,12 +270,12 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		}
 	}
 
-	public GameObjectComponent AddComponent( TypeDescription type, bool enabled = true )
+	public BaseComponent AddComponent( TypeDescription type, bool enabled = true )
 	{
-		if ( !type.TargetType.IsAssignableTo( typeof( GameObjectComponent ) ) )
+		if ( !type.TargetType.IsAssignableTo( typeof( BaseComponent ) ) )
 			return null;
 
-		var t = type.Create<GameObjectComponent>( null );
+		var t = type.Create<BaseComponent>( null );
 
 		t.GameObject = this;
 		Components.Add( t );
@@ -283,80 +283,6 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		t.Enabled = enabled;
 
 		return t;
-	}
-
-	internal void DrawGizmos()
-	{
-		if ( !Active ) return;
-
-		var parentTx = Gizmo.Transform;
-
-		using ( Gizmo.ObjectScope( this, Transform ) )
-		{
-			if ( Gizmo.IsSelected )
-			{
-				DrawTransformGizmos( parentTx );
-			}
-
-			bool clicked = Gizmo.WasClicked;
-
-			foreach ( var component in Components )
-			{
-				using var scope = Gizmo.Scope();
-
-				component.DrawGizmos();
-				clicked |= Gizmo.WasClicked;
-			}
-
-			if ( clicked )
-			{
-				Gizmo.Select();
-			}
-
-			foreach ( var child in Children )
-			{
-				child.DrawGizmos();
-			}
-
-		}
-	}
-
-	void DrawTransformGizmos( Transform parentTransform )
-	{
-		using var scope = Gizmo.Scope();
-
-		var tx = Transform;
-
-		// use the local position but get rid of local rotation and local scale
-		Gizmo.Transform = parentTransform.Add( tx.Position, false );
-
-		Gizmo.Hitbox.DepthBias = 0.1f;
-
-		if ( Gizmo.Settings.EditMode == "position" )
-		{
-			if ( Gizmo.Control.Position( "position", tx.Position, out var newPos, tx.Rotation ) )
-			{
-				tx.Position = newPos;
-			}
-		}
-
-		if ( Gizmo.Settings.EditMode == "rotation" )
-		{
-			if ( Gizmo.Control.Rotate( "rotation", tx.Rotation, out var newRotation ) )
-			{
-				tx.Rotation = newRotation;
-			}
-		}
-
-		if ( Gizmo.Settings.EditMode == "scale" )
-		{
-			if ( Gizmo.Control.Scale( "scale", tx.Scale, out var newScale ) )
-			{
-				tx.Scale = newScale.Clamp( 0.001f, 100.0f );
-			}
-		}
-
-		Transform = tx;
 	}
 
 	internal void Tick()
@@ -486,7 +412,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	/// <summary>
 	/// Find component on this gameobject, or its parents
 	/// </summary>
-	public T GetComponentInParent<T>( bool enabledOnly = true ) where T : GameObjectComponent
+	public T GetComponentInParent<T>( bool enabledOnly = true ) where T : BaseComponent
 	{
 		var t = GetComponent<T>( enabledOnly, false );
 		if ( t is not null )

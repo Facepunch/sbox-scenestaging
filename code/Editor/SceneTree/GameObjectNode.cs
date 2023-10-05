@@ -5,7 +5,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 {
 	public GameObjectNode( GameObject o ) : base( o )
 	{
-		Height = 18;
+		Height = 17;
 	}
 
 	public override bool HasChildren => Value.Children.Any();
@@ -101,7 +101,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		r.Left += 22;
 
 		Paint.SetPen( selected ? Theme.White.WithAlpha( opacity ) : Theme.ControlText.WithAlpha( opacity ) );
-		Paint.SetDefaultFont( 9 );
+		Paint.SetDefaultFont();
 		Paint.DrawText( r, name, TextFlag.LeftCenter );
 	}
 

@@ -16,6 +16,7 @@ public class GameObjectInspector : Widget
 	{
 		TargetObject = target;
 		SerializedObject = EditorTypeLibrary.GetSerializedObject( target );
+		SerializedObject.OnPropertyChanged += ( p ) => PropertyEdited( p, TargetObject );
 
 		Layout = Layout.Column();
 
@@ -46,6 +47,12 @@ public class GameObjectInspector : Widget
 	//	footer.Add( new Button.Primary( "Add Component", "add" ) { Clicked = AddComponentDialog } );
 	}
 
+	void PropertyEdited( SerializedProperty property, GameObject go )
+	{
+		var value = property.GetValue<object>();
+		go.EditLog( $"{go.Name}.{property.Name}", go, () => property.SetValue( value ) );
+	}
+
 	/// <summary>
 	/// Pop up a window to add a component to this entity
 	/// </summary>
@@ -60,9 +67,9 @@ public class GameObjectInspector : Widget
 
 public class ComponentList : Widget
 {
-	List<GameObjectComponent> componentList; // todo - SerializedObject should support lists, arrays
+	List<BaseComponent> componentList; // todo - SerializedObject should support lists, arrays
 
-	public ComponentList( List<GameObjectComponent> components ) : base( null )
+	public ComponentList( List<BaseComponent> components ) : base( null )
 	{
 		componentList = components;
 		Layout = Layout.Column();
@@ -78,13 +85,20 @@ public class ComponentList : Widget
 		foreach ( var o in componentList )
 		{
 			var serialized = EditorTypeLibrary.GetSerializedObject( o );
+			serialized.OnPropertyChanged += ( p ) => PropertyEdited( p, o );
 			var sheet = new ComponentSheet( serialized, () => OpenContextMenu( o ) );
 			Layout.Add( sheet );
 			Layout.AddSeparator();
 		}
 	}
 
-	void OpenContextMenu( GameObjectComponent component )
+	void PropertyEdited( SerializedProperty property, BaseComponent component )
+	{
+		var value = property.GetValue<object>();
+		component.EditLog( $"{component.Name}.{property.Name}", component, () => property.SetValue( value ) );
+	}
+
+	void OpenContextMenu( BaseComponent component )
 	{
 		var menu = new Menu( this );
 

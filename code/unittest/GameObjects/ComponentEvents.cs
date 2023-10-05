@@ -61,7 +61,7 @@ public class ComponentEvents
 	}
 }
 
-public class OrderTestComponent : GameObjectComponent
+public class OrderTestComponent : BaseComponent
 {
 	public int EnabledCalls;
 	public int DisabledCalls;

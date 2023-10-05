@@ -1,15 +1,12 @@
 ﻿using Sandbox;
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using static GameObject;
 
-public abstract partial class GameObjectComponent
-{ 
-	public JsonNode Serialize( SerializeOptions options = null )
+public abstract partial class BaseComponent
+{
+	public JsonNode Serialize( GameObject.SerializeOptions options = null )
 	{
 		var t = TypeLibrary.GetType( GetType() );
 		if ( t is null )
@@ -24,11 +21,11 @@ public abstract partial class GameObjectComponent
 			{ "__enabled", Enabled },
 		};
 
-		foreach( var prop in t.Properties.Where( x => x.HasAttribute<PropertyAttribute>() ).OrderBy( x => x.Name ) )
+		foreach ( var prop in t.Properties.Where( x => x.HasAttribute<PropertyAttribute>() ).OrderBy( x => x.Name ) )
 		{
 			var value = prop.GetValue( this );
 
-			if ( prop.PropertyType == typeof(GameObject) )
+			if ( prop.PropertyType == typeof( GameObject ) )
 			{
 				if ( value is GameObject go )
 				{
@@ -57,7 +54,7 @@ public abstract partial class GameObjectComponent
 
 		foreach ( var prop in t.Properties.Where( x => x.HasAttribute<PropertyAttribute>() ).OrderBy( x => x.Name ) )
 		{
-			var v = node[ prop.Name ];
+			var v = node[prop.Name];
 			if ( v is null ) continue;
 
 			try
@@ -70,7 +67,7 @@ public abstract partial class GameObjectComponent
 			}
 		}
 
-		Enabled = (bool) (node["__enabled"] ?? true);
+		Enabled = (bool)(node["__enabled"] ?? true);
 	}
 
 	private void DeserializeProperty( PropertyDescription prop, JsonNode node )

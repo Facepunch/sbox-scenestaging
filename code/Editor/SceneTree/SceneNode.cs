@@ -39,7 +39,7 @@ public partial class SceneNode : TreeNode<Scene>
 		r.Left += 4;
 		Paint.DrawIcon( r, "perm_media", 14, TextFlag.LeftCenter );
 		r.Left += 22;
-		Paint.SetDefaultFont( 9 );
+		Paint.SetDefaultFont();
 		Paint.DrawText( r, $"{Value.Name}", TextFlag.LeftCenter );
 	}
 
@@ -73,8 +73,7 @@ public partial class SceneNode : TreeNode<Scene>
 	{
 		var m = new Menu();
 
-		m.AddOption( "Save", action: () => SaveScene( Value, false ) ).Enabled = Value.SourceSceneFile is not null;
-		m.AddOption( "Save Scene As..", action: () => SaveScene( Value, true ) );
+
 
 		m.AddSeparator();
 
@@ -90,44 +89,6 @@ public partial class SceneNode : TreeNode<Scene>
 		return true;
 	}
 
-	public static void SaveScene( Scene scene, bool saveAs )
-	{
-		var saveLocation = "";
-
-		var a = scene.Save();
-
-		if ( scene.SourceSceneFile is not null )
-		{
-			var asset = AssetSystem.FindByPath( scene.SourceSceneFile.ResourcePath );
-			if ( asset is not null )
-			{
-				saveLocation = asset.AbsolutePath;
-			}
-		}
-
-		if ( saveAs )
-		{
-			var lastDirectory = Cookie.GetString( "LastSaveSceneLocation", "" );
-
-			var fd = new FileDialog( null );
-			fd.Title = $"Save Scene As..";
-			fd.Directory = lastDirectory;
-			fd.DefaultSuffix = $".scene";
-			fd.SelectFile( saveLocation );
-			fd.SetFindFile();
-			fd.SetModeSave();
-			fd.SetNameFilter( $"Scene File (*.scene)" );
-
-			if ( !fd.Execute() )
-				return;
-
-			saveLocation = fd.SelectedFile;
-		}
-
-		var sceneAsset = AssetSystem.CreateResource( "scene", saveLocation );
-		sceneAsset.SaveToDisk( a );
-
-	}
 
 
 }

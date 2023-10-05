@@ -5,7 +5,7 @@ using Sandbox.Diagnostics;
 [Category( "Rendering" )]
 [Icon( "visibility", "red", "white" )]
 [Alias( "ModelComponentMate" )]
-public class ModelComponent : GameObjectComponent
+public class ModelComponent : BaseComponent
 {
 	Model _model;
 

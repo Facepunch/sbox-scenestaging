@@ -1,12 +1,9 @@
-﻿using Microsoft.VisualBasic;
-using Sandbox;
+﻿using Sandbox;
 using Sandbox.Diagnostics;
-using Sandbox.Physics;
 using Sandbox.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 public sealed class Scene
 {
@@ -21,9 +18,11 @@ public sealed class Scene
 	public SceneFile SourceSceneFile { get; private set; }
 	public PrefabFile SourcePrefabFile { get; private set; }
 
-	public List<GameObject> All = new ();
+	public List<GameObject> All = new();
 
-	Gizmo.Instance gizmoInstance = new ();
+	public bool HasUnsavedChanges { get; private set; }
+
+	Gizmo.Instance gizmoInstance = new();
 
 	public Scene()
 	{
@@ -89,7 +88,7 @@ public sealed class Scene
 
 	public void TickObjects()
 	{
-		for ( int i=0; i < All.Count; i++ )
+		for ( int i = 0; i < All.Count; i++ )
 		{
 			All[i].Tick();
 		}
@@ -112,7 +111,7 @@ public sealed class Scene
 
 	public void DrawGizmos()
 	{
-		foreach( var e in All )
+		foreach ( var e in All )
 		{
 			e.DrawGizmos();
 		}
@@ -159,7 +158,7 @@ public sealed class Scene
 		if ( deleteList.Count == 0 )
 			return;
 
-		foreach( var o in deleteList.ToArray() )
+		foreach ( var o in deleteList.ToArray() )
 		{
 			o.DestroyImmediate();
 			deleteList.Remove( o );
@@ -178,7 +177,7 @@ public sealed class Scene
 
 		if ( resource.GameObjects is not null )
 		{
-			foreach( var json in resource.GameObjects )
+			foreach ( var json in resource.GameObjects )
 			{
 				var go = CreateObject( false );
 				go.Deserialize( json );
@@ -207,12 +206,12 @@ public sealed class Scene
 		return a;
 	}
 
-	public IEnumerable<T> FindAllComponents<T>( bool includeDisabled = false ) where T : GameObjectComponent
+	public IEnumerable<T> FindAllComponents<T>( bool includeDisabled = false ) where T : BaseComponent
 	{
 		// array rent?
 		List<T> found = new List<T>();
 
-		foreach( var go in All )
+		foreach ( var go in All )
 		{
 			found.AddRange( go.GetComponents<T>( includeDisabled, true ) );
 		}
@@ -233,7 +232,7 @@ public sealed class Scene
 	/// </summary>
 	public GameObject FindObjectByGuid( Guid guid )
 	{
-		var o =  All.Select( x => x.FindObjectByGuid( guid ) ).Where( x => x is not null ).FirstOrDefault();
+		var o = All.Select( x => x.FindObjectByGuid( guid ) ).Where( x => x is not null ).FirstOrDefault();
 
 		if ( o is null )
 		{
@@ -279,5 +278,19 @@ public sealed class Scene
 		var renderers = All.SelectMany( x => x.GetComponents<ModelComponent>() );
 
 		return BBox.FromBoxes( renderers.Select( x => x.Bounds ) );
+	}
+
+	public void EditLog( string name, object source, Action undo )
+	{
+		if ( !IsEditor ) return;
+
+		HasUnsavedChanges = true;
+		//Log.Info( $"Scene Change: {name} / {source}" );
+	}
+
+	public void ClearUnsavedChanges()
+	{
+		if ( !IsEditor ) return;
+		HasUnsavedChanges = false;
 	}
 }

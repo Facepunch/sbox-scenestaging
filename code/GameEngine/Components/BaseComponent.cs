@@ -3,7 +3,7 @@ using System;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-public abstract partial class GameObjectComponent
+public abstract partial class BaseComponent
 {
 	public Scene Scene => GameObject.Scene;
 
@@ -120,5 +120,13 @@ public abstract partial class GameObjectComponent
 	public virtual void EditorUpdate()
 	{
 
+	}
+
+	/// <summary>
+	/// Called when something on the component has been edited
+	/// </summary>
+	public void EditLog( string name, object source, Action undo )
+	{
+		GameObject.EditLog( name, source, undo );
 	}
 }

@@ -2,7 +2,7 @@ using Sandbox;
 using Sandbox.Services;
 using System;
 
-public sealed class TurretComponent : GameObjectComponent
+public sealed class TurretComponent : BaseComponent
 {
 	[Property] GameObject Gun { get; set; }
 	[Property] GameObject Bullet { get; set; }

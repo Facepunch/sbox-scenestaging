@@ -5,7 +5,7 @@ using System;
 [Title( "Spot Light" )]
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
-public class SpotLightComponent : GameObjectComponent
+public class SpotLightComponent : BaseComponent
 {
 	SceneSpotLight _sceneObject;
 

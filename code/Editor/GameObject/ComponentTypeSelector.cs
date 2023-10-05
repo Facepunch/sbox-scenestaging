@@ -104,7 +104,7 @@ public partial class ComponentTypeSelector : PopupWidget
 		listView.Clear();
 
 		// entity components
-		var types = EditorTypeLibrary.GetTypes<GameObjectComponent>().Where( x => !x.IsAbstract );
+		var types = EditorTypeLibrary.GetTypes<BaseComponent>().Where( x => !x.IsAbstract );
 
 
 		if ( !string.IsNullOrWhiteSpace( searchString ) )
@@ -253,7 +253,7 @@ public partial class ComponentTypeSelector : PopupWidget
 		// we just wrote a file, lets wait until its compiled and loaded
 		await EditorUtility.Projects.WaitForCompiles();
 
-		var componentType = EditorTypeLibrary.GetType<GameObjectComponent>( componentName );
+		var componentType = EditorTypeLibrary.GetType<BaseComponent>( componentName );
 		if ( componentType is null )
 		{
 			Log.Warning( $"Couldn't find target component type {componentName}" );
@@ -261,7 +261,7 @@ public partial class ComponentTypeSelector : PopupWidget
 			componentType = EditorTypeLibrary.GetType( componentName );
 			Log.Warning( $"Couldn't find target component type {componentType}" );
 
-			foreach ( var t in EditorTypeLibrary.GetTypes<GameObjectComponent>() )
+			foreach ( var t in EditorTypeLibrary.GetTypes<BaseComponent>() )
 			{
 				Log.Info( $"{t}" );
 			}

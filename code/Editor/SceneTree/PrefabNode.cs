@@ -34,12 +34,14 @@ public partial class PrefabNode : GameObjectNode
 		}
 
 		var r = item.Rect;
-		Paint.SetPen( Theme.ControlText );
 
-		r.Left += 4;
-		Paint.DrawIcon( r, "perm_media", 14, TextFlag.LeftCenter );
+
+		Paint.SetPen( Theme.Blue );
+		Paint.DrawIcon( r, "circle", 14, TextFlag.LeftCenter );
 		r.Left += 22;
-		Paint.SetDefaultFont( 9 );
+
+		Paint.SetDefaultFont();
+		Paint.SetPen( Theme.ControlText );
 		Paint.DrawText( r, $"{Value.Name}", TextFlag.LeftCenter );
 	}
 
@@ -73,8 +75,8 @@ public partial class PrefabNode : GameObjectNode
 	{
 		var m = new Menu();
 
-		m.AddOption( "Save", action: () => Save( Value, false ) );
-		m.AddOption( "Save Scene As..", action: () => Save( Value, true ) );
+		m.AddOption( "Save Prefab", action: () => Save( Value, false ) );
+		m.AddOption( "Save As..", action: () => Save( Value, true ) );
 
 		m.AddSeparator();
 

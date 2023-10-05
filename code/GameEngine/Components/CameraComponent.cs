@@ -6,7 +6,7 @@ using System.Linq;
 [Title( "Camera" )]
 [Category( "Render" )]
 [Icon( "videocam", "red", "white" )]
-public class CameraComponent : GameObjectComponent
+public class CameraComponent : BaseComponent
 {
 	SceneCamera sceneCamera = new SceneCamera();
 

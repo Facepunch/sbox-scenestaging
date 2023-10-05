@@ -1,7 +1,7 @@
 ﻿public static class EditorScene
 {
 	public static string PlayMode { get; set; } = "scene";
-	public static Scene Active { get; set; }
+	public static Scene Active { get; private set; }
 	public static List<Scene> OpenScenes { get; set; } = new();
 
 	internal static Gizmo.Instance GizmoInstance { get; private set; }
@@ -40,6 +40,17 @@
 		}
 
 		EditorEvent.Run( "scene.open" );
+	}
+
+	public static bool SwitchActive( Scene scene )
+	{
+		if ( Active == scene )
+			return false;
+
+		Active = scene;
+		EditorWindow.DockManager.RaiseDock( "Scene" );
+		UpdateEditorTitle();
+		return true;
 	}
 
 	public static Scene GetAppropriateScene()
@@ -151,7 +162,7 @@
 			UpdateEditorTitle();
 
 			EditorEvent.Run( "scene.open" );
-			EditorWindow.DockManager.RaiseDock( "Scene" );
+
 		}
 	}
 
@@ -206,7 +217,10 @@
 	{
 		if ( Active is not null )
 		{
-			EditorWindow.UpdateEditorTitle( Active.Name );
+			var name = Active.Name;
+			if ( Active.HasUnsavedChanges ) name += "*";
+
+			EditorWindow.UpdateEditorTitle( name );
 			return;
 		}
 

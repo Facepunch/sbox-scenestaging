@@ -1,7 +1,7 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
 
-public abstract class ColliderBaseComponent : GameObjectComponent
+public abstract class ColliderBaseComponent : BaseComponent
 {
 	PhysicsShape shape;
 	protected PhysicsBody ownBody;

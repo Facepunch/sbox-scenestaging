@@ -5,7 +5,7 @@ using System;
 [Title( "Directional Light" )]
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
-public class DirectionalLightComponent : GameObjectComponent
+public class DirectionalLightComponent : BaseComponent
 {
 	SceneSunLight _sceneObject;
 

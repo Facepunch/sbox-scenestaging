@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 [Title( "Rigid Body" )]
 [Category( "Physics" )]
 [Icon( "panorama_fish_eye", "red", "white" )]
-public class PhysicsComponent : GameObjectComponent
+public class PhysicsComponent : BaseComponent
 {
 	[Property] public bool Static { get; set; } = false;
 	[Property] public bool Gravity { get; set; } = true;

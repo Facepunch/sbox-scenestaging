@@ -11,7 +11,17 @@ public partial class SceneTabButton : Widget
 		Cursor = CursorShape.Finger;
 	}
 
-	string Text => IsLiveGame ? "Game" : scene.Name;
+	string Text
+	{
+		get
+		{
+			if ( IsLiveGame ) return "Current Game";
+
+			var txt = scene.Name;
+			if ( scene.HasUnsavedChanges ) return $"{txt}*";
+			return txt;
+		}
+	}
 	bool IsPrefab => scene.IsEditor && scene.SourcePrefabFile is not null;
 	bool IsLiveGame => !scene.IsEditor;
 
@@ -27,7 +37,7 @@ public partial class SceneTabButton : Widget
 	{
 		if ( e.LeftMouseButton )
 		{
-			EditorScene.Active = scene;
+			EditorScene.SwitchActive( scene );
 		}
 
 		if ( e.RightMouseButton )
@@ -67,9 +77,10 @@ public partial class SceneTabButton : Widget
 
 	void OpenContextMenu()
 	{
-		var m = new Menu();
+		var m = scene.CreateContextMenu();
 
-		m.AddOption( "Close Scene", "close", () => EditorScene.CloseScene( scene ) );
+		m.AddSeparator();
+		m.AddOption( "Close", "close", () => EditorScene.CloseScene( scene ) );
 
 		m.OpenAtCursor();
 	}

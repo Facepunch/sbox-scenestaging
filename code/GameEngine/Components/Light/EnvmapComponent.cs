@@ -5,7 +5,7 @@ using System;
 [Title( "Envmap Probe" )]
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
-public class EnvmapComponent : GameObjectComponent
+public class EnvmapComponent : BaseComponent
 {
 	SceneCubemap _sceneObject;
 
