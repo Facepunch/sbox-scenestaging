@@ -229,7 +229,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 	{
 		menu.AddOption( "Create Empty", "category", () =>
 		{
-			using var scope = EditorScene.GetAppropriateScene().Push();
+			using var scope = EditorScene.Active.Push();
 			var go = GameObject.Create( true, "Object" );
 			then( go );
 		} );
@@ -240,7 +240,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 			submenu.AddOption( "Cube", "category", () =>
 			{
-				using var scope = EditorScene.GetAppropriateScene().Push();
+				using var scope = EditorScene.Active.Push();
 				var go = GameObject.Create();
 				go.Name = "Cube";
 
@@ -252,7 +252,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 			submenu.AddOption( "Sphere", "category", () =>
 			{
-				using var scope = EditorScene.GetAppropriateScene().Push();
+				using var scope = EditorScene.Active.Push();
 				var go = GameObject.Create();
 				go.Name = "Sphere";
 
@@ -265,7 +265,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 			submenu.AddOption( "Plane", "category", () =>
 			{
-				using var scope = EditorScene.GetAppropriateScene().Push();
+				using var scope = EditorScene.Active.Push();
 				var go = GameObject.Create();
 				go.Name = "Plane";
 
@@ -282,7 +282,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 			submenu.AddOption( "Directional Light", "category", () =>
 			{
-				using var scope = EditorScene.GetAppropriateScene().Push();
+				using var scope = EditorScene.Active.Push();
 				var go = GameObject.Create();
 				go.Name = "Directional Light";
 				go.WorldTransform = new Transform( 0, Rotation.LookAt( Vector3.Down + Vector3.Right * 0.25f ) );
@@ -294,7 +294,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 			submenu.AddOption( "Point Light", "category", () =>
 			{
-				using var scope = EditorScene.GetAppropriateScene().Push();
+				using var scope = EditorScene.Active.Push();
 				var go = GameObject.Create();
 				go.Name = "Point Light";
 
@@ -306,7 +306,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 			submenu.AddOption( "Spot Light", "category", () =>
 			{
-				using var scope = EditorScene.GetAppropriateScene().Push();
+				using var scope = EditorScene.Active.Push();
 				var go = GameObject.Create();
 				go.Name = "Spot Light";
 
@@ -319,7 +319,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		{
 			menu.AddOption( "Camera", "category", () =>
 			{
-				using var scope = EditorScene.GetAppropriateScene().Push();
+				using var scope = EditorScene.Active.Push();
 				var go = GameObject.Create();
 				go.Name = "Camera";
 

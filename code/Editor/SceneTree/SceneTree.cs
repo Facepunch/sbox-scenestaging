@@ -32,7 +32,7 @@ public partial class SceneTreeWidget : Widget
 	[EditorEvent.Frame]
 	public void CheckForChanges()
 	{
-		var activeScene = EditorScene.GetAppropriateScene();
+		var activeScene = EditorScene.Active;
 
 		if ( _lastScene == activeScene ) return;
 

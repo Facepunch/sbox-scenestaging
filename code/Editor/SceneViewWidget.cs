@@ -53,7 +53,7 @@ public partial class SceneViewWidget : Widget
 
 		Current = this;
 
-		var activeScene = EditorScene.GetAppropriateScene();
+		var activeScene = EditorScene.Active;
 
 		Camera.World = activeScene?.SceneWorld;
 		Camera.ZNear = EditorScene.GizmoInstance.Settings.CameraZNear;
@@ -98,14 +98,7 @@ public partial class SceneViewWidget : Widget
 		{
 			Cursor = Gizmo.HasHovered ? CursorShape.Finger : CursorShape.Arrow;
 			
-			// pump the loop if they're not pumping it
-			if ( !GameManager.IsPlaying )
-			{
-				activeScene.Tick();
-			}
-
 			activeScene.PreRender();
-
 			activeScene.DrawGizmos();
 
 			if ( Gizmo.HasClicked && Gizmo.HasHovered )
@@ -123,7 +116,7 @@ public partial class SceneViewWidget : Widget
 	[Event( "scene.open" )]
 	public void SceneOpened()
 	{
-		var activeScene = EditorScene.GetAppropriateScene();
+		var activeScene = EditorScene.Active;
 		if ( activeScene is null )
 			return;
 

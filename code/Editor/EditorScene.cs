@@ -53,13 +53,6 @@
 		return true;
 	}
 
-	public static Scene GetAppropriateScene()
-	{
-		if ( GameManager.IsPlaying ) return Scene.Active;
-
-		return EditorScene.Active;
-	}
-
 	static Scene previousActiveScene;
 
 	public static void Play()
@@ -111,26 +104,37 @@
 		}
 
 		EditorWindow.DockManager.RaiseDock( "Scene" );
-
-		UpdateGameCamera();
-
+		SceneEditorTick();
 	}
 
 	/// <summary>
 	/// Called once a frame to keep the game camera in sync with the main camera in the editor scene
 	/// </summary>
 	[EditorEvent.Frame]
-	public static void UpdateGameCamera()
+	public static void SceneEditorTick()
 	{
-		if ( GameManager.IsPlaying ) return;
-		if ( EditorScene.Active is null ) return;
+		if ( Active is null ) return;
 		if ( Camera.Main is null ) return;
 
-		var camera = EditorScene.Active.FindAllComponents<CameraComponent>( false ).FirstOrDefault();
-
-		if ( camera is not null )
+		//
+		// If we're not playing, then position the game's main camera where the first CameraComponent is
+		//
+		if ( !GameManager.IsPlaying )
 		{
-			camera.UpdateCamera( Camera.Main );
+			var camera = Active.FindAllComponents<CameraComponent>( false ).FirstOrDefault();
+
+			if ( camera is not null )
+			{
+				camera.UpdateCamera( Camera.Main );
+			}
+		}
+
+		//
+		// If this is an editor scene, tick it to flush deleted objects etc
+		//
+		if ( Active.IsEditor )
+		{
+			Active.Tick();
 		}
 	}
 

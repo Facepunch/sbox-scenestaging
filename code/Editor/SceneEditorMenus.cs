@@ -78,7 +78,7 @@ public static class SceneEditorMenus
 	[Menu( "Editor", "Scene/Duplicate", Shortcut = "Ctrl+D" )]
 	public static void Duplicate()
 	{
-		using var scope = EditorScene.GetAppropriateScene().Push();
+		using var scope = EditorScene.Active.Push();
 		var options = new GameObject.SerializeOptions();
 		var source = EditorScene.Selection.First() as GameObject;
 		var json = source.Serialize( options );
@@ -98,7 +98,7 @@ public static class SceneEditorMenus
 	[Menu( "Editor", "Scene/Delete", Shortcut = "Del" )]
 	public static void Delete()
 	{
-		using var scope = EditorScene.GetAppropriateScene().Push();
+		using var scope = EditorScene.Active.Push();
 
 		foreach ( var entry in EditorScene.Selection.OfType<GameObject>() )
 		{
