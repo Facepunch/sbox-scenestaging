@@ -481,4 +481,14 @@ public partial class GameObject
 
 		Parent.EditLog( name, source, undo );
 	}
+
+	/// <summary>
+	/// This is slow, and somewhat innacurate. Don't call it every frame!
+	/// </summary>
+	public BBox GetBounds()
+	{
+		var renderers = GetComponents<ModelComponent>( true, true );
+
+		return BBox.FromBoxes( renderers.Select( x => x.Bounds ) );
+	}
 }

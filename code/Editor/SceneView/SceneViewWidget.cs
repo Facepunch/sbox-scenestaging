@@ -22,6 +22,8 @@ public partial class SceneViewWidget : Widget
 		Camera = new SceneCamera();
 		Camera.ClearFlags = ClearFlags.Color | ClearFlags.Depth | ClearFlags.Stencil;
 
+		AcceptDrops = true;
+
 		Renderer = new NativeRenderingWidget( this );
 		Renderer.Size = 200;
 		Renderer.Camera = Camera;
@@ -156,22 +158,88 @@ public partial class SceneViewWidget : Widget
 			cameraTargetPosition = targetPos;
 		}
 	}
-}
 
-public class SceneViewToolbar : SceneToolbar
-{
-	public SceneViewToolbar( Widget parent) : base( parent )
+	GameObject DragObject;
+
+	public override void OnDragDrop( DragEvent ev )
 	{
+		base.OnDragDrop( ev );
+
+		using var sceneScope = EditorScene.Active.Push();
+
+		bool onSurface = EditorScene.GizmoInstance.TryGetWorldCursor( 1024, out var pos, out var norm );
+
+		if ( DragObject is not null )
+		{
+			EditorScene.Selection.Clear();
+			EditorScene.Selection.Add( DragObject );
+
+			DragObject.Flags = GameObjectFlags.None;
+			DragObject = null;
+		}
+	}
+
+	public override void OnDragHover( DragEvent ev )
+	{
+		base.OnDragHover( ev );
+
+		ev.Action = DropAction.Copy;
+
+		using var sceneScope = EditorScene.Active.Push();
+
+		if ( DragObject is not null )
+		{
+			DragObject.Enabled = false;
+		}
+
+		var tr = EditorScene.Active.SceneWorld.Trace
+						.WithoutTags( "dragging" )
+						.Ray( Camera.GetRay( ev.LocalPosition, Renderer.Size ), 4096 )
+						.Run();
+
+		var rot = Rotation.LookAt( tr.HitNormal, Vector3.Up ) * Rotation.From( 90, 0, 0 );
+
+		if ( DragObject is null )
+		{
+			if ( ev.Data.HasFileOrFolder )
+			{
+				var asset = AssetSystem.FindByPath( ev.Data.FileOrFolder );
+				if ( asset is null ) return;
+
+				//
+				// A prefab asset!
+				//
+				if ( asset.LoadResource<PrefabFile>() is PrefabFile prefabFile )
+				{
+					DragObject = SceneUtility.Instantiate( prefabFile.PrefabScene, tr.EndPosition, rot );
+					DragObject.Flags = GameObjectFlags.NotSaved | GameObjectFlags.Hidden;
+				}
+			}
+		}
+
+		//
+		// Position the drag object
+		//
+		if ( DragObject is not null )
+		{
+			DragObject.Enabled = true;
+			DragObject.Flags = GameObjectFlags.NotSaved | GameObjectFlags.Hidden;
+
+			var bbox = DragObject.GetBounds();
+			var pos = tr.EndPosition;
+
+			var offset = bbox.ClosestPoint( bbox.Center + tr.HitNormal * 10000.0f ) - bbox.Center;
+			pos += offset;
+
+			DragObject.WorldTransform = DragObject.WorldTransform.WithPosition( pos, rot );
+			return;
+		}
 
 	}
 
-	public override void BuildToolbar()
+	public override void OnDragLeave()
 	{
-		AddGizmoModes();
-		AddSeparator();
-		AddCameraDropdown();
-		AddSeparator();
-		AddAdvancedDropdown();
-		
+		DragObject?.Destroy();
+		DragObject = null;
 	}
 }

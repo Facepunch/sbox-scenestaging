@@ -213,16 +213,6 @@ public class Scene : GameObject
 		Load( file );
 	}
 
-	/// <summary>
-	/// This is slow, and somewhat innacurate. Don't call it every frame!
-	/// </summary>
-	public BBox GetBounds()
-	{
-		var renderers = GetComponents<ModelComponent>( true, false );
-
-		return BBox.FromBoxes( renderers.Select( x => x.Bounds ) );
-	}
-
 	public override void EditLog( string name, object source, Action undo )
 	{
 		if ( !IsEditor ) return;
