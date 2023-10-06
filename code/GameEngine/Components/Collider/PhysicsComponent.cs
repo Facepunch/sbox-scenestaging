@@ -27,14 +27,10 @@ public class PhysicsComponent : BaseComponent
 	public override void OnEnabled()
 	{
 		Assert.True( _body == null );
+		Assert.NotNull( Scene, "Tried to create physics object but no scene" );
+		Assert.NotNull( Scene.PhysicsWorld, "Tried to create physics object but no physics world" );
 
-		if ( Scene.Active.PhysicsWorld  is null )
-		{
-			Log.Warning( "Tried to create physics object but no physics world" );
-			return;
-		}	
-
-		_body = new PhysicsBody( Scene.Active.PhysicsWorld );
+		_body = new PhysicsBody( Scene.PhysicsWorld );
 		
 		_body.UseController = false;
 		_body.BodyType = PhysicsBodyType.Dynamic;
