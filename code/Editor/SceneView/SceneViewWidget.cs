@@ -173,8 +173,6 @@ public partial class SceneViewWidget : Widget
 
 		using var sceneScope = EditorScene.Active.Push();
 
-		bool onSurface = EditorScene.GizmoInstance.TryGetWorldCursor( 1024, out var pos, out var norm );
-
 		if ( DragObject is not null )
 		{
 			EditorScene.Selection.Clear();
