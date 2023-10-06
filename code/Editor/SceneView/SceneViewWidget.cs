@@ -7,6 +7,9 @@ using System.Linq;
 using System;
 using Sandbox;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Threading;
 
 [Dock( "Editor", "Scene", "grid_4x4" )]
 public partial class SceneViewWidget : Widget
@@ -160,6 +163,9 @@ public partial class SceneViewWidget : Widget
 	}
 
 	GameObject DragObject;
+	float DragOffset;
+	Task DragInstallTask;
+	CancellationTokenSource DragCancelSource;
 
 	public override void OnDragDrop( DragEvent ev )
 	{
@@ -177,6 +183,9 @@ public partial class SceneViewWidget : Widget
 			DragObject.Flags = GameObjectFlags.None;
 			DragObject = null;
 		}
+
+		DragCancelSource?.Cancel();
+		DragCancelSource = null;
 	}
 
 	public override void OnDragHover( DragEvent ev )
@@ -194,26 +203,37 @@ public partial class SceneViewWidget : Widget
 
 		var tr = EditorScene.Active.SceneWorld.Trace
 						.WithoutTags( "dragging" )
-						.Ray( Camera.GetRay( ev.LocalPosition, Renderer.Size ), 4096 )
+						.Ray( Camera.GetRay( ev.LocalPosition - Renderer.Position, Renderer.Size ), 4096 )
 						.Run();
 
 		var rot = Rotation.LookAt( tr.HitNormal, Vector3.Up ) * Rotation.From( 90, 0, 0 );
 
-		if ( DragObject is null )
+		if ( DragObject is null && (DragInstallTask?.IsCompleted ?? true) )
 		{
+			DragOffset = 0;
+
+			if ( ev.Data.Url is not null )
+			{
+				DragCancelSource?.Cancel();
+				DragCancelSource = new CancellationTokenSource();
+				DragInstallTask = InstallPackageAsync( ev.Data.Text, DragCancelSource.Token );
+				return;
+			}
+
 			if ( ev.Data.HasFileOrFolder )
 			{
 				var asset = AssetSystem.FindByPath( ev.Data.FileOrFolder );
-				if ( asset is null ) return;
-
-				//
-				// A prefab asset!
-				//
-				if ( asset.LoadResource<PrefabFile>() is PrefabFile prefabFile )
+				if ( asset is not null )
 				{
-					DragObject = SceneUtility.Instantiate( prefabFile.PrefabScene, tr.EndPosition, rot );
-					DragObject.Flags = GameObjectFlags.NotSaved | GameObjectFlags.Hidden;
+					CreateDragObjectFromAsset( asset );
 				}
+			}
+
+			if ( DragObject  is not null )
+			{
+				var b = DragObject.GetBounds();
+				var offset = b.ClosestPoint( Vector3.Down * 10000 ) - DragObject.WorldTransform.Position;
+				DragOffset = offset.Length;
 			}
 		}
 
@@ -225,11 +245,7 @@ public partial class SceneViewWidget : Widget
 			DragObject.Enabled = true;
 			DragObject.Flags = GameObjectFlags.NotSaved | GameObjectFlags.Hidden;
 
-			var bbox = DragObject.GetBounds();
-			var pos = tr.EndPosition;
-
-			var offset = bbox.ClosestPoint( bbox.Center + tr.HitNormal * 10000.0f ) - bbox.Center;
-			pos += offset;
+			var pos = tr.EndPosition + tr.HitNormal * DragOffset;
 
 			DragObject.WorldTransform = DragObject.WorldTransform.WithPosition( pos, rot );
 			return;
@@ -237,9 +253,50 @@ public partial class SceneViewWidget : Widget
 
 	}
 
+	void CreateDragObjectFromAsset( Asset asset )
+	{
+		//
+		// A prefab asset!
+		//
+		if ( asset.LoadResource<PrefabFile>() is PrefabFile prefabFile )
+		{
+			DragObject = SceneUtility.Instantiate( prefabFile.PrefabScene, Vector3.Zero, Rotation.Identity );
+			return;
+		}
+
+		//
+		// A model asset!
+		//
+		if ( asset.LoadResource<Model>() is Model modelAsset )
+		{
+			DragObject = EditorScene.Active.CreateObject();
+			DragObject.Name = modelAsset.ResourceName;
+
+			var mc = DragObject.AddComponent<ModelComponent>();
+			mc.Model = modelAsset;
+
+		}
+	}
+
+	async Task InstallPackageAsync( string url, CancellationToken token )
+	{
+		var asset = await AssetSystem.InstallAsync( url, null, token );
+
+		if ( token.IsCancellationRequested )
+			return;
+
+		if ( asset is not null )
+		{
+			CreateDragObjectFromAsset( asset );
+		}
+	}
+
 	public override void OnDragLeave()
 	{
 		DragObject?.Destroy();
 		DragObject = null;
+
+		DragCancelSource?.Cancel();
+		DragCancelSource = null;
 	}
 }
