@@ -1,0 +1,24 @@
+{
+  "RootObject": {
+    "Id": "abf72244-1fcc-4837-8df0-b51d2f170a05",
+    "Name": "Bullet",
+    "Enabled": true,
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "0.3,0.3,0.3",
+    "Components": [
+      {
+        "__type": "ModelComponent",
+        "__enabled": true,
+        "MaterialOverride": "materials/default.vmat",
+        "Model": "models/dev/sphere.vmdl",
+        "Tint": "0,0.29406,0.9802,1"
+      },
+      {
+        "__type": "SelfDestructComponent",
+        "__enabled": true,
+        "Seconds": 4
+      }
+    ]
+  }
+}

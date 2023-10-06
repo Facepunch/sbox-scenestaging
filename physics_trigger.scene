@@ -1,0 +1,94 @@
+{
+  "GameObjects": [
+    {
+      "Id": "4b5f7c8a-631a-49db-a9e0-a76afd9ddf1a",
+      "Name": "Main Camera",
+      "Enabled": true,
+      "Position": "-908.1094,638.6705,385.6665",
+      "Rotation": "0.06743208,0.1689241,-0.3645545,0.9132456",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "Color, Depth, Stencil",
+          "FieldOfView": 60,
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "Id": "0f6df700-4323-46b1-9d95-e178dbd26497",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "0,0,200",
+      "Rotation": "-0.2459843,0.5938584,0.2931525,0.7077326",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "Id": "2f603a30-7415-4e19-a4e7-702bba9ce547",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-483.0987,221.2081,141.3537",
+      "Rotation": "0.01607971,0.07643269,-0.2052421,0.9755897",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": true,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "c0619f22-3cd1-44e6-8bff-34d9a6a88119",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "-461.3526,211.6344,292.0616",
+      "Rotation": "0.01607971,0.07643269,-0.2052421,0.9755897",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        }
+      ]
+    }
+  ]
+}
