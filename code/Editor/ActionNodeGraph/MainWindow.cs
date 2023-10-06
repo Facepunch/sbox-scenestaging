@@ -39,7 +39,7 @@ public partial class MainWindow : DockWindow
 
 		ActionJig = actionJig;
 		Graph = new ActionGraph( actionJig );
-		View = new GraphView( null )
+		View = new ActionGraphView( null )
 		{
 			Graph = Graph,
 			WindowTitle = "Graph View"
@@ -101,5 +101,41 @@ public partial class MainWindow : DockWindow
 		}
 
 		return base.OnClose();
+	}
+}
+
+public class ActionGraphView : GraphView
+{
+	public ActionGraphView( Widget parent ) : base( parent )
+	{
+	}
+
+	private static IEnumerable<INodeType> GetInstanceNodes( TypeDescription typeDesc )
+	{
+		foreach ( var propertyDesc in typeDesc.Properties )
+		{
+			if ( propertyDesc.CanRead )
+			{
+				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Get );
+			}
+
+			if ( propertyDesc.CanWrite )
+			{
+				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Set );
+			}
+		}
+	}
+
+	protected override IEnumerable<INodeType> GetRelevantNodes( Type inputValueType )
+	{
+		var baseNodes = base.GetRelevantNodes( inputValueType );
+		var typeDesc = EditorTypeLibrary.GetType( inputValueType );
+
+		if ( typeDesc == null )
+		{
+			return baseNodes;
+		}
+
+		return GetInstanceNodes( typeDesc ).Concat( baseNodes );
 	}
 }

@@ -10,6 +10,11 @@ namespace Editor.ActionJigs;
 
 public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 {
+	private static HashSet<string> Hidden { get; } = new ()
+	{
+		"event", "property.get", "property.set"
+	};
+
 	public string Identifier => Definition.Identifier;
 
 	public DisplayInfo DisplayInfo => new DisplayInfo
@@ -26,7 +31,7 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 			.Any( x => x.Type.IsAssignableFrom( valueType ) );
 	}
 
-	public bool HideInEditor => Identifier == "event";
+	public bool HideInEditor => Hidden.Contains( Identifier );
 
 	public INode CreateNode( IGraph graph )
 	{
@@ -34,6 +39,49 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 		var node = actionGraph.Jig.AddNode( Definition );
 		return new ActionNode( actionGraph, node );
 	}
+}
+
+public enum PropertyNodeKind
+{
+	Get,
+	Set
+}
+
+public record struct PropertyNodeType( PropertyDescription Property, PropertyNodeKind Kind ) : INodeType
+{
+	public DisplayInfo DisplayInfo => new ()
+	{
+		Name = $"{Property.Title} ({Kind})",
+		Description = Property.Description,
+		Group = $"*{Property.TypeDescription.Name}"
+	};
+
+	public bool HasInput( Type valueType )
+	{
+		return Kind == PropertyNodeKind.Set && valueType == typeof(OutputSignal)
+			|| Property.TypeDescription.TargetType.IsAssignableFrom( valueType )
+			|| Property.PropertyType.IsAssignableFrom( valueType );
+	}
+
+	public bool HideInEditor => false;
+
+	public INode CreateNode( IGraph graph )
+	{
+		var actionGraph = (ActionGraph)graph;
+		var node = actionGraph.Jig.AddNode( Kind switch
+		{
+			PropertyNodeKind.Set => actionGraph.Jig.NodeLibrary.SetProperty,
+			PropertyNodeKind.Get => actionGraph.Jig.NodeLibrary.GetProperty,
+			_ => throw new NotImplementedException()
+		} );
+
+		node.Properties["type"].Value = Property.TypeDescription.TargetType;
+		node.Properties["property"].Value = Property.Name;
+
+		return new ActionNode( actionGraph, node );
+	}
+
+	public string Identifier => $"property.{Kind}/{Property.TypeDescription.FullName}/{Property.Name}";
 }
 
 public class ActionNode : INode
@@ -47,12 +95,86 @@ public class ActionNode : INode
 
 	public string Identifier { get; }
 
-	DisplayInfo INode.DisplayInfo => new ()
+	public string ErrorMessage => string.Join( Environment.NewLine,
+		Node.GetMessages()
+			.Where( x => x.IsError )
+			.Select( FormatMessage ) );
+
+	private static string FormatProperty( Node.Property property )
 	{
-		Name = Definition.DisplayInfo.Title,
-		Description = Definition.DisplayInfo.Description,
-		Tags = Definition.DisplayInfo.Tags
-	};
+		return property.Definition.Display.Title ?? property.Name;
+	}
+
+	private static string FormatInput( Node.Input input )
+	{
+		return input.Definition.Display.Title ?? input.Name;
+	}
+
+	private static string FormatOutput( Node.Output output )
+	{
+		return output.Definition.Display.Title ?? output.Name;
+	}
+
+	private string FormatMessage( ValidationMessage message )
+	{
+		return message.Context switch
+		{
+			Link link when link.Target.Node == Node => $"{FormatInput(link.Target)}: {message.Value}",
+			Node.Property property when property.Node == Node => $"{FormatProperty( property )}: {message.Value}",
+			Node.Input input when input.Node == Node => $"{FormatInput(input)}: {message.Value}",
+			Node.Output output when output.Node == Node => $"{FormatOutput( output )}: {message.Value}",
+			_ => message.Value
+		};
+	}
+
+	private DisplayInfo PropertyDisplayInfo( PropertyNodeKind kind )
+	{
+		var name = Node.Properties["property"].Value as string;
+
+		return new DisplayInfo { Name = $"{kind} {name}" };
+	}
+
+	DisplayInfo INode.DisplayInfo
+	{
+		get
+		{
+			switch ( Definition.Identifier )
+			{
+				case "property.get":
+					return PropertyDisplayInfo( PropertyNodeKind.Get );
+
+				case "property.set":
+					return PropertyDisplayInfo( PropertyNodeKind.Set );
+
+				default:
+					return
+						new()
+						{
+							Name = Definition.DisplayInfo.Title,
+							Description = Definition.DisplayInfo.Description,
+							Tags = Definition.DisplayInfo.Tags
+						};
+			}
+		}
+	}
+
+	public Color PrimaryColor
+	{
+		get
+		{
+			if ( Node.HasErrors() )
+			{
+				return Theme.Red;
+			}
+
+			return Node.Definition.Kind switch
+			{
+				NodeKind.Action => Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.Blue, 0.5f ),
+				NodeKind.Expression => Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.Yellow, 0.5f ),
+				_ => throw new NotImplementedException()
+			};
+		}
+	}
 
 	public Vector2 Position
 	{
@@ -102,7 +224,6 @@ public class ActionNode : INode
 
 			foreach ( var key in _plugs.Keys.Where( x => !keys.Contains( x ) ).ToArray() )
 			{
-				Log.Info( $"Removed {key}" );
 				_plugs.Remove( key );
 				changed = true;
 			}
@@ -113,14 +234,12 @@ public class ActionNode : INode
 				{
 					if ( plug.LastType != plug.Type )
 					{
-						Log.Info( $"Changed {key}" );
 						plug.LastType = plug.Type;
 						changed = true;
 					}
 				}
 				else
 				{
-					Log.Info( $"Added {key}" );
 					_plugs[key] = _createPlug( key );
 					changed = true;
 				}
@@ -142,11 +261,7 @@ public class ActionNode : INode
 
 	void INode.OnPaint( Rect rect )
 	{
-		if ( Node.HasErrors() )
-		{
-			Paint.SetBrush( Color.Red.WithAlpha( 0.25f ) );
-			Paint.DrawRect( rect, 5f );
-		}
+
 	}
 
 	NodeUI INode.CreateUI( GraphView view )
@@ -233,6 +348,11 @@ public class ActionPlug<T, TDef> : IActionPlug
 			return null;
 		}
 
+		if ( !input.Definition.IsRequired && input.Value is null && !input.IsLinked )
+		{
+			input.Value = input.Definition.Default;
+		}
+
 		if ( Type == typeof( float ) )
 		{
 			var slider = new FloatEditor( plug ) { Title = DisplayInfo.Name, Node = node };
@@ -244,6 +364,10 @@ public class ActionPlug<T, TDef> : IActionPlug
 
 		return null;
 	}
+
+	public string ErrorMessage => string.Join( Environment.NewLine, Parameter.GetMessages()
+		.Where( x => x.IsError )
+		.Select( x => x.Value ) );
 
 	public IPlug ConnectedOutput
 	{
