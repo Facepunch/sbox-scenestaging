@@ -11,7 +11,9 @@ public sealed class TurretComponent : BaseComponent
 	[Property] GameObject SecondaryBullet { get; set; }
 	[Property] GameObject Muzzle { get; set; }
 
-	public delegate void ShootHandler( TurretComponent turret, GameObject bullet );
+	[Property] public float ShootVelocity { get; set; } = 300f;
+
+	public delegate void ShootHandler( TurretComponent turret, GameObject bullet, bool secondary );
 	
 	[Property] public ShootHandler OnShoot { get; set; }
 
