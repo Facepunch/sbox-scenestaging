@@ -467,9 +467,9 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 
 	void OnUpdate()
 	{
-		foreach ( var c in Components )
+		for ( int i=0; i< Components.Count; i++ )
 		{
-			c.InternalUpdate();
+			Components[i].InternalUpdate();
 		}
 	}
 
