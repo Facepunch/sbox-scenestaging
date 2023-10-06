@@ -29,8 +29,9 @@ public sealed class Scene
 		SceneWorld = new SceneWorld();
 		PhysicsWorld = new PhysicsWorld();
 
-		//var settings = new CollisionRules();
-		//PhysicsWorld.SetCollisionRules( settings );
+		// todo - load from package
+		var settings = new Sandbox.Physics.CollisionRules();
+		PhysicsWorld.SetCollisionRules( settings );
 	}
 
 	public void Register( GameObject o )
