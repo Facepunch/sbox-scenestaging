@@ -373,6 +373,8 @@ public partial class GameObject
 
 	public void AddSibling( GameObject go, bool before, bool keepWorldPosition = true )
 	{
+		if ( this is Scene ) throw new InvalidOperationException( "Can't add a sibling to a scene!" );
+
 		go.SetParent( Parent, keepWorldPosition );
 
 		go.Parent.Children.Remove( go );
@@ -383,6 +385,8 @@ public partial class GameObject
 
 	public void SetParent( GameObject value, bool keepWorldPosition = true )
 	{
+		if ( this is Scene ) throw new InvalidOperationException( "Can't set the parent of a scene!" );
+
 		if ( Parent == value ) return;
 
 		if ( keepWorldPosition )

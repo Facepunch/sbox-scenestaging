@@ -2,7 +2,7 @@
 
 public partial class PrefabNode : GameObjectNode
 {
-	public PrefabNode( GameObject go ) : base( go )
+	public PrefabNode( PrefabScene go ) : base( go )
 	{
 
 	}
@@ -94,9 +94,9 @@ public partial class PrefabNode : GameObjectNode
 
 		var a = obj.GetAsPrefab();
 
-		if ( scene.SourcePrefabFile is not null )
+		if ( scene is PrefabScene prefabScene )
 		{
-			var asset = AssetSystem.FindByPath( scene.SourcePrefabFile.ResourcePath );
+			var asset = AssetSystem.FindByPath( prefabScene.Source.ResourcePath );
 			if ( asset is not null )
 			{
 				saveLocation = asset.AbsolutePath;

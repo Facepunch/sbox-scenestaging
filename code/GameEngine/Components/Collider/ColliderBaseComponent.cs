@@ -80,7 +80,6 @@ public abstract class ColliderBaseComponent : BaseComponent
 
 	public void OnPhysicsChanged()
 	{
-		Log.Info( "Physics Changed" );
 		OnDisabled();
 		OnEnabled();
 	}

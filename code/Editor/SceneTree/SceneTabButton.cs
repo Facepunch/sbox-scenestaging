@@ -22,7 +22,7 @@ public partial class SceneTabButton : Widget
 			return txt;
 		}
 	}
-	bool IsPrefab => scene.IsEditor && scene.SourcePrefabFile is not null;
+	bool IsPrefab => scene is PrefabScene;
 	bool IsLiveGame => !scene.IsEditor;
 
 	protected override Vector2 SizeHint()

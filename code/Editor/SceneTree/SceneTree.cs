@@ -44,9 +44,9 @@ public partial class SceneTreeWidget : Widget
 		if ( _lastScene is null )
 			return;
 
-		if ( _lastScene.IsEditor && _lastScene.SourcePrefabFile is not null )
+		if ( _lastScene.IsEditor && _lastScene is PrefabScene prefabScene )
 		{
-			var node = TreeView.AddItem( new PrefabNode( _lastScene.Children.First() ) );
+			var node = TreeView.AddItem( new PrefabNode( prefabScene ) );
 			TreeView.Open( node );
 
 			return;

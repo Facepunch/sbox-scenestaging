@@ -1,7 +1,7 @@
 ﻿
 using Editor;
 
-namespace Sandbox.Helpers;
+namespace Sandbox.Utility;
 
 public static class Helpers
 {

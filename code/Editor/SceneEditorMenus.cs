@@ -35,6 +35,12 @@ public static class SceneEditorMenus
 	{
 		var selected = EditorScene.Selection.First() as GameObject;
 
+		if  ( selected  is Scene )
+		{
+			PasteAsChild();
+			return;
+		}
+
 		var text = EditorUtility.Clipboard.Paste();
 		if ( JsonNode.Parse( text ) is JsonObject jso )
 		{
@@ -81,6 +87,9 @@ public static class SceneEditorMenus
 		using var scope = EditorScene.Active.Push();
 		var options = new GameObject.SerializeOptions();
 		var source = EditorScene.Selection.First() as GameObject;
+
+		if ( source is Scene ) return;
+
 		var json = source.Serialize( options );
 
 		SceneUtility.MakeGameObjectsUnique( json );
@@ -102,6 +111,9 @@ public static class SceneEditorMenus
 
 		foreach ( var entry in EditorScene.Selection.OfType<GameObject>() )
 		{
+			if ( !entry.IsDeletable() )
+				return;
+
 			entry.Destroy();
 		}
 	}

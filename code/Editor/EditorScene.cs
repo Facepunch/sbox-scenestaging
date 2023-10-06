@@ -181,16 +181,19 @@
 		// TODO: Unsaved changes test
 		//
 
-		Active = new Scene();
+		var prefabScene = new PrefabScene();
+
+		OpenScenes.Add( prefabScene );
+		Active = prefabScene;
 
 		new SceneSunLight( Active.SceneWorld, Rotation.From( 80, 45, 0 ), Color.White * 0.5f );
 
 		using ( Active.Push() )
 		{
-			Active.Name = resource.ResourceName.ToTitleCase();
-			Active.IsEditor = true;
-			OpenScenes.Add( Active );
-			Active.Load( resource );
+			prefabScene.Name = resource.ResourceName.ToTitleCase();
+			prefabScene.IsEditor = true;
+			prefabScene.Load( resource );
+
 			UpdateEditorTitle();
 
 			EditorWindow.DockManager.RaiseDock( "Scene" );

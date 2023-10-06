@@ -5,18 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public sealed class Scene : GameObject
+public class Scene : GameObject
 {
 	public bool IsEditor { get; set; }
 
 	public SceneWorld SceneWorld { get; private set; }
 	public SceneWorld DebugSceneWorld => gizmoInstance.World;
 	public PhysicsWorld PhysicsWorld { get; private set; }
-	public NavigationMesh NavigationMesh { get; set; }
-
 	public SceneFile SourceSceneFile { get; private set; }
-	public PrefabFile SourcePrefabFile { get; private set; }
-
 	public bool HasUnsavedChanges { get; private set; }
 
 	Gizmo.Instance gizmoInstance = new();
@@ -139,20 +135,6 @@ public sealed class Scene : GameObject
 			}
 		}
 	}
-
-	public void Load( PrefabFile resource )
-	{
-		SourcePrefabFile = resource;
-
-		using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
-
-		if ( resource.RootObject is not null )
-		{
-			var go = CreateObject( false );
-			go.Deserialize( resource.RootObject );
-		}
-	}
-
 
 	public SceneFile Save()
 	{
