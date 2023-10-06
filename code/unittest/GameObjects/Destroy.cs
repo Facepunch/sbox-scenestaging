@@ -18,8 +18,8 @@ public class DestroyTests
 		Assert.IsTrue( go.Active );
 		Assert.IsNotNull( go.Scene );
 		Assert.AreEqual( go.Scene, scene );
-		Assert.IsNull( go.Parent );
-		Assert.AreEqual( 1, scene.All.Count() );
+		Assert.IsNotNull( go.Parent );
+		Assert.AreEqual( 1, scene.Children.Count() );
 
 		go.Destroy();
 
@@ -28,16 +28,16 @@ public class DestroyTests
 		Assert.IsTrue( go.Active );
 		Assert.IsNotNull( go.Scene );
 		Assert.AreEqual( go.Scene, scene );
-		Assert.IsNull( go.Parent );
-		Assert.AreEqual( 1, scene.All.Count() );
+		Assert.IsNotNull( go.Parent );
+		Assert.AreEqual( 1, scene.Children.Count() );
 
-		scene.Tick();
+		scene.GameTick();
 
 		Assert.IsFalse( go.Enabled );
 		Assert.IsFalse( go.Active );
 		Assert.IsNull( go.Scene );
 		Assert.IsNull( go.Parent );
-		Assert.AreEqual( 0, scene.All.Count() );
+		Assert.AreEqual( 0, scene.Children.Count() );
 	}
 
 	[TestMethod]
@@ -55,7 +55,7 @@ public class DestroyTests
 		Assert.IsNotNull( go.Scene );
 		Assert.AreEqual( go.Scene, scene );
 		Assert.IsNotNull( go.Parent );
-		Assert.AreEqual( 1, scene.All.Count() );
+		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
 
 		go.Destroy();
@@ -66,16 +66,16 @@ public class DestroyTests
 		Assert.IsNotNull( go.Scene );
 		Assert.AreEqual( go.Scene, scene );
 		Assert.IsNotNull( go.Parent );
-		Assert.AreEqual( 1, scene.All.Count() );
+		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
 
-		scene.Tick();
+		scene.GameTick();
 
 		Assert.IsFalse( go.Enabled );
 		Assert.IsFalse( go.Active );
 		Assert.IsNull( go.Scene );
 		Assert.IsNull( go.Parent );
-		Assert.AreEqual( 1, scene.All.Count() );
+		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 0, parent.Children.Count() );
 	}
 
@@ -98,8 +98,8 @@ public class DestroyTests
 		Assert.IsTrue( parent.Active );
 		Assert.IsNotNull( parent.Scene );
 		Assert.AreEqual( parent.Scene, scene );
-		Assert.IsNull( parent.Parent );
-		Assert.AreEqual( 1, scene.All.Count() );
+		Assert.IsNotNull( parent.Parent );
+		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
 
 		parent.Destroy();
@@ -110,10 +110,10 @@ public class DestroyTests
 		Assert.IsNotNull( go.Scene );
 		Assert.AreEqual( go.Scene, scene );
 		Assert.IsNotNull( go.Parent );
-		Assert.AreEqual( 1, scene.All.Count() );
+		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
 
-		scene.Tick();
+		scene.GameTick();
 		
 		Assert.IsFalse( parent.Enabled );
 		Assert.IsFalse( parent.Active );
@@ -123,7 +123,7 @@ public class DestroyTests
 		Assert.IsFalse( go.Active );
 		Assert.IsNull( go.Scene );
 		Assert.IsNull( go.Parent );
-		Assert.AreEqual( 0, scene.All.Count() );
+		Assert.AreEqual( 0, scene.Children.Count() );
 		Assert.AreEqual( 0, parent.Children.Count() );
 	}
 
@@ -146,8 +146,8 @@ public class DestroyTests
 		Assert.IsTrue( parent.Active );
 		Assert.IsNotNull( parent.Scene );
 		Assert.AreEqual( parent.Scene, scene );
-		Assert.IsNull( parent.Parent );
-		Assert.AreEqual( 1, scene.All.Count() );
+		Assert.IsNotNull( parent.Parent );
+		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
 
 		parent.DestroyImmediate();
@@ -160,7 +160,7 @@ public class DestroyTests
 		Assert.IsFalse( go.Active );
 		Assert.IsNull( go.Scene );
 		Assert.IsNull( go.Parent );
-		Assert.AreEqual( 0, scene.All.Count() );
+		Assert.AreEqual( 0, scene.Children.Count() );
 		Assert.AreEqual( 0, parent.Children.Count() );
 	}
 
@@ -179,7 +179,7 @@ public class DestroyTests
 		Assert.IsNotNull( go.Scene );
 		Assert.AreEqual( go.Scene, scene );
 		Assert.IsNotNull( go.Parent );
-		Assert.AreEqual( 1, scene.All.Count() );
+		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
 
 		go.DestroyImmediate();
@@ -188,7 +188,7 @@ public class DestroyTests
 		Assert.IsFalse( go.Active );
 		Assert.IsNull( go.Scene );
 		Assert.IsNull( go.Parent );
-		Assert.AreEqual( 1, scene.All.Count() );
+		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 0, parent.Children.Count() );
 
 	}
@@ -205,8 +205,8 @@ public class DestroyTests
 		Assert.IsTrue( go.Active );
 		Assert.IsNotNull( go.Scene );
 		Assert.AreEqual( go.Scene, scene );
-		Assert.IsNull( go.Parent );
-		Assert.AreEqual( 1, scene.All.Count() );
+		Assert.IsNotNull( go.Parent );
+		Assert.AreEqual( 1, scene.Children.Count() );
 
 		go.DestroyImmediate();
 
@@ -214,6 +214,6 @@ public class DestroyTests
 		Assert.IsFalse( go.Active );
 		Assert.IsNull( go.Scene );
 		Assert.IsNull( go.Parent );
-		Assert.AreEqual( 0, scene.All.Count() );
+		Assert.AreEqual( 0, scene.Children.Count() );
 	}
 }

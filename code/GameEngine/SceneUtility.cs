@@ -95,7 +95,7 @@ public static class SceneUtility
 		go.Deserialize( json );
 		go.Transform = transform;
 
-		Scene.Active.Register( go );
+		GameManager.ActiveScene.Register( go );
 
 		return go;
 	}

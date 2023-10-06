@@ -7,11 +7,11 @@ public partial class SceneNode : TreeNode<Scene>
 
 	}
 
-	public override bool HasChildren => Value.All.Any();
+	public override bool HasChildren => Value.Children.Any();
 
 	protected override void BuildChildren()
 	{
-		SetChildren( Value.All, x => new GameObjectNode( x ) );
+		SetChildren( Value.Children, x => new GameObjectNode( x ) );
 	}
 
 	public override void OnPaint( VirtualWidget item )
@@ -49,7 +49,7 @@ public partial class SceneNode : TreeNode<Scene>
 		{
 			HashCode hc = new HashCode();
 
-			foreach ( var val in Value.All )
+			foreach ( var val in Value.Children )
 			{
 				hc.Add( val );
 			}

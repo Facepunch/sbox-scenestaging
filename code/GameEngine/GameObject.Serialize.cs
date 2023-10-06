@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-public sealed partial class GameObject
+public partial class GameObject
 {
 	public class SerializeOptions
 	{
@@ -81,11 +81,6 @@ public sealed partial class GameObject
 		}
 
 		return json;
-	}
-
-	public void Fdff()
-	{
-
 	}
 
 	public void Deserialize( JsonObject node )

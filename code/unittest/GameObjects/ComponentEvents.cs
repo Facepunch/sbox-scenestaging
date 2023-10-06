@@ -18,19 +18,19 @@ public class ComponentEvents
 		Assert.AreEqual( 1, o.EnabledCalls );
 		Assert.AreEqual( 0, o.DisabledCalls );
 
-		scene.Tick();
+		scene.GameTick();
 
 		Assert.AreEqual( 1, o.EnabledCalls );
 		Assert.AreEqual( 0, o.DisabledCalls );
 
 		go.Enabled = false;
-		scene.Tick();
+		scene.GameTick();
 
 		Assert.AreEqual( 1, o.EnabledCalls );
 		Assert.AreEqual( 1, o.DisabledCalls );
 
 		go.Destroy();
-		scene.Tick();
+		scene.GameTick();
 
 		Assert.AreEqual( 1, o.EnabledCalls );
 		Assert.AreEqual( 1, o.DisabledCalls );
@@ -48,13 +48,13 @@ public class ComponentEvents
 		Assert.AreEqual( 1, o.EnabledCalls );
 		Assert.AreEqual( 0, o.DisabledCalls );
 
-		scene.Tick();
+		scene.GameTick();
 
 		Assert.AreEqual( 1, o.EnabledCalls );
 		Assert.AreEqual( 0, o.DisabledCalls );
 
 		go.Destroy();
-		scene.Tick();
+		scene.GameTick();
 
 		Assert.AreEqual( 1, o.EnabledCalls );
 		Assert.AreEqual( 1, o.DisabledCalls );

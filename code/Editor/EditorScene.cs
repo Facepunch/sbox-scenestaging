@@ -62,8 +62,8 @@
 		if ( PlayMode == "scene" )
 		{
 			var current = EditorScene.Active.Save();
-			Scene.Active = new Scene();
-			Scene.Active.Load( current );
+			GameManager.ActiveScene = new Scene();
+			GameManager.ActiveScene.Load( current );
 		}
 		else
 		{
@@ -72,11 +72,11 @@
 
 		// switch editor to active scene
 		previousActiveScene = EditorScene.Active;
-		EditorScene.Active = Scene.Active;
+		EditorScene.Active = GameManager.ActiveScene;
 
-		Camera.Main.World = Scene.Active.SceneWorld;
+		Camera.Main.World = GameManager.ActiveScene.SceneWorld;
 		Camera.Main.Worlds.Clear();
-		Camera.Main.Worlds.Add( Scene.Active.DebugSceneWorld );
+		Camera.Main.Worlds.Add( GameManager.ActiveScene.DebugSceneWorld );
 		Camera.Main.Position = 0;
 		Camera.Main.Rotation = Rotation.From( 0, 0, 0 );
 		Camera.Main.ZNear = 1;
@@ -92,7 +92,7 @@
 	public static void Stop()
 	{
 		GameManager.IsPlaying = false;
-		Scene.Active = null;
+		GameManager.ActiveScene = null;
 
 		if ( OpenScenes.Contains( previousActiveScene ) )
 		{
@@ -134,7 +134,7 @@
 		//
 		if ( Active.IsEditor )
 		{
-			Active.Tick();
+			Active.GameTick();
 		}
 	}
 

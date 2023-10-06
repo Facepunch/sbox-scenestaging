@@ -1,7 +1,7 @@
 ﻿using Sandbox;
 using System;
 
-public sealed partial class GameObject
+public partial class GameObject
 {
 	internal void DrawGizmos()
 	{
@@ -84,8 +84,4 @@ public sealed partial class GameObject
 		Transform = tx;
 	}
 
-	public void EditLog( string name, object source, Action undo )
-	{
-		Scene.EditLog( name, source, undo );
-	}
 }

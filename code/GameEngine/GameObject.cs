@@ -20,10 +20,9 @@ public enum GameObjectFlags
 	NotSaved = 2,
 }
 
-public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
+public partial class GameObject
 {
-
-	Scene _scene;
+	protected Scene _scene;
 
 	public Scene Scene => _scene;
 
@@ -72,20 +71,20 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		}
 	}
 
-	private GameObject( bool enabled, string name, Scene scene )
+	internal GameObject( bool enabled, string name, Scene scene )
 	{
 		_enabled = enabled;
-		_scene = Scene.Active;
+		_scene = scene;
 		Id = Guid.NewGuid();
 		Name = name;
 	}
 
 	public static GameObject Create( bool enabled = true, string name = "GameObject" )
 	{
-		if ( Scene.Active is null )
+		if ( GameManager.ActiveScene is null )
 			throw new System.ArgumentNullException( "Trying to create a GameObject without an active scene" );
 
-		return new GameObject( enabled, name, Scene.Active );
+		return new GameObject( enabled, name, GameManager.ActiveScene );
 	}
 
 	public Transform WorldTransform
@@ -285,16 +284,16 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		return t;
 	}
 
-	internal void Tick()
+	internal virtual void Tick()
 	{
 		if ( !Enabled )
 			return;
 
 		OnUpdate();
 
-		foreach ( var child in Children )
+		for ( int i=0; i < Children.Count; i++ )
 		{
-			child.Tick();
+			Children[i].Tick();
 		}
 	}
 
@@ -376,21 +375,10 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 	{
 		go.SetParent( Parent, keepWorldPosition );
 
-		if ( go.Parent is null )
-		{
-			Scene.All.Remove( go );
-
-			var targetIndex = Scene.All.IndexOf( this );
-			if ( !before ) targetIndex++;
-			Scene.All.Insert( targetIndex, go );
-		}
-		else
-		{
-			go.Parent.Children.Remove( go );
-			var targetIndex = go.Parent.Children.IndexOf( this );
-			if ( !before ) targetIndex++;
-			go.Parent.Children.Insert( targetIndex, go );
-		}
+		go.Parent.Children.Remove( go );
+		var targetIndex = go.Parent.Children.IndexOf( this );
+		if ( !before ) targetIndex++;
+		go.Parent.Children.Insert( targetIndex, go );
 	}
 
 	public void SetParent( GameObject value, bool keepWorldPosition = true )
@@ -433,7 +421,7 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 			return Parent.Children.Where( x => x != this );
 		}
 
-		return Scene.All.Where( x => x != this );
+		return Enumerable.Empty<GameObject>();
 	}
 
 	// todo - this should be internal
@@ -484,5 +472,12 @@ public sealed partial class GameObject : IPrefabObject, IPrefabObject.Extendible
 		return Children.Select( x => x.FindObjectByGuid( guid ) )
 								.Where( x => x is not null )
 								.FirstOrDefault();
+	}
+
+	public virtual void EditLog( string name, object source, Action undo )
+	{
+		if ( Parent == null ) return;
+
+		Parent.EditLog( name, source, undo );
 	}
 }

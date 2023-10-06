@@ -6,6 +6,8 @@ public static class GameManager
 	public static bool IsPlaying { get; set; }
 	public static bool IsPaused { get; set; }
 
+	public static Scene ActiveScene { get; set; }
+
 
 	[Event( "frame" )]
 	public static void Frame()
@@ -13,10 +15,13 @@ public static class GameManager
 		if ( !GameManager.IsPlaying )
 			return;
 
-		Scene.Active.Tick();
-		Scene.Active.PreRender();
+		if ( ActiveScene is null )
+			return;
 
-		var camera = Scene.Active.FindAllComponents<CameraComponent>( true ).FirstOrDefault();
+		ActiveScene.GameTick();
+		ActiveScene.PreRender();
+
+		var camera = ActiveScene.FindAllComponents<CameraComponent>( true ).FirstOrDefault();
 
 		if ( camera is not null )
 		{

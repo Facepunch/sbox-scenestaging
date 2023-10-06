@@ -17,7 +17,7 @@ public partial class OpenSceneList : Widget
 
 		if ( GameManager.IsPlaying )
 		{
-			AddSceneButton( Scene.Active );
+			AddSceneButton( GameManager.ActiveScene );
 		}
 
 		foreach ( var scene in EditorScene.OpenScenes )
@@ -52,7 +52,7 @@ public partial class OpenSceneList : Widget
 			hash.Add( scene );
 		}
 
-		hash.Add( Scene.Active );
+		hash.Add( GameManager.ActiveScene );
 
 		if ( rebuildHash == hash.ToHashCode() ) return;
 		rebuildHash = hash.ToHashCode();

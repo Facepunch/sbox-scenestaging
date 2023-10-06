@@ -97,9 +97,8 @@ public partial class SceneViewWidget : Widget
 		using ( EditorScene.GizmoInstance.Push() )
 		{
 			Cursor = Gizmo.HasHovered ? CursorShape.Finger : CursorShape.Arrow;
-			
-			activeScene.PreRender();
-			activeScene.DrawGizmos();
+
+			activeScene.EditorTick();
 
 			if ( Gizmo.HasClicked && Gizmo.HasHovered )
 			{

@@ -5,11 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public sealed class Scene
+public sealed class Scene : GameObject
 {
-	public static Scene Active { get; set; }
 	public bool IsEditor { get; set; }
-	public string Name { get; set; } = "New Scene";
+
 	public SceneWorld SceneWorld { get; private set; }
 	public SceneWorld DebugSceneWorld => gizmoInstance.World;
 	public PhysicsWorld PhysicsWorld { get; private set; }
@@ -18,14 +17,13 @@ public sealed class Scene
 	public SceneFile SourceSceneFile { get; private set; }
 	public PrefabFile SourcePrefabFile { get; private set; }
 
-	public List<GameObject> All = new();
-
 	public bool HasUnsavedChanges { get; private set; }
 
 	Gizmo.Instance gizmoInstance = new();
 
-	public Scene()
+	public Scene() : base( true, "Scene", null  )
 	{
+		_scene = this;
 		SceneWorld = new SceneWorld();
 		PhysicsWorld = new PhysicsWorld();
 
@@ -36,64 +34,41 @@ public sealed class Scene
 
 	public void Register( GameObject o )
 	{
-		if ( !All.Contains( o ) )
-		{
-			All.Add( o );
-		}
+		o.Parent = this;
 
 		SceneUtility.ActivateGameObject( o );
 	}
 
-	public void Unregister( GameObject o )
+	public void EditorTick()
 	{
-		o.OnDestroy();
-		All.Remove( o );
-	}
-
-	public void PreRender()
-	{
-		foreach ( var e in All )
-		{
-			e.PreRender();
-		}
-	}
-
-
-	public void Tick()
-	{
-		if ( IsEditor )
-		{
-			ProcessDeletes();
-			return;
-		}
-
-		{
-			// Tell it to use the main camera
-			gizmoInstance.Input.Camera = Sandbox.Camera.Main;
-		}
-
-		using var giz = gizmoInstance.Push();
-
-		if ( GameManager.IsPaused )
-		{
-			ProcessDeletes();
-			return;
-		}
-
-		TickObjects();
 		ProcessDeletes();
-		TickPhysics();
-
-		DrawNavmesh();
+		PreRender();
+		DrawGizmos();
 	}
 
-	public void TickObjects()
+	public void GameTick()
 	{
-		for ( int i = 0; i < All.Count; i++ )
+		if ( IsEditor ) return; // never in editor
+
+		gizmoInstance.Input.Camera = Sandbox.Camera.Main;
+
+		using ( gizmoInstance.Push() )
 		{
-			All[i].Tick();
+			ProcessDeletes();
+
+			if ( GameManager.IsPaused )
+				return;
+
+			Tick();
+
+			ProcessDeletes();
+
+			TickPhysics();
+
+			ProcessDeletes();
 		}
 	}
+
 
 	void TickPhysics()
 	{
@@ -102,37 +77,16 @@ public sealed class Scene
 		PostPhysics();
 	}
 
-	void PostPhysics()
-	{
-		foreach ( var e in All )
-		{
-			e.PostPhysics();
-		}
-	}
-
-	public void DrawGizmos()
-	{
-		foreach ( var e in All )
-		{
-			e.DrawGizmos();
-		}
-	}
-
-	void DrawNavmesh()
-	{
-
-	}
-
 	internal void OnParentChanged( GameObject gameObject, GameObject oldParent, GameObject parent )
 	{
 		if ( oldParent == null )
 		{
-			All.Remove( gameObject );
+			//All.Remove( gameObject );
 		}
 
 		if ( parent == null )
 		{
-			All.Add( gameObject );
+			//All.Add( gameObject );
 		}
 	}
 
@@ -142,7 +96,7 @@ public sealed class Scene
 		{
 			var go = GameObject.Create( enabled );
 			go.Enabled = enabled;
-			Register( go );
+			go.Parent = this;
 			return go;
 		}
 	}
@@ -203,7 +157,7 @@ public sealed class Scene
 	public SceneFile Save()
 	{
 		var a = new SceneFile();
-		a.GameObjects = All.Select( x => x.Serialize() ).ToArray();
+		a.GameObjects = Children.Select( x => x.Serialize() ).ToArray();
 		return a;
 	}
 
@@ -212,7 +166,7 @@ public sealed class Scene
 		// array rent?
 		List<T> found = new List<T>();
 
-		foreach ( var go in All )
+		foreach ( var go in Children )
 		{
 			found.AddRange( go.GetComponents<T>( includeDisabled, true ) );
 		}
@@ -222,25 +176,10 @@ public sealed class Scene
 
 	internal void Remove( GameObject gameObject )
 	{
-		if ( !All.Remove( gameObject ) )
+		if ( !Children.Remove( gameObject ) )
 		{
 			Log.Warning( "Scene.Remove - gameobject wasn't in All!" );
 		}
-	}
-
-	/// <summary>
-	/// Find a GameObject by Guid
-	/// </summary>
-	public GameObject FindObjectByGuid( Guid guid )
-	{
-		var o = All.Select( x => x.FindObjectByGuid( guid ) ).Where( x => x is not null ).FirstOrDefault();
-
-		if ( o is null )
-		{
-			Log.Warning( $"Couldn't find object with guid {guid}" );
-		}
-
-		return o;
 	}
 
 	/// <summary>
@@ -248,12 +187,12 @@ public sealed class Scene
 	/// </summary>
 	public IDisposable Push()
 	{
-		var old = Active;
-		Active = this;
+		var old = GameManager.ActiveScene;
+		GameManager.ActiveScene = this;
 
 		return DisposeAction.Create( () =>
 		{
-			Active = old;
+			GameManager.ActiveScene = old;
 		} );
 	}
 
@@ -276,12 +215,12 @@ public sealed class Scene
 	/// </summary>
 	public BBox GetBounds()
 	{
-		var renderers = All.SelectMany( x => x.GetComponents<ModelComponent>() );
+		var renderers = Children.SelectMany( x => x.GetComponents<ModelComponent>() );
 
 		return BBox.FromBoxes( renderers.Select( x => x.Bounds ) );
 	}
 
-	public void EditLog( string name, object source, Action undo )
+	public override void EditLog( string name, object source, Action undo )
 	{
 		if ( !IsEditor ) return;
 

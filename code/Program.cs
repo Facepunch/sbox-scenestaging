@@ -10,8 +10,8 @@ public static class Program
 		// and when you press play it'll load that.
 		//
 
-		Scene.Active = new Scene();
-		Scene.Active.LoadFromFile( "turret.scene" );
+		GameManager.ActiveScene = new Scene();
+		GameManager.ActiveScene.LoadFromFile( "turret.scene" );
 
 		GameManager.IsPlaying = true;
 	}
