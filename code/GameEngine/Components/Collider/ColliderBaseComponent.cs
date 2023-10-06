@@ -6,6 +6,21 @@ public abstract class ColliderBaseComponent : BaseComponent
 	PhysicsShape shape;
 	protected PhysicsBody ownBody;
 
+	bool _isTrigger;
+	[Property] public bool IsTrigger
+	{
+		get => _isTrigger;
+		set
+		{
+			_isTrigger = value;
+
+			if ( shape is not null )
+			{
+				shape.IsTrigger = _isTrigger;
+			}
+		}
+	}
+
 	public override void OnEnabled()
 	{
 		Assert.IsNull( ownBody );
@@ -40,6 +55,10 @@ public abstract class ColliderBaseComponent : BaseComponent
 		}
 
 		shape = CreatePhysicsShape( physicsBody );
+		if ( shape is not null )
+		{
+			shape.IsTrigger = IsTrigger;
+		}
 	}
 
 	protected abstract PhysicsShape CreatePhysicsShape( PhysicsBody targetBody );
