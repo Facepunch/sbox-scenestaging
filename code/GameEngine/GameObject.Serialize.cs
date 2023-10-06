@@ -18,9 +18,6 @@ public partial class GameObject
 
 	public JsonObject Serialize( SerializeOptions options = null )
 	{
-		if ( PrefabSource is not null )
-			return PrefabSource.RootObject;
-
 		if ( Flags.HasFlag( GameObjectFlags.NotSaved ) )
 			return null;
 

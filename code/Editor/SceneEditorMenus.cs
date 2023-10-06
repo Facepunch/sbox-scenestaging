@@ -6,6 +6,23 @@ using System.Text.Json.Nodes;
 
 public static class SceneEditorMenus
 {
+	[Menu( "Editor", "Scene/Save", Shortcut = "Ctrl+S" )]
+	public static void SaveScene()
+	{
+		EditorScene.Active.Save( false );
+	}
+
+	[Menu( "Editor", "Scene/Save All", Shortcut = "Ctrl+Shift+S" )]
+	public static void SaveAllScene()
+	{
+		foreach ( var scene in EditorScene.OpenScenes )
+		{
+			if ( !scene.IsEditor ) continue;
+
+			scene.Save( false );
+		}
+	}
+
 	[Menu( "Editor", "Scene/Cut", Shortcut = "Ctrl+X" )]
 	public static void Cut()
 	{

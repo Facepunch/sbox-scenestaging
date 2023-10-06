@@ -1,6 +1,6 @@
 ﻿namespace Sandbox;
 
-public static class SceneExtensions
+public static partial class SceneExtensions
 {
 	public static bool IsDeletable( this GameObject target )
 	{

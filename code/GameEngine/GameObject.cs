@@ -31,9 +31,6 @@ public partial class GameObject
 	[Property]
 	public string Name { get; set; } = "Untitled Object";
 
-	public PrefabFile PrefabSource { get; set; }
-
-
 	public GameObjectFlags Flags { get; set; } = GameObjectFlags.None;
 
 	bool _enabled = true;

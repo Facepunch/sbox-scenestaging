@@ -61,6 +61,10 @@
 
 		if ( PlayMode == "scene" )
 		{
+			// can't play prefabs
+			if ( EditorScene.Active is PrefabScene )
+				return;
+
 			var current = EditorScene.Active.Save();
 			GameManager.ActiveScene = new Scene();
 			GameManager.ActiveScene.Load( current );
@@ -181,7 +185,9 @@
 		// TODO: Unsaved changes test
 		//
 
-		var prefabScene = new PrefabScene();
+
+
+		var prefabScene = resource.PrefabScene;
 
 		OpenScenes.Add( prefabScene );
 		Active = prefabScene;

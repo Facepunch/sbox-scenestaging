@@ -10,10 +10,7 @@ public class PrefabFile : GameResource
 	public JsonObject RootObject { get; set; }
 
 	[JsonIgnore]
-	PrefabScene PrefabScene { get; set; }
-
-	[JsonIgnore]
-	public GameObject GameObject { get; private set; }
+	public PrefabScene PrefabScene { get; set; }
 
 	protected override void PostLoad()
 	{
@@ -26,8 +23,7 @@ public class PrefabFile : GameResource
 
 		using ( PrefabScene.Push() )
 		{
-			PrefabScene.Source = this;
-			PrefabScene.Deserialize( RootObject );
+			PrefabScene.Load( this );
 		}
 	}
 }

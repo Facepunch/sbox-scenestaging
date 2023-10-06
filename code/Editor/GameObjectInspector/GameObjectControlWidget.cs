@@ -42,7 +42,7 @@ public class GameObjectControlWidget : ControlWidget
 			rect.Left += 22;
 			Paint.DrawText( rect, "None (GameObject)", TextFlag.LeftCenter );
 		}
-		else if ( go.PrefabSource is not null && go.Parent is null )
+		else if ( go is PrefabScene )
 		{
 			Paint.SetPen( Theme.Blue );
 			Paint.DrawIcon( rect, "panorama_wide_angle_select", 14, TextFlag.LeftCenter );
@@ -105,7 +105,7 @@ public class GameObjectControlWidget : ControlWidget
 
 			if ( asset.TryLoadResource( out PrefabFile prefabFile ) )
 			{
-				SerializedProperty.SetValue( prefabFile.GameObject );
+				SerializedProperty.SetValue( prefabFile.PrefabScene );
 				return;
 			}
 		}

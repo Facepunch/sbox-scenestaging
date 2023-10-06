@@ -87,6 +87,7 @@ public abstract partial class BaseComponent
 
 	public void Destroy()
 	{
+		Enabled = false;
 		GameObject.Components.Remove( this );
 	}
 

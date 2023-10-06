@@ -3,28 +3,41 @@
     "Id": "abf72244-1fcc-4837-8df0-b51d2f170a05",
     "Name": "Bullet",
     "Enabled": true,
-    "Position": "0,0,0",
+    "Position": "-1.2076,0.4688,-2.1869",
     "Rotation": "0,0,0,1",
-    "Scale": "0.6,0.6,0.6",
+    "Scale": "1,1,1",
     "Components": [
-      {
-        "__type": "ModelComponent",
-        "__enabled": true,
-        "MaterialOverride": "materials/default.vmat",
-        "Model": "models/dev/sphere.vmdl",
-        "Tint": "0.36881,0.73762,0,1"
-      },
       {
         "__type": "ColliderSphereComponent",
         "__enabled": true,
-        "Radius": 34.15,
+        "IsTrigger": false,
+        "Radius": 10.600002,
         "Surface": null
       },
       {
         "__type": "PhysicsComponent",
         "__enabled": true,
-        "Gravity": false,
+        "Gravity": true,
         "Static": false
+      }
+    ],
+    "Children": [
+      {
+        "Id": "24becca9-4f57-4924-a0ad-f75afe81b65e",
+        "Name": "Beachball Model",
+        "Enabled": true,
+        "Position": "-1.2766,-0.9477,-10.2715",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Components": [
+          {
+            "__type": "ModelComponent",
+            "__enabled": true,
+            "MaterialOverride": null,
+            "Model": "models/citizen_props/beachball.vmdl",
+            "Tint": "1,1,1,1"
+          }
+        ]
       }
     ]
   }

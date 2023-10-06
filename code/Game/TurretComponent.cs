@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Diagnostics;
 using Sandbox.Services;
 using System;
 
@@ -44,6 +45,8 @@ public sealed class TurretComponent : BaseComponent
 
 		if ( Input.Pressed( "Attack1" ) )
 		{
+			Assert.NotNull( Bullet );
+
 			var obj = SceneUtility.Instantiate( Bullet, Muzzle.WorldTransform.Position, Muzzle.WorldTransform.Rotation );
 			var physics = obj.GetComponent<PhysicsComponent>( true, true );
 			if ( physics is not null )

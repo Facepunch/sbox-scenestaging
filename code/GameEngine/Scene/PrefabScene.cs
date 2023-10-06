@@ -7,17 +7,28 @@ using System.Linq;
 
 public sealed class PrefabScene : Scene
 {
-	public PrefabFile Source { get; set; }
-
-	public void Load( PrefabFile resource )
+	public override void Load( GameResource resource )
 	{
-		Source = resource;
+		Assert.NotNull( resource );
 
-		using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
+		Clear();
 
-		if ( resource.RootObject is not null )
+		if ( resource is PrefabFile sceneFile )
 		{
-			Deserialize( resource.RootObject );
+			Source = sceneFile;
+			using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
+
+			if ( sceneFile.RootObject is not null )
+			{
+				Deserialize( sceneFile.RootObject );
+			}
 		}
+	}
+
+	public override GameResource Save()
+	{
+		var a = new PrefabFile();
+		a.RootObject = Serialize();
+		return a;
 	}
 }

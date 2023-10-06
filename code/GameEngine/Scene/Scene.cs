@@ -12,8 +12,9 @@ public class Scene : GameObject
 	public SceneWorld SceneWorld { get; private set; }
 	public SceneWorld DebugSceneWorld => gizmoInstance.World;
 	public PhysicsWorld PhysicsWorld { get; private set; }
-	public SceneFile SourceSceneFile { get; private set; }
 	public bool HasUnsavedChanges { get; private set; }
+
+	public GameResource Source { get; protected set; }
 
 	Gizmo.Instance gizmoInstance = new();
 
@@ -116,27 +117,47 @@ public class Scene : GameObject
 		}
 	}
 
-	public void Load( SceneFile resource )
+	protected void Clear()
+	{
+		foreach ( var go in Children.ToArray() )
+		{
+			go.DestroyImmediate();
+		}
+
+		foreach( var c in Components.ToArray() )
+		{
+
+			c.Destroy();
+		}
+
+	}
+
+	public virtual void Load( GameResource resource )
 	{
 		Assert.NotNull( resource );
 
-		SourceSceneFile = resource;
+		Clear();
 
-		using var sceneScope = Push();
-
-		using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
-
-		if ( resource.GameObjects is not null )
+		if ( resource is SceneFile sceneFile )
 		{
-			foreach ( var json in resource.GameObjects )
+			Source = sceneFile;
+
+			using var sceneScope = Push();
+
+			using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
+
+			if ( sceneFile.GameObjects is not null )
 			{
-				var go = CreateObject( false );
-				go.Deserialize( json );
+				foreach ( var json in sceneFile.GameObjects )
+				{
+					var go = CreateObject( false );
+					go.Deserialize( json );
+				}
 			}
 		}
 	}
 
-	public SceneFile Save()
+	public virtual GameResource Save()
 	{
 		var a = new SceneFile();
 		a.GameObjects = Children.Select( x => x.Serialize() ).ToArray();
@@ -197,7 +218,7 @@ public class Scene : GameObject
 	/// </summary>
 	public BBox GetBounds()
 	{
-		var renderers = Children.SelectMany( x => x.GetComponents<ModelComponent>() );
+		var renderers = GetComponents<ModelComponent>( true, false );
 
 		return BBox.FromBoxes( renderers.Select( x => x.Bounds ) );
 	}

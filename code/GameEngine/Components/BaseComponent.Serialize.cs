@@ -29,9 +29,15 @@ public abstract partial class BaseComponent
 			{
 				if ( value is GameObject go )
 				{
-					if ( go.PrefabSource is not null )
+					if ( go is PrefabScene prefabScene )
 					{
-						json.Add( prop.Name, go.PrefabSource.ResourcePath );
+						if ( prefabScene.Source is null )
+						{
+							Log.Warning( "Prefab scene has no source!" );
+							continue;
+						}
+
+						json.Add( prop.Name, prefabScene.Source.ResourcePath );
 					}
 					else
 					{
@@ -84,7 +90,7 @@ public abstract partial class BaseComponent
 
 			if ( ResourceLibrary.TryGet( guidString, out PrefabFile prefabFile ) )
 			{
-				prop.SetValue( this, prefabFile.GameObject );
+				prop.SetValue( this, prefabFile.PrefabScene );
 				return;
 			}
 

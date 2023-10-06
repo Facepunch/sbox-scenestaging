@@ -19,6 +19,25 @@
         "__enabled": true,
         "Seconds": 4
       }
+    ],
+    "Children": [
+      {
+        "Id": "a7fc6366-2a0b-426c-9b28-d0ca39123c4f",
+        "Name": "Cube",
+        "Enabled": true,
+        "Position": "-2.7109,-2.7334,-0.0001",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Components": [
+          {
+            "__type": "ModelComponent",
+            "__enabled": true,
+            "MaterialOverride": null,
+            "Model": "models/dev/box.vmdl",
+            "Tint": "1,1,1,1"
+          }
+        ]
+      }
     ]
   }
 }
