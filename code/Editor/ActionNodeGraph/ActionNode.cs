@@ -47,11 +47,11 @@ public enum PropertyNodeKind
 	Set
 }
 
-public record struct PropertyNodeType( PropertyDescription Property, PropertyNodeKind Kind ) : INodeType
+public record struct PropertyNodeType( PropertyDescription Property, PropertyNodeKind Kind, bool ReadWrite ) : INodeType
 {
 	public DisplayInfo DisplayInfo => new ()
 	{
-		Name = $"{Property.Title} ({Kind})",
+		Name = ReadWrite ? $"{Property.Title}/{Kind}" : $"{Property.Title} ({Kind})",
 		Description = Property.Description,
 		Group = $"*{Property.TypeDescription.Name}"
 	};

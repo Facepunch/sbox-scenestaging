@@ -112,12 +112,12 @@ public class ActionGraphView : GraphView
 		{
 			if ( propertyDesc.CanRead )
 			{
-				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Get );
+				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Get, propertyDesc.CanWrite );
 			}
 
 			if ( propertyDesc.CanWrite )
 			{
-				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Set );
+				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Set, propertyDesc.CanRead );
 			}
 		}
 	}
