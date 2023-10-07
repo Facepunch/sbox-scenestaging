@@ -63,6 +63,7 @@ public sealed class TurretComponent : BaseComponent
 		var tr = Physics.Trace
 			.Ray( Muzzle.WorldTransform.Position + Muzzle.WorldTransform.Forward * 50.0f, Muzzle.WorldTransform.Position + Muzzle.WorldTransform.Forward * 4000 )
 			.Size( bbox )
+			//.Radius( 40 )
 			.Run();
 
 		Gizmo.Transform = Transform.Zero;
@@ -70,6 +71,14 @@ public sealed class TurretComponent : BaseComponent
 		Gizmo.Draw.LineThickness = 1;
 		Gizmo.Draw.Line( tr.StartPosition, tr.EndPosition );
 		Gizmo.Draw.Line( tr.HitPosition, tr.HitPosition + tr.Normal * 30.0f );
+
+		Gizmo.Draw.LineSphere( new Sphere( tr.HitPosition, 10.0f ) );
+
+		if ( tr.Body is not null )
+		{
+			var closestPos = tr.Body.FindClosestPoint( tr.HitPosition );
+			Gizmo.Draw.LineSphere( new Sphere( closestPos, 10.0f ) );
+		}
 
 		var box = bbox;
 		box.Mins += tr.EndPosition;

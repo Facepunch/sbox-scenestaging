@@ -1,10 +1,11 @@
 using Sandbox;
 using System;
+using System.Drawing;
 
 public class FixedUpdate
 {
-	public float Frequency = 60;
-	public float MaxSteps = 1;
+	public float Frequency = 32;
+	public float MaxSteps = 5;
 	public float Delta => 1.0f / Frequency;
 
 	float lastTime;
@@ -44,10 +45,23 @@ public class PlayerController : BaseComponent
 	[Property] public float GroundAngle { get; set; } = 45.0f;
 	[Property] public Vector3 Gravity { get; set; } = new Vector3( 0, 0, 800 );
 
+	[Property] public float Acceleration { get; set; } = 10.0f;
+	[Property] public float AirAcceleration { get; set; } = 50.0f;
+	[Property] public float AirControl { get; set; } = 30.0f;
+	[Property] public float StopSpeed { get; set; } = 100.0f;
+	[Property] public float GroundFriction { get; set; } = 4.0f;
+	[Property] public float CameraDistance { get; set; } = 200.0f;
+
 	public Vector3 Velocity { get; set; }
 	public bool IsOnGround { get; private set; }
 	public float SurfaceFriction { get; private set; }
+	public Vector3 WishVelocity { get; private set; }
 
+
+	[Property] GameObject Body { get; set; }
+	[Property] GameObject Eye { get; set; }
+
+	public Angles EyeAngles;
 
 	FixedUpdate updateManager = new FixedUpdate();
 
@@ -58,17 +72,59 @@ public class PlayerController : BaseComponent
 
 	public override void Update()
 	{
-		updateManager.Run( DoFixedUpdate );
-		//DoFixedUpdate();
+		//updateManager.Run( DoFixedUpdate );
+
+
+
+		using ( Gizmo.Scope( $"PlayerBBox {GameObject.Id}", GameObject.Transform.WithRotation( Rotation.Identity )  ) )
+		{
+			Gizmo.Draw.Color = IsOnGround ? Color.Green.WithAlpha( 0.1f ) : Color.Cyan.WithAlpha( 0.3f );
+			Gizmo.Draw.LineBBox( BoundingBox );
+		}
+
+		EyeAngles.pitch += Input.MouseDelta.y * 0.1f;
+		EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
+		EyeAngles.roll = 0;
+
+		var camera = GameObject.GetComponent<CameraComponent>( true, true );
+		if ( camera is not null )
+		{
+			var camPos = Eye.WorldTransform.Position - EyeAngles.ToRotation().Forward * CameraDistance;
+			camera.GameObject.WorldTransform = camera.GameObject.WorldTransform.WithPosition( camPos, EyeAngles.ToRotation() );
+		}
+
+		if ( Body is not null )
+		{
+			Body.Transform = Body.Transform.WithRotation( new Angles( 0, EyeAngles.yaw, 0 ).ToRotation() );
+		}
+
+
+		DoFixedUpdate();
 	}
 
 	void DoFixedUpdate()
 	{
-		Velocity += ((Vector3.Forward * 100.0f) + (Vector3.Random * 10.0f)) * Time.Delta;
-		Velocity -= Gravity * Time.Delta * 0.5f;
+		if ( IsOnGround )
+		{
+			Velocity = Velocity.WithZ( 0 );
+			ApplyFriction( GroundFriction * SurfaceFriction );
+		}
 
-		WalkMove();
-		CategorizePosition( IsOnGround );
+		HandleInput();
+
+		Velocity -= Gravity * Time.Delta * 0.5f;
+		bool wasOnGround = IsOnGround;
+
+		if ( IsOnGround )
+		{
+			WalkMove();
+		}
+		else
+		{
+			AirMove();
+		}
+
+		CategorizePosition( wasOnGround );
 
 		if ( IsOnGround )
 		{
@@ -78,49 +134,196 @@ public class PlayerController : BaseComponent
 		{
 			Velocity -= Gravity * Time.Delta * 0.5f;
 		}
+	}
 
-		using ( Gizmo.Scope( $"PlayerBBox {GameObject.Id}", GameObject.Transform ) )
+	/// <summary>
+	/// Remove ground friction from velocity
+	/// </summary>
+	public virtual void ApplyFriction( float frictionAmount = 1.0f )
+	{
+		// If we are in water jump cycle, don't apply friction
+		//if ( player->m_flWaterJumpTime )
+		//   return;
+
+		// Not on ground - no friction
+
+
+		// Calculate speed
+		var speed = Velocity.Length;
+		if ( speed < 0.1f ) return;
+
+		// Bleed off some speed, but if we have less than the bleed
+		//  threshold, bleed the threshold amount.
+		float control = (speed < StopSpeed) ? StopSpeed : speed;
+
+		// Add the amount to the drop amount.
+		var drop = control * Time.Delta * frictionAmount;
+
+		// scale the velocity
+		float newspeed = speed - drop;
+		if ( newspeed < 0 ) newspeed = 0;
+
+		if ( newspeed != speed )
 		{
-			Gizmo.Draw.Color = IsOnGround ? Color.Green.WithAlpha( 0.1f ) : Color.Cyan.WithAlpha( 0.3f );
-
-			Gizmo.Draw.LineBBox( BoundingBox );
+			newspeed /= speed;
+			Velocity *= newspeed;
 		}
+
+		// mv->m_outWishVel -= (1.f-newspeed) * mv->m_vecVelocity;
 	}
 
-	public void WalkMove()
+	public void HandleInput()
 	{
-		var currentPos = GameObject.Transform.Position;
+		var rot = EyeAngles.ToRotation();
 
-		MoveHelper2 helper = new MoveHelper2( Scene.PhysicsWorld, currentPos, Velocity );
-		helper.MaxStandableAngle = GroundAngle;
-		helper.Trace = helper.Trace.Size( BoundingBox );
+		WishVelocity = 0;
 
-		helper.TryMoveWithStep( Time.Delta, StepHeight );
+		if ( Input.Down( "Forward" ) ) WishVelocity += rot.Forward;
+		if ( Input.Down( "Backward" ) ) WishVelocity += rot.Backward;
+		if ( Input.Down( "Left" ) ) WishVelocity += rot.Left;
+		if ( Input.Down( "Right" ) ) WishVelocity += rot.Right;
 
-		Velocity = helper.Velocity;
-		GameObject.Transform = new Transform( helper.Position );
+		if ( !WishVelocity.IsNearlyZero() ) WishVelocity = WishVelocity.Normal;
 
-	//	StayOnGround();
+		if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
+		else WishVelocity *= 150.0f;
+
+		if( IsOnGround && Input.Down( "Jump" ) )
+		{
+			float flGroundFactor = 1.0f;
+			float flMul = 268.3281572999747f * 1.2f;
+			float startz = Velocity.z;
+
+			//if ( Duck.IsActive )
+			//	flMul *= 0.8f;
+
+			Velocity = Velocity.WithZ( startz + flMul * flGroundFactor );
+
+			IsOnGround = false;
+		}
+
+	//	var wishdir = WishVelocity.Normal;
+		//var wishspeed = WishVelocity.Length;
+
+	//	WishVelocity = WishVelocity.WithZ( 0 );
+	//	WishVelocity = WishVelocity.Normal * wishspeed;
+
+	//	Accelerate( wishdir, wishspeed, 0, Acceleration );
+
+		//Velocity += wishVelocity * Time.Delta * 100.0f;
+
+
+
+
 	}
 
-	public void AirMove()
+	public virtual void Accelerate( Vector3 wishdir, float wishspeed, float speedLimit, float acceleration )
 	{
-		var currentPos = GameObject.WorldTransform.Position;
-		Velocity += Vector3.Forward * 100.0f * Time.Delta;
-		Velocity -= Gravity * Time.Delta * 0.5f;
+		if ( speedLimit > 0 && wishspeed > speedLimit )
+			wishspeed = speedLimit;
 
-		MoveHelper2 helper = new MoveHelper2( Scene.PhysicsWorld, currentPos, Velocity );
-		helper.MaxStandableAngle = GroundAngle;
-		helper.Trace = helper.Trace.Size( BoundingBox );
+		// See if we are changing direction a bit
+		var currentspeed = Velocity.Dot( wishdir );
 
-		helper.TryMoveWithStep( Time.Delta, StepHeight );
+		// Reduce wishspeed by the amount of veer.
+		var addspeed = wishspeed - currentspeed;
 
-		Velocity = helper.Velocity;
-		//GameObject.WorldTransform = new Transform( helper.Position );
+		// If not going to add any speed, done.
+		if ( addspeed <= 0 )
+			return;
 
-		//StayOnGround();
+		// Determine amount of acceleration.
+		var accelspeed = acceleration * Time.Delta * wishspeed * SurfaceFriction;
 
-		Velocity -= Gravity * Time.Delta * 0.5f;
+		// Cap at addspeed
+		if ( accelspeed > addspeed )
+			accelspeed = addspeed;
+
+		Velocity += wishdir * accelspeed;
+	}
+
+	public virtual void AirMove()
+	{
+		var wishdir = WishVelocity.Normal;
+		var wishspeed = WishVelocity.Length;
+
+		Accelerate( wishdir, wishspeed, AirControl, AirAcceleration );
+		Move( false );
+	}
+
+	public virtual void WalkMove()
+	{
+		var wishdir = WishVelocity.Normal;
+		var wishspeed = WishVelocity.Length;
+
+		WishVelocity = WishVelocity.WithZ( 0 );
+		WishVelocity = WishVelocity.Normal * wishspeed;
+
+		Velocity = Velocity.WithZ( 0 );
+		Accelerate( wishdir, wishspeed, 0, Acceleration );
+		Velocity = Velocity.WithZ( 0 );
+
+		if ( Velocity.Length < 1.0f )
+		{
+			Velocity = Vector3.Zero;
+			return;
+		}
+
+		//var pos = GameObject.Transform.Position;
+
+		// first try just moving to the destination
+		//var dest = (pos + Velocity * Time.Delta).WithZ( pos.z );
+
+		//if ( TryMove( dest ) )
+		//	return;
+
+		Move( true );
+
+	//	Velocity = Velocity.Normal * MathF.Min( Velocity.Length, wishspeed );
+	}
+
+	PhysicsTraceBuilder BuildTrace( Vector3 from, Vector3 to )
+	{
+		var tr = Scene.PhysicsWorld.Trace.Ray( from, to );
+		return BuildTrace( tr );
+	}
+
+	PhysicsTraceBuilder BuildTrace( PhysicsTraceBuilder source )
+	{
+		return source.Size( BoundingBox );
+	}
+
+	public virtual bool TryMove( Vector3 target )
+	{
+		var mover = new MoveHelper2( Scene.PhysicsWorld, GameObject.Transform.Position, Velocity );
+		mover.Trace = BuildTrace( mover.Trace );
+		mover.MaxStandableAngle = GroundAngle;
+
+		var tr = mover.TraceFromTo( GameObject.Transform.Position, target );
+
+		if ( tr.Hit ) return false;
+
+		GameObject.Transform = GameObject.Transform.WithPosition( tr.EndPosition );
+		return true;
+	}
+
+	public virtual void Move( bool step )
+	{
+		var mover = new MoveHelper2( Scene.PhysicsWorld, GameObject.Transform.Position, Velocity );
+		mover.Trace = BuildTrace( mover.Trace );
+		mover.MaxStandableAngle = GroundAngle;
+
+		if ( step )
+		{
+			mover.TryMoveWithStep( Time.Delta, StepHeight );
+		}
+		else
+		{
+			mover.TryMove( Time.Delta );
+		}
+
+		GameObject.Transform = GameObject.Transform.WithPosition( mover.Position );
+		Velocity = mover.Velocity;
 	}
 
 	public void StayOnGround()
@@ -131,11 +334,11 @@ public class PlayerController : BaseComponent
 		var end = Position + Vector3.Down * StepHeight;
 
 		// See how far up we can go without getting stuck
-		var trace = Scene.PhysicsWorld.Trace.Box( BoundingBox, Position, start ).Run();
+		var trace = BuildTrace( Position, start ).Run();
 		start = trace.EndPosition;
 
 		// Now trace down from a known safe position
-		trace = Scene.PhysicsWorld.Trace.Box( BoundingBox, start, end ).Run();
+		trace = BuildTrace( start, end ).Run();
 
 		if ( trace.Fraction <= 0 ) return;
 		if ( trace.Fraction >= 1 ) return;
@@ -189,10 +392,11 @@ public class PlayerController : BaseComponent
 		if ( bMovingUpRapidly || Swimming ) // or ladder and moving up
 		{
 			ClearGround();
+			SurfaceFriction = 0;
 			return;
 		}
 
-		var pm = Scene.PhysicsWorld.Trace.Box( BoundingBox, vBumpOrigin, point ).Run();
+		var pm = BuildTrace( vBumpOrigin, point ).Run();
 
 		if ( !pm.Hit || Vector3.GetAngle( Vector3.Up, pm.Normal ) > GroundAngle )
 		{
@@ -205,13 +409,15 @@ public class PlayerController : BaseComponent
 		else
 		{
 			IsOnGround = true;
-			SurfaceFriction = 0.5f;
+			SurfaceFriction = 1f;
 		}
 
 		if ( bMoveToEndPos && !pm.StartedSolid && pm.Fraction > 0.0f && pm.Fraction < 1.0f )
 		{
-			GameObject.WorldTransform = new Transform( pm.EndPosition );
+			GameObject.Transform = GameObject.Transform.WithPosition( pm.EndPosition );
 		}
+
+		Gizmo.Draw.ScreenText( $"SurfaceFriction: {SurfaceFriction}\n", 20 );
 
 	}
 

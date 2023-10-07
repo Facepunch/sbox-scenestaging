@@ -190,8 +190,8 @@ public struct MoveHelper2
 		var fraction = TryMove( timeDelta );
 
 		// If it got all the way then that's cool, use it
-		//if ( fraction.AlmostEqual( 0 ) )
-		//	return fraction;
+		if ( fraction.AlmostEqual( 0 ) )
+			return fraction;
 
 		// Move up (as much as we can)
 		stepMove.TraceMove( Vector3.Up * stepsize );
