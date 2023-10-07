@@ -231,7 +231,7 @@ public partial class ComponentTypeSelector : PopupWidget
 			var defaultComponent = $$"""
 				using Sandbox;
 
-				public sealed class {{componentName}} : GameObjectComponent
+				public sealed class {{componentName}} : BaseComponent
 				{
 					public override void Update()
 					{
