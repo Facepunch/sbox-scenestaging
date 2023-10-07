@@ -2,6 +2,7 @@ using Sandbox;
 using Sandbox.Diagnostics;
 using Sandbox.Services;
 using System;
+using System.Threading;
 
 public sealed class TurretComponent : BaseComponent
 {
@@ -22,6 +23,8 @@ public sealed class TurretComponent : BaseComponent
 		turretPitch += Input.MouseDelta.y * 0.1f;
 		turretPitch = turretPitch.Clamp( -30, 30 );
 		Gun.Transform = Gun.Transform.WithRotation( Rotation.From( turretPitch, turretYaw, 0  ) );
+
+		var bbox = new BBox( 0, 50 );
 
 		// drive tank
 		Vector3 movement = 0;
@@ -58,7 +61,8 @@ public sealed class TurretComponent : BaseComponent
 		}
 
 		var tr = Physics.Trace
-			.Ray( Muzzle.WorldTransform.Position, Muzzle.WorldTransform.Position + Muzzle.WorldTransform.Forward * 4000 )
+			.Ray( Muzzle.WorldTransform.Position + Muzzle.WorldTransform.Forward * 50.0f, Muzzle.WorldTransform.Position + Muzzle.WorldTransform.Forward * 4000 )
+			.Size( bbox )
 			.Run();
 
 		Gizmo.Transform = Transform.Zero;
@@ -67,9 +71,18 @@ public sealed class TurretComponent : BaseComponent
 		Gizmo.Draw.Line( tr.StartPosition, tr.EndPosition );
 		Gizmo.Draw.Line( tr.HitPosition, tr.HitPosition + tr.Normal * 30.0f );
 
+		var box = bbox;
+		box.Mins += tr.EndPosition;
+		box.Maxs += tr.EndPosition;
+
+		Gizmo.Draw.LineBBox( box );
+
+	//	Gizmo.Draw.Text( $"{tr.EndPosition}", Muzzle.WorldTransform );
+	//	Gizmo.Draw.Text( $"{tr.HitPosition}\n{tr.Fraction}\n{tr.Direction}", new Transform( tr.HitPosition ) );
+
 		using ( Gizmo.Scope( "circle", new Transform( tr.HitPosition, Rotation.LookAt( tr.Normal ) ) ) )
 		{
-			Gizmo.Draw.LineCircle( 0, 30 );
+		//	Gizmo.Draw.LineCircle( 0, 30 );
 		}
 
 		if ( Input.Pressed( "Attack2" ) && timeSinceLastSecondary > 0.02f && tr.Hit )

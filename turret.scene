@@ -29,7 +29,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
-          "MaterialOverride": "materials/default.vmat",
+          "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/plane.vmdl",
           "Tint": "0.05882,0.13725,0.49412,1"
         },
@@ -1004,6 +1004,54 @@
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "a46a1be9-0a37-4dd3-a4af-6ff3956683c6",
+      "Name": "Cube (6)",
+      "Enabled": true,
+      "Position": "904.5154,-141.3905,-1445.36",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "6.4,6.4,6.4",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "Tint": "0.92079,0.53406,0,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32.2,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "f9645320-457e-4de7-bcc5-5cc674dbb6ba",
+      "Name": "Cube (6)",
+      "Enabled": true,
+      "Position": "1250.129,-189.4961,-1516.795",
+      "Rotation": "-0.00000001717797,0.000000007865676,0.241669,0.9703576",
+      "Scale": "5,5,5",
+      "Components": [
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "Tint": "0,0.73762,0.3098,1"
         }
       ]
     },
@@ -2285,8 +2333,8 @@
       "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
       "Name": "Camera",
       "Enabled": true,
-      "Position": "1756.701,921.0959,-802.6239",
-      "Rotation": "0.3148696,0.1640211,-0.8291076,0.4318968",
+      "Position": "1630.013,877.5098,-1356.439",
+      "Rotation": "0.08006466,0.03423851,-0.9159636,0.3916987",
       "Scale": "1,1,1",
       "Components": [
         {
