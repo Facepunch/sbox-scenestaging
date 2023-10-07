@@ -57,19 +57,50 @@ public sealed class TurretComponent : BaseComponent
 			Stats.Increment( "balls_fired", 1 );
 		}
 
-		if ( Input.Down( "Attack2" ) && timeSinceLastSecondary > 0.02f )
+		var tr = Physics.Trace
+			.Ray( Muzzle.WorldTransform.Position, Muzzle.WorldTransform.Position + Muzzle.WorldTransform.Forward * 4000 )
+			.Run();
+
+		Gizmo.Transform = Transform.Zero;
+		Gizmo.Draw.Color = Color.White;
+		Gizmo.Draw.LineThickness = 1;
+		Gizmo.Draw.Line( tr.StartPosition, tr.EndPosition );
+		Gizmo.Draw.Line( tr.HitPosition, tr.HitPosition + tr.Normal * 30.0f );
+
+		using ( Gizmo.Scope( "circle", new Transform( tr.HitPosition, Rotation.LookAt( tr.Normal ) ) ) )
+		{
+			Gizmo.Draw.LineCircle( 0, 30 );
+		}
+
+		if ( Input.Pressed( "Attack2" ) && timeSinceLastSecondary > 0.02f && tr.Hit )
 		{
 			Stats.Increment( "cubes_fired", 1 );
 
 			timeSinceLastSecondary = 0;
 
-			var obj = SceneUtility.Instantiate( SecondaryBullet, Muzzle.WorldTransform.Position, Muzzle.WorldTransform.Rotation );
-			var physics = obj.GetComponent<PhysicsComponent>( true, true );
-			if ( physics is not null )
-			{
-				physics.Velocity = Muzzle.WorldTransform.Rotation.Forward * 300.0f;
-			}
+			int i = 0;
 
+			var r = Muzzle.WorldTransform.Rotation;
+
+			for ( float f = 0; f < tr.Distance; f += 10.0f )
+			{
+				if ( i++ > 200 )
+					break;
+
+				var off = MathF.Sin( i * 0.4f ) * Muzzle.WorldTransform.Right * 20.0f;
+				off += MathF.Cos( i * 0.4f ) * Muzzle.WorldTransform.Up * 20.0f;
+
+				var obj = SceneUtility.Instantiate( SecondaryBullet, tr.StartPosition + tr.Direction * f + off * 0.1f, r );
+
+				//r *= Rotation.From( 2, 4, 2 );
+
+				var physics = obj.GetComponent<PhysicsComponent>( true, true );
+				if ( physics is not null )
+				{
+					physics.Velocity = off * 2.0f;// Muzzle.WorldTransform.Rotation.Forward * 300.0f;
+				}
+			}
+	
 		}
 	}
 }
