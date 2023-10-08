@@ -5,6 +5,7 @@ public abstract class ColliderBaseComponent : BaseComponent
 {
 	PhysicsShape shape;
 	protected PhysicsBody ownBody;
+	protected PhysicsGroup group;
 
 	bool _isTrigger;
 	[Property] public bool IsTrigger
@@ -71,10 +72,23 @@ public abstract class ColliderBaseComponent : BaseComponent
 
 		ownBody?.Remove();
 		ownBody = null;
+
+		group?.Remove();
+		group = null;
 	}
 
 	protected override void OnPostPhysics()
 	{
+		if ( group is not null )
+		{
+			foreach( var body in group.Bodies )
+			{
+				body?.Move( GameObject.WorldTransform, Time.Delta * 4.0f );
+			}
+
+			return;
+		}
+
 		ownBody?.Move( GameObject.WorldTransform, Time.Delta * 4.0f );
 	}
 
