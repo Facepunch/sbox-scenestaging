@@ -62,10 +62,11 @@ public sealed class CameraPhysicsDebug : BaseComponent
 			Gizmo.Draw.Line( t.Position, t.Position + t.Normal * 3.0f );
 		}
 
+		
 
-		while ( worldPoints.Count > MaxPoints )
+		if ( worldPoints.Count > MaxPoints )
 		{
-			worldPoints.RemoveAt( 0 );
+			worldPoints.RemoveRange( 0, worldPoints.Count - MaxPoints );
 		}
 	}
 }
