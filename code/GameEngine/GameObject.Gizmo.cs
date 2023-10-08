@@ -20,6 +20,8 @@ public partial class GameObject
 
 			foreach ( var component in Components )
 			{
+				if ( !component.Enabled ) continue;
+
 				using var scope = Gizmo.Scope();
 
 				component.DrawGizmos();

@@ -83,7 +83,7 @@ public abstract class ColliderBaseComponent : BaseComponent
 		{
 			foreach( var body in group.Bodies )
 			{
-				body?.Move( GameObject.WorldTransform, Time.Delta * 4.0f );
+			//	body?.Move( GameObject.WorldTransform, Time.Delta * 4.0f );
 			}
 
 			return;

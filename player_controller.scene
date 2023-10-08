@@ -62,6 +62,13 @@
               "FieldOfView": 80,
               "ZFar": 10000,
               "ZNear": 1
+            },
+            {
+              "__type": "CameraPhysicsDebug",
+              "__enabled": true,
+              "MaxPoints": 10000,
+              "TracesPerFrame": 500,
+              "TraceType": "Ray"
             }
           ]
         },
@@ -340,6 +347,54 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "cd075bdd-2ae8-495b-a0a3-0b12eacfa91f",
+      "Name": "Cabin",
+      "Enabled": true,
+      "Position": "666.2659,776.6023,-1532.493",
+      "Rotation": "-0.00000004369251,-0.000000006436908,-0.1977707,0.9802483",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/portacabins/portacabin_300_600_b.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_props/portacabins/portacabin_300_600_b.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "f34b346f-38cf-4579-85b5-914d61c607de",
+      "Name": "Cabin",
+      "Enabled": true,
+      "Position": "850.3311,525.2525,-1631.623",
+      "Rotation": "-0.00000002114547,0.000000005928668,0.1821554,0.9832697",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/citizen/citizen.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/citizen/citizen.vmdl",
           "Surface": null
         }
       ]
@@ -1608,7 +1663,7 @@
       "Id": "5195d744-3d1c-4378-92c2-81e3897b80f2",
       "Name": "Cube (2)",
       "Enabled": true,
-      "Position": "1215.774,-323.0742,-1723.809",
+      "Position": "1216.83,-323.0742,-1504.344",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
       "Scale": "4.9,4.9,4.9",
       "Components": [
@@ -1632,7 +1687,31 @@
       "Id": "2f5ccfce-c898-437d-b8c1-de0541c8e6e6",
       "Name": "Cube (2)",
       "Enabled": true,
-      "Position": "1066.074,-451.4301,-1723.087",
+      "Position": "846.1329,903.7219,-1785.894",
+      "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
+      "Scale": "42.1,42.1,42.1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/soccerball.vmdl",
+          "Tint": "0.85644,0.12719,0.57932,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/soccerball.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "1b2e8bc1-ff8c-4404-a282-233b6aa72b88",
+      "Name": "Cube (2)",
+      "Enabled": true,
+      "Position": "1096.56,915.7159,-1747.127",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
       "Scale": "4.9,4.9,4.9",
       "Components": [
@@ -1647,7 +1726,7 @@
           "__type": "ColliderSphereComponent",
           "__enabled": true,
           "IsTrigger": false,
-          "Radius": 31.3,
+          "Radius": 32,
           "Surface": null
         }
       ]
@@ -3877,16 +3956,143 @@
       "Id": "80ffb131-60b4-4967-93b4-addc3065842b",
       "Name": "8hu_kultiras_smallhouse_2",
       "Enabled": true,
-      "Position": "581.1741,-708.5844,-1637.705",
-      "Rotation": "0.0000003540515,0.0000001892134,0.8485729,0.5290797",
+      "Position": "796.3422,-668.3089,-1588.54",
+      "Rotation": "0.0000002191773,0.0000003043082,0.5253132,0.8509094",
       "Scale": "1,1,1",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
-          "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "d5e8fa3e-f502-4f82-884e-f7583872d39d",
+      "Name": "8hu_kultiras_smallhouse_2",
+      "Enabled": true,
+      "Position": "904.5501,64.3218,-1811.178",
+      "Rotation": "0.08123279,-0.01099247,-0.1336513,0.9876328",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "91acecb5-8b58-4ed5-bc6d-5f8e4042bb6b",
+      "Name": "8hu_kultiras_smallhouse_2",
+      "Enabled": true,
+      "Position": "1159.405,-92.9491,-1636.827",
+      "Rotation": "0,0.0000003445896,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/uf-rts/resource_gold1.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/uf-rts/resource_gold1.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "a0204cda-1fa1-4ed1-a0e4-71efe2dcc196",
+      "Name": "8hu_kultiras_smallhouse_2",
+      "Enabled": true,
+      "Position": "796.3422,-668.3089,-1380.482",
+      "Rotation": "0.0000002191773,0.0000003043082,0.5253132,0.8509094",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "22f970d4-6a24-499c-8765-47132c87d2fb",
+      "Name": "8hu_kultiras_smallhouse_2",
+      "Enabled": true,
+      "Position": "796.3422,-668.3089,-1170.639",
+      "Rotation": "-0.0000003103042,0.0000002390701,-0.7437195,0.668492",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "77c637b1-9eca-4ad9-8330-d458bf8254a0",
+      "Name": "8hu_kultiras_smallhouse_2",
+      "Enabled": true,
+      "Position": "796.3422,-668.3089,-966.605",
+      "Rotation": "0.0000002191773,0.0000003043082,0.5253132,0.8509094",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Surface": null
         }
       ]
     },
@@ -4057,6 +4263,37 @@
           "MaterialOverride": null,
           "Model": "grass_block.vmdl",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "grass_block.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "7058c66b-ec56-4ff4-bf32-28ae5ad2ef2a",
+      "Name": "grass_block",
+      "Enabled": true,
+      "Position": "1355.177,-96.7543,-1637.753",
+      "Rotation": "0,0.0000003576279,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "grass_block.vmdl",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "grass_block.vmdl",
+          "Surface": null
         }
       ]
     },
