@@ -29,7 +29,8 @@ public partial class MainWindow : DockWindow
 	public ActionJig ActionJig { get; }
 
 	public ActionGraph Graph { get; }
-	public GraphView View { get; }
+	public GraphView View { get; private set; }
+	public Properties Properties { get; private set; }
 
 	public event Action Saved;
 
@@ -39,17 +40,6 @@ public partial class MainWindow : DockWindow
 
 		ActionJig = actionJig;
 		Graph = new ActionGraph( actionJig );
-		View = new ActionGraphView( null )
-		{
-			Graph = Graph,
-			WindowTitle = "Graph View"
-		};
-		View.SetBackgroundImage( "toolimages:/grapheditor/grapheditorbackgroundpattern_shader.png" );
-
-		foreach ( var nodeDefinition in EditorNodeLibrary.All.Values )
-		{
-			View.AddNodeType( new ActionNodeType( nodeDefinition ) );
-		}
 
 		Title = $"{name} - Action Graph";
 		Size = new Vector2( 1280, 720 );
@@ -71,8 +61,31 @@ public partial class MainWindow : DockWindow
 	[Event.Hotload]
 	public void RebuildUI()
 	{
+		View = new ActionGraphView( null )
+		{
+			Graph = Graph,
+			WindowTitle = "Graph View"
+		};
+		View.SetBackgroundImage( "toolimages:/grapheditor/grapheditorbackgroundpattern_shader.png" );
+		View.OnSelectionChanged += View_OnSelectionChanged;
+
+		foreach ( var nodeDefinition in EditorNodeLibrary.All.Values )
+		{
+			View.AddNodeType( new ActionNodeType( nodeDefinition ) );
+		}
+
+		Properties = new Properties( null )
+		{
+			Target = Graph,
+			Width = 320f
+		};
+
 		DockManager.Clear();
-		DockManager.AddDock( null, View );
+		DockManager.RegisterDockType( "Properties", "edit", () => new Properties(null) { Target = Graph }, false );
+
+		DockManager.AddDock( null, View, DockArea.Right, properties: DockManager.DockProperty.HideCloseButton | DockManager.DockProperty.HideOnClose );
+		DockManager.AddDock( null, Properties, DockArea.Left, DockManager.DockProperty.HideOnClose, split: 0.25f );
+		DockManager.Update();
 
 		MenuBar.Clear();
 
@@ -81,6 +94,20 @@ public partial class MainWindow : DockWindow
 			file.AddOption( new Option( "Save" ) { Shortcut = "Ctrl+S", Triggered = Save } );
 			file.AddSeparator();
 			file.AddOption( new Option( "Exit" ) { Triggered = Close } );
+		}
+	}
+
+	private void View_OnSelectionChanged()
+	{
+		var item = View.SelectedItems.SingleOrDefault();
+
+		if ( item is NodeUI node )
+		{
+			Properties.Target = node.Node;
+		}
+		else
+		{
+			Properties.Target = Graph;
 		}
 	}
 
@@ -104,6 +131,7 @@ public class ActionGraphView : GraphView
 {
 	public ActionGraphView( Widget parent ) : base( parent )
 	{
+
 	}
 
 	private static IEnumerable<INodeType> GetInstanceNodes( TypeDescription typeDesc )

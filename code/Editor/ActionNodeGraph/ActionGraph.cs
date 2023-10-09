@@ -10,12 +10,14 @@ namespace Editor.ActionJigs;
 
 public partial class ActionGraph : IGraph
 {
+	[HideInEditor]
 	public ActionJig Jig { get; }
 
 	private Dictionary<Node, ActionNode> NodeDict { get; } = new Dictionary<Node, ActionNode>();
 	private Dictionary<string, ActionNode> NodeIdDict { get; } = new Dictionary<string, ActionNode>();
 	private HashSet<ActionNode> DirtyNodes { get; } = new HashSet<ActionNode>();
 
+	[HideInEditor]
 	public IEnumerable<INode> Nodes => NodeDict.Values;
 
 	public void AddNode( INode node )

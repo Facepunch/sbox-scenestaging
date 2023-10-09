@@ -328,8 +328,8 @@ public class ActionPlug<T, TDef> : IActionPlug
 
 	public DisplayInfo DisplayInfo => new()
 	{
-		Name = Index == null ? Parameter.Display.Title
-			: $"{Parameter.Display.Title}[{Index}]",
+		Name = Index == null ? Parameter.Display.Title ?? Parameter.Name
+			: $"{Parameter.Display.Title ?? Parameter.Name}[{Index}]",
 		Description = Parameter.Display.Description
 	};
 
@@ -344,25 +344,6 @@ public class ActionPlug<T, TDef> : IActionPlug
 
 	public ValueEditor CreateEditor( NodeUI node, Plug plug )
 	{
-		if ( Parameter is not Node.Input input )
-		{
-			return null;
-		}
-
-		if ( !input.Definition.IsRequired && input.Value is null && !input.IsLinked )
-		{
-			input.Value = input.Definition.Default;
-		}
-
-		if ( Type == typeof( float ) )
-		{
-			var slider = new FloatEditor( plug ) { Title = DisplayInfo.Name, Node = node };
-			slider.Bind( "Value" ).From( input, "Value" );
-			return slider;
-		}
-
-		// TODO: int, bool, string, ...
-
 		return null;
 	}
 
@@ -453,5 +434,10 @@ public class ActionPlug<T, TDef> : IActionPlug
 			input.SetLinks( links );
 			Node.MarkDirty();
 		}
+	}
+
+	public override string ToString()
+	{
+		return $"{Node.Identifier}.{Identifier}";
 	}
 }
