@@ -99,9 +99,9 @@ public partial class MainWindow : DockWindow
 
 	private void View_OnSelectionChanged()
 	{
-		var item = View.SelectedItems.SingleOrDefault();
+		var items = View.SelectedItems.ToArray();
 
-		if ( item is NodeUI node )
+		if ( items is [NodeUI node] )
 		{
 			Properties.Target = node.Node;
 		}

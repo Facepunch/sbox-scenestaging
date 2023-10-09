@@ -43,6 +43,11 @@ public class Properties : Widget
 	[EditorEvent.Frame]
 	public void Frame()
 	{
+		if ( Target is ActionNode node )
+		{
+			node.MarkDirty();
+		}
+
 		if ( _contentInvalid )
 		{
 			_contentInvalid = false;
@@ -74,7 +79,9 @@ public class Properties : Widget
 		{
 			foreach ( var (name, property) in node.Node.Properties )
 			{
-				ps.AddRow( new SerializedNodeParameter<Node.Property, PropertyDefinition>( property ) );
+				var prop = new SerializedNodeParameter<Node.Property, PropertyDefinition>( property );
+
+				ps.AddRow( prop );
 			}
 		}
 

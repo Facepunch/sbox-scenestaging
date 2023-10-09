@@ -92,7 +92,7 @@ public class ActionNode : INode
 	public Node Node { get; }
 	public NodeDefinition Definition => Node.Definition;
 
-	public event Action PlugsChanged;
+	public event Action Changed;
 
 	public string Identifier { get; }
 
@@ -202,12 +202,28 @@ public class ActionNode : INode
 		set => _position.Value = value;
 	}
 
+	private const float ConstStringFontSize = 10f;
+	private const float ConstStringMaxWidth = 240f;
+	private const float ConstStringMaxHeight = 160f;
+
+	private Vector2 ConstStringExpandSize()
+	{
+		Paint.SetFont( null, ConstStringFontSize );
+		var size = Paint.MeasureText(
+			new Rect( 0f, 0f, ConstStringMaxWidth, ConstStringMaxHeight ),
+			$"\"{Node.Properties["value"].Value as string}\"",
+			TextFlag.WordWrap ).Size;
+
+		return size with { x = Math.Max( size.x - 120f, 0f ) };
+	}
+
 	public Vector2 ExpandSize
 	{
 		get
 		{
 			return Definition.Identifier switch
 			{
+				"const.string" => ConstStringExpandSize(),
 				{ } s when s.StartsWith( "const." ) => new Vector2( -40f, 12f ),
 				_ => default
 			};
@@ -225,19 +241,19 @@ public class ActionNode : INode
 					? () => getParams().Values.Select( x => (Node.Input)(object)x )
 						.SelectMany( x =>
 							x.LinkArray?
-								.Select( ( _, i ) => (x.Name, (int?)i) )
-								.Concat( new (string, int?)[] { (x.Name, x.LinkArray.Count) } ) ??
-							new (string, int?)[] { (x.Name, null) } )
-					: () => getParams().Keys.Select( x => (x, (int?)null) ),
+								.Select( ( _, i ) => (x.Name, i) )
+								.Concat( new (string, int)[] { (x.Name, x.LinkArray.Count) } ) ??
+							new (string, int)[] { (x.Name, 0) } )
+					: () => getParams().Keys.Select( x => (x, 0) ),
 				key => new ActionPlug<T, TDef>( node, getParams()[key.Name], key.Index ) );
 		}
 
-		private readonly Func<IEnumerable<(string Name, int? Index)>> _getKeys;
-		private readonly Func<(string Name, int? Index), IActionPlug> _createPlug;
+		private readonly Func<IEnumerable<(string Name, int Index)>> _getKeys;
+		private readonly Func<(string Name, int Index), IActionPlug> _createPlug;
 
-		private readonly Dictionary<(string Name, int? Index), IActionPlug> _plugs = new();
+		private readonly Dictionary<(string Name, int Index), IActionPlug> _plugs = new();
 
-		private PlugCollection( Func<IEnumerable<(string Name, int? Index)>> getKeys, Func<(string Name, int? Index), IActionPlug> createPlug )
+		private PlugCollection( Func<IEnumerable<(string Name, int Index)>> getKeys, Func<(string Name, int Index), IActionPlug> createPlug )
 		{
 			_getKeys = getKeys;
 			_createPlug = createPlug;
@@ -274,8 +290,8 @@ public class ActionNode : INode
 			return changed;
 		}
 
-		public IPlug this[ string name, int? index ] => _plugs[(name, index)];
-		public IPlug this[ string name ] => _plugs[(name, null)];
+		public IPlug this[ string name, int index ] => _plugs[(name, index)];
+		public IPlug this[ string name ] => _plugs[(name, 0)];
 
 		IEnumerator<IPlug> IEnumerable<IPlug>.GetEnumerator() => _plugs.Values.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => _plugs.Values.GetEnumerator();
@@ -294,7 +310,8 @@ public class ActionNode : INode
 
 		rect = rect.Shrink( 3f, 30f, 3f, 3f );
 
-		var value = Node.Properties["value"].Value;
+		var valueProperty = Node.Properties["value"];
+		var value = valueProperty.Value ?? valueProperty.Definition.Default;
 
 		Paint.SetFont( null, 12f, 800 );
 
@@ -305,6 +322,20 @@ public class ActionNode : INode
 				Paint.DrawRect( rect, 3f );
 				Paint.SetPen( colorVal.r + colorVal.g + colorVal.b > 1.5f ? Color.Black : Color.White );
 				Paint.DrawText( rect, colorVal.Hex );
+				break;
+
+			case string str:
+				Paint.SetPen( Color.White );
+				Paint.SetFont( null, ConstStringFontSize );
+				Paint.DrawText( new Rect(
+						rect.Center - new Vector2( ConstStringMaxWidth * 0.5f, ConstStringMaxHeight * 0.5f ),
+						new Vector2( ConstStringMaxWidth, ConstStringMaxHeight ) ),
+					$"\"{str}\"", TextFlag.WordWrap | TextFlag.Center );
+				break;
+
+			case float floatVal:
+				Paint.SetPen( Color.White );
+				Paint.DrawText( rect, $"{floatVal:F1}".Length > $"{floatVal}".Length ? $"{floatVal:F1}" : $"{floatVal}" );
 				break;
 
 			default:
@@ -345,10 +376,59 @@ public class ActionNode : INode
 
 	public void Update()
 	{
-		if ( Inputs.Update() | Outputs.Update() )
+		var changed = false;
+
+		changed |= Inputs.Update();
+		changed |= Outputs.Update();
+		changed |= UpdateProperties();
+		changed |= UpdateMessages();
+
+		if ( changed )
 		{
-			PlugsChanged?.Invoke();
+			Changed?.Invoke();
 		}
+	}
+
+	private object _prevValue;
+	private bool UpdateProperties()
+	{
+		if ( !Definition.Identifier.StartsWith( "const." ) )
+		{
+			return false;
+		}
+
+		var value = Node.Properties["value"].Value;
+
+		if ( _prevValue == value )
+		{
+			return false;
+		}
+
+		_prevValue = value;
+		return true;
+	}
+
+	private ValidationMessage[] _messages = Array.Empty<ValidationMessage>();
+
+	private bool UpdateMessages()
+	{
+		var oldMessages = _messages;
+		var newMessages = _messages = Node.GetMessages().ToArray();
+
+		if ( oldMessages.Length != newMessages.Length )
+		{
+			return true;
+		}
+
+		for ( var i = 0; i < oldMessages.Length; i++ )
+		{
+			if ( !oldMessages[i].Equals( newMessages[i] ) )
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
 
@@ -363,7 +443,7 @@ public class ActionPlug<T, TDef> : IActionPlug
 {
 	public ActionNode Node { get; }
 	public T Parameter { get; }
-	public int? Index { get; set; }
+	public int Index { get; set; }
 
 	public Type LastType { get; set; }
 
@@ -375,12 +455,13 @@ public class ActionPlug<T, TDef> : IActionPlug
 
 	public DisplayInfo DisplayInfo => new()
 	{
-		Name = Index == null ? Parameter.Display.Title ?? Parameter.Name
+		Name = Index == 0 && Parameter is not Node.Input { LinkArray: not null }
+			? Parameter.Display.Title ?? Parameter.Name
 			: $"{Parameter.Display.Title ?? Parameter.Name}[{Index}]",
 		Description = Parameter.Display.Description
 	};
 
-	public ActionPlug( ActionNode node, T parameter, int? index )
+	public ActionPlug( ActionNode node, T parameter, int index )
 	{
 		Node = node;
 		Parameter = parameter;
@@ -409,22 +490,22 @@ public class ActionPlug<T, TDef> : IActionPlug
 				return null;
 			}
 
-			if ( Index is null && input.Link is { } link )
+			if ( Index is 0 && input.Link is { } link )
 			{
 				return Node.Graph.FindNode( link.Source.Node )?.Outputs[link.Source.Name];
 			}
 
-			if ( Index is not {} index || input.LinkArray is not { } links )
+			if ( input.LinkArray is not { } links )
 			{
 				return null;
 			}
 
-			if ( index < 0 || index >= links.Count )
+			if ( Index < 0 || Index >= links.Count )
 			{
 				return null;
 			}
 
-			link = links[index];
+			link = links[Index];
 
 			return Node.Graph.FindNode( link.Source.Node )?.Outputs[link.Source.Name];
 		}
@@ -437,7 +518,7 @@ public class ActionPlug<T, TDef> : IActionPlug
 
 			if ( value is null )
 			{
-				if ( Index is null || Index is 0 && input.LinkArray?.Count == 1 )
+				if ( Index is 0 && input.LinkArray?.Count == 1 || input.Link is not null )
 				{
 					input.ClearLinks();
 				}
@@ -458,14 +539,12 @@ public class ActionPlug<T, TDef> : IActionPlug
 				return;
 			}
 
-			if ( !input.IsArray || value.Type.IsArray && (Index is null || Index is 0 && input.LinkArray?.Count == 1) )
+			if ( !input.IsArray || value.Type.IsArray && Index is 0 && input.LinkArray?.Count == 1 )
 			{
 				input.SetLink( output );
 				Node.MarkDirty();
 				return;
 			}
-
-			Index ??= 0;
 
 			var links = (input.LinkArray! ?? Array.Empty<Link>())
 				.Select( x => x.Source )
@@ -477,7 +556,7 @@ public class ActionPlug<T, TDef> : IActionPlug
 			}
 			else
 			{
-				links[Index ?? 0] = output;
+				links[Index] = output;
 			}
 
 			input.SetLinks( links );
