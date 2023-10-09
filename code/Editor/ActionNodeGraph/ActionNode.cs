@@ -27,8 +27,9 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 
 	public bool HasInput( Type valueType )
 	{
+		var isSignal = valueType == typeof(OutputSignal);
 		return Definition.Bind( null, null ).Inputs.Values
-			.Any( x => x.Type.IsAssignableFrom( valueType ) );
+			.Any( x => isSignal ? x.IsSignal : x.Type.IsAssignableFrom( valueType ) );
 	}
 
 	public bool HideInEditor => Hidden.Contains( Identifier );
