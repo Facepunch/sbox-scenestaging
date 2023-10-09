@@ -135,6 +135,18 @@ public class ActionNode : INode
 		return new DisplayInfo { Name = $"{kind} {name}" };
 	}
 
+	private DisplayInfo ConstDisplayInfo()
+	{
+		var name = Node.Properties["name"].Value as string;
+
+		return new DisplayInfo
+		{
+			Name = string.IsNullOrEmpty( name ) ? Definition.DisplayInfo.Title : name,
+			Description = Definition.DisplayInfo.Description,
+			Tags = Definition.DisplayInfo.Tags
+		};
+	}
+
 	DisplayInfo INode.DisplayInfo
 	{
 		get
@@ -146,6 +158,9 @@ public class ActionNode : INode
 
 				case "property.set":
 					return PropertyDisplayInfo( PropertyNodeKind.Set );
+
+				case {} s when s.StartsWith( "const." ):
+					return ConstDisplayInfo();
 
 				default:
 					return
@@ -168,10 +183,14 @@ public class ActionNode : INode
 				return Theme.Red;
 			}
 
-			return Node.Definition.Kind switch
+			return Definition.Kind switch
 			{
-				NodeKind.Action => Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.Blue, 0.5f ),
-				NodeKind.Expression => Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.Yellow, 0.5f ),
+				NodeKind.Action =>
+					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.Blue, 0.5f ),
+				NodeKind.Expression when Node.Definition.Identifier.StartsWith( "const." ) =>
+					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.White, 0.75f ),
+				NodeKind.Expression =>
+					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.Green, 0.5f ),
 				_ => throw new NotImplementedException()
 			};
 		}
@@ -185,8 +204,14 @@ public class ActionNode : INode
 
 	public Vector2 ExpandSize
 	{
-		get => _expandSize.Value;
-		set => _expandSize.Value = value;
+		get
+		{
+			return Definition.Identifier switch
+			{
+				{ } s when s.StartsWith( "const." ) => new Vector2( -40f, 12f ),
+				_ => default
+			};
+		}
 	}
 
 	public class PlugCollection : IEnumerable<IPlug>
@@ -262,7 +287,31 @@ public class ActionNode : INode
 
 	void INode.OnPaint( Rect rect )
 	{
+		if ( !Definition.Identifier.StartsWith( "const." ) )
+		{
+			return;
+		}
 
+		rect = rect.Shrink( 3f, 30f, 3f, 3f );
+
+		var value = Node.Properties["value"].Value;
+
+		Paint.SetFont( null, 12f, 800 );
+
+		switch ( value )
+		{
+			case Color colorVal:
+				Paint.SetBrush( colorVal );
+				Paint.DrawRect( rect, 3f );
+				Paint.SetPen( colorVal.r + colorVal.g + colorVal.b > 1.5f ? Color.Black : Color.White );
+				Paint.DrawText( rect, colorVal.Hex );
+				break;
+
+			default:
+				Paint.SetPen( Color.White );
+				Paint.DrawText( rect, value?.ToString() ?? "null" );
+				break;
+		}
 	}
 
 	NodeUI INode.CreateUI( GraphView view )
@@ -271,7 +320,6 @@ public class ActionNode : INode
 	}
 
 	private readonly UserDataProperty<Vector2> _position;
-	private readonly UserDataProperty<Vector2> _expandSize;
 
 	public PlugCollection Inputs { get; }
 	public PlugCollection Outputs { get; }
@@ -283,7 +331,6 @@ public class ActionNode : INode
 		Identifier = $"{node.Id}";
 
 		_position = new UserDataProperty<Vector2>( node.UserData, nameof(Position) );
-		_expandSize = new UserDataProperty<Vector2>( node.UserData, nameof(ExpandSize) );
 
 		Inputs = PlugCollection.Create<Node.Input, InputDefinition>( this, () => node.Inputs );
 		Outputs = PlugCollection.Create<Node.Output, OutputDefinition>( this, () => node.Outputs );
@@ -346,6 +393,8 @@ public class ActionPlug<T, TDef> : IActionPlug
 	{
 		return null;
 	}
+
+	public bool ShowLabel => !Node.Definition.Identifier.StartsWith( "const." );
 
 	public string ErrorMessage => string.Join( Environment.NewLine, Parameter.GetMessages()
 		.Where( x => x.IsError )

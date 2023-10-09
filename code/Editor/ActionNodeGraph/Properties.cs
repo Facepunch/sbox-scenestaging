@@ -50,6 +50,15 @@ public class Properties : Widget
 		}
 	}
 
+	private static HashSet<string> HidePropertiesFor { get; } = new()
+	{
+		"event",
+		"property.get",
+		"property.set",
+		"variable.get",
+		"variable.set"
+	};
+
 	void RebuildContent()
 	{
 		_content.Clear( true );
@@ -61,21 +70,11 @@ public class Properties : Widget
 
 		var ps = new ControlSheet();
 
-		if ( Target is ActionNode node )
+		if ( Target is ActionNode node && !HidePropertiesFor.Contains( node.Definition.Identifier ) )
 		{
 			foreach ( var (name, property) in node.Node.Properties )
 			{
 				ps.AddRow( new SerializedNodeParameter<Node.Property, PropertyDefinition>( property ) );
-			}
-
-			foreach ( var (name, input) in node.Node.Inputs )
-			{
-				if ( input.IsLinked )
-				{
-					continue;
-				}
-
-				ps.AddRow( new SerializedNodeParameter<Node.Input, InputDefinition>( input ) );
 			}
 		}
 
