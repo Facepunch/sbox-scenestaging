@@ -14,8 +14,8 @@ public class ModelCollider : ColliderBaseComponent
 
 	public override void DrawGizmos()
 	{
-		//if ( !Gizmo.IsSelected && !Gizmo.IsHovered )
-	//		return;
+		if ( !Gizmo.IsSelected && !Gizmo.IsHovered )
+			return;
 
 		if ( Model is null ) return;
 
@@ -27,9 +27,24 @@ public class ModelCollider : ColliderBaseComponent
 		{
 			using ( Gizmo.Scope( $"part {part.GetHashCode()}", part.Transform ) )
 			{
+				foreach ( var sphere in part.Spheres )
+				{
+					Gizmo.Draw.LineSphere( sphere.Sphere );
+				}
+
 				foreach ( var capsule in part.Capsules )
 				{
 					Gizmo.Draw.LineCapsule( capsule.Capsule );
+				}
+
+				foreach ( var hull in part.Hulls )
+				{
+					Gizmo.Draw.Lines( hull.GetLines() );
+				}
+
+				foreach ( var mesh in part.Meshes )
+				{
+					Gizmo.Draw.LineTriangles( mesh.GetTriangles() );
 				}
 			}
 		}
