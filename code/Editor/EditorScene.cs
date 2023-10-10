@@ -1,4 +1,7 @@
-﻿public static class EditorScene
+﻿using Sandbox;
+using System.Threading.Tasks;
+
+public static class EditorScene
 {
 	public static string PlayMode { get; set; } = "scene";
 	public static Scene Active { get; private set; }
@@ -147,13 +150,18 @@
 	/// </summary>
 
 	[EditorForAssetType( "scene" )]
-	public static void LoadFromScene( SceneFile resource )
+	public static async Task LoadFromScene( SceneFile resource )
 	{
 		Assert.NotNull( resource, "SceneFile should not be null" );
 
 		// 
 		// TODO: Unsaved changes test
 		//
+
+
+		if ( !await CloudAsset.Install( "Loading Scene..", resource.GetReferencedPackages() ) )
+			return;
+		
 
 		// is this scene already in OpenScenes?
 
@@ -239,4 +247,6 @@
 
 		EditorWindow.UpdateEditorTitle( "Smile Face" );
 	}
+
+
 }
