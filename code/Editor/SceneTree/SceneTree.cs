@@ -38,6 +38,9 @@ public partial class SceneTreeWidget : Widget
 
 		_lastScene = activeScene;
 
+		// Copy the current selection as we're about to kill it
+		var selection = new List<object>( EditorScene.Selection );
+
 		Header.Clear( true );
 		TreeView.Clear();
 
@@ -55,6 +58,13 @@ public partial class SceneTreeWidget : Widget
 		{
 			var node = TreeView.AddItem( new SceneNode( _lastScene ) );
 			TreeView.Open( node );
+		}
+
+		// Iterate through selection, try to find them in the new tree
+		foreach ( var go in selection.Select( x => x as GameObject ) )
+		{
+			if ( activeScene.FindObjectByGuid( go.Id ) is GameObject activeObj )
+				TreeView.Selection.Add( activeObj );
 		}
 	}
 }
