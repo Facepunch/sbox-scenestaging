@@ -1,3 +1,5 @@
+![image](https://github.com/Facepunch/sbox-scenestaging/assets/928843/243e74f2-d2cf-4792-94cc-f2273d636488)
+
 # Scene Staging
 
 In the future s&box will have a scene system. You will add GameObjects that contain Components to the scene.
