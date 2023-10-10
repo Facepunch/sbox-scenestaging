@@ -1,6 +1,88 @@
 {
   "GameObjects": [
     {
+      "Id": "6847521e-c350-4273-a554-207b9e355843",
+      "Name": "MoveHelperDebugVis",
+      "Enabled": false,
+      "Position": "952.6196,597.6646,-1626.883",
+      "Rotation": "0.07155182,-0.007697098,-0.9580652,-0.2773578",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "MoveHelperDebugVis",
+          "__enabled": true,
+          "Gravity": "0,0,-5.7",
+          "Velocity": "7.950001,0,0"
+        }
+      ]
+    },
+    {
+      "Id": "1ba8c3f7-c892-429d-b083-5430ae17e725",
+      "Name": "MoveHelperDebugVis",
+      "Enabled": true,
+      "Position": "1013.149,552.1714,-1590.001",
+      "Rotation": "0.04838911,0.004267891,0.6500289,0.7583551",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "MoveHelperDebugVis",
+          "__enabled": true,
+          "Gravity": "0,0,-57",
+          "Velocity": "198.3,0,0"
+        }
+      ]
+    },
+    {
+      "Id": "58e20959-7578-482d-80ec-9d109a3c5e4d",
+      "Name": "MoveHelperDebugVis",
+      "Enabled": false,
+      "Position": "944.4301,392.2409,-1545.639",
+      "Rotation": "-0.1126496,-0.1881578,0.7096356,-0.6695644",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "MoveHelperDebugVis",
+          "__enabled": true,
+          "Gravity": "0,0,-4.65",
+          "Velocity": "23.55,0,0"
+        }
+      ]
+    },
+    {
+      "Id": "b2bfaf6e-545d-4a5a-9acd-d63921687fc8",
+      "Name": "MoveHelperDebugVis",
+      "Enabled": false,
+      "Position": "1532.223,33.4927,-1537.518",
+      "Rotation": "0.003569647,-0.1453741,0.0242874,-0.9890732",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "MoveHelperDebugVis",
+          "__enabled": true,
+          "Gravity": "0,0,-41.34999",
+          "Velocity": "117.3,0,0"
+        }
+      ]
+    },
+    {
+      "Id": "e57822ac-e9df-4cf0-bba8-f8790bb22142",
+      "Name": "MoveHelperDebugVis",
+      "Enabled": false,
+      "Position": "1149.363,59.6977,-1480.064",
+      "Rotation": "0.04205942,0.03163541,-0.7980621,0.6002724",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "TraceDebugVis",
+          "__enabled": true,
+          "BoxSize": "2,2,2",
+          "SphereRadius": 4,
+          "TraceLength": 1000000,
+          "Type": "Box"
+        }
+      ]
+    },
+    {
       "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
       "Name": "Citizen",
       "Enabled": true,
@@ -9,23 +91,22 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PlayerController",
+          "__type": "CharacterController",
           "__enabled": true,
           "Acceleration": 10,
-          "AirAcceleration": 50,
-          "AirControl": 30,
+          "GroundAngle": 45,
+          "Height": 72,
+          "Radius": 16,
+          "StepHeight": 18
+        },
+        {
+          "__type": "PlayerController",
+          "__enabled": true,
           "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
-          "BoundingBox": {
-            "Mins": "-16,-16,0",
-            "Maxs": "16,16,72"
-          },
           "CameraDistance": 200,
           "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
-          "Gravity": "0,0,800",
-          "GroundAngle": 45,
-          "GroundFriction": 4,
-          "StepHeight": 18,
-          "StopSpeed": 100
+          "FirstPerson": false,
+          "Gravity": "0,0,800"
         }
       ],
       "Children": [
@@ -33,7 +114,7 @@
           "Id": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
           "Name": "Body",
           "Enabled": true,
-          "Position": "0,0,0",
+          "Position": "0,0.0325,0",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Components": [
@@ -42,6 +123,7 @@
               "__enabled": true,
               "MaterialOverride": null,
               "Model": "models/citizen/citizen.vmdl",
+              "ShouldCastShadows": true,
               "Tint": "1,1,1,1"
             }
           ]
@@ -65,7 +147,7 @@
             },
             {
               "__type": "CameraPhysicsDebug",
-              "__enabled": true,
+              "__enabled": false,
               "MaxPoints": 10000,
               "TracesPerFrame": 500,
               "TraceType": "Ray"
@@ -95,6 +177,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.05882,0.13725,0.49412,1"
         },
         {
@@ -119,6 +202,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.05882,0.13725,0.49412,1"
         },
         {
@@ -143,6 +227,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.05882,0.13725,0.49412,1"
         },
         {
@@ -184,6 +269,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -214,6 +300,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -250,6 +337,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -280,6 +368,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -310,6 +399,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -340,6 +430,57 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "ec22eee7-5402-4863-a6ff-9473aead30eb",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "760.2015,624.8857,-1613.384",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "430e25c7-268e-47e6-810f-c41d30d79d9f",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "786.1921,670.1918,-1612.719",
+      "Rotation": "-0.00000003254731,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -364,6 +505,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/portacabins/portacabin_300_600_b.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -379,7 +521,7 @@
       "Id": "f34b346f-38cf-4579-85b5-914d61c607de",
       "Name": "Cabin",
       "Enabled": true,
-      "Position": "850.3311,525.2525,-1631.623",
+      "Position": "850.0305,525.2525,-1631.623",
       "Rotation": "-0.00000002114547,0.000000005928668,0.1821554,0.9832697",
       "Scale": "1,1,1",
       "Components": [
@@ -388,6 +530,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -418,6 +561,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -448,6 +592,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -478,6 +623,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -508,6 +654,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -538,6 +685,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -568,6 +716,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -598,6 +747,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -628,6 +778,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -658,6 +809,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -688,6 +840,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -718,6 +871,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -748,6 +902,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -778,6 +933,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -808,6 +964,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -838,6 +995,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -868,6 +1026,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -898,6 +1057,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
@@ -928,6 +1088,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -958,6 +1119,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
@@ -988,6 +1150,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1018,6 +1181,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1048,6 +1212,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1078,6 +1243,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1108,6 +1274,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1138,6 +1305,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1168,6 +1336,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1198,6 +1367,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1228,6 +1398,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1258,6 +1429,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1288,6 +1460,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1318,6 +1491,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1348,6 +1522,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1378,6 +1553,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1408,6 +1584,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1438,6 +1615,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1468,6 +1646,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1483,7 +1662,7 @@
       "Id": "cb184a21-4452-40b5-b341-0a5505919900",
       "Name": "Cube (2)",
       "Enabled": true,
-      "Position": "1597.72,42.0577,-1602.466",
+      "Position": "1597.72,42.0577,-1602.129",
       "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
       "Components": [
@@ -1498,6 +1677,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1528,6 +1708,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1558,6 +1739,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1588,6 +1770,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1618,6 +1801,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1648,6 +1832,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1672,6 +1857,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
@@ -1687,7 +1873,7 @@
       "Id": "2f5ccfce-c898-437d-b8c1-de0541c8e6e6",
       "Name": "Cube (2)",
       "Enabled": true,
-      "Position": "846.1329,903.7219,-1785.894",
+      "Position": "771.5529,903.7219,-1785.894",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
       "Scale": "42.1,42.1,42.1",
       "Components": [
@@ -1696,6 +1882,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/soccerball.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
@@ -1711,15 +1898,16 @@
       "Id": "1b2e8bc1-ff8c-4404-a282-233b6aa72b88",
       "Name": "Cube (2)",
       "Enabled": true,
-      "Position": "1096.56,915.7159,-1747.127",
+      "Position": "1060.641,915.7159,-1635.723",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
       "Scale": "4.9,4.9,4.9",
       "Components": [
         {
           "__type": "ModelComponent",
-          "__enabled": true,
+          "__enabled": false,
           "MaterialOverride": null,
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
@@ -1750,6 +1938,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1765,7 +1954,7 @@
       "Id": "296611ab-2520-40b3-a226-0ec9d1b4d218",
       "Name": "Cube (2)",
       "Enabled": true,
-      "Position": "1346.828,356.0341,-1706.698",
+      "Position": "1348.234,356.0341,-1711.869",
       "Rotation": "-0.00000002437374,-0.1323278,0.000000004306913,0.9912062",
       "Scale": "4,4,4",
       "Components": [
@@ -1780,6 +1969,131 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "63967eaf-73ef-49c6-9627-0e26d7c676c0",
+      "Name": "Cube (2)",
+      "Enabled": true,
+      "Position": "1842.172,892.3596,-1675.855",
+      "Rotation": "-0.00000002437374,-0.1323278,0.000000004306913,0.9912062",
+      "Scale": "4,4,4",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "cbf96b1a-8d02-486b-9d5b-2dd1bdca6e72",
+      "Name": "Cube (2)",
+      "Enabled": true,
+      "Position": "1993.956,892.3596,-1602.123",
+      "Rotation": "-0.00000001211279,-0.3150304,0.00000001025339,0.9490816",
+      "Scale": "4,4,4",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "05f0d7cd-2b9c-4276-b9f7-9ad35cfe00a3",
+      "Name": "Cube (2)",
+      "Enabled": true,
+      "Position": "2103.148,892.3596,-1493.782",
+      "Rotation": "-0.000000004647677,-0.4180683,0.000000013607,0.9084154",
+      "Scale": "4,4,4",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "69dba46a-accf-4522-b54a-77fe664e3ccb",
+      "Name": "Cube (2)",
+      "Enabled": true,
+      "Position": "2193.474,892.3596,-1363.189",
+      "Rotation": "0.000000001079993,-0.4931541,0.00000001605084,0.8699416",
+      "Scale": "4,4,4",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1810,6 +2124,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1840,6 +2155,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1870,6 +2186,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1900,6 +2217,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1930,6 +2248,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1960,6 +2279,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -1990,6 +2310,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2020,6 +2341,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2050,6 +2372,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2080,6 +2403,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2110,6 +2434,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2140,6 +2465,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2170,6 +2496,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2200,6 +2527,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2230,6 +2558,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/concrete/damage/concrete_damaged.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2260,6 +2589,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2290,6 +2620,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2320,6 +2651,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2350,6 +2682,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
@@ -2380,6 +2713,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2417,6 +2751,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
         }
       ]
@@ -2440,6 +2775,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2470,6 +2806,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2500,6 +2837,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2530,6 +2868,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2560,6 +2899,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2590,6 +2930,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2620,6 +2961,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2650,6 +2992,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2680,6 +3023,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2710,6 +3054,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2740,6 +3085,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2770,6 +3116,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2800,6 +3147,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2830,6 +3178,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2860,6 +3209,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2897,6 +3247,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -2920,6 +3271,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2950,6 +3302,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -2980,6 +3333,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3010,6 +3364,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3040,6 +3395,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3077,6 +3433,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -3100,6 +3457,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3130,6 +3488,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
@@ -3160,6 +3519,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
@@ -3190,6 +3550,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
@@ -3227,6 +3588,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -3250,6 +3612,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3280,6 +3643,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3310,6 +3674,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3340,6 +3705,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3370,6 +3736,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3400,6 +3767,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3430,6 +3798,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3460,6 +3829,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3490,6 +3860,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3520,6 +3891,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3550,6 +3922,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3580,6 +3953,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,0.38,0,1"
         },
         {
@@ -3610,6 +3984,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3640,6 +4015,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3670,6 +4046,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3700,6 +4077,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3730,6 +4108,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3795,6 +4174,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/shrubs/pine/pine_shrub_tall_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -3812,6 +4192,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/nature/tallgrass/tallgrass_c.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -3829,6 +4210,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/shrubs/beech/beech_shrub_tall_small.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -3846,6 +4228,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/trees/shitty_pine_tree2.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -3863,6 +4246,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -3871,7 +4255,7 @@
       "Id": "f6ca04c0-3b5c-4cd1-bf3c-04b78c1d9f54",
       "Name": "8hu_kultiras_smallhouse_2",
       "Enabled": true,
-      "Position": "1782.028,-742.5276,-1637.705",
+      "Position": "1782.028,-742.5276,-1631.745",
       "Rotation": "0.0000002900602,0.0000002570682,0.6952017,0.7188154",
       "Scale": "1,1,1",
       "Components": [
@@ -3880,7 +4264,15 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
+          "Surface": null
         }
       ]
     },
@@ -3897,6 +4289,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -3914,6 +4307,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -3931,6 +4325,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -3948,6 +4343,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -3965,6 +4361,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -3980,7 +4377,7 @@
       "Id": "d5e8fa3e-f502-4f82-884e-f7583872d39d",
       "Name": "8hu_kultiras_smallhouse_2",
       "Enabled": true,
-      "Position": "904.5501,64.3218,-1811.178",
+      "Position": "903.0998,59.0603,-1778.223",
       "Rotation": "0.08123279,-0.01099247,-0.1336513,0.9876328",
       "Scale": "1,1,1",
       "Components": [
@@ -3989,6 +4386,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -4013,6 +4411,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/uf-rts/resource_gold1.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -4037,6 +4436,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -4061,6 +4461,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -4085,6 +4486,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -4109,6 +4511,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/small_junk/ground_junk_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4126,6 +4529,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/small_junk/ground_junk_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4143,6 +4547,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/small_junk/ground_junk_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4160,6 +4565,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/small_junk/ground_junk_straight_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4177,6 +4583,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/small_junk/ground_junk_straight_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4194,6 +4601,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/small_junk/ground_junk_straight_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4211,6 +4619,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/nature/grass_clumps/grass_clump_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4228,6 +4637,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/grass_models/grass_medium_a.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4245,6 +4655,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/grass_models/grass_medium_b.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4262,6 +4673,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "grass_block.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -4286,6 +4698,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "grass_block.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -4310,6 +4723,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/nature/tallgrass/tallgrass_c.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4327,6 +4741,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/binbags/binbag_pile_a2.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4344,6 +4759,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/binbags/binbag_pile_a1.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4361,6 +4777,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/props/dirt_pile/dirt_pile_03.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4378,6 +4795,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/props/dirt_pile/dirt_pile_03.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4395,6 +4813,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/props/dirt_pile/dirt_pile_03.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4412,6 +4831,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/props/dirt_pile/dirt_pile_03.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4429,6 +4849,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/props/dirt_pile/dirt_pile_03.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4446,6 +4867,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/props/dirt_pile/dirt_pile_04.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4463,6 +4885,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/props/dirt_pile/dirt_pile_05.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4480,6 +4903,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/props/dirt_pile/dirt_pile_04.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4497,6 +4921,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/black_bin/blackbin.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4514,6 +4939,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4531,6 +4957,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4548,6 +4975,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4565,6 +4993,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/player/hazmatsuit/hazmatsuit.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4582,6 +5011,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/player/human/adam_mp.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4599,6 +5029,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4616,6 +5047,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4633,6 +5065,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -4650,6 +5083,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
