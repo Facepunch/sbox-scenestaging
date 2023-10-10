@@ -1,4 +1,4 @@
-![image](https://github.com/Facepunch/sbox-scenestaging/assets/928843/243e74f2-d2cf-4792-94cc-f2273d636488)
+![image](https://github.com/Facepunch/sbox-scenestaging/assets/928843/f26e435e-e7a1-42ce-8da7-47de60d06cc3)
 
 # Scene Staging
 
