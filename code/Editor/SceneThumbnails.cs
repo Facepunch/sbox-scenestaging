@@ -83,7 +83,7 @@ public static class SceneThumbnailRenderer
 		var go = scene.CreateObject();
 		go.Name = "Directional Light";
 
-		go.WorldTransform = go.WorldTransform.WithRotation( Rotation.From( 90, 0, 0 ) );
+		go.Transform.Rotation = Rotation.From( 90, 0, 0 );
 		var light = go.AddComponent<DirectionalLightComponent>();
 		light.LightColor = Color.White;
 		light.SkyColor = "#557685";
@@ -101,8 +101,8 @@ public static class SceneThumbnailRenderer
 		var cam = scene.FindAllComponents<CameraComponent>().FirstOrDefault();
 		if ( cam is not null )
 		{
-			camera.Position = cam.GameObject.WorldTransform.Position;
-			camera.Rotation = cam.GameObject.WorldTransform.Rotation;
+			camera.Position = cam.Transform.Position;
+			camera.Rotation = cam.Transform.Rotation;
 			camera.FieldOfView = cam.FieldOfView;
 			camera.BackgroundColor = cam.BackgroundColor;
 		}

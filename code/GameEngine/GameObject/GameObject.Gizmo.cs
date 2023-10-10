@@ -9,7 +9,7 @@ public partial class GameObject
 
 		var parentTx = Gizmo.Transform;
 
-		using ( Gizmo.ObjectScope( this, Transform ) )
+		using ( Gizmo.ObjectScope( this, Transform.Local ) )
 		{
 			if ( Gizmo.IsSelected )
 			{
@@ -45,7 +45,7 @@ public partial class GameObject
 	{
 		using var scope = Gizmo.Scope();
 
-		var backup = Transform;
+		var backup = Transform.Local;
 		var tx = backup;
 
 		// use the local position but get rid of local rotation and local scale
@@ -57,7 +57,7 @@ public partial class GameObject
 		{
 			if ( Gizmo.Control.Position( "position", tx.Position, out var newPos, tx.Rotation ) )
 			{
-				EditLog( "Position", this, () => Transform = backup );
+				EditLog( "Position", this, () => Transform.Local = backup );
 
 				tx.Position = newPos;
 			}
@@ -67,7 +67,7 @@ public partial class GameObject
 		{
 			if ( Gizmo.Control.Rotate( "rotation", tx.Rotation, out var newRotation ) )
 			{
-				EditLog( "Rotation", this, () => Transform = backup );
+				EditLog( "Rotation", this, () => Transform.Local = backup );
 
 				tx.Rotation = newRotation;
 			}
@@ -77,13 +77,13 @@ public partial class GameObject
 		{
 			if ( Gizmo.Control.Scale( "scale", tx.Scale, out var newScale ) )
 			{
-				EditLog( "Scale", this, () => Transform = backup );
+				EditLog( "Scale", this, () => Transform.Local = backup );
 
 				tx.Scale = newScale.Clamp( 0.001f, 100.0f );
 			}
 		}
 
-		Transform = tx;
+		Transform.Local = tx;
 	}
 
 }

@@ -37,16 +37,16 @@ public class PhysicsComponent : BaseComponent
 		_body.GameObject = GameObject;
 		_body.GravityEnabled = Gravity;
 		_body.Sleeping = false;
-		_body.Transform = GameObject.WorldTransform;
+		_body.Transform = Transform.World;
 
-		GameObject.OnLocalTransformChanged += OnLocalTransformChanged;
+		Transform.OnTransformChanged += OnLocalTransformChanged;
 
 		UpdateColliders();
 	}
 
 	public override void OnDisabled()
 	{
-		GameObject.OnLocalTransformChanged -= OnLocalTransformChanged;
+		Transform.OnTransformChanged -= OnLocalTransformChanged;
 
 		_body.Remove();
 		_body = null;
@@ -65,18 +65,17 @@ public class PhysicsComponent : BaseComponent
 		var bt = _body.Transform;
 
 		isUpdatingPositionFromPhysics = true;
-		var wt = GameObject.WorldTransform;
-		GameObject.WorldTransform = bt.WithScale( wt.Scale );
+		Transform.World = bt.WithScale( Transform.Scale.x );
 		isUpdatingPositionFromPhysics = false;
 	}
 
-	void OnLocalTransformChanged( Transform newTransform )
+	void OnLocalTransformChanged( GameTransform tx )
 	{
 		if ( isUpdatingPositionFromPhysics ) return;
 
 		if ( _body is not null )
 		{
-			_body.Transform = GameObject.WorldTransform;
+			//_body.Transform = tx.World;
 		}
 	}
 

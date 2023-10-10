@@ -23,8 +23,10 @@ public enum GameObjectFlags
 public partial class GameObject
 {
 	protected Scene _scene;
+	private GameTransform _transform;
 
 	public Scene Scene => _scene;
+	public GameTransform Transform => _transform;
 
 	public Guid Id { get; private set; }
 
@@ -52,24 +54,9 @@ public partial class GameObject
 		}
 	}
 
-	Transform _transform = Transform.Zero;
-
-	[Property]
-	public Transform Transform
-	{
-		get => _transform;
-		set
-		{
-			if ( _transform == value )
-				return;
-
-			_transform = value;
-			OnLocalTransformChanged?.Invoke( value );
-		}
-	}
-
 	internal GameObject( bool enabled, string name, Scene scene )
 	{
+		_transform = new GameTransform( this );
 		_enabled = enabled;
 		_scene = scene;
 		Id = Guid.NewGuid();
@@ -83,32 +70,6 @@ public partial class GameObject
 
 		return new GameObject( enabled, name, GameManager.ActiveScene );
 	}
-
-	public Transform WorldTransform
-	{
-		get
-		{
-			if ( Parent is not null )
-			{
-				return Parent.WorldTransform.ToWorld( Transform );
-			}
-
-			return Transform;
-		}
-
-		set
-		{
-			if ( Parent is not null )
-			{
-				Transform = Parent.WorldTransform.ToLocal( value );
-				return;
-			}
-
-			Transform = value;
-		}
-	}
-
-	public Action<Transform> OnLocalTransformChanged;
 
 	public override string ToString()
 	{
@@ -145,14 +106,6 @@ public partial class GameObject
 			{
 				Assert.True( Scene == _parent.Scene, "Can't parent to a gameobject in a different scene" );
 				_parent.Children.Add( this );
-			}
-
-			if ( isDestroying )
-				return;
-
-			if ( Scene is not null )
-			{
-				Scene.OnParentChanged( this, oldParent, _parent );
 			}
 		}
 	}
@@ -388,9 +341,9 @@ public partial class GameObject
 
 		if ( keepWorldPosition )
 		{
-			var wp = WorldTransform;
+			var wp = Transform.World;
 			Parent = value;
-			WorldTransform = wp;
+			Transform.World = wp;
 		}
 		else
 		{

@@ -22,14 +22,14 @@ public sealed class TurretComponent : BaseComponent
 		turretYaw -= Input.MouseDelta.x * 0.1f;
 		turretPitch += Input.MouseDelta.y * 0.1f;
 		turretPitch = turretPitch.Clamp( -30, 30 );
-		Gun.Transform = Gun.Transform.WithRotation( Rotation.From( turretPitch, turretYaw, 0  ) );
+		Gun.Transform.Rotation = Rotation.From( turretPitch, turretYaw, 0 );
 
 		var bbox = new BBox( 0, 50 );
 
 		// drive tank
 		Vector3 movement = 0;
-		if ( Input.Down( "Forward" ) ) movement += GameObject.WorldTransform.Forward;
-		if ( Input.Down( "backward" ) ) movement += GameObject.WorldTransform.Backward;
+		if ( Input.Down( "Forward" ) ) movement += Transform.World.Forward;
+		if ( Input.Down( "backward" ) ) movement += Transform.World.Backward;
 
 		var rot = GameObject.Transform.Rotation;
 		var pos = GameObject.Transform.Position + movement * Time.Delta * 100.0f;
@@ -44,29 +44,29 @@ public sealed class TurretComponent : BaseComponent
 			rot *= Rotation.From( 0, Time.Delta * -90.0f, 0 );
 		}
 
-		GameObject.Transform = new Transform( pos, rot, 1 );
+		Transform.Local = new Transform( pos, rot, 1 );
 
 		if ( Input.Pressed( "Attack1" ) )
 		{
 			Assert.NotNull( Bullet );
 
-			var obj = SceneUtility.Instantiate( Bullet, Muzzle.WorldTransform.Position, Muzzle.WorldTransform.Rotation );
+			var obj = SceneUtility.Instantiate( Bullet, Muzzle.Transform.Position, Muzzle.Transform.Rotation );
 			var physics = obj.GetComponent<PhysicsComponent>( true, true );
 			if ( physics is not null )
 			{
-				physics.Velocity = Muzzle.WorldTransform.Rotation.Forward * 2000.0f;
+				physics.Velocity = Muzzle.Transform.Rotation.Forward * 2000.0f;
 			}
 
 			Stats.Increment( "balls_fired", 1 );
 		}
 
 		var tr = Physics.Trace
-			.Ray( Muzzle.WorldTransform.Position + Muzzle.WorldTransform.Forward * 50.0f, Muzzle.WorldTransform.Position + Muzzle.WorldTransform.Forward * 4000 )
+			.Ray( Muzzle.Transform.Position + Muzzle.Transform.Rotation.Forward * 50.0f, Muzzle.Transform.Position + Muzzle.Transform.Rotation.Forward * 4000 )
 			.Size( bbox )
 			//.Radius( 40 )
 			.Run();
 
-		Gizmo.Transform = Transform.Zero;
+		Gizmo.Transform = global::Transform.Zero;
 		Gizmo.Draw.Color = Color.White;
 		Gizmo.Draw.LineThickness = 1;
 		Gizmo.Draw.Line( tr.StartPosition, tr.EndPosition );
@@ -102,15 +102,15 @@ public sealed class TurretComponent : BaseComponent
 
 			int i = 0;
 
-			var r = Muzzle.WorldTransform.Rotation;
+			var r = Muzzle.Transform.Rotation;
 
 			for ( float f = 0; f < tr.Distance; f += 10.0f )
 			{
 				if ( i++ > 200 )
 					break;
 
-				var off = MathF.Sin( i * 0.4f ) * Muzzle.WorldTransform.Right * 20.0f;
-				off += MathF.Cos( i * 0.4f ) * Muzzle.WorldTransform.Up * 20.0f;
+				var off = MathF.Sin( i * 0.4f ) * r.Right * 20.0f;
+				off += MathF.Cos( i * 0.4f ) * r.Up * 20.0f;
 
 				var obj = SceneUtility.Instantiate( SecondaryBullet, tr.StartPosition + tr.Direction * f + off * 0.1f, r );
 

@@ -74,19 +74,6 @@ public class Scene : GameObject
 		PostPhysics();
 	}
 
-	internal void OnParentChanged( GameObject gameObject, GameObject oldParent, GameObject parent )
-	{
-		if ( oldParent == null )
-		{
-			//All.Remove( gameObject );
-		}
-
-		if ( parent == null )
-		{
-			//All.Add( gameObject );
-		}
-	}
-
 	public GameObject CreateObject( bool enabled = true )
 	{
 		using ( Push() )

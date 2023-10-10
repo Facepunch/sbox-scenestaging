@@ -114,7 +114,7 @@ file class MapComponentMapLoader : SceneMapLoader
 		var go = GameObject.Create();
 		go.Flags |= GameObjectFlags.NotSaved;
 		go.Name = $"{kv.TypeName}";
-		go.WorldTransform = kv.Transform;
+		go.Transform.Local = kv.Transform;
 
 		//
 		// ideal situation here is that we look at the entities and create them

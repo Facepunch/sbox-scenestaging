@@ -34,7 +34,7 @@ public class SpotLightComponent : BaseComponent
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
 
-		_sceneObject = new SceneSpotLight( Scene.SceneWorld, GameObject.Transform.Position, LightColor );
+		_sceneObject = new SceneSpotLight( Scene.SceneWorld, Transform.Position, LightColor );
 		//_sceneObject.Transform = GameObject.WorldTransform;
 		//_sceneObject.ShadowsEnabled = true;
 	}
@@ -50,7 +50,7 @@ public class SpotLightComponent : BaseComponent
 		if ( !_sceneObject.IsValid() )
 			return;
 
-		_sceneObject.Transform = GameObject.WorldTransform;
+		_sceneObject.Transform = Transform.World;
 	//	_sceneObject.ShadowsEnabled = Shadows;
 		_sceneObject.LightColor = LightColor;
 		_sceneObject.FallOff = 1;

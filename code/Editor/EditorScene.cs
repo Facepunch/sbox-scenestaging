@@ -31,14 +31,14 @@ public static class EditorScene
 		{
 			var go = Active.CreateObject();
 			go.Name = "Main Camera";
-			go.Transform = new Transform( Vector3.Up * 100 + Vector3.Backward * 300 );
+			go.Transform.Local = new Transform( Vector3.Up * 100 + Vector3.Backward * 300 );
 			go.AddComponent<CameraComponent>();
 		}
 
 		{
 			var go = Active.CreateObject();
 			go.Name = "Directional Light";
-			go.Transform = new Transform( Vector3.Up * 200, Rotation.From( 80, 45, 0 ) );
+			go.Transform.Local = new Transform( Vector3.Up * 200, Rotation.From( 80, 45, 0 ) );
 			go.AddComponent<DirectionalLightComponent>();
 		}
 

@@ -18,7 +18,7 @@ public class ModelComponent : BaseComponent
 				return _sceneObject.Bounds;
 			}
 
-			return new BBox( GameObject.WorldTransform.Position, 16 );
+			return new BBox( Transform.Position, 16 );
 		}
 	}
 
@@ -128,7 +128,7 @@ public class ModelComponent : BaseComponent
 		Assert.NotNull( Scene );
 
 		_sceneObject = new SceneObject( Scene.SceneWorld, Model ?? Model.Load( "models/dev/box.vmdl" ) );
-		_sceneObject.Transform = GameObject.WorldTransform;
+		_sceneObject.Transform = Transform.World;
 		_sceneObject.SetMaterialOverride( MaterialOverride );
 		_sceneObject.ColorTint = Tint;
 		_sceneObject.Flags.CastShadows = _castShadows;
@@ -145,7 +145,7 @@ public class ModelComponent : BaseComponent
 		if ( !_sceneObject.IsValid() )
 			return;
 
-		_sceneObject.Transform = GameObject.WorldTransform;
+		_sceneObject.Transform = Transform.World;
 	}
 
 }

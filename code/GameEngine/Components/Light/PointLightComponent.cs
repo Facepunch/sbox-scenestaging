@@ -27,7 +27,7 @@ public class PointLightComponent : BaseComponent
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
 
-		_sceneObject = new SceneLight( Scene.SceneWorld, GameObject.Transform.Position, Radius, LightColor );
+		_sceneObject = new SceneLight( Scene.SceneWorld, Transform.Position, Radius, LightColor );
 	}
 
 	public override void OnDisabled()
@@ -41,7 +41,7 @@ public class PointLightComponent : BaseComponent
 		if ( !_sceneObject.IsValid() )
 			return;
 
-		_sceneObject.Transform = GameObject.WorldTransform;
+		_sceneObject.Transform = Transform.World;
 		_sceneObject.LightColor = LightColor;
 		_sceneObject.Radius = Radius;
 	}

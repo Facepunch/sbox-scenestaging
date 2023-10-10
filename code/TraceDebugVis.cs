@@ -21,10 +21,10 @@ public sealed class TraceDebugVis : BaseComponent
 	{
 		var bb = new BBox( -BoxSize, BoxSize );
 
-		Gizmo.Transform = Transform.Zero;
+		Gizmo.Transform = global::Transform.Zero;
 
-		var pos = GameObject.WorldTransform.Position;
-		var rot = GameObject.WorldTransform.Rotation;
+		var pos = Transform.Position;
+		var rot = Transform.Rotation;
 
 		var tr = Scene.PhysicsWorld.Trace.Ray( new Ray( pos, rot.Forward ), TraceLength );
 

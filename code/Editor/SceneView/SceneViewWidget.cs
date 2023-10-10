@@ -131,8 +131,8 @@ public partial class SceneViewWidget : Widget
 		var cam = activeScene.FindAllComponents<CameraComponent>().FirstOrDefault();
 		if ( cam is not null )
 		{
-			Camera.Position = cam.GameObject.WorldTransform.Position;
-			Camera.Rotation = cam.GameObject.WorldTransform.Rotation;
+			Camera.Position = cam.Transform.Position;
+			Camera.Rotation = cam.Transform.Rotation;
 		}
 		else
 		{
@@ -230,7 +230,7 @@ public partial class SceneViewWidget : Widget
 			if ( DragObject  is not null )
 			{
 				var b = DragObject.GetBounds();
-				var offset = b.ClosestPoint( Vector3.Down * 10000 ) - DragObject.WorldTransform.Position;
+				var offset = b.ClosestPoint( Vector3.Down * 10000 ) - DragObject.Transform.Position;
 				DragOffset = offset.Length;
 			}
 		}
@@ -245,7 +245,8 @@ public partial class SceneViewWidget : Widget
 
 			var pos = tr.EndPosition + tr.HitNormal * DragOffset;
 
-			DragObject.WorldTransform = DragObject.WorldTransform.WithPosition( pos, rot );
+			DragObject.Transform.Position = pos;
+			DragObject.Transform.Rotation = rot;
 			return;
 		}
 

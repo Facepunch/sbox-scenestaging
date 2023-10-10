@@ -72,8 +72,8 @@ public class DirectionalLightComponent : BaseComponent
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
 
-		_sceneObject = new SceneSunLight( Scene.SceneWorld, GameObject.Transform.Rotation, Color.White );
-		_sceneObject.Transform = GameObject.WorldTransform;
+		_sceneObject = new SceneSunLight( Scene.SceneWorld, Transform.Rotation, Color.White );
+		_sceneObject.Transform = Transform.World;
 		_sceneObject.ShadowsEnabled = true;
 		_sceneObject.ShadowCascadeCount = 3;
 		_sceneObject.LightColor = LightColor;
@@ -100,7 +100,7 @@ public class DirectionalLightComponent : BaseComponent
 		if ( !_sceneObject.IsValid() )
 			return;
 
-		_sceneObject.Transform = GameObject.WorldTransform.WithScale( 1 );
+		_sceneObject.Transform = Transform.World.WithScale( 1 );
 		_sceneObject.ShadowsEnabled = Shadows;
 
 

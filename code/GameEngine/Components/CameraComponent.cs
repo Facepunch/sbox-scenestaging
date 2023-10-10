@@ -76,8 +76,8 @@ public class CameraComponent : BaseComponent
 		camera.World = scene.SceneWorld;
 		camera.Worlds.Clear();
 		camera.Worlds.Add( scene.DebugSceneWorld );
-		camera.Position = GameObject.WorldTransform.Position;
-		camera.Rotation = GameObject.WorldTransform.Rotation;
+		camera.Position = Transform.Position;
+		camera.Rotation = Transform.Rotation;
 		camera.ZNear = ZNear;
 		camera.ZFar = ZFar;
 		camera.FieldOfView = FieldOfView;

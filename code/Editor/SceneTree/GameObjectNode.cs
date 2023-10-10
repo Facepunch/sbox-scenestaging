@@ -285,7 +285,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 				using var scope = EditorScene.Active.Push();
 				var go = GameObject.Create();
 				go.Name = "Directional Light";
-				go.WorldTransform = new Transform( 0, Rotation.LookAt( Vector3.Down + Vector3.Right * 0.25f ) );
+				go.Transform.Rotation = Rotation.LookAt( Vector3.Down + Vector3.Right * 0.25f );
 
 				var model = go.AddComponent<DirectionalLightComponent>();
 

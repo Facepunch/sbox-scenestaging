@@ -26,17 +26,18 @@ public class PlayerController : BaseComponent
 		var camera = GameObject.GetComponent<CameraComponent>( true, true );
 		if ( camera is not null )
 		{
-			var camPos = Eye.WorldTransform.Position - EyeAngles.ToRotation().Forward * CameraDistance;
+			var camPos = Eye.Transform.Position - EyeAngles.ToRotation().Forward * CameraDistance;
 
-			if ( FirstPerson ) camPos = Eye.WorldTransform.Position + EyeAngles.ToRotation().Forward * 8;
+			if ( FirstPerson ) camPos = Eye.Transform.Position + EyeAngles.ToRotation().Forward * 8;
 
-			camera.GameObject.WorldTransform = camera.GameObject.WorldTransform.WithPosition( camPos, EyeAngles.ToRotation() );
+			camera.Transform.Position = camPos;
+			camera.Transform.Rotation = EyeAngles.ToRotation();
 		}
 
 		// rotate body to look angles
 		if ( Body is not null )
 		{
-			Body.Transform = Body.Transform.WithRotation( new Angles( 0, EyeAngles.yaw, 0 ).ToRotation() );
+			Body.Transform.Rotation = new Angles( 0, EyeAngles.yaw, 0 ).ToRotation();
 		}
 
 		// read inputs
@@ -67,6 +68,7 @@ public class PlayerController : BaseComponent
 			cc.Accelerate( WishVelocity.ClampLength( 50 ) );
 			cc.ApplyFriction( 0.1f );
 		}
+
 		cc.Move();
 
 		if ( !cc.IsOnGround )

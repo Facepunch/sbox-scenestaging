@@ -113,7 +113,7 @@ public static class SceneEditorMenus
 
 		var go = GameObject.Create();
 		go.Deserialize( json );
-		go.WorldTransform = source.WorldTransform;
+		go.Transform.World = source.Transform.World;
 
 		source.AddSibling( go, false );
 
@@ -145,11 +145,11 @@ public static class SceneEditorMenus
 		{
 			if ( i++ == 0 )
 			{
-				bbox = new BBox( entry.WorldTransform.Position, 16 );
+				bbox = new BBox( entry.Transform.Position, 16 );
 			}
 
 			// get the bounding box of the selected objects
-			bbox = bbox.AddBBox( new BBox( entry.WorldTransform.Position, 16 ) );
+			bbox = bbox.AddBBox( new BBox( entry.Transform.Position, 16 ) );
 
 			foreach ( var model in entry.GetComponents<ModelComponent>( true, true ) )
 			{
@@ -169,7 +169,7 @@ public static class SceneEditorMenus
 
 		foreach ( var entry in EditorScene.Selection.OfType<GameObject>() )
 		{
-			entry.WorldTransform = new Transform( SceneViewWidget.Current.Camera.Position, SceneViewWidget.Current.Camera.Rotation );
+			entry.Transform.World = new Transform( SceneViewWidget.Current.Camera.Position, SceneViewWidget.Current.Camera.Rotation );
 
 		}
 	}

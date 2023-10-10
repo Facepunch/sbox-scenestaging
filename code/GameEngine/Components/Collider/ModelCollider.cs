@@ -59,7 +59,6 @@ public class ModelCollider : ColliderBaseComponent
 
 	public override void OnEnabled()
 	{
-		var tx = GameObject.WorldTransform;
-		group = Scene.PhysicsWorld.SetupPhysicsFromModel( Model, tx, PhysicsMotionType.Keyframed );
+		group = Scene.PhysicsWorld.SetupPhysicsFromModel( Model, Transform.World, PhysicsMotionType.Keyframed );
 	}
 }

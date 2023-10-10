@@ -26,9 +26,9 @@ public partial class GameObject
 			{ "Id", Id },
 			{ "Name", Name },
 			{ "Enabled", Enabled },
-			{ "Position",  JsonValue.Create( Transform.Position.ToString() ) },
-			{ "Rotation", JsonValue.Create( Transform.Rotation ) },
-			{ "Scale", JsonValue.Create( (Vector3)Transform.Scale ) }
+			{ "Position",  JsonValue.Create( Transform.LocalPosition ) },
+			{ "Rotation", JsonValue.Create( Transform.LocalRotation ) },
+			{ "Scale", JsonValue.Create( Transform.LocalScale ) }
 		};
 
 		if ( Components.Any() )
@@ -84,9 +84,9 @@ public partial class GameObject
 	{
 		Id = node["Id"].Deserialize<Guid>();
 		Name = node["Name"].ToString() ?? Name;
-		_transform.Position = node["Position"].Deserialize<Vector3>();
-		_transform.Rotation = node["Rotation"].Deserialize<Rotation>();
-		_transform.Scale = node["Scale"].Deserialize<Vector3>().x;
+		Transform.LocalPosition = node["Position"].Deserialize<Vector3>();
+		Transform.LocalRotation = node["Rotation"].Deserialize<Rotation>();
+		Transform.LocalScale = node["Scale"].Deserialize<Vector3>();
 
 		if ( node["Children"] is JsonArray childArray )
 		{
@@ -123,7 +123,8 @@ public partial class GameObject
 		}
 
 		Enabled = (bool)(node["Enabled"] ?? Enabled);
-		UpdateEnabledStatus();
+
+		SceneUtility.ActivateGameObject( this );
 	}
 
 	public PrefabFile GetAsPrefab()

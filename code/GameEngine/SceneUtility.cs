@@ -49,16 +49,16 @@ public static class SceneUtility
 	/// <summary>
 	/// Create a unique copy of the passed in GameObject
 	/// </summary>
-	public static GameObject Instantiate( GameObject bullet, Transform transform )
+	public static GameObject Instantiate( GameObject template, Transform transform )
 	{
 		using var spawnScope = DeferInitializationScope( "Instantiate" );
 
-		var json = bullet.Serialize();
+		var json = template.Serialize();
 
 		MakeGameObjectsUnique( json );
 		var go = GameObject.Create();
 		go.Deserialize( json );
-		go.Transform = transform;
+		go.Transform.Local = transform;
 
 		GameManager.ActiveScene.Register( go );
 
@@ -68,12 +68,13 @@ public static class SceneUtility
 	/// <summary>
 	/// Create a unique copy of the passed in GameObject
 	/// </summary>
-	public static GameObject Instantiate( GameObject bullet ) => Instantiate( bullet, bullet.Transform );
+	public static GameObject Instantiate( GameObject template ) => Instantiate( template, Transform.Zero );
 
 	/// <summary>
 	/// Create a unique copy of the passed in GameObject
 	/// </summary>
-	public static GameObject Instantiate( GameObject bullet, Vector3 position, Quaternion rotation ) => Instantiate( bullet, new Transform( position, rotation, bullet.Transform.Scale ) );
+	public static GameObject Instantiate( GameObject template, Vector3 position, Quaternion rotation ) 
+		=> Instantiate( template, new Transform( position, rotation, template.Transform.LocalScale.x ) );
 
 
 	static HashSet<GameObject> spawnList;

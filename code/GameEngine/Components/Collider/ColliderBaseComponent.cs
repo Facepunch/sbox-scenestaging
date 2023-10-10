@@ -49,7 +49,7 @@ public abstract class ColliderBaseComponent : BaseComponent
 			physicsBody = new PhysicsBody( Scene.PhysicsWorld );
 			physicsBody.BodyType = PhysicsBodyType.Keyframed;
 			physicsBody.GameObject = GameObject;
-			physicsBody.Transform = GameObject.WorldTransform.WithScale( 1 );
+			physicsBody.Transform = Transform.World.WithScale( 1 );
 			physicsBody.UseController = true;
 			physicsBody.GravityEnabled = false;
 			ownBody = physicsBody;
@@ -89,7 +89,7 @@ public abstract class ColliderBaseComponent : BaseComponent
 			return;
 		}
 
-		ownBody?.Move( GameObject.WorldTransform, Time.Delta * 4.0f );
+		ownBody?.Move( Transform.World, Time.Delta * 4.0f );
 	}
 
 	public void OnPhysicsChanged()

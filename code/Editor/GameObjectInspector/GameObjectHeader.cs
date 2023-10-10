@@ -66,11 +66,11 @@ class GameObjectHeader : Widget
 		cs.SetMinimumColumnWidth( 0, 50 );
 		cs.SetColumnStretch( 0, 1 );
 
-		targetObject.GetProperty( "Transform" ).TryGetAsObject( out var txo );
+		targetObject.GetProperty( nameof( GameObject.Transform ) ).TryGetAsObject( out var txo );
 
-		cs.AddRow( txo.GetProperty( nameof( Transform.Position ) ) );
-		cs.AddRow( txo.GetProperty( nameof( Transform.Rotation ) ) );
-		cs.AddRow( txo.GetProperty( nameof( Transform.Scale ) ) );
+		cs.AddRow( txo.GetProperty( nameof( GameTransform.LocalPosition ) ) );
+		cs.AddRow( txo.GetProperty( nameof( GameTransform.LocalRotation ) ) );
+		cs.AddRow( txo.GetProperty( nameof( GameTransform.LocalScale ) ) );
 
 		Layout.Add( cs );
 

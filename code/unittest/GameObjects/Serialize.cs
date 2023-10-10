@@ -15,7 +15,7 @@ public class SerializeTest
 
 		var go1 = GameObject.Create	();
 		go1.Name = "My Game Object";
-		go1.Transform = new Transform( Vector3.Up, Rotation.Identity, 10 );
+		go1.Transform.Local = new Transform( Vector3.Up, Rotation.Identity, 10 );
 
 		var model = go1.AddComponent<ModelComponent>();
 		model.Model = Model.Load( "models/dev/box.vmdl" );
@@ -31,7 +31,7 @@ public class SerializeTest
 		Assert.AreEqual( go1.Id, go2.Id );
 		Assert.AreEqual( go1.Name, go2.Name );
 		Assert.AreEqual( go1.Enabled, go2.Enabled );
-		Assert.AreEqual( go1.Transform, go2.Transform );
+		Assert.AreEqual( go1.Transform.Local, go2.Transform.Local );
 		Assert.AreEqual( go1.Components.Count, go2.Components.Count );
 		Assert.AreEqual( go1.GetComponent<ModelComponent>().Model, go2.GetComponent<ModelComponent>().Model );
 		Assert.AreEqual( go1.GetComponent<ModelComponent>().Tint, go2.GetComponent<ModelComponent>().Tint );
@@ -46,7 +46,7 @@ public class SerializeTest
 		var timer = new ScopeTimer( "Creation" );
 		var go1 = GameObject.Create();
 		go1.Name = "My Game Object";
-		go1.Transform = new Transform( Vector3.Up, Rotation.Identity, 10 );
+		go1.Transform.Local = new Transform( Vector3.Up, Rotation.Identity, 10 );
 
 		int childrenCount = 150000;
 
@@ -54,7 +54,7 @@ public class SerializeTest
 		{
 			var child = GameObject.Create();
 			child.Name = $"Child {i}";
-			child.Transform = new Transform( Vector3.Random * 1000 );
+			child.Transform.Local = new Transform( Vector3.Random * 1000 );
 			child.Parent = go1;
 
 			child.AddComponent<ModelComponent>();
@@ -78,7 +78,7 @@ public class SerializeTest
 		Assert.AreEqual( go1.Id, go2.Id );
 		Assert.AreEqual( go1.Name, go2.Name );
 		Assert.AreEqual( go1.Enabled, go2.Enabled );
-		Assert.AreEqual( go1.Transform, go2.Transform );
+		Assert.AreEqual( go1.Transform.Local, go2.Transform.Local );
 		Assert.AreEqual( go2.Children.Count, childrenCount );
 
 

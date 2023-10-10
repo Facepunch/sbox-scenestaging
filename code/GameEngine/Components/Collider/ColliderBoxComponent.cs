@@ -21,7 +21,7 @@ public class ColliderBoxComponent : ColliderBaseComponent
 
 	protected override PhysicsShape CreatePhysicsShape( PhysicsBody targetBody )
 	{
-		var tx = targetBody.Transform.ToLocal( GameObject.WorldTransform );
+		var tx = targetBody.Transform.ToLocal( Transform.World );
 		var shape = targetBody.AddBoxShape( tx.Position, tx.Rotation, Scale * 0.5f * tx.Scale );
 
 		if ( Surface is not null )

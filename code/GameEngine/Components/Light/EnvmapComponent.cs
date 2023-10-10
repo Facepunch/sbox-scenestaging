@@ -39,7 +39,7 @@ public class EnvmapComponent : BaseComponent
 		if ( !_sceneObject.IsValid() )
 			return;
 
-		_sceneObject.Transform = GameObject.WorldTransform;
+		_sceneObject.Transform = Transform.World;
 		_sceneObject.Projection = Projection;
 		_sceneObject.Texture = Texture;
 		_sceneObject.TintColor = TintColor;

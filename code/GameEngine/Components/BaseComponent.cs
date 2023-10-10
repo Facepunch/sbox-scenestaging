@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 public abstract partial class BaseComponent
 {
 	public Scene Scene => GameObject.Scene;
+	public GameTransform Transform => GameObject.Transform;
 
 	public GameObject GameObject { get; internal set; }
 
