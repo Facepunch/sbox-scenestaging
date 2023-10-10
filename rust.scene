@@ -13,11 +13,13 @@
           "__enabled": true,
           "MaterialOverride": "models/rust_props/remnant_container/concrete_a_cont.vmat",
           "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
+          "IsTrigger": false,
           "Scale": "100,100,1",
           "Surface": null
         }
@@ -56,6 +58,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/barricades/barricade.stone.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -93,6 +96,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/barricades/barricade.stone.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -130,6 +134,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -167,6 +172,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -184,6 +190,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -201,6 +208,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -218,6 +226,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -235,6 +244,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -252,6 +262,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/rubble_piles/rubble_pile_9x9.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -269,6 +280,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/rubble_piles/rubble_pile_9x9.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -286,6 +298,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/concrete_debris/concrete_debris_b.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -303,6 +316,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/concrete_debris/concrete_debris_b.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -320,6 +334,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/shipping_containers/shipping_container_900_b.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -337,6 +352,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -354,6 +370,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -371,6 +388,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -408,6 +426,7 @@
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
+          "IsTrigger": false,
           "Scale": "50,50,50",
           "Surface": null
         },
@@ -416,6 +435,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -437,6 +457,7 @@
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
+          "IsTrigger": false,
           "Scale": "50,50,50",
           "Surface": null
         },
@@ -445,6 +466,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -462,6 +484,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/tires/tire_stack_c.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ],
@@ -479,6 +502,7 @@
               "__enabled": true,
               "MaterialOverride": null,
               "Model": "models/dev/sphere.vmdl",
+              "ShouldCastShadows": true,
               "Tint": "1,1,1,1"
             }
           ]
@@ -517,6 +541,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         },
         {
@@ -528,10 +553,22 @@
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
+          "IsTrigger": false,
           "Scale": "50,50,50",
           "Surface": null
         }
       ]
     }
+  ],
+  "__references": [
+    "rust.concrete_a_cont",
+    "rust.barricadestone",
+    "rust.wall_plaster_300x900",
+    "rust.american_beech_d_dead",
+    "rust.rubble_pile_9x9",
+    "rust.concrete_debris_b",
+    "rust.shipping_container_900_b",
+    "rust.industrial_fence_300",
+    "rust.tire_stack_c"
   ]
 }

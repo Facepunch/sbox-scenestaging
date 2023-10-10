@@ -13,6 +13,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -21,7 +22,7 @@
       "Id": "36a17215-9e6d-4279-8dee-b0a31d63b74e",
       "Name": "Crate",
       "Enabled": true,
-      "Position": "-207.7095,-223.902,-108.1969",
+      "Position": "-206.9405,-231.2184,-108.1969",
       "Rotation": "0,0,0.05233598,0.9986295",
       "Scale": "1,1,1",
       "Components": [
@@ -30,6 +31,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -47,6 +49,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ],
@@ -64,6 +67,7 @@
               "__enabled": true,
               "MaterialOverride": null,
               "Model": "models/dev/sphere.vmdl",
+              "ShouldCastShadows": true,
               "Tint": "1,1,1,1"
             }
           ]
@@ -100,6 +104,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_measuregeneric01b_pbr.vmat",
           "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -117,6 +122,7 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -134,9 +140,14 @@
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
     }
+  ],
+  "__references": [
+    "facepunch.wooden_crate",
+    "quack.devgen01b"
   ]
 }

@@ -12,11 +12,13 @@
         "__enabled": true,
         "MaterialOverride": null,
         "Model": "models/dev/box.vmdl",
+        "ShouldCastShadows": true,
         "Tint": "1,1,1,1"
       },
       {
         "__type": "ColliderBoxComponent",
         "__enabled": true,
+        "IsTrigger": false,
         "Scale": "50,50,50",
         "Surface": null
       },
@@ -51,6 +53,7 @@
                 "__enabled": true,
                 "MaterialOverride": null,
                 "Model": "models/dev/box.vmdl",
+                "ShouldCastShadows": true,
                 "Tint": "1,1,1,1"
               }
             ]
@@ -68,11 +71,13 @@
                 "__enabled": true,
                 "MaterialOverride": null,
                 "Model": "models/dev/box.vmdl",
+                "ShouldCastShadows": true,
                 "Tint": "1,1,1,1"
               },
               {
                 "__type": "ColliderBoxComponent",
                 "__enabled": true,
+                "IsTrigger": false,
                 "Scale": "50,50,50",
                 "Surface": null
               }
@@ -91,11 +96,13 @@
                 "__enabled": true,
                 "MaterialOverride": null,
                 "Model": "models/dev/box.vmdl",
+                "ShouldCastShadows": true,
                 "Tint": "1,1,1,1"
               },
               {
                 "__type": "ColliderBoxComponent",
                 "__enabled": true,
+                "IsTrigger": false,
                 "Scale": "50,50,50",
                 "Surface": null
               }
@@ -114,11 +121,13 @@
                 "__enabled": true,
                 "MaterialOverride": null,
                 "Model": "models/dev/box.vmdl",
+                "ShouldCastShadows": true,
                 "Tint": "1,1,1,1"
               },
               {
                 "__type": "ColliderBoxComponent",
                 "__enabled": true,
+                "IsTrigger": false,
                 "Scale": "50,50,50",
                 "Surface": null
               }
@@ -128,7 +137,7 @@
             "Id": "3123d5e4-b989-44ec-a5f2-f57e19f03311",
             "Name": "Cube (1)",
             "Enabled": true,
-            "Position": "51.2432,0.8604,9.1344",
+            "Position": "51.2432,0.8604,10.5007",
             "Rotation": "0.00000003254731,0,0,1",
             "Scale": "0.2,0.2,0.2",
             "Components": [
@@ -137,11 +146,13 @@
                 "__enabled": true,
                 "MaterialOverride": null,
                 "Model": "models/dev/box.vmdl",
+                "ShouldCastShadows": true,
                 "Tint": "1,1,1,1"
               },
               {
                 "__type": "ColliderBoxComponent",
                 "__enabled": true,
+                "IsTrigger": false,
                 "Scale": "50,50,50",
                 "Surface": null
               }
@@ -160,11 +171,13 @@
                 "__enabled": true,
                 "MaterialOverride": null,
                 "Model": "models/dev/box.vmdl",
+                "ShouldCastShadows": true,
                 "Tint": "1,1,1,1"
               },
               {
                 "__type": "ColliderBoxComponent",
                 "__enabled": true,
+                "IsTrigger": false,
                 "Scale": "50,50,50",
                 "Surface": null
               }
@@ -183,11 +196,13 @@
                 "__enabled": true,
                 "MaterialOverride": null,
                 "Model": "models/dev/box.vmdl",
+                "ShouldCastShadows": true,
                 "Tint": "1,1,1,1"
               },
               {
                 "__type": "ColliderBoxComponent",
                 "__enabled": true,
+                "IsTrigger": false,
                 "Scale": "50,50,50",
                 "Surface": null
               }
@@ -204,5 +219,6 @@
         ]
       }
     ]
-  }
+  },
+  "__references": []
 }

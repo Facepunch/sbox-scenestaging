@@ -86,7 +86,7 @@
       "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
       "Name": "Citizen",
       "Enabled": true,
-      "Position": "1018.834,692.3123,-1467.549",
+      "Position": "1018.834,700.6849,-1467.549",
       "Rotation": "-0.00000003254731,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -114,7 +114,7 @@
           "Id": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
           "Name": "Body",
           "Enabled": true,
-          "Position": "0,0.0325,0",
+          "Position": "0,1.2348,0",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Components": [
@@ -5088,5 +5088,33 @@
         }
       ]
     }
+  ],
+  "__references": [
+    "rust.portacabin_300_600_b",
+    "baik.soccerball",
+    "facepunch.concrete_damaged",
+    "facepunch.pine_shrub_tall_a",
+    "facepunch.tallgrass_c",
+    "facepunch.beech_shrub_tall_small",
+    "fish.gt_shitty_pine_tree2",
+    "orus.8hu_kultiras_smallhouse_2",
+    "rust.rock_cliff_a",
+    "titanovsky.ufrts_resource_gold1",
+    "rust.ground_junk_a",
+    "rust.ground_junk_straight_a",
+    "facepunch.grass_clump_a",
+    "fish.gt_grass_medium_a",
+    "fish.gt_grass_medium_b",
+    "sklystuff.grass_block",
+    "facepunch.binbag_pile_a2",
+    "facepunch.binbag_pile_a1",
+    "facepunch.dirtpile_03",
+    "facepunch.dirtpile_04",
+    "facepunch.dirtpile_05",
+    "facepunch.blackbin",
+    "facepunch.wheely_bin",
+    "facepunch.metal_wheely_bin",
+    "sboxmp.hazmatsuit",
+    "sboxmp.adam_mp"
   ]
 }
