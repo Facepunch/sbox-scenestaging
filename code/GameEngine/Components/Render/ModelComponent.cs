@@ -73,6 +73,23 @@ public class ModelComponent : BaseComponent
 		}
 	}
 
+	bool _castShadows = true;
+	[Property]
+	public bool ShouldCastShadows
+	{
+		get => _castShadows;
+		set
+		{
+			if ( _castShadows == value ) return;
+			_castShadows = value;
+
+			if ( _sceneObject is not null )
+			{
+				_sceneObject.Flags.CastShadows = _castShadows;
+			}
+		}
+	}
+
 	public string TestString { get; set; }
 
 	SceneObject _sceneObject;
@@ -114,6 +131,7 @@ public class ModelComponent : BaseComponent
 		_sceneObject.Transform = GameObject.WorldTransform;
 		_sceneObject.SetMaterialOverride( MaterialOverride );
 		_sceneObject.ColorTint = Tint;
+		_sceneObject.Flags.CastShadows = _castShadows;
 	}
 
 	public override void OnDisabled()
