@@ -80,6 +80,7 @@ public class CharacterController : BaseComponent
 	}
 
 	PhysicsTraceBuilder BuildTrace( Vector3 from, Vector3 to ) => BuildTrace( Scene.PhysicsWorld.Trace.Ray( from, to ) );
+	
 	PhysicsTraceBuilder BuildTrace( PhysicsTraceBuilder source ) => source.Size( BoundingBox );
 
 	void Move( bool step )

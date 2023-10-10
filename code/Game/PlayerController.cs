@@ -67,9 +67,6 @@ public class PlayerController : BaseComponent
 			cc.Accelerate( WishVelocity.ClampLength( 50 ) );
 			cc.ApplyFriction( 0.1f );
 		}
-
-		Gizmo.Draw.ScreenText( $"{WishVelocity}\n{cc.Velocity}\n{cc.Velocity.Length}\n{cc.IsOnGround}", 300 );
-
 		cc.Move();
 
 		if ( !cc.IsOnGround )
@@ -99,8 +96,5 @@ public class PlayerController : BaseComponent
 
 		if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
 		else WishVelocity *= 150.0f;
-
-		
-
 	}
 }

@@ -23,8 +23,8 @@ public sealed class MoveHelperDebugVis : BaseComponent
 		{
 			CharacterControllerHelper move = new CharacterControllerHelper( Scene.PhysicsWorld, pos, velocity );
 			move.Trace = move.Trace.Size( box );
-			//move.TryMoveWithStep( ts, 20.0f );
-			move.TryMove( ts );
+			move.TryMoveWithStep( ts, 20.0f );
+		//	move.TryMove( ts );
 
 			pos = move.Position;
 			velocity = move.Velocity;
