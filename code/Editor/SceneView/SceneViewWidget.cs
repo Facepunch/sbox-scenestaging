@@ -210,14 +210,6 @@ public partial class SceneViewWidget : Widget
 		{
 			DragOffset = 0;
 
-			if ( ev.Data.Url is not null )
-			{
-				DragCancelSource?.Cancel();
-				DragCancelSource = new CancellationTokenSource();
-				DragInstallTask = InstallPackageAsync( ev.Data.Text, DragCancelSource.Token );
-				return;
-			}
-
 			if ( ev.Data.HasFileOrFolder )
 			{
 				var asset = AssetSystem.FindByPath( ev.Data.FileOrFolder );
@@ -225,6 +217,14 @@ public partial class SceneViewWidget : Widget
 				{
 					CreateDragObjectFromAsset( asset );
 				}
+			}
+
+			if ( ev.Data.Url is not null )
+			{
+				DragCancelSource?.Cancel();
+				DragCancelSource = new CancellationTokenSource();
+				DragInstallTask = InstallPackageAsync( ev.Data.Text, DragCancelSource.Token );
+				return;
 			}
 
 			if ( DragObject  is not null )
