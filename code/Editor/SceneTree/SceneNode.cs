@@ -20,6 +20,8 @@ public partial class SceneNode : TreeNode<Scene>
 		fullSpanRect.Left = 0;
 		fullSpanRect.Right = TreeView.Width;
 
+
+
 		if ( item.Selected )
 		{
 			Paint.ClearPen();
@@ -28,13 +30,9 @@ public partial class SceneNode : TreeNode<Scene>
 
 			Paint.SetPen( Color.White );
 		}
-		else
-		{
-			Paint.SetPen( Theme.ControlText );
-		}
 
 		var r = item.Rect;
-		Paint.SetPen( Theme.ControlText );
+		Paint.SetPen( Theme.ControlText.WithAlpha( 0.4f ) );
 
 		r.Left += 4;
 		Paint.DrawIcon( r, "perm_media", 14, TextFlag.LeftCenter );

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using static Editor.BaseItemWidget;
 
 public partial class GameObjectNode : TreeNode<GameObject>
@@ -43,6 +44,24 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 		if ( !Value.Active ) opacity *= 0.5f;
 
+		Color pen = Theme.ControlText;
+		string icon = "layers";
+		Color iconColor = Theme.ControlText.WithAlpha( 0.6f );
+
+		if ( Value.IsPrefabInstance )
+		{
+			pen = Theme.Blue;
+			icon = "dataset";
+			iconColor = Theme.Blue;
+
+			if ( !Value.IsPrefabInstanceRoot )
+			{
+				icon = "dataset_linked";
+				iconColor = iconColor.WithAlpha( 0.5f );
+				pen = pen.WithAlpha( 0.5f );
+			}
+		}
+
 		//
 		// If there's a drag and drop happening, fade out nodes that aren't possible
 		//
@@ -80,14 +99,8 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		{
 			//item.PaintBackground( Color.Transparent, 3 );
 			Paint.ClearPen();
-			Paint.SetBrush( Theme.Blue.WithAlpha( 0.4f * opacity ) );
+			Paint.SetBrush( Theme.Blue.WithAlpha( 0.1f * opacity ) );
 			Paint.DrawRect( fullSpanRect );
-
-			Paint.SetPen( Color.White.WithAlpha( opacity ) );
-		}
-		else
-		{
-			Paint.SetPen( Theme.ControlText.WithAlpha( opacity ) );
 		}
 
 		var name = Value.Name;
@@ -96,11 +109,11 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		var r = item.Rect;
 		r.Left += 4;
 
-		if ( !selected ) Paint.SetPen( Theme.Blue.WithAlpha( opacity ).Saturate( opacity - 1.0f ) );
-		Paint.DrawIcon( r, "circle", 14, TextFlag.LeftCenter );
+		Paint.SetPen( iconColor.WithAlphaMultiplied( opacity ) );
+		Paint.DrawIcon( r, icon, 14, TextFlag.LeftCenter );
 		r.Left += 22;
 
-		Paint.SetPen( selected ? Theme.White.WithAlpha( opacity ) : Theme.ControlText.WithAlpha( opacity ) );
+		Paint.SetPen( pen.WithAlphaMultiplied( opacity ) );
 		Paint.SetDefaultFont();
 		Paint.DrawText( r, name, TextFlag.LeftCenter );
 	}
