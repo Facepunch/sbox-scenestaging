@@ -21,6 +21,8 @@ public partial class GameObject
 		if ( Flags.HasFlag( GameObjectFlags.NotSaved ) )
 			return null;
 
+		bool isPartOfPrefab = IsPrefabInstance;
+
 		var json = new JsonObject
 		{
 			{ "Id", Id },
@@ -30,6 +32,16 @@ public partial class GameObject
 			{ "Rotation", JsonValue.Create( Transform.LocalRotation ) },
 			{ "Scale", JsonValue.Create( Transform.LocalScale ) }
 		};
+
+		if ( IsPrefabInstanceRoot )
+		{
+			json.Add( "__Prefab", JsonValue.Create( PrefabSource ) );
+
+			if ( PrefabLut is not null )
+			{
+				json.Add( "__PrefabLut", JsonSerializer.SerializeToNode( PrefabLut ) );
+			}
+		}
 
 		if ( Components.Any() )
 		{
@@ -87,6 +99,16 @@ public partial class GameObject
 		Transform.LocalPosition = node["Position"].Deserialize<Vector3>();
 		Transform.LocalRotation = node["Rotation"].Deserialize<Rotation>();
 		Transform.LocalScale = node["Scale"].Deserialize<Vector3>();
+
+		if ( node["__Prefab"].Deserialize<string>() is string prefabSource )
+		{
+			SetPrefabSource( prefabSource );
+		}
+
+		if ( node["__PrefabLut"] is JsonObject a )
+		{
+			PrefabLut = a.Deserialize<Dictionary<Guid, Guid>>();
+		}
 
 		if ( node["Children"] is JsonArray childArray )
 		{

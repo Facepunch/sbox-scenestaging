@@ -13,14 +13,14 @@ public sealed class PrefabScene : Scene
 
 		Clear();
 
-		if ( resource is PrefabFile sceneFile )
+		if ( resource is PrefabFile file )
 		{
-			Source = sceneFile;
+			Source = file;
 			using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
 
-			if ( sceneFile.RootObject is not null )
+			if ( file.RootObject is not null )
 			{
-				Deserialize( sceneFile.RootObject );
+				Deserialize( file.RootObject );
 			}
 		}
 	}

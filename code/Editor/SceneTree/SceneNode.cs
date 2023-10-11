@@ -20,8 +20,6 @@ public partial class SceneNode : TreeNode<Scene>
 		fullSpanRect.Left = 0;
 		fullSpanRect.Right = TreeView.Width;
 
-
-
 		if ( item.Selected )
 		{
 			Paint.ClearPen();

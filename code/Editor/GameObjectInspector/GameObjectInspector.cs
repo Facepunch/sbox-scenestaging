@@ -24,7 +24,15 @@ public class GameObjectInspector : Widget
 
 		Layout.Add( h );
 		Layout.AddSeparator();
-		Layout.Add( new ComponentList( target.Components ) );
+
+		if ( !target.IsPrefabInstance )
+		{
+			Layout.Add( new ComponentList( target.Components ) );
+		}
+		else
+		{
+			// if we're the prefab root, show a list of variables that can be modified
+		}
 
 		//
 		// Add component

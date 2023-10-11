@@ -30,7 +30,7 @@ public static class SceneEditorMenus
 		var go = EditorScene.Selection.First() as GameObject;
 		var json = go.Serialize( options );
 
-		SceneUtility.MakeGameObjectsUnique( json );
+		SceneUtility.MakeGameObjectsUnique( json, false );
 
 		EditorUtility.Clipboard.Copy( json.ToString() );
 	}
@@ -42,7 +42,8 @@ public static class SceneEditorMenus
 		var options = new GameObject.SerializeOptions();
 		var go = EditorScene.Selection.First() as GameObject;
 		var json = go.Serialize( options );
-		SceneUtility.MakeGameObjectsUnique( json );
+
+		SceneUtility.MakeGameObjectsUnique( json, false );
 
 		EditorUtility.Clipboard.Copy( json.ToString() );
 	}
@@ -117,7 +118,7 @@ public static class SceneEditorMenus
 
 		var json = source.Serialize( options );
 
-		SceneUtility.MakeGameObjectsUnique( json );
+		SceneUtility.MakeGameObjectsUnique( json, false );
 
 		var go = GameObject.Create();
 		go.Deserialize( json );

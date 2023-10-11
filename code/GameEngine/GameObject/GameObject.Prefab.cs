@@ -7,11 +7,12 @@ using System.Text.Json.Nodes;
 
 public partial class GameObject
 {
-	PrefabScene PrefabScene { get; set; }
+	string PrefabSource { get; set; }
+	Dictionary<Guid, Guid> PrefabLut { get; set; }
 
-	internal void SetPrefabSource( PrefabScene prefabScene )
+	internal void SetPrefabSource( string prefabSource )
 	{
-		PrefabScene = prefabScene;
+		PrefabSource = prefabSource;
 	}
 
 	public bool IsPrefabInstance
@@ -29,7 +30,7 @@ public partial class GameObject
 	{
 		get
 		{
-			if ( PrefabScene is not null ) return true;
+			if ( PrefabSource is not null ) return true;
 			return false;
 		}
 	}
