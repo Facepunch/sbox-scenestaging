@@ -58,6 +58,9 @@ public static class SceneEditorMenus
 			return;
 		}
 
+		using var scope = EditorScene.Active.Push();
+		using var initScope = SceneUtility.DeferInitializationScope( "paste" );
+
 		var text = EditorUtility.Clipboard.Paste();
 		if ( JsonNode.Parse( text ) is JsonObject jso )
 		{
@@ -83,6 +86,9 @@ public static class SceneEditorMenus
 	{
 		var selected = EditorScene.Selection.First() as GameObject;
 
+		using var scope = EditorScene.Active.Push();
+		using var initScope = SceneUtility.DeferInitializationScope( "paste" );
+
 		var text = EditorUtility.Clipboard.Paste();
 		if ( JsonNode.Parse( text ) is JsonObject jso )
 		{
@@ -102,6 +108,8 @@ public static class SceneEditorMenus
 	public static void Duplicate()
 	{
 		using var scope = EditorScene.Active.Push();
+		using var initScope = SceneUtility.DeferInitializationScope( "duplicate" );
+
 		var options = new GameObject.SerializeOptions();
 		var source = EditorScene.Selection.First() as GameObject;
 

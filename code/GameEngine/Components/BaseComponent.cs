@@ -73,11 +73,11 @@ public abstract partial class BaseComponent
 
 		_enabledState = state;
 
-		onAwake?.Invoke();
-		onAwake = null;
-
 		if ( _enabledState )
 		{
+			onAwake?.Invoke();
+			onAwake = null;
+
 			ExceptionWrap( "OnEnabled", OnEnabled );
 		}
 		else
