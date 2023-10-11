@@ -111,12 +111,10 @@ public class Scene : GameObject
 			go.DestroyImmediate();
 		}
 
-		foreach( var c in Components.ToArray() )
+		ForEachComponent( "Clear", false, c =>
 		{
-
 			c.Destroy();
-		}
-
+		} );
 	}
 
 	public virtual void Load( GameResource resource )

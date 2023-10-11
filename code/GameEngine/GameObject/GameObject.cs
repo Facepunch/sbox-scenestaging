@@ -2,8 +2,10 @@
 using Sandbox.Diagnostics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using static Sandbox.IPrefabObject;
 
 public enum GameObjectFlags
 {
@@ -118,33 +120,9 @@ public partial class GameObject
 	/// </summary>
 	public bool Active => Enabled && Scene is not null && (Parent?.Active ?? true);
 
-	internal void OnCreate()
-	{
-		foreach ( var component in Components )
-		{
-			if ( component is BaseComponent goc )
-			{
-				goc.GameObject = this;
-			}
-		}
-
-		foreach ( var child in Children )
-		{
-			child.OnCreate();
-		}
-	}
-
 	internal void OnDestroy()
 	{
-		foreach ( var component in Components )
-		{
-			component.OnDisabled();
-
-			if ( component is BaseComponent goc )
-			{
-				goc.GameObject = null;
-			}
-		}
+		ForEachComponent( "OnDestroy", true, c => c.OnDestroyInternal() );
 
 		foreach ( var child in Children )
 		{
@@ -156,10 +134,7 @@ public partial class GameObject
 	{
 		//Gizmo.Draw.LineSphere( new Sphere( WorldTransform.Position, 3 ) );
 
-		foreach ( var component in Components )
-		{
-			component.PostPhysics();
-		}
+		ForEachComponent( "PostPhysics", true, c => c.PostPhysics() );
 
 		foreach ( var child in Children )
 		{
@@ -169,15 +144,38 @@ public partial class GameObject
 
 	internal void PreRender()
 	{
-
-		foreach ( var component in Components )
-		{
-			component.PreRender();
-		}
+		ForEachComponent( "PreRender", true, c => c.PreRender() );
 
 		foreach ( var child in Children )
 		{
 			child.PreRender();
+		}
+	}
+
+	internal void ForEachComponent( string name, bool activeOnly, Action<BaseComponent> action )
+	{
+		for ( int i = 0; i < Components.Count; i++ )
+		{
+			var c = Components[i];
+
+			if ( c is null )
+			{
+				Components.RemoveAt( i );
+				i--;
+				continue;
+			}
+
+			if ( activeOnly && !c.Active )
+				continue;
+
+			try
+			{
+				action( c );
+			}
+			catch ( System.Exception e )
+			{
+				Log.Warning( e, $"Exception when calling {name} on {c}: {e.Message}" );
+			}
 		}
 	}
 
@@ -262,11 +260,11 @@ public partial class GameObject
 	/// </summary>
 	internal void UpdateEnabledStatus()
 	{
-		foreach ( var component in Components )
+		ForEachComponent( "UpdateEnabledStatus", false, c =>
 		{
-			component.GameObject = this;
-			component.UpdateEnabledStatus();
-		}
+			c.GameObject = this;
+			c.UpdateEnabledStatus();
+		} );
 
 		foreach ( var child in Children )
 		{
@@ -409,10 +407,7 @@ public partial class GameObject
 
 	void OnUpdate()
 	{
-		for ( int i=0; i< Components.Count; i++ )
-		{
-			Components[i].InternalUpdate();
-		}
+		ForEachComponent( "Update", true, c => c.InternalUpdate() );
 	}
 
 	/// <summary>

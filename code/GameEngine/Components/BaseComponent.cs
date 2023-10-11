@@ -46,24 +46,34 @@ public abstract partial class BaseComponent
 	public virtual void OnEnabled() { }
 
 	public virtual void OnDisabled() { } 
+	public virtual void OnDestroyInternal() 
+	{
+		if ( _enabledState )
+		{
+			_enabledState = false;
+			OnDisabled();
+		}
+
+		GameObject = null;
+	} 
 
 	protected virtual void OnPostPhysics() { }
 	internal void PostPhysics() 
 	{
-		ExceptionWrap( "OnPostPhysics", OnPostPhysics );
+		OnPostPhysics();
 	}
 
 	protected virtual void OnPreRender() { }
 	internal virtual void PreRender() 
 	{
-		ExceptionWrap( "OnPreRender", OnPreRender );
+		OnPreRender();
 	}
 
 	internal virtual void InternalUpdate() 
 	{
 		if ( !Enabled ) return;
 
-		ExceptionWrap( "Update", Update );
+		Update();
 	}
 
 	internal void UpdateEnabledStatus()

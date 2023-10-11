@@ -86,15 +86,14 @@ public partial class GameObject
 
 			DrawGizmoHandle( ref clicked );
 
-			foreach ( var component in Components )
+			ForEachComponent( "DrawGizmos", true, c =>
 			{
-				if ( !component.Enabled ) continue;
-
 				using var scope = Gizmo.Scope();
 
-				component.DrawGizmos();
+				c.DrawGizmos();
 				clicked = clicked || Gizmo.WasClicked;
-			}
+
+			} );
 
 			if ( clicked )
 			{

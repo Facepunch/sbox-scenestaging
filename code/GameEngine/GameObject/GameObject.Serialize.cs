@@ -43,24 +43,18 @@ public partial class GameObject
 			}
 		}
 
-		if ( Components.Any() )
+		if ( Components.Any() && !isPartOfPrefab )
 		{
 			var components = new JsonArray();
 
-			foreach( var component in Components )
+			ForEachComponent( "Serialize", false, component =>
 			{
-				try
-				{
-					var result = component.Serialize( options );
-					if ( result is null ) continue;
+				var result = component.Serialize( options );
+				if ( result is null ) return;
 
-					components.Add( result );
-				}
-				catch ( System.Exception e )
-				{
-					Log.Warning( e, $"Exception when serializing Component" );
-				}
-			}
+				components.Add( result );
+
+			} );
 
 			json.Add( "Components", components );
 		}
