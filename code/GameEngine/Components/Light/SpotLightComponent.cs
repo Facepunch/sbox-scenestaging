@@ -5,7 +5,8 @@ using System;
 [Title( "Spot Light" )]
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
-public class SpotLightComponent : BaseComponent
+[EditorHandle( "materials/gizmo/spotlight.png" )]
+public class SpotLightComponent : BaseComponent, IComponentColorProvider
 {
 	SceneSpotLight _sceneObject;
 
@@ -15,6 +16,8 @@ public class SpotLightComponent : BaseComponent
 	[Property] public float ConeInner { get; set; } = 15;
 	[Property] public float Attenuation { get; set; } = 1.0f;
 	[Property] public Texture Cookie { get; set; }
+
+	Color IComponentColorProvider.ComponentColor => LightColor;
 
 	public override void DrawGizmos()
 	{

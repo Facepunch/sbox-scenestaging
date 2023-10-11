@@ -5,6 +5,7 @@ using System;
 [Title( "Envmap Probe" )]
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
+[EditorHandle( "materials/gizmo/envmap.png" )]
 public class EnvmapComponent : BaseComponent
 {
 	SceneCubemap _sceneObject;

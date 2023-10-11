@@ -2,7 +2,10 @@ using Sandbox;
 using System;
 using System.Drawing;
 
-
+[Title( "Character Controller" )]
+[Category( "Physics" )]
+[Icon( "directions_walk", "red", "white" )]
+[EditorHandle( "materials/gizmo/charactercontroller.png" )]
 public class CharacterController : BaseComponent
 {
 	[Property] public float Radius { get; set; } = 16.0f;

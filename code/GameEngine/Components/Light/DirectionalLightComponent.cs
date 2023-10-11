@@ -5,10 +5,10 @@ using System;
 [Title( "Directional Light" )]
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
-public class DirectionalLightComponent : BaseComponent
+[EditorHandle( "materials/gizmo/directionallight.png" )]
+public class DirectionalLightComponent : BaseComponent, IComponentColorProvider
 {
 	SceneSunLight _sceneObject;
-
 
 	Color _lightColor = "#E9FAFF";
 	[Property] public Color LightColor
@@ -41,6 +41,8 @@ public class DirectionalLightComponent : BaseComponent
 			}
 		}
 	}
+
+	Color IComponentColorProvider.ComponentColor => LightColor;
 
 	[Property] public bool Shadows { get; set; } = true;
 

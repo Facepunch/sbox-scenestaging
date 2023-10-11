@@ -6,6 +6,7 @@ using System.Linq;
 [Title( "Camera" )]
 [Category( "Render" )]
 [Icon( "videocam", "red", "white" )]
+[EditorHandle( "materials/gizmo/camera.png" )]
 public class CameraComponent : BaseComponent
 {
 	SceneCamera sceneCamera = new SceneCamera();
