@@ -78,7 +78,9 @@ public static class SceneThumbnailRenderer
 
 	static void TryAddDefaultLighting( Scene scene )
 	{
-		if ( scene.GetComponent<DirectionalLightComponent>( true, true ) is not null ) return;
+		if ( scene.GetComponent<DirectionalLightComponent>( false, true ) is not null ) return;
+		if ( scene.GetComponent<SpotLightComponent>( false, true ) is not null ) return;
+		if ( scene.GetComponent<PointLightComponent>( false, true ) is not null ) return;
 
 		var go = scene.CreateObject();
 		go.Name = "Directional Light";
