@@ -92,6 +92,8 @@ public class ComponentList : Widget
 
 		foreach ( var o in componentList )
 		{
+			if ( o is null ) continue;
+
 			var serialized = EditorTypeLibrary.GetSerializedObject( o );
 			serialized.OnPropertyChanged += ( p ) => PropertyEdited( p, o );
 			var sheet = new ComponentSheet( serialized, () => OpenContextMenu( o ) );
