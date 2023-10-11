@@ -56,9 +56,15 @@ public static class SceneUtility
 		var json = template.Serialize();
 
 		MakeGameObjectsUnique( json );
+
 		var go = GameObject.Create();
 		go.Deserialize( json );
 		go.Transform.Local = transform;
+
+		if ( template is PrefabScene prefabScene )
+		{
+			go.SetPrefabSource( prefabScene );
+		}
 
 		GameManager.ActiveScene.Register( go );
 
