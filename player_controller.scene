@@ -100,6 +100,34 @@
       ]
     },
     {
+      "Id": "cedbeabd-8ffe-4ce1-bb9b-c2df8616aadd",
+      "Name": "Volumetric Fog",
+      "Enabled": true,
+      "Position": "1248.084,44.49568,-1579.203",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "VolumetricFogVolume",
+          "__enabled": true,
+          "Bounds": {
+            "Mins": "-150,-150,-150",
+            "Maxs": "150,150,150"
+          },
+          "FalloffExponent": 1,
+          "Strength": 2
+        }
+      ]
+    },
+    {
       "Id": "12df27a7-aaf4-4da8-bc02-173ecd53c168",
       "Name": "SkyBox",
       "Enabled": true,
@@ -111,7 +139,7 @@
           "__type": "SkyBox2D",
           "__enabled": true,
           "SkyMaterial": "materials/skybox/light_test_sky_sunset_2.vmat",
-          "Tint": "0.72772,0.72772,0.72772,1"
+          "Tint": "1,1,1,1"
         }
       ]
     },

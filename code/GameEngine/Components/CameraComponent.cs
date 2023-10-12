@@ -83,6 +83,15 @@ public class CameraComponent : BaseComponent
 		camera.ZFar = ZFar;
 		camera.FieldOfView = FieldOfView;
 		camera.BackgroundColor = BackgroundColor;
+
+		camera.VolumetricFog.Enabled = true;
+		camera.VolumetricFog.ContinuousMode = true;
+		camera.VolumetricFog.DrawDistance = 4096;
+		camera.VolumetricFog.FadeInStart = 10;
+		camera.VolumetricFog.FadeInEnd = 20;
+		camera.VolumetricFog.IndirectStrength = 1.0f;
+		camera.VolumetricFog.Anisotropy = 1;
+		camera.VolumetricFog.Scattering = 1.0f;
 	}
 
 }
