@@ -518,7 +518,12 @@ public class ActionPlug<T, TDef> : IActionPlug
 
 			if ( value is null )
 			{
-				if ( Index is 0 && input.LinkArray?.Count == 1 || input.Link is not null )
+				if ( !input.IsLinked )
+				{
+					return;
+				}
+
+				if ( Index is 0 && input.LinkArray?.Count == 1 || !input.IsArray )
 				{
 					input.ClearLinks();
 				}
