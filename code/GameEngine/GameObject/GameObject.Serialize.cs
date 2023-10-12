@@ -41,6 +41,9 @@ public partial class GameObject
 			{
 				json.Add( "__PrefabLut", JsonSerializer.SerializeToNode( PrefabLut ) );
 			}
+
+			// prefabs don't save their children
+			return json;
 		}
 
 		if ( Components.Any() && !isPartOfPrefab )
