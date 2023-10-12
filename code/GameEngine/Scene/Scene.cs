@@ -115,6 +115,9 @@ public class Scene : GameObject
 		{
 			c.Destroy();
 		} );
+
+		Components.Clear();
+		Children.Clear();
 	}
 
 	public virtual void Load( GameResource resource )
