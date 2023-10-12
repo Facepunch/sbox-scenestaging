@@ -8,7 +8,6 @@ using System.Text.Json.Nodes;
 public partial class GameObject
 {
 	string PrefabSource { get; set; }
-	Dictionary<Guid, Guid> PrefabLut { get; set; }
 
 	internal void SetPrefabSource( string prefabSource )
 	{

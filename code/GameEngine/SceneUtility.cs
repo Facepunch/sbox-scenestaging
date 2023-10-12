@@ -13,7 +13,7 @@ public static class SceneUtility
 	/// This is used to make GameObject serializations unique, so when
 	/// you duplicate stuff, it copies over uniquely and keeps associations.
 	/// </summary>
-	public static void MakeGameObjectsUnique( JsonObject json, bool storeTranslations )
+	public static void MakeGameObjectsUnique( JsonObject json )
 	{
 		Dictionary<Guid, Guid> translate = new();
 
@@ -44,30 +44,6 @@ public static class SceneUtility
 
 			return updatedGuid;
 		} );
-
-		//
-		// Sometimes the gameobject wants to know what the originals were, so they
-		// can be looked up
-		//
-		if ( storeTranslations )
-		{
-			var trx = new JsonObject();
-
-			foreach( var o in translate )
-			{
-				trx.Add( o.Key.ToString(), o.Value );
-			}
-
-			//
-			// create a dictionary of old and new
-			//
-			// { 
-			//	 "abf72244-1fcc-4837-8df0-b51d2f170a05": "e08625c7-a7ba-4642-bf95-ffee4f6d619a",
-			//   "24becca9-4f57-4924-a0ad-f75afe81b65e": "06d55646-b206-44bc-8213-2f783bac37e7"
-			// }
-
-			json.Add( "__PrefabLut", trx );
-		}
 	}
 
 
@@ -80,7 +56,7 @@ public static class SceneUtility
 
 		var json = template.Serialize();
 
-		MakeGameObjectsUnique( json, template is PrefabScene );
+		MakeGameObjectsUnique( json );
 
 		var go = GameObject.Create();
 		go.Deserialize( json );

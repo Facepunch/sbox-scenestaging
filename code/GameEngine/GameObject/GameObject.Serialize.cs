@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sandbox;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,11 +37,6 @@ public partial class GameObject
 		if ( IsPrefabInstanceRoot )
 		{
 			json.Add( "__Prefab", JsonValue.Create( PrefabSource ) );
-
-			if ( PrefabLut is not null )
-			{
-				json.Add( "__PrefabLut", JsonSerializer.SerializeToNode( PrefabLut ) );
-			}
 
 			// prefabs don't save their children
 			return json;
@@ -100,11 +96,16 @@ public partial class GameObject
 		if ( node["__Prefab"].Deserialize<string>() is string prefabSource )
 		{
 			SetPrefabSource( prefabSource );
-		}
 
-		if ( node["__PrefabLut"] is JsonObject a )
-		{
-			PrefabLut = a.Deserialize<Dictionary<Guid, Guid>>();
+			var prefabFile = ResourceLibrary.Get<PrefabFile>( prefabSource );
+			if ( prefabFile  is null )
+			{
+				Log.Warning( $"Unable to load prefab '{prefabSource}'" );
+				return;
+			}
+
+			node = prefabFile.RootObject.Deserialize<JsonObject>(); // make a copy
+			SceneUtility.MakeGameObjectsUnique( node ); // change all the guids
 		}
 
 		if ( node["Children"] is JsonArray childArray )
@@ -119,7 +120,6 @@ public partial class GameObject
 				go.Parent = this;
 
 				go.Deserialize( jso );
-
 			}
 		}
 
