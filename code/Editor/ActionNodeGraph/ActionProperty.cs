@@ -70,7 +70,7 @@ public sealed class ActionControlWidget : ControlWidget
 
 		window.Saved += () =>
 		{
-			SerializedProperty.SetValue( jig.AsDelegate( SerializedProperty.PropertyType ) );
+			SerializedProperty.SetValue( window.ActionJig.AsDelegate( SerializedProperty.PropertyType ) );
 			SerializedProperty.Parent.NoteChanged( SerializedProperty );
 		};
 	}

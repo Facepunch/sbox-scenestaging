@@ -1,19 +1,159 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Editor.NodeEditor;
 using Facepunch.ActionJigs;
 
 namespace Editor.ActionJigs;
 
+public static class ActionJigExtensions
+{
+	public static Guid GetGuid( this IActionJig actionJig )
+	{
+		if ( actionJig.UserData.TryGetPropertyValue( "id", out var node ) && Guid.TryParse( node?.GetValue<string>(), out var guid ) )
+		{
+			return guid;
+		}
+
+		guid = Guid.NewGuid();
+		actionJig.UserData["id"] = guid.ToString();
+
+		return guid;
+	}
+
+	public static string GetName( this IActionJig actionJig )
+	{
+		return actionJig.UserData.TryGetPropertyValue( "name", out var node ) ? node?.GetValue<string>() : null;
+	}
+
+	private static DisplayInfo PropertyDisplayInfo( Node node, PropertyNodeKind kind )
+	{
+		var name = node.Properties["property"].Value as string;
+
+		return new DisplayInfo { Name = $"{kind} {name}" };
+	}
+
+	private static DisplayInfo ConstDisplayInfo( Node node )
+	{
+		var name = node.Properties["name"].Value as string;
+
+		return new DisplayInfo
+		{
+			Name = string.IsNullOrEmpty( name ) ? node.Definition.DisplayInfo.Title : name,
+			Description = node.Definition.DisplayInfo.Description,
+			Tags = node.Definition.DisplayInfo.Tags
+		};
+	}
+
+	public static DisplayInfo GetDisplayInfo( this Node node )
+	{
+		switch ( node.Definition.Identifier )
+		{
+			case "property.get":
+				return PropertyDisplayInfo( node, PropertyNodeKind.Get );
+
+			case "property.set":
+				return PropertyDisplayInfo( node, PropertyNodeKind.Set );
+
+			case { } s when s.StartsWith( "const." ):
+				return ConstDisplayInfo( node );
+
+			default:
+				return
+					new()
+					{
+						Name = node.Definition.DisplayInfo.Title,
+						Description = node.Definition.DisplayInfo.Description,
+						Tags = node.Definition.DisplayInfo.Tags
+					};
+		}
+	}
+}
+
 public partial class MainWindow : DockWindow
 {
-	private static Dictionary<ActionJig, MainWindow> Instances { get; } = new Dictionary<ActionJig, MainWindow>();
+	private static Dictionary<Guid, MainWindow> Instances { get; } = new Dictionary<Guid, MainWindow>();
 
-	public static MainWindow Open( ActionJig actionJig, string name )
+	[StackTraceBuilder]
+	public static void BuildStackTrace( Widget parent, NodeInvocationException e )
 	{
-		if ( !Instances.TryGetValue( actionJig, out var inst ) )
+		var row = parent.Layout.AddRow();
+		row.Spacing = 8;
+		row.Margin = 8;
+
+		var stack = new List<NodeInvocationException>();
+		var baseException = (Exception) e;
+
+		while ( true )
 		{
-			Instances[actionJig] = inst = new MainWindow( actionJig, name );
+			stack.Add( e );
+
+			if ( e.InnerException is NodeInvocationException inner )
+			{
+				e = inner;
+			}
+			else
+			{
+				baseException = e.InnerException ?? e;
+				break;
+			}
+		}
+
+		stack.Reverse();
+
+		var message = row.Add( new Label( baseException.Message ), 1 );
+		message.WordWrap = true;
+
+		var button = new Button( "Copy To Clipboard" );
+		button.Clicked = () =>
+		{
+			var message = baseException.Message;
+			message += "\n";
+			message += string.Join( "\n", stack.Select( x => x.Node.GetDisplayInfo().Name ) );
+			EditorUtility.Clipboard.Copy( message );
+		};
+
+		row.Add( button );
+
+		foreach ( var frame in stack )
+		{
+			AddStackLine( frame.Node, parent.Layout );
+		}
+	}
+
+	private static void AddStackLine( Node node, Layout target )
+	{
+		if ( node == null )
+			return;
+
+		var row = new StackRow( node.GetDisplayInfo().Name, node.ActionJig.GetName() );
+		row.IsFromEngine = false;
+		row.MouseClick += () =>
+		{
+			var window = Open( node.ActionJig );
+			var matchingNode = node.ActionJig == window.ActionJig
+				? node
+				: window.ActionJig.Nodes.FirstOrDefault( x => x.Id == node.Id );
+
+			window.View.SelectNode( matchingNode );
+			window.View.CenterOnSelection();
+		};
+
+		target.Add( row );
+	}
+
+	public static MainWindow Open( ActionJig actionJig, string name = null )
+	{
+		if ( actionJig.GetName() == null )
+		{
+			actionJig.UserData["name"] = name;
+		}
+
+		var guid = actionJig.GetGuid();
+
+		if ( !Instances.TryGetValue( guid, out var inst ) )
+		{
+			Instances[guid] = inst = new MainWindow( actionJig );
 		}
 
 		inst.Show();
@@ -30,14 +170,14 @@ public partial class MainWindow : DockWindow
 
 	public event Action Saved;
 
-	private MainWindow( ActionJig actionJig, string name )
+	private MainWindow( ActionJig actionJig )
 	{
 		DeleteOnClose = true;
 
 		ActionJig = actionJig;
 		Graph = new ActionGraph( actionJig );
 
-		Title = $"{name} - Action Graph";
+		Title = $"{ActionJig.GetName()} - Action Graph";
 		Size = new Vector2( 1280, 720 );
 
 		RebuildUI();
@@ -117,9 +257,11 @@ public partial class MainWindow : DockWindow
 
 	protected override bool OnClose()
 	{
-		if ( Instances.TryGetValue( ActionJig, out var inst ) && inst == this )
+		var guid = ActionJig.GetGuid();
+
+		if ( Instances.TryGetValue( guid, out var inst ) && inst == this )
 		{
-			Instances.Remove( ActionJig );
+			Instances.Remove( guid );
 		}
 
 		return base.OnClose();

@@ -228,22 +228,22 @@ public class ErrorListView : ListView
 	{
 		if ( context is Node node )
 		{
-			return $"{node.Definition.Identifier} #{node.Id}";
+			return node.GetDisplayInfo().Name;
 		}
 
 		if ( context is Node.Property property )
 		{
-			return $"{property.Name} - {FormatContext( property.Node )}";
+			return $"{property.Display.Title ?? property.Name} - {FormatContext( property.Node )}";
 		}
 
 		if ( context is Node.Input input )
 		{
-			return $"{input.Name} - {FormatContext(input.Node)}";
+			return $"{input.Display.Title ?? input.Name} - {FormatContext(input.Node)}";
 		}
 
 		if ( context is Node.Output output )
 		{
-			return $"{output.Name} - {FormatContext( output.Node )}";
+			return $"{output.Display.Title ?? output.Name} - {FormatContext( output.Node )}";
 		}
 
 		if ( context is Link link )
@@ -253,12 +253,12 @@ public class ErrorListView : ListView
 
 		if ( context is IActionJig actionJig )
 		{
-			return "root";
+			return actionJig.GetName();
 		}
 
 		if ( context is Variable variable )
 		{
-			return $"var {variable.Name}";
+			return variable.Name;
 		}
 
 		return context.ToString();
