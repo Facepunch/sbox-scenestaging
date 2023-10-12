@@ -190,11 +190,25 @@ public partial class GameObject
 		return t;
 	}
 
+	/// <summary>
+	/// Get the first matching component on this game object, optionally recurse when deep is true
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="enabledOnly"></param>
+	/// <param name="deep"></param>
+	/// <returns></returns>
 	public T GetComponent<T>( bool enabledOnly = true, bool deep = false ) where T : BaseComponent
 	{
 		return GetComponents<T>( enabledOnly, deep ).FirstOrDefault();
 	}
 
+	/// <summary>
+	/// Get a list of components on this game object, optionally recurse when deep is true
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="enabledOnly"></param>
+	/// <param name="deep"></param>
+	/// <returns></returns>
 	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) where T : BaseComponent
 	{
 		var q = Components.OfType<T>();

@@ -1,7 +1,6 @@
 ﻿using Sandbox;
 using System;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
+using System.Collections.Generic;
 
 public abstract partial class BaseComponent
 {
@@ -141,4 +140,10 @@ public abstract partial class BaseComponent
 	{
 		GameObject.EditLog( name, source, undo );
 	}
+	
+	/// <inheritdoc cref="GameObject.GetComponent{T}(bool, bool)"/>
+	public T GetComponent<T>( bool enabledOnly = true, bool deep = false ) where T : BaseComponent => GameObject.GetComponent<T>( enabledOnly, deep );
+
+	/// <inheritdoc cref="GameObject.GetComponents{T}(bool, bool)"/>
+	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) where T : BaseComponent => GameObject.GetComponents<T>( enabledOnly, deep );
 }
