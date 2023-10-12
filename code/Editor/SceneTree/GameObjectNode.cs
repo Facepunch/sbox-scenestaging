@@ -9,7 +9,16 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		Height = 17;
 	}
 
-	public override bool HasChildren => Value.Children.Any();
+	public override bool HasChildren
+	{
+		get
+		{
+			// hide children of prefabs
+			if ( Value.IsPrefabInstance ) return false;
+
+			return Value.Children.Any();
+		}
+	}
 
 	protected override void BuildChildren()
 	{
