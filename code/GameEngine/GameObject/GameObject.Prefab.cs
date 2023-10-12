@@ -15,6 +15,16 @@ public partial class GameObject
 		PrefabSource = prefabSource;
 	}
 
+	public string PrefabInstanceSource
+	{
+		get
+		{
+			if ( PrefabSource is not null ) return PrefabSource;
+			if ( Parent is null ) return default;
+			return Parent.PrefabInstanceSource;
+		}
+	}
+
 	public bool IsPrefabInstance
 	{
 		get

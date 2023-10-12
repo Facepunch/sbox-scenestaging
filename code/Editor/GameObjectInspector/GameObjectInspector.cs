@@ -28,24 +28,40 @@ public class GameObjectInspector : Widget
 		if ( !target.IsPrefabInstance )
 		{
 			Layout.Add( new ComponentList( target.Components ) );
-		}
-		else
-		{
-			// if we're the prefab root, show a list of variables that can be modified
-		}
 
-		//
-		// Add component
-		//
-		{
+			// Add component button
 			var row = Layout.AddRow();
 			row.AddStretchCell();
 			row.Margin = 16;
-			var button = row.Add( new Button( "Add Component", "add" ) );
-			button.FixedWidth = 230;
+			var button = row.Add( new Button.Primary( "Add Component", "add" ) );
 			button.Clicked = () => AddComponentDialog( button );
 			row.AddStretchCell();
 		}
+		else
+		{
+			if ( !target.IsPrefabInstanceRoot )
+			{
+				h.ReadOnly = true;
+			}
+
+			// if we're the prefab root, show a list of variables that can be modified
+
+			// Add component button
+			var row = Layout.AddRow();
+			row.AddStretchCell();
+			row.Margin = 16;
+			var button = row.Add( new Button( $"Open \"{target.PrefabInstanceSource}\"", "edit" ) );
+
+			button.Clicked = () =>
+			{
+				var prefabFile = target.PrefabInstanceSource;
+				var asset = AssetSystem.FindByPath( prefabFile );
+				asset.OpenInEditor();
+			};
+			row.AddStretchCell();
+		}
+
+
 
 		Layout.AddStretchCell();
 
