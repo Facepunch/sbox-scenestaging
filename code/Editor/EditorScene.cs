@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 public static class EditorScene
 {
 	public static string PlayMode { get; set; } = "scene";
-	public static Scene Active { get; private set; }
-	public static List<Scene> OpenScenes { get; set; } = new();
 
 	internal static Gizmo.Instance GizmoInstance { get; private set; }
 
@@ -14,7 +12,7 @@ public static class EditorScene
 
 	// scenes that have been edited, but waiting for a set interval to react
 	// just to debounce changes.
-	private static HashSet<Scene> editedScenes = new ();
+	private static HashSet<SceneEditorSession> editedScenes = new ();
 
 	static EditorScene()
 	{
@@ -25,60 +23,32 @@ public static class EditorScene
 
 	public static void NewScene()
 	{
-		Active = new Scene();
-		Active.Name = "Untitled Scene";
-		
-		RegisterEditingScene( Active );
-
+		var scene = new Scene();
+		scene.Name = "Untitled Scene";
 
 		// create default scene
 
 		{
-			var go = Active.CreateObject();
+			var go = scene.CreateObject();
 			go.Name = "Main Camera";
 			go.Transform.Local = new Transform( Vector3.Up * 100 + Vector3.Backward * 300 );
 			go.AddComponent<CameraComponent>();
 		}
 
 		{
-			var go = Active.CreateObject();
+			var go = scene.CreateObject();
 			go.Name = "Directional Light";
 			go.Transform.Local = new Transform( Vector3.Up * 200, Rotation.From( 80, 45, 0 ) );
 			go.AddComponent<DirectionalLightComponent>();
 		}
 
+		var newSession = new SceneEditorSession( scene );
+		newSession.MakeActive();
+
 		EditorEvent.Run( "scene.open" );
 	}
 
-	static void RegisterEditingScene( Scene scene )
-	{
-		scene.IsEditor = true;
-		scene.OnEdited += () => OnSceneEdited( scene );
-		OpenScenes.Add( scene );
-	}
-
-	static void UnregisterEditingScene( Scene scene )
-	{
-		scene.OnEdited = null;
-
-		// If this is the active scene
-		// switch away to a sibling
-		if ( scene == Active )
-		{
-			var index = OpenScenes.IndexOf( scene );
-			if ( index >= 0 && OpenScenes.Count > 1 )
-			{
-				if ( index > 0 ) index--;
-				else index++;
-
-				Active = OpenScenes[index];
-			}
-		}
-
-		OpenScenes.Remove( scene );
-	}
-
-	static void OnSceneEdited( Scene scene )
+	public static void OnSceneEdited( SceneEditorSession scene )
 	{
 		editedScenes.Add( scene );
 	}
@@ -90,45 +60,37 @@ public static class EditorScene
 		if ( timeSinceLastUpdatePrefabs < 0.1 ) return;
 		timeSinceLastUpdatePrefabs = 0;
 
-		foreach ( var scene in editedScenes )
+		foreach ( var session in editedScenes )
 		{
 			// todo: debounce
 
-			if ( scene is PrefabScene prefabScene )
+			if ( session.Scene is PrefabScene prefabScene )
 			{
 				UpdatePrefabInstances( prefabScene.Source as PrefabFile );
 			}
 
-			EditorEvent.Run( "scene.edited", scene );
+			EditorEvent.Run( "scene.edited", session.Scene );
 		}
 
 		editedScenes.Clear();
 	}
 
-	public static bool SwitchActive( Scene scene )
-	{
-		if ( Active == scene )
-			return false;
-
-		Active = scene;
-		EditorWindow.DockManager.RaiseDock( "Scene" );
-		UpdateEditorTitle();
-		return true;
-	}
-
-	static Scene previousActiveScene;
+	static SceneEditorSession previousActiveScene;
 
 	public static void Play()
 	{
 		GameManager.IsPlaying = true;
 
+		var activeSession = SceneEditorSession.Active;
+
 		if ( PlayMode == "scene" )
 		{
 			// can't play prefabs
-			if ( EditorScene.Active is PrefabScene )
+			if ( activeSession.Scene is PrefabScene )
 				return;
 
-			var current = EditorScene.Active.Save();
+			var current = activeSession.Scene.Save();
+
 			GameManager.ActiveScene = new Scene();
 			GameManager.ActiveScene.Load( current );
 		}
@@ -138,8 +100,10 @@ public static class EditorScene
 		}
 
 		// switch editor to active scene
-		previousActiveScene = EditorScene.Active;
-		EditorScene.Active = GameManager.ActiveScene;
+		previousActiveScene = activeSession;
+
+		var gameSession = new GameEditorSession( GameManager.ActiveScene );
+		gameSession.MakeActive();
 
 		Camera.Main.World = GameManager.ActiveScene.SceneWorld;
 		Camera.Main.Worlds.Clear();
@@ -161,13 +125,15 @@ public static class EditorScene
 		GameManager.IsPlaying = false;
 		GameManager.ActiveScene = null;
 
-		if ( OpenScenes.Contains( previousActiveScene ) )
+		GameEditorSession.CloseAll();
+
+		if ( SceneEditorSession.All.Contains( previousActiveScene ) )
 		{
-			EditorScene.Active = previousActiveScene;
+			previousActiveScene.MakeActive();
 		}
 		else
 		{
-			EditorScene.Active = OpenScenes.FirstOrDefault();
+			SceneEditorSession.All.FirstOrDefault()?.MakeActive();
 		}
 
 		EditorWindow.DockManager.RaiseDock( "Scene" );
@@ -180,33 +146,12 @@ public static class EditorScene
 	[EditorEvent.Frame]
 	public static void SceneEditorTick()
 	{
-		if ( Active is null ) return;
+		if ( SceneEditorSession.Active is null ) return;
 		if ( Camera.Main is null ) return;
 
 		ProcessSceneEdits();
 
-		//
-		// If we're not playing, then position the game's main camera where the first CameraComponent is
-		//
-		if ( !GameManager.IsPlaying )
-		{
-			var camera = Active.FindAllComponents<CameraComponent>( false ).FirstOrDefault();
-
-			if ( camera is not null )
-			{
-				camera.UpdateCamera( Camera.Main );
-			}
-		}
-
-		//
-		// If this is an editor scene, tick it to flush deleted objects etc
-		//
-		if ( Active.IsEditor )
-		{
-			Active.GameTick();
-		}
-
-
+		SceneEditorSession.Active.TickActive();
 	}
 
 	/// <summary>
@@ -218,25 +163,29 @@ public static class EditorScene
 	{
 		Assert.NotNull( resource, "SceneFile should not be null" );
 
+		var asset = AssetSystem.FindByPath( resource.ResourcePath );
+		asset?.RecordOpened();
+
 		// 
 		// TODO: Unsaved changes test
 		//
 
-
 		if ( !await CloudAsset.Install( "Loading Scene..", resource.GetReferencedPackages() ) )
 			return;
-		
 
+
+		
 		// is this scene already in OpenScenes?
 
-		Active = new Scene();
-		using ( Active.Push() )
+		var openingScene = new Scene();
+		using ( openingScene.Push() )
 		{
-			Active.Name = resource.ResourceName.ToTitleCase();
-			Active.Load( resource );
+			openingScene.Name = resource.ResourceName.ToTitleCase();
+			openingScene.Load( resource );
 
-			RegisterEditingScene( Active );
-			UpdateEditorTitle();
+			var session = new SceneEditorSession( openingScene );
+			session.MakeActive();
+
 			EditorEvent.Run( "scene.open" );
 		}
 	}
@@ -248,49 +197,34 @@ public static class EditorScene
 	[EditorForAssetType( PrefabFile.FileExtension )]
 	public static void LoadFromPrefab( PrefabFile resource )
 	{
+		Assert.NotNull( resource, "PrefabFile should not be null" );
+
+		var asset = AssetSystem.FindByPath( resource.ResourcePath );
+		asset?.RecordOpened();
+
 		// 
 		// TODO: Unsaved changes test
 		//
 
 		var prefabScene = resource.PrefabScene;
 
-		Active = prefabScene;
+		// add default lighting
+		new SceneSunLight( prefabScene.SceneWorld, Rotation.From( 80, 45, 0 ), Color.White * 0.5f );
 
-		new SceneSunLight( Active.SceneWorld, Rotation.From( 80, 45, 0 ), Color.White * 0.5f );
-
-		using ( Active.Push() )
+		using ( prefabScene.Push() )
 		{
 			prefabScene.Name = resource.ResourceName.ToTitleCase();
 			prefabScene.Load( resource );
 
-			RegisterEditingScene( prefabScene );
-			UpdateEditorTitle();
+			var session = new SceneEditorSession( prefabScene );
+			session.MakeActive();
 
 			EditorWindow.DockManager.RaiseDock( "Scene" );
 			EditorEvent.Run( "scene.open" );
 		}
 	}
 
-	public static void CloseScene( Scene scene )
-	{
-		// SAVE CHANGES???
 
-		UnregisterEditingScene( scene );
-	}
-
-	static void UpdateEditorTitle()
-	{
-		if ( Active is not null )
-		{
-			var name = Active.Name;
-			if ( Active.HasUnsavedChanges ) name += "*";
-
-			EditorWindow.UpdateEditorTitle( name );
-			return;
-		}
-
-		EditorWindow.UpdateEditorTitle( "Smile Face" );
-	}
 
 	static void UpdatePrefabsInScene( Scene scene, PrefabFile prefab )
 	{
@@ -319,9 +253,9 @@ public static class EditorScene
 		// this doesn't save it to disk
 		prefab.UpdateJson();
 
-		foreach ( var scene in OpenScenes )
+		foreach ( var session in SceneEditorSession.All )
 		{
-			UpdatePrefabsInScene( scene, prefab );
+			UpdatePrefabsInScene( session.Scene, prefab );
 		}
 
 		if ( GameManager.ActiveScene is not null )

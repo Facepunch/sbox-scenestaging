@@ -17,10 +17,10 @@ public partial class OpenSceneList : Widget
 
 		if ( GameManager.IsPlaying )
 		{
-			AddSceneButton( GameManager.ActiveScene );
+			//AddSceneButton( GameManager.ActiveScene );
 		}
 
-		foreach ( var scene in EditorScene.OpenScenes )
+		foreach ( var scene in SceneEditorSession.All )
 		{
 			AddSceneButton( scene );
 		}
@@ -35,7 +35,7 @@ public partial class OpenSceneList : Widget
 		Paint.DrawRect( LocalRect, 5 );
 	}
 
-	void AddSceneButton( Scene scene )
+	void AddSceneButton( SceneEditorSession scene )
 	{
 		Layout.Add( new SceneTabButton( scene ) );
 	}
@@ -47,7 +47,7 @@ public partial class OpenSceneList : Widget
 	{
 		HashCode hash = new();
 
-		foreach ( var scene in EditorScene.OpenScenes )
+		foreach ( var scene in SceneEditorSession.All )
 		{
 			hash.Add( scene );
 		}

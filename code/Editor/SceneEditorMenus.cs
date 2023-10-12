@@ -9,19 +9,19 @@ public static class SceneEditorMenus
 	[Menu( "Editor", "Scene/Save", Shortcut = "Ctrl+S" )]
 	public static void SaveScene()
 	{
-		EditorScene.Active.Save( false );
-		EditorEvent.Run( "scene.saved", EditorScene.Active );
+		SceneEditorSession.Active.Scene.Save( false );
+		EditorEvent.Run( "scene.saved", SceneEditorSession.Active.Scene );
 	}
 
 	[Menu( "Editor", "Scene/Save All", Shortcut = "Ctrl+Shift+S" )]
 	public static void SaveAllScene()
 	{
-		foreach ( var scene in EditorScene.OpenScenes )
+		foreach ( var session in SceneEditorSession.All )
 		{
-			if ( !scene.IsEditor ) continue;
+			if ( session is GameEditorSession ) continue;
 
-			scene.Save( false );
-			EditorEvent.Run( "scene.saved", scene );
+			session.Scene.Save( false );
+			EditorEvent.Run( "scene.saved", session.Scene );
 		}
 	}
 
@@ -59,13 +59,13 @@ public static class SceneEditorMenus
 			return;
 		}
 
-		using var scope = EditorScene.Active.Push();
+		using var scope = SceneEditorSession.Active.Scene.Push();
 		using var initScope = SceneUtility.DeferInitializationScope( "paste" );
 
 		var text = EditorUtility.Clipboard.Paste();
 		if ( JsonNode.Parse( text ) is JsonObject jso )
 		{
-			var go = EditorScene.Active.CreateObject();
+			var go = SceneEditorSession.Active.Scene.CreateObject();
 			go.Deserialize( jso );
 
 			if ( selected is not null )
@@ -88,13 +88,13 @@ public static class SceneEditorMenus
 	{
 		var selected = EditorScene.Selection.First() as GameObject;
 
-		using var scope = EditorScene.Active.Push();
+		using var scope = SceneEditorSession.Active.Scene.Push();
 		using var initScope = SceneUtility.DeferInitializationScope( "paste" );
 
 		var text = EditorUtility.Clipboard.Paste();
 		if ( JsonNode.Parse( text ) is JsonObject jso )
 		{
-			var go = EditorScene.Active.CreateObject();
+			var go = SceneEditorSession.Active.Scene.CreateObject();
 			go.Deserialize( jso );
 			go.SetParent( selected );
 			go.MakeNameUnique();
@@ -111,7 +111,7 @@ public static class SceneEditorMenus
 	[Menu( "Editor", "Scene/Duplicate", Shortcut = "Ctrl+D" )]
 	public static void Duplicate()
 	{
-		using var scope = EditorScene.Active.Push();
+		using var scope = SceneEditorSession.Active.Scene.Push();
 		using var initScope = SceneUtility.DeferInitializationScope( "duplicate" );
 
 		var options = new GameObject.SerializeOptions();
@@ -136,7 +136,7 @@ public static class SceneEditorMenus
 	[Menu( "Editor", "Scene/Delete", Shortcut = "Del" )]
 	public static void Delete()
 	{
-		using var scope = EditorScene.Active.Push();
+		using var scope = SceneEditorSession.Active.Scene.Push();
 
 		foreach ( var entry in EditorScene.Selection.OfType<GameObject>() )
 		{

@@ -44,7 +44,6 @@ public static class SceneThumbnailRenderer
 		var pix = new Pixmap( 256, 256 );
 
 		var scene = new PrefabScene();
-		scene.IsEditor = true;
 
 		using ( scene.Push() )
 		{
@@ -63,7 +62,6 @@ public static class SceneThumbnailRenderer
 		var pix = new Pixmap( 512, 288 );
 
 		var scene = new Scene();
-		scene.IsEditor = true;
 
 		using ( scene.Push() )
 		{

@@ -3,11 +3,13 @@ using System;
 
 public partial class SceneTabButton : Widget
 {
+	SceneEditorSession session;
 	Scene scene;
 
-	public SceneTabButton( Scene scene ) : base( null )
+	public SceneTabButton( SceneEditorSession session ) : base( null )
 	{
-		this.scene = scene;
+		this.session = session;
+		this.scene = session.Scene;
 		Cursor = CursorShape.Finger;
 	}
 
@@ -23,7 +25,7 @@ public partial class SceneTabButton : Widget
 		}
 	}
 	bool IsPrefab => scene is PrefabScene;
-	bool IsLiveGame => !scene.IsEditor;
+	bool IsLiveGame => session is GameEditorSession;
 
 	protected override Vector2 SizeHint()
 	{
@@ -37,7 +39,7 @@ public partial class SceneTabButton : Widget
 	{
 		if ( e.LeftMouseButton )
 		{
-			EditorScene.SwitchActive( scene );
+			session.MakeActive();
 		}
 
 		if ( e.RightMouseButton )
@@ -63,7 +65,7 @@ public partial class SceneTabButton : Widget
 		if ( IsPrefab ) pen = Theme.Blue;
 		if ( IsLiveGame ) pen = Theme.Green;
 
-		bool active = EditorScene.Active == scene;
+		bool active = SceneEditorSession.Active == session;
 
 		if ( active )
 		{
@@ -89,7 +91,7 @@ public partial class SceneTabButton : Widget
 		var m = scene.CreateContextMenu();
 
 		m.AddSeparator();
-		m.AddOption( "Close", "close", () => EditorScene.CloseScene( scene ) );
+		m.AddOption( "Close", "close", () => session.Destroy() );
 
 		m.OpenAtCursor();
 	}

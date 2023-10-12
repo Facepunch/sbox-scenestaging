@@ -1,15 +1,5 @@
-﻿
-using Editor;
-using Editor.PanelInspector;
-using Sandbox.Diagnostics;
-using Sandbox.Internal;
-using System.Linq;
-using System;
-using Sandbox;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Threading;
 
 [Dock( "Editor", "Scene", "grid_4x4" )]
 public partial class SceneViewWidget : Widget
@@ -58,9 +48,9 @@ public partial class SceneViewWidget : Widget
 
 		Current = this;
 
-		var activeScene = EditorScene.Active;
+		var session = SceneEditorSession.Active;
 
-		Camera.World = activeScene?.SceneWorld;
+		Camera.World = session?.Scene.SceneWorld;
 		Camera.ZNear = EditorScene.GizmoInstance.Settings.CameraZNear;
 		Camera.ZFar = EditorScene.GizmoInstance.Settings.CameraZFar;
 		Camera.FieldOfView = EditorScene.GizmoInstance.Settings.CameraFieldOfView;
@@ -80,19 +70,19 @@ public partial class SceneViewWidget : Widget
 			}
 		}
 
-		if( EditorScene.GizmoInstance.FirstPersonCamera( Camera, Renderer ) )
+		if ( EditorScene.GizmoInstance.FirstPersonCamera( Camera, Renderer ) )
 		{
 			cameraTargetPosition = null;
 		}
 
 		EditorScene.GizmoInstance.UpdateInputs( Camera, Renderer );
 
-		if ( activeScene is null )
+		if ( session is null )
 			return;
 
-		var sceneCamera = activeScene.FindAllComponents<CameraComponent>().FirstOrDefault();
+		var sceneCamera = session.Scene.FindAllComponents<CameraComponent>().FirstOrDefault();
 
-		activeScene.SceneWorld.AmbientLightColor = Color.Black;
+		session.Scene.SceneWorld.AmbientLightColor = Color.Black;
 
 		if ( sceneCamera is not null )
 		{
@@ -103,11 +93,11 @@ public partial class SceneViewWidget : Widget
 		{
 			Cursor = Gizmo.HasHovered ? CursorShape.Finger : CursorShape.Arrow;
 
-			activeScene.EditorTick();
+			session.Scene.EditorTick();
 
 			if ( Gizmo.HasClicked && Gizmo.HasHovered )
 			{
-			
+
 			}
 
 			if ( Gizmo.HasClicked && !Gizmo.HasHovered )
@@ -120,7 +110,7 @@ public partial class SceneViewWidget : Widget
 	[Event( "scene.open" )]
 	public void SceneOpened()
 	{
-		var activeScene = EditorScene.Active;
+		var activeScene = SceneEditorSession.Active;
 		if ( activeScene is null )
 			return;
 
@@ -128,7 +118,7 @@ public partial class SceneViewWidget : Widget
 		// and we should be saving the last camera setup per scene, per camera
 		// and then we could restore them here.
 
-		var cam = activeScene.FindAllComponents<CameraComponent>().FirstOrDefault();
+		var cam = activeScene.Scene.FindAllComponents<CameraComponent>().FirstOrDefault();
 		if ( cam is not null )
 		{
 			Camera.Position = cam.Transform.Position;
@@ -139,7 +129,7 @@ public partial class SceneViewWidget : Widget
 			Camera.Position = Vector3.Backward * 2000 + Vector3.Up * 2000 + Vector3.Left * 2000;
 			Camera.Rotation = Rotation.LookAt( -Camera.Position );
 
-			var bbox = activeScene.GetBounds();
+			var bbox = activeScene.Scene.GetBounds();
 
 			FrameOn( bbox );
 		}
@@ -171,7 +161,7 @@ public partial class SceneViewWidget : Widget
 	{
 		base.OnDragDrop( ev );
 
-		using var sceneScope = EditorScene.Active.Push();
+		using var sceneScope = SceneEditorSession.Active.Scene.Push();
 
 		if ( DragObject is not null )
 		{
@@ -192,14 +182,14 @@ public partial class SceneViewWidget : Widget
 
 		ev.Action = DropAction.Copy;
 
-		using var sceneScope = EditorScene.Active.Push();
+		using var sceneScope = SceneEditorSession.Active.Scene.Push();
 
 		if ( DragObject is not null )
 		{
 			DragObject.Enabled = false;
 		}
 
-		var tr = EditorScene.Active.SceneWorld.Trace
+		var tr = SceneEditorSession.Active.Scene.SceneWorld.Trace
 						.WithoutTags( "dragging" )
 						.Ray( Camera.GetRay( ev.LocalPosition - Renderer.Position, Renderer.Size ), 4096 )
 						.Run();
@@ -227,7 +217,7 @@ public partial class SceneViewWidget : Widget
 				return;
 			}
 
-			if ( DragObject  is not null )
+			if ( DragObject is not null )
 			{
 				var b = DragObject.GetBounds();
 				var offset = b.ClosestPoint( Vector3.Down * 10000 ) - DragObject.Transform.Position;
@@ -268,7 +258,7 @@ public partial class SceneViewWidget : Widget
 		//
 		if ( asset.LoadResource<Model>() is Model modelAsset )
 		{
-			DragObject = EditorScene.Active.CreateObject();
+			DragObject = SceneEditorSession.Active.Scene.CreateObject();
 			DragObject.Name = modelAsset.ResourceName;
 
 			var mc = DragObject.AddComponent<ModelComponent>();

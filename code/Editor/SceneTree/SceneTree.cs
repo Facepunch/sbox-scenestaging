@@ -28,12 +28,12 @@ public partial class SceneTreeWidget : Widget
 		CheckForChanges();
 	}
 
-	Scene _lastScene;
+	SceneEditorSession _lastScene;
 
 	[EditorEvent.Frame]
 	public void CheckForChanges()
 	{
-		var activeScene = EditorScene.Active;
+		var activeScene = SceneEditorSession.Active;
 
 		if ( _lastScene == activeScene ) return;
 
@@ -48,7 +48,7 @@ public partial class SceneTreeWidget : Widget
 		if ( _lastScene is null )
 			return;
 
-		if ( _lastScene.IsEditor && _lastScene is PrefabScene prefabScene )
+		if ( _lastScene is not GameEditorSession && _lastScene.Scene is PrefabScene prefabScene )
 		{
 			var node = TreeView.AddItem( new PrefabNode( prefabScene ) );
 			TreeView.Open( node );
@@ -57,14 +57,14 @@ public partial class SceneTreeWidget : Widget
 		}
 		else
 		{
-			var node = TreeView.AddItem( new SceneNode( _lastScene ) );
+			var node = TreeView.AddItem( new SceneNode( _lastScene.Scene ) );
 			TreeView.Open( node );
 		}
 
 		// Iterate through selection, try to find them in the new tree
 		foreach ( var go in selection.Select( x => x as GameObject ) )
 		{
-			if ( activeScene.FindObjectByGuid( go.Id ) is GameObject activeObj )
+			if ( activeScene.Scene.FindObjectByGuid( go.Id ) is GameObject activeObj )
 				TreeView.Selection.Add( activeObj );
 		}
 	}

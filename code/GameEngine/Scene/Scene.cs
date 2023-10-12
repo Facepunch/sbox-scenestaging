@@ -46,8 +46,6 @@ public class Scene : GameObject
 
 	public void GameTick()
 	{
-		if ( IsEditor ) return; // never in editor
-
 		gizmoInstance.Input.Camera = Sandbox.Camera.Main;
 
 		using ( gizmoInstance.Push() )
@@ -93,7 +91,7 @@ public class Scene : GameObject
 		deleteList.Add( gameObject );
 	}
 
-	internal void ProcessDeletes()
+	public void ProcessDeletes()
 	{
 		if ( deleteList.Count == 0 )
 			return;
@@ -210,7 +208,6 @@ public class Scene : GameObject
 
 	public void ClearUnsavedChanges()
 	{
-		if ( !IsEditor ) return;
 		HasUnsavedChanges = false;
 	}
 }
