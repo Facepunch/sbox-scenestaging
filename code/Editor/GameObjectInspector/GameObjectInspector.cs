@@ -34,6 +34,7 @@ public class GameObjectInspector : Widget
 			row.AddStretchCell();
 			row.Margin = 16;
 			var button = row.Add( new Button.Primary( "Add Component", "add" ) );
+			button.MinimumWidth = 300;
 			button.Clicked = () => AddComponentDialog( button );
 			row.AddStretchCell();
 		}
