@@ -21,6 +21,7 @@ public partial class SceneTreeWidget : Widget
 		Header = Layout.AddColumn();
 		Header = Layout.AddColumn();
 		TreeView = Layout.Add( new TreeView( this ), 1 );
+		TreeView.MultiSelect = true;
 		TreeView.Selection = EditorScene.Selection;
 		Footer = Layout.AddColumn();
 		_lastScene = null;
