@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Editor.NodeEditor;
 using Facepunch.ActionJigs;
-using Sandbox;
-using Sandbox.UI;
 
 namespace Editor.ActionJigs;
 
@@ -29,8 +24,9 @@ public partial class MainWindow : DockWindow
 	public ActionJig ActionJig { get; }
 
 	public ActionGraph Graph { get; }
-	public GraphView View { get; private set; }
+	public ActionGraphView View { get; private set; }
 	public Properties Properties { get; private set; }
+	public ErrorList ErrorList { get; private set; }
 
 	public event Action Saved;
 
@@ -76,15 +72,18 @@ public partial class MainWindow : DockWindow
 
 		Properties = new Properties( null )
 		{
-			Target = Graph,
-			Width = 320f
+			Target = Graph
 		};
+
+		ErrorList = new ErrorList( null, this );
 
 		DockManager.Clear();
 		DockManager.RegisterDockType( "Properties", "edit", () => new Properties(null) { Target = Graph }, false );
+		DockManager.RegisterDockType( "ErrorList", "error", () => new ErrorList( null, this ), false );
 
 		DockManager.AddDock( null, View, DockArea.Right, properties: DockManager.DockProperty.HideCloseButton | DockManager.DockProperty.HideOnClose );
-		DockManager.AddDock( null, Properties, DockArea.Left, DockManager.DockProperty.HideOnClose, split: 0.25f );
+		DockManager.AddDock( null, Properties, DockArea.Left, DockManager.DockProperty.HideOnClose, split: 0.33f );
+		DockManager.AddDock( Properties, ErrorList, DockArea.Bottom, DockManager.DockProperty.HideOnClose, split: 0.75f );
 		DockManager.Update();
 
 		MenuBar.Clear();
@@ -129,9 +128,47 @@ public partial class MainWindow : DockWindow
 
 public class ActionGraphView : GraphView
 {
+	public new ActionGraph Graph
+	{
+		get => (ActionGraph)base.Graph;
+		set => base.Graph = value;
+	}
+
 	public ActionGraphView( Widget parent ) : base( parent )
 	{
 
+	}
+
+	public void SelectNode( Node node )
+	{
+		var actionNode = Graph.FindNode( node );
+
+		SelectNode( actionNode );
+	}
+
+	public void SelectLink( Link link )
+	{
+		SelectLinks( new [] { link } );
+	}
+
+	public void SelectLinks( IEnumerable<Link> links )
+	{
+		var linkSet = links.Select( x => (x.Source, x.Target) ).ToHashSet();
+
+		var connections = Items.OfType<Connection>().Where( x =>
+			x.Input.Inner is ActionPlug<Node.Input, InputDefinition> { Parameter: { } input } &&
+			x.Output.Inner is ActionPlug<Node.Output, OutputDefinition> { Parameter: { } output } &&
+			linkSet.Contains( (output, input) ) );
+
+		foreach ( var item in SelectedItems )
+		{
+			item.Selected = false;
+		}
+
+		foreach ( var connection in connections )
+		{
+			connection.Selected = true;
+		}
 	}
 
 	private static IEnumerable<INodeType> GetInstanceNodes( TypeDescription typeDesc )
@@ -168,7 +205,7 @@ public class ActionGraphView : GraphView
 		{ typeof(OutputSignal), new HandleConfig( "Signal", Color.White, HandleShape.Arrow ) },
 		{ typeof(Task), new HandleConfig( "Signal", Color.White, HandleShape.Arrow ) },
 		{ typeof(GameObject), new HandleConfig( null, Theme.Blue ) },
-		{ typeof(GameObjectComponent), new HandleConfig( null, Theme.Green ) },
+		{ typeof(BaseComponent), new HandleConfig( null, Theme.Green ) },
 		{ typeof(float), new HandleConfig( "Float", Color.Parse( "#8ec07c" )!.Value ) },
 		{ typeof(int), new HandleConfig( "Int", Color.Parse( "#ce67e0" )!.Value ) },
 		{ typeof(bool), new HandleConfig( "Bool", Color.Parse( "#e0d867" )!.Value ) },
