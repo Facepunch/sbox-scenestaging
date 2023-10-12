@@ -321,8 +321,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 				var go = GameObject.Create();
 				go.Name = "Directional Light";
 				go.Transform.Rotation = Rotation.LookAt( Vector3.Down + Vector3.Right * 0.25f );
-
-				var model = go.AddComponent<DirectionalLightComponent>();
+				go.AddComponent<DirectionalLightComponent>();
 
 				then( go );
 			} );
@@ -332,8 +331,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 				using var scope = EditorScene.Active.Push();
 				var go = GameObject.Create();
 				go.Name = "Point Light";
-
-				var model = go.AddComponent<PointLightComponent>();
+				go.AddComponent<PointLightComponent>();
 
 				then( go );
 			} );
@@ -344,8 +342,20 @@ public partial class GameObjectNode : TreeNode<GameObject>
 				using var scope = EditorScene.Active.Push();
 				var go = GameObject.Create();
 				go.Name = "Spot Light";
+				go.AddComponent<SpotLightComponent>();
 
-				var model = go.AddComponent<SpotLightComponent>();
+				then( go );
+			} );
+
+			submenu.AddSeparator();
+
+			submenu.AddOption( "2D SkyBox", "category", () =>
+			{
+				using var scope = EditorScene.Active.Push();
+				var go = GameObject.Create();
+				go.Name = "SkyBox";
+
+				go.AddComponent<SkyBox2D>();
 
 				then( go );
 			} );
