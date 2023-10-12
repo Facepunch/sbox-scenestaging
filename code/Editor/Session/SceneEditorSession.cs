@@ -1,10 +1,15 @@
-﻿/// <summary>
+﻿using System;
+/// <summary>
 /// Holds a current open scene and its edit state
 /// </summary>
 public class SceneEditorSession
 {
 	public static List<SceneEditorSession> All { get; } = new ();
 	public static SceneEditorSession Active { get; set; }
+
+	// scenes that have been edited, but waiting for a set interval to react
+	// just to debounce changes.
+	private static HashSet<SceneEditorSession> editedScenes = new();
 
 	public Scene Scene { get; set; }
 
@@ -13,11 +18,13 @@ public class SceneEditorSession
 		Scene = scene;
 		All.Add( this );
 
-		Scene.OnEdited += () => EditorScene.OnSceneEdited( this );
+		Scene.OnEdited += () => OnSceneEdited( this );
 	}
 
 	public void Destroy()
 	{
+		Scene.OnEdited = null;
+
 		// If this is the active scene
 		// switch away to a sibling
 		if ( this == Active )
@@ -33,6 +40,11 @@ public class SceneEditorSession
 		}
 
 		All.Remove( this );
+	}
+
+	public static void OnSceneEdited( SceneEditorSession scene )
+	{
+		editedScenes.Add( scene );
 	}
 
 	public void MakeActive()
@@ -74,5 +86,40 @@ public class SceneEditorSession
 		if ( Active.Scene.HasUnsavedChanges ) name += "*";
 
 		EditorWindow.UpdateEditorTitle( name );		
+	}
+
+	public virtual void OnEdited()
+	{
+		EditorEvent.Run( "scene.edited", Scene );
+	}
+
+	static RealTimeSince timeSinceLastUpdatePrefabs;
+
+	public static void Tick()
+	{
+		ProcessSceneEdits();
+
+		Active?.TickActive();
+	}
+
+	static void ProcessSceneEdits()
+	{
+		if ( timeSinceLastUpdatePrefabs < 0.1 ) return;
+		timeSinceLastUpdatePrefabs = 0;
+
+		foreach ( var session in editedScenes )
+		{
+			session.OnEdited();
+		}
+
+		editedScenes.Clear();
+	}
+
+	/// <summary>
+	/// Pushes the active editor scene to the current scope
+	/// </summary>
+	public static IDisposable Scope()
+	{
+		return Active.Scene.Push();
 	}
 }

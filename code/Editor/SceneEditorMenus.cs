@@ -59,7 +59,7 @@ public static class SceneEditorMenus
 			return;
 		}
 
-		using var scope = SceneEditorSession.Active.Scene.Push();
+		using var scope = SceneEditorSession.Scope();
 		using var initScope = SceneUtility.DeferInitializationScope( "paste" );
 
 		var text = EditorUtility.Clipboard.Paste();
@@ -88,7 +88,7 @@ public static class SceneEditorMenus
 	{
 		var selected = EditorScene.Selection.First() as GameObject;
 
-		using var scope = SceneEditorSession.Active.Scene.Push();
+		using var scope = SceneEditorSession.Scope();
 		using var initScope = SceneUtility.DeferInitializationScope( "paste" );
 
 		var text = EditorUtility.Clipboard.Paste();
@@ -111,7 +111,7 @@ public static class SceneEditorMenus
 	[Menu( "Editor", "Scene/Duplicate", Shortcut = "Ctrl+D" )]
 	public static void Duplicate()
 	{
-		using var scope = SceneEditorSession.Active.Scene.Push();
+		using var scope = SceneEditorSession.Scope();
 		using var initScope = SceneUtility.DeferInitializationScope( "duplicate" );
 
 		var options = new GameObject.SerializeOptions();
@@ -136,7 +136,7 @@ public static class SceneEditorMenus
 	[Menu( "Editor", "Scene/Delete", Shortcut = "Del" )]
 	public static void Delete()
 	{
-		using var scope = SceneEditorSession.Active.Scene.Push();
+		using var scope = SceneEditorSession.Scope();
 
 		foreach ( var entry in EditorScene.Selection.OfType<GameObject>() )
 		{

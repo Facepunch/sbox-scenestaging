@@ -161,7 +161,7 @@ public partial class SceneViewWidget : Widget
 	{
 		base.OnDragDrop( ev );
 
-		using var sceneScope = SceneEditorSession.Active.Scene.Push();
+		using var sceneScope = SceneEditorSession.Scope();
 
 		if ( DragObject is not null )
 		{
@@ -182,7 +182,7 @@ public partial class SceneViewWidget : Widget
 
 		ev.Action = DropAction.Copy;
 
-		using var sceneScope = SceneEditorSession.Active.Scene.Push();
+		using var sceneScope = SceneEditorSession.Scope();
 
 		if ( DragObject is not null )
 		{

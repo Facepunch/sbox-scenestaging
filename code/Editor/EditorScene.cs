@@ -10,9 +10,7 @@ public static class EditorScene
 
 	public static SelectionSystem Selection => GizmoInstance.Selection;
 
-	// scenes that have been edited, but waiting for a set interval to react
-	// just to debounce changes.
-	private static HashSet<SceneEditorSession> editedScenes = new ();
+
 
 	static EditorScene()
 	{
@@ -48,32 +46,6 @@ public static class EditorScene
 		EditorEvent.Run( "scene.open" );
 	}
 
-	public static void OnSceneEdited( SceneEditorSession scene )
-	{
-		editedScenes.Add( scene );
-	}
-
-	static RealTimeSince timeSinceLastUpdatePrefabs;
-
-	static void ProcessSceneEdits()
-	{
-		if ( timeSinceLastUpdatePrefabs < 0.1 ) return;
-		timeSinceLastUpdatePrefabs = 0;
-
-		foreach ( var session in editedScenes )
-		{
-			// todo: debounce
-
-			if ( session.Scene is PrefabScene prefabScene )
-			{
-				UpdatePrefabInstances( prefabScene.Source as PrefabFile );
-			}
-
-			EditorEvent.Run( "scene.edited", session.Scene );
-		}
-
-		editedScenes.Clear();
-	}
 
 	static SceneEditorSession previousActiveScene;
 
@@ -149,9 +121,7 @@ public static class EditorScene
 		if ( SceneEditorSession.Active is null ) return;
 		if ( Camera.Main is null ) return;
 
-		ProcessSceneEdits();
-
-		SceneEditorSession.Active.TickActive();
+		SceneEditorSession.Tick();
 	}
 
 	/// <summary>
@@ -166,16 +136,15 @@ public static class EditorScene
 		var asset = AssetSystem.FindByPath( resource.ResourcePath );
 		asset?.RecordOpened();
 
-		// 
-		// TODO: Unsaved changes test
-		//
-
 		if ( !await CloudAsset.Install( "Loading Scene..", resource.GetReferencedPackages() ) )
 			return;
 
-
-		
-		// is this scene already in OpenScenes?
+		SceneEditorSession session = SceneEditorSession.All.Where( x => x.Scene.Source == resource ).FirstOrDefault();
+		if ( session  is not null )
+		{
+			session.MakeActive();
+			return;
+		}
 
 		var openingScene = new Scene();
 		using ( openingScene.Push() )
@@ -183,7 +152,7 @@ public static class EditorScene
 			openingScene.Name = resource.ResourceName.ToTitleCase();
 			openingScene.Load( resource );
 
-			var session = new SceneEditorSession( openingScene );
+			session = new SceneEditorSession( openingScene );
 			session.MakeActive();
 
 			EditorEvent.Run( "scene.open" );
@@ -202,9 +171,12 @@ public static class EditorScene
 		var asset = AssetSystem.FindByPath( resource.ResourcePath );
 		asset?.RecordOpened();
 
-		// 
-		// TODO: Unsaved changes test
-		//
+		PrefabEditorSession session = SceneEditorSession.All.OfType<PrefabEditorSession>().Where( x => x.Scene.Source == resource ).FirstOrDefault();
+		if ( session is not null )
+		{
+			session.MakeActive();
+			return;
+		}
 
 		var prefabScene = resource.PrefabScene;
 
@@ -216,7 +188,7 @@ public static class EditorScene
 			prefabScene.Name = resource.ResourceName.ToTitleCase();
 			prefabScene.Load( resource );
 
-			var session = new SceneEditorSession( prefabScene );
+			session = new PrefabEditorSession( prefabScene );
 			session.MakeActive();
 
 			EditorWindow.DockManager.RaiseDock( "Scene" );
