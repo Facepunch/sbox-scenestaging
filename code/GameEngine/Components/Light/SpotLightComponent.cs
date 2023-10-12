@@ -40,6 +40,8 @@ public class SpotLightComponent : BaseComponent, IComponentColorProvider
 		_sceneObject = new SceneSpotLight( Scene.SceneWorld, Transform.Position, LightColor );
 		//_sceneObject.Transform = GameObject.WorldTransform;
 		//_sceneObject.ShadowsEnabled = true;
+
+		_sceneObject.FogLighting = SceneLight.FogLightingMode.Dynamic;
 	}
 
 	public override void OnDisabled()

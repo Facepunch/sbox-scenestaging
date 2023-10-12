@@ -31,6 +31,7 @@ public class PointLightComponent : BaseComponent, IComponentColorProvider
 		Assert.NotNull( Scene );
 
 		_sceneObject = new SceneLight( Scene.SceneWorld, Transform.Position, Radius, LightColor );
+		_sceneObject.FogLighting = SceneLight.FogLightingMode.Dynamic;
 	}
 
 	public override void OnDisabled()
