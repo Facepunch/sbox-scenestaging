@@ -9,9 +9,21 @@ public partial class GameObject
 {
 	string PrefabSource { get; set; }
 
-	internal void SetPrefabSource( string prefabSource )
+	public void SetPrefabSource( string prefabSource )
 	{
 		PrefabSource = prefabSource;
+	}
+
+	/// <summary>
+	/// We are instantiated from a prefab. Stop that.
+	/// </summary>
+	public void BreakFromPrefab()
+	{
+		if ( PrefabSource is null )
+			return;
+
+		PrefabSource = null;
+		EditLog( "Break From Prefab", this, () => { } );
 	}
 
 	public string PrefabInstanceSource

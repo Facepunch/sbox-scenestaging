@@ -31,6 +31,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		{
 			HashCode hc = new HashCode();
 			hc.Add( Value.Name );
+			hc.Add( Value.IsPrefabInstance );
 
 			foreach ( var val in Value.Children )
 			{
@@ -207,7 +208,17 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		// delete
 
 		m.AddSeparator();
-		m.AddOption( "Convert To Prefab..", action: ConvertToPrefab );
+
+		if ( Value.IsPrefabInstanceRoot )
+		{
+			m.AddOption( "Unlink From Prefab", action: () => { Value.BreakFromPrefab(); } );
+		}
+		else
+		{
+			m.AddOption( "Convert To Prefab..", action: ConvertToPrefab );
+		}
+
+		
 		m.AddOption( "Properties..", action: OpenPropertyWindow );
 	}
 
@@ -240,6 +251,8 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 		var sceneAsset = AssetSystem.CreateResource( PrefabFile.FileExtension, saveLocation );
 		sceneAsset.SaveToDisk( a );
+
+		Value.SetPrefabSource( sceneAsset.Path );
 	}
 
 	public override void OnActivated()
