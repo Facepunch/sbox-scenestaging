@@ -26,6 +26,27 @@ public partial class GameObject
 		EditLog( "Break From Prefab", this, () => { } );
 	}
 
+	public void UpdateFromPrefab()
+	{
+		//
+		// This routine is the slowest possible way to do it right now
+		// what we need is some kind of "sync" routine for both GameObjects
+		// and Components.. to avoid deleting and recreating every object and
+		// component (which is obviously recreating every physics object and component)
+		//
+
+		var s = Serialize();
+
+		ForEachComponent( "DestroyComponents", true, c => c.Destroy() );
+
+		foreach ( var child in Children.ToArray() )
+		{
+			child.DestroyRecursive();
+		}
+
+		Deserialize( s );
+	}
+
 	public string PrefabInstanceSource
 	{
 		get

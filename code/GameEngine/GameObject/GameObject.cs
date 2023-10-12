@@ -423,6 +423,19 @@ public partial class GameObject
 								.FirstOrDefault();
 	}
 
+	public IEnumerable<GameObject> GetAllObjects( bool enabled )
+	{
+		if ( enabled && !Enabled )
+			yield break;
+
+		yield return this;
+
+		foreach ( var child in Children.SelectMany( x => x.GetAllObjects( enabled ) ) )
+		{
+			yield return child;
+		}
+	}
+
 	public virtual void EditLog( string name, object source, Action undo )
 	{
 		if ( Parent == null ) return;

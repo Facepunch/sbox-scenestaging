@@ -46,6 +46,15 @@ public partial class SceneTabButton : Widget
 		}
 	}
 
+	[Event( "scene.edited" )]
+	[Event( "scene.saved" )]
+	public void OnSceneEdited( Scene scene )
+	{
+		if ( scene != this.scene ) return;
+
+		Update();
+	}
+
 	protected override void OnPaint()
 	{
 		Paint.Antialiasing = true;

@@ -17,6 +17,11 @@ public class PrefabFile : GameResource
 		PostReload();
 	}
 
+	public void UpdateJson()
+	{
+		RootObject = PrefabScene.Serialize();
+	}
+
 	protected override void PostReload()
 	{
 		PrefabScene ??= new PrefabScene();

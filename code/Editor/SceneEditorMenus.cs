@@ -10,6 +10,7 @@ public static class SceneEditorMenus
 	public static void SaveScene()
 	{
 		EditorScene.Active.Save( false );
+		EditorEvent.Run( "scene.saved", EditorScene.Active );
 	}
 
 	[Menu( "Editor", "Scene/Save All", Shortcut = "Ctrl+Shift+S" )]
@@ -20,6 +21,7 @@ public static class SceneEditorMenus
 			if ( !scene.IsEditor ) continue;
 
 			scene.Save( false );
+			EditorEvent.Run( "scene.saved", scene );
 		}
 	}
 
@@ -31,6 +33,8 @@ public static class SceneEditorMenus
 		var json = go.Serialize( options );
 
 		EditorUtility.Clipboard.Copy( json.ToString() );
+
+		
 	}
 
 
@@ -74,6 +78,7 @@ public static class SceneEditorMenus
 			EditorScene.Selection.Clear();
 			EditorScene.Selection.Add( go );
 
+			go.EditLog( "Paste", go, null );
 			//TreeView.SelectItem( go );
 		}
 	}
@@ -98,6 +103,8 @@ public static class SceneEditorMenus
 
 			EditorScene.Selection.Clear();
 			EditorScene.Selection.Add( go );
+
+			go.EditLog( "Paste", go, null );
 		}
 	}
 
@@ -120,6 +127,8 @@ public static class SceneEditorMenus
 
 		source.AddSibling( go, false );
 
+		go.EditLog( "Duplicate", go, null );
+
 		EditorScene.Selection.Clear();
 		EditorScene.Selection.Add( go );
 	}
@@ -135,6 +144,7 @@ public static class SceneEditorMenus
 				return;
 
 			entry.Destroy();
+			entry.EditLog( "Delete", entry, null );
 		}
 	}
 

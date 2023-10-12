@@ -1,4 +1,5 @@
 ﻿using Sandbox;
+using System;
 using System.Threading.Tasks;
 
 public static class EditorScene
@@ -11,6 +12,10 @@ public static class EditorScene
 
 	public static SelectionSystem Selection => GizmoInstance.Selection;
 
+	// scenes that have been edited, but waiting for a set interval to react
+	// just to debounce changes.
+	private static HashSet<Scene> editedScenes = new ();
+
 	static EditorScene()
 	{
 		GizmoInstance = new Gizmo.Instance();
@@ -22,9 +27,9 @@ public static class EditorScene
 	{
 		Active = new Scene();
 		Active.Name = "Untitled Scene";
-		Active.IsEditor = true;
+		
+		RegisterEditingScene( Active );
 
-		OpenScenes.Add( Active );
 
 		// create default scene
 
@@ -43,6 +48,61 @@ public static class EditorScene
 		}
 
 		EditorEvent.Run( "scene.open" );
+	}
+
+	static void RegisterEditingScene( Scene scene )
+	{
+		scene.IsEditor = true;
+		scene.OnEdited += () => OnSceneEdited( scene );
+		OpenScenes.Add( scene );
+	}
+
+	static void UnregisterEditingScene( Scene scene )
+	{
+		scene.OnEdited = null;
+
+		// If this is the active scene
+		// switch away to a sibling
+		if ( scene == Active )
+		{
+			var index = OpenScenes.IndexOf( scene );
+			if ( index >= 0 && OpenScenes.Count > 1 )
+			{
+				if ( index > 0 ) index--;
+				else index++;
+
+				Active = OpenScenes[index];
+			}
+		}
+
+		OpenScenes.Remove( scene );
+	}
+
+	static void OnSceneEdited( Scene scene )
+	{
+		editedScenes.Add( scene );
+	}
+
+	static RealTimeSince timeSinceLastUpdatePrefabs;
+
+	static void ProcessSceneEdits()
+	{
+		if ( timeSinceLastUpdatePrefabs < 0.1 ) return;
+		timeSinceLastUpdatePrefabs = 0;
+
+		foreach ( var scene in editedScenes )
+		{
+			// todo: debounce
+
+			if ( scene is PrefabScene prefabScene )
+			{
+				UpdatePrefabInstances( prefabScene.Source as PrefabFile );
+			}
+
+			EditorEvent.Run( "scene.edited", scene );
+		}
+
+		editedScenes.Clear();
 	}
 
 	public static bool SwitchActive( Scene scene )
@@ -123,6 +183,8 @@ public static class EditorScene
 		if ( Active is null ) return;
 		if ( Camera.Main is null ) return;
 
+		ProcessSceneEdits();
+
 		//
 		// If we're not playing, then position the game's main camera where the first CameraComponent is
 		//
@@ -143,6 +205,8 @@ public static class EditorScene
 		{
 			Active.GameTick();
 		}
+
+
 	}
 
 	/// <summary>
@@ -169,16 +233,11 @@ public static class EditorScene
 		using ( Active.Push() )
 		{
 			Active.Name = resource.ResourceName.ToTitleCase();
-			Active.IsEditor = true;
-
 			Active.Load( resource );
 
-			OpenScenes.Add( Active );
-
+			RegisterEditingScene( Active );
 			UpdateEditorTitle();
-
 			EditorEvent.Run( "scene.open" );
-
 		}
 	}
 
@@ -193,11 +252,8 @@ public static class EditorScene
 		// TODO: Unsaved changes test
 		//
 
-
-
 		var prefabScene = resource.PrefabScene;
 
-		OpenScenes.Add( prefabScene );
 		Active = prefabScene;
 
 		new SceneSunLight( Active.SceneWorld, Rotation.From( 80, 45, 0 ), Color.White * 0.5f );
@@ -205,9 +261,9 @@ public static class EditorScene
 		using ( Active.Push() )
 		{
 			prefabScene.Name = resource.ResourceName.ToTitleCase();
-			prefabScene.IsEditor = true;
 			prefabScene.Load( resource );
 
+			RegisterEditingScene( prefabScene );
 			UpdateEditorTitle();
 
 			EditorWindow.DockManager.RaiseDock( "Scene" );
@@ -219,19 +275,7 @@ public static class EditorScene
 	{
 		// SAVE CHANGES???
 
-		if ( scene == Active )
-		{
-			var index = OpenScenes.IndexOf( scene );
-			if ( index >= 0 && OpenScenes.Count > 1 )
-			{
-				if ( index > 0 ) index--;
-				else index++;
-
-				Active = OpenScenes[index];
-			}
-		}
-
-		OpenScenes.Remove( scene );
+		UnregisterEditingScene( scene );
 	}
 
 	static void UpdateEditorTitle()
@@ -248,5 +292,42 @@ public static class EditorScene
 		EditorWindow.UpdateEditorTitle( "Smile Face" );
 	}
 
+	static void UpdatePrefabsInScene( Scene scene, PrefabFile prefab )
+	{
+		var changedPath = prefab.ResourcePath;
+
+		using ( scene.Push() )
+		{
+			foreach ( var obj in scene.GetAllObjects( false ) )
+			{
+				if ( obj.IsPrefabInstanceRoot && obj.PrefabInstanceSource == changedPath )
+				{
+					obj.UpdateFromPrefab();
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Should get called whenever the prefab scene has finished being edited
+	/// </summary>
+	public static void UpdatePrefabInstances( PrefabFile prefab )
+	{
+		ArgumentNullException.ThrowIfNull( prefab );
+
+		// write from prefab scene to its jsonobject
+		// this doesn't save it to disk
+		prefab.UpdateJson();
+
+		foreach ( var scene in OpenScenes )
+		{
+			UpdatePrefabsInScene( scene, prefab );
+		}
+
+		if ( GameManager.ActiveScene is not null )
+		{
+			UpdatePrefabsInScene( GameManager.ActiveScene, prefab );
+		}
+	}
 
 }

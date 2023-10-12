@@ -8,6 +8,7 @@ using System.Linq;
 public class Scene : GameObject
 {
 	public bool IsEditor { get; set; }
+	public Action OnEdited { get; set; }
 
 	public SceneWorld SceneWorld { get; private set; }
 	public SceneWorld DebugSceneWorld => gizmoInstance.World;
@@ -203,10 +204,8 @@ public class Scene : GameObject
 
 	public override void EditLog( string name, object source, Action undo )
 	{
-		if ( !IsEditor ) return;
-
 		HasUnsavedChanges = true;
-		//Log.Info( $"Scene Change: {name} / {source}" );
+		OnEdited?.Invoke();
 	}
 
 	public void ClearUnsavedChanges()
