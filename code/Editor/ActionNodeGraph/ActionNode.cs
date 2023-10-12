@@ -12,7 +12,7 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 {
 	private static HashSet<string> Hidden { get; } = new ()
 	{
-		"event", "property.get", "property.set"
+		"event", "property.get", "property.set", "field.get", "field.set"
 	};
 
 	public string Identifier => Definition.Identifier;
@@ -54,7 +54,7 @@ public record struct PropertyNodeType( PropertyDescription Property, PropertyNod
 	{
 		Name = ReadWrite ? $"{Property.Title}/{Kind}" : $"{Property.Title} ({Kind})",
 		Description = Property.Description,
-		Group = $"*{Property.TypeDescription.Name}"
+		Group = Property.TypeDescription.Name
 	};
 
 	public bool HasInput( Type valueType )
@@ -77,12 +77,49 @@ public record struct PropertyNodeType( PropertyDescription Property, PropertyNod
 		} );
 
 		node.Properties["type"].Value = Property.TypeDescription.TargetType;
-		node.Properties["property"].Value = Property.Name;
+		node.Properties["name"].Value = Property.Name;
 
 		return new ActionNode( actionGraph, node );
 	}
 
 	public string Identifier => $"property.{Kind}/{Property.TypeDescription.FullName}/{Property.Name}";
+}
+
+public record struct FieldNodeType( FieldDescription Field, PropertyNodeKind Kind, bool ReadWrite ) : INodeType
+{
+	public DisplayInfo DisplayInfo => new()
+	{
+		Name = ReadWrite ? $"{Field.Title}/{Kind}" : $"{Field.Title} ({Kind})",
+		Description = Field.Description,
+		Group = Field.TypeDescription.Name
+	};
+
+	public bool HasInput( Type valueType )
+	{
+		return Kind == PropertyNodeKind.Set && valueType == typeof( OutputSignal )
+		       || Field.TypeDescription.TargetType.IsAssignableFrom( valueType )
+		       || Field.FieldType.IsAssignableFrom( valueType );
+	}
+
+	public bool HideInEditor => false;
+
+	public INode CreateNode( IGraph graph )
+	{
+		var actionGraph = (ActionGraph)graph;
+		var node = actionGraph.Jig.AddNode( Kind switch
+		{
+			PropertyNodeKind.Set => actionGraph.Jig.NodeLibrary.SetField,
+			PropertyNodeKind.Get => actionGraph.Jig.NodeLibrary.GetField,
+			_ => throw new NotImplementedException()
+		} );
+
+		node.Properties["type"].Value = Field.TypeDescription.TargetType;
+		node.Properties["name"].Value = Field.Name;
+
+		return new ActionNode( actionGraph, node );
+	}
+
+	public string Identifier => $"field.{Kind}/{Field.TypeDescription.FullName}/{Field.Name}";
 }
 
 public class ActionNode : INode
@@ -128,51 +165,11 @@ public class ActionNode : INode
 		};
 	}
 
-	private DisplayInfo PropertyDisplayInfo( PropertyNodeKind kind )
-	{
-		var name = Node.Properties["property"].Value as string;
+	DisplayInfo INode.DisplayInfo => Node.GetDisplayInfo();
 
-		return new DisplayInfo { Name = $"{kind} {name}" };
-	}
+	public bool CanClone => Node != Node.ActionJig.EventNode;
 
-	private DisplayInfo ConstDisplayInfo()
-	{
-		var name = Node.Properties["name"].Value as string;
-
-		return new DisplayInfo
-		{
-			Name = string.IsNullOrEmpty( name ) ? Definition.DisplayInfo.Title : name,
-			Description = Definition.DisplayInfo.Description,
-			Tags = Definition.DisplayInfo.Tags
-		};
-	}
-
-	DisplayInfo INode.DisplayInfo
-	{
-		get
-		{
-			switch ( Definition.Identifier )
-			{
-				case "property.get":
-					return PropertyDisplayInfo( PropertyNodeKind.Get );
-
-				case "property.set":
-					return PropertyDisplayInfo( PropertyNodeKind.Set );
-
-				case {} s when s.StartsWith( "const." ):
-					return ConstDisplayInfo();
-
-				default:
-					return
-						new()
-						{
-							Name = Definition.DisplayInfo.Title,
-							Description = Definition.DisplayInfo.Description,
-							Tags = Definition.DisplayInfo.Tags
-						};
-			}
-		}
-	}
+	public bool CanRemove => Node != Node.ActionJig.EventNode;
 
 	public Color PrimaryColor
 	{
@@ -183,7 +180,7 @@ public class ActionNode : INode
 				return Theme.Red;
 			}
 
-			return Definition.Kind switch
+			var baseColor = Definition.Kind switch
 			{
 				NodeKind.Action =>
 					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.Blue, 0.5f ),
@@ -193,6 +190,13 @@ public class ActionNode : INode
 					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.Green, 0.5f ),
 				_ => throw new NotImplementedException()
 			};
+
+			if ( Node.GetMessages().Any( x => x is { Level: MessageLevel.Warning, Value: "Node is unreachable." } ) )
+			{
+				baseColor = baseColor.Desaturate( 0.75f ).Darken( 0.5f );
+			}
+
+			return baseColor;
 		}
 	}
 

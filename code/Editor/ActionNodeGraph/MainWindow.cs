@@ -3,6 +3,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Editor.NodeEditor;
 using Facepunch.ActionJigs;
+using static Facepunch.ActionJigs.Node;
+using PropertyAttribute = Sandbox.PropertyAttribute;
 
 namespace Editor.ActionJigs;
 
@@ -28,7 +30,7 @@ public static class ActionJigExtensions
 
 	private static DisplayInfo PropertyDisplayInfo( Node node, PropertyNodeKind kind )
 	{
-		var name = node.Properties["property"].Value as string;
+		var name = node.Properties["name"].Value as string;
 
 		return new DisplayInfo { Name = $"{kind} {name}" };
 	}
@@ -50,9 +52,11 @@ public static class ActionJigExtensions
 		switch ( node.Definition.Identifier )
 		{
 			case "property.get":
+			case "field.get":
 				return PropertyDisplayInfo( node, PropertyNodeKind.Get );
 
 			case "property.set":
+			case "field.set":
 				return PropertyDisplayInfo( node, PropertyNodeKind.Set );
 
 			case { } s when s.StartsWith( "const." ):
@@ -191,6 +195,11 @@ public partial class MainWindow : DockWindow
 		if ( updated.Any() )
 		{
 			View.UpdateConnections( updated );
+
+			foreach ( var item in View.Items )
+			{
+				item.Update();
+			}
 		}
 	}
 
@@ -317,14 +326,32 @@ public class ActionGraphView : GraphView
 	{
 		foreach ( var propertyDesc in typeDesc.Properties )
 		{
-			if ( propertyDesc.CanRead )
+			var canRead = propertyDesc.IsGetMethodPublic || propertyDesc.CanRead && propertyDesc.HasAttribute<PropertyAttribute>();
+			var canWrite = propertyDesc.IsSetMethodPublic || propertyDesc.CanWrite && propertyDesc.HasAttribute<PropertyAttribute>();
+
+			if ( canRead )
 			{
-				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Get, propertyDesc.CanWrite );
+				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Get, canWrite );
 			}
 
-			if ( propertyDesc.CanWrite )
+			if ( canWrite )
 			{
-				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Set, propertyDesc.CanRead );
+				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Set, canRead );
+			}
+		}
+
+		foreach ( var fieldDesc in typeDesc.Fields )
+		{
+			if ( !fieldDesc.IsPublic )
+			{
+				continue;
+			}
+
+			yield return new FieldNodeType( fieldDesc, PropertyNodeKind.Get, !fieldDesc.IsInitOnly );
+
+			if ( !fieldDesc.IsInitOnly )
+			{
+				yield return new FieldNodeType( fieldDesc, PropertyNodeKind.Set, true );
 			}
 		}
 	}
@@ -339,7 +366,10 @@ public class ActionGraphView : GraphView
 			return baseNodes;
 		}
 
-		return GetInstanceNodes( typeDesc ).Concat( baseNodes );
+		return GetInstanceNodes( typeDesc )
+			.OrderBy( x => x.DisplayInfo.Group )
+			.ThenBy( x => x.DisplayInfo.Name )
+			.Concat( baseNodes );
 	}
 
 	private static Dictionary<Type, HandleConfig> HandleConfigs { get; } = new()
