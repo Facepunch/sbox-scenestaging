@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
-public class ScopeTimer
+public class ScopeTimer : IDisposable
 {
 	private readonly Stopwatch stopwatch = new Stopwatch();
 	string Name { get; set; }
@@ -14,6 +15,6 @@ public class ScopeTimer
 	public void Dispose()
 	{
 		stopwatch.Stop();
-		System.Console.WriteLine($"{Name} took {stopwatch.ElapsedMilliseconds} ms");
+		System.Console.WriteLine($"{Name} took {stopwatch.Elapsed.TotalMilliseconds} ms");
 	}
 }
