@@ -34,7 +34,7 @@ public static partial class SceneExtensions
 			fileType = "Prefab File";
 		}
 
-		if ( saveAs )
+		if ( saveAs || string.IsNullOrEmpty( saveLocation ) )
 		{
 			var lastDirectory = Cookie.GetString( $"LastSaveLocation.{extension}", "" );
 
