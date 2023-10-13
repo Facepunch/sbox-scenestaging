@@ -6,15 +6,20 @@ public static class EditorScene
 {
 	public static string PlayMode { get; set; } = "scene";
 
-	internal static Gizmo.Instance GizmoInstance { get; private set; }
+	internal static Gizmo.Instance GizmoInstance { get; private set; } = new Gizmo.Instance();
 
 	public static SelectionSystem Selection => GizmoInstance.Selection;
 
-	static EditorScene()
+	[Event( "game.loaded" )]
+	public static void GameStarted( Package package )
 	{
-		GizmoInstance = new Gizmo.Instance();
 
-		NewScene();
+		// If we just started up, and there's no scenes
+		// create a new, blank one.
+		if ( SceneEditorSession.All.Count == 0 )
+		{
+			NewScene();
+		}
 	}
 
 	public static void NewScene()
