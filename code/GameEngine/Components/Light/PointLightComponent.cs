@@ -17,12 +17,19 @@ public class PointLightComponent : BaseComponent, IComponentColorProvider
 
 	public override void DrawGizmos()
 	{
-		//using var scope = Gizmo.Scope( $"light-{GetHashCode()}" );
+		using var scope = Gizmo.Scope( $"light-{GetHashCode()}" );
 
-		//var fwd = Vector3.Forward;
+		if ( Gizmo.IsSelected )
+		{
+			Gizmo.Draw.Color = LightColor.WithAlpha( 0.9f );
+			Gizmo.Draw.LineSphere( new Sphere( Vector3.Zero, Radius ), 12 );
+		}
 
-		//Gizmo.Draw.Color = LightColor;
-
+		if ( Gizmo.IsHovered )
+		{
+			Gizmo.Draw.Color = LightColor.WithAlpha( 0.4f );
+			Gizmo.Draw.LineSphere( new Sphere( Vector3.Zero, Radius ), 12 );
+		}
 	}
 
 	public override void OnEnabled()

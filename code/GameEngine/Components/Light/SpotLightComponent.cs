@@ -23,13 +23,29 @@ public class SpotLightComponent : BaseComponent, IComponentColorProvider
 	{
 		using var scope = Gizmo.Scope( $"light-{GetHashCode()}" );
 
+		if ( !Gizmo.IsSelected && !Gizmo.IsHovered )
+			return;
+
+		Gizmo.Draw.Color = LightColor.WithAlpha( Gizmo.IsSelected ? 0.9f : 0.4f );
+
 		var fwd = Vector3.Forward;
 
-		Gizmo.Draw.Color = LightColor;
+		// todo: the inner cone is some weird shit with falloff
+		var outerRadius = Radius * MathF.Tan( ConeOuter.DegreeToRadian() );
+		var sections = 16;
 
-	//	Gizmo.Transform = Transform.Zero;
-	//	Gizmo.Draw.Sprite( GameObject.Transform.Position, 10, Texture.Load( FileSystem.Mounted, "/editor/directional_light.png" ) );
+		for ( int i = 0; i <= sections; i++ )
+		{
+			var f = ((float)i + 1) / sections * MathF.PI * 2;
+			Vector3 vPos = Vector3.Zero;
+			vPos += Vector3.Left * outerRadius * MathF.Sin( f );
+			vPos += Vector3.Up * outerRadius * MathF.Cos( f );
+			vPos += fwd * Radius;
 
+			Gizmo.Draw.Line( Vector3.Zero, vPos );
+		}
+
+		Gizmo.Draw.LineCircle( fwd * Radius, outerRadius, sections: sections );
 	}
 
 	public override void OnEnabled()

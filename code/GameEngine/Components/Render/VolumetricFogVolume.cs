@@ -13,6 +13,17 @@ public class VolumetricFogVolume : BaseComponent
 	[Property] public float Strength { get; set; } = 2.0f;
 	[Property] public float FalloffExponent { get; set; } = 1.0f;
 
+	public override void DrawGizmos()
+	{
+		using var scope = Gizmo.Scope( $"volumetricfogvolume-{GetHashCode()}" );
+
+		if ( !Gizmo.IsSelected && !Gizmo.IsHovered )
+			return;
+
+		Gizmo.Draw.Color = Color.White.WithAlpha( Gizmo.IsSelected ? 0.9f : 0.4f );
+		Gizmo.Draw.LineBBox( Bounds );
+	}
+
 	public override void OnEnabled()
 	{
 		Assert.True( sceneObject == null );
