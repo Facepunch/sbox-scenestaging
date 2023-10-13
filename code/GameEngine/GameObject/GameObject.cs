@@ -52,7 +52,8 @@ public partial class GameObject
 				return;
 
 			_enabled = value;
-			UpdateEnabledStatus();
+
+			SceneUtility.ActivateGameObject( this );
 		}
 	}
 
@@ -270,7 +271,8 @@ public partial class GameObject
 
 	/// <summary>
 	/// Should be called whenever we change anything that we suspect might
-	/// cause the active status to change on us, or our components.
+	/// cause the active status to change on us, or our components. Don't call
+	/// this directly. Only call it via SceneUtility.ActivateGameObject( this );
 	/// </summary>
 	internal void UpdateEnabledStatus()
 	{

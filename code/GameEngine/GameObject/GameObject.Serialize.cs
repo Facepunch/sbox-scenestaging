@@ -142,8 +142,6 @@ public partial class GameObject
 		}
 
 		Enabled = (bool)(node["Enabled"] ?? Enabled);
-
-		SceneUtility.ActivateGameObject( this );
 	}
 
 	public PrefabFile GetAsPrefab()
