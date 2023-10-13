@@ -73,10 +73,10 @@ public partial class GameObject
 
 		return new GameObject( enabled, name, GameManager.ActiveScene );
 	}
-
+		
 	public override string ToString()
 	{
-		return $"GO - {Name}";
+		return $"GameObject:{Name}";
 	}
 
 	public List<BaseComponent> Components = new List<BaseComponent>();
