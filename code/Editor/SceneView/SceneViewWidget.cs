@@ -57,6 +57,15 @@ public partial class SceneViewWidget : Widget
 		Camera.ClearFlags = ClearFlags.Color | ClearFlags.Depth | ClearFlags.Stencil;
 		Camera.BackgroundColor = "#557685";
 
+		Camera.VolumetricFog.Enabled = true;
+		Camera.VolumetricFog.ContinuousMode = true;
+		Camera.VolumetricFog.DrawDistance = 4096;
+		Camera.VolumetricFog.FadeInStart = 10;
+		Camera.VolumetricFog.FadeInEnd = 20;
+		Camera.VolumetricFog.IndirectStrength = 1.0f;
+		Camera.VolumetricFog.Anisotropy = 1;
+		Camera.VolumetricFog.Scattering = 1.0f;
+
 		SceneToolbar.SceneInstance = EditorScene.GizmoInstance;
 
 		if ( cameraTargetPosition is not null )
