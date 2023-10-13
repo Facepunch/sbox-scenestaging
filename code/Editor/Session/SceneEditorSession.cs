@@ -127,4 +127,5 @@ public partial class SceneEditorSession
 	{
 		return Active.Scene.Push();
 	}
+
 }

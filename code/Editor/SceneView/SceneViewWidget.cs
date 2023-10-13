@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using Sandbox;
+using System.Threading;
 using System.Threading.Tasks;
 
 [Dock( "Editor", "Scene", "grid_4x4" )]
@@ -50,21 +51,27 @@ public partial class SceneViewWidget : Widget
 
 		var session = SceneEditorSession.Active;
 
-		Camera.World = session?.Scene.SceneWorld;
+	//	Camera.World = session?.Scene.SceneWorld;
+
+
+
+		if ( session is not null )
+		{
+			// Lets default to the settings from the camera
+			var camera = session.Scene.FindAllComponents<CameraComponent>( false ).FirstOrDefault();
+			if ( camera is not null )
+			{
+				camera.UpdateCamera( Camera );
+			}
+
+			session.RestoreCamera( Camera );
+		}
+
+		Camera.Worlds.Add( EditorScene.GizmoInstance.World );
+		Camera.ClearFlags = ClearFlags.Color | ClearFlags.Depth | ClearFlags.Stencil;
 		Camera.ZNear = EditorScene.GizmoInstance.Settings.CameraZNear;
 		Camera.ZFar = EditorScene.GizmoInstance.Settings.CameraZFar;
 		Camera.FieldOfView = EditorScene.GizmoInstance.Settings.CameraFieldOfView;
-		Camera.ClearFlags = ClearFlags.Color | ClearFlags.Depth | ClearFlags.Stencil;
-		Camera.BackgroundColor = "#557685";
-
-		Camera.VolumetricFog.Enabled = true;
-		Camera.VolumetricFog.ContinuousMode = true;
-		Camera.VolumetricFog.DrawDistance = 4096;
-		Camera.VolumetricFog.FadeInStart = 10;
-		Camera.VolumetricFog.FadeInEnd = 20;
-		Camera.VolumetricFog.IndirectStrength = 1.0f;
-		Camera.VolumetricFog.Anisotropy = 1;
-		Camera.VolumetricFog.Scattering = 1.0f;
 
 		SceneToolbar.SceneInstance = EditorScene.GizmoInstance;
 
@@ -89,14 +96,7 @@ public partial class SceneViewWidget : Widget
 		if ( session is null )
 			return;
 
-		var sceneCamera = session.Scene.FindAllComponents<CameraComponent>().FirstOrDefault();
-
 		session.Scene.SceneWorld.AmbientLightColor = Color.Black;
-
-		if ( sceneCamera is not null )
-		{
-			Camera.BackgroundColor = sceneCamera.BackgroundColor;
-		}
 
 		using ( EditorScene.GizmoInstance.Push() )
 		{
@@ -114,6 +114,8 @@ public partial class SceneViewWidget : Widget
 				Gizmo.Select();
 			}
 		}
+
+		session.UpdateState( Camera );
 	}
 
 	[Event( "scene.open" )]

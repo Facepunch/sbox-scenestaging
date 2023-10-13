@@ -75,17 +75,16 @@ public static class EditorScene
 		var gameSession = new GameEditorSession( GameManager.ActiveScene );
 		gameSession.MakeActive();
 
+		if ( activeSession is not null )
+		{
+			gameSession.CameraPosition = activeSession.CameraPosition;
+			gameSession.CameraRotation = activeSession.CameraRotation;
+		}
+
 		Camera.Main.World = GameManager.ActiveScene.SceneWorld;
 		Camera.Main.Worlds.Clear();
 		Camera.Main.Worlds.Add( GameManager.ActiveScene.DebugSceneWorld );
-		Camera.Main.Position = 0;
-		Camera.Main.Rotation = Rotation.From( 0, 0, 0 );
-		Camera.Main.ZNear = 1;
-		Camera.Main.Tonemap.Enabled = true;
-		Camera.Main.Tonemap.MinExposure = 0.1f;
-		Camera.Main.Tonemap.MaxExposure = 2.0f;
-		Camera.Main.Tonemap.Rate = 1.0f;
-		Camera.Main.Tonemap.Fade = 1.0f;
+
 
 		EditorWindow.DockManager.RaiseDock( "GameFrame" );
 	}
