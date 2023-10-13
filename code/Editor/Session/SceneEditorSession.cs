@@ -2,7 +2,7 @@
 /// <summary>
 /// Holds a current open scene and its edit state
 /// </summary>
-public class SceneEditorSession
+public partial class SceneEditorSession
 {
 	public static List<SceneEditorSession> All { get; } = new ();
 	public static SceneEditorSession Active { get; set; }
@@ -18,7 +18,8 @@ public class SceneEditorSession
 		Scene = scene;
 		All.Add( this );
 
-		Scene.OnEdited += () => OnSceneEdited( this );
+		Scene.OnEdited += OnSceneEdited;
+		InitUndo();
 	}
 
 	public void Destroy()
@@ -42,9 +43,10 @@ public class SceneEditorSession
 		All.Remove( this );
 	}
 
-	public static void OnSceneEdited( SceneEditorSession scene )
+	public void OnSceneEdited( string title )
 	{
-		editedScenes.Add( scene );
+		editedScenes.Add( this );
+		FullUndoSnapshot( title );
 	}
 
 	public void MakeActive()
@@ -74,6 +76,9 @@ public class SceneEditorSession
 		// If this is an editor scene, tick it to flush deleted objects etc
 		//
 		Scene.ProcessDeletes();
+
+		// Undo system might have a deferred snapshot
+		TickPendingUndoSnapshot();
 	}
 
 	static void UpdateEditorTitle()

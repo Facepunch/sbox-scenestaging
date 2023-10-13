@@ -186,4 +186,19 @@ public static class SceneEditorMenus
 
 		}
 	}
+
+
+	[Menu( "Editor", "Edit/Undo", Shortcut = "Ctrl+z" )]
+	public static void Undo()
+	{
+		using var scope = SceneEditorSession.Scope();
+		SceneEditorSession.Active.Undo();
+	}
+
+	[Menu( "Editor", "Edit/Redo", Shortcut = "Ctrl+y" )]
+	public static void Redo()
+	{
+		using var scope = SceneEditorSession.Scope();
+		SceneEditorSession.Active.Redo();
+	}
 }

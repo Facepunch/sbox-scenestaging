@@ -13,6 +13,7 @@ public partial class GameObject
 		handleTexture = null;
 
 		var handles = Components
+			.Where ( x => x is not null )
 			.Select( x => TypeLibrary.GetType( x.GetType() ) )
 			.SelectMany( x => x.GetAttributes<EditorHandleAttribute>() )
 			.FirstOrDefault();

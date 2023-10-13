@@ -12,6 +12,19 @@ public partial class GameObject
 	{
 	}
 
+	/// <summary>
+	/// Destroy all components and child objects
+	/// </summary>
+	public void Clear()
+	{
+		ForEachComponent( "DestroyComponents", true, c => c.Destroy() );
+
+		foreach ( var child in Children.ToArray() )
+		{
+			child.DestroyRecursive();
+		}
+	}
+
 	//
 	// For flexibility purposes, we serialize the GameObject manually
 	// into a JsonObject. I haven't benchmarked this, but I assume it's okay.

@@ -47,6 +47,8 @@ public partial class OpenSceneList : Widget
 	{
 		HashCode hash = new();
 
+		SceneEditorSession.All.RemoveAll( x => x is null );
+
 		foreach ( var scene in SceneEditorSession.All )
 		{
 			hash.Add( scene );

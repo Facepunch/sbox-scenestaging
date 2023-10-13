@@ -10,8 +10,6 @@ public static class EditorScene
 
 	public static SelectionSystem Selection => GizmoInstance.Selection;
 
-
-
 	static EditorScene()
 	{
 		GizmoInstance = new Gizmo.Instance();
@@ -196,10 +194,9 @@ public static class EditorScene
 		}
 	}
 
-
-
 	static void UpdatePrefabsInScene( Scene scene, PrefabFile prefab )
 	{
+		using var activeScope = SceneUtility.DeferInitializationScope( "Update Prefabs" );
 		var changedPath = prefab.ResourcePath;
 
 		using ( scene.Push() )

@@ -26,6 +26,7 @@ public abstract class ColliderBaseComponent : BaseComponent
 	{
 		Assert.IsNull( ownBody );
 		Assert.IsNull( shape );
+		Assert.NotNull( Scene );
 
 		PhysicsBody physicsBody = null;
 
@@ -41,7 +42,6 @@ public abstract class ColliderBaseComponent : BaseComponent
 				Log.Warning( $"{this}: PhysicsBody from {body} was null" );
 				return;
 			}
-
 		}
 		
 		if ( physicsBody is null )

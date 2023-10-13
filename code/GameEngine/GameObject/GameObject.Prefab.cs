@@ -37,13 +37,8 @@ public partial class GameObject
 
 		var s = Serialize();
 
-		ForEachComponent( "DestroyComponents", true, c => c.Destroy() );
 
-		foreach ( var child in Children.ToArray() )
-		{
-			child.DestroyRecursive();
-		}
-
+		Clear();
 		Deserialize( s );
 	}
 
