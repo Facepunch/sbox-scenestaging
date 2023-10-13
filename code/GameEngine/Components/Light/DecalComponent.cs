@@ -18,6 +18,11 @@ public class DecalComponent : BaseComponent
 	/// Width, Height, Projection distance
 	/// </summary>
 	[Property] public Vector3 DecalScale { get; set; } = new Vector3( 32, 32, 256 );
+	
+	/// <summary>
+	/// Tint the decal
+	/// </summary>
+	[Property] public Color TintColor { get; set; } = Color.White;
 
 	public override void DrawGizmos()
 	{
@@ -41,7 +46,7 @@ public class DecalComponent : BaseComponent
 		
 		_sceneObject = Decal.Place(
 			Scene.SceneWorld, Material, GameObject.Transform.Position, GameObject.Transform.Rotation,
-			DecalScale * GameObject.Transform.Scale, Color32.White 
+			DecalScale * GameObject.Transform.Scale, TintColor
 		);
 	}
 
@@ -55,7 +60,7 @@ public class DecalComponent : BaseComponent
 	// - Can probably get rid of CProjectedDecal in the end too and move most of it to C#
 	// - Need a better way to translate the decal which doesn't mean recreating it entirely
 	int hash = 0;
-	protected int Hash => HashCode.Combine( GameObject.Transform.Position, GameObject.Transform.Rotation, DecalScale, Material );
+	protected int Hash => HashCode.Combine( GameObject.Transform.Position, GameObject.Transform.Rotation, DecalScale, Material, TintColor );
 
 	protected override void OnPreRender()
 	{
