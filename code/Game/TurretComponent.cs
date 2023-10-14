@@ -24,7 +24,7 @@ public sealed class TurretComponent : BaseComponent
 		turretPitch = turretPitch.Clamp( -30, 30 );
 		Gun.Transform.Rotation = Rotation.From( turretPitch, turretYaw, 0 );
 
-		var bbox = new BBox( 0, 50 );
+		var bbox = new BBox( 0, 5 );
 
 		// drive tank
 		Vector3 movement = 0;
@@ -65,7 +65,7 @@ public sealed class TurretComponent : BaseComponent
 			.Size( bbox )
 			//.Radius( 40 )
 			.Run();
-
+		/*
 		Gizmo.Transform = global::Transform.Zero;
 		Gizmo.Draw.Color = Color.White;
 		Gizmo.Draw.LineThickness = 1;
@@ -85,9 +85,9 @@ public sealed class TurretComponent : BaseComponent
 		box.Maxs += tr.EndPosition;
 
 		Gizmo.Draw.LineBBox( box );
-
-	//	Gizmo.Draw.Text( $"{tr.EndPosition}", Muzzle.WorldTransform );
-	//	Gizmo.Draw.Text( $"{tr.HitPosition}\n{tr.Fraction}\n{tr.Direction}", new Transform( tr.HitPosition ) );
+				*/
+		//	Gizmo.Draw.Text( $"{tr.EndPosition}", Muzzle.WorldTransform );
+		//	Gizmo.Draw.Text( $"{tr.HitPosition}\n{tr.Fraction}\n{tr.Direction}", new Transform( tr.HitPosition ) );
 
 		using ( Gizmo.Scope( "circle", new Transform( tr.HitPosition, Rotation.LookAt( tr.Normal ) ) ) )
 		{
