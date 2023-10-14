@@ -54,17 +54,26 @@ public static class SceneUtility
 	{
 		using var spawnScope = DeferInitializationScope( "Instantiate" );
 
-		var json = template.Serialize();
+		JsonObject json = null;
+
+		if ( template is PrefabScene prefabScene && prefabScene.Source is PrefabFile prefabFile )
+		{
+			json = prefabFile.RootObject;
+		}
+		else
+		{
+			json = template.Serialize();
+		}
 
 		MakeGameObjectsUnique( json );
 
 		var go = GameObject.Create();
 		go.Deserialize( json );
-		go.Transform.Local = transform;
+		go.Transform.Local = transform.WithScale( transform.Scale * go.Transform.LocalScale.x );
 
-		if ( template is PrefabScene prefabScene )
+		if ( template is PrefabScene prefabScene1 )
 		{
-			go.SetPrefabSource( prefabScene.Source.ResourcePath );
+			go.SetPrefabSource( prefabScene1.Source.ResourcePath );
 		}
 
 		GameManager.ActiveScene.Register( go );
@@ -81,7 +90,7 @@ public static class SceneUtility
 	/// Create a unique copy of the passed in GameObject
 	/// </summary>
 	public static GameObject Instantiate( GameObject template, Vector3 position, Quaternion rotation ) 
-		=> Instantiate( template, new Transform( position, rotation, template.Transform.LocalScale.x ) );
+		=> Instantiate( template, new Transform( position, rotation, 1.0f ) );
 
 
 	static HashSet<GameObject> spawnList;
