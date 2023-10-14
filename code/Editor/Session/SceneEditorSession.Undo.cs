@@ -57,6 +57,7 @@ public partial class SceneEditorSession
 	private Action snapshotForUndo( )
 	{
 		var state = Scene.Serialize().ToJsonString();
+		var selection = Selection.OfType<GameObject>().Select( x => x.Id ).ToArray();
 
 		return () =>
 		{
@@ -66,6 +67,17 @@ public partial class SceneEditorSession
 			using var activeScope = SceneUtility.DeferInitializationScope( "Undo" );
 			var js = JsonObject.Parse( state ) as JsonObject;
 			Scene.Deserialize( js );
+
+			Selection.Clear();
+
+			foreach( var o in selection )
+			{
+				if ( Scene.FindObjectByGuid( o ) is GameObject go )
+				{
+					Selection.Add( go );
+				}
+			}
+			
 		};
 	}
 }
