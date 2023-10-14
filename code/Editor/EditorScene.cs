@@ -62,7 +62,10 @@ public static class EditorScene
 		{
 			// can't play prefabs
 			if ( activeSession.Scene is PrefabScene )
+			{
+				GameManager.IsPlaying = false;
 				return;
+			}
 
 			var current = activeSession.Scene.Save();
 
