@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 
 [Title( "Camera" )]
-[Category( "Render" )]
+[Category( "Camera" )]
 [Icon( "videocam", "red", "white" )]
 [EditorHandle( "materials/gizmo/camera.png" )]
 public class CameraComponent : BaseComponent
@@ -93,11 +93,18 @@ public class CameraComponent : BaseComponent
 		camera.VolumetricFog.Anisotropy = 1;
 		camera.VolumetricFog.Scattering = 1.0f;
 
-		camera.Tonemap.Enabled = true;
-		camera.Tonemap.MinExposure = 0.9f;
-		camera.Tonemap.MaxExposure = 1.1f;
-		camera.Tonemap.Rate = 1.0f;
-		camera.Tonemap.Fade = 1.0f;
+		// defaults - let components override
+		camera.Tonemap.Enabled = false;
+
+		foreach ( var c in GetComponents<ISceneCameraSetup>() )
+		{
+			c.SetupCamera( this, camera );
+		}
+	}
+
+	public interface ISceneCameraSetup
+	{
+		void SetupCamera( CameraComponent camera, SceneCamera sceneCamera );
 	}
 
 }
