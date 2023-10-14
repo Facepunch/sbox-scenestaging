@@ -232,6 +232,13 @@ public partial class GameObject
 		}
 	}
 
+	public bool TryGetComponent<T>( out T component )
+	{
+		component = GetComponent<T>();
+
+		return component is not null;
+	}
+
 	public BaseComponent AddComponent( TypeDescription type, bool enabled = true )
 	{
 		if ( !type.TargetType.IsAssignableTo( typeof( BaseComponent ) ) )
