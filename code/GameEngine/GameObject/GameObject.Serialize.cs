@@ -17,8 +17,10 @@ public partial class GameObject
 	/// </summary>
 	public void Clear()
 	{
+		// Remove all of our components
 		ForEachComponent( "DestroyComponents", true, c => c.Destroy() );
 
+		// Remove all of our children
 		foreach ( var child in Children.ToArray() )
 		{
 			child.DestroyRecursive();

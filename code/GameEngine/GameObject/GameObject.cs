@@ -306,10 +306,11 @@ public partial class GameObject
 	/// </summary>
 	void DestroyRecursive()
 	{
+		// note - keeping Scene to allow components to shutdown
+
 		isDestroying = true;
 		Parent = null;
 		Enabled = false;
-		_scene = null;
 		isDestroyed = true;
 
 		foreach ( var child in Children.ToArray() )
