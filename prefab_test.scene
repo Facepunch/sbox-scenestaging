@@ -39,8 +39,8 @@
       "Id": "bff9bd1c-7a0b-42c8-a4e6-ec813f65a3e8",
       "Name": "Camera",
       "Enabled": true,
-      "Position": "-1261.466,1483.895,1188.854",
-      "Rotation": "0.1464467,0.3535535,-0.3535535,0.8535532",
+      "Position": "-559.7692,772.8702,70.3804",
+      "Rotation": "0.1513976,0.06221148,-0.9124801,0.3749515",
       "Scale": "1,1,1",
       "Components": [
         {
@@ -58,145 +58,28 @@
       "Id": "26a868f4-c8b9-4e4b-a7f6-e255617cef51",
       "Name": "Bullet",
       "Enabled": true,
-      "Position": "-709.3657,674.3743,-0.00001525879",
+      "Position": "-709.3657,674.3743,18.18882",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
-      "__Prefab": "bullet.object",
-      "__PrefabLut": {
-        "abf72244-1fcc-4837-8df0-b51d2f170a05": "26a868f4-c8b9-4e4b-a7f6-e255617cef51",
-        "24becca9-4f57-4924-a0ad-f75afe81b65e": "1fd6ba4d-57d9-47b3-b75b-257c6dadbde1"
-      },
-      "Components": [
-        {
-          "__type": "ColliderSphereComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Radius": 10.600002,
-          "Surface": null
-        },
-        {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
-        }
-      ],
-      "Children": [
-        {
-          "Id": "1fd6ba4d-57d9-47b3-b75b-257c6dadbde1",
-          "Name": "Beachball Model",
-          "Enabled": true,
-          "Position": "-1.2766,-0.9477,-10.2715",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Components": [
-            {
-              "__type": "ModelComponent",
-              "__enabled": true,
-              "MaterialOverride": null,
-              "Model": "models/citizen_props/beachball.vmdl",
-              "ShouldCastShadows": true,
-              "Tint": "1,1,1,1"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Id": "eb5ec751-9fff-48aa-a19a-2624db9c490c",
-      "Name": "Bullet",
-      "Enabled": true,
-      "Position": "-665.608,674.3743,-0.00001525879",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "__Prefab": "bullet.object",
-      "__PrefabLut": {
-        "abf72244-1fcc-4837-8df0-b51d2f170a05": "eb5ec751-9fff-48aa-a19a-2624db9c490c",
-        "24becca9-4f57-4924-a0ad-f75afe81b65e": "a229dde9-305f-4bfe-899f-03ff33df947a"
-      },
-      "Components": [
-        {
-          "__type": "ColliderSphereComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Radius": 10.600002,
-          "Surface": null
-        },
-        {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
-        }
-      ],
-      "Children": [
-        {
-          "Id": "a229dde9-305f-4bfe-899f-03ff33df947a",
-          "Name": "Beachball Model",
-          "Enabled": true,
-          "Position": "-1.2766,-0.9477,-10.2715",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Components": [
-            {
-              "__type": "ModelComponent",
-              "__enabled": true,
-              "MaterialOverride": null,
-              "Model": "models/citizen_props/beachball.vmdl",
-              "ShouldCastShadows": true,
-              "Tint": "1,1,1,1"
-            }
-          ]
-        }
-      ]
+      "__Prefab": "bullet.object"
     },
     {
       "Id": "d0f8bb42-ffd8-450c-93ef-14965f540816",
       "Name": "Bullet",
       "Enabled": true,
-      "Position": "-622.2434,674.3743,-0.00001525879",
+      "Position": "-622.2434,674.3743,17.44794",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
-      "__Prefab": "bullet.object",
-      "__PrefabLut": {
-        "abf72244-1fcc-4837-8df0-b51d2f170a05": "d0f8bb42-ffd8-450c-93ef-14965f540816",
-        "24becca9-4f57-4924-a0ad-f75afe81b65e": "368acad7-569c-464b-ba7b-8e9d16a16056"
-      },
-      "Components": [
-        {
-          "__type": "ColliderSphereComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Radius": 10.600002,
-          "Surface": null
-        },
-        {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
-        }
-      ],
-      "Children": [
-        {
-          "Id": "368acad7-569c-464b-ba7b-8e9d16a16056",
-          "Name": "Beachball Model",
-          "Enabled": true,
-          "Position": "-1.2766,-0.9477,-10.2715",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Components": [
-            {
-              "__type": "ModelComponent",
-              "__enabled": true,
-              "MaterialOverride": null,
-              "Model": "models/citizen_props/beachball.vmdl",
-              "ShouldCastShadows": true,
-              "Tint": "1,1,1,1"
-            }
-          ]
-        }
-      ]
+      "__Prefab": "bullet.object"
+    },
+    {
+      "Id": "d0f8bb42-ffd8-450c-93ef-14965f540816",
+      "Name": "Bullet",
+      "Enabled": true,
+      "Position": "-666.5581,674.3743,17.44794",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "__Prefab": "bullet.object"
     }
   ],
   "__references": []
