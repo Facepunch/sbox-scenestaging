@@ -8,6 +8,9 @@ public class PrefabEditorSession : SceneEditorSession
 	public PrefabEditorSession( PrefabScene scene ) : base( scene )
 	{
 		scene.SceneWorld.AmbientLightColor = new Color( 0.7f, 0.7f, 0.7f );
+
+		scene.Name = scene.Source.ResourceName;
+		Selection.Add( scene );
 	}
 
 	public override void OnEdited()
