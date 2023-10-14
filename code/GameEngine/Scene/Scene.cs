@@ -37,11 +37,23 @@ public class Scene : GameObject
 		SceneUtility.ActivateGameObject( o );
 	}
 
+	/// <summary>
+	/// The update loop will turn certain settings on
+	/// Here we turn them to their defaults.
+	/// </summary>
+	void InitialSettings()
+	{
+		SceneWorld.GradientFog.Enabled = false;
+	}
+
 	public void EditorTick()
 	{
 		ProcessDeletes();
 		PreRender();
 		DrawGizmos();
+		InitialSettings();
+		Tick();
+		ProcessDeletes();
 	}
 
 	public void GameTick()
@@ -54,6 +66,8 @@ public class Scene : GameObject
 
 			if ( GameManager.IsPaused )
 				return;
+
+			InitialSettings();
 
 			Tick();
 

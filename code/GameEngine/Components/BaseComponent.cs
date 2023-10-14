@@ -71,6 +71,7 @@ public abstract partial class BaseComponent
 	internal virtual void InternalUpdate() 
 	{
 		if ( !Enabled ) return;
+		if ( Scene.IsEditor && this is not ExecuteInEditor ) return;
 
 		Update();
 	}
@@ -146,4 +147,12 @@ public abstract partial class BaseComponent
 
 	/// <inheritdoc cref="GameObject.GetComponents{T}(bool, bool)"/>
 	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) => GameObject.GetComponents<T>( enabledOnly, deep );
+
+	/// <summary>
+	/// A component with this interface will run in the editor
+	/// </summary>
+	public interface ExecuteInEditor
+	{
+
+	}
 }
