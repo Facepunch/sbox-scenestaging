@@ -132,10 +132,10 @@ public class ComponentList : Widget
 		menu.AddOption( "Reset", action: () => component.Reset() );
 		menu.AddSeparator();
 		menu.AddOption( "Remove Component", action: () => component.Destroy() );
-		menu.AddOption( "Copy To Clipboard" );
-		menu.AddOption( "Paste As New" );
-		menu.AddOption( "Paste Values" );
-		menu.AddOption( "Open In Window.." );
+		//menu.AddOption( "Copy To Clipboard" );
+		//menu.AddOption( "Paste As New" );
+		//menu.AddOption( "Paste Values" );
+		//menu.AddOption( "Open In Window.." );
 		menu.AddSeparator();
 
 		var t = EditorTypeLibrary.GetType( component.GetType() );
