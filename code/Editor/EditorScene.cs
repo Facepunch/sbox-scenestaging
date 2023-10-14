@@ -45,6 +45,7 @@ public static class EditorScene
 
 		var newSession = new SceneEditorSession( scene );
 		newSession.MakeActive();
+		newSession.InitializeCamera();
 
 		EditorEvent.Run( "scene.open" );
 	}
@@ -159,6 +160,7 @@ public static class EditorScene
 
 			session = new SceneEditorSession( openingScene );
 			session.MakeActive();
+			session.InitializeCamera();
 
 			EditorEvent.Run( "scene.open" );
 		}
@@ -193,6 +195,7 @@ public static class EditorScene
 
 			session = new PrefabEditorSession( prefabScene );
 			session.MakeActive();
+			session.InitializeCamera();
 
 			EditorEvent.Run( "scene.open" );
 		}

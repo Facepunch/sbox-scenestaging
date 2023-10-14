@@ -111,35 +111,6 @@ public partial class SceneViewWidget : Widget
 		session.UpdateState( Camera );
 	}
 
-	[Event( "scene.open" )]
-	public void SceneOpened()
-	{
-		var activeScene = SceneEditorSession.Active;
-		if ( activeScene is null )
-			return;
-
-		// ideally we should allow multiple scene windows
-		// and we should be saving the last camera setup per scene, per camera
-		// and then we could restore them here.
-
-		var cam = activeScene.Scene.FindAllComponents<CameraComponent>().FirstOrDefault();
-		if ( cam is not null )
-		{
-			Camera.Position = cam.Transform.Position;
-			Camera.Rotation = cam.Transform.Rotation;
-		}
-		else
-		{
-			Camera.Position = Vector3.Backward * 2000 + Vector3.Up * 2000 + Vector3.Left * 2000;
-			Camera.Rotation = Rotation.LookAt( -Camera.Position );
-
-			var bbox = activeScene.Scene.GetBounds();
-
-			FrameOn( bbox );
-		}
-	}
-
-
 	[Event( "scene.frame" )]
 	public void FrameOn( BBox target )
 	{

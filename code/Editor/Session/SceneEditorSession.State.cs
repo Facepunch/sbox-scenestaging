@@ -29,4 +29,17 @@ public partial class SceneEditorSession
 		camera.Rotation = CameraRotation;
 	}
 
+	public void InitializeCamera()
+	{
+		// todo - load last camera position from cookies if possible
+
+
+		CameraRotation = Rotation.From( 45, 45, 0 );
+
+		var fieldOfView = 80.0f;
+		var bounds = Scene.GetBounds();
+		var distance = MathX.SphereCameraDistance( bounds.Size.Length * 0.5f, fieldOfView ) * 1.0f;
+		CameraPosition = bounds.Center + distance * CameraRotation.Backward;
+	}
+
 }
