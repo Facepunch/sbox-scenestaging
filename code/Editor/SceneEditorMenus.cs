@@ -180,11 +180,16 @@ public static class SceneEditorMenus
 		if ( !SceneViewWidget.Current.IsValid() )
 			return;
 
+		if ( EditorScene.Selection.Count == 0 )
+			return;
+
 		foreach ( var entry in EditorScene.Selection.OfType<GameObject>() )
 		{
 			entry.Transform.World = new Transform( SceneViewWidget.Current.Camera.Position, SceneViewWidget.Current.Camera.Rotation );
 
 		}
+
+		SceneEditorSession.Active.Scene.EditLog( "Align To View", EditorScene.Selection.ToArray() );
 	}
 
 
