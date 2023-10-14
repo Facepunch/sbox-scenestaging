@@ -33,6 +33,7 @@ public static class SceneEditorMenus
 		var json = go.Serialize( options );
 
 		EditorUtility.Clipboard.Copy( json.ToString() );
+		go.Destroy();
 
 		
 	}
