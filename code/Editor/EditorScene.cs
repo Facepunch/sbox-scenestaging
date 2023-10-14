@@ -8,7 +8,7 @@ public static class EditorScene
 
 	internal static Gizmo.Instance GizmoInstance { get; private set; } = new Gizmo.Instance();
 
-	public static SelectionSystem Selection => GizmoInstance.Selection;
+	public static SelectionSystem Selection => SceneEditorSession.Active?.Selection;
 
 	[Event( "game.loaded" )]
 	public static void GameStarted( Package package )

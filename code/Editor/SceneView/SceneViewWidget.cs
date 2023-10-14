@@ -37,11 +37,15 @@ public partial class SceneViewWidget : Widget
 	[EditorEvent.Frame]
 	public void Frame()
 	{
-		if ( selectionHash != EditorScene.Selection.GetHashCode() )
+		var session = SceneEditorSession.Active;
+		if ( session is null ) return;
+
+		// Update inspector with current selection, if changed
+		if ( selectionHash != session.Selection.GetHashCode() )
 		{
 			// todo - multiselect
-			EditorUtility.InspectorObject = EditorScene.Selection.LastOrDefault();
-			selectionHash = EditorScene.Selection.GetHashCode();
+			EditorUtility.InspectorObject = session.Selection.LastOrDefault();
+			selectionHash = session.Selection.GetHashCode();
 		}
 
 		if ( !Visible )
@@ -49,23 +53,17 @@ public partial class SceneViewWidget : Widget
 
 		Current = this;
 
-		var session = SceneEditorSession.Active;
-
-	//	Camera.World = session?.Scene.SceneWorld;
-
-
-
-		if ( session is not null )
+		// Lets default to the settings from the camera
+		var camera = session.Scene.FindAllComponents<CameraComponent>( false ).FirstOrDefault();
+		if ( camera is not null )
 		{
-			// Lets default to the settings from the camera
-			var camera = session.Scene.FindAllComponents<CameraComponent>( false ).FirstOrDefault();
-			if ( camera is not null )
-			{
-				camera.UpdateCamera( Camera );
-			}
-
-			session.RestoreCamera( Camera );
+			camera.UpdateCamera( Camera );
 		}
+
+		session.RestoreCamera( Camera );
+
+		EditorScene.GizmoInstance.Selection = session.Selection;
+		
 
 		Camera.Worlds.Add( EditorScene.GizmoInstance.World );
 		Camera.ClearFlags = ClearFlags.Color | ClearFlags.Depth | ClearFlags.Stencil;

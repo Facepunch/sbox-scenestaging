@@ -22,7 +22,6 @@ public partial class SceneTreeWidget : Widget
 		Header = Layout.AddColumn();
 		TreeView = Layout.Add( new TreeView( this ), 1 );
 		TreeView.MultiSelect = true;
-		TreeView.Selection = EditorScene.Selection;
 		Footer = Layout.AddColumn();
 		_lastScene = null;
 		CheckForChanges();
@@ -39,10 +38,10 @@ public partial class SceneTreeWidget : Widget
 
 		_lastScene = activeScene;
 
-		// Copy the current selection as we're about to kill it
-		var selection = new List<object>( EditorScene.Selection );
-
 		Header.Clear( true );
+
+		// treeview will clear the selection, so give it a new one to clear
+		TreeView.Selection = new SelectionSystem();
 		TreeView.Clear();
 
 		if ( _lastScene is null )
@@ -61,12 +60,7 @@ public partial class SceneTreeWidget : Widget
 			TreeView.Open( node );
 		}
 
-		// Iterate through selection, try to find them in the new tree
-		foreach ( var go in selection.Select( x => x as GameObject ) )
-		{
-			if ( activeScene.Scene.FindObjectByGuid( go.Id ) is GameObject activeObj )
-				TreeView.Selection.Add( activeObj );
-		}
+		TreeView.Selection = activeScene.Selection;
 	}
 }
 
