@@ -17,7 +17,13 @@ public partial class GameObject
 	/// </summary>
 	public void Clear()
 	{
-		OnDestroy();
+		// delete all components
+		ForEachComponent( "OnDestroy", true, c => c.Destroy() );
+		Components.RemoveAll( x => x is null );
+
+		// delete all children
+		ForEachChild( "Children", true, c => c.DestroyImmediate() );
+		Children.RemoveAll( x => x is null );
 	}
 
 	//

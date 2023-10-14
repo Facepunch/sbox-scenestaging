@@ -120,8 +120,7 @@ public abstract partial class BaseComponent
 			_enabled = false;
 		}
 
-		var i = GameObject.Components.IndexOf( this );
-		if ( i >= 0 ) GameObject.Components[i] = null;
+		GameObject.Components.RemoveAll( x => x == this );
 	}
 
 	public virtual void Reset()
