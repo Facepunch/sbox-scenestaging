@@ -79,7 +79,6 @@ public partial class GameObject
 		using ( Gizmo.ObjectScope( this, Transform.Local ) )
 		{
 			bool clicked = Gizmo.WasClicked;
-			
 
 			if ( Gizmo.IsSelected )
 			{
@@ -100,6 +99,7 @@ public partial class GameObject
 			if ( clicked )
 			{
 				Gizmo.Select();
+				EditLog( "Selection", this );
 			}
 
 			foreach ( var child in Children )
