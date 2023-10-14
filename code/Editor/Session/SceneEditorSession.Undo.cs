@@ -38,7 +38,7 @@ public partial class SceneEditorSession
 			return;
 		}
 
-		Log.Info( $"Add Undo [{title}] [{Editor.Application.MouseButtons}] [{ShouldDeferUndo}]" );
+		//Log.Info( $"Add Undo [{title}] [{Editor.Application.MouseButtons}] [{ShouldDeferUndo}]" );
 		undoSystem.Snapshot( title );
 		pendingUndoSnapshot = null;
 	}
