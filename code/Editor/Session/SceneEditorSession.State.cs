@@ -31,8 +31,22 @@ public partial class SceneEditorSession
 
 	public void InitializeCamera()
 	{
-		// todo - load last camera position from cookies if possible
+		// 1. load last camera position from cookies if possible
 
+		//
+		// 2. Place camera where a Camera component is
+		//
+		var cc = Scene.GetComponent<CameraComponent>( true, true );
+		if ( cc is not null )
+		{
+			CameraPosition = cc.Transform.Position;
+			CameraRotation = cc.Transform.Rotation;
+			return;
+		}
+
+		//
+		// 3. BBox frame the scene
+		//
 
 		CameraRotation = Rotation.From( 45, 45, 0 );
 
