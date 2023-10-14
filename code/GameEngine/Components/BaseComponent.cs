@@ -171,9 +171,7 @@ public abstract partial class BaseComponent
 	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) => GameObject.GetComponents<T>( enabledOnly, deep );
 
 	public bool TryGetComponent<T>( out T component, bool enabledOnly = true, bool deep = false ) => GameObject.TryGetComponent( out component, enabledOnly, deep );
-
-	public bool TryGetComponents<T>( out IEnumerable<T> components, bool enabledOnly = true, bool deep = false ) => GameObject.TryGetComponents( out components, enabledOnly, deep );
-
+	
 	/// <summary>
 	/// A component with this interface will run in the editor
 	/// </summary>
