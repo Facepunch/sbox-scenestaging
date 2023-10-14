@@ -62,7 +62,14 @@ public class Scene : GameObject
 		PreRender();
 		DrawGizmos();
 		InitialSettings();
-		Tick();
+
+		// Only tick here if we're an editor scene
+		// The game will tick a game scene!
+		if ( IsEditor )
+		{
+			Tick();
+		}
+
 		ProcessDeletes();
 	}
 
