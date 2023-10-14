@@ -148,9 +148,9 @@ public abstract partial class BaseComponent
 	/// <summary>
 	/// Called when something on the component has been edited
 	/// </summary>
-	public void EditLog( string name, object source, Action undo )
+	public void EditLog( string name, object source )
 	{
-		GameObject.EditLog( name, source, undo );
+		GameObject.EditLog( name, source );
 	}
 	
 	/// <inheritdoc cref="GameObject.GetComponent{T}(bool, bool)"/>

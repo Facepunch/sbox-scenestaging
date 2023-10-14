@@ -75,7 +75,7 @@ public class GameObjectInspector : Widget
 	void PropertyEdited( SerializedProperty property, GameObject go )
 	{
 		var value = property.GetValue<object>();
-		go.EditLog( $"{go.Name}.{property.Name}", go, () => property.SetValue( value ) );
+		go.EditLog( $"{go.Name}.{property.Name}", go );
 	}
 
 	/// <summary>
@@ -122,7 +122,7 @@ public class ComponentList : Widget
 	void PropertyEdited( SerializedProperty property, BaseComponent component )
 	{
 		var value = property.GetValue<object>();
-		component.EditLog( $"{component.Name}.{property.Name}", component, () => property.SetValue( value ) );
+		component.EditLog( $"{component.Name}.{property.Name}", component );
 	}
 
 	void OpenContextMenu( BaseComponent component )

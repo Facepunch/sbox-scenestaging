@@ -219,7 +219,7 @@ public class Scene : GameObject
 		Load( file );
 	}
 
-	public override void EditLog( string name, object source, Action undo )
+	public override void EditLog( string name, object source )
 	{
 		HasUnsavedChanges = true;
 		OnEdited?.Invoke( name );

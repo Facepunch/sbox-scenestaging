@@ -126,7 +126,7 @@ public partial class GameObject
 		{
 			if ( Gizmo.Control.Position( "position", tx.Position, out var newPos, tx.Rotation ) )
 			{
-				EditLog( "Position", this, () => Transform.Local = backup );
+				EditLog( "Position", this );
 
 				tx.Position = newPos;
 			}
@@ -136,7 +136,7 @@ public partial class GameObject
 		{
 			if ( Gizmo.Control.Rotate( "rotation", tx.Rotation, out var newRotation ) )
 			{
-				EditLog( "Rotation", this, () => Transform.Local = backup );
+				EditLog( "Rotation", this );
 
 				tx.Rotation = newRotation;
 			}
@@ -146,7 +146,7 @@ public partial class GameObject
 		{
 			if ( Gizmo.Control.Scale( "scale", tx.Scale, out var newScale ) )
 			{
-				EditLog( "Scale", this, () => Transform.Local = backup );
+				EditLog( "Scale", this );
 
 				tx.Scale = newScale.Clamp( 0.001f, 100.0f );
 			}

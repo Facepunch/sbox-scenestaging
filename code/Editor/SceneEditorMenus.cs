@@ -78,7 +78,7 @@ public static class SceneEditorMenus
 			EditorScene.Selection.Clear();
 			EditorScene.Selection.Add( go );
 
-			go.EditLog( "Paste", go, null );
+			go.EditLog( "Paste", go );
 			//TreeView.SelectItem( go );
 		}
 	}
@@ -104,7 +104,7 @@ public static class SceneEditorMenus
 			EditorScene.Selection.Clear();
 			EditorScene.Selection.Add( go );
 
-			go.EditLog( "Paste", go, null );
+			go.EditLog( "Paste", go );
 		}
 	}
 
@@ -127,7 +127,7 @@ public static class SceneEditorMenus
 
 		source.AddSibling( go, false );
 
-		go.EditLog( "Duplicate", go, null );
+		go.EditLog( "Duplicate", go );
 
 		EditorScene.Selection.Clear();
 		EditorScene.Selection.Add( go );
@@ -144,7 +144,7 @@ public static class SceneEditorMenus
 				return;
 
 			entry.Destroy();
-			entry.EditLog( "Delete", entry, null );
+			entry.EditLog( "Delete", entry );
 		}
 	}
 

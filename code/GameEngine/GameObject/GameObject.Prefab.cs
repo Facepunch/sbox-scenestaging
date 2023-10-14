@@ -23,7 +23,7 @@ public partial class GameObject
 			return;
 
 		PrefabSource = null;
-		EditLog( "Break From Prefab", this, () => { } );
+		EditLog( "Break From Prefab", this );
 	}
 
 	public void UpdateFromPrefab()

@@ -43,6 +43,9 @@ public partial class SceneNode : TreeNode<Scene>
 	{
 		get
 		{
+			if ( Value?.Children is null )
+				return 0;
+
 			HashCode hc = new HashCode();
 
 			foreach ( var val in Value.Children )

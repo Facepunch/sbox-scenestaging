@@ -452,11 +452,11 @@ public partial class GameObject
 		}
 	}
 
-	public virtual void EditLog( string name, object source, Action undo )
+	public virtual void EditLog( string name, object source )
 	{
 		if ( Parent == null ) return;
 
-		Parent.EditLog( name, source, undo );
+		Parent.EditLog( name, source );
 	}
 
 	/// <summary>
