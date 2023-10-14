@@ -95,6 +95,7 @@ public class CameraComponent : BaseComponent
 
 		// defaults - let components override
 		camera.Tonemap.Enabled = false;
+		camera.CubemapFog.Enabled = false;
 
 		foreach ( var c in GetComponents<ISceneCameraSetup>() )
 		{

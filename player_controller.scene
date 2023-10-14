@@ -100,34 +100,6 @@
       ]
     },
     {
-      "Id": "cedbeabd-8ffe-4ce1-bb9b-c2df8616aadd",
-      "Name": "Volumetric Fog",
-      "Enabled": true,
-      "Position": "1248.084,44.49568,-1579.203",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "ModelComponent",
-          "__enabled": true,
-          "MaterialOverride": "materials/shine.vmat",
-          "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "VolumetricFogVolume",
-          "__enabled": true,
-          "Bounds": {
-            "Mins": "-150,-150,-150",
-            "Maxs": "150,150,150"
-          },
-          "FalloffExponent": 1,
-          "Strength": 2
-        }
-      ]
-    },
-    {
       "Id": "12df27a7-aaf4-4da8-bc02-173ecd53c168",
       "Name": "SkyBox",
       "Enabled": true,
@@ -193,7 +165,7 @@
           "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
           "Name": "Camera",
           "Enabled": true,
-          "Position": "-114.15,0,72",
+          "Position": "-114.15,0,49.91114",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Components": [
@@ -212,6 +184,15 @@
               "MaxPoints": 10000,
               "TracesPerFrame": 500,
               "TraceType": "Ray"
+            },
+            {
+              "__type": "CubemapFog",
+              "__enabled": true,
+              "Blur": 0.5,
+              "EndDistance": 8000,
+              "FalloffExponent": 2,
+              "Sky": "materials/skybox/light_test_sky_sunset_2.vmat",
+              "StartDistance": 0
             }
           ]
         },
