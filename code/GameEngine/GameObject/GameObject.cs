@@ -252,16 +252,16 @@ public partial class GameObject
 		}
 	}
 
-	public bool TryGetComponent<T>( out T component )
+	public bool TryGetComponent<T>( out T component, bool enabledOnly = true, bool deep = false )
 	{
-		component = GetComponent<T>();
+		component = GetComponent<T>( enabledOnly, deep );
 
 		return component is not null;
 	}
 
-	public bool TryGetComponents<T>( out IEnumerable<T> components )
+	public bool TryGetComponents<T>( out IEnumerable<T> components, bool enabledOnly = true, bool deep = false )
 	{
-		components = GetComponents<T>();
+		components = GetComponents<T>(enabledOnly, deep);
 
 		return components.Any();
 	}
