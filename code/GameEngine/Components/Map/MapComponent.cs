@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 [Title( "Map" )]
 [Category( "World" )]
 [Icon( "visibility", "red", "white" )]
-public class MapComponent : BaseComponent
+public class MapComponent : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	[Property]
 	public string MapName { get; set; }

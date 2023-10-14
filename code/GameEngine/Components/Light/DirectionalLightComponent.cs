@@ -6,7 +6,7 @@ using System;
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
 [EditorHandle( "materials/gizmo/directionallight.png" )]
-public class DirectionalLightComponent : BaseComponent, IComponentColorProvider
+public class DirectionalLightComponent : BaseComponent, IComponentColorProvider, BaseComponent.ExecuteInEditor
 {
 	SceneSunLight _sceneObject;
 

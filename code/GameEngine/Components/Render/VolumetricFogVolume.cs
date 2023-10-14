@@ -5,7 +5,7 @@ using Sandbox.Diagnostics;
 [Category( "Rendering" )]
 [Icon( "visibility", "red", "white" )]
 [EditorHandle( "materials/gizmo/VolumetricFogVolume.png" )]
-public class VolumetricFogVolume : BaseComponent
+public class VolumetricFogVolume : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	SceneFogVolume sceneObject;
 

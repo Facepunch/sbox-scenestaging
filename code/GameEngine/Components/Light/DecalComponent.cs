@@ -5,7 +5,7 @@ using System;
 [Title( "Decal" )]
 [Icon( "lens_blur", "red", "white" )]
 [EditorHandle( "materials/gizmo/decal.png" )]
-public class DecalComponent : BaseComponent
+public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	SceneObject _sceneObject;
 

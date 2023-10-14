@@ -5,7 +5,7 @@ using Sandbox.Diagnostics;
 [Category( "Rendering" )]
 [Icon( "visibility", "red", "white" )]
 [Alias( "ModelComponentMate" )]
-public class ModelComponent : BaseComponent
+public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	Model _model;
 
@@ -116,10 +116,6 @@ public class ModelComponent : BaseComponent
 			Gizmo.Draw.Color = Color.White.WithAlpha( 0.4f );
 			Gizmo.Draw.LineBBox( Model.Bounds );
 		}
-
-
-
-		
 	}
 
 	public override void OnEnabled()

@@ -61,7 +61,7 @@ public static class SceneThumbnailRenderer
 		// rendering scenes in 16:9 
 		var pix = new Pixmap( 512, 288 );
 
-		var scene = new Scene();
+		var scene = Scene.CreateEditorScene();
 
 		using ( scene.Push() )
 		{

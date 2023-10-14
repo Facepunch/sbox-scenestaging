@@ -24,7 +24,7 @@ public static class EditorScene
 
 	public static void NewScene()
 	{
-		var scene = new Scene();
+		var scene = Scene.CreateEditorScene();
 		scene.Name = "Untitled Scene";
 
 		// create default scene
@@ -148,7 +148,7 @@ public static class EditorScene
 			return;
 		}
 
-		var openingScene = new Scene();
+		var openingScene = Scene.CreateEditorScene();
 		using ( openingScene.Push() )
 		{
 			openingScene.Name = resource.ResourceName.ToTitleCase();

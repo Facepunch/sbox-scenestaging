@@ -39,6 +39,7 @@ public abstract partial class BaseComponent
 	}
 
 	public string Name { get; set; }
+	private bool ShouldExecute => !Scene.IsEditor || this is ExecuteInEditor;
 
 	public virtual void DrawGizmos() { }
 
@@ -50,7 +51,11 @@ public abstract partial class BaseComponent
 		if ( _enabledState )
 		{
 			_enabledState = false;
-			OnDisabled();
+
+			if ( ShouldExecute )
+			{
+				ExceptionWrap( "OnDisabled", OnDisabled );
+			}
 		}
 
 		GameObject = null;
@@ -71,7 +76,7 @@ public abstract partial class BaseComponent
 	internal virtual void InternalUpdate() 
 	{
 		if ( !Enabled ) return;
-		if ( Scene.IsEditor && this is not ExecuteInEditor ) return;
+		if ( !ShouldExecute ) return;
 
 		Update();
 	}
@@ -88,11 +93,17 @@ public abstract partial class BaseComponent
 			onAwake?.Invoke();
 			onAwake = null;
 
-			ExceptionWrap( "OnEnabled", OnEnabled );
+			if ( ShouldExecute )
+			{
+				ExceptionWrap( "OnEnabled", OnEnabled );
+			}
 		}
 		else
 		{
-			ExceptionWrap( "OnDisabled", OnDisabled );
+			if ( ShouldExecute )
+			{
+				ExceptionWrap( "OnDisabled", OnDisabled );
+			}
 		}
 	}
 

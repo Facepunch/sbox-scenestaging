@@ -5,7 +5,7 @@ using Sandbox.Diagnostics;
 [Category( "Rendering" )]
 [Icon( "visibility", "red", "white" )]
 [EditorHandle( "materials/gizmo/2dskybox.png" )]
-public class SkyBox2D : BaseComponent
+public class SkyBox2D : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	Color _tint = Color.White;
 

@@ -15,6 +15,7 @@ public partial class GameObject
 		var handles = Components
 			.Where ( x => x is not null )
 			.Select( x => TypeLibrary.GetType( x.GetType() ) )
+			.Where( x => x is not null )
 			.SelectMany( x => x.GetAttributes<EditorHandleAttribute>() )
 			.FirstOrDefault();
 

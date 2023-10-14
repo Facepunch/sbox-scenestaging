@@ -6,7 +6,7 @@ using System;
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
 [EditorHandle( "materials/gizmo/pointlight.png" )]
-public class PointLightComponent : BaseComponent, IComponentColorProvider
+public class PointLightComponent : BaseComponent, IComponentColorProvider, BaseComponent.ExecuteInEditor
 {
 	SceneLight _sceneObject;
 
