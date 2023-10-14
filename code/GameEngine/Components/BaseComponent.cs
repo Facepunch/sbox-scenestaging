@@ -109,8 +109,19 @@ public abstract partial class BaseComponent
 
 	public void Destroy()
 	{
-		Enabled = false;
-		GameObject.Components.Remove( this );
+		if ( _enabledState )
+		{
+			if ( ShouldExecute )
+			{
+				ExceptionWrap( "OnDisabled", OnDisabled );
+			}
+
+			_enabledState = false;
+			_enabled = false;
+		}
+
+		var i = GameObject.Components.IndexOf( this );
+		if ( i >= 0 ) GameObject.Components[i] = null;
 	}
 
 	public virtual void Reset()

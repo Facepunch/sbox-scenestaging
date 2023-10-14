@@ -123,12 +123,11 @@ public partial class GameObject
 
 	internal void OnDestroy()
 	{
-		ForEachComponent( "OnDestroy", true, c => c.OnDestroyInternal() );
+		ForEachComponent( "OnDestroy", true, c => c.Destroy() );
+		ForEachChild( "Children", true, c => c.OnDestroy() );
 
-		foreach ( var child in Children )
-		{
-			child.OnDestroy();
-		}
+		Children.Clear();
+		isDestroyed = true;
 	}
 
 	internal void PostPhysics()
@@ -136,21 +135,13 @@ public partial class GameObject
 		//Gizmo.Draw.LineSphere( new Sphere( WorldTransform.Position, 3 ) );
 
 		ForEachComponent( "PostPhysics", true, c => c.PostPhysics() );
-
-		foreach ( var child in Children )
-		{
-			child.PostPhysics();
-		}
+		ForEachChild( "PostPhysics", true, c => c.PostPhysics() );
 	}
 
 	internal void PreRender()
 	{
 		ForEachComponent( "PreRender", true, c => c.PreRender() );
-
-		foreach ( var child in Children )
-		{
-			child.PreRender();
-		}
+		ForEachChild( "PreRender", true, c => c.PreRender() );
 	}
 
 	internal void ForEachComponent( string name, bool activeOnly, Action<BaseComponent> action )
@@ -162,6 +153,33 @@ public partial class GameObject
 			if ( c is null )
 			{
 				Components.RemoveAt( i );
+				i--;
+				continue;
+			}
+
+			if ( activeOnly && !c.Active )
+				continue;
+
+			try
+			{
+				action( c );
+			}
+			catch ( System.Exception e )
+			{
+				Log.Warning( e, $"Exception when calling {name} on {c}: {e.Message}" );
+			}
+		}
+	}
+
+	internal void ForEachChild( string name, bool activeOnly, Action<GameObject> action )
+	{
+		for ( int i = 0; i < Children.Count; i++ )
+		{
+			var c = Children[i];
+
+			if ( c is null )
+			{
+				Children.RemoveAt( i );
 				i--;
 				continue;
 			}
@@ -212,7 +230,7 @@ public partial class GameObject
 	/// <returns></returns>
 	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false )
 	{
-		var q = Components.AsEnumerable();
+		var q = Components.Where( x => x is not null );
 		if ( enabledOnly ) q = q.Where( x => x.Active );
 
 		foreach ( var c in q.OfType<T>() )
@@ -224,6 +242,8 @@ public partial class GameObject
 		{
 			foreach ( var child in Children )
 			{
+				if ( child is null ) continue;
+
 				foreach ( var found in child.GetComponents<T>( enabledOnly, deep ) )
 				{
 					yield return found;
@@ -265,7 +285,11 @@ public partial class GameObject
 
 	public void Destroy()
 	{
+		if ( isDestroying )
+			return;
+
 		isDestroying = true;
+
 		Scene?.QueueDelete( this );
 	}
 
@@ -282,22 +306,17 @@ public partial class GameObject
 			c.UpdateEnabledStatus();
 		} );
 
-		foreach ( var child in Children )
-		{
-			child.UpdateEnabledStatus();
-		}
+		ForEachChild( "UpdateEnabledStatus", true, c => c.UpdateEnabledStatus() );
 	}
 
 	public void DestroyImmediate()
 	{
-		bool isRoot = Parent == null;
-		var scene = Scene;
+		OnDestroy();
 
-		DestroyRecursive();
-
-		if ( isRoot && scene is not null )
+		if ( Parent is not null )
 		{
-			scene.Remove( this );
+			var i = Parent.Children.IndexOf( this );
+			if ( i >= 0 ) Parent.Children[i] = null;
 		}
 	}
 
@@ -447,7 +466,7 @@ public partial class GameObject
 
 		yield return this;
 
-		foreach ( var child in Children.SelectMany( x => x.GetAllObjects( enabled ) ) )
+		foreach ( var child in Children.OfType<GameObject>().SelectMany( x => x.GetAllObjects( enabled ) ).ToArray() )
 		{
 			yield return child;
 		}

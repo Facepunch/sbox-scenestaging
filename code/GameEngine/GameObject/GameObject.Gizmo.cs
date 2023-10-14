@@ -102,10 +102,7 @@ public partial class GameObject
 				EditLog( "Selection", this );
 			}
 
-			foreach ( var child in Children )
-			{
-				child.DrawGizmos();
-			}
+			ForEachChild( "DrawGizmos", true, c => c.DrawGizmos() );
 
 		}
 	}

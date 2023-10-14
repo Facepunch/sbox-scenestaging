@@ -148,6 +148,7 @@ public class Scene : GameObject
 		Assert.NotNull( resource );
 
 		Clear();
+		ProcessDeletes();
 
 		if ( resource is SceneFile sceneFile )
 		{
@@ -182,18 +183,12 @@ public class Scene : GameObject
 
 		foreach ( var go in Children )
 		{
+			if ( go is null ) continue;
+
 			found.AddRange( go.GetComponents<T>( includeDisabled, true ) );
 		}
 
 		return found;
-	}
-
-	internal void Remove( GameObject gameObject )
-	{
-		if ( !Children.Remove( gameObject ) )
-		{
-			Log.Warning( "Scene.Remove - gameobject wasn't in All!" );
-		}
 	}
 
 	/// <summary>
