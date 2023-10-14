@@ -103,7 +103,7 @@
       "Id": "12df27a7-aaf4-4da8-bc02-173ecd53c168",
       "Name": "SkyBox",
       "Enabled": true,
-      "Position": "1252.565,134.7641,-1565.545",
+      "Position": "1252.565,134.7641,-1378.779",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -116,10 +116,30 @@
       ]
     },
     {
+      "Id": "0cd4b3b6-7ff0-461e-9ce3-716ce58ea5d4",
+      "Name": "Gradient Fog",
+      "Enabled": true,
+      "Position": "1318.709,134.7641,-1636.627",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "GradientFog",
+          "__enabled": true,
+          "Color": "0.15347,0.14853,0.13447,0.42",
+          "EndDistance": 1024,
+          "FalloffExponent": 3,
+          "Height": 1024,
+          "StartDistance": 0,
+          "VerticalFalloffExponent": 5
+        }
+      ]
+    },
+    {
       "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
       "Name": "Citizen",
       "Enabled": true,
-      "Position": "1030.004,656.9639,-1630.05",
+      "Position": "1030.004,656.9639,-1637.595",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -165,7 +185,7 @@
           "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
           "Name": "Camera",
           "Enabled": true,
-          "Position": "-114.15,0,49.91114",
+          "Position": "-200,0,64",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Components": [
@@ -187,7 +207,7 @@
             },
             {
               "__type": "CubemapFog",
-              "__enabled": true,
+              "__enabled": false,
               "Blur": 0.5,
               "EndDistance": 8000,
               "FalloffExponent": 2,
