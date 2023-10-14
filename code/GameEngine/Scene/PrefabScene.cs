@@ -19,7 +19,8 @@ public sealed class PrefabScene : Scene
 	{
 		return new PrefabScene()
 		{
-			Source = file
+			Source = file,
+			Name = $"{file.ResourceName}"
 		};
 	}
 
