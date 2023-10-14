@@ -63,8 +63,8 @@ public partial class SceneViewWidget : Widget
 		session.RestoreCamera( Camera );
 
 		EditorScene.GizmoInstance.Selection = session.Selection;
-		
 
+		Camera.World = session.Scene.SceneWorld;
 		Camera.Worlds.Add( EditorScene.GizmoInstance.World );
 		Camera.ClearFlags = ClearFlags.Color | ClearFlags.Depth | ClearFlags.Stencil;
 		Camera.ZNear = EditorScene.GizmoInstance.Settings.CameraZNear;
@@ -90,11 +90,6 @@ public partial class SceneViewWidget : Widget
 		}
 
 		EditorScene.GizmoInstance.UpdateInputs( Camera, Renderer );
-
-		if ( session is null )
-			return;
-
-		session.Scene.SceneWorld.AmbientLightColor = Color.Black;
 
 		using ( EditorScene.GizmoInstance.Push() )
 		{
