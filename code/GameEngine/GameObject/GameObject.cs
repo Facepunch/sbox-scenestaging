@@ -259,6 +259,13 @@ public partial class GameObject
 		return component is not null;
 	}
 
+	public bool TryGetComponents<T>( out IEnumerable<T> components )
+	{
+		components = GetComponents<T>();
+
+		return components.Any();
+	}
+	
 	public BaseComponent AddComponent( TypeDescription type, bool enabled = true )
 	{
 		if ( !type.TargetType.IsAssignableTo( typeof( BaseComponent ) ) )
