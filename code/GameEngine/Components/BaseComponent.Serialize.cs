@@ -95,7 +95,7 @@ public abstract partial class BaseComponent
 
 			if ( ResourceLibrary.TryGet( guidString, out PrefabFile prefabFile ) )
 			{
-				prop.SetValue( this, prefabFile.PrefabScene );
+				prop.SetValue( this, prefabFile.Scene );
 				return;
 			}
 

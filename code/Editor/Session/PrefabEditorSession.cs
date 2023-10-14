@@ -7,14 +7,14 @@ public class PrefabEditorSession : SceneEditorSession
 
 	public PrefabEditorSession( PrefabScene scene ) : base( scene )
 	{
-
+		scene.SceneWorld.AmbientLightColor = new Color( 0.7f, 0.7f, 0.7f );
 	}
 
 	public override void OnEdited()
 	{
 		if ( Scene is PrefabScene prefabScene )
 		{
-			EditorScene.UpdatePrefabInstances( prefabScene.Source as PrefabFile );
+			EditorScene.UpdatePrefabInstances( prefabScene, prefabScene.Source as PrefabFile );
 		}
 	}
 }

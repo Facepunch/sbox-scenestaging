@@ -105,7 +105,7 @@ public class GameObjectControlWidget : ControlWidget
 
 			if ( asset.TryLoadResource( out PrefabFile prefabFile ) )
 			{
-				SerializedProperty.SetValue( prefabFile.PrefabScene );
+				SerializedProperty.SetValue( prefabFile.Scene );
 				return;
 			}
 		}

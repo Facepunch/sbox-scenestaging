@@ -30,9 +30,14 @@ public class Scene : GameObject
 		PhysicsWorld.SetCollisionRules( settings );
 	}
 
+	protected Scene( bool isEditor ) : this()
+	{
+		IsEditor = isEditor;
+	}
+
 	public static Scene CreateEditorScene()
 	{
-		return new Scene() { IsEditor = true };
+		return new Scene( true );
 	}
 
 	public void Register( GameObject o )

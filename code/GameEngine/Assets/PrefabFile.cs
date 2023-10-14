@@ -9,26 +9,19 @@ public class PrefabFile : GameResource
 
 	public JsonObject RootObject { get; set; }
 
+	/// <summary>
+	/// This is used as a reference
+	/// </summary>
 	[JsonIgnore]
-	public PrefabScene PrefabScene { get; set; }
+	public PrefabScene Scene { get; set; }
 
 	protected override void PostLoad()
 	{
 		PostReload();
 	}
 
-	public void UpdateJson()
-	{
-		RootObject = PrefabScene.Serialize();
-	}
-
 	protected override void PostReload()
 	{
-		PrefabScene ??= new PrefabScene();
-
-		using ( PrefabScene.Push() )
-		{
-			PrefabScene.Load( this );
-		}
+		Scene ??= PrefabScene.Create( this );
 	}
 }

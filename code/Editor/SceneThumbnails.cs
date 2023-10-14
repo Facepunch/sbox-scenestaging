@@ -43,7 +43,7 @@ public static class SceneThumbnailRenderer
 	{
 		var pix = new Pixmap( 256, 256 );
 
-		var scene = new PrefabScene();
+		var scene = PrefabScene.Create();
 
 		using ( scene.Push() )
 		{

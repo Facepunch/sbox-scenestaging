@@ -253,7 +253,7 @@ public partial class SceneViewWidget : Widget
 		//
 		if ( asset.LoadResource<PrefabFile>() is PrefabFile prefabFile )
 		{
-			DragObject = SceneUtility.Instantiate( prefabFile.PrefabScene, Vector3.Zero, Rotation.Identity );
+			DragObject = SceneUtility.Instantiate( prefabFile.Scene, Vector3.Zero, Rotation.Identity );
 			return;
 		}
 

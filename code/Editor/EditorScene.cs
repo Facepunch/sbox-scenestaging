@@ -182,12 +182,10 @@ public static class EditorScene
 			session.MakeActive();
 			return;
 		}
-
-		var prefabScene = resource.PrefabScene;
-
 		// add default lighting
-		new SceneSunLight( prefabScene.SceneWorld, Rotation.From( 80, 45, 0 ), Color.White * 0.5f );
+		//new SceneSunLight( prefabScene.SceneWorld, Rotation.From( 80, 45, 0 ), Color.White * 0.5f );
 
+		var prefabScene = PrefabScene.Create();
 		using ( prefabScene.Push() )
 		{
 			prefabScene.Name = resource.ResourceName.ToTitleCase();
@@ -196,7 +194,6 @@ public static class EditorScene
 			session = new PrefabEditorSession( prefabScene );
 			session.MakeActive();
 
-			EditorWindow.DockManager.RaiseDock( "Scene" );
 			EditorEvent.Run( "scene.open" );
 		}
 	}
@@ -221,13 +218,13 @@ public static class EditorScene
 	/// <summary>
 	/// Should get called whenever the prefab scene has finished being edited
 	/// </summary>
-	public static void UpdatePrefabInstances( PrefabFile prefab )
+	public static void UpdatePrefabInstances( PrefabScene scene, PrefabFile prefab )
 	{
 		ArgumentNullException.ThrowIfNull( prefab );
 
 		// write from prefab scene to its jsonobject
 		// this doesn't save it to disk
-		prefab.UpdateJson();
+		prefab.RootObject = scene.Serialize();
 
 		foreach ( var session in SceneEditorSession.All )
 		{
