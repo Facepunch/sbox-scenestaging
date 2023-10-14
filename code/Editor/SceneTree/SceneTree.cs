@@ -51,8 +51,6 @@ public partial class SceneTreeWidget : Widget
 		{
 			var node = TreeView.AddItem( new PrefabNode( prefabScene ) );
 			TreeView.Open( node );
-
-			return;
 		}
 		else
 		{
