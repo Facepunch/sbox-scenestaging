@@ -10,7 +10,6 @@ public sealed class MoveHelperDebugVis : BaseComponent
 		
 	}
 
-
 	public override void DrawGizmos()
 	{
 		var ts = (1.0f / 15.0f);

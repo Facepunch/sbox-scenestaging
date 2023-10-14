@@ -1,7 +1,6 @@
 ﻿using System.Buffers;
 using System;
-
-namespace Sandbox;
+using Sandbox;
 
 internal struct CharacterControllerHelper
 {
@@ -313,7 +312,7 @@ file struct VelocityClipPlanes : IDisposable
 	Vector3 ClipVelocity( Vector3 vel, Vector3 norm, float overbounce = 1.0f )
 	{
 		var backoff = Vector3.Dot( vel, norm ) * overbounce;
-		var o = vel - (norm * backoff);
+		var o = vel - norm * backoff;
 
 		// garry: I don't totally understand how we could still
 		//		  be travelling towards the norm, but the hl2 code
