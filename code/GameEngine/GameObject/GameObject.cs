@@ -198,7 +198,7 @@ public partial class GameObject
 	/// <param name="enabledOnly"></param>
 	/// <param name="deep"></param>
 	/// <returns></returns>
-	public T GetComponent<T>( bool enabledOnly = true, bool deep = false ) where T : BaseComponent
+	public T GetComponent<T>( bool enabledOnly = true, bool deep = false )
 	{
 		return GetComponents<T>( enabledOnly, deep ).FirstOrDefault();
 	}
@@ -210,12 +210,12 @@ public partial class GameObject
 	/// <param name="enabledOnly"></param>
 	/// <param name="deep"></param>
 	/// <returns></returns>
-	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) where T : BaseComponent
+	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false )
 	{
-		var q = Components.OfType<T>();
+		var q = Components.AsEnumerable();
 		if ( enabledOnly ) q = q.Where( x => x.Active );
 
-		foreach ( var c in q )
+		foreach ( var c in q.OfType<T>() )
 		{
 			yield return c;
 		}

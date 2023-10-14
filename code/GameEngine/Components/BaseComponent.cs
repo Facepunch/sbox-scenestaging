@@ -142,8 +142,8 @@ public abstract partial class BaseComponent
 	}
 	
 	/// <inheritdoc cref="GameObject.GetComponent{T}(bool, bool)"/>
-	public T GetComponent<T>( bool enabledOnly = true, bool deep = false ) where T : BaseComponent => GameObject.GetComponent<T>( enabledOnly, deep );
+	public T GetComponent<T>( bool enabledOnly = true, bool deep = false ) => GameObject.GetComponent<T>( enabledOnly, deep );
 
 	/// <inheritdoc cref="GameObject.GetComponents{T}(bool, bool)"/>
-	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) where T : BaseComponent => GameObject.GetComponents<T>( enabledOnly, deep );
+	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) => GameObject.GetComponents<T>( enabledOnly, deep );
 }
