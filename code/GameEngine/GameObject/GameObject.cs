@@ -238,13 +238,6 @@ public partial class GameObject
 
 		return component is not null;
 	}
-
-	public bool TryGetComponents<T>( out IEnumerable<T> components, bool enabledOnly = true, bool deep = false )
-	{
-		components = GetComponents<T>(enabledOnly, deep);
-
-		return components.Any();
-	}
 	
 	public BaseComponent AddComponent( TypeDescription type, bool enabled = true )
 	{
