@@ -89,7 +89,7 @@ public abstract partial class BaseComponent
 	}
 
 	protected virtual void OnPreRender() { }
-	internal virtual void PreRender() 
+	internal void PreRender() 
 	{
 		OnPreRender();
 	}
