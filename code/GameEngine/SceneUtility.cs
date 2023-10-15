@@ -52,6 +52,8 @@ public static class SceneUtility
 	/// </summary>
 	public static GameObject Instantiate( GameObject template, Transform transform )
 	{
+		Assert.NotNull( GameManager.ActiveScene, "No Active Scene" );
+
 		using var spawnScope = DeferInitializationScope( "Instantiate" );
 
 		JsonObject json = null;
@@ -76,7 +78,7 @@ public static class SceneUtility
 			go.SetPrefabSource( prefabScene1.Source.ResourcePath );
 		}
 
-		GameManager.ActiveScene.Register( go );
+		go.Parent = GameManager.ActiveScene;
 
 		return go;
 	}

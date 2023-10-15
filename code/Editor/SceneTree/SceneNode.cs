@@ -78,7 +78,7 @@ public partial class SceneNode : TreeNode<Scene>
 
 		GameObjectNode.CreateObjectMenu( m, go =>
 		{
-			Value.Register( go );
+			go.Parent = Value;
 			TreeView.Open( this );
 			TreeView.SelectItem( go );
 		} );

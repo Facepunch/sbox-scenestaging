@@ -30,7 +30,30 @@ public partial class GameObject
 	public Scene Scene => _scene;
 	public GameTransform Transform => _transform;
 
-	public Guid Id { get; private set; }
+
+	private Guid _id;
+	public Guid Id 
+	{
+		get => _id;
+		private set
+		{
+			if ( _id == value ) return;
+
+			var oldId = _id;
+			_id = value;
+
+			Scene?.RegisterGameObjectId( this, oldId );
+		}
+
+	}
+
+	/// <summary>
+	/// Should only be called by Scene.RegisterGameObjectId
+	/// </summary>
+	internal void ForceChangeId( Guid guid )
+	{
+		_id = guid;
+	}
 
 	[Property]
 	public string Name { get; set; } = "Untitled Object";
@@ -126,6 +149,7 @@ public partial class GameObject
 
 		isDestroyed = true;
 		Enabled = false;
+		Scene.UnregisterGameObjectId( this );
 	}
 
 	internal void PostPhysics()
@@ -442,19 +466,6 @@ public partial class GameObject
 				return;
 			}
 		}
-	}
-
-	/// <summary>
-	/// Find a GameObject by Guid
-	/// </summary>
-	public GameObject FindObjectByGuid( Guid guid )
-	{
-		if ( guid == Id )
-			return this;
-
-		return Children.Select( x => x.FindObjectByGuid( guid ) )
-								.Where( x => x is not null )
-								.FirstOrDefault();
 	}
 
 	public IEnumerable<GameObject> GetAllObjects( bool enabled )

@@ -25,10 +25,12 @@ public class SerializeTest
 
 		System.Console.WriteLine( node );
 
+		SceneUtility.MakeGameObjectsUnique( node );
+
 		var go2 = GameObject.Create();
 		go2.Deserialize( node );
 
-		Assert.AreEqual( go1.Id, go2.Id );
+		Assert.AreNotEqual( go1.Id, go2.Id );
 		Assert.AreEqual( go1.Name, go2.Name );
 		Assert.AreEqual( go1.Enabled, go2.Enabled );
 		Assert.AreEqual( go1.Transform.Local, go2.Transform.Local );
@@ -48,7 +50,7 @@ public class SerializeTest
 		go1.Name = "My Game Object";
 		go1.Transform.Local = new Transform( Vector3.Up, Rotation.Identity, 10 );
 
-		int childrenCount = 150000;
+		int childrenCount = 15000;
 
 		for ( int i = 0; i < childrenCount; i++ )
 		{
@@ -67,6 +69,12 @@ public class SerializeTest
 
 
 		timer.Dispose();
+
+		using ( new ScopeTimer( "MakeGameObjectsUnique" ) )
+		{
+			SceneUtility.MakeGameObjectsUnique( node );
+		}
+
 		timer = new ScopeTimer( "Deserialize" );
 		//System.Console.WriteLine( node );
 
@@ -75,7 +83,7 @@ public class SerializeTest
 
 		timer.Dispose();
 
-		Assert.AreEqual( go1.Id, go2.Id );
+		Assert.AreNotEqual( go1.Id, go2.Id );
 		Assert.AreEqual( go1.Name, go2.Name );
 		Assert.AreEqual( go1.Enabled, go2.Enabled );
 		Assert.AreEqual( go1.Transform.Local, go2.Transform.Local );

@@ -20,6 +20,7 @@ public class DestroyTests
 		Assert.AreEqual( go.Scene, scene );
 		Assert.IsNotNull( go.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
+		Assert.AreEqual( 1, scene.RegisteredObjectIds );
 
 		go.Destroy();
 
@@ -30,6 +31,7 @@ public class DestroyTests
 		Assert.AreEqual( go.Scene, scene );
 		Assert.IsNotNull( go.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
+		Assert.AreEqual( 1, scene.RegisteredObjectIds );
 
 		scene.GameTick();
 
@@ -38,6 +40,7 @@ public class DestroyTests
 		Assert.IsNull( go.Scene );
 		Assert.IsNull( go.Parent );
 		Assert.AreEqual( 0, scene.Children.Count() );
+		Assert.AreEqual( 0, scene.RegisteredObjectIds );
 	}
 
 	[TestMethod]
@@ -57,6 +60,7 @@ public class DestroyTests
 		Assert.IsNotNull( go.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
+		Assert.AreEqual( 2, scene.RegisteredObjectIds );
 
 		go.Destroy();
 
@@ -68,6 +72,7 @@ public class DestroyTests
 		Assert.IsNotNull( go.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
+		Assert.AreEqual( 2, scene.RegisteredObjectIds );
 
 		scene.GameTick();
 
@@ -77,6 +82,7 @@ public class DestroyTests
 		Assert.IsNull( go.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 0, parent.Children.Count() );
+		Assert.AreEqual( 1, scene.RegisteredObjectIds );
 	}
 
 	[TestMethod]
@@ -101,6 +107,7 @@ public class DestroyTests
 		Assert.IsNotNull( parent.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
+		Assert.AreEqual( 2, scene.RegisteredObjectIds );
 
 		parent.Destroy();
 
@@ -112,6 +119,7 @@ public class DestroyTests
 		Assert.IsNotNull( go.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
+		Assert.AreEqual( 2, scene.RegisteredObjectIds );
 
 		scene.GameTick();
 		
@@ -125,6 +133,7 @@ public class DestroyTests
 		Assert.IsNull( go.Parent );
 		Assert.AreEqual( 0, scene.Children.Count() );
 		Assert.AreEqual( 0, parent.Children.Count() );
+		Assert.AreEqual( 0, scene.RegisteredObjectIds );
 	}
 
 	[TestMethod]
@@ -149,6 +158,7 @@ public class DestroyTests
 		Assert.IsNotNull( parent.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
+		Assert.AreEqual( 2, scene.RegisteredObjectIds );
 
 		parent.DestroyImmediate();
 
@@ -162,6 +172,7 @@ public class DestroyTests
 		Assert.IsNull( go.Parent );
 		Assert.AreEqual( 0, scene.Children.Count() );
 		Assert.AreEqual( 0, parent.Children.Count() );
+		Assert.AreEqual( 0, scene.RegisteredObjectIds );
 	}
 
 	[TestMethod]
@@ -181,6 +192,7 @@ public class DestroyTests
 		Assert.IsNotNull( go.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
+		Assert.AreEqual( 2, scene.RegisteredObjectIds );
 
 		go.DestroyImmediate();
 
@@ -190,6 +202,7 @@ public class DestroyTests
 		Assert.IsNull( go.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 0, parent.Children.Count() );
+		Assert.AreEqual( 1, scene.RegisteredObjectIds );
 
 	}
 
@@ -207,6 +220,7 @@ public class DestroyTests
 		Assert.AreEqual( go.Scene, scene );
 		Assert.IsNotNull( go.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
+		Assert.AreEqual( 1, scene.RegisteredObjectIds );
 
 		go.DestroyImmediate();
 
@@ -215,6 +229,7 @@ public class DestroyTests
 		Assert.IsNull( go.Scene );
 		Assert.IsNull( go.Parent );
 		Assert.AreEqual( 0, scene.Children.Count() );
+		Assert.AreEqual( 0, scene.RegisteredObjectIds );
 	}
 
 	[TestMethod]
@@ -239,6 +254,7 @@ public class DestroyTests
 		Assert.IsNotNull( parent.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 1, parent.Children.Count() );
+		Assert.AreEqual( 2, scene.RegisteredObjectIds );
 
 		parent.Clear();
 
@@ -252,6 +268,7 @@ public class DestroyTests
 		Assert.IsNull( go.Parent );
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 0, parent.Children.Count() );
+		Assert.AreEqual( 1, scene.RegisteredObjectIds );
 	}
 
 	[TestMethod]
@@ -262,6 +279,7 @@ public class DestroyTests
 
 		var parent = scene.CreateObject();
 
+		Assert.AreEqual( 1, scene.RegisteredObjectIds );
 
 		for ( int i =0; i< 16; i++ )
 		{
@@ -293,6 +311,7 @@ public class DestroyTests
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 16, parent.Children.Count() );
 		Assert.AreEqual( 1168, scene.SceneWorld.SceneObjects.Count() );
+		Assert.AreEqual( 1169, scene.RegisteredObjectIds );
 
 		parent.Clear();
 
@@ -303,5 +322,60 @@ public class DestroyTests
 		Assert.AreEqual( 1, scene.Children.Count() );
 		Assert.AreEqual( 0, scene.SceneWorld.SceneObjects.Count() );
 		Assert.AreEqual( 0, parent.Children.Count() );
+		Assert.AreEqual( 1, scene.RegisteredObjectIds );
+	}
+
+	[TestMethod]
+	public void Clear_Scene()
+	{
+		var scene = new Scene();
+		using var sceneScope = scene.Push();
+
+		var parent = scene.CreateObject();
+
+		Assert.AreEqual( 1, scene.RegisteredObjectIds );
+
+		for ( int i = 0; i < 16; i++ )
+		{
+			var go = GameObject.Create();
+			go.Parent = parent;
+
+			go.AddComponent<ModelComponent>();
+
+			for ( int j = 0; j < 8; j++ )
+			{
+				var go2 = GameObject.Create();
+				go2.Parent = go;
+				go2.AddComponent<ModelComponent>();
+
+				for ( int k = 0; k < 8; k++ )
+				{
+					var go3 = GameObject.Create();
+					go3.Parent = go;
+					go3.AddComponent<ModelComponent>();
+				}
+			}
+		}
+
+		Assert.IsTrue( parent.Enabled );
+		Assert.IsTrue( parent.Active );
+		Assert.IsNotNull( parent.Scene );
+		Assert.AreEqual( parent.Scene, scene );
+		Assert.IsNotNull( parent.Parent );
+		Assert.AreEqual( 1, scene.Children.Count() );
+		Assert.AreEqual( 16, parent.Children.Count() );
+		Assert.AreEqual( 1168, scene.SceneWorld.SceneObjects.Count() );
+		Assert.AreEqual( 1169, scene.RegisteredObjectIds );
+
+		scene.Clear();
+
+		Assert.IsFalse( parent.Enabled );
+		Assert.IsFalse( parent.Active );
+		Assert.IsNull( parent.Scene );
+		Assert.IsNull( parent.Parent );
+		Assert.AreEqual( 0, scene.Children.Count() );
+		Assert.AreEqual( 0, scene.SceneWorld.SceneObjects.Count() );
+		Assert.AreEqual( 0, parent.Children.Count() );
+		Assert.AreEqual( 0, scene.RegisteredObjectIds );
 	}
 }
