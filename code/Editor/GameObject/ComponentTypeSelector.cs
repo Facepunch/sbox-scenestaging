@@ -18,6 +18,43 @@ internal partial class ComponentTypeSelector : PopupWidget
 	string searchString;
 	const string NoCategoryName = "Uncategorized";
 
+	public ComponentTypeSelector( Widget parent ) : base( parent )
+	{
+		Layout = Layout.Column();
+
+		var head = Layout.Row();
+		head.Margin = 6;
+
+		Layout.Add( head );
+
+		Main = new Widget( this );
+		Main.Layout = Layout.Row();
+		Layout.Add( Main );
+
+		FixedWidth = 260;
+		MaximumHeight = 300;
+		DeleteOnClose = true;
+
+		var search = new LineEdit( this );
+		search.MinimumHeight = 22;
+		search.PlaceholderText = "Search..";
+		search.TextEdited += ( t ) =>
+		{
+			searchString = t;
+			ResetSelection();
+		};
+
+		head.Add( search );
+
+		ResetSelection();
+
+		search.Focus();
+	}
+
+	/// <summary>
+	/// Pushes a new selection to the selector
+	/// </summary>
+	/// <param name="selection"></param>
 	void PushSelection( ComponentSelection selection )
 	{
 		CurrentSelectionIndex++;
@@ -32,6 +69,9 @@ internal partial class ComponentTypeSelector : PopupWidget
 		AnimateSelection( true, Selections[CurrentSelectionIndex - 1], selection );
 	}
 
+	/// <summary>
+	/// Pops the current selection off
+	/// </summary>
 	internal void PopSelection()
 	{
 		// Don't pop while empty
@@ -73,40 +113,22 @@ internal partial class ComponentTypeSelector : PopupWidget
 		Animate.Add( selection, speed, selectionFrom, selectionTo, x => func( selection, x ), easing );
 	}
 
-	public ComponentTypeSelector( Widget parent ) : base( parent )
+	/// <summary>
+	/// Resets the current selection, useful when setting up / searching
+	/// </summary>
+	protected void ResetSelection()
 	{
-		Layout = Layout.Column();
-
-		var head = Layout.Row();
-		head.Margin = 6;
-
-		Layout.Add( head );
-
-		Main = new Widget( this );
-		Main.Layout = Layout.Row();
-		Layout.Add( Main );
-
-		FixedWidth = 260;
-		MaximumHeight = 300;
-		DeleteOnClose = true;
-
-		var search = new LineEdit( this );
-		search.MinimumHeight = 22;
-		search.PlaceholderText = "Search..";
-		search.TextEdited += ( t ) =>
-		{
-			searchString = t;
-			UpdateSelection( Selections.First() );
-		};
-
-		head.Add( search );
+		Main.Layout.Clear( true );
+		Selections.Clear();
 
 		var selection = new ComponentSelection( this, this );
+
+		CurrentSelectionIndex = 0;
+
 		UpdateSelection( selection );
+
 		Selections.Add( selection );
 		Main.Layout.Add( selection );
-
-		search.Focus();
 	}
 
 	protected override void OnPaint()
@@ -117,24 +139,39 @@ internal partial class ComponentTypeSelector : PopupWidget
 		Paint.DrawRect( LocalRect.Shrink( 1 ), 3 );
 	}
 
+	/// <summary>
+	/// Called when a category is selected
+	/// </summary>
+	/// <param name="category"></param>
 	void OnCategorySelected( string category )
 	{
 		// Push this as a new selection
 		PushSelection( new ComponentSelection( this, this, category ) );
 	}
 
+	/// <summary>
+	/// Called when an individual component is selected
+	/// </summary>
+	/// <param name="type"></param>
 	void OnComponentSelected( TypeDescription type )
 	{
 		OnSelect( type );
 		Destroy();
 	}
 
+	/// <summary>
+	/// Called when the New Component button is pressed
+	/// </summary>
 	void OnNewComponentSelected()
 	{
 		_ = CreateNewComponent();
 		Destroy();
 	}
 
+	/// <summary>
+	/// Updates any selection
+	/// </summary>
+	/// <param name="selection"></param>
 	void UpdateSelection( ComponentSelection selection )
 	{
 		selection.Clear();
@@ -254,7 +291,9 @@ internal partial class ComponentTypeSelector : PopupWidget
 		Destroy();
 	}
 
-
+	/// <summary>
+	/// A widget that contains a given selection - we hold this in a class because more than one can exist.
+	/// </summary>
 	partial class ComponentSelection : Widget
 	{
 		internal string Category { get; init; }
@@ -307,18 +346,28 @@ internal partial class ComponentTypeSelector : PopupWidget
 			return true;
 		}
 
+		/// <summary>
+		/// Adds a new entry to the current selection.
+		/// </summary>
+		/// <param name="entry"></param>
 		internal void AddEntry( ComponentBaseEntry entry )
 		{
 			Scroller.Canvas.Layout.Add( entry );
 			entry.Selector = this;
 		}
 
+		/// <summary>
+		/// Adds a stretch cell to the bottom of the selection - good to call this when you know you're done adding entries.
+		/// </summary>
 		internal void AddStretchCell()
 		{
 			Scroller.Canvas.Layout.AddStretchCell( 1 );
 			Update();
 		}
 
+		/// <summary>
+		/// Clears the current selection
+		/// </summary>
 		internal void Clear()
 		{
 			Scroller.Canvas.Layout.Clear( true );
@@ -333,7 +382,10 @@ internal partial class ComponentTypeSelector : PopupWidget
 		}
 	}
 
-	partial class ComponentBaseEntry : Widget
+	/// <summary>
+	/// All component entries are derived from this..
+	/// </summary>
+	abstract class ComponentBaseEntry : Widget
 	{
 		internal ComponentSelection Selector { get; set; }
 
@@ -343,7 +395,10 @@ internal partial class ComponentTypeSelector : PopupWidget
 		}
 	}
 
-	partial class ComponentEntry : ComponentBaseEntry
+	/// <summary>
+	/// A component entry
+	/// </summary>
+	class ComponentEntry : ComponentBaseEntry
 	{
 		public string Text { get; set; } = "My Component";
 		public string Icon { get; set; } = "note_add";
@@ -384,7 +439,10 @@ internal partial class ComponentTypeSelector : PopupWidget
 		}
 	}
 
-	partial class ComponentCategory : ComponentBaseEntry
+	/// <summary>
+	/// A category component entry
+	/// </summary>
+	class ComponentCategory : ComponentBaseEntry
 	{
 		public string Category { get; set; }
 		public ComponentCategory( Widget parent ) : base( parent ) { }
