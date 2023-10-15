@@ -1,0 +1,103 @@
+{
+  "GameObjects": [
+    {
+      "Id": "4d0891b8-3ac6-4e29-b40e-3460b2453d72",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "60c80a2a-e4f1-4042-a08e-af75703e4d0b",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0.4351622,0.4351622,-0.5573454,0.5573453",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "Id": "44a24d54-3a08-4bfb-bf8f-4a904cc7304e",
+      "Name": "SkyBox",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SkyBox2D",
+          "__enabled": true,
+          "SkyMaterial": "materials/skybox/light_test_sky_overcast.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "f1341dc9-bb2a-4418-8c6c-6076e0291e1f",
+      "Name": "Camera",
+      "Enabled": true,
+      "Position": "-502.0432,-0.000007368927,135.6779",
+      "Rotation": "-0.000000006330167,0.1062026,0.0000000000000000265609,0.9943446",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "Color, Depth, Stencil",
+          "FieldOfView": 60,
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "Id": "7e61da71-2733-47fb-a1d4-5dfde6c3764f",
+      "Name": "Panel Object",
+      "Enabled": false,
+      "Position": "0,-60.73787,63.43596",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PanelComponent",
+          "__enabled": true
+        }
+      ]
+    },
+    {
+      "Id": "02f77a17-6f53-4dc7-af97-c63f138cc86f",
+      "Name": "Panel Object",
+      "Enabled": true,
+      "Position": "0,-60.73787,63.43596",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SinglePanelComponent",
+          "__enabled": true
+        }
+      ]
+    }
+  ],
+  "__references": []
+}

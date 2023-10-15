@@ -1,0 +1,29 @@
+
+GameScreen
+{
+    
+}
+
+.time, .health
+{
+    background-color: #000a;
+    border-radius: 3px;
+    padding: 10px;
+    color: white;
+    font-weight: bolder;
+    position: absolute;
+    font-size: 30px;
+    font-family: poppins;
+}
+
+.time
+{
+    top: 30px;
+    left: 30px;
+}
+
+.health
+{
+    bottom: 100px;
+    right: 50px;
+}
