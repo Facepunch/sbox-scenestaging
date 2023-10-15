@@ -1,8 +1,5 @@
-﻿using Sandbox;
-using Sandbox.Utility;
+﻿using Sandbox.Utility;
 using System;
-using System.Linq;
-using System.Numerics;
 using System.Threading.Tasks;
 
 namespace Editor.EntityPrefabEditor;
@@ -10,85 +7,106 @@ namespace Editor.EntityPrefabEditor;
 /// <summary>
 /// A popup dialog to select an entity type
 /// </summary>
-public partial class ComponentTypeSelector : PopupWidget
+internal partial class ComponentTypeSelector : PopupWidget
 {
-	string currentCategory;
-	string searchString;
-	ListView listView;
-
 	public Action<TypeDescription> OnSelect { get; set; }
+	List<ComponentSelection> Selections { get; set; } = new();
 
+	int CurrentSelectionIndex { get; set; } = 0;
+	Widget Main { get; set; }
+
+	string searchString;
 	const string NoCategoryName = "Uncategorized";
+
+	void PushSelection( ComponentSelection selection )
+	{
+		CurrentSelectionIndex++;
+
+		// Do we have something at our new index, if so, kill it
+		if ( Selections.Count > CurrentSelectionIndex && Selections.ElementAt( CurrentSelectionIndex ) is var existingObj ) existingObj.Destroy();
+
+		Selections.Insert( CurrentSelectionIndex, selection );
+		Main.Layout.Add( selection, 1 );
+
+		UpdateSelection( selection );
+		AnimateSelection( true, Selections[CurrentSelectionIndex - 1], selection );
+	}
+
+	internal void PopSelection()
+	{
+		// Don't pop while empty
+		if ( CurrentSelectionIndex == 0 ) return;
+
+		var currentIdx = Selections[CurrentSelectionIndex];
+		CurrentSelectionIndex--;
+
+		AnimateSelection( false, currentIdx, Selections[CurrentSelectionIndex] );
+	}
+
+	/// <summary>
+	/// Runs an animation on the last selection, and the current selection.
+	/// I kinda hate this. A lot. But it's pretty.
+	/// </summary>
+	/// <param name="forward"></param>
+	/// <param name="prev"></param>
+	/// <param name="selection"></param>
+	void AnimateSelection( bool forward, ComponentSelection prev, ComponentSelection selection )
+	{
+		const string easing = "ease-out";
+		const float speed = 0.3f;
+
+		var distance = Width;
+
+		var prevFrom = prev.Position.x;
+		var prevTo = forward ? prev.Position.x - distance : prev.Position.x + distance;
+
+		var selectionFrom = forward ? selection.Position.x + distance : selection.Position.x;
+		var selectionTo = forward ? selection.Position.x : selection.Position.x + distance;
+
+		var func = ( ComponentSelection a, float x ) =>
+		{
+			a.Position = a.Position.WithX( x );
+			OnMoved();
+		};
+
+		Animate.Add( prev, speed, prevFrom, prevTo, x => func( prev, x ), easing );
+		Animate.Add( selection, speed, selectionFrom, selectionTo, x => func( selection, x ), easing );
+	}
 
 	public ComponentTypeSelector( Widget parent ) : base( parent )
 	{
-		WindowTitle = "Select Component Type..";
+		Layout = Layout.Column();
+
+		var head = Layout.Row();
+		head.Margin = 6;
+
+		Layout.Add( head );
+
+		Main = new Widget( this );
+		Main.Layout = Layout.Row();
+		Layout.Add( Main );
 
 		FixedWidth = 260;
-		FixedHeight = 300;
-		currentCategory = null;
-
+		MaximumHeight = 300;
 		DeleteOnClose = true;
 
-		listView = new ListView();
-
-		listView.Margin = 0;
-		listView.ItemSize = new Vector2( -1, 23 );
-		listView.ItemClicked += ItemSelect;
-		listView.ItemActivated += ItemSelect;
-
-		listView.ItemPaint = PaintItem;
-		listView.OnPaintOverride = () =>
-		{
-			return false;
-		};
-
-		listView.ItemHoverEnter += ( o ) => Cursor = CursorShape.Finger;
-		listView.ItemHoverLeave += ( o ) => Cursor = CursorShape.Arrow;
-
-		var SearchField = new LineEdit( this );
-		SearchField.MinimumHeight = 22;
-		SearchField.PlaceholderText = "Search..";
-		SearchField.ForwardNavigationEvents = listView;
-
-		SearchField.TextEdited += ( t ) =>
+		var search = new LineEdit( this );
+		search.MinimumHeight = 22;
+		search.PlaceholderText = "Search..";
+		search.TextEdited += ( t ) =>
 		{
 			searchString = t;
-			UpdateItems();
+			UpdateSelection( Selections.First() );
 		};
 
-		Layout = Layout.Column();
-		Layout.Add( SearchField );
-		Layout.Add( listView, 1 );
-		Layout.Margin = 0;
+		head.Add( search );
 
-		UpdateItems();
+		var selection = new ComponentSelection( this, this );
+		UpdateSelection( selection );
+		Selections.Add( selection );
+		Main.Layout.Add( selection );
 
-		SearchField.Focus();
-	}
-
-	void ItemSelect( object x )
-	{
-		if ( x is string category )
-		{
-			// LOL what am I fucking doing
-			if ( category == "__cc__" )
-			{
-				_ = CreateNewComponent();
-				return;
-			}
-
-			if ( currentCategory == category ) currentCategory = null;
-			else currentCategory = category;
-			UpdateItems();
-			return;
-		}
-
-		if ( x is TypeDescription type )
-		{
-			OnSelect( type );
-			Destroy();
-		}
+		search.Focus();
 	}
 
 	protected override void OnPaint()
@@ -96,112 +114,74 @@ public partial class ComponentTypeSelector : PopupWidget
 		Paint.Antialiasing = true;
 		Paint.SetPen( Theme.WidgetBackground.Darken( 0.4f ), 1 );
 		Paint.SetBrush( Theme.WidgetBackground );
-		Paint.DrawRect( listView.LocalRect.Shrink( 1 ), 3 );
+		Paint.DrawRect( LocalRect.Shrink( 1 ), 3 );
 	}
 
-	void UpdateItems()
+	void OnCategorySelected( string category )
 	{
-		listView.Clear();
+		// Push this as a new selection
+		PushSelection( new ComponentSelection( this, this, category ) );
+	}
+
+	void OnComponentSelected( TypeDescription type )
+	{
+		OnSelect( type );
+		Destroy();
+	}
+
+	void OnNewComponentSelected()
+	{
+		_ = CreateNewComponent();
+		Destroy();
+	}
+
+	void UpdateSelection( ComponentSelection selection )
+	{
+		selection.Clear();
 
 		// entity components
 		var types = EditorTypeLibrary.GetTypes<BaseComponent>().Where( x => !x.IsAbstract );
 
-
 		if ( !string.IsNullOrWhiteSpace( searchString ) )
 		{
-			listView.SetItems( types.Where( x => x.Title.Contains( searchString, StringComparison.OrdinalIgnoreCase ) ) );
+			var query = types.Where( x => x.Title.Contains( searchString, StringComparison.OrdinalIgnoreCase ) );
+			foreach ( var type in query )
+			{
+				selection.AddEntry( new ComponentEntry( selection, type ) { MouseClick = () => OnComponentSelected( type ) } );
+			}
+			selection.AddStretchCell();
 			return;
 		}
 
-		if ( currentCategory == null )
+		if ( selection.Category == null )
 		{
 			var categories = types.Select( x => string.IsNullOrWhiteSpace( x.Group ) ? NoCategoryName : x.Group ).Distinct().OrderBy( x => x ).ToArray();
 			if ( categories.Length > 1 )
 			{
-				listView.SetItems( categories );
-				listView.AddItem( "__cc__" );
+				foreach ( var category in categories )
+				{
+					selection.AddEntry( new ComponentCategory( selection )
+					{
+						Category = category,
+						MouseClick = () => OnCategorySelected( category ),
+					} );
+				}
+
+				selection.AddEntry( new ComponentEntry( selection ) { Text = "New Component...", MouseClick = OnNewComponentSelected } );
+				selection.AddStretchCell();
+
 				return;
 			}
 		}
 		else
 		{
-			types = types.Where( x => currentCategory == NoCategoryName ? x.Group == null : x.Group == currentCategory ).ToArray();
-		}
+			types = types.Where( x => selection.Category == NoCategoryName ? x.Group == null : x.Group == selection.Category ).OrderBy( x => x.Title );
 
-		listView.AddItem( currentCategory );
-
-		foreach ( var item in types.OrderBy( x => x.Title ) )
-		{
-			listView.AddItem( item );
-		}
-	}
-
-	private void PaintItem( VirtualWidget obj )
-	{
-
-		obj.PaintBackground( Color.Transparent, 2.0f );
-
-		bool highlight = obj.Hovered;
-		Paint.SetPen( obj.GetForegroundColor() );
-
-		if ( obj.Object is string curCat && curCat == currentCategory )
-		{
-			Paint.ClearPen();
-			Paint.SetBrush( Theme.WidgetBackground.WithAlpha( highlight ? 0.7f : 0.4f ) );
-			Paint.DrawRect( obj.Rect );
-
-			var r = obj.Rect.Shrink( 12, 2 );
-			Paint.SetPen( Theme.ControlText );
-			Paint.DrawIcon( r, "arrow_back", 14, TextFlag.LeftCenter );
-
-			Paint.SetDefaultFont( 8 );
-			var t = Paint.DrawText( r, currentCategory, TextFlag.Center );
-			return;
-		}
-
-		if ( obj.Object is string categoryTitle )
-		{
-			// LOL what am I fucking doing
-			if ( categoryTitle == "__cc__" )
+			foreach ( var type in types )
 			{
-				var rect = obj.Rect.Shrink( 12, 2 );
-
-				Paint.SetPen( Theme.Green.WithAlpha( highlight ? 1.0f : 0.7f ) );
-				Paint.DrawIcon( new Rect( rect.Position, rect.Height ), "note_add", rect.Height, TextFlag.Center );
-				rect.Left += rect.Height + 6;
-
-				Paint.SetDefaultFont( 8 );
-				Paint.SetPen( Theme.ControlText.WithAlpha( highlight ? 1.0f : 0.5f ) );
-				Paint.DrawText( rect, "New Component..", TextFlag.LeftCenter );
-				return;
+				selection.AddEntry( new ComponentEntry( selection, type ) { MouseClick = () => OnComponentSelected( type ) } );
 			}
-
-			Paint.SetPen( Theme.ControlText.WithAlpha( highlight ? 1.0f : 0.5f ) );
-
-			var r = obj.Rect.Shrink( 12, 2 );
-			Paint.SetDefaultFont( 8 );
-			Paint.DrawText( r, categoryTitle, TextFlag.LeftCenter );
-			Paint.DrawIcon( r, "arrow_forward", 14, TextFlag.RightCenter );
-			return;
-		}
-
-		if ( obj.Object is TypeDescription type )
-		{
-
-			var r = obj.Rect.Shrink( 12, 2 );
-
-			Helpers.PaintComponentIcon( type, new Rect( r.Position, r.Height ).Shrink( 2 ), highlight ? 1.0f : 0.7f );
-			r.Left += r.Height + 6;
-
-			Paint.SetDefaultFont( 8 );
-			Paint.SetPen( Theme.ControlText.WithAlpha( highlight ? 1.0f : 0.5f ) );
-			var t = Paint.DrawText( r, type.Title, TextFlag.LeftCenter );
-
-			//r.Left = t.Right + 8;
-
-			//Paint.SetDefaultFont( );
-			//Paint.SetPen( obj.GetForegroundColor().WithAlpha( 0.5f ) );
-			//Paint.DrawText( r, $"{type.ClassName}, {type.FullName}", TextFlag.LeftBottom );
+			selection.AddStretchCell();
 		}
 	}
 
@@ -272,5 +252,151 @@ public partial class ComponentTypeSelector : PopupWidget
 		}
 
 		Destroy();
+	}
+
+
+	partial class ComponentSelection : Widget
+	{
+		internal string Category { get; init; }
+		Widget CategoryHeader { get; set; }
+		ScrollArea Scroller { get; set; }
+		ComponentTypeSelector Selector { get; set; }
+
+		internal ComponentSelection( Widget parent, ComponentTypeSelector selector, string categoryName = null ) : base( parent )
+		{
+			Selector = selector;
+			Category = categoryName;
+			FixedWidth = 300;
+			MaximumHeight = 220;
+
+			Layout = Layout.Column();
+
+			CategoryHeader = new Widget( this );
+			CategoryHeader.FixedHeight = 24;
+			CategoryHeader.OnPaintOverride = PaintHeader;
+			CategoryHeader.MouseClick = Selector.PopSelection;
+			Layout.Add( CategoryHeader );
+
+			Scroller = new ScrollArea( this );
+			Scroller.Layout = Layout.Column();
+			Layout.Add( Scroller, 1 );
+
+			Scroller.Canvas = new Widget( Scroller );
+			Scroller.Canvas.Layout = Layout.Column();
+		}
+
+		internal bool PaintHeader()
+		{
+			var c = CategoryHeader;
+
+			Paint.ClearPen();
+			Paint.SetBrush( Theme.WidgetBackground.WithAlpha( c.IsUnderMouse ? 0.7f : 0.4f ) );
+			Paint.DrawRect( c.LocalRect );
+
+			var r = c.LocalRect.Shrink( 12, 2 );
+			Paint.SetPen( Theme.ControlText );
+
+			if ( Selector.CurrentSelectionIndex > 0 )
+			{
+				Paint.DrawIcon( r, "arrow_back", 14, TextFlag.LeftCenter );
+			}
+
+			Paint.SetDefaultFont( 8 );
+			Paint.DrawText( r, string.IsNullOrEmpty( Category ) ? "Component" : Category, TextFlag.Center );
+
+			return true;
+		}
+
+		internal void AddEntry( ComponentBaseEntry entry )
+		{
+			Scroller.Canvas.Layout.Add( entry );
+			entry.Selector = this;
+		}
+
+		internal void AddStretchCell()
+		{
+			Scroller.Canvas.Layout.AddStretchCell( 1 );
+			Update();
+		}
+
+		internal void Clear()
+		{
+			Scroller.Canvas.Layout.Clear( true );
+		}
+
+		protected override void OnPaint()
+		{
+			Paint.Antialiasing = true;
+			Paint.SetPen( Theme.WidgetBackground.Darken( 0.8f ), 1 );
+			Paint.SetBrush( Theme.WidgetBackground.Darken( 0.2f ) );
+			Paint.DrawRect( LocalRect.Shrink( 0 ), 3 );
+		}
+	}
+
+	partial class ComponentBaseEntry : Widget
+	{
+		internal ComponentSelection Selector { get; set; }
+
+		internal ComponentBaseEntry( Widget parent ) : base( parent )
+		{
+			FixedHeight = 24;
+		}
+	}
+
+	partial class ComponentEntry : ComponentBaseEntry
+	{
+		public string Text { get; set; } = "My Component";
+		public string Icon { get; set; } = "note_add";
+
+		public TypeDescription Type { get; init; }
+
+		internal ComponentEntry( Widget parent, TypeDescription type = null ) : base( parent )
+		{
+			Type = type;
+
+			if ( type is not null )
+			{
+				Text = type.Title;
+				Icon = type.Icon;
+			}
+		}
+
+		protected override void OnPaint()
+		{
+			var r = LocalRect.Shrink( 12, 2 );
+			var opacity = IsUnderMouse ? 1.0f : 0.7f;
+
+			if ( Type is not null && !string.IsNullOrEmpty( Type.Icon ) )
+			{
+				Helpers.PaintComponentIcon( Type, new Rect( r.Position, r.Height ).Shrink( 2 ), opacity );
+			}
+			else
+			{
+				Paint.SetPen( Theme.Green.WithAlpha( opacity ) );
+				Paint.DrawIcon( new Rect( r.Position, r.Height ).Shrink( 2 ), "note_add", r.Height, TextFlag.Center );
+			}
+
+			r.Left += r.Height + 6;
+
+			Paint.SetDefaultFont( 8 );
+			Paint.SetPen( Theme.ControlText.WithAlpha( IsUnderMouse ? 1.0f : 0.5f ) );
+			Paint.DrawText( r, Text, TextFlag.LeftCenter );
+		}
+	}
+
+	partial class ComponentCategory : ComponentBaseEntry
+	{
+		public string Category { get; set; }
+		public ComponentCategory( Widget parent ) : base( parent ) { }
+
+		protected override void OnPaint()
+		{
+			Paint.SetPen( Theme.ControlText.WithAlpha( IsUnderMouse ? 1.0f : 0.5f ) );
+
+			var r = LocalRect.Shrink( 12, 2 );
+			Paint.SetDefaultFont( 8 );
+			Paint.DrawText( r, Category, TextFlag.LeftCenter );
+			Paint.DrawIcon( r, "arrow_forward", 14, TextFlag.RightCenter );
+		}
 	}
 }
