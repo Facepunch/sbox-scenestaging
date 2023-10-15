@@ -101,6 +101,8 @@ public static class EditorScene
 	public static void Stop()
 	{
 		GameManager.IsPlaying = false;
+
+		GameManager.ActiveScene.Clear();
 		GameManager.ActiveScene = null;
 
 		GameEditorSession.CloseAll();
