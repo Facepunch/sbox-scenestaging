@@ -155,7 +155,7 @@ file class ComponentHeader : Widget
 		Paint.DrawIcon( expanderRect.InnerRect, Sheet.Expanded ? "keyboard_arrow_down" : "chevron_right", 16, TextFlag.Center );
 
 		Paint.SetPen( Theme.Blue.WithAlpha( opacity ) );
-		Paint.DrawIcon( iconRect.InnerRect, TargetObject.TypeIcon ?? "category", 14, TextFlag.Center ); 
+		Paint.DrawIcon( iconRect.InnerRect, string.IsNullOrEmpty( TargetObject.TypeIcon ) ? "category" : TargetObject.TypeIcon, 14, TextFlag.Center ); 
 
 		Paint.SetPen( Theme.Blue.Lighten( 0.1f ).WithAlpha( (Sheet.Expanded ? 0.9f : 0.6f) * opacity ) );
 		Paint.SetDefaultFont( 8, 1000, false );
