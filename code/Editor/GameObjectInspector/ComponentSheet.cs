@@ -12,6 +12,14 @@ public partial class ComponentSheet : Widget
 	SerializedObject TargetObject;
 	Layout Content;
 
+	internal bool Expanded { get; private set; } = true;
+
+	internal void SetExpanded( bool expanded )
+	{
+		Expanded = expanded;
+		RebuildContent();
+	}
+
 	public ComponentSheet( SerializedObject target, Action contextMenu ) : base( null )
 	{
 		Name = "ComponentSheet";
@@ -49,6 +57,8 @@ public partial class ComponentSheet : Widget
 
 	void BuildInstanceContent()
 	{
+		if ( !Expanded ) return;
+	
 		var props = TargetObject.Where( x => x.HasAttribute<PropertyAttribute>() );
 
 		var ps = new ControlSheet();
@@ -71,14 +81,16 @@ public partial class ComponentSheet : Widget
 file class ComponentHeader : Widget
 {
 	SerializedObject TargetObject { get; init; }
+	ComponentSheet Sheet { get; set; }
 
 	Layout expanderRect;
 	Layout iconRect;
 	Layout textRect;
 
-	public ComponentHeader( SerializedObject target, Widget parent ) : base( parent )
+	public ComponentHeader( SerializedObject target, ComponentSheet parent ) : base( parent )
 	{
 		TargetObject = target;
+		Sheet = parent;
 
 		var enabled = ControlWidget.Create( TargetObject.GetProperty( "Enabled" ) );
 		enabled.FixedWidth = 18;
@@ -115,9 +127,6 @@ file class ComponentHeader : Widget
 		Paint.Antialiasing = true;
 		Paint.TextAntialiasing = true;
 
-		bool expanded = true;
-
-
 		if ( Paint.HasMouseOver )
 		{
 			//Paint.ClearPen();
@@ -126,7 +135,7 @@ file class ComponentHeader : Widget
 			opacity = 1.0f;
 		}
 
-		if ( !expanded )
+		if ( !Sheet.Expanded )
 		{
 			Paint.ClearPen();
 			Paint.SetBrushRadial( new Vector2( 64, 0 ), 512, Color.Black.WithAlpha( 0.1f ), Color.Black.WithAlpha( 0.0f ) );
@@ -142,15 +151,13 @@ file class ComponentHeader : Widget
 			Paint.DrawLine( LocalRect.BottomLeft, LocalRect.BottomRight );
 		}
 
-		var row = LocalRect;
-
 		Paint.SetPen( Theme.White.WithAlpha( opacity * 0.5f ) );
-		Paint.DrawIcon( expanderRect.InnerRect, expanded ? "keyboard_arrow_down" : "chevron_right", 16, TextFlag.Center );
+		Paint.DrawIcon( expanderRect.InnerRect, Sheet.Expanded ? "keyboard_arrow_down" : "chevron_right", 16, TextFlag.Center );
 
 		Paint.SetPen( Theme.Blue.WithAlpha( opacity ) );
 		Paint.DrawIcon( iconRect.InnerRect, TargetObject.TypeIcon ?? "category", 14, TextFlag.Center ); 
 
-		Paint.SetPen( Theme.Blue.Lighten( 0.1f ).WithAlpha( (expanded ? 0.9f : 0.6f) * opacity ) );
+		Paint.SetPen( Theme.Blue.Lighten( 0.1f ).WithAlpha( (Sheet.Expanded ? 0.9f : 0.6f) * opacity ) );
 		Paint.SetDefaultFont( 8, 1000, false );
 		Paint.DrawText( textRect.InnerRect, TargetObject.TypeTitle, TextFlag.LeftCenter );
 	}
@@ -170,7 +177,7 @@ file class ComponentHeader : Widget
 
 		if ( e.LeftMouseButton )
 		{
-		//	Target.ToggleExpanded();
+			Sheet.SetExpanded( !Sheet.Expanded );
 		}
 	}
 }
