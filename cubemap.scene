@@ -13,6 +13,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough40.vmat",
           "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "0.07717,0.11386,0.05468,1"
         }
       ]
@@ -68,12 +69,13 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough00.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Id": "e76a0175-650c-4da0-84b6-d790cc89a465",
       "Name": "Sphere (1)",
       "Enabled": true,
       "Position": "0,-71.6163,31.6791",
@@ -85,15 +87,16 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough10.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Id": "3a911f40-45ba-4d91-ae71-7916d78b3383",
       "Name": "Sphere (2)",
       "Enabled": true,
-      "Position": "-3.2821,-148.084,31.2585",
+      "Position": "-3.822331,-148.084,31.2585",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -102,12 +105,13 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Id": "9a2ac3de-23a4-462e-9829-9ff30bfedb1d",
       "Name": "Sphere (3)",
       "Enabled": true,
       "Position": "0,-219.83,31.6791",
@@ -119,12 +123,13 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Id": "09864589-4f66-42dd-9e51-8f38c4371129",
       "Name": "Sphere (4)",
       "Enabled": true,
       "Position": "0,-287.1465,31.6791",
@@ -136,12 +141,13 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough40.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Id": "67f898c7-bd4d-433c-b4c0-1fc20689c184",
       "Name": "Sphere (5)",
       "Enabled": true,
       "Position": "0,-356.8394,31.6791",
@@ -153,12 +159,13 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough50.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Id": "a1d0ca51-f965-4ee9-8031-4f5cf3876f4c",
       "Name": "Sphere (6)",
       "Enabled": true,
       "Position": "92.2343,-356.8394,31.6791",
@@ -170,15 +177,16 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough60.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Id": "a03705ae-2bbe-4ec6-bd0a-6c1f3e5b7c9d",
       "Name": "Sphere (7)",
       "Enabled": true,
-      "Position": "116.072,-276.8991,31.679",
+      "Position": "91.26085,-289.9584,31.679",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -187,15 +195,16 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough70.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Id": "4f61b6d3-9d26-487e-94bb-0496c093f24f",
       "Name": "Sphere (8)",
       "Enabled": true,
-      "Position": "96.7847,-222.6799,31.6798",
+      "Position": "91.28776,-219.9904,31.6798",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -204,12 +213,13 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough80.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Id": "60a28864-4f6f-41d7-a278-f0a298446fab",
       "Name": "Sphere (9)",
       "Enabled": true,
       "Position": "92.2343,-151.6272,31.6791",
@@ -221,12 +231,13 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_metal_rough90.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
+      "Id": "245c74cd-8b7d-4a4d-bf20-60c7b0dd785d",
       "Name": "Sphere (10)",
       "Enabled": true,
       "Position": "92.2343,-76.6578,31.6791",
@@ -238,6 +249,7 @@
           "__enabled": true,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough00.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
       ]
@@ -259,7 +271,7 @@
       ]
     },
     {
-      "Id": "4e26ef17-030b-4450-8224-4a0ef520b2ab",
+      "Id": "7195ebe0-4f80-4089-bf59-d7a60aeb9c0b",
       "Name": "Point Light (1)",
       "Enabled": true,
       "Position": "-29.9482,-388.2371,150.4988",
@@ -293,5 +305,6 @@
         }
       ]
     }
-  ]
+  ],
+  "__references": []
 }

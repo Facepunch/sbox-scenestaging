@@ -9,19 +9,19 @@
       "Scale": "100,100,100",
       "Components": [
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "100,100,0.01",
-          "Surface": null
-        },
-        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "100,100,0.01",
+          "Surface": null
         }
       ]
     },
@@ -34,19 +34,19 @@
       "Scale": "100,100,100",
       "Components": [
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "100,100,0.01",
-          "Surface": null
-        },
-        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "100,100,0.01",
+          "Surface": null
         }
       ]
     },
@@ -59,19 +59,19 @@
       "Scale": "100,100,100",
       "Components": [
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "100,100,0.01",
-          "Surface": null
-        },
-        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "100,100,0.01",
+          "Surface": null
         }
       ]
     },
@@ -92,7 +92,7 @@
       ]
     },
     {
-      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Id": "bb3fb3a0-b713-43ce-8b3c-159e3635d3e5",
       "Name": "Point Light",
       "Enabled": true,
       "Position": "0,0,23.902",
@@ -108,7 +108,7 @@
       ]
     },
     {
-      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Id": "841a5e29-b37f-4927-a35f-eaacb28ad837",
       "Name": "Point Light",
       "Enabled": true,
       "Position": "0,341.7727,23.902",
@@ -124,7 +124,7 @@
       ]
     },
     {
-      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Id": "ad24c0a4-595c-4567-8466-49ab6879e132",
       "Name": "Point Light",
       "Enabled": true,
       "Position": "218.173,315.9599,23.9019",
@@ -158,7 +158,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "cbe5c410-5091-4845-a1e7-c60ebc1eab4e",
       "Name": "Cube (1)",
       "Enabled": true,
       "Position": "144.8313,186.542,20.1499",
@@ -176,7 +176,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "9b59dd2a-af62-4d9a-a7c6-5a458d38c603",
       "Name": "Cube (2)",
       "Enabled": true,
       "Position": "-78.672,191.8208,20.1501",
@@ -194,7 +194,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "332acfa0-85a4-4788-a7d4-e6e264760e28",
       "Name": "Cube (22)",
       "Enabled": true,
       "Position": "-253.8958,193.171,241.2195",
@@ -202,10 +202,12 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
         },
         {
           "__type": "ColliderBoxComponent",
@@ -215,17 +217,15 @@
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
-          "Tint": "1,1,1,1"
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "d30194bf-5635-4ffd-b7e1-d644972803ec",
       "Name": "Cube (23)",
       "Enabled": true,
       "Position": "-253.8958,193.171,295.758",
@@ -233,10 +233,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -247,16 +248,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "80c59be0-1d51-4de6-9205-ad560a38a9fc",
       "Name": "Cube (34)",
       "Enabled": true,
       "Position": "-170.0954,270.8357,284.8106",
@@ -264,16 +264,11 @@
       "Scale": "0.5,0.5,0.5",
       "Components": [
         {
-          "__type": "PointLightComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "LightColor": "0.91373,0.98039,1,1",
-          "Radius": 4000
-        },
-        {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -284,16 +279,21 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Radius": 4000
         }
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "1a64407c-e63f-4b47-9525-faa6e1f5baa2",
       "Name": "Cube (35)",
       "Enabled": true,
       "Position": "-271.1328,211.7697,1025.39",
@@ -301,10 +301,17 @@
       "Scale": "0.5,0.5,0.5",
       "Components": [
         {
-          "__type": "PointLightComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "LightColor": "0,0.77267,1,1",
-          "Radius": 4000
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -315,22 +322,15 @@
           "Tint": "0.14038,0.87122,0.88614,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PointLightComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
-        },
-        {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "LightColor": "0,0.77267,1,1",
+          "Radius": 4000
         }
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "49dcac82-7771-4142-af23-789a26a4f0da",
       "Name": "Cube (36)",
       "Enabled": true,
       "Position": "-236.4901,174.3901,1088.933",
@@ -338,16 +338,12 @@
       "Scale": "0.5,0.5,0.5",
       "Components": [
         {
-          "__type": "PointLightComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "LightColor": "0.61286,0.84653,0.15925,1",
-          "Radius": 4000
-        },
-        {
-          "__type": "PhysicsComponent",
-          "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "MaterialOverride": "materials/dev/primary_white_emissive.vmat",
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.37827,0.72277,0.12881,1"
         },
         {
           "__type": "ColliderBoxComponent",
@@ -357,17 +353,21 @@
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "MaterialOverride": "materials/dev/primary_white_emissive.vmat",
-          "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
-          "Tint": "0.37827,0.72277,0.12881,1"
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "PointLightComponent",
+          "__enabled": true,
+          "LightColor": "0.61286,0.84653,0.15925,1",
+          "Radius": 4000
         }
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "021a814b-cc92-4e9c-a62e-538df2f0a3c8",
       "Name": "Cube (4)",
       "Enabled": true,
       "Position": "-424.1659,196.4963,20.1508",
@@ -385,7 +385,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "84ae34b2-028a-4fac-8774-ca9e95013b8c",
       "Name": "Cube (7)",
       "Enabled": true,
       "Position": "-484.9999,349.1656,20.1508",
@@ -403,7 +403,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "eca0be09-0a52-45ea-ba79-50d37f695a8f",
       "Name": "Cube (8)",
       "Enabled": true,
       "Position": "-253.954,346.5734,20.1506",
@@ -421,7 +421,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "c66e0393-629e-4cef-9166-341d56094831",
       "Name": "Cube (9)",
       "Enabled": true,
       "Position": "-355.72,284.3123,20.1505",
@@ -439,10 +439,10 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "6cf82417-f166-41e6-878a-ca39e75f143e",
       "Name": "Cube (10)",
       "Enabled": true,
-      "Position": "-224.9919,60.1768,20.1505",
+      "Position": "-216.8735,58.45832,20.15029",
       "Rotation": "0.00000002175988,0.00000000000000030483,0.3650702,0.93098",
       "Scale": "1,1,1",
       "Components": [
@@ -457,7 +457,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "fb25fb66-7b4f-4e95-b7f1-d91f67f9fe73",
       "Name": "Cube (11)",
       "Enabled": true,
       "Position": "-343.0952,-32.3657,20.1506",
@@ -475,7 +475,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "1c163726-ea5f-44d8-83c9-cd9c1e0602cc",
       "Name": "Cube (12)",
       "Enabled": true,
       "Position": "-518.0451,48.8037,20.1502",
@@ -493,7 +493,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "3afeac21-6306-48b8-be1d-db415e0cd9ba",
       "Name": "Cube (15)",
       "Enabled": true,
       "Position": "-41.2668,317.9574,20.15",
@@ -511,7 +511,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "6bccaa29-d087-4483-975d-27e881200e62",
       "Name": "Cube (16)",
       "Enabled": true,
       "Position": "246.6794,336.4896,20.1501",
@@ -529,7 +529,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "e494cc2b-4865-4a98-9dd4-3ea7d8b96f9d",
       "Name": "Cube (17)",
       "Enabled": true,
       "Position": "205.5042,32.463,20.1512",
@@ -547,7 +547,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "38e19f72-d022-4994-bfdd-28414aaec13a",
       "Name": "Cube (18)",
       "Enabled": true,
       "Position": "21.3015,42.5948,20.1511",
@@ -565,7 +565,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "761a3a11-c4cd-43ef-8bef-788081042098",
       "Name": "Cube (20)",
       "Enabled": true,
       "Position": "-618.5155,308.0811,20.1501",
@@ -583,7 +583,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "e471b9d9-790b-45ff-adef-e7996ff2e994",
       "Name": "Cube",
       "Enabled": true,
       "Position": "19.9593,428.1119,-1.3346",
@@ -601,7 +601,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "21eb852f-f8b5-406b-89b9-6414779cc814",
       "Name": "Cube",
       "Enabled": true,
       "Position": "230.5045,387.9044,18.4747",
@@ -619,7 +619,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "cc415097-4d02-4cad-8c47-adf34f5d0dea",
       "Name": "Cube",
       "Enabled": true,
       "Position": "230.5045,387.9044,18.4747",
@@ -637,7 +637,7 @@
       ]
     },
     {
-      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Id": "e1eb3b25-12f1-4f47-bb06-07ab99eee08a",
       "Name": "Point Light",
       "Enabled": true,
       "Position": "-591.5596,344.5769,23.902",
@@ -653,7 +653,7 @@
       ]
     },
     {
-      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Id": "0c0deccc-eb06-40a1-a714-125687c714d4",
       "Name": "Point Light",
       "Enabled": true,
       "Position": "-591.5596,32.6809,23.902",
@@ -688,7 +688,7 @@
       ]
     },
     {
-      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Id": "e97536fa-fcbe-4a2d-99c1-c75a29765f03",
       "Name": "Point Light",
       "Enabled": true,
       "Position": "-317.6411,344.5769,23.902",
@@ -704,7 +704,7 @@
       ]
     },
     {
-      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Id": "74730e6d-3600-41a0-beba-8110f387e881",
       "Name": "Point Light",
       "Enabled": true,
       "Position": "-317.6411,344.5769,222.9267",
@@ -737,7 +737,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "73945cef-6e6f-49aa-8df8-5c8d87294676",
       "Name": "Cube",
       "Enabled": true,
       "Position": "-727.5114,80.6057,-1.111",
@@ -755,7 +755,7 @@
       ]
     },
     {
-      "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+      "Id": "22a73f5d-c2d5-4520-8b6c-3806e9b09092",
       "Name": "Cube",
       "Enabled": true,
       "Position": "-322.267,405.4605,-0.7554",
@@ -773,7 +773,7 @@
       ]
     },
     {
-      "Id": "7f9f1234-06d8-4e2f-908b-8540206518b0",
+      "Id": "a2b8475c-264e-4d22-b986-b14849d10b32",
       "Name": "Point Light",
       "Enabled": true,
       "Position": "-289.02,0,23.902",
@@ -793,16 +793,16 @@
       "Name": "Turret",
       "Enabled": true,
       "Position": "-354.2128,-448.0278,25.7834",
-      "Rotation": "0,0.0000003576279,0,1",
+      "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "TurretComponent",
           "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
-          "Tint": "1,1,1,1"
+          "Bullet": "bullet.object",
+          "Gun": "71121759-159a-436c-898d-ace54763fc3a",
+          "Muzzle": "e9a1d5d9-515a-4d2c-ab2c-8595bf3553fa",
+          "SecondaryBullet": "cube.object"
         },
         {
           "__type": "ColliderBoxComponent",
@@ -812,12 +812,12 @@
           "Surface": null
         },
         {
-          "__type": "TurretComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "Bullet": "bullet.object",
-          "Gun": "71121759-159a-436c-898d-ace54763fc3a",
-          "Muzzle": "e9a1d5d9-515a-4d2c-ab2c-8595bf3553fa",
-          "SecondaryBullet": "cube.object"
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
         }
       ],
       "Children": [
@@ -848,13 +848,20 @@
               ]
             },
             {
-              "Id": "cf2928a6-e884-47cb-b0b1-670eda7c685c",
+              "Id": "efe54b8f-91a9-4fe4-83e7-2d166f890a3d",
               "Name": "Cube (1)",
               "Enabled": true,
               "Position": "17.8328,0.8604,9.1344",
-              "Rotation": "0.00000003254731,0,0,1",
+              "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
               "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Surface": null
+                },
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
@@ -862,13 +869,6 @@
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
                   "Tint": "1,1,1,1"
-                },
-                {
-                  "__type": "ColliderBoxComponent",
-                  "__enabled": true,
-                  "IsTrigger": false,
-                  "Scale": "50,50,50",
-                  "Surface": null
                 }
               ]
             },
@@ -877,9 +877,16 @@
               "Name": "Cube (1)",
               "Enabled": true,
               "Position": "28.4373,0.8604,9.1344",
-              "Rotation": "0.00000003254731,0,0,1",
+              "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
               "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Surface": null
+                },
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
@@ -887,13 +894,6 @@
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
                   "Tint": "1,1,1,1"
-                },
-                {
-                  "__type": "ColliderBoxComponent",
-                  "__enabled": true,
-                  "IsTrigger": false,
-                  "Scale": "50,50,50",
-                  "Surface": null
                 }
               ]
             },
@@ -902,9 +902,16 @@
               "Name": "Cube (1)",
               "Enabled": true,
               "Position": "40.0265,0.8604,9.1344",
-              "Rotation": "0.00000003254731,0,0,1",
+              "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
               "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Surface": null
+                },
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
@@ -912,13 +919,6 @@
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
                   "Tint": "1,1,1,1"
-                },
-                {
-                  "__type": "ColliderBoxComponent",
-                  "__enabled": true,
-                  "IsTrigger": false,
-                  "Scale": "50,50,50",
-                  "Surface": null
                 }
               ]
             },
@@ -927,9 +927,16 @@
               "Name": "Cube (1)",
               "Enabled": true,
               "Position": "51.2432,0.8604,10.5007",
-              "Rotation": "0.00000003254731,0,0,1",
+              "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
               "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Surface": null
+                },
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
@@ -937,13 +944,6 @@
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
                   "Tint": "1,1,1,1"
-                },
-                {
-                  "__type": "ColliderBoxComponent",
-                  "__enabled": true,
-                  "IsTrigger": false,
-                  "Scale": "50,50,50",
-                  "Surface": null
                 }
               ]
             },
@@ -952,9 +952,16 @@
               "Name": "Cube (1)",
               "Enabled": true,
               "Position": "61.8421,0.8604,9.1344",
-              "Rotation": "0.00000003254731,0,0,1",
+              "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
               "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Surface": null
+                },
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
@@ -962,13 +969,6 @@
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
                   "Tint": "1,1,1,1"
-                },
-                {
-                  "__type": "ColliderBoxComponent",
-                  "__enabled": true,
-                  "IsTrigger": false,
-                  "Scale": "50,50,50",
-                  "Surface": null
                 }
               ]
             },
@@ -977,9 +977,16 @@
               "Name": "Cube (1)",
               "Enabled": true,
               "Position": "72.9951,0.8604,9.1344",
-              "Rotation": "0.00000003254731,0,0,1",
+              "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
               "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Surface": null
+                },
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
@@ -987,13 +994,6 @@
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
                   "Tint": "1,1,1,1"
-                },
-                {
-                  "__type": "ColliderBoxComponent",
-                  "__enabled": true,
-                  "IsTrigger": false,
-                  "Scale": "50,50,50",
-                  "Surface": null
                 }
               ]
             },
@@ -1002,11 +1002,11 @@
               "Name": "Muzzle",
               "Enabled": true,
               "Position": "82.5433,1.667,10.8299",
-              "Rotation": "0.00000003254731,0,0,1",
+              "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
               "Children": [
                 {
-                  "Id": "03e6291d-cf0d-48a9-9c7d-86a98ca4bf00",
+                  "Id": "4d6dc434-4117-444b-a7a1-e3689dd7fc83",
                   "Name": "Flashlight",
                   "Enabled": true,
                   "Position": "50.4807,0,-0",
@@ -1054,7 +1054,7 @@
           "Name": "Point Light",
           "Enabled": true,
           "Position": "-50.5047,0,-0",
-          "Rotation": "0,-0.0000003576279,0,1",
+          "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Components": [
             {

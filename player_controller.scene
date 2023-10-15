@@ -144,15 +144,6 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "CharacterController",
-          "__enabled": true,
-          "Acceleration": 10,
-          "GroundAngle": 45,
-          "Height": 72,
-          "Radius": 16,
-          "StepHeight": 18
-        },
-        {
           "__type": "PlayerController",
           "__enabled": true,
           "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
@@ -160,6 +151,15 @@
           "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
           "FirstPerson": false,
           "Gravity": "0,0,800"
+        },
+        {
+          "__type": "CharacterController",
+          "__enabled": true,
+          "Acceleration": 10,
+          "GroundAngle": 45,
+          "Height": 72,
+          "Radius": 16,
+          "StepHeight": 18
         }
       ],
       "Children": [
@@ -190,13 +190,13 @@
           "Scale": "1,1,1",
           "Components": [
             {
-              "__type": "CameraComponent",
-              "__enabled": true,
-              "BackgroundColor": "0.25292,0.26086,0.29703,1",
-              "ClearFlags": "Color, Depth, Stencil",
-              "FieldOfView": 80,
-              "ZFar": 10000,
-              "ZNear": 1
+              "__type": "CubemapFog",
+              "__enabled": false,
+              "Blur": 0.5,
+              "EndDistance": 8000,
+              "FalloffExponent": 2,
+              "Sky": "materials/skybox/light_test_sky_sunset_2.vmat",
+              "StartDistance": 0
             },
             {
               "__type": "CameraPhysicsDebug",
@@ -206,13 +206,13 @@
               "TraceType": "Ray"
             },
             {
-              "__type": "CubemapFog",
-              "__enabled": false,
-              "Blur": 0.5,
-              "EndDistance": 8000,
-              "FalloffExponent": 2,
-              "Sky": "materials/skybox/light_test_sky_sunset_2.vmat",
-              "StartDistance": 0
+              "__type": "CameraComponent",
+              "__enabled": true,
+              "BackgroundColor": "0.25292,0.26086,0.29703,1",
+              "ClearFlags": "Color, Depth, Stencil",
+              "FieldOfView": 80,
+              "ZFar": 10000,
+              "ZNear": 1
             }
           ]
         },
@@ -235,19 +235,19 @@
       "Scale": "20,20,20",
       "Components": [
         {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "100,100,0.01",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
           "Tint": "0.05882,0.13725,0.49412,1"
-        },
-        {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "100,100,0.01",
-          "Surface": null
         }
       ]
     },
@@ -260,19 +260,19 @@
       "Scale": "20,20,20",
       "Components": [
         {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "100,100,0.01",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
           "Tint": "0.05882,0.13725,0.49412,1"
-        },
-        {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "100,100,0.01",
-          "Surface": null
         }
       ]
     },
@@ -285,24 +285,24 @@
       "Scale": "20,20,20",
       "Components": [
         {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "100,100,0.01",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
           "Tint": "0.05882,0.13725,0.49412,1"
-        },
-        {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "100,100,0.01",
-          "Surface": null
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "650ce69e-04d7-427e-97eb-c2ec187a92d3",
       "Name": "Cube",
       "Enabled": true,
       "Position": "1420.439,0,535.5369",
@@ -310,12 +310,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
-          "Tint": "1,1,1,1"
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "PhysicsComponent",
@@ -324,11 +323,12 @@
           "Static": false
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
         }
       ]
     },
@@ -341,7 +341,7 @@
       "Scale": "1,1,1"
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "57ff8041-1fdf-44d8-8cd9-715d23202c73",
       "Name": "Cube",
       "Enabled": true,
       "Position": "1420.439,0,458.9947",
@@ -349,12 +349,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
-          "Tint": "1,1,1,1"
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "PhysicsComponent",
@@ -363,16 +362,17 @@
           "Static": false
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "d50405fe-42b6-4b95-a155-697b20c2a510",
       "Name": "Cube (1)",
       "Enabled": true,
       "Position": "686.7393,322.773,-1612.719",
@@ -380,10 +380,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -394,11 +395,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -411,10 +411,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -425,11 +426,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -442,10 +442,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -456,11 +457,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -473,10 +473,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -487,11 +488,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -504,19 +504,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
         }
       ]
     },
@@ -529,19 +529,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
         }
       ]
     },
@@ -554,19 +554,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_props/portacabins/portacabin_300_600_b.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_props/portacabins/portacabin_300_600_b.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "models/rust_props/portacabins/portacabin_300_600_b.vmdl",
-          "Surface": null
         }
       ]
     },
@@ -579,24 +579,24 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "models/citizen/citizen.vmdl",
-          "Surface": null
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "3dba2b88-af26-45ea-800c-c4539add410e",
       "Name": "Cube (2)",
       "Enabled": true,
       "Position": "686.7393,247.0549,-1612.719",
@@ -604,10 +604,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -618,11 +619,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -635,10 +635,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -649,11 +650,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -666,10 +666,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -680,11 +681,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -697,10 +697,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -711,11 +712,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -728,10 +728,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -742,11 +743,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -759,10 +759,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -773,11 +774,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -790,10 +790,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -804,11 +805,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -821,10 +821,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -835,11 +836,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -852,10 +852,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -866,11 +867,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -883,10 +883,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -897,11 +898,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -914,10 +914,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -928,11 +929,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -945,10 +945,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -959,11 +960,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -976,10 +976,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -990,11 +991,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1007,10 +1007,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1021,11 +1022,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1038,10 +1038,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1052,11 +1053,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1069,10 +1069,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1083,11 +1084,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1100,10 +1100,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1114,11 +1115,10 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1131,10 +1131,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1145,11 +1146,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1162,10 +1162,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1176,11 +1177,10 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1193,10 +1193,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1207,11 +1208,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1224,10 +1224,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1238,11 +1239,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1255,10 +1255,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1269,11 +1270,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1286,10 +1286,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1300,11 +1301,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1317,10 +1317,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1331,11 +1332,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1348,10 +1348,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1362,11 +1363,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1379,10 +1379,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1393,11 +1394,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1410,10 +1410,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1424,11 +1425,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1441,10 +1441,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1455,11 +1456,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1472,10 +1472,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1486,11 +1487,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1503,10 +1503,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1517,11 +1518,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1534,10 +1534,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1548,11 +1549,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1565,10 +1565,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1579,11 +1580,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1596,10 +1596,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1610,11 +1611,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1627,10 +1627,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1641,11 +1642,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1658,10 +1658,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1672,11 +1673,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1689,10 +1689,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1703,11 +1704,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1720,10 +1720,11 @@
       "Scale": "2,2,2",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1734,11 +1735,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1751,10 +1751,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1765,11 +1766,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1782,10 +1782,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1796,11 +1797,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1813,10 +1813,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1827,11 +1828,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1844,10 +1844,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1858,11 +1859,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1875,10 +1875,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1889,11 +1890,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1906,19 +1906,19 @@
       "Scale": "4.9,4.9,4.9",
       "Components": [
         {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 31.3,
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
-        },
-        {
-          "__type": "ColliderSphereComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Radius": 31.3,
-          "Surface": null
         }
       ]
     },
@@ -1931,19 +1931,19 @@
       "Scale": "42.1,42.1,42.1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/soccerball.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/soccerball.vmdl",
           "ShouldCastShadows": true,
           "Tint": "0.85644,0.12719,0.57932,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "models/soccerball.vmdl",
-          "Surface": null
         }
       ]
     },
@@ -1956,10 +1956,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -1970,11 +1971,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -1987,10 +1987,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2001,11 +2002,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2018,10 +2018,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2032,11 +2033,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2049,10 +2049,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2063,11 +2064,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2080,10 +2080,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2094,11 +2095,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2111,10 +2111,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2125,11 +2126,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2142,10 +2142,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2156,11 +2157,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2173,10 +2173,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2187,11 +2188,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2204,10 +2204,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2218,11 +2219,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2235,10 +2235,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2249,11 +2250,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2266,10 +2266,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2280,11 +2281,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2297,10 +2297,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2311,11 +2312,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2328,10 +2328,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2342,11 +2343,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2359,10 +2359,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2373,11 +2374,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2390,10 +2390,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2404,11 +2405,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2421,10 +2421,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2435,11 +2436,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2452,10 +2452,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2466,11 +2467,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2483,10 +2483,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2497,11 +2498,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2514,10 +2514,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2528,11 +2529,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2545,10 +2545,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2559,11 +2560,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2576,10 +2576,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2590,11 +2591,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2607,10 +2607,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2621,11 +2622,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2638,10 +2638,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2652,11 +2653,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2669,10 +2669,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2683,11 +2684,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2700,10 +2700,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2714,11 +2715,10 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2731,10 +2731,11 @@
       "Scale": "4,4,4",
       "Components": [
         {
-          "__type": "PhysicsComponent",
-          "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2745,16 +2746,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "277191c1-f346-47fe-8549-a757e2b60e15",
       "Name": "Cube (3)",
       "Enabled": true,
       "Position": "686.7393,168.3942,-1612.719",
@@ -2762,10 +2762,12 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
           "__type": "ColliderBoxComponent",
@@ -2775,17 +2777,15 @@
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
-          "Tint": "0.85644,0.12719,0.57932,1"
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "88fae078-25a5-4ae2-a010-01da02fc104b",
       "Name": "Cube (4)",
       "Enabled": true,
       "Position": "686.7393,91.1157,-1612.719",
@@ -2793,10 +2793,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2807,16 +2808,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "73891137-e128-4a7d-b0ad-5e6901120470",
       "Name": "Cube (5)",
       "Enabled": true,
       "Position": "393.1795,-531.9441,1091.211",
@@ -2824,10 +2824,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2838,11 +2839,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2855,10 +2855,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2869,11 +2870,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2886,10 +2886,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2900,11 +2901,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2917,10 +2917,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2931,11 +2932,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2948,10 +2948,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2962,11 +2963,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -2979,10 +2979,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -2993,11 +2994,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3010,10 +3010,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3024,11 +3025,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3041,10 +3041,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3055,11 +3056,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3072,10 +3072,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3086,11 +3087,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3103,10 +3103,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3117,11 +3118,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3134,10 +3134,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3148,11 +3149,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3165,10 +3165,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3179,11 +3180,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3196,10 +3196,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3210,11 +3211,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3227,10 +3227,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3241,16 +3242,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "3f25b320-a740-4b2c-8366-20f5a0a3a7a2",
       "Name": "Cube (6)",
       "Enabled": true,
       "Position": "686.7393,-73.5093,-1612.719",
@@ -3258,10 +3258,12 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
         },
         {
           "__type": "ColliderBoxComponent",
@@ -3271,17 +3273,15 @@
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
-          "Tint": "1,1,1,1"
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "fb9eb946-2d7e-4092-a43d-d888fd2671c8",
       "Name": "Cube (7)",
       "Enabled": true,
       "Position": "686.7393,-158.5866,-1612.719",
@@ -3289,10 +3289,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3303,16 +3304,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "f9a85fdd-fc84-4253-a6cd-32dba2f53dd6",
       "Name": "Cube (8)",
       "Enabled": true,
       "Position": "686.7393,-241.4487,-1612.719",
@@ -3320,10 +3320,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3334,16 +3335,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "e8cd7dfe-aba3-4b70-8761-af9f059373a6",
       "Name": "Cube (9)",
       "Enabled": true,
       "Position": "686.7393,-323.4224,-1612.719",
@@ -3351,10 +3351,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3365,16 +3366,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "b7ccdb77-039b-4980-827c-7f88ea2f99e8",
       "Name": "Cube (10)",
       "Enabled": true,
       "Position": "686.7393,-276.2431,-1563.041",
@@ -3382,10 +3382,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3396,16 +3397,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "23430def-4583-43ba-9c37-6e22aaa8ddf5",
       "Name": "Cube (11)",
       "Enabled": true,
       "Position": "686.7393,-198.8401,-1563.041",
@@ -3413,10 +3413,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3427,16 +3428,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "e4793a24-a5d8-409f-b584-9e70ffffa811",
       "Name": "Cube (12)",
       "Enabled": true,
       "Position": "686.7393,-115.8088,-1563.041",
@@ -3444,10 +3444,12 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
         },
         {
           "__type": "ColliderBoxComponent",
@@ -3457,17 +3459,15 @@
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
-          "Tint": "1,1,1,1"
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "090952ee-45c0-422f-8a32-e41a26c676eb",
       "Name": "Cube (13)",
       "Enabled": true,
       "Position": "686.7393,-29.5168,-1563.041",
@@ -3475,10 +3475,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3489,16 +3490,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "33d5d9f6-a398-4e2e-a558-63f58ddd28c3",
       "Name": "Cube (14)",
       "Enabled": true,
       "Position": "686.7393,55.9645,-1563.041",
@@ -3506,10 +3506,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3520,11 +3521,10 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3537,10 +3537,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3551,11 +3552,10 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3568,10 +3568,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3582,16 +3583,15 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "aa29ab37-9d3b-48e4-8e8c-2dbeeabc0492",
       "Name": "Cube (15)",
       "Enabled": true,
       "Position": "686.7393,129.0565,-1563.041",
@@ -3599,10 +3599,12 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ModelComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
         },
         {
           "__type": "ColliderBoxComponent",
@@ -3612,17 +3614,15 @@
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
-          "Tint": "1,1,1,1"
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "70e3b843-706c-4da2-a32d-4cd3f2e32e32",
       "Name": "Cube (16)",
       "Enabled": true,
       "Position": "686.7393,210.5549,-1563.041",
@@ -3630,10 +3630,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3644,16 +3645,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "2f723058-7cdb-437d-bc72-39ea9b3e79c7",
       "Name": "Cube (17)",
       "Enabled": true,
       "Position": "686.7393,286.9323,-1563.041",
@@ -3661,10 +3661,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3675,11 +3676,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3692,10 +3692,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3706,16 +3707,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "d34c3be2-c593-4133-8ebe-baede5e8453c",
       "Name": "Cube (18)",
       "Enabled": true,
       "Position": "686.7393,250.0716,-1498.417",
@@ -3723,10 +3723,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3737,16 +3738,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "0409a5e6-5296-462b-ad80-4ee5c1053ee6",
       "Name": "Cube (19)",
       "Enabled": true,
       "Position": "686.7393,176.8109,-1404.687",
@@ -3754,10 +3754,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3768,16 +3769,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "0d1caeb9-03ac-42ff-9365-39d99956ed10",
       "Name": "Cube (20)",
       "Enabled": true,
       "Position": "686.7393,97.5859,-1498.417",
@@ -3785,10 +3785,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3799,16 +3800,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "14655938-aa3b-44ea-ae0c-453412e54e19",
       "Name": "Cube (22)",
       "Enabled": true,
       "Position": "686.7393,-68.0729,-1498.417",
@@ -3816,10 +3816,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3830,11 +3831,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3847,10 +3847,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3861,11 +3862,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3878,10 +3878,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3892,11 +3893,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3909,10 +3909,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3923,11 +3924,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3940,10 +3940,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3954,11 +3955,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -3971,10 +3971,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -3985,11 +3986,10 @@
           "Tint": "1,0.38,0,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -4002,10 +4002,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -4016,11 +4017,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -4033,10 +4033,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -4047,11 +4048,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -4064,10 +4064,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -4078,11 +4079,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -4095,10 +4095,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -4109,16 +4110,15 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "cf2175d6-58af-4626-9d8b-1d933bb430fd",
       "Name": "Cube (23)",
       "Enabled": true,
       "Position": "686.7393,-151.4042,-1498.417",
@@ -4126,10 +4126,11 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "ColliderBoxComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
         },
         {
           "__type": "ModelComponent",
@@ -4140,11 +4141,10 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "PhysicsComponent",
           "__enabled": true,
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Surface": null
+          "Gravity": true,
+          "Static": false
         }
       ]
     },
@@ -4288,19 +4288,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
-          "Surface": null
         }
       ]
     },
@@ -4385,19 +4385,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
-          "Surface": null
         }
       ]
     },
@@ -4410,19 +4410,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
-          "Surface": null
         }
       ]
     },
@@ -4435,19 +4435,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/uf-rts/resource_gold1.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/uf-rts/resource_gold1.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "models/uf-rts/resource_gold1.vmdl",
-          "Surface": null
         }
       ]
     },
@@ -4460,19 +4460,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
-          "Surface": null
         }
       ]
     },
@@ -4485,19 +4485,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
-          "Surface": null
         }
       ]
     },
@@ -4510,19 +4510,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
-          "Surface": null
         }
       ]
     },
@@ -4697,19 +4697,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "grass_block.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "grass_block.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "grass_block.vmdl",
-          "Surface": null
         }
       ]
     },
@@ -4722,19 +4722,19 @@
       "Scale": "1,1,1",
       "Components": [
         {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "grass_block.vmdl",
+          "Surface": null
+        },
+        {
           "__type": "ModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "grass_block.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ModelCollider",
-          "__enabled": true,
-          "IsTrigger": false,
-          "Model": "grass_block.vmdl",
-          "Surface": null
         }
       ]
     },
@@ -4778,7 +4778,7 @@
       "Id": "5c9ce28d-ee71-4553-bcfa-91d4d500abdf",
       "Name": "binbag_pile_a1",
       "Enabled": true,
-      "Position": "1181.392,730.5104,-1637.716",
+      "Position": "1181.392,730.0825,-1637.716",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
