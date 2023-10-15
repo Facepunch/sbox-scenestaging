@@ -119,7 +119,7 @@ public partial class GameObject
 
 	internal void OnDestroy()
 	{
-		ForEachComponent( "OnDestroy", true, c => c.Destroy() );
+		ForEachComponent( "OnDestroy", false, c => c.Destroy() );
 		ForEachChild( "Children", true, c => c.OnDestroy() );
 
 		Children.RemoveAll( x => x is null );
@@ -201,6 +201,7 @@ public partial class GameObject
 		t.GameObject = this;
 		Components.Add( t );
 
+		t.InitializeComponent();
 		t.Enabled = enabled;
 		return t;
 	}
@@ -275,8 +276,7 @@ public partial class GameObject
 		if ( !Enabled )
 			return;
 
-		OnUpdate();
-
+		ForEachComponent( "Update", true, c => c.InternalUpdate() );
 		ForEachChild( "Tick", true, x => x.Tick() );
 	}
 
@@ -442,11 +442,6 @@ public partial class GameObject
 				return;
 			}
 		}
-	}
-
-	void OnUpdate()
-	{
-		ForEachComponent( "Update", true, c => c.InternalUpdate() );
 	}
 
 	/// <summary>

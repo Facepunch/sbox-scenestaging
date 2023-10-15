@@ -11,6 +11,23 @@ public abstract partial class BaseComponent
 
 	public GameObjectFlags Flags { get; set; } = GameObjectFlags.None;
 
+
+	bool _isInitialized = false;
+
+	/// <summary>
+	/// Called to call Awake, once, at startup.
+	/// </summary>
+	internal void InitializeComponent()
+	{
+		if ( _isInitialized ) return;
+		if ( GameObject is null ) return;
+		if ( !GameObject.Active ) return;
+
+		_isInitialized = true;
+		ExceptionWrap( "Awake", OnAwake );
+	}
+
+
 	/// <summary>
 	/// Internal functions to be called when the object wakes up
 	/// </summary>
@@ -43,23 +60,27 @@ public abstract partial class BaseComponent
 
 	public virtual void DrawGizmos() { }
 
+	/// <summary>
+	/// Called once per component
+	/// </summary>
+	public virtual void OnAwake() { }
+
+	/// <summary>
+	/// Called after Awake or whenever the component switches to being enabled (because a gameobject heirachy active change, or the component changed)
+	/// </summary>
 	public virtual void OnEnabled() { }
 
+	/// <summary>
+	/// Called once before the first Update - when enabled.
+	/// </summary>
+	public virtual void OnStart() { }
+
 	public virtual void OnDisabled() { } 
-	public virtual void OnDestroyInternal() 
-	{
-		if ( _enabledState )
-		{
-			_enabledState = false;
 
-			if ( ShouldExecute )
-			{
-				ExceptionWrap( "OnDisabled", OnDisabled );
-			}
-		}
-
-		GameObject = null;
-	} 
+	/// <summary>
+	/// Called once, when the component or gameobject is destroyed
+	/// </summary>
+	public virtual void OnDestroy() { }
 
 	protected virtual void OnPostPhysics() { }
 	internal void PostPhysics() 
@@ -73,12 +94,20 @@ public abstract partial class BaseComponent
 		OnPreRender();
 	}
 
+	bool _startCalled;
+
 	internal virtual void InternalUpdate() 
 	{
 		if ( !Enabled ) return;
 		if ( !ShouldExecute ) return;
 
-		Update();
+		if ( !_startCalled )
+		{
+			_startCalled = true;
+			ExceptionWrap( "Start", OnStart );
+		}
+
+		ExceptionWrap( "Update", Update );
 	}
 
 	internal void UpdateEnabledStatus()
@@ -90,6 +119,8 @@ public abstract partial class BaseComponent
 
 		if ( _enabledState )
 		{
+			InitializeComponent();
+
 			onAwake?.Invoke();
 			onAwake = null;
 
@@ -109,6 +140,8 @@ public abstract partial class BaseComponent
 
 	public void Destroy()
 	{
+		ExceptionWrap( "OnDestroy", OnDestroy );
+
 		if ( _enabledState )
 		{
 			if ( ShouldExecute )

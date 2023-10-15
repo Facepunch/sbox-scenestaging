@@ -73,6 +73,7 @@ public abstract partial class BaseComponent
 			}
 		}
 
+		InitializeComponent();
 		Enabled = (bool)(node["__enabled"] ?? true);
 	}
 
