@@ -3,7 +3,7 @@ using System;
 
 [Title( "Sharpen" )]
 [Category( "Post Processing" )]
-[Icon( "desktop_windows" )]
+[Icon( "deblur" )]
 public sealed class Sharpen : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	[Property] public float Scale { get; set; } = 2;

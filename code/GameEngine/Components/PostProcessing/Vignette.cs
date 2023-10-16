@@ -3,7 +3,7 @@ using System;
 
 [Title( "Vignette" )]
 [Category( "Post Processing" )]
-[Icon( "desktop_windows" )]
+[Icon( "vignette" )]
 public sealed class Vignette : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	/// <summary>

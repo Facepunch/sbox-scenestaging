@@ -3,7 +3,7 @@ using System;
 
 [Title( "Chromatic Aberration" )]
 [Category( "Post Processing" )]
-[Icon( "desktop_windows" )]
+[Icon( "zoom_out_map" )]
 public sealed class ChromaticAberration : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	/// <summary>

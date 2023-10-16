@@ -3,7 +3,7 @@ using System;
 
 [Title( "FilmGrain" )]
 [Category( "Post Processing" )]
-[Icon( "desktop_windows" )]
+[Icon( "grain" )]
 public sealed class FilmGrain : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	[Property] public float Intensity { get; set; } = 0.1f;

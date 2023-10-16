@@ -3,7 +3,7 @@ using System;
 
 [Title( "Pixelate" )]
 [Category( "Post Processing" )]
-[Icon( "desktop_windows" )]
+[Icon( "apps" )]
 public sealed class Pixelate : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	[Property] public float Scale { get; set; } = 5;
