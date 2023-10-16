@@ -10,13 +10,14 @@ namespace Editor.EntityPrefabEditor;
 internal partial class ComponentTypeSelector : PopupWidget
 {
 	public Action<TypeDescription> OnSelect { get; set; }
-	List<ComponentSelection> Selections { get; set; } = new();
-
-	int CurrentSelectionIndex { get; set; } = 0;
+	List<ComponentSelection> Panels { get; set; } = new();
+	int CurrentPanelId { get; set; } = 0;
 	Widget Main { get; set; }
 
 	string searchString;
 	const string NoCategoryName = "Uncategorized";
+
+	internal LineEdit Search { get; init; }
 
 	public ComponentTypeSelector( Widget parent ) : base( parent )
 	{
@@ -35,20 +36,20 @@ internal partial class ComponentTypeSelector : PopupWidget
 		MaximumHeight = 300;
 		DeleteOnClose = true;
 
-		var search = new LineEdit( this );
-		search.MinimumHeight = 22;
-		search.PlaceholderText = "Search..";
-		search.TextEdited += ( t ) =>
+		Search = new LineEdit( this );
+		Search.MinimumHeight = 22;
+		Search.PlaceholderText = "Search..";
+		Search.TextEdited += ( t ) =>
 		{
 			searchString = t;
 			ResetSelection();
 		};
 
-		head.Add( search );
+		head.Add( Search );
 
 		ResetSelection();
 
-		search.Focus();
+		Search.Focus();
 	}
 
 	/// <summary>
@@ -57,16 +58,16 @@ internal partial class ComponentTypeSelector : PopupWidget
 	/// <param name="selection"></param>
 	void PushSelection( ComponentSelection selection )
 	{
-		CurrentSelectionIndex++;
+		CurrentPanelId++;
 
 		// Do we have something at our new index, if so, kill it
-		if ( Selections.Count > CurrentSelectionIndex && Selections.ElementAt( CurrentSelectionIndex ) is var existingObj ) existingObj.Destroy();
+		if ( Panels.Count > CurrentPanelId && Panels.ElementAt( CurrentPanelId ) is var existingObj ) existingObj.Destroy();
 
-		Selections.Insert( CurrentSelectionIndex, selection );
+		Panels.Insert( CurrentPanelId, selection );
 		Main.Layout.Add( selection, 1 );
 
 		UpdateSelection( selection );
-		AnimateSelection( true, Selections[CurrentSelectionIndex - 1], selection );
+		AnimateSelection( true, Panels[CurrentPanelId - 1], selection );
 	}
 
 	/// <summary>
@@ -75,12 +76,12 @@ internal partial class ComponentTypeSelector : PopupWidget
 	internal void PopSelection()
 	{
 		// Don't pop while empty
-		if ( CurrentSelectionIndex == 0 ) return;
+		if ( CurrentPanelId == 0 ) return;
 
-		var currentIdx = Selections[CurrentSelectionIndex];
-		CurrentSelectionIndex--;
+		var currentIdx = Panels[CurrentPanelId];
+		CurrentPanelId--;
 
-		AnimateSelection( false, currentIdx, Selections[CurrentSelectionIndex] );
+		AnimateSelection( false, currentIdx, Panels[CurrentPanelId] );
 	}
 
 	/// <summary>
@@ -119,15 +120,15 @@ internal partial class ComponentTypeSelector : PopupWidget
 	protected void ResetSelection()
 	{
 		Main.Layout.Clear( true );
-		Selections.Clear();
+		Panels.Clear();
 
 		var selection = new ComponentSelection( this, this );
 
-		CurrentSelectionIndex = 0;
+		CurrentPanelId = 0;
 
 		UpdateSelection( selection );
 
-		Selections.Add( selection );
+		Panels.Add( selection );
 		Main.Layout.Add( selection );
 	}
 
@@ -168,6 +169,19 @@ internal partial class ComponentTypeSelector : PopupWidget
 		Destroy();
 	}
 
+	protected override void OnKeyRelease( KeyEvent e )
+	{
+		if ( e.Key == KeyCode.Down )
+		{
+			var selection = Panels[CurrentPanelId];
+			if ( selection.ItemList.FirstOrDefault() != null )
+			{
+				selection.Focus();
+				e.Accepted = true;
+			}
+		}
+	}
+
 	/// <summary>
 	/// Updates any selection
 	/// </summary>
@@ -175,6 +189,8 @@ internal partial class ComponentTypeSelector : PopupWidget
 	void UpdateSelection( ComponentSelection selection )
 	{
 		selection.Clear();
+
+		selection.ItemList.Add( selection.CategoryHeader );
 
 		// entity components
 		var types = EditorTypeLibrary.GetTypes<BaseComponent>().Where( x => !x.IsAbstract );
@@ -297,9 +313,13 @@ internal partial class ComponentTypeSelector : PopupWidget
 	partial class ComponentSelection : Widget
 	{
 		internal string Category { get; init; }
-		Widget CategoryHeader { get; set; }
-		ScrollArea Scroller { get; set; }
+		internal Widget CategoryHeader { get; init; }
+		ScrollArea Scroller { get; init; }
 		ComponentTypeSelector Selector { get; set; }
+
+		internal List<Widget> ItemList { get; private set; } = new();
+		internal int CurrentItemId { get; private set; } = 0;
+		internal Widget CurrentItem { get; private set; }
 
 		internal ComponentSelection( Widget parent, ComponentTypeSelector selector, string categoryName = null ) : base( parent )
 		{
@@ -324,18 +344,94 @@ internal partial class ComponentTypeSelector : PopupWidget
 			Scroller.Canvas.Layout = Layout.Column();
 		}
 
+		protected bool SelectMoveRow( int delta )
+		{
+			var selection = Selector.Panels[Selector.CurrentPanelId];
+			if ( delta == 1 && selection.ItemList.Count - 1 > selection.CurrentItemId )
+			{
+				selection.CurrentItem = selection.ItemList[++selection.CurrentItemId];
+				selection.Update();
+
+				return true;
+			}
+			else if ( delta == -1 )
+			{
+				if ( selection.CurrentItemId > 0 )
+				{
+					selection.CurrentItem = selection.ItemList[--selection.CurrentItemId];
+					selection.Update();
+
+					return true;
+				}
+				else
+				{
+					selection.Selector.Search.Focus();
+					selection.CurrentItem = null;
+					selection.Update();
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		protected bool Enter()
+		{
+			var selection = Selector.Panels[Selector.CurrentPanelId];
+			if ( selection.ItemList[selection.CurrentItemId] is Widget entry )
+			{
+				entry.MouseClick?.Invoke();
+				return true;
+			}
+
+			return false;
+		}
+
+		protected override void OnKeyRelease( KeyEvent e )
+		{
+			// Move down
+			if ( e.Key == KeyCode.Down && SelectMoveRow( 1 ) )
+			{
+				e.Accepted = true;
+				return;
+			}
+
+			// Move up 
+			if ( e.Key == KeyCode.Up && SelectMoveRow( -1 ) )
+			{
+				e.Accepted = true;
+				return;
+			}
+
+			// Back button while in any selection, goes to previous selction.
+			if ( e.Key == KeyCode.Left )
+			{
+				e.Accepted = true;
+				Selector.PopSelection();
+				return;
+			}
+
+			// Moving right, or hitting the enter key assumes you're trying to select something
+			if ( ( e.Key == KeyCode.Return || e.Key == KeyCode.Right ) && Enter() )
+			{
+				e.Accepted = true;
+				return;
+			}
+		}
+
 		internal bool PaintHeader()
 		{
 			var c = CategoryHeader;
+			var selected = c.IsUnderMouse || CurrentItem == c;
 
 			Paint.ClearPen();
-			Paint.SetBrush( Theme.WidgetBackground.WithAlpha( c.IsUnderMouse ? 0.7f : 0.4f ) );
+			Paint.SetBrush( selected ? Theme.Selection : Theme.WidgetBackground.WithAlpha( selected ? 0.7f : 0.4f ) );
 			Paint.DrawRect( c.LocalRect );
 
 			var r = c.LocalRect.Shrink( 12, 2 );
 			Paint.SetPen( Theme.ControlText );
 
-			if ( Selector.CurrentSelectionIndex > 0 )
+			if ( Selector.CurrentPanelId > 0 )
 			{
 				Paint.DrawIcon( r, "arrow_back", 14, TextFlag.LeftCenter );
 			}
@@ -353,6 +449,7 @@ internal partial class ComponentTypeSelector : PopupWidget
 		internal void AddEntry( ComponentBaseEntry entry )
 		{
 			Scroller.Canvas.Layout.Add( entry );
+			ItemList.Add( entry );
 			entry.Selector = this;
 		}
 
@@ -371,6 +468,7 @@ internal partial class ComponentTypeSelector : PopupWidget
 		internal void Clear()
 		{
 			Scroller.Canvas.Layout.Clear( true );
+			ItemList.Clear();
 		}
 
 		protected override void OnPaint()
@@ -419,7 +517,15 @@ internal partial class ComponentTypeSelector : PopupWidget
 		protected override void OnPaint()
 		{
 			var r = LocalRect.Shrink( 12, 2 );
-			var opacity = IsUnderMouse ? 1.0f : 0.7f;
+			var selected = IsUnderMouse || Selector.CurrentItem == this;
+			var opacity = selected ? 1.0f : 0.7f;
+
+			if ( selected )
+			{
+				Paint.ClearPen();
+				Paint.SetBrush( Theme.Selection );
+				Paint.DrawRect( LocalRect );
+			}
 
 			if ( Type is not null && !string.IsNullOrEmpty( Type.Icon ) )
 			{
@@ -434,7 +540,7 @@ internal partial class ComponentTypeSelector : PopupWidget
 			r.Left += r.Height + 6;
 
 			Paint.SetDefaultFont( 8 );
-			Paint.SetPen( Theme.ControlText.WithAlpha( IsUnderMouse ? 1.0f : 0.5f ) );
+			Paint.SetPen( Theme.ControlText.WithAlpha( selected ? 1.0f : 0.5f ) );
 			Paint.DrawText( r, Text, TextFlag.LeftCenter );
 		}
 	}
@@ -449,9 +555,19 @@ internal partial class ComponentTypeSelector : PopupWidget
 
 		protected override void OnPaint()
 		{
-			Paint.SetPen( Theme.ControlText.WithAlpha( IsUnderMouse ? 1.0f : 0.5f ) );
+			var selected = IsUnderMouse || Selector.CurrentItem == this;
+
+			if ( selected )
+			{
+				Paint.ClearPen();
+				Paint.SetBrush( Theme.Selection );
+				Paint.DrawRect( LocalRect );
+			}
 
 			var r = LocalRect.Shrink( 12, 2 );
+
+			Paint.SetPen( Theme.ControlText.WithAlpha( selected ? 1.0f : 0.5f ) );
+
 			Paint.SetDefaultFont( 8 );
 			Paint.DrawText( r, Category, TextFlag.LeftCenter );
 			Paint.DrawIcon( r, "arrow_forward", 14, TextFlag.RightCenter );
