@@ -4,7 +4,7 @@
       "Id": "4d0891b8-3ac6-4e29-b40e-3460b2453d72",
       "Name": "Cube",
       "Enabled": true,
-      "Position": "0,0,0",
+      "Position": "0,1.945508,0",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -71,30 +71,34 @@
       ]
     },
     {
-      "Id": "7e61da71-2733-47fb-a1d4-5dfde6c3764f",
-      "Name": "Panel Object",
-      "Enabled": false,
-      "Position": "0,-60.73787,63.43596",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "PanelComponent",
-          "__enabled": true
-        }
-      ]
-    },
-    {
-      "Id": "02f77a17-6f53-4dc7-af97-c63f138cc86f",
-      "Name": "Panel Object",
+      "Id": "9e2c8158-34b6-4f98-bdbb-ae9a1b930588",
+      "Name": "Screen Panel",
       "Enabled": true,
-      "Position": "0,-60.73787,63.43596",
+      "Position": "-0.0000001020514,-74.18726,70.75726",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "SinglePanelComponent",
-          "__enabled": true
+          "__type": "PanelRoot",
+          "__enabled": true,
+          "ZIndex": 100
+        }
+      ],
+      "Children": [
+        {
+          "Id": "5018ae09-cb6f-4d88-a427-6263c76ee93d",
+          "Name": "Health",
+          "Enabled": true,
+          "Position": "-0.00000000000000000000001158053,-36.90044,20.0713",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "PanelHost",
+              "__enabled": true,
+              "PanelTypeName": "HealthPanel"
+            }
+          ]
         }
       ]
     }

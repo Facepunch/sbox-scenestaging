@@ -1,0 +1,20 @@
+
+HealthPanel
+{
+    position: absolute;
+    bottom: 100px;
+    left: 200px;
+    gap: 30px;
+
+    .health, .armour
+    {
+        background-color: #000a;
+        border-radius: 3px;
+        padding: 10px;
+        color: white;
+        font-weight: bolder;
+        font-size: 30px;
+        font-family: poppins;
+        pointer-events: all;
+    }
+}
