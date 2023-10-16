@@ -249,7 +249,7 @@
       "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
       "Name": "Citizen",
       "Enabled": true,
-      "Position": "1030.004,656.9639,-1637.595",
+      "Position": "1030.004,661.5084,-1637.595",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -349,6 +349,40 @@
               "FalloffExponent": 2,
               "Sky": "materials/skybox/light_test_sky_sunset_2.vmat",
               "StartDistance": 0
+            },
+            {
+              "__type": "DepthOfField",
+              "__enabled": false,
+              "BackBlur": true,
+              "BlurSize": 30,
+              "FocalDistance": 250,
+              "FrontBlur": false
+            },
+            {
+              "__type": "FilmGrain",
+              "__enabled": true,
+              "Intensity": 0.03,
+              "Response": 1
+            },
+            {
+              "__type": "Vignette",
+              "__enabled": true,
+              "Center": "0.5,0.5",
+              "Color": "0,0,0,0.38",
+              "Intensity": 1,
+              "Roundness": 0.5,
+              "Smoothness": 1
+            },
+            {
+              "__type": "ChromaticAberration",
+              "__enabled": true,
+              "Offset": "4,6,4.049999",
+              "Scale": 0.2
+            },
+            {
+              "__type": "Sharpen",
+              "__enabled": true,
+              "Scale": 1
             }
           ]
         },

@@ -1,6 +1,8 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
+using Sandbox.Utility;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 [Title( "Camera" )]
@@ -98,6 +100,7 @@ public class CameraComponent : BaseComponent
 		camera.CubemapFog.Enabled = false;
 
 		camera.OnRenderOverlay = () => OnCameraRenderOverlay( camera );
+		camera.OnRenderTransparent = () => RenderHooks( afterTransparentHooks, camera );
 
 		foreach ( var c in GetComponents<ISceneCameraSetup>() )
 		{
@@ -105,12 +108,78 @@ public class CameraComponent : BaseComponent
 		}
 	}
 
+	class EffectHook
+	{
+		public int Order;
+		public Action<SceneCamera> Action;
+		public string Name;
+	}
+
+	List<EffectHook> afterTransparentHooks = new ();
+	List<EffectHook> beforeOverlayHooks = new ();
+
+	internal IDisposable AddHookAfterTransparent( string debugName, int order, Action<SceneCamera> renderEffect )
+	{
+		var hook = new EffectHook
+		{
+			Name = debugName,
+			Order = order,
+			Action = renderEffect
+		};
+
+		afterTransparentHooks.Add( hook );
+		afterTransparentHooks.Sort( ( x, y ) => x.Order - y.Order );
+
+		return DisposeAction.Create( () => afterTransparentHooks.Remove( hook ) );
+	}
+
+	internal IDisposable AddHookBeforeOverlay( string debugName, int order, Action<SceneCamera> renderEffect )
+	{
+		var hook = new EffectHook
+		{
+			Name = debugName,
+			Order = order,
+			Action = renderEffect
+		};
+
+		beforeOverlayHooks.Add( hook );
+		beforeOverlayHooks.Sort( ( x, y ) => x.Order - y.Order );
+
+		return DisposeAction.Create( () => beforeOverlayHooks.Remove( hook ) );
+	}
+
 	private void OnCameraRenderOverlay( SceneCamera camera )
 	{
 		if ( Scene is null )
 			return;
 
+		RenderHooks( beforeOverlayHooks, camera );
 		Scene.OnRenderOverlayInternal( camera );
+	}
+
+	private void RenderHooks( List<EffectHook> hooks, SceneCamera camera )
+	{
+		if ( Scene is null )
+			return;
+
+		for ( int i=0; i< hooks.Count; i++ )
+		{
+			if ( hooks[i] is null || hooks[i].Action is null )
+			{
+				hooks.RemoveAt( i );
+				i--;
+				continue;
+			}
+
+			try
+			{
+				hooks[i].Action?.Invoke( camera );
+			}
+			catch ( System.Exception e )
+			{
+				Log.Warning( e, $"Exception when running camera hook {hooks[i].Name}" );
+			}
+		}
 	}
 
 	public interface ISceneCameraSetup
