@@ -97,10 +97,20 @@ public class CameraComponent : BaseComponent
 		camera.Tonemap.Enabled = false;
 		camera.CubemapFog.Enabled = false;
 
+		camera.OnRenderOverlay = OnCameraRenderOverlay;
+
 		foreach ( var c in GetComponents<ISceneCameraSetup>() )
 		{
 			c.SetupCamera( this, camera );
 		}
+	}
+
+	private void OnCameraRenderOverlay()
+	{
+		if ( Scene is null )
+			return;
+
+		Scene.OnRenderOverlayInternal();
 	}
 
 	public interface ISceneCameraSetup
