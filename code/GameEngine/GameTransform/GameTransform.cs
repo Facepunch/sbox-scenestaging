@@ -1,6 +1,4 @@
-﻿using Sandbox;
-using System;
-using System.Linq;
+﻿using System;
 
 public class GameTransform
 {
@@ -38,8 +36,8 @@ public class GameTransform
 	/// <summary>
 	/// The current world transform
 	/// </summary>
-	public Transform World 
-	{ 
+	public Transform World
+	{
 		get
 		{
 			if ( Parent is null ) return Local;
@@ -97,12 +95,12 @@ public class GameTransform
 	/// <summary>
 	/// Position in local coordinates
 	/// </summary>
-	public Vector3 LocalPosition 
+	public Vector3 LocalPosition
 	{
-		get => Local.Position;
+		get => _local.Position;
 		set
 		{
-			Local = Local.WithPosition( value );
+			Local = _local.WithPosition( value );
 		}
 	}
 
@@ -111,10 +109,10 @@ public class GameTransform
 	/// </summary>
 	public Rotation LocalRotation
 	{
-		get => Local.Rotation;
+		get => _local.Rotation;
 		set
 		{
-			Local = Local.WithRotation( value );
+			Local = _local.WithRotation( value );
 		}
 	}
 
@@ -123,10 +121,10 @@ public class GameTransform
 	/// </summary>
 	public Vector3 LocalScale
 	{
-		get => Local.Scale;
+		get => _local.Scale;
 		set
 		{
-			Local = Local.WithScale( value.x );
+			Local = _local.WithScale( value.x );
 		}
 	}
 }
