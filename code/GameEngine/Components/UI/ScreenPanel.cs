@@ -6,7 +6,7 @@ using Sandbox.UI;
 [Icon( "desktop_windows", "red", "white" )]
 [EditorHandle( "materials/gizmo/ui.png" )]
 // TODO needs parent component of type
-public sealed class PanelRoot : BaseComponent, IPanelComponent, BaseComponent.RenderOverlay
+public sealed class PanelRoot : BaseComponent, IRootPanelComponent, BaseComponent.RenderOverlay
 {
 	[Property] public float Opacity { get; set; } = 1.0f;
 	[Property] public float Scale { get; set; } = 1.0f;
