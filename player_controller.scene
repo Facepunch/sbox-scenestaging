@@ -383,6 +383,10 @@
               "__type": "Sharpen",
               "__enabled": true,
               "Scale": 1
+            },
+            {
+              "__type": "Highlight",
+              "__enabled": true
             }
           ]
         },
@@ -4967,6 +4971,16 @@
           "Model": "models/sbox_props/binbags/binbag_pile_a2.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "HighlightOutline",
+          "__enabled": true,
+          "Color": "0,0.46,1,1",
+          "InsideColor": "0,0,0,0",
+          "InsideObscuredColor": "0,0,0,0",
+          "Material": null,
+          "ObscuredColor": "0,0,0,0",
+          "Width": 0.2
         }
       ]
     },
