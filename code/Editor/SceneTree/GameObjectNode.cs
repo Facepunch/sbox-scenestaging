@@ -262,7 +262,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 	public static void CreateObjectMenu( Menu menu, Action<GameObject> then )
 	{
-		menu.AddOption( "Create Empty", "category", () =>
+		menu.AddOption( "Create Empty", "dataset", () =>
 		{
 			using var scope = SceneEditorSession.Scope();
 			var go = GameObject.Create( true, "Object" );
@@ -271,7 +271,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 		// 3d obj
 		{
-			var submenu = menu.AddMenu( "3D Object" );
+			var submenu = menu.AddMenu( "3D Object", "dataset" );
 
 			submenu.AddOption( "Cube", "category", () =>
 			{
@@ -311,9 +311,9 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			} );
 		}
 
-		// 3d obj
+		// light
 		{
-			var submenu = menu.AddMenu( "Light" );
+			var submenu = menu.AddMenu( "Light", "light_mode" );
 
 			submenu.AddOption( "Directional Light", "category", () =>
 			{
@@ -361,8 +361,32 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			} );
 		}
 
+		// UI
 		{
-			menu.AddOption( "Camera", "category", () =>
+			var submenu = menu.AddMenu( "UI", "desktop_windows" );
+
+			submenu.AddOption( "World UI", "panorama_horizontal", () =>
+			{
+				using var scope = SceneEditorSession.Scope();
+				var go = GameObject.Create();
+				go.Name = "World UI";
+				go.AddComponent<WorldPanel>();
+				then( go );
+			} );
+
+			submenu.AddOption( "Screen UI", "desktop_windows", () =>
+			{
+				using var scope = SceneEditorSession.Scope();
+				var go = GameObject.Create();
+				go.Name = "Screen UI";
+				go.AddComponent<ScreenPanel>();
+
+				then( go );
+			} );
+		}
+
+		{
+			menu.AddOption( "Camera", "videocam", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
 				var go = GameObject.Create();

@@ -1,0 +1,65 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<root>
+
+    <div class="vitals">
+
+        <div class="health">
+            <div class="icon">heart_broken</div>
+            <div class="value">100</div>
+           
+        </div>
+
+        <div class="armor">
+            <div class="icon">shield</div>
+            <div class="value">33</div>
+        </div>
+
+    </div>
+
+    <div class="item">
+
+        <div class="value">16</div>
+        <div class="subvalue">67</div>
+    </div>
+
+    <div class="overlay">
+       
+        @*
+            You're advised not do shit like this. Well that's not true, you can do stuff like this
+            but you shouldn't really be doing it every frame. And the stuff inside should be its own
+            .razor file, or Panel - because those panels will get their own BuildHash and will only
+            update when you want them to.
+        *@
+        @foreach ( var model in Scene.GetComponents<ModelComponent>( true, true ) )
+        {
+            var bounds = model.Bounds;
+            var sphere = new Sphere(bounds.Center, bounds.Size.Length);
+            var pos = Camera.Main.ToScreen(bounds.Center);
+            pos.x /= Camera.Main.Size.x;
+            pos.y /= Camera.Main.Size.y;
+            pos *= 100.0f;
+
+            <div class="model-overlay" style="left: @(pos.x)%; top: @(pos.y)%;" @onclick=@(() => GameObjectClicked( model ))>
+                <div>@model.Model.Name</div>
+                <div>left: @(pos.x.FloorToInt())%; top: @(pos.y.FloorToInt())%;</div>
+            </div>
+        }
+
+    </div>
+
+</root>
+
+@code
+{
+    // Update every frame. This is just done as a test, and definitely should not be done.
+    protected override int BuildHash() => System.HashCode.Combine( Time.Now );
+
+
+    void GameObjectClicked( ModelComponent mc )
+    {
+        mc.Transform.Position += Vector3.Up * 10.0f;
+    }
+}

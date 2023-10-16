@@ -1,0 +1,30 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<root>
+
+    <div class="card">
+        <div class="name">@Name</div>
+        @if (TargetObject is not null)
+        {
+            <div class="gameobject">@TargetObject.Name</div>
+        }
+    </div>
+
+</root>
+
+@code{
+
+    [Property] public string Name { get; set; } = "Mingebag";
+
+    /// <summary>
+    /// Testing something a bit dynamic to make sure serialized properly
+    /// </summary>
+    [Property] public GameObject TargetObject { get; set; }
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine(Name, TargetObject);
+}

@@ -31,7 +31,7 @@ public abstract class ColliderBaseComponent : BaseComponent
 		PhysicsBody physicsBody = null;
 
 		// is there a physics body?
-		var body = GameObject.GetComponentInParent<PhysicsComponent>();
+		var body = GameObject.GetComponentInParent<PhysicsComponent>( true, true );
 		if ( body is not null )
 		{
 			physicsBody = body.GetBody();
