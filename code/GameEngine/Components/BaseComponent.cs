@@ -217,6 +217,6 @@ public abstract partial class BaseComponent
 	/// </summary>
 	public interface RenderOverlay
 	{
-		void OnRenderOverlay();
+		void OnRenderOverlay( SceneCamera camera );
 	}
 }

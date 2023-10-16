@@ -284,11 +284,11 @@ public class Scene : GameObject
 		return null;
 	}
 
-	internal void OnRenderOverlayInternal()
+	internal void OnRenderOverlayInternal( SceneCamera camera )
 	{
 		foreach ( var c in GetComponents<BaseComponent.RenderOverlay>( true, true ) )
 		{
-			c.OnRenderOverlay();
+			c.OnRenderOverlay( camera );
 		}
 	}
 }

@@ -61,10 +61,10 @@ public sealed class PanelRoot : BaseComponent, IRootPanelComponent, BaseComponen
 		rootPanel.ManualScale = Scale;
 	}
 
-	void BaseComponent.RenderOverlay.OnRenderOverlay()
+	void BaseComponent.RenderOverlay.OnRenderOverlay( SceneCamera camera )
 	{
-		if ( rootPanel is null )
-			return;
+		if ( rootPanel is null ) return;
+		if ( !camera.EnableUserInterface ) return;
 
 		rootPanel.RenderManual( Opacity );
 	}

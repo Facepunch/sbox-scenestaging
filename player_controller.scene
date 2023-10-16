@@ -83,37 +83,112 @@
       ]
     },
     {
-      "Id": "9e2c8158-34b6-4f98-bdbb-ae9a1b930588",
-      "Name": "Screen Panel",
-      "Enabled": true,
-      "Position": "-0.0000001020514,-74.18726,70.75726",
+      "Id": "3c08ac0a-f166-4391-a42a-727bfa834f97",
+      "Name": "Object",
+      "Enabled": false,
+      "Position": "979.3158,526.2988,-1513.404",
       "Rotation": "0,0,0,1",
+      "Scale": "1,1,1"
+    },
+    {
+      "Id": "b3b5ece6-cd1b-4b4d-9b36-cc88982a751d",
+      "Name": "Spot Light",
+      "Enabled": false,
+      "Position": "906.304,954.2023,-1254.256",
+      "Rotation": "0.05406565,0.2581995,-0.1976902,0.944102",
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "PanelRoot",
+          "__type": "SpotLightComponent",
           "__enabled": true,
-          "AutoScreenScale": true,
-          "Opacity": 1,
-          "Scale": 1,
-          "ZIndex": 100
+          "Attenuation": 1,
+          "ConeInner": 71.55,
+          "ConeOuter": 45.45,
+          "Cookie": "materials/effects/lightcookie.vtex",
+          "LightColor": "197.47,197.47,197.47,1",
+          "Radius": 3000
         }
-      ],
-      "Children": [
+      ]
+    },
+    {
+      "Id": "345b0bf5-02f3-4d23-af54-38d168045f71",
+      "Name": "MoveHelperDebugVis",
+      "Enabled": false,
+      "Position": "952.6196,597.6646,-1626.883",
+      "Rotation": "0.07155182,-0.007697098,-0.9580652,-0.2773578",
+      "Scale": "1,1,1",
+      "Components": [
         {
-          "Id": "5018ae09-cb6f-4d88-a427-6263c76ee93d",
-          "Name": "Health",
-          "Enabled": true,
-          "Position": "-0.00000000000000000000001158053,-36.90044,20.0713",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Components": [
-            {
-              "__type": "PanelHost",
-              "__enabled": true,
-              "PanelTypeName": "HealthPanel"
-            }
-          ]
+          "__type": "MoveHelperDebugVis",
+          "__enabled": true,
+          "Gravity": "0,0,-5.7",
+          "Velocity": "7.950001,0,0"
+        }
+      ]
+    },
+    {
+      "Id": "66401ad7-14b5-4c41-a9ec-527bbdfc227d",
+      "Name": "MoveHelperDebugVis",
+      "Enabled": false,
+      "Position": "956.0801,440.6392,-1527.239",
+      "Rotation": "-0.6707615,0.738689,0.05201491,-0.0413692",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "MoveHelperDebugVis",
+          "__enabled": true,
+          "Gravity": "0,0,-57",
+          "Velocity": "194.25,0,0"
+        }
+      ]
+    },
+    {
+      "Id": "ca6d2e36-4d11-4283-9644-2058cb5bb995",
+      "Name": "MoveHelperDebugVis",
+      "Enabled": false,
+      "Position": "2016.694,478.0431,-1632.491",
+      "Rotation": "-0.04875233,-0.386473,0.1152688,0.91377",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "MoveHelperDebugVis",
+          "__enabled": true,
+          "Gravity": "0,0,-74.10001",
+          "Velocity": "508.3,0,0"
+        }
+      ]
+    },
+    {
+      "Id": "1196ee08-d8dd-4290-9ff9-be67ddc9769a",
+      "Name": "MoveHelperDebugVis",
+      "Enabled": false,
+      "Position": "1182.166,48.9259,-1611.166",
+      "Rotation": "0.003569647,-0.1453741,0.0242874,-0.9890732",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "MoveHelperDebugVis",
+          "__enabled": true,
+          "Gravity": "0,0,-41.34999",
+          "Velocity": "117.3,0,0"
+        }
+      ]
+    },
+    {
+      "Id": "4f46ae3b-578b-4cc1-8ba9-32a0c8acd108",
+      "Name": "MoveHelperDebugVis",
+      "Enabled": false,
+      "Position": "1149.363,59.6977,-1480.064",
+      "Rotation": "0.04205942,0.03163541,-0.7980621,0.6002724",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "TraceDebugVis",
+          "__enabled": true,
+          "BoxSize": "2,2,2",
+          "SphereRadius": 4,
+          "TraceLength": 1000000,
+          "Type": "Box"
         }
       ]
     },
@@ -218,35 +293,25 @@
           "Children": [
             {
               "Id": "975e3006-e7c3-46a5-9f30-c31a196c89f9",
-              "Name": "World Panel",
+              "Name": "Name Tag UI",
               "Enabled": true,
-              "Position": "0,0.1895752,95.96265",
+              "Position": "-0.000001814945,0.1895752,80.7357",
               "Rotation": "-0.00000005960058,0.000000000000005518709,-0.9999317,0.01167414",
               "Scale": "1,1,1",
               "Components": [
                 {
                   "__type": "WorldPanel",
                   "__enabled": true,
-                  "PanelOffset": "-512,0",
+                  "HorizontalAlign": "Center",
+                  "LookAtCamera": true,
                   "PanelSize": "1024,256",
-                  "PanelTypeName": null
-                }
-              ],
-              "Children": [
+                  "RenderScale": 1,
+                  "VerticalAlign": "Center"
+                },
                 {
-                  "Id": "998c645f-92c1-4f3c-bbeb-132bbbc7ebb1",
-                  "Name": "Health",
-                  "Enabled": true,
-                  "Position": "-1179.011,-669.7352,1597.259",
-                  "Rotation": "0,0,0,1",
-                  "Scale": "1,1,1",
-                  "Components": [
-                    {
-                      "__type": "PanelHost",
-                      "__enabled": true,
-                      "PanelTypeName": "NameTagPanel"
-                    }
-                  ]
+                  "__type": "NameTagPanel",
+                  "__enabled": true,
+                  "Name": "Prickly Pete"
                 }
               ]
             }
@@ -404,7 +469,7 @@
       ]
     },
     {
-      "Id": "3c08ac0a-f166-4391-a42a-727bfa834f97",
+      "Id": "62c2a961-fa6a-4473-ba2c-821e488ac0c6",
       "Name": "Object",
       "Enabled": false,
       "Position": "979.3158,526.2988,-1513.404",
@@ -643,7 +708,7 @@
     },
     {
       "Id": "f34b346f-38cf-4579-85b5-914d61c607de",
-      "Name": "Cabin",
+      "Name": "Citizen Solid",
       "Enabled": true,
       "Position": "850.0305,525.2525,-1631.623",
       "Rotation": "-0.00000002114547,0.000000005928668,0.1821554,0.9832697",
@@ -663,6 +728,32 @@
           "IsTrigger": false,
           "Model": "models/citizen/citizen.vmdl",
           "Surface": null
+        }
+      ],
+      "Children": [
+        {
+          "Id": "085a5ac3-cbf3-47d8-b2c1-a8ad95345723",
+          "Name": "Name Tag UI",
+          "Enabled": true,
+          "Position": "-0.000001516925,-0.000003088577,78.34348",
+          "Rotation": "0.00000002114547,-0.000000005928669,-0.1821554,0.9832698",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "WorldPanel",
+              "__enabled": true,
+              "HorizontalAlign": "Center",
+              "LookAtCamera": true,
+              "PanelSize": "1024,256",
+              "RenderScale": 1,
+              "VerticalAlign": "Center"
+            },
+            {
+              "__type": "NameTagPanel",
+              "__enabled": true,
+              "Name": "Terry Airfryer"
+            }
+          ]
         }
       ]
     },
@@ -4220,7 +4311,7 @@
       ]
     },
     {
-      "Id": "b3b5ece6-cd1b-4b4d-9b36-cc88982a751d",
+      "Id": "0761c615-445d-4242-852e-80485edb20f1",
       "Name": "Spot Light",
       "Enabled": false,
       "Position": "906.304,954.2023,-1254.256",
@@ -5095,6 +5186,32 @@
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
         }
+      ],
+      "Children": [
+        {
+          "Id": "913c5692-bd97-49fe-b05e-251a6b8b443c",
+          "Name": "Name Tag UI",
+          "Enabled": true,
+          "Position": "0.00004921307,0.00005028578,86.29174",
+          "Rotation": "-0.0000003800131,-0.0000001476499,-0.9107943,0.4128596",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "NameTagPanel",
+              "__enabled": true,
+              "Name": "Emma Dongle"
+            },
+            {
+              "__type": "WorldPanel",
+              "__enabled": true,
+              "HorizontalAlign": "Center",
+              "LookAtCamera": true,
+              "PanelSize": "1024,256",
+              "RenderScale": 1,
+              "VerticalAlign": "Center"
+            }
+          ]
+        }
       ]
     },
     {
@@ -5116,36 +5233,26 @@
       ],
       "Children": [
         {
-          "Id": "9ca0e880-85d5-44a3-a6d0-3dd8bc3da7a7",
-          "Name": "World Panel",
+          "Id": "967e37e9-b51f-43cd-a06a-dc350a8d7271",
+          "Name": "Name Tag UI",
           "Enabled": true,
-          "Position": "-0.4961624,-0.3133124,91.62374",
-          "Rotation": "0.001669049,-0.002732914,0.01496947,0.9998826",
+          "Position": "0.00000006187065,-0.0000003213206,84.30791",
+          "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Components": [
             {
+              "__type": "NameTagPanel",
+              "__enabled": true,
+              "Name": "Fred Heatsink"
+            },
+            {
               "__type": "WorldPanel",
               "__enabled": true,
-              "PanelOffset": "-512,-128",
+              "HorizontalAlign": "Center",
+              "LookAtCamera": true,
               "PanelSize": "1024,256",
-              "PanelTypeName": null
-            }
-          ],
-          "Children": [
-            {
-              "Id": "9dda3d9b-1e59-4412-90b2-aa88255413d4",
-              "Name": "Health",
-              "Enabled": true,
-              "Position": "-1179.011,-669.7352,1597.259",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Components": [
-                {
-                  "__type": "PanelHost",
-                  "__enabled": true,
-                  "PanelTypeName": "NameTagPanel"
-                }
-              ]
+              "RenderScale": 1,
+              "VerticalAlign": "Center"
             }
           ]
         }
