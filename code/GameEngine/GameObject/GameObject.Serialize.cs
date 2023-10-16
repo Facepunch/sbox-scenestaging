@@ -60,14 +60,23 @@ public partial class GameObject
 		{
 			var components = new JsonArray();
 
-			ForEachComponent( "Serialize", false, component =>
+			foreach ( var component in Components )
 			{
-				var result = component.Serialize( options );
-				if ( result is null ) return;
+				if ( component is null ) continue;
 
-				components.Add( result );
+				try
+				{
 
-			} );
+					var result = component.Serialize( options );
+					if ( result is null ) continue;
+
+					components.Add( result );
+				}
+				catch ( System.Exception e )
+				{
+					Log.Warning( e, $"Exception when serializing {component} - skipping!" );
+				}
+			}
 
 			json.Add( "Components", components );
 		}
