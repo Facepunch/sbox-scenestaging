@@ -1,16 +1,10 @@
-using Editor;
 using Sandbox;
-using Sandbox.Diagnostics;
-using Sandbox.Services;
 using Sandbox.UI;
-using System;
-using System.Threading;
 
 [Title( "World Panel" )]
 [Category( "UI" )]
 [Icon( "panorama_horizontal" )]
 [EditorHandle( "materials/gizmo/ui.png" )]
-// TODO needs parent component of type
 public sealed class WorldPanel : BaseComponent, IRootPanelComponent
 {
 	Sandbox.UI.WorldPanel worldPanel;
@@ -18,21 +12,34 @@ public sealed class WorldPanel : BaseComponent, IRootPanelComponent
 	[Property] public float RenderScale { get; set; } = 1.0f;
 	[Property] public bool LookAtCamera { get; set; }
 	[Property] public Vector2 PanelSize { get; set; } = new Vector2( 512 );
+
+	// todo: show these as group buttons
+
 	[Property] public HAlignment HorizontalAlign { get; set; } = HAlignment.Center;
 	[Property] public VAlignment VerticalAlign { get; set; } = VAlignment.Center;
 
 
 	public enum HAlignment
 	{
+		[Icon( "align_horizontal_left" )]
 		Left = 1,
+
+		[Icon( "align_horizontal_center" )]
 		Center = 2,
+
+		[Icon( "align_horizontal_right" )]
 		Right = 3,
 	}
 
 	public enum VAlignment
 	{
+		[Icon( "align_vertical_top" )]
 		Top = 1,
+
+		[Icon( "align_vertical_center" )]
 		Center = 2,
+
+		[Icon( "align_vertical_bottom" )]
 		Bottom = 3,
 	}
 
@@ -43,7 +50,7 @@ public sealed class WorldPanel : BaseComponent, IRootPanelComponent
 		if ( HorizontalAlign == HAlignment.Center ) r.Position -= new Vector2( PanelSize.x * 0.5f, 0 );
 		if ( HorizontalAlign == HAlignment.Right ) r.Position -= new Vector2( PanelSize.x, 0 );
 
-		if ( VerticalAlign == VAlignment.Center ) r.Position -= new Vector2( 0, PanelSize.y * 0.5f);
+		if ( VerticalAlign == VAlignment.Center ) r.Position -= new Vector2( 0, PanelSize.y * 0.5f );
 		if ( VerticalAlign == VAlignment.Bottom ) r.Position -= new Vector2( 0, PanelSize.y );
 
 
@@ -94,7 +101,7 @@ public sealed class WorldPanel : BaseComponent, IRootPanelComponent
 			currentRot = Rotation.LookAt( camDelta, Camera.Main.Rotation.Up );
 		}
 
-		worldPanel.Transform = Transform.World.WithRotation( currentRot ).WithScale( currentScale * RenderScale);
+		worldPanel.Transform = Transform.World.WithRotation( currentRot ).WithScale( currentScale * RenderScale );
 
 		var rect = CalculateRect();
 

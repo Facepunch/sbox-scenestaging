@@ -1,4 +1,3 @@
-using Sandbox;
 using Sandbox.Razor;
 using Sandbox.UI;
 using System;
@@ -6,9 +5,14 @@ using System.Linq;
 
 [Category( "UI Panels" )]
 [Icon( "widgets" )]
-public class PanelComponent : BaseComponent, IPanelComponent
+public abstract class PanelComponent : BaseComponent, IPanelComponent
 {
 	Panel panel;
+
+	/// <summary>
+	/// The panel. Can be null if the panel doesn't exist yet.
+	/// </summary>
+	public Panel Panel => panel;
 
 	public override void OnEnabled()
 	{
@@ -39,6 +43,7 @@ public class PanelComponent : BaseComponent, IPanelComponent
 			return r.GetPanel();
 		}
 
+		// Do we have any parent panels we can become a child of?
 		var parentPanel = GameObject.GetComponentInParent<IPanelComponent>( false );
 		return parentPanel?.GetPanel();
 	}
@@ -49,39 +54,43 @@ public class PanelComponent : BaseComponent, IPanelComponent
 		panel = null;
 	}
 
-	public Panel GetPanel()
+	Panel IPanelComponent.GetPanel()
 	{
 		return panel;
 	}
 
-	protected virtual void BuildRenderTree( RenderTreeBuilder v )
-	{
+	/// <summary>
+	/// Gets overridden by .razor file
+	/// </summary>
+	protected virtual void BuildRenderTree( RenderTreeBuilder v ) { }
 
-	}
+	/// <summary>
+	/// Gets overridden by .razor file
+	/// </summary>
+	protected virtual string GetRenderTreeChecksum() => string.Empty;
 
 	private int BuildRenderHash()
 	{
 		return HashCode.Combine( BuildHash() );
 	}
 
-	protected virtual int BuildHash()
-	{
-		return 0;
-	}
-
-	protected virtual string GetRenderTreeChecksum()
-	{
-		return string.Empty;
-	}
+	/// <summary>
+	/// When this has changes, we will re-render this panel. This is usually
+	/// implemented as a HashCode.Combine containing stuff that causes the
+	/// panel's content to change.
+	/// </summary>
+	protected virtual int BuildHash() => 0;
 
 	string loadedStyleSheet;
 
 	void LoadStyleSheet()
 	{
 		var type = TypeLibrary?.GetType( GetType() );
+		if ( type is null )
+			return;
 
 		// get the shortest class file (incase we have MyPanel.SomeStuff.Blah)
-		var location = type?.GetAttributes<Sandbox.Internal.ClassFileLocationAttribute>( false )
+		var location = type.GetAttributes<Sandbox.Internal.ClassFileLocationAttribute>( false )
 										.OrderBy( x => x.Path.Length )
 										.FirstOrDefault();
 
@@ -102,6 +111,9 @@ public class PanelComponent : BaseComponent, IPanelComponent
 	}
 }
 
+/// <summary>
+/// A panel where we control the tree build.
+/// </summary>
 file class CustomBuildPanel : Panel
 {
 	Action<RenderTreeBuilder> treeBuilder;

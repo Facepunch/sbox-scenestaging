@@ -379,7 +379,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 				using var scope = SceneEditorSession.Scope();
 				var go = GameObject.Create();
 				go.Name = "Screen UI";
-				go.AddComponent<PanelRoot>();
+				go.AddComponent<ScreenPanel>();
 
 				then( go );
 			} );

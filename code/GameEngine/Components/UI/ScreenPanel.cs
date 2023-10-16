@@ -3,10 +3,10 @@ using Sandbox.UI;
 
 [Title( "Screen Panel" )]
 [Category( "UI" )]
-[Icon( "desktop_windows", "red", "white" )]
+[Icon( "desktop_windows" )]
 [EditorHandle( "materials/gizmo/ui.png" )]
-// TODO needs parent component of type
-public sealed class PanelRoot : BaseComponent, IRootPanelComponent, BaseComponent.RenderOverlay
+[Alias( "PanelRoot" )]
+public sealed class ScreenPanel : BaseComponent, IRootPanelComponent, BaseComponent.RenderOverlay
 {
 	[Property] public float Opacity { get; set; } = 1.0f;
 	[Property] public float Scale { get; set; } = 1.0f;
