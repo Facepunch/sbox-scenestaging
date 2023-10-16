@@ -75,6 +75,8 @@ class GameRootPanel : RootPanel
 	public bool AutoScale = true;
 	public float ManualScale;
 
+	override public bool IsWorldPanel => false;
+
 	protected override void UpdateScale( Rect screenSize )
 	{
 		if ( AutoScale )
