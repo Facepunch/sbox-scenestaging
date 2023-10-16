@@ -1,5 +1,4 @@
-﻿using Sandbox;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 public static class EditorScene
@@ -10,9 +9,20 @@ public static class EditorScene
 
 	public static SelectionSystem Selection => SceneEditorSession.Active?.Selection;
 
-	[Event( "game.loaded" )]
-	public static void GameStarted( Package package )
+	public static string LastOpenedScene
 	{
+		get => EditorCookie.Get<string>( "scene.lastopened", null );
+		set => EditorCookie.Set( "scene.lastopened", value );
+	}
+
+	[Event( "game.loaded" )]
+	public static async void GameStarted( Package package )
+	{
+		var resource = ResourceLibrary.Get<SceneFile>( LastOpenedScene );
+		if ( resource != null )
+		{
+			await LoadFromScene( resource );
+		}
 
 		// If we just started up, and there's no scenes
 		// create a new, blank one.
@@ -49,7 +59,6 @@ public static class EditorScene
 
 		EditorEvent.Run( "scene.open" );
 	}
-
 
 	static SceneEditorSession previousActiveScene;
 
@@ -93,7 +102,6 @@ public static class EditorScene
 		Camera.Main.World = GameManager.ActiveScene.SceneWorld;
 		Camera.Main.Worlds.Clear();
 		Camera.Main.Worlds.Add( GameManager.ActiveScene.DebugSceneWorld );
-
 
 		EditorWindow.DockManager.RaiseDock( "GameFrame" );
 	}
@@ -140,6 +148,8 @@ public static class EditorScene
 	public static async Task LoadFromScene( SceneFile resource )
 	{
 		Assert.NotNull( resource, "SceneFile should not be null" );
+		
+		LastOpenedScene = resource.ResourcePath;
 
 		var asset = AssetSystem.FindByPath( resource.ResourcePath );
 		asset?.RecordOpened();
@@ -148,7 +158,7 @@ public static class EditorScene
 			return;
 
 		SceneEditorSession session = SceneEditorSession.All.Where( x => x.Scene.Source == resource ).FirstOrDefault();
-		if ( session  is not null )
+		if ( session is not null )
 		{
 			session.MakeActive();
 			return;
