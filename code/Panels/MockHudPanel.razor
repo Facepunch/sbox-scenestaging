@@ -38,9 +38,13 @@
             var bounds = model.Bounds;
             var sphere = new Sphere(bounds.Center, bounds.Size.Length);
             var pos = Camera.Main.ToScreen(bounds.Center);
+            pos.x /= Camera.Main.Size.x;
+            pos.y /= Camera.Main.Size.y;
+            pos *= 100.0f;
 
-            <div class="model-overlay" style="left: @(pos.x)px; top: @(pos.y)px;">
-                @model.Model
+            <div class="model-overlay" style="left: @(pos.x)%; top: @(pos.y)%;" @onclick=@(() => GameObjectClicked( model ))>
+                <div>@model.Model.Name</div>
+                <div>left: @(pos.x.FloorToInt())%; top: @(pos.y.FloorToInt())%;</div>
             </div>
         }
 
@@ -53,4 +57,9 @@
     // Update every frame. This is just done as a test, and definitely should not be done.
     protected override int BuildHash() => System.HashCode.Combine( Time.Now );
 
+
+    void GameObjectClicked( ModelComponent mc )
+    {
+        mc.Transform.Position += Vector3.Up * 10.0f;
+    }
 }

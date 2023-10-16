@@ -14,10 +14,10 @@ NameTagPanel
     .card
     {
         flex-direction: column;
-        background-color: #000a;
+        background-color: #0008;
         border-radius: 5px;
         overflow: hidden;
-        padding: 20px;
+        padding: 10px 20px;
         justify-content: center;
         align-items: center;
         //backdrop-filter: blur( 2px ); - doesn't work on world panels!?!?!?

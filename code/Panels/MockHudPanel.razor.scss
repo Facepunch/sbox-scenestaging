@@ -56,13 +56,34 @@ MockHudPanel
         }
     }
 
-    // this is showing how to position things around things in the scene
-    // but in screen space instead of using a world panel
-    .model-overlay
+    .overlay
     {
         position: absolute;
-        background-color: #fff;
-        padding: 10px;
-        box-shadow: 5px 5px 32px rgba( black, 0.4 );
+        left: 0px;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+
+        // this is showing how to position things around things in the scene
+        // but in screen space instead of using a world panel
+        .model-overlay
+        {
+            position: absolute;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 5px 5px 32px rgba( black, 0.4 );
+            cursor: pointer;
+            flex-direction: column;
+
+            &:hover
+            {
+                background-color: #ff0;
+            }
+
+            &:active
+            {
+                background-color: #0ff;
+            }
+        }
     }
 }
