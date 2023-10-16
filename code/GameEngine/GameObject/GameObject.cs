@@ -415,18 +415,21 @@ public partial class GameObject
 	/// <summary>
 	/// Find component on this gameobject, or its parents
 	/// </summary>
-	public T GetComponentInParent<T>( bool enabledOnly = true ) where T : BaseComponent
+	public T GetComponentInParent<T>( bool enabledOnly = true, bool andSelf = false )
 	{
-		var t = GetComponent<T>( enabledOnly, false );
-		if ( t is not null )
-			return t;
+		if ( andSelf )
+		{
+			var t = GetComponent<T>( enabledOnly, false );
+			if ( t is not null )
+				return t;
+		}
 
 		if ( Parent is not null )
 		{
-			return Parent.GetComponentInParent<T>( enabledOnly );
+			return Parent.GetComponentInParent<T>( enabledOnly, true );
 		}
 
-		return null;
+		return default;
 	}
 
 	IEnumerable<GameObject> GetSiblings()
