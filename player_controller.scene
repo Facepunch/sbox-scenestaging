@@ -277,7 +277,7 @@
           "Id": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
           "Name": "Body",
           "Enabled": true,
-          "Position": "0,-0.1896,0",
+          "Position": "0,-0.66093,0",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Components": [
@@ -335,30 +335,6 @@
               "ZNear": 1
             },
             {
-              "__type": "CameraPhysicsDebug",
-              "__enabled": false,
-              "MaxPoints": 10000,
-              "TracesPerFrame": 500,
-              "TraceType": "Ray"
-            },
-            {
-              "__type": "CubemapFog",
-              "__enabled": false,
-              "Blur": 0.5,
-              "EndDistance": 8000,
-              "FalloffExponent": 2,
-              "Sky": "materials/skybox/light_test_sky_sunset_2.vmat",
-              "StartDistance": 0
-            },
-            {
-              "__type": "DepthOfField",
-              "__enabled": false,
-              "BackBlur": true,
-              "BlurSize": 30,
-              "FocalDistance": 250,
-              "FrontBlur": false
-            },
-            {
               "__type": "FilmGrain",
               "__enabled": true,
               "Intensity": 0.03,
@@ -387,6 +363,24 @@
             {
               "__type": "Highlight",
               "__enabled": true
+            },
+            {
+              "__type": "Bloom",
+              "__enabled": true,
+              "BloomCurve": {
+                "rangey": "0,106.45",
+                "frames": [
+                  {},
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              "Mode": "Screen",
+              "Strength": 1,
+              "Threshold": 0.3,
+              "ThresholdWidth": 2
             }
           ]
         },
@@ -766,6 +760,16 @@
           "IsTrigger": false,
           "Model": "models/citizen/citizen.vmdl",
           "Surface": null
+        },
+        {
+          "__type": "HighlightOutline",
+          "__enabled": true,
+          "Color": "86.39359,124.21,48.57718,1",
+          "InsideColor": "0,0,0,0",
+          "InsideObscuredColor": "0,0,0,0",
+          "Material": null,
+          "ObscuredColor": "0,0,0,0.4",
+          "Width": 0.3
         }
       ],
       "Children": [
@@ -4975,12 +4979,12 @@
         {
           "__type": "HighlightOutline",
           "__enabled": true,
-          "Color": "0,0.46,1,1",
+          "Color": "44.05941,69.79208,100,1",
           "InsideColor": "0,0,0,0",
           "InsideObscuredColor": "0,0,0,0",
           "Material": null,
           "ObscuredColor": "0,0,0,0",
-          "Width": 0.2
+          "Width": 0.4
         }
       ]
     },

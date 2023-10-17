@@ -18,7 +18,7 @@ public sealed class Highlight : BaseComponent, BaseComponent.ExecuteInEditor
 		renderHook?.Dispose();
 
 		var cc = GetComponent<CameraComponent>( false, false );
-		renderHook = cc.AddHookAfterTransparent( "Highlight", 100, RenderEffect );
+		renderHook = cc.AddHookAfterTransparent( "Highlight", 1000, RenderEffect );
 	}
 
 	public override void OnDisabled()
