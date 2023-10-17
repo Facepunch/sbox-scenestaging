@@ -45,7 +45,7 @@ public static partial class SceneExtensions
 			fd.SelectFile( saveLocation );
 			fd.SetFindFile();
 			fd.SetModeSave();
-			fd.SetNameFilter( $"{fileType} (*.{scene})" );
+			fd.SetNameFilter( $"{fileType} (*.{extension})" );
 
 			if ( !fd.Execute() )
 				return;
