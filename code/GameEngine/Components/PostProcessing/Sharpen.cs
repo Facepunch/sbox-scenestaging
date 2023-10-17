@@ -6,6 +6,7 @@ using System;
 [Icon( "deblur" )]
 public sealed class Sharpen : BaseComponent, BaseComponent.ExecuteInEditor
 {
+	[Range( 0, 5 )]
 	[Property] public float Scale { get; set; } = 2;
 
 	IDisposable renderHook;

@@ -19,7 +19,7 @@ public class CameraComponent : BaseComponent
 	[Property]
 	public Color BackgroundColor { get; set; } = "#557685";
 
-	[Property]
+	[Property, Range( 1, 179 )]
 	public float FieldOfView { get; set; } = 60;
 
 	[Property]

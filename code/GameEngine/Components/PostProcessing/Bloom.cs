@@ -8,8 +8,14 @@ using System;
 public class Bloom : BaseComponent, CameraComponent.ISceneCameraSetup
 {
 	[Property] public SceneCamera.BloomAccessor.BloomMode Mode { get; set; }
+
+	[Range( 0, 10 )]
 	[Property] public float Strength { get; set; } = 1.0f;
+
+	[Range( 0, 2 )]
 	[Property] public float Threshold { get; set; } = 0.5f;
+
+	[Range( 0, 5 )]
 	[Property] public float ThresholdWidth { get; set; }
 	[Property] public Curve BloomCurve { get; set; } = new Curve( new Curve.Frame( 0.0f, 0.5f ), new Curve.Frame( 1.0f, 1.0f ) );
 	[Property] public Gradient BloomColor { get; set; } = new Gradient( new Gradient.ColorFrame( 0.0f, Color.White ), new Gradient.ColorFrame( 1.0f, Color.Gray ) );

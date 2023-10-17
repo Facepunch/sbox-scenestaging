@@ -13,11 +13,13 @@ public sealed class DepthOfField : BaseComponent, BaseComponent.ExecuteInEditor
 	/// <summary>
 	/// How far away from the camera to focus
 	/// </summary>
+	[Range(0, 1000)]
 	[Property] public float FocalDistance { get; set; } = 200.0f;
 
 	/// <summary>
 	/// How blurry to make stuff that isn't in focus
 	/// </summary>
+	[Range( 0, 100 )]
 	[Property] public float BlurSize { get; set; } = 100.0f;
 
 	/// <summary>
