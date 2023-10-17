@@ -1,15 +1,11 @@
 ﻿using Sandbox;
-using Sandbox.Diagnostics;
-using System;
-using System.Buffers;
-using System.Numerics;
+using System.Collections.Generic;
 
 [Title( "Model Collider" )]
 [Category( "Physics" )]
 [Icon( "check_box_outline_blank", "red", "white" )]
 public class ModelCollider : ColliderBaseComponent
 {
-	[Property] public Surface Surface { get; set; }
 	[Property] public Model Model { get; set; }
 
 	public override void DrawGizmos()
@@ -52,13 +48,54 @@ public class ModelCollider : ColliderBaseComponent
 		// TODO - draw physics models from Model
 	}
 
-	protected override PhysicsShape CreatePhysicsShape( PhysicsBody targetBody )
+	protected override IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody )
 	{
-		return null;
+		var tx = targetBody.Transform.ToLocal( Transform.World );
+
+		foreach ( var part in Model.Physics.Parts )
+		{
+			foreach ( var sphere in part.Spheres )
+			{
+				yield return targetBody.AddSphereShape( tx.PointToWorld( sphere.Sphere.Center ), sphere.Sphere.Radius * tx.Scale );
+			}
+
+			foreach ( var capsule in part.Capsules )
+			{
+				yield return targetBody.AddCapsuleShape( tx.PointToWorld( capsule.Capsule.CenterA ), tx.PointToWorld( capsule.Capsule.CenterB ), capsule.Capsule.Radius * tx.Scale );
+			}
+
+			foreach ( var hull in part.Hulls )
+			{
+				yield return targetBody.AddShape( hull, tx );
+			}
+
+			foreach ( var mesh in part.Meshes )
+			{
+				yield return targetBody.AddShape( mesh, tx, false, true );
+			}
+		}
 	}
 
+	
 	public override void OnEnabled()
 	{
-		group = Scene.PhysicsWorld.SetupPhysicsFromModel( Model, Transform.World, PhysicsMotionType.Keyframed );
+		//
+		// When we create the model physics manually, it's all fucked.
+		// but when we use SetupPhysicsFromModel it all works. Why?
+		//
+		//  - garry
+		//
+		bool createModelPhysicsManually = false;
+
+		if ( createModelPhysicsManually )
+		{
+
+			base.OnEnabled();
+		}
+		else
+		{
+			group = Scene.PhysicsWorld.SetupPhysicsFromModel( Model, Transform.World, PhysicsMotionType.Keyframed );
+		}
 	}
+	
 }

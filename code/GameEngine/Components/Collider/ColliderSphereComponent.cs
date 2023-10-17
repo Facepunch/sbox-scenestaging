@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
+using System.Collections.Generic;
 
 [Title( "Collider - Sphere" )]
 [Category( "Physics" )]
@@ -16,7 +17,7 @@ public class ColliderSphereComponent : ColliderBaseComponent
 		Gizmo.Draw.LineSphere( new Sphere( 0, Radius ) );
 	}
 
-	protected override PhysicsShape CreatePhysicsShape( PhysicsBody targetBody )
+	protected override IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody )
 	{
 		var tx = targetBody.Transform.ToLocal( Transform.World );
 		var shape = targetBody.AddSphereShape( tx.Position, Radius * tx.Scale );
@@ -26,6 +27,6 @@ public class ColliderSphereComponent : ColliderBaseComponent
 			shape.SurfaceMaterial = Surface.ResourceName;
 		}
 
-		return shape;
+		yield return shape;
 	}
 }
