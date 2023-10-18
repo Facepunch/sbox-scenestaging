@@ -11,8 +11,8 @@ public static class EditorScene
 
 	public static string LastOpenedScene
 	{
-		get => EditorCookie.Get<string>( "scene.lastopened", null );
-		set => EditorCookie.Set( "scene.lastopened", value );
+		get => ProjectCookie.Get<string>( "scene.lastopened", null );
+		set => ProjectCookie.Set( "scene.lastopened", value );
 	}
 
 	[Event( "game.loaded" )]
