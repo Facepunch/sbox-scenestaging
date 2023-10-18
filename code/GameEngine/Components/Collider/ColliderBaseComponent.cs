@@ -2,7 +2,7 @@
 using Sandbox.Diagnostics;
 using System.Collections.Generic;
 
-public abstract class ColliderBaseComponent : BaseComponent
+public abstract class ColliderBaseComponent : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	List<PhysicsShape> shapes = new();
 	protected PhysicsBody ownBody;

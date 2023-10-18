@@ -3,16 +3,32 @@
     {
       "Id": "6847521e-c350-4273-a554-207b9e355843",
       "Name": "MoveHelperDebugVis",
-      "Enabled": false,
-      "Position": "952.6196,597.6646,-1626.883",
-      "Rotation": "0.07155182,-0.007697098,-0.9580652,-0.2773578",
+      "Enabled": true,
+      "Position": "1293.036,74.17367,-1596.871",
+      "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
         {
           "__type": "MoveHelperDebugVis",
           "__enabled": true,
-          "Gravity": "0,0,-5.7",
-          "Velocity": "7.950001,0,0"
+          "Gravity": "0,0,-180",
+          "Velocity": "140,0,0"
+        }
+      ]
+    },
+    {
+      "Id": "24612344-b2ef-460a-a6ac-25c300a69bc6",
+      "Name": "MoveHelperDebugVis",
+      "Enabled": true,
+      "Position": "1554.92,12.22214,-1528.38",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "MoveHelperDebugVis",
+          "__enabled": true,
+          "Gravity": "0,0,-180",
+          "Velocity": "140,0,0"
         }
       ]
     },
@@ -29,22 +45,6 @@
           "__enabled": true,
           "Gravity": "0,0,-57",
           "Velocity": "194.25,0,0"
-        }
-      ]
-    },
-    {
-      "Id": "58e20959-7578-482d-80ec-9d109a3c5e4d",
-      "Name": "MoveHelperDebugVis",
-      "Enabled": false,
-      "Position": "2016.694,478.0431,-1632.491",
-      "Rotation": "-0.04875233,-0.386473,0.1152688,0.91377",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "MoveHelperDebugVis",
-          "__enabled": true,
-          "Gravity": "0,0,-74.10001",
-          "Velocity": "508.3,0,0"
         }
       ]
     },
@@ -67,9 +67,9 @@
     {
       "Id": "e57822ac-e9df-4cf0-bba8-f8790bb22142",
       "Name": "MoveHelperDebugVis",
-      "Enabled": false,
-      "Position": "1149.363,59.6977,-1480.064",
-      "Rotation": "0.04205942,0.03163541,-0.7980621,0.6002724",
+      "Enabled": true,
+      "Position": "1158.875,56.95159,-1480.064",
+      "Rotation": "0.04778231,0.02206,-0.6536171,0.7549935",
       "Scale": "1,1,1",
       "Components": [
         {
@@ -81,14 +81,6 @@
           "Type": "Box"
         }
       ]
-    },
-    {
-      "Id": "3c08ac0a-f166-4391-a42a-727bfa834f97",
-      "Name": "Object",
-      "Enabled": false,
-      "Position": "979.3158,526.2988,-1513.404",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1"
     },
     {
       "Id": "b3b5ece6-cd1b-4b4d-9b36-cc88982a751d",
@@ -111,83 +103,19 @@
       ]
     },
     {
-      "Id": "345b0bf5-02f3-4d23-af54-38d168045f71",
-      "Name": "MoveHelperDebugVis",
-      "Enabled": false,
-      "Position": "952.6196,597.6646,-1626.883",
-      "Rotation": "0.07155182,-0.007697098,-0.9580652,-0.2773578",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "MoveHelperDebugVis",
-          "__enabled": true,
-          "Gravity": "0,0,-5.7",
-          "Velocity": "7.950001,0,0"
-        }
-      ]
-    },
-    {
-      "Id": "66401ad7-14b5-4c41-a9ec-527bbdfc227d",
-      "Name": "MoveHelperDebugVis",
-      "Enabled": false,
-      "Position": "956.0801,440.6392,-1527.239",
-      "Rotation": "-0.6707615,0.738689,0.05201491,-0.0413692",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "MoveHelperDebugVis",
-          "__enabled": true,
-          "Gravity": "0,0,-57",
-          "Velocity": "194.25,0,0"
-        }
-      ]
-    },
-    {
-      "Id": "ca6d2e36-4d11-4283-9644-2058cb5bb995",
-      "Name": "MoveHelperDebugVis",
-      "Enabled": false,
-      "Position": "2016.694,478.0431,-1632.491",
-      "Rotation": "-0.04875233,-0.386473,0.1152688,0.91377",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "MoveHelperDebugVis",
-          "__enabled": true,
-          "Gravity": "0,0,-74.10001",
-          "Velocity": "508.3,0,0"
-        }
-      ]
-    },
-    {
-      "Id": "1196ee08-d8dd-4290-9ff9-be67ddc9769a",
-      "Name": "MoveHelperDebugVis",
-      "Enabled": false,
-      "Position": "1182.166,48.9259,-1611.166",
-      "Rotation": "0.003569647,-0.1453741,0.0242874,-0.9890732",
-      "Scale": "1,1,1",
-      "Components": [
-        {
-          "__type": "MoveHelperDebugVis",
-          "__enabled": true,
-          "Gravity": "0,0,-41.34999",
-          "Velocity": "117.3,0,0"
-        }
-      ]
-    },
-    {
-      "Id": "4f46ae3b-578b-4cc1-8ba9-32a0c8acd108",
-      "Name": "MoveHelperDebugVis",
-      "Enabled": false,
-      "Position": "1149.363,59.6977,-1480.064",
-      "Rotation": "0.04205942,0.03163541,-0.7980621,0.6002724",
-      "Scale": "1,1,1",
+      "Id": "b95c2f7f-fbef-4475-9842-18769bc4c5eb",
+      "Name": "Trace Debug",
+      "Enabled": true,
+      "Position": "1638.155,42.05764,-1509.124",
+      "Rotation": "-0.00000002356131,0.3952931,0.0000000000000005460836,0.9185553",
+      "Scale": "2,2,2",
       "Components": [
         {
           "__type": "TraceDebugVis",
           "__enabled": true,
-          "BoxSize": "2,2,2",
-          "SphereRadius": 4,
-          "TraceLength": 1000000,
+          "BoxSize": "16,16,16",
+          "SphereRadius": 2,
+          "TraceLength": 1000,
           "Type": "Box"
         }
       ]
