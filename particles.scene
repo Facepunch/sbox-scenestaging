@@ -1,0 +1,1235 @@
+{
+  "GameObjects": [
+    {
+      "Id": "62c2a961-fa6a-4473-ba2c-821e488ac0c6",
+      "Name": "Object",
+      "Enabled": false,
+      "Position": "979.3158,526.2988,-1513.404",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1"
+    },
+    {
+      "Id": "0f2658d9-e4fc-4876-a3a4-d157e6855eef",
+      "Name": "Object",
+      "Enabled": false,
+      "Position": "979.3158,526.2988,-1513.404",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1"
+    },
+    {
+      "Id": "1d33f8db-a99e-4d1f-a52f-4a5da9f28510",
+      "Name": "Object",
+      "Enabled": false,
+      "Position": "979.3158,526.2988,-1513.404",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1"
+    },
+    {
+      "Id": "4171b9b9-1589-42b0-9287-542f7515f8d6",
+      "Name": "Object",
+      "Enabled": false,
+      "Position": "979.3158,526.2988,-1513.404",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1"
+    },
+    {
+      "Id": "73e20b85-6e38-4bc5-b416-8c9a8effe44a",
+      "Name": "Object",
+      "Enabled": false,
+      "Position": "979.3158,526.2988,-1513.404",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1"
+    },
+    {
+      "Id": "0dc818d1-d3fc-44c2-ba57-220b3996fe27",
+      "Name": "Object",
+      "Enabled": false,
+      "Position": "979.3158,526.2988,-1513.404",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1"
+    },
+    {
+      "Id": "4fb8d5e8-e554-47e5-84a2-fba6743cc56b",
+      "Name": "Object",
+      "Enabled": false,
+      "Position": "979.3158,526.2988,-1513.404",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1"
+    },
+    {
+      "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "158.6718,-124.3322,368.6452",
+      "Rotation": "0.8894004,0.1914825,-0.4057941,0.087365",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "1,0.89069,0.76238,1",
+          "Shadows": true,
+          "SkyColor": "0.10599,0.11132,0.12376,1"
+        }
+      ]
+    },
+    {
+      "Id": "12df27a7-aaf4-4da8-bc02-173ecd53c168",
+      "Name": "SkyBox",
+      "Enabled": true,
+      "Position": "1252.565,134.7641,-1378.779",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "SkyBox2D",
+          "__enabled": true,
+          "SkyMaterial": "materials/skybox/light_test_sky_night_basic.vmat",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "EnvmapComponent",
+          "__enabled": true,
+          "Bounds": {
+            "Mins": "-4096,-4096,-4096",
+            "Maxs": "4096,4096,4096"
+          },
+          "Projection": "Sphere",
+          "Texture": "textures/cubemaps/default.vtex",
+          "TintColor": "0.12857,0.20583,0.42574,1"
+        }
+      ]
+    },
+    {
+      "Id": "0cd4b3b6-7ff0-461e-9ce3-716ce58ea5d4",
+      "Name": "Gradient Fog",
+      "Enabled": true,
+      "Position": "1318.709,134.7641,-1636.627",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1"
+    },
+    {
+      "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
+      "Name": "Citizen",
+      "Enabled": true,
+      "Position": "1030.004,661.5084,-1637.595",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "CharacterController",
+          "__enabled": true,
+          "Acceleration": 10,
+          "GroundAngle": 45,
+          "Height": 71.05,
+          "Radius": 11.65,
+          "StepHeight": 18
+        },
+        {
+          "__type": "PlayerController",
+          "__enabled": true,
+          "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+          "CameraDistance": 200,
+          "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
+          "FirstPerson": false,
+          "Gravity": "0,0,800"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+          "Name": "Body",
+          "Enabled": true,
+          "Position": "0,-0.66093,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "MaterialOverride": null,
+              "Model": "models/citizen/citizen.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "975e3006-e7c3-46a5-9f30-c31a196c89f9",
+              "Name": "Name Tag UI",
+              "Enabled": true,
+              "Position": "-0.000001814945,0.1895752,80.7357",
+              "Rotation": "-0.00000005960058,0.000000000000005518709,-0.9999317,0.01167414",
+              "Scale": "1,1,1",
+              "Components": [
+                {
+                  "__type": "WorldPanel",
+                  "__enabled": true,
+                  "HorizontalAlign": "Center",
+                  "LookAtCamera": true,
+                  "PanelSize": "1024,256",
+                  "RenderScale": 1,
+                  "VerticalAlign": "Center"
+                },
+                {
+                  "__type": "NameTagPanel",
+                  "__enabled": true,
+                  "Name": "Prickly Pete"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+          "Name": "Camera",
+          "Enabled": true,
+          "Position": "-200,0,64",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "CameraComponent",
+              "__enabled": true,
+              "BackgroundColor": "0.25292,0.26086,0.29703,1",
+              "ClearFlags": "Color, Depth, Stencil",
+              "FieldOfView": 80,
+              "ZFar": 10000,
+              "ZNear": 1
+            },
+            {
+              "__type": "Sharpen",
+              "__enabled": true,
+              "Scale": 0.59
+            },
+            {
+              "__type": "Bloom",
+              "__enabled": true,
+              "BloomColor": {
+                "color": [
+                  {
+                    "c": "1,1,1,1"
+                  },
+                  {
+                    "t": 1,
+                    "c": "0.5,0.5,0.5,1"
+                  }
+                ]
+              },
+              "BloomCurve": {
+                "rangey": "0,106.45",
+                "frames": [
+                  {},
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              "Mode": "Screen",
+              "Strength": 2.31,
+              "Threshold": 0.23,
+              "ThresholdWidth": 3.21
+            },
+            {
+              "__type": "Tonemapping",
+              "__enabled": true,
+              "ExposureCompensation": 0,
+              "MaximumExposure": 2,
+              "MinimumExposure": 1.3,
+              "Rate": 4.52
+            }
+          ]
+        },
+        {
+          "Id": "edb447df-b691-4153-8652-070d2533e7c4",
+          "Name": "EyePos",
+          "Enabled": true,
+          "Position": "0,0,64",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Name": "Surface",
+      "Enabled": true,
+      "Position": "1420.439,0,-1637.736",
+      "Rotation": "0,0,0,1",
+      "Scale": "20,20,20",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.05882,0.13725,0.49412,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "100,100,0.01",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "0fe01e12-1d1b-4406-ba2a-7698c9049527",
+      "Name": "Object",
+      "Enabled": false,
+      "Position": "979.3158,526.2988,-1513.404",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1"
+    },
+    {
+      "Id": "d50405fe-42b6-4b95-a155-697b20c2a510",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "1226.329,159.9538,-1612.719",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "cf404c95-faa9-4b97-b053-e6e6e451f66c",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "1226.329,159.9538,-1557.368",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "807ae663-5cef-434e-848c-0bfed416340e",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "1226.329,159.9538,-1500.165",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "30de9759-a243-4c56-b6d8-16c2d4be58f8",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "1226.329,159.9538,-1443.766",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "966742c9-1591-46f5-9a72-5f842e0b7715",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "1226.329,159.9538,-1386.454",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "c33ff6dc-7ca1-4693-8baa-85cdcd4302c1",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "1226.329,159.9538,-1329.973",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "09593b24-9f13-4dd4-bb7f-c6ef580dd203",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "1226.329,159.9538,-1271.818",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        },
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "f34b346f-38cf-4579-85b5-914d61c607de",
+      "Name": "Citizen Solid",
+      "Enabled": true,
+      "Position": "850.0305,525.2525,-1631.623",
+      "Rotation": "-0.00000002114547,0.000000005928668,0.1821554,0.9832697",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/citizen/citizen.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "Surface": null
+        },
+        {
+          "__type": "HighlightOutline",
+          "__enabled": true,
+          "Color": "86.39359,124.21,48.57718,1",
+          "InsideColor": "0,0,0,0",
+          "InsideObscuredColor": "0,0,0,0",
+          "Material": null,
+          "ObscuredColor": "0,0,0,0.4",
+          "Width": 0.3
+        }
+      ],
+      "Children": [
+        {
+          "Id": "085a5ac3-cbf3-47d8-b2c1-a8ad95345723",
+          "Name": "Name Tag UI",
+          "Enabled": true,
+          "Position": "-0.000001516925,-0.000003088577,78.34348",
+          "Rotation": "0.00000002114547,-0.000000005928669,-0.1821554,0.9832698",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "WorldPanel",
+              "__enabled": true,
+              "HorizontalAlign": "Center",
+              "LookAtCamera": true,
+              "PanelSize": "1024,256",
+              "RenderScale": 1,
+              "VerticalAlign": "Center"
+            },
+            {
+              "__type": "NameTagPanel",
+              "__enabled": true,
+              "Name": "Terry Airfryer"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "dedef8ba-e131-495c-9628-2de978775cf7",
+      "Name": "blackbin",
+      "Enabled": true,
+      "Position": "1644.069,134.9687,-1637.743",
+      "Rotation": "0.0000003492405,0.0000001956726,0.8370405,0.5471399",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/rust_props/black_bin/blackbin.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_props/black_bin/blackbin.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "2c4a4d4d-e99a-40d3-955c-422e773a82cd",
+      "Name": "wheely_bin",
+      "Enabled": true,
+      "Position": "1617.681,207.7617,-1637.757",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "6ce6cbb8-60c3-4705-a75a-bb5cce47eaf2",
+      "Name": "wheely_bin",
+      "Enabled": true,
+      "Position": "1669.495,192.6342,-1637.757",
+      "Rotation": "-0.0000003937007,0.0000001184066,-0.9435996,0.3310893",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "49d032e2-fde7-434b-aa6a-b9640bea33c0",
+      "Name": "metal_wheely_bin",
+      "Enabled": true,
+      "Position": "1661.908,247.2755,-1637.717",
+      "Rotation": "0.000000391677,0.0000001232383,0.9387497,0.3445993",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/sbox_props/metal_wheely_bin/metal_wheely_bin.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "86e5e58e-6e90-4ed3-87eb-9b7ab87189d5",
+          "Name": "Fire Head",
+          "Enabled": true,
+          "Position": "-43.23042,8.558442,84.95074",
+          "Rotation": "-0.0000003916772,-0.0000001232383,-0.9387501,0.3445995",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "Looped": false,
+              "Particles": "particles/confetti/confetti_splash.vpcf",
+              "PlaybackSpeed": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "f97c5942-26d1-4bd9-a438-47f55df4dc76",
+      "Name": "hazmatsuit",
+      "Enabled": true,
+      "Position": "1626.212,172.5358,-1637.224",
+      "Rotation": "0.0000003038325,0.0000002451023,0.7282083,0.6853563",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/player/hazmatsuit/hazmatsuit.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "913c5692-bd97-49fe-b05e-251a6b8b443c",
+          "Name": "Name Tag UI",
+          "Enabled": true,
+          "Position": "0.00004921307,0.00005028578,86.29174",
+          "Rotation": "-0.0000003800131,-0.0000001476499,-0.9107943,0.4128596",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "NameTagPanel",
+              "__enabled": true,
+              "Name": "Emma Dongle"
+            },
+            {
+              "__type": "WorldPanel",
+              "__enabled": true,
+              "HorizontalAlign": "Center",
+              "LookAtCamera": true,
+              "PanelSize": "1024,256",
+              "RenderScale": 1,
+              "VerticalAlign": "Center"
+            }
+          ]
+        },
+        {
+          "Id": "6cd0e899-c3dc-4889-94ca-0a89b1cc8413",
+          "Name": "Fire Head",
+          "Enabled": true,
+          "Position": "1.90257,1.234248,76.93567",
+          "Rotation": "-0.0000003038324,-0.0000002451021,-0.7282079,0.6853559",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "Looped": false,
+              "Particles": "fireparticle.vpcf",
+              "PlaybackSpeed": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "85856266-af85-4deb-a1cf-321d9277bddb",
+      "Name": "adam_mp",
+      "Enabled": true,
+      "Position": "1690.402,208.9692,-1629.748",
+      "Rotation": "-0.002246819,0.002281674,0.995681,0.0927846",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/player/human/adam_mp.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "967e37e9-b51f-43cd-a06a-dc350a8d7271",
+          "Name": "Name Tag UI",
+          "Enabled": true,
+          "Position": "0.00000006187065,-0.0000003213206,84.30791",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "NameTagPanel",
+              "__enabled": true,
+              "Name": "Fred Heatsink"
+            },
+            {
+              "__type": "WorldPanel",
+              "__enabled": true,
+              "HorizontalAlign": "Center",
+              "LookAtCamera": true,
+              "PanelSize": "1024,256",
+              "RenderScale": 1,
+              "VerticalAlign": "Center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "36fa9228-8d1d-46c3-b1b2-e96ab5ef158b",
+      "Name": "Sphere",
+      "Enabled": true,
+      "Position": "1536.558,-114.3853,-1605.119",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "99477141-3eb1-4e09-b31b-a8f5db530acc",
+      "Name": "Sphere",
+      "Enabled": true,
+      "Position": "1536.558,702.735,-1618.644",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "77b8ee4f-787c-4648-9f21-00ec274058ea",
+      "Name": "Sphere",
+      "Enabled": true,
+      "Position": "591.4807,113.6206,-1605.119",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "6b5a2a2d-6e95-4f1f-ad70-a991c4fef96f",
+      "Name": "rope_barrier_a",
+      "Enabled": true,
+      "Position": "1401.848,607.5947,-1637.692",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/pixel_models/misc/rope_barrier/rope_barrier_a.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "9974d007-9ed9-43fa-bb9d-f861ca341bbe",
+          "Name": "Rope",
+          "Enabled": true,
+          "Position": "-0.2405645,-3.964198,39.53406",
+          "Rotation": "-0.0000003038324,-0.0000002451021,-0.7282079,0.6853559",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "ControlPoint2": "20597bd9-e390-4cd8-b866-1f84229e28bc",
+              "Looped": false,
+              "Particles": "particles/entity/rope.vpcf",
+              "PlaybackSpeed": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "a389ec35-29e6-428c-948e-d32cf4818251",
+      "Name": "rope_barrier_a",
+      "Enabled": true,
+      "Position": "1373.855,488.0291,-1637.692",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/pixel_models/misc/rope_barrier/rope_barrier_a.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "20597bd9-e390-4cd8-b866-1f84229e28bc",
+          "Name": "End Point",
+          "Enabled": true,
+          "Position": "-0.3116655,3.842567,39.91521",
+          "Rotation": "-0.0000003038324,-0.0000002451021,-0.7282079,0.6853559",
+          "Scale": "1,1,1"
+        },
+        {
+          "Id": "f067de26-aec7-49f4-a0cf-65188ee2d888",
+          "Name": "End Point",
+          "Enabled": true,
+          "Position": "-0.8597259,-5.189012,39.91516",
+          "Rotation": "0.0000003881654,0.000000041436,0.9833705,-0.1816109",
+          "Scale": "1.880001,1.880001,1.880001"
+        }
+      ]
+    },
+    {
+      "Id": "6060fe9a-9c29-409d-accb-c933087415de",
+      "Name": "fancywood_roundtable",
+      "Enabled": true,
+      "Position": "1236.251,455.1682,-1637.796",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/items/fancywooden_set/fancywood_roundtable.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "SpinComponent",
+          "__enabled": true,
+          "SpinAngles": "0,90,0"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "3a3bbfeb-cf71-4eb7-a542-6f6ee2bcee55",
+          "Name": "rope_barrier_a",
+          "Enabled": true,
+          "Position": "-10.51959,1.610178,34.54577",
+          "Rotation": "-0.00000005222024,0.00000000000000256088,-0.8761102,-0.4821112",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "MaterialOverride": null,
+              "Model": "models/patrickjr/props/sfmmug/sfmmug.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "acf05ac7-7e3a-486a-a2f7-b4a35715fe97",
+          "Name": "rope_barrier_a",
+          "Enabled": true,
+          "Position": "-5.347464,-6.093425,36.44662",
+          "Rotation": "0.6048552,-0.57652,-0.4224873,-0.3511114",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "MaterialOverride": null,
+              "Model": "models/banana/banana.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "deaf78ec-24e2-4e9e-a5a0-cdb2235ece28",
+          "Name": "rope_barrier_a",
+          "Enabled": true,
+          "Position": "11.24796,14.16775,40.63319",
+          "Rotation": "0.09911459,0.617034,-0.1852285,0.7583756",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "MaterialOverride": null,
+              "Model": "models/weapons/sbox_melee_trenchknife/w_trenchknife.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "ff7b2efb-1b04-4ce2-b1cc-bad3a8890d52",
+              "Name": "Rope",
+              "Enabled": true,
+              "Position": "-3.286884,-0.09215656,1.703",
+              "Rotation": "-0.0000003038324,-0.0000002451021,-0.7282079,0.6853559",
+              "Scale": "1,1,1",
+              "Components": [
+                {
+                  "__type": "ParticleSystem",
+                  "__enabled": true,
+                  "ControlPoint2": "f067de26-aec7-49f4-a0cf-65188ee2d888",
+                  "Looped": false,
+                  "Particles": "particles/entity/rope.vpcf",
+                  "PlaybackSpeed": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "f5bcdc38-4b83-466d-bbfc-92e6bbfcbe7b",
+          "Name": "Rope",
+          "Enabled": true,
+          "Position": "-9.010348,-4.313404,1.280648",
+          "Rotation": "-0.04230992,-0.8376607,0.0687678,-0.5401886",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "Looped": false,
+              "Particles": "particles/garry/spark_burst.vpcf",
+              "PlaybackSpeed": 0.77
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "e915faaf-6a0c-43dc-9dfb-6f1503f4826d",
+      "Name": "Rope",
+      "Enabled": true,
+      "Position": "1632.748,263.4026,-1607.227",
+      "Rotation": "0.1379947,0.606203,0.7517767,0.2197913",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ParticleSystem",
+          "__enabled": true,
+          "Looped": true,
+          "Particles": "particles/impact.metal.vpcf",
+          "PlaybackSpeed": 1
+        }
+      ]
+    },
+    {
+      "Id": "93a6330a-49ac-4dae-abd6-27027e8b7934",
+      "Name": "Leaves",
+      "Enabled": true,
+      "Position": "1320.413,691.7518,-1560.797",
+      "Rotation": "-0.04230992,-0.8376607,0.0687678,-0.5401886",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ParticleSystem",
+          "__enabled": true,
+          "Looped": false,
+          "Particles": "particles/enviroment/leaves/leaves_fall_01.vpcf",
+          "PlaybackSpeed": 0.77
+        }
+      ]
+    },
+    {
+      "Id": "3c3dbcbf-9842-4e13-b8db-2c1fd21cd3e6",
+      "Name": "lamppost03a_on",
+      "Enabled": true,
+      "Position": "1713.486,383.6714,-1640.026",
+      "Rotation": "0.00000004733067,-0.000000000000001462086,0.7940769,0.607817",
+      "Scale": "1,1,1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/props_c17/lamppost03a_on.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "fd094b92-7e56-4279-9d59-3f39a8a5bd46",
+          "Name": "Fire Head",
+          "Enabled": true,
+          "Position": "-1.559703,94.06494,438.4093",
+          "Rotation": "0.0000002038209,-0.0000002276942,0.2969498,0.9548931",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "Looped": false,
+              "Particles": "particles/water_drip.vpcf",
+              "PlaybackSpeed": 0.45
+            }
+          ]
+        },
+        {
+          "Id": "03134974-38c0-4154-993a-9b471c351a11",
+          "Name": "Fire Head",
+          "Enabled": true,
+          "Position": "0.3329683,91.58665,438.4093",
+          "Rotation": "0.0000002038209,-0.0000002276942,0.2969498,0.9548931",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "Looped": false,
+              "Particles": "particles/water_drip.vpcf",
+              "PlaybackSpeed": 1.34
+            }
+          ]
+        },
+        {
+          "Id": "d98405b0-2c95-4553-adc5-afc85c9b8a4f",
+          "Name": "Fire Head",
+          "Enabled": true,
+          "Position": "0.5974067,87.83638,438.4093",
+          "Rotation": "0.0000002038209,-0.0000002276942,0.2969498,0.9548931",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "Looped": false,
+              "Particles": "particles/water_drip.vpcf",
+              "PlaybackSpeed": 1.62
+            }
+          ]
+        },
+        {
+          "Id": "563dacdf-7bd1-465c-ac43-5ac2381eeadc",
+          "Name": "Fire Head",
+          "Enabled": true,
+          "Position": "-2.943673,90.55347,438.4093",
+          "Rotation": "0.0000002038209,-0.0000002276942,0.2969498,0.9548931",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "Looped": false,
+              "Particles": "particles/water_drip.vpcf",
+              "PlaybackSpeed": 1.22
+            }
+          ]
+        },
+        {
+          "Id": "63dcf817-abc0-422a-a291-8d4d9a5b952e",
+          "Name": "Fire Head",
+          "Enabled": true,
+          "Position": "-5.042957,94.16913,438.4093",
+          "Rotation": "0.0000002038209,-0.0000002276942,0.2969498,0.9548931",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "Looped": false,
+              "Particles": "particles/water_drip.vpcf",
+              "PlaybackSpeed": 0.72
+            }
+          ]
+        },
+        {
+          "Id": "4e3acf01-4ccd-4d39-9a45-c771e662609f",
+          "Name": "Fire Head",
+          "Enabled": true,
+          "Position": "-2.949923,97.23499,438.4093",
+          "Rotation": "0.0000002038209,-0.0000002276942,0.2969498,0.9548931",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "Looped": false,
+              "Particles": "particles/water_drip.vpcf",
+              "PlaybackSpeed": 1.29
+            }
+          ]
+        },
+        {
+          "Id": "808e4ec5-a2bf-4ef4-95d5-b7f5ac1a1086",
+          "Name": "Fire Head",
+          "Enabled": true,
+          "Position": "0.3447828,97.14709,438.4093",
+          "Rotation": "0.0000002038209,-0.0000002276942,0.2969498,0.9548931",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "Looped": false,
+              "Particles": "particles/water_drip.vpcf",
+              "PlaybackSpeed": 1.55
+            }
+          ]
+        },
+        {
+          "Id": "38153770-94be-4f82-affb-c59bfdc6c4d0",
+          "Name": "Fire Head",
+          "Enabled": true,
+          "Position": "2.932853,95.23141,438.4093",
+          "Rotation": "0.0000002038209,-0.0000002276942,0.2969498,0.9548931",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "ParticleSystem",
+              "__enabled": true,
+              "Looped": false,
+              "Particles": "particles/water_drip.vpcf",
+              "PlaybackSpeed": 1.54
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__references": [
+    "facepunch.blackbin",
+    "facepunch.wheely_bin",
+    "facepunch.metal_wheely_bin",
+    "baik.confettisplash",
+    "sboxmp.hazmatsuit",
+    "sugmagaming.fireparticle",
+    "sboxmp.adam_mp",
+    "stardrive.rope_barrier_a",
+    "luke.fwroundtable",
+    "pcjr.sfmmug",
+    "caro.banana",
+    "facepunch.w_trenchknife",
+    "garry.spark_burst",
+    "facepunch.leaves_fall_01",
+    "taoliguoshu.lamppost03a_on",
+    "stardrive.water_drip"
+  ]
+}
