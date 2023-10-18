@@ -19,7 +19,7 @@ public partial class GameObject
 			var oldId = _id;
 			_id = value;
 
-			Scene?.RegisterGameObjectId( this, oldId );
+			Scene?.Directory?.Add( this, oldId );
 		}
 
 	}

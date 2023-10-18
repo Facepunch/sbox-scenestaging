@@ -33,7 +33,7 @@ public partial class GameObject : IValid
 		Assert.AreEqual( 0, Children.Count, "Some children weren't deleted!" );
 
 		_destroyed = true;
-		Scene.UnregisterGameObjectId( this );
+		Scene.Directory.Remove( this );
 		Enabled = false;
 		Parent = null;
 		Scene = null;

@@ -86,7 +86,7 @@ public partial class SceneEditorSession
 
 			foreach( var o in selection )
 			{
-				if ( Scene.FindObjectByGuid( o ) is GameObject go )
+				if ( Scene.Directory.FindByGuid( o ) is GameObject go )
 				{
 					Selection.Add( go );
 				}

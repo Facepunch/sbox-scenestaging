@@ -87,7 +87,7 @@ public abstract partial class BaseComponent
 			{
 				onAwake += () =>
 				{
-					var go = Scene.FindObjectByGuid( guid );
+					var go = Scene.Directory.FindByGuid( guid );
 					if ( go is null ) Log.Warning( $"GameObject - {guid} was not found for {GetType().Name}.{prop.Name}" );
 					prop.SetValue( this, go );
 				};
