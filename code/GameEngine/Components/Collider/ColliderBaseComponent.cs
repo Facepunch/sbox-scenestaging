@@ -51,10 +51,10 @@ public abstract class ColliderBaseComponent : BaseComponent
 		//	var physGroup = new PhysicsGroup()
 
 			physicsBody = new PhysicsBody( Scene.PhysicsWorld );
-			physicsBody.BodyType = PhysicsBodyType.Static;
+			physicsBody.BodyType = PhysicsBodyType.Keyframed;
 			physicsBody.GameObject = GameObject;
 			physicsBody.Transform = Transform.World.WithScale( 1 );
-			//physicsBody.UseController = true;
+			physicsBody.UseController = true;
 			physicsBody.GravityEnabled = false;
 			ownBody = physicsBody;
 		}

@@ -500,4 +500,23 @@ public partial class GameObject
 
 		return BBox.FromBoxes( renderers.Select( x => x.Bounds ) );
 	}
+
+	/// <summary>
+	/// Get the GameObject after us,
+	/// </summary>
+	public GameObject GetNextSibling( bool enabledOnly )
+	{
+		if ( Parent is null ) return null;
+		var myIndex = Parent.Children.IndexOf( this );
+		if ( myIndex < 0 ) return null;
+		
+		for ( int i= myIndex+1; i< Parent.Children.Count; i++ )
+		{
+			if ( Parent.Children[i] is null ) continue;
+			if ( enabledOnly && !Parent.Children[i].Enabled ) continue;
+			return Parent.Children[i];
+		}
+
+		return null;
+	}
 }
