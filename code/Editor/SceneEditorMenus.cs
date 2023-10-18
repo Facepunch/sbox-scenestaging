@@ -140,14 +140,29 @@ public static class SceneEditorMenus
 	public static void Delete()
 	{
 		using var scope = SceneEditorSession.Scope();
+		int deleted = 0;
 
-		foreach ( var entry in EditorScene.Selection.OfType<GameObject>() )
+		foreach ( var entry in EditorScene.Selection.OfType<GameObject>().ToArray() )
 		{
 			if ( !entry.IsDeletable() )
 				return;
 
+			var nextSelect = entry.GetNextSibling( false );
+			if ( nextSelect is null ) nextSelect = entry.Parent;
+
+			if ( SceneEditorSession.Active.Selection.Contains( entry ) )
+			{
+				SceneEditorSession.Active.Selection.Clear();
+				SceneEditorSession.Active.Selection.Add( nextSelect );
+			}
+
 			entry.Destroy();
-			entry.EditLog( "Delete", entry );
+			deleted++;
+		}
+
+		if ( deleted > 0 )
+		{
+			SceneEditorSession.Active.Scene.EditLog( $"Deleted {deleted} Objects", SceneEditorSession.Active.Scene );
 		}
 	}
 

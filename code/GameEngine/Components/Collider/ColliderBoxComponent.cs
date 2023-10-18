@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
+using System.Collections.Generic;
 
 [Title( "Collider - Box" )]
 [Category( "Physics" )]
@@ -19,7 +20,7 @@ public class ColliderBoxComponent : ColliderBaseComponent
 		Gizmo.Draw.LineBBox( new BBox( Scale * -0.5f, Scale * 0.5f ) );
 	}
 
-	protected override PhysicsShape CreatePhysicsShape( PhysicsBody targetBody )
+	protected override IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody )
 	{
 		var tx = targetBody.Transform.ToLocal( Transform.World );
 		var shape = targetBody.AddBoxShape( tx.Position, tx.Rotation, Scale * 0.5f * tx.Scale );
@@ -29,6 +30,6 @@ public class ColliderBoxComponent : ColliderBaseComponent
 			shape.SurfaceMaterial = Surface.ResourceName;
 		}
 
-		return shape;
+		yield return shape;
 	}
 }

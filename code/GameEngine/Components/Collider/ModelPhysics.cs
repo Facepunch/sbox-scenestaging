@@ -1,12 +1,14 @@
 ﻿using Sandbox;
 using System.Collections.Generic;
 
-[Title( "Model Collider" )]
+[Title( "Model Physics" )]
 [Category( "Physics" )]
 [Icon( "check_box_outline_blank", "red", "white" )]
-public class ModelCollider : ColliderBaseComponent
+public class ModelPhysics : BaseComponent
 {
 	[Property] public Model Model { get; set; }
+
+	PhysicsGroup PhysicsGroup;
 
 	public override void DrawGizmos()
 	{
@@ -47,45 +49,19 @@ public class ModelCollider : ColliderBaseComponent
 
 		// TODO - draw physics models from Model
 	}
-
-	protected override IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody )
-	{
-		var bodyTransform = targetBody.Transform.ToLocal( Transform.World );
-
-		foreach ( var part in Model.Physics.Parts )
-		{
-			// Bone transform
-			var bx = bodyTransform.ToWorld( part.Transform );
-
-			foreach ( var sphere in part.Spheres )
-			{
-				yield return targetBody.AddSphereShape( bx.PointToWorld( sphere.Sphere.Center ), sphere.Sphere.Radius * bx.Scale );
-			}
-
-			foreach ( var capsule in part.Capsules )
-			{
-				yield return targetBody.AddCapsuleShape( bx.PointToWorld( capsule.Capsule.CenterA ), bx.PointToWorld( capsule.Capsule.CenterB ), capsule.Capsule.Radius * bodyTransform.Scale );
-			}
-
-			foreach ( var hull in part.Hulls )
-			{
-				yield return targetBody.AddShape( hull, bx );
-			}
-
-			foreach ( var mesh in part.Meshes )
-			{
-				yield return targetBody.AddShape( mesh, bx, false, true );
-			}
-		}
-	}
-
 	
 	public override void OnEnabled()
 	{
 		if ( Model is null )
 			return;
 
-		base.OnEnabled();
+		PhysicsGroup = Scene.PhysicsWorld.SetupPhysicsFromModel( Model, Transform.World, PhysicsMotionType.Dynamic );
 	}
-	
+
+	public override void OnDisabled()
+	{
+		PhysicsGroup?.Remove();
+		PhysicsGroup = null;
+	}
+
 }

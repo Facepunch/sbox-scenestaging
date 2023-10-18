@@ -8,10 +8,19 @@ using System.Drawing;
 [EditorHandle( "materials/gizmo/charactercontroller.png" )]
 public class CharacterController : BaseComponent
 {
+	[Range( 0, 200 )]
 	[Property] public float Radius { get; set; } = 16.0f;
+
+	[Range( 0, 200 )]
 	[Property] public float Height { get; set; } = 64.0f;
+
+	[Range( 0, 50 )]
 	[Property] public float StepHeight { get; set; } = 18.0f;
+
+	[Range( 0, 90 )]
 	[Property] public float GroundAngle { get; set; } = 45.0f;
+
+	[Range( 0, 20 )]
 	[Property] public float Acceleration { get; set; } = 10.0f;
 
 	public BBox BoundingBox => new BBox( new Vector3( -Radius, -Radius, 0 ), new Vector3( Radius, Radius, Height ) );
@@ -99,8 +108,9 @@ public class CharacterController : BaseComponent
 			return;
 		}
 
-		var mover = new CharacterControllerHelper( Scene.PhysicsWorld, GameObject.Transform.Position, Velocity );
-		mover.Trace = BuildTrace( mover.Trace );
+		var pos = GameObject.Transform.Position;
+
+		var mover = new CharacterControllerHelper( BuildTrace( pos, pos ), pos, Velocity );
 		mover.Bounce = 0.3f;
 		mover.MaxStandableAngle = GroundAngle;
 
@@ -204,8 +214,7 @@ public class CharacterController : BaseComponent
 		var pos = Transform.Position;
 		var delta = targetPosition - pos;
 
-		var mover = new CharacterControllerHelper( Scene.PhysicsWorld, pos, delta );
-		mover.Trace = BuildTrace( mover.Trace );
+		var mover = new CharacterControllerHelper( BuildTrace( pos, pos ), pos, delta );
 		mover.MaxStandableAngle = GroundAngle;
 
 		if ( useStep )

@@ -17,11 +17,11 @@ public sealed class MoveHelperDebugVis : BaseComponent
 		BBox box = new BBox( new Vector3( -8, -8, 0 ), new Vector3( 8, 8, 48 ) );
 		var pos = Transform.Position;
 		var velocity = Transform.Rotation * Velocity;
+		var trace = Scene.PhysicsWorld.Trace.Size( box );
 
 		for ( int i=0; i<100; i++ )
 		{
-			CharacterControllerHelper move = new CharacterControllerHelper( Scene.PhysicsWorld, pos, velocity );
-			move.Trace = move.Trace.Size( box );
+			CharacterControllerHelper move = new CharacterControllerHelper( trace, pos, velocity );
 			move.TryMoveWithStep( ts, 20.0f );
 		//	move.TryMove( ts );
 

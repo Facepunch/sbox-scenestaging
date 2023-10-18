@@ -258,8 +258,8 @@
           "__enabled": true,
           "Acceleration": 10,
           "GroundAngle": 45,
-          "Height": 72,
-          "Radius": 16,
+          "Height": 71.05,
+          "Radius": 11.65,
           "StepHeight": 18
         },
         {
@@ -367,6 +367,17 @@
             {
               "__type": "Bloom",
               "__enabled": true,
+              "BloomColor": {
+                "color": [
+                  {
+                    "c": "1,1,1,1"
+                  },
+                  {
+                    "t": 1,
+                    "c": "0.5,0.5,0.5,1"
+                  }
+                ]
+              },
               "BloomCurve": {
                 "rangey": "0,106.45",
                 "frames": [
@@ -2147,6 +2158,31 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/soccerball.vmdl",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "d16e6a00-4b55-45a5-b63f-c12ba151512f",
+      "Name": "Cube (2)",
+      "Enabled": true,
+      "Position": "1053.762,903.7219,-1787.252",
+      "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
+      "Scale": "42.1,42.1,42.1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/soccerball.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.85644,0.12719,0.57932,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 4.4800053,
           "Surface": null
         }
       ]
@@ -4609,7 +4645,7 @@
       "Id": "d5e8fa3e-f502-4f82-884e-f7583872d39d",
       "Name": "8hu_kultiras_smallhouse_2",
       "Enabled": true,
-      "Position": "903.0998,59.0603,-1778.223",
+      "Position": "904.275,63.32362,-1804.925",
       "Rotation": "0.08123279,-0.01099247,-0.1336513,0.9876328",
       "Scale": "1,1,1",
       "Components": [
@@ -4626,7 +4662,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
-          "Surface": null
+          "Surface": "bouncy.surface"
         }
       ]
     },
@@ -5165,6 +5201,13 @@
           "Model": "models/rust_props/black_bin/blackbin.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/rust_props/black_bin/blackbin.vmdl",
+          "Surface": null
         }
       ]
     },
@@ -5183,6 +5226,13 @@
           "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
+          "Surface": null
         }
       ]
     },
@@ -5201,6 +5251,13 @@
           "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
+          "Surface": null
         }
       ]
     },

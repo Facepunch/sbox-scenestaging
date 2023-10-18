@@ -17,20 +17,15 @@ internal struct CharacterControllerHelper
 	public float MaxStandableAngle;
 	public PhysicsTraceBuilder Trace;
 
-	public CharacterControllerHelper( PhysicsWorld world, Vector3 position, Vector3 velocity, params string[] solidTags ) : this()
+	public CharacterControllerHelper( PhysicsTraceBuilder trace, Vector3 position, Vector3 velocity ) : this()
 	{
 		Velocity = velocity;
 		Position = position;
 		Bounce = 0.0f;
 		MaxStandableAngle = 10.0f;
-
-		Trace = world.Trace.Ray( 0, 0 ).WithAnyTags( solidTags );
+		Trace = trace;
 	}
 
-	public CharacterControllerHelper( PhysicsWorld world, Vector3 position, Vector3 velocity ) : this( world, position, velocity, "solid", "playerclip", "passbullets", "player" )
-	{
-
-	}
 
 	/// <summary>
 	/// Trace this from one position to another

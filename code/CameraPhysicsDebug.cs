@@ -5,6 +5,9 @@ public sealed class CameraPhysicsDebug : BaseComponent
 {
 	[Property] public int MaxPoints { get; set; } = 10000;
 	[Property] public int TracesPerFrame { get; set; } = 500;
+
+	[Range( 0, 10 )]
+	[Property] public float NormalLength { get; set; } = 2;
 	[Property] public TraceTypes TraceType { get; set; } = TraceTypes.Ray;
 
 	public record struct Hitpoint( Vector3 Position, Vector3 Normal );
@@ -59,10 +62,8 @@ public sealed class CameraPhysicsDebug : BaseComponent
 		foreach ( var t in worldPoints )
 		{
 			Gizmo.Draw.Color = new Color( (t.Normal.x + 1) * 0.5f, (t.Normal.y + 1) * 0.5f, (t.Normal.z + 1) * 0.5f );
-			Gizmo.Draw.Line( t.Position, t.Position + t.Normal * 3.0f );
+			Gizmo.Draw.Line( t.Position, t.Position + t.Normal * NormalLength );
 		}
-
-		
 
 		if ( worldPoints.Count > MaxPoints )
 		{
