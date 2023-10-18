@@ -30,6 +30,8 @@ public partial class SceneEditorSession
 		// switch away to a sibling
 		if ( this == Active )
 		{
+			Active = null;
+
 			var index = All.IndexOf( this );
 			if ( index >= 0 && All.Count > 1 )
 			{
@@ -57,6 +59,8 @@ public partial class SceneEditorSession
 		UpdateEditorTitle();
 	}
 
+	RealTimeSince timeSinceSavedState;
+
 	public void TickActive()
 	{
 		//
@@ -79,6 +83,13 @@ public partial class SceneEditorSession
 
 		// Undo system might have a deferred snapshot
 		TickPendingUndoSnapshot();
+
+		// Save camera state to disk
+		if ( timeSinceSavedState > 1.0f )
+		{
+			timeSinceSavedState = 0;
+			SaveState();
+		}
 	}
 
 	static void UpdateEditorTitle()
