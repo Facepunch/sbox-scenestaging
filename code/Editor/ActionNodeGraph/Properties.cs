@@ -98,7 +98,7 @@ file class SerializedNodeParameter<T, TDef> : SerializedProperty
 	public override Type PropertyType => Target.Type;
 	public override string Name => Target.Name;
 	public override string GroupName => typeof(T) == typeof(Node.Property) ? "Properties" : "Inputs";
-	public override string DisplayName => Target.Display.Title ?? Name;
+	public override string DisplayName => Target.Display.Title;
 	public override string Description => Target.Display.Description;
 
 	public SerializedNodeParameter( T target )

@@ -28,22 +28,15 @@ public static class ActionJigExtensions
 		return actionJig.UserData.TryGetPropertyValue( "name", out var node ) ? node?.GetValue<string>() : null;
 	}
 
-	private static DisplayInfo PropertyDisplayInfo( Node node, PropertyNodeKind kind )
-	{
-		var name = node.Properties["name"].Value as string;
-
-		return new DisplayInfo { Name = $"{kind} {name}" };
-	}
-
 	private static DisplayInfo ConstDisplayInfo( Node node )
 	{
 		var name = node.Properties["name"].Value as string;
 
 		return new DisplayInfo
 		{
-			Name = string.IsNullOrEmpty( name ) ? node.Definition.DisplayInfo.Title : name,
-			Description = node.Definition.DisplayInfo.Description,
-			Tags = node.Definition.DisplayInfo.Tags
+			Name = string.IsNullOrEmpty( name ) ? node.DisplayInfo.Title : name,
+			Description = node.DisplayInfo.Description,
+			Tags = node.DisplayInfo.Tags
 		};
 	}
 
@@ -51,14 +44,6 @@ public static class ActionJigExtensions
 	{
 		switch ( node.Definition.Identifier )
 		{
-			case "property.get":
-			case "field.get":
-				return PropertyDisplayInfo( node, PropertyNodeKind.Get );
-
-			case "property.set":
-			case "field.set":
-				return PropertyDisplayInfo( node, PropertyNodeKind.Set );
-
 			case { } s when s.StartsWith( "const." ):
 				return ConstDisplayInfo( node );
 
@@ -66,9 +51,9 @@ public static class ActionJigExtensions
 				return
 					new()
 					{
-						Name = node.Definition.DisplayInfo.Title,
-						Description = node.Definition.DisplayInfo.Description,
-						Tags = node.Definition.DisplayInfo.Tags
+						Name = node.DisplayInfo.Title,
+						Description = node.DisplayInfo.Description,
+						Tags = node.DisplayInfo.Tags
 					};
 		}
 	}
@@ -324,34 +309,60 @@ public class ActionGraphView : GraphView
 
 	private static IEnumerable<INodeType> GetInstanceNodes( TypeDescription typeDesc )
 	{
-		foreach ( var propertyDesc in typeDesc.Properties )
+		var baseType = EditorTypeLibrary.GetType( typeDesc.TargetType.BaseType );
+
+		if ( baseType != null )
 		{
-			var canRead = propertyDesc.IsGetMethodPublic || propertyDesc.CanRead && propertyDesc.HasAttribute<PropertyAttribute>();
-			var canWrite = propertyDesc.IsSetMethodPublic || propertyDesc.CanWrite && propertyDesc.HasAttribute<PropertyAttribute>();
-
-			if ( canRead )
+			foreach ( var node in GetInstanceNodes(baseType) )
 			{
-				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Get, canWrite );
-			}
-
-			if ( canWrite )
-			{
-				yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Set, canRead );
+				yield return node;
 			}
 		}
 
-		foreach ( var fieldDesc in typeDesc.Fields )
+		foreach ( var memberDesc in typeDesc.DeclaredMembers )
 		{
-			if ( !fieldDesc.IsPublic )
+			if ( !memberDesc.IsPublic || memberDesc.IsStatic )
 			{
 				continue;
 			}
 
-			yield return new FieldNodeType( fieldDesc, PropertyNodeKind.Get, !fieldDesc.IsInitOnly );
-
-			if ( !fieldDesc.IsInitOnly )
+			switch ( memberDesc )
 			{
-				yield return new FieldNodeType( fieldDesc, PropertyNodeKind.Set, true );
+				case MethodDescription methodDesc:
+					if ( methodDesc.IsSpecialName )
+					{
+						break;
+					}
+
+					yield return new MethodNodeType( methodDesc );
+					break;
+
+				case PropertyDescription propertyDesc:
+					{
+						var canRead = propertyDesc.IsGetMethodPublic || propertyDesc.CanRead && propertyDesc.HasAttribute<PropertyAttribute>();
+						var canWrite = propertyDesc.IsSetMethodPublic || propertyDesc.CanWrite && propertyDesc.HasAttribute<PropertyAttribute>();
+
+						if ( canRead )
+						{
+							yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Get, canWrite );
+						}
+
+						if ( canWrite )
+						{
+							yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Set, canRead );
+						}
+						break;
+					}
+
+				case FieldDescription fieldDesc:
+					yield return new FieldNodeType( fieldDesc, PropertyNodeKind.Get, !fieldDesc.IsInitOnly );
+
+					if ( !fieldDesc.IsInitOnly )
+					{
+						yield return new FieldNodeType( fieldDesc, PropertyNodeKind.Set, true );
+					}
+
+					break;
 			}
 		}
 	}

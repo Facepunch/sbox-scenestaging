@@ -42,6 +42,39 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 	}
 }
 
+public record struct MethodNodeType( MethodDescription Method ) : INodeType
+{
+	public DisplayInfo DisplayInfo => new()
+	{
+		Name = Method.Title,
+		Description = Method.Description,
+		Group = Method.TypeDescription.Name,
+		Icon = "code"
+	};
+
+	public bool HasInput( Type valueType )
+	{
+		return valueType == typeof(OutputSignal)
+			|| !Method.IsStatic && Method.TypeDescription.TargetType.IsAssignableFrom( valueType )
+			|| Method.Parameters.Any( x => x.ParameterType.IsAssignableFrom( valueType ) );
+	}
+
+	public bool HideInEditor => false;
+
+	public INode CreateNode( IGraph graph )
+	{
+		var actionGraph = (ActionGraph)graph;
+		var node = actionGraph.Jig.AddNode( actionGraph.Jig.NodeLibrary.CallMethod );
+
+		node.Properties["_type"].Value = Method.TypeDescription.TargetType;
+		node.Properties["_name"].Value = Method.Name;
+
+		return new ActionNode( actionGraph, node );
+	}
+
+	public string Identifier => $"call/{Method.TypeDescription.FullName}/{Method.Name}";
+}
+
 public enum PropertyNodeKind
 {
 	Get,
@@ -54,7 +87,8 @@ public record struct PropertyNodeType( PropertyDescription Property, PropertyNod
 	{
 		Name = ReadWrite ? $"{Property.Title}/{Kind}" : $"{Property.Title} ({Kind})",
 		Description = Property.Description,
-		Group = Property.TypeDescription.Name
+		Group = Property.TypeDescription.Name,
+		Icon = Kind == PropertyNodeKind.Get ? "note" : "edit"
 	};
 
 	public bool HasInput( Type valueType )
@@ -76,8 +110,8 @@ public record struct PropertyNodeType( PropertyDescription Property, PropertyNod
 			_ => throw new NotImplementedException()
 		} );
 
-		node.Properties["type"].Value = Property.TypeDescription.TargetType;
-		node.Properties["name"].Value = Property.Name;
+		node.Properties["_type"].Value = Property.TypeDescription.TargetType;
+		node.Properties["_name"].Value = Property.Name;
 
 		return new ActionNode( actionGraph, node );
 	}
@@ -91,7 +125,8 @@ public record struct FieldNodeType( FieldDescription Field, PropertyNodeKind Kin
 	{
 		Name = ReadWrite ? $"{Field.Title}/{Kind}" : $"{Field.Title} ({Kind})",
 		Description = Field.Description,
-		Group = Field.TypeDescription.Name
+		Group = Field.TypeDescription.Name,
+		Icon = Kind == PropertyNodeKind.Get ? "note" : "edit"
 	};
 
 	public bool HasInput( Type valueType )
@@ -113,8 +148,8 @@ public record struct FieldNodeType( FieldDescription Field, PropertyNodeKind Kin
 			_ => throw new NotImplementedException()
 		} );
 
-		node.Properties["type"].Value = Field.TypeDescription.TargetType;
-		node.Properties["name"].Value = Field.Name;
+		node.Properties["_type"].Value = Field.TypeDescription.TargetType;
+		node.Properties["_name"].Value = Field.Name;
 
 		return new ActionNode( actionGraph, node );
 	}
@@ -140,17 +175,17 @@ public class ActionNode : INode
 
 	private static string FormatProperty( Node.Property property )
 	{
-		return property.Definition.Display.Title ?? property.Name;
+		return property.Definition.Display.Title;
 	}
 
 	private static string FormatInput( Node.Input input )
 	{
-		return input.Definition.Display.Title ?? input.Name;
+		return input.Definition.Display.Title;
 	}
 
 	private static string FormatOutput( Node.Output output )
 	{
-		return output.Definition.Display.Title ?? output.Name;
+		return output.Definition.Display.Title;
 	}
 
 	private string FormatMessage( ValidationMessage message )
@@ -180,7 +215,7 @@ public class ActionNode : INode
 				return Theme.Red;
 			}
 
-			var baseColor = Definition.Kind switch
+			var baseColor = Node.Kind switch
 			{
 				NodeKind.Action =>
 					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.Blue, 0.5f ),
@@ -460,8 +495,7 @@ public class ActionPlug<T, TDef> : IActionPlug
 	public DisplayInfo DisplayInfo => new()
 	{
 		Name = Index == 0 && Parameter is not Node.Input { LinkArray: not null }
-			? Parameter.Display.Title ?? Parameter.Name
-			: $"{Parameter.Display.Title ?? Parameter.Name}[{Index}]",
+			? Parameter.Display.Title : $"{Parameter.Display.Title}[{Index}]",
 		Description = Parameter.Display.Description
 	};
 

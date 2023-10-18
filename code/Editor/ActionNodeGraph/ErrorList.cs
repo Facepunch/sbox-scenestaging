@@ -233,17 +233,17 @@ public class ErrorListView : ListView
 
 		if ( context is Node.Property property )
 		{
-			return $"{property.Display.Title ?? property.Name} - {FormatContext( property.Node )}";
+			return $"{property.Display.Title} - {FormatContext( property.Node )}";
 		}
 
 		if ( context is Node.Input input )
 		{
-			return $"{input.Display.Title ?? input.Name} - {FormatContext(input.Node)}";
+			return $"{input.Display.Title} - {FormatContext( input.Node )}";
 		}
 
 		if ( context is Node.Output output )
 		{
-			return $"{output.Display.Title ?? output.Name} - {FormatContext( output.Node )}";
+			return $"{output.Display.Title} - {FormatContext( output.Node )}";
 		}
 
 		if ( context is Link link )
