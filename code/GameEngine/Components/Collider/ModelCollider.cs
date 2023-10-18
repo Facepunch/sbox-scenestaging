@@ -50,28 +50,31 @@ public class ModelCollider : ColliderBaseComponent
 
 	protected override IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody )
 	{
-		var tx = targetBody.Transform.ToLocal( Transform.World );
+		var bodyTransform = targetBody.Transform.ToLocal( Transform.World );
 
 		foreach ( var part in Model.Physics.Parts )
 		{
+			// Bone transform
+			var bx = bodyTransform.ToWorld( part.Transform );
+
 			foreach ( var sphere in part.Spheres )
 			{
-				yield return targetBody.AddSphereShape( tx.PointToWorld( sphere.Sphere.Center ), sphere.Sphere.Radius * tx.Scale );
+				yield return targetBody.AddSphereShape( bx.PointToWorld( sphere.Sphere.Center ), sphere.Sphere.Radius * bx.Scale );
 			}
 
 			foreach ( var capsule in part.Capsules )
 			{
-				yield return targetBody.AddCapsuleShape( tx.PointToWorld( capsule.Capsule.CenterA ), tx.PointToWorld( capsule.Capsule.CenterB ), capsule.Capsule.Radius * tx.Scale );
+				yield return targetBody.AddCapsuleShape( bx.PointToWorld( capsule.Capsule.CenterA ), bx.PointToWorld( capsule.Capsule.CenterB ), capsule.Capsule.Radius * bodyTransform.Scale );
 			}
 
 			foreach ( var hull in part.Hulls )
 			{
-				yield return targetBody.AddShape( hull, tx );
+				yield return targetBody.AddShape( hull, bx );
 			}
 
 			foreach ( var mesh in part.Meshes )
 			{
-				yield return targetBody.AddShape( mesh, tx, false, true );
+				yield return targetBody.AddShape( mesh, bx, false, true );
 			}
 		}
 	}
@@ -79,23 +82,10 @@ public class ModelCollider : ColliderBaseComponent
 	
 	public override void OnEnabled()
 	{
-		//
-		// When we create the model physics manually, it's all fucked.
-		// but when we use SetupPhysicsFromModel it all works. Why?
-		//
-		//  - garry
-		//
-		bool createModelPhysicsManually = false;
+		if ( Model is null )
+			return;
 
-		if ( createModelPhysicsManually )
-		{
-
-			base.OnEnabled();
-		}
-		else
-		{
-			group = Scene.PhysicsWorld.SetupPhysicsFromModel( Model, Transform.World, PhysicsMotionType.Keyframed );
-		}
+		base.OnEnabled();
 	}
 	
 }
