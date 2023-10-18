@@ -8,7 +8,6 @@ using System.Collections.Generic;
 public class ColliderBoxComponent : ColliderBaseComponent
 {
 	[Property] public Vector3 Scale { get; set; } = 50;
-	[Property] public Surface Surface { get; set; }
 
 	public override void DrawGizmos()
 	{

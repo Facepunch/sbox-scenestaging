@@ -9,7 +9,6 @@ using System.Collections.Generic;
 public class ColliderSphereComponent : ColliderBaseComponent
 {
 	[Property] public float Radius { get; set; } = 10.0f;
-	[Property] public Surface Surface { get; set; }
 
 	public override void DrawGizmos()
 	{
