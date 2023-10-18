@@ -22,9 +22,21 @@ public partial class SceneTreeWidget : Widget
 		Header = Layout.AddColumn();
 		TreeView = Layout.Add( new TreeView( this ), 1 );
 		TreeView.MultiSelect = true;
+		TreeView.BodyContextMenu = OpenTreeViewContextMenu;
 		Footer = Layout.AddColumn();
 		_lastScene = null;
 		CheckForChanges();
+	}
+
+	void OpenTreeViewContextMenu()
+	{
+		var rootItem = TreeView.Items.FirstOrDefault();
+		if ( rootItem is null ) return;
+
+		if ( rootItem  is TreeNode node )
+		{
+			node.OnContextMenu();
+		}
 	}
 
 	SceneEditorSession _lastScene;
