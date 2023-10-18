@@ -9,20 +9,6 @@ public partial class GameObject
 	{
 	}
 
-	/// <summary>
-	/// Destroy all components and child objects
-	/// </summary>
-	public void Clear()
-	{
-		// delete all components
-		ForEachComponent( "OnDestroy", true, c => c.Destroy() );
-		Components.RemoveAll( x => x is null );
-
-		// delete all children
-		ForEachChild( "Children", true, c => c.DestroyImmediate() );
-		Children.RemoveAll( x => x is null );
-	}
-
 	//
 	// For flexibility purposes, we serialize the GameObject manually
 	// into a JsonObject. I haven't benchmarked this, but I assume it's okay.

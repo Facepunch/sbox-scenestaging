@@ -61,10 +61,10 @@ public partial class GameObject
 		{
 			if ( _parent == value ) return;
 
-			if ( value is not null )
+			if ( value is not null && value.IsAncestor( this ) )
 			{
-				if ( value.IsAncestor( this ) )
-					return;
+				Log.Warning( $"Illegal parentage" );
+				return;
 			}
 
 			var oldParent = _parent;
@@ -154,11 +154,6 @@ public partial class GameObject
 		} );
 
 		ForEachChild( "UpdateEnabledStatus", true, c => c.UpdateEnabledStatus() );
-	}
-
-	private void RemoveChild( GameObject child )
-	{
-		Children.Remove( child );
 	}
 
 	public bool IsDescendant( GameObject o )

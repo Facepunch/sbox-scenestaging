@@ -24,7 +24,7 @@ public partial class GameObject : IValid
 		_destroying = true;
 
 		ForEachComponent( "OnDestroy", false, c => c.Destroy() );
-		ForEachChild( "Children", true, c => c.Term() );
+		ForEachChild( "Children", false, c => c.Term() );
 
 		Children.RemoveAll( x => x is null );
 		Components.RemoveAll( x => x is null );
@@ -33,11 +33,9 @@ public partial class GameObject : IValid
 		Assert.AreEqual( 0, Children.Count, "Some children weren't deleted!" );
 
 		_destroyed = true;
-		Enabled = false;
 		Scene.UnregisterGameObjectId( this );
-
-		Parent = null;
 		Enabled = false;
+		Parent = null;
 		Scene = null;
 		_destroyed = true;
 	}
@@ -62,5 +60,35 @@ public partial class GameObject : IValid
 	public void DestroyImmediate()
 	{
 		Term();
+	}
+
+	/// <summary>
+	/// Remove all children
+	/// </summary>
+	/// <param name="child"></param>
+	private void RemoveChild( GameObject child )
+	{
+		var i = Children.IndexOf( child );
+		if ( i < 0 ) return;
+
+		Children.RemoveAt( i );
+	}
+
+	/// <summary>
+	/// Destroy all components and child objects
+	/// </summary>
+	public void Clear()
+	{
+		// delete all components
+		ForEachComponent( "OnDestroy", false, c => c.Destroy() );
+
+		// delete all children
+		ForEachChild( "Children", false, c => c.Term() );
+
+		Components.RemoveAll( x => x is null );
+		Children.RemoveAll( x => x is null );
+
+		Assert.AreEqual( 0, Components.Count, $"{Components.Count} components weren't deleted!" );
+		Assert.AreEqual( 0, Children.Count, $"{Children.Count} children weren't deleted!" );
 	}
 }
