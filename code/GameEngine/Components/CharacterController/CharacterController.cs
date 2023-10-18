@@ -99,8 +99,9 @@ public class CharacterController : BaseComponent
 			return;
 		}
 
-		var mover = new CharacterControllerHelper( Scene.PhysicsWorld, GameObject.Transform.Position, Velocity );
-		mover.Trace = BuildTrace( mover.Trace );
+		var pos = GameObject.Transform.Position;
+
+		var mover = new CharacterControllerHelper( BuildTrace( pos, pos ), pos, Velocity );
 		mover.Bounce = 0.3f;
 		mover.MaxStandableAngle = GroundAngle;
 
@@ -204,8 +205,7 @@ public class CharacterController : BaseComponent
 		var pos = Transform.Position;
 		var delta = targetPosition - pos;
 
-		var mover = new CharacterControllerHelper( Scene.PhysicsWorld, pos, delta );
-		mover.Trace = BuildTrace( mover.Trace );
+		var mover = new CharacterControllerHelper( BuildTrace( pos, pos ), pos, delta );
 		mover.MaxStandableAngle = GroundAngle;
 
 		if ( useStep )

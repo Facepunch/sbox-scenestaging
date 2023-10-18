@@ -2163,6 +2163,31 @@
       ]
     },
     {
+      "Id": "d16e6a00-4b55-45a5-b63f-c12ba151512f",
+      "Name": "Cube (2)",
+      "Enabled": true,
+      "Position": "1053.762,903.7219,-1787.252",
+      "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
+      "Scale": "42.1,42.1,42.1",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "MaterialOverride": null,
+          "Model": "models/soccerball.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.85644,0.12719,0.57932,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 4.4800053,
+          "Surface": null
+        }
+      ]
+    },
+    {
       "Id": "0c85af75-2c45-452e-a824-a4ccdf7359a4",
       "Name": "Cube (2)",
       "Enabled": true,
