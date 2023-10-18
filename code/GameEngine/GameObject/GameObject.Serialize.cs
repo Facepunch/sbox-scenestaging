@@ -1,7 +1,4 @@
-﻿using Sandbox;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -85,7 +82,7 @@ public partial class GameObject
 		{
 			var children = new JsonArray();
 
-			foreach( var child in Children )
+			foreach ( var child in Children )
 			{
 				if ( child is null )
 					continue;
@@ -124,7 +121,7 @@ public partial class GameObject
 			SetPrefabSource( prefabSource );
 
 			var prefabFile = ResourceLibrary.Get<PrefabFile>( prefabSource );
-			if ( prefabFile  is null )
+			if ( prefabFile is null )
 			{
 				Log.Warning( $"Unable to load prefab '{prefabSource}'" );
 				return;
@@ -136,13 +133,13 @@ public partial class GameObject
 
 		if ( node["Children"] is JsonArray childArray )
 		{
-			foreach( var child in  childArray )
+			foreach ( var child in childArray )
 			{
 				if ( child is not JsonObject jso )
 					return;
 
 				var go = GameObject.Create();
-				
+
 				go.Parent = this;
 
 				go.Deserialize( jso );
@@ -151,7 +148,7 @@ public partial class GameObject
 
 		if ( node["Components"] is JsonArray componentArray )
 		{
-			foreach( var component in componentArray )
+			foreach ( var component in componentArray )
 			{
 				if ( component is not JsonObject jso )
 				{
@@ -165,10 +162,10 @@ public partial class GameObject
 					Log.Warning( $"TypeLibrary couldn't find BaseComponent type {jso["__type"]}" );
 					return;
 				}
-				
+
 				var c = this.AddComponent( componentType );
 				if ( c is null ) continue;
-				
+
 				c.Deserialize( jso );
 			}
 		}

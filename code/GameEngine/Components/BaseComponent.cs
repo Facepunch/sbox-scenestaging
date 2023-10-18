@@ -1,6 +1,4 @@
-﻿using Sandbox;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 public abstract partial class BaseComponent
 {
@@ -56,7 +54,7 @@ public abstract partial class BaseComponent
 	}
 
 	public string Name { get; set; }
-	private bool ShouldExecute => Scene is not null && ( !Scene.IsEditor || this is ExecuteInEditor );
+	private bool ShouldExecute => Scene is not null && (!Scene.IsEditor || this is ExecuteInEditor);
 
 	public virtual void DrawGizmos() { }
 
@@ -75,7 +73,7 @@ public abstract partial class BaseComponent
 	/// </summary>
 	public virtual void OnStart() { }
 
-	public virtual void OnDisabled() { } 
+	public virtual void OnDisabled() { }
 
 	/// <summary>
 	/// Called once, when the component or gameobject is destroyed
@@ -83,20 +81,20 @@ public abstract partial class BaseComponent
 	public virtual void OnDestroy() { }
 
 	protected virtual void OnPostPhysics() { }
-	internal void PostPhysics() 
+	internal void PostPhysics()
 	{
 		OnPostPhysics();
 	}
 
 	protected virtual void OnPreRender() { }
-	internal void PreRender() 
+	internal void PreRender()
 	{
 		OnPreRender();
 	}
 
 	bool _startCalled;
 
-	internal virtual void InternalUpdate() 
+	internal virtual void InternalUpdate()
 	{
 		if ( !Enabled ) return;
 		if ( !ShouldExecute ) return;
@@ -113,7 +111,7 @@ public abstract partial class BaseComponent
 	internal void UpdateEnabledStatus()
 	{
 		var state = _enabled && Scene is not null && GameObject is not null && GameObject.Active;
-		if ( state  == _enabledState ) return;
+		if ( state == _enabledState ) return;
 
 		_enabledState = state;
 
@@ -167,7 +165,7 @@ public abstract partial class BaseComponent
 		{
 			a();
 		}
-		catch (System.Exception e ) 
+		catch ( System.Exception e )
 		{
 			Log.Error( e, $"Exception when calling '{name}' on {this}" );
 		}
@@ -194,29 +192,5 @@ public abstract partial class BaseComponent
 	public void EditLog( string name, object source )
 	{
 		GameObject.EditLog( name, source );
-	}
-	
-	/// <inheritdoc cref="GameObject.GetComponent{T}(bool, bool)"/>
-	public T GetComponent<T>( bool enabledOnly = true, bool deep = false ) => GameObject.GetComponent<T>( enabledOnly, deep );
-
-	/// <inheritdoc cref="GameObject.GetComponents{T}(bool, bool)"/>
-	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false ) => GameObject.GetComponents<T>( enabledOnly, deep );
-
-	public bool TryGetComponent<T>( out T component, bool enabledOnly = true, bool deep = false ) => GameObject.TryGetComponent( out component, enabledOnly, deep );
-	
-	/// <summary>
-	/// A component with this interface will run in the editor
-	/// </summary>
-	public interface ExecuteInEditor
-	{
-
-	}
-
-	/// <summary>
-	/// A component with this interface will draw on the overlay on the camera
-	/// </summary>
-	public interface RenderOverlay
-	{
-		void OnRenderOverlay( SceneCamera camera );
 	}
 }

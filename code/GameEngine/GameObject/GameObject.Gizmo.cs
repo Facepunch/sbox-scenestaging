@@ -1,5 +1,4 @@
 ﻿using Sandbox;
-using System;
 using System.Linq;
 
 public partial class GameObject
@@ -13,7 +12,7 @@ public partial class GameObject
 		handleTexture = null;
 
 		var handles = Components
-			.Where ( x => x is not null )
+			.Where( x => x is not null )
 			.Select( x => TypeLibrary.GetType( x.GetType() ) )
 			.Where( x => x is not null )
 			.SelectMany( x => x.GetAttributes<EditorHandleAttribute>() )
@@ -25,7 +24,7 @@ public partial class GameObject
 		handleColor = Color.White;
 
 		var colorProvider = Components.OfType<IComponentColorProvider>().FirstOrDefault();
-		if ( colorProvider  is not null )
+		if ( colorProvider is not null )
 		{
 			handleColor = colorProvider.ComponentColor;
 

@@ -19,9 +19,8 @@ public class Scene : GameObject
 
 	Gizmo.Instance gizmoInstance = new();
 
-	public Scene() : base( true, "Scene", null )
+	public Scene() : base( true, "Scene" )
 	{
-		_scene = this;
 		SceneWorld = new SceneWorld();
 		PhysicsWorld = new PhysicsWorld();
 
@@ -247,6 +246,8 @@ public class Scene : GameObject
 
 	internal void RegisterGameObjectId( GameObject go, Guid previouslyKnownAs )
 	{
+		if ( go is Scene ) return;
+
 		if ( objectsById.TryGetValue( previouslyKnownAs, out var existing ) && existing == go )
 		{
 			objectsById.Remove( previouslyKnownAs );
@@ -257,6 +258,8 @@ public class Scene : GameObject
 
 	internal void UnregisterGameObjectId( GameObject go )
 	{
+		if ( go is Scene ) return;
+
 		if ( !objectsById.TryGetValue( go.Id, out var existing ) )
 		{
 			Log.Warning( $"Tried to unregister unregistered id {go}, {go.Id}" );
