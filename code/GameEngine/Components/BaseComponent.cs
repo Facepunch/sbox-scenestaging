@@ -187,10 +187,26 @@ public abstract partial class BaseComponent
 	}
 
 	/// <summary>
+	/// Called immediately after deserializing, and when a property is changed in the editor.
+	/// </summary>
+	public virtual void OnValidate()
+	{
+
+	}
+
+	internal virtual void OnValidateInternal()
+	{
+		OnValidate();
+	}
+
+
+	/// <summary>
 	/// Called when something on the component has been edited
 	/// </summary>
 	public void EditLog( string name, object source )
 	{
+		ExceptionWrap( "OnValidate", OnValidate );
+
 		GameObject.EditLog( name, source );
 	}
 }

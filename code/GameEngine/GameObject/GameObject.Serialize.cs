@@ -157,6 +157,8 @@ public partial class GameObject
 		}
 
 		Enabled = (bool)(node["Enabled"] ?? Enabled);
+
+		ForEachComponent( "OnValidate", false, c => c.OnValidateInternal() );
 	}
 
 	public PrefabFile GetAsPrefab()
