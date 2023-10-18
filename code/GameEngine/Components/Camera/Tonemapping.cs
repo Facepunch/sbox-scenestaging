@@ -6,16 +6,16 @@
 [Icon( "exposure" )]
 public class Tonemapping : BaseComponent, CameraComponent.ISceneCameraSetup
 {
-	[Property]
+	[Property, Range( 0.0f, 3.0f )]
 	public float MinimumExposure { get; set; } = 1.0f;
 
-	[Property]
+	[Property, Range( 0.0f, 3.0f )]
 	public float MaximumExposure { get; set; } = 2.0f;
 
-	[Property]
+	[Property, Range( 0.0f, 5.0f )]
 	public float ExposureCompensation { get; set; } = 0.0f;
 
-	[Property]
+	[Property, Range( 0.0f, 10.0f )]
 	public float Rate { get; set; } = 1.0f;
 
 	public void SetupCamera( CameraComponent camera, SceneCamera sceneCamera )
