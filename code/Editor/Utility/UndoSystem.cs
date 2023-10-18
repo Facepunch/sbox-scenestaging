@@ -59,7 +59,14 @@ public partial class UndoSystem
 		}
 
 		next = entry.Undo;
-		entry.Undo?.Invoke();
+		try
+		{
+			entry.Undo?.Invoke();
+		}
+		catch ( System.Exception e )
+		{
+			Log.Warning( e, $"Error when undoing '{entry.Name}': {e.Message}" );
+		}
 
 		if ( entry.Locked )
 		{
