@@ -5,7 +5,7 @@ public class GameTransform
 	public GameObject GameObject { get; init; }
 	public GameObject Parent => GameObject.Parent;
 
-	public Action<GameTransform> OnTransformChanged;
+	public Action OnTransformChanged;
 
 	internal GameTransform( GameObject owner )
 	{
@@ -29,8 +29,18 @@ public class GameTransform
 				return;
 
 			_local = value;
-			OnTransformChanged?.Invoke( this );
+			TransformChanged();
 		}
+	}
+
+	/// <summary>
+	/// Our transform has changed, which means our children transforms changed too
+	/// tell them all.
+	/// </summary>
+	void TransformChanged()
+	{
+		OnTransformChanged?.Invoke();
+		GameObject.ForEachChild( "TransformChanged", true, ( c ) => c.Transform.TransformChanged() );
 	}
 
 	/// <summary>

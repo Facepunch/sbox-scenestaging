@@ -62,6 +62,7 @@ public abstract class ColliderBaseComponent : BaseComponent, BaseComponent.Execu
 			physicsBody.UseController = true;
 			physicsBody.GravityEnabled = false;
 			keyframeBody = physicsBody;
+
 			Transform.OnTransformChanged += UpdateKeyframeTransform;
 		}
 	}
@@ -152,21 +153,21 @@ public abstract class ColliderBaseComponent : BaseComponent, BaseComponent.Execu
 
 	Vector3 _buildScale;
 
-	void UpdateKeyframeTransform( GameTransform tx )
+	void UpdateKeyframeTransform()
 	{
-		if ( tx.Scale != _buildScale )
+		if ( Transform.Scale != _buildScale )
 		{
 			Rebuild();
 		}
 
 		if ( Scene.IsEditor )
 		{
-			keyframeBody.Transform = tx.World;
+			keyframeBody.Transform = Transform.World;
 		}
 		else
 		{
-			keyframeBody.Transform = keyframeBody.Transform.WithScale( tx.World.Scale );
-			keyframeBody.Move( tx.World, Time.Delta * 4.0f );
+			keyframeBody.Transform = keyframeBody.Transform.WithScale( Transform.World.Scale );
+			keyframeBody.Move( Transform.World, Time.Delta * 4.0f );
 		}
 	}
 }
