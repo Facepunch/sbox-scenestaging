@@ -89,14 +89,6 @@ public partial class GameObject
 	public bool Active => Enabled && Scene is not null && (Parent?.Active ?? true);
 
 
-	internal void PostPhysics()
-	{
-		//Gizmo.Draw.LineSphere( new Sphere( WorldTransform.Position, 3 ) );
-
-		ForEachComponent( "PostPhysics", true, c => c.PostPhysics() );
-		ForEachChild( "PostPhysics", true, c => c.PostPhysics() );
-	}
-
 	internal void PreRender()
 	{
 		ForEachComponent( "PreRender", true, c => c.PreRender() );
@@ -127,16 +119,6 @@ public partial class GameObject
 				Log.Warning( e, $"Exception when calling {name} on {c}: {e.Message}" );
 			}
 		}
-	}
-
-
-	internal virtual void Tick()
-	{
-		if ( !Enabled )
-			return;
-
-		ForEachComponent( "Update", true, c => c.InternalUpdate() );
-		ForEachChild( "Tick", true, x => x.Tick() );
 	}
 
 

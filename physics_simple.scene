@@ -106,8 +106,9 @@
         },
         {
           "__type": "CameraPhysicsDebug",
-          "__enabled": true,
+          "__enabled": false,
           "MaxPoints": 10000,
+          "NormalLength": 2,
           "TracesPerFrame": 500,
           "TraceType": "Ray"
         }

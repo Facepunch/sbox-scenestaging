@@ -56,7 +56,7 @@ public class PhysicsComponent : BaseComponent
 
 	bool isUpdatingPositionFromPhysics;
 
-	protected override void OnPostPhysics()
+	public override void FixedUpdate()
 	{
 		if ( _body is null ) return;
 

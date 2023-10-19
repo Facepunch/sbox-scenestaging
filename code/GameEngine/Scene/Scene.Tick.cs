@@ -7,6 +7,10 @@ using System.Linq;
 
 public partial class Scene : GameObject
 {
+	FixedUpdate fixedUpdate = new FixedUpdate();
+
+
+
 	/// <summary>
 	/// The update loop will turn certain settings on
 	/// Here we turn them to their defaults.
@@ -28,11 +32,13 @@ public partial class Scene : GameObject
 		// The game will tick a game scene!
 		if ( IsEditor )
 		{
-			Tick();
+			Update();
 		}
 
 		ProcessDeletes();
 	}
+
+
 
 	public void GameTick()
 	{
@@ -47,21 +53,21 @@ public partial class Scene : GameObject
 
 			PreTickReset();
 
-			Tick();
+			Update();
 
 			ProcessDeletes();
 
-			TickPhysics();
+			fixedUpdate.Run( FixedUpdate );
 
 			ProcessDeletes();
 		}
 	}
 
-
-	void TickPhysics()
+	protected override void FixedUpdate()
 	{
-		PhysicsWorld.Gravity = Vector3.Down * 900;
+		PhysicsWorld.Gravity = Vector3.Down * 800;
 		PhysicsWorld?.Step( Time.Delta );
-		PostPhysics();
+
+		base.FixedUpdate();
 	}
 }

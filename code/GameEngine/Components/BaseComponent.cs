@@ -80,12 +80,6 @@ public abstract partial class BaseComponent
 	/// </summary>
 	public virtual void OnDestroy() { }
 
-	protected virtual void OnPostPhysics() { }
-	internal void PostPhysics()
-	{
-		OnPostPhysics();
-	}
-
 	protected virtual void OnPreRender() { }
 	internal void PreRender()
 	{
