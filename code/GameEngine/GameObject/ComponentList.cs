@@ -61,6 +61,7 @@ public enum FindMode
 	EverythingInDescendants = Enabled | Disabled | InDescendants,
 }
 
+[ActionGraphIgnore]
 public class ComponentList
 {
 	readonly GameObject go;
@@ -108,6 +109,7 @@ public class ComponentList
 	/// <summary>
 	/// Add a component of this type
 	/// </summary>
+	[ActionGraphInclude, Title( "Create {T}" )]
 	public T Create<T>( bool startEnabled = true ) where T : BaseComponent, new()
 	{
 		using var batch = CallbackBatch.StartGroup();
@@ -124,6 +126,7 @@ public class ComponentList
 	/// <summary>
 	/// Get a component of this type
 	/// </summary>
+	[ActionGraphInclude, Pure, Title( "Get {T}" )]
 	public T Get<T>( FindMode search )
 	{
 		return GetAll<T>( search ).FirstOrDefault();
@@ -153,6 +156,7 @@ public class ComponentList
 	/// <summary>
 	/// Get a list of components on this game object, optionally recurse when deep is true
 	/// </summary>
+	[ActionGraphInclude, Pure, Title( "Get All {T}" )]
 	public IEnumerable<T> GetAll<T>( FindMode find = FindMode.InSelf | FindMode.Enabled | FindMode.InDescendants )
 	{
 		bool enabledOnly = find.HasFlag( FindMode.Enabled );
@@ -240,6 +244,7 @@ public class ComponentList
 	/// <summary>
 	/// Try to get this component
 	/// </summary>
+	[ActionGraphInclude, Pure, Title( "Try Get {T}" )]
 	public bool TryGet<T>( out T component, FindMode search = FindMode.EnabledInSelf )
 	{
 		component = Get<T>( search );
@@ -258,6 +263,7 @@ public class ComponentList
 	public int Count => _list.Count;
 
 
+	[ActionGraphInclude, Title( "For Each {T}" )]
 	public void ForEach<T>( string name, bool includeDisabled, Action<T> action )
 	{
 		if ( !includeDisabled && !go.Active )
@@ -339,6 +345,7 @@ public class ComponentList
 	/// <summary>
 	/// Find this component, if it doesn't exist - create it.
 	/// </summary>
+	[ActionGraphInclude, Title( "Get Or Create {T}" )]
 	public T GetOrCreate<T>( FindMode flags = FindMode.EverythingInSelf ) where T : BaseComponent, new()
 	{
 		if ( TryGet<T>( out var component, flags ) )
