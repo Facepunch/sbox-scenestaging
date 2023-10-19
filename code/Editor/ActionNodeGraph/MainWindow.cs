@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Editor.NodeEditor;
@@ -248,6 +249,7 @@ public partial class MainWindow : DockWindow
 
 	private void Save()
 	{
+		View.WriteSpecialNodes();
 		Saved?.Invoke();
 	}
 
@@ -421,5 +423,39 @@ public class ActionGraphView : GraphView
 		}
 
 		return base.OnGetHandleConfig( type );
+	}
+
+	protected override void OnRebuild()
+	{
+		var commentsNode = Graph.Jig.UserData["comments"];
+
+		if ( commentsNode == null )
+		{
+			return;
+		}
+
+		try
+		{
+			var comments = (CommentNode[])Json.FromNode( commentsNode, typeof(CommentNode[]) );
+
+			foreach ( var comment in comments )
+			{
+				CreateNodeUI( comment );
+			}
+		}
+		catch ( Exception e )
+		{
+			Log.Error( e );
+		}
+	}
+
+	public void WriteSpecialNodes()
+	{
+		var commentNodes = Items
+			.OfType<CommentUI>()
+			.Select( x => x.Node as CommentNode )
+			.ToArray();
+
+		Graph.Jig.UserData["comments"] = Json.ToNode( commentNodes );
 	}
 }

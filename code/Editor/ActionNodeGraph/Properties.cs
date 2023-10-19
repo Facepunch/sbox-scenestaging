@@ -93,6 +93,14 @@ public class Properties : Widget
 				ps.AddRow( prop );
 			}
 		}
+		else if ( Target is CommentNode commentNode )
+		{
+			var obj = EditorTypeLibrary.GetSerializedObject( commentNode );
+
+			obj.OnPropertyChanged += _ => commentNode.Update();
+
+			ps.AddObject( obj );
+		}
 
 		_content.Add( ps );
 	}
