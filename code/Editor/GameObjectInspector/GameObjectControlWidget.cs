@@ -41,6 +41,7 @@ public class GameObjectControlWidget : ControlWidget
 			Paint.DrawIcon( rect, "radio_button_unchecked", 14, TextFlag.LeftCenter );
 			rect.Left += 22;
 			Paint.DrawText( rect, "None (GameObject)", TextFlag.LeftCenter );
+			Cursor = CursorShape.None;
 		}
 		else if ( go is PrefabScene )
 		{
@@ -55,6 +56,21 @@ public class GameObjectControlWidget : ControlWidget
 			Paint.DrawIcon( rect, "panorama_wide_angle_select", 14, TextFlag.LeftCenter );
 			rect.Left += 22;
 			Paint.DrawText( rect, go.Name, TextFlag.LeftCenter );
+			Cursor = CursorShape.Finger;
+		}
+	}
+
+	protected override void OnMouseClick( MouseEvent e )
+	{
+		if ( e.LeftMouseButton )
+		{
+			e.Accepted = true;
+			var go = SerializedProperty.GetValue<GameObject>();
+			if ( go is not PrefabScene )
+			{
+				SceneEditorSession.Active?.Selection.Set( go );
+				SceneEditorSession.Active.FullUndoSnapshot( $"Selected {go}" );
+			}
 		}
 	}
 
