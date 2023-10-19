@@ -76,15 +76,15 @@ internal struct CharacterControllerHelper
 				break;
 			}
 
-			Gizmo.Transform = Transform.Zero;
+			//Gizmo.Transform = Transform.Zero;
 
-			var dot = Velocity.Normal.Dot( pm.Normal );
-			Gizmo.Draw.Color = Color.White;
-			Gizmo.Draw.Text( $"{bump}\n{pm.Normal}\n{dot}", new Transform( pm.StartPosition ) );
-			Gizmo.Draw.Line( pm.StartPosition + Vector3.Up * 5, pm.EndPosition + Vector3.Up * 5 );
+			//var dot = Velocity.Normal.Dot( pm.Normal );
+			//Gizmo.Draw.Color = Color.White;
+			//Gizmo.Draw.Text( $"{bump}\n{pm.Normal}\n{dot}", new Transform( pm.StartPosition ) );
+			//Gizmo.Draw.Line( pm.StartPosition + Vector3.Up * 5, pm.EndPosition + Vector3.Up * 5 );
 
-			Gizmo.Draw.Color = Color.Green;
-			Gizmo.Draw.Line( pm.StartPosition + Vector3.Up * 5, pm.StartPosition + Vector3.Up * 5 + pm.Normal * 3 );
+			//Gizmo.Draw.Color = Color.Green;
+			//Gizmo.Draw.Line( pm.StartPosition + Vector3.Up * 5, pm.StartPosition + Vector3.Up * 5 + pm.Normal * 3 );
 
 			moveplanes.StartBump( Velocity );
 
