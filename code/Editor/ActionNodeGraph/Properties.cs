@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Editor.NodeEditor;
 using Facepunch.ActionJigs;
 using static Editor.NodeEditor.GraphView;
@@ -170,9 +172,9 @@ file class SerializedNodeParameter<T, TDef> : SerializedProperty
 [CustomEditor( typeof( Type ) )]
 internal class TypeControlWidget : ControlWidget
 {
-	public IReadOnlyList<Type> TypeConstraints =>
+	public Type GenericParameter =>
 		(SerializedProperty as SerializedNodeParameter<Node.Property, PropertyDefinition>)
-			?.Target.Definition.TypeConstraints;
+			?.Target.Definition.GenericParameter;
 
 	public override bool IsControlButton => true;
 	public override bool IsControlHovered => base.IsControlHovered || _menu.IsValid();
@@ -214,19 +216,136 @@ internal class TypeControlWidget : ControlWidget
 		}
 	}
 
-	private IEnumerable<TypeDescription> GetPossibleTypes()
+	private static HashSet<Type> SystemTypes { get; } = new()
 	{
-		var constraints = TypeConstraints ?? Array.Empty<Type>();
+		typeof(int),
+		typeof(float),
+		typeof(string),
+		typeof(bool),
+		typeof(GameObject),
+		typeof(GameTransform),
+		typeof(Color),
+		typeof(Vector2),
+		typeof(Vector3),
+		typeof(Vector4),
+		typeof(Angles),
+		typeof(Rotation)
+	};
+
+	private TypeOption GetTypeOption( Type type )
+	{
+		var typeDesc = EditorTypeLibrary.GetType( type );
+
+		var path = typeDesc is { }
+			? GetTypePath( typeDesc )
+			: $"System/{type.Name}";
+
+		return new TypeOption( path,
+			path.Split( "/" ),
+			type,
+			type.Name,
+			typeDesc?.Description,
+			typeDesc?.Icon );
+	}
+
+	private string GetTypePath( TypeDescription typeDesc )
+	{
+		var prefix = "Other";
+
+		if ( typeDesc.TargetType.IsAssignableTo( typeof(Resource) ) )
+		{
+			prefix = "Resource";
+		}
+		else if ( typeDesc.TargetType.IsAssignableTo( typeof(BaseComponent) ) )
+		{
+			prefix = "Component";
+		}
+		else if ( SystemTypes.Contains( typeDesc.TargetType ) )
+		{
+			prefix = typeDesc.Namespace ?? "Sandbox";
+		}
+
+		if ( !string.IsNullOrEmpty( typeDesc.Group ) )
+		{
+			prefix += $"/{typeDesc.Group}";
+		}
+		else if ( prefix == "Other" && !string.IsNullOrEmpty( typeDesc.Namespace ) )
+		{
+			prefix += $"/{typeDesc.Namespace}";
+		}
+
+		return $"{prefix}/{typeDesc.Name}";
+	}
+
+	private record TypeOption( string Path, string[] PathParts, Type Type, string Title, string Description, string Icon );
+
+	private static bool SatisfiesConstraints( Type type, Type genericParam )
+	{
+		if ( genericParam is null )
+		{
+			return true;
+		}
+
+		var attribs = genericParam.GenericParameterAttributes;
+
+		if ( attribs.HasFlag( GenericParameterAttributes.ReferenceTypeConstraint ) )
+		{
+			if ( type.IsValueType ) return false;
+		}
+
+		if ( attribs.HasFlag( GenericParameterAttributes.NotNullableValueTypeConstraint ) )
+		{
+			if ( !type.IsValueType ) return false;
+		}
+
+		if ( attribs.HasFlag( GenericParameterAttributes.DefaultConstructorConstraint ) )
+		{
+			if ( type.GetConstructor( BindingFlags.Public, Array.Empty<Type>() ) is null )
+			{
+				return false;
+			}
+		}
+
+		// TODO: constraints might involve other generic parameters
+
+		foreach ( var constraint in genericParam.GetGenericParameterConstraints() )
+		{
+			if ( !type.IsAssignableTo( constraint ) )
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private IEnumerable<TypeOption> GetPossibleTypes()
+	{
+		var genericParam = GenericParameter;
+
+		foreach ( var type in SystemTypes )
+		{
+			if ( !SatisfiesConstraints( type, genericParam ) ) continue;
+			yield return GetTypeOption( type );
+		}
 
 		var componentTypes = EditorTypeLibrary.GetTypes<BaseComponent>();
+		var resourceTypes = EditorTypeLibrary.GetTypes<GameResource>();
 
-		foreach ( var typeDesc in componentTypes )
+		foreach ( var typeDesc in componentTypes.Concat( resourceTypes ) )
 		{
 			if ( typeDesc.IsStatic ) continue;
 			if ( typeDesc.IsGenericType ) continue;
-			if ( constraints.Any( x => !x.IsAssignableFrom( typeDesc.TargetType ) ) ) continue;
+			if ( !SatisfiesConstraints( typeDesc.TargetType, genericParam ) ) continue;
 
-			yield return typeDesc;
+			var path = GetTypePath( typeDesc );
+
+			yield return new TypeOption( path,
+				path.Split( "/" ),
+				typeDesc.TargetType,
+				typeDesc.Name,
+				typeDesc.Description,
+				typeDesc.Icon );
 		}
 	}
 	
@@ -259,7 +378,7 @@ internal class TypeControlWidget : ControlWidget
 		_menu.MinimumWidth = ScreenRect.Width;
 	}
 
-	private void PopulateTypeMenu( Menu menu, IEnumerable<TypeDescription> types, string filter = null )
+	private void PopulateTypeMenu( Menu menu, IEnumerable<TypeOption> types, string filter = null )
 	{
 		menu.RemoveMenus();
 		menu.RemoveOptions();
@@ -271,7 +390,7 @@ internal class TypeControlWidget : ControlWidget
 
 		if ( useFilter )
 		{
-			var filtered = types.Where( x => x.FullName.Contains( filter, StringComparison.OrdinalIgnoreCase ) ).ToArray();
+			var filtered = types.Where( x => x.Type.Name.Contains( filter, StringComparison.OrdinalIgnoreCase ) ).ToArray();
 
 			if ( filtered.Length > maxFiltered + 1 )
 			{
@@ -285,35 +404,23 @@ internal class TypeControlWidget : ControlWidget
 		}
 
 		types = types
-			.OrderBy( x => string.IsNullOrEmpty( x.Group ) ? x.Namespace ?? "Global" : x.Group )
-			.ThenBy( x => x.Name );
+			.OrderBy( x => x.Path );
 
-		foreach ( var typeDescription in types )
+		foreach ( var type in types )
 		{
-			// Ignore compiler generated names
-			if ( typeDescription.Name.StartsWith( "<" ) ) continue;
-
 			var categoryMenu = menu;
-			var fullName = string.IsNullOrEmpty( typeDescription.Group )
-				? $"{typeDescription.Namespace ?? "Global"}.{typeDescription.Name}"
-				: $"{typeDescription.Group}.{typeDescription.Name}";
-			var name = fullName;
 
 			if ( !useFilter )
 			{
-				var nameParts = fullName.Split( ".", StringSplitOptions.RemoveEmptyEntries );
-
-				foreach ( var part in nameParts[..^1] )
+				foreach ( var part in type.PathParts[..^1] )
 				{
 					categoryMenu = categoryMenu.FindOrCreateMenu( part );
 				}
-
-				name = nameParts[^1];
 			}
 
-			var option = categoryMenu.AddOption( name, typeDescription.Icon );
-			option.StatusText = typeDescription.Description;
-			option.Triggered += () => SerializedProperty.SetValue( typeDescription.TargetType );
+			var option = categoryMenu.AddOption( type.Title, type.Icon );
+			option.StatusText = type.Description;
+			option.Triggered += () => SerializedProperty.SetValue( type.Type );
 		}
 
 		if ( truncated > 0 )

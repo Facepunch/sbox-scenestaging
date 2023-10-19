@@ -30,7 +30,9 @@ public static class ActionJigExtensions
 
 	private static DisplayInfo ConstDisplayInfo( Node node )
 	{
-		var name = node.Properties["name"].Value as string;
+		var name = node.Properties.TryGetValue( "name", out var nameProperty )
+			? nameProperty.Value as string
+			: null;
 
 		return new DisplayInfo
 		{
@@ -307,6 +309,16 @@ public class ActionGraphView : GraphView
 		}
 	}
 
+	private static bool IsMemberPublic( MemberDescription memberDesc )
+	{
+		if ( memberDesc.IsPublic )
+		{
+			return true;
+		}
+
+		return memberDesc.GetCustomAttribute<PropertyAttribute>() is { };
+	}
+
 	private static IEnumerable<INodeType> GetInstanceNodes( TypeDescription typeDesc )
 	{
 		var baseType = EditorTypeLibrary.GetType( typeDesc.TargetType.BaseType );
@@ -321,7 +333,7 @@ public class ActionGraphView : GraphView
 
 		foreach ( var memberDesc in typeDesc.DeclaredMembers )
 		{
-			if ( !memberDesc.IsPublic || memberDesc.IsStatic )
+			if ( !IsMemberPublic( memberDesc ) || memberDesc.IsStatic )
 			{
 				continue;
 			}

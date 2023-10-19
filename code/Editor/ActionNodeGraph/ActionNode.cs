@@ -263,6 +263,10 @@ public class ActionNode : INode
 			return Definition.Identifier switch
 			{
 				"const.string" => ConstStringExpandSize(),
+				"const.sound" => default,
+				"const.model" => default,
+				"const.material" => default,
+				"const.resource" => default,
 				{ } s when s.StartsWith( "const." ) => new Vector2( -40f, 12f ),
 				_ => default
 			};
@@ -329,8 +333,8 @@ public class ActionNode : INode
 			return changed;
 		}
 
-		public IPlug this[ string name, int index ] => _plugs[(name, index)];
-		public IPlug this[ string name ] => _plugs[(name, 0)];
+		public IPlug this[ string name, int index ] => _plugs.TryGetValue( (name, index), out var plug ) ? plug : null;
+		public IPlug this[ string name ] => _plugs.TryGetValue( (name, 0), out var plug ) ? plug : null;
 
 		IEnumerator<IPlug> IEnumerable<IPlug>.GetEnumerator() => _plugs.Values.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => _plugs.Values.GetEnumerator();
@@ -356,6 +360,11 @@ public class ActionNode : INode
 
 		switch ( value )
 		{
+			case Resource resource:
+				Paint.SetPen( Color.White );
+				Paint.DrawText( rect, resource.ResourceName ?? "null" );
+				break;
+
 			case Color colorVal:
 				Paint.SetBrush( colorVal );
 				Paint.DrawRect( rect, 3f );
