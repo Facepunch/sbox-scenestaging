@@ -20,10 +20,8 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		}
 	}
 
-	protected override void BuildChildren()
-	{
-		SetChildren( Value.Children, x => new GameObjectNode( x ) );
-	}
+	protected override void BuildChildren() => SetChildren( Value.Children, x => new GameObjectNode( x ) );
+	protected override bool HasDescendant( object obj ) => obj is GameObject go && Value.IsDescendant( go );
 
 	public override int ValueHash
 	{

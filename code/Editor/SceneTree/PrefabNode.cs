@@ -9,10 +9,8 @@ public partial class PrefabNode : GameObjectNode
 
 	public override bool HasChildren => Value.Children.Any();
 
-	protected override void BuildChildren()
-	{
-		SetChildren( Value.Children, x => new GameObjectNode( x ) );
-	}
+	protected override void BuildChildren() => SetChildren( Value.Children, x => new GameObjectNode( x ) );
+	protected override bool HasDescendant( object obj ) => obj is GameObject go && Value.IsDescendant( go );
 
 	public override void OnPaint( VirtualWidget item )
 	{
