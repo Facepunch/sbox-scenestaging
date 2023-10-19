@@ -4,6 +4,7 @@ using Sandbox.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 public partial class Scene : GameObject
 {
@@ -51,13 +52,26 @@ public partial class Scene : GameObject
 			if ( GameManager.IsPaused )
 				return;
 
+			bool noFixedUpdate = true;
+
+			if ( noFixedUpdate )
+			{
+				FixedUpdate();
+			}
+			else
+			{
+				fixedUpdate.Frequency = 50;
+				fixedUpdate.MaxSteps = 3;
+				fixedUpdate.Run( FixedUpdate );
+			}
+
 			PreTickReset();
 
 			Update();
 
 			ProcessDeletes();
 
-			fixedUpdate.Run( FixedUpdate );
+
 
 			ProcessDeletes();
 		}
@@ -65,9 +79,14 @@ public partial class Scene : GameObject
 
 	protected override void FixedUpdate()
 	{
-		PhysicsWorld.Gravity = Vector3.Down * 800;
-		PhysicsWorld?.Step( Time.Delta );
+		var idealHz = 100.0f;
+		var idealStep = 1.0f / idealHz;
+		var steps = (Time.Delta / idealStep).FloorToInt().Clamp( 1, 10 );
+
+		PhysicsWorld.Step( Time.Delta, steps );
 
 		base.FixedUpdate();
+
+		ProcessDeletes();
 	}
 }

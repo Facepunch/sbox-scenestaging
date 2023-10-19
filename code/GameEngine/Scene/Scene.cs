@@ -27,6 +27,10 @@ public partial class Scene : GameObject
 		PhysicsWorld = new PhysicsWorld();
 		Directory = new GameObjectDirectory( this );
 
+		PhysicsWorld.Gravity = Vector3.Down * 850;
+		PhysicsWorld.SimulationMode = PhysicsSimulationMode.Discrete;
+
+
 		// todo - load from package
 		var settings = new Sandbox.Physics.CollisionRules();
 		PhysicsWorld.SetCollisionRules( settings );
