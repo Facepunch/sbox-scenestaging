@@ -6,7 +6,20 @@ using System.Collections.Generic;
 [Icon( "check_box_outline_blank", "red", "white" )]
 public class ModelCollider : ColliderBaseComponent
 {
-	[Property] public Model Model { get; set; }
+	Model _model;
+
+	[Property]
+	public Model Model
+{
+		get => _model;
+		set
+		{
+			if ( _model == value ) return;
+
+			_model = value;
+			Rebuild();
+		}
+	}
 
 	public override void DrawGizmos()
 	{
@@ -44,12 +57,13 @@ public class ModelCollider : ColliderBaseComponent
 				}
 			}
 		}
-
-		// TODO - draw physics models from Model
 	}
 
 	protected override IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody )
 	{
+		if ( Model is null )
+			yield break;
+
 		var bodyTransform = targetBody.Transform.ToLocal( Transform.World );
 
 		foreach ( var part in Model.Physics.Parts )
@@ -77,15 +91,6 @@ public class ModelCollider : ColliderBaseComponent
 				yield return targetBody.AddShape( mesh, bx, false, true );
 			}
 		}
-	}
-
-	
-	public override void OnEnabled()
-	{
-		if ( Model is null )
-			return;
-
-		base.OnEnabled();
 	}
 	
 }

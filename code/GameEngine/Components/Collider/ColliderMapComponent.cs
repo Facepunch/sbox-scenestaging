@@ -19,7 +19,7 @@ public class ColliderMapComponent : ColliderBaseComponent
 
 	internal void SetBody( PhysicsBody body )
 	{
-		ownBody = body;
+		keyframeBody = body;
 	}
 
 	public override void OnEnabled()

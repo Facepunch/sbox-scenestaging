@@ -7,7 +7,20 @@ using System.Collections.Generic;
 [Icon( "check_box_outline_blank", "red", "white" )]
 public class ColliderBoxComponent : ColliderBaseComponent
 {
-	[Property] public Vector3 Scale { get; set; } = 50;
+	Vector3 _scale = 50;
+
+	[Property] 
+	public Vector3 Scale
+	{
+		get => _scale;
+		set
+		{
+			if ( _scale == value ) return;
+
+			_scale = value;
+			Rebuild();
+		}
+	}
 
 	public override void DrawGizmos()
 	{

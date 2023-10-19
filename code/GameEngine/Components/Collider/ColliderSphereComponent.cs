@@ -8,7 +8,20 @@ using System.Collections.Generic;
 [Alias( "SphereColliderComponent" )]
 public class ColliderSphereComponent : ColliderBaseComponent
 {
-	[Property] public float Radius { get; set; } = 10.0f;
+	float _radius = 10.0f;
+
+	[Property]
+	public float Radius
+	{
+		get => _radius;
+		set
+		{
+			if ( _radius == value ) return;
+
+			_radius = value;
+			Rebuild();
+		}
+	}
 
 	public override void DrawGizmos()
 	{
