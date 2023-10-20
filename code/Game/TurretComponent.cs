@@ -11,13 +11,30 @@ public sealed class TurretComponent : BaseComponent
 	[Property] GameObject SecondaryBullet { get; set; }
 	[Property] GameObject Muzzle { get; set; }
 
+	[Property] ModelComponent GunModel { get; set; }
+	[Property] Gradient GunColorGradient { get; set; }
+	[Property] Curve GunSizeCurve { get; set; }
+
 	float turretYaw;
 	float turretPitch;
 
 	TimeSince timeSinceLastSecondary;
 
+	TimeSince timeSincePrimary = 10;
+
+	void FlashGunModel()
+	{
+		if ( GunModel is null ) return;
+		if ( timeSincePrimary < 0 ) return;
+
+		GunModel.Tint = GunColorGradient.Evaluate( timeSincePrimary * 2.0f );
+		GunModel.Transform.LocalScale = GunSizeCurve.Evaluate( timeSincePrimary * 2.0f );
+	}
+
 	public override void Update()
 	{
+		FlashGunModel();
+
 		// rotate gun using mouse input
 		turretYaw -= Input.MouseDelta.x * 0.1f;
 		turretPitch += Input.MouseDelta.y * 0.1f;
@@ -61,6 +78,7 @@ public sealed class TurretComponent : BaseComponent
 
 			// Testing sound
 			Sound.FromWorld( "rust_smg.shoot", Transform.Position );
+			timeSincePrimary = 0;
 		}
 
 		var tr = Physics.Trace

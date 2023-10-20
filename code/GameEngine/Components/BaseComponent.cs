@@ -53,7 +53,7 @@ public abstract partial class BaseComponent
 		get => _enabledState;
 	}
 
-	public string Name { get; set; }
+
 	private bool ShouldExecute => Scene is not null && (!Scene.IsEditor || this is ExecuteInEditor);
 
 	public virtual void DrawGizmos() { }

@@ -9,6 +9,14 @@ public partial class GameObject
 	/// <summary>
 	/// Get the first matching component on this game object, optionally recurse when deep is true
 	/// </summary>
+	public BaseComponent GetComponent( Type type, bool enabledOnly = true, bool deep = false )
+	{
+		return GetComponents( type, enabledOnly, deep ).FirstOrDefault();
+	}
+
+	/// <summary>
+	/// Get the first matching component on this game object, optionally recurse when deep is true
+	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	/// <param name="enabledOnly"></param>
 	/// <param name="deep"></param>
@@ -47,6 +55,14 @@ public partial class GameObject
 				}
 			}
 		}
+	}
+
+	/// <summary>
+	/// Get a list of components on this game object, optionally recurse when deep is true
+	/// </summary>
+	public IEnumerable<BaseComponent> GetComponents( Type type, bool enabledOnly = true, bool deep = false )
+	{
+		return GetComponents<BaseComponent>( enabledOnly, deep ).Where( x => x.GetType().IsAssignableFrom( type ) );
 	}
 
 	public bool TryGetComponent<T>( out T component, bool enabledOnly = true, bool deep = false )

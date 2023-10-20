@@ -122,7 +122,7 @@ public class ComponentList : Widget
 	void PropertyEdited( SerializedProperty property, BaseComponent component )
 	{
 		var value = property.GetValue<object>();
-		component.EditLog( $"{component.Name}.{property.Name}", component );
+		component.EditLog( $"{component}.{property.Name}", component );
 	}
 
 	void OpenContextMenu( BaseComponent component )

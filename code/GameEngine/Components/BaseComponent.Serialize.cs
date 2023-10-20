@@ -48,6 +48,16 @@ public abstract partial class BaseComponent
 				continue;
 			}
 
+			if ( prop.PropertyType.IsAssignableTo( typeof( BaseComponent ) ) )
+			{
+				if ( value is BaseComponent component )
+				{
+					json.Add( prop.Name, component.GameObject.Id );
+				}
+
+				continue;
+			}
+
 			json.Add( prop.Name, Json.ToNode( value ) );
 		}
 
@@ -97,6 +107,28 @@ public abstract partial class BaseComponent
 			if ( ResourceLibrary.TryGet( guidString, out PrefabFile prefabFile ) )
 			{
 				prop.SetValue( this, prefabFile.Scene );
+				return;
+			}
+
+			throw new System.Exception( $"Couldn't parse '{guidString}' as object guid" );
+		}
+
+		if ( prop.PropertyType.IsAssignableTo( typeof( BaseComponent ) ) )
+		{
+			string guidString = node.Deserialize<string>();
+
+			if ( Guid.TryParse( guidString, out Guid guid ) )
+			{
+				onAwake += () =>
+				{
+					var go = Scene.Directory.FindByGuid( guid );
+					if ( go is null ) Log.Warning( $"GameObject - {guid} was not found for {GetType().Name}.{prop.Name}" );
+
+					var component = go.GetComponent( prop.PropertyType, false, false );
+					if ( component is null ) Log.Warning( $"Component - Unable to find {prop.PropertyType} on {go} for {GetType().Name}.{prop.Name}" );
+
+					prop.SetValue( this, component );
+				};
 				return;
 			}
 
