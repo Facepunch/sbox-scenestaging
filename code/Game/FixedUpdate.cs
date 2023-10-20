@@ -15,7 +15,7 @@ internal class FixedUpdate
 		var saveDelta = Time.Delta;
 
 		var delta = Delta;
-		var time = RealTime.Now;
+		var time = saveNow;
 		lastTime = lastTime.Clamp( time - (MaxSteps * delta), time + delta );
 
 		Time.Delta = delta;

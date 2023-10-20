@@ -9,7 +9,9 @@ using System.Threading;
 public partial class Scene : GameObject
 {
 	FixedUpdate fixedUpdate = new FixedUpdate();
+	public bool IsFixedUpdate;
 
+	public float FixedDelta => fixedUpdate.Delta;
 
 
 	/// <summary>
@@ -39,8 +41,6 @@ public partial class Scene : GameObject
 		ProcessDeletes();
 	}
 
-
-
 	public void GameTick()
 	{
 		gizmoInstance.Input.Camera = Sandbox.Camera.Main;
@@ -52,26 +52,24 @@ public partial class Scene : GameObject
 			if ( GameManager.IsPaused )
 				return;
 
-			bool noFixedUpdate = true;
-
+			bool noFixedUpdate = false;
 			if ( noFixedUpdate )
 			{
 				FixedUpdate();
 			}
 			else
 			{
-				fixedUpdate.Frequency = 50;
+				fixedUpdate.Frequency = 32;
 				fixedUpdate.MaxSteps = 3;
-				fixedUpdate.Run( FixedUpdate );
-			}
 
+				IsFixedUpdate = true;
+				fixedUpdate.Run( FixedUpdate );
+				IsFixedUpdate = false;
+			}
+			
 			PreTickReset();
 
 			Update();
-
-			ProcessDeletes();
-
-
 
 			ProcessDeletes();
 		}
@@ -79,9 +77,9 @@ public partial class Scene : GameObject
 
 	protected override void FixedUpdate()
 	{
-		var idealHz = 100.0f;
+		var idealHz = 220.0f;
 		var idealStep = 1.0f / idealHz;
-		var steps = (Time.Delta / idealStep).FloorToInt().Clamp( 1, 10 );
+		int steps = (Time.Delta / idealStep).FloorToInt().Clamp( 1, 10 );
 
 		PhysicsWorld.Step( Time.Delta, steps );
 

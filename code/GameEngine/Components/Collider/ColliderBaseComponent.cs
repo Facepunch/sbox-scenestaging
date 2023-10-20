@@ -167,7 +167,14 @@ public abstract class ColliderBaseComponent : BaseComponent, BaseComponent.Execu
 		else
 		{
 			keyframeBody.Transform = keyframeBody.Transform.WithScale( Transform.World.Scale );
-			keyframeBody.Move( Transform.World, Time.Delta * 4.0f );
+
+			// if timeToArrive is longer than a physics frame delta, the objects that we push
+			// will get pushed smoother, but will clip inside the collider more.
+			// if it's shorter, the objects will be punched quicker than the collider is moving
+			// so will tend to over-react to being touched.
+			float timeToArrive = Scene.FixedDelta;
+
+			keyframeBody.Move( Transform.World, timeToArrive );
 		}
 	}
 }
