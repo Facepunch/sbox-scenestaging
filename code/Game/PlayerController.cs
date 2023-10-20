@@ -41,8 +41,10 @@ public class PlayerController : BaseComponent
 		{
 			Body.Transform.Rotation = new Angles( 0, EyeAngles.yaw, 0 ).ToRotation();
 		}
+	}
 
-		// read inputs
+	public override void FixedUpdate()
+	{
 		BuildWishVelocity();
 
 		var cc = GameObject.GetComponent<CharacterController>();
@@ -55,7 +57,7 @@ public class PlayerController : BaseComponent
 			//	flMul *= 0.8f;
 
 			cc.Punch( Vector3.Up * flMul * flGroundFactor );
-		//	cc.IsOnGround = false;
+			//	cc.IsOnGround = false;
 		}
 
 		if ( cc.IsOnGround )
