@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
+using System;
 
 [Title( "Animated Model Renderer" )]
 [Category( "Rendering" )]
@@ -145,4 +146,47 @@ public class AnimatedModelComponent : BaseComponent, BaseComponent.ExecuteInEdit
 		_sceneObject.Update( Time.Delta );
 	}
 
+	internal void SetAnimParameter( string v, Vector3 value )
+	{
+		_sceneObject.SetAnimParameter( v, value );
+	}
+
+	internal void SetAnimParameter( string v, int value )
+	{
+		_sceneObject.SetAnimParameter( v, value );
+	}
+
+	internal void SetAnimParameter( string v, float value )
+	{
+		_sceneObject.SetAnimParameter( v, value );
+	}
+
+	internal void SetAnimParameter( string v, bool value )
+	{
+		_sceneObject.SetAnimParameter( v, value );
+	}
+
+	internal bool GetAnimParameterBool( string v )
+	{
+		return true;
+	}
+
+	internal CitizenAnimation.HoldTypes GetAnimParameterInt( string v )
+	{
+		return default;
+	}
+
+	internal float GetAnimParameterFloat( string v )
+	{
+		return default;
+	}
+
+	/// <summary>
+	/// Converts value to vector local to this entity's eyepos and passes it to SetAnimVector
+	/// </summary>
+	public void SetAnimLookAt( string name, Vector3 eyeDirectionWorld )
+	{
+		var delta = eyeDirectionWorld * Transform.Rotation.Inverse;
+		SetAnimParameter( name, delta );
+	}
 }
