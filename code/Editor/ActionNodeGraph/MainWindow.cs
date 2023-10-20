@@ -40,7 +40,7 @@ public static class ActionJigExtensions
 		{
 			Name = string.IsNullOrEmpty( name ) ? node.DisplayInfo.Title : name,
 			Description = node.DisplayInfo.Description,
-			Icon = node.Definition.DisplayInfo.Icon,
+			Icon = node.DisplayInfo.Icon,
 			Tags = node.DisplayInfo.Tags
 		};
 	}
@@ -54,7 +54,7 @@ public static class ActionJigExtensions
 				{
 					Name = node.ActionJig.UserData["name"]?.GetValue<string>() ?? "Event",
 					Description = node.DisplayInfo.Description,
-					Icon = node.Definition.DisplayInfo.Icon,
+					Icon = node.DisplayInfo.Icon,
 					Tags = node.DisplayInfo.Tags
 				};
 
@@ -66,7 +66,7 @@ public static class ActionJigExtensions
 				{
 					Name = node.DisplayInfo.Title,
 					Description = node.DisplayInfo.Description,
-					Icon = node.Definition.DisplayInfo.Icon,
+					Icon = node.DisplayInfo.Icon,
 					Tags = node.DisplayInfo.Tags
 				};
 		}

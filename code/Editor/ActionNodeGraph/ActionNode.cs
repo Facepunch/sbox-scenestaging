@@ -51,7 +51,7 @@ public record struct MethodNodeType( MethodDescription Method ) : INodeType
 		Name = Method.Title,
 		Description = Method.Description,
 		Group = Method.TypeDescription.Name,
-		Icon = Method.Icon ?? EditorNodeLibrary.CallMethod.DisplayInfo.Icon
+		Icon = Method.Icon ?? (Method.HasAttribute<PureAttribute>() ? "run_circle" : EditorNodeLibrary.CallMethod.DisplayInfo.Icon)
 	};
 
 	public bool HasInput( Type valueType )
