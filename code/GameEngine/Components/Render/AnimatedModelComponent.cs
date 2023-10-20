@@ -1,11 +1,10 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
 
-[Title( "Model Renderer" )]
+[Title( "Animated Model Renderer" )]
 [Category( "Rendering" )]
-[Icon( "free_breakfast" )]
-[Alias( "ModelComponentMate" )]
-public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
+[Icon( "sports_martial_arts" )]
+public class AnimatedModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	Model _model;
 
@@ -92,8 +91,8 @@ public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
 
 	public string TestString { get; set; }
 
-	SceneObject _sceneObject;
-	public SceneObject SceneObject => _sceneObject;
+	SceneModel _sceneObject;
+	public SceneModel SceneObject => _sceneObject;
 
 
 	public override void DrawGizmos()
@@ -125,7 +124,7 @@ public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
 
 		var model = Model ?? Model.Load( "models/dev/box.vmdl" );
 
-		_sceneObject = new SceneObject( Scene.SceneWorld, model, Transform.World );
+		_sceneObject = new SceneModel( Scene.SceneWorld, model, Transform.World );
 		_sceneObject.SetMaterialOverride( MaterialOverride );
 		_sceneObject.ColorTint = Tint;
 		_sceneObject.Flags.CastShadows = _castShadows;
@@ -143,6 +142,7 @@ public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
 			return;
 
 		_sceneObject.Transform = Transform.World;
+		_sceneObject.Update( Time.Delta );
 	}
 
 }

@@ -112,7 +112,7 @@
       "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
       "Name": "Citizen",
       "Enabled": true,
-      "Position": "1030.004,661.5084,-1637.595",
+      "Position": "1030.004,665.4609,-1637.595",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Components": [
@@ -146,6 +146,14 @@
           "Components": [
             {
               "__type": "ModelComponent",
+              "__enabled": false,
+              "MaterialOverride": null,
+              "Model": "models/citizen/citizen.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,0.58"
+            },
+            {
+              "__type": "AnimatedModelComponent",
               "__enabled": true,
               "MaterialOverride": null,
               "Model": "models/citizen/citizen.vmdl",
@@ -177,6 +185,24 @@
                   "Name": "Prickly Pete"
                 }
               ]
+            },
+            {
+              "Id": "2ad7400c-ed5b-48a6-b645-0468d6ec0f6c",
+              "Name": "banana",
+              "Enabled": true,
+              "Position": "0,-46.17558,25.5002",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Components": [
+                {
+                  "__type": "ModelComponent",
+                  "__enabled": true,
+                  "MaterialOverride": null,
+                  "Model": "models/banana/banana.vmdl",
+                  "ShouldCastShadows": true,
+                  "Tint": "1,1,1,1"
+                }
+              ]
             }
           ]
         },
@@ -193,14 +219,14 @@
               "__enabled": true,
               "BackgroundColor": "0.25292,0.26086,0.29703,1",
               "ClearFlags": "Color, Depth, Stencil",
-              "FieldOfView": 80,
+              "FieldOfView": 69.32,
               "ZFar": 10000,
               "ZNear": 1
             },
             {
               "__type": "Sharpen",
               "__enabled": true,
-              "Scale": 0.59
+              "Scale": 0.4
             },
             {
               "__type": "Bloom",
@@ -212,7 +238,7 @@
                   },
                   {
                     "t": 1,
-                    "c": "0.5,0.5,0.5,1"
+                    "c": "1,1,1,1"
                   }
                 ]
               },
@@ -227,14 +253,14 @@
                 ]
               },
               "Mode": "Screen",
-              "Strength": 2.31,
+              "Strength": 0.48,
               "Threshold": 0.23,
-              "ThresholdWidth": 3.21
+              "ThresholdWidth": 0.96
             },
             {
               "__type": "Tonemapping",
               "__enabled": true,
-              "ExposureCompensation": 0,
+              "ExposureCompensation": 0.43,
               "MaximumExposure": 2,
               "MinimumExposure": 1.3,
               "Rate": 4.52
@@ -641,7 +667,7 @@
       "Id": "49d032e2-fde7-434b-aa6a-b9640bea33c0",
       "Name": "metal_wheely_bin",
       "Enabled": true,
-      "Position": "1661.908,247.2755,-1637.717",
+      "Position": "1661.908,247.2755,-1640.171",
       "Rotation": "0.000000391677,0.0000001232383,0.9387497,0.3445993",
       "Scale": "1,1,1",
       "Components": [
@@ -683,7 +709,7 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "AnimatedModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/player/hazmatsuit/hazmatsuit.vmdl",
@@ -739,12 +765,12 @@
       "Id": "85856266-af85-4deb-a1cf-321d9277bddb",
       "Name": "adam_mp",
       "Enabled": true,
-      "Position": "1690.402,208.9692,-1629.748",
+      "Position": "1690.436,208.9281,-1637.977",
       "Rotation": "-0.002246819,0.002281674,0.995681,0.0927846",
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "AnimatedModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/player/human/adam_mp.vmdl",
@@ -1215,6 +1241,7 @@
     }
   ],
   "__references": [
+    "caro.banana",
     "facepunch.blackbin",
     "facepunch.wheely_bin",
     "facepunch.metal_wheely_bin",
@@ -1225,7 +1252,6 @@
     "stardrive.rope_barrier_a",
     "luke.fwroundtable",
     "pcjr.sfmmug",
-    "caro.banana",
     "facepunch.w_trenchknife",
     "garry.spark_burst",
     "facepunch.leaves_fall_01",
