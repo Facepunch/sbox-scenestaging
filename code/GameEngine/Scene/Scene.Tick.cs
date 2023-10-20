@@ -13,6 +13,12 @@ public partial class Scene : GameObject
 
 	public float FixedDelta => fixedUpdate.Delta;
 
+	/// <summary>
+	/// How many times a second FixedUpdate runs
+	/// </summary>
+	public float FixedUpdateFrequency { get; set; } = 50.0f;
+
+	public float TimeScale { get; set; } = 1.0f;
 
 	/// <summary>
 	/// The update loop will turn certain settings on
@@ -23,6 +29,8 @@ public partial class Scene : GameObject
 		SceneWorld.GradientFog.Enabled = false;
 	}
 
+	float time;
+	float delta;
 
 	public void EditorTick()
 	{
@@ -45,6 +53,14 @@ public partial class Scene : GameObject
 	{
 		gizmoInstance.Input.Camera = Sandbox.Camera.Main;
 
+		// Todo - make a scoping class to encompass this shit
+		var delta = Time.Delta * TimeScale;
+		time += delta;
+		var oldNow = Time.Now;
+		var oldDelta = Time.Delta;
+		Time.Now = time;
+		Time.Delta = delta;
+
 		using ( gizmoInstance.Push() )
 		{
 			ProcessDeletes();
@@ -52,15 +68,17 @@ public partial class Scene : GameObject
 			if ( GameManager.IsPaused )
 				return;
 
-			bool noFixedUpdate = false;
-			if ( noFixedUpdate )
+			bool use_fixed_update = true;
+
+
+			if ( !use_fixed_update )
 			{
 				FixedUpdate();
 			}
 			else
 			{
-				fixedUpdate.Frequency = 32;
-				fixedUpdate.MaxSteps = 3;
+				fixedUpdate.Frequency = FixedUpdateFrequency;
+				fixedUpdate.MaxSteps = 1; // todo - this will make the game run slower right now
 
 				IsFixedUpdate = true;
 				fixedUpdate.Run( FixedUpdate );
@@ -73,6 +91,9 @@ public partial class Scene : GameObject
 
 			ProcessDeletes();
 		}
+
+		Time.Now = oldNow;
+		Time.Delta = oldDelta;
 	}
 
 	protected override void FixedUpdate()

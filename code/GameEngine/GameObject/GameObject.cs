@@ -31,6 +31,7 @@ public partial class GameObject
 				return;
 
 			_enabled = value;
+			Transform.ClearLerp();
 
 			SceneUtility.ActivateGameObject( this );
 		}

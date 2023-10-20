@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Sandbox;
+using Sandbox.Physics;
+using System;
 
 public class GameTransform
 {
@@ -14,13 +16,14 @@ public class GameTransform
 	}
 
 	Transform _local;
+	Transform _fixedLocal;
 
 	/// <summary>
 	/// The current local transform
 	/// </summary>
 	public Transform Local
 	{
-		get => _local;
+		get => GameObject.Scene.IsFixedUpdate ? _fixedLocal : _local;
 		set
 		{
 			if ( value.Position.IsNaN ) throw new System.ArgumentOutOfRangeException();
@@ -29,7 +32,14 @@ public class GameTransform
 				return;
 
 			_local = value;
+			_fixedLocal = value;
+
 			TransformChanged();
+
+			if ( GameObject.Scene.IsFixedUpdate )
+			{
+				LerpTo( World, Time.Delta );
+			}
 		}
 	}
 
@@ -136,5 +146,35 @@ public class GameTransform
 		{
 			Local = _local.WithScale( value.x );
 		}
+	}
+
+	TransformInterpolate interp = new TransformInterpolate();
+
+	public void LerpTo( in Transform target, float timeToTake )
+	{
+		interp.Add( Time.Now + timeToTake, target );
+	}
+
+	public void ClearLerp()
+	{
+		interp.Clear( _local );
+	}
+
+	internal void Update()
+	{
+		if ( interp.entries is null )
+			return;
+
+		interp.CullOlderThan( Time.Now - 1.0f );
+
+		if ( interp.Query( Time.Now, ref _local ) )
+		{
+			// okay
+		}
+	}
+
+	public void FDdd()
+	{
+		//
 	}
 }

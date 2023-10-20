@@ -5,6 +5,8 @@
 		if ( !Enabled )
 			return;
 
+		Transform.Update();
+
 		ForEachComponent( "Update", true, c => c.InternalUpdate() );
 		ForEachChild( "Tick", true, x => x.Update() );
 	}
