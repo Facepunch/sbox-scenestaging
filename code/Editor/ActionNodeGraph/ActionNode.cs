@@ -5,6 +5,7 @@ using System.Linq;
 using Editor.NodeEditor;
 using Facepunch.ActionJigs;
 using Sandbox;
+using static Facepunch.ActionJigs.Node;
 
 namespace Editor.ActionJigs;
 
@@ -21,6 +22,7 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 	{
 		Name = Definition.DisplayInfo.Title,
 		Description = Definition.DisplayInfo.Description,
+		Icon = Definition.DisplayInfo.Icon,
 		Tags = Definition.DisplayInfo.Tags,
 		Group = Definition.DisplayInfo.Category
 	};
@@ -49,7 +51,7 @@ public record struct MethodNodeType( MethodDescription Method ) : INodeType
 		Name = Method.Title,
 		Description = Method.Description,
 		Group = Method.TypeDescription.Name,
-		Icon = "code"
+		Icon = Method.Icon ?? EditorNodeLibrary.CallMethod.DisplayInfo.Icon
 	};
 
 	public bool HasInput( Type valueType )
@@ -88,7 +90,9 @@ public record struct PropertyNodeType( PropertyDescription Property, PropertyNod
 		Name = ReadWrite ? $"{Property.Title}/{Kind}" : $"{Property.Title} ({Kind})",
 		Description = Property.Description,
 		Group = Property.TypeDescription.Name,
-		Icon = Kind == PropertyNodeKind.Get ? "note" : "edit"
+		Icon = Property.Icon ?? (Kind == PropertyNodeKind.Get
+			? EditorNodeLibrary.GetProperty.DisplayInfo.Icon
+			: EditorNodeLibrary.SetProperty.DisplayInfo.Icon)
 	};
 
 	public bool HasInput( Type valueType )
@@ -126,7 +130,9 @@ public record struct FieldNodeType( FieldDescription Field, PropertyNodeKind Kin
 		Name = ReadWrite ? $"{Field.Title}/{Kind}" : $"{Field.Title} ({Kind})",
 		Description = Field.Description,
 		Group = Field.TypeDescription.Name,
-		Icon = Kind == PropertyNodeKind.Get ? "note" : "edit"
+		Icon = Field.Icon ?? (Kind == PropertyNodeKind.Get
+			? EditorNodeLibrary.GetProperty.DisplayInfo.Icon
+			: EditorNodeLibrary.SetProperty.DisplayInfo.Icon)
 	};
 
 	public bool HasInput( Type valueType )
@@ -267,6 +273,7 @@ public class ActionNode : INode
 				"const.model" => default,
 				"const.material" => default,
 				"const.resource" => default,
+				{ } s when s.StartsWith( "op." ) => new Vector2( -60f, 15f ),
 				{ } s when s.StartsWith( "const." ) => new Vector2( -40f, 12f ),
 				_ => default
 			};
@@ -346,11 +353,26 @@ public class ActionNode : INode
 
 	void INode.OnPaint( Rect rect )
 	{
-		if ( !Definition.Identifier.StartsWith( "const." ) )
+		if ( Definition.Identifier.StartsWith( "op." ) )
 		{
-			return;
+			PaintOperator( rect );
 		}
+		else if ( Definition.Identifier.StartsWith( "const." ) )
+		{
+			PaintConstant( rect );
+		}
+	}
 
+	public bool HasTitleBar => !Definition.Identifier.StartsWith( "op." );
+
+	private void PaintOperator( Rect rect )
+	{
+		Paint.SetPen( Theme.ControlText );
+		Paint.DrawIcon( rect, Node.DisplayInfo.Icon, 50 );
+	}
+
+	private void PaintConstant( Rect rect )
+	{
 		rect = rect.Shrink( 3f, 30f, 3f, 3f );
 
 		var valueProperty = Node.Properties["value"];
@@ -522,7 +544,7 @@ public class ActionPlug<T, TDef> : IActionPlug
 		return null;
 	}
 
-	public bool ShowLabel => !Node.Definition.Identifier.StartsWith( "const." );
+	public bool ShowLabel => !Node.Definition.Identifier.StartsWith( "const." ) && !Node.Definition.Identifier.StartsWith( "op." );
 
 	public string ErrorMessage => string.Join( Environment.NewLine, Parameter.GetMessages()
 		.Where( x => x.IsError )

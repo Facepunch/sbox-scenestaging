@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -39,6 +40,7 @@ public static class ActionJigExtensions
 		{
 			Name = string.IsNullOrEmpty( name ) ? node.DisplayInfo.Title : name,
 			Description = node.DisplayInfo.Description,
+			Icon = node.Definition.DisplayInfo.Icon,
 			Tags = node.DisplayInfo.Tags
 		};
 	}
@@ -47,17 +49,26 @@ public static class ActionJigExtensions
 	{
 		switch ( node.Definition.Identifier )
 		{
+			case "event":
+				return new()
+				{
+					Name = node.ActionJig.UserData["name"]?.GetValue<string>() ?? "Event",
+					Description = node.DisplayInfo.Description,
+					Icon = node.Definition.DisplayInfo.Icon,
+					Tags = node.DisplayInfo.Tags
+				};
+
 			case { } s when s.StartsWith( "const." ):
 				return ConstDisplayInfo( node );
 
 			default:
-				return
-					new()
-					{
-						Name = node.DisplayInfo.Title,
-						Description = node.DisplayInfo.Description,
-						Tags = node.DisplayInfo.Tags
-					};
+				return new()
+				{
+					Name = node.DisplayInfo.Title,
+					Description = node.DisplayInfo.Description,
+					Icon = node.Definition.DisplayInfo.Icon,
+					Tags = node.DisplayInfo.Tags
+				};
 		}
 	}
 }
