@@ -162,7 +162,7 @@
               "__type": "AnimatedModelComponent",
               "__enabled": true,
               "MaterialOverride": null,
-              "Model": "models/player/human/adam_mp.vmdl",
+              "Model": "models/citizen/citizen.vmdl",
               "ShouldCastShadows": true,
               "Tint": "1,1,1,1"
             }
@@ -333,7 +333,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
-          "MaterialOverride": null,
+          "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
@@ -364,7 +364,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
-          "MaterialOverride": null,
+          "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
@@ -1247,7 +1247,6 @@
     }
   ],
   "__references": [
-    "sboxmp.adam_mp",
     "caro.banana",
     "facepunch.blackbin",
     "facepunch.wheely_bin",
@@ -1255,6 +1254,7 @@
     "baik.confettisplash",
     "sboxmp.hazmatsuit",
     "sugmagaming.fireparticle",
+    "sboxmp.adam_mp",
     "stardrive.rope_barrier_a",
     "luke.fwroundtable",
     "pcjr.sfmmug",

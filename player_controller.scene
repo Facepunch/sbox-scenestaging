@@ -193,11 +193,17 @@
         {
           "__type": "PlayerController",
           "__enabled": true,
+          "AnimationHelper": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
           "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
           "CameraDistance": 200,
           "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
           "FirstPerson": false,
           "Gravity": "0,0,800"
+        },
+        {
+          "__type": "CitizenAnimation",
+          "__enabled": true,
+          "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
         }
       ],
       "Children": [
@@ -210,7 +216,7 @@
           "Scale": "1,1,1",
           "Components": [
             {
-              "__type": "ModelComponent",
+              "__type": "AnimatedModelComponent",
               "__enabled": true,
               "MaterialOverride": null,
               "Model": "models/citizen/citizen.vmdl",
@@ -5216,7 +5222,7 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "AnimatedModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/player/hazmatsuit/hazmatsuit.vmdl",
@@ -5260,7 +5266,7 @@
       "Scale": "1,1,1",
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "AnimatedModelComponent",
           "__enabled": true,
           "MaterialOverride": null,
           "Model": "models/player/human/adam_mp.vmdl",

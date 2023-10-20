@@ -146,47 +146,24 @@ public class AnimatedModelComponent : BaseComponent, BaseComponent.ExecuteInEdit
 		_sceneObject.Update( Time.Delta );
 	}
 
-	internal void SetAnimParameter( string v, Vector3 value )
-	{
-		_sceneObject.SetAnimParameter( v, value );
-	}
+	public void Set( string v, Vector3 value ) => _sceneObject.SetAnimParameter( v, value );
+	public void Set( string v, int value ) => _sceneObject.SetAnimParameter( v, value );
+	public void Set( string v, float value ) => _sceneObject.SetAnimParameter( v, value );
+	public void Set( string v, bool value ) => _sceneObject.SetAnimParameter( v, value );
+//	public void Set( string v, Enum value ) => _sceneObject.SetAnimParameter( v, value );
 
-	internal void SetAnimParameter( string v, int value )
-	{
-		_sceneObject.SetAnimParameter( v, value );
-	}
-
-	internal void SetAnimParameter( string v, float value )
-	{
-		_sceneObject.SetAnimParameter( v, value );
-	}
-
-	internal void SetAnimParameter( string v, bool value )
-	{
-		_sceneObject.SetAnimParameter( v, value );
-	}
-
-	internal bool GetAnimParameterBool( string v )
-	{
-		return true;
-	}
-
-	internal CitizenAnimation.HoldTypes GetAnimParameterInt( string v )
-	{
-		return default;
-	}
-
-	internal float GetAnimParameterFloat( string v )
-	{
-		return default;
-	}
+	public bool GetBool( string v ) => _sceneObject.GetBool( v );
+	public int GetInt( string v ) => _sceneObject.GetInt( v );
+	public float GetFloat( string v ) => _sceneObject.GetFloat( v );
+	public Vector3 GetVector( string v ) => _sceneObject.GetVector3( v );
+	public Rotation GetRotation( string v ) => _sceneObject.GetRotation( v );
 
 	/// <summary>
 	/// Converts value to vector local to this entity's eyepos and passes it to SetAnimVector
 	/// </summary>
-	public void SetAnimLookAt( string name, Vector3 eyeDirectionWorld )
+	public void SetLookDirection( string name, Vector3 eyeDirectionWorld )
 	{
 		var delta = eyeDirectionWorld * Transform.Rotation.Inverse;
-		SetAnimParameter( name, delta );
+		Set( name, delta );
 	}
 }
