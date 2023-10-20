@@ -91,7 +91,6 @@ public class ComponentControlWidget : ControlWidget
 		if ( ev.Data.Object is GameObject go )
 		{
 			var c = go.GetComponent( SerializedProperty.PropertyType, false, false );
-			Log.Info( c );
 
 			SerializedProperty.SetValue( c );
 			return;
