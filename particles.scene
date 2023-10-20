@@ -128,11 +128,17 @@
         {
           "__type": "PlayerController",
           "__enabled": true,
+          "AnimationHelper": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
           "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
           "CameraDistance": 200,
           "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
           "FirstPerson": false,
           "Gravity": "0,0,800"
+        },
+        {
+          "__type": "CitizenAnimation",
+          "__enabled": true,
+          "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
         }
       ],
       "Children": [
@@ -156,7 +162,7 @@
               "__type": "AnimatedModelComponent",
               "__enabled": true,
               "MaterialOverride": null,
-              "Model": "models/citizen/citizen.vmdl",
+              "Model": "models/player/human/adam_mp.vmdl",
               "ShouldCastShadows": true,
               "Tint": "1,1,1,1"
             }
@@ -1241,6 +1247,7 @@
     }
   ],
   "__references": [
+    "sboxmp.adam_mp",
     "caro.banana",
     "facepunch.blackbin",
     "facepunch.wheely_bin",
@@ -1248,7 +1255,6 @@
     "baik.confettisplash",
     "sboxmp.hazmatsuit",
     "sugmagaming.fireparticle",
-    "sboxmp.adam_mp",
     "stardrive.rope_barrier_a",
     "luke.fwroundtable",
     "pcjr.sfmmug",
