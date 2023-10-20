@@ -56,25 +56,15 @@ internal struct CharacterControllerHelper
 			travelFraction += pm.Fraction;
 			timeLeft -= timeLeft * pm.Fraction;
 
-
-
-			//if ( pm.StartedSolid )
-			//{
-			//	break;
-			//}
-
-			if ( pm.Hit )
-			{
-				// There's a bug with sweeping where sometimes the end position is starting in solid, so we get stuck.
-				// Push back by a small margin so this should never happen.
-				Position = pm.EndPosition + pm.Normal * 0.001f;
-			}
-			else
+			if ( !pm.Hit )
 			{
 				Position = pm.EndPosition;
-
 				break;
 			}
+
+			Position = pm.EndPosition;// + pm.Normal * 0.001f;
+
+			bool standable = pm.Normal.Angle( Vector3.Up ) <= MaxStandableAngle;
 
 			//Gizmo.Transform = Transform.Zero;
 
@@ -88,7 +78,7 @@ internal struct CharacterControllerHelper
 
 			moveplanes.StartBump( Velocity );
 
-			if ( !moveplanes.TryAdd( pm.Normal, ref Velocity, Bounce ) )
+			if ( !moveplanes.TryAdd( pm.Normal, ref Velocity, standable ? 0 : Bounce ) )
 				break;
 		}
 
