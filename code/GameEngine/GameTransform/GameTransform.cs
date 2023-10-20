@@ -28,7 +28,7 @@ public class GameTransform
 		{
 			if ( value.Position.IsNaN ) throw new System.ArgumentOutOfRangeException();
 
-			if ( _local == value )
+			if ( Local == value )
 				return;
 
 			_local = value;
