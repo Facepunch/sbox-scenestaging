@@ -28,7 +28,7 @@ public partial class Scene : GameObject
 		Directory = new GameObjectDirectory( this );
 
 		PhysicsWorld.Gravity = Vector3.Down * 850;
-		PhysicsWorld.SimulationMode = PhysicsSimulationMode.Discrete;
+		PhysicsWorld.SimulationMode = PhysicsSimulationMode.Continuous;
 
 
 		// todo - load from package
