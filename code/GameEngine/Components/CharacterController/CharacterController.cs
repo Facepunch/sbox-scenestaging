@@ -134,8 +134,8 @@ public class CharacterController : BaseComponent
 		var vBumpOrigin = Position;
 		var wasOnGround = IsOnGround;
 
-		// We're flying upwards, never land on ground
-		if ( !IsOnGround && Velocity.z > 0 )
+		// We're flying upwards too fast, never land on ground
+		if ( !IsOnGround && Velocity.z > 50.0f )
 		{
 			IsOnGround = false;
 			return;
