@@ -1,6 +1,7 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
 using System;
+using System.Collections.Generic;
 
 [Title( "Animated Model Renderer" )]
 [Category( "Rendering" )]
@@ -91,6 +92,40 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 		}
 	}
 
+	bool _createBones = false;
+	[Property]
+	public bool CreateBoneObjects
+	{
+		get => _createBones;
+		set
+		{
+			if ( _createBones == value ) return;
+			_createBones = value;
+
+			BuildBoneHeirarchy( GameObject );
+		}
+	}
+
+
+	AnimatedModelComponent _boneMergeTarget;
+
+	[Property]
+	public AnimatedModelComponent BoneMergeTarget
+	{
+		get => _boneMergeTarget;
+		set
+		{
+			if ( _boneMergeTarget == value ) return;
+
+			_boneMergeTarget?.SetBoneMerge( this, false );
+
+			_boneMergeTarget = value;
+
+			_boneMergeTarget?.SetBoneMerge( this, true );
+		}
+	}
+
+
 	public string TestString { get; set; }
 
 	SceneModel _sceneObject;
@@ -119,6 +154,41 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 		}
 	}
 
+	HashSet<AnimatedModelComponent> mergeChildren = new ();
+
+	private void SetBoneMerge( AnimatedModelComponent target, bool enabled )
+	{
+		ArgumentNullException.ThrowIfNull( target );
+
+		if ( enabled )
+		{
+			mergeChildren.Add( target );
+		}
+		else
+		{
+			mergeChildren.Remove( target );
+		}
+
+		UpdateBoneMerge( target );
+	}
+
+	void UpdateBoneMerge( AnimatedModelComponent target )
+	{
+		if ( !target.GameObject.IsValid() ) return;
+		if ( SceneObject is null ) return;
+		if ( target.SceneObject is null ) return;
+
+		if ( mergeChildren.Contains( target ) )
+		{
+			SceneObject.AddChild( "merge", target.SceneObject );
+		}
+		else
+		{
+			SceneObject.RemoveChild( target.SceneObject );
+		}
+	}
+
+
 	public override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
@@ -130,6 +200,13 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 		_sceneObject.SetMaterialOverride( MaterialOverride );
 		_sceneObject.ColorTint = Tint;
 		_sceneObject.Flags.CastShadows = _castShadows;
+
+		_boneMergeTarget?.UpdateBoneMerge( this );
+
+		foreach( var target in mergeChildren )
+		{
+			UpdateBoneMerge( target );
+		}
 
 		BuildBoneHeirarchy( GameObject );
 	}

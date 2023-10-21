@@ -16,6 +16,9 @@ public sealed partial class AnimatedModelComponent
 		if ( thisBone is null )
 		{
 			ClearBoneProxies();
+
+			if ( !CreateBoneObjects )
+				return;
 			
 			foreach ( var b in Model.Bones.AllBones.Where( x => x.Parent is null ) )
 			{
@@ -56,6 +59,9 @@ public sealed partial class AnimatedModelComponent
 
 		foreach ( var o in boneToGameObject )
 		{
+			if ( !o.Value.IsValid() )
+				continue;
+
 			var t = o.Value.Transform.World;
 
 			o.Value.Transform.Proxy = null;
