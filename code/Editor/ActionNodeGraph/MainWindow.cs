@@ -290,6 +290,9 @@ public class ActionGraphView : GraphView
 
 	}
 
+	protected override INodeType RerouteNodeType { get; }
+		= new ActionNodeType( EditorNodeLibrary.Get( "nop" ) );
+
 	public void SelectNode( Node node )
 	{
 		var actionNode = Graph.FindNode( node );

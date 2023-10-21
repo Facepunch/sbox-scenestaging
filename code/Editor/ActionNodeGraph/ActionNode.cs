@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Editor.NodeEditor;
 using Facepunch.ActionJigs;
-using Sandbox;
-using static Facepunch.ActionJigs.Node;
 
 namespace Editor.ActionJigs;
 
@@ -13,7 +9,7 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 {
 	private static HashSet<string> Hidden { get; } = new ()
 	{
-		"event", "property.get", "property.set", "field.get", "field.set", "call"
+		"event", "property.get", "property.set", "field.get", "field.set", "call", "nop"
 	};
 
 	public string Identifier => Definition.Identifier;
@@ -30,7 +26,7 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 	public bool HasInput( Type valueType )
 	{
 		var isSignal = valueType == typeof(OutputSignal);
-		return Definition.Bind( null, null ).Inputs.Values
+		return Definition.Bind( null, null ).Inputs
 			.Any( x => isSignal ? x.IsSignal : x.Type.IsAssignableFrom( valueType ) );
 	}
 
@@ -303,6 +299,8 @@ public class ActionNode : INode
 
 		private readonly Dictionary<(string Name, int Index), IActionPlug> _plugs = new();
 
+		private (string Name, int Index)[] _sortedKeys;
+
 		private PlugCollection( Func<IEnumerable<(string Name, int Index)>> getKeys, Func<(string Name, int Index), IActionPlug> createPlug )
 		{
 			_getKeys = getKeys;
@@ -311,16 +309,16 @@ public class ActionNode : INode
 
 		public bool Update()
 		{
-			var keys = _getKeys().ToArray();
+			_sortedKeys = _getKeys().ToArray();
 			var changed = false;
 
-			foreach ( var key in _plugs.Keys.Where( x => !keys.Contains( x ) ).ToArray() )
+			foreach ( var key in _plugs.Keys.Where( x => !_sortedKeys.Contains( x ) ).ToArray() )
 			{
 				_plugs.Remove( key );
 				changed = true;
 			}
 
-			foreach ( var key in keys )
+			foreach ( var key in _sortedKeys )
 			{
 				if ( _plugs.TryGetValue( key, out var plug ) )
 				{
@@ -343,8 +341,13 @@ public class ActionNode : INode
 		public IPlug this[ string name, int index ] => _plugs.TryGetValue( (name, index), out var plug ) ? plug : null;
 		public IPlug this[ string name ] => _plugs.TryGetValue( (name, 0), out var plug ) ? plug : null;
 
-		IEnumerator<IPlug> IEnumerable<IPlug>.GetEnumerator() => _plugs.Values.GetEnumerator();
-		IEnumerator IEnumerable.GetEnumerator() => _plugs.Values.GetEnumerator();
+		public IEnumerator<IPlug> GetEnumerator()
+		{
+			return (_sortedKeys ?? Enumerable.Empty<(string Name, int Index)>())
+				.Select( x => this[x.Name, x.Index] )
+				.GetEnumerator();
+		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 
 	IEnumerable<IPlug> INode.Inputs => Inputs;
@@ -417,7 +420,9 @@ public class ActionNode : INode
 
 	NodeUI INode.CreateUI( GraphView view )
 	{
-		return new NodeUI( view, this );
+		return Definition.Identifier == "nop"
+			? new RerouteUI( view, this )
+			: new NodeUI( view, this );
 	}
 
 	private readonly UserDataProperty<Vector2> _position;
@@ -544,7 +549,7 @@ public class ActionPlug<T, TDef> : IActionPlug
 		return null;
 	}
 
-	public bool ShowLabel => !Node.Definition.Identifier.StartsWith( "const." ) && !Node.Definition.Identifier.StartsWith( "op." );
+	public bool ShowLabel => Node.Definition.Identifier != "nop" && !Node.Definition.Identifier.StartsWith( "const." ) && !Node.Definition.Identifier.StartsWith( "op." );
 
 	public string ErrorMessage => string.Join( Environment.NewLine, Parameter.GetMessages()
 		.Where( x => x.IsError )
