@@ -42,6 +42,7 @@ public partial class Scene : GameObject
 		if ( IsEditor )
 		{
 			Update();
+			UpdateAnimationThreaded();
 		}
 
 		ProcessDeletes();
@@ -86,21 +87,25 @@ public partial class Scene : GameObject
 			PreTickReset();
 
 			Update();
-
-			if ( ThreadedAnimation )
-			{
-				using ( Sandbox.Utility.Superluminal.Scope( "Scene.AnimUpdate", Color.Cyan ) )
-				{
-					var animModel = GetComponents<AnimatedModelComponent>( true, true ).ToArray();
-					Parallel.ForEach( animModel, x => x.UpdateInThread() );
-				}
-			}
+			UpdateAnimationThreaded();
 
 			ProcessDeletes();
 		}
 
 		Time.Now = oldNow;
 		Time.Delta = oldDelta;
+	}
+
+	void UpdateAnimationThreaded()
+	{
+		if ( !ThreadedAnimation )
+			return;
+		
+		using ( Sandbox.Utility.Superluminal.Scope( "Scene.AnimUpdate", Color.Cyan ) )
+		{
+			var animModel = GetComponents<AnimatedModelComponent>( true, true ).ToArray();
+			Parallel.ForEach( animModel, x => x.UpdateInThread() );
+		}
 	}
 
 	protected override void FixedUpdate()
