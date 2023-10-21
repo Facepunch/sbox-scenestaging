@@ -18,8 +18,15 @@ public static class GameManager
 		if ( ActiveScene is null )
 			return;
 
-		ActiveScene.GameTick();
-		ActiveScene.PreRender();
+		using ( Sandbox.Utility.Superluminal.Scope( "Scene.GameTick", Color.Cyan ) )
+		{
+			ActiveScene.GameTick();
+		}
+
+		using ( Sandbox.Utility.Superluminal.Scope( "Scene.PreRender", Color.Cyan ) )
+		{
+			ActiveScene.PreRender();
+		}
 
 		var camera = ActiveScene.FindAllComponents<CameraComponent>( true ).FirstOrDefault();
 

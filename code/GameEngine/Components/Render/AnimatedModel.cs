@@ -5,7 +5,7 @@ using System;
 [Title( "Animated Model Renderer" )]
 [Category( "Rendering" )]
 [Icon( "sports_martial_arts" )]
-public class AnimatedModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	Model _model;
 
@@ -34,6 +34,8 @@ public class AnimatedModelComponent : BaseComponent, BaseComponent.ExecuteInEdit
 			{
 				_sceneObject.Model = _model;
 			}
+
+			BuildBoneHeirarchy( GameObject );
 		}
 	}
 
@@ -129,6 +131,8 @@ public class AnimatedModelComponent : BaseComponent, BaseComponent.ExecuteInEdit
 		_sceneObject.SetMaterialOverride( MaterialOverride );
 		_sceneObject.ColorTint = Tint;
 		_sceneObject.Flags.CastShadows = _castShadows;
+
+		BuildBoneHeirarchy( GameObject );
 	}
 
 	public override void OnDisabled()
@@ -137,33 +141,34 @@ public class AnimatedModelComponent : BaseComponent, BaseComponent.ExecuteInEdit
 		_sceneObject = null;
 	}
 
-	protected override void OnPreRender()
+	public void UpdateInThread()
 	{
 		if ( !_sceneObject.IsValid() )
 			return;
 
 		_sceneObject.Transform = Transform.World;
-		_sceneObject.Update( Time.Delta );
+		_sceneObject.Update( Scene.IsEditor ? Time.Delta * 0.01f : Time.Delta );
+
+		UpdateBoneTransforms();
 	}
 
-	public void Set( string v, Vector3 value ) => _sceneObject.SetAnimParameter( v, value );
-	public void Set( string v, int value ) => _sceneObject.SetAnimParameter( v, value );
-	public void Set( string v, float value ) => _sceneObject.SetAnimParameter( v, value );
-	public void Set( string v, bool value ) => _sceneObject.SetAnimParameter( v, value );
-//	public void Set( string v, Enum value ) => _sceneObject.SetAnimParameter( v, value );
-
-	public bool GetBool( string v ) => _sceneObject.GetBool( v );
-	public int GetInt( string v ) => _sceneObject.GetInt( v );
-	public float GetFloat( string v ) => _sceneObject.GetFloat( v );
-	public Vector3 GetVector( string v ) => _sceneObject.GetVector3( v );
-	public Rotation GetRotation( string v ) => _sceneObject.GetRotation( v );
-
-	/// <summary>
-	/// Converts value to vector local to this entity's eyepos and passes it to SetAnimVector
-	/// </summary>
-	public void SetLookDirection( string name, Vector3 eyeDirectionWorld )
+	public override void Update()
 	{
-		var delta = eyeDirectionWorld * Transform.Rotation.Inverse;
-		Set( name, delta );
+		if ( !Scene.ThreadedAnimation )
+		{
+			if ( _sceneObject.IsValid() )
+			{
+				_sceneObject.Transform = Transform.World;
+				_sceneObject.Update( Scene.IsEditor ? Time.Delta * 0.01f : Time.Delta );
+
+				UpdateBoneTransforms();
+			}
+		}
 	}
+
+	protected override void OnPreRender()
+	{
+
+	}
+
 }

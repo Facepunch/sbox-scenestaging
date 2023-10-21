@@ -11,6 +11,16 @@
 	/// Don't save this object to disk, or when duplicating
 	/// </summary>
 	NotSaved = 2,
+
+	/// <summary>
+	/// Auto created - it's a bone
+	/// </summary>
+	Bone = 4,
+
+	/// <summary>
+	/// Auto created - it's an attachment
+	/// </summary>
+	Attachment = 4,
 }
 
 

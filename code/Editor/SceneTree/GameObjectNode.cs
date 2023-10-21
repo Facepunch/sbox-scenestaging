@@ -43,6 +43,8 @@ public partial class GameObjectNode : TreeNode<GameObject>
 	public override void OnPaint( VirtualWidget item )
 	{
 		var selected = item.Selected || item.Pressed || item.Dragging;
+		var isBone = Value.Flags.HasFlag( GameObjectFlags.Bone );
+		var isAttachment = Value.Flags.HasFlag( GameObjectFlags.Attachment );
 
 		var fullSpanRect = item.Rect;
 		fullSpanRect.Left = 0;
@@ -68,6 +70,12 @@ public partial class GameObjectNode : TreeNode<GameObject>
 				iconColor = iconColor.WithAlpha( 0.5f );
 				pen = pen.WithAlpha( 0.5f );
 			}
+		}
+
+		if ( isBone )
+		{
+			icon = "polyline";
+			iconColor = Theme.Pink.WithAlpha( 0.8f );
 		}
 
 		//
