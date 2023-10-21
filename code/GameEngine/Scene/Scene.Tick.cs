@@ -16,7 +16,7 @@ public partial class Scene : GameObject
 
 	public float TimeScale { get; set; } = 1.0f;
 
-	public bool ThreadedAnimation { get; set; } = false;
+	public bool ThreadedAnimation => true;
 
 	/// <summary>
 	/// The update loop will turn certain settings on
@@ -95,8 +95,6 @@ public partial class Scene : GameObject
 					Parallel.ForEach( animModel, x => x.UpdateInThread() );
 				}
 			}
-
-			
 
 			ProcessDeletes();
 		}
