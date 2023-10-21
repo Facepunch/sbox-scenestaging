@@ -168,24 +168,6 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 		{
 			mergeChildren.Remove( target );
 		}
-
-		UpdateBoneMerge( target );
-	}
-
-	void UpdateBoneMerge( AnimatedModelComponent target )
-	{
-		if ( !target.GameObject.IsValid() ) return;
-		if ( SceneObject is null ) return;
-		if ( target.SceneObject is null ) return;
-
-		if ( mergeChildren.Contains( target ) )
-		{
-			SceneObject.AddChild( "merge", target.SceneObject );
-		}
-		else
-		{
-			SceneObject.RemoveChild( target.SceneObject );
-		}
 	}
 
 
@@ -200,13 +182,9 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 		_sceneObject.SetMaterialOverride( MaterialOverride );
 		_sceneObject.ColorTint = Tint;
 		_sceneObject.Flags.CastShadows = _castShadows;
+		_sceneObject.Update( 0.01f );
 
-		_boneMergeTarget?.UpdateBoneMerge( this );
-
-		foreach( var target in mergeChildren )
-		{
-			UpdateBoneMerge( target );
-		}
+		_boneMergeTarget?.SetBoneMerge( this, true );
 
 		BuildBoneHeirarchy( GameObject );
 	}
@@ -221,23 +199,41 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 
 	public void UpdateInThread()
 	{
+		AnimationUpdate();
+	}
+
+	void AnimationUpdate()
+	{
 		if ( !_sceneObject.IsValid() )
 			return;
 
+		if ( _boneMergeTarget is not null )
+			return;
+
 		_sceneObject.Transform = Transform.World;
-		_sceneObject.Update( Scene.IsEditor ? Time.Delta * 0.01f : Time.Delta );
+		_sceneObject.Update( Scene.IsEditor ? 0.0f : Time.Delta );
+
+		MergeChildren();
+	}
+
+	void MergeChildren()
+	{
+		foreach ( var child in mergeChildren )
+		{
+			if ( child.SceneObject is null )
+				continue;
+
+			child.SceneObject.Transform = Transform.World;
+			child.SceneObject.MergeBones( SceneObject );
+		}
 	}
 
 	public override void Update()
 	{
-		if ( !Scene.ThreadedAnimation )
-		{
-			if ( _sceneObject.IsValid() )
-			{
-				_sceneObject.Transform = Transform.World;
-				_sceneObject.Update( Scene.IsEditor ? Time.Delta * 0.01f : Time.Delta );
-			}
-		}
+		if ( Scene.ThreadedAnimation )
+			return;
+
+		AnimationUpdate();
 	}
 
 	protected override void OnPreRender()
