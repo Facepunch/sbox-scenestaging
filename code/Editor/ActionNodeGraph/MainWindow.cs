@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Editor.NodeEditor;
 using Facepunch.ActionJigs;
+using Sandbox.ActionJigs;
+using Sandbox.Internal;
 using static Facepunch.ActionJigs.Node;
 using PropertyAttribute = Sandbox.PropertyAttribute;
 
@@ -12,19 +14,6 @@ namespace Editor.ActionJigs;
 
 public static class ActionJigExtensions
 {
-	public static Guid GetGuid( this IActionJig actionJig )
-	{
-		if ( actionJig.UserData.TryGetPropertyValue( "id", out var node ) && Guid.TryParse( node?.GetValue<string>(), out var guid ) )
-		{
-			return guid;
-		}
-
-		guid = Guid.NewGuid();
-		actionJig.UserData["id"] = guid.ToString();
-
-		return guid;
-	}
-
 	public static string GetName( this IActionJig actionJig )
 	{
 		return actionJig.UserData.TryGetPropertyValue( "name", out var node ) ? node?.GetValue<string>() : null;
@@ -183,7 +172,14 @@ public partial class MainWindow : DockWindow
 		Title = $"{ActionJig.GetName()} - Action Graph";
 		Size = new Vector2( 1280, 720 );
 
+		ActionJigDebugger.StartListening( actionJig, OnLinkTriggered );
+
 		RebuildUI();
+	}
+
+	private void OnLinkTriggered( Link link, object value )
+	{
+		View.LinkTriggered( link, value );
 	}
 
 	[EditorEvent.Frame]
@@ -266,6 +262,8 @@ public partial class MainWindow : DockWindow
 
 	protected override bool OnClose()
 	{
+		ActionJigDebugger.StopListening( ActionJig );
+
 		var guid = ActionJig.GetGuid();
 
 		if ( Instances.TryGetValue( guid, out var inst ) && inst == this )
@@ -279,6 +277,15 @@ public partial class MainWindow : DockWindow
 
 public class ActionGraphView : GraphView
 {
+	private class Pulse
+	{
+		public object Value { get; set; }
+		public float Time { get; set; }
+	}
+
+	private Dictionary<Connection, Pulse> Pulses { get; } = new();
+	private List<Connection> FinishedPulsing { get; } = new List<Connection>();
+
 	public new ActionGraph Graph
 	{
 		get => (ActionGraph)base.Graph;
@@ -292,6 +299,45 @@ public class ActionGraphView : GraphView
 
 	protected override INodeType RerouteNodeType { get; }
 		= new ActionNodeType( EditorNodeLibrary.Get( "nop" ) );
+
+	public void LinkTriggered( Link link, object value )
+	{
+		var connection = Items.OfType<Connection>()
+			.FirstOrDefault( x => x.Input.Inner is ActionPlug<Node.Input, InputDefinition> plugIn && plugIn.Parameter == link.Target
+				&& x.Output.Inner is ActionPlug<Node.Output, OutputDefinition> plugOut && plugOut.Parameter == link.Source );
+
+		if ( connection == null )
+		{
+			return;
+		}
+
+		Pulses[connection] = new Pulse { Time = 1f, Value = value };
+	}
+
+	[EditorEvent.Frame]
+	public void Frame()
+	{
+		var dt = Time.Delta;
+
+		FinishedPulsing.Clear();
+
+		foreach ( var pulse in Pulses )
+		{
+			pulse.Value.Time -= dt;
+			pulse.Key.WidthScale = 1f + MathF.Pow( Math.Max( pulse.Value.Time, 0f ), 8f ) * 3f;
+			pulse.Key.Update();
+
+			if ( pulse.Value.Time < 0f )
+			{
+				FinishedPulsing.Add( pulse.Key );
+			}
+		}
+
+		foreach ( var connection in FinishedPulsing )
+		{
+			Pulses.Remove( connection );
+		}
+	}
 
 	public void SelectNode( Node node )
 	{
