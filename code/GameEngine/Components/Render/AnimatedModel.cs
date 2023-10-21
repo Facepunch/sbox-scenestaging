@@ -33,9 +33,8 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 			if ( _sceneObject is not null )
 			{
 				_sceneObject.Model = _model;
+				BuildBoneHeirarchy( GameObject );
 			}
-
-			BuildBoneHeirarchy( GameObject );
 		}
 	}
 
@@ -137,6 +136,8 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 
 	public override void OnDisabled()
 	{
+		ClearBoneProxies();
+
 		_sceneObject?.Delete();
 		_sceneObject = null;
 	}
@@ -148,8 +149,6 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 
 		_sceneObject.Transform = Transform.World;
 		_sceneObject.Update( Scene.IsEditor ? Time.Delta * 0.01f : Time.Delta );
-
-		UpdateBoneTransforms();
 	}
 
 	public override void Update()
@@ -160,8 +159,6 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 			{
 				_sceneObject.Transform = Transform.World;
 				_sceneObject.Update( Scene.IsEditor ? Time.Delta * 0.01f : Time.Delta );
-
-				UpdateBoneTransforms();
 			}
 		}
 	}

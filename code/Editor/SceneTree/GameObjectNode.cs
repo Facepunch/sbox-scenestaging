@@ -30,6 +30,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			HashCode hc = new HashCode();
 			hc.Add( Value.Name );
 			hc.Add( Value.IsPrefabInstance );
+			hc.Add( Value.Flags );
 
 			foreach ( var val in Value.Children )
 			{
