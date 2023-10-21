@@ -28,6 +28,7 @@ public class ErrorList : Widget
 		Editor = editor;
 
 		Name = "ErrorList";
+		WindowTitle = "Error List";
 		MinimumSize = new( 100, 100 );
 
 		Layout = Layout.Column();
