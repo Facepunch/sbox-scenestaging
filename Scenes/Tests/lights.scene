@@ -799,10 +799,15 @@
         {
           "__type": "TurretComponent",
           "__enabled": true,
-          "Bullet": "bullet.object",
+          "Bullet": "scenes/tests/bullet.object",
           "Gun": "71121759-159a-436c-898d-ace54763fc3a",
+          "GunColorGradient": {},
+          "GunSizeCurve": {
+            "rangex": "0,0",
+            "rangey": "0,0"
+          },
           "Muzzle": "e9a1d5d9-515a-4d2c-ab2c-8595bf3553fa",
-          "SecondaryBullet": "cube.object"
+          "SecondaryBullet": "scenes/tests/cube.object"
         },
         {
           "__type": "ColliderBoxComponent",

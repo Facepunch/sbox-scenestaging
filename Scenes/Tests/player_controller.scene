@@ -218,6 +218,7 @@
             {
               "__type": "AnimatedModelComponent",
               "__enabled": true,
+              "CreateBoneObjects": false,
               "MaterialOverride": null,
               "Model": "models/citizen/citizen.vmdl",
               "ShouldCastShadows": true,
@@ -336,6 +337,46 @@
           "Position": "0,0,64",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1"
+        },
+        {
+          "Id": "258a1012-ff9e-49b5-bf1b-887d483bb0bf",
+          "Name": "Hair",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "AnimatedModelComponent",
+              "__enabled": true,
+              "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+              "CreateBoneObjects": false,
+              "MaterialOverride": null,
+              "Model": "models/citizen_clothes/hair/hair_fade/models/hair_fade.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "f14d65a1-eea4-4fe5-89d7-a550ec6b8f11",
+          "Name": "Hair",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Components": [
+            {
+              "__type": "AnimatedModelComponent",
+              "__enabled": true,
+              "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+              "CreateBoneObjects": false,
+              "MaterialOverride": null,
+              "Model": "models/citizen_clothes/shoes/boots/models/army_boots.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
@@ -5224,6 +5265,7 @@
         {
           "__type": "AnimatedModelComponent",
           "__enabled": true,
+          "CreateBoneObjects": false,
           "MaterialOverride": null,
           "Model": "models/player/hazmatsuit/hazmatsuit.vmdl",
           "ShouldCastShadows": true,
@@ -5268,6 +5310,7 @@
         {
           "__type": "AnimatedModelComponent",
           "__enabled": true,
+          "CreateBoneObjects": false,
           "MaterialOverride": null,
           "Model": "models/player/human/adam_mp.vmdl",
           "ShouldCastShadows": true,
@@ -5375,31 +5418,31 @@
     }
   ],
   "__references": [
-    "rust.portacabin_300_600_b",
     "baik.soccerball",
-    "facepunch.concrete_damaged",
-    "facepunch.pine_shrub_tall_a",
-    "facepunch.tallgrass_c",
     "facepunch.beech_shrub_tall_small",
-    "fish.gt_shitty_pine_tree2",
-    "orus.8hu_kultiras_smallhouse_2",
-    "rust.rock_cliff_a",
-    "titanovsky.ufrts_resource_gold1",
-    "rust.ground_junk_a",
-    "rust.ground_junk_straight_a",
-    "facepunch.grass_clump_a",
-    "fish.gt_grass_medium_a",
-    "fish.gt_grass_medium_b",
-    "sklystuff.grass_block",
-    "facepunch.binbag_pile_a2",
     "facepunch.binbag_pile_a1",
+    "facepunch.binbag_pile_a2",
+    "facepunch.blackbin",
+    "facepunch.concrete_damaged",
     "facepunch.dirtpile_03",
     "facepunch.dirtpile_04",
     "facepunch.dirtpile_05",
-    "facepunch.blackbin",
-    "facepunch.wheely_bin",
+    "facepunch.grass_clump_a",
     "facepunch.metal_wheely_bin",
+    "facepunch.pine_shrub_tall_a",
+    "facepunch.tallgrass_c",
+    "facepunch.wheely_bin",
+    "fish.gt_grass_medium_a",
+    "fish.gt_grass_medium_b",
+    "fish.gt_shitty_pine_tree2",
+    "orus.8hu_kultiras_smallhouse_2",
+    "rust.ground_junk_a",
+    "rust.ground_junk_straight_a",
+    "rust.portacabin_300_600_b",
+    "rust.rock_cliff_a",
+    "sboxmp.adam_mp",
     "sboxmp.hazmatsuit",
-    "sboxmp.adam_mp"
+    "sklystuff.grass_block",
+    "titanovsky.ufrts_resource_gold1"
   ]
 }

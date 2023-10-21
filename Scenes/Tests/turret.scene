@@ -136,7 +136,7 @@
         {
           "__type": "TurretComponent",
           "__enabled": true,
-          "Bullet": "bullet.object",
+          "Bullet": "scenes/tests/bullet.object",
           "Gun": "99e832d5-87ef-4bd1-a3c2-39ba2c536618",
           "GunColorGradient": {
             "color": [
@@ -199,7 +199,7 @@
             ]
           },
           "Muzzle": "432c5a69-3822-4504-a15f-5d7b652de9fc",
-          "SecondaryBullet": "cube.object"
+          "SecondaryBullet": "scenes/tests/cube.object"
         }
       ],
       "Children": [
