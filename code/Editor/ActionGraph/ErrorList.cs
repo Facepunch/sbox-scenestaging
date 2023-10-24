@@ -1,7 +1,7 @@
 ﻿using System;
-using Facepunch.ActionJigs;
+using Facepunch.ActionGraphs;
 
-namespace Editor.ActionJigs;
+namespace Editor.ActionGraphs;
 
 public class ErrorList : Widget
 {
@@ -89,7 +89,7 @@ public class ErrorList : Widget
 	public void UpdateErrors()
 	{
 		Messages.Clear();
-		Messages.AddRange( Editor.ActionJig.Messages );
+		Messages.AddRange( Editor.ActionGraph.Messages );
 
 		var hash = 0;
 
@@ -252,9 +252,9 @@ public class ErrorListView : ListView
 			return FormatContext( link.Target );
 		}
 
-		if ( context is IActionJig actionJig )
+		if ( context is IActionGraph actionGraph )
 		{
-			return actionJig.GetName();
+			return actionGraph.GetName();
 		}
 
 		if ( context is Variable variable )

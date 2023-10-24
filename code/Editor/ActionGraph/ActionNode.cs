@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using Editor.NodeEditor;
-using Facepunch.ActionJigs;
+using Facepunch.ActionGraphs;
 
-namespace Editor.ActionJigs;
+namespace Editor.ActionGraphs;
 
 public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 {
@@ -35,7 +35,7 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 	public INode CreateNode( IGraph graph )
 	{
 		var actionGraph = (ActionGraph)graph;
-		var node = actionGraph.Jig.AddNode( Definition );
+		var node = actionGraph.Graph.AddNode( Definition );
 		return new ActionNode( actionGraph, node );
 	}
 }
@@ -62,7 +62,7 @@ public record struct MethodNodeType( MethodDescription Method ) : INodeType
 	public INode CreateNode( IGraph graph )
 	{
 		var actionGraph = (ActionGraph)graph;
-		var node = actionGraph.Jig.AddNode( actionGraph.Jig.NodeLibrary.CallMethod );
+		var node = actionGraph.Graph.AddNode( actionGraph.Graph.NodeLibrary.CallMethod );
 
 		node.Properties["_type"].Value = Method.TypeDescription.TargetType;
 		node.Properties["_name"].Value = Method.Name;
@@ -103,10 +103,10 @@ public record struct PropertyNodeType( PropertyDescription Property, PropertyNod
 	public INode CreateNode( IGraph graph )
 	{
 		var actionGraph = (ActionGraph)graph;
-		var node = actionGraph.Jig.AddNode( Kind switch
+		var node = actionGraph.Graph.AddNode( Kind switch
 		{
-			PropertyNodeKind.Set => actionGraph.Jig.NodeLibrary.SetProperty,
-			PropertyNodeKind.Get => actionGraph.Jig.NodeLibrary.GetProperty,
+			PropertyNodeKind.Set => actionGraph.Graph.NodeLibrary.SetProperty,
+			PropertyNodeKind.Get => actionGraph.Graph.NodeLibrary.GetProperty,
 			_ => throw new NotImplementedException()
 		} );
 
@@ -143,10 +143,10 @@ public record struct FieldNodeType( FieldDescription Field, PropertyNodeKind Kin
 	public INode CreateNode( IGraph graph )
 	{
 		var actionGraph = (ActionGraph)graph;
-		var node = actionGraph.Jig.AddNode( Kind switch
+		var node = actionGraph.Graph.AddNode( Kind switch
 		{
-			PropertyNodeKind.Set => actionGraph.Jig.NodeLibrary.SetField,
-			PropertyNodeKind.Get => actionGraph.Jig.NodeLibrary.GetField,
+			PropertyNodeKind.Set => actionGraph.Graph.NodeLibrary.SetField,
+			PropertyNodeKind.Get => actionGraph.Graph.NodeLibrary.GetField,
 			_ => throw new NotImplementedException()
 		} );
 
@@ -204,9 +204,9 @@ public class ActionNode : INode
 
 	DisplayInfo INode.DisplayInfo => Node.GetDisplayInfo();
 
-	public bool CanClone => Node != Node.ActionJig.EventNode;
+	public bool CanClone => Node != Node.ActionGraph.EventNode;
 
-	public bool CanRemove => Node != Node.ActionJig.EventNode;
+	public bool CanRemove => Node != Node.ActionGraph.EventNode;
 
 	public Color PrimaryColor
 	{

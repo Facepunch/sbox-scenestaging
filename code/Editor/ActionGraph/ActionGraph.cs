@@ -3,15 +3,15 @@ using Editor.NodeEditor;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-using Facepunch.ActionJigs;
+using Facepunch.ActionGraphs;
 using Sandbox;
 
-namespace Editor.ActionJigs;
+namespace Editor.ActionGraphs;
 
 public partial class ActionGraph : IGraph
 {
 	[HideInEditor]
-	public ActionJig Jig { get; }
+	public Facepunch.ActionGraphs.ActionGraph Graph { get; }
 
 	private Dictionary<Node, ActionNode> NodeDict { get; } = new Dictionary<Node, ActionNode>();
 	private Dictionary<string, ActionNode> NodeIdDict { get; } = new Dictionary<string, ActionNode>();
@@ -63,19 +63,19 @@ public partial class ActionGraph : IGraph
 		throw new System.NotImplementedException();
 	}
 
-	public ActionGraph( ActionJig jig )
+	public ActionGraph( Facepunch.ActionGraphs.ActionGraph graph )
 	{
-		Jig = jig;
+		Graph = graph;
 
 		UpdateNodes();
 	}
 
 	/// <summary>
-	/// Keep <see cref="NodeDict"/> in sync with <see cref="Jig"/>.
+	/// Keep <see cref="NodeDict"/> in sync with <see cref="Graph"/>.
 	/// </summary>
 	private void UpdateNodes()
 	{
-		foreach ( var node in Jig.Nodes )
+		foreach ( var node in Graph.Nodes )
 		{
 			if ( !NodeDict.ContainsKey( node ) )
 			{
@@ -94,7 +94,7 @@ public partial class ActionGraph : IGraph
 
 	public IReadOnlyList<INode> Update()
 	{
-		var messages = Jig.Messages;
+		var messages = Graph.Messages;
 
 		if ( DirtyNodes.Count == 0 )
 		{

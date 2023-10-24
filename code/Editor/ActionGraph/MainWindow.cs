@@ -4,19 +4,19 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Editor.NodeEditor;
-using Facepunch.ActionJigs;
-using Sandbox.ActionJigs;
+using Facepunch.ActionGraphs;
+using Sandbox.ActionGraphs;
 using Sandbox.Internal;
-using static Facepunch.ActionJigs.Node;
+using static Facepunch.ActionGraphs.Node;
 using PropertyAttribute = Sandbox.PropertyAttribute;
 
-namespace Editor.ActionJigs;
+namespace Editor.ActionGraphs;
 
-public static class ActionJigExtensions
+public static class ActionGraphExtensions
 {
-	public static string GetName( this IActionJig actionJig )
+	public static string GetName( this IActionGraph actionGraph )
 	{
-		return actionJig.UserData.TryGetPropertyValue( "name", out var node ) ? node?.GetValue<string>() : null;
+		return actionGraph.UserData.TryGetPropertyValue( "name", out var node ) ? node?.GetValue<string>() : null;
 	}
 
 	private static DisplayInfo ConstDisplayInfo( Node node )
@@ -41,7 +41,7 @@ public static class ActionJigExtensions
 			case "event":
 				return new()
 				{
-					Name = node.ActionJig.UserData["name"]?.GetValue<string>() ?? "Event",
+					Name = node.ActionGraph.UserData["name"]?.GetValue<string>() ?? "Event",
 					Description = node.DisplayInfo.Description,
 					Icon = node.DisplayInfo.Icon,
 					Tags = node.DisplayInfo.Tags
@@ -118,14 +118,14 @@ public partial class MainWindow : DockWindow
 		if ( node == null )
 			return;
 
-		var row = new StackRow( node.GetDisplayInfo().Name, node.ActionJig.GetName() );
+		var row = new StackRow( node.GetDisplayInfo().Name, node.ActionGraph.GetName() );
 		row.IsFromEngine = false;
 		row.MouseClick += () =>
 		{
-			var window = Open( node.ActionJig );
-			var matchingNode = node.ActionJig == window.ActionJig
+			var window = Open( node.ActionGraph );
+			var matchingNode = node.ActionGraph == window.ActionGraph
 				? node
-				: window.ActionJig.Nodes.FirstOrDefault( x => x.Id == node.Id );
+				: window.ActionGraph.Nodes.FirstOrDefault( x => x.Id == node.Id );
 
 			window.View.SelectNode( matchingNode );
 			window.View.CenterOnSelection();
@@ -134,18 +134,18 @@ public partial class MainWindow : DockWindow
 		target.Add( row );
 	}
 
-	public static MainWindow Open( ActionJig actionJig, string name = null )
+	public static MainWindow Open( Facepunch.ActionGraphs.ActionGraph actionGraph, string name = null )
 	{
-		if ( actionJig.GetName() == null )
+		if ( actionGraph.GetName() == null )
 		{
-			actionJig.UserData["name"] = name;
+			actionGraph.UserData["name"] = name;
 		}
 
-		var guid = actionJig.GetGuid();
+		var guid = actionGraph.GetGuid();
 
 		if ( !Instances.TryGetValue( guid, out var inst ) )
 		{
-			Instances[guid] = inst = new MainWindow( actionJig );
+			Instances[guid] = inst = new MainWindow( actionGraph );
 		}
 
 		inst.Show();
@@ -153,7 +153,7 @@ public partial class MainWindow : DockWindow
 		return inst;
 	}
 
-	public ActionJig ActionJig { get; }
+	public Facepunch.ActionGraphs.ActionGraph ActionGraph { get; }
 
 	public ActionGraph Graph { get; }
 	public ActionGraphView View { get; private set; }
@@ -162,17 +162,17 @@ public partial class MainWindow : DockWindow
 
 	public event Action Saved;
 
-	private MainWindow( ActionJig actionJig )
+	private MainWindow( Facepunch.ActionGraphs.ActionGraph actionGraph )
 	{
 		DeleteOnClose = true;
 
-		ActionJig = actionJig;
-		Graph = new ActionGraph( actionJig );
+		ActionGraph = actionGraph;
+		Graph = new ActionGraph( actionGraph );
 
-		Title = $"{ActionJig.GetName()} - Action Graph";
+		Title = $"{ActionGraph.GetName()} - Action Graph";
 		Size = new Vector2( 1280, 720 );
 
-		ActionJigDebugger.StartListening( actionJig, OnLinkTriggered );
+		ActionGraphDebugger.StartListening( actionGraph, OnLinkTriggered );
 
 		RebuildUI();
 	}
@@ -262,9 +262,9 @@ public partial class MainWindow : DockWindow
 
 	protected override bool OnClose()
 	{
-		ActionJigDebugger.StopListening( ActionJig );
+		ActionGraphDebugger.StopListening( ActionGraph );
 
-		var guid = ActionJig.GetGuid();
+		var guid = ActionGraph.GetGuid();
 
 		if ( Instances.TryGetValue( guid, out var inst ) && inst == this )
 		{
@@ -487,7 +487,7 @@ public class ActionGraphView : GraphView
 
 	protected override void OnRebuild()
 	{
-		var commentsNode = Graph.Jig.UserData["comments"];
+		var commentsNode = Graph.Graph.UserData["comments"];
 
 		if ( commentsNode == null )
 		{
@@ -516,6 +516,6 @@ public class ActionGraphView : GraphView
 			.Select( x => x.Node as CommentNode )
 			.ToArray();
 
-		Graph.Jig.UserData["comments"] = Json.ToNode( commentNodes );
+		Graph.Graph.UserData["comments"] = Json.ToNode( commentNodes );
 	}
 }

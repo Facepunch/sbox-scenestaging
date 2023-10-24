@@ -2,10 +2,10 @@
 using System.IO;
 using System.Reflection;
 using Editor.NodeEditor;
-using Facepunch.ActionJigs;
+using Facepunch.ActionGraphs;
 using static Editor.NodeEditor.GraphView;
 
-namespace Editor.ActionJigs;
+namespace Editor.ActionGraphs;
 
 public class Properties : Widget
 {

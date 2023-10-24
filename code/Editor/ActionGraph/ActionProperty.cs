@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text.Json;
 using System.Xml.Linq;
-using Facepunch.ActionJigs;
+using Facepunch.ActionGraphs;
 using Sandbox;
 
-namespace Editor.ActionJigs;
+namespace Editor.ActionGraphs;
 
 [CanEdit( "action" )]
 public sealed class ActionProperty<T> : Button
@@ -20,12 +20,12 @@ public sealed class ActionProperty<T> : Button
 
 	protected override void OnClicked()
 	{
-		Value ??= ActionJig.Create<T>( EditorNodeLibrary );
+		Value ??= Facepunch.ActionGraphs.ActionGraph.Create<T>( EditorNodeLibrary );
 
 		// TODO: Would be good to use the containing property name if possible
 		var name = typeof(T).Name;
 
-		MainWindow.Open( (ActionJig)Value, name );
+		MainWindow.Open( (Facepunch.ActionGraphs.ActionGraph)Value, name );
 	}
 }
 
@@ -45,21 +45,21 @@ public sealed class ActionControlWidget : ControlWidget
 	private void Button_Clicked()
 	{
 		var action = SerializedProperty.GetValue<Delegate>();
-		ActionJig jig;
+		Facepunch.ActionGraphs.ActionGraph graph;
 
 		try
 		{
-			jig = action == null ? null : (ActionJig) action;
+			graph = action == null ? null : (Facepunch.ActionGraphs.ActionGraph) action;
 		}
 		catch ( InvalidCastException )
 		{
-			jig = null;
+			graph = null;
 		}
 
-		jig ??= ActionJig.Create( EditorNodeLibrary, SerializedProperty.PropertyType );
+		graph ??= Facepunch.ActionGraphs.ActionGraph.Create( EditorNodeLibrary, SerializedProperty.PropertyType );
 
 		var name = SerializedProperty.DisplayName;
-		var window = MainWindow.Open( jig, name );
+		var window = MainWindow.Open( graph, name );
 
 		if ( _openWindow == window )
 		{
@@ -70,7 +70,7 @@ public sealed class ActionControlWidget : ControlWidget
 
 		window.Saved += () =>
 		{
-			SerializedProperty.SetValue( window.ActionJig.AsDelegate( SerializedProperty.PropertyType ) );
+			SerializedProperty.SetValue( window.ActionGraph.AsDelegate( SerializedProperty.PropertyType ) );
 			SerializedProperty.Parent.NoteChanged( SerializedProperty );
 		};
 	}
