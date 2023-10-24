@@ -60,7 +60,7 @@ public class GameTransform
 
 			if ( GameObject.Scene.IsFixedUpdate )
 			{
-				LerpTo( World, Time.Delta );
+				LerpTo( _local, Time.Delta );
 			}
 		}
 	}
