@@ -1,10 +1,4 @@
-﻿
-using Editor;
-using Sandbox;
-using System.Linq;
-using System.Numerics;
-
-class GameObjectHeader : Widget
+﻿class GameObjectHeader : Widget
 {
 	SerializedObject Target;
 
@@ -15,21 +9,21 @@ class GameObjectHeader : Widget
 
 		Layout = Layout.Column();
 		Layout.Margin = 16;
-		Layout.Spacing = 4;
+		Layout.Spacing = 2;
 
 		var row = Layout.AddRow();
 		row.Spacing = 4;
 		row.Add( ControlWidget.Create( targetObject.GetProperty( nameof( GameObject.Enabled ) ) ) );
 		row.Add( ControlWidget.Create( targetObject.GetProperty( nameof( GameObject.Name ) ) ), 1 );
-		row.Add( ControlWidget.Create( targetObject.GetProperty( nameof( GameObject.Tags ) ) ) );
 
 		var cs = new ControlSheet();
 		cs.Margin = 0;
-		cs.SetMinimumColumnWidth( 0, 50 );
+		cs.SetMinimumColumnWidth( 0, 75 );
 		cs.SetColumnStretch( 0, 1 );
 
 		targetObject.GetProperty( nameof( GameObject.Transform ) ).TryGetAsObject( out var txo );
 
+		cs.AddRow( targetObject.GetProperty( nameof( GameObject.Tags ) ) );
 		cs.AddRow( txo.GetProperty( nameof( GameTransform.LocalPosition ) ) );
 		cs.AddRow( txo.GetProperty( nameof( GameTransform.LocalRotation ) ) );
 		cs.AddRow( txo.GetProperty( nameof( GameTransform.LocalScale ) ) );

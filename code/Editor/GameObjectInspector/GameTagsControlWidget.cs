@@ -4,14 +4,15 @@ using System.Collections.Generic;
 
 namespace Editor;
 
-[CustomEditor( typeof( GameTags ) )]
-public class GameTagsControlWidget : ControlWidget
+[CustomEditor( typeof( ITagSet ) )]
+public class TagSetControlWidget : ControlWidget
 {
-
 	Layout TagsArea;
 
-	public GameTagsControlWidget( SerializedProperty property ) : base( property )
+	public TagSetControlWidget( SerializedProperty property ) : base( property )
 	{
+		SetSizeMode( SizeMode.Ignore, SizeMode.Default );
+
 		Layout = Layout.Row();
 		Layout.Spacing = 3;
 		Layout.Margin = new Sandbox.UI.Margin( 3, 0 );
@@ -20,19 +21,9 @@ public class GameTagsControlWidget : ControlWidget
 		TagsArea.Spacing = 2;
 		TagsArea.Margin = new Sandbox.UI.Margin( 0, 3 );
 
+		Layout.AddStretchCell();
+
 		Layout.Add( new Button( null, "local_offer" ) { MouseLeftPress = OpenPopup, FixedWidth = ControlRowHeight, FixedHeight = ControlRowHeight, OnPaintOverride = PaintTagAdd, ToolTip = "Tags" } );
-
-	}
-
-	protected override Vector2 SizeHint() => new Vector2( 22, ControlRowHeight );
-
-	protected override void OnDoubleClick( MouseEvent e )
-	{
-		// ignore
-	}
-
-	protected override void OnMousePress( MouseEvent e )
-	{
 
 	}
 
@@ -40,7 +31,9 @@ public class GameTagsControlWidget : ControlWidget
 	{
 		get
 		{
-			var tags = SerializedProperty.GetValue<GameTags>();
+			var tags = SerializedProperty.GetValue<ITagSet>();
+			if ( tags is null )
+				return 0;
 
 			HashCode code = default;
 
@@ -56,7 +49,8 @@ public class GameTagsControlWidget : ControlWidget
 	{
 		TagsArea.Clear( true );
 
-		var tags = SerializedProperty.GetValue<GameTags>();
+		var tags = SerializedProperty.GetValue<ITagSet>();
+		if ( tags is null ) return;
 		
 		foreach( var tag in tags.TryGetAll().Take( 32 ) )
 		{
@@ -66,7 +60,10 @@ public class GameTagsControlWidget : ControlWidget
 
 	private void RemoveTag( string tag )
 	{
-		var tags = SerializedProperty.GetValue<GameTags>();
+		var tags = SerializedProperty.GetValue<ITagSet>();
+		if ( tags is null )
+			return;
+
 		tags.Remove( tag );
 	}
 
@@ -84,7 +81,13 @@ public class GameTagsControlWidget : ControlWidget
 
 	void OpenPopup()
 	{
-		var tags = SerializedProperty.GetValue<GameTags>();
+		var tags = SerializedProperty.GetValue<ITagSet>();
+
+		if ( tags is null )
+		{
+			Log.Warning( "TODO: create ITagSet if we can, base on what type the property is" );
+			return;
+		}
 
 		var popup = new PopupWidget( this );
 		popup.Size = new Vector2( 200, 300 );
@@ -102,33 +105,35 @@ public class GameTagsControlWidget : ControlWidget
 		// Collect all the common tags
 		if ( SerializedProperty.Parent is not null )
 		{
-			var sceneProp = SerializedProperty.Parent.GetProperty( "Scene" );
-			var scene = sceneProp.GetValue<Scene>();
-
-			popup.Layout.AddSpacingCell( 4 );
-
-			var grid = popup.Layout.Add( Layout.Grid() ) as GridLayout;
-
-			var obj = scene.GetAllObjects( true );
-			var allTags = obj.SelectMany( x => x.Tags.TryGetAll() )
-				.Concat( new[] { "solid", "trigger", "water" } ); // TODO - take these from collision data in LocalProject.CurrentGame.Config
-
-
-			int i = 0;
-			foreach( var g in allTags.GroupBy( x => x ).OrderByDescending( x => x.Count() ).Take( 32 ) )
+			var activeSession = SceneEditorSession.Active;
+			var scene = activeSession?.Scene;
+			if ( scene is not null )
 			{
-				var t = g.First();
-				var c = g.Count();
+				popup.Layout.AddSpacingCell( 4 );
 
-				var button = new Button( "", popup )
+				var grid = popup.Layout.Add( Layout.Grid() ) as GridLayout;
+
+				var obj = scene.GetAllObjects( true );
+				var allTags = obj.SelectMany( x => x.Tags.TryGetAll() )
+					.Concat( new[] { "solid", "trigger", "water" } ); // TODO - take these from collision data in LocalProject.CurrentGame.Config
+
+
+				int i = 0;
+				foreach ( var g in allTags.GroupBy( x => x ).OrderByDescending( x => x.Count() ).Take( 32 ) )
 				{
-					MouseLeftPress = () => tags.Toggle( t ),
-				};
+					var t = g.First();
+					var c = g.Count();
 
-				button.OnPaintOverride = () => PaintTagButton( t, c, button.LocalRect, tags.Has( t ) );
+					var button = new Button( "", popup )
+					{
+						MouseLeftPress = () => tags.Toggle( t ),
+					};
 
-				grid.AddCell( i % 2, i / 2, button );
-				i++;
+					button.OnPaintOverride = () => PaintTagButton( t, c, button.LocalRect, tags.Has( t ) );
+
+					grid.AddCell( i % 2, i / 2, button );
+					i++;
+				}
 			}
 
 		}
@@ -186,7 +191,7 @@ file class TagButton : Widget
 {
 	public TagButton( Widget parent ) : base( parent )
 	{
-		SetSizeMode( SizeMode.CanGrow, SizeMode.CanGrow );
+		SetSizeMode( SizeMode.CanShrink, SizeMode.Default );
 	}
 
 	public string TagText { get; set; }
