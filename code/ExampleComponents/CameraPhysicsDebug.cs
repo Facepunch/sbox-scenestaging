@@ -27,7 +27,7 @@ public sealed class CameraPhysicsDebug : BaseComponent
 		for ( int i = 0; i < TracesPerFrame; i++ )
 		{
 			PhysicsTraceResult t = default;
-			var start = Transform.Position + Transform.Rotation.Forward * 50.0f;
+			var start = Transform.Position;
 			var end = Transform.Position + Transform.Rotation.Forward * 1000 + Vector3.Random * 400;
 
 			if ( TraceType == TraceTypes.Ray )
