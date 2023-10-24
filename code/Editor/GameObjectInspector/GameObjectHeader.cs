@@ -2,6 +2,7 @@
 using Editor;
 using Sandbox;
 using System.Linq;
+using System.Numerics;
 
 class GameObjectHeader : Widget
 {
@@ -46,6 +47,54 @@ class GameObjectHeader : Widget
 		Paint.DrawRect( LocalRect );
 	}
 
+	protected override void OnContextMenu( ContextMenuEvent e )
+	{
+		e.Accepted = true;
+
+		var m = new Menu();
+
+		var clipText = EditorUtility.Clipboard.Paste();
+
+		try
+		{
+			var tx = Json.Deserialize<Transform>( clipText );
+			if ( tx != default )
+			{
+				m.AddOption( "Paste Transform", action: () =>
+				{
+					Target.GetProperty( "Transform" ).TryGetAsObject( out var txo );
+					txo.GetProperty( "Local" ).SetValue( tx );
+					SceneEditorSession.Active.FullUndoSnapshot( "Paste Transform" );
+				} );
+
+				m.AddSeparator();
+			}
+		}
+		catch ( System.Exception )
+		{
+			// ignore
+		}
+
+		m.AddOption( "Reset Transform", action: () =>
+		{
+			Target.GetProperty( "Transform" ).TryGetAsObject( out var txo );
+			txo.GetProperty( "Local" ).SetValue( Transform.Zero );
+
+			SceneEditorSession.Active.FullUndoSnapshot( "Reset Transform" );
+		} );
+
+		m.AddSeparator();
+
+		m.AddOption( "Copy Transform", action: () =>
+		{
+			Target.GetProperty( "Transform" ).TryGetAsObject( out var txo );
+			var tx = txo.GetProperty( "Local" ).GetValue<Transform>();
+
+			EditorUtility.Clipboard.Copy( Json.Serialize( tx ) );
+		} );
+
+		m.OpenAtCursor();
+	}
 }
 
 class AttachmentControlWidget : ControlWidget
