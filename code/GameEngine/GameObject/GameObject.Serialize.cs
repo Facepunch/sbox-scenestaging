@@ -28,7 +28,8 @@ public partial class GameObject
 			{ "Enabled", Enabled },
 			{ "Position",  JsonValue.Create( Transform.LocalPosition ) },
 			{ "Rotation", JsonValue.Create( Transform.LocalRotation ) },
-			{ "Scale", JsonValue.Create( Transform.LocalScale ) }
+			{ "Scale", JsonValue.Create( Transform.LocalScale ) },
+			{ "Tags", string.Join( ",", Tags.List ) }
 		};
 
 		if ( IsPrefabInstanceRoot )
@@ -101,6 +102,12 @@ public partial class GameObject
 		Transform.LocalPosition = node["Position"].Deserialize<Vector3>();
 		Transform.LocalRotation = node["Rotation"].Deserialize<Rotation>();
 		Transform.LocalScale = node["Scale"].Deserialize<Vector3>();
+
+		if ( node["Tags"].Deserialize<string>() is string tags )
+		{
+			Tags.Clear();
+			Tags.Add( tags.Split( ',', StringSplitOptions.RemoveEmptyEntries ) );
+		}
 
 		if ( node["__Prefab"].Deserialize<string>() is string prefabSource )
 		{
