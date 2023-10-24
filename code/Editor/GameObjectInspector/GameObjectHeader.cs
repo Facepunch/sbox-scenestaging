@@ -20,46 +20,7 @@ class GameObjectHeader : Widget
 		row.Spacing = 4;
 		row.Add( ControlWidget.Create( targetObject.GetProperty( nameof( GameObject.Enabled ) ) ) );
 		row.Add( ControlWidget.Create( targetObject.GetProperty( nameof( GameObject.Name ) ) ), 1 );
-
-	//	if ( parentEntity is not null && parentEntity.Model is Model model )
-	//	{
-	//		row.Add( new AttachmentControlWidget( Target.GetProperty( "Attachment" ), model ) );
-	//	}
-
-
-		// this all needs cleaning up and formalizing
-
-
-		// tag editor
-		// todo: make a Tag type that json serializes from string or array etc
-		// todo: make a TagControlWidget that uses SerializedProperty to edit
-		{
-			var w = new TagEdit( this );
-
-			w.Convertors.Add( tag =>
-			{
-				if ( tag == null || tag.Length < 2 || tag.Length > 16 )
-					return null;
-
-				if ( !tag.All( char.IsLetterOrDigit ) )
-					return null;
-
-				tag = tag.ToLower();
-
-				return new TagEdit.TagDetail
-				{
-					Value = tag,
-					Title = tag,
-				};
-			} );
-
-			var tags = targetObject.GetProperty( "Tags" );
-			if ( tags is not null )
-			{
-				w.Bind( "Value" ).From( () => tags.As.String, x => tags.As.String = x );
-			}
-			Layout.Add( w );
-		}
+		row.Add( ControlWidget.Create( targetObject.GetProperty( nameof( GameObject.Tags ) ) ) );
 
 		var cs = new ControlSheet();
 		cs.Margin = 0;

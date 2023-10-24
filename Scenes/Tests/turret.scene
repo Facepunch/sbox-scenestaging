@@ -7,6 +7,7 @@
       "Position": "1114.846,0,-1303.217",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "EnvmapComponent",
@@ -25,10 +26,12 @@
       "Position": "1420.439,0,-1637.736",
       "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
@@ -50,10 +53,12 @@
       "Position": "1426.931,-954.8324,-1551.606",
       "Rotation": "-0.5404876,-0.4595037,-0.4963918,0.5003225",
       "Scale": "20,20,20",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
@@ -75,10 +80,12 @@
       "Position": "519.4361,-73.0855,-1474.278",
       "Rotation": "-0.7356308,-0.03306742,-0.6756142,0.03600477",
       "Scale": "20,20,20",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
@@ -100,6 +107,7 @@
       "Position": "55.4718,-124.3322,91.5952",
       "Rotation": "-0.5276809,0.09922918,0.8290949,0.1559103",
       "Scale": "1,1,1",
+      "Tags": "light",
       "Components": [
         {
           "__type": "DirectionalLightComponent",
@@ -117,10 +125,12 @@
       "Position": "1322.021,549.7806,-1616.25",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "player,pawn,solid",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -210,6 +220,7 @@
           "Position": "0,0,25",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
+          "Tags": "aimer",
           "Children": [
             {
               "Id": "99f1f39f-e65f-4356-aeaa-41294019720a",
@@ -218,10 +229,12 @@
               "Position": "0,0,5",
               "Rotation": "0,0,0,1",
               "Scale": "0.5,0.5,0.5",
+              "Tags": "",
               "Components": [
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
+                  "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
@@ -236,10 +249,12 @@
               "Position": "17.8328,0.8604,9.1344",
               "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "",
               "Components": [
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
+                  "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
@@ -261,10 +276,12 @@
               "Position": "28.4373,0.8604,9.1344",
               "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "",
               "Components": [
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
+                  "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
@@ -286,10 +303,12 @@
               "Position": "40.0265,0.8604,9.1344",
               "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "",
               "Components": [
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
+                  "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
@@ -311,10 +330,12 @@
               "Position": "51.2432,0.8604,9.1344",
               "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "",
               "Components": [
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
+                  "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
@@ -336,10 +357,12 @@
               "Position": "61.8421,0.8604,9.1344",
               "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "",
               "Components": [
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
+                  "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
@@ -361,10 +384,12 @@
               "Position": "72.9951,0.8604,9.1344",
               "Rotation": "0,0,0,1",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "",
               "Components": [
                 {
                   "__type": "ModelComponent",
                   "__enabled": true,
+                  "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
                   "Model": "models/dev/box.vmdl",
                   "ShouldCastShadows": true,
@@ -385,7 +410,8 @@
               "Enabled": true,
               "Position": "79.6561,0.8604,9.1344",
               "Rotation": "0,0,0,1",
-              "Scale": "0.2,0.2,0.2"
+              "Scale": "0.2,0.2,0.2",
+              "Tags": "muzzle"
             }
           ]
         }
@@ -398,10 +424,12 @@
       "Position": "1420.439,0,535.5369",
       "Rotation": "-0.09391546,-0.2983155,-0.2852259,0.9059988",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -429,10 +457,12 @@
       "Position": "1420.439,0,458.9947",
       "Rotation": "-0.1529643,-0.1370061,-0.7290195,0.6529638",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -460,10 +490,12 @@
       "Position": "1420.439,-314.1158,-1418.345",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "player,solid,pawn",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -491,10 +523,12 @@
       "Position": "1420.439,-189.5529,-1418.345",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -522,6 +556,7 @@
       "Position": "1420.439,-163.9043,-1338.204",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -532,6 +567,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -553,10 +589,12 @@
       "Position": "1420.439,277.354,-1346.362",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -584,6 +622,7 @@
       "Position": "1420.439,-82.8088,-1418.345",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -594,6 +633,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -615,6 +655,7 @@
       "Position": "1420.439,-174.5318,-1259.018",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -625,6 +666,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -646,6 +688,7 @@
       "Position": "686.7393,322.773,-1612.719",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "solid",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -656,6 +699,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -677,6 +721,7 @@
       "Position": "686.7393,393.245,-1612.719",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "solid",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -687,6 +732,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -708,6 +754,7 @@
       "Position": "686.7393,466.1223,-1612.719",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "solid",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -718,6 +765,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -739,6 +787,7 @@
       "Position": "686.7393,538.7812,-1612.719",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "solid",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -749,6 +798,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -770,6 +820,7 @@
       "Position": "686.7393,247.0549,-1612.719",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "solid",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -780,6 +831,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -801,6 +853,7 @@
       "Position": "686.7393,168.3942,-1612.719",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "solid",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -818,6 +871,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -832,6 +886,7 @@
       "Position": "686.7393,91.1157,-1612.719",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "solid",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -842,6 +897,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -863,6 +919,7 @@
       "Position": "393.1795,-531.9441,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "solid",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -873,6 +930,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -894,6 +952,7 @@
       "Position": "326.341,-599.5729,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "solid",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -904,6 +963,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -925,6 +985,7 @@
       "Position": "267.9455,-676.0168,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -935,6 +996,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -956,6 +1018,7 @@
       "Position": "273.5231,-436.83,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -966,6 +1029,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -987,6 +1051,7 @@
       "Position": "171.2026,-716.7321,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -997,6 +1062,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1018,6 +1084,7 @@
       "Position": "154.2063,-586.5585,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1028,6 +1095,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1049,6 +1117,7 @@
       "Position": "220.7851,-527.5274,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1059,6 +1128,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1080,6 +1150,7 @@
       "Position": "171.3494,-432.7322,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1090,6 +1161,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1111,6 +1183,7 @@
       "Position": "220.5939,-361.897,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1121,6 +1194,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1142,6 +1216,7 @@
       "Position": "509.3035,-499.0526,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1152,6 +1227,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1173,6 +1249,7 @@
       "Position": "102.8515,-749.5279,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1183,6 +1260,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1204,6 +1282,7 @@
       "Position": "79.7005,-642.796,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1214,6 +1293,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1235,6 +1315,7 @@
       "Position": "118.2239,-498.7248,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1245,6 +1326,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1266,6 +1348,7 @@
       "Position": "138.8147,-372.9793,1091.211",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1276,6 +1359,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1297,6 +1381,7 @@
       "Position": "686.7393,-73.5093,-1612.719",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1314,6 +1399,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1328,10 +1414,12 @@
       "Position": "904.5154,-141.3905,-1437.039",
       "Rotation": "0,0,0,1",
       "Scale": "6.4,6.4,6.4",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -1353,6 +1441,7 @@
       "Position": "1250.129,-189.4961,-1516.795",
       "Rotation": "-0.00000001717797,0.000000007865676,0.241669,0.9703576",
       "Scale": "5,5,5",
+      "Tags": "",
       "Components": [
         {
           "__type": "ColliderBoxComponent",
@@ -1364,6 +1453,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1378,6 +1468,7 @@
       "Position": "686.7393,-158.5866,-1612.719",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1388,6 +1479,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1409,6 +1501,7 @@
       "Position": "686.7393,-241.4487,-1612.719",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1419,6 +1512,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1440,6 +1534,7 @@
       "Position": "686.7393,-323.4224,-1612.719",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1450,6 +1545,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1471,6 +1567,7 @@
       "Position": "686.7393,-276.2431,-1563.041",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1481,6 +1578,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1502,6 +1600,7 @@
       "Position": "686.7393,-198.8401,-1563.041",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1512,6 +1611,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1533,6 +1633,7 @@
       "Position": "686.7393,-115.8088,-1563.041",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1550,6 +1651,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1564,6 +1666,7 @@
       "Position": "686.7393,-29.5168,-1563.041",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1574,6 +1677,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1595,6 +1699,7 @@
       "Position": "686.7393,55.9645,-1563.041",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1605,6 +1710,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1626,6 +1732,7 @@
       "Position": "686.7393,357.9727,-1563.041",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1636,6 +1743,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1657,6 +1765,7 @@
       "Position": "686.7393,504.4504,-1563.041",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1667,6 +1776,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1688,6 +1798,7 @@
       "Position": "686.7393,129.0565,-1563.041",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1705,6 +1816,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1719,6 +1831,7 @@
       "Position": "686.7393,210.5549,-1563.041",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1729,6 +1842,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1750,6 +1864,7 @@
       "Position": "686.7393,286.9323,-1563.041",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1760,6 +1875,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1781,6 +1897,7 @@
       "Position": "686.7393,429.4614,-1563.041",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1791,6 +1908,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1812,6 +1930,7 @@
       "Position": "686.7393,250.0716,-1498.417",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1822,6 +1941,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1843,6 +1963,7 @@
       "Position": "686.7393,176.8109,-1404.687",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1853,6 +1974,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1874,6 +1996,7 @@
       "Position": "686.7393,97.5859,-1498.417",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1884,6 +2007,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1905,6 +2029,7 @@
       "Position": "686.7393,16.4862,-1498.417",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1915,6 +2040,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1936,6 +2062,7 @@
       "Position": "686.7393,-68.0729,-1498.417",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1946,6 +2073,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1967,6 +2095,7 @@
       "Position": "686.7393,329.0835,-1498.417",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -1977,6 +2106,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1998,6 +2128,7 @@
       "Position": "686.7393,407.8695,-1498.417",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2008,6 +2139,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2029,6 +2161,7 @@
       "Position": "686.7393,479.6847,-1498.417",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2039,6 +2172,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2060,6 +2194,7 @@
       "Position": "686.7393,444.2884,-1427.168",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2070,6 +2205,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2091,6 +2227,7 @@
       "Position": "686.7393,368.6415,-1427.168",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2101,6 +2238,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2122,6 +2260,7 @@
       "Position": "686.7393,289.921,-1427.168",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2132,6 +2271,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2153,6 +2293,7 @@
       "Position": "686.7393,340.3432,-1375.437",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2163,6 +2304,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2184,6 +2326,7 @@
       "Position": "686.7393,410.9009,-1375.437",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2194,6 +2337,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2215,6 +2359,7 @@
       "Position": "686.7393,370.0432,-1319.666",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2225,6 +2370,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2246,6 +2392,7 @@
       "Position": "686.7393,-151.4042,-1498.417",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2256,6 +2403,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2277,6 +2425,7 @@
       "Position": "1420.439,-168.6941,-1060.616",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2287,6 +2436,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2308,6 +2458,7 @@
       "Position": "1420.439,-175.0416,-1141.828",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2318,6 +2469,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough10.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2339,10 +2491,12 @@
       "Position": "1420.439,-182.0647,-973.8735",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2370,6 +2524,7 @@
       "Position": "1420.439,-189.5312,-896.2328",
       "Rotation": "-0.0000000323724,-0.002932126,0.0000000000954342,0.999996",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2380,6 +2535,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2401,6 +2557,7 @@
       "Position": "1420.439,79.6324,-805.0983",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
@@ -2411,6 +2568,7 @@
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -2432,6 +2590,7 @@
       "Position": "1223.259,-803.9999,-1087.162",
       "Rotation": "-0.1064454,0.2939645,0.588666,0.7454708",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -2452,6 +2611,7 @@
       "Position": "1099.505,-0.0033,-1162.002",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "EnvmapComponent",
@@ -2473,6 +2633,7 @@
       "Position": "1630.013,877.5098,-1356.439",
       "Rotation": "0.08006466,0.03423851,-0.9159636,0.3916987",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "CameraComponent",
