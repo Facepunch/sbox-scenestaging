@@ -145,6 +145,7 @@ public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject.ColorTint = Tint;
 		_sceneObject.Flags.CastShadows = _castShadows;
 		_sceneObject.MeshGroupMask = _bodyGroupsMask;
+		_sceneObject.Tags.SetFrom( GameObject.Tags );
 	}
 
 	public override void OnDisabled()

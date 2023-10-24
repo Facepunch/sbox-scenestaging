@@ -79,6 +79,7 @@ public sealed class WorldPanel : BaseComponent, IRootPanelComponent
 	{
 		worldPanel = new Sandbox.UI.WorldPanel( Scene.SceneWorld );
 		worldPanel.Transform = Transform.World;
+		worldPanel.SceneObject.Tags.SetFrom( GameObject.Tags );
 	}
 
 	public override void OnDisabled()

@@ -217,6 +217,7 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 		_sceneObject.MeshGroupMask = _bodyGroupsMask;
 		_sceneObject.Update( 0.01f );
 		_sceneObject.OnFootstepEvent += InternalOnFootstep;
+		_sceneObject.Tags.SetFrom( GameObject.Tags );
 
 		_boneMergeTarget?.SetBoneMerge( this, true );
 

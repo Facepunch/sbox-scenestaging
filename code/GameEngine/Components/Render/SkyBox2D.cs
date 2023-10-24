@@ -53,6 +53,7 @@ public class SkyBox2D : BaseComponent, BaseComponent.ExecuteInEditor
 
 		sceneObject = new SceneSkyBox( Scene.SceneWorld, SkyMaterial );
 		sceneObject.SkyTint = Tint;
+		sceneObject.Tags.SetFrom( GameObject.Tags );
 	}
 
 	public override void OnDisabled()

@@ -120,6 +120,14 @@ public abstract class ColliderBaseComponent : BaseComponent, BaseComponent.Execu
 		{
 			shape.IsTrigger = _isTrigger;
 			shape.SurfaceMaterial = Surface?.ResourcePath;
+
+			// this sucks, implement ITagSet
+			shape.ClearTags();
+
+			foreach ( var tag in GameObject.Tags.TryGetAll() )
+			{
+				shape.AddTag( tag );
+			}
 		}
 	}
 
