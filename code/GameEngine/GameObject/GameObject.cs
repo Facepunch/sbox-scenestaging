@@ -40,6 +40,7 @@ public partial class GameObject
 	internal GameObject( bool enabled, string name )
 	{
 		Transform = new GameTransform( this );
+		Tags = new GameTags( this );
 		_enabled = enabled;
 		Scene = this as Scene ?? GameManager.ActiveScene;
 		Id = Guid.NewGuid();
