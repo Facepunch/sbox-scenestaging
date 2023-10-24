@@ -90,7 +90,22 @@ public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
 		}
 	}
 
-	public string TestString { get; set; }
+	ulong _bodyGroupsMask = ulong.MaxValue;
+	[Property, Model.BodyGroupMask]
+	public ulong BodyGroups
+	{
+		get => _bodyGroupsMask;
+		set
+		{
+			if ( _bodyGroupsMask == value ) return;
+			_bodyGroupsMask = value;
+
+			if ( _sceneObject is not null )
+			{
+				_sceneObject.MeshGroupMask = _bodyGroupsMask;
+			}
+		}
+	}
 
 	SceneObject _sceneObject;
 	public SceneObject SceneObject => _sceneObject;
@@ -129,6 +144,7 @@ public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject.SetMaterialOverride( MaterialOverride );
 		_sceneObject.ColorTint = Tint;
 		_sceneObject.Flags.CastShadows = _castShadows;
+		_sceneObject.MeshGroupMask = _bodyGroupsMask;
 	}
 
 	public override void OnDisabled()
