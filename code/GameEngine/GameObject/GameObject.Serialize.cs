@@ -29,7 +29,7 @@ public partial class GameObject
 			{ "Position",  JsonValue.Create( Transform.LocalPosition ) },
 			{ "Rotation", JsonValue.Create( Transform.LocalRotation ) },
 			{ "Scale", JsonValue.Create( Transform.LocalScale ) },
-			{ "Tags", string.Join( ",", Tags.List ) }
+			{ "Tags", string.Join( ",", Tags.TryGetAll() ) }
 		};
 
 		if ( IsPrefabInstanceRoot )
@@ -105,7 +105,7 @@ public partial class GameObject
 
 		if ( node["Tags"].Deserialize<string>() is string tags )
 		{
-			Tags.Clear();
+			Tags.RemoveAll();
 			Tags.Add( tags.Split( ',', StringSplitOptions.RemoveEmptyEntries ) );
 		}
 

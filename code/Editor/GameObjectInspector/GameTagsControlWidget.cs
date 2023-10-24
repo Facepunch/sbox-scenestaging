@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System;
+using System.Collections.Generic;
 
 namespace Editor;
 
@@ -43,7 +44,7 @@ public class GameTagsControlWidget : ControlWidget
 
 			HashCode code = default;
 
-			foreach( var tag in tags.List )
+			foreach( var tag in tags.TryGetAll() )
 			{
 				code.Add( tag );
 			}
@@ -57,7 +58,7 @@ public class GameTagsControlWidget : ControlWidget
 
 		var tags = SerializedProperty.GetValue<GameTags>();
 		
-		foreach( var tag in tags.List.Take( 12 ) )
+		foreach( var tag in tags.TryGetAll().Take( 32 ) )
 		{
 			TagsArea.Add( new TagButton( this ) { TagText = tag, MouseLeftPress = () => RemoveTag( tag ) } );
 		}
@@ -109,7 +110,7 @@ public class GameTagsControlWidget : ControlWidget
 			var grid = popup.Layout.Add( Layout.Grid() ) as GridLayout;
 
 			var obj = scene.GetAllObjects( true );
-			var allTags = obj.SelectMany( x => x.Tags.List )
+			var allTags = obj.SelectMany( x => x.Tags.TryGetAll() )
 				.Concat( new[] { "solid", "trigger", "water" } ); // TODO - take these from collision data in LocalProject.CurrentGame.Config
 
 

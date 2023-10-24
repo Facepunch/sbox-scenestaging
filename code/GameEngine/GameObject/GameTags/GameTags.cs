@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 /// Entity Tags are strings you can set and check for on any entity. Internally
 /// these strings are tokenized and networked so they're also available clientside.
 /// </summary>
-public class GameTags
+public class GameTags : ITagSet
 {
 	HashSet<string> collection = new HashSet<string>( StringComparer.OrdinalIgnoreCase );
 
@@ -30,7 +30,7 @@ public class GameTags
 	/// <summary>
 	/// Returns all the tags this object has.
 	/// </summary>
-	public IReadOnlyCollection<string> List => collection;
+	public IEnumerable<string> TryGetAll() => collection;
 
 	/// <summary>
 	/// Returns true if this object has given tag.
@@ -116,15 +116,15 @@ public class GameTags
 	/// <summary>
 	/// Remove all tags
 	/// </summary>
-	public void Clear()
+	public void RemoveAll()
 	{
-		foreach ( var t in List.ToArray() )
+		foreach ( var t in collection.ToArray() )
 			Remove( t );
 	}
 
 	internal void SetAll( string tags )
 	{
-		Clear();
+		RemoveAll();
 		Add( tags.SplitQuotesStrings() );
 	}
 }
