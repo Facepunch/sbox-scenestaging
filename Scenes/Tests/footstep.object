@@ -1,0 +1,74 @@
+{
+  "RootObject": {
+    "Id": "57bf917c-edfb-4856-be77-cbe431e6bea9",
+    "Name": "footstep",
+    "Enabled": true,
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Components": [
+      {
+        "__type": "SelfDestructComponent",
+        "__enabled": true,
+        "Seconds": 10
+      },
+      {
+        "__type": "AlphaOverTime",
+        "__enabled": true,
+        "Alpha": [
+          {
+            "x": 0.30788177,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "in": 1.1481483,
+            "out": -1.1481483
+          }
+        ],
+        "Time": 10
+      }
+    ],
+    "Children": [
+      {
+        "Id": "84be6171-af31-4d1d-a7ac-377623cf2461",
+        "Name": "footstep",
+        "Enabled": true,
+        "Position": "2.066562,0.2411762,0.0000002577701",
+        "Rotation": "0,0,0,1",
+        "Scale": "0.08,0.08,0.08",
+        "Components": [
+          {
+            "__type": "ModelComponent",
+            "__enabled": true,
+            "BodyGroups": 18446744073709551615,
+            "MaterialOverride": "materials/default.vmat",
+            "Model": "models/dev/sphere.vmdl",
+            "ShouldCastShadows": true,
+            "Tint": "1,1,1,1"
+          }
+        ]
+      },
+      {
+        "Id": "91490394-55c3-4b15-8b91-8eb47539ea72",
+        "Name": "footstep (1)",
+        "Enabled": true,
+        "Position": "-2.229208,0.1194388,-0.0000001385221",
+        "Rotation": "0,0,0,1",
+        "Scale": "0.07,0.07,0.07",
+        "Components": [
+          {
+            "__type": "ModelComponent",
+            "__enabled": true,
+            "BodyGroups": 18446744073709551615,
+            "MaterialOverride": "materials/default.vmat",
+            "Model": "models/dev/sphere.vmdl",
+            "ShouldCastShadows": true,
+            "Tint": "1,1,1,1"
+          }
+        ]
+      }
+    ]
+  },
+  "__references": []
+}

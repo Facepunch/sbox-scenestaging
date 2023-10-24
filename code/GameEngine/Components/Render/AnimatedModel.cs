@@ -216,11 +216,14 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 		_sceneObject?.SetMaterialGroup( _materialGroup );
 		_sceneObject.MeshGroupMask = _bodyGroupsMask;
 		_sceneObject.Update( 0.01f );
+		_sceneObject.OnFootstepEvent += InternalOnFootstep;
 
 		_boneMergeTarget?.SetBoneMerge( this, true );
 
 		BuildBoneHeirarchy( GameObject );
 	}
+
+
 
 	public override void OnDisabled()
 	{
@@ -235,6 +238,16 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 		AnimationUpdate();
 	}
 
+	public void PostAnimationUpdate()
+	{
+		ThreadSafe.AssertIsMainThread();
+
+		if ( !_sceneObject.IsValid() )
+			return;
+
+		_sceneObject.RunPendingEvents();
+	}
+
 	void AnimationUpdate()
 	{
 		if ( !_sceneObject.IsValid() )
@@ -244,11 +257,17 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 			return;
 
 		_sceneObject.Transform = Transform.World;
-		_sceneObject.Update( Scene.IsEditor ? 0.0f : Time.Delta );
+
+		if ( Scene.IsEditor )
+		{
+			_sceneObject.UpdateToBindPose();
+		}
+		else
+		{
+			_sceneObject.Update( Scene.IsEditor ? 0.0f : Time.Delta );
+		}		
 
 		MergeChildren();
-
-		_sceneObject.GetEvents();
 	}
 
 	void MergeChildren()
@@ -269,11 +288,17 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 			return;
 
 		AnimationUpdate();
+		PostAnimationUpdate();
 	}
 
-	protected override void OnPreRender()
-	{
+	/// <summary>
+	/// Called when a footstep event happens
+	/// </summary>
+	public Action<SceneModel.FootstepEvent> OnFootstepEvent { get; set; }
 
+	private void InternalOnFootstep( SceneModel.FootstepEvent e )
+	{
+		OnFootstepEvent?.Invoke( e );
 	}
 
 }
