@@ -73,7 +73,7 @@ public class PhysicsComponent : BaseComponent
 
 		if ( _body is not null )
 		{
-			//_body.Transform = tx.World;
+			_body.Transform = Transform.World;
 		}
 	}
 
