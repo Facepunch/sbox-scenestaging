@@ -303,6 +303,6 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 	
 	public Transform? GetAttachment( string name, bool worldSpace = true )
 	{
-		return _sceneObject.GetAttachment( name, worldSpace );
+		return _sceneObject?.GetAttachment( name, worldSpace );
 	}
 }
