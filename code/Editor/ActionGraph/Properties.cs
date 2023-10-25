@@ -148,15 +148,15 @@ file class SerializedNodeParameter<T, TDef> : SerializedProperty
 				return true;
 			}
 
-			obj = EditorTypeLibrary.GetSerializedObject( () => Target.Value ?? (!Target.Definition.IsRequired
-				? Target.Definition.Default
-				: PropertyType.IsValueType
-					? Activator.CreateInstance( PropertyType )
-					: null), description, this );
+			obj = EditorTypeLibrary.GetSerializedObject(
+				() => Target.Value ?? (!Target.Definition.IsRequired
+					? Target.Definition.Default : Activator.CreateInstance( PropertyType ) ),
+				description, this );
 			return true;
 		}
-		catch
+		catch ( Exception e )
 		{
+			Log.Warning( e );
 			obj = null;
 			return false;
 		}
@@ -368,7 +368,7 @@ internal class TypeControlWidget : ControlWidget
 		w.Layout.Margin = 6;
 		w.Layout.Spacing = 4;
 
-		var filter = new Filter( w );
+		var filter = new GraphView.Filter( w );
 		filter.TextChanged += ( s ) => PopulateTypeMenu( _menu, types, s );
 		filter.PlaceholderText = "Filter Types..";
 

@@ -162,6 +162,10 @@ public partial class MainWindow : DockWindow
 
 	public event Action Saved;
 
+	private readonly UndoStack _undoStack = new();
+	private Option _undoMenuOption;
+	private Option _redoMenuOption;
+
 	private MainWindow( Facepunch.ActionGraphs.ActionGraph actionGraph )
 	{
 		DeleteOnClose = true;
@@ -196,6 +200,13 @@ public partial class MainWindow : DockWindow
 				item.Update();
 			}
 		}
+
+		_undoMenuOption.Enabled = _undoStack.CanUndo;
+		_redoMenuOption.Enabled = _undoStack.CanRedo;
+		_undoMenuOption.Text = _undoStack.UndoName ?? "Undo";
+		_redoMenuOption.Text = _undoStack.RedoName ?? "Redo";
+		_undoMenuOption.StatusText = _undoStack.UndoName;
+		_redoMenuOption.StatusText = _undoStack.RedoName;
 	}
 
 	[Event.Hotload]
@@ -238,6 +249,20 @@ public partial class MainWindow : DockWindow
 			file.AddSeparator();
 			file.AddOption( new Option( "Exit" ) { Triggered = Close } );
 		}
+
+		{
+			var edit = MenuBar.AddMenu( "Edit" );
+			_undoMenuOption = edit.AddOption( "Undo", "undo", Undo, "Ctrl+Z" );
+			_redoMenuOption = edit.AddOption( "Redo", "redo", Redo, "Ctrl+Y" );
+			_undoMenuOption.Enabled = _undoStack.CanUndo;
+			_redoMenuOption.Enabled = _undoStack.CanRedo;
+
+			edit.AddSeparator();
+			edit.AddOption( "Cut", "common/cut.png", CutSelection, "Ctrl+X" );
+			edit.AddOption( "Copy", "common/copy.png", CopySelection, "Ctrl+C" );
+			edit.AddOption( "Paste", "common/paste.png", PasteSelection, "Ctrl+V" );
+			edit.AddOption( "Select All", "select_all", SelectAll, "Ctrl+A" );
+		}
 	}
 
 	private void View_OnSelectionChanged()
@@ -258,6 +283,36 @@ public partial class MainWindow : DockWindow
 	{
 		View.WriteSpecialNodes();
 		Saved?.Invoke();
+	}
+
+	private void Undo()
+	{
+
+	}
+
+	private void Redo()
+	{
+
+	}
+
+	private void CutSelection()
+	{
+		View.CutSelection();
+	}
+
+	private void CopySelection()
+	{
+		View.CopySelection();
+	}
+
+	private void PasteSelection()
+	{
+		View.PasteSelection();
+	}
+
+	private void SelectAll()
+	{
+		View.SelectAll();
 	}
 
 	protected override bool OnClose()
@@ -323,13 +378,15 @@ public class ActionGraphView : GraphView
 
 		foreach ( var pulse in Pulses )
 		{
-			pulse.Value.Time -= dt;
-			pulse.Key.WidthScale = 1f + MathF.Pow( Math.Max( pulse.Value.Time, 0f ), 8f ) * 3f;
-			pulse.Key.Update();
-
-			if ( pulse.Value.Time < 0f )
+			if ( !pulse.Key.IsValid || pulse.Value.Time < 0f )
 			{
 				FinishedPulsing.Add( pulse.Key );
+			}
+			else
+			{
+				pulse.Value.Time -= dt;
+				pulse.Key.WidthScale = 1f + MathF.Pow( Math.Max( pulse.Value.Time, 0f ), 8f ) * 3f;
+				pulse.Key.Update();
 			}
 		}
 
