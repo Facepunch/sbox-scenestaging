@@ -3,7 +3,7 @@ using System.Collections;
 using Editor.NodeEditor;
 using Facepunch.ActionGraphs;
 
-namespace Editor.ActionGraphs;
+namespace Editor.ActionGraph;
 
 public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 {

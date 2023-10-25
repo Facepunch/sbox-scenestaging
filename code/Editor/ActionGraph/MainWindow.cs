@@ -10,7 +10,7 @@ using Sandbox.Internal;
 using static Facepunch.ActionGraphs.Node;
 using PropertyAttribute = Sandbox.PropertyAttribute;
 
-namespace Editor.ActionGraphs;
+namespace Editor.ActionGraph;
 
 public static class ActionGraphExtensions
 {

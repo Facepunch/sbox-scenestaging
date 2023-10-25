@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using Facepunch.ActionGraphs;
 using Sandbox;
 
-namespace Editor.ActionGraphs;
+namespace Editor.ActionGraph;
 
 public partial class ActionGraph : IGraph
 {

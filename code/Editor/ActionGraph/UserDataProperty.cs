@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace Editor.ActionGraphs
+namespace Editor.ActionGraph
 {
 	public record UserDataProperty<T>
 		where T : IEquatable<T>

@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using Facepunch.ActionGraphs;
 using Sandbox;
 
-namespace Editor.ActionGraphs;
+namespace Editor.ActionGraph;
 
 [CanEdit( "action" )]
 public sealed class ActionProperty<T> : Button

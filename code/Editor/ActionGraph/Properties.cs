@@ -3,9 +3,8 @@ using System.IO;
 using System.Reflection;
 using Editor.NodeEditor;
 using Facepunch.ActionGraphs;
-using static Editor.NodeEditor.GraphView;
 
-namespace Editor.ActionGraphs;
+namespace Editor.ActionGraph;
 
 public class Properties : Widget
 {
