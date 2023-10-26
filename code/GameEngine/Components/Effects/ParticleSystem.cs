@@ -71,14 +71,13 @@ public class ParticleSystem : BaseComponent, BaseComponent.ExecuteInEditor
 				RecreateSceneObject();
 			}
 
-
 			if ( !_sceneObject.IsValid() )
 				return;
 		}
 
-		_sceneObject.SetControlPoint( 0, ControlPoint1?.Transform.World ?? Transform.World );
-		_sceneObject.SetControlPoint( 1, ControlPoint2?.Transform.World ?? Transform.World );
-		_sceneObject.SetControlPoint( 2, ControlPoint3?.Transform.World ?? Transform.World );
+		_sceneObject.SetControlPoint( 0, ControlPoint1.IsValid() ? ControlPoint1.Transform.World : Transform.World );
+		_sceneObject.SetControlPoint( 1, ControlPoint2.IsValid() ? ControlPoint2.Transform.World : Transform.World );
+		_sceneObject.SetControlPoint( 2, ControlPoint3.IsValid() ? ControlPoint3.Transform.World : Transform.World );
 
 		_sceneObject.Simulate( RealTime.Delta * PlaybackSpeed );
 
