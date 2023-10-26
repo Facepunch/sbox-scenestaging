@@ -102,6 +102,9 @@ public abstract partial class BaseComponent
 		ExceptionWrap( "Update", Update );
 	}
 
+	public Action OnComponentActivated { get; set; }
+	public Action OnComponentDeactivated { get; set; }
+
 	internal void UpdateEnabledStatus()
 	{
 		var state = _enabled && Scene is not null && GameObject is not null && GameObject.Active;
@@ -119,6 +122,8 @@ public abstract partial class BaseComponent
 			if ( ShouldExecute )
 			{
 				ExceptionWrap( "OnEnabled", OnEnabled );
+
+				OnComponentActivated?.Invoke();
 			}
 		}
 		else
@@ -126,6 +131,8 @@ public abstract partial class BaseComponent
 			if ( ShouldExecute )
 			{
 				ExceptionWrap( "OnDisabled", OnDisabled );
+
+				OnComponentDeactivated?.Invoke();
 			}
 		}
 	}
@@ -136,13 +143,15 @@ public abstract partial class BaseComponent
 
 		if ( _enabledState )
 		{
+			_enabledState = false;
+			_enabled = false;
+
 			if ( ShouldExecute )
 			{
 				ExceptionWrap( "OnDisabled", OnDisabled );
-			}
 
-			_enabledState = false;
-			_enabled = false;
+				OnComponentDeactivated?.Invoke();
+			}
 		}
 
 		GameObject.Components.RemoveAll( x => x == this );
