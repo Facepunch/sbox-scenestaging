@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
+using System;
 using System.Collections.Generic;
 
 public abstract class ColliderBaseComponent : BaseComponent, BaseComponent.ExecuteInEditor
@@ -64,8 +65,57 @@ public abstract class ColliderBaseComponent : BaseComponent, BaseComponent.Execu
 			keyframeBody = physicsBody;
 
 			Transform.OnTransformChanged += UpdateKeyframeTransform;
+
+			keyframeBody.OnTouchStart += OnTouchStartInternal;
+			keyframeBody.OnTouchStop += OnTouchStopInternal;
 		}
 	}
+
+
+
+	public HashSet<ColliderBaseComponent> Touching { get; private set; } = new ();
+
+	private void OnTouchStartInternal( PhysicsCollisionStart e )
+	{
+		if ( !IsTrigger )
+			return;
+
+		if ( e.Other.Shape.Collider is not ColliderBaseComponent bc )
+			return;
+
+		// already added if false
+		if ( !Touching.Add( bc ) )
+			return;
+
+		bc.OnComponentDeactivated += RemoveDeactivated;
+
+	}
+
+	private void OnTouchStopInternal( PhysicsCollisionStop e )
+	{
+		if ( e.Other.Shape.Collider is not ColliderBaseComponent bc )
+			return;
+
+		if ( !Touching.Remove( bc ) )
+			return;
+
+		bc.OnComponentDeactivated -= RemoveDeactivated;
+	}
+
+	void RemoveDeactivated()
+	{
+		Action actions = default;
+
+		foreach( var e in Touching )
+		{
+			if ( e.Active ) continue;
+
+			actions += () => Touching.Remove( e );
+		}
+
+		actions?.Invoke();
+	}
+
 
 	protected virtual void RebuildImmediately()
 	{
@@ -118,6 +168,7 @@ public abstract class ColliderBaseComponent : BaseComponent, BaseComponent.Execu
 	{
 		foreach ( var shape in shapes )
 		{
+			shape.Collider = this;
 			shape.IsTrigger = _isTrigger;
 			shape.SurfaceMaterial = Surface?.ResourcePath;
 
