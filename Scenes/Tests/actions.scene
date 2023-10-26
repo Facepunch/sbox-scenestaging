@@ -1,0 +1,345 @@
+{
+  "GameObjects": [
+    {
+      "Id": "f7f26c66-d4d8-4b0b-951e-15e99d6581c7",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "0.0003355032,97.93508,557.4279",
+      "Rotation": "0.4351622,0.4351622,-0.5573454,0.5573453",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "Id": "d9d3c81a-88c5-4dfb-907a-9449629221e7",
+      "Name": "SkyBox",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "SkyBox2D",
+          "__enabled": true,
+          "SkyMaterial": "materials/skybox/light_test_sky_overcast.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
+      "Name": "Citizen",
+      "Enabled": true,
+      "Position": "0,0,100",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "CharacterController",
+          "__enabled": true,
+          "Acceleration": 10,
+          "GroundAngle": 45,
+          "Height": 72,
+          "IgnoreLayers": "solid,trigger",
+          "Radius": 10,
+          "StepHeight": 18
+        },
+        {
+          "__type": "PlayerController",
+          "__enabled": true,
+          "AnimationHelper": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
+          "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+          "CameraDistance": 200,
+          "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
+          "FirstPerson": false,
+          "Gravity": "0,0,800"
+        },
+        {
+          "__type": "CitizenAnimation",
+          "__enabled": true,
+          "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+          "Name": "Body",
+          "Enabled": true,
+          "Position": "0,-0.66093,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "AnimatedModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/citizen/citizen.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "975e3006-e7c3-46a5-9f30-c31a196c89f9",
+              "Name": "Name Tag UI",
+              "Enabled": true,
+              "Position": "-0.000001814945,0.1895752,80.7357",
+              "Rotation": "-0.00000005960058,0.000000000000005518709,-0.9999317,0.01167414",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "WorldPanel",
+                  "__enabled": true,
+                  "HorizontalAlign": "Center",
+                  "LookAtCamera": true,
+                  "PanelSize": "1024,256",
+                  "RenderScale": 1,
+                  "VerticalAlign": "Center"
+                },
+                {
+                  "__type": "NameTagPanel",
+                  "__enabled": true,
+                  "Name": "Prickly Pete"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+          "Name": "Camera",
+          "Enabled": true,
+          "Position": "-200,0,64",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "CameraComponent",
+              "__enabled": true,
+              "BackgroundColor": "0.25292,0.26086,0.29703,1",
+              "ClearFlags": "Color, Depth, Stencil",
+              "FieldOfView": 80,
+              "ZFar": 10000,
+              "ZNear": 1
+            },
+            {
+              "__type": "FilmGrain",
+              "__enabled": true,
+              "Intensity": 0.03,
+              "Response": 1
+            },
+            {
+              "__type": "Vignette",
+              "__enabled": true,
+              "Center": "0.5,0.5",
+              "Color": "0,0,0,0.38",
+              "Intensity": 1,
+              "Roundness": 0.5,
+              "Smoothness": 1
+            },
+            {
+              "__type": "ChromaticAberration",
+              "__enabled": true,
+              "Offset": "4,6,4.049999",
+              "Scale": 0.2
+            },
+            {
+              "__type": "Sharpen",
+              "__enabled": true,
+              "Scale": 1
+            },
+            {
+              "__type": "Highlight",
+              "__enabled": true
+            },
+            {
+              "__type": "Bloom",
+              "__enabled": true,
+              "BloomColor": {
+                "color": [
+                  {
+                    "c": "1,1,1,1"
+                  },
+                  {
+                    "t": 1,
+                    "c": "0.5,0.5,0.5,1"
+                  }
+                ]
+              },
+              "BloomCurve": {
+                "rangey": "0,106.45",
+                "frames": [
+                  {},
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              "Mode": "Screen",
+              "Strength": 1,
+              "Threshold": 0.3,
+              "ThresholdWidth": 2
+            }
+          ]
+        },
+        {
+          "Id": "edb447df-b691-4153-8652-070d2533e7c4",
+          "Name": "EyePos",
+          "Enabled": true,
+          "Position": "0,0,64",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Children": [
+            {
+              "Id": "5d22324a-5587-4982-aead-558ad25a8925",
+              "Name": "Camera",
+              "Enabled": true,
+              "Position": "0,0,0",
+              "Rotation": "-0.00000000000002942435,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "CameraComponent",
+                  "__enabled": true,
+                  "BackgroundColor": "0.33333,0.46275,0.52157,1",
+                  "ClearFlags": "Color, Depth, Stencil",
+                  "FieldOfView": 60,
+                  "ZFar": 10000,
+                  "ZNear": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "258a1012-ff9e-49b5-bf1b-887d483bb0bf",
+          "Name": "Hair",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "AnimatedModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+              "CreateBoneObjects": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/citizen_clothes/hair/hair_fade/models/hair_fade.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "f14d65a1-eea4-4fe5-89d7-a550ec6b8f11",
+          "Name": "Hair",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "AnimatedModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+              "CreateBoneObjects": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/citizen_clothes/shoes/boots/models/army_boots.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "4d236e67-8c2a-4e69-96de-52629fe5788b",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "0,0,-500",
+      "Rotation": "0,0,0,1",
+      "Scale": "20,20,20",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,0.32673,0.32673,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "553bc862-24f1-448b-b12b-e0d7308b12f6",
+      "Name": "Sphere",
+      "Enabled": true,
+      "Position": "100,0,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "5,5,5",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/soccerball.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 5,
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        }
+      ]
+    }
+  ],
+  "__references": [
+    "baik.soccerball"
+  ]
+}
