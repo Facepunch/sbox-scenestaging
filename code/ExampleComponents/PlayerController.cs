@@ -47,9 +47,11 @@ public class PlayerController : BaseComponent
 		{
 			var targetAngle = new Angles( 0, EyeAngles.yaw, 0 ).ToRotation();
 
-			if ( cc.Velocity.Length > 10.0f )
+			var v = cc.Velocity.WithZ( 0 );
+
+			if ( v.Length > 10.0f )
 			{
-				targetAngle = Rotation.LookAt( cc.Velocity );
+				targetAngle = Rotation.LookAt( v, Vector3.Up );
 			}
 
 			rotateDifference = Body.Transform.Rotation.Distance( targetAngle );
