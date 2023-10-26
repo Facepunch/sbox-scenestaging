@@ -89,6 +89,18 @@ public sealed partial class AnimatedModelComponent
 
 		_sceneObject.SetBoneWorldTransform( bone.Index, tx );
 	}
+
+	internal void SetPhysicsBone( int v, Transform transform, float lerp )
+	{
+		_sceneObject.SetBoneOverride( v, transform, lerp );
+	}
+
+	internal void ClearPhysicsBones()
+	{
+		if ( !_sceneObject.IsValid() ) return;
+
+		_sceneObject.ClearBoneOverrides();
+	}
 }
 
 

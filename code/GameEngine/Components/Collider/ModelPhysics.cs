@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using System.Collections.Generic;
+using System.Linq;
 
 [Title( "Model Physics" )]
 [Category( "Physics" )]
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 public class ModelPhysics : BaseComponent
 {
 	[Property] public Model Model { get; set; }
+
+	[Property] public AnimatedModelComponent Renderer { get; set; }
 
 	PhysicsGroup PhysicsGroup;
 
@@ -62,6 +65,26 @@ public class ModelPhysics : BaseComponent
 	{
 		PhysicsGroup?.Remove();
 		PhysicsGroup = null;
+
+		if ( Renderer is not null )
+		{
+			Renderer.ClearPhysicsBones();
+		}
+	}
+
+	public override void Update()
+	{
+		if ( PhysicsGroup is null ) return;
+		if ( Renderer is null ) return;
+
+		int i = 0;
+		foreach( var body in PhysicsGroup.Bodies )
+		{
+			var bone = Renderer.Model.Bones.AllBones.FirstOrDefault( x => x.Name == body.GroupName );
+			if ( bone is null ) continue;
+
+			Renderer.SetPhysicsBone( bone.Index, body.Transform, Time.Delta * Scene.FixedUpdateFrequency );
+		}
 	}
 
 }
