@@ -91,8 +91,14 @@ public static class SceneUtility
 	/// <summary>
 	/// Create a unique copy of the passed in GameObject
 	/// </summary>
-	public static GameObject Instantiate( GameObject template, Vector3 position, Quaternion rotation ) 
+	public static GameObject Instantiate( GameObject template, Vector3 position, Rotation rotation ) 
 		=> Instantiate( template, new Transform( position, rotation, 1.0f ) );
+
+	/// <summary>
+	/// Create a unique copy of the passed in GameObject
+	/// </summary>
+	public static GameObject Instantiate( GameObject template, Vector3 position )
+		=> Instantiate( template, new Transform( position, Rotation.Identity, 1.0f ) );
 
 
 	static HashSet<GameObject> spawnList;
