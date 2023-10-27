@@ -12,8 +12,14 @@ public class SpotLightComponent : BaseComponent, IComponentColorProvider, BaseCo
 
 	[Property] public Color LightColor { get; set; } = "#E9FAFF";
 	[Property] public float Radius { get; set; } = 500;
+
+	[Range(0, 90)]
 	[Property] public float ConeOuter { get; set; } = 45;
+
+	[Range( 0, 90 )]
 	[Property] public float ConeInner { get; set; } = 15;
+
+	[Range( 0, 10 )]
 	[Property] public float Attenuation { get; set; } = 1.0f;
 	[Property] public Texture Cookie { get; set; }
 
