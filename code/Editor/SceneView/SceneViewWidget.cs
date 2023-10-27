@@ -72,6 +72,7 @@ public partial class SceneViewWidget : Widget
 		Camera.FieldOfView = EditorScene.GizmoInstance.Settings.CameraFieldOfView;
 		Camera.EnableUserInterface = false;
 		Camera.EnablePostProcessing = false;
+		Camera.Ortho = false;
 
 		SceneToolbar.SceneInstance = EditorScene.GizmoInstance;
 
