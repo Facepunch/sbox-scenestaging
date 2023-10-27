@@ -366,7 +366,7 @@
                       "_name": "Velocity"
                     },
                     "UserData": {
-                      "Position": "1712,-528"
+                      "Position": "1632,-288"
                     }
                   },
                   {
@@ -580,7 +580,88 @@
                     "Id": 37,
                     "Type": "nop",
                     "UserData": {
-                      "Position": "912,-0"
+                      "Position": "1360,0"
+                    }
+                  },
+                  {
+                    "Id": 38,
+                    "Type": "nop",
+                    "UserData": {
+                      "Position": "256,-16"
+                    }
+                  },
+                  {
+                    "Id": 39,
+                    "Type": "nop",
+                    "UserData": {
+                      "Position": "1360,-16"
+                    }
+                  },
+                  {
+                    "Id": 40,
+                    "Type": "call",
+                    "Properties": {
+                      "T": {
+                        "$type": "Type",
+                        "Type": "package.facepunch.testbed/CitizenAnimation"
+                      },
+                      "_type": "package.facepunch.testbed/GameObject",
+                      "_name": "GetComponentInParent"
+                    },
+                    "UserData": {
+                      "Position": "1632,-64"
+                    }
+                  },
+                  {
+                    "Id": 41,
+                    "Type": "call",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/CitizenAnimation",
+                      "_name": "TriggerDeploy"
+                    },
+                    "UserData": {
+                      "Position": "2208,-80"
+                    }
+                  },
+                  {
+                    "Id": 42,
+                    "Type": "property.set",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/CitizenAnimation",
+                      "_name": "HoldType"
+                    },
+                    "UserData": {
+                      "Position": "1984,-80"
+                    }
+                  },
+                  {
+                    "Id": 43,
+                    "Type": "nop",
+                    "UserData": {
+                      "Position": "2096,80"
+                    }
+                  },
+                  {
+                    "Id": 44,
+                    "Type": "const.enum",
+                    "Properties": {
+                      "value": {
+                        "$type": "Simple",
+                        "Type": {
+                          "$type": "Nested",
+                          "DeclaringType": "package.facepunch.testbed/CitizenAnimation",
+                          "Name": "HoldTypes"
+                        },
+                        "Value": "Punch"
+                      },
+                      "T": {
+                        "$type": "Nested",
+                        "DeclaringType": "package.facepunch.testbed/CitizenAnimation",
+                        "Name": "HoldTypes"
+                      }
+                    },
+                    "UserData": {
+                      "Position": "1664,64"
                     }
                   }
                 ],
@@ -794,6 +875,60 @@
                     "out",
                     37,
                     "in"
+                  ],
+                  [
+                    0,
+                    "self",
+                    38,
+                    "in"
+                  ],
+                  [
+                    38,
+                    "out",
+                    39,
+                    "in"
+                  ],
+                  [
+                    39,
+                    "out",
+                    40,
+                    "_target"
+                  ],
+                  [
+                    43,
+                    "out",
+                    41,
+                    "_target"
+                  ],
+                  [
+                    42,
+                    "_signal",
+                    41,
+                    "_signal"
+                  ],
+                  [
+                    40,
+                    "_result",
+                    42,
+                    "target"
+                  ],
+                  [
+                    17,
+                    "_signal",
+                    42,
+                    "_signal"
+                  ],
+                  [
+                    40,
+                    "_result",
+                    43,
+                    "in"
+                  ],
+                  [
+                    44,
+                    "_result",
+                    42,
+                    "value"
                   ]
                 ],
                 "UserData": {

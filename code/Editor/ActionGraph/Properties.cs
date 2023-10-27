@@ -162,13 +162,42 @@ file class SerializedNodeParameter<T, TDef> : SerializedProperty
 		}
 	}
 
+	private static object ConvertTo( object value, Type sourceType, Type targetType )
+	{
+		if ( sourceType == targetType || sourceType.IsAssignableTo( targetType ) )
+		{
+			return value;
+		}
+
+		if ( sourceType == typeof(long) && targetType.IsEnum )
+		{
+			// Special case for EnumControlWidget :S
+
+			return Enum.ToObject( targetType, (long)value );
+		}
+
+		return Convert.ChangeType( value, targetType );
+	}
+
 	public override void SetValue<TVal>( TVal value )
 	{
-		Target.Value = value;
+		Target.Value = ConvertTo( value, typeof(TVal), PropertyType );
 	}
 
 	public override TVal GetValue<TVal>( TVal defaultValue = default )
 	{
+		if ( PropertyType.IsEnum && typeof(TVal) == typeof(long)
+			&& Target.Value is {} enumVal && enumVal.GetType() == PropertyType )
+		{
+			// Special case for EnumControlWidget :S
+
+			return (TVal)Convert.ChangeType(
+				Convert.ChangeType(
+					enumVal,
+					Enum.GetUnderlyingType( PropertyType ) ),
+				typeof(TVal) );
+		}
+
 		return Target.Value is TVal value
 			? value
 			: Target.Definition is { IsRequired: false, Default: TVal defaultDef }
@@ -329,20 +358,25 @@ internal class TypeControlWidget : ControlWidget
 	private IEnumerable<TypeOption> GetPossibleTypes()
 	{
 		var genericParam = GenericParameter;
+		var listedTypes = new HashSet<Type>();
 
 		foreach ( var type in SystemTypes )
 		{
+			if ( !listedTypes.Add( type ) ) continue;
 			if ( !SatisfiesConstraints( type, genericParam ) ) continue;
 			yield return GetTypeOption( type );
 		}
 
 		var componentTypes = EditorTypeLibrary.GetTypes<BaseComponent>();
 		var resourceTypes = EditorTypeLibrary.GetTypes<GameResource>();
+		var userTypes = EditorTypeLibrary.GetTypes()
+			.Where( x => x.TargetType.Assembly.GetName().Name?.StartsWith( "package." ) ?? false );
 
-		foreach ( var typeDesc in componentTypes.Concat( resourceTypes ) )
+		foreach ( var typeDesc in componentTypes.Concat( resourceTypes ).Concat( userTypes ) )
 		{
 			if ( typeDesc.IsStatic ) continue;
 			if ( typeDesc.IsGenericType ) continue;
+			if ( !listedTypes.Add( typeDesc.TargetType ) ) continue;
 			if ( !SatisfiesConstraints( typeDesc.TargetType, genericParam ) ) continue;
 
 			var path = GetTypePath( typeDesc );
