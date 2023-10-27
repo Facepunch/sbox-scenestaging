@@ -213,7 +213,7 @@
               "Name": "Camera",
               "Enabled": true,
               "Position": "0,0,0",
-              "Rotation": "-0.00000000000002942435,0,0,1",
+              "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
               "Components": [
@@ -275,6 +275,574 @@
               "Tint": "1,1,1,1"
             }
           ]
+        },
+        {
+          "Id": "038a1cc7-6e31-4689-8411-c577b88b8daa",
+          "Name": "Kick Trigger",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "trigger",
+          "Components": [
+            {
+              "__type": "ColliderSphereComponent",
+              "__enabled": true,
+              "IsTrigger": true,
+              "Radius": 30,
+              "Surface": null
+            },
+            {
+              "__type": "OnTouchComponent",
+              "__enabled": true,
+              "HandleStartTouch": {
+                "Variables": [],
+                "Nodes": [
+                  {
+                    "Id": 0,
+                    "Type": "event",
+                    "Properties": {
+                      "name": "event"
+                    },
+                    "UserData": {
+                      "Position": "-656,-368"
+                    }
+                  },
+                  {
+                    "Id": 1,
+                    "Type": "property.get",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/BaseComponent",
+                      "_name": "GameObject"
+                    },
+                    "UserData": {
+                      "Position": "-112,176"
+                    }
+                  },
+                  {
+                    "Id": 2,
+                    "Type": "property.get",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/GameObject",
+                      "_name": "Tags"
+                    },
+                    "UserData": {
+                      "Position": "64,176"
+                    }
+                  },
+                  {
+                    "Id": 4,
+                    "Type": "call",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/GameTags",
+                      "_name": "Has"
+                    },
+                    "UserData": {
+                      "Position": "256,192"
+                    }
+                  },
+                  {
+                    "Id": 5,
+                    "Type": "const.string",
+                    "Properties": {
+                      "value": "ball"
+                    },
+                    "UserData": {
+                      "Position": "64,240"
+                    }
+                  },
+                  {
+                    "Id": 6,
+                    "Type": "branch",
+                    "UserData": {
+                      "Position": "592,48"
+                    }
+                  },
+                  {
+                    "Id": 17,
+                    "Type": "property.set",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/PhysicsComponent",
+                      "_name": "Velocity"
+                    },
+                    "UserData": {
+                      "Position": "1712,-528"
+                    }
+                  },
+                  {
+                    "Id": 16,
+                    "Type": "call",
+                    "Properties": {
+                      "T": {
+                        "$type": "Type",
+                        "Type": "package.facepunch.testbed/PhysicsComponent"
+                      },
+                      "_type": "package.facepunch.testbed/BaseComponent",
+                      "_name": "GetComponent"
+                    },
+                    "UserData": {
+                      "Position": "-288,-336"
+                    }
+                  },
+                  {
+                    "Id": 9,
+                    "Type": "property.get",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/GameObject",
+                      "_name": "Transform"
+                    },
+                    "UserData": {
+                      "Position": "96,-592"
+                    }
+                  },
+                  {
+                    "Id": 11,
+                    "Type": "property.get",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/BaseComponent",
+                      "_name": "Transform"
+                    },
+                    "UserData": {
+                      "Position": "96,-528"
+                    }
+                  },
+                  {
+                    "Id": 12,
+                    "Type": "property.get",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/GameTransform",
+                      "_name": "Position"
+                    },
+                    "UserData": {
+                      "Position": "272,-592"
+                    }
+                  },
+                  {
+                    "Id": 13,
+                    "Type": "property.get",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/GameTransform",
+                      "_name": "Position"
+                    },
+                    "UserData": {
+                      "Position": "272,-528"
+                    }
+                  },
+                  {
+                    "Id": 14,
+                    "Type": "op.subtract",
+                    "UserData": {
+                      "Position": "544,-560"
+                    }
+                  },
+                  {
+                    "Id": 15,
+                    "Type": "property.get",
+                    "Properties": {
+                      "_type": "Sandbox.System/Vector3",
+                      "_name": "Normal"
+                    },
+                    "UserData": {
+                      "Position": "672,-560"
+                    }
+                  },
+                  {
+                    "Id": 18,
+                    "Type": "op.multiply",
+                    "UserData": {
+                      "Position": "896,-416"
+                    }
+                  },
+                  {
+                    "Id": 33,
+                    "Type": "const.string",
+                    "Properties": {
+                      "value": "attack1"
+                    },
+                    "UserData": {
+                      "Position": "288,-352"
+                    }
+                  },
+                  {
+                    "Id": 34,
+                    "Type": "op.conditional",
+                    "UserData": {
+                      "Position": "704,-288"
+                    }
+                  },
+                  {
+                    "Id": 32,
+                    "Type": "input.down",
+                    "UserData": {
+                      "Position": "464,-352"
+                    }
+                  },
+                  {
+                    "Id": 31,
+                    "Type": "call",
+                    "Properties": {
+                      "T": {
+                        "$type": "Type",
+                        "Type": "package.facepunch.testbed/CharacterController"
+                      },
+                      "_type": "package.facepunch.testbed/GameObject",
+                      "_name": "GetComponentInParent"
+                    },
+                    "UserData": {
+                      "Position": "-80,-896"
+                    }
+                  },
+                  {
+                    "Id": 23,
+                    "Type": "nop",
+                    "UserData": {
+                      "Position": "-304,-544"
+                    }
+                  },
+                  {
+                    "Id": 24,
+                    "Type": "property.get",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/PhysicsComponent",
+                      "_name": "Velocity"
+                    },
+                    "UserData": {
+                      "Position": "96,-816"
+                    }
+                  },
+                  {
+                    "Id": 25,
+                    "Type": "property.get",
+                    "Properties": {
+                      "_type": "package.facepunch.testbed/CharacterController",
+                      "_name": "Velocity"
+                    },
+                    "UserData": {
+                      "Position": "96,-896"
+                    }
+                  },
+                  {
+                    "Id": 26,
+                    "Type": "op.subtract",
+                    "UserData": {
+                      "Position": "336,-848"
+                    }
+                  },
+                  {
+                    "Id": 27,
+                    "Type": "op.add",
+                    "UserData": {
+                      "Position": "1248,-720"
+                    }
+                  },
+                  {
+                    "Id": 28,
+                    "Type": "nop",
+                    "UserData": {
+                      "Position": "256,-0"
+                    }
+                  },
+                  {
+                    "Id": 29,
+                    "Type": "nop",
+                    "UserData": {
+                      "Position": "-144,-48"
+                    }
+                  },
+                  {
+                    "Id": 30,
+                    "Type": "nop",
+                    "UserData": {
+                      "Position": "-400,-336"
+                    }
+                  },
+                  {
+                    "Id": 35,
+                    "Type": "const.float",
+                    "Properties": {
+                      "value": 200
+                    },
+                    "UserData": {
+                      "Position": "496,-192"
+                    }
+                  },
+                  {
+                    "Id": 36,
+                    "Type": "const.float",
+                    "Properties": {
+                      "value": 1000
+                    },
+                    "UserData": {
+                      "Position": "496,-272"
+                    }
+                  },
+                  {
+                    "Id": 37,
+                    "Type": "nop",
+                    "UserData": {
+                      "Position": "912,-0"
+                    }
+                  }
+                ],
+                "Links": [
+                  [
+                    0,
+                    "collider",
+                    1,
+                    "target"
+                  ],
+                  [
+                    1,
+                    "_result",
+                    2,
+                    "target"
+                  ],
+                  [
+                    2,
+                    "_result",
+                    4,
+                    "_target"
+                  ],
+                  [
+                    5,
+                    "_result",
+                    4,
+                    "tag"
+                  ],
+                  [
+                    4,
+                    "_result",
+                    6,
+                    "condition"
+                  ],
+                  [
+                    29,
+                    "out",
+                    6,
+                    "_signal"
+                  ],
+                  [
+                    37,
+                    "out",
+                    17,
+                    "target"
+                  ],
+                  [
+                    30,
+                    "out",
+                    16,
+                    "_target"
+                  ],
+                  [
+                    23,
+                    "out",
+                    9,
+                    "target"
+                  ],
+                  [
+                    30,
+                    "out",
+                    11,
+                    "target"
+                  ],
+                  [
+                    9,
+                    "_result",
+                    12,
+                    "target"
+                  ],
+                  [
+                    11,
+                    "_result",
+                    13,
+                    "target"
+                  ],
+                  [
+                    13,
+                    "_result",
+                    14,
+                    "a"
+                  ],
+                  [
+                    12,
+                    "_result",
+                    14,
+                    "b"
+                  ],
+                  [
+                    14,
+                    "_result",
+                    15,
+                    "target"
+                  ],
+                  [
+                    15,
+                    "_result",
+                    18,
+                    "a"
+                  ],
+                  [
+                    6,
+                    "true",
+                    17,
+                    "_signal"
+                  ],
+                  [
+                    27,
+                    "_result",
+                    17,
+                    "value"
+                  ],
+                  [
+                    35,
+                    "_result",
+                    34,
+                    "b"
+                  ],
+                  [
+                    32,
+                    "_result",
+                    34,
+                    "x"
+                  ],
+                  [
+                    33,
+                    "_result",
+                    32,
+                    "action"
+                  ],
+                  [
+                    31,
+                    "_result",
+                    25,
+                    "target"
+                  ],
+                  [
+                    0,
+                    "self",
+                    23,
+                    "in"
+                  ],
+                  [
+                    16,
+                    "_result",
+                    24,
+                    "target"
+                  ],
+                  [
+                    23,
+                    "out",
+                    31,
+                    "_target"
+                  ],
+                  [
+                    25,
+                    "_result",
+                    26,
+                    "a"
+                  ],
+                  [
+                    24,
+                    "_result",
+                    26,
+                    "b"
+                  ],
+                  [
+                    26,
+                    "_result",
+                    27,
+                    "a"
+                  ],
+                  [
+                    18,
+                    "_result",
+                    27,
+                    "b"
+                  ],
+                  [
+                    16,
+                    "_result",
+                    28,
+                    "in"
+                  ],
+                  [
+                    0,
+                    "_signal",
+                    29,
+                    "in"
+                  ],
+                  [
+                    0,
+                    "collider",
+                    30,
+                    "in"
+                  ],
+                  [
+                    36,
+                    "_result",
+                    34,
+                    "a"
+                  ],
+                  [
+                    34,
+                    "_result",
+                    18,
+                    "b"
+                  ],
+                  [
+                    28,
+                    "out",
+                    37,
+                    "in"
+                  ]
+                ],
+                "UserData": {
+                  "name": "Start Touch",
+                  "id": "d8365468-4f8f-4ec4-9a6f-be492845b0ed",
+                  "comments": [
+                    {
+                      "Size": "580,242",
+                      "Color": "Purple",
+                      "Title": "Player velocity relative to ball velocity",
+                      "Description": "",
+                      "Layer": 3,
+                      "Identifier": "0e6371c6-2319-4f4b-9ab7-5e595fd25033",
+                      "Position": "-112,-960"
+                    },
+                    {
+                      "Size": "592,226",
+                      "Color": "Blue",
+                      "Title": "Has \u0022ball\u0022 tag",
+                      "Description": "",
+                      "Layer": 1,
+                      "Identifier": "90b33d5c-21c4-46ac-96eb-5baab41d14cf",
+                      "Position": "-144,112"
+                    },
+                    {
+                      "Size": "800,226",
+                      "Color": "Green",
+                      "Title": "Ball to player direction",
+                      "Description": "",
+                      "Layer": 1,
+                      "Identifier": "5e93da2e-81cb-457d-bb7b-9cc663e1b448",
+                      "Position": "64,-672"
+                    },
+                    {
+                      "Size": "580,334",
+                      "Color": "Yellow",
+                      "Title": "Kick force",
+                      "Description": "",
+                      "Layer": 5,
+                      "Identifier": "40551862-c8da-4440-bfea-58b44e7b7803",
+                      "Position": "256,-416"
+                    }
+                  ]
+                }
+              },
+              "HandleStopTouch": null,
+              "HandleTouching": null
+            }
+          ]
         }
       ]
     },
@@ -306,13 +874,253 @@
       ]
     },
     {
+      "Id": "680400c0-3400-4307-bf64-d4e5845a4014",
+      "Name": "Cube (1)",
+      "Enabled": true,
+      "Position": "1000,0,-400",
+      "Rotation": "0,0,0,1",
+      "Scale": "20,20,20",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.32549,0.47451,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "9d1d9790-a6ac-438f-85e8-1b4454cd14fc",
+      "Name": "Cube (2)",
+      "Enabled": true,
+      "Position": "0,-1000,-400",
+      "Rotation": "0,0,0,1",
+      "Scale": "20,20,20",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.32673,0.47485,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "f24579ad-4149-4441-b268-42022d0d0ab7",
+      "Name": "Cube (4)",
+      "Enabled": true,
+      "Position": "-1000,0,-400",
+      "Rotation": "0,0,0,1",
+      "Scale": "20,20,20",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.32549,0.47451,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "2ef76918-d74f-4778-a88e-337367e31468",
+      "Name": "Cube (3)",
+      "Enabled": true,
+      "Position": "0,1000,-400",
+      "Rotation": "0,0,0,1",
+      "Scale": "20,20,20",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.32549,0.47451,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
       "Id": "553bc862-24f1-448b-b12b-e0d7308b12f6",
-      "Name": "Sphere",
+      "Name": "Ball",
       "Enabled": true,
       "Position": "100,0,50",
       "Rotation": "0,0,0,1",
       "Scale": "5,5,5",
-      "Tags": "",
+      "Tags": "ball",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/soccerball.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 5,
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        }
+      ]
+    },
+    {
+      "Id": "d6ae648d-b7a1-4b98-949f-ac57b8a35b90",
+      "Name": "Ball (1)",
+      "Enabled": true,
+      "Position": "79.94609,-92.75137,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "5,5,5",
+      "Tags": "ball",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/soccerball.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 5,
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        }
+      ]
+    },
+    {
+      "Id": "66b4fb94-e3b1-45c1-b590-e03f2df51ef8",
+      "Name": "Ball (2)",
+      "Enabled": true,
+      "Position": "160.1308,-74.81232,50",
+      "Rotation": "0,0,0,1",
+      "Scale": "5,5,5",
+      "Tags": "ball",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/soccerball.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 5,
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        }
+      ]
+    },
+    {
+      "Id": "2f163782-673d-4103-8a1b-f1707391b486",
+      "Name": "Ball (3)",
+      "Enabled": true,
+      "Position": "166.9967,17.11626,49.99998",
+      "Rotation": "0,0,0,1",
+      "Scale": "5,5,5",
+      "Tags": "ball",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/soccerball.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 5,
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true,
+          "Static": false
+        }
+      ]
+    },
+    {
+      "Id": "70c1699c-db30-4da1-9510-b000632a8c31",
+      "Name": "Ball (4)",
+      "Enabled": true,
+      "Position": "103.9836,55.58842,49.99999",
+      "Rotation": "0,0,0,1",
+      "Scale": "5,5,5",
+      "Tags": "ball",
       "Components": [
         {
           "__type": "ModelComponent",
