@@ -5,6 +5,35 @@ public sealed class CitizenAnimation : BaseComponent, BaseComponent.ExecuteInEdi
 {
 	[Property] public AnimatedModelComponent Target { get; set; }
 
+	[Property] public GameObject EyeSource { get; set; }
+
+	[Property] public GameObject LookAtObject { get; set; }
+
+	
+
+
+	public override void Update()
+	{
+		if ( LookAtObject.IsValid() )
+		{
+			var eyePos = GetEyeWorldTransform.Position;
+
+			var dir = (LookAtObject.Transform.Position - eyePos).Normal;
+			WithLook( dir, 1, 0.5f, 0.1f );
+		}
+	}
+
+	public Transform GetEyeWorldTransform
+	{
+		get 
+		{
+			if ( EyeSource.IsValid() ) return EyeSource.Transform.World;
+
+			return Transform.World;
+		}
+	}
+
+
 	/// <summary>
 	/// Have the player look at this point in the world
 	/// </summary>
