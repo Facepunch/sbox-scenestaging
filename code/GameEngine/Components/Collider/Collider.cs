@@ -143,7 +143,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		{
 			shape.Collider = this;
 			shape.IsTrigger = _isTrigger;
-			shape.SurfaceMaterial = Surface?.ResourcePath;
+			shape.SurfaceMaterial = Surface?.ResourceName;
 
 			// this sucks, implement ITagSet
 			shape.ClearTags();
