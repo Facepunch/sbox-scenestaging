@@ -15,7 +15,7 @@ public sealed class BrickBrick : BaseComponent, BaseComponent.ICollisionListener
 		
 	}
 
-	public void OnCollisionStart( CollisionStart o )
+	public void OnCollisionStart( Collision o )
 	{
 		if ( o.Other.GameObject.Tags.Has( "ball" ) )
 		{
@@ -28,7 +28,7 @@ public sealed class BrickBrick : BaseComponent, BaseComponent.ICollisionListener
 		
 	}
 
-	public void OnCollisionUpdate( CollisionUpdate other )
+	public void OnCollisionUpdate( Collision other )
 	{
 		
 	}

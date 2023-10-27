@@ -34,7 +34,7 @@ public sealed class BrickBall : BaseComponent, BaseComponent.ICollisionListener
 		Transform.Position = Transform.Position.WithX( StartX );
 	}
 
-	public void OnCollisionStart( CollisionStart o )
+	public void OnCollisionStart( Collision o )
 	{
 		Direction = Vector3.Reflect( Direction, o.Contact.Normal ).Normal.WithX( 0 );
 		o.Self.Body.Velocity = Direction * Speed;
@@ -52,7 +52,7 @@ public sealed class BrickBall : BaseComponent, BaseComponent.ICollisionListener
 		o.Self.Body.AngularVelocity = 0;
 	}
 
-	public void OnCollisionUpdate( CollisionUpdate o )
+	public void OnCollisionUpdate( Collision o )
 	{
 		Direction = Vector3.Reflect( Direction, o.Contact.Normal ).Normal.WithX( 0 );
 		o.Self.Body.Velocity = Direction * Speed;

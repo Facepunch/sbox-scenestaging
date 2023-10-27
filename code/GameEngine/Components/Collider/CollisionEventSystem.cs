@@ -7,7 +7,7 @@ using static BaseComponent;
 /// <summary>
 /// Used to abstract the listening of collision events
 /// </summary>
-internal class CollisionEventSystem : IDisposable
+class CollisionEventSystem : IDisposable
 {
 	private PhysicsBody body;
 	
@@ -16,14 +16,14 @@ internal class CollisionEventSystem : IDisposable
 	public CollisionEventSystem( PhysicsBody body )
 	{
 		this.body = body;
-		this.body.OnTouchStart += OnPhysicsTouchStart;
-		this.body.OnTouchStay += OnPhysicsTouchStay;
-		this.body.OnTouchStop += OnPhysicsTouchStop;
+		this.body.OnIntersectionStart += OnPhysicsTouchStart;
+		this.body.OnIntersectionUpdate += OnPhysicsTouchStay;
+		this.body.OnIntersectionEnd += OnPhysicsTouchStop;
 	}
 
-	private void OnPhysicsTouchStart( PhysicsCollisionStart c )
+	private void OnPhysicsTouchStart( PhysicsIntersection c )
 	{
-		var o = new CollisionStart( new CollisionSource( c.Self ), new CollisionSource( c.Other ), c.Contact );
+		var o = new Collision( new CollisionSource( c.Self ), new CollisionSource( c.Other ), c.Contact );
 
 		if ( o.Self.Collider.IsTrigger || o.Other.Collider.IsTrigger )
 		{
@@ -63,7 +63,7 @@ internal class CollisionEventSystem : IDisposable
 		actions?.Invoke();
 	}
 
-	private void OnPhysicsTouchStop( PhysicsCollisionStop c )
+	private void OnPhysicsTouchStop( PhysicsIntersectionEnd c )
 	{
 		var o = new CollisionStop( new CollisionSource( c.Self ), new CollisionSource( c.Other ) );
 
@@ -89,9 +89,9 @@ internal class CollisionEventSystem : IDisposable
 		}
 	}
 
-	private void OnPhysicsTouchStay( PhysicsCollisionStay c )
+	private void OnPhysicsTouchStay( PhysicsIntersection c )
 	{
-		var o = new CollisionUpdate( new CollisionSource( c.Self ), new CollisionSource( c.Other ), c.Contact );
+		var o = new Collision( new CollisionSource( c.Self ), new CollisionSource( c.Other ), c.Contact );
 
 		o.Self.GameObject.ForEachComponent<ICollisionListener>( "OnCollisionUpdate", true, ( x ) => x.OnCollisionUpdate( o ) );
 	}
@@ -101,8 +101,8 @@ internal class CollisionEventSystem : IDisposable
 		if ( !body.IsValid() )
 			return;
 
-		body.OnTouchStart -= OnPhysicsTouchStart;
-		body.OnTouchStay -= OnPhysicsTouchStay;
-		body.OnTouchStop -= OnPhysicsTouchStop;
+		body.OnIntersectionStart -= OnPhysicsTouchStart;
+		body.OnIntersectionUpdate -= OnPhysicsTouchStay;
+		body.OnIntersectionEnd -= OnPhysicsTouchStop;
 	}
 }

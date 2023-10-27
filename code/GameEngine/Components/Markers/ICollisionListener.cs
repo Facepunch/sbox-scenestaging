@@ -3,8 +3,7 @@ using Sandbox.Diagnostics;
 
 public abstract partial class BaseComponent
 {
-	public readonly record struct CollisionStart( CollisionSource Self, CollisionSource Other, PhysicsContact Contact );
-	public readonly record struct CollisionUpdate( CollisionSource Self, CollisionSource Other, PhysicsContact Contact );
+	public readonly record struct Collision( CollisionSource Self, CollisionSource Other, PhysicsContact Contact );
 	public readonly record struct CollisionStop( CollisionSource Self, CollisionSource Other );
 
 	public readonly struct CollisionSource
@@ -28,8 +27,8 @@ public abstract partial class BaseComponent
 	/// </summary>
 	public interface ICollisionListener
 	{
-		void OnCollisionStart( CollisionStart other );
-		void OnCollisionUpdate( CollisionUpdate other );
+		void OnCollisionStart( Collision other );
+		void OnCollisionUpdate( Collision other );
 		void OnCollisionStop( CollisionStop other );
 	}
 }
