@@ -92,7 +92,7 @@ public partial class GameObject
 		return default;
 	}
 
-	internal void ForEachComponent( string name, bool activeOnly, Action<BaseComponent> action )
+	public void ForEachComponent( string name, bool activeOnly, Action<BaseComponent> action )
 	{
 		for ( int i = Components.Count - 1; i >= 0; i-- )
 		{
@@ -110,6 +110,35 @@ public partial class GameObject
 			try
 			{
 				action( c );
+			}
+			catch ( System.Exception e )
+			{
+				Log.Warning( e, $"Exception when calling {name} on {c}: {e.Message}" );
+			}
+		}
+	}
+
+	public void ForEachComponent<T>( string name, bool activeOnly, Action<T> action )
+	{
+		for ( int i = Components.Count - 1; i >= 0; i-- )
+		{
+			BaseComponent c = Components[i];
+
+			if ( activeOnly && !c.Active )
+				continue;
+
+			if ( c is null )
+			{
+				Components.RemoveAt( i );
+				continue;
+			}
+
+			if ( c is not T t )
+				continue;
+
+			try
+			{
+				action( t );
 			}
 			catch ( System.Exception e )
 			{

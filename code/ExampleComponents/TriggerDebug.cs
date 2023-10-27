@@ -1,14 +1,26 @@
 using Sandbox;
 
-public sealed class TriggerDebug : BaseComponent
+public sealed class TriggerDebug : BaseComponent, BaseComponent.ITriggerListener
 {
-	[Property] public NameTagPanel NameTag { get; set; } 
+	[Property] public NameTagPanel NameTag { get; set; }
 
-	public override void Update()
+	int iTouching;
+
+	void ITriggerListener.OnTriggerEnter( ColliderBaseComponent other ) 
 	{
-		var c = GetComponent<ColliderBaseComponent>();
-		if ( c == null ) return;
+		Log.Info( $"{other} entered a trigger" );
 
-		NameTag.Name = $"{c.Touching.Count} Touching";
+		// get our trigger
+		iTouching++;
+
+		NameTag.Name = $"{iTouching} touching\n{other.GameObject.Name} entered";
 	}
+
+	void ITriggerListener.OnTriggerExit( ColliderBaseComponent other ) 
+	{
+		iTouching--;
+
+		NameTag.Name = $"{iTouching} touching\n{other.GameObject.Name} left";
+	}
+
 }

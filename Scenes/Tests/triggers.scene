@@ -1301,7 +1301,7 @@
         },
         {
           "Id": "cb11db34-4ae7-4206-8b99-4c10a6381263",
-          "Name": "Push Collider",
+          "Name": "Player Collider",
           "Enabled": true,
           "Position": "0,0,26.11092",
           "Rotation": "0,0,0,1",
@@ -1585,14 +1585,14 @@
             {
               "__type": "NameTagPanel",
               "__enabled": true,
-              "Name": "Mingebag"
+              "Name": "nothing"
             },
             {
               "__type": "WorldPanel",
               "__enabled": true,
               "HorizontalAlign": "Center",
               "LookAtCamera": true,
-              "PanelSize": "512,512",
+              "PanelSize": "1024,512",
               "RenderScale": 1,
               "VerticalAlign": "Center"
             }
@@ -1664,14 +1664,14 @@
             {
               "__type": "NameTagPanel",
               "__enabled": true,
-              "Name": "Mingebag"
+              "Name": "nothing"
             },
             {
               "__type": "WorldPanel",
               "__enabled": true,
               "HorizontalAlign": "Center",
               "LookAtCamera": true,
-              "PanelSize": "512,512",
+              "PanelSize": "1024,512",
               "RenderScale": 1,
               "VerticalAlign": "Center"
             }
@@ -1701,7 +1701,7 @@
     },
     {
       "Id": "8c626560-5e98-4894-9e19-b5b601b808eb",
-      "Name": "Cube",
+      "Name": "Dave Cube",
       "Enabled": true,
       "Position": "-224.5827,403.4372,-83.87447",
       "Rotation": "0,0,0,1",
@@ -1734,7 +1734,7 @@
     },
     {
       "Id": "968fdd7c-d349-40f6-b041-b95c53b76a3b",
-      "Name": "Cube",
+      "Name": "Simon Cube",
       "Enabled": true,
       "Position": "-191.7711,374.3874,-104.5067",
       "Rotation": "0,0,0,1",
@@ -1800,7 +1800,7 @@
     },
     {
       "Id": "1c42699e-a3a8-474b-a1fb-6a04715890ab",
-      "Name": "Cube",
+      "Name": "Yellow Cube",
       "Enabled": true,
       "Position": "-210.0794,419.2346,-114.2419",
       "Rotation": "-0.00000002284935,-0.0000000000000003561821,-0.3833484,0.9236039",
@@ -1833,7 +1833,7 @@
     },
     {
       "Id": "ef477bc6-ff58-4a63-9c82-0995bc8e03f2",
-      "Name": "Cube",
+      "Name": "Ball 1",
       "Enabled": true,
       "Position": "-325.497,190.0778,-77.94556",
       "Rotation": "0,0,0,1",
@@ -1866,7 +1866,7 @@
     },
     {
       "Id": "64d60016-2cb5-41c0-ade9-2ce91662d861",
-      "Name": "Cube",
+      "Name": "Ball 2",
       "Enabled": true,
       "Position": "-305.1775,191.9119,-77.94556",
       "Rotation": "0,0,0,1",
@@ -1899,7 +1899,7 @@
     },
     {
       "Id": "3983b0ec-5642-4930-bcce-90337f58e44b",
-      "Name": "Cube",
+      "Name": "Ball 3",
       "Enabled": true,
       "Position": "-283.9694,191.5065,-77.94559",
       "Rotation": "0,0,0,1",
@@ -1932,7 +1932,7 @@
     },
     {
       "Id": "77566230-afb2-4cdc-bc9e-8e5f35f01019",
-      "Name": "Cube",
+      "Name": "Ball 4",
       "Enabled": true,
       "Position": "-258.6091,190.709,-77.94559",
       "Rotation": "0,0,0,1",
@@ -1965,7 +1965,7 @@
     },
     {
       "Id": "70d825cd-77ef-429b-8fb6-266ec769c8f7",
-      "Name": "Cube",
+      "Name": "Ball 5",
       "Enabled": true,
       "Position": "-237.5614,191.1303,-77.94559",
       "Rotation": "0,0,0,1",
@@ -1998,7 +1998,7 @@
     },
     {
       "Id": "e6db2ce5-e44f-4f86-af1a-b9b8f9469e6a",
-      "Name": "Cube",
+      "Name": "Ball 6",
       "Enabled": true,
       "Position": "-215.2102,189.2495,-77.94559",
       "Rotation": "0,0,0,1",
@@ -2031,7 +2031,7 @@
     },
     {
       "Id": "24e33d63-f011-4b05-8004-444bc387ab96",
-      "Name": "Cube",
+      "Name": "Ball 7",
       "Enabled": true,
       "Position": "-218.6457,157.8212,-77.94548",
       "Rotation": "0,0,0,1",
@@ -4571,7 +4571,7 @@
     },
     {
       "Id": "2f0a864a-56c7-4b9a-bfdf-89ee8ca84e80",
-      "Name": "plastic_chair",
+      "Name": "plastic_chair 5",
       "Enabled": true,
       "Position": "-210.3983,246.2807,-128.3419",
       "Rotation": "0,0,0,1",
@@ -4604,7 +4604,7 @@
     },
     {
       "Id": "c611f61c-734c-4b26-9935-0811409aec08",
-      "Name": "plastic_chair",
+      "Name": "plastic_chair 4",
       "Enabled": true,
       "Position": "-256.9453,242.863,-128.3419",
       "Rotation": "0.00000002452427,0.000000000000001116891,0.4114489,0.9114331",
@@ -4637,7 +4637,7 @@
     },
     {
       "Id": "75871dee-916a-4558-a552-175842538e2f",
-      "Name": "plastic_chair",
+      "Name": "plastic_chair 3",
       "Enabled": true,
       "Position": "-269.1375,256.1174,-128.3419",
       "Rotation": "-0.00000005594917,0.000000000000005452633,-0.9386713,0.3448141",
@@ -4670,7 +4670,7 @@
     },
     {
       "Id": "7d2d9851-0753-44aa-a373-cfae6e9aa6a7",
-      "Name": "plastic_chair",
+      "Name": "plastic_chair 2",
       "Enabled": true,
       "Position": "-207.5235,286.6528,-128.342",
       "Rotation": "0.00000003366188,0.000000000000001637944,0.5647527,0.8252597",
@@ -4703,7 +4703,7 @@
     },
     {
       "Id": "c2c419b5-c5b1-4979-a819-99b87f2cf8b5",
-      "Name": "plastic_chair",
+      "Name": "plastic_chair 1",
       "Enabled": true,
       "Position": "-205.3026,324.0281,-128.342",
       "Rotation": "0.00000004578459,0.000000000000002496656,0.7681383,0.6402839",
