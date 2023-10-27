@@ -7,7 +7,7 @@ public abstract partial class BaseComponent
 	/// </summary>
 	public interface ITriggerListener
 	{
-		void OnTriggerEnter( ColliderBaseComponent other );
-		void OnTriggerExit( ColliderBaseComponent other );
+		void OnTriggerEnter( Collider other );
+		void OnTriggerExit( Collider other );
 	}
 }

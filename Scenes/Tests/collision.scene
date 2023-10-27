@@ -1,0 +1,787 @@
+{
+  "GameObjects": [
+    {
+      "Id": "bea4636e-9e5b-485c-92d2-5214c73bf212",
+      "Name": "Object",
+      "Enabled": true,
+      "Position": "0,0,167.3376",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "EnvmapComponent",
+          "__enabled": true,
+          "Bounds": {},
+          "Projection": "Box",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "TintColor": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "52117bd2-8020-4fa0-b23a-903ed1473301",
+      "Name": "Surface",
+      "Enabled": true,
+      "Position": "968.0176,-225.5823,-74.32854",
+      "Rotation": "0.00000008429399,-0.7071065,0.00000008429342,0.707107",
+      "Scale": "10,10,10",
+      "Tags": "solid,world,static",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.06127,0.13935,0.49505,1"
+        }
+      ]
+    },
+    {
+      "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "55.4718,-124.3322,91.5952",
+      "Rotation": "-0.1754926,0.2042828,0.1208522,0.9554401",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "0.92574,0.79106,0.68743,1",
+          "Shadows": true,
+          "SkyColor": "0.14356,0.14356,0.14356,1"
+        }
+      ]
+    },
+    {
+      "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "Name": "Camera",
+      "Enabled": true,
+      "Position": "-4476.789,-269.5986,-0.712777",
+      "Rotation": "-0.0000000003457107,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.25292,0.26086,0.29703,1",
+          "ClearFlags": "Color, Depth, Stencil",
+          "FieldOfView": 19.22,
+          "Orthographic": true,
+          "OrthographicHeight": 297.52054,
+          "ZFar": 6000,
+          "ZNear": 5000
+        },
+        {
+          "__type": "CameraPhysicsDebug",
+          "__enabled": false,
+          "MaxPoints": 10000,
+          "NormalLength": 2,
+          "TracesPerFrame": 500,
+          "TraceType": "Ray"
+        }
+      ]
+    },
+    {
+      "Id": "f936d200-813f-4f03-a36e-b726fbba8aaf",
+      "Name": "Spot Light",
+      "Enabled": false,
+      "Position": "631.1357,-47.85187,358.1124",
+      "Rotation": "0.2123716,0.2793965,-0.2815373,0.8930691",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 1,
+          "ConeInner": 0,
+          "ConeOuter": 37.5,
+          "Cookie": null,
+          "LightColor": "1,0.76059,0.61386,1",
+          "Radius": 4000
+        }
+      ]
+    },
+    {
+      "Id": "eed1d0da-fb94-44c7-b17b-638cddf71838",
+      "Name": "Cubemap",
+      "Enabled": true,
+      "Position": "1099.505,-0.0033,-1162.002",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "EnvmapComponent",
+          "__enabled": true,
+          "Bounds": {
+            "Mins": "-5120,-5120,-5120",
+            "Maxs": "5120,5120,5120"
+          },
+          "Projection": "Box",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "TintColor": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "66e5c3e7-7c1f-4fe3-955a-ce12db43e66b",
+      "Name": "Frame",
+      "Enabled": true,
+      "Position": "973.0561,-262.0567,-0.001402989",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Children": [
+        {
+          "Id": "d166817b-e146-4958-8728-092f57bd9edc",
+          "Name": "Cube",
+          "Enabled": true,
+          "Position": "26.94391,173.2801,-121.2935",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.0172,0.03302,0.08911,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "ac1582a8-84e9-4db5-b198-e478adfd55eb",
+              "Name": "collider",
+              "Enabled": true,
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "solid,world",
+              "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Surface": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "09bb3a83-559c-4669-b6c2-485466931210",
+          "Name": "Cube",
+          "Enabled": true,
+          "Position": "26.94391,173.2801,120.5434",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "1c09e3e2-e77e-4026-8c5a-d6eb9a1b3554",
+              "Name": "collider",
+              "Enabled": true,
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "solid,world",
+              "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Surface": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "39451dfc-c7f5-43c7-bb49-4970b1d4b50d",
+          "Name": "Cube",
+          "Enabled": true,
+          "Position": "26.94391,52.30974,-120.4035",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "812659bc-abb1-41bf-9546-e41535e0de45",
+              "Name": "collider",
+              "Enabled": true,
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "solid,world",
+              "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Surface": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "41a289cd-dab3-4c3a-b306-8bfe1b3216d4",
+          "Name": "Cube",
+          "Enabled": true,
+          "Position": "26.94391,52.30974,120.5434",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "bb299273-04e0-4a04-a2fd-3890caac8696",
+              "Name": "collider",
+              "Enabled": true,
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "solid,world",
+              "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Surface": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "cf5e1999-9af0-49e6-93cf-ab4f1ee324c3",
+          "Name": "Cube",
+          "Enabled": true,
+          "Position": "26.94391,-69.34135,-121.1455",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "20e84c5f-ec2b-4721-bbeb-1896c54e2bb3",
+              "Name": "collider",
+              "Enabled": true,
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "solid,world",
+              "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Surface": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "206dbb82-c71d-49c8-a58c-13e993b25cfd",
+          "Name": "Cube",
+          "Enabled": true,
+          "Position": "26.94391,-69.81863,120.5434",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "8743935e-7767-496d-b02e-524c22900fd7",
+              "Name": "collider",
+              "Enabled": true,
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "solid,world",
+              "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Surface": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "aeb7bba6-92b4-4b94-8762-aabb7023b907",
+          "Name": "Cube",
+          "Enabled": true,
+          "Position": "26.94391,167.4608,120.5434",
+          "Rotation": "0.00000002136507,-0.707107,0.00000002136506,0.7071065",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "d53e9999-927e-4197-895d-db62778bc102",
+              "Name": "collider",
+              "Enabled": true,
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "solid,world",
+              "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Surface": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "633640cc-04c9-4f5e-8079-3c2c7089ce45",
+          "Name": "Cube",
+          "Enabled": true,
+          "Position": "26.94391,-184.589,120.5434",
+          "Rotation": "0.00000002136507,-0.707107,0.00000002136506,0.7071065",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "e3e5b8a3-3004-4589-b41f-0db5dabbbbe2",
+              "Name": "collider",
+              "Enabled": true,
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "solid,world",
+              "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Surface": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "97c29979-4693-4324-81b0-45a9cec743bb",
+          "Name": "Cube",
+          "Enabled": true,
+          "Position": "26.94391,167.0817,0.001402989",
+          "Rotation": "0.00000002136507,-0.707107,0.00000002136506,0.7071065",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "dc5a78a9-9c8a-4adb-90c1-282dd496284c",
+              "Name": "collider",
+              "Enabled": true,
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "solid,world",
+              "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Surface": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "bf91c8c8-9dec-4792-8873-5534c40a0a73",
+          "Name": "Cube",
+          "Enabled": true,
+          "Position": "26.94391,-184.1647,0.001402989",
+          "Rotation": "0.00000002136507,-0.707107,0.00000002136506,0.7071065",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "7ea6a15d-f400-4bd9-9e42-4a5da248a075",
+              "Name": "collider",
+              "Enabled": true,
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "solid,world",
+              "Components": [
+                {
+                  "__type": "ColliderBoxComponent",
+                  "__enabled": true,
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Surface": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "71d7ff99-1717-4e65-ad69-87dd2c4b95a7",
+      "Name": "Bullet",
+      "Enabled": true,
+      "Position": "965.4139,-164.2536,-56.79545",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.1,0.1,0.1",
+      "Tags": "ball",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/lightemit.vmat",
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        },
+        {
+          "__type": "BrickBall",
+          "__enabled": true,
+          "CollisionIndicator": "scenes/tests/collision_indicator.object",
+          "Direction": "0,-0.2000015,0.3",
+          "Speed": 1000
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": false,
+          "Static": false
+        }
+      ],
+      "Children": [
+        {
+          "Id": "1cd1aa39-0976-4444-b9ca-25d729d736ab",
+          "Name": "Point Light",
+          "Enabled": true,
+          "Position": "7.70775,-8.597443,-0.0003993511",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "PointLightComponent",
+              "__enabled": true,
+              "LightColor": "22.21267,23.83321,24.31,1",
+              "Radius": 10000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "8fdc58a6-8bc3-48b4-8ba5-efdb92d785fc",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-136.3826,22.46868",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "dfdd48f8-56c7-492b-923d-50b3ef1f7d3c",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-168.5348,22.46868",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "ea7c6247-9acc-4589-9a60-e646d3b4a637",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-200.913,22.46868",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "771051af-cc6a-410f-be96-2dae585a3358",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-233.3424,22.46868",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "ea5e7940-0e8e-4bb8-a403-9fc31a751fb9",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-267.2426,22.46868",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "11827501-2019-4a6d-9ce4-abe115c87197",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-299.8086,22.46868",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "5f74b309-fd6d-4378-aa2f-c27b4cc866b1",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-332.7751,22.46868",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "43fd4c36-f219-4f31-9b5c-cd42f2604b4d",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-365.5654,22.46868",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "38b6c24a-4994-471d-ac7e-973fb548eaf8",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-397.8693,22.46868",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "b6480ca3-19a3-4f51-9761-345fca96bac0",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-397.8693,55.42264",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "9bb31a2a-2bc0-479e-9b3b-bdb676bdec43",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-364.7387,55.42264",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "76026018-6cf0-430d-b15c-03e8284c45bb",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-331.7392,55.42264",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "9c5a2e96-45a7-4702-b572-b7a5d5e8c0a0",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-298.8315,55.42264",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "b1e4dbfe-ba09-43f3-a6a2-fe0fb08a5833",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-266.6028,55.42264",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "b103380c-65e0-4684-a4f6-44fb4f9ad5c9",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-232.496,55.42264",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "2dc873ee-f7a5-4707-9b7f-a7a7d18349ca",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-200.7545,55.42264",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "c72e2b6f-4009-430b-8faf-893e2340fee6",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-168.5621,55.42264",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    },
+    {
+      "Id": "b8d7ecdf-fa4c-4196-b28d-954359acbd8c",
+      "Name": "Block",
+      "Enabled": true,
+      "Position": "965.4139,-136.759,55.42264",
+      "Rotation": "0,0,0,1",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "__Prefab": "scenes/tests/brick-1x1.object"
+    }
+  ],
+  "__references": [
+    "garry.wall_125x300"
+  ]
+}

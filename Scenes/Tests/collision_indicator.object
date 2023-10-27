@@ -1,43 +1,41 @@
 {
   "RootObject": {
-    "Id": "abf72244-1fcc-4837-8df0-b51d2f170a05",
-    "Name": "Bullet",
+    "Id": "b090066e-d979-48e7-b9f8-33107ca6e61f",
+    "Name": "collision_indicator",
     "Enabled": true,
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "0.3,0.3,0.3",
+    "Tags": "",
     "Components": [
-      {
-        "__type": "ModelComponent",
-        "__enabled": true,
-        "MaterialOverride": "materials/default.vmat",
-        "Model": "models/dev/sphere.vmdl",
-        "Tint": "0,0.29406,0.9802,1"
-      },
       {
         "__type": "SelfDestructComponent",
         "__enabled": true,
-        "Seconds": 4
+        "Seconds": 30
       }
     ],
     "Children": [
       {
-        "Id": "a7fc6366-2a0b-426c-9b28-d0ca39123c4f",
+        "Id": "7fc02d55-80e8-44a2-9df7-cd9d9e4af8fa",
         "Name": "Cube",
         "Enabled": true,
-        "Position": "-2.7109,-2.7334,-0.0001",
+        "Position": "0,0,-0.0001",
         "Rotation": "0,0,0,1",
-        "Scale": "1,1,1",
+        "Scale": "0.3,0.3,0.3",
+        "Tags": "",
         "Components": [
           {
             "__type": "ModelComponent",
             "__enabled": true,
-            "MaterialOverride": null,
-            "Model": "models/dev/box.vmdl",
-            "Tint": "1,1,1,1"
+            "BodyGroups": 18446744073709551615,
+            "MaterialOverride": "materials/default.vmat",
+            "Model": "models/dev/sphere.vmdl",
+            "ShouldCastShadows": false,
+            "Tint": "0.67643,1,0.14851,1"
           }
         ]
       }
     ]
-  }
+  },
+  "__references": []
 }

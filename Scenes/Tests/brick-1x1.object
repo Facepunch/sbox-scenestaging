@@ -1,0 +1,47 @@
+{
+  "RootObject": {
+    "Id": "2ee53550-94ea-4379-963a-18cf8de58404",
+    "Name": "brick-1x1",
+    "Enabled": true,
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "ball",
+    "Components": [
+      {
+        "__type": "ColliderBoxComponent",
+        "__enabled": true,
+        "IsTrigger": false,
+        "Scale": "50,100,100",
+        "Surface": null
+      },
+      {
+        "__type": "BrickBrick",
+        "__enabled": true
+      }
+    ],
+    "Children": [
+      {
+        "Id": "4bb99542-a012-4a5d-b25d-fa0eb88662b2",
+        "Name": "Cube",
+        "Enabled": true,
+        "Position": "42.63408,0,0",
+        "Rotation": "0,0,0.000000000466612,1",
+        "Scale": "2,2,2",
+        "Tags": "",
+        "Components": [
+          {
+            "__type": "ModelComponent",
+            "__enabled": true,
+            "BodyGroups": 18446744073709551615,
+            "MaterialOverride": "materials/default.vmat",
+            "Model": "models/dev/box.vmdl",
+            "ShouldCastShadows": true,
+            "Tint": "0.85644,0.12719,0.57932,1"
+          }
+        ]
+      }
+    ]
+  },
+  "__references": []
+}

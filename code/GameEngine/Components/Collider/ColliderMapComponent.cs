@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [Title( "Collider - Map" )]
 [Category( "Physics" )]
 [Icon( "panorama_fish_eye", "red", "white" )]
-public class ColliderMapComponent : ColliderBaseComponent
+public class ColliderMapComponent : Collider
 {
 	public ColliderMapComponent()
 	{

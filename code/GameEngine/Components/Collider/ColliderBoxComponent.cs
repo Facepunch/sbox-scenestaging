@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [Title( "Collider - Box" )]
 [Category( "Physics" )]
 [Icon( "check_box_outline_blank", "red", "white" )]
-public class ColliderBoxComponent : ColliderBaseComponent
+public class ColliderBoxComponent : Collider
 {
 	Vector3 _scale = 50;
 

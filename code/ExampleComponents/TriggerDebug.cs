@@ -6,17 +6,14 @@ public sealed class TriggerDebug : BaseComponent, BaseComponent.ITriggerListener
 
 	int iTouching;
 
-	void ITriggerListener.OnTriggerEnter( ColliderBaseComponent other ) 
+	void ITriggerListener.OnTriggerEnter( Collider other ) 
 	{
-		Log.Info( $"{other} entered a trigger" );
-
-		// get our trigger
 		iTouching++;
 
 		NameTag.Name = $"{iTouching} touching\n{other.GameObject.Name} entered";
 	}
 
-	void ITriggerListener.OnTriggerExit( ColliderBaseComponent other ) 
+	void ITriggerListener.OnTriggerExit( Collider other ) 
 	{
 		iTouching--;
 

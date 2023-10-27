@@ -6,7 +6,7 @@ using System.Collections.Generic;
 [Category( "Physics" )]
 [Icon( "panorama_fish_eye", "red", "white" )]
 [Alias( "SphereColliderComponent" )]
-public class ColliderSphereComponent : ColliderBaseComponent
+public class ColliderSphereComponent : Collider
 {
 	float _radius = 10.0f;
 

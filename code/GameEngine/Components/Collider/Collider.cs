@@ -3,10 +3,12 @@ using Sandbox.Diagnostics;
 using System;
 using System.Collections.Generic;
 
-public abstract class ColliderBaseComponent : BaseComponent, BaseComponent.ExecuteInEditor
+public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	List<PhysicsShape> shapes = new();
+
 	protected PhysicsBody keyframeBody;
+	CollisionEventSystem _collisionEvents;
 
 	[Property] public Surface Surface { get; set; }
 
@@ -62,66 +64,31 @@ public abstract class ColliderBaseComponent : BaseComponent, BaseComponent.Execu
 			physicsBody.Transform = Transform.World.WithScale( 1 );
 			physicsBody.UseController = true;
 			physicsBody.GravityEnabled = false;
+
+			Assert.IsNull( keyframeBody );
+
 			keyframeBody = physicsBody;
 
+			_collisionEvents = new CollisionEventSystem( keyframeBody );
+
 			Transform.OnTransformChanged += UpdateKeyframeTransform;
-
-			keyframeBody.OnTouchStart += OnTouchStartInternal;
-			keyframeBody.OnTouchStop += OnTouchStopInternal;
 		}
 	}
 
-
-
-	public HashSet<ColliderBaseComponent> Touching { get; private set; } = new ();
-
-	private void OnTouchStartInternal( PhysicsCollisionStart e )
+	/// <summary>
+	/// If we're a trigger, this will list all of the colliders that are touching us.
+	/// If we're not a trigger, this will list all of the triggers that we are touching.
+	/// </summary>
+	public IEnumerable<Collider> Touching
 	{
-		if ( !IsTrigger )
-			return;
-
-		if ( e.Other.Shape.Collider is not ColliderBaseComponent bc )
-			return;
-
-		// already added if false
-		if ( !Touching.Add( bc ) )
-			return;
-
-		bc.OnComponentDeactivated += RemoveDeactivated;
-
-		GameObject.ForEachComponent<ITriggerListener>( "OnTriggerEnter", true, ( c ) => c.OnTriggerEnter( bc ) );
-		bc.GameObject.ForEachComponent<ITriggerListener>( "OnTriggerEnter", true, ( c ) => c.OnTriggerEnter( this ) );
-
-	}
-
-	private void OnTouchStopInternal( PhysicsCollisionStop e )
-	{
-		if ( e.Other.Shape.Collider is not ColliderBaseComponent bc )
-			return;
-
-		if ( !Touching.Remove( bc ) )
-			return;
-
-		bc.OnComponentDeactivated -= RemoveDeactivated;
-
-		GameObject.ForEachComponent<ITriggerListener>( "OnTriggerExit", true, ( c ) => c.OnTriggerExit( bc ) );
-		bc.GameObject.ForEachComponent<ITriggerListener>( "OnTriggerExit", true, ( c ) => c.OnTriggerExit( this ) );
-	}
-
-	void RemoveDeactivated()
-	{
-		Action actions = default;
-
-		foreach( var e in Touching )
+		get
 		{
-			if ( e.Active ) continue;
+			if ( _collisionEvents is not null && _collisionEvents.Touching is not null )
+				return _collisionEvents.Touching;
 
-			actions += () => Touching.Remove( e );
+			return Array.Empty<Collider>();
 		}
-
-		actions?.Invoke();
 	}
-
 
 	protected virtual void RebuildImmediately()
 	{
@@ -198,6 +165,9 @@ public abstract class ColliderBaseComponent : BaseComponent, BaseComponent.Execu
 		shapes.Clear();
 
 		Transform.OnTransformChanged -= UpdateKeyframeTransform;
+
+		_collisionEvents?.Dispose();
+		_collisionEvents = null;
 
 		keyframeBody?.Remove();
 		keyframeBody = null;

@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
+using System;
 
 [Title( "Rigid Body" )]
 [Category( "Physics" )]
@@ -10,6 +11,7 @@ public class PhysicsComponent : BaseComponent
 	[Property] public bool Gravity { get; set; } = true;
 
 	PhysicsBody _body;
+	CollisionEventSystem _collisionEvents;
 
 	internal PhysicsBody GetBody()
 	{
@@ -20,6 +22,12 @@ public class PhysicsComponent : BaseComponent
 	{
 		get => _body.Velocity;
 		set => _body.Velocity = value;
+	}
+
+	public Vector3 AngularVelocity
+	{
+		get => _body.AngularVelocity;
+		set => _body.AngularVelocity = value;
 	}
 
 	public override void OnEnabled()
@@ -36,6 +44,9 @@ public class PhysicsComponent : BaseComponent
 		_body.GravityEnabled = Gravity;
 		_body.Sleeping = false;
 		_body.Transform = Transform.World;
+
+		_collisionEvents?.Dispose();
+		_collisionEvents = new CollisionEventSystem( _body );
 
 		Transform.OnTransformChanged += OnLocalTransformChanged;
 
@@ -82,7 +93,7 @@ public class PhysicsComponent : BaseComponent
 	/// </summary>
 	void UpdateColliders()
 	{
-		foreach( var c in GameObject.GetComponents<ColliderBaseComponent>( true, true ) )
+		foreach( var c in GameObject.GetComponents<Collider>( true, true ) )
 		{
 			c.OnPhysicsChanged();
 		}

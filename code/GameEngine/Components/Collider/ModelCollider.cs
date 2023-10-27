@@ -4,7 +4,7 @@ using System.Collections.Generic;
 [Title( "Model Collider" )]
 [Category( "Physics" )]
 [Icon( "check_box_outline_blank", "red", "white" )]
-public class ModelCollider : ColliderBaseComponent
+public class ModelCollider : Collider
 {
 	Model _model;
 
