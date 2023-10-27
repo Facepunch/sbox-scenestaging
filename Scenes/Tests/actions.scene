@@ -68,6 +68,262 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
+        },
+        {
+          "__type": "OnStartComponent",
+          "__enabled": true,
+          "HandleStart": {
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "event",
+                "Properties": {
+                  "name": "event"
+                },
+                "UserData": {
+                  "Position": "-16,-32"
+                }
+              },
+              {
+                "Id": 1,
+                "Type": "call",
+                "Properties": {
+                  "T": {
+                    "$type": "Type",
+                    "Type": "package.facepunch.testbed/CitizenAnimation"
+                  },
+                  "_type": "package.facepunch.testbed/GameObject",
+                  "_name": "GetComponent"
+                },
+                "UserData": {
+                  "Position": "256,48"
+                }
+              },
+              {
+                "Id": 2,
+                "Type": "property.set",
+                "Properties": {
+                  "_type": "package.facepunch.testbed/CitizenAnimation",
+                  "_name": "HoldType"
+                },
+                "UserData": {
+                  "Position": "576,0"
+                }
+              },
+              {
+                "Id": 3,
+                "Type": "const.enum",
+                "Properties": {
+                  "value": {
+                    "$type": "Simple",
+                    "Type": {
+                      "$type": "Nested",
+                      "DeclaringType": "package.facepunch.testbed/CitizenAnimation",
+                      "Name": "HoldTypes"
+                    },
+                    "Value": "Punch"
+                  },
+                  "T": {
+                    "$type": "Nested",
+                    "DeclaringType": "package.facepunch.testbed/CitizenAnimation",
+                    "Name": "HoldTypes"
+                  }
+                },
+                "UserData": {
+                  "Position": "288,176"
+                }
+              }
+            ],
+            "Links": [
+              [
+                0,
+                "self",
+                1,
+                "_target"
+              ],
+              [
+                1,
+                "_result",
+                2,
+                "target"
+              ],
+              [
+                0,
+                "_signal",
+                2,
+                "_signal"
+              ],
+              [
+                3,
+                "_result",
+                2,
+                "value"
+              ]
+            ],
+            "UserData": {
+              "name": "Start",
+              "id": "bdddf899-929b-4c54-8564-2caddebc1fbb",
+              "comments": []
+            }
+          }
+        },
+        {
+          "__type": "OnUpdateComponent",
+          "__enabled": true,
+          "HandleUpdate": {
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "event",
+                "Properties": {
+                  "name": "event"
+                },
+                "UserData": {
+                  "Position": "-16,-32"
+                }
+              },
+              {
+                "Id": 3,
+                "Type": "call",
+                "Properties": {
+                  "T": {
+                    "$type": "Type",
+                    "Type": "package.facepunch.testbed/AnimatedModelComponent"
+                  },
+                  "_type": "package.facepunch.testbed/GameObject",
+                  "_name": "GetComponent"
+                },
+                "UserData": {
+                  "Position": "640,192"
+                }
+              },
+              {
+                "Id": 4,
+                "Type": "const.bool",
+                "Properties": {
+                  "value": true
+                },
+                "UserData": {
+                  "Position": "448,288"
+                }
+              },
+              {
+                "Id": 5,
+                "Type": "property.set",
+                "Properties": {
+                  "_type": "package.facepunch.testbed/AnimatedModelComponent",
+                  "_name": "Tint"
+                },
+                "UserData": {
+                  "Position": "992,112"
+                }
+              },
+              {
+                "Id": 6,
+                "Type": "random.color",
+                "Properties": {
+                  "saturation": 0.75
+                },
+                "UserData": {
+                  "Position": "704,336"
+                }
+              },
+              {
+                "Id": 9,
+                "Type": "input.pressed",
+                "UserData": {
+                  "Position": "448,80"
+                }
+              },
+              {
+                "Id": 8,
+                "Type": "const.string",
+                "Properties": {
+                  "value": "attack1"
+                },
+                "UserData": {
+                  "Position": "272,80"
+                }
+              },
+              {
+                "Id": 10,
+                "Type": "branch",
+                "UserData": {
+                  "Position": "656,16"
+                }
+              },
+              {
+                "Id": 11,
+                "Type": "nop",
+                "UserData": {
+                  "Position": "272,176"
+                }
+              }
+            ],
+            "Links": [
+              [
+                11,
+                "out",
+                3,
+                "_target"
+              ],
+              [
+                4,
+                "_result",
+                3,
+                "deep"
+              ],
+              [
+                3,
+                "_result",
+                5,
+                "target"
+              ],
+              [
+                10,
+                "true",
+                5,
+                "_signal"
+              ],
+              [
+                6,
+                "_result",
+                5,
+                "value"
+              ],
+              [
+                8,
+                "_result",
+                9,
+                "action"
+              ],
+              [
+                0,
+                "_signal",
+                10,
+                "_signal"
+              ],
+              [
+                9,
+                "_result",
+                10,
+                "condition"
+              ],
+              [
+                0,
+                "self",
+                11,
+                "in"
+              ]
+            ],
+            "UserData": {
+              "name": "Update",
+              "id": "42181e71-5ba1-49c9-94f1-52a13f611a4a",
+              "comments": []
+            }
+          }
         }
       ],
       "Children": [
@@ -560,7 +816,7 @@
                     "Id": 35,
                     "Type": "const.float",
                     "Properties": {
-                      "value": 200
+                      "value": 250
                     },
                     "UserData": {
                       "Position": "496,-192"
@@ -570,7 +826,7 @@
                     "Id": 36,
                     "Type": "const.float",
                     "Properties": {
-                      "value": 1000
+                      "value": 500
                     },
                     "UserData": {
                       "Position": "496,-272"
@@ -613,55 +869,14 @@
                     }
                   },
                   {
-                    "Id": 41,
+                    "Id": 46,
                     "Type": "call",
                     "Properties": {
                       "_type": "package.facepunch.testbed/CitizenAnimation",
-                      "_name": "TriggerDeploy"
+                      "_name": "TriggerAttack"
                     },
                     "UserData": {
-                      "Position": "2208,-80"
-                    }
-                  },
-                  {
-                    "Id": 42,
-                    "Type": "property.set",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/CitizenAnimation",
-                      "_name": "HoldType"
-                    },
-                    "UserData": {
-                      "Position": "1984,-80"
-                    }
-                  },
-                  {
-                    "Id": 43,
-                    "Type": "nop",
-                    "UserData": {
-                      "Position": "2096,80"
-                    }
-                  },
-                  {
-                    "Id": 44,
-                    "Type": "const.enum",
-                    "Properties": {
-                      "value": {
-                        "$type": "Simple",
-                        "Type": {
-                          "$type": "Nested",
-                          "DeclaringType": "package.facepunch.testbed/CitizenAnimation",
-                          "Name": "HoldTypes"
-                        },
-                        "Value": "Punch"
-                      },
-                      "T": {
-                        "$type": "Nested",
-                        "DeclaringType": "package.facepunch.testbed/CitizenAnimation",
-                        "Name": "HoldTypes"
-                      }
-                    },
-                    "UserData": {
-                      "Position": "1664,64"
+                      "Position": "1920,-192"
                     }
                   }
                 ],
@@ -895,40 +1110,16 @@
                     "_target"
                   ],
                   [
-                    43,
-                    "out",
-                    41,
-                    "_target"
-                  ],
-                  [
-                    42,
-                    "_signal",
-                    41,
-                    "_signal"
-                  ],
-                  [
                     40,
                     "_result",
-                    42,
-                    "target"
+                    46,
+                    "_target"
                   ],
                   [
                     17,
                     "_signal",
-                    42,
+                    46,
                     "_signal"
-                  ],
-                  [
-                    40,
-                    "_result",
-                    43,
-                    "in"
-                  ],
-                  [
-                    44,
-                    "_result",
-                    42,
-                    "value"
                   ]
                 ],
                 "UserData": {
@@ -1036,6 +1227,60 @@
       ]
     },
     {
+      "Id": "8d7be9a3-0274-44d1-a88d-ed6a23a0cab2",
+      "Name": "Cube (8)",
+      "Enabled": true,
+      "Position": "1000,-1000,-400",
+      "Rotation": "0,0,0,1",
+      "Scale": "20,20,20",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.32549,0.47451,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "66b949c5-a69c-4171-9986-b97875472aa6",
+      "Name": "Cube (7)",
+      "Enabled": true,
+      "Position": "1000,1000,-400",
+      "Rotation": "0,0,0,1",
+      "Scale": "20,20,20",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.32549,0.47451,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
       "Id": "9d1d9790-a6ac-438f-85e8-1b4454cd14fc",
       "Name": "Cube (2)",
       "Enabled": true,
@@ -1067,6 +1312,60 @@
       "Name": "Cube (4)",
       "Enabled": true,
       "Position": "-1000,0,-400",
+      "Rotation": "0,0,0,1",
+      "Scale": "20,20,20",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.32549,0.47451,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "32617ecd-c712-4a25-93af-14dd00ed1201",
+      "Name": "Cube (6)",
+      "Enabled": true,
+      "Position": "-1000,1000,-400",
+      "Rotation": "0,0,0,1",
+      "Scale": "20,20,20",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.32549,0.47451,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "4a0eb0aa-7272-4ab4-9d47-f40381cf0a50",
+      "Name": "Cube (5)",
+      "Enabled": true,
+      "Position": "-1000,-1000,-400",
       "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
       "Tags": "",

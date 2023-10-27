@@ -238,6 +238,11 @@ public sealed class CitizenAnimation : BaseComponent, BaseComponent.ExecuteInEdi
 		Target.Set( "b_jump", true );
 	}
 
+	public void TriggerAttack()
+	{
+		Target.Set( "b_attack", true );
+	}
+
 	public void TriggerDeploy()
 	{
 		Target.Set( "b_deploy", true );
