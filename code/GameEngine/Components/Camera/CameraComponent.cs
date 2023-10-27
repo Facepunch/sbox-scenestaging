@@ -28,6 +28,12 @@ public class CameraComponent : BaseComponent
 	[Property]
 	public float ZFar { get; set; } = 10000;
 
+	[Property]
+	public bool Orthographic { get; set; }
+
+	[Property]
+	public float OrthographicHeight { get; set; } = 1204;
+
 	public override void DrawGizmos()
 	{
 		if ( sceneCamera is null )
@@ -85,6 +91,10 @@ public class CameraComponent : BaseComponent
 		camera.ZFar = ZFar;
 		camera.FieldOfView = FieldOfView;
 		camera.BackgroundColor = BackgroundColor;
+
+		camera.Ortho = Orthographic;
+		camera.OrthoWidth = 512; // this isn't used
+		camera.OrthoHeight = OrthographicHeight;
 
 		camera.VolumetricFog.Enabled = true;
 		camera.VolumetricFog.ContinuousMode = true;
