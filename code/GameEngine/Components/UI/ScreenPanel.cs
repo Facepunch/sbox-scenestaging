@@ -8,12 +8,17 @@ using Sandbox.UI;
 [Alias( "PanelRoot" )]
 public sealed class ScreenPanel : BaseComponent, IRootPanelComponent, BaseComponent.RenderOverlay
 {
-	[Property] public float Opacity { get; set; } = 1.0f;
-	[Property] public float Scale { get; set; } = 1.0f;
+	[Property, Range( 0, 1 )] public float Opacity { get; set; } = 1.0f;
+	[Property, Range( 0, 5 )] public float Scale { get; set; } = 1.0f;
 	[Property] public bool AutoScreenScale { get; set; } = true;
 	[Property] public int ZIndex { get; set; } = 100;
 
 	private GameRootPanel rootPanel;
+
+	public override void OnValidate()
+	{
+		if ( Scale < 0.001f ) Scale = 0.001f;
+	}
 
 	public override void OnAwake()
 	{
