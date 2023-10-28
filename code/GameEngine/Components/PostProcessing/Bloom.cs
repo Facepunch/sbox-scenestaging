@@ -18,7 +18,7 @@ public class Bloom : BaseComponent, CameraComponent.ISceneCameraSetup
 	[Range( 0, 5 )]
 	[Property] public float ThresholdWidth { get; set; }
 	[Property] public Curve BloomCurve { get; set; } = new Curve( new Curve.Frame( 0.0f, 0.5f ), new Curve.Frame( 1.0f, 1.0f ) );
-	[Property] public Gradient BloomColor { get; set; } = new Gradient( new Gradient.ColorFrame( 0.0f, Color.White ), new Gradient.ColorFrame( 1.0f, Color.Gray ) );
+	[Property] public Gradient BloomColor { get; set; } = new Gradient( new Gradient.ColorFrame( 0.0f, Color.White ), new Gradient.ColorFrame( 1.0f, Color.White ) );
 
 	public void SetupCamera( CameraComponent camera, SceneCamera sceneCamera )
 	{
