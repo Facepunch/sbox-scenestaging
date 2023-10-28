@@ -5,10 +5,10 @@ using System;
 public sealed partial class AnimatedModelComponent
 {
 
-	public void Set( string v, Vector3 value ) => _sceneObject.SetAnimParameter( v, value );
-	public void Set( string v, int value ) => _sceneObject.SetAnimParameter( v, value );
-	public void Set( string v, float value ) => _sceneObject.SetAnimParameter( v, value );
-	public void Set( string v, bool value ) => _sceneObject.SetAnimParameter( v, value );
+	public void Set( string v, Vector3 value ) => _sceneObject?.SetAnimParameter( v, value );
+	public void Set( string v, int value ) => _sceneObject?.SetAnimParameter( v, value );
+	public void Set( string v, float value ) => _sceneObject?.SetAnimParameter( v, value );
+	public void Set( string v, bool value ) => _sceneObject?.SetAnimParameter( v, value );
 	//	public void Set( string v, Enum value ) => _sceneObject.SetAnimParameter( v, value );
 
 	public bool GetBool( string v ) => _sceneObject.GetBool( v );
