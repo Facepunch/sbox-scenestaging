@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using Sandbox;
+using System;
 using System.Linq;
 using static Editor.Button;
 
@@ -35,7 +36,7 @@ public class GameObjectControlWidget : ControlWidget
 	{
 		var rect = LocalRect.Shrink( 6, 0 );
 		var go = SerializedProperty.GetValue<GameObject>();
-		if ( go is null )
+		if ( !go.IsValid() )
 		{
 			Paint.SetPen( Theme.ControlText.WithAlpha( 0.3f ) );
 			Paint.DrawIcon( rect, "radio_button_unchecked", 14, TextFlag.LeftCenter );
@@ -55,9 +56,23 @@ public class GameObjectControlWidget : ControlWidget
 			Paint.SetPen( Theme.Green );
 			Paint.DrawIcon( rect, "panorama_wide_angle_select", 14, TextFlag.LeftCenter );
 			rect.Left += 22;
-			Paint.DrawText( rect, go.Name, TextFlag.LeftCenter );
+			Paint.DrawText( rect, BuildName( go ), TextFlag.LeftCenter );
 			Cursor = CursorShape.Finger;
 		}
+	}
+
+	private string BuildName( GameObject go )
+	{
+		string str = "";
+
+		if ( go.Parent is not null && go.Parent is not Scene )
+		{
+			str += $"{BuildName( go.Parent )} > ";
+		}
+
+		str += $"{go.Name}";
+
+		return str;
 	}
 
 	protected override void OnMouseClick( MouseEvent e )
