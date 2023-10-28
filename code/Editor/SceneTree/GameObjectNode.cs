@@ -272,7 +272,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		menu.AddOption( "Create Empty", "dataset", () =>
 		{
 			using var scope = SceneEditorSession.Scope();
-			var go = GameObject.Create( true, "Object" );
+			var go = new GameObject( true, "Object" );
 			then( go );
 		} );
 
@@ -283,7 +283,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			submenu.AddOption( "Cube", "category", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
-				var go = GameObject.Create();
+				var go = new GameObject();
 				go.Name = "Cube";
 
 				var model = go.AddComponent<ModelComponent>();
@@ -295,7 +295,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			submenu.AddOption( "Sphere", "category", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
-				var go = GameObject.Create();
+				var go = new GameObject();
 				go.Name = "Sphere";
 
 				var model = go.AddComponent<ModelComponent>();
@@ -308,7 +308,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			submenu.AddOption( "Plane", "category", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
-				var go = GameObject.Create();
+				var go = new GameObject();
 				go.Name = "Plane";
 
 				var model = go.AddComponent<ModelComponent>();
@@ -325,7 +325,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			submenu.AddOption( "Directional Light", "category", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
-				var go = GameObject.Create();
+				var go = new GameObject();
 				go.Name = "Directional Light";
 				go.Transform.Rotation = Rotation.LookAt( Vector3.Down + Vector3.Right * 0.25f );
 				go.AddComponent<DirectionalLightComponent>();
@@ -336,7 +336,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			submenu.AddOption( "Point Light", "category", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
-				var go = GameObject.Create();
+				var go = new GameObject();
 				go.Name = "Point Light";
 				go.AddComponent<PointLightComponent>();
 
@@ -347,7 +347,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			submenu.AddOption( "Spot Light", "category", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
-				var go = GameObject.Create();
+				var go = new GameObject();
 				go.Name = "Spot Light";
 				go.AddComponent<SpotLightComponent>();
 
@@ -359,7 +359,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			submenu.AddOption( "2D SkyBox", "category", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
-				var go = GameObject.Create();
+				var go = new GameObject();
 				go.Name = "SkyBox";
 
 				go.AddComponent<SkyBox2D>();
@@ -375,7 +375,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			submenu.AddOption( "World UI", "panorama_horizontal", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
-				var go = GameObject.Create();
+				var go = new GameObject();
 				go.Name = "World UI";
 				go.AddComponent<WorldPanel>();
 				then( go );
@@ -384,7 +384,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			submenu.AddOption( "Screen UI", "desktop_windows", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
-				var go = GameObject.Create();
+				var go = new GameObject();
 				go.Name = "Screen UI";
 				go.AddComponent<ScreenPanel>();
 
@@ -396,7 +396,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			menu.AddOption( "Camera", "videocam", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
-				var go = GameObject.Create();
+				var go = new GameObject();
 				go.Name = "Camera";
 
 				var cam = go.AddComponent<CameraComponent>();

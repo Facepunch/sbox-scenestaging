@@ -13,7 +13,7 @@ public class SerializeTest
 
 		using var scope =  new Scene().Push();
 
-		var go1 = GameObject.Create	();
+		var go1 = new GameObject	();
 		go1.Name = "My Game Object";
 		go1.Transform.Local = new Transform( Vector3.Up, Rotation.Identity, 10 );
 
@@ -27,7 +27,7 @@ public class SerializeTest
 
 		SceneUtility.MakeGameObjectsUnique( node );
 
-		var go2 = GameObject.Create();
+		var go2 = new GameObject();
 		go2.Deserialize( node );
 
 		Assert.AreNotEqual( go1.Id, go2.Id );
@@ -46,7 +46,7 @@ public class SerializeTest
 		using var scope = new Scene().Push();
 
 		var timer = new ScopeTimer( "Creation" );
-		var go1 = GameObject.Create();
+		var go1 = new GameObject();
 		go1.Name = "My Game Object";
 		go1.Transform.Local = new Transform( Vector3.Up, Rotation.Identity, 10 );
 
@@ -54,7 +54,7 @@ public class SerializeTest
 
 		for ( int i = 0; i < childrenCount; i++ )
 		{
-			var child = GameObject.Create();
+			var child = new GameObject();
 			child.Name = $"Child {i}";
 			child.Transform.Local = new Transform( Vector3.Random * 1000 );
 			child.Parent = go1;
@@ -78,7 +78,7 @@ public class SerializeTest
 		timer = new ScopeTimer( "Deserialize" );
 		//System.Console.WriteLine( node );
 
-		var go2 = GameObject.Create();
+		var go2 = new GameObject();
 		go2.Deserialize( node );
 
 		timer.Dispose();

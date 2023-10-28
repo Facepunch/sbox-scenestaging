@@ -50,7 +50,7 @@ public class DestroyTests
 		using var sceneScope = scene.Push();
 
 		var parent = scene.CreateObject();
-		var go = GameObject.Create();
+		var go = new GameObject();
 		go.Parent = parent;
 
 		Assert.IsTrue( go.Enabled );
@@ -92,7 +92,7 @@ public class DestroyTests
 		using var sceneScope = scene.Push();
 
 		var parent = scene.CreateObject();
-		var go = GameObject.Create();
+		var go = new GameObject();
 		go.Parent = parent;
 
 		Assert.IsTrue( go.Enabled );
@@ -143,7 +143,7 @@ public class DestroyTests
 		using var sceneScope = scene.Push();
 
 		var parent = scene.CreateObject();
-		var go = GameObject.Create();
+		var go = new GameObject();
 		go.Parent = parent;
 
 		Assert.IsTrue( go.Enabled );
@@ -182,7 +182,7 @@ public class DestroyTests
 		using var sceneScope = scene.Push();
 
 		var parent = scene.CreateObject();
-		var go = GameObject.Create();
+		var go = new GameObject();
 		go.Parent = parent;
 
 		Assert.IsTrue( go.Enabled );
@@ -239,7 +239,7 @@ public class DestroyTests
 		using var sceneScope = scene.Push();
 
 		var parent = scene.CreateObject();
-		var go = GameObject.Create();
+		var go = new GameObject();
 		go.Parent = parent;
 
 		Assert.IsTrue( go.Enabled );
@@ -283,20 +283,20 @@ public class DestroyTests
 
 		for ( int i =0; i< 16; i++ )
 		{
-			var go = GameObject.Create();
+			var go = new GameObject();
 			go.Parent = parent;
 
 			go.AddComponent<ModelComponent>();
 
 			for ( int j = 0; j < 8; j++ )
 			{
-				var go2 = GameObject.Create();
+				var go2 = new GameObject();
 				go2.Parent = go;
 				go2.AddComponent<ModelComponent>();
 
 				for ( int k = 0; k < 8; k++ )
 				{
-					var go3 = GameObject.Create();
+					var go3 = new GameObject();
 					go3.Parent = go;
 					go3.AddComponent<ModelComponent>();
 				}
@@ -337,20 +337,20 @@ public class DestroyTests
 
 		for ( int i = 0; i < 16; i++ )
 		{
-			var go = GameObject.Create();
+			var go = new GameObject();
 			go.Parent = parent;
 
 			go.AddComponent<ModelComponent>();
 
 			for ( int j = 0; j < 8; j++ )
 			{
-				var go2 = GameObject.Create();
+				var go2 = new GameObject();
 				go2.Parent = go;
 				go2.AddComponent<ModelComponent>();
 
 				for ( int k = 0; k < 8; k++ )
 				{
-					var go3 = GameObject.Create();
+					var go3 = new GameObject();
 					go3.Parent = go;
 					go3.AddComponent<ModelComponent>();
 				}

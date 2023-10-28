@@ -46,12 +46,14 @@ public partial class Scene : GameObject
 		return new Scene( true );
 	}
 
-
+	/// <summary>
+	/// Create a GameObject on this scene. This doesn't require the scene to be the active scene.
+	/// </summary>
 	public GameObject CreateObject( bool enabled = true )
 	{
 		using ( Push() )
 		{
-			var go = GameObject.Create( enabled );
+			var go = new GameObject( enabled );
 			go.Enabled = enabled;
 			go.Parent = this;
 			return go;

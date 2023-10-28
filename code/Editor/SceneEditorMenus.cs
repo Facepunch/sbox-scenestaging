@@ -124,7 +124,7 @@ public static class SceneEditorMenus
 		var json = source.Serialize( options );
 		SceneUtility.MakeGameObjectsUnique( json );
 
-		var go = GameObject.Create();
+		var go = new GameObject();
 		go.Deserialize( json );
 		go.Transform.World = source.Transform.World;
 

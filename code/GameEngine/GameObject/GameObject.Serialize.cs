@@ -131,7 +131,7 @@ public partial class GameObject
 				if ( child is not JsonObject jso )
 					return;
 
-				var go = GameObject.Create();
+				var go = new GameObject();
 
 				go.Parent = this;
 
