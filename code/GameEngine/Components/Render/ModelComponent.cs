@@ -5,7 +5,7 @@ using Sandbox.Diagnostics;
 [Category( "Rendering" )]
 [Icon( "free_breakfast" )]
 [Alias( "ModelComponentMate" )]
-public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
+public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor, BaseComponent.ITintable
 {
 	Model _model;
 
@@ -110,6 +110,7 @@ public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
 	SceneObject _sceneObject;
 	public SceneObject SceneObject => _sceneObject;
 
+	Color ITintable.Color { get => Tint; set => Tint = value; }
 
 	public override void DrawGizmos()
 	{

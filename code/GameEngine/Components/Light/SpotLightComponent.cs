@@ -6,7 +6,7 @@ using System;
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
 [EditorHandle( "materials/gizmo/spotlight.png" )]
-public class SpotLightComponent : BaseComponent, IComponentColorProvider, BaseComponent.ExecuteInEditor
+public class SpotLightComponent : BaseComponent, IComponentColorProvider, BaseComponent.ExecuteInEditor, BaseComponent.ITintable
 {
 	SceneSpotLight _sceneObject;
 
@@ -24,6 +24,8 @@ public class SpotLightComponent : BaseComponent, IComponentColorProvider, BaseCo
 	[Property] public Texture Cookie { get; set; }
 
 	Color IComponentColorProvider.ComponentColor => LightColor;
+
+	Color ITintable.Color { get => LightColor; set => LightColor = value; }
 
 	public override void DrawGizmos()
 	{

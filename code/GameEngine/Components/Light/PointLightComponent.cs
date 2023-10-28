@@ -6,7 +6,7 @@ using System;
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
 [EditorHandle( "materials/gizmo/pointlight.png" )]
-public class PointLightComponent : BaseComponent, IComponentColorProvider, BaseComponent.ExecuteInEditor
+public class PointLightComponent : BaseComponent, IComponentColorProvider, BaseComponent.ExecuteInEditor, BaseComponent.ITintable
 {
 	SceneLight _sceneObject;
 
@@ -14,6 +14,8 @@ public class PointLightComponent : BaseComponent, IComponentColorProvider, BaseC
 	[Property] public float Radius { get; set; } = 400;
 
 	Color IComponentColorProvider.ComponentColor => LightColor;
+
+	Color ITintable.Color { get => LightColor; set => LightColor = value; }
 
 	public override void DrawGizmos()
 	{
