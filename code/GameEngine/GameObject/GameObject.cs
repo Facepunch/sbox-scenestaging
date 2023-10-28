@@ -101,6 +101,9 @@ public partial class GameObject
 	{
 		for ( int i = Children.Count - 1; i >= 0; i-- )
 		{
+			if ( i >= Children.Count )
+				continue;
+
 			var c = Children[i];
 
 			if ( c is null )
