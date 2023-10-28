@@ -79,7 +79,7 @@ public class ParticleSystem : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject.SetControlPoint( 1, ControlPoint2.IsValid() ? ControlPoint2.Transform.World : Transform.World );
 		_sceneObject.SetControlPoint( 2, ControlPoint3.IsValid() ? ControlPoint3.Transform.World : Transform.World );
 
-		_sceneObject.Simulate( RealTime.Delta * PlaybackSpeed );
+		_sceneObject.Simulate( Time.Delta * PlaybackSpeed );
 
 		if ( _sceneObject.Finished )
 		{
