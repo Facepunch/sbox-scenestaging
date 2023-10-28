@@ -13,7 +13,7 @@ public static class Program
 		//
 
 		GameManager.ActiveScene = new Scene();
-		GameManager.ActiveScene.LoadFromFile( "turret.scene" );
+		GameManager.ActiveScene.LoadFromFile( "scenes/tests/menu.scene" );
 
 		GameManager.IsPlaying = true;
 	}
