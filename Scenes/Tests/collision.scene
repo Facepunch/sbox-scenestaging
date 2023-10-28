@@ -62,7 +62,7 @@
       "Name": "Camera",
       "Enabled": true,
       "Position": "-4476.789,-269.5986,-0.712777",
-      "Rotation": "-0.0000000003457107,0,0,1",
+      "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
       "Components": [
@@ -571,7 +571,7 @@
           "__enabled": true,
           "CollisionIndicator": "scenes/tests/collision_indicator.object",
           "Direction": "0,-0.2000015,0.3",
-          "Speed": 1000
+          "Speed": 100
         },
         {
           "__type": "PhysicsComponent",

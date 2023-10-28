@@ -20,8 +20,12 @@
     {
         Log.Info("Open Scene");
 
-       // GameManager.ActiveScene = new Scene();
+        // GameManager.ActiveScene = new Scene();
         GameManager.ActiveScene.Load( file );
+
+        var go = GameManager.ActiveScene.CreateObject();
+        go.Name = "Return To Menu";
+        go.AddComponent<ReturnToMenu>();
     }
 
 }
