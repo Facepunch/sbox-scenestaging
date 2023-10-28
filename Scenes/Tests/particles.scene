@@ -95,6 +95,7 @@
           "Acceleration": 10,
           "GroundAngle": 45,
           "Height": 71.05,
+          "IgnoreLayers": "player",
           "Radius": 11.65,
           "StepHeight": 18
         },
@@ -111,13 +112,8 @@
         {
           "__type": "CitizenAnimation",
           "__enabled": true,
+          "Height": 0.93,
           "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
-        },
-        {
-          "__type": "DropObjectOnFootstep",
-          "__enabled": true,
-          "Prefab": "scenes/tests/footstep.object",
-          "Source": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
         }
       ],
       "Children": [
@@ -270,26 +266,6 @@
                                       "Tags": ""
                                     },
                                     {
-                                      "Id": "2ad7400c-ed5b-48a6-b645-0468d6ec0f6c",
-                                      "Name": "banana",
-                                      "Enabled": true,
-                                      "Position": "15.70039,-0.000001842242,0.000001770549",
-                                      "Rotation": "0,0,0,1",
-                                      "Scale": "1,1,1",
-                                      "Tags": "",
-                                      "Components": [
-                                        {
-                                          "__type": "ModelComponent",
-                                          "__enabled": true,
-                                          "BodyGroups": 18446744073709551615,
-                                          "MaterialOverride": null,
-                                          "Model": "models/banana/banana.vmdl",
-                                          "ShouldCastShadows": true,
-                                          "Tint": "1,1,1,1"
-                                        }
-                                      ]
-                                    },
-                                    {
                                       "Id": "975e3006-e7c3-46a5-9f30-c31a196c89f9",
                                       "Name": "Name Tag UI",
                                       "Enabled": true,
@@ -361,29 +337,7 @@
                                               "Position": "5.361091,0.6217209,3.394404",
                                               "Rotation": "-0.6958921,-0.170415,-0.392899,0.5764749",
                                               "Scale": "1,1,1",
-                                              "Tags": "",
-                                              "Children": [
-                                                {
-                                                  "Id": "61bf65c5-c75e-4300-9ff7-82426fadf481",
-                                                  "Name": "banana",
-                                                  "Enabled": true,
-                                                  "Position": "-2.485097,7.323626,-2.125503",
-                                                  "Rotation": "-0.003588625,-0.1923747,0.979503,-0.05955925",
-                                                  "Scale": "1.00001,1.00001,1.00001",
-                                                  "Tags": "",
-                                                  "Components": [
-                                                    {
-                                                      "__type": "ModelComponent",
-                                                      "__enabled": true,
-                                                      "BodyGroups": 18446744073709551615,
-                                                      "MaterialOverride": null,
-                                                      "Model": "models/patrickjr/props/sfmmug/sfmmug.vmdl",
-                                                      "ShouldCastShadows": true,
-                                                      "Tint": "1,1,1,1"
-                                                    }
-                                                  ]
-                                                }
-                                              ]
+                                              "Tags": ""
                                             },
                                             {
                                               "Id": "6f26f8ee-657a-45cc-b7cc-c2e826a11e4b",
@@ -550,25 +504,6 @@
                                               "Rotation": "-0.2772723,-0.6901741,-0.00000002980232,0.6684159",
                                               "Scale": "0.9999999,0.9999999,0.9999999",
                                               "Tags": ""
-                                            },
-                                            {
-                                              "Id": "f20124d9-99ea-4c29-8904-12aad6ae7c3a",
-                                              "Name": "Rope",
-                                              "Enabled": true,
-                                              "Position": "3.771701,0.279261,-0.0000005387655",
-                                              "Rotation": "0,0,0,1",
-                                              "Scale": "1.000008,1.000008,1.000008",
-                                              "Tags": "",
-                                              "Components": [
-                                                {
-                                                  "__type": "ParticleSystem",
-                                                  "__enabled": true,
-                                                  "ControlPoint2": "8420ce2d-0896-4a70-a040-de21e795c747",
-                                                  "Looped": false,
-                                                  "Particles": "particles/entity/rope.vpcf",
-                                                  "PlaybackSpeed": 1
-                                                }
-                                              ]
                                             }
                                           ]
                                         },
@@ -598,15 +533,6 @@
                                           "Rotation": "0.0000003278255,-0.00000005960464,-0.7577646,0.6525283",
                                           "Scale": "1,1,1",
                                           "Tags": ""
-                                        },
-                                        {
-                                          "Id": "22bd6ada-fb1e-414d-9ce1-f7e5fe6e44ae",
-                                          "Name": "arm_lower_L_twist",
-                                          "Enabled": true,
-                                          "Position": "0,0,0",
-                                          "Rotation": "0,0,0,1",
-                                          "Scale": "1,1,1",
-                                          "Tags": ""
                                         }
                                       ]
                                     },
@@ -625,15 +551,6 @@
                                       "Enabled": true,
                                       "Position": "5.022601,0.00002565979,-0.00001406669",
                                       "Rotation": "0.00000004470348,0.0000002980232,0.0000001005828,0.9999999",
-                                      "Scale": "1,1,1",
-                                      "Tags": ""
-                                    },
-                                    {
-                                      "Id": "9a7a2273-da55-4788-bb1e-1356ec1fc6f0",
-                                      "Name": "arm_upper_L_twist",
-                                      "Enabled": true,
-                                      "Position": "0,0,0",
-                                      "Rotation": "0,0,0,1",
                                       "Scale": "1,1,1",
                                       "Tags": ""
                                     }
@@ -929,24 +846,6 @@
                                               "Tags": ""
                                             }
                                           ]
-                                        },
-                                        {
-                                          "Id": "17bbf00e-72f2-490c-8c5b-e39fdcff4033",
-                                          "Name": "arm_lower_R_twist",
-                                          "Enabled": true,
-                                          "Position": "0,0,0",
-                                          "Rotation": "0,0,0,1",
-                                          "Scale": "1,1,1",
-                                          "Tags": ""
-                                        },
-                                        {
-                                          "Id": "34168f0b-5530-40de-9ecb-b6c4822f7725",
-                                          "Name": "arm_elbow_helper_R",
-                                          "Enabled": true,
-                                          "Position": "0,0,0",
-                                          "Rotation": "0,0,0,1",
-                                          "Scale": "1,1,1",
-                                          "Tags": ""
                                         }
                                       ]
                                     },
@@ -965,15 +864,6 @@
                                       "Enabled": true,
                                       "Position": "5.022557,0.00003451108,-0.00001001358",
                                       "Rotation": "0.00000001490116,-0.0000002905726,0.0000001639128,0.9999999",
-                                      "Scale": "1,1,1",
-                                      "Tags": ""
-                                    },
-                                    {
-                                      "Id": "8246898e-5c0c-49aa-8fe5-a83ed1e278e6",
-                                      "Name": "arm_upper_R_twist",
-                                      "Enabled": true,
-                                      "Position": "0,0,0",
-                                      "Rotation": "0,0,0,1",
                                       "Scale": "1,1,1",
                                       "Tags": ""
                                     }
@@ -1031,26 +921,6 @@
                               "Rotation": "-0.0000005032102,0.000001490116,0.3907284,0.920506",
                               "Scale": "1,1,1",
                               "Tags": ""
-                            },
-                            {
-                              "Id": "86182bc2-b675-4901-9e63-ab3085795654",
-                              "Name": "banana",
-                              "Enabled": true,
-                              "Position": "4.940893,-1.916505,-0.4442691",
-                              "Rotation": "-0.6899426,0.1482204,0.6924887,0.1498919",
-                              "Scale": "0.6999998,0.6999998,0.6999998",
-                              "Tags": "",
-                              "Components": [
-                                {
-                                  "__type": "ModelComponent",
-                                  "__enabled": true,
-                                  "BodyGroups": 18446744073709551615,
-                                  "MaterialOverride": null,
-                                  "Model": "models/items/plants_and_nature/potted_red_n_yellowflowers.vmdl",
-                                  "ShouldCastShadows": true,
-                                  "Tint": "1,1,1,1"
-                                }
-                              ]
                             }
                           ]
                         },
@@ -1165,26 +1035,6 @@
                               "Rotation": "-0.0000004862416,0.000001206994,0.3907294,0.9205056",
                               "Scale": "1,1,1",
                               "Tags": ""
-                            },
-                            {
-                              "Id": "639930e5-1390-408d-98f4-e7ffad27de0e",
-                              "Name": "banana",
-                              "Enabled": true,
-                              "Position": "1.054918,-2.239872,5.044245",
-                              "Rotation": "-0.56764,-0.8227322,-0.02887337,-0.007896228",
-                              "Scale": "0.6800001,0.6800001,0.6800001",
-                              "Tags": "",
-                              "Components": [
-                                {
-                                  "__type": "ModelComponent",
-                                  "__enabled": true,
-                                  "BodyGroups": 18446744073709551615,
-                                  "MaterialOverride": null,
-                                  "Model": "models/melon/melon.vmdl",
-                                  "ShouldCastShadows": true,
-                                  "Tint": "1,1,1,1"
-                                }
-                              ]
                             }
                           ]
                         },
@@ -1359,6 +1209,8 @@
               "BackgroundColor": "0.25292,0.26086,0.29703,1",
               "ClearFlags": "Color, Depth, Stencil",
               "FieldOfView": 69.32,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
               "ZFar": 10000,
               "ZNear": 1
             },
@@ -1379,7 +1231,8 @@
                     "t": 1,
                     "c": "1,1,1,1"
                   }
-                ]
+                ],
+                "alpha": []
               },
               "BloomCurve": {
                 "rangey": "0,106.45",
@@ -5691,7 +5544,6 @@
   "__references": [
     "baik.confettisplash",
     "caro.banana",
-    "caro.melon",
     "degg.f_wep_dagger",
     "facepunch.blackbin",
     "facepunch.leaves_fall_01",
@@ -5700,7 +5552,6 @@
     "facepunch.wheely_bin",
     "garry.spark_burst",
     "luke.fwroundtable",
-    "luke.office_flowers_1",
     "pcjr.sfmmug",
     "sboxmp.adam_mp",
     "sboxmp.hazmatsuit",

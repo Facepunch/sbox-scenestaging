@@ -25,7 +25,7 @@ public sealed class DropObjectOnFootstep : BaseComponent
 	private void OnEvent( SceneModel.FootstepEvent e )
 	{
 		var tr = Physics.Trace
-			.Ray( e.Transform.Position + Vector3.Up * 4, e.Transform.Position + Vector3.Up * -4 )
+			.Ray( e.Transform.Position + Vector3.Up * 20, e.Transform.Position + Vector3.Up * -20 )
 			.Run();
 
 		if ( !tr.Hit )

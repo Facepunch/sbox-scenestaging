@@ -10,6 +10,8 @@ public sealed class CitizenAnimation : BaseComponent, BaseComponent.ExecuteInEdi
 	[Property] public GameObject LookAtObject { get; set; }
 
 
+	[Property, Range( 0.5f, 1.5f)] public float Height { get; set; } = 1.0f;
+
 	public override void Update()
 	{
 		if ( LookAtObject.IsValid() )
@@ -19,6 +21,8 @@ public sealed class CitizenAnimation : BaseComponent, BaseComponent.ExecuteInEdi
 			var dir = (LookAtObject.Transform.Position - eyePos).Normal;
 			WithLook( dir, 1, 0.5f, 0.1f );
 		}
+
+		Target.Set( "scale_height", Height );
 
 		// SetIk( "left_hand", ... );
 		// SetIk( "right_hand", ... );
