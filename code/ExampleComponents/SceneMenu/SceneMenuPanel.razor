@@ -30,13 +30,10 @@ Click a scene to enter it - press escape to return to this menu.
 {
     void OpenScene( SceneFile file )
     {
-        Log.Info("Open Scene");
-
         // GameManager.ActiveScene = new Scene();
         GameManager.ActiveScene.Load( file );
 
-        var go = GameManager.ActiveScene.CreateObject();
-        go.Name = "Return To Menu";
+        var go = new GameObject( true, "Return To Menu" );
         go.AddComponent<ReturnToMenu>();
     }
 
