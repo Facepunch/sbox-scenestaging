@@ -25,6 +25,9 @@ class CollisionEventSystem : IDisposable
 	{
 		var o = new Collision( new CollisionSource( c.Self ), new CollisionSource( c.Other ), c.Contact );
 
+		if ( o.Self.Collider == null ) return;
+		if ( o.Other.Collider == null ) return;
+
 		if ( o.Self.Collider.IsTrigger || o.Other.Collider.IsTrigger )
 		{
 			if ( c.Other.Shape.Collider is not Collider bc )
@@ -66,6 +69,9 @@ class CollisionEventSystem : IDisposable
 	private void OnPhysicsTouchStop( PhysicsIntersectionEnd c )
 	{
 		var o = new CollisionStop( new CollisionSource( c.Self ), new CollisionSource( c.Other ) );
+
+		if ( o.Self.Collider == null ) return;
+		if ( o.Other.Collider == null ) return;
 
 		if ( o.Self.Collider.IsTrigger || o.Other.Collider.IsTrigger )
 		{
