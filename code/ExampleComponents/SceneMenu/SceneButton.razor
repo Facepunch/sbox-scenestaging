@@ -1,0 +1,19 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@inherits Panel
+
+<root onclick="@( () => OnSelected( Scene ) )">
+
+    <div class="title">@Scene.ResourceName</div>
+
+</root>
+
+@code
+{
+
+    public SceneFile Scene { get; set; }
+
+    public Action<SceneFile> OnSelected { get; set; }
+
+    protected override int BuildHash() => System.HashCode.Combine(Scene);
+}

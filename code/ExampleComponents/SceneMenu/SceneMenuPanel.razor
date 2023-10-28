@@ -1,0 +1,27 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<root>
+
+    <div class="scene-list">
+    @foreach( var scene in ResourceLibrary.GetAll<SceneFile>().OrderBy( x => x.ResourceName ) )
+    {
+        <SceneButton Scene="@scene" OnSelected="@OpenScene"></SceneButton> 
+    }
+    </div>
+
+
+</root>
+
+@code
+{
+    void OpenScene( SceneFile file )
+    {
+        Log.Info("Open Scene");
+
+       // GameManager.ActiveScene = new Scene();
+        GameManager.ActiveScene.Load( file );
+    }
+
+}

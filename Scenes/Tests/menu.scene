@@ -1,0 +1,72 @@
+{
+  "GameObjects": [
+    {
+      "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "Name": "Camera",
+      "Enabled": true,
+      "Position": "1011.863,273.6311,-1540.558",
+      "Rotation": "0.104912,0.06145444,-0.8564602,0.5016899",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.25292,0.26086,0.29703,1",
+          "ClearFlags": "Color, Depth, Stencil",
+          "FieldOfView": 85.5,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "ZFar": 2136.4,
+          "ZNear": 1
+        },
+        {
+          "__type": "CameraPhysicsDebug",
+          "__enabled": true,
+          "MaxPoints": 10000,
+          "NormalLength": 2,
+          "TracesPerFrame": 500,
+          "TraceType": "Ray"
+        }
+      ]
+    },
+    {
+      "Id": "33577379-4b88-4a04-bb85-6a86b5e70db0",
+      "Name": "Screen UI",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ScreenPanel",
+          "__enabled": true,
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
+        }
+      ],
+      "Children": [
+        {
+          "Id": "4f9ab128-10e1-42f4-91ec-7122b047b4dc",
+          "Name": "Scene Menu",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "SceneMenuPanel",
+              "__enabled": true,
+              "Name": "Mingebag"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__references": []
+}

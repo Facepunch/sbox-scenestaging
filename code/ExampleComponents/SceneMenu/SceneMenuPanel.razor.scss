@@ -1,0 +1,42 @@
+
+SceneMenuPanel
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333;
+    pointer-events: all;
+
+    .scene-list
+    {
+        flex-direction: column;
+        margin: 20px;
+    }
+}
+
+
+SceneButton
+{
+    font-size: 16px;
+    padding: 5px 10px;
+    color: #aaa;
+    background-color: #555;
+    margin: 1px;
+    cursor: pointer;
+    opacity: 0.5;
+
+    &:hover
+    {
+        opacity: 1;
+        background-color: #3555d2;
+        color: #fff;
+    }
+
+    &:active
+    {
+        background-color: #fff;
+        color: #666;
+    }
+}

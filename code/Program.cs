@@ -1,5 +1,7 @@
-﻿using Sandbox;
-using System.Linq;
+﻿global using System.Linq;
+global using System;
+using Sandbox;
+
 
 public static class Program
 {
