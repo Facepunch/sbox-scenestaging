@@ -116,7 +116,11 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		// no physics body
 		if ( physicsBody is null ) return;
 
-		physicsBody.Transform = Transform.World;
+		// update our keyframe immediately
+		if ( keyframeBody is not null )
+		{
+			keyframeBody.Transform = Transform.World;
+		}
 
 		// create the new shapes
 		shapes.AddRange( CreatePhysicsShapes( physicsBody ) );
