@@ -4,6 +4,18 @@
 
 <root>
 
+    <div class="title">
+        Scene Tests
+    </div>
+
+    <div class="explanation">
+The scenes below are used as tests and examples of the scene system. 
+One day we will force everyone to use the scene system - the Entity system will go away.
+
+
+Click a scene to enter it - press escape to return to this menu.
+    </div>
+
     <div class="scene-list">
     @foreach( var scene in ResourceLibrary.GetAll<SceneFile>().OrderBy( x => x.ResourceName ) )
     {

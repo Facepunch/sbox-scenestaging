@@ -8,24 +8,51 @@ SceneMenuPanel
     bottom: 0;
     background-color: #333;
     pointer-events: all;
+    flex-direction: column;
+    padding: 60px;
+    color: #ccc;
+
+    > .title
+    {
+        font-size: 60px;
+        font-family: Poppins;
+        font-weight: bold;
+    }
+
+    > .explanation
+    {
+        color: #aaa;
+        padding: 20px;
+        font-size: 17px;
+        justify-content: center;
+        text-align: center;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        width: 100%;
+    }
 
     .scene-list
     {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         margin: 20px;
+        justify-content: center;
     }
 }
 
 
 SceneButton
 {
-    font-size: 16px;
+    font-size: 19px;
+    font-family: Poppins;
+    font-weight: bold;
     padding: 5px 10px;
     color: #aaa;
-    background-color: #555;
-    margin: 1px;
+    background-color: #444;
+    margin: 5px;
     cursor: pointer;
     opacity: 0.5;
+    border-radius: 7px;
 
     &:hover
     {
