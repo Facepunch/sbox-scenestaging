@@ -9,8 +9,13 @@ public sealed class CitizenAnimation : BaseComponent, BaseComponent.ExecuteInEdi
 
 	[Property] public GameObject LookAtObject { get; set; }
 
-
 	[Property, Range( 0.5f, 1.5f)] public float Height { get; set; } = 1.0f;
+
+
+	[Property] public GameObject IkLeftHand { get; set; }
+	[Property] public GameObject IkRightHand { get; set; }
+	[Property] public GameObject IkLeftFoot { get; set; }
+	[Property] public GameObject IkRightFoot { get; set; }
 
 	public override void Update()
 	{
@@ -26,6 +31,18 @@ public sealed class CitizenAnimation : BaseComponent, BaseComponent.ExecuteInEdi
 
 		// SetIk( "left_hand", ... );
 		// SetIk( "right_hand", ... );
+
+		if ( IkLeftHand.IsValid() && IkLeftHand.Active ) SetIk( "hand_left", IkLeftHand.Transform.World );
+		else ClearIk( "hand_left" );
+
+		if ( IkRightHand.IsValid() && IkRightHand.Active ) SetIk( "hand_right", IkRightHand.Transform.World );
+		else ClearIk( "hand_right" );
+
+		if ( IkLeftFoot.IsValid() && IkLeftFoot.Active ) SetIk( "foot_left", IkLeftFoot.Transform.World );
+		else ClearIk( "foot_left" );
+
+		if ( IkRightFoot.IsValid() && IkRightFoot.Active ) SetIk( "foot_right", IkRightFoot.Transform.World );
+		else ClearIk( "foot_right" );
 	}
 
 	public void SetIk( string name, Transform tx )
@@ -33,14 +50,14 @@ public sealed class CitizenAnimation : BaseComponent, BaseComponent.ExecuteInEdi
 		// convert local to model
 		tx = Target.Transform.World.ToLocal( tx );
 
-		Target.Set( $"{name}_ik.enabled", true );
-		Target.Set( $"{name}_ik.position", tx.Position );
-		Target.Set( $"{name}_ik.rotation", tx.Rotation );
+		Target.Set( $"ik.{name}.enabled", true );
+		Target.Set( $"ik.{name}.position", tx.Position );
+		Target.Set( $"ik.{name}.rotation", tx.Rotation );
 	}
 
 	public void ClearIk( string name )
 	{
-		Target.Set( $"{name}_ik.enabled", false );
+		Target.Set( $"ik.{name}.enabled", false );
 	}
 
 	public Transform GetEyeWorldTransform
