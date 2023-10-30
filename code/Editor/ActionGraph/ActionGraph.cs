@@ -55,12 +55,25 @@ public partial class ActionGraph : IGraph
 
 	public string SerializeNodes( IEnumerable<INode> nodes )
 	{
-		throw new System.NotImplementedException();
+		var sourceNodes = nodes.OfType<ActionNode>()
+			.Select( x => x.Node )
+			.ToHashSet();
+
+		var sourceLinks = sourceNodes
+			.SelectMany( x => x.OutputLinks )
+			.Where( x => sourceNodes.Contains( x.Target.Node ) )
+			.ToArray();
+
+		return Graph.Serialize( sourceNodes, sourceLinks, EditorJsonOptions );
 	}
 
 	public IEnumerable<INode> DeserializeNodes( string serialized )
 	{
-		throw new System.NotImplementedException();
+		var result = Graph.DeserializeInsert( serialized, EditorJsonOptions );
+
+		UpdateNodes();
+
+		return result.Nodes.Select( x => NodeDict[x] );
 	}
 
 	public ActionGraph( Facepunch.ActionGraphs.ActionGraph graph )
