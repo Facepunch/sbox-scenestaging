@@ -7,11 +7,11 @@ using Sandbox;
 [Icon( "account_tree", "red", "white" )]
 public class OnTouchComponent : BaseComponent
 {
-	public delegate Task StartStopTouchHandler( GameObject self, ColliderBaseComponent collider );
-	public delegate Task TouchingHandler( GameObject self, IEnumerable<ColliderBaseComponent> colliders );
+	public delegate Task StartStopTouchHandler( GameObject self, Collider collider );
+	public delegate Task TouchingHandler( GameObject self, IEnumerable<Collider> colliders );
 
-	private HashSet<ColliderBaseComponent> _prevTouching = new();
-	private HashSet<ColliderBaseComponent> _nextTouching = new();
+	private HashSet<Collider> _prevTouching = new();
+	private HashSet<Collider> _nextTouching = new();
 
 	[Title( "Start Touch" ), Property] public StartStopTouchHandler HandleStartTouch { get; set; }
 	[Title( "Touching" ), Property] public TouchingHandler HandleTouching { get; set; }
@@ -21,7 +21,7 @@ public class OnTouchComponent : BaseComponent
 	{
 		_nextTouching.Clear();
 
-		var collider = GetComponent<ColliderBaseComponent>();
+		var collider = GetComponent<Collider>();
 
 		if ( collider != null )
 		{
