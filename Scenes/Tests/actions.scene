@@ -39,7 +39,7 @@
       "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
       "Name": "Citizen",
       "Enabled": true,
-      "Position": "0,0,100",
+      "Position": "-6.007456,0,100",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -67,6 +67,7 @@
         {
           "__type": "CitizenAnimation",
           "__enabled": true,
+          "Height": 1,
           "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
         },
         {
@@ -163,8 +164,7 @@
             ],
             "UserData": {
               "name": "Start",
-              "id": "bdddf899-929b-4c54-8564-2caddebc1fbb",
-              "comments": []
+              "id": "bdddf899-929b-4c54-8564-2caddebc1fbb"
             }
           }
         },
@@ -320,8 +320,7 @@
             ],
             "UserData": {
               "name": "Update",
-              "id": "42181e71-5ba1-49c9-94f1-52a13f611a4a",
-              "comments": []
+              "id": "42181e71-5ba1-49c9-94f1-52a13f611a4a"
             }
           }
         }
@@ -391,6 +390,8 @@
               "BackgroundColor": "0.25292,0.26086,0.29703,1",
               "ClearFlags": "Color, Depth, Stencil",
               "FieldOfView": 80,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
               "ZFar": 10000,
               "ZNear": 1
             },
@@ -436,7 +437,8 @@
                     "t": 1,
                     "c": "0.5,0.5,0.5,1"
                   }
-                ]
+                ],
+                "alpha": []
               },
               "BloomCurve": {
                 "rangey": "0,106.45",
@@ -479,6 +481,8 @@
                   "BackgroundColor": "0.33333,0.46275,0.52157,1",
                   "ClearFlags": "Color, Depth, Stencil",
                   "FieldOfView": 60,
+                  "Orthographic": false,
+                  "OrthographicHeight": 1204,
                   "ZFar": 10000,
                   "ZNear": 10
                 }
@@ -878,6 +882,51 @@
                     "UserData": {
                       "Position": "1920,-192"
                     }
+                  },
+                  {
+                    "Id": 47,
+                    "Type": "comment",
+                    "UserData": {
+                      "Position": "-144,96",
+                      "Size": "592,256",
+                      "Title": "Is it a ball?",
+                      "Layer": 2,
+                      "Color": 2,
+                      "Description": ""
+                    }
+                  },
+                  {
+                    "Id": 48,
+                    "Type": "comment",
+                    "UserData": {
+                      "Position": "64,-672",
+                      "Size": "800,224",
+                      "Title": "Get direction to ball from player",
+                      "Color": 3,
+                      "Layer": 1
+                    }
+                  },
+                  {
+                    "Id": 49,
+                    "Type": "comment",
+                    "UserData": {
+                      "Position": "-112,-960",
+                      "Size": "580,242",
+                      "Title": "Relaitve velocity",
+                      "Color": 5,
+                      "Layer": 1
+                    }
+                  },
+                  {
+                    "Id": 50,
+                    "Type": "comment",
+                    "UserData": {
+                      "Position": "256,-416",
+                      "Size": "580,334",
+                      "Title": "Kick force",
+                      "Layer": 1,
+                      "Color": 4
+                    }
                   }
                 ],
                 "Links": [
@@ -1124,45 +1173,7 @@
                 ],
                 "UserData": {
                   "name": "Start Touch",
-                  "id": "d8365468-4f8f-4ec4-9a6f-be492845b0ed",
-                  "comments": [
-                    {
-                      "Size": "580,242",
-                      "Color": "Purple",
-                      "Title": "Player velocity relative to ball velocity",
-                      "Description": "",
-                      "Layer": 3,
-                      "Identifier": "0e6371c6-2319-4f4b-9ab7-5e595fd25033",
-                      "Position": "-112,-960"
-                    },
-                    {
-                      "Size": "592,226",
-                      "Color": "Blue",
-                      "Title": "Has \u0022ball\u0022 tag",
-                      "Description": "",
-                      "Layer": 1,
-                      "Identifier": "90b33d5c-21c4-46ac-96eb-5baab41d14cf",
-                      "Position": "-144,112"
-                    },
-                    {
-                      "Size": "800,226",
-                      "Color": "Green",
-                      "Title": "Ball to player direction",
-                      "Description": "",
-                      "Layer": 1,
-                      "Identifier": "5e93da2e-81cb-457d-bb7b-9cc663e1b448",
-                      "Position": "64,-672"
-                    },
-                    {
-                      "Size": "580,334",
-                      "Color": "Yellow",
-                      "Title": "Kick force",
-                      "Description": "",
-                      "Layer": 5,
-                      "Identifier": "40551862-c8da-4440-bfea-58b44e7b7803",
-                      "Position": "256,-416"
-                    }
-                  ]
+                  "id": "d8365468-4f8f-4ec4-9a6f-be492845b0ed"
                 }
               },
               "HandleStopTouch": null,

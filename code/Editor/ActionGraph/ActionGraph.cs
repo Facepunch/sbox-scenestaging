@@ -92,7 +92,7 @@ public partial class ActionGraph : IGraph
 		{
 			if ( !NodeDict.ContainsKey( node ) )
 			{
-				var editorNode = new ActionNode( this, node );
+				var editorNode = ActionNodeType.CreateEditorNode( this, node );
 				NodeDict.Add( node, editorNode );
 				NodeIdDict.Add( editorNode.Identifier, editorNode );
 			}

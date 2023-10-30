@@ -281,7 +281,6 @@ public partial class MainWindow : DockWindow
 
 	private void Save()
 	{
-		View.WriteSpecialNodes();
 		Saved?.Invoke();
 	}
 
@@ -354,6 +353,9 @@ public class ActionGraphView : GraphView
 
 	protected override INodeType RerouteNodeType { get; }
 		= new ActionNodeType( EditorNodeLibrary.Get( "nop" ) );
+
+	protected override INodeType CommentNodeType { get; }
+		= new ActionNodeType( EditorNodeLibrary.Get( "comment" ) );
 
 	public void LinkTriggered( Link link, object value )
 	{
@@ -540,39 +542,5 @@ public class ActionGraphView : GraphView
 		}
 
 		return base.OnGetHandleConfig( type );
-	}
-
-	protected override void OnRebuild()
-	{
-		var commentsNode = Graph.Graph.UserData["comments"];
-
-		if ( commentsNode == null )
-		{
-			return;
-		}
-
-		try
-		{
-			var comments = (CommentNode[])Json.FromNode( commentsNode, typeof(CommentNode[]) );
-
-			foreach ( var comment in comments )
-			{
-				CreateNodeUI( comment );
-			}
-		}
-		catch ( Exception e )
-		{
-			Log.Error( e );
-		}
-	}
-
-	public void WriteSpecialNodes()
-	{
-		var commentNodes = Items
-			.OfType<CommentUI>()
-			.Select( x => x.Node as CommentNode )
-			.ToArray();
-
-		Graph.Graph.UserData["comments"] = Json.ToNode( commentNodes );
 	}
 }

@@ -5,7 +5,6 @@ using System.Text.Json.Nodes;
 namespace Editor.ActionGraph
 {
 	public record UserDataProperty<T>
-		where T : IEquatable<T>
 	{
 		public JsonObject UserData { get; }
 		public string Key { get; }

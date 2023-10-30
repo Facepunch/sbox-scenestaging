@@ -78,7 +78,15 @@ public class Properties : Widget
 
 		var ps = new ControlSheet();
 
-		if ( Target is ActionNode node && !HidePropertiesFor.Contains( node.Definition.Identifier ) )
+		if ( Target is CommentActionNode commentNode )
+		{
+			var obj = EditorTypeLibrary.GetSerializedObject( commentNode );
+
+			obj.OnPropertyChanged += _ => commentNode.MarkDirty();
+
+			ps.AddObject( obj );
+		}
+		else if ( Target is ActionNode node && !HidePropertiesFor.Contains( node.Definition.Identifier ) )
 		{
 			foreach ( var (name, property) in node.Node.Properties )
 			{
@@ -91,14 +99,6 @@ public class Properties : Widget
 
 				ps.AddRow( prop );
 			}
-		}
-		else if ( Target is CommentNode commentNode )
-		{
-			var obj = EditorTypeLibrary.GetSerializedObject( commentNode );
-
-			obj.OnPropertyChanged += _ => commentNode.Update();
-
-			ps.AddObject( obj );
 		}
 
 		_content.Add( ps );

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Text.Json.Serialization;
 using Editor.NodeEditor;
 using Facepunch.ActionGraphs;
 
@@ -32,11 +33,22 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 
 	public bool HideInEditor => Hidden.Contains( Identifier );
 
+	public static ActionNode CreateEditorNode( ActionGraph graph, Node node )
+	{
+		return node.Definition.Identifier switch
+		{
+			"comment" => new CommentActionNode( graph, node ),
+			"nop" => new RerouteActionNode( graph, node ),
+			_ => new ActionNode( graph, node )
+		};
+	}
+
 	public INode CreateNode( IGraph graph )
 	{
 		var actionGraph = (ActionGraph)graph;
 		var node = actionGraph.Graph.AddNode( Definition );
-		return new ActionNode( actionGraph, node );
+
+		return CreateEditorNode( actionGraph, node );
 	}
 }
 
@@ -161,15 +173,24 @@ public record struct FieldNodeType( FieldDescription Field, PropertyNodeKind Kin
 
 public class ActionNode : INode
 {
+	[HideInEditor]
 	public INodeType Type => new ActionNodeType( Definition );
+
+	[HideInEditor]
 	public ActionGraph Graph { get; }
+
+	[HideInEditor]
 	public Node Node { get; }
+
+	[HideInEditor]
 	public NodeDefinition Definition => Node.Definition;
 
 	public event Action Changed;
 
+	[HideInEditor]
 	public string Identifier { get; }
 
+	[HideInEditor]
 	public string ErrorMessage => string.Join( Environment.NewLine,
 		Node.GetMessages()
 			.Where( x => x.IsError )
@@ -202,12 +223,16 @@ public class ActionNode : INode
 		};
 	}
 
-	DisplayInfo INode.DisplayInfo => Node.GetDisplayInfo();
+	[HideInEditor]
+	public virtual DisplayInfo DisplayInfo => Node.GetDisplayInfo();
 
+	[HideInEditor]
 	public bool CanClone => Node != Node.ActionGraph.EventNode;
 
+	[HideInEditor]
 	public bool CanRemove => Node != Node.ActionGraph.EventNode;
 
+	[HideInEditor]
 	public Color PrimaryColor
 	{
 		get
@@ -237,6 +262,7 @@ public class ActionNode : INode
 		}
 	}
 
+	[HideInEditor]
 	public Vector2 Position
 	{
 		get => _position.Value;
@@ -258,6 +284,7 @@ public class ActionNode : INode
 		return size with { x = Math.Max( size.x - 120f, 0f ) };
 	}
 
+	[HideInEditor]
 	public Vector2 ExpandSize
 	{
 		get
@@ -350,8 +377,10 @@ public class ActionNode : INode
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 
+	[HideInEditor]
 	IEnumerable<IPlug> INode.Inputs => Inputs;
 
+	[HideInEditor]
 	IEnumerable<IPlug> INode.Outputs => Outputs;
 
 	void INode.OnPaint( Rect rect )
@@ -366,6 +395,7 @@ public class ActionNode : INode
 		}
 	}
 
+	[HideInEditor]
 	public bool HasTitleBar => !Definition.Identifier.StartsWith( "op." );
 
 	private void PaintOperator( Rect rect )
@@ -418,16 +448,18 @@ public class ActionNode : INode
 		}
 	}
 
-	NodeUI INode.CreateUI( GraphView view )
+	public virtual NodeUI CreateUI( GraphView view )
 	{
-		return Definition.Identifier == "nop"
-			? new RerouteUI( view, this )
-			: new NodeUI( view, this );
+		return new NodeUI( view, this );
 	}
 
+	[HideInEditor]
 	private readonly UserDataProperty<Vector2> _position;
 
+	[HideInEditor]
 	public PlugCollection Inputs { get; }
+
+	[HideInEditor]
 	public PlugCollection Outputs { get; }
 
 	public ActionNode( ActionGraph graph, Node node )
@@ -483,6 +515,7 @@ public class ActionNode : INode
 		return true;
 	}
 
+	[HideInEditor]
 	private ValidationMessage[] _messages = Array.Empty<ValidationMessage>();
 
 	private bool UpdateMessages()
@@ -504,6 +537,90 @@ public class ActionNode : INode
 		}
 
 		return false;
+	}
+}
+
+public class RerouteActionNode : ActionNode
+{
+	public RerouteActionNode( ActionGraph graph, Node node )
+		: base( graph, node )
+	{
+	}
+
+	public override NodeUI CreateUI( GraphView view )
+	{
+		return new RerouteUI( view, this );
+	}
+}
+
+public class CommentActionNode : ActionNode, ICommentNode
+{
+	[HideInEditor]
+	private readonly UserDataProperty<int> _layer;
+
+	[HideInEditor]
+	private readonly UserDataProperty<Vector2> _size;
+
+	[HideInEditor]
+	private readonly UserDataProperty<CommentColor> _color;
+
+	[HideInEditor]
+	private readonly UserDataProperty<string> _title;
+
+	[HideInEditor]
+	private readonly UserDataProperty<string> _description;
+
+	[HideInEditor]
+	public override DisplayInfo DisplayInfo => new ()
+	{
+		Name = Title, Description = Description, Icon = "notes"
+	};
+
+	public CommentActionNode( ActionGraph graph, Node node )
+		: base( graph, node )
+	{
+		_layer = new UserDataProperty<int>( Node.UserData, nameof(Layer) );
+		_size = new UserDataProperty<Vector2>( Node.UserData, nameof(Size) );
+		_color = new UserDataProperty<CommentColor>( Node.UserData, nameof(Color), CommentColor.Green );
+		_title = new UserDataProperty<string>( Node.UserData, nameof(Title), "Unnamed" );
+		_description = new UserDataProperty<string>( Node.UserData, nameof(Description), "" );
+	}
+
+	public override NodeUI CreateUI( GraphView view )
+	{
+		return new CommentUI( view, this );
+	}
+
+	[HideInEditor]
+	public int Layer
+	{
+		get => _layer.Value;
+		set => _layer.Value = value;
+	}
+
+	[HideInEditor]
+	public Vector2 Size
+	{
+		get => _size.Value;
+		set => _size.Value = value;
+	}
+
+	public CommentColor Color
+	{
+		get => _color.Value;
+		set => _color.Value = value;
+	}
+
+	public string Title
+	{
+		get => _title.Value;
+		set => _title.Value = value;
+	}
+
+	public string Description
+	{
+		get => _description.Value;
+		set => _description.Value = value;
 	}
 }
 
