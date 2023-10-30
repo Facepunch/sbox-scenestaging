@@ -7,7 +7,7 @@ using System;
 [EditorHandle( "materials/gizmo/decal.png" )]
 public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
 {
-	SceneObject _sceneObject;
+	ProjectedDecalSceneObject _sceneObject;
 
 	/// <summary>
 	/// The material to use for this decal
@@ -26,7 +26,14 @@ public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
 
 	public override void DrawGizmos()
 	{
-		Gizmo.Draw.Line( Vector3.Zero, Vector3.Forward * DecalScale.z );
+		if ( !Gizmo.IsSelected )
+		{
+			Gizmo.Draw.Line( Vector3.Zero, Vector3.Down * DecalScale.z );
+		}
+		else
+		{
+			Gizmo.Draw.LineBBox( new BBox( new Vector3( -DecalScale.x / 2f, -DecalScale.y / 2f, -DecalScale.z ), new Vector3( DecalScale.x / 2f, DecalScale.y / 2f, 0 ) ) );
+		}
 	}
 
 	public override void OnEnabled()
@@ -34,20 +41,9 @@ public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
 
-		PlaceDecal();
-	}
+		if ( Material == null ) return;
 
-	protected void PlaceDecal()
-	{
-		_sceneObject?.Delete();
-
-		if ( Material == null ) 
-			return;
-		
-		_sceneObject = Decal.Place(
-			Scene.SceneWorld, Material, GameObject.Transform.Position, GameObject.Transform.Rotation,
-			DecalScale * GameObject.Transform.Scale, TintColor
-		);
+		_sceneObject = new ProjectedDecalSceneObject( Scene.SceneWorld, Material, DecalScale );
 	}
 
 	public override void OnDisabled()
@@ -56,23 +52,26 @@ public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject = null;
 	}
 
-	// tony: From my first look, decals don't really like to be moved, their SceneObject.Transform is a relative transform I believe
-	// - Can probably get rid of CProjectedDecal in the end too and move most of it to C#
-	// - Need a better way to translate the decal which doesn't mean recreating it entirely
 	int hash = 0;
-	protected int Hash => HashCode.Combine( GameObject.Transform.Position, GameObject.Transform.Rotation, DecalScale, Material, TintColor );
+
+	/// <summary>
+	/// Decals currently don't support changing their scale / material without recreating the object
+	/// </summary>
+	protected int Hash => HashCode.Combine( DecalScale, Material );
 
 	protected override void OnPreRender()
 	{
 		if ( !_sceneObject.IsValid() )
 			return;
 
-		var lastHash = hash;
+		if ( Hash != hash )
+		{
+			_sceneObject?.Update( Material, DecalScale );
+		}
+
 		hash = Hash;
-
-		if ( Hash == lastHash )
-			return;
-
-		PlaceDecal();
+		
+		_sceneObject.ColorTint = TintColor;
+		_sceneObject.Transform = Transform.World;
 	}
 }
