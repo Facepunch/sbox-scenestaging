@@ -556,7 +556,23 @@
               "__type": "OnTouchComponent",
               "__enabled": true,
               "HandleStartTouch": {
-                "Variables": [],
+                "Variables": [
+                  {
+                    "Id": 52,
+                    "Name": "Collider",
+                    "Type": "package.facepunch.testbed/Collider"
+                  },
+                  {
+                    "Id": 54,
+                    "Name": "Self",
+                    "Type": "package.facepunch.testbed/GameObject"
+                  },
+                  {
+                    "Id": 62,
+                    "Name": "Ball Physics",
+                    "Type": "package.facepunch.testbed/PhysicsComponent"
+                  }
+                ],
                 "Nodes": [
                   {
                     "Id": 0,
@@ -565,7 +581,7 @@
                       "name": "event"
                     },
                     "UserData": {
-                      "Position": "-656,-368"
+                      "Position": "-480,-544"
                     }
                   },
                   {
@@ -576,7 +592,7 @@
                       "_name": "GameObject"
                     },
                     "UserData": {
-                      "Position": "-112,176"
+                      "Position": "-128,-240"
                     }
                   },
                   {
@@ -587,7 +603,7 @@
                       "_name": "Tags"
                     },
                     "UserData": {
-                      "Position": "64,176"
+                      "Position": "48,-240"
                     }
                   },
                   {
@@ -598,7 +614,7 @@
                       "_name": "Has"
                     },
                     "UserData": {
-                      "Position": "256,192"
+                      "Position": "240,-224"
                     }
                   },
                   {
@@ -608,14 +624,14 @@
                       "value": "ball"
                     },
                     "UserData": {
-                      "Position": "64,240"
+                      "Position": "48,-176"
                     }
                   },
                   {
                     "Id": 6,
                     "Type": "branch",
                     "UserData": {
-                      "Position": "592,48"
+                      "Position": "576,-368"
                     }
                   },
                   {
@@ -626,7 +642,7 @@
                       "_name": "Velocity"
                     },
                     "UserData": {
-                      "Position": "1632,-288"
+                      "Position": "1824,-176"
                     }
                   },
                   {
@@ -641,7 +657,7 @@
                       "_name": "GetComponent"
                     },
                     "UserData": {
-                      "Position": "-288,-336"
+                      "Position": "0,-496"
                     }
                   },
                   {
@@ -652,7 +668,7 @@
                       "_name": "Transform"
                     },
                     "UserData": {
-                      "Position": "96,-592"
+                      "Position": "-16,416"
                     }
                   },
                   {
@@ -663,7 +679,7 @@
                       "_name": "Transform"
                     },
                     "UserData": {
-                      "Position": "96,-528"
+                      "Position": "-16,480"
                     }
                   },
                   {
@@ -674,7 +690,7 @@
                       "_name": "Position"
                     },
                     "UserData": {
-                      "Position": "272,-592"
+                      "Position": "160,416"
                     }
                   },
                   {
@@ -685,14 +701,14 @@
                       "_name": "Position"
                     },
                     "UserData": {
-                      "Position": "272,-528"
+                      "Position": "160,480"
                     }
                   },
                   {
                     "Id": 14,
                     "Type": "op.subtract",
                     "UserData": {
-                      "Position": "544,-560"
+                      "Position": "432,448"
                     }
                   },
                   {
@@ -703,14 +719,14 @@
                       "_name": "Normal"
                     },
                     "UserData": {
-                      "Position": "672,-560"
+                      "Position": "560,448"
                     }
                   },
                   {
                     "Id": 18,
                     "Type": "op.multiply",
                     "UserData": {
-                      "Position": "896,-416"
+                      "Position": "784,592"
                     }
                   },
                   {
@@ -720,21 +736,21 @@
                       "value": "attack1"
                     },
                     "UserData": {
-                      "Position": "288,-352"
+                      "Position": "176,656"
                     }
                   },
                   {
                     "Id": 34,
                     "Type": "op.conditional",
                     "UserData": {
-                      "Position": "704,-288"
+                      "Position": "592,720"
                     }
                   },
                   {
                     "Id": 32,
                     "Type": "input.down",
                     "UserData": {
-                      "Position": "464,-352"
+                      "Position": "352,656"
                     }
                   },
                   {
@@ -749,14 +765,17 @@
                       "_name": "GetComponentInParent"
                     },
                     "UserData": {
-                      "Position": "-80,-896"
+                      "Position": "-192,96"
                     }
                   },
                   {
-                    "Id": 23,
-                    "Type": "nop",
+                    "Id": 55,
+                    "Type": "var.get",
+                    "Properties": {
+                      "var": 54
+                    },
                     "UserData": {
-                      "Position": "-304,-544"
+                      "Position": "-368,96"
                     }
                   },
                   {
@@ -767,7 +786,7 @@
                       "_name": "Velocity"
                     },
                     "UserData": {
-                      "Position": "96,-816"
+                      "Position": "-16,224"
                     }
                   },
                   {
@@ -778,42 +797,53 @@
                       "_name": "Velocity"
                     },
                     "UserData": {
-                      "Position": "96,-896"
+                      "Position": "-16,96"
                     }
                   },
                   {
                     "Id": 26,
                     "Type": "op.subtract",
                     "UserData": {
-                      "Position": "336,-848"
+                      "Position": "224,160"
                     }
                   },
                   {
                     "Id": 27,
                     "Type": "op.add",
                     "UserData": {
-                      "Position": "1248,-720"
+                      "Position": "1088,240"
                     }
                   },
                   {
-                    "Id": 28,
-                    "Type": "nop",
+                    "Id": 65,
+                    "Type": "comment",
                     "UserData": {
-                      "Position": "256,-0"
+                      "Position": "-240,-672",
+                      "Size": "640,306",
+                      "Title": "Set Variables",
+                      "Color": 6,
+                      "Layer": 2
                     }
                   },
                   {
-                    "Id": 29,
-                    "Type": "nop",
+                    "Id": 66,
+                    "Type": "comment",
                     "UserData": {
-                      "Position": "-144,-48"
+                      "Position": "1488,-256",
+                      "Size": "880,434",
+                      "Title": "Kick ball, play punch anim",
+                      "Color": 0,
+                      "Layer": 1
                     }
                   },
                   {
-                    "Id": 30,
-                    "Type": "nop",
+                    "Id": 63,
+                    "Type": "var.get",
+                    "Properties": {
+                      "var": 62
+                    },
                     "UserData": {
-                      "Position": "-400,-336"
+                      "Position": "-192,224"
                     }
                   },
                   {
@@ -823,7 +853,7 @@
                       "value": 250
                     },
                     "UserData": {
-                      "Position": "496,-192"
+                      "Position": "384,816"
                     }
                   },
                   {
@@ -833,28 +863,37 @@
                       "value": 500
                     },
                     "UserData": {
-                      "Position": "496,-272"
+                      "Position": "384,736"
                     }
                   },
                   {
-                    "Id": 37,
-                    "Type": "nop",
+                    "Id": 64,
+                    "Type": "var.get",
+                    "Properties": {
+                      "var": 62
+                    },
                     "UserData": {
-                      "Position": "1360,0"
+                      "Position": "1520,-112"
                     }
                   },
                   {
-                    "Id": 38,
-                    "Type": "nop",
+                    "Id": 58,
+                    "Type": "var.get",
+                    "Properties": {
+                      "var": 52
+                    },
                     "UserData": {
-                      "Position": "256,-16"
+                      "Position": "-192,480"
                     }
                   },
                   {
-                    "Id": 39,
-                    "Type": "nop",
+                    "Id": 59,
+                    "Type": "var.get",
+                    "Properties": {
+                      "var": 54
+                    },
                     "UserData": {
-                      "Position": "1360,-16"
+                      "Position": "-192,416"
                     }
                   },
                   {
@@ -869,7 +908,7 @@
                       "_name": "GetComponentInParent"
                     },
                     "UserData": {
-                      "Position": "1632,-64"
+                      "Position": "1872,48"
                     }
                   },
                   {
@@ -880,17 +919,17 @@
                       "_name": "TriggerAttack"
                     },
                     "UserData": {
-                      "Position": "1920,-192"
+                      "Position": "2176,-64"
                     }
                   },
                   {
                     "Id": 47,
                     "Type": "comment",
                     "UserData": {
-                      "Position": "-144,96",
-                      "Size": "592,256",
+                      "Position": "-336,-304",
+                      "Size": "768,240",
                       "Title": "Is it a ball?",
-                      "Layer": 2,
+                      "Layer": 4,
                       "Color": 2,
                       "Description": ""
                     }
@@ -899,40 +938,90 @@
                     "Id": 48,
                     "Type": "comment",
                     "UserData": {
-                      "Position": "64,-672",
-                      "Size": "800,224",
+                      "Position": "-224,336",
+                      "Size": "976,224",
                       "Title": "Get direction to ball from player",
                       "Color": 3,
-                      "Layer": 1
+                      "Layer": 3
                     }
                   },
                   {
                     "Id": 49,
                     "Type": "comment",
                     "UserData": {
-                      "Position": "-112,-960",
-                      "Size": "580,242",
-                      "Title": "Relaitve velocity",
+                      "Position": "-384,32",
+                      "Size": "740,272",
+                      "Title": "Relative velocity",
                       "Color": 5,
-                      "Layer": 1
+                      "Layer": 3
                     }
                   },
                   {
                     "Id": 50,
                     "Type": "comment",
                     "UserData": {
-                      "Position": "256,-416",
+                      "Position": "144,592",
                       "Size": "580,334",
                       "Title": "Kick force",
-                      "Layer": 1,
+                      "Layer": 3,
                       "Color": 4
+                    }
+                  },
+                  {
+                    "Id": 51,
+                    "Type": "var.set",
+                    "Properties": {
+                      "var": 52
+                    },
+                    "UserData": {
+                      "Position": "-208,-608"
+                    }
+                  },
+                  {
+                    "Id": 53,
+                    "Type": "var.set",
+                    "Properties": {
+                      "var": 54
+                    },
+                    "UserData": {
+                      "Position": "0,-592"
+                    }
+                  },
+                  {
+                    "Id": 56,
+                    "Type": "var.get",
+                    "Properties": {
+                      "var": 54
+                    },
+                    "UserData": {
+                      "Position": "1696,48"
+                    }
+                  },
+                  {
+                    "Id": 60,
+                    "Type": "var.get",
+                    "Properties": {
+                      "var": 52
+                    },
+                    "UserData": {
+                      "Position": "-304,-240"
+                    }
+                  },
+                  {
+                    "Id": 61,
+                    "Type": "var.set",
+                    "Properties": {
+                      "var": 62
+                    },
+                    "UserData": {
+                      "Position": "208,-544"
                     }
                   }
                 ],
                 "Links": [
                   [
-                    0,
-                    "collider",
+                    60,
+                    "_result",
                     1,
                     "target"
                   ],
@@ -961,32 +1050,26 @@
                     "condition"
                   ],
                   [
-                    29,
-                    "out",
+                    61,
+                    "_signal",
                     6,
                     "_signal"
                   ],
                   [
-                    37,
-                    "out",
+                    64,
+                    "_result",
                     17,
                     "target"
                   ],
                   [
-                    30,
-                    "out",
+                    0,
+                    "collider",
                     16,
                     "_target"
                   ],
                   [
-                    23,
-                    "out",
-                    9,
-                    "target"
-                  ],
-                  [
-                    30,
-                    "out",
+                    58,
+                    "_result",
                     11,
                     "target"
                   ],
@@ -1063,20 +1146,14 @@
                     "target"
                   ],
                   [
-                    0,
-                    "self",
-                    23,
-                    "in"
-                  ],
-                  [
-                    16,
+                    63,
                     "_result",
                     24,
                     "target"
                   ],
                   [
-                    23,
-                    "out",
+                    55,
+                    "_result",
                     31,
                     "_target"
                   ],
@@ -1105,22 +1182,10 @@
                     "b"
                   ],
                   [
-                    16,
-                    "_result",
-                    28,
-                    "in"
-                  ],
-                  [
-                    0,
+                    53,
                     "_signal",
-                    29,
-                    "in"
-                  ],
-                  [
-                    0,
-                    "collider",
-                    30,
-                    "in"
+                    61,
+                    "_signal"
                   ],
                   [
                     36,
@@ -1135,26 +1200,20 @@
                     "b"
                   ],
                   [
-                    28,
-                    "out",
-                    37,
-                    "in"
+                    59,
+                    "_result",
+                    9,
+                    "target"
                   ],
                   [
-                    0,
-                    "self",
-                    38,
-                    "in"
+                    16,
+                    "_result",
+                    61,
+                    "value"
                   ],
                   [
-                    38,
-                    "out",
-                    39,
-                    "in"
-                  ],
-                  [
-                    39,
-                    "out",
+                    56,
+                    "_result",
                     40,
                     "_target"
                   ],
@@ -1168,6 +1227,30 @@
                     17,
                     "_signal",
                     46,
+                    "_signal"
+                  ],
+                  [
+                    0,
+                    "collider",
+                    51,
+                    "value"
+                  ],
+                  [
+                    0,
+                    "_signal",
+                    51,
+                    "_signal"
+                  ],
+                  [
+                    0,
+                    "self",
+                    53,
+                    "value"
+                  ],
+                  [
+                    51,
+                    "_signal",
+                    53,
                     "_signal"
                   ]
                 ],
