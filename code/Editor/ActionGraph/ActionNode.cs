@@ -10,7 +10,7 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 {
 	private static HashSet<string> Hidden { get; } = new ()
 	{
-		"event", "property.get", "property.set", "field.get", "field.set", "call", "nop"
+		"event", "property.get", "property.set", "field.get", "field.set", "call", "nop", "comment"
 	};
 
 	public string Identifier => Definition.Identifier;
