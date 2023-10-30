@@ -267,9 +267,11 @@ public partial class MainWindow : DockWindow
 
 	private void View_OnSelectionChanged()
 	{
-		var items = View.SelectedItems.ToArray();
+		var node = View.SelectedItems
+			.OfType<NodeUI>()
+			.MaxBy( n => n is CommentUI );
 
-		if ( items is [NodeUI node] )
+		if ( node != null )
 		{
 			Properties.Target = node.Node;
 		}
