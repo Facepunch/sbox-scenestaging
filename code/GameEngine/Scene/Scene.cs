@@ -30,9 +30,8 @@ public partial class Scene : GameObject
 		PhysicsWorld.Gravity = Vector3.Down * 850;
 		PhysicsWorld.SimulationMode = PhysicsSimulationMode.Continuous;
 
-
-		// todo - load from package
-		var settings = new Sandbox.Physics.CollisionRules();
+		// Grab collision rules from current game package
+		var settings = Game.Menu.Package.GetMeta( "Collision", new Sandbox.Physics.CollisionRules() );
 		PhysicsWorld.SetCollisionRules( settings );
 	}
 
