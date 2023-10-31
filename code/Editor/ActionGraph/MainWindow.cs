@@ -502,20 +502,58 @@ public class ActionGraphView : GraphView
 		}
 	}
 
-	protected override IEnumerable<INodeType> GetRelevantNodes( Type inputValueType )
+	protected override IEnumerable<INodeType> GetRelevantNodes( string name )
 	{
-		var baseNodes = base.GetRelevantNodes( inputValueType );
-		var typeDesc = EditorTypeLibrary.GetType( inputValueType );
-
-		if ( typeDesc == null )
+		foreach ( var variable in Graph.Graph.Variables.OrderBy( x => x.Name ) )
 		{
-			return baseNodes;
+			yield return new VariableNodeType( variable.Name, variable.Type, PropertyNodeKind.Get, false, true );
+			yield return new VariableNodeType( variable.Name, variable.Type, PropertyNodeKind.Set, false, true );
 		}
 
-		return GetInstanceNodes( typeDesc )
-			.OrderBy( x => x.DisplayInfo.Group )
-			.ThenBy( x => x.DisplayInfo.Name )
-			.Concat( baseNodes );
+		foreach ( var nodeType in base.GetRelevantNodes( name ) )
+		{
+			yield return nodeType;
+		}
+	}
+
+	protected override IEnumerable<INodeType> GetRelevantNodes( Type inputValueType, string name )
+	{
+		name = name?.Trim();
+
+		if ( inputValueType != typeof(OutputSignal) && !string.IsNullOrEmpty( name ) )
+		{
+			var match = Graph.Graph.Variables.FirstOrDefault( x => x.Name == name );
+
+			if ( match == null )
+			{
+				yield return new VariableNodeType( name, inputValueType, PropertyNodeKind.Set, true, false );
+			}
+		}
+
+		foreach ( var variable in Graph.Graph.Variables.OrderBy( x => x.Name ) )
+		{
+			if ( !variable.Type.IsAssignableFrom( inputValueType ) )
+			{
+				continue;
+			}
+
+			yield return new VariableNodeType( name, variable.Type, PropertyNodeKind.Set, false, false );
+		}
+
+		if ( EditorTypeLibrary.GetType( inputValueType ) is {} typeDesc )
+		{
+			foreach ( var nodeType in GetInstanceNodes( typeDesc )
+				.OrderBy( x => x.DisplayInfo.Group )
+				.ThenBy( x => x.DisplayInfo.Name ) )
+			{
+				yield return nodeType;
+			}
+		}
+
+		foreach ( var nodeType in base.GetRelevantNodes( inputValueType, name ) )
+		{
+			yield return nodeType;
+		}
 	}
 
 	private static Dictionary<Type, HandleConfig> HandleConfigs { get; } = new()

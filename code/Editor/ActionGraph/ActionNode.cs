@@ -10,7 +10,14 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 {
 	private static HashSet<string> Hidden { get; } = new ()
 	{
-		"event", "property.get", "property.set", "field.get", "field.set", "call", "nop", "comment"
+		"event",
+		"call",
+		"nop",
+		"comment",
+
+		"property.get", "property.set",
+		"field.get", "field.set",
+		"var.get", "var.set"
 	};
 
 	public string Identifier => Definition.Identifier;
@@ -52,6 +59,52 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 	}
 }
 
+public enum PropertyNodeKind
+{
+	Get,
+	Set
+}
+
+public record struct VariableNodeType( string Name, Type Type, PropertyNodeKind Kind, bool Create, bool ReadWrite ) : INodeType
+{
+	public DisplayInfo DisplayInfo => new()
+	{
+		Name = ReadWrite ? $"{Name}/{Kind}" : $"{Name} ({Kind})",
+		Group = "Variables",
+		Icon = Create ? "add" : Kind == PropertyNodeKind.Set
+			? EditorNodeLibrary.SetVar.DisplayInfo.Icon
+			: EditorNodeLibrary.GetVar.DisplayInfo.Icon
+	};
+
+	public bool HasInput( Type valueType )
+	{
+		return Kind == PropertyNodeKind.Set &&
+			(valueType == typeof(OutputSignal) || Type.IsAssignableFrom( valueType ));
+	}
+
+	public bool HideInEditor => false;
+
+	public INode CreateNode( IGraph graph )
+	{
+		var actionGraph = (ActionGraph)graph;
+		var node = actionGraph.Graph.AddNode( Kind == PropertyNodeKind.Set
+			? actionGraph.Graph.NodeLibrary.SetVar
+			: actionGraph.Graph.NodeLibrary.GetVar );
+
+		var (name, type) = (Name, Type);
+
+		var variable = Create
+			? actionGraph.Graph.AddVariable( Name, Type )
+			: actionGraph.Graph.Variables.First( x => x.Name == name && x.Type == type );
+
+		node.Properties["var"].Value = variable;
+
+		return new ActionNode( actionGraph, node );
+	}
+
+	public string Identifier => $"var.{Kind}/{Name}";
+}
+
 public record struct MethodNodeType( MethodDescription Method ) : INodeType
 {
 	public DisplayInfo DisplayInfo => new()
@@ -83,12 +136,6 @@ public record struct MethodNodeType( MethodDescription Method ) : INodeType
 	}
 
 	public string Identifier => $"call/{Method.TypeDescription.FullName}/{Method.Name}";
-}
-
-public enum PropertyNodeKind
-{
-	Get,
-	Set
 }
 
 public record struct PropertyNodeType( PropertyDescription Property, PropertyNodeKind Kind, bool ReadWrite ) : INodeType
@@ -244,12 +291,14 @@ public class ActionNode : INode
 
 			var baseColor = Node.Kind switch
 			{
+				_ when Node.Definition.Identifier.StartsWith( "var." ) =>
+					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Color.Parse( "#811EFC" )!.Value, 0.5f ),
 				NodeKind.Action =>
-					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.Blue, 0.5f ),
+					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Color.Parse( "#1997FF" )!.Value, 0.5f ),
 				NodeKind.Expression when Node.Definition.Identifier.StartsWith( "const." ) =>
-					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.White, 0.75f ),
+					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Color.Parse( "#1CFF39" )!.Value, 0.5f ),
 				NodeKind.Expression =>
-					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Theme.Green, 0.5f ),
+					Color.Lerp( new Color( 0.7f, 0.7f, 0.7f ), Color.Parse( "#FFF31C" )!.Value, 0.5f ),
 				_ => throw new NotImplementedException()
 			};
 
@@ -667,6 +716,7 @@ public class ActionPlug<T, TDef> : IActionPlug
 	}
 
 	public bool ShowLabel => Node.Definition.Identifier != "nop" && !Node.Definition.Identifier.StartsWith( "const." ) && !Node.Definition.Identifier.StartsWith( "op." );
+	public bool InTitleBar => Parameter.Name == "_signal";
 
 	public string ErrorMessage => string.Join( Environment.NewLine, Parameter.GetMessages()
 		.Where( x => x.IsError )

@@ -188,6 +188,7 @@
                 "Id": 3,
                 "Type": "call",
                 "Properties": {
+                  "deep": true,
                   "T": {
                     "$type": "Type",
                     "Type": "package.facepunch.testbed/AnimatedModelComponent"
@@ -196,17 +197,7 @@
                   "_name": "GetComponent"
                 },
                 "UserData": {
-                  "Position": "640,192"
-                }
-              },
-              {
-                "Id": 4,
-                "Type": "const.bool",
-                "Properties": {
-                  "value": true
-                },
-                "UserData": {
-                  "Position": "448,288"
+                  "Position": "656,112"
                 }
               },
               {
@@ -227,14 +218,14 @@
                   "saturation": 0.75
                 },
                 "UserData": {
-                  "Position": "704,336"
+                  "Position": "656,192"
                 }
               },
               {
                 "Id": 9,
                 "Type": "input.pressed",
                 "UserData": {
-                  "Position": "448,80"
+                  "Position": "448,48"
                 }
               },
               {
@@ -244,12 +235,12 @@
                   "value": "attack1"
                 },
                 "UserData": {
-                  "Position": "272,80"
+                  "Position": "272,48"
                 }
               },
               {
                 "Id": 10,
-                "Type": "branch",
+                "Type": "if",
                 "UserData": {
                   "Position": "656,16"
                 }
@@ -268,12 +259,6 @@
                 "out",
                 3,
                 "_target"
-              ],
-              [
-                4,
-                "_result",
-                3,
-                "deep"
               ],
               [
                 3,
@@ -571,6 +556,11 @@
                     "Id": 62,
                     "Name": "Ball Physics",
                     "Type": "package.facepunch.testbed/PhysicsComponent"
+                  },
+                  {
+                    "Id": 73,
+                    "Name": "Poop",
+                    "Type": "package.facepunch.testbed/Collider"
                   }
                 ],
                 "Nodes": [
@@ -581,7 +571,7 @@
                       "name": "event"
                     },
                     "UserData": {
-                      "Position": "-480,-544"
+                      "Position": "-560,-544"
                     }
                   },
                   {
@@ -629,9 +619,9 @@
                   },
                   {
                     "Id": 6,
-                    "Type": "branch",
+                    "Type": "if",
                     "UserData": {
-                      "Position": "576,-368"
+                      "Position": "688,-608"
                     }
                   },
                   {
@@ -657,7 +647,7 @@
                       "_name": "GetComponent"
                     },
                     "UserData": {
-                      "Position": "0,-496"
+                      "Position": "-224,-432"
                     }
                   },
                   {
@@ -818,8 +808,8 @@
                     "Id": 65,
                     "Type": "comment",
                     "UserData": {
-                      "Position": "-240,-672",
-                      "Size": "640,306",
+                      "Position": "-256,-656",
+                      "Size": "464,306",
                       "Title": "Set Variables",
                       "Color": 6,
                       "Layer": 2
@@ -873,7 +863,7 @@
                       "var": 62
                     },
                     "UserData": {
-                      "Position": "1520,-112"
+                      "Position": "1520,-160"
                     }
                   },
                   {
@@ -974,7 +964,7 @@
                       "var": 52
                     },
                     "UserData": {
-                      "Position": "-208,-608"
+                      "Position": "16,-496"
                     }
                   },
                   {
@@ -984,7 +974,7 @@
                       "var": 54
                     },
                     "UserData": {
-                      "Position": "0,-592"
+                      "Position": "16,-560"
                     }
                   },
                   {
@@ -1014,7 +1004,21 @@
                       "var": 62
                     },
                     "UserData": {
-                      "Position": "208,-544"
+                      "Position": "16,-432"
+                    }
+                  },
+                  {
+                    "Id": 74,
+                    "Type": "nop",
+                    "UserData": {
+                      "Position": "-32,-480"
+                    }
+                  },
+                  {
+                    "Id": 70,
+                    "Type": "all",
+                    "UserData": {
+                      "Position": "-224,-608"
                     }
                   }
                 ],
@@ -1050,9 +1054,9 @@
                     "condition"
                   ],
                   [
-                    61,
-                    "_signal",
-                    6,
+                    74,
+                    "out",
+                    53,
                     "_signal"
                   ],
                   [
@@ -1182,9 +1186,9 @@
                     "b"
                   ],
                   [
-                    53,
+                    70,
                     "_signal",
-                    61,
+                    6,
                     "_signal"
                   ],
                   [
@@ -1238,7 +1242,7 @@
                   [
                     0,
                     "_signal",
-                    51,
+                    70,
                     "_signal"
                   ],
                   [
@@ -1248,9 +1252,21 @@
                     "value"
                   ],
                   [
+                    74,
+                    "out",
+                    61,
+                    "_signal"
+                  ],
+                  [
+                    70,
+                    "body",
+                    74,
+                    "in"
+                  ],
+                  [
+                    74,
+                    "out",
                     51,
-                    "_signal",
-                    53,
                     "_signal"
                   ]
                 ],

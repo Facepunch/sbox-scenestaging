@@ -60,8 +60,8 @@ public class Properties : Widget
 		"event",
 		"property.get",
 		"property.set",
-		"variable.get",
-		"variable.set"
+		"var.get",
+		"var.set"
 	};
 
 	void RebuildContent()
