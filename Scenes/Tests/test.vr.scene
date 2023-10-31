@@ -1,0 +1,315 @@
+{
+  "GameObjects": [
+    {
+      "Id": "fddb41bc-94fd-4f9a-994f-3657c15750bd",
+      "Name": "Flatgrass",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "MapComponent",
+          "__enabled": true,
+          "MapName": "facepunch.flatgrass"
+        }
+      ]
+    },
+    {
+      "Id": "88ee0d62-5822-4c01-b22b-12744226aca6",
+      "Name": "SkyBox",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "SkyBox2D",
+          "__enabled": true,
+          "SkyMaterial": "materials/skybox/light_test_sky_sunny.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "16bea1e9-0ad8-4040-9574-6d8c80d38f59",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "-0.4003422,-0.3071933,0.5083043,-0.697843",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "1,0.90436,0.79208,1",
+          "Shadows": true,
+          "SkyColor": "0.54056,0.71154,0.79703,1"
+        }
+      ]
+    },
+    {
+      "Id": "8328274d-9e34-4c3e-b06d-7af41188d3e9",
+      "Name": "Spot Light",
+      "Enabled": true,
+      "Position": "0,63.8978,103.9999",
+      "Rotation": "0,0.707107,0,0.7071065",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 1,
+          "ConeInner": 15,
+          "ConeOuter": 45,
+          "Cookie": null,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Radius": 500
+        }
+      ]
+    },
+    {
+      "Id": "15aeff1d-1ba9-4198-9a91-927d2c940d01",
+      "Name": "Player",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "AnchorComponent",
+          "__enabled": true,
+          "UpdateType": "All"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "421c18f7-33c1-493c-8483-49cbf8b19822",
+          "Name": "Camera",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "CameraComponent",
+              "__enabled": true,
+              "BackgroundColor": "0.33333,0.46275,0.52157,1",
+              "ClearFlags": "Color, Depth, Stencil",
+              "FieldOfView": 90,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
+              "TargetEye": "Both",
+              "ZFar": 5000,
+              "ZNear": 1
+            },
+            {
+              "__type": "TrackedPoseComponent",
+              "__enabled": true,
+              "PoseSource": "Head",
+              "TrackingType": "All",
+              "UpdateType": "All",
+              "UseRelativeTransform": true
+            }
+          ]
+        },
+        {
+          "Id": "27cffa28-046b-49fd-8d98-a1247b845418",
+          "Name": "Left Hand",
+          "Enabled": true,
+          "Position": "0,5.222285,0",
+          "Rotation": "0,0,0,0",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "TrackedPoseComponent",
+              "__enabled": true,
+              "PoseSource": "LeftHand",
+              "TrackingType": "All",
+              "UpdateType": "All",
+              "UseRelativeTransform": true
+            }
+          ],
+          "Children": [
+            {
+              "Id": "da3bd340-d220-413b-a844-95f8329a32dd",
+              "Name": "Left Hand Model",
+              "Enabled": true,
+              "Position": "-4,0,0",
+              "Rotation": "0,0.707107,0,0.7071065",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "ModelComponent",
+                  "__enabled": true,
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": null,
+                  "Model": "models/hands/alyx_hand_left.vmdl",
+                  "ShouldCastShadows": true,
+                  "Tint": "1,1,1,1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "d5fe9b06-4f25-44fc-a8f2-891a1f43b164",
+          "Name": "Right Hand",
+          "Enabled": true,
+          "Position": "0,-6.932611,0",
+          "Rotation": "0,0,0,0",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "TrackedPoseComponent",
+              "__enabled": true,
+              "PoseSource": "RightHand",
+              "TrackingType": "All",
+              "UpdateType": "All",
+              "UseRelativeTransform": true
+            }
+          ],
+          "Children": [
+            {
+              "Id": "01bfb8ea-d52a-4104-a4eb-22cdb57da0c5",
+              "Name": "Right Hand Model",
+              "Enabled": true,
+              "Position": "-4,0,0",
+              "Rotation": "0,0.707107,0,0.7071065",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "ModelComponent",
+                  "__enabled": true,
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": null,
+                  "Model": "models/hands/alyx_hand_right.vmdl",
+                  "ShouldCastShadows": true,
+                  "Tint": "1,1,1,1"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "c08ff8ca-603e-4769-a2ab-2ad4b1bfc907",
+      "Name": "oil_drum_a",
+      "Enabled": true,
+      "Position": "55.23362,116.36,-28.29894",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/sbox_props/oil_drum/oil_drum_a.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "7d3b1b23-4959-4f9f-ab69-7e7d3eedab61",
+      "Name": "beer_cask",
+      "Enabled": true,
+      "Position": "-49.14129,108.4974,-28.32806",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/props/beer_keg/beer_cask.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "78f2c5dd-e71f-4eaf-b410-ef645382baf1",
+      "Name": "r_k_monitor",
+      "Enabled": true,
+      "Position": "87.34061,-29.82755,-27.99957",
+      "Rotation": "0.00000005631489,-0.000000000000004497445,0.9448068,0.3276283",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/r_k_monitor.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "794e4bb7-8428-4833-a520-d5005574d46c",
+      "Name": "ddrmachine",
+      "Enabled": true,
+      "Position": "-92.1005,-41.32419,-27.9991",
+      "Rotation": "0.00000002009923,-0.0000000000000001630115,0.3372091,0.9414296",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/carsonhome/ddrmachine.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "73ea31d4-d9e1-48ac-bcb1-a00c04c407ba",
+      "Name": "Object",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "EnvmapComponent",
+          "__enabled": true,
+          "Bounds": {
+            "Mins": "-512,-512,-512",
+            "Maxs": "512,512,512"
+          },
+          "Projection": "Box",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "TintColor": "1,1,1,1"
+        }
+      ]
+    }
+  ],
+  "__references": [
+    "facepunch.beer_cask",
+    "facepunch.oil_drum",
+    "randkassets.r_k_monitor",
+    "shadb.ddrmachine"
+  ]
+}
