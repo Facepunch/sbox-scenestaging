@@ -537,7 +537,7 @@ public class ActionGraphView : GraphView
 				continue;
 			}
 
-			yield return new VariableNodeType( name, variable.Type, PropertyNodeKind.Set, false, false );
+			yield return new VariableNodeType( variable.Name, variable.Type, PropertyNodeKind.Set, false, false );
 		}
 
 		if ( EditorTypeLibrary.GetType( inputValueType ) is {} typeDesc )
