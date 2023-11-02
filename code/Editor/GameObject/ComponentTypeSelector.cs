@@ -163,9 +163,9 @@ internal partial class ComponentTypeSelector : PopupWidget
 	/// <summary>
 	/// Called when the New Component button is pressed
 	/// </summary>
-	void OnNewComponentSelected()
+	void OnNewComponentSelected( string componentName = "MyComponent" )
 	{
-		_ = CreateNewComponent();
+		_ = CreateNewComponent( componentName );
 		Destroy();
 	}
 
@@ -202,6 +202,8 @@ internal partial class ComponentTypeSelector : PopupWidget
 			{
 				selection.AddEntry( new ComponentEntry( selection, type ) { MouseClick = () => OnComponentSelected( type ) } );
 			}
+
+			selection.AddEntry( new ComponentEntry( selection ) { Text = $"New '{searchString}' Component...", MouseClick = () => OnNewComponentSelected( searchString ) } );
 			selection.AddStretchCell();
 			return;
 		}
@@ -220,7 +222,7 @@ internal partial class ComponentTypeSelector : PopupWidget
 					} );
 				}
 
-				selection.AddEntry( new ComponentEntry( selection ) { Text = "New Component...", MouseClick = OnNewComponentSelected } );
+				selection.AddEntry( new ComponentEntry( selection ) { Text = "New Component...", MouseClick = () => OnNewComponentSelected() } );
 				selection.AddStretchCell();
 
 				return;
@@ -241,7 +243,7 @@ internal partial class ComponentTypeSelector : PopupWidget
 	/// <summary>
 	/// We're creating a new component..
 	/// </summary>
-	async Task CreateNewComponent()
+	async Task CreateNewComponent( string componentName = "MyComponent" )
 	{
 		var codePath = LocalProject.CurrentGame.GetCodePath();
 
@@ -249,15 +251,16 @@ internal partial class ComponentTypeSelector : PopupWidget
 		fd.Title = "Create new component..";
 		fd.Directory = codePath;
 		fd.DefaultSuffix = ".cs";
-		fd.SelectFile( $"MyComponent.cs" );
+		fd.SelectFile( $"{componentName}.cs" );
 		fd.SetFindFile();
 		fd.SetModeSave();
 		fd.SetNameFilter( "Cs File (*.cs)" );
 
 		if ( !fd.Execute() )
 			return;
-
-		var componentName = System.IO.Path.GetFileNameWithoutExtension( fd.SelectedFile );
+		
+		// User might change their mind on the component name
+		componentName = System.IO.Path.GetFileNameWithoutExtension( fd.SelectedFile );
 
 		if ( !System.IO.File.Exists( fd.SelectedFile ) )
 		{
