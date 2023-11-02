@@ -110,7 +110,7 @@ public static class EditorScene
 	{
 		GameManager.IsPlaying = false;
 
-		GameManager.ActiveScene.Clear();
+		GameManager.ActiveScene?.Clear();
 		GameManager.ActiveScene = null;
 
 		GameEditorSession.CloseAll();
