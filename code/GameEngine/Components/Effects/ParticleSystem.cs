@@ -107,6 +107,14 @@ public class ParticleSystem : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject?.SetControlPoint( i, rotation );
 	}
 
+	public Vector3 GetControlPointPosition( int i )
+	{
+		if ( _sceneObject is null )
+			return Vector3.Zero;
+		
+		return _sceneObject.GetControlPointPosition( i );
+	}
+
 	public override void Update()
 	{
 		if ( !_sceneObject.IsValid() )
