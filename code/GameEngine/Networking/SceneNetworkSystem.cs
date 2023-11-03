@@ -8,9 +8,17 @@ using System.Threading.Tasks;
 /// </summary>
 public class SceneNetworkSystem : GameNetworkSystem
 {
-	public SceneNetworkSystem( NetworkSystem system ) : base( system )
+	static Guid NetworkGuid = Guid.NewGuid();
+	internal static SceneNetworkSystem Instance { get; private set; }
+
+	public static Guid LocalGuid() => NetworkGuid;
+
+	public SceneNetworkSystem( Sandbox.Internal.TypeLibrary library, NetworkSystem system ) : base( library, system )
 	{
+		Instance = this;
 		Log.Info( "SceneNetworkSystem Initialized" );
+
+		AddJsonHandler<Net_ObjectCreate>( NetworkObject.CreateFromWire );
 	}
 
 	/// <summary>
@@ -43,4 +51,24 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		GameManager.IsPlaying = true;
 	}
+
+	public override async Task OnJoined( NetworkUser client )
+	{
+		Log.Info( $"Client {client.Name} has joined the game!" );
+	}
+
+	public override async Task OnLeave( NetworkUser client )
+	{
+		Log.Info( $"Client {client.Name} has left the game!" );
+	}
+}
+
+
+public struct Net_ObjectCreate
+{
+	public JsonObject JsonData { get; set; }
+	public Guid Guid { get; set; }
+	public Guid Creator { get; set; }
+	public Guid Owner { get; set; }
+	
 }

@@ -21,9 +21,12 @@ public class PlayerController : BaseComponent
 	public override void Update()
 	{
 		// Eye input
-		EyeAngles.pitch += Input.MouseDelta.y * 0.1f;
-		EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
-		EyeAngles.roll = 0;
+		if ( GameObject.IsMine )
+		{
+			EyeAngles.pitch += Input.MouseDelta.y * 0.1f;
+			EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
+			EyeAngles.roll = 0;
+		}
 
 		// Update camera position
 		var camera = GameObject.GetComponent<CameraComponent>( true, true );
@@ -75,7 +78,10 @@ public class PlayerController : BaseComponent
 
 	public override void FixedUpdate()
 	{
-		BuildWishVelocity();
+		if ( !GameObject.IsMine )
+			return;
+
+			BuildWishVelocity();
 
 		var cc = GameObject.GetComponent<CharacterController>();
 
@@ -133,6 +139,6 @@ public class PlayerController : BaseComponent
 		if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
 
 		if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
-		else WishVelocity *= 150.0f;
+		else WishVelocity *= 80.0f;
 	}
 }

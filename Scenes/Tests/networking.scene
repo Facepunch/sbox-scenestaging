@@ -47,6 +47,71 @@
       ]
     },
     {
+      "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "Name": "Camera",
+      "Enabled": true,
+      "Position": "653.8376,863.2358,-573.3307",
+      "Rotation": "0.1921523,0.3922019,-0.3957874,0.8078413",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.25292,0.26086,0.29703,1",
+          "ClearFlags": "Color, Depth, Stencil",
+          "FieldOfView": 69.32,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "ZFar": 10000,
+          "ZNear": 1
+        },
+        {
+          "__type": "Sharpen",
+          "__enabled": true,
+          "Scale": 0.4
+        },
+        {
+          "__type": "Bloom",
+          "__enabled": true,
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "BloomCurve": {
+            "rangey": "0,106.45",
+            "frames": [
+              {},
+              {
+                "x": 1,
+                "y": 1
+              }
+            ]
+          },
+          "Mode": "Screen",
+          "Strength": 0.48,
+          "Threshold": 0.23,
+          "ThresholdWidth": 0.96
+        },
+        {
+          "__type": "Tonemapping",
+          "__enabled": true,
+          "ExposureCompensation": 0.43,
+          "MaximumExposure": 2,
+          "MinimumExposure": 1.3,
+          "Rate": 4.52
+        }
+      ]
+    },
+    {
       "Id": "0cd4b3b6-7ff0-461e-9ce3-716ce58ea5d4",
       "Name": "Gradient Fog",
       "Enabled": true,
@@ -58,8 +123,8 @@
     {
       "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
       "Name": "Citizen",
-      "Enabled": true,
-      "Position": "1104.624,661,-1637.595",
+      "Enabled": false,
+      "Position": "1133.766,661,-1637.595",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "red,green",
@@ -92,6 +157,15 @@
           "IkRightFoot": "18934e2e-aa35-4468-b8ed-6b4ad65eaed1",
           "IkRightHand": "9325a660-3ef2-4b1b-9bde-986839db2d4e",
           "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
+        },
+        {
+          "__type": "NetworkTest",
+          "__enabled": true,
+          "ObjectToSpawn": "087550f3-8196-4f3b-8a2f-5c8b4bd33631"
+        },
+        {
+          "__type": "NetworkObject",
+          "__enabled": true
         }
       ],
       "Children": [
@@ -1232,71 +1306,6 @@
           ]
         },
         {
-          "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
-          "Name": "Camera",
-          "Enabled": true,
-          "Position": "-200,0,64",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Components": [
-            {
-              "__type": "CameraComponent",
-              "__enabled": true,
-              "BackgroundColor": "0.25292,0.26086,0.29703,1",
-              "ClearFlags": "Color, Depth, Stencil",
-              "FieldOfView": 69.32,
-              "Orthographic": false,
-              "OrthographicHeight": 1204,
-              "ZFar": 10000,
-              "ZNear": 1
-            },
-            {
-              "__type": "Sharpen",
-              "__enabled": true,
-              "Scale": 0.4
-            },
-            {
-              "__type": "Bloom",
-              "__enabled": true,
-              "BloomColor": {
-                "color": [
-                  {
-                    "c": "1,1,1,1"
-                  },
-                  {
-                    "t": 1,
-                    "c": "1,1,1,1"
-                  }
-                ],
-                "alpha": []
-              },
-              "BloomCurve": {
-                "rangey": "0,106.45",
-                "frames": [
-                  {},
-                  {
-                    "x": 1,
-                    "y": 1
-                  }
-                ]
-              },
-              "Mode": "Screen",
-              "Strength": 0.48,
-              "Threshold": 0.23,
-              "ThresholdWidth": 0.96
-            },
-            {
-              "__type": "Tonemapping",
-              "__enabled": true,
-              "ExposureCompensation": 0.43,
-              "MaximumExposure": 2,
-              "MinimumExposure": 1.3,
-              "Rate": 4.52
-            }
-          ]
-        },
-        {
           "Id": "edb447df-b691-4153-8652-070d2533e7c4",
           "Name": "EyePos",
           "Enabled": true,
@@ -1567,9 +1576,63 @@
     },
     {
       "Id": "087550f3-8196-4f3b-8a2f-5c8b4bd33631",
-      "Name": "Object",
+      "Name": "Network Object Test",
       "Enabled": true,
       "Position": "1623.856,95.16387,-1301.406",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "NetworkObject",
+          "__enabled": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "57fc6b36-72b5-431b-a98c-06aafcc01121",
+          "Name": "Cube",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.36016,0.82673,0.40682,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "c6950774-2d08-4c73-8d2b-d555d7b2ef93",
+      "Name": "Network Manager",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "GameNetworkManager",
+          "__enabled": true,
+          "PlayerPrefab": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
+          "SpawnPoint": "4cda32b9-b10d-4d0b-8245-ad8a500cf2f6"
+        }
+      ]
+    },
+    {
+      "Id": "4cda32b9-b10d-4d0b-8245-ad8a500cf2f6",
+      "Name": "Spawnpoint",
+      "Enabled": true,
+      "Position": "1252.565,555.6076,-1622.08",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": ""
