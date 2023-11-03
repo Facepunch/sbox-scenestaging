@@ -27,7 +27,7 @@ public partial class Scene : GameObject
 		SceneWorld.GradientFog.Enabled = false;
 	}
 
-	float time;
+	internal float CurrentTime;
 	float delta;
 
 	public void EditorTick()
@@ -54,11 +54,9 @@ public partial class Scene : GameObject
 
 		// Todo - make a scoping class to encompass this shit
 		var delta = Time.Delta * TimeScale;
-		time += delta;
-		var oldNow = Time.Now;
-		var oldDelta = Time.Delta;
-		Time.Now = time;
-		Time.Delta = delta;
+		CurrentTime += delta;
+
+		using var timeScope = Time.Scope( CurrentTime, delta, tick );
 
 		using ( gizmoInstance.Push() )
 		{
@@ -85,15 +83,13 @@ public partial class Scene : GameObject
 			}
 
 			PreTickReset();
+			SceneNetworkUpdate();
 
 			Update();
 			UpdateAnimationThreaded();
 
 			ProcessDeletes();
 		}
-
-		Time.Now = oldNow;
-		Time.Delta = oldDelta;
 	}
 
 	void UpdateAnimationThreaded()
@@ -124,8 +120,12 @@ public partial class Scene : GameObject
 		}
 	}
 
+	int tick;
+
 	protected override void FixedUpdate()
 	{
+		tick++;
+
 		using ( Sandbox.Utility.Superluminal.Scope( "Scene.FixedUpdate", Color.Cyan ) )
 		{
 			var idealHz = 220.0f;

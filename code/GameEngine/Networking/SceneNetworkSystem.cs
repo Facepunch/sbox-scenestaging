@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using Sandbox.Network;
+using Sandbox.Utility;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 		Log.Info( "SceneNetworkSystem Initialized" );
 
 		AddJsonHandler<Net_ObjectCreate>( NetworkObject.CreateFromWire );
+		AddJsonHandler<Net_ObjectUpdate>( GameObject.ObjectUpdate );
 	}
 
 	/// <summary>
@@ -61,6 +63,11 @@ public class SceneNetworkSystem : GameNetworkSystem
 	{
 		Log.Info( $"Client {client.Name} has left the game!" );
 	}
+
+	public override IDisposable Push()
+	{
+		return GameManager.ActiveScene.Push();
+	}
 }
 
 
@@ -71,4 +78,12 @@ public struct Net_ObjectCreate
 	public Guid Creator { get; set; }
 	public Guid Owner { get; set; }
 	
+}
+
+public struct Net_ObjectUpdate
+{
+	public Guid Guid { get; set; }
+	public Transform Transform { get; set; }
+	public Guid Parent { get; set; }
+
 }

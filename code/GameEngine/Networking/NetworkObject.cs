@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Diagnostics;
 using static Sandbox.PhysicsContact;
 
 public sealed class NetworkObject : BaseComponent
@@ -27,26 +28,29 @@ public sealed class NetworkObject : BaseComponent
 
 	public static void Instantiate( GameObject target )
 	{
-		var create = new Net_ObjectCreate();
-		create.Guid = target.Id;
-		create.JsonData = target.Serialize();
-		create.Owner = SceneNetworkSystem.LocalGuid();
-		create.Creator = SceneNetworkSystem.LocalGuid();
+		if ( SceneNetworkSystem.Instance is not null )
+		{
+			var create = new Net_ObjectCreate();
+			create.Guid = target.Id;
+			create.JsonData = target.Serialize();
+			create.Owner = SceneNetworkSystem.LocalGuid();
+			create.Creator = SceneNetworkSystem.LocalGuid();
 
-		SceneNetworkSystem.Instance.BroadcastJson( create );
+			SceneNetworkSystem.Instance.BroadcastJson( create );
+		}
 
 		var netObject = target.GetComponent<NetworkObject>();
-		netObject.Creator = create.Creator;
-		netObject.Owner = create.Owner;
+		netObject.Creator = SceneNetworkSystem.LocalGuid();
+		netObject.Owner = SceneNetworkSystem.LocalGuid();
 
 		target.SetNetworkObject( netObject );
 	}
 
 	public static void CreateFromWire( NetworkUser user, Net_ObjectCreate create )
 	{
-		using var scope = GameManager.ActiveScene.Push();
+		Assert.NotNull( GameManager.ActiveScene );
 
-		Log.Info( $"OnObjectCreate from {user}" );
+		Log.Info( $"OnObjectCreate from {user} / {GameManager.ActiveScene}" );
 
 		var go = new GameObject();
 		go.Deserialize( create.JsonData );
