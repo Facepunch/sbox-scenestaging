@@ -166,6 +166,12 @@ public partial class GameObject
 		Enabled = (bool)(node["Enabled"] ?? Enabled);
 
 		ForEachComponent( "OnValidate", false, c => c.OnValidateInternal() );
+
+
+		if ( !SceneUtility.IsSpawning )
+		{
+			PostDeserialize();
+		}
 	}
 
 	public PrefabFile GetAsPrefab()
@@ -173,5 +179,18 @@ public partial class GameObject
 		var a = new PrefabFile();
 		a.RootObject = Serialize();
 		return a;
+	}
+
+	internal void PostDeserialize()
+	{
+		foreach ( var component in Components )
+		{
+			component.PostDeserialize();
+		}
+
+		foreach ( var child in Children )
+		{
+			child.PostDeserialize();
+		}
 	}
 }
