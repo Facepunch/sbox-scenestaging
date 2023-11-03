@@ -29,7 +29,7 @@ public abstract partial class BaseComponent
 	/// <summary>
 	/// Internal functions to be called when the object wakes up
 	/// </summary>
-	Action onAwake;
+	Action onPostDeserialize;
 
 	bool _enabledState;
 	bool _enabled = false;
@@ -105,6 +105,12 @@ public abstract partial class BaseComponent
 	public Action OnComponentActivated { get; set; }
 	public Action OnComponentDeactivated { get; set; }
 
+	internal void PostDeserialize()
+	{
+		onPostDeserialize?.Invoke();
+		onPostDeserialize = null;
+	}
+
 	internal void UpdateEnabledStatus()
 	{
 		var state = _enabled && Scene is not null && GameObject is not null && GameObject.Active;
@@ -115,9 +121,6 @@ public abstract partial class BaseComponent
 		if ( _enabledState )
 		{
 			InitializeComponent();
-
-			onAwake?.Invoke();
-			onAwake = null;
 
 			if ( ShouldExecute )
 			{
