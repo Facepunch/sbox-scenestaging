@@ -11,10 +11,9 @@ public class PlayerController : BaseComponent
 
 	public Vector3 WishVelocity { get; private set; }
 
-	[Property] GameObject Body { get; set; }
-	[Property] GameObject Eye { get; set; }
-	[Property] bool FirstPerson { get; set; }
-	[Property] CitizenAnimation AnimationHelper { get; set; }
+	[Property] public GameObject Body { get; set; }
+	[Property] public GameObject Eye { get; set; }
+	[Property] public CitizenAnimation AnimationHelper { get; set; }
 
 	public Angles EyeAngles;
 
@@ -26,18 +25,6 @@ public class PlayerController : BaseComponent
 			EyeAngles.pitch += Input.MouseDelta.y * 0.1f;
 			EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
 			EyeAngles.roll = 0;
-		}
-
-		// Update camera position
-		var camera = GameObject.GetComponent<CameraComponent>( true, true );
-		if ( camera is not null )
-		{
-			var camPos = Eye.Transform.Position - EyeAngles.ToRotation().Forward * CameraDistance;
-
-			if ( FirstPerson ) camPos = Eye.Transform.Position + EyeAngles.ToRotation().Forward * 8;
-
-			camera.Transform.Position = camPos;
-			camera.Transform.Rotation = EyeAngles.ToRotation();
 		}
 
 		var cc = GameObject.GetComponent<CharacterController>();

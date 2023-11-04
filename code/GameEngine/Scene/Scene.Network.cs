@@ -28,6 +28,9 @@ public partial class Scene : GameObject
 
 		timeSinceNetworkUpdate = 0;
 
+		if ( SceneNetworkSystem.Instance == null )
+			return;
+
 		foreach( var obj in networkedObjects )
 		{
 			if ( !obj.IsMine ) continue;

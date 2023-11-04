@@ -1,4 +1,5 @@
 ﻿using Sandbox;
+using Sandbox.Network;
 using static Sandbox.PhysicsContact;
 
 public partial class GameObject
@@ -31,7 +32,7 @@ public partial class GameObject
 		SceneNetworkSystem.Instance.BroadcastJson( update );
 	}
 
-	internal static void ObjectUpdate( NetworkUser user, Net_ObjectUpdate update )
+	internal static void ObjectUpdate( NetworkChannel user, Net_ObjectUpdate update )
 	{
 		var obj = GameManager.ActiveScene.Directory.FindByGuid( update.Guid );
 		if ( obj is null )

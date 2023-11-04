@@ -9,12 +9,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class SceneNetworkSystem : GameNetworkSystem
 {
-	static Guid NetworkGuid = Guid.NewGuid();
 	internal static SceneNetworkSystem Instance { get; private set; }
 
-	public static Guid LocalGuid() => NetworkGuid;
-
-	public SceneNetworkSystem( Sandbox.Internal.TypeLibrary library, NetworkSystem system ) : base( library, system )
+	public SceneNetworkSystem()
 	{
 		Instance = this;
 		Log.Info( "SceneNetworkSystem Initialized" );
@@ -26,7 +23,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 	/// <summary>
 	/// A client has joined and wants a snapshot of the world
 	/// </summary>
-	public override async Task<JsonObject> GetSnapshotAsync( NetworkUser source )
+	public override async Task<JsonObject> GetSnapshotAsync( NetworkChannel source )
 	{
 		ThreadSafe.AssertIsMainThread();
 
@@ -54,12 +51,12 @@ public class SceneNetworkSystem : GameNetworkSystem
 		GameManager.IsPlaying = true;
 	}
 
-	public override async Task OnJoined( NetworkUser client )
+	public override void OnJoined( NetworkChannel client )
 	{
 		Log.Info( $"Client {client.Name} has joined the game!" );
 	}
 
-	public override async Task OnLeave( NetworkUser client )
+	public override void OnLeave( NetworkChannel client )
 	{
 		Log.Info( $"Client {client.Name} has left the game!" );
 	}
