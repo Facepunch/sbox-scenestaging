@@ -66,11 +66,11 @@ public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
 
 		if ( Hash != hash )
 		{
-			_sceneObject?.Update( Material, DecalScale );
+			_sceneObject.Material = Material;
+			_sceneObject.DecalSize = DecalScale;
+			hash = Hash;
 		}
 
-		hash = Hash;
-		
 		_sceneObject.ColorTint = TintColor;
 		_sceneObject.Transform = Transform.World;
 	}
