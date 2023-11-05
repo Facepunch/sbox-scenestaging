@@ -30,10 +30,35 @@ public partial class Scene : GameObject
 		PhysicsWorld.Gravity = Vector3.Down * 850;
 		PhysicsWorld.SimulationMode = PhysicsSimulationMode.Continuous;
 
+		UpdateFromPackage( Game.Menu?.Package );
+		Event.Register( this );
+	}
 
-		// todo - load from package
-		var settings = new Sandbox.Physics.CollisionRules();
+	~Scene()
+	{
+		Event.Unregister( this );
+	}
+
+	/// <summary>
+	/// Updates information like physics collision rules from a game package.
+	/// </summary>
+	/// <param name="package"></param>
+	protected void UpdateFromPackage( Package package )
+	{
+		if ( package == null ) return;
+
+		// Grab collision rules from current game package
+		var settings = package.GetMeta( "Collision", new Sandbox.Physics.CollisionRules() );
 		PhysicsWorld.SetCollisionRules( settings );
+	}
+
+	[Event( "addon.config.updated" )]
+	protected void OnAddonConfigUpdated( Package package )
+	{
+		if ( Game.Menu.Package.FullIdent != package.FullIdent )
+			return;
+
+		UpdateFromPackage( package );
 	}
 
 	protected Scene( bool isEditor ) : this()
