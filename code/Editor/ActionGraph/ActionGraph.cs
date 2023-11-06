@@ -42,6 +42,20 @@ public partial class ActionGraph : IGraph
 		NodeIdDict.Remove( node.Identifier );
 
 		actionNode.Node.Remove();
+
+		var referencedVars = actionNode.Node.Properties.Values
+			.Select( x => x.Value )
+			.OfType<Variable>()
+			.ToArray();
+
+		foreach ( var variable in referencedVars )
+		{
+			if ( variable.IsValid && !variable.References.Any() )
+			{
+				Log.Info( $"No more references to {variable}" );
+				Graph.RemoveVariable( variable );
+			}
+		}
 	}
 
 	internal void MarkDirty( ActionNode node )
