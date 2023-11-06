@@ -5,7 +5,7 @@
 [Icon( "font_download" )]
 public sealed class TextRenderer : BaseComponent, BaseComponent.ExecuteInEditor
 {
-	SpriteSceneObject _so;
+	SceneObject _so;
 
 	[Property] public Color Color { get; set; } = Color.White;
 	[Property,Range( 0, 2 )] public float Scale { get; set; } = 1.0f;
@@ -18,7 +18,7 @@ public sealed class TextRenderer : BaseComponent, BaseComponent.ExecuteInEditor
 
 	public override void OnEnabled()
 	{
-		_so = new SpriteSceneObject( Scene.SceneWorld );
+		_so = new TextSceneObject( Scene.SceneWorld );
 		_so.Transform = Transform.World;
 	}
 
@@ -30,13 +30,14 @@ public sealed class TextRenderer : BaseComponent, BaseComponent.ExecuteInEditor
 
 	protected override void OnPreRender()
 	{
-		if ( _so is null ) return;
-
-		_so.Transform = Transform.World.WithScale( Transform.Scale.x * Scale );
-		_so.ColorTint = Color;
-		_so.Text = Text;
-		_so.FontFamily = FontFamily;
-		_so.FontSize = FontSize;
+		if ( _so is TextSceneObject so )
+		{
+			so.Transform = Transform.World.WithScale( Transform.Scale.x * Scale );
+			so.ColorTint = Color;
+			so.Text = Text;
+			so.FontFamily = FontFamily;
+			so.FontSize = FontSize;
+		}
 	}
 }
 
