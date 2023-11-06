@@ -69,7 +69,7 @@ public record struct VariableNodeType( string Name, Type Type, PropertyNodeKind 
 {
 	public DisplayInfo DisplayInfo => new()
 	{
-		Name = ReadWrite ? $"{Name}/{Kind}" : $"{Name} ({Kind})",
+		Name = ReadWrite ? $"{Name} ({GraphView.FormatTypeName( Type )})/{Kind}" : $"{Name} ({GraphView.FormatTypeName( Type )}, {Kind})",
 		Group = "Variables",
 		Icon = Create ? "add" : Kind == PropertyNodeKind.Set
 			? EditorNodeLibrary.SetVar.DisplayInfo.Icon
