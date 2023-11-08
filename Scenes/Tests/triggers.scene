@@ -56,6 +56,1997 @@
       "Tags": ""
     },
     {
+      "Id": "89a49952-df1d-43cb-92a7-e82d83d2f823",
+      "Name": "Snow",
+      "Enabled": false,
+      "Position": "-378.1988,334.2794,241.2732",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "AlphaOverLifetime": [
+            {
+              "x": 0.5,
+              "y": 1
+            }
+          ],
+          "Collision": false,
+          "Damping": 1,
+          "Force": "0,0,-230",
+          "Lifetime": {
+            "rangey": "0,5",
+            "frames": [
+              {
+                "y": 0.5,
+                "in": -1.0188684,
+                "out": 1.0188684
+              },
+              {
+                "x": 1,
+                "y": 1
+              }
+            ]
+          },
+          "MaxParticles": 1000,
+          "Speed": 1,
+          "StartRotation": [
+            {
+              "x": 0.5
+            }
+          ],
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": true,
+          "Scale": 2,
+          "Texture": "materials/particles/kenney/fire_01.vtex"
+        },
+        {
+          "__type": "ParticleSphereEmitter",
+          "__enabled": true,
+          "Initial": 0,
+          "Radius": 800,
+          "Rate": 163.41,
+          "Velocity": 0
+        }
+      ],
+      "Children": [
+        {
+          "Id": "943b5671-1a31-4b9a-86df-f95c41c6ec8f",
+          "Name": "Sprite",
+          "Enabled": false,
+          "Position": "0,125.511,-261.4047",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {},
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1
+                }
+              ],
+              "Collision": false,
+              "Damping": 0.66,
+              "Force": "0,0,-10",
+              "Lifetime": {
+                "rangey": "0,10",
+                "frames": [
+                  {
+                    "y": 0.15357143,
+                    "in": -1.0188684,
+                    "out": 1.0188684
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              "MaxParticles": 1000,
+              "Speed": 1,
+              "StartRotation": [
+                {
+                  "x": 0.5
+                }
+              ],
+              "Tint": "0.35644,0.35644,0.35644,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": true,
+              "Scale": 200,
+              "Texture": "materials/particles/kenney/smoke_01.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 800,
+              "Rate": 18.24,
+              "Velocity": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "cbb3856f-fee4-465a-9da9-c89c29ab5617",
+      "Name": "Kids",
+      "Enabled": false,
+      "Position": "573.7643,573.7464,-17.58622",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "AlphaOverLifetime": [
+            {
+              "y": 1,
+              "in": -0.1159421,
+              "out": 0.1159421
+            },
+            {
+              "x": 0.8522167,
+              "y": 1
+            },
+            {
+              "x": 1,
+              "in": 17.30435,
+              "out": -17.30435
+            }
+          ],
+          "Collision": false,
+          "Damping": 1,
+          "Force": "0,0,-800",
+          "Lifetime": {
+            "rangey": "0,30",
+            "frames": [
+              {
+                "y": 0.06428572,
+                "mode": "Linear"
+              },
+              {
+                "x": 1,
+                "y": 0.32142857,
+                "mode": "Linear"
+              }
+            ]
+          },
+          "MaxParticles": 50,
+          "Speed": 1,
+          "StartRotation": {
+            "rangey": "0,360",
+            "frames": [
+              {
+                "in": -1.5841589,
+                "out": 1.5841589
+              },
+              {
+                "x": 1,
+                "y": 1
+              }
+            ]
+          },
+          "Tint": "0.61386,0.61386,0.61386,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": false,
+          "Scale": 20,
+          "Texture": "sprites/character_femaleperson_behindback.vtex"
+        },
+        {
+          "__type": "ParticleSphereEmitter",
+          "__enabled": true,
+          "Initial": 0,
+          "Radius": 12.71,
+          "Rate": 10,
+          "Velocity": 756.98
+        }
+      ]
+    },
+    {
+      "Id": "0311178c-12ff-4a8a-9f9b-f971f0188eb1",
+      "Name": "Glass",
+      "Enabled": false,
+      "Position": "-464.8909,-83.03101,-93.58242",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "AlphaOverLifetime": [
+            {
+              "y": 1,
+              "in": -0.1159421,
+              "out": 0.1159421
+            },
+            {
+              "x": 0.8522167,
+              "y": 1
+            },
+            {
+              "x": 1,
+              "in": 17.30435,
+              "out": -17.30435
+            }
+          ],
+          "Collision": true,
+          "Damping": 1,
+          "Force": "0,0,-800",
+          "Lifetime": {
+            "rangey": "0,30",
+            "frames": [
+              {
+                "y": 0.06428572,
+                "mode": "Linear"
+              },
+              {
+                "x": 1,
+                "y": 0.10357138,
+                "mode": "Linear"
+              }
+            ]
+          },
+          "MaxParticles": 20000,
+          "Speed": 1,
+          "StartRotation": {
+            "rangey": "0,360",
+            "frames": [
+              {
+                "in": -1.5841589,
+                "out": 1.5841589
+              },
+              {
+                "x": 1,
+                "y": 1
+              }
+            ]
+          },
+          "Tint": "1,0.97673,0.76733,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": false,
+          "Scale": 2,
+          "Texture": "materials/effects/fleck_glass2_color_tga_75f1d9fe.generated.vtex"
+        },
+        {
+          "__type": "ParticleSphereEmitter",
+          "__enabled": true,
+          "Initial": 0,
+          "Radius": 12.71,
+          "Rate": 1000,
+          "Velocity": 1000
+        }
+      ]
+    },
+    {
+      "Id": "48dfa384-4b93-4c22-8172-8eb6de2582b5",
+      "Name": "Fire",
+      "Enabled": false,
+      "Position": "1.888684,599.0943,-142.6031",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "AlphaOverLifetime": [
+            {
+              "in": -5.9999986,
+              "out": 5.9999986
+            },
+            {
+              "x": 0.32881773,
+              "y": 0.9607143
+            },
+            {
+              "x": 1,
+              "in": 5.5483875,
+              "out": -5.5483875
+            }
+          ],
+          "Collision": false,
+          "Damping": 1,
+          "Force": "0,0,180",
+          "Lifetime": {
+            "rangey": "0,2",
+            "frames": [
+              {
+                "y": 0.075,
+                "in": -0.065573506,
+                "out": 0.065573506
+              },
+              {
+                "x": 1,
+                "y": 0.28214285
+              }
+            ]
+          },
+          "MaxParticles": 1000,
+          "Speed": 1,
+          "StartRotation": {
+            "rangey": "0,360",
+            "frames": [
+              {
+                "in": -1.0230774,
+                "out": 1.0230774
+              },
+              {
+                "x": 1,
+                "y": 1,
+                "in": -0.6888068,
+                "out": 0.6888068
+              }
+            ]
+          },
+          "Tint": "0.9802,0.45089,0,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": true,
+          "Scale": 5,
+          "Texture": "materials/particles/kenney/flame_02.vtex"
+        },
+        {
+          "__type": "ParticleSphereEmitter",
+          "__enabled": true,
+          "Initial": 0,
+          "Radius": 14.27,
+          "Rate": 10,
+          "Velocity": 0
+        }
+      ],
+      "Children": [
+        {
+          "Id": "4821b5eb-c653-4d08-b36f-a28c8746ecec",
+          "Name": "Fire",
+          "Enabled": true,
+          "Position": "0,-1.415018,-5.665033",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -5.9999986,
+                  "out": 5.9999986
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1,
+                  "in": 5.5483875,
+                  "out": -5.5483875
+                }
+              ],
+              "Collision": false,
+              "Damping": 1,
+              "Force": "0,0,150",
+              "Lifetime": {
+                "rangey": "0,2",
+                "frames": [
+                  {
+                    "y": 0.075,
+                    "in": -0.065573506,
+                    "out": 0.065573506
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.28214285
+                  }
+                ]
+              },
+              "MaxParticles": 50,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.0230774,
+                    "out": 1.0230774
+                  },
+                  {
+                    "x": 1,
+                    "y": 1,
+                    "in": -0.6888068,
+                    "out": 0.6888068
+                  }
+                ]
+              },
+              "Tint": "0.9802,0.17644,0,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": true,
+              "Scale": 15,
+              "Texture": "materials/particles/kenney/fire_01.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 6.76,
+              "Rate": 101.93,
+              "Velocity": 36.48
+            }
+          ],
+          "Children": [
+            {
+              "Id": "3c874439-1808-45f3-9cdc-98f151b73073",
+              "Name": "Point Light",
+              "Enabled": true,
+              "Position": "0.1720808,0,10.95741",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "PointLightComponent",
+                  "__enabled": false,
+                  "LightColor": "1,0.1,0,1",
+                  "Radius": 4000
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "0d4396ef-4d09-4987-b1f7-221977f3428d",
+          "Name": "Embers",
+          "Enabled": true,
+          "Position": "0,-1.128414,2.875409",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -5.9999986,
+                  "out": 5.9999986
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1,
+                  "in": 5.5483875,
+                  "out": -5.5483875
+                }
+              ],
+              "Collision": false,
+              "Damping": 3,
+              "Force": "0,0,150",
+              "Lifetime": {
+                "rangey": "0,2",
+                "frames": [
+                  {
+                    "y": 0.075,
+                    "in": -0.065573506,
+                    "out": 0.065573506
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.6857143
+                  }
+                ]
+              },
+              "MaxParticles": 50,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.0230774,
+                    "out": 1.0230774
+                  },
+                  {
+                    "x": 1,
+                    "y": 1,
+                    "in": -0.6888068,
+                    "out": 0.6888068
+                  }
+                ]
+              },
+              "Tint": "0.9802,0.56852,0,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": true,
+              "Scale": 0.7,
+              "Texture": "materials/particles/kenney/circle_05.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 15.77,
+              "Rate": 101.93,
+              "Velocity": 70.82
+            }
+          ]
+        },
+        {
+          "Id": "47050a55-4bf1-48a5-a5c1-0d87491228b4",
+          "Name": "Smoke",
+          "Enabled": true,
+          "Position": "-6.542392,-0.7008754,24.9344",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -4.0571446,
+                  "out": 4.0571446
+                },
+                {
+                  "x": 0.060344826,
+                  "y": 1
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1
+                }
+              ],
+              "Collision": false,
+              "Damping": 1,
+              "Force": "0,0,30",
+              "Lifetime": {
+                "rangey": "0,30",
+                "frames": [
+                  {
+                    "y": 0.06428572,
+                    "mode": "Linear"
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.32142857,
+                    "mode": "Linear"
+                  }
+                ]
+              },
+              "MaxParticles": 15,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.5841589,
+                    "out": 1.5841589
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              "Tint": "0.15347,0.13739,0.11852,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": false,
+              "Scale": 40,
+              "Texture": "materials/particles/kenney/smoke_01.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 18.56,
+              "Rate": 5,
+              "Velocity": 10.73
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "540d3287-4f77-43cb-b27c-e1fe1f729b39",
+      "Name": "Fire",
+      "Enabled": false,
+      "Position": "-134.5752,803.9244,-83.14692",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "AlphaOverLifetime": [
+            {
+              "in": -5.9999986,
+              "out": 5.9999986
+            },
+            {
+              "x": 0.32881773,
+              "y": 0.9607143
+            },
+            {
+              "x": 1,
+              "in": 5.5483875,
+              "out": -5.5483875
+            }
+          ],
+          "Collision": false,
+          "Damping": 1,
+          "Force": "0,0,180",
+          "Lifetime": {
+            "rangey": "0,2",
+            "frames": [
+              {
+                "y": 0.075,
+                "in": -0.065573506,
+                "out": 0.065573506
+              },
+              {
+                "x": 1,
+                "y": 0.28214285
+              }
+            ]
+          },
+          "MaxParticles": 1000,
+          "Speed": 1,
+          "StartRotation": {
+            "rangey": "0,360",
+            "frames": [
+              {
+                "in": -1.0230774,
+                "out": 1.0230774
+              },
+              {
+                "x": 1,
+                "y": 1,
+                "in": -0.6888068,
+                "out": 0.6888068
+              }
+            ]
+          },
+          "Tint": "0.9802,0.45089,0,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": true,
+          "Scale": 5,
+          "Texture": "materials/particles/kenney/flame_02.vtex"
+        },
+        {
+          "__type": "ParticleSphereEmitter",
+          "__enabled": true,
+          "Initial": 0,
+          "Radius": 14.27,
+          "Rate": 10,
+          "Velocity": 0
+        }
+      ],
+      "Children": [
+        {
+          "Id": "b78e9341-8c37-477d-9772-9217ad8db02e",
+          "Name": "Fire",
+          "Enabled": true,
+          "Position": "0,-1.415018,-5.665033",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -5.9999986,
+                  "out": 5.9999986
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1,
+                  "in": 5.5483875,
+                  "out": -5.5483875
+                }
+              ],
+              "Collision": false,
+              "Damping": 1,
+              "Force": "0,0,150",
+              "Lifetime": {
+                "rangey": "0,2",
+                "frames": [
+                  {
+                    "y": 0.075,
+                    "in": -0.065573506,
+                    "out": 0.065573506
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.28214285
+                  }
+                ]
+              },
+              "MaxParticles": 50,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.0230774,
+                    "out": 1.0230774
+                  },
+                  {
+                    "x": 1,
+                    "y": 1,
+                    "in": -0.6888068,
+                    "out": 0.6888068
+                  }
+                ]
+              },
+              "Tint": "0.9802,0.17644,0,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": true,
+              "Scale": 15,
+              "Texture": "materials/particles/kenney/fire_01.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 6.76,
+              "Rate": 101.93,
+              "Velocity": 36.48
+            }
+          ],
+          "Children": [
+            {
+              "Id": "f6a4554b-eaa2-4a75-a81f-b359168dca2c",
+              "Name": "Point Light",
+              "Enabled": true,
+              "Position": "0.1720808,0,10.95741",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "PointLightComponent",
+                  "__enabled": false,
+                  "LightColor": "1,0.1,0,1",
+                  "Radius": 4000
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "0ac49c92-bc96-44cf-9a16-8d5239c13185",
+          "Name": "Embers",
+          "Enabled": true,
+          "Position": "0,-1.128414,2.875409",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -5.9999986,
+                  "out": 5.9999986
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1,
+                  "in": 5.5483875,
+                  "out": -5.5483875
+                }
+              ],
+              "Collision": false,
+              "Damping": 3,
+              "Force": "0,0,150",
+              "Lifetime": {
+                "rangey": "0,2",
+                "frames": [
+                  {
+                    "y": 0.075,
+                    "in": -0.065573506,
+                    "out": 0.065573506
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.6857143
+                  }
+                ]
+              },
+              "MaxParticles": 50,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.0230774,
+                    "out": 1.0230774
+                  },
+                  {
+                    "x": 1,
+                    "y": 1,
+                    "in": -0.6888068,
+                    "out": 0.6888068
+                  }
+                ]
+              },
+              "Tint": "0.9802,0.56852,0,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": true,
+              "Scale": 0.7,
+              "Texture": "materials/particles/kenney/circle_05.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 15.77,
+              "Rate": 101.93,
+              "Velocity": 70.82
+            }
+          ]
+        },
+        {
+          "Id": "ca12f992-0221-4687-a664-ebd7414e1f0c",
+          "Name": "Smoke",
+          "Enabled": true,
+          "Position": "-6.542392,-0.7008754,24.9344",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -4.0571446,
+                  "out": 4.0571446
+                },
+                {
+                  "x": 0.060344826,
+                  "y": 1
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1
+                }
+              ],
+              "Collision": false,
+              "Damping": 1,
+              "Force": "0,0,30",
+              "Lifetime": {
+                "rangey": "0,30",
+                "frames": [
+                  {
+                    "y": 0.06428572,
+                    "mode": "Linear"
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.32142857,
+                    "mode": "Linear"
+                  }
+                ]
+              },
+              "MaxParticles": 15,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.5841589,
+                    "out": 1.5841589
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              "Tint": "0.15347,0.13739,0.11852,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": false,
+              "Scale": 40,
+              "Texture": "materials/particles/kenney/smoke_01.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 18.56,
+              "Rate": 5,
+              "Velocity": 10.73
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "318e842d-ac30-4b27-97ac-ccfb71524c7f",
+      "Name": "Fire",
+      "Enabled": false,
+      "Position": "-129.8659,803.9244,-131.7613",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "AlphaOverLifetime": [
+            {
+              "in": -5.9999986,
+              "out": 5.9999986
+            },
+            {
+              "x": 0.32881773,
+              "y": 0.9607143
+            },
+            {
+              "x": 1,
+              "in": 5.5483875,
+              "out": -5.5483875
+            }
+          ],
+          "Collision": false,
+          "Damping": 1,
+          "Force": "0,0,180",
+          "Lifetime": {
+            "rangey": "0,2",
+            "frames": [
+              {
+                "y": 0.075,
+                "in": -0.065573506,
+                "out": 0.065573506
+              },
+              {
+                "x": 1,
+                "y": 0.28214285
+              }
+            ]
+          },
+          "MaxParticles": 1000,
+          "Speed": 1,
+          "StartRotation": {
+            "rangey": "0,360",
+            "frames": [
+              {
+                "in": -1.0230774,
+                "out": 1.0230774
+              },
+              {
+                "x": 1,
+                "y": 1,
+                "in": -0.6888068,
+                "out": 0.6888068
+              }
+            ]
+          },
+          "Tint": "0.9802,0.45089,0,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": true,
+          "Scale": 5,
+          "Texture": "materials/particles/kenney/flame_02.vtex"
+        },
+        {
+          "__type": "ParticleSphereEmitter",
+          "__enabled": true,
+          "Initial": 0,
+          "Radius": 14.27,
+          "Rate": 10,
+          "Velocity": 0
+        }
+      ],
+      "Children": [
+        {
+          "Id": "d349eed6-2a3b-424d-8cca-1cc89527afe9",
+          "Name": "Fire",
+          "Enabled": true,
+          "Position": "0,-1.415018,-5.665033",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -5.9999986,
+                  "out": 5.9999986
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1,
+                  "in": 5.5483875,
+                  "out": -5.5483875
+                }
+              ],
+              "Collision": false,
+              "Damping": 1,
+              "Force": "0,0,150",
+              "Lifetime": {
+                "rangey": "0,2",
+                "frames": [
+                  {
+                    "y": 0.075,
+                    "in": -0.065573506,
+                    "out": 0.065573506
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.28214285
+                  }
+                ]
+              },
+              "MaxParticles": 50,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.0230774,
+                    "out": 1.0230774
+                  },
+                  {
+                    "x": 1,
+                    "y": 1,
+                    "in": -0.6888068,
+                    "out": 0.6888068
+                  }
+                ]
+              },
+              "Tint": "0.9802,0.17644,0,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": true,
+              "Scale": 15,
+              "Texture": "materials/particles/kenney/fire_01.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 6.76,
+              "Rate": 101.93,
+              "Velocity": 36.48
+            }
+          ],
+          "Children": [
+            {
+              "Id": "447523fd-223c-41b1-92d8-0b6245991f07",
+              "Name": "Point Light",
+              "Enabled": true,
+              "Position": "0.1720808,0,10.95741",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "PointLightComponent",
+                  "__enabled": false,
+                  "LightColor": "1,0.1,0,1",
+                  "Radius": 4000
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "30e54fba-313c-4d0f-9e51-3fbe5e798f2d",
+          "Name": "Embers",
+          "Enabled": true,
+          "Position": "0,-1.128414,2.875409",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -5.9999986,
+                  "out": 5.9999986
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1,
+                  "in": 5.5483875,
+                  "out": -5.5483875
+                }
+              ],
+              "Collision": false,
+              "Damping": 3,
+              "Force": "0,0,150",
+              "Lifetime": {
+                "rangey": "0,2",
+                "frames": [
+                  {
+                    "y": 0.075,
+                    "in": -0.065573506,
+                    "out": 0.065573506
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.6857143
+                  }
+                ]
+              },
+              "MaxParticles": 50,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.0230774,
+                    "out": 1.0230774
+                  },
+                  {
+                    "x": 1,
+                    "y": 1,
+                    "in": -0.6888068,
+                    "out": 0.6888068
+                  }
+                ]
+              },
+              "Tint": "0.9802,0.56852,0,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": true,
+              "Scale": 0.7,
+              "Texture": "materials/particles/kenney/circle_05.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 15.77,
+              "Rate": 101.93,
+              "Velocity": 70.82
+            }
+          ]
+        },
+        {
+          "Id": "24691e10-7d9f-48f4-8e78-541fd8d7b387",
+          "Name": "Smoke",
+          "Enabled": true,
+          "Position": "-6.542392,-0.7008754,24.9344",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -4.0571446,
+                  "out": 4.0571446
+                },
+                {
+                  "x": 0.060344826,
+                  "y": 1
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1
+                }
+              ],
+              "Collision": false,
+              "Damping": 1,
+              "Force": "0,0,30",
+              "Lifetime": {
+                "rangey": "0,30",
+                "frames": [
+                  {
+                    "y": 0.06428572,
+                    "mode": "Linear"
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.32142857,
+                    "mode": "Linear"
+                  }
+                ]
+              },
+              "MaxParticles": 15,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.5841589,
+                    "out": 1.5841589
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              "Tint": "0.15347,0.13739,0.11852,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": false,
+              "Scale": 40,
+              "Texture": "materials/particles/kenney/smoke_01.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 18.56,
+              "Rate": 5,
+              "Velocity": 10.73
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "531a5606-7428-46e9-9b85-0caa61229a42",
+      "Name": "Fire",
+      "Enabled": false,
+      "Position": "-602.3929,-76.7607,-117.9863",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "AlphaOverLifetime": [
+            {
+              "in": -5.9999986,
+              "out": 5.9999986
+            },
+            {
+              "x": 0.32881773,
+              "y": 0.9607143
+            },
+            {
+              "x": 1,
+              "in": 5.5483875,
+              "out": -5.5483875
+            }
+          ],
+          "Collision": false,
+          "Damping": 1,
+          "Force": "0,0,180",
+          "Lifetime": {
+            "rangey": "0,2",
+            "frames": [
+              {
+                "y": 0.075,
+                "in": -0.065573506,
+                "out": 0.065573506
+              },
+              {
+                "x": 1,
+                "y": 0.28214285
+              }
+            ]
+          },
+          "MaxParticles": 1000,
+          "Speed": 1,
+          "StartRotation": {
+            "rangey": "0,360",
+            "frames": [
+              {
+                "in": -1.0230774,
+                "out": 1.0230774
+              },
+              {
+                "x": 1,
+                "y": 1,
+                "in": -0.6888068,
+                "out": 0.6888068
+              }
+            ]
+          },
+          "Tint": "0.9802,0.45089,0,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": true,
+          "Scale": 5,
+          "Texture": "materials/particles/kenney/flame_02.vtex"
+        },
+        {
+          "__type": "ParticleSphereEmitter",
+          "__enabled": true,
+          "Initial": 0,
+          "Radius": 26.68,
+          "Rate": 10,
+          "Velocity": 0
+        }
+      ],
+      "Children": [
+        {
+          "Id": "dc8676fd-ac78-42be-8d9a-e537621efc36",
+          "Name": "Fire",
+          "Enabled": true,
+          "Position": "0,-1.415018,-5.665033",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -5.9999986,
+                  "out": 5.9999986
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1,
+                  "in": 5.5483875,
+                  "out": -5.5483875
+                }
+              ],
+              "Collision": false,
+              "Damping": 1,
+              "Force": "0,0,150",
+              "Lifetime": {
+                "rangey": "0,2",
+                "frames": [
+                  {
+                    "y": 0.075,
+                    "in": -0.065573506,
+                    "out": 0.065573506
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.28214285
+                  }
+                ]
+              },
+              "MaxParticles": 50,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.0230774,
+                    "out": 1.0230774
+                  },
+                  {
+                    "x": 1,
+                    "y": 1,
+                    "in": -0.6888068,
+                    "out": 0.6888068
+                  }
+                ]
+              },
+              "Tint": "0.9802,0.17644,0,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": true,
+              "Scale": 15,
+              "Texture": "materials/particles/kenney/fire_01.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 23.32,
+              "Rate": 101.93,
+              "Velocity": 36.48
+            }
+          ],
+          "Children": [
+            {
+              "Id": "da3b3843-e28d-4c6e-9559-3755b347bb04",
+              "Name": "Point Light",
+              "Enabled": true,
+              "Position": "0.1720808,0,10.95741",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "PointLightComponent",
+                  "__enabled": false,
+                  "LightColor": "1,0.1,0,1",
+                  "Radius": 4000
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "b54ece4f-6290-4c20-a49b-44aaf7615ab8",
+          "Name": "Embers",
+          "Enabled": true,
+          "Position": "0,-1.128414,2.875409",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -5.9999986,
+                  "out": 5.9999986
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1,
+                  "in": 5.5483875,
+                  "out": -5.5483875
+                }
+              ],
+              "Collision": false,
+              "Damping": 3,
+              "Force": "0,0,150",
+              "Lifetime": {
+                "rangey": "0,2",
+                "frames": [
+                  {
+                    "y": 0.075,
+                    "in": -0.065573506,
+                    "out": 0.065573506
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.6857143
+                  }
+                ]
+              },
+              "MaxParticles": 50,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.0230774,
+                    "out": 1.0230774
+                  },
+                  {
+                    "x": 1,
+                    "y": 1,
+                    "in": -0.6888068,
+                    "out": 0.6888068
+                  }
+                ]
+              },
+              "Tint": "0.9802,0.56852,0,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": true,
+              "Scale": 0.7,
+              "Texture": "materials/particles/kenney/circle_05.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 15.77,
+              "Rate": 101.93,
+              "Velocity": 70.82
+            }
+          ]
+        },
+        {
+          "Id": "7f9dbeed-a527-42b5-83f1-18c6e33d4b43",
+          "Name": "Smoke",
+          "Enabled": true,
+          "Position": "-6.542392,-0.7008754,24.9344",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -4.0571446,
+                  "out": 4.0571446
+                },
+                {
+                  "x": 0.060344826,
+                  "y": 1
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1
+                }
+              ],
+              "Collision": false,
+              "Damping": 1,
+              "Force": "0,0,30",
+              "Lifetime": {
+                "rangey": "0,30",
+                "frames": [
+                  {
+                    "y": 0.06428572,
+                    "mode": "Linear"
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.32142857,
+                    "mode": "Linear"
+                  }
+                ]
+              },
+              "MaxParticles": 15,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.5841589,
+                    "out": 1.5841589
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              "Tint": "0.15347,0.13739,0.11852,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": false,
+              "Scale": 40,
+              "Texture": "materials/particles/kenney/smoke_01.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 18.56,
+              "Rate": 5,
+              "Velocity": 10.73
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "ee59b2fc-3515-46e0-bfdb-c639fadb906b",
+      "Name": "Fire",
+      "Enabled": false,
+      "Position": "-661.0591,-76.7607,-117.9863",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "AlphaOverLifetime": [
+            {
+              "in": -5.9999986,
+              "out": 5.9999986
+            },
+            {
+              "x": 0.32881773,
+              "y": 0.9607143
+            },
+            {
+              "x": 1,
+              "in": 5.5483875,
+              "out": -5.5483875
+            }
+          ],
+          "Collision": false,
+          "Damping": 1,
+          "Force": "0,0,180",
+          "Lifetime": {
+            "rangey": "0,2",
+            "frames": [
+              {
+                "y": 0.075,
+                "in": -0.065573506,
+                "out": 0.065573506
+              },
+              {
+                "x": 1,
+                "y": 0.28214285
+              }
+            ]
+          },
+          "MaxParticles": 1000,
+          "Speed": 1,
+          "StartRotation": {
+            "rangey": "0,360",
+            "frames": [
+              {
+                "in": -1.0230774,
+                "out": 1.0230774
+              },
+              {
+                "x": 1,
+                "y": 1,
+                "in": -0.6888068,
+                "out": 0.6888068
+              }
+            ]
+          },
+          "Tint": "0.9802,0.45089,0,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": true,
+          "Scale": 5,
+          "Texture": "materials/particles/kenney/flame_02.vtex"
+        },
+        {
+          "__type": "ParticleSphereEmitter",
+          "__enabled": true,
+          "Initial": 0,
+          "Radius": 26.68,
+          "Rate": 10,
+          "Velocity": 0
+        }
+      ],
+      "Children": [
+        {
+          "Id": "ec42a686-22d5-4636-91c5-0260c2af0e42",
+          "Name": "Fire",
+          "Enabled": true,
+          "Position": "0,-1.415018,-5.665033",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -5.9999986,
+                  "out": 5.9999986
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1,
+                  "in": 5.5483875,
+                  "out": -5.5483875
+                }
+              ],
+              "Collision": false,
+              "Damping": 1,
+              "Force": "0,0,150",
+              "Lifetime": {
+                "rangey": "0,2",
+                "frames": [
+                  {
+                    "y": 0.075,
+                    "in": -0.065573506,
+                    "out": 0.065573506
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.28214285
+                  }
+                ]
+              },
+              "MaxParticles": 50,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.0230774,
+                    "out": 1.0230774
+                  },
+                  {
+                    "x": 1,
+                    "y": 1,
+                    "in": -0.6888068,
+                    "out": 0.6888068
+                  }
+                ]
+              },
+              "Tint": "0.9802,0.17644,0,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": true,
+              "Scale": 15,
+              "Texture": "materials/particles/kenney/fire_01.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 23.32,
+              "Rate": 101.93,
+              "Velocity": 36.48
+            }
+          ],
+          "Children": [
+            {
+              "Id": "805a22b2-7ad3-447a-9b41-49155a430d94",
+              "Name": "Point Light",
+              "Enabled": true,
+              "Position": "0.1720808,0,10.95741",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "PointLightComponent",
+                  "__enabled": false,
+                  "LightColor": "1,0.1,0,1",
+                  "Radius": 4000
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "e778e6e2-cd36-4cc7-abea-14a819da7c9a",
+          "Name": "Embers",
+          "Enabled": true,
+          "Position": "0,-1.128414,2.875409",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -5.9999986,
+                  "out": 5.9999986
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1,
+                  "in": 5.5483875,
+                  "out": -5.5483875
+                }
+              ],
+              "Collision": false,
+              "Damping": 3,
+              "Force": "0,0,150",
+              "Lifetime": {
+                "rangey": "0,2",
+                "frames": [
+                  {
+                    "y": 0.075,
+                    "in": -0.065573506,
+                    "out": 0.065573506
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.6857143
+                  }
+                ]
+              },
+              "MaxParticles": 50,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.0230774,
+                    "out": 1.0230774
+                  },
+                  {
+                    "x": 1,
+                    "y": 1,
+                    "in": -0.6888068,
+                    "out": 0.6888068
+                  }
+                ]
+              },
+              "Tint": "0.9802,0.56852,0,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": true,
+              "Scale": 0.7,
+              "Texture": "materials/particles/kenney/circle_05.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 15.77,
+              "Rate": 101.93,
+              "Velocity": 70.82
+            }
+          ]
+        },
+        {
+          "Id": "f26ff442-3178-4deb-8f27-770e89c36881",
+          "Name": "Smoke",
+          "Enabled": true,
+          "Position": "-6.542392,-0.7008754,24.9344",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ParticleEffect",
+              "__enabled": true,
+              "AlphaOverLifetime": [
+                {
+                  "in": -4.0571446,
+                  "out": 4.0571446
+                },
+                {
+                  "x": 0.060344826,
+                  "y": 1
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1
+                }
+              ],
+              "Collision": false,
+              "Damping": 1,
+              "Force": "0,0,30",
+              "Lifetime": {
+                "rangey": "0,30",
+                "frames": [
+                  {
+                    "y": 0.06428572,
+                    "mode": "Linear"
+                  },
+                  {
+                    "x": 1,
+                    "y": 0.32142857,
+                    "mode": "Linear"
+                  }
+                ]
+              },
+              "MaxParticles": 15,
+              "Speed": 1,
+              "StartRotation": {
+                "rangey": "0,360",
+                "frames": [
+                  {
+                    "in": -1.5841589,
+                    "out": 1.5841589
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              "Tint": "0.15347,0.13739,0.11852,1"
+            },
+            {
+              "__type": "ParticleSpriteRenderer",
+              "__enabled": true,
+              "Additive": false,
+              "Scale": 40,
+              "Texture": "materials/particles/kenney/smoke_01.vtex"
+            },
+            {
+              "__type": "ParticleSphereEmitter",
+              "__enabled": true,
+              "Initial": 0,
+              "Radius": 18.56,
+              "Rate": 5,
+              "Velocity": 10.73
+            }
+          ]
+        }
+      ]
+    },
+    {
       "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
       "Name": "Citizen",
       "Enabled": true,
@@ -87,6 +2078,7 @@
         {
           "__type": "CitizenAnimation",
           "__enabled": true,
+          "Height": 1,
           "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
         }
       ],
@@ -1178,6 +3170,8 @@
               "BackgroundColor": "0.25292,0.26086,0.29703,1",
               "ClearFlags": "Color, Depth, Stencil",
               "FieldOfView": 69.32,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
               "ZFar": 10000,
               "ZNear": 1
             },
@@ -1198,7 +3192,8 @@
                     "t": 1,
                     "c": "1,1,1,1"
                   }
-                ]
+                ],
+                "alpha": []
               },
               "BloomCurve": {
                 "rangey": "0,106.45",
@@ -1332,6 +3327,7 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "EyeSource": "9fb6dd1b-b409-4569-a71a-4708f72ffecd",
+          "Height": 1,
           "LookAtObject": "112d9294-df67-44d5-923f-697d048040e5",
           "Target": "51cc61a1-80a0-4949-81d8-f917e4da2cf5"
         }
@@ -2502,6 +4498,7 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "EyeSource": "d0fc292b-66ab-4e15-88d7-3b9eca33f829",
+          "Height": 1,
           "LookAtObject": "112d9294-df67-44d5-923f-697d048040e5",
           "Target": "a2c3311c-9447-4966-906c-e5e05fe40d90"
         }
@@ -3672,6 +5669,7 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "EyeSource": "705fbf10-2640-4d4d-89e6-8270403bd698",
+          "Height": 1,
           "LookAtObject": "112d9294-df67-44d5-923f-697d048040e5",
           "Target": "958f2bc4-8738-458b-919f-f74a9e9a52ed"
         }
@@ -4842,6 +6840,7 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "EyeSource": "bfd21b92-e689-400f-840f-a29bff963b94",
+          "Height": 1,
           "LookAtObject": "112d9294-df67-44d5-923f-697d048040e5",
           "Target": "b79572b5-b46d-4332-8d77-6dc04ff6427a"
         }
@@ -6012,6 +8011,7 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "EyeSource": "2b592aa0-b62f-470d-92ef-d477a9a95200",
+          "Height": 1,
           "LookAtObject": "112d9294-df67-44d5-923f-697d048040e5",
           "Target": "e61940a5-911d-4460-83d4-f92aa476591e"
         }
@@ -7553,7 +9553,7 @@
       "Id": "8c626560-5e98-4894-9e19-b5b601b808eb",
       "Name": "Dave Cube",
       "Enabled": true,
-      "Position": "-224.5827,403.4372,-83.87447",
+      "Position": "-228.6109,403.4372,-71.68383",
       "Rotation": "0,0,0,1",
       "Scale": "0.5,0.5,0.5",
       "Tags": "",
@@ -8528,7 +10528,7 @@
       "Name": "wall_conc_300x900",
       "Enabled": true,
       "Position": "151.6095,108.6255,-156.2346",
-      "Rotation": "0.0000000006119851,-0.00000004274153,0.707107,0.7071065",
+      "Rotation": "0.001782117,-0.001782208,0.7071047,0.7071042",
       "Scale": "1,1,1",
       "Tags": "",
       "Components": [
@@ -10583,7 +12583,7 @@
       "Id": "c2c419b5-c5b1-4979-a819-99b87f2cf8b5",
       "Name": "plastic_chair 1",
       "Enabled": true,
-      "Position": "-205.3026,324.0281,-128.342",
+      "Position": "-205.3026,324.0281,-127.0989",
       "Rotation": "0.00000004578459,0.000000000000002496656,0.7681383,0.6402839",
       "Scale": "1,1,1",
       "Tags": "",
@@ -10629,6 +12629,13 @@
           "Model": "models/props/skip/skip.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/props/skip/skip.vmdl",
+          "Surface": null
         }
       ]
     },
