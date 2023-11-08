@@ -50,39 +50,28 @@ public sealed class SpriteRenderer : BaseComponent, BaseComponent.ExecuteInEdito
 	}
 }
 
-class SpriteSceneObject : SceneCustomObject
+class SpriteSceneObject : SceneDynamicObject
 {
-	public Material Material { get; set; }
-	public Texture Texture { get; set; }
-	public Vector2 Size { get; set; } = 10.0f;
-	public float Scale { get; set; } = 1.0f;
-
-	List<Vertex> Vertices = new List<Vertex>( 16 );
+	public Texture Texture 
+	{
+		set
+		{
+			Attributes.Set( "BaseTexture", value );
+			Attributes.Set( "BaseTextureSheet", value.SequenceData );
+		}
+	}
 
 	public SpriteSceneObject( SceneWorld world ) : base( world )
 	{
 		RenderLayer = SceneRenderLayer.Default;
 	}
 
-	public override void RenderSceneObject()
-	{
-		if ( Material is null )
-			return;
+	//public override void RenderSceneObject()
+	//{
 
-		if ( Texture is null )
-			return;
-
-		Attributes.Set( "BaseTexture", Texture );
-		Attributes.Set( "BaseTextureSheet", Texture.SequenceData );
-
-		Graphics.SetupLighting( this, Graphics.Attributes );
-		Graphics.Draw( Vertices, Vertices.Count, Material, Attributes, Graphics.PrimitiveType.Points );
-	}
-
-	public void Clear()
-	{
-		Vertices.Clear();
-	}
+		//Graphics.SetupLighting( this, Graphics.Attributes );
+		//Graphics.Draw( Vertices, Vertices.Count, Material, Attributes, Graphics.PrimitiveType.Points );
+	//}
 
 	public void DrawSprite( in Vector3 center, in Vector2 size, in Angles angles, in Color color )
 	{
@@ -92,9 +81,10 @@ class SpriteSceneObject : SceneCustomObject
 		v.Normal.y = angles.yaw;
 		v.Normal.z = angles.roll;
 
-		lock ( this )
-		{
-			Vertices.Add( v );
-		}
+		AddVertex( v );
+
+
+			//Vertices.Add( v );
+		
 	}
 }

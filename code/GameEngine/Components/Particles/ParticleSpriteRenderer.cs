@@ -9,7 +9,6 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 	[Property, Range( 0, 2 )] public float Scale { get; set; } = 1.0f;
 	[Property] public bool Additive { get; set; }
 
-
 	public override void OnEnabled()
 	{
 		_so = new SpriteSceneObject( Scene.SceneWorld );
@@ -27,25 +26,20 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 		if ( _so is null ) return;
 		if ( !TryGetComponent( out ParticleEffect effect ) ) return;
 
-
-		_so.Transform = Transform.World.WithRotation( Rotation.Identity );
+		_so.Transform = Transform.World;
 		_so.Material = Material.FromShader( "code/shaders/sprite.vfx" );
-		_so.Flags.CastShadows = true;
+		_so.Flags.CastShadows = !Additive;
 		_so.Texture = Texture;
-
-		var left = Camera.Main.Rotation.Left;
-		var up = Camera.Main.Rotation.Up;
 
 		if ( Additive ) _so.Attributes.SetCombo( "D_BLEND", 1 );
 		else _so.Attributes.SetCombo( "D_BLEND", 0 );
 
-		_so.Clear();
-
-		foreach( var p in effect.Particles )
+		using ( _so.Write( Graphics.PrimitiveType.Points, effect.Particles.Count, 0 ) )
 		{
-			var rot = p.Angles.ToRotation();
-
-			_so.DrawSprite( p.Position, p.Size * Scale, p.Angles, p.Color );
+			foreach ( var p in effect.Particles )
+			{
+				_so.DrawSprite( p.Position, p.Size * Scale, p.Angles, p.Color );
+			}
 		}
 	}
 }
