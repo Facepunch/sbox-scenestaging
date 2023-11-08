@@ -27,11 +27,14 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property] public Curve Lifetime { get; set; } = 1.0f;
 	[Property] public Curve AlphaOverLifetime { get; set; } = 1.0f;
 
-
 	[Property] public Curve StartRotation { get; set; } = 0.0f;
+
+	[Property, Range( 0, 1 )] public float SimulationSpace { get; set; } = 1.0f;
 
 
 	public bool IsFull => Particles.Count >= MaxParticles;
+
+	Transform lastTransform;
 
 	public override void Update()
 	{
@@ -39,9 +42,26 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 		float timeDelta = MathX.Clamp( Time.Delta, 0.0f, 1.0f / 30.0f ) * Speed;
 
+		var tx = Transform.World;
+		Vector3 lastPos = lastTransform.Position;
+		Transform deltaTransform = tx.ToLocal( lastTransform );
+
+		bool parentMoved = deltaTransform != global::Transform.Zero;
+
 		Parallel.ForEach( Particles, p =>
 		{
 			float delta = MathX.Remap( Time.Now, p.BornTime, p.DeathTime );
+
+			if ( parentMoved && p.Frame > 0 && SimulationSpace > 0.0f )
+			{
+				var localPos = lastTransform.PointToLocal( p.Position );
+				var worldPos = tx.PointToWorld( localPos );
+
+				p.Position = Vector3.Lerp( p.Position, worldPos, SimulationSpace );
+			}
+
+			p.Frame++;
+
 
 			if ( !Force.IsNearlyZero() )
 			{
@@ -85,6 +105,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		} );
 
 		deferredAction?.Invoke();
+		lastTransform = tx;
 	}
 
 	public Particle Emit( Vector3 position )

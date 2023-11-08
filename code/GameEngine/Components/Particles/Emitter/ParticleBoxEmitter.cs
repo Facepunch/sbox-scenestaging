@@ -9,7 +9,6 @@ namespace Sandbox.GameEngine.Components.Particles.Emitter;
 public sealed class ParticleBoxEmitter : ParticleEmitter
 {
 	[Property] public Vector3 Size { get; set; } = 50.0f;
-	[Property, Range( -1000, 1000 )] public float Velocity { get; set; } = 100.0f;
 	[Property] public bool OnEdge { get; set; } = false;
 
 	public override void DrawGizmos()
@@ -49,12 +48,7 @@ public sealed class ParticleBoxEmitter : ParticleEmitter
 			
 		pos += size;
 
-		var p = target.Emit( Transform.World.PointToWorld( pos ) );
-
-		if ( Velocity != 0.0f )
-		{
-		//	p.Velocity += offset * Velocity;
-		}
+		target.Emit( Transform.World.PointToWorld( pos ) );
 
 		return true;
 	}

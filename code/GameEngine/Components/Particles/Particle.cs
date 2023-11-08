@@ -10,4 +10,5 @@ public class Particle
 	public float DeathTime;
 	public float Radius;
 	public Angles Angles;
+	public int Frame;
 }
