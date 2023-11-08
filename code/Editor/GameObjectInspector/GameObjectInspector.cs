@@ -25,12 +25,16 @@ public class GameObjectInspector : Widget
 		Layout.Add( h );
 		Layout.AddSeparator();
 
+		var scroller = Layout.Add( new ScrollArea( this ) );
+		scroller.Canvas = new Widget( scroller );
+		scroller.Canvas.Layout = Layout.Column();
+
 		if ( !target.IsPrefabInstance )
 		{
-			Layout.Add( new ComponentList( target.Id, target.Components ) );
+			scroller.Canvas.Layout.Add( new ComponentList( target.Id, target.Components ) );
 
 			// Add component button
-			var row = Layout.AddRow();
+			var row = scroller.Canvas.Layout.AddRow();
 			row.AddStretchCell();
 			row.Margin = 16;
 			var button = row.Add( new Button.Primary( "Add Component", "add" ) );
@@ -48,7 +52,7 @@ public class GameObjectInspector : Widget
 			// if we're the prefab root, show a list of variables that can be modified
 
 			// Add component button
-			var row = Layout.AddRow();
+			var row = scroller.Canvas.Layout.AddRow();
 			row.AddStretchCell();
 			row.Margin = 16;
 			var button = row.Add( new Button( $"Open \"{target.PrefabInstanceSource}\"", "edit" ) );
@@ -62,14 +66,14 @@ public class GameObjectInspector : Widget
 			row.AddStretchCell();
 		}
 
+		scroller.Canvas.Layout.AddStretchCell( 1 );
 
-
-		Layout.AddStretchCell();
-
-		var footer = Layout.AddRow();
-	////	footer.Margin = 8;
-	//	footer.AddStretchCell();
-	//	footer.Add( new Button.Primary( "Add Component", "add" ) { Clicked = AddComponentDialog } );
+		//var footer = scroller.Canvas.Layout.AddRow();
+		//footer.Margin = 8;
+		//footer.AddStretchCell();
+		//var footerBtn = footer.Add( new Button.Primary( "Add Component", "add" ) );
+		//footerBtn.Clicked = () => AddComponentDialog( footerBtn );
+		//footer.Add( footerBtn );
 	}
 
 	void PropertyEdited( SerializedProperty property, GameObject go )
