@@ -1,6 +1,7 @@
 ﻿using Editor;
 using Sandbox;
 using Sandbox.Utility;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.Serialization;
@@ -36,9 +37,12 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 	Transform lastTransform;
 
+	ConcurrentQueue<Particle> deleteList = new ConcurrentQueue<Particle>();
+
 	public override void Update()
 	{
-		Action deferredAction = default;
+		using var ps = Superluminal.Scope( "Particle Effect", Color.Red, $"{GameObject.Name} - {Particles.Count} Particles" );
+
 
 		float timeDelta = MathX.Clamp( Time.Delta, 0.0f, 1.0f / 30.0f ) * Speed;
 
@@ -93,28 +97,30 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 			if ( delta >= 1.0f )
 			{
-				lock ( this )
-				{
-					deferredAction += () =>
-					{
-						Terminate( p );
-					};
-				}
+				deleteList.Enqueue( p );
 			}
 
 		} );
 
-		deferredAction?.Invoke();
+		while ( deleteList.TryDequeue( out var delete ))
+		{
+			Terminate( delete );
+		}
+
 		lastTransform = tx;
+	}
+
+	static void TickParticle()
+	{
+
 	}
 
 	public Particle Emit( Vector3 position )
 	{
-		var p = new Particle();
+		var p = Particle.Create();
 
 		p.Position = position;
 		p.Radius = 4.0f;
-		p.BornTime = Time.Now;
 		p.DeathTime = Time.Now + Lifetime.Evaluate( Random.Shared.Float( 0, 1 ) );
 		p.Color = Tint;
 		p.Angles.roll = StartRotation.Evaluate( Random.Shared.Float( 0, 1 ) );
@@ -127,5 +133,6 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	public void Terminate( Particle p )
 	{
 		Particles.Remove( p );
+		Particle.Pool.Enqueue( p );
 	}
 }
