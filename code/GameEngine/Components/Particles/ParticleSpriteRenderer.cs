@@ -29,7 +29,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 
 
 		_so.Transform = Transform.World.WithRotation( Rotation.Identity );
-		_so.Material = Material.FromShader( "sprite.vfx" );
+		_so.Material = Material.FromShader( "code/shaders/sprite.vfx" );
 		_so.Flags.CastShadows = true;
 		_so.Texture = Texture;
 
@@ -43,10 +43,9 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 
 		foreach( var p in effect.Particles )
 		{
-			var pos = _so.Transform.PointToLocal( p.Position );
 			var rot = p.Angles.ToRotation();
 
-			_so.DrawSprite( rot * left, rot * up, pos, p.Size * Scale, p.Color );
+			_so.DrawSprite( p.Position, p.Size * Scale, p.Angles, p.Color );
 		}
 	}
 }

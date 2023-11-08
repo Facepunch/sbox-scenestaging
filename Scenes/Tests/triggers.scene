@@ -265,7 +265,7 @@
     {
       "Id": "0311178c-12ff-4a8a-9f9b-f971f0188eb1",
       "Name": "Glass",
-      "Enabled": false,
+      "Enabled": true,
       "Position": "-464.8909,-83.03101,-93.58242",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -344,7 +344,7 @@
     {
       "Id": "48dfa384-4b93-4c22-8172-8eb6de2582b5",
       "Name": "Fire",
-      "Enabled": false,
+      "Enabled": true,
       "Position": "1.888684,599.0943,-142.6031",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -685,7 +685,7 @@
     {
       "Id": "540d3287-4f77-43cb-b27c-e1fe1f729b39",
       "Name": "Fire",
-      "Enabled": false,
+      "Enabled": true,
       "Position": "-134.5752,803.9244,-83.14692",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -1026,7 +1026,7 @@
     {
       "Id": "318e842d-ac30-4b27-97ac-ccfb71524c7f",
       "Name": "Fire",
-      "Enabled": false,
+      "Enabled": true,
       "Position": "-129.8659,803.9244,-131.7613",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -1367,7 +1367,7 @@
     {
       "Id": "531a5606-7428-46e9-9b85-0caa61229a42",
       "Name": "Fire",
-      "Enabled": false,
+      "Enabled": true,
       "Position": "-602.3929,-76.7607,-117.9863",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -1708,7 +1708,7 @@
     {
       "Id": "ee59b2fc-3515-46e0-bfdb-c639fadb906b",
       "Name": "Fire",
-      "Enabled": false,
+      "Enabled": true,
       "Position": "-661.0591,-76.7607,-117.9863",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -3172,6 +3172,7 @@
               "FieldOfView": 69.32,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "TargetEye": "None",
               "ZFar": 10000,
               "ZNear": 1
             },

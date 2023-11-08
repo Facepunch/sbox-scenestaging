@@ -69,6 +69,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 			p.Position = target;
 			p.Size = 1.0f;
 			p.Color = p.Color.WithAlpha( AlphaOverLifetime.Evaluate( delta ) );
+			
 
 			if ( delta >= 1.0f )
 			{
