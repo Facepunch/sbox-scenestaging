@@ -11,21 +11,56 @@ public partial class ComponentSheet : Widget
 {
 	SerializedObject TargetObject;
 	Layout Content;
+	Guid GameObjectId;
+	
+	string ExpandedCookieString => $"expand.{GameObjectId}.{TargetObject.TypeName}";
 
-	internal bool Expanded { get; private set; } = true;
+	/// <summary>
+	/// The user's local preference to having this component expanded or not.
+	/// </summary>
+	bool ExpandedCookie
+	{
+		get => ProjectCookie.Get( ExpandedCookieString, true );
+		set
+		{
+			// Don't bother storing the cookie if it's an expanded component
+			if ( value )
+			{
+				ProjectCookie.Remove( ExpandedCookieString );
+			}
+			else
+			{
+				ProjectCookie.Set( ExpandedCookieString, value );
+			}
+		}
+	}
 
+	/// <summary>
+	/// Is this component currently expanded?
+	/// </summary>
+	internal bool Expanded { get; set; } = true;
+
+	/// <summary>
+	/// Expands/shrinks the component in the component list.
+	/// </summary>
+	/// <param name="expanded"></param>
 	internal void SetExpanded( bool expanded )
 	{
 		Expanded = expanded;
 		RebuildContent();
+		ExpandedCookie = expanded;
 	}
 
-	public ComponentSheet( SerializedObject target, Action contextMenu ) : base( null )
+	public ComponentSheet( Guid gameObjectId, SerializedObject target, Action contextMenu ) : base( null )
 	{
+		GameObjectId = gameObjectId;
 		Name = "ComponentSheet";
 		TargetObject = target;
 		Layout = Layout.Column();
 		SetSizeMode( SizeMode.Default, SizeMode.CanShrink );
+
+		// Check to see if we have a cookie to say if the component isn't expanded
+		Expanded = ExpandedCookie;
 
 		var header = Layout.Add( new ComponentHeader( TargetObject, this ) );
 		header.MouseRightPress += contextMenu;
@@ -70,12 +105,6 @@ public partial class ComponentSheet : Widget
 		
 		Content.Add( ps );
 	}
-
-	public override void ChildValuesChanged( Widget source )
-	{
-		//TargetObject.IsChanged();
-	}
-
 }
 
 file class ComponentHeader : Widget

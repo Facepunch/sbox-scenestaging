@@ -27,7 +27,7 @@ public class GameObjectInspector : Widget
 
 		if ( !target.IsPrefabInstance )
 		{
-			Layout.Add( new ComponentList( target.Components ) );
+			Layout.Add( new ComponentList( target.Id, target.Components ) );
 
 			// Add component button
 			var row = Layout.AddRow();
@@ -93,9 +93,11 @@ public class GameObjectInspector : Widget
 public class ComponentList : Widget
 {
 	List<BaseComponent> componentList; // todo - SerializedObject should support lists, arrays
+	Guid GameObjectId;
 
-	public ComponentList( List<BaseComponent> components ) : base( null )
+	public ComponentList( Guid gameObjectId, List<BaseComponent> components ) : base( null )
 	{
+		GameObjectId = gameObjectId;
 		componentList = components;
 		Layout = Layout.Column();
 
@@ -113,7 +115,7 @@ public class ComponentList : Widget
 
 			var serialized = EditorTypeLibrary.GetSerializedObject( o );
 			serialized.OnPropertyChanged += ( p ) => PropertyEdited( p, o );
-			var sheet = new ComponentSheet( serialized, () => OpenContextMenu( o ) );
+			var sheet = new ComponentSheet( GameObjectId, serialized, () => OpenContextMenu( o ) );
 			Layout.Add( sheet );
 			Layout.AddSeparator();
 		}
