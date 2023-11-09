@@ -11,24 +11,59 @@ public partial class ComponentSheet : Widget
 {
 	SerializedObject TargetObject;
 	Layout Content;
+	Guid GameObjectId;
+	
+	string ExpandedCookieString => $"expand.{GameObjectId}.{TargetObject.TypeName}";
 
-	internal bool Expanded { get; private set; } = true;
+	/// <summary>
+	/// The user's local preference to having this component expanded or not.
+	/// </summary>
+	bool ExpandedCookie
+	{
+		get => ProjectCookie.Get( ExpandedCookieString, true );
+		set
+		{
+			// Don't bother storing the cookie if it's an expanded component
+			if ( value )
+			{
+				ProjectCookie.Remove( ExpandedCookieString );
+			}
+			else
+			{
+				ProjectCookie.Set( ExpandedCookieString, value );
+			}
+		}
+	}
 
+	/// <summary>
+	/// Is this component currently expanded?
+	/// </summary>
+	internal bool Expanded { get; set; } = true;
+
+	/// <summary>
+	/// Expands/shrinks the component in the component list.
+	/// </summary>
+	/// <param name="expanded"></param>
 	internal void SetExpanded( bool expanded )
 	{
 		Expanded = expanded;
 		RebuildContent();
+		ExpandedCookie = expanded;
 	}
 
-	public ComponentSheet( SerializedObject target, Action contextMenu ) : base( null )
+	public ComponentSheet( Guid gameObjectId, SerializedObject target, Action contextMenu ) : base( null )
 	{
+		GameObjectId = gameObjectId;
 		Name = "ComponentSheet";
 		TargetObject = target;
 		Layout = Layout.Column();
 		SetSizeMode( SizeMode.Default, SizeMode.CanShrink );
 
+		// Check to see if we have a cookie to say if the component isn't expanded
+		Expanded = ExpandedCookie;
+
 		var header = Layout.Add( new ComponentHeader( TargetObject, this ) );
-		header.MouseRightPress += contextMenu;
+		header.WantsContextMenu = contextMenu;
 
 		Content = Layout.AddColumn();
 		Frame();
@@ -150,14 +185,18 @@ file class ComponentHeader : Widget
 	SerializedObject TargetObject { get; init; }
 	ComponentSheet Sheet { get; set; }
 
+	public Action WantsContextMenu;
+
 	Layout expanderRect;
 	Layout iconRect;
 	Layout textRect;
+	Layout moreRect;
 
 	public ComponentHeader( SerializedObject target, ComponentSheet parent ) : base( parent )
 	{
 		TargetObject = target;
 		Sheet = parent;
+		MouseTracking = true;
 
 		var enabled = ControlWidget.Create( TargetObject.GetProperty( "Enabled" ) );
 		enabled.FixedWidth = 18;
@@ -184,6 +223,13 @@ file class ComponentHeader : Widget
 
 		// text 
 		textRect = Layout.AddColumn( 1 );
+
+		Layout.AddStretchCell( 1 );
+
+		moreRect = Layout.AddRow();
+		moreRect.AddSpacingCell( 16 );
+
+		Layout.AddSpacingCell( 16 );
 	}
 
 	protected override void OnPaint()
@@ -227,15 +273,15 @@ file class ComponentHeader : Widget
 		Paint.SetPen( Theme.Blue.Lighten( 0.1f ).WithAlpha( (Sheet.Expanded ? 0.9f : 0.6f) * opacity ) );
 		Paint.SetDefaultFont( 8, 1000, false );
 		Paint.DrawText( textRect.InnerRect, TargetObject.TypeTitle, TextFlag.LeftCenter );
+
+		Paint.DrawIcon( moreRect.InnerRect, "more_horiz", 16, TextFlag.RightCenter );
 	}
 
-	protected override void OnContextMenu( ContextMenuEvent e )
+	protected override void OnMouseRightClick( MouseEvent e )
 	{
-		base.OnContextMenu( e );
+		base.OnMouseRightClick( e );
 
-		var menu = new Menu();
-		//menu.AddOption( "Delete Component", "clear", () => Target.Parent.Components.Remove( Target ) );
-		menu.OpenAtCursor( false );
+		WantsContextMenu?.Invoke();
 	}
 
 	protected override void OnMouseClick( MouseEvent e )
@@ -244,7 +290,14 @@ file class ComponentHeader : Widget
 
 		if ( e.LeftMouseButton )
 		{
-			Sheet.SetExpanded( !Sheet.Expanded );
+			if ( moreRect.InnerRect.IsInside( e.LocalPosition ) )
+			{
+				WantsContextMenu?.Invoke();
+			}
+			else
+			{
+				Sheet.SetExpanded( !Sheet.Expanded );
+			}
 		}
 	}
 }

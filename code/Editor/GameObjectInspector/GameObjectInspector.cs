@@ -25,12 +25,16 @@ public class GameObjectInspector : Widget
 		Layout.Add( h );
 		Layout.AddSeparator();
 
+		var scroller = Layout.Add( new ScrollArea( this ) );
+		scroller.Canvas = new Widget( scroller );
+		scroller.Canvas.Layout = Layout.Column();
+
 		if ( !target.IsPrefabInstance )
 		{
-			Layout.Add( new ComponentList( target.Components ) );
+			scroller.Canvas.Layout.Add( new ComponentList( target.Id, target.Components ) );
 
 			// Add component button
-			var row = Layout.AddRow();
+			var row = scroller.Canvas.Layout.AddRow();
 			row.AddStretchCell();
 			row.Margin = 16;
 			var button = row.Add( new Button.Primary( "Add Component", "add" ) );
@@ -48,7 +52,7 @@ public class GameObjectInspector : Widget
 			// if we're the prefab root, show a list of variables that can be modified
 
 			// Add component button
-			var row = Layout.AddRow();
+			var row = scroller.Canvas.Layout.AddRow();
 			row.AddStretchCell();
 			row.Margin = 16;
 			var button = row.Add( new Button( $"Open \"{target.PrefabInstanceSource}\"", "edit" ) );
@@ -62,14 +66,14 @@ public class GameObjectInspector : Widget
 			row.AddStretchCell();
 		}
 
+		scroller.Canvas.Layout.AddStretchCell( 1 );
 
-
-		Layout.AddStretchCell();
-
-		var footer = Layout.AddRow();
-	////	footer.Margin = 8;
-	//	footer.AddStretchCell();
-	//	footer.Add( new Button.Primary( "Add Component", "add" ) { Clicked = AddComponentDialog } );
+		//var footer = scroller.Canvas.Layout.AddRow();
+		//footer.Margin = 8;
+		//footer.AddStretchCell();
+		//var footerBtn = footer.Add( new Button.Primary( "Add Component", "add" ) );
+		//footerBtn.Clicked = () => AddComponentDialog( footerBtn );
+		//footer.Add( footerBtn );
 	}
 
 	void PropertyEdited( SerializedProperty property, GameObject go )
@@ -93,9 +97,11 @@ public class GameObjectInspector : Widget
 public class ComponentList : Widget
 {
 	List<BaseComponent> componentList; // todo - SerializedObject should support lists, arrays
+	Guid GameObjectId;
 
-	public ComponentList( List<BaseComponent> components ) : base( null )
+	public ComponentList( Guid gameObjectId, List<BaseComponent> components ) : base( null )
 	{
+		GameObjectId = gameObjectId;
 		componentList = components;
 		Layout = Layout.Column();
 
@@ -113,7 +119,7 @@ public class ComponentList : Widget
 
 			var serialized = EditorTypeLibrary.GetSerializedObject( o );
 			serialized.OnPropertyChanged += ( p ) => PropertyEdited( p, o );
-			var sheet = new ComponentSheet( serialized, () => OpenContextMenu( o ) );
+			var sheet = new ComponentSheet( GameObjectId, serialized, () => OpenContextMenu( o ) );
 			Layout.Add( sheet );
 			Layout.AddSeparator();
 		}
@@ -131,6 +137,25 @@ public class ComponentList : Widget
 
 		menu.AddOption( "Reset", action: () => component.Reset() );
 		menu.AddSeparator();
+
+		var componentIndex = componentList.IndexOf( component );
+		var canMoveUp = componentList.Count > 1 && componentIndex > 0;
+		var canMoveDown = componentList.Count > 1 && componentIndex < componentList.Count - 1;
+
+		menu.AddOption( "Move Up", action: () =>
+		{
+			componentList.RemoveAt( componentIndex );
+			componentList.Insert( componentIndex - 1, component );
+			Rebuild();
+		} ).Enabled = canMoveUp;
+
+		menu.AddOption( "Move Down", action: () =>
+		{
+			componentList.RemoveAt( componentIndex );
+			componentList.Insert( componentIndex + 1, component );
+			Rebuild();
+		} ).Enabled = canMoveDown;
+
 		menu.AddOption( "Remove Component", action: () => component.Destroy() );
 		//menu.AddOption( "Copy To Clipboard" );
 		//menu.AddOption( "Paste As New" );

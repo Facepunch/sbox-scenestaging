@@ -23,6 +23,8 @@ public partial class SceneTreeWidget : Widget
 		TreeView = Layout.Add( new TreeView( this ), 1 );
 		TreeView.MultiSelect = true;
 		TreeView.BodyContextMenu = OpenTreeViewContextMenu;
+		TreeView.ItemSelected = x => _lastScene?.Scene?.EditLog( "Selection", this );
+		TreeView.ItemsSelected = x => _lastScene?.Scene?.EditLog( "Selection", this );
 		Footer = Layout.AddColumn();
 		_lastScene = null;
 		CheckForChanges();
