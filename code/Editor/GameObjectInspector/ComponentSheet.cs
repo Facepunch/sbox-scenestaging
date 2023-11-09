@@ -63,7 +63,7 @@ public partial class ComponentSheet : Widget
 		Expanded = ExpandedCookie;
 
 		var header = Layout.Add( new ComponentHeader( TargetObject, this ) );
-		header.MouseRightPress += contextMenu;
+		header.WantsContextMenu = contextMenu;
 
 		Content = Layout.AddColumn();
 		Frame();
@@ -112,14 +112,18 @@ file class ComponentHeader : Widget
 	SerializedObject TargetObject { get; init; }
 	ComponentSheet Sheet { get; set; }
 
+	public Action WantsContextMenu;
+
 	Layout expanderRect;
 	Layout iconRect;
 	Layout textRect;
+	Layout moreRect;
 
 	public ComponentHeader( SerializedObject target, ComponentSheet parent ) : base( parent )
 	{
 		TargetObject = target;
 		Sheet = parent;
+		MouseTracking = true;
 
 		var enabled = ControlWidget.Create( TargetObject.GetProperty( "Enabled" ) );
 		enabled.FixedWidth = 18;
@@ -146,6 +150,13 @@ file class ComponentHeader : Widget
 
 		// text 
 		textRect = Layout.AddColumn( 1 );
+
+		Layout.AddStretchCell( 1 );
+
+		moreRect = Layout.AddRow();
+		moreRect.AddSpacingCell( 16 );
+
+		Layout.AddSpacingCell( 16 );
 	}
 
 	protected override void OnPaint()
@@ -189,6 +200,8 @@ file class ComponentHeader : Widget
 		Paint.SetPen( Theme.Blue.Lighten( 0.1f ).WithAlpha( (Sheet.Expanded ? 0.9f : 0.6f) * opacity ) );
 		Paint.SetDefaultFont( 8, 1000, false );
 		Paint.DrawText( textRect.InnerRect, TargetObject.TypeTitle, TextFlag.LeftCenter );
+
+		Paint.DrawIcon( moreRect.InnerRect, "more_horiz", 16, TextFlag.RightCenter );
 	}
 
 	protected override void OnContextMenu( ContextMenuEvent e )
@@ -200,13 +213,27 @@ file class ComponentHeader : Widget
 		menu.OpenAtCursor( false );
 	}
 
+	protected override void OnMouseRightClick( MouseEvent e )
+	{
+		base.OnMouseRightClick( e );
+
+		WantsContextMenu?.Invoke();
+	}
+
 	protected override void OnMouseClick( MouseEvent e )
 	{
 		base.OnMouseClick( e );
 
 		if ( e.LeftMouseButton )
 		{
-			Sheet.SetExpanded( !Sheet.Expanded );
+			if ( moreRect.InnerRect.IsInside( e.LocalPosition ) )
+			{
+				WantsContextMenu?.Invoke();
+			}
+			else
+			{
+				Sheet.SetExpanded( !Sheet.Expanded );
+			}
 		}
 	}
 }
