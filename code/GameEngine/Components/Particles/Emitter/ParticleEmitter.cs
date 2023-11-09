@@ -2,26 +2,73 @@
 
 public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEditor
 {
-	[Property, Range( 0, 1000 )] public float Initial { get; set; } = 10.0f;
+	[Property] public float Duration { get; set; } = 10.0f;
+	[Property] public float Delay { get; set; } = 0.0f;
+	[Property] public bool Loop { get; set; } = true;
+	[Property, Range( 0, 1000 )] public float Burst { get; set; } = 100.0f;
 	[Property, Range( 0, 1000 )] public float Rate { get; set; } = 1.0f;
 
 	public float time;
+	float emitted;
+	float burst;
 
 	public override void OnEnabled()
 	{
-		time = Initial;
+		ResetEmitter();
+	}
+
+	public void ResetEmitter()
+	{
+		emitted = 0;
+		time = 0;
+		burst = 0;
 	}
 
 	public override void Update()
 	{
-		if ( !TryGetComponent( out ParticleEffect effect ) ) return;
+		if ( !TryGetComponent( out ParticleEffect effect ) ) 
+			return;
 
-		time += Time.Delta * Rate;
+		time += Time.Delta;
 
-		while ( !effect.IsFull && time >= 1.0f )
+		float runTime = time - Delay;
+
+		// not started yet
+		if ( runTime  < 0 )
 		{
+			return;
+		}	
+
+		bool finished = time > (Duration + Delay);
+
+		if ( finished )
+		{
+			if ( !Loop )
+			{
+				if ( Scene.IsEditor )
+				{
+					// TODO - if this is selected
+					ResetEmitter();
+				}
+
+				return;
+			}
+
+			ResetEmitter();
+			return;
+		}
+
+		while ( burst < Burst && !effect.IsFull )
+		{
+			burst++;
 			Emit( effect );
-			time -= 1.0f;
+		}
+
+		float targetEmission = Rate * runTime;
+		while ( !effect.IsFull && emitted < targetEmission )
+		{
+			emitted++;
+			Emit( effect );
 		}
 	}
 
