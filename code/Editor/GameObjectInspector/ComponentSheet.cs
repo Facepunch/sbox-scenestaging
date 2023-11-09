@@ -204,15 +204,6 @@ file class ComponentHeader : Widget
 		Paint.DrawIcon( moreRect.InnerRect, "more_horiz", 16, TextFlag.RightCenter );
 	}
 
-	protected override void OnContextMenu( ContextMenuEvent e )
-	{
-		base.OnContextMenu( e );
-
-		var menu = new Menu();
-		//menu.AddOption( "Delete Component", "clear", () => Target.Parent.Components.Remove( Target ) );
-		menu.OpenAtCursor( false );
-	}
-
 	protected override void OnMouseRightClick( MouseEvent e )
 	{
 		base.OnMouseRightClick( e );
