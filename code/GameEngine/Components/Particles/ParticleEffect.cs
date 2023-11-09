@@ -17,16 +17,20 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property, Range( 0, 2 )] public float Speed { get; set; } = 1.0f;
 
 	[Property] public Vector3 Force { get; set; }
-	[Property] public bool Collision { get; set; }
+
 	[Property, Range( 0, 1 )] public float Damping { get; set; }
 
 	[Property] public int MaxParticles { get; set; } = 1000;
-	[Property] public Color Tint { get; set; } = Color.White;
 
-	public List<Particle> Particles { get; } = new List<Particle>();
+	[Property, Group( "Color" )]
+	public Color Tint { get; set; } = Color.White;
+	[Property, Group( "Color" )]
+	public Curve AlphaOverLifetime { get; set; } = 1.0f;
+
 
 	[Property] public Curve Lifetime { get; set; } = 1.0f;
-	[Property] public Curve AlphaOverLifetime { get; set; } = 1.0f;
+
+
 
 	[Property] public Curve StartRotation { get; set; } = 0.0f;
 	[Property] public Curve StartVelocity { get; set; } = 1.0f;
@@ -34,6 +38,17 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property, Range( 0, 1 )] public float SimulationSpace { get; set; } = 1.0f;
 	[Property, Range( 0, 1 )] public float SequenceSpeed { get; set; } = 1.0f;
 
+	[Property, ToggleGroup( "Collision" )] 
+	public bool Collision { get; set; }
+
+	[Property, ToggleGroup( "Collision" )]
+	public float CollisionRadius { get; set; }
+
+	[Property, ToggleGroup( "Collision" )]
+	public TagSet CollisionIgnore { get; set; }
+
+
+	public List<Particle> Particles { get; } = new List<Particle>();
 
 	public bool IsFull => Particles.Count >= MaxParticles;
 
@@ -112,11 +127,6 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		lastTransform = tx;
 	}
 
-	static void TickParticle()
-	{
-
-	}
-
 	public Particle Emit( Vector3 position )
 	{
 		var p = Particle.Create();
@@ -139,3 +149,4 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		Particle.Pool.Enqueue( p );
 	}
 }
+

@@ -2,11 +2,11 @@
 
 public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEditor
 {
-	[Property] public float Duration { get; set; } = 10.0f;
-	[Property] public float Delay { get; set; } = 0.0f;
-	[Property] public bool Loop { get; set; } = true;
-	[Property, Range( 0, 1000 )] public float Burst { get; set; } = 100.0f;
-	[Property, Range( 0, 1000 )] public float Rate { get; set; } = 1.0f;
+	[Property, Group( "Emitter" )] public bool Loop { get; set; } = true;
+	[Property, Group( "Emitter" )] public float Duration { get; set; } = 10.0f;
+	[Property, Group( "Emitter" )] public float Delay { get; set; } = 0.0f;
+	[Property, Range( 0, 1000 ), Group( "Emitter" )] public float Burst { get; set; } = 100.0f;
+	[Property, Range( 0, 1000 ), Group( "Emitter" )] public float Rate { get; set; } = 1.0f;
 
 	public float time;
 	float emitted;

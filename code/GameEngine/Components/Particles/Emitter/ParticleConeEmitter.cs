@@ -1,21 +1,19 @@
-﻿using Editor;
-using Sandbox.Utility;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Runtime.Serialization;
-using static Sandbox.Gizmo;
-
-namespace Sandbox.GameEngine.Components.Particles.Emitter;
+﻿namespace Sandbox.GameEngine.Components.Particles.Emitter;
 
 public sealed class ParticleConeEmitter : ParticleEmitter
 {
-	[Property] public Vector3 Size { get; set; } = 50.0f;
-	[Property, Range( 0, 45 )] public float ConeAngle { get; set; } = 30.0f;
-	[Property] public float ConeNear { get; set; } = 1.0f;
-	[Property] public float ConeFar { get; set; } = 50.0f;
-	[Property] public bool OnEdge { get; set; } = false;
-	[Property] public bool InVolume { get; set; } = false;
-	[Property, Range( 0, 10 )] public float Velocity { get; set; } = 1;
+	[Property, Group( "Placement" )]
+	public bool OnEdge { get; set; } = false;
+	[Property, Group( "Placement" )]
+	public bool InVolume { get; set; } = false;
+
+	[Property, Range( 0, 45 ), Group( "Cone" ), Title( "Angle" )]
+	public float ConeAngle { get; set; } = 30.0f;
+	[Property, Group( "Cone" ), Title( "Start" )]
+	public float ConeNear { get; set; } = 1.0f;
+	[Property, Group( "Cone" ), Title( "End" )]
+	public float ConeFar { get; set; } = 50.0f;
+
 
 	public override void DrawGizmos()
 	{
@@ -26,8 +24,6 @@ public sealed class ParticleConeEmitter : ParticleEmitter
 		Gizmo.Draw.LineCircle( Vector3.Forward * (ConeFar - ConeNear), ConeFar * MathF.Tan( ConeAngle.DegreeToRadian() ) );
 		Gizmo.Draw.LineCircle( Vector3.Forward * 0, ConeNear * MathF.Tan( ConeAngle.DegreeToRadian() ) );
 
-		// TODO - Box Resize Gizmo
-		
 	}
 
 	public override bool Emit( ParticleEffect target )
@@ -57,7 +53,7 @@ public sealed class ParticleConeEmitter : ParticleEmitter
 
 		p.Velocity = Transform.World.NormalToWorld( pos.Normal ) * p.Velocity.Length;
 
-		
+
 
 
 
