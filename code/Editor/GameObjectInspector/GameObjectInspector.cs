@@ -137,6 +137,25 @@ public class ComponentList : Widget
 
 		menu.AddOption( "Reset", action: () => component.Reset() );
 		menu.AddSeparator();
+
+		var componentIndex = componentList.IndexOf( component );
+		var canMoveUp = componentList.Count > 1 && componentIndex > 0;
+		var canMoveDown = componentList.Count > 1 && componentIndex < componentList.Count - 1;
+
+		menu.AddOption( "Move Up", action: () =>
+		{
+			componentList.RemoveAt( componentIndex );
+			componentList.Insert( componentIndex - 1, component );
+			Rebuild();
+		} ).Enabled = canMoveUp;
+
+		menu.AddOption( "Move Down", action: () =>
+		{
+			componentList.RemoveAt( componentIndex );
+			componentList.Insert( componentIndex + 1, component );
+			Rebuild();
+		} ).Enabled = canMoveDown;
+
 		menu.AddOption( "Remove Component", action: () => component.Destroy() );
 		//menu.AddOption( "Copy To Clipboard" );
 		//menu.AddOption( "Paste As New" );
