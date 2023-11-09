@@ -32,6 +32,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property] public Curve StartVelocity { get; set; } = 1.0f;
 
 	[Property, Range( 0, 1 )] public float SimulationSpace { get; set; } = 1.0f;
+	[Property, Range( 0, 1 )] public float SequenceSpeed { get; set; } = 1.0f;
 
 
 	public bool IsFull => Particles.Count >= MaxParticles;
@@ -93,8 +94,8 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 			p.Position = target;
 			p.Size = 1.0f;
-			p.Color = p.Color.WithAlpha( AlphaOverLifetime.Evaluate( delta ) );
-			
+			p.Alpha = AlphaOverLifetime.Evaluate( delta );
+			p.SequenceTime += timeDelta * SequenceSpeed;
 
 			if ( delta >= 1.0f )
 			{

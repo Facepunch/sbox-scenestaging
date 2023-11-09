@@ -91,6 +91,7 @@
             ]
           },
           "MaxParticles": 1000,
+          "SequenceSpeed": 1,
           "SimulationSpace": 1,
           "Speed": 1,
           "StartRotation": [
@@ -113,6 +114,7 @@
           "Count": 1,
           "Scale": 2,
           "Shadows": false,
+          "SortMode": "Unsorted",
           "Texture": "materials/particles/kenney/fire_01.vtex"
         },
         {
@@ -169,6 +171,7 @@
                 ]
               },
               "MaxParticles": 1000,
+              "SequenceSpeed": 1,
               "SimulationSpace": 1,
               "Speed": 1,
               "StartRotation": [
@@ -191,6 +194,7 @@
               "Count": 1,
               "Scale": 200,
               "Shadows": false,
+              "SortMode": "Unsorted",
               "Texture": "materials/particles/kenney/smoke_01.vtex"
             },
             {
@@ -255,6 +259,7 @@
             ]
           },
           "MaxParticles": 50,
+          "SequenceSpeed": 1,
           "SimulationSpace": 1,
           "Speed": 1,
           "StartRotation": {
@@ -285,6 +290,7 @@
           "Count": 1,
           "Scale": 20,
           "Shadows": false,
+          "SortMode": "Unsorted",
           "Texture": "sprites/character_femaleperson_behindback.vtex"
         },
         {
@@ -346,6 +352,7 @@
             ]
           },
           "MaxParticles": 1000,
+          "SequenceSpeed": 1,
           "SimulationSpace": 1,
           "Speed": 1,
           "StartRotation": {
@@ -378,6 +385,7 @@
           "Count": 1,
           "Scale": 20,
           "Shadows": false,
+          "SortMode": "Unsorted",
           "Texture": "materials/particles/kenney/flame_02.vtex"
         },
         {
@@ -439,6 +447,7 @@
                 ]
               },
               "MaxParticles": 50,
+              "SequenceSpeed": 1,
               "SimulationSpace": 1,
               "Speed": 1,
               "StartRotation": {
@@ -471,6 +480,7 @@
               "Count": 1,
               "Scale": 15,
               "Shadows": false,
+              "SortMode": "Unsorted",
               "Texture": "materials/particles/kenney/fire_01.vtex"
             },
             {
@@ -527,6 +537,7 @@
                 ]
               },
               "MaxParticles": 50,
+              "SequenceSpeed": 1,
               "SimulationSpace": 1,
               "Speed": 1,
               "StartRotation": {
@@ -559,6 +570,7 @@
               "Count": 1,
               "Scale": 30,
               "Shadows": false,
+              "SortMode": "Unsorted",
               "Texture": "materials/particles/kenney/fire_01.vtex"
             },
             {
@@ -620,6 +632,7 @@
                 ]
               },
               "MaxParticles": 50,
+              "SequenceSpeed": 1,
               "SimulationSpace": 1,
               "Speed": 1,
               "StartRotation": {
@@ -652,6 +665,7 @@
               "Count": 1,
               "Scale": 0.7,
               "Shadows": false,
+              "SortMode": "Unsorted",
               "Texture": "materials/particles/kenney/circle_05.vtex"
             },
             {
@@ -715,6 +729,7 @@
                 ]
               },
               "MaxParticles": 15,
+              "SequenceSpeed": 1,
               "SimulationSpace": 1,
               "Speed": 1,
               "StartRotation": {
@@ -736,7 +751,7 @@
                   "y": 1
                 }
               ],
-              "Tint": "0.15347,0.13739,0.11852,1"
+              "Tint": "0.76238,0.68075,0.58499,0.52"
             },
             {
               "__type": "ParticleSpriteRenderer",
@@ -744,8 +759,9 @@
               "Additive": false,
               "Count": 1,
               "Scale": 80,
-              "Shadows": false,
-              "Texture": "materials/particles/kenney/smoke_01.vtex"
+              "Shadows": true,
+              "SortMode": "Unsorted",
+              "Texture": "materials/particles/smoke/render/smokeloop_i_0.vtex"
             },
             {
               "__type": "ParticleSphereEmitter",
@@ -797,6 +813,7 @@
             ]
           },
           "MaxParticles": 2000,
+          "SequenceSpeed": 1,
           "SimulationSpace": 1,
           "Speed": 1,
           "StartRotation": {
@@ -829,6 +846,7 @@
           "Count": 1,
           "Scale": 0.77,
           "Shadows": false,
+          "SortMode": "Unsorted",
           "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
         },
         {
@@ -901,6 +919,7 @@
             ]
           },
           "MaxParticles": 2000,
+          "SequenceSpeed": 1,
           "SimulationSpace": 0.08,
           "Speed": 1,
           "StartRotation": {
@@ -933,6 +952,7 @@
           "Count": 1,
           "Scale": 0.77,
           "Shadows": false,
+          "SortMode": "Unsorted",
           "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
         },
         {
@@ -1009,6 +1029,7 @@
             ]
           },
           "MaxParticles": 2000,
+          "SequenceSpeed": 1,
           "SimulationSpace": 0,
           "Speed": 1,
           "StartRotation": {
@@ -1041,6 +1062,7 @@
           "Count": 1,
           "Scale": 0.92,
           "Shadows": false,
+          "SortMode": "Unsorted",
           "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
         },
         {
@@ -1116,6 +1138,7 @@
             ]
           },
           "MaxParticles": 2000,
+          "SequenceSpeed": 1,
           "SimulationSpace": 1,
           "Speed": 1,
           "StartRotation": {
@@ -1148,6 +1171,7 @@
           "Count": 1,
           "Scale": 0.92,
           "Shadows": false,
+          "SortMode": "Unsorted",
           "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
         },
         {
@@ -1223,6 +1247,7 @@
             ]
           },
           "MaxParticles": 2000,
+          "SequenceSpeed": 1,
           "SimulationSpace": 1,
           "Speed": 1,
           "StartRotation": {
@@ -1255,6 +1280,7 @@
           "Count": 1,
           "Scale": 0.92,
           "Shadows": false,
+          "SortMode": "Unsorted",
           "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
         },
         {
@@ -1335,6 +1361,7 @@
             ]
           },
           "MaxParticles": 2000,
+          "SequenceSpeed": 1,
           "SimulationSpace": 1,
           "Speed": 1,
           "StartRotation": {
@@ -1367,6 +1394,7 @@
           "Count": 1,
           "Scale": 0.92,
           "Shadows": false,
+          "SortMode": "Unsorted",
           "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
         },
         {
@@ -1410,11 +1438,11 @@
       ]
     },
     {
-      "Id": "a20bbf5b-bb83-4b0b-8c8b-95d1a450c0c3",
-      "Name": "Cone",
+      "Id": "a4c43c05-5324-4910-b89a-88d7ab7aecab",
+      "Name": "Smoke",
       "Enabled": true,
-      "Position": "222.3631,-14.94217,-36.56042",
-      "Rotation": "-0.2431078,-0.01096843,-0.922671,-0.2990642",
+      "Position": "-494.6021,632.4538,-106.3604",
+      "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
       "Components": [
@@ -1424,29 +1452,30 @@
           "AlphaOverLifetime": [
             {},
             {
-              "x": 0.05049261,
-              "y": 1
+              "x": 0.35344827,
+              "y": 0.98214287
             },
             {
               "x": 1
             }
           ],
-          "Collision": true,
-          "Damping": 0,
-          "Force": "0,0,-900",
+          "Collision": false,
+          "Damping": 1,
+          "Force": "0,0,-10",
           "Lifetime": {
-            "rangey": "0,2",
+            "rangey": "0,5",
             "frames": [
               {
                 "y": 1
               },
               {
                 "x": 1,
-                "y": 0.6535714
+                "y": 0.25
               }
             ]
           },
-          "MaxParticles": 2000,
+          "MaxParticles": 100,
+          "SequenceSpeed": 0.55,
           "SimulationSpace": 0,
           "Speed": 1.02,
           "StartRotation": {
@@ -1468,37 +1497,33 @@
             "rangey": "0,1000",
             "frames": [
               {
-                "x": 0.48891625,
-                "y": 0.50714284
+                "x": 0.47660097
               }
             ]
           },
-          "Tint": "0.31683,0.76772,1,1"
+          "Tint": "1,0.19307,0.69337,1"
         },
         {
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
-          "Additive": true,
-          "Count": 8,
-          "Scale": 0.54,
-          "Shadows": false,
-          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+          "Additive": false,
+          "Count": 1,
+          "Scale": 60,
+          "Shadows": true,
+          "SortMode": "ByDistance",
+          "Texture": "materials/particles/smoke/render/smokeloop_i_0.vtex"
         },
         {
-          "__type": "ParticleConeEmitter",
+          "__type": "ParticleSphereEmitter",
           "__enabled": true,
-          "Burst": 2000,
-          "ConeAngle": 13.51,
-          "ConeFar": 9.200019,
-          "ConeNear": 0,
-          "Delay": 5,
-          "Duration": 0.5,
-          "InVolume": true,
-          "Loop": false,
+          "Burst": 0,
+          "Delay": 0,
+          "Duration": 10,
+          "Loop": true,
           "OnEdge": false,
-          "Rate": 444.61,
-          "Size": "50,50,50",
-          "Velocity": 5.41
+          "Radius": 52.33,
+          "Rate": 500,
+          "Velocity": 29.15
         }
       ]
     },
@@ -9077,6 +9102,7 @@
                 ]
               },
               "MaxParticles": 500,
+              "SequenceSpeed": 1,
               "SimulationSpace": 1,
               "Speed": 1,
               "StartRotation": {
@@ -9109,6 +9135,7 @@
               "Count": 1,
               "Scale": 1.23,
               "Shadows": false,
+              "SortMode": "Unsorted",
               "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
             },
             {
@@ -9169,6 +9196,7 @@
                 ]
               },
               "MaxParticles": 2000,
+              "SequenceSpeed": 1,
               "SimulationSpace": 0,
               "Speed": 1,
               "StartRotation": {
@@ -9201,6 +9229,7 @@
               "Count": 1,
               "Scale": 3,
               "Shadows": false,
+              "SortMode": "Unsorted",
               "Texture": "materials/particle/particle_debris_burst/particle_debris_burst_001.vtex"
             },
             {
@@ -9425,6 +9454,7 @@
                 ]
               },
               "MaxParticles": 20000,
+              "SequenceSpeed": 1,
               "SimulationSpace": 1,
               "Speed": 1,
               "StartRotation": {
@@ -9455,6 +9485,7 @@
               "Count": 1,
               "Scale": 2,
               "Shadows": false,
+              "SortMode": "Unsorted",
               "Texture": "materials/effects/fleck_glass2_color_tga_75f1d9fe.generated.vtex"
             },
             {
