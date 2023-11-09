@@ -173,11 +173,6 @@ public partial class ComponentSheet : Widget
 		sheet.AddLayout( lo );
 	}
 
-	public override void ChildValuesChanged( Widget source )
-	{
-		//TargetObject.IsChanged();
-	}
-
 }
 
 file class ComponentHeader : Widget
