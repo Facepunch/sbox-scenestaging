@@ -19,9 +19,9 @@ struct VS_INPUT
 	float3 pos : POSITION < Semantic( PosXyz ); >;
 	float4 uv  : TEXCOORD0 < Semantic( LowPrecisionUv ); >;
     float4 normal : NORMAL < Semantic( None ); >;
-	float4 tint : COLOR0 < Semantic( None ); >;
+    float4 tint : TEXCOORD1 < Semantic( None ); >;
 	
-    float4 sequence : TEXCOORD1 < Semantic( None ); >;
+    float4 sequence : TEXCOORD2 < Semantic( None ); >;
 
 	uint instanceId : TEXCOORD13 < Semantic( InstanceTransformUv ); >; 
 };
