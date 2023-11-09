@@ -183,7 +183,7 @@ public class ComponentList : Widget
 	[EditorEvent.Frame]
 	public void Frame()
 	{
-		var hash = componentList.Count;
+		var hash = componentList?.Count ?? 0;
 
 		if ( hashCode == hash ) return;
 
