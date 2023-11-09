@@ -8,6 +8,9 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 	[Property] public Texture Texture { get; set; } = Texture.White;
 	[Property, Range( 0, 2 )] public float Scale { get; set; } = 1.0f;
 	[Property] public bool Additive { get; set; }
+	[Property] public bool Shadows { get; set; }
+
+	[Property] public int Count { get; set; } = 1;
 
 	public override void OnEnabled()
 	{
@@ -28,17 +31,37 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 
 		_so.Transform = Transform.World;
 		_so.Material = Material.FromShader( "code/shaders/sprite.vfx" );
-		_so.Flags.CastShadows = !Additive;
+		_so.Flags.CastShadows = Shadows && !Additive;
 		_so.Texture = Texture;
 
 		if ( Additive ) _so.Attributes.SetCombo( "D_BLEND", 1 );
 		else _so.Attributes.SetCombo( "D_BLEND", 0 );
 
-		using ( _so.Write( Graphics.PrimitiveType.Points, effect.Particles.Count, 0 ) )
+		var trailMul = 1.0f / (float)Count;
+
+		using ( _so.Write( Graphics.PrimitiveType.Points, effect.Particles.Count * Count, 0 ) )
 		{
 			foreach ( var p in effect.Particles )
 			{
-				_so.DrawSprite( p.Position, p.Size * Scale, p.Angles, p.Color );
+				var v = new Vertex();
+				var size = p.Size * Scale;
+
+				v.TexCoord0 = new Vector4( size.x, size.y, 0, 0 );
+				v.TexCoord1 = p.Color;
+
+				v.Position = p.Position;
+
+				v.Normal.x = p.Angles.pitch;
+				v.Normal.y = p.Angles.yaw;
+				v.Normal.z = p.Angles.roll;
+
+				for ( int i = 0; i < Count; i++ )
+				{
+					_so.AddVertex( v );
+
+					v.Position += p.Velocity * (1.0f / 500.0f) * size.x;
+					v.TexCoord1.w += trailMul;
+				}
 			}
 		}
 	}
