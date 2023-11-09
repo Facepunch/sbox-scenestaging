@@ -29,6 +29,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property] public Curve AlphaOverLifetime { get; set; } = 1.0f;
 
 	[Property] public Curve StartRotation { get; set; } = 0.0f;
+	[Property] public Curve StartVelocity { get; set; } = 1.0f;
 
 	[Property, Range( 0, 1 )] public float SimulationSpace { get; set; } = 1.0f;
 
@@ -120,10 +121,11 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		var p = Particle.Create();
 
 		p.Position = position;
-		p.Radius = 4.0f;
+		p.Radius = 1.0f;
 		p.DeathTime = Time.Now + Lifetime.Evaluate( Random.Shared.Float( 0, 1 ) );
 		p.Color = Tint;
 		p.Angles.roll = StartRotation.Evaluate( Random.Shared.Float( 0, 1 ) );
+		p.Velocity = Vector3.Random.Normal * StartVelocity.Evaluate( Random.Shared.Float( 0, 1 ) );
 
 		Particles.Add( p );
 
