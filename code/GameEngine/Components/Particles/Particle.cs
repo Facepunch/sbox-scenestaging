@@ -30,6 +30,7 @@ public class Particle
 
 		p.BornTime = Time.Now;
 		p.Age = 0;
+		p.Angles = Angles.Zero;
 		p.Frame = 0;
 		p.Velocity = 0;
 		p.Color = Color.White;

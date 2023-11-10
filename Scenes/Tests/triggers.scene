@@ -71,6 +71,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": false,
+          "ApplyRotation": false,
           "ApplyShape": false,
           "Bounce": {
             "Constants": "1,0,0,0"
@@ -101,16 +102,12 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
           },
           "SequenceSpeed": 1,
           "Space": "World",
-          "StartRotation": [
-            {
-              "x": 0.5
-            }
-          ],
           "StartVelocity": {
             "Constants": "1,0,0,0"
           },
@@ -158,6 +155,7 @@
                 "Constants": "1,0,0,0"
               },
               "ApplyColor": false,
+              "ApplyRotation": false,
               "ApplyShape": false,
               "Bounce": {
                 "Constants": "1,0,0,0"
@@ -188,16 +186,12 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "Roll": {},
               "Scale": {
                 "Constants": "1,0,0,0"
               },
               "SequenceSpeed": 1,
               "Space": "World",
-              "StartRotation": [
-                {
-                  "x": 0.5
-                }
-              ],
               "StartVelocity": {
                 "Constants": "1,0,0,0"
               },
@@ -247,6 +241,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": false,
+          "ApplyRotation": false,
           "ApplyShape": false,
           "Bounce": {
             "Constants": "1,0,0,0"
@@ -277,24 +272,12 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
           },
           "SequenceSpeed": 1,
           "Space": "World",
-          "StartRotation": {
-            "rangey": "0,360",
-            "frames": [
-              {
-                "in": -1.5841589,
-                "out": 1.5841589
-              },
-              {
-                "x": 1,
-                "y": 1
-              }
-            ]
-          },
           "StartVelocity": {
             "Constants": "1,0,0,0"
           },
@@ -330,7 +313,7 @@
       "Id": "48dfa384-4b93-4c22-8172-8eb6de2582b5",
       "Name": "Fire",
       "Enabled": true,
-      "Position": "1.888684,599.0943,-142.6031",
+      "Position": "1.888684,599.0943,-144.1058",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -343,7 +326,7 @@
             "CurveA": [
               {},
               {
-                "x": 0.5,
+                "x": 0.11083744,
                 "y": 1
               },
               {
@@ -353,21 +336,25 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
+          "ApplyRotation": true,
           "ApplyShape": true,
           "Bounce": {
             "Constants": "1,0,0,0"
           },
           "Brightness": {
-            "Constants": "1,0,0,0"
+            "Type": "Range",
+            "Constants": "2,1,0,0"
           },
           "Collision": false,
           "CollisionIgnore": null,
           "CollisionRadius": 0,
-          "Damping": {},
+          "Damping": {
+            "Constants": "1,0,0,0"
+          },
           "Force": true,
           "ForceDirection": "0,0,1",
           "ForceScale": {
-            "Constants": "50,0,0,0"
+            "Constants": "80,0,0,0"
           },
           "Gradient": {
             "color": [
@@ -379,38 +366,31 @@
             "alpha": []
           },
           "Lifetime": {
-            "Constants": "1,0,0,0"
+            "Type": "Range",
+            "Constants": "1,2,0,0"
           },
           "MaxParticles": 16,
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {
+            "Evaluation": "Particle",
+            "Constants": "0,10,0,0"
+          },
           "Scale": {
-            "Constants": "1,0,0,0"
+            "Type": "Range",
+            "Constants": "1,0.3,0,0"
           },
           "SequenceSpeed": 1,
           "Space": "World",
-          "StartRotation": {
-            "rangey": "0,360",
-            "frames": [
-              {
-                "in": -1.0230774,
-                "out": 1.0230774
-              },
-              {
-                "x": 1,
-                "y": 1,
-                "in": -0.6888068,
-                "out": 0.6888068
-              }
-            ]
-          },
           "StartVelocity": {
             "Constants": "1,0,0,0"
           },
-          "Stretch": {},
+          "Stretch": {
+            "Constants": "1,0,0,0"
+          },
           "TimeScale": 1,
-          "Tint": "0.9802,0.45089,0,1"
+          "Tint": "0.9802,0.56852,0,1"
         },
         {
           "__type": "ParticleSpriteRenderer",
@@ -453,6 +433,7 @@
                 "Constants": "1,0,0,0"
               },
               "ApplyColor": true,
+              "ApplyRotation": true,
               "ApplyShape": true,
               "Bounce": {
                 "Constants": "1,0,0,0"
@@ -547,27 +528,17 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "Roll": {
+                "Type": "Range",
+                "Evaluation": "Particle",
+                "Constants": "0,360,0,0"
+              },
               "Scale": {
                 "Type": "Range",
                 "Constants": "1,2,0,0"
               },
               "SequenceSpeed": 1,
               "Space": "World",
-              "StartRotation": {
-                "rangey": "0,360",
-                "frames": [
-                  {
-                    "in": -1.0230774,
-                    "out": 1.0230774
-                  },
-                  {
-                    "x": 1,
-                    "y": 1,
-                    "in": -0.6888068,
-                    "out": 0.6888068
-                  }
-                ]
-              },
               "StartVelocity": {
                 "Constants": "1,0,0,0"
               },
@@ -615,6 +586,7 @@
                 "Constants": "1,0,0,0"
               },
               "ApplyColor": true,
+              "ApplyRotation": false,
               "ApplyShape": true,
               "Bounce": {
                 "Constants": "1,0,0,0"
@@ -645,26 +617,12 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "Roll": {},
               "Scale": {
                 "Constants": "1,0,0,0"
               },
               "SequenceSpeed": 1,
               "Space": "World",
-              "StartRotation": {
-                "rangey": "0,360",
-                "frames": [
-                  {
-                    "in": -1.0230774,
-                    "out": 1.0230774
-                  },
-                  {
-                    "x": 1,
-                    "y": 1,
-                    "in": -0.6888068,
-                    "out": 0.6888068
-                  }
-                ]
-              },
               "StartVelocity": {
                 "Constants": "1,0,0,0"
               },
@@ -714,6 +672,7 @@
                 "Constants": "1,0,0,0"
               },
               "ApplyColor": true,
+              "ApplyRotation": false,
               "ApplyShape": true,
               "Bounce": {
                 "Constants": "1,0,0,0"
@@ -755,27 +714,13 @@
                 "Evaluation": "Particle",
                 "Constants": "1,0.5,0,0"
               },
+              "Roll": {},
               "Scale": {
                 "Type": "Range",
                 "Constants": "2,1,0,0"
               },
               "SequenceSpeed": 1,
               "Space": "World",
-              "StartRotation": {
-                "rangey": "0,360",
-                "frames": [
-                  {
-                    "in": -1.0230774,
-                    "out": 1.0230774
-                  },
-                  {
-                    "x": 1,
-                    "y": 1,
-                    "in": -0.6888068,
-                    "out": 0.6888068
-                  }
-                ]
-              },
               "StartVelocity": {
                 "Constants": "1,0,0,0"
               },
@@ -841,6 +786,7 @@
                 "Constants": "1,0,0,0"
               },
               "ApplyColor": true,
+              "ApplyRotation": false,
               "ApplyShape": true,
               "Bounce": {
                 "Constants": "1,0,0,0"
@@ -878,24 +824,12 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "Roll": {},
               "Scale": {
                 "Constants": "1,0,0,0"
               },
               "SequenceSpeed": 1,
               "Space": "World",
-              "StartRotation": {
-                "rangey": "0,360",
-                "frames": [
-                  {
-                    "in": -1.5841589,
-                    "out": 1.5841589
-                  },
-                  {
-                    "x": 1,
-                    "y": 1
-                  }
-                ]
-              },
               "StartVelocity": {
                 "Constants": "1,0,0,0"
               },
@@ -956,6 +890,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
+          "ApplyRotation": false,
           "ApplyShape": true,
           "Bounce": {
             "Constants": "1,0,0,0"
@@ -988,26 +923,12 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
           },
           "SequenceSpeed": 1,
           "Space": "World",
-          "StartRotation": {
-            "rangey": "0,360",
-            "frames": [
-              {
-                "in": -1.0230774,
-                "out": 1.0230774
-              },
-              {
-                "x": 1,
-                "y": 1,
-                "in": -0.6888068,
-                "out": 0.6888068
-              }
-            ]
-          },
           "StartVelocity": {
             "Constants": "1,0,0,0"
           },
@@ -1088,6 +1009,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
+          "ApplyRotation": false,
           "ApplyShape": true,
           "Bounce": {
             "Constants": "1,0,0,0"
@@ -1120,26 +1042,12 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
           },
           "SequenceSpeed": 1,
           "Space": "World",
-          "StartRotation": {
-            "rangey": "0,360",
-            "frames": [
-              {
-                "in": -1.0230774,
-                "out": 1.0230774
-              },
-              {
-                "x": 1,
-                "y": 1,
-                "in": -0.6888068,
-                "out": 0.6888068
-              }
-            ]
-          },
           "StartVelocity": {
             "Constants": "1,0,0,0"
           },
@@ -1229,6 +1137,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
+          "ApplyRotation": true,
           "ApplyShape": true,
           "Bounce": {
             "Constants": "1,0,0,0"
@@ -1263,34 +1172,23 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0,360,0,0"
+          },
           "Scale": {
             "Constants": "1,0,0,0"
           },
           "SequenceSpeed": 1,
           "Space": "World",
-          "StartRotation": {
-            "rangey": "0,360",
-            "frames": [
-              {
-                "in": -1.0230774,
-                "out": 1.0230774
-              },
-              {
-                "x": 1,
-                "y": 1,
-                "in": -0.6888068,
-                "out": 0.6888068
-              }
-            ]
-          },
           "StartVelocity": {
             "Constants": "1,0,0,0"
           },
           "Stretch": {
             "Type": "Curve",
-            "Evaluation": "Particle",
             "CurveA": {
-              "rangey": "-2,2",
+              "rangey": "-1,1",
               "frames": [
                 {},
                 {
@@ -1375,6 +1273,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
+          "ApplyRotation": false,
           "ApplyShape": true,
           "Bounce": {
             "Constants": "1,0,0,0"
@@ -1407,26 +1306,12 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
           },
           "SequenceSpeed": 1,
           "Space": "World",
-          "StartRotation": {
-            "rangey": "0,360",
-            "frames": [
-              {
-                "in": -1.0230774,
-                "out": 1.0230774
-              },
-              {
-                "x": 1,
-                "y": 1,
-                "in": -0.6888068,
-                "out": 0.6888068
-              }
-            ]
-          },
           "StartVelocity": {
             "Constants": "1,0,0,0"
           },
@@ -1495,6 +1380,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
+          "ApplyRotation": false,
           "ApplyShape": true,
           "Bounce": {
             "Constants": "1,0,0,0"
@@ -1527,26 +1413,12 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
           },
           "SequenceSpeed": 1,
           "Space": "World",
-          "StartRotation": {
-            "rangey": "0,360",
-            "frames": [
-              {
-                "in": -1.0230774,
-                "out": 1.0230774
-              },
-              {
-                "x": 1,
-                "y": 1,
-                "in": -0.6888068,
-                "out": 0.6888068
-              }
-            ]
-          },
           "StartVelocity": {
             "Constants": "1,0,0,0"
           },
@@ -1615,6 +1487,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
+          "ApplyRotation": false,
           "ApplyShape": true,
           "Bounce": {
             "Constants": "1,0,0,0"
@@ -1647,26 +1520,12 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
           },
           "SequenceSpeed": 1,
           "Space": "World",
-          "StartRotation": {
-            "rangey": "0,360",
-            "frames": [
-              {
-                "in": -1.0230774,
-                "out": 1.0230774
-              },
-              {
-                "x": 1,
-                "y": 1,
-                "in": -0.6888068,
-                "out": 0.6888068
-              }
-            ]
-          },
           "StartVelocity": {
             "Constants": "1,0,0,0"
           },
@@ -1738,6 +1597,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
+          "ApplyRotation": false,
           "ApplyShape": true,
           "Bounce": {
             "Constants": "1,0,0,0"
@@ -1770,26 +1630,12 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
           },
           "SequenceSpeed": 1,
           "Space": "World",
-          "StartRotation": {
-            "rangey": "0,360",
-            "frames": [
-              {
-                "in": -1.0230774,
-                "out": 1.0230774
-              },
-              {
-                "x": 1,
-                "y": 1,
-                "in": -0.6888068,
-                "out": 0.6888068
-              }
-            ]
-          },
           "StartVelocity": {
             "Constants": "1,0,0,0"
           },
@@ -1874,6 +1720,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
+          "ApplyRotation": false,
           "ApplyShape": true,
           "Bounce": {
             "Type": "Range",
@@ -1952,6 +1799,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {},
           "Scale": {
             "Type": "Curve",
             "CurveA": [
@@ -2016,21 +1864,6 @@
           },
           "SequenceSpeed": 0,
           "Space": "World",
-          "StartRotation": {
-            "rangey": "0,360",
-            "frames": [
-              {
-                "in": -1.0230774,
-                "out": 1.0230774
-              },
-              {
-                "x": 1,
-                "y": 1,
-                "in": -0.6888068,
-                "out": 0.6888068
-              }
-            ]
-          },
           "StartVelocity": {
             "Type": "Range",
             "Constants": "1000,700,0,0"
@@ -2095,6 +1928,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
+          "ApplyRotation": true,
           "ApplyShape": true,
           "Bounce": {
             "Constants": "1,0,0,0"
@@ -2133,27 +1967,17 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "Roll": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0,360,0,0"
+          },
           "Scale": {
             "Type": "Range",
             "Constants": "1,2,0,0"
           },
           "SequenceSpeed": 0.55,
           "Space": "World",
-          "StartRotation": {
-            "rangey": "0,360",
-            "frames": [
-              {
-                "in": -1.0230774,
-                "out": 1.0230774
-              },
-              {
-                "x": 1,
-                "y": 1,
-                "in": -0.6888068,
-                "out": 0.6888068
-              }
-            ]
-          },
           "StartVelocity": {
             "Evaluation": "Particle",
             "Constants": "100,0,0,0"
@@ -9739,6 +9563,7 @@
                 "Constants": "1,0,0,0"
               },
               "ApplyColor": false,
+              "ApplyRotation": false,
               "ApplyShape": false,
               "Bounce": {
                 "Constants": "1,0,0,0"
@@ -9769,26 +9594,12 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "Roll": {},
               "Scale": {
                 "Constants": "1,0,0,0"
               },
               "SequenceSpeed": 1,
               "Space": "World",
-              "StartRotation": {
-                "rangey": "0,360",
-                "frames": [
-                  {
-                    "in": -1.0230774,
-                    "out": 1.0230774
-                  },
-                  {
-                    "x": 1,
-                    "y": 1,
-                    "in": -0.6888068,
-                    "out": 0.6888068
-                  }
-                ]
-              },
               "StartVelocity": {
                 "Constants": "1,0,0,0"
               },
@@ -9835,6 +9646,7 @@
                 "Constants": "1,0,0,0"
               },
               "ApplyColor": false,
+              "ApplyRotation": false,
               "ApplyShape": false,
               "Bounce": {
                 "Constants": "1,0,0,0"
@@ -9865,26 +9677,12 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "Roll": {},
               "Scale": {
                 "Constants": "1,0,0,0"
               },
               "SequenceSpeed": 1,
               "Space": "World",
-              "StartRotation": {
-                "rangey": "0,360",
-                "frames": [
-                  {
-                    "in": -1.0230774,
-                    "out": 1.0230774
-                  },
-                  {
-                    "x": 1,
-                    "y": 1,
-                    "in": -0.6888068,
-                    "out": 0.6888068
-                  }
-                ]
-              },
               "StartVelocity": {
                 "Constants": "1,0,0,0"
               },
@@ -10094,6 +9892,7 @@
                 "Constants": "1,0,0,0"
               },
               "ApplyColor": false,
+              "ApplyRotation": false,
               "ApplyShape": false,
               "Bounce": {
                 "Constants": "1,0,0,0"
@@ -10124,24 +9923,12 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "Roll": {},
               "Scale": {
                 "Constants": "1,0,0,0"
               },
               "SequenceSpeed": 1,
               "Space": "World",
-              "StartRotation": {
-                "rangey": "0,360",
-                "frames": [
-                  {
-                    "in": -1.5841589,
-                    "out": 1.5841589
-                  },
-                  {
-                    "x": 1,
-                    "y": 1
-                  }
-                ]
-              },
               "StartVelocity": {
                 "Constants": "1,0,0,0"
               },

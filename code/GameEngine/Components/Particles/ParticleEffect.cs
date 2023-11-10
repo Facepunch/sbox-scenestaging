@@ -34,6 +34,13 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property, Group( "Movement" )]
 	public SimulationSpace Space { get; set; }
 
+	[Property, ToggleGroup( "ApplyRotation", Label = "Rotation" )]
+	public bool ApplyRotation { get; set; } = false;
+
+	[Property, Group( "ApplyRotation" )]
+	public ParticleFloat Roll { get; set; } = 0.0f;
+
+
 
 	[Property, ToggleGroup( "ApplyShape", Label = "Shape" )]
 	public bool ApplyShape { get; set; } = false;
@@ -69,10 +76,6 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 	[Property, Group( "Force" )]
 	public ParticleFloat ForceScale { get; set; } = 1.0f;
-
-
-
-	[Property] public Curve StartRotation { get; set; } = 0.0f;
 
 
 	[Property, Range( 0, 1 )] public float SequenceSpeed { get; set; } = 1.0f;
@@ -122,7 +125,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		Parallel.ForEach( Particles, p =>
 		{
 			Random fixedRandom = new Random( p.Seed );
-			var deathTime = p.BornTime + Lifetime.Evaluate( 0.5f, fixedRandom.Float( 0, 1 ) );
+			var deathTime = p.BornTime + Lifetime.Evaluate( fixedRandom.Float( 0, 1 ), fixedRandom.Float( 0, 1 ) );
 
 			float delta = MathX.Remap( p.BornTime + p.Age, p.BornTime, deathTime );
 
@@ -203,6 +206,11 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 				}
 			}
 
+			if ( ApplyRotation )
+			{
+				p.Angles.roll = Roll.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+			}
+
 			p.Position = target;
 			p.SequenceTime += timeScale * SequenceSpeed;
 
@@ -227,7 +235,6 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 		p.Position = position;
 		p.Radius = 1.0f;
-		p.Angles.roll = StartRotation.Evaluate( Random.Shared.Float( 0, 1 ) );
 		p.Velocity = Vector3.Random.Normal * StartVelocity.Evaluate( Random.Shared.Float( 0, 1 ), Random.Shared.Float( 0, 1 ) );
 
 
