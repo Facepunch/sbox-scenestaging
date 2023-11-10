@@ -27,6 +27,8 @@ public partial class Scene : GameObject
 		PhysicsWorld = new PhysicsWorld();
 		Directory = new GameObjectDirectory( this );
 
+		PhysicsWorld.DebugSceneWorld = DebugSceneWorld;
+
 		PhysicsWorld.Gravity = Vector3.Down * 850;
 		PhysicsWorld.SimulationMode = PhysicsSimulationMode.Continuous;
 

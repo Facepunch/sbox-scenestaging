@@ -36,6 +36,7 @@ public partial class Scene : GameObject
 		PreRender();
 		DrawGizmos();
 		PreTickReset();
+		PhysicsWorld.DebugDraw();
 
 		// Only tick here if we're an editor scene
 		// The game will tick a game scene!
