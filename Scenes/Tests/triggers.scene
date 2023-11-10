@@ -70,7 +70,11 @@
           "Alpha": {
             "Constants": "1,0,0,0"
           },
+          "ApplyColor": false,
           "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
             "Constants": "1,0,0,0"
           },
           "Collision": false,
@@ -151,7 +155,11 @@
               "Alpha": {
                 "Constants": "1,0,0,0"
               },
+              "ApplyColor": false,
               "Bounce": {
+                "Constants": "1,0,0,0"
+              },
+              "Brightness": {
                 "Constants": "1,0,0,0"
               },
               "Collision": false,
@@ -234,7 +242,11 @@
           "Alpha": {
             "Constants": "1,0,0,0"
           },
+          "ApplyColor": false,
           "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
             "Constants": "1,0,0,0"
           },
           "Collision": false,
@@ -334,7 +346,11 @@
             ],
             "Constants": "1,0,0,0"
           },
+          "ApplyColor": true,
           "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
             "Constants": "1,0,0,0"
           },
           "Collision": false,
@@ -428,7 +444,11 @@
                 "Type": "Range",
                 "Constants": "1,0,0,0"
               },
+              "ApplyColor": true,
               "Bounce": {
+                "Constants": "1,0,0,0"
+              },
+              "Brightness": {
                 "Constants": "1,0,0,0"
               },
               "Collision": false,
@@ -527,7 +547,11 @@
               "Alpha": {
                 "Constants": "1,0,0,0"
               },
+              "ApplyColor": true,
               "Bounce": {
+                "Constants": "1,0,0,0"
+              },
+              "Brightness": {
                 "Constants": "1,0,0,0"
               },
               "Collision": false,
@@ -620,7 +644,13 @@
                 "Evaluation": "Particle",
                 "Constants": "1,0,0,0"
               },
+              "ApplyColor": true,
               "Bounce": {
+                "Constants": "1,0,0,0"
+              },
+              "Brightness": {
+                "Type": "Range",
+                "Evaluation": "Frame",
                 "Constants": "1,0,0,0"
               },
               "Collision": false,
@@ -652,7 +682,8 @@
               },
               "MaxParticles": 50,
               "PerParticleTimeScale": {
-                "Constants": "1,0,0,0"
+                "Evaluation": "Particle",
+                "Constants": "1,0.5,0,0"
               },
               "Scale": {
                 "Type": "Range",
@@ -679,7 +710,7 @@
                 "Constants": "1,0,0,0"
               },
               "TimeScale": 1,
-              "Tint": "8,8,8,1"
+              "Tint": "1,1,1,1"
             },
             {
               "__type": "ParticleSpriteRenderer",
@@ -738,7 +769,11 @@
                 ],
                 "Constants": "1,0,0,0"
               },
+              "ApplyColor": true,
               "Bounce": {
+                "Constants": "1,0,0,0"
+              },
+              "Brightness": {
                 "Constants": "1,0,0,0"
               },
               "Collision": false,
@@ -847,7 +882,11 @@
             ],
             "Constants": "1,0,0,0"
           },
+          "ApplyColor": true,
           "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
             "Constants": "1,0,0,0"
           },
           "Collision": false,
@@ -960,9 +999,24 @@
           "__type": "ParticleEffect",
           "__enabled": true,
           "Alpha": {
+            "Type": "Curve",
+            "CurveA": [
+              {},
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 1
+              }
+            ],
             "Constants": "1,0,0,0"
           },
+          "ApplyColor": true,
           "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
             "Constants": "1,0,0,0"
           },
           "Collision": false,
@@ -1077,7 +1131,11 @@
           "Alpha": {
             "Constants": "1,0,0,0"
           },
+          "ApplyColor": true,
           "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
             "Constants": "1,0,0,0"
           },
           "Collision": false,
@@ -1191,7 +1249,11 @@
           "Alpha": {
             "Constants": "1,0,0,0"
           },
+          "ApplyColor": true,
           "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
             "Constants": "1,0,0,0"
           },
           "Collision": false,
@@ -1305,7 +1367,11 @@
           "Alpha": {
             "Constants": "1,0,0,0"
           },
+          "ApplyColor": true,
           "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
             "Constants": "1,0,0,0"
           },
           "Collision": false,
@@ -1422,7 +1488,11 @@
           "Alpha": {
             "Constants": "1,0,0,0"
           },
+          "ApplyColor": true,
           "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
             "Constants": "1,0,0,0"
           },
           "Collision": false,
@@ -1540,9 +1610,28 @@
             "Type": "Range",
             "Constants": "1,0,0,0"
           },
+          "ApplyColor": true,
           "Bounce": {
             "Type": "Range",
             "Constants": "0.9,0.1,0,0"
+          },
+          "Brightness": {
+            "Evaluation": "Frame",
+            "CurveA": {
+              "rangey": "0,100",
+              "frames": [
+                {
+                  "y": 0.7821429,
+                  "in": 0.041666638,
+                  "out": -0.041666638
+                },
+                {
+                  "x": 0.10000001,
+                  "y": 0.009999956
+                }
+              ]
+            },
+            "Constants": "0.52,0,0,0"
           },
           "Collision": true,
           "CollisionIgnore": null,
@@ -1680,7 +1769,7 @@
             "Constants": "1000,900,0,0"
           },
           "TimeScale": 1,
-          "Tint": "0.37624,0.37624,0.37624,1"
+          "Tint": "1,1,1,1"
         },
         {
           "__type": "ParticleSpriteRenderer",
@@ -1737,7 +1826,11 @@
             ],
             "Constants": "1,0,0,0"
           },
+          "ApplyColor": false,
           "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
             "Constants": "1,0,0,0"
           },
           "Collision": false,
@@ -9373,7 +9466,11 @@
               "Alpha": {
                 "Constants": "1,0,0,0"
               },
+              "ApplyColor": false,
               "Bounce": {
+                "Constants": "1,0,0,0"
+              },
+              "Brightness": {
                 "Constants": "1,0,0,0"
               },
               "Collision": false,
@@ -9463,7 +9560,11 @@
               "Alpha": {
                 "Constants": "1,0,0,0"
               },
+              "ApplyColor": false,
               "Bounce": {
+                "Constants": "1,0,0,0"
+              },
+              "Brightness": {
                 "Constants": "1,0,0,0"
               },
               "Collision": false,
@@ -9716,7 +9817,11 @@
               "Alpha": {
                 "Constants": "1,0,0,0"
               },
+              "ApplyColor": false,
               "Bounce": {
+                "Constants": "1,0,0,0"
+              },
+              "Brightness": {
                 "Constants": "1,0,0,0"
               },
               "Collision": true,

@@ -34,6 +34,7 @@ public class Particle
 		p.Age = 0;
 		p.Frame = 0;
 		p.Velocity = 0;
+		p.Color = Color.White;
 		p.Alpha = 1;
 		p.Sequence = 0;
 		p.SequenceTime = Random.Shared.Float( 0, 100 );

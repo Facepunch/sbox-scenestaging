@@ -39,14 +39,19 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property, Group( "Shape" )]
 	public ParticleFloat Scale { get; set; } = 1.0f;
 
+	[Property, ToggleGroup( "ApplyColor", Label = "Color" )]
+	public bool ApplyColor { get; set; } = false;
 
-	[Property, Group( "Color" )]
+	[Property, Group( "ApplyColor" )]
 	public Color Tint { get; set; } = Color.White;
 
-	[Property, Group( "Color" )]
+	[Property, Group( "ApplyColor" )]
 	public Gradient Gradient { get; set; } = Color.White;
 
-	[Property, Group( "Color" )]
+	[Property, Group( "ApplyColor" )]
+	public ParticleFloat Brightness { get; set; } = 1.0f;	
+	
+	[Property, Group( "ApplyColor" )]
 	public ParticleFloat Alpha { get; set; } = 1.0f;
 
 
@@ -167,10 +172,19 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 				}
 			}
 
+			if ( ApplyColor )
+			{
+				var brightness = Brightness.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+
+				p.Alpha = Alpha.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+
+				p.Color = Tint * Gradient.Evaluate( Random.Shared.Float( 0, 1 ) );
+				p.Color *= new Color( brightness, 1.0f );
+			}
+
 			p.Scale = Scale.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
 			p.Position = target;
 			p.Size = 1.0f;
-			p.Alpha = Alpha.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
 			p.SequenceTime += timeScale * SequenceSpeed;
 
 			if ( delta >= 1.0f )
@@ -194,16 +208,9 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 		p.Position = position;
 		p.Radius = 1.0f;
-		p.Color = Tint;
 		p.Angles.roll = StartRotation.Evaluate( Random.Shared.Float( 0, 1 ) );
 		p.Velocity = Vector3.Random.Normal * StartVelocity.Evaluate( Random.Shared.Float( 0, 1 ), Random.Shared.Float( 0, 1 ) );
 		p.Scale = 1;
-
-		var c = Gradient.Evaluate( Random.Shared.Float( 0, 1 ) );
-		p.Color.r *= c.r;
-		p.Color.g *= c.g;
-		p.Color.b *= c.b;
-		p.Color.a *= c.a;
 
 		Particles.Add( p );
 

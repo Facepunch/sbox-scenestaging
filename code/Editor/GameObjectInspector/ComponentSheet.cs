@@ -132,9 +132,10 @@ public partial class ComponentSheet : Widget
 		var toggleGroup = props.FirstOrDefault( x => x.HasAttribute<ToggleGroupAttribute>() && x.Name == groupName );
 		if ( toggleGroup is not null )
 		{
+			toggleGroup.TryGetAttribute<ToggleGroupAttribute>( out var toggleAttr );
 			skipProperty = toggleGroup;
 
-			var label = new Label( groupName );
+			var label = new Label( toggleAttr.Label ?? groupName );
 			label.SetStyles( "color: #ccc; font-weight: bold;" );
 			label.FixedHeight = ControlWidget.ControlRowHeight;
 
