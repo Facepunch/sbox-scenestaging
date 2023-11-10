@@ -4,6 +4,7 @@ using Sandbox.Utility;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace Sandbox;
@@ -92,6 +93,12 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property, ToggleGroup( "Collision" )]
 	public ParticleFloat Bounce { get; set; } = 1.0f;
 
+	[Property, ToggleGroup( "Collision" )]
+	public ParticleFloat Friction { get; set; } = 1.0f;
+
+	[Property, ToggleGroup( "Collision" )]
+	public ParticleFloat Bumpiness { get; set; } = 0.0f;
+
 
 	public List<Particle> Particles { get; } = new List<Particle>();
 
@@ -129,7 +136,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 			float delta = MathX.Remap( p.BornTime + p.Age, p.BornTime, deathTime );
 
-			var bounceRandom = fixedRandom.Float( 0, 1 );
+
 			var damping = Damping.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
 			var forceScale = ForceScale.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
 			var timeScale = PerParticleTimeScale.Evaluate( delta, fixedRandom.Float( 0, 1 ) ) * timeDelta;
@@ -167,17 +174,65 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 				}
 			}
 
-			var target = p.Position + (p.Velocity * timeScale);
+			var targetPosition = p.Position + (p.Velocity * timeScale);
 
 			if ( Collision )
 			{
-				var tr = global::Physics.Trace.Ray( p.Position, target ).Radius( p.Radius ).Run();
+				var bounceRandom = fixedRandom.Float( 0, 1 );
+				var slideRandom = fixedRandom.Float( 0, 1 );
+				var bumpRandom = fixedRandom.Float( 0, 1 );
+
+				var tr = global::Physics.Trace.Ray( p.Position, targetPosition ).Radius( p.Radius ).Run();
 
 				if ( tr.Hit )
 				{
+					var moveDelta = (targetPosition - p.Position);
+					var remainingDistance = moveDelta.Length * (1.0f - tr.Fraction) ;
+					var velocity = p.Velocity;
+					var speed = p.Velocity.Length;
+
+					var surfaceNormal = tr.Normal;
+
+					// make the hit normal bumpy if we have bumpiness
+					surfaceNormal += Vector3.Random * Bumpiness.Evaluate( delta, bumpRandom ) * 0.5f;
+
 					var bounce = Bounce.Evaluate( delta, bounceRandom );
-					p.Velocity = Vector3.Reflect( p.Velocity, tr.Normal ) * bounce;
-					target = tr.EndPosition;
+
+					var surfaceVelocityNormal = velocity.SubtractDirection( surfaceNormal, 1 + bounce ).Normal;
+
+					var friction = Friction.Evaluate( delta, slideRandom );
+					var slideSpeed = speed - (friction * friction * 16.0f * timeScale * MathF.Max( speed, 100 ) );
+					if ( slideSpeed < 0 ) slideSpeed = 0;
+
+	
+
+					const float surfaceOffset = 0.03f;
+
+					// We still have a decent old distance to move
+					// so lets trace the rest of that incase we hit annother surface
+					if ( remainingDistance > 0.0f )
+					{
+						var startPos = tr.EndPosition + tr.Normal * surfaceOffset;
+						var endPos = startPos + velocity.SubtractDirection( tr.Normal ).Normal * remainingDistance;
+						var slideTr = global::Physics.Trace.Ray( p.Position, targetPosition ).Radius( p.Radius + 0.01f ).Run();
+
+						if ( slideTr.Hit )
+						{
+							targetPosition = slideTr.EndPosition + slideTr.Normal * surfaceOffset;
+						}
+						else
+						{
+							targetPosition = slideTr.EndPosition;
+						}
+
+						
+					}
+					else
+					{
+						targetPosition = tr.EndPosition + tr.Normal * surfaceOffset;
+					}
+
+					p.Velocity = surfaceVelocityNormal * slideSpeed;
 				}
 			}
 
@@ -211,7 +266,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 				p.Angles.roll = Roll.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
 			}
 
-			p.Position = target;
+			p.Position = targetPosition;
 			p.SequenceTime += timeScale * SequenceSpeed;
 
 			if ( delta >= 1.0f )
