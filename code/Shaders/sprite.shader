@@ -19,21 +19,21 @@ struct VS_INPUT
 	float3 pos : POSITION < Semantic( PosXyz ); >;
 	float4 uv  : TEXCOORD0 < Semantic( LowPrecisionUv ); >;
     float4 normal : NORMAL < Semantic( None ); >;
+    float4 velocity : TANGENT0 < Semantic( None ); >;
     float4 tint : TEXCOORD1 < Semantic( None ); >;
     float4 color : COLOR0 < Semantic( None ); >;
-	
-	uint instanceId : TEXCOORD13 < Semantic( InstanceTransformUv ); >; 
+
 };
 
 struct GS_INPUT
 {
     float3 pos : POSITION;
-    float4 normal : NORMAL;
     float4 uv : TEXCOORD0;
+    float4 normal : NORMAL;
+    float4 velocity : TANGENT0;
     float4 tint : COLOR0;
     float4 color : COLOR1 < Semantic( None ); >;
-	
-    uint instanceId : TEXCOORD13;
+
 };
 
 
@@ -52,7 +52,6 @@ VS
 {
 	GS_INPUT MainVs(const VS_INPUT i)
 	{
-	
 		return i;
 	
 		//VertexInput o;
@@ -108,6 +107,8 @@ GS
 	CreateTexture2D( g_SheetTexture ) < Attribute( "SheetTexture" ); Filter( MIN_MAG_MIP_POINT ); AddressU( WRAP ); AddressV( WRAP ); SrgbRead( false ); >;
 	float4 g_SheetData < Attribute( "BaseTextureSheet" ); >;
 
+	float4 g_MotionBlur < Attribute( "g_MotionBlur" ); >;
+
 	float4 SampleSheet( float4 data, float sequence, float time )
 	{
 		if ( data.w == 0 )
@@ -124,7 +125,7 @@ GS
 		params.m_flSequenceAnimationTime = time;
 
 		SheetDataSamplerOutput_t o = SampleSheetData( PassToArgTexture2D( g_SheetTexture ), params, false );
-	
+		
 		return o.m_vFrame0Bounds;
 	}
 
@@ -141,10 +142,22 @@ GS
 		o.uv.xy = bounds.xy + o.uv.xy * (bounds.zw - bounds.xy);
 	}
 
-	[maxvertexcount(4)]
+	[maxvertexcount(80)]
 	void MainGs(point GS_INPUT i[1], inout TriangleStream<PS_INPUT> triStream)
 	{
+	
+		if (i[0].color.y == (1.0f / 255.0f))
+		{	
+			float4 ss = mul(g_matWorldToView, float4(i[0].velocity.xyz, 0));
+			ss.z = 0;
+			ss = normalize(ss);
+
+			i[0].normal.b += atan2( ss.y, ss.x ) * 57;
+		}
+	
+	
 		PS_INPUT o;
+
 
 		CalculateSpriteVertex(o, i[0], float2(-1.0, 1.0));
 		GSAppendVertex(triStream, o);
@@ -159,6 +172,70 @@ GS
 		GSAppendVertex(triStream, o);
 
 		GSRestartStrip(triStream);
+
+	
+		if ( g_MotionBlur.r == 0)
+			return;
+	
+		i[0].tint.a *= 0.9f;
+	
+		float3 velocity = i[0].velocity.xyz;
+		float speed = length( velocity) * g_MotionBlur.y;
+		float splots = speed / 50.0;
+	
+		if (splots < 1) return;
+		if ( splots > 20 ) splots = 20;
+	
+	
+		for (int f = 1; f < splots+1; f++ )
+		{
+			i[0].tint.a *= 0.7;
+		
+			GS_INPUT a = i[0];
+			GS_INPUT b = i[0];
+    
+			a.pos.xyz += (velocity / g_MotionBlur.z) * f * a.uv.x;
+			b.pos.xyz -= (velocity / g_MotionBlur.z) * f * a.uv.x;
+			
+	
+//			a.tint.a /= f * 3;
+			//b.tint.a /= f * 3;
+		
+			//
+			// leading trail
+			//
+			if ( g_MotionBlur.r > 1 )
+			{
+	
+				CalculateSpriteVertex(o, a, float2(-1.0, 1.0));
+				GSAppendVertex(triStream, o);
+			
+				CalculateSpriteVertex(o, a, float2(-1.0, -1.0));
+				GSAppendVertex(triStream, o);
+
+				CalculateSpriteVertex(o, a, float2(1.0, 1.0));
+				GSAppendVertex(triStream, o);
+
+				CalculateSpriteVertex(o, a, float2(1.0, -1.0));
+				GSAppendVertex(triStream, o);
+
+				GSRestartStrip(triStream);
+			}
+		
+			CalculateSpriteVertex(o, b, float2(-1.0, 1.0));
+			GSAppendVertex(triStream, o);
+			
+			CalculateSpriteVertex(o, b, float2(-1.0, -1.0));
+			GSAppendVertex(triStream, o);
+
+			CalculateSpriteVertex(o, b, float2(1.0, 1.0));
+			GSAppendVertex(triStream, o);
+
+			CalculateSpriteVertex(o, b, float2(1.0, -1.0));
+			GSAppendVertex(triStream, o);
+
+			GSRestartStrip(triStream);
+		}
 		
 	}
 }

@@ -10,7 +10,24 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 	[Property] public bool Additive { get; set; }
 	[Property] public bool Shadows { get; set; }
 
-	[Property] public int Count { get; set; } = 1;
+	[Property, ToggleGroup( "FaceVelocity" )]
+	public bool FaceVelocity { get; set; }
+
+	[Property, ToggleGroup( "FaceVelocity" )]
+	[Range( 0, 360 )] public float RotationOffset { get; set; }
+
+	[Property, ToggleGroup( "MotionBlur" )]
+	public bool MotionBlur { get; set; }
+
+	[Property, ToggleGroup( "MotionBlur" )]
+	public bool LeadingTrail { get; set; } = true;
+
+	[Property, ToggleGroup( "MotionBlur" ), Range( 0, 1 )]
+	public float BlurAmount { get; set; } = 0.5f;
+
+	[Property, ToggleGroup( "MotionBlur" ), Range( 0, 1 )]
+	public float BlurSpacing { get; set; } = 0.5f;
+
 
 	public enum ParticleSortMode
 	{
@@ -53,11 +70,19 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 		if ( Additive ) _so.Attributes.SetCombo( "D_BLEND", 1 );
 		else _so.Attributes.SetCombo( "D_BLEND", 0 );
 
-		var trailMul = 1.0f / (float)Count;
+		if ( MotionBlur )
+		{
+			_so.Attributes.Set( "g_MotionBlur", new Vector4( LeadingTrail ? 2 : 1, BlurAmount.Remap( 0, 1, 0, 6, false ), BlurSpacing.Remap( 0, 1, 5000, 500, false ), 0 ) );
+		}
+		else
+		{
+			_so.Attributes.Set( "g_MotionBlur", new Vector4( 0, 0, 0, 0 ) );
+		}
+
 
 		BBox bounds = BBox.FromPositionAndSize( _so.Transform.Position, 10 );
 
-		using ( _so.Write( Graphics.PrimitiveType.Points, effect.Particles.Count * Count, 0 ) )
+		using ( _so.Write( Graphics.PrimitiveType.Points, effect.Particles.Count, 0 ) )
 		{
 			var list = effect.Particles.AsEnumerable();
 
@@ -72,26 +97,39 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 
 				var v = new Vertex();
 				var size = p.Size * Scale;
+				byte directionMode = 0;
 
-				v.Color.r = (byte) p.Sequence;
 
 				v.TexCoord0 = new Vector4( size.x, size.y, p.SequenceTime, 0 );
 				v.TexCoord1 = p.Color.WithAlphaMultiplied( p.Alpha );
 
 				v.Position = p.Position;
 
+				if ( FaceVelocity )
+				{
+					directionMode = 1;
+					var screenVelocity = Camera.Rotation.Inverse * p.Velocity;
+					var angle = MathF.Atan2( screenVelocity.y, screenVelocity.z );
+
+					p.Angles.roll = angle.RadianToDegree().NormalizeDegrees() + RotationOffset;
+					p.Angles.roll = RotationOffset;
+				}
+
 				v.Normal.x = p.Angles.pitch;
 				v.Normal.y = p.Angles.yaw;
 				v.Normal.z = p.Angles.roll;
 
+				v.Tangent.x = p.Velocity.x;
+				v.Tangent.y = p.Velocity.y;
+				v.Tangent.z = p.Velocity.z;
 
-				for ( int i = 0; i < Count; i++ )
-				{
-					_so.AddVertex( v );
 
-					v.Position += p.Velocity * (1.0f / 500.0f) * size.x;
-					v.TexCoord1.w += trailMul;
-				}
+				v.Color.r = (byte)p.Sequence;
+				v.Color.g = directionMode;
+
+				_so.AddVertex( v );
+
+				v.Position += p.Velocity * (1.0f / 500.0f) * size.x;
 			}
 
 			// expand bounds slightly, based on max particle size?
