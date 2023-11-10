@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using Sandbox.Sdf;
 using static Editor.BaseItemWidget;
 
 public partial class GameObjectNode : TreeNode<GameObject>
@@ -363,6 +364,50 @@ public partial class GameObjectNode : TreeNode<GameObject>
 				go.Name = "SkyBox";
 
 				go.AddComponent<SkyBox2D>();
+
+				then( go );
+			} );
+		}
+
+		// SDF
+		{
+			var submenu = menu.AddMenu( "SDF", "construction" );
+
+			submenu.AddOption( "World", "public", () =>
+			{
+				using var scope = SceneEditorSession.Scope();
+				var go = new GameObject();
+				go.Name = "SDF World";
+
+				go.AddComponent<Sdf3DWorldComponent>();
+
+				then( go );
+			} );
+
+			submenu.AddSeparator();
+
+			submenu.AddOption( "Box", "square", () =>
+			{
+				using var scope = SceneEditorSession.Scope();
+				var go = new GameObject();
+				go.Name = "Box";
+
+				var brush = go.AddComponent<Sdf3DBoxBrushComponent>();
+				brush.Volume = ResourceLibrary.GetAll<Sdf3DVolume>()
+					.FirstOrDefault( x => !x.IsTextureSourceOnly );
+
+				then( go );
+			} );
+
+			submenu.AddOption( "Sphere", "circle", () =>
+			{
+				using var scope = SceneEditorSession.Scope();
+				var go = new GameObject();
+				go.Name = "Sphere";
+
+				var brush = go.AddComponent<Sdf3DSphereBrushComponent>();
+				brush.Volume = ResourceLibrary.GetAll<Sdf3DVolume>()
+					.FirstOrDefault( x => !x.IsTextureSourceOnly );
 
 				then( go );
 			} );
