@@ -11,7 +11,9 @@
   "MenuResources": "*",
   "HasCode": true,
   "CodePath": "/code/",
-  "PackageReferences": [],
+  "PackageReferences": [
+    "facepunch.libsdf"
+  ],
   "EditorReferences": null,
   "Metadata": {
     "MaxPlayers": 16,

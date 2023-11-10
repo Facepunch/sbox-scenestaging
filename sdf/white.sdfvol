@@ -1,0 +1,16 @@
+{
+  "Material": "materials/worldspacegrid.vmat",
+  "IsTextureSourceOnly": false,
+  "CollisionTags": "solid",
+  "QualityLevel": "Medium",
+  "ChunkResolution": 16,
+  "ChunkSize": 256,
+  "MaxDistance": 64,
+  "ReferencedTextures": [
+    {
+      "TargetAttribute": "ScorchLayer",
+      "Source": "sdf/scorch.sdfvol"
+    }
+  ],
+  "__references": []
+}
