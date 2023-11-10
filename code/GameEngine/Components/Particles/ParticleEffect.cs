@@ -178,7 +178,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 				p.Alpha = Alpha.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
 
-				p.Color = Tint * Gradient.Evaluate( Random.Shared.Float( 0, 1 ) );
+				p.Color = Tint * Gradient.Evaluate( fixedRandom.Float( 0, 1 ) ); // TODO, gradient, between two gradients etc
 				p.Color *= new Color( brightness, 1.0f );
 			}
 
