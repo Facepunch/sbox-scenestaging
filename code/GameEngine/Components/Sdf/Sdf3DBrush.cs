@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.Sdf;
+using Sandbox.Sdf.Noise;
 
 [Title( "SDF 3D Brush" )]
 public abstract class Sdf3DBrushComponent : BaseComponent, BaseComponent.ExecuteInEditor
@@ -25,8 +26,20 @@ public abstract class Sdf3DBrushComponent : BaseComponent, BaseComponent.Execute
 				return _nextModification.Value;
 			}
 
+			if ( !GameObject.IsValid )
+			{
+				return default;
+			}
+
 			var sdf = OnBuildSdf();
 			var world = GetComponentInParent<Sdf3DWorldComponent>();
+
+			var modifiers = GetComponents<Sdf3DModifierComponent>();
+
+			foreach ( var modifier in modifiers )
+			{
+				sdf = modifier.Apply( sdf );
+			}
 
 			if ( world == null )
 			{
@@ -39,7 +52,7 @@ public abstract class Sdf3DBrushComponent : BaseComponent, BaseComponent.Execute
 		}
 	}
 
-	private void InvalidateWorld()
+	internal void InvalidateWorld()
 	{
 		_nextModification = null;
 		GetComponentInParent<Sdf3DWorldComponent>()?.InvalidateBrush( this );
@@ -94,7 +107,7 @@ public abstract class Sdf3DBrushComponent : BaseComponent, BaseComponent.Execute
 	protected abstract ISdf3D OnBuildSdf();
 }
 
-[Title( "Sphere Brush" )]
+[Title( "Sphere Brush" ), Icon( "circle" )]
 public class Sdf3DSphereBrushComponent : Sdf3DBrushComponent
 {
 	[Property] public float Radius { get; set; } = 128f;
@@ -110,7 +123,7 @@ public class Sdf3DSphereBrushComponent : Sdf3DBrushComponent
 	}
 }
 
-[Title( "Box Brush" )]
+[Title( "Box Brush" ), Icon( "square ")]
 public class Sdf3DBoxBrushComponent : Sdf3DBrushComponent
 {
 	[Property] public Vector3 Size { get; set; } = new Vector3( 128f, 128f, 128f );
@@ -124,5 +137,51 @@ public class Sdf3DBoxBrushComponent : Sdf3DBrushComponent
 	protected override ISdf3D OnBuildSdf()
 	{
 		return new BoxSdf3D( Size * -0.5f, Size * 0.5f, CornerRadius );
+	}
+}
+
+public abstract class Sdf3DModifierComponent : BaseComponent, BaseComponent.ExecuteInEditor
+{
+	public abstract ISdf3D Apply( ISdf3D sdf );
+
+	private void InvalidateWorld()
+	{
+		GetComponent<Sdf3DBrushComponent>()?.InvalidateWorld();
+	}
+
+	public override void OnValidate()
+	{
+		InvalidateWorld();
+	}
+
+	public override void OnEnabled()
+	{
+		InvalidateWorld();
+	}
+
+	public override void OnDisabled()
+	{
+		InvalidateWorld();
+	}
+}
+
+[Title( "Noise Modifier" ), Icon( "waves" )]
+public class Sdf3DNoiseComponent : Sdf3DModifierComponent
+{
+	[Property]
+	public int Seed { get; set; } = 0x3680bf16;
+
+	[Property]
+	public Vector3 CellSize { get; set; } = new ( 256f, 256f, 256f );
+
+	[Property]
+	public float DistanceOffset { get; set; } = 0f;
+
+	[Property]
+	public float BiasScale { get; set; } = 0.125f;
+
+	public override ISdf3D Apply( ISdf3D sdf )
+	{
+		return sdf.Bias( new CellularNoiseSdf3D( Seed, CellSize, DistanceOffset ), BiasScale );
 	}
 }

@@ -1,174 +1,6 @@
 {
   "GameObjects": [
     {
-      "Id": "1ee71f84-4475-4eba-8be0-479dea6bcc2a",
-      "Name": "Directional Light",
-      "Enabled": true,
-      "Position": "184.1404,55.56393,222.256",
-      "Rotation": "0.4351622,0.4351622,-0.5573454,0.5573453",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Components": [
-        {
-          "__type": "DirectionalLightComponent",
-          "__enabled": true,
-          "LightColor": "0.91373,0.98039,1,1",
-          "Shadows": true,
-          "SkyColor": "0.05882,0.07451,0.08235,1"
-        }
-      ]
-    },
-    {
-      "Id": "68b39269-c67c-469f-ab51-3a7378bcda11",
-      "Name": "World",
-      "Enabled": true,
-      "Position": "0,0,-0.0002288692",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Components": [
-        {
-          "__type": "Sdf3DWorldComponent",
-          "__enabled": true
-        }
-      ],
-      "Children": [
-        {
-          "Id": "2742bea5-9485-46d0-bf1e-2311d4073c94",
-          "Name": "Box",
-          "Enabled": true,
-          "Position": "0,0,-512",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Components": [
-            {
-              "__type": "Sdf3DBoxBrushComponent",
-              "__enabled": true,
-              "CornerRadius": 32,
-              "Operator": "Add",
-              "Size": "4096,4096,1024",
-              "Volume": "sdf/white.sdfvol"
-            }
-          ]
-        },
-        {
-          "Id": "23363641-a6f2-41b8-9e04-801a96b4fe3e",
-          "Name": "Sphere",
-          "Enabled": true,
-          "Position": "471.115,1109.65,162.5535",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Components": [
-            {
-              "__type": "Sdf3DSphereBrushComponent",
-              "__enabled": true,
-              "Operator": "Subtract",
-              "Radius": 256,
-              "Volume": "sdf/white.sdfvol"
-            }
-          ],
-          "Children": [
-            {
-              "Id": "6d1f4269-e19e-4cb0-90b5-9751e7715eae",
-              "Name": "Scorch",
-              "Enabled": true,
-              "Position": "0,0,-0.00007346328",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "",
-              "Components": [
-                {
-                  "__type": "Sdf3DSphereBrushComponent",
-                  "__enabled": true,
-                  "Operator": "Add",
-                  "Radius": 288,
-                  "Volume": "sdf/scorch.sdfvol"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "Id": "f383d5de-e62a-4798-9457-018da0618fcb",
-          "Name": "Sphere (1)",
-          "Enabled": true,
-          "Position": "381.2937,630.7844,237.9695",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Components": [
-            {
-              "__type": "Sdf3DSphereBrushComponent",
-              "__enabled": true,
-              "Operator": "Subtract",
-              "Radius": 256,
-              "Volume": "sdf/white.sdfvol"
-            }
-          ],
-          "Children": [
-            {
-              "Id": "c1d602e4-bfab-42f1-9da0-23b289277538",
-              "Name": "Scorch",
-              "Enabled": true,
-              "Position": "0,0,-0.000241864",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "",
-              "Components": [
-                {
-                  "__type": "Sdf3DSphereBrushComponent",
-                  "__enabled": true,
-                  "Operator": "Add",
-                  "Radius": 288,
-                  "Volume": "sdf/scorch.sdfvol"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "Id": "5a370c3f-c8ee-4a3c-880a-2ef0a32d88c5",
-          "Name": "Sphere (2)",
-          "Enabled": true,
-          "Position": "672.3458,502.4142,232.9679",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Components": [
-            {
-              "__type": "Sdf3DSphereBrushComponent",
-              "__enabled": true,
-              "Operator": "Subtract",
-              "Radius": 256,
-              "Volume": "sdf/white.sdfvol"
-            }
-          ],
-          "Children": [
-            {
-              "Id": "d229e14b-b854-49b7-9b46-e4bfc7d308d4",
-              "Name": "Scorch",
-              "Enabled": true,
-              "Position": "0,0,0",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "",
-              "Components": [
-                {
-                  "__type": "Sdf3DSphereBrushComponent",
-                  "__enabled": true,
-                  "Operator": "Add",
-                  "Radius": 288,
-                  "Volume": "sdf/scorch.sdfvol"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "Id": "ad8c215e-ac43-4b95-bd79-03f15c30e19c",
       "Name": "Camera",
       "Enabled": true,
@@ -188,6 +20,105 @@
           "TargetEye": "None",
           "ZFar": 10000,
           "ZNear": 10
+        }
+      ]
+    },
+    {
+      "Id": "1afb483b-06dd-45f1-9d92-3312e09a9e7b",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0.4351622,0.4351622,-0.5573454,0.5573453",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "0.93564,0.98537,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "Id": "35d3248e-82f1-4059-9685-50fc0a5d95c4",
+      "Name": "SDF World",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "Sdf3DWorldComponent",
+          "__enabled": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "6106d5b2-6cbb-4f77-87f4-ee3d497ce477",
+          "Name": "Sphere",
+          "Enabled": true,
+          "Position": "0,0,597.5592",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "Sdf3DSphereBrushComponent",
+              "__enabled": true,
+              "Operator": "Add",
+              "Radius": 1024,
+              "Volume": "sdf/white.sdfvol"
+            },
+            {
+              "__type": "Sdf3DNoiseComponent",
+              "__enabled": true,
+              "BiasScale": 0.125,
+              "CellSize": "256,256,256",
+              "DistanceOffset": 0,
+              "Seed": 914407190
+            }
+          ]
+        },
+        {
+          "Id": "259c37f2-f8d9-40c6-ab32-c9f98547d763",
+          "Name": "Sphere",
+          "Enabled": true,
+          "Position": "557.2042,711.7593,1174.847",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "Sdf3DSphereBrushComponent",
+              "__enabled": true,
+              "Operator": "Add",
+              "Radius": 512,
+              "Volume": "sdf/scorch.sdfvol"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "5a0a938e-0e75-4e38-ad9d-739df9ee1796",
+              "Name": "Sphere (1)",
+              "Enabled": true,
+              "Position": "0.00003051758,0,0.0001220703",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "Sdf3DSphereBrushComponent",
+                  "__enabled": true,
+                  "Operator": "Subtract",
+                  "Radius": 442.89957,
+                  "Volume": "sdf/white.sdfvol"
+                }
+              ]
+            }
+          ]
         }
       ]
     }

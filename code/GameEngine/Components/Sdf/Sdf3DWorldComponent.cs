@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.Sdf;
 
-[Title( "SDF 3D World" )]
+[Title( "SDF 3D World" ), Icon( "public" )]
 public sealed class Sdf3DWorldComponent : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	public Sdf3DWorld World { get; private set; }
@@ -97,6 +97,6 @@ public sealed class Sdf3DWorldComponent : BaseComponent, BaseComponent.ExecuteIn
 			brush.CommitModification();
 		}
 
-		await World.SetModificationsAsync( modifications, changes );
+		await World.SetModificationsAsync( modifications, changes.Count == 0 ? null : changes );
 	}
 }
