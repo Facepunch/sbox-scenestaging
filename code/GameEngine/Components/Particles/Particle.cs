@@ -17,8 +17,6 @@ public class Particle
 	public float SequenceTime;
 	public int Frame;
 
-	public float Scale;
-
 	public int Seed;
 
 	public static Queue<Particle> Pool = new ( 512 );
@@ -38,6 +36,7 @@ public class Particle
 		p.Alpha = 1;
 		p.Sequence = 0;
 		p.SequenceTime = Random.Shared.Float( 0, 100 );
+		p.Size = 5;
 		p.Seed = Random.Shared.Int( 0, 1000 );
 
 		return p;

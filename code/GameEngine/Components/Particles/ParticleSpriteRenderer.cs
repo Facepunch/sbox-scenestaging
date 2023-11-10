@@ -71,7 +71,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 				bounds = bounds.AddPoint( p.Position );
 
 				var v = new Vertex();
-				var size = p.Size * Scale * p.Scale;
+				var size = p.Size * Scale;
 
 				v.Color.r = (byte) p.Sequence;
 

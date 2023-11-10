@@ -35,9 +35,15 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	public SimulationSpace Space { get; set; }
 
 
+	[Property, ToggleGroup( "ApplyShape", Label = "Shape" )]
+	public bool ApplyShape { get; set; } = false;
 
-	[Property, Group( "Shape" )]
+	[Property, Group( "ApplyShape" )]
 	public ParticleFloat Scale { get; set; } = 1.0f;
+
+	[Property, Group( "ApplyShape" )]
+	public ParticleFloat Stretch { get; set; } = 0.0f;
+
 
 	[Property, ToggleGroup( "ApplyColor", Label = "Color" )]
 	public bool ApplyColor { get; set; } = false;
@@ -182,9 +188,22 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 				p.Color *= new Color( brightness, 1.0f );
 			}
 
-			p.Scale = Scale.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+			if ( ApplyShape )
+			{
+				p.Size = Scale.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+
+				var aspect = Stretch.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+				if ( aspect < 0 )
+				{
+					p.Size.x *= aspect.Remap( 0, -1, 1, 2, false );
+				}
+				else if ( aspect > 0 )
+				{
+					p.Size.y *= aspect.Remap( 0, 1, 1, 2, false );
+				}
+			}
+
 			p.Position = target;
-			p.Size = 1.0f;
 			p.SequenceTime += timeScale * SequenceSpeed;
 
 			if ( delta >= 1.0f )
@@ -210,7 +229,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		p.Radius = 1.0f;
 		p.Angles.roll = StartRotation.Evaluate( Random.Shared.Float( 0, 1 ) );
 		p.Velocity = Vector3.Random.Normal * StartVelocity.Evaluate( Random.Shared.Float( 0, 1 ), Random.Shared.Float( 0, 1 ) );
-		p.Scale = 1;
+
 
 		Particles.Add( p );
 
