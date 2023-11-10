@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Sandbox;
 
@@ -17,7 +18,13 @@ public class Particle
 	public float SequenceTime;
 	public int Frame;
 
-	public int Seed;
+	public float Random01;
+	public float Random02;
+	public float Random03;
+	public float Random04;
+	public float Random05;
+	public float Random06;
+	public float Random07;
 
 	public static Queue<Particle> Pool = new ( 512 );
 
@@ -27,6 +34,14 @@ public class Particle
 		{
 			p = new Particle();
 		}
+
+		p.Random01 = Random.Shared.Float( 0, 1 );
+		p.Random02 = Random.Shared.Float( 0, 1 );
+		p.Random03 = Random.Shared.Float( 0, 1 );
+		p.Random04 = Random.Shared.Float( 0, 1 );
+		p.Random05 = Random.Shared.Float( 0, 1 );
+		p.Random06 = Random.Shared.Float( 0, 1 );
+		p.Random07 = Random.Shared.Float( 0, 1 );
 
 		p.BornTime = Time.Now;
 		p.Age = 0;
@@ -38,7 +53,6 @@ public class Particle
 		p.Sequence = 0;
 		p.SequenceTime = Random.Shared.Float( 0, 100 );
 		p.Size = 5;
-		p.Seed = Random.Shared.Int( 0, 1000 );
 
 		return p;
 	}

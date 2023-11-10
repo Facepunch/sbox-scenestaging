@@ -131,15 +131,14 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 		Parallel.ForEach( Particles, p =>
 		{
-			Random fixedRandom = new Random( p.Seed );
-			var deathTime = p.BornTime + Lifetime.Evaluate( fixedRandom.Float( 0, 1 ), fixedRandom.Float( 0, 1 ) );
+			var deathTime = p.BornTime + Lifetime.Evaluate( p.Random01, p.Random02 );
 
 			float delta = MathX.Remap( p.BornTime + p.Age, p.BornTime, deathTime );
 
 
-			var damping = Damping.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
-			var forceScale = ForceScale.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
-			var timeScale = PerParticleTimeScale.Evaluate( delta, fixedRandom.Float( 0, 1 ) ) * timeDelta;
+			var damping = Damping.Evaluate( delta, p.Random01 );
+			var forceScale = ForceScale.Evaluate( delta, p.Random02 );
+			var timeScale = PerParticleTimeScale.Evaluate( delta, p.Random03 ) * timeDelta;
 
 			if ( parentMoved && p.Frame > 0 && Space == SimulationSpace.Local )
 			{
@@ -178,9 +177,9 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 			if ( Collision )
 			{
-				var bounceRandom = fixedRandom.Float( 0, 1 );
-				var slideRandom = fixedRandom.Float( 0, 1 );
-				var bumpRandom = fixedRandom.Float( 0, 1 );
+				var bounceRandom = p.Random01;
+				var slideRandom = p.Random07;
+				var bumpRandom = p.Random03;
 
 				var tr = global::Physics.Trace.Ray( p.Position, targetPosition ).Radius( p.Radius ).Run();
 
@@ -238,19 +237,19 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 			if ( ApplyColor )
 			{
-				var brightness = Brightness.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+				var brightness = Brightness.Evaluate( delta, p.Random01 );
 
-				p.Alpha = Alpha.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+				p.Alpha = Alpha.Evaluate( delta, p.Random02 );
 
-				p.Color = Tint * Gradient.Evaluate( fixedRandom.Float( 0, 1 ) ); // TODO, gradient, between two gradients etc
+				p.Color = Tint * Gradient.Evaluate( p.Random03 ); // TODO, gradient, between two gradients etc
 				p.Color *= new Color( brightness, 1.0f );
 			}
 
 			if ( ApplyShape )
 			{
-				p.Size = Scale.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+				p.Size = Scale.Evaluate( delta, p.Random04 );
 
-				var aspect = Stretch.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+				var aspect = Stretch.Evaluate( delta, p.Random05 );
 				if ( aspect < 0 )
 				{
 					p.Size.x *= aspect.Remap( 0, -1, 1, 2, false );
@@ -263,7 +262,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 			if ( ApplyRotation )
 			{
-				p.Angles.roll = Roll.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+				p.Angles.roll = Roll.Evaluate( delta, p.Random06 );
 			}
 
 			p.Position = targetPosition;
