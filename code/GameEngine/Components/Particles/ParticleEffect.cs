@@ -14,28 +14,56 @@ namespace Sandbox;
 [EditorHandle( "materials/gizmo/particles.png" )]
 public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEditor
 {
-	[Property, Range( 0, 2 )] public float Speed { get; set; } = 1.0f;
+	[Property, Group( "Limits" )]
+	public int MaxParticles { get; set; } = 1000;
 
-	[Property] public Vector3 Force { get; set; }
+	[Property, Group( "Limits" )]
+	public ParticleFloat Lifetime { get; set; } = 1.0f;
 
-	[Property, Range( 0, 1 )] public float Damping { get; set; }
+	[Property, Group( "Time" ), Range( 0, 1 )]
+	public float TimeScale { get; set; } = 1.0f;
 
-	[Property] public int MaxParticles { get; set; } = 1000;
+	[Property, Group( "Time" )]
+	public ParticleFloat PerParticleTimeScale { get; set; } = 1.0f;
+
+
+	[Property, Group( "Movement" )]
+	public ParticleFloat StartVelocity { get; set; } = 1.0f;
+	[Property, Group( "Movement" )]
+	public ParticleFloat Damping { get; set; } = 0.0f;
+	[Property, Group( "Movement" )]
+	public SimulationSpace Space { get; set; }
+
+
+
+	[Property, Group( "Shape" )]
+	public ParticleFloat Scale { get; set; } = 1.0f;
+
 
 	[Property, Group( "Color" )]
 	public Color Tint { get; set; } = Color.White;
+
 	[Property, Group( "Color" )]
-	public Curve AlphaOverLifetime { get; set; } = 1.0f;
+	public Gradient Gradient { get; set; } = Color.White;
+
+	[Property, Group( "Color" )]
+	public ParticleFloat Alpha { get; set; } = 1.0f;
 
 
-	[Property] public Curve Lifetime { get; set; } = 1.0f;
+	[Property, ToggleGroup( "Force" )]
+	public bool Force { get; set; }
+
+	[Property, Group( "Force" )]
+	public Vector3 ForceDirection { get; set; }
+
+	[Property, Group( "Force" )]
+	public ParticleFloat ForceScale { get; set; } = 1.0f;
 
 
 
 	[Property] public Curve StartRotation { get; set; } = 0.0f;
-	[Property] public Curve StartVelocity { get; set; } = 1.0f;
 
-	[Property, Range( 0, 1 )] public float SimulationSpace { get; set; } = 1.0f;
+
 	[Property, Range( 0, 1 )] public float SequenceSpeed { get; set; } = 1.0f;
 
 	[Property, ToggleGroup( "Collision" )] 
@@ -47,6 +75,9 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property, ToggleGroup( "Collision" )]
 	public TagSet CollisionIgnore { get; set; }
 
+	[Property, ToggleGroup( "Collision" )]
+	public ParticleFloat Bounce { get; set; } = 1.0f;
+
 
 	public List<Particle> Particles { get; } = new List<Particle>();
 
@@ -56,12 +87,18 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 	ConcurrentQueue<Particle> deleteList = new ConcurrentQueue<Particle>();
 
+	public enum SimulationSpace
+	{
+		World,
+		Local
+	}
+
 	public override void Update()
 	{
 		using var ps = Superluminal.Scope( "Particle Effect", Color.Red, $"{GameObject.Name} - {Particles.Count} Particles" );
 
 
-		float timeDelta = MathX.Clamp( Time.Delta, 0.0f, 1.0f / 30.0f ) * Speed;
+		float timeDelta = MathX.Clamp( Time.Delta, 0.0f, 1.0f / 30.0f ) * TimeScale;
 
 		var tx = Transform.World;
 		Vector3 lastPos = lastTransform.Position;
@@ -69,32 +106,54 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 		bool parentMoved = deltaTransform != global::Transform.Zero;
 
+
+
 		Parallel.ForEach( Particles, p =>
 		{
-			float delta = MathX.Remap( Time.Now, p.BornTime, p.DeathTime );
+			Random fixedRandom = new Random( p.Seed );
+			var deathTime = p.BornTime + Lifetime.Evaluate( 0.5f, fixedRandom.Float( 0, 1 ) );
 
-			if ( parentMoved && p.Frame > 0 && SimulationSpace > 0.0f )
+			float delta = MathX.Remap( p.BornTime + p.Age, p.BornTime, deathTime );
+
+			var bounceRandom = fixedRandom.Float( 0, 1 );
+			var damping = Damping.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+			var forceScale = ForceScale.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+			var timeScale = PerParticleTimeScale.Evaluate( delta, fixedRandom.Float( 0, 1 ) ) * timeDelta;
+
+			if ( parentMoved && p.Frame > 0 && Space == SimulationSpace.Local )
 			{
 				var localPos = lastTransform.PointToLocal( p.Position );
 				var worldPos = tx.PointToWorld( localPos );
 
-				p.Position = Vector3.Lerp( p.Position, worldPos, SimulationSpace );
+				p.Position = worldPos;
 			}
 
+			p.Age += timeScale;
 			p.Frame++;
 
 
-			if ( !Force.IsNearlyZero() )
+
+
+			if ( Force && forceScale != 0.0f && !ForceDirection.IsNearlyZero() )
 			{
-				p.Velocity += Force * timeDelta;
+				p.Velocity += forceScale * ForceDirection * timeScale;
 			}
 
-			if ( Damping != 0 )
+			if ( damping > 0 )
 			{
-				p.Velocity -= p.Velocity * timeDelta * Damping;
+				var speed = p.Velocity.Length;
+				var drop = speed * timeScale * damping;
+				float newspeed = speed - drop;
+				if ( newspeed < 0 ) newspeed = 0;
+
+				if ( newspeed != speed )
+				{
+					newspeed /= speed;
+					p.Velocity *= newspeed;
+				}
 			}
 
-			var target = p.Position + (p.Velocity * timeDelta);
+			var target = p.Position + (p.Velocity * timeScale);
 
 			if ( Collision )
 			{
@@ -102,15 +161,17 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 				if ( tr.Hit )
 				{
-					p.Velocity = Vector3.Reflect( p.Velocity, tr.Normal ) * Random.Shared.Float( 0.6f, 0.9f );
+					var bounce = Bounce.Evaluate( delta, bounceRandom );
+					p.Velocity = Vector3.Reflect( p.Velocity, tr.Normal ) * bounce;
 					target = tr.EndPosition;
 				}
 			}
 
+			p.Scale = Scale.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
 			p.Position = target;
 			p.Size = 1.0f;
-			p.Alpha = AlphaOverLifetime.Evaluate( delta );
-			p.SequenceTime += timeDelta * SequenceSpeed;
+			p.Alpha = Alpha.Evaluate( delta, fixedRandom.Float( 0, 1 ) );
+			p.SequenceTime += timeScale * SequenceSpeed;
 
 			if ( delta >= 1.0f )
 			{
@@ -133,10 +194,16 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 		p.Position = position;
 		p.Radius = 1.0f;
-		p.DeathTime = Time.Now + Lifetime.Evaluate( Random.Shared.Float( 0, 1 ) );
 		p.Color = Tint;
 		p.Angles.roll = StartRotation.Evaluate( Random.Shared.Float( 0, 1 ) );
-		p.Velocity = Vector3.Random.Normal * StartVelocity.Evaluate( Random.Shared.Float( 0, 1 ) );
+		p.Velocity = Vector3.Random.Normal * StartVelocity.Evaluate( Random.Shared.Float( 0, 1 ), Random.Shared.Float( 0, 1 ) );
+		p.Scale = 1;
+
+		var c = Gradient.Evaluate( Random.Shared.Float( 0, 1 ) );
+		p.Color.r *= c.r;
+		p.Color.g *= c.g;
+		p.Color.b *= c.b;
+		p.Color.a *= c.a;
 
 		Particles.Add( p );
 
