@@ -1,5 +1,12 @@
 #include "vr_common.fxc"
 
+//
+// Helpers
+//
+
+static const float ToDegrees = 57.2958f;
+static const float ToRadians = 0.0174533f;
+
 
 //
 // Transforms / Instancing

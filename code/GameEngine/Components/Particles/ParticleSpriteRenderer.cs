@@ -82,6 +82,12 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 			_so.Attributes.Set( "g_MotionBlur", new Vector4( 0, 0, 0, 0 ) );
 		}
 
+		_so.Attributes.Set( "g_FaceVelocity", FaceVelocity );
+		_so.Attributes.Set( "g_FaceVelocityOffset", RotationOffset );
+
+
+		_so.Attributes.Set( "g_ScreenSize", false );
+
 
 		BBox bounds = BBox.FromPositionAndSize( _so.Transform.Position, 10 );
 
@@ -107,16 +113,6 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 				v.TexCoord1 = p.Color.WithAlphaMultiplied( p.Alpha );
 
 				v.Position = p.Position;
-
-				if ( FaceVelocity )
-				{
-					directionMode = 1;
-					var screenVelocity = Camera.Rotation.Inverse * p.Velocity;
-					var angle = MathF.Atan2( screenVelocity.y, screenVelocity.z );
-
-					p.Angles.roll = angle.RadianToDegree().NormalizeDegrees() + RotationOffset;
-					p.Angles.roll = RotationOffset;
-				}
 
 				v.Normal.x = p.Angles.pitch;
 				v.Normal.y = p.Angles.yaw;

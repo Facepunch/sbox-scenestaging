@@ -53,16 +53,6 @@ VS
 	GS_INPUT MainVs(const VS_INPUT i)
 	{
 		return i;
-	
-		//VertexInput o;
-
-		//float3x4 mat = InstanceTransform( i.instanceId );
-		//float3 ws = mul( mat, float4( i.pos, 1.0f ) );
-		//o.vPositionPs.xyzw = Position3WsToPs( ws.xyz );
-		//o.uv = i.uv;
-		//o.tint = i.tint;
-
-		//return o;
 	}
 }
 
@@ -70,17 +60,27 @@ GS
 {
 	#include "sheet_sampling.fxc"
 
+	CreateTexture2D( g_SheetTexture ) < Attribute( "SheetTexture" ); Filter( MIN_MAG_MIP_POINT ); AddressU( WRAP ); AddressV( WRAP ); SrgbRead( false ); >;
+	float4 g_SheetData < Attribute( "BaseTextureSheet" ); >;
 
+	bool g_ScreenSize < Attribute( "g_ScreenSize" ); >;
 
-	float4 CalculateSpritePs(float3 vWorldSpace, float2 flPointSize, float2 vDelta, bool worldSize, float3 angles )
+	float4 g_MotionBlur < Attribute( "g_MotionBlur" ); >;
+
+	bool g_FaceVelocity < Attribute( "g_FaceVelocity" ); >;
+	float g_FaceVelocityOffset < Attribute( "g_FaceVelocityOffset" ); >;
+
+	float4 CalculateSpritePs(float3 vWorldSpace, float2 flPointSize, float2 vDelta, float3 angles )
 	{
 		float4 resultPs;
 		float3 offsets = 0;
 	
-		float3x3 mat = MatrixBuildRotationAboutAxis(g_vCameraDirWs, angles.z); // yaw
+		float3 cameraAxis = g_vCameraDirWs;
+	
+		float3x3 mat = MatrixBuildRotationAboutAxis( cameraAxis, angles.z ); // yaw
     
 
-		if ( worldSize )
+		if ( !g_ScreenSize )
 		{
 			float3 vecCameraRightDir = cross( g_vCameraDirWs, g_vCameraUpDirWs );
 			float3 offsets = 0;
@@ -89,13 +89,12 @@ GS
 		
 			offsets = mul(offsets, mat);
 			vWorldSpace += offsets;
-
-    }
+		}
 
 		// transform into screenspace
 		resultPs = Position3WsToPs(vWorldSpace);
 
-		if ( !worldSize )
+		if ( g_ScreenSize )
 		{
 			float2 vPixelSize = 1.0 * g_vInvViewportSize.xy;
 			resultPs.xy += (flPointSize * vPixelSize.xy * vDelta.xy * resultPs.w);
@@ -104,10 +103,7 @@ GS
 		return resultPs;
 	}
 
-	CreateTexture2D( g_SheetTexture ) < Attribute( "SheetTexture" ); Filter( MIN_MAG_MIP_POINT ); AddressU( WRAP ); AddressV( WRAP ); SrgbRead( false ); >;
-	float4 g_SheetData < Attribute( "BaseTextureSheet" ); >;
 
-	float4 g_MotionBlur < Attribute( "g_MotionBlur" ); >;
 
 	float4 SampleSheet( float4 data, float sequence, float time )
 	{
@@ -133,7 +129,7 @@ GS
 	{
 		float2 size = i.uv.xy;
 	
-		o.vPositionPs = CalculateSpritePs(i.pos.xyz, size, vDelta, true, i.normal.xyz);
+		o.vPositionPs = CalculateSpritePs(i.pos.xyz, size, vDelta, i.normal.xyz);
 		o.tint = i.tint.rgba;
 		o.uv = 0;
 		o.uv.xy = float2(vDelta.x * 0.5 + 0.5, 0.5 - vDelta.y * 0.5);
@@ -161,18 +157,20 @@ GS
 		GSRestartStrip(triStream);
 	}
 
+
+
 	[maxvertexcount(64)]
 	void MainGs(point GS_INPUT i[1], inout TriangleStream<PS_INPUT> triStream)
 	{
 	
-		if (i[0].color.y == (1.0f / 255.0f))
+		if ( g_FaceVelocity )
 		{	
 			float4 ss = mul(g_matWorldToView, float4(i[0].velocity.xyz, 0));
 			ss.z = 0;
 			ss = normalize(ss);
 
-			i[0].normal.b += atan2( ss.y, ss.x ) * 57;
-		}
+        i[0].normal.b += ToDegrees * atan2(ss.y, ss.x) + g_FaceVelocityOffset;
+    }
 	
 		DrawSprite( i[0], triStream );
 	
