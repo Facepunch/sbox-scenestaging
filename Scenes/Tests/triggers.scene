@@ -1878,8 +1878,8 @@
       "Id": "f72c08d8-0ad8-4c68-80d4-4463620ab918",
       "Name": "Cone",
       "Enabled": true,
-      "Position": "-556.0688,229.3449,-115.0296",
-      "Rotation": "0.6182682,-0.3092604,0.4170345,0.5900629",
+      "Position": "-315.1371,23.34148,-41.00544",
+      "Rotation": "0.6361825,0.7363778,-0.1386389,0.1838177",
       "Scale": "1,1,1",
       "Tags": "",
       "Components": [
@@ -1910,7 +1910,8 @@
           "ApplyRotation": false,
           "ApplyShape": true,
           "Bounce": {
-            "Evaluation": "Particle"
+            "Evaluation": "Particle",
+            "Constants": "0.2,0,0,0"
           },
           "Brightness": {
             "Type": "Range",
@@ -1932,7 +1933,7 @@
             "Constants": "10,50,0,0"
           },
           "Bumpiness": {
-            "Constants": "0.1,0,0,0"
+            "Constants": "0.3,0,0,0"
           },
           "Collision": true,
           "CollisionIgnore": null,
@@ -2044,14 +2045,14 @@
           "StartVelocity": {
             "Type": "Range",
             "Evaluation": "Particle",
-            "Constants": "300,800,0,0"
+            "Constants": "300,400,0,0"
           },
           "Stretch": {
             "Type": "Range",
             "Evaluation": "Particle",
             "Constants": "-1,1,0,0"
           },
-          "TimeScale": 0,
+          "TimeScale": 1,
           "Tint": "1,1,1,1"
         },
         {
@@ -2060,7 +2061,7 @@
           "Additive": false,
           "BlurAmount": 100,
           "BlurOpacity": 1,
-          "BlurSpacing": 0.43,
+          "BlurSpacing": 0.35,
           "FaceVelocity": false,
           "LeadingTrail": true,
           "MotionBlur": true,
@@ -2074,15 +2075,15 @@
           "__type": "ParticleConeEmitter",
           "__enabled": true,
           "Burst": 5000,
-          "ConeAngle": 25.67,
+          "ConeAngle": 35.59,
           "ConeFar": 50,
           "ConeNear": 1,
-          "Delay": 4,
-          "Duration": 3,
+          "Delay": 1,
+          "Duration": 1,
           "InVolume": false,
           "Loop": true,
           "OnEdge": false,
-          "Rate": 2000
+          "Rate": 0
         }
       ]
     },

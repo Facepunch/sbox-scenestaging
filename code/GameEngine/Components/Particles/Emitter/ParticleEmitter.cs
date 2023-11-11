@@ -64,6 +64,8 @@ public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEd
 			Emit( effect );
 		}
 
+		burst = Burst;
+
 		float targetEmission = Rate * runTime;
 		while ( !effect.IsFull && emitted < targetEmission )
 		{
