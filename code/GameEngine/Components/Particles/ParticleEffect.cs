@@ -99,6 +99,9 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property, ToggleGroup( "Collision" )]
 	public ParticleFloat Bumpiness { get; set; } = 0.0f;
 
+	[Property, ToggleGroup( "Collision" )]
+	public ParticleFloat PushStrength { get; set; } = 0.0f;
+
 
 	public List<Particle> Particles { get; } = new List<Particle>();
 
@@ -165,8 +168,9 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 				var bounce = Bounce.Evaluate( delta, p.Random07 );
 				var friction = Friction.Evaluate( delta, p.Random06 );
 				var bumpiness = Bumpiness.Evaluate( delta, p.Random05 );
+				var push = PushStrength.Evaluate( delta, p.Random02 );
 
-				p.MoveWithCollision( bounce, friction, bumpiness, timeScale );
+				p.MoveWithCollision( bounce, friction, bumpiness, push, timeScale );
 			}
 			else
 			{

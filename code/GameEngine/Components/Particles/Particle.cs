@@ -84,7 +84,7 @@ public class Particle
 		Velocity *= newspeed;
 	}
 
-	public void MoveWithCollision( in float bounce, in float friction, in float bumpiness, in float dt )
+	public void MoveWithCollision( in float bounce, in float friction, in float bumpiness, in float push, in float dt )
 	{
 		const float surfaceOffset = 0.1f;
 
@@ -140,6 +140,14 @@ public class Particle
 		{
 			Position = targetPosition;
 			return;
+		}
+
+		//
+		// If we have push, then push the physics object we hit
+		//
+		if ( push != 0 )
+		{
+			tr.Body.ApplyForceAt( tr.HitPosition, Velocity * tr.Body.Mass * push );
 		}
 
 		HitPos = tr.HitPosition;

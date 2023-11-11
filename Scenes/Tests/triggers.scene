@@ -108,6 +108,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
@@ -204,6 +205,7 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "PushStrength": {},
               "Roll": {},
               "Scale": {
                 "Constants": "1,0,0,0"
@@ -302,6 +304,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
@@ -415,6 +418,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {
             "Evaluation": "Particle",
             "Constants": "0,10,0,0"
@@ -582,6 +586,7 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "PushStrength": {},
               "Roll": {
                 "Type": "Range",
                 "Evaluation": "Particle",
@@ -683,6 +688,7 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "PushStrength": {},
               "Roll": {},
               "Scale": {
                 "Constants": "1,0,0,0"
@@ -792,6 +798,7 @@
                 "Evaluation": "Particle",
                 "Constants": "1,0.5,0,0"
               },
+              "PushStrength": {},
               "Roll": {},
               "Scale": {
                 "Type": "Range",
@@ -914,6 +921,7 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "PushStrength": {},
               "Roll": {},
               "Scale": {
                 "Constants": "1,0,0,0"
@@ -1025,6 +1033,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
@@ -1156,6 +1165,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
@@ -1301,6 +1311,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {
             "Type": "Range",
             "Evaluation": "Particle",
@@ -1447,6 +1458,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
@@ -1566,6 +1578,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
@@ -1685,6 +1698,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
@@ -1807,6 +1821,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {},
           "Scale": {
             "Constants": "1,0,0,0"
@@ -1976,6 +1991,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {},
           "Scale": {
             "Type": "Range",
@@ -2038,7 +2054,7 @@
                 "x": 1
               }
             ],
-            "Constants": "0.3,0.2,0,0"
+            "Constants": "0.4,0.6,0,0"
           },
           "SequenceSpeed": 0,
           "Space": "World",
@@ -2049,8 +2065,7 @@
           },
           "Stretch": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "Constants": "-1,1,0,0"
+            "Evaluation": "Particle"
           },
           "TimeScale": 1,
           "Tint": "1,1,1,1"
@@ -2162,6 +2177,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PushStrength": {},
           "Roll": {
             "Type": "Range",
             "Evaluation": "Particle",
@@ -9961,6 +9977,7 @@
               "PerParticleTimeScale": {
                 "Constants": "1,0,0,0"
               },
+              "PushStrength": {},
               "Roll": {},
               "Scale": {
                 "Constants": "1,0,0,0"
