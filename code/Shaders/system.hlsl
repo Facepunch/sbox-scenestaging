@@ -60,3 +60,39 @@ void OpaqueFadeDepth( float flOpacity, float2 vPositionSs )
 	float flNoise = Tex2DLoad( g_tBlueNoise, int3( vPositionSs.xy % TextureDimensions2D( g_tBlueNoise, 0 ).xy, 0 ) ).g;
 	clip( mad( flOpacity, 2.0, -1.5 ) + flNoise );
 }
+
+//
+//
+// SHEET SAMPLING
+//
+//
+
+#include "sheet_sampling.fxc"
+
+CreateTexture2D( g_SheetTexture ) < Attribute( "SheetTexture" ); Filter( MIN_MAG_MIP_POINT ); AddressU( WRAP ); AddressV( WRAP ); SrgbRead( false ); >;
+
+//
+// Most basic implementation. Get the bounds for a single
+//
+float4 SampleSheet(float4 data, float sequence, float time)
+{
+    if ( data.w == 0 )
+        return float4(0, 0, 1, 1);
+	
+    SheetDataSamplerParams_t params;
+    params.m_flSheetTextureBaseV = data.x;
+    params.m_flOOSheetTextureWidth = 1.0f / data.y;
+    params.m_flOOSheetTextureHeight = data.z;
+    params.m_flSheetTextureWidth = data.y;
+    params.m_flSheetSequenceCount = data.w;
+    params.m_flSequenceAnimationTimescale = 1.0f;
+    params.m_flSequenceIndex = sequence;
+    params.m_flSequenceAnimationTime = time;
+
+    SheetDataSamplerOutput_t o = SampleSheetData(PassToArgTexture2D(g_SheetTexture), params, false);
+		
+    float4 b = o.m_vFrame0Bounds;
+    b.zw -= b.xy;
+    
+    return b;
+}

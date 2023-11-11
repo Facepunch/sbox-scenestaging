@@ -58,9 +58,7 @@ VS
 
 GS
 {
-	#include "sheet_sampling.fxc"
 
-	CreateTexture2D( g_SheetTexture ) < Attribute( "SheetTexture" ); Filter( MIN_MAG_MIP_POINT ); AddressU( WRAP ); AddressV( WRAP ); SrgbRead( false ); >;
 	float4 g_SheetData < Attribute( "BaseTextureSheet" ); >;
 
 	bool g_ScreenSize < Attribute( "g_ScreenSize" ); >;
@@ -103,28 +101,6 @@ GS
 		return resultPs;
 	}
 
-
-
-	float4 SampleSheet( float4 data, float sequence, float time )
-	{
-		if ( data.w == 0 )
-			return float4( 0, 0, 1, 1 );
-	
-		SheetDataSamplerParams_t params;
-		params.m_flSheetTextureBaseV = data.x;
-		params.m_flOOSheetTextureWidth = 1.0f / data.y;
-		params.m_flOOSheetTextureHeight = data.z;
-		params.m_flSheetTextureWidth = data.y;
-		params.m_flSheetSequenceCount = data.w;
-		params.m_flSequenceAnimationTimescale = 1.0f;
-		params.m_flSequenceIndex = sequence;
-		params.m_flSequenceAnimationTime = time;
-
-		SheetDataSamplerOutput_t o = SampleSheetData( PassToArgTexture2D( g_SheetTexture ), params, false );
-		
-		return o.m_vFrame0Bounds;
-	}
-
 	void CalculateSpriteVertex(out PS_INPUT o, in VS_INPUT i, in float2 vDelta)
 	{
 		float2 size = i.uv.xy;
@@ -135,7 +111,7 @@ GS
 		o.uv.xy = float2(vDelta.x * 0.5 + 0.5, 0.5 - vDelta.y * 0.5);
 	
 		float4 bounds = SampleSheet( g_SheetData, i.color.x, i.uv.z );
-		o.uv.xy = bounds.xy + o.uv.xy * (bounds.zw - bounds.xy);
+		o.uv.xy = bounds.xy + ( o.uv.xy * bounds.zw );
 	}
 
 	void DrawSprite( in GS_INPUT i, inout TriangleStream<PS_INPUT> triStream )
