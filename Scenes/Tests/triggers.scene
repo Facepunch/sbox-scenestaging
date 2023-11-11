@@ -86,6 +86,7 @@
           "CollisionIgnore": null,
           "CollisionRadius": 0,
           "Damping": {},
+          "DieOnCollisionChance": {},
           "Force": false,
           "ForceDirection": "0,0,0",
           "ForceScale": {
@@ -183,6 +184,7 @@
               "CollisionIgnore": null,
               "CollisionRadius": 0,
               "Damping": {},
+              "DieOnCollisionChance": {},
               "Force": false,
               "ForceDirection": "0,0,0",
               "ForceScale": {
@@ -282,6 +284,7 @@
           "CollisionIgnore": null,
           "CollisionRadius": 0,
           "Damping": {},
+          "DieOnCollisionChance": {},
           "Force": false,
           "ForceDirection": "0,0,0",
           "ForceScale": {
@@ -393,6 +396,7 @@
           "Damping": {
             "Constants": "1,0,0,0"
           },
+          "DieOnCollisionChance": {},
           "Force": true,
           "ForceDirection": "0,0,1",
           "ForceScale": {
@@ -559,6 +563,7 @@
               "Damping": {
                 "Constants": "3,0,0,0"
               },
+              "DieOnCollisionChance": {},
               "Force": true,
               "ForceDirection": "0,0,1",
               "ForceScale": {
@@ -666,6 +671,7 @@
               "CollisionIgnore": null,
               "CollisionRadius": 0,
               "Damping": {},
+              "DieOnCollisionChance": {},
               "Force": false,
               "ForceDirection": "0,0,0",
               "ForceScale": {
@@ -769,6 +775,7 @@
               "Damping": {
                 "Constants": "5.04,0,0,0"
               },
+              "DieOnCollisionChance": {},
               "Force": true,
               "ForceDirection": "0,0,1",
               "ForceScale": {
@@ -895,6 +902,7 @@
                 "Type": "Range",
                 "Constants": "0,2,0,0"
               },
+              "DieOnCollisionChance": {},
               "Force": true,
               "ForceDirection": "0,0,1",
               "ForceScale": {
@@ -1009,6 +1017,7 @@
           "CollisionIgnore": null,
           "CollisionRadius": 0,
           "Damping": {},
+          "DieOnCollisionChance": {},
           "Force": false,
           "ForceDirection": "0,0,0",
           "ForceScale": {
@@ -1141,6 +1150,7 @@
           "CollisionIgnore": null,
           "CollisionRadius": 0,
           "Damping": {},
+          "DieOnCollisionChance": {},
           "Force": false,
           "ForceDirection": "0,0,0",
           "ForceScale": {
@@ -1285,6 +1295,7 @@
           "CollisionIgnore": null,
           "CollisionRadius": 0,
           "Damping": {},
+          "DieOnCollisionChance": {},
           "Force": true,
           "ForceDirection": "0,0,-100",
           "ForceScale": {
@@ -1434,6 +1445,7 @@
           "CollisionIgnore": null,
           "CollisionRadius": 0,
           "Damping": {},
+          "DieOnCollisionChance": {},
           "Force": false,
           "ForceDirection": "0,0,0",
           "ForceScale": {
@@ -1554,6 +1566,7 @@
           "CollisionIgnore": null,
           "CollisionRadius": 0,
           "Damping": {},
+          "DieOnCollisionChance": {},
           "Force": false,
           "ForceDirection": "0,0,0",
           "ForceScale": {
@@ -1674,6 +1687,7 @@
           "CollisionIgnore": null,
           "CollisionRadius": 0,
           "Damping": {},
+          "DieOnCollisionChance": {},
           "Force": false,
           "ForceDirection": "0,0,0",
           "ForceScale": {
@@ -1797,6 +1811,7 @@
           "CollisionIgnore": null,
           "CollisionRadius": 0,
           "Damping": {},
+          "DieOnCollisionChance": {},
           "Force": false,
           "ForceDirection": "0,0,0",
           "ForceScale": {
@@ -1958,6 +1973,7 @@
             "Evaluation": "Particle",
             "Constants": "0.1,0.2,0,0"
           },
+          "DieOnCollisionChance": {},
           "Force": true,
           "ForceDirection": "0,0,-1",
           "ForceScale": {
@@ -1991,7 +2007,9 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
-          "PushStrength": {},
+          "PushStrength": {
+            "Constants": "1,0,0,0"
+          },
           "Roll": {},
           "Scale": {
             "Type": "Range",
@@ -2151,6 +2169,7 @@
           "Damping": {
             "Constants": "2,0,0,0"
           },
+          "DieOnCollisionChance": {},
           "Force": false,
           "ForceDirection": "0,0,0",
           "ForceScale": {
@@ -9955,6 +9974,7 @@
               "CollisionIgnore": null,
               "CollisionRadius": 0,
               "Damping": {},
+              "DieOnCollisionChance": {},
               "Force": false,
               "ForceDirection": "0,0,0",
               "ForceScale": {

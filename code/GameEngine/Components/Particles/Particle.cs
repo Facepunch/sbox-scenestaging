@@ -84,7 +84,7 @@ public class Particle
 		Velocity *= newspeed;
 	}
 
-	public void MoveWithCollision( in float bounce, in float friction, in float bumpiness, in float push, in float dt )
+	public void MoveWithCollision( in float bounce, in float friction, in float bumpiness, in float push, in bool die, in float dt )
 	{
 		const float surfaceOffset = 0.1f;
 
@@ -140,6 +140,14 @@ public class Particle
 		{
 			Position = targetPosition;
 			return;
+		}
+
+		//
+		// If we want to die on collision then set its age to max
+		//
+		if ( die )
+		{
+			Age = float.MaxValue;
 		}
 
 		//

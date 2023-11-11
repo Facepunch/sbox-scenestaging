@@ -85,6 +85,9 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	public bool Collision { get; set; }
 
 	[Property, ToggleGroup( "Collision" )]
+	public ParticleFloat DieOnCollisionChance { get; set; } = 0.0f;
+
+	[Property, ToggleGroup( "Collision" )]
 	public float CollisionRadius { get; set; }
 
 	[Property, ToggleGroup( "Collision" )]
@@ -129,8 +132,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		Transform deltaTransform = tx.ToLocal( lastTransform );
 
 		bool parentMoved = deltaTransform != global::Transform.Zero;
-
-
+		bool isEditor = Scene.IsEditor;
 
 		Parallel.ForEach( Particles, p =>
 		{
@@ -168,9 +170,12 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 				var bounce = Bounce.Evaluate( delta, p.Random07 );
 				var friction = Friction.Evaluate( delta, p.Random06 );
 				var bumpiness = Bumpiness.Evaluate( delta, p.Random05 );
-				var push = PushStrength.Evaluate( delta, p.Random02 );
+				var push = PushStrength.Evaluate( delta, p.Random04 );
+				var die = DieOnCollisionChance.Evaluate( delta, p.Random03 ) > 0.5f;
 
-				p.MoveWithCollision( bounce, friction, bumpiness, push, timeScale );
+				if ( isEditor ) push = 0;
+
+				p.MoveWithCollision( bounce, friction, bumpiness, push, die, timeScale );
 			}
 			else
 			{
