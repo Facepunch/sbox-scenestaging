@@ -28,6 +28,9 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 	[Property, ToggleGroup( "MotionBlur" ), Range( 0, 1 )]
 	public float BlurSpacing { get; set; } = 0.5f;
 
+	[Property, ToggleGroup( "MotionBlur" ), Range( 0, 1 )]
+	public float BlurOpacity { get; set; } = 0.5f;
+
 
 	public enum ParticleSortMode
 	{
@@ -72,7 +75,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 
 		if ( MotionBlur )
 		{
-			_so.Attributes.Set( "g_MotionBlur", new Vector4( LeadingTrail ? 2 : 1, BlurAmount.Remap( 0, 1, 0, 6, false ), BlurSpacing.Remap( 0, 1, 5000, 500, false ), 0 ) );
+			_so.Attributes.Set( "g_MotionBlur", new Vector4( LeadingTrail ? 2 : 1, BlurAmount.Remap( 0, 1, 0, 6, false ), BlurSpacing.Remap( 0, 1, 0, 1, false ), BlurOpacity ) );
 		}
 		else
 		{

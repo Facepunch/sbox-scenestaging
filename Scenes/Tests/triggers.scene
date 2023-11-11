@@ -125,7 +125,12 @@
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": true,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
           "FaceVelocity": false,
+          "LeadingTrail": true,
+          "MotionBlur": false,
           "RotationOffset": 0,
           "Scale": 2,
           "Shadows": false,
@@ -216,7 +221,12 @@
               "__type": "ParticleSpriteRenderer",
               "__enabled": true,
               "Additive": true,
+              "BlurAmount": 0.5,
+              "BlurOpacity": 0.5,
+              "BlurSpacing": 0.5,
               "FaceVelocity": false,
+              "LeadingTrail": true,
+              "MotionBlur": false,
               "RotationOffset": 0,
               "Scale": 200,
               "Shadows": false,
@@ -309,7 +319,12 @@
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": false,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
           "FaceVelocity": false,
+          "LeadingTrail": true,
+          "MotionBlur": false,
           "RotationOffset": 0,
           "Scale": 20,
           "Shadows": false,
@@ -423,7 +438,12 @@
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": true,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
           "FaceVelocity": false,
+          "LeadingTrail": true,
+          "MotionBlur": false,
           "RotationOffset": 0,
           "Scale": 20,
           "Shadows": false,
@@ -584,7 +604,12 @@
               "__type": "ParticleSpriteRenderer",
               "__enabled": true,
               "Additive": true,
+              "BlurAmount": 0.5,
+              "BlurOpacity": 0.5,
+              "BlurSpacing": 0.5,
               "FaceVelocity": false,
+              "LeadingTrail": true,
+              "MotionBlur": false,
               "RotationOffset": 0,
               "Scale": 15,
               "Shadows": false,
@@ -675,7 +700,12 @@
               "__type": "ParticleSpriteRenderer",
               "__enabled": true,
               "Additive": true,
+              "BlurAmount": 0.5,
+              "BlurOpacity": 0.5,
+              "BlurSpacing": 0.5,
               "FaceVelocity": false,
+              "LeadingTrail": true,
+              "MotionBlur": false,
               "RotationOffset": 0,
               "Scale": 30,
               "Shadows": false,
@@ -780,7 +810,12 @@
               "__type": "ParticleSpriteRenderer",
               "__enabled": true,
               "Additive": true,
+              "BlurAmount": 0.5,
+              "BlurOpacity": 0.5,
+              "BlurSpacing": 0.5,
               "FaceVelocity": false,
+              "LeadingTrail": true,
+              "MotionBlur": false,
               "RotationOffset": 0,
               "Scale": 0.7,
               "Shadows": false,
@@ -896,7 +931,12 @@
               "__type": "ParticleSpriteRenderer",
               "__enabled": true,
               "Additive": false,
+              "BlurAmount": 0.5,
+              "BlurOpacity": 0.5,
+              "BlurSpacing": 0.5,
               "FaceVelocity": false,
+              "LeadingTrail": true,
+              "MotionBlur": false,
               "RotationOffset": 0,
               "Scale": 80,
               "Shadows": true,
@@ -1002,7 +1042,12 @@
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": true,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
           "FaceVelocity": false,
+          "LeadingTrail": true,
+          "MotionBlur": false,
           "RotationOffset": 0,
           "Scale": 0.77,
           "Shadows": false,
@@ -1128,7 +1173,12 @@
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": true,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
           "FaceVelocity": false,
+          "LeadingTrail": true,
+          "MotionBlur": false,
           "RotationOffset": 0,
           "Scale": 0.77,
           "Shadows": false,
@@ -1175,7 +1225,7 @@
       "Id": "875d8b73-07e0-4f9f-9d14-8eebd7d223ae",
       "Name": "Sphere - Edge",
       "Enabled": true,
-      "Position": "1.888657,509.7635,146.1953",
+      "Position": "1.787604,509.6357,146.1953",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -1187,6 +1237,7 @@
             "Type": "Curve",
             "CurveA": [
               {
+                "y": 1,
                 "in": -2.7860713,
                 "out": 2.7860713
               },
@@ -1213,7 +1264,9 @@
             "Constants": "1,0,0,0"
           },
           "Brightness": {
-            "Constants": "0.4,0,0,0"
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0.6,0.3,0,0"
           },
           "Bumpiness": {
             "Constants": "1,0,0,0"
@@ -1244,7 +1297,7 @@
             "Evaluation": "Particle",
             "Constants": "1,0.7,0,0"
           },
-          "MaxParticles": 5000,
+          "MaxParticles": 100,
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
@@ -1254,7 +1307,7 @@
             "Constants": "0,360,0,0"
           },
           "Scale": {
-            "Constants": "1,0,0,0"
+            "Constants": "3,0,0,0"
           },
           "SequenceSpeed": 1,
           "Space": "World",
@@ -1282,21 +1335,26 @@
                 }
               ]
             },
-            "Constants": "-10,0,0,0"
+            "Constants": "2,0,0,0"
           },
-          "TimeScale": 0.55,
+          "TimeScale": 0.22,
           "Tint": "1,1,1,1"
         },
         {
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
-          "Additive": true,
+          "Additive": false,
+          "BlurAmount": 0.77,
+          "BlurOpacity": 0.75,
+          "BlurSpacing": 1,
           "FaceVelocity": true,
-          "RotationOffset": 0,
+          "LeadingTrail": true,
+          "MotionBlur": false,
+          "RotationOffset": 270,
           "Scale": 0.77,
           "Shadows": false,
-          "SortMode": "Unsorted",
-          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+          "SortMode": "ByDistance",
+          "Texture": "materials/particles/ui_arrow_01.vtex"
         },
         {
           "__type": "ParticleSphereEmitter",
@@ -1307,7 +1365,7 @@
           "Loop": true,
           "OnEdge": true,
           "Radius": 0,
-          "Rate": 978.13,
+          "Rate": 65.1,
           "Velocity": 308.94
         }
       ],
@@ -1406,7 +1464,12 @@
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": true,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
           "FaceVelocity": false,
+          "LeadingTrail": true,
+          "MotionBlur": false,
           "RotationOffset": 0,
           "Scale": 0.92,
           "Shadows": false,
@@ -1520,7 +1583,12 @@
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": true,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
           "FaceVelocity": false,
+          "LeadingTrail": true,
+          "MotionBlur": false,
           "RotationOffset": 0,
           "Scale": 0.92,
           "Shadows": false,
@@ -1634,7 +1702,12 @@
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": true,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
           "FaceVelocity": false,
+          "LeadingTrail": true,
+          "MotionBlur": false,
           "RotationOffset": 0,
           "Scale": 0.92,
           "Shadows": false,
@@ -1751,7 +1824,12 @@
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": true,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
           "FaceVelocity": false,
+          "LeadingTrail": true,
+          "MotionBlur": false,
           "RotationOffset": 0,
           "Scale": 0.92,
           "Shadows": false,
@@ -1851,7 +1929,7 @@
                 }
               ]
             },
-            "Constants": "10,5,0,0"
+            "Constants": "10,50,0,0"
           },
           "Bumpiness": {
             "Constants": "0.1,0,0,0"
@@ -1875,11 +1953,11 @@
           "Gradient": {
             "color": [
               {
-                "c": "1,0.74,0,1"
+                "c": "1,0.78762,0.18317,1"
               },
               {
                 "t": 0.22008547,
-                "c": "1,0.08874,0,1"
+                "c": "1,0.16536,0.08416,1"
               },
               {
                 "t": 0.99786323,
@@ -1893,7 +1971,7 @@
             "Evaluation": "Particle",
             "Constants": "3,4,0,0"
           },
-          "MaxParticles": 1000,
+          "MaxParticles": 10000,
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
@@ -1959,7 +2037,7 @@
                 "x": 1
               }
             ],
-            "Constants": "0.3,0.4,0,0"
+            "Constants": "0.3,0.2,0,0"
           },
           "SequenceSpeed": 0,
           "Space": "World",
@@ -1973,14 +2051,19 @@
             "Evaluation": "Particle",
             "Constants": "-1,1,0,0"
           },
-          "TimeScale": 1,
+          "TimeScale": 0,
           "Tint": "1,1,1,1"
         },
         {
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": false,
+          "BlurAmount": 100,
+          "BlurOpacity": 1,
+          "BlurSpacing": 0.43,
           "FaceVelocity": false,
+          "LeadingTrail": true,
+          "MotionBlur": true,
           "RotationOffset": 0,
           "Scale": 2,
           "Shadows": false,
@@ -2101,7 +2184,12 @@
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": false,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
           "FaceVelocity": false,
+          "LeadingTrail": true,
+          "MotionBlur": false,
           "RotationOffset": 0,
           "Scale": 60,
           "Shadows": true,
@@ -9889,7 +9977,12 @@
               "__type": "ParticleSpriteRenderer",
               "__enabled": true,
               "Additive": false,
+              "BlurAmount": 0.5,
+              "BlurOpacity": 0.5,
+              "BlurSpacing": 0.5,
               "FaceVelocity": false,
+              "LeadingTrail": true,
+              "MotionBlur": false,
               "RotationOffset": 0,
               "Scale": 2,
               "Shadows": false,

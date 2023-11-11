@@ -129,7 +129,7 @@ GS
 		return o.m_vFrame0Bounds;
 	}
 
-	void CalculateSpriteVertex(out PS_INPUT o, VS_INPUT i, float2 vDelta)
+	void CalculateSpriteVertex(out PS_INPUT o, in VS_INPUT i, in float2 vDelta)
 	{
 		float2 size = i.uv.xy;
 	
@@ -142,7 +142,26 @@ GS
 		o.uv.xy = bounds.xy + o.uv.xy * (bounds.zw - bounds.xy);
 	}
 
-	[maxvertexcount(80)]
+	void DrawSprite( in GS_INPUT i, inout TriangleStream<PS_INPUT> triStream )
+	{
+		PS_INPUT o;
+
+		CalculateSpriteVertex(o, i, float2(-1.0, 1.0));
+		GSAppendVertex(triStream, o);
+			
+		CalculateSpriteVertex(o, i, float2(-1.0, -1.0));
+		GSAppendVertex(triStream, o);
+
+		CalculateSpriteVertex(o, i, float2(1.0, 1.0));
+		GSAppendVertex(triStream, o);
+
+		CalculateSpriteVertex(o, i, float2(1.0, -1.0));
+		GSAppendVertex(triStream, o);
+
+		GSRestartStrip(triStream);
+	}
+
+	[maxvertexcount(64)]
 	void MainGs(point GS_INPUT i[1], inout TriangleStream<PS_INPUT> triStream)
 	{
 	
@@ -155,86 +174,45 @@ GS
 			i[0].normal.b += atan2( ss.y, ss.x ) * 57;
 		}
 	
-	
-		PS_INPUT o;
-
-
-		CalculateSpriteVertex(o, i[0], float2(-1.0, 1.0));
-		GSAppendVertex(triStream, o);
-			
-		CalculateSpriteVertex(o, i[0], float2(-1.0, -1.0));
-		GSAppendVertex(triStream, o);
-
-		CalculateSpriteVertex(o, i[0], float2(1.0, 1.0));
-		GSAppendVertex(triStream, o);
-
-		CalculateSpriteVertex(o, i[0], float2(1.0, -1.0));
-		GSAppendVertex(triStream, o);
-
-		GSRestartStrip(triStream);
-
+		DrawSprite( i[0], triStream );
 	
 		if ( g_MotionBlur.r == 0)
 			return;
 	
-		i[0].tint.a *= 0.9f;
+		i[0].tint.a *= g_MotionBlur.w;
 	
 		float3 velocity = i[0].velocity.xyz;
 		float speed = length( velocity) * g_MotionBlur.y;
 		float splots = speed / 50.0;
 	
 		if (splots < 1) return;
-		if ( splots > 20 ) splots = 20;
+		if ( splots > 8 ) splots = 8;
 	
+		float3 scale = i[0].uv.x * (g_MotionBlur.z * 0.002f) * velocity;
 	
 		for (int f = 1; f < splots+1; f++ )
 		{
-			i[0].tint.a *= 0.7;
+			i[0].tint.a *= g_MotionBlur.w;
+		
+			// clamp alpha, because it's a waste of time drawing if we can't see it
+			i[0].tint.a = clamp( i[0].tint.a, 0.001, 1 );
 		
 			GS_INPUT a = i[0];
-			GS_INPUT b = i[0];
+			GS_INPUT b = a;
     
-			a.pos.xyz += (velocity / g_MotionBlur.z) * f * a.uv.x;
-			b.pos.xyz -= (velocity / g_MotionBlur.z) * f * a.uv.x;
-			
-	
-//			a.tint.a /= f * 3;
-			//b.tint.a /= f * 3;
-		
+			// move along velocity vector
+			a.pos.xyz += scale * f;
+			b.pos.xyz -= scale * f;
+					
 			//
 			// leading trail
 			//
 			if ( g_MotionBlur.r > 1 )
 			{
-	
-				CalculateSpriteVertex(o, a, float2(-1.0, 1.0));
-				GSAppendVertex(triStream, o);
-			
-				CalculateSpriteVertex(o, a, float2(-1.0, -1.0));
-				GSAppendVertex(triStream, o);
-
-				CalculateSpriteVertex(o, a, float2(1.0, 1.0));
-				GSAppendVertex(triStream, o);
-
-				CalculateSpriteVertex(o, a, float2(1.0, -1.0));
-				GSAppendVertex(triStream, o);
-
-				GSRestartStrip(triStream);
+				DrawSprite(a, triStream);
 			}
 		
-			CalculateSpriteVertex(o, b, float2(-1.0, 1.0));
-			GSAppendVertex(triStream, o);
-			
-			CalculateSpriteVertex(o, b, float2(-1.0, -1.0));
-			GSAppendVertex(triStream, o);
-
-			CalculateSpriteVertex(o, b, float2(1.0, 1.0));
-			GSAppendVertex(triStream, o);
-
-			CalculateSpriteVertex(o, b, float2(1.0, -1.0));
-			GSAppendVertex(triStream, o);
-
-			GSRestartStrip(triStream);
+			DrawSprite(b, triStream);
 		}
 		
 	}
