@@ -1,4 +1,8 @@
 #include "vr_common.fxc"
+#include "vr_lighting.fxc"
+#include "volumetric_fog.fxc"
+#include "vr_gradient_fog.fxc"
+#include "vr_cubemap_fog.fxc"
 
 //
 // Helpers
@@ -53,13 +57,13 @@ ExtraShaderData_t System_GetExtraPerInstanceShaderData( uint instance )
     return extraShaderData;
 }
 
-CreateAttributeTexture2DWithoutSampler( g_tBlueNoise ) : register( t0 ) < Attribute( "BlueNoise" ); SrgbRead( false ); >;
+//CreateAttributeTexture2DWithoutSampler( g_tBlueNoise ) : register( t0 ) < Attribute( "BlueNoise" ); SrgbRead( false ); >;
 
-void OpaqueFadeDepth( float flOpacity, float2 vPositionSs )
-{
-	float flNoise = Tex2DLoad( g_tBlueNoise, int3( vPositionSs.xy % TextureDimensions2D( g_tBlueNoise, 0 ).xy, 0 ) ).g;
-	clip( mad( flOpacity, 2.0, -1.5 ) + flNoise );
-}
+//void OpaqueFadeDepth( float flOpacity, float2 vPositionSs )
+//{
+//	float flNoise = Tex2DLoad( g_tBlueNoise, int3( vPositionSs.xy % TextureDimensions2D( g_tBlueNoise, 0 ).xy, 0 ) ).g;
+//	clip( mad( flOpacity, 2.0, -1.5 ) + flNoise );
+//}
 
 //
 //
@@ -115,27 +119,47 @@ float GetDepth(float2 ss)
     return Tex2DMS(g_tDepth, ss.xy, 0).r;
 }
 
-	//
-	// Get the depth at this position, between 0-1, where 1 is ZFar
-	//
+//
+// Get the depth at this position, between 0-1, where 1 is ZFar
+//
 float GetDepthNormalized(float2 ss)
 {
     float depth = Tex2DMS(g_tDepth, ss.xy, 0).r;
     return RemapValClamped(depth, g_flViewportMinZ, g_flViewportMaxZ, 0.0, 1.0);
 }
 		
-	//
-	// Get the difference between the depth of a screen space position
-	// and a worldspace position. 
-	//
-	// garry: I hate how this works but I couldn't work out the right
-	//			shader code for it. It should take ONE of these arguments
-	//			not two. It should be able to work out one from the other.
-	//			This drove me insane for at least 3 hours.
-	//
-float3 GetDepthDistance(float2 ss, float3 worldpos)
+//
+// Get the difference between the depth of a screen space position
+// and a worldspace position. 
+//
+// garry: I hate how this works but I couldn't work out the right
+//			shader code for it. It should take ONE of these arguments
+//			not two. It should be able to work out one from the other.
+//			This drove me insane for at least 3 hours.
+//
+float GetDepthDistance(float2 ss, float3 worldpos)
 {
     float3 vDirection = normalize(worldpos.xyz - g_vCameraPositionWs);
     float3 pos = RecoverWorldPosFromProjectedDepthAndRay(GetDepthNormalized(ss.xy), normalize(vDirection)).xyz;
     return distance(worldpos, pos);
+}
+
+
+
+//
+// Get a pixel color with fog
+//
+float3 GetWithFog(float3 worldPos, float2 screenPos, float3 color, float amount)
+{
+    if (amount <= 0)
+        return color;
+	
+    const float3 vPositionToCameraWs = worldPos.xyz - g_vCameraPositionWs;
+
+    float3 fogged = color;
+    fogged.rgb = ApplyGradientFog(fogged.rgb, worldPos.xyz, vPositionToCameraWs.xyz);
+    fogged.rgb = ApplyCubemapFog(fogged.rgb, worldPos.xyz, vPositionToCameraWs.xyz);
+    fogged.rgb = ApplyVolumetricFog(0, fogged.rgb, worldPos.xyz, screenPos.xy);
+
+    return lerp(color, fogged, amount);
 }

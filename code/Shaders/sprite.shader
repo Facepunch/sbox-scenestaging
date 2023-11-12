@@ -204,6 +204,7 @@ PS
 	DynamicCombo( D_SCENE_DEPTH_MSAA, 0..1, Sys( ALL ) );
 
 	float g_DepthFeather < Attribute( "g_DepthFeather" ); >;
+	float g_FogStrength < Attribute( "g_FogStrength" ); >;
 
 	SamplerState g_sParticleTrilinearWrap < Filter( MIN_MAG_MIP_LINEAR ); MaxAniso( 1 ); >;
 
@@ -232,6 +233,10 @@ PS
 		RenderState( DepthWriteEnable, false );
 	#endif
 
+
+
+
+
 	float4 MainPs( PS_INPUT i ) : SV_Target0
 	{
 		float2 uv = i.uv.xy;
@@ -242,8 +247,8 @@ PS
 	
 		if ( g_DepthFeather > 0 )
 		{
-			float dist = GetDepthDistance( i.vPositionPs.xy, i.worldpos );
-			float feather = clamp(dist / g_DepthFeather, 0, 1);
+			float dist = GetDepthDistance( i.vPositionPs.xy, i.worldpos.xyz );
+			float feather = clamp(dist / g_DepthFeather, 0.0, 1.0 );
 			col.a *= feather;
 		}
 	
@@ -256,6 +261,10 @@ PS
 			// transparency
 		#else
 						
+		#endif
+	
+		#if S_MODE_DEPTH == 0
+		col.rgb = GetWithFog( i.worldpos, i.vPositionPs.xy, col.rgb, g_FogStrength );
 		#endif
 	
 

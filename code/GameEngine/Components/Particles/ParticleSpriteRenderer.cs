@@ -7,6 +7,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 	SpriteSceneObject _so;
 	[Property] public Texture Texture { get; set; } = Texture.White;
 	[Property, Range( 0, 50 )] public float DepthFeather { get; set; } = 0.0f;
+	[Property, Range( 0, 1 )] public float FogStrength { get; set; } = 1.0f;
 	[Property, Range( 0, 2 )] public float Scale { get; set; } = 1.0f;
 	[Property] public bool Additive { get; set; }
 	[Property] public bool Shadows { get; set; }
@@ -86,6 +87,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 		_so.Attributes.Set( "g_FaceVelocity", FaceVelocity );
 		_so.Attributes.Set( "g_FaceVelocityOffset", RotationOffset );
 		_so.Attributes.Set( "g_DepthFeather", DepthFeather );
+		_so.Attributes.Set( "g_FogStrength", FogStrength );
 
 
 		_so.Attributes.Set( "g_ScreenSize", false );
