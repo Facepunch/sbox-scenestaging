@@ -96,3 +96,46 @@ float4 SampleSheet(float4 data, float sequence, float time)
     
     return b;
 }
+
+
+//
+//
+// DEPTH UTILITY
+//
+//
+
+CreateTexture2DMS( g_tDepth ) < Attribute( "DepthBuffer" ); SrgbRead( false ); Filter( POINT ); AddressU( WRAP ); AddressV( WRAP ); >;
+
+
+//
+// Get the depth between ZNear and ZFar
+//
+float GetDepth(float2 ss)
+{
+    return Tex2DMS(g_tDepth, ss.xy, 0).r;
+}
+
+	//
+	// Get the depth at this position, between 0-1, where 1 is ZFar
+	//
+float GetDepthNormalized(float2 ss)
+{
+    float depth = Tex2DMS(g_tDepth, ss.xy, 0).r;
+    return RemapValClamped(depth, g_flViewportMinZ, g_flViewportMaxZ, 0.0, 1.0);
+}
+		
+	//
+	// Get the difference between the depth of a screen space position
+	// and a worldspace position. 
+	//
+	// garry: I hate how this works but I couldn't work out the right
+	//			shader code for it. It should take ONE of these arguments
+	//			not two. It should be able to work out one from the other.
+	//			This drove me insane for at least 3 hours.
+	//
+float3 GetDepthDistance(float2 ss, float3 worldpos)
+{
+    float3 vDirection = normalize(worldpos.xyz - g_vCameraPositionWs);
+    float3 pos = RecoverWorldPosFromProjectedDepthAndRay(GetDepthNormalized(ss.xy), normalize(vDirection)).xyz;
+    return distance(worldpos, pos);
+}

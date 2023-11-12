@@ -40,6 +40,7 @@ struct GS_INPUT
 struct PS_INPUT
 {
 	float4 vPositionPs : SV_ScreenPosition;
+    float3 worldpos: TEXCOORD1;
 	float4 uv : TEXCOORD0;
 	float4 tint : TEXCOORD9;
 
@@ -68,7 +69,7 @@ GS
 	bool g_FaceVelocity < Attribute( "g_FaceVelocity" ); >;
 	float g_FaceVelocityOffset < Attribute( "g_FaceVelocityOffset" ); >;
 
-	float4 CalculateSpritePs(float3 vWorldSpace, float2 flPointSize, float2 vDelta, float3 angles )
+	float4 CalculateSpritePs( inout float3 vWorldSpace, float2 flPointSize, float2 vDelta, float3 angles )
 	{
 		float4 resultPs;
 		float3 offsets = 0;
@@ -105,7 +106,9 @@ GS
 	{
 		float2 size = i.uv.xy;
 	
-		o.vPositionPs = CalculateSpritePs(i.pos.xyz, size, vDelta, i.normal.xyz);
+		o.worldpos = i.pos.xyz;
+	
+		o.vPositionPs = CalculateSpritePs( o.worldpos, size, vDelta, i.normal.xyz);
 		o.tint = i.tint.rgba;
 		o.uv = 0;
 		o.uv.xy = float2(vDelta.x * 0.5 + 0.5, 0.5 - vDelta.y * 0.5);
@@ -198,11 +201,16 @@ PS
 
 	StaticCombo( S_MODE_DEPTH, 0..1, Sys( ALL ) );
 	DynamicCombo( D_BLEND, 0..1, Sys( ALL ) );
+	DynamicCombo( D_SCENE_DEPTH_MSAA, 0..1, Sys( ALL ) );
+
+	float g_DepthFeather < Attribute( "g_DepthFeather" ); >;
 
 	SamplerState g_sParticleTrilinearWrap < Filter( MIN_MAG_MIP_LINEAR ); MaxAniso( 1 ); >;
 
 	CreateTexture2D( g_ColorTexture ) < Attribute( "BaseTexture" ); Filter( BILINEAR ); AddressU( CLAMP ); AddressV( CLAMP ); AddressW( CLAMP ); SrgbRead( true ); >;
 	float4 g_SheetData < Attribute( "BaseTextureSheet" ); >;
+
+	RenderState( DepthWriteEnable, false );
 
 	// additive
 	#if ( D_BLEND == 1 ) 
@@ -232,21 +240,22 @@ PS
 		col = Tex2D( g_ColorTexture, uv );
 		col.rgba *= i.tint.rgba;
 	
+		if ( g_DepthFeather > 0 )
+		{
+			float dist = GetDepthDistance( i.vPositionPs.xy, i.worldpos );
+			float feather = clamp(dist / g_DepthFeather, 0, 1);
+			col.a *= feather;
+		}
+	
 	    clip(col.a - 0.0001);
 
-	
-		//OpaqueFadeDepth(pow(col.a, 0.3f), i.vPositionPs.xy);
-	
 		#if S_MODE_DEPTH
 			OpaqueFadeDepth( pow( col.a, 0.3f ), i.vPositionPs.xy );
 			return 1;
 		#elif (D_BLEND == 1)
 			// transparency
 		#else
-			
-			//OpaqueFadeDepth(pow(col.a, 0.1f), i.vPositionPs.xy);
-			
-			
+						
 		#endif
 	
 
