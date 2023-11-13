@@ -14,22 +14,22 @@ public class ParticleSystem : BaseComponent, BaseComponent.ExecuteInEditor
 	[Range( 0, 2.0f )]
 	[Property] public float PlaybackSpeed { get; set; } = 1.0f;
 
-	private bool emissionStopped;
+	private bool _emission = true;
 	
 	/// <summary>
 	/// Turn on or off particle emission.
 	/// Useful for particles with intermittent or permanent durations.
 	/// </summary>
 	[Property]
-	public bool EmissionStopped
+	public bool Emission
 	{
-		get => emissionStopped;
+		get => _emission;
 		set
 		{
-			emissionStopped = value;
+			_emission = value;
 			
 			if (_sceneObject is not null)
-				_sceneObject.EmissionStopped = value;
+				_sceneObject.EmissionStopped = !value;
 		}
 	}
 
@@ -79,7 +79,7 @@ public class ParticleSystem : BaseComponent, BaseComponent.ExecuteInEditor
 
 		_sceneObject = new SceneParticles( Scene.SceneWorld, _particles );
 		_sceneObject.Transform = Transform.World;
-		_sceneObject.EmissionStopped = emissionStopped;
+		_sceneObject.EmissionStopped = !_emission;
 	}
 
 	public void PlayEffect()
