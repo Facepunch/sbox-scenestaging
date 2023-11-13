@@ -73,22 +73,30 @@ public class ModelCollider : Collider
 
 			foreach ( var sphere in part.Spheres )
 			{
-				yield return targetBody.AddSphereShape( bx.PointToWorld( sphere.Sphere.Center ), sphere.Sphere.Radius * bx.Scale );
+				var shape = targetBody.AddSphereShape( bx.PointToWorld( sphere.Sphere.Center ), sphere.Sphere.Radius * bx.Scale );
+				shape.Surface = sphere.Surface;
+				yield return shape;
 			}
 
 			foreach ( var capsule in part.Capsules )
 			{
-				yield return targetBody.AddCapsuleShape( bx.PointToWorld( capsule.Capsule.CenterA ), bx.PointToWorld( capsule.Capsule.CenterB ), capsule.Capsule.Radius * bodyTransform.Scale );
+				var shape = targetBody.AddCapsuleShape( bx.PointToWorld( capsule.Capsule.CenterA ), bx.PointToWorld( capsule.Capsule.CenterB ), capsule.Capsule.Radius * bodyTransform.Scale );
+				shape.Surface = capsule.Surface;
+				yield return shape;
 			}
 
 			foreach ( var hull in part.Hulls )
 			{
-				yield return targetBody.AddShape( hull, bx );
+				var shape = targetBody.AddShape( hull, bx );
+				shape.Surface = hull.Surface;
+				yield return shape;
 			}
 
 			foreach ( var mesh in part.Meshes )
 			{
-				yield return targetBody.AddShape( mesh, bx, false, true );
+				var shape = targetBody.AddShape( mesh, bx, false, true );
+				shape.Surface = mesh.Surface;
+				yield return shape;
 			}
 		}
 	}
