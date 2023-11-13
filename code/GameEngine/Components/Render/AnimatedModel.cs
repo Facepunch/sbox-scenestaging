@@ -301,5 +301,9 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 	{
 		OnFootstepEvent?.Invoke( e );
 	}
-
+	
+	public Transform? GetAttachment( string name, bool worldSpace = true )
+	{
+		return _sceneObject?.GetAttachment( name, worldSpace );
+	}
 }
