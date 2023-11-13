@@ -42,9 +42,6 @@ public class TrackedPoseComponent : BaseComponent
 	[Property]
 	public UpdateTypes UpdateType { get; set; }
 
-	[Property]
-	public bool UseRelativeTransform { get; set; }
-
 	/// <summary>
 	/// Get the appropriate VR transform for the specified <see cref="PoseSource"/>
 	/// </summary>

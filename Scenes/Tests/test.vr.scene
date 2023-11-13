@@ -101,7 +101,7 @@
               "__type": "CameraComponent",
               "__enabled": true,
               "BackgroundColor": "0.33333,0.46275,0.52157,1",
-              "ClearFlags": "Color, Depth, Stencil",
+              "ClearFlags": "All",
               "FieldOfView": 90,
               "Orthographic": false,
               "OrthographicHeight": 1204,
@@ -148,9 +148,18 @@
               "Tags": "",
               "Components": [
                 {
-                  "__type": "ModelComponent",
+                  "__type": "SkeletalPoseComponent",
+                  "__enabled": true,
+                  "HandSource": "Left",
+                  "OverrideAnimGraphNames": false,
+                  "UpdateType": "All"
+                },
+                {
+                  "__type": "AnimatedModelComponent",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
+                  "CreateBoneObjects": false,
+                  "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Model": "models/hands/alyx_hand_left.vmdl",
                   "ShouldCastShadows": true,
@@ -189,9 +198,18 @@
               "Tags": "",
               "Components": [
                 {
-                  "__type": "ModelComponent",
+                  "__type": "SkeletalPoseComponent",
+                  "__enabled": true,
+                  "HandSource": "Right",
+                  "OverrideAnimGraphNames": false,
+                  "UpdateType": "All"
+                },
+                {
+                  "__type": "AnimatedModelComponent",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
+                  "CreateBoneObjects": false,
+                  "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Model": "models/hands/alyx_hand_right.vmdl",
                   "ShouldCastShadows": true,
