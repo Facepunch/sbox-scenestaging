@@ -68,6 +68,8 @@ public static class SceneEditorMenus
 		var text = EditorUtility.Clipboard.Paste();
 		if ( JsonNode.Parse( text ) is JsonObject jso )
 		{
+			SceneUtility.MakeGameObjectsUnique( jso );
+
 			var go = SceneEditorSession.Active.Scene.CreateObject();
 			go.Deserialize( jso );
 
