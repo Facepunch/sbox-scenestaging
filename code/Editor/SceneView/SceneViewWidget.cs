@@ -64,6 +64,8 @@ public partial class SceneViewWidget : Widget
 
 		EditorScene.GizmoInstance.Selection = session.Selection;
 
+		
+
 		Camera.World = session.Scene.SceneWorld;
 		Camera.Worlds.Add( EditorScene.GizmoInstance.World );
 		Camera.ClearFlags = ClearFlags.Color | ClearFlags.Depth | ClearFlags.Stencil;
@@ -73,6 +75,21 @@ public partial class SceneViewWidget : Widget
 		Camera.EnableUserInterface = false;
 		Camera.EnablePostProcessing = false;
 		Camera.Ortho = false;
+
+		if ( EditorScene.GizmoInstance.GetValue<bool>( "unlit" ) )
+		{
+			Camera.EnableDirectLighting = false;
+			Camera.EnableIndirectLighting = false;
+			Camera.AmbientLightColor = Color.White;
+			Camera.Bloom.Enabled = false;
+			Camera.Tonemap.Enabled = false;
+		}
+		else
+		{
+			Camera.EnableDirectLighting = true;
+			Camera.EnableIndirectLighting = true;
+			Camera.AmbientLightColor = Color.Black;
+		}
 
 		SceneToolbar.SceneInstance = EditorScene.GizmoInstance;
 
