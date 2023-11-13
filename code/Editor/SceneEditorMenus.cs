@@ -130,6 +130,7 @@ public static class SceneEditorMenus
 		var go = new GameObject();
 		go.Deserialize( json );
 		go.Transform.World = source.Transform.World;
+		go.MakeNameUnique();
 
 		source.AddSibling( go, false );
 
