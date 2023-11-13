@@ -62,7 +62,7 @@ public partial class GameObject
 	/// </summary>
 	public IEnumerable<BaseComponent> GetComponents( Type type, bool enabledOnly = true, bool deep = false )
 	{
-		return GetComponents<BaseComponent>( enabledOnly, deep ).Where( x => x.GetType().IsAssignableFrom( type ) );
+		return GetComponents<BaseComponent>( enabledOnly, deep ).Where( x => x.GetType().IsAssignableTo( type ) );
 	}
 
 	public bool TryGetComponent<T>( out T component, bool enabledOnly = true, bool deep = false )
