@@ -114,6 +114,11 @@ public class ParticleSystem : BaseComponent, BaseComponent.ExecuteInEditor
 		
 		return _sceneObject.GetControlPointPosition( i );
 	}
+	
+	public void Set( string name, Vector3 position )
+	{
+		_sceneObject?.SetNamedValue( name, position );
+	}
 
 	public override void Update()
 	{
