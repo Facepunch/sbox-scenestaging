@@ -14,4 +14,7 @@ public partial class PanelComponent
 
 	/// <inheritdoc cref="Panel.BindClass(string, Func{bool})"/>
 	public void BindClass( string className, Func<bool> func ) => Panel.BindClass( className, func );
+
+	/// <inheritdoc cref="Panel.SetClass(string, bool)"/>
+	public void SetClass( string className, bool enabled ) => Panel.SetClass( className, enabled );
 }
