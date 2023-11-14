@@ -11,24 +11,59 @@ public partial class ComponentSheet : Widget
 {
 	SerializedObject TargetObject;
 	Layout Content;
+	Guid GameObjectId;
+	
+	string ExpandedCookieString => $"expand.{GameObjectId}.{TargetObject.TypeName}";
 
-	internal bool Expanded { get; private set; } = true;
+	/// <summary>
+	/// The user's local preference to having this component expanded or not.
+	/// </summary>
+	bool ExpandedCookie
+	{
+		get => ProjectCookie.Get( ExpandedCookieString, true );
+		set
+		{
+			// Don't bother storing the cookie if it's an expanded component
+			if ( value )
+			{
+				ProjectCookie.Remove( ExpandedCookieString );
+			}
+			else
+			{
+				ProjectCookie.Set( ExpandedCookieString, value );
+			}
+		}
+	}
 
+	/// <summary>
+	/// Is this component currently expanded?
+	/// </summary>
+	internal bool Expanded { get; set; } = true;
+
+	/// <summary>
+	/// Expands/shrinks the component in the component list.
+	/// </summary>
+	/// <param name="expanded"></param>
 	internal void SetExpanded( bool expanded )
 	{
 		Expanded = expanded;
 		RebuildContent();
+		ExpandedCookie = expanded;
 	}
 
-	public ComponentSheet( SerializedObject target, Action contextMenu ) : base( null )
+	public ComponentSheet( Guid gameObjectId, SerializedObject target, Action contextMenu ) : base( null )
 	{
+		GameObjectId = gameObjectId;
 		Name = "ComponentSheet";
 		TargetObject = target;
 		Layout = Layout.Column();
 		SetSizeMode( SizeMode.Default, SizeMode.CanShrink );
 
+		// Check to see if we have a cookie to say if the component isn't expanded
+		Expanded = ExpandedCookie;
+
 		var header = Layout.Add( new ComponentHeader( TargetObject, this ) );
-		header.MouseRightPress += contextMenu;
+		header.WantsContextMenu = contextMenu;
 
 		Content = Layout.AddColumn();
 		Frame();
@@ -48,7 +83,8 @@ public partial class ComponentSheet : Widget
 		}
 	}
 
-	void RebuildContent()
+	[Event.Hotload]
+	public void RebuildContent()
 	{
 		Content.Clear( true );
 
@@ -59,21 +95,82 @@ public partial class ComponentSheet : Widget
 	{
 		if ( !Expanded ) return;
 	
-		var props = TargetObject.Where( x => x.HasAttribute<PropertyAttribute>() );
+		var props = TargetObject.Where( x => x.HasAttribute<PropertyAttribute>() )
+									.OrderBy( x => x.SourceLine )
+									.ThenBy( x => x.DisplayName )
+									.ToArray();
 
 		var ps = new ControlSheet();
+		HashSet<string> handledGroups = new ( StringComparer.OrdinalIgnoreCase );
 
-		foreach( var prop in props.OrderBy( x => x.SourceLine ).ThenBy( x => x.DisplayName ) )
+		foreach( var prop in props )
 		{
+			if ( !string.IsNullOrWhiteSpace( prop.GroupName ) )
+			{
+				if ( handledGroups.Contains( prop.GroupName ) )
+					continue;
+
+				handledGroups.Add( prop.GroupName );
+				AddGroup( ps, prop.GroupName, props.Where( x => x.GroupName == prop.GroupName ).ToArray() );
+				continue;
+			}
+
 			ps.AddRow( prop );
 		}
 		
 		Content.Add( ps );
 	}
 
-	public override void ChildValuesChanged( Widget source )
+	private void AddGroup( ControlSheet sheet, string groupName, SerializedProperty[] props )
 	{
-		//TargetObject.IsChanged();
+		var lo = Layout.Column();
+		lo.Spacing = 2;
+		var ps = new ControlSheet();
+
+		SerializedProperty skipProperty = null;
+
+		var toggleGroup = props.FirstOrDefault( x => x.HasAttribute<ToggleGroupAttribute>() && x.Name == groupName );
+		if ( toggleGroup is not null )
+		{
+			skipProperty = toggleGroup;
+
+			var label = new Label( groupName );
+			label.SetStyles( "color: #ccc; font-weight: bold;" );
+			label.FixedHeight = ControlWidget.ControlRowHeight;
+
+			var toggle = ControlWidget.Create( toggleGroup );
+			toggle.FixedHeight = 18;
+			toggle.FixedWidth = 18;
+
+			var row = Layout.Row();
+			row.Spacing = 8;
+			row.Add( toggle );
+			row.Add( label, 1 );
+
+			lo.Add( row );
+		}
+		else
+		{
+			var label = new Label( groupName );
+			label.SetStyles( "color: #ccc; font-weight: bold;" );
+			label.FixedHeight = ControlWidget.ControlRowHeight;
+			lo.Add( label );
+		}
+
+		ps.Margin = 0;
+
+		foreach ( var prop in props )
+		{
+			if ( skipProperty == prop )
+				continue;
+
+			ps.AddRow( prop, 8 );
+		}
+
+		lo.Add( ps );
+		lo.Margin = new Sandbox.UI.Margin( 0, 0, 0, 0 );
+
+		sheet.AddLayout( lo );
 	}
 
 }
@@ -83,14 +180,18 @@ file class ComponentHeader : Widget
 	SerializedObject TargetObject { get; init; }
 	ComponentSheet Sheet { get; set; }
 
+	public Action WantsContextMenu;
+
 	Layout expanderRect;
 	Layout iconRect;
 	Layout textRect;
+	Layout moreRect;
 
 	public ComponentHeader( SerializedObject target, ComponentSheet parent ) : base( parent )
 	{
 		TargetObject = target;
 		Sheet = parent;
+		MouseTracking = true;
 
 		var enabled = ControlWidget.Create( TargetObject.GetProperty( "Enabled" ) );
 		enabled.FixedWidth = 18;
@@ -117,6 +218,13 @@ file class ComponentHeader : Widget
 
 		// text 
 		textRect = Layout.AddColumn( 1 );
+
+		Layout.AddStretchCell( 1 );
+
+		moreRect = Layout.AddRow();
+		moreRect.AddSpacingCell( 16 );
+
+		Layout.AddSpacingCell( 16 );
 	}
 
 	protected override void OnPaint()
@@ -160,15 +268,15 @@ file class ComponentHeader : Widget
 		Paint.SetPen( Theme.Blue.Lighten( 0.1f ).WithAlpha( (Sheet.Expanded ? 0.9f : 0.6f) * opacity ) );
 		Paint.SetDefaultFont( 8, 1000, false );
 		Paint.DrawText( textRect.InnerRect, TargetObject.TypeTitle, TextFlag.LeftCenter );
+
+		Paint.DrawIcon( moreRect.InnerRect, "more_horiz", 16, TextFlag.RightCenter );
 	}
 
-	protected override void OnContextMenu( ContextMenuEvent e )
+	protected override void OnMouseRightClick( MouseEvent e )
 	{
-		base.OnContextMenu( e );
+		base.OnMouseRightClick( e );
 
-		var menu = new Menu();
-		//menu.AddOption( "Delete Component", "clear", () => Target.Parent.Components.Remove( Target ) );
-		menu.OpenAtCursor( false );
+		WantsContextMenu?.Invoke();
 	}
 
 	protected override void OnMouseClick( MouseEvent e )
@@ -177,7 +285,14 @@ file class ComponentHeader : Widget
 
 		if ( e.LeftMouseButton )
 		{
-			Sheet.SetExpanded( !Sheet.Expanded );
+			if ( moreRect.InnerRect.IsInside( e.LocalPosition ) )
+			{
+				WantsContextMenu?.Invoke();
+			}
+			else
+			{
+				Sheet.SetExpanded( !Sheet.Expanded );
+			}
 		}
 	}
 }

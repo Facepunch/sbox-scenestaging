@@ -5,18 +5,32 @@ using System.Linq;
 public partial class Scene : GameObject
 {
 	FixedUpdate fixedUpdate = new FixedUpdate();
-	public bool IsFixedUpdate;
+	public bool IsFixedUpdate { get; private set; }
 
 	public float FixedDelta => fixedUpdate.Delta;
 
 	/// <summary>
 	/// How many times a second FixedUpdate runs
 	/// </summary>
-	public float FixedUpdateFrequency { get; set; } = 50.0f;
+	[Property] public float FixedUpdateFrequency { get; set; } = 50.0f;
 
-	public float TimeScale { get; set; } = 1.0f;
+	/// <summary>
+	/// If the frame took longer than a FixedUpdate step, we need to run multiple
+	/// steps for that frame, to catch up. How many are allowed? Too few, and the 
+	/// simluation will run slower than the game. If you allow an unlimited amount
+	/// then the frame time could snowball to infinity and never catch up.
+	/// </summary>
+	[Property] public int MaxFixedUpdates { get; set; } = 5;
 
-	public bool ThreadedAnimation => true;
+	[Property, Range( 0, 1 )] public float TimeScale { get; set; } = 1.0f;
+
+	[Property] public bool ThreadedAnimation { get; set; } = true;
+
+	/// <summary>
+	/// If false, then instead of operating physics, and UpdateFixed in a fixed update frequency
+	/// they will be called the same as Update - every frame, with a time delta.
+	/// </summary>
+	[Property] public bool UseFixedUpdate { get; set; } = true;
 
 	/// <summary>
 	/// The update loop will turn certain settings on
@@ -29,6 +43,7 @@ public partial class Scene : GameObject
 
 	internal float CurrentTime;
 	float delta;
+	float time;
 
 	public void EditorTick()
 	{
@@ -36,6 +51,7 @@ public partial class Scene : GameObject
 		PreRender();
 		DrawGizmos();
 		PreTickReset();
+		PhysicsWorld.DebugDraw();
 
 		// Only tick here if we're an editor scene
 		// The game will tick a game scene!
@@ -65,17 +81,14 @@ public partial class Scene : GameObject
 			if ( GameManager.IsPaused )
 				return;
 
-			bool use_fixed_update = true;
-
-
-			if ( !use_fixed_update )
+			if ( !UseFixedUpdate )
 			{
 				FixedUpdate();
 			}
 			else
 			{
 				fixedUpdate.Frequency = FixedUpdateFrequency;
-				fixedUpdate.MaxSteps = 1; // todo - this will make the game run slower right now
+				fixedUpdate.MaxSteps = MaxFixedUpdates;
 
 				IsFixedUpdate = true;
 				fixedUpdate.Run( FixedUpdate );

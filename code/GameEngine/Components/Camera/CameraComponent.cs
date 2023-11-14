@@ -34,6 +34,9 @@ public class CameraComponent : BaseComponent
 	[Property]
 	public float OrthographicHeight { get; set; } = 1204;
 
+	[Property]
+	public StereoTargetEye TargetEye { get; set; } = StereoTargetEye.None;
+
 	public override void DrawGizmos()
 	{
 		if ( sceneCamera is null )
@@ -91,6 +94,7 @@ public class CameraComponent : BaseComponent
 		camera.ZFar = ZFar;
 		camera.FieldOfView = FieldOfView;
 		camera.BackgroundColor = BackgroundColor;
+		camera.TargetEye = TargetEye;
 
 		camera.Ortho = Orthographic;
 		camera.OrthoWidth = 512; // this isn't used

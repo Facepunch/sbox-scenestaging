@@ -81,7 +81,7 @@ public class GameObjectControlWidget : ControlWidget
 		{
 			e.Accepted = true;
 			var go = SerializedProperty.GetValue<GameObject>();
-			if ( go is not PrefabScene )
+			if ( go is not null && go is not PrefabScene )
 			{
 				SceneEditorSession.Active?.Selection.Set( go );
 				SceneEditorSession.Active.FullUndoSnapshot( $"Selected {go}" );

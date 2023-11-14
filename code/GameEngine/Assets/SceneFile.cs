@@ -5,4 +5,7 @@ using System.Text.Json.Nodes;
 public class SceneFile : GameResource
 {
 	public JsonObject[] GameObjects { get; set; }
+	public JsonObject SceneProperties { get; set; }
+	public string Title { get; set; }
+	public string Description { get; set; }
 }

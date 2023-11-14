@@ -21,11 +21,17 @@ public partial class Scene : GameObject
 
 	Gizmo.Instance gizmoInstance = new();
 
+
+	public string Title { get; set; }
+	public string Description { get; set; }
+
 	public Scene() : base( true, "Scene" )
 	{
 		SceneWorld = new SceneWorld();
 		PhysicsWorld = new PhysicsWorld();
 		Directory = new GameObjectDirectory( this );
+
+		PhysicsWorld.DebugSceneWorld = DebugSceneWorld;
 
 		PhysicsWorld.Gravity = Vector3.Down * 850;
 		PhysicsWorld.SimulationMode = PhysicsSimulationMode.Continuous;

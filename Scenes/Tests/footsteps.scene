@@ -1161,10 +1161,11 @@
               "__type": "CameraComponent",
               "__enabled": true,
               "BackgroundColor": "0.25292,0.26086,0.29703,1",
-              "ClearFlags": "Color, Depth, Stencil",
+              "ClearFlags": "All",
               "FieldOfView": 69.32,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "TargetEye": "None",
               "ZFar": 10000,
               "ZNear": 1
             },
@@ -1338,6 +1339,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "100,100,0.01",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1385,6 +1387,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1412,6 +1415,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1439,10 +1443,20 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
     }
   ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 0.3,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "Footsteps",
+  "Description": "Testing the footsteps animation event",
   "__references": []
 }

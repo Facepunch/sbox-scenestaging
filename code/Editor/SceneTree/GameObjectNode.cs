@@ -82,7 +82,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		//
 		// If there's a drag and drop happening, fade out nodes that aren't possible
 		//
-		if ( TreeView.IsBeingDroppedOn && (TreeView.CurrentItemDragEvent.Data.Object is not GameObject go || Value.IsAncestor( go )) )
+		if ( TreeView.IsBeingDroppedOn && (TreeView.CurrentItemDragEvent.Data.Object is GameObject go && Value.IsAncestor( go )) )
 		{
 			opacity *= 0.23f;
 		}
@@ -146,6 +146,8 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 	public override DropAction OnDragDrop( ItemDragEvent e )
 	{
+		using var scope = Value.Scene.Push();
+
 		if ( e.Data.Object is GameObject go )
 		{
 			// can't parent to an ancesor
@@ -168,6 +170,35 @@ public partial class GameObjectNode : TreeNode<GameObject>
 				}
 			}
 
+			return DropAction.Move;
+		}
+
+		var asset = AssetSystem.FindByPath( e.Data.FileOrFolder );
+		if ( asset is not null && asset.AssetType.FileExtension == "object" )
+		{
+			var pf = asset.LoadResource<PrefabFile>();
+			if ( pf is null ) return DropAction.Ignore;
+
+			if ( e.IsDrop )
+			{
+				var instantiated = SceneUtility.Instantiate( pf.Scene );
+
+				if ( e.DropEdge.HasFlag( ItemEdge.Top ) )
+				{
+					Value.AddSibling( instantiated, true );
+				}
+				else if ( e.DropEdge.HasFlag( ItemEdge.Bottom ) )
+				{
+					Value.AddSibling( instantiated, false );
+				}
+				else
+				{
+					instantiated.SetParent( Value, true );
+				}
+
+				SceneEditorSession.Active.Selection.Set( instantiated );
+			}
+			
 			return DropAction.Move;
 		}
 
