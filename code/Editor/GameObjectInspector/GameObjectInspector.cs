@@ -223,6 +223,8 @@ public class ComponentList : Widget
 
 			var component = target.GameObject.AddComponent( componentType );
 			component.DeserializeImmediately( jso );
+			
+			SceneEditorSession.Active.FullUndoSnapshot( "Pasted Component As New" );
 		}
 		catch
 		{
@@ -239,6 +241,7 @@ public class ComponentList : Widget
 			if ( JsonNode.Parse( text ) is JsonObject jso )
 			{
 				target.Deserialize( jso );
+				SceneEditorSession.Active.FullUndoSnapshot( "Pasted Component Values" );
 			}
 		}
 		catch
