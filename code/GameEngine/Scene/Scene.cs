@@ -21,6 +21,10 @@ public partial class Scene : GameObject
 
 	Gizmo.Instance gizmoInstance = new();
 
+
+	public string Title { get; set; }
+	public string Description { get; set; }
+
 	public Scene() : base( true, "Scene" )
 	{
 		SceneWorld = new SceneWorld();
