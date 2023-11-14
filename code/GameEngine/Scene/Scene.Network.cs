@@ -49,6 +49,7 @@ public partial class Scene : GameObject
 			create.JsonData = target.Serialize();
 			create.Owner = target.Net.Owner;
 			create.Creator = target.Net.Creator;
+			create.Update = target.CreateNetworkUpdate();
 
 			jso.Add( create );
 		}

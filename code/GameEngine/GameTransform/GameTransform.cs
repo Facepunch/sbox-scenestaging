@@ -15,6 +15,7 @@ public class GameTransform
 	{
 		GameObject = owner;
 		_local = Transform.Zero;
+		_fixedLocal = Transform.Zero;
 	}
 
 	Transform _local;
@@ -42,7 +43,7 @@ public class GameTransform
 
 		set
 		{
-			if ( value.Position.IsNaN ) throw new System.ArgumentOutOfRangeException();
+			if ( value.Position.IsNaN ) throw new System.ArgumentOutOfRangeException( "Position is NaN" );
 
 			if ( Proxy is not null )
 			{
@@ -95,7 +96,7 @@ public class GameTransform
 
 		set
 		{
-			if ( value.Position.IsNaN ) throw new System.ArgumentOutOfRangeException();
+			if ( value.Position.IsNaN ) throw new System.ArgumentOutOfRangeException( "Position is NaN" );
 
 			if ( Proxy is not null )
 			{
@@ -204,10 +205,5 @@ public class GameTransform
 		{
 			// okay
 		}
-	}
-
-	public void FDdd()
-	{
-		//
 	}
 }

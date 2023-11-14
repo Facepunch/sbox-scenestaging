@@ -2,7 +2,7 @@ using Sandbox;
 using System.Drawing;
 using System.Runtime;
 
-public class PlayerController : BaseComponent
+public class PlayerController : BaseComponent, INetworkBaby
 {
 	[Property] public Vector3 Gravity { get; set; } = new Vector3( 0, 0, 800 );
 
@@ -13,6 +13,7 @@ public class PlayerController : BaseComponent
 	[Property] public CitizenAnimation AnimationHelper { get; set; }
 
 	public Angles EyeAngles;
+	public bool IsRunning;
 
 	public bool IsController => GameObject.IsNetworked == false || GameObject.IsMine;
 
@@ -30,6 +31,8 @@ public class PlayerController : BaseComponent
 			var lookDir = EyeAngles.ToRotation();
 			cam.Transform.Position = Transform.Position + lookDir.Backward * 300 + Vector3.Up * 75.0f;
 			cam.Transform.Rotation = lookDir;
+
+			IsRunning = Input.Down( "Run" );
 		}
 
 		var cc = GameObject.GetComponent<CharacterController>();
@@ -64,7 +67,7 @@ public class PlayerController : BaseComponent
 			AnimationHelper.IsGrounded = cc.IsOnGround;
 			AnimationHelper.FootShuffle = rotateDifference;
 			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
-			AnimationHelper.MoveStyle = Input.Down( "Run" ) ? CitizenAnimation.MoveStyles.Run : CitizenAnimation.MoveStyles.Walk;
+			AnimationHelper.MoveStyle = IsRunning ? CitizenAnimation.MoveStyles.Run : CitizenAnimation.MoveStyles.Walk;
 		}
 	}
 
@@ -132,5 +135,17 @@ public class PlayerController : BaseComponent
 
 		if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
 		else WishVelocity *= 110.0f;
+	}
+
+	public void Write( ref ByteStream stream )
+	{
+		stream.Write( IsRunning );
+		stream.Write( EyeAngles );
+	}
+
+	public void Read( ByteStream stream )
+	{
+		IsRunning = stream.Read<bool>();
+		EyeAngles = stream.Read<Angles>();
 	}
 }

@@ -55,5 +55,7 @@ public sealed class NetworkObject : BaseComponent
 		netObject.Owner = create.Owner;
 
 		go.SetNetworkObject( netObject );
+
+		go.Receive( create.Update );
 	}
 }

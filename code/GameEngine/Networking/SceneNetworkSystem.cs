@@ -104,7 +104,8 @@ public struct Net_ObjectCreate
 	public Guid Guid { get; set; }
 	public Guid Creator { get; set; }
 	public Guid Owner { get; set; }
-	
+	public Net_ObjectUpdate Update { get; set; }
+
 }
 
 public struct Net_ObjectUpdate
@@ -112,5 +113,6 @@ public struct Net_ObjectUpdate
 	public Guid Guid { get; set; }
 	public Transform Transform { get; set; }
 	public Guid Parent { get; set; }
+	public string Data { get; set; }
 
 }
