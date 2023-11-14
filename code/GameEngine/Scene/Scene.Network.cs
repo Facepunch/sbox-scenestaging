@@ -1,9 +1,6 @@
 ﻿using Sandbox;
-using Sandbox.Diagnostics;
-using Sandbox.Utility;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.Json.Nodes;
 
 public partial class Scene : GameObject
 {
@@ -19,11 +16,11 @@ public partial class Scene : GameObject
 		networkedObjects.Remove( obj );
 	}
 
-	TimeSince timeSinceNetworkUpdate = 0;
+	RealTimeSince timeSinceNetworkUpdate = 0;
 
 	internal void SceneNetworkUpdate()
 	{
-		if ( timeSinceNetworkUpdate < ( 1.0f / 30.0f ) )
+		if ( timeSinceNetworkUpdate < (1.0f / 30.0f) )
 			return;
 
 		timeSinceNetworkUpdate = 0;
@@ -31,11 +28,31 @@ public partial class Scene : GameObject
 		if ( SceneNetworkSystem.Instance == null )
 			return;
 
-		foreach( var obj in networkedObjects )
+		foreach ( var obj in networkedObjects )
 		{
 			if ( !obj.IsMine ) continue;
 
+			//Log.Info( $"TIK: {obj}" );
 			obj.NetworkUpdate();
 		}
+	}
+
+
+	internal JsonArray SerializeNetworkObjects()
+	{
+		JsonArray jso = new JsonArray();
+
+		foreach ( var target in networkedObjects )
+		{
+			var create = new Net_ObjectCreate();
+			create.Guid = target.Id;
+			create.JsonData = target.Serialize();
+			create.Owner = target.Net.Owner;
+			create.Creator = target.Net.Creator;
+
+			jso.Add( create );
+		}
+
+		return jso;
 	}
 }

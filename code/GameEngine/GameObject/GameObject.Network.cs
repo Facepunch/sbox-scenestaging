@@ -10,6 +10,9 @@ public partial class GameObject
 	public bool IsProxy => IsNetworked && !IsMine;
 	public bool IsNetworked => Net is not null;
 
+	public float LastTx { get; set; }
+	public float LastRcv { get; set; }
+
 	internal void SetNetworkObject( NetworkObject obj )
 	{
 		Net = obj;
@@ -32,6 +35,9 @@ public partial class GameObject
 		update.Parent = Parent.Id;
 
 		SceneNetworkSystem.Instance.BroadcastJson( update );
+
+		LastTx = RealTime.Now;
+
 	}
 
 	internal static void ObjectUpdate( NetworkChannel user, Net_ObjectUpdate update )
@@ -43,8 +49,12 @@ public partial class GameObject
 			return;
 		}
 
-		//obj.Transform.Local = update.Transform;
-		obj.Transform.LerpTo( update.Transform, (1.0f / 30.0f) );
-		
+		obj.Receive( update );		
+	}
+
+	private void Receive( Net_ObjectUpdate update )
+	{
+		LastRcv = RealTime.Now;
+		Transform.LerpTo( update.Transform, (1.0f / 30.0f) );
 	}
 }

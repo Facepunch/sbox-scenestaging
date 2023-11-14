@@ -1,6 +1,8 @@
 ﻿using Sandbox;
 using Sandbox.Network;
 using Sandbox.Utility;
+using System.Runtime;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -27,14 +29,18 @@ public class SceneNetworkSystem : GameNetworkSystem
 	{
 		ThreadSafe.AssertIsMainThread();
 
+		JsonObject jso = new JsonObject();
+
 		var o = new GameObject.SerializeOptions();
 		o.SceneForNetwork = true;
+		jso.Add( "Scene", GameManager.ActiveScene.Serialize( o ) );
 
-		var s = GameManager.ActiveScene.Serialize( o );
+		jso.Add( "Objects", GameManager.ActiveScene.SerializeNetworkObjects() );
+		jso.Add( "Time", Time.Now );
 
-		Log.Info( s.ToJsonString() );
+		// we could probably send "global" network objects here
 
-		return s;
+		return jso;
 	}
 
 	/// <summary>
@@ -53,7 +59,24 @@ public class SceneNetworkSystem : GameNetworkSystem
 		GameManager.ActiveScene?.ProcessDeletes();
 
 		GameManager.ActiveScene = new Scene();
-		GameManager.ActiveScene.Deserialize( data );
+
+		if ( data.TryGetPropertyValue( "Time", out var time ) )
+		{
+			Time.Now = time.GetValue<float>();
+		}
+
+		if ( data.TryGetPropertyValue( "Scene", out var sceneData ) )
+		{
+			GameManager.ActiveScene.Deserialize( sceneData.AsObject() );
+		}
+
+		if ( data.TryGetPropertyValue( "Objects", out var __ ) && __.AsArray() is JsonArray objectArray )
+		{
+			foreach( var o in objectArray )
+			{
+				NetworkObject.CreateFromWire( null, o.Deserialize<Net_ObjectCreate>() );
+			}
+		}
 
 		GameManager.IsPlaying = true;
 	}

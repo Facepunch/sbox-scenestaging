@@ -41,8 +41,8 @@ public partial class Scene : GameObject
 		SceneWorld.GradientFog.Enabled = false;
 	}
 
-	float TimeNow;
-	float TimeDelta;
+	float TimeNow = 0.0f;
+	float TimeDelta = 0.1f;
 
 	public void EditorTick()
 	{

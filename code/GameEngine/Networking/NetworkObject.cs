@@ -47,10 +47,6 @@ public sealed class NetworkObject : BaseComponent
 
 	public static void CreateFromWire( NetworkChannel user, Net_ObjectCreate create )
 	{
-		Assert.NotNull( GameManager.ActiveScene );
-
-		Log.Info( $"OnObjectCreate from {user} / {GameManager.ActiveScene}" );
-
 		var go = new GameObject();
 		go.Deserialize( create.JsonData );
 
