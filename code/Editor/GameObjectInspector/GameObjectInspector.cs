@@ -2,6 +2,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Nodes;
 
 namespace Editor.Inspectors;
 
@@ -157,9 +158,15 @@ public class ComponentList : Widget
 		} ).Enabled = canMoveDown;
 
 		menu.AddOption( "Remove Component", action: () => component.Destroy() );
-		//menu.AddOption( "Copy To Clipboard" );
-		//menu.AddOption( "Paste As New" );
-		//menu.AddOption( "Paste Values" );
+		
+		menu.AddOption( "Copy To Clipboard", action: () => CopyComponent( component ) );
+
+		if ( HasComponentInClipboard() )
+		{
+			menu.AddOption( "Paste Values", action: () => PasteComponentValues( component ) );
+			menu.AddOption( "Paste As New", action: () => PasteComponentAsNew( component ) );
+		}
+		
 		//menu.AddOption( "Open In Window.." );
 		menu.AddSeparator();
 
@@ -176,6 +183,74 @@ public class ComponentList : Widget
 
 		menu.OpenAtCursor();
 
+	}
+
+	private bool HasComponentInClipboard()
+	{
+		var text = EditorUtility.Clipboard.Paste();
+
+		try
+		{
+			if ( JsonNode.Parse( text ) is JsonObject jso )
+			{
+				var componentType = TypeLibrary.GetType<BaseComponent>( (string)jso["__type"] );
+				return componentType is not null;
+			}
+		}
+		catch
+		{
+			// Do nothing.
+		}
+		
+		return false;
+	}
+
+	private void PasteComponentAsNew( BaseComponent target )
+	{
+		var text = EditorUtility.Clipboard.Paste();
+
+		try
+		{
+			if ( JsonNode.Parse( text ) is not JsonObject jso )
+				return;
+
+			var componentType = TypeLibrary.GetType<BaseComponent>( (string)jso["__type"] );
+			if ( componentType is null )
+			{
+				Log.Warning( $"TypeLibrary couldn't find BaseComponent type {jso["__type"]}" );
+				return;
+			}
+
+			var component = target.GameObject.AddComponent( componentType );
+			component.DeserializeImmediately( jso );
+		}
+		catch
+		{
+			// Do nothing.
+		}
+	}
+
+	private void PasteComponentValues( BaseComponent target )
+	{
+		var text = EditorUtility.Clipboard.Paste();
+
+		try
+		{
+			if ( JsonNode.Parse( text ) is JsonObject jso )
+			{
+				target.Deserialize( jso );
+			}
+		}
+		catch
+		{
+			// Do nothing.
+		}
+	}
+
+	private void CopyComponent( BaseComponent component )
+	{
+		var result = component.Serialize();
+		EditorUtility.Clipboard.Copy( result.ToString() );
 	}
 
 	int hashCode;
