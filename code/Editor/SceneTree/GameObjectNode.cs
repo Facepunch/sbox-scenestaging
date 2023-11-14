@@ -46,6 +46,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		var selected = item.Selected || item.Pressed || item.Dragging;
 		var isBone = Value.Flags.HasFlag( GameObjectFlags.Bone );
 		var isAttachment = Value.Flags.HasFlag( GameObjectFlags.Attachment );
+		var isNetworked = Value.IsNetworked;
 
 		var fullSpanRect = item.Rect;
 		fullSpanRect.Left = 0;
@@ -77,6 +78,12 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		{
 			icon = "polyline";
 			iconColor = Theme.Pink.WithAlpha( 0.8f );
+		}
+
+		if ( isNetworked )
+		{
+			icon = "rss_feed";
+			iconColor = Theme.Blue.WithAlpha( 0.8f );
 		}
 
 		//
@@ -132,7 +139,24 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 		Paint.SetPen( pen.WithAlphaMultiplied( opacity ) );
 		Paint.SetDefaultFont();
-		Paint.DrawText( r, name, TextFlag.LeftCenter );
+		r.Left += Paint.DrawText( r, name, TextFlag.LeftCenter ).Width;
+
+		if ( isNetworked )
+		{
+			if ( Value.IsMine )
+			{
+				r.Left += 4;
+				Paint.SetPen( Theme.Green.WithAlphaMultiplied( opacity * 0.4f ) );
+				Paint.DrawIcon( r, "home", 14, TextFlag.LeftCenter );
+			}
+			else if ( Value.IsProxy )
+			{
+				r.Left += 4;
+				Paint.SetPen( pen.WithAlphaMultiplied( opacity * 0.4f ) );
+				Paint.DrawIcon( r, "directions_run", 14, TextFlag.LeftCenter );
+				// TODO - show owner's name
+			}
+		}
 	}
 
 	public override bool OnDragStart()

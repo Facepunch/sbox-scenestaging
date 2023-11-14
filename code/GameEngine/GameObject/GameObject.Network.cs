@@ -6,7 +6,8 @@ public partial class GameObject
 {
 	internal NetworkObject Net { get; private set; }
 
-	public bool IsMine => Net?.IsMine ?? false;
+	public bool IsMine => IsNetworked && Net.IsMine;
+	public bool IsProxy => IsNetworked && !IsMine;
 	public bool IsNetworked => Net is not null;
 
 	internal void SetNetworkObject( NetworkObject obj )
