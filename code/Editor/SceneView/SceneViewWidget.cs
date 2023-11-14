@@ -27,6 +27,7 @@ public partial class SceneViewWidget : Widget
 		Layout.Add( Renderer );
 
 		Camera.Worlds.Add( EditorScene.GizmoInstance.World );
+		FocusMode = FocusMode.TabOrClickOrWheel;
 	}
 
 	int selectionHash = 0;
