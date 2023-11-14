@@ -7,6 +7,7 @@ public partial class GameObject
 	internal NetworkObject Net { get; private set; }
 
 	public bool IsMine => Net?.IsMine ?? false;
+	public bool IsNetworked => Net is not null;
 
 	internal void SetNetworkObject( NetworkObject obj )
 	{

@@ -41,9 +41,8 @@ public partial class Scene : GameObject
 		SceneWorld.GradientFog.Enabled = false;
 	}
 
-	internal float CurrentTime;
-	float delta;
-	float time;
+	float TimeNow;
+	float TimeDelta;
 
 	public void EditorTick()
 	{
@@ -68,11 +67,10 @@ public partial class Scene : GameObject
 	{
 		gizmoInstance.Input.Camera = Sandbox.Camera.Main;
 
-		// Todo - make a scoping class to encompass this shit
-		var delta = Time.Delta * TimeScale;
-		CurrentTime += delta;
+		TimeDelta = Time.Delta * TimeScale;
+		TimeNow += TimeDelta;
 
-		using var timeScope = Time.Scope( CurrentTime, delta, tick );
+		using var timeScope = Time.Scope( TimeNow, TimeDelta, tick );
 
 		using ( gizmoInstance.Push() )
 		{

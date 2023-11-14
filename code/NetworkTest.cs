@@ -27,11 +27,5 @@ public sealed class NetworkTest : BaseComponent
 			NetworkObject.Instantiate( o );
 		}
 
-
-		var cam = Scene.GetComponent<CameraComponent>( true, true );
-
-
-		cam.Transform.Position = Transform.Position + lookDir.Backward * 300 + Vector3.Up * 75.0f;
-		cam.Transform.Rotation = lookDir;
 	}
 }

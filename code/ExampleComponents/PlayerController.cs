@@ -1,13 +1,10 @@
 using Sandbox;
 using System.Drawing;
-
+using System.Runtime;
 
 public class PlayerController : BaseComponent
 {
 	[Property] public Vector3 Gravity { get; set; } = new Vector3( 0, 0, 800 );
-
-	[Range( 0, 400)]
-	[Property] public float CameraDistance { get; set; } = 200.0f;
 
 	public Vector3 WishVelocity { get; private set; }
 
@@ -17,15 +14,26 @@ public class PlayerController : BaseComponent
 
 	public Angles EyeAngles;
 
+	public bool IsController => GameObject.IsNetworked == false || GameObject.IsMine;
+
 	public override void Update()
 	{
 		// Eye input
-		if ( GameObject.IsMine )
+		if ( IsController )
 		{
 			EyeAngles.pitch += Input.MouseDelta.y * 0.1f;
 			EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
 			EyeAngles.roll = 0;
+
+			var cam = Scene.GetComponent<CameraComponent>( true, true );
+
+			var lookDir = EyeAngles.ToRotation();
+			cam.Transform.Position = Transform.Position + lookDir.Backward * 300 + Vector3.Up * 75.0f;
+			cam.Transform.Rotation = lookDir;
 		}
+
+
+
 
 		var cc = GameObject.GetComponent<CharacterController>();
 		if ( cc is null ) return;
@@ -65,7 +73,7 @@ public class PlayerController : BaseComponent
 
 	public override void FixedUpdate()
 	{
-		if ( !GameObject.IsMine )
+		if ( !IsController )
 			return;
 
 			BuildWishVelocity();
@@ -126,6 +134,6 @@ public class PlayerController : BaseComponent
 		if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
 
 		if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
-		else WishVelocity *= 70.0f;
+		else WishVelocity *= 110.0f;
 	}
 }

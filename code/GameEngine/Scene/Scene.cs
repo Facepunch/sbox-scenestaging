@@ -113,7 +113,7 @@ public partial class Scene : GameObject
 	{
 		var old = GameManager.ActiveScene;
 		GameManager.ActiveScene = this;
-		var timeScope = Time.Scope( GameManager.ActiveScene.CurrentTime, GameManager.ActiveScene.delta, 1 );
+		var timeScope = Time.Scope( GameManager.ActiveScene.TimeNow, GameManager.ActiveScene.TimeDelta, 1 );
 
 		return DisposeAction.Create( () =>
 		{
