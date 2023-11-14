@@ -22,13 +22,13 @@ public class ComponentControlWidget : ControlWidget
 
 	protected override void OnContextMenu( ContextMenuEvent e )
 	{
-		var m = new Menu();
+		var m = new Menu( this );
 
 	//	m.AddOption( "Copy", action: Copy );
 	//	m.AddOption( "Paste", action: Paste );
 		m.AddOption( "Clear", action: Clear );
 
-		m.OpenAtCursor();
+		m.OpenAtCursor( true );
 	}
 
 	protected override void PaintControl()

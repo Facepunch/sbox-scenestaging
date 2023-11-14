@@ -88,12 +88,12 @@ public partial class SceneTabButton : Widget
 
 	void OpenContextMenu()
 	{
-		var m = scene.CreateContextMenu();
+		var m = scene.CreateContextMenu( this );
 
 		m.AddSeparator();
 		m.AddOption( "Close", "close", () => session.Destroy() );
 
-		m.OpenAtCursor();
+		m.OpenAtCursor( true );
 	}
 }
 

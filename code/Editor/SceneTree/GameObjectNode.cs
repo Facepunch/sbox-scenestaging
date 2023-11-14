@@ -207,11 +207,11 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 	public override bool OnContextMenu()
 	{
-		var m = new Menu();
+		var m = new Menu( TreeView );
 
 		AddGameObjectMenuItems( m );
 
-		m.OpenAtCursor();
+		m.OpenAtCursor( true );
 
 		return true;
 	}

@@ -62,9 +62,9 @@ public static partial class SceneExtensions
 	/// <summary>
 	/// We should make this globally reachanle at some point. Should be able to draw icons using bitmaps etc too.
 	/// </summary>
-	public static Editor.Menu CreateContextMenu( this Scene scene )
+	public static Editor.Menu CreateContextMenu( this Scene scene, Widget parent = null )
 	{
-		var menu = new Editor.Menu();
+		var menu = new Editor.Menu( parent );
 
 		menu.AddOption( "Save", "save", action: () => scene.Save( false ) ).Enabled = scene.HasUnsavedChanges && scene.Source is not null;
 		menu.AddOption( "Save Scene As..", action: () => scene.Save( true ) );

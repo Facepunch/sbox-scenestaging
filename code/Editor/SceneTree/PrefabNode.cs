@@ -71,7 +71,7 @@ public partial class PrefabNode : GameObjectNode
 
 	public override bool OnContextMenu()
 	{
-		var m = new Menu();
+		var m = new Menu( TreeView );
 
 		m.AddOption( "Save Prefab", action: () => Save( Value, false ) );
 		m.AddOption( "Save As..", action: () => Save( Value, true ) );
@@ -80,7 +80,7 @@ public partial class PrefabNode : GameObjectNode
 
 		AddGameObjectMenuItems( m );
 
-		m.OpenAtCursor();
+		m.OpenAtCursor( true );
 
 		return true;
 	}
