@@ -166,15 +166,11 @@ public class ComponentList : Widget
 		var t = EditorTypeLibrary.GetType( component.GetType() );
 		if ( t.SourceFile is not null )
 		{
-			Log.Info( component.GetType() );
-			Log.Info( t.FullName );
-			Log.Info( t.SourceFile );
-
 			var filename = System.IO.Path.GetFileName( t.SourceFile );
 			menu.AddOption( $"Open {filename}..", action: () => CodeEditor.OpenFile( t.SourceFile, t.SourceLine ) );
 		}
 
-		menu.OpenAtCursor();
+		menu.OpenAtCursor( true );
 
 	}
 
