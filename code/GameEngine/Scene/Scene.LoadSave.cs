@@ -61,7 +61,7 @@ public partial class Scene : GameObject
 
 		foreach( var child in Children )
 		{
-			children.Add( child.Serialize() );
+			children.Add( child.Serialize( options ) );
 		}
 
 		json.Add( "GameObjects", children );

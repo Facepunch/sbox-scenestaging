@@ -27,7 +27,14 @@ public class SceneNetworkSystem : GameNetworkSystem
 	{
 		ThreadSafe.AssertIsMainThread();
 
-		return GameManager.ActiveScene.Serialize();
+		var o = new GameObject.SerializeOptions();
+		o.SceneForNetwork = true;
+
+		var s = GameManager.ActiveScene.Serialize( o );
+
+		Log.Info( s.ToJsonString() );
+
+		return s;
 	}
 
 	/// <summary>

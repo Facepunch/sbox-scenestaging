@@ -7,6 +7,10 @@ public partial class GameObject
 {
 	public class SerializeOptions
 	{
+		/// <summary>
+		/// If we're serializing for network, we won't include any networked objects
+		/// </summary>
+		public bool SceneForNetwork { get; set; }
 	}
 
 	//
@@ -18,6 +22,11 @@ public partial class GameObject
 	{
 		if ( Flags.HasFlag( GameObjectFlags.NotSaved ) )
 			return null;
+
+		if ( options is not null )
+		{
+			if ( options.SceneForNetwork && IsNetworked ) return null;
+		}
 
 		bool isPartOfPrefab = IsPrefabInstance;
 

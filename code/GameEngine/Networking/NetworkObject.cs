@@ -1,6 +1,5 @@
 using Sandbox;
 using Sandbox.Diagnostics;
-using static Sandbox.PhysicsContact;
 
 public sealed class NetworkObject : BaseComponent
 {

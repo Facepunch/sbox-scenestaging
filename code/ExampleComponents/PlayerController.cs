@@ -32,9 +32,6 @@ public class PlayerController : BaseComponent
 			cam.Transform.Rotation = lookDir;
 		}
 
-
-
-
 		var cc = GameObject.GetComponent<CharacterController>();
 		if ( cc is null ) return;
 
