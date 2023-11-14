@@ -184,12 +184,12 @@ public partial class SceneViewWidget : Widget
 			DragObject.Enabled = false;
 		}
 
-		var tr = SceneEditorSession.Active.Scene.SceneWorld.Trace
+		var tr = SceneEditorSession.Active.Scene.PhysicsWorld.Trace
 						.WithoutTags( "dragging" )
-						.Ray( Camera.GetRay( ev.LocalPosition - Renderer.Position, Renderer.Size ), 4096 )
+						.Ray( Camera.GetRay( ev.LocalPosition - Renderer.Position, Renderer.Size ), 2048 )
 						.Run();
 
-		var rot = Rotation.LookAt( tr.HitNormal, Vector3.Up ) * Rotation.From( 90, 0, 0 );
+		var rot = Rotation.LookAt( tr.Normal, Vector3.Up ) * Rotation.From( 90, 0, 0 );
 
 		if ( DragObject is null && (DragInstallTask?.IsCompleted ?? true) )
 		{
@@ -204,7 +204,7 @@ public partial class SceneViewWidget : Widget
 				}
 			}
 
-			if ( ev.Data.Url is not null )
+			if ( DragObject is null && ev.Data.Url is not null )
 			{
 				DragCancelSource?.Cancel();
 				DragCancelSource = new CancellationTokenSource();
@@ -227,8 +227,11 @@ public partial class SceneViewWidget : Widget
 		{
 			DragObject.Enabled = true;
 			DragObject.Flags = GameObjectFlags.NotSaved | GameObjectFlags.Hidden;
+			DragObject.Tags.Add( "dragging" );
 
-			var pos = tr.EndPosition + tr.HitNormal * DragOffset;
+
+
+			var pos = tr.EndPosition + tr.Normal * DragOffset;
 
 			DragObject.Transform.Position = pos;
 			DragObject.Transform.Rotation = rot;
