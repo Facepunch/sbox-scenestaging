@@ -164,6 +164,7 @@ public partial class SceneViewWidget : Widget
 			EditorScene.Selection.Add( DragObject );
 
 			DragObject.Flags = GameObjectFlags.None;
+			DragObject.Tags.Remove( "isdragdrop" );
 			DragObject = null;
 		}
 
@@ -185,7 +186,7 @@ public partial class SceneViewWidget : Widget
 		}
 
 		var tr = SceneEditorSession.Active.Scene.PhysicsWorld.Trace
-						.WithoutTags( "dragging" )
+						.WithoutTags( "isdragdrop", "trigger" )
 						.Ray( Camera.GetRay( ev.LocalPosition - Renderer.Position, Renderer.Size ), 2048 )
 						.Run();
 
@@ -227,7 +228,7 @@ public partial class SceneViewWidget : Widget
 		{
 			DragObject.Enabled = true;
 			DragObject.Flags = GameObjectFlags.NotSaved | GameObjectFlags.Hidden;
-			DragObject.Tags.Add( "dragging" );
+			DragObject.Tags.Add( "isdragdrop" );
 
 
 
@@ -242,6 +243,8 @@ public partial class SceneViewWidget : Widget
 
 	void CreateDragObjectFromAsset( Asset asset )
 	{
+		asset.RecordOpened();
+
 		//
 		// A prefab asset!
 		//
