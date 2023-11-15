@@ -98,7 +98,7 @@ public class GameObjectControlWidget : ControlWidget
 	{
 		ev.Action = DropAction.Ignore;
 
-		if ( ev.Data.Object is GameObject go )
+		if ( ev.Data.Object is GameObject or GameObject[] )
 		{
 			ev.Action = DropAction.Link;
 			return;
@@ -121,10 +121,15 @@ public class GameObjectControlWidget : ControlWidget
 
 	public override void OnDragDrop( DragEvent ev )
 	{
-
 		if ( ev.Data.Object is GameObject go )
 		{
 			SerializedProperty.SetValue( go );
+			return;
+		}
+
+		if ( ev.Data.Object is GameObject[] gos )
+		{
+			SerializedProperty.SetValue( gos.FirstOrDefault() );
 			return;
 		}
 

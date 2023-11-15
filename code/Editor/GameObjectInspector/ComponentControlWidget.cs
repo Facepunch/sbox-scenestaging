@@ -79,10 +79,9 @@ public class ComponentControlWidget : ControlWidget
 	{
 		ev.Action = DropAction.Ignore;
 
-		if ( ev.Data.Object is GameObject )
+		if ( ev.Data.Object is GameObject or GameObject[] )
 		{
 			ev.Action = DropAction.Link;
-			return;
 		}
 	}
 
@@ -90,10 +89,16 @@ public class ComponentControlWidget : ControlWidget
 	{
 		if ( ev.Data.Object is GameObject go )
 		{
-			var c = go.GetComponent( SerializedProperty.PropertyType, false, false );
-
+			var c = go.GetComponent( SerializedProperty.PropertyType, false );
 			SerializedProperty.SetValue( c );
-			return;
+		}
+		else if ( ev.Data.Object is GameObject[] gos )
+		{
+			var suitable = gos.FirstOrDefault( g => g.GetComponent( SerializedProperty.PropertyType, false ) is not null );
+			if ( suitable is null ) return;
+
+			var c = suitable.GetComponent( SerializedProperty.PropertyType, false );
+			SerializedProperty.SetValue( c );
 		}
 	}
 }
