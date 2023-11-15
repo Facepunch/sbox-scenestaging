@@ -1,6 +1,7 @@
 ﻿using Sandbox;
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
+using Sandbox.Network;
 
 public partial class Scene : GameObject
 {
@@ -38,15 +39,15 @@ public partial class Scene : GameObject
 	}
 
 
-	internal JsonArray SerializeNetworkObjects()
+	internal List<ObjectCreateMsg> SerializeNetworkObjects()
 	{
-		JsonArray jso = new JsonArray();
+		var jso = new List<ObjectCreateMsg>();
 
 		foreach ( var target in networkedObjects )
 		{
-			var create = new Net_ObjectCreate();
+			var create = new ObjectCreateMsg();
 			create.Guid = target.Id;
-			create.JsonData = target.Serialize();
+			create.JsonData = target.Serialize().ToJsonString();
 			create.Owner = target.Net.Owner;
 			create.Creator = target.Net.Creator;
 			create.Update = target.CreateNetworkUpdate();

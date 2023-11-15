@@ -1,5 +1,7 @@
 using Sandbox;
 using Sandbox.Diagnostics;
+using Sandbox.Network;
+using System.Text.Json.Nodes;
 
 public sealed class NetworkObject : BaseComponent
 {
@@ -29,13 +31,13 @@ public sealed class NetworkObject : BaseComponent
 	{
 		if ( SceneNetworkSystem.Instance is not null )
 		{
-			var create = new Net_ObjectCreate();
+			var create = new ObjectCreateMsg();
 			create.Guid = target.Id;
-			create.JsonData = target.Serialize();
+			create.JsonData = target.Serialize()?.ToJsonString() ?? "{}";
 			create.Owner = SceneNetworkSystem.LocalId;
 			create.Creator = SceneNetworkSystem.LocalId;
 
-			SceneNetworkSystem.Instance.BroadcastJson( create );
+			SceneNetworkSystem.Instance.Broadcast( create );
 		}
 
 		var netObject = target.GetComponent<NetworkObject>();
@@ -43,19 +45,5 @@ public sealed class NetworkObject : BaseComponent
 		netObject.Owner = SceneNetworkSystem.LocalId;
 
 		target.SetNetworkObject( netObject );
-	}
-
-	public static void CreateFromWire( NetworkChannel user, Net_ObjectCreate create )
-	{
-		var go = new GameObject();
-		go.Deserialize( create.JsonData );
-
-		var netObject = go.GetComponent<NetworkObject>();
-		netObject.Creator = create.Creator;
-		netObject.Owner = create.Owner;
-
-		go.SetNetworkObject( netObject );
-
-		go.Receive( create.Update );
 	}
 }

@@ -33,27 +33,16 @@ public partial class GameObject
 	{
 		var update = CreateNetworkUpdate();
 
-		SceneNetworkSystem.Instance.BroadcastJson( update );
+		SceneNetworkSystem.Instance.Broadcast( update );
 
 		LastTx = RealTime.Now;
 
 	}
 
-	internal static void ObjectUpdate( NetworkChannel user, Net_ObjectUpdate update )
-	{
-		var obj = GameManager.ActiveScene.Directory.FindByGuid( update.Guid );
-		if ( obj is null )
-		{
-			Log.Warning( $"ObjectUpdate: Unknown object {update.Guid}" );
-			return;
-		}
 
-		obj.Receive( update );		
-	}
-
-	internal Net_ObjectUpdate CreateNetworkUpdate()
+	internal ObjectUpdateMsg CreateNetworkUpdate()
 	{
-		var update = new Net_ObjectUpdate();
+		var update = new ObjectUpdateMsg();
 		update.Guid = Id;
 		update.Transform = Transform.Local;
 		update.Parent = Parent.Id;
@@ -81,7 +70,7 @@ public partial class GameObject
 		return update;
 	}
 
-	internal void Receive( Net_ObjectUpdate update )
+	internal void Receive( ObjectUpdateMsg update )
 	{
 		LastRcv = RealTime.Now;
 		Transform.LerpTo( update.Transform, (1.0f / 30.0f) );

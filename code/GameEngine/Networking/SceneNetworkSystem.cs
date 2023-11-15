@@ -17,36 +17,28 @@ public class SceneNetworkSystem : GameNetworkSystem
 	{
 		Instance = this;
 		Log.Info( "SceneNetworkSystem Initialized" );
-
-		AddJsonHandler<Net_ObjectCreate>( NetworkObject.CreateFromWire );
-		AddJsonHandler<Net_ObjectUpdate>( GameObject.ObjectUpdate );
 	}
 
 	/// <summary>
 	/// A client has joined and wants a snapshot of the world
 	/// </summary>
-	public override async Task<JsonObject> GetSnapshotAsync( NetworkChannel source )
+	public override void GetSnapshot( NetworkChannel source, ref SnapshotMsg msg )
 	{
 		ThreadSafe.AssertIsMainThread();
 
-		JsonObject jso = new JsonObject();
+		msg.Time = Time.Now;
 
 		var o = new GameObject.SerializeOptions();
 		o.SceneForNetwork = true;
-		jso.Add( "Scene", GameManager.ActiveScene.Serialize( o ) );
 
-		jso.Add( "Objects", GameManager.ActiveScene.SerializeNetworkObjects() );
-		jso.Add( "Time", Time.Now );
-
-		// we could probably send "global" network objects here
-
-		return jso;
+		msg.SceneData = GameManager.ActiveScene.Serialize( o ).ToJsonString();
+		msg.NetworkObjects = GameManager.ActiveScene.SerializeNetworkObjects();
 	}
 
 	/// <summary>
 	/// We have recieved a snapshot of the world
 	/// </summary>
-	public override async Task SetSnapshotAsync( JsonObject data )
+	public override async Task SetSnapshotAsync( SnapshotMsg msg )
 	{
 		ThreadSafe.AssertIsMainThread();
 
@@ -60,22 +52,17 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		GameManager.ActiveScene = new Scene();
 
-		if ( data.TryGetPropertyValue( "Time", out var time ) )
+		Time.Now = msg.Time;
+
+		if ( !string.IsNullOrWhiteSpace( msg.SceneData ) )
 		{
-			Time.Now = time.GetValue<float>();
+			var sceneData = JsonObject.Parse( msg.SceneData ).AsObject();
+			GameManager.ActiveScene.Deserialize( sceneData );
 		}
 
-		if ( data.TryGetPropertyValue( "Scene", out var sceneData ) )
+		foreach ( var nwo in msg.NetworkObjects )
 		{
-			GameManager.ActiveScene.Deserialize( sceneData.AsObject() );
-		}
-
-		if ( data.TryGetPropertyValue( "Objects", out var __ ) && __.AsArray() is JsonArray objectArray )
-		{
-			foreach( var o in objectArray )
-			{
-				NetworkObject.CreateFromWire( null, o.Deserialize<Net_ObjectCreate>() );
-			}
+			OnObjectCreate( nwo, null );
 		}
 
 		GameManager.IsPlaying = true;
@@ -95,24 +82,31 @@ public class SceneNetworkSystem : GameNetworkSystem
 	{
 		return GameManager.ActiveScene.Push();
 	}
+
+	protected override void OnObjectCreate( in ObjectCreateMsg message, NetworkChannel source )
+	{
+		var go = new GameObject();
+		go.Deserialize( JsonObject.Parse( message.JsonData ).AsObject() );
+
+		var netObject = go.GetComponent<NetworkObject>();
+		netObject.Creator = message.Creator;
+		netObject.Owner = message.Owner;
+
+		go.SetNetworkObject( netObject );
+
+		//go.Receive( message.Update );
+	}
+
+	protected override void OnObjectUpdate( in ObjectUpdateMsg message, NetworkChannel source )
+	{
+		var obj = GameManager.ActiveScene.Directory.FindByGuid( message.Guid );
+		if ( obj is null )
+		{
+			Log.Warning( $"ObjectUpdate: Unknown object {message.Guid}" );
+			return;
+		}
+
+		obj.Receive( message );		
+	}
 }
 
-
-public struct Net_ObjectCreate
-{
-	public JsonObject JsonData { get; set; }
-	public Guid Guid { get; set; }
-	public Guid Creator { get; set; }
-	public Guid Owner { get; set; }
-	public Net_ObjectUpdate Update { get; set; }
-
-}
-
-public struct Net_ObjectUpdate
-{
-	public Guid Guid { get; set; }
-	public Transform Transform { get; set; }
-	public Guid Parent { get; set; }
-	public string Data { get; set; }
-
-}
