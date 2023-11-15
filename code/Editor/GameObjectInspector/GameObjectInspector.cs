@@ -119,7 +119,7 @@ public class ComponentList : Widget
 
 			var serialized = EditorTypeLibrary.GetSerializedObject( o );
 			serialized.OnPropertyChanged += ( p ) => PropertyEdited( p, o );
-			var sheet = new ComponentSheet( GameObjectId, serialized, () => OpenContextMenu( o ) );
+			var sheet = new ComponentSheet( GameObjectId, serialized, ( x ) => OpenContextMenu( o, x ) );
 			Layout.Add( sheet );
 			Layout.AddSeparator();
 		}
@@ -131,7 +131,7 @@ public class ComponentList : Widget
 		component.EditLog( $"{component}.{property.Name}", component );
 	}
 
-	void OpenContextMenu( BaseComponent component )
+	void OpenContextMenu( BaseComponent component, Vector2? position = null )
 	{
 		var menu = new Menu( this );
 
@@ -170,7 +170,14 @@ public class ComponentList : Widget
 			menu.AddOption( $"Open {filename}..", action: () => CodeEditor.OpenFile( t.SourceFile, t.SourceLine ) );
 		}
 
-		menu.OpenAtCursor( true );
+		if ( position != null )
+		{
+			menu.OpenAt( position.Value, true );
+		}
+		else
+		{
+			menu.OpenAtCursor( true );
+		}
 
 	}
 
