@@ -74,6 +74,7 @@ public partial class SceneEditorSession
 	{
 		// Don't save the state of play sessions
 		if ( this is GameEditorSession ) return;
+		if ( ProjectCookie is null ) return;
 
 		var cookieName = CookieName;
 
