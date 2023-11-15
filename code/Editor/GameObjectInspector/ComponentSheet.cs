@@ -225,6 +225,22 @@ file class ComponentHeader : Widget
 		moreRect.AddSpacingCell( 16 );
 
 		Layout.AddSpacingCell( 16 );
+
+		IsDraggable = true;
+	}
+
+	protected override void OnDragStart()
+	{
+		base.OnDragStart();
+
+		if ( !TargetObject.TryGetProperty( "GameObject", out var goProp ) ) return;
+
+		var go = goProp.GetValue<GameObject>( null );
+		if ( go == null ) return;
+
+		var drag = new Drag( Sheet );
+		drag.Data.Object = go;
+		drag.Execute();
 	}
 
 	protected override void OnPaint()
