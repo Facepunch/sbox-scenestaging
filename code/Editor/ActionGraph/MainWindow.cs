@@ -38,10 +38,10 @@ public static class ActionGraphExtensions
 	{
 		switch ( node.Definition.Identifier )
 		{
-			case "event":
+			case "input":
 				return new()
 				{
-					Name = node.ActionGraph.UserData["name"]?.GetValue<string>() ?? "Event",
+					Name = node.ActionGraph.UserData["name"]?.GetValue<string>() ?? node.DisplayInfo.Title,
 					Description = node.DisplayInfo.Description,
 					Icon = node.DisplayInfo.Icon,
 					Tags = node.DisplayInfo.Tags

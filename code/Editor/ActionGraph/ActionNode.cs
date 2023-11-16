@@ -10,10 +10,8 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 {
 	private static HashSet<string> Hidden { get; } = new ()
 	{
-		"event",
-		"call",
-		"nop",
-		"comment",
+		"input", "output",
+		"call", "nop", "comment",
 
 		"property.get", "property.set",
 		"field.get", "field.set",
@@ -34,7 +32,7 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 	public bool HasInput( Type valueType )
 	{
 		var isSignal = valueType == typeof(OutputSignal);
-		return Definition.Bind( null, null ).Inputs
+		return Definition.Bind( null ).Inputs
 			.Any( x => isSignal ? x.IsSignal : x.Type.IsAssignableFrom( valueType ) );
 	}
 
@@ -274,10 +272,10 @@ public class ActionNode : INode
 	public virtual DisplayInfo DisplayInfo => Node.GetDisplayInfo();
 
 	[HideInEditor]
-	public bool CanClone => Node != Node.ActionGraph.EventNode;
+	public bool CanClone => Node.Definition != EditorNodeLibrary.Input && Node.Definition != EditorNodeLibrary.Output;
 
 	[HideInEditor]
-	public bool CanRemove => Node != Node.ActionGraph.EventNode;
+	public bool CanRemove => Node.Definition != EditorNodeLibrary.Input && Node.Definition != EditorNodeLibrary.Output;
 
 	[HideInEditor]
 	public Color PrimaryColor
