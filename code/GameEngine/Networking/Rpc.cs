@@ -15,7 +15,7 @@ public class BaseRpcAttribute : System.Attribute
 
 
 [AttributeUsage( AttributeTargets.Method )]
-[CodeGenerator( CodeGeneratorFlags.Instance | CodeGeneratorFlags.WrapMethod, "RpcWrap" )]
+[CodeGenerator( CodeGeneratorFlags.Instance | CodeGeneratorFlags.WrapMethod, "__rpc_Broadcast" )]
 public class BroadcastAttribute : Attribute
 {
 

@@ -74,7 +74,6 @@ public class PlayerController : BaseComponent, INetworkBaby
 	[Broadcast]
 	public void OnJump( float floatValue, string dataString, object[] objects, Vector3 position )
 	{
-		Log.Info( $"Value: {floatValue} {dataString} {objects.Length} {position}" );
 		AnimationHelper?.TriggerJump();
 	}
 
@@ -100,7 +99,7 @@ public class PlayerController : BaseComponent, INetworkBaby
 			//	cc.IsOnGround = false;
 
 			OnJump( fJumps, "Hello", new object[] { Time.Now.ToString(), 43.0f }, Vector3.Random );
-			//RpcWrap( null, "method", fJumps, "Hello", new object[] { Time.Now.ToString(), 43.0f }, Vector3.Random );
+
 			fJumps += 1.0f;
 
 		}
