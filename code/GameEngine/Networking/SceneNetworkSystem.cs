@@ -78,11 +78,13 @@ public class SceneNetworkSystem : GameNetworkSystem
 		Log.Info( $"Client {client.Name} has left the game!" );
 
 		GameManager.ActiveScene.DestroyNetworkObjects( x => x.Net.Owner == client.Id );
-
 	}
 
 	public override IDisposable Push()
 	{
+		if ( GameManager.ActiveScene is null )
+			return null;
+
 		return GameManager.ActiveScene.Push();
 	}
 
@@ -174,13 +176,16 @@ public class SceneNetworkSystem : GameNetworkSystem
 		var method = typeDesc.GetMethod( messageName );
 		if ( method == null )
 		{
-			throw new System.Exception( $"Unknown RPC {messageName} on {typeDesc.Name}" );
+			throw new System.Exception( $"Unknown RPC '{messageName}' on {typeDesc.Name}" );
 		}
 
 		// todo make sure has an RPC attribute
 		// todo make sure of permissions, make sure source can call this
 
-		method.Invoke( target, new object[] {} );
+		if ( target is BaseComponent bc ) bc.rpcFromNetwork = true;
+
+		var arguments = Packer.Deserialize( argumentData ) as object[];
+
+		method.Invoke( target, arguments );
 	}
 }
-

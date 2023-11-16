@@ -102,7 +102,7 @@ public partial class GameObject
 		
 	}
 
-	internal void CallRpc( BaseComponent source, string method )
+	internal void CallRpc( BaseComponent source, string method, params object[] arguments )
 	{
 		if ( SceneNetworkSystem.Instance is null )
 		{
@@ -113,7 +113,7 @@ public partial class GameObject
 		msg.Guid = Id;
 		msg.Component = source.GetType().Name;
 		msg.MessageName = method;
-		msg.ArgumentData = new byte[] { 1, 4, 55 };
+		msg.ArgumentData = SceneNetworkSystem.Instance.Packer.Serialize( arguments );
 
 		SceneNetworkSystem.Instance.Broadcast( msg );
 	}
