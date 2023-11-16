@@ -67,6 +67,7 @@ public class PhysicsComponent : BaseComponent
 	public override void FixedUpdate()
 	{
 		if ( _body is null ) return;
+		if ( GameObject.IsProxy ) return; // updating position from the network
 
 		_body.GravityEnabled = Gravity;
 
