@@ -52,6 +52,11 @@ public partial class GameObject : IValid
 		_destroying = true;
 
 		Scene?.QueueDelete( this );
+
+		if ( Net is not null )
+		{
+			Net.SendNetworkDestroy();
+		}
 	}
 
 	/// <summary>

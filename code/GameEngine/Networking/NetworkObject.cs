@@ -10,22 +10,7 @@ public sealed class NetworkObject : BaseComponent
 
 	public bool IsMine => Owner == SceneNetworkSystem.LocalId;
 
-	public override void OnAwake()
-	{
-		base.OnAwake();
-
-
-	}
-
-	public override void OnStart()
-	{
-		base.OnStart();
-	}
-
-	public override void Update()
-	{
-
-	}
+	bool hasNetworkDestroyed;
 
 	public static void Instantiate( GameObject target )
 	{
@@ -45,5 +30,22 @@ public sealed class NetworkObject : BaseComponent
 		netObject.Owner = SceneNetworkSystem.LocalId;
 
 		target.SetNetworkObject( netObject );
+	}
+
+	internal void OnNetworkDestroy()
+	{
+		hasNetworkDestroyed = true;
+		GameObject.Destroy();
+	}
+
+	internal void SendNetworkDestroy()
+	{
+		if ( hasNetworkDestroyed ) return;
+		if ( !IsMine ) return;
+
+		var msg = new ObjectDestroyMsg();
+		msg.Guid = GameObject.Id;
+
+		SceneNetworkSystem.Instance.Broadcast( msg );
 	}
 }

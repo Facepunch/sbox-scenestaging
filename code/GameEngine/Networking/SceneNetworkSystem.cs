@@ -76,6 +76,9 @@ public class SceneNetworkSystem : GameNetworkSystem
 	public override void OnLeave( NetworkChannel client )
 	{
 		Log.Info( $"Client {client.Name} has left the game!" );
+
+		GameManager.ActiveScene.DestroyNetworkObjects( x => x.Net.Owner == client.Id );
+
 	}
 
 	public override IDisposable Push()
@@ -85,7 +88,11 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 	protected override void OnObjectCreate( in ObjectCreateMsg message, NetworkChannel source )
 	{
+		// TODO: Does source have the authority to create?
+
 		var go = new GameObject();
+
+		// TODO: Does this server allow this client to be creating objects from json?
 		go.Deserialize( JsonObject.Parse( message.JsonData ).AsObject() );
 
 		var netObject = go.GetComponent<NetworkObject>();
@@ -106,7 +113,30 @@ public class SceneNetworkSystem : GameNetworkSystem
 			return;
 		}
 
-		obj.Receive( message );		
+		// TODO: Does source have the authority to update?
+
+		obj.Receive( message );
+	}
+
+	protected override void OnObjectDestroy( in ObjectDestroyMsg message, NetworkChannel source )
+	{
+		var obj = GameManager.ActiveScene.Directory.FindByGuid( message.Guid );
+		if ( obj is null )
+		{
+			Log.Warning( $"ObjectDestroy: Unknown object {message.Guid}" );
+			return;
+		}
+
+		// TODO: Does source have the authoruty to destroy?
+
+		if ( obj.Net is not null )
+		{
+			obj.Net.OnNetworkDestroy();
+		}
+		else
+		{
+			obj.Destroy();
+		}
 	}
 }
 

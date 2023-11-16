@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
 using Sandbox.Network;
+using System.Linq;
 
 public partial class Scene : GameObject
 {
@@ -56,5 +57,16 @@ public partial class Scene : GameObject
 		}
 
 		return jso;
+	}
+
+
+	internal void DestroyNetworkObjects( Func<GameObject, bool> test )
+	{
+		var found = networkedObjects.Where( test ).ToArray();
+
+		foreach( var f in found )
+		{
+			f.Destroy();
+		}
 	}
 }
