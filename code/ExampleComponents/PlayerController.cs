@@ -71,6 +71,11 @@ public class PlayerController : BaseComponent, INetworkBaby
 		}
 	}
 
+	public void OnJump()
+	{
+		AnimationHelper?.TriggerJump();
+	}
+
 	public override void FixedUpdate()
 	{
 		if ( !IsController )
@@ -90,7 +95,9 @@ public class PlayerController : BaseComponent, INetworkBaby
 			cc.Punch( Vector3.Up * flMul * flGroundFactor );
 			//	cc.IsOnGround = false;
 
-			AnimationHelper?.TriggerJump();
+			OnJump();
+			GameObject.CallRpc( this, "OnJump" );
+
 		}
 
 		if ( cc.IsOnGround )

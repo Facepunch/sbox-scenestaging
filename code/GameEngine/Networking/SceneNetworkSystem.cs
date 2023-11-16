@@ -138,5 +138,49 @@ public class SceneNetworkSystem : GameNetworkSystem
 			obj.Destroy();
 		}
 	}
+
+	protected override void OnObjectMessage( in ObjectMessageMsg message, NetworkChannel source )
+	{
+		// TODO - flag for "global rpc", for calling statics?
+		// DispatchRpc( null, .. )
+
+		var obj = GameManager.ActiveScene.Directory.FindByGuid( message.Guid );
+		if ( obj is null )
+		{
+			Log.Warning( $"OnObjectMessage: Unknown object {message.Guid}" );
+			return;
+		}
+
+		// todo - support rpcs on GameObject? Not user created obviously, but makes sense to pass things through here?
+		//		- like changing ownership etc?
+		//		- just set target to the obj?
+		// DispatchRpc( obj, .. )
+
+		var componentName = message.Component;
+		var target = obj.Components.FirstOrDefault( x => x.GetType().Name == componentName );
+
+		DispatchRpc( source, target, message.MessageName, message.ArgumentData );
+	}
+
+	private void DispatchRpc( NetworkChannel source, object target, string messageName, byte[] argumentData )
+	{
+		var typeDesc = TypeLibrary.GetType( target.GetType() );
+		if ( typeDesc == null )
+		{
+			throw new System.Exception( $"Tried to call RPC on unknown type {target.GetType()}" );
+		}
+
+		// TODO: support calling overloaded methods?
+		var method = typeDesc.GetMethod( messageName );
+		if ( method == null )
+		{
+			throw new System.Exception( $"Unknown RPC {messageName} on {typeDesc.Name}" );
+		}
+
+		// todo make sure has an RPC attribute
+		// todo make sure of permissions, make sure source can call this
+
+		method.Invoke( target, new object[] {} );
+	}
 }
 
