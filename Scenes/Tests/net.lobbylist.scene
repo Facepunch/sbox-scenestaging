@@ -1,0 +1,324 @@
+{
+  "GameObjects": [
+    {
+      "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "158.6718,-124.3322,368.6452",
+      "Rotation": "0.8894004,0.1914825,-0.4057941,0.087365",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "0,0,0,1",
+          "Shadows": true,
+          "SkyColor": "0.02193,0.02278,0.02475,1"
+        }
+      ]
+    },
+    {
+      "Id": "12df27a7-aaf4-4da8-bc02-173ecd53c168",
+      "Name": "SkyBox",
+      "Enabled": true,
+      "Position": "1252.565,134.7641,-1378.779",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "SkyBox2D",
+          "__enabled": true,
+          "SkyMaterial": "materials/skybox/light_test_sky_night_basic.vmat",
+          "Tint": "0.0198,0.0198,0.0198,1"
+        },
+        {
+          "__type": "EnvmapComponent",
+          "__enabled": true,
+          "Bounds": {
+            "Mins": "-4096,-4096,-4096",
+            "Maxs": "4096,4096,4096"
+          },
+          "Projection": "Sphere",
+          "Texture": "textures/cubemaps/default.vtex",
+          "TintColor": "0.12857,0.20583,0.42574,1"
+        }
+      ]
+    },
+    {
+      "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "Name": "Camera",
+      "Enabled": true,
+      "Position": "1050.461,393.9113,-1536.836",
+      "Rotation": "0.2293157,0.1970243,-0.7229961,0.6211862",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.25292,0.26086,0.29703,1",
+          "ClearFlags": "All",
+          "FieldOfView": 73.68,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "TargetEye": "None",
+          "ZFar": 10000,
+          "ZNear": 1
+        },
+        {
+          "__type": "Bloom",
+          "__enabled": true,
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "BloomCurve": {
+            "rangey": "0,106.45",
+            "frames": [
+              {},
+              {
+                "x": 1,
+                "y": 1
+              }
+            ]
+          },
+          "Mode": "Screen",
+          "Strength": 7.95,
+          "Threshold": 0.08,
+          "ThresholdWidth": 3.06
+        },
+        {
+          "__type": "Tonemapping",
+          "__enabled": true,
+          "ExposureCompensation": 0.43,
+          "MaximumExposure": 2,
+          "MinimumExposure": 1.3,
+          "Rate": 4.52
+        }
+      ]
+    },
+    {
+      "Id": "0cd4b3b6-7ff0-461e-9ce3-716ce58ea5d4",
+      "Name": "Gradient Fog",
+      "Enabled": true,
+      "Position": "1318.709,134.7641,-1636.627",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": ""
+    },
+    {
+      "Id": "8fb08eff-6288-42d9-a8a9-981bd535be4d",
+      "Name": "Spot Light",
+      "Enabled": true,
+      "Position": "978.264,280.5271,-1510.71",
+      "Rotation": "-0.00000005501167,0.7318483,0.0000001134687,0.6814676",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 0.45,
+          "ConeInner": 0,
+          "ConeOuter": 30.15,
+          "Cookie": "materials/effects/lightcookie.vtex",
+          "LightColor": "2,1.85327,1.43564,1",
+          "Radius": 501.43942
+        },
+        {
+          "__type": "SpinComponent",
+          "__enabled": true,
+          "SpinAngles": "0,0,10"
+        }
+      ]
+    },
+    {
+      "Id": "8c64e32c-b269-47c7-b0fa-66149819dced",
+      "Name": "Scene",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Children": [
+        {
+          "Id": "cc71df09-7f34-457f-bb0f-abe31b615402",
+          "Name": "trash_pile_c_03",
+          "Enabled": true,
+          "Position": "1072.543,273.0627,-1637.636",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/props/trash_pile_c/trash_pile_c_03.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "e6100ecf-1825-4354-a382-2b7c9f2d4b2f",
+          "Name": "trash_pile_a_01",
+          "Enabled": true,
+          "Position": "1019.082,329.6609,-1637.636",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/props/trash_pile_a/trash_pile_a_01.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "3a1cba04-928f-4993-b3e9-0a89fd3db695",
+          "Name": "trash_pile_c_04",
+          "Enabled": true,
+          "Position": "991.8993,240.0206,-1637.636",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/props/trash_pile_c/trash_pile_c_04.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "62050497-8884-4cf1-ab91-0e7ef3001a1c",
+          "Name": "trash_pile_c_02",
+          "Enabled": true,
+          "Position": "956.34,340.7145,-1637.636",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/props/trash_pile_c/trash_pile_c_02.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "f58c9bdb-17c9-4178-a23a-6b24b50b3722",
+          "Name": "wooden_chair_a",
+          "Enabled": true,
+          "Position": "970.0709,284.2838,-1637.636",
+          "Rotation": "0.00000001222938,0.0000000000000001231974,0.2051749,0.9787256",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/props/trim_sheets/chairs/wooden_chair_a.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+          "Name": "Surface",
+          "Enabled": true,
+          "Position": "1420.439,0,-1637.736",
+          "Rotation": "0,0,0,1",
+          "Scale": "20,20,20",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/shine.vmat",
+              "Model": "models/dev/plane.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.05882,0.13725,0.49412,1"
+            },
+            {
+              "__type": "ColliderBoxComponent",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Scale": "100,100,0.01",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "1522b80e-9e39-431b-9f00-b18a7b5b5120",
+      "Name": "Lobby UI",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "LobbyListPanel",
+          "__enabled": true
+        },
+        {
+          "__type": "ScreenPanel",
+          "__enabled": true,
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "networking",
+  "Description": "",
+  "__references": [
+    "facepunch.trash_pile_a_01",
+    "facepunch.trash_pile_c_02",
+    "facepunch.trash_pile_c_03",
+    "facepunch.trash_pile_c_04",
+    "facepunch.wooden_chair_a"
+  ]
+}

@@ -1,0 +1,82 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@using Sandbox.Network;
+
+@inherits PanelComponent
+
+<root>
+
+    <div class="header">
+
+        <div class="title">
+            Lobby List
+        </div>
+
+        <div class="explanation">
+            <p>This is just listing every lobby that is running under this game.</p>
+            <p>A lobby is just a listen server that gets handed off when the owner leaves.</p>
+        </div>
+
+    </div>
+
+    <div class="list">
+
+        @if ( refreshing )
+        {
+            <div>Refreshing..</div>
+        }
+        else if ( list.Count == 0 )
+        {
+            <div>No lobbies were found</div>
+        }
+        else
+        {
+            @foreach( var lobby in list )
+            {
+                <div class="button" onclick=@(() => OpenLobby( lobby ) )>
+
+                    <div class="title">
+                    @lobby.LobbyId
+                    </div>
+
+                    <div class="count">
+                        @lobby.Members / @lobby.MaxMembers
+                    </div>
+
+                </div>
+            }
+        }
+    </div>
+
+
+</root>
+
+@code
+{
+    bool refreshing;
+    List<LobbyInformation> list = new ();
+
+    public override void OnEnabled()
+    {
+        base.OnEnabled();
+
+        _ =  RefreshLobbyList();
+    }
+
+    async Task RefreshLobbyList()
+    {
+        refreshing = true;
+        StateHasChanged();
+
+        list = await GameNetworkSystem.QueryLobbies();
+
+        refreshing = false;
+        StateHasChanged();
+    }
+
+    void OpenLobby( LobbyInformation lobby )
+    {
+        GameNetworkSystem.Connect( lobby.LobbyId );
+    }
+
+}

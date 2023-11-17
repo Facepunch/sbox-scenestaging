@@ -1,0 +1,83 @@
+
+LobbyListPanel
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	backdrop-filter: blur( 5px );
+	pointer-events: all;
+	flex-direction: row;
+	padding: 100px;
+	color: #ccc;
+	font-family: Poppins;
+	gap: 100px;
+
+	> .header
+	{
+		flex-direction: column;
+		width: 400px;
+		margin: 100px;
+
+		> .title
+		{
+			font-size: 50px;
+			font-family: Poppins;
+			font-weight: bold;
+		}
+
+		> .explanation
+		{
+			color: #aaa;
+			font-size: 17px;
+			margin-top: 50px;
+			margin-bottom: 50px;
+			width: 100%;
+			flex-direction: column;
+			gap: 20px;
+		}
+	}
+
+	.list
+	{
+		flex-direction: row;
+		flex-wrap: wrap;
+		margin: 20px;
+		justify-content: flex-start;
+		backdrop-filter: blur( 64px );
+		background-color: #0005;
+		border-radius: 20px;
+		flex-grow: 1;
+		gap: 10px;
+		padding: 20px;
+	}
+}
+
+
+.list > .button
+{
+	background-color: #bbb;
+	color: #333;
+	padding: 20px;
+	border-radius: 10px;
+	gap: 20px;
+	font-weight: bold;
+	width: 280px;
+	cursor: pointer;
+
+	.title
+	{
+		flex-grow: 1;
+	}
+
+	.count
+	{
+		white-space: nowrap;
+	}
+
+	&:hover
+	{
+		background-color: #fff;
+	}
+}
