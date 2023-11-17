@@ -9,6 +9,14 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		Height = 17;
 	}
 
+	public override string Name
+	{
+		get => Value.Name;
+		set => Value.Name = value;
+	}
+
+	public override bool CanEdit => true;
+
 	public override bool HasChildren
 	{
 		get
