@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text.Json.Serialization;
 using Editor.NodeEditor;
 using Facepunch.ActionGraphs;
+using Sandbox.ActionGraphs;
 
 namespace Editor.ActionGraph;
 
@@ -11,7 +12,8 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 	private static HashSet<string> Hidden { get; } = new ()
 	{
 		"input", "output",
-		"call", "nop", "comment",
+		"call", "graph",
+		"nop", "comment",
 
 		"property.get", "property.set",
 		"field.get", "field.set",
@@ -54,6 +56,31 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 		var node = actionGraph.Graph.AddNode( Definition );
 
 		return CreateEditorNode( actionGraph, node );
+	}
+}
+
+public record struct GraphNodeType( ActionGraphResource Resource ) : INodeType
+{
+	public string Identifier => Resource.ResourcePath;
+
+	public DisplayInfo DisplayInfo => Resource.DisplayInfo;
+
+	public bool HasInput( Type valueType )
+	{
+		// TODO
+		return false;
+	}
+
+	public bool HideInEditor => false;
+
+	public INode CreateNode( IGraph graph )
+	{
+		var actionGraph = (ActionGraph)graph;
+		var node = actionGraph.Graph.AddNode( actionGraph.Graph.NodeLibrary.Graph );
+
+		node.Properties["graph"].Value = Resource.ResourcePath;
+
+		return new ActionNode( actionGraph, node );
 	}
 }
 
@@ -439,6 +466,20 @@ public class ActionNode : INode
 		else if ( Definition.Identifier.StartsWith( "const." ) )
 		{
 			PaintConstant( rect );
+		}
+	}
+
+	public void OnDoubleClick()
+	{
+		if ( Definition.Identifier == "graph" )
+		{
+			var graph = Node.Properties["graph"].Value as string;
+
+			if ( !string.IsNullOrEmpty( graph ) )
+			{
+				var asset = AssetSystem.FindByPath( graph );
+				asset?.OpenInEditor();
+			}
 		}
 	}
 

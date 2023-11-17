@@ -14,11 +14,6 @@ namespace Editor.ActionGraph;
 
 public static class ActionGraphExtensions
 {
-	public static string GetName( this IActionGraph actionGraph )
-	{
-		return actionGraph.UserData.TryGetPropertyValue( "name", out var node ) ? node?.GetValue<string>() : null;
-	}
-
 	private static DisplayInfo ConstDisplayInfo( Node node )
 	{
 		var name = node.Properties.TryGetValue( "name", out var nameProperty )
@@ -62,7 +57,8 @@ public static class ActionGraphExtensions
 	}
 }
 
-public partial class MainWindow : DockWindow
+[EditorForAssetType( "action" )]
+public partial class MainWindow : DockWindow, IAssetEditor
 {
 	private static Dictionary<Guid, MainWindow> Instances { get; } = new Dictionary<Guid, MainWindow>();
 
@@ -118,7 +114,7 @@ public partial class MainWindow : DockWindow
 		if ( node == null )
 			return;
 
-		var row = new StackRow( node.GetDisplayInfo().Name, node.ActionGraph.GetName() );
+		var row = new StackRow( node.GetDisplayInfo().Name, node.ActionGraph.Title );
 		row.IsFromEngine = false;
 		row.MouseClick += () =>
 		{
@@ -136,16 +132,17 @@ public partial class MainWindow : DockWindow
 
 	public static MainWindow Open( Facepunch.ActionGraphs.ActionGraph actionGraph, string name = null )
 	{
-		if ( actionGraph.GetName() == null )
+		if ( string.IsNullOrEmpty( actionGraph.Title ) )
 		{
-			actionGraph.UserData["name"] = name;
+			actionGraph.Title = name;
 		}
 
 		var guid = actionGraph.GetGuid();
 
 		if ( !Instances.TryGetValue( guid, out var inst ) )
 		{
-			Instances[guid] = inst = new MainWindow( actionGraph );
+			Instances[guid] = inst = new MainWindow();
+			inst.Init( actionGraph );
 		}
 
 		inst.Show();
@@ -153,9 +150,11 @@ public partial class MainWindow : DockWindow
 		return inst;
 	}
 
-	public Facepunch.ActionGraphs.ActionGraph ActionGraph { get; }
+	public Asset Asset { get; private set; }
+	public ActionGraphResource Resource { get; private set; }
+	public Facepunch.ActionGraphs.ActionGraph ActionGraph { get; private set; }
 
-	public ActionGraph Graph { get; }
+	public ActionGraph Graph { get; private set; }
 	public ActionGraphView View { get; private set; }
 	public Properties Properties { get; private set; }
 	public ErrorList ErrorList { get; private set; }
@@ -166,19 +165,50 @@ public partial class MainWindow : DockWindow
 	private Option _undoMenuOption;
 	private Option _redoMenuOption;
 
-	private MainWindow( Facepunch.ActionGraphs.ActionGraph actionGraph )
+	public bool CanOpenMultipleAssets => false;
+
+	public void AssetOpen( Asset asset )
 	{
+		var resource = asset.LoadResource<ActionGraphResource>();
+
+		resource.Graph ??= Facepunch.ActionGraphs.ActionGraph.CreateEmpty( EditorNodeLibrary );
+
+		Init( resource.Graph, asset, resource );
+		Show();
+	}
+
+	public void Init( Facepunch.ActionGraphs.ActionGraph actionGraph, Asset asset = null, ActionGraphResource resource = null )
+	{
+		if ( ActionGraph != null )
+		{
+			ActionGraphDebugger.StopListening( ActionGraph );
+		}
+
 		DeleteOnClose = true;
 
+		Asset = asset;
+		Resource = resource;
 		ActionGraph = actionGraph;
 		Graph = new ActionGraph( actionGraph );
-
-		Title = $"{ActionGraph.GetName()} - Action Graph";
+		
 		Size = new Vector2( 1280, 720 );
 
-		ActionGraphDebugger.StartListening( actionGraph, OnLinkTriggered );
-
+		UpdateTitle();
 		RebuildUI();
+
+		try
+		{
+			ActionGraphDebugger.StartListening( actionGraph, OnLinkTriggered );
+		}
+		catch ( Exception e )
+		{
+			Log.Error( e );
+		}
+	}
+
+	private void UpdateTitle()
+	{
+		Title = $"{ActionGraph.Title} - Action Graph";
 	}
 
 	private void OnLinkTriggered( Link link, object value )
@@ -284,6 +314,16 @@ public partial class MainWindow : DockWindow
 	private void Save()
 	{
 		Saved?.Invoke();
+
+		if ( Asset != null )
+		{
+			Resource.Graph = ActionGraph;
+
+			Asset.SaveToMemory( Resource );
+			Asset.SaveToDisk( Resource );
+		}
+
+		UpdateTitle();
 	}
 
 	private void Undo()
@@ -508,6 +548,16 @@ public class ActionGraphView : GraphView
 		{
 			yield return new VariableNodeType( variable.Name, variable.Type, PropertyNodeKind.Get, false, true );
 			yield return new VariableNodeType( variable.Name, variable.Type, PropertyNodeKind.Set, false, true );
+		}
+
+		foreach ( var resource in GlobalGameNamespace.ResourceLibrary.GetAll<ActionGraphResource>() )
+		{
+			if ( resource.Graph == null )
+			{
+				continue;
+			}
+
+			yield return new GraphNodeType( resource );
 		}
 
 		foreach ( var nodeType in base.GetRelevantNodes( name ) )

@@ -1,0 +1,78 @@
+{
+  "Graph": {
+    "Kind": "Action",
+    "Variables": [],
+    "Nodes": [
+      {
+        "Id": 0,
+        "Type": "input",
+        "Properties": {
+          "parameters": [
+            {
+              "Name": "value",
+              "Type": "System.Private.CoreLib/System.String",
+              "IsRequired": true
+            }
+          ]
+        },
+        "UserData": {
+          "Position": "-176,-32"
+        }
+      },
+      {
+        "Id": 1,
+        "Type": "log.info",
+        "Inputs": {
+          "format": "Hello, {0}!"
+        },
+        "UserData": {
+          "Position": "80,-32"
+        }
+      },
+      {
+        "Id": 2,
+        "Type": "const.string",
+        "Properties": {
+          "name": "Greeting",
+          "value": "Hello, {0}!"
+        },
+        "UserData": {
+          "Position": "-176,-112"
+        }
+      }
+    ],
+    "Links": [
+      [
+        0,
+        "_signal",
+        1,
+        "_signal"
+      ],
+      [
+        0,
+        "value",
+        1,
+        "args",
+        0
+      ],
+      [
+        2,
+        "_result",
+        1,
+        "format"
+      ]
+    ],
+    "UserData": {
+      "Title": "Greeter",
+      "Description": "Says hello to the input.",
+      "id": "1edf82bc-0c61-4efd-9955-7024a589b7e2",
+      "Icon": "emoji_people",
+      "Category": "Custom"
+    }
+  },
+  "Title": "Greeter",
+  "Description": "Says hello to the input.",
+  "Category": "Custom",
+  "Icon": "emoji_people",
+  "__references": []
+}

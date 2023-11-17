@@ -254,7 +254,7 @@ public class ErrorListView : ListView
 
 		if ( context is IActionGraph actionGraph )
 		{
-			return actionGraph.GetName();
+			return actionGraph.DisplayInfo.Title;
 		}
 
 		if ( context is Variable variable )

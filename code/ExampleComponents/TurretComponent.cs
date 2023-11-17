@@ -16,6 +16,7 @@ public sealed class TurretComponent : BaseComponent
 	public delegate void ShootHandler( TurretComponent turret, GameObject bullet, bool secondary );
 	
 	[Property] public ShootHandler OnShoot { get; set; }
+	[Property] public Func<int, int> TestFunc { get; set; }
 
 	[Property] ModelRenderer GunModel { get; set; }
 	[Property] Gradient GunColorGradient { get; set; }
@@ -76,6 +77,8 @@ public sealed class TurretComponent : BaseComponent
 			var obj = SceneUtility.Instantiate( Bullet, Muzzle.Transform.Position, Muzzle.Transform.Rotation );
 
 			Stats.Increment( "balls_fired", 1 );
+
+			Log.Info( $"TestFunc(1): {TestFunc?.Invoke(1)}");
 
 			OnShoot?.Invoke( this, obj, true );
 			

@@ -58,6 +58,7 @@ public class Properties : Widget
 	private static HashSet<string> HidePropertiesFor { get; } = new()
 	{
 		"input", "output",
+		"graph",
 		"property.get",
 		"property.set",
 		"var.get",

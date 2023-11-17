@@ -74,240 +74,194 @@
           "__type": "OnStartComponent",
           "__enabled": true,
           "HandleStart": {
+            "Kind": "Action",
             "Variables": [],
             "Nodes": [
               {
                 "Id": 0,
-                "Type": "event",
-                "Properties": {
-                  "name": "event"
-                },
+                "Type": "input",
                 "UserData": {
-                  "Position": "-16,-32"
+                  "Position": "-304,-144"
                 }
               },
               {
-                "Id": 1,
-                "Type": "call",
-                "Properties": {
-                  "T": {
-                    "$type": "Type",
-                    "Type": "package.facepunch.testbed/CitizenAnimation"
-                  },
-                  "_type": "package.facepunch.testbed/GameObject",
-                  "_name": "GetComponent"
-                },
-                "UserData": {
-                  "Position": "256,48"
-                }
-              },
-              {
-                "Id": 2,
-                "Type": "property.set",
-                "Properties": {
-                  "_type": "package.facepunch.testbed/CitizenAnimation",
-                  "_name": "HoldType"
-                },
-                "UserData": {
-                  "Position": "576,0"
-                }
-              },
-              {
-                "Id": 3,
-                "Type": "const.enum",
-                "Properties": {
-                  "value": {
-                    "$type": "Simple",
-                    "Type": {
-                      "$type": "Nested",
-                      "DeclaringType": "package.facepunch.testbed/CitizenAnimation",
-                      "Name": "HoldTypes"
-                    },
-                    "Value": "Punch"
-                  },
-                  "T": {
-                    "$type": "Nested",
-                    "DeclaringType": "package.facepunch.testbed/CitizenAnimation",
-                    "Name": "HoldTypes"
-                  }
-                },
-                "UserData": {
-                  "Position": "288,176"
-                }
-              }
-            ],
-            "Links": [
-              [
-                0,
-                "self",
-                1,
-                "_target"
-              ],
-              [
-                1,
-                "_result",
-                2,
-                "target"
-              ],
-              [
-                0,
-                "_signal",
-                2,
-                "_signal"
-              ],
-              [
-                3,
-                "_result",
-                2,
-                "value"
-              ]
-            ],
-            "UserData": {
-              "name": "Start",
-              "id": "bdddf899-929b-4c54-8564-2caddebc1fbb"
-            }
-          }
-        },
-        {
-          "__type": "OnUpdateComponent",
-          "__enabled": true,
-          "HandleUpdate": {
-            "Variables": [],
-            "Nodes": [
-              {
-                "Id": 0,
-                "Type": "event",
-                "Properties": {
-                  "name": "event"
-                },
-                "UserData": {
-                  "Position": "-16,-32"
-                }
-              },
-              {
-                "Id": 3,
-                "Type": "call",
-                "Properties": {
-                  "deep": true,
-                  "T": {
-                    "$type": "Type",
-                    "Type": "package.facepunch.testbed/AnimatedModelComponent"
-                  },
-                  "_type": "package.facepunch.testbed/GameObject",
-                  "_name": "GetComponent"
-                },
-                "UserData": {
-                  "Position": "656,112"
-                }
-              },
-              {
-                "Id": 5,
+                "Id": 23,
                 "Type": "property.set",
                 "Properties": {
                   "_type": "package.facepunch.testbed/AnimatedModelComponent",
                   "_name": "Tint"
                 },
                 "UserData": {
-                  "Position": "992,112"
+                  "Position": "1344,-48"
                 }
               },
               {
-                "Id": 6,
+                "Id": 19,
+                "Type": "property.get",
+                "Properties": {
+                  "_type": "package.facepunch.testbed/GameObject",
+                  "_name": "Children"
+                },
+                "UserData": {
+                  "Position": "256,-48"
+                }
+              },
+              {
+                "Id": 24,
                 "Type": "random.color",
+                "UserData": {
+                  "Position": "1008,48"
+                }
+              },
+              {
+                "Id": 21,
+                "Type": "foreach",
+                "UserData": {
+                  "Position": "576,-144"
+                }
+              },
+              {
+                "Id": 22,
+                "Type": "call",
                 "Properties": {
-                  "saturation": 0.75
+                  "T": {
+                    "$type": "Type",
+                    "Type": "package.facepunch.testbed/AnimatedModelComponent"
+                  },
+                  "_type": "package.facepunch.testbed/GameObject",
+                  "_name": "TryGetComponent"
                 },
                 "UserData": {
-                  "Position": "656,192"
+                  "Position": "816,-80"
                 }
               },
               {
-                "Id": 9,
-                "Type": "input.pressed",
-                "UserData": {
-                  "Position": "448,48"
-                }
-              },
-              {
-                "Id": 8,
-                "Type": "const.string",
-                "Properties": {
-                  "value": "attack1"
-                },
-                "UserData": {
-                  "Position": "272,48"
-                }
-              },
-              {
-                "Id": 10,
+                "Id": 25,
                 "Type": "if",
                 "UserData": {
-                  "Position": "656,16"
+                  "Position": "1088,-128"
                 }
               },
               {
-                "Id": 11,
+                "Id": 32,
                 "Type": "nop",
                 "UserData": {
-                  "Position": "272,176"
+                  "Position": "-16,-256"
+                }
+              },
+              {
+                "Id": 31,
+                "Type": "property.get",
+                "Properties": {
+                  "_type": "package.facepunch.testbed/GameObject",
+                  "_name": "Name"
+                },
+                "UserData": {
+                  "Position": "0,-208"
+                }
+              },
+              {
+                "Id": 30,
+                "Type": "graph",
+                "Properties": {
+                  "graph": "actions/greeter.action"
+                },
+                "UserData": {
+                  "Position": "304,-272"
                 }
               }
             ],
             "Links": [
               [
-                11,
-                "out",
-                3,
-                "_target"
-              ],
-              [
-                3,
-                "_result",
-                5,
-                "target"
-              ],
-              [
-                10,
-                "true",
-                5,
+                21,
+                "body",
+                25,
                 "_signal"
               ],
               [
-                6,
+                22,
                 "_result",
-                5,
-                "value"
-              ],
-              [
-                8,
-                "_result",
-                9,
-                "action"
-              ],
-              [
-                0,
-                "_signal",
-                10,
-                "_signal"
-              ],
-              [
-                9,
-                "_result",
-                10,
+                25,
                 "condition"
               ],
               [
                 0,
                 "self",
-                11,
+                19,
+                "target"
+              ],
+              [
+                0,
+                "self",
+                31,
+                "target"
+              ],
+              [
+                22,
+                "component",
+                23,
+                "target"
+              ],
+              [
+                25,
+                "true",
+                23,
+                "_signal"
+              ],
+              [
+                24,
+                "_result",
+                23,
+                "value"
+              ],
+              [
+                19,
+                "_result",
+                21,
+                "enumerable"
+              ],
+              [
+                21,
+                "body.value",
+                22,
+                "_target"
+              ],
+              [
+                0,
+                "_signal",
+                32,
                 "in"
+              ],
+              [
+                31,
+                "_result",
+                30,
+                "value"
+              ],
+              [
+                32,
+                "out",
+                30,
+                "_signal"
+              ],
+              [
+                30,
+                "_signal",
+                21,
+                "_signal"
               ]
             ],
             "UserData": {
-              "name": "Update",
-              "id": "42181e71-5ba1-49c9-94f1-52a13f611a4a"
+              "name": "Start",
+              "id": "b719be75-b339-452f-af21-1aada36039f2",
+              "Title": "Start"
             }
           }
+        },
+        {
+          "__type": "OnUpdateComponent",
+          "__enabled": true,
+          "HandleUpdate": null
         }
       ],
       "Children": [
@@ -373,10 +327,11 @@
               "__type": "CameraComponent",
               "__enabled": true,
               "BackgroundColor": "0.25292,0.26086,0.29703,1",
-              "ClearFlags": "Color, Depth, Stencil",
+              "ClearFlags": "All",
               "FieldOfView": 80,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "TargetEye": "None",
               "ZFar": 10000,
               "ZNear": 1
             },
@@ -464,10 +419,11 @@
                   "__type": "CameraComponent",
                   "__enabled": true,
                   "BackgroundColor": "0.33333,0.46275,0.52157,1",
-                  "ClearFlags": "Color, Depth, Stencil",
+                  "ClearFlags": "All",
                   "FieldOfView": 60,
                   "Orthographic": false,
                   "OrthographicHeight": 1204,
+                  "TargetEye": "None",
                   "ZFar": 10000,
                   "ZNear": 10
                 }
@@ -535,746 +491,13 @@
               "__enabled": true,
               "IsTrigger": true,
               "Radius": 30,
+              "Static": false,
               "Surface": null
             },
             {
               "__type": "OnTouchComponent",
               "__enabled": true,
-              "HandleStartTouch": {
-                "Variables": [
-                  {
-                    "Id": 52,
-                    "Name": "Collider",
-                    "Type": "package.facepunch.testbed/Collider"
-                  },
-                  {
-                    "Id": 54,
-                    "Name": "Self",
-                    "Type": "package.facepunch.testbed/GameObject"
-                  },
-                  {
-                    "Id": 62,
-                    "Name": "Ball Physics",
-                    "Type": "package.facepunch.testbed/PhysicsComponent"
-                  },
-                  {
-                    "Id": 73,
-                    "Name": "Poop",
-                    "Type": "package.facepunch.testbed/Collider"
-                  }
-                ],
-                "Nodes": [
-                  {
-                    "Id": 0,
-                    "Type": "event",
-                    "Properties": {
-                      "name": "event"
-                    },
-                    "UserData": {
-                      "Position": "-560,-544"
-                    }
-                  },
-                  {
-                    "Id": 1,
-                    "Type": "property.get",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/BaseComponent",
-                      "_name": "GameObject"
-                    },
-                    "UserData": {
-                      "Position": "-128,-240"
-                    }
-                  },
-                  {
-                    "Id": 2,
-                    "Type": "property.get",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/GameObject",
-                      "_name": "Tags"
-                    },
-                    "UserData": {
-                      "Position": "48,-240"
-                    }
-                  },
-                  {
-                    "Id": 4,
-                    "Type": "call",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/GameTags",
-                      "_name": "Has"
-                    },
-                    "UserData": {
-                      "Position": "240,-224"
-                    }
-                  },
-                  {
-                    "Id": 5,
-                    "Type": "const.string",
-                    "Properties": {
-                      "value": "ball"
-                    },
-                    "UserData": {
-                      "Position": "48,-176"
-                    }
-                  },
-                  {
-                    "Id": 6,
-                    "Type": "if",
-                    "UserData": {
-                      "Position": "688,-608"
-                    }
-                  },
-                  {
-                    "Id": 17,
-                    "Type": "property.set",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/PhysicsComponent",
-                      "_name": "Velocity"
-                    },
-                    "UserData": {
-                      "Position": "1824,-176"
-                    }
-                  },
-                  {
-                    "Id": 16,
-                    "Type": "call",
-                    "Properties": {
-                      "T": {
-                        "$type": "Type",
-                        "Type": "package.facepunch.testbed/PhysicsComponent"
-                      },
-                      "_type": "package.facepunch.testbed/BaseComponent",
-                      "_name": "GetComponent"
-                    },
-                    "UserData": {
-                      "Position": "-224,-432"
-                    }
-                  },
-                  {
-                    "Id": 9,
-                    "Type": "property.get",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/GameObject",
-                      "_name": "Transform"
-                    },
-                    "UserData": {
-                      "Position": "-16,416"
-                    }
-                  },
-                  {
-                    "Id": 11,
-                    "Type": "property.get",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/BaseComponent",
-                      "_name": "Transform"
-                    },
-                    "UserData": {
-                      "Position": "-16,480"
-                    }
-                  },
-                  {
-                    "Id": 12,
-                    "Type": "property.get",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/GameTransform",
-                      "_name": "Position"
-                    },
-                    "UserData": {
-                      "Position": "160,416"
-                    }
-                  },
-                  {
-                    "Id": 13,
-                    "Type": "property.get",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/GameTransform",
-                      "_name": "Position"
-                    },
-                    "UserData": {
-                      "Position": "160,480"
-                    }
-                  },
-                  {
-                    "Id": 14,
-                    "Type": "op.subtract",
-                    "UserData": {
-                      "Position": "432,448"
-                    }
-                  },
-                  {
-                    "Id": 15,
-                    "Type": "property.get",
-                    "Properties": {
-                      "_type": "Sandbox.System/Vector3",
-                      "_name": "Normal"
-                    },
-                    "UserData": {
-                      "Position": "560,448"
-                    }
-                  },
-                  {
-                    "Id": 18,
-                    "Type": "op.multiply",
-                    "UserData": {
-                      "Position": "784,592"
-                    }
-                  },
-                  {
-                    "Id": 33,
-                    "Type": "const.string",
-                    "Properties": {
-                      "value": "attack1"
-                    },
-                    "UserData": {
-                      "Position": "176,656"
-                    }
-                  },
-                  {
-                    "Id": 34,
-                    "Type": "op.conditional",
-                    "UserData": {
-                      "Position": "592,720"
-                    }
-                  },
-                  {
-                    "Id": 32,
-                    "Type": "input.down",
-                    "UserData": {
-                      "Position": "352,656"
-                    }
-                  },
-                  {
-                    "Id": 31,
-                    "Type": "call",
-                    "Properties": {
-                      "T": {
-                        "$type": "Type",
-                        "Type": "package.facepunch.testbed/CharacterController"
-                      },
-                      "_type": "package.facepunch.testbed/GameObject",
-                      "_name": "GetComponentInParent"
-                    },
-                    "UserData": {
-                      "Position": "-192,96"
-                    }
-                  },
-                  {
-                    "Id": 55,
-                    "Type": "var.get",
-                    "Properties": {
-                      "var": 54
-                    },
-                    "UserData": {
-                      "Position": "-368,96"
-                    }
-                  },
-                  {
-                    "Id": 24,
-                    "Type": "property.get",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/PhysicsComponent",
-                      "_name": "Velocity"
-                    },
-                    "UserData": {
-                      "Position": "-16,224"
-                    }
-                  },
-                  {
-                    "Id": 25,
-                    "Type": "property.get",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/CharacterController",
-                      "_name": "Velocity"
-                    },
-                    "UserData": {
-                      "Position": "-16,96"
-                    }
-                  },
-                  {
-                    "Id": 26,
-                    "Type": "op.subtract",
-                    "UserData": {
-                      "Position": "224,160"
-                    }
-                  },
-                  {
-                    "Id": 27,
-                    "Type": "op.add",
-                    "UserData": {
-                      "Position": "1088,240"
-                    }
-                  },
-                  {
-                    "Id": 65,
-                    "Type": "comment",
-                    "UserData": {
-                      "Position": "-256,-656",
-                      "Size": "464,306",
-                      "Title": "Set Variables",
-                      "Color": 6,
-                      "Layer": 2
-                    }
-                  },
-                  {
-                    "Id": 66,
-                    "Type": "comment",
-                    "UserData": {
-                      "Position": "1488,-256",
-                      "Size": "880,434",
-                      "Title": "Kick ball, play punch anim",
-                      "Color": 0,
-                      "Layer": 1
-                    }
-                  },
-                  {
-                    "Id": 63,
-                    "Type": "var.get",
-                    "Properties": {
-                      "var": 62
-                    },
-                    "UserData": {
-                      "Position": "-192,224"
-                    }
-                  },
-                  {
-                    "Id": 35,
-                    "Type": "const.float",
-                    "Properties": {
-                      "value": 250
-                    },
-                    "UserData": {
-                      "Position": "384,816"
-                    }
-                  },
-                  {
-                    "Id": 36,
-                    "Type": "const.float",
-                    "Properties": {
-                      "value": 500
-                    },
-                    "UserData": {
-                      "Position": "384,736"
-                    }
-                  },
-                  {
-                    "Id": 64,
-                    "Type": "var.get",
-                    "Properties": {
-                      "var": 62
-                    },
-                    "UserData": {
-                      "Position": "1520,-160"
-                    }
-                  },
-                  {
-                    "Id": 58,
-                    "Type": "var.get",
-                    "Properties": {
-                      "var": 52
-                    },
-                    "UserData": {
-                      "Position": "-192,480"
-                    }
-                  },
-                  {
-                    "Id": 59,
-                    "Type": "var.get",
-                    "Properties": {
-                      "var": 54
-                    },
-                    "UserData": {
-                      "Position": "-192,416"
-                    }
-                  },
-                  {
-                    "Id": 40,
-                    "Type": "call",
-                    "Properties": {
-                      "T": {
-                        "$type": "Type",
-                        "Type": "package.facepunch.testbed/CitizenAnimation"
-                      },
-                      "_type": "package.facepunch.testbed/GameObject",
-                      "_name": "GetComponentInParent"
-                    },
-                    "UserData": {
-                      "Position": "1872,48"
-                    }
-                  },
-                  {
-                    "Id": 46,
-                    "Type": "call",
-                    "Properties": {
-                      "_type": "package.facepunch.testbed/CitizenAnimation",
-                      "_name": "TriggerAttack"
-                    },
-                    "UserData": {
-                      "Position": "2176,-64"
-                    }
-                  },
-                  {
-                    "Id": 47,
-                    "Type": "comment",
-                    "UserData": {
-                      "Position": "-336,-304",
-                      "Size": "768,240",
-                      "Title": "Is it a ball?",
-                      "Layer": 4,
-                      "Color": 2,
-                      "Description": ""
-                    }
-                  },
-                  {
-                    "Id": 48,
-                    "Type": "comment",
-                    "UserData": {
-                      "Position": "-224,336",
-                      "Size": "976,224",
-                      "Title": "Get direction to ball from player",
-                      "Color": 3,
-                      "Layer": 3
-                    }
-                  },
-                  {
-                    "Id": 49,
-                    "Type": "comment",
-                    "UserData": {
-                      "Position": "-384,32",
-                      "Size": "740,272",
-                      "Title": "Relative velocity",
-                      "Color": 5,
-                      "Layer": 3
-                    }
-                  },
-                  {
-                    "Id": 50,
-                    "Type": "comment",
-                    "UserData": {
-                      "Position": "144,592",
-                      "Size": "580,334",
-                      "Title": "Kick force",
-                      "Layer": 3,
-                      "Color": 4
-                    }
-                  },
-                  {
-                    "Id": 51,
-                    "Type": "var.set",
-                    "Properties": {
-                      "var": 52
-                    },
-                    "UserData": {
-                      "Position": "16,-496"
-                    }
-                  },
-                  {
-                    "Id": 53,
-                    "Type": "var.set",
-                    "Properties": {
-                      "var": 54
-                    },
-                    "UserData": {
-                      "Position": "16,-560"
-                    }
-                  },
-                  {
-                    "Id": 56,
-                    "Type": "var.get",
-                    "Properties": {
-                      "var": 54
-                    },
-                    "UserData": {
-                      "Position": "1696,48"
-                    }
-                  },
-                  {
-                    "Id": 60,
-                    "Type": "var.get",
-                    "Properties": {
-                      "var": 52
-                    },
-                    "UserData": {
-                      "Position": "-304,-240"
-                    }
-                  },
-                  {
-                    "Id": 61,
-                    "Type": "var.set",
-                    "Properties": {
-                      "var": 62
-                    },
-                    "UserData": {
-                      "Position": "16,-432"
-                    }
-                  },
-                  {
-                    "Id": 74,
-                    "Type": "nop",
-                    "UserData": {
-                      "Position": "-32,-480"
-                    }
-                  },
-                  {
-                    "Id": 70,
-                    "Type": "all",
-                    "UserData": {
-                      "Position": "-224,-608"
-                    }
-                  }
-                ],
-                "Links": [
-                  [
-                    60,
-                    "_result",
-                    1,
-                    "target"
-                  ],
-                  [
-                    1,
-                    "_result",
-                    2,
-                    "target"
-                  ],
-                  [
-                    2,
-                    "_result",
-                    4,
-                    "_target"
-                  ],
-                  [
-                    5,
-                    "_result",
-                    4,
-                    "tag"
-                  ],
-                  [
-                    4,
-                    "_result",
-                    6,
-                    "condition"
-                  ],
-                  [
-                    74,
-                    "out",
-                    53,
-                    "_signal"
-                  ],
-                  [
-                    64,
-                    "_result",
-                    17,
-                    "target"
-                  ],
-                  [
-                    0,
-                    "collider",
-                    16,
-                    "_target"
-                  ],
-                  [
-                    58,
-                    "_result",
-                    11,
-                    "target"
-                  ],
-                  [
-                    9,
-                    "_result",
-                    12,
-                    "target"
-                  ],
-                  [
-                    11,
-                    "_result",
-                    13,
-                    "target"
-                  ],
-                  [
-                    13,
-                    "_result",
-                    14,
-                    "a"
-                  ],
-                  [
-                    12,
-                    "_result",
-                    14,
-                    "b"
-                  ],
-                  [
-                    14,
-                    "_result",
-                    15,
-                    "target"
-                  ],
-                  [
-                    15,
-                    "_result",
-                    18,
-                    "a"
-                  ],
-                  [
-                    6,
-                    "true",
-                    17,
-                    "_signal"
-                  ],
-                  [
-                    27,
-                    "_result",
-                    17,
-                    "value"
-                  ],
-                  [
-                    35,
-                    "_result",
-                    34,
-                    "b"
-                  ],
-                  [
-                    32,
-                    "_result",
-                    34,
-                    "x"
-                  ],
-                  [
-                    33,
-                    "_result",
-                    32,
-                    "action"
-                  ],
-                  [
-                    31,
-                    "_result",
-                    25,
-                    "target"
-                  ],
-                  [
-                    63,
-                    "_result",
-                    24,
-                    "target"
-                  ],
-                  [
-                    55,
-                    "_result",
-                    31,
-                    "_target"
-                  ],
-                  [
-                    25,
-                    "_result",
-                    26,
-                    "a"
-                  ],
-                  [
-                    24,
-                    "_result",
-                    26,
-                    "b"
-                  ],
-                  [
-                    26,
-                    "_result",
-                    27,
-                    "a"
-                  ],
-                  [
-                    18,
-                    "_result",
-                    27,
-                    "b"
-                  ],
-                  [
-                    70,
-                    "_signal",
-                    6,
-                    "_signal"
-                  ],
-                  [
-                    36,
-                    "_result",
-                    34,
-                    "a"
-                  ],
-                  [
-                    34,
-                    "_result",
-                    18,
-                    "b"
-                  ],
-                  [
-                    59,
-                    "_result",
-                    9,
-                    "target"
-                  ],
-                  [
-                    16,
-                    "_result",
-                    61,
-                    "value"
-                  ],
-                  [
-                    56,
-                    "_result",
-                    40,
-                    "_target"
-                  ],
-                  [
-                    40,
-                    "_result",
-                    46,
-                    "_target"
-                  ],
-                  [
-                    17,
-                    "_signal",
-                    46,
-                    "_signal"
-                  ],
-                  [
-                    0,
-                    "collider",
-                    51,
-                    "value"
-                  ],
-                  [
-                    0,
-                    "_signal",
-                    70,
-                    "_signal"
-                  ],
-                  [
-                    0,
-                    "self",
-                    53,
-                    "value"
-                  ],
-                  [
-                    74,
-                    "out",
-                    61,
-                    "_signal"
-                  ],
-                  [
-                    70,
-                    "body",
-                    74,
-                    "in"
-                  ],
-                  [
-                    74,
-                    "out",
-                    51,
-                    "_signal"
-                  ]
-                ],
-                "UserData": {
-                  "name": "Start Touch",
-                  "id": "d8365468-4f8f-4ec4-9a6f-be492845b0ed"
-                }
-              },
+              "HandleStartTouch": null,
               "HandleStopTouch": null,
               "HandleTouching": null
             }
@@ -1305,6 +528,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1332,6 +556,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1359,6 +584,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1386,6 +612,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1413,6 +640,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1440,6 +668,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1467,6 +696,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1494,6 +724,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1521,6 +752,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1548,13 +780,13 @@
           "__enabled": true,
           "IsTrigger": false,
           "Radius": 5,
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         }
       ]
     },
@@ -1581,13 +813,13 @@
           "__enabled": true,
           "IsTrigger": false,
           "Radius": 5,
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         }
       ]
     },
@@ -1614,13 +846,13 @@
           "__enabled": true,
           "IsTrigger": false,
           "Radius": 5,
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         }
       ]
     },
@@ -1647,13 +879,13 @@
           "__enabled": true,
           "IsTrigger": false,
           "Radius": 5,
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         }
       ]
     },
@@ -1680,17 +912,26 @@
           "__enabled": true,
           "IsTrigger": false,
           "Radius": 5,
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         }
       ]
     }
   ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "actions",
+  "Description": "",
   "__references": [
     "baik.soccerball"
   ]
