@@ -116,7 +116,7 @@ public partial class Scene : GameObject
 		//
 		using ( Sandbox.Utility.Superluminal.Scope( "Scene.AnimUpdate", Color.Cyan ) )
 		{
-			Parallel.ForEach( animModel, x => x.UpdateInThread() );
+			Sandbox.Utility.Parallel.ForEach( animModel, x => x.UpdateInThread() );
 		}
 
 		//
