@@ -10,6 +10,12 @@ public sealed class GameNetworkManager : BaseComponent
 		var myPlayerObject = SceneUtility.Instantiate( PlayerPrefab, SpawnPoint.Transform.World );
 		myPlayerObject.Enabled = true;
 
+		var nameTag = myPlayerObject.GetComponent<NameTagPanel>( false, true );
+		if ( nameTag is not null )
+		{
+			nameTag.Name = Game.UserName;
+		}
+
 		NetworkObject.Instantiate( myPlayerObject );
 	}
 
