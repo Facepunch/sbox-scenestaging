@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sandbox.Network;
+using System;
 using System.Threading.Tasks;
 
 public static class EditorScene
@@ -110,6 +111,7 @@ public static class EditorScene
 
 	public static void Stop()
 	{
+		GameNetworkSystem.Disconnect();
 		GameManager.IsPlaying = false;
 
 		GameManager.ActiveScene?.Clear();
