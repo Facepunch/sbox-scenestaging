@@ -14,15 +14,13 @@ public sealed class NetworkTest : BaseComponent
 		
 		if ( Input.Pressed( "Attack1" ) )
 		{
-			Log.Info( "ATTACK" );
-
 			var pos = Transform.Position + Vector3.Up * 40.0f + lookDir.Forward.WithZ( 0.0f ) * 50.0f;
 
 			var o = SceneUtility.Instantiate( ObjectToSpawn, pos );
 			o.Enabled = true;
 
 			var p = o.GetComponent<PhysicsComponent>();
-			p.Velocity = lookDir.Forward * 1000.0f;
+			p.Velocity = lookDir.Forward * 500.0f + Vector3.Up * 540.0f;
 
 			NetworkObject.Instantiate( o );
 		}
