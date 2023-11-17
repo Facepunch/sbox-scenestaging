@@ -16,7 +16,6 @@ public class SceneNetworkSystem : GameNetworkSystem
 	public SceneNetworkSystem()
 	{
 		Instance = this;
-		Log.Info( "SceneNetworkSystem Initialized" );
 	}
 
 	/// <summary>
@@ -33,6 +32,14 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		msg.SceneData = GameManager.ActiveScene.Serialize( o ).ToJsonString();
 		msg.NetworkObjects = GameManager.ActiveScene.SerializeNetworkObjects();
+	}
+
+	public override void Dispose()
+	{
+		base.Dispose();
+
+		if ( Instance == this )
+			Instance = null;
 	}
 
 	/// <summary>
