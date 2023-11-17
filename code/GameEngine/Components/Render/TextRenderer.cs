@@ -55,6 +55,9 @@ file class TextSceneObject : SceneCustomObject
 
 	public override void RenderSceneObject()
 	{
+		if ( string.IsNullOrWhiteSpace( Text ) )
+			return;
+
 		var textFlags = TextFlag.DontClip | TextFlag.Center;
 
 		Graphics.Attributes.SetCombo( "D_WORLDPANEL", 1 );
