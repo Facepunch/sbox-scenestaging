@@ -8,7 +8,6 @@ public class SpringArmComponent : BaseComponent
 {
     private CameraComponent _camera;
 
-
     [Property, Range(50, 200), Category("Follow Settings")]
     public float TargetArmLength { get; set; } = 180f;
 
@@ -25,40 +24,35 @@ public class SpringArmComponent : BaseComponent
     public TagSet IgnoreLayers { get; set; } = new();
 
     [Property, Range(1, 5), Category("Debugging")] 
-    private float SpringArmLineWidth { get; set; } = 2f;
+    public float SpringArmLineWidth { get; set; } = 2f;
     
     [Property, Category("Debugging")] 
-    private Color SpringArmColor { get; set; } = new(.75f, .2f, .2f, .75f);
+    public Color SpringArmColor { get; set; } = new(.75f, .2f, .2f, .75f);
     
     [Property, Category("Debugging")] 
-    private bool VisualDebugging { get; set; } = false;
+    public bool VisualDebugging { get; set; } = false;
     
     [Property, Category("Debugging")] 
-    private bool ShowRaycasts { get; set; } = true;
+    public bool ShowRaycasts { get; set; } = true;
     
     [Property, Category("Debugging")] 
-    private bool ShowCollisionProbe { get; set; } = true;
+    public bool ShowCollisionProbe { get; set; } = true;
     
     [Property, Category("Debugging")] 
-    private bool ShowCollisionThroughSurface { get; set; } = true;
-    
-    [Property, Category("Debugging")] 
-    private Color CollisionProbeColor { get; set; } = new(.15f, .75f, .2f, .75f);
+    public Color CollisionProbeColor { get; set; } = new(.15f, .75f, .2f, .75f);
 
-    public override void OnEnabled()
+    public override void OnStart()
     {
         _camera = GetComponent<CameraComponent>(deep: true);
         
-        Assert.NotNull(_camera);
+        Assert.NotNull(_camera, $"{nameof(SpringArmComponent).ToTitleCase()} need to have a camera object as child.");
     }
 
     public override void Update()
     {
-        if (_camera is null)
-            return;
+        if (_camera is null) return;
 
         UpdateCameraPosition();
-        DrawGizmos();
     }
 
     private void UpdateCameraPosition()
@@ -79,26 +73,21 @@ public class SpringArmComponent : BaseComponent
 
     public override void DrawGizmos()
     {
-        if (!VisualDebugging)
-            return;
-
+        if (VisualDebugging is false) return;
+        if (_camera is null) return;
+        
         Gizmo.Draw.LineThickness = SpringArmLineWidth;
 
         if (ShowRaycasts)
         {
             Gizmo.Draw.Color = SpringArmColor;
-
-            if (ShowCollisionThroughSurface)
-                Gizmo.Draw.Line(Transform.Position, _camera.Transform.Position);
-            else
-                Gizmo.Draw.Line(Transform.Position, _camera.Transform.Position);
+            Gizmo.Draw.Line(Transform.Position, _camera.Transform.Position);
         }
 
-        if (ShowCollisionProbe)
-        {
-            Gizmo.Draw.LineThickness = 1f;
-            Gizmo.Draw.Color = CollisionProbeColor;
-            Gizmo.Draw.LineSphere(_camera.Transform.Position, CollisionProbeSize);
-        }
+        if (!ShowCollisionProbe) return;
+        
+        Gizmo.Draw.LineThickness = 1f;
+        Gizmo.Draw.Color = CollisionProbeColor;
+        Gizmo.Draw.LineSphere(_camera.Transform.Position, CollisionProbeSize);
     }
 }

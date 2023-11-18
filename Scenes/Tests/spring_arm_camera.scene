@@ -101,7 +101,6 @@
           "__enabled": true,
           "AnimationHelper": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
           "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
-          "Camera": "1167f863-0ea7-467b-aad7-1654502c99c4",
           "CameraDistance": 200,
           "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
           "FirstPerson": false,
@@ -220,7 +219,7 @@
           ]
         },
         {
-          "Id": "1167f863-0ea7-467b-aad7-1654502c99c4",
+          "Id": "c84a9c65-8b53-4b2c-9b05-4fe5be5fd1cd",
           "Name": "SpringArm",
           "Enabled": true,
           "Position": "0,0,50",
@@ -231,17 +230,15 @@
             {
               "__type": "SpringArmComponent",
               "__enabled": true,
+              "CollisionOffset": 15,
               "CollisionProbeColor": "0.15,0.75,0.2,0.75",
               "CollisionProbeSize": 5,
               "IgnoreLayers": "",
-              "MinCollisionDistance": 0,
-              "PlayerController": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
               "ShowCollisionProbe": true,
-              "ShowCollisionThroughSurface": true,
               "ShowRaycasts": true,
-              "SmoothSpeed": 0,
+              "SmoothTime": 0,
               "SpringArmColor": "0.75,0.2,0.2,0.75",
-              "SpringArmLineWidth": 6,
+              "SpringArmLineWidth": 2,
               "TargetArmLength": 180,
               "VisualDebugging": true
             }
@@ -251,7 +248,7 @@
               "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
               "Name": "Camera",
               "Enabled": true,
-              "Position": "0,0,0",
+              "Position": "0,0,50",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
