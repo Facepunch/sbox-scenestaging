@@ -1,5 +1,6 @@
 using Sandbox;
 using System.Drawing;
+using Sandbox.Diagnostics;
 
 
 public class PlayerController : BaseComponent
@@ -15,8 +16,16 @@ public class PlayerController : BaseComponent
 	[Property] GameObject Eye { get; set; }
 	[Property] bool FirstPerson { get; set; }
 	[Property] CitizenAnimation AnimationHelper { get; set; }
+	[Property] GameObject Camera { get; set; }
+	
+	public bool OverrideCameraPosition { get; set; }
 
 	public Angles EyeAngles;
+
+	public override void OnEnabled()
+	{
+		Assert.NotNull(Camera);
+	}
 
 	public override void Update()
 	{
@@ -26,15 +35,20 @@ public class PlayerController : BaseComponent
 		EyeAngles.roll = 0;
 
 		// Update camera position
-		var camera = GameObject.GetComponent<CameraComponent>( true, true );
-		if ( camera is not null )
+		
+		if ( Camera is not null )
 		{
-			var camPos = Eye.Transform.Position - EyeAngles.ToRotation().Forward * CameraDistance;
+			if (!OverrideCameraPosition)
+			{
+				var camPos = Eye.Transform.Position - EyeAngles.ToRotation().Forward * CameraDistance;
 
-			if ( FirstPerson ) camPos = Eye.Transform.Position + EyeAngles.ToRotation().Forward * 8;
+				if (FirstPerson)
+					camPos = Eye.Transform.Position + EyeAngles.ToRotation().Forward * 8;
 
-			camera.Transform.Position = camPos;
-			camera.Transform.Rotation = EyeAngles.ToRotation();
+				Camera.Transform.Position = camPos;
+			}
+			
+			Camera.Transform.Rotation = EyeAngles.ToRotation();
 		}
 
 		var cc = GameObject.GetComponent<CharacterController>();

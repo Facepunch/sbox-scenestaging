@@ -7,6 +7,7 @@
       "Position": "1114.846,0,-1303.217",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "EnvmapComponent",
@@ -25,10 +26,12 @@
       "Position": "906.3349,0,-1631.205",
       "Rotation": "0,-0.01919759,0,0.9998158",
       "Scale": "10,10,10",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
@@ -39,6 +42,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "100,100,1",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -50,6 +54,7 @@
       "Position": "55.4718,-124.3322,91.5952",
       "Rotation": "-0.5276809,0.09922918,0.8290949,0.1559103",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "DirectionalLightComponent",
@@ -67,13 +72,17 @@
       "Position": "1011.863,273.6311,-1540.558",
       "Rotation": "0.104912,0.06145444,-0.8564602,0.5016899",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "CameraComponent",
           "__enabled": true,
           "BackgroundColor": "0.25292,0.26086,0.29703,1",
-          "ClearFlags": "Color, Depth, Stencil",
+          "ClearFlags": "All",
           "FieldOfView": 85.5,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "TargetEye": "None",
           "ZFar": 2136.4,
           "ZNear": 1
         },
@@ -94,10 +103,12 @@
       "Position": "953.007,104.095,-1616.6",
       "Rotation": "0.0000000384625,-0.00000000000000003364402,0.6452936,0.7639344",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
           "ShouldCastShadows": true,
@@ -108,6 +119,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/citizen/citizen.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -119,10 +131,12 @@
       "Position": "896.9753,113.5968,-1616.6",
       "Rotation": "0.0000000384625,-0.00000000000000003364402,0.6452936,0.7639344",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
           "ShouldCastShadows": true,
@@ -142,6 +156,7 @@
       "Position": "1223.259,-803.9999,-1087.162",
       "Rotation": "-0.1064454,0.2939645,0.588666,0.7454708",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -162,6 +177,7 @@
       "Position": "502.9799,219.0271,-1541.885",
       "Rotation": "0.003547103,0.005014129,-0.1381661,0.9903903",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -182,6 +198,7 @@
       "Position": "1099.505,-0.0033,-1162.002",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "EnvmapComponent",
@@ -197,5 +214,14 @@
       ]
     }
   ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "physics_ragdoll",
+  "Description": "",
   "__references": []
 }
