@@ -66,7 +66,11 @@ internal partial class ComponentTypeSelector : PopupWidget
 		Panels.Insert( CurrentPanelId, selection );
 		Main.Layout.Add( selection, 1 );
 
-		UpdateSelection( selection );
+		if ( !selection.IsManual )
+		{
+			UpdateSelection( selection );
+		}
+
 		AnimateSelection( true, Panels[CurrentPanelId - 1], selection );
 	}
 
@@ -165,7 +169,91 @@ internal partial class ComponentTypeSelector : PopupWidget
 	/// </summary>
 	void OnNewComponentSelected( string componentName = "MyComponent" )
 	{
-		_ = CreateNewComponent( componentName );
+		var templateTypes = ComponentTemplate.GetAllTypes();
+		var selection = new ComponentSelection( this, this, "Create a new component" ) { IsManual = true };
+
+		selection.AddEntry( new Label( "Name", this ) ).ContentMargins = 8;
+
+		var textEdit = new TextEdit( this );
+		textEdit.PlainText = componentName;
+		textEdit.FixedHeight = 24;
+
+		selection.AddEntry( textEdit ).ContentMargins = 8;
+		selection.AddEntry( new Label( "Create Script from Template", this ) ).ContentMargins = 8;
+
+		foreach ( var componentTemplate in templateTypes )
+		{
+			selection.AddEntry( new ComponentEntry( selection )
+				{ 
+					Icon = componentTemplate.Icon, 
+					Text = $"New {componentTemplate.Title}..", 
+					MouseClick = () => _ = CreateNewComponent( componentTemplate, textEdit.PlainText )
+				} 
+			);
+		}
+
+		selection.AddStretchCell();
+
+		PushSelection( selection );
+
+		// Focus the TextEdit
+		textEdit.Focus();
+	}
+
+	/// <summary>
+	/// We're creating a new component..
+	/// </summary>
+	async Task CreateNewComponent( TypeDescription desc, string componentName )
+	{
+		var template = TypeLibrary.Create<ComponentTemplate>( desc.Name );
+		var codePath = LocalProject.CurrentGame.GetCodePath();
+		var fd = new FileDialog( Parent );
+		fd.Title = "Create new component..";
+		fd.Directory = codePath;
+		fd.DefaultSuffix = template.Suffix;
+		fd.SelectFile( $"{componentName}{template.Suffix}" );
+		fd.SetFindFile();
+		fd.SetModeSave();
+		fd.SetNameFilter( template.NameFilter );
+
+		if ( !fd.Execute() )
+			return;
+
+		// User might change their mind on the component name
+		componentName = System.IO.Path.GetFileNameWithoutExtension( fd.SelectedFile );
+
+		if ( !System.IO.File.Exists( fd.SelectedFile ) )
+		{
+			template.Create( componentName, fd.SelectedFile );
+		}
+
+		// give it half a second, should do it
+		await Task.Delay( 500 );
+
+		// open it in the code editor
+		CodeEditor.OpenFile( fd.SelectedFile );
+
+		// we just wrote a file, lets wait until its compiled and loaded
+		await EditorUtility.Projects.WaitForCompiles();
+
+		var componentType = EditorTypeLibrary.GetType<BaseComponent>( componentName );
+		if ( componentType is null )
+		{
+			Log.Warning( $"Couldn't find target component type {componentName}" );
+
+			componentType = EditorTypeLibrary.GetType( componentName );
+			Log.Warning( $"Couldn't find target component type {componentType}" );
+
+			foreach ( var t in EditorTypeLibrary.GetTypes<BaseComponent>() )
+			{
+				Log.Info( $"{t}" );
+			}
+		}
+		else
+		{
+			OnSelect( componentType );
+		}
+
 		Destroy();
 	}
 
@@ -241,76 +329,6 @@ internal partial class ComponentTypeSelector : PopupWidget
 	}
 
 	/// <summary>
-	/// We're creating a new component..
-	/// </summary>
-	async Task CreateNewComponent( string componentName = "MyComponent" )
-	{
-		var codePath = LocalProject.CurrentGame.GetCodePath();
-
-		var fd = new FileDialog( null );
-		fd.Title = "Create new component..";
-		fd.Directory = codePath;
-		fd.DefaultSuffix = ".cs";
-		fd.SelectFile( $"{componentName}.cs" );
-		fd.SetFindFile();
-		fd.SetModeSave();
-		fd.SetNameFilter( "Cs File (*.cs)" );
-
-		if ( !fd.Execute() )
-			return;
-		
-		// User might change their mind on the component name
-		componentName = System.IO.Path.GetFileNameWithoutExtension( fd.SelectedFile );
-
-		if ( !System.IO.File.Exists( fd.SelectedFile ) )
-		{
-			var defaultComponent = $$"""
-				using Sandbox;
-
-				public sealed class {{componentName}} : BaseComponent
-				{
-					public override void Update()
-					{
-						
-					}
-				}
-
-				""";
-
-			System.IO.File.WriteAllText( fd.SelectedFile, defaultComponent );
-		}
-
-		// give it half a second, should do it
-		await Task.Delay( 500 );
-
-		// open it in the code editor
-		CodeEditor.OpenFile( fd.SelectedFile );
-
-		// we just wrote a file, lets wait until its compiled and loaded
-		await EditorUtility.Projects.WaitForCompiles();
-
-		var componentType = EditorTypeLibrary.GetType<BaseComponent>( componentName );
-		if ( componentType is null )
-		{
-			Log.Warning( $"Couldn't find target component type {componentName}" );
-
-			componentType = EditorTypeLibrary.GetType( componentName );
-			Log.Warning( $"Couldn't find target component type {componentType}" );
-
-			foreach ( var t in EditorTypeLibrary.GetTypes<BaseComponent>() )
-			{
-				Log.Info( $"{t}" );
-			}
-		}
-		else
-		{
-			OnSelect( componentType );
-		}
-
-		Destroy();
-	}
-
-	/// <summary>
 	/// A widget that contains a given selection - we hold this in a class because more than one can exist.
 	/// </summary>
 	partial class ComponentSelection : Widget
@@ -323,6 +341,8 @@ internal partial class ComponentTypeSelector : PopupWidget
 		internal List<Widget> ItemList { get; private set; } = new();
 		internal int CurrentItemId { get; private set; } = 0;
 		internal Widget CurrentItem { get; private set; }
+
+		internal bool IsManual { get; set; }
 
 		internal ComponentSelection( Widget parent, ComponentTypeSelector selector, string categoryName = null ) : base( parent )
 		{
@@ -449,11 +469,14 @@ internal partial class ComponentTypeSelector : PopupWidget
 		/// Adds a new entry to the current selection.
 		/// </summary>
 		/// <param name="entry"></param>
-		internal void AddEntry( ComponentBaseEntry entry )
+		internal Widget AddEntry( Widget entry )
 		{
-			Scroller.Canvas.Layout.Add( entry );
+			var layoutWidget = Scroller.Canvas.Layout.Add( entry );
 			ItemList.Add( entry );
-			entry.Selector = this;
+
+			if ( entry is ComponentEntry e ) e.Selector = this;
+
+			return layoutWidget;
 		}
 
 		/// <summary>
@@ -462,6 +485,15 @@ internal partial class ComponentTypeSelector : PopupWidget
 		internal void AddStretchCell()
 		{
 			Scroller.Canvas.Layout.AddStretchCell( 1 );
+			Update();
+		}
+
+		/// <summary>
+		/// Adds a separator cell.
+		/// </summary>
+		internal void AddSeparator()
+		{
+			Scroller.Canvas.Layout.AddSeparator( true );
 			Update();
 		}
 
@@ -484,30 +516,21 @@ internal partial class ComponentTypeSelector : PopupWidget
 	}
 
 	/// <summary>
-	/// All component entries are derived from this..
-	/// </summary>
-	abstract class ComponentBaseEntry : Widget
-	{
-		internal ComponentSelection Selector { get; set; }
-
-		internal ComponentBaseEntry( Widget parent ) : base( parent )
-		{
-			FixedHeight = 24;
-		}
-	}
-
-	/// <summary>
 	/// A component entry
 	/// </summary>
-	class ComponentEntry : ComponentBaseEntry
+	class ComponentEntry : Widget
 	{
 		public string Text { get; set; } = "My Component";
 		public string Icon { get; set; } = "note_add";
+		public bool IsSelected { get; set; } = false;
+
+		internal ComponentSelection Selector { get; set; }
 
 		public TypeDescription Type { get; init; }
 
 		internal ComponentEntry( Widget parent, TypeDescription type = null ) : base( parent )
 		{
+			FixedHeight = 24;
 			Type = type;
 
 			if ( type is not null )
@@ -537,7 +560,9 @@ internal partial class ComponentTypeSelector : PopupWidget
 			else
 			{
 				Paint.SetPen( Theme.Green.WithAlpha( opacity ) );
-				Paint.DrawIcon( new Rect( r.Position, r.Height ).Shrink( 2 ), "note_add", r.Height, TextFlag.Center );
+
+				var icon = !string.IsNullOrEmpty( Icon ) ? Icon : "note_add";
+				Paint.DrawIcon( new Rect( r.Position, r.Height ).Shrink( 2 ), icon, r.Height, TextFlag.Center );
 			}
 
 			r.Left += r.Height + 6;
@@ -551,7 +576,7 @@ internal partial class ComponentTypeSelector : PopupWidget
 	/// <summary>
 	/// A category component entry
 	/// </summary>
-	class ComponentCategory : ComponentBaseEntry
+	class ComponentCategory : ComponentEntry
 	{
 		public string Category { get; set; }
 		public ComponentCategory( Widget parent ) : base( parent ) { }
