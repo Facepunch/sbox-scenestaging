@@ -14,10 +14,10 @@ public class SpringArmComponent : BaseComponent
     public float TargetArmLength { get; set; } = 180f;
 
     [Property, Range(0, 5), Category("Follow Settings")]
-    public float SmoothSpeed { get; set; } = .2f;
+    public float SmoothTime { get; set; } = .2f;
 
     [Property, Range(0, 50), Category("Collision Settings")]
-    public float MinCollisionDistance { get; set; } = 15f;
+    public float CollisionOffset { get; set; } = 15f;
 
     [Property, Range(0, 15, .5f), Category("Collision Settings")]
     public float CollisionProbeSize { get; set; } = 5f;
@@ -25,13 +25,26 @@ public class SpringArmComponent : BaseComponent
     [Property, Category("Collision Settings")]
     public TagSet IgnoreLayers { get; set; } = new();
 
-    [Property, Range(1, 5), Category("Debugging")] public float SpringArmLineWidth { get; set; } = 2f;
-    [Property, Category("Debugging")] public Color SpringArmColor { get; set; } = new(.75f, .2f, .2f, .75f);
-    [Property, Category("Debugging")] public bool VisualDebugging { get; set; } = false;
-    [Property, Category("Debugging")] private bool ShowRaycasts { get; set; } = true;
-    [Property, Category("Debugging")] bool ShowCollisionProbe { get; set; } = true;
-    [Property, Category("Debugging")] bool ShowCollisionThroughSurface { get; set; } = true;
-    [Property, Category("Debugging")] public Color CollisionProbeColor { get; set; } = new(.15f, .75f, .2f, .75f);
+    [Property, Range(1, 5), Category("Debugging")] 
+    private float SpringArmLineWidth { get; set; } = 2f;
+    
+    [Property, Category("Debugging")] 
+    private Color SpringArmColor { get; set; } = new(.75f, .2f, .2f, .75f);
+    
+    [Property, Category("Debugging")] 
+    private bool VisualDebugging { get; set; } = false;
+    
+    [Property, Category("Debugging")] 
+    private bool ShowRaycasts { get; set; } = true;
+    
+    [Property, Category("Debugging")] 
+    private bool ShowCollisionProbe { get; set; } = true;
+    
+    [Property, Category("Debugging")] 
+    private bool ShowCollisionThroughSurface { get; set; } = true;
+    
+    [Property, Category("Debugging")] 
+    private Color CollisionProbeColor { get; set; } = new(.15f, .75f, .2f, .75f);
 
     public override void OnEnabled()
     {
@@ -56,16 +69,16 @@ public class SpringArmComponent : BaseComponent
     {
         var target = Transform.Position + Transform.Rotation.Forward * -TargetArmLength;
         var trace = Scene.PhysicsWorld.Trace
-            .Ray(Transform.Position, target + -Transform.Rotation.Forward * MinCollisionDistance)
+            .Ray(Transform.Position, target + -Transform.Rotation.Forward * CollisionOffset)
             .WithoutTags(IgnoreLayers).Run();
 
         var newCamPos = trace.Hit
-            ? trace.HitPosition + Transform.Rotation.Forward * MinCollisionDistance
+            ? trace.HitPosition + Transform.Rotation.Forward * CollisionOffset
             : target;
 
         var velocity = Vector3.Zero;
         _camera.Transform.Position =
-            Vector3.SmoothDamp(_camera.Transform.Position, newCamPos, ref velocity, SmoothSpeed, Time.Delta);
+            Vector3.SmoothDamp(_camera.Transform.Position, newCamPos, ref velocity, SmoothTime, Time.Delta);
     }
 
     public override void DrawGizmos()
