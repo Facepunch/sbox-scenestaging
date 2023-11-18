@@ -1,7 +1,7 @@
 {
   "Title": "Testbed",
   "Type": "game",
-  "Org": "local",
+  "Org": "facepunch",
   "Ident": "testbed",
   "Tags": null,
   "Schema": 1,
@@ -11,10 +11,7 @@
   "MenuResources": "*",
   "HasCode": true,
   "CodePath": "/code/",
-  "PackageReferences": [
-    "alex.iconify",
-    "local.sandwind"
-  ],
+  "PackageReferences": [],
   "EditorReferences": null,
   "Metadata": {
     "MaxPlayers": 16,
