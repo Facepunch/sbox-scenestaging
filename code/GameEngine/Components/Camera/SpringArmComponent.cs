@@ -8,7 +8,6 @@ public class SpringArmComponent : BaseComponent
 {
     private CameraComponent _camera;
 
-    [Property] public PlayerController PlayerController { get; set; }
 
     [Property, Range(50, 200), Category("Follow Settings")]
     public float TargetArmLength { get; set; } = 180f;
@@ -51,9 +50,6 @@ public class SpringArmComponent : BaseComponent
         _camera = GetComponent<CameraComponent>(deep: true);
         
         Assert.NotNull(_camera);
-        Assert.NotNull(PlayerController);
-
-        PlayerController.OverrideCameraPosition = true;
     }
 
     public override void Update()
