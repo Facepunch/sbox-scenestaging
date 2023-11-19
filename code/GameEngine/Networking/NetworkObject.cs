@@ -42,6 +42,7 @@ public sealed class NetworkObject : BaseComponent
 	{
 		if ( hasNetworkDestroyed ) return;
 		if ( !IsMine ) return;
+		if ( SceneNetworkSystem.Instance is null ) return;
 
 		var msg = new ObjectDestroyMsg();
 		msg.Guid = GameObject.Id;

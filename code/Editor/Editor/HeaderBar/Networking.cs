@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net;
 
 namespace Editor.HeaderBar;
 
@@ -14,20 +15,20 @@ internal class NetworkingBar : Widget
 	{
 		MinimumHeight = Theme.RowHeight;
 
-		layout.Spacing = 1;
+		layout.Spacing = 5;
 		layout.Margin = new Sandbox.UI.Margin( 16, 0 );
-		layout.Add( new LaunchButton() );
+		layout.Add( new NetworkStatus() );
 	}
 }
 
-file class LaunchButton : Widget
+file class NetworkStatus : Widget
 {
 	public static Color DeactivatedColor => Theme.WidgetBackground.Darken( 0.2f );
 
-	public LaunchButton() : base( null )
+	public NetworkStatus() : base( null )
 	{
-		ToolTip = "Join in external player";
-		StatusTip = "Join in external player";
+		ToolTip = "Network";
+		StatusTip = "Network";
 
 		FixedWidth = Theme.RowHeight;
 		FixedHeight = Theme.RowHeight;
@@ -38,9 +39,21 @@ file class LaunchButton : Widget
 
 	protected override void OnMousePress( MouseEvent e )
 	{
-		// if network isn't started, then start it
-		ConsoleSystem.Run( "host" );
+		var menu = new Menu( this );
 
+		menu.AddOption( new Option( "Start Hosting", "dns", () => EditorUtility.Network.StartHosting() ) { Enabled = !EditorUtility.Network.Active } );
+		menu.AddOption( new Option( "Disconnect", "phonelink_erase", () => EditorUtility.Network.Disconnect() ) { Enabled = EditorUtility.Network.Active } );
+
+		menu.AddSeparator();
+
+		menu.AddOption( new Option( "Join via new instance", "connected_tv", () => SpawnProcess() ) { Enabled = EditorUtility.Network.Hosting } );
+
+		menu.OpenAtCursor();
+		// menu
+	}
+
+	void SpawnProcess()
+	{
 		var p = new Process();
 		p.StartInfo.FileName = "sbox.exe";
 		p.StartInfo.WorkingDirectory = System.Environment.CurrentDirectory;
@@ -68,38 +81,32 @@ file class LaunchButton : Widget
 	protected override void OnPaint()
 	{
 		Paint.Antialiasing = true;
-		var paintColor = Color.White;
+		var paintColor = Theme.Red.Darken( 0.5f ).Desaturate( 0.2f );
+
+		if ( EditorUtility.Network.Active )
+		{
+			paintColor = Theme.Green.Darken( 0.4f );
+		}
 
 		var rect = LocalRect.Shrink( 0, 0, 0, 0 );
 
-		var fontSize = 15;
-		var icon = "add_to_queue";
-		bool active = false;
+		Paint.ClearPen();
+		Paint.SetBrush( paintColor );
+		Paint.DrawRect( LocalRect.Shrink( 1 ), 30 );
 
-		if ( active )
+
+		Paint.SetPen( paintColor.Lighten( 0.5f ) );
+
+		if ( EditorUtility.Network.Hosting )
 		{
-			paintColor = Color.White;
-
-			Paint.ClearPen();
-			Paint.SetBrush( Theme.Blue.Darken( 0.5f ) );
-
+			Paint.DrawIcon( LocalRect.Shrink( 2 ), "dns", 11 );
 		}
 		else
 		{
-			paintColor = Color.White.WithAlpha( 0.4f );
-			Paint.ClearPen();
-			Paint.SetBrush( DeactivatedColor );
+			Paint.DrawIcon( LocalRect.Shrink( 2 ), "wifi", 11 );
 		}
 
-		Paint.DrawRect( rect, 3 );
-
-		if ( !Paint.HasMouseOver )
-		{
-			paintColor = paintColor.WithAlphaMultiplied( 0.75f );
-		}
-
-		Paint.SetPen( paintColor );
-		Paint.DrawIcon( LocalRect, icon, fontSize, TextFlag.Center );
+		
 	}
 
 }
