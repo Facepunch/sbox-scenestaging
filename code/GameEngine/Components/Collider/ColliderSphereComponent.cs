@@ -8,7 +8,8 @@ using System.Collections.Generic;
 [Alias( "SphereColliderComponent" )]
 public class ColliderSphereComponent : Collider
 {
-	float _radius = 10.0f;
+	private float _radius = 10.0f;
+	private Vector3 _offset = 0;
 
 	[Property]
 	public float Radius
@@ -22,17 +23,30 @@ public class ColliderSphereComponent : Collider
 			Rebuild();
 		}
 	}
+	
+	[Property]
+	public Vector3 Offset
+	{
+		get => _offset;
+		set
+		{
+			if (_offset == value) return;
+
+			_offset = value;
+			Rebuild();
+		}
+	}
 
 	public override void DrawGizmos()
 	{
 		Gizmo.Draw.Color = Gizmo.Colors.Green.WithAlpha( Gizmo.IsChildSelected ? 0.5f : 0.1f );
-		Gizmo.Draw.LineSphere( new Sphere( 0, Radius ) );
+		Gizmo.Draw.LineSphere( new Sphere( Offset, Radius ) );
 	}
 
 	protected override IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody )
 	{
 		var tx = targetBody.Transform.ToLocal( Transform.World );
-		var shape = targetBody.AddSphereShape( tx.Position, Radius * tx.Scale );
+		var shape = targetBody.AddSphereShape( tx.Position + Offset, Radius * tx.Scale );
 
 		if ( Surface is not null )
 		{
