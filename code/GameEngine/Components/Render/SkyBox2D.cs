@@ -40,7 +40,16 @@ public class SkyBox2D : BaseComponent, BaseComponent.ExecuteInEditor
 			if ( sceneObject is not null )
 			{
 				sceneObject.SkyMaterial = _material;
+				DirtyProbes();
 			}
+		}
+	}
+
+	public void DirtyProbes()
+	{
+		foreach ( var probe in Scene.GetComponents<EnvmapComponent>( true, true ) )
+		{
+			probe.RenderDirty();
 		}
 	}
 
