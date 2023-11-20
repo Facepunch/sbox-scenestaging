@@ -34,12 +34,18 @@ public partial class GameObject
 		{
 			{ "Id", Id },
 			{ "Name", Name },
-			{ "Enabled", Enabled },
-			{ "Position",  JsonValue.Create( Transform.LocalPosition ) },
-			{ "Rotation", JsonValue.Create( Transform.LocalRotation ) },
-			{ "Scale", JsonValue.Create( Transform.LocalScale ) },
-			{ "Tags", string.Join( ",", Tags.TryGetAll() ) }
 		};
+		
+		if ( Transform.Position != Vector3.Zero ) json.Add( "Position", JsonValue.Create( Transform.LocalPosition ) );
+		if ( Transform.LocalRotation != Rotation.Identity ) json.Add( "Rotation", JsonValue.Create( Transform.LocalRotation ) );
+		if ( Transform.LocalScale != 1.0f ) json.Add( "Scale", JsonValue.Create( Transform.LocalScale ) );
+		if ( Tags.TryGetAll().Any() ) json.Add( "Tags", string.Join( ",", Tags.TryGetAll() ) );
+
+		if ( Networked ) json.Add( "Networked", true );
+		if ( Enabled ) json.Add( "Enabled", true );
+		
+		
+		
 
 		if ( IsPrefabInstanceRoot )
 		{
@@ -108,9 +114,9 @@ public partial class GameObject
 	{
 		Id = node["Id"].Deserialize<Guid>();
 		Name = node["Name"].ToString() ?? Name;
-		Transform.LocalPosition = node["Position"].Deserialize<Vector3>();
-		Transform.LocalRotation = node["Rotation"].Deserialize<Rotation>();
-		Transform.LocalScale = node["Scale"].Deserialize<Vector3>();
+		Transform.LocalPosition = node["Position"]?.Deserialize<Vector3>() ?? Vector3.Zero;
+		Transform.LocalRotation = node["Rotation"]?.Deserialize<Rotation>() ?? Rotation.Identity;
+		Transform.LocalScale = node["Scale"]?.Deserialize<Vector3>() ?? Vector3.One;
 
 		if ( node["Tags"].Deserialize<string>() is string tags )
 		{
@@ -172,7 +178,8 @@ public partial class GameObject
 			}
 		}
 
-		Enabled = (bool)(node["Enabled"] ?? Enabled);
+		Enabled = (bool)(node["Enabled"] ?? false);
+		Networked = (bool) (node["Networked"] ?? false);
 
 		ForEachComponent( "OnValidate", false, c => c.OnValidateInternal() );
 
