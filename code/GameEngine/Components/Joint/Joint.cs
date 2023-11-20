@@ -1,0 +1,120 @@
+﻿using Sandbox;
+using Sandbox.Physics;
+
+public abstract class Joint : BaseComponent, BaseComponent.ExecuteInEditor
+{
+	private PhysicsJoint joint;
+	private PhysicsBody worldBody;
+
+	/// <summary>
+	/// Game object to attach this joint to, uses world reference body if not specified.
+	/// </summary>
+	[Property] public GameObject Body { get; set; }
+
+	private bool enableCollision;
+
+	private bool started;
+
+	/// <summary>
+	/// Enable or disable collision between the two bodies.
+	/// </summary>
+	[Property] public bool EnableCollision
+	{
+		get => enableCollision;
+		set
+		{
+			enableCollision = value;
+			if ( joint.IsValid() )
+				joint.Collisions = enableCollision;
+		}
+	}
+
+	public override void OnStart()
+	{
+		base.OnStart();
+
+		started = true;
+
+		CreateJoint();
+	}
+
+	public override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		started = false;
+
+		DestroyJoint();
+	}
+
+	public override void OnEnabled()
+	{
+		base.OnEnabled();
+
+		CreateJoint();
+	}
+
+	public override void OnDisabled()
+	{
+		base.OnDisabled();
+
+		DestroyJoint();
+	}
+
+	/// <summary>
+	/// Joint type implementation.
+	/// </summary>
+	protected abstract PhysicsJoint CreateJoint( PhysicsBody body1, PhysicsBody body2 );
+
+	private void CreateJoint()
+	{
+		if ( !started )
+			return;
+
+		var thisPhysics = GetComponent<PhysicsComponent>();
+		if ( thisPhysics == null || !thisPhysics.GetBody().IsValid() )
+			return;
+
+		// By default use the world reference body.
+		var otherBody = Scene?.PhysicsWorld?.Body;
+		if ( Body.IsValid() )
+		{
+			// Try to grab body from target game object.
+			var otherPhysics = Body.GetComponent<PhysicsComponent>();
+			if ( otherPhysics != null && otherPhysics.GetBody().IsValid() )
+				otherBody = otherPhysics.GetBody();
+		}
+
+		var thisBody = thisPhysics.GetBody();
+		if ( !otherBody.IsValid() )
+		{
+			// Create a new world reference body if all else fails.
+			// This shouldn't be needed when scenes sets the world reference body.
+			worldBody = new PhysicsBody( thisBody.World );
+			otherBody = worldBody;
+		}
+
+		joint = CreateJoint( thisBody, otherBody );
+		joint.Collisions = EnableCollision;
+	}
+
+	private void DestroyJoint()
+	{
+		joint?.Remove();
+		joint = null;
+
+		worldBody?.Remove();
+		worldBody = null;
+	}
+
+	public override void DrawGizmos()
+	{
+		if ( !joint.IsValid() )
+			return;
+
+		Gizmo.Draw.LineThickness = 1;
+		Gizmo.Draw.Color = Gizmo.Colors.Green.WithAlpha( Gizmo.IsSelected ? 1.0f : 0.2f );
+		Gizmo.Draw.Line( joint.Point1.LocalPosition, 0 );
+		Gizmo.Draw.Line( joint.Point1.LocalPosition, Transform.World.PointToLocal( Body.Transform.Position ) );
+	}
+}
