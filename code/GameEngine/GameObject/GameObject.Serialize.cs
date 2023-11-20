@@ -138,7 +138,7 @@ public partial class GameObject
 			foreach ( var child in childArray )
 			{
 				if ( child is not JsonObject jso )
-					return;
+					continue;
 
 				var go = new GameObject();
 
@@ -155,14 +155,14 @@ public partial class GameObject
 				if ( component is not JsonObject jso )
 				{
 					Log.Warning( $"Component entry is not an object!" );
-					return;
+					continue;
 				}
 
 				var componentType = TypeLibrary.GetType<BaseComponent>( (string)jso["__type"] );
 				if ( componentType is null )
 				{
 					Log.Warning( $"TypeLibrary couldn't find BaseComponent type {jso["__type"]}" );
-					return;
+					continue;
 				}
 
 				var c = this.AddComponent( componentType );
