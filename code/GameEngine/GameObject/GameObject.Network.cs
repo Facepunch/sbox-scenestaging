@@ -42,7 +42,11 @@ public partial class GameObject
 		}
 	}
 
-	public void NetworkInit()
+	/// <summary>
+	/// Create this GameObject on the network. If you have permission to create an object then this
+	/// object will be synced to all other clients.
+	/// </summary>
+	public void NetworkSpawn()
 	{
 		if ( Net is not null ) return;
 
@@ -52,8 +56,7 @@ public partial class GameObject
 	/// <summary>
 	/// Initialize this object from the network
 	/// </summary>
-	/// <param name="message"></param>
-	public void NetworkInit( ObjectCreateMsg msg )
+	internal void NetworkSpawnRemote( ObjectCreateMsg msg )
 	{
 		if ( Net is not null ) return;
 

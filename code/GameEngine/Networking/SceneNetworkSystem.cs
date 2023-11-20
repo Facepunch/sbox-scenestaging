@@ -103,7 +103,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		// TODO: Does this server allow this client to be creating objects from json?
 		go.Deserialize( JsonObject.Parse( message.JsonData ).AsObject() );
-		go.NetworkInit( message );
+		go.NetworkSpawnRemote( message );
 
 		//go.Receive( message.Update );
 	}

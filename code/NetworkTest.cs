@@ -22,7 +22,7 @@ public sealed class NetworkTest : BaseComponent
 			var p = o.GetComponent<PhysicsComponent>();
 			p.Velocity = lookDir.Forward * 500.0f + Vector3.Up * 540.0f;
 
-			o.NetworkInit();
+			o.NetworkSpawn();
 		}
 
 	}

@@ -1,6 +1,6 @@
 using Sandbox.Network;
 
-public sealed class NetworkObject
+internal sealed class NetworkObject
 {
 	GameObject GameObject { get; set; }
 	public Guid Creator { get; set; }
@@ -108,7 +108,6 @@ public sealed class NetworkObject
 
 	internal void Destroy()
 	{
-		Log.Info( $"Destroying {GameObject} [{Creator}]" );
 		GameObject.Destroy();
 	}
 }
