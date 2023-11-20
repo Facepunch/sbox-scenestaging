@@ -6,7 +6,7 @@ public sealed class NetworkTest : BaseComponent
 
 	public override void Update()
 	{
-		if ( !GameObject.IsMine )
+		if ( IsProxy )
 			return;
 
 		var pc = GetComponent<PlayerController>();
@@ -22,7 +22,7 @@ public sealed class NetworkTest : BaseComponent
 			var p = o.GetComponent<PhysicsComponent>();
 			p.Velocity = lookDir.Forward * 500.0f + Vector3.Up * 540.0f;
 
-			NetworkObject.Instantiate( o );
+			o.NetworkInit();
 		}
 
 	}

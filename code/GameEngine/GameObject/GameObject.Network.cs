@@ -1,33 +1,82 @@
 ﻿using Sandbox;
 using Sandbox.Network;
-using static Sandbox.PhysicsContact;
 
 public partial class GameObject
 {
 	internal NetworkObject Net { get; private set; }
 
-	public bool IsMine => IsNetworked && Net.IsMine;
-	public bool IsProxy => IsNetworked && !IsMine;
+	public bool IsNetworkOwner => Net?.IsOwner ?? false;
+	public bool IsProxy => Net?.IsProxy ?? false;
 	public bool IsNetworked => Net is not null;
 
 	public float LastTx { get; set; }
 	public float LastRcv { get; set; }
 
-	internal void SetNetworkObject( NetworkObject obj )
+	bool _networked;
+
+	public bool Networked
 	{
-		Net = obj;
-		Scene.RegisterNetworkedObject( this );
+		get
+		{
+			if ( Scene is null ) return false;
+
+			if ( Scene.IsEditor )
+			{
+				return _networked;
+			}
+
+			return Net is not null;
+		}
+		set
+		{
+			if ( Scene is null ) return;
+
+			if ( Scene.IsEditor )
+			{
+				_networked = value;
+				return;
+			}
+
+			if ( value ) StartNetworking();
+			else EndNetworking();
+		}
 	}
 
-	internal void ShutdownNetworking()
+	public void NetworkInit()
 	{
-		if ( Net is null )
-			return;
+		if ( Net is not null ) return;
 
-		Scene.UnregisterNetworkObject( this );
+		Net = new NetworkObject( this, true );
 	}
 
+	/// <summary>
+	/// Initialize this object from the network
+	/// </summary>
+	/// <param name="message"></param>
+	public void NetworkInit( ObjectCreateMsg msg )
+	{
+		if ( Net is not null ) return;
 
+		Net = new NetworkObject( this, msg );
+	}
+
+	/// <summary>
+	/// Networking enabled from the editor
+	/// </summary>
+	void StartNetworking()
+	{
+		if ( Net is not null ) return;
+
+		Net = new NetworkObject( this, false );
+	}
+
+	void EndNetworking()
+	{
+		if ( Net is null ) return;
+
+		Net.Dispose();
+		Net = null;
+	}
 
 	internal void NetworkUpdate()
 	{
@@ -49,7 +98,7 @@ public partial class GameObject
 
 		ByteStream data = ByteStream.Create( 32 );
 
-		foreach( var c in Components )
+		foreach ( var c in Components )
 		{
 			if ( c is INetworkBaby net )
 			{
@@ -65,7 +114,7 @@ public partial class GameObject
 			}
 		}
 
-		update.Data = Convert.ToBase64String( data.ToArray() ); 
+		update.Data = Convert.ToBase64String( data.ToArray() );
 
 		return update;
 	}
@@ -93,13 +142,13 @@ public partial class GameObject
 				if ( c is not INetworkBaby net )
 					continue;
 
-				if ( c.GetType().Name != t ) 
+				if ( c.GetType().Name != t )
 					continue;
 
 				net.Read( componentData );
 			}
 		}
-		
+
 	}
 }
 

@@ -1,35 +1,68 @@
-using Sandbox;
-using Sandbox.Diagnostics;
 using Sandbox.Network;
-using System.Text.Json.Nodes;
 
-public sealed class NetworkObject : BaseComponent
+public sealed class NetworkObject
 {
+	GameObject GameObject { get; set; }
 	public Guid Creator { get; set; }
 	public Guid Owner { get; set; }
 
-	public bool IsMine => Owner == SceneNetworkSystem.LocalId;
+	public bool IsOwner => Owner == SceneNetworkSystem.LocalId;
+	public bool IsUnowned => Owner == Guid.Empty;
+	public bool IsProxy
+	{
+		get
+		{
+			if ( IsOwner ) return false;
+			if ( IsUnowned && GameNetworkSystem.IsHost ) return false;
+
+			return true;
+		}
+	}
 
 	bool hasNetworkDestroyed;
 
-	public static void Instantiate( GameObject target )
+	internal NetworkObject( GameObject source, bool localOwner )
 	{
-		if ( SceneNetworkSystem.Instance is not null )
-		{
-			var create = new ObjectCreateMsg();
-			create.Guid = target.Id;
-			create.JsonData = target.Serialize()?.ToJsonString() ?? "{}";
-			create.Owner = SceneNetworkSystem.LocalId;
-			create.Creator = SceneNetworkSystem.LocalId;
+		GameObject = source;
+		Creator = Guid.Empty;
+		Owner = Guid.Empty;
 
-			SceneNetworkSystem.Instance.Broadcast( create );
+		if ( localOwner )
+		{
+			Creator = SceneNetworkSystem.LocalId;
+			Owner = SceneNetworkSystem.LocalId;
 		}
 
-		var netObject = target.GetComponent<NetworkObject>();
-		netObject.Creator = SceneNetworkSystem.LocalId;
-		netObject.Owner = SceneNetworkSystem.LocalId;
+		if ( !IsProxy )
+		{
+			SendInstantiateMessage();
+		}
 
-		target.SetNetworkObject( netObject );
+		GameObject.Scene.RegisterNetworkedObject( this );
+	}
+
+	internal NetworkObject( GameObject source, ObjectCreateMsg msg )
+	{
+		GameObject = source;
+
+		Creator = msg.Creator;
+		Owner = msg.Owner;
+
+		GameObject.Scene.RegisterNetworkedObject( this );
+	}
+
+	internal void Dispose()
+	{
+		GameObject.Scene.UnregisterNetworkObject( this );
+		GameObject = default;
+	}
+
+	void SendInstantiateMessage()
+	{
+		if ( SceneNetworkSystem.Instance is null )
+			return;
+
+		SceneNetworkSystem.Instance.Broadcast( GetCreateMessage( true ) );
 	}
 
 	internal void OnNetworkDestroy()
@@ -41,12 +74,41 @@ public sealed class NetworkObject : BaseComponent
 	internal void SendNetworkDestroy()
 	{
 		if ( hasNetworkDestroyed ) return;
-		if ( !IsMine ) return;
+		if ( IsProxy ) return;
 		if ( SceneNetworkSystem.Instance is null ) return;
 
 		var msg = new ObjectDestroyMsg();
 		msg.Guid = GameObject.Id;
 
 		SceneNetworkSystem.Instance.Broadcast( msg );
+	}
+
+	internal void NetworkUpdate()
+	{
+		if ( IsProxy ) return;
+
+		GameObject.NetworkUpdate();
+	}
+
+	internal ObjectCreateMsg GetCreateMessage( bool includeUpdate )
+	{
+		var create = new ObjectCreateMsg();
+		create.Guid = GameObject.Id;
+		create.JsonData = GameObject.Serialize().ToJsonString();
+		create.Owner = Owner;
+		create.Creator = Creator;
+
+		if ( includeUpdate )
+		{
+			create.Update = GameObject.CreateNetworkUpdate();
+		}
+
+		return create;
+	}
+
+	internal void Destroy()
+	{
+		Log.Info( $"Destroying {GameObject} [{Creator}]" );
+		GameObject.Destroy();
 	}
 }

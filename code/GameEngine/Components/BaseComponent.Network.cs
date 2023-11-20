@@ -7,6 +7,8 @@ using System.Text.Json.Nodes;
 
 public abstract partial class BaseComponent
 {
+	public bool IsProxy => GameObject.IsProxy;
+
 	public bool rpcFromNetwork;
 
 	public void __rpc_Broadcast( Action resume, string methodName, params object[] argumentList )

@@ -6,14 +6,14 @@ using System.Linq;
 
 public partial class Scene : GameObject
 {
-	HashSet<GameObject> networkedObjects = new HashSet<GameObject>();
+	HashSet<NetworkObject> networkedObjects = new HashSet<NetworkObject>();
 
-	internal void RegisterNetworkedObject( GameObject obj )
+	internal void RegisterNetworkedObject( NetworkObject obj )
 	{
 		networkedObjects.Add( obj );
 	}
 
-	internal void UnregisterNetworkObject( GameObject obj )
+	internal void UnregisterNetworkObject( NetworkObject obj )
 	{
 		networkedObjects.Remove( obj );
 	}
@@ -32,9 +32,6 @@ public partial class Scene : GameObject
 
 		foreach ( var obj in networkedObjects )
 		{
-			if ( !obj.IsMine ) continue;
-
-			//Log.Info( $"TIK: {obj}" );
 			obj.NetworkUpdate();
 		}
 	}
@@ -46,21 +43,14 @@ public partial class Scene : GameObject
 
 		foreach ( var target in networkedObjects )
 		{
-			var create = new ObjectCreateMsg();
-			create.Guid = target.Id;
-			create.JsonData = target.Serialize().ToJsonString();
-			create.Owner = target.Net.Owner;
-			create.Creator = target.Net.Creator;
-			create.Update = target.CreateNetworkUpdate();
-
-			jso.Add( create );
+			jso.Add( target.GetCreateMessage( true ) );
 		}
 
 		return jso;
 	}
 
 
-	internal void DestroyNetworkObjects( Func<GameObject, bool> test )
+	internal void DestroyNetworkObjects( Func<NetworkObject, bool> test )
 	{
 		var found = networkedObjects.Where( test ).ToArray();
 

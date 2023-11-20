@@ -77,14 +77,14 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 	public override void OnJoined( NetworkChannel client )
 	{
-		Log.Info( $"Client {client.Name} has joined the game!" );
+		Log.Info( $"Client {client.Name} ({client.Id}) has joined the game!" );
 	}
 
 	public override void OnLeave( NetworkChannel client )
 	{
-		Log.Info( $"Client {client.Name} has left the game!" );
+		Log.Info( $"Client {client.Name} ({client.Id}) has left the game!" );
 
-		GameManager.ActiveScene.DestroyNetworkObjects( x => x.Net.Owner == client.Id );
+		GameManager.ActiveScene.DestroyNetworkObjects( x => x.Owner == client.Id );
 	}
 
 	public override IDisposable Push()
@@ -103,12 +103,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		// TODO: Does this server allow this client to be creating objects from json?
 		go.Deserialize( JsonObject.Parse( message.JsonData ).AsObject() );
-
-		var netObject = go.GetComponent<NetworkObject>();
-		netObject.Creator = message.Creator;
-		netObject.Owner = message.Owner;
-
-		go.SetNetworkObject( netObject );
+		go.NetworkInit( message );
 
 		//go.Receive( message.Update );
 	}

@@ -12,7 +12,7 @@
 		Layout.Spacing = 2;
 
 		var row = Layout.AddRow();
-		row.Spacing = 4;
+		row.Spacing = 2;
 		row.Add( ControlWidget.Create( targetObject.GetProperty( nameof( GameObject.Enabled ) ) ) );
 		row.Add( ControlWidget.Create( targetObject.GetProperty( nameof( GameObject.Name ) ) ), 1 );
 
@@ -27,6 +27,8 @@
 		cs.AddRow( txo.GetProperty( nameof( GameTransform.LocalPosition ) ) );
 		cs.AddRow( txo.GetProperty( nameof( GameTransform.LocalRotation ) ) );
 		cs.AddRow( txo.GetProperty( nameof( GameTransform.LocalScale ) ) );
+
+		cs.AddRow( targetObject.GetProperty( nameof( GameObject.Networked ) ) );
 
 		Layout.Add( cs );
 

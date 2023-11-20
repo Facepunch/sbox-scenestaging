@@ -15,12 +15,10 @@ public class PlayerController : BaseComponent, INetworkBaby
 	public Angles EyeAngles;
 	public bool IsRunning;
 
-	public bool IsController => GameObject.IsNetworked == false || GameObject.IsMine;
-
 	public override void Update()
 	{
 		// Eye input
-		if ( IsController )
+		if ( !IsProxy )
 		{
 			EyeAngles.pitch += Input.MouseDelta.y * 0.1f;
 			EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
@@ -81,10 +79,10 @@ public class PlayerController : BaseComponent, INetworkBaby
 
 	public override void FixedUpdate()
 	{
-		if ( !IsController )
+		if ( IsProxy )
 			return;
 
-			BuildWishVelocity();
+		BuildWishVelocity();
 
 		var cc = GameObject.GetComponent<CharacterController>();
 
