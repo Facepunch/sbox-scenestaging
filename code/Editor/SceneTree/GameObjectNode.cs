@@ -9,6 +9,14 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		Height = 17;
 	}
 
+	public override string Name
+	{
+		get => Value.Name;
+		set => Value.Name = value;
+	}
+
+	public override bool CanEdit => true;
+
 	public override bool HasChildren
 	{
 		get
@@ -89,9 +97,16 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		//
 		// If there's a drag and drop happening, fade out nodes that aren't possible
 		//
-		if ( TreeView.IsBeingDroppedOn && (TreeView.CurrentItemDragEvent.Data.Object is GameObject go && Value.IsAncestor( go )) )
+		if ( TreeView.IsBeingDroppedOn )
 		{
-			opacity *= 0.23f;
+			if ( TreeView.CurrentItemDragEvent.Data.Object is GameObject[] gos && gos.Any( go => Value.IsAncestor( go ) ) )
+			{
+				opacity *= 0.23f;
+			}
+			else if ( TreeView.CurrentItemDragEvent.Data.Object is GameObject go && Value.IsAncestor( go ) )
+			{
+				opacity *= 0.23f;
+			}
 		}
 
 		if ( item.Dropping )
@@ -162,7 +177,18 @@ public partial class GameObjectNode : TreeNode<GameObject>
 	public override bool OnDragStart()
 	{
 		var drag = new Drag( TreeView );
-		drag.Data.Object = Value;
+		
+		if ( TreeView.IsSelected( Value ) )
+		{
+			// If we're selected then use all selected items in the tree.
+			drag.Data.Object = TreeView.SelectedItems.OfType<GameObject>().ToArray();
+		}
+		else
+		{
+			// Otherwise let's just drag this one.
+			drag.Data.Object = new[] { Value };
+		}
+		
 		drag.Execute();
 
 		return true;
@@ -172,25 +198,29 @@ public partial class GameObjectNode : TreeNode<GameObject>
 	{
 		using var scope = Value.Scene.Push();
 
-		if ( e.Data.Object is GameObject go )
+		if ( e.Data.Object is GameObject[] gos )
 		{
-			// can't parent to an ancesor
-			if ( go == Value || Value.IsAncestor( go ) )
-				return DropAction.Ignore;
-
-			if ( e.IsDrop )
+			if ( gos.Any( go => go == Value || Value.IsAncestor( go ) ) )
 			{
-				if ( e.DropEdge.HasFlag( ItemEdge.Top ) )
+				return DropAction.Ignore;
+			}
+			
+			foreach ( var go in gos )
+			{
+				if ( e.IsDrop )
 				{
-					Value.AddSibling( go, true );
-				}
-				else if ( e.DropEdge.HasFlag( ItemEdge.Bottom ) )
-				{
-					Value.AddSibling( go, false );
-				}
-				else
-				{
-					go.SetParent( Value, true );
+					if ( e.DropEdge.HasFlag( ItemEdge.Top ) )
+					{
+						Value.AddSibling( go, true );
+					}
+					else if ( e.DropEdge.HasFlag( ItemEdge.Bottom ) )
+					{
+						Value.AddSibling( go, false );
+					}
+					else
+					{
+						go.SetParent( Value, true );
+					}
 				}
 			}
 
@@ -231,11 +261,11 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 	public override bool OnContextMenu()
 	{
-		var m = new Menu();
+		var m = new Menu( TreeView );
 
 		AddGameObjectMenuItems( m );
 
-		m.OpenAtCursor();
+		m.OpenAtCursor( true );
 
 		return true;
 	}

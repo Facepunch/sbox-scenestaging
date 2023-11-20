@@ -5,7 +5,7 @@ using System.Linq;
 
 [Category( "UI Panels" )]
 [Icon( "widgets" )]
-public abstract class PanelComponent : BaseComponent, IPanelComponent
+public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 {
 	Panel panel;
 

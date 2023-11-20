@@ -45,7 +45,7 @@ file class PlayButton : Widget
 	{
 		if ( hoveringDropdown && !GameManager.IsPlaying )
 		{
-			var menu = new Menu();
+			var menu = new Menu( this );
 
 			menu.AddOption( "Game", "sports_esports", () => EditorScene.PlayMode = "game" ).Enabled = EditorScene.PlayMode != "game";
 			menu.AddOption( "Scene", "slideshow", () => EditorScene.PlayMode = "scene" ).Enabled = EditorScene.PlayMode != "scene";
