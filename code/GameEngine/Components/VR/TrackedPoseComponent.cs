@@ -42,6 +42,9 @@ public class TrackedPoseComponent : BaseComponent
 	[Property]
 	public UpdateTypes UpdateType { get; set; }
 
+	[Property]
+	public bool UseRelativeTransform { get; set; }
+
 	/// <summary>
 	/// Get the appropriate VR transform for the specified <see cref="PoseSource"/>
 	/// </summary>
@@ -62,6 +65,9 @@ public class TrackedPoseComponent : BaseComponent
 	private void UpdatePose()
 	{
 		var newTransform = GetTransform();
+
+		if ( UseRelativeTransform )
+			newTransform = VR.Anchor.ToLocal( newTransform );
 
 		//
 		// Update gameobject transform
