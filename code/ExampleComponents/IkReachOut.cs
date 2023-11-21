@@ -5,6 +5,7 @@ public sealed class IkReachOut : BaseComponent
 	[Property] public GameObject TargetGameObject { get; set; }
 	[Property] public float Radius { get; set; }
 	[Property] public Angles HandRotation { get; set; }
+	[Property] public TagSet IgnoreCollision { get; set; }
 
 	TimeUntil timeUntilRetry;
 
@@ -19,7 +20,9 @@ public sealed class IkReachOut : BaseComponent
 			dir = (Transform.Rotation.Forward + Vector3.Random) * Radius;
 		}
 
-		var tr = Physics.Trace.Sphere( 2, Transform.Position, Transform.Position + dir.Normal * Radius )
+		var tr = Physics.Trace
+			.Sphere( 2, Transform.Position, Transform.Position + dir.Normal * Radius )
+			.WithoutTags( IgnoreCollision )
 			.Run();
 
 		if  ( tr.Hit )
