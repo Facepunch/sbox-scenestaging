@@ -227,6 +227,8 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 			// so will tend to over-react to being touched.
 			float timeToArrive = Scene.FixedDelta;
 
+			if ( IsProxy ) timeToArrive *= 2.0f;
+
 			keyframeBody.Move( Transform.World, timeToArrive );
 		}
 	}

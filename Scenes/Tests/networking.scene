@@ -134,7 +134,7 @@
           "Acceleration": 10,
           "GroundAngle": 45,
           "Height": 71.05,
-          "IgnoreLayers": "",
+          "IgnoreLayers": "player",
           "Radius": 11.65,
           "StepHeight": 18
         },
@@ -1005,6 +1005,7 @@
                   "__type": "IkReachOut",
                   "__enabled": true,
                   "HandRotation": "-90,0,0",
+                  "IgnoreCollision": "player",
                   "Radius": 30,
                   "TargetGameObject": "eace0ea7-7995-455c-8bf0-cb49f47e05cd"
                 }
@@ -1028,6 +1029,7 @@
                   "__type": "IkReachOut",
                   "__enabled": true,
                   "HandRotation": "-90,180,0",
+                  "IgnoreCollision": "player",
                   "Radius": 30,
                   "TargetGameObject": "9325a660-3ef2-4b1b-9bde-986839db2d4e"
                 }
@@ -1050,6 +1052,7 @@
                   "__type": "IkReachOut",
                   "__enabled": true,
                   "HandRotation": "-90,180,0",
+                  "IgnoreCollision": null,
                   "Radius": 40
                 }
               ],
@@ -1146,6 +1149,23 @@
               "Tint": "1,1,1,1"
             }
           ]
+        },
+        {
+          "Id": "22d93711-3db9-442d-919c-db26112ad26f",
+          "Name": "Physics Push",
+          "Position": "0,0,30.12771",
+          "Tags": "player",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ColliderSphereComponent",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Radius": 28.000004,
+              "Static": false,
+              "Surface": null
+            }
+          ]
         }
       ]
     },
@@ -1189,7 +1209,7 @@
         {
           "__type": "SelfDestructComponent",
           "__enabled": true,
-          "Seconds": 10
+          "Seconds": 60
         }
       ],
       "Children": [
@@ -1214,7 +1234,7 @@
               "IsTrigger": false,
               "Scale": "51.28003,50,50",
               "Static": false,
-              "Surface": "surfaces/bouncy.surface"
+              "Surface": null
             }
           ]
         }
@@ -1222,9 +1242,8 @@
     },
     {
       "Id": "7b9aa73f-214d-499b-86aa-625cd1900e3c",
-      "Name": "Network Object Test (1)",
-      "Position": "1341.012,-268.0647,-1449.558",
-      "Scale": "0.3,0.3,0.3",
+      "Name": "Ball",
+      "Position": "1523.783,-268.0647,-1449.558",
       "Networked": true,
       "Enabled": true,
       "Components": [
@@ -1244,6 +1263,7 @@
           "Id": "8db3763e-4dfe-4688-9652-70d5c4d941e9",
           "Name": "Cube",
           "Position": "0,0,0",
+          "Scale": "8,8,8",
           "Enabled": true,
           "Components": [
             {
@@ -1251,17 +1271,252 @@
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
-              "Model": "models/dev/box.vmdl",
+              "Model": "models/soccerball.vmdl",
               "ShouldCastShadows": true,
-              "Tint": "0.60891,0.23139,0,1"
+              "Tint": "1,1,1,1"
             },
             {
-              "__type": "ColliderBoxComponent",
+              "__type": "ColliderSphereComponent",
               "__enabled": true,
               "IsTrigger": false,
-              "Scale": "51.28003,50,50",
+              "Radius": 4.720005,
               "Static": false,
-              "Surface": "surfaces/bouncy.surface"
+              "Surface": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "641b8fd9-713d-4061-9c3a-815d30d42995",
+      "Name": "Ball (1)",
+      "Position": "1447.071,-180.0867,-1449.558",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true
+        },
+        {
+          "__type": "SelfDestructComponent",
+          "__enabled": false,
+          "Seconds": 10
+        }
+      ],
+      "Children": [
+        {
+          "Id": "9d10f00d-056b-4476-8248-fc3362a7a552",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "8,8,8",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/soccerball.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "ColliderSphereComponent",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Radius": 4.720005,
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "eee18979-9397-4394-b18b-d6e2bae934a3",
+      "Name": "Ball (2)",
+      "Position": "1154.811,-180.0867,-1449.558",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true
+        },
+        {
+          "__type": "SelfDestructComponent",
+          "__enabled": false,
+          "Seconds": 10
+        }
+      ],
+      "Children": [
+        {
+          "Id": "090e7b2d-60dc-48d7-90f3-64c3d3dc7d49",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "8,8,8",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/soccerball.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "ColliderSphereComponent",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Radius": 4.720005,
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "9a0e3b36-751c-4bf1-86c9-39cc8a0a65d4",
+      "Name": "Ball (3)",
+      "Position": "1154.811,-410.0601,-1449.558",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true
+        },
+        {
+          "__type": "SelfDestructComponent",
+          "__enabled": false,
+          "Seconds": 10
+        }
+      ],
+      "Children": [
+        {
+          "Id": "8d2748e1-4a1d-40ab-93de-28a69eaf8628",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "8,8,8",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/soccerball.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "ColliderSphereComponent",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Radius": 4.720005,
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "8a6d4feb-bc4f-4c97-8a93-51c65aaa9883",
+      "Name": "Ball (4)",
+      "Position": "1346.282,-413.7725,-1449.557",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true
+        },
+        {
+          "__type": "SelfDestructComponent",
+          "__enabled": false,
+          "Seconds": 10
+        }
+      ],
+      "Children": [
+        {
+          "Id": "675fd167-47ca-4f58-8157-7bf997107a44",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "8,8,8",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/soccerball.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "ColliderSphereComponent",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Radius": 4.720005,
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "8a58c89d-9908-4749-a9ce-71a1f926d2f9",
+      "Name": "Ball (5)",
+      "Position": "1346.282,-56.36513,-1449.557",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true
+        },
+        {
+          "__type": "SelfDestructComponent",
+          "__enabled": false,
+          "Seconds": 10
+        }
+      ],
+      "Children": [
+        {
+          "Id": "495cce3c-d622-4565-aca7-81bf70676026",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "8,8,8",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/soccerball.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "ColliderSphereComponent",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Radius": 4.720005,
+              "Static": false,
+              "Surface": null
             }
           ]
         }
@@ -1610,6 +1865,60 @@
       ]
     },
     {
+      "Id": "b134d6ad-a35a-4781-80dd-6401670b9710",
+      "Name": "Sphere (9)",
+      "Position": "1977.172,1173.984,-2156.807",
+      "Scale": "20,20,20",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.35644,0.06176,0.32697,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 31.839945,
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "1f80baf5-2f5b-4c03-a843-8d4ce994c346",
+      "Name": "Sphere (10)",
+      "Position": "2516.296,1173.984,-2156.807",
+      "Scale": "20,20,20",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.35644,0.06176,0.32697,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 31.839945,
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
       "Id": "d0712793-79b7-46aa-a94c-5287a644008a",
       "Name": "Sphere (1)",
       "Position": "1345.408,-267.3028,-2164.677",
@@ -1624,7 +1933,196 @@
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
-          "Tint": "0.35644,0.06176,0.32697,1"
+          "Tint": "0.31683,0.08313,0.29346,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "39db5380-9611-4c74-873b-095cb7753dce",
+      "Name": "Sphere (2)",
+      "Position": "1477.375,-1196.27,-2164.677",
+      "Scale": "20,20,20",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.31683,0.08313,0.29346,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "1d38f15a-8c7e-431d-93a1-132a143370aa",
+      "Name": "Sphere (3)",
+      "Position": "882.0978,-1196.27,-2164.677",
+      "Scale": "20,20,20",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.31683,0.08313,0.29346,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "220a17bc-6552-4235-be6a-2ea2188dd5ef",
+      "Name": "Sphere (4)",
+      "Position": "310.6305,-1196.27,-2164.677",
+      "Scale": "20,20,20",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.31683,0.08313,0.29346,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "b1cdadca-069b-43c0-ac70-c96d148acdfc",
+      "Name": "Sphere (5)",
+      "Position": "310.6305,-587.6801,-2164.677",
+      "Scale": "20,20,20",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.31683,0.08313,0.29346,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "66bc9403-76dc-49fd-bb1c-248a25dabbed",
+      "Name": "Sphere (6)",
+      "Position": "310.6305,90.89149,-2164.677",
+      "Scale": "20,20,20",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.31683,0.08313,0.29346,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "a535110b-389b-496a-9af3-22fe1c87facd",
+      "Name": "Sphere (7)",
+      "Position": "310.6305,737.5006,-2164.677",
+      "Scale": "20,20,20",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.31683,0.08313,0.29346,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "62418497-9b9f-4072-b228-f8f7fd12b97d",
+      "Name": "Sphere (8)",
+      "Position": "793.3074,1068.353,-2164.677",
+      "Scale": "20,20,20",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.31683,0.08313,0.29346,1"
         },
         {
           "__type": "ColliderSphereComponent",
@@ -1647,6 +2145,7 @@
   "Title": "networking",
   "Description": "",
   "__references": [
+    "baik.soccerball",
     "facepunch.beech_bush_large",
     "facepunch.beech_bush_regular_medium_b",
     "facepunch.beech_shrub_tall_large",
