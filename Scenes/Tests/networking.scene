@@ -2154,6 +2154,273 @@
           "Surface": null
         }
       ]
+    },
+    {
+      "Id": "256f2029-cd5c-4a94-9910-c5d1928e78c3",
+      "Name": "Spinner",
+      "Position": "1768.604,407.9418,-1626.577",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "SpinComponent",
+          "__enabled": true,
+          "SpinAngles": "0,100,0"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "afef1df6-f03e-4e30-ad7e-1c7f507ad07e",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "8f88e30f-4136-44ea-b9c8-03c46dc28bd7",
+          "Name": "Cube",
+          "Position": "0,-33.89098,7.874942",
+          "Scale": "0.1,0.1,0.1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "d5afad8b-0b33-4d10-bf11-4d07f4d8a322",
+          "Name": "Cube",
+          "Position": "0,-57.53217,7.875",
+          "Scale": "0.1,0.1,0.1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "a4f8d5c5-db69-4fce-a2a6-9dadd6bb1005",
+          "Name": "Cube",
+          "Position": "0,-82.5915,7.875",
+          "Scale": "0.1,0.1,0.1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "ff8feab6-dccc-4b25-80e4-752c850dacf7",
+          "Name": "Cube",
+          "Position": "0,-115.8153,7.875",
+          "Scale": "0.1,0.1,0.1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "fdee5aad-7806-45c4-bd07-314571413aac",
+          "Name": "Cube",
+          "Position": "0,-141.4495,7.875",
+          "Scale": "0.1,0.1,0.1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "edf34526-212e-42b7-95bd-1709bccbd2ac",
+          "Name": "Cube",
+          "Position": "0,-180.4409,7.875",
+          "Scale": "0.1,0.1,0.1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "3d14f9e7-4ee8-4b89-adab-b9cf0aab1676",
+          "Name": "Cube",
+          "Position": "0,-210.8042,7.875",
+          "Scale": "0.1,0.1,0.1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "d2cff00f-3e59-4c46-ae85-d9022974fb4d",
+          "Name": "Cube",
+          "Position": "0,-243.7596,7.875",
+          "Scale": "0.1,0.1,0.1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "72c41d0f-dc74-45b6-b303-f152398335c0",
+          "Name": "Cube",
+          "Position": "0,-279.7055,7.875",
+          "Scale": "0.1,0.1,0.1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "391144be-7b2e-471b-81ee-3dd4b3f118df",
+          "Name": "Cube",
+          "Position": "0,-279.7055,7.875",
+          "Scale": "0.1,0.1,0.1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "e781f082-296e-4dcb-a442-46599a572826",
+          "Name": "Cube",
+          "Position": "0,-303.1257,7.875",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.33725,0.03137,0.30588,1"
+            }
+          ]
+        },
+        {
+          "Id": "d5d3e3d0-a13e-4f9f-b1b8-98e8f7538fef",
+          "Name": "Cube",
+          "Position": "0,-335.1363,7.875",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.33725,0.03137,0.30588,1"
+            }
+          ]
+        },
+        {
+          "Id": "7b8cbb7c-60e6-400d-ab09-8464fb8324c0",
+          "Name": "Cube",
+          "Position": "0,-384.7816,7.875",
+          "Scale": "0.8,0.8,0.8",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "0.33663,0.03166,0.30614,1"
+            }
+          ]
+        }
+      ]
     }
   ],
   "SceneProperties": {
