@@ -22,6 +22,7 @@ public class SkyBox2D : BaseComponent, BaseComponent.ExecuteInEditor
 			if ( sceneObject is not null )
 			{
 				sceneObject.SkyTint = Tint;
+				DirtyProbes();
 			}
 		}
 	}
