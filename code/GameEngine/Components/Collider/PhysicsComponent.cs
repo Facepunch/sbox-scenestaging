@@ -5,7 +5,7 @@ using System;
 [Title( "Rigid Body" )]
 [Category( "Physics" )]
 [Icon( "panorama_fish_eye", "red", "white" )]
-public class PhysicsComponent : BaseComponent
+public class PhysicsComponent : BaseComponent, INetworkBaby
 {
 	[Property] public bool Gravity { get; set; } = true;
 
@@ -67,7 +67,9 @@ public class PhysicsComponent : BaseComponent
 	public override void FixedUpdate()
 	{
 		if ( _body is null ) return;
-		if ( GameObject.IsProxy ) return; // updating position from the network
+
+		if ( GameObject.IsProxy )
+			return; 
 
 		_body.GravityEnabled = Gravity;
 
@@ -76,6 +78,15 @@ public class PhysicsComponent : BaseComponent
 		isUpdatingPositionFromPhysics = true;
 		Transform.World = bt.WithScale( Transform.Scale.x );
 		isUpdatingPositionFromPhysics = false;
+	}
+
+	public override void Update()
+	{
+		if ( GameObject.IsProxy )
+		{
+			_body.Transform = Transform.World;
+			return;
+		}
 	}
 
 	void OnLocalTransformChanged()
@@ -99,4 +110,15 @@ public class PhysicsComponent : BaseComponent
 		}
 	}
 
+	public void Write( ref ByteStream stream )
+	{
+		stream.Write( _body.Velocity );
+		stream.Write( _body.AngularVelocity );
+	}
+
+	public void Read( ByteStream stream )
+	{
+		_body.Velocity = stream.Read<Vector3>();
+		_body.AngularVelocity = stream.Read<Vector3>();
+	}
 }
