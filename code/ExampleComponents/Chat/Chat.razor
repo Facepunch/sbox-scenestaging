@@ -1,0 +1,76 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<root>
+
+	<div class="output">
+		@foreach (var entry in Entries)
+		{
+			<div class="chat_entry">
+				<div class="author">@entry.author</div>
+				<div class="message">@entry.message</div>
+			</div>
+		}
+	</div>
+
+	<div class="input">
+		<TextEntry @ref="InputBox" onsubmit="@ChatFinished"></TextEntry>
+	</div>
+	
+</root>
+
+@code
+{
+
+	[Property] public string MyStringValue { get; set; } = "Hello World!";
+
+	TextEntry InputBox;
+
+	public record Entry( string author, string message, RealTimeSince timeSinceAdded );
+	List<Entry> Entries = new();
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( MyStringValue );
+
+	public override void Update()
+	{
+		if (InputBox is null)
+			return;
+
+		Panel.AcceptsFocus = false;
+
+		if ( Input.Pressed( "chat" ) )
+		{
+			InputBox.Focus();
+		}
+
+		if ( Entries.RemoveAll( x => x.timeSinceAdded > 30.0f ) > 0 )
+		{
+			StateHasChanged();
+		}
+
+		SetClass( "open", InputBox.HasFocus );
+	}
+
+	void ChatFinished()
+	{
+		var text = InputBox.Text;
+		InputBox.Text = "";
+
+		AddText( Sandbox.Utility.Steam.PersonaName, text );
+	}
+
+	[Broadcast]
+	public void AddText( string author, string message )
+	{
+		message = message.Truncate( 300 );
+
+		Log.Info($"{author}: {message}");
+
+		Entries.Add(new Entry( author, message, 0.0f ));
+		StateHasChanged();
+	}
+}

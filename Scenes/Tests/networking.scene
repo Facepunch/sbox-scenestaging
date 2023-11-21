@@ -1,17 +1,6 @@
 {
   "GameObjects": [
     {
-      "Id": "b3d1bd63-6c07-4398-8cb0-fed3c6fd4602",
-      "Name": "Network Session",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "NetworkSession",
-          "__enabled": true
-        }
-      ]
-    },
-    {
       "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
       "Name": "Directional Light",
       "Position": "158.6718,-124.3322,368.6452",
@@ -24,6 +13,38 @@
           "LightColor": "1,0.89069,0.76238,1",
           "Shadows": true,
           "SkyColor": "0.10599,0.11132,0.12376,1"
+        }
+      ]
+    },
+    {
+      "Id": "3577eec4-3644-4c44-be71-bc7563b751cf",
+      "Name": "Chat UI",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ScreenPanel",
+          "__enabled": true,
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
+        },
+        {
+          "__type": "Chat",
+          "__enabled": true,
+          "MyStringValue": "Hello World!"
+        }
+      ]
+    },
+    {
+      "Id": "b3d1bd63-6c07-4398-8cb0-fed3c6fd4602",
+      "Name": "Network Session",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NetworkSession",
+          "__enabled": true
         }
       ]
     },
@@ -480,7 +501,7 @@
                                         {
                                           "Id": "083046f1-db93-460b-862b-842f01d05228",
                                           "Name": "arm_lower_L_twist0",
-                                          "Position": "0.00004572706,-0.000005974987,-0.00003998277",
+                                          "Position": "0,0,0",
                                           "Enabled": true
                                         },
                                         {
@@ -492,7 +513,7 @@
                                         {
                                           "Id": "0d87e0c7-5642-4cb6-a16a-2cee56987d15",
                                           "Name": "arm_elbow_helper_L",
-                                          "Position": "0.00004572706,-0.000005974987,-0.00003998277",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000003278255,-0.00000005960464,-0.7577646,0.6525283",
                                           "Enabled": true
                                         },
@@ -507,7 +528,7 @@
                                     {
                                       "Id": "946f103a-0b3b-4926-b818-8004ca90a81d",
                                       "Name": "arm_upper_L_twist0",
-                                      "Position": "0.00004546633,0.000007711881,-0.00003998281",
+                                      "Position": "0,0,0",
                                       "Enabled": true
                                     },
                                     {
@@ -706,13 +727,13 @@
                                         {
                                           "Id": "f4623065-fbf6-4168-81b7-f4a1c27a60de",
                                           "Name": "arm_lower_R_twist0",
-                                          "Position": "-0.00004572695,0.000005974655,-0.00003998298",
+                                          "Position": "0,0,0",
                                           "Enabled": true,
                                           "Children": [
                                             {
                                               "Id": "03883b35-a564-4a18-9106-7371482170d3",
                                               "Name": "arm_elbow_helper_R",
-                                              "Position": "-0.00004572696,0.000005974652,-0.00003998298",
+                                              "Position": "0,0,0",
                                               "Rotation": "-0.0000007376075,0.0000002682209,0.7577677,-0.6525244",
                                               "Enabled": true
                                             }
@@ -735,7 +756,7 @@
                                     {
                                       "Id": "130adb2a-2e84-4412-8157-62e32fcc0547",
                                       "Name": "arm_upper_R_twist0",
-                                      "Position": "-0.00004546618,-0.000007712124,-0.00003998296",
+                                      "Position": "0,0,0",
                                       "Enabled": true
                                     },
                                     {
@@ -2136,6 +2157,7 @@
     }
   ],
   "SceneProperties": {
+    "NetworkFrequency": 60,
     "FixedUpdateFrequency": 50,
     "MaxFixedUpdates": 5,
     "TimeScale": 1,
