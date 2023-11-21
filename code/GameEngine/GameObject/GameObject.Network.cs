@@ -137,8 +137,10 @@ public partial class GameObject
 
 	internal void Receive( ObjectUpdateMsg update )
 	{
+		float netRate = Scene.NetworkRate;
 		LastRcv = RealTime.Now;
-		Transform.LerpTo( update.Transform, (1.0f / 30.0f) );
+
+		Transform.FromNetwork( update.Transform, netRate );
 
 		if ( string.IsNullOrWhiteSpace( update.Data ) )
 			return;

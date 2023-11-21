@@ -5,7 +5,7 @@
 		if ( !Enabled )
 			return;
 
-		Transform.Update();
+		Transform.Update( IsProxy );
 
 		ForEachComponent( "Update", true, c => c.InternalUpdate() );
 		ForEachChild( "Tick", true, x => x.Update() );

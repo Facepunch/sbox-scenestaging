@@ -6,6 +6,16 @@ using System.Linq;
 
 public partial class Scene : GameObject
 {
+	/// <summary>
+	/// How many times a second network update runs
+	/// </summary>
+	[Property] public float NetworkFrequency { get; set; } = 60.0f;
+
+	/// <summary>
+	/// One divided by NetworkFrequency.
+	/// </summary>
+	public float NetworkRate => 1.0f / NetworkFrequency;
+
 	HashSet<NetworkObject> networkedObjects = new HashSet<NetworkObject>();
 
 	internal void RegisterNetworkedObject( NetworkObject obj )
@@ -22,7 +32,7 @@ public partial class Scene : GameObject
 
 	internal void SceneNetworkUpdate()
 	{
-		if ( timeSinceNetworkUpdate < (1.0f / 30.0f) )
+		if ( timeSinceNetworkUpdate < NetworkRate )
 			return;
 
 		timeSinceNetworkUpdate = 0;
