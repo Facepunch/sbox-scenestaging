@@ -21,11 +21,14 @@ public class TransformInterpolate
 	public void Add( in float time, in Transform tx )
 	{
 		// last entry was this time, remove it
-		if ( entries.Count > 0 )
+		while ( entries.Count > 0 )
 		{
 			var lastEntry = entries.Last();
-			if ( lastEntry.Time == time )
-				entries.RemoveAt( entries.Count - 1 );
+
+			if ( lastEntry.Time < time )
+				break;
+
+			entries.RemoveAt( entries.Count - 1 );
 		}
 
 		entries.Add( new Entry( time, tx ) );
