@@ -37,6 +37,12 @@ public class CameraComponent : BaseComponent
 	[Property]
 	public StereoTargetEye TargetEye { get; set; } = StereoTargetEye.None;
 
+	[Property]
+	public TagSet RenderTags { get; set; } = new();
+
+	[Property]
+	public TagSet RenderExcludeTags { get; set; } = new();
+	
 	public override void DrawGizmos()
 	{
 		if ( sceneCamera is null )
@@ -116,6 +122,9 @@ public class CameraComponent : BaseComponent
 
 		camera.OnRenderOverlay = () => OnCameraRenderOverlay( camera );
 		camera.OnRenderTransparent = () => RenderHooks( afterTransparentHooks, camera );
+
+		camera.RenderTags.SetFrom( RenderTags );
+		camera.ExcludeTags.SetFrom( RenderExcludeTags );
 
 		foreach ( var c in GetComponents<ISceneCameraSetup>() )
 		{
