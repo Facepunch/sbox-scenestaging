@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq.Expressions;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -7,6 +8,7 @@ using Editor.NodeEditor;
 using Facepunch.ActionGraphs;
 using Sandbox.ActionGraphs;
 using Sandbox.Internal;
+using static Editor.NodeEditor.GraphView;
 using static Facepunch.ActionGraphs.Node;
 using PropertyAttribute = Sandbox.PropertyAttribute;
 
@@ -603,6 +605,84 @@ public class ActionGraphView : GraphView
 		foreach ( var nodeType in base.GetRelevantNodes( inputValueType, name ) )
 		{
 			yield return nodeType;
+		}
+	}
+
+	protected override void OnOpenContextMenu( Menu menu, PlugOut nodeOutput )
+	{
+		var selectedNodes = SelectedItems
+			.OfType<NodeUI>()
+			.Select( x => (NodeUI: x, ActionNode: x.Node is ActionNode { Node: { } node } ? node : null) )
+			.Where( x => x.ActionNode != null )
+			.ToArray();
+
+		var actionGraph = Graph.Graph;
+
+		if ( actionGraph.CanCreateSubGraph( selectedNodes.Select( x => x.ActionNode ) ) )
+		{
+			menu.AddOption( "Create Custom Node...", "add_box", async () =>
+			{
+				var avgPos = selectedNodes
+					.Aggregate( Vector2.Zero, ( s, x ) => s + x.NodeUI.Position )
+					/ selectedNodes.Length;
+
+				var result = await actionGraph.CreateSubGraphAsync( selectedNodes.Select( x => x.ActionNode ), async subGraph =>
+				{
+					const string extension = "action";
+
+					var fd = new FileDialog( null );
+					fd.Title = "Create ActionGraph Node";
+					fd.Directory = Path.GetDirectoryName( LocalProject.CurrentGame.Path );
+					fd.DefaultSuffix = $".{extension}";
+					fd.SelectFile( $"untitled.{extension}" );
+					fd.SetFindFile();
+					fd.SetModeSave();
+					fd.SetNameFilter( $"ActionGraph Node (*.{extension})" );
+
+					if ( !fd.Execute() )
+						return null;
+
+					var fileName = Path.GetFileNameWithoutExtension( fd.SelectedFile );
+					var title = fileName.ToTitleCase();
+
+					var asset = AssetSystem.CreateResource( "action", fd.SelectedFile );
+					var resource = asset.LoadResource<ActionGraphResource>();
+
+					resource.Graph = subGraph;
+					resource.Title = title;
+					resource.Description = "No description provided.";
+					resource.Icon = "account_tree";
+					resource.Category = "Custom";
+
+					asset.SaveToMemory( resource );
+					asset.SaveToDisk( resource );
+
+					MainAssetBrowser.Instance?.UpdateAssetList();
+
+					return asset.Path;
+				} );
+
+				var removedNodes = selectedNodes
+					.Where( x => !x.ActionNode.IsValid )
+					.Select( x => x.NodeUI )
+					.ToArray();
+
+				foreach ( var node in removedNodes )
+				{
+					node.Destroy();
+				}
+
+				var removedConnections = Connections
+					.Where( x => !x.Output.IsValid || !x.Input.IsValid )
+					.ToArray();
+
+				foreach ( var connection in removedConnections )
+				{
+					connection.Destroy();
+				}
+
+				BuildFromNodes( new[] { new ActionNode( Graph, result!.Value.GraphNode ) }, avgPos, true );
+			} );
 		}
 	}
 

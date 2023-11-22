@@ -13,12 +13,35 @@ public partial class ActionGraph : IGraph
 	[HideInEditor]
 	public Facepunch.ActionGraphs.ActionGraph Graph { get; }
 
-	private Dictionary<Node, ActionNode> NodeDict { get; } = new Dictionary<Node, ActionNode>();
-	private Dictionary<string, ActionNode> NodeIdDict { get; } = new Dictionary<string, ActionNode>();
-	private HashSet<ActionNode> DirtyNodes { get; } = new HashSet<ActionNode>();
+	[HideInEditor]
+	private Dictionary<Node, ActionNode> NodeDict { get; } = new ();
+
+	[HideInEditor]
+	private Dictionary<string, ActionNode> NodeIdDict { get; } = new ();
+
+	[HideInEditor]
+	private HashSet<ActionNode> DirtyNodes { get; } = new ();
 
 	[HideInEditor]
 	public IEnumerable<INode> Nodes => NodeDict.Values;
+
+	public string Title
+	{
+		get => Graph.Title;
+		set => Graph.Title = value;
+	}
+
+	public string Description
+	{
+		get => Graph.Description;
+		set => Graph.Description = value;
+	}
+
+	public string Icon
+	{
+		get => Graph.Icon;
+		set => Graph.Icon = value;
+	}
 
 	public void AddNode( INode node )
 	{
@@ -71,14 +94,9 @@ public partial class ActionGraph : IGraph
 	{
 		var sourceNodes = nodes.OfType<ActionNode>()
 			.Select( x => x.Node )
-			.ToHashSet();
-
-		var sourceLinks = sourceNodes
-			.SelectMany( x => x.OutputLinks )
-			.Where( x => sourceNodes.Contains( x.Target.Node ) )
 			.ToArray();
 
-		return Graph.Serialize( sourceNodes, sourceLinks, EditorJsonOptions );
+		return Graph.Serialize( sourceNodes, EditorJsonOptions );
 	}
 
 	public IEnumerable<INode> DeserializeNodes( string serialized )

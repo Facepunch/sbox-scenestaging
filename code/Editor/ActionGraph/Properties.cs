@@ -98,6 +98,10 @@ public class Properties : Widget
 				ps.AddRow( prop );
 			}
 		}
+		else if ( Target is ActionGraph )
+		{
+			ps.AddObject( EditorTypeLibrary.GetSerializedObject( Target ) );
+		}
 
 		_content.Add( ps );
 	}
