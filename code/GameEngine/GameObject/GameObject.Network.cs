@@ -1,5 +1,7 @@
 ﻿using Sandbox;
 using Sandbox.Network;
+using System.Reflection;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public partial class GameObject
 {
@@ -99,9 +101,7 @@ public partial class GameObject
 		var update = CreateNetworkUpdate();
 
 		SceneNetworkSystem.Instance.Broadcast( update );
-
 		LastTx = RealTime.Now;
-
 	}
 
 
@@ -112,7 +112,7 @@ public partial class GameObject
 		update.Transform = Transform.Local;
 		update.Parent = Parent.Id;
 
-		ByteStream data = ByteStream.Create( 32 );
+		using ByteStream data = ByteStream.Create( 32 );
 
 		foreach ( var c in Components )
 		{
@@ -127,6 +127,8 @@ public partial class GameObject
 					data.Write( dataStream.Length ); // Ident of this component somehow
 					data.Write( dataStream );
 				}
+
+				dataStream.Dispose();
 			}
 		}
 
@@ -140,14 +142,14 @@ public partial class GameObject
 		float netRate = Scene.NetworkRate;
 		LastRcv = RealTime.Now;
 
-		Transform.FromNetwork( update.Transform, netRate );
+		Transform.FromNetwork( update.Transform, netRate * 2.0f );
 
 		if ( string.IsNullOrWhiteSpace( update.Data ) )
 			return;
 
 		var data = Convert.FromBase64String( update.Data );
 
-		ByteStream reader = ByteStream.CreateReader( data );
+		using ByteStream reader = ByteStream.CreateReader( data );
 
 		while ( reader.ReadRemaining > 2 )
 		{
@@ -167,6 +169,62 @@ public partial class GameObject
 			}
 		}
 
+	}
+
+	/// <summary>
+	/// Stop being the network owner
+	/// </summary>
+	[Broadcast]
+	public void Renounce()
+	{
+		if ( Net is null ) return;
+
+		// TODO - check if we're allowed to do this
+		// TODO - rules around this stuff
+
+		if ( Net.Owner != Rpc.CallerId )
+			return;
+
+		Net.Owner = Guid.Empty;
+	}
+
+	/// <summary>
+	/// Become the owner of this network object, if at all possible.
+	/// </summary>
+	public void BecomeNetworkOwner()
+	{
+		if ( Net is null ) return;
+
+		Msg_BecomeNetworkOwner();
+	}
+
+	[Broadcast]
+	void Msg_BecomeNetworkOwner()
+	{
+		// TODO - check if we're allowed to do this
+		// TODO - rules around this stuff
+
+		Net.Owner = Rpc.CallerId;
+	}
+
+
+	public void __rpc_Broadcast( Action resume, string methodName, params object[] argumentList )
+	{
+		if ( !Rpc.Calling && IsNetworked && SceneNetworkSystem.Instance is not null )
+		{
+			var msg = new ObjectMessageMsg();
+			msg.Guid = Id;
+			msg.Component = null;
+			msg.MessageName = methodName;
+			msg.ArgumentData = TypeLibrary.ToBytes( argumentList );
+
+			SceneNetworkSystem.Instance.Broadcast( msg );
+		}
+
+		Rpc.PreCall();
+
+		// we want to call this
+		resume();
 	}
 }
 

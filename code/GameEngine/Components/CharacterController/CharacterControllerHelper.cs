@@ -116,7 +116,7 @@ internal struct CharacterControllerHelper
 		// Move up (as much as we can)
 		stepMove.TraceMove( Vector3.Up * stepsize );
 
-		/// if the move delta is too low, we probably won't get up a step
+		// if the move delta is too low, we probably won't get up a step
 		Vector3 moveBack = 0;
 		var moveDelta = stepMove.Velocity.WithZ( 0 ) * timeDelta;
 		var deltaLen = moveDelta.Length;

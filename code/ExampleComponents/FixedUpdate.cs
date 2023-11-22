@@ -9,7 +9,7 @@ internal class FixedUpdate
 
 	float lastTime;
 
-	int ticks;
+	int ticks = 0;
 
 	internal void Run( Action fixedUpdate )
 	{
@@ -26,6 +26,7 @@ internal class FixedUpdate
 			fixedUpdate();
 			
 			lastTime += delta;
+			ticks++;
 		}
 	}
 }

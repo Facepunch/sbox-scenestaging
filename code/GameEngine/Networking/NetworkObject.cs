@@ -6,7 +6,7 @@ internal sealed class NetworkObject
 	public Guid Creator { get; set; }
 	public Guid Owner { get; set; }
 
-	public bool IsOwner => Owner == SceneNetworkSystem.LocalId;
+	public bool IsOwner => Owner == SceneNetworkSystem.Local.Id;
 	public bool IsUnowned => Owner == Guid.Empty;
 	public bool IsProxy
 	{
@@ -29,8 +29,8 @@ internal sealed class NetworkObject
 
 		if ( localOwner )
 		{
-			Creator = SceneNetworkSystem.LocalId;
-			Owner = SceneNetworkSystem.LocalId;
+			Creator = SceneNetworkSystem.Local.Id;
+			Owner = SceneNetworkSystem.Local.Id;
 		}
 
 		if ( !IsProxy )

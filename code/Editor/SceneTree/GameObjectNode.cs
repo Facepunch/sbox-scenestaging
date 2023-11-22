@@ -39,6 +39,9 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			hc.Add( Value.Name );
 			hc.Add( Value.IsPrefabInstance );
 			hc.Add( Value.Flags );
+			hc.Add( Value.Networked );
+			hc.Add( Value.IsNetworkOwner );
+			hc.Add( Value.IsProxy );
 
 			foreach ( var val in Value.Children )
 			{

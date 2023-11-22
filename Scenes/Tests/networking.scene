@@ -155,7 +155,7 @@
           "Acceleration": 10,
           "GroundAngle": 45,
           "Height": 71.05,
-          "IgnoreLayers": "player",
+          "IgnoreLayers": "player,carrying",
           "Radius": 11.65,
           "StepHeight": 18
         },
@@ -179,6 +179,7 @@
         {
           "__type": "NetworkTest",
           "__enabled": true,
+          "HoldRelative": "04654c6d-ab93-4351-be3e-fd4745f17f69",
           "ObjectToSpawn": "087550f3-8196-4f3b-8a2f-5c8b4bd33631"
         }
       ],
@@ -2421,6 +2422,38 @@
           ]
         }
       ]
+    },
+    {
+      "Id": "b69da33e-611a-45d8-843c-a3ff2fd1fcfb",
+      "Name": "wooden_crate",
+      "Position": "1555.032,625.362,-1637.636",
+      "Tags": "pickup",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "Static": false,
+          "Surface": null
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -2439,6 +2472,7 @@
     "facepunch.beech_bush_regular_medium_b",
     "facepunch.beech_shrub_tall_large",
     "facepunch.tree_oak_big_a",
+    "facepunch.wooden_crate",
     "fish.flowers",
     "rust.wall_conc_300x900"
   ]
