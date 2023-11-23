@@ -1,7 +1,7 @@
 ﻿using Sandbox;
 using Sandbox.Physics;
 
-[Title( "Slide Joint" )]
+[Title( "Slider Joint" )]
 [Category( "Physics" )]
 [Icon( "open_in_full", "red", "white" )]
 public sealed class SliderJoint : Joint
