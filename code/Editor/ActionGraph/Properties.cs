@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using Facepunch.ActionGraphs;
+using static Sandbox.PhysicsContact;
 
 namespace Editor.ActionGraph;
 
@@ -57,7 +59,6 @@ public class Properties : Widget
 
 	private static HashSet<string> HidePropertiesFor { get; } = new()
 	{
-		"input", "output",
 		"graph",
 		"property.get",
 		"property.set",
@@ -93,6 +94,34 @@ public class Properties : Widget
 					continue;
 				}
 
+				if ( name == "parameters" )
+				{
+					var count = (property.Value as Array)?.Length ?? 0;
+					var isInput = node.Definition.Identifier == "input";
+
+					for ( var i = 0; i < count; ++i )
+					{
+						var layout = Layout.Row();
+						var title = new Label( isInput ? $"Input #{i + 1}" : $"Output #{i + 1}" );
+						title.MinimumHeight = Theme.RowHeight;
+						title.Alignment = TextFlag.LeftCenter;
+						title.SetStyles( "color: #ddd; font-weight: bold;" );
+						layout.Add( title );
+
+						ps.AddLayout( layout );
+
+						var obj = EditorTypeLibrary.GetSerializedObject( isInput
+							? new InputParameterProxy( node.Node, i )
+							: new OutputParameterProxy( node.Node, i ) );
+
+						obj.OnPropertyChanged += _ => node.MarkDirty();
+
+						ps.AddObject( obj );
+					}
+
+					continue;
+				}
+
 				var prop = new SerializedNodeParameter<Node.Property, PropertyDefinition>( property );
 
 				ps.AddRow( prop );
@@ -104,6 +133,109 @@ public class Properties : Widget
 		}
 
 		_content.Add( ps );
+	}
+}
+
+internal abstract class InputOutputParameterProxy<T>
+{
+	[HideInEditor]
+	public Node Target { get; }
+
+	[HideInEditor]
+	public int Index { get; }
+
+	[HideInEditor]
+	protected abstract ParameterDisplayInfo DisplayInfo { get; set; }
+
+	[HideInEditor]
+	protected T[] Parameters
+	{
+		get
+		{
+			return Target.Properties["parameters"].Value as T[] ?? Array.Empty<T>();
+		}
+		set
+		{
+			Target.Properties["parameters"].Value = value;
+		}
+	}
+
+	public string Title
+	{
+		get
+		{
+			return DisplayInfo?.Title;
+		}
+		set
+		{
+			var displayInfo = DisplayInfo;
+			DisplayInfo = displayInfo == null
+				? new ParameterDisplayInfo( value )
+				: displayInfo with { Title = value };
+		}
+	}
+
+	public string Description
+	{
+		get
+		{
+			return DisplayInfo?.Description;
+		}
+		set
+		{
+			var displayInfo = DisplayInfo ?? new ParameterDisplayInfo( "Unnamed" );
+			DisplayInfo = displayInfo with { Description = value };
+		}
+	}
+
+	protected InputOutputParameterProxy( Node target, int index )
+	{
+		Target = target;
+		Index = index;
+	}
+}
+
+internal class InputParameterProxy : InputOutputParameterProxy<InputParameter>
+{
+	[HideInEditor]
+	protected override ParameterDisplayInfo DisplayInfo
+	{
+		get
+		{
+			return Parameters[Index].Display;
+		}
+		set
+		{
+			var parameters = Parameters.ToArray();
+			parameters[Index] = parameters[Index] with { Display = value };
+			Parameters = parameters;
+		}
+	}
+
+	public InputParameterProxy( Node target, int index ) : base( target, index )
+	{
+	}
+}
+
+internal class OutputParameterProxy : InputOutputParameterProxy<OutputParameter>
+{
+	[HideInEditor]
+	protected override ParameterDisplayInfo DisplayInfo
+	{
+		get
+		{
+			return Parameters[Index].Display;
+		}
+		set
+		{
+			var parameters = Parameters.ToArray();
+			parameters[Index] = parameters[Index] with { Display = value };
+			Parameters = parameters;
+		}
+	}
+
+	public OutputParameterProxy( Node target, int index ) : base( target, index )
+	{
 	}
 }
 

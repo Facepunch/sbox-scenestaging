@@ -392,7 +392,7 @@ public class ActionNode : INode
 								.Concat( new (string, int)[] { (x.Name, x.LinkArray.Count) } ) ??
 							new (string, int)[] { (x.Name, 0) } )
 					: () => getParams().Keys.Select( x => (x, 0) ),
-				key => new ActionPlug<T, TDef>( node, getParams()[key.Name], key.Index ) );
+				key => new ActionPlug<T, TDef>( node, getParams(), key.Name, key.Index ) );
 		}
 
 		private readonly Func<IEnumerable<(string Name, int Index)>> _getKeys;
@@ -722,14 +722,16 @@ public class ActionPlug<T, TDef> : IActionPlug
 	where TDef : class, IParameterDefinition
 {
 	public ActionNode Node { get; }
-	public T Parameter { get; }
+	public T Parameter => Source[Identifier];
 	public int Index { get; set; }
+
+	public IReadOnlyDictionary<string, T> Source { get; }
 
 	public Type LastType { get; set; }
 
 	INode IPlug.Node => Node;
 
-	public string Identifier => Parameter.Name;
+	public string Identifier { get; }
 
 	public Type Type => Parameter.Type;
 
@@ -740,10 +742,11 @@ public class ActionPlug<T, TDef> : IActionPlug
 		Description = Parameter.Display.Description
 	};
 
-	public ActionPlug( ActionNode node, T parameter, int index )
+	public ActionPlug( ActionNode node, IReadOnlyDictionary<string, T> source, string identifier, int index )
 	{
 		Node = node;
-		Parameter = parameter;
+		Source = source;
+		Identifier = identifier;
 		Index = index;
 
 		LastType = Type;
