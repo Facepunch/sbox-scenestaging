@@ -185,6 +185,10 @@ public partial class MainWindow : DockWindow, IAssetEditor
 		{
 			ActionGraphDebugger.StopListening( ActionGraph );
 		}
+		else
+		{
+			ResourceSaved += OnResourceSaved;
+		}
 
 		DeleteOnClose = true;
 
@@ -211,6 +215,28 @@ public partial class MainWindow : DockWindow, IAssetEditor
 	private void UpdateTitle()
 	{
 		Title = $"{ActionGraph.Title} - Action Graph";
+	}
+
+	private void OnResourceSaved( ActionGraphResource resource )
+	{
+		var path = resource.ResourcePath;
+
+		var matchingNodes = ActionGraph.Nodes
+			.Where( x => x.Definition.Identifier == "graph" )
+			.Where( x =>
+				x.Properties["graph"].Value is string refPath &&
+				refPath.Equals( path, StringComparison.OrdinalIgnoreCase ) )
+			.ToArray();
+
+		Log.Info( $"{matchingNodes.Length} matches with path \"{path}\" in {Asset?.Path}!" );
+
+		foreach ( var node in matchingNodes )
+		{
+			// Force referencing nodes to invalidate
+
+			node.Properties["graph"].Value = null;
+			node.Properties["graph"].Value = path;
+		}
 	}
 
 	private void OnLinkTriggered( Link link, object value )
@@ -313,6 +339,8 @@ public partial class MainWindow : DockWindow, IAssetEditor
 		}
 	}
 
+	private static Action<ActionGraphResource> ResourceSaved;
+
 	private void Save()
 	{
 		Saved?.Invoke();
@@ -323,6 +351,8 @@ public partial class MainWindow : DockWindow, IAssetEditor
 
 			Asset.SaveToMemory( Resource );
 			Asset.SaveToDisk( Resource );
+
+			ResourceSaved?.Invoke( Resource );
 		}
 
 		UpdateTitle();
@@ -361,6 +391,8 @@ public partial class MainWindow : DockWindow, IAssetEditor
 	protected override bool OnClose()
 	{
 		ActionGraphDebugger.StopListening( ActionGraph );
+
+		ResourceSaved -= OnResourceSaved;
 
 		var guid = ActionGraph.GetGuid();
 
