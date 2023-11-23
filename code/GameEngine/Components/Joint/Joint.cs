@@ -29,6 +29,34 @@ public abstract class Joint : BaseComponent, BaseComponent.ExecuteInEditor
 		}
 	}
 
+	/// <summary>
+	/// Strength of the linear constraint. If it takes any more energy than this, it'll break.
+	/// </summary>
+	[Property]
+	public float BreakForce
+	{
+		get => joint.IsValid() ? joint.Strength : default;
+		set
+		{
+			if ( joint.IsValid() )
+				joint.Strength = value;
+		}
+	}
+
+	/// <summary>
+	/// Strength of the angular constraint. If it takes any more energy than this, it'll break.
+	/// </summary>
+	[Property]
+	public float BreakTorque
+	{
+		get => joint.IsValid() ? joint.AngularStrength : default;
+		set
+		{
+			if ( joint.IsValid() )
+				joint.AngularStrength = value;
+		}
+	}
+
 	public override void OnStart()
 	{
 		base.OnStart();
