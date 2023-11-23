@@ -27,20 +27,43 @@ public sealed class NetworkTest : BaseComponent
 			var p = o.GetComponent<PhysicsComponent>();
 			p.Velocity = lookDir.Forward * 500.0f + Vector3.Up * 540.0f;
 
-			o.NetworkSpawn();
+			o.Network.Spawn();
 		}
 
 		UpdatePickup();
 
 	}
 
+	protected override void OnPreRender()
+	{
+		if ( Carrying.IsValid() && !Carrying.IsProxy )
+		{
+			var offset = new Vector3( 0, 0, 40 );
+
+			var pc = GetComponent<PlayerController>();
+
+			Carrying.Transform.Position = HoldRelative.Transform.Position + HoldRelative.Parent.Transform.Rotation * offset;
+			Carrying.Transform.Rotation = pc.Body.Transform.Rotation;
+			Carrying.GetComponent<PhysicsComponent>().Velocity = 0;
+			Carrying.GetComponent<PhysicsComponent>().AngularVelocity = 0;
+		}
+	}
+
 	void UpdatePickup()
 	{
 		if ( Carrying.IsValid() )
 		{
+			if ( Carrying.IsProxy )
+			{
+				Drop();
+				return;
+			}
+
+			var offset = new Vector3( 0, 0, 40 );
+
 			var pc = GetComponent<PlayerController>();
 
-			Carrying.Transform.Position = HoldRelative.Transform.Position + HoldRelative.Transform.Rotation.Right * -30 + HoldRelative.Transform.Rotation.Forward * -30;
+			Carrying.Transform.Position = HoldRelative.Transform.Position + HoldRelative.Parent.Transform.Rotation * offset;
 			Carrying.Transform.Rotation = pc.Body.Transform.Rotation;
 			Carrying.GetComponent<PhysicsComponent>().Velocity = 0;
 			Carrying.GetComponent<PhysicsComponent>().AngularVelocity = 0;
@@ -73,12 +96,15 @@ public sealed class NetworkTest : BaseComponent
 		if ( !go.Tags.Has( "pickup" ) )
 			return;
 
-		go.BecomeNetworkOwner();
+		go.Network.TakeOwnership();
 
 		Carrying = go;
 		Carrying.Tags.Add( "carrying" );
 
+		var ca = GetComponent<CitizenAnimation>();
 
+		ca.IkLeftHand = Carrying.Children.FirstOrDefault( x => x.Name == "hand_left" ) ?? Carrying;
+		ca.IkRightHand = Carrying.Children.FirstOrDefault( x => x.Name == "hand_right" ) ?? Carrying;
 
 		Log.Info( $"Pick up {tr.Body.GameObject}" );
 	}
@@ -89,7 +115,11 @@ public sealed class NetworkTest : BaseComponent
 			return;
 
 		Carrying.Tags.Remove( "carrying" );
-		Carrying.Renounce();
+		Carrying.Network.DropOwnership();
 		Carrying = null;
+
+		var ca = GetComponent<CitizenAnimation>();
+		ca.IkLeftHand = null;
+		ca.IkRightHand = null;
 	}
 }

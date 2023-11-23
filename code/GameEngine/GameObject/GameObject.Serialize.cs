@@ -25,7 +25,7 @@ public partial class GameObject
 
 		if ( options is not null )
 		{
-			if ( options.SceneForNetwork && IsNetworked ) return null;
+			if ( options.SceneForNetwork && Network.Active ) return null;
 		}
 
 		bool isPartOfPrefab = IsPrefabInstance;

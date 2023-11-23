@@ -171,15 +171,13 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "Height": 1.22,
-          "IkLeftHand": "eace0ea7-7995-455c-8bf0-cb49f47e05cd",
           "IkRightFoot": "18934e2e-aa35-4468-b8ed-6b4ad65eaed1",
-          "IkRightHand": "9325a660-3ef2-4b1b-9bde-986839db2d4e",
           "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
         },
         {
           "__type": "NetworkTest",
           "__enabled": true,
-          "HoldRelative": "04654c6d-ab93-4351-be3e-fd4745f17f69",
+          "HoldRelative": "fe9d0cda-67d7-4172-bdf7-cc1e11c8d66f",
           "ObjectToSpawn": "087550f3-8196-4f3b-8a2f-5c8b4bd33631"
         }
       ],
@@ -2452,6 +2450,166 @@
           "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
           "Static": false,
           "Surface": null
+        }
+      ],
+      "Children": [
+        {
+          "Id": "902bd410-458c-47c2-a7f1-b5c621e8e64a",
+          "Name": "hand_left",
+          "Position": "-12.15159,15.97199,15.59975",
+          "Rotation": "0.7120587,-0.02174648,-0.0179871,0.7015521",
+          "Enabled": true
+        },
+        {
+          "Id": "01c7c8bc-3472-4b3a-bb01-075a8e108bf6",
+          "Name": "hand_right",
+          "Position": "-13.14985,-15.71757,17.47381",
+          "Rotation": "0.6973566,-0.09054035,-0.08951746,0.7053251",
+          "Enabled": true
+        }
+      ]
+    },
+    {
+      "Id": "ee659a5a-9979-4e57-9dee-4e4142734d8e",
+      "Name": "wooden_crate (1)",
+      "Position": "1555.032,565.2958,-1637.636",
+      "Tags": "pickup",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "Static": false,
+          "Surface": null
+        }
+      ],
+      "Children": [
+        {
+          "Id": "243f5c50-1f76-4ba1-ba61-20bd642be0eb",
+          "Name": "hand_left",
+          "Position": "-12.15159,15.97199,15.59975",
+          "Rotation": "0.7120587,-0.02174648,-0.0179871,0.7015521",
+          "Enabled": true
+        },
+        {
+          "Id": "87989fe9-af4f-4330-906b-672f397d108f",
+          "Name": "hand_right",
+          "Position": "-13.14985,-15.71757,17.47381",
+          "Rotation": "0.6973566,-0.09054035,-0.08951746,0.7053251",
+          "Enabled": true
+        }
+      ]
+    },
+    {
+      "Id": "b2befa06-51b9-492c-b5db-b9d171ab82f4",
+      "Name": "wooden_crate (2)",
+      "Position": "1555.032,509.8184,-1637.636",
+      "Tags": "pickup",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "Static": false,
+          "Surface": null
+        }
+      ],
+      "Children": [
+        {
+          "Id": "4466069b-75ed-4438-810d-efae8c0d640b",
+          "Name": "hand_left",
+          "Position": "-12.15159,15.97199,15.59975",
+          "Rotation": "0.7120587,-0.02174648,-0.0179871,0.7015521",
+          "Enabled": true
+        },
+        {
+          "Id": "36028bd0-a34c-491c-9938-9b0d38a07a07",
+          "Name": "hand_right",
+          "Position": "-13.14985,-15.71757,17.47381",
+          "Rotation": "0.6973566,-0.09054035,-0.08951746,0.7053251",
+          "Enabled": true
+        }
+      ]
+    },
+    {
+      "Id": "47679d14-6d00-4a28-9994-2cd831699bcc",
+      "Name": "wooden_crate (3)",
+      "Position": "1555.032,448.6255,-1637.636",
+      "Tags": "pickup",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": true,
+          "Gravity": true
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "Static": false,
+          "Surface": null
+        }
+      ],
+      "Children": [
+        {
+          "Id": "0167f7fa-4217-4764-8a34-fc52d6acd284",
+          "Name": "hand_left",
+          "Position": "-12.15159,15.97199,15.59975",
+          "Rotation": "0.7120587,-0.02174648,-0.0179871,0.7015521",
+          "Enabled": true
+        },
+        {
+          "Id": "b91866f6-629c-4828-9196-f02890a65bb0",
+          "Name": "hand_right",
+          "Position": "-13.14985,-15.71757,17.47381",
+          "Rotation": "0.6973566,-0.09054035,-0.08951746,0.7053251",
+          "Enabled": true
         }
       ]
     }
