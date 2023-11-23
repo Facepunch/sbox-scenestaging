@@ -82,9 +82,8 @@
       "Tags": "",
       "Components": [
         {
-          "__type": "AnchorComponent",
-          "__enabled": true,
-          "UpdateType": "All"
+          "__type": "VrAnchor",
+          "__enabled": true
         }
       ],
       "Children": [
@@ -105,17 +104,18 @@
               "FieldOfView": 90,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "RenderExcludeTags": "",
+              "RenderTags": "",
               "TargetEye": "Both",
               "ZFar": 5000,
               "ZNear": 1
             },
             {
-              "__type": "TrackedPoseComponent",
+              "__type": "VrTrackedObject",
               "__enabled": true,
               "PoseSource": "Head",
               "TrackingType": "All",
-              "UpdateType": "All",
-              "UseRelativeTransform": true
+              "UseRelativeTransform": false
             }
           ]
         },
@@ -129,12 +129,11 @@
           "Tags": "",
           "Components": [
             {
-              "__type": "TrackedPoseComponent",
+              "__type": "VrTrackedObject",
               "__enabled": true,
               "PoseSource": "LeftHand",
               "TrackingType": "All",
-              "UpdateType": "All",
-              "UseRelativeTransform": true
+              "UseRelativeTransform": false
             }
           ],
           "Children": [
@@ -148,11 +147,9 @@
               "Tags": "",
               "Components": [
                 {
-                  "__type": "SkeletalPoseComponent",
+                  "__type": "VrHand",
                   "__enabled": true,
-                  "HandSource": "Left",
-                  "OverrideAnimGraphNames": false,
-                  "UpdateType": "All"
+                  "HandSource": "Left"
                 },
                 {
                   "__type": "AnimatedModelComponent",
@@ -179,12 +176,11 @@
           "Tags": "",
           "Components": [
             {
-              "__type": "TrackedPoseComponent",
+              "__type": "VrTrackedObject",
               "__enabled": true,
               "PoseSource": "RightHand",
               "TrackingType": "All",
-              "UpdateType": "All",
-              "UseRelativeTransform": true
+              "UseRelativeTransform": false
             }
           ],
           "Children": [
@@ -198,11 +194,9 @@
               "Tags": "",
               "Components": [
                 {
-                  "__type": "SkeletalPoseComponent",
+                  "__type": "VrHand",
                   "__enabled": true,
-                  "HandSource": "Right",
-                  "OverrideAnimGraphNames": false,
-                  "UpdateType": "All"
+                  "HandSource": "Right"
                 },
                 {
                   "__type": "AnimatedModelComponent",
@@ -324,6 +318,15 @@
       ]
     }
   ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "test.vr",
+  "Description": "",
   "__references": [
     "facepunch.beer_cask",
     "facepunch.oil_drum",

@@ -1,13 +1,15 @@
 ﻿using Sandbox;
 
-[Title( "Tracked Pose" )]
+/// <summary>
+/// Updates this GameObject's transform based on a given tracked object (e.g. left controller, HMD).
+/// </summary>
+[Title( "VR Tracked Object" )]
 [Category( "VR" )]
-[Icon( "front_hand" )]
-public class TrackedPoseComponent : BaseComponent
+[Icon( "animation" )]
+public class VrTrackedObject : BaseComponent
 {
 	public enum PoseSources
 	{
-		None,
 		Head,
 		LeftHand,
 		RightHand
@@ -23,27 +25,23 @@ public class TrackedPoseComponent : BaseComponent
 		All = Rotation | Position
 	}
 
-	[Flags]
-	public enum UpdateTypes
-	{
-		None,
-		OnPreRender,
-		Update,
-
-		All = OnPreRender | Update
-	}
-
+	/// <summary>
+	/// Which tracked object should we use to update the transform?
+	/// </summary>
 	[Property]
-	public PoseSources PoseSource { get; set; }
+	public PoseSources PoseSource { get; set; } = PoseSources.Head;
 
+	/// <summary>
+	/// Which parts of the transform should be updated? (eg. rotation, position)
+	/// </summary>
 	[Property]
-	public TrackingTypes TrackingType { get; set; }
+	public TrackingTypes TrackingType { get; set; } = TrackingTypes.All;
 
+	/// <summary>
+	/// If this is checked, then the transform used will be relative to the VR anchor (rather than an absolute world position).
+	/// </summary>
 	[Property]
-	public UpdateTypes UpdateType { get; set; }
-
-	[Property]
-	public bool UseRelativeTransform { get; set; }
+	public bool UseRelativeTransform { get; set; } = false;
 
 	/// <summary>
 	/// Get the appropriate VR transform for the specified <see cref="PoseSource"/>
@@ -55,12 +53,13 @@ public class TrackedPoseComponent : BaseComponent
 			PoseSources.Head => Input.VR.Head,
 			PoseSources.LeftHand => Input.VR.LeftHand.Transform,
 			PoseSources.RightHand => Input.VR.RightHand.Transform,
+
 			_ => new Transform( Vector3.Zero, Rotation.Identity )
 		};
 	}
 
 	/// <summary>
-	/// Set the gameobject's transform based on the <see cref="PoseSource"/> and <see cref="TrackingType"/>
+	/// Set the GameObject's transform based on the <see cref="PoseSource"/> and <see cref="TrackingType"/>
 	/// </summary>
 	private void UpdatePose()
 	{
@@ -70,7 +69,7 @@ public class TrackedPoseComponent : BaseComponent
 			newTransform = VR.Anchor.ToLocal( newTransform );
 
 		//
-		// Update gameobject transform
+		// Update GameObject transform
 		//
 		if ( TrackingType.HasFlag( TrackingTypes.Position ) )
 			GameObject.Transform.Position = newTransform.Position;
@@ -84,10 +83,7 @@ public class TrackedPoseComponent : BaseComponent
 		if ( !Enabled || Scene.IsEditor )
 			return;
 
-		if ( UpdateType.HasFlag( UpdateTypes.Update ) )
-		{
-			UpdatePose();
-		}
+		UpdatePose();
 	}
 
 	protected override void OnPreRender()
@@ -95,9 +91,6 @@ public class TrackedPoseComponent : BaseComponent
 		if ( !Enabled || Scene.IsEditor )
 			return;
 
-		if ( UpdateType.HasFlag( UpdateTypes.OnPreRender ))
-		{
-			UpdatePose();
-		}
+		UpdatePose();
 	}
 }

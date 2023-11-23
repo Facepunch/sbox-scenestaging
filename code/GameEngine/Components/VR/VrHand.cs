@@ -2,15 +2,18 @@
 using Sandbox.Engine;
 using System.Collections.Generic;
 
-[Title( "Skeletal Pose" )]
+/// <summary>
+/// Updates the parameters on an <see cref="AnimatedModelComponent"/> on this GameObject based on the skeletal data from SteamVR.
+/// Useful for quick hand posing based on controller input.
+/// </summary>
+[Title( "VR Hand" )]
 [Category( "VR" )]
-[Icon( "hand_bones" )]
-public class SkeletalPoseComponent : BaseComponent
+[Icon( "waving_hand" )]
+public class VrHand : BaseComponent
 {
 	private AnimatedModelComponent _animatedModelComponent;
 
-	// TODO: These should ideally be user-editable, these values are only for the
-	// Alyx hands right now
+	// TODO: These should ideally be user-editable, these values only work on the Alyx hands right now
 	private static List<string> AnimGraphNames = new()
 	{
 		"FingerCurl_Thumb",
@@ -26,24 +29,11 @@ public class SkeletalPoseComponent : BaseComponent
 		Right
 	}
 
-	[Flags]
-	public enum UpdateTypes
-	{
-		None,
-		OnPreRender,
-		Update,
-
-		All = OnPreRender | Update
-	}
-
+	/// <summary>
+	/// Which hand should we use to update the parameters?
+	/// </summary>
 	[Property]
-	public HandSources HandSource { get; set; }
-
-	[Property]
-	public UpdateTypes UpdateType { get; set; }
-
-	[Property]
-	public bool OverrideAnimGraphNames { get; set; }
+	public HandSources HandSource { get; set; } = HandSources.Left;
 
 	public override void OnAwake()
 	{
@@ -69,10 +59,7 @@ public class SkeletalPoseComponent : BaseComponent
 		if ( !Enabled || Scene.IsEditor )
 			return;
 
-		if ( UpdateType.HasFlag( UpdateTypes.Update ) )
-		{
-			UpdatePose();
-		}
+		UpdatePose();
 	}
 
 	protected override void OnPreRender()
@@ -80,9 +67,6 @@ public class SkeletalPoseComponent : BaseComponent
 		if ( !Enabled || Scene.IsEditor )
 			return;
 
-		if ( UpdateType.HasFlag( UpdateTypes.OnPreRender ) )
-		{
-			UpdatePose();
-		}
+		UpdatePose();
 	}
 }
