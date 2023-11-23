@@ -608,6 +608,31 @@ public class ActionGraphView : GraphView
 		}
 	}
 
+	private void RemoveInvalidElements()
+	{
+		var invalidNodes = Items
+			.OfType<NodeUI>()
+			.Where( x => x.Node is ActionNode { Node.IsValid: false } )
+			.ToArray();
+
+		var invalidConnections = Connections
+			.Where( x =>
+				x.Input.Node.Node is ActionNode { Node.IsValid: false } ||
+				x.Output.Node.Node is ActionNode { Node.IsValid: false } )
+			.ToArray();
+
+		foreach ( var invalidNode in invalidNodes )
+		{
+			invalidNode.Destroy();
+		}
+
+		foreach ( var connection in invalidConnections )
+		{
+			Connections.Remove( connection );
+			connection.Destroy();
+		}
+	}
+
 	protected override void OnOpenContextMenu( Menu menu, PlugOut nodeOutput )
 	{
 		var selectedNodes = SelectedItems
@@ -662,25 +687,7 @@ public class ActionGraphView : GraphView
 					return asset.Path;
 				} );
 
-				var removedNodes = selectedNodes
-					.Where( x => !x.ActionNode.IsValid )
-					.Select( x => x.NodeUI )
-					.ToArray();
-
-				foreach ( var node in removedNodes )
-				{
-					node.Destroy();
-				}
-
-				var removedConnections = Connections
-					.Where( x => !x.Output.IsValid || !x.Input.IsValid )
-					.ToArray();
-
-				foreach ( var connection in removedConnections )
-				{
-					connection.Destroy();
-				}
-
+				RemoveInvalidElements();
 				BuildFromNodes( new[] { new ActionNode( Graph, result!.Value.GraphNode ) }, avgPos, true );
 			} );
 		}
