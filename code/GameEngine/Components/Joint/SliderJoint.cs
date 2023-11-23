@@ -11,15 +11,21 @@ public sealed class SliderJoint : Joint
 	/// </summary>
 	[Property] public Vector3 Axis { get; set; } = Vector3.Forward;
 
+	private float maxLength;
+	private float minLength;
+	private float friction;
+
 	/// <summary>
 	/// Maximum length it should be allowed to go
 	/// </summary>
 	[Property]
 	public float MaxLength
 	{
-		get => sliderJoint.IsValid() ? sliderJoint.MaxLength : default;
+		get => maxLength;
 		set
 		{
+			maxLength = value;
+
 			if ( sliderJoint.IsValid() )
 			{
 				sliderJoint.MaxLength = value;
@@ -33,17 +39,17 @@ public sealed class SliderJoint : Joint
 	[Property]
 	public float MinLength
 	{
-		get => sliderJoint.IsValid() ? sliderJoint.MinLength : default;
+		get => minLength;
 		set
 		{
+			minLength = value;
+
 			if ( sliderJoint.IsValid() )
 			{
 				sliderJoint.MinLength = value;
 			}
 		}
 	}
-
-	private float friction;
 
 	/// <summary>
 	/// Slider friction
@@ -68,6 +74,7 @@ public sealed class SliderJoint : Joint
 	protected override PhysicsJoint CreateJoint( PhysicsBody body1, PhysicsBody body2 )
 	{
 		sliderJoint = PhysicsJoint.CreateSlider( body1, body2, Axis, MinLength, MaxLength );
+		sliderJoint.Friction = friction;
 		return sliderJoint;
 	}
 }

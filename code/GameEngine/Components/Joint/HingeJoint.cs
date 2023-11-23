@@ -16,15 +16,21 @@ public sealed class HingeJoint : Joint
 	/// </summary>
 	[Property] public Vector3 Axis { get; set; } = Vector3.Forward;
 
+	private float maxAngle;
+	private float minAngle;
+	private float friction;
+
 	/// <summary>
 	/// Maximum angle it should be allowed to go
 	/// </summary>
 	[Property] 
 	public float MaxAngle
 	{
-		get => hingeJoint.IsValid() ? hingeJoint.MaxAngle : default;
+		get => maxAngle;
 		set
 		{
+			maxAngle = value;
+
 			if ( hingeJoint.IsValid() )
 			{
 				hingeJoint.MaxAngle = value;
@@ -38,17 +44,17 @@ public sealed class HingeJoint : Joint
 	[Property]
 	public float MinAngle
 	{
-		get => hingeJoint.IsValid() ? hingeJoint.MinAngle : default;
+		get => minAngle;
 		set
 		{
+			minAngle = value;
+
 			if ( hingeJoint.IsValid() )
 			{
 				hingeJoint.MinAngle = value;
 			}
 		}
 	}
-
-	private float friction;
 
 	/// <summary>
 	/// Hinge friction
@@ -73,6 +79,9 @@ public sealed class HingeJoint : Joint
 	protected override PhysicsJoint CreateJoint( PhysicsBody body1, PhysicsBody body2 )
 	{
 		hingeJoint = PhysicsJoint.CreateHinge( body1, body2, body1.Transform.PointToWorld( Center ), Axis );
+		hingeJoint.MinAngle = MinAngle;
+		hingeJoint.MaxAngle = MaxAngle;
+		hingeJoint.Friction = Friction;
 		return hingeJoint;
 	}
 

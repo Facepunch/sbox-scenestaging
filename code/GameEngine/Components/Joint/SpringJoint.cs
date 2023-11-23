@@ -6,15 +6,22 @@ using Sandbox.Physics;
 [Icon( "waves", "red", "white" )]
 public sealed class SpringJoint : Joint
 {
+	private float frequency;
+	private float damping;
+	private float maxLength;
+	private float minLength;
+
 	/// <summary>
 	/// The stiffness of the spring
 	/// </summary>
 	[Property]
 	public float Frequency
 	{
-		get => springJoint.IsValid() ? springJoint.SpringLinear.Frequency : default;
+		get => frequency;
 		set
 		{
+			frequency = value;
+
 			if ( springJoint.IsValid() )
 			{
 				var springLinear = springJoint.SpringLinear;
@@ -30,9 +37,11 @@ public sealed class SpringJoint : Joint
 	[Property]
 	public float Damping
 	{
-		get => springJoint.IsValid() ? springJoint.SpringLinear.Damping : default;
+		get => damping;
 		set
 		{
+			damping = value;
+
 			if ( springJoint.IsValid() )
 			{
 				var springLinear = springJoint.SpringLinear;
@@ -48,9 +57,11 @@ public sealed class SpringJoint : Joint
 	[Property]
 	public float MaxLength
 	{
-		get => springJoint.IsValid() ? springJoint.MaxLength : default;
+		get => maxLength;
 		set
 		{
+			maxLength = value;
+
 			if ( springJoint.IsValid() )
 			{
 				springJoint.MaxLength = value;
@@ -64,9 +75,11 @@ public sealed class SpringJoint : Joint
 	[Property]
 	public float MinLength
 	{
-		get => springJoint.IsValid() ? springJoint.MinLength : default;
+		get => minLength;
 		set
 		{
+			minLength = value;
+
 			if ( springJoint.IsValid() )
 			{
 				springJoint.MinLength = value;
@@ -78,7 +91,8 @@ public sealed class SpringJoint : Joint
 
 	protected override PhysicsJoint CreateJoint( PhysicsBody body1, PhysicsBody body2 )
 	{
-		springJoint = PhysicsJoint.CreateSpring( body1, body2, 0, 0 );
+		springJoint = PhysicsJoint.CreateSpring( body1, body2, MinLength, MaxLength );
+		springJoint.SpringLinear = new PhysicsSpring( Frequency, Damping );
 		return springJoint;
 	}
 }
