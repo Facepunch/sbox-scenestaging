@@ -64,6 +64,11 @@ public partial class ActionGraph : IGraph
 		NodeDict.Remove( actionNode.Node );
 		NodeIdDict.Remove( node.Identifier );
 
+		if ( !actionNode.Node.IsValid )
+		{
+			return;
+		}
+
 		actionNode.Node.Remove();
 
 		var referencedVars = actionNode.Node.Properties.Values

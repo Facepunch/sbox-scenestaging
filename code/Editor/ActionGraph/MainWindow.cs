@@ -623,6 +623,7 @@ public class ActionGraphView : GraphView
 
 		foreach ( var invalidNode in invalidNodes )
 		{
+			Graph.RemoveNode( (ActionNode) invalidNode.Node );
 			invalidNode.Destroy();
 		}
 
@@ -744,8 +745,12 @@ public class ActionGraphView : GraphView
 					return asset.Path;
 				} );
 
+				var newNode = new ActionNode( Graph, result!.Value.GraphNode );
+
+				Graph.AddNode( newNode );
+
 				RemoveInvalidElements();
-				BuildFromNodes( new[] { new ActionNode( Graph, result!.Value.GraphNode ) }, avgPos, true );
+				BuildFromNodes( new[] { newNode }, avgPos, true );
 			} );
 		}
 	}
