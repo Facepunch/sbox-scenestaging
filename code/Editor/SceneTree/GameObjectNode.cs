@@ -42,6 +42,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			hc.Add( Value.Networked );
 			hc.Add( Value.Network.IsOwner );
 			hc.Add( Value.IsProxy );
+			hc.Add( Value.Active );
 
 			foreach ( var val in Value.Children )
 			{
