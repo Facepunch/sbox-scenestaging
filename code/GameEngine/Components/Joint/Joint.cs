@@ -143,6 +143,10 @@ public abstract class Joint : BaseComponent, BaseComponent.ExecuteInEditor
 		Gizmo.Draw.LineThickness = 1;
 		Gizmo.Draw.Color = Gizmo.Colors.Green.WithAlpha( Gizmo.IsSelected ? 1.0f : 0.2f );
 		Gizmo.Draw.Line( joint.Point1.LocalPosition, 0 );
-		Gizmo.Draw.Line( joint.Point1.LocalPosition, Transform.World.PointToLocal( Body.Transform.Position ) );
+
+		if ( Body.IsValid() )
+		{
+			Gizmo.Draw.Line( joint.Point1.LocalPosition, Transform.World.PointToLocal( Body.Transform.Position ) );
+		}
 	}
 }
