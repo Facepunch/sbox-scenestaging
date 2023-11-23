@@ -6,9 +6,19 @@ using Sandbox.Physics;
 [Icon( "door_front", "red", "white" )]
 public sealed class HingeJoint : Joint
 {
+	/// <summary>
+	/// Relative position of the hinge
+	/// </summary>
 	[Property] public Vector3 Center { get; set; }
+
+	/// <summary>
+	/// Axis the hinge rotates around
+	/// </summary>
 	[Property] public Vector3 Axis { get; set; } = Vector3.Forward;
 
+	/// <summary>
+	/// Maximum angle it should be allowed to go
+	/// </summary>
 	[Property] 
 	public float MaxAngle
 	{
@@ -22,6 +32,9 @@ public sealed class HingeJoint : Joint
 		}
 	}
 
+	/// <summary>
+	/// Minimum angle it should be allowed to go
+	/// </summary>
 	[Property]
 	public float MinAngle
 	{
@@ -37,6 +50,9 @@ public sealed class HingeJoint : Joint
 
 	private float friction;
 
+	/// <summary>
+	/// Hinge friction
+	/// </summary>
 	[Property]
 	public float Friction
 	{
