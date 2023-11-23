@@ -73,6 +73,23 @@ public partial class GameObject
 	}
 
 	/// <summary>
+	/// Get the first matching component on this game object. 
+	/// If no match is found, a new component is added and returned.
+	/// </summary>
+	/// <param name="enabledOnly">
+	/// If true, a new component will be created when the only matching component is disabled.
+	/// If false, the first matching component will be returned regardless of its enabled state.
+	/// </param>
+	public T GetOrAddComponent<T>( bool enabledOnly = true ) where T : BaseComponent, new()
+	{
+		if ( !TryGetComponent( out T component, enabledOnly, false ) )
+		{
+			component = AddComponent<T>();
+		}
+		return component;
+	}
+
+	/// <summary>
 	/// Find component on this gameobject, or its parents
 	/// </summary>
 	public T GetComponentInParent<T>( bool enabledOnly = true, bool andSelf = false )
