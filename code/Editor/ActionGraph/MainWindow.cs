@@ -633,6 +633,61 @@ public class ActionGraphView : GraphView
 		}
 	}
 
+	private void CleanUpNewSubGraph( Facepunch.ActionGraphs.ActionGraph graph )
+	{
+		const string positionKey = "Position";
+		const float inputOutputMargin = 300f;
+
+		var minPos = new Vector2( float.PositiveInfinity, float.PositiveInfinity );
+		var maxPos = new Vector2( float.NegativeInfinity, float.NegativeInfinity );
+		var posCount = 0;
+
+		foreach ( var node in graph.Nodes )
+		{
+			if ( node.UserData[positionKey] is not { } posValue )
+			{
+				continue;
+			}
+
+			var pos = posValue.Deserialize<Vector2>();
+
+			minPos = Vector2.Min( minPos, pos );
+			maxPos = Vector2.Max( maxPos, pos );
+			posCount++;
+		}
+
+		if ( posCount == 0 )
+		{
+			minPos = maxPos = 0f;
+		}
+
+		var midPos = (minPos + maxPos) * 0.5f;
+		var width = maxPos.x - minPos.x;
+
+		foreach ( var node in graph.Nodes )
+		{
+			if ( node.UserData[positionKey] is not { } posValue )
+			{
+				continue;
+			}
+
+			var pos = posValue.Deserialize<Vector2>() - midPos;
+			node.UserData[positionKey] = JsonSerializer.SerializeToNode( pos );
+		}
+
+		if ( graph.InputNode is { } input )
+		{
+			var pos = new Vector2( width * -0.5f - inputOutputMargin, 0f );
+			input.UserData[positionKey] = JsonSerializer.SerializeToNode( pos );
+		}
+
+		if ( graph.PrimaryOutputNode is { } output )
+		{
+			var pos = new Vector2( width * 0.5f + inputOutputMargin, 0f );
+			output.UserData[positionKey] = JsonSerializer.SerializeToNode( pos );
+		}
+	}
+
 	protected override void OnOpenContextMenu( Menu menu, PlugOut nodeOutput )
 	{
 		var selectedNodes = SelectedItems
@@ -672,6 +727,8 @@ public class ActionGraphView : GraphView
 
 					var asset = AssetSystem.CreateResource( "action", fd.SelectedFile );
 					var resource = asset.LoadResource<ActionGraphResource>();
+
+					CleanUpNewSubGraph( subGraph );
 
 					resource.Graph = subGraph;
 					resource.Title = title;
