@@ -1,28 +1,80 @@
 ﻿@using Sandbox;
 @using Sandbox.UI;
+@using Sandbox.Network;
 @inherits PanelComponent
 
 <root>
 
-    <div class="title">
-        Scene Tests
-    </div>
+    <div class="left">
 
-    <div class="explanation">
-The scenes below are used as tests and examples of the scene system. 
-One day we will force everyone to use the scene system - the Entity system will go away.
+        <div class="title">
+            Scene Tests
+        </div>
 
+        <div class="explanation">
+            <p>
+                The scenes below are used as tests and examples of the scene system. 
+                One day we will force everyone to use the scene system - the Entity system will go away.
+            </p>
 
-Click a scene to enter it - press escape to return to this menu.
+            <p>
+                Click a scene to enter it - press escape to return to this menu.
+            </p>
+        </div>
+
     </div>
 
     <div class="scene-list">
+        <div class="header">
+            <div class="title">Scenes</div>
+        </div>
+
     @foreach( var scene in ResourceLibrary.GetAll<SceneFile>().OrderBy( x => x.ResourceName ) )
     {
         <SceneButton Scene="@scene" OnSelected="@OpenScene"></SceneButton> 
     }
     </div>
 
+    <div class="lobby-list">
+
+        <div class="header">
+            <div class="title">Server List</div>
+        </div>
+
+        @if (refreshing)
+        {
+            <div>Refreshing..</div>
+        }
+        else if (list.Count == 0)
+        {
+            <div>No lobbies were found</div>
+        }
+        else
+        {
+            @foreach (var lobby in list)
+            {
+                <div class="button" onclick=@(() => OpenLobby( lobby ) )>
+
+                    <div class="title">
+                        @lobby.Name
+                    </div>
+
+                    <div class="meta">
+
+                        <div class="map">
+                            @lobby.Map
+                        </div>
+
+                        <div class="count">
+                            @lobby.Members / @lobby.MaxMembers
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+    </div>
 
 </root>
 
@@ -35,6 +87,32 @@ Click a scene to enter it - press escape to return to this menu.
 
         var go = new GameObject( true, "Return To Menu" );
         go.AddComponent<ReturnToMenu>();
+    }
+
+    bool refreshing;
+    List<LobbyInformation> list = new();
+
+    public override void OnEnabled()
+    {
+        base.OnEnabled();
+
+        _ = RefreshLobbyList();
+    }
+
+    async Task RefreshLobbyList()
+    {
+        refreshing = true;
+        StateHasChanged();
+
+        list = await GameNetworkSystem.QueryLobbies();
+
+        refreshing = false;
+        StateHasChanged();
+    }
+
+    void OpenLobby( LobbyInformation lobby )
+    {
+        GameNetworkSystem.Connect( lobby.LobbyId );
     }
 
 }

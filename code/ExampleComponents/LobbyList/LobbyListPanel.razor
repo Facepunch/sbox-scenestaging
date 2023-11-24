@@ -36,11 +36,24 @@
                 <div class="button" onclick=@(() => OpenLobby( lobby ) )>
 
                     <div class="title">
-                    @lobby.LobbyId
+                        @lobby.Name
                     </div>
 
-                    <div class="count">
-                        @lobby.Members / @lobby.MaxMembers
+                    @foreach (var e in lobby.Data)
+                    {
+                        <div>@e</div>
+                    }
+
+                    <div class="meta">
+
+                        <div class="map">
+                            MAP IS @lobby.Map
+                        </div>
+
+                        <div class="count">
+                            @lobby.Members / @lobby.MaxMembers
+                        </div>
+
                     </div>
 
                 </div>
@@ -72,6 +85,13 @@
 
         refreshing = false;
         StateHasChanged();
+
+        await Task.Delay(5000);
+
+        if ( GameObject.IsValid() )
+        {
+            await RefreshLobbyList();
+        }
     }
 
     void OpenLobby( LobbyInformation lobby )

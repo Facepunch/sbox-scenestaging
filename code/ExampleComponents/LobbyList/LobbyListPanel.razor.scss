@@ -61,19 +61,33 @@ LobbyListPanel
 	color: #333;
 	padding: 20px;
 	border-radius: 10px;
-	gap: 20px;
-	font-weight: bold;
+	gap: 10px;
 	width: 280px;
 	cursor: pointer;
+	width: 100%;
+	flex-direction: column;
 
 	.title
 	{
 		flex-grow: 1;
+		font-weight: bold;
+		font-size: 16px;
 	}
 
-	.count
+	.meta
 	{
-		white-space: nowrap;
+		gap: 10px;
+		font-size: 12px;
+
+		.map
+		{
+			flex-grow: 1;
+		}
+
+		.count
+		{
+			white-space: nowrap;
+		}
 	}
 
 	&:hover
