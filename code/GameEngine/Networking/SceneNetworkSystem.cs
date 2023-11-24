@@ -44,6 +44,15 @@ public class SceneNetworkSystem : GameNetworkSystem
 			Instance = null;
 	}
 
+	protected override void Tick()
+	{
+		var sceneTitle = GameManager.ActiveScene?.Title;
+		if ( string.IsNullOrWhiteSpace( sceneTitle ) ) sceneTitle = GameManager.ActiveScene.Name;
+		if ( string.IsNullOrWhiteSpace( sceneTitle ) ) sceneTitle = "<empty>";
+
+		MapName = sceneTitle;
+	}
+
 	/// <summary>
 	/// We have recieved a snapshot of the world
 	/// </summary>
