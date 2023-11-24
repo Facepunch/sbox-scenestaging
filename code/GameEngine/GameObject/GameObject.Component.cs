@@ -73,6 +73,19 @@ public partial class GameObject
 	}
 
 	/// <summary>
+	/// Get the first matching component on this game object, including components
+	/// that are disabled. If no such component is found, add and return a new one.
+	/// </summary>
+	public T GetOrAddComponent<T>( bool startEnabled = true ) where T : BaseComponent, new()
+	{
+		if ( !TryGetComponent( out T component, false ) )
+		{
+			component = AddComponent<T>( startEnabled );
+		}
+		return component;
+	}
+
+	/// <summary>
 	/// Find component on this gameobject, or its parents
 	/// </summary>
 	public T GetComponentInParent<T>( bool enabledOnly = true, bool andSelf = false )
