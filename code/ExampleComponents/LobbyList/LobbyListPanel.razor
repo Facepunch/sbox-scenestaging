@@ -78,19 +78,23 @@
 
     async Task RefreshLobbyList()
     {
-        refreshing = true;
-        StateHasChanged();
-
-        list = await GameNetworkSystem.QueryLobbies();
-
-        refreshing = false;
-        StateHasChanged();
-
-        await Task.Delay(5000);
-
-        if ( GameObject.IsValid() )
+        while (true)
         {
-            await RefreshLobbyList();
+            refreshing = true;
+            StateHasChanged();
+
+            list = await GameNetworkSystem.QueryLobbies();
+
+            if (!GameObject.IsValid())
+                return;
+
+            refreshing = false;
+            StateHasChanged();
+
+            await Task.Delay(5000);
+
+            if (!GameObject.IsValid())
+                return;
         }
     }
 
