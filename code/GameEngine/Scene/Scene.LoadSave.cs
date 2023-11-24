@@ -114,6 +114,7 @@ public partial class Scene : GameObject
 		{
 			if ( prop.Name == "Enabled" ) continue;
 			if ( prop.Name == "Name" ) continue;
+			if ( prop.Name == "Lerp" ) continue;
 
 			jso.Add( prop.Name, JsonValue.Create( prop.GetValue( this ) ) );
 		}
@@ -127,6 +128,7 @@ public partial class Scene : GameObject
 		{
 			if ( prop.Name == "Enabled" ) continue;
 			if ( prop.Name == "Name" ) continue;
+			if ( prop.Name == "Lerp" ) continue;
 
 			if ( !data.TryGetPropertyValue( prop.Name, out JsonNode node ) )
 				continue;
