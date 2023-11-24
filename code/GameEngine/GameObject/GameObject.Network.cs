@@ -171,6 +171,15 @@ public partial class GameObject
 		Net.Owner = Rpc.CallerId;
 	}
 
+	[Broadcast]
+	void Msg_AssignOwnership( Guid guid )
+	{
+		// TODO - check if we're allowed to do this
+		// TODO - rules around this stuff
+
+		Net.Owner = guid;
+	}
+
 
 	public void __rpc_Broadcast( Action resume, string methodName, params object[] argumentList )
 	{
@@ -264,6 +273,17 @@ public partial class GameObject
 			if ( IsOwner ) return false;
 
 			go.Msg_TakeOwnership();
+			return true;
+		}
+
+		/// <summary>
+		/// Set the owner of this object
+		/// </summary>
+		public readonly bool AssignOwnership( NetworkChannel channel )
+		{
+			if ( !Active ) return false;
+
+			go.Msg_AssignOwnership( channel.Id );
 			return true;
 		}
 
