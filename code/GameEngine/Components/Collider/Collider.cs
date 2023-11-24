@@ -184,6 +184,9 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 
 		Transform.OnTransformChanged -= UpdateKeyframeTransform;
 
+		GameObject.Tags.OnTagAdded -= OnTagsChanged;
+		GameObject.Tags.OnTagRemoved -= OnTagsChanged;
+
 		_collisionEvents?.Dispose();
 		_collisionEvents = null;
 
