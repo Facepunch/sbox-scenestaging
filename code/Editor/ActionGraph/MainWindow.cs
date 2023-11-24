@@ -46,12 +46,6 @@ public static class ActionGraphExtensions
 				return ConstDisplayInfo( node );
 
 			default:
-				if ( node.Definition.Identifier == "call" )
-				{
-					var binding = typeof(Node).GetProperty( "Binding", BindingFlags.Instance | BindingFlags.NonPublic );
-					Log.Info( ((NodeBinding)binding!.GetValue( node )!).DisplayInfo.Title );
-				}
-
 				return new()
 				{
 					Name = node.DisplayInfo.Title,
