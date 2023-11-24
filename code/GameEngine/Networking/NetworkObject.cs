@@ -1,3 +1,5 @@
+using Sandbox;
+using Sandbox.Diagnostics;
 using Sandbox.Network;
 
 internal sealed class NetworkObject
@@ -21,17 +23,27 @@ internal sealed class NetworkObject
 
 	bool hasNetworkDestroyed;
 
-	internal NetworkObject( GameObject source, bool localOwner )
+	internal NetworkObject( GameObject source )
 	{
 		GameObject = source;
 		Creator = Guid.Empty;
 		Owner = Guid.Empty;
 
-		if ( localOwner )
+		if ( !IsProxy )
 		{
-			Creator = SceneNetworkSystem.Local.Id;
-			Owner = SceneNetworkSystem.Local.Id;
+			SendInstantiateMessage();
 		}
+
+		GameObject.Scene.RegisterNetworkedObject( this );
+	}
+
+	internal NetworkObject( GameObject source, NetworkChannel owner )
+	{
+		Assert.NotNull( owner );
+
+		GameObject = source;
+		Creator = owner.Id;
+		Owner = owner.Id;
 
 		if ( !IsProxy )
 		{

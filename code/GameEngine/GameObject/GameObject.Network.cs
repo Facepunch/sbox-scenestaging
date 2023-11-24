@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using Sandbox.Network;
+using System.Threading.Channels;
 
 public partial class GameObject
 {
@@ -58,7 +59,7 @@ public partial class GameObject
 	{
 		if ( Net is not null ) return;
 
-		Net = new NetworkObject( this, false );
+		Net = new NetworkObject( this );
 	}
 
 	void EndNetworking()
@@ -312,7 +313,24 @@ public partial class GameObject
 		{
 			if ( Active ) return false;
 
-			go.Net = new NetworkObject( go, true );
+			go.Enabled = true;
+			go.Net = new NetworkObject( go, GameNetworkSystem.Local );
+			return true;
+		}
+
+		/// <summary>
+		/// Spawn on the network. If you have permission to spawn entities, this will spawn on
+		/// everyone else's clients and you will be the owner.
+		/// </summary>
+		public readonly bool Spawn( NetworkChannel owner )
+		{
+			if ( Active ) return false;
+
+			// TODO - can we create objects for this owner
+
+			go.Enabled = true;
+			go.Net = new NetworkObject( go );
+			go.Network.AssignOwnership( owner );
 			return true;
 		}
 	}
