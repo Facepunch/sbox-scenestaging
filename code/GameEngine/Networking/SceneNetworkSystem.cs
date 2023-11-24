@@ -99,6 +99,9 @@ public class SceneNetworkSystem : GameNetworkSystem
 	{
 		Log.Info( $"Client {client.Name} ({client.Id}) has left the game!" );
 
+		if ( client.Id == Guid.Empty )
+			return;
+
 		GameManager.ActiveScene.DestroyNetworkObjects( x => x.Owner == client.Id );
 	}
 
