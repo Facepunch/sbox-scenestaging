@@ -141,7 +141,7 @@ public partial class Scene : GameObject
 
 	internal void OnRenderOverlayInternal( SceneCamera camera )
 	{
-		foreach ( var c in GetComponents<BaseComponent.RenderOverlay>( true, true ) )
+		foreach ( var c in GetComponents<BaseComponent.IRenderOverlay>( true, true ) )
 		{
 			c.OnRenderOverlay( camera );
 		}
