@@ -180,7 +180,7 @@ public partial class GameObject
 			msg.Guid = Id;
 			msg.Component = null;
 			msg.MessageName = methodName;
-			msg.ArgumentData = TypeLibrary.ToBytes( argumentList );
+			msg.Arguments = argumentList;
 
 			SceneNetworkSystem.Instance.Broadcast( msg );
 		}

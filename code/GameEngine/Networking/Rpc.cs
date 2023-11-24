@@ -86,9 +86,7 @@ public static class Rpc
 		var oldCaller = Caller;
 		Caller = source;
 
-		var arguments = TypeLibrary.FromBytes<object[]>( message.ArgumentData );
-
-		method.Invoke( targetObject, arguments );
+		method.Invoke( targetObject, message.Arguments );
 
 		Caller = oldCaller;
 	}

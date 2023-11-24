@@ -19,7 +19,7 @@ public abstract partial class BaseComponent
 			msg.Guid = GameObject.Id;
 			msg.Component = GetType().Name;
 			msg.MessageName = methodName;
-			msg.ArgumentData = TypeLibrary.ToBytes( argumentList );
+			msg.Arguments = argumentList;
 
 			SceneNetworkSystem.Instance.Broadcast( msg );
 		}
