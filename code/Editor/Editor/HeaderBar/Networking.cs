@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Net;
 
 namespace Editor.HeaderBar;
@@ -78,6 +79,12 @@ file class NetworkStatus : Widget
 		// ignore
 	}
 
+	[EditorEvent.Frame]
+	public void CheckForChanges()
+	{
+		SetContentHash( HashCode.Combine( EditorUtility.Network.Active ), 0.1f );
+	}
+
 	protected override void OnPaint()
 	{
 		Paint.Antialiasing = true;
@@ -88,12 +95,9 @@ file class NetworkStatus : Widget
 			paintColor = Theme.Green.Darken( 0.4f );
 		}
 
-		var rect = LocalRect.Shrink( 0, 0, 0, 0 );
-
 		Paint.ClearPen();
 		Paint.SetBrush( paintColor );
 		Paint.DrawRect( LocalRect.Shrink( 1 ), 30 );
-
 
 		Paint.SetPen( paintColor.Lighten( 0.5f ) );
 
