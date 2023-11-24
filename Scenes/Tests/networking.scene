@@ -2617,13 +2617,14 @@
   "SceneProperties": {
     "NetworkFrequency": 60,
     "FixedUpdateFrequency": 50,
+    "Lerping": true,
     "MaxFixedUpdates": 5,
     "TimeScale": 1,
     "ThreadedAnimation": true,
     "UseFixedUpdate": true
   },
-  "Title": "networking",
-  "Description": "",
+  "Title": "Networking",
+  "Description": "Automatically creates a server joinable by others",
   "__references": [
     "baik.soccerball",
     "facepunch.beech_bush_large",

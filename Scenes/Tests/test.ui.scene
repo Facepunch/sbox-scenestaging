@@ -3,14 +3,13 @@
     {
       "Id": "4d0891b8-3ac6-4e29-b40e-3460b2453d72",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "0,178.2849,-58.79975",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -21,10 +20,9 @@
         {
           "Id": "84d957bf-c018-4ccb-a4a0-887b7395088d",
           "Name": "World UI",
-          "Enabled": true,
           "Position": "-25.28594,-0.1865788,-0.1047413",
           "Rotation": "0.00000005959918,-0.0000000005688116,1,-0.0000006397578",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "NameTagPanel",
@@ -45,10 +43,9 @@
         {
           "Id": "192bd580-3fd9-44d0-8320-3bae97304bdf",
           "Name": "World UI",
-          "Enabled": true,
           "Position": "-50.47972,-0.1866177,-26.09694",
           "Rotation": "0.5190907,0.0000003625464,0.8547185,-0.0000005471081",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "WorldPanel",
@@ -70,10 +67,9 @@
         {
           "Id": "8c06372b-3f52-4b13-acb2-7e4ea7234e9a",
           "Name": "World UI",
-          "Enabled": true,
           "Position": "-6.52694,-0.4599169,52.5299",
           "Rotation": "-0.007454982,0.001371549,0.9834642,-0.1809356",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "NameTagPanel",
@@ -96,14 +92,13 @@
     {
       "Id": "b65e3be9-ba40-4ac1-9440-9a0f65068191",
       "Name": "Sphere",
-      "Enabled": true,
       "Position": "0,81.23104,-58.79975",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -114,10 +109,9 @@
         {
           "Id": "09c23f98-3a63-4c2e-97d6-9d7cb721b17d",
           "Name": "World UI",
-          "Enabled": true,
           "Position": "-33.16663,-0.1865889,-0.1047403",
           "Rotation": "0.00000005959918,-0.0000000005688116,1,-0.0000006397578",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "WorldPanel",
@@ -138,10 +132,9 @@
         {
           "Id": "5c4868b8-1072-4383-93be-b3cb2231ec19",
           "Name": "World UI",
-          "Enabled": true,
           "Position": "-50.47972,-0.1866177,-26.09694",
           "Rotation": "0.5190907,0.0000003625464,0.8547185,-0.0000005471081",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "NameTagPanel",
@@ -163,10 +156,9 @@
         {
           "Id": "4501827b-cd69-4fe4-a3e0-c266d99893fa",
           "Name": "World UI",
-          "Enabled": true,
           "Position": "-7.519797,-1.273687,51.35894",
           "Rotation": "-0.007413972,0.001578259,0.9780543,-0.2082045",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "WorldPanel",
@@ -189,14 +181,13 @@
     {
       "Id": "c6dd56f2-a90a-4b6c-b4b6-f3a094e2ac6e",
       "Name": "Bird",
-      "Enabled": true,
       "Position": "0,-20.71415,-58.79975",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
@@ -207,10 +198,9 @@
         {
           "Id": "4e652c81-5bc6-4401-99be-7787e5c1014c",
           "Name": "World UI",
-          "Enabled": true,
           "Position": "-50.5653,-0.1866113,-0.1047382",
           "Rotation": "0.00000005959918,-0.0000000005688116,1,-0.0000006397578",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "NameTagPanel",
@@ -231,10 +221,9 @@
         {
           "Id": "c89c1f60-0928-4644-a808-8f180f6ea286",
           "Name": "World UI",
-          "Enabled": true,
           "Position": "-50.47972,-0.1866177,-26.09694",
           "Rotation": "0.5190907,0.0000003625464,0.8547185,-0.0000005471081",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "WorldPanel",
@@ -256,10 +245,9 @@
         {
           "Id": "d329f33d-448c-4d32-ac53-77fa0966d551",
           "Name": "World UI",
-          "Enabled": true,
           "Position": "-7.519797,-1.273687,51.35894",
           "Rotation": "-0.007413972,0.001578259,0.9780543,-0.2082045",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "NameTagPanel",
@@ -282,10 +270,8 @@
     {
       "Id": "22472f17-5de7-4462-b60f-cd2b0dc77a77",
       "Name": "Point Light",
-      "Enabled": true,
       "Position": "136.3133,372.9648,49.27744",
-      "Rotation": "-0.0000002743546,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PointLightComponent",
@@ -298,10 +284,8 @@
     {
       "Id": "3ae18f03-2b0f-4017-aab0-64d24e5834ca",
       "Name": "Point Light",
-      "Enabled": true,
       "Position": "-259.587,-391.2967,213.6024",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PointLightComponent",
@@ -314,10 +298,8 @@
     {
       "Id": "60c80a2a-e4f1-4042-a08e-af75703e4d0b",
       "Name": "Directional Light",
-      "Enabled": true,
-      "Position": "0,0,0",
       "Rotation": "0.4460604,0.4967057,-0.4974584,0.5539393",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "DirectionalLightComponent",
@@ -332,9 +314,6 @@
       "Id": "44a24d54-3a08-4bfb-bf8f-4a904cc7304e",
       "Name": "SkyBox",
       "Enabled": true,
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
       "Components": [
         {
           "__type": "SkyBox2D",
@@ -347,13 +326,11 @@
     {
       "Id": "9e2c8158-34b6-4f98-bdbb-ae9a1b930588",
       "Name": "Screen Panel",
-      "Enabled": true,
       "Position": "-0.0000001020514,-74.18726,70.75726",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "PanelRoot",
+          "__type": "ScreenPanel",
           "__enabled": true,
           "AutoScreenScale": true,
           "Opacity": 1,
@@ -365,10 +342,8 @@
         {
           "Id": "5018ae09-cb6f-4d88-a427-6263c76ee93d",
           "Name": "Health",
-          "Enabled": true,
           "Position": "-0.00000000000000000000001158053,-36.90044,20.0713",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "MockHudPanel",
@@ -381,10 +356,8 @@
     {
       "Id": "ea3699ec-87c5-4b70-982b-cce92cc614d6",
       "Name": "Spinner",
-      "Enabled": true,
       "Position": "-44.70381,74.48879,-92.92389",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "SpinComponent",
@@ -396,10 +369,9 @@
         {
           "Id": "f1341dc9-bb2a-4418-8c6c-6076e0291e1f",
           "Name": "Camera",
-          "Enabled": true,
           "Position": "-279.8804,107.6391,197.6537",
           "Rotation": "0.03534396,0.2239077,-0.1518613,0.9620573",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "Tonemapping",
@@ -413,8 +385,11 @@
               "__type": "CameraComponent",
               "__enabled": true,
               "BackgroundColor": "0.33333,0.46275,0.52157,1",
-              "ClearFlags": "Color, Depth, Stencil",
+              "ClearFlags": "All",
               "FieldOfView": 80,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
+              "TargetEye": "None",
               "ZFar": 10000,
               "ZNear": 10
             }
@@ -423,5 +398,16 @@
       ]
     }
   ],
+  "SceneProperties": {
+    "NetworkFrequency": 60,
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "UI",
+  "Description": "World panels and screen panels. Parenting, input, rotation.",
   "__references": []
 }

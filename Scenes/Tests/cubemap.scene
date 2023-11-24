@@ -3,14 +3,13 @@
     {
       "Id": "472d0946-e074-498c-a0ab-ed7d1f2c5bab",
       "Name": "Plane",
-      "Enabled": true,
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough40.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
@@ -21,10 +20,9 @@
     {
       "Id": "474b400b-6665-4f50-9b0a-92b6f5284bf1",
       "Name": "Directional Light",
-      "Enabled": true,
       "Position": "0,0,90.2498",
       "Rotation": "0.4351622,0.4351622,-0.5573454,0.5573453",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "DirectionalLightComponent",
@@ -38,10 +36,8 @@
     {
       "Id": "08d35d17-142b-4866-b59b-b7975382c240",
       "Name": "Cubemap",
-      "Enabled": true,
       "Position": "50.6053,-174.802,104.6461",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "EnvmapComponent",
@@ -59,14 +55,13 @@
     {
       "Id": "abfc44d7-a0e6-4d83-8849-5eedb428a0f3",
       "Name": "Sphere",
-      "Enabled": true,
       "Position": "0,-1.9958,31.6791",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough00.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -77,14 +72,13 @@
     {
       "Id": "e76a0175-650c-4da0-84b6-d790cc89a465",
       "Name": "Sphere (1)",
-      "Enabled": true,
       "Position": "0,-71.6163,31.6791",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough10.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -95,14 +89,13 @@
     {
       "Id": "3a911f40-45ba-4d91-ae71-7916d78b3383",
       "Name": "Sphere (2)",
-      "Enabled": true,
       "Position": "-3.822331,-148.084,31.2585",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -113,14 +106,13 @@
     {
       "Id": "9a2ac3de-23a4-462e-9829-9ff30bfedb1d",
       "Name": "Sphere (3)",
-      "Enabled": true,
       "Position": "0,-219.83,31.6791",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -131,14 +123,13 @@
     {
       "Id": "09864589-4f66-42dd-9e51-8f38c4371129",
       "Name": "Sphere (4)",
-      "Enabled": true,
       "Position": "0,-287.1465,31.6791",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough40.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -149,14 +140,13 @@
     {
       "Id": "67f898c7-bd4d-433c-b4c0-1fc20689c184",
       "Name": "Sphere (5)",
-      "Enabled": true,
       "Position": "0,-356.8394,31.6791",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough50.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -167,14 +157,13 @@
     {
       "Id": "a1d0ca51-f965-4ee9-8031-4f5cf3876f4c",
       "Name": "Sphere (6)",
-      "Enabled": true,
       "Position": "92.2343,-356.8394,31.6791",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough60.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -185,14 +174,13 @@
     {
       "Id": "a03705ae-2bbe-4ec6-bd0a-6c1f3e5b7c9d",
       "Name": "Sphere (7)",
-      "Enabled": true,
       "Position": "91.26085,-289.9584,31.679",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough70.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -203,14 +191,13 @@
     {
       "Id": "4f61b6d3-9d26-487e-94bb-0496c093f24f",
       "Name": "Sphere (8)",
-      "Enabled": true,
       "Position": "91.28776,-219.9904,31.6798",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough80.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -221,14 +208,13 @@
     {
       "Id": "60a28864-4f6f-41d7-a278-f0a298446fab",
       "Name": "Sphere (9)",
-      "Enabled": true,
       "Position": "92.2343,-151.6272,31.6791",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough90.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -239,14 +225,13 @@
     {
       "Id": "245c74cd-8b7d-4a4d-bf20-60c7b0dd785d",
       "Name": "Sphere (10)",
-      "Enabled": true,
       "Position": "92.2343,-76.6578,31.6791",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough00.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -257,10 +242,8 @@
     {
       "Id": "4e26ef17-030b-4450-8224-4a0ef520b2ab",
       "Name": "Point Light",
-      "Enabled": true,
       "Position": "-24.9382,-40.7385,96.7141",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PointLightComponent",
@@ -273,10 +256,8 @@
     {
       "Id": "7195ebe0-4f80-4089-bf59-d7a60aeb9c0b",
       "Name": "Point Light (1)",
-      "Enabled": true,
       "Position": "-29.9482,-388.2371,150.4988",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PointLightComponent",
@@ -289,22 +270,35 @@
     {
       "Id": "e65e36fd-b242-4432-b564-8faebeb35732",
       "Name": "Camera",
-      "Enabled": true,
       "Position": "-168.5737,7.0671,352.5934",
       "Rotation": "-0.1503301,-0.4222043,0.2998586,-0.8421574",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "CameraComponent",
           "__enabled": true,
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
-          "ClearFlags": "Color, Depth, Stencil",
+          "ClearFlags": "All",
           "FieldOfView": 75.75,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "TargetEye": "None",
           "ZFar": 10000,
           "ZNear": 10
         }
       ]
     }
   ],
+  "SceneProperties": {
+    "NetworkFrequency": 60,
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "Cubemap",
+  "Description": "Testing the EnvmapProbe component",
   "__references": []
 }

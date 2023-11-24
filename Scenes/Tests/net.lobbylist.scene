@@ -3,11 +3,9 @@
     {
       "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
       "Name": "Directional Light",
-      "Enabled": true,
       "Position": "158.6718,-124.3322,368.6452",
       "Rotation": "0.8894004,0.1914825,-0.4057941,0.087365",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "DirectionalLightComponent",
@@ -21,11 +19,8 @@
     {
       "Id": "12df27a7-aaf4-4da8-bc02-173ecd53c168",
       "Name": "SkyBox",
-      "Enabled": true,
       "Position": "1252.565,134.7641,-1378.779",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "SkyBox2D",
@@ -49,11 +44,9 @@
     {
       "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
       "Name": "Camera",
-      "Enabled": true,
       "Position": "1050.461,393.9113,-1536.836",
       "Rotation": "0.2293157,0.1970243,-0.7229961,0.6211862",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "CameraComponent",
@@ -110,20 +103,15 @@
     {
       "Id": "0cd4b3b6-7ff0-461e-9ce3-716ce58ea5d4",
       "Name": "Gradient Fog",
-      "Enabled": true,
       "Position": "1318.709,134.7641,-1636.627",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": ""
+      "Enabled": true
     },
     {
       "Id": "8fb08eff-6288-42d9-a8a9-981bd535be4d",
       "Name": "Spot Light",
-      "Enabled": true,
       "Position": "978.264,280.5271,-1510.71",
       "Rotation": "-0.00000005501167,0.7318483,0.0000001134687,0.6814676",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -146,19 +134,12 @@
       "Id": "8c64e32c-b269-47c7-b0fa-66149819dced",
       "Name": "Scene",
       "Enabled": true,
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Children": [
         {
           "Id": "cc71df09-7f34-457f-bb0f-abe31b615402",
           "Name": "trash_pile_c_03",
-          "Enabled": true,
           "Position": "1072.543,273.0627,-1637.636",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
@@ -174,11 +155,8 @@
         {
           "Id": "e6100ecf-1825-4354-a382-2b7c9f2d4b2f",
           "Name": "trash_pile_a_01",
-          "Enabled": true,
           "Position": "1019.082,329.6609,-1637.636",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
@@ -194,11 +172,8 @@
         {
           "Id": "3a1cba04-928f-4993-b3e9-0a89fd3db695",
           "Name": "trash_pile_c_04",
-          "Enabled": true,
           "Position": "991.8993,240.0206,-1637.636",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
@@ -214,11 +189,8 @@
         {
           "Id": "62050497-8884-4cf1-ab91-0e7ef3001a1c",
           "Name": "trash_pile_c_02",
-          "Enabled": true,
           "Position": "956.34,340.7145,-1637.636",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
@@ -234,11 +206,9 @@
         {
           "Id": "f58c9bdb-17c9-4178-a23a-6b24b50b3722",
           "Name": "wooden_chair_a",
-          "Enabled": true,
           "Position": "970.0709,284.2838,-1637.636",
           "Rotation": "0.00000001222938,0.0000000000000001231974,0.2051749,0.9787256",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
@@ -254,11 +224,9 @@
         {
           "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
           "Name": "Surface",
-          "Enabled": true,
           "Position": "1420.439,0,-1637.736",
-          "Rotation": "0,0,0,1",
           "Scale": "20,20,20",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
@@ -285,10 +253,6 @@
       "Id": "1522b80e-9e39-431b-9f00-b18a7b5b5120",
       "Name": "Lobby UI",
       "Enabled": true,
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
           "__type": "LobbyListPanel",
@@ -306,14 +270,16 @@
     }
   ],
   "SceneProperties": {
+    "NetworkFrequency": 60,
     "FixedUpdateFrequency": 50,
+    "Lerping": true,
     "MaxFixedUpdates": 5,
     "TimeScale": 1,
     "ThreadedAnimation": true,
     "UseFixedUpdate": true
   },
-  "Title": "networking",
-  "Description": "",
+  "Title": "Lobby List",
+  "Description": "A list of lobbies",
   "__references": [
     "facepunch.trash_pile_a_01",
     "facepunch.trash_pile_c_02",

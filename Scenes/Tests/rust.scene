@@ -3,14 +3,13 @@
     {
       "Id": "ae899b58-4cb8-469b-929e-b9cee784d98c",
       "Name": "Plane",
-      "Enabled": true,
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
       "Scale": "10,10,10",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "models/rust_props/remnant_container/concrete_a_cont.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
@@ -21,6 +20,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "100,100,1",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -28,10 +28,9 @@
     {
       "Id": "8968b643-b931-4556-9e16-3d92b5e75ff0",
       "Name": "Spot Light",
-      "Enabled": true,
       "Position": "-456.3969,-157.33,70.9175",
       "Rotation": "0,0,-0.5056576,0.8627343",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -48,14 +47,14 @@
     {
       "Id": "5bd7f863-a61f-4fc0-a0c2-a9df7afd881e",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-393.2265,-425.3183,-1.2198",
       "Rotation": "0,-0,-0.2739593,0.9617413",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/barricades/barricade.stone.vmdl",
           "ShouldCastShadows": true,
@@ -66,10 +65,9 @@
     {
       "Id": "0974346b-aac5-4152-b2d8-0f40ca4d5a65",
       "Name": "Spot Light",
-      "Enabled": true,
       "Position": "313.4948,-15.2287,115.0273",
       "Rotation": "0,0.9987631,0,0.04972083",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -86,14 +84,14 @@
     {
       "Id": "4c47bec8-7a76-40bd-8f1c-343b8a20a4c4",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-349.6256,-333.7433,-1.71",
       "Rotation": "0,0,0.009162664,0.999958",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/barricades/barricade.stone.vmdl",
           "ShouldCastShadows": true,
@@ -104,10 +102,9 @@
     {
       "Id": "2c5bf054-19d8-426a-b8b3-89a7d79e44b9",
       "Name": "Spot Light",
-      "Enabled": true,
       "Position": "-454.6291,-108.5722,53.7213",
       "Rotation": "0.9279775,0.3109482,0.1947102,-0.06524501",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -124,14 +121,14 @@
     {
       "Id": "2d459143-482c-412d-8737-860dfac34150",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-487.3505,-494.6768,-1.8954",
       "Rotation": "0,-0,-0.707107,0.7071065",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
           "ShouldCastShadows": true,
@@ -142,10 +139,9 @@
     {
       "Id": "53725acb-8c63-48ef-827e-7dad011ce1f8",
       "Name": "Spot Light",
-      "Enabled": true,
       "Position": "-295.4084,151.478,45.1196",
       "Rotation": "0.009279268,0.03273769,-0.2725423,0.9615419",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -162,14 +158,14 @@
     {
       "Id": "405b1027-90b8-45a6-9393-a93cd1e6965f",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-498.7296,-137.6851,-1.7549",
       "Rotation": "-0.01110677,-0.01110674,-0.7070202,0.7070188",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
           "ShouldCastShadows": true,
@@ -180,14 +176,14 @@
     {
       "Id": "35ab90a3-5df4-4972-ba12-db142743123b",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-483.7231,222.7822,-11.5867",
       "Rotation": "0.009255753,0.009255728,-0.7070475,0.707045",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
           "ShouldCastShadows": true,
@@ -198,14 +194,14 @@
     {
       "Id": "ef9b7bda-7515-4cff-a093-108a6311a501",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-672.6313,222.7825,-11.5867",
       "Rotation": "0.009255753,0.009255728,-0.7070475,0.707045",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
           "ShouldCastShadows": true,
@@ -216,14 +212,14 @@
     {
       "Id": "42cf4b9a-10aa-4eb9-835e-6e91758cd78a",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-667.9079,-297.8436,-209.1437",
       "Rotation": "0.01302657,-0.001283034,-0.9950992,-0.09801131",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
           "ShouldCastShadows": true,
@@ -234,14 +230,14 @@
     {
       "Id": "5406fbde-322e-431e-8e6b-7bbafd385f8b",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-961.2297,28.5256,-218.3443",
       "Rotation": "0.08655088,0.1002591,0.6819781,0.7192796",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
           "ShouldCastShadows": true,
@@ -252,14 +248,14 @@
     {
       "Id": "38fa4304-d46b-4a80-8c54-81f542a3130f",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-395.6563,405.8358,-38.1059",
       "Rotation": "0,0,0.009162664,0.999958",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/rubble_piles/rubble_pile_9x9.vmdl",
           "ShouldCastShadows": true,
@@ -270,14 +266,15 @@
     {
       "Id": "a421ac19-76e7-493f-9328-7076da05b235",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-625.9832,544.8216,-38.1059",
       "Rotation": "0,0,0.009162664,0.999958",
       "Scale": "1.5,1.5,1.5",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/rubble_piles/rubble_pile_9x9.vmdl",
           "ShouldCastShadows": true,
@@ -288,14 +285,14 @@
     {
       "Id": "77cd9e8a-c284-4644-9801-2878e9ae72dc",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-399.1765,-252.4252,-0.0276",
       "Rotation": "0,0,0.8343674,0.5512087",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/concrete_debris/concrete_debris_b.vmdl",
           "ShouldCastShadows": true,
@@ -306,14 +303,15 @@
     {
       "Id": "983c1034-f208-43ba-b16f-2cbfe6114fb8",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-96.026,354.4538,-3.3535",
       "Rotation": "0,-0,-0.3226781,0.9465088",
       "Scale": "2,2,2",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/concrete_debris/concrete_debris_b.vmdl",
           "ShouldCastShadows": true,
@@ -324,14 +322,14 @@
     {
       "Id": "fbac0062-171d-47cc-b1b6-7f14d0a9dd72",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-285.9511,557.0157,-0.027",
       "Rotation": "0,0,0.4198495,0.9075937",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/shipping_containers/shipping_container_900_b.vmdl",
           "ShouldCastShadows": true,
@@ -342,14 +340,14 @@
     {
       "Id": "d51a6b84-5452-4aeb-802d-3a751b4ad807",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-375.5695,-484.208,1.3438",
       "Rotation": "0,0,0.6883554,0.7253736",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
           "ShouldCastShadows": true,
@@ -360,14 +358,14 @@
     {
       "Id": "22216d50-df83-4ee2-87f5-391ede946a0e",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-257.6477,-490.3877,0.9858",
       "Rotation": "0,0,0.6883554,0.7253736",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
           "ShouldCastShadows": true,
@@ -378,14 +376,14 @@
     {
       "Id": "61673273-ad0a-42f1-9d84-fbe9cb2c365c",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-139.2377,-496.593,1.908",
       "Rotation": "0,0,0.6883554,0.7253736",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
           "ShouldCastShadows": true,
@@ -396,10 +394,8 @@
     {
       "Id": "ad61cd8e-b8db-4d53-ad5d-1d92d8208a73",
       "Name": "Point Light",
-      "Enabled": true,
       "Position": "-231.4456,312.7728,153.8908",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PointLightComponent",
@@ -412,27 +408,26 @@
     {
       "Id": "1cf20169-a7de-40eb-b514-69b17dc68bbd",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-117.0236,0,256.2163",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -443,27 +438,26 @@
     {
       "Id": "1d1684c2-bcb7-4943-bdfa-c842812e1b30",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-117.0236,-109.0445,329.2191",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -474,14 +468,14 @@
     {
       "Id": "11ad79f2-9c0b-41b1-ae96-5696d488c949",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-267.1209,43.9013,-4.9293",
       "Rotation": "0,0,0.8343674,0.5512087",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/tires/tire_stack_c.vmdl",
           "ShouldCastShadows": true,
@@ -492,14 +486,13 @@
         {
           "Id": "461f69b6-3d26-4fb8-b10d-d5350416020f",
           "Name": "Sphere",
-          "Enabled": true,
           "Position": "-31.4945,35.6044,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/dev/sphere.vmdl",
               "ShouldCastShadows": true,
@@ -512,17 +505,19 @@
     {
       "Id": "7563abcc-b564-4521-9aa1-b1d0552e8a92",
       "Name": "Camera",
-      "Enabled": true,
       "Position": "280.0198,-226.7577,135.2636",
       "Rotation": "-0.09939483,0.02436552,0.966144,0.2368393",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "CameraComponent",
           "__enabled": true,
           "BackgroundColor": "0.12871,0.07744,0.02612,1",
-          "ClearFlags": "Color, Depth, Stencil",
+          "ClearFlags": "All",
           "FieldOfView": 70.05,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "TargetEye": "None",
           "ZFar": 5996.1,
           "ZNear": 20.800001
         }
@@ -531,14 +526,13 @@
     {
       "Id": "ec76722d-70af-44cb-913d-3a7582616f85",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "-117.0236,22.9639,426.3412",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -547,19 +541,30 @@
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
     }
   ],
+  "SceneProperties": {
+    "NetworkFrequency": 60,
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "Rust",
+  "Description": "Just a bunch of Rust props",
   "__references": [
     "rust.american_beech_d_dead",
     "rust.barricadestone",

@@ -3,10 +3,8 @@
     {
       "Id": "bea4636e-9e5b-485c-92d2-5214c73bf212",
       "Name": "Object",
-      "Enabled": true,
       "Position": "1114.846,0,-1303.217",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "EnvmapComponent",
@@ -21,14 +19,15 @@
     {
       "Id": "52117bd2-8020-4fa0-b23a-903ed1473301",
       "Name": "Surface",
-      "Enabled": true,
       "Position": "906.3349,0,-1631.205",
       "Rotation": "0,-0.01919759,0,0.9998158",
       "Scale": "10,10,10",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
@@ -39,6 +38,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "100,100,1",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -46,10 +46,9 @@
     {
       "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
       "Name": "Directional Light",
-      "Enabled": true,
       "Position": "55.4718,-124.3322,91.5952",
       "Rotation": "-0.5276809,0.09922918,0.8290949,0.1559103",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "DirectionalLightComponent",
@@ -63,17 +62,19 @@
     {
       "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
       "Name": "Camera",
-      "Enabled": true,
       "Position": "1011.863,273.6311,-1540.558",
       "Rotation": "0.104912,0.06145444,-0.8564602,0.5016899",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "CameraComponent",
           "__enabled": true,
           "BackgroundColor": "0.25292,0.26086,0.29703,1",
-          "ClearFlags": "Color, Depth, Stencil",
+          "ClearFlags": "All",
           "FieldOfView": 85.5,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "TargetEye": "None",
           "ZFar": 2136.4,
           "ZNear": 1
         },
@@ -90,14 +91,14 @@
     {
       "Id": "dc7e2c50-ebbc-4cf8-a98f-0b3918dcd4cd",
       "Name": "Citizen - Solid",
-      "Enabled": true,
       "Position": "953.007,104.095,-1616.6",
       "Rotation": "0.0000000384625,-0.00000000000000003364402,0.6452936,0.7639344",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
           "ShouldCastShadows": true,
@@ -108,6 +109,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/citizen/citizen.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -115,14 +117,14 @@
     {
       "Id": "be2267ea-ef4e-459e-becc-0da1308f9da3",
       "Name": "Citizen - Ragdoll",
-      "Enabled": true,
       "Position": "896.9753,113.5968,-1616.6",
       "Rotation": "0.0000000384625,-0.00000000000000003364402,0.6452936,0.7639344",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
           "ShouldCastShadows": true,
@@ -138,10 +140,9 @@
     {
       "Id": "b3b5ece6-cd1b-4b4d-9b36-cc88982a751d",
       "Name": "Spot Light",
-      "Enabled": true,
       "Position": "1223.259,-803.9999,-1087.162",
       "Rotation": "-0.1064454,0.2939645,0.588666,0.7454708",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -158,10 +159,9 @@
     {
       "Id": "758c906c-3278-4b4e-866a-99e0a7fc9737",
       "Name": "Spot Light",
-      "Enabled": true,
       "Position": "502.9799,219.0271,-1541.885",
       "Rotation": "0.003547103,0.005014129,-0.1381661,0.9903903",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -178,10 +178,8 @@
     {
       "Id": "eed1d0da-fb94-44c7-b17b-638cddf71838",
       "Name": "Cubemap",
-      "Enabled": true,
       "Position": "1099.505,-0.0033,-1162.002",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "EnvmapComponent",
@@ -197,5 +195,16 @@
       ]
     }
   ],
+  "SceneProperties": {
+    "NetworkFrequency": 60,
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "Physics.Ragdoll",
+  "Description": "Ragdoll spawning (todo)",
   "__references": []
 }

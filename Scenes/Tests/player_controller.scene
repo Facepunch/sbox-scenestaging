@@ -3,11 +3,7 @@
     {
       "Id": "6847521e-c350-4273-a554-207b9e355843",
       "Name": "MoveHelperDebugVis",
-      "Enabled": false,
       "Position": "1293.036,74.17367,-1596.871",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
           "__type": "MoveHelperDebugVis",
@@ -20,11 +16,7 @@
     {
       "Id": "24612344-b2ef-460a-a6ac-25c300a69bc6",
       "Name": "MoveHelperDebugVis",
-      "Enabled": false,
       "Position": "1554.92,12.22214,-1528.38",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
           "__type": "MoveHelperDebugVis",
@@ -37,11 +29,8 @@
     {
       "Id": "1ba8c3f7-c892-429d-b083-5430ae17e725",
       "Name": "MoveHelperDebugVis",
-      "Enabled": false,
       "Position": "956.0801,440.6392,-1527.239",
       "Rotation": "-0.6707615,0.738689,0.05201491,-0.0413692",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
           "__type": "MoveHelperDebugVis",
@@ -54,11 +43,8 @@
     {
       "Id": "b2bfaf6e-545d-4a5a-9acd-d63921687fc8",
       "Name": "MoveHelperDebugVis",
-      "Enabled": false,
       "Position": "1182.166,48.9259,-1611.166",
       "Rotation": "0.003569647,-0.1453741,0.0242874,-0.9890732",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
           "__type": "MoveHelperDebugVis",
@@ -71,11 +57,9 @@
     {
       "Id": "e57822ac-e9df-4cf0-bba8-f8790bb22142",
       "Name": "MoveHelperDebugVis",
-      "Enabled": true,
       "Position": "1158.875,56.95159,-1480.064",
       "Rotation": "0.04778231,0.02206,-0.6536171,0.7549935",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "TraceDebugVis",
@@ -90,11 +74,8 @@
     {
       "Id": "b3b5ece6-cd1b-4b4d-9b36-cc88982a751d",
       "Name": "Spot Light",
-      "Enabled": false,
       "Position": "906.304,954.2023,-1254.256",
       "Rotation": "0.05406565,0.2581995,-0.1976902,0.944102",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -111,11 +92,10 @@
     {
       "Id": "b95c2f7f-fbef-4475-9842-18769bc4c5eb",
       "Name": "Trace Debug",
-      "Enabled": true,
       "Position": "1638.155,42.05764,-1509.124",
       "Rotation": "-0.00000002356131,0.3952931,0.0000000000000005460836,0.9185553",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "TraceDebugVis",
@@ -130,11 +110,9 @@
     {
       "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
       "Name": "Directional Light",
-      "Enabled": true,
       "Position": "158.6718,-124.3322,368.6452",
       "Rotation": "0.8894004,0.1914825,-0.4057941,0.087365",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "DirectionalLightComponent",
@@ -148,11 +126,8 @@
     {
       "Id": "12df27a7-aaf4-4da8-bc02-173ecd53c168",
       "Name": "SkyBox",
-      "Enabled": true,
       "Position": "1252.565,134.7641,-1378.779",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "SkyBox2D",
@@ -165,11 +140,8 @@
     {
       "Id": "0cd4b3b6-7ff0-461e-9ce3-716ce58ea5d4",
       "Name": "Gradient Fog",
-      "Enabled": true,
       "Position": "1318.709,134.7641,-1636.627",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "GradientFog",
@@ -186,11 +158,8 @@
     {
       "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
       "Name": "Citizen",
-      "Enabled": true,
       "Position": "1030.004,661.5084,-1637.595",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "CharacterController",
@@ -207,14 +176,13 @@
           "__enabled": true,
           "AnimationHelper": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
           "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
-          "CameraDistance": 200,
           "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
-          "FirstPerson": false,
           "Gravity": "0,0,800"
         },
         {
           "__type": "CitizenAnimation",
           "__enabled": true,
+          "Height": 1,
           "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
         }
       ],
@@ -222,11 +190,8 @@
         {
           "Id": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
           "Name": "Body",
-          "Enabled": true,
           "Position": "0,-0.66093,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "AnimatedModelComponent",
@@ -244,11 +209,9 @@
             {
               "Id": "975e3006-e7c3-46a5-9f30-c31a196c89f9",
               "Name": "Name Tag UI",
-              "Enabled": true,
               "Position": "-0.000001814945,0.1895752,80.7357",
               "Rotation": "-0.00000005960058,0.000000000000005518709,-0.9999317,0.01167414",
-              "Scale": "1,1,1",
-              "Tags": "",
+              "Enabled": true,
               "Components": [
                 {
                   "__type": "WorldPanel",
@@ -271,18 +234,18 @@
         {
           "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
           "Name": "Camera",
-          "Enabled": true,
           "Position": "-200,0,64",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "CameraComponent",
               "__enabled": true,
               "BackgroundColor": "0.25292,0.26086,0.29703,1",
-              "ClearFlags": "Color, Depth, Stencil",
+              "ClearFlags": "All",
               "FieldOfView": 80,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
+              "TargetEye": "None",
               "ZFar": 10000,
               "ZNear": 1
             },
@@ -328,7 +291,8 @@
                     "t": 1,
                     "c": "0.5,0.5,0.5,1"
                   }
-                ]
+                ],
+                "alpha": []
               },
               "BloomCurve": {
                 "rangey": "0,106.45",
@@ -350,20 +314,14 @@
         {
           "Id": "edb447df-b691-4153-8652-070d2533e7c4",
           "Name": "EyePos",
-          "Enabled": true,
           "Position": "0,0,64",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": ""
+          "Enabled": true
         },
         {
           "Id": "258a1012-ff9e-49b5-bf1b-887d483bb0bf",
           "Name": "Hair",
-          "Enabled": true,
           "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "AnimatedModelComponent",
@@ -382,11 +340,8 @@
         {
           "Id": "f14d65a1-eea4-4fe5-89d7-a550ec6b8f11",
           "Name": "Hair",
-          "Enabled": true,
           "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "AnimatedModelComponent",
@@ -407,11 +362,9 @@
     {
       "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
       "Name": "Surface",
-      "Enabled": true,
       "Position": "1420.439,0,-1637.736",
-      "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -427,6 +380,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "100,100,0.01",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -434,11 +388,10 @@
     {
       "Id": "2c4c6af7-d96d-4e7d-a62f-e7574edd2bd1",
       "Name": "Surface",
-      "Enabled": true,
       "Position": "1426.931,-954.8324,-1551.606",
       "Rotation": "-0.5404876,-0.4595037,-0.4963918,0.5003225",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -454,6 +407,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "100,100,0.01",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -461,11 +415,10 @@
     {
       "Id": "64cc8f38-0ddf-4fe9-b9f5-2822d2cd405c",
       "Name": "Surface",
-      "Enabled": true,
       "Position": "519.4361,-73.0855,-1474.278",
       "Rotation": "-0.7356308,-0.03306742,-0.6756142,0.03600477",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -481,6 +434,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "100,100,0.01",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -488,11 +442,9 @@
     {
       "Id": "650ce69e-04d7-427e-97eb-c2ec187a92d3",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,0,535.5369",
       "Rotation": "-0.09391546,-0.2983155,-0.2852259,0.9059988",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -506,14 +458,14 @@
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -521,20 +473,14 @@
     {
       "Id": "62c2a961-fa6a-4473-ba2c-821e488ac0c6",
       "Name": "Object",
-      "Enabled": false,
-      "Position": "979.3158,526.2988,-1513.404",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": ""
+      "Position": "979.3158,526.2988,-1513.404"
     },
     {
       "Id": "57ff8041-1fdf-44d8-8cd9-715d23202c73",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,0,458.9947",
       "Rotation": "-0.1529643,-0.1370061,-0.7290195,0.6529638",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -548,14 +494,14 @@
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -563,17 +509,13 @@
     {
       "Id": "d50405fe-42b6-4b95-a155-697b20c2a510",
       "Name": "Cube (1)",
-      "Enabled": true,
       "Position": "686.7393,322.773,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -589,6 +531,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -596,17 +539,13 @@
     {
       "Id": "5df98436-300e-40f3-a7f8-37f68a2a4881",
       "Name": "Cube (1)",
-      "Enabled": true,
       "Position": "686.7393,393.245,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -622,6 +561,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -629,17 +569,13 @@
     {
       "Id": "2601cbbd-94dc-4332-ac4a-3024d5cb692b",
       "Name": "Cube (1)",
-      "Enabled": true,
       "Position": "686.7393,466.1223,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -655,6 +591,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -662,17 +599,13 @@
     {
       "Id": "4c7639d6-4a94-4ef3-8fb2-084cc2799525",
       "Name": "Cube (1)",
-      "Enabled": true,
       "Position": "686.7393,538.7812,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -688,6 +621,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -695,11 +629,8 @@
     {
       "Id": "ec22eee7-5402-4863-a6ff-9473aead30eb",
       "Name": "Cube (1)",
-      "Enabled": true,
       "Position": "760.2015,624.8857,-1613.384",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -715,6 +646,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -722,11 +654,8 @@
     {
       "Id": "430e25c7-268e-47e6-810f-c41d30d79d9f",
       "Name": "Cube (1)",
-      "Enabled": true,
       "Position": "786.1921,670.1918,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -742,6 +671,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -749,11 +679,9 @@
     {
       "Id": "cd075bdd-2ae8-495b-a0a3-0b12eacfa91f",
       "Name": "Cabin",
-      "Enabled": true,
       "Position": "666.2659,776.6023,-1532.493",
       "Rotation": "-0.00000004369251,-0.000000006436908,-0.1977707,0.9802483",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -769,6 +697,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_props/portacabins/portacabin_300_600_b.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -776,11 +705,9 @@
     {
       "Id": "f34b346f-38cf-4579-85b5-914d61c607de",
       "Name": "Citizen Solid",
-      "Enabled": true,
       "Position": "850.0305,525.2525,-1631.623",
       "Rotation": "-0.00000002114547,0.000000005928668,0.1821554,0.9832697",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -796,6 +723,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/citizen/citizen.vmdl",
+          "Static": false,
           "Surface": null
         },
         {
@@ -813,11 +741,9 @@
         {
           "Id": "085a5ac3-cbf3-47d8-b2c1-a8ad95345723",
           "Name": "Name Tag UI",
-          "Enabled": true,
           "Position": "-0.000001516925,-0.000003088577,78.34348",
           "Rotation": "0.00000002114547,-0.000000005928669,-0.1821554,0.9832698",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "WorldPanel",
@@ -840,17 +766,13 @@
     {
       "Id": "3dba2b88-af26-45ea-800c-c4539add410e",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "686.7393,247.0549,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -866,6 +788,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -873,17 +796,13 @@
     {
       "Id": "257109a5-d5a7-4019-87d5-3116d00cc7f3",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1117.223,343.6628,-1651.443",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -899,6 +818,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -906,17 +826,14 @@
     {
       "Id": "1c60ae93-73e8-4dd2-b8f1-a93ce712990a",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1118.402,517.0034,-1658.921",
       "Rotation": "-0.00000002779386,-0.07808238,0.000000002541372,0.996947",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -932,6 +849,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -939,17 +857,14 @@
     {
       "Id": "cedbeabd-8ffe-4ce1-bb9b-c2df8616aadd",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1171.076,517.0034,-1638.617",
       "Rotation": "-0.00000001431177,-0.2835328,0.000000009228225,0.9589624",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -965,6 +880,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -972,17 +888,14 @@
     {
       "Id": "2e7d1b0d-14cc-4af5-8f0c-040c964185f5",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1250.165,517.0034,-1587.368",
       "Rotation": "-0.00000001431177,-0.2835328,0.000000009228225,0.9589624",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -998,6 +911,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1005,17 +919,14 @@
     {
       "Id": "dc1455af-cfa0-46ca-9e5c-aa81c5728a7b",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1343.784,517.0034,-1526.705",
       "Rotation": "-0.00000001431177,-0.2835328,0.000000009228225,0.9589624",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1031,6 +942,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1038,17 +950,14 @@
     {
       "Id": "100fe72f-057e-4c8a-8723-d46b5ac2715e",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1164.34,343.5392,-1644.13",
       "Rotation": "-0.00000002038901,-0.1936464,0.000000006302668,0.9810716",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1064,6 +973,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1071,17 +981,14 @@
     {
       "Id": "9d37c139-4297-4602-8362-63d1761614a5",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1156.666,88.1235,-1652.084",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1097,6 +1004,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1104,17 +1012,14 @@
     {
       "Id": "b1f6d713-7339-4064-b266-a53f41748ea8",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1599.482,-87.0359,-1654.213",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1130,6 +1035,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1137,17 +1043,14 @@
     {
       "Id": "9fb497d5-cf09-46a0-b16c-a2ef980bafc1",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1666.201,58.2784,-1654.534",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1163,6 +1066,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1170,17 +1074,14 @@
     {
       "Id": "b896ef31-e743-4202-90e0-f9ca282ad746",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1766.159,-66.7407,-1655.016",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1196,6 +1097,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1203,17 +1105,15 @@
     {
       "Id": "352462c6-760a-46a3-9eb8-1edc57e65d58",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1421.322,602.4346,-1725.114",
       "Rotation": "-0.0005409368,0.00234326,-0.2249131,0.9743757",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1229,6 +1129,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1236,17 +1137,15 @@
     {
       "Id": "8a993e04-6df3-47f6-811d-c8506eb2fbf9",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1515.772,859.8407,-1725.568",
       "Rotation": "-0.0005409368,0.00234326,-0.2249131,0.9743757",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1262,6 +1161,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1269,17 +1169,15 @@
     {
       "Id": "b5628e28-113d-4bf1-a578-e4e30fe3f04a",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1839.357,527.498,-1727.124",
       "Rotation": "-0.0005409368,0.00234326,-0.2249131,0.9743757",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1295,6 +1193,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1302,17 +1201,15 @@
     {
       "Id": "e6394212-88bd-448d-b5ed-e458ae7929e7",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1775.65,807.4183,-1726.817",
       "Rotation": "-0.0005409368,0.00234326,-0.2249131,0.9743757",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1328,6 +1225,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1335,17 +1233,15 @@
     {
       "Id": "59c8c6e7-9bb4-419a-865c-1bea1969e05d",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1685.993,731.8704,-1718.415",
       "Rotation": "0.0008234567,0.002259518,0.3424133,0.939546",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1361,6 +1257,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1368,17 +1265,15 @@
     {
       "Id": "baf68672-e6cb-4ee9-a483-b98d221c96f5",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1632.04,574.8147,-1715.279",
       "Rotation": "0.0008234567,0.002259518,0.3424133,0.939546",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1394,6 +1289,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1401,17 +1297,15 @@
     {
       "Id": "ad9d5fb1-476b-4004-9928-3d104adfc438",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1380.654,907.2274,-1714.071",
       "Rotation": "0.0008234567,0.002259518,0.3424133,0.939546",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1427,6 +1321,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1434,17 +1329,15 @@
     {
       "Id": "c78c4c8c-6c18-4558-aba7-07e02ed33cb7",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1894.37,731.7219,-1716.542",
       "Rotation": "0.0003875117,0.00237346,0.1611441,0.986928",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1460,6 +1353,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1467,17 +1361,15 @@
     {
       "Id": "61cbb507-afff-4b90-b631-9e0d07ae27c0",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1663.586,903.2711,-1703.921",
       "Rotation": "0.0003875117,0.00237346,0.1611441,0.986928",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1493,6 +1385,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1500,17 +1393,14 @@
     {
       "Id": "2f3f6828-0313-47a5-bc52-f60bf5799c44",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1484.799,42.0577,-1679.132",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1526,6 +1416,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1533,17 +1424,14 @@
     {
       "Id": "db06ff09-f1b6-46e8-bd7c-512b8179d0cf",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1492.74,42.0577,-1674.46",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1559,6 +1447,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1566,17 +1455,14 @@
     {
       "Id": "747a7c05-834f-44ba-8aba-05f6850a70b3",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1499.911,42.0577,-1669.002",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1592,6 +1478,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1599,17 +1486,14 @@
     {
       "Id": "6d203025-7958-4d0b-be77-0f0baf0f2fd8",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1505.716,42.0577,-1664.015",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1625,6 +1509,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1632,17 +1517,14 @@
     {
       "Id": "d60690bd-d4ea-455a-9c2d-437e988ebf47",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1510.969,42.0577,-1660.045",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1658,6 +1540,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1665,17 +1548,14 @@
     {
       "Id": "e6f7f311-6d93-4e6d-bfcc-a6aa72ad0b6f",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1517.329,42.0577,-1654.818",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1691,6 +1571,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1698,17 +1579,14 @@
     {
       "Id": "f24bb474-0dc8-4fdc-af97-5db9e410b4c6",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1524.824,42.0577,-1649.699",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1724,6 +1602,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1731,17 +1610,14 @@
     {
       "Id": "4c240fa1-13d6-4fce-897c-c6a040b1967c",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1531.73,42.0577,-1644.904",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1757,6 +1633,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1764,17 +1641,14 @@
     {
       "Id": "acf2e043-e57d-4d41-b2f4-dc54b033a65a",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1540.606,42.0577,-1638.956",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1790,6 +1664,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1797,17 +1672,14 @@
     {
       "Id": "5cb05949-9c0e-465e-8c76-7285d42a10f7",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1547.95,42.0577,-1633.836",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1823,6 +1695,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1830,17 +1703,14 @@
     {
       "Id": "e248eaf8-a556-430c-baa2-4f4055dc4c1b",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1554.432,42.0577,-1629.011",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1856,6 +1726,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1863,17 +1734,14 @@
     {
       "Id": "35d56fe7-ecf4-4b97-8f4d-833804218441",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1561.125,42.0577,-1624.209",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1889,6 +1757,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1896,17 +1765,14 @@
     {
       "Id": "fba76cee-7f30-4742-b870-d32ccb3c0e51",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1568.769,42.0577,-1619.929",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1922,6 +1788,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1929,17 +1796,14 @@
     {
       "Id": "c0333743-30ce-43af-a2d0-fac83c0329f2",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1575.909,42.0577,-1615.906",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1955,6 +1819,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1962,17 +1827,14 @@
     {
       "Id": "2aec5ff3-84e6-473b-a997-7019527cb226",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1583.713,42.0577,-1610.799",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -1988,6 +1850,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1995,17 +1858,14 @@
     {
       "Id": "37109d74-765b-4f7e-9c57-04b005580fb1",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1589.852,42.0577,-1607.166",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2021,6 +1881,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2028,17 +1889,14 @@
     {
       "Id": "cb184a21-4452-40b5-b341-0a5505919900",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1597.72,42.0577,-1602.129",
-      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2054,6 +1912,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2061,17 +1920,14 @@
     {
       "Id": "581c5fd1-8cad-4755-948a-104f6aed2b1a",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1238.468,738.0173,-1616.26",
       "Rotation": "-0.0005409368,0.00234326,-0.2249131,0.9743757",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2087,6 +1943,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2094,17 +1951,14 @@
     {
       "Id": "afc72905-e900-46c1-a5d0-fd8966fb99df",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1298.25,810.9677,-1632.342",
       "Rotation": "-0.0005409368,0.00234326,-0.2249131,0.9743757",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2120,6 +1974,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2127,17 +1982,14 @@
     {
       "Id": "e5a76602-3cb9-415f-877a-45cc0e1ba0f7",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1346.829,154.3461,-1654.797",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2153,6 +2005,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2160,17 +2013,14 @@
     {
       "Id": "ff9f131f-522a-42e9-ae0f-1090720a533f",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1121.084,105.4299,-1657.738",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2186,6 +2036,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2193,17 +2044,14 @@
     {
       "Id": "6c335b0c-86e4-45c1-a050-87821931449c",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1231.145,-89.5148,-1654.242",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2219,6 +2067,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2226,11 +2075,10 @@
     {
       "Id": "5195d744-3d1c-4378-92c2-81e3897b80f2",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1216.83,-323.0742,-1504.344",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
       "Scale": "4.9,4.9,4.9",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -2246,6 +2094,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Radius": 31.3,
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2253,11 +2102,10 @@
     {
       "Id": "2f5ccfce-c898-437d-b8c1-de0541c8e6e6",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "771.5529,903.7219,-1785.894",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
       "Scale": "42.1,42.1,42.1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -2273,6 +2121,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/soccerball.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2280,11 +2129,10 @@
     {
       "Id": "d16e6a00-4b55-45a5-b63f-c12ba151512f",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1053.762,903.7219,-1787.252",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
       "Scale": "42.1,42.1,42.1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -2300,6 +2148,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Radius": 4.4800053,
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2307,17 +2156,14 @@
     {
       "Id": "0c85af75-2c45-452e-a824-a4ccdf7359a4",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1377.914,-22.806,-1654.948",
       "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2333,6 +2179,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2340,17 +2187,15 @@
     {
       "Id": "296611ab-2520-40b3-a226-0ec9d1b4d218",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1348.234,356.0341,-1711.869",
       "Rotation": "-0.00000002437374,-0.1323278,0.000000004306913,0.9912062",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2366,6 +2211,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2373,17 +2219,15 @@
     {
       "Id": "63967eaf-73ef-49c6-9627-0e26d7c676c0",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1842.172,892.3596,-1675.855",
       "Rotation": "-0.00000002437374,-0.1323278,0.000000004306913,0.9912062",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2399,6 +2243,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2406,17 +2251,15 @@
     {
       "Id": "cbf96b1a-8d02-486b-9d5b-2dd1bdca6e72",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1993.956,892.3596,-1602.123",
       "Rotation": "-0.00000001211279,-0.3150304,0.00000001025339,0.9490816",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2432,6 +2275,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2439,17 +2283,15 @@
     {
       "Id": "05f0d7cd-2b9c-4276-b9f7-9ad35cfe00a3",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2103.148,892.3596,-1493.782",
       "Rotation": "-0.000000004647677,-0.4180683,0.000000013607,0.9084154",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2465,6 +2307,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2472,17 +2315,15 @@
     {
       "Id": "69dba46a-accf-4522-b54a-77fe664e3ccb",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2193.474,892.3596,-1363.189",
       "Rotation": "0.000000001079993,-0.4931541,0.00000001605084,0.8699416",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2498,6 +2339,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2505,17 +2347,15 @@
     {
       "Id": "7ef9b66c-c248-4339-9516-55dc95c09fa2",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1516.46,343.5392,-1686.644",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2531,6 +2371,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2538,17 +2379,15 @@
     {
       "Id": "bf611bef-1050-4b4f-9219-5048b6d7b9a3",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1539.502,343.5393,-1675.702",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2564,6 +2403,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2571,17 +2411,15 @@
     {
       "Id": "23ea24df-5c42-4338-9fc0-534a90953f40",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1564.302,343.5391,-1665.057",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2597,6 +2435,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2604,17 +2443,15 @@
     {
       "Id": "4a7b8d7c-0a98-4f2e-bac3-6ac8eb3c0ec2",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1594.436,343.5391,-1656.639",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2630,6 +2467,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2637,17 +2475,15 @@
     {
       "Id": "1c62eb1c-5e6f-4de5-b61e-2ee7340bdf36",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2181.451,315.6279,-1588.216",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2663,6 +2499,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2670,17 +2507,15 @@
     {
       "Id": "f527583d-d823-4132-8f0e-6e7b38393499",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2181.451,481.6078,-1588.216",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2696,6 +2531,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2703,17 +2539,14 @@
     {
       "Id": "3ca5c30a-dce6-4d4c-8f08-27a367e82bfd",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2127.248,602.2429,-1588.372",
-      "Rotation": "0,0,0,1",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2729,6 +2562,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2736,17 +2570,15 @@
     {
       "Id": "1067c9ea-07ae-45ee-96b2-3c7bf9c8cf29",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2155.843,605.5508,-1402.294",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2762,6 +2594,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2769,17 +2602,15 @@
     {
       "Id": "0eb89d44-257c-48ae-9211-80c0c1f611c9",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2154.631,605.5508,-1213.378",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2795,6 +2626,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2802,17 +2634,15 @@
     {
       "Id": "984fda87-0bf5-42da-9d9e-77aae16d06f5",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2153.399,605.5508,-1021.251",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2828,6 +2658,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2835,17 +2666,15 @@
     {
       "Id": "d095d957-df44-4459-a61a-ade1e9604b99",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2152.21,605.5508,-835.6037",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2861,6 +2690,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2868,17 +2698,15 @@
     {
       "Id": "fefbd051-dd55-490b-8967-87d9f15c30dc",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2151.053,605.5508,-654.9906",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2894,6 +2722,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2901,17 +2730,15 @@
     {
       "Id": "909ddb30-29c2-4bc5-8422-e7b90b94760f",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2190.117,767.5601,-1588.161",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2927,6 +2754,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2934,17 +2762,15 @@
     {
       "Id": "bfd1a2d9-19a1-4f9d-8c1a-e0c3190ed664",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "2212.53,942.3976,-1588.018",
       "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2960,6 +2786,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -2967,17 +2794,15 @@
     {
       "Id": "16c0bed9-daef-4233-8edb-988e56570fc3",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1620.197,343.539,-1646.966",
       "Rotation": "0.0004882579,-0.003166555,-0.1524032,0.9883133",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -2993,6 +2818,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3000,17 +2826,14 @@
     {
       "Id": "d3cab9ab-92b1-4e1d-a566-0df3da5872e3",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1619.426,343.539,-1526.567",
       "Rotation": "0.001127132,-0.002999167,-0.3518059,0.9360676",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3026,6 +2849,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3033,17 +2857,14 @@
     {
       "Id": "ca515778-8cb2-4b8d-81c8-d90487c05f87",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1619.136,343.539,-1481.516",
       "Rotation": "0.001127132,-0.002999167,-0.3518059,0.9360676",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3059,6 +2880,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3066,17 +2888,14 @@
     {
       "Id": "69f07c9e-292c-41cb-8a38-f194f5868e76",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1618.828,343.539,-1433.258",
       "Rotation": "0.001127132,-0.002999167,-0.3518059,0.9360676",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3092,6 +2911,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3099,17 +2919,15 @@
     {
       "Id": "cbcd1443-3024-4dc3-88fe-38850323cc72",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1782.608,343.5389,-1672.543",
       "Rotation": "-0.00000004131897,0.1536478,-0.000000005000819,0.9881251",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3125,6 +2943,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3132,17 +2951,15 @@
     {
       "Id": "d8ba1e08-4902-48ef-a8ee-6924500e8907",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "1984.426,359.9016,-1714.539",
       "Rotation": "-0.00000003600888,0.05902757,-0.000000001921184,0.9982557",
       "Scale": "4,4,4",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": false,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3158,6 +2975,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3165,23 +2983,20 @@
     {
       "Id": "277191c1-f346-47fe-8549-a757e2b60e15",
       "Name": "Cube (3)",
-      "Enabled": true,
       "Position": "686.7393,168.3942,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
@@ -3198,17 +3013,13 @@
     {
       "Id": "88fae078-25a5-4ae2-a010-01da02fc104b",
       "Name": "Cube (4)",
-      "Enabled": true,
       "Position": "686.7393,91.1157,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3224,6 +3035,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3231,17 +3043,13 @@
     {
       "Id": "73891137-e128-4a7d-b0ad-5e6901120470",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "393.1795,-531.9441,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3257,6 +3065,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3264,17 +3073,13 @@
     {
       "Id": "759dd5db-bae3-4513-90c2-e3d1db04b0ab",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "326.341,-599.5729,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3290,6 +3095,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3297,17 +3103,13 @@
     {
       "Id": "958c8f7b-5230-4f46-8b84-f22c235cfaa8",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "267.9455,-676.0168,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3323,6 +3125,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3330,17 +3133,13 @@
     {
       "Id": "9aa90f32-7d91-4e4c-9c00-6860a40de78f",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "273.5231,-436.83,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3356,6 +3155,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3363,17 +3163,13 @@
     {
       "Id": "26711425-d3e0-42d1-ad3c-bf13db7e665f",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "171.2026,-716.7321,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3389,6 +3185,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3396,17 +3193,13 @@
     {
       "Id": "101633be-bc98-4ac6-bf4d-a77672c98d2b",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "154.2063,-586.5585,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3422,6 +3215,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3429,17 +3223,13 @@
     {
       "Id": "f6bfe58e-af39-4187-963f-5f16546970cb",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "220.7851,-527.5274,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3455,6 +3245,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3462,17 +3253,13 @@
     {
       "Id": "0197683b-4bc7-4203-b6de-3e9ee1816e91",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "171.3494,-432.7322,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3488,6 +3275,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3495,17 +3283,13 @@
     {
       "Id": "a8a9a48c-3d66-4d7c-8afa-2210800a8199",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "220.5939,-361.897,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3521,6 +3305,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3528,17 +3313,13 @@
     {
       "Id": "29d0976c-5b9a-4186-bbbc-5d3a1c2bc297",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "509.3035,-499.0526,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3554,6 +3335,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3561,17 +3343,13 @@
     {
       "Id": "85616cfc-75b7-4196-9941-7d487359e78c",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "102.8515,-749.5279,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3587,6 +3365,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3594,17 +3373,13 @@
     {
       "Id": "1a227731-75c3-4e5d-87c8-1d56c332af06",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "79.7005,-642.796,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3620,6 +3395,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3627,17 +3403,13 @@
     {
       "Id": "32b15aca-64c9-4a36-9c81-784a5b7d09d8",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "118.2239,-498.7248,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3653,6 +3425,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3660,17 +3433,13 @@
     {
       "Id": "56ea9e8b-aa5c-4d6a-8e76-c0aef0c922cc",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "138.8147,-372.9793,1091.211",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3686,6 +3455,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3693,23 +3463,20 @@
     {
       "Id": "3f25b320-a740-4b2c-8366-20f5a0a3a7a2",
       "Name": "Cube (6)",
-      "Enabled": true,
       "Position": "686.7393,-73.5093,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
@@ -3726,17 +3493,13 @@
     {
       "Id": "fb9eb946-2d7e-4092-a43d-d888fd2671c8",
       "Name": "Cube (7)",
-      "Enabled": true,
       "Position": "686.7393,-158.5866,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3752,6 +3515,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3759,17 +3523,13 @@
     {
       "Id": "f9a85fdd-fc84-4253-a6cd-32dba2f53dd6",
       "Name": "Cube (8)",
-      "Enabled": true,
       "Position": "686.7393,-241.4487,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3785,6 +3545,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3792,17 +3553,13 @@
     {
       "Id": "e8cd7dfe-aba3-4b70-8761-af9f059373a6",
       "Name": "Cube (9)",
-      "Enabled": true,
       "Position": "686.7393,-323.4224,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3818,6 +3575,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3825,17 +3583,13 @@
     {
       "Id": "b7ccdb77-039b-4980-827c-7f88ea2f99e8",
       "Name": "Cube (10)",
-      "Enabled": true,
       "Position": "686.7393,-276.2431,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3851,6 +3605,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3858,17 +3613,13 @@
     {
       "Id": "23430def-4583-43ba-9c37-6e22aaa8ddf5",
       "Name": "Cube (11)",
-      "Enabled": true,
       "Position": "686.7393,-198.8401,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3884,6 +3635,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3891,23 +3643,20 @@
     {
       "Id": "e4793a24-a5d8-409f-b584-9e70ffffa811",
       "Name": "Cube (12)",
-      "Enabled": true,
       "Position": "686.7393,-115.8088,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
@@ -3924,17 +3673,13 @@
     {
       "Id": "090952ee-45c0-422f-8a32-e41a26c676eb",
       "Name": "Cube (13)",
-      "Enabled": true,
       "Position": "686.7393,-29.5168,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3950,6 +3695,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3957,17 +3703,13 @@
     {
       "Id": "33d5d9f6-a398-4e2e-a558-63f58ddd28c3",
       "Name": "Cube (14)",
-      "Enabled": true,
       "Position": "686.7393,55.9645,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -3983,6 +3725,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -3990,17 +3733,13 @@
     {
       "Id": "7f61f3f6-fde6-405a-a1e1-4c5c4b1a9672",
       "Name": "Cube (14)",
-      "Enabled": true,
       "Position": "686.7393,357.9727,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4016,6 +3755,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4023,17 +3763,13 @@
     {
       "Id": "2d7b6ae5-7598-4502-9ebe-bb2083f618bd",
       "Name": "Cube (14)",
-      "Enabled": true,
       "Position": "686.7393,504.4504,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4049,6 +3785,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4056,23 +3793,20 @@
     {
       "Id": "aa29ab37-9d3b-48e4-8e8c-2dbeeabc0492",
       "Name": "Cube (15)",
-      "Enabled": true,
       "Position": "686.7393,129.0565,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
@@ -4089,17 +3823,13 @@
     {
       "Id": "70e3b843-706c-4da2-a32d-4cd3f2e32e32",
       "Name": "Cube (16)",
-      "Enabled": true,
       "Position": "686.7393,210.5549,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4115,6 +3845,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4122,17 +3853,13 @@
     {
       "Id": "2f723058-7cdb-437d-bc72-39ea9b3e79c7",
       "Name": "Cube (17)",
-      "Enabled": true,
       "Position": "686.7393,286.9323,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4148,6 +3875,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4155,17 +3883,13 @@
     {
       "Id": "fce310f2-ba63-4b3b-a4e3-0ba557fbab69",
       "Name": "Cube (17)",
-      "Enabled": true,
       "Position": "686.7393,429.4614,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4181,6 +3905,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4188,17 +3913,13 @@
     {
       "Id": "d34c3be2-c593-4133-8ebe-baede5e8453c",
       "Name": "Cube (18)",
-      "Enabled": true,
       "Position": "686.7393,250.0716,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4214,6 +3935,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4221,17 +3943,13 @@
     {
       "Id": "0409a5e6-5296-462b-ad80-4ee5c1053ee6",
       "Name": "Cube (19)",
-      "Enabled": true,
       "Position": "686.7393,176.8109,-1404.687",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4247,6 +3965,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4254,17 +3973,13 @@
     {
       "Id": "0d1caeb9-03ac-42ff-9365-39d99956ed10",
       "Name": "Cube (20)",
-      "Enabled": true,
       "Position": "686.7393,97.5859,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4280,6 +3995,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4287,17 +4003,13 @@
     {
       "Id": "14655938-aa3b-44ea-ae0c-453412e54e19",
       "Name": "Cube (22)",
-      "Enabled": true,
       "Position": "686.7393,-68.0729,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4313,6 +4025,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4320,17 +4033,13 @@
     {
       "Id": "71f9fca2-8bcd-4a5f-ad5e-a8a56bd7739c",
       "Name": "Cube (22)",
-      "Enabled": true,
       "Position": "686.7393,329.0835,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4346,6 +4055,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4353,17 +4063,13 @@
     {
       "Id": "7bf06558-a359-47a0-b6f3-5087084bbd76",
       "Name": "Cube (22)",
-      "Enabled": true,
       "Position": "686.7393,407.8695,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4379,6 +4085,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4386,17 +4093,13 @@
     {
       "Id": "241b6558-60a6-4b65-a575-98c8daebb8b2",
       "Name": "Cube (22)",
-      "Enabled": true,
       "Position": "686.7393,479.6847,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4412,6 +4115,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4419,17 +4123,13 @@
     {
       "Id": "887c7246-c53a-4c57-8ff0-7ab57fe8670c",
       "Name": "Cube (22)",
-      "Enabled": true,
       "Position": "686.7393,444.2884,-1427.168",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4445,6 +4145,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4452,17 +4153,13 @@
     {
       "Id": "4b96cc95-3822-4ca6-9204-3a9912dd45ee",
       "Name": "Cube (22)",
-      "Enabled": true,
       "Position": "686.7393,368.6415,-1427.168",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4478,6 +4175,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4485,17 +4183,13 @@
     {
       "Id": "72fcb66e-4664-4801-85c6-5783134cd7a9",
       "Name": "Cube (22)",
-      "Enabled": true,
       "Position": "686.7393,289.921,-1427.168",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4511,6 +4205,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4518,17 +4213,13 @@
     {
       "Id": "eb935124-2f21-4157-a493-b055bd8e40ab",
       "Name": "Cube (22)",
-      "Enabled": true,
       "Position": "686.7393,340.3432,-1375.437",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4544,6 +4235,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4551,17 +4243,13 @@
     {
       "Id": "49e1f034-5d14-461c-881e-f9b998340cd3",
       "Name": "Cube (22)",
-      "Enabled": true,
       "Position": "686.7393,410.9009,-1375.437",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4577,6 +4265,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4584,17 +4273,13 @@
     {
       "Id": "8f68d8ca-8672-4d42-8e8c-45df5acd4cc8",
       "Name": "Cube (22)",
-      "Enabled": true,
       "Position": "686.7393,370.0432,-1319.666",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4610,6 +4295,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4617,17 +4303,13 @@
     {
       "Id": "cf2175d6-58af-4626-9d8b-1d933bb430fd",
       "Name": "Cube (23)",
-      "Enabled": true,
       "Position": "686.7393,-151.4042,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
@@ -4643,6 +4325,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4650,11 +4333,8 @@
     {
       "Id": "0761c615-445d-4242-852e-80485edb20f1",
       "Name": "Spot Light",
-      "Enabled": false,
       "Position": "906.304,954.2023,-1254.256",
       "Rotation": "0.05406565,0.2581995,-0.1976902,0.944102",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -4671,11 +4351,8 @@
     {
       "Id": "eed1d0da-fb94-44c7-b17b-638cddf71838",
       "Name": "Cubemap",
-      "Enabled": true,
       "Position": "1099.505,-0.0033,-1162.002",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "EnvmapComponent",
@@ -4693,11 +4370,8 @@
     {
       "Id": "5975824d-79db-4063-bbbb-54ffe4bac621",
       "Name": "pine_shrub_tall_a",
-      "Enabled": true,
       "Position": "1709.884,465.5057,-1637.687",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4713,11 +4387,9 @@
     {
       "Id": "ed411713-f5b9-40bf-ab47-036b8fe628c5",
       "Name": "tallgrass_c",
-      "Enabled": true,
       "Position": "1482.384,571.963,-1625.416",
       "Rotation": "-0.00000002289153,0.002404839,0.00000951738,0.9999971",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4733,11 +4405,8 @@
     {
       "Id": "6bed2b73-0d9d-4a78-af4c-6e7163293dd8",
       "Name": "beech_shrub_tall_small",
-      "Enabled": true,
       "Position": "1246.757,216.144,-1637.641",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4753,11 +4422,8 @@
     {
       "Id": "42b18412-29e0-4fdd-8c28-6e840d083168",
       "Name": "shitty_pine_tree2",
-      "Enabled": true,
       "Position": "2086.217,169.332,-1637.588",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4773,11 +4439,9 @@
     {
       "Id": "4534b9e6-d73b-4e68-b52f-9850aef7f9cb",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "2168.268,-755.4309,-1637.705",
       "Rotation": "0.0000002900602,0.0000002570682,0.6952017,0.7188154",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4793,11 +4457,9 @@
     {
       "Id": "f6ca04c0-3b5c-4cd1-bf3c-04b78c1d9f54",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "1782.028,-742.5276,-1631.745",
       "Rotation": "0.0000002900602,0.0000002570682,0.6952017,0.7188154",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4813,6 +4475,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/8hu_kultiras_smallhouse_2.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4820,11 +4483,9 @@
     {
       "Id": "f7152a36-fd26-46c6-9392-f600f32052c2",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "2638.885,-198.0525,-1368.732",
       "Rotation": "0.0000004154683,0.00000003284734,0.995773,0.09184724",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4840,11 +4501,9 @@
     {
       "Id": "2442779b-b3fb-4207-b1c8-5abca3cacc9d",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "2741.573,353.8541,-1368.732",
       "Rotation": "0.0000004154683,0.00000003284734,0.995773,0.09184724",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4860,11 +4519,9 @@
     {
       "Id": "bc8e0219-da10-4599-a28f-fbf8aef38235",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "2829.448,826.1599,-1368.732",
       "Rotation": "0.0000004154683,0.00000003284734,0.995773,0.09184724",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4880,11 +4537,9 @@
     {
       "Id": "45d46b68-2b43-4dea-996a-f11464bccbc2",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "1175.006,-1084.548,-1637.705",
       "Rotation": "-0.00000002268129,0.0000003570987,-0.05436027,0.9985215",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4900,11 +4555,9 @@
     {
       "Id": "80ffb131-60b4-4967-93b4-addc3065842b",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "796.3422,-668.3089,-1588.54",
       "Rotation": "0.0000002191773,0.0000003043082,0.5253132,0.8509094",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4920,6 +4573,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4927,11 +4581,9 @@
     {
       "Id": "d5e8fa3e-f502-4f82-884e-f7583872d39d",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "904.275,63.32362,-1804.925",
       "Rotation": "0.08123279,-0.01099247,-0.1336513,0.9876328",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4947,6 +4599,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": "bouncy.surface"
         }
       ]
@@ -4954,11 +4607,8 @@
     {
       "Id": "91acecb5-8b58-4ed5-bc6d-5f8e4042bb6b",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "1159.405,-92.9491,-1636.827",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -4974,6 +4624,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/uf-rts/resource_gold1.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -4981,11 +4632,9 @@
     {
       "Id": "a0204cda-1fa1-4ed1-a0e4-71efe2dcc196",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "796.3422,-668.3089,-1380.482",
       "Rotation": "0.0000002191773,0.0000003043082,0.5253132,0.8509094",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5001,6 +4650,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -5008,11 +4658,9 @@
     {
       "Id": "22f970d4-6a24-499c-8765-47132c87d2fb",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "796.3422,-668.3089,-1170.639",
       "Rotation": "-0.0000003103042,0.0000002390701,-0.7437195,0.668492",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5028,6 +4676,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -5035,11 +4684,9 @@
     {
       "Id": "77c637b1-9eca-4ad9-8330-d458bf8254a0",
       "Name": "8hu_kultiras_smallhouse_2",
-      "Enabled": true,
       "Position": "796.3422,-668.3089,-966.605",
       "Rotation": "0.0000002191773,0.0000003043082,0.5253132,0.8509094",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5055,6 +4702,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -5062,11 +4710,9 @@
     {
       "Id": "842e2c3d-4aff-4ddb-84c7-326e5067df17",
       "Name": "ground_junk_a",
-      "Enabled": true,
       "Position": "1587.436,403.9835,-1547.147",
       "Rotation": "-0.0032022,0.00000002098341,0.9999949,0.000006548379",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5082,11 +4728,9 @@
     {
       "Id": "765fc32a-2767-4e05-beeb-285212db545f",
       "Name": "ground_junk_a",
-      "Enabled": true,
       "Position": "1446.864,200.4103,-1638.134",
       "Rotation": "-0.0032022,0.00000002098341,0.9999949,0.000006548379",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5102,11 +4746,9 @@
     {
       "Id": "8f096bc8-6ad2-421d-893d-cf108e6cb2c5",
       "Name": "ground_junk_a",
-      "Enabled": true,
       "Position": "1684.804,372.5118,-1546.525",
       "Rotation": "-0.0032022,0.00000002098341,0.9999949,0.000006548379",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5122,11 +4764,9 @@
     {
       "Id": "c7122692-6e40-49d6-9c0d-7cc6d3556630",
       "Name": "ground_junk_straight_a",
-      "Enabled": true,
       "Position": "1570.536,297.3375,-1547.756",
       "Rotation": "-0.002617905,0.001844111,0.8175374,-0.5758665",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5142,11 +4782,9 @@
     {
       "Id": "1a903bf4-1e49-4733-ad86-718add4a59af",
       "Name": "ground_junk_straight_a",
-      "Enabled": true,
       "Position": "1545.366,213.6891,-1636.618",
       "Rotation": "-0.002617905,0.001844111,0.8175374,-0.5758665",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5162,11 +4800,9 @@
     {
       "Id": "d48f23c0-76a9-4c92-80c6-b7bb3c3500bd",
       "Name": "ground_junk_straight_a",
-      "Enabled": true,
       "Position": "1436.539,-90.6118,-1637.314",
       "Rotation": "-0.002617905,0.001844111,0.8175374,-0.5758665",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5182,11 +4818,8 @@
     {
       "Id": "2e79b3e0-abf9-41dd-ad57-738bed6e06e1",
       "Name": "grass_clump_a",
-      "Enabled": true,
       "Position": "1443.077,-71.5574,-1639.016",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5202,11 +4835,8 @@
     {
       "Id": "b5395c3f-7c1f-41c4-95d9-c7173406758b",
       "Name": "grass_medium_a",
-      "Enabled": true,
       "Position": "1416.897,-4.1446,-1637.725",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5222,11 +4852,8 @@
     {
       "Id": "ecd07418-e9f5-48cb-a252-0de04cb6f2af",
       "Name": "grass_medium_b",
-      "Enabled": true,
       "Position": "1402.597,21.387,-1637.733",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5242,11 +4869,8 @@
     {
       "Id": "1d7e3979-2ae8-41b7-a4dc-dabb73939d61",
       "Name": "grass_block",
-      "Enabled": true,
       "Position": "1355.177,-146.0738,-1637.753",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5262,6 +4886,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "grass_block.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -5269,11 +4894,8 @@
     {
       "Id": "7058c66b-ec56-4ff4-bf32-28ae5ad2ef2a",
       "Name": "grass_block",
-      "Enabled": true,
       "Position": "1355.177,-96.7543,-1637.753",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5289,6 +4911,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "grass_block.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -5296,11 +4919,8 @@
     {
       "Id": "4966a9f2-6335-4efc-b8ab-196b4badbd1f",
       "Name": "tallgrass_c",
-      "Enabled": true,
       "Position": "1332.413,-109.1849,-1637.733",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5316,11 +4936,8 @@
     {
       "Id": "87211826-3bb0-4d4d-b214-17ac2137dda8",
       "Name": "binbag_pile_a2",
-      "Enabled": true,
       "Position": "1209.477,702.4082,-1637.723",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5346,11 +4963,8 @@
     {
       "Id": "5c9ce28d-ee71-4553-bcfa-91d4d500abdf",
       "Name": "binbag_pile_a1",
-      "Enabled": true,
       "Position": "1181.392,730.0825,-1637.716",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5366,11 +4980,9 @@
     {
       "Id": "8ea21ed4-fbf7-4da8-860b-5a64dd549186",
       "Name": "dirt_pile_03",
-      "Enabled": true,
       "Position": "1640.671,-171.0205,-1636.513",
       "Rotation": "-0.00000001716876,0.002404839,0.000007138125,0.9999971",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5386,11 +4998,9 @@
     {
       "Id": "7cfc5e71-b342-46d5-9c60-051805664e5f",
       "Name": "dirt_pile_03",
-      "Enabled": true,
       "Position": "1599.95,-155.1582,-1636.284",
       "Rotation": "-0.00000001716876,0.002404839,0.000007138125,0.9999971",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5406,11 +5016,9 @@
     {
       "Id": "f48be3cf-076e-4cdd-b86d-fedc73c5ac68",
       "Name": "dirt_pile_03",
-      "Enabled": true,
       "Position": "1580.656,-178.2604,-1636.192",
       "Rotation": "-0.00000001716876,0.002404839,0.000007138125,0.9999971",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5426,11 +5034,9 @@
     {
       "Id": "d8f180e6-0356-4930-9eda-f4a462c604e0",
       "Name": "dirt_pile_03",
-      "Enabled": true,
       "Position": "1571.269,-214.6144,-1636.147",
       "Rotation": "-0.00000001716876,0.002404839,0.000007138125,0.9999971",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5446,11 +5052,9 @@
     {
       "Id": "b0c836a3-4038-4118-87ee-d08b1a70d468",
       "Name": "dirt_pile_03",
-      "Enabled": true,
       "Position": "1582.148,341.1877,-1547.198",
       "Rotation": "-0.0032022,0.00000002098341,0.9999949,0.000006548379",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5466,11 +5070,9 @@
     {
       "Id": "10f1b5aa-3ffb-4c79-b3e4-34a1c5b58482",
       "Name": "dirt_pile_04",
-      "Enabled": true,
       "Position": "1610.046,375.8706,-1547.047",
       "Rotation": "-0.003197521,0.00000002098272,0.9999949,0.000006548409",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5486,11 +5088,9 @@
     {
       "Id": "bb8b438c-ecdf-46e2-a37d-159907a709a5",
       "Name": "dirt_pile_05",
-      "Enabled": true,
       "Position": "1608.082,310.1413,-1547.031",
       "Rotation": "-0.003197521,0.00000002098272,0.9999949,0.000006548409",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5506,11 +5106,9 @@
     {
       "Id": "e4912c01-4fee-4d98-922a-13d3e6b9ca24",
       "Name": "dirt_pile_04",
-      "Enabled": true,
       "Position": "1645.621,320.7594,-1546.807",
       "Rotation": "-0.002943866,0.001260074,0.9193269,-0.3934824",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5526,11 +5124,9 @@
     {
       "Id": "dedef8ba-e131-495c-9628-2de978775cf7",
       "Name": "blackbin",
-      "Enabled": true,
       "Position": "1573.113,218.6712,-1637.743",
       "Rotation": "0.0000003492405,0.0000001956726,0.8370405,0.5471399",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5546,6 +5142,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_props/black_bin/blackbin.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -5553,11 +5150,8 @@
     {
       "Id": "2c4a4d4d-e99a-40d3-955c-422e773a82cd",
       "Name": "wheely_bin",
-      "Enabled": true,
       "Position": "1617.681,207.7617,-1637.757",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5573,6 +5167,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -5580,11 +5175,9 @@
     {
       "Id": "6ce6cbb8-60c3-4705-a75a-bb5cce47eaf2",
       "Name": "wheely_bin",
-      "Enabled": true,
       "Position": "1669.495,192.6342,-1637.757",
       "Rotation": "-0.0000003937007,0.0000001184066,-0.9435996,0.3310893",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5600,6 +5193,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/sbox_props/wheely_bin/wheely_bin.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -5607,11 +5201,9 @@
     {
       "Id": "49d032e2-fde7-434b-aa6a-b9640bea33c0",
       "Name": "metal_wheely_bin",
-      "Enabled": true,
       "Position": "1773.508,186.0868,-1637.717",
       "Rotation": "0.000000391677,0.0000001232383,0.9387497,0.3445993",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5627,11 +5219,9 @@
     {
       "Id": "f97c5942-26d1-4bd9-a438-47f55df4dc76",
       "Name": "hazmatsuit",
-      "Enabled": true,
       "Position": "1624.776,6.6158,-1552.45",
       "Rotation": "0.0000003800134,0.00000014765,0.910795,0.4128599",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "AnimatedModelComponent",
@@ -5649,11 +5239,9 @@
         {
           "Id": "913c5692-bd97-49fe-b05e-251a6b8b443c",
           "Name": "Name Tag UI",
-          "Enabled": true,
           "Position": "0.00004921307,0.00005028578,86.29174",
           "Rotation": "-0.0000003800131,-0.0000001476499,-0.9107943,0.4128596",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "NameTagPanel",
@@ -5676,11 +5264,9 @@
     {
       "Id": "85856266-af85-4deb-a1cf-321d9277bddb",
       "Name": "adam_mp",
-      "Enabled": true,
       "Position": "1694.564,346.883,-1546.468",
       "Rotation": "-0.003076066,-0.0008899161,0.9605997,0.2779152",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "AnimatedModelComponent",
@@ -5698,11 +5284,8 @@
         {
           "Id": "967e37e9-b51f-43cd-a06a-dc350a8d7271",
           "Name": "Name Tag UI",
-          "Enabled": true,
           "Position": "0.00000006187065,-0.0000003213206,84.30791",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "NameTagPanel",
@@ -5725,11 +5308,8 @@
     {
       "Id": "36fa9228-8d1d-46c3-b1b2-e96ab5ef158b",
       "Name": "Sphere",
-      "Enabled": true,
       "Position": "1536.558,-114.3853,-1605.119",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5745,11 +5325,8 @@
     {
       "Id": "99477141-3eb1-4e09-b31b-a8f5db530acc",
       "Name": "Sphere",
-      "Enabled": true,
       "Position": "1536.558,702.735,-1605.119",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5765,11 +5342,8 @@
     {
       "Id": "11b16948-a9c7-4729-adf7-af449315d622",
       "Name": "Sphere",
-      "Enabled": true,
       "Position": "1716.288,968.9046,-1574.368",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5785,11 +5359,8 @@
     {
       "Id": "77b8ee4f-787c-4648-9f21-00ec274058ea",
       "Name": "Sphere",
-      "Enabled": true,
       "Position": "591.4807,113.6206,-1605.119",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
@@ -5803,6 +5374,17 @@
       ]
     }
   ],
+  "SceneProperties": {
+    "NetworkFrequency": 60,
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "Player Controller",
+  "Description": "Simple source engine style player controller",
   "__references": [
     "baik.soccerball",
     "facepunch.beech_shrub_tall_small",
