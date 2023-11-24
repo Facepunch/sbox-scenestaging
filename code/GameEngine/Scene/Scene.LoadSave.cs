@@ -9,7 +9,7 @@ public partial class Scene : GameObject
 	{
 		Assert.NotNull( resource );
 
-		SceneNetworkSystem.Disconnect();
+		SceneNetworkSystem.OnChangingScene();
 
 		ProcessDeletes();
 		Clear();
