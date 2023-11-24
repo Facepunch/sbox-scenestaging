@@ -90,14 +90,46 @@ public class SceneNetworkSystem : GameNetworkSystem
 		GameManager.IsPlaying = true;
 	}
 
-	public override void OnJoined( NetworkChannel client )
+	// TODO - system for registering global listeners like this
+
+	public override void OnConnected( NetworkChannel client )
 	{
 		Log.Info( $"Client {client.Name} ({client.Id}) has joined the game!" );
+
+		Action queue = default;
+
+		foreach ( var c in GameManager.ActiveScene.GetComponents<BaseComponent.INetworkListener>( true, true ) )
+		{
+			queue += () => c.OnConnected( client );
+		}
+
+		queue?.Invoke();
+	}
+
+	public override void OnJoined( NetworkChannel client )
+	{
+		Action queue = default;
+
+		foreach ( var c in GameManager.ActiveScene.GetComponents<BaseComponent.INetworkListener>( true, true ) )
+		{
+			queue += () => c.OnActive( client );
+		}
+
+		queue?.Invoke();
 	}
 
 	public override void OnLeave( NetworkChannel client )
 	{
 		Log.Info( $"Client {client.Name} ({client.Id}) has left the game!" );
+
+		Action queue = default;
+
+		foreach ( var c in GameManager.ActiveScene.GetComponents<BaseComponent.INetworkListener>( true, true ) )
+		{
+			queue += () => c.OnDisconnected( client );
+		}
+
+		queue?.Invoke();
 
 		if ( client.Id == Guid.Empty )
 			return;
