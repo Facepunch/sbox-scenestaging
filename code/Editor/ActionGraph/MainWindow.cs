@@ -1,17 +1,14 @@
 ﻿using System;
 using System.IO;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Editor.NodeEditor;
 using Facepunch.ActionGraphs;
 using Sandbox.ActionGraphs;
 using Sandbox.Internal;
-using static Editor.NodeEditor.GraphView;
-using static Facepunch.ActionGraphs.Node;
 using PropertyAttribute = Sandbox.PropertyAttribute;
+using Connection = Editor.NodeEditor.Connection;
 
 namespace Editor.ActionGraph;
 
