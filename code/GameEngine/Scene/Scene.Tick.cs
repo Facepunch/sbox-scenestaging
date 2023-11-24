@@ -41,7 +41,8 @@ public partial class Scene : GameObject
 		SceneWorld.GradientFog.Enabled = false;
 	}
 
-	float time;
+	float TimeNow = 0.0f;
+	float TimeDelta = 0.1f;
 
 	public void EditorTick()
 	{
@@ -66,13 +67,10 @@ public partial class Scene : GameObject
 	{
 		gizmoInstance.Input.Camera = Sandbox.Camera.Main;
 
-		// Todo - make a scoping class to encompass this shit
-		var delta = Time.Delta * TimeScale;
-		time += delta;
-		var oldNow = Time.Now;
-		var oldDelta = Time.Delta;
-		Time.Now = time;
-		Time.Delta = delta;
+		TimeDelta = Time.Delta * TimeScale;
+		TimeNow += TimeDelta;
+
+		using var timeScope = Time.Scope( TimeNow, TimeDelta, tick );
 
 		using ( gizmoInstance.Push() )
 		{
@@ -96,15 +94,13 @@ public partial class Scene : GameObject
 			}
 
 			PreTickReset();
+			SceneNetworkUpdate();
 
 			Update();
 			UpdateAnimationThreaded();
 
 			ProcessDeletes();
 		}
-
-		Time.Now = oldNow;
-		Time.Delta = oldDelta;
 	}
 
 	void UpdateAnimationThreaded()
@@ -120,7 +116,7 @@ public partial class Scene : GameObject
 		//
 		using ( Sandbox.Utility.Superluminal.Scope( "Scene.AnimUpdate", Color.Cyan ) )
 		{
-			Parallel.ForEach( animModel, x => x.UpdateInThread() );
+			Sandbox.Utility.Parallel.ForEach( animModel, x => x.UpdateInThread() );
 		}
 
 		//
@@ -135,8 +131,12 @@ public partial class Scene : GameObject
 		}
 	}
 
+	int tick;
+
 	protected override void FixedUpdate()
 	{
+		tick++;
+
 		using ( Sandbox.Utility.Superluminal.Scope( "Scene.FixedUpdate", Color.Cyan ) )
 		{
 			var idealHz = 220.0f;

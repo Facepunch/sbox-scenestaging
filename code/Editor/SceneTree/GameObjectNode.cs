@@ -39,6 +39,10 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			hc.Add( Value.Name );
 			hc.Add( Value.IsPrefabInstance );
 			hc.Add( Value.Flags );
+			hc.Add( Value.Networked );
+			hc.Add( Value.Network.IsOwner );
+			hc.Add( Value.IsProxy );
+			hc.Add( Value.Active );
 
 			foreach ( var val in Value.Children )
 			{
@@ -54,6 +58,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		var selected = item.Selected || item.Pressed || item.Dragging;
 		var isBone = Value.Flags.HasFlag( GameObjectFlags.Bone );
 		var isAttachment = Value.Flags.HasFlag( GameObjectFlags.Attachment );
+		var isNetworked = Value.Networked;
 
 		var fullSpanRect = item.Rect;
 		fullSpanRect.Left = 0;
@@ -85,6 +90,22 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		{
 			icon = "polyline";
 			iconColor = Theme.Pink.WithAlpha( 0.8f );
+		}
+
+		if ( isNetworked )
+		{
+			icon = "rss_feed";
+			iconColor = Theme.Blue.WithAlpha( 0.8f );
+
+			if ( Value.Network.IsOwner )
+			{
+				iconColor = Theme.Green.WithAlpha( 0.8f );
+			}
+
+			if ( Value.IsProxy )
+			{
+				iconColor = Theme.ControlText.WithAlpha( 0.6f );
+			}
 		}
 
 		//
@@ -147,7 +168,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 		Paint.SetPen( pen.WithAlphaMultiplied( opacity ) );
 		Paint.SetDefaultFont();
-		Paint.DrawText( r, name, TextFlag.LeftCenter );
+		r.Left += Paint.DrawText( r, name, TextFlag.LeftCenter ).Width;
 	}
 
 	public override bool OnDragStart()

@@ -13,6 +13,9 @@ public sealed class SelfDestructComponent : BaseComponent
 
 	public override void Update()
 	{
+		if ( GameObject.IsProxy )
+			return;
+
 		if ( timeUntilDie <= 0.0f )
 		{
 			GameObject.Destroy();

@@ -8,27 +8,33 @@ SceneMenuPanel
     bottom: 0;
     background-color: #333;
     pointer-events: all;
-    flex-direction: column;
+    flex-direction: row;
     padding: 60px;
     color: #ccc;
+    font-family: Poppins;
+    font-size: 14px;
 
-    > .title
-    {
-        font-size: 60px;
-        font-family: Poppins;
-        font-weight: bold;
-    }
 
-    > .explanation
+    .left
     {
-        color: #aaa;
-        padding: 20px;
-        font-size: 17px;
-        justify-content: center;
-        text-align: center;
-        margin-top: 50px;
-        margin-bottom: 50px;
-        width: 100%;
+        width: 400px;
+        flex-direction: column;
+
+        > .title
+        {
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        > .explanation
+        {
+            color: #aaaa;
+            font-size: 17px;
+            margin-bottom: 50px;
+            width: 100%;
+            flex-direction: column;
+            gap: 20px;
+        }
     }
 
     .scene-list
@@ -38,14 +44,28 @@ SceneMenuPanel
         margin: 20px;
         justify-content: center;
     }
+
+    .lobby-list
+    {
+        width: 500px;
+        flex-direction: column;
+        margin: 20px;
+        overflow: scroll;
+        gap: 5px;
+    }
+
+    .header
+    {
+        margin-bottom: 10px;
+        font-size: 20px;
+        width: 100%;
+        font-weight: bold;
+    }
 }
 
 
 SceneButton
 {
-    font-size: 19px;
-    font-family: Poppins;
-    font-weight: bold;
     padding: 5px 10px;
     color: #aaa;
     background-color: #444;
@@ -53,6 +73,16 @@ SceneButton
     cursor: pointer;
     opacity: 0.5;
     border-radius: 7px;
+    flex-direction: column;
+    max-width: 300px;
+    flex-grow: 1;
+
+    .title
+    {
+        font-size: 19px;
+        font-family: Poppins;
+        font-weight: bold;
+    }
 
     &:hover
     {
@@ -65,5 +95,48 @@ SceneButton
     {
         background-color: #fff;
         color: #666;
+    }
+}
+
+
+.lobby-list > .button
+{
+    background-color: transparent;
+    color: #aaa;
+    padding: 10px;
+    border-radius: 8px;
+    gap: 2px;
+    width: 280px;
+    cursor: pointer;
+    width: 100%;
+    flex-direction: column;
+
+    .title
+    {
+        flex-grow: 1;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .meta
+    {
+        gap: 10px;
+        font-size: 12px;
+
+        .map
+        {
+            flex-grow: 1;
+        }
+
+        .count
+        {
+            white-space: nowrap;
+        }
+    }
+
+    &:hover
+    {
+        background-color: #f13edc;
+        color: #fff;
     }
 }

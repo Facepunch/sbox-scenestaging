@@ -1,40 +1,36 @@
 using Sandbox;
 using System.Drawing;
+using System.Runtime;
 
-
-public class PlayerController : BaseComponent
+public class PlayerController : BaseComponent, INetworkSerializable
 {
 	[Property] public Vector3 Gravity { get; set; } = new Vector3( 0, 0, 800 );
 
-	[Range( 0, 400)]
-	[Property] public float CameraDistance { get; set; } = 200.0f;
-
 	public Vector3 WishVelocity { get; private set; }
 
-	[Property] GameObject Body { get; set; }
-	[Property] GameObject Eye { get; set; }
-	[Property] bool FirstPerson { get; set; }
-	[Property] CitizenAnimation AnimationHelper { get; set; }
+	[Property] public GameObject Body { get; set; }
+	[Property] public GameObject Eye { get; set; }
+	[Property] public CitizenAnimation AnimationHelper { get; set; }
 
 	public Angles EyeAngles;
+	public bool IsRunning;
 
 	public override void Update()
 	{
 		// Eye input
-		EyeAngles.pitch += Input.MouseDelta.y * 0.1f;
-		EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
-		EyeAngles.roll = 0;
-
-		// Update camera position
-		var camera = GameObject.GetComponent<CameraComponent>( true, true );
-		if ( camera is not null )
+		if ( !IsProxy )
 		{
-			var camPos = Eye.Transform.Position - EyeAngles.ToRotation().Forward * CameraDistance;
+			EyeAngles.pitch += Input.MouseDelta.y * 0.1f;
+			EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
+			EyeAngles.roll = 0;
 
-			if ( FirstPerson ) camPos = Eye.Transform.Position + EyeAngles.ToRotation().Forward * 8;
+			var cam = Scene.GetComponent<CameraComponent>( true, true );
 
-			camera.Transform.Position = camPos;
-			camera.Transform.Rotation = EyeAngles.ToRotation();
+			var lookDir = EyeAngles.ToRotation();
+			cam.Transform.Position = Transform.Position + lookDir.Backward * 300 + Vector3.Up * 75.0f;
+			cam.Transform.Rotation = lookDir;
+
+			IsRunning = Input.Down( "Run" );
 		}
 
 		var cc = GameObject.GetComponent<CharacterController>();
@@ -69,12 +65,23 @@ public class PlayerController : BaseComponent
 			AnimationHelper.IsGrounded = cc.IsOnGround;
 			AnimationHelper.FootShuffle = rotateDifference;
 			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
-			AnimationHelper.MoveStyle = Input.Down( "Run" ) ? CitizenAnimation.MoveStyles.Run : CitizenAnimation.MoveStyles.Walk;
+			AnimationHelper.MoveStyle = IsRunning ? CitizenAnimation.MoveStyles.Run : CitizenAnimation.MoveStyles.Walk;
 		}
 	}
 
+	[Broadcast]
+	public void OnJump( float floatValue, string dataString, object[] objects, Vector3 position )
+	{
+		AnimationHelper?.TriggerJump();
+	}
+
+	float fJumps;
+
 	public override void FixedUpdate()
 	{
+		if ( IsProxy )
+			return;
+
 		BuildWishVelocity();
 
 		var cc = GameObject.GetComponent<CharacterController>();
@@ -89,7 +96,10 @@ public class PlayerController : BaseComponent
 			cc.Punch( Vector3.Up * flMul * flGroundFactor );
 			//	cc.IsOnGround = false;
 
-			AnimationHelper?.TriggerJump();
+			OnJump( fJumps, "Hello", new object[] { Time.Now.ToString(), 43.0f }, Vector3.Random );
+
+			fJumps += 1.0f;
+
 		}
 
 		if ( cc.IsOnGround )
@@ -133,6 +143,18 @@ public class PlayerController : BaseComponent
 		if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
 
 		if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
-		else WishVelocity *= 70.0f;
+		else WishVelocity *= 110.0f;
+	}
+
+	public void Write( ref ByteStream stream )
+	{
+		stream.Write( IsRunning );
+		stream.Write( EyeAngles );
+	}
+
+	public void Read( ByteStream stream )
+	{
+		IsRunning = stream.Read<bool>();
+		EyeAngles = stream.Read<Angles>();
 	}
 }

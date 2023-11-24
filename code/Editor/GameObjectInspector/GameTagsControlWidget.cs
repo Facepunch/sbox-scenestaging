@@ -85,8 +85,17 @@ public class TagSetControlWidget : ControlWidget
 
 		if ( tags is null )
 		{
-			Log.Warning( "TODO: create ITagSet if we can, base on what type the property is" );
-			return;
+
+			if ( SerializedProperty.PropertyType == typeof( TagSet ) )
+			{
+				tags = new TagSet();
+				SerializedProperty.SetValue( tags );
+			}
+			else
+			{
+				Log.Warning( "ITagSet is null and we don't know how to create it" );
+				return;
+			}
 		}
 
 		var popup = new PopupWidget( this );

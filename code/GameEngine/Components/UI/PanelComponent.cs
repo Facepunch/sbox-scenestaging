@@ -109,6 +109,14 @@ public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 		loadedStyleSheet = path;
 		panel.StyleSheet.Load( loadedStyleSheet ); // todo ignore missing
 	}
+
+	/// <summary>
+	/// Should be called when you want the component to be re-rendered.
+	/// </summary>
+	public void StateHasChanged()
+	{
+		panel.StateHasChanged();
+	}
 }
 
 /// <summary>

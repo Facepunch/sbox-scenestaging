@@ -7,6 +7,10 @@ public partial class GameObject
 {
 	public class SerializeOptions
 	{
+		/// <summary>
+		/// If we're serializing for network, we won't include any networked objects
+		/// </summary>
+		public bool SceneForNetwork { get; set; }
 	}
 
 	//
@@ -14,10 +18,15 @@ public partial class GameObject
 	// into a JsonObject. I haven't benchmarked this, but I assume it's okay.
 	//
 
-	public JsonObject Serialize( SerializeOptions options = null )
+	public virtual JsonObject Serialize( SerializeOptions options = null )
 	{
 		if ( Flags.HasFlag( GameObjectFlags.NotSaved ) )
 			return null;
+
+		if ( options is not null )
+		{
+			if ( options.SceneForNetwork && Network.Active ) return null;
+		}
 
 		bool isPartOfPrefab = IsPrefabInstance;
 
@@ -25,12 +34,18 @@ public partial class GameObject
 		{
 			{ "Id", Id },
 			{ "Name", Name },
-			{ "Enabled", Enabled },
-			{ "Position",  JsonValue.Create( Transform.LocalPosition ) },
-			{ "Rotation", JsonValue.Create( Transform.LocalRotation ) },
-			{ "Scale", JsonValue.Create( Transform.LocalScale ) },
-			{ "Tags", string.Join( ",", Tags.TryGetAll() ) }
 		};
+		
+		if ( Transform.Position != Vector3.Zero ) json.Add( "Position", JsonValue.Create( Transform.LocalPosition ) );
+		if ( Transform.LocalRotation != Rotation.Identity ) json.Add( "Rotation", JsonValue.Create( Transform.LocalRotation ) );
+		if ( Transform.LocalScale != 1.0f ) json.Add( "Scale", JsonValue.Create( Transform.LocalScale ) );
+		if ( Tags.TryGetAll().Any() ) json.Add( "Tags", string.Join( ",", Tags.TryGetAll() ) );
+
+		if ( Networked ) json.Add( "Networked", true );
+		if ( Enabled ) json.Add( "Enabled", true );
+		
+		
+		
 
 		if ( IsPrefabInstanceRoot )
 		{
@@ -95,13 +110,13 @@ public partial class GameObject
 		return json;
 	}
 
-	public void Deserialize( JsonObject node )
+	public virtual void Deserialize( JsonObject node )
 	{
 		Id = node["Id"].Deserialize<Guid>();
 		Name = node["Name"].ToString() ?? Name;
-		Transform.LocalPosition = node["Position"].Deserialize<Vector3>();
-		Transform.LocalRotation = node["Rotation"].Deserialize<Rotation>();
-		Transform.LocalScale = node["Scale"].Deserialize<Vector3>();
+		Transform.LocalPosition = node["Position"]?.Deserialize<Vector3>() ?? Vector3.Zero;
+		Transform.LocalRotation = node["Rotation"]?.Deserialize<Rotation>() ?? Rotation.Identity;
+		Transform.LocalScale = node["Scale"]?.Deserialize<Vector3>() ?? Vector3.One;
 
 		if ( node["Tags"].Deserialize<string>() is string tags )
 		{
@@ -129,7 +144,7 @@ public partial class GameObject
 			foreach ( var child in childArray )
 			{
 				if ( child is not JsonObject jso )
-					return;
+					continue;
 
 				var go = new GameObject();
 
@@ -146,14 +161,14 @@ public partial class GameObject
 				if ( component is not JsonObject jso )
 				{
 					Log.Warning( $"Component entry is not an object!" );
-					return;
+					continue;
 				}
 
 				var componentType = TypeLibrary.GetType<BaseComponent>( (string)jso["__type"] );
 				if ( componentType is null )
 				{
 					Log.Warning( $"TypeLibrary couldn't find BaseComponent type {jso["__type"]}" );
-					return;
+					continue;
 				}
 
 				var c = this.AddComponent( componentType );
@@ -163,7 +178,8 @@ public partial class GameObject
 			}
 		}
 
-		Enabled = (bool)(node["Enabled"] ?? Enabled);
+		Enabled = (bool)(node["Enabled"] ?? false);
+		Networked = (bool) (node["Networked"] ?? false);
 
 		ForEachComponent( "OnValidate", false, c => c.OnValidateInternal() );
 

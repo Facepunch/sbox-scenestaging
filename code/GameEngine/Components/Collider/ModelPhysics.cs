@@ -77,7 +77,6 @@ public class ModelPhysics : BaseComponent
 		if ( PhysicsGroup is null ) return;
 		if ( Renderer is null ) return;
 
-		int i = 0;
 		foreach( var body in PhysicsGroup.Bodies )
 		{
 			var bone = Renderer.Model.Bones.AllBones.FirstOrDefault( x => x.Name == body.GroupName );

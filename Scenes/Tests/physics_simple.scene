@@ -3,10 +3,8 @@
     {
       "Id": "bea4636e-9e5b-485c-92d2-5214c73bf212",
       "Name": "Object",
-      "Enabled": true,
       "Position": "1114.846,0,-1303.217",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "EnvmapComponent",
@@ -21,14 +19,15 @@
     {
       "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
       "Name": "Surface",
-      "Enabled": true,
       "Position": "1420.439,0,-1500",
       "Rotation": "0,-0.1387412,0,0.9903287",
       "Scale": "10,10,10",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
@@ -39,6 +38,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "100,100,1",
+          "Static": false,
           "Surface": null
         }
       ],
@@ -46,14 +46,14 @@
         {
           "Id": "52117bd2-8020-4fa0-b23a-903ed1473301",
           "Name": "Surface",
-          "Enabled": true,
           "Position": "-53.0367,0,1.5121",
           "Rotation": "0,0.1197037,0,0.9928097",
-          "Scale": "1,1,1",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": "materials/default.vmat",
               "Model": "models/dev/plane.vmdl",
               "ShouldCastShadows": true,
@@ -64,6 +64,7 @@
               "__enabled": true,
               "IsTrigger": false,
               "Scale": "100,100,1",
+              "Static": false,
               "Surface": null
             }
           ]
@@ -73,10 +74,9 @@
     {
       "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
       "Name": "Directional Light",
-      "Enabled": true,
       "Position": "55.4718,-124.3322,91.5952",
       "Rotation": "-0.5276809,0.09922918,0.8290949,0.1559103",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "DirectionalLightComponent",
@@ -90,17 +90,19 @@
     {
       "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
       "Name": "Camera",
-      "Enabled": true,
       "Position": "1059.81,560.7681,-1380.534",
       "Rotation": "0.2324847,0.1533773,-0.8016834,0.528895",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "CameraComponent",
           "__enabled": true,
           "BackgroundColor": "0.25292,0.26086,0.29703,1",
-          "ClearFlags": "Color, Depth, Stencil",
+          "ClearFlags": "All",
           "FieldOfView": 85.5,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "TargetEye": "None",
           "ZFar": 2136.4,
           "ZNear": 1
         },
@@ -117,14 +119,14 @@
     {
       "Id": "03f05c61-b3c3-43a9-b27b-83e018ba2e85",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,0,535.5369",
       "Rotation": "-0.09391546,-0.2983155,-0.2852259,0.9059988",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -133,14 +135,14 @@
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -148,14 +150,14 @@
     {
       "Id": "56283b9c-bf7e-46be-8a62-b2cd1568c788",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,0,458.9947",
       "Rotation": "-0.1529643,-0.1370061,-0.7290195,0.6529638",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -164,14 +166,14 @@
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -179,14 +181,13 @@
     {
       "Id": "751a1826-fe1c-4df8-b08b-cd238602252e",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,-314.1158,-1418.345",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -195,14 +196,14 @@
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -210,14 +211,13 @@
     {
       "Id": "e0437580-ff5e-4c9d-a7eb-0e705ca087c3",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,-189.5529,-1418.345",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -228,33 +228,31 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         }
       ]
     },
     {
       "Id": "cb511414-419b-4b00-8744-ef5ce95357ee",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1495.309,-285.0375,-1338.204",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -265,6 +263,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -272,14 +271,13 @@
     {
       "Id": "2d6c4c32-18f9-42a8-a8e0-0de696d6da45",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,277.354,-1346.362",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -290,27 +288,26 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         }
       ]
     },
     {
       "Id": "dc7e2c50-ebbc-4cf8-a98f-0b3918dcd4cd",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "953.007,104.095,-1484.404",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -319,29 +316,29 @@
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         }
       ],
       "Children": [
         {
           "Id": "94f8b675-eb21-4c6e-961a-476ed012c901",
           "Name": "Object",
-          "Enabled": true,
           "Position": "0.5857173,34.32753,0",
-          "Rotation": "0,0,0,1",
           "Scale": "5,5,5",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelCollider",
               "__enabled": true,
               "IsTrigger": false,
               "Model": "models/soccerball.vmdl",
+              "Static": false,
               "Surface": null
             },
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
               "ShouldCastShadows": true,
@@ -352,21 +349,22 @@
         {
           "Id": "6872c6b0-7ff9-4312-9aae-f91d04f42fa9",
           "Name": "Object",
-          "Enabled": true,
           "Position": "54.94188,0.4081305,30.78301",
-          "Rotation": "0,0,0,1",
           "Scale": "2.840001,2.840001,2.840001",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelCollider",
               "__enabled": true,
               "IsTrigger": false,
               "Model": "models/citizen_props/balloonheart01.vmdl",
+              "Static": false,
               "Surface": null
             },
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/citizen_props/balloonheart01.vmdl",
               "ShouldCastShadows": true,
@@ -377,21 +375,22 @@
         {
           "Id": "9fffefd5-4a2f-43a0-8100-611ff0e85bcd",
           "Name": "Object",
-          "Enabled": true,
           "Position": "-33.1356,0.4081268,35.86548",
-          "Rotation": "0,0,0,1",
           "Scale": "2.840001,2.840001,2.840001",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelCollider",
               "__enabled": true,
               "IsTrigger": false,
               "Model": "models/citizen_props/chair01.vmdl",
+              "Static": false,
               "Surface": null
             },
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/citizen_props/chair01.vmdl",
               "ShouldCastShadows": true,
@@ -402,21 +401,22 @@
         {
           "Id": "4ae54125-d146-4901-bc15-21eb2f83685a",
           "Name": "Object",
-          "Enabled": true,
           "Position": "0,-37.5013,-2.137615",
-          "Rotation": "0,0,0,1",
           "Scale": "5,5,5",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelCollider",
               "__enabled": true,
               "IsTrigger": false,
               "Model": "models/soccerball.vmdl",
+              "Static": false,
               "Surface": null
             },
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
               "ShouldCastShadows": true,
@@ -427,21 +427,22 @@
         {
           "Id": "2cec6b7e-c34a-4089-85ea-80a6a88862e2",
           "Name": "Object",
-          "Enabled": true,
           "Position": "0.00005614059,-1.271752,-28.89172",
-          "Rotation": "0,0,0,1",
           "Scale": "5,5,5",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelCollider",
               "__enabled": true,
               "IsTrigger": false,
               "Model": "models/soccerball.vmdl",
+              "Static": false,
               "Surface": null
             },
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
               "ShouldCastShadows": true,
@@ -454,14 +455,13 @@
     {
       "Id": "f49f95db-90c2-417b-b785-dfe134bcf961",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1105.448,321.7939,-1484.404",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -470,29 +470,29 @@
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         }
       ],
       "Children": [
         {
           "Id": "37f9ddf7-dd3b-4531-be5b-e2d2458908d6",
           "Name": "Object",
-          "Enabled": true,
           "Position": "0.5857173,34.32753,0",
-          "Rotation": "0,0,0,1",
           "Scale": "5,5,5",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelCollider",
               "__enabled": true,
               "IsTrigger": false,
               "Model": "models/soccerball.vmdl",
+              "Static": false,
               "Surface": null
             },
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
               "ShouldCastShadows": true,
@@ -503,21 +503,22 @@
         {
           "Id": "facea959-1cef-4e23-9291-0678f20b0386",
           "Name": "Object",
-          "Enabled": true,
           "Position": "54.94188,0.4081305,30.78301",
-          "Rotation": "0,0,0,1",
           "Scale": "2.840001,2.840001,2.840001",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelCollider",
               "__enabled": true,
               "IsTrigger": false,
               "Model": "models/citizen_props/balloonheart01.vmdl",
+              "Static": false,
               "Surface": null
             },
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/citizen_props/balloonheart01.vmdl",
               "ShouldCastShadows": true,
@@ -528,21 +529,22 @@
         {
           "Id": "a92842cf-3855-4ab5-89f8-1bfa00358380",
           "Name": "Object",
-          "Enabled": true,
           "Position": "-33.1356,0.4081268,35.86548",
-          "Rotation": "0,0,0,1",
           "Scale": "2.840001,2.840001,2.840001",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelCollider",
               "__enabled": true,
               "IsTrigger": false,
               "Model": "models/citizen_props/chair01.vmdl",
+              "Static": false,
               "Surface": null
             },
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/citizen_props/chair01.vmdl",
               "ShouldCastShadows": true,
@@ -553,21 +555,22 @@
         {
           "Id": "07c8230a-0cdd-461e-805e-f358dc92916a",
           "Name": "Object",
-          "Enabled": true,
           "Position": "0,-37.5013,-2.137615",
-          "Rotation": "0,0,0,1",
           "Scale": "5,5,5",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelCollider",
               "__enabled": true,
               "IsTrigger": false,
               "Model": "models/soccerball.vmdl",
+              "Static": false,
               "Surface": null
             },
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
               "ShouldCastShadows": true,
@@ -578,21 +581,22 @@
         {
           "Id": "e556ce10-40c4-413a-86e0-5e2cc8e374a3",
           "Name": "Object",
-          "Enabled": true,
           "Position": "0.00005614059,-1.271752,-28.89172",
-          "Rotation": "0,0,0,1",
           "Scale": "5,5,5",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelCollider",
               "__enabled": true,
               "IsTrigger": false,
               "Model": "models/soccerball.vmdl",
+              "Static": false,
               "Surface": null
             },
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
               "ShouldCastShadows": true,
@@ -605,14 +609,13 @@
     {
       "Id": "77c33cce-57b9-4222-9fb7-ea8d5ab1372d",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "912.0634,257.3591,-1484.404",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -621,22 +624,21 @@
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         }
       ],
       "Children": [
         {
           "Id": "48db1bf9-9b7b-4050-a348-490af5fb9b92",
           "Name": "Object",
-          "Enabled": true,
           "Position": "0.5857173,34.32753,0",
-          "Rotation": "0,0,0,1",
           "Scale": "5,5,5",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
               "ShouldCastShadows": true,
@@ -647,6 +649,7 @@
               "__enabled": true,
               "IsTrigger": false,
               "Radius": 4.800005,
+              "Static": false,
               "Surface": null
             }
           ]
@@ -654,14 +657,14 @@
         {
           "Id": "2e5aaa18-2018-4992-aa10-4228dfd771b4",
           "Name": "Object",
-          "Enabled": true,
           "Position": "0.5856934,-39.83988,0",
-          "Rotation": "0,0,0,1",
           "Scale": "5,5,5",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
               "ShouldCastShadows": true,
@@ -672,6 +675,7 @@
               "__enabled": true,
               "IsTrigger": false,
               "Radius": 4.800005,
+              "Static": false,
               "Surface": null
             }
           ]
@@ -679,14 +683,14 @@
         {
           "Id": "89b48dbe-3cc7-433d-be8a-5730909ea36d",
           "Name": "Object",
-          "Enabled": true,
           "Position": "0.5857343,0.7638804,42.7809",
-          "Rotation": "0,0,0,1",
           "Scale": "5,5,5",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
               "ShouldCastShadows": true,
@@ -697,6 +701,7 @@
               "__enabled": true,
               "IsTrigger": false,
               "Radius": 4.800005,
+              "Static": false,
               "Surface": null
             }
           ]
@@ -704,14 +709,14 @@
         {
           "Id": "08ed54a2-4805-4f41-a85d-230290f27f42",
           "Name": "Object",
-          "Enabled": true,
           "Position": "0.5856934,0.7638855,-35.82425",
-          "Rotation": "0,0,0,1",
           "Scale": "5,5,5",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
               "ShouldCastShadows": true,
@@ -722,6 +727,7 @@
               "__enabled": true,
               "IsTrigger": false,
               "Radius": 4.800005,
+              "Static": false,
               "Surface": null
             }
           ]
@@ -731,20 +737,18 @@
     {
       "Id": "c292983f-28c1-424d-b2b1-08cfda146579",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,-82.8088,-1418.345",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -755,6 +759,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -762,20 +767,18 @@
     {
       "Id": "7e57dfca-8653-464a-811f-92f8a744a199",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,-174.5318,-1259.018",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -786,6 +789,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -793,20 +797,18 @@
     {
       "Id": "598dd5ba-f259-4465-a251-4c8d873b026b",
       "Name": "Cube (1)",
-      "Enabled": true,
       "Position": "686.7393,322.773,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -817,6 +819,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -824,20 +827,18 @@
     {
       "Id": "5bd3b429-ad8b-4950-ad6f-97c508e004a9",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "686.7393,247.0549,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -848,6 +849,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -855,27 +857,26 @@
     {
       "Id": "708f6377-9768-4c1f-86bd-b6874c3ddb1d",
       "Name": "Cube (3)",
-      "Enabled": true,
       "Position": "686.7393,168.3942,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -886,20 +887,18 @@
     {
       "Id": "823687ee-a10e-4929-add3-51543b2b8907",
       "Name": "Cube (4)",
-      "Enabled": true,
       "Position": "686.7393,91.1157,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -910,6 +909,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -917,20 +917,18 @@
     {
       "Id": "319e4e9d-d686-42c5-a92e-823fc6e4393d",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "686.7393,10.1939,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -941,6 +939,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -948,27 +947,26 @@
     {
       "Id": "628527cd-3f23-47a8-b2f1-fbab2945e184",
       "Name": "Cube (6)",
-      "Enabled": true,
       "Position": "686.7393,-73.5093,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -979,20 +977,18 @@
     {
       "Id": "80e2c1f2-9a6c-4359-b868-63e1b9440820",
       "Name": "Cube (7)",
-      "Enabled": true,
       "Position": "686.7393,-158.5866,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1003,6 +999,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1010,20 +1007,18 @@
     {
       "Id": "c5269fbd-9948-472a-8851-c13e5f56fdfb",
       "Name": "Cube (8)",
-      "Enabled": true,
       "Position": "686.7393,-241.4487,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1034,6 +1029,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1041,20 +1037,18 @@
     {
       "Id": "ff30c8fa-8217-4bc7-b266-731f91b10fc2",
       "Name": "Cube (9)",
-      "Enabled": true,
       "Position": "686.7393,-323.4224,-1612.719",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1065,6 +1059,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1072,20 +1067,18 @@
     {
       "Id": "f5a5e715-75b7-41b5-b6b9-30afbe06379a",
       "Name": "Cube (10)",
-      "Enabled": true,
       "Position": "686.7393,-276.2431,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1096,6 +1089,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1103,20 +1097,18 @@
     {
       "Id": "127ba6e1-8d7c-4b12-988a-f691cfc4433a",
       "Name": "Cube (11)",
-      "Enabled": true,
       "Position": "686.7393,-198.8401,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1127,6 +1119,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1134,27 +1127,26 @@
     {
       "Id": "c8707e8b-5668-4d27-8cd3-e31aaf23df3c",
       "Name": "Cube (12)",
-      "Enabled": true,
       "Position": "686.7393,-115.8088,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1165,20 +1157,18 @@
     {
       "Id": "e37bf4c7-1218-455b-aea8-7ea8c2912d90",
       "Name": "Cube (13)",
-      "Enabled": true,
       "Position": "686.7393,-29.5168,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1189,6 +1179,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1196,20 +1187,18 @@
     {
       "Id": "a5707ac0-6ddc-4f42-9c77-5c361cfb3f50",
       "Name": "Cube (14)",
-      "Enabled": true,
       "Position": "686.7393,55.9645,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1220,6 +1209,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1227,27 +1217,26 @@
     {
       "Id": "00336a0f-8c44-4b88-be7a-ed80e109833d",
       "Name": "Cube (15)",
-      "Enabled": true,
       "Position": "686.7393,129.0565,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1258,20 +1247,18 @@
     {
       "Id": "f98da357-a936-4144-8d9c-4a95fcf56b46",
       "Name": "Cube (16)",
-      "Enabled": true,
       "Position": "686.7393,210.5549,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1282,6 +1269,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1289,20 +1277,18 @@
     {
       "Id": "598fa658-1081-4f2c-a30f-524e9b019e48",
       "Name": "Cube (17)",
-      "Enabled": true,
       "Position": "686.7393,286.9323,-1563.041",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1313,6 +1299,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1320,20 +1307,18 @@
     {
       "Id": "fd918b24-5505-4889-9e0a-b3697b591695",
       "Name": "Cube (18)",
-      "Enabled": true,
       "Position": "686.7393,250.0716,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1344,6 +1329,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1351,20 +1337,18 @@
     {
       "Id": "8d4b8c69-2373-4cbe-ae9f-ee85df2e99b1",
       "Name": "Cube (19)",
-      "Enabled": true,
       "Position": "686.7393,176.8109,-1473.943",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1375,6 +1359,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1382,20 +1367,18 @@
     {
       "Id": "0d132701-d558-4947-b11c-d48cb1844b56",
       "Name": "Cube (20)",
-      "Enabled": true,
       "Position": "686.7393,97.5859,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1406,6 +1389,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1413,20 +1397,18 @@
     {
       "Id": "164be8ed-16f0-4f51-8dfc-95f3a0c6763c",
       "Name": "Cube (21)",
-      "Enabled": true,
       "Position": "686.7393,16.4862,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1437,6 +1419,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1444,20 +1427,18 @@
     {
       "Id": "7d44d934-4ba9-4a9e-a5f4-eea8325f1c5d",
       "Name": "Cube (22)",
-      "Enabled": true,
       "Position": "686.7393,-68.0729,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1468,6 +1449,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1475,20 +1457,18 @@
     {
       "Id": "0923d2d6-0f1f-4a52-808c-03d9f38f53cf",
       "Name": "Cube (23)",
-      "Enabled": true,
       "Position": "686.7393,-151.4042,-1498.417",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1499,6 +1479,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1506,20 +1487,19 @@
     {
       "Id": "2c62ad58-8115-4ad4-8808-df9d3596eced",
       "Name": "Cube (24)",
-      "Enabled": true,
       "Position": "686.7393,-239.8307,-1443.393",
       "Rotation": "-0.2430982,-0.08640327,0.323563,0.9103538",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": false,
-          "Static": false
+          "Gravity": false
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1530,6 +1510,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1537,20 +1518,19 @@
     {
       "Id": "f0cc7ea1-11ae-490d-a32d-16c9d3a58262",
       "Name": "Cube (25)",
-      "Enabled": true,
       "Position": "686.7393,-239.8307,-1382.343",
       "Rotation": "0.07870866,-0.2586703,0.2802613,0.9210581",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": false,
-          "Static": false
+          "Gravity": false
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1561,6 +1541,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1568,20 +1549,19 @@
     {
       "Id": "90482f75-3c35-4cf2-8da0-8cecb046f5fa",
       "Name": "Cube (26)",
-      "Enabled": true,
       "Position": "686.7393,-239.8307,-1320.379",
       "Rotation": "-0.1145911,-0.2151414,0.4559259,0.8559871",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": false,
-          "Static": false
+          "Gravity": false
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1592,6 +1572,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1599,20 +1580,19 @@
     {
       "Id": "d6da9c21-5df3-4281-9018-29bc9a360f81",
       "Name": "Cube (27)",
-      "Enabled": true,
       "Position": "710.5922,-239.8307,-1268.59",
       "Rotation": "-0.000000006061102,0.0000000129868,0.3990127,0.9169455",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": false,
-          "Static": false
+          "Gravity": false
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1623,6 +1603,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1630,20 +1611,18 @@
     {
       "Id": "e2b0cbb6-003f-43c4-b3bb-44b6bf471cab",
       "Name": "Cube (28)",
-      "Enabled": true,
       "Position": "686.7393,-239.8307,-1213.068",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1654,6 +1633,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1661,20 +1641,18 @@
     {
       "Id": "604acc22-5c43-4e9e-a100-f50dba325022",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,-168.6941,-1060.616",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1685,6 +1663,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1692,20 +1671,18 @@
     {
       "Id": "8eda48fa-1875-4080-9d6d-343cc98665cc",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,-175.0416,-1141.828",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough10.vmat",
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1716,6 +1693,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1723,14 +1701,13 @@
     {
       "Id": "e42c2329-b37c-4320-b11c-b89fbe7977c1",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,-182.0647,-973.8735",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1739,14 +1716,14 @@
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1754,20 +1731,18 @@
     {
       "Id": "a40a0a77-e008-485c-a708-fe893457105c",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,-189.5312,-896.2328",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1778,6 +1753,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1785,20 +1761,18 @@
     {
       "Id": "7c20008a-6cd8-4f15-95e0-5bddfe510f29",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "1420.439,79.6324,-805.0983",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -1809,6 +1783,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1816,20 +1791,18 @@
     {
       "Id": "1d455f06-727b-4550-92b2-7affcea556a1",
       "Name": "Sphere",
-      "Enabled": true,
       "Position": "1201.331,204.828,-1093.685",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
           "Model": "models/dev/sphere.vmdl",
           "ShouldCastShadows": true,
@@ -1840,6 +1813,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Radius": 33.25,
+          "Static": false,
           "Surface": null
         }
       ],
@@ -1847,14 +1821,14 @@
         {
           "Id": "98396346-2ea2-44e9-846e-6f31ac86d731",
           "Name": "Cube (1)",
-          "Enabled": true,
           "Position": "0,0,-30.3707",
-          "Rotation": "0,0,0,1",
           "Scale": "0.2,0.2,0.2",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/dev/box.vmdl",
               "ShouldCastShadows": true,
@@ -1865,14 +1839,14 @@
         {
           "Id": "c4d1357b-8a72-4ce6-aebc-ad26570f5b95",
           "Name": "Cube",
-          "Enabled": true,
           "Position": "0,0,30.9502",
-          "Rotation": "0,0,0,1",
           "Scale": "0.2,0.2,0.2",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/dev/box.vmdl",
               "ShouldCastShadows": true,
@@ -1883,6 +1857,7 @@
               "__enabled": true,
               "IsTrigger": false,
               "Scale": "54.2,54.65,59.6",
+              "Static": false,
               "Surface": null
             }
           ]
@@ -1892,10 +1867,9 @@
     {
       "Id": "b3b5ece6-cd1b-4b4d-9b36-cc88982a751d",
       "Name": "Spot Light",
-      "Enabled": true,
       "Position": "1223.259,-803.9999,-1087.162",
       "Rotation": "-0.1064454,0.2939645,0.588666,0.7454708",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -1912,10 +1886,8 @@
     {
       "Id": "eed1d0da-fb94-44c7-b17b-638cddf71838",
       "Name": "Cubemap",
-      "Enabled": true,
       "Position": "1099.505,-0.0033,-1162.002",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Enabled": true,
       "Components": [
         {
           "__type": "EnvmapComponent",
@@ -1931,6 +1903,17 @@
       ]
     }
   ],
+  "SceneProperties": {
+    "NetworkFrequency": 60,
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "Physics.Simple",
+  "Description": "Compound model based colliders",
   "__references": [
     "baik.soccerball"
   ]

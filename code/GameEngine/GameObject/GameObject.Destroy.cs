@@ -33,6 +33,7 @@ public partial class GameObject : IValid
 		Assert.AreEqual( 0, Children.Count, "Some children weren't deleted!" );
 
 		_destroyed = true;
+		EndNetworking();
 		Scene.Directory.Remove( this );
 		Enabled = false;
 		Parent = null;
@@ -51,6 +52,7 @@ public partial class GameObject : IValid
 		_destroying = true;
 
 		Scene?.QueueDelete( this );
+		Net?.SendNetworkDestroy();
 	}
 
 	/// <summary>
