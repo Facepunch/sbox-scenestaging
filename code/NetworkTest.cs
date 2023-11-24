@@ -71,8 +71,14 @@ public sealed class NetworkTest : BaseComponent
 
 		if ( Input.Pressed( "use" ) )
 		{
+			var pc = GetComponent<PlayerController>();
+			var lookDir = pc.EyeAngles.ToRotation();
+
 			if ( Carrying  is not null )
 			{
+				Carrying.GetComponent<PhysicsComponent>().Velocity = lookDir.Forward * 300.0f + Vector3.Up * 200.0f;
+				Carrying.GetComponent<PhysicsComponent>().AngularVelocity = 0;
+
 				Drop();
 				return;
 			}
@@ -105,8 +111,6 @@ public sealed class NetworkTest : BaseComponent
 
 		ca.IkLeftHand = Carrying.Children.FirstOrDefault( x => x.Name == "hand_left" ) ?? Carrying;
 		ca.IkRightHand = Carrying.Children.FirstOrDefault( x => x.Name == "hand_right" ) ?? Carrying;
-
-		Log.Info( $"Pick up {tr.Body.GameObject}" );
 	}
 
 	void Drop()
