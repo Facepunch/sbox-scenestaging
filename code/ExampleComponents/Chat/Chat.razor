@@ -81,14 +81,14 @@
 		StateHasChanged();
 	}
 
-	void BaseComponent.INetworkListener.OnConnected( NetworkChannel channel )
+	void BaseComponent.INetworkListener.OnConnected( Connection channel )
 	{
 		if ( IsProxy ) return;
 
 		AddText( "🛎️", $"{channel.DisplayName} has joined the game" );
 	}
 
-	void BaseComponent.INetworkListener.OnDisconnected( NetworkChannel channel )
+	void BaseComponent.INetworkListener.OnDisconnected( Connection channel )
 	{
 		if ( IsProxy ) return;
 

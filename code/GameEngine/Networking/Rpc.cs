@@ -12,7 +12,7 @@ public class BroadcastAttribute : Attribute
 
 public static class Rpc
 {
-	public static NetworkChannel Caller { get; private set; }
+	public static Connection Caller { get; private set; }
 	public static Guid CallerId => Caller.Id;
 
 	public static bool Calling { get; private set; }
@@ -28,10 +28,10 @@ public static class Rpc
 			return;
 		}
 
-		Caller = GameNetworkSystem.Local;
+		Caller = Connection.Local;
 	}
 
-	internal static void HandleIncoming( ObjectMessageMsg message, NetworkChannel source )
+	internal static void HandleIncoming( ObjectMessageMsg message, Connection source )
 	{
 		if ( message.Guid == Guid.Empty )
 		{
@@ -74,7 +74,7 @@ public static class Rpc
 		}
 	}
 
-	private static void InvokeRpc( in ObjectMessageMsg message, in TypeDescription typeDesc, in object targetObject, in NetworkChannel source )
+	private static void InvokeRpc( in ObjectMessageMsg message, in TypeDescription typeDesc, in object targetObject, in Connection source )
 	{
 		var method = typeDesc.GetMethod( message.MessageName );
 		if ( method == null )

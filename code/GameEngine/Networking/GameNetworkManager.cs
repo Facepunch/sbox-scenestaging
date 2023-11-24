@@ -15,7 +15,7 @@ public sealed class GameNetworkManager : BaseComponent, BaseComponent.INetworkLi
 		
 	}
 
-	public void OnActive( NetworkChannel channel )
+	public void OnActive( Connection channel )
 	{
 		Log.Info( $"Player '{channel.DisplayName}' is becoming active" );
 

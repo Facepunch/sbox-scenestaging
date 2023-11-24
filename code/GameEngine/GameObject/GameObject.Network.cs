@@ -244,7 +244,7 @@ public partial class GameObject
 		/// <summary>
 		/// Are we the creator of this network object
 		/// </summary>
-		public readonly bool IsOwner => OwnerId == GameNetworkSystem.Local.Id;
+		public readonly bool IsOwner => OwnerId == Connection.Local.Id;
 
 		/// <summary>
 		/// The Id of the owner of this object
@@ -254,7 +254,7 @@ public partial class GameObject
 		/// <summary>
 		/// Are we the creator of this network object
 		/// </summary>
-		public readonly bool IsCreator => CreatorId == GameNetworkSystem.Local.Id;
+		public readonly bool IsCreator => CreatorId == Connection.Local.Id;
 
 		/// <summary>
 		/// The Id of the create of this object
@@ -283,7 +283,7 @@ public partial class GameObject
 		/// <summary>
 		/// Set the owner of this object
 		/// </summary>
-		public readonly bool AssignOwnership( NetworkChannel channel )
+		public readonly bool AssignOwnership( Connection channel )
 		{
 			if ( !Active ) return false;
 
@@ -314,7 +314,7 @@ public partial class GameObject
 			if ( Active ) return false;
 
 			go.Enabled = true;
-			go.Net = new NetworkObject( go, GameNetworkSystem.Local );
+			go.Net = new NetworkObject( go, Connection.Local );
 			return true;
 		}
 
@@ -322,7 +322,7 @@ public partial class GameObject
 		/// Spawn on the network. If you have permission to spawn entities, this will spawn on
 		/// everyone else's clients and you will be the owner.
 		/// </summary>
-		public readonly bool Spawn( NetworkChannel owner )
+		public readonly bool Spawn( Connection owner )
 		{
 			if ( Active ) return false;
 

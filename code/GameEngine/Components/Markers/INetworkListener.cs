@@ -10,7 +10,7 @@ public abstract partial class BaseComponent
 		/// <summary>
 		/// Called when someone connection joins the server
 		/// </summary>
-		void OnConnected( NetworkChannel channel )
+		void OnConnected( Connection conn )
 		{
 
 		}
@@ -18,7 +18,7 @@ public abstract partial class BaseComponent
 		/// <summary>
 		/// Called when someone leaves the server
 		/// </summary>
-		void OnDisconnected( NetworkChannel channel )
+		void OnDisconnected( Connection conn )
 		{
 
 		}
@@ -26,7 +26,7 @@ public abstract partial class BaseComponent
 		/// <summary>
 		/// Called when someone is all loaded and entered the game
 		/// </summary>
-		void OnActive( NetworkChannel channel )
+		void OnActive( Connection conn )
 		{
 
 		}

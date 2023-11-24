@@ -8,7 +8,7 @@ internal sealed class NetworkObject
 	public Guid Creator { get; set; }
 	public Guid Owner { get; set; }
 
-	public bool IsOwner => Owner == SceneNetworkSystem.Local.Id;
+	public bool IsOwner => Owner == Connection.Local.Id;
 	public bool IsUnowned => Owner == Guid.Empty;
 	public bool IsProxy
 	{
@@ -37,7 +37,7 @@ internal sealed class NetworkObject
 		GameObject.Scene.RegisterNetworkedObject( this );
 	}
 
-	internal NetworkObject( GameObject source, NetworkChannel owner )
+	internal NetworkObject( GameObject source, Connection owner )
 	{
 		Assert.NotNull( owner );
 

@@ -22,7 +22,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 	/// <summary>
 	/// A client has joined and wants a snapshot of the world
 	/// </summary>
-	public override void GetSnapshot( NetworkChannel source, ref SnapshotMsg msg )
+	public override void GetSnapshot( Connection source, ref SnapshotMsg msg )
 	{
 		ThreadSafe.AssertIsMainThread();
 
@@ -92,7 +92,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 	// TODO - system for registering global listeners like this
 
-	public override void OnConnected( NetworkChannel client )
+	public override void OnConnected( Connection client )
 	{
 		Log.Info( $"Client {client.Name} ({client.Id}) has joined the game!" );
 
@@ -106,7 +106,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 		queue?.Invoke();
 	}
 
-	public override void OnJoined( NetworkChannel client )
+	public override void OnJoined( Connection client )
 	{
 		Action queue = default;
 
@@ -118,7 +118,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 		queue?.Invoke();
 	}
 
-	public override void OnLeave( NetworkChannel client )
+	public override void OnLeave( Connection client )
 	{
 		Log.Info( $"Client {client.Name} ({client.Id}) has left the game!" );
 
@@ -145,7 +145,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 		return GameManager.ActiveScene.Push();
 	}
 
-	private void OnObjectCreate( ObjectCreateMsg message, NetworkChannel source )
+	private void OnObjectCreate( ObjectCreateMsg message, Connection source )
 	{
 		// TODO: Does source have the authority to create?
 
@@ -158,7 +158,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 		//go.Receive( message.Update );
 	}
 
-	private void OnObjectUpdate( ObjectUpdateMsg message, NetworkChannel source )
+	private void OnObjectUpdate( ObjectUpdateMsg message, Connection source )
 	{
 		var obj = GameManager.ActiveScene.Directory.FindByGuid( message.Guid );
 		if ( obj is null )
@@ -172,7 +172,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 		obj.Receive( message );
 	}
 
-	private void OnObjectDestroy( ObjectDestroyMsg message, NetworkChannel source )
+	private void OnObjectDestroy( ObjectDestroyMsg message, Connection source )
 	{
 		var obj = GameManager.ActiveScene.Directory.FindByGuid( message.Guid );
 		if ( obj is null )
@@ -193,7 +193,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 		}
 	}
 
-	private void OnObjectMessage( ObjectMessageMsg message, NetworkChannel source )
+	private void OnObjectMessage( ObjectMessageMsg message, Connection source )
 	{
 		Rpc.HandleIncoming( message, source );
 	}
