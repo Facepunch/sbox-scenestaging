@@ -12,6 +12,11 @@ public class SceneNetworkSystem : GameNetworkSystem
 	public SceneNetworkSystem()
 	{
 		Instance = this;
+
+		AddHandler<ObjectCreateMsg>( OnObjectCreate );
+		AddHandler<ObjectUpdateMsg>( OnObjectUpdate );
+		AddHandler<ObjectDestroyMsg>( OnObjectDestroy );
+		AddHandler<ObjectMessageMsg>( OnObjectMessage );
 	}
 
 	/// <summary>
@@ -27,8 +32,9 @@ public class SceneNetworkSystem : GameNetworkSystem
 		o.SceneForNetwork = true;
 
 		msg.SceneData = GameManager.ActiveScene.Serialize( o ).ToJsonString();
-		msg.NetworkObjects = GameManager.ActiveScene.SerializeNetworkObjects();
+		GameManager.ActiveScene.SerializeNetworkObjects( msg.NetworkObjects );
 	}
+
 
 	public override void Dispose()
 	{
@@ -65,7 +71,11 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		foreach ( var nwo in msg.NetworkObjects )
 		{
-			OnObjectCreate( nwo, null );
+			if ( nwo is ObjectCreateMsg oc )
+			{
+				OnObjectCreate( oc, null );
+				continue;
+			}
 		}
 
 		GameManager.IsPlaying = true;
@@ -91,7 +101,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 		return GameManager.ActiveScene.Push();
 	}
 
-	protected override void OnObjectCreate( in ObjectCreateMsg message, NetworkChannel source )
+	private void OnObjectCreate( ObjectCreateMsg message, NetworkChannel source )
 	{
 		// TODO: Does source have the authority to create?
 
@@ -104,7 +114,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 		//go.Receive( message.Update );
 	}
 
-	protected override void OnObjectUpdate( in ObjectUpdateMsg message, NetworkChannel source )
+	private void OnObjectUpdate( ObjectUpdateMsg message, NetworkChannel source )
 	{
 		var obj = GameManager.ActiveScene.Directory.FindByGuid( message.Guid );
 		if ( obj is null )
@@ -118,7 +128,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 		obj.Receive( message );
 	}
 
-	protected override void OnObjectDestroy( in ObjectDestroyMsg message, NetworkChannel source )
+	private void OnObjectDestroy( ObjectDestroyMsg message, NetworkChannel source )
 	{
 		var obj = GameManager.ActiveScene.Directory.FindByGuid( message.Guid );
 		if ( obj is null )
@@ -139,8 +149,40 @@ public class SceneNetworkSystem : GameNetworkSystem
 		}
 	}
 
-	protected override void OnObjectMessage( in ObjectMessageMsg message, NetworkChannel source )
+	private void OnObjectMessage( ObjectMessageMsg message, NetworkChannel source )
 	{
 		Rpc.HandleIncoming( message, source );
 	}
+}
+
+public partial struct ObjectCreateMsg
+{
+	public string JsonData { get; set; }
+	public Guid Guid { get; set; }
+	public Guid Creator { get; set; }
+	public Guid Owner { get; set; }
+	public ObjectUpdateMsg Update { get; set; }
+}
+
+public partial struct ObjectUpdateMsg
+{
+	public Guid Guid { get; set; }
+	public Transform Transform { get; set; }
+	public Guid Parent { get; set; }
+	public string Data { get; set; }
+}
+
+public partial struct ObjectDestroyMsg
+{
+	public Guid Guid { get; set; }
+
+	// flags, reason, does it matter?
+}
+
+public partial struct ObjectMessageMsg
+{
+	public Guid Guid { get; set; }
+	public string Component { get; set; } // todo - id the components better, allow for multiple
+	public string MessageName { get; set; } // todo - this can be a hash for sure
+	public object[] Arguments { get; set; }
 }

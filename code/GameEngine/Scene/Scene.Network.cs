@@ -47,16 +47,12 @@ public partial class Scene : GameObject
 	}
 
 
-	internal List<ObjectCreateMsg> SerializeNetworkObjects()
+	internal void SerializeNetworkObjects( List<object> collection )
 	{
-		var jso = new List<ObjectCreateMsg>();
-
 		foreach ( var target in networkedObjects )
 		{
-			jso.Add( target.GetCreateMessage( true ) );
+			collection.Add( target.GetCreateMessage( true ) );
 		}
-
-		return jso;
 	}
 
 
