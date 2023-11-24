@@ -79,6 +79,7 @@
           "__enabled": true,
           "AnimationHelper": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
           "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+          "Camera": "7c163f9b-273d-41e8-91d6-9f096d02854b",
           "CameraDistance": 200,
           "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
           "FirstPerson": false,
@@ -1245,10 +1246,11 @@
               "__type": "CameraComponent",
               "__enabled": true,
               "BackgroundColor": "0.25292,0.26086,0.29703,1",
-              "ClearFlags": "Color, Depth, Stencil",
+              "ClearFlags": "All",
               "FieldOfView": 69.32,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "TargetEye": "None",
               "ZFar": 10000,
               "ZNear": 1
             },
@@ -1422,6 +1424,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "100,100,0.01",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1449,6 +1452,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Radius": 32.79981,
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1476,6 +1480,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1503,6 +1508,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1530,6 +1536,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1557,6 +1564,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -1584,10 +1592,20 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/citizen/citizen.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
     }
   ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "ik",
+  "Description": "",
   "__references": []
 }

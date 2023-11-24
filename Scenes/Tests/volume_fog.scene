@@ -157,7 +157,8 @@
                 "t": 1,
                 "c": "0.39216,0.19608,0.02745,1"
               }
-            ]
+            ],
+            "alpha": []
           },
           "Speed": 0.4
         }
@@ -226,8 +227,7 @@
         {
           "__type": "PlayerController",
           "__enabled": true,
-          "AnimationHelper": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
-          "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+          "Camera": "7c163f9b-273d-41e8-91d6-9f096d02854b",
           "CameraDistance": 200,
           "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
           "FirstPerson": true,
@@ -248,10 +248,11 @@
               "__type": "CameraComponent",
               "__enabled": true,
               "BackgroundColor": "0.25292,0.26086,0.29703,1",
-              "ClearFlags": "Color, Depth, Stencil",
+              "ClearFlags": "All",
               "FieldOfView": 86.12,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "TargetEye": "None",
               "ZFar": 10000,
               "ZNear": 1
             },
@@ -342,6 +343,7 @@
               "__enabled": true,
               "IsTrigger": false,
               "Radius": 25,
+              "Static": false,
               "Surface": null
             }
           ]
@@ -361,6 +363,7 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "EyeSource": "2b592aa0-b62f-470d-92ef-d477a9a95200",
+          "Height": 1,
           "LookAtObject": "edb447df-b691-4153-8652-070d2533e7c4",
           "Target": "e61940a5-911d-4460-83d4-f92aa476591e"
         }
@@ -1324,7 +1327,7 @@
                       "Id": "0c3ace1d-eba7-49aa-a7b6-2001807dde99",
                       "Name": "leg_upper_L_twist1",
                       "Enabled": true,
-                      "Position": "7.235181,0.00002315223,0.000003364922",
+                      "Position": "7.235196,0.00002315228,0.000003364995",
                       "Rotation": "0.00000000372529,-0.0000002686866,0,1",
                       "Scale": "1,1,1",
                       "Tags": ""
@@ -1364,7 +1367,7 @@
               "Id": "4e503367-5874-411d-8552-eea799080f4f",
               "Name": "root_IK",
               "Enabled": true,
-              "Position": "1.266577,0.0000205487,-0.00000008209499",
+              "Position": "1.266577,0.0000205487,-0.000000082095",
               "Rotation": "0.000000000000003552714,-0.00000001490116,0.0000001192093,0.9999999",
               "Scale": "1,1,1",
               "Tags": "",
@@ -1382,7 +1385,7 @@
                   "Id": "4ce4a168-daa3-433c-9878-59378c8b2cc0",
                   "Name": "hand_L_IK_target",
                   "Enabled": true,
-                  "Position": "0.6941156,20.3947,39.24792",
+                  "Position": "0.6941156,20.3947,39.24791",
                   "Rotation": "0.7698929,0.5281296,-0.2142482,0.2871265",
                   "Scale": "0.9999999,0.9999999,0.9999999",
                   "Tags": ""
@@ -1392,7 +1395,7 @@
                   "Name": "aim_matrix_02a",
                   "Enabled": true,
                   "Position": "4.638928,-0.000002998398,9.842495",
-                  "Rotation": "0.00000007549791,0.00000007549787,-0.00000008940697,1",
+                  "Rotation": "0.0000000754979,0.00000007549787,-0.00000008940697,1",
                   "Scale": "1,1,1",
                   "Tags": "",
                   "Children": [
@@ -1400,8 +1403,8 @@
                       "Id": "3db3dd09-5746-422e-953c-98a7de62b2c7",
                       "Name": "aim_matrix_02b",
                       "Enabled": true,
-                      "Position": "3.937003,0.00001254677,0.0000002219516",
-                      "Rotation": "-0.000000000000003552714,0.000000000000003552714,-0.0000000000000000000002646978,1",
+                      "Position": "3.937003,0.00001254677,0.0000002219515",
+                      "Rotation": "0,0.00000000000001065814,-0.0000000000000000000003705769,1",
                       "Scale": "1,1,1",
                       "Tags": ""
                     }
@@ -1412,7 +1415,7 @@
                   "Name": "aim_matrix_01",
                   "Enabled": true,
                   "Position": "4.638928,-0.000003115281,11.811",
-                  "Rotation": "0.00000007549791,0.00000007549787,-0.00000008940697,1",
+                  "Rotation": "0.0000000754979,0.00000007549787,-0.00000008940697,1",
                   "Scale": "1,1,1",
                   "Tags": ""
                 },
@@ -1420,7 +1423,7 @@
                   "Id": "6822a0b0-f62b-4e45-8171-3affabe8f4f7",
                   "Name": "foot_R_IK_target",
                   "Enabled": true,
-                  "Position": "-0.8840626,-4.427408,3.807905",
+                  "Position": "-0.8840626,-4.427408,3.807921",
                   "Rotation": "-0.6508946,-0.2762884,0.2762875,-0.6508964",
                   "Scale": "1,1,1",
                   "Tags": ""
@@ -1531,6 +1534,7 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "EyeSource": "203113bb-4426-4ee1-9530-465031f4f709",
+          "Height": 1,
           "LookAtObject": "edb447df-b691-4153-8652-070d2533e7c4",
           "Target": "5dc52a07-140d-4081-b84b-c25c6a8cc36a"
         }
@@ -1894,7 +1898,7 @@
                                               "Id": "cfe6515f-d052-483d-86f7-30df424218a5",
                                               "Name": "hand_R_to_L_ikrule",
                                               "Enabled": true,
-                                              "Position": "-28.15184,11.30967,27.26414",
+                                              "Position": "-28.15185,11.30968,27.26415",
                                               "Rotation": "0.2772722,0.690174,0.00000002235174,-0.6684158",
                                               "Scale": "0.9999998,0.9999998,0.9999998",
                                               "Tags": ""
@@ -2701,6 +2705,7 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "EyeSource": "3c9bcdd2-fcd5-4d25-9c7d-a88a2dd06b04",
+          "Height": 1,
           "LookAtObject": "edb447df-b691-4153-8652-070d2533e7c4",
           "Target": "2cc89027-f1fa-4543-90a3-7f081dc96052"
         }
@@ -3064,7 +3069,7 @@
                                               "Id": "a986b5c0-4447-4eed-80f1-69edc5941b9e",
                                               "Name": "hand_R_to_L_ikrule",
                                               "Enabled": true,
-                                              "Position": "-28.15184,11.30967,27.26414",
+                                              "Position": "-28.15185,11.30968,27.26415",
                                               "Rotation": "0.2772722,0.690174,0.00000002235174,-0.6684158",
                                               "Scale": "0.9999998,0.9999998,0.9999998",
                                               "Tags": ""
@@ -3153,7 +3158,7 @@
                                   "Id": "5e59af60-7a7e-4aaa-8984-5da76838aed0",
                                   "Name": "arm_upper_R",
                                   "Enabled": true,
-                                  "Position": "6.218294,0.000002393032,-0.00006482002",
+                                  "Position": "6.218292,0.000009545586,-0.00006479022",
                                   "Rotation": "0.02770655,0.3880895,0.06826833,0.9186721",
                                   "Scale": "1,1,1",
                                   "Tags": "",
@@ -3871,6 +3876,7 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "EyeSource": "5ce1ba3d-405b-4621-9490-a5cde52cdef0",
+          "Height": 1,
           "LookAtObject": "edb447df-b691-4153-8652-070d2533e7c4",
           "Target": "7c83510b-0351-4aa1-85f0-74594342107e"
         }
@@ -3974,7 +3980,7 @@
                                       "Id": "24aff4ff-e879-4cc0-87d0-ac27f001a81f",
                                       "Name": "face_lid_lower_R",
                                       "Enabled": true,
-                                      "Position": "6.908828,5.140465,-3.234579",
+                                      "Position": "6.908828,5.140465,-3.234586",
                                       "Rotation": "0.3386922,-0.9305478,0.1307778,0.04759904",
                                       "Scale": "1,1,1",
                                       "Tags": ""
@@ -4883,7 +4889,7 @@
                   "Id": "39aa4a53-fb05-4877-a910-ad5482b2089e",
                   "Name": "hand_R_IK_target",
                   "Enabled": true,
-                  "Position": "0.6939865,-20.39473,39.24799",
+                  "Position": "0.6939858,-20.39472,39.24799",
                   "Rotation": "-0.2871272,-0.2142481,0.5281312,-0.7698916",
                   "Scale": "1,1,1",
                   "Tags": ""
@@ -5041,6 +5047,7 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "EyeSource": "7b621053-0c29-4350-9658-1581fb0ce43f",
+          "Height": 1,
           "LookAtObject": "edb447df-b691-4153-8652-070d2533e7c4",
           "Target": "c6ab49f1-364c-49d0-a866-2f2a8f7743a5"
         }
@@ -5051,7 +5058,7 @@
           "Name": "Body",
           "Enabled": true,
           "Position": "0,0,0",
-          "Rotation": "0.00000002599988,-0.00000001523571,0.0000000000000003961266,1",
+          "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
           "Components": [
@@ -5072,7 +5079,7 @@
               "Id": "cc84916d-9898-4e9d-ac0b-11d67acbfecd",
               "Name": "pelvis",
               "Enabled": true,
-              "Position": "1.266589,0.000001497969,31.07364",
+              "Position": "1.266588,-0.0000001178512,31.07364",
               "Rotation": "0.499999,0.4999991,0.5000001,-0.5000006",
               "Scale": "1.000001,1.000001,1.000001",
               "Tags": "",
@@ -5090,7 +5097,7 @@
                       "Id": "44b31e56-c02b-46d4-814a-5ff96ecb6a3c",
                       "Name": "spine_1",
                       "Enabled": true,
-                      "Position": "5.610404,0.000006795909,0.00004387689",
+                      "Position": "5.610435,0.000006799344,0.00004387695",
                       "Rotation": "-0.0003969967,0.0000001937151,0.0002738386,0.9999999",
                       "Scale": "1,1,1",
                       "Tags": "",
@@ -6022,8 +6029,8 @@
               "Id": "85445f29-4e81-430a-afe6-f7f41372e924",
               "Name": "root_IK",
               "Enabled": true,
-              "Position": "1.266573,-0.00000205636,-0.00000003938189",
-              "Rotation": "0.000000000000002775558,-0.00000001490115,0.00000006705523,0.9999993",
+              "Position": "1.266573,-0.00000205636,-0.0000000007877597",
+              "Rotation": "0.0000000000000001110223,-0.00000001490115,0.00000006705523,0.9999993",
               "Scale": "1.000001,1.000001,1.000001",
               "Tags": "",
               "Children": [
@@ -6031,7 +6038,7 @@
                   "Id": "e7fd1b7a-00ef-4260-b74c-3dc573d08f8c",
                   "Name": "hand_R_IK_target",
                   "Enabled": true,
-                  "Position": "0.6939948,-20.39477,39.248",
+                  "Position": "0.6939936,-20.39477,39.248",
                   "Rotation": "0.2871272,0.2142481,-0.5281313,0.7698917",
                   "Scale": "1,1,1",
                   "Tags": ""
@@ -6040,7 +6047,7 @@
                   "Id": "256dd93d-e163-40d3-8527-2978ee3a0a5d",
                   "Name": "hand_L_IK_target",
                   "Enabled": true,
-                  "Position": "0.6941136,20.39471,39.24791",
+                  "Position": "0.6941124,20.3947,39.24791",
                   "Rotation": "0.7698931,0.5281297,-0.2142482,0.2871266",
                   "Scale": "1,1,1",
                   "Tags": ""
@@ -6049,8 +6056,8 @@
                   "Id": "69b1a330-a893-43eb-b19e-9de65ceda004",
                   "Name": "aim_matrix_02a",
                   "Enabled": true,
-                  "Position": "4.638938,-0.00005876006,9.842485",
-                  "Rotation": "0.00000007549793,0.00000007549789,-0.00000008195639,1",
+                  "Position": "4.638938,-0.00005927186,9.842485",
+                  "Rotation": "0.00000007549791,0.00000007549788,-0.00000008195639,1",
                   "Scale": "1,1,1",
                   "Tags": "",
                   "Children": [
@@ -6058,8 +6065,8 @@
                       "Id": "e13b6135-d86f-4998-a283-bf42ca5e0af4",
                       "Name": "aim_matrix_02b",
                       "Enabled": true,
-                      "Position": "3.936996,-0.0000007748594,0.0000003547239",
-                      "Rotation": "-0.000000000000007105427,-0.0000000000000004440892,-0.0000000000000000000004235165,1",
+                      "Position": "3.936996,-0.0000007748594,0.0000004746896",
+                      "Rotation": "0,0,0,1",
                       "Scale": "1,1,1",
                       "Tags": ""
                     }
@@ -6069,8 +6076,8 @@
                   "Id": "09a9cb7f-6004-43bf-b313-161a6062c859",
                   "Name": "aim_matrix_01",
                   "Enabled": true,
-                  "Position": "4.638939,-0.0000586746,11.81099",
-                  "Rotation": "0.00000007549793,0.00000007549789,-0.00000008195639,1",
+                  "Position": "4.638938,-0.00005928877,11.81099",
+                  "Rotation": "0.00000007549791,0.00000007549788,-0.00000008195639,1",
                   "Scale": "1,1,1",
                   "Tags": ""
                 },
@@ -6078,7 +6085,7 @@
                   "Id": "602a7aab-fda9-4b67-90e2-5950916e9933",
                   "Name": "foot_R_IK_target",
                   "Enabled": true,
-                  "Position": "-0.8840671,-4.427356,3.807918",
+                  "Position": "-0.8840672,-4.427356,3.807917",
                   "Rotation": "0.6508946,0.2762884,-0.2762876,0.6508965",
                   "Scale": "1,1,1",
                   "Tags": ""
@@ -6087,9 +6094,9 @@
                   "Id": "aec32d72-01ec-4b11-a680-a0d7a93abedf",
                   "Name": "foot_L_IK_target",
                   "Enabled": true,
-                  "Position": "-0.8840898,4.427353,3.807917",
-                  "Rotation": "0.6508961,0.276287,-0.2762895,0.6508949",
-                  "Scale": "0.9999999,0.9999999,0.9999999",
+                  "Position": "-0.8840899,4.427353,3.807917",
+                  "Rotation": "0.650896,0.2762871,-0.2762895,0.6508949",
+                  "Scale": "1,1,1",
                   "Tags": ""
                 }
               ]
@@ -6143,6 +6150,7 @@
           "__type": "CitizenAnimation",
           "__enabled": true,
           "EyeSource": "76c59c3e-5515-4565-b7e9-5731ac6054bd",
+          "Height": 1,
           "LookAtObject": "edb447df-b691-4153-8652-070d2533e7c4",
           "Target": "98ef57df-2bee-4931-aa17-42d51f43f977"
         }
@@ -7323,6 +7331,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7350,6 +7359,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7359,7 +7369,7 @@
       "Name": "rock_cliff_a",
       "Enabled": true,
       "Position": "-62.87562,-463.9492,-209.4362",
-      "Rotation": "0,0.0000004023317,0,1",
+      "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
       "Tags": "",
       "Components": [
@@ -7377,6 +7387,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7404,6 +7415,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7431,6 +7443,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7458,6 +7471,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7485,6 +7499,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7512,6 +7527,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7539,6 +7555,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7566,6 +7583,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7593,6 +7611,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7620,6 +7639,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7647,6 +7667,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7674,6 +7695,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7701,6 +7723,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7728,6 +7751,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -7882,7 +7906,8 @@
                     "t": 0.98504275,
                     "c": "0,0,0,1"
                   }
-                ]
+                ],
+                "alpha": []
               },
               "Speed": 1
             }
@@ -8091,6 +8116,15 @@
       ]
     }
   ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "volume_fog",
+  "Description": "",
   "__references": [
     "apetavern.van",
     "degg.f_wep_dagger",

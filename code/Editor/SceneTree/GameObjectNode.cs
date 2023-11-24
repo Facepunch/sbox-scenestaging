@@ -453,8 +453,11 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			} );
 		}
 
+		// Camera
 		{
-			menu.AddOption( "Camera", "videocam", () =>
+			var submenu = menu.AddMenu("Camera", "desktop_windows");
+
+			submenu.AddOption("Camera", "videocam", () =>
 			{
 				using var scope = SceneEditorSession.Scope();
 				var go = new GameObject();
@@ -462,9 +465,25 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 				var cam = go.AddComponent<CameraComponent>();
 
-				then( go );
-			} );
+				then(go);
+			});
 
+			submenu.AddOption("Spring Arm", "start", () =>
+			{
+				using var scope = SceneEditorSession.Scope();
+
+				var parent = new GameObject();
+				parent.Name = "Spring Arm";
+
+				parent.AddComponent<SpringArmComponent>();
+
+				var camera = new GameObject();
+				camera.Parent = parent;
+				camera.Name = "Camera";
+				camera.AddComponent<CameraComponent>();
+                
+				then(parent);
+			});
 		}
 	}
 }

@@ -1,51 +1,35 @@
 using Sandbox;
-using System.Drawing;
 
-
+[Category("Player")]
 public class PlayerController : BaseComponent
 {
-	[Property] public Vector3 Gravity { get; set; } = new Vector3( 0, 0, 800 );
+	private Angles _eyeAngles;
+	private Vector3 _wishVelocity;
 
-	[Range( 0, 400)]
+	private const float FlGroundFactor = 1.0f;
+	private const float FlMul = 268.3281572999747f * 1.2f;
+	
+	[Property] public GameObject Eye { get; set; }
+	[Property] public bool FirstPerson { get; set; } = false;
 	[Property] public float CameraDistance { get; set; } = 200.0f;
-
-	public Vector3 WishVelocity { get; private set; }
-
-	[Property] GameObject Body { get; set; }
-	[Property] GameObject Eye { get; set; }
-	[Property] bool FirstPerson { get; set; }
-	[Property] CitizenAnimation AnimationHelper { get; set; }
-
-	public Angles EyeAngles;
+	[Property] public Vector3 Gravity { get; set; } = new( 0, 0, 800 );
+	[Property] public GameObject Body { get; set; }
+	[Property] public CitizenAnimation AnimationHelper { get; set; }
 
 	public override void Update()
 	{
-		// Eye input
-		EyeAngles.pitch += Input.MouseDelta.y * 0.1f;
-		EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
-		EyeAngles.roll = 0;
-
-		// Update camera position
-		var camera = GameObject.GetComponent<CameraComponent>( true, true );
-		if ( camera is not null )
-		{
-			var camPos = Eye.Transform.Position - EyeAngles.ToRotation().Forward * CameraDistance;
-
-			if ( FirstPerson ) camPos = Eye.Transform.Position + EyeAngles.ToRotation().Forward * 8;
-
-			camera.Transform.Position = camPos;
-			camera.Transform.Rotation = EyeAngles.ToRotation();
-		}
-
+		CalculateEyesAngles();
+		SetCameraPosition();
+		
 		var cc = GameObject.GetComponent<CharacterController>();
 		if ( cc is null ) return;
 
-		float rotateDifference = 0;
+		var rotateDifference = 0f;
 
 		// rotate body to look angles
 		if ( Body is not null )
 		{
-			var targetAngle = new Angles( 0, EyeAngles.yaw, 0 ).ToRotation();
+			var targetAngle = new Angles( 0, _eyeAngles.yaw, 0 ).ToRotation();
 
 			var v = cc.Velocity.WithZ( 0 );
 
@@ -62,13 +46,12 @@ public class PlayerController : BaseComponent
 			}
 		}
 
-
 		if ( AnimationHelper is not null )
 		{
 			AnimationHelper.WithVelocity( cc.Velocity );
 			AnimationHelper.IsGrounded = cc.IsOnGround;
 			AnimationHelper.FootShuffle = rotateDifference;
-			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
+			AnimationHelper.WithLook( _eyeAngles.Forward, 1, 1, 1.0f );
 			AnimationHelper.MoveStyle = Input.Down( "Run" ) ? CitizenAnimation.MoveStyles.Run : CitizenAnimation.MoveStyles.Walk;
 		}
 	}
@@ -81,12 +64,10 @@ public class PlayerController : BaseComponent
 
 		if ( cc.IsOnGround && Input.Down( "Jump" ) )
 		{
-			float flGroundFactor = 1.0f;
-			float flMul = 268.3281572999747f * 1.2f;
 			//if ( Duck.IsActive )
 			//	flMul *= 0.8f;
 
-			cc.Punch( Vector3.Up * flMul * flGroundFactor );
+			cc.Punch( Vector3.Up * FlMul * FlGroundFactor );
 			//	cc.IsOnGround = false;
 
 			AnimationHelper?.TriggerJump();
@@ -95,13 +76,13 @@ public class PlayerController : BaseComponent
 		if ( cc.IsOnGround )
 		{
 			cc.Velocity = cc.Velocity.WithZ( 0 );
-			cc.Accelerate( WishVelocity );
+			cc.Accelerate( _wishVelocity );
 			cc.ApplyFriction( 4.0f );
 		}
 		else
 		{
 			cc.Velocity -= Gravity * Time.Delta * 0.5f;
-			cc.Accelerate( WishVelocity.ClampLength( 50 ) );
+			cc.Accelerate( _wishVelocity.ClampLength( 50 ) );
 			cc.ApplyFriction( 0.1f );
 		}
 
@@ -117,22 +98,50 @@ public class PlayerController : BaseComponent
 		}
 	}
 
-	public void BuildWishVelocity()
+	private void CalculateEyesAngles()
 	{
-		var rot = EyeAngles.ToRotation();
+		_eyeAngles.pitch += Input.MouseDelta.y * 0.1f;
+		_eyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
+		_eyeAngles.roll = 0;
+	}
+    
+	private void SetCameraPosition()
+	{
+		var camera = GetComponent<CameraComponent>(deep: true);
+		
+		var camPos = Eye.Transform.Position - _eyeAngles.ToRotation().Forward * CameraDistance;
+		
+		if (FirstPerson)
+			camPos = Eye.Transform.Position + _eyeAngles.ToRotation().Forward * 8;
 
-		WishVelocity = 0;
+		var hasSpringArm = TryGetComponent<SpringArmComponent>(out var springArm, deep: true);
+		
+		if (hasSpringArm)
+		{
+			springArm.Transform.Rotation = _eyeAngles.ToRotation();
+			return;
+		}
 
-		if ( Input.Down( "Forward" ) ) WishVelocity += rot.Forward;
-		if ( Input.Down( "Backward" ) ) WishVelocity += rot.Backward;
-		if ( Input.Down( "Left" ) ) WishVelocity += rot.Left;
-		if ( Input.Down( "Right" ) ) WishVelocity += rot.Right;
+		camera.Transform.Rotation = _eyeAngles.ToRotation();
+		camera.Transform.Position = camPos;
+	}
+	
+	private void BuildWishVelocity()
+	{
+		var rot = _eyeAngles.ToRotation();
 
-		WishVelocity = WishVelocity.WithZ( 0 );
+		_wishVelocity = 0;
 
-		if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
+		if ( Input.Down( "Forward" ) ) _wishVelocity += rot.Forward;
+		if ( Input.Down( "Backward" ) ) _wishVelocity += rot.Backward;
+		if ( Input.Down( "Left" ) ) _wishVelocity += rot.Left;
+		if ( Input.Down( "Right" ) ) _wishVelocity += rot.Right;
 
-		if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
-		else WishVelocity *= 70.0f;
+		_wishVelocity = _wishVelocity.WithZ( 0 );
+
+		if ( !_wishVelocity.IsNearZeroLength ) _wishVelocity = _wishVelocity.Normal;
+
+		if ( Input.Down( "Run" ) ) _wishVelocity *= 320.0f;
+		else _wishVelocity *= 70.0f;
 	}
 }

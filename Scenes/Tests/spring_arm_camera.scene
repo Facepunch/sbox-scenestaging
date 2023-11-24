@@ -1,0 +1,544 @@
+{
+  "GameObjects": [
+    {
+      "Id": "b3b5ece6-cd1b-4b4d-9b36-cc88982a751d",
+      "Name": "Spot Light",
+      "Enabled": false,
+      "Position": "906.304,954.2023,-1254.256",
+      "Rotation": "0.05406565,0.2581995,-0.1976902,0.944102",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "SpotLightComponent",
+          "__enabled": true,
+          "Attenuation": 1,
+          "ConeInner": 71.55,
+          "ConeOuter": 45.45,
+          "Cookie": "materials/effects/lightcookie.vtex",
+          "LightColor": "197.47,197.47,197.47,1",
+          "Radius": 3000
+        }
+      ]
+    },
+    {
+      "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "158.6718,-124.3322,368.6452",
+      "Rotation": "0.8894004,0.1914825,-0.4057941,0.087365",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "1,0.89069,0.76238,1",
+          "Shadows": true,
+          "SkyColor": "0.10599,0.11132,0.12376,1"
+        }
+      ]
+    },
+    {
+      "Id": "12df27a7-aaf4-4da8-bc02-173ecd53c168",
+      "Name": "SkyBox",
+      "Enabled": true,
+      "Position": "1252.565,134.7641,-1378.779",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "SkyBox2D",
+          "__enabled": true,
+          "SkyMaterial": "materials/skybox/light_test_sky_overcast.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "0cd4b3b6-7ff0-461e-9ce3-716ce58ea5d4",
+      "Name": "Gradient Fog",
+      "Enabled": true,
+      "Position": "1318.709,134.7641,-1636.627",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "GradientFog",
+          "__enabled": true,
+          "Color": "0.15347,0.14853,0.13447,0.42",
+          "EndDistance": 1024,
+          "FalloffExponent": 3,
+          "Height": 1024,
+          "StartDistance": 0,
+          "VerticalFalloffExponent": 5
+        }
+      ]
+    },
+    {
+      "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
+      "Name": "Citizen",
+      "Enabled": true,
+      "Position": "1030.004,661.5084,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "CharacterController",
+          "__enabled": true,
+          "Acceleration": 10,
+          "GroundAngle": 45,
+          "Height": 72,
+          "IgnoreLayers": "solid,trigger",
+          "Radius": 10,
+          "StepHeight": 18
+        },
+        {
+          "__type": "PlayerController",
+          "__enabled": true,
+          "AnimationHelper": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
+          "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+          "CameraDistance": 200,
+          "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
+          "FirstPerson": false,
+          "Gravity": "0,0,800"
+        },
+        {
+          "__type": "CitizenAnimation",
+          "__enabled": true,
+          "Height": 1,
+          "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+          "Name": "Body",
+          "Enabled": true,
+          "Position": "0,-0.66093,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "AnimatedModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/citizen/citizen.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "975e3006-e7c3-46a5-9f30-c31a196c89f9",
+              "Name": "Name Tag UI",
+              "Enabled": true,
+              "Position": "-0.000001814945,0.1895752,80.7357",
+              "Rotation": "-0.00000005960058,0.000000000000005518709,-0.9999317,0.01167414",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "WorldPanel",
+                  "__enabled": true,
+                  "HorizontalAlign": "Center",
+                  "LookAtCamera": true,
+                  "PanelSize": "1024,256",
+                  "RenderScale": 1,
+                  "VerticalAlign": "Center"
+                },
+                {
+                  "__type": "NameTagPanel",
+                  "__enabled": true,
+                  "Name": "Prickly Pete"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "edb447df-b691-4153-8652-070d2533e7c4",
+          "Name": "EyePos",
+          "Enabled": true,
+          "Position": "0,0,64",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": ""
+        },
+        {
+          "Id": "258a1012-ff9e-49b5-bf1b-887d483bb0bf",
+          "Name": "Hair",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "AnimatedModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+              "CreateBoneObjects": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/citizen_clothes/hair/hair_fade/models/hair_fade.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "f14d65a1-eea4-4fe5-89d7-a550ec6b8f11",
+          "Name": "Shoes",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "AnimatedModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+              "CreateBoneObjects": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/citizen_clothes/shoes/boots/models/army_boots.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "c84a9c65-8b53-4b2c-9b05-4fe5be5fd1cd",
+          "Name": "SpringArm",
+          "Enabled": true,
+          "Position": "0,0,50",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "SpringArmComponent",
+              "__enabled": true,
+              "CollisionOffset": 15,
+              "CollisionProbeColor": "0.15,0.75,0.2,0.75",
+              "CollisionProbeSize": 5,
+              "IgnoreLayers": "",
+              "ShowCollisionProbe": true,
+              "ShowRaycasts": true,
+              "SmoothTime": 0,
+              "SpringArmColor": "0.75,0.2,0.2,0.75",
+              "SpringArmLineWidth": 2,
+              "TargetArmLength": 180,
+              "VisualDebugging": true
+            }
+          ],
+          "Children": [
+            {
+              "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+              "Name": "Camera",
+              "Enabled": true,
+              "Position": "0,0,50",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Components": [
+                {
+                  "__type": "CameraComponent",
+                  "__enabled": true,
+                  "BackgroundColor": "0.25292,0.26086,0.29703,1",
+                  "ClearFlags": "All",
+                  "FieldOfView": 80,
+                  "Orthographic": false,
+                  "OrthographicHeight": 1204,
+                  "TargetEye": "None",
+                  "ZFar": 10000,
+                  "ZNear": 1
+                },
+                {
+                  "__type": "FilmGrain",
+                  "__enabled": false,
+                  "Intensity": 0.03,
+                  "Response": 1
+                },
+                {
+                  "__type": "Vignette",
+                  "__enabled": true,
+                  "Center": "0.5,0.5",
+                  "Color": "0,0,0,0.38",
+                  "Intensity": 1,
+                  "Roundness": 0.5,
+                  "Smoothness": 1
+                },
+                {
+                  "__type": "ChromaticAberration",
+                  "__enabled": false,
+                  "Offset": "4,6,4.049999",
+                  "Scale": 0.2
+                },
+                {
+                  "__type": "Sharpen",
+                  "__enabled": false,
+                  "Scale": 1
+                },
+                {
+                  "__type": "Highlight",
+                  "__enabled": true
+                },
+                {
+                  "__type": "Bloom",
+                  "__enabled": true,
+                  "BloomColor": {
+                    "color": [
+                      {
+                        "c": "1,1,1,1"
+                      },
+                      {
+                        "t": 1,
+                        "c": "0.5,0.5,0.5,1"
+                      }
+                    ],
+                    "alpha": []
+                  },
+                  "BloomCurve": {
+                    "rangey": "0,106.45",
+                    "frames": [
+                      {},
+                      {
+                        "x": 1,
+                        "y": 1
+                      }
+                    ]
+                  },
+                  "Mode": "Screen",
+                  "Strength": 1,
+                  "Threshold": 0.3,
+                  "ThresholdWidth": 2
+                },
+                {
+                  "__type": "Tonemapping",
+                  "__enabled": true,
+                  "ExposureCompensation": 0,
+                  "MaximumExposure": 2,
+                  "MinimumExposure": 1,
+                  "Rate": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "89cfd827-84f6-4bf7-92dc-4ec0bc62c2cf",
+      "Name": "Plane",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "25,25,25",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Model": null,
+          "Static": false,
+          "Surface": null
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "100,100,0.01",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "9e8f93cf-6623-4be7-9206-2dbec596e588",
+      "Name": "Environments",
+      "Enabled": true,
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Children": [
+        {
+          "Id": "f4c9b6c0-c461-4d62-baeb-26e64038eba8",
+          "Name": "Wall",
+          "Enabled": true,
+          "Position": "850,650,100",
+          "Rotation": "0,0.707107,0,0.7071065",
+          "Scale": "2,2,2",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/plane.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "ModelCollider",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Model": null,
+              "Static": false,
+              "Surface": null
+            },
+            {
+              "__type": "ColliderBoxComponent",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Scale": "100,100,0.01",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        },
+        {
+          "Id": "672ec855-7089-4eea-bab0-961c2c763f39",
+          "Name": "Wall (2)",
+          "Enabled": true,
+          "Position": "950,550,100",
+          "Rotation": "-0.4999141,0.4999138,0.5000862,0.5000858",
+          "Scale": "2,2,2",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/plane.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "ModelCollider",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Model": null,
+              "Static": false,
+              "Surface": null
+            },
+            {
+              "__type": "ColliderBoxComponent",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Scale": "100,100,0.01",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        },
+        {
+          "Id": "03c34a7b-f0ea-4279-b54a-892c6d7693d4",
+          "Name": "Wall (3)",
+          "Enabled": true,
+          "Position": "1150,550,100",
+          "Rotation": "-0.4999141,0.4999138,0.5000862,0.5000858",
+          "Scale": "2,2,2",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/plane.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "ModelCollider",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Model": null,
+              "Static": false,
+              "Surface": null
+            },
+            {
+              "__type": "ColliderBoxComponent",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Scale": "100,100,0.01",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        },
+        {
+          "Id": "eae5380c-ed66-4aed-8b30-9801f38b7e14",
+          "Name": "Wall (1)",
+          "Enabled": true,
+          "Position": "850,850,100",
+          "Rotation": "0,0.707107,0,0.7071065",
+          "Scale": "2,2,2",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "ModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "models/dev/plane.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "ModelCollider",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Model": null,
+              "Static": false,
+              "Surface": null
+            },
+            {
+              "__type": "ColliderBoxComponent",
+              "__enabled": true,
+              "IsTrigger": false,
+              "Scale": "100,100,0.01",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "dev",
+  "Description": "",
+  "__references": []
+}

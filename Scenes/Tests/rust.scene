@@ -7,10 +7,12 @@
       "Position": "0,0,0",
       "Rotation": "0,0,0,1",
       "Scale": "10,10,10",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": "models/rust_props/remnant_container/concrete_a_cont.vmat",
           "Model": "models/dev/plane.vmdl",
           "ShouldCastShadows": true,
@@ -21,6 +23,7 @@
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "100,100,1",
+          "Static": false,
           "Surface": null
         }
       ]
@@ -32,6 +35,7 @@
       "Position": "-456.3969,-157.33,70.9175",
       "Rotation": "0,0,-0.5056576,0.8627343",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -52,10 +56,12 @@
       "Position": "-393.2265,-425.3183,-1.2198",
       "Rotation": "0,-0,-0.2739593,0.9617413",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/barricades/barricade.stone.vmdl",
           "ShouldCastShadows": true,
@@ -70,6 +76,7 @@
       "Position": "313.4948,-15.2287,115.0273",
       "Rotation": "0,0.9987631,0,0.04972083",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -90,10 +97,12 @@
       "Position": "-349.6256,-333.7433,-1.71",
       "Rotation": "0,0,0.009162664,0.999958",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/barricades/barricade.stone.vmdl",
           "ShouldCastShadows": true,
@@ -108,6 +117,7 @@
       "Position": "-454.6291,-108.5722,53.7213",
       "Rotation": "0.9279775,0.3109482,0.1947102,-0.06524501",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -128,10 +138,12 @@
       "Position": "-487.3505,-494.6768,-1.8954",
       "Rotation": "0,-0,-0.707107,0.7071065",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
           "ShouldCastShadows": true,
@@ -146,6 +158,7 @@
       "Position": "-295.4084,151.478,45.1196",
       "Rotation": "0.009279268,0.03273769,-0.2725423,0.9615419",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "SpotLightComponent",
@@ -166,10 +179,12 @@
       "Position": "-498.7296,-137.6851,-1.7549",
       "Rotation": "-0.01110677,-0.01110674,-0.7070202,0.7070188",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
           "ShouldCastShadows": true,
@@ -184,10 +199,12 @@
       "Position": "-483.7231,222.7822,-11.5867",
       "Rotation": "0.009255753,0.009255728,-0.7070475,0.707045",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_structures/fences_walls/wall_plaster_300x900.vmdl",
           "ShouldCastShadows": true,
@@ -202,10 +219,12 @@
       "Position": "-672.6313,222.7825,-11.5867",
       "Rotation": "0.009255753,0.009255728,-0.7070475,0.707045",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
           "ShouldCastShadows": true,
@@ -220,10 +239,12 @@
       "Position": "-667.9079,-297.8436,-209.1437",
       "Rotation": "0.01302657,-0.001283034,-0.9950992,-0.09801131",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
           "ShouldCastShadows": true,
@@ -238,10 +259,12 @@
       "Position": "-961.2297,28.5256,-218.3443",
       "Rotation": "0.08655088,0.1002591,0.6819781,0.7192796",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_nature/american_beech/american_beech_d_dead.vmdl",
           "ShouldCastShadows": true,
@@ -256,10 +279,12 @@
       "Position": "-395.6563,405.8358,-38.1059",
       "Rotation": "0,0,0.009162664,0.999958",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/rubble_piles/rubble_pile_9x9.vmdl",
           "ShouldCastShadows": true,
@@ -274,10 +299,12 @@
       "Position": "-625.9832,544.8216,-38.1059",
       "Rotation": "0,0,0.009162664,0.999958",
       "Scale": "1.5,1.5,1.5",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/rubble_piles/rubble_pile_9x9.vmdl",
           "ShouldCastShadows": true,
@@ -292,10 +319,12 @@
       "Position": "-399.1765,-252.4252,-0.0276",
       "Rotation": "0,0,0.8343674,0.5512087",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/concrete_debris/concrete_debris_b.vmdl",
           "ShouldCastShadows": true,
@@ -310,10 +339,12 @@
       "Position": "-96.026,354.4538,-3.3535",
       "Rotation": "0,-0,-0.3226781,0.9465088",
       "Scale": "2,2,2",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/concrete_debris/concrete_debris_b.vmdl",
           "ShouldCastShadows": true,
@@ -328,10 +359,12 @@
       "Position": "-285.9511,557.0157,-0.027",
       "Rotation": "0,0,0.4198495,0.9075937",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/shipping_containers/shipping_container_900_b.vmdl",
           "ShouldCastShadows": true,
@@ -346,10 +379,12 @@
       "Position": "-375.5695,-484.208,1.3438",
       "Rotation": "0,0,0.6883554,0.7253736",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
           "ShouldCastShadows": true,
@@ -364,10 +399,12 @@
       "Position": "-257.6477,-490.3877,0.9858",
       "Rotation": "0,0,0.6883554,0.7253736",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
           "ShouldCastShadows": true,
@@ -382,10 +419,12 @@
       "Position": "-139.2377,-496.593,1.908",
       "Rotation": "0,0,0.6883554,0.7253736",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/industrial_fences/industrial_fence_300.vmdl",
           "ShouldCastShadows": true,
@@ -400,6 +439,7 @@
       "Position": "-231.4456,312.7728,153.8908",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PointLightComponent",
@@ -416,23 +456,25 @@
       "Position": "-117.0236,0,256.2163",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -447,23 +489,25 @@
       "Position": "-117.0236,-109.0445,329.2191",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         },
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -478,10 +522,12 @@
       "Position": "-267.1209,43.9013,-4.9293",
       "Rotation": "0,0,0.8343674,0.5512087",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/rust_props/tires/tire_stack_c.vmdl",
           "ShouldCastShadows": true,
@@ -496,10 +542,12 @@
           "Position": "-31.4945,35.6044,0",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
+          "Tags": "",
           "Components": [
             {
               "__type": "ModelComponent",
               "__enabled": true,
+              "BodyGroups": 18446744073709551615,
               "MaterialOverride": null,
               "Model": "models/dev/sphere.vmdl",
               "ShouldCastShadows": true,
@@ -516,13 +564,17 @@
       "Position": "280.0198,-226.7577,135.2636",
       "Rotation": "-0.09939483,0.02436552,0.966144,0.2368393",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "CameraComponent",
           "__enabled": true,
           "BackgroundColor": "0.12871,0.07744,0.02612,1",
-          "ClearFlags": "Color, Depth, Stencil",
+          "ClearFlags": "All",
           "FieldOfView": 70.05,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "TargetEye": "None",
           "ZFar": 5996.1,
           "ZNear": 20.800001
         }
@@ -535,10 +587,12 @@
       "Position": "-117.0236,22.9639,426.3412",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
+      "Tags": "",
       "Components": [
         {
           "__type": "ModelComponent",
           "__enabled": true,
+          "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "ShouldCastShadows": true,
@@ -547,19 +601,28 @@
         {
           "__type": "PhysicsComponent",
           "__enabled": true,
-          "Gravity": true,
-          "Static": false
+          "Gravity": true
         },
         {
           "__type": "ColliderBoxComponent",
           "__enabled": true,
           "IsTrigger": false,
           "Scale": "50,50,50",
+          "Static": false,
           "Surface": null
         }
       ]
     }
   ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "rust",
+  "Description": "",
   "__references": [
     "rust.american_beech_d_dead",
     "rust.barricadestone",
