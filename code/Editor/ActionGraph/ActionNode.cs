@@ -130,21 +130,37 @@ public record struct VariableNodeType( string Name, Type Type, PropertyNodeKind 
 	public string Identifier => $"var.{Kind}/{Name}";
 }
 
-public record struct MethodNodeType( MethodDescription Method ) : INodeType
+public record struct MethodNodeType( MethodDescription[] Methods ) : INodeType
 {
 	public DisplayInfo DisplayInfo => new()
 	{
-		Name = Method.Title,
-		Description = Method.Description,
-		Group = Method.TypeDescription.Name,
-		Icon = Method.Icon ?? (Method.HasAttribute<PureAttribute>() ? "run_circle" : EditorNodeLibrary.CallMethod.DisplayInfo.Icon)
+		Name = Methods[0].Title.Contains( '{' ) ? Methods[0].Name.ToTitleCase() : Methods[0].Title,
+		Description = Methods[0].Description,
+		Group = Methods[0].TypeDescription.Name,
+		Icon = Methods[0].Icon ?? (Methods[0].HasAttribute<PureAttribute>() ? "run_circle" : EditorNodeLibrary.CallMethod.DisplayInfo.Icon)
 	};
 
 	public bool HasInput( Type valueType )
 	{
-		return valueType == typeof(OutputSignal)
-			|| !Method.IsStatic && Method.TypeDescription.TargetType.IsAssignableFrom( valueType )
-			|| Method.Parameters.Any( x => x.ParameterType.IsAssignableFrom( valueType ) );
+		return Methods.Any( x =>
+		{
+			if ( valueType == typeof(OutputSignal) && x.GetCustomAttribute<PureAttribute>() is null )
+			{
+				return true;
+			}
+
+			if ( !x.IsStatic && x.TypeDescription.TargetType.IsAssignableFrom( valueType ) )
+			{
+				return true;
+			}
+
+			if ( x.Parameters.Any( x => x.ParameterType.IsAssignableFrom( valueType ) ) )
+			{
+				return true;
+			}
+
+			return false;
+		} );
 	}
 
 	public bool HideInEditor => false;
@@ -154,13 +170,13 @@ public record struct MethodNodeType( MethodDescription Method ) : INodeType
 		var actionGraph = (ActionGraph)graph;
 		var node = actionGraph.Graph.AddNode( actionGraph.Graph.NodeLibrary.CallMethod );
 
-		node.Properties["_type"].Value = Method.TypeDescription.TargetType;
-		node.Properties["_name"].Value = Method.Name;
+		node.Properties["_type"].Value = Methods[0].TypeDescription.TargetType;
+		node.Properties["_name"].Value = Methods[0].Name;
 
 		return new ActionNode( actionGraph, node );
 	}
 
-	public string Identifier => $"call/{Method.TypeDescription.FullName}/{Method.Name}";
+	public string Identifier => $"call/{Methods[0].TypeDescription.FullName}/{Methods[0].Name}";
 }
 
 public record struct PropertyNodeType( PropertyDescription Property, PropertyNodeKind Kind, bool ReadWrite ) : INodeType
@@ -721,8 +737,10 @@ public class ActionPlug<T, TDef> : IActionPlug
 	where T : Node.Parameter<TDef>
 	where TDef : class, IParameterDefinition
 {
+	private readonly T _defaultParam;
+
 	public ActionNode Node { get; }
-	public T Parameter => Source[Identifier];
+	public T Parameter => Source.TryGetValue( Identifier, out var param ) ? param : _defaultParam;
 	public int Index { get; set; }
 
 	public IReadOnlyDictionary<string, T> Source { get; }
@@ -750,6 +768,8 @@ public class ActionPlug<T, TDef> : IActionPlug
 		Index = index;
 
 		LastType = Type;
+
+		_defaultParam = Parameter;
 	}
 
 	public ValueEditor CreateEditor( NodeUI node, Plug plug )

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ public static class ActionGraphExtensions
 			case "input":
 				return new()
 				{
-					Name = node.ActionGraph.UserData["name"]?.GetValue<string>() ?? node.DisplayInfo.Title,
+					Name = node.ActionGraph.Title ?? node.DisplayInfo.Title,
 					Description = node.DisplayInfo.Description,
 					Icon = node.DisplayInfo.Icon,
 					Tags = node.DisplayInfo.Tags
@@ -48,6 +49,12 @@ public static class ActionGraphExtensions
 				return ConstDisplayInfo( node );
 
 			default:
+				if ( node.Definition.Identifier == "call" )
+				{
+					var binding = typeof(Node).GetProperty( "Binding", BindingFlags.Instance | BindingFlags.NonPublic );
+					Log.Info( ((NodeBinding)binding!.GetValue( node )!).DisplayInfo.Title );
+				}
+
 				return new()
 				{
 					Name = node.DisplayInfo.Title,
@@ -528,6 +535,8 @@ public class ActionGraphView : GraphView
 			}
 		}
 
+		var methods = new List<MethodDescription>();
+
 		foreach ( var memberDesc in typeDesc.DeclaredMembers )
 		{
 			if ( !IsMemberPublic( memberDesc ) || memberDesc.IsStatic )
@@ -543,7 +552,7 @@ public class ActionGraphView : GraphView
 						break;
 					}
 
-					yield return new MethodNodeType( methodDesc );
+					methods.Add( methodDesc );
 					break;
 
 				case PropertyDescription propertyDesc:
@@ -573,6 +582,11 @@ public class ActionGraphView : GraphView
 
 					break;
 			}
+		}
+
+		foreach ( var methodGroup in methods.GroupBy( x => x.Name ) )
+		{
+			yield return new MethodNodeType( methodGroup.ToArray() );
 		}
 	}
 
