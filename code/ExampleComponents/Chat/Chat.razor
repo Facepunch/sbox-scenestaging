@@ -60,6 +60,9 @@
 		var text = InputBox.Text;
 		InputBox.Text = "";
 
+		if (string.IsNullOrWhiteSpace(text))
+			return;
+
 		AddText( Sandbox.Utility.Steam.PersonaName, text );
 	}
 
@@ -67,6 +70,9 @@
 	public void AddText( string author, string message )
 	{
 		message = message.Truncate( 300 );
+
+		if (string.IsNullOrWhiteSpace(message))
+			return;
 
 		Log.Info($"{author}: {message}");
 
