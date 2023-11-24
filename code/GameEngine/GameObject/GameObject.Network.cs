@@ -71,6 +71,9 @@ public partial class GameObject
 
 	internal void NetworkUpdate()
 	{
+		if ( SceneNetworkSystem.Instance is null )
+			return;
+
 		var update = CreateNetworkUpdate();
 
 		SceneNetworkSystem.Instance.Broadcast( update );
