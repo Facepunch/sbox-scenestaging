@@ -9,6 +9,8 @@ public partial class Scene : GameObject
 	{
 		Assert.NotNull( resource );
 
+		SceneNetworkSystem.Disconnect();
+
 		ProcessDeletes();
 		Clear();
 
