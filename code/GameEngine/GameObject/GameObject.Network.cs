@@ -276,6 +276,7 @@ public partial class GameObject
 			if ( !Active ) return false;
 			if ( !IsOwner ) return false;
 
+			go.NetworkUpdate(); // send final update
 			go.Msg_DropOwnership();
 			return true;
 		}
