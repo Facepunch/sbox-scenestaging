@@ -201,7 +201,6 @@ PS
 
 	StaticCombo( S_MODE_DEPTH, 0..1, Sys( ALL ) );
 	DynamicCombo( D_BLEND, 0..1, Sys( ALL ) );
-	DynamicCombo( D_SCENE_DEPTH_MSAA, 0..1, Sys( ALL ) );
 
 	float g_DepthFeather < Attribute( "g_DepthFeather" ); >;
 	float g_FogStrength < Attribute( "g_FogStrength" ); >;
@@ -232,9 +231,6 @@ PS
 	#if S_MODE_DEPTH == 0
 		RenderState( DepthWriteEnable, false );
 	#endif
-
-
-
 
 
 	float4 MainPs( PS_INPUT i ) : SV_Target0

@@ -157,9 +157,9 @@ float3 GetWithFog(float3 worldPos, float2 screenPos, float3 color, float amount)
     const float3 vPositionToCameraWs = worldPos.xyz - g_vCameraPositionWs;
 
     float3 fogged = color;
-    fogged.rgb = ApplyGradientFog(fogged.rgb, worldPos.xyz, vPositionToCameraWs.xyz);
-    fogged.rgb = ApplyCubemapFog(fogged.rgb, worldPos.xyz, vPositionToCameraWs.xyz);
-    fogged.rgb = ApplyVolumetricFog(0, fogged.rgb, worldPos.xyz, screenPos.xy);
+    fogged = ApplyGradientFog(fogged, worldPos.xyz, vPositionToCameraWs.xyz);
+    fogged = ApplyCubemapFog(fogged, worldPos.xyz, vPositionToCameraWs.xyz);
+    fogged = ApplyVolumetricFog(fogged, worldPos.xyz, screenPos.xy);
 
     return lerp(color, fogged, amount);
 }
