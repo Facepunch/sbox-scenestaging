@@ -1,0 +1,164 @@
+{
+  "GameObjects": [
+    {
+      "Id": "f8a04d54-f3d3-4569-933c-c9e4f7b2f660",
+      "Name": "Directional Light",
+      "Enabled": true,
+      "Position": "0,0,154.1046",
+      "Rotation": "-0.1097847,0.3239216,0.3016309,0.8899668",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "Id": "52a9cb6d-df54-4e11-afb0-c864e560688d",
+      "Name": "SkyBox",
+      "Enabled": true,
+      "Position": "0,0,200",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "SkyBox2D",
+          "__enabled": true,
+          "SkyMaterial": "materials/skybox/skybox_day_cloudy_field_a.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "0f1b76ac-f6ff-4bf5-b075-b7cd319fa960",
+      "Name": "Citizen Player",
+      "Enabled": true,
+      "Position": "182.8452,189.7666,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "CharacterController",
+          "__enabled": true,
+          "Acceleration": 10,
+          "GroundAngle": 45,
+          "Height": 64,
+          "IgnoreLayers": "",
+          "Radius": 16,
+          "StepHeight": 18
+        },
+        {
+          "__type": "PlayerController",
+          "__enabled": true,
+          "AnimationHelper": "0f1b76ac-f6ff-4bf5-b075-b7cd319fa960",
+          "Body": "48e0b8fa-9a88-4748-9c13-7af59f33974d",
+          "CameraDistance": 200,
+          "Eye": "420c47d5-4152-441a-b2f2-a4200728200e",
+          "FirstPerson": false,
+          "Gravity": "0,0,800"
+        },
+        {
+          "__type": "CitizenAnimation",
+          "__enabled": true,
+          "Height": 1,
+          "Target": "48e0b8fa-9a88-4748-9c13-7af59f33974d"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "48e0b8fa-9a88-4748-9c13-7af59f33974d",
+          "Name": "Body",
+          "Enabled": true,
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "AnimatedModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/citizen/citizen.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "420c47d5-4152-441a-b2f2-a4200728200e",
+          "Name": "EyePos",
+          "Enabled": true,
+          "Position": "0,0,64",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": ""
+        },
+        {
+          "Id": "e5252655-eab9-48db-a844-4572d52e16e7",
+          "Name": "Camera",
+          "Enabled": true,
+          "Position": "-200,0,64",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Components": [
+            {
+              "__type": "CameraComponent",
+              "__enabled": true,
+              "BackgroundColor": "0.33333,0.46275,0.52157,1",
+              "ClearFlags": "All",
+              "FieldOfView": 60,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
+              "RenderExcludeTags": "",
+              "RenderTags": "",
+              "TargetEye": "None",
+              "ZFar": 500000,
+              "ZNear": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "233747a4-5f04-4bab-85fb-3f1105610995",
+      "Name": "Cube",
+      "Enabled": true,
+      "Position": "210.606,208.8853,122.0423",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "terrain",
+  "Description": "",
+  "__references": []
+}

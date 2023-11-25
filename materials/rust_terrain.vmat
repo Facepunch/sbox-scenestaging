@@ -1,0 +1,65 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/rust_terrain.shader"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Splat 0 ----
+	TextureAmbientOcclusion0 "Textures/Terrain/Rust/Splats/soil_ao.png"
+	TextureColor0 "Textures/Terrain/Rust/Splats/soil_albedo.tga"
+	TextureMetalness0 "materials/default/default_metal.tga"
+	TextureNormal0 "Textures/Terrain/Rust/Splats/soil_nrm.tga"
+	TextureRoughness0 "Textures/Terrain/Rust/Splats/soil_rough.png"
+
+	//---- Splat 1 ----
+	TextureAmbientOcclusion1 "Textures/Terrain/Rust/Splats/snow_ao.png"
+	TextureColor1 "Textures/Terrain/Rust/Splats/snow_albedo.tga"
+	TextureMetalness1 "materials/default/default_metal.tga"
+	TextureNormal1 "Textures/Terrain/Rust/Splats/snow_nrm.tga"
+	TextureRoughness1 "textures/terrain/rust/splats/snow_rough.png"
+
+	//---- Splat 2 ----
+	TextureAmbientOcclusion2 "Textures/Terrain/Rust/Splats/sand_ao.png"
+	TextureColor2 "Textures/Terrain/Rust/Splats/sand_albedo.tga"
+	TextureMetalness2 "materials/default/default_metal.tga"
+	TextureNormal2 "Textures/Terrain/Rust/Splats/sand_nrm.tga"
+	TextureRoughness2 "Textures/Terrain/Rust/Splats/sand_rough.png"
+
+	//---- Splat 3 ----
+	TextureAmbientOcclusion3 "Textures/Terrain/Rust/Splats/rock_ao.png"
+	TextureColor3 "Textures/Terrain/Rust/Splats/rock_albedo.tga"
+	TextureMetalness3 "materials/default/default_metal.tga"
+	TextureNormal3 "Textures/Terrain/Rust/Splats/rock_nrm.tga"
+	TextureRoughness3 "Textures/Terrain/Rust/Splats/rock_rough.png"
+
+	//---- Splat 4 ----
+	TextureAmbientOcclusion4 "Textures/Terrain/Rust/Splats/grass_ao.png"
+	TextureColor4 "textures/terrain/rust/splats/grass_albedo.tga"
+	TextureMetalness4 "materials/default/default_metal.tga"
+	TextureNormal4 "Textures/Terrain/Rust/Splats/grass_nrm.tga"
+	TextureRoughness4 "Textures/Terrain/Rust/Splats/grass_rough.png"
+
+	//---- Splat 5 ----
+	TextureAmbientOcclusion5 "Textures/Terrain/Rust/Splats/forest_ao.png"
+	TextureColor5 "Textures/Terrain/Rust/Splats/forest_albedo.tga"
+	TextureMetalness5 "materials/default/default_metal.tga"
+	TextureNormal5 "Textures/Terrain/Rust/Splats/forest_nrm.tga"
+	TextureRoughness5 "Textures/Terrain/Rust/Splats/forest_rough.png"
+
+	//---- Splat 6 ----
+	TextureAmbientOcclusion6 "Textures/Terrain/Rust/Splats/stones_ao.png"
+	TextureColor6 "Textures/Terrain/Rust/Splats/stones_albedo.tga"
+	TextureMetalness6 "materials/default/default_metal.tga"
+	TextureNormal6 "Textures/Terrain/Rust/Splats/stones_nrm.tga"
+	TextureRoughness6 "Textures/Terrain/Rust/Splats/stones_rough.png"
+
+	//---- Splat 7 ----
+	TextureAmbientOcclusion7 "Textures/Terrain/Rust/Splats/gravel_ao.png"
+	TextureColor7 "Textures/Terrain/Rust/Splats/gravel_albedo.tga"
+	TextureMetalness7 "materials/default/default_metal.tga"
+	TextureNormal7 "Textures/Terrain/Rust/Splats/gravel_nrm.tga"
+	TextureRoughness7 "Textures/Terrain/Rust/Splats/gravel_rough.png"
+}
