@@ -10,6 +10,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 	protected PhysicsBody keyframeBody;
 	CollisionEventSystem _collisionEvents;
 
+	[Property] public bool Static { get; set; } = false;
 	[Property] public Surface Surface { get; set; }
 
 	bool _isTrigger;
@@ -41,28 +42,37 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 
 		UpdatePhysicsBody();
 		RebuildImmediately();
+
+		GameObject.Tags.OnTagAdded += OnTagsChanged;
+		GameObject.Tags.OnTagRemoved += OnTagsChanged;
 	}
+
+
+
 
 	void UpdatePhysicsBody()
 	{
 		PhysicsBody physicsBody = null;
 
 		// is there a rigid body?
-		var body = GameObject.GetComponentInParent<PhysicsComponent>( true, true );
-		if ( body is not null )
+		if ( !Static )
 		{
-			physicsBody = body.GetBody();
-			if ( physicsBody is null ) return;
+			var body = GameObject.GetComponentInParent<PhysicsComponent>( true, true );
+			if ( body is not null )
+			{
+				physicsBody = body.GetBody();
+				if ( physicsBody is null ) return;
+			}
 		}
 
 		// If not, make us a keyframe body
 		if ( physicsBody is null )
 		{
 			physicsBody = new PhysicsBody( Scene.PhysicsWorld );
-			physicsBody.BodyType = PhysicsBodyType.Keyframed;
+			physicsBody.BodyType = Static ? PhysicsBodyType.Static : PhysicsBodyType.Keyframed;
 			physicsBody.GameObject = GameObject;
 			physicsBody.Transform = Transform.World.WithScale( 1 );
-			physicsBody.UseController = true;
+			physicsBody.UseController = Static ? false : true;
 			physicsBody.GravityEnabled = false;
 
 			Assert.IsNull( keyframeBody );
@@ -72,6 +82,14 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 			_collisionEvents = new CollisionEventSystem( keyframeBody );
 
 			Transform.OnTransformChanged += UpdateKeyframeTransform;
+		}
+	}
+
+	private void OnTagsChanged( string obj )
+	{
+		foreach ( var shape in shapes )
+		{
+			shape.Tags.SetFrom( GameObject.Tags );
 		}
 	}
 
@@ -151,13 +169,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 			shape.IsTrigger = _isTrigger;
 			shape.SurfaceMaterial = Surface?.ResourceName;
 
-			// this sucks, implement ITagSet
-			shape.ClearTags();
-
-			foreach ( var tag in GameObject.Tags.TryGetAll() )
-			{
-				shape.AddTag( tag );
-			}
+			shape.Tags.SetFrom( GameObject.Tags );
 		}
 	}
 
@@ -171,6 +183,9 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		shapes.Clear();
 
 		Transform.OnTransformChanged -= UpdateKeyframeTransform;
+
+		GameObject.Tags.OnTagAdded -= OnTagsChanged;
+		GameObject.Tags.OnTagRemoved -= OnTagsChanged;
 
 		_collisionEvents?.Dispose();
 		_collisionEvents = null;
@@ -201,7 +216,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 			Rebuild();
 		}
 
-		if ( Scene.IsEditor )
+		if ( Scene.IsEditor || Static )
 		{
 			keyframeBody.Transform = Transform.World;
 		}
@@ -214,6 +229,8 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 			// if it's shorter, the objects will be punched quicker than the collider is moving
 			// so will tend to over-react to being touched.
 			float timeToArrive = Scene.FixedDelta;
+
+			if ( IsProxy ) timeToArrive *= 2.0f;
 
 			keyframeBody.Move( Transform.World, timeToArrive );
 		}

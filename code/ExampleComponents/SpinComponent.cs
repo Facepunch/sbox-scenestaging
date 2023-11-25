@@ -6,6 +6,8 @@ public sealed class SpinComponent : BaseComponent
 
 	public override void Update()
 	{
-		Transform.LocalRotation *= (SpinAngles * RealTime.Delta).ToRotation();
+		if ( IsProxy ) return;
+
+		Transform.LocalRotation *= (SpinAngles * Time.Delta).ToRotation();
 	}
 }

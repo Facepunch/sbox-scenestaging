@@ -15,6 +15,9 @@ public partial class GameObject
 	[Property]
 	public string Name { get; set; } = "Untitled Object";
 
+	[Property]
+	public bool Lerping { get; set; } = true;
+
 
 	bool _enabled = true;
 

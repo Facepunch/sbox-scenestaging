@@ -21,11 +21,17 @@ public partial class Scene : GameObject
 
 	Gizmo.Instance gizmoInstance = new();
 
+
+	public string Title { get; set; }
+	public string Description { get; set; }
+
 	public Scene() : base( true, "Scene" )
 	{
 		SceneWorld = new SceneWorld();
 		PhysicsWorld = new PhysicsWorld();
 		Directory = new GameObjectDirectory( this );
+
+		PhysicsWorld.DebugSceneWorld = DebugSceneWorld;
 
 		PhysicsWorld.Gravity = Vector3.Down * 850;
 		PhysicsWorld.SimulationMode = PhysicsSimulationMode.Continuous;
@@ -107,10 +113,16 @@ public partial class Scene : GameObject
 	{
 		var old = GameManager.ActiveScene;
 		GameManager.ActiveScene = this;
+		var timeScope = Time.Scope( GameManager.ActiveScene.TimeNow, GameManager.ActiveScene.TimeDelta, 1 );
 
 		return DisposeAction.Create( () =>
 		{
-			GameManager.ActiveScene = old;
+			if ( GameManager.ActiveScene == this )
+			{
+				GameManager.ActiveScene = old;
+			}
+
+			timeScope?.Dispose();
 		} );
 	}
 
@@ -129,7 +141,7 @@ public partial class Scene : GameObject
 
 	internal void OnRenderOverlayInternal( SceneCamera camera )
 	{
-		foreach ( var c in GetComponents<BaseComponent.RenderOverlay>( true, true ) )
+		foreach ( var c in GetComponents<BaseComponent.IRenderOverlay>( true, true ) )
 		{
 			c.OnRenderOverlay( camera );
 		}

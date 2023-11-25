@@ -4,7 +4,8 @@
 
 <root onclick="@( () => OnSelected( Scene ) )">
 
-    <div class="title">@Scene.ResourceName</div>
+    <div class="title">@(Scene.Title ?? Scene.ResourceName)</div>
+    <div class="description">@Scene.Description</div>
 
 </root>
 

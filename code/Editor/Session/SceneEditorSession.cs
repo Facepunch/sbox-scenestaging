@@ -20,6 +20,7 @@ public partial class SceneEditorSession
 
 		Scene.OnEdited += OnSceneEdited;
 		InitUndo();
+		timeSinceSavedState = 0;
 	}
 
 	public void Destroy()

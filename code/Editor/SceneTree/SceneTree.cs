@@ -54,6 +54,9 @@ public partial class SceneTreeWidget : Widget
 
 		Header.Clear( true );
 
+		// Copy the current selection as we're about to kill it
+		var selection = TreeView.Selection.Select( x => x as GameObject );
+
 		// treeview will clear the selection, so give it a new one to clear
 		TreeView.Selection = new SelectionSystem();
 		TreeView.Clear();
@@ -73,6 +76,18 @@ public partial class SceneTreeWidget : Widget
 		}
 
 		TreeView.Selection = activeScene.Selection;
+		
+		// Go through the current scene
+		// Feel like this could be loads faster
+		foreach ( var go in _lastScene.Scene.GetAllObjects( false ) )
+		{
+			// If we find a matching item in our new scene
+			if ( selection.FirstOrDefault( x => x.Id == go.Id ) != null )
+			{
+				// Add it to the current selection
+				TreeView.Selection.Add( go );
+			}
+		}
 	}
 }
 

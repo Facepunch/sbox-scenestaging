@@ -1,0 +1,97 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@implements BaseComponent.INetworkListener
+
+<root>
+
+	<div class="output">
+		@foreach (var entry in Entries)
+		{
+			<div class="chat_entry">
+				<div class="author">@entry.author</div>
+				<div class="message">@entry.message</div>
+			</div>
+		}
+	</div>
+
+	<div class="input">
+		<TextEntry @ref="InputBox" onsubmit="@ChatFinished"></TextEntry>
+	</div>
+	
+</root>
+
+@code
+{
+
+	[Property] public string MyStringValue { get; set; } = "Hello World!";
+
+	TextEntry InputBox;
+
+	public record Entry( string author, string message, RealTimeSince timeSinceAdded );
+	List<Entry> Entries = new();
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( MyStringValue );
+
+	public override void Update()
+	{
+		if (InputBox is null)
+			return;
+
+		Panel.AcceptsFocus = false;
+
+		if ( Input.Pressed( "chat" ) )
+		{
+			InputBox.Focus();
+		}
+
+		if ( Entries.RemoveAll( x => x.timeSinceAdded > 30.0f ) > 0 )
+		{
+			StateHasChanged();
+		}
+
+		SetClass( "open", InputBox.HasFocus );
+	}
+
+	void ChatFinished()
+	{
+		var text = InputBox.Text;
+		InputBox.Text = "";
+
+		if (string.IsNullOrWhiteSpace(text))
+			return;
+
+		AddText( Sandbox.Utility.Steam.PersonaName, text );
+	}
+
+	[Broadcast]
+	public void AddText( string author, string message )
+	{
+		message = message.Truncate( 300 );
+
+		if (string.IsNullOrWhiteSpace(message))
+			return;
+
+		Log.Info($"{author}: {message}");
+
+		Entries.Add(new Entry( author, message, 0.0f ));
+		StateHasChanged();
+	}
+
+	void BaseComponent.INetworkListener.OnConnected( Connection channel )
+	{
+		if ( IsProxy ) return;
+
+		AddText( "🛎️", $"{channel.DisplayName} has joined the game" );
+	}
+
+	void BaseComponent.INetworkListener.OnDisconnected( Connection channel )
+	{
+		if ( IsProxy ) return;
+
+		AddText(  "💨", $"{channel.DisplayName} has left the game" );
+	}
+}

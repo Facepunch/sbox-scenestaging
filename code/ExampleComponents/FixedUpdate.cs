@@ -9,27 +9,24 @@ internal class FixedUpdate
 
 	float lastTime;
 
+	int ticks = 0;
+
 	internal void Run( Action fixedUpdate )
 	{
-		var saveNow = Time.Now;
-		var saveDelta = Time.Delta;
-
 		var delta = Delta;
-		var time = saveNow;
+		var time = Time.Now;
 		lastTime = lastTime.Clamp( time - (MaxSteps * delta), time + delta );
-
-		Time.Delta = delta;
 
 		while ( lastTime < time )
 		{
+			using var timeScope = Time.Scope( lastTime, delta, ticks );
+
 			Time.Now = lastTime;
 
 			fixedUpdate();
 			
 			lastTime += delta;
+			ticks++;
 		}
-
-		Time.Now = saveNow;
-		Time.Delta = saveDelta;
 	}
 }

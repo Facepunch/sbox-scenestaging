@@ -5,7 +5,7 @@ using System.Linq;
 
 [Category( "UI Panels" )]
 [Icon( "widgets" )]
-public abstract class PanelComponent : BaseComponent, IPanelComponent
+public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 {
 	Panel panel;
 
@@ -108,6 +108,14 @@ public abstract class PanelComponent : BaseComponent, IPanelComponent
 		// add new one
 		loadedStyleSheet = path;
 		panel.StyleSheet.Load( loadedStyleSheet ); // todo ignore missing
+	}
+
+	/// <summary>
+	/// Should be called when you want the component to be re-rendered.
+	/// </summary>
+	public void StateHasChanged()
+	{
+		panel.StateHasChanged();
 	}
 }
 

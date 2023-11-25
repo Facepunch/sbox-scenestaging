@@ -51,7 +51,7 @@ public partial class ComponentSheet : Widget
 		ExpandedCookie = expanded;
 	}
 
-	public ComponentSheet( Guid gameObjectId, SerializedObject target, Action contextMenu ) : base( null )
+	public ComponentSheet( Guid gameObjectId, SerializedObject target, Action<Vector2?> contextMenu ) : base( null )
 	{
 		GameObjectId = gameObjectId;
 		Name = "ComponentSheet";
@@ -136,6 +136,7 @@ public partial class ComponentSheet : Widget
 			skipProperty = toggleGroup;
 
 			var label = new Label( toggleAttr.Label ?? groupName );
+
 			label.SetStyles( "color: #ccc; font-weight: bold;" );
 			label.FixedHeight = ControlWidget.ControlRowHeight;
 
@@ -181,7 +182,7 @@ file class ComponentHeader : Widget
 	SerializedObject TargetObject { get; init; }
 	ComponentSheet Sheet { get; set; }
 
-	public Action WantsContextMenu;
+	public Action<Vector2?> WantsContextMenu;
 
 	Layout expanderRect;
 	Layout iconRect;
@@ -226,6 +227,22 @@ file class ComponentHeader : Widget
 		moreRect.AddSpacingCell( 16 );
 
 		Layout.AddSpacingCell( 16 );
+
+		IsDraggable = true;
+	}
+
+	protected override void OnDragStart()
+	{
+		base.OnDragStart();
+
+		if ( !TargetObject.TryGetProperty( "GameObject", out var goProp ) ) return;
+
+		var go = goProp.GetValue<GameObject>( null );
+		if ( go == null ) return;
+
+		var drag = new Drag( Sheet );
+		drag.Data.Object = go;
+		drag.Execute();
 	}
 
 	protected override void OnPaint()
@@ -277,7 +294,7 @@ file class ComponentHeader : Widget
 	{
 		base.OnMouseRightClick( e );
 
-		WantsContextMenu?.Invoke();
+		WantsContextMenu?.Invoke( null );
 	}
 
 	protected override void OnMouseClick( MouseEvent e )
@@ -288,7 +305,7 @@ file class ComponentHeader : Widget
 		{
 			if ( moreRect.InnerRect.IsInside( e.LocalPosition ) )
 			{
-				WantsContextMenu?.Invoke();
+				WantsContextMenu?.Invoke( ToScreen( moreRect.OuterRect.BottomLeft ) );
 			}
 			else
 			{

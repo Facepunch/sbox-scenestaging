@@ -21,17 +21,20 @@ public class TransformInterpolate
 	public void Add( in float time, in Transform tx )
 	{
 		// last entry was this time, remove it
-		if ( entries.Count > 0 )
+		while ( entries.Count > 0 )
 		{
 			var lastEntry = entries.Last();
-			if ( lastEntry.Time == time )
-				entries.RemoveAt( entries.Count - 1 );
+
+			if ( lastEntry.Time < time )
+				break;
+
+			entries.RemoveAt( entries.Count - 1 );
 		}
 
 		entries.Add( new Entry( time, tx ) );
 	}
 
-	public bool Query( float now, ref Transform transform )
+	public bool Query( float now, ref Transform transform, bool extrapolate )
 	{
 		if ( entries.Count == 0 || start.Time == 0 )
 		{
@@ -50,8 +53,19 @@ public class TransformInterpolate
 		}
 
 		var to = entries[i];
-		var delta = MathX.Remap( now, from.Time, to.Time, 0.0f, 1.0f );
-		transform = Transform.Lerp( from.Transform, to.Transform, delta, true );
+
+		if ( from.Transform == to.Transform )
+		{
+			transform = from.Transform;
+			return true;
+		}
+
+		// allow at most 1 second of extrapolation
+		now = float.Clamp( now, from.Time, to.Time + 1.0f );
+
+		var delta = MathX.Remap( now, from.Time, to.Time, 0.0f, 1.0f, false );
+
+		transform = Transform.Lerp( from.Transform, to.Transform, delta, false );
 
 		return true;
 	}

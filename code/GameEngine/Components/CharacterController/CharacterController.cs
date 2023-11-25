@@ -6,7 +6,7 @@ using System.Drawing;
 [Category( "Physics" )]
 [Icon( "directions_walk", "red", "white" )]
 [EditorHandle( "materials/gizmo/charactercontroller.png" )]
-public class CharacterController : BaseComponent
+public class CharacterController : BaseComponent, INetworkSerializable
 {
 	[Range( 0, 200 )]
 	[Property] public float Radius { get; set; } = 16.0f;
@@ -275,5 +275,17 @@ public class CharacterController : BaseComponent
 		_stuckTries++;
 
 		return true;
+	}
+
+	public void Write( ref ByteStream stream )
+	{
+		stream.Write( IsOnGround );
+		stream.Write( Velocity );
+	}
+
+	public void Read( ByteStream stream )
+	{
+		IsOnGround = stream.Read<bool>();
+		Velocity = stream.Read<Vector3>();
 	}
 }

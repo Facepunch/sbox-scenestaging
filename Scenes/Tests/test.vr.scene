@@ -82,9 +82,8 @@
       "Tags": "",
       "Components": [
         {
-          "__type": "AnchorComponent",
-          "__enabled": true,
-          "UpdateType": "All"
+          "__type": "VrAnchor",
+          "__enabled": true
         }
       ],
       "Children": [
@@ -101,21 +100,22 @@
               "__type": "CameraComponent",
               "__enabled": true,
               "BackgroundColor": "0.33333,0.46275,0.52157,1",
-              "ClearFlags": "Color, Depth, Stencil",
+              "ClearFlags": "All",
               "FieldOfView": 90,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "RenderExcludeTags": "",
+              "RenderTags": "",
               "TargetEye": "Both",
               "ZFar": 5000,
               "ZNear": 1
             },
             {
-              "__type": "TrackedPoseComponent",
+              "__type": "VrTrackedObject",
               "__enabled": true,
               "PoseSource": "Head",
               "TrackingType": "All",
-              "UpdateType": "All",
-              "UseRelativeTransform": true
+              "UseRelativeTransform": false
             }
           ]
         },
@@ -129,12 +129,11 @@
           "Tags": "",
           "Components": [
             {
-              "__type": "TrackedPoseComponent",
+              "__type": "VrTrackedObject",
               "__enabled": true,
               "PoseSource": "LeftHand",
               "TrackingType": "All",
-              "UpdateType": "All",
-              "UseRelativeTransform": true
+              "UseRelativeTransform": false
             }
           ],
           "Children": [
@@ -148,9 +147,16 @@
               "Tags": "",
               "Components": [
                 {
-                  "__type": "ModelComponent",
+                  "__type": "VrHand",
+                  "__enabled": true,
+                  "HandSource": "Left"
+                },
+                {
+                  "__type": "AnimatedModelComponent",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
+                  "CreateBoneObjects": false,
+                  "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Model": "models/hands/alyx_hand_left.vmdl",
                   "ShouldCastShadows": true,
@@ -170,12 +176,11 @@
           "Tags": "",
           "Components": [
             {
-              "__type": "TrackedPoseComponent",
+              "__type": "VrTrackedObject",
               "__enabled": true,
               "PoseSource": "RightHand",
               "TrackingType": "All",
-              "UpdateType": "All",
-              "UseRelativeTransform": true
+              "UseRelativeTransform": false
             }
           ],
           "Children": [
@@ -189,9 +194,16 @@
               "Tags": "",
               "Components": [
                 {
-                  "__type": "ModelComponent",
+                  "__type": "VrHand",
+                  "__enabled": true,
+                  "HandSource": "Right"
+                },
+                {
+                  "__type": "AnimatedModelComponent",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
+                  "CreateBoneObjects": false,
+                  "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Model": "models/hands/alyx_hand_right.vmdl",
                   "ShouldCastShadows": true,
@@ -306,6 +318,15 @@
       ]
     }
   ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "test.vr",
+  "Description": "",
   "__references": [
     "facepunch.beer_cask",
     "facepunch.oil_drum",

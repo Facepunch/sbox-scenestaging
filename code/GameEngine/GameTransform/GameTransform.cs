@@ -15,6 +15,7 @@ public class GameTransform
 	{
 		GameObject = owner;
 		_local = Transform.Zero;
+		_fixedLocal = Transform.Zero;
 	}
 
 	Transform _local;
@@ -42,7 +43,7 @@ public class GameTransform
 
 		set
 		{
-			if ( value.Position.IsNaN ) throw new System.ArgumentOutOfRangeException();
+			if ( value.Position.IsNaN ) throw new System.ArgumentOutOfRangeException( "Position is NaN" );
 
 			if ( Proxy is not null )
 			{
@@ -95,7 +96,7 @@ public class GameTransform
 
 		set
 		{
-			if ( value.Position.IsNaN ) throw new System.ArgumentOutOfRangeException();
+			if ( value.Position.IsNaN ) throw new System.ArgumentOutOfRangeException( "Position is NaN" );
 
 			if ( Proxy is not null )
 			{
@@ -193,21 +194,45 @@ public class GameTransform
 		interp.Clear( Local );
 	}
 
-	internal void Update()
+	internal void Update( bool isNetworkProxy )
 	{
 		if ( interp.entries is null )
 			return;
 
 		interp.CullOlderThan( Time.Now - 1.0f );
 
-		if ( interp.Query( Time.Now, ref _local ) )
+		//
+		// If we're a network proxy recieving positions from the network
+		// we want to act as if they're being set every frame.
+		//
+		if ( isNetworkProxy )
+		{
+			Transform networkLerp = _local;
+			if ( interp.Query( Time.Now, ref networkLerp, true ) )
+			{
+				Local = networkLerp;
+			}
+
+			return;
+		}
+
+		//
+		// If we're lerping locally (a physics object etc) we want to lerp
+		// as low impact as possible.
+		//
+		if ( interp.Query( Time.Now, ref _local, false ) )
 		{
 			// okay
 		}
 	}
 
-	public void FDdd()
+	internal void FromNetwork( Transform transform, float netRate )
 	{
-		//
+		if ( transform == _local ) return;
+
+		_local = transform;
+
+		LerpTo( _local, netRate );
+		TransformChanged();
 	}
 }

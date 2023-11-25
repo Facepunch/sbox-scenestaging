@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sandbox.Network;
+using System;
 using System.Threading.Tasks;
 
 public static class EditorScene
@@ -11,8 +12,8 @@ public static class EditorScene
 
 	public static string LastOpenedScene
 	{
-		get => ProjectCookie.Get<string>( "scene.lastopened", null );
-		set => ProjectCookie.Set( "scene.lastopened", value );
+		get => ProjectCookie?.Get<string>( "scene.lastopened", null );
+		set => ProjectCookie?.Set( "scene.lastopened", value );
 	}
 
 	[Event( "game.loaded" )]
@@ -104,13 +105,16 @@ public static class EditorScene
 		Camera.Main.Worlds.Add( GameManager.ActiveScene.DebugSceneWorld );
 
 		EditorWindow.DockManager.RaiseDock( "GameFrame" );
+		
+		EditorEvent.Run("scene.play");
 	}
 
 	public static void Stop()
 	{
+		GameNetworkSystem.Disconnect();
 		GameManager.IsPlaying = false;
 
-		GameManager.ActiveScene.Clear();
+		GameManager.ActiveScene?.Clear();
 		GameManager.ActiveScene = null;
 
 		GameEditorSession.CloseAll();
@@ -126,6 +130,8 @@ public static class EditorScene
 
 		EditorWindow.DockManager.RaiseDock( "Scene" );
 		SceneEditorTick();
+		
+		EditorEvent.Run("scene.stop");
 	}
 
 	/// <summary>

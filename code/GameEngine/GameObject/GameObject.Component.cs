@@ -62,7 +62,7 @@ public partial class GameObject
 	/// </summary>
 	public IEnumerable<BaseComponent> GetComponents( Type type, bool enabledOnly = true, bool deep = false )
 	{
-		return GetComponents<BaseComponent>( enabledOnly, deep ).Where( x => x.GetType().IsAssignableFrom( type ) );
+		return GetComponents<BaseComponent>( enabledOnly, deep ).Where( x => x.GetType().IsAssignableTo( type ) );
 	}
 
 	public bool TryGetComponent<T>( out T component, bool enabledOnly = true, bool deep = false )
@@ -70,6 +70,19 @@ public partial class GameObject
 		component = GetComponent<T>( enabledOnly, deep );
 
 		return component is not null;
+	}
+
+	/// <summary>
+	/// Get the first matching component on this game object, including components
+	/// that are disabled. If no such component is found, add and return a new one.
+	/// </summary>
+	public T GetOrAddComponent<T>( bool startEnabled = true ) where T : BaseComponent, new()
+	{
+		if ( !TryGetComponent( out T component, false ) )
+		{
+			component = AddComponent<T>( startEnabled );
+		}
+		return component;
 	}
 
 	/// <summary>

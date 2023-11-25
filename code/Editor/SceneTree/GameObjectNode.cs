@@ -9,6 +9,14 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		Height = 17;
 	}
 
+	public override string Name
+	{
+		get => Value.Name;
+		set => Value.Name = value;
+	}
+
+	public override bool CanEdit => true;
+
 	public override bool HasChildren
 	{
 		get
@@ -31,6 +39,10 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			hc.Add( Value.Name );
 			hc.Add( Value.IsPrefabInstance );
 			hc.Add( Value.Flags );
+			hc.Add( Value.Networked );
+			hc.Add( Value.Network.IsOwner );
+			hc.Add( Value.IsProxy );
+			hc.Add( Value.Active );
 
 			foreach ( var val in Value.Children )
 			{
@@ -46,6 +58,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		var selected = item.Selected || item.Pressed || item.Dragging;
 		var isBone = Value.Flags.HasFlag( GameObjectFlags.Bone );
 		var isAttachment = Value.Flags.HasFlag( GameObjectFlags.Attachment );
+		var isNetworked = Value.Networked;
 
 		var fullSpanRect = item.Rect;
 		fullSpanRect.Left = 0;
@@ -79,12 +92,35 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			iconColor = Theme.Pink.WithAlpha( 0.8f );
 		}
 
+		if ( isNetworked )
+		{
+			icon = "rss_feed";
+			iconColor = Theme.Blue.WithAlpha( 0.8f );
+
+			if ( Value.Network.IsOwner )
+			{
+				iconColor = Theme.Green.WithAlpha( 0.8f );
+			}
+
+			if ( Value.IsProxy )
+			{
+				iconColor = Theme.ControlText.WithAlpha( 0.6f );
+			}
+		}
+
 		//
 		// If there's a drag and drop happening, fade out nodes that aren't possible
 		//
-		if ( TreeView.IsBeingDroppedOn && (TreeView.CurrentItemDragEvent.Data.Object is not GameObject go || Value.IsAncestor( go )) )
+		if ( TreeView.IsBeingDroppedOn )
 		{
-			opacity *= 0.23f;
+			if ( TreeView.CurrentItemDragEvent.Data.Object is GameObject[] gos && gos.Any( go => Value.IsAncestor( go ) ) )
+			{
+				opacity *= 0.23f;
+			}
+			else if ( TreeView.CurrentItemDragEvent.Data.Object is GameObject go && Value.IsAncestor( go ) )
+			{
+				opacity *= 0.23f;
+			}
 		}
 
 		if ( item.Dropping )
@@ -132,13 +168,24 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 		Paint.SetPen( pen.WithAlphaMultiplied( opacity ) );
 		Paint.SetDefaultFont();
-		Paint.DrawText( r, name, TextFlag.LeftCenter );
+		r.Left += Paint.DrawText( r, name, TextFlag.LeftCenter ).Width;
 	}
 
 	public override bool OnDragStart()
 	{
 		var drag = new Drag( TreeView );
-		drag.Data.Object = Value;
+		
+		if ( TreeView.IsSelected( Value ) )
+		{
+			// If we're selected then use all selected items in the tree.
+			drag.Data.Object = TreeView.SelectedItems.OfType<GameObject>().ToArray();
+		}
+		else
+		{
+			// Otherwise let's just drag this one.
+			drag.Data.Object = new[] { Value };
+		}
+		
 		drag.Execute();
 
 		return true;
@@ -146,28 +193,63 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 	public override DropAction OnDragDrop( ItemDragEvent e )
 	{
-		if ( e.Data.Object is GameObject go )
-		{
-			// can't parent to an ancesor
-			if ( go == Value || Value.IsAncestor( go ) )
-				return DropAction.Ignore;
+		using var scope = Value.Scene.Push();
 
-			if ( e.IsDrop )
+		if ( e.Data.Object is GameObject[] gos )
+		{
+			if ( gos.Any( go => go == Value || Value.IsAncestor( go ) ) )
 			{
-				if ( e.DropEdge.HasFlag( ItemEdge.Top ) )
+				return DropAction.Ignore;
+			}
+			
+			foreach ( var go in gos )
+			{
+				if ( e.IsDrop )
 				{
-					Value.AddSibling( go, true );
-				}
-				else if ( e.DropEdge.HasFlag( ItemEdge.Bottom ) )
-				{
-					Value.AddSibling( go, false );
-				}
-				else
-				{
-					go.SetParent( Value, true );
+					if ( e.DropEdge.HasFlag( ItemEdge.Top ) )
+					{
+						Value.AddSibling( go, true );
+					}
+					else if ( e.DropEdge.HasFlag( ItemEdge.Bottom ) )
+					{
+						Value.AddSibling( go, false );
+					}
+					else
+					{
+						go.SetParent( Value, true );
+					}
 				}
 			}
 
+			return DropAction.Move;
+		}
+
+		var asset = AssetSystem.FindByPath( e.Data.FileOrFolder );
+		if ( asset is not null && asset.AssetType.FileExtension == "object" )
+		{
+			var pf = asset.LoadResource<PrefabFile>();
+			if ( pf is null ) return DropAction.Ignore;
+
+			if ( e.IsDrop )
+			{
+				var instantiated = SceneUtility.Instantiate( pf.Scene );
+
+				if ( e.DropEdge.HasFlag( ItemEdge.Top ) )
+				{
+					Value.AddSibling( instantiated, true );
+				}
+				else if ( e.DropEdge.HasFlag( ItemEdge.Bottom ) )
+				{
+					Value.AddSibling( instantiated, false );
+				}
+				else
+				{
+					instantiated.SetParent( Value, true );
+				}
+
+				SceneEditorSession.Active.Selection.Set( instantiated );
+			}
+			
 			return DropAction.Move;
 		}
 
@@ -176,11 +258,11 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 	public override bool OnContextMenu()
 	{
-		var m = new Menu();
+		var m = new Menu( TreeView );
 
 		AddGameObjectMenuItems( m );
 
-		m.OpenAtCursor();
+		m.OpenAtCursor( true );
 
 		return true;
 	}
