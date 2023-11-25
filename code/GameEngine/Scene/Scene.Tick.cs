@@ -46,6 +46,10 @@ public partial class Scene : GameObject
 
 	public void EditorTick()
 	{
+		TimeNow = RealTime.Now;
+		TimeDelta = RealTime.Delta;
+		using var timeScope = Time.Scope( TimeNow, TimeDelta, tick );
+
 		ProcessDeletes();
 		PreRender();
 		DrawGizmos();
