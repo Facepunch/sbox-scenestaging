@@ -134,7 +134,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		bool parentMoved = deltaTransform != global::Transform.Zero;
 		bool isEditor = Scene.IsEditor;
 
-		Parallel.ForEach( Particles, p =>
+		Utility.Parallel.ForEach( Particles, p =>
 		{
 			var deathTime = p.BornTime + Lifetime.Evaluate( p.Random01, p.Random02 );
 
@@ -237,7 +237,6 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		p.Position = position;
 		p.Radius = 1.0f;
 		p.Velocity = Vector3.Random.Normal * StartVelocity.Evaluate( Random.Shared.Float( 0, 1 ), Random.Shared.Float( 0, 1 ) );
-
 
 		Particles.Add( p );
 
