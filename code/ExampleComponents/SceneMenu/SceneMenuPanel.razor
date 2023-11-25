@@ -1,6 +1,7 @@
 ﻿@using Sandbox;
 @using Sandbox.UI;
 @using Sandbox.Network;
+@using Sandbox.Diagnostics;
 @inherits PanelComponent
 
 <root>
@@ -96,6 +97,8 @@
     {
         base.OnEnabled();
 
+        Assert.True(GameObject.IsValid());
+
         _ = RefreshLobbyList();
     }
 
@@ -108,16 +111,10 @@
 
             list = await GameNetworkSystem.QueryLobbies();
 
-            if (!GameObject.IsValid())
-                return;
-
             refreshing = false;
             StateHasChanged();
 
-            await Task.Delay(5000);
-
-            if (!GameObject.IsValid())
-                return;
+            await Task.DelayRealtimeSeconds( 5.0f );
         }
     }
 

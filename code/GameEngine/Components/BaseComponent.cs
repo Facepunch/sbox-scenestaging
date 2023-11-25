@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Sandbox;
+using System;
+using System.Threading;
 
 public abstract partial class BaseComponent
 {
@@ -8,6 +10,11 @@ public abstract partial class BaseComponent
 	public GameObject GameObject { get; internal set; }
 
 	public GameObjectFlags Flags { get; set; } = GameObjectFlags.None;
+
+	/// <summary>
+	/// Allow creating tasks that are automatically cancelled when the GameObject is destroyed.
+	/// </summary>
+	protected TaskSource Task => GameObject.Task;
 
 
 	bool _isInitialized = false;

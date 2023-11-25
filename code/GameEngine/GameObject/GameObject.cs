@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
 
 
 public partial class GameObject
@@ -22,6 +23,16 @@ public partial class GameObject
 	bool _enabled = true;
 
 	/// <summary>
+	/// This token source is expired when leaving the game session, or when the GameObject is disabled/destroyed.
+	/// </summary>
+	CancellationTokenSource enabledTokenSource;
+
+	/// <summary>
+	/// This token is cancelled when the GameObject ceases to exist, or is disabled
+	/// </summary>
+	public CancellationToken EnabledToken => enabledTokenSource?.Token ?? CancellationToken.None;
+
+	/// <summary>
 	/// Is this gameobject enabled?
 	/// </summary>
 	[Property]
@@ -36,9 +47,21 @@ public partial class GameObject
 			_enabled = value;
 			Transform.ClearLerp();
 
+			if ( _enabled )
+			{
+				CreateTaskSource();
+			}
+			else
+			{
+				CancelTaskSource();
+			}
+
 			SceneUtility.ActivateGameObject( this );
 		}
 	}
+
+
+	internal TaskSource Task { get; set; }
 
 	public GameObject( bool enabled, string name )
 	{
@@ -48,6 +71,11 @@ public partial class GameObject
 		Scene = this as Scene ?? GameManager.ActiveScene;
 		Id = Guid.NewGuid();
 		Name = name;
+
+		if ( enabled )
+		{
+			CreateTaskSource();
+		}
 
 		if ( this is Scene scene )
 		{
@@ -71,6 +99,30 @@ public partial class GameObject
 	public override string ToString()
 	{
 		return $"GameObject:{Name}";
+	}
+
+	/// <summary>
+	/// Creates a new task source. Any Waits etc created by Task will be cancelled
+	/// when the GameObject is disabled, or destroyed, or the game is exited.
+	/// </summary>
+	private void CreateTaskSource()
+	{
+		// cancel any previous tasks
+		CancelTaskSource();
+
+		enabledTokenSource = TaskSource.CreateLinkedTokenSource();
+		Task = TaskSource.Create( enabledTokenSource.Token );
+	}
+
+	/// <summary>
+	/// Cancel this task source
+	/// </summary>
+	private void CancelTaskSource()
+	{
+		enabledTokenSource?.Cancel();
+		enabledTokenSource?.Dispose();
+		enabledTokenSource = null;
+		Task.Expire();
 	}
 
 	public List<BaseComponent> Components = new List<BaseComponent>();

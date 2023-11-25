@@ -71,6 +71,8 @@ public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 
 	private int BuildRenderHash()
 	{
+		if ( panel is null ) return 0;
+
 		return HashCode.Combine( BuildHash() );
 	}
 
@@ -115,7 +117,7 @@ public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 	/// </summary>
 	public void StateHasChanged()
 	{
-		panel.StateHasChanged();
+		panel?.StateHasChanged();
 	}
 }
 
