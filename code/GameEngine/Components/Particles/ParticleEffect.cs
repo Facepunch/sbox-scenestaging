@@ -175,7 +175,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 				if ( isEditor ) push = 0;
 
-				p.MoveWithCollision( bounce, friction, bumpiness, push, die, timeScale );
+				p.MoveWithCollision( bounce, friction, bumpiness, push, die, timeScale, radius, CollisionIgnore );
 			}
 			else
 			{

@@ -84,7 +84,7 @@ public class Particle
 		Velocity *= newspeed;
 	}
 
-	public void MoveWithCollision( in float bounce, in float friction, in float bumpiness, in float push, in bool die, in float dt )
+	public void MoveWithCollision( in float bounce, in float friction, in float bumpiness, in float push, in bool die, in float dt, float radius, TagSet collisionIgnore )
 	{
 		const float surfaceOffset = 0.1f;
 
@@ -101,7 +101,8 @@ public class Particle
 			if ( recheck )
 			{
 				var checkTrace = global::Physics.Trace.Ray( Position, Position + HitNormal * surfaceOffset * -2.0f )
-								.Radius( Radius )
+								.Radius( radius * Radius )
+								.WithoutTags( collisionIgnore )
 								.Run();
 
 				if ( checkTrace.Hit )
@@ -134,7 +135,8 @@ public class Particle
 		var targetPosition = Position + Velocity * dt;
 
 		var tr = global::Physics.Trace.Ray( Position, targetPosition )
-										.Radius( Radius )
+										.Radius( radius * Radius )
+										.WithoutTags( collisionIgnore )
 										.Run();
 		if ( !tr.Hit )
 		{
