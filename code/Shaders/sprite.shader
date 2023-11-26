@@ -3,21 +3,27 @@ HEADER
 	Description = "Sprite Shader for S&box";
 }
 
+FEATURES
+{
+	#include "common/features.hlsl"
+}
+
 MODES
 {
 	VrForward();
-	Depth( S_MODE_DEPTH ); 
+	Depth( S_MODE_DEPTH );
+	ToolsVis( S_MODE_TOOLS_VIS );
 }
 
 COMMON
 {
-	#include "code/shaders/system.hlsl"
+	#include "common/shared.hlsl"
 }
 
 struct VS_INPUT
 {
-	float3 pos : POSITION < Semantic( PosXyz ); >;
-	float4 uv  : TEXCOORD0 < Semantic( LowPrecisionUv ); >;
+	float3 pos : POSITION < Semantic( None ); >;
+	float4 uv  : TEXCOORD0 < Semantic( None ); >;
     float4 normal : NORMAL < Semantic( None ); >;
     float4 velocity : TANGENT0 < Semantic( None ); >;
     float4 tint : TEXCOORD1 < Semantic( None ); >;
@@ -32,21 +38,16 @@ struct GS_INPUT
     float4 normal : NORMAL;
     float4 velocity : TANGENT0;
     float4 tint : COLOR0;
-    float4 color : COLOR1 < Semantic( None ); >;
-
+    float4 color : COLOR1;
 };
-
 
 struct PS_INPUT
 {
 	float4 vPositionPs : SV_ScreenPosition;
     float3 worldpos: TEXCOORD1;
-	float4 uv : TEXCOORD0;
 	float4 tint : TEXCOORD9;
-
-  //  float4 sheet_uv0 : TEXCOORD20;
-  //  float4 sheet_uv1 : TEXCOORD21;
-   // float sheet_blend : TEXCOORD22;
+	float4 sheetUv : TEXCOORD3;
+	float sheetBlend : TEXCOORD4;
 };
 
 VS
@@ -61,11 +62,8 @@ GS
 {
 
 	float4 g_SheetData < Attribute( "BaseTextureSheet" ); >;
-
 	bool g_ScreenSize < Attribute( "g_ScreenSize" ); >;
-
 	float4 g_MotionBlur < Attribute( "g_MotionBlur" ); >;
-
 	bool g_FaceVelocity < Attribute( "g_FaceVelocity" ); >;
 	float g_FaceVelocityOffset < Attribute( "g_FaceVelocityOffset" ); >;
 
@@ -77,7 +75,6 @@ GS
 		float3 cameraAxis = g_vCameraDirWs;
 	
 		float3x3 mat = MatrixBuildRotationAboutAxis( cameraAxis, angles.z ); // yaw
-    
 
 		if ( !g_ScreenSize )
 		{
@@ -110,11 +107,9 @@ GS
 	
 		o.vPositionPs = CalculateSpritePs( o.worldpos, size, vDelta, i.normal.xyz);
 		o.tint = i.tint.rgba;
-		o.uv = 0;
-		o.uv.xy = float2(vDelta.x * 0.5 + 0.5, 0.5 - vDelta.y * 0.5);
-	
-		float4 bounds = SampleSheet( g_SheetData, i.color.x, i.uv.z );
-		o.uv.xy = bounds.xy + ( o.uv.xy * bounds.zw );
+
+		float2 uv = float2(vDelta.x * 0.5 + 0.5, 0.5 - vDelta.y * 0.5);
+		Sheet::Blended( g_SheetData, i.color.x * 255, i.uv.z, uv, o.sheetUv.xy, o.sheetUv.zw, o.sheetBlend );
 	}
 
 	void DrawSprite( in GS_INPUT i, inout TriangleStream<PS_INPUT> triStream )
@@ -135,8 +130,6 @@ GS
 
 		GSRestartStrip(triStream);
 	}
-
-
 
 	[maxvertexcount(64)]
 	void MainGs(point GS_INPUT i[1], inout TriangleStream<PS_INPUT> triStream)
@@ -197,7 +190,8 @@ GS
 
 PS
 {
-	#include "sheet_sampling.fxc"
+	#define CUSTOM_MATERIAL_INPUTS 1
+	#include "common/pixel.hlsl"
 
 	StaticCombo( S_MODE_DEPTH, 0..1, Sys( ALL ) );
 	DynamicCombo( D_BLEND, 0..1, Sys( ALL ) );
@@ -210,7 +204,7 @@ PS
 	CreateTexture2D( g_ColorTexture ) < Attribute( "BaseTexture" ); Filter( BILINEAR ); AddressU( CLAMP ); AddressV( CLAMP ); AddressW( CLAMP ); SrgbRead( true ); >;
 	float4 g_SheetData < Attribute( "BaseTextureSheet" ); >;
 
-	RenderState( DepthWriteEnable, false );
+	RenderState( DepthWriteEnable, true );
 
 	// additive
 	#if ( D_BLEND == 1 ) 
@@ -232,22 +226,28 @@ PS
 		RenderState( DepthWriteEnable, false );
 	#endif
 
-
 	float4 MainPs( PS_INPUT i ) : SV_Target0
 	{
-		float2 uv = i.uv.xy;
-		float4 col = 1;
-	
-		col = Tex2D( g_ColorTexture, uv );
+		float4 col = Tex2D( g_ColorTexture, i.sheetUv.xy );
+
+		if ( i.sheetBlend > 0 )
+		{
+			float4 col2 = Tex2D( g_ColorTexture, i.sheetUv.zw );
+
+			col = lerp( col, col2, i.sheetBlend );
+		}
+
 		col.rgba *= i.tint.rgba;
 	
 		if ( g_DepthFeather > 0 )
 		{
-			float dist = GetDepthDistance( i.vPositionPs.xy, i.worldpos.xyz );
+			float3 pos = Depth::GetWorldPosition( i.vPositionPs.xy );
+
+			float dist = distance( pos, i.worldpos.xyz );
 			float feather = clamp(dist / g_DepthFeather, 0.0, 1.0 );
 			col.a *= feather;
 		}
-	
+
 	    clip(col.a - 0.0001);
 
 		#if S_MODE_DEPTH
@@ -259,10 +259,11 @@ PS
 						
 		#endif
 	
-		#if S_MODE_DEPTH == 0
-		col.rgb = GetWithFog( i.worldpos, i.vPositionPs.xy, col.rgb, g_FogStrength );
-		#endif
-	
+		if ( g_FogStrength > 0 )
+		{
+			float3 fogged = Fog::Apply( i.worldpos, i.vPositionPs.xy, col.rgb );
+			col.rgb = lerp( col.rgb, fogged, g_FogStrength );
+		}
 
 		return col;
 	}
