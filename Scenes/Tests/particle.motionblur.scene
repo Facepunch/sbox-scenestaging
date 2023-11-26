@@ -10,9 +10,9 @@
         {
           "__type": "DirectionalLightComponent",
           "__enabled": true,
-          "LightColor": "1,0.89069,0.76238,1",
+          "LightColor": "0.04455,0.04345,0.04345,1",
           "Shadows": true,
-          "SkyColor": "0.10599,0.11132,0.12376,1"
+          "SkyColor": "0,0,0,1"
         }
       ]
     },
@@ -26,7 +26,7 @@
           "__type": "SkyBox2D",
           "__enabled": true,
           "SkyMaterial": "materials/skybox/light_test_sky_night_basic.vmat",
-          "Tint": "1,1,1,1"
+          "Tint": "0.06931,0.06622,0.06622,1"
         },
         {
           "__type": "EnvmapComponent",
@@ -37,14 +37,15 @@
           },
           "Projection": "Sphere",
           "Texture": "textures/cubemaps/default.vtex",
-          "TintColor": "0.16572,0.1857,0.24257,1"
+          "TintColor": "0.12384,0.13154,0.15347,1"
         }
       ]
     },
     {
-      "Id": "3062e064-e0af-4592-83d3-09fd1cea3d89",
-      "Name": "Sphere - Edge",
-      "Position": "27.43362,673.2575,-107.7269",
+      "Id": "34fc8657-1949-4510-8c1e-1f674760917e",
+      "Name": "Emitter",
+      "Position": "410.2136,166.2659,-150.758",
+      "Rotation": "0.5994329,0.2281379,0.7449377,0.183577",
       "Enabled": true,
       "Components": [
         {
@@ -53,13 +54,1061 @@
           "Alpha": {
             "Type": "Curve",
             "CurveA": [
-              {},
               {
-                "x": 0.052955665,
                 "y": 1
               },
               {
-                "x": 0.76970446,
+                "x": 0.9864532,
+                "y": 1,
+                "in": -0.064516194,
+                "out": 0.064516194
+              },
+              {
+                "x": 1,
+                "in": 7.1666684,
+                "out": -7.1666684
+              }
+            ],
+            "Constants": "1,0,0,0"
+          },
+          "ApplyColor": true,
+          "ApplyRotation": false,
+          "ApplyShape": true,
+          "Bounce": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0.1,0.5,0,0"
+          },
+          "Brightness": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "CurveA": {
+              "rangey": "0,10",
+              "frames": [
+                {
+                  "y": 0.7821429,
+                  "in": 0.041666638,
+                  "out": -0.041666638
+                },
+                {
+                  "x": 0.050738923,
+                  "y": 0.1
+                }
+              ]
+            },
+            "Constants": "8,12,0,0"
+          },
+          "Bumpiness": {
+            "Evaluation": "Particle",
+            "Constants": "0.2,0.1,0,0"
+          },
+          "Collision": true,
+          "CollisionIgnore": "player",
+          "CollisionRadius": 1,
+          "Damping": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0.2,0.3,0,0"
+          },
+          "DieOnCollisionChance": {},
+          "Force": true,
+          "ForceDirection": "0,0,-1",
+          "ForceScale": {
+            "Constants": "900,-400,0,0"
+          },
+          "Friction": {
+            "Constants": "0.05,0,0,0"
+          },
+          "Gradient": {
+            "color": [
+              {
+                "c": "0.25248,0.71594,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "Lifetime": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "1,2,0,0"
+          },
+          "MaxParticles": 10000,
+          "PerParticleTimeScale": {
+            "Constants": "1,0,0,0"
+          },
+          "PushStrength": {},
+          "Roll": {},
+          "Scale": {
+            "Evaluation": "Particle",
+            "CurveA": [
+              {},
+              {
+                "x": 0.06280788,
+                "y": 1
+              },
+              {
+                "x": 0.15640394,
+                "y": 0.067664884
+              },
+              {
+                "x": 0.24507388,
+                "y": 0.80151117
+              },
+              {
+                "x": 0.3004926,
+                "y": 0.10999663
+              },
+              {
+                "x": 0.3817734,
+                "y": 0.6617586
+              },
+              {
+                "x": 0.4359606,
+                "y": 0.08971601
+              },
+              {
+                "x": 0.51600987,
+                "y": 0.5303103
+              },
+              {
+                "x": 0.57758623,
+                "y": 0.10129062
+              },
+              {
+                "x": 0.6514778,
+                "y": 0.39363855
+              },
+              {
+                "x": 0.7093596,
+                "y": 0.08596241
+              },
+              {
+                "x": 0.77093595,
+                "y": 0.81999165
+              },
+              {
+                "x": 0.82389164,
+                "y": 0.13258635
+              },
+              {
+                "x": 0.8940887,
+                "y": 0.3859684
+              },
+              {
+                "x": 1
+              }
+            ],
+            "Constants": "0.6,1,0,0"
+          },
+          "SequenceId": {},
+          "SequenceSpeed": {
+            "Constants": "1,0,0,0"
+          },
+          "SequenceTime": {
+            "Constants": "1,0,0,0"
+          },
+          "SheetSequence": false,
+          "Space": "World",
+          "StartVelocity": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "1000,500,0,0"
+          },
+          "Stretch": {
+            "Evaluation": "Particle"
+          },
+          "TimeScale": 1,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": true,
+          "BlurAmount": 1,
+          "BlurOpacity": 0.61,
+          "BlurSpacing": 0.32,
+          "DepthFeather": 0,
+          "FaceVelocity": false,
+          "FogStrength": 1,
+          "LeadingTrail": true,
+          "MotionBlur": true,
+          "RotationOffset": 0,
+          "Scale": 2,
+          "Shadows": false,
+          "SortMode": "ByDistance",
+          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+        },
+        {
+          "__type": "ParticleConeEmitter",
+          "__enabled": true,
+          "Burst": 0,
+          "ConeAngle": 9.3,
+          "ConeFar": 50,
+          "ConeNear": 1,
+          "Delay": 0,
+          "Duration": 10,
+          "InVolume": false,
+          "Loop": true,
+          "OnEdge": false,
+          "Rate": 1000
+        }
+      ]
+    },
+    {
+      "Id": "401fb4e8-eff1-4f31-8f78-1ae2a6aa3599",
+      "Name": "Emitter (2)",
+      "Position": "4755.604,147.3873,978.3127",
+      "Rotation": "0.626757,-0.01740016,0.7788948,-0.01400138",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "Alpha": {
+            "Type": "Curve",
+            "CurveA": [
+              {
+                "y": 1
+              },
+              {
+                "x": 0.3866995,
+                "y": 1,
+                "in": -0.064516194,
+                "out": 0.064516194
+              },
+              {
+                "x": 1,
+                "in": 2.782609,
+                "out": -2.782609
+              }
+            ],
+            "Constants": "1,0,0,0"
+          },
+          "ApplyColor": true,
+          "ApplyRotation": false,
+          "ApplyShape": true,
+          "Bounce": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0.1,0.5,0,0"
+          },
+          "Brightness": {
+            "CurveA": {
+              "rangey": "0,10",
+              "frames": [
+                {
+                  "y": 0.7821429,
+                  "in": 0.041666638,
+                  "out": -0.041666638
+                },
+                {
+                  "x": 0.050738923,
+                  "y": 0.1
+                }
+              ]
+            },
+            "Constants": "600,0,0,0"
+          },
+          "Bumpiness": {
+            "Evaluation": "Particle",
+            "Constants": "0.2,0.1,0,0"
+          },
+          "Collision": true,
+          "CollisionIgnore": "player",
+          "CollisionRadius": 1,
+          "Damping": {
+            "Evaluation": "Particle",
+            "Constants": "1,0.3,0,0"
+          },
+          "DieOnCollisionChance": {},
+          "Force": true,
+          "ForceDirection": "0,0,-1",
+          "ForceScale": {
+            "Constants": "300,-400,0,0"
+          },
+          "Friction": {
+            "Constants": "0.05,0,0,0"
+          },
+          "Gradient": {
+            "color": [
+              {
+                "c": "1,0.28931,0.0396,1"
+              }
+            ],
+            "alpha": []
+          },
+          "Lifetime": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "2,3,0,0"
+          },
+          "MaxParticles": 10000,
+          "PerParticleTimeScale": {
+            "Constants": "1,0,0,0"
+          },
+          "PushStrength": {},
+          "Roll": {},
+          "Scale": {
+            "Type": "Range",
+            "CurveA": [
+              {},
+              {
+                "x": 0.06280788,
+                "y": 1
+              },
+              {
+                "x": 0.15640394,
+                "y": 0.067664884
+              },
+              {
+                "x": 0.24507388,
+                "y": 0.80151117
+              },
+              {
+                "x": 0.3004926,
+                "y": 0.10999663
+              },
+              {
+                "x": 0.3817734,
+                "y": 0.6617586
+              },
+              {
+                "x": 0.4359606,
+                "y": 0.08971601
+              },
+              {
+                "x": 0.51600987,
+                "y": 0.5303103
+              },
+              {
+                "x": 0.57758623,
+                "y": 0.10129062
+              },
+              {
+                "x": 0.6514778,
+                "y": 0.39363855
+              },
+              {
+                "x": 0.7093596,
+                "y": 0.08596241
+              },
+              {
+                "x": 0.77093595,
+                "y": 0.81999165
+              },
+              {
+                "x": 0.82389164,
+                "y": 0.13258635
+              },
+              {
+                "x": 0.8940887,
+                "y": 0.3859684
+              },
+              {
+                "x": 1
+              }
+            ],
+            "Constants": "3,0,0,0"
+          },
+          "SequenceId": {},
+          "SequenceSpeed": {
+            "Constants": "1,0,0,0"
+          },
+          "SequenceTime": {
+            "Constants": "1,0,0,0"
+          },
+          "SheetSequence": false,
+          "Space": "World",
+          "StartVelocity": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "2000,-800,0,0"
+          },
+          "Stretch": {
+            "Evaluation": "Particle"
+          },
+          "TimeScale": 0.97,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": true,
+          "BlurAmount": 1,
+          "BlurOpacity": 0.49,
+          "BlurSpacing": 0.51,
+          "DepthFeather": 0,
+          "FaceVelocity": false,
+          "FogStrength": 1,
+          "LeadingTrail": true,
+          "MotionBlur": true,
+          "RotationOffset": 0,
+          "Scale": 2,
+          "Shadows": false,
+          "SortMode": "ByDistance",
+          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+        },
+        {
+          "__type": "ParticleSphereEmitter",
+          "__enabled": true,
+          "Burst": 1000,
+          "Delay": 0,
+          "Duration": 3.7,
+          "Loop": true,
+          "OnEdge": false,
+          "Radius": 6.16,
+          "Rate": 0,
+          "Velocity": 1000
+        }
+      ]
+    },
+    {
+      "Id": "42991c02-0cf3-4dd1-a29b-1585f9fcb320",
+      "Name": "Emitter (3)",
+      "Position": "4755.604,1374.391,1845.803",
+      "Rotation": "0.626757,-0.01740016,0.7788948,-0.01400138",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "Alpha": {
+            "Type": "Curve",
+            "CurveA": [
+              {
+                "y": 1
+              },
+              {
+                "x": 0.3866995,
+                "y": 1,
+                "in": -0.064516194,
+                "out": 0.064516194
+              },
+              {
+                "x": 1,
+                "in": 2.782609,
+                "out": -2.782609
+              }
+            ],
+            "Constants": "1,0,0,0"
+          },
+          "ApplyColor": true,
+          "ApplyRotation": false,
+          "ApplyShape": true,
+          "Bounce": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0.1,0.5,0,0"
+          },
+          "Brightness": {
+            "CurveA": {
+              "rangey": "0,10",
+              "frames": [
+                {
+                  "y": 0.7821429,
+                  "in": 0.041666638,
+                  "out": -0.041666638
+                },
+                {
+                  "x": 0.050738923,
+                  "y": 0.1
+                }
+              ]
+            },
+            "Constants": "600,0,0,0"
+          },
+          "Bumpiness": {
+            "Evaluation": "Particle",
+            "Constants": "0.2,0.1,0,0"
+          },
+          "Collision": true,
+          "CollisionIgnore": "player",
+          "CollisionRadius": 1,
+          "Damping": {
+            "Evaluation": "Particle",
+            "Constants": "2,0.3,0,0"
+          },
+          "DieOnCollisionChance": {},
+          "Force": true,
+          "ForceDirection": "0,0,-1",
+          "ForceScale": {
+            "Constants": "300,-400,0,0"
+          },
+          "Friction": {
+            "Constants": "0.05,0,0,0"
+          },
+          "Gradient": {
+            "color": [
+              {
+                "c": "1,0.28931,0.0396,1"
+              }
+            ],
+            "alpha": []
+          },
+          "Lifetime": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "2,3,0,0"
+          },
+          "MaxParticles": 10000,
+          "PerParticleTimeScale": {
+            "Constants": "1,0,0,0"
+          },
+          "PushStrength": {},
+          "Roll": {},
+          "Scale": {
+            "Type": "Range",
+            "CurveA": [
+              {},
+              {
+                "x": 0.06280788,
+                "y": 1
+              },
+              {
+                "x": 0.15640394,
+                "y": 0.067664884
+              },
+              {
+                "x": 0.24507388,
+                "y": 0.80151117
+              },
+              {
+                "x": 0.3004926,
+                "y": 0.10999663
+              },
+              {
+                "x": 0.3817734,
+                "y": 0.6617586
+              },
+              {
+                "x": 0.4359606,
+                "y": 0.08971601
+              },
+              {
+                "x": 0.51600987,
+                "y": 0.5303103
+              },
+              {
+                "x": 0.57758623,
+                "y": 0.10129062
+              },
+              {
+                "x": 0.6514778,
+                "y": 0.39363855
+              },
+              {
+                "x": 0.7093596,
+                "y": 0.08596241
+              },
+              {
+                "x": 0.77093595,
+                "y": 0.81999165
+              },
+              {
+                "x": 0.82389164,
+                "y": 0.13258635
+              },
+              {
+                "x": 0.8940887,
+                "y": 0.3859684
+              },
+              {
+                "x": 1
+              }
+            ],
+            "Constants": "3,0,0,0"
+          },
+          "SequenceId": {},
+          "SequenceSpeed": {
+            "Constants": "1,0,0,0"
+          },
+          "SequenceTime": {
+            "Constants": "1,0,0,0"
+          },
+          "SheetSequence": false,
+          "Space": "World",
+          "StartVelocity": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "2000,-800,0,0"
+          },
+          "Stretch": {
+            "Evaluation": "Particle"
+          },
+          "TimeScale": 0.97,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": true,
+          "BlurAmount": 1,
+          "BlurOpacity": 0.49,
+          "BlurSpacing": 0.51,
+          "DepthFeather": 0,
+          "FaceVelocity": false,
+          "FogStrength": 1,
+          "LeadingTrail": true,
+          "MotionBlur": true,
+          "RotationOffset": 0,
+          "Scale": 2,
+          "Shadows": false,
+          "SortMode": "ByDistance",
+          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+        },
+        {
+          "__type": "ParticleSphereEmitter",
+          "__enabled": true,
+          "Burst": 888.75,
+          "Delay": 2,
+          "Duration": 4.3,
+          "Loop": true,
+          "OnEdge": false,
+          "Radius": 6.16,
+          "Rate": 0,
+          "Velocity": 1000
+        }
+      ]
+    },
+    {
+      "Id": "565f2f4f-ce18-44a5-abaa-2b2a8f3a1b56",
+      "Name": "Emitter (4)",
+      "Position": "4755.604,-1771.859,1323.096",
+      "Rotation": "0.626757,-0.01740016,0.7788948,-0.01400138",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "Alpha": {
+            "Type": "Curve",
+            "CurveA": [
+              {
+                "y": 1
+              },
+              {
+                "x": 0.3866995,
+                "y": 1,
+                "in": -0.064516194,
+                "out": 0.064516194
+              },
+              {
+                "x": 1,
+                "in": 2.782609,
+                "out": -2.782609
+              }
+            ],
+            "Constants": "1,0,0,0"
+          },
+          "ApplyColor": true,
+          "ApplyRotation": false,
+          "ApplyShape": true,
+          "Bounce": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0.1,0.5,0,0"
+          },
+          "Brightness": {
+            "CurveA": {
+              "rangey": "0,10",
+              "frames": [
+                {
+                  "y": 0.7821429,
+                  "in": 0.041666638,
+                  "out": -0.041666638
+                },
+                {
+                  "x": 0.050738923,
+                  "y": 0.1
+                }
+              ]
+            },
+            "Constants": "600,0,0,0"
+          },
+          "Bumpiness": {
+            "Evaluation": "Particle",
+            "Constants": "0.2,0.1,0,0"
+          },
+          "Collision": true,
+          "CollisionIgnore": "player",
+          "CollisionRadius": 1,
+          "Damping": {
+            "Evaluation": "Particle",
+            "Constants": "3,0.3,0,0"
+          },
+          "DieOnCollisionChance": {},
+          "Force": true,
+          "ForceDirection": "0,0,-1",
+          "ForceScale": {
+            "Constants": "300,-400,0,0"
+          },
+          "Friction": {
+            "Constants": "0.05,0,0,0"
+          },
+          "Gradient": {
+            "color": [
+              {
+                "c": "1,0.28931,0.0396,1"
+              }
+            ],
+            "alpha": []
+          },
+          "Lifetime": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "2,3,0,0"
+          },
+          "MaxParticles": 10000,
+          "PerParticleTimeScale": {
+            "Constants": "1,0,0,0"
+          },
+          "PushStrength": {},
+          "Roll": {},
+          "Scale": {
+            "Type": "Range",
+            "CurveA": [
+              {},
+              {
+                "x": 0.06280788,
+                "y": 1
+              },
+              {
+                "x": 0.15640394,
+                "y": 0.067664884
+              },
+              {
+                "x": 0.24507388,
+                "y": 0.80151117
+              },
+              {
+                "x": 0.3004926,
+                "y": 0.10999663
+              },
+              {
+                "x": 0.3817734,
+                "y": 0.6617586
+              },
+              {
+                "x": 0.4359606,
+                "y": 0.08971601
+              },
+              {
+                "x": 0.51600987,
+                "y": 0.5303103
+              },
+              {
+                "x": 0.57758623,
+                "y": 0.10129062
+              },
+              {
+                "x": 0.6514778,
+                "y": 0.39363855
+              },
+              {
+                "x": 0.7093596,
+                "y": 0.08596241
+              },
+              {
+                "x": 0.77093595,
+                "y": 0.81999165
+              },
+              {
+                "x": 0.82389164,
+                "y": 0.13258635
+              },
+              {
+                "x": 0.8940887,
+                "y": 0.3859684
+              },
+              {
+                "x": 1
+              }
+            ],
+            "Constants": "3,0,0,0"
+          },
+          "SequenceId": {},
+          "SequenceSpeed": {
+            "Constants": "1,0,0,0"
+          },
+          "SequenceTime": {
+            "Constants": "1,0,0,0"
+          },
+          "SheetSequence": false,
+          "Space": "World",
+          "StartVelocity": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "2000,-800,0,0"
+          },
+          "Stretch": {
+            "Evaluation": "Particle"
+          },
+          "TimeScale": 0.97,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": true,
+          "BlurAmount": 1,
+          "BlurOpacity": 0.49,
+          "BlurSpacing": 0.51,
+          "DepthFeather": 0,
+          "FaceVelocity": false,
+          "FogStrength": 1,
+          "LeadingTrail": true,
+          "MotionBlur": true,
+          "RotationOffset": 0,
+          "Scale": 2,
+          "Shadows": false,
+          "SortMode": "ByDistance",
+          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+        },
+        {
+          "__type": "ParticleSphereEmitter",
+          "__enabled": true,
+          "Burst": 411.98,
+          "Delay": 3,
+          "Duration": 4,
+          "Loop": true,
+          "OnEdge": false,
+          "Radius": 6.16,
+          "Rate": 0,
+          "Velocity": 1000
+        }
+      ]
+    },
+    {
+      "Id": "fbfe7318-2d4a-40f1-9747-73f641276a49",
+      "Name": "Emitter (1)",
+      "Position": "415.0546,127.6864,-151.3589",
+      "Rotation": "0.6240479,-0.1480901,0.719374,-0.266708",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "Alpha": {
+            "Type": "Curve",
+            "CurveA": [
+              {
+                "y": 1
+              },
+              {
+                "x": 0.9864532,
+                "y": 1,
+                "in": -0.064516194,
+                "out": 0.064516194
+              },
+              {
+                "x": 1,
+                "in": 7.1666684,
+                "out": -7.1666684
+              }
+            ],
+            "Constants": "1,0,0,0"
+          },
+          "ApplyColor": true,
+          "ApplyRotation": false,
+          "ApplyShape": true,
+          "Bounce": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0.1,0.5,0,0"
+          },
+          "Brightness": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "CurveA": {
+              "rangey": "0,10",
+              "frames": [
+                {
+                  "y": 0.7821429,
+                  "in": 0.041666638,
+                  "out": -0.041666638
+                },
+                {
+                  "x": 0.050738923,
+                  "y": 0.1
+                }
+              ]
+            },
+            "Constants": "8,12,0,0"
+          },
+          "Bumpiness": {
+            "Evaluation": "Particle",
+            "Constants": "0.2,0.1,0,0"
+          },
+          "Collision": true,
+          "CollisionIgnore": "player",
+          "CollisionRadius": 1,
+          "Damping": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0.2,0.3,0,0"
+          },
+          "DieOnCollisionChance": {},
+          "Force": true,
+          "ForceDirection": "0,0,-1",
+          "ForceScale": {
+            "Constants": "900,-400,0,0"
+          },
+          "Friction": {
+            "Constants": "0.05,0,0,0"
+          },
+          "Gradient": {
+            "color": [
+              {
+                "c": "0.25248,0.71594,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "Lifetime": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "1,2,0,0"
+          },
+          "MaxParticles": 10000,
+          "PerParticleTimeScale": {
+            "Constants": "1,0,0,0"
+          },
+          "PushStrength": {},
+          "Roll": {},
+          "Scale": {
+            "Evaluation": "Particle",
+            "CurveA": [
+              {},
+              {
+                "x": 0.06280788,
+                "y": 1
+              },
+              {
+                "x": 0.15640394,
+                "y": 0.067664884
+              },
+              {
+                "x": 0.24507388,
+                "y": 0.80151117
+              },
+              {
+                "x": 0.3004926,
+                "y": 0.10999663
+              },
+              {
+                "x": 0.3817734,
+                "y": 0.6617586
+              },
+              {
+                "x": 0.4359606,
+                "y": 0.08971601
+              },
+              {
+                "x": 0.51600987,
+                "y": 0.5303103
+              },
+              {
+                "x": 0.57758623,
+                "y": 0.10129062
+              },
+              {
+                "x": 0.6514778,
+                "y": 0.39363855
+              },
+              {
+                "x": 0.7093596,
+                "y": 0.08596241
+              },
+              {
+                "x": 0.77093595,
+                "y": 0.81999165
+              },
+              {
+                "x": 0.82389164,
+                "y": 0.13258635
+              },
+              {
+                "x": 0.8940887,
+                "y": 0.3859684
+              },
+              {
+                "x": 1
+              }
+            ],
+            "Constants": "0.52,1,0,0"
+          },
+          "SequenceId": {},
+          "SequenceSpeed": {
+            "Constants": "1,0,0,0"
+          },
+          "SequenceTime": {
+            "Constants": "1,0,0,0"
+          },
+          "SheetSequence": false,
+          "Space": "World",
+          "StartVelocity": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "1000,500,0,0"
+          },
+          "Stretch": {
+            "Evaluation": "Particle",
+            "Constants": "-5,0,0,0"
+          },
+          "TimeScale": 1,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__enabled": true,
+          "Additive": true,
+          "BlurAmount": 0.41,
+          "BlurOpacity": 0.65,
+          "BlurSpacing": 0.37,
+          "DepthFeather": 0,
+          "FaceVelocity": true,
+          "FogStrength": 1,
+          "LeadingTrail": true,
+          "MotionBlur": false,
+          "RotationOffset": 0,
+          "Scale": 2,
+          "Shadows": false,
+          "SortMode": "ByDistance",
+          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+        },
+        {
+          "__type": "ParticleConeEmitter",
+          "__enabled": true,
+          "Burst": 0,
+          "ConeAngle": 9.3,
+          "ConeFar": 50,
+          "ConeNear": 1,
+          "Delay": 0,
+          "Duration": 10,
+          "InVolume": false,
+          "Loop": true,
+          "OnEdge": false,
+          "Rate": 1000
+        }
+      ]
+    },
+    {
+      "Id": "a4c43c05-5324-4910-b89a-88d7ab7aecab",
+      "Name": "Smoke",
+      "Position": "-494.6021,632.4538,-106.3604",
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__enabled": true,
+          "Alpha": {
+            "Type": "Curve",
+            "CurveA": [
+              {
+                "in": -39.333374,
+                "out": 39.333374
+              },
+              {
+                "x": 0.070197046,
                 "y": 1
               },
               {
@@ -69,13 +1118,15 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
-          "ApplyRotation": false,
+          "ApplyRotation": true,
           "ApplyShape": true,
           "Bounce": {
             "Constants": "1,0,0,0"
           },
           "Brightness": {
-            "Constants": "1,0,0,0"
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "1,0.4,0,0"
           },
           "Bumpiness": {
             "Constants": "1,0,0,0"
@@ -83,7 +1134,9 @@
           "Collision": false,
           "CollisionIgnore": null,
           "CollisionRadius": 0,
-          "Damping": {},
+          "Damping": {
+            "Constants": "2,0,0,0"
+          },
           "DieOnCollisionChance": {},
           "Force": false,
           "ForceDirection": "0,0,0",
@@ -103,278 +1156,77 @@
             "alpha": []
           },
           "Lifetime": {
-            "Constants": "5,0,0,0"
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "1,5,0,0"
           },
-          "MaxParticles": 2000,
+          "MaxParticles": 100,
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
           "PushStrength": {},
-          "Roll": {},
-          "Scale": {
-            "Constants": "100,0,0,0"
-          },
-          "SequenceId": {
-            "Evaluation": "Particle"
-          },
-          "SequenceSpeed": {
+          "Roll": {
+            "Type": "Range",
             "Evaluation": "Particle",
-            "CurveA": [
-              {},
-              {
-                "x": 0.5,
-                "y": 1
-              },
-              {
-                "x": 1
-              }
-            ],
+            "Constants": "0,360,0,0"
+          },
+          "Scale": {
+            "Type": "Range",
             "Constants": "1,2,0,0"
           },
-          "SequenceTime": {
-            "Evaluation": "Particle"
+          "SequenceId": {},
+          "SequenceSpeed": {
+            "Constants": "1,0,0,0"
           },
-          "SheetSequence": true,
+          "SequenceTime": {
+            "Constants": "1,0,0,0"
+          },
+          "SheetSequence": false,
           "Space": "World",
           "StartVelocity": {
-            "Constants": "1,0,0,0"
+            "Evaluation": "Particle",
+            "Constants": "100,0,0,0"
           },
           "Stretch": {},
           "TimeScale": 1,
-          "Tint": "1,1,1,1"
+          "Tint": "0.23366,1,0.14851,1"
         },
         {
           "__type": "ParticleSpriteRenderer",
           "__enabled": true,
           "Additive": false,
-          "BlurAmount": 1,
-          "BlurOpacity": 0.73,
-          "BlurSpacing": 1,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
           "DepthFeather": 0,
           "FaceVelocity": false,
           "FogStrength": 1,
           "LeadingTrail": true,
           "MotionBlur": false,
           "RotationOffset": 0,
-          "Scale": 0.77,
+          "Scale": 60,
           "Shadows": true,
-          "SortMode": "Unsorted",
-          "Texture": "materials/particles/smoke/render/smokeloop_g_1.vtex"
+          "SortMode": "ByDistance",
+          "Texture": "materials/particles/smoke/render/smokeloop_i_0.vtex"
         },
         {
           "__type": "ParticleSphereEmitter",
           "__enabled": true,
-          "Burst": 1,
+          "Burst": 0,
           "Delay": 0,
-          "Duration": 5,
+          "Duration": 10,
           "Loop": true,
           "OnEdge": false,
-          "Radius": 1,
-          "Rate": 0,
-          "Velocity": 0
-        }
-      ],
-      "Children": [
-        {
-          "Id": "f88295ca-92a8-4b38-a088-13fe77c0548f",
-          "Name": "Label",
-          "Position": "0,0,-40.57322",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "TextRenderer",
-              "__enabled": true,
-              "Color": "0.83168,0.83168,0.83168,1",
-              "FontFamily": "Poppins",
-              "FontSize": 32,
-              "Scale": 0.17,
-              "Text": "Smoke Sheet"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Id": "32924c54-1333-4f89-bf5f-f885d4221690",
-      "Name": "Sphere - Leaves",
-      "Position": "27.43362,816.6102,-107.7269",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ParticleEffect",
-          "__enabled": true,
-          "Alpha": {
-            "Type": "Curve",
-            "CurveA": [
-              {},
-              {
-                "x": 0.052955665,
-                "y": 1
-              },
-              {
-                "x": 0.76970446,
-                "y": 1
-              },
-              {
-                "x": 1
-              }
-            ],
-            "Constants": "1,0,0,0"
-          },
-          "ApplyColor": true,
-          "ApplyRotation": false,
-          "ApplyShape": true,
-          "Bounce": {
-            "Constants": "1,0,0,0"
-          },
-          "Brightness": {
-            "Constants": "1,0,0,0"
-          },
-          "Bumpiness": {
-            "Constants": "1,0,0,0"
-          },
-          "Collision": false,
-          "CollisionIgnore": null,
-          "CollisionRadius": 0,
-          "Damping": {},
-          "DieOnCollisionChance": {},
-          "Force": false,
-          "ForceDirection": "0,0,0",
-          "ForceScale": {
-            "Constants": "1,0,0,0"
-          },
-          "Friction": {
-            "Constants": "1,0,0,0"
-          },
-          "Gradient": {
-            "color": [
-              {
-                "c": "0.32372,0.83663,0.24022,1"
-              },
-              {
-                "t": 0.21581197,
-                "c": "0.15881,0.52495,0.89109,1"
-              },
-              {
-                "t": 0.44017094,
-                "c": "0.89109,0.84715,0.15881,1"
-              },
-              {
-                "t": 0.8418803,
-                "c": "0.89109,0.15881,0.61282,1"
-              }
-            ],
-            "alpha": []
-          },
-          "Lifetime": {
-            "Constants": "2,0,0,0"
-          },
-          "MaxParticles": 2000,
-          "PerParticleTimeScale": {
-            "Constants": "1,0,0,0"
-          },
-          "PushStrength": {},
-          "Roll": {},
-          "Scale": {
-            "Type": "Curve",
-            "CurveA": {
-              "rangey": "0,10",
-              "frames": [
-                {
-                  "y": 0.33571428,
-                  "in": -17.599987,
-                  "out": 17.599987
-                },
-                {
-                  "x": 0.09975369,
-                  "y": 1
-                },
-                {
-                  "x": 1,
-                  "y": 0.325,
-                  "in": 1.4133334,
-                  "out": -1.4133334
-                }
-              ]
-            },
-            "Constants": "20,0,0,0"
-          },
-          "SequenceId": {
-            "Type": "Range",
-            "Evaluation": "Particle",
-            "Constants": "0,1000,0,0"
-          },
-          "SequenceSpeed": {
-            "Constants": "1,0,0,0"
-          },
-          "SequenceTime": {
-            "Type": "Range",
-            "Constants": "0,3,0,0"
-          },
-          "SheetSequence": true,
-          "Space": "World",
-          "StartVelocity": {
-            "Constants": "1,0,0,0"
-          },
-          "Stretch": {},
-          "TimeScale": 1,
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ParticleSpriteRenderer",
-          "__enabled": true,
-          "Additive": true,
-          "BlurAmount": 1,
-          "BlurOpacity": 0.73,
-          "BlurSpacing": 1,
-          "DepthFeather": 0,
-          "FaceVelocity": false,
-          "FogStrength": 1,
-          "LeadingTrail": true,
-          "MotionBlur": false,
-          "RotationOffset": 0,
-          "Scale": 1,
-          "Shadows": false,
-          "SortMode": "Unsorted",
-          "Texture": "materials/particles/numbers/numbers.vtex"
-        },
-        {
-          "__type": "ParticleSphereEmitter",
-          "__enabled": true,
-          "Burst": 1,
-          "Delay": 0,
-          "Duration": 5,
-          "Loop": true,
-          "OnEdge": false,
-          "Radius": 31.78,
-          "Rate": 10,
-          "Velocity": 0
-        }
-      ],
-      "Children": [
-        {
-          "Id": "20951779-50b9-46f3-bf08-a145b8bfeca7",
-          "Name": "Label",
-          "Position": "0,0,-40.57322",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "TextRenderer",
-              "__enabled": true,
-              "Color": "0.83168,0.83168,0.83168,1",
-              "FontFamily": "Poppins",
-              "FontSize": 32,
-              "Scale": 0.17,
-              "Text": "Random Frame"
-            }
-          ]
+          "Radius": 52.33,
+          "Rate": 500,
+          "Velocity": 29.15
         }
       ]
     },
     {
       "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
       "Name": "Citizen",
-      "Position": "-176.8865,675.7812,-156.3238",
+      "Position": "167.6357,251.8548,-147.7231",
       "Tags": "red,green",
       "Enabled": true,
       "Components": [
@@ -426,7 +1278,7 @@
             {
               "Id": "fe9d0cda-67d7-4172-bdf7-cc1e11c8d66f",
               "Name": "pelvis",
-              "Position": "1.266586,0,31.0736",
+              "Position": "1.266586,0.00001525879,31.0736",
               "Rotation": "-0.4999993,-0.4999994,-0.5000004,0.5000009",
               "Enabled": true,
               "Children": [
@@ -440,28 +1292,28 @@
                     {
                       "Id": "1bcf69d2-c94b-49ba-9fef-77ae1fdca65e",
                       "Name": "spine_1",
-                      "Position": "5.610418,0.00001970317,0.00007305491",
+                      "Position": "5.610418,0.0000196874,0.00004253735",
                       "Rotation": "-0.000396952,0.0000002086163,0.0002739429,0.9999998",
                       "Enabled": true,
                       "Children": [
                         {
                           "Id": "17c9ef41-499d-4a08-8d43-fc6b77831949",
                           "Name": "spine_2",
-                          "Position": "5.610459,0.00001280103,0.00001271904",
+                          "Position": "5.610459,0.00001279265,0.00004323662",
                           "Rotation": "0.0002120286,-0.0002525151,0.0000910759,1",
                           "Enabled": true,
                           "Children": [
                             {
                               "Id": "04654c6d-ab93-4351-be3e-fd4745f17f69",
                               "Name": "neck_0",
-                              "Position": "5.820016,-0.09348532,-0.002972875",
+                              "Position": "5.820017,-0.09348532,-0.002957616",
                               "Rotation": "0.0000821203,-0.000251025,0.01994136,-0.9998012",
                               "Enabled": true,
                               "Children": [
                                 {
                                   "Id": "112d9294-df67-44d5-923f-697d048040e5",
                                   "Name": "head",
-                                  "Position": "4.51083,-0.0007575451,0.00001029615",
+                                  "Position": "4.51083,-0.0007575451,-0.00002022142",
                                   "Rotation": "0.0000001192093,-0.00000007450581,0.01963396,0.9998072",
                                   "Enabled": true,
                                   "Children": [
@@ -475,21 +1327,21 @@
                                     {
                                       "Id": "0dcdb0b8-4b96-4b8f-ba35-78519e77933c",
                                       "Name": "eye_R",
-                                      "Position": "6.908863,5.140491,-3.234568",
+                                      "Position": "6.908863,5.140491,-3.234599",
                                       "Rotation": "-0.707108,-0.7071056,-0.000003516674,0.000004142523",
                                       "Enabled": true
                                     },
                                     {
                                       "Id": "5bdbca4f-dc61-41a2-94cf-ef631725ef0a",
                                       "Name": "face_lid_lower_R",
-                                      "Position": "6.908825,5.14046,-3.234568",
+                                      "Position": "6.908825,5.14046,-3.234583",
                                       "Rotation": "-0.3386923,0.9305478,-0.1307779,-0.04759897",
                                       "Enabled": true
                                     },
                                     {
                                       "Id": "96738d2c-7835-4091-9df8-5ae653b64936",
                                       "Name": "face_lid_lower_L",
-                                      "Position": "6.908893,5.14046,3.234669",
+                                      "Position": "6.908893,5.14046,3.234684",
                                       "Rotation": "0.3386921,-0.9305472,-0.1307825,-0.04760015",
                                       "Enabled": true
                                     },
@@ -503,14 +1355,14 @@
                                     {
                                       "Id": "37ba25e7-96b1-4be1-ba8d-b3767abd1d01",
                                       "Name": "face_lid_upper_R",
-                                      "Position": "6.908878,5.140506,-3.234568",
+                                      "Position": "6.908878,5.140521,-3.234583",
                                       "Rotation": "-0.8974884,-0.4185048,0.05881578,-0.1261319",
                                       "Enabled": true
                                     },
                                     {
                                       "Id": "86a90924-260d-4e82-bfa7-2001bd6fd2e5",
                                       "Name": "ear_R",
-                                      "Position": "5.621449,-0.4154401,-5.929188",
+                                      "Position": "5.621449,-0.4154401,-5.929173",
                                       "Rotation": "0.04624295,-0.6935213,0.1379467,-0.7055925",
                                       "Enabled": true
                                     },
@@ -528,7 +1380,7 @@
                             {
                               "Id": "486532fb-e535-4f51-b484-6795dd8bc70f",
                               "Name": "clavicle_L",
-                              "Position": "4.038116,0.2752102,1.103948",
+                              "Position": "4.038116,0.2752102,1.103963",
                               "Rotation": "-0.08115548,0.6811197,0.08690505,-0.7224523",
                               "Enabled": true,
                               "Children": [
@@ -542,28 +1394,28 @@
                                     {
                                       "Id": "dd1b01da-2c2f-4c7a-81d4-ad370d585df3",
                                       "Name": "arm_lower_L",
-                                      "Position": "10.04519,0.000008821482,-0.00005292889",
+                                      "Position": "10.04519,0.00002384184,-0.00005006787",
                                       "Rotation": "0.00000004470348,0.0000004693866,0.1484236,0.9889238",
                                       "Enabled": true,
                                       "Children": [
                                         {
                                           "Id": "8e7a6c54-b405-4004-b3d3-30fdbf5309e1",
                                           "Name": "hand_L",
-                                          "Position": "7.706695,-0.000002384184,-0.00009608263",
+                                          "Position": "7.706672,0.0000004768369,-0.0000762939",
                                           "Rotation": "0.09163112,-0.03309625,0.03967814,0.9944518",
                                           "Enabled": true,
                                           "Children": [
                                             {
                                               "Id": "647b9597-060f-4804-8f22-ad6f513ec741",
                                               "Name": "hold_L",
-                                              "Position": "5.361071,0.6217114,3.394388",
+                                              "Position": "5.36105,0.6217199,3.394408",
                                               "Rotation": "-0.6958921,-0.170415,-0.392899,0.5764749",
                                               "Enabled": true
                                             },
                                             {
                                               "Id": "6f26f8ee-657a-45cc-b7cc-c2e826a11e4b",
                                               "Name": "finger_thumb_0_L",
-                                              "Position": "1.127941,1.648613,0.8667647",
+                                              "Position": "1.12792,1.648622,0.8667852",
                                               "Rotation": "0.5684277,0.1216941,0.4117243,0.7018287",
                                               "Enabled": true,
                                               "Children": [
@@ -588,7 +1440,7 @@
                                             {
                                               "Id": "39990e48-1a4e-4bb6-b0ea-f26ed6ee1576",
                                               "Name": "finger_index_meta_L",
-                                              "Position": "2.07528,1.204104,0.3774813",
+                                              "Position": "2.075301,1.204096,0.3774609",
                                               "Rotation": "0.06037846,0.04580591,0.1049121,0.9915894",
                                               "Enabled": true,
                                               "Children": [
@@ -602,14 +1454,14 @@
                                                     {
                                                       "Id": "8aa14ea7-2814-412d-bf2b-ae0cb1f64122",
                                                       "Name": "finger_index_1_L",
-                                                      "Position": "2.28328,0.000006228682,-0.0001308917",
+                                                      "Position": "2.28329,-0.000006526705,-0.0001565217",
                                                       "Rotation": "-0.000001147389,-0.2335206,0.000003024936,0.972352",
                                                       "Enabled": true,
                                                       "Children": [
                                                         {
                                                           "Id": "bb61f0c9-e57d-417a-9ccd-c27e25bc75bf",
                                                           "Name": "finger_index_2_L",
-                                                          "Position": "1.594391,-0.00004167853,-0.0001506935",
+                                                          "Position": "1.594389,-0.00005444882,-0.0001783128",
                                                           "Rotation": "-0.000004693866,-0.01375909,0.000002592802,0.9999053",
                                                           "Enabled": true
                                                         }
@@ -622,7 +1474,7 @@
                                             {
                                               "Id": "fec73c3e-82fc-48a0-8f5f-520911947a7e",
                                               "Name": "finger_middle_meta_L",
-                                              "Position": "2.100676,-0.1590879,0.285798",
+                                              "Position": "2.100654,-0.1590794,0.2858184",
                                               "Rotation": "0.00896778,0.03486501,-0.01934981,0.9991645",
                                               "Enabled": true,
                                               "Children": [
@@ -643,7 +1495,7 @@
                                                         {
                                                           "Id": "0f626d9a-0c43-4074-a90d-fa36492942b6",
                                                           "Name": "finger_middle_2_L",
-                                                          "Position": "1.683006,-0.00002908706,-0.0001892857",
+                                                          "Position": "1.683008,-0.00002104043,-0.0001599006",
                                                           "Rotation": "-0.00001375377,-0.04821886,-0.00003314018,0.9988368",
                                                           "Enabled": true
                                                         }
@@ -656,7 +1508,7 @@
                                             {
                                               "Id": "c38abd58-783c-4523-97f0-a45cf60076e6",
                                               "Name": "finger_ring_meta_L",
-                                              "Position": "2.104878,-1.444499,0.223244",
+                                              "Position": "2.104899,-1.444508,0.2232236",
                                               "Rotation": "-0.06376523,-0.02919634,-0.1306909,0.9889396",
                                               "Enabled": true,
                                               "Children": [
@@ -670,14 +1522,14 @@
                                                     {
                                                       "Id": "b876562c-f405-4f51-afca-571c20c0f786",
                                                       "Name": "finger_ring_1_L",
-                                                      "Position": "2.197983,-0.000004768369,-0.0001217126",
+                                                      "Position": "2.197994,-0.000007003542,-0.0001499652",
                                                       "Rotation": "-0.00004592538,-0.2566091,-0.00006532669,0.9665152",
                                                       "Enabled": true,
                                                       "Children": [
                                                         {
                                                           "Id": "ad426b02-4d56-409c-ac60-ef639abf6810",
                                                           "Name": "finger_ring_2_L",
-                                                          "Position": "1.535336,-0.00003197787,-0.0001865177",
+                                                          "Position": "1.535341,-0.0000297129,-0.0001563727",
                                                           "Rotation": "-0.00001230836,-0.05038811,0.000008925796,0.9987297",
                                                           "Enabled": true
                                                         }
@@ -690,7 +1542,7 @@
                                             {
                                               "Id": "e72407b1-8106-4f18-82e8-499efd89db06",
                                               "Name": "hand_R_to_L_ikrule",
-                                              "Position": "-28.15186,11.30969,27.26417",
+                                              "Position": "-28.15185,11.30969,27.26416",
                                               "Rotation": "-0.2772723,-0.6901741,-0.00000002980232,0.6684159",
                                               "Enabled": true
                                             }
@@ -705,13 +1557,13 @@
                                         {
                                           "Id": "7e20fb0b-aee9-4b11-abee-12a2bb95c115",
                                           "Name": "arm_lower_L_twist1",
-                                          "Position": "3.853356,-0.000005662438,-0.00008344645",
+                                          "Position": "3.853333,-0.000002682207,-0.00006341931",
                                           "Enabled": true
                                         },
                                         {
                                           "Id": "0d87e0c7-5642-4cb6-a16a-2cee56987d15",
                                           "Name": "arm_elbow_helper_L",
-                                          "Position": "0.00001392309,-0.000006579649,-0.00007626564",
+                                          "Position": "-0.00000894044,-0.000003592156,-0.00005627425",
                                           "Rotation": "0.0000003278255,-0.00000005960464,-0.7577646,0.6525283",
                                           "Enabled": true
                                         },
@@ -726,7 +1578,7 @@
                                     {
                                       "Id": "946f103a-0b3b-4926-b818-8004ca90a81d",
                                       "Name": "arm_upper_L_twist0",
-                                      "Position": "0.00004007739,0.00002360587,-0.0000430452",
+                                      "Position": "0.00001734422,0.00001974993,-0.00002305379",
                                       "Enabled": true
                                     },
                                     {
@@ -748,35 +1600,35 @@
                             {
                               "Id": "072b0cc1-74e5-4ebf-9231-b6a05d178578",
                               "Name": "clavicle_R",
-                              "Position": "4.036982,0.2748696,-1.108149",
+                              "Position": "4.036982,0.2748696,-1.108164",
                               "Rotation": "-0.08130813,0.6814711,-0.08696642,0.7220963",
                               "Enabled": true,
                               "Children": [
                                 {
                                   "Id": "78798998-5fa8-4dff-ab3c-f3a6a4b9c5ad",
                                   "Name": "arm_upper_R",
-                                  "Position": "6.218274,0.000005698296,-0.00007027386",
+                                  "Position": "6.218288,0.000009393783,-0.00007116793",
                                   "Rotation": "0.0277065,0.3880895,0.06826836,0.918672",
                                   "Enabled": true,
                                   "Children": [
                                     {
                                       "Id": "de3902a6-72ae-403b-8064-0eb74ba620ee",
                                       "Name": "arm_lower_R",
-                                      "Position": "10.04516,0.00001621246,-0.00006294249",
+                                      "Position": "10.04517,0.000003099441,-0.00005054473",
                                       "Rotation": "-0.0000000372529,0.0000001937151,0.1484233,0.9889239",
                                       "Enabled": true,
                                       "Children": [
                                         {
                                           "Id": "5b5cf478-e971-4656-afdd-8d543cc50bbc",
                                           "Name": "hand_R",
-                                          "Position": "7.70667,0.00002622604,-0.0000295639",
+                                          "Position": "7.706658,0.00002777576,-0.00003957748",
                                           "Rotation": "-0.09163144,0.03309621,0.03967842,0.9944515",
                                           "Enabled": true,
                                           "Children": [
                                             {
                                               "Id": "8420ce2d-0896-4a70-a040-de21e795c747",
                                               "Name": "hold_R",
-                                              "Position": "5.361097,0.6218917,-3.394491",
+                                              "Position": "5.361086,0.6218959,-3.394501",
                                               "Rotation": "-0.576474,0.3928988,0.1704146,0.695893",
                                               "Enabled": true,
                                               "Children": [
@@ -803,7 +1655,7 @@
                                             {
                                               "Id": "75834168-d148-48b8-9a2f-c9d6f847f5e3",
                                               "Name": "finger_thumb_0_R",
-                                              "Position": "1.127916,1.648676,-0.8668974",
+                                              "Position": "1.127926,1.648671,-0.8668872",
                                               "Rotation": "-0.5684255,-0.1216944,0.4117284,0.7018281",
                                               "Enabled": true,
                                               "Children": [
@@ -817,7 +1669,7 @@
                                                     {
                                                       "Id": "d5f8bd96-01a3-49fa-b47c-52740e339de6",
                                                       "Name": "finger_thumb_2_R",
-                                                      "Position": "2.136316,0.00004887579,-0.00007176396",
+                                                      "Position": "2.136318,0.00003504751,-0.00007760521",
                                                       "Rotation": "0.0000000782311,0.08420044,0.0000005532056,0.9964489",
                                                       "Enabled": true
                                                     }
@@ -828,28 +1680,28 @@
                                             {
                                               "Id": "28f31a77-df30-4989-88f1-a946fd654bb5",
                                               "Name": "finger_index_meta_R",
-                                              "Position": "2.075306,1.204134,-0.3775851",
+                                              "Position": "2.075284,1.204143,-0.3776055",
                                               "Rotation": "-0.0603777,-0.04580308,0.1049159,0.9915892",
                                               "Enabled": true,
                                               "Children": [
                                                 {
                                                   "Id": "d410890f-de38-4777-a443-4e3f2937d78b",
                                                   "Name": "finger_index_0_R",
-                                                  "Position": "3.068909,0.00002655387,-0.00001168251",
+                                                  "Position": "3.068899,0.00003406405,-0.00002026558",
                                                   "Rotation": "0.003392495,0.2652348,-0.06862299,0.9617328",
                                                   "Enabled": true,
                                                   "Children": [
                                                     {
                                                       "Id": "2633280c-5459-4bec-8c7c-c908fbe20282",
                                                       "Name": "finger_index_1_R",
-                                                      "Position": "2.283281,0.00003111362,-0.00006181002",
+                                                      "Position": "2.283286,0.00002473593,-0.00004893541",
                                                       "Rotation": "0.000002712011,0.2335185,-0.000001698732,0.9723523",
                                                       "Enabled": true,
                                                       "Children": [
                                                         {
                                                           "Id": "0dbbe952-4470-4b7b-8b67-ca95d3cd6d17",
                                                           "Name": "finger_index_2_R",
-                                                          "Position": "1.594432,0.00009408592,-0.0001259334",
+                                                          "Position": "1.594429,0.00008131563,-0.00009830667",
                                                           "Rotation": "0.000004738569,0.01376472,0.0000004470348,0.9999053",
                                                           "Enabled": true
                                                         }
@@ -869,14 +1721,14 @@
                                                 {
                                                   "Id": "9d1023dd-611d-4831-a1ad-97b5cbbfb662",
                                                   "Name": "finger_middle_0_R",
-                                                  "Position": "2.999215,0.00006067751,-0.00003051757",
+                                                  "Position": "2.999226,0.000056684,-0.00002121925",
                                                   "Rotation": "-0.0008731559,0.2335047,0.001300201,0.9723544",
                                                   "Enabled": true,
                                                   "Children": [
                                                     {
                                                       "Id": "946f4e60-baf8-496f-ae41-173042cfa40d",
                                                       "Name": "finger_middle_1_R",
-                                                      "Position": "2.560962,0.00003916024,-0.00005549191",
+                                                      "Position": "2.560968,0.00003513693,-0.00004196166",
                                                       "Rotation": "0.000005975366,0.2322946,0.00003750622,0.9726455",
                                                       "Enabled": true,
                                                       "Children": [
@@ -896,21 +1748,21 @@
                                             {
                                               "Id": "65539039-1411-43d1-9c83-b910ecaea20b",
                                               "Name": "finger_ring_meta_R",
-                                              "Position": "2.104884,-1.444477,-0.2233164",
+                                              "Position": "2.104874,-1.444473,-0.2233265",
                                               "Rotation": "0.06376481,0.02919935,-0.1306878,0.9889399",
                                               "Enabled": true,
                                               "Children": [
                                                 {
                                                   "Id": "818cb025-dec0-489f-b4ef-24b63a033db0",
                                                   "Name": "finger_ring_0_R",
-                                                  "Position": "2.824291,0.00006502865,-0.000005602835",
+                                                  "Position": "2.824281,0.00006511805,-0.0000166893",
                                                   "Rotation": "-0.004531965,0.185554,0.0562013,0.9810151",
                                                   "Enabled": true,
                                                   "Children": [
                                                     {
                                                       "Id": "11632e9c-ceb4-40a9-a156-fb50fc0e9e40",
                                                       "Name": "finger_ring_1_R",
-                                                      "Position": "2.198016,0.00004395842,-0.00007534026",
+                                                      "Position": "2.198027,0.00004172325,-0.00004708766",
                                                       "Rotation": "0.00004531443,0.2566069,-0.00006809831,0.9665158",
                                                       "Enabled": true,
                                                       "Children": [
@@ -930,7 +1782,7 @@
                                             {
                                               "Id": "c8f634bb-8400-4d4d-b9af-f6003fccba88",
                                               "Name": "hand_L_to_R_ikrule",
-                                              "Position": "-28.15177,11.30985,-27.26429",
+                                              "Position": "-28.15178,11.30985,-27.2643",
                                               "Rotation": "0.2772729,0.6901738,0.000000372529,0.6684158",
                                               "Enabled": true
                                             }
@@ -939,19 +1791,19 @@
                                         {
                                           "Id": "7fd9eb05-65d6-42da-bcc0-6e6a437a274c",
                                           "Name": "arm_lower_R_twist1",
-                                          "Position": "3.853325,0.00002604723,-0.00004875659",
+                                          "Position": "3.853314,0.00002747774,-0.00005877017",
                                           "Enabled": true
                                         },
                                         {
                                           "Id": "f4623065-fbf6-4168-81b7-f4a1c27a60de",
                                           "Name": "arm_lower_R_twist0",
-                                          "Position": "-0.0000282471,0.00003028547,-0.00005634122",
+                                          "Position": "-0.00001681537,0.00002879181,-0.00004634547",
                                           "Enabled": true,
                                           "Children": [
                                             {
                                               "Id": "03883b35-a564-4a18-9106-7371482170d3",
                                               "Name": "arm_elbow_helper_R",
-                                              "Position": "-0.00002363427,0.00002797533,-0.00006196195",
+                                              "Position": "-0.00001220254,0.00002648167,-0.0000519662",
                                               "Rotation": "-0.0000007376075,0.0000002682209,0.7577677,-0.6525244",
                                               "Enabled": true
                                             }
@@ -974,7 +1826,7 @@
                                     {
                                       "Id": "130adb2a-2e84-4412-8157-62e32fcc0547",
                                       "Name": "arm_upper_R_twist0",
-                                      "Position": "-0.00002571761,0.00001895049,-0.00006758266",
+                                      "Position": "-0.00001435107,0.00002087851,-0.00005758692",
                                       "Enabled": true
                                     },
                                     {
@@ -996,7 +1848,7 @@
                             {
                               "Id": "efa3aea4-a49e-40d6-8230-e8ce10c6f183",
                               "Name": "neck_clothing",
-                              "Position": "5.820016,-0.09348532,-0.002972875",
+                              "Position": "5.820017,-0.09348532,-0.002957616",
                               "Rotation": "0.0000821203,-0.000251025,0.01994136,-0.9998012",
                               "Enabled": true
                             }
@@ -1009,7 +1861,7 @@
                 {
                   "Id": "afcc3bc8-7039-4f33-8993-91a56d2adc16",
                   "Name": "leg_upper_R",
-                  "Position": "-0.2881514,-0.4264399,-4.427369",
+                  "Position": "-0.2881514,-0.4264399,-4.427384",
                   "Rotation": "-0.000001549721,1,0.0000001788139,-0.000000923872",
                   "Enabled": true,
                   "Children": [
@@ -1030,7 +1882,7 @@
                             {
                               "Id": "5d080de5-7816-41c7-a39c-2197cd4acfcb",
                               "Name": "ball_R",
-                              "Position": "4.429123,-0.000008106233,0.00001552225",
+                              "Position": "4.429123,-0.000008106233,0.0000002634588",
                               "Rotation": "-0.0000005032102,0.000001490116,0.3907284,0.920506",
                               "Enabled": true
                             }
@@ -1039,19 +1891,19 @@
                         {
                           "Id": "1b50e25f-9713-409d-924f-dde83bd3516b",
                           "Name": "leg_lower_R_twist1",
-                          "Position": "6.257754,0.000004172326,-0.00003278628",
+                          "Position": "6.257754,0.000004172326,-0.000002268695",
                           "Enabled": true
                         },
                         {
                           "Id": "5963295e-83fe-4bac-bbb6-1d8062137b9e",
                           "Name": "leg_lower_R_twist0",
-                          "Position": "0,0,0",
+                          "Position": "0.00000000006775736,0.00000000005638868,-0.00001525879",
                           "Enabled": true
                         },
                         {
                           "Id": "0ce98742-5a2b-4050-9332-3ed060d0f209",
                           "Name": "leg_knee_helper_R",
-                          "Position": "0,0,0",
+                          "Position": "0.00000000006775736,0.00000000005638868,-0.00001525879",
                           "Rotation": "0.0000009241048,-0.000001251698,0.7135268,0.7006278",
                           "Enabled": true
                         },
@@ -1066,20 +1918,20 @@
                     {
                       "Id": "bb1dcaf3-d3f2-40a9-b356-9cf33cbd3460",
                       "Name": "leg_upper_R_twist1",
-                      "Position": "7.235191,0.00002587512,-0.00002998508",
+                      "Position": "7.235191,0.0000258751,-0.00001472629",
                       "Enabled": true
                     },
                     {
                       "Id": "c8f55ac8-c970-4a61-bbaf-31b3fabf0326",
                       "Name": "leg_upper_R_twist0",
-                      "Position": "0.000007629395,0.00000000002728484,0.00000000003274181",
+                      "Position": "0.00000762946,0.00000000004183676,-0.00001525876",
                       "Rotation": "-0.00000005960464,0,0.000003039837,1",
                       "Enabled": true
                     },
                     {
                       "Id": "3bc5e80b-fe38-4727-8f54-5585d565643c",
                       "Name": "leg_glute_helper_R",
-                      "Position": "0.00002288818,0.00000000008185452,0.00000000009822543",
+                      "Position": "0.00002288825,0.00000000009640644,-0.00001525869",
                       "Rotation": "-0.000001056968,-0.0000006258488,-0.7071052,0.7071084",
                       "Enabled": true
                     },
@@ -1094,14 +1946,14 @@
                 {
                   "Id": "9c019290-2d16-4403-a611-81a9f2850dba",
                   "Name": "leg_upper_L",
-                  "Position": "-0.2881278,-0.4264346,4.427368",
+                  "Position": "-0.2881278,-0.4264346,4.427383",
                   "Rotation": "-0.000001549721,1,0.0000001788139,-0.000001162291",
                   "Enabled": true,
                   "Children": [
                     {
                       "Id": "72263bfb-d7c7-441f-95e9-ca59228d092d",
                       "Name": "leg_lower_L",
-                      "Position": "14.47038,-0.00005506131,-0.00005307029",
+                      "Position": "14.47038,-0.00005506134,-0.00002255271",
                       "Rotation": "-0.000003024936,-0.0000004023314,-0.01828231,0.9998329",
                       "Enabled": true,
                       "Children": [
@@ -1115,7 +1967,7 @@
                             {
                               "Id": "5ce3feb2-b9fe-48d3-b6c9-d905b2e0c2e9",
                               "Name": "ball_L",
-                              "Position": "4.429112,-0.00000333786,0.00001569163",
+                              "Position": "4.429112,-0.00000333786,-0.00001482595",
                               "Rotation": "-0.0000004862416,0.000001206994,0.3907294,0.9205056",
                               "Enabled": true
                             }
@@ -1124,7 +1976,7 @@
                         {
                           "Id": "c6319286-f309-45ac-981d-7453bfa814a5",
                           "Name": "leg_lower_L_twist1",
-                          "Position": "6.257754,0.000006288291,-0.00003766379",
+                          "Position": "6.257754,0.000006288291,-0.000007146215",
                           "Enabled": true
                         },
                         {
@@ -1151,7 +2003,7 @@
                     {
                       "Id": "21ee9129-c593-405e-8c62-fcca43e437e2",
                       "Name": "leg_upper_L_twist1",
-                      "Position": "7.235191,0.00002587512,-0.00002653508",
+                      "Position": "7.235191,0.00002587509,0.000003982503",
                       "Enabled": true
                     },
                     {
@@ -1186,14 +2038,14 @@
                 {
                   "Id": "4816d0e9-0e3d-4a11-92b8-e86af60ae52c",
                   "Name": "hand_R_IK_target",
-                  "Position": "0.6939831,-20.39471,39.24799",
+                  "Position": "0.6939831,-20.39473,39.24799",
                   "Rotation": "0.2871271,0.2142481,-0.5281312,0.7698917",
                   "Enabled": true
                 },
                 {
                   "Id": "f9424ea6-19f4-41f0-a70c-c6d0d45f2b73",
                   "Name": "hand_L_IK_target",
-                  "Position": "0.6941113,20.39471,39.24792",
+                  "Position": "0.6941113,20.39468,39.24792",
                   "Rotation": "0.7698929,0.5281296,-0.2142482,0.2871266",
                   "Enabled": true
                 },
@@ -1220,14 +2072,14 @@
                 {
                   "Id": "7ae9aa3e-faa2-440b-b077-53284b8f505c",
                   "Name": "foot_R_IK_target",
-                  "Position": "-0.8840643,-4.427368,3.807907",
+                  "Position": "-0.8840643,-4.427399,3.807907",
                   "Rotation": "0.6508947,0.2762884,-0.2762876,0.6508964",
                   "Enabled": true
                 },
                 {
                   "Id": "a34a0818-4c9a-4347-a948-b52fc9e9ebb4",
                   "Name": "foot_L_IK_target",
-                  "Position": "-0.8840935,4.427429,3.807922",
+                  "Position": "-0.8840935,4.427399,3.807922",
                   "Rotation": "0.650896,0.276287,-0.2762895,0.6508948",
                   "Enabled": true
                 }
@@ -1300,7 +2152,7 @@
             },
             {
               "__type": "GradientFog",
-              "__enabled": true,
+              "__enabled": false,
               "Color": "0.17165,0.28666,0.5099,0.17",
               "EndDistance": 8096,
               "FalloffExponent": 1,
@@ -1346,6 +2198,26 @@
           ]
         },
         {
+          "Id": "51392ab4-b775-4ad4-859c-73bc4fec358d",
+          "Name": "Hair",
+          "Position": "-25.08069,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "AnimatedModelComponent",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+              "CreateBoneObjects": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/citizen_clothes/hair/hair_tight_ponytail/models/hair_tight_ponytail_black.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
           "Id": "cb11db34-4ae7-4206-8b99-4c10a6381263",
           "Name": "Player Collider",
           "Position": "0,0,26.11092",
@@ -1365,7 +2237,7 @@
       ]
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Id": "a40ba877-2955-4842-b952-669bcacab279",
       "Name": "Surface",
       "Position": "-333.0323,335.8681,-156.2393",
       "Scale": "100,100,100",
@@ -1390,6 +2262,72 @@
           "Surface": null
         }
       ]
+    },
+    {
+      "Id": "f0ee51ec-23ad-45c2-a519-b0bf0ee2ea2e",
+      "Name": "Cube",
+      "Position": "-512.1797,391.7269,-251.9565",
+      "Scale": "5,5,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelComponent",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0.19851,0.3182,0.74257,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "5e8a736a-2164-4975-be82-c7f3c658d7d9",
+      "Name": "Object",
+      "Position": "0,120.9542,0",
+      "Enabled": true
+    },
+    {
+      "Id": "d92214b3-4347-4eea-92a2-f8c30fbaae48",
+      "Name": "Label",
+      "Position": "374.8162,178.1222,-151.2729",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "TextRenderer",
+          "__enabled": true,
+          "Color": "0.83137,0.83137,0.83137,1",
+          "FontFamily": "Poppins",
+          "FontSize": 32,
+          "Scale": 0.17,
+          "Text": "Motion Blur"
+        }
+      ]
+    },
+    {
+      "Id": "5654945f-e495-4f0c-8912-5c68a4557209",
+      "Name": "Label (1)",
+      "Position": "374.8162,118.434,-151.2729",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "TextRenderer",
+          "__enabled": true,
+          "Color": "0.83137,0.83137,0.83137,1",
+          "FontFamily": "Poppins",
+          "FontSize": 32,
+          "Scale": 0.17,
+          "Text": "Face Velocity"
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -1401,8 +2339,8 @@
     "ThreadedAnimation": true,
     "UseFixedUpdate": true
   },
-  "Title": "Particle Sheets",
-  "Description": "Testing the Sequence Sheet element",
+  "Title": "Particle Motion Blur",
+  "Description": "Showing motion blur",
   "__references": [
     "degg.f_wep_dagger"
   ]
