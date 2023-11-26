@@ -112,7 +112,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 				var size = p.Size * Scale;
 
 
-				v.TexCoord0 = new Vector4( size.x, size.y, p.SequenceTime, 0 );
+				v.TexCoord0 = new Vector4( size.x, size.y, p.SequenceTime.x + p.SequenceTime.y + p.SequenceTime.z , 0 );
 				v.TexCoord1 = p.Color.WithAlphaMultiplied( p.Alpha );
 
 				v.Position = p.Position;

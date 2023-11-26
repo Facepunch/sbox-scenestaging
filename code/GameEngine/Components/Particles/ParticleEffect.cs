@@ -79,8 +79,6 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	public ParticleFloat ForceScale { get; set; } = 1.0f;
 
 
-
-
 	[Property, ToggleGroup( "Collision" )] 
 	public bool Collision { get; set; }
 
@@ -88,7 +86,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	public ParticleFloat DieOnCollisionChance { get; set; } = 0.0f;
 
 	[Property, ToggleGroup( "Collision" )]
-	public float CollisionRadius { get; set; }
+	public float CollisionRadius { get; set; } = 1.0f;
 
 	[Property, ToggleGroup( "Collision" )]
 	public TagSet CollisionIgnore { get; set; }
@@ -105,6 +103,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property, ToggleGroup( "Collision" )]
 	public ParticleFloat PushStrength { get; set; } = 0.0f;
 
+
 	[Property, ToggleGroup( "SheetSequence", Label = "Sheet Sequence" )]
 	public bool SheetSequence { get; set; }
 
@@ -112,7 +111,10 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	public ParticleFloat SequenceId { get; set; } = 0.0f;
 
 	[Property, Group( "SheetSequence" )]
-	[Range( -1, 1 )] public ParticleFloat SequenceTime { get; set; } = 1.0f;
+	public ParticleFloat SequenceTime { get; set; } = 1.0f;
+
+	[Property, Group( "SheetSequence" )]
+	public ParticleFloat SequenceSpeed { get; set; } = 1.0f;
 
 
 	public List<Particle> Particles { get; } = new List<Particle>();
@@ -224,7 +226,8 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 			if ( SheetSequence )
 			{
-				p.SequenceTime = SequenceTime.Evaluate( delta, p.Random01 );
+				p.SequenceTime.x = SequenceTime.Evaluate( delta, p.Random01 );
+				p.SequenceTime.y += SequenceSpeed.Evaluate( delta, p.Random03 ) * timeScale;
 				p.Sequence = (int) SequenceId.Evaluate( delta, p.Random02 );
 			}
 

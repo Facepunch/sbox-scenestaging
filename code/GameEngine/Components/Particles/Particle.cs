@@ -15,7 +15,7 @@ public class Particle
 	public float Radius;
 	public Angles Angles;
 	public int Sequence;
-	public float SequenceTime;
+	public Vector3 SequenceTime;
 	public int Frame;
 
 	public float Random01;
@@ -56,7 +56,7 @@ public class Particle
 		p.Color = Color.White;
 		p.Alpha = 1;
 		p.Sequence = 0;
-		p.SequenceTime = Random.Shared.Float( 0, 100 );
+		p.SequenceTime = 0;
 		p.Size = 5;
 		p.HitTime = 0;
 		p.LastHitTime = 0;
