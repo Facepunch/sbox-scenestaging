@@ -110,7 +110,6 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 
 				var v = new Vertex();
 				var size = p.Size * Scale;
-				byte directionMode = 0;
 
 
 				v.TexCoord0 = new Vector4( size.x, size.y, p.SequenceTime, 0 );
@@ -126,9 +125,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 				v.Tangent.y = p.Velocity.y;
 				v.Tangent.z = p.Velocity.z;
 
-
-				v.Color.r = (byte)p.Sequence;
-				v.Color.g = directionMode;
+				v.Color.r = (byte)(p.Sequence % 255);
 
 				_so.AddVertex( v );
 

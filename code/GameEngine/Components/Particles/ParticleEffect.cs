@@ -79,7 +79,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	public ParticleFloat ForceScale { get; set; } = 1.0f;
 
 
-	[Property, Range( 0, 1 )] public float SequenceSpeed { get; set; } = 1.0f;
+
 
 	[Property, ToggleGroup( "Collision" )] 
 	public bool Collision { get; set; }
@@ -104,6 +104,15 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 	[Property, ToggleGroup( "Collision" )]
 	public ParticleFloat PushStrength { get; set; } = 0.0f;
+
+	[Property, ToggleGroup( "SheetSequence", Label = "Sheet Sequence" )]
+	public bool SheetSequence { get; set; }
+
+	[Property, ToggleGroup( "SheetSequence" )]
+	public ParticleFloat SequenceId { get; set; } = 0.0f;
+
+	[Property, Group( "SheetSequence" )]
+	[Range( -1, 1 )] public ParticleFloat SequenceTime { get; set; } = 1.0f;
 
 
 	public List<Particle> Particles { get; } = new List<Particle>();
@@ -172,6 +181,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 				var bumpiness = Bumpiness.Evaluate( delta, p.Random05 );
 				var push = PushStrength.Evaluate( delta, p.Random04 );
 				var die = DieOnCollisionChance.Evaluate( delta, p.Random03 ) > 0.5f;
+				var radius = MathF.Max( 0.01f, CollisionRadius );
 
 				if ( isEditor ) push = 0;
 
@@ -212,8 +222,11 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 				p.Angles.roll = Roll.Evaluate( delta, p.Random06 );
 			}
 
-
-			p.SequenceTime += timeScale * SequenceSpeed;
+			if ( SheetSequence )
+			{
+				p.SequenceTime = SequenceTime.Evaluate( delta, p.Random01 );
+				p.Sequence = (int) SequenceId.Evaluate( delta, p.Random02 );
+			}
 
 			if ( delta >= 1.0f )
 			{
