@@ -43,7 +43,7 @@ public struct ParticleGradient
 		Particle
 	}
 
-	internal Color Evaluate( float delta, float randomFixed )
+	public readonly Color Evaluate( in float delta, in float randomFixed )
 	{
 		var d = Evaluation switch
 		{

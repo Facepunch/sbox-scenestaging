@@ -55,7 +55,7 @@ public struct ParticleFloat
 		Particle
 	}
 
-	internal float Evaluate( float delta, float randomFixed )
+	public readonly float Evaluate( in float delta, in float randomFixed )
 	{
 		var d = Evaluation switch
 		{
