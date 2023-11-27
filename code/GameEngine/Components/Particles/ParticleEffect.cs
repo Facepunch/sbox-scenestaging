@@ -60,7 +60,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	public Color Tint { get; set; } = Color.White;
 
 	[Property, Group( "ApplyColor" )]
-	public Gradient Gradient { get; set; } = Color.White;
+	public ParticleGradient Gradient { get; set; } = Color.White;
 
 	[Property, Group( "ApplyColor" )]
 	public ParticleFloat Brightness { get; set; } = 1.0f;	
@@ -175,7 +175,6 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 				p.Velocity += forceScale * ForceDirection * timeScale;
 			}
 
-
 			if ( Collision )
 			{
 				var bounce = Bounce.Evaluate( delta, p.Random07 );
@@ -200,7 +199,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 				p.Alpha = Alpha.Evaluate( delta, p.Random02 );
 
-				p.Color = Tint * Gradient.Evaluate( p.Random03 ); // TODO, gradient, between two gradients etc
+				p.Color = Tint * Gradient.Evaluate( delta, p.Random03 ); // TODO, gradient, between two gradients etc
 				p.Color *= new Color( brightness, 1.0f );
 			}
 

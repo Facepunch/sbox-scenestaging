@@ -57,15 +57,15 @@
                 "y": 1
               },
               {
-                "x": 0.9864532,
+                "x": 0.7155172,
                 "y": 1,
                 "in": -0.064516194,
                 "out": 0.064516194
               },
               {
                 "x": 1,
-                "in": 7.1666684,
-                "out": -7.1666684
+                "in": 2.4680855,
+                "out": -2.4680855
               }
             ],
             "Constants": "1,0,0,0"
@@ -119,12 +119,27 @@
             "Constants": "0.05,0,0,0"
           },
           "Gradient": {
-            "color": [
-              {
-                "c": "1,0.78762,0.18317,1"
-              }
-            ],
-            "alpha": []
+            "Evaluation": "Particle",
+            "GradientA": {
+              "color": [
+                {
+                  "t": 0.5,
+                  "c": "1,1,1,1"
+                }
+              ],
+              "alpha": []
+            },
+            "GradientB": {
+              "color": [
+                {
+                  "t": 0.5,
+                  "c": "1,1,1,1"
+                }
+              ],
+              "alpha": []
+            },
+            "ConstantA": "1,1,1,1",
+            "ConstantB": "1,1,1,1"
           },
           "Lifetime": {
             "Type": "Range",
@@ -218,7 +233,7 @@
             "Evaluation": "Particle"
           },
           "TimeScale": 1,
-          "Tint": "1,1,1,1"
+          "Tint": "1,0.3,0,1"
         },
         {
           "__type": "ParticleSpriteRenderer",
@@ -226,7 +241,7 @@
           "Additive": false,
           "BlurAmount": 100,
           "BlurOpacity": 1,
-          "BlurSpacing": 0.26,
+          "BlurSpacing": 0.49,
           "DepthFeather": 0,
           "FaceVelocity": false,
           "FogStrength": 1,
@@ -306,13 +321,27 @@
             "Constants": "1,0,0,0"
           },
           "Gradient": {
-            "color": [
-              {
-                "t": 0.5,
-                "c": "1,1,1,1"
-              }
-            ],
-            "alpha": []
+            "Evaluation": "Particle",
+            "GradientA": {
+              "color": [
+                {
+                  "t": 0.5,
+                  "c": "1,1,1,1"
+                }
+              ],
+              "alpha": []
+            },
+            "GradientB": {
+              "color": [
+                {
+                  "t": 0.5,
+                  "c": "1,1,1,1"
+                }
+              ],
+              "alpha": []
+            },
+            "ConstantA": "1,1,1,1",
+            "ConstantB": "1,1,1,1"
           },
           "Lifetime": {
             "Type": "Range",
