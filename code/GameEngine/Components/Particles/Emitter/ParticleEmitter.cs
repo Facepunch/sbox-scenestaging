@@ -12,9 +12,33 @@ public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEd
 	float emitted;
 	float burst;
 
+	ParticleEffect target;
+
 	public override void OnEnabled()
 	{
 		ResetEmitter();
+
+		target = GetComponentInParent<ParticleEffect>( true, true );
+		if ( target is not null )
+		{
+			target.OnPreStep += OnParticleStep;
+		}
+		else
+		{
+			Log.Warning( $"No particle effect found for {this}" );
+		}
+	}
+
+	public override void OnDisabled()
+	{
+		base.OnDisabled();
+
+		if ( target is not null )
+		{
+			target.OnPreStep -= OnParticleStep;
+		}
+
+		target = null;
 	}
 
 	public void ResetEmitter()
@@ -24,12 +48,12 @@ public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEd
 		burst = 0;
 	}
 
-	public override void Update()
+	void OnParticleStep( float delta )
 	{
-		if ( !TryGetComponent( out ParticleEffect effect ) ) 
-			return;
+		if ( target is null ) return;
+		if ( !target.Active ) return;
 
-		time += Time.Delta;
+		time += delta;
 
 		float runTime = time - Delay;
 
@@ -58,19 +82,19 @@ public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEd
 			return;
 		}
 
-		while ( burst < Burst && !effect.IsFull )
+		while ( burst < Burst && !target.IsFull )
 		{
 			burst++;
-			Emit( effect );
+			Emit( target );
 		}
 
 		burst = Burst;
 
 		float targetEmission = Rate * runTime;
-		while ( !effect.IsFull && emitted < targetEmission )
+		while ( !target.IsFull && emitted < targetEmission )
 		{
 			emitted++;
-			Emit( effect );
+			Emit( target );
 		}
 	}
 

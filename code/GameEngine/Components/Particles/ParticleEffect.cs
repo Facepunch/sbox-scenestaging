@@ -24,6 +24,12 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property, Group( "Time" ), Range( 0, 1 )]
 	public float TimeScale { get; set; } = 1.0f;
 
+	/// <summary>
+	/// How many seconds to pre-warm this effect by when creating
+	/// </summary>
+	[Property, Group( "Time" ), Range( 0, 1 )]
+	public float PreWarm { get; set; } = 0.0f;
+
 	[Property, Group( "Time" )]
 	public ParticleFloat PerParticleTimeScale { get; set; } = 1.0f;
 
@@ -40,8 +46,6 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 	[Property, Group( "ApplyRotation" )]
 	public ParticleFloat Roll { get; set; } = 0.0f;
-
-
 
 	[Property, ToggleGroup( "ApplyShape", Label = "Shape" )]
 	public bool ApplyShape { get; set; } = false;
@@ -125,18 +129,71 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 	ConcurrentQueue<Particle> deleteList = new ConcurrentQueue<Particle>();
 
+	/// <summary>
+	/// Called before the particles are stepped
+	/// </summary>
+	public Action<float> OnPreStep { get; set; }
+
+	/// <summary>
+	/// Called after the particles are stepped
+	/// </summary>
+	public Action<float> OnPostStep { get; set; }
+
+	/// <summary>
+	/// Called after the particles are stepped
+	/// </summary>
+	public Action<Particle, float> OnStep { get; set; }
+
 	public enum SimulationSpace
 	{
 		World,
 		Local
 	}
 
+	bool isWarmed;
+
+	public override void OnEnabled()
+	{
+		base.OnEnabled();
+
+		isWarmed = false;
+	}
+
+	public override void OnDisabled()
+	{
+		Particles.Clear();
+	}
+
+	
+
 	public override void Update()
 	{
+		if ( !isWarmed )
+		{
+			isWarmed = true;
+
+			float timeStep = 0.2f;
+			if ( PreWarm < timeStep ) timeStep = PreWarm;
+
+			for ( float i = 0; i < PreWarm; i += timeStep )
+			{
+				Step( timeStep );
+			}
+
+			return;
+		}
+
 		using var ps = Superluminal.Scope( "Particle Effect", Color.Red, $"{GameObject.Name} - {Particles.Count} Particles" );
 
-
 		float timeDelta = MathX.Clamp( Time.Delta, 0.0f, 1.0f / 30.0f ) * TimeScale;
+
+		Step( timeDelta );
+	}
+
+	public void Step( float timeDelta )
+	{
+		if ( timeDelta <= 0 )
+			return;
 
 		var tx = Transform.World;
 		Vector3 lastPos = lastTransform.Position;
@@ -145,12 +202,13 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		bool parentMoved = deltaTransform != global::Transform.Zero;
 		bool isEditor = Scene.IsEditor;
 
+		OnPreStep?.Invoke( timeDelta );
+
 		Utility.Parallel.ForEach( Particles, p =>
 		{
 			var deathTime = p.BornTime + Lifetime.Evaluate( p.Random01, p.Random02 );
 
 			float delta = MathX.Remap( p.BornTime + p.Age, p.BornTime, deathTime );
-
 
 			var damping = Damping.Evaluate( delta, p.Random01 );
 			var forceScale = ForceScale.Evaluate( delta, p.Random02 );
@@ -167,8 +225,9 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 			p.Age += timeScale;
 			p.Frame++;
 
-
 			p.ApplyDamping( damping * timeScale );
+
+			OnStep?.Invoke( p, delta );
 
 			if ( Force && forceScale != 0.0f && !ForceDirection.IsNearlyZero() )
 			{
@@ -242,6 +301,8 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 			Terminate( delete );
 		}
 
+		OnPostStep?.Invoke( timeDelta );
+
 		lastTransform = tx;
 	}
 
@@ -250,6 +311,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		var p = Particle.Create();
 
 		p.Position = position;
+		p.StartPosition = position;
 		p.Radius = 1.0f;
 		p.Velocity = Vector3.Random.Normal * StartVelocity.Evaluate( Random.Shared.Float( 0, 1 ), Random.Shared.Float( 0, 1 ) );
 

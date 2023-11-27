@@ -195,6 +195,7 @@ PS
 
 	StaticCombo( S_MODE_DEPTH, 0..1, Sys( ALL ) );
 	DynamicCombo( D_BLEND, 0..1, Sys( ALL ) );
+	DynamicCombo( D_OPAQUE, 0..1, Sys( ALL ) );
 
 	float g_DepthFeather < Attribute( "g_DepthFeather" ); >;
 	float g_FogStrength < Attribute( "g_FogStrength" ); >;
@@ -226,6 +227,11 @@ PS
 		RenderState( DepthWriteEnable, false );
 	#endif
 
+	#if D_OPAQUE == 1
+		RenderState( DepthWriteEnable, true );
+		RenderState( BlendEnable, false );
+	#endif
+
 	float4 MainPs( PS_INPUT i ) : SV_Target0
 	{
 		float4 col = Tex2D( g_ColorTexture, i.sheetUv.xy );
@@ -249,6 +255,10 @@ PS
 		}
 
 	    clip(col.a - 0.0001);
+
+		#if D_OPAQUE
+			OpaqueFadeDepth( pow( col.a, 0.5f ), i.vPositionPs.xy );
+		#endif
 
 		#if S_MODE_DEPTH
 			OpaqueFadeDepth( pow( col.a, 0.3f ), i.vPositionPs.xy );

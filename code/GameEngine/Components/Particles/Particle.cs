@@ -30,6 +30,7 @@ public class Particle
 	public Vector3 HitNormal;
 	public float HitTime;
 	public float LastHitTime;
+	public Vector3 StartPosition;
 
 	public static Queue<Particle> Pool = new ( 512 );
 
@@ -58,8 +59,8 @@ public class Particle
 		p.Sequence = 0;
 		p.SequenceTime = 0;
 		p.Size = 5;
-		p.HitTime = 0;
-		p.LastHitTime = 0;
+		p.HitTime = -1000;
+		p.LastHitTime = -1000;
 
 		return p;
 	}

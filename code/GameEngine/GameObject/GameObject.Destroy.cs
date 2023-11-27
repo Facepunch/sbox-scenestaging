@@ -29,16 +29,15 @@ public partial class GameObject : IValid
 		Children.RemoveAll( x => x is null );
 		Components.RemoveAll( x => x is null );
 
-		Assert.AreEqual( 0, Components.Count, "Some components weren't deleted!" );
-		Assert.AreEqual( 0, Children.Count, "Some children weren't deleted!" );
-
 		_destroyed = true;
 		EndNetworking();
 		Scene.Directory.Remove( this );
 		Enabled = false;
 		Parent = null;
 		Scene = null;
-		_destroyed = true;
+
+		Assert.AreEqual( 0, Components.Count, "Some components weren't deleted!" );
+		Assert.AreEqual( 0, Children.Count, "Some children weren't deleted!" );
 	}
 
 	/// <summary>

@@ -12,6 +12,12 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 	[Property] public bool Additive { get; set; }
 	[Property] public bool Shadows { get; set; }
 
+	/// <summary>
+	/// If opaque there's no need to sort particles, because they will write to
+	/// the depth buffer during the opaque pass.
+	/// </summary>
+	[Property] public bool Opaque { get; set; }
+
 	[Property, ToggleGroup( "FaceVelocity" )]
 	public bool FaceVelocity { get; set; }
 
@@ -65,7 +71,11 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 	protected override void OnPreRender()
 	{
 		if ( _so is null ) return;
-		if ( !TryGetComponent( out ParticleEffect effect ) ) return;
+		if ( !TryGetComponent( out ParticleEffect effect ) )
+		{
+			_so.Clear();
+			return;
+		}
 
 		_so.Transform = Transform.World;
 		_so.Material = Material.FromShader( "code/shaders/sprite.vfx" );
@@ -74,6 +84,8 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 
 		if ( Additive ) _so.Attributes.SetCombo( "D_BLEND", 1 );
 		else _so.Attributes.SetCombo( "D_BLEND", 0 );
+
+		_so.Attributes.SetCombo( "D_OPAQUE", Opaque ? 1: 0 );
 
 		if ( MotionBlur )
 		{
@@ -92,6 +104,8 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 
 		_so.Attributes.Set( "g_ScreenSize", false );
 
+		_so.Flags.IsOpaque = Opaque;
+		_so.Flags.IsTranslucent = !Opaque;
 
 		BBox bounds = BBox.FromPositionAndSize( _so.Transform.Position, 10 );
 
@@ -99,7 +113,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 		{
 			var list = effect.Particles.AsEnumerable();
 
-			if ( SortMode == ParticleSortMode.ByDistance )
+			if ( !Opaque && SortMode == ParticleSortMode.ByDistance )
 			{
 				list = list.OrderByDescending( x => x.Position.DistanceSquared( Camera.Position ) );
 			}
