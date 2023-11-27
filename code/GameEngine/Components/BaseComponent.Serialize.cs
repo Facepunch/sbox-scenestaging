@@ -87,6 +87,16 @@ public abstract partial class BaseComponent
 		Enabled = (bool)(node["__enabled"] ?? true);
 	}
 
+	/// <summary>
+	/// Deserialize this component as per <see cref="Deserialize"/> but update <see cref="GameObject"/> and <see cref="BaseComponent"/> property
+	/// references immediately instead of having them deferred.
+	/// </summary>
+	public void DeserializeImmediately( JsonObject node )
+	{
+		Deserialize( node );
+		PostDeserialize();
+	}
+
 	private void DeserializeProperty( PropertyDescription prop, JsonNode node )
 	{
 		if ( prop.PropertyType == typeof( GameObject ) )
