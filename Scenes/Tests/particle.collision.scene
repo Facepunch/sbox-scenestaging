@@ -150,6 +150,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PreWarm": 0,
           "PushStrength": {},
           "Roll": {},
           "Scale": {
@@ -247,6 +248,7 @@
           "FogStrength": 1,
           "LeadingTrail": true,
           "MotionBlur": false,
+          "Opaque": true,
           "RotationOffset": 0,
           "Scale": 2,
           "Shadows": true,
@@ -352,6 +354,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PreWarm": 0,
           "PushStrength": {},
           "Roll": {
             "Type": "Range",
@@ -391,6 +394,7 @@
           "FogStrength": 1,
           "LeadingTrail": true,
           "MotionBlur": false,
+          "Opaque": false,
           "RotationOffset": 0,
           "Scale": 60,
           "Shadows": true,

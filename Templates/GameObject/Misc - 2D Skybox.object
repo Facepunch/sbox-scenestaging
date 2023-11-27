@@ -1,0 +1,19 @@
+{
+  "RootObject": {
+    "Id": "67ad8e7e-bb8e-40e0-b814-350fddb5d6af",
+    "Name": "SkyBox",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "SkyBox2D",
+        "__enabled": true,
+        "SkyMaterial": "materials/skybox/light_test_sky_sunny02.vmat",
+        "Tint": "1,1,1,1"
+      }
+    ]
+  },
+  "ShowInMenu": true,
+  "MenuPath": "Misc/2D Skybox",
+  "MenuIcon": "\uD83C\uDF03",
+  "__references": []
+}

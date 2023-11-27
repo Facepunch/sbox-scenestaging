@@ -283,6 +283,12 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		CreateObjectMenu( m, go =>
 		{
 			go.Parent = Value;
+
+			if ( Value is not Scene )
+			{
+				go.Transform.Local = Transform.Zero;
+			}
+
 			TreeView.Open( this );
 			TreeView.SelectItem( go );
 		} );
@@ -351,142 +357,40 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 	public static void CreateObjectMenu( Menu menu, Action<GameObject> then )
 	{
+		var prefabs = AssetSystem.All.Where( x => x.AssetType.FileExtension == PrefabFile.FileExtension )
+						.Where( x => x.RelativePath.StartsWith( "templates/gameobject/" ) )
+						.Select( x => x.LoadResource<PrefabFile>() )
+						.Where( x => x.ShowInMenu )
+						.OrderByDescending( x => x.MenuPath.Count( x => x == '/' ) )
+						.ThenBy( x => x.MenuPath )
+						.ToArray();
+
+		Vector3 pos = SceneEditorSession.Active.CameraPosition + SceneEditorSession.Active.CameraRotation.Forward * 300;
+
+		// I wonder if we should be tracing and placing it on the surface?
+
 		menu.AddOption( "Create Empty", "dataset", () =>
 		{
 			using var scope = SceneEditorSession.Scope();
 			var go = new GameObject( true, "Object" );
+			go.Transform.Local = new Transform( pos );
 			then( go );
 		} );
 
-		// 3d obj
+		foreach ( var entry in prefabs )
 		{
-			var submenu = menu.AddMenu( "3D Object", "dataset" );
-
-			submenu.AddOption( "Cube", "category", () =>
+			menu.AddOption( entry.MenuPath.Split( '/' ), entry.MenuIcon, () =>
 			{
 				using var scope = SceneEditorSession.Scope();
-				var go = new GameObject();
-				go.Name = "Cube";
-
-				var model = go.AddComponent<ModelComponent>();
-				model.Model = Model.Load( "models/dev/box.vmdl" );
-
+				var go = SceneUtility.Instantiate( entry.Scene, Transform.Zero );
+				go.BreakFromPrefab();
+				go.Name = entry.MenuPath.Split( '/' ).Last();
+				go.Transform.Local = new Transform( pos );
 				then( go );
 			} );
-
-			submenu.AddOption( "Sphere", "category", () =>
-			{
-				using var scope = SceneEditorSession.Scope();
-				var go = new GameObject();
-				go.Name = "Sphere";
-
-				var model = go.AddComponent<ModelComponent>();
-				model.Model = Model.Load( "models/dev/sphere.vmdl" );
-
-				then( go );
-			} );
-
-
-			submenu.AddOption( "Plane", "category", () =>
-			{
-				using var scope = SceneEditorSession.Scope();
-				var go = new GameObject();
-				go.Name = "Plane";
-
-				var model = go.AddComponent<ModelComponent>();
-				model.Model = Model.Load( "models/dev/plane.vmdl" );
-
-				then( go );
-			} );
-		}
-
-		// light
-		{
-			var submenu = menu.AddMenu( "Light", "light_mode" );
-
-			submenu.AddOption( "Directional Light", "category", () =>
-			{
-				using var scope = SceneEditorSession.Scope();
-				var go = new GameObject();
-				go.Name = "Directional Light";
-				go.Transform.Rotation = Rotation.LookAt( Vector3.Down + Vector3.Right * 0.25f );
-				go.AddComponent<DirectionalLightComponent>();
-
-				then( go );
-			} );
-
-			submenu.AddOption( "Point Light", "category", () =>
-			{
-				using var scope = SceneEditorSession.Scope();
-				var go = new GameObject();
-				go.Name = "Point Light";
-				go.AddComponent<PointLightComponent>();
-
-				then( go );
-			} );
-
-
-			submenu.AddOption( "Spot Light", "category", () =>
-			{
-				using var scope = SceneEditorSession.Scope();
-				var go = new GameObject();
-				go.Name = "Spot Light";
-				go.AddComponent<SpotLightComponent>();
-
-				then( go );
-			} );
-
-			submenu.AddSeparator();
-
-			submenu.AddOption( "2D SkyBox", "category", () =>
-			{
-				using var scope = SceneEditorSession.Scope();
-				var go = new GameObject();
-				go.Name = "SkyBox";
-
-				go.AddComponent<SkyBox2D>();
-
-				then( go );
-			} );
-		}
-
-		// UI
-		{
-			var submenu = menu.AddMenu( "UI", "desktop_windows" );
-
-			submenu.AddOption( "World UI", "panorama_horizontal", () =>
-			{
-				using var scope = SceneEditorSession.Scope();
-				var go = new GameObject();
-				go.Name = "World UI";
-				go.AddComponent<WorldPanel>();
-				then( go );
-			} );
-
-			submenu.AddOption( "Screen UI", "desktop_windows", () =>
-			{
-				using var scope = SceneEditorSession.Scope();
-				var go = new GameObject();
-				go.Name = "Screen UI";
-				go.AddComponent<ScreenPanel>();
-
-				then( go );
-			} );
-		}
-
-		{
-			menu.AddOption( "Camera", "videocam", () =>
-			{
-				using var scope = SceneEditorSession.Scope();
-				var go = new GameObject();
-				go.Name = "Camera";
-
-				var cam = go.AddComponent<CameraComponent>();
-
-				then( go );
-			} );
-
 		}
 	}
+
+
 }
 
