@@ -98,6 +98,22 @@ public static class SceneThumbnailRenderer
 		camera.FieldOfView = 80;
 		camera.ClearFlags = ClearFlags.Color | ClearFlags.Depth | ClearFlags.Stencil;
 
+		// Tick the scene so that everything is initialized correctly
+		{
+			var gi = new Gizmo.Instance();
+			gi.Input.Camera = camera;
+			using ( gi.Push() )
+			using ( scene.Push() )
+			{
+				Time.Delta = 0.1f;
+				for ( int i = 0; i < 10; i++ )
+				{
+					Time.Now += Time.Delta;
+					scene.EditorTick();
+				}
+			}
+		}
+
 		var cam = scene.FindAllComponents<CameraComponent>().FirstOrDefault();
 		if ( cam is not null )
 		{
