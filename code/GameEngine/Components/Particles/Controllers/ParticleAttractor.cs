@@ -1,7 +1,8 @@
-﻿using Sandbox.Utility;
+﻿namespace Sandbox;
 
-namespace Sandbox;
-
+[Title( "Particle Attractor" )]
+[Category( "Particles" )]
+[Icon( "attractions" )]
 public class ParticleAttractor : ParticleController
 {
 	[Property]

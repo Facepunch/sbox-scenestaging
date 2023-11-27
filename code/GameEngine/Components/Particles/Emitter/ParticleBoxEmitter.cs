@@ -1,11 +1,8 @@
-﻿using Editor;
-using Sandbox.Utility;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Runtime.Serialization;
+﻿namespace Sandbox;
 
-namespace Sandbox.GameEngine.Components.Particles.Emitter;
-
+[Title( "Box Emitter" )]
+[Category( "Particles" )]
+[Icon( "check_box_outline_blank" )]
 public sealed class ParticleBoxEmitter : ParticleEmitter
 {
 	[Property] public Vector3 Size { get; set; } = 50.0f;
@@ -20,7 +17,7 @@ public sealed class ParticleBoxEmitter : ParticleEmitter
 		Gizmo.Draw.LineBBox( BBox.FromPositionAndSize( 0, Size ) );
 
 		// TODO - Box Resize Gizmo
-		
+
 	}
 
 	public override bool Emit( ParticleEffect target )
@@ -45,7 +42,7 @@ public sealed class ParticleBoxEmitter : ParticleEmitter
 			else if ( face == 4 ) size.y = Size.y;
 			else if ( face == 5 ) size.z = Size.z;
 		}
-			
+
 		pos += size;
 
 		target.Emit( Transform.World.PointToWorld( pos ) );

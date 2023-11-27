@@ -1,11 +1,8 @@
-﻿using Editor;
-using Sandbox.Utility;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Runtime.Serialization;
+﻿namespace Sandbox;
 
-namespace Sandbox.GameEngine.Components.Particles.Emitter;
-
+[Title( "Sphere Emitter" )]
+[Category( "Particles" )]
+[Icon( "radio_button_unchecked" )]
 public sealed class ParticleSphereEmitter : ParticleEmitter
 {
 	[Property, Range( 0, 100 )] public float Radius { get; set; } = 20.0f;
@@ -22,7 +19,7 @@ public sealed class ParticleSphereEmitter : ParticleEmitter
 		Gizmo.Draw.LineSphere( 0, Radius );
 
 		// TODO - Sphere Gizmo
-		
+
 	}
 
 	public override bool Emit( ParticleEffect target )

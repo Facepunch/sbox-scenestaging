@@ -1,7 +1,8 @@
 ﻿using Sandbox;
-using Sandbox.Utility;
-using System.Collections.Generic;
 
+[Title( "Particle Sprite Renderer" )]
+[Category( "Particles" )]
+[Icon( "favorite" )]
 public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	SpriteSceneObject _so;
@@ -85,7 +86,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 		if ( Additive ) _so.Attributes.SetCombo( "D_BLEND", 1 );
 		else _so.Attributes.SetCombo( "D_BLEND", 0 );
 
-		_so.Attributes.SetCombo( "D_OPAQUE", Opaque ? 1: 0 );
+		_so.Attributes.SetCombo( "D_OPAQUE", Opaque ? 1 : 0 );
 
 		if ( MotionBlur )
 		{
@@ -126,7 +127,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 				var size = p.Size * Scale;
 
 
-				v.TexCoord0 = new Vector4( size.x, size.y, p.SequenceTime.x + p.SequenceTime.y + p.SequenceTime.z , 0 );
+				v.TexCoord0 = new Vector4( size.x, size.y, p.SequenceTime.x + p.SequenceTime.y + p.SequenceTime.z, 0 );
 				v.TexCoord1 = p.Color.WithAlphaMultiplied( p.Alpha );
 
 				v.Position = p.Position;

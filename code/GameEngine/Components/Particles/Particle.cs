@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Sandbox;
+﻿namespace Sandbox;
 
 public class Particle
 {
@@ -32,7 +29,7 @@ public class Particle
 	public float LastHitTime;
 	public Vector3 StartPosition;
 
-	public static Queue<Particle> Pool = new ( 512 );
+	public static Queue<Particle> Pool = new( 512 );
 
 	public static Particle Create()
 	{
@@ -75,7 +72,7 @@ public class Particle
 		var drop = speed * amount;
 		float newspeed = speed - drop;
 
-		if ( newspeed < 0 ) 
+		if ( newspeed < 0 )
 			newspeed = 0;
 
 		if ( newspeed == speed )
@@ -187,6 +184,6 @@ public class Particle
 			HitTime = 0;
 		}
 
-		Position = targetPosition;		
+		Position = targetPosition;
 	}
 }

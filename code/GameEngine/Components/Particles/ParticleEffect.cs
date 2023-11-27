@@ -1,16 +1,10 @@
-﻿using Editor;
-using Sandbox;
-using Sandbox.Utility;
+﻿using Sandbox.Utility;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 
 namespace Sandbox;
 
 [Title( "Particle Effect" )]
-[Category( "Effects" )]
+[Category( "Particles" )]
 [Icon( "shower" )]
 [EditorHandle( "materials/gizmo/particles.png" )]
 public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEditor
@@ -67,8 +61,8 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	public ParticleGradient Gradient { get; set; } = Color.White;
 
 	[Property, Group( "ApplyColor" )]
-	public ParticleFloat Brightness { get; set; } = 1.0f;	
-	
+	public ParticleFloat Brightness { get; set; } = 1.0f;
+
 	[Property, Group( "ApplyColor" )]
 	public ParticleFloat Alpha { get; set; } = 1.0f;
 
@@ -83,7 +77,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 	public ParticleFloat ForceScale { get; set; } = 1.0f;
 
 
-	[Property, ToggleGroup( "Collision" )] 
+	[Property, ToggleGroup( "Collision" )]
 	public bool Collision { get; set; }
 
 	[Property, ToggleGroup( "Collision" )]
@@ -164,7 +158,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 		Particles.Clear();
 	}
 
-	
+
 
 	public override void Update()
 	{
@@ -283,7 +277,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 			{
 				p.SequenceTime.x = SequenceTime.Evaluate( delta, p.Random01 );
 				p.SequenceTime.y += SequenceSpeed.Evaluate( delta, p.Random03 ) * timeScale;
-				p.Sequence = (int) SequenceId.Evaluate( delta, p.Random02 );
+				p.Sequence = (int)SequenceId.Evaluate( delta, p.Random02 );
 			}
 
 			if ( delta >= 1.0f )
@@ -293,7 +287,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 		} );
 
-		while ( deleteList.TryDequeue( out var delete ))
+		while ( deleteList.TryDequeue( out var delete ) )
 		{
 			Terminate( delete );
 		}
@@ -314,7 +308,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 		Particles.Add( p );
 
-		return p;		
+		return p;
 	}
 
 	public void Terminate( Particle p )

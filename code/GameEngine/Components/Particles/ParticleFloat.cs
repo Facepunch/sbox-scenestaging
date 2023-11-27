@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Sandbox;
 
@@ -45,7 +44,7 @@ public struct ParticleFloat
 	{
 		Constant,
 		Range,
-		Curve 
+		Curve
 	}
 
 	public enum EvaluationType

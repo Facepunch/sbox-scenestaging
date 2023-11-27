@@ -1,5 +1,8 @@
-﻿namespace Sandbox.GameEngine.Components.Particles.Emitter;
+﻿namespace Sandbox;
 
+[Title( "Cone Emitter" )]
+[Category( "Particles" )]
+[Icon( "change_history" )]
 public sealed class ParticleConeEmitter : ParticleEmitter
 {
 	[Property, Group( "Placement" )]
