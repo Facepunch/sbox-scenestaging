@@ -1,5 +1,4 @@
-﻿using Sandbox;
-using Sandbox.Diagnostics;
+﻿using Sandbox.Diagnostics;
 
 namespace Sandbox.TerrainEngine;
 
@@ -29,8 +28,7 @@ public class TerrainColliderComponent : BaseComponent, BaseComponent.ExecuteInEd
 		_body.GravityEnabled = false;
 		_body.Transform = Transform.World;
 
-		Log.Warning( $"{this} disabled cause it hangs for 20 seconds to add the massive collision mesh." );
-		// GenerateCollisionMesh();
+		GenerateCollisionMesh();
 	}
 
 	public override void OnDisabled()
@@ -39,9 +37,6 @@ public class TerrainColliderComponent : BaseComponent, BaseComponent.ExecuteInEd
 		_body = null;
 	}
 
-	/// <summary>
-	/// Horrible, takes 20 seconds to add and takes 1.5GB of memory.
-	/// </summary>
 	void GenerateCollisionMesh()
 	{
 		var terrain = GetComponent<TerrainComponent>( false ); // Terrain component might be disabled
@@ -51,64 +46,10 @@ public class TerrainColliderComponent : BaseComponent, BaseComponent.ExecuteInEd
 			return;
 		}
 
-		/*var heightScale = terrain.MaxHeightInInches;
-		var scale = terrain.TerrainResolutionInInches;
-
-		var pixels = terrain.HeightMap.GetPixels();
-		var width = terrain.HeightMap.Width;
-		var height = terrain.HeightMap.Height;
-
-		var min = Vector3.Zero;
-		var max = Vector3.Zero;
-
-		var verticies = new Vector3[width * height];
-		int[] indices = new int[(width - 1) * (height - 1) * 6];
-
-		// verticies
-		for ( int y = 0; y < height; y++ )
-		{
-			for ( int x = 0; x < width; x++ )
-			{
-				var color = pixels[ y * width + ( width - x - 1 ) ]; // FIXME: why do I need to do this backwards
-				var h = (float)color.b / 255.0f;
-
-				// are we stupid rust heightmap
-				if ( terrain.IsRustHeightmap )
-				{
-					h = (color.b * 256 + color.r) / 256.0f * 2 / 255.0f;
-				}
-
-				verticies[y * width + x] = new Vector3( x * scale - width * scale / 2, y * scale - height * scale / 2, h * heightScale );
-				min = Vector3.Min( verticies[y * width + x], min );
-				max = Vector3.Max( verticies[y * width + x], max );
-			}
-		}
-
-		int index = 0;
-		for ( int y = 0; y < height - 1; y++ )
-		{
-			for ( int x = 0; x < width - 1; x++ )
-			{
-				// Each quad requires two triangles
-				int bottomLeft = y * width + x;
-				int topLeft = (y + 1) * width + x;
-				int bottomRight = bottomLeft + 1;
-				int topRight = topLeft + 1;
-
-				// Triangle 1
-				indices[index++] = bottomLeft;
-				indices[index++] = topRight;
-				indices[index++] = topLeft;
-
-				// Triangle 2
-				indices[index++] = bottomLeft;
-				indices[index++] = bottomRight;
-				indices[index++] = topRight;
-			}
-		}
-
-		var shape = _body.AddMeshShape( verticies, indices );
-		shape.AddTag( "solid" );
-		shape.IsTrigger = false;*/
+		var data = terrain.TerrainData;
+		var sizeScale = terrain.TerrainResolutionInInches;
+		var heightScale = terrain.MaxHeightInInches / ushort.MaxValue;
+		//var shape = _body.AddHeightFieldShape( data.HeightMap, data.HeightMapWidth, data.HeightMapHeight, sizeScale, heightScale );
+		//shape.Tags.Add( "solid" );
 	}
 }
