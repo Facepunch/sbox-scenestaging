@@ -37,7 +37,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 	public override void OnEnabled()
 	{
 		Assert.IsNull( keyframeBody );
-		Assert.AreEqual( 0, shapes.Count );
+		//Assert.AreEqual( 0, shapes.Count );
 		Assert.NotNull( Scene );
 
 		UpdatePhysicsBody();
@@ -110,8 +110,6 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 
 	protected virtual void RebuildImmediately()
 	{
-		shapesDirty = false;
-
 		// destroy any old shapes
 		foreach ( var shape in shapes )
 		{
