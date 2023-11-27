@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Editor.NodeEditor;
 using Facepunch.ActionGraphs;
 
@@ -85,6 +86,11 @@ internal class TypeControlWidget : ControlWidget
 
 	private string GetTypePath( TypeDescription typeDesc )
 	{
+		if ( typeDesc.TargetType.DeclaringType != null )
+		{
+			return $"{GetTypePath( EditorTypeLibrary.GetType( typeDesc.TargetType.DeclaringType ) )}/{typeDesc.Name}";
+		}
+
 		var prefix = "Other";
 
 		if ( typeDesc.TargetType.IsAssignableTo( typeof( Resource ) ) )
@@ -97,7 +103,7 @@ internal class TypeControlWidget : ControlWidget
 		}
 		else if ( SystemTypes.Contains( typeDesc.TargetType ) )
 		{
-			prefix = typeDesc.Namespace ?? "Sandbox";
+			prefix = typeDesc.Namespace?.Replace( '.', '/' ) ?? "Sandbox";
 		}
 
 		if ( !string.IsNullOrEmpty( typeDesc.Group ) )
@@ -106,7 +112,7 @@ internal class TypeControlWidget : ControlWidget
 		}
 		else if ( prefix == "Other" && !string.IsNullOrEmpty( typeDesc.Namespace ) )
 		{
-			prefix += $"/{typeDesc.Namespace}";
+			prefix += $"/{typeDesc.Namespace.Replace( '.', '/' )}";
 		}
 
 		return $"{prefix}/{typeDesc.Name}";
@@ -175,6 +181,8 @@ internal class TypeControlWidget : ControlWidget
 		{
 			if ( typeDesc.IsStatic ) continue;
 			if ( typeDesc.IsGenericType ) continue;
+			if ( typeDesc.HasAttribute<CompilerGeneratedAttribute>() ) continue;
+			if ( typeDesc.Name.StartsWith( "<" ) || typeDesc.Name.StartsWith( "_" ) ) continue;
 			if ( !listedTypes.Add( typeDesc.TargetType ) ) continue;
 			if ( !SatisfiesConstraints( typeDesc.TargetType, genericParam ) ) continue;
 
