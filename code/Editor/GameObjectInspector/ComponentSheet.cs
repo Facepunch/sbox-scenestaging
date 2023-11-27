@@ -293,6 +293,7 @@ file class ComponentHeader : Widget
 		base.OnMouseRightClick( e );
 
 		WantsContextMenu?.Invoke( null );
+		e.Accepted = true;
 	}
 
 	protected override void OnMouseClick( MouseEvent e )

@@ -28,8 +28,9 @@ public class GameObjectControlWidget : ControlWidget
 	//	m.AddOption( "Copy", action: Copy );
 	//	m.AddOption( "Paste", action: Paste );
 		m.AddOption( "Clear", action: Clear );
-
 		m.OpenAtCursor( true );
+
+		e.Accepted = true;
 	}
 
 	protected override void PaintControl()

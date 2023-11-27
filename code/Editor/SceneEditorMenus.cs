@@ -37,8 +37,7 @@ public static class SceneEditorMenus
 		EditorUtility.Clipboard.Copy( json.ToString() );
 		go.Destroy();
 	}
-
-
+	
 	[Menu( "Editor", "Scene/Copy", Shortcut = "Ctrl+C" )]
 	public static void Copy()
 	{

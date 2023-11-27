@@ -3,6 +3,7 @@ using Sandbox;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
+using Sandbox.Utility;
 
 namespace Editor.Inspectors;
 
@@ -93,6 +94,18 @@ public class GameObjectInspector : Widget
 		s.OpenAt( source.ScreenRect.BottomLeft, animateOffset: new Vector2( 0, -4 ) );
 		s.FixedWidth = source.Width;
 	}
+
+	protected override void OnContextMenu( ContextMenuEvent e )
+	{
+		if ( Helpers.HasComponentInClipboard() )
+		{
+			var menu = new Menu( this );
+			menu.AddOption( "Paste Component As New", action: () => Helpers.PasteComponentAsNew( TargetObject ) );
+			menu.OpenAtCursor( true );
+		}
+		
+		base.OnContextMenu( e );
+	}
 }
 
 public class ComponentList : Widget
@@ -157,14 +170,17 @@ public class ComponentList : Widget
 			Rebuild();
 		} ).Enabled = canMoveDown;
 
-		menu.AddOption( "Remove Component", action: () => component.Destroy() );
-		
-		menu.AddOption( "Copy To Clipboard", action: () => CopyComponent( component ) );
-
-		if ( HasComponentInClipboard() )
+		menu.AddOption( "Remove Component", action: () =>
 		{
-			menu.AddOption( "Paste Values", action: () => PasteComponentValues( component ) );
-			menu.AddOption( "Paste As New", action: () => PasteComponentAsNew( component ) );
+			component.Destroy();
+			SceneEditorSession.Active.Scene.EditLog( "Removed Component", component );
+		} );
+		menu.AddOption( "Copy To Clipboard", action: () => Helpers.CopyComponent( component ) );
+
+		if ( Helpers.HasComponentInClipboard() )
+		{
+			menu.AddOption( "Paste Values", action: () => Helpers.PasteComponentValues( component ) );
+			menu.AddOption( "Paste As New", action: () => Helpers.PasteComponentAsNew( component.GameObject ) );
 		}
 		
 		//menu.AddOption( "Open In Window.." );
@@ -186,77 +202,6 @@ public class ComponentList : Widget
 			menu.OpenAtCursor( true );
 		}
 
-	}
-
-	private bool HasComponentInClipboard()
-	{
-		var text = EditorUtility.Clipboard.Paste();
-
-		try
-		{
-			if ( JsonNode.Parse( text ) is JsonObject jso )
-			{
-				var componentType = TypeLibrary.GetType<BaseComponent>( (string)jso["__type"] );
-				return componentType is not null;
-			}
-		}
-		catch
-		{
-			// Do nothing.
-		}
-		
-		return false;
-	}
-
-	private void PasteComponentAsNew( BaseComponent target )
-	{
-		var text = EditorUtility.Clipboard.Paste();
-
-		try
-		{
-			if ( JsonNode.Parse( text ) is not JsonObject jso )
-				return;
-
-			var componentType = TypeLibrary.GetType<BaseComponent>( (string)jso["__type"] );
-			if ( componentType is null )
-			{
-				Log.Warning( $"TypeLibrary couldn't find BaseComponent type {jso["__type"]}" );
-				return;
-			}
-
-			var component = target.GameObject.AddComponent( componentType );
-			component.DeserializeImmediately( jso );
-
-			SceneEditorSession.Active.Scene.EditLog( "Pasted Component As New", target );
-		}
-		catch
-		{
-			// Do nothing.
-		}
-	}
-
-	private void PasteComponentValues( BaseComponent target )
-	{
-		var text = EditorUtility.Clipboard.Paste();
-
-		try
-		{
-			if ( JsonNode.Parse( text ) is JsonObject jso )
-			{
-				target.Deserialize( jso );
-				SceneEditorSession.Active.Scene.EditLog( "Pasted Component Values", target );
-			}
-		}
-		catch
-		{
-			// Do nothing.
-		}
-	}
-
-	private void CopyComponent( BaseComponent component )
-	{
-		var result = component.Serialize();
-		EditorUtility.Clipboard.Copy( result.ToString() );
 	}
 
 	int hashCode;

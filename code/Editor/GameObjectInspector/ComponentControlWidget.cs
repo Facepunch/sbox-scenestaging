@@ -29,6 +29,8 @@ public class ComponentControlWidget : ControlWidget
 		m.AddOption( "Clear", action: Clear );
 
 		m.OpenAtCursor( true );
+
+		e.Accepted = true;
 	}
 
 	protected override void PaintControl()
