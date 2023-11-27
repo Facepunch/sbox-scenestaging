@@ -192,9 +192,6 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 	public void Step( float timeDelta )
 	{
-		if ( timeDelta <= 0 )
-			return;
-
 		var tx = Transform.World;
 		Vector3 lastPos = lastTransform.Position;
 		Transform deltaTransform = tx.ToLocal( lastTransform );

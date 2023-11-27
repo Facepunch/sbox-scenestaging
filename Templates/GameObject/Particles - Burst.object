@@ -137,7 +137,7 @@
         "Scale": 1,
         "Shadows": false,
         "SortMode": "Unsorted",
-        "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+        "Texture": "materials/particles/shapes/circle1.vtex"
       },
       {
         "__type": "ParticleSphereEmitter",
@@ -153,8 +153,8 @@
       }
     ]
   },
-  "ShowInMenu": false,
-  "MenuPath": null,
-  "MenuIcon": null,
+  "ShowInMenu": true,
+  "MenuPath": "Particles/Burst",
+  "MenuIcon": "\uD83C\uDF86",
   "__references": []
 }

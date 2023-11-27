@@ -71,7 +71,7 @@
             "Constants": "1,0,0,0"
           },
           "ApplyColor": true,
-          "ApplyRotation": false,
+          "ApplyRotation": true,
           "ApplyShape": true,
           "Bounce": {
             "Type": "Range",
@@ -152,7 +152,11 @@
           },
           "PreWarm": 0,
           "PushStrength": {},
-          "Roll": {},
+          "Roll": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0,360,0,0"
+          },
           "Scale": {
             "Evaluation": "Particle",
             "CurveA": [
@@ -213,7 +217,7 @@
                 "x": 1
               }
             ],
-            "Constants": "1.12,1,0,0"
+            "Constants": "2,1,0,0"
           },
           "SequenceId": {},
           "SequenceSpeed": {
@@ -253,7 +257,7 @@
           "Scale": 2,
           "Shadows": true,
           "SortMode": "ByDistance",
-          "Texture": "materials/tools/handle_edged_circle_tga_b183d0e4.generated.vtex"
+          "Texture": "materials/particles/shapes/bean1.vtex"
         },
         {
           "__type": "ParticleBoxEmitter",

@@ -1,7 +1,7 @@
 {
   "RootObject": {
-    "Id": "828eb830-4cb4-4b0d-9ca4-dbe026e5b6b4",
-    "Name": "Partifcles/Particle - Spray",
+    "Id": "3f1222bf-b192-40ba-b89b-b52032d9eb13",
+    "Name": "particle - sprayer",
     "Enabled": true,
     "Components": [
       {
@@ -27,7 +27,7 @@
           ],
           "Constants": "1,0,0,0"
         },
-        "ApplyColor": false,
+        "ApplyColor": true,
         "ApplyRotation": false,
         "ApplyShape": true,
         "Bounce": {
@@ -51,6 +51,7 @@
           "Constants": "1,0,0,0"
         },
         "Gradient": {
+          "Type": "Range",
           "Evaluation": "Particle",
           "GradientA": {
             "color": [
@@ -70,8 +71,8 @@
             ],
             "alpha": []
           },
-          "ConstantA": "1,1,1,1",
-          "ConstantB": "1,1,1,1"
+          "ConstantA": "0.98515,0.92604,0,1",
+          "ConstantB": "1,0.22,0,1"
         },
         "Lifetime": {
           "Type": "Range",
@@ -91,23 +92,26 @@
         },
         "Scale": {
           "Type": "Curve",
-          "CurveA": [
-            {
-              "in": -9.333329,
-              "out": 9.333329
-            },
-            {
-              "x": 0.03325123,
-              "y": 1,
-              "in": -0.056075174,
-              "out": 0.056075174
-            },
-            {
-              "x": 1,
-              "in": 2.9152544,
-              "out": -2.9152544
-            }
-          ],
+          "CurveA": {
+            "rangey": "0,3",
+            "frames": [
+              {
+                "in": -9.333329,
+                "out": 9.333329
+              },
+              {
+                "x": 0.03325123,
+                "y": 1,
+                "in": -0.056075174,
+                "out": 0.056075174
+              },
+              {
+                "x": 1,
+                "in": 2.9152544,
+                "out": -2.9152544
+              }
+            ]
+          },
           "Constants": "1,0,0,0"
         },
         "SequenceId": {},
@@ -126,7 +130,7 @@
         },
         "Stretch": {},
         "TimeScale": 1,
-        "Tint": "0,0,0,1"
+        "Tint": "1,1,1,1"
       },
       {
         "__type": "ParticleSpriteRenderer",
@@ -145,7 +149,7 @@
         "Scale": 1,
         "Shadows": false,
         "SortMode": "Unsorted",
-        "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+        "Texture": "materials/particles/shapes/star1.vtex"
       },
       {
         "__type": "ParticleConeEmitter",
@@ -164,7 +168,7 @@
     ]
   },
   "ShowInMenu": true,
-  "MenuPath": "Particles/Sprayer",
+  "MenuPath": "Particles/Spray",
   "MenuIcon": "\uD83D\uDEBF",
   "__references": []
 }
