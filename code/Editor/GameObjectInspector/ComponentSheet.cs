@@ -197,7 +197,7 @@ file class GroupHeader : Widget
 	{
 		FixedHeight = ControlWidget.ControlRowHeight;
 		Layout = Layout.Row();
-		Layout.AddSpacingCell( 2 );
+		Layout.AddSpacingCell( 20 );
 		Layout.Spacing = 5;
 
 		toggleLayout = Layout.AddColumn();
@@ -217,6 +217,11 @@ file class GroupHeader : Widget
 
 		toggleLayout.Add( controlWidget );
 		toggleControl = controlWidget;
+
+		if ( controlWidget is BoolControlWidget bcw )
+		{
+			bcw.Color = Theme.Green;
+		}
 	}
 
 	protected override void OnMousePress( MouseEvent e )
@@ -236,20 +241,32 @@ file class GroupHeader : Widget
 
 	protected override void OnPaint()
 	{
-		Paint.ClearPen();
-		Paint.SetBrush( Theme.ControlBackground.WithAlpha( 0.3f ) );
-		var lr = LocalRect;
-		Paint.DrawRect( lr );
+		bool isChecked = false;
+
+		if ( toggleControl is BoolControlWidget bcw )
+		{
+			isChecked = bcw.IsChecked;
+		}
+
+		//if ( false )
+		{
+			Paint.ClearPen();
+			Paint.SetBrush( Theme.Black.WithAlpha( 0.2f ) );
+			var lr = LocalRect.Shrink( 1, 0 );
+			Paint.DrawRect( lr, 5 );
+		}
 
 		float spacing = 5;
-		if ( toggleControl is null ) spacing = 13;
 
 		Paint.ClearBrush();
-		Paint.SetPen( Color.White.WithAlpha( Paint.HasMouseOver ? 0.4f : (state ? 0.4f : 0.3f ) ) );
+		Paint.SetPen( Color.White.WithAlpha( Paint.HasMouseOver ? 0.8f : (state ? 0.7f : 0.3f ) ) );
+
+		if ( isChecked ) Paint.SetPen( Theme.Green.WithAlpha( Paint.HasMouseOver ? 0.8f : (state ? 0.6f : 0.3f) ) );
+
 		Paint.DrawText( LocalRect.Shrink( toggleLayout.OuterRect.Right + spacing, 0, 0, 0 ), Title, TextFlag.LeftCenter );
 
 		Paint.SetPen( Color.White.WithAlpha( Paint.HasMouseOver ? 0.4f : 0.1f ) );
-		Paint.DrawIcon( LocalRect, state ? "arrow_drop_down" : "arrow_right", 16, TextFlag.LeftCenter );
+		Paint.DrawIcon( LocalRect.Shrink( 4, 0 ), state ? "arrow_drop_down" : "arrow_right", 16, TextFlag.LeftCenter );
 	}
 
 	bool state = true;
