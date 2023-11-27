@@ -525,6 +525,11 @@ public class ActionGraphView : GraphView
 				yield return node;
 			}
 		}
+		else
+		{
+			// Hack because TypeLibrary doesn't include Object
+			yield return new ToStringNodeType();
+		}
 
 		var methods = new List<MethodDescription>();
 
