@@ -575,7 +575,7 @@ public class ActionGraphView : GraphView
 			}
 		}
 
-		foreach ( var methodGroup in methods.GroupBy( x => x.Name ) )
+		foreach ( var methodGroup in methods.GroupBy( x => (x.Name, x.IsStatic) ) )
 		{
 			yield return new MethodNodeType( methodGroup.ToArray() );
 		}

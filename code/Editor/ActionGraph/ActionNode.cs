@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Text.Json.Serialization;
-using Editor.NodeEditor;
+﻿using Editor.NodeEditor;
 using Facepunch.ActionGraphs;
 using Sandbox.ActionGraphs;
+using System;
+using System.Collections;
 
 namespace Editor.ActionGraph;
 
@@ -134,7 +133,7 @@ public record struct MethodNodeType( MethodDescription[] Methods ) : INodeType
 {
 	public DisplayInfo DisplayInfo => new()
 	{
-		Name = Methods[0].Title.Contains( '{' ) ? Methods[0].Name.ToTitleCase() : Methods[0].Title,
+		Name = $"{(Methods[0].Title.Contains( '{' ) ? Methods[0].Name.ToTitleCase() : Methods[0].Title)}{(Methods[0].IsStatic ? " (static)" : "")}",
 		Description = Methods[0].Description,
 		Group = Methods[0].TypeDescription.Name,
 		Icon = Methods[0].Icon ?? (Methods[0].HasAttribute<PureAttribute>() ? "run_circle" : EditorNodeLibrary.CallMethod.DisplayInfo.Icon)
@@ -172,11 +171,12 @@ public record struct MethodNodeType( MethodDescription[] Methods ) : INodeType
 
 		node.Properties["_type"].Value = Methods[0].TypeDescription.TargetType;
 		node.Properties["_name"].Value = Methods[0].Name;
+		node.Properties["_isStatic"].Value = Methods[0].IsStatic;
 
 		return new ActionNode( actionGraph, node );
 	}
 
-	public string Identifier => $"call/{Methods[0].TypeDescription.FullName}/{Methods[0].Name}";
+	public string Identifier => $"call/{Methods[0].TypeDescription.FullName}/{Methods[0].Name}/{(Methods[0].IsStatic ? "static" : "instance")}";
 }
 
 public record struct PropertyNodeType( PropertyDescription Property, PropertyNodeKind Kind, bool ReadWrite ) : INodeType
