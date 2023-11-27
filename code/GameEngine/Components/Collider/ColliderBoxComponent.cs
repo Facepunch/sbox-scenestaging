@@ -7,7 +7,8 @@ using System.Collections.Generic;
 [Icon( "check_box_outline_blank", "red", "white" )]
 public class ColliderBoxComponent : Collider
 {
-	Vector3 _scale = 50;
+	private Vector3 _scale = 50;
+	private Vector3 _offset = 0;
 
 	[Property] 
 	public Vector3 Scale
@@ -22,6 +23,19 @@ public class ColliderBoxComponent : Collider
 		}
 	}
 
+	[Property]
+	public Vector3 Offset
+	{
+		get => _offset;
+		set
+		{
+			if (_offset == value) return;
+
+			_offset = value;
+			Rebuild();
+		}
+	}
+
 	public override void DrawGizmos()
 	{
 		if ( !Gizmo.IsSelected && !Gizmo.IsHovered )
@@ -29,13 +43,13 @@ public class ColliderBoxComponent : Collider
 
 		Gizmo.Draw.LineThickness = 1;
 		Gizmo.Draw.Color = Gizmo.Colors.Green.WithAlpha( Gizmo.IsSelected ? 1.0f : 0.2f );
-		Gizmo.Draw.LineBBox( new BBox( Scale * -0.5f, Scale * 0.5f ) );
+		Gizmo.Draw.LineBBox( new BBox( Scale * -0.5f + Offset, Scale * 0.5f + Offset ) );
 	}
 
 	protected override IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody )
 	{
 		var tx = targetBody.Transform.ToLocal( Transform.World );
-		var shape = targetBody.AddBoxShape( tx.Position, tx.Rotation, Scale * 0.5f * tx.Scale );
+		var shape = targetBody.AddBoxShape( tx.Position + Offset, tx.Rotation, Scale * 0.5f * tx.Scale );
 
 		if ( Surface is not null )
 		{
