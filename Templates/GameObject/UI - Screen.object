@@ -1,0 +1,21 @@
+{
+  "RootObject": {
+    "Id": "b364909a-8ac7-46ad-bfe2-59c07f5954fe",
+    "Name": "Screen UI",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "ScreenPanel",
+        "__enabled": true,
+        "AutoScreenScale": true,
+        "Opacity": 1,
+        "Scale": 1,
+        "ZIndex": 100
+      }
+    ]
+  },
+  "ShowInMenu": true,
+  "MenuPath": "UI/Screen",
+  "MenuIcon": "\uD83D\uDDA5\uFE0F",
+  "__references": []
+}

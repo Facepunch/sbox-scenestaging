@@ -1,0 +1,22 @@
+{
+  "RootObject": {
+    "Id": "57a890d9-7f84-4ba8-9320-e5d7fe0a4938",
+    "Name": "Cube",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "ModelComponent",
+        "__enabled": true,
+        "BodyGroups": 18446744073709551615,
+        "MaterialOverride": null,
+        "Model": "models/dev/box.vmdl",
+        "ShouldCastShadows": true,
+        "Tint": "1,1,1,1"
+      }
+    ]
+  },
+  "ShowInMenu": true,
+  "MenuPath": "3D Object/Cube",
+  "MenuIcon": "\uD83D\uDCE6",
+  "__references": []
+}

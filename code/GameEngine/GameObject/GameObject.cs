@@ -207,13 +207,19 @@ public partial class GameObject
 	/// </summary>
 	internal void UpdateEnabledStatus()
 	{
+		// we want to run all of the callbacks after the enabled status has changed
+		// this is kind of crude though, we should instead have something proper, that defers
+		// callbacks until a certain point, and calls them in a logical order.
+		Action a = default;
+
 		ForEachComponent( "UpdateEnabledStatus", false, c =>
 		{
-			c.GameObject = this;
-			c.UpdateEnabledStatus();
+			a += c.UpdateEnabledStatus();
 		} );
 
 		ForEachChild( "UpdateEnabledStatus", true, c => c.UpdateEnabledStatus() );
+
+		a?.Invoke();
 	}
 
 	public bool IsDescendant( GameObject o )

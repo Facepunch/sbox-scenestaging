@@ -118,37 +118,46 @@ public abstract partial class BaseComponent
 		onPostDeserialize = null;
 	}
 
-	internal void UpdateEnabledStatus()
+	internal Action UpdateEnabledStatus()
 	{
 		var state = _enabled && Scene is not null && GameObject is not null && GameObject.Active;
-		if ( state == _enabledState ) return;
+		if ( state == _enabledState ) return null;
 
 		_enabledState = state;
 
 		if ( _enabledState )
 		{
-			InitializeComponent();
-
-			if ( ShouldExecute )
+			return () =>
 			{
-				ExceptionWrap( "OnEnabled", OnEnabled );
+				InitializeComponent();
 
-				OnComponentActivated?.Invoke();
-			}
+				if ( ShouldExecute )
+				{
+
+						ExceptionWrap( "OnEnabled", OnEnabled );
+						OnComponentActivated?.Invoke();
+				
+				}
+			};
 		}
 		else
 		{
-			if ( ShouldExecute )
+			return () =>
 			{
-				ExceptionWrap( "OnDisabled", OnDisabled );
+				if ( ShouldExecute )
+				{
+					ExceptionWrap( "OnDisabled", OnDisabled );
 
-				OnComponentDeactivated?.Invoke();
-			}
+					OnComponentDeactivated?.Invoke();
+				}
+			};
 		}
 	}
 
 	public void Destroy()
 	{
+		GameObject.Components.RemoveAll( x => x == this );
+
 		ExceptionWrap( "OnDestroy", OnDestroy );
 
 		if ( _enabledState )
@@ -163,8 +172,6 @@ public abstract partial class BaseComponent
 				OnComponentDeactivated?.Invoke();
 			}
 		}
-
-		GameObject.Components.RemoveAll( x => x == this );
 	}
 
 	public virtual void Reset()

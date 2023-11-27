@@ -54,6 +54,11 @@ public partial class Scene : GameObject
 
 	public override JsonObject Serialize( SerializeOptions options = null )
 	{
+		if ( this is PrefabScene )
+		{
+			return base.Serialize( options );
+		}
+
 		var json = new JsonObject
 		{
 			{ "Type", "Scene" },
@@ -76,6 +81,12 @@ public partial class Scene : GameObject
 
 	public override void Deserialize( JsonObject node )
 	{
+		if ( this is PrefabScene )
+		{
+			base.Deserialize( node );
+			return;
+		}
+
 		ProcessDeletes();
 		Clear();
 

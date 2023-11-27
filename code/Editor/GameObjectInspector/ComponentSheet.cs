@@ -100,79 +100,209 @@ public partial class ComponentSheet : Widget
 									.ThenBy( x => x.DisplayName )
 									.ToArray();
 
-		var ps = new ControlSheet();
+
 		HashSet<string> handledGroups = new ( StringComparer.OrdinalIgnoreCase );
 
-		foreach( var prop in props )
+		// Add ungrouped first
+		ControlSheet cs = null;
+		foreach ( var prop in props.Where( x => string.IsNullOrWhiteSpace(  x.GroupName ) ) )
 		{
-			if ( !string.IsNullOrWhiteSpace( prop.GroupName ) )
-			{
-				if ( handledGroups.Contains( prop.GroupName ) )
-					continue;
-
-				handledGroups.Add( prop.GroupName );
-				AddGroup( ps, prop.GroupName, props.Where( x => x.GroupName == prop.GroupName ).ToArray() );
-				continue;
-			}
-
-			ps.AddRow( prop );
+			cs ??= new ControlSheet();
+			cs.AddRow( prop );
 		}
-		
-		Content.Add( ps );
+
+		if ( cs is not null )
+		{
+			Content.Add( cs );
+		}
+
+		// add groups
+		foreach ( var prop in props.Where( x => !string.IsNullOrWhiteSpace( x.GroupName ) ) )
+		{
+
+			if ( handledGroups.Contains( prop.GroupName ) )
+				continue;
+
+			handledGroups.Add( prop.GroupName );
+			AddGroup( Content, prop.GroupName, props.Where( x => x.GroupName == prop.GroupName ).ToArray() );
+		}
 	}
 
-	private void AddGroup( ControlSheet sheet, string groupName, SerializedProperty[] props )
+	private void AddGroup( Layout sheet, string groupName, SerializedProperty[] props )
 	{
-		var lo = Layout.Column();
-		lo.Spacing = 2;
-		var ps = new ControlSheet();
+		GroupHeader headerWidget = new GroupHeader( this );
+		sheet.AddSpacingCell( 2 );
+		sheet.Add( headerWidget );
+
+		headerWidget.Title = groupName;
 
 		SerializedProperty skipProperty = null;
+		bool closed = false;
 
 		var toggleGroup = props.FirstOrDefault( x => x.HasAttribute<ToggleGroupAttribute>() && x.Name == groupName );
 		if ( toggleGroup is not null )
 		{
-			skipProperty = toggleGroup;
+			toggleGroup.TryGetAttribute<ToggleGroupAttribute>( out var toggleAttr );
+			if ( toggleGroup is not null )
+			{
+				skipProperty = toggleGroup;
 
-			var label = new Label( groupName );
-			label.SetStyles( "color: #ccc; font-weight: bold;" );
-			label.FixedHeight = ControlWidget.ControlRowHeight;
+				var enabler = ControlWidget.Create( toggleGroup );
 
-			var toggle = ControlWidget.Create( toggleGroup );
-			toggle.FixedHeight = 18;
-			toggle.FixedWidth = 18;
+				headerWidget.Title = toggleAttr.Label ?? groupName;
+				headerWidget.AddToggle( enabler );
 
-			var row = Layout.Row();
-			row.Spacing = 8;
-			row.Add( toggle );
-			row.Add( label, 1 );
-
-			lo.Add( row );
-		}
-		else
-		{
-			var label = new Label( groupName );
-			label.SetStyles( "color: #ccc; font-weight: bold;" );
-			label.FixedHeight = ControlWidget.ControlRowHeight;
-			lo.Add( label );
+				if ( !toggleGroup.As.Bool ) closed = true;
+			}
 		}
 
-		ps.Margin = 0;
+		var widget = new Widget( this );
+		
+		var ps = new ControlSheet();
+		ps.Margin = new Sandbox.UI.Margin( 0, 2, 16, 0 );
 
 		foreach ( var prop in props )
 		{
 			if ( skipProperty == prop )
 				continue;
 
-			ps.AddRow( prop, 8 );
+			ps.AddRow( prop, 16 );
 		}
 
-		lo.Add( ps );
-		lo.Margin = new Sandbox.UI.Margin( 0, 0, 0, 0 );
+		widget.Layout = ps;
 
-		sheet.AddLayout( lo );
+		sheet.Add( widget );
+
+		headerWidget.OnToggled += ( s ) =>
+		{
+			using var su = SuspendUpdates.For( this );
+
+			if ( !s ) widget.Hide();
+			else widget.Show();
+		};
+
+		if ( closed ) headerWidget.Toggle();
+
+		headerWidget.CookieName = $"expand.{GameObjectId}.{TargetObject.TypeName}.{groupName}";
 	}
 
+}
+
+file class GroupHeader : Widget
+{
+	Layout toggleLayout;
+	ControlWidget toggleControl;
+
+	public GroupHeader( Widget parent ) : base( parent )
+	{
+		FixedHeight = ControlWidget.ControlRowHeight;
+		Layout = Layout.Row();
+		Layout.AddSpacingCell( 20 );
+		Layout.Spacing = 5;
+
+		toggleLayout = Layout.AddColumn();
+
+		Layout.AddStretchCell();
+	}
+
+	protected override Vector2 SizeHint() => new Vector2( 4096, ControlWidget.ControlRowHeight );
+
+	public string Title { get; set; }
+
+
+	internal void AddToggle( ControlWidget controlWidget )
+	{
+		controlWidget.FixedHeight = 18;
+		controlWidget.FixedWidth = 18;
+
+		toggleLayout.Add( controlWidget );
+		toggleControl = controlWidget;
+
+		if ( controlWidget is BoolControlWidget bcw )
+		{
+			bcw.Color = Theme.Green;
+		}
+	}
+
+	protected override void OnMousePress( MouseEvent e )
+	{
+		base.OnMousePress( e );
+
+		if (e.Button == MouseButtons.Left )
+		{
+			Toggle();
+		}
+	}
+
+	protected override void OnDoubleClick( MouseEvent e )
+	{
+		e.Accepted = false;
+	}
+
+	protected override void OnPaint()
+	{
+		bool isChecked = false;
+
+		if ( toggleControl is BoolControlWidget bcw )
+		{
+			isChecked = bcw.IsChecked;
+		}
+
+		//if ( false )
+		{
+			Paint.ClearPen();
+			Paint.SetBrush( Theme.Black.WithAlpha( 0.2f ) );
+			var lr = LocalRect.Shrink( 1, 0 );
+			Paint.DrawRect( lr, 5 );
+		}
+
+		float spacing = 5;
+
+		Paint.ClearBrush();
+		Paint.SetPen( Color.White.WithAlpha( Paint.HasMouseOver ? 0.8f : (state ? 0.7f : 0.3f ) ) );
+
+		if ( isChecked ) Paint.SetPen( Theme.Green.WithAlpha( Paint.HasMouseOver ? 0.8f : (state ? 0.6f : 0.3f) ) );
+
+		Paint.DrawText( LocalRect.Shrink( toggleLayout.OuterRect.Right + spacing, 0, 0, 0 ), Title, TextFlag.LeftCenter );
+
+		Paint.SetPen( Color.White.WithAlpha( Paint.HasMouseOver ? 0.4f : 0.1f ) );
+		Paint.DrawIcon( LocalRect.Shrink( 4, 0 ), state ? "arrow_drop_down" : "arrow_right", 16, TextFlag.LeftCenter );
+	}
+
+	bool state = true;
+
+	public void Toggle()
+	{
+		state = !state;
+		OnToggled?.Invoke( state );
+
+		if ( CookieName is not null )
+		{
+			ProjectCookie.Set( CookieName, state );
+		}
+	}
+
+	public Action<bool> OnToggled;
+
+	string _cookieName;
+
+	public string CookieName 
+	{ 
+		get
+		{
+			return _cookieName;
+		}
+
+		set
+		{
+			_cookieName = value;
+
+			var newState = ProjectCookie.Get<bool>( _cookieName, state );
+			if ( newState == state ) return;
+
+			Toggle();
+		}
+	}
 }
 
 file class ComponentHeader : Widget

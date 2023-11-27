@@ -1,0 +1,23 @@
+{
+  "RootObject": {
+    "Id": "68d3f058-d689-4473-a223-302ffa96b278",
+    "Name": "Spot Light",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "SpotLightComponent",
+        "__enabled": true,
+        "Attenuation": 1,
+        "ConeInner": 15,
+        "ConeOuter": 45,
+        "Cookie": null,
+        "LightColor": "0.91373,0.98039,1,1",
+        "Radius": 500
+      }
+    ]
+  },
+  "ShowInMenu": true,
+  "MenuPath": "Light/Spot Light",
+  "MenuIcon": "\uD83D\uDD26",
+  "__references": []
+}

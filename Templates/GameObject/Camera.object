@@ -1,0 +1,27 @@
+{
+  "RootObject": {
+    "Id": "11fb79ef-ff73-447b-8f38-759c958892f5",
+    "Name": "Camera",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "CameraComponent",
+        "__enabled": true,
+        "BackgroundColor": "0.33333,0.46275,0.52157,1",
+        "ClearFlags": "All",
+        "FieldOfView": 60,
+        "Orthographic": false,
+        "OrthographicHeight": 1204,
+        "RenderExcludeTags": "",
+        "RenderTags": "",
+        "TargetEye": "None",
+        "ZFar": 10000,
+        "ZNear": 10
+      }
+    ]
+  },
+  "ShowInMenu": true,
+  "MenuPath": "Camera",
+  "MenuIcon": "\uD83C\uDFA6",
+  "__references": []
+}

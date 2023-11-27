@@ -9,6 +9,7 @@ namespace Editor.Inspectors;
 
 
 [CanEdit( typeof(GameObject) )]
+[CanEdit( typeof( PrefabScene ) )]
 public class GameObjectInspector : Widget
 {
 	GameObject TargetObject;

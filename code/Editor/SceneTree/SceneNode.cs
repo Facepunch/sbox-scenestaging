@@ -70,8 +70,6 @@ public partial class SceneNode : TreeNode<Scene>
 	{
 		var m = new Menu( TreeView );
 
-
-
 		m.AddSeparator();
 
 		GameObjectNode.CreateObjectMenu( m, go =>

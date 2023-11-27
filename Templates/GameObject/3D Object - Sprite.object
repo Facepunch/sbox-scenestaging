@@ -1,0 +1,27 @@
+{
+  "RootObject": {
+    "Id": "2214b3e5-652c-4f4c-8924-1b72af9b5403",
+    "Name": "Object (1)",
+    "Position": "-442.3349,-423.4464,-130.8879",
+    "Scale": "3.400001,3.400001,3.400001",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "SpriteRenderer",
+        "__enabled": true,
+        "Additive": false,
+        "CastShadows": true,
+        "Color": "0.31188,0.06176,0.06176,1",
+        "DepthFeather": 0,
+        "FogStrength": 1,
+        "Opaque": true,
+        "Size": "10,10",
+        "Texture": "materials/particles/shapes/heart1.vtex"
+      }
+    ]
+  },
+  "ShowInMenu": true,
+  "MenuPath": "3D Object/Sprite",
+  "MenuIcon": "\uD83D\uDC96",
+  "__references": []
+}

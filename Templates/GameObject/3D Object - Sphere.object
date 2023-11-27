@@ -1,0 +1,22 @@
+{
+  "RootObject": {
+    "Id": "d8bcf688-d7df-4986-9ba7-9750ab14cc51",
+    "Name": "Sphere",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "ModelComponent",
+        "__enabled": true,
+        "BodyGroups": 18446744073709551615,
+        "MaterialOverride": null,
+        "Model": "models/dev/sphere.vmdl",
+        "ShouldCastShadows": true,
+        "Tint": "1,1,1,1"
+      }
+    ]
+  },
+  "ShowInMenu": true,
+  "MenuPath": "3D Object/Sphere",
+  "MenuIcon": "\u26BD",
+  "__references": []
+}
