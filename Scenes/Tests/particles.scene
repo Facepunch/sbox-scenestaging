@@ -964,6 +964,8 @@
               "FieldOfView": 69.32,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "RenderExcludeTags": "",
+              "RenderTags": "",
               "TargetEye": "None",
               "ZFar": 10000,
               "ZNear": 1
@@ -4590,7 +4592,7 @@
     "ThreadedAnimation": true,
     "UseFixedUpdate": true
   },
-  "Title": "Particles",
+  "Title": "Source Particles",
   "Description": "Tetsing ParticleSystem component, which uses Source Engine particles",
   "__references": [
     "baik.confettisplash",
