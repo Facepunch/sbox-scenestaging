@@ -60,10 +60,6 @@ public sealed class PrefabScene : Scene
 	{
 		var a = new PrefabFile();
 		a.RootObject = Serialize();
-		a.ShowInMenu = a.ShowInMenu;
-		a.MenuPath = a.MenuPath;
-		a.MenuIcon = a.MenuIcon;
-
 		return a;
 	}
 }

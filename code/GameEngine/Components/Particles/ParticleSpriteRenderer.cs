@@ -142,8 +142,6 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 				v.Color.r = (byte)(p.Sequence % 255);
 
 				_so.AddVertex( v );
-
-				v.Position += p.Velocity * (1.0f / 500.0f) * size.x;
 			}
 
 			// expand bounds slightly, based on max particle size?
