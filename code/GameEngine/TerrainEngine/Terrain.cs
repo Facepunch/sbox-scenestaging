@@ -113,7 +113,7 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject = new SceneObject( Scene.SceneWorld, _model, Transform.World );
 		_sceneObject.Tags.SetFrom( GameObject.Tags );
 		_sceneObject.Batchable = false;
-		_sceneObject.Flags.CastShadows = true;
+		_sceneObject.Flags.CastShadows = false;
 
 		_brushSceneObject = new BrushPreviewSceneObject( Scene.SceneWorld );
 		_brushSceneObject.Batchable = false;
