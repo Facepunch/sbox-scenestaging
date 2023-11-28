@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sandbox.TerrainEngine;
+using System;
 using System.Data;
 using static Editor.BaseItemWidget;
 
@@ -389,6 +390,24 @@ public partial class GameObjectNode : TreeNode<GameObject>
 				then( go );
 			} );
 		}
+
+		// this isn't really going to work as a prefab because I want to save a new terrain asset?
+		menu.AddOption( "3D Object/Terrain".Split( '/' ), "⛰️", () =>
+		{
+			using var scope = SceneEditorSession.Scope();
+			var go = new GameObject( true, "Terrain" );
+			go.Transform.Local = new Transform( pos );
+
+			var terrain = go.AddComponent<Terrain>( false );
+			terrain.TerrainData = new();
+			terrain.TerrainMaterial = Material.Load( "materials/terrain_grid.vmat" );
+
+			terrain.Enabled = true;
+
+			go.AddComponent<TerrainCollider>();
+
+			then( go );
+		} );
 	}
 
 

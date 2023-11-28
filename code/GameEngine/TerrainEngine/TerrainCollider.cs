@@ -3,12 +3,12 @@
 namespace Sandbox.TerrainEngine;
 
 /// <summary>
-/// Creates a static collider matching the shape of a sibling <see cref="TerrainComponent"/>.
+/// Creates a static collider matching the shape of a sibling <see cref="Terrain"/>.
 /// </summary>
 [Title( "Terrain Collider" )]
 [Category( "Physics" )]
 [Icon( "terrain" )]
-public class TerrainColliderComponent : BaseComponent, BaseComponent.ExecuteInEditor
+public class TerrainCollider : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	[Property] public Surface Surface { get; set; }
 
@@ -39,7 +39,7 @@ public class TerrainColliderComponent : BaseComponent, BaseComponent.ExecuteInEd
 
 	void GenerateCollisionMesh()
 	{
-		var terrain = GetComponent<TerrainComponent>( false ); // Terrain component might be disabled
+		var terrain = GetComponent<Terrain>( false ); // Terrain component might be disabled
 		if ( terrain == null )
 		{
 			Log.Warning( $"No TerrainComponent found on {this}" );

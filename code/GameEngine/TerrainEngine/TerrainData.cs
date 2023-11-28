@@ -1,15 +1,14 @@
-﻿using Sandbox;
+﻿namespace Sandbox.TerrainEngine;
 
 /// <summary>
-/// The TerrainData class stores heightmaps, detail mesh positions, tree instances, and terrain texture alpha maps.
-/// The Terrain component links to the terrain data and renders it.
+/// The TerrainData class stores heightmaps, splatmaps, etc.
+/// The <see cref="Terrain"/> component links to the terrain data and renders it.
 /// </summary>
-[GameResource( "Terrain Data", "terrain", "All the stuff of a terrain", Icon = "landscape" )]
-public class TerrainDataResource : GameResource
+/// <remarks>
+/// I am torn between having this be an asset or not.
+/// </remarks>
+public class TerrainData
 {
-	//
-	// None of this should be edited through the editor I guess
-	//
 	public ushort[] HeightMap { get; private set; }
 
 	public int HeightMapWidth { get; private set; }
@@ -17,7 +16,7 @@ public class TerrainDataResource : GameResource
 
 	public float MaxHeight { get; private set; }
 
-	public TerrainDataResource()
+	public TerrainData()
 	{
 		HeightMapWidth = 513;
 		HeightMapHeight = 513;
@@ -58,10 +57,4 @@ public class TerrainDataResource : GameResource
 
 		return HeightMap[y * HeightMapWidth + x];
 	}
-
-	protected override void PostLoad()
-	{
-		base.PostLoad();
-	}
-
 }

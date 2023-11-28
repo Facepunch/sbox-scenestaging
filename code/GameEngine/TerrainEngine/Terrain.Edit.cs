@@ -1,6 +1,6 @@
 ﻿namespace Sandbox.TerrainEngine;
 
-public partial class TerrainComponent
+public partial class Terrain
 {
 	[Range( 1, 128 )]
 	[Property] public int BrushRadius { get; set; } = 16;

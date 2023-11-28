@@ -5,12 +5,12 @@ namespace Sandbox.TerrainEngine;
 [Title( "Terrain" )]
 [Category( "Rendering" )]
 [Icon( "terrain" )]
-public partial class TerrainComponent : BaseComponent, BaseComponent.ExecuteInEditor
+public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	SceneObject _sceneObject;
 	public SceneObject SceneObject => _sceneObject;
 
-	[Property] public TerrainDataResource TerrainData { get; set; }
+	[Property] public TerrainData TerrainData { get; set; }
 
 	/// <summary>
 	/// This needs to be a material that uses a terrain shader.
@@ -78,7 +78,7 @@ public partial class TerrainComponent : BaseComponent, BaseComponent.ExecuteInEd
 
 	public void SyncHeightMap()
 	{
-		Assert.NotNull( TerrainData );
+		if ( TerrainData is null ) return;
 
 		if ( _heightmap == null )
 		{
@@ -110,8 +110,6 @@ public partial class TerrainComponent : BaseComponent, BaseComponent.ExecuteInEd
 			indexCount = clipmapMesh.IndexCount;
 		}
 
-		SyncHeightMap();
-
 		_sceneObject = new SceneObject( Scene.SceneWorld, _model, Transform.World );
 		_sceneObject.Tags.SetFrom( GameObject.Tags );
 		_sceneObject.Batchable = false;
@@ -122,6 +120,8 @@ public partial class TerrainComponent : BaseComponent, BaseComponent.ExecuteInEd
 		_brushSceneObject.Flags.CastShadows = false;
 
 		Brush = "circle0";
+
+		SyncHeightMap();
 	}
 
 	public override void OnDisabled()

@@ -1,28 +1,9 @@
 ﻿using Editor.EntityPrefabEditor;
 using Editor.Inspectors;
 using Sandbox.TerrainEngine;
-using System.IO;
-using System.Linq;
-using static Sandbox.Gizmo;
-
 namespace Editor;
 
-internal class TerrainDataEditor : BaseResourceEditor<TerrainDataResource>
-{
-	public TerrainDataEditor()
-	{
-		Layout = Layout.Column();
-	}
-
-	protected override void Initialize( Asset asset, TerrainDataResource resource )
-	{
-		Layout.Clear( true );
-		Layout.Add( new Label( "Don't edit this resource directly" ) );
-		Layout.Add( new Button( "Import Heightmap" ) );
-	}
-}
-
-[CustomEditor( typeof( TerrainComponent ) )]
+[CustomEditor( typeof( Terrain ) )]
 public class TerrainControlWidget : ControlWidget
 {
 	public TerrainControlWidget( SerializedProperty property ) : base( property )
@@ -102,7 +83,7 @@ struct BrushData
 	public Pixmap Pixmap;
 }
 
-[CustomEditor( typeof( TerrainComponent ) )]
+[CustomEditor( typeof( Terrain ) )]
 public class TerrainWidget : CustomComponentWidget
 {
 	public TerrainWidget( SerializedObject obj ) : base( obj )
