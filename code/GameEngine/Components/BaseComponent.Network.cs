@@ -37,7 +37,7 @@ public abstract partial class BaseComponent
 	
 	protected void __rpc_Authority( Action resume, string methodName, params object[] argumentList )
 	{
-		if ( !IsProxy || Rpc.Calling )
+		if ( !IsProxy )
 		{
 			Rpc.PreCall();
 			
