@@ -265,7 +265,7 @@ public partial class SceneViewWidget : Widget
 			DragObject = SceneEditorSession.Active.Scene.CreateObject();
 			DragObject.Name = modelAsset.ResourceName;
 
-			var mc = DragObject.AddComponent<ModelComponent>();
+			var mc = DragObject.AddComponent<ModelRenderer>();
 			mc.Model = modelAsset;
 
 		}

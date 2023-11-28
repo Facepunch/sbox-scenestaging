@@ -3,10 +3,11 @@ using Sandbox.Diagnostics;
 using System;
 using System.Collections.Generic;
 
-[Title( "Animated Model Renderer" )]
+[Title( "Model Renderer (skinned)" )]
 [Category( "Rendering" )]
 [Icon( "sports_martial_arts" )]
-public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponent.ExecuteInEditor
+[Alias( "AnimatedModelComponent" )]
+public sealed partial class SkinnedModelRenderer : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	Model _model;
 
@@ -121,10 +122,10 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 	}
 
 
-	AnimatedModelComponent _boneMergeTarget;
+	SkinnedModelRenderer _boneMergeTarget;
 
 	[Property]
-	public AnimatedModelComponent BoneMergeTarget
+	public SkinnedModelRenderer BoneMergeTarget
 	{
 		get => _boneMergeTarget;
 		set
@@ -185,9 +186,9 @@ public sealed partial class AnimatedModelComponent : BaseComponent, BaseComponen
 		}
 	}
 
-	HashSet<AnimatedModelComponent> mergeChildren = new ();
+	HashSet<SkinnedModelRenderer> mergeChildren = new ();
 
-	private void SetBoneMerge( AnimatedModelComponent target, bool enabled )
+	private void SetBoneMerge( SkinnedModelRenderer target, bool enabled )
 	{
 		ArgumentNullException.ThrowIfNull( target );
 

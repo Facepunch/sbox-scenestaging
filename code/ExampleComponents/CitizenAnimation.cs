@@ -3,7 +3,7 @@ using System;
 
 public sealed class CitizenAnimation : BaseComponent, BaseComponent.ExecuteInEditor
 {
-	[Property] public AnimatedModelComponent Target { get; set; }
+	[Property] public SkinnedModelRenderer Target { get; set; }
 
 	[Property] public GameObject EyeSource { get; set; }
 

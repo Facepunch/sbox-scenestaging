@@ -333,7 +333,7 @@ public partial class GameObject
 	/// </summary>
 	public BBox GetBounds()
 	{
-		var renderers = GetComponents<ModelComponent>( true, true );
+		var renderers = GetComponents<ModelRenderer>( true, true );
 
 		return BBox.FromBoxes( renderers.Select( x => x.Bounds ) );
 	}

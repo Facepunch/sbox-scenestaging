@@ -9,7 +9,7 @@ public class ModelPhysics : BaseComponent
 {
 	[Property] public Model Model { get; set; }
 
-	[Property] public AnimatedModelComponent Renderer { get; set; }
+	[Property] public SkinnedModelRenderer Renderer { get; set; }
 
 	PhysicsGroup PhysicsGroup;
 

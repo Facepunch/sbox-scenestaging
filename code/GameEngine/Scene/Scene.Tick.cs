@@ -113,7 +113,7 @@ public partial class Scene : GameObject
 			return;
 
 		// TODO - faster way to accumulate these
-		var animModel = GetComponents<AnimatedModelComponent>( true, true ).ToArray();
+		var animModel = GetComponents<SkinnedModelRenderer>( true, true ).ToArray();
 
 		//
 		// Run the updates and the bone merges in a thread

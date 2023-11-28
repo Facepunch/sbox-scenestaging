@@ -24,7 +24,7 @@ public sealed class AlphaOverTime : BaseComponent
 
 		var a = Alpha.EvaluateDelta( timeSinceEnabled / Time );
 
-		foreach ( var component in  GetComponents<ModelComponent>( true, true ) )
+		foreach ( var component in  GetComponents<ModelRenderer>( true, true ) )
 		{
 			component.Tint = component.Tint.WithAlpha( a );
 		}

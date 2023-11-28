@@ -4,10 +4,11 @@ using Sandbox.Diagnostics;
 /// <summary>
 /// Component that creates a projected decal relative to its GameObject.
 /// </summary>
-[Title( "Decal" )]
-[Icon( "lens_blur", "red", "white" )]
+[Title( "Decal Renderer" )]
+[Category( "Rendering" )]
+[Icon( "lens_blur" )]
 [EditorHandle( "materials/gizmo/decal.png" )]
-public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
+public class DecalRenderer : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	ProjectedDecalSceneObject _sceneObject;
 

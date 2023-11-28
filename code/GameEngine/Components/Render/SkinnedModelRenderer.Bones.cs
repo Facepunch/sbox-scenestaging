@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public sealed partial class AnimatedModelComponent
+public sealed partial class SkinnedModelRenderer
 {
 	Dictionary<int, GameObject> boneToGameObject = new ();
 
@@ -106,11 +106,11 @@ public sealed partial class AnimatedModelComponent
 
 public class ModelBoneTransformProxy : TransformProxy
 {
-	private AnimatedModelComponent model;
+	private SkinnedModelRenderer model;
 	private BoneCollection.Bone bone;
 	private GameObject target;
 
-	public ModelBoneTransformProxy( AnimatedModelComponent model, BoneCollection.Bone bone, GameObject target )
+	public ModelBoneTransformProxy( SkinnedModelRenderer model, BoneCollection.Bone bone, GameObject target )
 	{
 		this.model = model;
 		this.bone = bone;

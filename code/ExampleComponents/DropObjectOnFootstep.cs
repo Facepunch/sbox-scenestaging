@@ -7,7 +7,7 @@ using System.Threading;
 public sealed class DropObjectOnFootstep : BaseComponent
 {
 	[Property] GameObject Prefab { get; set; }
-	[Property] AnimatedModelComponent Source { get; set; }
+	[Property] SkinnedModelRenderer Source { get; set; }
 
 	public override void OnEnabled()
 	{

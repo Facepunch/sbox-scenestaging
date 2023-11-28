@@ -4,8 +4,8 @@ using Sandbox.Diagnostics;
 [Title( "Model Renderer" )]
 [Category( "Rendering" )]
 [Icon( "free_breakfast" )]
-[Alias( "ModelComponentMate" )]
-public class ModelComponent : BaseComponent, BaseComponent.ExecuteInEditor, BaseComponent.ITintable
+[Alias( "ModelComponentMate", "ModelComponent" )]
+public class ModelRenderer : BaseComponent, BaseComponent.ExecuteInEditor, BaseComponent.ITintable
 {
 	Model _model;
 

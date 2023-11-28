@@ -2,7 +2,7 @@
 using Sandbox.Diagnostics;
 using System;
 
-public sealed partial class AnimatedModelComponent
+public sealed partial class SkinnedModelRenderer
 {
 
 	public void Set( string v, Vector3 value ) => _sceneObject?.SetAnimParameter( v, value );

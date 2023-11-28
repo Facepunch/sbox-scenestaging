@@ -11,7 +11,7 @@ public sealed class TurretComponent : BaseComponent
 	[Property] GameObject SecondaryBullet { get; set; }
 	[Property] GameObject Muzzle { get; set; }
 
-	[Property] ModelComponent GunModel { get; set; }
+	[Property] ModelRenderer GunModel { get; set; }
 	[Property] Gradient GunColorGradient { get; set; }
 	[Property] Curve GunSizeCurve { get; set; }
 

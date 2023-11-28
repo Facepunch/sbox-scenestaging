@@ -60,7 +60,7 @@ public sealed class Highlight : BaseComponent, BaseComponent.ExecuteInEditor
 
 	private static void DrawGlow( HighlightOutline glow, OutlinePass pass )
 	{
-		foreach ( var model in glow.GetComponents<ModelComponent>( true, true ) )
+		foreach ( var model in glow.GetComponents<ModelRenderer>( true, true ) )
 		{
 			var so = model.SceneObject;
 			if ( so is null ) continue;

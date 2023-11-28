@@ -3,7 +3,7 @@ using Sandbox.Engine;
 using System.Collections.Generic;
 
 /// <summary>
-/// Updates the parameters on an <see cref="AnimatedModelComponent"/> on this GameObject based on the skeletal data from SteamVR.
+/// Updates the parameters on an <see cref="SkinnedModelRenderer"/> on this GameObject based on the skeletal data from SteamVR.
 /// Useful for quick hand posing based on controller input.
 /// </summary>
 [Title( "VR Hand" )]
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 [Icon( "waving_hand" )]
 public class VrHand : BaseComponent
 {
-	private AnimatedModelComponent _animatedModelComponent;
+	private SkinnedModelRenderer _animatedModelComponent;
 
 	// TODO: These should ideally be user-editable, these values only work on the Alyx hands right now
 	private static List<string> AnimGraphNames = new()
@@ -37,7 +37,7 @@ public class VrHand : BaseComponent
 
 	public override void OnAwake()
 	{
-		_animatedModelComponent = GetComponent<AnimatedModelComponent>();
+		_animatedModelComponent = GetComponent<SkinnedModelRenderer>();
 	}
 
 	private void UpdatePose()

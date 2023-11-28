@@ -1,6 +1,4 @@
 ﻿using Sandbox;
-using System;
-using static System.Net.Mime.MediaTypeNames;
 
 [Title( "Gradient Fog" )]
 [Category( "Rendering" )]
