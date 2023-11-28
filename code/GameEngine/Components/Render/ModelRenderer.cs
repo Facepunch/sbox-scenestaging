@@ -124,9 +124,6 @@ public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseCompon
 		_sceneObject.Flags.CastShadows = _castShadows;
 		_sceneObject.MeshGroupMask = _bodyGroupsMask;
 		_sceneObject.SetMaterialOverride( MaterialOverride );
-
-		_sceneObject.SetMaterialOverride( MaterialOverride );
-		// _sceneObject?.SetMaterialGroup( _materialGroup ); todo -
 	}
 
 	public override void OnEnabled()
@@ -154,6 +151,16 @@ public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseCompon
 			return;
 
 		_sceneObject.Transform = Transform.World;
+	}
+
+	/// <summary>
+	/// Tags have been updated - lets update our scene object tags
+	/// </summary>
+	protected override void OnTagsChannged()
+	{
+		if ( !_sceneObject.IsValid() ) return;
+
+		_sceneObject.Tags.SetFrom( GameObject.Tags );
 	}
 
 }

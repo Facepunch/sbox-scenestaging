@@ -5,6 +5,8 @@
 		if ( !Enabled )
 			return;
 
+		DirtyTagsUpdate();
+
 		Transform.Update( IsProxy );
 
 		ForEachComponent( "Update", true, c => c.InternalUpdate() );

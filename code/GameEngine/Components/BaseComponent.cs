@@ -229,4 +229,19 @@ public abstract partial class BaseComponent
 
 		GameObject.EditLog( name, source );
 	}
+
+
+
+	/// <summary>
+	/// When tags have been updated
+	/// </summary>
+	protected virtual void OnTagsChannged()
+	{
+
+	}
+
+	internal virtual void OnTagsUpdatedInternal()
+	{
+		OnTagsChannged();
+	}
 }

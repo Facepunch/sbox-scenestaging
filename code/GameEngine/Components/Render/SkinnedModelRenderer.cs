@@ -92,7 +92,9 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 		var model = Model ?? Model.Load( "models/dev/box.vmdl" );
 
 		var so = new SceneModel( Scene.SceneWorld, model, Transform.World );
+		so.Tags.SetFrom( GameObject.Tags );
 		_sceneObject = so;
+
 		UpdateObject();
 
 		so.Update( 0.01f );
