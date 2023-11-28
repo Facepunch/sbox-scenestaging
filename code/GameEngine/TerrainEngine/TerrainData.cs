@@ -7,14 +7,15 @@
 /// <remarks>
 /// I am torn between having this be an asset or not.
 /// </remarks>
-public class TerrainData
+// [GameResource( "Terrain Data", "terrain", "Full of grass" )]
+public class TerrainData // : GameResource
 {
-	public ushort[] HeightMap { get; private set; }
+	public ushort[] HeightMap { get; set; }
 
-	public int HeightMapWidth { get; private set; }
-	public int HeightMapHeight { get; private set; }
+	public int HeightMapWidth { get; set; }
+	public int HeightMapHeight { get; set; }
 
-	public float MaxHeight { get; private set; }
+	public float MaxHeight { get; set; }
 
 	public TerrainData()
 	{

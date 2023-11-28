@@ -394,12 +394,30 @@ public partial class GameObjectNode : TreeNode<GameObject>
 		// this isn't really going to work as a prefab because I want to save a new terrain asset?
 		menu.AddOption( "3D Object/Terrain".Split( '/' ), "⛰️", () =>
 		{
+			/*var fd = new FileDialog( null );
+			fd.Title = $"Save Terrain Data..";
+			// fd.Directory = lastDirectory;
+			fd.DefaultSuffix = $".terrain";
+			fd.SetFindFile();
+			fd.SetModeSave();
+			fd.SetNameFilter( $"Terrain Data (*.terrain)" );
+
+			if ( !fd.Execute() )
+				return;
+
+			var saveLocation = fd.SelectedFile;*/
+
 			using var scope = SceneEditorSession.Scope();
 			var go = new GameObject( true, "Terrain" );
 			go.Transform.Local = new Transform( pos );
 
+			var terrainData = new TerrainData();
+
+			// var asset = AssetSystem.CreateResource( "terrain", saveLocation );
+			// asset.SaveToDisk( terrainData );
+
 			var terrain = go.AddComponent<Terrain>( false );
-			terrain.TerrainData = new();
+			terrain.TerrainData = terrainData;
 			terrain.TerrainMaterial = Material.Load( "materials/terrain_grid.vmat" );
 
 			terrain.Enabled = true;
