@@ -129,39 +129,6 @@ public record struct VariableNodeType( string Name, Type Type, PropertyNodeKind 
 	public string Identifier => $"var.{Kind}/{Name}";
 }
 
-/// <summary>
-/// Hack because TypeLibrary doesn't include Object.
-/// </summary>
-public record struct ToStringNodeType() : INodeType
-{
-	public string Identifier => "call/tostring";
-
-	public DisplayInfo DisplayInfo => new()
-	{
-		Name = "ToString",
-		Description = "Returns a string that represents the current object.",
-		Icon = "description"
-	};
-
-	public bool HasInput( Type valueType )
-	{
-		return valueType != typeof(OutputSignal);
-	}
-
-	public bool HideInEditor => false;
-
-	public INode CreateNode( IGraph graph )
-	{
-		var actionGraph = (ActionGraph)graph;
-		var node = actionGraph.Graph.AddNode( actionGraph.Graph.NodeLibrary.CallMethod );
-
-		node.Properties["_type"].Value = typeof(object);
-		node.Properties["_name"].Value = nameof(object.ToString);
-
-		return new ActionNode( actionGraph, node );
-	}
-}
-
 public record struct MethodNodeType( MethodDescription[] Methods ) : INodeType
 {
 	public DisplayInfo DisplayInfo => new()
