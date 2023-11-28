@@ -184,15 +184,19 @@ public partial class GameObject
 		Net.Owner = guid;
 	}
 
-
-	public void __rpc_Broadcast( Action resume, string methodName, params object[] argumentList )
+	protected void __rpc_Broadcast( Action resume, string methodName, params object[] argumentList )
 	{
 		if ( !Rpc.Calling && Network.Active && SceneNetworkSystem.Instance is not null )
 		{
+			if ( !Rpc.TryFindMethodIndex( methodName, out var index ) )
+			{
+				throw new( $"Unindexed RPC method '{methodName}'" );
+			}
+			
 			var msg = new ObjectMessageMsg();
 			msg.Guid = Id;
 			msg.Component = null;
-			msg.MessageName = methodName;
+			msg.MethodIndex = index;
 			msg.Arguments = argumentList;
 
 			SceneNetworkSystem.Instance.Broadcast( msg );

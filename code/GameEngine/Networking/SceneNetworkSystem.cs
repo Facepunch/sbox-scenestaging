@@ -17,6 +17,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 		AddHandler<ObjectUpdateMsg>( OnObjectUpdate );
 		AddHandler<ObjectDestroyMsg>( OnObjectDestroy );
 		AddHandler<ObjectMessageMsg>( OnObjectMessage );
+		AddHandler<StaticRpcMsg>( OnStaticRpc );
 	}
 
 	/// <summary>
@@ -197,6 +198,11 @@ public class SceneNetworkSystem : GameNetworkSystem
 	{
 		Rpc.HandleIncoming( message, source );
 	}
+	
+	private void OnStaticRpc( StaticRpcMsg message, Connection source )
+	{
+		Rpc.HandleIncoming( message, source );
+	}
 }
 
 public partial struct ObjectCreateMsg
@@ -227,6 +233,12 @@ public partial struct ObjectMessageMsg
 {
 	public Guid Guid { get; set; }
 	public string Component { get; set; } // todo - id the components better, allow for multiple
-	public string MessageName { get; set; } // todo - this can be a hash for sure
+	public int MethodIndex { get; set; }
+	public object[] Arguments { get; set; }
+}
+
+public partial struct StaticRpcMsg
+{
+	public int MethodIndex { get; set; }
 	public object[] Arguments { get; set; }
 }
