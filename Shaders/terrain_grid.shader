@@ -136,7 +136,7 @@ PS
         p.TextureCoords = uv;
 
         p.WorldPosition = i.WorldPosition;
-        p.WorldPositionWithOffset = i.WorldPosition;
+        p.WorldPositionWithOffset = i.WorldPosition - g_vHighPrecisionLightingOffsetWs.xyz;
         p.ScreenPosition = i.ScreenPosition;
         p.GeometricNormal = geoNormal;
 
