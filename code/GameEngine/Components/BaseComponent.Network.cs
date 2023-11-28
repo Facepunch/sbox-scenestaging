@@ -59,7 +59,10 @@ public abstract partial class BaseComponent
 			msg.MethodIndex = index;
 			msg.Arguments = argumentList;
 
-			SceneNetworkSystem.Instance.Broadcast( msg );
+			if ( !GameNetworkSystem.IsHost )
+				SceneNetworkSystem.Instance.Broadcast( msg );
+			else
+				SceneNetworkSystem.Instance.Send( Network.OwnerId, msg );
 		}
 	}
 }
