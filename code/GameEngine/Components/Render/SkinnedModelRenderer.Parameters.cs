@@ -5,18 +5,18 @@ using System;
 public sealed partial class SkinnedModelRenderer
 {
 
-	public void Set( string v, Vector3 value ) => _sceneObject?.SetAnimParameter( v, value );
-	public void Set( string v, int value ) => _sceneObject?.SetAnimParameter( v, value );
-	public void Set( string v, float value ) => _sceneObject?.SetAnimParameter( v, value );
-	public void Set( string v, bool value ) => _sceneObject?.SetAnimParameter( v, value );
-	public void Set( string v, Rotation value ) => _sceneObject?.SetAnimParameter( v, value );
+	public void Set( string v, Vector3 value ) => SceneModel?.SetAnimParameter( v, value );
+	public void Set( string v, int value ) => SceneModel?.SetAnimParameter( v, value );
+	public void Set( string v, float value ) => SceneModel?.SetAnimParameter( v, value );
+	public void Set( string v, bool value ) => SceneModel?.SetAnimParameter( v, value );
+	public void Set( string v, Rotation value ) => SceneModel?.SetAnimParameter( v, value );
 	//	public void Set( string v, Enum value ) => _sceneObject.SetAnimParameter( v, value );
 
-	public bool GetBool( string v ) => _sceneObject.GetBool( v );
-	public int GetInt( string v ) => _sceneObject.GetInt( v );
-	public float GetFloat( string v ) => _sceneObject.GetFloat( v );
-	public Vector3 GetVector( string v ) => _sceneObject.GetVector3( v );
-	public Rotation GetRotation( string v ) => _sceneObject.GetRotation( v );
+	public bool GetBool( string v ) => SceneModel?.GetBool( v ) ?? false;
+	public int GetInt( string v ) => SceneModel?.GetInt( v ) ?? 0;
+	public float GetFloat( string v ) => SceneModel?.GetFloat( v ) ?? 0.0f;
+	public Vector3 GetVector( string v ) => SceneModel?.GetVector3( v ) ?? Vector3.Zero;
+	public Rotation GetRotation( string v ) => SceneModel?.GetRotation( v ) ?? Rotation.Identity;
 
 	/// <summary>
 	/// Converts value to vector local to this entity's eyepos and passes it to SetAnimVector

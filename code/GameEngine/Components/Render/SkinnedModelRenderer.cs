@@ -7,108 +7,11 @@ using System.Collections.Generic;
 [Category( "Rendering" )]
 [Icon( "sports_martial_arts" )]
 [Alias( "AnimatedModelComponent" )]
-public sealed partial class SkinnedModelRenderer : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed partial class SkinnedModelRenderer : ModelRenderer
 {
-	Model _model;
-
-	public BBox Bounds
-	{
-		get
-		{
-			if ( _sceneObject is not null )
-			{
-				return _sceneObject.Bounds;
-			}
-
-			return new BBox( Transform.Position, 16 );
-		}
-	}
-
-	[Property] public Model Model 
-	{
-		get => _model;
-		set
-		{
-			if ( _model == value ) return;
-			_model = value;
-
-			if ( _sceneObject is not null )
-			{
-				_sceneObject.Model = _model;
-				BuildBoneHeirarchy( GameObject );
-			}
-		}
-	}
-
-	string _materialGroup;
-
-	[Property]
-	public string MaterialGroup
-	{
-		get => _materialGroup;
-		set
-		{
-			if ( _materialGroup == value ) return;
-
-			_materialGroup = value;
-			_sceneObject?.SetMaterialGroup( _materialGroup );
-		}
-	}
-
-
-	Color _tint = Color.White;
-	[Property]
-	public Color Tint
-	{
-		get => _tint;
-		set
-		{
-			if ( _tint == value ) return;
-
-			_tint = value;
-
-			if ( _sceneObject is not null )
-			{
-				_sceneObject.ColorTint = Tint;
-			}
-		}
-	}
-
-	Material _material;
-	[Property] public Material MaterialOverride
-	{
-		get => _material;
-		set
-		{
-			if ( _material == value ) return;
-			_material = value;
-
-			if ( _sceneObject is not null )
-			{
-				_sceneObject.SetMaterialOverride( _material );
-			}
-		}
-	}
-
-	bool _castShadows = true;
-	[Property]
-	public bool ShouldCastShadows
-	{
-		get => _castShadows;
-		set
-		{
-			if ( _castShadows == value ) return;
-			_castShadows = value;
-
-			if ( _sceneObject is not null )
-			{
-				_sceneObject.Flags.CastShadows = _castShadows;
-			}
-		}
-	}
-
 	bool _createBones = false;
-	[Property]
+
+	[Property, Group( "Bones" )]
 	public bool CreateBoneObjects
 	{
 		get => _createBones;
@@ -121,10 +24,9 @@ public sealed partial class SkinnedModelRenderer : BaseComponent, BaseComponent.
 		}
 	}
 
-
 	SkinnedModelRenderer _boneMergeTarget;
 
-	[Property]
+	[Property, Group( "Bones" )]
 	public SkinnedModelRenderer BoneMergeTarget
 	{
 		get => _boneMergeTarget;
@@ -140,29 +42,8 @@ public sealed partial class SkinnedModelRenderer : BaseComponent, BaseComponent.
 		}
 	}
 
-	ulong _bodyGroupsMask = ulong.MaxValue;
-	[Property, Model.BodyGroupMask]
-	public ulong BodyGroups
-	{
-		get => _bodyGroupsMask;
-		set
-		{
-			if ( _bodyGroupsMask == value ) return;
-			_bodyGroupsMask = value;
 
-			if ( _sceneObject is not null )
-			{
-				_sceneObject.MeshGroupMask = _bodyGroupsMask;
-			}
-		}
-	}
-
-
-	public string TestString { get; set; }
-
-	SceneModel _sceneObject;
-	public SceneModel SceneObject => _sceneObject;
-
+	public SceneModel SceneModel => (SceneModel) _sceneObject;
 
 	public override void DrawGizmos()
 	{
@@ -210,21 +91,25 @@ public sealed partial class SkinnedModelRenderer : BaseComponent, BaseComponent.
 
 		var model = Model ?? Model.Load( "models/dev/box.vmdl" );
 
-		_sceneObject = new SceneModel( Scene.SceneWorld, model, Transform.World );
-		_sceneObject.SetMaterialOverride( MaterialOverride );
-		_sceneObject.ColorTint = Tint;
-		_sceneObject.Flags.CastShadows = _castShadows;
-		_sceneObject?.SetMaterialGroup( _materialGroup );
-		_sceneObject.MeshGroupMask = _bodyGroupsMask;
-		_sceneObject.Update( 0.01f );
-		_sceneObject.OnFootstepEvent += InternalOnFootstep;
-		_sceneObject.Tags.SetFrom( GameObject.Tags );
+		var so = new SceneModel( Scene.SceneWorld, model, Transform.World );
+		_sceneObject = so;
+		UpdateObject();
+
+		so.Update( 0.01f );
 
 		_boneMergeTarget?.SetBoneMerge( this, true );
-
 		BuildBoneHeirarchy( GameObject );
 	}
 
+	protected override void UpdateObject()
+	{
+		base.UpdateObject();
+
+		if ( !SceneModel.IsValid() )
+			return;
+
+		SceneModel.OnFootstepEvent = InternalOnFootstep;
+	}
 
 
 	public override void OnDisabled()
@@ -244,15 +129,15 @@ public sealed partial class SkinnedModelRenderer : BaseComponent, BaseComponent.
 	{
 		ThreadSafe.AssertIsMainThread();
 
-		if ( !_sceneObject.IsValid() )
+		if ( !SceneModel.IsValid() )
 			return;
 
-		_sceneObject.RunPendingEvents();
+		SceneModel.RunPendingEvents();
 	}
 
 	void AnimationUpdate()
 	{
-		if ( !_sceneObject.IsValid() )
+		if ( !SceneModel.IsValid() )
 			return;
 
 		if ( _boneMergeTarget is not null )
@@ -262,11 +147,11 @@ public sealed partial class SkinnedModelRenderer : BaseComponent, BaseComponent.
 
 		if ( Scene.IsEditor )
 		{
-			_sceneObject.UpdateToBindPose();
+			SceneModel.UpdateToBindPose();
 		}
 		else
 		{
-			_sceneObject.Update( Scene.IsEditor ? 0.0f : Time.Delta );
+			SceneModel.Update( Scene.IsEditor ? 0.0f : Time.Delta );
 		}		
 
 		MergeChildren();
@@ -276,11 +161,11 @@ public sealed partial class SkinnedModelRenderer : BaseComponent, BaseComponent.
 	{
 		foreach ( var child in mergeChildren )
 		{
-			if ( child.SceneObject is null )
+			if ( child.SceneModel is null )
 				continue;
 
-			child.SceneObject.Transform = Transform.World;
-			child.SceneObject.MergeBones( SceneObject );
+			child.SceneModel.Transform = Transform.World;
+			child.SceneModel.MergeBones( SceneModel );
 		}
 	}
 
@@ -305,6 +190,6 @@ public sealed partial class SkinnedModelRenderer : BaseComponent, BaseComponent.
 	
 	public Transform? GetAttachment( string name, bool worldSpace = true )
 	{
-		return _sceneObject?.GetAttachment( name, worldSpace );
+		return SceneModel?.GetAttachment( name, worldSpace );
 	}
 }

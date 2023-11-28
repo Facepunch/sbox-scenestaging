@@ -4,7 +4,7 @@
 [Title( "Sprite Renderer" )]
 [Category( "Rendering" )]
 [Icon( "favorite" )]
-public sealed class SpriteRenderer : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class SpriteRenderer : Renderer, BaseComponent.ExecuteInEditor
 {
 	SpriteSceneObject _so;
 

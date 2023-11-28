@@ -5,7 +5,7 @@ using Sandbox.Diagnostics;
 [Category( "Rendering" )]
 [Icon( "free_breakfast" )]
 [Alias( "ModelComponentMate", "ModelComponent" )]
-public class ModelRenderer : BaseComponent, BaseComponent.ExecuteInEditor, BaseComponent.ITintable
+public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseComponent.ITintable
 {
 	Model _model;
 
@@ -29,11 +29,7 @@ public class ModelRenderer : BaseComponent, BaseComponent.ExecuteInEditor, BaseC
 		{
 			if ( _model == value ) return;
 			_model = value;
-
-			if ( _sceneObject is not null )
-			{
-				_sceneObject.Model = _model;
-			}
+			UpdateObject();
 		}
 	}
 
@@ -49,11 +45,7 @@ public class ModelRenderer : BaseComponent, BaseComponent.ExecuteInEditor, BaseC
 			if ( _tint == value ) return;
 
 			_tint = value;
-
-			if ( _sceneObject is not null )
-			{
-				_sceneObject.ColorTint = Tint;
-			}
+			UpdateObject();
 		}
 	}
 
@@ -65,13 +57,10 @@ public class ModelRenderer : BaseComponent, BaseComponent.ExecuteInEditor, BaseC
 		{
 			if ( _material == value ) return;
 			_material = value;
-
-			if ( _sceneObject is not null )
-			{
-				_sceneObject.SetMaterialOverride( _material );
-			}
+			UpdateObject();
 		}
 	}
+
 
 	bool _castShadows = true;
 	[Property]
@@ -82,11 +71,7 @@ public class ModelRenderer : BaseComponent, BaseComponent.ExecuteInEditor, BaseC
 		{
 			if ( _castShadows == value ) return;
 			_castShadows = value;
-
-			if ( _sceneObject is not null )
-			{
-				_sceneObject.Flags.CastShadows = _castShadows;
-			}
+			UpdateObject();
 		}
 	}
 
@@ -99,15 +84,11 @@ public class ModelRenderer : BaseComponent, BaseComponent.ExecuteInEditor, BaseC
 		{
 			if ( _bodyGroupsMask == value ) return;
 			_bodyGroupsMask = value;
-
-			if ( _sceneObject is not null )
-			{
-				_sceneObject.MeshGroupMask = _bodyGroupsMask;
-			}
+			UpdateObject();
 		}
 	}
 
-	SceneObject _sceneObject;
+	internal SceneObject _sceneObject;
 	public SceneObject SceneObject => _sceneObject;
 
 	Color ITintable.Color { get => Tint; set => Tint = value; }
@@ -134,6 +115,20 @@ public class ModelRenderer : BaseComponent, BaseComponent.ExecuteInEditor, BaseC
 		}
 	}
 
+	protected virtual void UpdateObject()
+	{
+		if ( !_sceneObject.IsValid() )
+			return;
+
+		_sceneObject.ColorTint = Tint;
+		_sceneObject.Flags.CastShadows = _castShadows;
+		_sceneObject.MeshGroupMask = _bodyGroupsMask;
+		_sceneObject.SetMaterialOverride( MaterialOverride );
+
+		_sceneObject.SetMaterialOverride( MaterialOverride );
+		// _sceneObject?.SetMaterialGroup( _materialGroup ); todo -
+	}
+
 	public override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
@@ -142,11 +137,9 @@ public class ModelRenderer : BaseComponent, BaseComponent.ExecuteInEditor, BaseC
 		var model = Model ?? Model.Load( "models/dev/box.vmdl" );
 
 		_sceneObject = new SceneObject( Scene.SceneWorld, model, Transform.World );
-		_sceneObject.SetMaterialOverride( MaterialOverride );
-		_sceneObject.ColorTint = Tint;
-		_sceneObject.Flags.CastShadows = _castShadows;
-		_sceneObject.MeshGroupMask = _bodyGroupsMask;
 		_sceneObject.Tags.SetFrom( GameObject.Tags );
+
+		UpdateObject();
 	}
 
 	public override void OnDisabled()

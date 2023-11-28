@@ -78,28 +78,26 @@ public sealed partial class SkinnedModelRenderer
 
 	public Transform GetBoneTransform( in BoneCollection.Bone bone, in bool worldPosition )
 	{
-		if ( _sceneObject is null ) return global::Transform.Zero;
-
-		return _sceneObject.GetBoneWorldTransform( bone.Index );
+		if ( !SceneModel.IsValid() ) return global::Transform.Zero;
+		return SceneModel.GetBoneWorldTransform( bone.Index );
 	}
 
 	public void SetBoneTransform( in BoneCollection.Bone bone, in Transform tx, in bool worldPosition )
 	{
-		if ( _sceneObject is null ) return;
-
-		_sceneObject.SetBoneWorldTransform( bone.Index, tx );
+		if ( !SceneModel.IsValid() ) return;
+		SceneModel.SetBoneWorldTransform( bone.Index, tx );
 	}
 
 	internal void SetPhysicsBone( int v, Transform transform, float lerp )
 	{
-		_sceneObject.SetBoneOverride( v, transform, lerp );
+		if ( !SceneModel.IsValid() ) return;
+		SceneModel.SetBoneOverride( v, transform, lerp );
 	}
 
 	internal void ClearPhysicsBones()
 	{
-		if ( !_sceneObject.IsValid() ) return;
-
-		_sceneObject.ClearBoneOverrides();
+		if ( !SceneModel.IsValid() ) return;
+		SceneModel.ClearBoneOverrides();
 	}
 }
 
