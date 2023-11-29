@@ -319,6 +319,17 @@ public class ComponentList
 	}
 
 	/// <summary>
+	/// Find this component, if it doesn't exist - create it.
+	/// </summary>
+	public T GetOrCreate<T>( FindMode flags = FindMode.EverythingInSelf ) where T : BaseComponent, new()
+	{
+		if ( TryGet<T>( out var component, flags ) )
+			return component;
+
+		return Create<T>();
+	}
+
+	/// <summary>
 	/// Find component on this gameobject's ancestors or on self
 	/// </summary>
 	public T GetInAncestorsOrSelf<T>( bool includeDisabled = false )
