@@ -77,6 +77,7 @@ public partial class SceneEditorSession
 	private Action snapshotForUndo( )
 	{
 		var o = new JsonSerializerOptions { MaxDepth = 512, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault };
+		var jn = new JsonDocumentOptions { MaxDepth = 512 };
 		var state = Scene.Serialize().ToJsonString( o );
 		var selection = Selection.OfType<GameObject>().Select( x => x.Id ).ToArray();
 
@@ -85,7 +86,7 @@ public partial class SceneEditorSession
 			Scene.Clear();
 
 			using var sceneScope = Scene.Push();
-			var js = JsonObject.Parse( state ) as JsonObject;
+			var js = JsonObject.Parse( state, documentOptions: jn ) as JsonObject;
 			Scene.Deserialize( js );
 
 			Selection.Clear();
