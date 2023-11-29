@@ -15,7 +15,7 @@ public sealed class ScreenPanel : BaseComponent, IRootPanelComponent, BaseCompon
 
 	private GameRootPanel rootPanel;
 
-	public override void OnValidate()
+	protected override void OnValidate()
 	{
 		if ( Scale < 0.001f ) Scale = 0.001f;
 	}

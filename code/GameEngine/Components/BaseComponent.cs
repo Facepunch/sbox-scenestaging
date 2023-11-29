@@ -196,15 +196,10 @@ public abstract partial class BaseComponent
 
 	}
 
-	public virtual void EditorUpdate()
-	{
-
-	}
-
 	/// <summary>
 	/// Called immediately after deserializing, and when a property is changed in the editor.
 	/// </summary>
-	public virtual void OnValidate()
+	protected virtual void OnValidate()
 	{
 
 	}
