@@ -34,7 +34,7 @@ public class GameObjectInspector : Widget
 
 		if ( !target.IsPrefabInstance )
 		{
-			scroller.Canvas.Layout.Add( new ComponentList( target.Id, target.Components ) );
+			scroller.Canvas.Layout.Add( new ComponentList( target.Id, target.Components.GetAll() ) );
 
 			// Add component button
 			var row = scroller.Canvas.Layout.AddRow();
@@ -91,7 +91,7 @@ public class GameObjectInspector : Widget
 	public void AddComponentDialog( Button source )
 	{
 		var s = new ComponentTypeSelector( this );
-		s.OnSelect += ( t ) => TargetObject.AddComponent( t );
+		s.OnSelect += ( t ) => TargetObject.Components.Add( t );
 		s.OpenAt( source.ScreenRect.BottomLeft, animateOffset: new Vector2( 0, -4 ) );
 		s.FixedWidth = source.Width;
 	}
@@ -114,10 +114,10 @@ public class ComponentList : Widget
 	List<BaseComponent> componentList; // todo - SerializedObject should support lists, arrays
 	Guid GameObjectId;
 
-	public ComponentList( Guid gameObjectId, List<BaseComponent> components ) : base( null )
+	public ComponentList( Guid gameObjectId, IEnumerable<BaseComponent> components ) : base( null )
 	{
 		GameObjectId = gameObjectId;
-		componentList = components;
+		componentList = components.ToList();
 		Layout = Layout.Column();
 
 		hashCode = -1;

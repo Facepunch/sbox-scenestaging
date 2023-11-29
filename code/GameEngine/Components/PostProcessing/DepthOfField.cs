@@ -39,7 +39,7 @@ public sealed class DepthOfField : BaseComponent, BaseComponent.ExecuteInEditor
 		renderHook?.Dispose();
 		renderHook = null;
 
-		var cc = GetComponent<CameraComponent>( false, false );
+		var cc = Components.Get<CameraComponent>( false, false );
 		renderHook = cc.AddHookAfterTransparent( "Depth Of Field", 100, RenderEffect );
 	}
 

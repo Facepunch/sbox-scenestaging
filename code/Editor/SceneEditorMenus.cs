@@ -184,7 +184,7 @@ public static class SceneEditorMenus
 			// get the bounding box of the selected objects
 			bbox = bbox.AddBBox( new BBox( entry.Transform.Position, 16 ) );
 
-			foreach ( var model in entry.GetComponents<ModelRenderer>( true, true ) )
+			foreach ( var model in entry.Components.GetAll<ModelRenderer>( true, true ) )
 			{
 				bbox = bbox.AddBBox( model.Bounds );
 			}

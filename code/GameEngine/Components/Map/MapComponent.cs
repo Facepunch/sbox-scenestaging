@@ -54,7 +54,7 @@ public class MapComponent : BaseComponent, BaseComponent.ExecuteInEditor
 			var go = new GameObject();
 			go.Flags |= GameObjectFlags.NotSaved;
 			go.Name = "World Physics";
-			var co = go.AddComponent<ColliderMapComponent>();
+			var co = go.Components.Add<ColliderMapComponent>();
 			co.SetBody( body );
 			go.SetParent( GameObject, true );
 		}
@@ -124,7 +124,7 @@ file class MapComponentMapLoader : SceneMapLoader
 		// and be turned on and off.. but nothing else.
 		//
 
-		var c = go.AddComponent<MapObjectComponent>();
+		var c = go.Components.Add<MapObjectComponent>();
 
 		c.RecreateMapObjects += () =>
 		{

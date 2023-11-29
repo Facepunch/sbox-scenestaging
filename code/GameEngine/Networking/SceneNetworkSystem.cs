@@ -98,7 +98,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		Action queue = default;
 
-		foreach ( var c in GameManager.ActiveScene.GetComponents<BaseComponent.INetworkListener>( true, true ) )
+		foreach ( var c in GameManager.ActiveScene.Components.GetAll<BaseComponent.INetworkListener>( true, true ) )
 		{
 			queue += () => c.OnConnected( client );
 		}
@@ -110,7 +110,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 	{
 		Action queue = default;
 
-		foreach ( var c in GameManager.ActiveScene.GetComponents<BaseComponent.INetworkListener>( true, true ) )
+		foreach ( var c in GameManager.ActiveScene.Components.GetAll<BaseComponent.INetworkListener>( true, true ) )
 		{
 			queue += () => c.OnActive( client );
 		}
@@ -124,7 +124,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		Action queue = default;
 
-		foreach ( var c in GameManager.ActiveScene.GetComponents<BaseComponent.INetworkListener>( true, true ) )
+		foreach ( var c in GameManager.ActiveScene.Components.GetAll<BaseComponent.INetworkListener>( true, true ) )
 		{
 			queue += () => c.OnDisconnected( client );
 		}

@@ -50,7 +50,7 @@ public partial class SceneEditorSession
 		//
 		// 2. Place camera where a Camera component is
 		//
-		var cc = Scene.GetComponent<CameraComponent>( true, true );
+		var cc = Scene.Components.Get<CameraComponent>( true, true );
 		if ( cc is not null )
 		{
 			CameraPosition = cc.Transform.Position;

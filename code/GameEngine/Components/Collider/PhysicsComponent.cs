@@ -104,7 +104,7 @@ public class PhysicsComponent : BaseComponent, INetworkSerializable
 	/// </summary>
 	void UpdateColliders()
 	{
-		foreach( var c in GameObject.GetComponents<Collider>( true, true ) )
+		foreach( var c in GameObject.Components.GetAll<Collider>( true, true ) )
 		{
 			c.OnPhysicsChanged();
 		}

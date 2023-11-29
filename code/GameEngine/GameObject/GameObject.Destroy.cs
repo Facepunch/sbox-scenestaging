@@ -20,7 +20,7 @@ public partial class GameObject : IValid
 		using var batch = CallbackBatch.StartGroup();
 		_destroying = true;
 
-		ForEachComponent( "OnDestroy", false, c => c.Destroy() );
+		Components.ForEach( "OnDestroy", false, c => c.Destroy() );
 		ForEachChild( "Children", false, c => c.Term() );
 
 		CallbackBatch.Add( CommonCallback.Term, TermFinal, this, "Term" );
@@ -40,7 +40,7 @@ public partial class GameObject : IValid
 		Scene = null;
 
 		Children.RemoveAll( x => x is null );
-		Components.RemoveAll( x => x is null );
+		Components.RemoveNull();
 
 		Assert.AreEqual( 0, Components.Count, "Some components weren't deleted!" );
 		Assert.AreEqual( 0, Children.Count, "Some children weren't deleted!" );
@@ -87,12 +87,13 @@ public partial class GameObject : IValid
 	public void Clear()
 	{
 		// delete all components
-		ForEachComponent( "OnDestroy", false, c => c.Destroy() );
+		Components.ForEach( "OnDestroy", false, c => c.Destroy() );
 
 		// delete all children
 		ForEachChild( "Children", false, c => c.Term() );
 
-		Components.RemoveAll( x => x is null );
+		Components.RemoveNull();
+		
 		Children.RemoveAll( x => x is null );
 
 		Assert.AreEqual( 0, Components.Count, $"{Components.Count} components weren't deleted!" );

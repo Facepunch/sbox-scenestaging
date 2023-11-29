@@ -21,7 +21,7 @@ public sealed class GameNetworkManager : BaseComponent, BaseComponent.INetworkLi
 
 		var player = SceneUtility.Instantiate( PlayerPrefab, SpawnPoint.Transform.World );
 
-		var nameTag = player.GetComponent<NameTagPanel>( false, true );
+		var nameTag = player.Components.Get<NameTagPanel>( false, true );
 		if ( nameTag is not null )
 		{
 			nameTag.Name = channel.DisplayName;

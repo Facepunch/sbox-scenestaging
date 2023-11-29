@@ -19,7 +19,6 @@ public partial class GameObject
 	[Property]
 	public bool Lerping { get; set; } = true;
 
-
 	bool _enabled = true;
 
 	/// <summary>
@@ -31,6 +30,11 @@ public partial class GameObject
 	/// This token is cancelled when the GameObject ceases to exist, or is disabled
 	/// </summary>
 	public CancellationToken EnabledToken => enabledTokenSource?.Token ?? CancellationToken.None;
+
+	/// <summary>
+	/// Access components on this GameObject
+	/// </summary>
+	public ComponentList Components { get; private set; }
 
 	/// <summary>
 	/// Is this gameobject enabled?
@@ -68,6 +72,7 @@ public partial class GameObject
 	public GameObject( bool enabled, string name )
 	{
 		Transform = new GameTransform( this );
+		Components = new ComponentList( this );
 		Tags = new GameTags( this );
 		_enabled = enabled;
 		Scene = this as Scene ?? GameManager.ActiveScene;
@@ -127,8 +132,6 @@ public partial class GameObject
 		Task.Expire();
 	}
 
-	public List<BaseComponent> Components = new List<BaseComponent>();
-
 	GameObject _parent;
 
 	public GameObject Parent
@@ -168,7 +171,7 @@ public partial class GameObject
 
 	internal void PreRender()
 	{
-		ForEachComponent( "PreRender", true, c => c.PreRender() );
+		Components.ForEach( "PreRender", true, c => c.PreRender() );
 		ForEachChild( "PreRender", true, c => c.PreRender() );
 	}
 
@@ -211,7 +214,7 @@ public partial class GameObject
 	{
 		using var batch = CallbackBatch.StartGroup();
 
-		ForEachComponent( "UpdateEnabledStatus", false, c => c.UpdateEnabledStatus() );
+		Components.ForEach( "UpdateEnabledStatus", false, c => c.UpdateEnabledStatus() );
 		ForEachChild( "UpdateEnabledStatus", false, c => c.UpdateEnabledStatus() );
 	}
 
@@ -326,7 +329,7 @@ public partial class GameObject
 	/// </summary>
 	public BBox GetBounds()
 	{
-		var renderers = GetComponents<ModelRenderer>( true, true );
+		var renderers = Components.GetAll<ModelRenderer>( true, true );
 
 		return BBox.FromBoxes( renderers.Select( x => x.Bounds ) );
 	}

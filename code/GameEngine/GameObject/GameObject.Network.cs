@@ -89,7 +89,7 @@ public partial class GameObject
 
 		using ByteStream data = ByteStream.Create( 32 );
 
-		foreach ( var c in Components )
+		foreach ( var c in Components.GetAll() )
 		{
 			if ( c is INetworkSerializable net )
 			{
@@ -132,7 +132,7 @@ public partial class GameObject
 			var l = reader.Read<int>();
 			var componentData = reader.ReadByteStream( l );
 
-			foreach ( var c in Components )
+			foreach ( var c in Components.GetAll() )
 			{
 				if ( c is not INetworkSerializable net )
 					continue;

@@ -126,7 +126,7 @@ public class CameraComponent : BaseComponent
 		camera.RenderTags.SetFrom( RenderTags );
 		camera.ExcludeTags.SetFrom( RenderExcludeTags );
 
-		foreach ( var c in GetComponents<ISceneCameraSetup>() )
+		foreach ( var c in Components.GetAll<ISceneCameraSetup>() )
 		{
 			c.SetupCamera( this, camera );
 		}

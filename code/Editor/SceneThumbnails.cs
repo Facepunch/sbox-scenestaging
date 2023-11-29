@@ -76,15 +76,15 @@ public static class SceneThumbnailRenderer
 
 	static void TryAddDefaultLighting( Scene scene )
 	{
-		if ( scene.GetComponent<DirectionalLightComponent>( false, true ) is not null ) return;
-		if ( scene.GetComponent<SpotLightComponent>( false, true ) is not null ) return;
-		if ( scene.GetComponent<PointLightComponent>( false, true ) is not null ) return;
+		if ( scene.Components.Get<DirectionalLightComponent>( false, true ) is not null ) return;
+		if ( scene.Components.Get<SpotLightComponent>( false, true ) is not null ) return;
+		if ( scene.Components.Get<PointLightComponent>( false, true ) is not null ) return;
 
 		var go = scene.CreateObject();
 		go.Name = "Directional Light";
 
 		go.Transform.Rotation = Rotation.From( 90, 0, 0 );
-		var light = go.AddComponent<DirectionalLightComponent>();
+		var light = go.Components.Add<DirectionalLightComponent>();
 		light.LightColor = Color.White;
 		light.SkyColor = "#557685";
 	}

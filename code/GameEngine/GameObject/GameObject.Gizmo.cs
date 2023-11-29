@@ -10,7 +10,7 @@ public partial class GameObject
 	{
 		handleTexture = null;
 
-		var handles = Components
+		var handles = Components.GetAll()
 			.Where( x => x is not null )
 			.Select( x => TypeLibrary.GetType( x.GetType() ) )
 			.Where( x => x is not null )
@@ -22,7 +22,7 @@ public partial class GameObject
 
 		handleColor = Color.White;
 
-		var colorProvider = Components.OfType<IComponentColorProvider>().FirstOrDefault();
+		var colorProvider = Components.GetAll<IComponentColorProvider>().FirstOrDefault();
 		if ( colorProvider is not null )
 		{
 			handleColor = colorProvider.ComponentColor;
@@ -85,7 +85,7 @@ public partial class GameObject
 
 			DrawGizmoHandle( ref clicked );
 
-			ForEachComponent( "DrawGizmos", true, c =>
+			Components.ForEach( "DrawGizmos", true, c =>
 			{
 				using var scope = Gizmo.Scope();
 				c.DrawGizmosInternal();

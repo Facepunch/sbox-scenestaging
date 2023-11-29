@@ -72,7 +72,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 	protected override void OnPreRender()
 	{
 		if ( _so is null ) return;
-		if ( !TryGetComponent( out ParticleEffect effect ) )
+		if ( !Components.TryGet( out ParticleEffect effect ) )
 		{
 			_so.Clear();
 			return;

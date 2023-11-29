@@ -16,6 +16,11 @@ public abstract partial class BaseComponent
 	/// </summary>
 	protected TaskSource Task => GameObject.Task;
 
+	/// <summary>
+	/// Allow creating tasks that are automatically cancelled when the GameObject is destroyed.
+	/// </summary>
+	public ComponentList Components => GameObject.Components;
+
 
 	bool _isInitialized = false;
 
@@ -134,7 +139,7 @@ public abstract partial class BaseComponent
 	{
 		using var batch = CallbackBatch.StartGroup();
 
-		GameObject.Components.RemoveAll( x => x == this );
+		GameObject.Components.OnDestroyedInternal( this );
 
 		CallbackBatch.Add( CommonCallback.Destroy, OnDestroy, this, "OnDestroy" );
 

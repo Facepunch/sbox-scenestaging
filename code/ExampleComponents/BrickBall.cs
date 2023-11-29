@@ -22,7 +22,7 @@ public sealed class BrickBall : BaseComponent, BaseComponent.ICollisionListener
 
 		StartX = Transform.Position.x;
 
-		var rigidBody = GetComponent<PhysicsComponent>();
+		var rigidBody = Components.Get<PhysicsComponent>();
 		rigidBody.Velocity = (Direction.Normal * Speed).WithX( 0 );
 	}
 

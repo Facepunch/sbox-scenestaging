@@ -100,7 +100,7 @@ public partial class Scene : GameObject
 		{
 			if ( go is null ) continue;
 
-			found.AddRange( go.GetComponents<T>( includeDisabled, true ) );
+			found.AddRange( go.Components.GetAll<T>( includeDisabled, true ) );
 		}
 
 		return found;
@@ -141,7 +141,7 @@ public partial class Scene : GameObject
 
 	internal void OnRenderOverlayInternal( SceneCamera camera )
 	{
-		foreach ( var c in GetComponents<BaseComponent.IRenderOverlay>( true, true ) )
+		foreach ( var c in Components.GetAll<BaseComponent.IRenderOverlay>( true, true ) )
 		{
 			c.OnRenderOverlay( camera );
 		}

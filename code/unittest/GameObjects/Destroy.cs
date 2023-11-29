@@ -286,19 +286,19 @@ public class DestroyTests
 			var go = new GameObject();
 			go.Parent = parent;
 
-			go.AddComponent<ModelRenderer>();
+			go.Components.Add<ModelRenderer>();
 
 			for ( int j = 0; j < 8; j++ )
 			{
 				var go2 = new GameObject();
 				go2.Parent = go;
-				go2.AddComponent<ModelRenderer>();
+				go2.Components.Add<ModelRenderer>();
 
 				for ( int k = 0; k < 8; k++ )
 				{
 					var go3 = new GameObject();
 					go3.Parent = go;
-					go3.AddComponent<ModelRenderer>();
+					go3.Components.Add<ModelRenderer>();
 				}
 			}
 		}
@@ -340,19 +340,19 @@ public class DestroyTests
 			var go = new GameObject();
 			go.Parent = parent;
 
-			go.AddComponent<ModelRenderer>();
+			go.Components.Add<ModelRenderer>();
 
 			for ( int j = 0; j < 8; j++ )
 			{
 				var go2 = new GameObject();
 				go2.Parent = go;
-				go2.AddComponent<ModelRenderer>();
+				go2.Components.Add<ModelRenderer>();
 
 				for ( int k = 0; k < 8; k++ )
 				{
 					var go3 = new GameObject();
 					go3.Parent = go;
-					go3.AddComponent<ModelRenderer>();
+					go3.Components.Add<ModelRenderer>();
 				}
 			}
 		}

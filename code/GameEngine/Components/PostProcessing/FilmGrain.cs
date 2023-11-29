@@ -16,7 +16,7 @@ public sealed class FilmGrain : BaseComponent, BaseComponent.ExecuteInEditor
 	{
 		renderHook?.Dispose();
 
-		var cc = GetComponent<CameraComponent>( false, false );
+		var cc = Components.Get<CameraComponent>( false, false );
 		renderHook = cc.AddHookBeforeOverlay( "Film Grain", 1000, RenderEffect );
 	}
 

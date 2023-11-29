@@ -13,7 +13,7 @@ public sealed class ColorOverTime : BaseComponent
 
 		var color = Gradient.Evaluate( (delta) % 1.0f );
 
-		GameObject.ForEachComponent<ITintable>( "ChangeColor", true, t =>
+		GameObject.Components.ForEach<ITintable>( "ChangeColor", true, t =>
 		{
 			t.Color = color;
 		} );

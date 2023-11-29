@@ -7,6 +7,6 @@
 		if ( !Tags.PopDirty() )
 			return;
 
-		ForEachComponent( "TagsUpdated", true, c => c.OnTagsUpdatedInternal() );
+		Components.ForEach( "TagsUpdated", true, c => c.OnTagsUpdatedInternal() );
 	}
 }

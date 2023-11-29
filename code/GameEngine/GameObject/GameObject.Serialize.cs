@@ -56,11 +56,11 @@ public partial class GameObject
 			return json;
 		}
 
-		if ( Components.Any() && !isPartOfPrefab )
+		if ( Components.Count > 0 && !isPartOfPrefab )
 		{
 			var components = new JsonArray();
 
-			foreach ( var component in Components )
+			foreach ( var component in Components.GetAll() )
 			{
 				if ( component is null ) continue;
 
@@ -174,7 +174,7 @@ public partial class GameObject
 					continue;
 				}
 
-				var c = this.AddComponent( componentType );
+				var c = this.Components.Add( componentType );
 				if ( c is null ) continue;
 
 				c.Deserialize( jso );
@@ -184,7 +184,7 @@ public partial class GameObject
 		Enabled = (bool)(node["Enabled"] ?? false);
 		Networked = (bool) (node["Networked"] ?? false);
 
-		ForEachComponent( "OnValidate", false, c => c.OnValidateInternal() );
+		Components.ForEach( "OnValidate", false, c => c.OnValidateInternal() );
 		CallbackBatch.Add( CommonCallback.Deserialized, PostDeserialize, this, "PostDeserialize" );
 	}
 
@@ -197,10 +197,7 @@ public partial class GameObject
 
 	internal void PostDeserialize()
 	{
-		foreach ( var component in Components )
-		{
-			component.PostDeserialize();
-		}
+		Components.ForEach( "PostDeserialize", false, c => c.PostDeserialize() );
 
 		foreach ( var child in Children )
 		{

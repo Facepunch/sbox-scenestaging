@@ -68,7 +68,7 @@ public sealed class TurretComponent : BaseComponent
 			Assert.NotNull( Bullet );
 
 			var obj = SceneUtility.Instantiate( Bullet, Muzzle.Transform.Position, Muzzle.Transform.Rotation );
-			var physics = obj.GetComponent<PhysicsComponent>( true, true );
+			var physics = obj.Components.Get<PhysicsComponent>( true, true );
 			if ( physics is not null )
 			{
 				physics.Velocity = Muzzle.Transform.Rotation.Forward * 2000.0f;
@@ -137,7 +137,7 @@ public sealed class TurretComponent : BaseComponent
 
 				//r *= Rotation.From( 2, 4, 2 );
 
-				var physics = obj.GetComponent<PhysicsComponent>( true, true );
+				var physics = obj.Components.Get<PhysicsComponent>( true, true );
 				if ( physics is not null )
 				{
 					physics.Velocity = off * 2.0f;// Muzzle.WorldTransform.Rotation.Forward * 300.0f;

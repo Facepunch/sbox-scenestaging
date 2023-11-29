@@ -37,7 +37,7 @@ public class VrHand : BaseComponent
 
 	protected override void OnAwake()
 	{
-		_animatedModelComponent = GetComponent<SkinnedModelRenderer>();
+		_animatedModelComponent = Components.Get<SkinnedModelRenderer>();
 	}
 
 	private void UpdatePose()

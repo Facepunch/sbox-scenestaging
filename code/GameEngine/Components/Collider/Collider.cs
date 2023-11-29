@@ -51,7 +51,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		// is there a rigid body?
 		if ( !Static )
 		{
-			var body = GameObject.GetComponentInParent<PhysicsComponent>( true, true );
+			var body = GameObject.Components.GetInParent<PhysicsComponent>( true, true );
 			if ( body is not null )
 			{
 				physicsBody = body.GetBody();
@@ -123,7 +123,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		// try to get rigidbody
 		if ( physicsBody is null )
 		{
-			var body = GameObject.GetComponentInParent<PhysicsComponent>( true, true );
+			var body = GameObject.Components.GetInParent<PhysicsComponent>( true, true );
 			if ( body is null ) return;
 			physicsBody = body.GetBody();
 		}

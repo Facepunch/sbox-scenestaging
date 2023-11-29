@@ -6,7 +6,7 @@ public abstract class ParticleController : BaseComponent, BaseComponent.ExecuteI
 
 	protected override void OnEnabled()
 	{
-		target = GetComponentInParent<ParticleEffect>( true, true );
+		target = Components.GetInParent<ParticleEffect>( true, true );
 		if ( target is not null )
 		{
 			target.OnPreStep += OnBeforeStep;

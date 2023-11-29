@@ -33,7 +33,7 @@
             .razor file, or Panel - because those panels will get their own BuildHash and will only
             update when you want them to.
         *@
-        @foreach ( var model in Scene.GetComponents<ModelRenderer>( true, true ) )
+        @foreach ( var model in Scene.Components.GetAll<ModelRenderer>( true, true ) )
         {
             var bounds = model.Bounds;
             var sphere = new Sphere(bounds.Center, bounds.Size.Length);

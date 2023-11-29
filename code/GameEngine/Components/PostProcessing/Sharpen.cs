@@ -15,7 +15,7 @@ public sealed class Sharpen : BaseComponent, BaseComponent.ExecuteInEditor
 	{
 		renderHook?.Dispose();
 
-		var cc = GetComponent<CameraComponent>( false, false );
+		var cc = Components.Get<CameraComponent>( false, false );
 		renderHook = cc.AddHookBeforeOverlay( "Pixelate", 500, RenderEffect );
 	}
 

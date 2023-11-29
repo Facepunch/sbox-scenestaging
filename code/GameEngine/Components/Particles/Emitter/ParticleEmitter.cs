@@ -18,7 +18,7 @@ public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEd
 	{
 		ResetEmitter();
 
-		target = GetComponentInParent<ParticleEffect>( true, true );
+		target = Components.GetInParent<ParticleEffect>( true, true );
 		if ( target is not null )
 		{
 			target.OnPreStep += OnParticleStep;

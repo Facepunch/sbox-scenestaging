@@ -8,7 +8,7 @@ public sealed class ChangeColorOnEnterTrigger : BaseComponent, BaseComponent.ITr
 
 	void ITriggerListener.OnTriggerEnter( Collider other ) 
 	{
-		foreach( var c in GetComponents<ModelRenderer>( true, true ) )
+		foreach( var c in Components.GetAll<ModelRenderer>( true, true ) )
 		{
 			c.Tint = ColorRange.Evaluate( Random.Shared.Float() );
 		}
@@ -16,7 +16,7 @@ public sealed class ChangeColorOnEnterTrigger : BaseComponent, BaseComponent.ITr
 
 	void ITriggerListener.OnTriggerExit( Collider other ) 
 	{
-		foreach ( var c in GetComponents<ModelRenderer>( true, true ) )
+		foreach ( var c in Components.GetAll<ModelRenderer>( true, true ) )
 		{
 			c.Tint = Color.White;
 		}
