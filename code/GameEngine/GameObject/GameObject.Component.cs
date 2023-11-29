@@ -162,6 +162,7 @@ public partial class GameObject
 
 	public T AddComponent<T>( bool enabled = true ) where T : BaseComponent, new()
 	{
+		using var batch = CallbackBatch.StartGroup();
 		var t = new T();
 
 		t.GameObject = this;

@@ -78,7 +78,6 @@ public partial class SceneEditorSession
 			Scene.Clear();
 
 			using var sceneScope = Scene.Push();
-			using var activeScope = SceneUtility.DeferInitializationScope( "Undo" );
 			var js = JsonObject.Parse( state ) as JsonObject;
 			Scene.Deserialize( js );
 

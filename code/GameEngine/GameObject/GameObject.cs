@@ -44,6 +44,8 @@ public partial class GameObject
 			if ( _enabled == value )
 				return;
 
+			using var batchGroup = CallbackBatch.StartGroup();
+
 			_enabled = value;
 			Transform.ClearLerp();
 
@@ -56,7 +58,7 @@ public partial class GameObject
 				CancelTaskSource();
 			}
 
-			SceneUtility.ActivateGameObject( this );
+			UpdateEnabledStatus();
 		}
 	}
 
@@ -207,19 +209,10 @@ public partial class GameObject
 	/// </summary>
 	internal void UpdateEnabledStatus()
 	{
-		// we want to run all of the callbacks after the enabled status has changed
-		// this is kind of crude though, we should instead have something proper, that defers
-		// callbacks until a certain point, and calls them in a logical order.
-		Action a = default;
+		using var batch = CallbackBatch.StartGroup();
 
-		ForEachComponent( "UpdateEnabledStatus", false, c =>
-		{
-			a += c.UpdateEnabledStatus();
-		} );
-
+		ForEachComponent( "UpdateEnabledStatus", false, c => c.UpdateEnabledStatus() );
 		ForEachChild( "UpdateEnabledStatus", true, c => c.UpdateEnabledStatus() );
-
-		a?.Invoke();
 	}
 
 	public bool IsDescendant( GameObject o )

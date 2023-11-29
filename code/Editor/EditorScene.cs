@@ -221,7 +221,6 @@ public static class EditorScene
 
 	static void UpdatePrefabsInScene( Scene scene, PrefabFile prefab )
 	{
-		using var activeScope = SceneUtility.DeferInitializationScope( "Update Prefabs" );
 		var changedPath = prefab.ResourcePath;
 
 		using ( scene.Push() )

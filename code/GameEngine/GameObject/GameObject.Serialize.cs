@@ -112,6 +112,8 @@ public partial class GameObject
 
 	public virtual void Deserialize( JsonObject node )
 	{
+		using var batchGroup = CallbackBatch.StartGroup();
+
 		Id = node["Id"].Deserialize<Guid>();
 		Name = node["Name"].ToString() ?? Name;
 		Transform.LocalPosition = node["Position"]?.Deserialize<Vector3>() ?? Vector3.Zero;
@@ -182,12 +184,8 @@ public partial class GameObject
 		Networked = (bool) (node["Networked"] ?? false);
 
 		ForEachComponent( "OnValidate", false, c => c.OnValidateInternal() );
-
-
-		if ( !SceneUtility.IsSpawning )
-		{
-			PostDeserialize();
-		}
+		
+		CallbackBatch.Add( "PostDeserialize", 10, PostDeserialize );
 	}
 
 	public PrefabFile GetAsPrefab()

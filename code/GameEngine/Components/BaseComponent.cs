@@ -51,7 +51,7 @@ public abstract partial class BaseComponent
 
 			_enabled = value;
 
-			SceneUtility.ActivateComponent( this );
+			UpdateEnabledStatus();
 		}
 	}
 
@@ -118,39 +118,39 @@ public abstract partial class BaseComponent
 		onPostDeserialize = null;
 	}
 
-	internal Action UpdateEnabledStatus()
+	internal void UpdateEnabledStatus()
 	{
+		using var batch = CallbackBatch.StartGroup();
+
 		var state = _enabled && Scene is not null && GameObject is not null && GameObject.Active;
-		if ( state == _enabledState ) return null;
+		if ( state == _enabledState ) return;
 
 		_enabledState = state;
 
 		if ( _enabledState )
 		{
-			return () =>
+			CallbackBatch.Add( "Initialize", 100, () => InitializeComponent() );
+
+			if ( ShouldExecute )
 			{
-				InitializeComponent();
-
-				if ( ShouldExecute )
+				CallbackBatch.Add( "OnEnabled", 200, () =>
 				{
+					ExceptionWrap( "OnEnabled", OnEnabled );
+					OnComponentActivated?.Invoke();
+				} );
 
-						ExceptionWrap( "OnEnabled", OnEnabled );
-						OnComponentActivated?.Invoke();
-				
-				}
-			};
+			}
 		}
 		else
 		{
-			return () =>
+			if ( ShouldExecute )
 			{
-				if ( ShouldExecute )
+				CallbackBatch.Add( "OnDisabled", 200, () =>
 				{
 					ExceptionWrap( "OnDisabled", OnDisabled );
-
 					OnComponentDeactivated?.Invoke();
-				}
-			};
+				} );
+			}
 		}
 	}
 
@@ -216,7 +216,7 @@ public abstract partial class BaseComponent
 
 	internal virtual void OnValidateInternal()
 	{
-		OnValidate();
+		CallbackBatch.Add( "OnValidate", 20, OnValidate );
 	}
 
 

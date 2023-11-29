@@ -22,7 +22,7 @@ public partial class Scene : GameObject
 
 			using var sceneScope = Push();
 
-			using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
+			using var batchGroup = CallbackBatch.StartGroup();
 
 			if ( sceneFile.GameObjects is not null )
 			{
@@ -91,7 +91,7 @@ public partial class Scene : GameObject
 		Clear();
 
 		using var sceneScope = Push();
-		using var spawnScope = SceneUtility.DeferInitializationScope( "Deserialize" );
+		using var batchGroup = CallbackBatch.StartGroup();
 
 		if ( node["GameObjects"] is JsonArray childArray )
 		{
