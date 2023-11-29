@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -184,8 +185,7 @@ public partial class GameObject
 		Networked = (bool) (node["Networked"] ?? false);
 
 		ForEachComponent( "OnValidate", false, c => c.OnValidateInternal() );
-		
-		CallbackBatch.Add( "PostDeserialize", 10, PostDeserialize );
+		CallbackBatch.Add( CommonCallback.Deserialized, PostDeserialize, this, "PostDeserialize" );
 	}
 
 	public PrefabFile GetAsPrefab()

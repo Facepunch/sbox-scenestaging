@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 
 public partial class GameObject : IValid
@@ -21,20 +22,30 @@ public partial class GameObject : IValid
 	/// </summary>
 	private void Term()
 	{
+		using var batch = CallbackBatch.StartGroup();
 		_destroying = true;
 
 		ForEachComponent( "OnDestroy", false, c => c.Destroy() );
 		ForEachChild( "Children", false, c => c.Term() );
+		
+		CallbackBatch.Add( CommonCallback.Term, TermFinal, this, "Term" );
+	}
 
-		Children.RemoveAll( x => x is null );
-		Components.RemoveAll( x => x is null );
-
+	/// <summary>
+	/// The last thing ever called.
+	/// </summary>
+	private void TermFinal()
+	{
 		_destroyed = true;
+
 		EndNetworking();
 		Scene.Directory.Remove( this );
 		Enabled = false;
 		Parent = null;
 		Scene = null;
+
+		Children.RemoveAll( x => x is null );
+		Components.RemoveAll( x => x is null );
 
 		Assert.AreEqual( 0, Components.Count, "Some components weren't deleted!" );
 		Assert.AreEqual( 0, Children.Count, "Some children weren't deleted!" );

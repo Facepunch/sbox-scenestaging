@@ -1,47 +1,58 @@
 ﻿
 using Sandbox;
-using Sandbox.Diagnostics;
 
 /// <summary>
-/// Store callbacks until a set time, and then call them in grouped order
+/// We want to execute callbacks in a predictable order. This happens
+/// naturally when spawning one GameObject, but when spawning a scene, or a 
+/// prefab, we want to hold the calls to things like OnEnable and call them all
+/// after OnStart or whatever has been called on all the objects in the batch.
 /// </summary>
 internal class CallbackBatch : System.IDisposable
 {
 	static CallbackBatch Current { get; set; }
-	static Stack<CallbackBatch> Pool = new ();
+	static Stack<CallbackBatch> Pool = new();
+
+	record struct ActionTarget( Action Action, object Target, string name );
 
 	class Group
 	{
-		List<Action> Actions = new List<Action>();
+		List<ActionTarget> Actions = new List<ActionTarget>();
 
 		public void Clear()
 		{
 			Actions.Clear();
 		}
 
-		public void Add( string name, Action action )
+		public void Add( ActionTarget action )
 		{
 			Actions.Add( action );
 		}
 
 		public void Execute()
 		{
-			foreach( var action in Actions )
+			foreach ( var action in Actions )
 			{
-				action();
+				try
+				{
+					action.Action();
+				}
+				catch ( System.Exception e )
+				{
+					Log.Error( e, $"{action.name} on {action.Target} failed: {e.Message}" );
+				}
 			}
 
 			Actions.Clear();
 		}
 	}
 
-	Dictionary<int, Group> Groups = new Dictionary<int, Group>();
+	Dictionary<CommonCallback, Group> Groups = new();
 
 	public static CallbackBatch StartGroup()
 	{
 		if ( Current is not null ) return null;
 
-		if ( !Pool.TryPop( out var instance) )
+		if ( !Pool.TryPop( out var instance ) )
 		{
 			instance = new CallbackBatch();
 		}
@@ -50,34 +61,24 @@ internal class CallbackBatch : System.IDisposable
 		return Current;
 	}
 
-	public static void Add( string name, int order, Action action )
+	public static void Add( CommonCallback order, Action action, object target, string name )
 	{
 		if ( Current is not null )
 		{
-			Current.AddToGroup( order, name, action );
-			// add 
+			var group = Current.Groups.GetOrCreate( order );
+			group.Add( new ActionTarget( action, target, name ) );
 			return;
 		}
 
-		throw new System.Exception( $"CallbackBatch.Add called outside of a batch for '{name}'" );
+		throw new System.Exception( $"CallbackBatch.Add called outside of a batch for '{order}'" );
 	}
 
 	void Execute()
 	{
-		int lastIndex = -1000;
-
-		foreach( var group in Groups.OrderBy( x => x.Key ) )
+		foreach ( var group in Groups.OrderBy( x => x.Key ) )
 		{
-			Assert.True( group.Key > lastIndex );
-			lastIndex = group.Key;
 			group.Value.Execute();
 		}
-	}
-
-	void AddToGroup( int order, string name, Action action )
-	{
-		var v = Groups.GetOrCreate( order );
-		v.Add( name, action );
 	}
 
 	public void Dispose()
@@ -96,3 +97,48 @@ internal class CallbackBatch : System.IDisposable
 	}
 }
 
+/// <summary>
+/// A list of component methods that are deferred and batched into groups, and exected in group order.
+/// This is used to ensure that components are initialized in a predictable order.
+/// The order of this enum is critical.
+/// </summary>
+internal enum CommonCallback
+{
+	Unknown,
+
+	/// <summary>
+	/// The component has been deserialized. This callback is used to resolve
+	/// GameObjects from a string GameObject ID.
+	/// </summary>
+	Deserialized,
+
+	/// <summary>
+	/// The component has been deserialized, or edited in the editor
+	/// </summary>
+	Validate,
+
+	/// <summary>
+	/// The component is awake. Called only once, on first enable.
+	/// </summary>
+	Awake,
+
+	/// <summary>
+	/// Component has been enabled
+	/// </summary>
+	Enable,
+
+	/// <summary>
+	/// Component has been disabled
+	/// </summary>
+	Disable,
+
+	/// <summary>
+	/// Component has been destroyed
+	/// </summary>
+	Destroy,
+
+	/// <summary>
+	/// GameObject actually deleted
+	/// </summary>
+	Term
+}

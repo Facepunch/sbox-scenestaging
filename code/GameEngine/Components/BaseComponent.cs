@@ -29,7 +29,8 @@ public abstract partial class BaseComponent
 		if ( !GameObject.Active ) return;
 
 		_isInitialized = true;
-		ExceptionWrap( "Awake", OnAwake );
+
+		CallbackBatch.Add( CommonCallback.Awake, OnAwake, this, "OnAwake" );
 	}
 
 
@@ -109,8 +110,8 @@ public abstract partial class BaseComponent
 		ExceptionWrap( "Update", Update );
 	}
 
-	public Action OnComponentActivated { get; set; }
-	public Action OnComponentDeactivated { get; set; }
+	public Action OnComponentEnabled { get; set; }
+	public Action OnComponentDisabled { get; set; }
 
 	internal void PostDeserialize()
 	{
@@ -129,36 +130,31 @@ public abstract partial class BaseComponent
 
 		if ( _enabledState )
 		{
-			CallbackBatch.Add( "Initialize", 100, () => InitializeComponent() );
+			InitializeComponent();
 
 			if ( ShouldExecute )
 			{
-				CallbackBatch.Add( "OnEnabled", 200, () =>
-				{
-					ExceptionWrap( "OnEnabled", OnEnabled );
-					OnComponentActivated?.Invoke();
-				} );
-
+				CallbackBatch.Add( CommonCallback.Enable, OnEnabled, this, "OnEnabled" );
+				CallbackBatch.Add( CommonCallback.Enable, () => OnComponentEnabled?.Invoke(), this, "OnComponentEnabled" );
 			}
 		}
 		else
 		{
 			if ( ShouldExecute )
 			{
-				CallbackBatch.Add( "OnDisabled", 200, () =>
-				{
-					ExceptionWrap( "OnDisabled", OnDisabled );
-					OnComponentDeactivated?.Invoke();
-				} );
+				CallbackBatch.Add( CommonCallback.Disable, OnDisabled, this, "OnDisabled" );
+				CallbackBatch.Add( CommonCallback.Disable, () => OnComponentDisabled?.Invoke(), this, "OnComponentDisabled" );
 			}
 		}
 	}
 
 	public void Destroy()
 	{
+		using var batch = CallbackBatch.StartGroup();
+
 		GameObject.Components.RemoveAll( x => x == this );
 
-		ExceptionWrap( "OnDestroy", OnDestroy );
+		CallbackBatch.Add( CommonCallback.Destroy, OnDestroy, this, "OnDestroy" );
 
 		if ( _enabledState )
 		{
@@ -167,9 +163,8 @@ public abstract partial class BaseComponent
 
 			if ( ShouldExecute )
 			{
-				ExceptionWrap( "OnDisabled", OnDisabled );
-
-				OnComponentDeactivated?.Invoke();
+				CallbackBatch.Add( CommonCallback.Disable, OnDisabled, this, "OnDisabled" );
+				CallbackBatch.Add( CommonCallback.Disable, () => OnComponentDisabled?.Invoke(), this, "OnComponentDisabled" );
 			}
 		}
 	}
@@ -216,7 +211,7 @@ public abstract partial class BaseComponent
 
 	internal virtual void OnValidateInternal()
 	{
-		CallbackBatch.Add( "OnValidate", 20, OnValidate );
+		CallbackBatch.Add( CommonCallback.Validate, OnValidate, this, "OnValidate" );
 	}
 
 

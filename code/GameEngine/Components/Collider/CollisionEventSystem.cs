@@ -39,7 +39,7 @@ class CollisionEventSystem : IDisposable
 			if ( !Touching.Add( bc ) )
 				return;
 
-			bc.OnComponentDeactivated += RemoveDeactivated;
+			bc.OnComponentDisabled += RemoveDeactivated;
 
 			o.Self.GameObject.ForEachComponent<ITriggerListener>( "OnTriggerEnter", true, ( c ) => c.OnTriggerEnter( bc ) );
 		}
@@ -84,7 +84,7 @@ class CollisionEventSystem : IDisposable
 			if ( !Touching.Remove( bc ) )
 				return;
 
-			bc.OnComponentDeactivated -= RemoveDeactivated;
+			bc.OnComponentDisabled -= RemoveDeactivated;
 
 			o.Self.GameObject.ForEachComponent<ITriggerListener>( "OnTriggerExit", true, ( c ) => c.OnTriggerExit( bc ) );
 		}
