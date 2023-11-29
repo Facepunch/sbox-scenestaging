@@ -774,7 +774,7 @@ public class ActionPlug<T, TDef> : IActionPlug
 
 	public ValueEditor CreateEditor( NodeUI node, Plug plug )
 	{
-		return null;
+		return new DefaultEditor( plug ) { Title = DisplayInfo.Name, Node = node };
 	}
 
 	public bool ShowLabel => Node.Definition.Identifier != "nop" && !Node.Definition.Identifier.StartsWith( "const." ) && !Node.Definition.Identifier.StartsWith( "op." );

@@ -57,14 +57,20 @@ public class Properties : Widget
 		}
 	}
 
-	private static HashSet<string> HidePropertiesFor { get; } = new()
+	private static bool CanEditInputType( Type type )
 	{
-		"graph",
-		"property.get",
-		"property.set",
-		"var.get",
-		"var.set"
-	};
+		if ( type.IsAbstract || type.IsInterface || type.IsArray || type.ContainsGenericParameters )
+		{
+			return false;
+		}
+
+		if ( type == typeof(Variable) )
+		{
+			return false;
+		}
+
+		return true;
+	}
 
 	void RebuildContent()
 	{
@@ -85,11 +91,16 @@ public class Properties : Widget
 
 			ps.AddObject( obj );
 		}
-		else if ( Target is ActionNode node && !HidePropertiesFor.Contains( node.Definition.Identifier ) )
+		else if ( Target is ActionNode node )
 		{
 			foreach ( var (name, property) in node.Node.Properties )
 			{
-				if ( name.StartsWith( "_" ) )
+				if ( name.StartsWith( "_" ) || name == "graph" && node.Definition.Identifier == "graph" )
+				{
+					continue;
+				}
+
+				if ( !CanEditInputType( property.Type ) )
 				{
 					continue;
 				}
@@ -123,6 +134,23 @@ public class Properties : Widget
 				}
 
 				var prop = new SerializedNodeParameter<Node.Property, PropertyDefinition>( property );
+
+				ps.AddRow( prop );
+			}
+
+			foreach ( var (name, input) in node.Node.Inputs )
+			{
+				if ( input.IsLinked || input.Name.StartsWith( "_" ) )
+				{
+					continue;
+				}
+
+				if ( !CanEditInputType( input.Type ) )
+				{
+					continue;
+				}
+
+				var prop = new SerializedNodeParameter<Node.Input, InputDefinition>( input );
 
 				ps.AddRow( prop );
 			}
