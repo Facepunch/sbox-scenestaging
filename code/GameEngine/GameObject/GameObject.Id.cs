@@ -1,12 +1,4 @@
-﻿using Sandbox;
-using Sandbox.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-
-public partial class GameObject
+﻿public partial class GameObject
 {
 	private Guid _id;
 	public Guid Id

@@ -183,9 +183,9 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		// TODO: Does source have the authoruty to destroy?
 
-		if ( obj.Net is not null )
+		if ( obj._net is not null )
 		{
-			obj.Net.OnNetworkDestroy();
+			obj._net.OnNetworkDestroy();
 		}
 		else
 		{

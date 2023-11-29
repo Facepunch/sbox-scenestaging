@@ -1,7 +1,4 @@
 ﻿using Sandbox;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 /// <summary>
@@ -30,7 +27,7 @@ public class GameTags : ITagSet
 	/// </summary>
 	public IEnumerable<string> TryGetAll()
 	{
-		if ( target.Parent is null || target.Parent is Scene ) 
+		if ( target.Parent is null || target.Parent is Scene )
 			return collection;
 
 		return collection.Concat( target.Parent.Tags.TryGetAll() ).Distinct();
@@ -161,7 +158,7 @@ public class GameTags : ITagSet
 		dirty = true;
 
 		// make all our children dirty too
-		foreach( var c in target.Children )
+		foreach ( var c in target.Children )
 		{
 			c.Tags.MarkDirty();
 		}

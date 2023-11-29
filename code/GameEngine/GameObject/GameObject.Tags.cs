@@ -2,7 +2,6 @@
 {
 	public GameTags Tags { get; init; }
 
-
 	void DirtyTagsUpdate()
 	{
 		if ( !Tags.PopDirty() )

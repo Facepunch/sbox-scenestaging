@@ -1,10 +1,5 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Runtime.InteropServices;
 
 
 public partial class GameObject : IValid
@@ -27,7 +22,7 @@ public partial class GameObject : IValid
 
 		ForEachComponent( "OnDestroy", false, c => c.Destroy() );
 		ForEachChild( "Children", false, c => c.Term() );
-		
+
 		CallbackBatch.Add( CommonCallback.Term, TermFinal, this, "Term" );
 	}
 
@@ -62,7 +57,7 @@ public partial class GameObject : IValid
 		_destroying = true;
 
 		Scene?.QueueDelete( this );
-		Net?.SendNetworkDestroy();
+		_net?.SendNetworkDestroy();
 	}
 
 	/// <summary>
