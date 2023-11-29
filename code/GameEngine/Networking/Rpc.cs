@@ -1,4 +1,5 @@
-﻿using Sandbox.Network;
+﻿using System.ComponentModel;
+using Sandbox.Network;
 
 namespace Sandbox;
 
@@ -38,23 +39,16 @@ public static class Rpc
 		Caller = Connection.Local;
 	}
 
-	// todo - this would have to be public for now...
+	[EditorBrowsable( EditorBrowsableState.Never )]
 	public static void WrapStaticMethod( Action resume, string methodName, params object[] argumentList )
 	{
 		if ( !Calling && SceneNetworkSystem.Instance is not null )
 		{
-			if ( TryFindMethodIndex( methodName, out var index ) )
-			{
-				var msg = new StaticRpcMsg();
-				msg.MethodIndex = index;
-				msg.Arguments = argumentList;
+			var msg = new StaticRpcMsg();
+			msg.MethodIndex = FindMethodIndex( methodName );
+			msg.Arguments = argumentList;
 
-				SceneNetworkSystem.Instance.Broadcast( msg );
-			}
-			else
-			{
-				throw new( $"Unindexed Static RPC method '{methodName}'" );
-			}
+			SceneNetworkSystem.Instance.Broadcast( msg );
 		}
 
 		PreCall();
@@ -63,11 +57,7 @@ public static class Rpc
 
 	internal static void HandleIncoming( StaticRpcMsg message, Connection source )
 	{
-		if ( !TryFindMethodName( message.MethodIndex, out var fullName ) )
-		{
-			throw new( $"Unknown Static RPC method with index '{message.MethodIndex}'" );
-		}
-
+		var fullName = FindMethodName( message.MethodIndex );
 		var split = fullName.Split( "." );
 		var typeName = string.Join( ".", split[..^1] );
 		var methodName = split[^1];
@@ -137,12 +127,9 @@ public static class Rpc
 
 	static void InvokeRpc( in ObjectMessageMsg message, in TypeDescription typeDesc, in object targetObject, in Connection source )
 	{
-		if ( !TryFindMethodName( message.MethodIndex, out var methodName ) )
-		{
-			throw new( $"Unknown RPC method with index '{message.MethodIndex}'" );
-		}
-		
+		var methodName = FindMethodName( message.MethodIndex );
 		var method = typeDesc.GetMethod( methodName );
+		
 		if ( method == null )
 		{
 			throw new System.Exception( $"Unknown RPC '{methodName}' on {typeDesc.Name}" );
@@ -161,26 +148,34 @@ public static class Rpc
 	/// Try to find a method name string from the supplied index.
 	/// </summary>
 	/// <param name="index"></param>
-	/// <param name="methodName"></param>
-	internal static bool TryFindMethodName( int index, out string methodName )
+	internal static string FindMethodName( int index )
 	{
 		if ( !_hasIndexedMethodNames )
 			IndexMethodNames();
 
-		return _indexToMethodName.TryGetValue( index, out methodName );
+		if ( !_indexToMethodName.TryGetValue( index, out var methodName ) )
+		{
+			throw new( $"Unknown Static RPC method with index '{index}'" );
+		}
+
+		return methodName;
 	}
 
 	/// <summary>
-	/// Try to find an index from the supplied method name,
+	/// Try to find an index from the supplied method name.
 	/// </summary>
 	/// <param name="methodName"></param>
-	/// <param name="index"></param>
-	internal static bool TryFindMethodIndex( string methodName, out int index )
+	internal static int FindMethodIndex( string methodName )
 	{
 		if ( !_hasIndexedMethodNames )
 			IndexMethodNames();
 
-		return _methodNameToIndex.TryGetValue( methodName, out index );
+		if ( !_methodNameToIndex.TryGetValue( methodName, out var index ) )
+		{
+			throw new( $"Unindexed RPC method '{methodName}'" );
+		}
+		
+		return index;
 	}
 
 	static Dictionary<string, int> _methodNameToIndex;

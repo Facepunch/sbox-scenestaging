@@ -188,7 +188,7 @@ public partial class GameObject
 	{
 		if ( !Rpc.Calling && Network.Active && SceneNetworkSystem.Instance is not null )
 		{
-			if ( !Rpc.TryFindMethodIndex( methodName, out var index ) )
+			if ( !Rpc.FindMethodIndex( methodName, out var index ) )
 			{
 				throw new( $"Unindexed RPC method '{methodName}'" );
 			}
