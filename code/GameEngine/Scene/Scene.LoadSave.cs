@@ -14,6 +14,15 @@ public partial class Scene : GameObject
 		ProcessDeletes();
 		Clear();
 
+
+		if ( !IsEditor )
+		{
+			// Make it so IsLoading will return true
+			StartLoading();
+			LoadingScreen.IsVisible = true;
+			LoadingScreen.Title = "Loading Scene";
+		}
+
 		if ( resource is SceneFile sceneFile )
 		{
 			Source = sceneFile;

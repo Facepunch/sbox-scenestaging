@@ -6,7 +6,8 @@
 			return;
 
 		// TODO - faster way to accumulate these
-		var animModel = Components.GetAll<SkinnedModelRenderer>( FindMode.EnabledInSelfAndDescendants ).ToArray();
+		var animModel = Components.GetAll<SkinnedModelRenderer>( FindMode.EnabledInSelfAndDescendants )
+			.ToArray();
 
 		//
 		// Run the updates and the bone merges in a thread
