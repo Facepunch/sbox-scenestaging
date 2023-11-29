@@ -132,7 +132,7 @@ public static class Rpc
 		
 		if ( method == null )
 		{
-			throw new System.Exception( $"Unknown RPC '{methodName}' on {typeDesc.Name}" );
+			throw new( $"Unknown RPC '{methodName}' on {typeDesc.Name}" );
 		}
 
 		Calling = true;
@@ -150,15 +150,24 @@ public static class Rpc
 	/// <param name="index"></param>
 	internal static string FindMethodName( int index )
 	{
-		if ( !_hasIndexedMethodNames )
-			IndexMethodNames();
+		if ( _indexToMethodName.TryGetValue( index, out var methodName ) )
+		{
+			return methodName;
+		}
 
-		if ( !_indexToMethodName.TryGetValue( index, out var methodName ) )
+		var methods = GetAllMethodNames();
+
+		try
+		{
+			methodName = methods.ElementAt( index );
+			_indexToMethodName[index] = methodName;
+			_methodNameToIndex[methodName] = index;
+			return methodName;
+		}
+		catch
 		{
 			throw new( $"Unknown Static RPC method with index '{index}'" );
 		}
-
-		return methodName;
 	}
 
 	/// <summary>
@@ -167,33 +176,47 @@ public static class Rpc
 	/// <param name="methodName"></param>
 	internal static int FindMethodIndex( string methodName )
 	{
-		if ( !_hasIndexedMethodNames )
-			IndexMethodNames();
+		if ( _methodNameToIndex.TryGetValue( methodName, out var index ) )
+		{
+			return index;
+		}
 
-		if ( !_methodNameToIndex.TryGetValue( methodName, out var index ) )
+		var methods = GetAllMethodNames();
+		var success = false;
+		index = 0;
+			
+		foreach ( var m in methods )
+		{
+			if ( m == methodName )
+			{
+				_methodNameToIndex[methodName] = index;
+				_indexToMethodName[index] = methodName;
+				success = true;
+			}
+
+			index++;
+		}
+
+		if ( !success )
 		{
 			throw new( $"Unindexed RPC method '{methodName}'" );
 		}
-		
+
 		return index;
 	}
 
-	static Dictionary<string, int> _methodNameToIndex;
-	static Dictionary<int, string> _indexToMethodName;
-	static bool _hasIndexedMethodNames;
+	static Dictionary<string, int> _methodNameToIndex = new();
+	static Dictionary<int, string> _indexToMethodName = new();
 
 	[Event.Hotload]
 	static void OnHotload()
 	{
-		IndexMethodNames();
+		_methodNameToIndex.Clear();
+		_indexToMethodName.Clear();
 	}
 
-	static void IndexMethodNames()
+	static IEnumerable<string> GetAllMethodNames()
 	{
-		_methodNameToIndex = new();
-		_indexToMethodName = new();
-		
-		var currentIndex = 0;
 		var staticMethods = TypeLibrary
 			.GetMethodsWithAttribute<BroadcastAttribute>()
 			.Select( ( m ) => $"{m.Method.TypeDescription.FullName}.{m.Method.Name}" )
@@ -206,20 +229,9 @@ public static class Rpc
 			.Where( x => !x.IsStatic && ( x.Attributes.OfType<BroadcastAttribute>().Any() || x.Attributes.OfType<AuthorityAttribute>().Any() ) )
 			.Select( ( m ) => m.Name );
 
-		var methods = staticMethods
+		return staticMethods
 			.Concat( instanceMethods )
 			.Distinct()
-			.ToList();
-
-		methods.Sort( ( a, b ) => string.Compare( a, b, StringComparison.Ordinal ) );
-
-		foreach ( var methodName in methods )
-		{
-			_methodNameToIndex[methodName] = currentIndex;
-			_indexToMethodName[currentIndex] = methodName;
-			currentIndex++;
-		}
-		
-		_hasIndexedMethodNames = true;
+			.OrderBy( a => a );
 	}
 }
