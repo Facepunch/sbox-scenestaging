@@ -83,7 +83,7 @@ public sealed class ActionControlWidget : ControlWidget
 		// icon
 		{
 			Paint.SetPen( graph is null ? Theme.Grey.WithAlphaMultiplied( alpha ) : Theme.Green.WithAlphaMultiplied( alpha ) );
-			var r = Paint.DrawIcon( rect, "account_tree", 17, TextFlag.LeftCenter );
+			var r = Paint.DrawIcon( rect, graph?.Icon ?? "account_tree", 17, TextFlag.LeftCenter );
 			rect.Left += r.Width + 8;
 		}
 
