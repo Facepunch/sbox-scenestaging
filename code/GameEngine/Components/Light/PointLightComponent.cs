@@ -17,7 +17,7 @@ public class PointLightComponent : BaseComponent, IComponentColorProvider, BaseC
 
 	Color ITintable.Color { get => LightColor; set => LightColor = value; }
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		using var scope = Gizmo.Scope( $"light-{GetHashCode()}" );
 
@@ -34,7 +34,7 @@ public class PointLightComponent : BaseComponent, IComponentColorProvider, BaseC
 		}
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
@@ -43,7 +43,7 @@ public class PointLightComponent : BaseComponent, IComponentColorProvider, BaseC
 		_sceneObject.FogLighting = SceneLight.FogLightingMode.Dynamic;
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_sceneObject?.Delete();
 		_sceneObject = null;

@@ -13,7 +13,7 @@ public class VolumetricFogVolume : BaseComponent, BaseComponent.ExecuteInEditor
 	[Property] public float Strength { get; set; } = 2.0f;
 	[Property] public float FalloffExponent { get; set; } = 1.0f;
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		using var scope = Gizmo.Scope( $"volumetricfogvolume-{GetHashCode()}" );
 
@@ -24,7 +24,7 @@ public class VolumetricFogVolume : BaseComponent, BaseComponent.ExecuteInEditor
 		Gizmo.Draw.LineBBox( Bounds );
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( sceneObject == null );
 		Assert.NotNull( Scene );
@@ -32,7 +32,7 @@ public class VolumetricFogVolume : BaseComponent, BaseComponent.ExecuteInEditor
 		sceneObject = new SceneFogVolume( Scene.SceneWorld, Transform.World, Bounds, Strength, FalloffExponent );
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		sceneObject?.Delete();
 		sceneObject = null;

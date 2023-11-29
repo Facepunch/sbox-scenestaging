@@ -93,7 +93,7 @@ public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseCompon
 
 	Color ITintable.Color { get => Tint; set => Tint = value; }
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( Model is null )
 			return;
@@ -126,7 +126,7 @@ public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseCompon
 		_sceneObject.SetMaterialOverride( MaterialOverride );
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
@@ -139,7 +139,7 @@ public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseCompon
 		UpdateObject();
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_sceneObject?.Delete();
 		_sceneObject = null;

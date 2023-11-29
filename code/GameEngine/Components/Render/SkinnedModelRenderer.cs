@@ -45,7 +45,7 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 
 	public SceneModel SceneModel => (SceneModel) _sceneObject;
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( Model is null )
 			return;
@@ -84,7 +84,7 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 	}
 
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
@@ -114,7 +114,7 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 	}
 
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		ClearBoneProxies();
 

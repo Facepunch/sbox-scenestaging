@@ -33,12 +33,12 @@ public class ParticleSystem : BaseComponent, BaseComponent.ExecuteInEditor
 	SceneParticles _sceneObject;
 	public SceneParticles SceneObject => _sceneObject;
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.NotNull( Scene );
 
@@ -88,7 +88,7 @@ public class ParticleSystem : BaseComponent, BaseComponent.ExecuteInEditor
 		}
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_sceneObject?.Delete();
 		_sceneObject = null;

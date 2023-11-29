@@ -11,7 +11,7 @@ public sealed class AlphaOverTime : BaseComponent
 
 	TimeSince timeSinceEnabled;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		base.OnEnabled();
 

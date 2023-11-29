@@ -35,7 +35,7 @@ public class VrHand : BaseComponent
 	[Property]
 	public HandSources HandSource { get; set; } = HandSources.Left;
 
-	public override void OnAwake()
+	protected override void OnAwake()
 	{
 		_animatedModelComponent = GetComponent<SkinnedModelRenderer>();
 	}

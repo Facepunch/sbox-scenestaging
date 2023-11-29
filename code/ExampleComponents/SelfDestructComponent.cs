@@ -6,7 +6,7 @@ public sealed class SelfDestructComponent : BaseComponent
 
 	TimeUntil timeUntilDie;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		timeUntilDie = Seconds;
 	}

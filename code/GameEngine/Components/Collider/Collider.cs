@@ -34,7 +34,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 	/// </summary>
 	protected abstract IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody );
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.IsNull( keyframeBody );
 		//Assert.AreEqual( 0, shapes.Count );
@@ -170,7 +170,7 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 		}
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		foreach ( var shape in shapes )
 		{

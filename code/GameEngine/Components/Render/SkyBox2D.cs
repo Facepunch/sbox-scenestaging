@@ -46,7 +46,7 @@ public class SkyBox2D : BaseComponent, BaseComponent.ExecuteInEditor
 
 	SceneSkyBox sceneObject;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( sceneObject == null );
 		Assert.NotNull( Scene );
@@ -56,7 +56,7 @@ public class SkyBox2D : BaseComponent, BaseComponent.ExecuteInEditor
 		sceneObject.Tags.SetFrom( GameObject.Tags );
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		sceneObject?.Delete();
 		sceneObject = null;

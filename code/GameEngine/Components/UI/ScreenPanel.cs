@@ -20,14 +20,14 @@ public sealed class ScreenPanel : BaseComponent, IRootPanelComponent, BaseCompon
 		if ( Scale < 0.001f ) Scale = 0.001f;
 	}
 
-	public override void OnAwake()
+	protected override void OnAwake()
 	{
 		rootPanel = new GameRootPanel();
 		rootPanel.RenderedManually = true;
 		rootPanel.Style.Display = DisplayMode.None;
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		if ( rootPanel is null )
 			return;
@@ -36,7 +36,7 @@ public sealed class ScreenPanel : BaseComponent, IRootPanelComponent, BaseCompon
 		rootPanel.Style.Display = DisplayMode.Flex;
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		// todo disable rootpanel
 		if ( rootPanel is null )
@@ -45,7 +45,7 @@ public sealed class ScreenPanel : BaseComponent, IRootPanelComponent, BaseCompon
 		rootPanel.Style.Display = DisplayMode.None;
 	}
 
-	public override void OnDestroy()
+	protected override void OnDestroy()
 	{
 		rootPanel?.Delete();
 		rootPanel = null;

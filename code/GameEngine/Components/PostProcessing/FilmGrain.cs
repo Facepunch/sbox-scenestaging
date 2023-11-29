@@ -12,7 +12,7 @@ public sealed class FilmGrain : BaseComponent, BaseComponent.ExecuteInEditor
 
 	IDisposable renderHook;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		renderHook?.Dispose();
 
@@ -20,7 +20,7 @@ public sealed class FilmGrain : BaseComponent, BaseComponent.ExecuteInEditor
 		renderHook = cc.AddHookBeforeOverlay( "Film Grain", 1000, RenderEffect );
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		renderHook?.Dispose();
 		renderHook = null;

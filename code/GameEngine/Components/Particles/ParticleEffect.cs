@@ -146,14 +146,14 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 	bool isWarmed;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		base.OnEnabled();
 
 		isWarmed = false;
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		Particles.Clear();
 	}

@@ -34,7 +34,7 @@ public sealed class DepthOfField : BaseComponent, BaseComponent.ExecuteInEditor
 
 	IDisposable renderHook;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		renderHook?.Dispose();
 		renderHook = null;
@@ -43,7 +43,7 @@ public sealed class DepthOfField : BaseComponent, BaseComponent.ExecuteInEditor
 		renderHook = cc.AddHookAfterTransparent( "Depth Of Field", 100, RenderEffect );
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		renderHook?.Dispose();
 		renderHook = null;

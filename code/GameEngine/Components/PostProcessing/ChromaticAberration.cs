@@ -23,7 +23,7 @@ public sealed class ChromaticAberration : BaseComponent, BaseComponent.ExecuteIn
 
 	IDisposable renderHook;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		renderHook?.Dispose();
 
@@ -31,7 +31,7 @@ public sealed class ChromaticAberration : BaseComponent, BaseComponent.ExecuteIn
 		renderHook = cc.AddHookBeforeOverlay( "ChromaticAberration", 900, RenderEffect );
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		renderHook?.Dispose();
 		renderHook = null;

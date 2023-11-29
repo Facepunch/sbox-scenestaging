@@ -18,14 +18,14 @@ public class MapComponent : BaseComponent, BaseComponent.ExecuteInEditor
 
 	Task loadingTask;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		base.OnEnabled();
 
 		loadingTask = OnEnabledAsync();
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		loadedMap?.Delete();
 		loadedMap = null;
@@ -77,7 +77,7 @@ public class MapObjectComponent : BaseComponent
 		objects.AddRange( sceneObjects );
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		RecreateMapObjects?.Invoke();
 
@@ -87,7 +87,7 @@ public class MapObjectComponent : BaseComponent
 		}
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		foreach( var obj in objects )
 		{

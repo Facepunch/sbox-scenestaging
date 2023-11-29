@@ -27,7 +27,7 @@ public class SpotLightComponent : BaseComponent, IComponentColorProvider, BaseCo
 
 	Color ITintable.Color { get => LightColor; set => LightColor = value; }
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		using var scope = Gizmo.Scope( $"light-{GetHashCode()}" );
 
@@ -56,7 +56,7 @@ public class SpotLightComponent : BaseComponent, IComponentColorProvider, BaseCo
 		Gizmo.Draw.LineCircle( fwd * Radius, outerRadius, sections: sections );
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
@@ -68,7 +68,7 @@ public class SpotLightComponent : BaseComponent, IComponentColorProvider, BaseCo
 		_sceneObject.FogLighting = SceneLight.FogLightingMode.Dynamic;
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_sceneObject?.Delete();
 		_sceneObject = null;

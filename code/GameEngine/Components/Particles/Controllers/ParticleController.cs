@@ -4,7 +4,7 @@ public abstract class ParticleController : BaseComponent, BaseComponent.ExecuteI
 {
 	ParticleEffect target;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		target = GetComponentInParent<ParticleEffect>( true, true );
 		if ( target is not null )
@@ -19,7 +19,7 @@ public abstract class ParticleController : BaseComponent, BaseComponent.ExecuteI
 		}
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		if ( target is not null )
 		{

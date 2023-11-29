@@ -3,7 +3,7 @@ using System;
 
 public sealed class BrickBrick : BaseComponent, BaseComponent.ICollisionListener
 {
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		base.OnEnabled();
 

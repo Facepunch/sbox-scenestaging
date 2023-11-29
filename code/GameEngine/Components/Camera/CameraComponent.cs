@@ -42,8 +42,8 @@ public class CameraComponent : BaseComponent
 
 	[Property]
 	public TagSet RenderExcludeTags { get; set; } = new();
-	
-	public override void DrawGizmos()
+
+	protected override void DrawGizmos()
 	{
 		if ( sceneCamera is null )
 			return;

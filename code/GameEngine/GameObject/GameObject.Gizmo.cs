@@ -88,8 +88,7 @@ public partial class GameObject
 			ForEachComponent( "DrawGizmos", true, c =>
 			{
 				using var scope = Gizmo.Scope();
-
-				c.DrawGizmos();
+				c.DrawGizmosInternal();
 				clicked = clicked || Gizmo.WasClicked;
 
 			} );

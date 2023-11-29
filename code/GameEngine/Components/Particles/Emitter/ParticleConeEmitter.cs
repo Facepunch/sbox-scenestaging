@@ -18,7 +18,7 @@ public sealed class ParticleConeEmitter : ParticleEmitter
 	public float ConeFar { get; set; } = 50.0f;
 
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( !Gizmo.IsSelected )
 			return;

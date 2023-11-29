@@ -14,7 +14,7 @@ public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 	/// </summary>
 	public Panel Panel => panel;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		loadedStyleSheet = null;
 		panel = new CustomBuildPanel( BuildRenderTree, GetRenderTreeChecksum, BuildRenderHash );
@@ -48,7 +48,7 @@ public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 		return parentPanel?.GetPanel();
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		panel?.Delete();
 		panel = null;

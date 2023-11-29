@@ -29,7 +29,7 @@ public class PhysicsComponent : BaseComponent, INetworkSerializable
 		set => _body.AngularVelocity = value;
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _body == null );
 		Assert.NotNull( Scene, "Tried to create physics object but no scene" );
@@ -52,7 +52,7 @@ public class PhysicsComponent : BaseComponent, INetworkSerializable
 		UpdateColliders();
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		Transform.OnTransformChanged -= OnLocalTransformChanged;
 

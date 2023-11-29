@@ -64,26 +64,25 @@ public abstract partial class BaseComponent
 
 	private bool ShouldExecute => Scene is not null && (!Scene.IsEditor || this is ExecuteInEditor);
 
-	public virtual void DrawGizmos() { }
 
 	/// <summary>
 	/// Called once per component
 	/// </summary>
-	public virtual void OnAwake() { }
+	protected virtual void OnAwake() { }
 
 	/// <summary>
 	/// Called after Awake or whenever the component switches to being enabled (because a gameobject heirachy active change, or the component changed)
 	/// </summary>
-	public virtual void OnEnabled() { }
+	protected virtual void OnEnabled() { }
 
 
 
-	public virtual void OnDisabled() { }
+	protected virtual void OnDisabled() { }
 
 	/// <summary>
 	/// Called once, when the component or gameobject is destroyed
 	/// </summary>
-	public virtual void OnDestroy() { }
+	protected virtual void OnDestroy() { }
 
 	protected virtual void OnPreRender() { }
 	internal void PreRender()

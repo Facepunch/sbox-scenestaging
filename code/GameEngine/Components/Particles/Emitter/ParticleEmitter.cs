@@ -14,7 +14,7 @@ public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEd
 
 	ParticleEffect target;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		ResetEmitter();
 
@@ -29,7 +29,7 @@ public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEd
 		}
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		base.OnDisabled();
 
