@@ -32,6 +32,8 @@ public partial class GameObject
 	/// <returns></returns>
 	public IEnumerable<T> GetComponents<T>( bool enabledOnly = true, bool deep = false )
 	{
+		if ( enabledOnly && !Enabled ) yield break;
+
 		var q = Components.Where( x => x is not null );
 		if ( enabledOnly ) q = q.Where( x => x.Active );
 
