@@ -91,7 +91,7 @@ public class GameObjectInspector : Widget
 	public void AddComponentDialog( Button source )
 	{
 		var s = new ComponentTypeSelector( this );
-		s.OnSelect += ( t ) => TargetObject.Components.Add( t );
+		s.OnSelect += ( t ) => TargetObject.Components.Create( t );
 		s.OpenAt( source.ScreenRect.BottomLeft, animateOffset: new Vector2( 0, -4 ) );
 		s.FixedWidth = source.Width;
 	}

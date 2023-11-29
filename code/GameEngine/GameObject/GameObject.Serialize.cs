@@ -174,7 +174,7 @@ public partial class GameObject
 					continue;
 				}
 
-				var c = this.Components.Add( componentType );
+				var c = this.Components.Create( componentType );
 				if ( c is null ) continue;
 
 				c.Deserialize( jso );

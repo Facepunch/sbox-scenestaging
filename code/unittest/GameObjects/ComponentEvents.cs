@@ -13,7 +13,7 @@ public class ComponentEvents
 		using var sceneScope = scene.Push();
 
 		var go = scene.CreateObject();
-		var o = go.Components.Add<OrderTestComponent>();
+		var o = go.Components.Create<OrderTestComponent>();
 
 		Assert.AreEqual( 1, o.AwakeCalls, "Awake wasn't called" );
 		Assert.AreEqual( 1, o.EnabledCalls, "Enabled wasn't called" );
@@ -46,7 +46,7 @@ public class ComponentEvents
 		using var sceneScope = scene.Push();
 
 		var go = scene.CreateObject();
-		var o = go.Components.Add<OrderTestComponent>( false );
+		var o = go.Components.Create<OrderTestComponent>( false );
 
 		Assert.AreEqual( 1, o.AwakeCalls );
 		Assert.AreEqual( 0, o.EnabledCalls );
@@ -85,7 +85,7 @@ public class ComponentEvents
 		using var sceneScope = scene.Push();
 
 		var go = scene.CreateObject( false );
-		var o = go.Components.Add<OrderTestComponent>( );
+		var o = go.Components.Create<OrderTestComponent>( );
 
 		Assert.AreEqual( 0, o.AwakeCalls ); // awake shouldn't call until the gameobject is active
 		Assert.AreEqual( 0, o.EnabledCalls );
@@ -124,7 +124,7 @@ public class ComponentEvents
 		using var sceneScope = scene.Push();
 
 		var go = scene.CreateObject();
-		var o = go.Components.Add<OrderTestComponent>();
+		var o = go.Components.Create<OrderTestComponent>();
 
 		Assert.AreEqual( 1, o.AwakeCalls );
 		Assert.AreEqual( 0, o.StartCalls );

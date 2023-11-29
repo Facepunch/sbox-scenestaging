@@ -87,7 +87,7 @@
         GameManager.ActiveScene.Load( file );
 
         var go = new GameObject( true, "Return To Menu" );
-        go.Components.Add<ReturnToMenu>();
+        go.Components.Create<ReturnToMenu>();
     }
 
     bool refreshing;

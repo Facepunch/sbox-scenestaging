@@ -10,15 +10,23 @@ public class ComponentList
 		go = o;
 	}
 
+	/// <summary>
+	/// Get all components
+	/// </summary>
 	public IEnumerable<BaseComponent> GetAll()
 	{
 		return _list;
 	}
 
-	public BaseComponent Add( TypeDescription type, bool enabled = true )
+	/// <summary>
+	/// Add a component of this type
+	/// </summary>
+	public BaseComponent Create( TypeDescription type, bool enabled = true )
 	{
 		if ( !type.TargetType.IsAssignableTo( typeof( BaseComponent ) ) )
 			return null;
+
+		using var batch = CallbackBatch.StartGroup();
 
 		var t = type.Create<BaseComponent>( null );
 
@@ -30,7 +38,10 @@ public class ComponentList
 		return t;
 	}
 
-	public T Add<T>( bool enabled = true ) where T : BaseComponent, new()
+	/// <summary>
+	/// Add a component of this type
+	/// </summary>
+	public T Create<T>( bool enabled = true ) where T : BaseComponent, new()
 	{
 		using var batch = CallbackBatch.StartGroup();
 		var t = new T();

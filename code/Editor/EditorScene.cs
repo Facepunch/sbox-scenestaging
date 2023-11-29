@@ -44,14 +44,14 @@ public static class EditorScene
 			var go = scene.CreateObject();
 			go.Name = "Main Camera";
 			go.Transform.Local = new Transform( Vector3.Up * 100 + Vector3.Backward * 300 );
-			go.Components.Add<CameraComponent>();
+			go.Components.Create<CameraComponent>();
 		}
 
 		{
 			var go = scene.CreateObject();
 			go.Name = "Directional Light";
 			go.Transform.Local = new Transform( Vector3.Up * 200, Rotation.From( 80, 45, 0 ) );
-			go.Components.Add<DirectionalLightComponent>();
+			go.Components.Create<DirectionalLightComponent>();
 		}
 
 		var newSession = new SceneEditorSession( scene );

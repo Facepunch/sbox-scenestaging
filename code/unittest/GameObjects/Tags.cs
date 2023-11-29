@@ -105,7 +105,7 @@ public class Tags
 		using var sceneScope = scene.Push();
 
 		var go = scene.CreateObject();
-		var tc = go.Components.Add<TagsTestComponent>();
+		var tc = go.Components.Create<TagsTestComponent>();
 		Assert.AreEqual( 0, tc.TagUpdateCalls );
 
 		scene.GameTick();
@@ -150,7 +150,7 @@ public class Tags
 
 		var child = scene.CreateObject();
 		child.Parent = go;
-		var tc = child.Components.Add<TagsTestComponent>();
+		var tc = child.Components.Create<TagsTestComponent>();
 
 		Assert.AreEqual( 0, tc.TagUpdateCalls );
 

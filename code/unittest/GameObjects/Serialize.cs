@@ -17,7 +17,7 @@ public class SerializeTest
 		go1.Name = "My Game Object";
 		go1.Transform.Local = new Transform( Vector3.Up, Rotation.Identity, 10 );
 
-		var model = go1.Components.Add<ModelRenderer>();
+		var model = go1.Components.Create<ModelRenderer>();
 		model.Model = Model.Load( "models/dev/box.vmdl" );
 		model.Tint = Color.Red;
 
@@ -59,7 +59,7 @@ public class SerializeTest
 			child.Transform.Local = new Transform( Vector3.Random * 1000 );
 			child.Parent = go1;
 
-			child.Components.Add<ModelRenderer>();
+			child.Components.Create<ModelRenderer>();
 		}
 
 		timer.Dispose();

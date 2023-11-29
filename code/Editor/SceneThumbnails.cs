@@ -84,7 +84,7 @@ public static class SceneThumbnailRenderer
 		go.Name = "Directional Light";
 
 		go.Transform.Rotation = Rotation.From( 90, 0, 0 );
-		var light = go.Components.Add<DirectionalLightComponent>();
+		var light = go.Components.Create<DirectionalLightComponent>();
 		light.LightColor = Color.White;
 		light.SkyColor = "#557685";
 	}
