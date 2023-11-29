@@ -153,7 +153,7 @@
                     {
                       "Id": "8bf94b24-605f-4044-bfb5-ec2c39ba3551",
                       "Name": "spine_1",
-                      "Position": "5.610411,0.00001968659,0.00004253734",
+                      "Position": "5.610426,0.00001968827,0.00004253737",
                       "Rotation": "-0.000396952,0.0000002086163,0.0002739429,0.9999998",
                       "Tags": "red,green",
                       "Enabled": true,
@@ -982,7 +982,7 @@
                 {
                   "Id": "ffbcb7e6-6feb-496b-b1ac-bedbeb3cef1e",
                   "Name": "hand_L_IK_target",
-                  "Position": "0.694096,20.39468,39.24792",
+                  "Position": "0.694096,20.39468,39.24791",
                   "Rotation": "0.7698929,0.5281296,-0.2142482,0.2871266",
                   "Tags": "red,green",
                   "Enabled": true
@@ -5468,7 +5468,7 @@
     {
       "Id": "d58ccf0a-bfc4-467a-9ee9-a46a4bcf2ec6",
       "Name": "Shady",
-      "Position": "199.8853,1131.933,-431.6675",
+      "Position": "199.8853,1131.933,-428.4873",
       "Rotation": "-0.000000004305293,-0.0000000000000002786739,-0.07223086,0.9973886",
       "Tags": "red,green",
       "Enabled": true,
@@ -5485,7 +5485,7 @@
         {
           "Id": "c6ab49f1-364c-49d0-a866-2f2a8f7743a5",
           "Name": "Body",
-          "Position": "0,0,0",
+          "Position": "-28.06582,0.00001041312,1.662564",
           "Tags": "red,green",
           "Enabled": true,
           "Components": [
@@ -5520,7 +5520,7 @@
                     {
                       "Id": "44b31e56-c02b-46d4-814a-5ff96ecb6a3c",
                       "Name": "spine_1",
-                      "Position": "5.610435,0.000006799344,0.00004387695",
+                      "Position": "5.610404,0.000006795909,0.00004387689",
                       "Rotation": "-0.0003969967,0.0000001937151,0.0002738386,0.9999999",
                       "Tags": "red,green",
                       "Enabled": true,
@@ -8194,6 +8194,26 @@
           "Model": "models/rock_moss_set_02/rock_moss_02f.vmdl",
           "ShouldCastShadows": true,
           "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "bd93c460-493f-4083-bb19-8d99da123dfc",
+      "Name": "Decal",
+      "Position": "96.1103,-63.07175,-133.8766",
+      "Rotation": "0.4357638,0.4925607,0.4991551,0.5642141",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "DecalRenderer",
+          "__enabled": true,
+          "CutoffAngle": 39.34,
+          "CutoffAngleSoftness": 50,
+          "Material": "materials/decals/facepunch-legacy.vmat",
+          "Mod2XBlending": false,
+          "Size": "400,400,400",
+          "TintColor": "1,1,1,1",
+          "TriPlanar": false
         }
       ]
     }
