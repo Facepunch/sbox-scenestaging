@@ -303,6 +303,24 @@ public class ComponentList
 		_list.Remove( baseComponent );
 	}
 
+	/// <summary>
+	/// Move the position of the component in the list by delta (-1 means up one, 1 means down one)
+	/// </summary>
+	public void Move( BaseComponent baseComponent, int delta )
+	{
+		var i = _list.IndexOf( baseComponent );
+		if ( i < 0 ) return;
+
+        i += delta;
+
+		if ( i < 0 ) i = 0;
+		if ( i >= _list.Count ) i = _list.Count - 1;
+
+		// Move the element
+		_list.RemoveAt( _list.IndexOf( baseComponent ) );
+		_list.Insert( i, baseComponent );
+	}
+
 	//
 	// Easy Modes
 	//
