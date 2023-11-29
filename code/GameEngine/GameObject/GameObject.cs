@@ -212,7 +212,7 @@ public partial class GameObject
 		using var batch = CallbackBatch.StartGroup();
 
 		ForEachComponent( "UpdateEnabledStatus", false, c => c.UpdateEnabledStatus() );
-		ForEachChild( "UpdateEnabledStatus", true, c => c.UpdateEnabledStatus() );
+		ForEachChild( "UpdateEnabledStatus", false, c => c.UpdateEnabledStatus() );
 	}
 
 	public bool IsDescendant( GameObject o )
