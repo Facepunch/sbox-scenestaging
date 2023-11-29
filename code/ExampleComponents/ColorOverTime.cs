@@ -7,7 +7,7 @@ public sealed class ColorOverTime : BaseComponent
 
 	float delta = 0.0f;
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		delta += Time.Delta * Speed;
 

@@ -160,7 +160,7 @@ public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEdito
 
 
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( !isWarmed )
 		{

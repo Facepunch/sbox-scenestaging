@@ -18,7 +18,7 @@ public sealed class SpriteRenderer : Renderer, BaseComponent.ExecuteInEditor
 	[Property] public float FogStrength { get; set; } = 1.0f;
 
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 
 	}

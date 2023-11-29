@@ -171,7 +171,7 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 		}
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( Scene.ThreadedAnimation )
 			return;

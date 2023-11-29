@@ -22,7 +22,7 @@ public sealed class CameraPhysicsDebug : BaseComponent
 
 	List<Hitpoint> worldPoints = new();
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		for ( int i = 0; i < TracesPerFrame; i++ )
 		{

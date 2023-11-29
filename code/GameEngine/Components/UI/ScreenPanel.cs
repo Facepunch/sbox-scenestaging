@@ -56,7 +56,7 @@ public sealed class ScreenPanel : BaseComponent, IRootPanelComponent, BaseCompon
 		return rootPanel;
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( rootPanel is null )
 			return;

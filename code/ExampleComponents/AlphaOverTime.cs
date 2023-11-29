@@ -18,9 +18,9 @@ public sealed class AlphaOverTime : BaseComponent
 		timeSinceEnabled = 0;
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
-		base.Update();
+		base.OnUpdate();
 
 		var a = Alpha.EvaluateDelta( timeSinceEnabled / Time );
 

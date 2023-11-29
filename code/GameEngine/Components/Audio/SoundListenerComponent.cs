@@ -6,7 +6,7 @@ using Sandbox;
 [EditorHandle( "materials/gizmo/audiolistener.png" )]
 public sealed class SoundListenerComponent : BaseComponent
 {
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		Sound.Listener = new()
 		{

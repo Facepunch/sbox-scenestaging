@@ -10,11 +10,6 @@ public sealed class BrickBrick : BaseComponent, BaseComponent.ICollisionListener
 	//	Transform.LocalRotation *= Rotation.From( Random.Shared.Float( -15, 15 ), Random.Shared.Float( -15, 15 ), 0 );
 	}
 
-	public override void Update()
-	{
-		
-	}
-
 	public void OnCollisionStart( Collision o )
 	{
 		if ( o.Other.GameObject.Tags.Has( "ball" ) )

@@ -15,7 +15,7 @@ public class PlayerController : BaseComponent, INetworkSerializable
 	public Angles EyeAngles;
 	public bool IsRunning;
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		// Eye input
 		if ( !IsProxy )

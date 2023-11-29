@@ -10,7 +10,7 @@ public sealed class GameNetworkManager : BaseComponent, BaseComponent.INetworkLi
 
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		
 	}

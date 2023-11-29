@@ -5,7 +5,7 @@ public sealed class MoveHelperDebugVis : BaseComponent
 	[Property] Vector3 Gravity { get; set; }
 	[Property] Vector3 Velocity { get; set; }
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		
 	}

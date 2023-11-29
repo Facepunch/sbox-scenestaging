@@ -9,7 +9,7 @@ public sealed class IkReachOut : BaseComponent
 
 	TimeUntil timeUntilRetry;
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( timeUntilRetry > 0 )
 			return;

@@ -62,7 +62,7 @@ public class ParticleSystem : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject.Transform = Transform.World;
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( !_sceneObject.IsValid() )
 		{

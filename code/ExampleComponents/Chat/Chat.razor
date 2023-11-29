@@ -36,7 +36,7 @@
 	/// </summary>
 	protected override int BuildHash() => System.HashCode.Combine( MyStringValue );
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if (InputBox is null)
 			return;

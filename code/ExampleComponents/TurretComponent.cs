@@ -31,7 +31,7 @@ public sealed class TurretComponent : BaseComponent
 		GunModel.Transform.LocalScale = GunSizeCurve.Evaluate( timeSincePrimary * 2.0f );
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		FlashGunModel();
 

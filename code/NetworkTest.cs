@@ -9,7 +9,7 @@ public sealed class NetworkTest : BaseComponent
 
 	GameObject Carrying;
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( IsProxy )
 			return;

@@ -19,7 +19,7 @@ public abstract partial class BaseComponent
 			ExceptionWrap( "Start", OnStart );
 		}
 
-		ExceptionWrap( "Update", Update );
+		ExceptionWrap( "Update", OnUpdate );
 	}
 
 	internal void InternalFixedUpdate()
@@ -31,7 +31,7 @@ public abstract partial class BaseComponent
 	}
 
 
-	public virtual void Update()
+	protected virtual void OnUpdate()
 	{
 
 	}

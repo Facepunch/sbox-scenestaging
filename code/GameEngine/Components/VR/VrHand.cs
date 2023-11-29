@@ -54,7 +54,7 @@ public class VrHand : BaseComponent
 		}
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( !Enabled || Scene.IsEditor )
 			return;

@@ -11,7 +11,7 @@ public sealed class SelfDestructComponent : BaseComponent
 		timeUntilDie = Seconds;
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( GameObject.IsProxy )
 			return;
