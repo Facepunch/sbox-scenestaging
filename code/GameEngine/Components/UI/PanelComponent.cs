@@ -23,7 +23,7 @@ public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 		UpdateParent();
 	}
 
-	public override void OnStart()
+	protected override void OnStart()
 	{
 		UpdateParent();
 	}

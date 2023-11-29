@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 public sealed class NetworkSession : BaseComponent
 {
-	public override void OnStart()
+	protected override void OnStart()
 	{
 		//
 		// Create a lobby if we're not connected

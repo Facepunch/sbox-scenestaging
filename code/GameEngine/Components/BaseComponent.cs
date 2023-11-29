@@ -76,10 +76,7 @@ public abstract partial class BaseComponent
 	/// </summary>
 	public virtual void OnEnabled() { }
 
-	/// <summary>
-	/// Called once before the first Update - when enabled.
-	/// </summary>
-	public virtual void OnStart() { }
+
 
 	public virtual void OnDisabled() { }
 

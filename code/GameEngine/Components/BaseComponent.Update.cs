@@ -8,6 +8,11 @@ public abstract partial class BaseComponent
 {
 	bool _startCalled;
 
+	/// <summary>
+	/// Called once before the first Update - when enabled.
+	/// </summary>
+	protected virtual void OnStart() { }
+
 	internal void InternalUpdate()
 	{
 		if ( !Enabled ) return;
@@ -30,12 +35,19 @@ public abstract partial class BaseComponent
 		ExceptionWrap( "FixedUpdate", OnFixedUpdate );
 	}
 
-
+	/// <summary>
+	/// When enabled, called every frame
+	/// </summary>
 	protected virtual void OnUpdate()
 	{
 
 	}
 
+	/// <summary>
+	/// When enabled, called on a fixed interval that is determined by the Scene. This
+	/// is also the fixed interval in which the physics are ticked. Time.Delta is that
+	/// fixed interval.
+	/// </summary>
 	protected virtual void OnFixedUpdate()
 	{
 

@@ -5,7 +5,7 @@ public sealed class GameNetworkManager : BaseComponent, BaseComponent.INetworkLi
 	[Property] public GameObject PlayerPrefab { get; set; }
 	[Property] public GameObject SpawnPoint { get; set; }
 
-	public override void OnStart()
+	protected override void OnStart()
 	{
 
 	}
