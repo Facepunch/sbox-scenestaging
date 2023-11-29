@@ -124,7 +124,16 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 
 	public void UpdateInThread()
 	{
-		AnimationUpdate();
+		// If we're parented of an animator we need to be updated in order
+		// so just bounce
+		if ( Components.GetInAncestors<SkinnedModelRenderer>() is not null )
+			return;
+
+		// Update in order
+		foreach ( var c in Components.GetAll<SkinnedModelRenderer>( FindMode.EnabledInSelfAndDescendants ) )
+		{
+			c.AnimationUpdate();
+		}
 	}
 
 	public void PostAnimationUpdate()
