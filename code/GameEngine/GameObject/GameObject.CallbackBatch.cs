@@ -8,7 +8,7 @@ using Sandbox.Diagnostics;
 internal class CallbackBatch : System.IDisposable
 {
 	static CallbackBatch Current { get; set; }
-	static CallbackBatch Singleton = new CallbackBatch();
+	static Stack<CallbackBatch> Pool = new ();
 
 	class Group
 	{
@@ -30,6 +30,8 @@ internal class CallbackBatch : System.IDisposable
 			{
 				action();
 			}
+
+			Actions.Clear();
 		}
 	}
 
@@ -39,7 +41,12 @@ internal class CallbackBatch : System.IDisposable
 	{
 		if ( Current is not null ) return null;
 
-		Current = Singleton;
+		if ( !Pool.TryPop( out var instance) )
+		{
+			instance = new CallbackBatch();
+		}
+
+		Current = instance;
 		return Current;
 	}
 
@@ -53,14 +60,6 @@ internal class CallbackBatch : System.IDisposable
 		}
 
 		throw new System.Exception( $"CallbackBatch.Add called outside of a batch for '{name}'" );
-	}
-
-	void Reset()
-	{
-		foreach( var g in Groups )
-		{
-			g.Value.Clear();
-		}
 	}
 
 	void Execute()
@@ -83,10 +82,17 @@ internal class CallbackBatch : System.IDisposable
 
 	public void Dispose()
 	{
+		if ( Current == this )
+		{
+			Current = null;
+		}
+
 		Execute();
 
-		Current.Reset();
-		Current = null;
+		if ( Pool.Count < 2 )
+		{
+			Pool.Push( this );
+		}
 	}
 }
 
