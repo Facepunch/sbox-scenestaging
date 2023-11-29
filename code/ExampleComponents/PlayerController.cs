@@ -77,7 +77,7 @@ public class PlayerController : BaseComponent, INetworkSerializable
 
 	float fJumps;
 
-	public override void FixedUpdate()
+	protected override void OnFixedUpdate()
 	{
 		if ( IsProxy )
 			return;

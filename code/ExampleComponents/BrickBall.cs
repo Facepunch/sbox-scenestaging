@@ -26,7 +26,7 @@ public sealed class BrickBall : BaseComponent, BaseComponent.ICollisionListener
 		rigidBody.Velocity = (Direction.Normal * Speed).WithX( 0 );
 	}
 
-	public override void FixedUpdate()
+	protected override void OnFixedUpdate()
 	{
 
 

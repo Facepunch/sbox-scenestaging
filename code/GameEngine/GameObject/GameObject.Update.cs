@@ -15,7 +15,7 @@
 
 	protected virtual void FixedUpdate()
 	{
-		ForEachComponent( "FixedUpdate", true, c => c.FixedUpdate() );
+		ForEachComponent( "FixedUpdate", true, c => c.InternalFixedUpdate() );
 		ForEachChild( "FixedUpdate", true, x => x.FixedUpdate() );
 	}
 }

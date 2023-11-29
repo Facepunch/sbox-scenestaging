@@ -64,7 +64,7 @@ public class PhysicsComponent : BaseComponent, INetworkSerializable
 
 	bool isUpdatingPositionFromPhysics;
 
-	public override void FixedUpdate()
+	protected override void OnFixedUpdate()
 	{
 		if ( _body is null ) return;
 

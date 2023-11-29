@@ -94,21 +94,7 @@ public abstract partial class BaseComponent
 		OnPreRender();
 	}
 
-	bool _startCalled;
 
-	internal virtual void InternalUpdate()
-	{
-		if ( !Enabled ) return;
-		if ( !ShouldExecute ) return;
-
-		if ( !_startCalled )
-		{
-			_startCalled = true;
-			ExceptionWrap( "Start", OnStart );
-		}
-
-		ExceptionWrap( "Update", Update );
-	}
 
 	public Action OnComponentEnabled { get; set; }
 	public Action OnComponentDisabled { get; set; }
@@ -186,15 +172,6 @@ public abstract partial class BaseComponent
 		}
 	}
 
-	public virtual void Update()
-	{
-
-	}
-
-	public virtual void FixedUpdate()
-	{
-
-	}
 
 	/// <summary>
 	/// Called immediately after deserializing, and when a property is changed in the editor.
