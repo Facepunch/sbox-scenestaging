@@ -172,10 +172,10 @@ public partial class GameObject
 	internal void PreRender()
 	{
 		Components.ForEach( "PreRender", false, c => c.PreRender() );
-		ForEachChild( "PreRender", true, c => c.PreRender() );
+		ForEachChild( "PreRender", false, c => c.PreRender() );
 	}
 
-	internal void ForEachChild( string name, bool activeOnly, Action<GameObject> action )
+	internal void ForEachChild( string name, bool includeDisabled, Action<GameObject> action )
 	{
 		for ( int i = Children.Count - 1; i >= 0; i-- )
 		{
@@ -190,7 +190,7 @@ public partial class GameObject
 				continue;
 			}
 
-			if ( activeOnly && !c.Active )
+			if ( !includeDisabled && !c.Active )
 				continue;
 
 			try
@@ -215,7 +215,7 @@ public partial class GameObject
 		using var batch = CallbackBatch.StartGroup();
 
 		Components.ForEach( "UpdateEnabledStatus", true, c => c.UpdateEnabledStatus() );
-		ForEachChild( "UpdateEnabledStatus", false, c => c.UpdateEnabledStatus() );
+		ForEachChild( "UpdateEnabledStatus", true, c => c.UpdateEnabledStatus() );
 	}
 
 	public bool IsDescendant( GameObject o )

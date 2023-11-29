@@ -99,7 +99,7 @@ public partial class GameObject
 				EditLog( "Selection", this );
 			}
 
-			ForEachChild( "DrawGizmos", true, c => c.DrawGizmos() );
+			ForEachChild( "DrawGizmos", false, c => c.DrawGizmos() );
 
 		}
 	}

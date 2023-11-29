@@ -21,7 +21,7 @@ public partial class GameObject : IValid
 		_destroying = true;
 
 		Components.ForEach( "OnDestroy", true, c => c.Destroy() );
-		ForEachChild( "Children", false, c => c.Term() );
+		ForEachChild( "Children", true, c => c.Term() );
 
 		CallbackBatch.Add( CommonCallback.Term, TermFinal, this, "Term" );
 	}
@@ -90,7 +90,7 @@ public partial class GameObject : IValid
 		Components.ForEach( "OnDestroy", true, c => c.Destroy() );
 
 		// delete all children
-		ForEachChild( "Children", false, c => c.Term() );
+		ForEachChild( "Children", true, c => c.Term() );
 
 		Components.RemoveNull();
 		

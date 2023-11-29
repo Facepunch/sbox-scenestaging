@@ -10,12 +10,12 @@
 		Transform.Update( IsProxy );
 
 		Components.ForEach( "Update", false, c => c.InternalUpdate() );
-		ForEachChild( "Tick", true, x => x.Update() );
+		ForEachChild( "Tick", false, x => x.Update() );
 	}
 
 	protected virtual void FixedUpdate()
 	{
 		Components.ForEach( "FixedUpdate", false, c => c.InternalFixedUpdate() );
-		ForEachChild( "FixedUpdate", true, x => x.FixedUpdate() );
+		ForEachChild( "FixedUpdate", false, x => x.FixedUpdate() );
 	}
 }
