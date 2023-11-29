@@ -28,6 +28,7 @@ public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseCompon
 		set
 		{
 			if ( _model == value ) return;
+
 			_model = value;
 			UpdateObject();
 		}
@@ -123,6 +124,7 @@ public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseCompon
 		_sceneObject.ColorTint = Tint;
 		_sceneObject.Flags.CastShadows = _castShadows;
 		_sceneObject.MeshGroupMask = _bodyGroupsMask;
+		_sceneObject.Model = Model;
 		_sceneObject.SetMaterialOverride( MaterialOverride );
 	}
 
