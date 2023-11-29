@@ -164,7 +164,7 @@ public class OrderTestComponent : BaseComponent
 		AwakeCalls++;
 	}
 
-	public override void OnStart()
+	protected override void OnStart()
 	{
 		Assert.AreEqual( AwakeCalls, 1 );
 		Assert.AreEqual( EnabledCalls, 1 );
