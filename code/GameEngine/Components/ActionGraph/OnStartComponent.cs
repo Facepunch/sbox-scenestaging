@@ -11,7 +11,7 @@ public class OnStartComponent : BaseComponent
 
 	[Title( "Start" ), Property] public StartHandler HandleStart { get; set; }
 
-	public override void OnStart()
+	protected override void OnStart()
 	{
 		HandleStart?.Invoke( GameObject );
 	}

@@ -17,7 +17,7 @@ public class OnTouchComponent : BaseComponent
 	[Title( "Touching" ), Property] public TouchingHandler HandleTouching { get; set; }
 	[Title( "Stop Touch" ), Property] public StartStopTouchHandler HandleStopTouch { get; set; }
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		_nextTouching.Clear();
 

@@ -11,7 +11,7 @@ public class OnUpdateComponent : BaseComponent
 
 	[Title( "Update" ), Property] public UpdateHandler HandleUpdate { get; set; }
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		HandleUpdate?.Invoke( GameObject, Time.Delta );
 	}
