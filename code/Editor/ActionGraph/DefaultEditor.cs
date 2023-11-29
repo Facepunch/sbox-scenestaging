@@ -1,44 +1,75 @@
-﻿using Editor.NodeEditor;
+﻿using System;
+using Editor.NodeEditor;
+using Facepunch.ActionGraphs;
 
 namespace Editor.ActionGraph;
 
 public class DefaultEditor : ValueEditor
 {
-	public string Title { get; set; }
-	public object Value { get; set; }
+	public NodeUI Node { get; }
+	public Plug Plug { get; }
+	public Node.Input Input { get; }
 
-	public NodeUI Node { get; set; }
-
-	public DefaultEditor( GraphicsItem parent ) : base( parent )
+	public DefaultEditor( NodeUI node, Plug parent ) : base( parent )
 	{
 		HoverEvents = true;
 		Cursor = CursorShape.Finger;
+
+		Node = node;
+		Plug = parent;
+		Input = (parent.Inner as ActionPlug<Node.Input, InputDefinition>)?.Parameter;
+	}
+
+	private static string FormatValue( Type type, object value )
+	{
+		if ( type == typeof(string) )
+		{
+			return $"\"{value}\"";
+		}
+
+		if ( type == typeof(float) || type == typeof(double) )
+		{
+			return $"{value:F2}";
+		}
+
+		return $"{value}";
 	}
 
 	protected override void OnPaint()
 	{
+		Enabled = !Input.IsLinked && Input.Value is not null;
+
 		if ( !Enabled )
 			return;
 
 		Paint.Antialiasing = true;
 		Paint.TextAntialiasing = true;
 
-		var bg = Theme.ControlBackground.WithAlpha( 0.4f );
-		var fg = Theme.ControlText;
-
 		var rect = LocalRect.Shrink( 1 );
 
-		Paint.ClearPen();
-		Paint.SetBrush( bg );
-		Paint.DrawRect( rect, 2 );
+		var bg = Theme.ControlBackground;
+		var fg = Theme.ControlText;
 
-		var shrink = 10f;
-		
-		if ( !string.IsNullOrWhiteSpace( Title ) )
+		if ( !string.IsNullOrWhiteSpace( Input.Display.Title ) )
 		{
-			Paint.DrawText( rect.Shrink( shrink, 0, shrink, 0 ), Title, TextFlag.LeftCenter );
+			Paint.SetPen( fg );
+			Paint.DrawText( rect.Shrink( 5f, 0, 5f, 0 ), Input.Display.Title, TextFlag.LeftCenter );
 		}
+		var shrink = 10f;
 
-		Paint.DrawText( rect.Shrink( shrink, 0, shrink, 0 ), $"{Value:0.000}", TextFlag.RightCenter );
+		var text = FormatValue( Input.Type, Input.Value );
+		var textSize = Paint.MeasureText( text );
+
+		var valueRect = new Rect( LocalRect.Left - textSize.x - shrink * 2, LocalRect.Top, textSize.x + shrink * 2, LocalRect.Height )
+			.Shrink( 0f, 2f, 0f, 2f );
+		var handleConfig = Plug.HandleConfig;
+
+		Paint.SetPen( handleConfig.Color.Desaturate( 0.2f ).Darken( 0.3f ), 2f );
+		Paint.SetBrush( bg );
+		Paint.DrawRect( valueRect, 2 );
+
+		Paint.SetPen( fg );
+		Paint.DrawText( valueRect.Shrink( shrink, 0, shrink, 0 ), text, TextFlag.RightCenter );
+
 	}
 }

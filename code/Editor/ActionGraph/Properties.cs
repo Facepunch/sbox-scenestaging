@@ -100,11 +100,6 @@ public class Properties : Widget
 					continue;
 				}
 
-				if ( !CanEditInputType( property.Type ) )
-				{
-					continue;
-				}
-
 				if ( name == "parameters" )
 				{
 					var count = (property.Value as Array)?.Length ?? 0;

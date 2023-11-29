@@ -3,11 +3,9 @@
     {
       "Id": "f7f26c66-d4d8-4b0b-951e-15e99d6581c7",
       "Name": "Directional Light",
-      "Enabled": true,
       "Position": "0.0003355032,97.93508,557.4279",
       "Rotation": "0.4351622,0.4351622,-0.5573454,0.5573453",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "DirectionalLightComponent",
@@ -22,10 +20,6 @@
       "Id": "d9d3c81a-88c5-4dfb-907a-9449629221e7",
       "Name": "SkyBox",
       "Enabled": true,
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
           "__type": "SkyBox2D",
@@ -38,11 +32,8 @@
     {
       "Id": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
       "Name": "Citizen",
-      "Enabled": true,
       "Position": "-6.007456,0,100",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
           "__type": "CharacterController",
@@ -59,9 +50,7 @@
           "__enabled": true,
           "AnimationHelper": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
           "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
-          "CameraDistance": 200,
           "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
-          "FirstPerson": false,
           "Gravity": "0,0,800"
         },
         {
@@ -96,7 +85,7 @@
                   "_name": "GetComponent"
                 },
                 "UserData": {
-                  "Position": "256,48"
+                  "Position": "288,16"
                 }
               },
               {
@@ -106,14 +95,7 @@
                   "_type": "package.facepunch.testbed/CitizenAnimation",
                   "_name": "HoldType"
                 },
-                "UserData": {
-                  "Position": "576,0"
-                }
-              },
-              {
-                "Id": 3,
-                "Type": "const.enum",
-                "Properties": {
+                "Inputs": {
                   "value": {
                     "$type": "Simple",
                     "Type": {
@@ -122,15 +104,10 @@
                       "Name": "HoldTypes"
                     },
                     "Value": "Punch"
-                  },
-                  "T": {
-                    "$type": "Nested",
-                    "DeclaringType": "package.facepunch.testbed/CitizenAnimation",
-                    "Name": "HoldTypes"
                   }
                 },
                 "UserData": {
-                  "Position": "288,176"
+                  "Position": "576,0"
                 }
               }
             ],
@@ -152,17 +129,12 @@
                 "_signal",
                 2,
                 "_signal"
-              ],
-              [
-                3,
-                "_result",
-                2,
-                "value"
               ]
             ],
             "UserData": {
               "name": "Start",
-              "id": "bdddf899-929b-4c54-8564-2caddebc1fbb"
+              "id": "bdddf899-929b-4c54-8564-2caddebc1fbb",
+              "Title": "Start"
             }
           }
         },
@@ -185,10 +157,6 @@
                 "Type": "call",
                 "Properties": {
                   "deep": true,
-                  "T": {
-                    "$type": "Type",
-                    "Type": "package.facepunch.testbed/AnimatedModelComponent"
-                  },
                   "_type": "package.facepunch.testbed/GameObject",
                   "_name": "GetComponent"
                 },
@@ -200,7 +168,6 @@
                 "Id": 5,
                 "Type": "property.set",
                 "Properties": {
-                  "_type": "package.facepunch.testbed/AnimatedModelComponent",
                   "_name": "Tint"
                 },
                 "UserData": {
@@ -310,18 +277,14 @@
         {
           "Id": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
           "Name": "Body",
-          "Enabled": true,
           "Position": "0,-0.66093,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
-              "__type": "AnimatedModelComponent",
+              "__type": "SkinnedModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "CreateBoneObjects": false,
-              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen/citizen.vmdl",
               "ShouldCastShadows": true,
@@ -332,11 +295,9 @@
             {
               "Id": "975e3006-e7c3-46a5-9f30-c31a196c89f9",
               "Name": "Name Tag UI",
-              "Enabled": true,
               "Position": "-0.000001814945,0.1895752,80.7357",
               "Rotation": "-0.00000005960058,0.000000000000005518709,-0.9999317,0.01167414",
-              "Scale": "1,1,1",
-              "Tags": "",
+              "Enabled": true,
               "Components": [
                 {
                   "__type": "WorldPanel",
@@ -359,11 +320,8 @@
         {
           "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
           "Name": "Camera",
-          "Enabled": true,
           "Position": "-200,0,64",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
               "__type": "CameraComponent",
@@ -373,6 +331,8 @@
               "FieldOfView": 80,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "RenderExcludeTags": "",
+              "RenderTags": "",
               "TargetEye": "None",
               "ZFar": 10000,
               "ZNear": 1
@@ -442,20 +402,14 @@
         {
           "Id": "edb447df-b691-4153-8652-070d2533e7c4",
           "Name": "EyePos",
-          "Enabled": true,
           "Position": "0,0,64",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Children": [
             {
               "Id": "5d22324a-5587-4982-aead-558ad25a8925",
               "Name": "Camera",
-              "Enabled": true,
               "Position": "0,0,0",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "",
+              "Enabled": true,
               "Components": [
                 {
                   "__type": "CameraComponent",
@@ -465,6 +419,8 @@
                   "FieldOfView": 60,
                   "Orthographic": false,
                   "OrthographicHeight": 1204,
+                  "RenderExcludeTags": "",
+                  "RenderTags": "",
                   "TargetEye": "None",
                   "ZFar": 10000,
                   "ZNear": 10
@@ -476,19 +432,15 @@
         {
           "Id": "258a1012-ff9e-49b5-bf1b-887d483bb0bf",
           "Name": "Hair",
-          "Enabled": true,
           "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
-              "__type": "AnimatedModelComponent",
+              "__type": "SkinnedModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
               "CreateBoneObjects": false,
-              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen_clothes/hair/hair_fade/models/hair_fade.vmdl",
               "ShouldCastShadows": true,
@@ -499,19 +451,15 @@
         {
           "Id": "f14d65a1-eea4-4fe5-89d7-a550ec6b8f11",
           "Name": "Hair",
-          "Enabled": true,
           "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
-              "__type": "AnimatedModelComponent",
+              "__type": "SkinnedModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
               "CreateBoneObjects": false,
-              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen_clothes/shoes/boots/models/army_boots.vmdl",
               "ShouldCastShadows": true,
@@ -522,11 +470,9 @@
         {
           "Id": "038a1cc7-6e31-4689-8411-c577b88b8daa",
           "Name": "Kick Trigger",
-          "Enabled": true,
           "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
           "Tags": "trigger",
+          "Enabled": true,
           "Components": [
             {
               "__type": "ColliderSphereComponent",
@@ -600,18 +546,11 @@
                       "_type": "package.facepunch.testbed/GameTags",
                       "_name": "Has"
                     },
-                    "UserData": {
-                      "Position": "240,-224"
-                    }
-                  },
-                  {
-                    "Id": 5,
-                    "Type": "const.string",
-                    "Properties": {
-                      "value": "ball"
+                    "Inputs": {
+                      "tag": "ball"
                     },
                     "UserData": {
-                      "Position": "48,-176"
+                      "Position": "240,-224"
                     }
                   },
                   {
@@ -717,16 +656,6 @@
                     }
                   },
                   {
-                    "Id": 33,
-                    "Type": "const.string",
-                    "Properties": {
-                      "value": "attack1"
-                    },
-                    "UserData": {
-                      "Position": "176,656"
-                    }
-                  },
-                  {
                     "Id": 34,
                     "Type": "op.conditional",
                     "UserData": {
@@ -736,6 +665,9 @@
                   {
                     "Id": 32,
                     "Type": "input.down",
+                    "Inputs": {
+                      "action": "attack1"
+                    },
                     "UserData": {
                       "Position": "352,656"
                     }
@@ -914,7 +846,7 @@
                     "Type": "comment",
                     "UserData": {
                       "Position": "-336,-304",
-                      "Size": "768,240",
+                      "Size": "768,192",
                       "Title": "Is it a ball?",
                       "Layer": 4,
                       "Color": 2,
@@ -1039,12 +971,6 @@
                     "_target"
                   ],
                   [
-                    5,
-                    "_result",
-                    4,
-                    "tag"
-                  ],
-                  [
                     4,
                     "_result",
                     6,
@@ -1133,12 +1059,6 @@
                     "_result",
                     34,
                     "x"
-                  ],
-                  [
-                    33,
-                    "_result",
-                    32,
-                    "action"
                   ],
                   [
                     31,
@@ -1283,14 +1203,12 @@
     {
       "Id": "4d236e67-8c2a-4e69-96de-52629fe5788b",
       "Name": "Cube",
-      "Enabled": true,
       "Position": "0,0,-500",
-      "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1311,14 +1229,12 @@
     {
       "Id": "680400c0-3400-4307-bf64-d4e5845a4014",
       "Name": "Cube (1)",
-      "Enabled": true,
       "Position": "1000,0,-400",
-      "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1339,14 +1255,12 @@
     {
       "Id": "8d7be9a3-0274-44d1-a88d-ed6a23a0cab2",
       "Name": "Cube (8)",
-      "Enabled": true,
       "Position": "1000,-1000,-400",
-      "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1367,14 +1281,12 @@
     {
       "Id": "66b949c5-a69c-4171-9986-b97875472aa6",
       "Name": "Cube (7)",
-      "Enabled": true,
       "Position": "1000,1000,-400",
-      "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1395,14 +1307,12 @@
     {
       "Id": "9d1d9790-a6ac-438f-85e8-1b4454cd14fc",
       "Name": "Cube (2)",
-      "Enabled": true,
       "Position": "0,-1000,-400",
-      "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1423,14 +1333,12 @@
     {
       "Id": "f24579ad-4149-4441-b268-42022d0d0ab7",
       "Name": "Cube (4)",
-      "Enabled": true,
       "Position": "-1000,0,-400",
-      "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1451,14 +1359,12 @@
     {
       "Id": "32617ecd-c712-4a25-93af-14dd00ed1201",
       "Name": "Cube (6)",
-      "Enabled": true,
       "Position": "-1000,1000,-400",
-      "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1479,14 +1385,12 @@
     {
       "Id": "4a0eb0aa-7272-4ab4-9d47-f40381cf0a50",
       "Name": "Cube (5)",
-      "Enabled": true,
       "Position": "-1000,-1000,-400",
-      "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1507,14 +1411,12 @@
     {
       "Id": "2ef76918-d74f-4778-a88e-337367e31468",
       "Name": "Cube (3)",
-      "Enabled": true,
       "Position": "0,1000,-400",
-      "Rotation": "0,0,0,1",
       "Scale": "20,20,20",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1535,14 +1437,13 @@
     {
       "Id": "553bc862-24f1-448b-b12b-e0d7308b12f6",
       "Name": "Ball",
-      "Enabled": true,
       "Position": "100,0,50",
-      "Rotation": "0,0,0,1",
       "Scale": "5,5,5",
       "Tags": "ball",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1568,14 +1469,13 @@
     {
       "Id": "d6ae648d-b7a1-4b98-949f-ac57b8a35b90",
       "Name": "Ball (1)",
-      "Enabled": true,
       "Position": "79.94609,-92.75137,50",
-      "Rotation": "0,0,0,1",
       "Scale": "5,5,5",
       "Tags": "ball",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1601,14 +1501,13 @@
     {
       "Id": "66b4fb94-e3b1-45c1-b590-e03f2df51ef8",
       "Name": "Ball (2)",
-      "Enabled": true,
       "Position": "160.1308,-74.81232,50",
-      "Rotation": "0,0,0,1",
       "Scale": "5,5,5",
       "Tags": "ball",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1634,14 +1533,13 @@
     {
       "Id": "2f163782-673d-4103-8a1b-f1707391b486",
       "Name": "Ball (3)",
-      "Enabled": true,
       "Position": "166.9967,17.11626,49.99998",
-      "Rotation": "0,0,0,1",
       "Scale": "5,5,5",
       "Tags": "ball",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1667,14 +1565,13 @@
     {
       "Id": "70c1699c-db30-4da1-9510-b000632a8c31",
       "Name": "Ball (4)",
-      "Enabled": true,
       "Position": "103.9836,55.58842,49.99999",
-      "Rotation": "0,0,0,1",
       "Scale": "5,5,5",
       "Tags": "ball",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1699,7 +1596,9 @@
     }
   ],
   "SceneProperties": {
+    "NetworkFrequency": 60,
     "FixedUpdateFrequency": 50,
+    "Lerping": true,
     "MaxFixedUpdates": 5,
     "TimeScale": 1,
     "ThreadedAnimation": true,
