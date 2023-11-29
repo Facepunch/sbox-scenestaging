@@ -17,7 +17,7 @@ public sealed class Highlight : BaseComponent, BaseComponent.ExecuteInEditor
 	{
 		renderHook?.Dispose();
 
-		var cc = Components.Get<CameraComponent>( false, false );
+		var cc = Components.Get<CameraComponent>( FindMode.EverythingInSelf );
 		renderHook = cc.AddHookAfterTransparent( "Highlight", 1000, RenderEffect );
 	}
 
@@ -37,7 +37,7 @@ public sealed class Highlight : BaseComponent, BaseComponent.ExecuteInEditor
 
 	public void RenderEffect( SceneCamera camera )
 	{
-		var outlines = Scene.FindAllComponents<HighlightOutline>();
+		var outlines = Scene.Components.GetAll<HighlightOutline>( FindMode.EnabledInSelfAndDescendants );
 
 		if ( !outlines.Any() ) return;
 
@@ -60,7 +60,7 @@ public sealed class Highlight : BaseComponent, BaseComponent.ExecuteInEditor
 
 	private static void DrawGlow( HighlightOutline glow, OutlinePass pass )
 	{
-		foreach ( var model in glow.Components.GetAll<ModelRenderer>( true, true ) )
+		foreach ( var model in glow.Components.GetAll<ModelRenderer>( FindMode.EnabledInSelfAndDescendants ) )
 		{
 			var so = model.SceneObject;
 			if ( so is null ) continue;

@@ -20,7 +20,7 @@ public partial class GameObject : IValid
 		using var batch = CallbackBatch.StartGroup();
 		_destroying = true;
 
-		Components.ForEach( "OnDestroy", false, c => c.Destroy() );
+		Components.ForEach( "OnDestroy", true, c => c.Destroy() );
 		ForEachChild( "Children", false, c => c.Term() );
 
 		CallbackBatch.Add( CommonCallback.Term, TermFinal, this, "Term" );
@@ -87,7 +87,7 @@ public partial class GameObject : IValid
 	public void Clear()
 	{
 		// delete all components
-		Components.ForEach( "OnDestroy", false, c => c.Destroy() );
+		Components.ForEach( "OnDestroy", true, c => c.Destroy() );
 
 		// delete all children
 		ForEachChild( "Children", false, c => c.Term() );

@@ -171,7 +171,7 @@ public partial class GameObject
 
 	internal void PreRender()
 	{
-		Components.ForEach( "PreRender", true, c => c.PreRender() );
+		Components.ForEach( "PreRender", false, c => c.PreRender() );
 		ForEachChild( "PreRender", true, c => c.PreRender() );
 	}
 
@@ -214,7 +214,7 @@ public partial class GameObject
 	{
 		using var batch = CallbackBatch.StartGroup();
 
-		Components.ForEach( "UpdateEnabledStatus", false, c => c.UpdateEnabledStatus() );
+		Components.ForEach( "UpdateEnabledStatus", true, c => c.UpdateEnabledStatus() );
 		ForEachChild( "UpdateEnabledStatus", false, c => c.UpdateEnabledStatus() );
 	}
 
@@ -329,7 +329,7 @@ public partial class GameObject
 	/// </summary>
 	public BBox GetBounds()
 	{
-		var renderers = Components.GetAll<ModelRenderer>( true, true );
+		var renderers = Components.GetAll<ModelRenderer>( FindMode.EnabledInSelfAndDescendants );
 
 		return BBox.FromBoxes( renderers.Select( x => x.Bounds ) );
 	}

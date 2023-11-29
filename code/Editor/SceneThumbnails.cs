@@ -76,9 +76,9 @@ public static class SceneThumbnailRenderer
 
 	static void TryAddDefaultLighting( Scene scene )
 	{
-		if ( scene.Components.Get<DirectionalLightComponent>( false, true ) is not null ) return;
-		if ( scene.Components.Get<SpotLightComponent>( false, true ) is not null ) return;
-		if ( scene.Components.Get<PointLightComponent>( false, true ) is not null ) return;
+		if ( scene.Components.GetInDescendantsOrSelf<DirectionalLightComponent>( true ) is not null ) return;
+		if ( scene.Components.GetInDescendantsOrSelf<SpotLightComponent>( true ) is not null ) return;
+		if ( scene.Components.GetInDescendantsOrSelf<PointLightComponent>( true ) is not null ) return;
 
 		var go = scene.CreateObject();
 		go.Name = "Directional Light";
@@ -114,7 +114,7 @@ public static class SceneThumbnailRenderer
 			}
 		}
 
-		var cam = scene.FindAllComponents<CameraComponent>().FirstOrDefault();
+		var cam = scene.Components.GetAll<CameraComponent>( FindMode.EnabledInSelfAndDescendants ).FirstOrDefault();
 		if ( cam is not null )
 		{
 			camera.Position = cam.Transform.Position;

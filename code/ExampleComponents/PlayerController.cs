@@ -24,7 +24,7 @@ public class PlayerController : BaseComponent, INetworkSerializable
 			EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
 			EyeAngles.roll = 0;
 
-			var cam = Scene.Components.Get<CameraComponent>( true, true );
+			var cam = Scene.Components.Get<CameraComponent>( FindMode.EnabledInSelfAndDescendants );
 
 			var lookDir = EyeAngles.ToRotation();
 			cam.Transform.Position = Transform.Position + lookDir.Backward * 300 + Vector3.Up * 75.0f;

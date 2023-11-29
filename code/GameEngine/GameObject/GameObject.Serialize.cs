@@ -184,7 +184,7 @@ public partial class GameObject
 		Enabled = (bool)(node["Enabled"] ?? false);
 		Networked = (bool) (node["Networked"] ?? false);
 
-		Components.ForEach( "OnValidate", false, c => c.OnValidateInternal() );
+		Components.ForEach( "OnValidate", true, c => c.OnValidateInternal() );
 		CallbackBatch.Add( CommonCallback.Deserialized, PostDeserialize, this, "PostDeserialize" );
 	}
 
@@ -197,7 +197,7 @@ public partial class GameObject
 
 	internal void PostDeserialize()
 	{
-		Components.ForEach( "PostDeserialize", false, c => c.PostDeserialize() );
+		Components.ForEach( "PostDeserialize", true, c => c.PostDeserialize() );
 
 		foreach ( var child in Children )
 		{

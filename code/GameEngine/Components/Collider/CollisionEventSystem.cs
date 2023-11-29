@@ -41,11 +41,11 @@ class CollisionEventSystem : IDisposable
 
 			bc.OnComponentDisabled += RemoveDeactivated;
 
-			o.Self.GameObject.Components.ForEach<ITriggerListener>( "OnTriggerEnter", true, ( c ) => c.OnTriggerEnter( bc ) );
+			o.Self.GameObject.Components.ForEach<ITriggerListener>( "OnTriggerEnter", false, ( c ) => c.OnTriggerEnter( bc ) );
 		}
 		else
 		{
-			o.Self.GameObject.Components.ForEach<ICollisionListener>( "OnCollisionStart", true, ( x ) => x.OnCollisionStart( o ) );
+			o.Self.GameObject.Components.ForEach<ICollisionListener>( "OnCollisionStart", false, ( x ) => x.OnCollisionStart( o ) );
 		}
 	}
 
@@ -86,12 +86,12 @@ class CollisionEventSystem : IDisposable
 
 			bc.OnComponentDisabled -= RemoveDeactivated;
 
-			o.Self.GameObject.Components.ForEach<ITriggerListener>( "OnTriggerExit", true, ( c ) => c.OnTriggerExit( bc ) );
+			o.Self.GameObject.Components.ForEach<ITriggerListener>( "OnTriggerExit", false, ( c ) => c.OnTriggerExit( bc ) );
 		}
 		else
 		{
 
-			o.Self.GameObject.Components.ForEach<ICollisionListener>( "OnCollisionStop", true, ( x ) => x.OnCollisionStop( o ) );
+			o.Self.GameObject.Components.ForEach<ICollisionListener>( "OnCollisionStop", false, ( x ) => x.OnCollisionStop( o ) );
 		}
 	}
 
@@ -99,7 +99,7 @@ class CollisionEventSystem : IDisposable
 	{
 		var o = new Collision( new CollisionSource( c.Self ), new CollisionSource( c.Other ), c.Contact );
 
-		o.Self.GameObject.Components.ForEach<ICollisionListener>( "OnCollisionUpdate", true, ( x ) => x.OnCollisionUpdate( o ) );
+		o.Self.GameObject.Components.ForEach<ICollisionListener>( "OnCollisionUpdate", false, ( x ) => x.OnCollisionUpdate( o ) );
 	}
 
 	public void Dispose()

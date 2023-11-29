@@ -85,7 +85,7 @@ public partial class GameObject
 
 			DrawGizmoHandle( ref clicked );
 
-			Components.ForEach( "DrawGizmos", true, c =>
+			Components.ForEach( "DrawGizmos", false, c =>
 			{
 				using var scope = Gizmo.Scope();
 				c.DrawGizmosInternal();

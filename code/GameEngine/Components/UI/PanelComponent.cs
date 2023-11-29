@@ -38,13 +38,13 @@ public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 	Panel FindParentPanel()
 	{
 		// do we have any root panels with us?
-		if ( Components.Get<IRootPanelComponent>( true ) is IRootPanelComponent r )
+		if ( Components.Get<IRootPanelComponent>() is IRootPanelComponent r )
 		{
 			return r.GetPanel();
 		}
 
 		// Do we have any parent panels we can become a child of?
-		var parentPanel = GameObject.Components.GetInParent<IPanelComponent>( false );
+		var parentPanel = GameObject.Components.Get<IPanelComponent>( FindMode.InAncestors | FindMode.Enabled );
 		return parentPanel?.GetPanel();
 	}
 

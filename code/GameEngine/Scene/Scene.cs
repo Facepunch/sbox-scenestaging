@@ -91,20 +91,6 @@ public partial class Scene : GameObject
 		}
 	}
 
-	public IEnumerable<T> FindAllComponents<T>( bool includeDisabled = false ) where T : BaseComponent
-	{
-		// array rent?
-		List<T> found = new List<T>();
-
-		foreach ( var go in Children )
-		{
-			if ( go is null ) continue;
-
-			found.AddRange( go.Components.GetAll<T>( includeDisabled, true ) );
-		}
-
-		return found;
-	}
 
 	/// <summary>
 	/// Push this scene as the active scene, for a scope
@@ -141,7 +127,7 @@ public partial class Scene : GameObject
 
 	internal void OnRenderOverlayInternal( SceneCamera camera )
 	{
-		foreach ( var c in Components.GetAll<BaseComponent.IRenderOverlay>( true, true ) )
+		foreach ( var c in Components.GetAll<BaseComponent.IRenderOverlay>( FindMode.EnabledInSelfAndDescendants ) )
 		{
 			c.OnRenderOverlay( camera );
 		}
