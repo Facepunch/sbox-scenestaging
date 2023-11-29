@@ -78,9 +78,13 @@ public static class EditorScene
 				return;
 			}
 
+			LoadingScreen.IsVisible = true;
+			LoadingScreen.Title = "Loading Scene..";
+
 			var current = activeSession.Scene.Save();
 
 			GameManager.ActiveScene = new Scene();
+			GameManager.ActiveScene.StartLoading();
 			GameManager.ActiveScene.Load( current );
 		}
 		else

@@ -18,6 +18,11 @@ public static class GameManager
 		if ( ActiveScene is null )
 			return;
 
+		if ( ActiveScene.IsLoading )
+			return;
+
+		LoadingScreen.IsVisible = false;
+
 		using ( Sandbox.Utility.Superluminal.Scope( "Scene.GameTick", Color.Cyan ) )
 		{
 			ActiveScene.GameTick();

@@ -118,6 +118,11 @@ internal enum CommonCallback
 	Validate,
 
 	/// <summary>
+	/// An opportunity for the component to load any data they need to load
+	/// </summary>
+	Loading,
+
+	/// <summary>
 	/// The component is awake. Called only once, on first enable.
 	/// </summary>
 	Awake,
