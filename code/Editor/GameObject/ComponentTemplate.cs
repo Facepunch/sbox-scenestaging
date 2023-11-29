@@ -14,7 +14,7 @@ public abstract class ComponentTemplate
 
 		public sealed class {{componentName}} : BaseComponent
 		{
-			public override void Update()
+			protected override void OnUpdate()
 			{
 
 			}
