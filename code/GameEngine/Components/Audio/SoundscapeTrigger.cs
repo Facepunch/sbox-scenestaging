@@ -54,7 +54,8 @@ public class SoundscapeTrigger : BaseComponent
 				Gizmo.Draw.Color = Playing ? Gizmo.Colors.Active : Gizmo.Colors.Blue;
 				Gizmo.Draw.LineSphere( 0, Radius );
 			}
-		}else if(Type == TriggerType.Box)
+		}
+		else if(Type == TriggerType.Box)
 		{
 			if ( Gizmo.IsSelected )
 			{

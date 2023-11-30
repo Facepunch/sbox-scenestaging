@@ -3,7 +3,7 @@ using Sandbox;
 [Category( "Audio" )]
 [Title( "Sound Point" )]
 [Icon( "volume_up", "red", "white" )]
-[EditorHandle( "materials/gizmo/audiolistener.png" )]
+[EditorHandle( "materials/gizmo/sound.png" )]
 public sealed class SoundPointComponent : BaseSoundComponent
 {  
 	protected override void OnEnabled()

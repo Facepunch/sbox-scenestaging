@@ -1397,6 +1397,7 @@
         {
           "__type": "SoundscapeTrigger",
           "__enabled": true,
+          "BoxSize": "50,50,50",
           "Radius": 1122.4788,
           "Soundscape": "soundscapes/coast.sndscape",
           "StayActiveOnExit": true,
@@ -1412,6 +1413,7 @@
         {
           "__type": "SoundscapeTrigger",
           "__enabled": true,
+          "BoxSize": "50,50,50",
           "Radius": 1122.4788,
           "Soundscape": "sounds/electric_buzz.sndscape",
           "StayActiveOnExit": true,
@@ -1474,18 +1476,44 @@
     },
     {
       "Id": "fcfb14c2-30df-43a4-95cf-60e4f2c8469c",
-      "Name": "Object",
-      "Position": "1325.556,118.7159,-1584.126",
+      "Name": "Sound Point",
+      "Position": "1325.556,-252.043,-1584.126",
       "Enabled": true,
       "Components": [
         {
           "__type": "SoundPointComponent",
           "__enabled": true,
           "Force2d": false,
-          "Pitch": 0.39,
+          "MaxRepeatTime": 1,
+          "MinRepeatTime": 1,
+          "Pitch": 1,
           "PlayOnStart": true,
+          "Repeat": false,
           "SoundEvent": "sounds/the_s\u0026box_song.sound",
-          "SoundOverride": true,
+          "SoundOverride": false,
+          "StopOnNew": false,
+          "Volume": 1
+        }
+      ]
+    },
+    {
+      "Id": "de47802b-f9d4-4a71-85a5-8d996b29dc06",
+      "Name": "Sound Box",
+      "Position": "1265.108,756.2404,-1584.126",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "SoundBoxComponent",
+          "__enabled": true,
+          "Force2d": false,
+          "MaxRepeatTime": 1,
+          "MinRepeatTime": 1,
+          "Pitch": 1,
+          "PlayOnStart": true,
+          "Repeat": false,
+          "Scale": "460.8669,65.80019,50",
+          "SoundEvent": "sounds/team fortress 2 soundtrack upgrade station.sound",
+          "SoundOverride": false,
           "StopOnNew": false,
           "Volume": 1
         }
@@ -1503,5 +1531,8 @@
   },
   "Title": "Soundscape",
   "Description": "Ambient sound triggers",
-  "__references": []
+  "__references": [
+    "mungus.the_sbox_song",
+    "seal.teamfortress2soundtrack_upgrades"
+  ]
 }

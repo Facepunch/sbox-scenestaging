@@ -1,22 +1,22 @@
 {
   "RootObject": {
     "Id": "dd0bb3e2-da8d-49dd-a618-e597d0b12c48",
-    "Name": "Birds",
-    "Position": "1402.337,-181.2095,-1491.703",
+    "Name": "audio - soundscape",
     "Enabled": true,
     "Components": [
       {
         "__type": "SoundscapeTrigger",
         "__enabled": true,
         "Radius": 512,
+        "Scale": "50,50,50",
         "Soundscape": "birdchirpsndscape.sndscape",
         "StayActiveOnExit": true,
         "Type": "Point"
       }
     ]
   },
-  "ShowInMenu": true,
-  "MenuPath": "Audio/Soundscape",
-  "MenuIcon": "surround_sound",
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
   "__references": []
 }
