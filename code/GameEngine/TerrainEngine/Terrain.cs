@@ -32,13 +32,18 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 
 	private Texture _heightmap;
 
-	public float GetHeight( Vector3 pos )
+	/// <summary>
+	/// Gets the height at the given position defined in world space, relative to the Terrain space.
+	/// </summary>
+	public float GetHeight( Vector3 position )
 	{
-		// this should really interpolate, but just round to ints for now
-		int x = (int)Math.Round( pos.x / TerrainResolutionInInches );
-		int y = (int)Math.Round( pos.y / TerrainResolutionInInches );
+		// TODO: Clamp in bounds
 
-		return ((float)TerrainData.GetHeight( x, y ) / (float)ushort.MaxValue ) * MaxHeightInInches;
+		// Scale position to TerrainData
+		position /= TerrainResolutionInInches;
+
+		var height = TerrainData.GetInterpolatedHeight( position.x, position.y );
+		return height * MaxHeightInInches;
 	}
 
 	public bool InRange( Vector3 pos )

@@ -57,5 +57,31 @@ public class TerrainData // : GameResource
 		}
 
 		return HeightMap[y * HeightMapWidth + x];
+
+	/// <summary>
+	/// Pass texel units, returns a normalized float.
+	/// </summary>
+	public float GetInterpolatedHeight( float x, float y )
+	{
+		int xFloor = (int)MathF.Floor( x );
+		int xCeil = (int)MathF.Ceiling( x );
+		int yFloor = (int)MathF.Floor( y );
+		int yCeil = (int)MathF.Ceiling( y );
+
+		float q11 = (float)GetHeight( xFloor, yFloor ) / (float)ushort.MaxValue;
+		float q12 = (float)GetHeight( xFloor, yCeil ) / (float)ushort.MaxValue;
+		float q21 = (float)GetHeight( xCeil, yFloor ) / (float)ushort.MaxValue;
+		float q22 = (float)GetHeight( xCeil, yCeil ) / (float)ushort.MaxValue;
+
+		float deltaX = x - xFloor;
+		float deltaY = y - yFloor;
+
+		float interpolatedValue = (1 - deltaX) * (1 - deltaY) * q11 +
+						   deltaX * (1 - deltaY) * q21 +
+						   (1 - deltaX) * deltaY * q12 +
+						   deltaX * deltaY * q22;
+
+		return interpolatedValue;
+	}
 	}
 }
