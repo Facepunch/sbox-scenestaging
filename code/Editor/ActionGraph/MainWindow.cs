@@ -563,6 +563,12 @@ public class ActionGraphView : GraphView
 
 				case PropertyDescription propertyDesc:
 					{
+						if ( propertyDesc.IsIndexer )
+						{
+							// TODO
+							break;
+						}
+
 						var canRead = propertyDesc.IsGetMethodPublic || propertyDesc.CanRead && propertyDesc.HasAttribute<PropertyAttribute>();
 						var canWrite = propertyDesc.IsSetMethodPublic || propertyDesc.CanWrite && propertyDesc.HasAttribute<PropertyAttribute>();
 
@@ -575,6 +581,7 @@ public class ActionGraphView : GraphView
 						{
 							yield return new PropertyNodeType( propertyDesc, PropertyNodeKind.Set, canRead );
 						}
+
 						break;
 					}
 
