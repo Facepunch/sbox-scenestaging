@@ -95,11 +95,10 @@ class BrushPreviewSceneObject : SceneCustomObject
 		buffer.AddCube( Vector3.Zero, Vector3.One * Radius * 6 , Rotation.Identity );
 
 		RenderAttributes attributes = new RenderAttributes();
-		attributes.Set( "D_MSAA_DEPTH_BUFFER", 1 );
 		attributes.Set( "Brush", Texture );
 		attributes.Set( "Radius", Radius );
 
-		Graphics.GrabDepthTexture( "SceneDepth", attributes, false );
+		Graphics.GrabDepthTexture( "DepthBuffer", attributes, false );
 		
 
 		buffer.Draw( material, attributes );

@@ -19,29 +19,24 @@ MODES
 
 COMMON
 {
-    #include "system.fxc"
-    #include "vr_common.fxc"
-
-
+	#include "common/shared.hlsl"
 }
 
 struct VertexInput
 {
-	float3 Position     : POSITION		< Semantic( PosXyz ); >;
-	float3 DecalOrigin  : TEXCOORD0		< Semantic( Uvwx ); >;
-	uint nInstanceTransformID				: TEXCOORD13	< Semantic( InstanceTransformUv ); >;
+	float3 Position     		: POSITION		< Semantic( PosXyz ); >;
+	float3 DecalOrigin  		: TEXCOORD0		< Semantic( Uvwx ); >;
+	uint nInstanceTransformID	: TEXCOORD13	< Semantic( InstanceTransformUv ); >;
 };
 
 struct PixelInput
 {
-	float3 WorldPosition : TEXCOORD0;
-	float3 DecalRight	: TEXCOORD1;
-	float3 DecalForward	: TEXCOORD2;
-	float3 DecalUp		: TEXCOORD3;
-	float3 CameraToPositionRay          : TEXCOORD4;
-	float3 DecalOrigin		: TEXCOORD5;
-
-
+	float3 WorldPosition		: TEXCOORD0;
+	float3 DecalRight			: TEXCOORD1;
+	float3 DecalForward			: TEXCOORD2;
+	float3 DecalUp				: TEXCOORD3;
+	float3 CameraToPositionRay	: TEXCOORD4;
+	float3 DecalOrigin			: TEXCOORD5;
 
     #if ( PROGRAM == VFX_PROGRAM_VS )
         float4 PixelPosition : SV_Position;
@@ -54,9 +49,6 @@ struct PixelInput
 
 VS
 {
-	// absolute fucking idiot
-	#define VS_INPUT VertexInput
-
 	#include "instancing.fxc"
 
 	DynamicComboRule( Allow0( D_SKINNING ) )
@@ -85,15 +77,6 @@ VS
 
 PS
 {
-	DynamicCombo( D_MSAA_DEPTH_BUFFER, 0..1, Sys( ALL ) );
-
-	// fucking christ
-	#if ( D_MSAA_DEPTH_BUFFER )
-		CreateTexture2DMS( g_tSceneDepth ) < Attribute( "SceneDepth" ); SrgbRead( false ); Filter( MIN_MAG_MIP_POINT ); AddressU( CLAMP ); AddressV( CLAMP ); >;
-	#else
-		CreateTexture2D( g_tSceneDepth ) < Attribute( "SceneDepth" ); SrgbRead( false ); Filter( MIN_MAG_MIP_POINT ); AddressU( CLAMP ); AddressV( CLAMP ); >;
-	#endif
-
 	CreateTexture2D( g_tBrush ) < Attribute( "Brush" ); SrgbRead( false ); Filter( MIN_MAG_MIP_POINT ); AddressU( WRAP ); AddressV( WRAP ); >;
 
 	float g_flRadius < Attribute( "Radius" ); Default( 16.0f ); >;
@@ -115,33 +98,11 @@ PS
 
     #include "vr_common_ps_code.fxc"
 
-	float3 CalculateWorldSpacePosition( float3 vCameraToPositionRayWs, float2 vPositionSs, int2 vOffset, int nMsaaSample )
+	// Could use Depth::GetWorldPosition in the future if it supports giving rays?
+	float3 CalculateWorldSpacePosition( float3 vCameraToPositionRayWs, float2 vPositionSs )
 	{
-		// Calculate view ray direction
-		float3 vCameraToPositionDirWs = vCameraToPositionRayWs.xyz;
-		vCameraToPositionDirWs.xyz += vOffset.x * ddx( vCameraToPositionRayWs.xyz );
-		vCameraToPositionDirWs.xyz += vOffset.y * ddy( vCameraToPositionRayWs.xyz );
-		vCameraToPositionDirWs.xyz = normalize( vCameraToPositionDirWs.xyz );
-
-		// Calculate depth
-		float flProjectedDepth;
-		#if ( D_MSAA_DEPTH_BUFFER )
-		{
-			flProjectedDepth = Tex2DMS( g_tSceneDepth, vPositionSs.xy + vOffset.xy, nMsaaSample ).x;
-		}
-		#else
-		{
-			flProjectedDepth = Tex2DLoad( g_tSceneDepth, int3( vPositionSs.xy + vOffset.xy, 0 ) ).x;
-		}
-		#endif
-
-		// Remap depth to viewport depth range
-		flProjectedDepth = RemapValClamped( flProjectedDepth, g_flViewportMinZ, g_flViewportMaxZ, 0.0, 1.0 );
-
-		// Recover
-		float3 vPositionWs = RecoverWorldPosFromProjectedDepthAndRay( flProjectedDepth, vCameraToPositionDirWs.xyz );
-
-		return vPositionWs.xyz;
+		float depth = Depth::GetNormalized( vPositionSs.xy );
+		return RecoverWorldPosFromProjectedDepthAndRay( depth, vCameraToPositionRayWs );
 	}
 	
 	//-----------------------------------------------------------------------------------------------------------------
@@ -173,32 +134,19 @@ PS
 
 	float4 MainPs( PixelInput i ) : SV_Target0
 	{
-        float3 vPositionWs = CalculateWorldSpacePosition( i.CameraToPositionRay, i.ScreenPosition.xy, int2( 0, 0 ), 0 );
-        // float3 vPositionDs = CaclulateDecalSpacePosition( vPositionWs, i.WorldDecalOrigin, float3( 0, -1, 0 ) * 8, float3( 1, 0, 0 ) * 8, float3( 0, 0, 1 ) * 8 );
-        
+        float3 vPositionWs = CalculateWorldSpacePosition( i.CameraToPositionRay, i.ScreenPosition.xy );
 		float3 vPositionDs = CaclulateDecalSpacePosition( vPositionWs, i.DecalOrigin, i.DecalRight, i.DecalUp, i.DecalForward );
 
 		if ( InDecalBounds( vPositionWs, i.DecalOrigin, i.DecalRight, i.DecalUp, i.DecalForward ) )
 		{
-			// g_tBrush
-
-			// vec4 local_position = (vec4(world_position - decal_position, 0.0)) * WORLD_MATRIX;
-			// vec2 uv_coords = (vec2(local_position.x, -local_position.y)  / (4.0*(decal_half_scale.xz * 2.0 * decal_half_scale.xz))) - vec2(0.5);
-
 			float3 localPos = i.DecalOrigin - vPositionWs;
 			float2 uv = float2( localPos.x, -localPos.y ) / ( 2 * g_flRadius ) - float2( 0.5, 0.5 );
 
-			return float4( 0.2, 0.2, 0.8, Tex2D( g_tBrush, uv /*localPos.xy / 600 + float2( 0.5, 0.5 )*/ ).r );
+			return float4( 0.2, 0.2, 0.8, Tex2D( g_tBrush, uv ).r );
 		}
 
 		clip( -1 );
 
-
-
-        // clip( InsideRegion( vPositionDs ) - 0.5 );
-		// return float4 ( 0, 0, 0, 1 );
-
-		// return float4( 0, 0, length(vPositionDs) / 1000, 1 );
 		return float4( 0, 0, vPositionWs.z / 1000, 1 );
 	}
 }
