@@ -553,6 +553,11 @@ public class ActionGraphView : GraphView
 						break;
 					}
 
+					if ( !methodDesc.AreParametersActionGraphSafe() )
+					{
+						break;
+					}
+
 					methods.Add( methodDesc );
 					break;
 
