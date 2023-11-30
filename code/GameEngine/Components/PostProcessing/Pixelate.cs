@@ -14,7 +14,7 @@ public sealed class Pixelate : BaseComponent, BaseComponent.ExecuteInEditor
 	{
 		renderHook?.Dispose();
 
-		var cc = Components.Get<CameraComponent>( FindMode.EverythingInSelf );
+		var cc = Components.Get<CameraComponent>( true );
 		renderHook = cc.AddHookBeforeOverlay( "Pixelate", 500, RenderEffect );
 	}
 

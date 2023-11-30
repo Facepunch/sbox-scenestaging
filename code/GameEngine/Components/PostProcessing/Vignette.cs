@@ -39,7 +39,7 @@ public sealed class Vignette : BaseComponent, BaseComponent.ExecuteInEditor
 	{
 		renderHook?.Dispose();
 
-		var cc = Components.Get<CameraComponent>( FindMode.EverythingInSelf );
+		var cc = Components.Get<CameraComponent>( true );
 		renderHook = cc.AddHookBeforeOverlay( "Vignette", 900, RenderEffect );
 	}
 

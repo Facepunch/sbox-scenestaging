@@ -27,7 +27,7 @@ public sealed class ChromaticAberration : BaseComponent, BaseComponent.ExecuteIn
 	{
 		renderHook?.Dispose();
 
-		var cc = Components.Get<CameraComponent>( FindMode.EverythingInSelf );
+		var cc = Components.Get<CameraComponent>( true );
 		renderHook = cc.AddHookBeforeOverlay( "ChromaticAberration", 900, RenderEffect );
 	}
 

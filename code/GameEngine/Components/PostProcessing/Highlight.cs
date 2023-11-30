@@ -17,7 +17,7 @@ public sealed class Highlight : BaseComponent, BaseComponent.ExecuteInEditor
 	{
 		renderHook?.Dispose();
 
-		var cc = Components.Get<CameraComponent>( FindMode.EverythingInSelf );
+		var cc = Components.Get<CameraComponent>( true );
 		renderHook = cc.AddHookAfterTransparent( "Highlight", 1000, RenderEffect );
 	}
 
