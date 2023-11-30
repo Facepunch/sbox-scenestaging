@@ -44,9 +44,6 @@ public static class Rpc
 	{
 		if ( !Calling && SceneNetworkSystem.Instance is not null )
 		{
-			var typeName = string.Join( ".", methodName.Split( "." )[..^1] );
-			var type = TypeLibrary.GetType( typeName );
-			
 			var msg = new StaticRpcMsg();
 			msg.MethodIndex = FindMethodIndex( methodName );
 			msg.Arguments = argumentList;
