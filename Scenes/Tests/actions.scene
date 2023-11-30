@@ -157,6 +157,10 @@
                 "Type": "call",
                 "Properties": {
                   "deep": true,
+                  "T": {
+                    "$type": "Type",
+                    "Type": "package.facepunch.testbed/ModelRenderer"
+                  },
                   "_type": "package.facepunch.testbed/GameObject",
                   "_name": "GetComponent"
                 },
@@ -268,7 +272,8 @@
             ],
             "UserData": {
               "name": "Update",
-              "id": "42181e71-5ba1-49c9-94f1-52a13f611a4a"
+              "id": "42181e71-5ba1-49c9-94f1-52a13f611a4a",
+              "Title": "Update"
             }
           }
         }
