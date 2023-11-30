@@ -514,16 +514,26 @@ public class ActionGraphView : GraphView
 		return memberDesc.GetCustomAttribute<PropertyAttribute>() is { };
 	}
 
-	private static IEnumerable<INodeType> GetInstanceNodes( TypeDescription typeDesc )
+	private static IEnumerable<INodeType> GetInstanceNodes( Type type )
 	{
-		var baseType = EditorTypeLibrary.GetType( typeDesc.TargetType.BaseType );
-
-		if ( baseType != null )
+		if ( type == null )
 		{
-			foreach ( var node in GetInstanceNodes(baseType) )
+			yield break;
+		}
+
+		if ( type.BaseType != null )
+		{
+			foreach ( var node in GetInstanceNodes( type.BaseType ) )
 			{
 				yield return node;
 			}
+		}
+
+		var typeDesc = EditorTypeLibrary.GetType( type );
+
+		if ( typeDesc == null )
+		{
+			yield break;
 		}
 
 		var methods = new List<MethodDescription>();
@@ -629,14 +639,11 @@ public class ActionGraphView : GraphView
 			yield return new VariableNodeType( variable.Name, variable.Type, PropertyNodeKind.Set, false, false );
 		}
 
-		if ( EditorTypeLibrary.GetType( inputValueType ) is {} typeDesc )
+		foreach ( var nodeType in GetInstanceNodes( inputValueType )
+			.OrderBy( x => x.DisplayInfo.Group )
+			.ThenBy( x => x.DisplayInfo.Name ) )
 		{
-			foreach ( var nodeType in GetInstanceNodes( typeDesc )
-				.OrderBy( x => x.DisplayInfo.Group )
-				.ThenBy( x => x.DisplayInfo.Name ) )
-			{
-				yield return nodeType;
-			}
+			yield return nodeType;
 		}
 
 		foreach ( var nodeType in base.GetRelevantNodes( inputValueType, name ) )
