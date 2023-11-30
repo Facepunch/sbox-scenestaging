@@ -1,4 +1,6 @@
-﻿[Dock( "Editor", "Hierarchy", "list" )]
+﻿using System;
+
+[Dock( "Editor", "Hierarchy", "list" )]
 public partial class SceneTreeWidget : Widget
 {
 	TreeView TreeView;
@@ -20,7 +22,7 @@ public partial class SceneTreeWidget : Widget
 		Layout.Add( new OpenSceneList( this ) );
 		Header = Layout.AddColumn();
 		Header = Layout.AddColumn();
-		TreeView = Layout.Add( new TreeView( this ), 1 );
+		TreeView = Layout.Add( new SceneTreeView(), 1 );
 		TreeView.MultiSelect = true;
 		TreeView.BodyContextMenu = OpenTreeViewContextMenu;
 		TreeView.ItemSelected = x => _lastScene?.Scene?.EditLog( "Selection", this );
@@ -91,3 +93,10 @@ public partial class SceneTreeWidget : Widget
 	}
 }
 
+class SceneTreeView : TreeView
+{
+	protected override void OnShortcutPressed( KeyEvent e )
+	{
+		// don't accept, let shortcuts run
+	}
+}
