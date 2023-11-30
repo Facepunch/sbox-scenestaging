@@ -1398,10 +1398,28 @@
         {
           "__type": "SoundscapeTrigger",
           "__enabled": true,
+          "BoxSize": "50,50,50",
           "Radius": 1122.4788,
           "Soundscape": "soundscapes/coast.sndscape",
           "StayActiveOnExit": true,
           "Type": "Sphere"
+        }
+      ]
+    },
+    {
+      "Id": "6b3ff814-2bd1-4962-bd78-df5984104b33",
+      "Name": "Coast  (1)",
+      "Position": "1762.016,828.7952,-1582.495",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "SoundscapeTrigger",
+          "__enabled": true,
+          "BoxSize": "256.1998,90.99995,61.66671",
+          "Radius": 1122.4788,
+          "Soundscape": "sounds/water_drips.sndscape",
+          "StayActiveOnExit": true,
+          "Type": "Box"
         }
       ]
     },
@@ -1421,6 +1439,7 @@
         {
           "__type": "SoundscapeTrigger",
           "__enabled": true,
+          "BoxSize": "50,50,50",
           "Radius": 1122.4788,
           "Soundscape": "sounds/electric_buzz.sndscape",
           "StayActiveOnExit": true,
@@ -1442,6 +1461,24 @@
           "FontSize": 128,
           "Scale": 1.09,
           "Text": "coast \uD83D\uDEE5\uFE0F"
+        }
+      ]
+    },
+    {
+      "Id": "7f6c78aa-7fea-4a14-8a7e-a52699738252",
+      "Name": "Waterdrops",
+      "Position": "1783.637,814.2136,-1500.379",
+      "Rotation": "0.00000004239887,-0.0000000002550475,0.707107,0.7071065",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "TextRenderer",
+          "__enabled": true,
+          "Color": "0.45103,0.47149,0.5297,1",
+          "FontFamily": "Poppins",
+          "FontSize": 128,
+          "Scale": 0.61,
+          "Text": "waterdrops \uD83D\uDCA6"
         }
       ]
     },
