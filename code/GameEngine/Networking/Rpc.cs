@@ -192,6 +192,7 @@ public static class Rpc
 				_methodNameToIndex[methodName] = index;
 				_indexToMethodName[index] = methodName;
 				success = true;
+				break;
 			}
 
 			index++;
@@ -219,9 +220,7 @@ public static class Rpc
 	{
 		var staticMethods = TypeLibrary
 			.GetMethodsWithAttribute<BroadcastAttribute>()
-			.Select( ( m ) => $"{m.Method.TypeDescription.FullName}.{m.Method.Name}" )
-			.Distinct()
-			.ToList();
+			.Select( ( m ) => $"{m.Method.TypeDescription.FullName}.{m.Method.Name}" );
 		
 		var instanceMethods = TypeLibrary.GetTypes()
 			.SelectMany( x => x.Members )
@@ -232,6 +231,6 @@ public static class Rpc
 		return staticMethods
 			.Concat( instanceMethods )
 			.Distinct()
-			.OrderBy( a => a );
+			.Order();
 	}
 }
