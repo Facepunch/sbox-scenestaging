@@ -2,7 +2,7 @@ using Sandbox;
 
 [Category( "Audio" )]
 [Title( "Listener" )]
-[Icon( "volume_down" )]
+[Icon( "hearing" )]
 [EditorHandle( "materials/gizmo/audiolistener.png" )]
 [Alias( "SoundListener" )]
 public sealed class AudioListener : BaseComponent

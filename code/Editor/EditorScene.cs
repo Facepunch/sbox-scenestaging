@@ -123,6 +123,8 @@ public static class EditorScene
 
 		GameEditorSession.CloseAll();
 
+		Sound.StopAll( false );
+
 		if ( SceneEditorSession.All.Contains( previousActiveScene ) )
 		{
 			previousActiveScene.MakeActive();

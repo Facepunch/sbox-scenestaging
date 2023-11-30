@@ -84,16 +84,15 @@ public class CameraComponent : BaseComponent
 
 	public void UpdateCamera( SceneCamera camera )
 	{
-		var scene = GameObject.Scene;
-		if ( scene is null )
+		if ( Scene is null )
 		{
 			Log.Warning( $"Trying to update camera from {this} but has no scene" );
 			return;
 		}
 
-		camera.World = scene.SceneWorld;
+		camera.World = Scene.SceneWorld;
 		camera.Worlds.Clear();
-		camera.Worlds.Add( scene.DebugSceneWorld );
+		camera.Worlds.Add( Scene.DebugSceneWorld );
 		camera.Position = Transform.Position;
 		camera.Rotation = Transform.Rotation;
 		camera.ZNear = ZNear;
