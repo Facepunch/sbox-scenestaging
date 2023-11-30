@@ -118,7 +118,7 @@ public static class EditorScene
 		GameNetworkSystem.Disconnect();
 		GameManager.IsPlaying = false;
 
-		GameManager.ActiveScene?.Clear();
+		GameManager.ActiveScene?.Destroy();
 		GameManager.ActiveScene = null;
 
 		GameEditorSession.CloseAll();

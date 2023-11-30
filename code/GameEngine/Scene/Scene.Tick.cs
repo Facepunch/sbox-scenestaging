@@ -61,7 +61,7 @@ public partial class Scene : GameObject
 		if ( IsEditor )
 		{
 			Update();
-			UpdateAnimationThreaded();
+			Signal( SceneHook.Stage.UpdateBones );
 		}
 
 		ProcessDeletes();
@@ -101,7 +101,7 @@ public partial class Scene : GameObject
 			SceneNetworkUpdate();
 
 			Update();
-			UpdateAnimationThreaded();
+			Signal( SceneHook.Stage.UpdateBones );
 
 			ProcessDeletes();
 		}
@@ -116,14 +116,9 @@ public partial class Scene : GameObject
 
 		using ( Sandbox.Utility.Superluminal.Scope( "Scene.FixedUpdate", Color.Cyan ) )
 		{
-			var idealHz = 220.0f;
-			var idealStep = 1.0f / idealHz;
-			int steps = (Time.Delta / idealStep).FloorToInt().Clamp( 1, 10 );
+			Signal( SceneHook.Stage.PhysicsStep );
 
-			using ( Sandbox.Utility.Superluminal.Scope( "PhysicsWorld.Step", Color.Cyan ) )
-			{
-				PhysicsWorld.Step( Time.Delta, steps );
-			}
+
 
 			using ( Sandbox.Utility.Superluminal.Scope( "FixedUpdate", Color.Cyan ) )
 			{

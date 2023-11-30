@@ -122,19 +122,7 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 		_sceneObject = null;
 	}
 
-	public void UpdateInThread()
-	{
-		// If we're parented of an animator we need to be updated in order
-		// so just bounce
-		if ( Components.GetInAncestors<SkinnedModelRenderer>() is not null )
-			return;
 
-		// Update in order
-		foreach ( var c in Components.GetAll<SkinnedModelRenderer>( FindMode.EnabledInSelfAndDescendants ) )
-		{
-			c.AnimationUpdate();
-		}
-	}
 
 	public void PostAnimationUpdate()
 	{
@@ -146,7 +134,7 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 		SceneModel.RunPendingEvents();
 	}
 
-	void AnimationUpdate()
+	internal void AnimationUpdate()
 	{
 		if ( !SceneModel.IsValid() )
 			return;

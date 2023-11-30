@@ -49,7 +49,7 @@ public partial class GameObject : IValid
 	/// <summary>
 	/// Destroy this object. Will actually be destroyed at the start of the next frame.
 	/// </summary>
-	public void Destroy()
+	public virtual void Destroy()
 	{
 		if ( _destroying )
 			return;
@@ -84,7 +84,7 @@ public partial class GameObject : IValid
 	/// <summary>
 	/// Destroy all components and child objects
 	/// </summary>
-	public void Clear()
+	public virtual void Clear()
 	{
 		// delete all components
 		Components.ForEach( "OnDestroy", true, c => c.Destroy() );
