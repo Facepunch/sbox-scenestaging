@@ -50,7 +50,7 @@ public partial class SceneEditorSession
 		//
 		// 2. Place camera where a Camera component is
 		//
-		var cc = Scene.Components.Get<CameraComponent>( FindMode.EverythingInSelfAndDescendants );
+		var cc = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
 		if ( cc is not null )
 		{
 			CameraPosition = cc.Transform.Position;

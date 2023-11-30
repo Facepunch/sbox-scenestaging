@@ -13,20 +13,19 @@ public class SceneAnimationHook : SceneHook
 			return;
 
 		// TODO - faster way to accumulate these
-		var animModel = Scene.Components.GetAll<SkinnedModelRenderer>( FindMode.EnabledInSelfAndDescendants )
-			.ToArray();
+		var allSkinnedRenderers = Scene.GetAllComponents<SkinnedModelRenderer>();
 
 		//
 		// Run the updates and the bone merges in a thread
 		//
-		Sandbox.Utility.Parallel.ForEach( animModel, x => UpdateInThread( x) );
+		Sandbox.Utility.Parallel.ForEach( allSkinnedRenderers, x => UpdateInThread( x) );
 
 		//
 		// Run events in the main thread
 		//
 		using ( Sandbox.Utility.Superluminal.Scope( "Scene.AnimPostUpdate", Color.Yellow ) )
 		{
-			foreach ( var x in animModel )
+			foreach ( var x in allSkinnedRenderers )
 			{
 				x.PostAnimationUpdate();
 			}

@@ -114,7 +114,7 @@ public static class SceneThumbnailRenderer
 			}
 		}
 
-		var cam = scene.Components.GetAll<CameraComponent>( FindMode.EnabledInSelfAndDescendants ).FirstOrDefault();
+		var cam = scene.GetAllComponents<CameraComponent>().FirstOrDefault();
 		if ( cam is not null )
 		{
 			camera.Position = cam.Transform.Position;

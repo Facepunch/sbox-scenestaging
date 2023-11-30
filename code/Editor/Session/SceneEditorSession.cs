@@ -69,7 +69,7 @@ public partial class SceneEditorSession
 		//
 		if ( !GameManager.IsPlaying )
 		{
-			var camera = Scene.Components.GetAll<CameraComponent>( FindMode.EnabledInSelfAndDescendants ).FirstOrDefault();
+			var camera = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
 
 			if ( camera is not null )
 			{

@@ -33,7 +33,7 @@ public static class GameManager
 			ActiveScene.PreRender();
 		}
 
-		var camera = ActiveScene.Components.GetAll<CameraComponent>( FindMode.EnabledInSelfAndDescendants ).FirstOrDefault();
+		var camera = ActiveScene.GetAllComponents<CameraComponent>().FirstOrDefault();
 
 		if ( camera is not null )
 		{
