@@ -1,4 +1,4 @@
-using Sandbox;
+﻿using Sandbox;
 
 [Title( "Soundscape Trigger" )]
 [Category( "Rendering" )]
@@ -9,7 +9,8 @@ public class SoundscapeTrigger : BaseComponent
 	public enum TriggerType
 	{
 		Point,
-		Sphere
+		Sphere,
+		Box
 	}
 
 	[Property] public TriggerType Type { get; set; }
@@ -26,6 +27,20 @@ public class SoundscapeTrigger : BaseComponent
 	[ShowIf( nameof(Type), TriggerType.Sphere )]
 	public float Radius { get; set; } = 500.0f;
 
+	Vector3 _scale = 50;
+	[Property]
+	[ShowIf( nameof( Type ), TriggerType.Box )]
+	public Vector3 BoxSize
+	{
+		get => _scale;
+		set
+		{
+			if ( _scale == value ) return;
+
+			_scale = value;
+		}
+	}
+
 	protected override void DrawGizmos()
 	{
 		if ( Type == TriggerType.Point )
@@ -39,8 +54,15 @@ public class SoundscapeTrigger : BaseComponent
 				Gizmo.Draw.Color = Playing ? Gizmo.Colors.Active : Gizmo.Colors.Blue;
 				Gizmo.Draw.LineSphere( 0, Radius );
 			}
+		}else if(Type == TriggerType.Box)
+		{
+			if ( Gizmo.IsSelected )
+			{
+				Gizmo.Draw.Color = Playing ? Gizmo.Colors.Active : Gizmo.Colors.Blue;
+				Gizmo.Draw.LineBBox( new BBox( -BoxSize, BoxSize ) );
+			}
 		}
-
+		
 	}
 
 
@@ -101,6 +123,10 @@ public class SoundscapeTrigger : BaseComponent
 		if ( Type == TriggerType.Sphere )
 		{
 			return (position - Transform.Position).LengthSquared < (Radius * Radius);
+		}
+		else if( Type == TriggerType.Box)
+		{
+			return new BBox( -BoxSize, BoxSize ).Contains( position - Transform.Position );
 		}
 
 		return true;
