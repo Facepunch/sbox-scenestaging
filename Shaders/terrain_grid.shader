@@ -32,6 +32,7 @@ COMMON
     #include "common/shared.hlsl"
 
     CreateTexture2DWithoutSampler( g_tHeightMap ) < Attribute( "HeightMap" ); SrgbRead( false ); >;
+    CreateTexture2DWithoutSampler( g_tControlMap ) < Attribute( "ControlMap" ); SrgbRead( false ); >;
 
     // Used to sample the heightmap
     SamplerState g_sBilinearBorder < Filter( BILINEAR ); AddressU( BORDER ); AddressV( BORDER ); >;
@@ -84,6 +85,17 @@ PS
 
     #include "TerrainCommon.hlsl"
 
+    #define DEFINE_SPLATMAP(index) \
+    CreateInputTexture2D( TextureColor##index,            Srgb,   8,  "",                 "_color",   TOKEN_STRINGIZE(Splat index) , Default3( 1.0, 1.0, 1.0 ) ); \
+    CreateInputTexture2D( TextureNormal##index,           Linear, 8,  "NormalizeNormals", "_normal",  TOKEN_STRINGIZE(Splat index) , Default3( 0.5, 0.5, 1.0 ) ); \
+    CreateTexture2DWithoutSampler( g_tColor##index ) < Channel( RGB, Box( TextureColor##index ), Srgb ); OutputFormat( DXT1 ); SrgbRead( true ); >; \
+    CreateTexture2DWithoutSampler( g_tNormal##index ) < Channel( RGB, Box( TextureNormal##index ), Linear ); OutputFormat( DXT5 ); SrgbRead( false ); >; \
+
+    DEFINE_SPLATMAP(0)
+    DEFINE_SPLATMAP(1)
+
+    SamplerState g_sAnisotropic < Filter( ANISOTROPIC ); MaxAniso(8); >;
+
     StaticCombo( S_MODE_TOOLS_WIREFRAME, 0..1, Sys( ALL ) );
     StaticCombo( S_MODE_DEPTH, 0..1, Sys( ALL ) );
 
@@ -125,12 +137,40 @@ PS
         float3 TangentU, TangentV;
         float3 geoNormal = TerrainNormal( g_tHeightMap, uv, TangentU, TangentV );
 
+        //
+        // this is all wrong, just a quick mess to get anything basic showing
+        //
+
+        float4 control = Tex2DS( g_tControlMap, g_sBilinearBorder, uv );
+        float control_sum = control.r + control.g + control.b + control.a;
+
+        float rcpLen = ( control_sum > 0.00001 ) ? 1.0f / sqrt( control_sum ) : 0;
+        control *= rcpLen;
+
+        float baseWeight = saturate( 1.0f - control_sum );
+
         float chessboard = CheckersGradBox( i.WorldPosition.xy / 64 );
+        float3 base = 0.4 + chessboard * float3(0.2, 0.2, 0.2);
+        float3 col1 = Tex2DS( g_tColor0, g_sAnisotropic, i.WorldPosition.xy / 256 );
+        float3 col2 = Tex2DS( g_tColor1, g_sAnisotropic, i.WorldPosition.xy / 256 );
+        float3 nrm1 = DecodeNormal( Tex2DS( g_tNormal0, g_sAnisotropic, i.WorldPosition.xy / 256 ) );
+        float3 nrm2 = DecodeNormal( Tex2DS( g_tNormal1, g_sAnisotropic, i.WorldPosition.xy / 256 ) );
+
+        float3 color = base * baseWeight;
+        float3 blend = col1 * control.r;
+        blend += col2 * control.g;
+
+        color += blend;
+
+        // this definitely isn't how you blend normals
+        float3 norm = float3( 0, 0, 1 ); // * ( 1.0f - weight ) + blend1nm * control.r );
+       
+        float roughness = 1.0f; // (1.0f - saturate( weight )) * (0.5f - chessboard * 0.2f) + 1.0f * control.r;
 
         Material p = Material::Init();
-        p.Albedo = 0.4 + chessboard * float3(0.2, 0.2, 0.2);
-        p.Normal = geoNormal;
-        p.Roughness = 0.5f - chessboard * 0.2f;
+        p.Albedo = color;
+        p.Normal = TransformNormal( norm, geoNormal, TangentU, TangentV );
+        p.Roughness = roughness;
         p.Metalness = 0.0f;
         p.AmbientOcclusion = 1.0f;
         p.TextureCoords = uv;

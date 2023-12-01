@@ -3,12 +3,51 @@ using System;
 
 namespace Editor.TerrainEngine;
 
-public class TerrainEditor
+public static class TerrainEditor
 {
+	public static string Mode { get; set; } = "Sculpt";
 
 	public static Brush Brush { get; set; } = new();
 
 	public static void AddHeight( Terrain terrain, Vector3 pos, bool invert = false )
+	{
+		// this should really interpolate, but just round to ints for now
+		int basex = (int)Math.Round( pos.x / terrain.TerrainResolutionInInches );
+		int basey = (int)Math.Round( pos.y / terrain.TerrainResolutionInInches );
+
+		var radius = (int)Math.Round( Brush.Size / terrain.TerrainResolutionInInches );
+
+		var x1 = basex - radius;
+		var y1 = basey - radius;
+		var x2 = basex + radius;
+		var y2 = basey + radius;
+
+		var size = radius * 2;
+
+		for ( var y = 0; y < size; ++y )
+		{
+			for ( var x = 0; x < size; ++x )
+			{
+				var brushWidth = Brush.Texture.Width;
+				var brushHeight = Brush.Texture.Height;
+
+				var brushX = (brushWidth / size) * x;
+				var brushY = (brushHeight / size) * y;
+
+				var brushPix = Brush.Pixels[brushY * brushHeight + brushX];
+
+				float brushValue = ((float)brushPix.r / 255.0f) * 100;
+				var value = (int)Math.Round( brushValue * Brush.Opacity );
+
+				if ( invert ) value = -value;
+
+				var height = terrain.TerrainData.GetHeight( x1 + x, y1 + y );
+				terrain.TerrainData.SetHeight( x1 + x, y1 + y, (ushort)(height + value) );
+			}
+		}
+	}
+
+	public static void AddSplat( Terrain terrain, Vector3 pos, bool invert = false )
 	{
 		// this should really interpolate, but just round to ints for now
 		int basex = (int)Math.Round( pos.x / terrain.TerrainResolutionInInches );
@@ -40,8 +79,21 @@ public class TerrainEditor
 
 				if ( invert ) value = -value;
 
-				var height = terrain.TerrainData.GetHeight( x1 + x, y1 + y );
-				terrain.TerrainData.SetHeight( x1 + x, y1 + y, (ushort)(height + value) );
+				var color = terrain.TerrainData.GetSplat( x1 + x, y1 + y );
+				
+				if ( !invert )
+				{
+					color.r = (byte)Math.Clamp( brushPix.r + color.r, 0, 255 );
+				}
+				else
+				{
+					color.g = (byte)Math.Clamp( brushPix.r + color.g, 0, 255 );
+
+				}
+
+				terrain.TerrainData.SetSplat( x1 + x, y1 + y, color );
+				// var height = terrain.TerrainData.GetHeight( x1 + x, y1 + y );
+				//terrain.TerrainData.SetHeight( x1 + x, y1 + y, (ushort)(height + value) );
 			}
 		}
 	}
@@ -65,7 +117,14 @@ public class TerrainEditor
 
 			if ( Application.MouseButtons.HasFlag( MouseButtons.Left ) )
 			{
-				AddHeight( terrain, hitPosition, Application.KeyboardModifiers.HasFlag( KeyboardModifiers.Ctrl ) );
+				if ( TerrainEditor.Mode == "Sculpt" )
+				{
+					AddHeight( terrain, hitPosition, Application.KeyboardModifiers.HasFlag( KeyboardModifiers.Ctrl ) );
+				}
+				else if ( TerrainEditor.Mode == "Paint" )
+				{
+					AddSplat( terrain, hitPosition, Application.KeyboardModifiers.HasFlag( KeyboardModifiers.Ctrl ) );
+				}
 				terrain.SyncHeightMap();
 			}
 

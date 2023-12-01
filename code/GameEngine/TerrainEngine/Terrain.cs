@@ -33,6 +33,7 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 	int indexCount = 0;
 
 	private Texture _heightmap;
+	private Texture _controlmap;
 
 	/// <summary>
 	/// Gets the height at the given position defined in world space, relative to the Terrain space.
@@ -98,8 +99,19 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 			return;
 		}
 
+		if ( _controlmap == null )
+		{
+			_controlmap = Texture.Create( TerrainData.HeightMapSize, TerrainData.HeightMapSize, ImageFormat.RGBA8888 )
+				.WithData( new ReadOnlySpan<Color32>( TerrainData.ControlMap ) )
+				.WithDynamicUsage()
+				.WithName( "terrain_controlmap" )
+				.Finish();
+			return;
+		}
+
 		// TODO: We could update only the dirty region, but this seems reasonable at least on 513x513
 		_heightmap.Update( new ReadOnlySpan<ushort>( TerrainData.HeightMap ) );
+		_controlmap.Update( new ReadOnlySpan<Color32>( TerrainData.ControlMap ) );
 	}
 
 	protected override void OnEnabled()
@@ -137,6 +149,7 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject.Transform = Transform.World;
 
 		_sceneObject.Attributes.Set( "HeightMap", _heightmap );
+		_sceneObject.Attributes.Set( "ControlMap", _controlmap );
 		_sceneObject.Attributes.Set( "HeightScale", MaxHeightInInches );
 		_sceneObject.Attributes.Set( "TerrainResolution", TerrainResolutionInInches );
 		_sceneObject.Attributes.Set( "DebugView", (int)DebugView );

@@ -4,6 +4,7 @@ using Sandbox.TerrainEngine;
 using Sandbox.UI;
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace Editor.TerrainEngine;
 
@@ -38,8 +39,26 @@ public partial class TerrainComponentWidget : CustomComponentWidget
 		SerializedTerrainData = data;
 
 		var tabs = Layout.Add( new TabWidget( this ) );
-		tabs.AddPage( "Sculpt", "construction", new SculptPageWidget( this ) );
-		tabs.AddPage( "Paint", "brush", PaintPage() );
+
+		var sculptPage = new SculptPageWidget( this );
+		var paintPage = new PaintPageWidget( this );
+
+		tabs.AddPage( "Sculpt", "construction", sculptPage );
+		tabs.AddPage( "Paint", "brush", paintPage );
 		tabs.AddPage( "Settings", "settings", SettingsPage() );
+
+		// cant be fucked
+		var tabbar = typeof( TabWidget ).GetField( "TabBar", BindingFlags.NonPublic | BindingFlags.Instance ).GetValue( tabs ) as SegmentedControl;
+		tabbar.OnSelectedChanged += ( value ) =>
+		{
+			TerrainEditor.Mode = value;
+		};
+
+		// set the active tab for the current editor mode
+		var pages = typeof( TabWidget ).GetField( "pages", BindingFlags.NonPublic | BindingFlags.Instance ).GetValue( tabs ) as Dictionary<string, Widget>;
+		if ( pages.TryGetValue( TerrainEditor.Mode , out var page ) )
+		{
+			tabs.SetPage( page );
+		}
 	}
 }

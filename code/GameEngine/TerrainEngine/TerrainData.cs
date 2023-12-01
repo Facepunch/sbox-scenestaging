@@ -22,7 +22,7 @@ public class TerrainData // : GameResource
 	public float MaxHeight { get; set; }
 
 	// This might be a trap design, should be more generic layers?
-	public ushort[] ControlMap { get; set; }
+	public Color32[] ControlMap { get; set; }
 
 	//
 	// Public non-serializable
@@ -41,7 +41,36 @@ public class TerrainData // : GameResource
 	public void SetSize( int size )
 	{
 		HeightMap = new ushort[size * size];
+		ControlMap = new Color32[size * size];
+
+		for ( int i = 0; i < size * size; i++ )
+		{
+			ControlMap[i] = new Color32( 0, 0, 0, 0 );
+		}
+
 		HeightMapSize = size;
+	}
+
+	public void SetSplat( int x, int y, Color32 value )
+	{
+		var index = y * HeightMapSize + x;
+		if ( index < 0 || index >= HeightMap.Length )
+		{
+			return;
+		}
+
+		ControlMap[y * HeightMapSize + x] = value;
+	}
+
+	public Color32 GetSplat( int x, int y )
+	{
+		var index = y * HeightMapSize + x;
+		if ( index < 0 || index >= HeightMap.Length )
+		{
+			return Color32.White;
+		}
+
+		return ControlMap[y * HeightMapSize + x];
 	}
 
 	public void SetHeight( int x, int y, ushort value )

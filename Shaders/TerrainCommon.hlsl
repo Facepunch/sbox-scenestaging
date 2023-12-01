@@ -48,14 +48,7 @@ float4 Debug( PixelInput i, Material m )
 
     if ( g_nDebugView == 2 )
     {
-        if ( Blink( 1.0 ) )
-        {
-            // return float4( Tex2DS( g_tSplatMap0, g_sAnisotropic, m.TextureCoords ).rgb, 1.0f );
-        }
-        else
-        {
-            // return float4( Tex2DS( g_tSplatMap1, g_sAnisotropic, m.TextureCoords ).rgb, 1.0f );
-        }
+        return float4( Tex2DS( g_tControlMap, g_sBilinearBorder, m.TextureCoords ).a, 0.0f, 0.0f, 1.0f );
     }        
 
     return float4( 0, 0, 0, 1 );
