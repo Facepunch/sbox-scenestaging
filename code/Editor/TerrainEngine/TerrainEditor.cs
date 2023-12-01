@@ -42,7 +42,10 @@ public static class TerrainEditor
 				if ( invert ) value = -value;
 
 				var height = terrain.TerrainData.GetHeight( x1 + x, y1 + y );
-				terrain.TerrainData.SetHeight( x1 + x, y1 + y, (ushort)(height + value) );
+				int newHeight = height + value;
+
+				newHeight = Math.Max( newHeight, 0 );
+				terrain.TerrainData.SetHeight( x1 + x, y1 + y, (ushort)newHeight );
 			}
 		}
 	}
