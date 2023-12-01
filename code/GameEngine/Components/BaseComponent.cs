@@ -2,13 +2,19 @@
 using System;
 using System.Threading;
 
+[ActionGraphIgnore]
 public abstract partial class BaseComponent
 {
+	[ActionGraphInclude]
 	public Scene Scene => GameObject.Scene;
+
+	[ActionGraphInclude]
 	public GameTransform Transform => GameObject.Transform;
 
+	[ActionGraphInclude]
 	public GameObject GameObject { get; internal set; }
 
+	[ActionGraphInclude]
 	public GameObjectFlags Flags { get; set; } = GameObjectFlags.None;
 
 	/// <summary>
@@ -47,6 +53,7 @@ public abstract partial class BaseComponent
 	bool _enabledState;
 	bool _enabled = false;
 
+	[ActionGraphInclude]
 	public bool Enabled
 	{
 		get => _enabled;
@@ -61,6 +68,7 @@ public abstract partial class BaseComponent
 		}
 	}
 
+	[ActionGraphInclude]
 	public bool Active
 	{
 		get => _enabledState;
@@ -139,6 +147,7 @@ public abstract partial class BaseComponent
 		}
 	}
 
+	[ActionGraphInclude]
 	public void Destroy()
 	{
 		using var batch = CallbackBatch.StartGroup();
