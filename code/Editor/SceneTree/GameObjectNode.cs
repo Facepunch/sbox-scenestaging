@@ -416,13 +416,13 @@ public partial class GameObjectNode : TreeNode<GameObject>
 			// var asset = AssetSystem.CreateResource( "terrain", saveLocation );
 			// asset.SaveToDisk( terrainData );
 
-			var terrain = go.AddComponent<Terrain>( false );
+			var terrain = go.Components.Create<Terrain>( false );
 			terrain.TerrainData = terrainData;
 			terrain.TerrainMaterial = Material.Load( "materials/terrain_grid.vmat" );
 
 			terrain.Enabled = true;
 
-			go.AddComponent<TerrainCollider>();
+			go.Components.Create<TerrainCollider>();
 
 			then( go );
 		} );

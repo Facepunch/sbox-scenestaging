@@ -102,7 +102,7 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 		_heightmap.Update( new ReadOnlySpan<ushort>( TerrainData.HeightMap ) );
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
@@ -123,7 +123,7 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 		SyncHeightMap();
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_sceneObject?.Delete();
 		_sceneObject = null;
@@ -142,7 +142,7 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject.Attributes.Set( "DebugView", (int)DebugView );
 	}
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( Gizmo.IsSelected )
 		{
@@ -158,11 +158,6 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 		//Gizmo.Draw.ScreenText( $"Terrain Size: {HeightMap.Width * TerrainResolutionInInches} x {HeightMap.Height * TerrainResolutionInInches} ( {(HeightMap.Width * TerrainResolutionInInches).InchToMeter()}m² )", Vector2.One * 16, size: 16, flags: TextFlag.Left );
 		//Gizmo.Draw.ScreenText( $"Clipmap Lod Levels: {ClipMapLodLevels} covering {ClipMapLodExtentTexels} texels", Vector2.One * 16 + Vector2.Up * 24, size: 16, flags: TextFlag.Left );
 		//Gizmo.Draw.ScreenText( $"Clipmap Mesh: {vertexCount.KiloFormat()} verticies {(indexCount / 3).KiloFormat()} triangles", Vector2.One * 16 + Vector2.Up * 48, size: 16, flags: TextFlag.Left );
-	}
-
-	public override void EditorUpdate()
-	{
-
 	}
 
 	public enum DebugViewEnum

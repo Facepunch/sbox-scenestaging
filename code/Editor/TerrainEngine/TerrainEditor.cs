@@ -56,7 +56,7 @@ public class TerrainEditor
 		var selection = instance.Selection.FirstOrDefault();
 		if ( selection is not GameObject gameObject )
 			return false;
-		if ( !gameObject.TryGetComponent<Terrain>( out var terrain ) )
+		if ( !gameObject.Components.TryGet<Terrain>( out var terrain ) )
 			return false;
 
 		if ( terrain.RayIntersects( instance.Input.CursorRay, out var hitPosition ) && canvas.IsUnderMouse )

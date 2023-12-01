@@ -14,7 +14,7 @@ public class TerrainCollider : BaseComponent, BaseComponent.ExecuteInEditor
 
 	PhysicsBody _body;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _body == null );
 		Assert.NotNull( Scene, "Tried to create physics object but no scene" );
@@ -31,15 +31,15 @@ public class TerrainCollider : BaseComponent, BaseComponent.ExecuteInEditor
 		GenerateCollisionMesh();
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_body.Remove();
 		_body = null;
 	}
 
 	void GenerateCollisionMesh()
-	{
-		var terrain = GetComponent<Terrain>( false ); // Terrain component might be disabled
+	{	
+		var terrain = Components.Get<Terrain>( true ); // Terrain component might be disabled
 		if ( terrain == null )
 		{
 			Log.Warning( $"No TerrainComponent found on {this}" );
