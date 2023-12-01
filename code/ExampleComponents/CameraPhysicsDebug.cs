@@ -1,7 +1,7 @@
 using Sandbox;
 using System.Collections.Generic;
 
-public sealed class CameraPhysicsDebug : BaseComponent
+public sealed class CameraPhysicsDebug : BaseComponent, BaseComponent.ExecuteInEditor
 {
 	[Property] public int MaxPoints { get; set; } = 10000;
 	[Property] public int TracesPerFrame { get; set; } = 500;
@@ -9,8 +9,9 @@ public sealed class CameraPhysicsDebug : BaseComponent
 	[Range( 0, 10 )]
 	[Property] public float NormalLength { get; set; } = 2;
 	[Property] public TraceTypes TraceType { get; set; } = TraceTypes.Ray;
+	[Property] public bool Hitboxes { get; set; } = false;
 
-	public record struct Hitpoint( Vector3 Position, Vector3 Normal );
+	public record struct Hitpoint( Vector3 Position, Vector3 Normal, Color Tint );
 
 	public enum TraceTypes
 	{
@@ -26,34 +27,40 @@ public sealed class CameraPhysicsDebug : BaseComponent
 	{
 		for ( int i = 0; i < TracesPerFrame; i++ )
 		{
-			PhysicsTraceResult t = default;
+			SceneTraceResult t = default;
 			var start = Transform.Position;
 			var end = Transform.Position + Transform.Rotation.Forward * 1000 + Vector3.Random * 400;
 
 			if ( TraceType == TraceTypes.Ray )
 			{
-				t = Physics.Trace
+				t = Scene.Trace
 						.Ray( start, end )
+						.UseHitboxes( Hitboxes )
 						.Run();
 			}
 			else if (  TraceType == TraceTypes.Box )
 			{
-				t = Physics.Trace
+				t = Scene.Trace
 						.Ray( start, end )
 						.Size( new BBox( -10, 10 ) )
+						.UseHitboxes( Hitboxes )
 						.Run();
+
+
 			}
 			else if ( TraceType == TraceTypes.Sphere )
 			{
-				t = Physics.Trace
+				t = Scene.Trace
 						.Ray( start, end )
-						.Radius( 20 )
+						.Radius( 5 )
+						.UseHitboxes( Hitboxes )
 						.Run();
 			}
 
 			if ( t.Hit )
 			{
-				worldPoints.Add( new Hitpoint { Position = t.HitPosition, Normal = t.Normal } );
+				Color tint = Color.White;
+				worldPoints.Add( new Hitpoint { Position = t.EndPosition, Normal = t.Normal, Tint = tint } );
 			}
 
 
@@ -61,7 +68,7 @@ public sealed class CameraPhysicsDebug : BaseComponent
 
 		foreach ( var t in worldPoints )
 		{
-			Gizmo.Draw.Color = new Color( (t.Normal.x + 1) * 0.5f, (t.Normal.y + 1) * 0.5f, (t.Normal.z + 1) * 0.5f );
+			Gizmo.Draw.Color = t.Tint * new Color( (t.Normal.x + 1) * 0.5f, (t.Normal.y + 1) * 0.5f, (t.Normal.z + 1) * 0.5f );
 			Gizmo.Draw.Line( t.Position, t.Position + t.Normal * NormalLength );
 		}
 

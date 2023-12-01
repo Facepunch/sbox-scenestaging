@@ -79,12 +79,16 @@ public sealed partial class SkinnedModelRenderer
 	public Transform GetBoneTransform( in BoneCollection.Bone bone, in bool worldPosition )
 	{
 		if ( !SceneModel.IsValid() ) return global::Transform.Zero;
+		ArgumentNullException.ThrowIfNull( bone, nameof( bone ) );
+
 		return SceneModel.GetBoneWorldTransform( bone.Index );
 	}
 
 	public void SetBoneTransform( in BoneCollection.Bone bone, in Transform tx, in bool worldPosition )
 	{
 		if ( !SceneModel.IsValid() ) return;
+		ArgumentNullException.ThrowIfNull( bone, nameof( bone ) );
+
 		SceneModel.SetBoneWorldTransform( bone.Index, tx );
 	}
 

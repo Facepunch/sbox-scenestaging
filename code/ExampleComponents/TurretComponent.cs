@@ -81,7 +81,7 @@ public sealed class TurretComponent : BaseComponent
 			timeSincePrimary = 0;
 		}
 
-		var tr = Physics.Trace
+		var tr = Scene.Trace
 			.Ray( Muzzle.Transform.Position + Muzzle.Transform.Rotation.Forward * 50.0f, Muzzle.Transform.Position + Muzzle.Transform.Rotation.Forward * 4000 )
 			.Size( bbox )
 			//.Radius( 40 )

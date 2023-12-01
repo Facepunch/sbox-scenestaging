@@ -93,7 +93,7 @@ public sealed class NetworkTest : BaseComponent
 		var lookDir = pc.EyeAngles.ToRotation();
 		var eyePos = Transform.Position + Vector3.Up * 60;
 
-		var tr = Physics.Trace.WithoutTags( "player" ).Sphere( 16, eyePos, eyePos + lookDir.Forward * 100 ).Run();
+		var tr = Scene.Trace.WithoutTags( "player" ).Sphere( 16, eyePos, eyePos + lookDir.Forward * 100 ).Run();
 		if ( !tr.Hit ) return;
 
 		if ( tr.Body.GameObject is not GameObject go )
