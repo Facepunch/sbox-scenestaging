@@ -94,6 +94,9 @@ public partial class SceneViewWidget : Widget
 			Camera.AmbientLightColor = Color.Black;
 		}
 
+		var toolvis = EditorScene.GizmoInstance.GetValue<int>( "ToolsVisMode" );
+		Camera.Attributes.Set( "ToolsVisMode", EditorScene.GizmoInstance.GetValue<int>( "ToolsVisMode" ) );
+
 		SceneToolbar.SceneInstance = EditorScene.GizmoInstance;
 
 		if ( cameraTargetPosition is not null )
