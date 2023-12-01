@@ -540,7 +540,7 @@ public class ActionGraphView : GraphView
 
 		foreach ( var memberDesc in typeDesc.DeclaredMembers )
 		{
-			if ( !IsMemberPublic( memberDesc ) || memberDesc.IsStatic )
+			if ( !IsMemberPublic( memberDesc ) || memberDesc.IsStatic || memberDesc.IsActionGraphIgnored() )
 			{
 				continue;
 			}
