@@ -135,7 +135,7 @@ public record struct MethodNodeType( MethodDescription[] Methods ) : INodeType
 	{
 		Name = $"{(Methods[0].Title.Contains( '{' ) ? Methods[0].Name.ToTitleCase() : Methods[0].Title)}{(Methods[0].IsStatic ? " (static)" : "")}",
 		Description = Methods[0].Description,
-		Group = Methods[0].TypeDescription.Name,
+		Group = $"{Methods[0].TypeDescription.Name}:data_object",
 		Icon = Methods[0].Icon ?? (Methods[0].HasAttribute<PureAttribute>() ? "run_circle" : EditorNodeLibrary.CallMethod.DisplayInfo.Icon)
 	};
 
@@ -183,9 +183,9 @@ public record struct PropertyNodeType( PropertyDescription Property, PropertyNod
 {
 	public DisplayInfo DisplayInfo => new ()
 	{
-		Name = ReadWrite ? $"{Property.Title}/{Kind}" : $"{Property.Title} ({Kind})",
+		Name = ReadWrite ? $"{Property.Title}:storage/{Kind}" : $"{Property.Title} ({Kind})",
 		Description = Property.Description,
-		Group = Property.TypeDescription.Name,
+		Group = $"{Property.TypeDescription.Name}:data_object",
 		Icon = Property.Icon ?? (Kind == PropertyNodeKind.Get
 			? EditorNodeLibrary.GetProperty.DisplayInfo.Icon
 			: EditorNodeLibrary.SetProperty.DisplayInfo.Icon)
@@ -223,8 +223,8 @@ public record struct FieldNodeType( FieldDescription Field, PropertyNodeKind Kin
 {
 	public DisplayInfo DisplayInfo => new()
 	{
-		Name = ReadWrite ? $"{Field.Title}/{Kind}" : $"{Field.Title} ({Kind})",
-		Description = Field.Description,
+		Name = ReadWrite ? $"{Field.Title}:storage/{Kind}" : $"{Field.Title} ({Kind})",
+		Description = $"{Field.Description}:data_object",
 		Group = Field.TypeDescription.Name,
 		Icon = Field.Icon ?? (Kind == PropertyNodeKind.Get
 			? EditorNodeLibrary.GetProperty.DisplayInfo.Icon

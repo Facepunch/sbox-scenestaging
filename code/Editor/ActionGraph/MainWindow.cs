@@ -664,12 +664,12 @@ public class ActionGraphView : GraphView
 			yield return new VariableNodeType( variable.Name, variable.Type, PropertyNodeKind.Set, false, false );
 		}
 
-		foreach ( var nodeType in GetInstanceNodes( inputValueType ) )
+		foreach ( var nodeType in base.GetRelevantNodes( inputValueType, name ) )
 		{
 			yield return nodeType;
 		}
 
-		foreach ( var nodeType in base.GetRelevantNodes( inputValueType, name ) )
+		foreach ( var nodeType in GetInstanceNodes( inputValueType ) )
 		{
 			yield return nodeType;
 		}
