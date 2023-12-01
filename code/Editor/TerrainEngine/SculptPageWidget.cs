@@ -36,13 +36,13 @@ public class SculptPageWidget : Widget
 {
 	public SculptPageWidget( Widget parent ) : base( parent )
 	{
-		List<(string, string, Pixmap)> modes = new()
+		List<(string, Pixmap)> modes = new()
 		{
-			new( "Sculpt", "displacement_tool_push_pull.png", Pixmap.FromFile( $"hammer/displacement_tool_push_pull.png" ) ),
-			new( "Smooth", "displacement_tool_smooth.png", Pixmap.FromFile( $"hammer/displacement_tool_smooth.png" ) ),
-			new( "Flatten", "displacement_tool_flatten.png", Pixmap.FromFile( $"hammer/displacement_tool_flatten.png" ) ),
-			new( "Erode", "displacement_tool_erode.png", Pixmap.FromFile( $"hammer/displacement_tool_erode.png" ) ),
-			new( "Noise", "displacement_tool_noise.png", Pixmap.FromFile( $"hammer/displacement_tool_noise.png" ) ),
+			new( "Sculpt", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"Images/displacement_tool_push_pull.png" ) ) ),
+			new( "Smooth", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"Images/displacement_tool_smooth.png" ) ) ),
+			new( "Flatten", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"Images/displacement_tool_flatten.png" ) ) ),
+			new( "Erode", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"Images/displacement_tool_erode.png" ) ) ),
+			new( "Noise", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"Images/displacement_tool_noise.png" ) ) )
 		};
 
 		ListView modeList = new();
