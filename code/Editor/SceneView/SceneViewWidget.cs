@@ -116,18 +116,22 @@ public partial class SceneViewWidget : Widget
 
 		using ( EditorScene.GizmoInstance.Push() )
 		{
-			Cursor = Gizmo.HasHovered ? CursorShape.Finger : CursorShape.Arrow;
-
 			session.Scene.EditorTick();
 
-			if ( Gizmo.HasClicked && Gizmo.HasHovered )
+			// TODO: Clean all this shit up
+			if ( !Editor.TerrainEngine.TerrainEditor.Update( EditorScene.GizmoInstance, Camera, Renderer ) )
 			{
+				Cursor = Gizmo.HasHovered ? CursorShape.Finger : CursorShape.Arrow;
 
-			}
+				if ( Gizmo.HasClicked && Gizmo.HasHovered )
+				{
 
-			if ( Gizmo.HasClicked && !Gizmo.HasHovered )
-			{
-				Gizmo.Select();
+				}
+
+				if ( Gizmo.HasClicked && !Gizmo.HasHovered )
+				{
+					Gizmo.Select();
+				}
 			}
 		}
 

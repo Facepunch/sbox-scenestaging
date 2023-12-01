@@ -1,186 +1,101 @@
-﻿using Editor.EntityPrefabEditor;
-using Editor.Inspectors;
-using Sandbox.TerrainEngine;
-namespace Editor;
+﻿using Sandbox.TerrainEngine;
+using System;
 
-[CustomEditor( typeof( Terrain ) )]
-public class TerrainControlWidget : ControlWidget
+namespace Editor.TerrainEngine;
+
+public class TerrainEditor
 {
-	public TerrainControlWidget( SerializedProperty property ) : base( property )
+
+	public static Brush Brush { get; set; } = new();
+
+	public static void AddHeight( Terrain terrain, Vector3 pos, bool invert = false )
 	{
-		SetSizeMode( SizeMode.Default, SizeMode.Default );
+		// this should really interpolate, but just round to ints for now
+		int basex = (int)Math.Round( pos.x / terrain.TerrainResolutionInInches );
+		int basey = (int)Math.Round( pos.y / terrain.TerrainResolutionInInches );
 
-		Layout = Layout.Column();
-		Layout.Spacing = 2;
+		var radius = (int)Math.Round( Brush.Radius / terrain.TerrainResolutionInInches );
 
-		AcceptDrops = true;
-	}
+		var x1 = basex - radius;
+		var y1 = basey - radius;
+		var x2 = basex + radius;
+		var y2 = basey + radius;
 
-	protected override Vector2 SizeHint() => new Vector2( 10000, 22 );
+		var size = radius * 2;
 
-	protected override void OnContextMenu( ContextMenuEvent e )
-	{
-		var m = new Menu( this );
-
-		m.OpenAtCursor( true );
-	}
-
-	protected override void PaintControl()
-	{
-		var rect = LocalRect.Shrink( 6, 0 );
-		var component = SerializedProperty.GetValue<BaseComponent>();
-		var type = EditorTypeLibrary.GetType( SerializedProperty.PropertyType );
-
-		Paint.SetBrush( Theme.Red );
-		Paint.DrawRect( rect );
-
-/*		if ( component is null )
+		for ( var y = 0; y < size; ++y )
 		{
-			Paint.SetPen( Theme.ControlText.WithAlpha( 0.3f ) );
-			Paint.DrawIcon( rect, type?.Icon, 14, TextFlag.LeftCenter );
-			rect.Left += 22;
-			Paint.DrawText( rect, $"None ({type?.Name})", TextFlag.LeftCenter );
-			Cursor = CursorShape.None;
+			for ( var x = 0; x < size; ++x )
+			{
+				var brushWidth = Brush.Texture.Width;
+				var brushHeight = Brush.Texture.Height;
+
+				var brushX = (brushWidth / size) * x;
+				var brushY = (brushHeight / size) * y;
+
+				var brushPix = Brush.Pixels[brushY * brushHeight + brushX];
+
+				float brushValue = ((float)brushPix.r / 255.0f);
+				var value = (int)Math.Round( brushValue * Brush.Strength );
+
+				if ( invert ) value = -value;
+
+				var height = terrain.TerrainData.GetHeight( x1 + x, y1 + y );
+				terrain.TerrainData.SetHeight( x1 + x, y1 + y, (ushort)(height + value) );
+			}
 		}
-		else
+	}
+
+	public static bool Update( Gizmo.Instance instance, SceneCamera camera, Widget canvas )
+	{
+		// poo emoji
+		_previewObject?.Delete();
+		_previewObject = default;
+
+		// Only do stuff if we have a terrain selected, this is like a special control mode
+		var selection = instance.Selection.FirstOrDefault();
+		if ( selection is not GameObject gameObject )
+			return false;
+		if ( !gameObject.TryGetComponent<Terrain>( out var terrain ) )
+			return false;
+
+		if ( terrain.RayIntersects( instance.Input.CursorRay, out var hitPosition ) && canvas.IsUnderMouse )
 		{
-			Paint.SetPen( Theme.Green );
-			Paint.DrawIcon( rect, type?.Icon, 14, TextFlag.LeftCenter );
-			rect.Left += 22;
-			Paint.DrawText( rect, $"{component.GetType()} (on {component.GameObject.Name})", TextFlag.LeftCenter );
-			Cursor = CursorShape.Finger;
-		}*/
-	}
-}
+			DrawBrushPreview( instance, new Transform( hitPosition ) );
 
-file class TextureWidget : Widget
-{
-	Pixmap pixmap;
+			if ( Application.MouseButtons.HasFlag( MouseButtons.Left ) )
+			{
+				AddHeight( terrain, hitPosition, Application.KeyboardModifiers.HasFlag( KeyboardModifiers.Ctrl ) );
+				terrain.SyncHeightMap();
+			}
 
-	public TextureWidget( Pixmap pixmap, Widget parent ) : base( parent )
-	{
-		this.pixmap = pixmap;
-	}
-
-	protected override void OnPaint()
-	{
-		base.OnPaint();
-
-		Paint.Antialiasing = true;
-
-		Paint.ClearPen();
-		// Paint.SetBrush( Theme.Red );
-		Paint.DrawRect( LocalRect );
-
-		Paint.Draw( LocalRect.Contain( pixmap.Size ), pixmap );
-	}
-}
-
-struct BrushData
-{
-	public string Name;
-	public Texture Texture;
-	public Pixmap Pixmap;
-}
-
-[CustomEditor( typeof( Terrain ) )]
-public class TerrainWidget : CustomComponentWidget
-{
-	public TerrainWidget( SerializedObject obj ) : base( obj )
-	{
-		SetSizeMode( SizeMode.Default, SizeMode.Default );
-
-		Layout = Layout.Column();
-		Layout.Spacing = 8;
-
-		var tabs = Layout.Add( new TabWidget( this ) );
-		tabs.AddPage( "Sculpt", "construction", SculptPage() );
-		tabs.AddPage( "Paint", "brush", new Widget( this ) );
-		tabs.AddPage( "Settings", "settings", SettingsPage() );
-	}
-
-	Widget SculptPage()
-	{
-		var container = new Widget( null );
-
-		List<BrushData> brushes = new();
-		foreach ( var filename in FileSystem.Content.FindFile( "Brushes", "*.png" ) )
-		{
-			BrushData data = new BrushData();
-			data.Name = System.IO.Path.GetFileNameWithoutExtension( filename );
-			data.Texture = Texture.Load( FileSystem.Content, $"Brushes/{filename}" );
-			data.Pixmap = Pixmap.FromFile( FileSystem.Content.GetFullPath( $"Brushes/{filename}" ) );
-			brushes.Add( data );
+			return true;
 		}
-
-		ListView list = new();
-		list.MaximumHeight = 80;
-		list.SetItems( brushes.Cast<object>() );
-		list.ItemSize = new Vector2( 48, 64 );
-		list.OnPaintOverride += () => PaintListBackground( list );
-		list.ItemPaint = PaintBrushItem;
-		list.ItemSelected = ( item ) => { if ( item is BrushData data ) SerializedObject.GetProperty( "Brush" ).SetValue( data.Name ); };
-
-		Layout.Add( list );
-
-		container.Layout = Layout.Column();
-		container.Layout.Spacing = 8;
-		// container.Layout.Add( new InformationBox( "Left click to raise.\n\nHold shift and left click to lower." ) );
-		container.Layout.Add( list );
-
-		var cs = new ControlSheet();
-
-		var radius = SerializedObject.GetProperty( "BrushRadius" );
-		if ( radius != null ) cs.AddRow( radius );
-
-		var strength = SerializedObject.GetProperty( "BrushStrength" );
-		if ( strength != null ) cs.AddRow( strength );
-
-		container.Layout.Add( cs );
-
-		return container;
-	}
-
-	Widget SettingsPage()
-	{
-		var container = new Widget( null );
-
-		var sheet = new ControlSheet();
-		sheet.AddObject( SerializedObject );
-
-		container.Layout = Layout.Column();
-		container.Layout.Add( sheet );
-
-		var warning = new WarningBox( "Heightmaps must use a single channel and be either 8 or 16 bit. Resolution must be power of two." );
-		container.Layout.Add( warning );
-		container.Layout.Add( new Button( "Import Heightmap" ) );
-
-		return container;
-	}
-
-	private bool PaintListBackground( Widget widget )
-	{
-		Paint.ClearPen();
-		Paint.SetBrush( Theme.ControlBackground );
-		Paint.DrawRect( widget.LocalRect );
 
 		return false;
 	}
 
-	private void PaintBrushItem( VirtualWidget widget )
-	{
-		var brush = (BrushData)widget.Object;
+	static BrushPreviewSceneObject _previewObject;
 
-		if ( widget.Hovered || widget.Selected )
+	static void DrawBrushPreview( Gizmo.Instance instance, Transform transform )
+	{
+		if ( _previewObject == null )
 		{
-			Paint.ClearPen();
-			Paint.SetBrush( widget.Selected ? Theme.Selection.WithAlpha( 0.8f ) : Color.White.WithAlpha( 0.1f ) );
-			Paint.DrawRect( widget.Rect.Grow( 2 ), 3 );
+			_previewObject = new BrushPreviewSceneObject( instance.World ); // Not cached, FindOrCreate is internal :x
 		}
 
-		Paint.Draw( widget.Rect.Shrink( 0, 0, 0, 16 ), brush.Pixmap );
+		var color = Color.White;
 
-		Paint.SetPen( Theme.White.WithAlpha( 0.7f ) );
-		Paint.DrawText( widget.Rect, brush.Name, TextFlag.CenterBottom );
+		if ( Application.KeyboardModifiers.HasFlag( KeyboardModifiers.Ctrl ) )
+			color = Color.Red;
+
+		color.a = Brush.Strength / 100.0f;
+
+		_previewObject.RenderLayer = SceneRenderLayer.OverlayWithDepth;
+		_previewObject.Bounds = new BBox( 0, float.MaxValue );
+		_previewObject.Transform = transform;
+		_previewObject.Radius = Brush.Radius;
+		_previewObject.Texture = Brush.Texture;
+		_previewObject.Color = Application.KeyboardModifiers.HasFlag( KeyboardModifiers.Ctrl ) ? Color.Red : Color.White;
 	}
 }

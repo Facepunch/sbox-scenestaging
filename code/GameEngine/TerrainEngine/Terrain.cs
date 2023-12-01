@@ -25,6 +25,8 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 
 	[Property, Category( "Debug" )] public DebugViewEnum DebugView { get; set; } = DebugViewEnum.None;
 
+	[Property] public bool CastShadows { get; set; } = true;
+
 	Model _model;
 
 	int vertexCount = 0;
@@ -57,7 +59,7 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 
 	public bool RayIntersects( Ray ray, out Vector3 position )
 	{
-		var raycastDistance = 10000.0f;
+		var raycastDistance = 20000.0f;
 		for ( var distance = 0.0f; distance <= raycastDistance; distance += 0.1f )
 		{
 			var currentPoint = ray.Position + ray.Forward * distance;
@@ -87,10 +89,10 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 
 		if ( _heightmap == null )
 		{
-			_heightmap = Texture.Create( TerrainData.HeightMapWidth, TerrainData.HeightMapHeight, ImageFormat.R16 )
+			_heightmap = Texture.Create( TerrainData.HeightMapSize, TerrainData.HeightMapSize, ImageFormat.R16 )
 				.WithData( new ReadOnlySpan<ushort>( TerrainData.HeightMap ) )
-				.WithDynamicUsage() // maybe
-				.WithUAVBinding() // compute mips?
+				.WithDynamicUsage()
+				.WithUAVBinding() // if we want to compute mips
 				.WithName( "terrain_heightmap" )
 				.Finish();
 			return;
@@ -99,8 +101,6 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 		// TODO: We could update only the dirty region, but this seems reasonable at least on 513x513
 		_heightmap.Update( new ReadOnlySpan<ushort>( TerrainData.HeightMap ) );
 	}
-
-	BrushPreviewSceneObject _brushSceneObject;
 
 	public override void OnEnabled()
 	{
@@ -120,12 +120,6 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject.Batchable = false;
 		_sceneObject.Flags.CastShadows = false;
 
-		_brushSceneObject = new BrushPreviewSceneObject( Scene.SceneWorld );
-		_brushSceneObject.Batchable = false;
-		_brushSceneObject.Flags.CastShadows = false;
-
-		Brush = "circle0";
-
 		SyncHeightMap();
 	}
 
@@ -133,9 +127,6 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 	{
 		_sceneObject?.Delete();
 		_sceneObject = null;
-
-		_brushSceneObject?.Delete();
-		_brushSceneObject = null;
 	}
 
 	protected override void OnPreRender()
@@ -153,23 +144,15 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 
 	public override void DrawGizmos()
 	{
+		if ( Gizmo.IsSelected )
+		{
+			Gizmo.Draw.Color = Color.White.WithAlpha( 0.4f );
+			Gizmo.Draw.LineBBox( Bounds );
+		}
+
 		if ( RayIntersects( Gizmo.CurrentRay, out var hitPosition ) )
 		{
 			Gizmo.Hitbox.TrySetHovered( hitPosition );
-
-			Gizmo.Draw.Color = Color.White;
-
-			_brushSceneObject.Radius = BrushRadius * TerrainResolutionInInches;
-			_brushSceneObject.Transform = new Transform( hitPosition );
-			_brushSceneObject.Texture = BrushTexture;
-
-			if ( Gizmo.IsPressed )
-			{
-
-				Gizmo.Draw.ScreenText( "pressed", Vector2.One * 16 );
-				AddHeight( hitPosition );
-				SyncHeightMap();
-			}
 		}
 
 		//Gizmo.Draw.ScreenText( $"Terrain Size: {HeightMap.Width * TerrainResolutionInInches} x {HeightMap.Height * TerrainResolutionInInches} ( {(HeightMap.Width * TerrainResolutionInInches).InchToMeter()}m² )", Vector2.One * 16, size: 16, flags: TextFlag.Left );
@@ -193,12 +176,8 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 	{
 		get
 		{
-			if ( _sceneObject is not null )
-			{
-				return _sceneObject.Bounds;
-			}
-
-			return new BBox( Transform.Position, 16 );
+			var size = new Vector3( TerrainData.HeightMapSize * TerrainResolutionInInches, TerrainData.HeightMapSize * TerrainResolutionInInches, MaxHeightInInches );
+			return new BBox( Vector3.Zero, Transform.Position + size );
 		}
 	}
 }

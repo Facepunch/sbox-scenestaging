@@ -1,4 +1,6 @@
-﻿namespace Sandbox.TerrainEngine;
+﻿using System.Text.Json.Serialization;
+
+namespace Sandbox.TerrainEngine;
 
 /// <summary>
 /// The TerrainData class stores heightmaps, splatmaps, etc.
@@ -10,53 +12,66 @@
 // [GameResource( "Terrain Data", "terrain", "Full of grass" )]
 public class TerrainData // : GameResource
 {
+	//
+	// Serializable in the best formats for precision
+	//
 	public ushort[] HeightMap { get; set; }
 
-	public int HeightMapWidth { get; set; }
-	public int HeightMapHeight { get; set; }
+	public int HeightMapSize { get; set; }
 
 	public float MaxHeight { get; set; }
 
+	// This might be a trap design, should be more generic layers?
+	public ushort[] ControlMap { get; set; }
+
+	//
+	// Public non-serializable
+	//
+
+	[JsonIgnore]
+	public Texture HeightmapTexture { get; private set; }
+
 	public TerrainData()
 	{
-		HeightMapWidth = 513;
-		HeightMapHeight = 513;
-		HeightMap = new ushort[HeightMapWidth * HeightMapHeight];
+		SetSize( 513 );
+
 		MaxHeight = 1024.0f;
 	}
 
-	public void SetSize( int width, int height )
+	public void SetSize( int size )
 	{
-		HeightMap = new ushort[width * height];
+		HeightMap = new ushort[size * size];
+		HeightMapSize = size;
 	}
 
 	public void SetHeight( int x, int y, ushort value )
 	{
-		var index = y * HeightMapWidth + x;
+		var index = y * HeightMapSize + x;
 		if ( index < 0 || index >= HeightMap.Length )
 		{
 			return;
 		}
 
-		HeightMap[y * HeightMapWidth + x] = value;
+		HeightMap[y * HeightMapSize + x] = value;
 	}
 
 	public bool InRange( int x, int y )
 	{
-		if ( x < 0 || x >= HeightMapWidth ) return false;
-		if ( y < 0 || y >= HeightMapHeight ) return false;
+		if ( x < 0 || x >= HeightMapSize ) return false;
+		if ( y < 0 || y >= HeightMapSize ) return false;
 		return true;
 	}
 
 	public ushort GetHeight( int x, int y )
 	{
-		var index = y * HeightMapWidth + x;
+		var index = y * HeightMapSize + x;
 		if ( index < 0 || index >= HeightMap.Length )
 		{
 			return 0;
 		}
 
-		return HeightMap[y * HeightMapWidth + x];
+		return HeightMap[y * HeightMapSize + x];
+	}
 
 	/// <summary>
 	/// Pass texel units, returns a normalized float.
@@ -83,5 +98,26 @@ public class TerrainData // : GameResource
 
 		return interpolatedValue;
 	}
+
+	public float GetHeightF( int x, int y )
+	{
+		return 0.0f;
+	}
+
+	public void SetHeight( int x, int y, float value )
+	{
+
+	}
+
+	// TerrainData.ImportExport.cs
+
+	public void ImportHeightmap()
+	{
+
+	}
+
+	public void ExportHeightmap()
+	{
+
 	}
 }

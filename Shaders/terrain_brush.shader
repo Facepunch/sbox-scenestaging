@@ -80,6 +80,7 @@ PS
 	CreateTexture2D( g_tBrush ) < Attribute( "Brush" ); SrgbRead( false ); Filter( MIN_MAG_MIP_POINT ); AddressU( WRAP ); AddressV( WRAP ); >;
 
 	float g_flRadius < Attribute( "Radius" ); Default( 16.0f ); >;
+	float4 g_flColor < Attribute( "Color" ); >;
 
 	#define COLOR_WRITE_ALREADY_SET
 	RenderState( ColorWriteEnable0, RGB );
@@ -142,7 +143,10 @@ PS
 			float3 localPos = i.DecalOrigin - vPositionWs;
 			float2 uv = float2( localPos.x, -localPos.y ) / ( 2 * g_flRadius ) - float2( 0.5, 0.5 );
 
-			return float4( 0.2, 0.2, 0.8, Tex2D( g_tBrush, uv ).r );
+			float opacity = Tex2D( g_tBrush, uv ).r;
+			float4 color = float4( g_flColor.xyz, g_flColor.w * opacity );
+
+			return color;
 		}
 
 		clip( -1 );
