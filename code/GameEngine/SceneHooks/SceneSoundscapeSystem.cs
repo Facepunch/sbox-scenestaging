@@ -1,11 +1,11 @@
 ﻿namespace Sandbox;
 
 /// <summary>
-/// Ticks the physics in FrameStage.PhysicsStep
+/// Implements logic for the SoundScape system
 /// </summary>
-class SceneSoundscapeHook : SceneHook
+class SceneSoundscapeSystem : GameObjectSystem
 {
-	public SceneSoundscapeHook( Scene scene ) : base( scene )
+	public SceneSoundscapeSystem( Scene scene ) : base( scene )
 	{
 		Listen( Stage.UpdateBones, 0, Update, "TickSoundScapes" );
 	}

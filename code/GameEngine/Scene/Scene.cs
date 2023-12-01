@@ -37,7 +37,7 @@ public partial class Scene : GameObject
 		PhysicsWorld.SimulationMode = PhysicsSimulationMode.Continuous;
 
 		UpdateFromPackage( Game.Menu?.Package );
-		InitHooks();
+		InitSystems();
 
 		Event.Register( this );
 	}
@@ -50,7 +50,7 @@ public partial class Scene : GameObject
 	public override void Destroy()
 	{
 		Clear();
-		ShutdownHooks();
+		ShutdownSystems();
 	}
 
 

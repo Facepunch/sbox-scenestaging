@@ -62,7 +62,7 @@ public partial class Scene : GameObject
 		if ( IsEditor )
 		{
 			Update();
-			Signal( SceneHook.Stage.UpdateBones );
+			Signal( GameObjectSystem.Stage.UpdateBones );
 		}
 
 		ProcessDeletes();
@@ -105,7 +105,7 @@ public partial class Scene : GameObject
 			SceneNetworkUpdate();
 
 			Update();
-			Signal( SceneHook.Stage.UpdateBones );
+			Signal( GameObjectSystem.Stage.UpdateBones );
 
 			ProcessDeletes();
 		}
@@ -118,7 +118,7 @@ public partial class Scene : GameObject
 
 		using ( Sandbox.Utility.Superluminal.Scope( "Scene.FixedUpdate", Color.Cyan ) )
 		{
-			Signal( SceneHook.Stage.PhysicsStep );
+			Signal( GameObjectSystem.Stage.PhysicsStep );
 
 
 

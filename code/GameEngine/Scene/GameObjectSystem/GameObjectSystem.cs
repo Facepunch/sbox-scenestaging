@@ -5,13 +5,13 @@
 /// is hooked into the scene's lifecycle, 
 /// and is disposed when the scene is disposed.
 /// </summary>
-public abstract class SceneHook : IDisposable
+public abstract class GameObjectSystem : IDisposable
 {
 	public Scene Scene { get; private set; }
 
 	List<IDisposable> disposables = new List<IDisposable>();
 
-	public SceneHook( Scene scene )
+	public GameObjectSystem( Scene scene )
 	{
 		Scene = scene;
 	}

@@ -2,12 +2,12 @@
 
 public partial class Scene
 {
-	List<SceneHook> systems = new List<SceneHook>();
+	List<GameObjectSystem> systems = new List<GameObjectSystem>();
 
 	/// <summary>
 	/// Call dispose on all installed hooks
 	/// </summary>
-	void ShutdownHooks()
+	void ShutdownSystems()
 	{
 		foreach( var sys in systems )
 		{
@@ -20,34 +20,34 @@ public partial class Scene
 	/// <summary>
 	/// Find all types of SceneHook, create an instance of each one and install it.
 	/// </summary>
-	void InitHooks()
+	void InitSystems()
 	{
-		ShutdownHooks();
+		ShutdownSystems();
 
-		var found = TypeLibrary.GetTypes<SceneHook>()
+		var found = TypeLibrary.GetTypes<GameObjectSystem>()
 			.Where( x => !x.IsAbstract )
 			.ToArray();
 
 		foreach( var f in found )
 		{
-			systems.Add( f.Create<SceneHook>( new object[] { this } ) );
+			systems.Add( f.Create<GameObjectSystem>( new object[] { this } ) );
 		}
 	}
 
 	/// <summary>
 	/// Signal a hook stage
 	/// </summary>
-	private void Signal( SceneHook.Stage stage )
+	private void Signal( GameObjectSystem.Stage stage )
 	{
-		GetHooks( stage ).Run();
+		GetCallbacks( stage ).Run();
 	}
 
-	Dictionary<SceneHook.Stage, TimedCallbackList> listeners = new Dictionary<SceneHook.Stage, TimedCallbackList>();
+	Dictionary<GameObjectSystem.Stage, TimedCallbackList> listeners = new Dictionary<GameObjectSystem.Stage, TimedCallbackList>();
 
 	/// <summary>
 	/// Get the hook container for this stage
 	/// </summary>
-	TimedCallbackList GetHooks( SceneHook.Stage stage )
+	TimedCallbackList GetCallbacks( GameObjectSystem.Stage stage )
 	{
 		if ( listeners.TryGetValue( stage, out var list ) )
 			return list;
@@ -60,8 +60,8 @@ public partial class Scene
 	/// <summary>
 	/// Call this method on this stage. This returns a disposable that will remove the hook when disposed.
 	/// </summary>
-	public IDisposable AddHook( SceneHook.Stage stage, int order, Action action, string className, string description )
+	public IDisposable AddHook( GameObjectSystem.Stage stage, int order, Action action, string className, string description )
 	{
-		return GetHooks( stage ).Add( order, action, className, description );
+		return GetCallbacks( stage ).Add( order, action, className, description );
 	}
 }

@@ -1,8 +1,8 @@
 ﻿namespace Sandbox;
 
-public class SceneAnimationHook : SceneHook
+public class SceneAnimationSystem : GameObjectSystem
 {
-	public SceneAnimationHook( Scene scene ) : base( scene )
+	public SceneAnimationSystem( Scene scene ) : base( scene )
 	{
 		Listen( Stage.UpdateBones, 0, UpdateAnimation, "UpdateAnimation" );
 	}

@@ -3,9 +3,9 @@
 /// <summary>
 /// Ticks the physics in FrameStage.PhysicsStep
 /// </summary>
-class ScenePhysicsHook : SceneHook
+class ScenePhysicsSystem : GameObjectSystem
 {
-	public ScenePhysicsHook( Scene scene ) : base( scene )
+	public ScenePhysicsSystem( Scene scene ) : base( scene )
 	{
 		Listen( Stage.PhysicsStep, 0, UpdatePhysics, "UpdatePhysics" );
 	}
