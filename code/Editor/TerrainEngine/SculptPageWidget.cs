@@ -38,11 +38,11 @@ public class SculptPageWidget : Widget
 	{
 		List<(string, Pixmap)> modes = new()
 		{
-			new( "Sculpt", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"Images/displacement_tool_push_pull.png" ) ) ),
-			new( "Smooth", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"Images/displacement_tool_smooth.png" ) ) ),
-			new( "Flatten", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"Images/displacement_tool_flatten.png" ) ) ),
-			new( "Erode", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"Images/displacement_tool_erode.png" ) ) ),
-			new( "Noise", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"Images/displacement_tool_noise.png" ) ) )
+			new( "Sculpt", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"materials/tools/terrain/sculpt_raise_lower.png" ) ) ),
+			new( "Smooth", Pixmap.FromFile(  FileSystem.Content.GetFullPath( $"materials/tools/terrain/sculpt_smooth.png" ) ) ),
+			new( "Flatten", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"materials/tools/terrain/sculpt_flatten.png" ) ) ),
+			new( "Erode", Pixmap.FromFile( FileSystem.Content.GetFullPath($"materials/tools/terrain/sculpt_erode.png") ) ),
+			new( "Noise", Pixmap.FromFile( FileSystem.Content.GetFullPath( $"materials/tools/terrain/sculpt_noise.png" ) ) )
 		};
 
 		ListView modeList = new();
@@ -75,7 +75,7 @@ public class SculptPageWidget : Widget
 
 	private void PaintModeItem( VirtualWidget widget )
 	{
-		var mode = ((string, string, Pixmap))widget.Object;
+		var mode = ((string, Pixmap))widget.Object;
 
 		Paint.ClearPen();
 		Paint.ClearBrush();
@@ -90,9 +90,10 @@ public class SculptPageWidget : Widget
 			Paint.DrawRect( widget.Rect.Grow( 2 ), 3 );
 		}
 
-		Paint.Draw( widget.Rect.Shrink( 0, 0, 0, 16 ).Contain( mode.Item3.Size ), mode.Item3, widget.Selected ? 1.0f : 0.5f );
+		Paint.Draw( widget.Rect.Shrink( 0, 0, 0, 16 ).Contain( mode.Item2.Size ), mode.Item2, widget.Selected ? 1.0f : 0.5f );
 
 		Paint.SetPen( Theme.White.WithAlpha( widget.Selected ? 1.0f : 0.7f ) );
 		Paint.DrawText( widget.Rect.Shrink( 0, 0, 0, 2 ), mode.Item1, TextFlag.CenterBottom );
 	}
+
 }
