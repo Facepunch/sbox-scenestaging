@@ -144,7 +144,7 @@ PS
 			float2 uv = float2( localPos.x, -localPos.y ) / ( 2 * g_flRadius ) - float2( 0.5, 0.5 );
 
 			float opacity = Tex2D( g_tBrush, uv ).r;
-			float4 color = float4( g_flColor.xyz, g_flColor.w * opacity );
+			float4 color = float4( g_flColor.rgb, g_flColor.a * opacity );
 
 			return color;
 		}

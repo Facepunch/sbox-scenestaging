@@ -5,10 +5,10 @@ public class Brush
 	public Texture Texture { get; private set; }
 	public Color32[] Pixels { get; private set; }
 
-	[Range( 1, 1024 )]
-	[Property] public int Radius { get; set; } = 128;
-	[Range( 0, 100.0f )]
-	[Property] public float Strength { get; set; } = 100.0f;
+	[Range( 8, 1024 )]
+	[Property] public int Size { get; set; } = 512;
+	[Range( 0, 1.0f, 0.01f )]
+	[Property] public float Opacity { get; set; } = 1.0f;
 
 	public void Set( string name )
 	{

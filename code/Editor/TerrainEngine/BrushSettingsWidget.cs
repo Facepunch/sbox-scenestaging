@@ -8,6 +8,8 @@ file class TextureWidget : Widget
 	public TextureWidget( Pixmap pixmap, Widget parent ) : base( parent )
 	{
 		this.pixmap = pixmap;
+
+		this.MinimumSize = new Vector2( 96, 96 );
 	}
 
 	protected override void OnPaint()
@@ -46,7 +48,7 @@ class BrushSettingsWidget : Widget
 		}
 
 		ListView list = new();
-		list.MaximumHeight = 80;
+		list.MaximumHeight = 96;
 		list.SetItems( brushes.Cast<object>() );
 		list.ItemSize = new Vector2( 32, 32 );
 		list.OnPaintOverride += () => PaintListBackground( list );
@@ -55,40 +57,27 @@ class BrushSettingsWidget : Widget
 
 		Layout = Layout.Column();
 
-		Layout.Add( new Label( "Brushes" ) );
+		var label = new Label( "Brushes" );
+		label.SetStyles( "font-weight: bold" );
+		Layout.Add( label );
+
+		Layout.AddSpacingCell( 8 );
 
 		var two = Layout.Row();
 
-		two.Add( new Label( "current" ) );
+		two.Add( new TextureWidget( brushes.First().Pixmap, this ) );
 		two.Add( list );
 
 		Layout.Add( two );
 
-		var brush = EditorUtility.GetSerializedObject( TerrainEditor.Brush );
-
-		Log.Info( $"brush type: {brush.TypeName}" );
-
-		foreach( var prop in brush )
-		{
-			Log.Info( $"\t{prop.Name} - {prop.PropertyType}" );
-		}
-
-		var radius = brush.GetProperty( nameof( Brush.Radius ) );
-
-		Log.Info( $"radius: { radius.Name } { radius.PropertyType }" );
+		// var brush = EditorUtility.GetSerializedObject( TerrainEditor.Brush );
+		var brush = EditorTypeLibrary.GetSerializedObject( TerrainEditor.Brush );
 
 		var cs = new ControlSheet();
-
-		// var radius = brush.GetProperty( nameof( Brush.Radius ) );
-		Log.Info( $"source line: {radius.SourceLine} iseditable={radius.IsEditable}" );
-
-		cs.AddRow( brush.GetProperty( nameof( Brush.Radius ) ) );
-		cs.AddRow( brush.GetProperty( nameof( Brush.Strength ) ) );
+		cs.AddRow( brush.GetProperty( "Size" ) );
+		cs.AddRow( brush.GetProperty( "Opacity" ) );
 
 		Layout.Add( cs );
-
-
-		// Layout.Add
 	}
 
 	private void PaintBrushItem( VirtualWidget widget )

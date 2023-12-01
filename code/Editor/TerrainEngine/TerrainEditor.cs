@@ -14,7 +14,7 @@ public class TerrainEditor
 		int basex = (int)Math.Round( pos.x / terrain.TerrainResolutionInInches );
 		int basey = (int)Math.Round( pos.y / terrain.TerrainResolutionInInches );
 
-		var radius = (int)Math.Round( Brush.Radius / terrain.TerrainResolutionInInches );
+		var radius = (int)Math.Round( Brush.Size / terrain.TerrainResolutionInInches );
 
 		var x1 = basex - radius;
 		var y1 = basey - radius;
@@ -36,7 +36,7 @@ public class TerrainEditor
 				var brushPix = Brush.Pixels[brushY * brushHeight + brushX];
 
 				float brushValue = ((float)brushPix.r / 255.0f);
-				var value = (int)Math.Round( brushValue * Brush.Strength );
+				var value = (int)Math.Round( brushValue * Brush.Opacity );
 
 				if ( invert ) value = -value;
 
@@ -89,13 +89,13 @@ public class TerrainEditor
 		if ( Application.KeyboardModifiers.HasFlag( KeyboardModifiers.Ctrl ) )
 			color = Color.Red;
 
-		color.a = Brush.Strength / 100.0f;
+		color.a = Brush.Opacity;
 
 		_previewObject.RenderLayer = SceneRenderLayer.OverlayWithDepth;
 		_previewObject.Bounds = new BBox( 0, float.MaxValue );
 		_previewObject.Transform = transform;
-		_previewObject.Radius = Brush.Radius;
+		_previewObject.Radius = Brush.Size;
 		_previewObject.Texture = Brush.Texture;
-		_previewObject.Color = Application.KeyboardModifiers.HasFlag( KeyboardModifiers.Ctrl ) ? Color.Red : Color.White;
+		_previewObject.Color = color;
 	}
 }
