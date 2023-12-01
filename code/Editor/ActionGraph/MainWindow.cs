@@ -514,6 +514,19 @@ public class ActionGraphView : GraphView
 		return memberDesc.GetCustomAttribute<PropertyAttribute>() is { };
 	}
 
+	private static int MemberTypeOrdinal( MemberDescription memberDesc )
+	{
+		switch ( memberDesc )
+		{
+			case FieldDescription:
+			case PropertyDescription:
+				return 0;
+
+			default:
+				return 1;
+		}
+	}
+
 	private static IEnumerable<INodeType> GetInstanceNodes( Type type )
 	{
 		if ( type == null )
@@ -538,7 +551,7 @@ public class ActionGraphView : GraphView
 
 		var methods = new List<MethodDescription>();
 
-		foreach ( var memberDesc in typeDesc.DeclaredMembers )
+		foreach ( var memberDesc in typeDesc.DeclaredMembers.OrderBy( MemberTypeOrdinal ).ThenBy( x => x.Name ) )
 		{
 			if ( !IsMemberPublic( memberDesc ) || memberDesc.IsStatic || memberDesc.IsActionGraphIgnored() )
 			{
@@ -651,9 +664,7 @@ public class ActionGraphView : GraphView
 			yield return new VariableNodeType( variable.Name, variable.Type, PropertyNodeKind.Set, false, false );
 		}
 
-		foreach ( var nodeType in GetInstanceNodes( inputValueType )
-			.OrderBy( x => x.DisplayInfo.Group )
-			.ThenBy( x => x.DisplayInfo.Name ) )
+		foreach ( var nodeType in GetInstanceNodes( inputValueType ) )
 		{
 			yield return nodeType;
 		}
