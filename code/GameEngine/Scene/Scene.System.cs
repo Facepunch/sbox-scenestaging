@@ -64,4 +64,20 @@ public partial class Scene
 	{
 		return GetCallbacks( stage ).Add( order, action, className, description );
 	}
+
+	/// <summary>
+	/// Get a specific system
+	/// </summary>
+	public T GetSystem<T>() where T: GameObjectSystem
+	{
+		return systems.OfType<T>().FirstOrDefault();
+	}
+
+	/// <summary>
+	/// Get a specific system
+	/// </summary>
+	public void GetSystem<T>( out T val ) where T : GameObjectSystem
+	{
+		val = systems.OfType<T>().FirstOrDefault();
+	}
 }
