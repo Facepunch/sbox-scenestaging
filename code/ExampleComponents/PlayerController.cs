@@ -62,6 +62,7 @@ public class PlayerController : BaseComponent, INetworkSerializable
 		if ( AnimationHelper is not null )
 		{
 			AnimationHelper.WithVelocity( cc.Velocity );
+			AnimationHelper.WithWishVelocity( WishVelocity );
 			AnimationHelper.IsGrounded = cc.IsOnGround;
 			AnimationHelper.FootShuffle = rotateDifference;
 			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
