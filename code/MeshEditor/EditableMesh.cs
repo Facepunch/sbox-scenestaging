@@ -381,7 +381,7 @@ public class EditableMesh
 			center += CalculateCenter( part );
 		}
 
-		return center / Selection.Count();
+		return center / parts.Count();
 	}
 
 	public BBox CalculateBounds( MeshPart part )
