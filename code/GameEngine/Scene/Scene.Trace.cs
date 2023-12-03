@@ -2,37 +2,62 @@
 
 public partial class Scene : GameObject
 {
-	public SceneTraceBuilder Trace => new SceneTraceBuilder( this );
+	public SceneTrace Trace => new SceneTrace( this );
 
+
+	internal SceneTraceResult RunTrace( in SceneTrace trace )
+	{
+		var physicsResult = trace.PhysicsTrace.Run();
+		SceneTraceResult sceneResult = SceneTraceResult.From( this, physicsResult );
+
+		// pool me
+		List<SceneTraceResult> results = new List<SceneTraceResult>();
+		results.Add( sceneResult );
+
+		foreach ( var system in systems )
+		{
+			if ( system is GameObjectSystem.ITraceProvider traceProvider )
+			{
+				traceProvider.DoTrace( trace, results );
+			}
+		}
+
+		foreach ( var result in results.OrderBy( x => x.Fraction ) )
+		{
+			return result;
+		}
+
+		return sceneResult;
+	}
 }
 
 
-public partial struct SceneTraceBuilder
+public partial struct SceneTrace
 {
 	Scene scene;
-	PhysicsTraceBuilder physicsTrace;
-	bool hitboxes;
+	public PhysicsTraceBuilder PhysicsTrace;
+	public bool IncludeHitboxes;
 
-	internal SceneTraceBuilder( Scene scene )
+	internal SceneTrace( Scene scene )
 	{
 		this.scene = scene;
-		physicsTrace = GameManager.ActiveScene.PhysicsWorld.Trace;
+		PhysicsTrace = GameManager.ActiveScene.PhysicsWorld.Trace;
 	}
 
 	/// <summary>
 	/// Casts a sphere from point A to point B.
 	/// </summary>
-	public SceneTraceBuilder Sphere( float radius, in Vector3 from, in Vector3 to ) => Ray( from, to ).Radius( radius );
+	public SceneTrace Sphere( float radius, in Vector3 from, in Vector3 to ) => Ray( from, to ).Radius( radius );
 
 	/// <summary>
 	/// Casts a sphere from a given position and direction, up to a given distance.
 	/// </summary>
-	public SceneTraceBuilder Sphere( float radius, in Ray ray, in float distance ) => Ray( ray, distance ).Radius( radius );
+	public SceneTrace Sphere( float radius, in Ray ray, in float distance ) => Ray( ray, distance ).Radius( radius );
 
 	/// <summary>
 	/// Casts a box from point A to point B.
 	/// </summary>
-	public SceneTraceBuilder Box( Vector3 extents, in Vector3 from, in Vector3 to )
+	public SceneTrace Box( Vector3 extents, in Vector3 from, in Vector3 to )
 	{
 		return Ray( from, to ).Size( extents );
 	}
@@ -40,7 +65,7 @@ public partial struct SceneTraceBuilder
 	/// <summary>
 	/// Casts a box from a given position and direction, up to a given distance.
 	/// </summary>
-	public SceneTraceBuilder Box( Vector3 extents, in Ray ray, in float distance )
+	public SceneTrace Box( Vector3 extents, in Ray ray, in float distance )
 	{
 		return Ray( ray, distance ).Size( extents );
 	}
@@ -48,7 +73,7 @@ public partial struct SceneTraceBuilder
 	/// <summary>
 	/// Casts a box from point A to point B.
 	/// </summary>
-	public SceneTraceBuilder Box( BBox bbox, in Vector3 from, in Vector3 to )
+	public SceneTrace Box( BBox bbox, in Vector3 from, in Vector3 to )
 	{
 		return Ray( from, to ).Size( bbox );
 	}
@@ -56,7 +81,7 @@ public partial struct SceneTraceBuilder
 	/// <summary>
 	/// Casts a box from a given position and direction, up to a given distance.
 	/// </summary>
-	public SceneTraceBuilder Box( BBox bbox, in Ray ray, in float distance )
+	public SceneTrace Box( BBox bbox, in Ray ray, in float distance )
 	{
 		return Ray( ray, distance ).Size( bbox );
 	}
@@ -64,70 +89,70 @@ public partial struct SceneTraceBuilder
 	/// <summary>
 	/// Casts a capsule
 	/// </summary>
-	public readonly SceneTraceBuilder Capsule( Capsule capsule )
+	public readonly SceneTrace Capsule( Capsule capsule )
 	{
 		var t = this;
-		t.physicsTrace = physicsTrace.Capsule( capsule );
+		t.PhysicsTrace = PhysicsTrace.Capsule( capsule );
 		return t;
 	}
 
 	/// <summary>
 	/// Casts a capsule from point A to point B.
 	/// </summary>
-	public SceneTraceBuilder Capsule( Capsule capsule, in Vector3 from, in Vector3 to )
+	public SceneTrace Capsule( Capsule capsule, in Vector3 from, in Vector3 to )
 	{
 		var t = this;
-		t.physicsTrace = physicsTrace.Capsule( capsule, from, to );
+		t.PhysicsTrace = PhysicsTrace.Capsule( capsule, from, to );
 		return t;
 	}
 
 	/// <summary>
 	/// Casts a capsule from a given position and direction, up to a given distance.
 	/// </summary>
-	public SceneTraceBuilder Capsule( Capsule capsule, in Ray ray, in float distance )
+	public SceneTrace Capsule( Capsule capsule, in Ray ray, in float distance )
 	{
 		var t = this;
-		t.physicsTrace = physicsTrace.Capsule( capsule, ray, distance );
+		t.PhysicsTrace = PhysicsTrace.Capsule( capsule, ray, distance );
 		return t;
 	}
 
 	/// <summary>
 	/// Casts a ray from point A to point B.
 	/// </summary>
-	public SceneTraceBuilder Ray( in Vector3 from, in Vector3 to )
+	public SceneTrace Ray( in Vector3 from, in Vector3 to )
 	{
 		var t = this;
-		t.physicsTrace = physicsTrace.Ray( from, to );
+		t.PhysicsTrace = PhysicsTrace.Ray( from, to );
 		return t;
 	}
 
 	/// <summary>
 	/// Casts a ray from a given position and direction, up to a given distance.
 	/// </summary>
-	public SceneTraceBuilder Ray( in Ray ray, in float distance )
+	public SceneTrace Ray( in Ray ray, in float distance )
 	{
 		var t = this;
-		t.physicsTrace = physicsTrace.Ray( ray, distance );
+		t.PhysicsTrace = PhysicsTrace.Ray( ray, distance );
 		return t;
 	}
 
 	/// <summary>
 	/// Casts a PhysicsBody from its current position and rotation to desired end point.
 	/// </summary>
-	public SceneTraceBuilder Body( PhysicsBody body, in Vector3 to )
+	public SceneTrace Body( PhysicsBody body, in Vector3 to )
 	{
 		var t = this;
-		t.physicsTrace = physicsTrace.Body( body, to );
+		t.PhysicsTrace = PhysicsTrace.Body( body, to );
 		return t;
 	}
 
 	/// <summary>
 	/// Casts a PhysicsBody from a position and rotation to desired end point.
 	/// </summary>
-	public SceneTraceBuilder Body( PhysicsBody body, in Transform from, in Vector3 to )
+	public SceneTrace Body( PhysicsBody body, in Transform from, in Vector3 to )
 	{
 		var t = this;
-		t.physicsTrace = physicsTrace.Body( body, from, to );
+		t.PhysicsTrace = PhysicsTrace.Body( body, from, to );
 		return t;
 	}
 
@@ -136,17 +161,17 @@ public partial struct SceneTraceBuilder
 	/// Basically 'hull traces' but with physics shapes.
 	/// Same as tracing a body but allows rotation to change during the sweep.
 	/// </summary>
-	public SceneTraceBuilder Sweep( in PhysicsBody body, in Transform from, in Transform to )
+	public SceneTrace Sweep( in PhysicsBody body, in Transform from, in Transform to )
 	{
 		var t = this;
-		t.physicsTrace = physicsTrace.Sweep( body, from, to );
+		t.PhysicsTrace = PhysicsTrace.Sweep( body, from, to );
 		return t;
 	}
 
 	/// <summary>
 	/// Creates a Trace.Sweep using the <see cref="PhysicsBody">PhysicsBody</see>'s position as the starting position.
 	/// </summary>
-	public SceneTraceBuilder Sweep( in PhysicsBody body, in Transform to )
+	public SceneTrace Sweep( in PhysicsBody body, in Transform to )
 	{
 		return Sweep( body, body.Transform, to );
 	}
@@ -154,10 +179,10 @@ public partial struct SceneTraceBuilder
 	/// <summary>
 	/// Sets the start and end positions of the trace request
 	/// </summary>
-	public readonly SceneTraceBuilder FromTo( in Vector3 from, in Vector3 to )
+	public readonly SceneTrace FromTo( in Vector3 from, in Vector3 to )
 	{
 		var t = this;
-		t.physicsTrace = physicsTrace.FromTo( from, to );
+		t.PhysicsTrace = PhysicsTrace.FromTo( from, to );
 		return t;
 	}
 
@@ -165,7 +190,7 @@ public partial struct SceneTraceBuilder
 	/// <summary>
 	/// Makes this trace an axis aligned box of given size. Extracts mins and maxs from the Bounding Box.
 	/// </summary>
-	public readonly SceneTraceBuilder Size( in BBox hull )
+	public readonly SceneTrace Size( in BBox hull )
 	{
 		return Size( hull.Mins, hull.Maxs );
 	}
@@ -173,7 +198,7 @@ public partial struct SceneTraceBuilder
 	/// <summary>
 	/// Makes this trace an axis aligned box of given size. Calculates mins and maxs by assuming given size is (maxs-mins) and the center is in the middle.
 	/// </summary>
-	public readonly SceneTraceBuilder Size( in Vector3 size )
+	public readonly SceneTrace Size( in Vector3 size )
 	{
 		return Size( size * -0.5f, size * 0.5f );
 	}
@@ -181,10 +206,10 @@ public partial struct SceneTraceBuilder
 	/// <summary>
 	/// Makes this trace an axis aligned box of given size.
 	/// </summary>
-	public readonly SceneTraceBuilder Size( in Vector3 mins, in Vector3 maxs )
+	public readonly SceneTrace Size( in Vector3 mins, in Vector3 maxs )
 	{
 		var t = this;
-		t.physicsTrace = physicsTrace.Size( mins, maxs );
+		t.PhysicsTrace = PhysicsTrace.Size( mins, maxs );
 		return t;
 	}
 
@@ -192,20 +217,20 @@ public partial struct SceneTraceBuilder
 	/// <summary>
 	/// Makes this trace a sphere of given radius.
 	/// </summary>
-	public readonly SceneTraceBuilder Radius( float radius )
+	public readonly SceneTrace Radius( float radius )
 	{
 		var t = this;
-		t.physicsTrace = physicsTrace.Radius( radius );
+		t.PhysicsTrace = PhysicsTrace.Radius( radius );
 		return t;
 	}
 
 	/// <summary>
 	/// Should we hit hitboxes
 	/// </summary>
-	public readonly SceneTraceBuilder UseHitboxes( bool hit = true )
+	public readonly SceneTrace UseHitboxes( bool hit = true )
 	{
 		var t = this;
-		t.hitboxes = hit;
+		t.IncludeHitboxes = hit;
 		return t;
 	}
 
@@ -213,82 +238,45 @@ public partial struct SceneTraceBuilder
 	/// Only return entities with this tag. Subsequent calls to this will add multiple requirements
 	/// and they'll all have to be met (ie, the entity will need all tags).
 	/// </summary>
-	public SceneTraceBuilder WithTag( string tag ) { var t = this; t.physicsTrace = t.physicsTrace.WithTag( tag ); return t; }
+	public SceneTrace WithTag( string tag ) { var t = this; t.PhysicsTrace = t.PhysicsTrace.WithTag( tag ); return t; }
 
 	/// <summary>
 	/// Only return entities with all of these tags
 	/// </summary>
-	public SceneTraceBuilder WithAllTags( params string[] tags ) { var t = this; t.physicsTrace = t.physicsTrace.WithAllTags( tags ); return t; }
+	public SceneTrace WithAllTags( params string[] tags ) { var t = this; t.PhysicsTrace = t.PhysicsTrace.WithAllTags( tags ); return t; }
 
 	/// <summary>
 	/// Only return entities with all of these tags
 	/// </summary>
-	public SceneTraceBuilder WithAllTags( ITagSet tags ) { var t = this; t.physicsTrace = t.physicsTrace.WithAllTags( tags ); return t; }
+	public SceneTrace WithAllTags( ITagSet tags ) { var t = this; t.PhysicsTrace = t.PhysicsTrace.WithAllTags( tags ); return t; }
 
 	/// <summary>
 	/// Only return entities with any of these tags
 	/// </summary>
-	public SceneTraceBuilder WithAnyTags( params string[] tags ) { var t = this; t.physicsTrace = t.physicsTrace.WithAllTags( tags ); return t; }
+	public SceneTrace WithAnyTags( params string[] tags ) { var t = this; t.PhysicsTrace = t.PhysicsTrace.WithAllTags( tags ); return t; }
 
 	/// <summary>
 	/// Only return entities with any of these tags
 	/// </summary>
-	public SceneTraceBuilder WithAnyTags( ITagSet tags ) { var t = this; t.physicsTrace = t.physicsTrace.WithAnyTags( tags ); return t; }
+	public SceneTrace WithAnyTags( ITagSet tags ) { var t = this; t.PhysicsTrace = t.PhysicsTrace.WithAnyTags( tags ); return t; }
 
 	/// <summary>
 	/// Only return entities without any of these tags
 	/// </summary>
-	public SceneTraceBuilder WithoutTags( params string[] tags ) { var t = this; t.physicsTrace = t.physicsTrace.WithoutTags( tags ); return t; }
+	public SceneTrace WithoutTags( params string[] tags ) { var t = this; t.PhysicsTrace = t.PhysicsTrace.WithoutTags( tags ); return t; }
 
 	/// <summary>
 	/// Only return entities without any of these tags
 	/// </summary>
-	public SceneTraceBuilder WithoutTags( ITagSet tags ) { var t = this; t.physicsTrace = t.physicsTrace.WithoutTags( tags ); return t; }
+	public SceneTrace WithoutTags( ITagSet tags ) { var t = this; t.PhysicsTrace = t.PhysicsTrace.WithoutTags( tags ); return t; }
 
 	/// <summary>
 	/// Run the trace and return the result. The result will return the first hit.
 	/// </summary>
 	public readonly SceneTraceResult Run()
 	{
-		var physicsResult = physicsTrace.Run();
-
-		SceneTraceResult sceneResult = SceneTraceResult.From( scene, physicsResult );
-
-		if ( hitboxes )
-		{
-			// pool me
-			List<SceneTraceResult> results = new List<SceneTraceResult>();
-
-			// collect hits from all hitbox groups
-			var groups = scene.GetAllComponents<HitboxGroup>();
-			foreach ( var group in groups )
-			{
-				group.Trace( this, results );
-			}
-
-			// order results by closest
-			foreach( var result in results.OrderBy( x => x.Fraction ) )
-			{
-				// further away than our physics result, which means all the 
-				// others are too, so just bail
-				if ( result.Fraction > physicsResult.Fraction )
-					break;
-
-				return result;
-			}
-		}
-
-		return sceneResult;
+		return scene.RunTrace( this );
 	}
-
-	/// <summary>
-	/// Run the trace and return the result. The result will return the first hit.
-	/// </summary>
-	public readonly SceneTraceResult RunAgainstCapsule( in Capsule capsule, in Transform transform )
-	{
-		return SceneTraceResult.From( scene, physicsTrace.RunAgainstCapsule( capsule, transform ) );
-	}
-
 }
 
 public struct SceneTraceResult
@@ -379,7 +367,7 @@ public struct SceneTraceResult
 	/// </summary>
 	public float Distance => Vector3.DistanceBetween( StartPosition, EndPosition );
 
-	internal static SceneTraceResult From( in Scene scene, in PhysicsTraceResult physicsResult )
+	public static SceneTraceResult From( in Scene scene, in PhysicsTraceResult physicsResult )
 	{
 		var result = new SceneTraceResult
 		{

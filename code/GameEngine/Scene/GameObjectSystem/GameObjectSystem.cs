@@ -48,4 +48,14 @@ public abstract class GameObjectSystem : IDisposable
 		PhysicsStep
 	}
 
+	/// <summary>
+	/// When implementing an ITraceProvider, the most importannt thing to keep in mind 
+	/// is that the call to DoTrace should be thread safe. This might be called from 
+	/// multiple threads at once, so you better watch out.
+	/// </summary>
+	public interface ITraceProvider
+	{
+		public void DoTrace( in SceneTrace trace, List<SceneTraceResult> results );
+	}
+
 }
