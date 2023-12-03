@@ -25,11 +25,15 @@ public sealed class CameraPhysicsDebug : BaseComponent, BaseComponent.ExecuteInE
 
 	protected override void OnUpdate()
 	{
-		for ( int i = 0; i < TracesPerFrame; i++ )
+		var start = Transform.Position;
+
+		Gizmo.Draw.LineThickness = 2;
+		Gizmo.Draw.LineSphere( start, 2.0f );
+
+		Sandbox.Utility.Parallel.ForEach( Enumerable.Range( 0, TracesPerFrame ), i =>
 		{
 			SceneTraceResult t = default;
-			var start = Transform.Position;
-			var end = Transform.Position + Transform.Rotation.Forward * 1000 + Vector3.Random * 400;
+			var end = start + Transform.Rotation.Forward * 1000 + Vector3.Random * 400;
 
 			if ( TraceType == TraceTypes.Ray )
 			{
@@ -38,11 +42,11 @@ public sealed class CameraPhysicsDebug : BaseComponent, BaseComponent.ExecuteInE
 						.UseHitboxes( Hitboxes )
 						.Run();
 			}
-			else if (  TraceType == TraceTypes.Box )
+			else if ( TraceType == TraceTypes.Box )
 			{
 				t = Scene.Trace
 						.Ray( start, end )
-						.Size( new BBox( -10, 10 ) )
+						.Size( new BBox( -5, 5 ) )
 						.UseHitboxes( Hitboxes )
 						.Run();
 
@@ -59,12 +63,15 @@ public sealed class CameraPhysicsDebug : BaseComponent, BaseComponent.ExecuteInE
 
 			if ( t.Hit )
 			{
-				Color tint = Color.White;
-				worldPoints.Add( new Hitpoint { Position = t.EndPosition, Normal = t.Normal, Tint = tint } );
+				lock ( worldPoints )
+				{
+					Color tint = Color.White;
+					worldPoints.Add( new Hitpoint { Position = t.EndPosition, Normal = t.Normal, Tint = tint } );
+				}
 			}
 
 
-		}
+		} );
 
 		foreach ( var t in worldPoints )
 		{
