@@ -1,0 +1,1629 @@
+{
+  "GameObjects": [
+    {
+      "Id": "f2868704-9b7e-4931-a3cf-6e2d0445abcd",
+      "Name": "Sky",
+      "Position": "15.55351,-436.0537,60.89309",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "SkyBox2D",
+          "__enabled": true,
+          "SkyMaterial": "materials/skybox/light_test_sky_sunny02.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "232ae042-f74e-4283-9839-0e1927bb458a",
+      "Name": "Sun",
+      "Position": "-8.913376,-7.66098,84.27193",
+      "Rotation": "0.1464467,0.3535535,-0.3535535,0.8535532",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "DirectionalLightComponent",
+          "__enabled": true,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.29877,0.34052,0.36139,1"
+        }
+      ]
+    },
+    {
+      "Id": "50cc551c-5a92-4eb7-ad5e-03891c296c54",
+      "Name": "Citizen",
+      "Position": "278.7088,-56.24343,-231.8635",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "CharacterController",
+          "__enabled": true,
+          "Acceleration": 10,
+          "GroundAngle": 45,
+          "Height": 72,
+          "IgnoreLayers": "solid,trigger",
+          "Radius": 10,
+          "StepHeight": 18
+        },
+        {
+          "__type": "PlayerController",
+          "__enabled": true,
+          "AnimationHelper": "50cc551c-5a92-4eb7-ad5e-03891c296c54",
+          "Body": "2285c225-25df-4a34-8734-0260cc54bffe",
+          "Eye": "305dcc76-bbad-4c93-bb35-e1046c0e95ae",
+          "Gravity": "0,0,800"
+        },
+        {
+          "__type": "CitizenAnimation",
+          "__enabled": true,
+          "Height": 1,
+          "Target": "2285c225-25df-4a34-8734-0260cc54bffe"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "2285c225-25df-4a34-8734-0260cc54bffe",
+          "Name": "Body",
+          "Position": "0,-0.66093,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "SkinnedModelRenderer",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "MaterialOverride": null,
+              "Model": "models/citizen/citizen.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "150e6952-4dd7-4d8b-ab5f-38f9a6d4c1d7",
+              "Name": "Name Tag UI",
+              "Position": "-0.000001814945,0.1895752,80.7357",
+              "Rotation": "-0.00000005960058,0.000000000000005518709,-0.9999317,0.01167414",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "WorldPanel",
+                  "__enabled": true,
+                  "HorizontalAlign": "Center",
+                  "LookAtCamera": true,
+                  "PanelSize": "1024,256",
+                  "RenderScale": 1,
+                  "VerticalAlign": "Center"
+                },
+                {
+                  "__type": "NameTagPanel",
+                  "__enabled": true,
+                  "Name": "Prickly Pete"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "5d5cbdef-d34b-491c-9e44-ae962928730f",
+          "Name": "Camera",
+          "Position": "-200,0,64",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "CameraComponent",
+              "__enabled": true,
+              "BackgroundColor": "0.25292,0.26086,0.29703,1",
+              "ClearFlags": "All",
+              "FieldOfView": 80,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
+              "RenderExcludeTags": "",
+              "RenderTags": "",
+              "TargetEye": "None",
+              "ZFar": 10000,
+              "ZNear": 1
+            },
+            {
+              "__type": "FilmGrain",
+              "__enabled": true,
+              "Intensity": 0.03,
+              "Response": 1
+            },
+            {
+              "__type": "Vignette",
+              "__enabled": true,
+              "Center": "0.5,0.5",
+              "Color": "0,0,0,0.38",
+              "Intensity": 1,
+              "Roundness": 0.5,
+              "Smoothness": 1
+            },
+            {
+              "__type": "ChromaticAberration",
+              "__enabled": true,
+              "Offset": "4,6,4.049999",
+              "Scale": 0.2
+            },
+            {
+              "__type": "Sharpen",
+              "__enabled": true,
+              "Scale": 1
+            },
+            {
+              "__type": "Highlight",
+              "__enabled": true
+            },
+            {
+              "__type": "Bloom",
+              "__enabled": true,
+              "BloomColor": {
+                "color": [
+                  {
+                    "c": "1,1,1,1"
+                  },
+                  {
+                    "t": 1,
+                    "c": "0.5,0.5,0.5,1"
+                  }
+                ],
+                "alpha": []
+              },
+              "BloomCurve": {
+                "rangey": "0,106.45",
+                "frames": [
+                  {},
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              "Mode": "Screen",
+              "Strength": 1,
+              "Threshold": 0.3,
+              "ThresholdWidth": 2
+            }
+          ]
+        },
+        {
+          "Id": "305dcc76-bbad-4c93-bb35-e1046c0e95ae",
+          "Name": "EyePos",
+          "Position": "0,0,64",
+          "Enabled": true
+        },
+        {
+          "Id": "7795dc6b-e4cd-47ab-8048-47e6f640b927",
+          "Name": "Hair",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "SkinnedModelRenderer",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": "2285c225-25df-4a34-8734-0260cc54bffe",
+              "CreateBoneObjects": false,
+              "MaterialOverride": null,
+              "Model": "models/citizen_clothes/hair/hair_fade/models/hair_fade.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "739def6e-5e84-4cfb-b347-0c7b121ed080",
+          "Name": "Hair",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "SkinnedModelRenderer",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": "2285c225-25df-4a34-8734-0260cc54bffe",
+              "CreateBoneObjects": false,
+              "MaterialOverride": null,
+              "Model": "models/citizen_clothes/shoes/boots/models/army_boots.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "e3e842b2-4447-4369-8a6b-c0490eeea010",
+      "Name": "Static",
+      "Position": "10.68401,-435.7746,31.68847",
+      "Enabled": true,
+      "Children": [
+        {
+          "Id": "18b3111b-6a69-462d-a8e9-972ed4719785",
+          "Name": "Slope1",
+          "Position": "488.6326,276.9688,-205.1105",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "EditableMeshComponent",
+              "__enabled": true,
+              "Mesh": {
+                "DistinctPositions": [
+                  "-18.63795,-465.9659,126.2115",
+                  "-18.63795,-301.0986,126.2115",
+                  "255.1365,-300.4488,126.2115",
+                  "255.1365,-465.3161,126.2115",
+                  "-151.7711,-466.6157,-64",
+                  "-151.7711,-301.7483,-64",
+                  "255.9934,-301.0986,-64",
+                  "255.9934,-465.9659,-64"
+                ],
+                "Vertexes": [
+                  {
+                    "Position": "-18.63795,-465.9659,126.2115",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-0.5824359,-14.56143"
+                  },
+                  {
+                    "Position": "-18.63795,-301.0986,126.2115",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-0.5824359,-9.409331",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "255.1365,-300.4488,126.2115",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "7.973016,-9.389025",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "255.1365,-465.3161,126.2115",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "7.973016,-14.54113",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "255.9934,-465.9659,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "7.999794,14.56143",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "255.9934,-301.0986,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "7.999794,9.409331",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "-151.7711,-301.7483,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-4.742847,9.429634",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "-151.7711,-466.6157,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-4.742847,14.58174",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "-18.63795,-465.9659,126.2115",
+                    "Normal": "-0.8192621,0,0.5734193",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-14.56143,-2.897279"
+                  },
+                  {
+                    "Position": "-151.7711,-466.6157,-64",
+                    "Normal": "-0.8192621,0,0.5734193",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-14.58174,4.358164",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "-151.7711,-301.7483,-64",
+                    "Normal": "-0.8192621,0,0.5734193",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-9.429634,4.358164",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "-18.63795,-301.0986,126.2115",
+                    "Normal": "-0.8192621,0,0.5734193",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-9.409331,-2.897279",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "-18.63795,-301.0986,126.2115",
+                    "Normal": "-0.001983397,0.9999939,-0.00286367",
+                    "Tangent": "0.999998,0.001984976,0.0005189227",
+                    "Texcoord": "-0.6010973,-3.917151",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "-151.7711,-301.7483,-64",
+                    "Normal": "-0.001593288,0.9999961,-0.002300422",
+                    "Tangent": "0.9999987,0.001594252,0.000417156",
+                    "Texcoord": "-4.757865,2.021669",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "255.9934,-301.0986,-64",
+                    "Normal": "-0.001983397,0.9999939,-0.00286367",
+                    "Tangent": "0.999998,0.001984976,0.0005189227",
+                    "Texcoord": "7.981115,2.026982",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "255.1365,-300.4488,126.2115",
+                    "Normal": "-0.002373505,0.9999913,-0.003426917",
+                    "Tangent": "0.999997,0.002375646,0.000620675",
+                    "Texcoord": "7.950708,-3.911846",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "255.1365,-300.4488,126.2115",
+                    "Normal": "0.9999899,0,0.004504876",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "9.389025,-3.908152",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "255.9934,-301.0986,-64",
+                    "Normal": "0.9999899,0,0.004504876",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "9.409331,2.036018",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "255.9934,-465.9659,-64",
+                    "Normal": "0.9999899,0,0.004504876",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "14.56143,2.036018",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "255.1365,-465.3161,126.2115",
+                    "Normal": "0.9999899,0,0.004504876",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "14.54113,-3.908152",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "255.1365,-465.3161,126.2115",
+                    "Normal": "0.001983512,-0.9999947,0.002589107",
+                    "Tangent": "-0.9999974,-0.001986346,-0.001183775",
+                    "Texcoord": "-7.944158,-3.906407",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "255.9934,-465.9659,-64",
+                    "Normal": "0.001593507,-0.9999928,0.003423408",
+                    "Tangent": "-0.9999983,-0.001596776,-0.0009522337",
+                    "Texcoord": "-7.97658,2.049882",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "-151.7711,-466.6157,-64",
+                    "Normal": "0.001983512,-0.9999947,0.002589107",
+                    "Tangent": "-0.9999974,-0.001986346,-0.001183775",
+                    "Texcoord": "4.77176,2.037723",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "-18.63795,-465.9659,126.2115",
+                    "Normal": "0.002373516,-0.9999956,0.001754803",
+                    "Tangent": "-0.9999962,-0.002376001,-0.001415367",
+                    "Texcoord": "0.6169962,-3.918554"
+                  }
+                ],
+                "Indices": [
+                  0,
+                  2,
+                  1,
+                  2,
+                  0,
+                  3,
+                  4,
+                  6,
+                  5,
+                  6,
+                  4,
+                  7,
+                  8,
+                  10,
+                  9,
+                  10,
+                  8,
+                  11,
+                  12,
+                  14,
+                  13,
+                  14,
+                  12,
+                  15,
+                  16,
+                  18,
+                  17,
+                  18,
+                  16,
+                  19,
+                  20,
+                  22,
+                  21,
+                  22,
+                  20,
+                  23
+                ],
+                "Parts": [
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {}
+                ],
+                "Selection": [],
+                "Mesh": {
+                  "IsValid": true,
+                  "HasIndexBuffer": true,
+                  "IndexCount": 36,
+                  "HasVertexBuffer": true,
+                  "VertexCount": 24
+                }
+              }
+            },
+            {
+              "__type": "ModelRenderer",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "sbox_procedural_model.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "717aea79-9f8b-47e6-9c05-28dd1394003f",
+          "Name": "Slope1 (1)",
+          "Position": "-256.9841,-530.4005,-252.6657",
+          "Rotation": "0.00000005959735,-0.00000000000001414747,0.9998778,-0.01563399",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "EditableMeshComponent",
+              "__enabled": true,
+              "Mesh": {
+                "DistinctPositions": [
+                  "248.4118,-472.4779,61.5554",
+                  "248.4118,-307.6106,61.5554",
+                  "565.0697,-310.1433,61.5554",
+                  "565.0697,-475.0107,61.5554",
+                  "-151.7711,-466.6157,-64",
+                  "-151.7711,-301.7483,-64",
+                  "565.9266,-310.7932,-64",
+                  "565.9266,-475.6605,-64"
+                ],
+                "Vertexes": [
+                  {
+                    "Position": "248.4118,-472.4779,61.5554",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "7.762868,-14.76493"
+                  },
+                  {
+                    "Position": "248.4118,-307.6106,61.5554",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "7.762868,-9.61283",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "565.0697,-310.1433,61.5554",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "17.65843,-9.691979",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "565.0697,-475.0107,61.5554",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "17.65843,-14.84408",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "565.9266,-475.6605,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "17.68521,14.86439",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "565.9266,-310.7932,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "17.68521,9.712286",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "-151.7711,-301.7483,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-4.742847,9.429634",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "-151.7711,-466.6157,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-4.742847,14.58174",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "248.4118,-472.4779,61.5554",
+                    "Normal": "-0.2993571,0,0.9541411",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-14.76493,-7.982717"
+                  },
+                  {
+                    "Position": "-151.7711,-466.6157,-64",
+                    "Normal": "-0.2993571,0,0.9541411",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-14.58174,5.12406",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "-151.7711,-301.7483,-64",
+                    "Normal": "-0.2993571,0,0.9541411",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-9.429634,5.12406",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "248.4118,-307.6106,61.5554",
+                    "Normal": "-0.2993571,0,0.9541411",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-9.61283,-7.982717",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "248.4118,-307.6106,61.5554",
+                    "Normal": "0.01029992,0.9999467,0.000700567",
+                    "Tangent": "0.9999387,-0.01029186,0.004090426",
+                    "Texcoord": "7.861467,-1.930284",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "-151.7711,-301.7483,-64",
+                    "Normal": "0.01260134,0.9998993,0.00652178",
+                    "Tangent": "0.9999173,-0.01261773,0.00247861",
+                    "Texcoord": "-4.623642,1.938075",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "565.9266,-310.7932,-64",
+                    "Normal": "0.01029992,0.9999467,0.000700567",
+                    "Tangent": "0.9999387,-0.01029186,0.004090426",
+                    "Texcoord": "17.7843,1.993323",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "565.0697,-310.1433,61.5554",
+                    "Normal": "0.0079981,0.9999549,-0.005120673",
+                    "Tangent": "0.999952,-0.007968886,0.005700139",
+                    "Texcoord": "17.73538,-1.874676",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "565.0697,-310.1433,61.5554",
+                    "Normal": "0.9999768,0,0.006824498",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "9.691979,-1.803052",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "565.9266,-310.7932,-64",
+                    "Normal": "0.9999768,0,0.006824498",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "9.712286,2.120646",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "565.9266,-475.6605,-64",
+                    "Normal": "0.9999768,0,0.006824498",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "14.86439,2.120646",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "565.0697,-475.0107,61.5554",
+                    "Normal": "0.9999768,0,0.006824498",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "14.84408,-1.803052",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "565.0697,-475.0107,61.5554",
+                    "Normal": "-0.01029978,-0.9999145,-0.008051746",
+                    "Tangent": "-0.9998625,0.01046601,-0.01286234",
+                    "Texcoord": "-17.81039,-2.041594",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "565.9266,-475.6605,-64",
+                    "Normal": "-0.01260131,-0.9999077,0.005089013",
+                    "Tangent": "-0.9998877,0.01255946,-0.008174379",
+                    "Texcoord": "-17.87111,2.074479",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "-151.7711,-466.6157,-64",
+                    "Normal": "-0.01029978,-0.9999145,-0.008051746",
+                    "Tangent": "-0.9998625,0.01046601,-0.01286234",
+                    "Texcoord": "4.592402,1.88214",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "248.4118,-472.4779,61.5554",
+                    "Normal": "-0.007996409,-0.9997435,-0.02119107",
+                    "Tangent": "-0.9998109,0.008369097,-0.01755709",
+                    "Texcoord": "-7.880713,-2.234733"
+                  }
+                ],
+                "Indices": [
+                  0,
+                  2,
+                  1,
+                  2,
+                  0,
+                  3,
+                  4,
+                  6,
+                  5,
+                  6,
+                  4,
+                  7,
+                  8,
+                  10,
+                  9,
+                  10,
+                  8,
+                  11,
+                  12,
+                  14,
+                  13,
+                  14,
+                  12,
+                  15,
+                  16,
+                  18,
+                  17,
+                  18,
+                  16,
+                  19,
+                  20,
+                  22,
+                  21,
+                  22,
+                  20,
+                  23
+                ],
+                "Parts": [
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {}
+                ],
+                "Selection": [],
+                "Mesh": {
+                  "IsValid": true,
+                  "HasIndexBuffer": true,
+                  "IndexCount": 36,
+                  "HasVertexBuffer": true,
+                  "VertexCount": 24
+                }
+              }
+            },
+            {
+              "__type": "ModelRenderer",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "sbox_procedural_model.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "1f8d6c02-1281-41f5-ba06-4546d6225ef6",
+          "Name": "Floor",
+          "Position": "139.3109,585.7697,-243.8135",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "EditableMeshComponent",
+              "__enabled": true,
+              "Mesh": {
+                "DistinctPositions": [
+                  "-1009.814,-1200.552,-23.17002",
+                  "-1009.814,437.4165,-23.17002",
+                  "852.6277,437.4165,-23.17002",
+                  "852.6277,-1200.552,-23.17002",
+                  "-1009.814,-1200.552,-64",
+                  "-1009.814,437.4165,-64",
+                  "852.6277,437.4165,-64",
+                  "852.6277,-1200.552,-64"
+                ],
+                "Vertexes": [
+                  {
+                    "Position": "-1009.814,-1200.552,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-31.55668,-37.51725"
+                  },
+                  {
+                    "Position": "-1009.814,437.4165,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-31.55668,13.66927",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "852.6277,437.4165,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "26.64462,13.66927",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "852.6277,-1200.552,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "26.64462,-37.51725",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "852.6277,-1200.552,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "26.64462,37.51725",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "852.6277,437.4165,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "26.64462,-13.66927",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "-1009.814,437.4165,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-31.55668,-13.66927",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "-1009.814,-1200.552,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-31.55668,37.51725",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "-1009.814,-1200.552,-23.17002",
+                    "Normal": "-1,-0.00000007452543,0",
+                    "Tangent": "-0.00000007452543,1,0",
+                    "Texcoord": "-37.51725,0.7240631"
+                  },
+                  {
+                    "Position": "-1009.814,-1200.552,-64",
+                    "Normal": "-1,-0.00000007452543,0",
+                    "Tangent": "-0.00000007452543,1,0",
+                    "Texcoord": "-37.51725,2",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "-1009.814,437.4165,-64",
+                    "Normal": "-1,-0.00000007452543,0",
+                    "Tangent": "-0.00000007452543,1,0",
+                    "Texcoord": "13.66927,2",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "-1009.814,437.4165,-23.17002",
+                    "Normal": "-1,-0.00000007452543,0",
+                    "Tangent": "-0.00000007452543,1,0",
+                    "Texcoord": "13.66927,0.7240631",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "-1009.814,437.4165,-23.17002",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-31.55668,0.7240631",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "-1009.814,437.4165,-64",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "-31.55668,2",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "852.6277,437.4165,-64",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "26.64462,2",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "852.6277,437.4165,-23.17002",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "26.64462,0.7240631",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "852.6277,437.4165,-23.17002",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "-13.66927,0.7240631",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "852.6277,437.4165,-64",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "-13.66927,2",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "852.6277,-1200.552,-64",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "37.51725,2",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "852.6277,-1200.552,-23.17002",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "37.51725,0.7240631",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "852.6277,-1200.552,-23.17002",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "-26.64462,0.7240631",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "852.6277,-1200.552,-64",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "-26.64462,2",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "-1009.814,-1200.552,-64",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "31.55668,2",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "-1009.814,-1200.552,-23.17002",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "31.55668,0.7240631"
+                  }
+                ],
+                "Indices": [
+                  0,
+                  2,
+                  1,
+                  2,
+                  0,
+                  3,
+                  4,
+                  6,
+                  5,
+                  6,
+                  4,
+                  7,
+                  8,
+                  10,
+                  9,
+                  10,
+                  8,
+                  11,
+                  12,
+                  14,
+                  13,
+                  14,
+                  12,
+                  15,
+                  16,
+                  18,
+                  17,
+                  18,
+                  16,
+                  19,
+                  20,
+                  22,
+                  21,
+                  22,
+                  20,
+                  23
+                ],
+                "Parts": [
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {}
+                ],
+                "Selection": [],
+                "Mesh": {
+                  "IsValid": true,
+                  "HasIndexBuffer": true,
+                  "IndexCount": 36,
+                  "HasVertexBuffer": true,
+                  "VertexCount": 24
+                }
+              }
+            },
+            {
+              "__type": "ModelRenderer",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "sbox_procedural_model.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "9bd845b7-a38d-49cf-9304-8acf23f0889a",
+          "Name": "Floor (1)",
+          "Position": "-765.0876,395.459,-77.46241",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "EditableMeshComponent",
+              "__enabled": true,
+              "Mesh": {
+                "DistinctPositions": [
+                  "151.3181,-676.0193,-23.17002",
+                  "151.3181,-419.3071,-23.17002",
+                  "353.1827,-419.3071,-23.17002",
+                  "353.1827,-676.0193,-23.17002",
+                  "151.3181,-676.0193,-64",
+                  "151.3181,-419.3071,-64",
+                  "353.1827,-419.3071,-64",
+                  "353.1827,-676.0193,-64"
+                ],
+                "Vertexes": [
+                  {
+                    "Position": "151.3181,-676.0193,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "4.728689,-21.1256"
+                  },
+                  {
+                    "Position": "151.3181,-419.3071,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "4.728689,-13.10335",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "353.1827,-419.3071,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "11.03696,-13.10335",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "353.1827,-676.0193,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "11.03696,-21.1256",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "353.1827,-676.0193,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "11.03696,21.1256",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "353.1827,-419.3071,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "11.03696,13.10335",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "151.3181,-419.3071,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "4.728689,13.10335",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "151.3181,-676.0193,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "4.728689,21.1256",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "151.3181,-676.0193,-23.17002",
+                    "Normal": "-1,0,0",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-21.1256,0.7240631"
+                  },
+                  {
+                    "Position": "151.3181,-676.0193,-64",
+                    "Normal": "-1,0,0",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-21.1256,2",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "151.3181,-419.3071,-64",
+                    "Normal": "-1,0,0",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-13.10335,2",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "151.3181,-419.3071,-23.17002",
+                    "Normal": "-1,0,0",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-13.10335,0.7240631",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "151.3181,-419.3071,-23.17002",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "4.728689,0.7240631",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "151.3181,-419.3071,-64",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "4.728689,2",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "353.1827,-419.3071,-64",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "11.03696,2",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "353.1827,-419.3071,-23.17002",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "11.03696,0.7240631",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "353.1827,-419.3071,-23.17002",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "13.10335,0.7240631",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "353.1827,-419.3071,-64",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "13.10335,2",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "353.1827,-676.0193,-64",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "21.1256,2",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "353.1827,-676.0193,-23.17002",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "21.1256,0.7240631",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "353.1827,-676.0193,-23.17002",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "-11.03696,0.7240631",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "353.1827,-676.0193,-64",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "-11.03696,2",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "151.3181,-676.0193,-64",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "-4.728689,2",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "151.3181,-676.0193,-23.17002",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "-4.728689,0.7240631"
+                  }
+                ],
+                "Indices": [
+                  0,
+                  2,
+                  1,
+                  2,
+                  0,
+                  3,
+                  4,
+                  6,
+                  5,
+                  6,
+                  4,
+                  7,
+                  8,
+                  10,
+                  9,
+                  10,
+                  8,
+                  11,
+                  12,
+                  14,
+                  13,
+                  14,
+                  12,
+                  15,
+                  16,
+                  18,
+                  17,
+                  18,
+                  16,
+                  19,
+                  20,
+                  22,
+                  21,
+                  22,
+                  20,
+                  23
+                ],
+                "Parts": [
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {}
+                ],
+                "Selection": [],
+                "Mesh": {
+                  "IsValid": true,
+                  "HasIndexBuffer": true,
+                  "IndexCount": 36,
+                  "HasVertexBuffer": true,
+                  "VertexCount": 24
+                }
+              }
+            },
+            {
+              "__type": "ModelRenderer",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "sbox_procedural_model.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "Id": "4c5d6385-0d1d-4499-a7ec-826ecd62e67e",
+          "Name": "Floor (2)",
+          "Position": "-775.7716,831.2336,-300.0383",
+          "Rotation": "0.00000001630946,-0.2736274,-0.00000000000000002836455,0.9618356",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "EditableMeshComponent",
+              "__enabled": true,
+              "Mesh": {
+                "DistinctPositions": [
+                  "81.03783,-676.0193,-23.17002",
+                  "81.03783,-419.3071,-23.17002",
+                  "583.6331,-419.3071,-23.17002",
+                  "583.6331,-676.0193,-23.17002",
+                  "81.03783,-676.0193,-64",
+                  "81.03783,-419.3071,-64",
+                  "583.6331,-419.3071,-64",
+                  "583.6331,-676.0193,-64"
+                ],
+                "Vertexes": [
+                  {
+                    "Position": "81.03783,-676.0193,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "2.532432,-21.1256"
+                  },
+                  {
+                    "Position": "81.03783,-419.3071,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "2.532432,-13.10335",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "583.6331,-419.3071,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "18.23853,-13.10335",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "583.6331,-676.0193,-23.17002",
+                    "Normal": "0,0,1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "18.23853,-21.1256",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "583.6331,-676.0193,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "18.23853,21.1256",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "583.6331,-419.3071,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "18.23853,13.10335",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "81.03783,-419.3071,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "2.532432,13.10335",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "81.03783,-676.0193,-64",
+                    "Normal": "0,0,-1",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "2.532432,21.1256",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "81.03783,-676.0193,-23.17002",
+                    "Normal": "-1,0,0",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-21.1256,0.7240631"
+                  },
+                  {
+                    "Position": "81.03783,-676.0193,-64",
+                    "Normal": "-1,0,0",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-21.1256,2",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "81.03783,-419.3071,-64",
+                    "Normal": "-1,0,0",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-13.10335,2",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "81.03783,-419.3071,-23.17002",
+                    "Normal": "-1,0,0",
+                    "Tangent": "0,1,0",
+                    "Texcoord": "-13.10335,0.7240631",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "81.03783,-419.3071,-23.17002",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "2.532432,0.7240631",
+                    "DistinctIndex": 1
+                  },
+                  {
+                    "Position": "81.03783,-419.3071,-64",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "2.532432,2",
+                    "DistinctIndex": 5
+                  },
+                  {
+                    "Position": "583.6331,-419.3071,-64",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "18.23853,2",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "583.6331,-419.3071,-23.17002",
+                    "Normal": "0,1,0",
+                    "Tangent": "1,0,0",
+                    "Texcoord": "18.23853,0.7240631",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "583.6331,-419.3071,-23.17002",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "13.10335,0.7240631",
+                    "DistinctIndex": 2
+                  },
+                  {
+                    "Position": "583.6331,-419.3071,-64",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "13.10335,2",
+                    "DistinctIndex": 6
+                  },
+                  {
+                    "Position": "583.6331,-676.0193,-64",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "21.1256,2",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "583.6331,-676.0193,-23.17002",
+                    "Normal": "1,0,0",
+                    "Tangent": "0,-1,0",
+                    "Texcoord": "21.1256,0.7240631",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "583.6331,-676.0193,-23.17002",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "-18.23853,0.7240631",
+                    "DistinctIndex": 3
+                  },
+                  {
+                    "Position": "583.6331,-676.0193,-64",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "-18.23853,2",
+                    "DistinctIndex": 7
+                  },
+                  {
+                    "Position": "81.03783,-676.0193,-64",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "-2.532432,2",
+                    "DistinctIndex": 4
+                  },
+                  {
+                    "Position": "81.03783,-676.0193,-23.17002",
+                    "Normal": "0,-1,0",
+                    "Tangent": "-1,0,0",
+                    "Texcoord": "-2.532432,0.7240631"
+                  }
+                ],
+                "Indices": [
+                  0,
+                  2,
+                  1,
+                  2,
+                  0,
+                  3,
+                  4,
+                  6,
+                  5,
+                  6,
+                  4,
+                  7,
+                  8,
+                  10,
+                  9,
+                  10,
+                  8,
+                  11,
+                  12,
+                  14,
+                  13,
+                  14,
+                  12,
+                  15,
+                  16,
+                  18,
+                  17,
+                  18,
+                  16,
+                  19,
+                  20,
+                  22,
+                  21,
+                  22,
+                  20,
+                  23
+                ],
+                "Parts": [
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {}
+                ],
+                "Selection": [],
+                "Mesh": {
+                  "IsValid": true,
+                  "HasIndexBuffer": true,
+                  "IndexCount": 36,
+                  "HasVertexBuffer": true,
+                  "VertexCount": 24
+                }
+              }
+            },
+            {
+              "__type": "ModelRenderer",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": null,
+              "Model": "sbox_procedural_model.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "NetworkFrequency": 60,
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "TimeScale": 1,
+    "ThreadedAnimation": true,
+    "UseFixedUpdate": true
+  },
+  "Title": "movement test",
+  "Description": "",
+  "__references": []
+}
