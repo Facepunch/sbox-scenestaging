@@ -80,7 +80,7 @@ public partial class PrefabNode : GameObjectNode
 
 		AddGameObjectMenuItems( m );
 
-		m.OpenAtCursor( true );
+		m.OpenAtCursor( false );
 
 		return true;
 	}

@@ -262,7 +262,7 @@ public partial class GameObjectNode : TreeNode<GameObject>
 
 		AddGameObjectMenuItems( m );
 
-		m.OpenAtCursor( true );
+		m.OpenAtCursor( false );
 
 		return true;
 	}

@@ -93,7 +93,7 @@ public partial class SceneTabButton : Widget
 		m.AddSeparator();
 		m.AddOption( "Close", "close", () => session.Destroy() );
 
-		m.OpenAtCursor( true );
+		m.OpenAtCursor( false );
 	}
 }
 

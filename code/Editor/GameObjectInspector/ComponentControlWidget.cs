@@ -28,7 +28,7 @@ public class ComponentControlWidget : ControlWidget
 	//	m.AddOption( "Paste", action: Paste );
 		m.AddOption( "Clear", action: Clear );
 
-		m.OpenAtCursor( true );
+		m.OpenAtCursor( false );
 
 		e.Accepted = true;
 	}

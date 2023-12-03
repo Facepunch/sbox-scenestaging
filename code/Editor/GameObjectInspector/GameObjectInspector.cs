@@ -102,7 +102,7 @@ public class GameObjectInspector : Widget
 		{
 			var menu = new Menu( this );
 			menu.AddOption( "Paste Component As New", action: () => Helpers.PasteComponentAsNew( TargetObject ) );
-			menu.OpenAtCursor( true );
+			menu.OpenAtCursor( false );
 		}
 		
 		base.OnContextMenu( e );
@@ -198,7 +198,7 @@ public class ComponentList : Widget
 		}
 		else
 		{
-			menu.OpenAtCursor( true );
+			menu.OpenAtCursor( false );
 		}
 
 	}
