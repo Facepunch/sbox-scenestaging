@@ -217,4 +217,5 @@ public abstract partial class BaseComponent
 	{
 		OnTagsChannged();
 	}
+
 }

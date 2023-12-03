@@ -133,6 +133,11 @@ internal enum CommonCallback
 	Enable,
 
 	/// <summary>
+	/// The component has become dirty, usually due to a property changing
+	/// </summary>
+	Dirty,
+
+	/// <summary>
 	/// Component has been disabled
 	/// </summary>
 	Disable,
