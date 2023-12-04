@@ -21,7 +21,7 @@ public class OnTouchComponent : BaseComponent
 	{
 		_nextTouching.Clear();
 
-		var collider = GetComponent<Collider>();
+		var collider = Components.Get<Collider>();
 
 		if ( collider != null )
 		{
