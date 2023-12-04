@@ -33,12 +33,26 @@ public static class GameManager
 			ActiveScene.PreRender();
 		}
 
-		var camera = ActiveScene.GetAllComponents<CameraComponent>().FirstOrDefault();
-
-		if ( camera is not null )
+		var cameras = ActiveScene.GetAllComponents<CameraComponent>( false ).OrderBy( x => x.Priority );
+		foreach ( var cam in cameras )
 		{
-			camera.UpdateCamera( Camera.Main );
+			cam.UpdateCamera();
 		}
+	}
 
+	[Event( "camera.post" )]
+	public static void PostCamera()
+	{
+		if ( !GameManager.IsPlaying )
+			return;
+
+		if ( ActiveScene is null )
+			return;
+
+		var cameras = ActiveScene.FindAllComponents<CameraComponent>( false ).OrderBy( x => x.Priority );
+		foreach ( var cam in cameras )
+		{
+			cam.AddToRenderList();
+		}
 	}
 }

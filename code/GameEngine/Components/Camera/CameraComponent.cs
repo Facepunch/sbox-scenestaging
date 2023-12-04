@@ -19,6 +19,9 @@ public class CameraComponent : BaseComponent
 	[Property]
 	public Color BackgroundColor { get; set; } = "#557685";
 
+	[Property]
+	bool ClearColor { get; set; } = true;
+
 	[Property, Range( 1, 179 )]
 	public float FieldOfView { get; set; } = 60;
 
@@ -27,6 +30,12 @@ public class CameraComponent : BaseComponent
 
 	[Property]
 	public float ZFar { get; set; } = 10000;
+
+	/// <summary>
+	/// A camera with a higher priority is drawn on top of a Camera with a lower priority.
+	/// </summary>
+	[Property]
+	public int Priority { get; set; }
 
 	[Property]
 	public bool Orthographic { get; set; }
@@ -51,11 +60,6 @@ public class CameraComponent : BaseComponent
 		using var scope = Gizmo.Scope( $"{GetHashCode()}" );
 
 		Gizmo.Transform = Gizmo.Transform.WithScale( 1 );
-
-		sceneCamera.Position = Vector3.Zero;
-		sceneCamera.Rotation = Rotation.Identity;
-		sceneCamera.FieldOfView = FieldOfView;
-		sceneCamera.BackgroundColor = BackgroundColor;
 
 		var cs = new Vector2( 1920, 1080 );
 
@@ -82,15 +86,25 @@ public class CameraComponent : BaseComponent
 		Gizmo.Draw.Line( bl.Forward * ZFar, tl.Forward * ZFar );
 	}
 
-	public void UpdateCamera( SceneCamera camera )
+	public void AddToRenderList()
 	{
-		if ( Scene is null )
+		sceneCamera.AddToRenderList();
+	}
+
+	public void UpdateCamera( SceneCamera camera = null )
+	{
+		if ( camera is null ) camera = sceneCamera;
+
+		var scene = GameObject.Scene;
+		if ( scene is null )
 		{
 			Log.Warning( $"Trying to update camera from {this} but has no scene" );
 			return;
 		}
 
-		camera.World = Scene.SceneWorld;
+		camera.Enabled = Enabled;
+		camera.World = scene.SceneWorld;
+		camera.ClearFlags = ClearFlags;
 		camera.Worlds.Clear();
 		camera.Worlds.Add( Scene.DebugSceneWorld );
 		camera.Position = Transform.Position;
@@ -98,37 +112,47 @@ public class CameraComponent : BaseComponent
 		camera.ZNear = ZNear;
 		camera.ZFar = ZFar;
 		camera.FieldOfView = FieldOfView;
-		camera.BackgroundColor = BackgroundColor;
-		camera.TargetEye = TargetEye;
 
-		camera.Ortho = Orthographic;
-		camera.OrthoWidth = 512; // this isn't used
-		camera.OrthoHeight = OrthographicHeight;
+		if ( ClearColor )
+		{
+			camera.BackgroundColor = BackgroundColor;
 
-		camera.VolumetricFog.Enabled = true;
-		camera.VolumetricFog.ContinuousMode = true;
-		camera.VolumetricFog.DrawDistance = 4096;
-		camera.VolumetricFog.FadeInStart = 64;
-		camera.VolumetricFog.FadeInEnd = 256;
-		camera.VolumetricFog.IndirectStrength = 1.0f;
-		camera.VolumetricFog.Anisotropy = 1;
-		camera.VolumetricFog.Scattering = 1.0f;
+			camera.TargetEye = TargetEye;
 
-		// defaults - let components override
-		camera.Tonemap.Enabled = false;
-		camera.CubemapFog.Enabled = false;
-		camera.Bloom.Enabled = false;
+			camera.Ortho = Orthographic;
+			camera.OrthoWidth = 512; // this isn't used
+			camera.OrthoHeight = OrthographicHeight;
 
-		camera.OnRenderOverlay = () => OnCameraRenderOverlay( camera );
-		camera.OnRenderTransparent = () => RenderHooks( afterTransparentHooks, camera );
+			camera.VolumetricFog.Enabled = true;
+			camera.VolumetricFog.ContinuousMode = true;
+			camera.VolumetricFog.DrawDistance = 4096;
+			camera.VolumetricFog.FadeInStart = 64;
+			camera.VolumetricFog.FadeInEnd = 256;
+			camera.VolumetricFog.IndirectStrength = 1.0f;
+			camera.VolumetricFog.Anisotropy = 1;
+			camera.VolumetricFog.Scattering = 1.0f;
+
+			// defaults - let components override
+			camera.Tonemap.Enabled = false;
+			camera.CubemapFog.Enabled = false;
+			camera.Bloom.Enabled = false;
+
+			camera.OnRenderOverlay = () => OnCameraRenderOverlay( camera );
+			camera.OnRenderTransparent = () => RenderHooks( afterTransparentHooks, camera );
+
+			foreach ( var c in GetComponents<ISceneCameraSetup>() )
+			{
+				c.SetupCamera( this, camera );
+			}
+
+		}
+		else
+		{
+			camera.BackgroundColor = Color.Transparent;
+		}
 
 		camera.RenderTags.SetFrom( RenderTags );
 		camera.ExcludeTags.SetFrom( RenderExcludeTags );
-
-		foreach ( var c in Components.GetAll<ISceneCameraSetup>() )
-		{
-			c.SetupCamera( this, camera );
-		}
 	}
 
 	class EffectHook

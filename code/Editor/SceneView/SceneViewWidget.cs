@@ -57,17 +57,16 @@ public partial class SceneViewWidget : Widget
 		Current = this;
 
 		// Lets default to the settings from the camera
-		var camera = session.Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
-		if ( camera is not null )
+
+		var cam = session.Scene.GetAllComponents<CameraComponent>( false ).OrderBy( x => x.Priority ).FirstOrDefault();
+		if ( cam is not null )
 		{
-			camera.UpdateCamera( Camera );
+			cam.UpdateCamera();
 		}
 
 		session.RestoreCamera( Camera );
 
 		EditorScene.GizmoInstance.Selection = session.Selection;
-
-		
 
 		Camera.World = session.Scene.SceneWorld;
 		Camera.Worlds.Add( EditorScene.GizmoInstance.World );
