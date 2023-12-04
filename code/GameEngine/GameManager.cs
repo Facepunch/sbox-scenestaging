@@ -44,7 +44,10 @@ public static class GameManager
 	public static void PostCamera()
 	{
 		if ( !GameManager.IsPlaying )
+		{
+			Camera.Main.AddToRenderList();
 			return;
+		}
 
 		if ( ActiveScene is null )
 			return;
