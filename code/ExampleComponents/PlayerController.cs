@@ -22,7 +22,7 @@ public class PlayerController : BaseComponent, INetworkSerializable
 		if ( IsProxy )
 			return;
 
-		var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
+		var cam = Scene.GetAllComponents<CameraComponent>().OrderBy( x => x.Priority ).FirstOrDefault();
 		if ( cam is not null )
 		{
 			EyeAngles = cam.Transform.Rotation.Angles();
@@ -39,7 +39,7 @@ public class PlayerController : BaseComponent, INetworkSerializable
 			EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
 			EyeAngles.roll = 0;
 
-			var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
+			var cam = Scene.GetAllComponents<CameraComponent>().OrderBy( x => x.Priority ).FirstOrDefault();
 
 			var lookDir = EyeAngles.ToRotation();
 			cam.Transform.Position = Transform.Position + lookDir.Backward * 300 + Vector3.Up * 75.0f;
