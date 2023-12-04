@@ -6,14 +6,16 @@ using System.Data;
 using System.Linq;
 using System.Threading;
 
-
-public partial class GameObject
+[ActionGraphIgnore]
+public partial class GameObject : IComponentLister
 {
+	[ActionGraphInclude]
 	public Scene Scene { get; private set; }
 
+	[ActionGraphInclude]
 	public GameTransform Transform { get; private set; }
 
-	[Property]
+	[Property, ActionGraphInclude]
 	public string Name { get; set; } = "Untitled Object";
 
 	[Property]
@@ -39,7 +41,7 @@ public partial class GameObject
 	/// <summary>
 	/// Is this gameobject enabled?
 	/// </summary>
-	[Property]
+	[Property, ActionGraphInclude]
 	public bool Enabled
 	{
 		get => _enabled;
@@ -134,6 +136,7 @@ public partial class GameObject
 
 	GameObject _parent;
 
+	[ActionGraphInclude]
 	public GameObject Parent
 	{
 		get => _parent;
@@ -160,12 +163,14 @@ public partial class GameObject
 		}
 	}
 
+	[ActionGraphInclude]
 	public List<GameObject> Children { get; } = new List<GameObject>();
 
 	/// <summary>
 	/// Is this gameobject active. For it to be active, it needs to be enabled, all of its ancestors
 	/// need to be enabled, and it needs to be in a scene.
 	/// </summary>
+	[ActionGraphInclude]
 	public bool Active => Enabled && Scene is not null && (Parent?.Active ?? true);
 
 
@@ -218,11 +223,13 @@ public partial class GameObject
 		ForEachChild( "UpdateEnabledStatus", true, c => c.UpdateEnabledStatus() );
 	}
 
+	[ActionGraphInclude, Pure]
 	public bool IsDescendant( GameObject o )
 	{
 		return o.IsAncestor( this );
 	}
 
+	[ActionGraphInclude, Pure]
 	public bool IsAncestor( GameObject o )
 	{
 		if ( o == this ) return true;
@@ -235,6 +242,7 @@ public partial class GameObject
 		return false;
 	}
 
+	[ActionGraphInclude]
 	public void AddSibling( GameObject go, bool before, bool keepWorldPosition = true )
 	{
 		if ( this is Scene ) throw new InvalidOperationException( "Can't add a sibling to a scene!" );
@@ -247,6 +255,7 @@ public partial class GameObject
 		go.Parent.Children.Insert( targetIndex, go );
 	}
 
+	[ActionGraphInclude]
 	public void SetParent( GameObject value, bool keepWorldPosition = true )
 	{
 		if ( this is Scene ) throw new InvalidOperationException( "Can't set the parent of a scene!" );
@@ -304,6 +313,7 @@ public partial class GameObject
 		}
 	}
 
+	[ActionGraphInclude, Pure]
 	public IEnumerable<GameObject> GetAllObjects( bool enabled )
 	{
 		if ( enabled && !Enabled )
@@ -327,6 +337,8 @@ public partial class GameObject
 	/// <summary>
 	/// This is slow, and somewhat innacurate. Don't call it every frame!
 	/// </summary>
+
+	[ActionGraphInclude, Pure]
 	public BBox GetBounds()
 	{
 		var renderers = Components.GetAll<ModelRenderer>( FindMode.EnabledInSelfAndDescendants );

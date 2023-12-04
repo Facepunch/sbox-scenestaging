@@ -443,3 +443,40 @@ public class ComponentList
 	}
 
 }
+
+[Title( "Components" ), Icon( "apps" )]
+public interface IComponentLister
+{
+	[ActionGraphIgnore]
+	ComponentList Components { get; }
+
+	[Title( "Create {T}" )]
+	public T Create<T>( bool startEnabled = true ) where T : BaseComponent, new()
+	{
+		return Components.Create<T>( startEnabled );
+	}
+
+	[Pure, Title( "Get {T}" )]
+	public T Get<T>( FindMode search )
+	{
+		return Components.GetAll<T>( search ).FirstOrDefault();
+	}
+
+	[Pure, Title( "Try Get {T}" )]
+	public bool TryGet<T>( out T component, FindMode search = FindMode.EnabledInSelf )
+	{
+		return Components.TryGet( out component, search );
+	}
+
+	[Title( "For Each {T}" )]
+	public void ForEach<T>( string name, bool includeDisabled, Action<T> action )
+	{
+		Components.ForEach<T>( name, includeDisabled, action );
+	}
+
+	[Title( "Get Or Create {T}" )]
+	public T GetOrCreate<T>( FindMode flags = FindMode.EverythingInSelf ) where T : BaseComponent, new()
+	{
+		return Components.GetOrCreate<T>( flags );
+	}
+}

@@ -1,8 +1,10 @@
 ﻿using Editor.NodeEditor;
 using Facepunch.ActionGraphs;
 using Sandbox.ActionGraphs;
+using Sandbox.UI;
 using System;
 using System.Collections;
+using static Facepunch.ActionGraphs.Node;
 
 namespace Editor.ActionGraph;
 
@@ -135,7 +137,7 @@ public record struct MethodNodeType( MethodDescription[] Methods ) : INodeType
 	{
 		Name = $"{(Methods[0].Title.Contains( '{' ) ? Methods[0].Name.ToTitleCase() : Methods[0].Title)}{(Methods[0].IsStatic ? " (static)" : "")}",
 		Description = Methods[0].Description,
-		Group = $"{Methods[0].TypeDescription.Name}:data_object",
+		Group = $"{Methods[0].TypeDescription.Title}:{Methods[0].TypeDescription.Icon ?? "data_object"}",
 		Icon = Methods[0].Icon ?? (Methods[0].HasAttribute<PureAttribute>() ? "run_circle" : EditorNodeLibrary.CallMethod.DisplayInfo.Icon)
 	};
 
@@ -185,7 +187,7 @@ public record struct PropertyNodeType( PropertyDescription Property, PropertyNod
 	{
 		Name = ReadWrite ? $"{Property.Title}:storage/{Kind}" : $"{Property.Title} ({Kind})",
 		Description = Property.Description,
-		Group = $"{Property.TypeDescription.Name}:data_object",
+		Group = $"{Property.TypeDescription.Title}:{Property.TypeDescription.Icon ?? "data_object"}",
 		Icon = Property.Icon ?? (Kind == PropertyNodeKind.Get
 			? EditorNodeLibrary.GetProperty.DisplayInfo.Icon
 			: EditorNodeLibrary.SetProperty.DisplayInfo.Icon)
@@ -225,7 +227,7 @@ public record struct FieldNodeType( FieldDescription Field, PropertyNodeKind Kin
 	{
 		Name = ReadWrite ? $"{Field.Title}:storage/{Kind}" : $"{Field.Title} ({Kind})",
 		Description = $"{Field.Description}:data_object",
-		Group = Field.TypeDescription.Name,
+		Group = $"{Field.TypeDescription.Title}:{Field.TypeDescription.Icon ?? "data_object"}",
 		Icon = Field.Icon ?? (Kind == PropertyNodeKind.Get
 			? EditorNodeLibrary.GetProperty.DisplayInfo.Icon
 			: EditorNodeLibrary.SetProperty.DisplayInfo.Icon)

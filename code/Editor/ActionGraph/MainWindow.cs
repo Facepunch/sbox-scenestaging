@@ -527,16 +527,27 @@ public class ActionGraphView : GraphView
 		}
 	}
 
-	private static IEnumerable<INodeType> GetInstanceNodes( Type type )
+	private static IEnumerable<INodeType> GetInstanceNodes( Type type, bool isRoot )
 	{
 		if ( type == null )
 		{
 			yield break;
 		}
 
-		if ( type.BaseType != null )
+		if ( isRoot )
 		{
-			foreach ( var node in GetInstanceNodes( type.BaseType ) )
+			foreach ( var iFace in type.GetInterfaces() )
+			{
+				foreach ( var node in GetInstanceNodes( iFace, false ) )
+				{
+					yield return node;
+				}
+			}
+		}
+
+		if ( !type.IsInterface && type.BaseType != null )
+		{
+			foreach ( var node in GetInstanceNodes( type.BaseType, false ) )
 			{
 				yield return node;
 			}
@@ -669,7 +680,7 @@ public class ActionGraphView : GraphView
 			yield return nodeType;
 		}
 
-		foreach ( var nodeType in GetInstanceNodes( inputValueType ) )
+		foreach ( var nodeType in GetInstanceNodes( inputValueType, true ) )
 		{
 			yield return nodeType;
 		}

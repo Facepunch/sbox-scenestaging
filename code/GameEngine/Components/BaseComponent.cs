@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 
 [ActionGraphIgnore]
-public abstract partial class BaseComponent
+public abstract partial class BaseComponent : IComponentLister
 {
 	[ActionGraphInclude]
 	public Scene Scene => GameObject.Scene;
