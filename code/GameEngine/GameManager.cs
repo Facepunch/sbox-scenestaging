@@ -33,7 +33,7 @@ public static class GameManager
 			ActiveScene.PreRender();
 		}
 
-		var cameras = ActiveScene.GetAllComponents<CameraComponent>( false ).OrderBy( x => x.Priority );
+		var cameras = ActiveScene.GetAllComponents<CameraComponent>().OrderBy( x => x.Priority );
 		foreach ( var cam in cameras )
 		{
 			cam.UpdateCamera();
@@ -49,7 +49,7 @@ public static class GameManager
 		if ( ActiveScene is null )
 			return;
 
-		var cameras = ActiveScene.FindAllComponents<CameraComponent>( false ).OrderBy( x => x.Priority );
+		var cameras = ActiveScene.GetAllComponents<CameraComponent>().OrderBy( x => x.Priority );
 		foreach ( var cam in cameras )
 		{
 			cam.AddToRenderList();
