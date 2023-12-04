@@ -1,6 +1,74 @@
 {
   "GameObjects": [
     {
+      "Id": "0a2618e2-acc7-4e8d-91f5-6e1f31b31842",
+      "Name": "ViewModelCamera",
+      "Position": "495.1117,397.6863,-722.6508",
+      "Rotation": "0.00000003823076,-0.0000000000000002403713,0.6414058,0.7672025",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.33333,0.46275,0.52157,0",
+          "ClearColor": false,
+          "ClearFlags": "Depth",
+          "FieldOfView": 78.16,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "viewmodel",
+          "TargetEye": "None",
+          "ZFar": 100000,
+          "ZNear": 0.5
+        }
+      ],
+      "Children": [
+        {
+          "Id": "8cc2df8b-86d7-4eef-ac86-5e796075a1d8",
+          "Name": "Current ViewModel",
+          "Position": "0,0,0",
+          "Tags": "viewmodel",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "SkinnedModelRenderer",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "MaterialOverride": null,
+              "Model": "models/weapons/sbox_smg_mp5/v_mp5.vmdl",
+              "ShouldCastShadows": true,
+              "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "a7b46643-9f66-4fa2-829d-f7a65757c927",
+              "Name": "Arms",
+              "Position": "0,0,0",
+              "Tags": "viewmodel",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "SkinnedModelRenderer",
+                  "__enabled": true,
+                  "BodyGroups": 18446744073709551511,
+                  "BoneMergeTarget": "8cc2df8b-86d7-4eef-ac86-5e796075a1d8",
+                  "CreateBoneObjects": false,
+                  "MaterialOverride": null,
+                  "Model": "models/first_person/first_person_arms.vmdl",
+                  "ShouldCastShadows": true,
+                  "Tint": "1,1,1,1"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
       "Name": "Directional Light",
       "Position": "158.6718,-124.3322,368.6452",
@@ -1225,76 +1293,6 @@
               "MaximumExposure": 2,
               "MinimumExposure": 1.3,
               "Rate": 4.52
-            }
-          ],
-          "Children": [
-            {
-              "Id": "0a2618e2-acc7-4e8d-91f5-6e1f31b31842",
-              "Name": "ViewModelCamera",
-              "Position": "0,0,0",
-              "Tags": "red,green",
-              "Enabled": true,
-              "Components": [
-                {
-                  "__type": "CameraComponent",
-                  "__enabled": true,
-                  "BackgroundColor": "0.33333,0.46275,0.52157,0",
-                  "ClearColor": false,
-                  "ClearFlags": "Depth",
-                  "FieldOfView": 78.16,
-                  "Orthographic": false,
-                  "OrthographicHeight": 1204,
-                  "Priority": 1,
-                  "RenderExcludeTags": "",
-                  "RenderTags": "viewmodel",
-                  "TargetEye": "None",
-                  "ZFar": 100000,
-                  "ZNear": 0.5
-                }
-              ],
-              "Children": [
-                {
-                  "Id": "8cc2df8b-86d7-4eef-ac86-5e796075a1d8",
-                  "Name": "Current ViewModel",
-                  "Position": "0,0,0",
-                  "Tags": "viewmodel,red,green",
-                  "Enabled": true,
-                  "Components": [
-                    {
-                      "__type": "SkinnedModelRenderer",
-                      "__enabled": true,
-                      "BodyGroups": 18446744073709551615,
-                      "CreateBoneObjects": false,
-                      "MaterialOverride": null,
-                      "Model": "models/weapons/sbox_smg_mp5/v_mp5.vmdl",
-                      "ShouldCastShadows": true,
-                      "Tint": "1,1,1,1"
-                    }
-                  ],
-                  "Children": [
-                    {
-                      "Id": "a7b46643-9f66-4fa2-829d-f7a65757c927",
-                      "Name": "Arms",
-                      "Position": "0,0,0",
-                      "Tags": "viewmodel,red,green",
-                      "Enabled": true,
-                      "Components": [
-                        {
-                          "__type": "SkinnedModelRenderer",
-                          "__enabled": true,
-                          "BodyGroups": 18446744073709551511,
-                          "BoneMergeTarget": "8cc2df8b-86d7-4eef-ac86-5e796075a1d8",
-                          "CreateBoneObjects": false,
-                          "MaterialOverride": null,
-                          "Model": "models/first_person/first_person_arms.vmdl",
-                          "ShouldCastShadows": true,
-                          "Tint": "1,1,1,1"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
             }
           ]
         }
