@@ -58,7 +58,7 @@ public partial class SceneViewWidget : Widget
 
 		// Lets default to the settings from the camera
 
-		var cam = session.Scene.GetAllComponents<CameraComponent>( false ).OrderBy( x => x.Priority ).FirstOrDefault();
+		var cam = session.Scene.GetAllComponents<CameraComponent>().OrderBy( x => x.Priority ).FirstOrDefault();
 		if ( cam is not null )
 		{
 			cam.UpdateCamera();
