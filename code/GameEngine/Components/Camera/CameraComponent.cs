@@ -140,7 +140,7 @@ public class CameraComponent : BaseComponent
 			camera.OnRenderOverlay = () => OnCameraRenderOverlay( camera );
 			camera.OnRenderTransparent = () => RenderHooks( afterTransparentHooks, camera );
 
-			foreach ( var c in GetComponents<ISceneCameraSetup>() )
+			foreach ( var c in Components.GetAll<ISceneCameraSetup>() )
 			{
 				c.SetupCamera( this, camera );
 			}
