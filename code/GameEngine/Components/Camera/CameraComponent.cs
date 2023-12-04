@@ -102,7 +102,6 @@ public class CameraComponent : BaseComponent
 			return;
 		}
 
-		camera.Enabled = Enabled;
 		camera.World = scene.SceneWorld;
 		camera.ClearFlags = ClearFlags;
 		camera.Worlds.Clear();
