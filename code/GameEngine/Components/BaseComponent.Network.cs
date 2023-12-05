@@ -11,14 +11,14 @@ public abstract partial class BaseComponent
 
 	public bool IsProxy => GameObject.IsProxy;
 
-	protected void __rpc_Broadcast( Action resume, string methodName, params object[] argumentList )
+	protected void __rpc_Broadcast( WrappedMethod m, params object[] argumentList )
 	{
 		if ( !Rpc.Calling && Network.Active && SceneNetworkSystem.Instance is not null )
 		{
 			var msg = new ObjectMessageMsg();
 			msg.Guid = GameObject.Id;
 			msg.Component = GetType().Name;
-			msg.MethodIndex = Rpc.FindMethodIndex( methodName );
+			msg.MethodIdentity = m.MethodIdentity;
 			msg.Arguments = argumentList;
 
 			SceneNetworkSystem.Instance.Broadcast( msg );
@@ -26,18 +26,18 @@ public abstract partial class BaseComponent
 
 		Rpc.PreCall();
 
-		// we want to call this
-		resume();
+		// Resume the original method (we want to call this)
+		m.Resume();
 	}
 	
-	protected void __rpc_Authority( Action resume, string methodName, params object[] argumentList )
+	protected void __rpc_Authority( WrappedMethod m, params object[] argumentList )
 	{
 		if ( !IsProxy )
 		{
 			Rpc.PreCall();
 			
 			// If we are already the authority call the original method and return early
-			resume();
+			m.Resume();
 			return;
 		}
 		
@@ -46,7 +46,7 @@ public abstract partial class BaseComponent
 			var msg = new ObjectMessageMsg();
 			msg.Guid = GameObject.Id;
 			msg.Component = GetType().Name;
-			msg.MethodIndex = Rpc.FindMethodIndex( methodName );
+			msg.MethodIdentity = m.MethodIdentity;
 			msg.Arguments = argumentList;
 			
 			SceneNetworkSystem.Instance.Send( Network.OwnerId, msg );

@@ -233,12 +233,12 @@ public partial struct ObjectMessageMsg
 {
 	public Guid Guid { get; set; }
 	public string Component { get; set; } // todo - id the components better, allow for multiple
-	public int MethodIndex { get; set; }
+	public int MethodIdentity { get; set; }
 	public object[] Arguments { get; set; }
 }
 
 public partial struct StaticRpcMsg
 {
-	public int MethodIndex { get; set; }
+	public int MethodIdentity { get; set; }
 	public object[] Arguments { get; set; }
 }

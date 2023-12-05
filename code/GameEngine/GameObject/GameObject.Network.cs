@@ -184,14 +184,14 @@ public partial class GameObject
 		Net.Owner = guid;
 	}
 
-	protected void __rpc_Broadcast( Action resume, string methodName, params object[] argumentList )
+	protected void __rpc_Broadcast( WrappedMethod m, params object[] argumentList )
 	{
 		if ( !Rpc.Calling && Network.Active && SceneNetworkSystem.Instance is not null )
 		{
 			var msg = new ObjectMessageMsg();
 			msg.Guid = Id;
 			msg.Component = null;
-			msg.MethodIndex = Rpc.FindMethodIndex( methodName );
+			msg.MethodIdentity = m.MethodIdentity;
 			msg.Arguments = argumentList;
 
 			SceneNetworkSystem.Instance.Broadcast( msg );
@@ -199,8 +199,8 @@ public partial class GameObject
 
 		Rpc.PreCall();
 
-		// we want to call this
-		resume();
+		// Resume the original method (we want to call this)
+		m.Resume();
 	}
 
 	GameObject FindNetworkRoot()

@@ -40,39 +40,35 @@ public static class Rpc
 	}
 
 	[EditorBrowsable( EditorBrowsableState.Never )]
-	public static void WrapStaticMethod( Action resume, string methodName, params object[] argumentList )
+	public static void WrapStaticMethod( WrappedMethod m, params object[] argumentList )
 	{
 		if ( !Calling && SceneNetworkSystem.Instance is not null )
 		{
 			var msg = new StaticRpcMsg();
-			msg.MethodIndex = FindMethodIndex( methodName );
+			msg.MethodIdentity = m.MethodIdentity;
 			msg.Arguments = argumentList;
 
 			SceneNetworkSystem.Instance.Broadcast( msg );
 		}
 
 		PreCall();
-		resume();
+		m.Resume();
 	}
 
 	internal static void HandleIncoming( StaticRpcMsg message, Connection source )
 	{
-		var fullName = FindMethodName( message.MethodIndex );
-		var split = fullName.Split( "." );
-		var typeName = string.Join( ".", split[..^1] );
-		var methodName = split[^1];
-		var type = TypeLibrary.GetType( typeName );
+		var type = FindStaticType( message.MethodIdentity );
 
-		if ( type == null )
+		if ( type is null )
 		{
-			throw new( $"Unknown Static RPC type '{typeName}'" );
+			throw new( $"Unknown Static RPC type for method with identity '{message.MethodIdentity}'" );
 		}
 
-		var method = type.Methods.FirstOrDefault( m => m.IsStatic && m.Name == methodName && m.Parameters.Length == message.Arguments.Length );
+		var method = type.GetMethodByIdent( message.MethodIdentity );
 		
-		if ( method == null )
+		if ( method is null )
 		{
-			throw new( $"Unknown Static RPC method '{methodName}' on {typeName}" );
+			throw new( $"Unknown Static RPC method with identity '{message.MethodIdentity}' on {type}" );
 		}
 		
 		Calling = true;
@@ -88,7 +84,7 @@ public static class Rpc
 	{
 		if ( message.Guid == Guid.Empty )
 		{
-			Log.Warning( $"OnObjectMessage: Failed to call RPC with index '{message.MethodIndex}' for unknown object" );
+			Log.Warning( $"OnObjectMessage: Failed to call RPC with identity '{message.MethodIdentity}' for unknown object" );
 			return;
 		}
 
@@ -127,12 +123,11 @@ public static class Rpc
 
 	static void InvokeRpc( in ObjectMessageMsg message, in TypeDescription typeDesc, in object targetObject, in Connection source )
 	{
-		var methodName = FindMethodName( targetObject.GetType(), message.MethodIndex );
-		var method = typeDesc.GetMethod( methodName );
+		var method = typeDesc.GetMethodByIdent( message.MethodIdentity );
 		
 		if ( method == null )
 		{
-			throw new( $"Unknown RPC '{methodName}' on {typeDesc.Name}" );
+			throw new( $"Unknown RPC with identity '{message.MethodIdentity}' on {typeDesc.Name}" );
 		}
 
 		Calling = true;
@@ -143,83 +138,34 @@ public static class Rpc
 
 		Caller = oldCaller;
 	}
-
-	/// <summary>
-	/// Try to find a method name string from the supplied index.
-	/// </summary>
-	/// <param name="targetType"></param>
-	/// <param name="index"></param>
-	internal static string FindMethodName( Type targetType, int index )
-	{
-		if ( _indexToMethodName.TryGetValue( index, out var methodName ) )
-		{
-			return methodName;
-		}
-
-		methodName = TypeLibrary.GetType( targetType )
-			.Methods
-			.Select( m => m.Name )
-			.FirstOrDefault( m => m.FastHash() == index );
-
-		if ( !string.IsNullOrEmpty( methodName ) )
-		{
-			_indexToMethodName[index] = methodName;
-			_methodNameToIndex[methodName] = index;
-		}
-
-		return methodName;
-	}
 	
 	/// <summary>
-	/// Try to find a static method name string from the supplied index.
+	/// Try to find a <see cref="TypeDescription"/> from the supplied method identity.
 	/// </summary>
-	/// <param name="targetType"></param>
-	/// <param name="index"></param>
-	internal static string FindMethodName( int index )
+	/// <param name="methodIdentity"></param>
+	internal static TypeDescription FindStaticType( int methodIdentity )
 	{
-		if ( _indexToMethodName.TryGetValue( index, out var methodName ) )
+		if ( _methodIdentityToType.TryGetValue( methodIdentity, out var type ) )
 		{
-			return methodName;
+			return type;
 		}
 
-		methodName = TypeLibrary.GetMethodsWithAttribute<BroadcastAttribute>()
-			.Select( ( m, t ) => $"{m.Method.TypeDescription.FullName}.{m.Method.Name}" )
-			.FirstOrDefault( m => m.FastHash() == index );
+		var method = TypeLibrary.GetMethodsWithAttribute<BroadcastAttribute>()
+			.Select( m => m.Method )
+			.FirstOrDefault( m => m.Identity == methodIdentity );
 
-		if ( !string.IsNullOrEmpty( methodName ) )
-		{
-			_indexToMethodName[index] = methodName;
-			_methodNameToIndex[methodName] = index;
-		}
+		if ( method is null ) return default;
 
-		return methodName;
+		_methodIdentityToType[methodIdentity] = method.TypeDescription;
+		return method.TypeDescription;
+
 	}
-
-	/// <summary>
-	/// Try to find an index from the supplied method name.
-	/// </summary>
-	/// <param name="targetType"></param>
-	/// <param name="methodName"></param>
-	internal static int FindMethodIndex( string methodName )
-	{
-		if ( _methodNameToIndex.TryGetValue( methodName, out var index ) )
-		{
-			return index;
-		}
-
-		index = methodName.FastHash();
-		_methodNameToIndex[methodName] = index;
-		_indexToMethodName[index] = methodName;
-		return index;
-	}
-
-	static Dictionary<string, int> _methodNameToIndex = new();
-	static Dictionary<int, string> _indexToMethodName = new();
+	
+	static Dictionary<int, TypeDescription> _methodIdentityToType = new();
 
 	[Event.Hotload]
 	static void OnHotload()
 	{
-		_methodNameToIndex.Clear();
-		_indexToMethodName.Clear();
+		_methodIdentityToType.Clear();
 	}
 }
