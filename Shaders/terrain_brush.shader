@@ -77,7 +77,7 @@ VS
 
 PS
 {
-	CreateTexture2D( g_tBrush ) < Attribute( "Brush" ); SrgbRead( false ); Filter( MIN_MAG_MIP_POINT ); AddressU( WRAP ); AddressV( WRAP ); >;
+	CreateTexture2D( g_tBrush ) < Attribute( "Brush" ); SrgbRead( false ); Filter( BILINEAR ); AddressU( WRAP ); AddressV( WRAP ); >;
 
 	float g_flRadius < Attribute( "Radius" ); Default( 16.0f ); >;
 	float4 g_flColor < Attribute( "Color" ); >;

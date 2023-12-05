@@ -51,6 +51,7 @@ class BrushSettingsWidget : Widget
 		list.MaximumHeight = 96;
 		list.SetItems( brushes.Cast<object>() );
 		list.ItemSize = new Vector2( 32, 32 );
+		list.ItemAlign = Sandbox.UI.Align.SpaceBetween;
 		list.OnPaintOverride += () => PaintListBackground( list );
 		list.ItemPaint = PaintBrushItem;
 		list.ItemSelected = ( item ) => { if ( item is BrushData data ) TerrainEditor.Brush.Set( data.Name ); };
