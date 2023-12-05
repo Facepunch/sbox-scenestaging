@@ -18,7 +18,7 @@ class ScenePhysicsSystem : GameObjectSystem
 
 		using ( Sandbox.Utility.Superluminal.Scope( "PhysicsWorld.Step", Color.Cyan ) )
 		{
-			Scene.PhysicsWorld.Step( Time.Delta, steps );
+			Scene.PhysicsWorld.Step( Time.Now, Time.Delta, steps );
 		}
 	}
 }

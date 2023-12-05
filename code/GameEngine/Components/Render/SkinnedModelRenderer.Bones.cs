@@ -92,10 +92,12 @@ public sealed partial class SkinnedModelRenderer
 		SceneModel.SetBoneWorldTransform( bone.Index, tx );
 	}
 
-	internal void SetPhysicsBone( int v, Transform transform, float lerp )
+	internal void SetBoneTransform( in BoneCollection.Bone bone, Transform transform, float lerp )
 	{
 		if ( !SceneModel.IsValid() ) return;
-		SceneModel.SetBoneOverride( v, transform, lerp );
+		ArgumentNullException.ThrowIfNull( bone, nameof( bone ) );
+
+		SceneModel.SetBoneOverride( bone.Index, transform, lerp );
 	}
 
 	internal void ClearPhysicsBones()
