@@ -101,6 +101,8 @@ public static class TerrainEditor
 		}
 	}
 
+	static bool _dragging = false;
+
 	public static bool Update( Gizmo.Instance instance, SceneCamera camera, Widget canvas )
 	{
 		// poo emoji
@@ -120,6 +122,12 @@ public static class TerrainEditor
 
 			if ( Application.MouseButtons.HasFlag( MouseButtons.Left ) )
 			{
+				if ( !_dragging )
+				{
+					_dragging = true;
+					terrain.EditLog( "Terrain Sculpt", terrain );
+				}
+
 				if ( TerrainEditor.Mode == "Sculpt" )
 				{
 					AddHeight( terrain, hitPosition, Application.KeyboardModifiers.HasFlag( KeyboardModifiers.Ctrl ) );
@@ -129,6 +137,10 @@ public static class TerrainEditor
 					AddSplat( terrain, hitPosition, Application.KeyboardModifiers.HasFlag( KeyboardModifiers.Ctrl ) );
 				}
 				terrain.SyncHeightMap();
+			}
+			else if ( _dragging )
+			{
+				_dragging = false;
 			}
 
 			return true;
@@ -146,10 +158,10 @@ public static class TerrainEditor
 			_previewObject = new BrushPreviewSceneObject( instance.World ); // Not cached, FindOrCreate is internal :x
 		}
 
-		var color = Color.White;
+		var color = Color.FromBytes( 150, 150, 250 );
 
 		if ( Application.KeyboardModifiers.HasFlag( KeyboardModifiers.Ctrl ) )
-			color = Color.Red;
+			color = color.AdjustHue( 90 );
 
 		color.a = Brush.Opacity;
 
