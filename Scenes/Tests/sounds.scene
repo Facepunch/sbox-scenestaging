@@ -135,6 +135,7 @@
           "AnimationHelper": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
           "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
           "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
+          "FirstPerson": false,
           "Gravity": "0,0,800"
         },
         {
@@ -1529,10 +1530,7 @@
     "ThreadedAnimation": true,
     "UseFixedUpdate": true
   },
-  "Title": "Soundscape",
-  "Description": "Ambient sound triggers",
-  "__references": [
-    "mungus.the_sbox_song",
-    "seal.teamfortress2soundtrack_upgrades"
-  ]
+  "Title": "Sounds",
+  "Description": "Sound components",
+  "__references": []
 }
