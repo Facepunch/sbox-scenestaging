@@ -82,8 +82,6 @@ public class ModelPhysics : BaseComponent
 		if ( PhysicsGroup is null ) return;
 		if ( Renderer is null ) return;
 
-		//var bbox = new BBox( Renderer.GameObject.Transform.Position, 1 );
-
 		foreach ( var body in PhysicsGroup.Bodies )
 		{
 			var bone = Renderer.Model.Bones.AllBones.FirstOrDefault( x => x.Name == body.GroupName );
@@ -91,19 +89,13 @@ public class ModelPhysics : BaseComponent
 
 			var tx = body.GetLerpedTransform( Time.Now );
 
-			Renderer.SetBoneTransform( bone, tx, 1 );
-			//bbox = bbox.AddPoint( body.Transform.Position );
+			Renderer.SetBoneTransform( bone, tx );
 
 			if ( bone.Index == 0 )
 			{
 				Renderer.GameObject.Transform.Position = tx.Position;
 			}
 		}
-
-		//Renderer.GameObject.Transform.Position = bbox.Center;
-		//Renderer.SceneObject.Bounds = bbox;
-
-		// Gizmo.Draw.LineBBox( Renderer.SceneObject.Bounds );
 	}
 
 }
