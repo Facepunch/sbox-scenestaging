@@ -46,6 +46,7 @@ public static class Rpc
 		{
 			var msg = new StaticRpcMsg();
 			msg.MethodIdentity = m.MethodIdentity;
+			msg.TypeIdentity = TypeLibrary.GetType( m.TypeName ).Identity;
 			msg.Arguments = argumentList;
 
 			SceneNetworkSystem.Instance.Broadcast( msg );
@@ -57,7 +58,7 @@ public static class Rpc
 
 	internal static void HandleIncoming( StaticRpcMsg message, Connection source )
 	{
-		var type = FindStaticType( message.MethodIdentity );
+		var type = TypeLibrary.GetTypeByIdent( message.TypeIdentity );
 
 		if ( type is null )
 		{
@@ -137,35 +138,5 @@ public static class Rpc
 		method.Invoke( targetObject, message.Arguments );
 
 		Caller = oldCaller;
-	}
-	
-	/// <summary>
-	/// Try to find a <see cref="TypeDescription"/> from the supplied method identity.
-	/// </summary>
-	/// <param name="methodIdentity"></param>
-	internal static TypeDescription FindStaticType( int methodIdentity )
-	{
-		if ( _methodIdentityToType.TryGetValue( methodIdentity, out var type ) )
-		{
-			return type;
-		}
-
-		var method = TypeLibrary.GetMethodsWithAttribute<BroadcastAttribute>()
-			.Select( m => m.Method )
-			.FirstOrDefault( m => m.Identity == methodIdentity );
-
-		if ( method is null ) return default;
-
-		_methodIdentityToType[methodIdentity] = method.TypeDescription;
-		return method.TypeDescription;
-
-	}
-	
-	static Dictionary<int, TypeDescription> _methodIdentityToType = new();
-
-	[Event.Hotload]
-	static void OnHotload()
-	{
-		_methodIdentityToType.Clear();
 	}
 }

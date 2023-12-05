@@ -239,6 +239,7 @@ public partial struct ObjectMessageMsg
 
 public partial struct StaticRpcMsg
 {
+	public int TypeIdentity { get; set; }
 	public int MethodIdentity { get; set; }
 	public object[] Arguments { get; set; }
 }
