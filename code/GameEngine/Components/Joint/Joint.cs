@@ -111,6 +111,13 @@ public abstract class Joint : BaseComponent, BaseComponent.ExecuteInEditor
 			var otherPhysics = Body.Components.Get<PhysicsComponent>();
 			if ( otherPhysics != null && otherPhysics.GetBody().IsValid() )
 				otherBody = otherPhysics.GetBody();
+
+			if ( !otherBody.IsValid() )
+			{
+				var otherCollider = Body.Components.Get<Collider>();
+				if ( otherCollider != null && otherCollider.KeyframeBody.IsValid() )
+					otherBody = otherCollider.KeyframeBody;
+			}
 		}
 
 		var thisBody = thisPhysics.GetBody();

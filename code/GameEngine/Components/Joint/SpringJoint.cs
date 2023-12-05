@@ -6,8 +6,8 @@ using Sandbox.Physics;
 [Icon( "waves", "red", "white" )]
 public sealed class SpringJoint : Joint
 {
-	private float frequency;
-	private float damping;
+	private float frequency = 5;
+	private float damping = 0.7f;
 	private float maxLength;
 	private float minLength;
 
@@ -91,7 +91,11 @@ public sealed class SpringJoint : Joint
 
 	protected override PhysicsJoint CreateJoint( PhysicsBody body1, PhysicsBody body2 )
 	{
-		springJoint = PhysicsJoint.CreateSpring( body1, body2, MinLength, MaxLength );
+		var anchor = body1.Position;
+		var point1 = new PhysicsPoint( body1, body1.Transform.PointToLocal( anchor ) );
+		var point2 = new PhysicsPoint( body2, body2.Transform.PointToLocal( anchor ) );
+
+		springJoint = PhysicsJoint.CreateSpring( point1, point2, MinLength, MaxLength );
 		springJoint.SpringLinear = new PhysicsSpring( Frequency, Damping );
 		return springJoint;
 	}

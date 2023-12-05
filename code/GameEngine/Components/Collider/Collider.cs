@@ -8,6 +8,8 @@ public abstract class Collider : BaseComponent, BaseComponent.ExecuteInEditor
 	List<PhysicsShape> shapes = new();
 
 	protected PhysicsBody keyframeBody;
+	public PhysicsBody KeyframeBody => keyframeBody;
+
 	CollisionEventSystem _collisionEvents;
 
 	[Property] public bool Static { get; set; } = false;
