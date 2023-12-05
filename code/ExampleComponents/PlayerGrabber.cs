@@ -61,7 +61,7 @@ public class PlayerGrabber : BaseComponent
 			}
 			else
 			{
-				MoveShit( targetTx );
+				grabbedBody.SmoothMove( targetTx, 0.2f, Time.Delta );
 				return;
 			}
 		}
@@ -88,14 +88,5 @@ public class PlayerGrabber : BaseComponent
 			grabbedBody.MotionEnabled = true;
 		}
 
-	}
-
-	void MoveShit( Transform target )
-	{
-		var velocity = grabbedBody.Velocity;
-		var pos = Vector3.SmoothDamp( grabbedBody.Transform.Position, target.Position, ref velocity, 0.1f, RealTime.Delta );
-		grabbedBody.Velocity = velocity;
-
-		grabbedBody.AngularVelocity = 0;
 	}
 }
