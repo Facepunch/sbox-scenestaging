@@ -142,16 +142,19 @@ public sealed partial class SkinnedModelRenderer : ModelRenderer
 		if ( _boneMergeTarget is not null )
 			return;
 
-		_sceneObject.Transform = Transform.World;
+		lock ( this )
+		{
+			_sceneObject.Transform = Transform.World;
 
-		if ( Scene.IsEditor )
-		{
-			SceneModel.UpdateToBindPose();
+			if ( Scene.IsEditor )
+			{
+				SceneModel.UpdateToBindPose();
+			}
+			else
+			{
+				SceneModel.Update( Scene.IsEditor ? 0.0f : Time.Delta );
+			}
 		}
-		else
-		{
-			SceneModel.Update( Scene.IsEditor ? 0.0f : Time.Delta );
-		}		
 
 		MergeChildren();
 	}

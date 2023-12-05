@@ -39,8 +39,10 @@ public class SceneAnimationSystem : GameObjectSystem
 		if ( renderer.Components.GetInAncestors<SkinnedModelRenderer>() is not null )
 			return;
 
+		renderer.AnimationUpdate();
+
 		// Update in order
-		foreach ( var c in renderer.Components.GetAll<SkinnedModelRenderer>( FindMode.EnabledInSelfAndDescendants ) )
+		foreach ( var c in renderer.Components.GetAll<SkinnedModelRenderer>( FindMode.Enabled | FindMode.InDescendants ) )
 		{
 			c.AnimationUpdate();
 		}
