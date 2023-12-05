@@ -46,7 +46,6 @@ public static class Rpc
 		{
 			var msg = new StaticRpcMsg();
 			msg.MethodIdentity = m.MethodIdentity;
-			msg.TypeIdentity = TypeLibrary.GetType( m.TypeName ).Identity;
 			msg.Arguments = argumentList;
 
 			SceneNetworkSystem.Instance.Broadcast( msg );
@@ -58,18 +57,9 @@ public static class Rpc
 
 	internal static void HandleIncoming( StaticRpcMsg message, Connection source )
 	{
-		var type = TypeLibrary.GetTypeByIdent( message.TypeIdentity );
-
-		if ( type is null )
+		if ( TypeLibrary.GetMemberByIdent( message.MethodIdentity ) is not MethodDescription method )
 		{
 			throw new( $"Unknown Static RPC type for method with identity '{message.MethodIdentity}'" );
-		}
-
-		var method = type.GetMethodByIdent( message.MethodIdentity );
-		
-		if ( method is null )
-		{
-			throw new( $"Unknown Static RPC method with identity '{message.MethodIdentity}' on {type}" );
 		}
 		
 		Calling = true;
@@ -124,9 +114,7 @@ public static class Rpc
 
 	static void InvokeRpc( in ObjectMessageMsg message, in TypeDescription typeDesc, in object targetObject, in Connection source )
 	{
-		var method = typeDesc.GetMethodByIdent( message.MethodIdentity );
-		
-		if ( method == null )
+		if ( TypeLibrary.GetMemberByIdent( message.MethodIdentity ) is not MethodDescription method )
 		{
 			throw new( $"Unknown RPC with identity '{message.MethodIdentity}' on {typeDesc.Name}" );
 		}
