@@ -96,7 +96,11 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 				.WithUAVBinding() // if we want to compute mips
 				.WithName( "terrain_heightmap" )
 				.Finish();
-			return;
+		}
+		else
+		{
+			// TODO: We could update only the dirty region, but this seems reasonable at least on 513x513
+			_heightmap.Update( new ReadOnlySpan<ushort>( TerrainData.HeightMap ) );
 		}
 
 		if ( _controlmap == null )
@@ -108,10 +112,10 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 				.Finish();
 			return;
 		}
-
-		// TODO: We could update only the dirty region, but this seems reasonable at least on 513x513
-		_heightmap.Update( new ReadOnlySpan<ushort>( TerrainData.HeightMap ) );
-		_controlmap.Update( new ReadOnlySpan<Color32>( TerrainData.ControlMap ) );
+		else
+		{
+			_controlmap.Update( new ReadOnlySpan<Color32>( TerrainData.ControlMap ) );
+		}
 	}
 
 	protected override void OnEnabled()
@@ -147,6 +151,9 @@ public partial class Terrain : BaseComponent, BaseComponent.ExecuteInEditor
 			return;
 
 		_sceneObject.Transform = Transform.World;
+		_sceneObject.Flags.CastShadows = CastShadows;
+		_sceneObject.Flags.IsOpaque = true;
+		_sceneObject.Flags.IsTranslucent = false;
 
 		_sceneObject.Attributes.Set( "HeightMap", _heightmap );
 		_sceneObject.Attributes.Set( "ControlMap", _controlmap );
