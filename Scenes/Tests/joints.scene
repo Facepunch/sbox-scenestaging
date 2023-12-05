@@ -96,6 +96,7 @@
           "AnimationHelper": "dd69f8fb-cc25-4152-8866-93ee06af68af",
           "Body": "1edae0ba-635e-42b4-8275-252ac1780d1f",
           "Eye": "a4d93c85-1c12-4a85-bb7e-b19f6cf5bbd7",
+          "FirstPerson": false,
           "Gravity": "0,0,800"
         },
         {
@@ -1825,8 +1826,8 @@
     "ThreadedAnimation": true,
     "UseFixedUpdate": true
   },
-  "Title": "Footsteps",
-  "Description": "Testing the footsteps animation event",
+  "Title": "Physics Joints",
+  "Description": "Tetsing various types of physics joints",
   "__references": [
     "facepunch.industrial_light",
     "facepunch.metal_beam_b_128",
