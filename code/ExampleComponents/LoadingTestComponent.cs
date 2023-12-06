@@ -5,7 +5,7 @@ using Sandbox.Services;
 using System;
 using System.Threading;
 
-public sealed class LoadingTestComponent : BaseComponent
+public sealed class LoadingTestComponent : Component
 {
 	protected override async Task OnLoad()
 	{

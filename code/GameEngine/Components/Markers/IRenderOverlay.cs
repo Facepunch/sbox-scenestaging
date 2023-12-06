@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 
-public abstract partial class BaseComponent
+public abstract partial class Component
 {
 	/// <summary>
 	/// A component with this interface will draw on the overlay on the camera

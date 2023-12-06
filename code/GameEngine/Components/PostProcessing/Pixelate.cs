@@ -4,7 +4,7 @@ using System;
 [Title( "Pixelate" )]
 [Category( "Post Processing" )]
 [Icon( "apps" )]
-public sealed class Pixelate : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class Pixelate : Component, Component.ExecuteInEditor
 {
 	[Property] public float Scale { get; set; } = 5;
 

@@ -9,7 +9,7 @@ using System.Linq;
 [Category( "Camera" )]
 [Icon( "videocam", "red", "white" )]
 [EditorHandle( "materials/gizmo/camera.png" )]
-public class CameraComponent : BaseComponent
+public class CameraComponent : Component
 {
 	SceneCamera sceneCamera = new SceneCamera();
 

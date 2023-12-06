@@ -4,7 +4,7 @@
 [Category( "Rendering" )]
 [Icon( "surround_sound" )]
 [EditorHandle( "materials/gizmo/soundscape.png" )]
-public class SoundscapeTrigger : BaseComponent
+public class SoundscapeTrigger : Component
 {
 	public enum TriggerType
 	{

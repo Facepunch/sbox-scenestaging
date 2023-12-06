@@ -1,6 +1,6 @@
 ﻿namespace Sandbox;
 
-public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEditor
+public abstract class ParticleEmitter : global::Component, global::Component.ExecuteInEditor
 {
 	[Property, Group( "Emitter" )] public bool Loop { get; set; } = true;
 	[Property, Group( "Emitter" )] public float Duration { get; set; } = 10.0f;

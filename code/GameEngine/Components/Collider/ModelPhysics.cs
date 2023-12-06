@@ -5,7 +5,7 @@ using System.Linq;
 [Title( "Model Physics" )]
 [Category( "Physics" )]
 [Icon( "check_box_outline_blank", "red", "white" )]
-public class ModelPhysics : BaseComponent
+public class ModelPhysics : Component
 {
 	[Property] public Model Model { get; set; }
 

@@ -169,7 +169,7 @@ public partial class GameObject
 					continue;
 				}
 
-				var componentType = TypeLibrary.GetType<BaseComponent>( (string)jso["__type"] );
+				var componentType = TypeLibrary.GetType<Component>( (string)jso["__type"] );
 				if ( componentType is null )
 				{
 					Log.Warning( $"TypeLibrary couldn't find BaseComponent type {jso["__type"]}" );

@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-public abstract class BaseSoundComponent : BaseComponent
+public abstract class BaseSoundComponent : Component
 {
 	[Property, Group( "Sound" )] public SoundEvent SoundEvent { get; set; }
 	[Property, Group( "Sound" )] public bool PlayOnStart { get; set; } = true;

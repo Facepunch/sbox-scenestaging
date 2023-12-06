@@ -46,22 +46,22 @@ public class ComponentGet
 	void CheckSelf( GameObject go )
 	{
 		// enabled only
-		Assert.AreEqual( 1, go.Components.GetAll<BaseComponent>( FindMode.EnabledInSelf ).Count() );
-		Assert.IsTrue( go.Components.GetAll<BaseComponent>( FindMode.EnabledInSelf ).All( x => x.Enabled ) );
-		Assert.IsTrue( go.Components.GetAll<BaseComponent>( FindMode.EnabledInSelf ).All( x => x.GameObject == go ) );
+		Assert.AreEqual( 1, go.Components.GetAll<Component>( FindMode.EnabledInSelf ).Count() );
+		Assert.IsTrue( go.Components.GetAll<Component>( FindMode.EnabledInSelf ).All( x => x.Enabled ) );
+		Assert.IsTrue( go.Components.GetAll<Component>( FindMode.EnabledInSelf ).All( x => x.GameObject == go ) );
 
 		// disabled only
-		Assert.AreEqual( 1, go.Components.GetAll<BaseComponent>( FindMode.DisabledInSelf ).Count() );
-		Assert.IsTrue( go.Components.GetAll<BaseComponent>( FindMode.DisabledInSelf ).All( x => !x.Enabled ) );
-		Assert.IsTrue( go.Components.GetAll<BaseComponent>( FindMode.DisabledInSelf ).All( x => x.GameObject == go ) );
+		Assert.AreEqual( 1, go.Components.GetAll<Component>( FindMode.DisabledInSelf ).Count() );
+		Assert.IsTrue( go.Components.GetAll<Component>( FindMode.DisabledInSelf ).All( x => !x.Enabled ) );
+		Assert.IsTrue( go.Components.GetAll<Component>( FindMode.DisabledInSelf ).All( x => x.GameObject == go ) );
 
 		// enabled or disabled
-		Assert.AreEqual( 2, go.Components.GetAll<BaseComponent>( FindMode.Enabled | FindMode.InSelf | FindMode.Disabled ).Count() );
-		Assert.IsTrue( go.Components.GetAll<BaseComponent>( FindMode.Enabled | FindMode.InSelf | FindMode.Disabled ).All( x => x.GameObject == go ) );
+		Assert.AreEqual( 2, go.Components.GetAll<Component>( FindMode.Enabled | FindMode.InSelf | FindMode.Disabled ).Count() );
+		Assert.IsTrue( go.Components.GetAll<Component>( FindMode.Enabled | FindMode.InSelf | FindMode.Disabled ).All( x => x.GameObject == go ) );
 
 		// no enabled or disabled means the same as both
-		Assert.AreEqual( 2, go.Components.GetAll<BaseComponent>( FindMode.InSelf ).Count() );
-		Assert.IsTrue( go.Components.GetAll<BaseComponent>( FindMode.InSelf ).All( x => x.GameObject == go ) );
+		Assert.AreEqual( 2, go.Components.GetAll<Component>( FindMode.InSelf ).Count() );
+		Assert.IsTrue( go.Components.GetAll<Component>( FindMode.InSelf ).All( x => x.GameObject == go ) );
 	}
 
 	[TestMethod]

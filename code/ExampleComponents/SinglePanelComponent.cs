@@ -5,7 +5,7 @@ using Sandbox.UI;
 using System;
 using System.Threading;
 
-public sealed class SinglePanelComponent : BaseComponent
+public sealed class SinglePanelComponent : Component
 {
 	Panel panel;
 

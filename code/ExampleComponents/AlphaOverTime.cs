@@ -4,7 +4,7 @@ using Sandbox.Services;
 using System;
 using System.Threading;
 
-public sealed class AlphaOverTime : BaseComponent
+public sealed class AlphaOverTime : Component
 {
 	[Property] float Time { get; set; } = 5.0f;
 	[Property] Curve Alpha { get; set; }

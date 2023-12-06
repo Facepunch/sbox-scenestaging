@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class ReturnToMenu : BaseComponent
+public sealed class ReturnToMenu : Component
 {
 	protected override void OnUpdate()
 	{

@@ -1,6 +1,6 @@
 ﻿namespace Sandbox;
 
-public abstract class ParticleController : BaseComponent, BaseComponent.ExecuteInEditor
+public abstract class ParticleController : global::Component, global::Component.ExecuteInEditor
 {
 	ParticleEffect target;
 

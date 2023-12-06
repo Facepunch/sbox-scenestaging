@@ -4,7 +4,7 @@ using System;
 [Title( "Chromatic Aberration" )]
 [Category( "Post Processing" )]
 [Icon( "zoom_out_map" )]
-public sealed class ChromaticAberration : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class ChromaticAberration : Component, Component.ExecuteInEditor
 {
 	/// <summary>
 	/// Enable chromatic aberration

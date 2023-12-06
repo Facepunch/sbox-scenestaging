@@ -4,7 +4,7 @@ using System;
 [Title( "FilmGrain" )]
 [Category( "Post Processing" )]
 [Icon( "grain" )]
-public sealed class FilmGrain : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class FilmGrain : Component, Component.ExecuteInEditor
 {
 	[Property] public float Intensity { get; set; } = 0.1f;
 

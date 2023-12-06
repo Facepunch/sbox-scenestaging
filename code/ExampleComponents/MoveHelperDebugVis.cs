@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class MoveHelperDebugVis : BaseComponent
+public sealed class MoveHelperDebugVis : Component
 {
 	[Property] Vector3 Gravity { get; set; }
 	[Property] Vector3 Velocity { get; set; }

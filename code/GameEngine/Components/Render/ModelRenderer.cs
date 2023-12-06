@@ -5,7 +5,7 @@ using Sandbox.Diagnostics;
 [Category( "Rendering" )]
 [Icon( "free_breakfast" )]
 [Alias( "ModelComponentMate", "ModelComponent" )]
-public class ModelRenderer : Renderer, BaseComponent.ExecuteInEditor, BaseComponent.ITintable
+public class ModelRenderer : Renderer, Component.ExecuteInEditor, Component.ITintable
 {
 	Model _model;
 

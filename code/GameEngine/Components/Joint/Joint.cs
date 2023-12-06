@@ -1,7 +1,7 @@
 ﻿using Sandbox;
 using Sandbox.Physics;
 
-public abstract class Joint : BaseComponent, BaseComponent.ExecuteInEditor
+public abstract class Joint : Component, Component.ExecuteInEditor
 {
 	private PhysicsJoint joint;
 	private PhysicsBody worldBody;

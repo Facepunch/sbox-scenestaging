@@ -3,7 +3,7 @@
 [Title( "Particle Sprite Renderer" )]
 [Category( "Particles" )]
 [Icon( "favorite" )]
-public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class ParticleSpriteRenderer : Component, Component.ExecuteInEditor
 {
 	SpriteSceneObject _so;
 	[Property] public Texture Texture { get; set; } = Texture.White;

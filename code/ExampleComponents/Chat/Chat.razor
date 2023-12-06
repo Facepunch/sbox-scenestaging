@@ -1,7 +1,7 @@
 ﻿@using Sandbox;
 @using Sandbox.UI;
 @inherits PanelComponent
-@implements BaseComponent.INetworkListener
+@implements Component.INetworkListener
 
 <root>
 
@@ -81,14 +81,14 @@
 		StateHasChanged();
 	}
 
-	void BaseComponent.INetworkListener.OnConnected( Connection channel )
+	void Component.INetworkListener.OnConnected( Connection channel )
 	{
 		if ( IsProxy ) return;
 
 		AddText( "🛎️", $"{channel.DisplayName} has joined the game" );
 	}
 
-	void BaseComponent.INetworkListener.OnDisconnected( Connection channel )
+	void Component.INetworkListener.OnDisconnected( Connection channel )
 	{
 		if ( IsProxy ) return;
 

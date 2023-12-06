@@ -4,7 +4,7 @@
 [Title( "Cubemap Fog" )]
 [Category( "Camera" )]
 [Icon( "foggy" )]
-public class CubemapFog : BaseComponent, CameraComponent.ISceneCameraSetup
+public class CubemapFog : Component, CameraComponent.ISceneCameraSetup
 {
 	[Property]
 	public float StartDistance { get; set; } = 10.0f;

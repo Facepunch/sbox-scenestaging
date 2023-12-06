@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class IkReachOut : BaseComponent
+public sealed class IkReachOut : Component
 {
 	[Property] public GameObject TargetGameObject { get; set; }
 	[Property] public float Radius { get; set; }

@@ -185,7 +185,7 @@ public class Tags
 
 }
 
-public class TagsTestComponent : BaseComponent
+public class TagsTestComponent : Component
 {
 	public int TagUpdateCalls;
 

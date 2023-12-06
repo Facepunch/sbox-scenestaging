@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-public partial class BaseComponent
+public partial class Component
 {
 	protected virtual Task OnLoad()
 	{

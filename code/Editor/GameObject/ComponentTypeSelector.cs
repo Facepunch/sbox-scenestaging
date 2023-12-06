@@ -236,7 +236,7 @@ internal partial class ComponentTypeSelector : PopupWidget
 		// we just wrote a file, lets wait until its compiled and loaded
 		await EditorUtility.Projects.WaitForCompiles();
 
-		var componentType = EditorTypeLibrary.GetType<BaseComponent>( componentName );
+		var componentType = EditorTypeLibrary.GetType<Component>( componentName );
 		if ( componentType is null )
 		{
 			Log.Warning( $"Couldn't find target component type {componentName}" );
@@ -244,7 +244,7 @@ internal partial class ComponentTypeSelector : PopupWidget
 			componentType = EditorTypeLibrary.GetType( componentName );
 			Log.Warning( $"Couldn't find target component type {componentType}" );
 
-			foreach ( var t in EditorTypeLibrary.GetTypes<BaseComponent>() )
+			foreach ( var t in EditorTypeLibrary.GetTypes<Component>() )
 			{
 				Log.Info( $"{t}" );
 			}
@@ -281,7 +281,7 @@ internal partial class ComponentTypeSelector : PopupWidget
 		selection.ItemList.Add( selection.CategoryHeader );
 
 		// entity components
-		var types = EditorTypeLibrary.GetTypes<BaseComponent>().Where( x => !x.IsAbstract );
+		var types = EditorTypeLibrary.GetTypes<Component>().Where( x => !x.IsAbstract );
 
 		if ( !string.IsNullOrWhiteSpace( searchString ) )
 		{

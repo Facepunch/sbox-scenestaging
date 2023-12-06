@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-public sealed class ChangeColorOnEnterTrigger : BaseComponent, BaseComponent.ITriggerListener
+public sealed class ChangeColorOnEnterTrigger : Component, Component.ITriggerListener
 {
 	[Property]
 	public Gradient ColorRange { get; set; }

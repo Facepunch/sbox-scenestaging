@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 [Title( "Map" )]
 [Category( "World" )]
 [Icon( "visibility", "red", "white" )]
-public class MapComponent : BaseComponent, BaseComponent.ExecuteInEditor
+public class MapComponent : Component, Component.ExecuteInEditor
 {
 	[Property]
 	public string MapName { get; set; }
@@ -66,7 +66,7 @@ public class MapComponent : BaseComponent, BaseComponent.ExecuteInEditor
 [Category( "World" )]
 [Tag( "development" )]
 [Icon( "maps_home_work" )]
-public class MapObjectComponent : BaseComponent
+public class MapObjectComponent : Component
 {
 	List<SceneObject> objects = new List<SceneObject>();
 

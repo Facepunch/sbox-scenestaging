@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 
-public abstract partial class BaseComponent
+public abstract partial class Component
 {
 	/// <summary>
 	/// A component with this interface can react to interactions with triggers

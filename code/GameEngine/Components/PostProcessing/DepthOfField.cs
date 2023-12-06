@@ -6,7 +6,7 @@ using static Sandbox.RenderHook;
 [Title( "Depth Of Field" )]
 [Category( "Post Processing" )]
 [Icon( "center_focus_strong" )]
-public sealed class DepthOfField : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class DepthOfField : Component, Component.ExecuteInEditor
 {
 	RenderAttributes attributes = new RenderAttributes();
 

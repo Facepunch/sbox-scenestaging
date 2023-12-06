@@ -2,12 +2,12 @@
 
 public partial class Scene : GameObject
 {
-	Dictionary<Type, HashSet<BaseComponent>> components = new();
+	Dictionary<Type, HashSet<Component>> components = new();
 
-	internal void RegisterComponent( BaseComponent c )
+	internal void RegisterComponent( Component c )
 	{
 		var t = c.GetType();
-		while ( t != typeof( BaseComponent ) )
+		while ( t != typeof( Component ) )
 		{
 			components.GetOrCreate( t ).Add( c );
 
@@ -15,10 +15,10 @@ public partial class Scene : GameObject
 		}
 	}
 
-	internal void UnregisterComponent( BaseComponent c )
+	internal void UnregisterComponent( Component c )
 	{
 		var t = c.GetType();
-		while ( t != typeof( BaseComponent ) )
+		while ( t != typeof( Component ) )
 		{
 			components.GetOrCreate( t ).Remove( c );
 
@@ -26,7 +26,7 @@ public partial class Scene : GameObject
 		}
 	}
 
-	public IEnumerable<T> GetAllComponents<T>() where T : BaseComponent
+	public IEnumerable<T> GetAllComponents<T>() where T : Component
 	{
 		if ( !components.TryGetValue( typeof( T ), out var set ) )
 			return Array.Empty<T>();

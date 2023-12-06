@@ -1,4 +1,4 @@
-﻿public abstract class Renderer : BaseComponent
+﻿public abstract class Renderer : Component
 {
 
 

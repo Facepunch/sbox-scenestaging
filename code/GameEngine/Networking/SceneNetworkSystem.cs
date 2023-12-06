@@ -100,7 +100,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		Action queue = default;
 
-		foreach ( var c in GameManager.ActiveScene.Components.GetAll<BaseComponent.INetworkListener>( FindMode.EnabledInSelfAndDescendants ) )
+		foreach ( var c in GameManager.ActiveScene.Components.GetAll<Component.INetworkListener>( FindMode.EnabledInSelfAndDescendants ) )
 		{
 			queue += () => c.OnConnected( client );
 		}
@@ -112,7 +112,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 	{
 		Action queue = default;
 
-		foreach ( var c in GameManager.ActiveScene.Components.GetAll<BaseComponent.INetworkListener>( FindMode.EnabledInSelfAndDescendants ) )
+		foreach ( var c in GameManager.ActiveScene.Components.GetAll<Component.INetworkListener>( FindMode.EnabledInSelfAndDescendants ) )
 		{
 			queue += () => c.OnActive( client );
 		}
@@ -126,7 +126,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		Action queue = default;
 
-		foreach ( var c in GameManager.ActiveScene.Components.GetAll<BaseComponent.INetworkListener>( FindMode.EnabledInSelfAndDescendants ) )
+		foreach ( var c in GameManager.ActiveScene.Components.GetAll<Component.INetworkListener>( FindMode.EnabledInSelfAndDescendants ) )
 		{
 			queue += () => c.OnDisconnected( client );
 		}

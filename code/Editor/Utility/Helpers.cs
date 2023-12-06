@@ -13,9 +13,9 @@ public static class Helpers
 		Paint.SetPen( Theme.Green.WithAlpha( opacity ) );
 		Paint.DrawIcon( rect, td.Icon, rect.Height, TextFlag.Center );
 	}
-	
+
 	/// <summary>
-	/// Is there a <see cref="BaseComponent"/> type in the clipboard?
+	/// Is there a <see cref="global::Component"/> type in the clipboard?
 	/// </summary>
 	/// <returns></returns>
 	internal static bool HasComponentInClipboard()
@@ -26,7 +26,7 @@ public static class Helpers
 		{
 			if ( JsonNode.Parse( text ) is JsonObject jso )
 			{
-				var componentType = TypeLibrary.GetType<BaseComponent>( (string)jso["__type"] );
+				var componentType = TypeLibrary.GetType<global::Component>( (string)jso["__type"] );
 				return componentType is not null;
 			}
 		}
@@ -39,7 +39,7 @@ public static class Helpers
 	}
 
 	/// <summary>
-	/// Paste a <see cref="BaseComponent"/> as a new component on the target <see cref="GameObject"/>.
+	/// Paste a <see cref="global::Component"/> as a new component on the target <see cref="GameObject"/>.
 	/// </summary>
 	/// <param name="target"></param>
 	internal static void PasteComponentAsNew( GameObject target )
@@ -51,7 +51,7 @@ public static class Helpers
 			if ( JsonNode.Parse( text ) is not JsonObject jso )
 				return;
 
-			var componentType = TypeLibrary.GetType<BaseComponent>( (string)jso["__type"] );
+			var componentType = TypeLibrary.GetType<global::Component>( (string)jso["__type"] );
 			if ( componentType is null )
 			{
 				Log.Warning( $"TypeLibrary couldn't find BaseComponent type {jso["__type"]}" );
@@ -70,10 +70,10 @@ public static class Helpers
 	}
 
 	/// <summary>
-	/// Paste component values from clipboard to the target <see cref="BaseComponent"/>.
+	/// Paste component values from clipboard to the target <see cref="global::Component"/>.
 	/// </summary>
 	/// <param name="target"></param>
-	internal static void PasteComponentValues( BaseComponent target )
+	internal static void PasteComponentValues( global::Component target )
 	{
 		var text = EditorUtility.Clipboard.Paste();
 
@@ -92,10 +92,10 @@ public static class Helpers
 	}
 
 	/// <summary>
-	/// Copy the target <see cref="BaseComponent"/> to the clipboard.
+	/// Copy the target <see cref="global::Component"/> to the clipboard.
 	/// </summary>
 	/// <param name="component"></param>
-	internal static void CopyComponent( BaseComponent component )
+	internal static void CopyComponent( global::Component component )
 	{
 		var result = component.Serialize();
 		EditorUtility.Clipboard.Copy( result.ToString() );

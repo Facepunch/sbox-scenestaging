@@ -4,7 +4,7 @@ using System;
 [Title( "Vignette" )]
 [Category( "Post Processing" )]
 [Icon( "vignette" )]
-public sealed class Vignette : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class Vignette : Component, Component.ExecuteInEditor
 {
 	/// <summary>
 	/// The color of the vignette or the "border"

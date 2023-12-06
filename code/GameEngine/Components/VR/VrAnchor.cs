@@ -6,7 +6,7 @@
 [Title( "VR Anchor" )]
 [Category( "VR" )]
 [Icon( "anchor" )]
-public class VrAnchor : BaseComponent
+public class VrAnchor : Component
 {
 	/// <summary>
 	/// Update <see cref="VR.Anchor"/> based on the GameObject's transform

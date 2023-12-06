@@ -8,7 +8,7 @@ using Sandbox.Diagnostics;
 [Category( "Rendering" )]
 [Icon( "lens_blur" )]
 [EditorHandle( "materials/gizmo/decal.png" )]
-public class DecalRenderer : Renderer, BaseComponent.ExecuteInEditor
+public class DecalRenderer : Renderer, Component.ExecuteInEditor
 {
 	ProjectedDecalSceneObject _sceneObject;
 

@@ -7,7 +7,7 @@ namespace Sandbox;
 [Category( "Particles" )]
 [Icon( "shower" )]
 [EditorHandle( "materials/gizmo/particles.png" )]
-public sealed class ParticleEffect : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class ParticleEffect : global::Component, global::Component.ExecuteInEditor
 {
 	[Property, Group( "Limits" )]
 	public int MaxParticles { get; set; } = 1000;

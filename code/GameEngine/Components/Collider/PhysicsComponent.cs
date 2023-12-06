@@ -5,7 +5,7 @@ using System;
 [Title( "Rigid Body" )]
 [Category( "Physics" )]
 [Icon( "panorama_fish_eye", "red", "white" )]
-public class PhysicsComponent : BaseComponent, INetworkSerializable
+public class PhysicsComponent : Component, INetworkSerializable
 {
 	[Property] public bool Gravity { get; set; } = true;
 

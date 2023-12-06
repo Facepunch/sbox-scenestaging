@@ -3,7 +3,7 @@
 [Title( "Text Renderer" )]
 [Category( "Rendering" )]
 [Icon( "font_download" )]
-public sealed class TextRenderer : Renderer, BaseComponent.ExecuteInEditor
+public sealed class TextRenderer : Renderer, Component.ExecuteInEditor
 {
 	SceneObject _so;
 

@@ -5,7 +5,7 @@ using Sandbox.Diagnostics;
 [Category( "Effects" )]
 [Icon( "shower" )]
 [EditorHandle( "materials/gizmo/particles.png" )]
-public class ParticleSystem : BaseComponent, BaseComponent.ExecuteInEditor
+public class ParticleSystem : Component, Component.ExecuteInEditor
 {
 	Sandbox.ParticleSystem _particles;
 

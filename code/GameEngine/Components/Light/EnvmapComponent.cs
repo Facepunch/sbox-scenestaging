@@ -6,7 +6,7 @@ using System;
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
 [EditorHandle( "materials/gizmo/envmap.png" )]
-public class EnvmapComponent : BaseComponent, BaseComponent.ExecuteInEditor
+public class EnvmapComponent : Component, Component.ExecuteInEditor
 {
 	SceneCubemap _sceneObject;
 

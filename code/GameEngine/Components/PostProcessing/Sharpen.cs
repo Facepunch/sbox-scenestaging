@@ -4,7 +4,7 @@ using System;
 [Title( "Sharpen" )]
 [Category( "Post Processing" )]
 [Icon( "deblur" )]
-public sealed class Sharpen : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class Sharpen : Component, Component.ExecuteInEditor
 {
 	[Range( 0, 5 )]
 	[Property] public float Scale { get; set; } = 2;

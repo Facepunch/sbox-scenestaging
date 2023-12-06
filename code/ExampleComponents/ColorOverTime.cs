@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class ColorOverTime : BaseComponent
+public sealed class ColorOverTime : Component
 {
 	[Property] public Gradient Gradient { get; set; } = new Gradient( new Gradient.ColorFrame( 0.0f, Color.Cyan ), new Gradient.ColorFrame( 1.0f, Color.Red ) );
 	[Property] public float Speed { get; set; } = 1.0f;

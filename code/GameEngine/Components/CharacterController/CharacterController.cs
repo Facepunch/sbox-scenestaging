@@ -6,7 +6,7 @@ using System.Drawing;
 [Category( "Physics" )]
 [Icon( "directions_walk", "red", "white" )]
 [EditorHandle( "materials/gizmo/charactercontroller.png" )]
-public class CharacterController : BaseComponent, INetworkSerializable
+public class CharacterController : Component, INetworkSerializable
 {
 	[Range( 0, 200 )]
 	[Property] public float Radius { get; set; } = 16.0f;

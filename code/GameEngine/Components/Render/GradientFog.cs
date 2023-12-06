@@ -3,7 +3,7 @@
 [Title( "Gradient Fog" )]
 [Category( "Rendering" )]
 [Icon( "foggy" )]
-public class GradientFog : BaseComponent, BaseComponent.ExecuteInEditor
+public class GradientFog : Component, Component.ExecuteInEditor
 {
 	[Property] public float StartDistance { get; set; } = 0.0f;
 	[Property] public float EndDistance { get; set; } = 1024.0f;

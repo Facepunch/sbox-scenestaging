@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class TriggerDebug : BaseComponent, BaseComponent.ITriggerListener
+public sealed class TriggerDebug : Component, Component.ITriggerListener
 {
 	[Property] public NameTagPanel NameTag { get; set; }
 

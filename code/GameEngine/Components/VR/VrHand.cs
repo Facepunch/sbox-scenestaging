@@ -9,7 +9,7 @@ using System.Collections.Generic;
 [Title( "VR Hand" )]
 [Category( "VR" )]
 [Icon( "waving_hand" )]
-public class VrHand : BaseComponent
+public class VrHand : Component
 {
 	private SkinnedModelRenderer _animatedModelComponent;
 

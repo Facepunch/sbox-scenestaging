@@ -1,7 +1,7 @@
 using Sandbox;
 using System.Threading;
 
-public sealed class TraceDebugVis : BaseComponent
+public sealed class TraceDebugVis : Component
 {
 	public enum TraceType
 	{

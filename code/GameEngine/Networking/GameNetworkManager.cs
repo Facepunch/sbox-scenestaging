@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class GameNetworkManager : BaseComponent, BaseComponent.INetworkListener
+public sealed class GameNetworkManager : Component, Component.INetworkListener
 {
 	[Property] public GameObject PlayerPrefab { get; set; }
 	[Property] public GameObject SpawnPoint { get; set; }

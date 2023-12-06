@@ -166,13 +166,13 @@ public class ComponentListWidget : Widget
 		}
 	}
 
-	void PropertyEdited( SerializedProperty property, BaseComponent component )
+	void PropertyEdited( SerializedProperty property, Component component )
 	{
 		var value = property.GetValue<object>();
 		component.EditLog( $"{component}.{property.Name}", component );
 	}
 
-	void OpenContextMenu( BaseComponent component, Vector2? position = null )
+	void OpenContextMenu( Component component, Vector2? position = null )
 	{
 		if ( SerializedObject.IsMultipleTargets )
 		{

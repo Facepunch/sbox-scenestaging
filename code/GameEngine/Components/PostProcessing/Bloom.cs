@@ -5,7 +5,7 @@ using System;
 [Title( "Bloom" )]
 [Category( "Post Processing" )]
 [Icon( "exposure" )]
-public class Bloom : BaseComponent, CameraComponent.ISceneCameraSetup
+public class Bloom : Component, CameraComponent.ISceneCameraSetup
 {
 	[Property] public SceneCamera.BloomAccessor.BloomMode Mode { get; set; }
 

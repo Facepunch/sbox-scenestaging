@@ -9,7 +9,7 @@ using System.Linq;
 [Title( "Highlight" )]
 [Category( "Post Processing" )]
 [Icon( "lightbulb_outline" )]
-public sealed class Highlight : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class Highlight : Component, Component.ExecuteInEditor
 {
 	IDisposable renderHook;
 
@@ -98,7 +98,7 @@ public sealed class Highlight : BaseComponent, BaseComponent.ExecuteInEditor
 [Title( "Highlight Outline" )]
 [Category( "Renderering" )]
 [Icon( "lightbulb_outline" )]
-public class HighlightOutline : BaseComponent
+public class HighlightOutline : Component
 {
 	/// <summary>
 	/// If defined, the glow will use this material rather than a generated one.

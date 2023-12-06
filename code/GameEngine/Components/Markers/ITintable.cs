@@ -1,4 +1,4 @@
-﻿public abstract partial class BaseComponent
+﻿public abstract partial class Component
 {
 	/// <summary>
 	/// A component that lets you change its color

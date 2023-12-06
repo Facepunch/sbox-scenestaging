@@ -147,7 +147,7 @@ public class ComponentEvents
 	}
 }
 
-public class OrderTestComponent : BaseComponent
+public class OrderTestComponent : Component
 {
 	public int AwakeCalls;
 	public int EnabledCalls;

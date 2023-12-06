@@ -3,7 +3,7 @@ using System;
 using System.Text.Json;
 using System.Threading;
 
-public abstract partial class BaseComponent : IJsonConvert
+public abstract partial class Component : IJsonConvert
 {
 	public Scene Scene => GameObject.Scene;
 	public GameTransform Transform => GameObject.Transform;

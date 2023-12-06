@@ -6,7 +6,7 @@ using Sandbox;
 [Title( "Hitbox" )]
 [Category( "Game" )]
 [Icon( "psychology_alt" )]
-public sealed class ManualHitbox : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class ManualHitbox : Component, Component.ExecuteInEditor
 {
 	HitboxSystem system;
 

@@ -2,7 +2,7 @@ using Sandbox;
 using Sandbox.Services;
 using System;
 
-public sealed class CollisionDebugComponent : BaseComponent
+public sealed class CollisionDebugComponent : Component
 {
 	[Property] GameObject DebugPoint { get; set; }
 

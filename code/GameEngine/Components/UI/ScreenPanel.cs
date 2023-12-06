@@ -6,7 +6,7 @@ using Sandbox.UI;
 [Icon( "desktop_windows" )]
 [EditorHandle( "materials/gizmo/ui.png" )]
 [Alias( "PanelRoot" )]
-public sealed class ScreenPanel : BaseComponent, IRootPanelComponent, BaseComponent.IRenderOverlay
+public sealed class ScreenPanel : Component, IRootPanelComponent, Component.IRenderOverlay
 {
 	[Property, Range( 0, 1 )] public float Opacity { get; set; } = 1.0f;
 	[Property, Range( 0, 5 )] public float Scale { get; set; } = 1.0f;
@@ -66,7 +66,7 @@ public sealed class ScreenPanel : BaseComponent, IRootPanelComponent, BaseCompon
 		rootPanel.ManualScale = Scale;
 	}
 
-	void BaseComponent.IRenderOverlay.OnRenderOverlay( SceneCamera camera )
+	void Component.IRenderOverlay.OnRenderOverlay( SceneCamera camera )
 	{
 		if ( rootPanel is null ) return;
 		if ( !camera.EnableUserInterface ) return;

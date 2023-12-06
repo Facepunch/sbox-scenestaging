@@ -4,7 +4,7 @@
 [Title( "Tonemapping" )]
 [Category( "Camera" )]
 [Icon( "exposure" )]
-public class Tonemapping : BaseComponent, CameraComponent.ISceneCameraSetup
+public class Tonemapping : Component, CameraComponent.ISceneCameraSetup
 {
 	[Property, Range( 0.0f, 3.0f )]
 	public float MinimumExposure { get; set; } = 1.0f;

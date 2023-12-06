@@ -5,7 +5,7 @@ using static Editor.Button;
 
 namespace Editor;
 
-[CustomEditor( typeof( BaseComponent ) )]
+[CustomEditor( typeof( Component ) )]
 public class ComponentControlWidget : ControlWidget
 {
 	public override bool SupportsMultiEdit => true;
@@ -38,7 +38,7 @@ public class ComponentControlWidget : ControlWidget
 	protected override void PaintControl()
 	{
 		var rect = LocalRect.Shrink( 6, 0 );
-		var component = SerializedProperty.GetValue<BaseComponent>();
+		var component = SerializedProperty.GetValue<Component>();
 		var type = EditorTypeLibrary.GetType( SerializedProperty.PropertyType );
 
 		if ( SerializedProperty.IsMultipleDifferentValues )
@@ -71,7 +71,7 @@ public class ComponentControlWidget : ControlWidget
 		if ( e.LeftMouseButton )
 		{
 			e.Accepted = true;
-			var go = SerializedProperty.GetValue<BaseComponent>();
+			var go = SerializedProperty.GetValue<Component>();
 
 			if ( go is not null )
 			{
@@ -83,7 +83,7 @@ public class ComponentControlWidget : ControlWidget
 
 	void Clear()
 	{
-		SerializedProperty.SetValue<BaseComponent>( null );
+		SerializedProperty.SetValue<Component>( null );
 	}
 
 	public override void OnDragHover( DragEvent ev )

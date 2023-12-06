@@ -1,7 +1,7 @@
 using Sandbox;
 using System.Collections.Generic;
 
-public sealed class CameraPhysicsDebug : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class CameraPhysicsDebug : Component, Component.ExecuteInEditor
 {
 	[Property] public int MaxPoints { get; set; } = 10000;
 	[Property] public int TracesPerFrame { get; set; } = 500;

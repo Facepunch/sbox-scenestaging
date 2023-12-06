@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using static Sandbox.NavigationMesh;
 
-public abstract partial class BaseComponent
+public abstract partial class Component
 {
 	public JsonNode Serialize( GameObject.SerializeOptions options = null )
 	{
@@ -80,7 +80,7 @@ public abstract partial class BaseComponent
 	}
 
 	/// <summary>
-	/// Deserialize this component as per <see cref="Deserialize"/> but update <see cref="GameObject"/> and <see cref="BaseComponent"/> property
+	/// Deserialize this component as per <see cref="Deserialize"/> but update <see cref="GameObject"/> and <see cref="Component"/> property
 	/// references immediately instead of having them deferred.
 	/// </summary>
 	public void DeserializeImmediately( JsonObject node )
@@ -111,7 +111,7 @@ public abstract partial class BaseComponent
 
 	public static void JsonWrite( object value, Utf8JsonWriter writer )
 	{
-		if ( value is not BaseComponent component )
+		if ( value is not Component component )
 			throw new NotImplementedException();
 
 		// components really need a guid, then we'll write an object with gameobject and guid

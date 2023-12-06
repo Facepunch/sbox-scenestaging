@@ -1,6 +1,6 @@
 using Sandbox;
 
-public sealed class BrickBall : BaseComponent, BaseComponent.ICollisionListener
+public sealed class BrickBall : Component, Component.ICollisionListener
 {
 	[Property] public GameObject CollisionIndicator { get; set; }
 

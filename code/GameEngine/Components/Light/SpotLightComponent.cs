@@ -6,7 +6,7 @@ using System;
 [Category( "Light" )]
 [Icon( "light_mode", "red", "white" )]
 [EditorHandle( "materials/gizmo/spotlight.png" )]
-public class SpotLightComponent : BaseComponent, IComponentColorProvider, BaseComponent.ExecuteInEditor, BaseComponent.ITintable
+public class SpotLightComponent : Component, IComponentColorProvider, Component.ExecuteInEditor, Component.ITintable
 {
 	SceneSpotLight _sceneObject;
 

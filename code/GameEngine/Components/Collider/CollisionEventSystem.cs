@@ -2,7 +2,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
-using static BaseComponent;
+using static Component;
 
 /// <summary>
 /// Used to abstract the listening of collision events

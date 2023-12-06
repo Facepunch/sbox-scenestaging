@@ -5,7 +5,7 @@ using Sandbox;
 [Icon( "hearing" )]
 [EditorHandle( "materials/gizmo/audiolistener.png" )]
 [Alias( "SoundListener" )]
-public sealed class AudioListener : BaseComponent
+public sealed class AudioListener : Component
 {
 	protected override void OnUpdate()
 	{

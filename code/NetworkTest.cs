@@ -1,7 +1,7 @@
 using Sandbox;
 using System.Threading;
 
-public sealed class NetworkTest : BaseComponent
+public sealed class NetworkTest : Component
 {
 	[Property] public GameObject ObjectToSpawn { get; set; }
 

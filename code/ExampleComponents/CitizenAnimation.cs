@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-public sealed class CitizenAnimation : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class CitizenAnimation : Component, Component.ExecuteInEditor
 {
 	[Property] public SkinnedModelRenderer Target { get; set; }
 

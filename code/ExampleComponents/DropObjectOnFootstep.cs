@@ -4,7 +4,7 @@ using Sandbox.Services;
 using System;
 using System.Threading;
 
-public sealed class DropObjectOnFootstep : BaseComponent
+public sealed class DropObjectOnFootstep : Component
 {
 	[Property] GameObject Prefab { get; set; }
 	[Property] SkinnedModelRenderer Source { get; set; }

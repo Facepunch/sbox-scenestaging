@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-public abstract partial class BaseComponent
+public abstract partial class Component
 {
 	public GameObject.NetworkAccessor Network => GameObject.Network;
 

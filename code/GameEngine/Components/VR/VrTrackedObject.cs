@@ -6,7 +6,7 @@
 [Title( "VR Tracked Object" )]
 [Category( "VR" )]
 [Icon( "animation" )]
-public class VrTrackedObject : BaseComponent
+public class VrTrackedObject : Component
 {
 	public enum PoseSources
 	{

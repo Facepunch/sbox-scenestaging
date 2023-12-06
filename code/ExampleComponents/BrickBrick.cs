@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-public sealed class BrickBrick : BaseComponent, BaseComponent.ICollisionListener
+public sealed class BrickBrick : Component, Component.ICollisionListener
 {
 	protected override void OnEnabled()
 	{

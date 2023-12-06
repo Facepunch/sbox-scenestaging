@@ -69,18 +69,18 @@ public class ComponentList
 	/// This is the hard list of components.
 	/// This isn't a HashSet because we need the order to stay.
 	/// </summary>
-	List<BaseComponent> _list;
+	List<Component> _list;
 
 	internal ComponentList( GameObject o )
 	{
 		go = o;
-		_list = new List<BaseComponent>();
+		_list = new List<Component>();
 	}
 
 	/// <summary>
 	/// Get all components, including disabled ones
 	/// </summary>
-	public IEnumerable<BaseComponent> GetAll()
+	public IEnumerable<Component> GetAll()
 	{
 		return _list;
 	}
@@ -88,14 +88,14 @@ public class ComponentList
 	/// <summary>
 	/// Add a component of this type
 	/// </summary>
-	public BaseComponent Create( TypeDescription type, bool startEnabled = true )
+	public Component Create( TypeDescription type, bool startEnabled = true )
 	{
-		if ( !type.TargetType.IsAssignableTo( typeof( BaseComponent ) ) )
+		if ( !type.TargetType.IsAssignableTo( typeof( Component ) ) )
 			return null;
 
 		using var batch = CallbackBatch.StartGroup();
 
-		var t = type.Create<BaseComponent>( null );
+		var t = type.Create<Component>( null );
 
 		t.GameObject = go;
 		_list.Add( t );
@@ -108,7 +108,7 @@ public class ComponentList
 	/// <summary>
 	/// Add a component of this type
 	/// </summary>
-	public T Create<T>( bool startEnabled = true ) where T : BaseComponent, new()
+	public T Create<T>( bool startEnabled = true ) where T : Component, new()
 	{
 		using var batch = CallbackBatch.StartGroup();
 		var t = new T();
@@ -132,7 +132,7 @@ public class ComponentList
 	/// <summary>
 	/// Get a component of this type
 	/// </summary>
-	public BaseComponent Get( Type type, FindMode find = FindMode.EnabledInSelf )
+	public Component Get( Type type, FindMode find = FindMode.EnabledInSelf )
 	{
 		return GetAll( type, find ).FirstOrDefault();
 	}
@@ -140,15 +140,15 @@ public class ComponentList
 	/// <summary>
 	/// Get all components of this type
 	/// </summary>
-	public IEnumerable<BaseComponent> GetAll( Type type, FindMode find )
+	public IEnumerable<Component> GetAll( Type type, FindMode find )
 	{
-		return GetAll<BaseComponent>( find ).Where( x => x.GetType().IsAssignableTo( type ) );
+		return GetAll<Component>( find ).Where( x => x.GetType().IsAssignableTo( type ) );
 	}
 
 	/// <summary>
 	/// Get all components
 	/// </summary>
-	public IEnumerable<BaseComponent> GetAll( FindMode find ) => GetAll<BaseComponent>( find );
+	public IEnumerable<Component> GetAll( FindMode find ) => GetAll<Component>( find );
 
 	/// <summary>
 	/// Get a list of components on this game object, optionally recurse when deep is true
@@ -250,7 +250,7 @@ public class ComponentList
 	/// <summary>
 	/// Allows linq style queries
 	/// </summary>
-	public BaseComponent FirstOrDefault( Func<BaseComponent, bool> value ) => _list.FirstOrDefault( value );
+	public Component FirstOrDefault( Func<Component, bool> value ) => _list.FirstOrDefault( value );
 
 	/// <summary>
 	/// Amount of components - including disabled
@@ -265,7 +265,7 @@ public class ComponentList
 
 		for ( int i = _list.Count - 1; i >= 0; i-- )
 		{
-			BaseComponent c = _list[i];
+			Component c = _list[i];
 
 			if ( !includeDisabled && !c.Enabled )
 				continue;
@@ -290,7 +290,7 @@ public class ComponentList
 		}
 	}
 
-	public void ForEach( string name, bool includeDisabled, Action<BaseComponent> action ) => ForEach<BaseComponent>( name, includeDisabled, action );
+	public void ForEach( string name, bool includeDisabled, Action<Component> action ) => ForEach<Component>( name, includeDisabled, action );
 
 
 	internal void RemoveNull()
@@ -298,7 +298,7 @@ public class ComponentList
 		_list.RemoveAll( x => x is null );
 	}
 
-	internal void OnDestroyedInternal( BaseComponent baseComponent )
+	internal void OnDestroyedInternal( Component baseComponent )
 	{
 		_list.Remove( baseComponent );
 	}
@@ -306,7 +306,7 @@ public class ComponentList
 	/// <summary>
 	/// Move the position of the component in the list by delta (-1 means up one, 1 means down one)
 	/// </summary>
-	public void Move( BaseComponent baseComponent, int delta )
+	public void Move( Component baseComponent, int delta )
 	{
 		var i = _list.IndexOf( baseComponent );
 		if ( i < 0 ) return;
@@ -339,7 +339,7 @@ public class ComponentList
 	/// <summary>
 	/// Find this component, if it doesn't exist - create it.
 	/// </summary>
-	public T GetOrCreate<T>( FindMode flags = FindMode.EverythingInSelf ) where T : BaseComponent, new()
+	public T GetOrCreate<T>( FindMode flags = FindMode.EverythingInSelf ) where T : Component, new()
 	{
 		if ( TryGet<T>( out var component, flags ) )
 			return component;
