@@ -85,7 +85,7 @@ public class SoundscapeTrigger : BaseComponent
 		if ( activeEntries.Count == 0 && removalList.Count == 0 )
 			return;
 
-		UpdateEntries( Sound.Listener ?? global::Transform.Zero );
+		UpdateEntries( Sound.Listener );
 	}
 
 	protected override void OnDestroy()
@@ -223,7 +223,7 @@ public class SoundscapeTrigger : BaseComponent
 			currentVolume = 0.0f;
 			volumeScale = masterVolume;
 
-			handle = Audio.Play( "core.ambient" );
+			handle = Sound.Play( "core.ambient" );
 
 			handle.SetSoundFile( sound.SoundFile );
 
@@ -286,7 +286,7 @@ public class SoundscapeTrigger : BaseComponent
 			timeUntilNextShot = source.RepeatTime.GetValue();
 
 			handle.Stop( false );
-			handle = Audio.Play( source.SoundFile.ResourcePath );
+			handle = Sound.Play( source.SoundFile.ResourcePath );
 
 			// we'll make this shape more configurable, but right now bias x/y rather than up and down
 			var randomOffset = new Vector3( Game.Random.Float( -10, 10 ), Game.Random.Float( -10, 10 ), Game.Random.Float( -1, 1 ) );

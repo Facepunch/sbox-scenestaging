@@ -58,7 +58,7 @@ public sealed class SoundBoxComponent : BaseSoundComponent
 
 		if ( SoundHandle.IsPlaying ) return;
 		
-		SoundHandle = Audio.Play( SoundEvent );
+		SoundHandle = Sound.Play( SoundEvent );
 		SoundHandle.Position = SndPos;
 
 		ApplyOverrides();
@@ -74,7 +74,7 @@ public sealed class SoundBoxComponent : BaseSoundComponent
 			SoundHandle.Pitch = Pitch;
 
 			if ( Force2d )
-				SoundHandle.Position = Sound.Listener.Value.Position + Sound.Listener.Value.Rotation.Forward * 10.0f;
+				SoundHandle.Position = Sound.Listener.Position + Sound.Listener.Rotation.Forward * 10.0f;
 		}
 	}
 

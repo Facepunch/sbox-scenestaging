@@ -77,7 +77,7 @@ public sealed class TurretComponent : BaseComponent
 			Stats.Increment( "balls_fired", 1 );
 
 			// Testing sound
-			Sound.FromWorld( "rust_smg.shoot", Transform.Position );
+			Sound.Play( "rust_smg.shoot", Transform.Position );
 			timeSincePrimary = 0;
 		}
 

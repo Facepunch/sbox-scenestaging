@@ -23,7 +23,7 @@ class SceneSoundscapeSystem : GameObjectSystem
 
 		timeSinceUpdate = 0;
 
-		var head = Sound.Listener ?? Transform.Zero;
+		var head = Sound.Listener;
 
 		var ambience = Scene.GetAllComponents<SoundscapeTrigger>()
 								.Where( x => x.TestListenerPosition( head.Position ) )
