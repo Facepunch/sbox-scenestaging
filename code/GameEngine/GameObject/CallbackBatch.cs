@@ -107,10 +107,9 @@ internal enum CommonCallback
 	Unknown,
 
 	/// <summary>
-	/// The component has been deserialized. This callback is used to resolve
-	/// GameObjects from a string GameObject ID.
+	/// The component is deserializing.
 	/// </summary>
-	Deserialized,
+	Deserialize,
 
 	/// <summary>
 	/// The component has been deserialized, or edited in the editor

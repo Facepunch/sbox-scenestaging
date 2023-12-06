@@ -1,8 +1,9 @@
 ﻿using Sandbox;
 using System;
+using System.Text.Json;
 using System.Threading;
 
-public abstract partial class BaseComponent
+public abstract partial class BaseComponent : IJsonConvert
 {
 	public Scene Scene => GameObject.Scene;
 	public GameTransform Transform => GameObject.Transform;
@@ -38,11 +39,6 @@ public abstract partial class BaseComponent
 		CallbackBatch.Add( CommonCallback.Awake, OnAwake, this, "OnAwake" );
 	}
 
-
-	/// <summary>
-	/// Internal functions to be called when the object wakes up
-	/// </summary>
-	Action onPostDeserialize;
 
 	bool _enabledState;
 	bool _enabled = false;
@@ -100,11 +96,7 @@ public abstract partial class BaseComponent
 	public Action OnComponentEnabled { get; set; }
 	public Action OnComponentDisabled { get; set; }
 
-	internal void PostDeserialize()
-	{
-		onPostDeserialize?.Invoke();
-		onPostDeserialize = null;
-	}
+
 
 	internal void UpdateEnabledStatus()
 	{
@@ -217,5 +209,4 @@ public abstract partial class BaseComponent
 	{
 		OnTagsChannged();
 	}
-
 }

@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using static Sandbox.NavigationMesh;
 
 public abstract partial class BaseComponent
 {
@@ -25,66 +26,57 @@ public abstract partial class BaseComponent
 		{
 			var value = prop.GetValue( this );
 
-			if ( prop.PropertyType == typeof( GameObject ) )
+			try
 			{
-				if ( value is GameObject go )
-				{
-					if ( go is PrefabScene prefabScene )
-					{
-						if ( prefabScene.Source is null )
-						{
-							Log.Warning( "Prefab scene has no source!" );
-							continue;
-						}
-
-						json.Add( prop.Name, prefabScene.Source.ResourcePath );
-					}
-					else
-					{
-						// todo: if this is a prefab, not in the scene, we need to handle that too!
-						json.Add( prop.Name, go.Id );
-					}
-				}
-				continue;
+				json.Add( prop.Name, Json.ToNode( value ) );
 			}
-
-			if ( prop.PropertyType.IsAssignableTo( typeof( BaseComponent ) ) )
+			catch ( System.Exception e )
 			{
-				if ( value is BaseComponent component )
-				{
-					json.Add( prop.Name, component.GameObject.Id );
-				}
-
-				continue;
+				Log.Warning( e );
 			}
-
-			json.Add( prop.Name, Json.ToNode( value ) );
 		}
 
 		return json;
 	}
 
+	JsonObject jsonData;
+
 	public void Deserialize( JsonObject node )
 	{
-		var t = TypeLibrary.GetType( GetType() );
+		jsonData = node;
+	}
 
-		foreach ( var prop in t.Properties.Where( x => x.HasAttribute<PropertyAttribute>() ).OrderBy( x => x.Name ) )
+	internal void PostDeserialize()
+	{
+		if ( jsonData is null )
+			return;
+
+		try
 		{
-			var v = node[prop.Name];
-			if ( v is null ) continue;
+			var t = TypeLibrary.GetType( GetType() );
 
-			try
+			foreach ( var prop in t.Properties.Where( x => x.HasAttribute<PropertyAttribute>() ).OrderBy( x => x.Name ) )
 			{
-				DeserializeProperty( prop, v );
+				var v = jsonData[prop.Name];
+				if ( v is null ) continue;
+
+				try
+				{
+					DeserializeProperty( prop, v );
+				}
+				catch ( System.Exception e )
+				{
+					Log.Warning( e, $"Error when deserializing {this}.{prop.Name} ({e.Message})" );
+				}
 			}
-			catch ( System.Exception e )
-			{
-				Log.Warning( e, $"Error when deserializing {this}.{prop.Name} ({e.Message})" );
-			}
+
+			InitializeComponent();
+			Enabled = (bool)(jsonData["__enabled"] ?? true);
 		}
-
-		InitializeComponent();
-		Enabled = (bool)(node["__enabled"] ?? true);
+		finally
+		{
+			jsonData = null;
+		}
 	}
 
 	/// <summary>
@@ -99,52 +91,32 @@ public abstract partial class BaseComponent
 
 	private void DeserializeProperty( PropertyDescription prop, JsonNode node )
 	{
-		if ( prop.PropertyType == typeof( GameObject ) )
-		{
-			string guidString = node.Deserialize<string>();
-
-			if ( Guid.TryParse( guidString, out Guid guid ) )
-			{
-				onPostDeserialize += () =>
-				{
-					var go = Scene.Directory.FindByGuid( guid );
-					if ( go is null ) Log.Warning( $"GameObject - {guid} was not found for {GetType().Name}.{prop.Name}" );
-					prop.SetValue( this, go );
-				};
-				return;
-			}
-
-			if ( ResourceLibrary.TryGet( guidString, out PrefabFile prefabFile ) )
-			{
-				prop.SetValue( this, prefabFile.Scene );
-				return;
-			}
-
-			throw new System.Exception( $"Couldn't parse '{guidString}' as object guid" );
-		}
-
-		if ( prop.PropertyType.IsAssignableTo( typeof( BaseComponent ) ) )
-		{
-			string guidString = node.Deserialize<string>();
-
-			if ( Guid.TryParse( guidString, out Guid guid ) )
-			{
-				onPostDeserialize += () =>
-				{
-					var go = Scene.Directory.FindByGuid( guid );
-					if ( go is null ) Log.Warning( $"GameObject - {guid} was not found for {GetType().Name}.{prop.Name}" );
-
-					var component = go.Components.Get( prop.PropertyType, FindMode.EverythingInSelf );
-					if ( component is null ) Log.Warning( $"Component - Unable to find {prop.PropertyType} on {go} for {GetType().Name}.{prop.Name}" );
-
-					prop.SetValue( this, component );
-				};
-				return;
-			}
-
-			throw new System.Exception( $"Couldn't parse '{guidString}' as object guid" );
-		}
-
 		prop.SetValue( this, Json.FromNode( node, prop.PropertyType ) );
+	}
+
+	public static object JsonRead( ref Utf8JsonReader reader, Type targetType )
+	{
+		if ( reader.TryGetGuid( out Guid guid ) )
+		{
+			var go = GameManager.ActiveScene.Directory.FindByGuid( guid );
+			if ( go is null ) Log.Warning( $"GameObject {guid} was not found" );
+			var component = go.Components.Get( targetType, FindMode.EverythingInSelf );
+			if ( component is null ) Log.Warning( $"Component - Unable to find Component on {go}" );
+
+			return component;
+		}
+
+		return null;
+	}
+
+	public static void JsonWrite( object value, Utf8JsonWriter writer )
+	{
+		if ( value is not BaseComponent component )
+			throw new NotImplementedException();
+
+		// components really need a guid, then we'll write an object with gameobject and guid
+		writer.WriteStringValue( component.GameObject.Id );
+
+		
 	}
 }

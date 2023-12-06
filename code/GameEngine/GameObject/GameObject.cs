@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 
 
-public partial class GameObject
+public partial class GameObject : IJsonConvert
 {
 	public Scene Scene { get; private set; }
 

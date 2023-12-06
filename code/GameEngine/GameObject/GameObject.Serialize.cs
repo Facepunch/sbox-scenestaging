@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Sandbox;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using static Sandbox.NavigationMesh;
 
 public partial class GameObject
 {
@@ -186,7 +188,7 @@ public partial class GameObject
 
 		Components.ForEach( "OnLoadInternal", true, c => c.OnLoadInternal() );
 		Components.ForEach( "OnValidate", true, c => c.OnValidateInternal() );
-		CallbackBatch.Add( CommonCallback.Deserialized, PostDeserialize, this, "PostDeserialize" );
+		CallbackBatch.Add( CommonCallback.Deserialize, PostDeserialize, this, "PostDeserialize" );
 	}
 
 	public PrefabFile GetAsPrefab()
@@ -203,6 +205,58 @@ public partial class GameObject
 		foreach ( var child in Children )
 		{
 			child.PostDeserialize();
+		}
+	}
+
+	public static object JsonRead( ref Utf8JsonReader reader, Type targetType )
+	{
+		if ( reader.TokenType == JsonTokenType.String )
+		{
+			if ( reader.TryGetGuid( out Guid guid ) )
+			{
+				var go = GameManager.ActiveScene.Directory.FindByGuid( guid );
+
+				if ( go is null )
+				{
+					Log.Warning( $"Couldn't find GameObject {guid}" );
+				}
+
+				return go;
+			}
+
+			var stringValue = reader.GetString();
+
+			if ( ResourceLibrary.TryGet( stringValue, out PrefabFile prefabFile ) )
+			{
+				return prefabFile.Scene;
+			}
+
+			return null;
+		}
+
+		reader.Skip();
+		return null;
+	}
+
+	public static void JsonWrite( object value, Utf8JsonWriter writer )
+	{
+		if ( value is not GameObject go )
+			throw new NotImplementedException();
+
+		if ( go is PrefabScene prefabScene )
+		{
+			if ( prefabScene.Source is null )
+			{
+				Log.Warning( "Prefab scene has no source!" );
+				writer.WriteStringValue( "" );
+				return;
+			}
+			
+			writer.WriteStringValue( prefabScene.Source.ResourcePath );
+		}
+		else
+		{
+			writer.WriteStringValue( go.Id );
 		}
 	}
 }
