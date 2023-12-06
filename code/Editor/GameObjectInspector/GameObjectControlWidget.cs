@@ -1,14 +1,10 @@
-﻿using Microsoft.VisualBasic;
-using Sandbox;
-using System;
-using System.Linq;
-using static Editor.Button;
-
-namespace Editor;
+﻿namespace Editor;
 
 [CustomEditor( typeof( GameObject ) )]
 public class GameObjectControlWidget : ControlWidget
 {
+	public override bool SupportsMultiEdit => true;
+
 	public GameObjectControlWidget( SerializedProperty property ) : base( property )
 	{
 		SetSizeMode( SizeMode.Default, SizeMode.Default );
@@ -25,8 +21,8 @@ public class GameObjectControlWidget : ControlWidget
 	{
 		var m = new Menu( this );
 
-	//	m.AddOption( "Copy", action: Copy );
-	//	m.AddOption( "Paste", action: Paste );
+		//	m.AddOption( "Copy", action: Copy );
+		//	m.AddOption( "Paste", action: Paste );
 		m.AddOption( "Clear", action: Clear );
 		m.OpenAtCursor( false );
 
@@ -37,7 +33,14 @@ public class GameObjectControlWidget : ControlWidget
 	{
 		var rect = LocalRect.Shrink( 6, 0 );
 		var go = SerializedProperty.GetValue<GameObject>();
-		if ( !go.IsValid() )
+		if ( SerializedProperty.IsMultipleDifferentValues )
+		{
+			Paint.SetPen( Theme.MultipleValues );
+			Paint.DrawIcon( rect, "panorama_wide_angle_select", 14, TextFlag.LeftCenter );
+			rect.Left += 22;
+			Paint.DrawText( rect, "Multiple Values", TextFlag.LeftCenter );
+		}
+		else if ( !go.IsValid() )
 		{
 			Paint.SetPen( Theme.ControlText.WithAlpha( 0.3f ) );
 			Paint.DrawIcon( rect, "radio_button_unchecked", 14, TextFlag.LeftCenter );

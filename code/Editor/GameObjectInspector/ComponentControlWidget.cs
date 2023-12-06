@@ -8,6 +8,8 @@ namespace Editor;
 [CustomEditor( typeof( BaseComponent ) )]
 public class ComponentControlWidget : ControlWidget
 {
+	public override bool SupportsMultiEdit => true;
+
 	public ComponentControlWidget( SerializedProperty property ) : base( property )
 	{
 		SetSizeMode( SizeMode.Default, SizeMode.Default );
@@ -39,7 +41,14 @@ public class ComponentControlWidget : ControlWidget
 		var component = SerializedProperty.GetValue<BaseComponent>();
 		var type = EditorTypeLibrary.GetType( SerializedProperty.PropertyType );
 
-		if ( component is null )
+		if ( SerializedProperty.IsMultipleDifferentValues )
+		{
+			Paint.SetPen( Theme.MultipleValues );
+			Paint.DrawIcon( rect, type?.Icon, 14, TextFlag.LeftCenter );
+			rect.Left += 22;
+			Paint.DrawText( rect, "Multiple Values", TextFlag.LeftCenter );
+		}
+		else if ( component is null )
 		{
 			Paint.SetPen( Theme.ControlText.WithAlpha( 0.3f ) );
 			Paint.DrawIcon( rect, type?.Icon, 14, TextFlag.LeftCenter );
