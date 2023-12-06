@@ -4,7 +4,7 @@
 [Title( "Sprite Renderer" )]
 [Category( "Rendering" )]
 [Icon( "favorite" )]
-public sealed class SpriteRenderer : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class SpriteRenderer : Renderer, BaseComponent.ExecuteInEditor
 {
 	SpriteSceneObject _so;
 
@@ -18,7 +18,7 @@ public sealed class SpriteRenderer : BaseComponent, BaseComponent.ExecuteInEdito
 	[Property] public float FogStrength { get; set; } = 1.0f;
 
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 
 	}
@@ -28,13 +28,13 @@ public sealed class SpriteRenderer : BaseComponent, BaseComponent.ExecuteInEdito
 
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		_so = new SpriteSceneObject( Scene.SceneWorld );
 		_so.Transform = Transform.World;
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_so?.Delete();
 		_so = null;

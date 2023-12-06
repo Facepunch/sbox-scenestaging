@@ -4,9 +4,9 @@ public abstract class ParticleController : BaseComponent, BaseComponent.ExecuteI
 {
 	ParticleEffect target;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
-		target = GetComponentInParent<ParticleEffect>( true, true );
+		target = Components.GetInAncestorsOrSelf<ParticleEffect>();
 		if ( target is not null )
 		{
 			target.OnPreStep += OnBeforeStep;
@@ -19,7 +19,7 @@ public abstract class ParticleController : BaseComponent, BaseComponent.ExecuteI
 		}
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		if ( target is not null )
 		{

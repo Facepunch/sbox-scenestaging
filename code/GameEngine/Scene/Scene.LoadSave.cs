@@ -14,6 +14,15 @@ public partial class Scene : GameObject
 		ProcessDeletes();
 		Clear();
 
+
+		if ( !IsEditor )
+		{
+			// Make it so IsLoading will return true
+			StartLoading();
+			LoadingScreen.IsVisible = true;
+			LoadingScreen.Title = "Loading Scene";
+		}
+
 		if ( resource is SceneFile sceneFile )
 		{
 			Source = sceneFile;
@@ -22,7 +31,7 @@ public partial class Scene : GameObject
 
 			using var sceneScope = Push();
 
-			using var spawnScope = SceneUtility.DeferInitializationScope( "Load" );
+			using var batchGroup = CallbackBatch.StartGroup();
 
 			if ( sceneFile.GameObjects is not null )
 			{
@@ -91,7 +100,7 @@ public partial class Scene : GameObject
 		Clear();
 
 		using var sceneScope = Push();
-		using var spawnScope = SceneUtility.DeferInitializationScope( "Deserialize" );
+		using var batchGroup = CallbackBatch.StartGroup();
 
 		if ( node["GameObjects"] is JsonArray childArray )
 		{

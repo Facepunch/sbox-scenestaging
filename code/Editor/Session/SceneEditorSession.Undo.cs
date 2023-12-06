@@ -1,6 +1,7 @@
 ﻿
 using Sandbox.Helpers;
 using System;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 public partial class SceneEditorSession
@@ -38,9 +39,14 @@ public partial class SceneEditorSession
 			return;
 		}
 
-		//Log.Info( $"Add Undo [{title}] [{Editor.Application.MouseButtons}] [{ShouldDeferUndo}]" );
-		undoSystem.Snapshot( title );
-		pendingUndoSnapshot = null;
+		try
+		{
+			undoSystem.Snapshot( title );
+		}
+		finally
+		{
+			pendingUndoSnapshot = null;
+		}
 	}
 
 	private void TickPendingUndoSnapshot()
@@ -70,7 +76,9 @@ public partial class SceneEditorSession
 
 	private Action snapshotForUndo( )
 	{
-		var state = Scene.Serialize().ToJsonString();
+		var o = new JsonSerializerOptions { MaxDepth = 512, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault };
+		var jn = new JsonDocumentOptions { MaxDepth = 512 };
+		var state = Scene.Serialize().ToJsonString( o );
 		var selection = Selection.OfType<GameObject>().Select( x => x.Id ).ToArray();
 
 		return () =>
@@ -78,8 +86,7 @@ public partial class SceneEditorSession
 			Scene.Clear();
 
 			using var sceneScope = Scene.Push();
-			using var activeScope = SceneUtility.DeferInitializationScope( "Undo" );
-			var js = JsonObject.Parse( state ) as JsonObject;
+			var js = JsonObject.Parse( state, documentOptions: jn ) as JsonObject;
 			Scene.Deserialize( js );
 
 			Selection.Clear();

@@ -134,7 +134,7 @@ public abstract partial class BaseComponent
 					var go = Scene.Directory.FindByGuid( guid );
 					if ( go is null ) Log.Warning( $"GameObject - {guid} was not found for {GetType().Name}.{prop.Name}" );
 
-					var component = go.GetComponent( prop.PropertyType, false, false );
+					var component = go.Components.Get( prop.PropertyType, FindMode.EverythingInSelf );
 					if ( component is null ) Log.Warning( $"Component - Unable to find {prop.PropertyType} on {go} for {GetType().Name}.{prop.Name}" );
 
 					prop.SetValue( this, component );

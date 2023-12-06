@@ -10,7 +10,7 @@ public sealed class ParticleSphereEmitter : ParticleEmitter
 	[Property] public bool OnEdge { get; set; } = false;
 
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( !Gizmo.IsSelected )
 			return;

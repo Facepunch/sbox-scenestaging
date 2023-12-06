@@ -1,10 +1,8 @@
 ﻿using Sandbox;
-using Sandbox.Network;
-using System.Threading.Channels;
 
 public partial class GameObject
 {
-	internal NetworkObject Net { get; private set; }
+	internal NetworkObject _net { get; private set; }
 
 	public bool IsProxy => Network.IsProxy;
 
@@ -24,7 +22,7 @@ public partial class GameObject
 				return _networked;
 			}
 
-			return Net is not null;
+			return _net is not null;
 		}
 
 		set
@@ -47,9 +45,9 @@ public partial class GameObject
 	/// </summary>
 	internal void NetworkSpawnRemote( ObjectCreateMsg msg )
 	{
-		if ( Net is not null ) return;
+		if ( _net is not null ) return;
 
-		Net = new NetworkObject( this, msg );
+		_net = new NetworkObject( this, msg );
 	}
 
 	/// <summary>
@@ -57,17 +55,17 @@ public partial class GameObject
 	/// </summary>
 	void StartNetworking()
 	{
-		if ( Net is not null ) return;
+		if ( _net is not null ) return;
 
-		Net = new NetworkObject( this );
+		_net = new NetworkObject( this );
 	}
 
 	void EndNetworking()
 	{
-		if ( Net is null ) return;
+		if ( _net is null ) return;
 
-		Net.Dispose();
-		Net = null;
+		_net.Dispose();
+		_net = null;
 	}
 
 	internal void NetworkUpdate()
@@ -91,7 +89,7 @@ public partial class GameObject
 
 		using ByteStream data = ByteStream.Create( 32 );
 
-		foreach ( var c in Components )
+		foreach ( var c in Components.GetAll() )
 		{
 			if ( c is INetworkSerializable net )
 			{
@@ -134,7 +132,7 @@ public partial class GameObject
 			var l = reader.Read<int>();
 			var componentData = reader.ReadByteStream( l );
 
-			foreach ( var c in Components )
+			foreach ( var c in Components.GetAll() )
 			{
 				if ( c is not INetworkSerializable net )
 					continue;
@@ -154,15 +152,15 @@ public partial class GameObject
 	[Broadcast]
 	void Msg_DropOwnership()
 	{
-		if ( Net is null ) return;
+		if ( _net is null ) return;
 
 		// TODO - check if we're allowed to do this
 		// TODO - rules around this stuff
 
-		if ( Net.Owner != Rpc.CallerId )
+		if ( _net.Owner != Rpc.CallerId )
 			return;
 
-		Net.Owner = Guid.Empty;
+		_net.Owner = Guid.Empty;
 	}
 
 
@@ -172,7 +170,7 @@ public partial class GameObject
 		// TODO - check if we're allowed to do this
 		// TODO - rules around this stuff
 
-		Net.Owner = Rpc.CallerId;
+		_net.Owner = Rpc.CallerId;
 	}
 
 	[Broadcast]
@@ -181,7 +179,7 @@ public partial class GameObject
 		// TODO - check if we're allowed to do this
 		// TODO - rules around this stuff
 
-		Net.Owner = guid;
+		_net.Owner = guid;
 	}
 
 	protected void __rpc_Broadcast( WrappedMethod m, params object[] argumentList )
@@ -205,7 +203,7 @@ public partial class GameObject
 
 	GameObject FindNetworkRoot()
 	{
-		if ( Net is not null ) return this;
+		if ( _net is not null ) return this;
 		if ( Parent is null || Parent is Scene ) return null;
 
 		return Parent.FindNetworkRoot();
@@ -238,7 +236,7 @@ public partial class GameObject
 		/// <summary>
 		/// Is this object networked
 		/// </summary>
-		public readonly bool Active => go.Net is not null;
+		public readonly bool Active => go._net is not null;
 
 		/// <summary>
 		/// Are we the creator of this network object
@@ -248,7 +246,7 @@ public partial class GameObject
 		/// <summary>
 		/// The Id of the owner of this object
 		/// </summary>
-		public readonly Guid OwnerId => go.Net?.Owner ?? Guid.Empty;
+		public readonly Guid OwnerId => go._net?.Owner ?? Guid.Empty;
 
 		/// <summary>
 		/// Are we the creator of this network object
@@ -258,13 +256,13 @@ public partial class GameObject
 		/// <summary>
 		/// The Id of the create of this object
 		/// </summary>
-		public readonly Guid CreatorId => go.Net?.Creator ?? Guid.Empty;
+		public readonly Guid CreatorId => go._net?.Creator ?? Guid.Empty;
 
 		/// <summary>
 		/// Is this object a network proxy. A network proxy is a network object that is not being simulated on the local pc.
 		/// This means it's either owned by no-one and is being simulated by the host, or owned by another client.
 		/// </summary>
-		public readonly bool IsProxy => go.Net?.IsProxy ?? false;
+		public readonly bool IsProxy => go._net?.IsProxy ?? false;
 
 		/// <summary>
 		/// Become the network owner of this object.
@@ -313,7 +311,7 @@ public partial class GameObject
 			if ( Active ) return false;
 
 			go.Enabled = true;
-			go.Net = new NetworkObject( go, Connection.Local );
+			go._net = new NetworkObject( go, Connection.Local );
 			return true;
 		}
 
@@ -328,7 +326,7 @@ public partial class GameObject
 			// TODO - can we create objects for this owner
 
 			go.Enabled = true;
-			go.Net = new NetworkObject( go );
+			go._net = new NetworkObject( go );
 			go.Network.AssignOwnership( owner );
 			return true;
 		}

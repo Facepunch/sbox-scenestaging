@@ -49,13 +49,13 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 
 	[Property] public ParticleSortMode SortMode { get; set; }
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		_so = new SpriteSceneObject( Scene.SceneWorld );
 		_so.Transform = Transform.World;
 	}
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( _so is not null )
 		{
@@ -63,7 +63,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 		}
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_so?.Delete();
 		_so = null;
@@ -72,7 +72,7 @@ public sealed class ParticleSpriteRenderer : BaseComponent, BaseComponent.Execut
 	protected override void OnPreRender()
 	{
 		if ( _so is null ) return;
-		if ( !TryGetComponent( out ParticleEffect effect ) )
+		if ( !Components.TryGet( out ParticleEffect effect ) )
 		{
 			_so.Clear();
 			return;

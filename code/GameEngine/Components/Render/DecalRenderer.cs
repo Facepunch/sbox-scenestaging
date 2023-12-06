@@ -4,10 +4,11 @@ using Sandbox.Diagnostics;
 /// <summary>
 /// Component that creates a projected decal relative to its GameObject.
 /// </summary>
-[Title( "Decal" )]
-[Icon( "lens_blur", "red", "white" )]
+[Title( "Decal Renderer" )]
+[Category( "Rendering" )]
+[Icon( "lens_blur" )]
 [EditorHandle( "materials/gizmo/decal.png" )]
-public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
+public class DecalRenderer : Renderer, BaseComponent.ExecuteInEditor
 {
 	ProjectedDecalSceneObject _sceneObject;
 
@@ -26,7 +27,20 @@ public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
 	/// </summary>
 	[Property] public Color TintColor { get; set; } = Color.White;
 
-	public override void DrawGizmos()
+	/// <summary>
+	/// Triplanar - projects in multiple directions
+	/// </summary>
+	[Property] public bool TriPlanar { get; set; } = false;
+
+	/// <summary>
+	/// Triplanar - projects in multiple directions
+	/// </summary>
+	[Property] public bool Mod2XBlending { get; set; } = false;
+
+	[Property, Range( 0, 180)] public float CutoffAngle { get; set; } = 60;
+	[Property, Range( 0, 50 )] public float CutoffAngleSoftness { get; set; } = 5;
+
+	protected override void DrawGizmos()
 	{
 		if ( !Gizmo.IsSelected )
 		{
@@ -38,7 +52,7 @@ public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
 		}
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
@@ -48,7 +62,7 @@ public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject = new ProjectedDecalSceneObject( Scene.SceneWorld, Material, Size );
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_sceneObject?.Delete();
 		_sceneObject = null;
@@ -71,5 +85,13 @@ public class DecalComponent : BaseComponent, BaseComponent.ExecuteInEditor
 
 		_sceneObject.ColorTint = TintColor;
 		_sceneObject.Transform = Transform.World;
+		_sceneObject.Attributes.Set( "g_bTriPlanar", TriPlanar );
+		_sceneObject.Attributes.Set( "g_flCutoffAngle", CutoffAngle );
+		_sceneObject.Attributes.Set( "g_flCutoffAngleSoftness", CutoffAngleSoftness );
+		_sceneObject.Attributes.SetCombo( "D_BLEND_MODE", Mod2XBlending ? 1 : 0 );
+		_sceneObject.Flags.NeedsLightProbe = true;
+		_sceneObject.Flags.NeedsEnvironmentMap = true;
+
+
 	}
 }

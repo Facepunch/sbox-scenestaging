@@ -9,24 +9,24 @@ public sealed class BrickBall : BaseComponent, BaseComponent.ICollisionListener
 	[Range( 0, 100 )]
 	[Property] public float Speed { get; set; } = 100.0f;
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		Gizmo.Draw.Line( 0, Direction.Normal * 100.0f );
 	}
 
 	float StartX;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		base.OnEnabled();
 
 		StartX = Transform.Position.x;
 
-		var rigidBody = GetComponent<PhysicsComponent>();
+		var rigidBody = Components.Get<PhysicsComponent>();
 		rigidBody.Velocity = (Direction.Normal * Speed).WithX( 0 );
 	}
 
-	public override void FixedUpdate()
+	protected override void OnFixedUpdate()
 	{
 
 

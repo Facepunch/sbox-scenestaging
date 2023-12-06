@@ -54,7 +54,7 @@ public static class SceneUtility
 	{
 		Assert.NotNull( GameManager.ActiveScene, "No Active Scene" );
 
-		using var spawnScope = DeferInitializationScope( "Instantiate" );
+		using var batchGroup = CallbackBatch.StartGroup();
 
 		JsonObject json = null;
 
@@ -99,61 +99,4 @@ public static class SceneUtility
 	/// </summary>
 	public static GameObject Instantiate( GameObject template, Vector3 position )
 		=> Instantiate( template, new Transform( position, Rotation.Identity, 1.0f ) );
-
-
-	static HashSet<GameObject> spawnList;
-
-	/// <summary>
-	/// Create a scope in which all created gameobjects only become enabled at the end.
-	/// This is useful if you have situation where you're spawning a prefab with lots of 
-	/// connections, and want everything deserialized and existing before activating.
-	/// </summary>
-	public static IDisposable DeferInitializationScope( string scopeName )
-	{
-		var lastSpawnList = spawnList;
-		spawnList = new();
-
-		return DisposeAction.Create( () =>
-		{
-			var sw = spawnList;
-			spawnList = lastSpawnList;
-
-			foreach ( var o in sw )
-			{
-				o.PostDeserialize();
-				o.UpdateEnabledStatus();
-			}
-
-			sw.Clear();
-			sw = null;
-		} );
-	}
-
-	internal static bool IsSpawning => spawnList is not null;
-
-	internal static void ActivateGameObject( GameObject o )
-	{
-		Assert.NotNull( o.Scene );
-
-		if ( spawnList is not null )
-		{
-			spawnList.Add( o );
-			return;
-		}
-
-		o.UpdateEnabledStatus();
-	}
-
-	internal static void ActivateComponent( BaseComponent o )
-	{
-		if ( o.GameObject is null || o.Scene is null ) return;
-
-		if ( spawnList is null )
-		{
-			o.UpdateEnabledStatus()?.Invoke();
-			return;
-		}
-
-		ActivateGameObject( o.GameObject );
-	}
 }

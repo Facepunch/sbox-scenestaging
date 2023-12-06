@@ -78,7 +78,7 @@ public class VrTrackedObject : BaseComponent
 			GameObject.Transform.Rotation = newTransform.Rotation;
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( !Enabled || Scene.IsEditor )
 			return;

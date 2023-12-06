@@ -6,12 +6,12 @@ public sealed class CollisionDebugComponent : BaseComponent
 {
 	[Property] GameObject DebugPoint { get; set; }
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		//Scene.PhysicsWorld.Internal_OnCollision += PhysicsCollision;
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		//Scene.PhysicsWorld.Internal_OnCollision -= PhysicsCollision;
 	}

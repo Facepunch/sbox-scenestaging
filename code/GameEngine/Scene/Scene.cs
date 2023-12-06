@@ -37,6 +37,8 @@ public partial class Scene : GameObject
 		PhysicsWorld.SimulationMode = PhysicsSimulationMode.Continuous;
 
 		UpdateFromPackage( Game.Menu?.Package );
+		InitSystems();
+
 		Event.Register( this );
 	}
 
@@ -44,6 +46,13 @@ public partial class Scene : GameObject
 	{
 		Event.Unregister( this );
 	}
+
+	public override void Destroy()
+	{
+		Clear();
+		ShutdownSystems();
+	}
+
 
 	/// <summary>
 	/// Updates information like physics collision rules from a game package.
@@ -91,20 +100,6 @@ public partial class Scene : GameObject
 		}
 	}
 
-	public IEnumerable<T> FindAllComponents<T>( bool includeDisabled = false ) where T : BaseComponent
-	{
-		// array rent?
-		List<T> found = new List<T>();
-
-		foreach ( var go in Children )
-		{
-			if ( go is null ) continue;
-
-			found.AddRange( go.GetComponents<T>( includeDisabled, true ) );
-		}
-
-		return found;
-	}
 
 	/// <summary>
 	/// Push this scene as the active scene, for a scope
@@ -141,7 +136,7 @@ public partial class Scene : GameObject
 
 	internal void OnRenderOverlayInternal( SceneCamera camera )
 	{
-		foreach ( var c in GetComponents<BaseComponent.IRenderOverlay>( true, true ) )
+		foreach ( var c in Components.GetAll<BaseComponent.IRenderOverlay>( FindMode.EnabledInSelfAndDescendants ) )
 		{
 			c.OnRenderOverlay( camera );
 		}

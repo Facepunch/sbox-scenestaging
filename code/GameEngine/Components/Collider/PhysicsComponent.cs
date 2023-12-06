@@ -29,7 +29,7 @@ public class PhysicsComponent : BaseComponent, INetworkSerializable
 		set => _body.AngularVelocity = value;
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _body == null );
 		Assert.NotNull( Scene, "Tried to create physics object but no scene" );
@@ -52,7 +52,7 @@ public class PhysicsComponent : BaseComponent, INetworkSerializable
 		UpdateColliders();
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		Transform.OnTransformChanged -= OnLocalTransformChanged;
 
@@ -64,7 +64,7 @@ public class PhysicsComponent : BaseComponent, INetworkSerializable
 
 	bool isUpdatingPositionFromPhysics;
 
-	public override void FixedUpdate()
+	protected override void OnFixedUpdate()
 	{
 		if ( _body is null ) return;
 
@@ -80,7 +80,7 @@ public class PhysicsComponent : BaseComponent, INetworkSerializable
 		isUpdatingPositionFromPhysics = false;
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( GameObject.IsProxy )
 		{
@@ -104,7 +104,7 @@ public class PhysicsComponent : BaseComponent, INetworkSerializable
 	/// </summary>
 	void UpdateColliders()
 	{
-		foreach( var c in GameObject.GetComponents<Collider>( true, true ) )
+		foreach( var c in GameObject.Components.GetAll<Collider>( FindMode.EnabledInSelfAndDescendants ) )
 		{
 			c.OnPhysicsChanged();
 		}

@@ -1,25 +1,18 @@
 ﻿using Editor.EntityPrefabEditor;
-using Sandbox;
-using System;
-using System.Collections.Generic;
-using System.Text.Json.Nodes;
 using Sandbox.Utility;
+using System;
 
 namespace Editor.Inspectors;
 
 
-[CanEdit( typeof(GameObject) )]
-[CanEdit( typeof( PrefabScene ) )]
-public class GameObjectInspector : Widget
-{
-	GameObject TargetObject;
-	SerializedObject SerializedObject;
 
-	public GameObjectInspector( Widget parent, GameObject target ) : base( parent )
+[CanEdit( typeof( GameObject ) )]
+[CanEdit( typeof( PrefabScene ) )]
+public class GameObjectInspector : InspectorWidget
+{
+	public GameObjectInspector( SerializedObject so ) : base( so )
 	{
-		TargetObject = target;
-		SerializedObject = EditorTypeLibrary.GetSerializedObject( target );
-		SerializedObject.OnPropertyChanged += ( p ) => PropertyEdited( p, TargetObject );
+		SerializedObject.OnPropertyChanged += ( p ) => PropertyEdited( p );
 
 		Layout = Layout.Column();
 
@@ -32,9 +25,12 @@ public class GameObjectInspector : Widget
 		scroller.Canvas = new Widget( scroller );
 		scroller.Canvas.Layout = Layout.Column();
 
-		if ( !target.IsPrefabInstance )
+		bool isPrefabInstance = SerializedObject.Targets.OfType<GameObject>().Any( x => x.IsPrefabInstance );
+
+
+		if ( !isPrefabInstance )
 		{
-			scroller.Canvas.Layout.Add( new ComponentList( target.Id, target.Components ) );
+			scroller.Canvas.Layout.Add( new ComponentListWidget( SerializedObject ) );
 
 			// Add component button
 			var row = scroller.Canvas.Layout.AddRow();
@@ -47,22 +43,24 @@ public class GameObjectInspector : Widget
 		}
 		else
 		{
-			if ( !target.IsPrefabInstanceRoot )
-			{
-				h.ReadOnly = true;
-			}
+			//if ( !target.IsPrefabInstanceRoot )
+			//{
+			//	h.ReadOnly = true;
+			//}
 
 			// if we're the prefab root, show a list of variables that can be modified
+
+			var source = SerializedObject.Targets.OfType<GameObject>().Select( x => x.PrefabInstanceSource ).FirstOrDefault();
 
 			// Add component button
 			var row = scroller.Canvas.Layout.AddRow();
 			row.AddStretchCell();
 			row.Margin = 16;
-			var button = row.Add( new Button( $"Open \"{target.PrefabInstanceSource}\"", "edit" ) );
+			var button = row.Add( new Button( $"Open \"{source}\"", "edit" ) );
 
 			button.Clicked = () =>
 			{
-				var prefabFile = target.PrefabInstanceSource;
+				var prefabFile = source;
 				var asset = AssetSystem.FindByPath( prefabFile );
 				asset.OpenInEditor();
 			};
@@ -70,19 +68,12 @@ public class GameObjectInspector : Widget
 		}
 
 		scroller.Canvas.Layout.AddStretchCell( 1 );
-
-		//var footer = scroller.Canvas.Layout.AddRow();
-		//footer.Margin = 8;
-		//footer.AddStretchCell();
-		//var footerBtn = footer.Add( new Button.Primary( "Add Component", "add" ) );
-		//footerBtn.Clicked = () => AddComponentDialog( footerBtn );
-		//footer.Add( footerBtn );
 	}
 
-	void PropertyEdited( SerializedProperty property, GameObject go )
+	void PropertyEdited( SerializedProperty property )
 	{
-		var value = property.GetValue<object>();
-		go.EditLog( $"{go.Name}.{property.Name}", go );
+		//	var value = property.GetValue<object>();
+		//	go.EditLog( $"{go.Name}.{property.Name}", go );
 	}
 
 	/// <summary>
@@ -91,9 +82,29 @@ public class GameObjectInspector : Widget
 	public void AddComponentDialog( Button source )
 	{
 		var s = new ComponentTypeSelector( this );
-		s.OnSelect += ( t ) => TargetObject.AddComponent( t );
+		s.OnSelect += ( t ) => AddComponent( t );
 		s.OpenAt( source.ScreenRect.BottomLeft, animateOffset: new Vector2( 0, -4 ) );
 		s.FixedWidth = source.Width;
+	}
+
+	private void AddComponent( TypeDescription componentType )
+	{
+		foreach( var go in SerializedObject.Targets.OfType<GameObject>() )
+		{
+			if ( go.IsPrefabInstance ) continue;
+
+			go.Components.Create( componentType );
+		}
+	}
+
+	private void PasteComponent()
+	{
+		foreach ( var go in SerializedObject.Targets.OfType<GameObject>() )
+		{
+			if ( go.IsPrefabInstance ) continue;
+
+			Helpers.PasteComponentAsNew( go );
+		}
 	}
 
 	protected override void OnContextMenu( ContextMenuEvent e )
@@ -101,26 +112,25 @@ public class GameObjectInspector : Widget
 		if ( Helpers.HasComponentInClipboard() )
 		{
 			var menu = new Menu( this );
-			menu.AddOption( "Paste Component As New", action: () => Helpers.PasteComponentAsNew( TargetObject ) );
-			menu.OpenAtCursor( true );
+			menu.AddOption( "Paste Component As New", action: PasteComponent );
+			menu.OpenAtCursor( false );
 		}
-		
+
 		base.OnContextMenu( e );
 	}
 }
 
-public class ComponentList : Widget
+public class ComponentListWidget : Widget
 {
-	List<BaseComponent> componentList; // todo - SerializedObject should support lists, arrays
+	SerializedObject SerializedObject { get; init; }
+
 	Guid GameObjectId;
 
-	public ComponentList( Guid gameObjectId, List<BaseComponent> components ) : base( null )
+	public ComponentListWidget( SerializedObject so ) : base( null )
 	{
-		GameObjectId = gameObjectId;
-		componentList = components;
+		SerializedObject = so;
+		GameObjectId = so.IsMultipleTargets ? Guid.Empty : so.Targets.OfType<GameObject>().Select( x => x.Id ).Single();
 		Layout = Layout.Column();
-
-		hashCode = -1;
 		Frame();
 	}
 
@@ -128,13 +138,29 @@ public class ComponentList : Widget
 	{
 		Layout.Clear( true );
 
-		foreach ( var o in componentList )
+		var gobs = SerializedObject.Targets.OfType<GameObject>().ToArray();
+		if ( gobs.Length == 0 ) return;
+
+		foreach ( var o in gobs[0].Components.GetAll() )
 		{
 			if ( o is null ) continue;
 
-			var serialized = EditorTypeLibrary.GetSerializedObject( o );
-			serialized.OnPropertyChanged += ( p ) => PropertyEdited( p, o );
-			var sheet = new ComponentSheet( GameObjectId, serialized, ( x ) => OpenContextMenu( o, x ) );
+			var allGobs = gobs.Select( x => x.Components.GetAll().Where( y => y.GetType() == o.GetType() ).FirstOrDefault() ).ToArray();
+
+			// Must be one on every go to show up
+			if ( allGobs.Length != gobs.Length ) continue;
+			if ( allGobs.Any( x => x is null ) ) continue;
+
+			MultiSerializedObject mso = new MultiSerializedObject();
+
+			foreach( var entry in allGobs )
+			{
+				var serialized = EditorTypeLibrary.GetSerializedObject( entry );
+				mso.Add( serialized );
+			}
+
+			mso.OnPropertyChanged += ( p ) => PropertyEdited( p, o );
+			var sheet = new ComponentSheet( GameObjectId, mso, ( x ) => OpenContextMenu( o, x ) );
 			Layout.Add( sheet );
 			Layout.AddSeparator();
 		}
@@ -148,26 +174,32 @@ public class ComponentList : Widget
 
 	void OpenContextMenu( BaseComponent component, Vector2? position = null )
 	{
+		if ( SerializedObject.IsMultipleTargets )
+		{
+			// TODO
+			return;
+		}
+
+		var componentList = SerializedObject.Targets.OfType<GameObject>().Select( x => x.Components ).Single();
+
 		var menu = new Menu( this );
 
 		menu.AddOption( "Reset", action: () => component.Reset() );
 		menu.AddSeparator();
 
-		var componentIndex = componentList.IndexOf( component );
+		var componentIndex = componentList.GetAll().ToList().IndexOf( component );
 		var canMoveUp = componentList.Count > 1 && componentIndex > 0;
 		var canMoveDown = componentList.Count > 1 && componentIndex < componentList.Count - 1;
 
 		menu.AddOption( "Move Up", action: () =>
 		{
-			componentList.RemoveAt( componentIndex );
-			componentList.Insert( componentIndex - 1, component );
+			componentList.Move( component, -1 );
 			Rebuild();
 		} ).Enabled = canMoveUp;
 
 		menu.AddOption( "Move Down", action: () =>
 		{
-			componentList.RemoveAt( componentIndex );
-			componentList.Insert( componentIndex + 1, component );
+			componentList.Move( component, +1 );
 			Rebuild();
 		} ).Enabled = canMoveDown;
 
@@ -183,7 +215,7 @@ public class ComponentList : Widget
 			menu.AddOption( "Paste Values", action: () => Helpers.PasteComponentValues( component ) );
 			menu.AddOption( "Paste As New", action: () => Helpers.PasteComponentAsNew( component.GameObject ) );
 		}
-		
+
 		//menu.AddOption( "Open In Window.." );
 		menu.AddSeparator();
 
@@ -200,21 +232,22 @@ public class ComponentList : Widget
 		}
 		else
 		{
-			menu.OpenAtCursor( true );
+			menu.OpenAtCursor( false );
 		}
 
 	}
 
-	int hashCode;
 
 	[EditorEvent.Frame]
 	public void Frame()
 	{
-		var hash = componentList?.Count ?? 0;
+		int hash = 1;
 
-		if ( hashCode == hash ) return;
+		hash = SerializedObject.Targets.OfType<GameObject>().Sum( x => x.Components.Count );
 
-		hashCode = hash;
+		if ( !SetContentHash( hash ) )
+			return;
+
 		Rebuild();
 	}
 }

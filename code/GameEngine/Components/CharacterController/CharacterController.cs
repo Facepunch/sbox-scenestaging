@@ -31,7 +31,7 @@ public class CharacterController : BaseComponent, INetworkSerializable
 
 	public bool IsOnGround { get; set; }
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		Gizmo.Draw.LineBBox( BoundingBox );
 	}

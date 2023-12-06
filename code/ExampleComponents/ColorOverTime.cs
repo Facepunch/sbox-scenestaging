@@ -7,13 +7,13 @@ public sealed class ColorOverTime : BaseComponent
 
 	float delta = 0.0f;
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		delta += Time.Delta * Speed;
 
 		var color = Gradient.Evaluate( (delta) % 1.0f );
 
-		GameObject.ForEachComponent<ITintable>( "ChangeColor", true, t =>
+		GameObject.Components.ForEach<ITintable>( "ChangeColor", false, t =>
 		{
 			t.Color = color;
 		} );

@@ -8,6 +8,8 @@ namespace Editor;
 [CustomEditor( typeof( BaseComponent ) )]
 public class ComponentControlWidget : ControlWidget
 {
+	public override bool SupportsMultiEdit => true;
+
 	public ComponentControlWidget( SerializedProperty property ) : base( property )
 	{
 		SetSizeMode( SizeMode.Default, SizeMode.Default );
@@ -28,7 +30,7 @@ public class ComponentControlWidget : ControlWidget
 	//	m.AddOption( "Paste", action: Paste );
 		m.AddOption( "Clear", action: Clear );
 
-		m.OpenAtCursor( true );
+		m.OpenAtCursor( false );
 
 		e.Accepted = true;
 	}
@@ -39,7 +41,14 @@ public class ComponentControlWidget : ControlWidget
 		var component = SerializedProperty.GetValue<BaseComponent>();
 		var type = EditorTypeLibrary.GetType( SerializedProperty.PropertyType );
 
-		if ( component is null )
+		if ( SerializedProperty.IsMultipleDifferentValues )
+		{
+			Paint.SetPen( Theme.MultipleValues );
+			Paint.DrawIcon( rect, type?.Icon, 14, TextFlag.LeftCenter );
+			rect.Left += 22;
+			Paint.DrawText( rect, "Multiple Values", TextFlag.LeftCenter );
+		}
+		else if ( component is null )
 		{
 			Paint.SetPen( Theme.ControlText.WithAlpha( 0.3f ) );
 			Paint.DrawIcon( rect, type?.Icon, 14, TextFlag.LeftCenter );
@@ -91,15 +100,15 @@ public class ComponentControlWidget : ControlWidget
 	{
 		if ( ev.Data.Object is GameObject go )
 		{
-			var c = go.GetComponent( SerializedProperty.PropertyType, false );
+			var c = go.Components.Get( SerializedProperty.PropertyType );
 			SerializedProperty.SetValue( c );
 		}
 		else if ( ev.Data.Object is GameObject[] gos )
 		{
-			var suitable = gos.FirstOrDefault( g => g.GetComponent( SerializedProperty.PropertyType, false ) is not null );
+			var suitable = gos.FirstOrDefault( g => g.Components.Get( SerializedProperty.PropertyType ) is not null );
 			if ( suitable is null ) return;
 
-			var c = suitable.GetComponent( SerializedProperty.PropertyType, false );
+			var c = suitable.Components.Get( SerializedProperty.PropertyType );
 			SerializedProperty.SetValue( c );
 		}
 	}

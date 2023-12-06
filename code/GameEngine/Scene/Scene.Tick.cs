@@ -43,12 +43,13 @@ public partial class Scene : GameObject
 
 	float TimeNow = 0.0f;
 	float TimeDelta = 0.1f;
+	int Tick = 0;
 
 	public void EditorTick()
 	{
 		TimeNow = RealTime.Now;
 		TimeDelta = RealTime.Delta;
-		using var timeScope = Time.Scope( TimeNow, TimeDelta, tick );
+		using var timeScope = Time.Scope( TimeNow, TimeDelta, Tick );
 
 		ProcessDeletes();
 		PreRender();
@@ -61,7 +62,7 @@ public partial class Scene : GameObject
 		if ( IsEditor )
 		{
 			Update();
-			UpdateAnimationThreaded();
+			Signal( GameObjectSystem.Stage.UpdateBones );
 		}
 
 		ProcessDeletes();
@@ -69,12 +70,18 @@ public partial class Scene : GameObject
 
 	public void GameTick()
 	{
-		gizmoInstance.Input.Camera = Sandbox.Camera.Main;
+		if ( Sandbox.Camera.Main is not null )
+		{
+			gizmoInstance.Input.Camera = Sandbox.Camera.Main;
+
+			// default sound listener, it might get overriden anyway
+			Sound.Listener = new( Sandbox.Camera.Main.Position, Sandbox.Camera.Main.Rotation );
+		}
 
 		TimeDelta = Time.Delta * TimeScale;
 		TimeNow += TimeDelta;
 
-		using var timeScope = Time.Scope( TimeNow, TimeDelta, tick );
+		using var timeScope = Time.Scope( TimeNow, TimeDelta, Tick );
 
 		using ( gizmoInstance.Push() )
 		{
@@ -101,56 +108,22 @@ public partial class Scene : GameObject
 			SceneNetworkUpdate();
 
 			Update();
-			UpdateAnimationThreaded();
+			Signal( GameObjectSystem.Stage.UpdateBones );
 
 			ProcessDeletes();
 		}
 	}
 
-	void UpdateAnimationThreaded()
-	{
-		if ( !ThreadedAnimation )
-			return;
-
-		// TODO - faster way to accumulate these
-		var animModel = GetComponents<AnimatedModelComponent>( true, true ).ToArray();
-
-		//
-		// Run the updates and the bone merges in a thread
-		//
-		using ( Sandbox.Utility.Superluminal.Scope( "Scene.AnimUpdate", Color.Cyan ) )
-		{
-			Sandbox.Utility.Parallel.ForEach( animModel, x => x.UpdateInThread() );
-		}
-
-		//
-		// Run events in the main thread
-		//
-		using ( Sandbox.Utility.Superluminal.Scope( "Scene.AnimPostUpdate", Color.Yellow ) )
-		{
-			foreach( var x in animModel )
-			{
-				x.PostAnimationUpdate();
-			}
-		}
-	}
-
-	int tick;
 
 	protected override void FixedUpdate()
 	{
-		tick++;
+		Tick++;
 
 		using ( Sandbox.Utility.Superluminal.Scope( "Scene.FixedUpdate", Color.Cyan ) )
 		{
-			var idealHz = 220.0f;
-			var idealStep = 1.0f / idealHz;
-			int steps = (Time.Delta / idealStep).FloorToInt().Clamp( 1, 10 );
+			Signal( GameObjectSystem.Stage.PhysicsStep );
 
-			using ( Sandbox.Utility.Superluminal.Scope( "PhysicsWorld.Step", Color.Cyan ) )
-			{
-				PhysicsWorld.Step( Time.Delta, steps );
-			}
+
 
 			using ( Sandbox.Utility.Superluminal.Scope( "FixedUpdate", Color.Cyan ) )
 			{
@@ -163,4 +136,5 @@ public partial class Scene : GameObject
 			}
 		}
 	}
+
 }

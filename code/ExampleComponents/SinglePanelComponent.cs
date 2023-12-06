@@ -9,7 +9,7 @@ public sealed class SinglePanelComponent : BaseComponent
 {
 	Panel panel;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Log.Info( "Create UI" );
 		panel = new Panel();
@@ -22,7 +22,7 @@ public sealed class SinglePanelComponent : BaseComponent
 		
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		Log.Info( "Destroy UI" );
 		Camera.Main.OnRenderOverlay -= RenderPanel;

@@ -62,7 +62,11 @@ internal struct CharacterControllerHelper
 				break;
 			}
 
-			Position = pm.EndPosition;// + pm.Normal * 0.001f;
+			if ( pm.Fraction > 0 )
+			{
+				Position = pm.EndPosition;// + pm.Normal * 0.001f;
+				moveplanes.StartBump( Velocity );
+			}
 
 			bool standable = pm.Normal.Angle( Vector3.Up ) <= MaxStandableAngle;
 
@@ -75,8 +79,6 @@ internal struct CharacterControllerHelper
 
 			//Gizmo.Draw.Color = Color.Green;
 			//Gizmo.Draw.Line( pm.StartPosition + Vector3.Up * 5, pm.StartPosition + Vector3.Up * 5 + pm.Normal * 3 );
-
-			moveplanes.StartBump( Velocity );
 
 			if ( !moveplanes.TryAdd( pm.Normal, ref Velocity, standable ? 0 : Bounce ) )
 				break;
@@ -213,17 +215,13 @@ file struct VelocityClipPlanes : IDisposable
 		//
 		if ( Count == 1 )
 		{
-			BumpVelocity = velocity;
-			BumpVelocity = ClipVelocity( BumpVelocity, normal, 1.0f + bounce );
+			BumpVelocity = ClipVelocity( OrginalVelocity, normal, 1.0f + bounce );
+			OrginalVelocity = BumpVelocity;
 			velocity = BumpVelocity;
 
 			return true;
 		}
 
-		//
-		// clip to all of the planes we've put in
-		//
-		velocity = BumpVelocity;
 		if ( TryClip( ref velocity ) )
 		{
 			// Hit the floor and the wall, go along the join
@@ -235,7 +233,7 @@ file struct VelocityClipPlanes : IDisposable
 			else
 			{
 				velocity = Vector3.Zero;
-				return true;
+				return false;
 			}
 		}
 
@@ -243,9 +241,10 @@ file struct VelocityClipPlanes : IDisposable
 		// We're moving in the opposite direction to our
 		// original intention so just stop right there.
 		//
-		if ( velocity.Dot( OrginalVelocity ) < 0 )
+		if ( velocity.Dot( OrginalVelocity ) <= 0 )
 		{
 			velocity = 0;
+			return false;
 		}
 
 		return true;
@@ -259,7 +258,7 @@ file struct VelocityClipPlanes : IDisposable
 	{
 		for ( int i = 0; i < Count; i++ )
 		{
-			velocity = ClipVelocity( BumpVelocity, Planes[i] );
+			velocity = ClipVelocity( OrginalVelocity, Planes[i] );
 
 			if ( MovingTowardsAnyPlane( velocity, i ) )
 				return false;

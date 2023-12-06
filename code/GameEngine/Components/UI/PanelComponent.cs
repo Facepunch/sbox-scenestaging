@@ -14,7 +14,7 @@ public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 	/// </summary>
 	public Panel Panel => panel;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		loadedStyleSheet = null;
 		panel = new CustomBuildPanel( BuildRenderTree, GetRenderTreeChecksum, BuildRenderHash );
@@ -23,7 +23,7 @@ public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 		UpdateParent();
 	}
 
-	public override void OnStart()
+	protected override void OnStart()
 	{
 		UpdateParent();
 	}
@@ -38,17 +38,17 @@ public abstract partial class PanelComponent : BaseComponent, IPanelComponent
 	Panel FindParentPanel()
 	{
 		// do we have any root panels with us?
-		if ( GetComponent<IRootPanelComponent>( true ) is IRootPanelComponent r )
+		if ( Components.Get<IRootPanelComponent>() is IRootPanelComponent r )
 		{
 			return r.GetPanel();
 		}
 
 		// Do we have any parent panels we can become a child of?
-		var parentPanel = GameObject.GetComponentInParent<IPanelComponent>( false );
+		var parentPanel = GameObject.Components.Get<IPanelComponent>( FindMode.InAncestors | FindMode.Enabled );
 		return parentPanel?.GetPanel();
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		panel?.Delete();
 		panel = null;

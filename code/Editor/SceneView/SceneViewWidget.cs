@@ -47,7 +47,7 @@ public partial class SceneViewWidget : Widget
 		if ( selectionHash != session.Selection.GetHashCode() )
 		{
 			// todo - multiselect
-			EditorUtility.InspectorObject = session.Selection.LastOrDefault();
+			EditorUtility.InspectorObject = session.Selection.ToArray();
 			selectionHash = session.Selection.GetHashCode();
 		}
 
@@ -57,7 +57,7 @@ public partial class SceneViewWidget : Widget
 		Current = this;
 
 		// Lets default to the settings from the camera
-		var camera = session.Scene.FindAllComponents<CameraComponent>( false ).FirstOrDefault();
+		var camera = session.Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
 		if ( camera is not null )
 		{
 			camera.UpdateCamera( Camera );
@@ -265,7 +265,7 @@ public partial class SceneViewWidget : Widget
 			DragObject = SceneEditorSession.Active.Scene.CreateObject();
 			DragObject.Name = modelAsset.ResourceName;
 
-			var mc = DragObject.AddComponent<ModelComponent>();
+			var mc = DragObject.Components.Create<ModelRenderer>();
 			mc.Model = modelAsset;
 
 		}

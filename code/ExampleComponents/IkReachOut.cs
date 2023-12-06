@@ -9,7 +9,7 @@ public sealed class IkReachOut : BaseComponent
 
 	TimeUntil timeUntilRetry;
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( timeUntilRetry > 0 )
 			return;
@@ -20,7 +20,7 @@ public sealed class IkReachOut : BaseComponent
 			dir = (Transform.Rotation.Forward + Vector3.Random) * Radius;
 		}
 
-		var tr = Physics.Trace
+		var tr = Scene.Trace
 			.Sphere( 2, Transform.Position, Transform.Position + dir.Normal * Radius )
 			.WithoutTags( IgnoreCollision )
 			.Run();

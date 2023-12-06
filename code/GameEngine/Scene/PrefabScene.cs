@@ -48,7 +48,7 @@ public sealed class PrefabScene : Scene
 		}
 
 		Source = file;
-		using ( SceneUtility.DeferInitializationScope( "Load" ) )
+		using ( CallbackBatch.StartGroup() )
 		{
 			Deserialize( file.RootObject );
 		}

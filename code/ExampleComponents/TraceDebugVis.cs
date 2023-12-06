@@ -17,7 +17,7 @@ public sealed class TraceDebugVis : BaseComponent
 
 
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		var bb = new BBox( -BoxSize, BoxSize );
 

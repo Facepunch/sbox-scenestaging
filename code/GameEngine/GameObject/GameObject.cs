@@ -19,7 +19,6 @@ public partial class GameObject
 	[Property]
 	public bool Lerping { get; set; } = true;
 
-
 	bool _enabled = true;
 
 	/// <summary>
@@ -33,6 +32,11 @@ public partial class GameObject
 	public CancellationToken EnabledToken => enabledTokenSource?.Token ?? CancellationToken.None;
 
 	/// <summary>
+	/// Access components on this GameObject
+	/// </summary>
+	public ComponentList Components { get; private set; }
+
+	/// <summary>
 	/// Is this gameobject enabled?
 	/// </summary>
 	[Property]
@@ -43,6 +47,8 @@ public partial class GameObject
 		{
 			if ( _enabled == value )
 				return;
+
+			using var batchGroup = CallbackBatch.StartGroup();
 
 			_enabled = value;
 			Transform.ClearLerp();
@@ -56,7 +62,7 @@ public partial class GameObject
 				CancelTaskSource();
 			}
 
-			SceneUtility.ActivateGameObject( this );
+			UpdateEnabledStatus();
 		}
 	}
 
@@ -66,6 +72,7 @@ public partial class GameObject
 	public GameObject( bool enabled, string name )
 	{
 		Transform = new GameTransform( this );
+		Components = new ComponentList( this );
 		Tags = new GameTags( this );
 		_enabled = enabled;
 		Scene = this as Scene ?? GameManager.ActiveScene;
@@ -125,8 +132,6 @@ public partial class GameObject
 		Task.Expire();
 	}
 
-	public List<BaseComponent> Components = new List<BaseComponent>();
-
 	GameObject _parent;
 
 	public GameObject Parent
@@ -166,11 +171,11 @@ public partial class GameObject
 
 	internal void PreRender()
 	{
-		ForEachComponent( "PreRender", true, c => c.PreRender() );
-		ForEachChild( "PreRender", true, c => c.PreRender() );
+		Components.ForEach( "PreRender", false, c => c.PreRender() );
+		ForEachChild( "PreRender", false, c => c.PreRender() );
 	}
 
-	internal void ForEachChild( string name, bool activeOnly, Action<GameObject> action )
+	internal void ForEachChild( string name, bool includeDisabled, Action<GameObject> action )
 	{
 		for ( int i = Children.Count - 1; i >= 0; i-- )
 		{
@@ -185,7 +190,7 @@ public partial class GameObject
 				continue;
 			}
 
-			if ( activeOnly && !c.Active )
+			if ( !includeDisabled && !c.Active )
 				continue;
 
 			try
@@ -207,19 +212,10 @@ public partial class GameObject
 	/// </summary>
 	internal void UpdateEnabledStatus()
 	{
-		// we want to run all of the callbacks after the enabled status has changed
-		// this is kind of crude though, we should instead have something proper, that defers
-		// callbacks until a certain point, and calls them in a logical order.
-		Action a = default;
+		using var batch = CallbackBatch.StartGroup();
 
-		ForEachComponent( "UpdateEnabledStatus", false, c =>
-		{
-			a += c.UpdateEnabledStatus();
-		} );
-
+		Components.ForEach( "UpdateEnabledStatus", true, c => c.UpdateEnabledStatus() );
 		ForEachChild( "UpdateEnabledStatus", true, c => c.UpdateEnabledStatus() );
-
-		a?.Invoke();
 	}
 
 	public bool IsDescendant( GameObject o )
@@ -333,7 +329,7 @@ public partial class GameObject
 	/// </summary>
 	public BBox GetBounds()
 	{
-		var renderers = GetComponents<ModelComponent>( true, true );
+		var renderers = Components.GetAll<ModelRenderer>( FindMode.EnabledInSelfAndDescendants );
 
 		return BBox.FromBoxes( renderers.Select( x => x.Bounds ) );
 	}

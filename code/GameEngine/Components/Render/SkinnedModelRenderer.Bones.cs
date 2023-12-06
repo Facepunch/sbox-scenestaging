@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public sealed partial class AnimatedModelComponent
+public sealed partial class SkinnedModelRenderer
 {
 	Dictionary<int, GameObject> boneToGameObject = new ();
 
@@ -78,39 +78,35 @@ public sealed partial class AnimatedModelComponent
 
 	public Transform GetBoneTransform( in BoneCollection.Bone bone, in bool worldPosition )
 	{
-		if ( _sceneObject is null ) return global::Transform.Zero;
+		if ( !SceneModel.IsValid() ) return global::Transform.Zero;
+		ArgumentNullException.ThrowIfNull( bone, nameof( bone ) );
 
-		return _sceneObject.GetBoneWorldTransform( bone.Index );
+		return SceneModel.GetBoneWorldTransform( bone.Index );
 	}
 
-	public void SetBoneTransform( in BoneCollection.Bone bone, in Transform tx, in bool worldPosition )
+	internal void SetBoneTransform( in BoneCollection.Bone bone, Transform transform )
 	{
-		if ( _sceneObject is null ) return;
+		if ( !SceneModel.IsValid() ) return;
+		ArgumentNullException.ThrowIfNull( bone, nameof( bone ) );
 
-		_sceneObject.SetBoneWorldTransform( bone.Index, tx );
-	}
-
-	internal void SetPhysicsBone( int v, Transform transform, float lerp )
-	{
-		_sceneObject.SetBoneOverride( v, transform, lerp );
+		SceneModel.SetBoneOverride( bone.Index, transform );
 	}
 
 	internal void ClearPhysicsBones()
 	{
-		if ( !_sceneObject.IsValid() ) return;
-
-		_sceneObject.ClearBoneOverrides();
+		if ( !SceneModel.IsValid() ) return;
+		SceneModel.ClearBoneOverrides();
 	}
 }
 
 
 public class ModelBoneTransformProxy : TransformProxy
 {
-	private AnimatedModelComponent model;
+	private SkinnedModelRenderer model;
 	private BoneCollection.Bone bone;
 	private GameObject target;
 
-	public ModelBoneTransformProxy( AnimatedModelComponent model, BoneCollection.Bone bone, GameObject target )
+	public ModelBoneTransformProxy( SkinnedModelRenderer model, BoneCollection.Bone bone, GameObject target )
 	{
 		this.model = model;
 		this.bone = bone;
@@ -139,6 +135,6 @@ public class ModelBoneTransformProxy : TransformProxy
 
 	public override void SetWorldTransform( Transform value )
 	{
-		model.SetBoneTransform( bone, value, true );
+		model.SetBoneTransform( bone, value );
 	}
 }

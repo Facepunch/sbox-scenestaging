@@ -1,5 +1,4 @@
 ﻿using Sandbox;
-using System.Linq;
 
 public partial class GameObject
 {
@@ -11,7 +10,7 @@ public partial class GameObject
 	{
 		handleTexture = null;
 
-		var handles = Components
+		var handles = Components.GetAll()
 			.Where( x => x is not null )
 			.Select( x => TypeLibrary.GetType( x.GetType() ) )
 			.Where( x => x is not null )
@@ -23,7 +22,7 @@ public partial class GameObject
 
 		handleColor = Color.White;
 
-		var colorProvider = Components.OfType<IComponentColorProvider>().FirstOrDefault();
+		var colorProvider = Components.GetAll<IComponentColorProvider>().FirstOrDefault();
 		if ( colorProvider is not null )
 		{
 			handleColor = colorProvider.ComponentColor;
@@ -86,11 +85,10 @@ public partial class GameObject
 
 			DrawGizmoHandle( ref clicked );
 
-			ForEachComponent( "DrawGizmos", true, c =>
+			Components.ForEach( "DrawGizmos", false, c =>
 			{
 				using var scope = Gizmo.Scope();
-
-				c.DrawGizmos();
+				c.DrawGizmosInternal();
 				clicked = clicked || Gizmo.WasClicked;
 
 			} );
@@ -101,7 +99,7 @@ public partial class GameObject
 				EditLog( "Selection", this );
 			}
 
-			ForEachChild( "DrawGizmos", true, c => c.DrawGizmos() );
+			ForEachChild( "DrawGizmos", false, c => c.DrawGizmos() );
 
 		}
 	}

@@ -32,7 +32,7 @@
 
     @foreach( var scene in ResourceLibrary.GetAll<SceneFile>().OrderBy( x => x.ResourceName ) )
     {
-        <SceneButton Scene="@scene" OnSelected="@OpenScene"></SceneButton> 
+        <SceneButton Scene="@scene" OnSelected=@OpenScene></SceneButton> 
     }
     </div>
 
@@ -83,17 +83,16 @@
 {
     void OpenScene( SceneFile file )
     {
-        // GameManager.ActiveScene = new Scene();
-        GameManager.ActiveScene.Load( file );
+        GameManager.ActiveScene.Load(file);
 
-        var go = new GameObject( true, "Return To Menu" );
-        go.AddComponent<ReturnToMenu>();
+        var go = new GameObject(true, "Return To Menu");
+        go.Components.Create<ReturnToMenu>();
     }
 
     bool refreshing;
     List<LobbyInformation> list = new();
 
-    public override void OnEnabled()
+    protected override void OnEnabled()
     {
         base.OnEnabled();
 

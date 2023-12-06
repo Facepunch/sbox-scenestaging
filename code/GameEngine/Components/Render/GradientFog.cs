@@ -1,6 +1,4 @@
 ﻿using Sandbox;
-using System;
-using static System.Net.Mime.MediaTypeNames;
 
 [Title( "Gradient Fog" )]
 [Category( "Rendering" )]
@@ -15,7 +13,7 @@ public class GradientFog : BaseComponent, BaseComponent.ExecuteInEditor
 	[Property] public float Height { get; set; } = 100.0f;
 	[Property] public float VerticalFalloffExponent { get; set; } = 1.0f;
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		var world = Scene?.SceneWorld;
 		if ( world is null ) return;

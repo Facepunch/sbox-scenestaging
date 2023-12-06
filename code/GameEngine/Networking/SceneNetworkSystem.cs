@@ -99,7 +99,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		Action queue = default;
 
-		foreach ( var c in GameManager.ActiveScene.GetComponents<BaseComponent.INetworkListener>( true, true ) )
+		foreach ( var c in GameManager.ActiveScene.Components.GetAll<BaseComponent.INetworkListener>( FindMode.EnabledInSelfAndDescendants ) )
 		{
 			queue += () => c.OnConnected( client );
 		}
@@ -111,7 +111,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 	{
 		Action queue = default;
 
-		foreach ( var c in GameManager.ActiveScene.GetComponents<BaseComponent.INetworkListener>( true, true ) )
+		foreach ( var c in GameManager.ActiveScene.Components.GetAll<BaseComponent.INetworkListener>( FindMode.EnabledInSelfAndDescendants ) )
 		{
 			queue += () => c.OnActive( client );
 		}
@@ -125,7 +125,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		Action queue = default;
 
-		foreach ( var c in GameManager.ActiveScene.GetComponents<BaseComponent.INetworkListener>( true, true ) )
+		foreach ( var c in GameManager.ActiveScene.Components.GetAll<BaseComponent.INetworkListener>( FindMode.EnabledInSelfAndDescendants ) )
 		{
 			queue += () => c.OnDisconnected( client );
 		}
@@ -184,9 +184,9 @@ public class SceneNetworkSystem : GameNetworkSystem
 
 		// TODO: Does source have the authoruty to destroy?
 
-		if ( obj.Net is not null )
+		if ( obj._net is not null )
 		{
-			obj.Net.OnNetworkDestroy();
+			obj._net.OnNetworkDestroy();
 		}
 		else
 		{

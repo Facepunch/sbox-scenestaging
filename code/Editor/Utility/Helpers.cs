@@ -58,7 +58,7 @@ public static class Helpers
 				return;
 			}
 
-			var component = target.AddComponent( componentType );
+			var component = target.Components.Create( componentType );
 			component.DeserializeImmediately( jso );
 
 			SceneEditorSession.Active.Scene.EditLog( "Pasted Component As New", target );

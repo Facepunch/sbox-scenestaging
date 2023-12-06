@@ -5,12 +5,12 @@ public sealed class GameNetworkManager : BaseComponent, BaseComponent.INetworkLi
 	[Property] public GameObject PlayerPrefab { get; set; }
 	[Property] public GameObject SpawnPoint { get; set; }
 
-	public override void OnStart()
+	protected override void OnStart()
 	{
 
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		
 	}
@@ -21,7 +21,7 @@ public sealed class GameNetworkManager : BaseComponent, BaseComponent.INetworkLi
 
 		var player = SceneUtility.Instantiate( PlayerPrefab, SpawnPoint.Transform.World );
 
-		var nameTag = player.GetComponent<NameTagPanel>( false, true );
+		var nameTag = player.Components.Get<NameTagPanel>( FindMode.EverythingInSelfAndDescendants );
 		if ( nameTag is not null )
 		{
 			nameTag.Name = channel.DisplayName;

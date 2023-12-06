@@ -3,7 +3,7 @@ using System;
 
 public sealed class CitizenAnimation : BaseComponent, BaseComponent.ExecuteInEditor
 {
-	[Property] public AnimatedModelComponent Target { get; set; }
+	[Property] public SkinnedModelRenderer Target { get; set; }
 
 	[Property] public GameObject EyeSource { get; set; }
 
@@ -17,7 +17,7 @@ public sealed class CitizenAnimation : BaseComponent, BaseComponent.ExecuteInEdi
 	[Property] public GameObject IkLeftFoot { get; set; }
 	[Property] public GameObject IkRightFoot { get; set; }
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( LookAtObject.IsValid() )
 		{

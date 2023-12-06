@@ -10,15 +10,15 @@ public sealed class Pixelate : BaseComponent, BaseComponent.ExecuteInEditor
 
 	IDisposable renderHook;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		renderHook?.Dispose();
 
-		var cc = GetComponent<CameraComponent>( false, false );
+		var cc = Components.Get<CameraComponent>( true );
 		renderHook = cc.AddHookBeforeOverlay( "Pixelate", 500, RenderEffect );
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		renderHook?.Dispose();
 		renderHook = null;

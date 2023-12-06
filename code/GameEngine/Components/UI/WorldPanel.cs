@@ -58,7 +58,7 @@ public sealed class WorldPanel : BaseComponent, IRootPanelComponent
 	}
 
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		using ( Gizmo.Scope( null, new Transform( 0, Rotation.From( 0, 90, -90 ), Gizmo.Transform.Scale * Sandbox.ScenePanelObject.ScreenToWorldScale ) ) )
 		{
@@ -75,14 +75,14 @@ public sealed class WorldPanel : BaseComponent, IRootPanelComponent
 		}
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		worldPanel = new Sandbox.UI.WorldPanel( Scene.SceneWorld );
 		worldPanel.Transform = Transform.World;
 		worldPanel.SceneObject.Tags.SetFrom( GameObject.Tags );
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		worldPanel?.Delete();
 	}

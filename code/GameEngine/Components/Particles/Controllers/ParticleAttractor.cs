@@ -23,7 +23,7 @@ public class ParticleAttractor : ParticleController
 
 	Vector3? targetPosition;
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		base.DrawGizmos();
 

@@ -16,7 +16,7 @@ public class VrAnchor : BaseComponent
 		VR.Anchor = GameObject.Transform.World;
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( !Enabled || Scene.IsEditor )
 			return;

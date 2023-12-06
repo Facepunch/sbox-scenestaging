@@ -22,7 +22,7 @@ public class ColliderBoxComponent : Collider
 		}
 	}
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( !Gizmo.IsSelected && !Gizmo.IsHovered )
 			return;

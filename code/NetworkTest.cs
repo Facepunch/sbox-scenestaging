@@ -9,12 +9,12 @@ public sealed class NetworkTest : BaseComponent
 
 	GameObject Carrying;
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( IsProxy )
 			return;
 
-		var pc = GetComponent<PlayerController>();
+		var pc = Components.Get<PlayerController>();
 		var lookDir = pc.EyeAngles.ToRotation();
 		
 		if ( Input.Pressed( "Attack1" ) )
@@ -24,7 +24,7 @@ public sealed class NetworkTest : BaseComponent
 			var o = SceneUtility.Instantiate( ObjectToSpawn, pos );
 			o.Enabled = true;
 
-			var p = o.GetComponent<PhysicsComponent>();
+			var p = o.Components.Get<PhysicsComponent>();
 			p.Velocity = lookDir.Forward * 500.0f + Vector3.Up * 540.0f;
 
 			o.Network.Spawn();
@@ -40,12 +40,12 @@ public sealed class NetworkTest : BaseComponent
 		{
 			var offset = new Vector3( 0, 0, 40 );
 
-			var pc = GetComponent<PlayerController>();
+			var pc = Components.Get<PlayerController>();
 
 			Carrying.Transform.Position = HoldRelative.Transform.Position + HoldRelative.Parent.Transform.Rotation * offset;
 			Carrying.Transform.Rotation = pc.Body.Transform.Rotation;
-			Carrying.GetComponent<PhysicsComponent>().Velocity = 0;
-			Carrying.GetComponent<PhysicsComponent>().AngularVelocity = 0;
+			Carrying.Components.Get<PhysicsComponent>().Velocity = 0;
+			Carrying.Components.Get<PhysicsComponent>().AngularVelocity = 0;
 		}
 	}
 
@@ -61,23 +61,23 @@ public sealed class NetworkTest : BaseComponent
 
 			var offset = new Vector3( 0, 0, 40 );
 
-			var pc = GetComponent<PlayerController>();
+			var pc = Components.Get<PlayerController>();
 
 			Carrying.Transform.Position = HoldRelative.Transform.Position + HoldRelative.Parent.Transform.Rotation * offset;
 			Carrying.Transform.Rotation = pc.Body.Transform.Rotation;
-			Carrying.GetComponent<PhysicsComponent>().Velocity = 0;
-			Carrying.GetComponent<PhysicsComponent>().AngularVelocity = 0;
+			Carrying.Components.Get<PhysicsComponent>().Velocity = 0;
+			Carrying.Components.Get<PhysicsComponent>().AngularVelocity = 0;
 		}
 
 		if ( Input.Pressed( "use" ) )
 		{
-			var pc = GetComponent<PlayerController>();
+			var pc = Components.Get<PlayerController>();
 			var lookDir = pc.EyeAngles.ToRotation();
 
 			if ( Carrying  is not null )
 			{
-				Carrying.GetComponent<PhysicsComponent>().Velocity = lookDir.Forward * 300.0f + Vector3.Up * 200.0f;
-				Carrying.GetComponent<PhysicsComponent>().AngularVelocity = 0;
+				Carrying.Components.Get<PhysicsComponent>().Velocity = lookDir.Forward * 300.0f + Vector3.Up * 200.0f;
+				Carrying.Components.Get<PhysicsComponent>().AngularVelocity = 0;
 
 				Drop();
 				return;
@@ -89,11 +89,11 @@ public sealed class NetworkTest : BaseComponent
 
 	void TryPickup()
 	{
-		var pc = GetComponent<PlayerController>();
+		var pc = Components.Get<PlayerController>();
 		var lookDir = pc.EyeAngles.ToRotation();
 		var eyePos = Transform.Position + Vector3.Up * 60;
 
-		var tr = Physics.Trace.WithoutTags( "player" ).Sphere( 16, eyePos, eyePos + lookDir.Forward * 100 ).Run();
+		var tr = Scene.Trace.WithoutTags( "player" ).Sphere( 16, eyePos, eyePos + lookDir.Forward * 100 ).Run();
 		if ( !tr.Hit ) return;
 
 		if ( tr.Body.GameObject is not GameObject go )
@@ -107,7 +107,7 @@ public sealed class NetworkTest : BaseComponent
 		Carrying = go;
 		Carrying.Tags.Add( "carrying" );
 
-		var ca = GetComponent<CitizenAnimation>();
+		var ca = Components.Get<CitizenAnimation>();
 
 		ca.IkLeftHand = Carrying.Children.FirstOrDefault( x => x.Name == "hand_left" ) ?? Carrying;
 		ca.IkRightHand = Carrying.Children.FirstOrDefault( x => x.Name == "hand_right" ) ?? Carrying;
@@ -122,7 +122,7 @@ public sealed class NetworkTest : BaseComponent
 		Carrying.Network.DropOwnership();
 		Carrying = null;
 
-		var ca = GetComponent<CitizenAnimation>();
+		var ca = Components.Get<CitizenAnimation>();
 		ca.IkLeftHand = null;
 		ca.IkRightHand = null;
 	}

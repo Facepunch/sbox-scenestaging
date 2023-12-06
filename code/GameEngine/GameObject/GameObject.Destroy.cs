@@ -1,9 +1,5 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 
 
 public partial class GameObject : IValid
@@ -21,20 +17,30 @@ public partial class GameObject : IValid
 	/// </summary>
 	private void Term()
 	{
+		using var batch = CallbackBatch.StartGroup();
 		_destroying = true;
 
-		ForEachComponent( "OnDestroy", false, c => c.Destroy() );
-		ForEachChild( "Children", false, c => c.Term() );
+		Components.ForEach( "OnDestroy", true, c => c.Destroy() );
+		ForEachChild( "Children", true, c => c.Term() );
 
-		Children.RemoveAll( x => x is null );
-		Components.RemoveAll( x => x is null );
+		CallbackBatch.Add( CommonCallback.Term, TermFinal, this, "Term" );
+	}
 
+	/// <summary>
+	/// The last thing ever called.
+	/// </summary>
+	private void TermFinal()
+	{
 		_destroyed = true;
+
 		EndNetworking();
 		Scene.Directory.Remove( this );
 		Enabled = false;
 		Parent = null;
 		Scene = null;
+
+		Children.RemoveAll( x => x is null );
+		Components.RemoveNull();
 
 		Assert.AreEqual( 0, Components.Count, "Some components weren't deleted!" );
 		Assert.AreEqual( 0, Children.Count, "Some children weren't deleted!" );
@@ -43,7 +49,7 @@ public partial class GameObject : IValid
 	/// <summary>
 	/// Destroy this object. Will actually be destroyed at the start of the next frame.
 	/// </summary>
-	public void Destroy()
+	public virtual void Destroy()
 	{
 		if ( _destroying )
 			return;
@@ -51,7 +57,7 @@ public partial class GameObject : IValid
 		_destroying = true;
 
 		Scene?.QueueDelete( this );
-		Net?.SendNetworkDestroy();
+		_net?.SendNetworkDestroy();
 	}
 
 	/// <summary>
@@ -78,15 +84,16 @@ public partial class GameObject : IValid
 	/// <summary>
 	/// Destroy all components and child objects
 	/// </summary>
-	public void Clear()
+	public virtual void Clear()
 	{
 		// delete all components
-		ForEachComponent( "OnDestroy", false, c => c.Destroy() );
+		Components.ForEach( "OnDestroy", true, c => c.Destroy() );
 
 		// delete all children
-		ForEachChild( "Children", false, c => c.Term() );
+		ForEachChild( "Children", true, c => c.Term() );
 
-		Components.RemoveAll( x => x is null );
+		Components.RemoveNull();
+		
 		Children.RemoveAll( x => x is null );
 
 		Assert.AreEqual( 0, Components.Count, $"{Components.Count} components weren't deleted!" );

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -55,11 +56,11 @@ public partial class GameObject
 			return json;
 		}
 
-		if ( Components.Any() && !isPartOfPrefab )
+		if ( Components.Count > 0 && !isPartOfPrefab )
 		{
 			var components = new JsonArray();
 
-			foreach ( var component in Components )
+			foreach ( var component in Components.GetAll() )
 			{
 				if ( component is null ) continue;
 
@@ -112,6 +113,8 @@ public partial class GameObject
 
 	public virtual void Deserialize( JsonObject node )
 	{
+		using var batchGroup = CallbackBatch.StartGroup();
+
 		Id = node["Id"].Deserialize<Guid>();
 		Name = node["Name"].ToString() ?? Name;
 		Transform.LocalPosition = node["Position"]?.Deserialize<Vector3>() ?? Vector3.Zero;
@@ -171,7 +174,7 @@ public partial class GameObject
 					continue;
 				}
 
-				var c = this.AddComponent( componentType );
+				var c = this.Components.Create( componentType );
 				if ( c is null ) continue;
 
 				c.Deserialize( jso );
@@ -181,13 +184,9 @@ public partial class GameObject
 		Enabled = (bool)(node["Enabled"] ?? false);
 		Networked = (bool) (node["Networked"] ?? false);
 
-		ForEachComponent( "OnValidate", false, c => c.OnValidateInternal() );
-
-
-		if ( !SceneUtility.IsSpawning )
-		{
-			PostDeserialize();
-		}
+		Components.ForEach( "OnLoadInternal", true, c => c.OnLoadInternal() );
+		Components.ForEach( "OnValidate", true, c => c.OnValidateInternal() );
+		CallbackBatch.Add( CommonCallback.Deserialized, PostDeserialize, this, "PostDeserialize" );
 	}
 
 	public PrefabFile GetAsPrefab()
@@ -199,10 +198,7 @@ public partial class GameObject
 
 	internal void PostDeserialize()
 	{
-		foreach ( var component in Components )
-		{
-			component.PostDeserialize();
-		}
+		Components.ForEach( "PostDeserialize", true, c => c.PostDeserialize() );
 
 		foreach ( var child in Children )
 		{

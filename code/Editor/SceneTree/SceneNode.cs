@@ -79,7 +79,7 @@ public partial class SceneNode : TreeNode<Scene>
 			TreeView.SelectItem( go );
 		} );
 
-		m.OpenAtCursor( true );
+		m.OpenAtCursor( false );
 
 		return true;
 	}

@@ -11,7 +11,7 @@ public sealed class TurretComponent : BaseComponent
 	[Property] GameObject SecondaryBullet { get; set; }
 	[Property] GameObject Muzzle { get; set; }
 
-	[Property] ModelComponent GunModel { get; set; }
+	[Property] ModelRenderer GunModel { get; set; }
 	[Property] Gradient GunColorGradient { get; set; }
 	[Property] Curve GunSizeCurve { get; set; }
 
@@ -31,7 +31,7 @@ public sealed class TurretComponent : BaseComponent
 		GunModel.Transform.LocalScale = GunSizeCurve.Evaluate( timeSincePrimary * 2.0f );
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		FlashGunModel();
 
@@ -68,7 +68,7 @@ public sealed class TurretComponent : BaseComponent
 			Assert.NotNull( Bullet );
 
 			var obj = SceneUtility.Instantiate( Bullet, Muzzle.Transform.Position, Muzzle.Transform.Rotation );
-			var physics = obj.GetComponent<PhysicsComponent>( true, true );
+			var physics = obj.Components.Get<PhysicsComponent>( FindMode.EnabledInSelfAndDescendants );
 			if ( physics is not null )
 			{
 				physics.Velocity = Muzzle.Transform.Rotation.Forward * 2000.0f;
@@ -81,7 +81,7 @@ public sealed class TurretComponent : BaseComponent
 			timeSincePrimary = 0;
 		}
 
-		var tr = Physics.Trace
+		var tr = Scene.Trace
 			.Ray( Muzzle.Transform.Position + Muzzle.Transform.Rotation.Forward * 50.0f, Muzzle.Transform.Position + Muzzle.Transform.Rotation.Forward * 4000 )
 			.Size( bbox )
 			//.Radius( 40 )
@@ -137,7 +137,7 @@ public sealed class TurretComponent : BaseComponent
 
 				//r *= Rotation.From( 2, 4, 2 );
 
-				var physics = obj.GetComponent<PhysicsComponent>( true, true );
+				var physics = obj.Components.Get<PhysicsComponent>( FindMode.EnabledInSelfAndDescendants );
 				if ( physics is not null )
 				{
 					physics.Velocity = off * 2.0f;// Muzzle.WorldTransform.Rotation.Forward * 300.0f;

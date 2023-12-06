@@ -11,11 +11,27 @@ public class PlayerController : BaseComponent, INetworkSerializable
 	[Property] public GameObject Body { get; set; }
 	[Property] public GameObject Eye { get; set; }
 	[Property] public CitizenAnimation AnimationHelper { get; set; }
+	[Property] public bool FirstPerson { get; set; }
 
 	public Angles EyeAngles;
 	public bool IsRunning;
 
-	public override void Update()
+	protected override void OnEnabled()
+	{
+		base.OnEnabled();
+
+		if ( IsProxy )
+			return;
+
+		var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
+		if ( cam is not null )
+		{
+			EyeAngles = cam.Transform.Rotation.Angles();
+			EyeAngles.roll = 0;
+		}
+	}
+
+	protected override void OnUpdate()
 	{
 		// Eye input
 		if ( !IsProxy )
@@ -24,16 +40,27 @@ public class PlayerController : BaseComponent, INetworkSerializable
 			EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
 			EyeAngles.roll = 0;
 
-			var cam = Scene.GetComponent<CameraComponent>( true, true );
+			var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
 
 			var lookDir = EyeAngles.ToRotation();
-			cam.Transform.Position = Transform.Position + lookDir.Backward * 300 + Vector3.Up * 75.0f;
-			cam.Transform.Rotation = lookDir;
+
+			if ( FirstPerson )
+			{
+				cam.Transform.Position = Eye.Transform.Position;
+				cam.Transform.Rotation = lookDir;
+			}
+			else
+			{
+				cam.Transform.Position = Transform.Position + lookDir.Backward * 300 + Vector3.Up * 75.0f;
+				cam.Transform.Rotation = lookDir;
+			}
+
+
 
 			IsRunning = Input.Down( "Run" );
 		}
 
-		var cc = GameObject.GetComponent<CharacterController>();
+		var cc = GameObject.Components.Get<CharacterController>();
 		if ( cc is null ) return;
 
 		float rotateDifference = 0;
@@ -62,6 +89,7 @@ public class PlayerController : BaseComponent, INetworkSerializable
 		if ( AnimationHelper is not null )
 		{
 			AnimationHelper.WithVelocity( cc.Velocity );
+			AnimationHelper.WithWishVelocity( WishVelocity );
 			AnimationHelper.IsGrounded = cc.IsOnGround;
 			AnimationHelper.FootShuffle = rotateDifference;
 			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
@@ -77,14 +105,14 @@ public class PlayerController : BaseComponent, INetworkSerializable
 
 	float fJumps;
 
-	public override void FixedUpdate()
+	protected override void OnFixedUpdate()
 	{
 		if ( IsProxy )
 			return;
 
 		BuildWishVelocity();
 
-		var cc = GameObject.GetComponent<CharacterController>();
+		var cc = GameObject.Components.Get<CharacterController>();
 
 		if ( cc.IsOnGround && Input.Down( "Jump" ) )
 		{

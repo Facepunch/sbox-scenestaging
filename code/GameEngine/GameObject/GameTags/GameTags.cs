@@ -1,7 +1,4 @@
 ﻿using Sandbox;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 /// <summary>
@@ -12,10 +9,8 @@ public class GameTags : ITagSet
 {
 	HashSet<string> collection = new HashSet<string>( StringComparer.OrdinalIgnoreCase );
 
+	bool dirty;
 	GameObject target;
-
-	public Action<string> OnTagAdded { get; set; }
-	public Action<string> OnTagRemoved { get; set; }
 
 	internal GameTags( GameObject target )
 	{
@@ -24,18 +19,48 @@ public class GameTags : ITagSet
 
 	public override string ToString()
 	{
-		return string.Join( ", ", collection );
+		return string.Join( ", ", TryGetAll() );
 	}
 
 	/// <summary>
 	/// Returns all the tags this object has.
 	/// </summary>
-	public IEnumerable<string> TryGetAll() => collection;
+	public IEnumerable<string> TryGetAll()
+	{
+		if ( target.Parent is null || target.Parent is Scene )
+			return collection;
+
+		return collection.Concat( target.Parent.Tags.TryGetAll() ).Distinct();
+	}
+
+	/// <summary>
+	/// Returns all the tags this object has.
+	/// </summary>
+	public IEnumerable<string> TryGetAll( bool includeAncestors )
+	{
+		if ( !includeAncestors ) return collection;
+		return TryGetAll();
+	}
+
+	/// <summary>
+	/// Returns true if this object (or its parents) has given tag.
+	/// </summary>
+	public bool Has( string tag )
+	{
+		if ( collection.Contains( tag ) )
+			return true;
+
+		return target.Parent?.Tags.Has( tag ) ?? false;
+	}
 
 	/// <summary>
 	/// Returns true if this object has given tag.
 	/// </summary>
-	public bool Has( string tag ) => collection.Contains( tag );
+	public bool Has( string tag, bool includeAncestors )
+	{
+		if ( !includeAncestors ) return collection.Contains( tag );
+		return Has( tag );
+	}
 
 	/// <summary>
 	/// Returns true if this object has one or more tags from given tag list.
@@ -68,7 +93,7 @@ public class GameTags : ITagSet
 		}
 
 		collection.Add( tag );
-		OnTagAdded?.Invoke( tag );
+		MarkDirty();
 	}
 
 	/// <summary>
@@ -91,8 +116,7 @@ public class GameTags : ITagSet
 		if ( !collection.Remove( tag ) )
 			return;
 
-		OnTagRemoved?.Invoke( tag );
-		// on tags changed
+		MarkDirty();
 	}
 
 	/// <summary>
@@ -109,7 +133,7 @@ public class GameTags : ITagSet
 	/// </summary>
 	public void Toggle( string tag )
 	{
-		if ( Has( tag ) ) Remove( tag );
+		if ( Has( tag, false ) ) Remove( tag );
 		else Add( tag );
 	}
 
@@ -126,5 +150,24 @@ public class GameTags : ITagSet
 	{
 		RemoveAll();
 		Add( tags.SplitQuotesStrings() );
+	}
+
+	void MarkDirty()
+	{
+		if ( dirty ) return;
+		dirty = true;
+
+		// make all our children dirty too
+		foreach ( var c in target.Children )
+		{
+			c.Tags.MarkDirty();
+		}
+	}
+
+	internal bool PopDirty()
+	{
+		if ( !dirty ) return false;
+		dirty = false;
+		return true;
 	}
 }

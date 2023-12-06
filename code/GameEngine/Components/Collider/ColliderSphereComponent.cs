@@ -23,7 +23,7 @@ public class ColliderSphereComponent : Collider
 		}
 	}
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		Gizmo.Draw.Color = Gizmo.Colors.Green.WithAlpha( Gizmo.IsChildSelected ? 0.5f : 0.1f );
 		Gizmo.Draw.LineSphere( new Sphere( 0, Radius ) );

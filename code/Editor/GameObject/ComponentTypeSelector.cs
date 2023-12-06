@@ -206,7 +206,7 @@ internal partial class ComponentTypeSelector : PopupWidget
 	async Task CreateNewComponent( TypeDescription desc, string componentName )
 	{
 		var template = TypeLibrary.Create<ComponentTemplate>( desc.Name );
-		var codePath = LocalProject.CurrentGame.GetCodePath();
+		var codePath = Project.CurrentGame.GetCodePath();
 		var fd = new FileDialog( Parent );
 		fd.Title = "Create new component..";
 		fd.Directory = codePath;

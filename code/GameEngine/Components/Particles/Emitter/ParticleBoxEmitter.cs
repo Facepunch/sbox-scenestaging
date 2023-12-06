@@ -8,7 +8,7 @@ public sealed class ParticleBoxEmitter : ParticleEmitter
 	[Property] public Vector3 Size { get; set; } = 50.0f;
 	[Property] public bool OnEdge { get; set; } = false;
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( !Gizmo.IsSelected )
 			return;

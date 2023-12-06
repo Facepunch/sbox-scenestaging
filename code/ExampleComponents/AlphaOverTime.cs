@@ -11,20 +11,20 @@ public sealed class AlphaOverTime : BaseComponent
 
 	TimeSince timeSinceEnabled;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		base.OnEnabled();
 
 		timeSinceEnabled = 0;
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
-		base.Update();
+		base.OnUpdate();
 
 		var a = Alpha.EvaluateDelta( timeSinceEnabled / Time );
 
-		foreach ( var component in  GetComponents<ModelComponent>( true, true ) )
+		foreach ( var component in Components.GetAll<ModelRenderer>( FindMode.EnabledInSelfAndDescendants ) )
 		{
 			component.Tint = component.Tint.WithAlpha( a );
 		}

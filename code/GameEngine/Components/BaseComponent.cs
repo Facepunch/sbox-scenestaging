@@ -16,6 +16,11 @@ public abstract partial class BaseComponent
 	/// </summary>
 	protected TaskSource Task => GameObject.Task;
 
+	/// <summary>
+	/// Allow creating tasks that are automatically cancelled when the GameObject is destroyed.
+	/// </summary>
+	public ComponentList Components => GameObject.Components;
+
 
 	bool _isInitialized = false;
 
@@ -29,7 +34,8 @@ public abstract partial class BaseComponent
 		if ( !GameObject.Active ) return;
 
 		_isInitialized = true;
-		ExceptionWrap( "Awake", OnAwake );
+
+		CallbackBatch.Add( CommonCallback.Awake, OnAwake, this, "OnAwake" );
 	}
 
 
@@ -51,7 +57,7 @@ public abstract partial class BaseComponent
 
 			_enabled = value;
 
-			SceneUtility.ActivateComponent( this );
+			UpdateEnabledStatus();
 		}
 	}
 
@@ -63,29 +69,25 @@ public abstract partial class BaseComponent
 
 	private bool ShouldExecute => Scene is not null && (!Scene.IsEditor || this is ExecuteInEditor);
 
-	public virtual void DrawGizmos() { }
 
 	/// <summary>
 	/// Called once per component
 	/// </summary>
-	public virtual void OnAwake() { }
+	protected virtual void OnAwake() { }
 
 	/// <summary>
 	/// Called after Awake or whenever the component switches to being enabled (because a gameobject heirachy active change, or the component changed)
 	/// </summary>
-	public virtual void OnEnabled() { }
+	protected virtual void OnEnabled() { }
 
-	/// <summary>
-	/// Called once before the first Update - when enabled.
-	/// </summary>
-	public virtual void OnStart() { }
 
-	public virtual void OnDisabled() { }
+
+	protected virtual void OnDisabled() { }
 
 	/// <summary>
 	/// Called once, when the component or gameobject is destroyed
 	/// </summary>
-	public virtual void OnDestroy() { }
+	protected virtual void OnDestroy() { }
 
 	protected virtual void OnPreRender() { }
 	internal void PreRender()
@@ -93,24 +95,10 @@ public abstract partial class BaseComponent
 		OnPreRender();
 	}
 
-	bool _startCalled;
 
-	internal virtual void InternalUpdate()
-	{
-		if ( !Enabled ) return;
-		if ( !ShouldExecute ) return;
 
-		if ( !_startCalled )
-		{
-			_startCalled = true;
-			ExceptionWrap( "Start", OnStart );
-		}
-
-		ExceptionWrap( "Update", Update );
-	}
-
-	public Action OnComponentActivated { get; set; }
-	public Action OnComponentDeactivated { get; set; }
+	public Action OnComponentEnabled { get; set; }
+	public Action OnComponentDisabled { get; set; }
 
 	internal void PostDeserialize()
 	{
@@ -118,58 +106,57 @@ public abstract partial class BaseComponent
 		onPostDeserialize = null;
 	}
 
-	internal Action UpdateEnabledStatus()
+	internal void UpdateEnabledStatus()
 	{
+		using var batch = CallbackBatch.StartGroup();
+
 		var state = _enabled && Scene is not null && GameObject is not null && GameObject.Active;
-		if ( state == _enabledState ) return null;
+		if ( state == _enabledState ) return;
 
 		_enabledState = state;
 
 		if ( _enabledState )
 		{
-			return () =>
+			InitializeComponent();
+
+			if ( ShouldExecute )
 			{
-				InitializeComponent();
+				CallbackBatch.Add( CommonCallback.Enable, OnEnabled, this, "OnEnabled" );
+				CallbackBatch.Add( CommonCallback.Enable, () => OnComponentEnabled?.Invoke(), this, "OnComponentEnabled" );
+			}
 
-				if ( ShouldExecute )
-				{
-
-						ExceptionWrap( "OnEnabled", OnEnabled );
-						OnComponentActivated?.Invoke();
-				
-				}
-			};
+			Scene.RegisterComponent( this );
 		}
 		else
 		{
-			return () =>
+			if ( ShouldExecute )
 			{
-				if ( ShouldExecute )
-				{
-					ExceptionWrap( "OnDisabled", OnDisabled );
+				CallbackBatch.Add( CommonCallback.Disable, OnDisabled, this, "OnDisabled" );
+				CallbackBatch.Add( CommonCallback.Disable, () => OnComponentDisabled?.Invoke(), this, "OnComponentDisabled" );
+			}
 
-					OnComponentDeactivated?.Invoke();
-				}
-			};
+			Scene.UnregisterComponent( this );
 		}
 	}
 
 	public void Destroy()
 	{
-		GameObject.Components.RemoveAll( x => x == this );
+		using var batch = CallbackBatch.StartGroup();
 
-		ExceptionWrap( "OnDestroy", OnDestroy );
+		GameObject.Components.OnDestroyedInternal( this );
+
+		CallbackBatch.Add( CommonCallback.Destroy, OnDestroy, this, "OnDestroy" );
 
 		if ( _enabledState )
 		{
 			_enabledState = false;
 			_enabled = false;
+			Scene.UnregisterComponent( this );
 
 			if ( ShouldExecute )
 			{
-				ExceptionWrap( "OnDisabled", OnDisabled );
-
-				OnComponentDeactivated?.Invoke();
+				CallbackBatch.Add( CommonCallback.Disable, OnDisabled, this, "OnDisabled" );
+				CallbackBatch.Add( CommonCallback.Disable, () => OnComponentDisabled?.Invoke(), this, "OnComponentDisabled" );
 			}
 		}
 	}
@@ -191,32 +178,18 @@ public abstract partial class BaseComponent
 		}
 	}
 
-	public virtual void Update()
-	{
-
-	}
-
-	public virtual void FixedUpdate()
-	{
-
-	}
-
-	public virtual void EditorUpdate()
-	{
-
-	}
 
 	/// <summary>
 	/// Called immediately after deserializing, and when a property is changed in the editor.
 	/// </summary>
-	public virtual void OnValidate()
+	protected virtual void OnValidate()
 	{
 
 	}
 
 	internal virtual void OnValidateInternal()
 	{
-		OnValidate();
+		CallbackBatch.Add( CommonCallback.Validate, OnValidate, this, "OnValidate" );
 	}
 
 
@@ -229,4 +202,20 @@ public abstract partial class BaseComponent
 
 		GameObject.EditLog( name, source );
 	}
+
+
+
+	/// <summary>
+	/// When tags have been updated
+	/// </summary>
+	protected virtual void OnTagsChannged()
+	{
+
+	}
+
+	internal virtual void OnTagsUpdatedInternal()
+	{
+		OnTagsChannged();
+	}
+
 }

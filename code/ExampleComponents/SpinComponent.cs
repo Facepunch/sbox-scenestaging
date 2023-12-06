@@ -4,7 +4,7 @@ public sealed class SpinComponent : BaseComponent
 {
 	[Property] public Angles SpinAngles { get; set; }
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( IsProxy ) return;
 

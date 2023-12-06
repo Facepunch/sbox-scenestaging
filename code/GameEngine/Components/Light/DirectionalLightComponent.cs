@@ -46,7 +46,7 @@ public class DirectionalLightComponent : BaseComponent, IComponentColorProvider,
 
 	[Property] public bool Shadows { get; set; } = true;
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		using var scope = Gizmo.Scope( $"light-{GetHashCode()}" );
 
@@ -69,7 +69,7 @@ public class DirectionalLightComponent : BaseComponent, IComponentColorProvider,
 
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
@@ -91,7 +91,7 @@ public class DirectionalLightComponent : BaseComponent, IComponentColorProvider,
 		_sceneObject.SetShadowCascadeDistance( 2, 4000 );
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_sceneObject?.Delete();
 		_sceneObject = null;

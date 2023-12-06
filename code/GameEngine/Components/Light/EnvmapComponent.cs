@@ -15,12 +15,12 @@ public class EnvmapComponent : BaseComponent, BaseComponent.ExecuteInEditor
 	[Property] public Texture Texture { get; set; }
 	[Property] public BBox Bounds { get; set; } = new BBox( 0, 1024 );
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		Gizmo.Draw.LineBBox( Bounds );
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.True( _sceneObject == null );
 		Assert.NotNull( Scene );
@@ -29,7 +29,7 @@ public class EnvmapComponent : BaseComponent, BaseComponent.ExecuteInEditor
 		_sceneObject = new SceneCubemap( Scene.SceneWorld, Texture, Bounds );
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_sceneObject?.Delete();
 		_sceneObject = null;

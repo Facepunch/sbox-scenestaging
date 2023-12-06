@@ -10,7 +10,7 @@ public class ModelCollider : Collider
 
 	[Property]
 	public Model Model
-{
+	{
 		get => _model;
 		set
 		{
@@ -21,7 +21,7 @@ public class ModelCollider : Collider
 		}
 	}
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( !Gizmo.IsSelected && !Gizmo.IsHovered )
 			return;

@@ -120,7 +120,7 @@
 			EditorUtility.Clipboard.Copy( Json.Serialize( tx ) );
 		} );
 
-		m.OpenAtCursor( true );
+		m.OpenAtCursor( false );
 	}
 }
 

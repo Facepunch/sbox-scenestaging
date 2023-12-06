@@ -13,7 +13,7 @@ public class ComponentEvents
 		using var sceneScope = scene.Push();
 
 		var go = scene.CreateObject();
-		var o = go.AddComponent<OrderTestComponent>();
+		var o = go.Components.Create<OrderTestComponent>();
 
 		Assert.AreEqual( 1, o.AwakeCalls, "Awake wasn't called" );
 		Assert.AreEqual( 1, o.EnabledCalls, "Enabled wasn't called" );
@@ -46,7 +46,7 @@ public class ComponentEvents
 		using var sceneScope = scene.Push();
 
 		var go = scene.CreateObject();
-		var o = go.AddComponent<OrderTestComponent>( false );
+		var o = go.Components.Create<OrderTestComponent>( false );
 
 		Assert.AreEqual( 1, o.AwakeCalls );
 		Assert.AreEqual( 0, o.EnabledCalls );
@@ -85,7 +85,7 @@ public class ComponentEvents
 		using var sceneScope = scene.Push();
 
 		var go = scene.CreateObject( false );
-		var o = go.AddComponent<OrderTestComponent>( );
+		var o = go.Components.Create<OrderTestComponent>( );
 
 		Assert.AreEqual( 0, o.AwakeCalls ); // awake shouldn't call until the gameobject is active
 		Assert.AreEqual( 0, o.EnabledCalls );
@@ -124,7 +124,7 @@ public class ComponentEvents
 		using var sceneScope = scene.Push();
 
 		var go = scene.CreateObject();
-		var o = go.AddComponent<OrderTestComponent>();
+		var o = go.Components.Create<OrderTestComponent>();
 
 		Assert.AreEqual( 1, o.AwakeCalls );
 		Assert.AreEqual( 0, o.StartCalls );
@@ -155,7 +155,7 @@ public class OrderTestComponent : BaseComponent
 	public int DisabledCalls;
 	public int DestroyCalls;
 
-	public override void OnAwake()
+	protected override void OnAwake()
 	{
 		Assert.AreEqual( AwakeCalls, 0 );
 		Assert.AreEqual( EnabledCalls, 0 );
@@ -164,13 +164,13 @@ public class OrderTestComponent : BaseComponent
 		AwakeCalls++;
 	}
 
-	public override void OnStart()
+	protected override void OnStart()
 	{
 		Assert.AreEqual( AwakeCalls, 1 );
 		Assert.AreEqual( EnabledCalls, 1 );
 		StartCalls++;
 	}
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		Assert.AreEqual( AwakeCalls, 1 );
 		Assert.AreEqual( StartCalls, 0 );
@@ -178,7 +178,7 @@ public class OrderTestComponent : BaseComponent
 		EnabledCalls++;
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		Assert.AreEqual( AwakeCalls, 1 );
 		Assert.AreNotEqual( StartCalls, 0 );
@@ -186,7 +186,7 @@ public class OrderTestComponent : BaseComponent
 		DisabledCalls++;
 	}
 
-	public override void OnDestroy()
+	protected override void OnDestroy()
 	{
 		Assert.AreEqual( AwakeCalls, 1 );
 		DestroyCalls++;

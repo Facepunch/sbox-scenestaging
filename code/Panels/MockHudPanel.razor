@@ -33,7 +33,7 @@
             .razor file, or Panel - because those panels will get their own BuildHash and will only
             update when you want them to.
         *@
-        @foreach ( var model in Scene.GetComponents<ModelComponent>( true, true ) )
+        @foreach ( var model in Scene.Components.GetAll<ModelRenderer>( FindMode.EnabledInSelfAndDescendants ) )
         {
             var bounds = model.Bounds;
             var sphere = new Sphere(bounds.Center, bounds.Size.Length);
@@ -58,7 +58,7 @@
     protected override int BuildHash() => System.HashCode.Combine( Time.Now );
 
 
-    void GameObjectClicked( ModelComponent mc )
+    void GameObjectClicked( ModelRenderer mc )
     {
         mc.Transform.Position += Vector3.Up * 10.0f;
     }

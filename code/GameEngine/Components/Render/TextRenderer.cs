@@ -3,7 +3,7 @@
 [Title( "Text Renderer" )]
 [Category( "Rendering" )]
 [Icon( "font_download" )]
-public sealed class TextRenderer : BaseComponent, BaseComponent.ExecuteInEditor
+public sealed class TextRenderer : Renderer, BaseComponent.ExecuteInEditor
 {
 	SceneObject _so;
 
@@ -16,13 +16,13 @@ public sealed class TextRenderer : BaseComponent, BaseComponent.ExecuteInEditor
 	// TODO - alignment
 	// TODO - rect size
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		_so = new TextSceneObject( Scene.SceneWorld );
 		_so.Transform = Transform.World;
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		_so?.Delete();
 		_so = null;

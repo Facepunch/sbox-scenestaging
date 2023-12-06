@@ -9,11 +9,11 @@ public class ModelPhysics : BaseComponent
 {
 	[Property] public Model Model { get; set; }
 
-	[Property] public AnimatedModelComponent Renderer { get; set; }
+	[Property] public SkinnedModelRenderer Renderer { get; set; }
 
 	PhysicsGroup PhysicsGroup;
 
-	public override void DrawGizmos()
+	protected override void DrawGizmos()
 	{
 		if ( !Gizmo.IsSelected && !Gizmo.IsHovered )
 			return;
@@ -52,16 +52,21 @@ public class ModelPhysics : BaseComponent
 
 		// TODO - draw physics models from Model
 	}
-	
-	public override void OnEnabled()
+
+	protected override void OnEnabled()
 	{
 		if ( Model is null )
 			return;
 
 		PhysicsGroup = Scene.PhysicsWorld.SetupPhysicsFromModel( Model, Transform.World, PhysicsMotionType.Dynamic );
+		
+		foreach ( var body in PhysicsGroup.Bodies )
+		{
+			body.GameObject = GameObject;
+		}
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		PhysicsGroup?.Remove();
 		PhysicsGroup = null;
@@ -72,17 +77,24 @@ public class ModelPhysics : BaseComponent
 		}
 	}
 
-	public override void Update()
+	protected override void OnUpdate()
 	{
 		if ( PhysicsGroup is null ) return;
 		if ( Renderer is null ) return;
 
-		foreach( var body in PhysicsGroup.Bodies )
+		foreach ( var body in PhysicsGroup.Bodies )
 		{
 			var bone = Renderer.Model.Bones.AllBones.FirstOrDefault( x => x.Name == body.GroupName );
 			if ( bone is null ) continue;
 
-			Renderer.SetPhysicsBone( bone.Index, body.Transform, Time.Delta * Scene.FixedUpdateFrequency );
+			var tx = body.GetLerpedTransform( Time.Now );
+
+			Renderer.SetBoneTransform( bone, tx );
+
+			if ( bone.Index == 0 )
+			{
+				Renderer.GameObject.Transform.Position = tx.Position;
+			}
 		}
 	}
 

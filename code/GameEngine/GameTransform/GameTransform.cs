@@ -73,7 +73,7 @@ public class GameTransform
 	void TransformChanged()
 	{
 		OnTransformChanged?.Invoke();
-		GameObject.ForEachChild( "TransformChanged", true, ( c ) => c.Transform.TransformChanged() );
+		GameObject.ForEachChild( "TransformChanged", false, ( c ) => c.Transform.TransformChanged() );
 	}
 
 	/// <summary>

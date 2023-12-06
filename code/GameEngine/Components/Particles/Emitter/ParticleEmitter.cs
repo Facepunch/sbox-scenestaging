@@ -14,11 +14,11 @@ public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEd
 
 	ParticleEffect target;
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		ResetEmitter();
 
-		target = GetComponentInParent<ParticleEffect>( true, true );
+		target = Components.GetInAncestorsOrSelf<ParticleEffect>();
 		if ( target is not null )
 		{
 			target.OnPreStep += OnParticleStep;
@@ -29,7 +29,7 @@ public abstract class ParticleEmitter : BaseComponent, BaseComponent.ExecuteInEd
 		}
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		base.OnDisabled();
 

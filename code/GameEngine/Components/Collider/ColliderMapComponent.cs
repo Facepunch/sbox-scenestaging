@@ -22,12 +22,12 @@ public class ColliderMapComponent : Collider
 		keyframeBody = body;
 	}
 
-	public override void OnEnabled()
+	protected override void OnEnabled()
 	{
 		// nothing
 	}
 
-	public override void OnDisabled()
+	protected override void OnDisabled()
 	{
 		// nothing
 	}

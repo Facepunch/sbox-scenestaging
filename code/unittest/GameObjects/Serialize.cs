@@ -9,7 +9,7 @@ public class SerializeTest
 	public void SerializeSingle()
 	{
 		Assert.IsNotNull( TypeLibrary, "TypeLibrary hasn't been mocked" );
-		Assert.IsNotNull( TypeLibrary.GetType<ModelComponent>(), "TypeLibrary hasn't been given the game assembly" );
+		Assert.IsNotNull( TypeLibrary.GetType<ModelRenderer>(), "TypeLibrary hasn't been given the game assembly" );
 
 		using var scope =  new Scene().Push();
 
@@ -17,7 +17,7 @@ public class SerializeTest
 		go1.Name = "My Game Object";
 		go1.Transform.Local = new Transform( Vector3.Up, Rotation.Identity, 10 );
 
-		var model = go1.AddComponent<ModelComponent>();
+		var model = go1.Components.Create<ModelRenderer>();
 		model.Model = Model.Load( "models/dev/box.vmdl" );
 		model.Tint = Color.Red;
 
@@ -35,9 +35,9 @@ public class SerializeTest
 		Assert.AreEqual( go1.Enabled, go2.Enabled );
 		Assert.AreEqual( go1.Transform.Local, go2.Transform.Local );
 		Assert.AreEqual( go1.Components.Count, go2.Components.Count );
-		Assert.AreEqual( go1.GetComponent<ModelComponent>().Model, go2.GetComponent<ModelComponent>().Model );
-		Assert.AreEqual( go1.GetComponent<ModelComponent>().Tint, go2.GetComponent<ModelComponent>().Tint );
-		Assert.AreEqual( go1.GetComponent<ModelComponent>().MaterialOverride, go2.GetComponent<ModelComponent>().MaterialOverride );
+		Assert.AreEqual( go1.Components.Get<ModelRenderer>().Model, go2.Components.Get<ModelRenderer>().Model );
+		Assert.AreEqual( go1.Components.Get<ModelRenderer>().Tint, go2.Components.Get<ModelRenderer>().Tint );
+		Assert.AreEqual( go1.Components.Get<ModelRenderer>().MaterialOverride, go2.Components.Get<ModelRenderer>().MaterialOverride );
 	}
 
 	[TestMethod]
@@ -59,7 +59,7 @@ public class SerializeTest
 			child.Transform.Local = new Transform( Vector3.Random * 1000 );
 			child.Parent = go1;
 
-			child.AddComponent<ModelComponent>();
+			child.Components.Create<ModelRenderer>();
 		}
 
 		timer.Dispose();
