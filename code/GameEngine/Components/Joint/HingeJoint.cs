@@ -6,16 +6,6 @@ using Sandbox.Physics;
 [Icon( "door_front", "red", "white" )]
 public sealed class HingeJoint : Joint
 {
-	/// <summary>
-	/// Relative position of the hinge
-	/// </summary>
-	[Property] public Vector3 Center { get; set; }
-
-	/// <summary>
-	/// Axis the hinge rotates around
-	/// </summary>
-	[Property] public Vector3 Axis { get; set; } = Vector3.Forward;
-
 	private float maxAngle;
 	private float minAngle;
 	private float friction;
@@ -78,7 +68,7 @@ public sealed class HingeJoint : Joint
 
 	protected override PhysicsJoint CreateJoint( PhysicsBody body1, PhysicsBody body2 )
 	{
-		hingeJoint = PhysicsJoint.CreateHinge( body1, body2, body1.Transform.PointToWorld( Center ), Axis );
+		hingeJoint = PhysicsJoint.CreateHinge( body1, body2, Transform.Position, Transform.Rotation.Up );
 		hingeJoint.MinAngle = MinAngle;
 		hingeJoint.MaxAngle = MaxAngle;
 		hingeJoint.Friction = Friction;
@@ -89,8 +79,11 @@ public sealed class HingeJoint : Joint
 	{
 		base.DrawGizmos();
 
+		Gizmo.Draw.IgnoreDepth = true;
 		Gizmo.Draw.LineThickness = 1;
 		Gizmo.Draw.Color = Gizmo.Colors.Green.WithAlpha( Gizmo.IsSelected ? 1.0f : 0.2f );
-		Gizmo.Draw.LineBBox( new BBox( Center - 5, Center + 5 ) );
+		Gizmo.Draw.LineBBox( new BBox( 0, 10 ) );
+		Gizmo.Draw.Color = Gizmo.Colors.Red;
+		Gizmo.Draw.Line( Transform.Rotation.Up * -5.0f, Transform.Rotation.Up * 5.0f );
 	}
 }
