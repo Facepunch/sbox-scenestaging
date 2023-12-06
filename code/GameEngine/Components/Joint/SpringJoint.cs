@@ -4,6 +4,7 @@ using Sandbox.Physics;
 [Title( "Spring Joint" )]
 [Category( "Physics" )]
 [Icon( "waves", "red", "white" )]
+[EditorHandle( "materials/gizmo/spring.png" )]
 public sealed class SpringJoint : Joint
 {
 	private float frequency = 5;

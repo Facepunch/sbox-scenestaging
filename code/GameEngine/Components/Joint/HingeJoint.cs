@@ -4,6 +4,7 @@ using Sandbox.Physics;
 [Title( "Hinge Joint" )]
 [Category( "Physics" )]
 [Icon( "door_front", "red", "white" )]
+[EditorHandle( "materials/gizmo/hinge.png" )]
 public sealed class HingeJoint : Joint
 {
 	private float maxAngle;

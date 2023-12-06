@@ -4,6 +4,7 @@ using Sandbox.Physics;
 [Title( "Slider Joint" )]
 [Category( "Physics" )]
 [Icon( "open_in_full", "red", "white" )]
+[EditorHandle( "materials/gizmo/slider.png" )]
 public sealed class SliderJoint : Joint
 {
 	private float maxLength;

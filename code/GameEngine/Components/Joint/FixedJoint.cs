@@ -4,6 +4,7 @@ using Sandbox.Physics;
 [Title( "Fixed Joint" )]
 [Category( "Physics" )]
 [Icon( "join_inner", "red", "white" )]
+[EditorHandle( "materials/gizmo/pinned.png" )]
 public sealed class FixedJoint : Joint
 {
 	private Sandbox.Physics.FixedJoint fixedJoint;
