@@ -1,25 +1,20 @@
 ﻿using Editor.EntityPrefabEditor;
-using Sandbox;
-using System;
-using System.Collections.Generic;
-using System.Text.Json.Nodes;
 using Sandbox.Utility;
+using System;
 
 namespace Editor.Inspectors;
 
 
-[CanEdit( typeof(GameObject) )]
+[CanEdit( typeof( GameObject ) )]
 [CanEdit( typeof( PrefabScene ) )]
 public class GameObjectInspector : Widget
 {
-	GameObject TargetObject;
 	SerializedObject SerializedObject;
 
-	public GameObjectInspector( Widget parent, GameObject target ) : base( parent )
+	public GameObjectInspector( Widget parent, SerializedObject so ) : base( parent )
 	{
-		TargetObject = target;
-		SerializedObject = EditorTypeLibrary.GetSerializedObject( target );
-		SerializedObject.OnPropertyChanged += ( p ) => PropertyEdited( p, TargetObject );
+		SerializedObject = so;
+		SerializedObject.OnPropertyChanged += ( p ) => PropertyEdited( p );
 
 		Layout = Layout.Column();
 
@@ -32,6 +27,7 @@ public class GameObjectInspector : Widget
 		scroller.Canvas = new Widget( scroller );
 		scroller.Canvas.Layout = Layout.Column();
 
+		/*
 		if ( !target.IsPrefabInstance )
 		{
 			scroller.Canvas.Layout.Add( new ComponentList( target.Id, target.Components ) );
@@ -67,7 +63,7 @@ public class GameObjectInspector : Widget
 				asset.OpenInEditor();
 			};
 			row.AddStretchCell();
-		}
+		}*/
 
 		scroller.Canvas.Layout.AddStretchCell( 1 );
 
@@ -79,10 +75,10 @@ public class GameObjectInspector : Widget
 		//footer.Add( footerBtn );
 	}
 
-	void PropertyEdited( SerializedProperty property, GameObject go )
+	void PropertyEdited( SerializedProperty property )
 	{
-		var value = property.GetValue<object>();
-		go.EditLog( $"{go.Name}.{property.Name}", go );
+		//	var value = property.GetValue<object>();
+		//	go.EditLog( $"{go.Name}.{property.Name}", go );
 	}
 
 	/// <summary>
@@ -90,21 +86,21 @@ public class GameObjectInspector : Widget
 	/// </summary>
 	public void AddComponentDialog( Button source )
 	{
-		var s = new ComponentTypeSelector( this );
-		s.OnSelect += ( t ) => TargetObject.Components.Create( t );
-		s.OpenAt( source.ScreenRect.BottomLeft, animateOffset: new Vector2( 0, -4 ) );
-		s.FixedWidth = source.Width;
+	//	var s = new ComponentTypeSelector( this );
+	//	s.OnSelect += ( t ) => TargetObject.Components.Create( t );
+	//	s.OpenAt( source.ScreenRect.BottomLeft, animateOffset: new Vector2( 0, -4 ) );
+	//	s.FixedWidth = source.Width;
 	}
 
 	protected override void OnContextMenu( ContextMenuEvent e )
 	{
 		if ( Helpers.HasComponentInClipboard() )
 		{
-			var menu = new Menu( this );
-			menu.AddOption( "Paste Component As New", action: () => Helpers.PasteComponentAsNew( TargetObject ) );
-			menu.OpenAtCursor( false );
+		//	var menu = new Menu( this );
+		//	menu.AddOption( "Paste Component As New", action: () => Helpers.PasteComponentAsNew( TargetObject ) );
+		//	menu.OpenAtCursor( false );
 		}
-		
+
 		base.OnContextMenu( e );
 	}
 }
@@ -181,7 +177,7 @@ public class ComponentList : Widget
 			menu.AddOption( "Paste Values", action: () => Helpers.PasteComponentValues( component ) );
 			menu.AddOption( "Paste As New", action: () => Helpers.PasteComponentAsNew( component.GameObject ) );
 		}
-		
+
 		//menu.AddOption( "Open In Window.." );
 		menu.AddSeparator();
 

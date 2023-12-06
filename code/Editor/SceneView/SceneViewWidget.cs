@@ -47,7 +47,7 @@ public partial class SceneViewWidget : Widget
 		if ( selectionHash != session.Selection.GetHashCode() )
 		{
 			// todo - multiselect
-			EditorUtility.InspectorObject = session.Selection.LastOrDefault();
+			EditorUtility.InspectorObject = session.Selection.ToArray();
 			selectionHash = session.Selection.GetHashCode();
 		}
 
