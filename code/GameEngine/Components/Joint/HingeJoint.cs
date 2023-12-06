@@ -84,6 +84,6 @@ public sealed class HingeJoint : Joint
 		Gizmo.Draw.Color = Gizmo.Colors.Green.WithAlpha( Gizmo.IsSelected ? 1.0f : 0.2f );
 		Gizmo.Draw.LineBBox( new BBox( 0, 10 ) );
 		Gizmo.Draw.Color = Gizmo.Colors.Red;
-		Gizmo.Draw.Line( Transform.Rotation.Up * -5.0f, Transform.Rotation.Up * 5.0f );
+		Gizmo.Draw.Line( Vector3.Up * -5.0f, Vector3.Up * 5.0f );
 	}
 }
