@@ -30,7 +30,7 @@ public class GameObjectInspector : InspectorWidget
 
 		if ( !isPrefabInstance )
 		{
-			//scroller.Canvas.Layout.Add( new ComponentList( target.Id, target.Components ) );
+			scroller.Canvas.Layout.Add( new ComponentListWidget( SerializedObject ) );
 
 			// Add component button
 			var row = scroller.Canvas.Layout.AddRow();
@@ -120,18 +120,17 @@ public class GameObjectInspector : InspectorWidget
 	}
 }
 
-public class ComponentList : Widget
+public class ComponentListWidget : Widget
 {
-	global::ComponentList componentList; // todo - SerializedObject should support lists, arrays
+	SerializedObject SerializedObject { get; init; }
+
 	Guid GameObjectId;
 
-	public ComponentList( Guid gameObjectId, global::ComponentList components ) : base( null )
+	public ComponentListWidget( SerializedObject so ) : base( null )
 	{
-		GameObjectId = gameObjectId;
-		componentList = components;
+		SerializedObject = so;
+		GameObjectId = so.IsMultipleTargets ? Guid.Empty : so.Targets.OfType<GameObject>().Select( x => x.Id ).Single();
 		Layout = Layout.Column();
-
-		hashCode = -1;
 		Frame();
 	}
 
@@ -139,13 +138,29 @@ public class ComponentList : Widget
 	{
 		Layout.Clear( true );
 
-		foreach ( var o in componentList.GetAll() )
+		var gobs = SerializedObject.Targets.OfType<GameObject>().ToArray();
+		if ( gobs.Length == 0 ) return;
+
+		foreach ( var o in gobs[0].Components.GetAll() )
 		{
 			if ( o is null ) continue;
 
-			var serialized = EditorTypeLibrary.GetSerializedObject( o );
-			serialized.OnPropertyChanged += ( p ) => PropertyEdited( p, o );
-			var sheet = new ComponentSheet( GameObjectId, serialized, ( x ) => OpenContextMenu( o, x ) );
+			var allGobs = gobs.Select( x => x.Components.GetAll().Where( y => y.GetType() == o.GetType() ).FirstOrDefault() ).ToArray();
+
+			// Must be one on every go to show up
+			if ( allGobs.Length != gobs.Length ) continue;
+			if ( allGobs.Any( x => x is null ) ) continue;
+
+			MultiSerializedObject mso = new MultiSerializedObject();
+
+			foreach( var entry in allGobs )
+			{
+				var serialized = EditorTypeLibrary.GetSerializedObject( entry );
+				mso.Add( serialized );
+			}
+
+			mso.OnPropertyChanged += ( p ) => PropertyEdited( p, o );
+			var sheet = new ComponentSheet( GameObjectId, mso, ( x ) => OpenContextMenu( o, x ) );
 			Layout.Add( sheet );
 			Layout.AddSeparator();
 		}
@@ -159,6 +174,14 @@ public class ComponentList : Widget
 
 	void OpenContextMenu( BaseComponent component, Vector2? position = null )
 	{
+		if ( SerializedObject.IsMultipleTargets )
+		{
+			// TODO
+			return;
+		}
+
+		var componentList = SerializedObject.Targets.OfType<GameObject>().Select( x => x.Components ).Single();
+
 		var menu = new Menu( this );
 
 		menu.AddOption( "Reset", action: () => component.Reset() );
@@ -214,16 +237,17 @@ public class ComponentList : Widget
 
 	}
 
-	int hashCode;
 
 	[EditorEvent.Frame]
 	public void Frame()
 	{
-		var hash = componentList?.Count ?? 0;
+		int hash = 1;
 
-		if ( hashCode == hash ) return;
+		hash = SerializedObject.Targets.OfType<GameObject>().Sum( x => x.Components.Count );
 
-		hashCode = hash;
+		if ( !SetContentHash( hash ) )
+			return;
+
 		Rebuild();
 	}
 }
