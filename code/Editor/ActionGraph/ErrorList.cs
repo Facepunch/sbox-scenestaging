@@ -1,7 +1,7 @@
 ﻿using System;
 using Facepunch.ActionGraphs;
 
-namespace Editor.ActionGraph;
+namespace Editor.ActionGraphs;
 
 public class ErrorList : Widget
 {

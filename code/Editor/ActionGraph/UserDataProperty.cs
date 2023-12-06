@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace Editor.ActionGraph
+namespace Editor.ActionGraphs
 {
 	public record UserDataProperty<T>
 	{

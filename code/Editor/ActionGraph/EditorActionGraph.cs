@@ -6,12 +6,12 @@ using System.Text.Json.Serialization;
 using Facepunch.ActionGraphs;
 using Sandbox;
 
-namespace Editor.ActionGraph;
+namespace Editor.ActionGraphs;
 
-public partial class ActionGraph : IGraph
+public partial class EditorActionGraph : IGraph
 {
 	[HideInEditor]
-	public Facepunch.ActionGraphs.ActionGraph Graph { get; }
+	public ActionGraph Graph { get; }
 
 	[HideInEditor]
 	private Dictionary<Node, ActionNode> NodeDict { get; } = new ();
@@ -113,7 +113,7 @@ public partial class ActionGraph : IGraph
 		return result.Nodes.Select( x => NodeDict[x] );
 	}
 
-	public ActionGraph( Facepunch.ActionGraphs.ActionGraph graph )
+	public EditorActionGraph( Facepunch.ActionGraphs.ActionGraph graph )
 	{
 		Graph = graph;
 

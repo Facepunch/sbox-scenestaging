@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Editor.ActionGraph;
+namespace Editor.ActionGraphs;
 
 public class UndoStack
 {

@@ -10,7 +10,7 @@ using Sandbox.Internal;
 using PropertyAttribute = Sandbox.PropertyAttribute;
 using Connection = Editor.NodeEditor.Connection;
 
-namespace Editor.ActionGraph;
+namespace Editor.ActionGraphs;
 
 public static class ActionGraphExtensions
 {
@@ -154,7 +154,7 @@ public partial class MainWindow : DockWindow, IAssetEditor
 	public ActionGraphResource Resource { get; private set; }
 	public Facepunch.ActionGraphs.ActionGraph ActionGraph { get; private set; }
 
-	public ActionGraph Graph { get; private set; }
+	public EditorActionGraph Graph { get; private set; }
 	public ActionGraphView View { get; private set; }
 	public Properties Properties { get; private set; }
 	public ErrorList ErrorList { get; private set; }
@@ -193,7 +193,7 @@ public partial class MainWindow : DockWindow, IAssetEditor
 		Asset = asset;
 		Resource = resource;
 		ActionGraph = actionGraph;
-		Graph = new ActionGraph( actionGraph );
+		Graph = new EditorActionGraph( actionGraph );
 		
 		Size = new Vector2( 1280, 720 );
 
@@ -414,9 +414,9 @@ public class ActionGraphView : GraphView
 	private Dictionary<Connection, Pulse> Pulses { get; } = new();
 	private List<Connection> FinishedPulsing { get; } = new List<Connection>();
 
-	public new ActionGraph Graph
+	public new EditorActionGraph Graph
 	{
-		get => (ActionGraph)base.Graph;
+		get => (EditorActionGraph)base.Graph;
 		set => base.Graph = value;
 	}
 

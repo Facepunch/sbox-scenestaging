@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Editor.ActionGraph;
+namespace Editor.ActionGraphs;
 
 [CustomEditor( typeof( Delegate ) )]
 public sealed class ActionControlWidget : ControlWidget

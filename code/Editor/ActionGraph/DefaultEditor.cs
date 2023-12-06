@@ -2,7 +2,7 @@
 using Editor.NodeEditor;
 using Facepunch.ActionGraphs;
 
-namespace Editor.ActionGraph;
+namespace Editor.ActionGraphs;
 
 public class DefaultEditor : ValueEditor
 {

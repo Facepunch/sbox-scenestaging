@@ -6,7 +6,7 @@ using System;
 using System.Collections;
 using static Facepunch.ActionGraphs.Node;
 
-namespace Editor.ActionGraph;
+namespace Editor.ActionGraphs;
 
 public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 {
@@ -41,7 +41,7 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 
 	public bool HideInEditor => Hidden.Contains( Identifier );
 
-	public static ActionNode CreateEditorNode( ActionGraph graph, Node node )
+	public static ActionNode CreateEditorNode( EditorActionGraph graph, Node node )
 	{
 		return node.Definition.Identifier switch
 		{
@@ -53,7 +53,7 @@ public record struct ActionNodeType( NodeDefinition Definition ) : INodeType
 
 	public INode CreateNode( IGraph graph )
 	{
-		var actionGraph = (ActionGraph)graph;
+		var actionGraph = (EditorActionGraph)graph;
 		var node = actionGraph.Graph.AddNode( Definition );
 
 		return CreateEditorNode( actionGraph, node );
@@ -76,7 +76,7 @@ public record struct GraphNodeType( ActionGraphResource Resource ) : INodeType
 
 	public INode CreateNode( IGraph graph )
 	{
-		var actionGraph = (ActionGraph)graph;
+		var actionGraph = (EditorActionGraph)graph;
 		var node = actionGraph.Graph.AddNode( actionGraph.Graph.NodeLibrary.Graph );
 
 		node.Properties["graph"].Value = Resource.ResourcePath;
@@ -112,7 +112,7 @@ public record struct VariableNodeType( string Name, Type Type, PropertyNodeKind 
 
 	public INode CreateNode( IGraph graph )
 	{
-		var actionGraph = (ActionGraph)graph;
+		var actionGraph = (EditorActionGraph)graph;
 		var node = actionGraph.Graph.AddNode( Kind == PropertyNodeKind.Set
 			? actionGraph.Graph.NodeLibrary.SetVar
 			: actionGraph.Graph.NodeLibrary.GetVar );
@@ -168,7 +168,7 @@ public record struct MethodNodeType( MethodDescription[] Methods ) : INodeType
 
 	public INode CreateNode( IGraph graph )
 	{
-		var actionGraph = (ActionGraph)graph;
+		var actionGraph = (EditorActionGraph)graph;
 		var node = actionGraph.Graph.AddNode( actionGraph.Graph.NodeLibrary.CallMethod );
 
 		node.Properties["_type"].Value = Methods[0].TypeDescription.TargetType;
@@ -204,7 +204,7 @@ public record struct PropertyNodeType( PropertyDescription Property, PropertyNod
 
 	public INode CreateNode( IGraph graph )
 	{
-		var actionGraph = (ActionGraph)graph;
+		var actionGraph = (EditorActionGraph)graph;
 		var node = actionGraph.Graph.AddNode( Kind switch
 		{
 			PropertyNodeKind.Set => actionGraph.Graph.NodeLibrary.SetProperty,
@@ -244,7 +244,7 @@ public record struct FieldNodeType( FieldDescription Field, PropertyNodeKind Kin
 
 	public INode CreateNode( IGraph graph )
 	{
-		var actionGraph = (ActionGraph)graph;
+		var actionGraph = (EditorActionGraph)graph;
 		var node = actionGraph.Graph.AddNode( Kind switch
 		{
 			PropertyNodeKind.Set => actionGraph.Graph.NodeLibrary.SetField,
@@ -267,7 +267,7 @@ public class ActionNode : INode
 	public INodeType Type => new ActionNodeType( Definition );
 
 	[HideInEditor]
-	public ActionGraph Graph { get; }
+	public EditorActionGraph Graph { get; }
 
 	[HideInEditor]
 	public Node Node { get; }
@@ -568,7 +568,7 @@ public class ActionNode : INode
 	[HideInEditor]
 	public PlugCollection Outputs { get; }
 
-	public ActionNode( ActionGraph graph, Node node )
+	public ActionNode( EditorActionGraph graph, Node node )
 	{
 		Graph = graph;
 		Node = node;
@@ -648,7 +648,7 @@ public class ActionNode : INode
 
 public class RerouteActionNode : ActionNode
 {
-	public RerouteActionNode( ActionGraph graph, Node node )
+	public RerouteActionNode( EditorActionGraph graph, Node node )
 		: base( graph, node )
 	{
 	}
@@ -682,7 +682,7 @@ public class CommentActionNode : ActionNode, ICommentNode
 		Name = Title, Description = Description, Icon = "notes"
 	};
 
-	public CommentActionNode( ActionGraph graph, Node node )
+	public CommentActionNode( EditorActionGraph graph, Node node )
 		: base( graph, node )
 	{
 		_layer = new UserDataProperty<int>( Node.UserData, nameof(Layer) );

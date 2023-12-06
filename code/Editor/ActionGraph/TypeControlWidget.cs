@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using Editor.NodeEditor;
 using Facepunch.ActionGraphs;
 
-namespace Editor.ActionGraph;
+namespace Editor.ActionGraphs;
 
 [CustomEditor( typeof( Type ) )]
 internal class TypeControlWidget : ControlWidget

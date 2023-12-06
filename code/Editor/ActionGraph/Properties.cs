@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using Facepunch.ActionGraphs;
 using static Sandbox.PhysicsContact;
 
-namespace Editor.ActionGraph;
+namespace Editor.ActionGraphs;
 
 public class Properties : Widget
 {
@@ -150,7 +150,7 @@ public class Properties : Widget
 				ps.AddRow( prop );
 			}
 		}
-		else if ( Target is ActionGraph )
+		else if ( Target is EditorActionGraph )
 		{
 			ps.AddObject( EditorTypeLibrary.GetSerializedObject( Target ) );
 		}
