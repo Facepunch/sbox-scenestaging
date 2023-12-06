@@ -6,11 +6,6 @@ using Sandbox.Physics;
 [Icon( "open_in_full", "red", "white" )]
 public sealed class SliderJoint : Joint
 {
-	/// <summary>
-	/// Axis the slider travels
-	/// </summary>
-	[Property] public Vector3 Axis { get; set; } = Vector3.Forward;
-
 	private float maxLength;
 	private float minLength;
 	private float friction;
@@ -73,7 +68,7 @@ public sealed class SliderJoint : Joint
 
 	protected override PhysicsJoint CreateJoint( PhysicsBody body1, PhysicsBody body2 )
 	{
-		sliderJoint = PhysicsJoint.CreateSlider( body1, body2, Axis, MinLength, MaxLength );
+		sliderJoint = PhysicsJoint.CreateSlider( body1, body2, Transform.Rotation.Up, MinLength, MaxLength );
 		sliderJoint.Friction = friction;
 		return sliderJoint;
 	}
