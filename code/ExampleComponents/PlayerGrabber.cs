@@ -9,8 +9,6 @@ public class PlayerGrabber : BaseComponent
 	Transform grabbedOffset;
 	Vector3 localOffset;
 
-	Sandbox.Physics.FixedJoint joint;
-
 	bool waitForUp = false;
 
 	protected override void OnUpdate()

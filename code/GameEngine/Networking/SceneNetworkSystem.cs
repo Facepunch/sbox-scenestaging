@@ -56,7 +56,7 @@ public class SceneNetworkSystem : GameNetworkSystem
 	/// <summary>
 	/// We have recieved a snapshot of the world
 	/// </summary>
-	public override async Task SetSnapshotAsync( SnapshotMsg msg )
+	public override Task SetSnapshotAsync( SnapshotMsg msg )
 	{
 		ThreadSafe.AssertIsMainThread();
 
@@ -88,6 +88,8 @@ public class SceneNetworkSystem : GameNetworkSystem
 		}
 
 		GameManager.IsPlaying = true;
+
+		return Task.CompletedTask;
 	}
 
 	// TODO - system for registering global listeners like this
