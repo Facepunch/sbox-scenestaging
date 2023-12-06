@@ -46,7 +46,7 @@ public sealed class Highlight : BaseComponent, BaseComponent.ExecuteInEditor
 		Graphics.GrabDepthTexture( "DepthTexture" );
 
 		// Generate a temporary render target to draw the stencil to, also so we don't clash with the main depth buffer
-		using var rt = RenderTarget.GetTemporary( 1, ImageFormat.None, ImageFormat.D24S8, -1 );
+		using var rt = RenderTarget.GetTemporary( 1, ImageFormat.None, ImageFormat.D24S8 );
 		Graphics.RenderTarget = rt;
 
 		Graphics.Clear( Color.Black, false, true, true );

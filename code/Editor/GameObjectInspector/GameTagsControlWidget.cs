@@ -137,7 +137,7 @@ public class TagSetControlWidget : ControlWidget
 
 				var obj = scene.GetAllObjects( true );
 				var allTags = obj.SelectMany( x => x.Tags.TryGetAll() )
-					.Concat( new[] { "solid", "trigger", "water" } ); // TODO - take these from collision data in LocalProject.CurrentGame.Config
+					.Concat( new[] { "solid", "trigger", "water" } ); // TODO - take these from collision data in Project.CurrentGame.Config
 
 
 				int i = 0;
