@@ -5,15 +5,13 @@ using System;
 namespace Editor.Inspectors;
 
 
+
 [CanEdit( typeof( GameObject ) )]
 [CanEdit( typeof( PrefabScene ) )]
-public class GameObjectInspector : Widget
+public class GameObjectInspector : InspectorWidget
 {
-	SerializedObject SerializedObject;
-
-	public GameObjectInspector( Widget parent, SerializedObject so ) : base( parent )
+	public GameObjectInspector( SerializedObject so ) : base( so )
 	{
-		SerializedObject = so;
 		SerializedObject.OnPropertyChanged += ( p ) => PropertyEdited( p );
 
 		Layout = Layout.Column();
@@ -27,10 +25,12 @@ public class GameObjectInspector : Widget
 		scroller.Canvas = new Widget( scroller );
 		scroller.Canvas.Layout = Layout.Column();
 
-		/*
-		if ( !target.IsPrefabInstance )
+		bool isPrefabInstance = SerializedObject.Targets.OfType<GameObject>().Any( x => x.IsPrefabInstance );
+
+
+		if ( !isPrefabInstance )
 		{
-			scroller.Canvas.Layout.Add( new ComponentList( target.Id, target.Components ) );
+			//scroller.Canvas.Layout.Add( new ComponentList( target.Id, target.Components ) );
 
 			// Add component button
 			var row = scroller.Canvas.Layout.AddRow();
@@ -43,36 +43,31 @@ public class GameObjectInspector : Widget
 		}
 		else
 		{
-			if ( !target.IsPrefabInstanceRoot )
-			{
-				h.ReadOnly = true;
-			}
+			//if ( !target.IsPrefabInstanceRoot )
+			//{
+			//	h.ReadOnly = true;
+			//}
 
 			// if we're the prefab root, show a list of variables that can be modified
+
+			var source = SerializedObject.Targets.OfType<GameObject>().Select( x => x.PrefabInstanceSource ).FirstOrDefault();
 
 			// Add component button
 			var row = scroller.Canvas.Layout.AddRow();
 			row.AddStretchCell();
 			row.Margin = 16;
-			var button = row.Add( new Button( $"Open \"{target.PrefabInstanceSource}\"", "edit" ) );
+			var button = row.Add( new Button( $"Open \"{source}\"", "edit" ) );
 
 			button.Clicked = () =>
 			{
-				var prefabFile = target.PrefabInstanceSource;
+				var prefabFile = source;
 				var asset = AssetSystem.FindByPath( prefabFile );
 				asset.OpenInEditor();
 			};
 			row.AddStretchCell();
-		}*/
+		}
 
 		scroller.Canvas.Layout.AddStretchCell( 1 );
-
-		//var footer = scroller.Canvas.Layout.AddRow();
-		//footer.Margin = 8;
-		//footer.AddStretchCell();
-		//var footerBtn = footer.Add( new Button.Primary( "Add Component", "add" ) );
-		//footerBtn.Clicked = () => AddComponentDialog( footerBtn );
-		//footer.Add( footerBtn );
 	}
 
 	void PropertyEdited( SerializedProperty property )
@@ -86,19 +81,39 @@ public class GameObjectInspector : Widget
 	/// </summary>
 	public void AddComponentDialog( Button source )
 	{
-	//	var s = new ComponentTypeSelector( this );
-	//	s.OnSelect += ( t ) => TargetObject.Components.Create( t );
-	//	s.OpenAt( source.ScreenRect.BottomLeft, animateOffset: new Vector2( 0, -4 ) );
-	//	s.FixedWidth = source.Width;
+		var s = new ComponentTypeSelector( this );
+		s.OnSelect += ( t ) => AddComponent( t );
+		s.OpenAt( source.ScreenRect.BottomLeft, animateOffset: new Vector2( 0, -4 ) );
+		s.FixedWidth = source.Width;
+	}
+
+	private void AddComponent( TypeDescription componentType )
+	{
+		foreach( var go in SerializedObject.Targets.OfType<GameObject>() )
+		{
+			if ( go.IsPrefabInstance ) continue;
+
+			go.Components.Create( componentType );
+		}
+	}
+
+	private void PasteComponent()
+	{
+		foreach ( var go in SerializedObject.Targets.OfType<GameObject>() )
+		{
+			if ( go.IsPrefabInstance ) continue;
+
+			Helpers.PasteComponentAsNew( go );
+		}
 	}
 
 	protected override void OnContextMenu( ContextMenuEvent e )
 	{
 		if ( Helpers.HasComponentInClipboard() )
 		{
-		//	var menu = new Menu( this );
-		//	menu.AddOption( "Paste Component As New", action: () => Helpers.PasteComponentAsNew( TargetObject ) );
-		//	menu.OpenAtCursor( false );
+			var menu = new Menu( this );
+			menu.AddOption( "Paste Component As New", action: PasteComponent );
+			menu.OpenAtCursor( false );
 		}
 
 		base.OnContextMenu( e );
