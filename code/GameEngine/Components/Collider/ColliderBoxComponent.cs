@@ -1,6 +1,4 @@
 ﻿using Sandbox;
-using Sandbox.Diagnostics;
-using System.Collections.Generic;
 
 [Title( "Collider - Box" )]
 [Category( "Physics" )]

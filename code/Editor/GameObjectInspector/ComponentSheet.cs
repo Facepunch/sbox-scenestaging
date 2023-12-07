@@ -7,6 +7,19 @@ using System.Reflection.Metadata;
 using Tools;
 namespace Editor.EntityPrefabEditor;
 
+/// <summary>
+/// This isn't general enough
+/// </summary>
+public abstract class CustomComponentWidget : Widget
+{
+	public SerializedObject SerializedObject { get; private set; }
+
+	public CustomComponentWidget( SerializedObject obj ) : base( null )
+	{
+		SerializedObject = obj;
+	}
+}
+
 public partial class ComponentSheet : Widget
 {
 	SerializedObject TargetObject;
@@ -91,10 +104,29 @@ public partial class ComponentSheet : Widget
 		BuildInstanceContent();
 	}
 
+	bool BuildCustomEditor()
+	{
+		// SO SHIT
+		var editor = EditorTypeLibrary.GetTypesWithAttribute<CustomEditorAttribute>( false )
+					.Where( x => x.Type.TargetType.IsAssignableTo( typeof( CustomComponentWidget ) ) )
+					.Where( x => x.Attribute.TargetType.Name == TargetObject.TypeName )
+					.FirstOrDefault();
+
+		if ( editor.Type == null ) return false;
+
+		var widget = editor.Type.Create<CustomComponentWidget>( new object[] { TargetObject } );
+
+		Content.Add( widget );
+
+		return true;
+	}
+
 	void BuildInstanceContent()
 	{
 		if ( !Expanded ) return;
-	
+
+		if ( BuildCustomEditor() ) return;
+
 		var props = TargetObject.Where( x => x.HasAttribute<PropertyAttribute>() )
 									.OrderBy( x => x.SourceLine )
 									.ThenBy( x => x.DisplayName )
