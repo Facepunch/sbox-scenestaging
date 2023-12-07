@@ -12,7 +12,7 @@ public abstract class ComponentTemplate
 		var content = $$"""
 		using Sandbox;
 
-		public sealed class {{componentName}} : BaseComponent
+		public sealed class {{componentName}} : Component
 		{
 			protected override void OnUpdate()
 			{
