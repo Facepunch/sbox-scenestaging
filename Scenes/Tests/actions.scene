@@ -1,0 +1,134 @@
+{
+  "GameObjects": [
+    {
+      "Id": "bb8d26a2-2c61-4931-9f46-b21986b81c64",
+      "Name": "Sun",
+      "Position": "0,0,100",
+      "Rotation": "-0.06201506,0.5347982,0.2700481,0.7982603",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "DirectionalLight",
+          "__enabled": true,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "Id": "e0911b0c-3700-4c9b-88b8-112b2332d6bf",
+      "Name": "Cube",
+      "Position": "0,0,-256",
+      "Scale": "8,8,8",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "dev/helper/testgrid.vmat",
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "1ad22c7e-8635-4a1e-b256-6c9843d07750",
+      "Name": "Camera",
+      "Position": "-379.6557,-126.844,165.2387",
+      "Rotation": "-0.04510347,0.2281259,0.1886413,0.9541167",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 80,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "Id": "610f500f-a7e4-4661-aec8-cca590d52161",
+      "Name": "Sphere",
+      "Position": "0,0,32",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "UpdateAction",
+          "__enabled": true,
+          "Update": {
+            "Kind": "Action",
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "input"
+              },
+              {
+                "Id": 1,
+                "Type": "log.info",
+                "Inputs": {
+                  "format": "Hello, world!"
+                },
+                "UserData": {
+                  "Position": "320,0"
+                }
+              }
+            ],
+            "Links": [
+              [
+                0,
+                "_signal",
+                1,
+                "_signal"
+              ]
+            ],
+            "UserData": {
+              "Title": "Update",
+              "id": "d9b42e74-89f9-4c40-93f7-10fc38b8452e"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "MaxFixedUpdates": 5,
+    "FixedUpdateFrequency": 50,
+    "NetworkFrequency": 60,
+    "Lerping": true,
+    "UseFixedUpdate": true,
+    "ThreadedAnimation": true,
+    "TimeScale": 1
+  },
+  "Title": "actions",
+  "Description": "",
+  "__references": []
+}
