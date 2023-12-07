@@ -573,7 +573,7 @@ internal partial class ComponentTypeSelector : PopupWidget
 
 			if ( Type is not null && !string.IsNullOrEmpty( Type.Icon ) )
 			{
-				Helpers.PaintComponentIcon( Type, new Rect( r.Position, r.Height ).Shrink( 2 ), opacity );
+				Type.PaintComponentIcon( new Rect( r.Position, r.Height ).Shrink( 2 ), opacity );
 			}
 			else
 			{

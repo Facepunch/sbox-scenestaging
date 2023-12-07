@@ -103,13 +103,13 @@ public class GameObjectInspector : InspectorWidget
 		{
 			if ( go.IsPrefabInstance ) continue;
 
-			Helpers.PasteComponentAsNew( go );
+			go.PasteComponent();
 		}
 	}
 
 	protected override void OnContextMenu( ContextMenuEvent e )
 	{
-		if ( Helpers.HasComponentInClipboard() )
+		if ( SceneEditor.HasComponentInClipboard() )
 		{
 			var menu = new Menu( this );
 			menu.AddOption( "Paste Component As New", action: PasteComponent );
@@ -208,12 +208,12 @@ public class ComponentListWidget : Widget
 			component.Destroy();
 			SceneEditorSession.Active.Scene.EditLog( "Removed Component", component );
 		} );
-		menu.AddOption( "Copy To Clipboard", action: () => Helpers.CopyComponent( component ) );
+		menu.AddOption( "Copy To Clipboard", action: () => component.CopyToClipboard() );
 
-		if ( Helpers.HasComponentInClipboard() )
+		if ( SceneEditor.HasComponentInClipboard() )
 		{
-			menu.AddOption( "Paste Values", action: () => Helpers.PasteComponentValues( component ) );
-			menu.AddOption( "Paste As New", action: () => Helpers.PasteComponentAsNew( component.GameObject ) );
+			menu.AddOption( "Paste Values", action: () => component.PasteValues() );
+			menu.AddOption( "Paste As New", action: () => component.GameObject.PasteComponent() );
 		}
 
 		//menu.AddOption( "Open In Window.." );
