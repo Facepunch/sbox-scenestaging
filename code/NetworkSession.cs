@@ -9,7 +9,7 @@ public sealed class NetworkSession : Component
 		//
 		// Create a lobby if we're not connected
 		//
-		if ( SceneNetworkSystem.Instance is null )
+		if ( !GameNetworkSystem.IsActive )
 		{
 			GameNetworkSystem.CreateLobby();
 		}

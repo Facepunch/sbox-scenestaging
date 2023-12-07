@@ -19,6 +19,9 @@ public sealed class DropObjectOnFootstep : Component
 
 	protected override void OnDisabled()
 	{
+		if ( Source is null )
+			return;
+
 		Source.OnFootstepEvent -= OnEvent;
 	}
 
