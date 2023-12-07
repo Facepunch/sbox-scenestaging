@@ -1,7 +1,4 @@
 using Sandbox;
-using Sandbox.UI;
-using System;
-using static Sandbox.RenderHook;
 
 [Title( "Depth Of Field" )]
 [Category( "Post Processing" )]
@@ -13,7 +10,7 @@ public sealed class DepthOfField : Component, Component.ExecuteInEditor
 	/// <summary>
 	/// How far away from the camera to focus
 	/// </summary>
-	[Range(0, 1000)]
+	[Range( 0, 1000 )]
 	[Property] public float FocalDistance { get; set; } = 200.0f;
 
 	/// <summary>
