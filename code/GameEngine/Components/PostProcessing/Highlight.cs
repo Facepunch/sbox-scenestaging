@@ -1,7 +1,4 @@
 using Sandbox;
-using Sandbox.Component;
-using System;
-using System.Linq;
 
 /// <summary>
 /// This should be added to a camera that you want to outline stuff
