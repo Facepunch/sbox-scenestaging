@@ -44,6 +44,9 @@ public abstract partial class Component
 	public void Deserialize( JsonObject node )
 	{
 		jsonData = node;
+
+		InitializeComponent();
+		Enabled = (bool)(jsonData["__enabled"] ?? true);
 	}
 
 	internal void PostDeserialize()
@@ -69,9 +72,7 @@ public abstract partial class Component
 					Log.Warning( e, $"Error when deserializing {this}.{prop.Name} ({e.Message})" );
 				}
 			}
-
-			InitializeComponent();
-			Enabled = (bool)(jsonData["__enabled"] ?? true);
+			
 		}
 		finally
 		{
