@@ -89,16 +89,60 @@
             "Nodes": [
               {
                 "Id": 0,
-                "Type": "input"
+                "Type": "input",
+                "UserData": {
+                  "Position": "-0,-48"
+                }
               },
               {
-                "Id": 1,
-                "Type": "log.info",
-                "Inputs": {
-                  "format": "Hello, world!"
+                "Id": 2,
+                "Type": "property.get",
+                "Properties": {
+                  "_type": "Sandbox.Game/Sandbox.GameObject",
+                  "_name": "Transform"
                 },
                 "UserData": {
-                  "Position": "320,0"
+                  "Position": "288,-16"
+                }
+              },
+              {
+                "Id": 3,
+                "Type": "property.set",
+                "Properties": {
+                  "_type": "Sandbox.Game/Sandbox.GameTransform",
+                  "_name": "Position"
+                },
+                "UserData": {
+                  "Position": "560,-48"
+                }
+              },
+              {
+                "Id": 4,
+                "Type": "time.now",
+                "UserData": {
+                  "Position": "0,48"
+                }
+              },
+              {
+                "Id": 27,
+                "Type": "graph",
+                "Properties": {
+                  "graph": "actions/circle.action"
+                },
+                "Inputs": {
+                  "_in2": {
+                    "$type": "Simple",
+                    "Type": "System.Private.CoreLib/System.Single",
+                    "Value": 128
+                  },
+                  "_in3": {
+                    "$type": "Simple",
+                    "Type": "System.Private.CoreLib/System.Single",
+                    "Value": 4
+                  }
+                },
+                "UserData": {
+                  "Position": "288,64"
                 }
               }
             ],
@@ -106,8 +150,32 @@
               [
                 0,
                 "_signal",
-                1,
+                3,
                 "_signal"
+              ],
+              [
+                0,
+                "self",
+                2,
+                "target"
+              ],
+              [
+                2,
+                "_result",
+                3,
+                "target"
+              ],
+              [
+                4,
+                "_result",
+                27,
+                "_in1"
+              ],
+              [
+                27,
+                "_out1",
+                3,
+                "value"
               ]
             ],
             "UserData": {
@@ -120,13 +188,13 @@
     }
   ],
   "SceneProperties": {
-    "MaxFixedUpdates": 5,
-    "FixedUpdateFrequency": 50,
-    "NetworkFrequency": 60,
     "Lerping": true,
     "UseFixedUpdate": true,
     "ThreadedAnimation": true,
-    "TimeScale": 1
+    "TimeScale": 1,
+    "MaxFixedUpdates": 5,
+    "FixedUpdateFrequency": 50,
+    "NetworkFrequency": 60
   },
   "Title": "actions",
   "Description": "",

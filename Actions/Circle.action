@@ -1,0 +1,287 @@
+{
+  "Graph": {
+    "Kind": "Expression",
+    "Variables": [],
+    "Nodes": [
+      {
+        "Id": 0,
+        "Type": "input",
+        "Properties": {
+          "parameters": [
+            {
+              "Name": "_in1",
+              "Type": "System.Private.CoreLib/System.Single",
+              "IsRequired": true,
+              "Display": {
+                "Title": "Time"
+              }
+            },
+            {
+              "Name": "_in2",
+              "Type": "System.Private.CoreLib/System.Single",
+              "IsRequired": true,
+              "Display": {
+                "Title": "Radius"
+              }
+            },
+            {
+              "Name": "_in3",
+              "Type": "System.Private.CoreLib/System.Single",
+              "IsRequired": true,
+              "Display": {
+                "Title": "Period"
+              }
+            }
+          ]
+        },
+        "UserData": {
+          "Position": "-192,-80"
+        }
+      },
+      {
+        "Id": 1,
+        "Type": "output",
+        "Properties": {
+          "parameters": [
+            {
+              "Name": "_out1",
+              "Type": "Sandbox.System/Vector3",
+              "Display": {
+                "Title": "Position"
+              }
+            }
+          ]
+        },
+        "UserData": {
+          "Position": "1312,128"
+        }
+      },
+      {
+        "Id": 2,
+        "Type": "math.cos",
+        "UserData": {
+          "Position": "432,128"
+        }
+      },
+      {
+        "Id": 3,
+        "Type": "math.sin",
+        "UserData": {
+          "Position": "432,192"
+        }
+      },
+      {
+        "Id": 4,
+        "Type": "const.vec3",
+        "Properties": {
+          "value": "1,0,0"
+        },
+        "UserData": {
+          "Position": "464,48"
+        }
+      },
+      {
+        "Id": 5,
+        "Type": "const.vec3",
+        "Properties": {
+          "value": "0,1,0"
+        },
+        "UserData": {
+          "Position": "464,256"
+        }
+      },
+      {
+        "Id": 6,
+        "Type": "op.multiply",
+        "UserData": {
+          "Position": "752,144"
+        }
+      },
+      {
+        "Id": 7,
+        "Type": "op.multiply",
+        "UserData": {
+          "Position": "752,224"
+        }
+      },
+      {
+        "Id": 8,
+        "Type": "op.add",
+        "UserData": {
+          "Position": "928,176"
+        }
+      },
+      {
+        "Id": 9,
+        "Type": "nop",
+        "UserData": {
+          "Position": "368,208"
+        }
+      },
+      {
+        "Id": 10,
+        "Type": "op.multiply",
+        "UserData": {
+          "Position": "1136,144"
+        }
+      },
+      {
+        "Id": 11,
+        "Type": "const.float",
+        "Properties": {
+          "name": "2 PI",
+          "value": 6.2831855
+        },
+        "UserData": {
+          "Position": "-144,48"
+        }
+      },
+      {
+        "Id": 12,
+        "Type": "op.divide",
+        "UserData": {
+          "Position": "16,16"
+        }
+      },
+      {
+        "Id": 13,
+        "Type": "op.multiply",
+        "UserData": {
+          "Position": "256,16"
+        }
+      },
+      {
+        "Id": 14,
+        "Type": "nop",
+        "UserData": {
+          "Position": "944,-0"
+        }
+      },
+      {
+        "Id": 15,
+        "Type": "nop",
+        "UserData": {
+          "Position": "160,-32"
+        }
+      }
+    ],
+    "Links": [
+      [
+        2,
+        "_result",
+        6,
+        "b"
+      ],
+      [
+        3,
+        "_result",
+        7,
+        "a"
+      ],
+      [
+        4,
+        "_result",
+        6,
+        "a"
+      ],
+      [
+        5,
+        "_result",
+        7,
+        "b"
+      ],
+      [
+        6,
+        "_result",
+        8,
+        "a"
+      ],
+      [
+        7,
+        "_result",
+        8,
+        "b"
+      ],
+      [
+        9,
+        "out",
+        2,
+        "x"
+      ],
+      [
+        9,
+        "out",
+        3,
+        "x"
+      ],
+      [
+        10,
+        "_result",
+        1,
+        "_out1"
+      ],
+      [
+        13,
+        "_result",
+        9,
+        "in"
+      ],
+      [
+        14,
+        "out",
+        10,
+        "a"
+      ],
+      [
+        8,
+        "_result",
+        10,
+        "b"
+      ],
+      [
+        0,
+        "_in3",
+        12,
+        "a"
+      ],
+      [
+        11,
+        "_result",
+        12,
+        "b"
+      ],
+      [
+        15,
+        "out",
+        13,
+        "a"
+      ],
+      [
+        12,
+        "_result",
+        13,
+        "b"
+      ],
+      [
+        0,
+        "_in2",
+        14,
+        "in"
+      ],
+      [
+        0,
+        "_in1",
+        15,
+        "in"
+      ]
+    ],
+    "UserData": {
+      "Title": "Circle",
+      "Description": "No description provided.",
+      "Icon": "account_tree",
+      "Category": "Custom",
+      "id": "d80acacb-c375-4d0b-b9b3-b5ce88a87b93"
+    }
+  },
+  "__references": []
+}
