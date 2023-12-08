@@ -1,0 +1,40 @@
+{
+  "RootObject": {
+    "Id": "2922f27a-14b6-4cab-a64a-fcbff84815a4",
+    "Name": "ball",
+    "Tags": "ball",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "ModelRenderer",
+        "__enabled": true,
+        "BodyGroups": 18446744073709551615,
+        "MaterialOverride": "test/textures/cards/spade_8.vmat",
+        "Model": "models/dev/sphere.vmdl",
+        "ShouldCastShadows": true,
+        "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "PhysicsComponent",
+        "__enabled": true,
+        "Gravity": true
+      },
+      {
+        "__type": "ColliderSphereComponent",
+        "__enabled": true,
+        "IsTrigger": false,
+        "Radius": 32,
+        "Static": false,
+        "Surface": "surfaces/default.surface"
+      },
+      {
+        "__type": "TestBall",
+        "__enabled": true
+      }
+    ]
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "__references": []
+}

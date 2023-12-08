@@ -24,7 +24,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/shine.vmat",
@@ -51,7 +51,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -73,12 +73,12 @@
       "Id": "64cc8f38-0ddf-4fe9-b9f5-2822d2cd405c",
       "Name": "Surface",
       "Position": "519.4361,-73.0855,-1474.278",
-      "Rotation": "-0.7356308,-0.03306742,-0.6756142,0.03600477",
+      "Rotation": "-0.7062612,-0.03456532,-0.7062616,0.0345653",
       "Scale": "20,20,20",
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -121,7 +121,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -211,7 +211,7 @@
           "Id": "99e832d5-87ef-4bd1-a3c2-39ba2c536618",
           "Name": "Gun",
           "Position": "0,0,25",
-          "Tags": "aimer",
+          "Tags": "aimer,player,pawn,solid",
           "Enabled": true,
           "Children": [
             {
@@ -219,10 +219,11 @@
               "Name": "Cube",
               "Position": "0,0,5",
               "Scale": "0.5,0.5,0.5",
+              "Tags": "aimer,player,pawn,solid",
               "Enabled": true,
               "Components": [
                 {
-                  "__type": "ModelComponent",
+                  "__type": "ModelRenderer",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
@@ -237,10 +238,11 @@
               "Name": "Cube (1)",
               "Position": "17.8328,0.8604,9.1344",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "aimer,player,pawn,solid",
               "Enabled": true,
               "Components": [
                 {
-                  "__type": "ModelComponent",
+                  "__type": "ModelRenderer",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
@@ -263,10 +265,11 @@
               "Name": "Cube (1)",
               "Position": "28.4373,0.8604,9.1344",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "aimer,player,pawn,solid",
               "Enabled": true,
               "Components": [
                 {
-                  "__type": "ModelComponent",
+                  "__type": "ModelRenderer",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
@@ -289,10 +292,11 @@
               "Name": "Cube (1)",
               "Position": "40.0265,0.8604,9.1344",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "aimer,player,pawn,solid",
               "Enabled": true,
               "Components": [
                 {
-                  "__type": "ModelComponent",
+                  "__type": "ModelRenderer",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
@@ -315,10 +319,11 @@
               "Name": "Cube (1)",
               "Position": "51.2432,0.8604,9.1344",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "aimer,player,pawn,solid",
               "Enabled": true,
               "Components": [
                 {
-                  "__type": "ModelComponent",
+                  "__type": "ModelRenderer",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
@@ -341,10 +346,11 @@
               "Name": "Cube (1)",
               "Position": "61.8421,0.8604,9.1344",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "aimer,player,pawn,solid",
               "Enabled": true,
               "Components": [
                 {
-                  "__type": "ModelComponent",
+                  "__type": "ModelRenderer",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
@@ -367,10 +373,11 @@
               "Name": "Cube (1)",
               "Position": "72.9951,0.8604,9.1344",
               "Scale": "0.2,0.2,0.2",
+              "Tags": "aimer,player,pawn,solid",
               "Enabled": true,
               "Components": [
                 {
-                  "__type": "ModelComponent",
+                  "__type": "ModelRenderer",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
                   "MaterialOverride": null,
@@ -393,7 +400,7 @@
               "Name": "Muzzle",
               "Position": "79.6561,0.8604,9.1344",
               "Scale": "0.2,0.2,0.2",
-              "Tags": "muzzle",
+              "Tags": "muzzle,aimer,player,pawn,solid",
               "Enabled": true
             }
           ]
@@ -408,7 +415,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -439,7 +446,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -470,7 +477,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -500,7 +507,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -535,7 +542,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -560,7 +567,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -595,7 +602,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -625,7 +632,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -656,7 +663,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -687,7 +694,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -718,7 +725,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -749,7 +756,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -780,7 +787,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -819,7 +826,7 @@
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -842,7 +849,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -873,7 +880,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -904,7 +911,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -934,7 +941,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -964,7 +971,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -994,7 +1001,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1024,7 +1031,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1054,7 +1061,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1084,7 +1091,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1114,7 +1121,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1144,7 +1151,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1174,7 +1181,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1204,7 +1211,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1234,7 +1241,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1264,7 +1271,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1302,7 +1309,7 @@
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1320,7 +1327,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1341,7 +1348,7 @@
     {
       "Id": "f9645320-457e-4de7-bcc5-5cc674dbb6ba",
       "Name": "Cube (6)",
-      "Position": "1250.129,-189.4961,-1516.795",
+      "Position": "1101.121,91.10023,-1316.431",
       "Rotation": "-0.00000001717797,0.000000007865676,0.241669,0.9703576",
       "Scale": "5,5,5",
       "Enabled": true,
@@ -1355,7 +1362,7 @@
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1377,7 +1384,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1407,7 +1414,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1437,7 +1444,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -1467,7 +1474,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1497,7 +1504,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1535,7 +1542,7 @@
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1557,7 +1564,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1587,7 +1594,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1617,7 +1624,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1647,7 +1654,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1685,7 +1692,7 @@
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1707,7 +1714,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1737,7 +1744,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1767,7 +1774,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1797,7 +1804,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1827,7 +1834,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1857,7 +1864,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1887,7 +1894,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1917,7 +1924,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1947,7 +1954,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -1977,7 +1984,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -2007,7 +2014,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -2037,7 +2044,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -2067,7 +2074,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -2097,7 +2104,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -2127,7 +2134,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -2157,7 +2164,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -2187,7 +2194,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -2217,7 +2224,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
@@ -2247,7 +2254,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -2277,7 +2284,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/dev_metal_rough10.vmat",
@@ -2302,7 +2309,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -2338,7 +2345,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -2368,7 +2375,7 @@
           "Gravity": true
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": null,
@@ -2427,7 +2434,7 @@
     {
       "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
       "Name": "Camera",
-      "Position": "1630.013,877.5098,-1356.439",
+      "Position": "1492.204,-21.07027,-1487.667",
       "Rotation": "0.08006466,0.03423851,-0.9159636,0.3916987",
       "Enabled": true,
       "Components": [
@@ -2439,6 +2446,8 @@
           "FieldOfView": 85.5,
           "Orthographic": false,
           "OrthographicHeight": 1204,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
           "TargetEye": "None",
           "ZFar": 10000,
           "ZNear": 1

@@ -1,0 +1,375 @@
+{
+  "GameObjects": [
+    {
+      "Id": "64cc8f38-0ddf-4fe9-b9f5-2822d2cd405c",
+      "Name": "FarGlassWall",
+      "Position": "-35,0.0001022623,0.00009527506",
+      "Rotation": "-0.7071072,0.0000004523774,-0.7071064,-0.0000004523768",
+      "Scale": "30,30,30",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": false,
+          "Tint": "0.03191,0.15347,0.03434,0.77"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "100,100,0.01",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "698a8b71-7b99-439f-8a5d-1913e926813d",
+      "Name": "CloseGlassWall",
+      "Position": "35,0.0001022623,0.00009527506",
+      "Rotation": "-0.7071072,0.0000004523774,-0.7071064,-0.0000004523768",
+      "Scale": "30,30,30",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "ShouldCastShadows": false,
+          "Tint": "0,0,0,0"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "100,100,0.01",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "Name": "Directional Light",
+      "Rotation": "-0.0000004523773,0.707107,0.7071065,-0.000000452377",
+      "Tags": "light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "DirectionalLight",
+          "__enabled": true,
+          "LightColor": "0.92574,0.79106,0.68743,1",
+          "Shadows": true,
+          "SkyColor": "0.14356,0.14356,0.14356,1"
+        }
+      ]
+    },
+    {
+      "Id": "b3b5ece6-cd1b-4b4d-9b36-cc88982a751d",
+      "Name": "Spot Light",
+      "Position": "1208.812,-827.3016,-1124.297",
+      "Rotation": "-0.1109777,0.2922835,0.577069,0.7544824",
+      "Components": [
+        {
+          "__type": "SpotLight",
+          "__enabled": true,
+          "Attenuation": 1,
+          "ConeInner": 71.55,
+          "ConeOuter": 45.45,
+          "Cookie": "materials/effects/lightcookie.vtex",
+          "LightColor": "197.47,197.47,197.47,1",
+          "Radius": 3000
+        }
+      ]
+    },
+    {
+      "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "Name": "Camera",
+      "Position": "530.8173,-0.0002322419,311.2446",
+      "Rotation": "0,0,1,-0.0000006397578",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.25292,0.26086,0.29703,1",
+          "ClearFlags": "All",
+          "FieldOfView": 85.5,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "ZFar": 10000,
+          "ZNear": 1
+        },
+        {
+          "__type": "TestCamPlayer",
+          "__enabled": true
+        }
+      ]
+    },
+    {
+      "Id": "7b16b25c-8305-465d-a0c1-f5aad14984e3",
+      "Name": "LeftWall",
+      "Position": "0,-352,0",
+      "Scale": "10,10,10",
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": false,
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": false
+        }
+      ]
+    },
+    {
+      "Id": "9fefcec3-ef71-4626-a660-bd9c30664ec7",
+      "Name": "BigBall",
+      "Scale": "5.5,5.5,5.5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": false,
+          "Tint": "0,0,0,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": false,
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": false
+        }
+      ]
+    },
+    {
+      "Id": "20bbff0f-0602-4b7c-b99b-5ccab274975f",
+      "Name": "BigBall (1)",
+      "Position": "0,550,106.9897",
+      "Scale": "10,10,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": false,
+          "Tint": "0,0,0,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": false,
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": false
+        }
+      ]
+    },
+    {
+      "Id": "f4022683-ff35-4971-8ddc-b00454c41385",
+      "Name": "BigBall (2)",
+      "Position": "0,-550,106.9897",
+      "Scale": "10,10,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": false,
+          "Tint": "0,0,0,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": false,
+          "Surface": null
+        },
+        {
+          "__type": "PhysicsComponent",
+          "__enabled": false,
+          "Gravity": false
+        }
+      ]
+    },
+    {
+      "Id": "28e84abf-6370-4058-b5dd-c932b7f5ffa0",
+      "Name": "RightWall",
+      "Position": "0,352,0",
+      "Scale": "10,10,10",
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/sphere.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ColliderSphereComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Radius": 32,
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "fbf0b729-0087-4da6-8493-997d9d39d8b6",
+      "Name": "TestGameManager",
+      "Position": "487.6451,477.5339,864.221",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "TestGameManager",
+          "__enabled": true,
+          "Ball": "test/ball.object",
+          "ClickRemoveParticle": "test/click_remove_particle.object",
+          "GutterParticle": "test/gutter_particle.object"
+        }
+      ]
+    },
+    {
+      "Id": "bbbd21a5-0f48-4e2f-bb8b-7d829595b353",
+      "Name": "CubeL",
+      "Position": "-400,-850,614.9226",
+      "Scale": "20,20,20",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0,0,0,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "288c790e-8b32-4621-b6a7-291096b0ac82",
+      "Name": "CubeR",
+      "Position": "-400,850,614.9226",
+      "Scale": "20,20,20",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "ShouldCastShadows": true,
+          "Tint": "0,0,0,1"
+        },
+        {
+          "__type": "ColliderBoxComponent",
+          "__enabled": true,
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "d9052a22-3f1c-4c09-af73-d4375835096c",
+      "Name": "ScreenPanelRight",
+      "Position": "1707.782,145.7795,1311.232",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ScreenPanel",
+          "__enabled": true,
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
+        }
+      ],
+      "Children": [
+        {
+          "Id": "789db1c7-3321-45a9-8881-2bec99ef84b2",
+          "Name": "TestHud",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "TestHud",
+              "__enabled": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "Lerping": true,
+    "UseFixedUpdate": true,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "MaxFixedUpdates": 5,
+    "FixedUpdateFrequency": 50,
+    "NetworkFrequency": 60
+  },
+  "Title": "Turret",
+  "Description": "Tests input, parenting and physics",
+  "__references": []
+}

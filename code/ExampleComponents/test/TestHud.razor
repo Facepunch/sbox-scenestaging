@@ -1,0 +1,186 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<root>
+    @{
+        var gm = Scene.GetAllComponents<TestGameManager>().FirstOrDefault();
+        string timerString = gm.GameState == GameState.Playing ? TimeSpan.FromSeconds(MathF.Ceiling(TestGameManager.GAME_TIME - gm.ElapsedTime)).ToString(@"m\:ss") : gm.GameFinishedMessage;
+    }
+
+    <div class="game_title_container">
+        Ball Poker
+    </div>
+
+    <div class="top_score">
+        @($"Top Score: {gm.TopScore}")
+    </div>
+
+    <div class="timer" style="transform: scale(@(Utils.Map(gm.TimeSinceNewSecond, 0f, 0.2f, Utils.Map(gm.ElapsedTime, 0f, TestGameManager.GAME_TIME, 1f, 1.4f, EasingType.QuadIn), 1f, EasingType.QuadOut)));">
+        @(timerString)
+    </div>
+
+    <div class="restart_button" onclick="@( () => Restart() )">
+        <div>Restart</div>
+        <div class="restart_binding">[R]</div>
+    </div>
+
+
+    @if(gm.GameState == GameState.Playing)
+    {
+        var rightArrowPos = Vector2.Lerp(new Vector2(1314f, 1000f), new Vector2(1320f, 1018f), 0.5f + Utils.FastSin(Time.Now * 3f) * 0.5f);
+        var leftArrowPos = Vector2.Lerp(new Vector2(540f, 1000f), new Vector2(534f, 1018f), 0.5f + Utils.FastSin(Time.Now * 3f) * 0.5f);
+        var arrowScale = 1.1f + Utils.FastSin(Time.Now * 2.5f) * 0.1f;
+        <div class="arrow" style="left: @(rightArrowPos.x)px; top: @(rightArrowPos.y)px; transform: rotate(70deg) scale(@(arrowScale)); opacity:@(0.15f + Utils.FastSin(Time.Now * 4f) * 0.1f);">➤</div>
+        <div class="arrow" style="left: @(leftArrowPos.x)px; top: @(leftArrowPos.y)px; transform: rotate(110deg) scale(@(arrowScale)); opacity:@(0.15f + Utils.FastSin(Time.Now * 4f) * 0.1f);">➤</div>
+    }
+
+    @if(gm.GameState != GameState.Playing)
+    {
+        <div class="finished_container" style="
+            transform: scale(@((1f + Utils.FastSin(Time.Now * 1f) * 0.025f) * Utils.Map(gm.TimeSinceFinishGame, 0f, 0.5f, 1.75f, 1f, EasingType.QuadOut))) rotate(@(Utils.Map(Utils.FastSin(Time.Now * 3.75f), -1f, 1f, -1f, 1f, EasingType.QuadInOut) * 3f)deg);
+            opacity:@(Utils.Map(gm.TimeSinceFinishGame, 0f, 0.2f, 0f, 1f, EasingType.QuadOut));
+        ">
+            <div class="finished_title"> 
+                Score
+            </div>
+
+            <div class="finished_score" style="transform: scale(@(gm.LastScoreTally > 0 ? Utils.Map(gm.TimeSinceTally, 0f, 0.25f, 1.33f, 1f, EasingType.QuadOut) : 1f));">
+                @(gm.CurrTalliedScore)
+            </div>
+
+            @if(gm.GameState == GameState.WaitingForRestart)
+            {
+                <div class="finished_rating" style="transform: scale(@(Utils.Map(gm.TimeSinceTally, 0f, 0.4f, 0f, 1f, EasingType.BounceOut)));">
+                    @(Utils.GetRatingEmojiForPoints(gm.TotalScore))
+                </div>
+            }
+        </div>
+    }
+    
+    @{
+        var collected_container_opacity = gm.GameState == GameState.Playing ? Utils.Map(gm.TimeSinceFinishSet, 0f, 0.4f, 0f, 1f, EasingType.SineIn) : (gm.CollectedCards.Count() > 0 ? 1f : 0f);
+    }
+
+    <div class="collected_container" style="background-color: @((new Color(0.11f, 0.11f, 0.11f, collected_container_opacity).Rgba)); border-color: @((new Color(0.2f, 0.2f, 0.2f, collected_container_opacity).Rgba)); box-shadow: 0px 6px 16px  @((new Color(0.11f, 0.11f, 0.11f, collected_container_opacity).Rgba));">
+        @{
+            var numCollected = gm.CollectedCards.Count();
+        }
+        
+        <div class="collected_inner_container">
+            @for(int cardNum = 0; cardNum < numCollected; cardNum++)
+            {
+                var card = gm.CollectedCards[cardNum];
+                var scale = cardNum == numCollected - 1 ? Utils.Map(gm.TimeSinceCollect, 0f, 0.3f, 1.5f, 1f, EasingType.QuadOut) : 1f;
+
+                <div class="prev_card_bg" style="font-size:50px; transform: scale(@(scale));">@(card.GetSuitString())
+                    <div class="prev_card_num" style="font-size:30px;">@(card.GetNumberString())</div>
+                </div>
+                <!-- <div class="collected">@(card.GetDisplayString())</div> -->
+            }
+        </div>
+
+        @if(numCollected > 0)
+        {
+            CardHand hand = Utils.EvaluateHand(gm.CollectedCards);
+
+            <div class="collected_hand_type">@(Utils.GetStringForHand(hand))</div>
+        }
+    </div>
+
+    <div class="previous_container">
+        @for(int setNum = 0; setNum < gm.FinishedSets.Count(); setNum++)
+        {
+            var set = gm.FinishedSets[setNum];
+
+            float timeSince = Time.Now - gm.FinishedSetTimes[setNum];
+            Vector2 posOffset = Vector2.Lerp(new Vector2(-836f, 870f + setNum * -86f), Vector2.Zero, Utils.Map(timeSince, 0f, 0.5f, 0f, 1f, EasingType.QuadIn));
+            //Vector2 posOffset = Vector2.Lerp(new Vector2(-836f, 870f + setNum * -87f), Vector2.Zero, 0.5f + Utils.FastSin(Time.Now * 2f) * 0.5f);
+            var scale = Utils.Map(timeSince, 0f, 0.5f, 1.4f, 1f, EasingType.QuadIn);
+
+            <!--
+            var str = "";
+            foreach(var card in set)
+                str += card.GetDisplayString();
+                -->
+
+            <div class="previous" style="left:@(posOffset.x); top:@(posOffset.y); transform: scale(@(scale));">
+                @{
+                    CardHand hand = Utils.EvaluateHand(set);
+                    //CardHand hand = (CardHand)((setNum + 1) % 9);
+                    int points = Utils.GetPointsForHand(hand);
+                }
+
+                <div class="prev_inner_container">
+                    @foreach(var card in set)
+                    {
+                        <div class="prev_card_bg">@(card.GetSuitString())
+                            <div class="prev_card_num">@(card.GetNumberString())</div>
+                        </div>
+                    }
+                </div>
+
+                <div class="previous_hand_type">@(Utils.GetStringForHand(hand))</div>
+
+                @if(gm.GameState != GameState.Playing && gm.FinishedNumHandsTallied > setNum)
+                {
+                    var scoreScale = setNum == gm.FinishedNumHandsTallied - 1 ? Utils.Map(gm.TimeSinceTally, 0f, 0.25f, 1.5f, 1f, EasingType.QuadOut) : 1f;
+
+                    <div class="previous_points" style="
+                        font-size:@(Utils.Map((int)hand, 1, 9, 30f, 45f, EasingType.QuadOut));
+                        left:@(Utils.Map((int)hand, 1, 9, -50f, -100f, EasingType.SineOut));
+                        transform: scale(@(scoreScale)) rotate(-15deg);">
+                            @(points > 0 ? $"+{points}" : "❌")
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <!--
+    <div class="item">
+
+        <div class="value">16</div>
+        <div class="subvalue">67</div>
+    </div>
+    
+    <div class="crosshair" style="left:@(Mouse.Position.x * Panel.ScaleFromScreen); bottom:@(-Mouse.Position.y * Panel.ScaleFromScreen)"></div>
+    -->
+</root>
+
+@code
+{
+    public TestGameManager TestGameManager { get; set; }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+    }
+
+    string GetCursorString()
+    {
+        var gameManager = Scene.GetAllComponents<TestGameManager>().FirstOrDefault();
+
+        switch(gameManager.CursorType)
+        {
+            case CursorType.Pointer: default: return "pointer";
+            case CursorType.Crosshair: return "crosshair";
+        }
+    }
+
+    protected override int BuildHash()
+    {
+        var gameManager = Scene.GetAllComponents<TestGameManager>().FirstOrDefault();
+        return System.HashCode.Combine(gameManager.CursorType, Time.Now);
+    }
+
+    void Restart()
+    {
+        var sfx = Sound.Play( "switch", new Vector3(0f, -150f, 0f ));
+		sfx.Pitch = Game.Random.Float( 0.85f, 0.9f );
+
+        var gameManager = Scene.GetAllComponents<TestGameManager>().FirstOrDefault();
+        gameManager.Restart();
+    }
+}

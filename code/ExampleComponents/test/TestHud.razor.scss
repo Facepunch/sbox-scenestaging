@@ -1,0 +1,307 @@
+TestHud {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+
+    .timer {
+        position: absolute;
+        left: 840px;
+        top: 77%;
+        width: 240px;
+        height: 60px;
+        color: #bbbbbb;
+        font-weight: bold;
+        font-size: 38px;
+        font-family: monospace;
+        white-space: nowrap;
+        text-shadow: 0px 3px 2px #444444;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        //background-color: red;
+        text-stroke: 6px black;
+    }
+
+    .vitals {
+        position: absolute;
+        left: 200px;
+        bottom: 100px;
+        gap: 10px;
+        pointer-events: all;
+    }
+
+    .finished_container {
+        position: absolute;
+        left: 800px;
+        top: 24%;
+        width: 340px;
+        height: 20%;
+        pointer-events: all;
+        background-color: #222222fb;
+        border: 1px solid #333333;
+        //justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 8px;
+        border-radius: 8px;
+        box-shadow: 4px 14px 32px #000000;
+    }
+
+    .finished_title {
+        color: #bbbbbbcc;
+        font-weight: 600;
+        font-size: 48px;
+        font-family: poppins;
+        white-space: nowrap;
+        text-align: center;
+        text-shadow: 4px 4px 4px black;
+    }
+
+    .finished_score {
+        color: white;
+        font-weight: 600;
+        font-size: 48px;
+        font-family: poppins;
+        white-space: nowrap;
+        text-align: center;
+        text-shadow: 4px 4px 4px black;
+    }
+
+    .finished_rating {
+        color: white;
+        font-weight: 600;
+        font-size: 48px;
+        font-family: poppins;
+        white-space: nowrap;
+        text-align: center;
+        text-shadow: 4px 4px 4px black;
+        padding-bottom: 28px;
+    }
+
+    .collected_container {
+        position: absolute;
+        left: 790px;
+        top: 84%;
+        width: 320px;
+        height: 110px;
+        flex-direction: column;
+        pointer-events: all;
+        //background-color: #222222;
+        border: 1px solid #333333;
+        //flex-direction: row;
+        //gap: 12px;
+        //justify-content: center;
+        align-items: center;
+        padding: 4px;
+        margin: 8px;
+        gap: -4px;
+        border-radius: 8px;
+        //box-shadow: 0px 6px 16px #222222;
+        //padding-bottom: 0px;
+    }
+
+    .collected_inner_container {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .collected {
+        color: white;
+        font-weight: bolder;
+        font-size: 28px;
+        font-family: poppins;
+        white-space: nowrap;
+        //padding-bottom: 16px;
+    }
+
+    .collected_hand_type {
+        color: #aaaaaa;
+        font-weight: bold;
+        font-size: 22px;
+        font-family: poppins;
+        white-space: nowrap;
+        //padding-bottom: 20px;
+        text-stroke: 4px black;
+        text-shadow: 1px 3px 1px black;
+        padding-top: 6px;
+    }
+
+    .previous_container {
+        position: absolute;
+        left: 87%;
+        top: 5%;
+        width: 12%;
+        height: 860px;
+        pointer-events: all;
+        background-color: #ffffff01;
+        flex-direction: column;
+        //gap: 12px;
+        //justify-content: center;
+        align-items: center;
+        padding: 0px;
+        gap: 6px;
+        border-radius: 8px;
+    }
+
+    .previous {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #222222;
+        border: 1px solid #333333;
+        padding: 8px;
+        margin: 0px;
+        width: 100%;
+        height: 80px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 8px #222222;
+    }
+
+    .prev_inner_container {
+        white-space: nowrap;
+        flex-direction: row;
+        gap: -4px;
+    }
+
+    .prev_card_bg {
+        color: white;
+        font-weight: bolder;
+        font-size: 36px;
+        font-family: poppins;
+        white-space: nowrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .prev_card_num {
+        position: absolute;
+        color: white;
+        font-weight: 600;
+        font-size: 18px;
+        font-family: poppins;
+        white-space: nowrap;
+        //text-shadow: 2px 2px 1px black;
+        text-stroke: 5px black;
+    }
+
+    .previous_hand_type {
+        color: #aaaaaa;
+        font-weight: bold;
+        font-size: 16px;
+        font-family: poppins;
+        white-space: nowrap;
+        //padding-bottom: 20px;
+        text-stroke: 4px black;
+        text-shadow: 1px 3px 1px black;
+    }
+
+    .previous_points {
+        position: absolute;
+        font-weight: bold;
+        font-size: 36px;
+        font-family: poppins;
+        white-space: nowrap;
+        color: #ffffff;
+        left: -65px;
+        text-shadow: 4px 4px 1px black;
+        text-stroke: 6px black;
+    }
+
+    .item {
+        position: absolute;
+        right: 200px;
+        bottom: 100px;
+        gap: 10px;
+    }
+
+    .restart_button {
+        position: absolute;
+        left: 70px;
+        top: 150px;
+        width: 180px;
+        height: 64px;
+        justify-content: center;
+        align-items: center;
+        background-color: #222222;
+        border: 1px solid #333333;
+        pointer-events: all;
+        border-radius: 8px;
+        color: #999999;
+        font-weight: 600;
+        font-size: 30px;
+        font-family: poppins;
+        white-space: nowrap;
+        text-align: center;
+        text-shadow: 2px 4px 4px black;
+
+        &:hover {
+            opacity: 1;
+            background-color: #333333;
+            border: 1px solid #666666;
+            color: #eeeeee;
+        }
+
+        &:active {
+            background-color: #444444;
+            border: 1px solid #ffffff;
+        }
+    }
+
+    .restart_binding {
+        padding-left: 12px;
+        font-size: 28px;
+        color: #555555;
+        text-shadow: 0px 2px 4px black;
+    }
+
+    .game_title_container {
+        position: absolute;
+        left: 70px;
+        top: 20px;
+        width: 180px;
+        height: 64px;
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
+        font-size: 50px;
+        font-family: poppins;
+        white-space: nowrap;
+        text-align: center;
+        text-shadow: 0px 4px 2px #333333;
+        text-stroke: 1px #999999;
+    }
+
+    .top_score {
+        position: absolute;
+        left: 70px;
+        top: 70px;
+        width: 180px;
+        height: 64px;
+        justify-content: center;
+        align-items: center;
+        color: #666666;
+        font-weight: 500;
+        font-size: 24px;
+        font-family: poppins;
+        white-space: nowrap;
+        text-align: center;
+        text-shadow: 0px 4px 2px #111111;
+    }
+
+    .arrow {
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        justify-content: center;
+        align-items: center;
+        color: #aaaaff99;
+        font-weight: 500;
+        font-size: 50px;
+        //font-family: poppins;
+        white-space: nowrap;
+        text-align: center;
+        text-shadow: 0px 4px 2px #111111;
+    }
+}

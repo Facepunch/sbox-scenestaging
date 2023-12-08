@@ -15,7 +15,7 @@ public static class Program
 		//
 
 		GameManager.ActiveScene = new Scene();
-		GameManager.ActiveScene.LoadFromFile( "scenes/tests/menu.scene" );
+		GameManager.ActiveScene.LoadFromFile( "test/test.scene" );
 
 		GameManager.IsPlaying = true;
 	}
