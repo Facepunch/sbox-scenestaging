@@ -52,6 +52,8 @@ public sealed class TestGameManager : Component
 	public int TotalScore { get; private set; }
 	public int TopScore { get; private set; }
 
+	public int ExistingStatScore { get; private set; }
+
 	private int _numLocked;
 	private int _numUnknown;
 
@@ -65,7 +67,7 @@ public sealed class TestGameManager : Component
 		TestCamPlayer.Manager = this;
 
 		_ballContainer = Scene.GetAllObjects( true ).Where( x => x.Name == "BallContainer" ).FirstOrDefault();
-
+		
 		Restart();
 		//SpawnBall( new Vector3( 0f, -210f, 1200f ) );
 		//SpawnBall( new Vector3( 0f, -160f, 1200f ) );
@@ -76,6 +78,24 @@ public sealed class TestGameManager : Component
 
 		if(topScoreData != null)
 			TopScore = topScoreData.Score;
+
+		_ = UpdatePlayerStats();
+
+		//FileSystem.Data.WriteJson<TopScoreData>( "ballpoker_top_score.json", new TopScoreData() { Score = 0 } );
+		//Sandbox.Services.Stats.SetValue( "score", 0 );
+	}
+
+	public static Sandbox.Services.Stats.PlayerStats StartStats;
+
+	async Task UpdatePlayerStats()
+	{
+		StartStats = Sandbox.Services.Stats.LocalPlayer.Copy();
+		await StartStats.Refresh();
+
+		ExistingStatScore = (int)StartStats["score"].Value;
+
+		if(ExistingStatScore > TopScore)
+			TopScore = ExistingStatScore;
 	}
 
 	protected override void OnUpdate()
@@ -146,8 +166,8 @@ public sealed class TestGameManager : Component
 
 		if ( Input.Pressed( "use" ) )
 		{
-			for (int i = 0; i < 5; i++)
-				CollectCard( new CardData((CardSuit)Game.Random.Int(0, 3), Game.Random.Int(1, 13)) );
+			//for (int i = 0; i < 5; i++)
+			//	CollectCard( new CardData((CardSuit)Game.Random.Int(0, 3), Game.Random.Int(1, 13)) );
 		}
 	}
 
@@ -160,6 +180,9 @@ public sealed class TestGameManager : Component
 				TopScore = TotalScore;
 				SaveScore();
 			}
+
+			if(TotalScore > ExistingStatScore)
+				Sandbox.Services.Stats.SetValue( "score", TotalScore );
 		}
 
 		GameState = GameState.Playing;
@@ -347,6 +370,9 @@ public sealed class TestGameManager : Component
 			TopScore = TotalScore;
 			SaveScore();
 		}
+
+		if ( TotalScore > ExistingStatScore )
+			Sandbox.Services.Stats.SetValue( "score", TotalScore );
 	}
 
 	void SpawnGutterParticles( bool right )
