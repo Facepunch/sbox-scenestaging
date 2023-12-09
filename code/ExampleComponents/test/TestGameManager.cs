@@ -116,6 +116,15 @@ public sealed class TestGameManager : Component
 			{
 				_currSecond = second;
 				TimeSinceNewSecond = 0f;
+
+				int secondsRemaining = (int)GAME_TIME - second;
+
+				if( secondsRemaining <= 10)
+				{
+					var beepSfx = Sound.Play( "beep", new Vector3( 0f, 0f, 100f ) );
+					beepSfx.Pitch = Utils.Map( secondsRemaining, 10, 1, 0.8f, 1f, EasingType.QuadIn );
+					beepSfx.Volume = Utils.Map( secondsRemaining, 10, 1, 0.8f, 1.4f, EasingType.QuadIn );
+				}
 			}
 
 			if ( ElapsedTime > GAME_TIME )
