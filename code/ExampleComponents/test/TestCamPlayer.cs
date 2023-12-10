@@ -22,7 +22,7 @@ public sealed class TestCamPlayer : Component
 		base.OnUpdate();
 
 		TestBall targetBall = null;
-		var tr = Physics.Trace.Ray( new Ray( Transform.Position, Screen.GetDirection( Mouse.Position ) ), 1500f )
+		var tr = Scene.Trace.Ray( new Ray( Transform.Position, Screen.GetDirection( Mouse.Position ) ), 1500f )
 				.WithTag( "ball" )
 				.Run();
 
