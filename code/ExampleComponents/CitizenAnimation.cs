@@ -144,7 +144,7 @@ public sealed class CitizenAnimation : Component, Component.ExecuteInEditor
 	public float AimBodyWeight
 	{
 		get => Target.GetFloat( "aim_body_weight" );
-		set => Target.Set( "aim_headaim_body_weight_weight", value );
+		set => Target.Set( "aim_body_weight", value );
 	}
 
 
