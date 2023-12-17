@@ -107,7 +107,7 @@ public sealed class NetworkTest : Component
 		Carrying = go;
 		Carrying.Tags.Add( "carrying" );
 
-		var ca = Components.Get<CitizenAnimation>();
+		var ca = Components.Get<Sandbox.Citizen.CitizenAnimationHelper>();
 
 		ca.IkLeftHand = Carrying.Children.FirstOrDefault( x => x.Name == "hand_left" ) ?? Carrying;
 		ca.IkRightHand = Carrying.Children.FirstOrDefault( x => x.Name == "hand_right" ) ?? Carrying;
@@ -122,7 +122,7 @@ public sealed class NetworkTest : Component
 		Carrying.Network.DropOwnership();
 		Carrying = null;
 
-		var ca = Components.Get<CitizenAnimation>();
+		var ca = Components.Get<Sandbox.Citizen.CitizenAnimationHelper>();
 		ca.IkLeftHand = null;
 		ca.IkRightHand = null;
 	}
