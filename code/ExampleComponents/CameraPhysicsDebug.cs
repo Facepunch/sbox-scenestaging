@@ -46,7 +46,7 @@ public sealed class CameraPhysicsDebug : Component, Component.ExecuteInEditor
 			{
 				t = Scene.Trace
 						.Ray( start, end )
-						.Size( new BBox( -5, 5 ) )
+						.Size( new BBox( Vector3.One * -5, Vector3.One * 5 ) )
 						.UseHitboxes( Hitboxes )
 						.Run();
 

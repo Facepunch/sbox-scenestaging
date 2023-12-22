@@ -41,7 +41,7 @@ public sealed class TurretComponent : Component
 		turretPitch = turretPitch.Clamp( -30, 30 );
 		Gun.Transform.Rotation = Rotation.From( turretPitch, turretYaw, 0 );
 
-		var bbox = new BBox( 0, 5 );
+		var bbox = BBox.FromPositionAndSize( 0, 5 );
 
 		// drive tank
 		Vector3 movement = 0;
