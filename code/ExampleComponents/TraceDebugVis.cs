@@ -17,6 +17,7 @@ public sealed class TraceDebugVis : Component
 	[Property] public List<GameObject> IgnoreSingleObjects { get; set; }
 	[Property] public List<GameObject> IgnoreHierarchy { get; set; }
 	[Property] public TagSet IgnoreTags { get; set; }
+	[Property] public bool IncludeHitboxes { get; set; } = true;
 
 	protected override void OnUpdate()
 	{
@@ -68,6 +69,11 @@ public sealed class TraceDebugVis : Component
 		if ( IgnoreTags  is not null )
 		{
 			tr = tr.WithoutTags( IgnoreTags );
+		}
+
+		if ( IncludeHitboxes )
+		{
+			tr = tr.UseHitboxes();
 		}
 
 		var r = tr.Run();

@@ -1,0 +1,99 @@
+{
+  "GameObjects": [
+    {
+      "Id": "147e9b00-9738-48fc-b9b6-ec6a8ad86bdf",
+      "Name": "Main Camera",
+      "Position": "951.2282,538.3,990.0031",
+      "Rotation": "0.02486696,0.02384196,-0.7213985,0.6916628",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__enabled": true,
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 96.69,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "Bloom",
+          "__enabled": true,
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ]
+          },
+          "BloomCurve": [
+            {
+              "y": 0.5
+            },
+            {
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "Mode": "Additive",
+          "Strength": 1,
+          "Threshold": 0.5,
+          "ThresholdWidth": 0
+        },
+        {
+          "__type": "Sharpen",
+          "__enabled": true,
+          "Scale": 2
+        },
+        {
+          "__type": "NoClip",
+          "__enabled": true,
+          "MoveSpeed": 600
+        },
+        {
+          "__type": "PlayerGrabber",
+          "__enabled": true
+        }
+      ]
+    },
+    {
+      "Id": "c7b7a49f-d221-433f-b9df-5064d4d666ca",
+      "Name": "Map Loader",
+      "Position": "-101.0034,-19.83072,71.2681",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "MapInstance",
+          "__enabled": true,
+          "MapName": "facepunch.datacore",
+          "UseMapFromLaunch": true
+        }
+      ],
+      "Children": []
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true
+  },
+  "Title": "Map Loader",
+  "Description": "A scene that can load maps",
+  "__references": []
+}
