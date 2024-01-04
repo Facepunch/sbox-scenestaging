@@ -2,10 +2,10 @@
 
 public class UpdateAction : Component
 {
-	public delegate Task UpdateFunc( GameObject self, float dt );
+public delegate Task UpdateFunc( GameObject self, float dt );
 
-	[Property]
-	public UpdateFunc Update { get; set; }
+[Property]
+public UpdateFunc Update { get; set; }
 
 	protected override void OnUpdate()
 	{
