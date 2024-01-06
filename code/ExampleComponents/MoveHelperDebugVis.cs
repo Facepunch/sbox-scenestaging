@@ -17,7 +17,7 @@ public sealed class MoveHelperDebugVis : Component
 		BBox box = new BBox( new Vector3( -8, -8, 0 ), new Vector3( 8, 8, 48 ) );
 		var pos = Transform.Position;
 		var velocity = Transform.Rotation * Velocity;
-		var trace = Scene.PhysicsWorld.Trace.Size( box );
+		var trace = Scene.Trace.Size( box );
 
 		for ( int i=0; i<100; i++ )
 		{
