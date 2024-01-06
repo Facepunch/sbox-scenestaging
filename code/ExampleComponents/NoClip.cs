@@ -13,8 +13,7 @@ public sealed class NoClip : Component
 
 	protected override void OnUpdate()
 	{
-		eyeAngles.pitch += Input.AnalogLook.pitch * 10.0f;
-		eyeAngles.yaw += Input.AnalogLook.yaw * 10.0f;
+		eyeAngles += Input.AnalogLook;
 
 		Vector3 movement = Input.AnalogMove;
 

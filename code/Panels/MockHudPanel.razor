@@ -37,14 +37,15 @@
         {
             var bounds = model.Bounds;
             var sphere = new Sphere(bounds.Center, bounds.Size.Length);
-            var pos = Camera.Main.ToScreen(bounds.Center);
-            pos.x /= Camera.Main.Size.x;
-            pos.y /= Camera.Main.Size.y;
+            var pos = Scene.Camera.PointToScreenNormal(bounds.Center, out bool behind );
+            if (behind) continue;
             pos *= 100.0f;
 
             <div class="model-overlay" style="left: @(pos.x)%; top: @(pos.y)%;" @onclick=@(() => GameObjectClicked( model ))>
                 <div>@model.Model.Name</div>
                 <div>left: @(pos.x.FloorToInt())%; top: @(pos.y.FloorToInt())%;</div>
+                <div>@Screen.Size</div>
+                <div>@Scene.Camera.ScreenRect.Size</div>
             </div>
         }
 
