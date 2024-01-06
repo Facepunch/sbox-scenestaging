@@ -15,6 +15,11 @@ public sealed class MapLoadedHandler : Component
 		if ( MapInstance is not null )
 		{
 			MapInstance.OnMapLoaded = OnMapLoaded;
+
+			if ( MapInstance.IsLoaded )
+			{
+				OnMapLoaded();
+			}
 		}
 	}
 
