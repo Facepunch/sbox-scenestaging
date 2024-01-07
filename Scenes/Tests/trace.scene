@@ -1,5 +1,36 @@
 {
+  "Id": "a6b0e969-f051-466a-810e-f4bf29787039",
   "GameObjects": [
+    {
+      "Id": "f51d4adf-531d-46e3-a956-7a62246a10e9",
+      "Name": "Trace Debug",
+      "Position": "788.9104,307.7298,-1612.1",
+      "Rotation": "-0.00000000000002552071,-0.00000003801147,0.7702633,-0.6377271",
+      "Scale": "1,0.2,0.2",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "TraceDebugVis",
+          "__enabled": true,
+          "BoxSize": "3,3,3",
+          "IgnoreHierarchy": [],
+          "IgnoreSingleObjects": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "IgnoreTags": "green",
+          "IncludeHitboxes": true,
+          "SphereRadius": 2,
+          "TraceLength": 1000,
+          "Type": "Ray"
+        }
+      ]
+    },
     {
       "Id": "bea4636e-9e5b-485c-92d2-5214c73bf212",
       "Name": "Object",
@@ -10,6 +41,7 @@
           "__type": "EnvmapProbe",
           "__enabled": true,
           "Bounds": {},
+          "Feathering": 0.02,
           "Projection": "Box",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1"
@@ -296,6 +328,7 @@
             "Mins": "-5120,-5120,-5120",
             "Maxs": "5120,5120,5120"
           },
+          "Feathering": 0.02,
           "Projection": "Box",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1"
@@ -374,7 +407,8 @@
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
-          "Locking": {}
+          "Locking": {},
+          "StartAsleep": false
         }
       ]
     },
@@ -411,7 +445,8 @@
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
-          "Locking": {}
+          "Locking": {},
+          "StartAsleep": false
         }
       ]
     },
@@ -597,7 +632,8 @@
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
-          "Locking": {}
+          "Locking": {},
+          "StartAsleep": false
         }
       ]
     },
@@ -633,7 +669,62 @@
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
-          "Locking": {}
+          "Locking": {},
+          "StartAsleep": false
+        }
+      ]
+    },
+    {
+      "Id": "2d82def3-fa62-493f-a199-202d97e6bbd7",
+      "Name": "Cube (4)",
+      "Position": "1277.742,-152.3744,-1577.119",
+      "Scale": "2,2,2",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "IsTrigger": true,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null
+        }
+      ],
+      "Children": [
+        {
+          "Id": "b0d59657-6787-4d2d-8fcb-6396244de3c2",
+          "Name": "World",
+          "Position": "-0.449585,49.77866,0.00006103516",
+          "Rotation": "0.00000003803324,-0.000000000000003188862,0.6380919,0.7699624",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "WorldPanel",
+              "__enabled": true,
+              "HorizontalAlign": "Center",
+              "LookAtCamera": false,
+              "PanelSize": "1024,512",
+              "RenderScale": 1,
+              "VerticalAlign": "Center"
+            },
+            {
+              "__type": "NameTagPanel",
+              "__enabled": true,
+              "Name": "a trigger",
+              "TargetObject": null
+            }
+          ]
         }
       ]
     },
@@ -669,7 +760,8 @@
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
-          "Locking": {}
+          "Locking": {},
+          "StartAsleep": false
         }
       ]
     },
@@ -706,7 +798,8 @@
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
-          "Locking": {}
+          "Locking": {},
+          "StartAsleep": false
         }
       ],
       "Children": [
@@ -790,7 +883,8 @@
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
-          "Locking": {}
+          "Locking": {},
+          "StartAsleep": false
         }
       ],
       "Children": [
@@ -815,27 +909,6 @@
               "__enabled": true,
               "Name": "ignores greenies",
               "TargetObject": null
-            }
-          ]
-        },
-        {
-          "Id": "f51d4adf-531d-46e3-a956-7a62246a10e9",
-          "Name": "Trace Debug",
-          "Position": "-26.99609,0.00007629395,0",
-          "Rotation": "0,0,1,-0.0000006397578",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "TraceDebugVis",
-              "__enabled": true,
-              "BoxSize": "3,3,3",
-              "IgnoreHierarchy": [],
-              "IgnoreSingleObjects": [],
-              "IgnoreTags": "green",
-              "IncludeHitboxes": true,
-              "SphereRadius": 2,
-              "TraceLength": 1000,
-              "Type": "Ray"
             }
           ]
         }
@@ -874,7 +947,8 @@
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
-          "Locking": {}
+          "Locking": {},
+          "StartAsleep": false
         }
       ],
       "Children": [
@@ -960,7 +1034,8 @@
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
-          "Locking": {}
+          "Locking": {},
+          "StartAsleep": false
         }
       ],
       "Children": [
@@ -1046,7 +1121,8 @@
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
-          "Locking": {}
+          "Locking": {},
+          "StartAsleep": false
         }
       ],
       "Children": [
