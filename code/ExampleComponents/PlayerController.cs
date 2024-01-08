@@ -37,8 +37,7 @@ public class PlayerController : Component, INetworkSerializable
 		// Eye input
 		if ( !IsProxy )
 		{
-			EyeAngles.pitch += Input.MouseDelta.y * 0.1f;
-			EyeAngles.yaw -= Input.MouseDelta.x * 0.1f;
+			EyeAngles += Input.AnalogLook * 0.5f;
 			EyeAngles.roll = 0;
 
 			var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
@@ -160,13 +159,7 @@ public class PlayerController : Component, INetworkSerializable
 	{
 		var rot = EyeAngles.ToRotation();
 
-		WishVelocity = 0;
-
-		if ( Input.Down( "Forward" ) ) WishVelocity += rot.Forward;
-		if ( Input.Down( "Backward" ) ) WishVelocity += rot.Backward;
-		if ( Input.Down( "Left" ) ) WishVelocity += rot.Left;
-		if ( Input.Down( "Right" ) ) WishVelocity += rot.Right;
-
+		WishVelocity = rot * Input.AnalogMove;
 		WishVelocity = WishVelocity.WithZ( 0 );
 
 		if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
