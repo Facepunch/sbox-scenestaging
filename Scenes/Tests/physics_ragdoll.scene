@@ -1,4 +1,5 @@
 {
+  "Id": "c2ba7b73-6ad3-4504-b07b-3643bb3e8994",
   "GameObjects": [
     {
       "Id": "bea4636e-9e5b-485c-92d2-5214c73bf212",
@@ -7,9 +8,10 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "EnvmapComponent",
+          "__type": "EnvmapProbe",
           "__enabled": true,
           "Bounds": {},
+          "Feathering": 0.02,
           "Projection": "Box",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1"
@@ -28,9 +30,10 @@
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.06127,0.13935,0.49505,1"
         }
       ],
@@ -42,8 +45,9 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "ColliderBoxComponent",
+              "__type": "BoxCollider",
               "__enabled": true,
+              "Center": "0,0,0",
               "IsTrigger": false,
               "Scale": "100,100,50",
               "Static": true,
@@ -61,7 +65,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "DirectionalLightComponent",
+          "__type": "DirectionalLight",
           "__enabled": true,
           "LightColor": "0.92574,0.79106,0.68743,1",
           "Shadows": true,
@@ -82,11 +86,14 @@
           "BackgroundColor": "0.25292,0.26086,0.29703,1",
           "ClearFlags": "All",
           "FieldOfView": 85.5,
+          "IsMainCamera": true,
           "Orthographic": false,
           "OrthographicHeight": 1204,
+          "Priority": 1,
           "RenderExcludeTags": "",
           "RenderTags": "",
           "TargetEye": "None",
+          "Viewport": "0,0,1,1",
           "ZFar": 2136.4,
           "ZNear": 1
         },
@@ -98,6 +105,42 @@
           "NormalLength": 2,
           "TracesPerFrame": 500,
           "TraceType": "Ray"
+        },
+        {
+          "__type": "Tonemapping",
+          "__enabled": true,
+          "ExposureCompensation": -1,
+          "MaximumExposure": 2,
+          "MinimumExposure": 1,
+          "Rate": 1
+        },
+        {
+          "__type": "Bloom",
+          "__enabled": true,
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ]
+          },
+          "BloomCurve": [
+            {
+              "y": 0.5
+            },
+            {
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "Mode": "Screen",
+          "Strength": 0.5,
+          "Threshold": 1,
+          "ThresholdWidth": 1
         }
       ]
     },
@@ -112,9 +155,10 @@
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
@@ -138,15 +182,18 @@
           "__type": "SkinnedModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551611,
+          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
           "__type": "ModelPhysics",
           "__enabled": true,
+          "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
           "Renderer": "be2267ea-ef4e-459e-becc-0da1308f9da3"
         }
@@ -164,9 +211,10 @@
               "BodyGroups": 18446744073709551615,
               "BoneMergeTarget": "be2267ea-ef4e-459e-becc-0da1308f9da3",
               "CreateBoneObjects": false,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen_clothes/hat/beanie/models/beanie_green.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -183,9 +231,10 @@
               "BodyGroups": 18446744073709551615,
               "BoneMergeTarget": "be2267ea-ef4e-459e-becc-0da1308f9da3",
               "CreateBoneObjects": false,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen_clothes/dress/dotted_dress/models/dotted_dress.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -203,9 +252,10 @@
               "BodyGroups": 18446744073709551615,
               "BoneMergeTarget": "be2267ea-ef4e-459e-becc-0da1308f9da3",
               "CreateBoneObjects": false,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen_clothes/hair/eyelashes/models/eyelashes.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -223,9 +273,10 @@
               "BodyGroups": 18446744073709551615,
               "BoneMergeTarget": "be2267ea-ef4e-459e-becc-0da1308f9da3",
               "CreateBoneObjects": false,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen_clothes/hair/eyebrows_drawn/models/eyebrows_drawn.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -243,15 +294,18 @@
           "__type": "SkinnedModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
           "__type": "ModelPhysics",
           "__enabled": true,
+          "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
           "Renderer": "bf864c94-ead3-49f2-9dca-11754e30b2f1"
         }
@@ -268,15 +322,18 @@
           "__type": "SkinnedModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
           "__type": "ModelPhysics",
           "__enabled": true,
+          "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
           "Renderer": "ac20e8ae-52c9-4886-be10-1ddd21d411ed"
         }
@@ -293,15 +350,18 @@
           "__type": "SkinnedModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
           "__type": "ModelPhysics",
           "__enabled": true,
+          "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
           "Renderer": "4f5289dd-6f54-45dd-a3ff-a5eec3a36eb0"
         }
@@ -318,15 +378,18 @@
           "__type": "SkinnedModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
           "__type": "ModelPhysics",
           "__enabled": true,
+          "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
           "Renderer": "edd17d40-c132-44c5-82ff-012c048c8b45"
         }
@@ -343,15 +406,18 @@
           "__type": "SkinnedModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
           "__type": "ModelPhysics",
           "__enabled": true,
+          "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
           "Renderer": "3bf91bec-ba21-4df3-8b3b-1d3564306bdf"
         }
@@ -365,7 +431,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "SpotLightComponent",
+          "__type": "SpotLight",
           "__enabled": true,
           "Attenuation": 1,
           "ConeInner": 71.55,
@@ -384,7 +450,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "SpotLightComponent",
+          "__type": "SpotLight",
           "__enabled": true,
           "Attenuation": 1,
           "ConeInner": 71.55,
@@ -402,12 +468,13 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "EnvmapComponent",
+          "__type": "EnvmapProbe",
           "__enabled": true,
           "Bounds": {
             "Mins": "-5120,-5120,-5120",
             "Maxs": "5120,5120,5120"
           },
+          "Feathering": 0.02,
           "Projection": "Box",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1"
@@ -423,6 +490,8 @@
         {
           "__type": "PlayerController",
           "__enabled": true,
+          "AnimationHelper": null,
+          "Body": null,
           "Eye": "0be956d0-5ab7-4de9-8ad7-301e2959034d",
           "FirstPerson": true,
           "Gravity": "0,0,800"
@@ -439,7 +508,10 @@
         },
         {
           "__type": "PlayerGrabber",
-          "__enabled": true
+          "__enabled": true,
+          "DecalEffect": "effects/decal_bullet_default.prefab",
+          "ImpactEffect": "effects/impact_default.prefab",
+          "ShootDamage": 9
         }
       ],
       "Children": [
@@ -462,23 +534,29 @@
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
           "Surface": null
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "StartAsleep": false
         }
       ]
     },
@@ -493,23 +571,29 @@
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
           "Surface": null
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "StartAsleep": false
         }
       ]
     },
@@ -524,23 +608,29 @@
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
           "Surface": null
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "StartAsleep": false
         }
       ]
     },
@@ -555,23 +645,29 @@
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
           "Surface": null
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "StartAsleep": false
         }
       ],
       "Children": [
@@ -586,14 +682,16 @@
               "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/dev/box.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "ColliderBoxComponent",
+              "__type": "BoxCollider",
               "__enabled": true,
+              "Center": "0,0,0",
               "IsTrigger": false,
               "Scale": "50,50,50",
               "Static": false,
@@ -612,14 +710,16 @@
               "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/dev/box.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "ColliderBoxComponent",
+              "__type": "BoxCollider",
               "__enabled": true,
+              "Center": "0,0,0",
               "IsTrigger": false,
               "Scale": "50,50,50",
               "Static": false,
@@ -635,7 +735,7 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "SpotLightComponent",
+              "__type": "SpotLight",
               "__enabled": true,
               "Attenuation": 1,
               "ConeInner": 29.07,
@@ -659,23 +759,29 @@
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
           "Surface": null
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "StartAsleep": false
         }
       ]
     },
@@ -689,6 +795,7 @@
         {
           "__type": "ModelPhysics",
           "__enabled": true,
+          "Locking": {},
           "Model": "models/sbox_props/trolley/trolley.vmdl",
           "Renderer": "ba152c4b-affa-4ecf-a32b-f2b56cee18ca"
         },
@@ -696,22 +803,24 @@
           "__type": "SkinnedModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/sbox_props/trolley/trolley.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
     }
   ],
   "SceneProperties": {
-    "NetworkFrequency": 60,
     "FixedUpdateFrequency": 50,
     "Lerping": true,
     "MaxFixedUpdates": 5,
-    "TimeScale": 1,
+    "NetworkFrequency": 60,
     "ThreadedAnimation": true,
+    "TimeScale": 1,
     "UseFixedUpdate": true
   },
   "Title": "Physics.Ragdoll",
