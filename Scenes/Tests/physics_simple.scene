@@ -1,4 +1,5 @@
 {
+  "Id": "a0ac126a-28bf-4278-ade7-2d0f8b986e51",
   "GameObjects": [
     {
       "Id": "bea4636e-9e5b-485c-92d2-5214c73bf212",
@@ -7,9 +8,10 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "EnvmapComponent",
+          "__type": "EnvmapProbe",
           "__enabled": true,
           "Bounds": {},
+          "Feathering": 0.02,
           "Projection": "Box",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1"
@@ -25,17 +27,19 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.05882,0.13725,0.49412,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "100,100,1",
           "Static": false,
@@ -51,17 +55,19 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/default.vmat",
               "Model": "models/dev/plane.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "0.06127,0.13935,0.49505,1"
             },
             {
-              "__type": "ColliderBoxComponent",
+              "__type": "BoxCollider",
               "__enabled": true,
+              "Center": "0,0,0",
               "IsTrigger": false,
               "Scale": "100,100,1",
               "Static": false,
@@ -79,7 +85,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "DirectionalLightComponent",
+          "__type": "DirectionalLight",
           "__enabled": true,
           "LightColor": "0.92574,0.79106,0.68743,1",
           "Shadows": true,
@@ -100,19 +106,37 @@
           "BackgroundColor": "0.25292,0.26086,0.29703,1",
           "ClearFlags": "All",
           "FieldOfView": 85.5,
+          "IsMainCamera": true,
           "Orthographic": false,
           "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
           "TargetEye": "None",
+          "Viewport": "0,0,1,1",
           "ZFar": 2136.4,
           "ZNear": 1
         },
         {
           "__type": "CameraPhysicsDebug",
           "__enabled": false,
+          "Hitboxes": false,
           "MaxPoints": 10000,
           "NormalLength": 2,
           "TracesPerFrame": 500,
           "TraceType": "Ray"
+        },
+        {
+          "__type": "PlayerGrabber",
+          "__enabled": true,
+          "DecalEffect": "effects/decal_bullet_default.prefab",
+          "ImpactEffect": "effects/impact_default.prefab",
+          "ShootDamage": 9
+        },
+        {
+          "__type": "NoClip",
+          "__enabled": true,
+          "MoveSpeed": 600
         }
       ]
     },
@@ -124,22 +148,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -155,22 +186,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -185,22 +223,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -215,26 +260,33 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
           "Surface": null
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         }
       ]
     },
@@ -245,22 +297,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -275,26 +334,33 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
           "Surface": null
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         }
       ]
     },
@@ -305,18 +371,24 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         }
       ],
       "Children": [
@@ -336,12 +408,13 @@
               "Surface": null
             },
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -362,12 +435,13 @@
               "Surface": null
             },
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen_props/balloonheart01.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -388,12 +462,13 @@
               "Surface": null
             },
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen_props/chair01.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -414,12 +489,13 @@
               "Surface": null
             },
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -440,12 +516,13 @@
               "Surface": null
             },
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -459,18 +536,24 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         }
       ],
       "Children": [
@@ -490,12 +573,13 @@
               "Surface": null
             },
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -516,12 +600,13 @@
               "Surface": null
             },
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen_props/balloonheart01.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -542,12 +627,13 @@
               "Surface": null
             },
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen_props/chair01.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -568,12 +654,13 @@
               "Surface": null
             },
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -594,12 +681,13 @@
               "Surface": null
             },
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -613,18 +701,24 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         }
       ],
       "Children": [
@@ -636,17 +730,19 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "ColliderSphereComponent",
+              "__type": "SphereCollider",
               "__enabled": true,
+              "Center": "0,0,0",
               "IsTrigger": false,
               "Radius": 4.800005,
               "Static": false,
@@ -662,17 +758,19 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "ColliderSphereComponent",
+              "__type": "SphereCollider",
               "__enabled": true,
+              "Center": "0,0,0",
               "IsTrigger": false,
               "Radius": 4.800005,
               "Static": false,
@@ -688,17 +786,19 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "ColliderSphereComponent",
+              "__type": "SphereCollider",
               "__enabled": true,
+              "Center": "0,0,0",
               "IsTrigger": false,
               "Radius": 4.800005,
               "Static": false,
@@ -714,17 +814,19 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/soccerball.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "ColliderSphereComponent",
+              "__type": "SphereCollider",
               "__enabled": true,
+              "Center": "0,0,0",
               "IsTrigger": false,
               "Radius": 4.800005,
               "Static": false,
@@ -741,22 +843,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -771,22 +880,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -801,22 +917,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -831,22 +954,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -861,25 +991,32 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.85644,0.12719,0.57932,1"
         }
       ]
@@ -891,22 +1028,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -921,22 +1065,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -951,25 +1102,32 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
@@ -981,22 +1139,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1011,22 +1176,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1041,22 +1213,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1071,22 +1250,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1101,22 +1287,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1131,25 +1324,32 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
@@ -1161,22 +1361,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1191,22 +1398,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1221,25 +1435,32 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
           "Surface": null
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
@@ -1251,22 +1472,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1281,22 +1509,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1311,22 +1546,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1341,22 +1583,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1371,22 +1620,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1401,22 +1657,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1431,22 +1694,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1461,22 +1731,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1492,22 +1769,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": false
+          "AngularDamping": 0,
+          "Gravity": false,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.2934,0.81188,0.209,0.48"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1523,22 +1807,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": false
+          "AngularDamping": 0,
+          "Gravity": false,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.29412,0.81176,0.20784,0.47843"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1554,22 +1845,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": false
+          "AngularDamping": 0,
+          "Gravity": false,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.29412,0.81176,0.20784,0.47843"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1585,22 +1883,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": false
+          "AngularDamping": 0,
+          "Gravity": false,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.29412,0.81176,0.20784,0.47843"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1615,22 +1920,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1645,22 +1957,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1675,22 +1994,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_metal_rough10.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1705,22 +2031,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1735,22 +2068,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1765,22 +2105,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
+          "__type": "BoxCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -1795,22 +2142,29 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "PhysicsComponent",
+          "__type": "Rigidbody",
           "__enabled": true,
-          "Gravity": true
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         },
         {
-          "__type": "ModelComponent",
+          "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
           "Model": "models/dev/sphere.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,0.1,0,1"
         },
         {
-          "__type": "ColliderSphereComponent",
+          "__type": "SphereCollider",
           "__enabled": true,
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Radius": 33.25,
           "Static": false,
@@ -1826,12 +2180,13 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/dev/box.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -1844,17 +2199,19 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelComponent",
+              "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/dev/box.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "ColliderBoxComponent",
+              "__type": "BoxCollider",
               "__enabled": true,
+              "Center": "0,0,0",
               "IsTrigger": false,
               "Scale": "54.2,54.65,59.6",
               "Static": false,
@@ -1872,7 +2229,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "SpotLightComponent",
+          "__type": "SpotLight",
           "__enabled": true,
           "Attenuation": 1,
           "ConeInner": 71.55,
@@ -1890,12 +2247,13 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "EnvmapComponent",
+          "__type": "EnvmapProbe",
           "__enabled": true,
           "Bounds": {
             "Mins": "-5120,-5120,-5120",
             "Maxs": "5120,5120,5120"
           },
+          "Feathering": 0.02,
           "Projection": "Box",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1"
@@ -1904,12 +2262,12 @@
     }
   ],
   "SceneProperties": {
-    "NetworkFrequency": 60,
     "FixedUpdateFrequency": 50,
     "Lerping": true,
     "MaxFixedUpdates": 5,
-    "TimeScale": 1,
+    "NetworkFrequency": 60,
     "ThreadedAnimation": true,
+    "TimeScale": 1,
     "UseFixedUpdate": true
   },
   "Title": "Physics.Simple",

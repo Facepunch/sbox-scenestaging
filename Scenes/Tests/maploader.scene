@@ -1,4 +1,5 @@
 {
+  "Id": "91590e66-4e7f-4a6f-9f54-39d937ab4348",
   "GameObjects": [
     {
       "Id": "147e9b00-9738-48fc-b9b6-ec6a8ad86bdf",
@@ -68,7 +69,10 @@
         },
         {
           "__type": "PlayerGrabber",
-          "__enabled": true
+          "__enabled": true,
+          "DecalEffect": "effects/decal_bullet_default.prefab",
+          "ImpactEffect": "effects/impact_default.prefab",
+          "ShootDamage": 9
         },
         {
           "__type": "ChromaticAberration",
@@ -98,6 +102,7 @@
           "__enabled": true,
           "MapName": "facepunch.datacore",
           "OnMapLoaded": null,
+          "OnMapUnloaded": null,
           "UseMapFromLaunch": true
         },
         {

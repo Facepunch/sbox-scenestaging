@@ -1,3 +1,4 @@
+using Sandbox;
 using Sandbox.ModelEditor.Nodes;
 
 public class Prop : Component, Component.ExecuteInEditor, Component.ICollisionListener, Component.IDamageable
@@ -116,8 +117,13 @@ public class Prop : Component, Component.ExecuteInEditor, Component.ICollisionLi
 
 	public void Kill()
 	{
-		CreateGibs();
+		OnBreak();
 		GameObject.Destroy();
+	}
+
+	void OnBreak()
+	{
+		CreateGibs();
 	}
 
 	void CreateGibs()
