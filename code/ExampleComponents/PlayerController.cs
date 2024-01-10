@@ -3,7 +3,7 @@ using Sandbox.Citizen;
 using System.Drawing;
 using System.Runtime;
 
-public class PlayerController : Component, INetworkSerializable
+public class PlayerController : Component
 {
 	[Property] public Vector3 Gravity { get; set; } = new Vector3( 0, 0, 800 );
 
@@ -14,8 +14,11 @@ public class PlayerController : Component, INetworkSerializable
 	[Property] public CitizenAnimationHelper AnimationHelper { get; set; }
 	[Property] public bool FirstPerson { get; set; }
 
-	public Angles EyeAngles;
-	public bool IsRunning;
+	[Sync]
+	public Angles EyeAngles { get; set; }
+
+	[Sync]
+	public bool IsRunning { get; set; }
 
 	protected override void OnEnabled()
 	{
@@ -27,8 +30,9 @@ public class PlayerController : Component, INetworkSerializable
 		var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
 		if ( cam is not null )
 		{
-			EyeAngles = cam.Transform.Rotation.Angles();
-			EyeAngles.roll = 0;
+			var ee = cam.Transform.Rotation.Angles();
+			ee.roll = 0;
+			EyeAngles = ee;
 		}
 	}
 
@@ -37,8 +41,10 @@ public class PlayerController : Component, INetworkSerializable
 		// Eye input
 		if ( !IsProxy )
 		{
-			EyeAngles += Input.AnalogLook * 0.5f;
-			EyeAngles.roll = 0;
+			var ee = EyeAngles;
+			ee += Input.AnalogLook * 0.5f;
+			ee.roll = 0;
+			EyeAngles = ee;
 
 			var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
 
@@ -166,17 +172,5 @@ public class PlayerController : Component, INetworkSerializable
 
 		if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
 		else WishVelocity *= 110.0f;
-	}
-
-	public void Write( ref ByteStream stream )
-	{
-		stream.Write( IsRunning );
-		stream.Write( EyeAngles );
-	}
-
-	public void Read( ByteStream stream )
-	{
-		IsRunning = stream.Read<bool>();
-		EyeAngles = stream.Read<Angles>();
 	}
 }
