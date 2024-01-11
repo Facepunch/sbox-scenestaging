@@ -67,7 +67,7 @@ public sealed class TurretComponent : Component
 		{
 			Assert.NotNull( Bullet );
 
-			var obj = SceneUtility.Instantiate( Bullet, Muzzle.Transform.Position, Muzzle.Transform.Rotation );
+			var obj = Bullet.Clone( Muzzle.Transform.Position, Muzzle.Transform.Rotation );
 			var physics = obj.Components.Get<Rigidbody>( FindMode.EnabledInSelfAndDescendants );
 			if ( physics is not null )
 			{
@@ -133,7 +133,7 @@ public sealed class TurretComponent : Component
 				var off = MathF.Sin( i * 0.4f ) * r.Right * 20.0f;
 				off += MathF.Cos( i * 0.4f ) * r.Up * 20.0f;
 
-				var obj = SceneUtility.Instantiate( SecondaryBullet, tr.StartPosition + tr.Direction * f + off * 0.1f, r );
+				var obj = SecondaryBullet.Clone( tr.StartPosition + tr.Direction * f + off * 0.1f, r );
 
 				//r *= Rotation.From( 2, 4, 2 );
 

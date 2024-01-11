@@ -132,12 +132,12 @@ public class PlayerGrabber : Component
 
 		if ( ImpactEffect is not null )
 		{
-			SceneUtility.Instantiate( ImpactEffect, new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( tr.Normal ) ) );	
+			ImpactEffect.Clone(new Transform(tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt(tr.Normal)));	
 		}
 
 		if ( DecalEffect is not null )
 		{
-			var decal = SceneUtility.Instantiate( DecalEffect, new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( -tr.Normal, Vector3.Random ), Random.Shared.Float( 0.8f, 1.2f ) ) );
+			var decal = DecalEffect.Clone(new Transform(tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt(-tr.Normal, Vector3.Random), Random.Shared.Float(0.8f, 1.2f)));
 			decal.SetParent( tr.GameObject );
 		}
 

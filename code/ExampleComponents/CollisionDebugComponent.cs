@@ -21,6 +21,6 @@ public sealed class CollisionDebugComponent : Component
 		if ( vector == default )
 			return;
 
-		SceneUtility.Instantiate( DebugPoint, vector, Rotation.Identity );
+		DebugPoint.Clone(vector, Rotation.Identity);
 	}
 }

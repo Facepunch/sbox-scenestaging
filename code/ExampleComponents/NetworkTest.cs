@@ -21,7 +21,7 @@ public sealed class NetworkTest : Component
 		{
 			var pos = Transform.Position + Vector3.Up * 40.0f + lookDir.Forward.WithZ( 0.0f ) * 50.0f;
 
-			var o = SceneUtility.Instantiate( ObjectToSpawn, pos );
+			var o = ObjectToSpawn.Clone( pos);
 			o.Enabled = true;
 
 			var p = o.Components.Get<Rigidbody>();

@@ -38,7 +38,7 @@ public sealed class DropObjectOnFootstep : Component
 		angles.pitch = 0;
 		angles.roll = 0;
 
-		SceneUtility.Instantiate( Prefab, new Transform( tr.HitPosition, angles.ToRotation() ) );
+		Prefab.Clone( new Transform( tr.HitPosition, angles.ToRotation() ) );
 	}
 
 }

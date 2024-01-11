@@ -19,7 +19,7 @@ public sealed class GameNetworkManager : Component, Component.INetworkListener
 	{
 		Log.Info( $"Player '{channel.DisplayName}' is becoming active" );
 
-		var player = SceneUtility.Instantiate( PlayerPrefab, SpawnPoint.Transform.World );
+		var player = PlayerPrefab.Clone( SpawnPoint.Transform.World );
 
 		var nameTag = player.Components.Get<NameTagPanel>( FindMode.EverythingInSelfAndDescendants );
 		if ( nameTag is not null )

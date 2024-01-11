@@ -42,7 +42,7 @@ public sealed class BrickBall : Component, Component.ICollisionListener
 
 		if ( CollisionIndicator is not null )
 		{
-			SceneUtility.Instantiate( CollisionIndicator, o.Contact.Point );
+			CollisionIndicator.Clone( o.Contact.Point);
 		}
 	}
 
@@ -60,7 +60,7 @@ public sealed class BrickBall : Component, Component.ICollisionListener
 
 		if ( CollisionIndicator is not null )
 		{
-			SceneUtility.Instantiate( CollisionIndicator, o.Contact.Point );
+			CollisionIndicator.Clone( o.Contact.Point);
 		}
 	}
 }
