@@ -1,23 +1,17 @@
-using Sandbox;
+namespace Sandbox;
 
 public sealed class GameNetworkManager : Component, Component.INetworkListener
 {
 	[Property] public GameObject PlayerPrefab { get; set; }
 	[Property] public GameObject SpawnPoint { get; set; }
 
-	protected override void OnStart()
-	{
-
-	}
-
-	protected override void OnUpdate()
-	{
-		
-	}
-
 	public void OnActive( Connection channel )
 	{
 		Log.Info( $"Player '{channel.DisplayName}' is becoming active" );
+		Log.Info( $"Avatar: {channel.GetUserData( "avatar" )}" );
+
+		var clothing = new ClothingContainer();
+		clothing.Deserialize( channel.GetUserData( "avatar" ) );
 
 		var player = PlayerPrefab.Clone( SpawnPoint.Transform.World );
 
@@ -25,6 +19,12 @@ public sealed class GameNetworkManager : Component, Component.INetworkListener
 		if ( nameTag is not null )
 		{
 			nameTag.Name = channel.DisplayName;
+		}
+
+		// Assume that if they have a skinned model renderer, it's the citizen's body
+		if ( player.Components.TryGet<SkinnedModelRenderer>( out var body, FindMode.EverythingInSelfAndDescendants ) )
+		{
+			clothing.Apply( body );
 		}
 
 		player.Network.Spawn( channel );

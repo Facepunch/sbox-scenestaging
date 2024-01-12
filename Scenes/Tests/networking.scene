@@ -224,7 +224,7 @@
               "__version": 0,
               "__type": "SkinnedModelRenderer",
               "__enabled": true,
-              "BodyGroups": 18446744073709551611,
+              "BodyGroups": 18446744073709551615,
               "BoneMergeTarget": null,
               "CreateBoneObjects": true,
               "MaterialGroup": null,
@@ -1257,93 +1257,6 @@
           "Enabled": true
         },
         {
-          "Id": "7194688c-0eb9-44b8-8010-5b9a25083aeb",
-          "Name": "Coat",
-          "Position": "-25.08072,0,0",
-          "Tags": "red,green",
-          "Enabled": true,
-          "Components": [
-            {
-              "__version": 0,
-              "__type": "SkinnedModelRenderer",
-              "__enabled": true,
-              "BodyGroups": 18446744073709551615,
-              "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
-              "CreateBoneObjects": false,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
-              "Model": "models/citizen_clothes/shirt/polo_shirt/models/binman_shirt.vmdl",
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            }
-          ]
-        },
-        {
-          "Id": "1b665a24-354c-4fcd-a4cd-1119a3da75e0",
-          "Name": "Apron",
-          "Position": "-25.08069,0,0",
-          "Tags": "red,green",
-          "Components": [
-            {
-              "__version": 0,
-              "__type": "SkinnedModelRenderer",
-              "__enabled": true,
-              "BodyGroups": 18446744073709551615,
-              "BoneMergeTarget": null,
-              "CreateBoneObjects": false,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
-              "Model": "models/citizen_clothes/vest/chefs_apron/models/chefs_apron.vmdl",
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            }
-          ]
-        },
-        {
-          "Id": "51392ab4-b775-4ad4-859c-73bc4fec358d",
-          "Name": "Chef Hat",
-          "Position": "-25.08069,0,0",
-          "Tags": "red,green",
-          "Enabled": true,
-          "Components": [
-            {
-              "__version": 0,
-              "__type": "SkinnedModelRenderer",
-              "__enabled": true,
-              "BodyGroups": 18446744073709551615,
-              "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
-              "CreateBoneObjects": false,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
-              "Model": "models/citizen_clothes/hair/hair_scruffy_shaved_sides/models/scruffy_shaved_sides_black.vmdl",
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            }
-          ]
-        },
-        {
-          "Id": "913df2d8-b5f8-4bb5-862c-e1c73142de93",
-          "Name": "Shorts",
-          "Position": "-25.08069,0,0",
-          "Tags": "red,green",
-          "Enabled": true,
-          "Components": [
-            {
-              "__version": 0,
-              "__type": "SkinnedModelRenderer",
-              "__enabled": true,
-              "BodyGroups": 18446744073709551615,
-              "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
-              "CreateBoneObjects": false,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
-              "Model": "models/citizen_clothes/shorts/boxing_shorts/models/boxing_shorts.vmdl",
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            }
-          ]
-        },
-        {
           "Id": "22d93711-3db9-442d-919c-db26112ad26f",
           "Name": "Physics Push",
           "Position": "0,0,30.12771",
@@ -1375,7 +1288,10 @@
               "__enabled": true,
               "Loopback": false,
               "Mode": "PushToTalk",
+              "MorphFadeSpeed": 50,
+              "MorphScale": 2,
               "PushToTalkInput": "voice",
+              "Renderer": null,
               "Volume": 1,
               "WorldspacePlayback": true
             }
