@@ -2,42 +2,13 @@
   "Id": "a6b0e969-f051-466a-810e-f4bf29787039",
   "GameObjects": [
     {
-      "Id": "f51d4adf-531d-46e3-a956-7a62246a10e9",
-      "Name": "Trace Debug",
-      "Position": "788.9104,307.7298,-1612.1",
-      "Rotation": "-0.00000000000002552071,-0.00000003801147,0.7702633,-0.6377271",
-      "Scale": "1,0.2,0.2",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "TraceDebugVis",
-          "__enabled": true,
-          "BoxSize": "3,3,3",
-          "IgnoreHierarchy": [],
-          "IgnoreSingleObjects": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-          ],
-          "IgnoreTags": "green",
-          "IncludeHitboxes": true,
-          "SphereRadius": 2,
-          "TraceLength": 1000,
-          "Type": "Ray"
-        }
-      ]
-    },
-    {
       "Id": "bea4636e-9e5b-485c-92d2-5214c73bf212",
       "Name": "Object",
       "Position": "1114.846,0,-1303.217",
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "EnvmapProbe",
           "__enabled": true,
           "Bounds": {},
@@ -56,6 +27,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -74,6 +46,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "BoxCollider",
               "__enabled": true,
               "Center": "0,0,0",
@@ -94,6 +67,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "DirectionalLight",
           "__enabled": true,
           "LightColor": "0.92574,0.79106,0.68743,1",
@@ -110,6 +84,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "CameraComponent",
           "__enabled": true,
           "BackgroundColor": "0.25292,0.26086,0.29703,1",
@@ -127,6 +102,7 @@
           "ZNear": 1
         },
         {
+          "__version": 0,
           "__type": "CameraPhysicsDebug",
           "__enabled": false,
           "Hitboxes": false,
@@ -146,6 +122,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -156,6 +133,7 @@
           "Tint": "1,1,1,1"
         },
         {
+          "__version": 0,
           "__type": "ModelCollider",
           "__enabled": true,
           "IsTrigger": false,
@@ -173,6 +151,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "SkinnedModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551611,
@@ -185,6 +164,7 @@
           "Tint": "1,1,1,1"
         },
         {
+          "__version": 0,
           "__type": "ModelPhysics",
           "__enabled": true,
           "Locking": {},
@@ -200,6 +180,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "SkinnedModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
@@ -220,6 +201,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "SkinnedModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
@@ -241,6 +223,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "SkinnedModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
@@ -262,6 +245,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "SkinnedModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
@@ -285,6 +269,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "SpotLight",
           "__enabled": true,
           "Attenuation": 1,
@@ -304,6 +289,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "SpotLight",
           "__enabled": true,
           "Attenuation": 1,
@@ -322,6 +308,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "EnvmapProbe",
           "__enabled": true,
           "Bounds": {
@@ -342,6 +329,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "PlayerController",
           "__enabled": true,
           "AnimationHelper": null,
@@ -351,6 +339,7 @@
           "Gravity": "0,0,800"
         },
         {
+          "__version": 0,
           "__type": "CharacterController",
           "__enabled": true,
           "Acceleration": 10,
@@ -361,8 +350,12 @@
           "StepHeight": 18
         },
         {
+          "__version": 0,
           "__type": "PlayerGrabber",
-          "__enabled": true
+          "__enabled": true,
+          "DecalEffect": null,
+          "ImpactEffect": null,
+          "ShootDamage": 9
         }
       ],
       "Children": [
@@ -383,6 +376,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -393,6 +387,7 @@
           "Tint": "0,1,0.22,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -402,12 +397,14 @@
           "Surface": null
         },
         {
+          "__version": 0,
           "__type": "Rigidbody",
           "__enabled": true,
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "RigidbodyFlags": 0,
           "StartAsleep": false
         }
       ]
@@ -421,6 +418,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -431,6 +429,7 @@
           "Tint": "0,1,0.22,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -440,12 +439,14 @@
           "Surface": null
         },
         {
+          "__version": 0,
           "__type": "Rigidbody",
           "__enabled": true,
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "RigidbodyFlags": 0,
           "StartAsleep": false
         }
       ]
@@ -458,6 +459,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -468,6 +470,7 @@
           "Tint": "1,0,0.86,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -477,6 +480,7 @@
           "Surface": null
         },
         {
+          "__version": 0,
           "__type": "SpinComponent",
           "__enabled": true,
           "SpinAngles": "0,45,0"
@@ -492,6 +496,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
@@ -502,6 +507,7 @@
               "Tint": "0,1,0.22,1"
             },
             {
+              "__version": 0,
               "__type": "BoxCollider",
               "__enabled": true,
               "Center": "0,0,0",
@@ -520,6 +526,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "ModelRenderer",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
@@ -530,6 +537,7 @@
               "Tint": "1,1,1,1"
             },
             {
+              "__version": 0,
               "__type": "BoxCollider",
               "__enabled": true,
               "Center": "0,0,0",
@@ -547,6 +555,7 @@
               "Enabled": true,
               "Components": [
                 {
+                  "__version": 0,
                   "__type": "ModelRenderer",
                   "__enabled": true,
                   "BodyGroups": 18446744073709551615,
@@ -557,6 +566,7 @@
                   "Tint": "1,1,1,1"
                 },
                 {
+                  "__version": 0,
                   "__type": "BoxCollider",
                   "__enabled": true,
                   "Center": "0,0,0",
@@ -574,6 +584,7 @@
                   "Enabled": true,
                   "Components": [
                     {
+                      "__version": 0,
                       "__type": "ModelRenderer",
                       "__enabled": true,
                       "BodyGroups": 18446744073709551615,
@@ -584,6 +595,7 @@
                       "Tint": "1,1,1,1"
                     },
                     {
+                      "__version": 0,
                       "__type": "BoxCollider",
                       "__enabled": true,
                       "Center": "0,0,0",
@@ -608,6 +620,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -618,6 +631,7 @@
           "Tint": "1,1,1,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -627,12 +641,14 @@
           "Surface": null
         },
         {
+          "__version": 0,
           "__type": "Rigidbody",
           "__enabled": true,
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "RigidbodyFlags": 0,
           "StartAsleep": false
         }
       ]
@@ -645,6 +661,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -655,6 +672,7 @@
           "Tint": "1,1,1,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -664,12 +682,14 @@
           "Surface": null
         },
         {
+          "__version": 0,
           "__type": "Rigidbody",
           "__enabled": true,
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "RigidbodyFlags": 0,
           "StartAsleep": false
         }
       ]
@@ -682,6 +702,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -692,6 +713,7 @@
           "Tint": "1,1,1,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -710,6 +732,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "WorldPanel",
               "__enabled": true,
               "HorizontalAlign": "Center",
@@ -719,6 +742,7 @@
               "VerticalAlign": "Center"
             },
             {
+              "__version": 0,
               "__type": "NameTagPanel",
               "__enabled": true,
               "Name": "a trigger",
@@ -736,6 +760,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -746,6 +771,7 @@
           "Tint": "1,1,1,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -755,12 +781,14 @@
           "Surface": null
         },
         {
+          "__version": 0,
           "__type": "Rigidbody",
           "__enabled": true,
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "RigidbodyFlags": 0,
           "StartAsleep": false
         }
       ]
@@ -774,6 +802,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -784,6 +813,7 @@
           "Tint": "1,1,1,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -793,12 +823,14 @@
           "Surface": null
         },
         {
+          "__version": 0,
           "__type": "Rigidbody",
           "__enabled": true,
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "RigidbodyFlags": 0,
           "StartAsleep": false
         }
       ],
@@ -811,6 +843,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "WorldPanel",
               "__enabled": true,
               "HorizontalAlign": "Center",
@@ -820,6 +853,7 @@
               "VerticalAlign": "Center"
             },
             {
+              "__version": 0,
               "__type": "NameTagPanel",
               "__enabled": true,
               "Name": "hits everything",
@@ -835,6 +869,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "TraceDebugVis",
               "__enabled": true,
               "BoxSize": "3,3,3",
@@ -859,6 +894,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -869,6 +905,7 @@
           "Tint": "0.28997,0.67327,0.34363,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -878,12 +915,14 @@
           "Surface": null
         },
         {
+          "__version": 0,
           "__type": "Rigidbody",
           "__enabled": true,
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "RigidbodyFlags": 0,
           "StartAsleep": false
         }
       ],
@@ -896,6 +935,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "WorldPanel",
               "__enabled": true,
               "HorizontalAlign": "Center",
@@ -905,10 +945,41 @@
               "VerticalAlign": "Center"
             },
             {
+              "__version": 0,
               "__type": "NameTagPanel",
               "__enabled": true,
               "Name": "ignores greenies",
               "TargetObject": null
+            }
+          ]
+        },
+        {
+          "Id": "f51d4adf-531d-46e3-a956-7a62246a10e9",
+          "Name": "Trace Debug",
+          "Position": "-26.99609,-0.0003933907,0.000006544105",
+          "Rotation": "0,0.000000000000001776357,1,-0.0000005662441",
+          "Enabled": true,
+          "Components": [
+            {
+              "__version": 0,
+              "__type": "TraceDebugVis",
+              "__enabled": true,
+              "BoxSize": "3,3,3",
+              "IgnoreHierarchy": [],
+              "IgnoreSingleObjects": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "IgnoreTags": "green",
+              "IncludeHitboxes": true,
+              "SphereRadius": 2,
+              "TraceLength": 1000,
+              "Type": "Ray"
             }
           ]
         }
@@ -923,6 +994,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -933,6 +1005,7 @@
           "Tint": "0.80198,0.17072,0.7136,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -942,12 +1015,14 @@
           "Surface": null
         },
         {
+          "__version": 0,
           "__type": "Rigidbody",
           "__enabled": true,
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "RigidbodyFlags": 0,
           "StartAsleep": false
         }
       ],
@@ -960,6 +1035,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "WorldPanel",
               "__enabled": true,
               "HorizontalAlign": "Center",
@@ -969,6 +1045,7 @@
               "VerticalAlign": "Center"
             },
             {
+              "__version": 0,
               "__type": "NameTagPanel",
               "__enabled": true,
               "Name": "ignore pink spinner",
@@ -984,6 +1061,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "TraceDebugVis",
               "__enabled": true,
               "BoxSize": "3,3,3",
@@ -1010,6 +1088,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -1020,6 +1099,7 @@
           "Tint": "0.80198,0.17072,0.7136,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -1029,12 +1109,14 @@
           "Surface": null
         },
         {
+          "__version": 0,
           "__type": "Rigidbody",
           "__enabled": true,
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "RigidbodyFlags": 0,
           "StartAsleep": false
         }
       ],
@@ -1047,6 +1129,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "WorldPanel",
               "__enabled": true,
               "HorizontalAlign": "Center",
@@ -1056,6 +1139,7 @@
               "VerticalAlign": "Center"
             },
             {
+              "__version": 0,
               "__type": "NameTagPanel",
               "__enabled": true,
               "Name": "ignore white guy",
@@ -1071,6 +1155,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "TraceDebugVis",
               "__enabled": true,
               "BoxSize": "3,3,3",
@@ -1097,6 +1182,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "ModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -1107,6 +1193,7 @@
           "Tint": "0.80198,0.17072,0.7136,1"
         },
         {
+          "__version": 0,
           "__type": "BoxCollider",
           "__enabled": true,
           "Center": "0,0,0",
@@ -1116,12 +1203,14 @@
           "Surface": null
         },
         {
+          "__version": 0,
           "__type": "Rigidbody",
           "__enabled": true,
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "RigidbodyFlags": 0,
           "StartAsleep": false
         }
       ],
@@ -1134,6 +1223,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "WorldPanel",
               "__enabled": true,
               "HorizontalAlign": "Center",
@@ -1143,6 +1233,7 @@
               "VerticalAlign": "Center"
             },
             {
+              "__version": 0,
               "__type": "NameTagPanel",
               "__enabled": true,
               "Name": "ignore pink spinner hierarchy",
@@ -1158,6 +1249,7 @@
           "Enabled": true,
           "Components": [
             {
+              "__version": 0,
               "__type": "TraceDebugVis",
               "__enabled": true,
               "BoxSize": "3,3,3",
@@ -1183,6 +1275,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "SkinnedModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -1195,6 +1288,7 @@
           "Tint": "1,1,1,1"
         },
         {
+          "__version": 0,
           "__type": "ModelHitboxes",
           "__enabled": true,
           "Renderer": "5e522dd4-c060-4cea-8c42-58aae3a55298",
@@ -1211,6 +1305,7 @@
       "Enabled": true,
       "Components": [
         {
+          "__version": 0,
           "__type": "SkinnedModelRenderer",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
@@ -1223,6 +1318,7 @@
           "Tint": "0.07764,0.32673,0.10255,1"
         },
         {
+          "__version": 0,
           "__type": "ModelHitboxes",
           "__enabled": true,
           "Renderer": "b935054e-0f05-44f4-b718-b18975334c85",
