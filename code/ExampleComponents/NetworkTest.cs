@@ -1,37 +1,16 @@
-using Sandbox;
-using System.Threading;
-
 public sealed class NetworkTest : Component
 {
-	[Property] public GameObject ObjectToSpawn { get; set; }
-
 	[Property] public GameObject HoldRelative { get; set; }
 
-	GameObject Carrying;
+	[Sync]
+	GameObject Carrying { get; set; }
 
 	protected override void OnUpdate()
 	{
 		if ( IsProxy )
 			return;
 
-		var pc = Components.Get<PlayerController>();
-		var lookDir = pc.EyeAngles.ToRotation();
-		
-		if ( Input.Pressed( "Attack1" ) )
-		{
-			var pos = Transform.Position + Vector3.Up * 40.0f + lookDir.Forward.WithZ( 0.0f ) * 50.0f;
-
-			var o = ObjectToSpawn.Clone( pos);
-			o.Enabled = true;
-
-			var p = o.Components.Get<Rigidbody>();
-			p.Velocity = lookDir.Forward * 500.0f + Vector3.Up * 540.0f;
-
-			o.Network.Spawn();
-		}
-
 		UpdatePickup();
-
 	}
 
 	protected override void OnPreRender()
@@ -44,8 +23,6 @@ public sealed class NetworkTest : Component
 
 			Carrying.Transform.Position = HoldRelative.Transform.Position + HoldRelative.Parent.Transform.Rotation * offset;
 			Carrying.Transform.Rotation = pc.Body.Transform.Rotation;
-			Carrying.Components.Get<Rigidbody>().Velocity = 0;
-			Carrying.Components.Get<Rigidbody>().AngularVelocity = 0;
 		}
 	}
 
@@ -65,8 +42,8 @@ public sealed class NetworkTest : Component
 
 			Carrying.Transform.Position = HoldRelative.Transform.Position + HoldRelative.Parent.Transform.Rotation * offset;
 			Carrying.Transform.Rotation = pc.Body.Transform.Rotation;
-			Carrying.Components.Get<Rigidbody>().Velocity = 0;
-			Carrying.Components.Get<Rigidbody>().AngularVelocity = 0;
+			//Carrying.Components.Get<Rigidbody>().Velocity = 0;
+			//Carrying.Components.Get<Rigidbody>().AngularVelocity = 0;
 		}
 
 		if ( Input.Pressed( "use" ) )
@@ -74,10 +51,14 @@ public sealed class NetworkTest : Component
 			var pc = Components.Get<PlayerController>();
 			var lookDir = pc.EyeAngles.ToRotation();
 
-			if ( Carrying  is not null )
+			if ( Carrying is not null )
 			{
-				Carrying.Components.Get<Rigidbody>().Velocity = lookDir.Forward * 300.0f + Vector3.Up * 200.0f;
-				Carrying.Components.Get<Rigidbody>().AngularVelocity = 0;
+				var rb = Carrying.Components.Get<Rigidbody>( true );
+				if ( rb is not null )
+				{
+					rb.Enabled = true;
+					rb.Velocity = lookDir.Forward * 300.0f + Vector3.Up * 200.0f;
+				}
 
 				Drop();
 				return;
@@ -105,7 +86,14 @@ public sealed class NetworkTest : Component
 		go.Network.TakeOwnership();
 
 		Carrying = go;
+		Carrying.SetParent( GameObject, true );
 		Carrying.Tags.Add( "carrying" );
+
+		var rb = Carrying.Components.Get<Rigidbody>( true );
+		if ( rb is not null )
+		{
+			rb.Enabled = false;
+		}
 
 		var ca = Components.Get<Sandbox.Citizen.CitizenAnimationHelper>();
 
@@ -118,6 +106,13 @@ public sealed class NetworkTest : Component
 		if ( !Carrying.IsValid() )
 			return;
 
+		var rb = Carrying.Components.Get<Rigidbody>( true );
+		if ( rb is not null )
+		{
+			rb.Enabled = true;
+		}
+
+		Carrying.SetParent( null, true );
 		Carrying.Tags.Remove( "carrying" );
 		Carrying.Network.DropOwnership();
 		Carrying = null;

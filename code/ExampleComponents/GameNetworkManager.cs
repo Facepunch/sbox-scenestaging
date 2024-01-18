@@ -7,9 +7,6 @@ public sealed class GameNetworkManager : Component, Component.INetworkListener
 
 	public void OnActive( Connection channel )
 	{
-		Log.Info( $"Player '{channel.DisplayName}' is becoming active" );
-		Log.Info( $"Avatar: {channel.GetUserData( "avatar" )}" );
-
 		var clothing = new ClothingContainer();
 		clothing.Deserialize( channel.GetUserData( "avatar" ) );
 
