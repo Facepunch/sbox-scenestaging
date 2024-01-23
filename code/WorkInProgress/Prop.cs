@@ -1,7 +1,7 @@
-using Sandbox;
+using Sandbox.Diagnostics;
 using Sandbox.ModelEditor.Nodes;
 
-public class Prop : Component, Component.ExecuteInEditor, Component.ICollisionListener, Component.IDamageable
+public class Prop : Component, Component.ExecuteInEditor, Component.IDamageable
 {
 	Model _model;
 
@@ -12,16 +12,56 @@ public class Prop : Component, Component.ExecuteInEditor, Component.ICollisionLi
 		set
 		{
 			if ( _model == value ) return;
+
 			_model = value;
 			OnModelChanged();
 		}
 	}
-	[Property] public float Health { get; set; }
+
+	[Property, Sync] public float Health { get; set; }
+	[Property, MakeDirty] public bool ShowCreatedComponents { get; set; }
+
+	List<Component> ProceduralComponents { get; set; }
+
+	[Property] public Action OnPropBreak { get; set; }
+	[Property] public Action<DamageInfo> OnPropTakeDamage { get; set; }
+
+	public void ClearProcedurals()
+	{
+		if ( ProceduralComponents is null )
+			return;
+
+		foreach ( var p in ProceduralComponents )
+		{
+			p.Destroy();
+		}
+
+		ProceduralComponents?.Clear();
+	}
+
+	public void AddProcedural( Component p )
+	{
+		Assert.AreNotEqual( p, this );
+
+		ProceduralComponents ??= new();
+
+		p.Flags |= ComponentFlags.Hidden | ComponentFlags.NotSaved;
+
+		if ( !ProceduralComponents.Contains( p ) )
+		{
+			ProceduralComponents.Add( p );
+		}
+	}
+
 
 	protected override void OnEnabled()
 	{
-		OnModelChanged();
 		UpdateComponents();
+	}
+
+	protected override void OnDisabled()
+	{
+		ClearProcedurals();
 	}
 
 	void OnModelChanged()
@@ -32,6 +72,12 @@ public class Prop : Component, Component.ExecuteInEditor, Component.ICollisionLi
 		if ( Model.TryGetData<ModelPropData>( out var propData ) )
 		{
 			Health = propData.Health > 0 ? propData.Health : Health;
+		}
+
+		if ( Active )
+		{
+			ClearProcedurals();
+			UpdateComponents();
 		}
 	}
 
@@ -44,6 +90,7 @@ public class Prop : Component, Component.ExecuteInEditor, Component.ICollisionLi
 
 		CreateModelComponent( skinned );
 		CreatePhysicsComponent();
+		ApplyVisibilityFlags();
 	}
 
 	void CreateModelComponent( bool skinned )
@@ -61,6 +108,8 @@ public class Prop : Component, Component.ExecuteInEditor, Component.ICollisionLi
 
 		mr.Flags |= ComponentFlags.Hidden | ComponentFlags.NotSaved;
 		mr.Model = Model;
+
+		AddProcedural( mr );
 	}
 
 	void CreatePhysicsComponent()
@@ -74,36 +123,30 @@ public class Prop : Component, Component.ExecuteInEditor, Component.ICollisionLi
 			collider.Flags |= ComponentFlags.Hidden | ComponentFlags.NotSaved;
 			collider.Model = Model;
 
+			AddProcedural( collider );
+
 			var rigidBody = Components.GetOrCreate<Rigidbody>();
 			rigidBody.Flags |= ComponentFlags.Hidden | ComponentFlags.NotSaved;
+
+			AddProcedural( rigidBody );
 
 			return;
 		}
 
 		var p = Components.GetOrCreate<ModelPhysics>();
+		p.Renderer = ProceduralComponents.OfType<SkinnedModelRenderer>().FirstOrDefault();
 		p.Model = Model;
+		AddProcedural( p );
 	}
 
-	public void OnCollisionStart( Collision c )
-	{
-		//Log.Warning( $"{c.Contact.NormalSpeed} / {c.Contact.Speed.Length}" );
-	}
-
-	public void OnCollisionUpdate( Collision other )
-	{
-
-	}
-
-	public void OnCollisionStop( CollisionStop other )
-	{
-
-	}
 
 	public void OnDamage( in DamageInfo damage )
 	{
 		// The dead feel nothing
 		if ( Health <= 0.0f )
 			return;
+
+		OnPropTakeDamage?.Invoke( damage );
 
 		// Take the damage
 		Health -= damage.Damage;
@@ -123,6 +166,8 @@ public class Prop : Component, Component.ExecuteInEditor, Component.ICollisionLi
 
 	void OnBreak()
 	{
+		OnPropBreak?.Invoke();
+
 		CreateGibs();
 	}
 
@@ -163,6 +208,31 @@ public class Prop : Component, Component.ExecuteInEditor, Component.ICollisionLi
 			}
 
 
+		}
+	}
+
+	protected override void OnDirty()
+	{
+		base.OnDirty();
+
+		ApplyVisibilityFlags();
+	}
+
+	void ApplyVisibilityFlags()
+	{
+		if ( ProceduralComponents is null )
+			return;
+
+		foreach ( var c in ProceduralComponents )
+		{
+			if ( ShowCreatedComponents )
+			{
+				c.Flags = ComponentFlags.NotSaved;
+			}
+			else
+			{
+				c.Flags = ComponentFlags.Hidden | ComponentFlags.NotSaved;
+			}
 		}
 	}
 }
