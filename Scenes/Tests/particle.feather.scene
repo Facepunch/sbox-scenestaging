@@ -1,4 +1,5 @@
 {
+  "Id": "b23401ea-87e0-477c-9ce6-9f558cf798c4",
   "GameObjects": [
     {
       "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
@@ -8,8 +9,9 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "DirectionalLightComponent",
-          "__enabled": true,
+          "__type": "DirectionalLight",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
           "LightColor": "1,0.89069,0.76238,1",
           "Shadows": true,
           "SkyColor": "0.10599,0.11132,0.12376,1"
@@ -24,17 +26,16 @@
       "Components": [
         {
           "__type": "SkyBox2D",
-          "__enabled": true,
           "SkyMaterial": "materials/skybox/light_test_sky_night_basic.vmat",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "EnvmapComponent",
-          "__enabled": true,
+          "__type": "EnvmapProbe",
           "Bounds": {
             "Mins": "-40960,-40960,-40960",
             "Maxs": "40960,40960,40960"
           },
+          "Feathering": 0.02,
           "Projection": "Sphere",
           "Texture": "textures/cubemaps/default.vtex",
           "TintColor": "0.16572,0.1857,0.24257,1"
@@ -50,7 +51,6 @@
       "Components": [
         {
           "__type": "CharacterController",
-          "__enabled": true,
           "Acceleration": 10,
           "GroundAngle": 45,
           "Height": 71.05,
@@ -60,17 +60,34 @@
         },
         {
           "__type": "PlayerController",
-          "__enabled": true,
-          "AnimationHelper": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
+          "AnimationHelper": {
+            "_type": "component",
+            "go": "4d326de5-b0c5-447f-8cc9-c6b3d0bd93a8",
+            "component_type": "CitizenAnimationHelper"
+          },
           "Body": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
           "Eye": "edb447df-b691-4153-8652-070d2533e7c4",
+          "FirstPerson": false,
           "Gravity": "0,0,800"
         },
         {
-          "__type": "CitizenAnimation",
-          "__enabled": true,
+          "__type": "CitizenAnimationHelper",
+          "BodyWeight": 1,
+          "EyeSource": null,
+          "EyesWeight": 1,
+          "HeadWeight": 1,
           "Height": 1,
-          "Target": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7"
+          "IkLeftFoot": null,
+          "IkLeftHand": null,
+          "IkRightFoot": null,
+          "IkRightHand": null,
+          "LookAt": null,
+          "LookAtEnabled": false,
+          "Target": {
+            "_type": "component",
+            "go": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+            "component_type": "SkinnedModelRenderer"
+          }
         }
       ],
       "Children": [
@@ -81,14 +98,14 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "AnimatedModelComponent",
-              "__enabled": true,
+              "__type": "SkinnedModelRenderer",
               "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": null,
               "CreateBoneObjects": true,
               "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen/citizen.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ],
@@ -458,12 +475,12 @@
                                                   "Enabled": true,
                                                   "Components": [
                                                     {
-                                                      "__type": "ModelComponent",
-                                                      "__enabled": true,
+                                                      "__type": "ModelRenderer",
                                                       "BodyGroups": 18446744073709551615,
+                                                      "MaterialGroup": null,
                                                       "MaterialOverride": null,
                                                       "Model": "models/fantasy/items/dagger.vmdl",
-                                                      "ShouldCastShadows": true,
+                                                      "RenderType": "On",
                                                       "Tint": "1,1,1,1"
                                                     }
                                                   ]
@@ -913,26 +930,26 @@
           "Components": [
             {
               "__type": "CameraComponent",
-              "__enabled": true,
               "BackgroundColor": "0.25292,0.26086,0.29703,1",
               "ClearFlags": "All",
               "FieldOfView": 69.32,
+              "IsMainCamera": true,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "Priority": 1,
               "RenderExcludeTags": "",
               "RenderTags": "",
               "TargetEye": "None",
+              "Viewport": "0,0,1,1",
               "ZFar": 10000,
               "ZNear": 1
             },
             {
               "__type": "Sharpen",
-              "__enabled": true,
               "Scale": 0.2
             },
             {
               "__type": "Bloom",
-              "__enabled": true,
               "BloomColor": {
                 "color": [
                   {
@@ -962,7 +979,6 @@
             },
             {
               "__type": "Tonemapping",
-              "__enabled": true,
               "ExposureCompensation": 0,
               "MaximumExposure": 2,
               "MinimumExposure": 1.3,
@@ -970,7 +986,6 @@
             },
             {
               "__type": "GradientFog",
-              "__enabled": true,
               "Color": "0.17165,0.28666,0.5099,0.17",
               "EndDistance": 8096,
               "FalloffExponent": 1,
@@ -980,7 +995,6 @@
             },
             {
               "__type": "Vignette",
-              "__enabled": true,
               "Center": "0.4999999,0.5",
               "Color": "0,0,0,0.7",
               "Intensity": 0.8,
@@ -1002,15 +1016,18 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "AnimatedModelComponent",
-              "__enabled": true,
+              "__type": "SkinnedModelRenderer",
               "BodyGroups": 18446744073709551615,
-              "BoneMergeTarget": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+              "BoneMergeTarget": {
+                "_type": "component",
+                "go": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+                "component_type": "SkinnedModelRenderer"
+              },
               "CreateBoneObjects": false,
               "MaterialGroup": null,
               "MaterialOverride": null,
               "Model": "models/citizen_clothes/vest/chefs_apron/models/chefs_apron.vmdl",
-              "ShouldCastShadows": true,
+              "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
@@ -1023,8 +1040,8 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "ColliderSphereComponent",
-              "__enabled": true,
+              "__type": "SphereCollider",
+              "Center": "0,0,0",
               "IsTrigger": false,
               "Radius": 25,
               "Static": false,
@@ -1043,17 +1060,17 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
+          "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/plane.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "0.05882,0.13725,0.49412,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "100,100,0.01",
           "Static": false,
@@ -1069,7 +1086,6 @@
       "Components": [
         {
           "__type": "ParticleEffect",
-          "__enabled": true,
           "Alpha": {
             "Type": "Curve",
             "CurveA": [
@@ -1148,6 +1164,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PreWarm": 0,
           "PushStrength": {},
           "Roll": {
             "Type": "Range",
@@ -1181,7 +1198,6 @@
         },
         {
           "__type": "ParticleSpriteRenderer",
-          "__enabled": true,
           "Additive": false,
           "BlurAmount": 0.5,
           "BlurOpacity": 0.5,
@@ -1191,6 +1207,7 @@
           "FogStrength": 1,
           "LeadingTrail": true,
           "MotionBlur": false,
+          "Opaque": false,
           "RotationOffset": 0,
           "Scale": 60,
           "Shadows": true,
@@ -1199,9 +1216,9 @@
         },
         {
           "__type": "ParticleSphereEmitter",
-          "__enabled": true,
           "Burst": 0,
           "Delay": 0,
+          "DestroyOnEnd": false,
           "Duration": 10,
           "Loop": true,
           "OnEdge": false,
@@ -1219,7 +1236,6 @@
       "Components": [
         {
           "__type": "ParticleEffect",
-          "__enabled": true,
           "Alpha": {
             "Type": "Curve",
             "CurveA": [
@@ -1298,6 +1314,7 @@
           "PerParticleTimeScale": {
             "Constants": "1,0,0,0"
           },
+          "PreWarm": 0,
           "PushStrength": {},
           "Roll": {
             "Type": "Range",
@@ -1329,27 +1346,27 @@
         },
         {
           "__type": "ParticleSpriteRenderer",
-          "__enabled": true,
           "Additive": false,
           "BlurAmount": 0.5,
           "BlurOpacity": 0.5,
           "BlurSpacing": 0.5,
-          "DepthFeather": 21.68,
+          "DepthFeather": 50,
           "FaceVelocity": false,
           "FogStrength": 1,
           "LeadingTrail": true,
           "MotionBlur": false,
+          "Opaque": false,
           "RotationOffset": 0,
-          "Scale": 60,
-          "Shadows": true,
+          "Scale": 50,
+          "Shadows": false,
           "SortMode": "ByDistance",
           "Texture": "materials/particles/smoke/render/smokeloop_i_0.vtex"
         },
         {
           "__type": "ParticleSphereEmitter",
-          "__enabled": true,
           "Burst": 0,
           "Delay": 0,
+          "DestroyOnEnd": false,
           "Duration": 10,
           "Loop": true,
           "OnEdge": false,
@@ -1366,12 +1383,12 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
+          "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
@@ -1383,12 +1400,12 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
+          "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
@@ -1401,7 +1418,6 @@
       "Components": [
         {
           "__type": "TextRenderer",
-          "__enabled": true,
           "Color": "1,1,1,1",
           "FontFamily": "Poppins",
           "FontSize": 32,
@@ -1418,7 +1434,6 @@
       "Components": [
         {
           "__type": "TextRenderer",
-          "__enabled": true,
           "Color": "1,1,1,1",
           "FontFamily": "Poppins",
           "FontSize": 32,
@@ -1429,12 +1444,12 @@
     }
   ],
   "SceneProperties": {
-    "NetworkFrequency": 60,
     "FixedUpdateFrequency": 50,
     "Lerping": true,
     "MaxFixedUpdates": 5,
-    "TimeScale": 1,
+    "NetworkFrequency": 60,
     "ThreadedAnimation": true,
+    "TimeScale": 1,
     "UseFixedUpdate": true
   },
   "Title": "Particle Feather",
