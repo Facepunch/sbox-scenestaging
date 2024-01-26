@@ -24,6 +24,6 @@ public sealed class GameNetworkManager : Component, Component.INetworkListener
 			clothing.Apply( body );
 		}
 
-		player.Network.Spawn( channel );
+		player.NetworkSpawn( channel );
 	}
 }
