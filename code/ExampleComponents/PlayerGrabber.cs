@@ -146,7 +146,7 @@ public class PlayerGrabber : Component
 			tr.Body.ApplyImpulseAt( tr.HitPosition, tr.Direction * 200.0f * tr.Body.Mass.Clamp( 0,200 ) );
 		}
 
-		var damage = new DamageInfo( ShootDamage, GameObject, GameObject );
+		var damage = new DamageInfo( ShootDamage, GameObject, GameObject, tr.Hitbox );
 
 		foreach ( var damageable in tr.GameObject.Components.GetAll<IDamageable>() )
 		{
