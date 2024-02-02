@@ -77,7 +77,7 @@ public class PlayerGrabber : Component
 		var tr = Scene.Trace.Ray( Scene.Camera.Transform.Position, Scene.Camera.Transform.Position + Scene.Camera.Transform.Rotation.Forward * 1000 )
 			.Run();
 
-		if ( !tr.Hit || tr.Body is null || tr.Body.BodyType == PhysicsBodyType.Static )
+		if ( !tr.Hit || tr.Body is null || tr.Body.BodyType != PhysicsBodyType.Dynamic )
 			return;
 
 		if ( Input.Down( "attack1" ) )
@@ -124,7 +124,7 @@ public class PlayerGrabber : Component
 		var ray = Scene.Camera.ScreenNormalToRay( 0.5f );
 		ray.Forward += Vector3.Random * 0.03f;
 
-		var tr = Scene.Trace.Ray( ray, 1000.0f )
+		var tr = Scene.Trace.Ray( ray, 3000.0f )
 				.Run();
 
 		if ( !tr.Hit || tr.GameObject is null )
@@ -132,18 +132,18 @@ public class PlayerGrabber : Component
 
 		if ( ImpactEffect is not null )
 		{
-			ImpactEffect.Clone(new Transform(tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt(tr.Normal)));	
+			ImpactEffect.Clone( new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( tr.Normal ) ) );
 		}
 
 		if ( DecalEffect is not null )
 		{
-			var decal = DecalEffect.Clone(new Transform(tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt(-tr.Normal, Vector3.Random), Random.Shared.Float(0.8f, 1.2f)));
+			var decal = DecalEffect.Clone( new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( -tr.Normal, Vector3.Random ), Random.Shared.Float( 0.8f, 1.2f ) ) );
 			decal.SetParent( tr.GameObject );
 		}
 
 		if ( tr.Body is not null )
 		{
-			tr.Body.ApplyImpulseAt( tr.HitPosition, tr.Direction * 200.0f * tr.Body.Mass.Clamp( 0,200 ) );
+			tr.Body.ApplyImpulseAt( tr.HitPosition, tr.Direction * 200.0f * tr.Body.Mass.Clamp( 0, 200 ) );
 		}
 
 		var damage = new DamageInfo( ShootDamage, GameObject, GameObject, tr.Hitbox );

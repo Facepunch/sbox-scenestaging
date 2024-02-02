@@ -1,0 +1,3372 @@
+{
+  "Id": "f35d927b-6b3f-4244-a8e0-9992de7aa2da",
+  "GameObjects": [
+    {
+      "Id": "7a371711-1229-4adf-b047-9a6f57a8a732",
+      "Name": "Directional Light",
+      "Position": "0,0,200",
+      "Rotation": "0.1597522,0.2488411,-0.5160785,0.8038784",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "DirectionalLight",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "Id": "b8dd4390-e714-4a72-97ba-ecc111f4c341",
+      "Name": "Cube (10)",
+      "Position": "2913.717,1993.478,-192",
+      "Scale": "20,4,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "f97e8652-da5f-47a6-b139-0887e4e5fed1",
+      "Name": "Cube (4)",
+      "Position": "1824.563,2619.821,-191.9988",
+      "Rotation": "0,0,-0.7071067,0.7071068",
+      "Scale": "20,4,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "44ca76ac-672a-4944-b9a8-542d296111a9",
+      "Name": "Cube (1)",
+      "Position": "4367.078,1582.615,299.4073",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "20,4,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "80ee4eee-adfc-45dd-ba52-becb6c36e073",
+      "Name": "Cube (3)",
+      "Position": "3810.191,1126.098,299.4073",
+      "Rotation": "0,0,0.1305262,0.9914449",
+      "Scale": "20,4,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "2f349562-e0eb-4d2e-aa16-96f4d0f77c95",
+      "Name": "Cube (2)",
+      "Position": "3840.623,1988.754,57.66727",
+      "Rotation": "0,-0.258819,0,0.9659258",
+      "Scale": "20,4,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "ce274e96-d77f-4893-97de-2f90812e25d1",
+      "Name": "Cube (11)",
+      "Position": "2881.14,1389.048,60.55545",
+      "Scale": "18.24,20,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.2,0.56,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "feb6fae6-a3f8-43f6-834a-c40bad0c2aa3",
+      "Name": "Cube (14)",
+      "Position": "864,1376,60.55554",
+      "Scale": "5,30,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.2,0.56,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "f815f3ed-aeb6-4fdd-ac46-1e9ee2bffcd9",
+      "Name": "Cube (17)",
+      "Position": "2208,1024,64",
+      "Scale": "10,5,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.2,0.56,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "1a8700f6-6204-4e40-bcf0-e4d6796adff4",
+      "Name": "Cube (24)",
+      "Position": "1248,1024,64",
+      "Scale": "10,5,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.2,0.56,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "75acb70b-1e2e-47d2-b5c3-22a9112432bb",
+      "Name": "Cube (28)",
+      "Position": "1737.182,1024,115.1622",
+      "Scale": "10,5,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.2,0.56,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "59ac41b4-2d56-4197-a8cd-7d337d3fc45e",
+      "Name": "Cube (29)",
+      "Position": "2092.482,1734.965,-199.5259",
+      "Scale": "5,5,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.2,0.56,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "8323b2d7-b366-42e0-b7d3-68fe004ec4c3",
+      "Name": "Cube (32)",
+      "Position": "1921.826,1734.964,-245.2075",
+      "Rotation": "0,-0.258819,0,0.9659258",
+      "Scale": "5,5,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.2,0.56,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "416c04ca-efd8-4ccd-a38b-c8c6be0dadbd",
+      "Name": "Cube (31)",
+      "Position": "1218.991,1450.397,-199.5254",
+      "Scale": "5,5,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.2,0.56,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "2c6a3367-6558-4dab-a129-f8dbaf9c1e9e",
+      "Name": "Cube (5)",
+      "Position": "1749.489,2408.271,-199.5249",
+      "Scale": "2,2,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.2,0.56,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "7f32573b-d4d9-48c6-b61d-2d11c6e2f2ef",
+      "Name": "Cube (6)",
+      "Position": "1878.286,2605.02,-199.5258",
+      "Scale": "2,2,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.2,0.56,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "961100e4-58c7-43ea-8d4a-d0d4aeba278b",
+      "Name": "Cube (7)",
+      "Position": "1766.845,2816.742,-199.5258",
+      "Scale": "2,2,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.2,0.56,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "7f7f8e33-1fa0-477a-9fc2-e3aa9f1e5cfc",
+      "Name": "Cube (21)",
+      "Position": "1697.035,1379.935,-192",
+      "Scale": "30,30,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null
+        }
+      ]
+    },
+    {
+      "Id": "20a4a065-4db6-4a9c-acbf-65fc90fe6604",
+      "Name": "Closest Point",
+      "Position": "1797.075,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "06cfcef8-0073-4d8a-b955-240b9edddb62",
+      "Name": "Closest Point (12)",
+      "Position": "1764.078,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "d7639316-357d-49b5-ae4a-6ddb1cf1c9dc",
+      "Name": "Closest Point (13)",
+      "Position": "1737.848,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "3f55ee82-a67f-4364-b452-828f9e43b416",
+      "Name": "Closest Point (14)",
+      "Position": "1707.036,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "3ce36872-6ae3-4ee6-8416-f0b40e0f47e8",
+      "Name": "Closest Point (15)",
+      "Position": "1669.339,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "771c5d28-9aa3-4947-86f3-7503f66e2faa",
+      "Name": "Closest Point (16)",
+      "Position": "1632.374,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "c7bbfc46-0094-41a4-97c3-1a79e09bf67d",
+      "Name": "Closest Point (17)",
+      "Position": "1595.648,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "f7644487-aee8-4674-aaa8-7f798981606c",
+      "Name": "Closest Point (18)",
+      "Position": "1564.344,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "215e5c74-3df9-42fa-92d4-ffebeb149229",
+      "Name": "Closest Point (19)",
+      "Position": "1537.435,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "2e8ad0f7-8952-4daf-bc5d-a196937ae135",
+      "Name": "Closest Point (20)",
+      "Position": "1498.345,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "d7038c1f-082e-470c-bf68-48401ec5f835",
+      "Name": "Closest Point (21)",
+      "Position": "1467.636,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "afec73e7-53fd-4627-8e9f-f594556958b2",
+      "Name": "Closest Point (22)",
+      "Position": "1443.679,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "85ca7234-a97f-40d0-a3c2-ff966e337878",
+      "Name": "Closest Point (23)",
+      "Position": "1411.332,1232.688,315.3311",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": false,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "8037b526-43b5-4104-9186-623a6c34ad1a",
+      "Name": "Object",
+      "Position": "2188.562,1959.599,148.7119",
+      "Rotation": "0.2708732,0.137716,-0.8492547,0.4317737",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "SkyBox2D",
+          "SkyMaterial": "materials/skybox/light_test_sky_sunny02.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "ffe39f6e-e830-4cf3-82d3-9f4eb90051d1",
+      "Name": "Path",
+      "Position": "2047.408,1024.973,362.6554",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": false,
+          "Path": true,
+          "RandomPoint": false,
+          "Target": {
+            "_type": "gameobject",
+            "go": "a57488d6-9c18-4a94-8d4c-1c314b7f3615"
+          }
+        }
+      ],
+      "Children": [
+        {
+          "Id": "cac3dc5d-0379-4bfb-8429-77a2df6f3795",
+          "Name": "Text",
+          "Position": "0,0,0",
+          "Rotation": "0,-0,-0.7144727,0.6996633",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "TextRenderer",
+              "Color": "1,1,1,1",
+              "FontFamily": "Poppins",
+              "FontSize": 124.66,
+              "Scale": 0.11,
+              "Text": "Path Start"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "a57488d6-9c18-4a94-8d4c-1c314b7f3615",
+      "Name": "Path Target",
+      "Position": "2054.749,1757.278,-39.77957",
+      "Enabled": true,
+      "Children": [
+        {
+          "Id": "b44f4d75-beac-4736-9993-6dbbf617cd98",
+          "Name": "Text",
+          "Position": "0,0,0",
+          "Rotation": "0,-0,-0.7144727,0.6996633",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "TextRenderer",
+              "Color": "1,1,1,1",
+              "FontFamily": "Poppins",
+              "FontSize": 124.66,
+              "Scale": 0.11,
+              "Text": "Path End"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "912a6e19-ec61-40cb-b0e9-5c3df188bac6",
+      "Name": "Camera",
+      "Position": "2188.562,1959.599,148.7119",
+      "Rotation": "0.2708732,0.137716,-0.8492547,0.4317737",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 84.96,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "DepthOfField",
+          "__enabled": false,
+          "BackBlur": true,
+          "BlurSize": 100,
+          "FocalDistance": 419.06,
+          "FrontBlur": true
+        },
+        {
+          "__type": "Bloom",
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "BloomCurve": [
+            {
+              "y": 0.5
+            },
+            {
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "Mode": "Additive",
+          "Strength": 1.48,
+          "Threshold": 0.73,
+          "ThresholdWidth": 1
+        },
+        {
+          "__type": "Tonemapping",
+          "ExposureCompensation": 0,
+          "MaximumExposure": 2,
+          "MinimumExposure": 1,
+          "Rate": 1
+        },
+        {
+          "__type": "NoClip",
+          "MoveSpeed": 600
+        },
+        {
+          "__type": "PlayerGrabber",
+          "DecalEffect": {
+            "_type": "gameobject",
+            "go": "0484a181-d910-41a1-aa93-798bb644f0dd",
+            "prefab": "effects/decal_bullet_default.prefab"
+          },
+          "ImpactEffect": {
+            "_type": "gameobject",
+            "go": "8aec9411-c071-4805-85d3-861d2e35e6ac",
+            "prefab": "effects/impact_default.prefab"
+          },
+          "ShootDamage": 9
+        },
+        {
+          "__type": "CubemapFog",
+          "Blur": 0.81,
+          "EndDistance": 8096,
+          "FalloffExponent": 1.0799992,
+          "Sky": "materials/skybox/light_test_sky_sunny02.vmat",
+          "StartDistance": 512
+        }
+      ]
+    },
+    {
+      "Id": "83fbafa1-8f7e-4c54-9508-4765b0798d9a",
+      "Name": "present_box",
+      "Position": "2112.199,1706.72,-45.55482",
+      "Scale": "2,2,2",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 0,
+          "IsStatic": false,
+          "Model": "models/props/presents/present_box.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ],
+      "Children": [
+        {
+          "Id": "25e71180-7a7f-4a44-93cc-cf729b81b41f",
+          "Name": "AgentAttract",
+          "Position": "0,0,8.949503",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "NavigationQueryTest",
+              "AttractAgents": true,
+              "ClosestEdge": false,
+              "ClosestPoint": false,
+              "Path": false,
+              "RandomPoint": false,
+              "Target": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "afcbbc7c-1561-4eaa-851f-5661c640a253",
+      "Name": "NavAgent (51)",
+      "Position": "3140.589,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "4269ed44-2d01-4544-b787-2491ab0a78cb",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "d50acb76-7fb9-45ea-ae1d-3add20eb4690",
+      "Name": "NavAgent (55)",
+      "Position": "3047.046,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "e0f09bc1-f551-472b-ad86-0aa795fd7e20",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "ca37ad08-b1fa-4884-bd56-f1d69cc9ca5d",
+      "Name": "NavAgent (59)",
+      "Position": "2945.658,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "a1d45190-517b-425d-93ae-72c7e75e8a6a",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "3713b711-1504-473e-bc1f-3e464c68196c",
+      "Name": "NavAgent (63)",
+      "Position": "2840.719,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "8d7333b6-78e8-4483-b6f0-e89c32b58030",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "5df0ac88-259b-489e-90bd-739e141b9931",
+      "Name": "NavAgent (129)",
+      "Position": "2734.518,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "f309d47c-ca85-4507-a5c9-c71d53721aa1",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "fa5c6856-ca74-41da-83fc-f1138ec5c954",
+      "Name": "NavAgent (43)",
+      "Position": "3277.889,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "9a9c0cea-81ad-49d4-87f9-63fb52235cda",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "b3d04925-a7bd-4207-8bf0-12524334393f",
+      "Name": "NavAgent (48)",
+      "Position": "3184.848,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "0b6d835f-260f-480f-bfc4-a041242a7645",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "cbb47463-d4b0-4e6f-9c0f-157a551e74f0",
+      "Name": "NavAgent (52)",
+      "Position": "3089.537,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "5465a5dc-8915-4e65-98f2-9ee928f992d3",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "9eae0af6-19f1-4e62-8800-3c06182e13f1",
+      "Name": "NavAgent (56)",
+      "Position": "2995.995,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "dd07ac0f-1315-41b1-a65e-12ba8f4488c8",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "cbc481ff-83ee-4078-97c2-a1e337c55d51",
+      "Name": "NavAgent (60)",
+      "Position": "2894.607,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "ac20c788-ff38-4c31-b73a-6d3379d75d3a",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "7357b62f-11dd-460f-838a-fd6302f5ad7f",
+      "Name": "NavAgent (64)",
+      "Position": "2789.667,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "8aecb084-aa40-4208-90f5-f7f130ec975e",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "f416fab8-fe01-491a-82f0-d97e0d826e96",
+      "Name": "NavAgent (130)",
+      "Position": "2683.467,1985.377,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "7e88dfb2-b128-4b92-b9a6-68505bd59f1f",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "13de4ad8-9e63-479c-8f26-dfa5aee6c09e",
+      "Name": "NavAgent (44)",
+      "Position": "3272.562,2030.812,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "3c8b06a2-4d94-42ae-8dd3-266179b28548",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "0364a720-7631-4b00-a5f6-9741fb622fe3",
+      "Name": "NavAgent (49)",
+      "Position": "3179.521,2030.812,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "b974c1e1-05cc-4d66-9050-4b13c76308da",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "9cf321b1-22b2-4180-91fb-e63985ee1fd1",
+      "Name": "NavAgent (53)",
+      "Position": "3084.211,2030.812,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "7c2a6028-bd9d-4533-9946-13443e6f8129",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "802afbf7-1d81-4f60-8f78-308bd27aeaa0",
+      "Name": "NavAgent (57)",
+      "Position": "2990.669,2030.812,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 550,
+          "Height": 44.36,
+          "MaxSpeed": 500,
+          "Radius": 20,
+          "Separation": 0.16,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "d2343a27-0477-4c3b-95ce-147893070889",
+          "Name": "Cube",
+          "Position": "0,0,10.29068",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/lightemit.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "Off",
+              "Tint": "0.04186,0.04169,0.03193,1"
+            }
+          ],
+          "Children": [
+            {
+              "Id": "dd2b56f0-a8a3-48ce-8dfd-42a9631aa4dc",
+              "Name": "Point Light",
+              "Position": "0,0,1.753479",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "PointLight",
+                  "Attenuation": 2.57,
+                  "FogMode": "Enabled",
+                  "FogStrength": 1,
+                  "LightColor": "1,0.90884,0.31628,1",
+                  "Radius": 800,
+                  "Shadows": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "b6908491-958c-4b38-994c-a452fc1660fd",
+      "Name": "NavAgent (61)",
+      "Position": "2889.28,2030.812,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "539029c0-2600-4b17-8248-3c26589ab843",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "88f46f9a-3a5a-406b-97bb-6753881fdebe",
+      "Name": "NavAgent (65)",
+      "Position": "2784.341,2030.812,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "3af708d0-32f4-4614-97fb-0beac5244330",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "4b1cd0c7-e94a-4645-a8e7-620740d71232",
+      "Name": "NavAgent (131)",
+      "Position": "2678.141,2030.812,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "7ae70c2a-8a4b-4606-aa3a-5a7ab6d5c057",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "0c479853-f3cb-4fc7-af5d-e1b87245b8f7",
+      "Name": "NavAgent (45)",
+      "Position": "3324.989,2034.082,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "32489844-f2d2-4221-89fb-99dd1f9d6955",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "8db2c382-6fa2-423a-9feb-f8c6f89eed41",
+      "Name": "NavAgent (46)",
+      "Position": "3231.948,2034.082,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "244228cb-65e3-45fd-ab54-ee959196d03d",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "a7a7965d-0b71-4e39-8340-cd13b9744013",
+      "Name": "NavAgent (50)",
+      "Position": "3136.637,2034.082,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "9fb2ef12-c50a-42d7-a17b-50891a5228c2",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "fc4a804d-9613-469e-a927-a01b1b08e75e",
+      "Name": "NavAgent (54)",
+      "Position": "3043.095,2034.082,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "6c0a62a8-e898-4730-a243-d8e31c4bd6ac",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "fe520f35-f9e1-4c55-9c54-71d7db094194",
+      "Name": "NavAgent (58)",
+      "Position": "2941.707,2034.082,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "683584d1-cd0c-43c2-b4bc-d900f6af95b5",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "9571beb2-097b-4556-9948-9656cc4ae708",
+      "Name": "NavAgent (62)",
+      "Position": "2836.767,2034.082,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "9703654c-c7a1-4eb1-bd05-0e903ca522b7",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "67219900-82bd-4c07-8987-232374d56918",
+      "Name": "NavAgent (66)",
+      "Position": "2730.567,2034.082,-156.4348",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 150,
+          "Height": 44.36,
+          "MaxSpeed": 200,
+          "Radius": 20,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "96afa90b-8d46-499c-807c-c815e9cb6042",
+          "Name": "Cube",
+          "Position": "0,0,13.03287",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.71628,0.25819,0.16658,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "cf3be184-866f-42a6-8381-dd13b868ceff",
+      "Name": "NavAgent (100)",
+      "Position": "1244.22,1973.202,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "88792aae-60ac-4ec5-8110-c502766b74cf",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "aef7bd2c-4d6c-4e27-9ac3-979b4ebc1554",
+      "Name": "NavAgent (106)",
+      "Position": "1288.247,1973.202,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "386d05da-0cff-484b-ad24-443b489d62eb",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "99990513-f9f5-4275-98ea-c23629f65a73",
+      "Name": "NavAgent (112)",
+      "Position": "1340.827,1973.202,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "a52e474a-95b7-4621-82ef-f3373681bc14",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "62f1e542-9944-4479-8548-33c3e1ad0a3b",
+      "Name": "NavAgent (118)",
+      "Position": "1387.084,1973.202,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "484e3bd9-64bc-4e55-b415-4e3a97d2e707",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "97e934ef-af16-4cfc-a89e-1cef82ad2221",
+      "Name": "NavAgent (89)",
+      "Position": "1135.255,1918.22,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "624bf3e0-3222-44e4-8b4d-14d091ae3b84",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "faa9db6a-fdb9-42a7-bbaf-079ae15dc1c7",
+      "Name": "NavAgent (95)",
+      "Position": "1199.949,1918.22,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "84375949-3b40-442b-96a9-c8cbe81ba44d",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "5107d493-9038-4855-a1e4-037bea01ec8f",
+      "Name": "NavAgent (101)",
+      "Position": "1247.286,1918.22,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "59441593-c46b-41ea-8e06-c811e07a6fef",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "d6f9285e-b6de-4982-94ba-324d60543b2b",
+      "Name": "NavAgent (107)",
+      "Position": "1291.314,1918.22,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "ed0e3d9e-6265-4d95-9913-0b5dc3a16b67",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "44c44634-2d55-4dd3-9701-47554c011dbe",
+      "Name": "NavAgent (113)",
+      "Position": "1343.894,1918.22,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "3d1ae01d-6144-4d13-9e1d-3b8e8ec30448",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "4070da45-eb5c-4048-b784-080a00ce8996",
+      "Name": "NavAgent (119)",
+      "Position": "1390.15,1918.22,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "2b0bbadb-8903-4f61-88d3-c5f605dd393f",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "46866599-d5b7-4762-a84f-129ec24ffc50",
+      "Name": "NavAgent (90)",
+      "Position": "1139.182,1865.252,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "c42eb46e-f833-457c-b235-b3ff64b2c1b8",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "a7b53dea-e152-4b2e-ae8f-449788e13adc",
+      "Name": "NavAgent (96)",
+      "Position": "1203.876,1865.252,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "57b114f6-f26f-44d7-abd6-c45ef26d8014",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "601c9a23-a579-46b9-889c-7ea9107ea74d",
+      "Name": "NavAgent (102)",
+      "Position": "1251.213,1865.252,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "7d6efb84-d240-4f67-8621-eb68dfc177e8",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "fd9aaa48-f752-48cc-8774-580a2c02da32",
+      "Name": "NavAgent (108)",
+      "Position": "1295.24,1865.252,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "1c69efbf-f50c-494e-a52e-047b3607b9d9",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "1b76ee6e-1ae0-4126-8484-b01d14002d54",
+      "Name": "NavAgent (114)",
+      "Position": "1347.82,1865.252,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "80e9c91c-ee39-44f0-ad6d-a4b772bc6deb",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "1af5fe02-4ee4-460f-a0ec-e1dbbb23a3ec",
+      "Name": "NavAgent (120)",
+      "Position": "1394.077,1865.252,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "b37340a0-9e06-4b50-9e00-13b7c6d0e210",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "14997777-5e50-4518-ae83-2441f710ffca",
+      "Name": "NavAgent (91)",
+      "Position": "1137.833,1800.023,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "77df1d0b-1019-45f9-980f-a672e47fc065",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "5ba1519a-8869-4ab6-93ae-ef2c869d55ed",
+      "Name": "NavAgent (97)",
+      "Position": "1202.527,1800.023,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "dec191a4-41fc-4936-9a7d-53ca848ae54a",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "5cdfa347-5bb7-4096-a40f-86367797bdde",
+      "Name": "NavAgent (103)",
+      "Position": "1249.864,1800.023,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "ee6a13fc-21c8-4257-b69b-7036836d352b",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "c6dc5845-f2bf-4df2-ac5d-99e4ae314146",
+      "Name": "NavAgent (109)",
+      "Position": "1293.891,1800.023,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "1d76743f-434d-4098-8dc9-07bbf2ff6c89",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "e6c5c989-19ee-4cd3-b5a3-401e03cfe7a4",
+      "Name": "NavAgent (115)",
+      "Position": "1346.471,1800.023,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "2b4e4964-0fbc-40b5-b305-7c802c5565a5",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "727d3500-1cd2-4b24-a2bf-74681c49e21c",
+      "Name": "NavAgent (121)",
+      "Position": "1392.728,1800.023,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "9fba6760-b2e9-4593-8718-0c2f4b1422e5",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "c25c8144-b247-4035-ba90-10ec2a1bd7c7",
+      "Name": "NavAgent (92)",
+      "Position": "1134.522,1743.419,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "2cf87292-6d30-44ce-8189-9ff35903f8e6",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "12bb42c1-cc2b-43d7-ace4-81e395dbb15e",
+      "Name": "NavAgent (98)",
+      "Position": "1199.216,1743.419,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "dc8b3a83-7071-4590-8739-3ab1fb0839de",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "09d8d33d-b95c-4e45-b093-0bc018e5fa46",
+      "Name": "NavAgent (104)",
+      "Position": "1246.553,1743.419,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "d4dd1e1a-ae98-4131-9d26-b4ef7eb2d1b1",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "2147f495-f07d-4d96-b606-f09f48c80db0",
+      "Name": "NavAgent (110)",
+      "Position": "1290.58,1743.419,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "53caa564-0ae1-46a3-86af-4cfa50987b58",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "93ce946f-143a-42fc-a5d8-04d680c7667e",
+      "Name": "NavAgent (116)",
+      "Position": "1343.16,1743.419,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "8af6dc00-4d76-4ba1-8801-b69e093c9e61",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "dc3c460c-0f0d-4231-b549-3e243daeb5f0",
+      "Name": "NavAgent (122)",
+      "Position": "1389.417,1743.419,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "2e229332-7ac7-414d-ad19-f4f76ff25e9a",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "9f83e287-4687-494d-b7c2-0491bd1398ff",
+      "Name": "NavAgent (93)",
+      "Position": "1131.472,1677.634,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "ec0cf7ef-3009-45d0-8a98-a4e19d1cf7a8",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "7dc9512b-fb26-4318-a4a9-f7373921a9cd",
+      "Name": "NavAgent (99)",
+      "Position": "1196.166,1677.634,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "85a97e9c-5fce-488d-8aa2-55c8b5966e3c",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "7dba0b4e-ad84-4e95-bcac-5c3d4b394137",
+      "Name": "NavAgent (105)",
+      "Position": "1243.503,1677.634,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "bd1be90e-0ecb-44eb-a2aa-787f1306d2ce",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "e8d43608-03df-433b-a64d-5e986120e1e2",
+      "Name": "NavAgent (111)",
+      "Position": "1287.531,1677.634,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "e8109292-bbd9-46ae-8ae0-1ee8d1d76cb9",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "5015ba8a-98d6-4e6f-85a6-22bcbda0122e",
+      "Name": "NavAgent (117)",
+      "Position": "1340.111,1677.634,-154.2761",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "3f09f611-7927-40d6-b775-6dfa87f21e42",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "34a274bb-91aa-4a9b-adc5-0858ff40d4c8",
+      "Name": "NavAgent (123)",
+      "Position": "1139.4,721.4297,-154.2749",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "7d0cd190-ebfe-4927-9107-3bdbfc1c2845",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "ea61289d-3bf6-4ea5-ada3-3a074576f3ba",
+      "Name": "NavAgent (124)",
+      "Position": "1114.556,805.1824,-154.2748",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "bad18f6c-2317-4458-b675-057789463067",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "7aec9153-76b5-4fa9-8809-7799a20571e4",
+      "Name": "NavAgent (125)",
+      "Position": "1230.532,813.1329,-154.2746",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "c42c34b7-2af7-4332-9259-2f42cbe43a49",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "ae301a9e-faa9-4efd-8874-b2140f507670",
+      "Name": "NavAgent (126)",
+      "Position": "1231.672,711.4006,-154.275",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "f1ebc830-b564-4f56-8aea-0b8b688865be",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "c44b89df-9054-4f21-ac2c-29916c8d6157",
+      "Name": "NavAgent (127)",
+      "Position": "2356.4,811.4612,-154.2749",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "37fec47f-993d-46d5-9103-b21e1f15a098",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "662a09ee-3612-43ce-b6e1-07a167605cec",
+      "Name": "NavAgent (128)",
+      "Position": "2338.149,696.4589,-154.2749",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshAgent",
+          "Acceleration": 50,
+          "Height": 66.640076,
+          "MaxSpeed": 120,
+          "Radius": 29.42,
+          "Separation": 0.5,
+          "UpdatePosition": true
+        }
+      ],
+      "Children": [
+        {
+          "Id": "e73e4e00-0a72-410c-ba31-4d74c50b4188",
+          "Name": "Cube",
+          "Position": "0,0,50.80054",
+          "Scale": "0.5,0.5,1.5",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "20941c20-d77c-4d41-9837-e68650c4b793",
+      "Name": "rock_cliff_c",
+      "Position": "1451.687,3585.388,-451.9211",
+      "Rotation": "0.4999998,0.8660252,0.00000002980232,0.00000005161912",
+      "Scale": "5,5,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 0,
+          "IsStatic": true,
+          "Model": "models/rust_nature/rocks/rock_cliff_c.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": true,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 60,
+      "AgentRadius": 10,
+      "AgentStepSize": 15,
+      "AgentMaxSlope": 30,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "Navigation - Basics",
+  "Description": "Basics of NavMesh and NavMeshAgent",
+  "LastSaved": "2024-02-02T15:50:21.5587421\u002B00:00",
+  "__references": [
+    "facepunch.present_box",
+    "rust.rock_cliff_c"
+  ]
+}
