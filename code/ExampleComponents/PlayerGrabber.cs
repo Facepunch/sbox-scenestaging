@@ -148,6 +148,7 @@ public class PlayerGrabber : Component
 
 		var damage = new DamageInfo( ShootDamage, GameObject, GameObject, tr.Hitbox );
 		damage.Position = tr.HitPosition;
+		damage.Shape = tr.Shape;
 
 		foreach ( var damageable in tr.GameObject.Components.GetAll<IDamageable>() )
 		{

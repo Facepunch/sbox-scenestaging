@@ -1,0 +1,680 @@
+{
+  "Id": "a6b0e969-f051-466a-810e-f4bf29787039",
+  "GameObjects": [
+    {
+      "Id": "52117bd2-8020-4fa0-b23a-903ed1473301",
+      "Name": "Surface",
+      "Position": "1084.086,-70.45532,-1631.205",
+      "Scale": "10,10,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "RenderType": "On",
+          "Tint": "0.06127,0.13935,0.49505,1"
+        }
+      ],
+      "Children": [
+        {
+          "Id": "23c65f4f-bf21-4481-9e94-de77804161b5",
+          "Name": "Surface (1)",
+          "Position": "0,0,-25",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "100,100,50",
+              "Static": true,
+              "Surface": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "Name": "Directional Light",
+      "Position": "55.4718,-124.3322,91.5952",
+      "Rotation": "0.4803084,0.2399953,-0.7546629,0.3770808",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "DirectionalLight",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.57426,0.4891,0.42359,1",
+          "Shadows": true,
+          "SkyColor": "0.05446,0.05446,0.05446,1"
+        }
+      ]
+    },
+    {
+      "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "Name": "Camera",
+      "Position": "1011.863,273.6311,-1540.558",
+      "Rotation": "0.104912,0.06145444,-0.8564602,0.5016899",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "BackgroundColor": "0.25292,0.26086,0.29703,1",
+          "ClearFlags": "All",
+          "FieldOfView": 85.5,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 2136.4,
+          "ZNear": 1
+        },
+        {
+          "__type": "CameraPhysicsDebug",
+          "__enabled": false,
+          "Hitboxes": false,
+          "MaxPoints": 10000,
+          "NormalLength": 2,
+          "TracesPerFrame": 500,
+          "TraceType": "Ray"
+        },
+        {
+          "__type": "Bloom",
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "BloomCurve": [
+            {
+              "y": 0.5
+            },
+            {
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "Mode": "Additive",
+          "Strength": 0.5,
+          "Threshold": 0.2,
+          "ThresholdWidth": 0.6
+        },
+        {
+          "__type": "Tonemapping",
+          "ExposureCompensation": 0,
+          "MaximumExposure": 2,
+          "MinimumExposure": 1,
+          "Rate": 1
+        }
+      ]
+    },
+    {
+      "Id": "eed1d0da-fb94-44c7-b17b-638cddf71838",
+      "Name": "Cubemap",
+      "Position": "1099.505,-0.0033,-1162.002",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "EnvmapProbe",
+          "Bounds": {
+            "Mins": "-5120,-5120,-5120",
+            "Maxs": "5120,5120,5120"
+          },
+          "Feathering": 0.02,
+          "Projection": "Box",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "TintColor": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "62c9abb3-c5a7-4717-8787-8f85f0c989b7",
+      "Name": "Player",
+      "Position": "1185.693,375.8237,-1585.303",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "PlayerController",
+          "AnimationHelper": null,
+          "Body": null,
+          "Eye": {
+            "_type": "gameobject",
+            "go": "0be956d0-5ab7-4de9-8ad7-301e2959034d"
+          },
+          "FirstPerson": true,
+          "Gravity": "0,0,800"
+        },
+        {
+          "__type": "CharacterController",
+          "Acceleration": 10,
+          "Bounciness": 0.3,
+          "GroundAngle": 45,
+          "Height": 64,
+          "IgnoreLayers": "debris",
+          "Radius": 16,
+          "StepHeight": 18
+        },
+        {
+          "__type": "PlayerGrabber",
+          "DecalEffect": {
+            "_type": "gameobject",
+            "prefab": "effects/decal_bullet_default.prefab"
+          },
+          "ImpactEffect": {
+            "_type": "gameobject",
+            "prefab": "effects/impact_default.prefab"
+          },
+          "ShootDamage": 9
+        }
+      ],
+      "Children": [
+        {
+          "Id": "0be956d0-5ab7-4de9-8ad7-301e2959034d",
+          "Name": "Eye",
+          "Position": "0,0,58",
+          "Enabled": true
+        }
+      ]
+    },
+    {
+      "Id": "73e421c9-f7e7-4737-9f9d-80135b027af7",
+      "Name": "Cube",
+      "Position": "972.2286,17.30582,-1565.657",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null
+        },
+        {
+          "__type": "Rigidbody",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ]
+    },
+    {
+      "Id": "264000e6-09fe-48a0-acb7-4aa440f4fd83",
+      "Name": "Prop",
+      "Position": "1129.134,-74.82725,-1507.433",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 50,
+          "IsStatic": false,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ]
+    },
+    {
+      "Id": "8fa08338-96dd-49ec-b9e5-95f27e45b040",
+      "Name": "Prop (1)",
+      "Position": "1050.392,-103.9807,-1630.95",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 50,
+          "IsStatic": false,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ]
+    },
+    {
+      "Id": "de936e2f-8c78-443a-b415-f2be113d4065",
+      "Name": "Prop (3)",
+      "Position": "1146.263,-118.6071,-1507.443",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 50,
+          "IsStatic": false,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ]
+    },
+    {
+      "Id": "26ee6cb9-0cb4-4aff-85b9-e601114f5d50",
+      "Name": "Prop (6)",
+      "Position": "1250,-161.94,-1625.029",
+      "Rotation": "0.00000001669146,0.0000000000000005574729,0.2800363,0.9599896",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 2000,
+          "IsStatic": false,
+          "Model": "models/sbox_props/concrete_barrier/concrete_barrier.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ]
+    },
+    {
+      "Id": "de32cc2b-5631-4b62-adfe-31ad7c7fe128",
+      "Name": "Prop (22)",
+      "Position": "1290.958,-226.1694,-1625.029",
+      "Rotation": "0.00000001669146,0.0000000000000005574729,0.2800363,0.9599896",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 2000,
+          "IsStatic": false,
+          "Model": "models/sbox_props/concrete_barrier/concrete_barrier.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ]
+    },
+    {
+      "Id": "0d3cdac9-340c-4119-965f-baa96a5ce76f",
+      "Name": "Spot Light",
+      "Position": "1223.259,-803.9999,-1087.162",
+      "Rotation": "-0.1064454,0.2939645,0.588666,0.7454708",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "SpotLight",
+          "Attenuation": 1,
+          "ConeInner": 71.55,
+          "ConeOuter": 45.45,
+          "Cookie": "materials/effects/lightcookie.vtex",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "197.47,197.47,197.47,1",
+          "Radius": 3000,
+          "Shadows": true
+        }
+      ]
+    },
+    {
+      "Id": "d3f98951-747b-47f6-abdf-2207179e8e99",
+      "Name": "Prop (19)",
+      "Position": "1138.328,-67.13023,-1471.131",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 2,
+          "IsStatic": false,
+          "Model": "models/sbox_props/watermelon/watermelon.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ]
+    },
+    {
+      "Id": "5f403d47-4998-4436-8caa-6326f6902825",
+      "Name": "Prop (20)",
+      "Position": "1139.867,-109.267,-1441.378",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 2,
+          "IsStatic": false,
+          "Model": "models/sbox_props/watermelon/watermelon.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ]
+    },
+    {
+      "Id": "882f2dfb-9919-4311-ae2f-8f9816f272f6",
+      "Name": "Prop (13)",
+      "Position": "1159.247,-76.06198,-1487.911",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 2,
+          "IsStatic": false,
+          "Model": "models/sbox_props/watermelon/watermelon.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ]
+    },
+    {
+      "Id": "2faaf218-1d1b-4857-8d06-69f6275c9578",
+      "Name": "Prop (4)",
+      "Position": "1045.885,-103.9807,-1585.394",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 50,
+          "IsStatic": false,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ]
+    },
+    {
+      "Id": "304f9eac-1a1e-4225-a32b-2cab945f6aed",
+      "Name": "Prop (2)",
+      "Position": "948.5277,108.1997,-1630.95",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 50,
+          "IsStatic": false,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ]
+    },
+    {
+      "Id": "4209a958-bb24-4c6b-b214-376c56bf0797",
+      "Name": "Glass (1)",
+      "Position": "992.2403,104.8312,-1581.932",
+      "Rotation": "0.4999998,0.5,0.5,0.4999998",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Glass",
+          "Material": "materials/glass.vmat",
+          "Points": [
+            "-50,-50",
+            "50,-50",
+            "50,50",
+            "-50,50"
+          ],
+          "ShardLifeTime": 3,
+          "Surface": "surfaces/glass.surface",
+          "TextureAxisU": "1,0,0",
+          "TextureAxisV": "0,-1,0",
+          "TextureOffset": "0,0",
+          "TextureScale": "1,1",
+          "TextureSize": "512,512",
+          "Thickness": 0.2
+        }
+      ]
+    },
+    {
+      "Id": "5131ca75-a2bd-4406-ad39-4a0e9a217982",
+      "Name": "Glass (2)",
+      "Position": "992.2403,211.5412,-1581.932",
+      "Rotation": "0.4999998,0.5,0.5,0.4999998",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Glass",
+          "Material": "materials/glass.vmat",
+          "Points": [
+            "-50,-50",
+            "50,-50",
+            "50,50",
+            "-50,50"
+          ],
+          "ShardLifeTime": 3,
+          "Surface": "surfaces/glass.surface",
+          "TextureAxisU": "1,0,0",
+          "TextureAxisV": "0,-1,0",
+          "TextureOffset": "0,0",
+          "TextureScale": "1,1",
+          "TextureSize": "512,512",
+          "Thickness": 0.2
+        }
+      ]
+    },
+    {
+      "Id": "afb203fa-7311-4836-8c34-cb4387a3ea35",
+      "Name": "Glass (4)",
+      "Position": "1144.609,-157.1543,-1581.932",
+      "Rotation": "0.0296106,0.7064867,0.7064864,0.02961059",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Glass",
+          "Material": "materials/dev/gray_grid_8.vmat",
+          "Points": [
+            "-50,-50",
+            "50,-50",
+            "50,50",
+            "-50,50"
+          ],
+          "ShardLifeTime": 3,
+          "Surface": "surfaces/glass.surface",
+          "TextureAxisU": "1,0,0",
+          "TextureAxisV": "0,-1,0",
+          "TextureOffset": "0,0",
+          "TextureScale": "1,1",
+          "TextureSize": "100,100",
+          "Thickness": 2
+        }
+      ]
+    },
+    {
+      "Id": "63566619-ce2d-4652-8d85-fc80a196e302",
+      "Name": "Glass (3)",
+      "Position": "1250.686,9.702629,-1581.932",
+      "Rotation": "0.0296106,0.7064867,0.7064864,0.02961059",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Glass",
+          "Material": "materials/glass.vmat",
+          "Points": [
+            "-50,-50",
+            "50,-50",
+            "50,50",
+            "-50,50"
+          ],
+          "ShardLifeTime": 3,
+          "Surface": "surfaces/glass.surface",
+          "TextureAxisU": "1,0,0",
+          "TextureAxisV": "0,-1,0",
+          "TextureOffset": "0,0",
+          "TextureScale": "1,1",
+          "TextureSize": "512,512",
+          "Thickness": 0.2
+        }
+      ]
+    },
+    {
+      "Id": "d53a71bb-c586-48ca-9ac5-6ef12134708c",
+      "Name": "Glass (5)",
+      "Position": "1127.859,-92.62665,-1515.631",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Glass",
+          "Material": "materials/dev/black_grid_8.vmat",
+          "Points": [
+            "-50,-50",
+            "50,-50",
+            "50,50",
+            "-50,50"
+          ],
+          "ShardLifeTime": 3,
+          "Surface": "surfaces/glass.surface",
+          "TextureAxisU": "1,0,0",
+          "TextureAxisV": "0,-1,0",
+          "TextureOffset": "0,0",
+          "TextureScale": "1,1",
+          "TextureSize": "100,100",
+          "Thickness": 2
+        }
+      ]
+    },
+    {
+      "Id": "73b6cc46-7f14-469f-80d0-4f1a73306a62",
+      "Name": "door_2_window_a",
+      "Position": "1083.053,-21.50332,-1630.205",
+      "Rotation": "0,0,0.3665013,0.9304175",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 0,
+          "IsStatic": true,
+          "Model": "models/doors/door_2_window_a.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ],
+      "Children": [
+        {
+          "Id": "bb1bd24f-ebf3-4532-87e8-76ae54673d0e",
+          "Name": "Glass",
+          "Position": "0.0000743866,26.06555,70.39905",
+          "Rotation": "0.4999998,0.5,0.5,0.4999998",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Glass",
+              "Material": "materials/glass.vmat",
+              "Points": [
+                "-19,-30",
+                "19,-30",
+                "19,30",
+                "-19,30"
+              ],
+              "ShardLifeTime": 3,
+              "Surface": null,
+              "TextureAxisU": "1,0,0",
+              "TextureAxisV": "0,-1,0",
+              "TextureOffset": "0,0",
+              "TextureScale": "1,1",
+              "TextureSize": "512,512",
+              "Thickness": 0.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "a60ed79c-836d-4947-b3e6-7ea3e17f0d8b",
+      "Name": "door_2_window_a (1)",
+      "Position": "1358.533,57.12736,-1630.864",
+      "Rotation": "0,-0,-0.2957065,0.9552789",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Prop",
+          "Health": 0,
+          "IsStatic": true,
+          "Model": "models/doors/door_2_window_a.vmdl",
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "ShowCreatedComponents": false
+        }
+      ],
+      "Children": [
+        {
+          "Id": "3fd9bfdc-a9fb-419a-95ba-e167b4df7489",
+          "Name": "Glass",
+          "Position": "0.0000743866,26.06555,70.39905",
+          "Rotation": "0.4999998,0.5,0.5,0.4999998",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Glass",
+              "Material": "materials/glass.vmat",
+              "Points": [
+                "-19,-30",
+                "19,-30",
+                "19,30",
+                "-19,30"
+              ],
+              "ShardLifeTime": 3,
+              "Surface": "surfaces/glass.surface",
+              "TextureAxisU": "1,0,0",
+              "TextureAxisV": "0,-1,0",
+              "TextureOffset": "0,0",
+              "TextureScale": "1,1",
+              "TextureSize": "512,512",
+              "Thickness": 0.2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 60,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "Props",
+  "Description": "Testing  common prop behaviours",
+  "LastSaved": "2024-02-03T23:19:30.5896729\u002B00:00",
+  "__references": [
+    "facepunch.concrete_barrier",
+    "facepunch.watermelon",
+    "facepunch.wooden_crate",
+    "gkaf.door_2_window_a"
+  ]
+}
