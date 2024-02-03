@@ -587,7 +587,7 @@
                 "-19,30"
               ],
               "ShardLifeTime": 3,
-              "Surface": null,
+              "Surface": "surfaces/glass.surface",
               "TextureAxisU": "1,0,0",
               "TextureAxisV": "0,-1,0",
               "TextureOffset": "0,0",
@@ -668,9 +668,9 @@
       "IncludedBodies": ""
     }
   },
-  "Title": "Props",
-  "Description": "Testing  common prop behaviours",
-  "LastSaved": "2024-02-03T23:19:30.5896729\u002B00:00",
+  "Title": "Shatter Glass",
+  "Description": "Glass that shatters when you hit it",
+  "LastSaved": "2024-02-03T23:57:38.3684538\u002B00:00",
   "__references": [
     "facepunch.concrete_barrier",
     "facepunch.watermelon",
