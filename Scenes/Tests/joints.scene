@@ -65,11 +65,11 @@
           "Tint": "0.05882,0.13725,0.49412,1"
         },
         {
-          "__type": "BoxCollider",
+          "__type": "PlaneCollider",
           "Center": "0,0,0",
           "IsTrigger": false,
-          "Scale": "100,100,0.01",
-          "Static": false,
+          "Scale": "100,100",
+          "Static": true,
           "Surface": null
         }
       ]
@@ -107,7 +107,10 @@
         },
         {
           "__type": "SpringJoint",
-          "Body": "26e5c59d-5fa4-4812-8bac-74c64a2308ac",
+          "Body": {
+            "_type": "gameobject",
+            "go": "26e5c59d-5fa4-4812-8bac-74c64a2308ac"
+          },
           "BreakForce": 0,
           "BreakTorque": 0,
           "Damping": 0.7,
@@ -152,13 +155,17 @@
           "__type": "PlayerController",
           "AnimationHelper": null,
           "Body": null,
-          "Eye": "919b85bd-9fcf-45c7-9992-f0783512e19a",
+          "Eye": {
+            "_type": "gameobject",
+            "go": "919b85bd-9fcf-45c7-9992-f0783512e19a"
+          },
           "FirstPerson": true,
           "Gravity": "0,0,800"
         },
         {
           "__type": "CharacterController",
           "Acceleration": 10,
+          "Bounciness": 0.3,
           "GroundAngle": 45,
           "Height": 64,
           "IgnoreLayers": "",
@@ -167,8 +174,14 @@
         },
         {
           "__type": "PlayerGrabber",
-          "DecalEffect": "effects/decal_bullet_default.prefab",
-          "ImpactEffect": "effects/impact_default.prefab",
+          "DecalEffect": {
+            "_type": "gameobject",
+            "prefab": "effects/decal_bullet_default.prefab"
+          },
+          "ImpactEffect": {
+            "_type": "gameobject",
+            "prefab": "effects/impact_default.prefab"
+          },
           "ShootDamage": 9
         }
       ],
@@ -214,7 +227,10 @@
         },
         {
           "__type": "SpringJoint",
-          "Body": "26e5c59d-5fa4-4812-8bac-74c64a2308ac",
+          "Body": {
+            "_type": "gameobject",
+            "go": "26e5c59d-5fa4-4812-8bac-74c64a2308ac"
+          },
           "BreakForce": 0,
           "BreakTorque": 0,
           "Damping": 0.7,
@@ -282,7 +298,10 @@
         },
         {
           "__type": "SpringJoint",
-          "Body": "26e5c59d-5fa4-4812-8bac-74c64a2308ac",
+          "Body": {
+            "_type": "gameobject",
+            "go": "26e5c59d-5fa4-4812-8bac-74c64a2308ac"
+          },
           "BreakForce": 0,
           "BreakTorque": 0,
           "Damping": 0.7,
@@ -329,7 +348,10 @@
           "ControlPoints": [
             {
               "StringCP": "1",
-              "GameObjectValue": "eaa3c563-339f-4adf-861a-8251ff1d9e3e"
+              "GameObjectValue": {
+                "_type": "gameobject",
+                "go": "eaa3c563-339f-4adf-861a-8251ff1d9e3e"
+              }
             }
           ],
           "Looped": false,
@@ -350,7 +372,10 @@
           "ControlPoints": [
             {
               "StringCP": "1",
-              "GameObjectValue": "c6e89877-6972-41f6-984b-ea6625523737"
+              "GameObjectValue": {
+                "_type": "gameobject",
+                "go": "c6e89877-6972-41f6-984b-ea6625523737"
+              }
             }
           ],
           "Looped": false,
@@ -371,7 +396,10 @@
           "ControlPoints": [
             {
               "StringCP": "1",
-              "GameObjectValue": "d3ac4507-127c-41ed-872f-9a4fad9426f5"
+              "GameObjectValue": {
+                "_type": "gameobject",
+                "go": "d3ac4507-127c-41ed-872f-9a4fad9426f5"
+              }
             }
           ],
           "Looped": false,
@@ -475,7 +503,10 @@
             },
             {
               "__type": "SliderJoint",
-              "Body": "13cb80b0-fb57-423a-8e76-68db48fbd865",
+              "Body": {
+                "_type": "gameobject",
+                "go": "13cb80b0-fb57-423a-8e76-68db48fbd865"
+              },
               "BreakForce": 0,
               "BreakTorque": 0,
               "EnableCollision": false,
@@ -514,11 +545,17 @@
               "ControlPoints": [
                 {
                   "StringCP": "0",
-                  "GameObjectValue": "70acea5c-b91a-4e7a-a4d0-b29f4dec0c7e"
+                  "GameObjectValue": {
+                    "_type": "gameobject",
+                    "go": "70acea5c-b91a-4e7a-a4d0-b29f4dec0c7e"
+                  }
                 },
                 {
                   "StringCP": "1",
-                  "GameObjectValue": "13cb80b0-fb57-423a-8e76-68db48fbd865"
+                  "GameObjectValue": {
+                    "_type": "gameobject",
+                    "go": "13cb80b0-fb57-423a-8e76-68db48fbd865"
+                  }
                 }
               ],
               "Looped": false,
@@ -568,7 +605,10 @@
             },
             {
               "__type": "HingeJoint",
-              "Body": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+              "Body": {
+                "_type": "gameobject",
+                "go": "3892656c-65a1-4fa2-9e9a-393d70b91af9"
+              },
               "BreakForce": 0,
               "BreakTorque": 0,
               "EnableCollision": false,
@@ -655,7 +695,10 @@
             },
             {
               "__type": "HingeJoint",
-              "Body": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+              "Body": {
+                "_type": "gameobject",
+                "go": "3892656c-65a1-4fa2-9e9a-393d70b91af9"
+              },
               "BreakForce": 0,
               "BreakTorque": 0,
               "EnableCollision": false,
@@ -742,7 +785,10 @@
             },
             {
               "__type": "HingeJoint",
-              "Body": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+              "Body": {
+                "_type": "gameobject",
+                "go": "3892656c-65a1-4fa2-9e9a-393d70b91af9"
+              },
               "BreakForce": 0,
               "BreakTorque": 0,
               "EnableCollision": false,
@@ -823,10 +869,23 @@
     "NetworkFrequency": 60,
     "ThreadedAnimation": true,
     "TimeScale": 1,
-    "UseFixedUpdate": true
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
   },
   "Title": "Physics Joints",
   "Description": "Tetsing various types of physics joints",
+  "LastSaved": "2024-02-10T19:52:54.1002117\u002B00:00",
   "__references": [
     "facepunch.metal_beam_b_128",
     "facepunch.wooden_crate",

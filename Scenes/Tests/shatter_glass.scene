@@ -16,24 +16,14 @@
           "Model": "models/dev/plane.vmdl",
           "RenderType": "On",
           "Tint": "0.06127,0.13935,0.49505,1"
-        }
-      ],
-      "Children": [
+        },
         {
-          "Id": "23c65f4f-bf21-4481-9e94-de77804161b5",
-          "Name": "Surface (1)",
-          "Position": "0,0,-25",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "BoxCollider",
-              "Center": "0,0,0",
-              "IsTrigger": false,
-              "Scale": "100,100,50",
-              "Static": true,
-              "Surface": null
-            }
-          ]
+          "__type": "PlaneCollider",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "100,100",
+          "Static": false,
+          "Surface": null
         }
       ]
     },
@@ -670,7 +660,7 @@
   },
   "Title": "Shatter Glass",
   "Description": "Glass that shatters when you hit it",
-  "LastSaved": "2024-02-03T23:57:38.3684538\u002B00:00",
+  "LastSaved": "2024-02-10T19:56:04.0361537\u002B00:00",
   "__references": [
     "facepunch.concrete_barrier",
     "facepunch.watermelon",
