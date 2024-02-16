@@ -1,4 +1,5 @@
 {
+  "Id": "731c5d8b-6e06-4e79-b883-d757d61e919b",
   "GameObjects": [
     {
       "Id": "4d0891b8-3ac6-4e29-b40e-3460b2453d72",
@@ -7,12 +8,12 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
+          "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ],
@@ -26,12 +27,11 @@
           "Components": [
             {
               "__type": "NameTagPanel",
-              "__enabled": true,
-              "Name": "A Square"
+              "Name": "A Square",
+              "TargetObject": null
             },
             {
               "__type": "WorldPanel",
-              "__enabled": true,
               "HorizontalAlign": "Center",
               "LookAtCamera": false,
               "PanelSize": "1024,1024",
@@ -49,7 +49,6 @@
           "Components": [
             {
               "__type": "WorldPanel",
-              "__enabled": true,
               "HorizontalAlign": "Center",
               "LookAtCamera": false,
               "PanelSize": "1024,1024",
@@ -58,9 +57,11 @@
             },
             {
               "__type": "NameTagPanel",
-              "__enabled": true,
               "Name": "A Square",
-              "TargetObject": "4d0891b8-3ac6-4e29-b40e-3460b2453d72"
+              "TargetObject": {
+                "_type": "gameobject",
+                "go": "4d0891b8-3ac6-4e29-b40e-3460b2453d72"
+              }
             }
           ]
         },
@@ -73,12 +74,11 @@
           "Components": [
             {
               "__type": "NameTagPanel",
-              "__enabled": true,
-              "Name": "A Square"
+              "Name": "A Square",
+              "TargetObject": null
             },
             {
               "__type": "WorldPanel",
-              "__enabled": true,
               "HorizontalAlign": "Center",
               "LookAtCamera": true,
               "PanelSize": "1024,1024",
@@ -96,12 +96,12 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
+          "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/sphere.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ],
@@ -115,7 +115,6 @@
           "Components": [
             {
               "__type": "WorldPanel",
-              "__enabled": true,
               "HorizontalAlign": "Center",
               "LookAtCamera": false,
               "PanelSize": "1024,1024",
@@ -124,8 +123,8 @@
             },
             {
               "__type": "NameTagPanel",
-              "__enabled": true,
-              "Name": "A Sphere"
+              "Name": "A Sphere",
+              "TargetObject": null
             }
           ]
         },
@@ -138,13 +137,14 @@
           "Components": [
             {
               "__type": "NameTagPanel",
-              "__enabled": true,
               "Name": "A Sphere",
-              "TargetObject": "b65e3be9-ba40-4ac1-9440-9a0f65068191"
+              "TargetObject": {
+                "_type": "gameobject",
+                "go": "b65e3be9-ba40-4ac1-9440-9a0f65068191"
+              }
             },
             {
               "__type": "WorldPanel",
-              "__enabled": true,
               "HorizontalAlign": "Center",
               "LookAtCamera": false,
               "PanelSize": "1024,1024",
@@ -162,7 +162,6 @@
           "Components": [
             {
               "__type": "WorldPanel",
-              "__enabled": true,
               "HorizontalAlign": "Center",
               "LookAtCamera": true,
               "PanelSize": "1024,1024",
@@ -171,8 +170,8 @@
             },
             {
               "__type": "NameTagPanel",
-              "__enabled": true,
-              "Name": "A Sphere"
+              "Name": "A Sphere",
+              "TargetObject": null
             }
           ]
         }
@@ -185,12 +184,12 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
+          "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/plane.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ],
@@ -204,12 +203,11 @@
           "Components": [
             {
               "__type": "NameTagPanel",
-              "__enabled": true,
-              "Name": "A Plane"
+              "Name": "A Plane",
+              "TargetObject": null
             },
             {
               "__type": "WorldPanel",
-              "__enabled": true,
               "HorizontalAlign": "Center",
               "LookAtCamera": false,
               "PanelSize": "1024,1024",
@@ -227,7 +225,6 @@
           "Components": [
             {
               "__type": "WorldPanel",
-              "__enabled": true,
               "HorizontalAlign": "Center",
               "LookAtCamera": false,
               "PanelSize": "1024,1024",
@@ -236,9 +233,11 @@
             },
             {
               "__type": "NameTagPanel",
-              "__enabled": true,
               "Name": "A Plane",
-              "TargetObject": "c6dd56f2-a90a-4b6c-b4b6-f3a094e2ac6e"
+              "TargetObject": {
+                "_type": "gameobject",
+                "go": "c6dd56f2-a90a-4b6c-b4b6-f3a094e2ac6e"
+              }
             }
           ]
         },
@@ -251,12 +250,11 @@
           "Components": [
             {
               "__type": "NameTagPanel",
-              "__enabled": true,
-              "Name": "A Plane"
+              "Name": "A Plane",
+              "TargetObject": null
             },
             {
               "__type": "WorldPanel",
-              "__enabled": true,
               "HorizontalAlign": "Center",
               "LookAtCamera": true,
               "PanelSize": "1024,1024",
@@ -271,13 +269,17 @@
       "Id": "22472f17-5de7-4462-b60f-cd2b0dc77a77",
       "Name": "Point Light",
       "Position": "136.3133,372.9648,49.27744",
+      "Tags": "light_point,light",
       "Enabled": true,
       "Components": [
         {
-          "__type": "PointLightComponent",
-          "__enabled": true,
+          "__type": "PointLight",
+          "Attenuation": 1,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
           "LightColor": "0.49505,0.87756,0.9901,1",
-          "Radius": 4000
+          "Radius": 4000,
+          "Shadows": true
         }
       ]
     },
@@ -285,13 +287,17 @@
       "Id": "3ae18f03-2b0f-4017-aab0-64d24e5834ca",
       "Name": "Point Light",
       "Position": "-259.587,-391.2967,213.6024",
+      "Tags": "light_point,light",
       "Enabled": true,
       "Components": [
         {
-          "__type": "PointLightComponent",
-          "__enabled": true,
+          "__type": "PointLight",
+          "Attenuation": 1,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
           "LightColor": "10.8812,8.1609,5.4406,1",
-          "Radius": 4000
+          "Radius": 4000,
+          "Shadows": true
         }
       ]
     },
@@ -299,11 +305,13 @@
       "Id": "60c80a2a-e4f1-4042-a08e-af75703e4d0b",
       "Name": "Directional Light",
       "Rotation": "0.4460604,0.4967057,-0.4974584,0.5539393",
+      "Tags": "light_directional,light",
       "Enabled": true,
       "Components": [
         {
-          "__type": "DirectionalLightComponent",
-          "__enabled": true,
+          "__type": "DirectionalLight",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
           "LightColor": "0.0198,0.01888,0.01627,1",
           "Shadows": true,
           "SkyColor": "0.00745,0.00908,0.0099,1"
@@ -313,11 +321,11 @@
     {
       "Id": "44a24d54-3a08-4bfb-bf8f-4a904cc7304e",
       "Name": "SkyBox",
+      "Tags": "skybox",
       "Enabled": true,
       "Components": [
         {
           "__type": "SkyBox2D",
-          "__enabled": true,
           "SkyMaterial": "materials/skybox/skybox_workshop.vmat",
           "Tint": "1,1,1,1"
         }
@@ -331,7 +339,6 @@
       "Components": [
         {
           "__type": "ScreenPanel",
-          "__enabled": true,
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
@@ -346,8 +353,7 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "MockHudPanel",
-              "__enabled": true
+              "__type": "MockHudPanel"
             }
           ]
         }
@@ -361,7 +367,6 @@
       "Components": [
         {
           "__type": "SpinComponent",
-          "__enabled": true,
           "SpinAngles": "0,5,0"
         }
       ],
@@ -375,7 +380,6 @@
           "Components": [
             {
               "__type": "Tonemapping",
-              "__enabled": true,
               "ExposureCompensation": 1.5,
               "MaximumExposure": 2,
               "MinimumExposure": 1,
@@ -383,31 +387,59 @@
             },
             {
               "__type": "CameraComponent",
-              "__enabled": true,
               "BackgroundColor": "0.33333,0.46275,0.52157,1",
               "ClearFlags": "All",
               "FieldOfView": 80,
+              "IsMainCamera": true,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "Priority": 1,
+              "RenderExcludeTags": "",
+              "RenderTags": "",
               "TargetEye": "None",
+              "Viewport": "0,0,1,1",
               "ZFar": 10000,
               "ZNear": 10
             }
           ]
         }
       ]
+    },
+    {
+      "Id": "25dd0011-957b-4f4e-ac97-b93c4a981425",
+      "Name": "Screen Gizmo Text",
+      "Position": "-68.50214,99.21661,-27.73784",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ScreenGizmoText"
+        }
+      ]
     }
   ],
   "SceneProperties": {
-    "NetworkFrequency": 60,
     "FixedUpdateFrequency": 50,
     "Lerping": true,
     "MaxFixedUpdates": 5,
-    "TimeScale": 1,
+    "NetworkFrequency": 60,
     "ThreadedAnimation": true,
-    "UseFixedUpdate": true
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
   },
   "Title": "UI",
   "Description": "World panels and screen panels. Parenting, input, rotation.",
+  "LastSaved": "2024-02-16T14:43:24.1855546-06:00",
   "__references": []
 }
