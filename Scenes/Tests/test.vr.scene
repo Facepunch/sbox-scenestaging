@@ -1,33 +1,29 @@
 {
+  "Id": "d353a6db-8582-47d8-a0f8-f14a0df7e735",
   "GameObjects": [
     {
       "Id": "fddb41bc-94fd-4f9a-994f-3657c15750bd",
       "Name": "Flatgrass",
       "Enabled": true,
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
-          "__type": "MapComponent",
-          "__enabled": true,
-          "MapName": "facepunch.flatgrass"
+          "__type": "MapInstance",
+          "MapName": "facepunch.flatgrass",
+          "OnMapLoaded": null,
+          "OnMapUnloaded": null,
+          "UseMapFromLaunch": false
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "Id": "88ee0d62-5822-4c01-b22b-12744226aca6",
       "Name": "SkyBox",
+      "Tags": "skybox",
       "Enabled": true,
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
           "__type": "SkyBox2D",
-          "__enabled": true,
           "SkyMaterial": "materials/skybox/light_test_sky_sunny.vmat",
           "Tint": "1,1,1,1"
         }
@@ -36,15 +32,14 @@
     {
       "Id": "16bea1e9-0ad8-4040-9574-6d8c80d38f59",
       "Name": "Directional Light",
-      "Enabled": true,
-      "Position": "0,0,0",
       "Rotation": "-0.4003422,-0.3071933,0.5083043,-0.697843",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Tags": "light_directional,light",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "DirectionalLightComponent",
-          "__enabled": true,
+          "__type": "DirectionalLight",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
           "LightColor": "1,0.90436,0.79208,1",
           "Shadows": true,
           "SkyColor": "0.54056,0.71154,0.79703,1"
@@ -54,21 +49,22 @@
     {
       "Id": "8328274d-9e34-4c3e-b06d-7af41188d3e9",
       "Name": "Spot Light",
-      "Enabled": true,
       "Position": "0,63.8978,103.9999",
       "Rotation": "0,0.707107,0,0.7071065",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Tags": "light_spot,light",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "SpotLightComponent",
-          "__enabled": true,
+          "__type": "SpotLight",
           "Attenuation": 1,
           "ConeInner": 15,
           "ConeOuter": 45,
           "Cookie": null,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
           "LightColor": "0.91373,0.98039,1,1",
-          "Radius": 500
+          "Radius": 500,
+          "Shadows": true
         }
       ]
     },
@@ -76,14 +72,9 @@
       "Id": "15aeff1d-1ba9-4198-9a91-927d2c940d01",
       "Name": "Player",
       "Enabled": true,
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
-          "__type": "VrAnchor",
-          "__enabled": true
+          "__type": "VRAnchor"
         }
       ],
       "Children": [
@@ -91,28 +82,25 @@
           "Id": "421c18f7-33c1-493c-8483-49cbf8b19822",
           "Name": "Camera",
           "Enabled": true,
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
           "Components": [
             {
               "__type": "CameraComponent",
-              "__enabled": true,
               "BackgroundColor": "0.33333,0.46275,0.52157,1",
               "ClearFlags": "All",
               "FieldOfView": 90,
+              "IsMainCamera": true,
               "Orthographic": false,
               "OrthographicHeight": 1204,
+              "Priority": 1,
               "RenderExcludeTags": "",
               "RenderTags": "",
               "TargetEye": "Both",
+              "Viewport": "0,0,1,1",
               "ZFar": 5000,
               "ZNear": 1
             },
             {
-              "__type": "VrTrackedObject",
-              "__enabled": true,
+              "__type": "VRTrackedObject",
               "PoseSource": "Head",
               "TrackingType": "All",
               "UseRelativeTransform": false
@@ -122,15 +110,12 @@
         {
           "Id": "27cffa28-046b-49fd-8d98-a1247b845418",
           "Name": "Left Hand",
-          "Enabled": true,
           "Position": "0,5.222285,0",
           "Rotation": "0,0,0,0",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
-              "__type": "VrTrackedObject",
-              "__enabled": true,
+              "__type": "VRTrackedObject",
               "PoseSource": "LeftHand",
               "TrackingType": "All",
               "UseRelativeTransform": false
@@ -140,26 +125,25 @@
             {
               "Id": "da3bd340-d220-413b-a844-95f8329a32dd",
               "Name": "Left Hand Model",
-              "Enabled": true,
               "Position": "-4,0,0",
               "Rotation": "0,0.707107,0,0.7071065",
-              "Scale": "1,1,1",
-              "Tags": "",
+              "Enabled": true,
               "Components": [
                 {
-                  "__type": "VrHand",
-                  "__enabled": true,
-                  "HandSource": "Left"
+                  "__type": "VRHand",
+                  "HandSource": "Left",
+                  "SkinnedModelComponent": null
                 },
                 {
-                  "__type": "AnimatedModelComponent",
-                  "__enabled": true,
+                  "__type": "SkinnedModelRenderer",
+                  "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
+                  "BoneMergeTarget": null,
                   "CreateBoneObjects": false,
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Model": "models/hands/alyx_hand_left.vmdl",
-                  "ShouldCastShadows": true,
+                  "RenderType": "On",
                   "Tint": "1,1,1,1"
                 }
               ]
@@ -169,15 +153,12 @@
         {
           "Id": "d5fe9b06-4f25-44fc-a8f2-891a1f43b164",
           "Name": "Right Hand",
-          "Enabled": true,
           "Position": "0,-6.932611,0",
           "Rotation": "0,0,0,0",
-          "Scale": "1,1,1",
-          "Tags": "",
+          "Enabled": true,
           "Components": [
             {
-              "__type": "VrTrackedObject",
-              "__enabled": true,
+              "__type": "VRTrackedObject",
               "PoseSource": "RightHand",
               "TrackingType": "All",
               "UseRelativeTransform": false
@@ -187,26 +168,25 @@
             {
               "Id": "01bfb8ea-d52a-4104-a4eb-22cdb57da0c5",
               "Name": "Right Hand Model",
-              "Enabled": true,
               "Position": "-4,0,0",
               "Rotation": "0,0.707107,0,0.7071065",
-              "Scale": "1,1,1",
-              "Tags": "",
+              "Enabled": true,
               "Components": [
                 {
-                  "__type": "VrHand",
-                  "__enabled": true,
-                  "HandSource": "Right"
+                  "__type": "VRHand",
+                  "HandSource": "Right",
+                  "SkinnedModelComponent": null
                 },
                 {
-                  "__type": "AnimatedModelComponent",
-                  "__enabled": true,
+                  "__type": "SkinnedModelRenderer",
+                  "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
+                  "BoneMergeTarget": null,
                   "CreateBoneObjects": false,
                   "MaterialGroup": null,
                   "MaterialOverride": null,
                   "Model": "models/hands/alyx_hand_right.vmdl",
-                  "ShouldCastShadows": true,
+                  "RenderType": "On",
                   "Tint": "1,1,1,1"
                 }
               ]
@@ -218,19 +198,16 @@
     {
       "Id": "c08ff8ca-603e-4769-a2ab-2ad4b1bfc907",
       "Name": "oil_drum_a",
-      "Enabled": true,
       "Position": "55.23362,116.36,-28.29894",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
+          "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/sbox_props/oil_drum/oil_drum_a.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
@@ -238,19 +215,16 @@
     {
       "Id": "7d3b1b23-4959-4f9f-ab69-7e7d3eedab61",
       "Name": "beer_cask",
-      "Enabled": true,
       "Position": "-49.14129,108.4974,-28.32806",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
+          "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/props/beer_keg/beer_cask.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
@@ -258,19 +232,17 @@
     {
       "Id": "78f2c5dd-e71f-4eaf-b410-ef645382baf1",
       "Name": "r_k_monitor",
-      "Enabled": true,
       "Position": "87.34061,-29.82755,-27.99957",
       "Rotation": "0.00000005631489,-0.000000000000004497445,0.9448068,0.3276283",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
+          "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/r_k_monitor.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
@@ -278,19 +250,17 @@
     {
       "Id": "794e4bb7-8428-4833-a520-d5005574d46c",
       "Name": "ddrmachine",
-      "Enabled": true,
       "Position": "-92.1005,-41.32419,-27.9991",
       "Rotation": "0.00000002009923,-0.0000000000000001630115,0.3372091,0.9414296",
-      "Scale": "1,1,1",
-      "Tags": "",
+      "Enabled": true,
       "Components": [
         {
-          "__type": "ModelComponent",
-          "__enabled": true,
+          "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/carsonhome/ddrmachine.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
@@ -299,18 +269,14 @@
       "Id": "73ea31d4-d9e1-48ac-bcb1-a00c04c407ba",
       "Name": "Object",
       "Enabled": true,
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
       "Components": [
         {
-          "__type": "EnvmapComponent",
-          "__enabled": true,
+          "__type": "EnvmapProbe",
           "Bounds": {
             "Mins": "-512,-512,-512",
             "Maxs": "512,512,512"
           },
+          "Feathering": 0.02,
           "Projection": "Box",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1"
@@ -320,13 +286,28 @@
   ],
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
+    "Lerping": true,
     "MaxFixedUpdates": 5,
-    "TimeScale": 1,
+    "NetworkFrequency": 30,
     "ThreadedAnimation": true,
-    "UseFixedUpdate": true
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
   },
-  "Title": "test.vr",
-  "Description": "",
+  "Title": "VR",
+  "Description": "Virtual Reality",
+  "LastSaved": "2024-02-20T16:49:06.5916339\u002B00:00",
   "__references": [
     "facepunch.beer_cask",
     "facepunch.oil_drum",

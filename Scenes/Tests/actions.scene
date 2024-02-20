@@ -1,15 +1,18 @@
 {
+  "Id": "e5b69914-9eb5-417f-a6c6-f93206ea2ee3",
   "GameObjects": [
     {
       "Id": "bb8d26a2-2c61-4931-9f46-b21986b81c64",
       "Name": "Sun",
       "Position": "0,0,100",
       "Rotation": "-0.06201506,0.5347982,0.2700481,0.7982603",
+      "Tags": "light_directional,light",
       "Enabled": true,
       "Components": [
         {
           "__type": "DirectionalLight",
-          "__enabled": true,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
           "LightColor": "0.91373,0.98039,1,1",
           "Shadows": true,
           "SkyColor": "0.05882,0.07451,0.08235,1"
@@ -25,16 +28,16 @@
       "Components": [
         {
           "__type": "ModelRenderer",
-          "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": "dev/helper/testgrid.vmat",
           "Model": "models/dev/box.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ColliderBoxComponent",
-          "__enabled": true,
+          "__type": "BoxCollider",
+          "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false,
@@ -51,15 +54,17 @@
       "Components": [
         {
           "__type": "CameraComponent",
-          "__enabled": true,
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
           "ClearFlags": "All",
           "FieldOfView": 80,
+          "IsMainCamera": true,
           "Orthographic": false,
           "OrthographicHeight": 1204,
+          "Priority": 1,
           "RenderExcludeTags": "",
           "RenderTags": "",
           "TargetEye": "None",
+          "Viewport": "0,0,1,1",
           "ZFar": 10000,
           "ZNear": 10
         }
@@ -73,18 +78,21 @@
       "Components": [
         {
           "__type": "ModelRenderer",
-          "__enabled": true,
           "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
           "MaterialOverride": null,
           "Model": "models/dev/sphere.vmdl",
-          "ShouldCastShadows": true,
+          "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
           "__type": "UpdateAction",
-          "__enabled": true,
           "Update": {
-            "Kind": "Action",
+            "Version": 5,
+            "UserData": {
+              "Title": "Update",
+              "id": "d9b42e74-89f9-4c40-93f7-10fc38b8452e"
+            },
             "Variables": [],
             "Nodes": [
               {
@@ -129,74 +137,81 @@
                 "Properties": {
                   "graph": "actions/circle.action"
                 },
-                "Inputs": {
-                  "_in2": {
-                    "$type": "Simple",
-                    "Type": "System.Private.CoreLib/System.Single",
-                    "Value": 128
-                  },
-                  "_in3": {
-                    "$type": "Simple",
-                    "Type": "System.Private.CoreLib/System.Single",
-                    "Value": 4
-                  }
-                },
                 "UserData": {
                   "Position": "288,64"
                 }
               }
             ],
             "Links": [
-              [
-                0,
-                "_signal",
-                3,
-                "_signal"
-              ],
-              [
-                0,
-                "self",
-                2,
-                "target"
-              ],
-              [
-                2,
-                "_result",
-                3,
-                "target"
-              ],
-              [
-                4,
-                "_result",
-                27,
-                "_in1"
-              ],
-              [
-                27,
-                "_out1",
-                3,
-                "value"
-              ]
-            ],
-            "UserData": {
-              "Title": "Update",
-              "id": "d9b42e74-89f9-4c40-93f7-10fc38b8452e"
-            }
+              {
+                "SrcId": 0,
+                "SrcName": "self",
+                "DstId": 2,
+                "DstName": "_target"
+              },
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 3,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 2,
+                "SrcName": "_result",
+                "DstId": 3,
+                "DstName": "_target"
+              },
+              {
+                "SrcId": 27,
+                "SrcName": "_out1",
+                "DstId": 3,
+                "DstName": "_value"
+              },
+              {
+                "SrcId": 4,
+                "SrcName": "_result",
+                "DstId": 27,
+                "DstName": "_in1"
+              },
+              {
+                "Value": 128,
+                "DstId": 27,
+                "DstName": "_in2"
+              },
+              {
+                "Value": 4,
+                "DstId": 27,
+                "DstName": "_in3"
+              }
+            ]
           }
         }
       ]
     }
   ],
   "SceneProperties": {
+    "FixedUpdateFrequency": 50,
     "Lerping": true,
-    "UseFixedUpdate": true,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 60,
     "ThreadedAnimation": true,
     "TimeScale": 1,
-    "MaxFixedUpdates": 5,
-    "FixedUpdateFrequency": 50,
-    "NetworkFrequency": 60
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
   },
-  "Title": "actions",
-  "Description": "",
+  "Title": "ActionGraph",
+  "Description": "Testing visual scripting",
+  "LastSaved": "2024-02-20T16:49:06.5117664\u002B00:00",
   "__references": []
 }

@@ -6,6 +6,7 @@
       "Name": "Sun",
       "Position": "0,0,100",
       "Rotation": "-0.06201506,0.5347982,0.2700481,0.7982603",
+      "Tags": "light_directional,light",
       "Enabled": true,
       "Components": [
         {
@@ -76,6 +77,7 @@
       "Components": [
         {
           "__type": "SkinnedModelRenderer",
+          "AnimationGraph": null,
           "BodyGroups": 341,
           "BoneMergeTarget": null,
           "CreateBoneObjects": false,
@@ -104,10 +106,22 @@
     "NetworkFrequency": 30,
     "ThreadedAnimation": true,
     "TimeScale": 1,
-    "UseFixedUpdate": true
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
   },
-  "Title": "rootmotion",
-  "Description": "",
-  "LastSaved": "2024-02-01T09:54:58.9667351\u002B00:00",
+  "Title": "Root Motion",
+  "Description": "Animation defined movement",
+  "LastSaved": "2024-02-20T16:49:06.5309572\u002B00:00",
   "__references": []
 }

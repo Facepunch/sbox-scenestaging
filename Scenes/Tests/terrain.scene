@@ -6,12 +6,13 @@
       "Name": "Directional Light",
       "Position": "0,0,154.1046",
       "Rotation": "-0.1097847,0.3239216,0.3016309,0.8899668",
+      "Tags": "light_directional,light",
       "Enabled": true,
       "Components": [
         {
-          "__version": 0,
           "__type": "DirectionalLight",
-          "__enabled": true,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
           "LightColor": "1,1,1,1",
           "Shadows": true,
           "SkyColor": "0.52475,0.52475,0.52475,1"
@@ -22,12 +23,11 @@
       "Id": "52a9cb6d-df54-4e11-afb0-c864e560688d",
       "Name": "SkyBox",
       "Position": "0,0,200",
+      "Tags": "skybox",
       "Enabled": true,
       "Components": [
         {
-          "__version": 0,
           "__type": "SkyBox2D",
-          "__enabled": true,
           "SkyMaterial": "materials/sky/atmosphere_sky.vmat",
           "Tint": "1,1,1,1"
         }
@@ -40,10 +40,9 @@
       "Enabled": true,
       "Components": [
         {
-          "__version": 0,
           "__type": "CharacterController",
-          "__enabled": true,
           "Acceleration": 10,
+          "Bounciness": 0.3,
           "GroundAngle": 45,
           "Height": 64,
           "IgnoreLayers": "",
@@ -51,19 +50,25 @@
           "StepHeight": 18
         },
         {
-          "__version": 0,
           "__type": "PlayerController",
-          "__enabled": true,
-          "AnimationHelper": "0f1b76ac-f6ff-4bf5-b075-b7cd319fa960",
-          "Body": "48e0b8fa-9a88-4748-9c13-7af59f33974d",
-          "Eye": "420c47d5-4152-441a-b2f2-a4200728200e",
+          "AnimationHelper": {
+            "_type": "component",
+            "go": "0f1b76ac-f6ff-4bf5-b075-b7cd319fa960",
+            "component_type": "CitizenAnimationHelper"
+          },
+          "Body": {
+            "_type": "gameobject",
+            "go": "48e0b8fa-9a88-4748-9c13-7af59f33974d"
+          },
+          "Eye": {
+            "_type": "gameobject",
+            "go": "420c47d5-4152-441a-b2f2-a4200728200e"
+          },
           "FirstPerson": false,
           "Gravity": "0,0,800"
         },
         {
-          "__version": 0,
           "__type": "CitizenAnimationHelper",
-          "__enabled": true,
           "BodyWeight": 1,
           "EyeSource": null,
           "EyesWeight": 1,
@@ -75,7 +80,11 @@
           "IkRightHand": null,
           "LookAt": null,
           "LookAtEnabled": false,
-          "Target": "48e0b8fa-9a88-4748-9c13-7af59f33974d"
+          "Target": {
+            "_type": "component",
+            "go": "48e0b8fa-9a88-4748-9c13-7af59f33974d",
+            "component_type": "SkinnedModelRenderer"
+          }
         }
       ],
       "Children": [
@@ -86,9 +95,8 @@
           "Enabled": true,
           "Components": [
             {
-              "__version": 0,
               "__type": "SkinnedModelRenderer",
-              "__enabled": true,
+              "AnimationGraph": null,
               "BodyGroups": 18446744073709551615,
               "BoneMergeTarget": null,
               "CreateBoneObjects": false,
@@ -108,9 +116,7 @@
           "Enabled": true,
           "Components": [
             {
-              "__version": 0,
               "__type": "TraceDebugVis",
-              "__enabled": true,
               "BoxSize": "3,3,3",
               "IgnoreHierarchy": [],
               "IgnoreSingleObjects": [],
@@ -129,9 +135,7 @@
           "Enabled": true,
           "Components": [
             {
-              "__version": 0,
               "__type": "CameraComponent",
-              "__enabled": true,
               "BackgroundColor": "0.33333,0.46275,0.52157,1",
               "ClearFlags": "All",
               "FieldOfView": 60,
@@ -158,9 +162,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__version": 0,
           "__type": "Terrain",
-          "__enabled": true,
           "ClipMapLodExtentTexels": 128,
           "ClipMapLodLevels": 7,
           "DebugView": "None",
@@ -169,9 +171,7 @@
           "TerrainMaterial": "materials/core/terrain.vmat"
         },
         {
-          "__version": 0,
           "__type": "TerrainCollider",
-          "__enabled": true,
           "IsTrigger": false,
           "Static": true,
           "Surface": null
@@ -186,9 +186,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__version": 0,
           "__type": "ModelRenderer",
-          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialGroup": null,
           "MaterialOverride": "materials/dev/simple/floor_simple_128.vmat",
@@ -197,9 +195,7 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__version": 0,
           "__type": "BoxCollider",
-          "__enabled": true,
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
@@ -215,9 +211,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__version": 0,
           "__type": "ModelRenderer",
-          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "MaterialGroup": null,
           "MaterialOverride": null,
@@ -226,20 +220,17 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__version": 0,
           "__type": "Rigidbody",
-          "__enabled": true,
           "AngularDamping": 0,
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "MassOverride": 0,
           "RigidbodyFlags": 0,
           "StartAsleep": false
         },
         {
-          "__version": 0,
           "__type": "BoxCollider",
-          "__enabled": true,
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
@@ -256,9 +247,22 @@
     "NetworkFrequency": 60,
     "ThreadedAnimation": true,
     "TimeScale": 1,
-    "UseFixedUpdate": true
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
   },
-  "Title": "terrain",
-  "Description": "",
+  "Title": "Terrain",
+  "Description": "What? In the Source Engine?",
+  "LastSaved": "2024-02-20T16:49:06.546305\u002B00:00",
   "__references": []
 }
