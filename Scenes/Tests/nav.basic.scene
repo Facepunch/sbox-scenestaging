@@ -6,6 +6,7 @@
       "Name": "Directional Light",
       "Position": "0,0,200",
       "Rotation": "0.1597522,0.2488411,-0.5160785,0.8038784",
+      "Tags": "light_directional,light",
       "Enabled": true,
       "Components": [
         {
@@ -691,6 +692,7 @@
       "Name": "Object",
       "Position": "2188.562,1959.599,148.7119",
       "Rotation": "0.2708732,0.137716,-0.8492547,0.4317737",
+      "Tags": "skybox",
       "Enabled": true,
       "Components": [
         {
@@ -839,12 +841,10 @@
           "__type": "PlayerGrabber",
           "DecalEffect": {
             "_type": "gameobject",
-            "go": "0484a181-d910-41a1-aa93-798bb644f0dd",
             "prefab": "effects/decal_bullet_default.prefab"
           },
           "ImpactEffect": {
             "_type": "gameobject",
-            "go": "8aec9411-c071-4805-85d3-861d2e35e6ac",
             "prefab": "effects/impact_default.prefab"
           },
           "ShootDamage": 9
@@ -910,7 +910,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -947,7 +948,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -984,7 +986,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1021,7 +1024,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1058,7 +1062,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1095,7 +1100,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1132,7 +1138,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1169,7 +1176,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1206,7 +1214,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1243,7 +1252,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1280,7 +1290,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1317,7 +1328,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1354,7 +1366,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1391,7 +1404,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1428,7 +1442,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1465,7 +1480,8 @@
           "MaxSpeed": 500,
           "Radius": 20,
           "Separation": 0.16,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1491,6 +1507,7 @@
               "Id": "dd2b56f0-a8a3-48ce-8dfd-42a9631aa4dc",
               "Name": "Point Light",
               "Position": "0,0,1.753479",
+              "Tags": "light_point,light",
               "Enabled": true,
               "Components": [
                 {
@@ -1521,7 +1538,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1558,7 +1576,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1595,7 +1614,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1632,7 +1652,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1669,7 +1690,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1706,7 +1728,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1743,7 +1766,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1780,7 +1804,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1817,7 +1842,8 @@
           "MaxSpeed": 200,
           "Radius": 20,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": false
         }
       ],
       "Children": [
@@ -1842,46 +1868,9 @@
       ]
     },
     {
-      "Id": "67219900-82bd-4c07-8987-232374d56918",
-      "Name": "NavAgent (66)",
-      "Position": "2730.567,2034.082,-156.4348",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "NavMeshAgent",
-          "Acceleration": 150,
-          "Height": 44.36,
-          "MaxSpeed": 200,
-          "Radius": 20,
-          "Separation": 0.5,
-          "UpdatePosition": true
-        }
-      ],
-      "Children": [
-        {
-          "Id": "96afa90b-8d46-499c-807c-c815e9cb6042",
-          "Name": "Cube",
-          "Position": "0,0,13.03287",
-          "Scale": "0.5,0.5,0.5",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "ModelRenderer",
-              "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": "materials/default.vmat",
-              "Model": "models/dev/box.vmdl",
-              "RenderType": "On",
-              "Tint": "0.71628,0.25819,0.16658,1"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Id": "cf3be184-866f-42a6-8381-dd13b868ceff",
-      "Name": "NavAgent (100)",
-      "Position": "1244.22,1973.202,-154.2761",
+      "Id": "ba06254f-4ae3-4a9b-ae28-20cf8b5c5253",
+      "Name": "NavAgent (1)",
+      "Position": "1337.349,2035.525,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -1891,14 +1880,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "88792aae-60ac-4ec5-8110-c502766b74cf",
+          "Id": "7059944a-30c3-452f-b51f-b8b5d70e114f",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -1912,13 +1902,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "3944a65e-f472-49dd-82c0-a8437acc2b56",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "aef7bd2c-4d6c-4e27-9ac3-979b4ebc1554",
-      "Name": "NavAgent (106)",
-      "Position": "1288.247,1973.202,-154.2761",
+      "Id": "c108ced6-017b-40e1-abfb-ed199da7c9cb",
+      "Name": "NavAgent (7)",
+      "Position": "1337.349,1982.805,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -1928,14 +1937,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "386d05da-0cff-484b-ad24-443b489d62eb",
+          "Id": "92ca472c-16d2-492c-8565-04372d364979",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -1949,13 +1959,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "31afa0f9-0f80-43d6-9bf6-16b8aa33df02",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "99990513-f9f5-4275-98ea-c23629f65a73",
-      "Name": "NavAgent (112)",
-      "Position": "1340.827,1973.202,-154.2761",
+      "Id": "531ecd43-33f5-4082-b687-5786f2693fc2",
+      "Name": "NavAgent (12)",
+      "Position": "1337.349,1916.731,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -1965,14 +1994,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "a52e474a-95b7-4621-82ef-f3373681bc14",
+          "Id": "16134d7e-ceb3-4100-8746-03b2b698618c",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -1986,13 +2016,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "0e477fea-5315-450d-9d55-9fd1830b28ca",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "62f1e542-9944-4479-8548-33c3e1ad0a3b",
-      "Name": "NavAgent (118)",
-      "Position": "1387.084,1973.202,-154.2761",
+      "Id": "297f1f7c-95d1-49d4-9546-a5739364fe5b",
+      "Name": "NavAgent (17)",
+      "Position": "1337.349,1859.785,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2002,14 +2051,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "484e3bd9-64bc-4e55-b415-4e3a97d2e707",
+          "Id": "6647e6cc-8c13-4c3e-a817-8a6fbbb8b074",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2023,13 +2073,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "75b913e5-30fa-4ce4-aef4-2e6c53e7bbd5",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "97e934ef-af16-4cfc-a89e-1cef82ad2221",
-      "Name": "NavAgent (89)",
-      "Position": "1135.255,1918.22,-154.2761",
+      "Id": "8d27dc34-e559-4df1-8212-eabfb49254e6",
+      "Name": "NavAgent (22)",
+      "Position": "1337.349,1785.132,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2039,14 +2108,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "624bf3e0-3222-44e4-8b4d-14d091ae3b84",
+          "Id": "14512ed4-c8bf-4497-ad6e-960fad789a75",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2060,13 +2130,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "59ff9159-fa66-4297-b5bb-779ba0aae942",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "faa9db6a-fdb9-42a7-bbaf-079ae15dc1c7",
-      "Name": "NavAgent (95)",
-      "Position": "1199.949,1918.22,-154.2761",
+      "Id": "5bb9a6e3-3ad1-434a-89db-64a8d87af323",
+      "Name": "NavAgent (31)",
+      "Position": "1094.505,682.6942,-154.2753",
       "Enabled": true,
       "Components": [
         {
@@ -2076,14 +2165,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "84375949-3b40-442b-96a9-c8cbe81ba44d",
+          "Id": "4f5287ed-8d67-44d4-95ec-70d6de9ac89c",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2097,13 +2187,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "b108372d-14f5-4c6b-8e08-24997d5227d6",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "5107d493-9038-4855-a1e4-037bea01ec8f",
-      "Name": "NavAgent (101)",
-      "Position": "1247.286,1918.22,-154.2761",
+      "Id": "09939c6d-83c5-4662-a777-8247b48e0649",
+      "Name": "NavAgent (32)",
+      "Position": "1094.505,771.5483,-154.2753",
       "Enabled": true,
       "Components": [
         {
@@ -2113,14 +2222,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "59441593-c46b-41ea-8e06-c811e07a6fef",
+          "Id": "61de907f-3bbc-4042-aaba-02ad04867699",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2134,13 +2244,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "2de29df2-b627-40bd-92c4-4bbe5a31517b",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "d6f9285e-b6de-4982-94ba-324d60543b2b",
-      "Name": "NavAgent (107)",
-      "Position": "1291.314,1918.22,-154.2761",
+      "Id": "443d9bcf-c967-4180-8aee-ec40133c935a",
+      "Name": "NavAgent (33)",
+      "Position": "1094.505,849.7178,-154.2753",
       "Enabled": true,
       "Components": [
         {
@@ -2150,14 +2279,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "ed0e3d9e-6265-4d95-9913-0b5dc3a16b67",
+          "Id": "2abdaf58-5de5-4382-be6a-b3a7ba21f142",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2171,13 +2301,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "83cb54c2-be87-4381-a80d-77896cfde3c1",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "44c44634-2d55-4dd3-9701-47554c011dbe",
-      "Name": "NavAgent (113)",
-      "Position": "1343.894,1918.22,-154.2761",
+      "Id": "eeb45ea3-bb76-44e8-bc02-57734165383b",
+      "Name": "NavAgent (34)",
+      "Position": "1174.982,830.3782,-154.2752",
       "Enabled": true,
       "Components": [
         {
@@ -2187,14 +2336,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "3d1ae01d-6144-4d13-9e1d-3b8e8ec30448",
+          "Id": "d95e3146-cb70-4db0-b0e6-0fa716c79947",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2208,13 +2358,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "be7ee7e9-06cd-4b62-bd98-40db5e073d30",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "4070da45-eb5c-4048-b784-080a00ce8996",
-      "Name": "NavAgent (119)",
-      "Position": "1390.15,1918.22,-154.2761",
+      "Id": "5b23127e-6c0f-4755-b92f-61415e15a4c1",
+      "Name": "NavAgent (35)",
+      "Position": "1165.939,750.5372,-154.2752",
       "Enabled": true,
       "Components": [
         {
@@ -2224,14 +2393,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "2b0bbadb-8903-4f61-88d3-c5f605dd393f",
+          "Id": "36cbff86-8faf-4af3-b311-91e7c6911f88",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2245,13 +2415,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "a5b95c74-9634-483c-acb9-16df2b65d25b",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "46866599-d5b7-4762-a84f-129ec24ffc50",
-      "Name": "NavAgent (90)",
-      "Position": "1139.182,1865.252,-154.2761",
+      "Id": "ee468f1e-da8c-457d-935a-14bcb2804263",
+      "Name": "NavAgent (36)",
+      "Position": "1183.417,663.8326,-154.2754",
       "Enabled": true,
       "Components": [
         {
@@ -2261,14 +2450,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "c42eb46e-f833-457c-b235-b3ff64b2c1b8",
+          "Id": "f3b32c1d-511d-42db-9018-5188a4f7fcfb",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2282,13 +2472,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "025454d9-ca7c-4ab5-bf97-173a3ebfb0cc",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "a7b53dea-e152-4b2e-ae8f-449788e13adc",
-      "Name": "NavAgent (96)",
-      "Position": "1203.876,1865.252,-154.2761",
+      "Id": "42baf006-ec24-424d-9031-4c094d112a11",
+      "Name": "NavAgent (37)",
+      "Position": "1261.753,655.7579,-154.2751",
       "Enabled": true,
       "Components": [
         {
@@ -2298,14 +2507,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "57b114f6-f26f-44d7-abd6-c45ef26d8014",
+          "Id": "40316bd9-47fc-43e9-937e-af59159a78f2",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2319,13 +2529,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "c340f512-51a3-4465-bc9c-4f287881ee09",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "601c9a23-a579-46b9-889c-7ea9107ea74d",
-      "Name": "NavAgent (102)",
-      "Position": "1251.213,1865.252,-154.2761",
+      "Id": "8756c95b-0e4f-466e-a6f0-93fe82dd93e2",
+      "Name": "NavAgent (38)",
+      "Position": "1263.031,749.4758,-154.2751",
       "Enabled": true,
       "Components": [
         {
@@ -2335,14 +2564,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "7d6efb84-d240-4f67-8621-eb68dfc177e8",
+          "Id": "fd217113-e142-4a49-a3cf-3056b8031495",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2356,13 +2586,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "4038ef02-fd5d-4f3e-be9e-a2a4bfdcb632",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "fd9aaa48-f752-48cc-8774-580a2c02da32",
-      "Name": "NavAgent (108)",
-      "Position": "1295.24,1865.252,-154.2761",
+      "Id": "e5884ef1-0a9f-4dbb-b180-efd3ff4f37d8",
+      "Name": "NavAgent (39)",
+      "Position": "1274.216,813.7745,-131.7437",
       "Enabled": true,
       "Components": [
         {
@@ -2372,14 +2621,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "1c69efbf-f50c-494e-a52e-047b3607b9d9",
+          "Id": "8b02355e-1cfb-4357-8254-b9fb933eb746",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2393,13 +2643,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "40914b99-ba37-409b-8ace-4ffd3be774f9",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "1b76ee6e-1ae0-4126-8484-b01d14002d54",
-      "Name": "NavAgent (114)",
-      "Position": "1347.82,1865.252,-154.2761",
+      "Id": "10738ba2-f1b4-4b56-950e-87736e9a6769",
+      "Name": "NavAgent (27)",
+      "Position": "1337.349,2109.738,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2409,14 +2678,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "80e9c91c-ee39-44f0-ad6d-a4b772bc6deb",
+          "Id": "ef2e9d6f-0a68-4510-9057-3bdeaecdfe72",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2430,13 +2700,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "eee41f68-404f-4990-924c-095c4920b97c",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "1af5fe02-4ee4-460f-a0ec-e1dbbb23a3ec",
-      "Name": "NavAgent (120)",
-      "Position": "1394.077,1865.252,-154.2761",
+      "Id": "dcc72d0b-52ce-41a1-b937-19d5716cea32",
+      "Name": "NavAgent (2)",
+      "Position": "1284.598,2035.525,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2446,14 +2735,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "b37340a0-9e06-4b50-9e00-13b7c6d0e210",
+          "Id": "63e3c926-e91f-4cd1-9744-5547dbe08009",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2467,13 +2757,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "743b8ee0-1198-48b6-92d3-2a56a0389655",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "14997777-5e50-4518-ae83-2441f710ffca",
-      "Name": "NavAgent (91)",
-      "Position": "1137.833,1800.023,-154.2761",
+      "Id": "3178a65e-5426-4714-b1e0-70644ceca6a1",
+      "Name": "NavAgent (8)",
+      "Position": "1284.598,1982.805,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2483,14 +2792,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "77df1d0b-1019-45f9-980f-a672e47fc065",
+          "Id": "24a3ab3e-e2f8-4785-b21b-d76ccfbfc26b",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2504,13 +2814,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "07dd3271-715f-4a35-ab2b-114b9fef16f1",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "5ba1519a-8869-4ab6-93ae-ef2c869d55ed",
-      "Name": "NavAgent (97)",
-      "Position": "1202.527,1800.023,-154.2761",
+      "Id": "bfa56870-051e-4c42-8e9f-1d103c512626",
+      "Name": "NavAgent (13)",
+      "Position": "1284.598,1916.731,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2520,14 +2849,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "dec191a4-41fc-4936-9a7d-53ca848ae54a",
+          "Id": "1f3737ef-093e-492b-befa-393da409a31f",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2541,13 +2871,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "7bfbbb09-7fbd-4214-8de0-f4f4e4f84806",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "5cdfa347-5bb7-4096-a40f-86367797bdde",
-      "Name": "NavAgent (103)",
-      "Position": "1249.864,1800.023,-154.2761",
+      "Id": "37e70d72-d853-451c-a374-a98be5ed4079",
+      "Name": "NavAgent (18)",
+      "Position": "1284.598,1859.785,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2557,14 +2906,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "ee6a13fc-21c8-4257-b69b-7036836d352b",
+          "Id": "6ecc3d62-c5ce-4c00-8105-87bdaa1d18b1",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2578,13 +2928,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "496cb8dd-afa4-4dba-863a-a752e439a4da",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "c6dc5845-f2bf-4df2-ac5d-99e4ae314146",
-      "Name": "NavAgent (109)",
-      "Position": "1293.891,1800.023,-154.2761",
+      "Id": "860a4552-2b92-4d67-84c5-e7d0433474aa",
+      "Name": "NavAgent (23)",
+      "Position": "1284.598,1785.132,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2594,14 +2963,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "1d76743f-434d-4098-8dc9-07bbf2ff6c89",
+          "Id": "e0c7d4c3-786e-4d7c-ae9b-70be22c8bb05",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2615,13 +2985,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "0ba599f7-2f73-471e-97c1-89386243519f",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "e6c5c989-19ee-4cd3-b5a3-401e03cfe7a4",
-      "Name": "NavAgent (115)",
-      "Position": "1346.471,1800.023,-154.2761",
+      "Id": "5ba25314-17cc-4b95-a45c-bc6fbeb1d3b4",
+      "Name": "NavAgent (28)",
+      "Position": "1284.598,2109.738,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2631,14 +3020,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "2b4e4964-0fbc-40b5-b305-7c802c5565a5",
+          "Id": "05da7823-c3f4-4328-adee-2a1abc0d9710",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2652,13 +3042,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "02a9366f-6060-4717-b1df-0ca8587cb486",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "727d3500-1cd2-4b24-a2bf-74681c49e21c",
-      "Name": "NavAgent (121)",
-      "Position": "1392.728,1800.023,-154.2761",
+      "Id": "1872f302-9a96-42d0-a9ec-7a6fd8fe4e9a",
+      "Name": "NavAgent (3)",
+      "Position": "1237.26,2035.525,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2668,14 +3077,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "9fba6760-b2e9-4593-8718-0c2f4b1422e5",
+          "Id": "314deaae-df3f-43bd-9d9a-7d4cbedb7df3",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2689,13 +3099,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "bb3e2749-7e5c-4ad6-9fa3-ba99fdd46ea9",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "c25c8144-b247-4035-ba90-10ec2a1bd7c7",
-      "Name": "NavAgent (92)",
-      "Position": "1134.522,1743.419,-154.2761",
+      "Id": "61eacb12-53d8-4481-ab90-99255c25d54b",
+      "Name": "NavAgent (9)",
+      "Position": "1237.26,1982.805,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2705,14 +3134,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "2cf87292-6d30-44ce-8189-9ff35903f8e6",
+          "Id": "621a677b-6552-41d2-8555-6ead531df939",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2726,13 +3156,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "f7461d2b-0fde-4e99-ae9f-dbbda8601e5b",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "12bb42c1-cc2b-43d7-ace4-81e395dbb15e",
-      "Name": "NavAgent (98)",
-      "Position": "1199.216,1743.419,-154.2761",
+      "Id": "030d8285-1f5c-4157-9de9-ef8dc3a654c6",
+      "Name": "NavAgent (14)",
+      "Position": "1237.26,1916.731,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2742,14 +3191,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "dc8b3a83-7071-4590-8739-3ab1fb0839de",
+          "Id": "b0c8eca3-64b3-4b94-add1-d978a4ed318f",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2763,13 +3213,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "4808eb19-188c-4562-9508-26f037dbea1f",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "09d8d33d-b95c-4e45-b093-0bc018e5fa46",
-      "Name": "NavAgent (104)",
-      "Position": "1246.553,1743.419,-154.2761",
+      "Id": "26d44eda-88a1-47eb-92f1-8a1ee3871abc",
+      "Name": "NavAgent (19)",
+      "Position": "1237.26,1859.785,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2779,14 +3248,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "d4dd1e1a-ae98-4131-9d26-b4ef7eb2d1b1",
+          "Id": "83abfb10-a3fd-405a-a1e0-b9ec6a3f3ff1",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2800,13 +3270,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "fe22d431-b685-4bf6-9f68-f279128eb9c5",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "2147f495-f07d-4d96-b606-f09f48c80db0",
-      "Name": "NavAgent (110)",
-      "Position": "1290.58,1743.419,-154.2761",
+      "Id": "8d202a77-96a8-477a-a780-5486327f5dea",
+      "Name": "NavAgent (24)",
+      "Position": "1237.26,1785.132,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2816,14 +3305,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "53caa564-0ae1-46a3-86af-4cfa50987b58",
+          "Id": "99942a58-19d4-43c6-afe5-891ca8c46990",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2837,13 +3327,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "5c3a3a0c-40c6-45b3-9d01-3a24f3e8291d",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "93ce946f-143a-42fc-a5d8-04d680c7667e",
-      "Name": "NavAgent (116)",
-      "Position": "1343.16,1743.419,-154.2761",
+      "Id": "492e401e-2d4a-408b-9f3f-4d65e3b9802e",
+      "Name": "NavAgent (29)",
+      "Position": "1237.26,2109.738,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2853,14 +3362,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "8af6dc00-4d76-4ba1-8801-b69e093c9e61",
+          "Id": "b1ba69db-e52e-411b-bba0-6ae6da7d467d",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2874,13 +3384,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "08c093d8-5647-4be3-9aab-d520acdfa41f",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "dc3c460c-0f0d-4231-b549-3e243daeb5f0",
-      "Name": "NavAgent (122)",
-      "Position": "1389.417,1743.419,-154.2761",
+      "Id": "cd1ed75e-f23c-4624-b794-67cde5797fd5",
+      "Name": "NavAgent (4)",
+      "Position": "1187.228,2035.525,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2890,14 +3419,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "2e229332-7ac7-414d-ad19-f4f76ff25e9a",
+          "Id": "8b56a580-d123-40a5-96b6-d6e08d94c29e",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2911,13 +3441,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "73b709d2-2521-4398-982d-fc27e1653a5e",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "9f83e287-4687-494d-b7c2-0491bd1398ff",
-      "Name": "NavAgent (93)",
-      "Position": "1131.472,1677.634,-154.2761",
+      "Id": "dbd84422-fc59-4b37-9284-26967b6ee7d1",
+      "Name": "NavAgent (10)",
+      "Position": "1187.228,1982.805,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2927,14 +3476,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "ec0cf7ef-3009-45d0-8a98-a4e19d1cf7a8",
+          "Id": "2a7f78bb-737a-4d2a-8999-8aa7483e9a0c",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2948,13 +3498,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "11dbbe57-5009-4d29-9e28-d498d7bc46e9",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "7dc9512b-fb26-4318-a4a9-f7373921a9cd",
-      "Name": "NavAgent (99)",
-      "Position": "1196.166,1677.634,-154.2761",
+      "Id": "b0edd28b-5c43-4132-9e75-31dbccf86b61",
+      "Name": "NavAgent (15)",
+      "Position": "1187.228,1916.731,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -2964,14 +3533,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "85a97e9c-5fce-488d-8aa2-55c8b5966e3c",
+          "Id": "c55307f6-05c5-4272-ac93-6e5fd27b139e",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -2985,13 +3555,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "09aae8c1-9c6d-4062-b117-d9e1abfdee1f",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "7dba0b4e-ad84-4e95-bcac-5c3d4b394137",
-      "Name": "NavAgent (105)",
-      "Position": "1243.503,1677.634,-154.2761",
+      "Id": "448e2ce1-1e73-4007-9b45-7ce4e81c0c3d",
+      "Name": "NavAgent (20)",
+      "Position": "1187.228,1859.785,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -3001,14 +3590,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "bd1be90e-0ecb-44eb-a2aa-787f1306d2ce",
+          "Id": "170d0d0c-5251-4093-871d-987fbd75bc9b",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -3022,13 +3612,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "bc797156-97ae-42e1-a84b-fff254d49426",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "e8d43608-03df-433b-a64d-5e986120e1e2",
-      "Name": "NavAgent (111)",
-      "Position": "1287.531,1677.634,-154.2761",
+      "Id": "ea3902d1-a3be-4f5c-871d-4853a36bd8dd",
+      "Name": "NavAgent (25)",
+      "Position": "1187.228,1785.132,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -3038,14 +3647,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "e8109292-bbd9-46ae-8ae0-1ee8d1d76cb9",
+          "Id": "9a27e063-2ff9-407f-9cd9-ff4d9b66a850",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -3059,13 +3669,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "150e6d56-ba91-413b-a1cc-4e28d652ada0",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "5015ba8a-98d6-4e6f-85a6-22bcbda0122e",
-      "Name": "NavAgent (117)",
-      "Position": "1340.111,1677.634,-154.2761",
+      "Id": "a4438864-580f-4f5c-89f8-ce25b71c1bd7",
+      "Name": "NavAgent (30)",
+      "Position": "1187.228,2109.738,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -3075,14 +3704,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "3f09f611-7927-40d6-b775-6dfa87f21e42",
+          "Id": "a8f30771-df9f-4fc7-b64d-fb880f6448cc",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -3096,13 +3726,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "c79681de-733d-4a31-a075-1ac9ff139aa0",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "34a274bb-91aa-4a9b-adc5-0858ff40d4c8",
-      "Name": "NavAgent (123)",
-      "Position": "1139.4,721.4297,-154.2749",
+      "Id": "ccd06d4b-4e2a-4d56-b882-6d9c4880d2e6",
+      "Name": "NavAgent (5)",
+      "Position": "1137.79,2035.525,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -3112,14 +3761,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "7d0cd190-ebfe-4927-9107-3bdbfc1c2845",
+          "Id": "1609aee8-4a41-4649-bf27-8dd0061b0ed8",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -3133,13 +3783,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "dd2aac33-ed28-4b26-b53a-341e7c2bd0c0",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "ea61289d-3bf6-4ea5-ada3-3a074576f3ba",
-      "Name": "NavAgent (124)",
-      "Position": "1114.556,805.1824,-154.2748",
+      "Id": "013d8549-cbdf-4fb4-be06-11353f3746c3",
+      "Name": "NavAgent (6)",
+      "Position": "1137.79,1982.805,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -3149,14 +3818,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "bad18f6c-2317-4458-b675-057789463067",
+          "Id": "bc48c2c3-f99e-4b1c-96b4-9dd977734ab1",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -3170,13 +3840,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "3afd6fd1-66bc-4c77-918b-f92f6f878af0",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "7aec9153-76b5-4fa9-8809-7799a20571e4",
-      "Name": "NavAgent (125)",
-      "Position": "1230.532,813.1329,-154.2746",
+      "Id": "d158f2be-deab-49ba-8362-3ba744d0225a",
+      "Name": "NavAgent (11)",
+      "Position": "1137.79,1916.731,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -3186,14 +3875,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "c42c34b7-2af7-4332-9259-2f42cbe43a49",
+          "Id": "01acbf91-8415-4d86-b8cc-a45d628b11c2",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -3207,13 +3897,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "de076ca4-8ad2-4df3-983a-e49c9b193c64",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "ae301a9e-faa9-4efd-8874-b2140f507670",
-      "Name": "NavAgent (126)",
-      "Position": "1231.672,711.4006,-154.275",
+      "Id": "d6fb261a-7313-42c8-bb8a-6d6c87d9c2fe",
+      "Name": "NavAgent (16)",
+      "Position": "1137.79,1859.785,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -3223,14 +3932,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "f1ebc830-b564-4f56-8aea-0b8b688865be",
+          "Id": "8072a788-03c2-49af-8fc1-3b3e63f043c4",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -3244,13 +3954,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "7c890b58-9491-4d75-b9d5-2aa761826b94",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "c44b89df-9054-4f21-ac2c-29916c8d6157",
-      "Name": "NavAgent (127)",
-      "Position": "2356.4,811.4612,-154.2749",
+      "Id": "63926faa-45ef-41ad-b41e-26cf983dfb86",
+      "Name": "NavAgent (21)",
+      "Position": "1137.79,1785.132,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -3260,14 +3989,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "37fec47f-993d-46d5-9103-b21e1f15a098",
+          "Id": "b251570f-b1e4-434c-88d7-42863ec3c347",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -3281,13 +4011,32 @@
               "Tint": "1,0.2186,0.75256,1"
             }
           ]
+        },
+        {
+          "Id": "41e7979f-29d8-4abf-9b96-21cbac99b798",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "662a09ee-3612-43ce-b6e1-07a167605cec",
-      "Name": "NavAgent (128)",
-      "Position": "2338.149,696.4589,-154.2749",
+      "Id": "86349649-8759-491c-9f09-ab05e15ef8d9",
+      "Name": "NavAgent (26)",
+      "Position": "1137.79,2109.738,-154.2762",
       "Enabled": true,
       "Components": [
         {
@@ -3297,14 +4046,15 @@
           "MaxSpeed": 120,
           "Radius": 29.42,
           "Separation": 0.5,
-          "UpdatePosition": true
+          "UpdatePosition": true,
+          "UpdateRotation": true
         }
       ],
       "Children": [
         {
-          "Id": "e73e4e00-0a72-410c-ba31-4d74c50b4188",
+          "Id": "78f37cdc-e40c-45b9-ad81-1b074549bbb6",
           "Name": "Cube",
-          "Position": "0,0,50.80054",
+          "Position": "0,0,43.15346",
           "Scale": "0.5,0.5,1.5",
           "Enabled": true,
           "Components": [
@@ -3316,6 +4066,25 @@
               "Model": "models/dev/box.vmdl",
               "RenderType": "On",
               "Tint": "1,0.2186,0.75256,1"
+            }
+          ]
+        },
+        {
+          "Id": "cd977714-f25c-4a78-9f59-d13e321fa830",
+          "Name": "Cube",
+          "Position": "11.26062,0,73.453",
+          "Rotation": "0.5,0.5,0.5,0.5",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/props/icons/facepunch_logo.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
             }
           ]
         }
@@ -3364,9 +4133,10 @@
   },
   "Title": "Navigation - Basics",
   "Description": "Basics of NavMesh and NavMeshAgent",
-  "LastSaved": "2024-02-02T15:50:21.5587421\u002B00:00",
+  "LastSaved": "2024-02-20T14:22:00.2226158\u002B00:00",
   "__references": [
     "facepunch.present_box",
+    "mdlresrc.facepunch_logo",
     "rust.rock_cliff_c"
   ]
 }
