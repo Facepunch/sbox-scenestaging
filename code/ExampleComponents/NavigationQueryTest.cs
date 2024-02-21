@@ -2,11 +2,14 @@ public sealed class NavigationQueryTest : Component
 {
 
 	[Property] public bool ClosestPoint { get; set; }
-	[Property] public bool RandomPoint { get; set; }
+
 	[Property] public bool ClosestEdge { get; set; }
 
 	[Property, ToggleGroup( "Path" )] public bool Path { get; set; }
 	[Property, ToggleGroup( "Path" )] public GameObject Target { get; set; }
+
+	[Property, ToggleGroup( "RandomPoint" )] public bool RandomPoint { get; set; }
+	[Property, ToggleGroup( "RandomPoint" )] public float RandomRadius { get; set; } = 100.0f;
 
 
 	[Property] public bool AttractAgents { get; set; }
@@ -44,14 +47,18 @@ public sealed class NavigationQueryTest : Component
 
 		if ( RandomPoint )
 		{
-			for ( int i = 0; i < 10; i++ )
+			Gizmo.Draw.LineThickness = 2;
+			Gizmo.Draw.Color = Color.Black.WithAlpha( 0.3f );
+			Gizmo.Draw.LineSphere( Transform.Position, RandomRadius );
+
+			for ( int i = 0; i < 100; i++ )
 			{
-				var pos = Scene.NavMesh.GetRandomPoint();
+				var pos = Scene.NavMesh.GetRandomPoint( Transform.Position, RandomRadius );
 
 				if ( pos.HasValue )
 				{
 					Gizmo.Draw.Color = Color.Black;
-					Gizmo.Draw.SolidBox( BBox.FromPositionAndSize( pos.Value, 20 ) );
+					Gizmo.Draw.SolidBox( BBox.FromPositionAndSize( pos.Value, 5 ) );
 				}
 			}
 		}

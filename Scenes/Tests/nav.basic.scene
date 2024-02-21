@@ -479,6 +479,25 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
+          "Target": null
+        }
+      ]
+    },
+    {
+      "Id": "0c75b814-d629-4f7c-b230-06af3ce98137",
+      "Name": "Random Point",
+      "Position": "1810.31,1542.325,-135.7191",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavigationQueryTest",
+          "AttractAgents": false,
+          "ClosestEdge": false,
+          "ClosestPoint": true,
+          "Path": false,
+          "RandomPoint": true,
+          "RandomRadius": 249.84023,
           "Target": null
         }
       ]
@@ -496,6 +515,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -513,6 +533,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -530,6 +551,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -547,6 +569,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -564,6 +587,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -581,6 +605,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -598,6 +623,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -615,6 +641,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -632,6 +659,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -649,6 +677,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -666,6 +695,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -683,6 +713,7 @@
           "ClosestPoint": true,
           "Path": false,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": null
         }
       ]
@@ -715,6 +746,7 @@
           "ClosestPoint": false,
           "Path": true,
           "RandomPoint": false,
+          "RandomRadius": 100,
           "Target": {
             "_type": "gameobject",
             "go": "a57488d6-9c18-4a94-8d4c-1c314b7f3615"
@@ -891,6 +923,7 @@
               "ClosestPoint": false,
               "Path": false,
               "RandomPoint": false,
+              "RandomRadius": 100,
               "Target": null
             }
           ]
@@ -4133,7 +4166,7 @@
   },
   "Title": "Navigation - Basics",
   "Description": "Basics of NavMesh and NavMeshAgent",
-  "LastSaved": "2024-02-20T14:22:00.2226158\u002B00:00",
+  "LastSaved": "2024-02-21T08:17:49.5974153\u002B00:00",
   "__references": [
     "facepunch.present_box",
     "mdlresrc.facepunch_logo",
