@@ -38,7 +38,7 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "100,100,0.01",
-          "Static": false,
+          "Static": true,
           "Surface": null
         }
       ]
@@ -65,7 +65,7 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "100,100,0.01",
-          "Static": false,
+          "Static": true,
           "Surface": null
         }
       ]
@@ -92,7 +92,7 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "100,100,0.01",
-          "Static": false,
+          "Static": true,
           "Surface": null
         }
       ]
@@ -2798,7 +2798,8 @@
                 "t": 1,
                 "c": "1,1,1,1"
               }
-            ]
+            ],
+            "alpha": []
           },
           "BloomCurve": [
             {
@@ -2851,6 +2852,6 @@
   },
   "Title": "Turret",
   "Description": "Tests input, parenting and physics",
-  "LastSaved": "2024-02-21T16:31:20.9492842\u002B00:00",
+  "LastSaved": "2024-02-22T08:45:38.6313176\u002B00:00",
   "__references": []
 }
