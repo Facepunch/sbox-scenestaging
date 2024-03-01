@@ -5,7 +5,7 @@
       "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
       "Name": "Directional Light",
       "Position": "158.6718,-124.3322,368.6452",
-      "Rotation": "0.8894004,0.1914825,-0.4057941,0.087365",
+      "Rotation": "0.9038046,-0.1040946,-0.4123662,-0.0474938",
       "Tags": "light_directional,light",
       "Enabled": true,
       "Components": [
@@ -163,6 +163,14 @@
           "LookAt": null,
           "LookAtEnabled": false,
           "Target": {
+            "_type": "component",
+            "go": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+            "component_type": "SkinnedModelRenderer"
+          }
+        },
+        {
+          "__type": "PlayerFootsteps",
+          "Source": {
             "_type": "component",
             "go": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
             "component_type": "SkinnedModelRenderer"
@@ -1067,7 +1075,31 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "AudioListener"
+              "__type": "AudioListener",
+              "UseCameraDirection": true
+            }
+          ]
+        },
+        {
+          "Id": "4afebfa1-f1e6-4f4c-a4b5-707e1ec53c02",
+          "Name": "Voice",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Voice",
+              "Loopback": true,
+              "Mode": "PushToTalk",
+              "MorphScale": 3,
+              "MorphSmoothTime": 0.1,
+              "PushToTalkInput": "voice",
+              "Renderer": {
+                "_type": "component",
+                "go": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "Volume": 1,
+              "WorldspacePlayback": true
             }
           ]
         }
@@ -1077,7 +1109,7 @@
       "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
       "Name": "Surface",
       "Position": "1420.439,0,-1637.736",
-      "Scale": "20,20,20",
+      "Scale": "50,50,20",
       "Enabled": true,
       "Components": [
         {
@@ -1100,267 +1132,476 @@
       ]
     },
     {
-      "Id": "200bd69b-85f5-4cb1-bff5-162f6dd2117d",
-      "Name": "Surface (1)",
-      "Position": "3331.08,83.39952,-1656.131",
-      "Scale": "40,40,40",
+      "Id": "17d4050c-96b7-4173-a516-3ed8ba1864ac",
+      "Name": "Generic Room",
+      "Position": "1248,-779.9979,-1440",
+      "Scale": "8,1,8",
       "Enabled": true,
-      "Components": [
+      "Children": [
         {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/water/water_pond_a.vmat",
-          "Model": "models/dev/plane.vmdl",
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Id": "b8b0dbf8-6dac-4561-b89c-8e4bcce8b9fa",
+          "Name": "Sphere (14)",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.85644,0.12719,0.57932,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null
+            }
+          ]
         },
         {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "100,100,0.01",
-          "Static": false,
-          "Surface": null
+          "Id": "0db67827-f376-44e2-b1ac-298709d3efb0",
+          "Name": "Sphere (1)",
+          "Position": "-32,-548.0021,0",
+          "Scale": "2.25,1,1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.85644,0.12719,0.57932,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        },
+        {
+          "Id": "8cf2c7be-1917-4f1a-8bfe-e9085b7185ee",
+          "Name": "Sphere (9)",
+          "Position": "-32,-276.0017,28.00002",
+          "Rotation": "-0.7071067,0,0,0.7071068",
+          "Scale": "2.487275,1,1.767787",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.85644,0.12719,0.57932,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        },
+        {
+          "Id": "2d9d1d77-43e8-4334-9415-3559e59ae06d",
+          "Name": "Sphere (9)",
+          "Position": "-32,-228.0021,-26",
+          "Rotation": "-0.7071067,0,0,0.7071068",
+          "Scale": "2.487275,1,2.487786",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.85644,0.12719,0.57932,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        },
+        {
+          "Id": "a6f2234d-c486-4016-b5e1-be7d4ab0ed2d",
+          "Name": "Sphere (3)",
+          "Position": "-86,-276.0018,0",
+          "Rotation": "0,0,-0.7071067,0.7071068",
+          "Scale": "1.5,1,1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.85644,0.12719,0.57932,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        },
+        {
+          "Id": "667bd99f-9676-4074-98e7-2f3a7e1c7bb2",
+          "Name": "Sphere (8)",
+          "Position": "22.00002,-276.0015,0",
+          "Rotation": "0,0,-0.7071067,0.7071068",
+          "Scale": "1.5,1,1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.85644,0.12719,0.57932,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        },
+        {
+          "Id": "51ef4e34-1475-47cb-aa41-c28460923d79",
+          "Name": "Sphere (10)",
+          "Position": "-32,0,10",
+          "Scale": "0.375,1,0.625",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.85644,0.12719,0.57932,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        },
+        {
+          "Id": "3c7270a1-ec3e-4d62-a4e4-2c13d54ca4e6",
+          "Name": "Sphere (2)",
+          "Position": "-64,0.00006103516,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "0.85644,0.12719,0.57932,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null
+            }
+          ]
+        },
+        {
+          "Id": "fa56771d-8933-4ab5-a60a-37ec785ad2be",
+          "Name": "Point Light",
+          "Position": "-78,-324.0021,-6",
+          "Tags": "light_point,light",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "PointLight",
+              "Attenuation": 1,
+              "FogMode": "Enabled",
+              "FogStrength": 1,
+              "LightColor": "0.91373,0.98039,1,1",
+              "Radius": 400,
+              "Shadows": true
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "fed53b9d-f3f6-467e-9667-6256b7a4cfb5",
-      "Name": "Sphere",
-      "Position": "2389.535,-1353.603,-1708.616",
-      "Scale": "16,16,16",
+      "Id": "9032795d-93ed-49b3-8512-53f81c3a17c2",
+      "Name": "Steel Room",
+      "Position": "2320,-779.9979,-1440",
+      "Scale": "8,1,8",
       "Enabled": true,
-      "Components": [
+      "Children": [
         {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
+          "Id": "7a567bb2-e71f-4cf6-81c2-e7081275e9b4",
+          "Name": "Sphere (14)",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "models/rust_props/remnant_container/metal_grate_b_cont.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": "surfaces/metal.sheet.surface"
+            }
+          ]
         },
         {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
-        }
-      ]
-    },
-    {
-      "Id": "37961886-96a3-4eef-9747-b4bc99f631d2",
-      "Name": "Sphere (1)",
-      "Position": "589.468,-1353.603,-1708.616",
-      "Scale": "16,16,16",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
+          "Id": "7dfca8c5-f435-4f98-882f-9e71ebedcb05",
+          "Name": "Sphere (1)",
+          "Position": "-32,-548.0021,0",
+          "Scale": "2.25,1,1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "models/rust_props/remnant_container/metal_grate_b_cont.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": "surfaces/metal.sheet.surface"
+            }
+          ]
         },
         {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
-        }
-      ]
-    },
-    {
-      "Id": "3c7270a1-ec3e-4d62-a4e4-2c13d54ca4e6",
-      "Name": "Sphere (2)",
-      "Position": "1229.146,-1190.121,-1498.892",
-      "Scale": "16,16,16",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
+          "Id": "6ea75877-6d94-4e6f-aa5c-805805ff54c4",
+          "Name": "Sphere (9)",
+          "Position": "-32,-276.0017,28.00002",
+          "Rotation": "-0.7071067,0,0,0.7071068",
+          "Scale": "2.487275,1,1.767787",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "models/rust_props/remnant_container/metal_grate_b_cont.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": "surfaces/metal.sheet.surface"
+            }
+          ]
         },
         {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
-        }
-      ]
-    },
-    {
-      "Id": "344fa148-1689-4d57-80e3-f85ba8cbcce2",
-      "Name": "Sphere (8)",
-      "Position": "1916.767,-61.77515,-1498.892",
-      "Scale": "15.04,1.92001,16",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
+          "Id": "2cd27d56-33bc-4b1c-a163-70518cb31e07",
+          "Name": "Sphere (9)",
+          "Position": "-32,-164.0021,-26",
+          "Rotation": "-0.7071067,0,0,0.7071068",
+          "Scale": "2.487275,1,2.247787",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "models/rust_props/remnant_container/metal_grate_b_cont.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": "surfaces/metal.sheet.surface"
+            }
+          ]
         },
         {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
-        }
-      ]
-    },
-    {
-      "Id": "82e1fe6e-17cf-4a41-af4e-5358e87d4631",
-      "Name": "Sphere (9)",
-      "Position": "2029.315,-448.2373,-1498.893",
-      "Rotation": "0,-0,-0.7080936,0.7061185",
-      "Scale": "15.04,1.92001,16",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
+          "Id": "f34e9ac9-dd3d-456a-95f9-ae87c82475a2",
+          "Name": "Sphere (3)",
+          "Position": "-86,-276.0018,0",
+          "Rotation": "0,0,-0.7071067,0.7071068",
+          "Scale": "1.5,1,1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "models/rust_props/remnant_container/metal_grate_b_cont.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": "surfaces/metal.sheet.surface"
+            }
+          ]
         },
         {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
-        }
-      ]
-    },
-    {
-      "Id": "3ed44061-c389-41c2-9c87-be33baf8e9a4",
-      "Name": "Sphere (13)",
-      "Position": "1835.693,-445.5387,-1146.404",
-      "Rotation": "0.4993011,-0.5006978,-0.5006979,0.4993012",
-      "Scale": "15.04,1.92001,16",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
+          "Id": "1b0b02c1-7c3c-4f98-b66c-bddf8307fd26",
+          "Name": "Sphere (8)",
+          "Position": "22.00002,-276.0015,0",
+          "Rotation": "0,0,-0.7071067,0.7071068",
+          "Scale": "1.5,1,1",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "models/rust_props/remnant_container/metal_grate_b_cont.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": "surfaces/metal.sheet.surface"
+            }
+          ]
         },
         {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
-        }
-      ]
-    },
-    {
-      "Id": "737959d6-0a82-4a59-bff1-bedbbbb8e4b0",
-      "Name": "Sphere (10)",
-      "Position": "1481.626,-825.1293,-1498.892",
-      "Rotation": "0,-0,-0.7080936,0.7061185",
-      "Scale": "15.04,1.92001,16",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
+          "Id": "2d0418be-b13e-461d-8fc8-e3c2b7779b11",
+          "Name": "Sphere (10)",
+          "Position": "-32,11.99792,10",
+          "Scale": "0.375,1,0.625",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "models/rust_props/remnant_container/metal_grate_b_cont.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": "surfaces/metal.sheet.surface"
+            }
+          ]
         },
         {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
-        }
-      ]
-    },
-    {
-      "Id": "269c1ccf-d772-434b-8a06-9f98a298239e",
-      "Name": "Sphere (11)",
-      "Position": "1505.783,64.15431,-1498.892",
-      "Rotation": "0,-0,-0.7080936,0.7061185",
-      "Scale": "15.04,1.92001,16",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
+          "Id": "c546a2f3-7b75-4d0b-a374-af25d9764e35",
+          "Name": "Sphere (2)",
+          "Position": "-64,0.00006103516,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "models/rust_props/remnant_container/metal_grate_b_cont.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "BoxCollider",
+              "Center": "0,0,0",
+              "IsTrigger": false,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": "surfaces/metal.sheet.surface"
+            }
+          ]
         },
         {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
-        }
-      ]
-    },
-    {
-      "Id": "0c058fcc-b99d-4c93-8fb9-393fe5619372",
-      "Name": "Sphere (12)",
-      "Position": "1506.798,-383.7134,-1253.783",
-      "Rotation": "0,-0,-0.7080936,0.7061185",
-      "Scale": "15.04,1.92001,6.240007",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
-        },
-        {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
+          "Id": "64bb2f08-2283-4bb4-a803-097df2bfbbe6",
+          "Name": "Point Light",
+          "Position": "-52,-324.0021,-6",
+          "Tags": "light_point,light",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "PointLight",
+              "Attenuation": 1,
+              "FogMode": "Enabled",
+              "FogStrength": 1,
+              "LightColor": "0.91373,0.98039,1,1",
+              "Radius": 400,
+              "Shadows": true
+            }
+          ]
         }
       ]
     },
@@ -1469,32 +1710,6 @@
       ]
     },
     {
-      "Id": "6262de53-a705-492b-9043-d1c58f689173",
-      "Name": "Sphere (3)",
-      "Position": "1893.128,-1256.441,-1545.859",
-      "Scale": "16,16,16",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
-        },
-        {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
-        }
-      ]
-    },
-    {
       "Id": "1b9fa72c-8c49-4d2c-afa2-c945130503f6",
       "Name": "Coast ",
       "Position": "2621.534,89.00911,-1520.725",
@@ -1557,27 +1772,10 @@
       ]
     },
     {
-      "Id": "cfdb2d5d-3f7a-46a0-942a-ae2e42882d51",
-      "Name": "Birds",
-      "Position": "1821.417,-616.011,-1489.267",
-      "Rotation": "-0.00000003466849,0.00000002660208,-0.1676367,0.9858496",
-      "Scale": "0.44,0.44,0.44",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "TextRenderer",
-          "Color": "0.45103,0.47149,0.5297,1",
-          "FontFamily": "Poppins",
-          "FontSize": 58.11,
-          "Scale": 1.09,
-          "Text": "s\u0026box song"
-        }
-      ]
-    },
-    {
       "Id": "fcfb14c2-30df-43a4-95cf-60e4f2c8469c",
       "Name": "Sound Point",
-      "Position": "1827.17,-624.0112,-1533.324",
+      "Position": "16,-576,-1584",
+      "Rotation": "0,0,-0.9659258,0.2588192",
       "Enabled": true,
       "Components": [
         {
@@ -1610,6 +1808,83 @@
               "Model": "models/dev/sphere.vmdl",
               "RenderType": "On",
               "Tint": "1,1,1,0.22"
+            }
+          ]
+        },
+        {
+          "Id": "cfdb2d5d-3f7a-46a0-942a-ae2e42882d51",
+          "Name": "Birds",
+          "Position": "-3.291138,3.44165,46.73303",
+          "Rotation": "-0.00000003466849,0.00000002660208,-0.1676367,0.9858496",
+          "Scale": "0.44,0.44,0.44",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "TextRenderer",
+              "Color": "0.45103,0.47149,0.5297,1",
+              "FontFamily": "Poppins",
+              "FontSize": 58.11,
+              "Scale": 1.09,
+              "Text": "s\u0026box song"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "4b96d221-3233-4df9-b524-bfa9ca008161",
+      "Name": "Sound Point (1)",
+      "Position": "1776,-1136,-1584",
+      "Rotation": "0,0,-0.9659258,0.2588192",
+      "Components": [
+        {
+          "__type": "SoundPointComponent",
+          "Force2d": false,
+          "MaxRepeatTime": 1,
+          "MinRepeatTime": 1,
+          "Pitch": 1,
+          "PlayOnStart": true,
+          "Repeat": false,
+          "SoundEvent": "sounds/the_s\u0026box_song.sound",
+          "SoundOverride": true,
+          "StopOnNew": false,
+          "Volume": 5
+        }
+      ],
+      "Children": [
+        {
+          "Id": "0e193606-c075-492c-9e01-b694e365e2dc",
+          "Name": "Sphere",
+          "Position": "0,0,0",
+          "Scale": "0.4,0.4,0.4",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "ModelRenderer",
+              "BodyGroups": 18446744073709551615,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/default/white.vmat",
+              "Model": "models/dev/sphere.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,0.22"
+            }
+          ]
+        },
+        {
+          "Id": "a3a8ecc7-56b9-4a6d-91bb-0beab177df3a",
+          "Name": "Birds",
+          "Position": "-3.291138,3.44165,46.73303",
+          "Rotation": "-0.00000003466849,0.00000002660208,-0.1676367,0.9858496",
+          "Scale": "0.44,0.44,0.44",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "TextRenderer",
+              "Color": "0.45103,0.47149,0.5297,1",
+              "FontFamily": "Poppins",
+              "FontSize": 58.11,
+              "Scale": 1.09,
+              "Text": "s\u0026box song"
             }
           ]
         }
@@ -1681,6 +1956,8 @@
   },
   "Title": "Sounds",
   "Description": "Sound components",
-  "LastSaved": "2024-02-29T13:03:18.5843244\u002B00:00",
-  "__references": []
+  "LastSaved": "2024-03-01T10:38:42.7820325\u002B00:00",
+  "__references": [
+    "rust.remnant_container_6x4"
+  ]
 }

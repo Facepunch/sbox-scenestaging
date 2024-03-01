@@ -199,7 +199,7 @@
             "go": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
             "component_type": "SkinnedModelRenderer"
           },
-          "Volume": 1,
+          "Volume": 4,
           "WorldspacePlayback": true
         }
       ],
@@ -1158,17 +1158,6 @@
               "Tint": "1,1,1,1"
             }
           ]
-        },
-        {
-          "Id": "5b89f936-cde4-4c42-bf04-f51ec3386cb7",
-          "Name": "Listener",
-          "Position": "13.83447,0,63.01013",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "AudioListener"
-            }
-          ]
         }
       ]
     },
@@ -1430,6 +1419,6 @@
   },
   "Title": "Sound - Voice",
   "Description": "Voice input",
-  "LastSaved": "2024-02-29T13:14:23.7751584\u002B00:00",
+  "LastSaved": "2024-02-29T13:15:18.6369492\u002B00:00",
   "__references": []
 }
