@@ -83,7 +83,7 @@
 {
     void OpenScene( SceneFile file )
     {
-        GameManager.ActiveScene.Load(file);
+        Game.ActiveScene.Load(file);
 
         var go = new GameObject(true, "Return To Menu");
         go.Components.Create<ReturnToMenu>();

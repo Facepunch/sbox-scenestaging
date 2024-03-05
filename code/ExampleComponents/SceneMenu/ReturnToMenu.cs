@@ -6,7 +6,7 @@ public sealed class ReturnToMenu : Component
 	{
 		if ( Input.EscapePressed )
 		{
-			GameManager.ActiveScene.LoadFromFile( "scenes/tests/menu.scene" );
+			Game.ActiveScene.LoadFromFile( "scenes/tests/menu.scene" );
 		}
 	}
 }
