@@ -29,7 +29,6 @@
         {
           "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
           "MaterialOverride": "dev/helper/testgrid.vmat",
           "Model": "models/dev/box.vmdl",
           "RenderType": "On",
@@ -39,11 +38,8 @@
           "__type": "BoxCollider",
           "Center": "0,0,0",
           "IsTrigger": false,
-          "OnTriggerEnter": null,
-          "OnTriggerExit": null,
           "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
+          "Static": false
         }
       ]
     },
@@ -76,8 +72,6 @@
         },
         {
           "__type": "PlayerGrabber",
-          "DecalEffect": null,
-          "ImpactEffect": null,
           "ShootDamage": 9
         }
       ]
@@ -85,135 +79,118 @@
     {
       "Id": "610f500f-a7e4-4661-aec8-cca590d52161",
       "Name": "Sphere",
-      "Position": "0,0,32",
+      "Position": "-32,-24,-0.00003771868",
       "Enabled": true,
       "Components": [
         {
           "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/dev/sphere.vmdl",
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "UpdateAction",
-          "Update": {
+          "OnComponentUpdate": {
             "Version": 5,
             "UserData": {
-              "Title": "Update",
-              "id": "d9b42e74-89f9-4c40-93f7-10fc38b8452e",
+              "Title": "Move the sphere",
+              "id": "1ee9176d-14bd-4452-bc4e-7dc1733525ea",
               "ReferencedComponentTypes": []
             },
             "Variables": [],
             "Nodes": [
               {
                 "Id": 0,
-                "Type": "input",
+                "Type": "input"
+              },
+              {
+                "Id": 1,
+                "Type": "property.get",
+                "Properties": {
+                  "_name": "Transform",
+                  "_type": "Sandbox.Game/Sandbox.GameObject"
+                },
                 "UserData": {
-                  "Position": "-0,-48"
+                  "Position": "256,144"
                 }
               },
               {
                 "Id": 2,
-                "Type": "property.get",
-                "Properties": {
-                  "_type": "Sandbox.Game/Sandbox.GameObject",
-                  "_name": "Transform"
-                },
-                "UserData": {
-                  "Position": "288,-16"
-                }
-              },
-              {
-                "Id": 3,
                 "Type": "property.set",
                 "Properties": {
                   "_type": "Sandbox.Game/Sandbox.GameTransform",
                   "_name": "Position"
                 },
                 "UserData": {
-                  "Position": "560,-48"
+                  "Position": "576,144"
+                }
+              },
+              {
+                "Id": 3,
+                "Type": "time.now",
+                "UserData": {
+                  "Position": "16,240"
                 }
               },
               {
                 "Id": 4,
-                "Type": "time.now",
-                "UserData": {
-                  "Position": "0,48"
-                }
-              },
-              {
-                "Id": 27,
                 "Type": "graph",
                 "Properties": {
                   "graph": "actions/circle.action"
                 },
                 "UserData": {
-                  "Position": "288,64"
+                  "Position": "304,256"
                 }
               }
             ],
             "Links": [
               {
                 "SrcId": 0,
-                "SrcName": "self",
+                "SrcName": "_signal",
+                "DstId": 2,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 1,
+                "SrcName": "_result",
                 "DstId": 2,
                 "DstName": "_target"
               },
               {
-                "SrcId": 0,
-                "SrcName": "_signal",
-                "DstId": 3,
-                "DstName": "_signal"
-              },
-              {
-                "SrcId": 2,
-                "SrcName": "_result",
-                "DstId": 3,
-                "DstName": "_target"
-              },
-              {
-                "SrcId": 27,
+                "SrcId": 4,
                 "SrcName": "_out1",
-                "DstId": 3,
+                "DstId": 2,
                 "DstName": "_value"
               },
               {
-                "SrcId": 4,
+                "SrcId": 3,
                 "SrcName": "_result",
-                "DstId": 27,
+                "DstId": 4,
                 "DstName": "_in1"
               },
               {
                 "Value": 128,
-                "DstId": 27,
+                "DstId": 4,
                 "DstName": "_in2"
               },
               {
                 "Value": 10,
-                "DstId": 27,
+                "DstId": 4,
                 "DstName": "_in3"
               }
             ]
-          }
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
         },
         {
           "__type": "SphereCollider",
           "Center": "0,0,0",
           "IsTrigger": false,
-          "OnTriggerEnter": null,
-          "OnTriggerExit": null,
           "Radius": 35.35983,
-          "Static": false,
-          "Surface": null
+          "Static": false
         }
       ]
     },
     {
       "Id": "c6d2801f-e863-40ae-9fed-87e8cb53f7db",
-      "Name": "Cube",
+      "Name": "Trigger Cube",
       "Position": "-8,136,-0.00001034479",
       "Scale": "3.799999,0.9999999,1",
       "Enabled": true,
@@ -221,8 +198,6 @@
         {
           "__type": "ModelRenderer",
           "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
           "RenderType": "On",
           "Tint": "1,1,1,1"
@@ -234,7 +209,7 @@
           "OnTriggerEnter": {
             "Version": 5,
             "UserData": {
-              "Title": "On Trigger Enter",
+              "Title": "Show text and change color",
               "id": "ec67dd63-5315-4514-99d0-1463898237ec",
               "ReferencedComponentTypes": [
                 "Sandbox.Game/Sandbox.ModelRenderer"
@@ -349,7 +324,7 @@
           "OnTriggerExit": {
             "Version": 5,
             "UserData": {
-              "Title": "On Trigger Exit",
+              "Title": "Hide text and change color back",
               "id": "28e62378-d466-46d0-aa85-43631c0aa086",
               "ReferencedComponentTypes": []
             },
@@ -450,8 +425,7 @@
             ]
           },
           "Scale": "50.24,50,50",
-          "Static": false,
-          "Surface": null
+          "Static": false
         }
       ]
     },
@@ -495,6 +469,6 @@
   },
   "Title": "ActionGraph.Triggers",
   "Description": "How Colliders can have trigger actions",
-  "LastSaved": "2024-03-10T09:36:30.2788734\u002B00:00",
+  "LastSaved": "2024-03-10T10:12:51.7596467\u002B00:00",
   "__references": []
 }
