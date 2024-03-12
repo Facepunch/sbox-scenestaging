@@ -8,8 +8,6 @@ public class PlayerGrabber : Component
 	Transform grabbedOffset;
 	Vector3 localOffset;
 
-
-
 	bool waitForUp = false;
 
 	protected override void OnUpdate()
