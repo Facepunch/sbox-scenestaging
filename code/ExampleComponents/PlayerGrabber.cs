@@ -4,6 +4,11 @@ public class PlayerGrabber : Component
 	[Property] public GameObject DecalEffect { get; set; }
 	[Property] public float ShootDamage { get; set; } = 9.0f;
 
+	/// <summary>
+	/// The higher this is, the "looser" the grip is when dragging objects
+	/// </summary>
+	[Property, Range( 1, 16 )] public float MovementSmoothness { get; set; } = 3.0f;
+
 	PhysicsBody grabbedBody;
 	Transform grabbedOffset;
 	Vector3 localOffset;
@@ -61,7 +66,6 @@ public class PlayerGrabber : Component
 			}
 			else
 			{
-				grabbedBody.SmoothMove( targetTx, 0.4f, Time.Delta );
 				return;
 			}
 		}
@@ -86,6 +90,31 @@ public class PlayerGrabber : Component
 			grabbedBody.MotionEnabled = true;
 		}
 
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		if ( IsProxy )
+			return;
+
+		Transform aimTransform = Scene.Camera.Transform.World;
+
+		if ( waitForUp && Input.Down( "attack1" ) )
+		{
+			return;
+		}
+
+		waitForUp = false;
+
+		if ( grabbedBody is not null )
+		{
+			if ( Input.Down( "attack1" ) )
+			{
+				var targetTx = aimTransform.ToWorld( grabbedOffset );
+				grabbedBody.SmoothMove( targetTx, Time.Delta * MovementSmoothness, Time.Delta );
+				return;
+			}
+		}
 	}
 
 	protected override void OnPreRender()
