@@ -15,7 +15,6 @@
         <div class="explanation">
             <p>
                 The scenes below are used as tests and examples of the scene system. 
-                One day we will force everyone to use the scene system - the Entity system will go away.
             </p>
 
             <p>
@@ -30,7 +29,7 @@
             <div class="title">Scenes</div>
         </div>
 
-    @foreach( var scene in ResourceLibrary.GetAll<SceneFile>().OrderBy( x => x.ResourceName ) )
+    @foreach( var scene in ResourceLibrary.GetAll<SceneFile>().Where( x => x.ResourcePath.Contains( "/tests/" )).OrderBy( x => x.ResourceName ) )
     {
         <SceneButton Scene="@scene" OnSelected=@OpenScene></SceneButton> 
     }
