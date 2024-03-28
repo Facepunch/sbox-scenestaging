@@ -1,0 +1,43 @@
+InputTestingHud
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	font-weight: bold;
+	border-radius: 20px;
+	gap: 128px;
+	align-items: flex-end;
+
+	.panel
+	{
+		gap: 8px;
+		padding: 16px 10px;
+		flex-direction: column;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		max-height: 200px;
+
+		InputHint, InputAnalogHint
+		{
+			gap: 16px;
+			background-color: rgba( #222653, 0.5 );
+			padding: 16px;
+			border-radius: 16px;
+			backdrop-filter: blur( 10px );
+		}
+
+		&.row
+		{
+			align-items: flex-end;
+			flex-direction: row;
+		}
+	}
+
+	.title
+	{
+		font-size: 25px;
+		font-family: Poppins;
+		color: #fff;
+	}
+}

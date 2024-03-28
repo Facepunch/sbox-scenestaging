@@ -1,0 +1,42 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<root>
+	<div class="panel">
+		@if ( Input.UsingController )
+		{
+			<InputAnalogHint Size=@InputGlyphSize.Small @Analog=@InputAnalog.Look />
+			<InputAnalogHint Size=@InputGlyphSize.Small @Analog=@InputAnalog.Move />
+		}
+		else
+		{
+			<InputHint Size=@InputGlyphSize.Small @Action="Forward" />
+			<InputHint Size=@InputGlyphSize.Small @Action="Backward" />
+			<InputHint Size=@InputGlyphSize.Small @Action="Left" />
+			<InputHint Size=@InputGlyphSize.Small @Action="Right" />
+		}
+
+	</div>
+	
+	<div style="flex-grow: 1;" />
+
+	<div class="panel row">
+		<InputHint Size=@InputGlyphSize.Medium @Action="Jump" />
+	</div>
+
+	<div style="flex-grow: 1;" />
+
+	<div class="panel">
+		<InputHint Size=@InputGlyphSize.Small @Action="Attack1" />
+		<InputHint Size=@InputGlyphSize.Small @Action="Attack2" />
+	</div>
+</root>
+
+@code
+{
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( Input.UsingController );
+}

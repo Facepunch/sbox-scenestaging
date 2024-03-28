@@ -1,0 +1,65 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+
+<style>
+    InputHint
+    {
+        justify-content: center;
+        align-items: center;
+        
+        gap: 32px;
+
+        img
+        {
+            background-size: contain;
+            background-repeat: no-repeat;
+            max-height: 64px;
+            max-width: 64px;
+        }
+
+        label{
+            font-family: Arial;
+            color: white;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+    }
+</style>
+
+<root>
+    <img @ref=Glyph />
+    <label>@Action</label>
+</root>
+
+@code
+{
+    // @ref
+    public Image Glyph { get; set; }
+    public string Action { get; set; } = "Use";
+    public InputGlyphSize Size { get; set; } = InputGlyphSize.Medium;
+
+    /// <summary>
+    /// Checks the current button and updates the glyph.
+    /// </summary>
+    void UpdateTexture()
+    {
+        var texture = Input.GetGlyph( Action, Size, false );
+        if ( texture is null ) return;
+        if ( Glyph is null ) return;
+        Glyph.Texture = texture;
+    }
+
+    protected override void OnAfterTreeRender( bool firstTime )
+    {
+        UpdateTexture();
+
+        SetClass("keyboard", !Input.UsingController);
+    }
+
+    protected override int BuildHash()
+    {
+        // If we switch input device, rebuild the tree.
+        return HashCode.Combine( Action, Input.UsingController );
+    }
+}
