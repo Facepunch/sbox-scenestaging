@@ -1,0 +1,31 @@
+WorldPanelTest
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+	pointer-events: all;
+	border-radius: 20px;
+	background-color: #444;
+
+
+	&:hover
+	{
+		background-color: red;
+	}
+
+	&:active {
+		background-color: green;
+	}
+
+	.title
+	{
+		font-size: 25px;
+		font-family: Poppins;
+		color: #fff;
+	}
+}
