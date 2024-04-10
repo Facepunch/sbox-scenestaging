@@ -11,8 +11,8 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "DirectionalLight",
-          "__guid": "6f8edc02-5dce-42a6-b536-bdf801703057",
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "9ed17b5f-790a-4681-96f6-23c84f3b5486",
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.90698,0.94884,1,1",
@@ -30,14 +30,14 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "SkyBox2D",
-          "__guid": "7238790f-1eb2-49c8-ab36-a7fb3a94305a",
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "2c2cd247-7e5a-4d29-8255-e84197953fd9",
           "SkyMaterial": "materials/skybox/light_test_sky_night_basic.vmat",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "EnvmapProbe",
-          "__guid": "54503f82-0528-4488-a256-e3f62a457955",
+          "__type": "Sandbox.EnvmapProbe",
+          "__guid": "17318546-d7f8-4059-a941-54bf25a3f6eb",
           "__enabled": false,
           "Texture": "textures/cubemaps/default.vtex",
           "Bounds": {
@@ -65,8 +65,8 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "CameraComponent",
-          "__guid": "7fd0aeae-e6f5-4ba4-8601-c04e03279dfb",
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "04ef9f39-345b-41d1-b9ff-8342dcbdcf34",
           "BackgroundColor": "0.25292,0.26086,0.29703,1",
           "ClearFlags": "All",
           "FieldOfView": 69.32,
@@ -82,13 +82,13 @@
           "ZNear": 1
         },
         {
-          "__type": "Sharpen",
-          "__guid": "6f0fb52b-e553-4ef5-b2ae-7054c704afbe",
+          "__type": "Sandbox.Sharpen",
+          "__guid": "df831460-6c07-4913-af1a-807e834455e6",
           "Scale": 0.4
         },
         {
-          "__type": "Bloom",
-          "__guid": "75f4285a-ed79-49bb-85a0-a20ab15b3e67",
+          "__type": "Sandbox.Bloom",
+          "__guid": "07a4f14a-08a8-4887-bc89-ce56c8edaa7c",
           "BloomColor": {
             "color": [
               {
@@ -117,8 +117,8 @@
           "ThresholdWidth": 0.96
         },
         {
-          "__type": "Tonemapping",
-          "__guid": "4383cd89-e772-40e0-93e4-3070e7ea9cbf",
+          "__type": "Sandbox.Tonemapping",
+          "__guid": "8c77aa97-8bc3-4915-86a0-484a55278d08",
           "ExposureCompensation": 0,
           "MaximumExposure": 3,
           "MinimumExposure": 0,
@@ -126,7 +126,7 @@
         },
         {
           "__type": "NoClip",
-          "__guid": "bdf163fc-f62a-4491-a186-ffbd362c7075",
+          "__guid": "7e02153b-153e-4cde-87f0-1a2cc6895e88",
           "__enabled": false,
           "MoveSpeed": 600
         }
@@ -141,17 +141,16 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "bcab720b-0cf3-45a0-9e92-75fef0cd322f",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "34792d96-f172-4a72-9279-cee9478f7bb7",
           "BodyGroups": 18446744073709551615,
-          "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/plane.vmdl",
           "RenderType": "On",
-          "Tint": "0.05882,0.13725,0.49412,1"
+          "Tint": "0.39176,0.48963,0.92558,1"
         },
         {
-          "__type": "BoxCollider",
-          "__guid": "32f6de33-c8ae-4833-a943-7c52ae558472",
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "24221ad5-ff5e-4a57-886a-e63ab3bef4be",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "100,100,0.01",
@@ -162,15 +161,16 @@
     {
       "__guid": "77b8ee4f-787c-4648-9f21-00ec274058ea",
       "Name": "Sphere",
-      "Position": "832,-56,-1605.119",
+      "Position": "616,-128,-1568",
+      "Scale": "2,2,2",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "3ddd3862-f771-4d22-a11d-5dc29499d582",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "1bd14000-f41a-4a0e-83c5-49e70e05b85e",
           "BodyGroups": 18446744073709551615,
-          "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
+          "MaterialOverride": "materials/dev/reflectivity_90.vmat",
           "Model": "models/dev/sphere.vmdl",
           "RenderType": "On",
           "Tint": "1,1,1,1"
@@ -180,28 +180,47 @@
         {
           "__guid": "79a2e39b-1564-47c4-8918-3ba6040f6345",
           "Name": "Envmap Probe",
-          "Position": "0,5.982769,8.715942",
+          "Position": "0,5.982769,0",
           "Enabled": true,
           "NetworkMode": 2,
           "Components": [
             {
-              "__type": "EnvmapProbe",
-              "__guid": "01d0756d-6052-4975-9d9d-6e3218c595ca",
-              "Texture": "textures/cubemaps/default2.vtex",
+              "__type": "Sandbox.EnvmapProbe",
+              "__guid": "55949262-8ae8-4ff0-a7b2-f2f92ff07c5f",
               "Bounds": {
-                "Mins": "-10000,-10000,-10000",
-                "Maxs": "10000,10000,10000"
+                "Mins": "-100,-100,-100",
+                "Maxs": "100,100,100"
               },
-              "DelayBetweenUpdates": 0.55,
+              "DelayBetweenUpdates": 0.1,
               "Feathering": 0.02,
               "FrameInterval": 5,
-              "MaxDistance": 512,
+              "MaxDistance": 1024,
               "Projection": "Box",
               "RenderDynamically": true,
               "TintColor": "1,1,1,1",
-              "UpdateStrategy": "FrameInterval",
+              "UpdateStrategy": "OnEnabled",
               "ZFar": 4096,
               "ZNear": 16
+            }
+          ]
+        },
+        {
+          "__guid": "ce5d81a2-87ff-49ce-9eaf-84f7649a2516",
+          "Name": "Text",
+          "Position": "0,0,52",
+          "Rotation": "0,0,-0.6087614,0.7933534",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "Sandbox.TextRenderer",
+              "__guid": "7bfc04b6-ccb3-40f7-9531-3bc10d4db1db",
+              "Color": "1,1,1,1",
+              "FontFamily": "Poppins",
+              "FontSize": 64,
+              "Scale": 0.3,
+              "Text": "Update Once, On Startup"
             }
           ]
         }
@@ -210,16 +229,16 @@
     {
       "__guid": "040de513-0356-46fd-b106-ad2c49aea0a0",
       "Name": "Sphere (9)",
-      "Position": "1096,-56,-1594.931",
+      "Position": "1104,-56.00044,-1568",
       "Scale": "3,3,3",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "809b9ec2-688d-4527-9acc-938e48824914",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "0eae89fb-db54-476c-a5f6-25e7b61de0bd",
           "BodyGroups": 18446744073709551615,
-          "MaterialOverride": "materials/dev/dev_metal_rough00.vmat",
+          "MaterialOverride": "materials/dev/reflectivity_90.vmat",
           "Model": "models/dev/sphere.vmdl",
           "RenderType": "On",
           "Tint": "1,1,1,1"
@@ -235,23 +254,43 @@
           "NetworkMode": 2,
           "Components": [
             {
-              "__type": "EnvmapProbe",
-              "__guid": "5f642054-e8e2-4a3f-9a26-7923bcc1bc41",
-              "Texture": "textures/cubemaps/default2.vtex",
+              "__type": "Sandbox.EnvmapProbe",
+              "__guid": "a099eb37-8f14-4589-8961-b38ad9c0f258",
               "Bounds": {
-                "Mins": "-10000,-10000,-10000",
-                "Maxs": "10000,10000,10000"
+                "Mins": "-103.6005,-142.7206,-87.04021",
+                "Maxs": "130.8803,115.2801,103.6803"
               },
               "DelayBetweenUpdates": 0.1,
               "Feathering": 0.02,
-              "FrameInterval": 2,
-              "MaxDistance": 512,
+              "FrameInterval": 5,
+              "MaxDistance": 1024,
               "Projection": "Box",
               "RenderDynamically": true,
               "TintColor": "1,1,1,1",
-              "UpdateStrategy": "FrameInterval",
+              "UpdateStrategy": "EveryFrame",
               "ZFar": 4096,
               "ZNear": 16
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "07a5a578-f40a-4955-b731-266cf2ab1d4c",
+              "Name": "Text",
+              "Position": "0,0,153.4721",
+              "Rotation": "0,0,-0.6087614,0.7933534",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "55c3085c-c984-4b07-8f92-6e81efc94d29",
+                  "Color": "1,1,1,1",
+                  "FontFamily": "Poppins",
+                  "FontSize": 64,
+                  "Scale": 0.3,
+                  "Text": "Update Every Frame"
+                }
+              ]
             }
           ]
         }
@@ -259,28 +298,61 @@
     },
     {
       "__guid": "209eb1af-61f5-45f1-b334-ab730d61d05a",
-      "Name": "Sphere",
-      "Position": "1215.598,155.5344,-1656.393",
+      "Name": "Cube",
+      "Position": "1968,8,-1584",
       "Scale": "2,2,2",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "2d940b6f-ed5d-45df-a408-ffef6cfd82c0",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "20810425-9cb8-4c2a-b583-9bee8e69db93",
           "BodyGroups": 18446744073709551615,
-          "MaterialOverride": "materials/default.vmat",
+          "MaterialOverride": "materials/dev/reflectivity_90.vmat",
           "Model": "models/dev/box.vmdl",
           "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
+          "Tint": "1,1,1,1"
         },
         {
-          "__type": "BoxCollider",
-          "__guid": "a3b3c61d-c15e-4fe2-b64d-cbfb38aae467",
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "ea54af10-27e4-4d65-acaa-0be01783ab60",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false
+        },
+        {
+          "__type": "SpinComponent",
+          "__guid": "013d0e9a-c4db-4c5b-bc1c-d8a5b84744f1",
+          "SpinAngles": "0,128,0"
+        }
+      ]
+    },
+    {
+      "__guid": "a217be31-9566-4b59-a721-6668ad0e125a",
+      "Name": "Envmap Probe",
+      "Position": "1968,8,-1584",
+      "Scale": "0.3333333,0.3333333,0.3333333",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "Sandbox.EnvmapProbe",
+          "__guid": "f0bd0d5b-4e93-443e-81f1-9c819092d175",
+          "Bounds": {
+            "Mins": "-500,-500,-500",
+            "Maxs": "500,500,500"
+          },
+          "DelayBetweenUpdates": 0.1,
+          "Feathering": 0.02,
+          "FrameInterval": 5,
+          "MaxDistance": 1024,
+          "Projection": "Box",
+          "RenderDynamically": true,
+          "TintColor": "1,1,1,1",
+          "UpdateStrategy": "EveryFrame",
+          "ZFar": 4096,
+          "ZNear": 16
         }
       ]
     },
@@ -293,8 +365,8 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "fe3c6e3f-43c3-4c9a-90ed-916ded34e5bc",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "e7810775-3b53-451c-b02f-39604e0b9cc1",
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
@@ -302,8 +374,8 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "BoxCollider",
-          "__guid": "a0df5fda-a43c-4690-a0d2-26ac6693fe48",
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "59d8e2ba-c9a0-479b-9871-8ecfe5041c6d",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
@@ -320,8 +392,8 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "2aca035f-c109-4205-85f1-a9f7e3865327",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "6a62c5cb-0b75-4704-82e3-29473a51a374",
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
@@ -329,8 +401,8 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "BoxCollider",
-          "__guid": "17babd84-56e7-4832-84e7-39adf029b00c",
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "68a0583f-838b-42fc-b875-c9d6ef890af6",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
@@ -347,8 +419,8 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "bea5729a-0283-47a0-968d-fd846eb2371c",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "9683f461-7d72-4d8d-8b87-c66083f2d090",
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
@@ -356,8 +428,8 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "BoxCollider",
-          "__guid": "db859160-ebd0-4fe7-93a5-e5a18e8e45f2",
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "8a7946bb-9885-4f2d-a354-2c8ed8b289c6",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
@@ -374,8 +446,8 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "28da0c8b-066e-456e-8f0c-e5f6ea64085e",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "8c1c3061-b307-428b-8675-682f429cdff8",
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
@@ -383,8 +455,8 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "BoxCollider",
-          "__guid": "61099fc9-f4e1-4660-808b-c93d99c5050d",
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "c39d660f-c896-4c00-8792-e51a631ad26e",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
@@ -395,14 +467,14 @@
     {
       "__guid": "fed53b9d-f3f6-467e-9667-6256b7a4cfb5",
       "Name": "Sphere",
-      "Position": "1936,-328,-1544",
+      "Position": "2392,-328,-1544",
       "Scale": "4,4,4",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "b6506c42-ea14-45d5-aeb0-b32ce5386eed",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "cc1dfcd1-6400-471d-bb80-4f70fb9c0502",
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
@@ -410,8 +482,8 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "BoxCollider",
-          "__guid": "1c5e07e8-0604-4116-ad06-b597efcc43d9",
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "5d92f8dc-527e-41c2-ac37-572638f95f21",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
@@ -420,16 +492,16 @@
       ]
     },
     {
-      "__guid": "0aaf043e-223d-4f4c-9104-4eb98a0503ab",
+      "__guid": "671da710-5839-4a62-92b1-8fdd2ae15952",
       "Name": "Sphere (4)",
-      "Position": "2208,-328,-1624",
-      "Scale": "4,0.4800015,0.4",
+      "Position": "2264,-472,-1544",
+      "Scale": "4,4,4",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "f62cd002-ce76-4c21-879d-b6a2cbc5fa13",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "ef383c28-0baf-49dd-a9e8-9d521cd08c7e",
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
@@ -437,8 +509,8 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "BoxCollider",
-          "__guid": "458acc3a-1255-4398-bc6a-ff4e8f8c7e14",
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "a9e884f8-59d8-40c1-9ae0-db8d5ae6b5cc",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
@@ -447,16 +519,16 @@
       ]
     },
     {
-      "__guid": "6628885b-1406-41cb-baab-d74106ac481c",
+      "__guid": "724b1004-436c-4aef-9289-77a85eddee3f",
       "Name": "Sphere (5)",
-      "Position": "2208,-328,-1584",
-      "Scale": "4,0.4800015,0.4",
+      "Position": "2104,-648,-1544",
+      "Scale": "4,4,4",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "620bafab-e2a1-4780-b4ec-5a760f048a3a",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "69135aa5-6e73-412a-ac32-751b0ea03719",
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
@@ -464,8 +536,8 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "BoxCollider",
-          "__guid": "deff60af-0d90-4184-a018-328cf63310b6",
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "71b2d500-28af-4594-b7f3-5609fc209538",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
@@ -474,16 +546,16 @@
       ]
     },
     {
-      "__guid": "d271afb7-d1eb-4e97-a728-91fee51cf956",
+      "__guid": "01a6c3d6-66bc-49eb-a5e3-908259ca8aa7",
       "Name": "Sphere (6)",
-      "Position": "2208,-328,-1536",
-      "Scale": "4,0.4800015,0.4",
+      "Position": "1928,-776,-1544",
+      "Scale": "4,4,4",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__guid": "6c91bc38-c269-4380-a794-2510e127e15c",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "16b97128-8ba7-4f7b-8374-4655dcdd6529",
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/box.vmdl",
@@ -491,114 +563,12 @@
           "Tint": "0.85644,0.12719,0.57932,1"
         },
         {
-          "__type": "BoxCollider",
-          "__guid": "5a01dff3-3eff-4419-b1fe-33cd52ed56e9",
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "3ba49739-2f60-4366-888d-c7647033b727",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": false
-        }
-      ]
-    },
-    {
-      "__guid": "18c4fc4c-178e-4aed-bd5d-506dbd475b50",
-      "Name": "Sphere (7)",
-      "Position": "2208,-328,-1496",
-      "Scale": "4,0.4800015,0.4",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "__guid": "91520efe-f5f9-42e0-b131-c686dc1efd85",
-          "BodyGroups": 18446744073709551615,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
-        },
-        {
-          "__type": "BoxCollider",
-          "__guid": "4580e260-0319-45a7-82a5-c1e12cf22d40",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false
-        }
-      ]
-    },
-    {
-      "__guid": "8aa15a6b-0b44-4d46-94be-0a31670ee1a1",
-      "Name": "Sphere (8)",
-      "Position": "2208,-328,-1456",
-      "Scale": "4,0.4800015,0.4",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "__guid": "09abebef-d854-4976-862d-01b836fdda20",
-          "BodyGroups": 18446744073709551615,
-          "MaterialOverride": "materials/default.vmat",
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
-        },
-        {
-          "__type": "BoxCollider",
-          "__guid": "5228b7d3-81e8-4f0c-a27b-48c122ffb2a4",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false
-        }
-      ]
-    },
-    {
-      "__guid": "59310f1f-7a82-4324-883d-15e9bf7d3f01",
-      "Name": "Point Light",
-      "Position": "2216,-448,-1584",
-      "Tags": "light_point,light",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "Components": [
-        {
-          "__type": "PointLight",
-          "__guid": "acf18670-75e3-4052-96d5-cec09420daaa",
-          "Attenuation": 1,
-          "FogMode": "Enabled",
-          "FogStrength": 1,
-          "LightColor": "20,4.66667,0,1",
-          "Radius": 800,
-          "Shadows": true
-        }
-      ]
-    },
-    {
-      "__guid": "e24d7d41-6c38-4835-b13d-a345463d92bc",
-      "Name": "Envmap Probe",
-      "Position": "1568,376,-1600",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "Components": [
-        {
-          "__type": "EnvmapProbe",
-          "__guid": "b730914c-7398-496d-a377-8cfa51b4dec9",
-          "Texture": "textures/cubemaps/default2.vtex",
-          "Bounds": {
-            "Mins": "-10000,-10000,-10000",
-            "Maxs": "10000,10000,10000"
-          },
-          "DelayBetweenUpdates": 0.1,
-          "Feathering": 0.02,
-          "FrameInterval": 5,
-          "MaxDistance": 512,
-          "Projection": "Box",
-          "RenderDynamically": false,
-          "TintColor": "1,1,1,1",
-          "UpdateStrategy": "OnEnabled",
-          "ZFar": 4096,
-          "ZNear": 16
         }
       ]
     },
@@ -611,8 +581,8 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "CharacterController",
-          "__guid": "326cd4ae-09de-4e7e-8a13-9bcf167b0390",
+          "__type": "Sandbox.CharacterController",
+          "__guid": "54963559-83e8-43e8-9242-0b52997f89b6",
           "Acceleration": 10,
           "Bounciness": 0.3,
           "GroundAngle": 45,
@@ -623,10 +593,10 @@
         },
         {
           "__type": "PlayerController",
-          "__guid": "fa4b8a58-aff9-46e6-8a61-cfd7bd235995",
+          "__guid": "c7dc769f-4af0-4611-b570-37b1c7ba40ae",
           "AnimationHelper": {
             "_type": "component",
-            "component_id": "9a9edb83-8b89-47bc-8818-85f566f8e567",
+            "component_id": "2f5f1ffb-4710-41e5-aff8-e2d0228f478b",
             "go": "987c9d86-7b2b-47c1-9ef1-8bd0aa4c474c",
             "component_type": "CitizenAnimationHelper"
           },
@@ -642,8 +612,8 @@
           "Gravity": "0,0,800"
         },
         {
-          "__type": "CitizenAnimationHelper",
-          "__guid": "9a9edb83-8b89-47bc-8818-85f566f8e567",
+          "__type": "Sandbox.Citizen.CitizenAnimationHelper",
+          "__guid": "2f5f1ffb-4710-41e5-aff8-e2d0228f478b",
           "BodyWeight": 1,
           "EyesWeight": 1,
           "HeadWeight": 1,
@@ -651,17 +621,17 @@
           "LookAtEnabled": false,
           "Target": {
             "_type": "component",
-            "component_id": "802f5931-9fff-4876-9e7b-f693e41e650a",
+            "component_id": "3a7b065f-0e0f-43c6-acac-f8189b8964f6",
             "go": "6de61bcb-58d7-4ceb-9f04-90779acec3a9",
             "component_type": "SkinnedModelRenderer"
           }
         },
         {
-          "__type": "ApplyLocalClothing",
-          "__guid": "1372f19f-c0f0-4724-bb80-8d13a98c073d",
+          "__type": "Sandbox.ApplyLocalClothing",
+          "__guid": "b3394bfd-8fa3-4fe1-949a-971a44884ddc",
           "BodyTarget": {
             "_type": "component",
-            "component_id": "802f5931-9fff-4876-9e7b-f693e41e650a",
+            "component_id": "3a7b065f-0e0f-43c6-acac-f8189b8964f6",
             "go": "6de61bcb-58d7-4ceb-9f04-90779acec3a9",
             "component_type": "SkinnedModelRenderer"
           }
@@ -676,8 +646,8 @@
           "NetworkMode": 2,
           "Components": [
             {
-              "__type": "SkinnedModelRenderer",
-              "__guid": "802f5931-9fff-4876-9e7b-f693e41e650a",
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "3a7b065f-0e0f-43c6-acac-f8189b8964f6",
               "BodyGroups": 18446744073709551615,
               "CreateBoneObjects": true,
               "Model": "models/citizen/citizen.vmdl",
@@ -1326,8 +1296,8 @@
                           "NetworkMode": 2,
                           "Components": [
                             {
-                              "__type": "DecalRenderer",
-                              "__guid": "64c4046e-e03b-4d49-8090-08df6dcfae64",
+                              "__type": "Sandbox.DecalRenderer",
+                              "__guid": "e1006b4e-cf66-4ae9-9e88-b66643690c0e",
                               "CutoffAngle": 36.26,
                               "CutoffAngleSoftness": 23.5,
                               "Material": "materials/decals/default.vmat",
@@ -1349,8 +1319,8 @@
                       "NetworkMode": 2,
                       "Components": [
                         {
-                          "__type": "DecalRenderer",
-                          "__guid": "52705a1c-29dd-4d74-84d5-6d7d6c2b6ba4",
+                          "__type": "Sandbox.DecalRenderer",
+                          "__guid": "18b717a0-6de7-4be4-81dc-5c772fa98fac",
                           "CutoffAngle": 36.26,
                           "CutoffAngleSoftness": 23.5,
                           "Material": "materials/decals/terry1.vmat",
@@ -1655,9 +1625,9 @@
       "IncludedBodies": ""
     }
   },
-  "Title": "Dynamic Cubemaps",
-  "Description": "How can mirrors be real if",
-  "LastSaved": "2024-04-05T16:34:27.8248184\u002B01:00",
+  "Title": "Cubemap - Dynamic",
+  "Description": "Cubemaps can update in realtime",
+  "LastSaved": "2024-04-10T19:00:32.9602648\u002B01:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []
