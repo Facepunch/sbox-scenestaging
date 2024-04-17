@@ -1,0 +1,384 @@
+{
+  "__guid": "0a141e3d-1f00-4bbb-a9e3-c35845e9c9ac",
+  "GameObjects": [
+    {
+      "__guid": "2b836f2e-8cda-4cbe-befc-49b392619480",
+      "Name": "Main Camera",
+      "Position": "-1166.007,775.4131,532.0658",
+      "Rotation": "0.0625556,0.2017502,-0.289473,0.9335893",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "f0897136-d584-4c2e-8ea9-991000ba449e",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "OnComponentStart": {
+            "__version": 6,
+            "__guid": "991a2608-af77-47d8-a838-9419e23a62af",
+            "UserData": {
+              "Title": "Make Sphere Grid",
+              "ReferencedComponentTypes": []
+            },
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "input",
+                "UserData": {
+                  "Position": "-16,240"
+                }
+              },
+              {
+                "Id": 2,
+                "Type": "scene.ref",
+                "Properties": {
+                  "gameobject": {
+                    "_type": "gameobject",
+                    "go": "3ec97d9d-6b8d-4265-af88-2a8510ab9d72"
+                  }
+                },
+                "UserData": {
+                  "Position": "-16,304",
+                  "Labels": {
+                    "_result": "sphere"
+                  }
+                }
+              },
+              {
+                "Id": 3,
+                "Type": "scene.clone",
+                "UserData": {
+                  "Position": "864,384"
+                }
+              },
+              {
+                "Id": 5,
+                "Type": "forrange",
+                "UserData": {
+                  "Position": "320,240",
+                  "Labels": {
+                    "body.value": "i"
+                  }
+                }
+              },
+              {
+                "Id": 6,
+                "Type": "forrange",
+                "UserData": {
+                  "Position": "528,288",
+                  "Labels": {
+                    "body.value": "j"
+                  }
+                }
+              },
+              {
+                "Id": 7,
+                "Type": "vec3.new",
+                "UserData": {
+                  "Position": "192,384"
+                }
+              },
+              {
+                "Id": 8,
+                "Type": "op.multiply",
+                "UserData": {
+                  "Position": "576,496"
+                }
+              },
+              {
+                "Id": 9,
+                "Type": "op.subtract",
+                "UserData": {
+                  "Position": "400,496"
+                }
+              },
+              {
+                "Id": 10,
+                "Type": "property",
+                "Properties": {
+                  "_type": "Sandbox.Game/Sandbox.GameObject",
+                  "_name": "Enabled"
+                },
+                "UserData": {
+                  "Position": "864,240"
+                }
+              }
+            ],
+            "Links": [
+              {
+                "SrcId": 6,
+                "SrcName": "body",
+                "DstId": 3,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 8,
+                "SrcName": "_result",
+                "DstId": 3,
+                "DstName": "position"
+              },
+              {
+                "SrcId": 2,
+                "SrcName": "_result",
+                "DstId": 3,
+                "DstName": "target"
+              },
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 5,
+                "DstName": "_signal"
+              },
+              {
+                "Value": 65,
+                "DstId": 5,
+                "DstName": "count"
+              },
+              {
+                "SrcId": 5,
+                "SrcName": "body",
+                "DstId": 6,
+                "DstName": "_signal"
+              },
+              {
+                "Value": 65,
+                "DstId": 6,
+                "DstName": "count"
+              },
+              {
+                "SrcId": 5,
+                "SrcName": "body.value",
+                "DstId": 7,
+                "DstName": "x"
+              },
+              {
+                "SrcId": 6,
+                "SrcName": "body.value",
+                "DstId": 7,
+                "DstName": "y"
+              },
+              {
+                "Value": 0,
+                "DstId": 7,
+                "DstName": "z"
+              },
+              {
+                "SrcId": 9,
+                "SrcName": "_result",
+                "DstId": 8,
+                "DstName": "a"
+              },
+              {
+                "Value": {
+                  "$type": "Simple",
+                  "Type": "System.Private.CoreLib/System.Single",
+                  "Value": 64
+                },
+                "DstId": 8,
+                "DstName": "b"
+              },
+              {
+                "SrcId": 7,
+                "SrcName": "_result",
+                "DstId": 9,
+                "DstName": "a"
+              },
+              {
+                "Value": {
+                  "$type": "Simple",
+                  "Type": "Sandbox.System/Vector3",
+                  "Value": "32,32,0"
+                },
+                "DstId": 9,
+                "DstName": "b"
+              },
+              {
+                "SrcId": 5,
+                "SrcName": "_signal",
+                "DstId": 10,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 2,
+                "SrcName": "_result",
+                "DstId": 10,
+                "DstName": "_target"
+              },
+              {
+                "Value": false,
+                "DstId": 10,
+                "DstName": "_value"
+              }
+            ]
+          },
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "__guid": "9636b869-fa9c-4f8d-bf6e-e0c957e3cd18",
+      "Name": "Directional Light",
+      "Position": "0,0,200",
+      "Rotation": "-0.2459842,0.5938582,0.2931525,0.7077327",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "39ccfa19-ef7e-433d-ad46-91c2dfb2dbdb",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "__guid": "d7eb5ab9-6ade-4afa-a765-05b55adfc815",
+      "Name": "Plane",
+      "Scale": "10,10,10",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "c3f5a8d2-4aa3-4f4c-a8e0-41eb83780daa",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/plane.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "3ec97d9d-6b8d-4265-af88-2a8510ab9d72",
+      "Name": "Sphere",
+      "Position": "49.00499,114.6748,53.56899",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "da235985-ade3-463e-802f-8bcbd894bc03",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/sphere.vmdl",
+          "OnComponentStart": {
+            "__version": 6,
+            "__guid": "a281b804-4b23-4418-8216-b1cbe4ef8df6",
+            "UserData": {
+              "Title": "On Component Start",
+              "ReferencedComponentTypes": []
+            },
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "input",
+                "UserData": {
+                  "Position": "-0,96"
+                }
+              },
+              {
+                "Id": 3,
+                "Type": "property",
+                "Properties": {
+                  "_type": "Sandbox.Game/Sandbox.ModelRenderer",
+                  "_name": "Tint"
+                },
+                "UserData": {
+                  "Position": "304,160"
+                }
+              },
+              {
+                "Id": 4,
+                "Type": "scene.ref",
+                "ParentId": 3,
+                "Properties": {
+                  "component": {
+                    "_type": "component",
+                    "component_id": "da235985-ade3-463e-802f-8bcbd894bc03",
+                    "go": "3ec97d9d-6b8d-4265-af88-2a8510ab9d72",
+                    "component_type": "ModelRenderer"
+                  }
+                }
+              },
+              {
+                "Id": 5,
+                "Type": "random.color",
+                "Properties": {
+                  "saturation": 0.75
+                },
+                "UserData": {
+                  "Position": "16,192"
+                }
+              }
+            ],
+            "Links": [
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 3,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 4,
+                "SrcName": "_result",
+                "DstId": 3,
+                "DstName": "_target"
+              },
+              {
+                "SrcId": 5,
+                "SrcName": "_result",
+                "DstId": 3,
+                "DstName": "_value"
+              }
+            ]
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "actions.cached",
+  "Description": "",
+  "LastSaved": "2024-04-17T18:13:52.8637701\u002B01:00",
+  "ResourceVersion": 1,
+  "__version": 1,
+  "__references": []
+}
