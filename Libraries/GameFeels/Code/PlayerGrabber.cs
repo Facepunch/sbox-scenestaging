@@ -1,3 +1,6 @@
+using Sandbox;
+using System;
+
 public class PlayerGrabber : Component
 {
 	[Property] public GameObject ImpactEffect { get; set; }
