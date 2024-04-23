@@ -29,7 +29,7 @@
 
 <root>
     <img @ref=Glyph />
-    <label>@Analog</label>
+    <label>@( !string.IsNullOrEmpty( Text ) ? Text : Analog.ToString() )</label>
 </root>
 
 @code
@@ -38,6 +38,7 @@
     public Image Glyph { get; set; }
     public InputAnalog Analog { get; set; }
     public InputGlyphSize Size { get; set; } = InputGlyphSize.Medium;
+    public string Text { get; set; }
 
     /// <summary>
     /// Checks the current button and updates the glyph.
