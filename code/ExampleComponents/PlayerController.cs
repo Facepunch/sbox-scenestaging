@@ -69,7 +69,7 @@ public class PlayerController : Component
 		var cc = GameObject.Components.Get<CharacterController>();
 		if ( cc is null ) return;
 
-		float rotateDifference = 0;
+		float moveRotationSpeed = 0;
 
 		// rotate body to look angles
 		if ( Body is not null )
@@ -83,11 +83,17 @@ public class PlayerController : Component
 				targetAngle = Rotation.LookAt( v, Vector3.Up );
 			}
 
-			rotateDifference = Body.Transform.Rotation.Distance( targetAngle );
+			float rotateDifference = Body.Transform.Rotation.Distance( targetAngle );
 
 			if ( rotateDifference > 50.0f || cc.Velocity.Length > 10.0f )
 			{
-				Body.Transform.Rotation = Rotation.Lerp( Body.Transform.Rotation, targetAngle, Time.Delta * 2.0f );
+				var newRotation = Rotation.Lerp( Body.Transform.Rotation, targetAngle, Time.Delta * 2.0f );
+
+				// We won't end up actually moving to the targetAngle, so calculate how much we're actually moving
+				var angleDiff = Body.Transform.Rotation.Angles() - newRotation.Angles(); // Rotation.Distance is unsigned
+				moveRotationSpeed = angleDiff.yaw / Time.Delta;
+
+				Body.Transform.Rotation = newRotation;
 			}
 		}
 
@@ -97,7 +103,7 @@ public class PlayerController : Component
 			AnimationHelper.WithVelocity( cc.Velocity );
 			AnimationHelper.WithWishVelocity( WishVelocity );
 			AnimationHelper.IsGrounded = cc.IsOnGround;
-			AnimationHelper.FootShuffle = rotateDifference;
+			AnimationHelper.MoveRotationSpeed = moveRotationSpeed;
 			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
 			AnimationHelper.MoveStyle = IsRunning ? CitizenAnimationHelper.MoveStyles.Run : CitizenAnimationHelper.MoveStyles.Walk;
 		}
