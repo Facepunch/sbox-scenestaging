@@ -509,6 +509,131 @@
       ]
     },
     {
+      "__guid": "0f9f2581-ed10-4ce8-ac70-b8539d9d36d3",
+      "Name": "Box (2)",
+      "Position": "1384,-332,-1519.198",
+      "Tags": "solid,noblockaudio",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.MeshComponent",
+          "__guid": "6d022c74-1e7a-4697-8a09-8274aec53928",
+          "Collision": "Mesh",
+          "Color": "1,1,1,0.58",
+          "IsTrigger": false,
+          "Mesh": {
+            "Topology": "H4sIAAAAAAAACl2Qiw6CUAxDh1flgg/wAfr/X2pP0iWLJA25W9t16xHxFc4C30E4\u002Bt2FWbgKd2Ew4NTvIZxcb9ZH4b5db\u002Bb9z/oUzVh8m7lPc9FOzjRYQ8ZXyXxxXvrw4e72wvtWdoEPdzMXj8We9OHDXcvO7EqdN396eKaeLHjkLciePeYxi4z0mMFtMisablFvRXZ2Tj158KQOF78f9WSROMQBAAA=",
+            "TextureOrigin": "1088,-332,-1519.198",
+            "Positions": [
+              "-8,-156,112",
+              "8,-156,112",
+              "8,156,112",
+              "-8,156,112",
+              "-8,156,-112",
+              "8,156,-112",
+              "8,-156,-112",
+              "-8,-156,-112"
+            ],
+            "TextureUAxis": [
+              "1,0,0",
+              "1,0,0",
+              "0,-1,0",
+              "0,1,0",
+              "-1,0,0",
+              "1,0,0"
+            ],
+            "TextureVAxis": [
+              "0,-1,0",
+              "0,-1,0",
+              "0,0,-1",
+              "0,0,-1",
+              "0,0,-1",
+              "0,0,-1"
+            ],
+            "TextureScale": [
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25"
+            ],
+            "TextureAngle": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "MaterialIndex": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "EdgeFlags": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "Materials": [
+              "materials/dev/reflectivity_30.vmat"
+            ]
+          },
+          "SmoothingAngle": 40,
+          "Static": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "65c18df2-7654-4ed1-b7dc-83e5af7b2770",
+          "Name": "Text",
+          "Position": "8.460083,0,-64.52612",
+          "Rotation": "0,0,1,-0.00000004371139",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.TextRenderer",
+              "__guid": "4a9f2be9-54ed-48a3-b187-165b01c4c4b0",
+              "Color": "0.84651,0.84651,0.84651,1",
+              "FontFamily": "Poppins",
+              "FontSize": 64,
+              "Scale": 0.04,
+              "Text": "This is solid, but it has a \u0022noblockaudio\u0022 tag, which\nmeans that it won\u0027t occlude audio."
+            }
+          ]
+        }
+      ]
+    },
+    {
       "__guid": "c8c54f5c-ddee-418b-9cdb-1c870582f417",
       "Name": "Box",
       "Position": "879.9998,-336,-1519.21",
@@ -819,7 +944,7 @@
             ]
           },
           "SmoothingAngle": 40,
-          "Static": false
+          "Static": true
         }
       ]
     },
@@ -949,9 +1074,9 @@
       "IncludedBodies": ""
     }
   },
-  "Title": "Props",
-  "Description": "Testing  common prop behaviours",
-  "LastSaved": "2024-05-01T14:01:19.3501869\u002B01:00",
+  "Title": "Sound - Occlusion",
+  "Description": "Solid stuff should block sounds.x",
+  "LastSaved": "2024-05-01T14:14:54.7980178\u002B01:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": [
