@@ -1,4 +1,8 @@
+using Sandbox;
 using Sandbox.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 public sealed class Glass : Component, Component.ExecuteInEditor, Component.IDamageable
@@ -255,6 +259,7 @@ public sealed class Glass : Component, Component.ExecuteInEditor, Component.IDam
 		shape.Surface = Surface;
 
 		body.SetComponentSource( this );
+		body.EnableCollisionSounds = false;
 		body.OnIntersectionStart += OnPhysicsTouchStart;
 		body.BodyType = PhysicsBodyType.Keyframed;
 		body.Transform = transform;
