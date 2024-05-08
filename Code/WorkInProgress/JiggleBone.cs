@@ -36,6 +36,8 @@ public sealed class JiggleBone : TransformProxyComponent
 	{
 		var oldPos = LocalJigglePosition;
 
+
+
 		using ( Transform.DisableProxy() )
 		{
 			var worldTx = Transform.World;
@@ -43,13 +45,16 @@ public sealed class JiggleBone : TransformProxyComponent
 			var startPoint = worldTx.PointToWorld( StartPoint );
 			var endPoint = worldTx.PointToWorld( EndPoint );
 
+			//Gizmo.Draw.LineSphere( startPoint, 1 );
+			//Gizmo.Draw.LineSphere( endPoint, 1 );
+
 			state.Extent = (endPoint - startPoint);
 			state.Stiffness = Stiffness;
 			state.Damping = Damping;
 			state.Radius = Radius;
 			state.Mass = Mass;
 
-			state.Update( worldTx.PointToWorld( StartPoint ), worldTx.Rotation, Time.Delta * Speed * 16.0f );
+			state.Update( startPoint, Time.Delta * Speed * 16.0f );
 
 			var tx = worldTx.RotateAround( startPoint, state.Rotation );
 			LocalJigglePosition = GameObject.Parent.Transform.World.ToLocal( tx );
@@ -107,9 +112,9 @@ class JiggleBoneState
 
 	}
 
-	internal void Update( Vector3 position, Rotation rotation, float timeDelta )
+	internal void Update( Vector3 position, float timeDelta )
 	{
-		basePosition = position + rotation * Extent;
+		basePosition = position + Extent;
 
 		// initialization
 		if ( Position == default )
@@ -145,5 +150,9 @@ class JiggleBoneState
 
 		// Store the rotation offset result
 		Rotation = Rotation.FromToRotation( basePosition - position, Position - position );
+
+		//Gizmo.Draw.IgnoreDepth = true;
+		//Gizmo.Draw.Line( position, Position );
+		//Gizmo.Draw.Line( basePosition, Position );
 	}
 }
