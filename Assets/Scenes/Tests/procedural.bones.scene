@@ -1,5 +1,5 @@
 {
-  "__guid": "8e945bb9-361b-451d-a48c-235b19e21cde",
+  "__guid": "31351e60-a320-478f-883b-0e0a7f37f818",
   "GameObjects": [
     {
       "__guid": "4cd458a5-53ca-4a62-a487-803e011a907a",
@@ -1895,13 +1895,26 @@
               "Children": [
                 {
                   "__guid": "8ed1e5b0-6cb4-4851-8dd4-b3bf0c93afb5",
-                  "Flags": 4,
+                  "Flags": 1028,
                   "Name": "spine_0",
-                  "Position": "3.921827,-0.002448082,-0.0001163057",
-                  "Rotation": "0.0002582668,-0.0000002086403,-0.0000562668,1",
+                  "Position": "3.921825,-0.00244316,-0.0001120164",
+                  "Rotation": "0.0002582669,-0.0000002235174,-0.00005626678,0.9999999",
                   "Enabled": true,
                   "NetworkMode": 2,
                   "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "JiggleBone",
+                      "__guid": "b4be1d58-93d7-4b1f-85cf-7f32dd863d5e",
+                      "EndPoint": "32,0,0",
+                      "StartPoint": "0,0,0",
+                      "Damping": 1.6,
+                      "Mass": 1,
+                      "Radius": 40,
+                      "Speed": 1,
+                      "Stiffness": 1.78
+                    }
+                  ],
                   "Children": [
                     {
                       "__guid": "11e111b4-fc84-4492-92e0-6d50f1842df0",
@@ -1918,20 +1931,20 @@
                           "__guid": "be540881-1e27-4a00-a9f4-b114d5296564",
                           "EndPoint": "17.67999,0,0",
                           "StartPoint": "0,0,0",
-                          "Damping": 0.11,
+                          "Damping": 1.6,
                           "Mass": 1,
                           "Radius": 29.25,
                           "Speed": 1,
-                          "Stiffness": 1.47
+                          "Stiffness": 1.78
                         }
                       ],
                       "Children": [
                         {
                           "__guid": "a0a64c82-fcc3-4f95-ae5b-f1dc2922ae36",
-                          "Flags": 1028,
+                          "Flags": 4,
                           "Name": "spine_2",
-                          "Position": "2.595103,-0.01171753,2.057424",
-                          "Rotation": "0.0002119988,-0.0002527386,0.0000911355,0.9999999",
+                          "Position": "5.610455,0.00001001358,0.00003937123",
+                          "Rotation": "0.0002119392,-0.0002525895,0.00009104605,1",
                           "Enabled": true,
                           "NetworkMode": 2,
                           "NetworkInterpolation": true,
@@ -1951,11 +1964,11 @@
                                   "__guid": "9d737338-b382-4666-9203-cc94ec72004a",
                                   "EndPoint": "17.67999,0,0",
                                   "StartPoint": "0,0,0",
-                                  "Damping": 0.11,
+                                  "Damping": 1.6,
                                   "Mass": 1,
                                   "Radius": 29.25,
                                   "Speed": 1,
-                                  "Stiffness": 1.47
+                                  "Stiffness": 1.78
                                 }
                               ],
                               "Children": [
@@ -1993,8 +2006,8 @@
                                       "__guid": "ba1514c1-2a33-41f0-9d7e-351aa8dda587",
                                       "Flags": 4,
                                       "Name": "face_lid_lower_R",
-                                      "Position": "6.908824,5.140459,-3.234565",
-                                      "Rotation": "-0.3386923,0.9305478,-0.1307779,-0.047599",
+                                      "Position": "6.908821,5.140461,-3.234578",
+                                      "Rotation": "-0.3386923,0.9305478,-0.1307779,-0.04759899",
                                       "Enabled": true,
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true
@@ -2048,6 +2061,27 @@
                                       "Enabled": true,
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true
+                                    },
+                                    {
+                                      "__guid": "4c0a9a55-ac53-4936-a355-e638c6c728de",
+                                      "Flags": 0,
+                                      "Name": "Cube",
+                                      "Position": "16.23846,1.122449,0.001050353",
+                                      "Scale": "0.1,0.1,0.1",
+                                      "Enabled": true,
+                                      "NetworkMode": 2,
+                                      "NetworkInterpolation": true,
+                                      "Components": [
+                                        {
+                                          "__type": "Sandbox.ModelRenderer",
+                                          "__guid": "6f2557aa-484f-4498-be42-f21c86c5158a",
+                                          "BodyGroups": 18446744073709551615,
+                                          "MaterialOverride": "materials/default.vmat",
+                                          "Model": "models/dev/box.vmdl",
+                                          "RenderType": "On",
+                                          "Tint": "1,1,1,1"
+                                        }
+                                      ]
                                     }
                                   ]
                                 }
@@ -2077,11 +2111,11 @@
                                       "__guid": "7ad93de7-0595-44ac-95bb-01844a14fe6c",
                                       "EndPoint": "17.67999,0,0",
                                       "StartPoint": "0,0,0",
-                                      "Damping": 0.11,
+                                      "Damping": 1.6,
                                       "Mass": 1,
                                       "Radius": 29.25,
                                       "Speed": 1,
-                                      "Stiffness": 1.47
+                                      "Stiffness": 1.78
                                     }
                                   ],
                                   "Children": [
@@ -2296,6 +2330,28 @@
                                               "Enabled": true,
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true
+                                            },
+                                            {
+                                              "__guid": "55e3b1cb-0617-47ec-967b-702cc926b05a",
+                                              "Flags": 0,
+                                              "Name": "Cube",
+                                              "Position": "3.692975,0.06614843,3.087178",
+                                              "Rotation": "-0.01966792,0.7032936,-0.1137089,0.7014742",
+                                              "Scale": "0.1,0.1,0.1",
+                                              "Enabled": true,
+                                              "NetworkMode": 2,
+                                              "NetworkInterpolation": true,
+                                              "Components": [
+                                                {
+                                                  "__type": "Sandbox.ModelRenderer",
+                                                  "__guid": "32cef308-0d5a-412b-8cb0-c1140b8b7ab2",
+                                                  "BodyGroups": 18446744073709551615,
+                                                  "MaterialOverride": "materials/default.vmat",
+                                                  "Model": "models/dev/box.vmdl",
+                                                  "RenderType": "On",
+                                                  "Tint": "1,1,1,1"
+                                                }
+                                              ]
                                             }
                                           ]
                                         },
@@ -2365,8 +2421,8 @@
                                   "__guid": "f4e07dae-962c-4db1-905d-5147d9e12466",
                                   "Flags": 1028,
                                   "Name": "arm_upper_R",
-                                  "Position": "22.90772,3.541906,2.161519",
-                                  "Rotation": "0.07992473,-0.05475663,0.1089335,0.9893166",
+                                  "Position": "22.90835,3.537614,2.161585",
+                                  "Rotation": "0.07992474,-0.05475664,0.1089337,0.9893168",
                                   "Enabled": true,
                                   "NetworkMode": 2,
                                   "NetworkInterpolation": true,
@@ -2376,11 +2432,11 @@
                                       "__guid": "1cec383b-3b6e-450f-a3ff-50895bfc3fd5",
                                       "EndPoint": "17.67999,0,0",
                                       "StartPoint": "0,0,0",
-                                      "Damping": 0.11,
+                                      "Damping": 1.6,
                                       "Mass": 1,
                                       "Radius": 29.25,
                                       "Speed": 1,
-                                      "Stiffness": 1.47
+                                      "Stiffness": 1.78
                                     }
                                   ],
                                   "Children": [
@@ -2388,8 +2444,8 @@
                                       "__guid": "284b21fb-eb30-4689-bca1-6f0e49f17843",
                                       "Flags": 4,
                                       "Name": "arm_lower_R",
-                                      "Position": "10.04517,0.000009834765,-0.00006198882",
-                                      "Rotation": "-0.00000005960464,0.0000001788139,0.1484233,0.988924",
+                                      "Position": "10.04517,0.00001335144,-0.00005722046",
+                                      "Rotation": "-0.00000008287435,0.0000001792864,0.1484233,0.9889239",
                                       "Enabled": true,
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
@@ -2398,8 +2454,8 @@
                                           "__guid": "27d22943-a880-4343-b698-45fa97a90793",
                                           "Flags": 4,
                                           "Name": "hand_R",
-                                          "Position": "7.706649,0.00003027916,-0.0000500679",
-                                          "Rotation": "-0.09163141,0.03309624,0.03967846,0.9944516",
+                                          "Position": "7.706654,0.0000295639,-0.00004196167",
+                                          "Rotation": "-0.09163141,0.03309622,0.0396784,0.9944516",
                                           "Enabled": true,
                                           "NetworkMode": 2,
                                           "NetworkInterpolation": true,
@@ -2408,8 +2464,8 @@
                                               "__guid": "7683160f-dcbe-45b9-aafa-a823b5889b33",
                                               "Flags": 4,
                                               "Name": "hold_R",
-                                              "Position": "5.36108,0.6219075,-3.394512",
-                                              "Rotation": "-0.5764739,0.3928987,0.1704146,0.6958931",
+                                              "Position": "5.361085,0.621902,-3.394508",
+                                              "Rotation": "-0.5764739,0.3928987,0.1704146,0.695893",
                                               "Enabled": true,
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true
@@ -2590,8 +2646,8 @@
                                               "__guid": "b430745c-7883-44ab-92f9-9b2bddebb438",
                                               "Flags": 4,
                                               "Name": "hand_L_to_R_ikrule",
-                                              "Position": "-28.15178,11.30985,-27.2643",
-                                              "Rotation": "0.277273,0.6901738,0.0000003129244,0.6684158",
+                                              "Position": "-28.15179,11.30985,-27.26431",
+                                              "Rotation": "0.2772729,0.6901739,0.0000003121058,0.6684159",
                                               "Enabled": true,
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true
@@ -2602,7 +2658,7 @@
                                           "__guid": "b1c499c3-4de0-45a8-95b5-75b064e94075",
                                           "Flags": 4,
                                           "Name": "arm_lower_R_twist1",
-                                          "Position": "3.853328,0.00002539158,-0.00005161762",
+                                          "Position": "3.853322,0.00002765656,-0.00005722046",
                                           "Enabled": true,
                                           "NetworkMode": 2,
                                           "NetworkInterpolation": true
@@ -2643,7 +2699,7 @@
                                       "__guid": "9763b063-de72-4012-b080-26531834a846",
                                       "Flags": 4,
                                       "Name": "arm_upper_R_twist1",
-                                      "Position": "5.02259,0.00001493096,-0.00004124641",
+                                      "Position": "5.022587,0.00001764297,-0.00004577637",
                                       "Enabled": true,
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true
@@ -2773,20 +2829,33 @@
                 },
                 {
                   "__guid": "06101ce9-2f3c-416e-9f60-697932d83b96",
-                  "Flags": 4,
+                  "Flags": 1028,
                   "Name": "leg_upper_L",
-                  "Position": "-0.2881316,-0.4264346,4.427368",
-                  "Rotation": "-0.000001609325,1,0.0000001490116,-0.000001132488",
+                  "Position": "-0.288132,-0.4264328,4.427368",
+                  "Rotation": "0.6830119,0.6830137,0.1830118,-0.1830139",
                   "Enabled": true,
                   "NetworkMode": 2,
                   "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "JiggleBone",
+                      "__guid": "cb123d6b-84e7-494d-88d7-bca5e3e46b7f",
+                      "EndPoint": "32,0,0",
+                      "StartPoint": "0,0,0",
+                      "Damping": 0.43,
+                      "Mass": 1,
+                      "Radius": 40,
+                      "Speed": 1,
+                      "Stiffness": 2
+                    }
+                  ],
                   "Children": [
                     {
                       "__guid": "ba873c1c-23ae-42a2-8a7f-6ce3723af8de",
-                      "Flags": 4,
+                      "Flags": 1028,
                       "Name": "leg_lower_L",
-                      "Position": "14.47037,-0.00004656948,-0.00002255272",
-                      "Rotation": "-0.000003039837,-0.0000003576279,-0.01828232,0.9998329",
+                      "Position": "14.47036,-0.0000459701,-0.0000105437",
+                      "Rotation": "-0.000001946936,-0.000002413988,-0.7199161,0.6940611",
                       "Enabled": true,
                       "NetworkMode": 2,
                       "NetworkInterpolation": true,
@@ -4241,7 +4310,7 @@
   },
   "Title": "procedural.bones",
   "Description": "",
-  "LastSaved": "2024-05-08T17:09:48.4530656\u002B01:00",
+  "LastSaved": "2024-05-08T19:36:06.846374\u002B01:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": [
