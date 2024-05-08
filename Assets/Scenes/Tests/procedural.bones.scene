@@ -1,0 +1,3021 @@
+{
+  "__guid": "863ff916-1c5d-4b29-bb58-d77082d9094e",
+  "GameObjects": [
+    {
+      "__guid": "4cd458a5-53ca-4a62-a487-803e011a907a",
+      "Name": "Main Camera",
+      "Position": "-300,0,100",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "3d37d631-120c-42c7-a38c-59e954041e4b",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "Sandbox.Bloom",
+          "__guid": "542c2f03-0c05-46c0-8c8c-644f6f79f9e5",
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "BloomCurve": [
+            {
+              "y": 0.5
+            },
+            {
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "Mode": "Additive",
+          "Strength": 1,
+          "Threshold": 0.5,
+          "ThresholdWidth": 0
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "86eea3c8-92d5-49d6-be38-412feefec052",
+          "Name": "Viewmodel",
+          "Position": "23.04,-7.839956,-12.48",
+          "Rotation": "0.001329778,-0.02439596,0.0544111,0.9982197",
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "3fc6a1bd-a71c-4e0e-bb64-34c7762cf2bd",
+              "BodyGroups": 5203,
+              "Model": "models/weapons/sbox_assault_m4a1/v_m4a1.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "b129c0ce-d7b7-4689-8ee3-36de4c6648ed",
+              "Name": "Medium",
+              "Position": "12.70036,-0.00003481405,9.990372",
+              "Scale": "0.1,0.1,0.1",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Children": [
+                {
+                  "__guid": "b070a4c3-d769-4459-ada0-32eace6cea58",
+                  "Name": "Cube",
+                  "Position": "-0.0001301616,-0.0001396946,20.81809",
+                  "Scale": "0.1,0.1,0.2",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "cf5980b5-2058-4458-b4b8-3b8a830612a9",
+                      "BodyGroups": 18446744073709551615,
+                      "MaterialOverride": "materials/default.vmat",
+                      "Model": "models/dev/box.vmdl",
+                      "RenderType": "On",
+                      "Tint": "0,0,0,1"
+                    },
+                    {
+                      "__type": "JiggleBone",
+                      "__guid": "c64f524d-fe3a-4cb0-bf5e-a3a935085dc9",
+                      "EndPoint": "0,0,0",
+                      "StartPoint": "0,0,-104.1762",
+                      "Damping": 1,
+                      "Mass": 5,
+                      "Radius": 0.5,
+                      "Speed": 1,
+                      "Stiffness": 12
+                    }
+                  ],
+                  "Children": [
+                    {
+                      "__guid": "20304ccc-d029-4d30-ba2a-b5e93ae76960",
+                      "Name": "Line",
+                      "Position": "0,0,0",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkInterpolation": true,
+                      "Components": [
+                        {
+                          "__type": "Sandbox.LineRenderer",
+                          "__guid": "a85b234b-0d30-472b-92e2-b76bc9c6367c",
+                          "Color": {
+                            "color": [
+                              {
+                                "t": 0.49786323,
+                                "c": "0,0,0,1"
+                              }
+                            ],
+                            "alpha": []
+                          },
+                          "EndCap": "Rounded",
+                          "Opaque": true,
+                          "Points": [
+                            {
+                              "_type": "gameobject",
+                              "go": "b129c0ce-d7b7-4689-8ee3-36de4c6648ed"
+                            },
+                            {
+                              "_type": "gameobject",
+                              "go": "20304ccc-d029-4d30-ba2a-b5e93ae76960"
+                            }
+                          ],
+                          "SplineBias": 0.55,
+                          "SplineContinuity": 0.19,
+                          "SplineInterpolation": 9,
+                          "SplineTension": -0.03,
+                          "StartCap": "Rounded",
+                          "Width": [
+                            {
+                              "y": 0.122340426
+                            }
+                          ],
+                          "Wireframe": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "__guid": "f7b00faf-217e-479f-bfc2-a190201ccd88",
+              "Name": "Medium (2)",
+              "Position": "10.62322,-0.00004005862,8.714821",
+              "Scale": "0.1,0.1,0.1",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Children": [
+                {
+                  "__guid": "77961af4-ec80-44b7-88b4-bc1eaab53d94",
+                  "Name": "Cube",
+                  "Position": "-0.0001301616,-0.0001396946,20.81809",
+                  "Scale": "0.1,0.1,0.2",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "b89e6392-1260-4809-b502-c164a1e6612b",
+                      "BodyGroups": 18446744073709551615,
+                      "MaterialOverride": "materials/default.vmat",
+                      "Model": "models/dev/box.vmdl",
+                      "RenderType": "On",
+                      "Tint": "0,0,0,1"
+                    },
+                    {
+                      "__type": "JiggleBone",
+                      "__guid": "25588422-86e8-47d8-90af-18a8405ebcb5",
+                      "EndPoint": "0,0,0",
+                      "StartPoint": "0,0,-104.1762",
+                      "Damping": 1,
+                      "Mass": 5,
+                      "Radius": 0.5,
+                      "Speed": 1,
+                      "Stiffness": 12
+                    }
+                  ],
+                  "Children": [
+                    {
+                      "__guid": "9e23198b-2d10-4300-9349-a39f1abcc6cb",
+                      "Name": "Line",
+                      "Position": "0,0,0",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkInterpolation": true,
+                      "Components": [
+                        {
+                          "__type": "Sandbox.LineRenderer",
+                          "__guid": "a4523f61-e783-47de-abe7-8437e6f4c621",
+                          "Color": {
+                            "color": [
+                              {
+                                "t": 0.49786323,
+                                "c": "0,0,0,1"
+                              }
+                            ],
+                            "alpha": []
+                          },
+                          "EndCap": "Rounded",
+                          "Opaque": true,
+                          "Points": [
+                            {
+                              "_type": "gameobject",
+                              "go": "f7b00faf-217e-479f-bfc2-a190201ccd88"
+                            },
+                            {
+                              "_type": "gameobject",
+                              "go": "9e23198b-2d10-4300-9349-a39f1abcc6cb"
+                            }
+                          ],
+                          "SplineBias": 0.55,
+                          "SplineContinuity": 0.19,
+                          "SplineInterpolation": 9,
+                          "SplineTension": -0.03,
+                          "StartCap": "Rounded",
+                          "Width": [
+                            {
+                              "y": 0.122340426
+                            }
+                          ],
+                          "Wireframe": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "__guid": "51f7eb6a-0388-46fe-a1e8-d77776677553",
+              "Name": "Medium (2)",
+              "Position": "9.697162,0.6308364,8.011455",
+              "Rotation": "-0.3826842,-0.0000001508743,-0.00000006332994,0.9238818",
+              "Scale": "0.1,0.1,0.1",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Children": [
+                {
+                  "__guid": "a7caf8a4-5ce8-4a8e-b190-52725d0d63a4",
+                  "Name": "Cube",
+                  "Position": "-0.0001301616,-0.0001396946,20.81809",
+                  "Scale": "0.1,0.1,0.2",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "65f0959e-2ff0-4bd7-b9bc-ced905dac36a",
+                      "BodyGroups": 18446744073709551615,
+                      "MaterialOverride": "materials/default.vmat",
+                      "Model": "models/dev/box.vmdl",
+                      "RenderType": "On",
+                      "Tint": "0,0,0,1"
+                    },
+                    {
+                      "__type": "JiggleBone",
+                      "__guid": "13e03ec3-3117-4f6e-8089-c8a8f21c9025",
+                      "EndPoint": "0,0,0",
+                      "StartPoint": "0,0,-104.1762",
+                      "Damping": 1,
+                      "Mass": 5,
+                      "Radius": 0.5,
+                      "Speed": 1,
+                      "Stiffness": 10
+                    }
+                  ],
+                  "Children": [
+                    {
+                      "__guid": "7990c22a-11d6-4331-b0b9-d956d8c0ca42",
+                      "Name": "Line",
+                      "Position": "0,0,0",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkInterpolation": true,
+                      "Components": [
+                        {
+                          "__type": "Sandbox.LineRenderer",
+                          "__guid": "38fc24d0-b92b-4735-a0ea-7f83009262e7",
+                          "Color": {
+                            "color": [
+                              {
+                                "t": 0.49786323,
+                                "c": "0,0,0,1"
+                              }
+                            ],
+                            "alpha": []
+                          },
+                          "EndCap": "Rounded",
+                          "Opaque": true,
+                          "Points": [
+                            {
+                              "_type": "gameobject",
+                              "go": "51f7eb6a-0388-46fe-a1e8-d77776677553"
+                            },
+                            {
+                              "_type": "gameobject",
+                              "go": "7990c22a-11d6-4331-b0b9-d956d8c0ca42"
+                            }
+                          ],
+                          "SplineBias": 0.55,
+                          "SplineContinuity": 0.19,
+                          "SplineInterpolation": 9,
+                          "SplineTension": -0.03,
+                          "StartCap": "Rounded",
+                          "Width": [
+                            {
+                              "y": 0.122340426
+                            }
+                          ],
+                          "Wireframe": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "__guid": "449c8a7e-f46b-4344-bd13-3a29b240d5b9",
+              "Name": "Medium (2)",
+              "Position": "9.016207,-0.00005251591,8.633735",
+              "Scale": "0.1,0.1,0.1",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Children": [
+                {
+                  "__guid": "4c725c6a-c89e-4dfa-8ddd-42224318f832",
+                  "Name": "Cube",
+                  "Position": "-0.0001301616,-0.0001396946,20.81809",
+                  "Scale": "0.1,0.1,0.2",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "8c0bb4b1-511c-4b04-afed-5a616a06e427",
+                      "BodyGroups": 18446744073709551615,
+                      "MaterialOverride": "materials/default.vmat",
+                      "Model": "models/dev/box.vmdl",
+                      "RenderType": "On",
+                      "Tint": "0,0,0,1"
+                    },
+                    {
+                      "__type": "JiggleBone",
+                      "__guid": "0f56854a-644d-4120-ba32-69f94e19d20e",
+                      "EndPoint": "0,0,0",
+                      "StartPoint": "0,0,-104.1762",
+                      "Damping": 1,
+                      "Mass": 5,
+                      "Radius": 0.5,
+                      "Speed": 1,
+                      "Stiffness": 12
+                    }
+                  ],
+                  "Children": [
+                    {
+                      "__guid": "8404b9a8-12fd-44b1-854d-be9bb80ba0ed",
+                      "Name": "Line",
+                      "Position": "0,0,0",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkInterpolation": true,
+                      "Components": [
+                        {
+                          "__type": "Sandbox.LineRenderer",
+                          "__guid": "88f6996c-b4f1-4786-a24e-e8188e565f61",
+                          "Color": {
+                            "color": [
+                              {
+                                "t": 0.49786323,
+                                "c": "0,0,0,1"
+                              }
+                            ],
+                            "alpha": []
+                          },
+                          "EndCap": "Rounded",
+                          "Opaque": true,
+                          "Points": [
+                            {
+                              "_type": "gameobject",
+                              "go": "449c8a7e-f46b-4344-bd13-3a29b240d5b9"
+                            },
+                            {
+                              "_type": "gameobject",
+                              "go": "8404b9a8-12fd-44b1-854d-be9bb80ba0ed"
+                            }
+                          ],
+                          "SplineBias": 0.55,
+                          "SplineContinuity": 0.19,
+                          "SplineInterpolation": 9,
+                          "SplineTension": -0.03,
+                          "StartCap": "Rounded",
+                          "Width": [
+                            {
+                              "y": 0.122340426
+                            }
+                          ],
+                          "Wireframe": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "__guid": "8f06e826-cd59-41e5-9edb-4d6bcff18bc9",
+              "Name": "Medium (2)",
+              "Position": "8.147921,-1.162632,8.217111",
+              "Rotation": "0.3826834,-0.00000000372529,0.000000002793968,0.9238796",
+              "Scale": "0.1,0.1,0.1",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Children": [
+                {
+                  "__guid": "1b47e731-28f8-403b-83fa-923563b8b958",
+                  "Name": "Cube",
+                  "Position": "-0.0001301616,-0.0001396946,20.81809",
+                  "Scale": "0.1,0.1,0.2",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "1284ba29-58f5-466f-8f24-f8af9d1cae46",
+                      "BodyGroups": 18446744073709551615,
+                      "MaterialOverride": "materials/default.vmat",
+                      "Model": "models/dev/box.vmdl",
+                      "RenderType": "On",
+                      "Tint": "0,0,0,1"
+                    },
+                    {
+                      "__type": "JiggleBone",
+                      "__guid": "4814b5a0-30d4-4b6f-84be-e5112148d9b4",
+                      "EndPoint": "0,0,0",
+                      "StartPoint": "0,0,-104.1762",
+                      "Damping": 2,
+                      "Mass": 5,
+                      "Radius": 0.5,
+                      "Speed": 1,
+                      "Stiffness": 12
+                    }
+                  ],
+                  "Children": [
+                    {
+                      "__guid": "f0c5bcc3-4505-484c-887e-8469bc6e876f",
+                      "Name": "Line",
+                      "Position": "0,0,0",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkInterpolation": true,
+                      "Components": [
+                        {
+                          "__type": "Sandbox.LineRenderer",
+                          "__guid": "99c6c19d-63b7-4492-9a2f-8210ffcae0b8",
+                          "Color": {
+                            "color": [
+                              {
+                                "t": 0.49786323,
+                                "c": "0,0,0,1"
+                              }
+                            ],
+                            "alpha": []
+                          },
+                          "EndCap": "Rounded",
+                          "Opaque": true,
+                          "Points": [
+                            {
+                              "_type": "gameobject",
+                              "go": "8f06e826-cd59-41e5-9edb-4d6bcff18bc9"
+                            },
+                            {
+                              "_type": "gameobject",
+                              "go": "f0c5bcc3-4505-484c-887e-8469bc6e876f"
+                            }
+                          ],
+                          "SplineBias": 0.55,
+                          "SplineContinuity": 0.19,
+                          "SplineInterpolation": 9,
+                          "SplineTension": -0.03,
+                          "StartCap": "Rounded",
+                          "Width": [
+                            {
+                              "y": 0.122340426
+                            }
+                          ],
+                          "Wireframe": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "__guid": "bfc2083d-1b19-4748-94ec-ce814d717603",
+              "Name": "Medium (2)",
+              "Position": "7.322098,1.210972,7.276883",
+              "Rotation": "-0.7933668,0.0000001639128,0.0000006593764,0.6087618",
+              "Scale": "0.1,0.1,0.1",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Children": [
+                {
+                  "__guid": "2f615e14-10dd-4c41-81f5-8ad10219fba5",
+                  "Name": "Cube",
+                  "Position": "-0.0001301616,-0.0001396946,20.81809",
+                  "Scale": "0.1,0.1,0.2",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "15da4e98-c0f2-41b6-99c6-c163f8ccd110",
+                      "BodyGroups": 18446744073709551615,
+                      "MaterialOverride": "materials/default.vmat",
+                      "Model": "models/dev/box.vmdl",
+                      "RenderType": "On",
+                      "Tint": "0,0,0,1"
+                    },
+                    {
+                      "__type": "JiggleBone",
+                      "__guid": "3d3ccfb3-4ef4-4691-b074-4fb22e4d807e",
+                      "EndPoint": "0,0,0",
+                      "StartPoint": "0,0,-104.1762",
+                      "Damping": 1,
+                      "Mass": 5,
+                      "Radius": 0.5,
+                      "Speed": 1,
+                      "Stiffness": 7
+                    }
+                  ],
+                  "Children": [
+                    {
+                      "__guid": "43782b0d-bf1f-46c4-81b2-910aaae9c283",
+                      "Name": "Line",
+                      "Position": "0,0,0",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkInterpolation": true,
+                      "Components": [
+                        {
+                          "__type": "Sandbox.LineRenderer",
+                          "__guid": "91de612a-e76d-4215-99dd-c84c1a004beb",
+                          "Color": {
+                            "color": [
+                              {
+                                "t": 0.49786323,
+                                "c": "0,0,0,1"
+                              }
+                            ],
+                            "alpha": []
+                          },
+                          "EndCap": "Rounded",
+                          "Opaque": true,
+                          "Points": [
+                            {
+                              "_type": "gameobject",
+                              "go": "bfc2083d-1b19-4748-94ec-ce814d717603"
+                            },
+                            {
+                              "_type": "gameobject",
+                              "go": "43782b0d-bf1f-46c4-81b2-910aaae9c283"
+                            }
+                          ],
+                          "SplineBias": 0.55,
+                          "SplineContinuity": 0.19,
+                          "SplineInterpolation": 9,
+                          "SplineTension": -0.03,
+                          "StartCap": "Rounded",
+                          "Width": [
+                            {
+                              "y": 0.122340426
+                            }
+                          ],
+                          "Wireframe": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "__guid": "6db251aa-64a7-45ff-b1fb-80237fd7c634",
+              "Name": "Medium (2)",
+              "Position": "6.373607,-0.00007367553,8.702337",
+              "Scale": "0.1,0.1,0.1",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Children": [
+                {
+                  "__guid": "79c0ad66-c5c2-4d68-855a-845b28aa00e5",
+                  "Name": "Cube",
+                  "Position": "-0.0001301616,-0.0001396946,20.81809",
+                  "Scale": "0.1,0.1,0.2",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "cd72f14f-4740-4f83-827c-d7d6e8466c0c",
+                      "BodyGroups": 18446744073709551615,
+                      "MaterialOverride": "materials/default.vmat",
+                      "Model": "models/dev/box.vmdl",
+                      "RenderType": "On",
+                      "Tint": "0,0,0,1"
+                    },
+                    {
+                      "__type": "JiggleBone",
+                      "__guid": "a3a7dbff-870f-4efb-b5c1-d475919745d1",
+                      "EndPoint": "0,0,0",
+                      "StartPoint": "0,0,-104.1762",
+                      "Damping": 1,
+                      "Mass": 5,
+                      "Radius": 0.5,
+                      "Speed": 1,
+                      "Stiffness": 12
+                    }
+                  ],
+                  "Children": [
+                    {
+                      "__guid": "fc21ecc5-cdd1-400f-b93d-c3b1ed0469c3",
+                      "Name": "Line",
+                      "Position": "0,0,0",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkInterpolation": true,
+                      "Components": [
+                        {
+                          "__type": "Sandbox.LineRenderer",
+                          "__guid": "30221d39-4a96-41e9-950d-71e0d67bce63",
+                          "Color": {
+                            "color": [
+                              {
+                                "t": 0.49786323,
+                                "c": "0,0,0,1"
+                              }
+                            ],
+                            "alpha": []
+                          },
+                          "EndCap": "Rounded",
+                          "Opaque": true,
+                          "Points": [
+                            {
+                              "_type": "gameobject",
+                              "go": "6db251aa-64a7-45ff-b1fb-80237fd7c634"
+                            },
+                            {
+                              "_type": "gameobject",
+                              "go": "fc21ecc5-cdd1-400f-b93d-c3b1ed0469c3"
+                            }
+                          ],
+                          "SplineBias": 0.55,
+                          "SplineContinuity": 0.19,
+                          "SplineInterpolation": 9,
+                          "SplineTension": -0.03,
+                          "StartCap": "Rounded",
+                          "Width": [
+                            {
+                              "y": 0.122340426
+                            }
+                          ],
+                          "Wireframe": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "__guid": "a6ee9e30-f5c6-4dd1-9182-f18cd6885171",
+              "Name": "Medium (2)",
+              "Position": "5.417709,-0.00008225854,8.607393",
+              "Scale": "0.1,0.1,0.1",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Children": [
+                {
+                  "__guid": "d7147d6b-7c09-4551-9ebf-7da64ff2da0d",
+                  "Name": "Cube",
+                  "Position": "-0.0001301616,-0.0001396946,20.81809",
+                  "Scale": "0.1,0.1,0.2",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "cba50faf-5313-4bd5-bb95-cfddff5eedc6",
+                      "BodyGroups": 18446744073709551615,
+                      "MaterialOverride": "materials/default.vmat",
+                      "Model": "models/dev/box.vmdl",
+                      "RenderType": "On",
+                      "Tint": "0,0,0,1"
+                    },
+                    {
+                      "__type": "JiggleBone",
+                      "__guid": "558a4fd8-4fda-4139-82b9-348aebcc6631",
+                      "EndPoint": "0,0,0",
+                      "StartPoint": "0,0,-104.1762",
+                      "Damping": 3,
+                      "Mass": 5,
+                      "Radius": 0.5,
+                      "Speed": 1,
+                      "Stiffness": 12
+                    }
+                  ],
+                  "Children": [
+                    {
+                      "__guid": "99dfcd37-fcae-4ac3-8ea2-aeb11e99d715",
+                      "Name": "Line",
+                      "Position": "0,0,0",
+                      "Enabled": true,
+                      "NetworkMode": 2,
+                      "NetworkInterpolation": true,
+                      "Components": [
+                        {
+                          "__type": "Sandbox.LineRenderer",
+                          "__guid": "100bd009-a3cb-4413-8720-eaf0cea7a9c4",
+                          "Color": {
+                            "color": [
+                              {
+                                "t": 0.49786323,
+                                "c": "0,0,0,1"
+                              }
+                            ],
+                            "alpha": []
+                          },
+                          "EndCap": "Rounded",
+                          "Opaque": true,
+                          "Points": [
+                            {
+                              "_type": "gameobject",
+                              "go": "a6ee9e30-f5c6-4dd1-9182-f18cd6885171"
+                            },
+                            {
+                              "_type": "gameobject",
+                              "go": "99dfcd37-fcae-4ac3-8ea2-aeb11e99d715"
+                            }
+                          ],
+                          "SplineBias": 0.55,
+                          "SplineContinuity": 0.19,
+                          "SplineInterpolation": 9,
+                          "SplineTension": -0.03,
+                          "StartCap": "Rounded",
+                          "Width": [
+                            {
+                              "y": 0.122340426
+                            }
+                          ],
+                          "Wireframe": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "b5fd5a17-5e62-48f1-8f12-18d0deda6642",
+      "Name": "Directional Light",
+      "Position": "0,0,200",
+      "Rotation": "0.277208,0.3060589,0.4429616,0.7957819",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "2c384018-2513-4de8-bce7-531932d201f3",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "__guid": "fb20a2c9-3b1f-4259-a285-43a7e01b41d7",
+      "Name": "Box",
+      "Position": "0,0,7.999985",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.MeshComponent",
+          "__guid": "b4ee07b5-45ce-48c1-9114-eed0de177f6e",
+          "Collision": "Mesh",
+          "Color": "1,1,1,1",
+          "IsTrigger": false,
+          "Mesh": {
+            "Topology": "H4sIAAAAAAAACl2Qiw6CUAxDh1flgg/wAfr/X2pP0iWLJA25W9t16xHxFc4C30E4\u002Bt2FWbgKd2Ew4NTvIZxcb9ZH4b5db\u002Bb9z/oUzVh8m7lPc9FOzjRYQ8ZXyXxxXvrw4e72wvtWdoEPdzMXj8We9OHDXcvO7EqdN396eKaeLHjkLciePeYxi4z0mMFtMisablFvRXZ2Tj158KQOF78f9WSROMQBAAA=",
+            "Positions": [
+              "-640,-896,8",
+              "512,-896,8",
+              "512,768,8",
+              "-640,768,8",
+              "-640,768,-8",
+              "512,768,-8",
+              "512,-896,-8",
+              "-640,-896,-8"
+            ],
+            "TextureOrigin": [
+              "0,0,7.999985",
+              "0,0,7.999985",
+              "0,0,7.999985",
+              "0,0,7.999985",
+              "0,0,7.999985",
+              "0,0,7.999985"
+            ],
+            "TextureRotation": [
+              "0,0,0,1",
+              "0,0,0,1",
+              "0,0,0,1",
+              "0,0,0,1",
+              "0,0,0,1",
+              "0,0,0,1"
+            ],
+            "TextureUAxis": [
+              "1,0,0",
+              "1,0,0",
+              "0,-1,0",
+              "0,1,0",
+              "-1,0,0",
+              "1,0,0"
+            ],
+            "TextureVAxis": [
+              "0,-1,0",
+              "0,-1,0",
+              "0,0,-1",
+              "0,0,-1",
+              "0,0,-1",
+              "0,0,-1"
+            ],
+            "TextureScale": [
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25"
+            ],
+            "TextureOffset": [
+              "0,0",
+              "0,0",
+              "0,0",
+              "0,0",
+              "0,0",
+              "0,0"
+            ],
+            "TextureAngle": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "MaterialIndex": [
+              8,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "EdgeFlags": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "Materials": [
+              "materials/dev/reflectivity_30.vmat",
+              "materials/marble/marblefloor04/marblefloor04.vmat",
+              "materials/floor/concrete_a.vmat",
+              "mat/tilesmain_small.vmat",
+              "materials/terrain/grass/terrain_grass.vmat",
+              "materials/textures/ground/floor_tiles_09_2k/floor_tiles_09_2k.vmat",
+              "materials/pebbles.vmat",
+              "materials/concrete/concrete_gravel_01.vmat",
+              "materials/concrete/concrete_damaged_03.vmat",
+              "models/rubbish/textures/pile_00/bridgetarnj5_e.vmat"
+            ]
+          },
+          "SmoothingAngle": 40,
+          "Static": true
+        }
+      ]
+    },
+    {
+      "__guid": "75944a95-3cf5-480e-9c86-c111031fa212",
+      "Name": "Player",
+      "Position": "0,176,15.82616",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CharacterController",
+          "__guid": "854daf6a-9126-4131-b9d5-f46d99031d78",
+          "Acceleration": 10,
+          "Bounciness": 0.3,
+          "GroundAngle": 45,
+          "Height": 64,
+          "IgnoreLayers": "debris,tree",
+          "Radius": 16,
+          "StepHeight": 18
+        },
+        {
+          "__type": "PlayerGrabber",
+          "__guid": "388af53b-87ea-4e30-aad2-3e8237ab5498",
+          "DecalEffect": {
+            "_type": "gameobject",
+            "prefab": "effects/decal_bullet_default.prefab"
+          },
+          "ImpactEffect": {
+            "_type": "gameobject",
+            "prefab": "effects/impact_default.prefab"
+          },
+          "MovementSmoothness": 3,
+          "ShootDamage": 9
+        },
+        {
+          "__type": "PlayerController",
+          "__guid": "9e872f8f-e8e5-4b58-b701-125138370fe3",
+          "Body": {
+            "_type": "gameobject",
+            "go": "ec8c3bae-5ea2-4e52-a4d5-c1634faefab5"
+          },
+          "Eye": {
+            "_type": "gameobject",
+            "go": "0548f0ca-b275-4b17-8e13-e918361d69b6"
+          },
+          "FirstPerson": true,
+          "Gravity": "0,0,800"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "0548f0ca-b275-4b17-8e13-e918361d69b6",
+          "Name": "Eye",
+          "Position": "15.20728,0,58",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true
+        },
+        {
+          "__guid": "ec8c3bae-5ea2-4e52-a4d5-c1634faefab5",
+          "Name": "Collider",
+          "Position": "0,0,0",
+          "Tags": "noblockaudio,player",
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SphereCollider",
+              "__guid": "c136e172-7ee5-4cf4-a59f-6d4600592e39",
+              "Center": "0,-0.5599999,27.43998",
+              "IsTrigger": false,
+              "Radius": 31.91999,
+              "Static": false
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "fe04a546-bc28-4c41-8cab-e14cfd70fe6e",
+              "Name": "Cube",
+              "Position": "0,0,29.74234",
+              "Scale": "0.3,0.5,0.8",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "d838f62d-31ae-4ac8-9306-eb3b3356b2f6",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/default.vmat",
+                  "Model": "models/dev/box.vmdl",
+                  "RenderType": "On",
+                  "Tint": "0.33982,0.47785,0.71628,1"
+                }
+              ]
+            },
+            {
+              "__guid": "d787e0df-8d1d-4002-8653-99a954031587",
+              "Name": "Head",
+              "Position": "0,0,54.67339",
+              "Scale": "0.2,0.2,0.2",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "31be7bbe-50d0-4786-b433-831ac2612522",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/default.vmat",
+                  "Model": "models/dev/box.vmdl",
+                  "RenderType": "On",
+                  "Tint": "0.3907,0.23951,0.1581,1"
+                },
+                {
+                  "__type": "JiggleBone",
+                  "__guid": "b5e212db-80a1-41ae-bb8d-73ddef5e8285",
+                  "__enabled": false,
+                  "EndPoint": "0,0,32",
+                  "StartPoint": "0,0,0",
+                  "Damping": 1,
+                  "Mass": 1,
+                  "Radius": 40,
+                  "Speed": 1,
+                  "Stiffness": 1
+                },
+                {
+                  "__type": "Sandbox.LineRenderer",
+                  "__guid": "3cc687ea-c9fd-4497-80d2-94b394ae28cc",
+                  "Color": {
+                    "color": [
+                      {
+                        "t": 0.5,
+                        "c": "0,1,1,1"
+                      }
+                    ],
+                    "alpha": []
+                  },
+                  "EndCap": "None",
+                  "Opaque": true,
+                  "Points": [
+                    {
+                      "_type": "gameobject",
+                      "go": "d787e0df-8d1d-4002-8653-99a954031587"
+                    },
+                    {
+                      "_type": "gameobject",
+                      "go": "fe04a546-bc28-4c41-8cab-e14cfd70fe6e"
+                    }
+                  ],
+                  "SplineBias": 0,
+                  "SplineContinuity": 0,
+                  "SplineInterpolation": 0,
+                  "SplineTension": 0,
+                  "StartCap": "None",
+                  "Width": [
+                    {
+                      "x": 0.4702381,
+                      "y": 0.47074467
+                    }
+                  ],
+                  "Wireframe": false
+                }
+              ],
+              "Children": [
+                {
+                  "__guid": "7040dc72-a7d3-4019-8722-6dcffb2fd533",
+                  "Name": "Head",
+                  "Position": "0,13.84216,0",
+                  "Scale": "0.2,1,0.5",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "55f3ee93-6826-472e-92c9-8b30fe7d65a6",
+                      "BodyGroups": 18446744073709551615,
+                      "MaterialOverride": "materials/default.vmat",
+                      "Model": "models/dev/box.vmdl",
+                      "RenderType": "On",
+                      "Tint": "1,0.79845,0.53488,1"
+                    }
+                  ]
+                },
+                {
+                  "__guid": "c78878da-bb20-4b11-8988-f86d5aa1b073",
+                  "Name": "Head",
+                  "Position": "23.13302,0.9936523,-2.492065",
+                  "Scale": "0.2,0.2,0.2",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "01f799d6-2d5c-4530-bb48-3a5d08181fba",
+                      "BodyGroups": 18446744073709551615,
+                      "MaterialOverride": "materials/default.vmat",
+                      "Model": "models/dev/box.vmdl",
+                      "RenderType": "On",
+                      "Tint": "1,0.79845,0.53488,1"
+                    }
+                  ]
+                },
+                {
+                  "__guid": "13b869f2-ee80-4182-aac9-b762390b0185",
+                  "Name": "Head",
+                  "Position": "0,-14.49425,0",
+                  "Scale": "0.2,1,0.5",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "0ae81b57-eb7f-4951-ba01-dab17a4fc5d0",
+                      "BodyGroups": 18446744073709551615,
+                      "MaterialOverride": "materials/default.vmat",
+                      "Model": "models/dev/box.vmdl",
+                      "RenderType": "On",
+                      "Tint": "1,0.79845,0.53488,1"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "05a58426-d971-4c63-aecf-968980cb800f",
+      "Name": "Chained",
+      "Position": "186.3633,312.4068,22.23107",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "a4b82bc6-db21-4baa-9c50-8f7f36e80f6b",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,10",
+          "Static": false
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "ed11909b-9ca5-42fb-9546-590966fce108",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "98802f9b-a309-4bf8-b647-1844d1a7ec6d",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "1,1,0.2",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "43da2208-1770-41e1-9646-ca42115037be",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3b27ff39-4bbd-4ea2-9351-95e3145bf180",
+          "Name": "Cube",
+          "Position": "0,0,46.67284",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "1e348a0b-4dfa-47b0-b771-28e3dac6fd46",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "JiggleBone",
+              "__guid": "d69ec5ee-013c-42f6-bad2-efcccbfcfcf1",
+              "EndPoint": "0,0,0",
+              "StartPoint": "0,0,-83.21619",
+              "Damping": 0.21,
+              "Mass": 1,
+              "Radius": 40,
+              "Speed": 1,
+              "Stiffness": 0.09
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "8b3d81ba-69a8-442a-895e-9246d676bd89",
+              "Name": "Line",
+              "Position": "0,0,0",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.LineRenderer",
+                  "__guid": "fdbea520-b2ce-4cef-a11d-80e173e27091",
+                  "Color": {
+                    "color": [
+                      {
+                        "t": 0.49786323,
+                        "c": "0.00465,0.00465,0.00465,1"
+                      }
+                    ],
+                    "alpha": []
+                  },
+                  "EndCap": "Rounded",
+                  "Opaque": true,
+                  "Points": [
+                    {
+                      "_type": "gameobject",
+                      "go": "3b27ff39-4bbd-4ea2-9351-95e3145bf180"
+                    },
+                    {
+                      "_type": "gameobject",
+                      "go": "98802f9b-a309-4bf8-b647-1844d1a7ec6d"
+                    }
+                  ],
+                  "SplineBias": 0.55,
+                  "SplineContinuity": 0.19,
+                  "SplineInterpolation": 9,
+                  "SplineTension": -0.03,
+                  "StartCap": "Rounded",
+                  "Width": [
+                    {
+                      "y": 1
+                    }
+                  ],
+                  "Wireframe": false
+                }
+              ]
+            },
+            {
+              "__guid": "e9353241-f85c-441c-8c64-8050e1b2bc1b",
+              "Name": "Cube",
+              "Position": "0,0,109.513",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "d446321f-37aa-4216-b664-962aa882dbc6",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/default.vmat",
+                  "Model": "models/dev/box.vmdl",
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "JiggleBone",
+                  "__guid": "126806a5-3b58-4a3f-acac-21be4ba3ed1d",
+                  "EndPoint": "0,0,0",
+                  "StartPoint": "0,0,-83.21619",
+                  "Damping": 0.21,
+                  "Mass": 1,
+                  "Radius": 40,
+                  "Speed": 1,
+                  "Stiffness": 0.09
+                }
+              ],
+              "Children": [
+                {
+                  "__guid": "b53e2a21-2194-4779-95b6-635798b0be90",
+                  "Name": "Line",
+                  "Position": "0,0,-83.26578",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.LineRenderer",
+                      "__guid": "408628c7-9226-4f64-9135-a7c777e29c86",
+                      "Color": {
+                        "color": [
+                          {
+                            "t": 0.49786323,
+                            "c": "0.00392,0.00392,0.00392,1"
+                          }
+                        ],
+                        "alpha": []
+                      },
+                      "EndCap": "Rounded",
+                      "Opaque": true,
+                      "Points": [
+                        {
+                          "_type": "gameobject",
+                          "go": "e9353241-f85c-441c-8c64-8050e1b2bc1b"
+                        },
+                        {
+                          "_type": "gameobject",
+                          "go": "b53e2a21-2194-4779-95b6-635798b0be90"
+                        }
+                      ],
+                      "SplineBias": 0.55,
+                      "SplineContinuity": 0.19,
+                      "SplineInterpolation": 9,
+                      "SplineTension": -0.03,
+                      "StartCap": "Rounded",
+                      "Width": [
+                        {
+                          "y": 1
+                        }
+                      ],
+                      "Wireframe": false
+                    }
+                  ]
+                },
+                {
+                  "__guid": "53cf363d-db23-40c7-b40b-6258e5db17c4",
+                  "Name": "springyeyes_glasses",
+                  "Position": "15.09778,-0.8425903,192.7851",
+                  "Rotation": "0,0.9999999,0,0.00000005960464",
+                  "Scale": "3,3,3",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "d008610c-f245-418c-af11-2328587fd754",
+                      "BodyGroups": 18446744073709551615,
+                      "Model": "models/clothes/glasses/springyeyes_glasses.vmdl",
+                      "RenderType": "On",
+                      "Tint": "1,1,1,1"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "__guid": "b9fb6d19-cdb7-421a-b2ec-704f970bb26d",
+              "Name": "Cube",
+              "Position": "0,86.33344,41.75217",
+              "Rotation": "-0.5,0,0,0.8660254",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "39945ca3-543c-416b-bb9a-b61cbbad7d70",
+                  "__enabled": false,
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/default.vmat",
+                  "Model": "models/dev/box.vmdl",
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "JiggleBone",
+                  "__guid": "48e5f2f0-e9d3-4eeb-98db-6513f55c951b",
+                  "EndPoint": "0,0,0",
+                  "StartPoint": "0,0,-83.21619",
+                  "Damping": 0.21,
+                  "Mass": 1,
+                  "Radius": 40,
+                  "Speed": 1,
+                  "Stiffness": 0.09
+                }
+              ],
+              "Children": [
+                {
+                  "__guid": "f99bc4ad-6951-44d4-91aa-e3a7404e41b3",
+                  "Name": "Line",
+                  "Position": "0,-2.062683,-67.74359",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.LineRenderer",
+                      "__guid": "4f265654-4ca4-4219-9b67-a40791bd1bab",
+                      "Color": {
+                        "color": [
+                          {
+                            "t": 0.49786323,
+                            "c": "0.00392,0.00392,0.00392,1"
+                          }
+                        ],
+                        "alpha": []
+                      },
+                      "EndCap": "Rounded",
+                      "Opaque": true,
+                      "Points": [
+                        {
+                          "_type": "gameobject",
+                          "go": "b9fb6d19-cdb7-421a-b2ec-704f970bb26d"
+                        },
+                        {
+                          "_type": "gameobject",
+                          "go": "f99bc4ad-6951-44d4-91aa-e3a7404e41b3"
+                        }
+                      ],
+                      "SplineBias": 0.55,
+                      "SplineContinuity": 0.19,
+                      "SplineInterpolation": 9,
+                      "SplineTension": -0.03,
+                      "StartCap": "Rounded",
+                      "Width": {
+                        "rangey": "0,2",
+                        "frames": [
+                          {
+                            "y": 1
+                          },
+                          {
+                            "x": 1
+                          }
+                        ]
+                      },
+                      "Wireframe": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "__guid": "13a51d3f-e956-4938-8564-85e6e312e7db",
+              "Name": "Cube",
+              "Position": "0,-82.75104,42.56779",
+              "Rotation": "0.5000001,0,0,0.8660254",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "25f391de-28b8-44b4-967a-2fc09c35b304",
+                  "__enabled": false,
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/default.vmat",
+                  "Model": "models/dev/box.vmdl",
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "JiggleBone",
+                  "__guid": "c4d33f19-1cd2-4f1e-bfad-c975c40bd037",
+                  "EndPoint": "0,0,0",
+                  "StartPoint": "0,0,-83.21619",
+                  "Damping": 0.21,
+                  "Mass": 1,
+                  "Radius": 40,
+                  "Speed": 1,
+                  "Stiffness": 0.09
+                }
+              ],
+              "Children": [
+                {
+                  "__guid": "5e442a03-14a9-4a4e-aaa7-a082722453a6",
+                  "Name": "Line",
+                  "Position": "0,-2.062683,-67.74359",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkInterpolation": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.LineRenderer",
+                      "__guid": "c5775c6e-771d-4532-b24e-ecd1fb401d0c",
+                      "Color": {
+                        "color": [
+                          {
+                            "t": 0.49786323,
+                            "c": "0.00392,0.00392,0.00392,1"
+                          }
+                        ],
+                        "alpha": []
+                      },
+                      "EndCap": "Rounded",
+                      "Opaque": true,
+                      "Points": [
+                        {
+                          "_type": "gameobject",
+                          "go": "13a51d3f-e956-4938-8564-85e6e312e7db"
+                        },
+                        {
+                          "_type": "gameobject",
+                          "go": "5e442a03-14a9-4a4e-aaa7-a082722453a6"
+                        }
+                      ],
+                      "SplineBias": 0.55,
+                      "SplineContinuity": 0.19,
+                      "SplineInterpolation": 9,
+                      "SplineTension": -0.03,
+                      "StartCap": "Rounded",
+                      "Width": {
+                        "rangey": "0,2",
+                        "frames": [
+                          {
+                            "y": 1
+                          },
+                          {
+                            "x": 1
+                          }
+                        ]
+                      },
+                      "Wireframe": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "__guid": "229361db-b2ac-4440-92f9-20130ffccca9",
+              "Name": "Text",
+              "Position": "-25.48563,0,12.99399",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "8ef11afa-9a26-40c9-9516-64eb03d34f7e",
+                  "Color": "0.28372,0.28372,0.28372,1",
+                  "FontFamily": "Poppins",
+                  "FontSize": 29.17,
+                  "Scale": 0.3,
+                  "Text": "CHAINED"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "60712a77-06b4-47ab-8ad8-d29b46f0581b",
+      "Name": "Springy",
+      "Position": "179.2962,203.2738,22.23118",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "a511612e-3a7e-4e4f-a281-9c890903020b",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,10",
+          "Static": false
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "a0736e38-fa8e-4d22-be87-e4853bb00d4f",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "0fad056d-3ad5-450a-a80a-aa2989e73b68",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "1,1,0.2",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "368ee019-bb0d-4297-8697-f40bbb0231b0",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "41a61798-28b4-4424-8531-f90fe9041452",
+          "Name": "Cube",
+          "Position": "0,0,46.67284",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "585bec70-ca81-4237-93ed-ade25dff038e",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "JiggleBone",
+              "__guid": "09311afa-cfe7-4597-9424-b06dd75a0c60",
+              "EndPoint": "0,0,0",
+              "StartPoint": "0,0,-83.21619",
+              "Damping": 0.1,
+              "Mass": 1,
+              "Radius": 40,
+              "Speed": 1,
+              "Stiffness": 1
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "6443c031-6d97-4e56-86ab-1f648e4035f3",
+              "Name": "Line",
+              "Position": "0,0,0",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.LineRenderer",
+                  "__guid": "46409145-614d-44c6-ab00-862cb57f3b7e",
+                  "Color": {
+                    "color": [
+                      {
+                        "t": 0.49786323,
+                        "c": "0.09767,0.09767,0.09767,1"
+                      }
+                    ],
+                    "alpha": []
+                  },
+                  "EndCap": "Rounded",
+                  "Opaque": true,
+                  "Points": [
+                    {
+                      "_type": "gameobject",
+                      "go": "41a61798-28b4-4424-8531-f90fe9041452"
+                    },
+                    {
+                      "_type": "gameobject",
+                      "go": "0fad056d-3ad5-450a-a80a-aa2989e73b68"
+                    }
+                  ],
+                  "SplineBias": 0.55,
+                  "SplineContinuity": 0.19,
+                  "SplineInterpolation": 9,
+                  "SplineTension": -0.03,
+                  "StartCap": "Rounded",
+                  "Width": [
+                    {
+                      "y": 1
+                    }
+                  ],
+                  "Wireframe": false
+                }
+              ]
+            },
+            {
+              "__guid": "84082b1b-16c7-4c33-b295-34ddf2e95542",
+              "Name": "Text",
+              "Position": "-25.49002,-0.1094971,10.94437",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "f8a80783-c3ea-4b74-bf97-3c1f83eed949",
+                  "Color": "0.27907,0.27907,0.27907,1",
+                  "FontFamily": "Poppins",
+                  "FontSize": 29.51,
+                  "Scale": 0.3,
+                  "Text": "SPRINGY"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "98f8d30e-2c09-4407-bc6e-df1f41ebef18",
+      "Name": "Springy Af",
+      "Position": "179.2962,46.9306,22.23118",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "5d0caaac-289d-40bd-a7fc-6a48babcde7e",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,10",
+          "Static": false
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "3c9d09a3-2118-447b-888d-2edbea9d37b1",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "bdf2f1a2-a89a-4efb-b556-2d18cfb97250",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "1,1,0.2",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "357787ab-7392-400e-95a4-ad69aea38ae8",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "f4424889-843a-4e79-8233-7615a9052876",
+          "Name": "Cube",
+          "Position": "0,0,46.67284",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "a96fda87-2f54-4207-92bf-9321bc0c891b",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "JiggleBone",
+              "__guid": "9c4f944d-6b57-40b7-a1bb-251efa915e85",
+              "EndPoint": "0,0,0",
+              "StartPoint": "0,0,-83.21619",
+              "Damping": 0.1,
+              "Mass": 1,
+              "Radius": 40,
+              "Speed": 1,
+              "Stiffness": 2
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "752d9811-4571-44cf-92ef-3f849610d0d1",
+              "Name": "Line",
+              "Position": "0,0,0",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.LineRenderer",
+                  "__guid": "8e46ee5b-f43c-4ee7-b55d-98bd8004eb14",
+                  "Color": {
+                    "color": [
+                      {
+                        "t": 0.49786323,
+                        "c": "0.09767,0.09767,0.09767,1"
+                      }
+                    ],
+                    "alpha": []
+                  },
+                  "EndCap": "Rounded",
+                  "Opaque": true,
+                  "Points": [
+                    {
+                      "_type": "gameobject",
+                      "go": "f4424889-843a-4e79-8233-7615a9052876"
+                    },
+                    {
+                      "_type": "gameobject",
+                      "go": "bdf2f1a2-a89a-4efb-b556-2d18cfb97250"
+                    }
+                  ],
+                  "SplineBias": 0.55,
+                  "SplineContinuity": 0.19,
+                  "SplineInterpolation": 9,
+                  "SplineTension": -0.03,
+                  "StartCap": "Rounded",
+                  "Width": [
+                    {
+                      "y": 1
+                    }
+                  ],
+                  "Wireframe": false
+                }
+              ]
+            },
+            {
+              "__guid": "db2941a5-5fb4-41fa-9ea9-36933f3a68a1",
+              "Name": "Text",
+              "Position": "-25.47412,-0.1620941,13.88959",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "a23ff430-e0d1-4185-b6c4-eb2de5c7f97c",
+                  "Color": "0.31163,0.31163,0.31163,1",
+                  "FontFamily": "Poppins",
+                  "FontSize": 37.7,
+                  "Scale": 0.24,
+                  "Text": "SPRINGY"
+                }
+              ]
+            },
+            {
+              "__guid": "6b9312dd-ce2f-4875-b378-f825db6af44f",
+              "Name": "Text",
+              "Position": "-25.47412,-0.1620941,-2.258759",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "101380e3-1309-4212-b065-74f88fa74c5a",
+                  "Color": "0.31163,0.31163,0.31163,1",
+                  "FontFamily": "Poppins",
+                  "FontSize": 116.9,
+                  "Scale": 0.24,
+                  "Text": "AF"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "293c2828-560e-4e46-b4ae-d1addd56a12b",
+      "Name": "Medium",
+      "Position": "179.2962,119.404,22.23118",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "42e0fb39-0d1d-4f40-8513-a4ad4de6d5bf",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,10",
+          "Static": false
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "ae4908e9-b605-4aec-968e-03e7f244e796",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "d888649c-d9c6-4cdd-a0d6-67e2ff46ab90",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "1,1,0.2",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "0773cd86-890a-4d7e-82dd-c10cce709446",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ada302dc-7060-4a8f-abea-0349b0ac36ff",
+          "Name": "Cube",
+          "Position": "0,0,46.67284",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "571591c4-45f1-44d0-8c3d-6a3723c8eeee",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "JiggleBone",
+              "__guid": "4bd109b4-50c9-4628-8a7a-ad2f8a03055b",
+              "EndPoint": "0,0,0",
+              "StartPoint": "0,0,-83.21619",
+              "Damping": 0.5,
+              "Mass": 1,
+              "Radius": 40,
+              "Speed": 1,
+              "Stiffness": 0.5
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "047b6b02-593e-4395-aa4a-5cbcb30b060b",
+              "Name": "Line",
+              "Position": "0,0,0",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.LineRenderer",
+                  "__guid": "b8a55591-b709-44e5-8f5f-ca6f0cba605e",
+                  "Color": {
+                    "color": [
+                      {
+                        "t": 0.49786323,
+                        "c": "0.09767,0.09767,0.09767,1"
+                      }
+                    ],
+                    "alpha": []
+                  },
+                  "EndCap": "Rounded",
+                  "Opaque": true,
+                  "Points": [
+                    {
+                      "_type": "gameobject",
+                      "go": "ada302dc-7060-4a8f-abea-0349b0ac36ff"
+                    },
+                    {
+                      "_type": "gameobject",
+                      "go": "d888649c-d9c6-4cdd-a0d6-67e2ff46ab90"
+                    }
+                  ],
+                  "SplineBias": 0.55,
+                  "SplineContinuity": 0.19,
+                  "SplineInterpolation": 9,
+                  "SplineTension": -0.03,
+                  "StartCap": "Rounded",
+                  "Width": [
+                    {
+                      "y": 1
+                    }
+                  ],
+                  "Wireframe": false
+                }
+              ]
+            },
+            {
+              "__guid": "74fe8ce1-289d-4fe6-8899-f0d03d25dbe0",
+              "Name": "Text",
+              "Position": "-25.82321,-0.007369995,12.13113",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "69115e6c-3698-40dd-a4b2-404db77c5186",
+                  "Color": "0.31163,0.31163,0.31163,1",
+                  "FontFamily": "Poppins",
+                  "FontSize": 34.63,
+                  "Scale": 0.3,
+                  "Text": "MEDIUM"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "90feb3d3-a450-4393-83be-b32efdbe5510",
+      "Name": "Medium (1)",
+      "Position": "179.2962,-25.59431,22.23118",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "15f4456e-d8b7-4df4-a51c-f6492a5ec37c",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,10",
+          "Static": false
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "dbf29b93-57ec-4620-b096-61d1179ef954",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "610b55c6-ffb2-4bfc-b246-54c6abc3f185",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "1,1,0.2",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "9750b50e-95b6-438a-b0dd-3567072b1e7c",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1ba48353-3470-4e8c-80bc-b160e827e60f",
+          "Name": "Cube",
+          "Position": "0,0,46.67284",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "a039906d-58ce-4281-8b6d-ebef8e8c0942",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "JiggleBone",
+              "__guid": "87f5d51a-5bb5-45ac-8544-36810e0fad7d",
+              "EndPoint": "0,0,0",
+              "StartPoint": "0,0,-83.21619",
+              "Damping": 0,
+              "Mass": 1,
+              "Radius": 68.15,
+              "Speed": 1,
+              "Stiffness": 0
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "e505c706-8725-4905-9033-71fee1402c21",
+              "Name": "Line",
+              "Position": "0,0,0",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.LineRenderer",
+                  "__guid": "de2f74ad-a59c-4f1f-befb-58169efe7004",
+                  "Color": {
+                    "color": [
+                      {
+                        "t": 0.49786323,
+                        "c": "0.09767,0.09767,0.09767,1"
+                      }
+                    ],
+                    "alpha": []
+                  },
+                  "EndCap": "Rounded",
+                  "Opaque": true,
+                  "Points": [
+                    {
+                      "_type": "gameobject",
+                      "go": "1ba48353-3470-4e8c-80bc-b160e827e60f"
+                    },
+                    {
+                      "_type": "gameobject",
+                      "go": "610b55c6-ffb2-4bfc-b246-54c6abc3f185"
+                    }
+                  ],
+                  "SplineBias": 0.55,
+                  "SplineContinuity": 0.19,
+                  "SplineInterpolation": 9,
+                  "SplineTension": -0.03,
+                  "StartCap": "Rounded",
+                  "Width": [
+                    {
+                      "y": 1
+                    }
+                  ],
+                  "Wireframe": false
+                }
+              ]
+            },
+            {
+              "__guid": "874db301-18d0-4202-8e01-bf3b66037a7b",
+              "Name": "Text",
+              "Position": "-26.57382,-0.9466057,12.99733",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "533fc54a-33c9-42a2-9719-a62b9cfaddf2",
+                  "Color": "0.29302,0.29302,0.29302,1",
+                  "FontFamily": "Poppins",
+                  "FontSize": 37.7,
+                  "Scale": 0.3,
+                  "Text": "FLACID"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "3174dbda-f132-441e-b1f4-c08b5927866b",
+      "Name": "Spot Light",
+      "Position": "210.2127,759.9537,366.5068",
+      "Rotation": "0.2329629,0.3036031,-0.7329628,0.5624223",
+      "Tags": "light_spot,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SpotLight",
+          "__guid": "ee4964a9-5606-4a74-ac05-e60d48988b2e",
+          "Attenuation": 0.1,
+          "ConeInner": 18.02,
+          "ConeOuter": 43.43,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.75814,0.67322,0.45841,1",
+          "Radius": 5000,
+          "Shadows": true
+        }
+      ]
+    },
+    {
+      "__guid": "88230340-12b9-436b-b0d0-911648802826",
+      "Name": "Box",
+      "Position": "504,-64,95.99767",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.MeshComponent",
+          "__guid": "d22d53ab-1771-4bff-b306-3dbcca6a0a88",
+          "Collision": "Mesh",
+          "Color": "1,1,1,1",
+          "IsTrigger": false,
+          "Mesh": {
+            "Topology": "H4sIAAAAAAAACl2Qiw6CUAxDh1flgg/wAfr/X2pP0iWLJA25W9t16xHxFc4C30E4\u002Bt2FWbgKd2Ew4NTvIZxcb9ZH4b5db\u002Bb9z/oUzVh8m7lPc9FOzjRYQ8ZXyXxxXvrw4e72wvtWdoEPdzMXj8We9OHDXcvO7EqdN396eKaeLHjkLciePeYxi4z0mMFtMisablFvRXZ2Tj158KQOF78f9WSROMQBAAA=",
+            "Positions": [
+              "-8,-832,48.00233",
+              "8,-832,48.00233",
+              "8,832,48.00233",
+              "-8,832,48.00233",
+              "-8,832,-80",
+              "8,832,-80",
+              "8,-832,-80",
+              "-8,-832,-80"
+            ],
+            "TextureOrigin": [
+              "504,-64,95.99767",
+              "504,-64,95.99767",
+              "504,-64,95.99767",
+              "504,-64,95.99767",
+              "504,-64,95.99767",
+              "504,-64,95.99767"
+            ],
+            "TextureRotation": [
+              "0,0,0,1",
+              "0,0,0,1",
+              "0,0,0,1",
+              "0,0,0,1",
+              "0,0,0,1",
+              "0,0,0,1"
+            ],
+            "TextureUAxis": [
+              "1,0,0",
+              "1,0,0",
+              "0,-1,0",
+              "0,1,0",
+              "-1,0,0",
+              "1,0,0"
+            ],
+            "TextureVAxis": [
+              "0,-1,0",
+              "0,-1,0",
+              "0,0,-1",
+              "0,0,-1",
+              "0,0,-1",
+              "0,0,-1"
+            ],
+            "TextureScale": [
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25"
+            ],
+            "TextureOffset": [
+              "0,64",
+              "0,64",
+              "0,64",
+              "0,64",
+              "0,64",
+              "0,64"
+            ],
+            "TextureAngle": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "MaterialIndex": [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            "EdgeFlags": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "Materials": [
+              "materials/dev/reflectivity_30.vmat",
+              "models/rubbish/textures/pile_00/bridgetarnj5_e.vmat",
+              "materials/generic/wall_brick_older_bottom_moss.vmat"
+            ]
+          },
+          "SmoothingAngle": 40,
+          "Static": true
+        }
+      ]
+    },
+    {
+      "__guid": "9fda08ef-20a9-41f3-abd3-13b27fecf8f6",
+      "Name": "Light",
+      "Position": "179.2962,-192,22.23118",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "3706d3d8-2a2f-492d-b875-874e757c04b1",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,10",
+          "Static": false
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "5766b634-7cbe-4021-a3de-a4668e5ab972",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "18d5d377-a2bc-4aa7-bc9b-20cca44522bc",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "1,1,0.2",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "6a6c3774-1259-4445-a2cb-ab84b6cc3d4a",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "0deaf986-4abb-4760-a474-61139fc1267b",
+          "Name": "Cube",
+          "Position": "0,0,46.67284",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "596ba1e5-cc6f-4f65-a295-102927fa7f85",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "JiggleBone",
+              "__guid": "b875ba19-5139-4535-a59c-44f6097d8d85",
+              "EndPoint": "0,0,0",
+              "StartPoint": "0,0,-83.21619",
+              "Damping": 0.1,
+              "Mass": 0.1,
+              "Radius": 40,
+              "Speed": 1,
+              "Stiffness": 1
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "9ce9f1c2-1cda-4b42-a30f-d667caee8033",
+              "Name": "Line",
+              "Position": "0,0,0",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.LineRenderer",
+                  "__guid": "4bdd4c9c-6d22-41e5-b81f-44f944b0fc30",
+                  "Color": {
+                    "color": [
+                      {
+                        "t": 0.49786323,
+                        "c": "0.09767,0.09767,0.09767,1"
+                      }
+                    ],
+                    "alpha": []
+                  },
+                  "EndCap": "Rounded",
+                  "Opaque": true,
+                  "Points": [
+                    {
+                      "_type": "gameobject",
+                      "go": "0deaf986-4abb-4760-a474-61139fc1267b"
+                    },
+                    {
+                      "_type": "gameobject",
+                      "go": "18d5d377-a2bc-4aa7-bc9b-20cca44522bc"
+                    }
+                  ],
+                  "SplineBias": 0.55,
+                  "SplineContinuity": 0.19,
+                  "SplineInterpolation": 9,
+                  "SplineTension": -0.03,
+                  "StartCap": "Rounded",
+                  "Width": [
+                    {
+                      "y": 1
+                    }
+                  ],
+                  "Wireframe": false
+                }
+              ]
+            },
+            {
+              "__guid": "63798250-9a72-455c-a876-4f8063d1e8f1",
+              "Name": "Text",
+              "Position": "-25.49002,-0.1094971,10.94437",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "1bfcb10e-85af-4469-a0ca-d2b427c69d23",
+                  "Color": "0.27907,0.27907,0.27907,1",
+                  "FontFamily": "Poppins",
+                  "FontSize": 29.51,
+                  "Scale": 0.3,
+                  "Text": "LIGHT"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "516e8700-918a-4f23-9858-7c39730ca1f1",
+      "Name": "Medium",
+      "Position": "179.2962,-264,22.23118",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "aec773dc-953e-4a7b-a093-0864b5b23509",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,10",
+          "Static": false
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "b47dfe93-29f5-43a7-8866-703d0a5cf90a",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "2be833a6-9ed6-4cfa-8efe-537848487d12",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "1,1,0.2",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "87ed209b-6443-40ec-a371-1d91b281b44f",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "63a18f78-6358-4580-9275-ee7a031582df",
+          "Name": "Cube",
+          "Position": "0,0,46.67284",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "d5d7e7f5-7ec4-4aac-b424-bb41eabf8b59",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "JiggleBone",
+              "__guid": "aa84c18e-5703-4817-ac6d-8f94886c641b",
+              "EndPoint": "0,0,0",
+              "StartPoint": "0,0,-83.21619",
+              "Damping": 0.1,
+              "Mass": 2,
+              "Radius": 40,
+              "Speed": 1,
+              "Stiffness": 1
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "44b739e9-a2cf-46ea-9266-ed2545dca41d",
+              "Name": "Line",
+              "Position": "0,0,0",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.LineRenderer",
+                  "__guid": "20015df2-02ed-4a3b-a5cb-c8ae95a1e1cb",
+                  "Color": {
+                    "color": [
+                      {
+                        "t": 0.49786323,
+                        "c": "0.09767,0.09767,0.09767,1"
+                      }
+                    ],
+                    "alpha": []
+                  },
+                  "EndCap": "Rounded",
+                  "Opaque": true,
+                  "Points": [
+                    {
+                      "_type": "gameobject",
+                      "go": "63a18f78-6358-4580-9275-ee7a031582df"
+                    },
+                    {
+                      "_type": "gameobject",
+                      "go": "2be833a6-9ed6-4cfa-8efe-537848487d12"
+                    }
+                  ],
+                  "SplineBias": 0.55,
+                  "SplineContinuity": 0.19,
+                  "SplineInterpolation": 9,
+                  "SplineTension": -0.03,
+                  "StartCap": "Rounded",
+                  "Width": [
+                    {
+                      "y": 1
+                    }
+                  ],
+                  "Wireframe": false
+                }
+              ]
+            },
+            {
+              "__guid": "7d559f50-2136-49ef-b7f9-ecb01ff285a9",
+              "Name": "Text",
+              "Position": "-25.49002,-0.1094971,10.94437",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "ced27a48-e486-4788-99e3-586c0cc97632",
+                  "Color": "0.27907,0.27907,0.27907,1",
+                  "FontFamily": "Poppins",
+                  "FontSize": 29.51,
+                  "Scale": 0.3,
+                  "Text": "MEDIUM"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "dc0ae8a4-95eb-4ab4-bc51-c5878556d33b",
+      "Name": "Heavy",
+      "Position": "179.2962,-328,22.23118",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "186ac5b1-d62f-4adb-8257-605daf2b6ce4",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,10",
+          "Static": false
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "1727d7ab-eca3-4e92-ac08-b7abee86b73b",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "2337c047-2098-4fac-9630-8547a1e5878b",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "1,1,0.2",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "aae50a3a-985a-4906-a31c-97869c9a7b70",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "84a3aaf3-e01c-49c1-ac5c-d43be9019ff1",
+          "Name": "Cube",
+          "Position": "0,0,46.67284",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "14ff73d0-c57b-4346-bf6c-2825442300b8",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "JiggleBone",
+              "__guid": "1bdd4065-829c-4740-b0d0-e677c1f939e7",
+              "EndPoint": "0,0,0",
+              "StartPoint": "0,0,-83.21619",
+              "Damping": 0.1,
+              "Mass": 10,
+              "Radius": 40,
+              "Speed": 1,
+              "Stiffness": 1
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "0f6b5cc0-524d-432c-8f3b-f83d27783f26",
+              "Name": "Line",
+              "Position": "0,0,0",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.LineRenderer",
+                  "__guid": "a6ba0a35-7c2a-45ba-8935-79cfb64abb0d",
+                  "Color": {
+                    "color": [
+                      {
+                        "t": 0.49786323,
+                        "c": "0.09767,0.09767,0.09767,1"
+                      }
+                    ],
+                    "alpha": []
+                  },
+                  "EndCap": "Rounded",
+                  "Opaque": true,
+                  "Points": [
+                    {
+                      "_type": "gameobject",
+                      "go": "84a3aaf3-e01c-49c1-ac5c-d43be9019ff1"
+                    },
+                    {
+                      "_type": "gameobject",
+                      "go": "2337c047-2098-4fac-9630-8547a1e5878b"
+                    }
+                  ],
+                  "SplineBias": 0.55,
+                  "SplineContinuity": 0.19,
+                  "SplineInterpolation": 9,
+                  "SplineTension": -0.03,
+                  "StartCap": "Rounded",
+                  "Width": [
+                    {
+                      "y": 1
+                    }
+                  ],
+                  "Wireframe": false
+                }
+              ]
+            },
+            {
+              "__guid": "1b4d188b-74e6-4d02-a2b1-f0423c631684",
+              "Name": "Text",
+              "Position": "-25.49002,-0.1094971,10.94437",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "8282528e-288d-4cc5-b53e-184feed6b996",
+                  "Color": "0.27907,0.27907,0.27907,1",
+                  "FontFamily": "Poppins",
+                  "FontSize": 29.51,
+                  "Scale": 0.3,
+                  "Text": "HEAVY"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "b0b690cf-33eb-40b9-9f09-e3a62849f3ec",
+      "Name": "Very Heavy",
+      "Position": "179.2962,-392,22.23118",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "e2120c77-d39b-4e5e-b37f-a7fa045a8393",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,10",
+          "Static": false
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "29900411-a495-4256-b906-f03fca6088dd",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "9693efdf-e99e-4908-b6a4-2af5b8c7a96b",
+          "Name": "Cube",
+          "Position": "0,0,0",
+          "Scale": "1,1,0.2",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "d8e7412f-3a85-41e4-9e48-c82d09c47cb7",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "0fbd2c59-f426-4b94-9e39-29403f3afc47",
+          "Name": "Cube",
+          "Position": "0,0,46.67284",
+          "Scale": "0.5,0.5,0.5",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "57ed2909-d3d4-4f5c-b5ba-93940b28e78e",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "JiggleBone",
+              "__guid": "11bf99d5-6e9e-4e20-9129-f712e7b65fb7",
+              "EndPoint": "0,0,0",
+              "StartPoint": "0,0,-83.21619",
+              "Damping": 0.1,
+              "Mass": 100,
+              "Radius": 40,
+              "Speed": 1,
+              "Stiffness": 1
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "ccbbbe7f-96c6-4782-a42d-a9f879988448",
+              "Name": "Line",
+              "Position": "0,0,0",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.LineRenderer",
+                  "__guid": "e37f57a5-6892-4f13-a982-ba862d7819bc",
+                  "Color": {
+                    "color": [
+                      {
+                        "t": 0.49786323,
+                        "c": "0.09767,0.09767,0.09767,1"
+                      }
+                    ],
+                    "alpha": []
+                  },
+                  "EndCap": "Rounded",
+                  "Opaque": true,
+                  "Points": [
+                    {
+                      "_type": "gameobject",
+                      "go": "0fbd2c59-f426-4b94-9e39-29403f3afc47"
+                    },
+                    {
+                      "_type": "gameobject",
+                      "go": "9693efdf-e99e-4908-b6a4-2af5b8c7a96b"
+                    }
+                  ],
+                  "SplineBias": 0.55,
+                  "SplineContinuity": 0.19,
+                  "SplineInterpolation": 9,
+                  "SplineTension": -0.03,
+                  "StartCap": "Rounded",
+                  "Width": [
+                    {
+                      "y": 1
+                    }
+                  ],
+                  "Wireframe": false
+                }
+              ]
+            },
+            {
+              "__guid": "a66c26a1-9a51-4111-a253-c2ccb5ea292d",
+              "Name": "Text",
+              "Position": "-25.49002,-0.1094971,6.191956",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "d3dc9e64-c079-495a-a7dd-3b3ab59dec67",
+                  "Color": "0.27907,0.27907,0.27907,1",
+                  "FontFamily": "Poppins",
+                  "FontSize": 29.51,
+                  "Scale": 0.3,
+                  "Text": "VERY\nHEAVY"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "procedural.bones",
+  "Description": "",
+  "LastSaved": "2024-05-08T11:28:35.261143\u002B01:00",
+  "ResourceVersion": 1,
+  "__version": 1,
+  "__references": [
+    "aitextures.marblefloor04",
+    "creation.floor_tiles_09_2k",
+    "eurorp.pile_00",
+    "facepunch.v_m4a1",
+    "facepunch.wall_brick_older_bottom_moss",
+    "fpopium.concrete_a",
+    "goose.g_tilesdamaged8u",
+    "luke.springyeyes_glasses",
+    "rustextended.terrain_grass",
+    "sundayservice.concrete_damaged_03",
+    "sundayservice.concrete_gravel_01",
+    "tiled.pebbles"
+  ]
+}
