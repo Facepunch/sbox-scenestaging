@@ -29,7 +29,7 @@
             <div class="title">Scenes</div>
         </div>
 
-    @foreach( var scene in ResourceLibrary.GetAll<SceneFile>().Where( x => x.ResourcePath.Contains( "/tests/" )).OrderBy( x => x.ResourceName ) )
+    @foreach( var scene in ResourceLibrary.GetAll<SceneFile>().Where( x => x.ResourcePath.Contains( "/tests/" )).OrderBy( x => x.Title ) )
     {
         <SceneButton Scene="@scene" OnSelected=@OpenScene></SceneButton> 
     }
