@@ -27,6 +27,8 @@ public sealed class JiggleBone : TransformProxyComponent
 
 	protected override void OnEnabled()
 	{
+		LocalJigglePosition = Transform.Local;
+
 		base.OnEnabled();
 
 		state = new JiggleBoneState();
