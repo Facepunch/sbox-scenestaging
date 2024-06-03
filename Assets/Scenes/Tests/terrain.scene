@@ -1,58 +1,103 @@
 {
-  "Id": "1567725a-e8e4-45e3-ac28-272a098189e8",
+  "__guid": "1567725a-e8e4-45e3-ac28-272a098189e8",
   "GameObjects": [
     {
-      "Id": "f8a04d54-f3d3-4569-933c-c9e4f7b2f660",
+      "__guid": "816a9388-1388-4653-b89d-ab13f13cadf5",
+      "Flags": 0,
+      "Name": "Terrain",
+      "Position": "-13181.24,-10000,-1931.203",
+      "Tags": "solid",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Terrain",
+          "__guid": "f737554b-55b5-4fc4-becd-2f2208191124",
+          "__version": 1,
+          "ClipMapLodExtentTexels": 128,
+          "ClipMapLodLevels": 7,
+          "DebugView": "None",
+          "RenderType": "Off",
+          "Storage": "terrain/untitled.terrain",
+          "TerrainHeight": 10000,
+          "TerrainSize": 40000
+        },
+        {
+          "__type": "Sandbox.TerrainCollider",
+          "__guid": "1b48ac71-ac9f-4322-bd2a-ac16dc833c0d",
+          "IsTrigger": false,
+          "Static": true
+        }
+      ]
+    },
+    {
+      "__guid": "f8a04d54-f3d3-4569-933c-c9e4f7b2f660",
+      "Flags": 0,
       "Name": "Directional Light",
-      "Position": "0,0,154.1046",
+      "Position": "-8636.561,19059.98,3094.479",
       "Rotation": "-0.1097847,0.3239216,0.3016309,0.8899668",
       "Tags": "light_directional,light",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
-          "__type": "DirectionalLight",
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "90905cff-f9c0-46a3-b793-e1f4740cf016",
           "FogMode": "Enabled",
           "FogStrength": 1,
-          "LightColor": "1,1,1,1",
+          "LightColor": "0.78481,0.84945,0.90233,1",
           "Shadows": true,
           "SkyColor": "0.52475,0.52475,0.52475,1"
         }
       ]
     },
     {
-      "Id": "52a9cb6d-df54-4e11-afb0-c864e560688d",
+      "__guid": "52a9cb6d-df54-4e11-afb0-c864e560688d",
+      "Flags": 0,
       "Name": "SkyBox",
-      "Position": "0,0,200",
+      "Position": "-8636.561,19059.98,3051.806",
       "Tags": "skybox",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
-          "__type": "SkyBox2D",
-          "SkyMaterial": "materials/sky/atmosphere_sky.vmat",
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "d7b3af80-2a76-41ee-beda-bfeb781b728a",
+          "SkyMaterial": "materials/skybox/skybox_overcast_02.vmat",
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "0f1b76ac-f6ff-4bf5-b075-b7cd319fa960",
+      "__guid": "0f1b76ac-f6ff-4bf5-b075-b7cd319fa960",
+      "Flags": 0,
       "Name": "Citizen Player",
-      "Position": "272.4729,243.4004,162.5417",
+      "Position": "-8364.091,19303.38,3014.348",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
-          "__type": "CharacterController",
+          "__type": "Sandbox.CharacterController",
+          "__guid": "497aa782-91c7-41b8-b30b-3d6c033282a8",
           "Acceleration": 10,
           "Bounciness": 0.3,
           "GroundAngle": 45,
           "Height": 64,
           "IgnoreLayers": "",
           "Radius": 16,
-          "StepHeight": 18
+          "StepHeight": 18,
+          "UseCollisionRules": false
         },
         {
           "__type": "PlayerController",
+          "__guid": "b807cc8b-61a7-4336-bb66-3a7374a97e4c",
           "AnimationHelper": {
             "_type": "component",
+            "component_id": "66decd49-7df1-4ee9-a5b4-dbc8e27c5d2b",
             "go": "0f1b76ac-f6ff-4bf5-b075-b7cd319fa960",
             "component_type": "CitizenAnimationHelper"
           },
@@ -68,20 +113,16 @@
           "Gravity": "0,0,800"
         },
         {
-          "__type": "CitizenAnimationHelper",
+          "__type": "Sandbox.Citizen.CitizenAnimationHelper",
+          "__guid": "66decd49-7df1-4ee9-a5b4-dbc8e27c5d2b",
           "BodyWeight": 1,
-          "EyeSource": null,
           "EyesWeight": 1,
           "HeadWeight": 1,
           "Height": 1,
-          "IkLeftFoot": null,
-          "IkLeftHand": null,
-          "IkRightFoot": null,
-          "IkRightHand": null,
-          "LookAt": null,
           "LookAtEnabled": false,
           "Target": {
             "_type": "component",
+            "component_id": "cea81c75-628a-422f-9444-66f9b1ded2b9",
             "go": "48e0b8fa-9a88-4748-9c13-7af59f33974d",
             "component_type": "SkinnedModelRenderer"
           }
@@ -89,56 +130,51 @@
       ],
       "Children": [
         {
-          "Id": "48e0b8fa-9a88-4748-9c13-7af59f33974d",
+          "__guid": "48e0b8fa-9a88-4748-9c13-7af59f33974d",
+          "Flags": 0,
           "Name": "Body",
           "Position": "0,0,0",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
           "Components": [
             {
-              "__type": "SkinnedModelRenderer",
-              "AnimationGraph": null,
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "cea81c75-628a-422f-9444-66f9b1ded2b9",
               "BodyGroups": 18446744073709551615,
-              "BoneMergeTarget": null,
               "CreateBoneObjects": false,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/citizen/citizen.vmdl",
               "RenderType": "On",
-              "Tint": "1,1,1,1"
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
             }
           ]
         },
         {
-          "Id": "420c47d5-4152-441a-b2f2-a4200728200e",
+          "__guid": "420c47d5-4152-441a-b2f2-a4200728200e",
+          "Flags": 0,
           "Name": "EyePos",
           "Position": "0,0,64",
           "Rotation": "0,0.1736483,0,0.9848077",
           "Enabled": true,
-          "Components": [
-            {
-              "__type": "TraceDebugVis",
-              "BoxSize": "3,3,3",
-              "IgnoreHierarchy": [],
-              "IgnoreSingleObjects": [],
-              "IgnoreTags": null,
-              "IncludeHitboxes": true,
-              "SphereRadius": 2,
-              "TraceLength": 500,
-              "Type": "Box"
-            }
-          ]
+          "NetworkMode": 2,
+          "NetworkInterpolation": true
         },
         {
-          "Id": "e5252655-eab9-48db-a844-4572d52e16e7",
+          "__guid": "e5252655-eab9-48db-a844-4572d52e16e7",
+          "Flags": 0,
           "Name": "Camera",
           "Position": "-200,0,64",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
           "Components": [
             {
-              "__type": "CameraComponent",
+              "__type": "Sandbox.CameraComponent",
+              "__guid": "828264e3-0cd0-4866-874d-c6de42b5763d",
               "BackgroundColor": "0.33333,0.46275,0.52157,1",
               "ClearFlags": "All",
-              "FieldOfView": 60,
+              "FieldOfView": 70,
               "IsMainCamera": true,
               "Orthographic": false,
               "OrthographicHeight": 1204,
@@ -155,96 +191,106 @@
       ]
     },
     {
-      "Id": "816a9388-1388-4653-b89d-ab13f13cadf5",
-      "Name": "Terrain",
-      "Position": "-13181.24,-10000,-1931.203",
-      "Tags": "solid",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Terrain",
-          "ClipMapLodExtentTexels": 128,
-          "ClipMapLodLevels": 7,
-          "DebugView": "None",
-          "RenderType": "Off",
-          "TerrainDataFile": "new terrain 11.terrain",
-          "TerrainMaterial": "materials/core/terrain.vmat"
-        },
-        {
-          "__type": "TerrainCollider",
-          "IsTrigger": false,
-          "Static": true,
-          "Surface": null
-        }
-      ]
-    },
-    {
-      "Id": "361a5088-f72b-49a4-8786-f9112a75c430",
+      "__guid": "361a5088-f72b-49a4-8786-f9112a75c430",
+      "Flags": 0,
       "Name": "Cube",
-      "Position": "279.0703,247.7057,-348.6665",
+      "Position": "-8357.49,19307.69,2503.14",
       "Scale": "20,20,20",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
-          "__type": "ModelRenderer",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "9e13a4fa-7057-47e5-bbbb-0d7660c620ed",
           "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/simple/floor_simple_128.vmat",
           "Model": "models/dev/box.vmdl",
           "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "BoxCollider",
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "6c6ed9d9-e9f9-4413-8631-1359b3c608da",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
+          "Static": false
         }
       ]
     },
     {
-      "Id": "744a522f-1cf4-47bc-9b81-97c0ebce06c4",
-      "Name": "Cube",
-      "Position": "981.3826,825.9769,163.8713",
-      "Enabled": true,
+      "__guid": "8869ae7d-1765-42e1-91c6-830f6ff069a4",
+      "Flags": 0,
+      "Name": "Cubemap Fog",
+      "Position": "-10632.5,20122.46,3912.178",
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Model": "models/dev/box.vmdl",
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
+          "__type": "Sandbox.CubemapFog",
+          "__guid": "45208776-9d8f-41d5-8266-7123268bcc65",
+          "Blur": 0,
+          "EndDistance": 10000,
+          "FalloffExponent": 1,
+          "HeightExponent": 2,
+          "HeightStart": 2000,
+          "HeightWidth": 0,
+          "Sky": "materials/skybox/skybox_overcast_02.vmat",
+          "StartDistance": 2048
+        }
+      ]
+    },
+    {
+      "__guid": "ca6fe4bd-e523-4768-803a-76bbcb48d6ab",
+      "Flags": 0,
+      "Name": "Gradient Fog",
+      "Position": "-8676.311,19256.01,3150.764",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
         {
-          "__type": "Rigidbody",
-          "AngularDamping": 0,
-          "Gravity": true,
-          "LinearDamping": 0,
-          "Locking": {},
-          "MassOverride": 0,
-          "RigidbodyFlags": 0,
-          "StartAsleep": false
-        },
+          "__type": "Sandbox.GradientFog",
+          "__guid": "76061df0-92d8-47aa-a59f-14dd826dd71d",
+          "Color": "0.82259,0.85969,0.91163,1",
+          "EndDistance": 30000,
+          "FalloffExponent": 2,
+          "Height": 10000,
+          "StartDistance": 5000,
+          "VerticalFalloffExponent": 1
+        }
+      ]
+    },
+    {
+      "__guid": "4de3c754-fe20-43af-83d0-22925aa9f571",
+      "Flags": 0,
+      "Name": "Text",
+      "Position": "-8035.091,19690.84,3169.555",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
         {
-          "__type": "BoxCollider",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null
+          "__type": "Sandbox.TextRenderer",
+          "__guid": "4813c372-9800-478a-ba38-6ef4e941adcf",
+          "Color": "1,1,1,1",
+          "FontFamily": "Roboto",
+          "FontSize": 64,
+          "FontWeight": 800,
+          "Scale": 0.4,
+          "Text": "Terrain\nThis is a 1024x1024 heightmap\nImported from World Machine\nOver 40,000 x 40,000 units",
+          "Text2": "Hello! \u2764",
+          "TextAlignment": "Left"
         }
       ]
     }
   ],
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
-    "Lerping": true,
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
@@ -263,6 +309,8 @@
   },
   "Title": "Terrain",
   "Description": "What? In the Source Engine?",
-  "LastSaved": "2024-03-07T19:32:30.1611623\u002B00:00",
-  "__references": []
+  "LastSaved": "2024-06-03T02:47:23.3503516\u002B01:00",
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
 }
