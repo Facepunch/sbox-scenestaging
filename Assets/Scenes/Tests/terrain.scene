@@ -1,5 +1,5 @@
 {
-  "__guid": "1567725a-e8e4-45e3-ac28-272a098189e8",
+  "__guid": "85371993-be01-40ae-92da-d8073f09e17b",
   "GameObjects": [
     {
       "__guid": "816a9388-1388-4653-b89d-ab13f13cadf5",
@@ -18,16 +18,13 @@
           "ClipMapLodExtentTexels": 128,
           "ClipMapLodLevels": 7,
           "DebugView": "None",
+          "EnableCollision": true,
+          "IsTrigger": false,
           "RenderType": "Off",
+          "Static": true,
           "Storage": "terrain/untitled.terrain",
           "TerrainHeight": 10000,
           "TerrainSize": 40000
-        },
-        {
-          "__type": "Sandbox.TerrainCollider",
-          "__guid": "1b48ac71-ac9f-4322-bd2a-ac16dc833c0d",
-          "IsTrigger": false,
-          "Static": true
         }
       ]
     },
@@ -280,7 +277,6 @@
           "FontWeight": 800,
           "Scale": 0.4,
           "Text": "Terrain\nThis is a 1024x1024 heightmap\nImported from World Machine\nOver 40,000 x 40,000 units",
-          "Text2": "Hello! \u2764",
           "TextAlignment": "Left"
         }
       ]
@@ -309,7 +305,7 @@
   },
   "Title": "Terrain",
   "Description": "What? In the Source Engine?",
-  "LastSaved": "2024-06-03T02:47:23.3503516\u002B01:00",
+  "LastSaved": "2024-06-08T16:42:04.971547\u002B01:00",
   "ResourceVersion": 1,
   "__references": [],
   "__version": 1
