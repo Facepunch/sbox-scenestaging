@@ -1,0 +1,1703 @@
+{
+  "RootObject": {
+    "__guid": "af6c6453-26a0-4ed0-b6f4-b85db596f63e",
+    "Flags": 0,
+    "Name": "prefabs.cube",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "37af52ac-92da-451b-8b23-99c56ceae4f8",
+        "BodyGroups": 18446744073709551615,
+        "Model": "models/dev/box.vmdl",
+        "RenderType": "On",
+        "Tint": "1,0,0,1"
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "ec8b4110-0d6a-4c35-b7c5-e6d0be928269",
+        "Flags": 0,
+        "Name": "Head",
+        "Position": "0,0,59.20558",
+        "Scale": "1,0.5,0.5",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "df792ff3-0426-4c51-b260-dfdc75db5f7e",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          }
+        ]
+      },
+      {
+        "__guid": "a37d7e8f-6f18-416a-80f0-7b605aed90d9",
+        "Flags": 0,
+        "Name": "Neck",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "5670e3d1-efad-4555-8f30-52c4de851ffc",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "5e173566-51fd-40d9-829b-14504b1705f4",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "9ab62910-2bd9-45e2-9b91-ae16420fb8b3",
+        "Flags": 0,
+        "Name": "Neck (1)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "c66a136a-8995-4ce9-8971-763e6de0cd1a",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "f1ed2dee-9549-490d-8994-73eeda33816c",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "2fdc0196-7a88-45ea-9d13-c34669c3c329",
+        "Flags": 0,
+        "Name": "Neck (2)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "4f185004-2054-4a97-b960-f846355a8e99",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "346b6c0e-6b49-46ee-8f1a-fad17737cce3",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "11ac6420-22cd-4a1e-aeaa-dd1bb0b41a1e",
+        "Flags": 0,
+        "Name": "Neck (3)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "70eb0cb4-643b-414c-a811-da102cf1bd66",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "5b9040f8-1794-4aab-966e-8da65d6f5848",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "0e41f74b-2c63-4d03-87c5-94776e2b9caa",
+        "Flags": 0,
+        "Name": "Neck (4)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "02eaf21e-5a11-4db8-87af-ec013a6b00f6",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "75fbdca8-31ea-41c8-8623-998bb7a67154",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "3d0b4e52-7903-48a5-9755-71e1686e5309",
+        "Flags": 0,
+        "Name": "Neck (5)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "5d3e45b2-c343-45ad-a671-bff4cc321458",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "bd32faed-b2e7-4b0e-a417-851a3e0ca69f",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "acaaee1c-b217-428d-b997-9599281f8eed",
+        "Flags": 0,
+        "Name": "Neck (6)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "e540bb4d-b799-4fd2-8de7-54cbce5f47af",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "2296e080-ff9c-4ad0-8218-a698b9b0c025",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "50955caf-66a5-49d7-ba4b-4bfc067f60f4",
+        "Flags": 0,
+        "Name": "Neck (7)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "3e678117-0505-4f1d-b352-2f906fd86b0a",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "88d99126-36a6-4592-9f74-4afae73aeeba",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "e6c765da-e832-4853-b465-8313fda2449c",
+        "Flags": 0,
+        "Name": "Neck (8)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "0296ef51-bb80-4b12-92ff-e06cfefab86a",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "6ebb96b4-3926-4ff9-9711-8f45621a9dc6",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "d5a5f41a-ebfc-479a-afed-46e2ff6c0411",
+        "Flags": 0,
+        "Name": "Neck (9)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "9844268b-15af-4a73-a3bc-f26c0213858a",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "0cb4eb3c-9a46-47a0-8629-8d9fbf74159d",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "9f4938b7-b05d-4f1a-bc8b-607b8f690433",
+        "Flags": 0,
+        "Name": "Neck (10)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "903bf3dd-8762-4d11-a6ec-1c9be9860e1c",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "27c3f44b-f247-444d-9cd0-6d2c93d88c29",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "d082243a-37d4-4092-824e-ddf2bb7990ef",
+        "Flags": 0,
+        "Name": "Neck (11)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "be122063-a59e-4b95-8484-004cac60bb2d",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "a22bf643-b97f-41a1-9980-a5944a24eed9",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "69339d91-eb3e-410d-ae3c-58de0e233acc",
+        "Flags": 0,
+        "Name": "Neck (12)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "38bf914c-9ab7-4c8b-9331-6a62dbb38c4f",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "036b461c-4594-4318-9471-c8e56d3f6008",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "20c60fd3-612f-41da-ab72-9ab5c582f57e",
+        "Flags": 0,
+        "Name": "Neck (13)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "59597611-2cf9-4ebe-bb5c-446ab3e44ed4",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "7e2b76ef-a108-4d08-883f-d6dd3ab60cde",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "eb252cce-f8a3-45cc-a4a2-a52f067ef4ce",
+        "Flags": 0,
+        "Name": "Neck (14)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "d0f7900e-1fae-4915-b931-e77827a933eb",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "270e7291-4640-4404-a320-e41879ba2af5",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "2580e7bd-5be0-4b59-88f8-98b68547bd66",
+        "Flags": 0,
+        "Name": "Neck (15)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "859ff45b-c5dc-4c35-b4f2-44a2dc822da3",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "d1d4a827-ec88-4368-a19e-3f6889c54fee",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "06554210-e12b-41c8-913a-07bbade24da5",
+        "Flags": 0,
+        "Name": "Neck (16)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "5f36c048-8f11-4993-b686-4b973a811571",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "b4984e26-33ad-4270-9790-f4aacc1efc68",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "c06452ba-1909-40e3-b64c-6c476f871b9d",
+        "Flags": 0,
+        "Name": "Neck (17)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "323bfb3d-7a7a-411e-8844-8e9a27ca9a79",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "2d16d753-34d1-46e5-8df4-1eb76ad5df59",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "df8ebf4c-bffd-4ab2-92db-b686b87cef52",
+        "Flags": 0,
+        "Name": "Neck (18)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "3a2cce73-289b-41c3-bb08-420d854aa94e",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "0d27d760-4c9a-4461-bf4f-55dbb9d772cb",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "33ce35a7-dc81-4157-bfb9-c01490641783",
+        "Flags": 0,
+        "Name": "Neck (19)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "10a2a913-5a1e-4c2f-908a-508b8ef1cdf8",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "6559275d-bb10-4afb-b60e-f8fe121e41ca",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "70c58861-9e2d-463a-a938-b0bd14a494ae",
+        "Flags": 0,
+        "Name": "Neck (20)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "7e372d1a-05d4-497b-8323-b8d9d89157b1",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "4d4986d9-01e2-4211-b7c3-f5fab6908108",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "e859b5e4-fbe8-4fb4-9e84-02aa30ae9e2c",
+        "Flags": 0,
+        "Name": "Neck (21)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "bd3995b9-a6ec-4043-9a6c-49cf1bfb3625",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "4ac14d2e-6c51-45a5-b8c2-fe35bae4462a",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "7cdc791b-3481-4865-a26c-ad6d7314366f",
+        "Flags": 0,
+        "Name": "Neck (22)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "aed69442-cd22-4565-9a20-9fbc69a81d78",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "3f5dd754-cf96-4606-aa1f-38b921cb3957",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "b5db79fc-a786-4fc0-9c1a-7e89430882e0",
+        "Flags": 0,
+        "Name": "Neck (23)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "cde929fd-22e4-4dbf-acaa-818f05020346",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "2c0dacf2-c0fb-41ca-9593-49097743f0d7",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "92f38cc8-ce41-439e-9c1e-82b5c4a7a3a2",
+        "Flags": 0,
+        "Name": "Neck (24)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "bb5bd59f-995c-43af-945d-42b746fd9d7f",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "3eb88286-d0e8-4a0a-b4bd-0084895b34a6",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "bb633647-7358-4d08-bc73-932feb3bd1a7",
+        "Flags": 0,
+        "Name": "Neck (25)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "fa2fdc1e-e49b-419d-b050-f53f887fc395",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "8858cc45-a8f3-44cd-b674-c48be612f5a8",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "aa520c69-cde6-4177-a680-9c793e075d26",
+        "Flags": 0,
+        "Name": "Neck (26)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "ad3b61e6-d053-4061-8822-dfd1c0dad084",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "f039e287-6689-4821-be3e-6eb0654c4ea8",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "c0aed75d-9631-48a7-a6fd-36c6d3274b29",
+        "Flags": 0,
+        "Name": "Neck (27)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "546b6b4a-a670-4fa3-b3dd-2abc1a956562",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "1e52bd6a-4a51-4bf8-89e7-8066849ddf60",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "bdd2b4d9-b0e6-43f5-8357-2ef472340e05",
+        "Flags": 0,
+        "Name": "Neck (28)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "17c68f57-0bea-4768-b48e-41e2b8b1da0c",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "03b8e942-4bc8-4879-ad64-5bc70906848a",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "f2f90c8a-3fff-452c-8589-02c7435ab875",
+        "Flags": 0,
+        "Name": "Neck (29)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "a69af76b-cb47-4db7-b848-09faf6084f51",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "0e999de8-f1ce-417e-976d-30f0f0ea9e9a",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "098d38a7-a0c4-4b9b-9cfc-8be0e8a8e18e",
+        "Flags": 0,
+        "Name": "Neck (30)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "5f73844d-bd2f-40ae-80aa-4c1382ebe301",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "352b4d87-a42d-4170-b47d-dc0fd99f5316",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "579e4df1-f072-4980-85ff-1afe9b83ac99",
+        "Flags": 0,
+        "Name": "Neck (31)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "facf9d89-408d-4f42-ba11-f37cb9540776",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "08b447e9-810d-465e-8404-b76c54621385",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "a324ea26-0a4a-48a7-9065-8b5393dc8489",
+        "Flags": 0,
+        "Name": "Neck (32)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "1330bcdd-1388-448a-8cb7-16538a17939a",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "97f53760-41f1-4220-9433-2a04737e98ac",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "741ff3a2-ea4c-44d2-9bf5-9fd8b80c35b4",
+        "Flags": 0,
+        "Name": "Neck (33)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "17c1980c-4673-44bf-b614-891d753a9eb9",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "fe8f1767-39a4-496e-8ce0-4935f2b476ab",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "709493b9-41d5-4569-994c-b4998f60ebf0",
+        "Flags": 0,
+        "Name": "Neck (34)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "bafed5f6-8397-49aa-999e-74ad401041a6",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "dd9c80a7-2d1d-436a-9a7a-1bbbc778bf7e",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "cdb76561-adde-4c54-85c0-3e2c19dbd59d",
+        "Flags": 0,
+        "Name": "Neck (35)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "4c008b21-2601-4a83-b01b-ebe548548566",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "08d9f2a7-3d6f-407a-8474-a64eb224f9a0",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "6a95e9fd-33dd-4644-a98c-e1ef30b58815",
+        "Flags": 0,
+        "Name": "Neck (36)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "1761841e-9de2-4bee-967d-ddc80d2450e7",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "5aa219cb-8383-4925-ad7c-5519294bdda5",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "977b3ad1-fd14-48c1-b0c4-11c3b5e2791b",
+        "Flags": 0,
+        "Name": "Neck (37)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "7bcaa862-288e-4b78-9d4b-e25aace144e9",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "fb74c2ee-c558-4b5d-9d7e-b85704950e17",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "a9b34a89-bbfa-4b7f-89fa-e9cf51f1c688",
+        "Flags": 0,
+        "Name": "Neck (38)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "95887ba4-c621-49e0-b843-995ca9bf329d",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "54ad7bae-8da2-4844-a270-b39ced0131de",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "5e6dd37a-5a72-4bf5-b497-7220bd5c6629",
+        "Flags": 0,
+        "Name": "Neck (39)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "a10eb8c0-9e5a-43cf-8fcb-c6f1ac2ee304",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "a5bdcee1-69ab-4403-87c7-a8ba66e8101e",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "a36a088b-6635-424f-87d5-cae0099dead2",
+        "Flags": 0,
+        "Name": "Neck (40)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "48a485db-5200-4e98-9b75-e21f46673a56",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "bf546833-b1b7-4638-85e7-d49bbf25b08f",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "f0a0de7a-3511-48c6-b016-67624f0f429d",
+        "Flags": 0,
+        "Name": "Neck (41)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "f6ea5f9d-9267-4227-8a0b-4607ef9d5a0c",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "202989d3-c180-4a06-b38e-e473d6b1c560",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "bacc1c52-7465-4d99-9c00-2c4d55538856",
+        "Flags": 0,
+        "Name": "Neck (42)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "c47d1fad-d760-4a9c-bfa4-51a2f1732979",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "45fa66d9-ee57-4985-8fea-780d32e01a11",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "098317ac-fa2e-4cf2-9a86-dc7cd9c02a94",
+        "Flags": 0,
+        "Name": "Neck (43)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "47ab884a-e956-4122-a18c-d9d7b4b1efb4",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "930eb28f-82cc-4adb-983b-5fc6e45e4613",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "ebfd1dcb-2e4f-4180-acc9-26ab685995c7",
+        "Flags": 0,
+        "Name": "Neck (44)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "cb194cdb-7051-4926-a523-6b997f2fa7e4",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "f671b848-ad98-4386-a664-76e8a04dec22",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "f4b2e96c-942c-4b50-833c-58f392d2b3bf",
+        "Flags": 0,
+        "Name": "Neck (45)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "7c7f4057-c0ba-4cfc-81da-04c7f4701438",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "13712e97-d239-40cb-ab02-3a3addac1c92",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "daaf4c77-9dab-453c-81a7-f0ab38bcf40d",
+        "Flags": 0,
+        "Name": "Neck (46)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "d2c56a1d-5a71-4394-bacb-54f3408f01fb",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "29826aa5-5339-46d7-955e-e2fbe0d17f54",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "bbf68242-2058-4337-b1c1-b789d7c3124e",
+        "Flags": 0,
+        "Name": "Neck (47)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "1fcf7434-7b91-42d3-b851-6960e56af8ce",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "07bb8d27-6d33-4e0c-9a79-a18880b4dc74",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "7d6ae107-e2cf-4b14-a2f5-8283295b9086",
+        "Flags": 0,
+        "Name": "Neck (48)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "fdc33b09-ae43-4cee-a3d2-4b453b1cdbda",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "19df1987-edb4-405f-9c89-6d4702503510",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "b63c1f80-b833-45e7-b680-1e8b6a343f00",
+        "Flags": 0,
+        "Name": "Neck (49)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "5bd32364-83aa-4b80-88dc-1e52cec4fb8d",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "a6e7583f-7865-486f-a309-d5afaace6d31",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "83a9c363-dc4e-46a0-8835-ea405f5b1df0",
+        "Flags": 0,
+        "Name": "Neck (50)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "368e81e7-8389-47f3-8286-9063ea058f59",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "699060d5-ff09-4a40-9575-cf0e035495fe",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "bf1ed905-e300-4d9d-9a5a-90531528c690",
+        "Flags": 0,
+        "Name": "Neck (51)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "b0f706ad-aa68-483a-a092-b749af701be1",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "c2b916ce-8bf2-4723-929b-2d486107ecee",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "39a536b6-af43-447f-86ad-fa58cdcbab1d",
+        "Flags": 0,
+        "Name": "Neck (52)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "eadecdcf-9b66-4984-8a6d-ede70b0cf178",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "d9861b79-03ab-4c71-93f9-c645d966dcb4",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "2f73fed6-b79d-4db8-866a-c66508a91d0c",
+        "Flags": 0,
+        "Name": "Neck (53)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "862d9ea3-5ea5-452f-ad96-408ae9bad688",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "91c3e9bc-767f-432f-927e-0d202f48729f",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "e92e855d-c865-46f4-954b-6d26c5e3f7ca",
+        "Flags": 0,
+        "Name": "Neck (54)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "51bcb1f8-f545-4611-ae9d-67f1107b1a28",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "75010566-65d8-471b-ae11-cde20920b067",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "28621077-17cd-4111-9f86-ca018b681962",
+        "Flags": 0,
+        "Name": "Neck (55)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "b52a9ba2-9f04-4ef0-8330-b74c28acd365",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "7c253115-bf68-41d3-a822-4c39b736eb60",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "28692f78-d771-45f9-82d1-da68bc7bb6c1",
+        "Flags": 0,
+        "Name": "Neck (56)",
+        "Position": "0,0,32",
+        "Scale": "0.2,0.2,0.92",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "eda2ba4b-a5b4-44b2-bd3b-969cd0247228",
+            "BodyGroups": 18446744073709551615,
+            "Model": "models/dev/box.vmdl",
+            "RenderType": "On",
+            "Tint": "0.42791,0.07961,0.40469,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "adde00ca-cb0c-44c1-84d7-866c6280f94c",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "50,50,50",
+            "Static": false
+          }
+        ]
+      }
+    ],
+    "__variables": [
+      {
+        "Id": "HeadColor",
+        "Title": "Head Color",
+        "Group": "Head",
+        "Targets": [
+          {
+            "Id": "5670e3d1-efad-4555-8f30-52c4de851ffc",
+            "Property": "Tint"
+          },
+          {
+            "Id": "df792ff3-0426-4c51-b260-dfdc75db5f7e",
+            "Property": "Tint"
+          },
+          {
+            "Id": "37af52ac-92da-451b-8b23-99c56ceae4f8",
+            "Property": "MaterialOverride"
+          }
+        ]
+      },
+      {
+        "Id": "HeadModel",
+        "Title": "Head Model",
+        "Group": "Head",
+        "Targets": [
+          {
+            "Id": "df792ff3-0426-4c51-b260-dfdc75db5f7e",
+            "Property": "Model"
+          }
+        ]
+      },
+      {
+        "Id": "BodyColor",
+        "Title": "Body Color",
+        "Group": "Body",
+        "Targets": [
+          {
+            "Id": "37af52ac-92da-451b-8b23-99c56ceae4f8",
+            "Property": "Tint"
+          }
+        ]
+      },
+      {
+        "Id": "Rescue",
+        "Title": "Rescue",
+        "Group": "Grouper",
+        "Targets": [
+          {
+            "Id": "5670e3d1-efad-4555-8f30-52c4de851ffc",
+            "Property": "Model"
+          }
+        ]
+      },
+      {
+        "Id": "Cock Fucker",
+        "Title": "Cock Fucker",
+        "Targets": []
+      }
+    ]
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}

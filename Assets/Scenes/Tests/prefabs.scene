@@ -1,0 +1,307 @@
+{
+  "__guid": "e5b69914-9eb5-417f-a6c6-f93206ea2ee3",
+  "GameObjects": [
+    {
+      "__guid": "bb8d26a2-2c61-4931-9f46-b21986b81c64",
+      "Flags": 0,
+      "Name": "Sun",
+      "Position": "709.8795,-1207.879,-170.8906",
+      "Rotation": "-0.1297956,0.7231804,0.2447958,0.6326443",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "38c5a932-8645-4f10-a027-2b623ef1be0d",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "__guid": "93aeaba4-a55c-406f-ad5f-2fa366a70711",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-935.7373,-444.9897,581.6252",
+      "Rotation": "-0.05575797,0.2196077,0.23969,0.9440404",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "c67d28ff-faed-4437-91ca-2d5fbf0aca36",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "Sandbox.Tonemapping",
+          "__guid": "c789f2b7-2a2a-47a2-873c-cfb2259f7b67",
+          "__version": 1,
+          "ExposureBias": 2,
+          "ExposureCompensation": 0,
+          "ExposureMethod": "RGB",
+          "MaximumExposure": 2,
+          "MinimumExposure": 1,
+          "Mode": "HableFilmic",
+          "Rate": 1
+        },
+        {
+          "__type": "Sandbox.Bloom",
+          "__guid": "e99e7352-19e7-4b22-9330-55f875628d90",
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "BloomCurve": [
+            {
+              "y": 0.5
+            },
+            {
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "Mode": "Additive",
+          "Strength": 1,
+          "Threshold": 0.5,
+          "ThresholdWidth": 0
+        },
+        {
+          "__type": "NoClip",
+          "__guid": "82cdabcd-c78f-4cb6-9586-7a8fdb15006f",
+          "MoveSpeed": 600
+        }
+      ]
+    },
+    {
+      "__guid": "01cba321-2965-417e-9fbe-ee87b19e9e0a",
+      "Flags": 0,
+      "Name": "Floor",
+      "Position": "0,0,64",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.MeshComponent",
+          "__guid": "3c45ba61-ade2-4ee4-bc31-bbf34b1546d8",
+          "Collision": "Mesh",
+          "Color": "1,1,1,1",
+          "HideInGame": false,
+          "IsTrigger": false,
+          "Mesh": {
+            "Topology": "H4sIAAAAAAAACl2Qiw6CUAxDh1flgg/wAfr/X2pP0iWLJA25W9t16xHxFc4C30E4\u002Bt2FWbgKd2Ew4NTvIZxcb9ZH4b5db\u002Bb9z/oUzVh8m7lPc9FOzjRYQ8ZXyXxxXvrw4e72wvtWdoEPdzMXj8We9OHDXcvO7EqdN396eKaeLHjkLciePeYxi4z0mMFtMisablFvRXZ2Tj158KQOF78f9WSROMQBAAA=",
+            "Positions": [
+              "-1024,-1024,64",
+              "1024,-1024,64",
+              "1024,1024,64",
+              "-1024,1024,64",
+              "-1024,1024,-64",
+              "1024,1024,-64",
+              "1024,-1024,-64",
+              "-1024,-1024,-64"
+            ],
+            "TextureCoord": [
+              "8,8",
+              "-8,-0.5",
+              "8,-8",
+              "-8,-0.5",
+              "-8,-8",
+              "-8,-0.5",
+              "-8,8",
+              "-8,-0.5",
+              "8,-8",
+              "8,0.5",
+              "8,8",
+              "8,0.5",
+              "-8,8",
+              "8,0.5",
+              "-8,-8",
+              "8,0.5",
+              "8,-0.5",
+              "-8,0.5",
+              "-8,0.5",
+              "8,-0.5",
+              "-8,0.5",
+              "8,-0.5",
+              "8,-0.5",
+              "-8,0.5"
+            ],
+            "TextureUAxis": [
+              "1,0,0",
+              "1,0,-0",
+              "0,-1,0",
+              "0,1,0",
+              "-1,0,0",
+              "1,-0,0"
+            ],
+            "TextureVAxis": [
+              "0,-1,0",
+              "0,-1,0",
+              "0,0,-1",
+              "-0,0,-1",
+              "0,0,-1",
+              "-0,0,-1"
+            ],
+            "TextureScale": [
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25"
+            ],
+            "TextureOffset": [
+              "0,0",
+              "0,0",
+              "0,256",
+              "0,256",
+              "0,256",
+              "0,256"
+            ],
+            "MaterialIndex": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "EdgeFlags": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "Materials": [
+              "materials/dev/reflectivity_30.vmat"
+            ]
+          },
+          "SmoothingAngle": 40,
+          "Static": true
+        }
+      ]
+    },
+    {
+      "__guid": "333b6bb6-796c-40bd-b697-ca1014cfad99",
+      "Flags": 0,
+      "Name": "prefabs.cube (2)",
+      "Position": "-128,256,153",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "__Prefab": "scenes/tests/prefabs.cube.prefab",
+      "__PrefabVariables": {
+        "HeadColor": "0.79535,0.88062,1,1",
+        "HeadModel": "models/dev/box.vmdl",
+        "BodyColor": "0,0.96744,0.04837,1",
+        "Rescue": "models/dev/box.vmdl"
+      }
+    },
+    {
+      "__guid": "1a9620ad-005f-49cd-80c9-532d8a38fab6",
+      "Flags": 0,
+      "Name": "prefabs.cube (1)",
+      "Position": "0,256,153",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "__Prefab": "scenes/tests/prefabs.cube.prefab",
+      "__PrefabVariables": {
+        "HeadColor": "1,0.66047,0.96605,1",
+        "HeadModel": "models/dev/box.vmdl",
+        "BodyColor": "1,0,0,1",
+        "Rescue": "models/dev/box.vmdl"
+      }
+    },
+    {
+      "__guid": "bbe1a1df-81b8-4e83-ade9-02e28fa1d434",
+      "Flags": 0,
+      "Name": "prefabs.cube (3)",
+      "Position": "-256,480,160",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "__Prefab": "scenes/tests/prefabs.cube.prefab",
+      "__PrefabVariables": {
+        "HeadColor": "0.60899,1,0.54884,1",
+        "HeadModel": "models/dev/sphere.vmdl",
+        "BodyColor": "0,0.26667,1,1",
+        "Rescue": "models/dev/box.vmdl"
+      }
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "Prefabs",
+  "Description": "Testing prefab variables",
+  "LastSaved": "2024-06-12T15:37:40.3843207\u002B01:00",
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}
