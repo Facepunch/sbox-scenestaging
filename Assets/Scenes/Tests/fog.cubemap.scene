@@ -15,11 +15,11 @@
         {
           "__type": "Sandbox.DirectionalLight",
           "__guid": "a492d29e-43a8-44de-b170-e6f88d58e51b",
-          "__version": 1,
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.96744,0.86245,0.74246,1",
-          "Shadows": true
+          "Shadows": true,
+          "SkyColor": "0,0,0,0"
         }
       ]
     },
@@ -36,7 +36,7 @@
         {
           "__type": "Sandbox.SkyBox2D",
           "__guid": "69a797e9-d12c-4ad9-b049-c05ff2735a70",
-          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "SkyMaterial": "materials/skybox/skybox_overcast_02.vmat",
           "Tint": "1,1,1,1"
         },
         {
@@ -119,9 +119,9 @@
             ]
           },
           "Mode": "Additive",
-          "Strength": 0.61,
+          "Strength": 0.23,
           "Threshold": 0,
-          "ThresholdWidth": 0.83
+          "ThresholdWidth": 0.16
         },
         {
           "__type": "Sandbox.Tonemapping",
@@ -1072,7 +1072,7 @@
                           "__guid": "0ce98742-5a2b-4050-9332-3ed060d0f209",
                           "Flags": 4,
                           "Name": "leg_knee_helper_R",
-                          "Position": "0.000001907349,0.000004768372,-0.000009536743",
+                          "Position": "0,0,0",
                           "Rotation": "0.000000905889,-0.000001318489,0.7135269,0.7006279",
                           "Enabled": true,
                           "NetworkMode": 2,
@@ -1112,7 +1112,7 @@
                       "__guid": "3bc5e80b-fe38-4727-8f54-5585d565643c",
                       "Flags": 4,
                       "Name": "leg_glute_helper_R",
-                      "Position": "0.00002098083,0.000005543232,-0.00001764297",
+                      "Position": "0,0,0",
                       "Rotation": "-0.000001053308,-0.0000006515999,-0.7071051,0.7071084",
                       "Enabled": true,
                       "NetworkMode": 2,
@@ -1193,7 +1193,7 @@
                           "__guid": "a558fc40-7269-4d4a-82fa-40dadef40b5f",
                           "Flags": 4,
                           "Name": "leg_knee_helper_L",
-                          "Position": "-0.00001525879,0.000001847744,-0.000009536743",
+                          "Position": "0,0,0",
                           "Rotation": "-0.000002973302,-0.000001705918,0.7135277,0.7006271",
                           "Enabled": true,
                           "NetworkMode": 2,
@@ -1232,7 +1232,7 @@
                       "__guid": "25f039b8-be01-43aa-9b33-bf429b398079",
                       "Flags": 4,
                       "Name": "leg_glute_helper_L",
-                      "Position": "0.00001907349,0.000009596348,-0.000009536743",
+                      "Position": "0,0,0",
                       "Rotation": "-0.0000009340982,-0.0000007682515,-0.7071055,0.707108",
                       "Enabled": true,
                       "NetworkMode": 2,
@@ -1363,33 +1363,6 @@
               },
               "CreateBoneObjects": false,
               "Model": "models/citizen_clothes/shirt/polo_shirt/models/binman_shirt.vmdl",
-              "RenderType": "On",
-              "Tint": "1,1,1,1",
-              "UseAnimGraph": true
-            }
-          ]
-        },
-        {
-          "__guid": "51392ab4-b775-4ad4-859c-73bc4fec358d",
-          "Flags": 0,
-          "Name": "Chef Hat",
-          "Position": "-25.08069,0,0",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "Components": [
-            {
-              "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "ab09ac7a-a7b7-4456-8c3d-e0599bfb150c",
-              "BodyGroups": 18446744073709551615,
-              "BoneMergeTarget": {
-                "_type": "component",
-                "component_id": "21b3230c-a1ff-493f-893b-a39bdcfbe828",
-                "go": "7daff6f8-35a7-4fa6-9d2f-3c4e693af8d7",
-                "component_type": "SkinnedModelRenderer"
-              },
-              "CreateBoneObjects": false,
-              "Model": "models/dev/error.vmdl",
               "RenderType": "On",
               "Tint": "1,1,1,1",
               "UseAnimGraph": true
@@ -2151,7 +2124,7 @@
                                           "__guid": "ada0ed90-a6f2-4feb-99a7-c436e0ea4f71",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -3277,7 +3250,7 @@
                                           "__guid": "0a6ecb8b-c609-4ec2-910b-0f092dba3107",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -4403,7 +4376,7 @@
                                           "__guid": "9209da37-cc45-4e32-9b3d-12846cf4733c",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -5529,7 +5502,7 @@
                                           "__guid": "7200510b-1832-4b92-a5b7-4f430136f333",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -6655,7 +6628,7 @@
                                           "__guid": "1f158a5c-9358-4e40-b976-396e3c75646e",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -7781,7 +7754,7 @@
                                           "__guid": "6c604049-00c4-4ee8-8df9-4d0ca56d4fd0",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -8907,7 +8880,7 @@
                                           "__guid": "7315a6e4-a1c7-41d0-b147-64aac852b35f",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -10033,7 +10006,7 @@
                                           "__guid": "43c3011d-9b53-4a9b-84fe-f4db96f9e443",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -11159,7 +11132,7 @@
                                           "__guid": "de1c57dc-fe5e-4425-a003-16e19c72e74b",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -12285,7 +12258,7 @@
                                           "__guid": "0afce847-3757-406c-91e9-26e8625511d1",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -13411,7 +13384,7 @@
                                           "__guid": "fb017fc1-7f28-4731-9a5a-1a80fa6f2146",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -14537,7 +14510,7 @@
                                           "__guid": "5849f1da-95eb-43e6-a780-d773f93235f5",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -15663,7 +15636,7 @@
                                           "__guid": "28fb4fda-de8c-4c79-b5bd-91e74c556bff",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -16789,7 +16762,7 @@
                                           "__guid": "d5a54c45-bb16-4cbe-8433-8161a4aadc40",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -17915,7 +17888,7 @@
                                           "__guid": "f9f01fe2-cefa-4466-8acd-8ac3e5a4f163",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -19041,7 +19014,7 @@
                                           "__guid": "2cee93d5-295b-4ae0-9f0d-ed677e449eeb",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -20167,7 +20140,7 @@
                                           "__guid": "a9e5c70f-dbcf-4cca-87f5-0b8c32b751c2",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -21293,7 +21266,7 @@
                                           "__guid": "2f403016-1a2e-44b6-9165-d34a8a5abf1b",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -22419,7 +22392,7 @@
                                           "__guid": "66519c7b-8d92-4ee6-a6e0-319882e6f318",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -23545,7 +23518,7 @@
                                           "__guid": "1a0ac012-9b7e-4104-928a-3ba70eb248d7",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -24671,7 +24644,7 @@
                                           "__guid": "43274689-03c5-4557-a45a-53836c067b07",
                                           "Flags": 4,
                                           "Name": "arm_elbow_helper_R",
-                                          "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                          "Position": "0,0,0",
                                           "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                           "Enabled": true,
                                           "NetworkMode": 2,
@@ -25087,7 +25060,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.46047,0.46047,0.46047,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25115,7 +25088,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.46047,0.46047,0.46047,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25143,7 +25116,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.46047,0.46047,0.46047,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25171,7 +25144,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.46047,0.46047,0.46047,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25199,7 +25172,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.46047,0.46047,0.46047,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25227,7 +25200,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.46047,0.46047,0.46047,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25254,7 +25227,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.25581,0.25581,0.25581,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25281,7 +25254,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.46047,0.46047,0.46047,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25308,7 +25281,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.46047,0.46047,0.46047,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25335,7 +25308,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.46047,0.46047,0.46047,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25362,7 +25335,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.46047,0.46047,0.46047,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25389,7 +25362,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.25581,0.25581,0.25581,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25416,7 +25389,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "RenderType": "On",
-          "Tint": "0.03607,0.08661,0.31683,1"
+          "Tint": "0.25581,0.25581,0.25581,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -25441,7 +25414,7 @@
           "__type": "Sandbox.ModelRenderer",
           "__guid": "30e7d106-4423-4a8b-b226-efe8e7d5dfdf",
           "BodyGroups": 18446744073709551615,
-          "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
+          "MaterialOverride": "model/nez ;odel/xfipfcf_8k_albedo.vmat",
           "Model": "models/dev/box.vmdl",
           "RenderType": "On",
           "Tint": "1,1,1,1"
@@ -25480,10 +25453,11 @@
   },
   "Title": "Fog - Cubemap",
   "Description": "Fog where the color is the 2d skybox",
-  "LastSaved": "2024-06-19T23:33:08.6701636\u002B01:00",
+  "LastSaved": "2024-07-03T10:53:27.932481\u002B01:00",
   "ResourceVersion": 1,
   "__references": [
-    "rust.rock_cliff_a"
+    "rust.rock_cliff_a",
+    "tesssssssssst.xfipfcf_8k_albedo"
   ],
   "__version": 1
 }
