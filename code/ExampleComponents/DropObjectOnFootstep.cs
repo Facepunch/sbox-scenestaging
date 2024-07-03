@@ -1,9 +1,3 @@
-using Sandbox;
-using Sandbox.Diagnostics;
-using Sandbox.Services;
-using System;
-using System.Threading;
-
 public sealed class DropObjectOnFootstep : Component
 {
 	[Property] GameObject Prefab { get; set; }
@@ -27,6 +21,9 @@ public sealed class DropObjectOnFootstep : Component
 
 	private void OnEvent( SceneModel.FootstepEvent e )
 	{
+		if ( Prefab is null )
+			return;
+
 		var tr = Scene.Trace
 			.Ray( e.Transform.Position + Vector3.Up * 20, e.Transform.Position + Vector3.Up * -20 )
 			.Run();
