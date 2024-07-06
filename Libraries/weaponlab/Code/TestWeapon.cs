@@ -76,7 +76,6 @@ public sealed class TestWeapon : Component
 		}
 	}
 
-	GameObject worldmodel;
 	GameObject viewmodel;
 
 	protected override void OnEnabled()
@@ -91,7 +90,6 @@ public sealed class TestWeapon : Component
 		base.OnDisabled();
 
 		viewmodel?.Destroy();
-		worldmodel?.Destroy();
 	}
 
 	protected override void OnFixedUpdate()
