@@ -10,6 +10,8 @@
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Terrain",
@@ -38,6 +40,8 @@
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.DirectionalLight",
@@ -60,6 +64,8 @@
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SkyBox2D",
@@ -77,6 +83,8 @@
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.CharacterController",
@@ -135,6 +143,8 @@
           "Enabled": true,
           "NetworkMode": 2,
           "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.SkinnedModelRenderer",
@@ -156,7 +166,9 @@
           "Rotation": "0,0.1736483,0,0.9848077",
           "Enabled": true,
           "NetworkMode": 2,
-          "NetworkInterpolation": true
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1
         },
         {
           "__guid": "e5252655-eab9-48db-a844-4572d52e16e7",
@@ -166,6 +178,8 @@
           "Enabled": true,
           "NetworkMode": 2,
           "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.CameraComponent",
@@ -195,6 +209,13 @@
               "MinimumExposure": 1,
               "Mode": "ACES",
               "Rate": 1
+            },
+            {
+              "__type": "Sandbox.AmbientOcclusion",
+              "__guid": "76a2febf-7b4f-4164-a6fd-b9f285e7d969",
+              "Intensity": 12.5,
+              "Quality": "High",
+              "Radius": 64
             }
           ]
         }
@@ -209,6 +230,8 @@
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -237,6 +260,8 @@
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.CubemapFog",
@@ -260,6 +285,8 @@
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.GradientFog",
@@ -281,6 +308,8 @@
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.TextRenderer",
@@ -304,6 +333,8 @@
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.EnvmapProbe",
