@@ -4,36 +4,34 @@
 [Title( "Particle Model Renderer" )]
 [Category( "Particles" )]
 [Icon( "favorite" )]
-public sealed class ParticleModelRenderer : Component, Component.ExecuteInEditor
+public sealed class ParticleModelRenderer : ParticleRenderer, Component.ExecuteInEditor
 {
 	[Property] public List<Model> Models { get; set; } = new List<Model> { Model.Cube };
 
 	[Property] public Material MaterialOverride { get; set; }
-
-
-	ParticleEffect effect;
+	[Property] public ParticleFloat Scale { get; set; } = 1;
+	[Property] public bool Shadows { get; set; } = true;
 
 	protected override void OnEnabled()
 	{
-		effect = Components.Get<ParticleEffect>( true );
-		if ( effect.IsValid() )
+		if ( ParticleEffect.IsValid() )
 		{
-			effect.OnParticleCreated += OnParticleCreated;
-			effect.OnParticleDestroyed += OnParticleDestroyed;
+			ParticleEffect.OnParticleCreated += OnParticleCreated;
+			ParticleEffect.OnParticleDestroyed += OnParticleDestroyed;
 		}
 	}
 
 	protected override void OnDisabled()
 	{
-		if ( effect.IsValid() )
+		if ( ParticleEffect.IsValid() )
 		{
-			foreach ( var p in effect.Particles )
+			foreach ( var p in ParticleEffect.Particles )
 			{
 				OnParticleDestroyed( p );
 			}
 
-			effect.OnParticleCreated -= OnParticleCreated;
-			effect.OnParticleDestroyed -= OnParticleDestroyed;
+			ParticleEffect.OnParticleCreated -= OnParticleCreated;
+			ParticleEffect.OnParticleDestroyed -= OnParticleDestroyed;
 		}
 	}
 
@@ -51,20 +49,21 @@ public sealed class ParticleModelRenderer : Component, Component.ExecuteInEditor
 
 	protected override void OnPreRender()
 	{
-		if ( effect is null || effect.Particles.Count == 0 )
+		if ( ParticleEffect is null || ParticleEffect.Particles.Count == 0 )
 			return;
 
 		if ( Models is null || Models.Count == 0 )
 			return;
 
-		Sandbox.Utility.Parallel.ForEach( effect.Particles, p =>
+		Sandbox.Utility.Parallel.ForEach( ParticleEffect.Particles, p =>
 		{
 			SceneObject so = p.Get<SceneObject>( "so_model" );
 			if ( so is null ) return;
 
 			so.SetMaterialOverride( MaterialOverride );
-			so.Transform = new Transform( p.Position, p.Angles, p.Size * 1 );
+			so.Transform = new Transform( p.Position, p.Angles, p.Size * Scale.Evaluate( Time.Delta, p.Random04 ) );
 			so.ColorTint = p.Color.WithAlphaMultiplied( p.Alpha );
+			so.Flags.CastShadows = Shadows;
 		} );
 
 	}
