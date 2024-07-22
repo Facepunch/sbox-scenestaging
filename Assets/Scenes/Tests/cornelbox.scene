@@ -6,9 +6,7 @@
       "Flags": 0,
       "Name": "Object",
       "Position": "149.995,149.995,-212.125",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true
+      "Enabled": true
     },
     {
       "__guid": "adbea4c1-8d4f-4cf2-a2b5-8372f75dd201",
@@ -16,8 +14,6 @@
       "Name": "Cube",
       "Position": "131.4279,125.595,-238.635",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -35,8 +31,6 @@
       "Name": "Box",
       "Position": "0,0,129.6586",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.MeshComponent",
@@ -284,39 +278,21 @@
       ]
     },
     {
-      "__guid": "929035f7-8e3c-4d8a-bb02-d8cce030980c",
-      "Flags": 0,
-      "Name": "2D Skybox",
-      "Position": "-1.562424,15.74487,-17.25342",
-      "Tags": "skybox",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "Components": [
-        {
-          "__type": "Sandbox.SkyBox2D",
-          "__guid": "14d7c306-b6c2-4391-8b02-8b8e9d781a40",
-          "SkyMaterial": "materials/skybox/skybox_dark_01.vmat",
-          "Tint": "0,0,0,1"
-        }
-      ]
-    },
-    {
       "__guid": "b4703c82-1ffa-4643-964b-81b15964a3ed",
       "Flags": 0,
       "Name": "Cube",
       "Position": "-13.47926,0.9163313,6.390217",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "f982b337-e6b2-4503-8039-f84eead880b4",
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "61053899-0fdc-46c2-9cbd-be4b1d5da032",
           "BodyGroups": 341,
+          "CreateBoneObjects": false,
           "Model": "models/citizen/citizen.vmdl",
           "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
         }
       ]
     },
@@ -324,24 +300,27 @@
       "__guid": "789ef6d9-0155-4bb7-84aa-9344166aa40e",
       "Flags": 0,
       "Name": "Spot Light",
-      "Position": "1.291349,-0.3545022,272.0788",
-      "Rotation": "0,0.7071068,0,0.7071068",
+      "Position": "1.291392,-0.3545022,251.9526",
+      "Rotation": "-0.00000004470348,0.7071068,-0.00000004470348,0.7071068",
       "Tags": "light_spot,light",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.SpotLight",
           "__guid": "d9a0e3ec-570d-4ef5-b529-b83d7b4835e2",
           "Attenuation": 1,
           "ConeInner": 15,
-          "ConeOuter": 45,
+          "ConeOuter": 30.38,
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "10.19,8.72864,8.43637,1",
           "Radius": 372.00024,
           "Shadows": true
+        },
+        {
+          "__type": "SpinComponent",
+          "__guid": "c22ed5d4-f378-401b-8299-ef070669ba10",
+          "SpinAngles": "10,20,30"
         }
       ]
     },
@@ -349,11 +328,9 @@
       "__guid": "c405780d-2002-4fb6-9e94-ecbb770e67b6",
       "Flags": 0,
       "Name": "Sphere",
-      "Position": "-77.12611,-60.40169,67.53647",
+      "Position": "-77.12611,-60.40169,54.41866",
       "Scale": "2,2,2",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -367,31 +344,47 @@
       ]
     },
     {
+      "__guid": "19acda07-2525-4a9d-94bf-1bbe4d965e26",
+      "Flags": 0,
+      "Name": "Sphere (1)",
+      "Position": "-145.1991,59.45245,33.95985",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "1820383b-f654-4fe7-90ab-2c1a3dc3d23c",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
       "__guid": "00747775-1ee8-4c85-b947-19c215f740cb",
       "Flags": 0,
       "Name": "Envmap Probe",
-      "Position": "-13.55069,-1.291922,120.5322",
+      "Position": "0,0,120",
       "Scale": "1,1.068114,0.9251655",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.EnvmapProbe",
           "__guid": "ba392ea8-db15-461b-aa31-dd76748d0f3e",
           "Texture": "textures/cubemaps/default2.vtex",
           "Bounds": {
-            "Mins": "-150,-150,-150",
-            "Maxs": "150,150,150"
+            "Mins": "-160,-165,-160",
+            "Maxs": "160,165,160"
           },
           "DelayBetweenUpdates": 0.1,
           "Feathering": 0.02,
           "FrameInterval": 5,
           "MaxDistance": 512,
           "Projection": "Box",
-          "RenderDynamically": false,
+          "RenderDynamically": true,
           "TintColor": "1,1,1,1",
-          "UpdateStrategy": "OnEnabled",
+          "UpdateStrategy": "EveryFrame",
           "ZFar": 4096,
           "ZNear": 16
         }
@@ -405,13 +398,11 @@
       "Rotation": "-0.1080475,-0.000000004722905,0.9941458,-0.00000004345549",
       "Tags": "maincamera",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
           "__guid": "c356139a-c074-4386-bc04-25e8b968782c",
-          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "BackgroundColor": "0,0,0,1",
           "ClearFlags": "All",
           "FieldOfView": 85.34,
           "IsMainCamera": true,
@@ -424,6 +415,13 @@
           "Viewport": "0,0,1,1",
           "ZFar": 10000,
           "ZNear": 10
+        },
+        {
+          "__type": "Sandbox.AmbientOcclusion",
+          "__guid": "e4ab5ea9-a2d7-4742-b430-2b3535cc2425",
+          "Intensity": 16,
+          "Quality": "High",
+          "Radius": 64
         }
       ]
     }
@@ -451,7 +449,6 @@
   },
   "Title": "Cornell Box",
   "Description": "Classic GI Test Scene",
-  "LastSaved": "2024-06-01T02:20:56.2112465\u002B01:00",
   "ResourceVersion": 1,
   "__references": [],
   "__version": 1
