@@ -1,0 +1,89 @@
+{
+  "__guid": "8461cac9-c111-40b7-a5ba-764ede7ca55d",
+  "GameObjects": [
+    {
+      "__guid": "08f076fb-00a0-4ae0-a7c1-ed0fb5bb02f4",
+      "Flags": 0,
+      "Name": "Text",
+      "Enabled": true,
+      "NetworkMode": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.TextRenderer",
+          "__guid": "b7d8751a-546f-41d2-8e24-5f5029ad11de",
+          "Color": "1,1,1,1",
+          "FontFamily": "Poppins",
+          "FontSize": 64,
+          "FontWeight": 800,
+          "Scale": 0.3,
+          "Text": "Hello! \u2764",
+          "TextAlignment": "Center"
+        },
+        {
+          "__type": "SnapshotTest",
+          "__guid": "acfdf6d1-9b11-4730-b40d-d86a59ce9a0d",
+          "Counter": 0,
+          "Text": {
+            "_type": "component",
+            "component_id": "b7d8751a-546f-41d2-8e24-5f5029ad11de",
+            "go": "08f076fb-00a0-4ae0-a7c1-ed0fb5bb02f4",
+            "component_type": "TextRenderer"
+          }
+        }
+      ]
+    },
+    {
+      "__guid": "0f1b8a4c-8f95-403f-b442-9cfb8a453445",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-100,0,0",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "f6d46128-317c-4664-86b1-403a95b6954e",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "rpcspam",
+  "Description": "",
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}
