@@ -12,7 +12,7 @@ public class PlayerGrabber : Component
 	/// </summary>
 	[Property, Range( 1, 16 )] public float MovementSmoothness { get; set; } = 3.0f;
 
-	Rigidbody grabbedBody;
+	PhysicsBody grabbedBody;
 	Transform grabbedOffset;
 	Vector3 localOffset;
 
@@ -30,7 +30,7 @@ public class PlayerGrabber : Component
 			return;
 		}
 
-		if ( grabbedBody is not null )
+		if ( grabbedBody.IsValid() )
 		{
 			if ( Input.Down( "attack2" ) )
 			{
@@ -46,7 +46,7 @@ public class PlayerGrabber : Component
 
 			var targetTx = aimTransform.ToWorld( grabbedOffset );
 
-			var worldStart = grabbedBody.PhysicsBody.GetLerpedTransform( Time.Now ).PointToWorld( localOffset );
+			var worldStart = grabbedBody.GetLerpedTransform( Time.Now ).PointToWorld( localOffset );
 			var worldEnd = targetTx.PointToWorld( localOffset );
 
 			//var delta = Scene.Camera.Transform.World.PointToWorld( new Vector3( 0, -10, -5 ) ) - worldStart;
@@ -83,12 +83,12 @@ public class PlayerGrabber : Component
 		if ( !tr.Hit || tr.Body is null )
 			return;
 
-		if ( tr.Body.GetComponent() is not Rigidbody body )
+		if ( tr.Body.BodyType == PhysicsBodyType.Static )
 			return;
 
 		if ( Input.Down( "attack1" ) )
 		{
-			grabbedBody = body;
+			grabbedBody = tr.Body;
 			localOffset = tr.Body.Transform.PointToLocal( tr.HitPosition );
 			grabbedOffset = aimTransform.ToLocal( tr.Body.Transform );
 			grabbedBody.MotionEnabled = true;
@@ -112,12 +112,12 @@ public class PlayerGrabber : Component
 
 		waitForUp = false;
 
-		if ( grabbedBody is not null )
+		if ( grabbedBody.IsValid() )
 		{
 			if ( Input.Down( "attack1" ) )
 			{
 				var targetTx = aimTransform.ToWorld( grabbedOffset );
-				grabbedBody.PhysicsBody.SmoothMove( targetTx, Time.Delta * MovementSmoothness, Time.Delta );
+				grabbedBody.SmoothMove( targetTx, Time.Delta * MovementSmoothness, Time.Delta );
 				return;
 			}
 		}
