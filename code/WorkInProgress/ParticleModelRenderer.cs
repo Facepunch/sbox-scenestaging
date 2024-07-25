@@ -4,7 +4,7 @@
 [Title( "Particle Model Renderer" )]
 [Category( "Particles" )]
 [Icon( "favorite" )]
-public sealed class ParticleModelRenderer : ParticleRenderer, Component.ExecuteInEditor
+public sealed class ParticleModelRenderer : ParticleController, Component.ExecuteInEditor
 {
 	[Property] public List<Model> Models { get; set; } = new List<Model> { Model.Cube };
 
@@ -12,59 +12,43 @@ public sealed class ParticleModelRenderer : ParticleRenderer, Component.ExecuteI
 	[Property] public ParticleFloat Scale { get; set; } = 1;
 	[Property] public bool Shadows { get; set; } = true;
 
-	protected override void OnEnabled()
+	protected override void OnParticleCreated( Particle p )
 	{
-		if ( ParticleEffect.IsValid() )
-		{
-			ParticleEffect.OnParticleCreated += OnParticleCreated;
-			ParticleEffect.OnParticleDestroyed += OnParticleDestroyed;
-		}
+		p.AddListener( new ParticleModel( this ), this );
+	}
+}
+
+
+class ParticleModel : Particle.BaseListener
+{
+	public ParticleModelRenderer Renderer;
+
+	SceneObject so;
+
+	public ParticleModel( ParticleModelRenderer renderer )
+	{
+		Renderer = renderer;
 	}
 
-	protected override void OnDisabled()
+	public override void OnEnabled( Particle p )
 	{
-		if ( ParticleEffect.IsValid() )
-		{
-			foreach ( var p in ParticleEffect.Particles )
-			{
-				OnParticleDestroyed( p );
-			}
-
-			ParticleEffect.OnParticleCreated -= OnParticleCreated;
-			ParticleEffect.OnParticleDestroyed -= OnParticleDestroyed;
-		}
+		so = new SceneObject( Renderer.Scene.SceneWorld, Random.Shared.FromList( Renderer.Models ) ?? Model.Error );
 	}
 
-	private void OnParticleDestroyed( Particle particle )
+	public override void OnDisabled( Particle p )
 	{
-		SceneObject so = particle.Get<SceneObject>( "so_model" );
-		so?.Delete();
+		if ( so is null ) return;
+
+		so.Delete();
 	}
 
-	private void OnParticleCreated( Particle particle )
+	public override void OnUpdate( Particle p, float dt )
 	{
-		var so = new SceneObject( Scene.SceneWorld, Random.Shared.FromList( Models ) );
-		particle.Set( "so_model", so );
-	}
+		if ( so is null ) return;
 
-	protected override void OnPreRender()
-	{
-		if ( ParticleEffect is null || ParticleEffect.Particles.Count == 0 )
-			return;
-
-		if ( Models is null || Models.Count == 0 )
-			return;
-
-		Sandbox.Utility.Parallel.ForEach( ParticleEffect.Particles, p =>
-		{
-			SceneObject so = p.Get<SceneObject>( "so_model" );
-			if ( so is null ) return;
-
-			so.SetMaterialOverride( MaterialOverride );
-			so.Transform = new Transform( p.Position, p.Angles, p.Size * Scale.Evaluate( Time.Delta, p.Random04 ) );
-			so.ColorTint = p.Color.WithAlphaMultiplied( p.Alpha );
-			so.Flags.CastShadows = Shadows;
-		} );
-
+		so.Transform = new Transform( p.Position, p.Angles, p.Size * Renderer.Scale.Evaluate( p, 2356 ) );
+		so.SetMaterialOverride( Renderer.MaterialOverride );
+		so.ColorTint = p.Color.WithAlphaMultiplied( p.Alpha );
+		so.Flags.CastShadows = Renderer.Shadows;
 	}
 }
