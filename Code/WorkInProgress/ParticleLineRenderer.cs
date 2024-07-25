@@ -36,15 +36,6 @@ public sealed class ParticleLineRenderer : ParticleRenderer, Component.ExecuteIn
 	[Group( "Spline" )]
 	[Property, Range( -1, 1 )] public float SplineBias { get; set; }
 
-
-	public enum ParticleSortMode
-	{
-		Unsorted,
-		ByDistance
-	}
-
-	[Property] public ParticleSortMode SortMode { get; set; }
-
 	protected override void OnAwake()
 	{
 		Tags.Add( "particles" );
@@ -124,13 +115,8 @@ public sealed class ParticleLineRenderer : ParticleRenderer, Component.ExecuteIn
 		_so.StartLine();
 
 		{
-			var list = effect.Particles.ToList();
+			var list = effect.Particles;
 			var count = list.Count();
-
-			if ( !Opaque && SortMode == ParticleSortMode.ByDistance )
-			{
-				list = list.OrderByDescending( x => x.Position.DistanceSquared( viewerPosition ) ).ToList();
-			}
 
 			if ( list.Count() == 2 || SplineInterpolation == 1 )
 			{
@@ -138,6 +124,7 @@ public sealed class ParticleLineRenderer : ParticleRenderer, Component.ExecuteIn
 				{
 					var size = p.Size * Scale;
 					_so.AddLinePoint( p.Position, p.Color.WithAlphaMultiplied( p.Alpha ), size.Length );
+
 				}
 			}
 			else
