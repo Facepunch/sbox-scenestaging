@@ -10,7 +10,7 @@ public sealed class ParticleModelRenderer : ParticleController, Component.Execut
 
 	[Property] public Material MaterialOverride { get; set; }
 	[Property] public ParticleFloat Scale { get; set; } = 1;
-	[Property] public bool Shadows { get; set; } = true;
+	[Property] public bool CastShadows { get; set; } = true;
 
 	protected override void OnParticleCreated( Particle p )
 	{
@@ -49,6 +49,6 @@ class ParticleModel : Particle.BaseListener
 		so.Transform = new Transform( p.Position, p.Angles, p.Size * Renderer.Scale.Evaluate( p, 2356 ) );
 		so.SetMaterialOverride( Renderer.MaterialOverride );
 		so.ColorTint = p.Color.WithAlphaMultiplied( p.Alpha );
-		so.Flags.CastShadows = Renderer.Shadows;
+		so.Flags.CastShadows = Renderer.CastShadows;
 	}
 }
