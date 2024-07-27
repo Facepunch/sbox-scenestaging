@@ -8,10 +8,6 @@
       "Position": "-3616,5664,1312",
       "Tags": "solid",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Terrain",
@@ -35,22 +31,18 @@
       "Flags": 0,
       "Name": "Directional Light",
       "Position": "-2246.765,20780.76,4622.82",
-      "Rotation": "-0.137725,-0.8931246,0.419394,-0.08642225",
+      "Rotation": "-0.8383121,-0.3374499,0.2883892,0.3165308",
       "Tags": "light_directional,light",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.DirectionalLight",
           "__guid": "90905cff-f9c0-46a3-b793-e1f4740cf016",
           "FogMode": "Enabled",
           "FogStrength": 1,
-          "LightColor": "6,5.60093,5.07908,1",
+          "LightColor": "3.5,3.26804,2.96471,1",
           "Shadows": true,
-          "SkyColor": "0.76279,0.88535,1,1"
+          "SkyColor": "1.12558,1.57736,2,1"
         }
       ]
     },
@@ -62,10 +54,6 @@
       "Rotation": "0,0,-0.5000002,-0.8660253",
       "Tags": "skybox",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SkyBox2D",
@@ -79,12 +67,9 @@
       "__guid": "0f1b76ac-f6ff-4bf5-b075-b7cd319fa960",
       "Flags": 0,
       "Name": "Citizen Player",
-      "Position": "-1974.295,21024.16,4542.688",
+      "Position": "-1847.839,20907.17,4542.688",
+      "Rotation": "0,0,-0.258819,0.9659258",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.CharacterController",
@@ -141,10 +126,6 @@
           "Name": "Body",
           "Position": "0,0,0",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.SkinnedModelRenderer",
@@ -164,11 +145,7 @@
           "Name": "EyePos",
           "Position": "0,0,64",
           "Rotation": "0,0.1736483,0,0.9848077",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1
+          "Enabled": true
         },
         {
           "__guid": "e5252655-eab9-48db-a844-4572d52e16e7",
@@ -176,10 +153,6 @@
           "Name": "Camera",
           "Position": "-200,0,64",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.CameraComponent",
@@ -213,9 +186,18 @@
             {
               "__type": "Sandbox.AmbientOcclusion",
               "__guid": "76a2febf-7b4f-4164-a6fd-b9f285e7d969",
+              "FalloffDistance": 1,
               "Intensity": 12.5,
               "Quality": "High",
               "Radius": 64
+            },
+            {
+              "__type": "Sandbox.ColorAdjustments",
+              "__guid": "08d3456d-6739-4fb3-9630-8611155baa15",
+              "Brightness": 1.51,
+              "Contrast": 1,
+              "HueRotate": 0,
+              "Saturation": 1.1
             }
           ]
         }
@@ -228,10 +210,6 @@
       "Position": "-1967.695,21028.47,4031.481",
       "Scale": "11.53047,9.534824,20",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -258,10 +236,6 @@
       "Name": "Cubemap Fog",
       "Position": "-4242.705,21843.24,5440.519",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.CubemapFog",
@@ -283,10 +257,6 @@
       "Name": "Gradient Fog",
       "Position": "-2286.515,20976.79,4679.104",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.GradientFog",
@@ -304,12 +274,9 @@
       "__guid": "4de3c754-fe20-43af-83d0-22925aa9f571",
       "Flags": 0,
       "Name": "Text",
-      "Position": "-1645.295,21275.66,4597.447",
+      "Position": "-2254.865,21275.66,4597.447",
+      "Rotation": "0,0,0.7071067,0.7071068",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.TextRenderer",
@@ -331,10 +298,6 @@
       "Position": "11328,5760,4768",
       "Scale": "-49.40707,-49.40707,-49.40707",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.EnvmapProbe",
