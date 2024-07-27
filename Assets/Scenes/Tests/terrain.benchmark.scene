@@ -18,7 +18,7 @@
           "DebugView": "None",
           "EnableCollision": true,
           "IsTrigger": false,
-          "RenderType": "Off",
+          "RenderType": "On",
           "Static": true,
           "Storage": "terrain/terrain_benchmark.terrain",
           "TerrainHeight": 20000,
@@ -40,9 +40,9 @@
           "__guid": "90905cff-f9c0-46a3-b793-e1f4740cf016",
           "FogMode": "Enabled",
           "FogStrength": 1,
-          "LightColor": "3.5,3.26804,2.96471,1",
+          "LightColor": "1,0.59705,0.47442,1",
           "Shadows": true,
-          "SkyColor": "1.12558,1.57736,2,1"
+          "SkyColor": "0.13162,0.15013,0.16744,1"
         }
       ]
     },
@@ -180,7 +180,7 @@
               "ExposureMethod": "RGB",
               "MaximumExposure": 2,
               "MinimumExposure": 1,
-              "Mode": "ACES",
+              "Mode": "Legacy",
               "Rate": 1
             },
             {
@@ -198,6 +198,34 @@
               "Contrast": 1,
               "HueRotate": 0,
               "Saturation": 1.1
+            },
+            {
+              "__type": "Sandbox.Bloom",
+              "__guid": "1280a932-861e-436b-9f22-0288d68f6af7",
+              "BloomColor": {
+                "color": [
+                  {
+                    "c": "1,1,1,1"
+                  },
+                  {
+                    "t": 1,
+                    "c": "1,1,1,1"
+                  }
+                ]
+              },
+              "BloomCurve": [
+                {
+                  "y": 0.5
+                },
+                {
+                  "x": 1,
+                  "y": 1
+                }
+              ],
+              "Mode": "Additive",
+              "Strength": 0.46,
+              "Threshold": 0.5,
+              "ThresholdWidth": 0
             }
           ]
         }
@@ -241,13 +269,13 @@
           "__type": "Sandbox.CubemapFog",
           "__guid": "45208776-9d8f-41d5-8266-7123268bcc65",
           "Blur": 0.19,
-          "EndDistance": 20000,
-          "FalloffExponent": 2,
+          "EndDistance": 30000,
+          "FalloffExponent": 3,
           "HeightExponent": 2,
           "HeightStart": 2105.801,
           "HeightWidth": 0,
           "Sky": "materials/skybox/skybox_overcast_01.vmat",
-          "StartDistance": 10000
+          "StartDistance": 0
         }
       ]
     },
@@ -255,16 +283,16 @@
       "__guid": "ca6fe4bd-e523-4768-803a-76bbcb48d6ab",
       "Flags": 0,
       "Name": "Gradient Fog",
-      "Position": "-2286.515,20976.79,4679.104",
+      "Position": "-2286.515,20976.79,3565.733",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.GradientFog",
           "__guid": "76061df0-92d8-47aa-a59f-14dd826dd71d",
-          "Color": "0.73953,0.9045,1,1",
+          "Color": "1,0.9631,0.86977,1",
           "EndDistance": 30000,
           "FalloffExponent": 2,
-          "Height": 10000,
+          "Height": 245,
           "StartDistance": 2000,
           "VerticalFalloffExponent": 1
         }
