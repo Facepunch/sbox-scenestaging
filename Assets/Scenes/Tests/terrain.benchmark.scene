@@ -5,7 +5,6 @@
       "__guid": "816a9388-1388-4653-b89d-ab13f13cadf5",
       "Flags": 0,
       "Name": "Terrain",
-      "Position": "-3616,5664,1312",
       "Tags": "solid",
       "Enabled": true,
       "Components": [
@@ -30,7 +29,7 @@
       "__guid": "f8a04d54-f3d3-4569-933c-c9e4f7b2f660",
       "Flags": 0,
       "Name": "Directional Light",
-      "Position": "-2246.765,20780.76,4622.82",
+      "Position": "1571.368,19000.54,4122.128",
       "Rotation": "-0.8383121,-0.3374499,0.2883892,0.3165308",
       "Tags": "light_directional,light",
       "Enabled": true,
@@ -50,7 +49,7 @@
       "__guid": "52a9cb6d-df54-4e11-afb0-c864e560688d",
       "Flags": 0,
       "Name": "SkyBox",
-      "Position": "-2246.765,20780.76,4580.146",
+      "Position": "1571.368,19000.54,4079.454",
       "Rotation": "0,0,-0.5000002,-0.8660253",
       "Tags": "skybox",
       "Enabled": true,
@@ -67,7 +66,7 @@
       "__guid": "0f1b76ac-f6ff-4bf5-b075-b7cd319fa960",
       "Flags": 0,
       "Name": "Citizen Player",
-      "Position": "-1847.839,20907.17,4542.688",
+      "Position": "1970.294,19126.95,4041.996",
       "Rotation": "0,0,-0.258819,0.9659258",
       "Enabled": true,
       "Components": [
@@ -211,7 +210,8 @@
                     "t": 1,
                     "c": "1,1,1,1"
                   }
-                ]
+                ],
+                "alpha": []
               },
               "BloomCurve": [
                 {
@@ -235,7 +235,7 @@
       "__guid": "361a5088-f72b-49a4-8786-f9112a75c430",
       "Flags": 0,
       "Name": "Cube",
-      "Position": "-1967.695,21028.47,4031.481",
+      "Position": "1850.438,19248.25,3540.997",
       "Scale": "11.53047,9.534824,20",
       "Enabled": true,
       "Components": [
@@ -262,7 +262,7 @@
       "__guid": "8869ae7d-1765-42e1-91c6-830f6ff069a4",
       "Flags": 0,
       "Name": "Cubemap Fog",
-      "Position": "-4242.705,21843.24,5440.519",
+      "Position": "-424.5718,20063.02,4949.977",
       "Enabled": true,
       "Components": [
         {
@@ -283,7 +283,7 @@
       "__guid": "ca6fe4bd-e523-4768-803a-76bbcb48d6ab",
       "Flags": 0,
       "Name": "Gradient Fog",
-      "Position": "-2286.515,20976.79,3565.733",
+      "Position": "1531.618,19196.57,3075.191",
       "Enabled": true,
       "Components": [
         {
@@ -302,7 +302,7 @@
       "__guid": "4de3c754-fe20-43af-83d0-22925aa9f571",
       "Flags": 0,
       "Name": "Text",
-      "Position": "-2254.865,21275.66,4597.447",
+      "Position": "1563.268,19495.44,4106.905",
       "Rotation": "0,0,0.7071067,0.7071068",
       "Enabled": true,
       "Components": [
@@ -344,6 +344,25 @@
           "UpdateStrategy": "OnEnabled",
           "ZFar": 4096,
           "ZNear": 16
+        }
+      ]
+    },
+    {
+      "__guid": "f35daffa-c463-436f-9b3d-114f8c7e6609",
+      "Flags": 0,
+      "Name": "error",
+      "Position": "760.1501,18930.57,3857.938",
+      "Rotation": "0,0,-0.5,0.8660254",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "f36b2971-ca80-4341-bc7b-cad81b021d46",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": false,
+          "Model": "models/rocks/rock_cliff_a.vmdl",
+          "Tint": "1,1,1,1"
         }
       ]
     }

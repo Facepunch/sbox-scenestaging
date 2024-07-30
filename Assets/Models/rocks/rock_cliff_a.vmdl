@@ -1,0 +1,161 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc29:version{3cec427c-1b0e-4d48-a90a-0436f33a6041} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						name = "rock_cliff_a_LOD0"
+						filename = "models/rocks/rock_cliff_a.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 0.4
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"rock_cliff_a_LOD0",
+							]
+						}
+					},
+					{
+						_class = "RenderMeshFile"
+						name = "rock_cliff_a_LOD1"
+						filename = "models/rocks/rock_cliff_a.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 0.4
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"rock_cliff_a_LOD1",
+							]
+						}
+					},
+					{
+						_class = "RenderMeshFile"
+						name = "rock_cliff_a_LOD2"
+						filename = "models/rocks/rock_cliff_a.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 0.4
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"rock_cliff_a_LOD2",
+							]
+						}
+					},
+				]
+			},
+			{
+				_class = "LODGroupList"
+				children = 
+				[
+					{
+						_class = "LODGroup"
+						name = "LODGroup0"
+						switch_threshold = 0.0
+						meshes = 
+						[
+							"rock_cliff_a_LOD0",
+						]
+					},
+					{
+						_class = "LODGroup"
+						name = "LODGroup1"
+						switch_threshold = 100.0
+						meshes = 
+						[
+							"rock_cliff_a_LOD1",
+						]
+					},
+					{
+						_class = "LODGroup"
+						name = "LODGroup2"
+						switch_threshold = 200.0
+						meshes = 
+						[
+							"rock_cliff_a_LOD2",
+						]
+					},
+				]
+			},
+			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+							{
+								from = "rock_cliffs_atlas.vmat"
+								to = "models/rocks/rock_cliffs_atlas.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = ""
+					},
+				]
+			},
+			{
+				_class = "PhysicsShapeList"
+				children = 
+				[
+					{
+						_class = "PhysicsMeshFile"
+						parent_bone = ""
+						surface_prop = "default"
+						collision_tags = "solid"
+						recenter_on_parent_bone = false
+						offset_origin = [ 0.0, 0.0, 0.0 ]
+						offset_angles = [ 0.0, 0.0, 0.0 ]
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						filename = "models/rocks/rock_cliff_a_col_temp.fbx"
+						import_scale = 0.4
+						maxMeshVertices = 0
+						qemError = 0.0
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"rock_cliff_a_LOD0",
+							]
+						}
+					},
+				]
+			},
+		]
+		model_archetype = "physics_prop_model"
+		primary_associated_entity = "prop_physics"
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}
