@@ -9,51 +9,20 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "Sandbox.NetworkHelper",
-          "__guid": "437f2591-9203-41cb-ac1a-3760a6db3ebf",
+          "__type": "Sandbox.GameNetworkManager",
+          "__guid": "6abee06a-ab24-4378-ae5b-a0da8b37d1b9",
           "PlayerPrefab": {
             "_type": "gameobject",
             "go": "efcfd949-0f42-4979-a9c5-7ffa4ef067be"
           },
-          "SpawnPoints": [
-            {
-              "_type": "gameobject",
-              "go": "eabc794e-637a-4e39-9c43-9c72d0c22f2e"
-            },
-            {
-              "_type": "gameobject",
-              "go": "b6686159-a11d-49b6-9817-11f89e96c813"
-            },
-            {
-              "_type": "gameobject",
-              "go": "2d5f505d-7c9c-41ba-853a-7a928b0471bb"
-            },
-            {
-              "_type": "gameobject",
-              "go": "2d5f505d-7c9c-41ba-853a-7a928b0471bb"
-            },
-            {
-              "_type": "gameobject",
-              "go": "db3c48cb-ffeb-4393-ac99-1bbb9cb6b18c"
-            },
-            {
-              "_type": "gameobject",
-              "go": "d1534ad0-25b2-4e56-b12b-f9ea80fdcce4"
-            },
-            {
-              "_type": "gameobject",
-              "go": "8f6c9899-8333-49da-bb18-e0139564f106"
-            },
-            {
-              "_type": "gameobject",
-              "go": "2f12ed7f-ad44-450c-b74b-ef2b4be0950c"
-            },
-            {
-              "_type": "gameobject",
-              "go": "333cdc23-5fae-436c-b32d-c83617146273"
-            }
-          ],
-          "StartServer": true
+          "SpawnPoint": {
+            "_type": "gameobject",
+            "go": "eabc794e-637a-4e39-9c43-9c72d0c22f2e"
+          }
+        },
+        {
+          "__type": "NetworkSession",
+          "__guid": "831e9345-dcf4-40c4-babd-41c8096c0989"
         }
       ]
     },
@@ -127,13 +96,21 @@
           "Viewport": "0,0,1,1",
           "ZFar": 10000,
           "ZNear": 10
+        },
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "69a1fb2f-0a4a-4ae9-ad6e-61306a9ac109",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
         }
       ]
     },
     {
       "__guid": "efcfd949-0f42-4979-a9c5-7ffa4ef067be",
       "Flags": 0,
-      "Name": "Object",
+      "Name": "Player",
       "Position": "0,0,1.717541",
       "Components": [
         {
@@ -187,6 +164,42 @@
           "Radius": 16,
           "StepHeight": 18,
           "UseCollisionRules": false
+        },
+        {
+          "__type": "SpawnNetworkedObjects",
+          "__guid": "028d2969-8856-4688-8b38-4d702fcbd3d7",
+          "AmountToSpawn": 3,
+          "ParentToThis": true,
+          "PrefabToSpawn": {
+            "_type": "gameobject",
+            "go": "575a7b81-640d-449c-a4ce-bd27e447189e"
+          }
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "2c6d72ac-1697-45b2-af69-aa72098849ac",
+          "Flags": 0,
+          "Name": "Name",
+          "Position": "0,0,87.02979",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "NameTagPanel",
+              "__guid": "584460f6-b379-45f6-bf5c-2d4f3cd5abd4",
+              "Name": "Mingebag"
+            },
+            {
+              "__type": "Sandbox.WorldPanel",
+              "__guid": "4060addd-82a7-4ba0-be0c-327c975ecfea",
+              "HorizontalAlign": "Center",
+              "InteractionRange": 1000,
+              "LookAtCamera": true,
+              "PanelSize": "512,512",
+              "RenderScale": 1,
+              "VerticalAlign": "Center"
+            }
+          ]
         }
       ]
     },
@@ -202,76 +215,27 @@
           "Name": "Object",
           "Position": "0,129.955,0",
           "Enabled": true
+        }
+      ]
+    },
+    {
+      "__guid": "575a7b81-640d-449c-a4ce-bd27e447189e",
+      "Flags": 0,
+      "Name": "Orbiter",
+      "Position": "0,0,99.15921",
+      "Scale": "0.2,0.2,0.2",
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "69385e85-62d5-42cc-81a0-632d216965f3",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/sphere.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
         },
         {
-          "__guid": "b6686159-a11d-49b6-9817-11f89e96c813",
-          "Flags": 0,
-          "Name": "Object (1)",
-          "Position": "-146.5543,129.955,0",
-          "Enabled": true
-        },
-        {
-          "__guid": "89e567a1-3969-42e6-8218-3023f7aa0fc7",
-          "Flags": 0,
-          "Name": "Object (1)",
-          "Position": "171.7737,129.955,0",
-          "Enabled": true
-        },
-        {
-          "__guid": "2d5f505d-7c9c-41ba-853a-7a928b0471bb",
-          "Flags": 0,
-          "Name": "Object (1)",
-          "Position": "171.7737,-211.4584,0",
-          "Enabled": true
-        },
-        {
-          "__guid": "db3c48cb-ffeb-4393-ac99-1bbb9cb6b18c",
-          "Flags": 0,
-          "Name": "Object (1)",
-          "Position": "-144.2402,-211.4584,0",
-          "Enabled": true
-        },
-        {
-          "__guid": "fe36ce3e-705c-46db-bb06-d503550640f6",
-          "Flags": 0,
-          "Name": "Object (1)",
-          "Position": "238.9076,-211.4584,0",
-          "Enabled": true
-        },
-        {
-          "__guid": "d1534ad0-25b2-4e56-b12b-f9ea80fdcce4",
-          "Flags": 0,
-          "Name": "Object (1)",
-          "Position": "238.9076,344.4126,0",
-          "Enabled": true
-        },
-        {
-          "__guid": "8f6c9899-8333-49da-bb18-e0139564f106",
-          "Flags": 0,
-          "Name": "Object (1)",
-          "Position": "-325.7546,344.4126,0",
-          "Enabled": true
-        },
-        {
-          "__guid": "2f12ed7f-ad44-450c-b74b-ef2b4be0950c",
-          "Flags": 0,
-          "Name": "Object (1)",
-          "Position": "-325.7546,-214.1996,0",
-          "Enabled": true
-        },
-        {
-          "__guid": "a2929301-7711-45a1-b92a-cbe2d5e9fb68",
-          "Flags": 0,
-          "Name": "Object (1)",
-          "Position": "223.1002,-214.1996,0",
-          "Enabled": true
-        },
-        {
-          "__guid": "333cdc23-5fae-436c-b32d-c83617146273",
-          "Flags": 0,
-          "Name": "Object (1)",
-          "Position": "223.1002,-214.1996,0",
-          "Enabled": true
+          "__type": "FlyAroundParent",
+          "__guid": "9c4f787b-03a6-49f0-a2f2-a905f2b176a4"
         }
       ]
     }
