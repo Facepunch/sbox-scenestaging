@@ -61,7 +61,7 @@
       "__guid": "67eee7c8-e625-4a7d-944a-400287f5be2b",
       "Flags": 0,
       "Name": "Plane",
-      "Scale": "10,10,10",
+      "Scale": "100,100,1",
       "Enabled": true,
       "Components": [
         {
@@ -77,8 +77,8 @@
           "__guid": "f502b345-2265-46a2-a23f-f211a8aafb79",
           "Center": "0,0,0",
           "IsTrigger": false,
-          "Scale": "50,50",
-          "Static": false
+          "Scale": "100,100",
+          "Static": true
         }
       ]
     },
