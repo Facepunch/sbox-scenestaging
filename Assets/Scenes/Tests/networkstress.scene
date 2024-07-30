@@ -1,0 +1,305 @@
+{
+  "__guid": "ed011895-9cfd-467f-9f73-6c0e8278ddfa",
+  "GameObjects": [
+    {
+      "__guid": "b23486ac-6ff4-4d7d-bb52-0e5b61cdb8cc",
+      "Flags": 0,
+      "Name": "NetworkHelper",
+      "Position": "60.08204,72.74341,-26.49291",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.NetworkHelper",
+          "__guid": "437f2591-9203-41cb-ac1a-3760a6db3ebf",
+          "PlayerPrefab": {
+            "_type": "gameobject",
+            "go": "efcfd949-0f42-4979-a9c5-7ffa4ef067be"
+          },
+          "SpawnPoints": [
+            {
+              "_type": "gameobject",
+              "go": "eabc794e-637a-4e39-9c43-9c72d0c22f2e"
+            },
+            {
+              "_type": "gameobject",
+              "go": "b6686159-a11d-49b6-9817-11f89e96c813"
+            },
+            {
+              "_type": "gameobject",
+              "go": "2d5f505d-7c9c-41ba-853a-7a928b0471bb"
+            },
+            {
+              "_type": "gameobject",
+              "go": "2d5f505d-7c9c-41ba-853a-7a928b0471bb"
+            },
+            {
+              "_type": "gameobject",
+              "go": "db3c48cb-ffeb-4393-ac99-1bbb9cb6b18c"
+            },
+            {
+              "_type": "gameobject",
+              "go": "d1534ad0-25b2-4e56-b12b-f9ea80fdcce4"
+            },
+            {
+              "_type": "gameobject",
+              "go": "8f6c9899-8333-49da-bb18-e0139564f106"
+            },
+            {
+              "_type": "gameobject",
+              "go": "2f12ed7f-ad44-450c-b74b-ef2b4be0950c"
+            },
+            {
+              "_type": "gameobject",
+              "go": "333cdc23-5fae-436c-b32d-c83617146273"
+            }
+          ],
+          "StartServer": true
+        }
+      ]
+    },
+    {
+      "__guid": "67eee7c8-e625-4a7d-944a-400287f5be2b",
+      "Flags": 0,
+      "Name": "Plane",
+      "Scale": "10,10,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "c3128bb2-c0a7-434b-9072-e0fc74b9b131",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/plane.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.PlaneCollider",
+          "__guid": "f502b345-2265-46a2-a23f-f211a8aafb79",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50",
+          "Static": false
+        }
+      ]
+    },
+    {
+      "__guid": "972f5bb5-6ebc-4f96-a845-a0eab5c972d5",
+      "Flags": 0,
+      "Name": "Sun",
+      "Position": "-381.3437,-131.9277,539.6773",
+      "Rotation": "0,0.5,0,0.8660254",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "8a705f52-1b2f-4034-9937-e0b03802cbdb",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0,0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "629702b5-e0d0-4b50-a68b-a2e007c88ad0",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-0.0002916576,0,1631.067",
+      "Rotation": "0,0.7071067,0,0.7071068",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "f90f0e86-3d45-455f-9f6a-f7599e3ca892",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "__guid": "efcfd949-0f42-4979-a9c5-7ffa4ef067be",
+      "Flags": 0,
+      "Name": "Object",
+      "Position": "0,0,1.717541",
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "c34ea711-2ed6-49ac-bb07-c25cfcb0d8a5",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        },
+        {
+          "__type": "PlayerController",
+          "__guid": "6d16b64f-db6f-479d-957e-3890e00df876",
+          "AnimationHelper": {
+            "_type": "component",
+            "component_id": "1ee941f5-37a0-4390-a901-f81eb5c9da23",
+            "go": "efcfd949-0f42-4979-a9c5-7ffa4ef067be",
+            "component_type": "CitizenAnimationHelper"
+          },
+          "Body": {
+            "_type": "gameobject",
+            "go": "efcfd949-0f42-4979-a9c5-7ffa4ef067be"
+          },
+          "FirstPerson": false,
+          "Gravity": "0,0,800"
+        },
+        {
+          "__type": "Sandbox.Citizen.CitizenAnimationHelper",
+          "__guid": "1ee941f5-37a0-4390-a901-f81eb5c9da23",
+          "BodyWeight": 1,
+          "EyesWeight": 1,
+          "HeadWeight": 1,
+          "LookAtEnabled": false,
+          "Target": {
+            "_type": "component",
+            "component_id": "c34ea711-2ed6-49ac-bb07-c25cfcb0d8a5",
+            "go": "efcfd949-0f42-4979-a9c5-7ffa4ef067be",
+            "component_type": "SkinnedModelRenderer"
+          }
+        },
+        {
+          "__type": "Sandbox.CharacterController",
+          "__guid": "3b04c4c3-c57d-4021-aa92-fec050b5cadb",
+          "Acceleration": 10,
+          "Bounciness": 0.3,
+          "GroundAngle": 45,
+          "Height": 64,
+          "IgnoreLayers": "",
+          "Radius": 16,
+          "StepHeight": 18,
+          "UseCollisionRules": false
+        }
+      ]
+    },
+    {
+      "__guid": "df3169c2-a48b-4f77-a3b3-0daa62cbacce",
+      "Flags": 0,
+      "Name": "Spawns",
+      "Enabled": true,
+      "Children": [
+        {
+          "__guid": "eabc794e-637a-4e39-9c43-9c72d0c22f2e",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "0,129.955,0",
+          "Enabled": true
+        },
+        {
+          "__guid": "b6686159-a11d-49b6-9817-11f89e96c813",
+          "Flags": 0,
+          "Name": "Object (1)",
+          "Position": "-146.5543,129.955,0",
+          "Enabled": true
+        },
+        {
+          "__guid": "89e567a1-3969-42e6-8218-3023f7aa0fc7",
+          "Flags": 0,
+          "Name": "Object (1)",
+          "Position": "171.7737,129.955,0",
+          "Enabled": true
+        },
+        {
+          "__guid": "2d5f505d-7c9c-41ba-853a-7a928b0471bb",
+          "Flags": 0,
+          "Name": "Object (1)",
+          "Position": "171.7737,-211.4584,0",
+          "Enabled": true
+        },
+        {
+          "__guid": "db3c48cb-ffeb-4393-ac99-1bbb9cb6b18c",
+          "Flags": 0,
+          "Name": "Object (1)",
+          "Position": "-144.2402,-211.4584,0",
+          "Enabled": true
+        },
+        {
+          "__guid": "fe36ce3e-705c-46db-bb06-d503550640f6",
+          "Flags": 0,
+          "Name": "Object (1)",
+          "Position": "238.9076,-211.4584,0",
+          "Enabled": true
+        },
+        {
+          "__guid": "d1534ad0-25b2-4e56-b12b-f9ea80fdcce4",
+          "Flags": 0,
+          "Name": "Object (1)",
+          "Position": "238.9076,344.4126,0",
+          "Enabled": true
+        },
+        {
+          "__guid": "8f6c9899-8333-49da-bb18-e0139564f106",
+          "Flags": 0,
+          "Name": "Object (1)",
+          "Position": "-325.7546,344.4126,0",
+          "Enabled": true
+        },
+        {
+          "__guid": "2f12ed7f-ad44-450c-b74b-ef2b4be0950c",
+          "Flags": 0,
+          "Name": "Object (1)",
+          "Position": "-325.7546,-214.1996,0",
+          "Enabled": true
+        },
+        {
+          "__guid": "a2929301-7711-45a1-b92a-cbe2d5e9fb68",
+          "Flags": 0,
+          "Name": "Object (1)",
+          "Position": "223.1002,-214.1996,0",
+          "Enabled": true
+        },
+        {
+          "__guid": "333cdc23-5fae-436c-b32d-c83617146273",
+          "Flags": 0,
+          "Name": "Object (1)",
+          "Position": "223.1002,-214.1996,0",
+          "Enabled": true
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "Network Stress Test",
+  "Description": "",
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}
