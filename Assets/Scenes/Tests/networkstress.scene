@@ -238,6 +238,54 @@
           "__guid": "9c4f787b-03a6-49f0-a2f2-a905f2b176a4"
         }
       ]
+    },
+    {
+      "__guid": "6b793169-303a-49f2-9b07-b6d87895f118",
+      "Flags": 0,
+      "Name": "ObjectSpawner",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "SpawnMovingObjects",
+          "__guid": "32d0ca85-9ffa-49dd-8558-9de7e5011120",
+          "AmountToSpawn": 300,
+          "PrefabToSpawn": {
+            "_type": "gameobject",
+            "go": "292f5413-b1c6-4f0c-a526-84904421e20d"
+          }
+        }
+      ]
+    },
+    {
+      "__guid": "292f5413-b1c6-4f0c-a526-84904421e20d",
+      "Flags": 0,
+      "Name": "MovingObject",
+      "Components": [
+        {
+          "__type": "WalkAround",
+          "__guid": "6d2e6409-e8d6-4390-aaea-ab1f4c0a3996"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "6dff61bf-63df-4c38-9b7f-a234625faa31",
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "0,0,7.429256",
+          "Scale": "0.3,0.3,0.3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "e5beb71d-13bd-497f-bb68-1912ff29d2d9",
+              "BodyGroups": 18446744073709551615,
+              "Model": "models/dev/box.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
     }
   ],
   "SceneProperties": {
