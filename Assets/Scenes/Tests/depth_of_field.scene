@@ -1,0 +1,1847 @@
+{
+  "__guid": "d353a6db-8582-47d8-a0f8-f14a0df7e735",
+  "GameObjects": [
+    {
+      "__guid": "fddb41bc-94fd-4f9a-994f-3657c15750bd",
+      "Flags": 0,
+      "Name": "Flatgrass",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.MapInstance",
+          "__guid": "0f236144-3df8-47a7-adfd-4ea46220834e",
+          "__version": 1,
+          "EnableCollision": true,
+          "MapName": "facepunch.flatgrass",
+          "NoOrigin": true,
+          "UseMapFromLaunch": false
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "88ee0d62-5822-4c01-b22b-12744226aca6",
+      "Flags": 0,
+      "Name": "SkyBox",
+      "Tags": "skybox",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "a735ec8d-c4aa-478f-8205-1c897200abca",
+          "SkyMaterial": "materials/skybox/light_test_sky_sunny.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "16bea1e9-0ad8-4040-9574-6d8c80d38f59",
+      "Flags": 0,
+      "Name": "Directional Light",
+      "Rotation": "-0.4003422,-0.3071933,0.5083043,-0.697843",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "c6cc30c0-2d8b-44ec-8220-46be93a7636a",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "1,0.90436,0.79208,1",
+          "Shadows": true,
+          "SkyColor": "0.54056,0.71154,0.79703,1"
+        }
+      ]
+    },
+    {
+      "__guid": "8328274d-9e34-4c3e-b06d-7af41188d3e9",
+      "Flags": 0,
+      "Name": "Spot Light",
+      "Position": "0.0119453,86.00055,105.8853",
+      "Rotation": "0.1952331,0.6873928,0.07915428,0.6950609",
+      "Tags": "light_spot,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SpotLight",
+          "__guid": "f20da719-0422-4ba0-aab7-35c24b105ac7",
+          "Attenuation": 1,
+          "ConeInner": 15,
+          "ConeOuter": 45,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Radius": 500,
+          "Shadows": true
+        }
+      ]
+    },
+    {
+      "__guid": "a07dfdd5-23dc-4e6e-ba1a-cc0cbe3404e7",
+      "Flags": 0,
+      "Name": "Spot Light (1)",
+      "Position": "-56.60266,205.1319,53.38909",
+      "Rotation": "0.8207759,-0.277946,-0.4035107,0.2936864",
+      "Tags": "light_spot,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SpotLight",
+          "__guid": "8f0f8cd6-db16-4720-a8cb-83588fecb539",
+          "Attenuation": 0,
+          "ConeInner": 15,
+          "ConeOuter": 24.56,
+          "FogMode": "Disabled",
+          "FogStrength": 0,
+          "LightColor": "2.53023,6.72372,8,1",
+          "Radius": 100,
+          "Shadows": true
+        }
+      ]
+    },
+    {
+      "__guid": "a4f9493b-c5cf-4565-9681-d946ac391020",
+      "Flags": 0,
+      "Name": "Spot Light (2)",
+      "Position": "15.58317,205.1319,53.38909",
+      "Rotation": "0.5622984,-0.659354,-0.4970068,0.04535227",
+      "Tags": "light_spot,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SpotLight",
+          "__guid": "2db76aea-aebc-4b5d-b96c-c38ceb476a07",
+          "Attenuation": 0,
+          "ConeInner": 15,
+          "ConeOuter": 24.56,
+          "FogMode": "Disabled",
+          "FogStrength": 0,
+          "LightColor": "4,2.31349,1.26512,1",
+          "Radius": 100,
+          "Shadows": true
+        }
+      ]
+    },
+    {
+      "__guid": "c08ff8ca-603e-4769-a2ab-2ad4b1bfc907",
+      "Flags": 0,
+      "Name": "oil_drum_a",
+      "Position": "55.23362,116.36,-28.29894",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "c1700dce-05b5-4552-b624-a3ed2bfbb114",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/sbox_props/oil_drum/oil_drum_a.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "7d3b1b23-4959-4f9f-ab69-7e7d3eedab61",
+      "Flags": 0,
+      "Name": "beer_cask",
+      "Position": "-49.14129,108.4974,-28.32806",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "1c44dcbd-a164-4893-96e8-2c8ddc79fe13",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/props/beer_keg/beer_cask.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "78f2c5dd-e71f-4eaf-b410-ef645382baf1",
+      "Flags": 0,
+      "Name": "r_k_monitor",
+      "Position": "87.34061,-29.82755,-27.99957",
+      "Rotation": "0.00000005631489,-0.000000000000004497445,0.9448068,0.3276283",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "cf2c4083-521d-4dab-aaca-5f707b884491",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/r_k_monitor.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "1995dce0-31c3-428c-875d-e1adb1687708",
+      "Flags": 0,
+      "Name": "citizen",
+      "Position": "-18.93552,159.9708,-28.32825",
+      "Rotation": "0.00000002172198,-0.00000002172198,-0.7071068,0.7071068",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "7b846d63-b600-4f80-aa98-82d1d9a30450",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "38139b61-c48b-44d2-a581-545a71e8fdd2",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "abea1030-200f-4b54-9862-1beea66c8020",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7b846d63-b600-4f80-aa98-82d1d9a30450",
+                "go": "1995dce0-31c3-428c-875d-e1adb1687708",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/full_outfit/pirate_outfit/models/pirate_outfit.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "cb5069da-23bd-4d34-81b3-0bc70e371d26",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "ffdac063-3936-49b4-9a56-72e7d834f323",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7b846d63-b600-4f80-aa98-82d1d9a30450",
+                "go": "1995dce0-31c3-428c-875d-e1adb1687708",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/hair_balding/models/hair_baldingbrown.vmdl",
+              "RenderType": "On",
+              "Tint": "0.18605,0.13101,0.04846,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "c03a2a37-21a9-453c-a0b1-3e36bedac247",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "57fe4eaa-838b-4692-9f26-562f09bf985a",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7b846d63-b600-4f80-aa98-82d1d9a30450",
+                "go": "1995dce0-31c3-428c-875d-e1adb1687708",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/mutton_chops/models/mutton_chops.vmdl",
+              "RenderType": "On",
+              "Tint": "0.07907,0.0676,0.05038,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "a2fe989f-00f7-4b95-8367-d479da13e8fe",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "671d501c-0127-4be8-960d-f551723f8b5c",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7b846d63-b600-4f80-aa98-82d1d9a30450",
+                "go": "1995dce0-31c3-428c-875d-e1adb1687708",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/makeup/bruised_face/models/bruised_face.vmdl",
+              "RenderType": "On",
+              "Tint": "0.52093,0.52093,0.52093,1",
+              "UseAnimGraph": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "ab82fee7-5955-4e23-ad40-aaafe01a99c4",
+      "Flags": 0,
+      "Name": "citizen (1)",
+      "Position": "106.9129,508.0642,3.78429",
+      "Rotation": "0.000000007527492,-0.00000002978298,-0.9695132,0.2450394",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "68eeed4c-7750-44be-a111-31fdd635fe09",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "b91a3b83-12f5-48ce-822c-8b06abb819ce",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "e112c3f7-d0af-4807-b930-0e0689270ad1",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "68eeed4c-7750-44be-a111-31fdd635fe09",
+                "go": "ab82fee7-5955-4e23-ad40-aaafe01a99c4",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/full_outfit/pirate_outfit/models/pirate_outfit.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "73dc4697-f206-409d-b304-22afbcf58be3",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "234679cf-8469-441b-968c-5c84a67767a0",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "68eeed4c-7750-44be-a111-31fdd635fe09",
+                "go": "ab82fee7-5955-4e23-ad40-aaafe01a99c4",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/hair_balding/models/hair_baldingbrown.vmdl",
+              "RenderType": "On",
+              "Tint": "0.18605,0.13101,0.04846,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "6738df46-5610-4970-8dc9-09d6a3954841",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "c69f6ef5-c7eb-4953-a55b-7c57067c8f0d",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "68eeed4c-7750-44be-a111-31fdd635fe09",
+                "go": "ab82fee7-5955-4e23-ad40-aaafe01a99c4",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/mutton_chops/models/mutton_chops.vmdl",
+              "RenderType": "On",
+              "Tint": "0.07907,0.0676,0.05038,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "58776bfd-1cf5-4f44-bb57-80573e71f718",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "63acdc8e-d9ed-4deb-a7b1-8aa7809b35ee",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "68eeed4c-7750-44be-a111-31fdd635fe09",
+                "go": "ab82fee7-5955-4e23-ad40-aaafe01a99c4",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/makeup/bruised_face/models/bruised_face.vmdl",
+              "RenderType": "On",
+              "Tint": "0.52093,0.52093,0.52093,1",
+              "UseAnimGraph": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "9bcf6ccf-dacd-4914-aa14-76d5a307950e",
+      "Flags": 0,
+      "Name": "citizen (2)",
+      "Position": "-105.5448,506.0139,3.784287",
+      "Rotation": "-0.00000002575303,-0.00000001674725,-0.5451663,-0.8383279",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "ead8e77a-cac3-4456-84c4-894454727703",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "160a75d1-f149-42d8-a01e-cd4dab2cd63a",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "98f95aaa-9de4-44f8-867e-bc92e3d02bbb",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "ead8e77a-cac3-4456-84c4-894454727703",
+                "go": "9bcf6ccf-dacd-4914-aa14-76d5a307950e",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/full_outfit/pirate_outfit/models/pirate_outfit.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "c25acec9-d888-409f-a4df-419fcb01581a",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "d65ea1e9-7d80-4010-a121-102198d22f12",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "ead8e77a-cac3-4456-84c4-894454727703",
+                "go": "9bcf6ccf-dacd-4914-aa14-76d5a307950e",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/hair_balding/models/hair_baldingbrown.vmdl",
+              "RenderType": "On",
+              "Tint": "0.18605,0.13101,0.04846,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "b4309f0e-0c63-4dcb-b6ac-b1e163790719",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "4534cc28-3ee4-40bd-ad03-c6f69c28fbd7",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "ead8e77a-cac3-4456-84c4-894454727703",
+                "go": "9bcf6ccf-dacd-4914-aa14-76d5a307950e",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/mutton_chops/models/mutton_chops.vmdl",
+              "RenderType": "On",
+              "Tint": "0.07907,0.0676,0.05038,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "c9e4d19e-6dcc-442f-9264-d78759f6000a",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "df9eb37a-de84-414e-a0b1-f8ec91eaa1f0",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "ead8e77a-cac3-4456-84c4-894454727703",
+                "go": "9bcf6ccf-dacd-4914-aa14-76d5a307950e",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/makeup/bruised_face/models/bruised_face.vmdl",
+              "RenderType": "On",
+              "Tint": "0.52093,0.52093,0.52093,1",
+              "UseAnimGraph": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "15287a5d-8447-4c55-9b31-bbd3715b69ed",
+      "Flags": 0,
+      "Name": "citizen (3)",
+      "Position": "31.52734,481.2363,3.784257",
+      "Rotation": "-0.00000002561625,-0.00000001695572,-0.5519527,-0.8338754",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "caf4c3d7-6853-4932-9c11-ae39831a7097",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "13c8d2ff-4496-4190-9cc2-7dac1ed82958",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "f659e613-5cad-47f3-ac61-ca53c6107a1a",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "caf4c3d7-6853-4932-9c11-ae39831a7097",
+                "go": "15287a5d-8447-4c55-9b31-bbd3715b69ed",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/full_outfit/pirate_outfit/models/pirate_outfit.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "dc09293f-dd35-47c0-9ed4-b5841753041b",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "b905520a-cf98-4256-9c27-dc5dbf991c74",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "caf4c3d7-6853-4932-9c11-ae39831a7097",
+                "go": "15287a5d-8447-4c55-9b31-bbd3715b69ed",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/hair_balding/models/hair_baldingbrown.vmdl",
+              "RenderType": "On",
+              "Tint": "0.18605,0.13101,0.04846,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "0eefd344-e3a6-44e1-b51c-c22808fea7ed",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "18b668bd-7d76-479f-86d6-a5d673957299",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "caf4c3d7-6853-4932-9c11-ae39831a7097",
+                "go": "15287a5d-8447-4c55-9b31-bbd3715b69ed",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/mutton_chops/models/mutton_chops.vmdl",
+              "RenderType": "On",
+              "Tint": "0.07907,0.0676,0.05038,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "287c446c-c8c0-4212-a729-b73ecbfad606",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "7f641229-092d-4cce-913b-8bd1f02a38e1",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "caf4c3d7-6853-4932-9c11-ae39831a7097",
+                "go": "15287a5d-8447-4c55-9b31-bbd3715b69ed",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/makeup/bruised_face/models/bruised_face.vmdl",
+              "RenderType": "On",
+              "Tint": "0.52093,0.52093,0.52093,1",
+              "UseAnimGraph": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "6575d50f-cd5c-4a39-8f1e-10e378ceca0c",
+      "Flags": 0,
+      "Name": "citizen (4)",
+      "Position": "-73.72528,512.9161,3.784382",
+      "Rotation": "0.0000000003488765,-0.00000003071754,-0.9999355,0.01135686",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "0aceea2a-c041-4988-b8b1-384e75f7f8ef",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "3a520bfb-035c-4da8-9732-7f097c580f4b",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "615c5de0-5c9e-4cfa-ad1d-e51be4112b62",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "0aceea2a-c041-4988-b8b1-384e75f7f8ef",
+                "go": "6575d50f-cd5c-4a39-8f1e-10e378ceca0c",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/full_outfit/pirate_outfit/models/pirate_outfit.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "6c6f721d-b2b7-4311-ad26-89dafbd1fd27",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "82e7a7d1-a4df-4f52-a9db-6eee0af56bbf",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "0aceea2a-c041-4988-b8b1-384e75f7f8ef",
+                "go": "6575d50f-cd5c-4a39-8f1e-10e378ceca0c",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/hair_balding/models/hair_baldingbrown.vmdl",
+              "RenderType": "On",
+              "Tint": "0.18605,0.13101,0.04846,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "7cc286ae-2daa-4bf0-815e-8e24f70c0e54",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "fc2e1e21-5b98-46e8-b717-ae0ad1426ecf",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "0aceea2a-c041-4988-b8b1-384e75f7f8ef",
+                "go": "6575d50f-cd5c-4a39-8f1e-10e378ceca0c",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/mutton_chops/models/mutton_chops.vmdl",
+              "RenderType": "On",
+              "Tint": "0.07907,0.0676,0.05038,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "b5bc3f2e-4842-4ecf-85a5-81fd04d00d4c",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "786869e2-3628-4ed5-92cf-94a489b2f4e2",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "0aceea2a-c041-4988-b8b1-384e75f7f8ef",
+                "go": "6575d50f-cd5c-4a39-8f1e-10e378ceca0c",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/makeup/bruised_face/models/bruised_face.vmdl",
+              "RenderType": "On",
+              "Tint": "0.52093,0.52093,0.52093,1",
+              "UseAnimGraph": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "8456dee4-adaf-4033-9fee-024b0db5cfce",
+      "Flags": 0,
+      "Name": "citizen (6)",
+      "Position": "149.3045,711.6306,-0.5388255",
+      "Rotation": "0.00000001162894,-0.00000002843337,-0.92558,0.3785521",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "7d73062f-f59c-4b82-8f57-905917e3a688",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "fe4b1d59-5ff8-4c57-9f0e-34d526d9779a",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "15382585-17a4-4e3a-9216-63ab4fdeb921",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7d73062f-f59c-4b82-8f57-905917e3a688",
+                "go": "8456dee4-adaf-4033-9fee-024b0db5cfce",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/full_outfit/pirate_outfit/models/pirate_outfit.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "a119fc2d-c217-4807-acf9-dae37ed0d022",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "c5e4c236-9a4f-4abf-9c19-a321d3cb5413",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7d73062f-f59c-4b82-8f57-905917e3a688",
+                "go": "8456dee4-adaf-4033-9fee-024b0db5cfce",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/hair_balding/models/hair_baldingbrown.vmdl",
+              "RenderType": "On",
+              "Tint": "0.18605,0.13101,0.04846,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "0c4dff57-b5b2-46d3-aabc-68a3accd8d95",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "e87998d2-2fee-489b-b405-f1021feca300",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7d73062f-f59c-4b82-8f57-905917e3a688",
+                "go": "8456dee4-adaf-4033-9fee-024b0db5cfce",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/mutton_chops/models/mutton_chops.vmdl",
+              "RenderType": "On",
+              "Tint": "0.07907,0.0676,0.05038,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "09b4490d-9ebe-4e28-a2f1-9d45ec2be691",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "d787662a-0b12-4425-8585-ecc176214e8d",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7d73062f-f59c-4b82-8f57-905917e3a688",
+                "go": "8456dee4-adaf-4033-9fee-024b0db5cfce",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/makeup/bruised_face/models/bruised_face.vmdl",
+              "RenderType": "On",
+              "Tint": "0.52093,0.52093,0.52093,1",
+              "UseAnimGraph": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "39458681-6fa9-459b-b2e6-3193ba19bdcd",
+      "Flags": 0,
+      "Name": "citizen (7)",
+      "Position": "-114.553,708.921,-0.5388715",
+      "Rotation": "0.00000002782675,-0.00000001301387,-0.4236354,0.9058329",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "7996c78d-3664-46d1-877f-a699ad21e634",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "508f2e84-e7b6-49b6-ba43-a1c881721647",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "c27f4564-4a6a-461d-b5e6-99dfc5dce7ce",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7996c78d-3664-46d1-877f-a699ad21e634",
+                "go": "39458681-6fa9-459b-b2e6-3193ba19bdcd",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/full_outfit/pirate_outfit/models/pirate_outfit.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "01f498fa-e029-422b-ac12-6860e597b079",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "ebf8a0c6-0d8b-44ac-bc46-e28e2d84fdf2",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7996c78d-3664-46d1-877f-a699ad21e634",
+                "go": "39458681-6fa9-459b-b2e6-3193ba19bdcd",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/hair_balding/models/hair_baldingbrown.vmdl",
+              "RenderType": "On",
+              "Tint": "0.18605,0.13101,0.04846,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "d51dd10b-a0de-45ee-98cf-bc8f83dca60c",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "2f15d0e1-ae18-43c4-9822-61dc40e7c322",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7996c78d-3664-46d1-877f-a699ad21e634",
+                "go": "39458681-6fa9-459b-b2e6-3193ba19bdcd",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/mutton_chops/models/mutton_chops.vmdl",
+              "RenderType": "On",
+              "Tint": "0.07907,0.0676,0.05038,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "5b5ce0be-7efe-4883-b436-f7eded8b72d9",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "4758f8a7-afe6-46b8-bcd6-43c73709d3a6",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "7996c78d-3664-46d1-877f-a699ad21e634",
+                "go": "39458681-6fa9-459b-b2e6-3193ba19bdcd",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/makeup/bruised_face/models/bruised_face.vmdl",
+              "RenderType": "On",
+              "Tint": "0.52093,0.52093,0.52093,1",
+              "UseAnimGraph": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "9ab9ae29-3900-4244-9825-e24e810b2787",
+      "Flags": 0,
+      "Name": "citizen (8)",
+      "Position": "-25.93752,793.5054,-0.5389022",
+      "Rotation": "-0.000000005111864,-0.00000003029121,-0.9860576,-0.1664046",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "e92f8fcf-24e3-4dab-a376-76c0524874da",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "0e56e802-c915-45f6-adbb-359f8e4d857d",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "30e39f3e-72ed-4f19-9461-3ea7ce4ee6ea",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "e92f8fcf-24e3-4dab-a376-76c0524874da",
+                "go": "9ab9ae29-3900-4244-9825-e24e810b2787",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/full_outfit/pirate_outfit/models/pirate_outfit.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "0046e3ab-0fe6-4f95-abad-6e0d17116a44",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "b4a212d3-698a-4e4e-aed7-3b5ac5b86d44",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "e92f8fcf-24e3-4dab-a376-76c0524874da",
+                "go": "9ab9ae29-3900-4244-9825-e24e810b2787",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/hair_balding/models/hair_baldingbrown.vmdl",
+              "RenderType": "On",
+              "Tint": "0.18605,0.13101,0.04846,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "8c5dd64a-d5ec-42e1-b230-51738512fa32",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "26d8031b-c4bc-479d-a798-dc77f382f1c2",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "e92f8fcf-24e3-4dab-a376-76c0524874da",
+                "go": "9ab9ae29-3900-4244-9825-e24e810b2787",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/mutton_chops/models/mutton_chops.vmdl",
+              "RenderType": "On",
+              "Tint": "0.07907,0.0676,0.05038,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "16ee1836-9063-47fd-9132-c1d374632272",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "3bc9aa31-b0e0-44db-bdb4-de14b31d3fa4",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "e92f8fcf-24e3-4dab-a376-76c0524874da",
+                "go": "9ab9ae29-3900-4244-9825-e24e810b2787",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/makeup/bruised_face/models/bruised_face.vmdl",
+              "RenderType": "On",
+              "Tint": "0.52093,0.52093,0.52093,1",
+              "UseAnimGraph": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "fd11b4c2-63ff-4717-8098-338239ccab0d",
+      "Flags": 0,
+      "Name": "citizen (5)",
+      "Position": "-86.28042,470.945,3.784391",
+      "Rotation": "-0.00000001689208,-0.00000002565826,-0.835243,-0.5498811",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "5cb87672-671c-43a8-9bda-3e9a6f985c3d",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "dd9d3b83-f470-4a14-93c3-dd8868e9ce9f",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "79bb19dd-673c-47b8-9959-9ef11adc7d08",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "5cb87672-671c-43a8-9bda-3e9a6f985c3d",
+                "go": "fd11b4c2-63ff-4717-8098-338239ccab0d",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/full_outfit/pirate_outfit/models/pirate_outfit.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "4a52e9b7-b4c3-444b-81a8-ad033fd9c563",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "d59feb70-87ed-49e1-b1ac-9047d5e205e4",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "5cb87672-671c-43a8-9bda-3e9a6f985c3d",
+                "go": "fd11b4c2-63ff-4717-8098-338239ccab0d",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/hair_balding/models/hair_baldingbrown.vmdl",
+              "RenderType": "On",
+              "Tint": "0.18605,0.13101,0.04846,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "cd976830-e8f0-4733-9492-7ca704f7124f",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "427a4c23-6040-47c2-b1e2-64517182dccc",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "5cb87672-671c-43a8-9bda-3e9a6f985c3d",
+                "go": "fd11b4c2-63ff-4717-8098-338239ccab0d",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/hair/mutton_chops/models/mutton_chops.vmdl",
+              "RenderType": "On",
+              "Tint": "0.07907,0.0676,0.05038,1",
+              "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "263c09b5-4784-4361-8baf-8172159c123d",
+          "Flags": 0,
+          "Name": "pirate_outfit",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "f7c92ddd-f552-4ddb-84dd-ab71b75576e7",
+              "BodyGroups": 18446744073709551615,
+              "BoneMergeTarget": {
+                "_type": "component",
+                "component_id": "5cb87672-671c-43a8-9bda-3e9a6f985c3d",
+                "go": "fd11b4c2-63ff-4717-8098-338239ccab0d",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "CreateBoneObjects": false,
+              "Model": "models/citizen_clothes/makeup/bruised_face/models/bruised_face.vmdl",
+              "RenderType": "On",
+              "Tint": "0.52093,0.52093,0.52093,1",
+              "UseAnimGraph": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "0fb220e1-6738-4f1c-ba77-135951f2321d",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-240.3961,-107.8124,42.38157",
+      "Rotation": "-0.01233575,0.02420046,0.3892089,0.9207489",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "6149a499-1466-4726-8ddc-98d65e4553ec",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 40.351273,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "Sandbox.DepthOfField",
+          "__guid": "e63a5ad8-d2ef-4127-82e6-cf3d0ec2c96c",
+          "BackBlur": true,
+          "BlurSize": 1000,
+          "FocalDistance": 158.28755,
+          "FrontBlur": true
+        }
+      ]
+    },
+    {
+      "__guid": "4832fd37-1e55-4263-9300-1cb6c021bdd9",
+      "Flags": 0,
+      "Name": "New Timeline Player",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.MovieMaker.MovieClipPlayer",
+          "__guid": "4dd54c13-026c-4f74-93fa-7c62ff041665",
+          "clip": {
+            "tracks": [
+              {
+                "Id": "eb056141-3fe6-4659-bc5b-4ac31f42bfb3",
+                "Type": "PropertyVector3Track",
+                "Data": {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "0fb220e1-6738-4f1c-ba77-135951f2321d"
+                  },
+                  "GameObjectGuid": "0fb220e1-6738-4f1c-ba77-135951f2321d",
+                  "GameObjectName": "Camera",
+                  "GameObjectParent": null,
+                  "Property": "LocalPosition",
+                  "Elements": [
+                    [
+                      {
+                        "y": -239.70413
+                      },
+                      {
+                        "x": 10,
+                        "y": -253.14883
+                      },
+                      {
+                        "x": 15,
+                        "y": -16.988472
+                      },
+                      {
+                        "x": 20.010155,
+                        "y": -18.53294
+                      },
+                      {
+                        "x": 24.020006,
+                        "y": -18.53294
+                      },
+                      {
+                        "x": 25.151794,
+                        "y": -239.70413
+                      }
+                    ],
+                    [
+                      {
+                        "y": -108.485085
+                      },
+                      {
+                        "x": 10,
+                        "y": -95.41547
+                      },
+                      {
+                        "x": 15,
+                        "y": -92.29541
+                      },
+                      {
+                        "x": 20.010155,
+                        "y": 89.90785
+                      },
+                      {
+                        "x": 24.020006,
+                        "y": 58.885864
+                      },
+                      {
+                        "x": 25.151794,
+                        "y": -108.485085
+                      }
+                    ],
+                    [
+                      {
+                        "y": 42.61568
+                      },
+                      {
+                        "x": 10,
+                        "y": 38.066814
+                      },
+                      {
+                        "x": 15,
+                        "y": 42.546913
+                      },
+                      {
+                        "x": 20.010155,
+                        "y": 9.251073
+                      },
+                      {
+                        "x": 24.020006,
+                        "y": 27.22364
+                      },
+                      {
+                        "x": 25.151794,
+                        "y": 42.61568
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "Id": "acccf57c-1cc6-4f63-a6d5-158122ae8e3c",
+                "Type": "PropertyRotationTrack",
+                "Data": {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "0fb220e1-6738-4f1c-ba77-135951f2321d"
+                  },
+                  "GameObjectGuid": "0fb220e1-6738-4f1c-ba77-135951f2321d",
+                  "GameObjectName": "Camera",
+                  "GameObjectParent": null,
+                  "Property": "LocalRotation",
+                  "Elements": [
+                    [
+                      {
+                        "y": 3.106366
+                      },
+                      {
+                        "x": 10,
+                        "y": 3.0815175
+                      },
+                      {
+                        "x": 14.6,
+                        "y": 3.0815172
+                      },
+                      {
+                        "x": 17.6,
+                        "y": 3.0815172
+                      },
+                      {
+                        "x": 20.010155,
+                        "y": -16.532362
+                      },
+                      {
+                        "x": 24.020006,
+                        "y": 3.0815172
+                      },
+                      {
+                        "x": 25.151794,
+                        "y": 3.106366
+                      }
+                    ],
+                    [
+                      {
+                        "y": 45.799095
+                      },
+                      {
+                        "x": 10,
+                        "y": 46.252033
+                      },
+                      {
+                        "x": 14.6,
+                        "y": 90.57234
+                      },
+                      {
+                        "x": 17.6,
+                        "y": 90.57234
+                      },
+                      {
+                        "x": 20.010155,
+                        "y": 90.5961
+                      },
+                      {
+                        "x": 24.020006,
+                        "y": 90.57234
+                      },
+                      {
+                        "x": 25.151794,
+                        "y": 45.799095
+                      }
+                    ],
+                    [
+                      {
+                        "y": -0.21045002
+                      },
+                      {
+                        "x": 10,
+                        "y": -0.44519296
+                      },
+                      {
+                        "x": 14.6,
+                        "y": -0.44519386
+                      },
+                      {
+                        "x": 17.6,
+                        "y": -0.44519386
+                      },
+                      {
+                        "x": 20.010155,
+                        "y": -0.6455875
+                      },
+                      {
+                        "x": 24.020006,
+                        "y": -0.44519386
+                      },
+                      {
+                        "x": 25.151794,
+                        "y": -0.21045002
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "Id": "e5e12ad5-875e-4e3c-a30e-93f6f513c54c",
+                "Type": "PropertyFloatTrack",
+                "Data": {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "0fb220e1-6738-4f1c-ba77-135951f2321d"
+                  },
+                  "GameObjectGuid": "0fb220e1-6738-4f1c-ba77-135951f2321d",
+                  "GameObjectName": "Camera",
+                  "GameObjectParent": null,
+                  "Property": "FocalDistance",
+                  "Component": {
+                    "_type": "component",
+                    "component_id": "e63a5ad8-d2ef-4127-82e6-cf3d0ec2c96c",
+                    "go": "0fb220e1-6738-4f1c-ba77-135951f2321d",
+                    "component_type": "DepthOfField"
+                  },
+                  "ComponentGuid": "e63a5ad8-d2ef-4127-82e6-cf3d0ec2c96c",
+                  "ComponentType": "DepthOfField",
+                  "F": [
+                    {
+                      "y": 99.76
+                    },
+                    {
+                      "x": 4.47,
+                      "y": 359.38
+                    },
+                    {
+                      "x": 15.008921,
+                      "y": 359.38
+                    },
+                    {
+                      "x": 20.010155,
+                      "y": 78.12
+                    },
+                    {
+                      "x": 24.020006,
+                      "y": 222.36
+                    },
+                    {
+                      "x": 25.151794,
+                      "y": 99.76
+                    }
+                  ]
+                }
+              },
+              {
+                "Id": "724cfa49-bf66-40e7-a879-4408b06ba350",
+                "Type": "PropertyFloatTrack",
+                "Data": {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "0fb220e1-6738-4f1c-ba77-135951f2321d"
+                  },
+                  "GameObjectGuid": "0fb220e1-6738-4f1c-ba77-135951f2321d",
+                  "GameObjectName": "Camera",
+                  "GameObjectParent": null,
+                  "Property": "FieldOfView",
+                  "Component": {
+                    "_type": "component",
+                    "component_id": "6149a499-1466-4726-8ddc-98d65e4553ec",
+                    "go": "0fb220e1-6738-4f1c-ba77-135951f2321d",
+                    "component_type": "CameraComponent"
+                  },
+                  "ComponentGuid": "6149a499-1466-4726-8ddc-98d65e4553ec",
+                  "ComponentType": "CameraComponent",
+                  "F": [
+                    {
+                      "y": 40.58
+                    },
+                    {
+                      "x": 5.1,
+                      "y": 39.3
+                    },
+                    {
+                      "x": 8.5,
+                      "y": 14.48
+                    },
+                    {
+                      "x": 15,
+                      "y": 22.61
+                    },
+                    {
+                      "x": 20.010155,
+                      "y": 47.43
+                    },
+                    {
+                      "x": 24.020006,
+                      "y": 47.43
+                    },
+                    {
+                      "x": 25.151794,
+                      "y": 40.58
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "Loop": true,
+          "Play": true,
+          "PlaybackSpeed": 1
+        }
+      ]
+    },
+    {
+      "__guid": "87831e5c-94b7-4520-a2fa-e25918a6c4ea",
+      "Flags": 0,
+      "Name": "Dust",
+      "Position": "-21.57625,122.1586,35.39561",
+      "Tags": "particles",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ParticleEffect",
+          "__guid": "0477f616-9e2f-4564-8b72-505c3248f093",
+          "Alpha": {
+            "Type": "CurveRange",
+            "CurveA": [
+              {
+                "in": -5.3749986,
+                "out": 5.3749986
+              },
+              {
+                "x": 0.09933775,
+                "y": 1
+              },
+              {
+                "x": 0.839404,
+                "y": 1
+              },
+              {
+                "x": 1,
+                "in": 5.360001,
+                "out": -5.360001
+              }
+            ],
+            "CurveB": [
+              {},
+              {
+                "x": 0.19536424,
+                "y": 0.23106061
+              },
+              {
+                "x": 0.49172187,
+                "y": 0.27680865
+              },
+              {
+                "x": 0.7698676,
+                "y": 0.25313494
+              },
+              {
+                "x": 1
+              }
+            ],
+            "Constants": "1,0,0,0"
+          },
+          "ApplyColor": true,
+          "ApplyRotation": true,
+          "ApplyShape": true,
+          "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
+            "Constants": "0.2,0,0,0"
+          },
+          "Bumpiness": {},
+          "Collision": false,
+          "CollisionRadius": 1,
+          "Damping": {},
+          "DieOnCollisionChance": {},
+          "Force": true,
+          "ForceDirection": "0,0,0",
+          "ForceScale": {
+            "Constants": "0.3,0,0,0"
+          },
+          "Friction": {
+            "Constants": "1,0,0,0"
+          },
+          "Gradient": {
+            "Evaluation": "Particle",
+            "GradientA": {
+              "color": [
+                {
+                  "t": 0.5,
+                  "c": "1,1,1,1"
+                }
+              ],
+              "alpha": []
+            },
+            "GradientB": {
+              "color": [
+                {
+                  "t": 0.5,
+                  "c": "1,1,1,1"
+                }
+              ],
+              "alpha": []
+            },
+            "ConstantA": "1,1,1,1",
+            "ConstantB": "1,1,1,1"
+          },
+          "Lifetime": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "5,10,0,0"
+          },
+          "MaxParticles": 500,
+          "OrbitalForce": {},
+          "OrbitalPull": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "-1,1,0,0"
+          },
+          "PerParticleTimeScale": {
+            "Constants": "1,0.4,0,0"
+          },
+          "Pitch": {},
+          "PreWarm": 1,
+          "PushStrength": {},
+          "Roll": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0,360,0,0"
+          },
+          "Scale": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "CurveA": {
+              "rangey": "0,0.2",
+              "frames": [
+                {},
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 1
+                }
+              ]
+            },
+            "Constants": "0.4,1,0,0"
+          },
+          "SequenceId": {},
+          "SequenceSpeed": {
+            "Constants": "1,0,0,0"
+          },
+          "SequenceTime": {
+            "Constants": "1,0,0,0"
+          },
+          "SheetSequence": false,
+          "Space": "World",
+          "StartDelay": {},
+          "StartVelocity": {
+            "Type": "Range",
+            "Evaluation": "Particle"
+          },
+          "Stretch": {},
+          "TimeScale": 1,
+          "Tint": "0.37209,0.37209,0.37209,1",
+          "Yaw": {}
+        },
+        {
+          "__type": "Sandbox.ParticleSpriteRenderer",
+          "__guid": "09a2ad4e-03c4-40e5-94e9-92cec694af68",
+          "Additive": true,
+          "Alignment": "LookAtCamera",
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.91,
+          "BlurSpacing": 0.73,
+          "DepthFeather": 0,
+          "FaceVelocity": false,
+          "FogStrength": 1,
+          "LeadingTrail": true,
+          "Lighting": true,
+          "MotionBlur": false,
+          "Opaque": false,
+          "RotationOffset": 0,
+          "Scale": 0.4,
+          "Shadows": false,
+          "SortMode": "Unsorted",
+          "Texture": "materials/particles/shapes/splotch1.vtex"
+        },
+        {
+          "__type": "Sandbox.ParticleSphereEmitter",
+          "__guid": "ba0163a6-94a9-4566-b1e6-f80c76111a98",
+          "Burst": 0,
+          "Delay": 0,
+          "DestroyOnEnd": false,
+          "Duration": 5,
+          "Loop": true,
+          "OnEdge": false,
+          "Radius": 100,
+          "Rate": 1000,
+          "RateOverDistance": 0,
+          "Velocity": 0
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "Depth Of Field",
+  "Description": "Blurry at the front, blurry at the back",
+  "ResourceVersion": 1,
+  "__references": [
+    "facepunch.beer_cask",
+    "facepunch.oil_drum",
+    "randkassets.r_k_monitor"
+  ],
+  "__version": 1
+}
