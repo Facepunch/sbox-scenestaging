@@ -1,0 +1,182 @@
+{
+  "__guid": "d0cb7044-6280-489a-9e54-1b1a05dfa92d",
+  "GameObjects": [
+    {
+      "__guid": "9a33afd5-7371-42a2-a99d-56b75f05e23e",
+      "Flags": 0,
+      "Name": "Main Camera",
+      "Position": "-300,0,100",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "c42d0b8f-afd0-4370-b026-b26d5feafd78",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "__guid": "7c1a60d6-cdbc-44b4-8f6b-ee1c5c4ac2a7",
+      "Flags": 0,
+      "Name": "Directional Light",
+      "Position": "0,0,200",
+      "Rotation": "-0.2459842,0.5938582,0.2931525,0.7077327",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "34c82fda-9ac8-4efc-8a5b-3191e730374c",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0,0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "1b46d092-9977-4e5f-8441-d4077647e390",
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "-75.38287,5.234575,82.54935",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "b7071f8a-0dc6-4fbd-b41f-625f5c168f02",
+          "BodyGroups": 341,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "a79f5c94-603d-4384-a68a-3f2a57a2ae62",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "-5.617126,-26.23458,-0.5493469",
+          "Scale": "15,52,73",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ExampleComponents.LatticeDeform",
+              "__guid": "c1eba6e8-50d9-4823-8306-3186c67da76d",
+              "Segments": "2,5,3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "8dabc0c4-860f-4f5e-b5a5-f6b5ca5afa2d",
+      "Flags": 0,
+      "Name": "2D Skybox",
+      "Position": "-0.1114807,5.234575,93.71728",
+      "Tags": "skybox",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "83175c14-eae6-4f98-8acd-37224e2b59e1",
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "1f87dae7-7323-493e-9ec7-405e5f5a470e",
+      "Flags": 0,
+      "Name": "Car",
+      "Position": "0,-106.5994,85.05305",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "592dff7e-409b-4445-916f-4a0511ae7e92",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/bendable_staging.vmat",
+          "Model": "models/sports_car.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "7ec6399a-c5ef-4939-bf04-e5509a95c9aa",
+          "Flags": 0,
+          "Name": "Deform",
+          "Position": "-84,-42.40057,-1.053055",
+          "Scale": "185,85,52",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ExampleComponents.LatticeDeform",
+              "__guid": "22cf25ab-414a-4d6c-bb51-3dd80b0d374a",
+              "Segments": "7,5,3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "1b48e561-3826-4793-b1e9-ecdcf55f1c68",
+      "Flags": 0,
+      "Name": "Plane",
+      "Position": "-95.54219,-13.07913,82.77145",
+      "Scale": "10,10,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "512b833f-8024-45c3-98c5-a910bffc4c36",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/plane.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "Lattice Deformations",
+  "Description": "you did WHAT to my car what the hell dude come on!!!",
+  "ResourceVersion": 1,
+  "__references": [
+    "simonkvien.sports_car"
+  ],
+  "__version": 1
+}
