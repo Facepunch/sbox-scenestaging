@@ -1,11 +1,12 @@
 {
-  "__guid": "d0cb7044-6280-489a-9e54-1b1a05dfa92d",
+  "__guid": "4e9d1e99-1c44-4859-9a30-734e22227182",
   "GameObjects": [
     {
       "__guid": "9a33afd5-7371-42a2-a99d-56b75f05e23e",
       "Flags": 0,
       "Name": "Main Camera",
-      "Position": "-300,0,100",
+      "Position": "82.05553,-178.021,100.0001",
+      "Rotation": "0,0,0.9914448,0.1305264",
       "Enabled": true,
       "Components": [
         {
@@ -24,6 +25,14 @@
           "Viewport": "0,0,1,1",
           "ZFar": 10000,
           "ZNear": 10
+        },
+        {
+          "__type": "Sandbox.AmbientOcclusion",
+          "__guid": "0b62b085-cbc5-4a57-81e8-6574fd0f9843",
+          "FalloffDistance": 1,
+          "Intensity": 8,
+          "Quality": "High",
+          "Radius": 32
         }
       ]
     },
@@ -51,16 +60,20 @@
       "__guid": "1b46d092-9977-4e5f-8441-d4077647e390",
       "Flags": 0,
       "Name": "Cube",
-      "Position": "-75.38287,5.234575,82.54935",
+      "Position": "-36.93614,-217.0454,82.54935",
+      "Rotation": "0,0,0.9659258,0.2588192",
       "Enabled": true,
       "Components": [
         {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "b7071f8a-0dc6-4fbd-b41f-625f5c168f02",
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "5bc63c17-144a-4223-bb99-c51ca7b34cee",
+          "AnimationGraph": "models/citizen/citizen.vanmgrph",
           "BodyGroups": 341,
+          "CreateBoneObjects": false,
           "Model": "models/citizen/citizen.vmdl",
           "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
         }
       ],
       "Children": [
@@ -68,16 +81,9 @@
           "__guid": "a79f5c94-603d-4384-a68a-3f2a57a2ae62",
           "Flags": 0,
           "Name": "Object",
-          "Position": "-5.617126,-26.23458,-0.5493469",
+          "Position": "-5.61721,-30.8467,-1.540665",
           "Scale": "15,52,73",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ExampleComponents.LatticeDeform",
-              "__guid": "c1eba6e8-50d9-4823-8306-3186c67da76d",
-              "Segments": "2,5,3"
-            }
-          ]
+          "Enabled": true
         }
       ]
     },
@@ -101,7 +107,7 @@
       "__guid": "1f87dae7-7323-493e-9ec7-405e5f5a470e",
       "Flags": 0,
       "Name": "Car",
-      "Position": "0,-106.5994,85.05305",
+      "Position": "-112.767,-106.5994,85.05305",
       "Enabled": true,
       "Components": [
         {
@@ -119,14 +125,43 @@
           "__guid": "7ec6399a-c5ef-4939-bf04-e5509a95c9aa",
           "Flags": 0,
           "Name": "Deform",
-          "Position": "-84,-42.40057,-1.053055",
-          "Scale": "185,85,52",
+          "Position": "-84.71951,-44.23498,-2.13131",
+          "Scale": "186,85,56.66667",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.ExampleComponents.LatticeDeform",
-              "__guid": "22cf25ab-414a-4d6c-bb51-3dd80b0d374a",
-              "Segments": "7,5,3"
+              "__guid": "6ccf8953-2faa-484e-b795-b09886806693",
+              "Points": [
+                "0,-1,0,0",
+                "0,0,0.5,0",
+                "0,1,1,0",
+                "-0.25,0,0,0",
+                "-0.25,0,0,0",
+                "-0.25,0,1,0",
+                "-0.5,0.1,0,0",
+                "-0.5,0.1,0.5,0",
+                "-0.5,0.1,1,0",
+                "0,0,0,0",
+                "0,-0.5,0,0",
+                "0,0,1,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0"
+              ],
+              "Segments": "3,3,3"
             }
           ]
         }
@@ -136,7 +171,7 @@
       "__guid": "1b48e561-3826-4793-b1e9-ecdcf55f1c68",
       "Flags": 0,
       "Name": "Plane",
-      "Position": "-95.54219,-13.07913,82.77145",
+      "Position": "-104.4706,-13.07913,82.77145",
       "Scale": "10,10,1",
       "Enabled": true,
       "Components": [
@@ -147,6 +182,116 @@
           "Model": "models/dev/plane.vmdl",
           "RenderType": "On",
           "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "b0fe5a39-e41f-4909-8e56-cdf7897081f8",
+      "Flags": 0,
+      "Name": "bike",
+      "Position": "27.55806,-118.4987,96.59074",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "993fea33-4783-4fc6-bda1-9a6c167ba213",
+          "BodyGroups": 18446744073709551615,
+          "Health": 150,
+          "IsStatic": true,
+          "Model": "models/props/bike/bike.vmdl",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "da738e45-9fe2-4c97-9ebc-0aed10d32c5f",
+      "Flags": 0,
+      "Name": "Sphere",
+      "Position": "-174.6933,14.42737,157.6295",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "24406c41-09df-40c2-b330-77b311099c99",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/bendable_staging.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "7647ccc1-8220-48f0-9fe7-20af52e80549",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "-29.80247,-41.28865,-27.17667",
+          "Scale": "70,70,70",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ExampleComponents.LatticeDeform",
+              "__guid": "f1871929-b78e-48ed-9627-93bd31c03cb6",
+              "Points": [
+                "0,0,-2,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,-2,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,-2,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,-2,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0"
+              ],
+              "Segments": "3,3,3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "657031a5-2176-47a0-aeef-5cda4bb29b7e",
+      "Flags": 0,
+      "Name": "Envmap Probe",
+      "Position": "-119.7636,-39.11157,96.28072",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.EnvmapProbe",
+          "__guid": "664764d3-67f8-4475-bd02-8533a2012137",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "Bounds": {
+            "Mins": "-1000,-1000,-1000",
+            "Maxs": "1000,1000,1000"
+          },
+          "DelayBetweenUpdates": 0.1,
+          "Feathering": 0.02,
+          "FrameInterval": 5,
+          "MaxDistance": 512,
+          "Projection": "Box",
+          "RenderDynamically": true,
+          "TintColor": "1,1,1,1",
+          "UpdateStrategy": "OnEnabled",
+          "ZFar": 4096,
+          "ZNear": 16
         }
       ]
     }
@@ -172,10 +317,11 @@
       "IncludedBodies": ""
     }
   },
-  "Title": "Lattice Deformations",
-  "Description": "you did WHAT to my car what the hell dude come on!!!",
+  "Title": "Lattice Deformations (WIP)",
+  "Description": "what the hell dude come on what did u do to my car!!!",
   "ResourceVersion": 1,
   "__references": [
+    "facepunch.mountainbike",
     "simonkvien.sports_car"
   ],
   "__version": 1
