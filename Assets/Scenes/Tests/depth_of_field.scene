@@ -1277,8 +1277,8 @@
       "__guid": "0fb220e1-6738-4f1c-ba77-135951f2321d",
       "Flags": 0,
       "Name": "Camera",
-      "Position": "-217.8628,-276.0454,62.49994",
-      "Rotation": "0.07719297,0.002152091,-0.8777156,0.4729184",
+      "Position": "-221.4321,-287.1985,61.81282",
+      "Rotation": "0.06937206,0.03455327,-0.8924191,0.4445017",
       "Tags": "maincamera",
       "Enabled": true,
       "Components": [
@@ -1287,7 +1287,7 @@
           "__guid": "6149a499-1466-4726-8ddc-98d65e4553ec",
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
           "ClearFlags": "All",
-          "FieldOfView": 37.627922,
+          "FieldOfView": 62.96855,
           "IsMainCamera": true,
           "Orthographic": false,
           "OrthographicHeight": 1204,
@@ -1304,7 +1304,8 @@
           "__guid": "e63a5ad8-d2ef-4127-82e6-cf3d0ec2c96c",
           "BackBlur": true,
           "BlurSize": 32,
-          "FocalDistance": 32.99527,
+          "FocalDistance": 55.045845,
+          "FocusGap": 0,
           "FrontBlur": false
         },
         {
@@ -1721,7 +1722,7 @@
                   "ComponentType": "DepthOfField",
                   "F": [
                     {
-                      "y": 158.09
+                      "y": 93.53
                     },
                     {
                       "x": 5.1,
@@ -1745,11 +1746,11 @@
                     },
                     {
                       "x": 24.05,
-                      "y": 77.21
+                      "y": 102.77
                     },
                     {
                       "x": 31,
-                      "y": 187.5
+                      "y": 269.05
                     },
                     {
                       "x": 31.029999,
@@ -2013,6 +2014,80 @@
                         "x": 44.999996,
                         "y": 62.913174
                       }
+                    ]
+                  ]
+                }
+              },
+              {
+                "Id": "8ab50a58-1445-427c-92bc-7c7081686439",
+                "Type": "PropertyGenericTrack",
+                "Data": {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "0fb220e1-6738-4f1c-ba77-135951f2321d"
+                  },
+                  "GameObjectGuid": "0fb220e1-6738-4f1c-ba77-135951f2321d",
+                  "GameObjectName": "Camera",
+                  "GameObjectParent": null,
+                  "Property": "FrontBlur",
+                  "Component": {
+                    "_type": "component",
+                    "component_id": "e63a5ad8-d2ef-4127-82e6-cf3d0ec2c96c",
+                    "go": "0fb220e1-6738-4f1c-ba77-135951f2321d",
+                    "component_type": "DepthOfField"
+                  },
+                  "ComponentGuid": "e63a5ad8-d2ef-4127-82e6-cf3d0ec2c96c",
+                  "ComponentType": "DepthOfField",
+                  "PropertyType": "Boolean",
+                  "Data": [
+                    [
+                      0,
+                      true
+                    ],
+                    [
+                      11.82,
+                      false
+                    ],
+                    [
+                      24.05,
+                      true
+                    ],
+                    [
+                      31.02,
+                      false
+                    ]
+                  ]
+                }
+              },
+              {
+                "Id": "f25fdd62-118e-4037-bc84-ee0efa12349d",
+                "Type": "PropertyGenericTrack",
+                "Data": {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "0fb220e1-6738-4f1c-ba77-135951f2321d"
+                  },
+                  "GameObjectGuid": "0fb220e1-6738-4f1c-ba77-135951f2321d",
+                  "GameObjectName": "Camera",
+                  "GameObjectParent": null,
+                  "Property": "BackBlur",
+                  "Component": {
+                    "_type": "component",
+                    "component_id": "e63a5ad8-d2ef-4127-82e6-cf3d0ec2c96c",
+                    "go": "0fb220e1-6738-4f1c-ba77-135951f2321d",
+                    "component_type": "DepthOfField"
+                  },
+                  "ComponentGuid": "e63a5ad8-d2ef-4127-82e6-cf3d0ec2c96c",
+                  "ComponentType": "DepthOfField",
+                  "PropertyType": "Boolean",
+                  "Data": [
+                    [
+                      0,
+                      true
+                    ],
+                    [
+                      11.82,
+                      true
                     ]
                   ]
                 }
@@ -3051,7 +3126,7 @@
                               "Flags": 1028,
                               "Name": "head",
                               "Position": "4.510826,-0.0007615089,-0.00001957879",
-                              "Rotation": "-0.1303653,0.04739957,0.1398666,0.9804058",
+                              "Rotation": "0.1261386,0.004429493,-0.01676636,0.991861",
                               "Enabled": true,
                               "Children": [
                                 {
@@ -3294,7 +3369,7 @@
       "__guid": "e55b8ab0-4a96-4f26-8cf1-8b08d4a9307e",
       "Flags": 0,
       "Name": "Sphere",
-      "Position": "-219.6155,-195.9906,65.9132",
+      "Position": "-219.6155,-195.9906,65.61857",
       "Scale": "0.15,0.15,0.15",
       "Enabled": true,
       "Components": [
