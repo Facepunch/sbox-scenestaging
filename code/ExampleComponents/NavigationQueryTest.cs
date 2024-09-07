@@ -76,7 +76,7 @@ public sealed class NavigationQueryTest : Component
 			}
 		}
 
-		if ( Path && Target is not null )
+		if ( Path && Target.IsValid() )
 		{
 			Gizmo.Draw.Color = Color.Red;
 			Gizmo.Draw.LineThickness = 1;

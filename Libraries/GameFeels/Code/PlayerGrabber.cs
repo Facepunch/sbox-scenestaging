@@ -163,18 +163,18 @@ public class PlayerGrabber : Component
 		if ( !tr.Hit || tr.GameObject is null )
 			return;
 
-		if ( ImpactEffect is not null )
+		if ( ImpactEffect.IsValid() )
 		{
 			ImpactEffect.Clone( new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( tr.Normal ) ) );
 		}
 
-		if ( DecalEffect is not null )
+		if ( DecalEffect.IsValid() )
 		{
 			var decal = DecalEffect.Clone( new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( -tr.Normal, Vector3.Random ), Random.Shared.Float( 0.8f, 1.2f ) ) );
 			decal.SetParent( tr.GameObject );
 		}
 
-		if ( tr.Body is not null )
+		if ( tr.Body.IsValid() )
 		{
 			tr.Body.ApplyImpulseAt( tr.HitPosition, tr.Direction * 200.0f * tr.Body.Mass.Clamp( 0, 200 ) );
 		}

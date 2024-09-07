@@ -65,7 +65,7 @@ public sealed class TestWeapon : Component
 		vm.Set( "aim_pitch_inertia", angles.pitch );
 		vm.Set( "aim_yaw_inertia", angles.yaw );
 
-		if ( BodyRenderer is not null )
+		if ( BodyRenderer.IsValid() )
 		{
 			vm.Set( "jump", BodyRenderer.GetBool( "jump" ) );
 			vm.Set( "move_groundspeed", BodyRenderer.GetFloat( "move_groundspeed" ) );
@@ -169,7 +169,7 @@ public sealed class TestWeapon : Component
 			go.SetParent( tr.GameObject );
 		}
 
-		if ( tr.Body is not null )
+		if ( tr.Body.IsValid() )
 		{
 			tr.Body.ApplyImpulseAt( tr.HitPosition, tr.Direction * 200.0f * tr.Body.Mass.Clamp( 0, 200 ) );
 		}

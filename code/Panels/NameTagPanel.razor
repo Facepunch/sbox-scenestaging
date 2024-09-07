@@ -6,7 +6,7 @@
 
     <div class="card">
         <div class="name">@Name</div>
-        @if (TargetObject is not null)
+        @if (TargetObject.IsValid())
         {
             <div class="gameobject">@TargetObject.Name</div>
         }

@@ -78,13 +78,13 @@ public sealed class TraceDebugVis : Component
 
 		var r = tr.Run();
 
-		if ( r.GameObject is not null )
+		if ( r.GameObject.IsValid() )
 		{
 			Gizmo.Draw.Color = Color.White;
 			Gizmo.Draw.Text( $"{r.GameObject?.Name}", new Transform( r.HitPosition + Vector3.Down * 7 ), "Poppins", 18 );
 		}
 
-		if ( r.Shape is not null )
+		if ( r.Shape.IsValid() )
 		{
 			
 		}

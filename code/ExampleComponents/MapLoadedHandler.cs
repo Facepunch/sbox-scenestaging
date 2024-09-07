@@ -12,7 +12,7 @@ public sealed class MapLoadedHandler : Component
 
 	protected override void OnEnabled()
 	{
-		if ( MapInstance is not null )
+		if ( MapInstance.IsValid() )
 		{
 			MapInstance.OnMapLoaded = OnMapLoaded;
 
@@ -25,7 +25,7 @@ public sealed class MapLoadedHandler : Component
 
 	protected override void OnDisabled()
 	{
-		if ( MapInstance is not null )
+		if ( MapInstance.IsValid() )
 		{
 			MapInstance.OnMapLoaded -= OnMapLoaded;
 		}
@@ -37,7 +37,7 @@ public sealed class MapLoadedHandler : Component
 
 		var spawnPoints = Scene.Directory.FindByName( "info_player_start" ).ToArray();
 		var randomSpawn = Random.Shared.FromArray( spawnPoints );
-		if ( randomSpawn  is not null )
+		if ( randomSpawn.IsValid() )
 		{
 			PlayerObject.Transform.Position = randomSpawn.Transform.Position + Vector3.Up * 64;
 			PlayerObject.Transform.Rotation = randomSpawn.Transform.Rotation;

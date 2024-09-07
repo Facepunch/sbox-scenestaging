@@ -51,10 +51,10 @@ public sealed class NetworkTest : Component
 			var pc = Components.Get<PlayerController>();
 			var lookDir = pc.EyeAngles.ToRotation();
 
-			if ( Carrying is not null )
+			if ( Carrying.IsValid() )
 			{
 				var rb = Carrying.Components.Get<Rigidbody>( true );
-				if ( rb is not null )
+				if ( rb.IsValid() )
 				{
 					rb.Enabled = true;
 					rb.Velocity = lookDir.Forward * 300.0f + Vector3.Up * 200.0f;
@@ -90,7 +90,7 @@ public sealed class NetworkTest : Component
 		Carrying.Tags.Add( "carrying" );
 
 		var rb = Carrying.Components.Get<Rigidbody>( true );
-		if ( rb is not null )
+		if ( rb.IsValid() )
 		{
 			rb.Enabled = false;
 		}
@@ -107,7 +107,7 @@ public sealed class NetworkTest : Component
 			return;
 
 		var rb = Carrying.Components.Get<Rigidbody>( true );
-		if ( rb is not null )
+		if ( rb.IsValid() )
 		{
 			rb.Enabled = true;
 		}

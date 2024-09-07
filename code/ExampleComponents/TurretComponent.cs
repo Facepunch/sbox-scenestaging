@@ -69,7 +69,7 @@ public sealed class TurretComponent : Component
 
 			var obj = Bullet.Clone( Muzzle.Transform.Position, Muzzle.Transform.Rotation );
 			var physics = obj.Components.Get<Rigidbody>( FindMode.EnabledInSelfAndDescendants );
-			if ( physics is not null )
+			if ( physics.IsValid() )
 			{
 				physics.Velocity = Muzzle.Transform.Rotation.Forward * 2000.0f;
 			}
@@ -138,7 +138,7 @@ public sealed class TurretComponent : Component
 				//r *= Rotation.From( 2, 4, 2 );
 
 				var physics = obj.Components.Get<Rigidbody>( FindMode.EnabledInSelfAndDescendants );
-				if ( physics is not null )
+				if ( physics.IsValid() )
 				{
 					physics.Velocity = off * 2.0f;// Muzzle.WorldTransform.Rotation.Forward * 300.0f;
 				}

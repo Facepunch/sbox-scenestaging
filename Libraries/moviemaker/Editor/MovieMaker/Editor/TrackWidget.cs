@@ -28,10 +28,10 @@ public class TrackWidget : Widget
 		{
 			var so = pt.GetSerialized();
 
-			if ( pt.Component is not null )
+			if ( pt.Component.IsValid() )
 			{
 				var ctrl = ControlWidget.Create( so.GetProperty( nameof( PropertyTrack.Component ) ) );
-				if ( ctrl is not null )
+				if ( ctrl.IsValid() )
 				{
 					ctrl.MaximumWidth = 300;
 					Layout.Add( ctrl );
@@ -40,7 +40,7 @@ public class TrackWidget : Widget
 			else
 			{
 				var ctrl = ControlWidget.Create( so.GetProperty( nameof( PropertyTrack.GameObject ) ) );
-				if ( ctrl is not null )
+				if ( ctrl.IsValid() )
 				{
 					ctrl.MaximumWidth = 300;
 					Layout.Add( ctrl );

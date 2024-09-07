@@ -94,7 +94,7 @@ public sealed class ParticleTextRenderer : ParticleRenderer, Component.ExecuteIn
 
 	protected override void DrawGizmos()
 	{
-		if ( _so is not null )
+		if ( _so.IsValid() )
 		{
 			// Gizmo.Draw.LineBBox( _so.LocalBounds );
 		}

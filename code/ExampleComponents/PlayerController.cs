@@ -28,7 +28,7 @@ public class PlayerController : Component
 			return;
 
 		var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
-		if ( cam is not null )
+		if ( cam.IsValid() )
 		{
 			var ee = cam.Transform.Rotation.Angles();
 			ee.roll = 0;
@@ -72,7 +72,7 @@ public class PlayerController : Component
 		float moveRotationSpeed = 0;
 
 		// rotate body to look angles
-		if ( Body is not null )
+		if ( Body.IsValid() )
 		{
 			var targetAngle = new Angles( 0, EyeAngles.yaw, 0 ).ToRotation();
 
@@ -98,7 +98,7 @@ public class PlayerController : Component
 		}
 
 
-		if ( AnimationHelper is not null )
+		if ( AnimationHelper.IsValid() )
 		{
 			AnimationHelper.WithVelocity( cc.Velocity );
 			AnimationHelper.WithWishVelocity( WishVelocity );

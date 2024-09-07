@@ -40,7 +40,7 @@ public sealed class BrickBall : Component, Component.ICollisionListener
 		o.Self.Body.Velocity = Direction * Speed;
 		o.Self.Body.AngularVelocity = 0;
 
-		if ( CollisionIndicator is not null )
+		if ( CollisionIndicator.IsValid() )
 		{
 			CollisionIndicator.Clone( o.Contact.Point);
 		}
@@ -58,7 +58,7 @@ public sealed class BrickBall : Component, Component.ICollisionListener
 		o.Self.Body.Velocity = Direction * Speed;
 		o.Self.Body.AngularVelocity = 0;
 
-		if ( CollisionIndicator is not null )
+		if ( CollisionIndicator.IsValid() )
 		{
 			CollisionIndicator.Clone( o.Contact.Point);
 		}

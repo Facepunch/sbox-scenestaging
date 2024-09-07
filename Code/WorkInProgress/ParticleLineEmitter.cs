@@ -129,7 +129,7 @@ public sealed class ParticleLineEmitter : ParticleEmitter
 			pos += Vector3.Random.SubtractDirection( lineNormal ) * thickness;
 		}
 
-		var p = target.Emit( pos );
+		var p = target.Emit( pos, Random.Shared.Float( 0, 1 ) );
 
 		if ( p is not null )
 		{

@@ -13,7 +13,7 @@ public sealed class GameNetworkManager : Component, Component.INetworkListener
 		var player = PlayerPrefab.Clone( SpawnPoint.Transform.World );
 
 		var nameTag = player.Components.Get<NameTagPanel>( FindMode.EverythingInSelfAndDescendants );
-		if ( nameTag is not null )
+		if ( nameTag.IsValid() )
 		{
 			nameTag.Name = channel.DisplayName;
 		}
