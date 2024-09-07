@@ -47,7 +47,7 @@
     {
         var texture = Input.GetGlyph(Analog, Size, true);
         if ( texture is null ) return;
-        if ( Glyph is null ) return;
+        if ( !Glyph.IsValid() ) return;
         Glyph.Texture = texture;
     }
 

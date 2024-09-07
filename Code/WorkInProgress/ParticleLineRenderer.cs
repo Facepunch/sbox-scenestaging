@@ -71,7 +71,7 @@ public sealed class ParticleLineRenderer : ParticleRenderer, Component.ExecuteIn
 
 	protected override void OnPreRender()
 	{
-		if ( _so is null ) return;
+		if ( !_so.IsValid() ) return;
 		if ( !Components.TryGet( out ParticleEffect effect ) || effect.Particles.Count == 0 )
 		{
 			_so.RenderingEnabled = false;

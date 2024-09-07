@@ -16,7 +16,7 @@ public sealed class ParticleModelEmitter : ParticleEmitter
 
 	public Vector3 GetRandomPositionOnModel( ModelRenderer target )
 	{
-		if ( target is null )
+		if ( !target.IsValid() )
 			return Transform.Position;
 
 		if ( target.Model.HitboxSet is not null && target.Model.HitboxSet.All.Count > 0 )
@@ -47,8 +47,8 @@ public sealed class ParticleModelEmitter : ParticleEmitter
 	public override bool Emit( ParticleEffect target )
 	{
 
-		var model = Target == null ? Components.GetInParentOrSelf<ModelRenderer>() : Target?.Components.Get<ModelRenderer>();
-		if ( model is null ) return false;
+		var model = Target.IsValid() ? Target.Components.Get<ModelRenderer>() : Components.GetInParentOrSelf<ModelRenderer>();
+		if ( !model.IsValid() ) return false;
 
 		var targetPosition = GetRandomPositionOnModel( model );
 

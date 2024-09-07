@@ -24,7 +24,7 @@ public sealed class TurretComponent : Component
 
 	void FlashGunModel()
 	{
-		if ( GunModel is null ) return;
+		if ( !GunModel.IsValid() ) return;
 		if ( timeSincePrimary < 0 ) return;
 
 		GunModel.Tint = GunColorGradient.Evaluate( timeSincePrimary * 2.0f );

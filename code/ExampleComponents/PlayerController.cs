@@ -67,7 +67,7 @@ public class PlayerController : Component
 		}
 
 		var cc = GameObject.Components.Get<CharacterController>();
-		if ( cc is null ) return;
+		if ( !cc.IsValid() ) return;
 
 		float moveRotationSpeed = 0;
 

@@ -8,7 +8,7 @@ public sealed class Gun : Component
 			return;
 
 		var pc = Components.GetInAncestors<PlayerController>();
-		if ( pc is null )
+		if ( !pc.IsValid() )
 			return;
 
 		var lookDir = pc.EyeAngles.ToRotation();

@@ -115,8 +115,8 @@ public sealed class ParticleTextRenderer : ParticleRenderer, Component.ExecuteIn
 	{
 		var effect = ParticleEffect;
 
-		if ( _so is null ) return;
-		if ( effect is null || effect.Particles.Count == 0 )
+		if ( !_so.IsValid() ) return;
+		if ( !effect.IsValid() || effect.Particles.Count == 0 )
 		{
 			_so.RenderingEnabled = false;
 			return;
@@ -182,7 +182,7 @@ internal sealed class ParticleSpriteSceneObject : SceneCustomObject
 	{
 		var effect = owner.ParticleEffect;
 
-		if ( effect is null || effect.Particles.Count == 0 )
+		if ( !effect.IsValid() || effect.Particles.Count == 0 )
 			return;
 
 		var list = effect.Particles.AsEnumerable();

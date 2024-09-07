@@ -4,7 +4,7 @@ public sealed class PlayerFootsteps : Component
 
 	protected override void OnEnabled()
 	{
-		if ( Source is null )
+		if ( !Source.IsValid() )
 			return;
 
 		Source.OnFootstepEvent += OnEvent;
@@ -12,7 +12,7 @@ public sealed class PlayerFootsteps : Component
 
 	protected override void OnDisabled()
 	{
-		if ( Source is null )
+		if ( !Source.IsValid() )
 			return;
 
 		Source.OnFootstepEvent -= OnEvent;

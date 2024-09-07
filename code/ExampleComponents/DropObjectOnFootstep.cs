@@ -5,7 +5,7 @@ public sealed class DropObjectOnFootstep : Component
 
 	protected override void OnEnabled()
 	{
-		if ( Source is null )
+		if ( !Source.IsValid() )
 			return;
 
 		Source.OnFootstepEvent += OnEvent;
@@ -13,7 +13,7 @@ public sealed class DropObjectOnFootstep : Component
 
 	protected override void OnDisabled()
 	{
-		if ( Source is null )
+		if ( !Source.IsValid() )
 			return;
 
 		Source.OnFootstepEvent -= OnEvent;
@@ -21,7 +21,7 @@ public sealed class DropObjectOnFootstep : Component
 
 	private void OnEvent( SceneModel.FootstepEvent e )
 	{
-		if ( Prefab is null )
+		if ( !Prefab.IsValid() )
 			return;
 
 		var tr = Scene.Trace
