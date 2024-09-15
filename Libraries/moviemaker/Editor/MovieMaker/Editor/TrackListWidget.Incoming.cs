@@ -9,18 +9,18 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 {
 	void EditorEvent.ISceneEdited.GameObjectEdited( GameObject go, string propertyName )
 	{
-		var lastProperty = propertyName.Split( '.' ).Last();
+		if ( propertyName.StartsWith( "Transform." ) ) propertyName = propertyName.Replace( "Transform.", "" ).Split( '.' )[0];
 
-		if ( lastProperty == "LocalScale" || lastProperty == "LocalRotation" || lastProperty == "LocalPosition" )
+		if ( propertyName == "LocalScale" || propertyName == "LocalRotation" || propertyName == "LocalPosition" )
 		{
 			// make sure the track exists for this property
-			var targetTrack = Session.Clip.FindTrack( go, lastProperty );
+			var targetTrack = Session.Clip.FindTrack( go, propertyName );
 
 			if ( targetTrack is null )
 			{
 				if ( !Session.KeyframeRecording ) return;
 
-				targetTrack = Session.Clip.FindOrCreateTrack( go, lastProperty );
+				targetTrack = Session.Clip.FindOrCreateTrack( go, propertyName );
 				OnTrackCreated( targetTrack );
 			}
 
@@ -39,6 +39,8 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 
 	void EditorEvent.ISceneEdited.ComponentEdited( Component cmp, string propertyName )
 	{
+		propertyName = propertyName.Split( '.' ).First();
+
 		var targetTrack = Session.Clip.FindTrack( cmp, propertyName );
 
 		if ( targetTrack is null )
