@@ -46,6 +46,11 @@
 			if ( velocity.Length > maxSpeed )
 				velocity = velocity.Normal * maxSpeed;
 
+			if ( IsOnGround )
+			{
+				velocity = WishVelocity.Normal * velocity.Length;
+			}
+
 			velocity += GroundVelocity;
 			velocity.z = z;
 
