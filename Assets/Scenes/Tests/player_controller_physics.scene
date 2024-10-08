@@ -198,7 +198,7 @@
           "MassOverride": 500,
           "MotionEnabled": true,
           "OverrideMassCenter": false,
-          "RigidbodyFlags": 0,
+          "RigidbodyFlags": "DisableCollisionSounds",
           "StartAsleep": false
         },
         {
@@ -256,8 +256,7 @@
             "_type": "gameobject",
             "go": "6dcac1b2-f3ce-4915-b96f-c45a736a8453"
           },
-          "FirstPerson": false,
-          "Gravity": "0,0,800"
+          "FirstPerson": false
         }
       ],
       "Children": [
@@ -494,7 +493,7 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "100,100,0.01",
-          "Static": false
+          "Static": true
         }
       ]
     },
