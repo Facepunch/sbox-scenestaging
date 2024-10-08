@@ -9,6 +9,7 @@
 		if ( !StepUp ) return;
 		if ( !IsOnGround ) return;
 		if ( TimeSinceUngrounded < 0.2f ) return;
+		if ( WishVelocity.IsNearlyZero( 0.001f ) ) return;
 
 		var vel = (Velocity).WithZ( 0 ) * Time.Delta;
 		if ( vel.IsNearlyZero( 0.01f ) ) return;
