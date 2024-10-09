@@ -38,16 +38,20 @@
 			var speed = velocity.Length;
 
 			var maxSpeed = MathF.Max( wish.Length, speed );
-			var amount = IsOnGround ? 1 : 0.1f;
-			velocity = velocity.AddClamped( wish * amount, wish.Length * amount );
-
-			if ( velocity.Length > maxSpeed )
-				velocity = velocity.Normal * maxSpeed;
 
 			if ( IsOnGround )
 			{
-				velocity = WishVelocity.Normal * velocity.Length;
+				var amount = 15;
+				velocity = velocity.AddClamped( wish * amount, wish.Length * amount );
 			}
+			else
+			{
+				var amount = 0.15f;
+				velocity = velocity.AddClamped( wish * amount, wish.Length );
+			}
+
+			if ( velocity.Length > maxSpeed )
+				velocity = velocity.Normal * maxSpeed;
 
 			velocity += GroundVelocity;
 			velocity.z = z;
@@ -85,8 +89,14 @@
 		feetCollider.Center = new Vector3( 0, 0, BodyRadius * 0.5f );
 		feetCollider.Friction = IsOnGround ? 1.5f : 0;
 
+
+		float massCenter = WishVelocity.Length.Clamp( 0, StepHeight + 2 );
+
+		if ( !IsOnGround )
+			massCenter = BodyHeight * 0.5f;
+
 		Body.OverrideMassCenter = true;
-		Body.MassCenterOverride = new Vector3( 0, 0, WishVelocity.Length.Clamp( 0, 20 ) );
+		Body.MassCenterOverride = new Vector3( 0, 0, massCenter );
 	}
 
 	Transform _groundTransform;
