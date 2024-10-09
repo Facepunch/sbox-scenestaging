@@ -141,7 +141,10 @@ public class PhysicalPlayerController : Component
 		if ( Controller.TimeSinceGrounded < 0.3f && Input.Down( "Jump" ) && timeSinceJump > 0.5f )
 		{
 			timeSinceJump = 0;
-			Controller.Punch( Vector3.Up * 130 );
+
+			var jumpDir = WishVelocity + Vector3.Up * 1200;
+
+			Controller.Punch( jumpDir.Normal * 130 );
 			OnJump();
 		}
 

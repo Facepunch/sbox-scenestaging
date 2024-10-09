@@ -7,6 +7,9 @@
 	[Property, ToggleGroup( "Feet" )] public bool Feet { get; set; } = true;
 	[Property, Group( "Feet" )] public bool FeetDebug { get; set; } = false;
 
+	GameObject GroundObject { get; set; }
+	Component GroundComponent { get; set; }
+
 	TimeUntil timeUntilAllowedGround = 0;
 
 	/// <summary>
@@ -67,6 +70,8 @@
 		{
 			UpdateGround( tr.Body );
 
+			//Body.WorldPosition = tr.EndPosition;// + Vector3.Up * 0.1f;
+
 			if ( FeetDebug )
 				DebugDrawSystem.Current.AddBox( footbox, new Transform( tr.EndPosition ) ).WithColor( Color.Green );
 		}
@@ -92,28 +97,18 @@
 		var wasGrounded = IsOnGround;
 
 		GroundObject = body?.GetGameObject();
+		GroundComponent = body?.GetComponent();
 
 		if ( GroundObject is not null )
 		{
 			TimeSinceGrounded = 0;
 			_groundTransform = GroundObject.WorldTransform;
-
-			// We set the center of mass to the closest position on the ground
-			//
-			// * stops them sliding down ramps
-			// * stops them sliding off edges
-			// * stops them pushing through steps ground objects
-
-			Body.OverrideMassCenter = true;
-			Body.MassCenterOverride = new Vector3( 0, 0, 1 );
 		}
 		else
 		{
 			TimeSinceUngrounded = 0;
 			_groundLocal = default;
 			_groundTransform = default;
-
-			Body.OverrideMassCenter = false;
 		}
 
 		if ( wasGrounded != IsOnGround )

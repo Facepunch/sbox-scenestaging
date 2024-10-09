@@ -6,7 +6,7 @@ public sealed class SpinComponent : Component
 	{
 		if ( IsProxy ) return;
 
-		Transform.LocalRotation *= (SpinAngles * Time.Delta).ToRotation();
+		LocalRotation *= (SpinAngles * Time.Delta).ToRotation();
 	}
 }
 
@@ -14,8 +14,7 @@ public sealed class SpinComponent : Component
 public sealed class MoveComponent : Component
 {
 	[Property] public Vector3 Distance { get; set; }
-	[Property]
-	public float Speed { get; set; } = 10.0f;
+	[Property] public float Speed { get; set; } = 10.0f;
 
 	Transform startPos;
 

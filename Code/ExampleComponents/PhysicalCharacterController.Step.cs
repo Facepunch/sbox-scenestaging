@@ -12,7 +12,7 @@
 		if ( WishVelocity.IsNearlyZero( 0.001f ) ) return;
 
 		var vel = (Velocity).WithZ( 0 ) * Time.Delta;
-		if ( vel.IsNearlyZero( 0.01f ) ) return;
+		if ( vel.IsNearlyZero( 0.1f ) ) return;
 
 		var skin = 0.001f;
 		var footbox = BBox.FromPositionAndSize( new Vector3( 0, 0, BodyHeight * 0.5f ), new Vector3( BodyRadius, BodyRadius, BodyHeight ) );
@@ -67,8 +67,7 @@
 			if ( !CanStandOnSurfaceNormal( tr.Normal ) )
 				return;
 
-			Body.PhysicsBody.Position = tr.EndPosition;
-			Body.Velocity = Body.Velocity.WithZ( 0 );
+			Body.WorldPosition = tr.EndPosition - Vector3.Up * 0.1f;
 
 			if ( StepDebug )
 			{

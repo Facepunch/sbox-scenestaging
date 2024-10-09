@@ -1,11 +1,9 @@
-﻿public sealed partial class PhysicalCharacterController : Component
+﻿public sealed partial class PhysicalCharacterController : Component, IScenePhysicsEvents
 {
 	[Property, Group( "Body" ), RequireComponent] public Rigidbody Body { get; set; }
 	[Property, Group( "Body" )] public float BodyRadius { get; set; } = 16.0f;
 	[Property, Group( "Body" )] public float BodyHeight { get; set; } = 64.0f;
 
-	[Property, Group( "Ground" )] public Surface BodySurfaceGrounded { get; set; }
-	[Property, Group( "Ground" )] public Surface BodySurfaceAir { get; set; }
 	[Property, Group( "Ground" )] public float GroundAngle { get; set; } = 45.0f;
 
 
@@ -14,10 +12,10 @@
 
 
 
-	public Vector3 Velocity => Body.Velocity - GroundVelocity;
+	public Vector3 Velocity { get; private set; }
 	public Vector3 GroundVelocity { get; set; }
 	public float GroundYaw { get; set; }
-	GameObject GroundObject { get; set; }
+
 
 	protected override void OnAwake()
 	{
@@ -26,10 +24,10 @@
 		UpdateBody();
 	}
 
-	protected override void OnFixedUpdate()
+
+	void IScenePhysicsEvents.PrePhysicsStep()
 	{
 		UpdateBody();
-		UpdateGroundVelocity();
 
 		if ( !WishVelocity.IsNearZeroLength )
 		{
@@ -57,22 +55,38 @@
 			Body.Velocity = velocity;
 		}
 
-		TryStep();
+		//TryStep();
+	}
+
+	void IScenePhysicsEvents.PostPhysicsStep()
+	{
 		CategorizeGround();
+		UpdateGroundVelocity();
+
+		Velocity = Body.Velocity - GroundVelocity;
+	}
+
+	protected override void OnUpdate()
+	{
+		Gizmo.Draw.ScreenText( $"Velocity: {Body.Velocity.Length:0.00}\n" +
+			$"Velocity XY: {Body.Velocity.WithZ( 0 ).Length:0.00}", 100 );
 	}
 
 	void UpdateBody()
 	{
 		var bodyCollider = Body.GameObject.GetOrAddComponent<CapsuleCollider>();
-		bodyCollider.Radius = BodyRadius * 0.8f;
+		bodyCollider.Radius = BodyRadius;
 		bodyCollider.Start = Vector3.Up * (BodyHeight - bodyCollider.Radius);
-		bodyCollider.End = Vector3.Up * (bodyCollider.Radius + StepHeight * 0.5f);
-		bodyCollider.Surface = BodySurfaceAir;
+		bodyCollider.End = Vector3.Up * (bodyCollider.Radius + StepHeight * 0.1f);
+		bodyCollider.Friction = 0.0f;
 
-		var feetCollider = Body.GameObject.GetOrAddComponent<BoxCollider>();
-		feetCollider.Scale = new Vector3( BodyRadius, BodyRadius, BodyHeight * 0.8f );
-		feetCollider.Center = new Vector3( 0, 0, BodyHeight * 0.4f );
-		feetCollider.Surface = IsOnGround ? BodySurfaceGrounded : BodySurfaceAir;
+		var feetCollider = Body.GameObject.GetOrAddComponent<SphereCollider>();
+		feetCollider.Radius = BodyRadius * 0.5f;
+		feetCollider.Center = new Vector3( 0, 0, BodyRadius * 0.5f );
+		feetCollider.Friction = IsOnGround ? 1.5f : 0;
+
+		Body.OverrideMassCenter = true;
+		Body.MassCenterOverride = new Vector3( 0, 0, WishVelocity.Length.Clamp( 0, 20 ) );
 	}
 
 	Transform _groundTransform;
@@ -86,18 +100,21 @@
 			return;
 		}
 
-		var worldPos = WorldPosition;
+		if ( GroundComponent is Collider collider )
+		{
+			GroundVelocity = collider.GetVelocityAtPoint( WorldPosition );
+		}
 
-		var posLocal = _groundTransform.PointToLocal( worldPos );
-		var newWorldPos = GroundObject.WorldTransform.PointToWorld( posLocal );
-		var posChange = newWorldPos - worldPos;
-
-		GroundVelocity = posChange * (1 / Time.Delta);
+		if ( GroundComponent is Rigidbody rigidbody )
+		{
+			GroundVelocity = rigidbody.GetVelocityAtPoint( WorldPosition );
+		}
 	}
 
 	public void Punch( Vector3 velocity )
 	{
-		Body.PhysicsBody.ApplyForce( velocity * Body.PhysicsBody.Mass * 300 );
 		PreventGroundingForSeconds( 0.5f );
+		UpdateBody();
+		Body.PhysicsBody.ApplyForce( velocity * Body.PhysicsBody.Mass * 300 );
 	}
 }
