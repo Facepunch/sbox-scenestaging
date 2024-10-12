@@ -7,6 +7,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 {
 	private Model _model;
 	private RigidbodyFlags _rigidBodyFlags;
+	private PhysicsLock _locking;
 
 	[Property]
 	public Model Model
@@ -42,6 +43,25 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 					continue;
 
 				pair.Body.RigidbodyFlags = value;
+			}
+		}
+	}
+
+
+	[Property]
+	public PhysicsLock Locking
+	{
+		get => _locking;
+		set
+		{
+			_locking = value;
+
+			foreach ( var pair in _bodies )
+			{
+				if ( !pair.Body.IsValid() )
+					continue;
+
+				pair.Body.Locking = value;
 			}
 		}
 	}
@@ -96,6 +116,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			var body = go.AddComponent<Rigidbody>();
 			body.RigidbodyFlags = RigidbodyFlags;
+			body.Locking = Locking;
 
 			_bodies.Add( new BoneBodyPair( bone, body ) );
 
