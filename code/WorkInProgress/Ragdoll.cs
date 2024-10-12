@@ -101,8 +101,8 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 				if ( jointDesc.EnableTwistLimit )
 				{
-					hingeJoint.MinAngle = jointDesc.TwistMin.RadianToDegree();
-					hingeJoint.MaxAngle = jointDesc.TwistMax.RadianToDegree();
+					hingeJoint.MinAngle = jointDesc.TwistMin;
+					hingeJoint.MaxAngle = jointDesc.TwistMax;
 				}
 
 				joint = hingeJoint;
@@ -117,13 +117,13 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				if ( jointDesc.EnableSwingLimit )
 				{
 					ballJoint.SwingLimitEnabled = true;
-					ballJoint.SwingLimit = new Vector2( jointDesc.SwingMin.RadianToDegree(), jointDesc.SwingMax.RadianToDegree() );
+					ballJoint.SwingLimit = new Vector2( jointDesc.SwingMin, jointDesc.SwingMax );
 				}
 
 				if ( jointDesc.EnableTwistLimit )
 				{
 					ballJoint.TwistLimitEnabled = true;
-					ballJoint.TwistLimit = new Vector2( jointDesc.TwistMin.RadianToDegree(), jointDesc.TwistMax.RadianToDegree() );
+					ballJoint.TwistLimit = new Vector2( jointDesc.TwistMin, jointDesc.TwistMax );
 				}
 
 				joint = ballJoint;
