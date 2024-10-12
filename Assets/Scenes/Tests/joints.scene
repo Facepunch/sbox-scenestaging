@@ -1,15 +1,18 @@
 {
-  "Id": "c97a6691-a5bc-453a-9b2c-0a62330ec613",
+  "__guid": "c97a6691-a5bc-453a-9b2c-0a62330ec613",
   "GameObjects": [
     {
-      "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "__guid": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "Flags": 0,
       "Name": "Directional Light",
       "Position": "158.6718,-124.3322,368.6452",
       "Rotation": "0.8894004,0.1914825,-0.4057941,0.087365",
+      "Tags": "light_directional,light",
       "Enabled": true,
       "Components": [
         {
-          "__type": "DirectionalLight",
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "90d48c23-08b5-4932-b65f-3343b5669cbc",
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "1,0.89069,0.76238,1",
@@ -19,142 +22,92 @@
       ]
     },
     {
-      "Id": "12df27a7-aaf4-4da8-bc02-173ecd53c168",
+      "__guid": "12df27a7-aaf4-4da8-bc02-173ecd53c168",
+      "Flags": 0,
       "Name": "SkyBox",
       "Position": "1252.565,134.7641,-1378.779",
+      "Tags": "skybox",
       "Enabled": true,
       "Components": [
         {
-          "__type": "SkyBox2D",
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "c6589be1-b626-429c-a6d7-1da0366b5761",
+          "SkyIndirectLighting": true,
           "SkyMaterial": "materials/skybox/light_test_sky_night_basic.vmat",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "EnvmapProbe",
+          "__type": "Sandbox.EnvmapProbe",
+          "__guid": "c3e11eff-d60d-44b6-b834-30d4045a72fe",
+          "Texture": "textures/cubemaps/default.vtex",
           "Bounds": {
             "Mins": "-4096,-4096,-4096",
             "Maxs": "4096,4096,4096"
           },
+          "DelayBetweenUpdates": 0.1,
           "Feathering": 0.02,
+          "FrameInterval": 5,
+          "MaxDistance": 512,
+          "MultiBounce": false,
           "Projection": "Sphere",
-          "Texture": "textures/cubemaps/default.vtex",
-          "TintColor": "0.12857,0.20583,0.42574,1"
+          "RenderDynamically": false,
+          "TintColor": "0.12857,0.20583,0.42574,1",
+          "UpdateStrategy": "OnEnabled",
+          "ZFar": 4096,
+          "ZNear": 16
         }
       ]
     },
     {
-      "Id": "0cd4b3b6-7ff0-461e-9ce3-716ce58ea5d4",
+      "__guid": "0cd4b3b6-7ff0-461e-9ce3-716ce58ea5d4",
+      "Flags": 0,
       "Name": "Gradient Fog",
       "Position": "1318.709,134.7641,-1636.627",
       "Enabled": true
     },
     {
-      "Id": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "__guid": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
+      "Flags": 0,
       "Name": "Surface",
       "Position": "1420.439,0,-1637.736",
       "Scale": "20,20,20",
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelRenderer",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "cccaed6b-40f1-43e4-b4ae-df3dfa53d4a5",
           "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/plane.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Tint": "0.05882,0.13725,0.49412,1"
         },
         {
-          "__type": "PlaneCollider",
+          "__type": "Sandbox.PlaneCollider",
+          "__guid": "964f19cc-58ac-425a-935f-6d68eb4b07c8",
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "100,100",
-          "Static": true,
-          "Surface": null
+          "Static": true
         }
       ]
     },
     {
-      "Id": "eaa3c563-339f-4adf-861a-8251ff1d9e3e",
-      "Name": "industrial_light",
-      "Position": "1290.593,452.7491,-1483.374",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Model": "models/sbox_props/industrial_light/industrial_light.vmdl",
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "Rigidbody",
-          "AngularDamping": 2,
-          "Gravity": true,
-          "LinearDamping": 0.5,
-          "Locking": {},
-          "RigidbodyFlags": 0,
-          "StartAsleep": false
-        },
-        {
-          "__type": "ModelCollider",
-          "IsTrigger": false,
-          "Model": "models/sbox_props/industrial_light/industrial_light.vmdl",
-          "Static": false,
-          "Surface": null
-        },
-        {
-          "__type": "SpringJoint",
-          "Body": {
-            "_type": "gameobject",
-            "go": "26e5c59d-5fa4-4812-8bac-74c64a2308ac"
-          },
-          "BreakForce": 0,
-          "BreakTorque": 0,
-          "Damping": 0.7,
-          "EnableCollision": false,
-          "Frequency": 5,
-          "MaxLength": 50,
-          "MinLength": 50,
-          "OnBreak": null
-        }
-      ],
-      "Children": [
-        {
-          "Id": "76c4ddbf-400e-4d8c-bde4-399685b5362e",
-          "Name": "Spot Light",
-          "Position": "0,0,-32",
-          "Rotation": "0,0.707107,0,0.7071065",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "SpotLight",
-              "Attenuation": 1,
-              "ConeInner": 15,
-              "ConeOuter": 45,
-              "Cookie": null,
-              "FogMode": "Enabled",
-              "FogStrength": 1,
-              "LightColor": "1,0,0.34,1",
-              "Radius": 500,
-              "Shadows": true
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Id": "dc374a13-9fb5-4f4b-937f-1aa506b8a20c",
+      "__guid": "dc374a13-9fb5-4f4b-937f-1aa506b8a20c",
+      "Flags": 0,
       "Name": "Player",
       "Position": "936.6692,538.1973,-1585.303",
       "Enabled": true,
       "Components": [
         {
           "__type": "PlayerController",
-          "AnimationHelper": null,
-          "Body": null,
+          "__guid": "7dd9a2ee-c493-405a-ae5e-6aa1126422d8",
           "Eye": {
             "_type": "gameobject",
             "go": "919b85bd-9fcf-45c7-9992-f0783512e19a"
@@ -163,17 +116,20 @@
           "Gravity": "0,0,800"
         },
         {
-          "__type": "CharacterController",
+          "__type": "Sandbox.CharacterController",
+          "__guid": "e1a2c6e5-c4bf-4dcc-8057-fb9d46fe371a",
           "Acceleration": 10,
           "Bounciness": 0.3,
           "GroundAngle": 45,
           "Height": 64,
           "IgnoreLayers": "",
           "Radius": 16,
-          "StepHeight": 18
+          "StepHeight": 18,
+          "UseCollisionRules": false
         },
         {
           "__type": "PlayerGrabber",
+          "__guid": "c5252bb9-2eaf-4b32-9e9f-6597902d3dbb",
           "DecalEffect": {
             "_type": "gameobject",
             "prefab": "effects/decal_bullet_default.prefab"
@@ -182,12 +138,14 @@
             "_type": "gameobject",
             "prefab": "effects/impact_default.prefab"
           },
+          "MovementSmoothness": 3,
           "ShootDamage": 9
         }
       ],
       "Children": [
         {
-          "Id": "919b85bd-9fcf-45c7-9992-f0783512e19a",
+          "__guid": "919b85bd-9fcf-45c7-9992-f0783512e19a",
+          "Flags": 0,
           "Name": "Eye",
           "Position": "0,0,58",
           "Enabled": true
@@ -195,38 +153,50 @@
       ]
     },
     {
-      "Id": "c6e89877-6972-41f6-984b-ea6625523737",
+      "__guid": "c6e89877-6972-41f6-984b-ea6625523737",
+      "Flags": 0,
       "Name": "industrial_light (1)",
       "Position": "1290.593,403.9128,-1483.374",
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelRenderer",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "ad88ec6e-4ac4-4a86-80eb-42a27721b88a",
           "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/sbox_props/industrial_light/industrial_light.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "Rigidbody",
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "84704a52-cecc-4ffd-a77d-df098a098cc0",
           "AngularDamping": 2,
           "Gravity": true,
           "LinearDamping": 0.5,
           "Locking": {},
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "OverrideMassCenter": false,
           "RigidbodyFlags": 0,
           "StartAsleep": false
         },
         {
-          "__type": "ModelCollider",
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "7052e272-20ac-4453-87b5-39e2199b6160",
           "IsTrigger": false,
           "Model": "models/sbox_props/industrial_light/industrial_light.vmdl",
-          "Static": false,
-          "Surface": null
+          "Static": false
         },
         {
-          "__type": "SpringJoint",
+          "__type": "Sandbox.SpringJoint",
+          "__guid": "1842a69d-b31c-4164-acc9-24cd1fdbff0b",
           "Body": {
             "_type": "gameobject",
             "go": "26e5c59d-5fa4-4812-8bac-74c64a2308ac"
@@ -237,24 +207,25 @@
           "EnableCollision": false,
           "Frequency": 5,
           "MaxLength": 50,
-          "MinLength": 50,
-          "OnBreak": null
+          "MinLength": 50
         }
       ],
       "Children": [
         {
-          "Id": "d3f710fe-1abe-4b8d-aa46-ce71e8a74ae0",
+          "__guid": "d3f710fe-1abe-4b8d-aa46-ce71e8a74ae0",
+          "Flags": 0,
           "Name": "Spot Light",
           "Position": "0,0,-32",
           "Rotation": "0,0.707107,0,0.7071065",
+          "Tags": "light_spot,light",
           "Enabled": true,
           "Components": [
             {
-              "__type": "SpotLight",
+              "__type": "Sandbox.SpotLight",
+              "__guid": "f7059876-80c5-4831-8cce-1ad21e3455b9",
               "Attenuation": 1,
               "ConeInner": 15,
               "ConeOuter": 45,
-              "Cookie": null,
               "FogMode": "Enabled",
               "FogStrength": 1,
               "LightColor": "0,0.77267,1,1",
@@ -266,109 +237,17 @@
       ]
     },
     {
-      "Id": "d3ac4507-127c-41ed-872f-9a4fad9426f5",
-      "Name": "industrial_light (2)",
-      "Position": "1290.593,348.5238,-1483.374",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "ModelRenderer",
-          "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Model": "models/sbox_props/industrial_light/industrial_light.vmdl",
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "Rigidbody",
-          "AngularDamping": 2,
-          "Gravity": true,
-          "LinearDamping": 0.5,
-          "Locking": {},
-          "RigidbodyFlags": 0,
-          "StartAsleep": false
-        },
-        {
-          "__type": "ModelCollider",
-          "IsTrigger": false,
-          "Model": "models/sbox_props/industrial_light/industrial_light.vmdl",
-          "Static": false,
-          "Surface": null
-        },
-        {
-          "__type": "SpringJoint",
-          "Body": {
-            "_type": "gameobject",
-            "go": "26e5c59d-5fa4-4812-8bac-74c64a2308ac"
-          },
-          "BreakForce": 0,
-          "BreakTorque": 0,
-          "Damping": 0.7,
-          "EnableCollision": false,
-          "Frequency": 5,
-          "MaxLength": 50,
-          "MinLength": 50,
-          "OnBreak": null
-        }
-      ],
-      "Children": [
-        {
-          "Id": "37e2fb26-5198-4761-a3c8-3c668cf45d56",
-          "Name": "Spot Light",
-          "Position": "0,0,-32",
-          "Rotation": "0,0.707107,0,0.7071065",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "SpotLight",
-              "Attenuation": 1,
-              "ConeInner": 15,
-              "ConeOuter": 45,
-              "Cookie": null,
-              "FogMode": "Enabled",
-              "FogStrength": 1,
-              "LightColor": "1,0.86,0,1",
-              "Radius": 500,
-              "Shadows": true
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Id": "e7dd94b4-46aa-493f-aab7-1c9ef87bfc60",
-      "Name": "Rope",
-      "Position": "1290.593,452.749,-1483.374",
-      "Rotation": "-0.0000003038324,-0.0000002451021,-0.7282079,0.6853559",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "LegacyParticleSystem",
-          "ControlPoints": [
-            {
-              "StringCP": "1",
-              "GameObjectValue": {
-                "_type": "gameobject",
-                "go": "eaa3c563-339f-4adf-861a-8251ff1d9e3e"
-              }
-            }
-          ],
-          "Looped": false,
-          "Particles": "particles/entity/rope.vpcf",
-          "PlaybackSpeed": 1
-        }
-      ]
-    },
-    {
-      "Id": "3c3d1279-631d-4ba3-a607-fd4f8eec7792",
+      "__guid": "3c3d1279-631d-4ba3-a607-fd4f8eec7792",
+      "Flags": 0,
       "Name": "Rope (1)",
-      "Position": "1287.64,404.0763,-1483.374",
+      "Position": "1290.611,403.8975,-1483.374",
       "Rotation": "-0.0000003038324,-0.0000002451021,-0.7282079,0.6853559",
+      "Tags": "particles",
       "Enabled": true,
       "Components": [
         {
-          "__type": "LegacyParticleSystem",
+          "__type": "Sandbox.LegacyParticleSystem",
+          "__guid": "835fa735-fe82-4d5c-a864-2a25bb643b60",
           "ControlPoints": [
             {
               "StringCP": "1",
@@ -385,70 +264,55 @@
       ]
     },
     {
-      "Id": "ba3e2a6f-540e-4661-b469-e4f963df7b9b",
-      "Name": "Rope (2)",
-      "Position": "1284.278,348.7042,-1483.374",
-      "Rotation": "-0.0000003038324,-0.0000002451021,-0.7282079,0.6853559",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "LegacyParticleSystem",
-          "ControlPoints": [
-            {
-              "StringCP": "1",
-              "GameObjectValue": {
-                "_type": "gameobject",
-                "go": "d3ac4507-127c-41ed-872f-9a4fad9426f5"
-              }
-            }
-          ],
-          "Looped": false,
-          "Particles": "particles/entity/rope.vpcf",
-          "PlaybackSpeed": 1
-        }
-      ]
-    },
-    {
-      "Id": "26e5c59d-5fa4-4812-8bac-74c64a2308ac",
+      "__guid": "26e5c59d-5fa4-4812-8bac-74c64a2308ac",
+      "Flags": 0,
       "Name": "metal_beam_b_128",
       "Position": "1290.593,404.0202,-1483.374",
       "Rotation": "-0.0000001459778,-0.0000003706397,0.707107,0.7071065",
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelRenderer",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "d9f2ee2b-20bb-43c2-9f0c-4e10f64304c4",
           "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/props/beam_railing_a/metal_beam_b_128.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ModelCollider",
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "faae21ea-7746-415d-8233-9bcce1a81252",
           "IsTrigger": false,
           "Model": "models/props/beam_railing_a/metal_beam_b_128.vmdl",
-          "Static": true,
-          "Surface": null
+          "Static": true
         }
       ],
       "Children": [
         {
-          "Id": "e940ef93-abfc-4b83-b8d6-8de72bf08dab",
+          "__guid": "e940ef93-abfc-4b83-b8d6-8de72bf08dab",
+          "Flags": 0,
           "Name": "Object",
           "Position": "48.72876,0.0003255488,-0.0005037631",
           "Rotation": "-0.0000005580113,0.0000004018511,-0.9995406,-0.0303013",
           "Enabled": true
         },
         {
-          "Id": "60cd313e-51a8-4a88-b53e-b90b8d221bf2",
+          "__guid": "60cd313e-51a8-4a88-b53e-b90b8d221bf2",
+          "Flags": 0,
           "Name": "Object (1)",
           "Position": "0,2.944831,-0.00001984055",
           "Rotation": "-0.0000004853145,0.0000008134052,-0.6853554,-0.7282085",
           "Enabled": true
         },
         {
-          "Id": "28705238-bd6f-46ff-a3f3-315ff0fd0adf",
+          "__guid": "28705238-bd6f-46ff-a3f3-315ff0fd0adf",
+          "Flags": 0,
           "Name": "Object (2)",
           "Position": "-55.43963,3.36454,-0.00008267321",
           "Rotation": "-0.0000001283267,0.0000007484772,0.03030208,-0.9995406",
@@ -457,52 +321,66 @@
       ]
     },
     {
-      "Id": "b813d3c9-16a6-41b2-b234-e5e6f780e278",
+      "__guid": "b813d3c9-16a6-41b2-b234-e5e6f780e278",
+      "Flags": 0,
       "Name": "Object",
       "Position": "938.3911,372.304,-1500.01",
       "Enabled": true,
       "Children": [
         {
-          "Id": "13cb80b0-fb57-423a-8e76-68db48fbd865",
+          "__guid": "13cb80b0-fb57-423a-8e76-68db48fbd865",
+          "Flags": 0,
           "Name": "Cube",
           "Position": "146.1272,-44.90042,-95.419",
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelRenderer",
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "67c82102-472a-427c-94a2-05653a9f5ff8",
               "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "ModelCollider",
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "4fa3ef72-6e03-456b-919b-5fc8c2e9daba",
               "IsTrigger": false,
               "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
-              "Static": false,
-              "Surface": null
+              "Static": false
             }
           ]
         },
         {
-          "Id": "70acea5c-b91a-4e7a-a4d0-b29f4dec0c7e",
+          "__guid": "70acea5c-b91a-4e7a-a4d0-b29f4dec0c7e",
+          "Flags": 0,
           "Name": "Cube (1)",
           "Position": "96.04146,-44.90021,-95.41898",
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelRenderer",
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "f508a558-43ad-47d9-9d91-27aaa9085b2b",
               "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "SliderJoint",
+              "__type": "Sandbox.SliderJoint",
+              "__guid": "2c07bc74-f6db-4889-9d89-b3cf265792c7",
               "Body": {
                 "_type": "gameobject",
                 "go": "13cb80b0-fb57-423a-8e76-68db48fbd865"
@@ -512,36 +390,43 @@
               "EnableCollision": false,
               "Friction": 0,
               "MaxLength": 100,
-              "MinLength": 0,
-              "OnBreak": null
+              "MinLength": 0
             },
             {
-              "__type": "Rigidbody",
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "81360ce9-a1b3-465a-b498-55bd0003b285",
               "AngularDamping": 0,
               "Gravity": false,
               "LinearDamping": 0,
               "Locking": {},
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0,
+              "MotionEnabled": true,
+              "OverrideMassCenter": false,
               "RigidbodyFlags": 0,
               "StartAsleep": false
             },
             {
-              "__type": "ModelCollider",
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "8c66f852-2d4b-4b54-9896-c68539255d98",
               "IsTrigger": false,
               "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
-              "Static": false,
-              "Surface": null
+              "Static": false
             }
           ]
         },
         {
-          "Id": "ea22cea3-c177-4206-bc46-8ec4cb09a6a4",
+          "__guid": "ea22cea3-c177-4206-bc46-8ec4cb09a6a4",
+          "Flags": 0,
           "Name": "Rope (3)",
           "Position": "352.2019,80.44495,-95.419",
           "Rotation": "-0.0000003038324,-0.0000002451021,-0.7282079,0.6853559",
+          "Tags": "particles",
           "Enabled": true,
           "Components": [
             {
-              "__type": "LegacyParticleSystem",
+              "__type": "Sandbox.LegacyParticleSystem",
+              "__guid": "4c0b44c1-f30b-419b-aa0d-85a75d741101",
               "ControlPoints": [
                 {
                   "StringCP": "0",
@@ -567,88 +452,136 @@
       ]
     },
     {
-      "Id": "9edcbe81-af9b-41da-a869-aa374a507952",
+      "__guid": "9edcbe81-af9b-41da-a869-aa374a507952",
+      "Flags": 0,
       "Name": "Door1",
       "Position": "1125.045,636.3431,-1636.767",
       "Enabled": true,
       "Children": [
         {
-          "Id": "17e7b985-6800-4dc3-ad27-819c8a15b45d",
+          "__guid": "17e7b985-6800-4dc3-ad27-819c8a15b45d",
+          "Flags": 0,
           "Name": "door_2_window_a",
-          "Position": "0,0,0",
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelRenderer",
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "dd400d0e-2df1-4f75-b039-3176fd71f23e",
               "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/doors/door_2_window_a.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "Rigidbody",
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "84b44124-8383-4945-8244-55a699686df2",
               "AngularDamping": 0,
               "Gravity": false,
               "LinearDamping": 0,
               "Locking": {},
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0,
+              "MotionEnabled": true,
+              "OverrideMassCenter": false,
               "RigidbodyFlags": 0,
               "StartAsleep": false
             },
             {
-              "__type": "ModelCollider",
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "96cb9ceb-e057-4d81-8d0c-d1d301c3c7a1",
               "IsTrigger": false,
               "Model": "models/doors/door_2_window_a.vmdl",
-              "Static": false,
-              "Surface": null
+              "Static": false
             },
             {
-              "__type": "HingeJoint",
+              "__type": "Sandbox.HingeJoint",
+              "__guid": "769192f1-2810-4b95-879b-83ff13075356",
+              "Attachment": "Auto",
               "Body": {
                 "_type": "gameobject",
                 "go": "3892656c-65a1-4fa2-9e9a-393d70b91af9"
               },
               "BreakForce": 0,
               "BreakTorque": 0,
+              "DampingRatio": 1,
               "EnableCollision": false,
+              "Fequency": 1,
               "Friction": 0,
+              "LocalFrame1": {
+                "UniformScale": 1,
+                "IsValid": true,
+                "ForwardRay": {
+                  "Forward": "1,0,0"
+                },
+                "Scale": "1,1,1",
+                "Rotation": "0,0,0,1"
+              },
+              "LocalFrame2": {
+                "UniformScale": 1,
+                "IsValid": true,
+                "ForwardRay": {
+                  "Forward": "1,0,0"
+                },
+                "Scale": "1,1,1",
+                "Rotation": "0,0,0,1"
+              },
               "MaxAngle": 100,
+              "MaxTorque": 0,
               "MinAngle": -100,
-              "OnBreak": null
+              "Motor": "Disabled",
+              "TargetAngle": 0,
+              "TargetVelocity": 0
             }
           ]
         },
         {
-          "Id": "82167dce-6722-4740-9df7-b4ad805bdb2e",
+          "__guid": "82167dce-6722-4740-9df7-b4ad805bdb2e",
+          "Flags": 0,
           "Name": "frame",
           "Position": "0,27.259,-2.14622",
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelRenderer",
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "8375b661-2962-469a-9a53-44bba826dfa2",
               "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/props/trim_sheets/doors/wooden_door_frame/wooden_door_frame_single_01a.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
         },
         {
-          "Id": "4650390c-96f7-420c-8504-0d4e930dbf10",
+          "__guid": "4650390c-96f7-420c-8504-0d4e930dbf10",
+          "Flags": 0,
           "Name": "frame (1)",
           "Position": "0,27.259,-2.146",
           "Rotation": "0,0,1,-0.0000006397578",
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelRenderer",
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "2c85b8ea-7044-431f-9dde-fb6d48c43e8b",
               "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/props/trim_sheets/doors/wooden_door_frame/wooden_door_frame_single_01a.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             }
@@ -657,88 +590,136 @@
       ]
     },
     {
-      "Id": "ea1b54f6-780b-48fd-8ce9-9de3afc290de",
+      "__guid": "ea1b54f6-780b-48fd-8ce9-9de3afc290de",
+      "Flags": 0,
       "Name": "Door1 (1)",
       "Position": "1125.045,542.1202,-1636.767",
       "Enabled": true,
       "Children": [
         {
-          "Id": "ff331321-4d2a-4f89-a456-d91fdfa1f41c",
+          "__guid": "ff331321-4d2a-4f89-a456-d91fdfa1f41c",
+          "Flags": 0,
           "Name": "door_2_window_a",
-          "Position": "0,0,0",
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelRenderer",
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "c4326d23-716b-4c3c-995b-50f8f9f758cb",
               "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/doors/door_2_window_a.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "Rigidbody",
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "be3390ff-5b96-4302-8188-89df67cada02",
               "AngularDamping": 0,
               "Gravity": false,
               "LinearDamping": 0,
               "Locking": {},
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0,
+              "MotionEnabled": true,
+              "OverrideMassCenter": false,
               "RigidbodyFlags": 0,
               "StartAsleep": false
             },
             {
-              "__type": "ModelCollider",
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "34caa947-2c9f-4ba6-b960-686419e0ceac",
               "IsTrigger": false,
               "Model": "models/doors/door_2_window_a.vmdl",
-              "Static": false,
-              "Surface": null
+              "Static": false
             },
             {
-              "__type": "HingeJoint",
+              "__type": "Sandbox.HingeJoint",
+              "__guid": "c3b21ba0-f11b-42b5-abf4-bc30108cc04e",
+              "Attachment": "Auto",
               "Body": {
                 "_type": "gameobject",
                 "go": "3892656c-65a1-4fa2-9e9a-393d70b91af9"
               },
               "BreakForce": 0,
               "BreakTorque": 0,
+              "DampingRatio": 1,
               "EnableCollision": false,
+              "Fequency": 1,
               "Friction": 0,
+              "LocalFrame1": {
+                "UniformScale": 1,
+                "IsValid": true,
+                "ForwardRay": {
+                  "Forward": "1,0,0"
+                },
+                "Scale": "1,1,1",
+                "Rotation": "0,0,0,1"
+              },
+              "LocalFrame2": {
+                "UniformScale": 1,
+                "IsValid": true,
+                "ForwardRay": {
+                  "Forward": "1,0,0"
+                },
+                "Scale": "1,1,1",
+                "Rotation": "0,0,0,1"
+              },
               "MaxAngle": 100,
+              "MaxTorque": 0,
               "MinAngle": -100,
-              "OnBreak": null
+              "Motor": "Disabled",
+              "TargetAngle": 0,
+              "TargetVelocity": 0
             }
           ]
         },
         {
-          "Id": "7ad77d43-5dd5-4468-9059-9a0fbad9b3cb",
+          "__guid": "7ad77d43-5dd5-4468-9059-9a0fbad9b3cb",
+          "Flags": 0,
           "Name": "frame",
           "Position": "0,27.259,-2.14622",
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelRenderer",
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "7e2cf555-fc92-465d-92b7-5a95f39f6641",
               "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/props/trim_sheets/doors/wooden_door_frame/wooden_door_frame_single_01a.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
         },
         {
-          "Id": "16a4960c-b593-4ae3-8251-8cb4eac100c8",
+          "__guid": "16a4960c-b593-4ae3-8251-8cb4eac100c8",
+          "Flags": 0,
           "Name": "frame (1)",
           "Position": "0,27.259,-2.146",
           "Rotation": "0,0,1,-0.0000006397578",
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelRenderer",
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "6fc4d2e8-6e57-4f09-b53f-e274fcbd75d4",
               "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/props/trim_sheets/doors/wooden_door_frame/wooden_door_frame_single_01a.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             }
@@ -747,88 +728,136 @@
       ]
     },
     {
-      "Id": "cbb6f832-a070-4529-acf8-a8c61e21038e",
+      "__guid": "cbb6f832-a070-4529-acf8-a8c61e21038e",
+      "Flags": 0,
       "Name": "Door1 (2)",
       "Position": "1125.045,450.0031,-1636.767",
       "Enabled": true,
       "Children": [
         {
-          "Id": "f4f47a39-02bf-43ba-9c40-d642f6c2f4ab",
+          "__guid": "f4f47a39-02bf-43ba-9c40-d642f6c2f4ab",
+          "Flags": 0,
           "Name": "door_2_window_a",
-          "Position": "0,0,0",
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelRenderer",
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "c4886248-a2fb-4517-bd46-cb6e573485f2",
               "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/doors/door_2_window_a.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             },
             {
-              "__type": "Rigidbody",
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "002f1493-31a9-431f-9a02-1ae64aa99f88",
               "AngularDamping": 0,
               "Gravity": false,
               "LinearDamping": 0,
               "Locking": {},
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0,
+              "MotionEnabled": true,
+              "OverrideMassCenter": false,
               "RigidbodyFlags": 0,
               "StartAsleep": false
             },
             {
-              "__type": "ModelCollider",
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "f96ca43c-12de-4b80-b2c5-58428dd79667",
               "IsTrigger": false,
               "Model": "models/doors/door_2_window_a.vmdl",
-              "Static": false,
-              "Surface": null
+              "Static": false
             },
             {
-              "__type": "HingeJoint",
+              "__type": "Sandbox.HingeJoint",
+              "__guid": "c9497b8f-51eb-47fd-99ab-f58453ad71be",
+              "Attachment": "Auto",
               "Body": {
                 "_type": "gameobject",
                 "go": "3892656c-65a1-4fa2-9e9a-393d70b91af9"
               },
               "BreakForce": 0,
               "BreakTorque": 0,
+              "DampingRatio": 1,
               "EnableCollision": false,
+              "Fequency": 1,
               "Friction": 0,
+              "LocalFrame1": {
+                "UniformScale": 1,
+                "IsValid": true,
+                "ForwardRay": {
+                  "Forward": "1,0,0"
+                },
+                "Scale": "1,1,1",
+                "Rotation": "0,0,0,1"
+              },
+              "LocalFrame2": {
+                "UniformScale": 1,
+                "IsValid": true,
+                "ForwardRay": {
+                  "Forward": "1,0,0"
+                },
+                "Scale": "1,1,1",
+                "Rotation": "0,0,0,1"
+              },
               "MaxAngle": 100,
+              "MaxTorque": 0,
               "MinAngle": -100,
-              "OnBreak": null
+              "Motor": "Disabled",
+              "TargetAngle": 0,
+              "TargetVelocity": 0
             }
           ]
         },
         {
-          "Id": "fe87b081-a10f-4d7e-ba20-54bab3a07f3c",
+          "__guid": "fe87b081-a10f-4d7e-ba20-54bab3a07f3c",
+          "Flags": 0,
           "Name": "frame",
           "Position": "0,27.259,-2.14622",
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelRenderer",
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "f4be825c-0db2-4a84-bdb0-8411f8ee3b14",
               "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/props/trim_sheets/doors/wooden_door_frame/wooden_door_frame_single_01a.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             }
           ]
         },
         {
-          "Id": "52ea54df-9105-49dc-8736-24ddf1fac93e",
+          "__guid": "52ea54df-9105-49dc-8736-24ddf1fac93e",
+          "Flags": 0,
           "Name": "frame (1)",
           "Position": "0,27.259,-2.146",
           "Rotation": "0,0,1,-0.0000006397578",
           "Enabled": true,
           "Components": [
             {
-              "__type": "ModelRenderer",
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "94b1abe9-58fc-4a3c-9733-20b074a7b64a",
               "BodyGroups": 18446744073709551615,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
               "Model": "models/props/trim_sheets/doors/wooden_door_frame/wooden_door_frame_single_01a.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             }
@@ -837,14 +866,16 @@
       ]
     },
     {
-      "Id": "34e304b0-41c2-445d-978a-2d2a7709eaba",
+      "__guid": "34e304b0-41c2-445d-978a-2d2a7709eaba",
+      "Flags": 0,
       "Name": "Camera",
       "Position": "1136.118,484.6284,-1498.151",
       "Tags": "maincamera",
       "Enabled": true,
       "Components": [
         {
-          "__type": "CameraComponent",
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "805b1076-a185-4e47-b815-92b871751ecc",
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
           "ClearFlags": "All",
           "FieldOfView": 90,
@@ -860,13 +891,60 @@
           "ZNear": 10
         }
       ]
+    },
+    {
+      "__guid": "2c984b2a-d596-4027-a664-0a58afa3bbb2",
+      "Flags": 0,
+      "Name": "Ragdoll",
+      "Position": "1029.806,526.2427,-1624.686",
+      "Rotation": "0,0,1,-0.00000004371139",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "dc4cb694-4644-4bb9-86c5-6aec22e9c2c0",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        },
+        {
+          "__type": "Sandbox.Ragdoll",
+          "__guid": "459dec3c-64cb-493e-a723-41ea834a82ac",
+          "Model": "models/citizen/citizen.vmdl",
+          "Renderer": {
+            "_type": "component",
+            "component_id": "dc4cb694-4644-4bb9-86c5-6aec22e9c2c0",
+            "go": "2c984b2a-d596-4027-a664-0a58afa3bbb2",
+            "component_type": "SkinnedModelRenderer"
+          }
+        }
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
-    "Lerping": true,
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
@@ -885,11 +963,13 @@
   },
   "Title": "Physics Joints",
   "Description": "Tetsing various types of physics joints",
-  "LastSaved": "2024-02-10T19:52:54.1002117\u002B00:00",
+  "ResourceVersion": 1,
   "__references": [
+    "facepunch.industrial_light#27423",
     "facepunch.metal_beam_b_128#33742",
     "facepunch.wooden_crate#29138",
     "facepunch.wooden_door_frame_single_01a#63900",
     "gkaf.door_2_window_a#26046"
-  ]
+  ],
+  "__version": 1
 }
