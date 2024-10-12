@@ -49,12 +49,27 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		if ( physics.Parts.Count == 0 )
 			return;
 
+		var world = WorldTransform;
+
 		foreach ( var part in physics.Parts )
 		{
+			var bone = Model.Bones.GetBone( part.BoneName );
+
+			if ( Renderer.IsValid() && Renderer.TryGetBoneTransform( bone, out var local ) )
+			{
+				// Use transform of renderer bone
+				local = world.ToLocal( local );
+			}
+			else
+			{
+				// There's no renderer bones, use physics bind pose
+				local = part.Transform;
+			}
+
 			var go = Scene.CreateObject( false );
 			go.Flags = GameObjectFlags.NotSaved;
 			go.Name = part.BoneName;
-			go.LocalTransform = part.Transform;
+			go.LocalTransform = local;
 			go.Parent = GameObject;
 			go.AddComponent<Rigidbody>();
 
@@ -83,7 +98,6 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				collider.Surface = hull.Surface;
 			}
 
-			var bone = Model.Bones.GetBone( part.BoneName );
 			_bodies.Add( new BoneBodyPair( bone, go ) );
 		}
 
@@ -176,6 +190,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 	private void PositionRendererBonesFromPhysics()
 	{
+		if ( Scene.IsEditor )
+			return;
+
 		if ( !Renderer.IsValid() )
 			return;
 
