@@ -5,7 +5,8 @@ namespace Sandbox;
 /// </summary>
 public sealed class Ragdoll : Component, Component.ExecuteInEditor
 {
-	Model _model;
+	private Model _model;
+	private RigidbodyFlags _rigidBodyFlags;
 
 	[Property]
 	public Model Model
@@ -24,7 +25,28 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	[Property]
 	public SkinnedModelRenderer Renderer { get; set; }
 
-	private record BoneBodyPair( BoneCollection.Bone Bone, GameObject Body );
+	[Property]
+	public RigidbodyFlags RigidbodyFlags
+	{
+		get => _rigidBodyFlags;
+		set
+		{
+			if ( _rigidBodyFlags == value )
+				return;
+
+			_rigidBodyFlags = value;
+
+			foreach ( var pair in _bodies )
+			{
+				if ( !pair.Body.IsValid() )
+					continue;
+
+				pair.Body.RigidbodyFlags = value;
+			}
+		}
+	}
+
+	private record BoneBodyPair( BoneCollection.Bone Bone, Rigidbody Body );
 	private readonly List<BoneBodyPair> _bodies = new();
 
 	private void OnModelChanged()
@@ -71,7 +93,11 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			go.Name = part.BoneName;
 			go.LocalTransform = local;
 			go.Parent = GameObject;
-			go.AddComponent<Rigidbody>();
+
+			var body = go.AddComponent<Rigidbody>();
+			body.RigidbodyFlags = RigidbodyFlags;
+
+			_bodies.Add( new BoneBodyPair( bone, body ) );
 
 			foreach ( var sphere in part.Spheres )
 			{
@@ -97,8 +123,6 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				collider.Points = hull.GetPoints().ToList();
 				collider.Surface = hull.Surface;
 			}
-
-			_bodies.Add( new BoneBodyPair( bone, go ) );
 		}
 
 		foreach ( var jointDesc in physics.Joints )
@@ -157,7 +181,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			if ( joint.IsValid() )
 			{
-				joint.Body = _bodies[jointDesc.Body2].Body;
+				joint.Body = _bodies[jointDesc.Body2].Body.GameObject;
 				joint.EnableCollision = jointDesc.EnableCollision;
 				joint.BreakForce = jointDesc.LinearStrength;
 				joint.BreakTorque = jointDesc.AngularStrength;
@@ -166,7 +190,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		foreach ( var pair in _bodies )
 		{
-			pair.Body.Enabled = true;
+			pair.Body.GameObject.Enabled = true;
 		}
 	}
 
@@ -177,7 +201,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			if ( !pair.Body.IsValid() )
 				continue;
 
-			pair.Body.Destroy();
+			pair.Body.DestroyGameObject();
 		}
 
 		_bodies.Clear();
