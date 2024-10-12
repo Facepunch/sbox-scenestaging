@@ -274,4 +274,11 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		DestroyPhysics();
 	}
+
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		DestroyPhysics();
+	}
 }
