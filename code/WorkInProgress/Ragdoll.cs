@@ -6,6 +6,7 @@ namespace Sandbox;
 public sealed class Ragdoll : Component, Component.ExecuteInEditor
 {
 	private Model _model;
+	private SkinnedModelRenderer _renderer;
 	private RigidbodyFlags _rigidBodyFlags;
 	private PhysicsLock _locking;
 
@@ -19,12 +20,26 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				return;
 
 			_model = value;
+
 			OnModelChanged();
 		}
 	}
 
 	[Property]
-	public SkinnedModelRenderer Renderer { get; set; }
+	public SkinnedModelRenderer Renderer
+	{
+		get => _renderer;
+		set
+		{
+			if ( _renderer == value )
+				return;
+
+			if ( _renderer.IsValid() )
+				_renderer.ClearPhysicsBones();
+
+			_renderer = value;
+		}
+	}
 
 	[Property]
 	public RigidbodyFlags RigidbodyFlags
