@@ -201,13 +201,17 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		{
 			Joint joint = null;
 			var body = _bodies[jointDesc.Body1].Body;
+			var body2 = _bodies[jointDesc.Body2].Body;
+
+			var localFrame1 = jointDesc.Frame1.WithPosition( jointDesc.Frame1.Position * body.WorldScale );
+			var localFrame2 = jointDesc.Frame2.WithPosition( jointDesc.Frame2.Position * body2.WorldScale );
 
 			if ( jointDesc.Type == PhysicsGroupDescription.JointType.Hinge )
 			{
 				var hingeJoint = body.AddComponent<HingeJoint>();
 				hingeJoint.Attachment = HingeJoint.AttachmentMode.LocalFrames;
-				hingeJoint.LocalFrame1 = jointDesc.Frame1;
-				hingeJoint.LocalFrame2 = jointDesc.Frame2;
+				hingeJoint.LocalFrame1 = localFrame1;
+				hingeJoint.LocalFrame2 = localFrame2;
 
 				if ( jointDesc.EnableTwistLimit )
 				{
@@ -221,8 +225,8 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			{
 				var ballJoint = body.AddComponent<BallJoint>();
 				ballJoint.Attachment = BallJoint.AttachmentMode.LocalFrames;
-				ballJoint.LocalFrame1 = jointDesc.Frame1;
-				ballJoint.LocalFrame2 = jointDesc.Frame2;
+				ballJoint.LocalFrame1 = localFrame1;
+				ballJoint.LocalFrame2 = localFrame2;
 
 				if ( jointDesc.EnableSwingLimit )
 				{
@@ -253,7 +257,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			if ( joint.IsValid() )
 			{
-				joint.Body = _bodies[jointDesc.Body2].Body.GameObject;
+				joint.Body = body2.GameObject;
 				joint.EnableCollision = jointDesc.EnableCollision;
 				joint.BreakForce = jointDesc.LinearStrength;
 				joint.BreakTorque = jointDesc.AngularStrength;
