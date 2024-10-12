@@ -63,6 +63,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				var collider = go.AddComponent<SphereCollider>();
 				collider.Center = sphere.Sphere.Center;
 				collider.Radius = sphere.Sphere.Radius;
+				collider.Surface = sphere.Surface;
 			}
 
 			foreach ( var capsule in part.Capsules )
@@ -71,6 +72,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				collider.Start = capsule.Capsule.CenterA;
 				collider.End = capsule.Capsule.CenterB;
 				collider.Radius = capsule.Capsule.Radius;
+				collider.Surface = capsule.Surface;
 			}
 
 			foreach ( var hull in part.Hulls )
@@ -78,9 +80,10 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				var collider = go.AddComponent<HullCollider>();
 				collider.Type = HullCollider.PrimitiveType.Points;
 				collider.Points = hull.GetPoints().ToList();
+				collider.Surface = hull.Surface;
 			}
 
-			var bone = Model.Bones.AllBones.FirstOrDefault( x => x.Name == part.BoneName ); ;
+			var bone = Model.Bones.GetBone( part.BoneName );
 			_bodies.Add( new BoneBodyPair( bone, go ) );
 		}
 
