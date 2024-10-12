@@ -9,6 +9,10 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	private SkinnedModelRenderer _renderer;
 	private RigidbodyFlags _rigidBodyFlags;
 	private PhysicsLock _locking;
+	private bool _motionEnabled = true;
+
+	private record BoneBodyPair( BoneCollection.Bone Bone, Rigidbody Body );
+	private readonly List<BoneBodyPair> _bodies = new();
 
 	[Property]
 	public Model Model
@@ -35,7 +39,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				return;
 
 			if ( _renderer.IsValid() )
+			{
 				_renderer.ClearPhysicsBones();
+			}
 
 			_renderer = value;
 		}
@@ -62,7 +68,6 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
-
 	[Property]
 	public PhysicsLock Locking
 	{
@@ -81,8 +86,38 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
-	private record BoneBodyPair( BoneCollection.Bone Bone, Rigidbody Body );
-	private readonly List<BoneBodyPair> _bodies = new();
+	/// <summary>
+	/// Enable to drive renderer from physics, disable to drive physics from renderer.
+	/// </summary>
+	[Property]
+	public bool MotionEnabled
+	{
+		get => _motionEnabled;
+		set
+		{
+			if ( _motionEnabled == value )
+				return;
+
+			_motionEnabled = value;
+
+			var boneVelocities = value ? Renderer.GetBoneVelocities() : null;
+
+			foreach ( var pair in _bodies )
+			{
+				if ( !pair.Body.IsValid() )
+					continue;
+
+				pair.Body.MotionEnabled = value;
+
+				if ( boneVelocities is not null )
+				{
+					var boneVelocity = boneVelocities[pair.Bone.Index];
+					pair.Body.Velocity = boneVelocity.Linear;
+					pair.Body.AngularVelocity = boneVelocity.Angular;
+				}
+			}
+		}
+	}
 
 	private void OnModelChanged()
 	{
@@ -132,6 +167,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			var body = go.AddComponent<Rigidbody>();
 			body.RigidbodyFlags = RigidbodyFlags;
 			body.Locking = Locking;
+			body.MotionEnabled = MotionEnabled;
 
 			_bodies.Add( new BoneBodyPair( bone, body ) );
 
@@ -256,6 +292,8 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		if ( !Renderer.IsValid() )
 			return;
 
+		Renderer.ClearPhysicsBones();
+
 		var world = WorldTransform;
 
 		foreach ( var pair in _bodies )
@@ -263,16 +301,23 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			if ( !pair.Body.IsValid() )
 				continue;
 
-			var local = world.ToLocal( pair.Body.WorldTransform );
-			Renderer.SetBoneTransform( pair.Bone, local );
+			if ( pair.Body.MotionEnabled )
+			{
+				var local = world.ToLocal( pair.Body.WorldTransform );
+				Renderer.SetBoneTransform( pair.Bone, local );
+			}
+			else
+			{
+				if ( Renderer.TryGetBoneTransform( pair.Bone, out var local ) )
+				{
+					pair.Body.LocalTransform = world.ToLocal( local );
+				}
+			}
 		}
 	}
 
 	protected override void OnUpdate()
 	{
-		if ( !Renderer.IsValid() )
-			return;
-
 		PositionRendererBonesFromPhysics();
 	}
 
