@@ -171,6 +171,8 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			body.RigidbodyFlags = RigidbodyFlags;
 			body.Locking = Locking;
 			body.MotionEnabled = MotionEnabled;
+			body.LinearDamping = part.LinearDamping;
+			body.AngularDamping = part.AngularDamping;
 
 			_bodies.Add( new BodyRecord( body, bone ) );
 
