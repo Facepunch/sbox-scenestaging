@@ -11,8 +11,11 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	private PhysicsLock _locking;
 	private bool _motionEnabled = true;
 
-	private record BoneBodyPair( BoneCollection.Bone Bone, Rigidbody Body );
-	private readonly List<BoneBodyPair> _bodies = new();
+	private record BodyRecord( Rigidbody Component, BoneCollection.Bone Bone );
+	private readonly List<BodyRecord> _bodies = new();
+
+	private record JointRecord( Joint Component, Transform Frame1, Transform Frame2 );
+	private readonly List<JointRecord> _joints = new();
 
 	[Property]
 	public Model Model
@@ -58,12 +61,12 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			_rigidBodyFlags = value;
 
-			foreach ( var pair in _bodies )
+			foreach ( var body in _bodies )
 			{
-				if ( !pair.Body.IsValid() )
+				if ( !body.Component.IsValid() )
 					continue;
 
-				pair.Body.RigidbodyFlags = value;
+				body.Component.RigidbodyFlags = value;
 			}
 		}
 	}
@@ -76,12 +79,12 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		{
 			_locking = value;
 
-			foreach ( var pair in _bodies )
+			foreach ( var body in _bodies )
 			{
-				if ( !pair.Body.IsValid() )
+				if ( !body.Component.IsValid() )
 					continue;
 
-				pair.Body.Locking = value;
+				body.Component.Locking = value;
 			}
 		}
 	}
@@ -102,18 +105,18 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			var boneVelocities = value ? Renderer.GetBoneVelocities() : null;
 
-			foreach ( var pair in _bodies )
+			foreach ( var body in _bodies )
 			{
-				if ( !pair.Body.IsValid() )
+				if ( !body.Component.IsValid() )
 					continue;
 
-				pair.Body.MotionEnabled = value;
+				body.Component.MotionEnabled = value;
 
 				if ( boneVelocities is not null )
 				{
-					var boneVelocity = boneVelocities[pair.Bone.Index];
-					pair.Body.Velocity = boneVelocity.Linear;
-					pair.Body.AngularVelocity = boneVelocity.Angular;
+					var boneVelocity = boneVelocities[body.Bone.Index];
+					body.Component.Velocity = boneVelocity.Linear;
+					body.Component.AngularVelocity = boneVelocity.Angular;
 				}
 			}
 		}
@@ -169,7 +172,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			body.Locking = Locking;
 			body.MotionEnabled = MotionEnabled;
 
-			_bodies.Add( new BoneBodyPair( bone, body ) );
+			_bodies.Add( new BodyRecord( body, bone ) );
 
 			foreach ( var sphere in part.Spheres )
 			{
@@ -200,8 +203,8 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		foreach ( var jointDesc in physics.Joints )
 		{
 			Joint joint = null;
-			var body = _bodies[jointDesc.Body1].Body;
-			var body2 = _bodies[jointDesc.Body2].Body;
+			var body = _bodies[jointDesc.Body1].Component;
+			var body2 = _bodies[jointDesc.Body2].Component;
 
 			var localFrame1 = jointDesc.Frame1.WithPosition( jointDesc.Frame1.Position * body.WorldScale );
 			var localFrame2 = jointDesc.Frame2.WithPosition( jointDesc.Frame2.Position * body2.WorldScale );
@@ -261,26 +264,29 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				joint.EnableCollision = jointDesc.EnableCollision;
 				joint.BreakForce = jointDesc.LinearStrength;
 				joint.BreakTorque = jointDesc.AngularStrength;
+
+				_joints.Add( new JointRecord( joint, jointDesc.Frame1, jointDesc.Frame2 ) );
 			}
 		}
 
-		foreach ( var pair in _bodies )
+		foreach ( var body in _bodies )
 		{
-			pair.Body.GameObject.Enabled = true;
+			body.Component.GameObject.Enabled = true;
 		}
 	}
 
 	private void DestroyPhysics()
 	{
-		foreach ( var pair in _bodies )
+		foreach ( var body in _bodies )
 		{
-			if ( !pair.Body.IsValid() )
+			if ( !body.Component.IsValid() )
 				continue;
 
-			pair.Body.DestroyGameObject();
+			body.Component.DestroyGameObject();
 		}
 
 		_bodies.Clear();
+		_joints.Clear();
 
 		if ( Renderer.IsValid() )
 		{
@@ -300,29 +306,47 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		var world = WorldTransform;
 
-		foreach ( var pair in _bodies )
+		foreach ( var body in _bodies )
 		{
-			if ( !pair.Body.IsValid() )
+			if ( !body.Component.IsValid() )
 				continue;
 
-			if ( pair.Body.MotionEnabled )
+			if ( body.Component.MotionEnabled )
 			{
-				var local = world.ToLocal( pair.Body.WorldTransform );
-				Renderer.SetBoneTransform( pair.Bone, local );
+				var local = world.ToLocal( body.Component.WorldTransform );
+				Renderer.SetBoneTransform( body.Bone, local );
 			}
 			else
 			{
-				if ( Renderer.TryGetBoneTransform( pair.Bone, out var local ) )
+				if ( Renderer.TryGetBoneTransform( body.Bone, out var local ) )
 				{
-					pair.Body.LocalTransform = world.ToLocal( local );
+					body.Component.LocalTransform = world.ToLocal( local );
 				}
 			}
+		}
+	}
+
+	private void UpdateJointScale()
+	{
+		foreach ( var joint in _joints )
+		{
+			if ( !joint.Component.IsValid() )
+				continue;
+
+			var point1 = joint.Component.Point1;
+			point1.LocalPosition = joint.Frame1.Position * joint.Component.WorldTransform.UniformScale;
+			joint.Component.Point1 = point1;
+
+			var point2 = joint.Component.Point2;
+			point2.LocalPosition = joint.Frame2.Position * joint.Component.Body.WorldTransform.UniformScale;
+			joint.Component.Point2 = point2;
 		}
 	}
 
 	protected override void OnUpdate()
 	{
 		PositionRendererBonesFromPhysics();
+		UpdateJointScale();
 	}
 
 	protected override void OnEnabled()
