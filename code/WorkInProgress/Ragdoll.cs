@@ -10,6 +10,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	private RigidbodyFlags _rigidBodyFlags;
 	private PhysicsLock _locking;
 	private bool _motionEnabled = true;
+	private Rigidbody _rootBody;
 
 	private record BodyRecord( Rigidbody Component, BoneCollection.Bone Bone );
 	private readonly List<BodyRecord> _bodies = new();
@@ -28,7 +29,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			_model = value;
 
-			OnModelChanged();
+			CreatePhysics();
 		}
 	}
 
@@ -122,16 +123,11 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
-	private void OnModelChanged()
+	private void CreatePhysics()
 	{
 		if ( !Active )
 			return;
 
-		CreatePhysics();
-	}
-
-	private void CreatePhysics()
-	{
 		DestroyPhysics();
 
 		if ( !Model.IsValid() )
@@ -150,21 +146,16 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		{
 			var bone = Model.Bones.GetBone( part.BoneName );
 
-			if ( Renderer.IsValid() && Renderer.TryGetBoneTransform( bone, out var local ) )
-			{
-				// Use transform of renderer bone
-				local = world.ToLocal( local );
-			}
-			else
+			if ( !Renderer.IsValid() || !Renderer.TryGetBoneTransform( bone, out var boneWorld ) )
 			{
 				// There's no renderer bones, use physics bind pose
-				local = part.Transform;
+				boneWorld = world.ToWorld( part.Transform );
 			}
 
 			var go = Scene.CreateObject( false );
-			go.Flags = GameObjectFlags.NotSaved;
+			go.Flags = GameObjectFlags.NotSaved | GameObjectFlags.Absolute;
 			go.Name = part.BoneName;
-			go.LocalTransform = local;
+			go.WorldTransform = boneWorld;
 			go.Parent = GameObject;
 
 			var body = go.AddComponent<Rigidbody>();
@@ -205,15 +196,15 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		foreach ( var jointDesc in physics.Joints )
 		{
 			Joint joint = null;
-			var body = _bodies[jointDesc.Body1].Component;
+			var body1 = _bodies[jointDesc.Body1].Component;
 			var body2 = _bodies[jointDesc.Body2].Component;
 
-			var localFrame1 = jointDesc.Frame1.WithPosition( jointDesc.Frame1.Position * body.WorldScale );
+			var localFrame1 = jointDesc.Frame1.WithPosition( jointDesc.Frame1.Position * body1.WorldScale );
 			var localFrame2 = jointDesc.Frame2.WithPosition( jointDesc.Frame2.Position * body2.WorldScale );
 
 			if ( jointDesc.Type == PhysicsGroupDescription.JointType.Hinge )
 			{
-				var hingeJoint = body.AddComponent<HingeJoint>();
+				var hingeJoint = body1.AddComponent<HingeJoint>();
 				hingeJoint.Attachment = HingeJoint.AttachmentMode.LocalFrames;
 				hingeJoint.LocalFrame1 = localFrame1;
 				hingeJoint.LocalFrame2 = localFrame2;
@@ -228,7 +219,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			}
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Ball )
 			{
-				var ballJoint = body.AddComponent<BallJoint>();
+				var ballJoint = body1.AddComponent<BallJoint>();
 				ballJoint.Attachment = BallJoint.AttachmentMode.LocalFrames;
 				ballJoint.LocalFrame1 = localFrame1;
 				ballJoint.LocalFrame2 = localFrame2;
@@ -249,13 +240,13 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			}
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Fixed )
 			{
-				var fixedJoint = body.AddComponent<FixedJoint>();
+				var fixedJoint = body1.AddComponent<FixedJoint>();
 
 				joint = fixedJoint;
 			}
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Slider )
 			{
-				var sliderJoint = body.AddComponent<SliderJoint>();
+				var sliderJoint = body1.AddComponent<SliderJoint>();
 
 				joint = sliderJoint;
 			}
@@ -270,6 +261,8 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				_joints.Add( new JointRecord( joint, jointDesc.Frame1, jointDesc.Frame2 ) );
 			}
 		}
+
+		_rootBody = _bodies[0].Component;
 
 		foreach ( var body in _bodies )
 		{
@@ -286,6 +279,8 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			body.Component.DestroyGameObject();
 		}
+
+		_rootBody = null;
 
 		_bodies.Clear();
 		_joints.Clear();
@@ -306,6 +301,11 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		Renderer.ClearPhysicsBones();
 
+		if ( _rootBody.IsValid() && _rootBody.MotionEnabled )
+		{
+			WorldTransform = _rootBody.WorldTransform;
+		}
+
 		var world = WorldTransform;
 
 		foreach ( var body in _bodies )
@@ -320,9 +320,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			}
 			else
 			{
-				if ( Renderer.TryGetBoneTransform( body.Bone, out var local ) )
+				if ( Renderer.TryGetBoneTransform( body.Bone, out var boneWorld ) )
 				{
-					body.Component.LocalTransform = world.ToLocal( local );
+					body.Component.WorldTransform = boneWorld;
 				}
 			}
 		}
