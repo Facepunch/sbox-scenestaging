@@ -52,6 +52,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	}
 
 	[Property]
+	public bool IgnoreRoot { get; set; }
+
+	[Property, Group( "Physics" )]
 	public RigidbodyFlags RigidbodyFlags
 	{
 		get => _rigidBodyFlags;
@@ -72,7 +75,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
-	[Property]
+	[Property, Group( "Physics" )]
 	public PhysicsLock Locking
 	{
 		get => _locking;
@@ -93,7 +96,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	/// <summary>
 	/// Enable to drive renderer from physics, disable to drive physics from renderer.
 	/// </summary>
-	[Property]
+	[Property, Group( "Physics" )]
 	public bool MotionEnabled
 	{
 		get => _motionEnabled;
@@ -301,7 +304,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		Renderer.ClearPhysicsBones();
 
-		if ( _rootBody.IsValid() && _rootBody.MotionEnabled )
+		if ( !IgnoreRoot && _rootBody.IsValid() && _rootBody.MotionEnabled )
 		{
 			WorldTransform = _rootBody.WorldTransform;
 		}
