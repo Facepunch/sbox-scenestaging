@@ -198,12 +198,13 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		foreach ( var jointDesc in physics.Joints )
 		{
-			Joint joint = null;
 			var body1 = _bodies[jointDesc.Body1].Component;
 			var body2 = _bodies[jointDesc.Body2].Component;
 
 			var localFrame1 = jointDesc.Frame1.WithPosition( jointDesc.Frame1.Position * body1.WorldScale );
 			var localFrame2 = jointDesc.Frame2.WithPosition( jointDesc.Frame2.Position * body2.WorldScale );
+
+			Joint joint = null;
 
 			if ( jointDesc.Type == PhysicsGroupDescription.JointType.Hinge )
 			{
