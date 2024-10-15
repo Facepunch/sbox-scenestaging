@@ -107,21 +107,12 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			_motionEnabled = value;
 
-			var boneVelocities = value ? Renderer.GetBoneVelocities() : null;
-
 			foreach ( var body in _bodies )
 			{
 				if ( !body.Component.IsValid() )
 					continue;
 
 				body.Component.MotionEnabled = value;
-
-				if ( boneVelocities is not null )
-				{
-					var boneVelocity = boneVelocities[body.Bone.Index];
-					body.Component.Velocity = boneVelocity.Linear;
-					body.Component.AngularVelocity = boneVelocity.Angular;
-				}
 			}
 		}
 	}
@@ -322,12 +313,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				var local = world.ToLocal( body.Component.WorldTransform );
 				Renderer.SetBoneTransform( body.Bone, local );
 			}
-			else
+			else if ( Renderer.TryGetBoneTransform( body.Bone, out var boneWorld ) )
 			{
-				if ( Renderer.TryGetBoneTransform( body.Bone, out var boneWorld ) )
-				{
-					body.Component.WorldTransform = boneWorld;
-				}
+				body.Component.SmoothMove( boneWorld, 0.01f, Time.Delta );
 			}
 		}
 	}
