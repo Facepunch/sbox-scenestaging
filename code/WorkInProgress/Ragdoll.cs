@@ -308,12 +308,13 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			if ( !body.Component.IsValid() )
 				continue;
 
+			var local = world.ToLocal( body.Component.WorldTransform );
+			Renderer.SetBoneTransform( body.Bone, local );
+
 			if ( body.Component.MotionEnabled )
-			{
-				var local = world.ToLocal( body.Component.WorldTransform );
-				Renderer.SetBoneTransform( body.Bone, local );
-			}
-			else if ( Renderer.TryGetBoneTransform( body.Bone, out var boneWorld ) )
+				continue;
+
+			if ( Renderer.TryGetBoneTransformAnimation( body.Bone, out var boneWorld ) )
 			{
 				body.Component.SmoothMove( boneWorld, 0.01f, Time.Delta );
 			}
