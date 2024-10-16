@@ -463,6 +463,132 @@
       ]
     },
     {
+      "__guid": "1d1699ae-0dcc-4548-bf28-e9d012751978",
+      "Flags": 0,
+      "Name": "Object",
+      "Position": "1289.328,-750.5251,-1605.302",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "8e4a3cb8-9cfe-4e3a-b8ff-a65709ecbf68",
+          "CastShadows": true,
+          "Color": {
+            "color": [
+              {
+                "t": 0.08547009,
+                "c": "1,1,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "EndCap": "None",
+          "Face": "Camera",
+          "Opaque": true,
+          "Points": [
+            {
+              "_type": "gameobject",
+              "go": "1d1699ae-0dcc-4548-bf28-e9d012751978"
+            },
+            {
+              "_type": "gameobject",
+              "go": "2c65e859-06fc-49fb-bc11-212d7e4d73ec"
+            },
+            {
+              "_type": "gameobject",
+              "go": "b31cc44b-2c24-4044-99d0-ddf5c4eb95da"
+            },
+            {
+              "_type": "gameobject",
+              "go": "cb967714-a38d-468a-9ac8-28cf01baab4f"
+            },
+            {
+              "_type": "gameobject",
+              "go": "64535924-d848-44ec-bfb4-a6ca236dc063"
+            },
+            {
+              "_type": "gameobject",
+              "go": "3fecb145-06fb-4f69-ba01-a8c3bfb7736b"
+            },
+            {
+              "_type": "gameobject",
+              "go": "a3985b78-0588-428c-a1e8-576deb14b2a0"
+            }
+          ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "SplineBias": 0,
+          "SplineContinuity": -0.02,
+          "SplineInterpolation": 5,
+          "SplineTension": -0.78,
+          "StartCap": "None",
+          "UseVectorPoints": false,
+          "VectorPoints": [
+            "0,0,0",
+            "100,0,0",
+            "100,200,0"
+          ],
+          "Width": {
+            "rangey": "0,2",
+            "frames": [
+              {
+                "y": 1
+              }
+            ]
+          },
+          "Wireframe": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "2c65e859-06fc-49fb-bc11-212d7e4d73ec",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "133.2572,-161.3346,0",
+          "Enabled": true
+        },
+        {
+          "__guid": "b31cc44b-2c24-4044-99d0-ddf5c4eb95da",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "445.8972,10.93268,-0.0003662109",
+          "Enabled": true
+        },
+        {
+          "__guid": "cb967714-a38d-468a-9ac8-28cf01baab4f",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "475.0634,977.5466,155.4927",
+          "Enabled": true
+        },
+        {
+          "__guid": "64535924-d848-44ec-bfb4-a6ca236dc063",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "22.30896,1548.401,95.11499",
+          "Enabled": true
+        },
+        {
+          "__guid": "3fecb145-06fb-4f69-ba01-a8c3bfb7736b",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "-948.7444,1038.272,511.5366",
+          "Enabled": true
+        },
+        {
+          "__guid": "a3985b78-0588-428c-a1e8-576deb14b2a0",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "-1.626709,-3.564819,-0.0003662109",
+          "Enabled": true
+        }
+      ]
+    },
+    {
       "__guid": "3892656c-65a1-4fa2-9e9a-393d70b91af9",
       "Flags": 0,
       "Name": "Surface",
@@ -7110,6 +7236,5 @@
     "rust.ground_junk_straight_a#25317",
     "rust.rock_cliff_a#25118"
   ],
-  "IsValid": true,
   "__version": 1
 }

@@ -84,10 +84,17 @@
 		bodyCollider.End = Vector3.Up * (bodyCollider.Radius + StepHeight * 0.1f);
 		bodyCollider.Friction = 0.0f;
 
+		/*
 		var feetCollider = Body.GameObject.GetOrAddComponent<SphereCollider>();
 		feetCollider.Radius = BodyRadius * 0.5f;
 		feetCollider.Center = new Vector3( 0, 0, BodyRadius * 0.5f );
-		feetCollider.Friction = IsOnGround ? 1.5f : 0;
+		feetCollider.Friction = IsOnGround ? 2340.5f : 0;
+		*/
+
+		var feetCollider = Body.GameObject.GetOrAddComponent<BoxCollider>();
+		feetCollider.Scale = new Vector3( BodyRadius, BodyRadius, BodyRadius * 0.5f );
+		feetCollider.Center = new Vector3( 0, 0, BodyRadius * 0.25f );
+		feetCollider.Friction = IsOnGround ? 2.5f : 0;
 
 
 		float massCenter = WishVelocity.Length.Clamp( 0, StepHeight + 2 );
@@ -121,10 +128,28 @@
 		}
 	}
 
-	public void Punch( Vector3 velocity )
+	/// <summary>
+	/// Adds velocity in a special way. First we subtract any opposite velocity (ie, falling) then 
+	/// we add the velocity, but we clamp it to that direction. This means that if you jump when you're running
+	/// up a platform, you don't get extra jump power.
+	/// </summary>
+	public void Jump( Vector3 velocity )
 	{
 		PreventGroundingForSeconds( 0.5f );
 		UpdateBody();
-		Body.PhysicsBody.ApplyForce( velocity * Body.PhysicsBody.Mass * 300 );
+
+		var currentVel = Body.Velocity;
+
+		// moving in the opposite direction
+		// because this is a jump, we want to counteract that
+		var dot = currentVel.Dot( velocity );
+		if ( dot < 0 )
+		{
+			currentVel = currentVel.SubtractDirection( velocity.Normal, 1 );
+		}
+
+		currentVel = currentVel.AddClamped( velocity, velocity.Length );
+
+		Body.Velocity = currentVel;
 	}
 }

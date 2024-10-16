@@ -144,7 +144,7 @@ public class PhysicalPlayerController : Component
 
 			var jumpDir = WishVelocity + Vector3.Up * 1200;
 
-			Controller.Punch( jumpDir.Normal * 130 );
+			Controller.Jump( jumpDir.Normal * 300 );
 			OnJump();
 		}
 
