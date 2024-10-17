@@ -34,7 +34,7 @@
 		var groundVel = GroundVelocity.z;
 		bool wasOnGround = IsOnGround;
 
-		if ( IsSwimming || OnLadder )
+		if ( IsSwimming || IsClimbing )
 		{
 			PreventGroundingForSeconds( 0.1f );
 			UpdateGround( default );

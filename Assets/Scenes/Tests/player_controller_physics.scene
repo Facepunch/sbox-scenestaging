@@ -285,7 +285,7 @@
           "Projection": "Box",
           "RenderDynamically": true,
           "TintColor": "1,1,1,1",
-          "UpdateStrategy": "EveryFrame",
+          "UpdateStrategy": "OnEnabled",
           "ZFar": 4096,
           "ZNear": 16
         }
@@ -5563,14 +5563,200 @@
       "__guid": "5aed61dc-e130-4716-87d6-49f4d565b228",
       "Flags": 0,
       "Name": "ladder",
-      "Position": "-188.2567,1592.416,-1503.684",
-      "Scale": "0.5,0.5,5",
+      "Position": "-188.2567,1599.763,-1493.898",
+      "Rotation": "0,0,-0.7071067,0.7071068",
+      "Scale": "0.1,0.5,5",
       "Tags": "ladder",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "50e287d5-3708-45e6-b5c8-981a04e00259",
+          "__enabled": false,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/dev/primary_white_trans.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": false,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.50233,0.3813,0.15654,0.77"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "f3073149-a6ff-435e-9a20-2fb53b875705",
+          "Center": "0,0,0",
+          "IsTrigger": true,
+          "Scale": "50,50,50",
+          "Static": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "ebbeecd6-b1c0-42ac-8f78-760c3831a8f1",
+          "Flags": 0,
+          "Name": "wood_ladder",
+          "Position": "-7.757569,-1.050201,-27.97756",
+          "Scale": "10,2,0.2",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "62fb7263-0147-47d2-bc89-46f46bb3c648",
+              "BodyGroups": 18446744073709551615,
+              "Model": "models/rust_props/ladder_set/wood_ladder.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "cfea45c9-8ea2-420e-b1d6-df90accd45cf",
+      "Flags": 0,
+      "Name": "ladder",
+      "Position": "-692.9548,1599.763,-1493.898",
+      "Rotation": "0,0,-0.7071067,0.7071068",
+      "Scale": "0.1,0.5,5",
+      "Tags": "ladder",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "c61dbe26-0e73-4f9f-a498-7d0691dce738",
+          "__enabled": false,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/dev/primary_white_trans.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": false,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.50233,0.3813,0.15654,0.77"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "4def70a4-5edb-4ce3-ad9d-239d492463ae",
+          "Center": "0,0,0",
+          "IsTrigger": true,
+          "Scale": "50,50,50",
+          "Static": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "c08265be-e95b-42e0-855f-5426ef3e49c8",
+          "Flags": 0,
+          "Name": "wood_ladder",
+          "Position": "-7.757569,-1.050201,-27.97756",
+          "Scale": "10,2,0.2",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "9602d377-eab4-4040-9446-918cfa3fdf14",
+              "BodyGroups": 18446744073709551615,
+              "Model": "models/rust_props/ladder_set/wood_ladder.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "94467817-35e9-4c0b-a537-2ab50549482e",
+      "Flags": 0,
+      "Name": "ladder",
+      "Position": "-856.1866,1599.763,-1493.898",
+      "Rotation": "0,0,-0.7071067,0.7071068",
+      "Scale": "0.1,0.5,5",
+      "Tags": "ladder",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "4c941737-676e-4b49-bf53-96ad354f14b4",
+          "__enabled": false,
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/dev/primary_white_trans.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": false,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.50233,0.3813,0.15654,0.77"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "8e540e82-7d2f-412a-a2df-5a9b9cb836c0",
+          "Center": "0,0,0",
+          "IsTrigger": true,
+          "Scale": "50,50,50",
+          "Static": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "bc13b728-e0da-42ea-b1c5-2f38145d1b23",
+          "Flags": 0,
+          "Name": "wood_ladder",
+          "Position": "-7.757569,-1.050201,-27.97756",
+          "Scale": "10,2,0.2",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "29f8c25d-78f8-4bf1-bbd8-0ac40b18494d",
+              "BodyGroups": 18446744073709551615,
+              "Model": "models/rust_props/ladder_set/wood_ladder.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "5361bc8b-2d7f-4f3f-afe4-874d894fb3c3",
+      "Flags": 0,
+      "Name": "ladder",
+      "Position": "-74.75484,1625.526,-1493.898",
+      "Scale": "0.1,0.5,5",
+      "Tags": "ladder",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "8a7c0d3b-53e0-4aa9-9c84-bb75dfbfb3c9",
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/dev/primary_white_trans.vmat",
           "Model": "models/dev/box.vmdl",
@@ -5585,7 +5771,41 @@
         },
         {
           "__type": "Sandbox.BoxCollider",
-          "__guid": "f3073149-a6ff-435e-9a20-2fb53b875705",
+          "__guid": "724a3e8b-2a02-48d4-a631-c652c0a3787e",
+          "Center": "0,0,0",
+          "IsTrigger": true,
+          "Scale": "50,50,50",
+          "Static": false
+        }
+      ]
+    },
+    {
+      "__guid": "0d1ca134-83ed-4b2e-989d-d32b94bca80c",
+      "Flags": 0,
+      "Name": "ladder",
+      "Position": "183.713,1625.526,-1493.898",
+      "Scale": "0.2,0.5,5",
+      "Tags": "ladder",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "2c6f95ea-bf99-4100-8895-7453c103de0f",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/dev/primary_white_trans.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.50233,0.3813,0.15654,0.77"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "430d32c7-187d-470b-a953-0fbd78ccd52a",
           "Center": "0,0,0",
           "IsTrigger": true,
           "Scale": "50,50,50",
@@ -6044,6 +6264,38 @@
       ]
     },
     {
+      "__guid": "0ebcd23d-ae97-44c5-8741-22ec54cdb6b4",
+      "Flags": 0,
+      "Name": "Cube (2)",
+      "Position": "183.4664,1626.617,-1510.413",
+      "Scale": "0.1,1,5.5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "5d585ec7-6703-4e2a-9718-c1f6ec7e2ac9",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "36fbfa83-3cf1-4ef3-81fb-0eadf9728179",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true
+        }
+      ]
+    },
+    {
       "__guid": "29d3ce44-3c9d-43d8-8bd3-cedf02991d5a",
       "Flags": 0,
       "Name": "Cube (2)",
@@ -6079,8 +6331,8 @@
       "__guid": "62a09211-2530-4d08-b6e3-c08a4a4c4a08",
       "Flags": 0,
       "Name": "Conveyor",
-      "Position": "427.4961,1380.156,-1662.044",
-      "Rotation": "0.0004861689,0.002106174,-0.2249155,0.9743759",
+      "Position": "634.9321,1801.895,-1662.044",
+      "Rotation": "0.0000000000850752,-0.00000000001963793,-0.224916,0.9743782",
       "Scale": "3,20,1",
       "Enabled": true,
       "Components": [
@@ -6110,6 +6362,120 @@
           "__type": "Conveyor",
           "__guid": "f819f8a0-8948-4999-9aee-2887a813c70c",
           "Velocity": "0,-100,0"
+        }
+      ]
+    },
+    {
+      "__guid": "90d87f29-bbc6-4f6e-9a9a-7d2b19906bc8",
+      "Flags": 0,
+      "Name": "Conveyor",
+      "Position": "949.163,1648.662,-1662.044",
+      "Rotation": "0.0000000000850752,-0.00000000001963793,-0.224916,0.9743782",
+      "Scale": "3,20,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "22567b37-1401-44f6-9848-a5e3abf1c288",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.06512,0.06512,0.06512,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "98cf0965-de01-48f5-bb3c-38321cae0284",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true
+        },
+        {
+          "__type": "Conveyor",
+          "__guid": "8e1b8894-1558-44e0-a0a3-9a94c2c358ba",
+          "Velocity": "0,100,0"
+        }
+      ]
+    },
+    {
+      "__guid": "f86f7cdc-37ec-4c63-b09a-67a665175a3d",
+      "Flags": 0,
+      "Name": "Conveyor",
+      "Position": "597.9102,1333.963,-1662.044",
+      "Rotation": "0.0000000000850752,-0.00000000001963793,-0.224916,0.9743782",
+      "Scale": "10,3,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "4f45d954-bce6-4e5c-808c-19998e1dd003",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.06512,0.06512,0.06512,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "c0a5a962-2070-4811-b255-ab57ed465229",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true
+        },
+        {
+          "__type": "Conveyor",
+          "__guid": "3d55b954-26f6-47c5-ac3e-d725e6026003",
+          "Velocity": "100,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "a2e82bfd-860d-4996-acd6-e5b1898f5289",
+      "Flags": 0,
+      "Name": "Conveyor",
+      "Position": "976.0624,2109.43,-1662.044",
+      "Rotation": "0.0000000000850752,-0.00000000001963793,-0.224916,0.9743782",
+      "Scale": "10,3,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "b3b9d44c-bed8-4661-a2e5-6554364ae03d",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.06512,0.06512,0.06512,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "d65d9677-a8f8-4210-8e39-7460ac78c1b6",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true
+        },
+        {
+          "__type": "Conveyor",
+          "__guid": "871fcbc0-80d5-46d5-9b9f-a1c124088ea8",
+          "Velocity": "-100,0,0"
         }
       ]
     },
@@ -10281,7 +10647,8 @@
     "facepunch.tallgrass_c#29067",
     "rust.ground_junk_a#25316",
     "rust.ground_junk_straight_a#25317",
-    "rust.rock_cliff_a#25118"
+    "rust.rock_cliff_a#25118",
+    "rust.wood_ladder#25199"
   ],
   "__version": 1
 }

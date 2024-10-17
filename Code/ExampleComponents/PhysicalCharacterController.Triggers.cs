@@ -1,4 +1,5 @@
-﻿public sealed partial class PhysicalCharacterController : Component
+﻿
+public sealed partial class PhysicalCharacterController : Component
 {
 
 	void CategorizeTriggers()
@@ -12,6 +13,7 @@
 
 		float waterLevel = 0;
 		bool ladder = false;
+		GameObject ladderObject = default;
 
 		foreach ( var touch in Body.Touching )
 		{
@@ -28,22 +30,40 @@
 					waterLevel = level;
 			}
 
-			ladder = ladder || touch.Tags.Contains( "ladder" );
+			if ( ladder == false && touch.Tags.Contains( "ladder" ) )
+			{
+				var ladderSurface = touch.FindClosestPoint( head );
+				var level = Vector3.InverseLerp( ladderSurface, foot, head, true );
+
+				// Don't start climbing this ladder if it's below us, and we're not already climbing it
+				if ( ClimbingObject != touch.GameObject && level < 0.5f )
+					continue;
+
+				ladderObject = touch.GameObject;
+			}
 		}
 
-		if ( OnLadder != ladder )
-		{
-			OnLadder = ladder;
-			Log.Info( $"Ladder: {OnLadder}" );
-		}
+		TryStartClimbing( ladderObject );
 
 		if ( WaterLevel != waterLevel )
 		{
 			WaterLevel = waterLevel;
-			//Log.Info( $"WaterLevel: {WaterLevel}" );
 		}
 
-		Body.Gravity = !IsSwimming && !OnLadder;
-		Body.LinearDamping = Body.Gravity ? 0 : 2;
+		if ( IsSwimming )
+		{
+			Body.Gravity = false;
+			Body.LinearDamping = 5;
+		}
+		else if ( IsClimbing )
+		{
+			Body.Gravity = false;
+			Body.LinearDamping = 10;
+		}
+		else
+		{
+			Body.Gravity = true;
+			Body.LinearDamping = 0.1f;
+		}
 	}
 }

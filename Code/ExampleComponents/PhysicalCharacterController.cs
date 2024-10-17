@@ -72,13 +72,13 @@
 	{
 		CategorizeGround();
 		CategorizeTriggers();
+		UpdatePositionOnLadder();
 		UpdateGroundVelocity();
 
 		Velocity = Body.Velocity - GroundVelocity;
 	}
 
 	public bool InWater { get; set; }
-	public bool OnLadder { get; set; }
 
 	protected override void OnUpdate()
 	{
@@ -145,7 +145,7 @@
 	/// </summary>
 	public void Jump( Vector3 velocity )
 	{
-		PreventGroundingForSeconds( 0.5f );
+		PreventGroundingForSeconds( 0.2f );
 		UpdateBody();
 
 		var currentVel = Body.Velocity;

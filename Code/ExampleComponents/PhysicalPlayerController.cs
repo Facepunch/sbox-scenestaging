@@ -88,26 +88,33 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 		// rotate body to look angles
 		if ( Body.IsValid() )
 		{
-			var targetAngle = new Angles( 0, EyeAngles.yaw, 0 ).ToRotation();
-
-			var v = Controller.Velocity.WithZ( 0 );
-
-			if ( v.Length > 10.0f )
+			if ( Controller.IsClimbing )
 			{
-				targetAngle = Rotation.LookAt( v, Vector3.Up );
+				Body.WorldRotation = Rotation.Lerp( Body.WorldRotation, Controller.ClimbingRotation, Time.Delta * 5.0f );
 			}
-
-			float rotateDifference = Body.WorldRotation.Distance( targetAngle );
-
-			if ( rotateDifference > 50.0f || Controller.Velocity.Length > 10.0f )
+			else
 			{
-				var newRotation = Rotation.Lerp( Body.WorldRotation, targetAngle, Time.Delta * 2.0f );
+				var targetAngle = new Angles( 0, EyeAngles.yaw, 0 ).ToRotation();
 
-				// We won't end up actually moving to the targetAngle, so calculate how much we're actually moving
-				var angleDiff = Body.WorldRotation.Angles() - newRotation.Angles(); // Rotation.Distance is unsigned
-				moveRotationSpeed = angleDiff.yaw / Time.Delta;
+				var v = Controller.Velocity.WithZ( 0 );
 
-				Body.WorldRotation = newRotation;
+				if ( v.Length > 10.0f )
+				{
+					targetAngle = Rotation.LookAt( v, Vector3.Up );
+				}
+
+				float rotateDifference = Body.WorldRotation.Distance( targetAngle );
+
+				if ( rotateDifference > 50.0f || Controller.Velocity.Length > 10.0f )
+				{
+					var newRotation = Rotation.Lerp( Body.WorldRotation, targetAngle, Time.Delta * 2.0f );
+
+					// We won't end up actually moving to the targetAngle, so calculate how much we're actually moving
+					var angleDiff = Body.WorldRotation.Angles() - newRotation.Angles(); // Rotation.Distance is unsigned
+					moveRotationSpeed = angleDiff.yaw / Time.Delta;
+
+					Body.WorldRotation = newRotation;
+				}
 			}
 		}
 
@@ -116,12 +123,13 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 		{
 			AnimationHelper.WithVelocity( Controller.WishVelocity );
 			AnimationHelper.WithWishVelocity( Controller.WishVelocity );
-			AnimationHelper.IsGrounded = Controller.IsOnGround;
+			AnimationHelper.IsGrounded = Controller.IsOnGround || Controller.IsClimbing;
 			AnimationHelper.MoveRotationSpeed = moveRotationSpeed;
 			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
 			AnimationHelper.MoveStyle = IsRunning ? CitizenAnimationHelper.MoveStyles.Run : CitizenAnimationHelper.MoveStyles.Walk;
 			AnimationHelper.DuckLevel = IsDucked ? 1 : 0;
 			AnimationHelper.IsSwimming = Controller.IsSwimming;
+			AnimationHelper.IsClimbing = Controller.IsClimbing;
 		}
 	}
 
@@ -148,8 +156,23 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 
 			if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
 
-			if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
-			else WishVelocity *= 110.0f;
+			if ( Controller.IsClimbing )
+			{
+				WishVelocity = new Vector3( 0, 0, Input.AnalogMove.x );
+
+				WishVelocity *= 340.0f;
+
+				if ( Input.Down( "jump" ) )
+				{
+					// Jump away from ladder
+					Controller.Jump( Controller.ClimbingRotation.Backward * 200 );
+				}
+			}
+			else
+			{
+				if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
+				else WishVelocity *= 110.0f;
+			}
 		}
 
 		if ( Controller.TimeSinceGrounded < 0.3f && Input.Pressed( "Jump" ) && timeSinceJump > 0.5f )
@@ -173,17 +196,23 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 				Controller.Jump( Vector3.Up * 300 );
 			}
 		}
+		else if ( Controller.IsClimbing )
+		{
+
+		}
 		else
 		{
 			Controller.IsSwimming = Controller.WaterLevel > 0.7f;
 		}
 
-
-
 		if ( Controller.WaterLevel > 0 )
 			DebugDrawSystem.Current.AddText( WorldPosition + Vector3.Up * 80, $"WaterLevel: {Controller.WaterLevel}" );
 
 		if ( Controller.IsSwimming )
+		{
+			Controller.WishVelocity = WishVelocity;
+		}
+		else if ( Controller.IsClimbing )
 		{
 			Controller.WishVelocity = WishVelocity;
 		}
