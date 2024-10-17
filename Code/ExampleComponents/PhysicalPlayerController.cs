@@ -114,7 +114,7 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 
 		if ( AnimationHelper.IsValid() )
 		{
-			AnimationHelper.WithVelocity( Controller.Velocity );
+			AnimationHelper.WithVelocity( Controller.WishVelocity );
 			AnimationHelper.WithWishVelocity( WishVelocity );
 			AnimationHelper.IsGrounded = Controller.IsOnGround;
 			AnimationHelper.MoveRotationSpeed = moveRotationSpeed;
@@ -139,11 +139,11 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 
 		BuildWishVelocity();
 
-		if ( Controller.TimeSinceGrounded < 0.3f && Input.Down( "Jump" ) && timeSinceJump > 0.5f )
+		if ( Controller.TimeSinceGrounded < 0.3f && Input.Pressed( "Jump" ) && timeSinceJump > 0.5f )
 		{
 			timeSinceJump = 0;
 
-			var jumpDir = WishVelocity + Vector3.Up * 1200;
+			var jumpDir = Vector3.Up * 10;
 
 			Controller.Jump( jumpDir.Normal * 300 );
 			OnJump();

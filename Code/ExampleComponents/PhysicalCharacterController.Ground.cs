@@ -9,6 +9,7 @@
 
 	GameObject GroundObject { get; set; }
 	Component GroundComponent { get; set; }
+	float GroundFriction { get; set; }
 
 	TimeUntil timeUntilAllowedGround = 0;
 
@@ -69,7 +70,7 @@
 
 		if ( !tr.StartedSolid && tr.Hit && CanStandOnSurfaceNormal( tr.Normal ) )
 		{
-			UpdateGround( tr.Body );
+			UpdateGround( tr );
 
 			//
 			// Stick to ground
@@ -100,9 +101,11 @@
 		return Vector3.GetAngle( Vector3.Up, normal ) <= GroundAngle;
 	}
 
-	void UpdateGround( PhysicsBody body )
+	void UpdateGround( SceneTraceResult tr )
 	{
 		var wasGrounded = IsOnGround;
+
+		var body = tr.Body;
 
 		GroundObject = body?.GetGameObject();
 		GroundComponent = body?.GetComponent();
@@ -111,6 +114,13 @@
 		{
 			TimeSinceGrounded = 0;
 			_groundTransform = GroundObject.WorldTransform;
+			GroundFriction = tr.Surface.Friction;
+
+			if ( tr.Component is Collider collider )
+			{
+				if ( collider.Friction.HasValue )
+					GroundFriction = collider.Friction.Value;
+			}
 		}
 		else
 		{

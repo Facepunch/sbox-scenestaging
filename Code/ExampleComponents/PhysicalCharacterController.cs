@@ -29,6 +29,8 @@
 	{
 		UpdateBody();
 
+		var groundFriction = 0.25f + GroundFriction * 10;
+
 		if ( !WishVelocity.IsNearZeroLength )
 		{
 			var z = Body.Velocity.z;
@@ -41,12 +43,12 @@
 
 			if ( IsOnGround )
 			{
-				var amount = 15;
+				var amount = 1 * groundFriction;
 				velocity = velocity.AddClamped( wish * amount, wish.Length * amount );
 			}
 			else
 			{
-				var amount = 0.15f;
+				var amount = 0.05f;
 				velocity = velocity.AddClamped( wish * amount, wish.Length );
 			}
 
@@ -94,7 +96,7 @@
 		var feetCollider = Body.GameObject.GetOrAddComponent<BoxCollider>();
 		feetCollider.Scale = new Vector3( BodyRadius, BodyRadius, BodyRadius * 0.5f );
 		feetCollider.Center = new Vector3( 0, 0, BodyRadius * 0.25f );
-		feetCollider.Friction = IsOnGround ? 2.5f : 0;
+		feetCollider.Friction = IsOnGround ? 1f : 0;
 
 
 		float massCenter = WishVelocity.Length.Clamp( 0, StepHeight + 2 );
