@@ -156,9 +156,7 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 		{
 			timeSinceJump = 0;
 
-			var jumpDir = Vector3.Up * 10;
-
-			Controller.Jump( jumpDir.Normal * 300 );
+			Controller.Jump( Vector3.Up * 300 );
 			OnJump();
 		}
 
@@ -166,15 +164,27 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 
 		IsDucked = Input.Down( "duck" );
 
-		Controller.IsSwimming = Controller.WaterLevel > 0.5f;
+		if ( Controller.IsSwimming )
+		{
+			Controller.IsSwimming = Controller.WaterLevel > 0.3f;
+
+			if ( !Controller.IsSwimming && Input.Down( "Jump" ) )
+			{
+				Controller.Jump( Vector3.Up * 300 );
+			}
+		}
+		else
+		{
+			Controller.IsSwimming = Controller.WaterLevel > 0.7f;
+		}
+
+
 
 		if ( Controller.WaterLevel > 0 )
 			DebugDrawSystem.Current.AddText( WorldPosition + Vector3.Up * 80, $"WaterLevel: {Controller.WaterLevel}" );
 
 		if ( Controller.IsSwimming )
 		{
-
-
 			Controller.WishVelocity = WishVelocity;
 		}
 		else
