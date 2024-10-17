@@ -34,6 +34,13 @@
 		var groundVel = GroundVelocity.z;
 		bool wasOnGround = IsOnGround;
 
+		if ( IsSwimming || OnLadder )
+		{
+			PreventGroundingForSeconds( 0.1f );
+			UpdateGround( default );
+			return;
+		}
+
 		// ground is pushing us crazy, stop being grounded
 		if ( groundVel > 250 )
 		{

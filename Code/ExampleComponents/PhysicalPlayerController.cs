@@ -115,12 +115,13 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 		if ( AnimationHelper.IsValid() )
 		{
 			AnimationHelper.WithVelocity( Controller.WishVelocity );
-			AnimationHelper.WithWishVelocity( WishVelocity );
+			AnimationHelper.WithWishVelocity( Controller.WishVelocity );
 			AnimationHelper.IsGrounded = Controller.IsOnGround;
 			AnimationHelper.MoveRotationSpeed = moveRotationSpeed;
 			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
 			AnimationHelper.MoveStyle = IsRunning ? CitizenAnimationHelper.MoveStyles.Run : CitizenAnimationHelper.MoveStyles.Walk;
 			AnimationHelper.DuckLevel = IsDucked ? 1 : 0;
+			AnimationHelper.IsSwimming = Controller.IsSwimming;
 		}
 	}
 
@@ -137,7 +138,19 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 		if ( IsProxy )
 			return;
 
-		BuildWishVelocity();
+		// create WishVelocity
+		{
+			var rot = EyeAngles.ToRotation();
+
+			WishVelocity = rot * Input.AnalogMove;
+
+			if ( Controller.IsSwimming && Input.Down( "jump" ) ) WishVelocity += Vector3.Up;
+
+			if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
+
+			if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
+			else WishVelocity *= 110.0f;
+		}
 
 		if ( Controller.TimeSinceGrounded < 0.3f && Input.Pressed( "Jump" ) && timeSinceJump > 0.5f )
 		{
@@ -153,31 +166,35 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 
 		IsDucked = Input.Down( "duck" );
 
-		if ( IsDucked )
+		Controller.IsSwimming = Controller.WaterLevel > 0.5f;
+
+		if ( Controller.WaterLevel > 0 )
+			DebugDrawSystem.Current.AddText( WorldPosition + Vector3.Up * 80, $"WaterLevel: {Controller.WaterLevel}" );
+
+		if ( Controller.IsSwimming )
 		{
-			Controller.BodyHeight = 40;
+
+
+			Controller.WishVelocity = WishVelocity;
 		}
 		else
 		{
-			Controller.BodyHeight = 64;
+
+			if ( IsDucked )
+			{
+				Controller.BodyHeight = 40;
+			}
+			else
+			{
+				Controller.BodyHeight = 64;
+			}
+
+			Controller.WishVelocity = WishVelocity.WithZ( 0 );
 		}
 
-		Controller.WishVelocity = WishVelocity.WithZ( 0 );
+
 
 		UpdatePressure();
-	}
-
-	public void BuildWishVelocity()
-	{
-		var rot = EyeAngles.ToRotation();
-
-		WishVelocity = rot * Input.AnalogMove;
-		WishVelocity = WishVelocity.WithZ( 0 );
-
-		if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
-
-		if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
-		else WishVelocity *= 110.0f;
 	}
 
 	public void Explode()
@@ -211,7 +228,7 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 		if ( pressure < 0 ) pressure = 0;
 
 		//if ( pressure > 100000 )
-		DebugDrawSystem.Current.AddText( WorldPosition + Vector3.Up * 80, $"pressure: {pressure}" );
+		//DebugDrawSystem.Current.AddText( WorldPosition + Vector3.Up * 80, $"pressure: {pressure}" );
 
 		if ( pressure > 500000 )
 			Explode();

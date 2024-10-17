@@ -35,8 +35,8 @@
 		{
 			var z = Body.Velocity.z;
 
-			var velocity = (Body.Velocity - GroundVelocity).WithZ( 0 );
-			var wish = WishVelocity.WithZ( 0 );
+			var velocity = (Body.Velocity - GroundVelocity);
+			var wish = WishVelocity;
 			var speed = velocity.Length;
 
 			var maxSpeed = MathF.Max( wish.Length, speed );
@@ -56,7 +56,11 @@
 				velocity = velocity.Normal * maxSpeed;
 
 			velocity += GroundVelocity;
-			velocity.z = z;
+
+			if ( IsOnGround )
+			{
+				velocity.z = z;
+			}
 
 			Body.Velocity = velocity;
 		}
@@ -67,10 +71,14 @@
 	void IScenePhysicsEvents.PostPhysicsStep()
 	{
 		CategorizeGround();
+		CategorizeTriggers();
 		UpdateGroundVelocity();
 
 		Velocity = Body.Velocity - GroundVelocity;
 	}
+
+	public bool InWater { get; set; }
+	public bool OnLadder { get; set; }
 
 	protected override void OnUpdate()
 	{
@@ -154,4 +162,5 @@
 
 		Body.Velocity = currentVel;
 	}
+
 }
