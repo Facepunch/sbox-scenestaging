@@ -5,7 +5,7 @@ using Sandbox.Citizen;
 // It needs a clean up !
 //
 
-public class PhysicalPlayerController : Component
+public class PhysicalPlayerController : Component, Component.ICollisionListener
 {
 	[RequireComponent] public PhysicalCharacterController Controller { get; set; }
 
@@ -15,6 +15,7 @@ public class PhysicalPlayerController : Component
 	[Property] public GameObject Eye { get; set; }
 	[Property] public CitizenAnimationHelper AnimationHelper { get; set; }
 	[Property] public bool FirstPerson { get; set; }
+	[Property] public GameObject Gibs { get; set; }
 
 	[Sync] public Angles EyeAngles { get; set; }
 	[Sync] public bool IsRunning { get; set; }
@@ -163,6 +164,7 @@ public class PhysicalPlayerController : Component
 
 		Controller.WishVelocity = WishVelocity.WithZ( 0 );
 
+		UpdatePressure();
 	}
 
 	public void BuildWishVelocity()
@@ -176,5 +178,42 @@ public class PhysicalPlayerController : Component
 
 		if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
 		else WishVelocity *= 110.0f;
+	}
+
+	public void Explode()
+	{
+		Gibs.SetParent( Scene, true );
+		Gibs.Enabled = true;
+
+		foreach ( var rb in Gibs.GetComponentsInChildren<Rigidbody>() )
+		{
+			rb.Velocity = Vector3.Random * 1000;
+		}
+
+		GameObject.Destroy();
+	}
+
+
+	float pressure;
+
+	void ICollisionListener.OnCollisionStart( Collision collision )
+	{
+		pressure += collision.Contact.Impulse;
+	}
+	void ICollisionListener.OnCollisionUpdate( Collision collision )
+	{
+		pressure += collision.Contact.Impulse;
+	}
+
+	void UpdatePressure()
+	{
+		pressure -= 1000000;
+		if ( pressure < 0 ) pressure = 0;
+
+		//if ( pressure > 100000 )
+		DebugDrawSystem.Current.AddText( WorldPosition + Vector3.Up * 80, $"pressure: {pressure}" );
+
+		if ( pressure > 500000 )
+			Explode();
 	}
 }

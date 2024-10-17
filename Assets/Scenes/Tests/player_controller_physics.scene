@@ -151,7 +151,7 @@
         {
           "__type": "Sandbox.SkyBox2D",
           "__guid": "1fda29f3-d82f-4797-8cfc-cb2f0e52dd4f",
-          "SkyIndirectLighting": true,
+          "SkyIndirectLighting": false,
           "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
           "Tint": "1,1,1,1"
         }
@@ -173,6 +173,121 @@
           "Height": 1024,
           "StartDistance": 0,
           "VerticalFalloffExponent": 5
+        }
+      ]
+    },
+    {
+      "__guid": "7959ffa0-6e12-4c4f-927a-a38109217175",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "830.004,661.5084,-1556.891",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "2fb168b2-c1de-4fd1-ab41-8834db6461c2",
+          "BackgroundColor": "0.25292,0.26086,0.29703,1",
+          "ClearFlags": "All",
+          "FieldOfView": 94.33,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 0.1
+        },
+        {
+          "__type": "Sandbox.FilmGrain",
+          "__guid": "87ceb933-6ed8-43cf-b8fe-3a6b37299488",
+          "Intensity": 0.03,
+          "Response": 1
+        },
+        {
+          "__type": "Sandbox.Vignette",
+          "__guid": "763cec62-0832-403e-ac94-1fc25c6dc09f",
+          "Center": "0.5,0.5",
+          "Color": "0,0,0,0.38",
+          "Intensity": 1,
+          "Roundness": 0.5,
+          "Smoothness": 1
+        },
+        {
+          "__type": "Sandbox.ChromaticAberration",
+          "__guid": "a2415026-3ec9-4b50-b0bd-473d5a340808",
+          "Offset": "4,6,4.049999",
+          "Scale": 0.2
+        },
+        {
+          "__type": "Sandbox.Sharpen",
+          "__guid": "984a314c-701d-4068-8485-b8c36d9c1cd8",
+          "Scale": 1
+        },
+        {
+          "__type": "Sandbox.Highlight",
+          "__guid": "050315c7-7657-41b4-850c-3574b372ca1c"
+        },
+        {
+          "__type": "Sandbox.Bloom",
+          "__guid": "d98f2f74-c559-4c89-9212-f41967092d6c",
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "0.5,0.5,0.5,1"
+              }
+            ],
+            "alpha": []
+          },
+          "BloomCurve": {
+            "rangey": "0,106.45",
+            "frames": [
+              {},
+              {
+                "x": 1,
+                "y": 1
+              }
+            ]
+          },
+          "Mode": "Screen",
+          "Strength": 1,
+          "Threshold": 0.3,
+          "ThresholdWidth": 2
+        }
+      ]
+    },
+    {
+      "__guid": "1ba81285-4cbf-4490-93dc-860855204d3d",
+      "Flags": 0,
+      "Name": "Cubemap",
+      "Position": "1030.004,661.5084,-1532.835",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.EnvmapProbe",
+          "__guid": "ef9d54ba-1dac-4307-aa85-33a4c559f18c",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "Bounds": {
+            "Mins": "-5120,-5120,-5120",
+            "Maxs": "5120,5120,5120"
+          },
+          "DelayBetweenUpdates": 0.1,
+          "Feathering": 0.25,
+          "FrameInterval": 5,
+          "MaxDistance": 512,
+          "MultiBounce": false,
+          "Projection": "Box",
+          "RenderDynamically": true,
+          "TintColor": "1,1,1,1",
+          "UpdateStrategy": "EveryFrame",
+          "ZFar": 4096,
+          "ZNear": 16
         }
       ]
     },
@@ -231,9 +346,9 @@
           "BodyHeight": 64,
           "BodyRadius": 16,
           "Feet": true,
-          "FeetDebug": true,
+          "FeetDebug": false,
           "GroundAngle": 45,
-          "StepDebug": true,
+          "StepDebug": false,
           "StepHeight": 18,
           "StepUp": true
         },
@@ -254,96 +369,14 @@
             "_type": "gameobject",
             "go": "6dcac1b2-f3ce-4915-b96f-c45a736a8453"
           },
-          "FirstPerson": false
+          "FirstPerson": false,
+          "Gibs": {
+            "_type": "gameobject",
+            "go": "ce9b316d-ca55-4627-8520-97820675f98b"
+          }
         }
       ],
       "Children": [
-        {
-          "__guid": "7959ffa0-6e12-4c4f-927a-a38109217175",
-          "Flags": 0,
-          "Name": "Camera",
-          "Position": "-200,0,64",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.CameraComponent",
-              "__guid": "2fb168b2-c1de-4fd1-ab41-8834db6461c2",
-              "BackgroundColor": "0.25292,0.26086,0.29703,1",
-              "ClearFlags": "All",
-              "FieldOfView": 94.33,
-              "IsMainCamera": true,
-              "Orthographic": false,
-              "OrthographicHeight": 1204,
-              "Priority": 1,
-              "RenderExcludeTags": "",
-              "RenderTags": "",
-              "TargetEye": "None",
-              "Viewport": "0,0,1,1",
-              "ZFar": 10000,
-              "ZNear": 0.1
-            },
-            {
-              "__type": "Sandbox.FilmGrain",
-              "__guid": "87ceb933-6ed8-43cf-b8fe-3a6b37299488",
-              "Intensity": 0.03,
-              "Response": 1
-            },
-            {
-              "__type": "Sandbox.Vignette",
-              "__guid": "763cec62-0832-403e-ac94-1fc25c6dc09f",
-              "Center": "0.5,0.5",
-              "Color": "0,0,0,0.38",
-              "Intensity": 1,
-              "Roundness": 0.5,
-              "Smoothness": 1
-            },
-            {
-              "__type": "Sandbox.ChromaticAberration",
-              "__guid": "a2415026-3ec9-4b50-b0bd-473d5a340808",
-              "Offset": "4,6,4.049999",
-              "Scale": 0.2
-            },
-            {
-              "__type": "Sandbox.Sharpen",
-              "__guid": "984a314c-701d-4068-8485-b8c36d9c1cd8",
-              "Scale": 1
-            },
-            {
-              "__type": "Sandbox.Highlight",
-              "__guid": "050315c7-7657-41b4-850c-3574b372ca1c"
-            },
-            {
-              "__type": "Sandbox.Bloom",
-              "__guid": "d98f2f74-c559-4c89-9212-f41967092d6c",
-              "BloomColor": {
-                "color": [
-                  {
-                    "c": "1,1,1,1"
-                  },
-                  {
-                    "t": 1,
-                    "c": "0.5,0.5,0.5,1"
-                  }
-                ],
-                "alpha": []
-              },
-              "BloomCurve": {
-                "rangey": "0,106.45",
-                "frames": [
-                  {},
-                  {
-                    "x": 1,
-                    "y": 1
-                  }
-                ]
-              },
-              "Mode": "Screen",
-              "Strength": 1,
-              "Threshold": 0.3,
-              "ThresholdWidth": 2
-            }
-          ]
-        },
         {
           "__guid": "6dcac1b2-f3ce-4915-b96f-c45a736a8453",
           "Flags": 0,
@@ -457,6 +490,945 @@
                 }
               ],
               "Wireframe": false
+            }
+          ]
+        },
+        {
+          "__guid": "ce9b316d-ca55-4627-8520-97820675f98b",
+          "Flags": 0,
+          "Name": "Gibs",
+          "Position": "-8.092041,8.425354,-14.495",
+          "Components": [
+            {
+              "__type": "Sandbox.SoundPointComponent",
+              "__guid": "70506518-5b2c-42e6-b38c-efc45fdc08ff",
+              "DistanceAttenuation": false,
+              "DistanceAttenuationOverride": false,
+              "Force2d": false,
+              "MaxRepeatTime": 1,
+              "MinRepeatTime": 1,
+              "Occlusion": false,
+              "OcclusionOverride": false,
+              "OcclusionRadius": 32,
+              "Pitch": 1,
+              "PlayOnStart": true,
+              "ReflectionOverride": false,
+              "Reflections": false,
+              "Repeat": false,
+              "SoundEvent": "flesh_bloody_break.sound",
+              "SoundOverride": false,
+              "StopOnNew": false,
+              "TargetMixer": {
+                "Name": "unknown",
+                "Id": "00000000-0000-0000-0000-000000000000"
+              },
+              "Volume": 1
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "84df922b-40ea-49de-bedc-9bbf6b6b0aa6",
+              "Flags": 0,
+              "Name": "Guts",
+              "Position": "0.0002441406,0,-0.0002441406",
+              "Scale": "1.3,1.3,1.3",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "0bc7fcd9-e713-421c-9a49-1dde26d18585",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "a6522a37-7b6f-4e8c-9041-2dee8d4b12b2",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "2b1da9ce-46c2-4a7b-a590-a84a39c178eb",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "5ba6d047-3bc3-48aa-b35a-9bac43abe4a5",
+              "Flags": 0,
+              "Name": "Guts",
+              "Position": "0.0002441406,0,-18.49463",
+              "Scale": "2,2,2",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "df1d25e3-926d-4c07-88db-0d41e697374c",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "cb321bad-0cab-404e-b5ff-2a2d58917d6a",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "6115d68c-7d0a-4d66-b008-2e32d1d63b23",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "60e83a7c-7ea0-4796-8c41-4228743b7d3a",
+              "Flags": 0,
+              "Name": "Guts",
+              "Position": "0.0002441406,-76.67084,39.68127",
+              "Rotation": "-0.6087614,0,0,0.7933534",
+              "Scale": "2,3,2",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "d8afa2b1-2685-4dd7-aedd-97a247932f1e",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "941577ca-5ee1-4e9b-bad9-116f4bfd23b3",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "60e2195f-7cc2-4360-b359-c5797e4a21ac",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "9632c5e3-d50a-4f4a-906d-b6445db2b63c",
+              "Flags": 0,
+              "Name": "Blood Cloud",
+              "Position": "0.0002441406,-5.663574,46.75598",
+              "Scale": "1,1,2",
+              "Tags": "particles",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ParticleEffect",
+                  "__guid": "8b348366-5fb9-4ca0-add1-81d0e182d0e7",
+                  "__version": 1,
+                  "Alpha": {
+                    "Type": "CurveRange",
+                    "CurveA": [
+                      {
+                        "y": 0.1969697
+                      },
+                      {
+                        "x": 1
+                      }
+                    ],
+                    "CurveB": [
+                      {
+                        "y": 0.23106061
+                      },
+                      {
+                        "x": 1
+                      }
+                    ],
+                    "Constants": "1,0,0,0"
+                  },
+                  "ApplyAlpha": true,
+                  "ApplyColor": true,
+                  "ApplyRotation": false,
+                  "ApplyShape": true,
+                  "Bounce": {},
+                  "Brightness": {
+                    "Constants": "1,0,0,0"
+                  },
+                  "Bumpiness": {},
+                  "Collision": false,
+                  "CollisionRadius": 1,
+                  "Damping": {
+                    "Constants": "0.4,0,0,0"
+                  },
+                  "DieOnCollisionChance": {},
+                  "Force": true,
+                  "ForceDirection": "0,0,-1",
+                  "ForceScale": {
+                    "Constants": "2,0,0,0"
+                  },
+                  "Friction": {
+                    "Constants": "10,0,0,0"
+                  },
+                  "Gradient": {
+                    "Type": "Range",
+                    "GradientA": {
+                      "color": [
+                        {
+                          "t": 0.5,
+                          "c": "1,1,1,1"
+                        }
+                      ],
+                      "alpha": []
+                    },
+                    "GradientB": {
+                      "color": [
+                        {
+                          "t": 0.5,
+                          "c": "1,1,1,1"
+                        }
+                      ],
+                      "alpha": []
+                    },
+                    "ConstantA": "0.06047,0.06047,0.06047,1",
+                    "ConstantB": "0.45116,0.45116,0.45116,1"
+                  },
+                  "Lifetime": {
+                    "Type": "Range",
+                    "Evaluation": "Particle",
+                    "Constants": "2,15,0,0"
+                  },
+                  "MaxParticles": 1000,
+                  "OrbitalForce": {},
+                  "OrbitalPull": {},
+                  "PerParticleTimeScale": {
+                    "Constants": "1,0,0,0"
+                  },
+                  "Pitch": {},
+                  "PreWarm": 0,
+                  "PushStrength": {},
+                  "Roll": {},
+                  "Scale": {
+                    "Type": "Range",
+                    "Evaluation": "Particle",
+                    "Constants": "10,30,0,0"
+                  },
+                  "SequenceId": {},
+                  "SequenceSpeed": {
+                    "Constants": "1,0,0,0"
+                  },
+                  "SequenceTime": {
+                    "Constants": "1,0,0,0"
+                  },
+                  "SheetSequence": false,
+                  "Space": "World",
+                  "StartDelay": {},
+                  "StartVelocity": {
+                    "Constants": "1,0,0,0"
+                  },
+                  "Stretch": {},
+                  "TimeScale": 1,
+                  "Tint": "0.26512,0.04439,0.04439,1",
+                  "Yaw": {}
+                },
+                {
+                  "__type": "Sandbox.ParticleSphereEmitter",
+                  "__guid": "897788e9-71c4-4ff7-8cef-2e12e70b1853",
+                  "Burst": 50,
+                  "Delay": 0,
+                  "DestroyOnEnd": false,
+                  "Duration": 2,
+                  "Loop": false,
+                  "OnEdge": false,
+                  "Radius": 14.8,
+                  "Rate": 0,
+                  "RateOverDistance": 0,
+                  "Velocity": 20
+                },
+                {
+                  "__type": "Sandbox.ParticleSpriteRenderer",
+                  "__guid": "e3a4499d-7486-4ef0-bd33-443d5e87216b",
+                  "Additive": false,
+                  "Alignment": "LookAtCamera",
+                  "BlurAmount": 0.5,
+                  "BlurOpacity": 0.5,
+                  "BlurSpacing": 0.5,
+                  "DepthFeather": 4.38,
+                  "FaceVelocity": false,
+                  "FogStrength": 1,
+                  "LeadingTrail": true,
+                  "Lighting": true,
+                  "MotionBlur": false,
+                  "Opaque": false,
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RotationOffset": 0,
+                  "Scale": 1.16,
+                  "Shadows": false,
+                  "SortMode": "ByDistance",
+                  "Texture": "materials/particles/smoke/render/smokeloop_g_1.vtex"
+                }
+              ]
+            },
+            {
+              "__guid": "b8d55257-7a94-44a4-a0b0-bfe171e58fa0",
+              "Flags": 0,
+              "Name": "Blood Burst",
+              "Position": "0.0002441406,-5.663574,46.75598",
+              "Scale": "1,1,2",
+              "Tags": "particles",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ParticleEffect",
+                  "__guid": "658bd55f-f121-405b-89a8-da47f99e9be1",
+                  "__version": 1,
+                  "Alpha": {
+                    "Type": "CurveRange",
+                    "CurveA": [
+                      {
+                        "y": 0.5378788
+                      },
+                      {
+                        "x": 1
+                      }
+                    ],
+                    "CurveB": [
+                      {
+                        "y": 1
+                      },
+                      {
+                        "x": 1
+                      }
+                    ],
+                    "Constants": "1,0,0,0"
+                  },
+                  "ApplyAlpha": true,
+                  "ApplyColor": true,
+                  "ApplyRotation": false,
+                  "ApplyShape": true,
+                  "Bounce": {},
+                  "Brightness": {
+                    "Constants": "1,0,0,0"
+                  },
+                  "Bumpiness": {},
+                  "Collision": false,
+                  "CollisionRadius": 1,
+                  "Damping": {},
+                  "DieOnCollisionChance": {},
+                  "Force": true,
+                  "ForceDirection": "0,0,-600",
+                  "ForceScale": {
+                    "Constants": "1,0,0,0"
+                  },
+                  "Friction": {
+                    "Constants": "10,0,0,0"
+                  },
+                  "Gradient": {
+                    "Type": "Range",
+                    "GradientA": {
+                      "color": [
+                        {
+                          "t": 0.5,
+                          "c": "1,1,1,1"
+                        }
+                      ],
+                      "alpha": []
+                    },
+                    "GradientB": {
+                      "color": [
+                        {
+                          "t": 0.5,
+                          "c": "1,1,1,1"
+                        }
+                      ],
+                      "alpha": []
+                    },
+                    "ConstantA": "0.06047,0.06047,0.06047,1",
+                    "ConstantB": "0.45116,0.45116,0.45116,1"
+                  },
+                  "Lifetime": {
+                    "Type": "Range",
+                    "Evaluation": "Particle",
+                    "Constants": "0.5,1,0,0"
+                  },
+                  "MaxParticles": 1000,
+                  "OrbitalForce": {},
+                  "OrbitalPull": {},
+                  "PerParticleTimeScale": {
+                    "Constants": "1,0,0,0"
+                  },
+                  "Pitch": {},
+                  "PreWarm": 0,
+                  "PushStrength": {},
+                  "Roll": {},
+                  "Scale": {
+                    "Type": "Range",
+                    "Evaluation": "Particle",
+                    "Constants": "10,30,0,0"
+                  },
+                  "SequenceId": {},
+                  "SequenceSpeed": {
+                    "Constants": "1,0,0,0"
+                  },
+                  "SequenceTime": {
+                    "Constants": "1,0,0,0"
+                  },
+                  "SheetSequence": false,
+                  "Space": "World",
+                  "StartDelay": {},
+                  "StartVelocity": {
+                    "Constants": "1,0,0,0"
+                  },
+                  "Stretch": {},
+                  "TimeScale": 1,
+                  "Tint": "0.26512,0.04439,0.04439,1",
+                  "Yaw": {}
+                },
+                {
+                  "__type": "Sandbox.ParticleSphereEmitter",
+                  "__guid": "58aa5f48-0b24-460d-8130-fc1b2f1d3ffe",
+                  "Burst": 50,
+                  "Delay": 0,
+                  "DestroyOnEnd": false,
+                  "Duration": 2,
+                  "Loop": false,
+                  "OnEdge": false,
+                  "Radius": 14.8,
+                  "Rate": 0,
+                  "RateOverDistance": 0,
+                  "Velocity": 200
+                },
+                {
+                  "__type": "Sandbox.ParticleSpriteRenderer",
+                  "__guid": "d3f5c25f-6b96-4d2b-a0a6-f12c695158d2",
+                  "Additive": false,
+                  "Alignment": "LookAtCamera",
+                  "BlurAmount": 0.5,
+                  "BlurOpacity": 0.5,
+                  "BlurSpacing": 0.5,
+                  "DepthFeather": 33.26,
+                  "FaceVelocity": false,
+                  "FogStrength": 1,
+                  "LeadingTrail": true,
+                  "Lighting": true,
+                  "MotionBlur": false,
+                  "Opaque": false,
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RotationOffset": 0,
+                  "Scale": 2,
+                  "Shadows": false,
+                  "SortMode": "Unsorted",
+                  "Texture": "textures/particles/splatter.vtex"
+                }
+              ]
+            },
+            {
+              "__guid": "42f94fb2-e327-47cc-b18a-3956f28a720e",
+              "Flags": 0,
+              "Name": "Guts",
+              "Position": "-14.24524,0,-32.85608",
+              "Scale": "3,2,2",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "a1b1065f-6de5-444b-b033-8d2554e92b60",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "a7f1132e-edbf-4cdf-86af-9a5cf53fa582",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "8808b679-8b70-4c71-9938-a1d9ebd400a7",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "df250bf7-c7c4-4f0b-9d83-f7d8d871d146",
+              "Flags": 0,
+              "Name": "Guts",
+              "Position": "-14.24524,0,-11.41101",
+              "Scale": "2.2,2.7,2",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "11ae5a8a-e8b8-484f-afd0-d473f5b1c935",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "2db54284-8bfb-45cd-a3e7-308074a22b3a",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "ca9b2750-415d-4928-85af-4f4734b87304",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "205fb1b0-ef01-46fe-9edc-96096291bd14",
+              "Flags": 0,
+              "Name": "Entrails",
+              "Position": "-15.45251,0,-0.0002441406",
+              "Scale": "2,2,2",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "381df29e-15b0-4272-a6d4-dba17fb29dcf",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/intestine_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "be4edcbd-d3c1-4faa-bc55-3df3555ffa8d",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/intestine_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "44da109a-32dc-4401-8c8d-0cf9da96a778",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "0ce4e4a6-d841-44a8-84f6-98bc46c4517f",
+              "Flags": 0,
+              "Name": "Entrails",
+              "Position": "6.185547,-8.246826,-12.43079",
+              "Scale": "2,2,2",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "00bade73-508c-4f21-ba85-337be9fcfbe8",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/intestine_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "40997622-ac33-428b-86d2-b0e527be1347",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/intestine_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "5db476f5-fd0f-4456-924b-1b4e74a88813",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "dd85d944-ba35-44d3-b99b-657ce63c71dc",
+              "Flags": 0,
+              "Name": "Entrails",
+              "Position": "0.5291138,-13.59253,-21.29065",
+              "Scale": "2,2,2",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "4906f94c-175c-41b4-956e-fd6fd0e8916a",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/organ_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "5c3395a3-9189-4496-b0fe-84a3dfc681bb",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/organ_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "2dd95d3b-3a83-4ab2-a19a-8d2fb29617a3",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "98024f08-ce0f-49a1-9ce7-0b016eb42f6f",
+              "Flags": 0,
+              "Name": "Entrails",
+              "Position": "-23.9668,0,-35.69592",
+              "Scale": "2,5,2",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "82ffca83-699f-4e11-b639-94a396931617",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/organ_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "574e44a5-5b77-4c0b-90e0-69a0f6b63e4f",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/organ_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "eda28f5d-c59f-45b4-b5af-d8692208dbd0",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "86efb3b5-0e81-4530-97ae-39b66e08c8cc",
+              "Flags": 0,
+              "Name": "Entrails",
+              "Position": "-3.597778,-0.00006103516,1.79248",
+              "Scale": "2,1,2",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "ea79fc64-41cd-4554-88cf-611c52566da7",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/organ_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "74a0965c-7ad7-4d50-a554-cce1e5403b77",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/organ_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "fe948d07-038d-4845-80b0-56dbcc312c63",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "bcef882f-ed45-4a75-9190-59541b182b7d",
+              "Flags": 0,
+              "Name": "Entrails",
+              "Position": "-3.597778,-0.00006103516,0.0736084",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "e988b324-46e5-4e4e-8059-efd0b146012f",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/skull_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "c9a2ae0a-c100-4322-ae71-0ab4c35d3b41",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/skull_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "8ffc651c-886b-4789-90ac-b51ff9b59b1f",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "74c95cda-cf96-4dcc-8e0b-03fbbee1b0e4",
+              "Flags": 0,
+              "Name": "Entrails",
+              "Position": "-3.597778,-0.00006103516,-18.21399",
+              "Scale": "2,2,2",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "e3b91008-aec9-4733-9202-f288757cde86",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/skeleton_pelvis_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "80f4accc-4bca-45c3-8682-c3dbd4204eea",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/skeleton_pelvis_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "fcd66441-24cc-42f1-841f-156defe592ab",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
+            },
+            {
+              "__guid": "026cbcaf-1383-413f-8f69-ec78c008b27d",
+              "Flags": 0,
+              "Name": "Entrails",
+              "Position": "8.960449,0,-46.24707",
+              "Rotation": "0.01095857,0.005400183,-0.8969353,0.4419931",
+              "Scale": "3,3,3",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "ab7c7465-f74a-49e9-a8ed-eada7d04882f",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/citizen_gibs/models/intestine_gib.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.ModelCollider",
+                  "__guid": "e362c22d-0219-4bbb-9e14-c7b5a8b0a4ff",
+                  "IsTrigger": false,
+                  "Model": "models/citizen_gibs/models/intestine_gib.vmdl",
+                  "Static": false
+                },
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "e83cf899-6748-4dca-b113-09434091e4af",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": "DisableCollisionSounds",
+                  "StartAsleep": false
+                }
+              ]
             }
           ]
         }
@@ -1237,7 +2209,7 @@
           "__type": "MoveComponent",
           "__guid": "fc844f37-7456-4f8b-949b-47bbd0dec6ff",
           "Distance": "0,800,0",
-          "Speed": 1.5
+          "Speed": 1
         }
       ]
     },
@@ -1405,6 +2377,222 @@
           "__guid": "2b7badd0-9263-455a-a335-a0d830e268aa",
           "Distance": "0,0,-500",
           "Speed": 7
+        }
+      ]
+    },
+    {
+      "__guid": "16fe3f5e-09da-413a-b215-a480e4d1c8fa",
+      "Flags": 0,
+      "Name": "Crusher",
+      "Position": "869.7732,332.9717,-1477.363",
+      "Scale": "2,2,2",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "3ed17933-bce9-4c05-9379-b9f1d2af5251",
+          "__enabled": false,
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "18db6d27-6d12-4be4-be48-5782008f3c62",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "b061a4da-9c90-494b-84d1-bb6ed48397c7",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false
+        },
+        {
+          "__type": "MoveComponent",
+          "__guid": "12398857-077b-4bdf-ba37-2adb6646947b",
+          "Distance": "0,0,-100",
+          "Speed": 2
+        }
+      ]
+    },
+    {
+      "__guid": "286d3e3d-4d07-4cf0-89e7-62fdb3eb6e9a",
+      "Flags": 0,
+      "Name": "Crusher",
+      "Position": "869.7732,170.024,-1440.24",
+      "Scale": "2,2,2",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "a36996ce-ab93-41ab-b3fb-766c70b291dd",
+          "__enabled": false,
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "9388da79-7958-4d1e-b844-67cf613d9cd3",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "8c52347f-83f1-4041-863c-51cd330de7c5",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false
+        },
+        {
+          "__type": "MoveComponent",
+          "__guid": "524bda0a-2605-4e03-ad0a-f080c5b92ec4",
+          "Distance": "0,0,-100",
+          "Speed": 0.1
+        }
+      ]
+    },
+    {
+      "__guid": "22b91445-7be3-4748-a039-b7a07f68e3ee",
+      "Flags": 0,
+      "Name": "Red Crusher",
+      "Position": "869.7732,682.8709,-1588.28",
+      "Scale": "3,1,2",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "1fbc260a-cbb9-47eb-a529-89eff6503d1b",
+          "__enabled": false,
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "28d3d4c5-da74-4390-88e5-9fe5e8e48fdf",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,0,0,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "e6b63683-532d-4d44-9bab-9ed3471d0bab",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false
+        },
+        {
+          "__type": "MoveComponent",
+          "__guid": "5c7002c0-de60-4fd7-bac3-19fa482862c1",
+          "Distance": "0,50,0",
+          "Speed": 10
+        }
+      ]
+    },
+    {
+      "__guid": "6c0ab6f0-8e64-47bf-9e50-054fcf22867a",
+      "Flags": 0,
+      "Name": "Blue Crusher",
+      "Position": "869.7732,622.7498,-1588.28",
+      "Scale": "3,1,2",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "22615532-b560-4c97-8001-1d8ed1421338",
+          "__enabled": false,
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "596fcd00-f409-4f1d-a221-a05b3fd6c0aa",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0,0.23333,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "5cb533e4-5eda-450f-b0be-51b8ec85335d",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false
+        },
+        {
+          "__type": "MoveComponent",
+          "__guid": "96496b71-1ee4-4518-8731-e06768037e78",
+          "Distance": "0,-50,0",
+          "Speed": 10
         }
       ]
     },
@@ -4662,6 +5850,55 @@
       ]
     },
     {
+      "__guid": "90991423-02f3-4171-a16f-84296bc8be76",
+      "Flags": 0,
+      "Name": "Floor",
+      "Position": "868.3595,315.6279,-1731.606",
+      "Rotation": "-0.00000003235617,-0.003203978,0.0000000001042814,0.9999951",
+      "Scale": "4,9.181759,4",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "e47ac7ad-c3ab-47e6-8f56-6c1ac89e7192",
+          "__enabled": false,
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "9435152a-cff1-4ee1-b365-d78708e69e68",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "6453ec74-f733-4cfb-ba6f-925314750802",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false
+        }
+      ]
+    },
+    {
       "__guid": "0984ca9c-563c-4fcd-89d6-ac7349828e28",
       "Flags": 0,
       "Name": "Cube (2)",
@@ -6847,35 +8084,6 @@
           "LightColor": "197.47,197.47,197.47,1",
           "Radius": 3000,
           "Shadows": true
-        }
-      ]
-    },
-    {
-      "__guid": "eed1d0da-fb94-44c7-b17b-638cddf71838",
-      "Flags": 0,
-      "Name": "Cubemap",
-      "Position": "1099.505,-0.0033,-1162.002",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.EnvmapProbe",
-          "__guid": "76eb74c9-3a36-4de2-83df-891871c1029a",
-          "Texture": "textures/cubemaps/default2.vtex",
-          "Bounds": {
-            "Mins": "-5120,-5120,-5120",
-            "Maxs": "5120,5120,5120"
-          },
-          "DelayBetweenUpdates": 0.1,
-          "Feathering": 0.25,
-          "FrameInterval": 5,
-          "MaxDistance": 512,
-          "MultiBounce": false,
-          "Projection": "Box",
-          "RenderDynamically": false,
-          "TintColor": "1,1,1,1",
-          "UpdateStrategy": "OnEnabled",
-          "ZFar": 4096,
-          "ZNear": 16
         }
       ]
     },
