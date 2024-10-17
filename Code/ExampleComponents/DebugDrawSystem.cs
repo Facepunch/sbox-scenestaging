@@ -192,4 +192,55 @@ public class DebugDrawSystem : GameObjectSystem<DebugDrawSystem>
 	{
 		inFixedUpdate = false;
 	}
+
+	internal IConfigurableDebug AddText( Vector3 vector3, string v, float size = 18 )
+	{
+		var entry = new Entry();
+		entry.life = Time.Delta;
+
+		var so = new TextSceneObject( Scene.SceneWorld );
+		so.ScreenPosition = Scene.Camera.PointToScreenPixels( vector3 );
+		so.Flags.CastShadows = false;
+		so.TextBlock = new TextRendering.Scope( v, Color.White, size );
+
+		entry.sceneObject = so;
+
+		return Add( entry );
+	}
+}
+
+internal class TextSceneObject : SceneCustomObject
+{
+	public TextRendering.Scope TextBlock;
+	public TextFlag TextFlags = TextFlag.Center;
+	public Vector2 ScreenPosition;
+
+	public TextSceneObject( SceneWorld sceneWorld ) : base( sceneWorld )
+	{
+		RenderLayer = SceneRenderLayer.OverlayWithoutDepth;
+	}
+
+	public override void RenderSceneObject()
+	{
+		var pos = ScreenPosition;
+		var size = new Vector3( 1024 );
+
+		if ( TextFlags.Contains( TextFlag.CenterHorizontally ) )
+		{
+			pos.x -= size.x * 0.5f;
+		}
+
+		if ( TextFlags.Contains( TextFlag.CenterVertically ) )
+		{
+			pos.y -= size.y * 0.5f;
+		}
+
+		if ( TextFlags.Contains( TextFlag.Bottom ) )
+		{
+			pos.y -= size.y;
+		}
+
+		var rect = new Rect( pos, size );
+		Graphics.DrawText( rect, TextBlock, TextFlags );
+	}
 }
