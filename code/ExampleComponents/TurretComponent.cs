@@ -28,7 +28,7 @@ public sealed class TurretComponent : Component
 		if ( timeSincePrimary < 0 ) return;
 
 		GunModel.Tint = GunColorGradient.Evaluate( timeSincePrimary * 2.0f );
-		GunModel.Transform.LocalScale = GunSizeCurve.Evaluate( timeSincePrimary * 2.0f );
+		GunModel.LocalScale = GunSizeCurve.Evaluate( timeSincePrimary * 2.0f );
 	}
 
 	protected override void OnUpdate()
@@ -39,7 +39,7 @@ public sealed class TurretComponent : Component
 		turretYaw -= Input.MouseDelta.x * 0.1f;
 		turretPitch += Input.MouseDelta.y * 0.1f;
 		turretPitch = turretPitch.Clamp( -30, 30 );
-		Gun.Transform.Rotation = Rotation.From( turretPitch, turretYaw, 0 );
+		Gun.WorldRotation = Rotation.From( turretPitch, turretYaw, 0 );
 
 		var bbox = BBox.FromPositionAndSize( 0, 5 );
 
@@ -48,8 +48,8 @@ public sealed class TurretComponent : Component
 		if ( Input.Down( "Forward" ) ) movement += Transform.World.Forward;
 		if ( Input.Down( "backward" ) ) movement += Transform.World.Backward;
 
-		var rot = GameObject.Transform.Rotation;
-		var pos = GameObject.Transform.Position + movement * Time.Delta * 100.0f;
+		var rot = GameObject.WorldRotation;
+		var pos = GameObject.WorldPosition + movement * Time.Delta * 100.0f;
 
 		if ( Input.Down( "Left" ) )
 		{
@@ -67,22 +67,22 @@ public sealed class TurretComponent : Component
 		{
 			Assert.NotNull( Bullet );
 
-			var obj = Bullet.Clone( Muzzle.Transform.Position, Muzzle.Transform.Rotation );
+			var obj = Bullet.Clone( Muzzle.WorldPosition, Muzzle.WorldRotation );
 			var physics = obj.Components.Get<Rigidbody>( FindMode.EnabledInSelfAndDescendants );
 			if ( physics.IsValid() )
 			{
-				physics.Velocity = Muzzle.Transform.Rotation.Forward * 2000.0f;
+				physics.Velocity = Muzzle.WorldRotation.Forward * 2000.0f;
 			}
 
 			Stats.Increment( "balls_fired", 1 );
 
 			// Testing sound
-			Sound.Play( "sounds/kenney/ui/ui.downvote.sound", Transform.Position );
+			Sound.Play( "sounds/kenney/ui/ui.downvote.sound", WorldPosition );
 			timeSincePrimary = 0;
 		}
 
 		var tr = Scene.Trace
-			.Ray( Muzzle.Transform.Position + Muzzle.Transform.Rotation.Forward * 50.0f, Muzzle.Transform.Position + Muzzle.Transform.Rotation.Forward * 4000 )
+			.Ray( Muzzle.WorldPosition + Muzzle.WorldRotation.Forward * 50.0f, Muzzle.WorldPosition + Muzzle.WorldRotation.Forward * 4000 )
 			.Size( bbox )
 			//.Radius( 40 )
 			.Run();
@@ -123,7 +123,7 @@ public sealed class TurretComponent : Component
 
 			int i = 0;
 
-			var r = Muzzle.Transform.Rotation;
+			var r = Muzzle.WorldRotation;
 
 			for ( float f = 0; f < tr.Distance; f += 10.0f )
 			{

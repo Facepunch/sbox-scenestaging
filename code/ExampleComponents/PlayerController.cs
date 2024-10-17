@@ -30,7 +30,7 @@ public class PlayerController : Component
 		var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
 		if ( cam.IsValid() )
 		{
-			var ee = cam.Transform.Rotation.Angles();
+			var ee = cam.WorldRotation.Angles();
 			ee.roll = 0;
 			EyeAngles = ee;
 		}
@@ -52,13 +52,13 @@ public class PlayerController : Component
 
 			if ( FirstPerson )
 			{
-				cam.Transform.Position = Eye.Transform.Position;
-				cam.Transform.Rotation = lookDir;
+				cam.WorldPosition = Eye.WorldPosition;
+				cam.WorldRotation = lookDir;
 			}
 			else
 			{
-				cam.Transform.Position = Transform.Position + lookDir.Backward * 300 + Vector3.Up * 75.0f;
-				cam.Transform.Rotation = lookDir;
+				cam.WorldPosition = WorldPosition + lookDir.Backward * 300 + Vector3.Up * 75.0f;
+				cam.WorldRotation = lookDir;
 			}
 
 
@@ -83,17 +83,17 @@ public class PlayerController : Component
 				targetAngle = Rotation.LookAt( v, Vector3.Up );
 			}
 
-			float rotateDifference = Body.Transform.Rotation.Distance( targetAngle );
+			float rotateDifference = Body.WorldRotation.Distance( targetAngle );
 
 			if ( rotateDifference > 50.0f || cc.Velocity.Length > 10.0f )
 			{
-				var newRotation = Rotation.Lerp( Body.Transform.Rotation, targetAngle, Time.Delta * 2.0f );
+				var newRotation = Rotation.Lerp( Body.WorldRotation, targetAngle, Time.Delta * 2.0f );
 
 				// We won't end up actually moving to the targetAngle, so calculate how much we're actually moving
-				var angleDiff = Body.Transform.Rotation.Angles() - newRotation.Angles(); // Rotation.Distance is unsigned
+				var angleDiff = Body.WorldRotation.Angles() - newRotation.Angles(); // Rotation.Distance is unsigned
 				moveRotationSpeed = angleDiff.yaw / Time.Delta;
 
-				Body.Transform.Rotation = newRotation;
+				Body.WorldRotation = newRotation;
 			}
 		}
 

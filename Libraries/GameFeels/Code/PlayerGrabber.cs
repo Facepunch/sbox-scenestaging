@@ -77,7 +77,7 @@ public class PlayerGrabber : Component
 			return;
 		}
 
-		var tr = Scene.Trace.Ray( Scene.Camera.Transform.Position, Scene.Camera.Transform.Position + Scene.Camera.Transform.Rotation.Forward * 1000 )
+		var tr = Scene.Trace.Ray( Scene.Camera.WorldPosition, Scene.Camera.WorldPosition + Scene.Camera.WorldRotation.Forward * 1000 )
 			.Run();
 
 		if ( !tr.Hit || tr.Body is null )
@@ -152,7 +152,7 @@ public class PlayerGrabber : Component
 
 		timeSinceShoot = 0;
 
-		Sound.Play( shootSound, Transform.Position );
+		Sound.Play( shootSound, WorldPosition );
 
 		var ray = Scene.Camera.ScreenNormalToRay( 0.5f );
 		ray.Forward += Vector3.Random * 0.03f;

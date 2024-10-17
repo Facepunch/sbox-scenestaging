@@ -79,7 +79,7 @@ public sealed class ParticleLineRenderer : ParticleRenderer, Component.ExecuteIn
 			return;
 		}
 
-		var viewerPosition = Scene.Camera?.Transform.Position ?? Vector3.Zero;
+		var viewerPosition = Scene.Camera?.WorldPosition ?? Vector3.Zero;
 
 		_so.RenderingEnabled = true;
 		_so.Transform = Transform.World;

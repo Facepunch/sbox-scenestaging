@@ -9,7 +9,7 @@
 		{
 			for ( var i = 0; i < AmountToSpawn; i++ )
 			{
-				var go = PrefabToSpawn.Clone( Transform.Position );
+				var go = PrefabToSpawn.Clone( WorldPosition );
 				go.NetworkSpawn();
 			}
 		}

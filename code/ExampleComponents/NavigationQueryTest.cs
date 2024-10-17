@@ -23,7 +23,7 @@ public sealed class NavigationQueryTest : Component
 			timeSinceUpdate = 0;
 			foreach ( var agent in Scene.GetAllComponents<NavMeshAgent>() )
 			{
-				agent.MoveTo( Transform.Position );
+				agent.MoveTo( WorldPosition );
 			}
 		}
 	}
@@ -34,13 +34,13 @@ public sealed class NavigationQueryTest : Component
 
 		if ( ClosestPoint )
 		{
-			var pos = Scene.NavMesh.GetClosestPoint( BBox.FromPositionAndSize( Transform.Position, 80000 ) );
+			var pos = Scene.NavMesh.GetClosestPoint( BBox.FromPositionAndSize( WorldPosition, 80000 ) );
 
 			if ( pos.HasValue )
 			{
 				Gizmo.Draw.Color = Color.Orange;
 				Gizmo.Draw.LineThickness = 5;
-				Gizmo.Draw.Arrow( Transform.Position, pos.Value );
+				Gizmo.Draw.Arrow( WorldPosition, pos.Value );
 
 			}
 		}
@@ -49,11 +49,11 @@ public sealed class NavigationQueryTest : Component
 		{
 			Gizmo.Draw.LineThickness = 2;
 			Gizmo.Draw.Color = Color.Black.WithAlpha( 0.3f );
-			Gizmo.Draw.LineSphere( Transform.Position, RandomRadius );
+			Gizmo.Draw.LineSphere( WorldPosition, RandomRadius );
 
 			for ( int i = 0; i < 100; i++ )
 			{
-				var pos = Scene.NavMesh.GetRandomPoint( Transform.Position, RandomRadius );
+				var pos = Scene.NavMesh.GetRandomPoint( WorldPosition, RandomRadius );
 
 				if ( pos.HasValue )
 				{
@@ -65,13 +65,13 @@ public sealed class NavigationQueryTest : Component
 
 		if ( ClosestEdge )
 		{
-			var wall = Scene.NavMesh.GetClosestEdge( Transform.Position );
+			var wall = Scene.NavMesh.GetClosestEdge( WorldPosition );
 
 			if ( wall.HasValue )
 			{
 				Gizmo.Draw.Color = Color.Yellow;
 				Gizmo.Draw.LineThickness = 5;
-				Gizmo.Draw.Arrow( Transform.Position, wall.Value );
+				Gizmo.Draw.Arrow( WorldPosition, wall.Value );
 
 			}
 		}
@@ -83,7 +83,7 @@ public sealed class NavigationQueryTest : Component
 			//DrawArrow( Transform.Position, Target.Transform.Position );
 
 			Gizmo.Draw.LineThickness = 8;
-			var triangles = Scene.NavMesh.GetSimplePath( Transform.Position, Target.Transform.Position );
+			var triangles = Scene.NavMesh.GetSimplePath( WorldPosition, Target.WorldPosition );
 
 			var up = Vector3.Up * 32.0f;
 

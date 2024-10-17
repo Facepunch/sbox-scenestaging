@@ -16,11 +16,11 @@
 	{
 		if ( !IsProxy )
 		{
-			var localPos = Transform.LocalPosition;
+			var localPos = LocalPosition;
 			localPos.x = Direction.x * MathF.Sin( Time.Now ) * 64f;
 			localPos.y = Direction.y * MathF.Cos( Time.Now ) * 64f;
 			localPos.z = 80f + MathF.Sin( Time.Now ) * 8f + MathF.Cos( Time.Now ) * 8f;
-			Transform.LocalPosition = localPos;
+			LocalPosition = localPos;
 		}
 		
 		base.OnFixedUpdate();

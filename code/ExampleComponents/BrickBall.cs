@@ -20,7 +20,7 @@ public sealed class BrickBall : Component, Component.ICollisionListener
 	{
 		base.OnEnabled();
 
-		StartX = Transform.Position.x;
+		StartX = WorldPosition.x;
 
 		var rigidBody = Components.Get<Rigidbody>();
 		rigidBody.Velocity = (Direction.Normal * Speed).WithX( 0 );
@@ -30,8 +30,8 @@ public sealed class BrickBall : Component, Component.ICollisionListener
 	{
 
 
-		Transform.LocalRotation = Rotation.Identity;
-		Transform.Position = Transform.Position.WithX( StartX );
+		LocalRotation = Rotation.Identity;
+		WorldPosition = WorldPosition.WithX( StartX );
 	}
 
 	public void OnCollisionStart( Collision o )

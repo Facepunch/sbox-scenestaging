@@ -13,9 +13,9 @@
 				NextChangeDirection = Game.Random.Float( 2f, 8f );
 			}
 
-			var pos = Transform.Position;
+			var pos = WorldPosition;
 			pos += CurrentDirection * 32f * Time.Delta;
-			Transform.Position = pos;
+			WorldPosition = pos;
 		}
 		
 		base.OnFixedUpdate();

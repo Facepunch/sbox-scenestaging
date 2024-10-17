@@ -25,7 +25,7 @@ public sealed class CameraPhysicsDebug : Component, Component.ExecuteInEditor
 
 	protected override void OnUpdate()
 	{
-		var start = Transform.Position;
+		var start = WorldPosition;
 
 		Gizmo.Draw.LineThickness = 2;
 		Gizmo.Draw.LineSphere( start, 2.0f );
@@ -33,7 +33,7 @@ public sealed class CameraPhysicsDebug : Component, Component.ExecuteInEditor
 		Sandbox.Utility.Parallel.ForEach( Enumerable.Range( 0, TracesPerFrame ), i =>
 		{
 			SceneTraceResult t = default;
-			var end = start + Transform.Rotation.Forward * 1000 + Vector3.Random * 400;
+			var end = start + WorldRotation.Forward * 1000 + Vector3.Random * 400;
 
 			if ( TraceType == TraceTypes.Ray )
 			{

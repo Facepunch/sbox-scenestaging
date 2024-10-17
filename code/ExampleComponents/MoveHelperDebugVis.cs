@@ -15,8 +15,8 @@ public sealed class MoveHelperDebugVis : Component
 		var ts = (1.0f / 15.0f);
 
 		BBox box = new BBox( new Vector3( -8, -8, 0 ), new Vector3( 8, 8, 48 ) );
-		var pos = Transform.Position;
-		var velocity = Transform.Rotation * Velocity;
+		var pos = WorldPosition;
+		var velocity = WorldRotation * Velocity;
 		var trace = Scene.Trace.Size( box );
 
 		for ( int i=0; i<100; i++ )
@@ -29,7 +29,7 @@ public sealed class MoveHelperDebugVis : Component
 			velocity = move.Velocity;
 
 			velocity = velocity + Gravity;
-			velocity = velocity + Transform.Rotation * Velocity * 0.1f;
+			velocity = velocity + WorldRotation * Velocity * 0.1f;
 
 			using ( Gizmo.Scope( $"box {i}" ) )
 			{

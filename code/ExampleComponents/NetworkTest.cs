@@ -21,8 +21,8 @@ public sealed class NetworkTest : Component
 
 			var pc = Components.Get<PlayerController>();
 
-			Carrying.Transform.Position = HoldRelative.Transform.Position + HoldRelative.Parent.Transform.Rotation * offset;
-			Carrying.Transform.Rotation = pc.Body.Transform.Rotation;
+			Carrying.WorldPosition = HoldRelative.WorldPosition + HoldRelative.Parent.WorldRotation * offset;
+			Carrying.WorldRotation = pc.Body.WorldRotation;
 		}
 	}
 
@@ -40,8 +40,8 @@ public sealed class NetworkTest : Component
 
 			var pc = Components.Get<PlayerController>();
 
-			Carrying.Transform.Position = HoldRelative.Transform.Position + HoldRelative.Parent.Transform.Rotation * offset;
-			Carrying.Transform.Rotation = pc.Body.Transform.Rotation;
+			Carrying.WorldPosition = HoldRelative.WorldPosition + HoldRelative.Parent.WorldRotation * offset;
+			Carrying.WorldRotation = pc.Body.WorldRotation;
 			//Carrying.Components.Get<Rigidbody>().Velocity = 0;
 			//Carrying.Components.Get<Rigidbody>().AngularVelocity = 0;
 		}
@@ -72,7 +72,7 @@ public sealed class NetworkTest : Component
 	{
 		var pc = Components.Get<PlayerController>();
 		var lookDir = pc.EyeAngles.ToRotation();
-		var eyePos = Transform.Position + Vector3.Up * 60;
+		var eyePos = WorldPosition + Vector3.Up * 60;
 
 		var tr = Scene.Trace.WithoutTags( "player" ).Sphere( 16, eyePos, eyePos + lookDir.Forward * 100 ).Run();
 		if ( !tr.Hit ) return;

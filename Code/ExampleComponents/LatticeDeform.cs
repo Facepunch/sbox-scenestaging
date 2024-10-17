@@ -47,8 +47,8 @@ namespace Sandbox.ExampleComponents
 				var parent = Components.GetInParent<ModelRenderer>();
 
 				// Make it use the same bounds as the parent
-				Transform.Scale = parent.Bounds.Size;
-				Transform.Position = parent.Bounds.Mins;
+				WorldScale = parent.Bounds.Size;
+				WorldPosition = parent.Bounds.Mins;
 			}
 
 			base.OnEnabled();
@@ -92,7 +92,7 @@ namespace Sandbox.ExampleComponents
 			
 			matrix = Matrix.CreateScale(transform.Scale) * Matrix.CreateRotation(transform.Rotation) * Matrix.CreateTranslation(transform.Position);
 			
-			parent.SceneObject.Attributes.Set( "Scale", Transform.Scale );
+			parent.SceneObject.Attributes.Set( "Scale", WorldScale );
 			parent.SceneObject.Attributes.Set( "LocalToLattice", matrix.Inverted );
 			parent.SceneObject.Attributes.Set( "Lattice", PointsBuffer );
 			parent.SceneObject.Attributes.Set( "Segments", Segments );

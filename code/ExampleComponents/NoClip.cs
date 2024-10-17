@@ -8,7 +8,7 @@ public sealed class NoClip : Component
 
 	protected override void OnStart()
 	{
-		eyeAngles = Transform.Rotation;
+		eyeAngles = WorldRotation;
 	}
 
 	protected override void OnUpdate()
@@ -17,11 +17,11 @@ public sealed class NoClip : Component
 
 		Vector3 movement = Input.AnalogMove;
 
-		Transform.Rotation = eyeAngles;
+		WorldRotation = eyeAngles;
 
 		if ( !movement.IsNearlyZero() )
 		{
-			Transform.Position += Transform.Rotation * movement.Normal * Time.Delta * MoveSpeed;
+			WorldPosition += WorldRotation * movement.Normal * Time.Delta * MoveSpeed;
 		}
 	}
 }

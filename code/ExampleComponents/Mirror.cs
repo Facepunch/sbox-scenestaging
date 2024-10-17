@@ -12,8 +12,8 @@ public class Mirror : Component, Component.ExecuteInEditor
 		PlaneRender.Transform = Transform.World;
 
 		var camera = Scene.Camera;
-		var cameraPosition = camera.Transform.Position;
-		var cameraRotation = camera.Transform.Rotation;
+		var cameraPosition = camera.WorldPosition;
+		var cameraRotation = camera.WorldRotation;
 
 		var viewMatrix = Matrix.CreateWorld( cameraPosition, cameraRotation.Forward, cameraRotation.Up );
 		var reflectMatrix = ReflectMatrix( viewMatrix, new Plane( PlaneRender.Position, PlaneRender.Rotation.Up ) );

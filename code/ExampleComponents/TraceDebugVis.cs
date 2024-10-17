@@ -30,8 +30,8 @@ public sealed class TraceDebugVis : Component
 
 		Gizmo.Transform = global::Transform.Zero;
 
-		var pos = Transform.Position;
-		var rot = Transform.Rotation;
+		var pos = WorldPosition;
+		var rot = WorldRotation;
 
 		var tr = Scene.Trace.Ray( new Ray( pos, rot.Forward ), TraceLength );
 

@@ -15,7 +15,7 @@ public sealed class Gun : Component
 
 		if ( Input.Pressed( "Attack1" ) )
 		{
-			var pos = Transform.Position + Vector3.Up * 40.0f + lookDir.Forward.WithZ( 0.0f ) * 50.0f;
+			var pos = WorldPosition + Vector3.Up * 40.0f + lookDir.Forward.WithZ( 0.0f ) * 50.0f;
 
 			var o = ObjectToSpawn.Clone( pos );
 			o.Enabled = true;

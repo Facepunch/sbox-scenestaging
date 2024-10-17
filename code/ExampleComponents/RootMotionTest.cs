@@ -12,10 +12,10 @@ public sealed class RootMotionTest : Component
 		if ( Renderer.IsValid() )
 		{
 			Renderer.Set( "move_x", MoveX );
-			Transform.Position += Renderer.RootMotion.Position;
+			WorldPosition += Renderer.RootMotion.Position;
 
-			if ( Transform.Position.x > 100 || Transform.Position.x < -100 )
-				Transform.Position = 0;
+			if ( WorldPosition.x > 100 || WorldPosition.x < -100 )
+				WorldPosition = 0;
 		}
 	}
 }

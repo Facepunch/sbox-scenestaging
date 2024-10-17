@@ -17,7 +17,7 @@ public sealed class ParticleModelEmitter : ParticleEmitter
 	public Vector3 GetRandomPositionOnModel( ModelRenderer target )
 	{
 		if ( !target.IsValid() )
-			return Transform.Position;
+			return WorldPosition;
 
 		if ( target.Model.HitboxSet is not null && target.Model.HitboxSet.All.Count > 0 )
 		{

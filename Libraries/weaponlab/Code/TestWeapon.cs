@@ -54,8 +54,8 @@ public sealed class TestWeapon : Component
 		vm.Set( "iconsights", ironsights );
 		vm.Set( "move_bob", 1 );
 
-		var rotationDelta = Rotation.Difference( lastRot, Scene.Camera.Transform.Rotation );
-		lastRot = Scene.Camera.Transform.Rotation;
+		var rotationDelta = Rotation.Difference( lastRot, Scene.Camera.WorldRotation );
+		lastRot = Scene.Camera.WorldRotation;
 
 		var angles = rotationDelta.Angles();
 
@@ -125,7 +125,7 @@ public sealed class TestWeapon : Component
 
 		timeSinceLastShoot = 0;
 
-		Vector3 shootPosition = Transform.Position;
+		Vector3 shootPosition = WorldPosition;
 
 		if ( viewmodel.Components.TryGet<SkinnedModelRenderer>( out var vm ) )
 		{
@@ -133,7 +133,7 @@ public sealed class TestWeapon : Component
 
 			var muzzle = vm.GetBoneObject( vm.Model.Bones.GetBone( "muzzle" ) ) ?? vm.GameObject;
 
-			shootPosition = muzzle.Transform.Position;
+			shootPosition = muzzle.WorldPosition;
 			GameObject.Clone( "/effects/muzzle.prefab", global::Transform.Zero, muzzle );
 		}
 

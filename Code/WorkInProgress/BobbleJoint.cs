@@ -21,7 +21,7 @@ public sealed class BobbleJoint : Joint
 
 	protected override PhysicsJoint CreateJoint( PhysicsPoint point1, PhysicsPoint point2 )
 	{
-		var originPoint = Transform.Position;
+		var originPoint = WorldPosition;
 		var springDir = (point1.Body.Transform.Position - originPoint);
 
 		if ( springDir.Length < 10.0f ) springDir = springDir.Normal * 10.0f;

@@ -14,21 +14,21 @@ public sealed class IkReachOut : Component
 		if ( timeUntilRetry > 0 )
 			return;
 
-		var dir = (TargetGameObject.Transform.Position- Transform.Position);
+		var dir = (TargetGameObject.WorldPosition - WorldPosition);
 		if ( !TargetGameObject.Enabled )
 		{
-			dir = (Transform.Rotation.Forward + Vector3.Random) * Radius;
+			dir = (WorldRotation.Forward + Vector3.Random) * Radius;
 		}
 
 		var tr = Scene.Trace
-			.Sphere( 2, Transform.Position, Transform.Position + dir.Normal * Radius )
+			.Sphere( 2, WorldPosition, WorldPosition + dir.Normal * Radius )
 			.WithoutTags( IgnoreCollision )
 			.Run();
 
 		if  ( tr.Hit )
 		{
-			TargetGameObject.Transform.Position = tr.EndPosition;
-			TargetGameObject.Transform.Rotation = Rotation.LookAt( tr.Normal ) * Rotation.From( HandRotation );
+			TargetGameObject.WorldPosition = tr.EndPosition;
+			TargetGameObject.WorldRotation = Rotation.LookAt( tr.Normal ) * Rotation.From( HandRotation );
 			TargetGameObject.Enabled = true;
 		}
 		else

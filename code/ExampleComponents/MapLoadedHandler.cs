@@ -39,8 +39,8 @@ public sealed class MapLoadedHandler : Component
 		var randomSpawn = Random.Shared.FromArray( spawnPoints );
 		if ( randomSpawn.IsValid() )
 		{
-			PlayerObject.Transform.Position = randomSpawn.Transform.Position + Vector3.Up * 64;
-			PlayerObject.Transform.Rotation = randomSpawn.Transform.Rotation;
+			PlayerObject.WorldPosition = randomSpawn.WorldPosition + Vector3.Up * 64;
+			PlayerObject.WorldRotation = randomSpawn.WorldRotation;
 		}
 	}
 

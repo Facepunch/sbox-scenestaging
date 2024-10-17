@@ -10,7 +10,7 @@
 		{
 			for ( var i = 0; i < AmountToSpawn; i++ )
 			{
-				var go = PrefabToSpawn.Clone( Transform.Position, Rotation.Identity );
+				var go = PrefabToSpawn.Clone( WorldPosition, Rotation.Identity );
 
 				if ( ParentToThis )
 					go.SetParent( GameObject );
