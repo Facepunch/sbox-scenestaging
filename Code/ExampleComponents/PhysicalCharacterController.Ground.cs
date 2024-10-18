@@ -29,6 +29,38 @@
 		UpdateGround( default );
 	}
 
+
+	float skin => 0.001f;
+
+	/// <summary>
+	/// Lift player up and place a skin level above the ground
+	/// </summary>
+	void Reground()
+	{
+		var currentPosition = WorldPosition;
+
+		var tr = TraceBody( currentPosition + Vector3.Up * StepHeight, currentPosition + Vector3.Down * StepHeight );
+
+		if ( tr.StartedSolid )
+			return;
+
+		if ( tr.Hit )
+		{
+			var targetPosition = tr.EndPosition + Vector3.Up * skin;
+			var delta = currentPosition - targetPosition;
+			if ( delta == Vector3.Zero ) return;
+
+			WorldPosition = tr.EndPosition + Vector3.Up * skin;
+
+			// when stepping down, clear out the gravity velocity to avoid
+			// it thinking we're falling and building up like crazy
+			if ( delta.z > 1.0f )
+			{
+				Body.Velocity = Body.Velocity.WithZ( 0 );
+			}
+		}
+	}
+
 	void CategorizeGround()
 	{
 		var groundVel = GroundVelocity.z;
@@ -78,6 +110,7 @@
 		if ( !tr.StartedSolid && tr.Hit && CanStandOnSurfaceNormal( tr.Normal ) )
 		{
 			UpdateGround( tr );
+			Reground();
 
 			//
 			// Stick to ground

@@ -65,11 +65,13 @@
 			Body.Velocity = velocity;
 		}
 
-		//TryStep();
+		TryStep();
 	}
 
 	void IScenePhysicsEvents.PostPhysicsStep()
 	{
+		RestoreStep();
+
 		CategorizeGround();
 		CategorizeTriggers();
 		UpdatePositionOnLadder();
@@ -78,20 +80,14 @@
 		Velocity = Body.Velocity - GroundVelocity;
 	}
 
-	public bool InWater { get; set; }
-
-	protected override void OnUpdate()
-	{
-		Gizmo.Draw.ScreenText( $"Velocity: {Body.Velocity.Length:0.00}\n" +
-			$"Velocity XY: {Body.Velocity.WithZ( 0 ).Length:0.00}", 100 );
-	}
-
 	void UpdateBody()
 	{
+		var feetHeight = StepHeight;
+
 		var bodyCollider = Body.GameObject.GetOrAddComponent<CapsuleCollider>();
 		bodyCollider.Radius = BodyRadius;
 		bodyCollider.Start = Vector3.Up * (BodyHeight - bodyCollider.Radius);
-		bodyCollider.End = Vector3.Up * (bodyCollider.Radius + StepHeight * 0.1f);
+		bodyCollider.End = Vector3.Up * (bodyCollider.Radius + feetHeight - bodyCollider.Radius * 0.20f);
 		bodyCollider.Friction = 0.0f;
 
 		/*
@@ -101,17 +97,18 @@
 		feetCollider.Friction = IsOnGround ? 2340.5f : 0;
 		*/
 
+
+
 		var feetCollider = Body.GameObject.GetOrAddComponent<BoxCollider>();
-		feetCollider.Scale = new Vector3( BodyRadius, BodyRadius, BodyRadius * 0.5f );
-		feetCollider.Center = new Vector3( 0, 0, BodyRadius * 0.25f );
+		feetCollider.Scale = new Vector3( BodyRadius, BodyRadius, feetHeight );
+		feetCollider.Center = new Vector3( 0, 0, feetHeight * 0.5f );
 		feetCollider.Friction = IsOnGround ? 1f : 0;
 
 
-		float massCenter = WishVelocity.Length.Clamp( 0, StepHeight + 2 );
+		float massCenter = 0;// WishVelocity.Length.Clamp( 0, StepHeight );
 
 		if ( !IsOnGround )
 			massCenter = BodyHeight * 0.5f;
-
 
 
 		if ( IsOnGround )

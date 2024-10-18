@@ -4,17 +4,30 @@
 	[Property, Group( "StepUp" )] public bool StepDebug { get; set; } = true;
 	[Property, Group( "StepUp" )] public float StepHeight { get; set; } = 18.0f;
 
+	bool _didstep;
+	Vector3 _stepPosition;
+
+	SceneTraceResult TraceBody( Vector3 from, Vector3 to )
+	{
+		var tx = WorldTransform;
+		return Scene.Trace.Sweep( Body, tx.WithPosition( from ), tx.WithPosition( to ) ).IgnoreGameObjectHierarchy( GameObject ).Run();
+	}
+
+
 	void TryStep()
 	{
+		_didstep = false;
+
 		if ( !StepUp ) return;
 		if ( !IsOnGround ) return;
 		if ( TimeSinceUngrounded < 0.2f ) return;
 		if ( WishVelocity.IsNearlyZero( 0.001f ) ) return;
 
 		var vel = (Velocity).WithZ( 0 ) * Time.Delta;
-		if ( vel.IsNearlyZero( 0.1f ) ) return;
+		if ( vel.IsNearlyZero( 0.001f ) ) return;
 
-		var skin = 0.001f;
+		Reground();
+
 		var footbox = BBox.FromPositionAndSize( new Vector3( 0, 0, BodyHeight * 0.5f ), new Vector3( BodyRadius, BodyRadius, BodyHeight ) );
 		var from = WorldTransform.Position + Vector3.Up * skin;
 
@@ -22,7 +35,7 @@
 		// Keep moving
 		//
 
-		var tr = Scene.Trace.Box( footbox, from - vel.Normal, from + vel ).IgnoreGameObjectHierarchy( GameObject ).Run();
+		var tr = Scene.Trace.Box( footbox, from - vel.Normal * skin, from + vel ).IgnoreGameObjectHierarchy( GameObject ).Run();
 		if ( !tr.Hit )
 		{
 			var box = footbox.Translate( from );
@@ -37,15 +50,15 @@
 		//
 		// We hit a step
 		//
-		var hitDistance = tr.Distance - 1;
+		var hitDistance = tr.Distance - skin * 2;
 		var moveDir = vel.Normal * (vel.Length - hitDistance);
-		from = tr.EndPosition;
+		from = from + vel.Normal * hitDistance;
 
 		// move up 
-		tr = Scene.Trace.Box( footbox, from + Vector3.Up * 2, from + Vector3.Up * StepHeight ).IgnoreGameObjectHierarchy( GameObject ).Run();
-		if ( tr.Hit && (tr.Distance < 0.1f || tr.StartedSolid) )
+		tr = Scene.Trace.Box( footbox, from, from + Vector3.Up * StepHeight ).IgnoreGameObjectHierarchy( GameObject ).Run();
+		if ( tr.Hit && tr.StartedSolid )
 		{
-			DebugDrawSystem.Current.AddBox( footbox, new Transform( from + Vector3.Up * 1 ) ).WithColor( Color.Red );
+			DebugDrawSystem.Current.AddBox( footbox, new Transform( from + Vector3.Up * 1 ) ).WithColor( Color.Red ).WithTime( 30 );
 			return;
 		}
 
@@ -67,7 +80,11 @@
 			if ( !CanStandOnSurfaceNormal( tr.Normal ) )
 				return;
 
-			Body.WorldPosition = tr.EndPosition - Vector3.Up * 0.1f;
+			_didstep = true;
+			_stepPosition = tr.EndPosition - Vector3.Up * skin;
+
+			Body.WorldPosition = _stepPosition;
+
 
 			if ( StepDebug )
 			{
@@ -84,5 +101,14 @@
 		}
 
 		//DebugDrawSystem.Current.AddLine( from, tr.EndPosition, 0.4f ).WithColor( Color.Red ).WithTime( 1.4f );
+	}
+
+	void RestoreStep()
+	{
+		if ( _didstep )
+		{
+			Body.WorldPosition = _stepPosition;
+			_didstep = false;
+		}
 	}
 }
