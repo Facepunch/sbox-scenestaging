@@ -348,7 +348,7 @@
           "Feet": true,
           "FeetDebug": false,
           "GroundAngle": 45,
-          "StepDebug": true,
+          "StepDebug": false,
           "StepHeight": 18,
           "StepUp": true
         },
@@ -7624,6 +7624,162 @@
           ]
         },
         {
+          "__guid": "ebc3d197-3352-48e3-99eb-dcbe823a97fb",
+          "Flags": 0,
+          "Name": "Steps",
+          "Position": "-0.00002979425,507.9548,0",
+          "Enabled": true,
+          "Children": [
+            {
+              "__guid": "04d3e29f-9182-483f-9fe9-74f7880f26b6",
+              "Flags": 0,
+              "Name": "Cube (2)",
+              "Position": "-0.002078383,359.1587,3.552002",
+              "Rotation": "0,0,-0.7071067,0.7071068",
+              "Scale": "3,0.2,1",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "3185136e-6b92-4e90-9b31-2d53872f7220",
+                  "__enabled": false,
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "e6465c94-28f7-4857-b48d-02344a8c9d58",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/box.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "a4bc6f53-9927-41fb-bc09-4c20539e90b8",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "1c9a2dff-34d6-448e-8fd0-df0054ce0aa1",
+              "Flags": 0,
+              "Name": "Cube (2)",
+              "Position": "-0.002839895,521.8463,-4.447998",
+              "Rotation": "0,0,-0.7071067,0.7071068",
+              "Scale": "3,0.2,1",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "16dcb676-f262-4c15-a66e-0b7bbf3c2ace",
+                  "__enabled": false,
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "00b953aa-ffea-4424-a431-071560a022a6",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/box.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "cf84e68e-ce2f-4efd-a8ef-dc0b24f854d0",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "75994b19-940b-43d4-a404-5511682b948f",
+              "Flags": 0,
+              "Name": "Cube (2)",
+              "Position": "-0.002904745,201.8463,11.552",
+              "Rotation": "0,0,-0.7071067,0.7071068",
+              "Scale": "3,0.2,1",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "015201bb-6731-449d-93e4-0993d3640c4a",
+                  "__enabled": false,
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "119bd52a-307b-49e3-b28d-89e1bcd81bd0",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/box.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "cbfb4a56-b764-4330-8ff5-ab41511f4acd",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Static": false
+                }
+              ]
+            }
+          ]
+        },
+        {
           "__guid": "29436dc6-6d75-49af-9cf8-096a94730fd5",
           "Flags": 0,
           "Name": "Stair",
@@ -7729,7 +7885,7 @@
               "__guid": "82e2bd12-f45a-4e9b-9fe1-8bad0031903b",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "367.7528,-0.0009854439,1262.499",
+              "Position": "367.7528,-0.001026134,1262.499",
               "Enabled": true,
               "Components": [
                 {
@@ -7776,7 +7932,7 @@
               "__guid": "e8bf89e9-c689-43a0-87d3-82a358fb1986",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "404.0001,-23.99998,1262.499",
+              "Position": "404.0001,-24.00004,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -7824,7 +7980,7 @@
               "__guid": "deb2631d-3933-4088-9180-5e18f0b60415",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "403.0766,8.892303,1262.499",
+              "Position": "403.0766,8.892262,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -7872,7 +8028,7 @@
               "__guid": "d2e19fe7-c25b-4691-966b-b0a749ea86cd",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "454.751,-54.106,1262.499",
+              "Position": "454.751,-54.10606,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -8064,7 +8220,7 @@
               "__guid": "ad9b7e6e-534a-43b2-befb-5d6db5acfbde",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "395.9955,-62.95452,1262.501",
+              "Position": "395.9955,-62.95456,1262.501",
               "Rotation": "0,0,-0.6087614,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8112,7 +8268,7 @@
               "__guid": "0e6b5275-e45e-4f5d-8bcf-821ad2a86375",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "391.2995,-30.66463,1259.191",
+              "Position": "391.2995,-30.66469,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8160,7 +8316,7 @@
               "__guid": "110e51dd-4f9b-4384-8940-f7d9c8f0f238",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "443.8012,3.560532,1259.192",
+              "Position": "443.8012,3.560471,1259.192",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8208,7 +8364,7 @@
               "__guid": "fff4db18-0ade-45da-8366-470c32ac9cfe",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "438.9766,-35.95166,1259.191",
+              "Position": "438.9766,-35.95172,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8256,7 +8412,7 @@
               "__guid": "e0638e56-32c4-4c91-875f-9c556232f1ad",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "488.9273,-15.98584,1259.191",
+              "Position": "488.9273,-15.9859,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8304,7 +8460,7 @@
               "__guid": "0b2e21a8-a351-4275-b4ce-d4d0a348ccef",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "463.6745,-14.97534,1259.191",
+              "Position": "463.6745,-14.9754,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8352,7 +8508,7 @@
               "__guid": "5bfbd1e5-a7b1-4ad8-b80d-e2f56b06f42c",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "491.5527,-43.12423,1259.191",
+              "Position": "491.5528,-43.12429,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8400,7 +8556,7 @@
               "__guid": "e528984e-6e05-4039-b74d-d13afab344fa",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "483.6223,-74.90899,1259.191",
+              "Position": "483.6224,-74.90905,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8448,7 +8604,7 @@
               "__guid": "e74ac882-50f1-449c-adc6-7e1852711d16",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "459.2017,-106.8787,1259.191",
+              "Position": "459.2017,-106.8788,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8639,7 +8795,7 @@
               "__guid": "3517ac54-c5d1-4f57-993c-673e00dd3bfe",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "-0.00001335145,-74.66674,-1120",
+              "Position": "-0.00001573561,-87.99991,-1120",
               "Enabled": true,
               "Components": [
                 {
@@ -9626,7 +9782,7 @@
               "__guid": "cb7defb1-817b-4427-b77f-e6540558bb76",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "-0.00001478196,-82.66674,-1240",
+              "Position": "-0.0001406669,-103.9999,-1240",
               "Enabled": true,
               "Components": [
                 {
@@ -9673,7 +9829,7 @@
               "__guid": "3f1bae99-ad25-4059-ae5c-a9e7e5b51378",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "-0.0000152588,-85.3334,-1280",
+              "Position": "-0.0001416206,-109.3332,-1280",
               "Enabled": true,
               "Components": [
                 {
@@ -9720,7 +9876,7 @@
               "__guid": "58570c7a-c8c8-4d90-a525-87c8a8b09ef6",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "-0.00001573564,-88.00007,-1320",
+              "Position": "-0.0001425743,-114.6665,-1320",
               "Enabled": true,
               "Components": [
                 {
@@ -9767,7 +9923,7 @@
               "__guid": "f639d579-a679-4cd7-b065-eddd26142a49",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "0.0001058579,-90.66669,-1360",
+              "Position": "-0.00002145765,-119.9999,-1360",
               "Enabled": true,
               "Components": [
                 {
@@ -9814,7 +9970,7 @@
               "__guid": "f5f519fd-c927-457b-9669-e24cf296b61c",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "0.0003495217,-93.33353,-1400",
+              "Position": "0.0002217293,-125.3332,-1400",
               "Enabled": true,
               "Components": [
                 {
@@ -9908,7 +10064,7 @@
               "__guid": "d817f67c-9cf6-4f27-937b-b821f5782697",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "-0.00001382829,-77.3334,-1160",
+              "Position": "-0.0001387596,-93.3332,-1160",
               "Enabled": true,
               "Components": [
                 {
@@ -9955,7 +10111,7 @@
               "__guid": "62542ca9-f1c9-4f74-b62b-0ddd2030c2d0",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "-0.00001430513,-80.00007,-1200",
+              "Position": "-0.0001397133,-98.66653,-1200",
               "Enabled": true,
               "Components": [
                 {
@@ -10002,7 +10158,7 @@
               "__guid": "370f57cf-bcb2-4bf2-ae23-e336a4a92c2d",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "-0.00001287461,-72.00007,-1080",
+              "Position": "-0.00001478193,-82.66656,-1080",
               "Enabled": true,
               "Components": [
                 {
@@ -10049,7 +10205,7 @@
               "__guid": "e09eda0b-7673-4b43-8ed0-fcd346c0aed5",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "0.0003538132,-69.33344,-1040",
+              "Position": "0.0003523827,-77.33322,-1040",
               "Enabled": true,
               "Components": [
                 {
@@ -10096,7 +10252,7 @@
               "__guid": "d11f7b85-5d2f-4fb5-a809-dea83165450c",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "0.0001101494,-66.66662,-1000",
+              "Position": "0.0001091957,-71.99989,-1000",
               "Enabled": true,
               "Components": [
                 {
@@ -10143,7 +10299,7 @@
               "__guid": "dfb22d67-5bb3-45f5-a048-503f2484ea07",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "-0.0000114441,-64.00003,-960",
+              "Position": "-0.00001192091,-66.66656,-960",
               "Enabled": true,
               "Components": [
                 {

@@ -105,7 +105,7 @@
 		feetCollider.Friction = IsOnGround ? 10f : 0;
 
 
-		float massCenter = 0;// WishVelocity.Length.Clamp( 0, StepHeight );
+		float massCenter = WishVelocity.Length.Clamp( 0, StepHeight );
 
 		if ( !IsOnGround )
 			massCenter = BodyHeight * 0.5f;

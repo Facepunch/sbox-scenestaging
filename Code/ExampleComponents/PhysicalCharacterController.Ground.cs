@@ -30,19 +30,34 @@
 	}
 
 
-	float skin => 0.001f;
+	float skin => 0.05f;
 
 	/// <summary>
 	/// Lift player up and place a skin level above the ground
 	/// </summary>
 	void Reground()
 	{
+		if ( !IsOnGround )
+			return;
+
 		var currentPosition = WorldPosition;
 
-		var tr = TraceBody( currentPosition + Vector3.Up * StepHeight, currentPosition + Vector3.Down * StepHeight );
+		float radiusScale = 1.0f;
+		var tr = TraceBody( currentPosition + Vector3.Up * StepHeight, currentPosition + Vector3.Down * StepHeight, radiusScale );
+
+		while ( tr.StartedSolid )
+		{
+			radiusScale = radiusScale - 0.1f;
+			if ( radiusScale < 0.7f )
+				return;
+
+			tr = TraceBody( currentPosition + Vector3.Up * StepHeight, currentPosition + Vector3.Down * StepHeight, radiusScale );
+		}
 
 		if ( tr.StartedSolid )
+		{
 			return;
+		}
 
 		if ( tr.Hit )
 		{
@@ -50,7 +65,7 @@
 			var delta = currentPosition - targetPosition;
 			if ( delta == Vector3.Zero ) return;
 
-			WorldPosition = tr.EndPosition + Vector3.Up * skin;
+			WorldPosition = targetPosition;
 
 			// when stepping down, clear out the gravity velocity to avoid
 			// it thinking we're falling and building up like crazy
@@ -90,16 +105,19 @@
 		}
 
 		var testHeight = IsOnGround ? StepHeight : 4;
-		var footbox = BBox.FromPositionAndSize( new Vector3( 0, 0, BodyHeight * 0.25f ), new Vector3( BodyRadius, BodyRadius, BodyHeight * 0.5f ) );
-		var from = WorldTransform.Position + Vector3.Up * testHeight;
-		var to = from + Vector3.Down * testHeight * 2;
+		var from = WorldPosition + Vector3.Up * testHeight;
+		var to = WorldPosition + Vector3.Down * testHeight;
 
-		var tr = Scene.Trace.Box( footbox, from, to ).IgnoreGameObjectHierarchy( GameObject ).Run();
+		float radiusScale = 1;
+		var tr = TraceBody( from, to, radiusScale );
 
-		if ( tr.StartedSolid )
+		while ( tr.StartedSolid )
 		{
-			//	footbox = footbox = BBox.FromPositionAndSize( new Vector3( 0, 0, BodyHeight * 0.25f ), new Vector3( 2, 2, BodyHeight * 0.5f ) );
-			//	tr = Scene.Trace.Box( footbox, from, to ).IgnoreGameObjectHierarchy( GameObject ).Run();
+			radiusScale = radiusScale - 0.1f;
+			if ( radiusScale < 0.7f )
+				return;
+
+			tr = TraceBody( from, to, radiusScale );
 		}
 
 		if ( tr.StartedSolid )
@@ -112,25 +130,10 @@
 		{
 			UpdateGround( tr );
 			Reground();
-
-			//
-			// Stick to ground
-			//
-			if ( false && TimeSinceUngrounded > 2f && tr.Distance > testHeight )
-			{
-				DebugDrawSystem.Current.AddLine( Body.WorldPosition, tr.EndPosition ).WithColor( Color.White ).WithTime( 60 );
-				Body.WorldPosition = tr.EndPosition;// + Vector3.Up * 0.1f;
-			}
-
-			if ( FeetDebug )
-				DebugDrawSystem.Current.AddBox( footbox, new Transform( tr.EndPosition ) ).WithColor( Color.Green );
 		}
 		else
 		{
 			UpdateGround( default );
-
-			if ( FeetDebug )
-				DebugDrawSystem.Current.AddBox( footbox, new Transform( to ) ).WithColor( Color.Orange );
 		}
 	}
 
