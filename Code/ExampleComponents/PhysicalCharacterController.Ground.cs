@@ -132,7 +132,6 @@
 		else
 		{
 			TimeSinceUngrounded = 0;
-			_groundLocal = default;
 			_groundTransform = default;
 		}
 

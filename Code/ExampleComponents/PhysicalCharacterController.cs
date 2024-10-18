@@ -112,12 +112,22 @@
 		if ( !IsOnGround )
 			massCenter = BodyHeight * 0.5f;
 
-		Body.OverrideMassCenter = true;
-		Body.MassCenterOverride = new Vector3( 0, 0, massCenter );
+
+
+		if ( IsOnGround )
+		{
+			//Body.Locking = new PhysicsLock { Pitch = true, Yaw = true, Roll = true };
+			Body.OverrideMassCenter = true;
+			Body.MassCenterOverride = new Vector3( 0, 0, massCenter );
+		}
+		else
+		{
+			Body.OverrideMassCenter = false;
+			//	Body.Locking = default;
+		}
 	}
 
 	Transform _groundTransform;
-	Transform _groundLocal;
 
 	void UpdateGroundVelocity()
 	{
