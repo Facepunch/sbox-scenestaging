@@ -130,6 +130,14 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 			AnimationHelper.DuckLevel = IsDucked ? 1 : 0;
 			AnimationHelper.IsSwimming = Controller.IsSwimming;
 			AnimationHelper.IsClimbing = Controller.IsClimbing;
+
+			var skidding = 0.0f;
+
+			if ( Controller.WishVelocity.IsNearZeroLength )
+				skidding = Controller.Velocity.Length.Remap( 0, 1000, 0, 1 );
+
+			AnimationHelper.Target.Set( "skid", skidding );
+
 		}
 	}
 
