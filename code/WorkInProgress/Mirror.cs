@@ -1,3 +1,4 @@
+namespace Sandbox;
 
 public class Mirror : Component, Component.ExecuteInEditor
 {
@@ -8,6 +9,9 @@ public class Mirror : Component, Component.ExecuteInEditor
 	protected override void OnPreRender()
 	{
 		base.OnPreRender();
+
+		if ( Scene.IsEditor )
+			return;
 
 		PlaneRender.Transform = Transform.World;
 
@@ -78,7 +82,7 @@ public class Mirror : Component, Component.ExecuteInEditor
 			new( new Vector3( -size, size, 0 ), Vector3.Up, Vector3.Forward, new Vector2( -0.5f, 0.5f ) )
 		};
 
-		Graphics.Draw( vertices, 6, Material.Load( "mirror.vmat" ), PlaneRender.Attributes );
+		Graphics.Draw( vertices, 6, Material.Load( "materials/mirror.vmat" ), PlaneRender.Attributes );
 	}
 
 	private static Matrix ReflectMatrix( System.Numerics.Matrix4x4 m, Plane plane )
