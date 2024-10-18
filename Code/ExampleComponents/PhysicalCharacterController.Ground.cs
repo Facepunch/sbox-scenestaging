@@ -54,8 +54,9 @@
 
 			// when stepping down, clear out the gravity velocity to avoid
 			// it thinking we're falling and building up like crazy
-			if ( delta.z > 1.0f )
+			if ( delta.z > 0.1f )
 			{
+				Body.Velocity = Body.Velocity * 0.9f;
 				Body.Velocity = Body.Velocity.WithZ( 0 );
 			}
 		}

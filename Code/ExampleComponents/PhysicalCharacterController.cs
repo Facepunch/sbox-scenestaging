@@ -102,7 +102,7 @@
 		var feetCollider = Body.GameObject.GetOrAddComponent<BoxCollider>();
 		feetCollider.Scale = new Vector3( BodyRadius, BodyRadius, feetHeight );
 		feetCollider.Center = new Vector3( 0, 0, feetHeight * 0.5f );
-		feetCollider.Friction = IsOnGround ? 1f : 0;
+		feetCollider.Friction = IsOnGround ? 10f : 0;
 
 
 		float massCenter = 0;// WishVelocity.Length.Clamp( 0, StepHeight );
