@@ -74,6 +74,9 @@ public sealed partial class PhysicalCharacterController : Component, IScenePhysi
 
 	void EnsureComponentsCreated()
 	{
+		Body.CollisionEventsEnabled = true;
+		Body.CollisionUpdateEventsEnabled = true;
+
 		BodyCollider = Body.GameObject.GetOrAddComponent<CapsuleCollider>();
 		FeetCollider = Body.GameObject.GetOrAddComponent<BoxCollider>();
 
