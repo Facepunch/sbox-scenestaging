@@ -1,8 +1,56 @@
-﻿public sealed partial class PhysicalCharacterController : Component, IScenePhysicsEvents
+﻿[Icon( "🕺" ), EditorHandle( Icon = "🕺" )]
+public sealed partial class PhysicalCharacterController : Component, IScenePhysicsEvents, Component.ExecuteInEditor
 {
-	[Property, Group( "Body" ), RequireComponent] public Rigidbody Body { get; set; }
+	[Property, Hide, RequireComponent] public Rigidbody Body { get; set; }
+
+	CapsuleCollider BodyCollider { get; set; }
+	BoxCollider FeetCollider { get; set; }
+
+	bool _showRigidBodyComponent;
+
+
 	[Property, Group( "Body" )] public float BodyRadius { get; set; } = 16.0f;
 	[Property, Group( "Body" )] public float BodyHeight { get; set; } = 64.0f;
+	[Property, Group( "Body" )] public float BodyMass { get; set; } = 500;
+
+	[Property, Group( "Body" ), Title( "Show Rigidbody" )]
+	public bool ShowRigidbodyComponent
+	{
+		get => _showRigidBodyComponent;
+		set
+		{
+			_showRigidBodyComponent = value;
+
+			if ( Body.IsValid() )
+			{
+				Body.Flags = Body.Flags.WithFlag( ComponentFlags.Hidden, !value );
+			}
+		}
+	}
+
+	bool _showColliderComponent;
+
+	[Property, Group( "Body" ), Title( "Show Colliders" )]
+	public bool ShowColliderComponents
+	{
+		get => _showColliderComponent;
+		set
+		{
+			_showColliderComponent = value;
+
+			if ( BodyCollider.IsValid() )
+			{
+				BodyCollider.Flags = BodyCollider.Flags.WithFlag( ComponentFlags.Hidden, !value );
+			}
+
+			if ( FeetCollider.IsValid() )
+			{
+				FeetCollider.Flags = FeetCollider.Flags.WithFlag( ComponentFlags.Hidden, !value );
+			}
+		}
+	}
+
+
 
 	[Property, Group( "Ground" )] public float GroundAngle { get; set; } = 45.0f;
 
@@ -10,20 +58,35 @@
 	public Vector3 WishVelocity { get; set; }
 	public bool IsOnGround => GroundObject.IsValid();
 
-
-
 	public Vector3 Velocity { get; private set; }
 	public Vector3 GroundVelocity { get; set; }
 	public float GroundYaw { get; set; }
-
 
 	protected override void OnAwake()
 	{
 		base.OnAwake();
 
+		EnsureComponentsCreated();
 		UpdateBody();
+
+		Body.Velocity = 0;
 	}
 
+	void EnsureComponentsCreated()
+	{
+		BodyCollider = Body.GameObject.GetOrAddComponent<CapsuleCollider>();
+		FeetCollider = Body.GameObject.GetOrAddComponent<BoxCollider>();
+
+		Body.Flags = Body.Flags.WithFlag( ComponentFlags.Hidden, !_showRigidBodyComponent );
+		BodyCollider.Flags = BodyCollider.Flags.WithFlag( ComponentFlags.Hidden, !_showColliderComponent );
+		FeetCollider.Flags = FeetCollider.Flags.WithFlag( ComponentFlags.Hidden, !_showColliderComponent );
+	}
+
+	protected override void OnValidate()
+	{
+		EnsureComponentsCreated();
+		UpdateBody();
+	}
 
 	void IScenePhysicsEvents.PrePhysicsStep()
 	{
@@ -78,17 +141,20 @@
 		UpdateGroundVelocity();
 
 		Velocity = Body.Velocity - GroundVelocity;
+
+		DebugDrawSystem.Current.AddBox( BodyBox().Transform( WorldTransform ) ).WithColor( Color.Green );
 	}
 
 	void UpdateBody()
 	{
 		var feetHeight = StepHeight;
+		var radius = (BodyRadius * MathF.Sqrt( 2 )) / 2;
 
-		var bodyCollider = Body.GameObject.GetOrAddComponent<CapsuleCollider>();
-		bodyCollider.Radius = BodyRadius;
-		bodyCollider.Start = Vector3.Up * (BodyHeight - bodyCollider.Radius);
-		bodyCollider.End = Vector3.Up * (bodyCollider.Radius + feetHeight - bodyCollider.Radius * 0.20f);
-		bodyCollider.Friction = 0.0f;
+		BodyCollider.Radius = radius;
+		BodyCollider.Start = Vector3.Up * (BodyHeight - BodyCollider.Radius);
+		BodyCollider.End = Vector3.Up * (BodyCollider.Radius + feetHeight - BodyCollider.Radius * 0.20f);
+		BodyCollider.Friction = 0.0f;
+		BodyCollider.Enabled = true;
 
 		/*
 		var feetCollider = Body.GameObject.GetOrAddComponent<SphereCollider>();
@@ -98,11 +164,10 @@
 		*/
 
 
-
-		var feetCollider = Body.GameObject.GetOrAddComponent<BoxCollider>();
-		feetCollider.Scale = new Vector3( BodyRadius, BodyRadius, feetHeight );
-		feetCollider.Center = new Vector3( 0, 0, feetHeight * 0.5f );
-		feetCollider.Friction = IsOnGround ? 10f : 0;
+		FeetCollider.Scale = new Vector3( BodyRadius, BodyRadius, feetHeight );
+		FeetCollider.Center = new Vector3( 0, 0, feetHeight * 0.5f );
+		FeetCollider.Friction = IsOnGround ? 10f : 0;
+		FeetCollider.Enabled = true;
 
 
 		float massCenter = WishVelocity.Length.Clamp( 0, StepHeight );
@@ -122,6 +187,11 @@
 			Body.OverrideMassCenter = false;
 			//	Body.Locking = default;
 		}
+
+		Body.Locking = new PhysicsLock { Pitch = true, Yaw = true, Roll = true };
+		Body.RigidbodyFlags = RigidbodyFlags.DisableCollisionSounds;
+
+		Body.MassOverride = BodyMass;
 	}
 
 	Transform _groundTransform;

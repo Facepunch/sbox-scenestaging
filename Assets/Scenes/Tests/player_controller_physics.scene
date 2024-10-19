@@ -299,24 +299,6 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "Sandbox.Rigidbody",
-          "__guid": "e6f1337d-ad7c-4577-ac4d-da3f3b9bca76",
-          "AngularDamping": 0,
-          "Gravity": true,
-          "LinearDamping": 0,
-          "Locking": {
-            "Pitch": true,
-            "Yaw": true,
-            "Roll": true
-          },
-          "MassCenterOverride": "0,0,0",
-          "MassOverride": 500,
-          "MotionEnabled": true,
-          "OverrideMassCenter": false,
-          "RigidbodyFlags": "DisableCollisionSounds",
-          "StartAsleep": false
-        },
-        {
           "__type": "Sandbox.Citizen.CitizenAnimationHelper",
           "__guid": "18433e79-238c-4230-a6a9-3327674a228e",
           "BodyWeight": 1,
@@ -339,15 +321,18 @@
           "__guid": "fad0eff1-c82f-43a3-99b3-53393af25536",
           "Body": {
             "_type": "component",
-            "component_id": "e6f1337d-ad7c-4577-ac4d-da3f3b9bca76",
+            "component_id": "088cd0f6-726d-4ece-a74c-2e6e520072c7",
             "go": "eb96c376-46c8-4fdf-92e3-cc6f8bca0b2c",
             "component_type": "Rigidbody"
           },
           "BodyHeight": 64,
-          "BodyRadius": 16,
+          "BodyMass": 500,
+          "BodyRadius": 15.933333,
           "Feet": true,
           "FeetDebug": false,
           "GroundAngle": 45,
+          "ShowColliderComponents": true,
+          "ShowRigidbodyComponent": true,
           "StepDebug": false,
           "StepHeight": 18,
           "StepUp": true
@@ -374,6 +359,43 @@
             "_type": "gameobject",
             "go": "ce9b316d-ca55-4627-8520-97820675f98b"
           }
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "088cd0f6-726d-4ece-a74c-2e6e520072c7",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {
+            "Pitch": true,
+            "Yaw": true,
+            "Roll": true
+          },
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 500,
+          "MotionEnabled": true,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": "DisableCollisionSounds",
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.CapsuleCollider",
+          "__guid": "add9a5ed-2ffe-45cc-986d-7e56cd97e630",
+          "End": "0,0,27.01325",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Radius": 11.266568,
+          "Start": "0,0,52.73343",
+          "Static": false
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "95c97dce-7484-4cd0-accb-a8d7e6796e5d",
+          "Center": "0,0,9",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Scale": "15.93333,15.93333,18",
+          "Static": false
         }
       ],
       "Children": [
@@ -3392,7 +3414,7 @@
               "__guid": "047dd370-6488-4d9f-9788-16aa74c3fbea",
               "Flags": 0,
               "Name": "Cube",
-              "Position": "0,0,67.3147",
+              "Position": "0,-5.055176,67.3147",
               "Scale": "2,1,2",
               "Enabled": true,
               "Components": [
@@ -3502,7 +3524,7 @@
               "__guid": "3456fa24-bc03-4523-b704-b832cb25e189",
               "Flags": 0,
               "Name": "Cube",
-              "Position": "0,-62.48291,67.3147",
+              "Position": "0,-61.05518,67.3147",
               "Scale": "2,1,2",
               "Enabled": true,
               "Components": [
@@ -4250,7 +4272,7 @@
               "__guid": "a8fd26c1-cf7f-4a49-a5a4-97b11a00d9a1",
               "Flags": 0,
               "Name": "Text (1)",
-              "Position": "2.482661,143.1307,32.02631",
+              "Position": "2.482662,131.4625,33.13458",
               "Scale": "0.5,1,0.5",
               "Enabled": true,
               "Components": [
@@ -4265,13 +4287,13 @@
                     "BloomLayer": false,
                     "AfterUILayer": false
                   },
-                  "Scale": 0.3,
+                  "Scale": 0.22,
                   "TextAlignment": "Center",
                   "TextScope": {
                     "Text": "Spin",
                     "TextColor": "0,0.33333,1,1",
                     "FontName": "Poppins",
-                    "FontSize": 64,
+                    "FontSize": 87.19,
                     "FontWeight": 800,
                     "LineHeight": 1,
                     "Outline": {
@@ -4286,7 +4308,7 @@
                     },
                     "OutlineUnder": {
                       "Enabled": true,
-                      "Size": 20.533323,
+                      "Size": 26.666721,
                       "Color": "0,0,0,1"
                     },
                     "ShadowUnder": {
@@ -7885,7 +7907,7 @@
               "__guid": "82e2bd12-f45a-4e9b-9fe1-8bad0031903b",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "367.7528,-0.001026134,1262.499",
+              "Position": "367.7528,-0.001433035,1262.499",
               "Enabled": true,
               "Components": [
                 {
@@ -7932,7 +7954,7 @@
               "__guid": "e8bf89e9-c689-43a0-87d3-82a358fb1986",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "404.0001,-24.00004,1262.499",
+              "Position": "404.0001,-24.00046,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -7980,7 +8002,7 @@
               "__guid": "deb2631d-3933-4088-9180-5e18f0b60415",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "403.0766,8.892262,1262.499",
+              "Position": "403.0766,8.891856,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -8028,7 +8050,7 @@
               "__guid": "d2e19fe7-c25b-4691-966b-b0a749ea86cd",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "454.751,-54.10606,1262.499",
+              "Position": "454.751,-54.10667,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -8220,7 +8242,7 @@
               "__guid": "ad9b7e6e-534a-43b2-befb-5d6db5acfbde",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "395.9955,-62.95456,1262.501",
+              "Position": "395.9955,-62.95497,1262.501",
               "Rotation": "0,0,-0.6087614,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8268,7 +8290,7 @@
               "__guid": "0e6b5275-e45e-4f5d-8bcf-821ad2a86375",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "391.2995,-30.66469,1259.191",
+              "Position": "391.2995,-30.66509,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8316,7 +8338,7 @@
               "__guid": "110e51dd-4f9b-4384-8940-f7d9c8f0f238",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "443.8012,3.560471,1259.192",
+              "Position": "443.8012,3.559861,1259.192",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8364,7 +8386,7 @@
               "__guid": "fff4db18-0ade-45da-8366-470c32ac9cfe",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "438.9766,-35.95172,1259.191",
+              "Position": "438.9766,-35.95231,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8412,7 +8434,7 @@
               "__guid": "e0638e56-32c4-4c91-875f-9c556232f1ad",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "488.9273,-15.9859,1259.191",
+              "Position": "488.9273,-15.98651,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8460,7 +8482,7 @@
               "__guid": "0b2e21a8-a351-4275-b4ce-d4d0a348ccef",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "463.6745,-14.9754,1259.191",
+              "Position": "463.6745,-14.97599,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8508,7 +8530,7 @@
               "__guid": "5bfbd1e5-a7b1-4ad8-b80d-e2f56b06f42c",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "491.5528,-43.12429,1259.191",
+              "Position": "491.5528,-43.1249,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8556,7 +8578,7 @@
               "__guid": "e528984e-6e05-4039-b74d-d13afab344fa",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "483.6224,-74.90905,1259.191",
+              "Position": "483.6224,-74.90968,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8604,7 +8626,7 @@
               "__guid": "e74ac882-50f1-449c-adc6-7e1852711d16",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "459.2017,-106.8788,1259.191",
+              "Position": "459.2017,-106.8791,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -15404,6 +15426,20 @@
           "__type": "Conveyor",
           "__guid": "f819f8a0-8948-4999-9aee-2887a813c70c",
           "Velocity": "0,-100,0"
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "512923a7-0a42-4e68-9209-3d11729ae221",
+          "AngularDamping": 0,
+          "Gravity": false,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": false,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         }
       ]
     },
