@@ -1,21 +1,39 @@
 /// <summary>
 /// This is all wrong. At this point it might as well be a trigger and go through the physics objects.
 /// </summary>
-public sealed class Conveyor : Component, Component.ICollisionListener
+public sealed class Conveyor : Component, IScenePhysicsEvents
 {
 	[Property]
 	public Vector3 Velocity { get; set; }
 
-	void ICollisionListener.OnCollisionStart( Collision collision ) => ApplyVelocityToCollision( collision );
-	void ICollisionListener.OnCollisionUpdate( Collision collision ) => ApplyVelocityToCollision( collision );
+	Vector3 pos;
+	Rigidbody rBody;
 
-	void ApplyVelocityToCollision( Collision collision )
+	protected override void OnStart()
 	{
-		collision.Other.Shape.EnableTouchPersists = true;
+		base.OnStart();
 
-		var point = collision.Contact.Point;
-		var vel = WorldTransform.NormalToWorld( Velocity ) * Velocity.Length;
 
-		collision.Other.Body.Velocity = collision.Other.Body.Velocity.AddClamped( vel, vel.Length );
+	}
+
+	void IScenePhysicsEvents.PrePhysicsStep()
+	{
+		pos = WorldPosition;
+
+		rBody = GetComponent<Rigidbody>();
+
+		if ( rBody.IsValid() )
+		{
+			rBody.Velocity = WorldRotation * Velocity;
+			rBody.PhysicsBody.Sleeping = false;
+		}
+	}
+
+	void IScenePhysicsEvents.PostPhysicsStep()
+	{
+		if ( rBody.IsValid() )
+		{
+			rBody.WorldPosition = pos;
+		}
 	}
 }
