@@ -214,7 +214,7 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 		}
 
 		if ( Controller.WaterLevel > 0 )
-			DebugDrawSystem.Current.AddText( WorldPosition + Vector3.Up * 80, $"WaterLevel: {Controller.WaterLevel}" );
+			DebugDrawSystem.Current.Text( WorldPosition + Vector3.Up * 80, $"WaterLevel: {Controller.WaterLevel}" );
 
 		if ( Controller.IsSwimming )
 		{

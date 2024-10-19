@@ -105,9 +105,9 @@
 
 				Body.WorldPosition = _stepPosition;
 
-				if ( StepDebug )
+				//if ( StepDebug )
 				{
-					DebugDrawSystem.Current.AddLine( oldPosition, _stepPosition ).WithColor( Color.Cyan ).WithTime( 10.0f );
+					DebugDrawSystem.Current.Line( oldPosition, _stepPosition, duration: 10 );
 				}
 
 				return;
@@ -116,7 +116,7 @@
 
 		if ( StepDebug )
 		{
-			DebugDrawSystem.Current.AddBox( BBox.FromPositionAndSize( tr.HitPosition, 3 ) ).WithColor( Color.Red ).WithTime( 10 );
+			DebugDrawSystem.Current.Box( tr.HitPosition, 3, Color.Red, 10 );
 		}
 
 		//DebugDrawSystem.Current.AddLine( from, tr.EndPosition, 0.4f ).WithColor( Color.Red ).WithTime( 1.4f );
