@@ -295,7 +295,7 @@
       "__guid": "eb96c376-46c8-4fdf-92e3-cc6f8bca0b2c",
       "Flags": 0,
       "Name": "Citizen",
-      "Position": "1157.825,2273.841,-1613.38",
+      "Position": "1157.825,4016,-1613.38",
       "Enabled": true,
       "Components": [
         {
@@ -6234,6 +6234,1403 @@
               ]
             }
           ]
+        },
+        {
+          "__guid": "4fb9215c-f39b-4c29-948e-6f06f9123c81",
+          "Flags": 0,
+          "Name": "Balls",
+          "Position": "-0.001914243,-558.7791,-5.195557",
+          "Scale": "2,1,2",
+          "Enabled": true,
+          "Children": [
+            {
+              "__guid": "20f983c8-bb9d-4730-9663-194f52b72008",
+              "Flags": 0,
+              "Name": "Text (1)",
+              "Position": "-23.29512,143.1306,8.019958",
+              "Scale": "0.5000001,1,0.5",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.TextRenderer",
+                  "__guid": "0398618e-65b8-47c7-a1e6-258bd6a5fec0",
+                  "__version": 1,
+                  "BlendMode": "Normal",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "Scale": 0.3,
+                  "TextAlignment": "Center",
+                  "TextScope": {
+                    "Text": "ballpit",
+                    "TextColor": "0.51667,1,0,1",
+                    "FontName": "Poppins",
+                    "FontSize": 53.54,
+                    "FontWeight": 361,
+                    "LineHeight": 1,
+                    "LetterSpacing": 2.2000005,
+                    "WordSpacing": -1.4666665,
+                    "Outline": {
+                      "Enabled": true,
+                      "Size": 9.33333,
+                      "Color": "0,0.97209,0.53465,1"
+                    },
+                    "Shadow": {
+                      "Enabled": true,
+                      "Size": 2.6666672,
+                      "Color": "0.22196,0.83721,0.51933,0.84",
+                      "Offset": "-12.00002,6"
+                    },
+                    "OutlineUnder": {
+                      "Size": 20.533323,
+                      "Color": "0,0,0,1"
+                    },
+                    "ShadowUnder": {
+                      "Enabled": true,
+                      "Size": 3,
+                      "Color": "0,1,0.08333,1",
+                      "Offset": "14.06662,-8.866659"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "__guid": "1bf3a662-c841-4f64-a456-e68e6a02f10f",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "53.80403,171.8049,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "6285ee6b-c713-45c4-9089-cc462b39ce0d",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "8a55c58a-9e28-4460-81d6-3a37f299963e",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "2393e144-9c4d-4bea-a3fc-fe2fe5e3ae70",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "5ae0e083-616c-4b4f-8a1f-c982e706ac3b",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "29.80403,168,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "c5a473a1-691c-4ece-a1f2-56bf38c15de0",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "cd15d656-7cb5-4874-83fd-c214d59b9e9f",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "3c7ef2b3-1715-4f9d-9498-f871b52388f0",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "1ab37af6-3de9-4516-b4d8-7c9c40778d4f",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "61.80404,136,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "7348c457-6976-4fd9-aa9c-0a2b8714b662",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "d5428c43-6546-4d2b-937d-043899ba64df",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "c5f0cb1c-f635-47f6-8b9b-47612709837d",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "c363606c-8902-4828-a5b6-9eb6f61faf52",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "61.80404,136,28.37378",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "dc0e4d47-ad9e-4e5c-b59b-d79c6e193e15",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "138c40df-2838-4914-9caa-8290f7ca85fc",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "a8d033ab-8d9e-42c9-b1a9-cae54faeafbc",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "9d9f0f7d-8cbd-46ec-9050-a14981aa1e88",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "77.80403,168,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "6af27402-e4e2-4a32-ba21-33282a0d308a",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "74f87a95-d5c6-4c9b-bbca-59ec0a0a0dd7",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "58580e36-f856-4fcf-8e5e-f22a325a4f00",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "69d4cdfe-ea43-40b9-9184-9dfe6dd762a2",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "77.80404,104,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "454a1a43-0260-4891-a13b-7e3fcb13899e",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "8832d2cd-e48b-4604-a6a6-a7ea404ea941",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "55dc1620-b23b-4352-aa69-2371c09ab5ad",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "dc80f10a-2e95-4b4f-9be7-fd12ee374105",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "57.80404,104,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "ebcd6481-2bae-4886-99fe-b23052cf5787",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "f96d8358-ce47-430f-a525-45385ca4981d",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "cb54eaf6-fe7d-4500-b62b-f9eac0884f0d",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "fc59f030-1021-4fec-ac26-2e71d830f657",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "25.80404,80.00001,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "ef10f8a8-0b1c-4a59-be1f-cee608da547b",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "eddc454e-6575-497f-a434-a06f3586f03e",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "d2d2cbf8-147a-40ed-b9ee-57019883e879",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "4f1df46b-9b2c-4cca-be15-2f888cf2cb7a",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "25.80404,56.00001,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "c75d5f59-3dfc-4185-b8e6-f89eb1150f16",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "313236b0-bc26-4c55-afb4-9a5ac3e2b525",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "8891028c-353a-45c8-9964-4506787c1126",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "858f9cae-d18d-4a32-9619-ff07666ad692",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "25.80404,104,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "0de9da58-cc63-4b3c-a07c-6ba183fd6951",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "bedd3288-63d6-412a-80cc-84bd7ce332e1",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "ca6a7c80-7449-4922-9094-c4acaf065572",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "6245d3a8-1d79-47b3-b17f-68bfe22f44e6",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "25.80403,152,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "473006a6-6fc5-4bd7-b799-4c9906f7aeb4",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "d9cbb4c7-de50-4244-99a9-ca7ed3b9dd83",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "9518d92b-3d30-4e51-80ca-f91f966ea9ac",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "2ff165f5-6070-4995-8f93-e25e3d71b930",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "41.80404,144,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "b2ef7415-eb34-4ce1-b9c7-8bfb8d10ac29",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "e9cfabbd-454c-40c7-9bf2-94df9f83647d",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "83a2db0c-483e-4ad3-8dc0-98723c30ddfc",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "120c7e41-4115-48c3-9336-7c1f3084e433",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "41.80404,144,28.37378",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "db91e028-0296-4a05-9a55-6bf4b17793fe",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "7901c42c-20cf-4322-914e-ff27c9bd9864",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "3285831b-0ab9-4d48-a816-3398b9dad847",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "21b431f0-411c-4a47-b31a-4d5d052caca4",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "45.80404,88.00002,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "f75cee7e-03cf-48c8-aa79-c0a45d07caa8",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "c29df021-a5c4-4eb4-b676-b4c2a7d08824",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "5de452c0-a2ec-4836-a508-0c09599a8c64",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "62aa276e-fea9-49b2-ad46-f24bb7b2a216",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "45.80404,88.00002,28.37378",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "947d7167-4190-4be9-a908-ebda984c188c",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "ea833d4c-a4ae-4a4b-a28d-e8d62f9e7bea",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "6073f861-4afe-4c87-9873-c9194d3d332f",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "44dc3905-26bc-4db8-a10b-daf5a6d8618e",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "85.80403,136,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "269701c7-ab8f-4d6b-a2b1-96cc7f1e5101",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "37b0ac8f-e26f-4d20-944e-f446b65845b0",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "cfac66dd-b988-4573-a6fd-4a2c66d8340d",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "fee3e2f8-a1f5-4d05-8998-58aea15ba1f4",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "77.80404,80.00003,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "bcb4dcef-d742-4cad-b2d9-034c61677b87",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "2f1ac586-2785-402c-9fa3-77a5ecb9df20",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "2d102643-3f17-4a3f-aa4e-913e0769a867",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "ccf5f321-0b00-4333-9b05-0fb8224b7c06",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "77.80404,80.00003,28.37378",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "cc81039f-c40c-4e5f-a848-c13b8cd0c297",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "9b7f4242-ffab-42a2-a7da-65dc12a4449f",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "61b95300-5847-4ae7-a5d8-d239eac01135",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "9fc49679-c814-4bf7-acb2-7eb919f7e880",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "21.80404,128,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "7c3bb4d6-90a6-4062-80f7-e534df490955",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "9e8dbf62-3099-4fce-a6f5-f5ffca82d4ac",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "57129138-569b-44e5-a940-c874c2d0d311",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "25937fe6-a64b-40da-a294-ef80deb442c7",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "21.80404,128,28.37378",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "c33226b7-fb3d-42eb-9d3d-2f3d8b176174",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "0e175c62-b869-443a-8424-8b061a8fc3be",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "ae27447a-db46-41a9-aceb-ab85b6a3cf69",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "0035d494-b1c8-4c5d-b916-d4a859bf0e2c",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "85.80404,64.00003,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "27130043-301f-4452-8f05-b35b2684fe07",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "ec7b25b8-e33e-477b-b04a-4899b76fb269",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "8071286e-eb4f-46cc-a749-f9fb79f992c5",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "3569a47c-3671-415a-8709-d38acf3ab7c4",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "37.80404,112.3931,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "29cef73a-4721-45b4-8d49-92a03eb85e18",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "a0661912-1f5b-4042-bb63-ec6cdcf1a834",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "33bde4f1-29ab-4b0c-97c4-015b4d15491a",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "7eb3b2eb-28a9-4aa6-931a-6dc650a82085",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "65.80404,63.72121,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "45d16250-4091-4778-91fe-755701523c74",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "a782c3d6-126d-462d-a4eb-f6f364f72b70",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "3a65ae52-a692-43a8-b0c7-9f3f4cd52922",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "f9102e01-7a05-4e3b-880c-375186d8d285",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "65.80404,48.00002,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "b9972f81-705e-4583-a0fa-103533323afb",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "0557c81d-e687-4d09-9313-8a563842ba11",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "39c51ba7-6586-4795-a93f-40499d962915",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            },
+            {
+              "__guid": "087b87ee-9733-48f0-b4b4-8d207b229cf6",
+              "Flags": 0,
+              "Name": "Cube",
+              "Position": "49.80415,216.001,4.373779",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "2,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "5814a2ac-1fcf-4d6b-a800-739f5cb023d7",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/dev/box.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "9a818408-2cfa-406a-8131-e1d6be0f9aba",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Static": true
+                }
+              ]
+            },
+            {
+              "__guid": "265506e1-bc38-4088-91ae-dc2aad2826b7",
+              "Flags": 0,
+              "Name": "Cube",
+              "Position": "61.80417,16.001,4.373779",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "2,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "6508dbc3-681f-4742-aa36-015d7e2b557a",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/dev/box.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "a6240f88-1683-4e8c-8ff6-62dd7a1a287b",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Static": true
+                }
+              ]
+            },
+            {
+              "__guid": "1eda983c-94ac-4de0-8c1e-38ae3e742a53",
+              "Flags": 0,
+              "Name": "Cube",
+              "Position": "105.8046,128.0015,4.373779",
+              "Rotation": "0.00000002107342,0.00000002107342,0.7071069,0.7071066",
+              "Scale": "2,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "766a5e02-41ee-44e9-8789-7774984d125d",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/dev/box.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "b252f47c-e631-4cc2-b904-43a9b59a711e",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Static": true
+                }
+              ]
+            },
+            {
+              "__guid": "8ea39398-db81-4e6c-ba09-f40c5ae13029",
+              "Flags": 0,
+              "Name": "Cube",
+              "Position": "5.804556,104.001,4.373779",
+              "Rotation": "0.00000002107342,0.00000002107342,0.7071069,0.7071066",
+              "Scale": "2,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "25954452-d7e9-489a-a9bf-2a3f4408479e",
+                  "BodyGroups": 18446744073709551615,
+                  "Model": "models/dev/box.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "d9bf7529-8d42-41fb-b7b6-832456dff5fa",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "50,50,50",
+                  "Static": true
+                }
+              ]
+            },
+            {
+              "__guid": "60a2808d-dc28-480d-9bb8-0ff31f0b6c0f",
+              "Flags": 0,
+              "Name": "Pivot",
+              "Position": "40.82925,64.77516,9.46875",
+              "Rotation": "0.00000002980232,0.000000000000002664535,1,-0.00000008940697",
+              "Scale": "0.25,0.5,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Rigidbody",
+                  "__guid": "be1519b8-64f1-4f0a-9149-1ba60cf55ada",
+                  "AngularDamping": 0,
+                  "Gravity": true,
+                  "LinearDamping": 0,
+                  "Locking": {},
+                  "MassCenterOverride": "0,0,0",
+                  "MassOverride": 0,
+                  "MotionEnabled": true,
+                  "OverrideMassCenter": false,
+                  "RigidbodyFlags": 0,
+                  "StartAsleep": false
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "3c448294-e296-4502-9f82-95db6a46434c",
+                  "BodyGroups": 18446744073709551615,
+                  "MaterialOverride": "materials/shine.vmat",
+                  "Model": "models/dev/sphere.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "09f9b67d-6eb3-4010-bf26-b8e0864865d3",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Radius": 32.800014,
+                  "Static": false
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -7907,7 +9304,7 @@
               "__guid": "82e2bd12-f45a-4e9b-9fe1-8bad0031903b",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "367.7528,-0.001473725,1262.499",
+              "Position": "367.7528,-0.001514415,1262.499",
               "Enabled": true,
               "Components": [
                 {
@@ -7954,7 +9351,7 @@
               "__guid": "e8bf89e9-c689-43a0-87d3-82a358fb1986",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "404.0001,-24.0005,1262.499",
+              "Position": "404.0001,-24.00054,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -8002,7 +9399,7 @@
               "__guid": "deb2631d-3933-4088-9180-5e18f0b60415",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "403.0766,8.891815,1262.499",
+              "Position": "403.0766,8.891774,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -8050,7 +9447,7 @@
               "__guid": "d2e19fe7-c25b-4691-966b-b0a749ea86cd",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "454.751,-54.10673,1262.499",
+              "Position": "454.751,-54.10679,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -8242,7 +9639,7 @@
               "__guid": "ad9b7e6e-534a-43b2-befb-5d6db5acfbde",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "395.9955,-62.95501,1262.501",
+              "Position": "395.9955,-62.95505,1262.501",
               "Rotation": "0,0,-0.6087614,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8290,7 +9687,7 @@
               "__guid": "0e6b5275-e45e-4f5d-8bcf-821ad2a86375",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "391.2995,-30.66513,1259.191",
+              "Position": "391.2995,-30.66517,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8338,7 +9735,7 @@
               "__guid": "110e51dd-4f9b-4384-8940-f7d9c8f0f238",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "443.8012,3.5598,1259.192",
+              "Position": "443.8012,3.559739,1259.192",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8386,7 +9783,7 @@
               "__guid": "fff4db18-0ade-45da-8366-470c32ac9cfe",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "438.9766,-35.95237,1259.191",
+              "Position": "438.9766,-35.95243,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8434,7 +9831,7 @@
               "__guid": "e0638e56-32c4-4c91-875f-9c556232f1ad",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "488.9273,-15.98657,1259.191",
+              "Position": "488.9273,-15.98663,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8482,7 +9879,7 @@
               "__guid": "0b2e21a8-a351-4275-b4ce-d4d0a348ccef",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "463.6745,-14.97605,1259.191",
+              "Position": "463.6745,-14.97611,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8530,7 +9927,7 @@
               "__guid": "5bfbd1e5-a7b1-4ad8-b80d-e2f56b06f42c",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "491.5528,-43.12497,1259.191",
+              "Position": "491.5528,-43.12503,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8578,7 +9975,7 @@
               "__guid": "e528984e-6e05-4039-b74d-d13afab344fa",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "483.6224,-74.90974,1259.191",
+              "Position": "483.6224,-74.9098,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
