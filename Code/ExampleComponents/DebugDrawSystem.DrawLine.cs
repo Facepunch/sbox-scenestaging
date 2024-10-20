@@ -2,9 +2,14 @@
 {
 	readonly Material LineMaterial;
 
-	public void Line( Line line, Color color = new Color(), float duration = 0 )
+	public void Normal( Vector3 position, Vector3 direction, Color color = new Color(), float duration = 0, Transform transform = default )
 	{
-		Line( line.Start, line.End, color, duration );
+		Line( position, position + direction, color, duration, transform );
+	}
+
+	public void Line( Line line, Color color = new Color(), float duration = 0, Transform transform = default )
+	{
+		Line( line.Start, line.End, color, duration, transform );
 	}
 
 	public void Line( Vector3 from, Vector3 to, Color color = new Color(), float duration = 0, Transform transform = default )

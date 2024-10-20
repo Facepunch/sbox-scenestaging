@@ -111,11 +111,14 @@
 		float radiusScale = 1;
 		var tr = TraceBody( from, to, radiusScale );
 
-		while ( tr.StartedSolid )
+		while ( tr.StartedSolid || (tr.Hit && !CanStandOnSurfaceNormal( tr.Normal )) )
 		{
 			radiusScale = radiusScale - 0.1f;
 			if ( radiusScale < 0.7f )
+			{
+				UpdateGround( default );
 				return;
+			}
 
 			tr = TraceBody( from, to, radiusScale );
 		}
@@ -128,6 +131,8 @@
 
 		if ( !tr.StartedSolid && tr.Hit && CanStandOnSurfaceNormal( tr.Normal ) )
 		{
+			DebugDrawSystem.Current.Normal( tr.EndPosition, tr.Normal * 10, Color.Green, 10 );
+
 			UpdateGround( tr );
 			Reground();
 		}
