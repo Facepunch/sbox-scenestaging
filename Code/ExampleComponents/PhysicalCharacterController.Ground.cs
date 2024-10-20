@@ -104,12 +104,11 @@
 			return;
 		}
 
-		var testHeight = IsOnGround ? StepHeight : 4;
-		var from = WorldPosition + Vector3.Up * testHeight;
-		var to = WorldPosition + Vector3.Down * testHeight;
+		var from = WorldPosition + Vector3.Up * 4;
+		var to = WorldPosition + Vector3.Down * 2;
 
 		float radiusScale = 1;
-		var tr = TraceBody( from, to, radiusScale );
+		var tr = TraceBody( from, to, radiusScale, 0.5f );
 
 		while ( tr.StartedSolid || (tr.Hit && !CanStandOnSurfaceNormal( tr.Normal )) )
 		{

@@ -7,16 +7,16 @@
 	bool _didstep;
 	Vector3 _stepPosition;
 
-	BBox BodyBox( float scale = 1.0f ) => new BBox( new Vector3( -BodyRadius * 0.5f * scale, -BodyRadius * 0.5f * scale, 0 ), new Vector3( BodyRadius * 0.5f * scale, BodyRadius * 0.5f * scale, BodyHeight ) );
+	BBox BodyBox( float scale = 1.0f, float heightScale = 1.0f ) => new BBox( new Vector3( -BodyRadius * 0.5f * scale, -BodyRadius * 0.5f * scale, 0 ), new Vector3( BodyRadius * 0.5f * scale, BodyRadius * 0.5f * scale, BodyHeight * heightScale ) );
 
-	SceneTraceResult TraceBody( Vector3 from, Vector3 to, float scale = 1.0f )
+	SceneTraceResult TraceBody( Vector3 from, Vector3 to, float scale = 1.0f, float heightScale = 1.0f )
 	{
 		var tx = WorldTransform;
 		//return Scene.Trace.Sweep( Body, tx.WithPosition( from ), tx.WithPosition( to ) ).IgnoreGameObjectHierarchy( GameObject ).Run();
 
 		//var bbox = new BBox( new Vector3( BodyRadius, BodyRadius, 0 ), new Vector3( BodyRadius, BodyRadius, BodyHeight ) );
 
-		return Scene.Trace.Box( BodyBox( scale ), from, to ).IgnoreGameObjectHierarchy( GameObject ).Run();
+		return Scene.Trace.Box( BodyBox( scale, heightScale ), from, to ).IgnoreGameObjectHierarchy( GameObject ).Run();
 	}
 
 
