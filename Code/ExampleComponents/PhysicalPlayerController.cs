@@ -198,30 +198,16 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 		if ( Controller.WaterLevel > 0 )
 			DebugDrawSystem.Current.Text( WorldPosition + Vector3.Up * 80, $"WaterLevel: {Controller.WaterLevel}" );
 
-		if ( Controller.IsSwimming )
+		if ( IsDucked )
 		{
-			Controller.WishVelocity = WishVelocity;
-		}
-		else if ( Controller.IsClimbing )
-		{
-			Controller.WishVelocity = WishVelocity;
+			Controller.BodyHeight = 40;
 		}
 		else
 		{
-
-			if ( IsDucked )
-			{
-				Controller.BodyHeight = 40;
-			}
-			else
-			{
-				Controller.BodyHeight = 64;
-			}
-
-			Controller.WishVelocity = WishVelocity.WithZ( 0 );
+			Controller.BodyHeight = 64;
 		}
 
-
+		Controller.WishVelocity = WishVelocity;
 
 		UpdatePressure();
 	}

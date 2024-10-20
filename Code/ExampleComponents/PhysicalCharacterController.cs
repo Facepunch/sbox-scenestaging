@@ -93,41 +93,7 @@ public sealed partial class PhysicalCharacterController : Component, IScenePhysi
 		ChooseBestMoveMode();
 		UpdateBody();
 
-		var groundFriction = 0.25f + GroundFriction * 10;
-
-		if ( !WishVelocity.IsNearZeroLength )
-		{
-			var z = Body.Velocity.z;
-
-			var velocity = (Body.Velocity - GroundVelocity);
-			var wish = WishVelocity;
-			var speed = velocity.Length;
-
-			var maxSpeed = MathF.Max( wish.Length, speed );
-
-			if ( IsOnGround )
-			{
-				var amount = 1 * groundFriction;
-				velocity = velocity.AddClamped( wish * amount, wish.Length * amount );
-			}
-			else
-			{
-				var amount = 0.05f;
-				velocity = velocity.AddClamped( wish * amount, wish.Length );
-			}
-
-			if ( velocity.Length > maxSpeed )
-				velocity = velocity.Normal * maxSpeed;
-
-			velocity += GroundVelocity;
-
-			if ( IsOnGround )
-			{
-				velocity.z = z;
-			}
-
-			Body.Velocity = velocity;
-		}
+		CurrentMoveMode.AddVelocity( this );
 
 		TryStep();
 	}

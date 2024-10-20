@@ -33,7 +33,7 @@
 	public void PreventGrounding( float seconds )
 	{
 		_timeUntilAllowedGround = MathF.Max( _timeUntilAllowedGround, seconds );
-		UpdateGround( default );
+		UpdateGroundFromTraceResult( default );
 	}
 
 	/// <summary>
@@ -89,7 +89,7 @@
 		if ( !CurrentMoveMode.AllowGrounding )
 		{
 			PreventGrounding( 0.1f );
-			UpdateGround( default );
+			UpdateGroundFromTraceResult( default );
 			return;
 		}
 
@@ -97,14 +97,14 @@
 		if ( groundVel > 250 )
 		{
 			PreventGrounding( 0.3f );
-			UpdateGround( default );
+			UpdateGroundFromTraceResult( default );
 			return;
 		}
 
 		var velocity = Velocity - GroundVelocity;
 		if ( _timeUntilAllowedGround > 0 || groundVel > 300 )
 		{
-			UpdateGround( default );
+			UpdateGroundFromTraceResult( default );
 			return;
 		}
 
@@ -119,7 +119,7 @@
 			radiusScale = radiusScale - 0.1f;
 			if ( radiusScale < 0.7f )
 			{
-				UpdateGround( default );
+				UpdateGroundFromTraceResult( default );
 				return;
 			}
 
@@ -128,7 +128,7 @@
 
 		if ( tr.StartedSolid )
 		{
-			UpdateGround( default );
+			UpdateGroundFromTraceResult( default );
 			return;
 		}
 
@@ -136,12 +136,12 @@
 		{
 			//DebugDrawSystem.Current.Normal( tr.EndPosition, tr.Normal * 10, Color.Green, 10 );
 
-			UpdateGround( tr );
+			UpdateGroundFromTraceResult( tr );
 			Reground();
 		}
 		else
 		{
-			UpdateGround( default );
+			UpdateGroundFromTraceResult( default );
 		}
 	}
 
@@ -153,7 +153,7 @@
 		return Vector3.GetAngle( Vector3.Up, normal ) <= GroundAngle;
 	}
 
-	void UpdateGround( SceneTraceResult tr )
+	void UpdateGroundFromTraceResult( SceneTraceResult tr )
 	{
 		var wasGrounded = IsOnGround;
 

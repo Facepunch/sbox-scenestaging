@@ -10,8 +10,6 @@
 	// if we stepped, this holds the position we moved to
 	Vector3 _stepPosition;
 
-
-
 	/// <summary>
 	/// Try to step up. Will trace forward, then up, then across, then down.
 	/// </summary>
