@@ -128,8 +128,8 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
 			AnimationHelper.MoveStyle = IsRunning ? CitizenAnimationHelper.MoveStyles.Run : CitizenAnimationHelper.MoveStyles.Walk;
 			AnimationHelper.DuckLevel = IsDucked ? 1 : 0;
-			AnimationHelper.IsSwimming = Controller.IsSwimming;
-			AnimationHelper.IsClimbing = Controller.IsClimbing;
+			AnimationHelper.IsSwimming = Controller.CurrentMoveMode == Controller.Swimming;
+			AnimationHelper.IsClimbing = Controller.CurrentMoveMode == Controller.Climb;
 
 			var skidding = 0.0f;
 
@@ -194,24 +194,6 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 		if ( Input.Pressed( "score" ) ) FirstPerson = !FirstPerson;
 
 		IsDucked = Input.Down( "duck" );
-
-		if ( Controller.IsSwimming )
-		{
-			Controller.IsSwimming = Controller.WaterLevel > 0.3f;
-
-			if ( !Controller.IsSwimming && Input.Down( "Jump" ) )
-			{
-				Controller.Jump( Vector3.Up * 300 );
-			}
-		}
-		else if ( Controller.IsClimbing )
-		{
-
-		}
-		else
-		{
-			Controller.IsSwimming = Controller.WaterLevel > 0.7f;
-		}
 
 		if ( Controller.WaterLevel > 0 )
 			DebugDrawSystem.Current.Text( WorldPosition + Vector3.Up * 80, $"WaterLevel: {Controller.WaterLevel}" );

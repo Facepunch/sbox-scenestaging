@@ -70,6 +70,12 @@ public sealed partial class PhysicalCharacterController : Component, IScenePhysi
 	{
 		base.OnAwake();
 
+		MoveModes.Add( DefaultMoveMode );
+		MoveModes.Add( Climb );
+		MoveModes.Add( Swimming );
+
+		CurrentMoveMode = DefaultMoveMode;
+
 		EnsureComponentsCreated();
 		UpdateBody();
 
@@ -84,6 +90,7 @@ public sealed partial class PhysicalCharacterController : Component, IScenePhysi
 
 	void IScenePhysicsEvents.PrePhysicsStep()
 	{
+		ChooseBestMoveMode();
 		UpdateBody();
 
 		var groundFriction = 0.25f + GroundFriction * 10;
@@ -132,16 +139,19 @@ public sealed partial class PhysicalCharacterController : Component, IScenePhysi
 		Reground();
 		CategorizeGround();
 		CategorizeTriggers();
-		UpdatePositionOnLadder();
 		UpdateGroundVelocity();
 
 		Velocity = Body.Velocity - GroundVelocity;
+
+		CurrentMoveMode?.OnUpdate( this );
 
 		DebugDrawSystem.Current.Box( BodyBox(), transform: WorldTransform, color: Color.Green, duration: 0 );
 		DebugDrawSystem.Current.Sphere( new Sphere( Body.MassCenterOverride, 2 ), transform: WorldTransform, color: Color.Green, duration: 0 );
 
 		//DebugDrawSystem.Current.Sphere( new Sphere( WorldPosition + Vector3.Up * 100, 10 ), color: Color.Green );
 		//DebugDrawSystem.Current.Text( WorldPosition + Vector3.Up * 100, "Hello!", duration: 0 );
+
+		ChooseBestMoveMode();
 	}
 
 	Transform _groundTransform;

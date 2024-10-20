@@ -295,7 +295,7 @@
       "__guid": "eb96c376-46c8-4fdf-92e3-cc6f8bca0b2c",
       "Flags": 0,
       "Name": "Citizen",
-      "Position": "1157.825,4016,-1613.38",
+      "Position": "-16,1888,-1613.38",
       "Enabled": true,
       "Components": [
         {
@@ -328,10 +328,12 @@
           "BodyHeight": 64,
           "BodyMass": 500,
           "BodyRadius": 15.933333,
+          "EnableClimbing": false,
+          "EnableSwimming": false,
           "GroundAngle": 45,
           "ShowColliderComponents": false,
           "ShowRigidbodyComponent": false,
-          "StepDebug": true,
+          "StepDebug": false,
           "StepHeight": 18,
           "StepUp": true
         },
@@ -363,13 +365,13 @@
           "__guid": "088cd0f6-726d-4ece-a74c-2e6e520072c7",
           "AngularDamping": 0,
           "Gravity": true,
-          "LinearDamping": 0,
+          "LinearDamping": 0.1,
           "Locking": {
             "Pitch": true,
             "Yaw": true,
             "Roll": true
           },
-          "MassCenterOverride": "0,0,1.098784",
+          "MassCenterOverride": "0,0,4.830847",
           "MassOverride": 500,
           "MotionEnabled": true,
           "OverrideMassCenter": true,

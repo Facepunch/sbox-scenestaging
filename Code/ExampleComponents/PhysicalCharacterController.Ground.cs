@@ -86,7 +86,7 @@
 		var groundVel = GroundVelocity.z;
 		bool wasOnGround = IsOnGround;
 
-		if ( IsSwimming || IsClimbing )
+		if ( !CurrentMoveMode.AllowGrounding )
 		{
 			PreventGrounding( 0.1f );
 			UpdateGround( default );

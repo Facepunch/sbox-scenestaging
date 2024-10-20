@@ -48,5 +48,7 @@
 
 		float massCenter = IsOnGround ? WishVelocity.Length.Clamp( 0, StepHeight ) : BodyHeight * 0.5f;
 		Body.MassCenterOverride = Body.MassCenterOverride.LerpTo( new Vector3( 0, 0, massCenter ), Time.Delta * 10 );
+
+		CurrentMoveMode?.UpdateRigidBody( Body );
 	}
 }
