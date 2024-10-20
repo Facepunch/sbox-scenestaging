@@ -4,130 +4,150 @@
 	[Property, Group( "StepUp" )] public bool StepDebug { get; set; } = true;
 	[Property, Group( "StepUp" )] public float StepHeight { get; set; } = 18.0f;
 
+	// set when we stepped this tick, so at the end of the physics step we can restore our position
 	bool _didstep;
+
+	// if we stepped, this holds the position we moved to
 	Vector3 _stepPosition;
 
-	BBox BodyBox( float scale = 1.0f, float heightScale = 1.0f ) => new BBox( new Vector3( -BodyRadius * 0.5f * scale, -BodyRadius * 0.5f * scale, 0 ), new Vector3( BodyRadius * 0.5f * scale, BodyRadius * 0.5f * scale, BodyHeight * heightScale ) );
-
-	SceneTraceResult TraceBody( Vector3 from, Vector3 to, float scale = 1.0f, float heightScale = 1.0f )
-	{
-		var tx = WorldTransform;
-		//return Scene.Trace.Sweep( Body, tx.WithPosition( from ), tx.WithPosition( to ) ).IgnoreGameObjectHierarchy( GameObject ).Run();
-
-		//var bbox = new BBox( new Vector3( BodyRadius, BodyRadius, 0 ), new Vector3( BodyRadius, BodyRadius, BodyHeight ) );
-
-		return Scene.Trace.Box( BodyBox( scale, heightScale ), from, to ).IgnoreGameObjectHierarchy( GameObject ).Run();
-	}
 
 
+	/// <summary>
+	/// Try to step up. Will trace forward, then up, then across, then down.
+	/// </summary>
 	void TryStep()
 	{
 		_didstep = false;
 
 		if ( !StepUp ) return;
-		//if ( !IsOnGround ) return;
-		//if ( TimeSinceUngrounded < 0.2f ) return;
-		//if ( WishVelocity.IsNearlyZero( 0.001f ) ) return;
 		if ( Velocity.WithZ( 0 ).IsNearlyZero( 0.0001f ) ) return;
-
-		Reground();
+		if ( _timeUntilAllowedGround > 0 ) return;
 
 		var from = WorldPosition;
 		var vel = Velocity.WithZ( 0 ) * Time.Delta;
 		float radiusScale = 1.0f;
 
-		//
-		// Keep moving
-		//
+		SceneTraceResult result;
 
-		//var tr = Scene.Trace.Box( footbox, from - vel.Normal * skin, from + vel ).IgnoreGameObjectHierarchy( GameObject ).Run();
-		var tr = TraceBody( from - vel.Normal * skin, from + vel, radiusScale );
-
-		while ( tr.StartedSolid )
+		//
+		// Trace forwards, in our current velocity direction
+		//
 		{
-			radiusScale = radiusScale - 0.1f;
-			if ( radiusScale < 0.6f )
-				return;
+			var a = from - vel.Normal * _skin;
+			var b = from + vel;
 
-			tr = TraceBody( from - vel.Normal * skin, from + vel, radiusScale );
-		}
+			result = TraceBody( a, b, radiusScale );
 
-		if ( tr.StartedSolid )
-		{
-			//	Log.Info( $"Started Solid: {from} to {vel}" );
-			//	DebugDrawSystem.Current.AddBox( BBox.FromPositionAndSize( from, 3 ) ).WithColor( Color.Orange ).WithTime( 5 );
-			return;
-		}
-
-		if ( !tr.Hit )
-			return;
-
-		//
-		// We hit a step
-		//
-		var hitDistance = tr.Distance - skin * 2;
-		var moveDir = vel.Normal * (vel.Length - hitDistance);
-		from = from + vel.Normal * (tr.Distance - skin);
-
-		// move up 
-		//tr = Scene.Trace.Box( footbox, from, from + Vector3.Up * StepHeight ).IgnoreGameObjectHierarchy( GameObject ).Run();
-		tr = TraceBody( from, from + Vector3.Up * StepHeight, radiusScale );
-		if ( tr.Hit && !tr.StartedSolid )
-		{
-			//DebugDrawSystem.Current.AddBox( BBox.FromPositionAndSize( tr.HitPosition, 3 ) ).WithColor( Color.Red ).WithTime( 30 );
-			return;
-		}
-
-		// move across
-		var fromupper = from += Vector3.Up * (tr.Distance + 1);
-		tr = TraceBody( fromupper, fromupper + moveDir, radiusScale );
-		if ( tr.Hit )
-			return;
-
-		var dist = tr.Distance;
-
-		//
-		// Step Down
-		// 
-		{
-			var top = tr.EndPosition;
-			var bottom = tr.EndPosition + Vector3.Down * StepHeight;
-
-			tr = TraceBody( tr.EndPosition, tr.EndPosition + Vector3.Down * StepHeight, radiusScale );
-			if ( tr.Hit )
+			// If we're inside something, lose girth until we're not
+			while ( result.StartedSolid )
 			{
-				if ( !CanStandOnSurfaceNormal( tr.Normal ) )
+				radiusScale = radiusScale - 0.1f;
+				if ( radiusScale < 0.6f )
 					return;
 
-				_didstep = true;
-				_stepPosition = tr.EndPosition + Vector3.Up * skin;
-				var oldPosition = Body.WorldPosition;
+				result = TraceBody( a, b, radiusScale );
+			}
 
-				Body.WorldPosition = _stepPosition;
-
-				//if ( StepDebug )
-				{
-					DebugDrawSystem.Current.Line( oldPosition, _stepPosition, duration: 10 );
-				}
-
+			// If we didn't hit anything, we're done here
+			if ( !result.Hit )
 				return;
+
+			if ( StepDebug )
+			{
+				DebugDrawSystem.Current.Line( a, b, duration: 10, color: Color.Green );
+			}
+
+			// Remove the distace travelled from our velocity
+			vel = vel.Normal * (vel.Length - result.Distance);
+			if ( vel.Length <= 0 ) return;
+		}
+
+		//
+		// We hit a step, move upwards from this point, one step up
+		//
+		{
+			from = result.EndPosition;
+			var uppoint = from + Vector3.Up * StepHeight;
+
+			// move up 
+			result = TraceBody( from, uppoint, radiusScale );
+
+			if ( result.StartedSolid )
+				return;
+
+			// If we hit our head almost immediately, it's too tight to step up
+			// we need to draw the line somewhere
+			if ( result.Distance < 2 )
+			{
+				if ( StepDebug ) DebugDrawSystem.Current.Line( from, result.EndPosition, duration: 10, color: Color.Red );
+				return;
+			}
+
+			if ( StepDebug )
+			{
+				DebugDrawSystem.Current.Line( from, result.EndPosition, duration: 10, color: Color.Green );
 			}
 		}
 
-		if ( StepDebug )
+		// Move across
 		{
-			DebugDrawSystem.Current.Box( tr.HitPosition, 3, Color.Red, 10 );
+			// move across
+			var a = result.EndPosition;
+			var b = a + vel;
+
+			result = TraceBody( a, b, radiusScale );
+			if ( result.StartedSolid )
+				return;
+
+			if ( StepDebug )
+			{
+				DebugDrawSystem.Current.Line( a, b, duration: 10, color: Color.Green );
+			}
 		}
 
-		//DebugDrawSystem.Current.AddLine( from, tr.EndPosition, 0.4f ).WithColor( Color.Red ).WithTime( 1.4f );
+		//
+		// Step Down, back to the ground
+		// 
+		{
+			var dist = result.Distance;
+			var top = result.EndPosition;
+			var bottom = result.EndPosition + Vector3.Down * StepHeight;
+
+			result = TraceBody( top, bottom, radiusScale );
+
+			// no ground here (!)
+			if ( !result.Hit )
+			{
+				if ( StepDebug ) DebugDrawSystem.Current.Line( top, bottom, duration: 10, color: Color.Red );
+				return;
+			}
+
+			// can't stand here
+			if ( !CanStandOnSurfaceNormal( result.Normal ) )
+				return;
+
+			_didstep = true;
+			_stepPosition = result.EndPosition + Vector3.Up * _skin;
+
+			Body.WorldPosition = _stepPosition;
+
+			if ( StepDebug )
+			{
+				DebugDrawSystem.Current.Line( top, _stepPosition, duration: 10, color: Color.Green );
+			}
+		}
 	}
 
+	/// <summary>
+	/// If we stepped up on the previous step, we suck our position back to the previous position after the physics step
+	/// to avoid adding double velocity. This is technically wrong but doens't seem to cause any harm right now
+	/// </summary>
 	void RestoreStep()
 	{
 		if ( _didstep )
 		{
-			Body.WorldPosition = _stepPosition;
 			_didstep = false;
+			Body.WorldPosition = _stepPosition;
 		}
 	}
 }

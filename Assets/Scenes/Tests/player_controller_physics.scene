@@ -328,12 +328,10 @@
           "BodyHeight": 64,
           "BodyMass": 500,
           "BodyRadius": 15.933333,
-          "Feet": true,
-          "FeetDebug": false,
           "GroundAngle": 45,
           "ShowColliderComponents": false,
           "ShowRigidbodyComponent": false,
-          "StepDebug": false,
+          "StepDebug": true,
           "StepHeight": 18,
           "StepUp": true
         },
@@ -371,10 +369,10 @@
             "Yaw": true,
             "Roll": true
           },
-          "MassCenterOverride": "0,0,0",
+          "MassCenterOverride": "0,0,1.098784",
           "MassOverride": 500,
           "MotionEnabled": true,
-          "OverrideMassCenter": false,
+          "OverrideMassCenter": true,
           "RigidbodyFlags": "DisableCollisionSounds",
           "StartAsleep": false
         },
@@ -386,7 +384,8 @@
           "IsTrigger": false,
           "Radius": 11.266568,
           "Start": "0,0,52.73343",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "Sandbox.BoxCollider",
@@ -395,7 +394,8 @@
           "Friction": 0,
           "IsTrigger": false,
           "Scale": "15.93333,15.93333,18",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
@@ -574,7 +574,8 @@
                   "__guid": "a6522a37-7b6f-4e8c-9041-2dee8d4b12b2",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -619,7 +620,8 @@
                   "__guid": "cb321bad-0cab-404e-b5ff-2a2d58917d6a",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -665,7 +667,8 @@
                   "__guid": "941577ca-5ee1-4e9b-bad9-116f4bfd23b3",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -1028,7 +1031,8 @@
                   "__guid": "a7f1132e-edbf-4cdf-86af-9a5cf53fa582",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -1073,7 +1077,8 @@
                   "__guid": "2db54284-8bfb-45cd-a3e7-308074a22b3a",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/organ_02_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -1118,7 +1123,8 @@
                   "__guid": "be4edcbd-d3c1-4faa-bc55-3df3555ffa8d",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/intestine_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -1163,7 +1169,8 @@
                   "__guid": "40997622-ac33-428b-86d2-b0e527be1347",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/intestine_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -1208,7 +1215,8 @@
                   "__guid": "5c3395a3-9189-4496-b0fe-84a3dfc681bb",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/organ_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -1253,7 +1261,8 @@
                   "__guid": "574e44a5-5b77-4c0b-90e0-69a0f6b63e4f",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/organ_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -1298,7 +1307,8 @@
                   "__guid": "74a0965c-7ad7-4d50-a554-cce1e5403b77",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/organ_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -1342,7 +1352,8 @@
                   "__guid": "c9a2ae0a-c100-4322-ae71-0ab4c35d3b41",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/skull_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -1387,7 +1398,8 @@
                   "__guid": "80f4accc-4bca-45c3-8682-c3dbd4204eea",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/skeleton_pelvis_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -1433,7 +1445,8 @@
                   "__guid": "e362c22d-0219-4bbb-9e14-c7b5a8b0a4ff",
                   "IsTrigger": false,
                   "Model": "models/citizen_gibs/models/intestine_gib.vmdl",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "Sandbox.Rigidbody",
@@ -1695,7 +1708,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
@@ -1821,7 +1835,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
@@ -1891,7 +1906,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -2266,7 +2282,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveSinComponent",
@@ -2409,7 +2426,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveBrownianComponent",
@@ -2550,7 +2568,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -2696,7 +2715,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -2837,7 +2857,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -3044,7 +3065,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -3162,7 +3184,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -3280,7 +3303,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -3390,7 +3414,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -3454,7 +3479,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -3564,7 +3590,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -3683,7 +3710,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -3795,7 +3823,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -4087,7 +4116,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -4194,7 +4224,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -4259,7 +4290,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "SpinComponent",
@@ -4373,7 +4405,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -4428,7 +4461,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -4545,7 +4579,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -4600,7 +4635,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -4717,7 +4753,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -4772,7 +4809,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -4889,7 +4927,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -4945,7 +4984,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 },
                 {
                   "__type": "MoveComponent",
@@ -5129,7 +5169,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5177,7 +5218,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ],
               "Children": [
@@ -5348,7 +5390,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5396,7 +5439,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5444,7 +5488,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5492,7 +5537,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5540,7 +5586,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5588,7 +5635,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5636,7 +5684,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5684,7 +5733,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5732,7 +5782,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5780,7 +5831,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             }
@@ -5893,7 +5945,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5941,7 +5994,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -5989,7 +6043,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6037,7 +6092,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6085,7 +6141,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6133,7 +6190,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6181,7 +6239,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6229,7 +6288,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             }
@@ -6342,7 +6402,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6390,7 +6451,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6438,7 +6500,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6486,7 +6549,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6534,7 +6598,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6582,7 +6647,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6630,7 +6696,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6678,7 +6745,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6726,7 +6794,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6774,7 +6843,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6822,7 +6892,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6870,7 +6941,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6918,7 +6990,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -6966,7 +7039,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7014,7 +7088,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7062,7 +7137,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7110,7 +7186,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7158,7 +7235,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7206,7 +7284,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7254,7 +7333,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7302,7 +7382,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7350,7 +7431,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7398,7 +7480,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7446,7 +7529,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7479,7 +7563,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": true
+                  "Static": true,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7512,7 +7597,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": true
+                  "Static": true,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7545,7 +7631,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": true
+                  "Static": true,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7578,7 +7665,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": true
+                  "Static": true,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7626,7 +7714,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             }
@@ -7744,7 +7833,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7793,7 +7883,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7842,7 +7933,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7891,7 +7983,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7940,7 +8033,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -7989,7 +8083,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -8038,7 +8133,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -8087,7 +8183,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -8136,7 +8233,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -8192,7 +8290,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8241,7 +8340,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8290,7 +8390,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8339,7 +8440,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8388,7 +8490,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8437,7 +8540,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8486,7 +8590,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8535,7 +8640,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8584,7 +8690,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 }
@@ -8642,7 +8749,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8691,7 +8799,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8740,7 +8849,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8789,7 +8899,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8838,7 +8949,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8887,7 +8999,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8936,7 +9049,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -8985,7 +9099,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 },
@@ -9034,7 +9149,8 @@
                       "Center": "0,0,0",
                       "IsTrigger": false,
                       "Scale": "50,50,50",
-                      "Static": false
+                      "Static": false,
+                      "SurfaceVelocity": "0,0,0"
                     }
                   ]
                 }
@@ -9094,7 +9210,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9143,7 +9260,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9192,7 +9310,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             }
@@ -9249,7 +9368,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9296,7 +9416,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9304,7 +9425,7 @@
               "__guid": "82e2bd12-f45a-4e9b-9fe1-8bad0031903b",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "367.7528,-0.001514415,1262.499",
+              "Position": "367.7528,-0.001555105,1262.499",
               "Enabled": true,
               "Components": [
                 {
@@ -9343,7 +9464,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9351,7 +9473,7 @@
               "__guid": "e8bf89e9-c689-43a0-87d3-82a358fb1986",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "404.0001,-24.00054,1262.499",
+              "Position": "404.0001,-24.00059,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -9391,7 +9513,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9399,7 +9522,7 @@
               "__guid": "deb2631d-3933-4088-9180-5e18f0b60415",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "403.0766,8.891774,1262.499",
+              "Position": "403.0766,8.891734,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -9439,7 +9562,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9447,7 +9571,7 @@
               "__guid": "d2e19fe7-c25b-4691-966b-b0a749ea86cd",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "454.751,-54.10679,1262.499",
+              "Position": "454.751,-54.10685,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -9487,7 +9611,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9535,7 +9660,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9583,7 +9709,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9631,7 +9758,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9639,7 +9767,7 @@
               "__guid": "ad9b7e6e-534a-43b2-befb-5d6db5acfbde",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "395.9955,-62.95505,1262.501",
+              "Position": "395.9955,-62.95509,1262.501",
               "Rotation": "0,0,-0.6087614,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9679,7 +9807,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9687,7 +9816,7 @@
               "__guid": "0e6b5275-e45e-4f5d-8bcf-821ad2a86375",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "391.2995,-30.66517,1259.191",
+              "Position": "391.2995,-30.66521,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9727,7 +9856,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9735,7 +9865,7 @@
               "__guid": "110e51dd-4f9b-4384-8940-f7d9c8f0f238",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "443.8012,3.559739,1259.192",
+              "Position": "443.8012,3.559678,1259.192",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9775,7 +9905,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9783,7 +9914,7 @@
               "__guid": "fff4db18-0ade-45da-8366-470c32ac9cfe",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "438.9766,-35.95243,1259.191",
+              "Position": "438.9766,-35.9525,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9823,7 +9954,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9831,7 +9963,7 @@
               "__guid": "e0638e56-32c4-4c91-875f-9c556232f1ad",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "488.9273,-15.98663,1259.191",
+              "Position": "488.9273,-15.98669,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9871,7 +10003,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9879,7 +10012,7 @@
               "__guid": "0b2e21a8-a351-4275-b4ce-d4d0a348ccef",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "463.6745,-14.97611,1259.191",
+              "Position": "463.6745,-14.97617,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9919,7 +10052,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9927,7 +10061,7 @@
               "__guid": "5bfbd1e5-a7b1-4ad8-b80d-e2f56b06f42c",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "491.5528,-43.12503,1259.191",
+              "Position": "491.5528,-43.12509,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9967,7 +10101,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -9975,7 +10110,7 @@
               "__guid": "e528984e-6e05-4039-b74d-d13afab344fa",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "483.6224,-74.9098,1259.191",
+              "Position": "483.6224,-74.90986,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -10015,7 +10150,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10063,7 +10199,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10112,7 +10249,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10159,7 +10297,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10206,7 +10345,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10253,7 +10393,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10300,7 +10441,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10347,7 +10489,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10394,7 +10537,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10441,7 +10585,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10488,7 +10633,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10535,7 +10681,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10582,7 +10729,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10629,7 +10777,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10676,7 +10825,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10723,7 +10873,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10770,7 +10921,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10817,7 +10969,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10864,7 +11017,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10911,7 +11065,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -10958,7 +11113,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11005,7 +11161,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11052,7 +11209,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11099,7 +11257,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11146,7 +11305,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11193,7 +11353,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11240,7 +11401,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11287,7 +11449,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11334,7 +11497,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11381,7 +11545,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11428,7 +11593,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11475,7 +11641,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11522,7 +11689,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11569,7 +11737,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11616,7 +11785,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11663,7 +11833,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11710,7 +11881,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11757,7 +11929,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Scale": "50,50,50",
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             }
@@ -11814,7 +11987,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11863,7 +12037,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11912,7 +12087,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -11961,7 +12137,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -12010,7 +12187,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -12059,7 +12237,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -12108,7 +12287,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -12157,7 +12337,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -12206,7 +12387,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -12255,7 +12437,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             },
@@ -12304,7 +12487,8 @@
                   "Center": "0,0,0",
                   "IsTrigger": false,
                   "Radius": 32.800014,
-                  "Static": false
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
                 }
               ]
             }
@@ -12341,7 +12525,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "100,100,0.01",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12386,7 +12571,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12431,7 +12617,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12476,7 +12663,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12521,7 +12709,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12568,7 +12757,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12616,7 +12806,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12664,7 +12855,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12712,7 +12904,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12759,7 +12952,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12806,7 +13000,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12853,7 +13048,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -12902,7 +13098,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "SpinComponent",
@@ -12955,7 +13152,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "MoveComponent",
@@ -13009,7 +13207,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "MoveComponent",
@@ -13063,7 +13262,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "MoveComponent",
@@ -13118,7 +13318,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13167,7 +13368,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13216,7 +13418,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13265,7 +13468,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13314,7 +13518,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13364,7 +13569,8 @@
           "Friction": 0.002,
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13414,7 +13620,8 @@
           "Friction": 0.002,
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13464,7 +13671,8 @@
           "Friction": 0.002,
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13514,7 +13722,8 @@
           "Friction": 0.002,
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13564,7 +13773,8 @@
           "Friction": 0.002,
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13614,7 +13824,8 @@
           "Friction": 0.002,
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13663,7 +13874,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13712,7 +13924,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13761,7 +13974,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13810,7 +14024,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13859,7 +14074,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13908,7 +14124,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -13957,7 +14174,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14006,7 +14224,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14055,7 +14274,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14104,7 +14324,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14152,7 +14373,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14200,7 +14422,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14248,7 +14471,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14296,7 +14520,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14344,7 +14569,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14392,7 +14618,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14440,7 +14667,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14488,7 +14716,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14536,7 +14765,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14585,7 +14815,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14633,7 +14864,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14681,7 +14913,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14729,7 +14962,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14777,7 +15011,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14825,7 +15060,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14873,7 +15109,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14921,7 +15158,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -14969,7 +15207,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15017,7 +15256,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15065,7 +15305,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15113,7 +15354,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15161,7 +15403,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15209,7 +15452,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15257,7 +15501,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15305,7 +15550,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15353,7 +15599,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15401,7 +15648,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15449,7 +15697,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15497,7 +15746,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15545,7 +15795,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15593,7 +15844,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15641,7 +15893,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15689,7 +15942,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15737,7 +15991,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15784,7 +16039,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15816,7 +16072,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15848,7 +16105,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15881,7 +16139,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15914,7 +16173,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15948,7 +16208,8 @@
           "Center": "0,0,0",
           "IsTrigger": true,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -15982,7 +16243,8 @@
           "Center": "0,0,0",
           "IsTrigger": true,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16016,7 +16278,8 @@
           "Center": "0,0,0",
           "IsTrigger": true,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16052,7 +16315,8 @@
           "Center": "0,0,0",
           "IsTrigger": true,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
@@ -16114,7 +16378,8 @@
           "Center": "0,0,0",
           "IsTrigger": true,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
@@ -16176,7 +16441,8 @@
           "Center": "0,0,0",
           "IsTrigger": true,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
@@ -16236,7 +16502,8 @@
           "Center": "0,0,0",
           "IsTrigger": true,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16270,7 +16537,8 @@
           "Center": "0,0,0",
           "IsTrigger": true,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16302,7 +16570,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16334,7 +16603,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16366,7 +16636,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16399,7 +16670,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16432,7 +16704,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16464,7 +16737,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16496,7 +16770,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16528,7 +16803,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16560,7 +16836,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16592,7 +16869,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16624,7 +16902,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16656,7 +16935,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16688,7 +16968,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16720,7 +17001,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16752,7 +17034,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16784,7 +17067,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16817,10 +17101,11 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         },
         {
-          "__type": "Conveyor",
+          "__type": "Sandbox.Conveyor",
           "__guid": "f819f8a0-8948-4999-9aee-2887a813c70c",
           "Velocity": "0,-100,0"
         },
@@ -16868,7 +17153,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16901,7 +17187,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16948,7 +17235,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -16995,7 +17283,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17042,7 +17331,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17075,7 +17365,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Radius": 31.3,
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17107,7 +17398,8 @@
           "__guid": "57469884-477b-46e3-9779-f9a3f3d4d871",
           "IsTrigger": false,
           "Model": "models/soccerball.vmdl",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17156,7 +17448,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17205,7 +17498,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17254,7 +17548,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17303,7 +17598,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17352,7 +17648,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17400,7 +17697,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17448,7 +17746,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17496,7 +17795,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17544,7 +17844,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17593,7 +17894,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17642,7 +17944,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17676,7 +17979,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17710,7 +18014,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17744,7 +18049,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17778,7 +18084,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17827,7 +18134,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17875,7 +18183,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17924,7 +18233,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -17973,7 +18283,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18022,7 +18333,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18071,7 +18383,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18120,7 +18433,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18168,7 +18482,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
@@ -18246,7 +18561,8 @@
               "Center": "0,0,0",
               "IsTrigger": false,
               "Scale": "50,50,50",
-              "Static": false
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         }
@@ -18279,7 +18595,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "Sandbox.ModelRenderer",
@@ -18338,7 +18655,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18369,7 +18687,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "Sandbox.ModelRenderer",
@@ -18428,7 +18747,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18473,7 +18793,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18518,7 +18839,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18564,7 +18886,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18610,7 +18933,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18641,7 +18965,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "Sandbox.ModelRenderer",
@@ -18702,7 +19027,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18748,7 +19074,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18794,7 +19121,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18841,7 +19169,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18888,7 +19217,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18935,7 +19265,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -18983,7 +19314,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19031,7 +19363,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19079,7 +19412,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19127,7 +19461,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19175,7 +19510,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19223,7 +19559,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19271,7 +19608,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19319,7 +19657,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19367,7 +19706,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19415,7 +19755,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19463,7 +19804,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19511,7 +19853,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19559,7 +19902,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19607,7 +19951,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19655,7 +20000,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19703,7 +20049,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19751,7 +20098,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19799,7 +20147,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19830,7 +20179,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "Sandbox.ModelRenderer",
@@ -19891,7 +20241,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19937,7 +20288,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -19983,7 +20335,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20029,7 +20382,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20075,7 +20429,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20121,7 +20476,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20167,7 +20523,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20213,7 +20570,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20259,7 +20617,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20305,7 +20664,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20351,7 +20711,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20397,7 +20758,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20443,7 +20805,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20489,7 +20852,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20535,7 +20899,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20581,7 +20946,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20627,7 +20993,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "50,50,50",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -20751,7 +21118,8 @@
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "Static": false,
-          "Surface": "bouncy.surface"
+          "Surface": "bouncy.surface",
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },

@@ -1,6 +1,12 @@
 ﻿[Icon( "🕺" ), EditorHandle( Icon = "🕺" )]
 public sealed partial class PhysicalCharacterController : Component, IScenePhysicsEvents, Component.ExecuteInEditor
 {
+	/// <summary>
+	/// This is used to keep a distance away from surfaces. For exmaple, when grounding, we'll
+	/// be a skin distance away from the ground.
+	/// </summary>
+	const float _skin = 0.05f;
+
 	[Property, Hide, RequireComponent] public Rigidbody Body { get; set; }
 
 	CapsuleCollider BodyCollider { get; set; }
@@ -50,8 +56,6 @@ public sealed partial class PhysicalCharacterController : Component, IScenePhysi
 		}
 	}
 
-
-
 	[Property, Group( "Ground" )] public float GroundAngle { get; set; } = 45.0f;
 
 
@@ -70,19 +74,6 @@ public sealed partial class PhysicalCharacterController : Component, IScenePhysi
 		UpdateBody();
 
 		Body.Velocity = 0;
-	}
-
-	void EnsureComponentsCreated()
-	{
-		Body.CollisionEventsEnabled = true;
-		Body.CollisionUpdateEventsEnabled = true;
-
-		BodyCollider = Body.GameObject.GetOrAddComponent<CapsuleCollider>();
-		FeetCollider = Body.GameObject.GetOrAddComponent<BoxCollider>();
-
-		Body.Flags = Body.Flags.WithFlag( ComponentFlags.Hidden, !_showRigidBodyComponent );
-		BodyCollider.Flags = BodyCollider.Flags.WithFlag( ComponentFlags.Hidden, !_showColliderComponent );
-		FeetCollider.Flags = FeetCollider.Flags.WithFlag( ComponentFlags.Hidden, !_showColliderComponent );
 	}
 
 	protected override void OnValidate()
@@ -138,6 +129,7 @@ public sealed partial class PhysicalCharacterController : Component, IScenePhysi
 	{
 		RestoreStep();
 
+		Reground();
 		CategorizeGround();
 		CategorizeTriggers();
 		UpdatePositionOnLadder();
@@ -150,55 +142,6 @@ public sealed partial class PhysicalCharacterController : Component, IScenePhysi
 
 		//DebugDrawSystem.Current.Sphere( new Sphere( WorldPosition + Vector3.Up * 100, 10 ), color: Color.Green );
 		//DebugDrawSystem.Current.Text( WorldPosition + Vector3.Up * 100, "Hello!", duration: 0 );
-	}
-
-	void UpdateBody()
-	{
-		var feetHeight = StepHeight;
-		var radius = (BodyRadius * MathF.Sqrt( 2 )) / 2;
-
-		BodyCollider.Radius = radius;
-		BodyCollider.Start = Vector3.Up * (BodyHeight - BodyCollider.Radius);
-		BodyCollider.End = Vector3.Up * (BodyCollider.Radius + feetHeight - BodyCollider.Radius * 0.20f);
-		BodyCollider.Friction = 0.0f;
-		BodyCollider.Enabled = true;
-
-		/*
-		var feetCollider = Body.GameObject.GetOrAddComponent<SphereCollider>();
-		feetCollider.Radius = BodyRadius * 0.5f;
-		feetCollider.Center = new Vector3( 0, 0, BodyRadius * 0.5f );
-		feetCollider.Friction = IsOnGround ? 2340.5f : 0;
-		*/
-
-
-		FeetCollider.Scale = new Vector3( BodyRadius, BodyRadius, feetHeight );
-		FeetCollider.Center = new Vector3( 0, 0, feetHeight * 0.5f );
-		FeetCollider.Friction = IsOnGround ? 10f : 0;
-		FeetCollider.Enabled = true;
-
-
-		float massCenter = WishVelocity.Length.Clamp( 0, StepHeight );
-
-		if ( !IsOnGround )
-			massCenter = BodyHeight * 0.5f;
-
-
-		if ( IsOnGround )
-		{
-			//Body.Locking = new PhysicsLock { Pitch = true, Yaw = true, Roll = true };
-			Body.OverrideMassCenter = true;
-			Body.MassCenterOverride = new Vector3( 0, 0, massCenter );
-		}
-		else
-		{
-			Body.OverrideMassCenter = false;
-			//	Body.Locking = default;
-		}
-
-		Body.Locking = new PhysicsLock { Pitch = true, Yaw = true, Roll = true };
-		Body.RigidbodyFlags = RigidbodyFlags.DisableCollisionSounds;
-
-		Body.MassOverride = BodyMass;
 	}
 
 	Transform _groundTransform;
@@ -229,8 +172,7 @@ public sealed partial class PhysicalCharacterController : Component, IScenePhysi
 	/// </summary>
 	public void Jump( Vector3 velocity )
 	{
-		PreventGroundingForSeconds( 0.2f );
-		UpdateBody();
+		PreventGrounding( 0.2f );
 
 		var currentVel = Body.Velocity;
 

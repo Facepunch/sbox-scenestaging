@@ -1,17 +1,21 @@
 ﻿public sealed partial class PhysicalCharacterController : Component
 {
 	/// <summary>
-	/// Enable automatic ground detection. If you disable this then you should be doing
-	/// your own ground detection somewhere else.
+	/// The object we're standing on. Null if we're standing on nothing.
 	/// </summary>
-	[Property, ToggleGroup( "Feet" )] public bool Feet { get; set; } = true;
-	[Property, Group( "Feet" )] public bool FeetDebug { get; set; } = false;
-
 	GameObject GroundObject { get; set; }
+
+	/// <summary>
+	/// The collider component we're standing on. Null if we're standing nothing
+	/// </summary>
 	Component GroundComponent { get; set; }
+
+	/// <summary>
+	/// The friction property of the ground we're standing on.
+	/// </summary>
 	float GroundFriction { get; set; }
 
-	TimeUntil timeUntilAllowedGround = 0;
+	TimeUntil _timeUntilAllowedGround = 0;
 
 	/// <summary>
 	/// Amount of time since this character was last on the ground
@@ -23,14 +27,14 @@
 	/// </summary>
 	public TimeSince TimeSinceUngrounded { get; private set; } = 0;
 
-	public void PreventGroundingForSeconds( float seconds )
+	/// <summary>
+	/// Prevent being grounded for a number of seconds
+	/// </summary>
+	public void PreventGrounding( float seconds )
 	{
-		timeUntilAllowedGround = MathF.Max( timeUntilAllowedGround, seconds );
+		_timeUntilAllowedGround = MathF.Max( _timeUntilAllowedGround, seconds );
 		UpdateGround( default );
 	}
-
-
-	float skin => 0.05f;
 
 	/// <summary>
 	/// Lift player up and place a skin level above the ground
@@ -61,7 +65,7 @@
 
 		if ( tr.Hit )
 		{
-			var targetPosition = tr.EndPosition + Vector3.Up * skin;
+			var targetPosition = tr.EndPosition + Vector3.Up * _skin;
 			var delta = currentPosition - targetPosition;
 			if ( delta == Vector3.Zero ) return;
 
@@ -84,7 +88,7 @@
 
 		if ( IsSwimming || IsClimbing )
 		{
-			PreventGroundingForSeconds( 0.1f );
+			PreventGrounding( 0.1f );
 			UpdateGround( default );
 			return;
 		}
@@ -92,13 +96,13 @@
 		// ground is pushing us crazy, stop being grounded
 		if ( groundVel > 250 )
 		{
-			PreventGroundingForSeconds( 0.3f );
+			PreventGrounding( 0.3f );
 			UpdateGround( default );
 			return;
 		}
 
 		var velocity = Velocity - GroundVelocity;
-		if ( timeUntilAllowedGround > 0 || groundVel > 300 )
+		if ( _timeUntilAllowedGround > 0 || groundVel > 300 )
 		{
 			UpdateGround( default );
 			return;
@@ -130,7 +134,7 @@
 
 		if ( !tr.StartedSolid && tr.Hit && CanStandOnSurfaceNormal( tr.Normal ) )
 		{
-			DebugDrawSystem.Current.Normal( tr.EndPosition, tr.Normal * 10, Color.Green, 10 );
+			//DebugDrawSystem.Current.Normal( tr.EndPosition, tr.Normal * 10, Color.Green, 10 );
 
 			UpdateGround( tr );
 			Reground();
