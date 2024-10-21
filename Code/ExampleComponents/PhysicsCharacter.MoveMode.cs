@@ -1,7 +1,7 @@
 ﻿
 
 
-public sealed partial class PhysicalCharacterController : Component
+public sealed partial class PhysicsCharacter : Component
 {
 	public MoveMode CurrentMoveMode { get; private set; }
 
@@ -31,11 +31,11 @@ public sealed partial class PhysicalCharacterController : Component
 
 		public virtual bool AllowGrounding => false;
 
-		public virtual void OnUpdate( PhysicalCharacterController controller ) { }
-		public virtual void OnEnabled( PhysicalCharacterController controller ) { }
-		public virtual void OnDisabled( PhysicalCharacterController controller ) { }
+		public virtual void OnUpdate( PhysicsCharacter controller ) { }
+		public virtual void OnEnabled( PhysicsCharacter controller ) { }
+		public virtual void OnDisabled( PhysicsCharacter controller ) { }
 
-		public virtual int Score( PhysicalCharacterController controller ) => 0;
+		public virtual int Score( PhysicsCharacter controller ) => 0;
 
 		public virtual void UpdateRigidBody( Rigidbody body )
 		{
@@ -44,7 +44,7 @@ public sealed partial class PhysicalCharacterController : Component
 			body.AngularDamping = 1f;
 		}
 
-		public virtual void AddVelocity( PhysicalCharacterController controller )
+		public virtual void AddVelocity( PhysicsCharacter controller )
 		{
 			var body = controller.Body;
 			var wish = controller.WishVelocity;

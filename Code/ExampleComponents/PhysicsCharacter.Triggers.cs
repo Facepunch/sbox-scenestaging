@@ -1,5 +1,5 @@
 ﻿
-public sealed partial class PhysicalCharacterController
+public sealed partial class PhysicsCharacter
 {
 	void CategorizeTriggers()
 	{

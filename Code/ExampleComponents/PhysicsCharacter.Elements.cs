@@ -1,4 +1,4 @@
-﻿public sealed partial class PhysicalCharacterController : Component
+﻿public sealed partial class PhysicsCharacter : Component
 {
 	/// <summary>
 	/// Make sure the body and our components are created

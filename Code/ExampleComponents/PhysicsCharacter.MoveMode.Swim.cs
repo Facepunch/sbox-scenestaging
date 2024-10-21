@@ -1,4 +1,4 @@
-﻿public sealed partial class PhysicalCharacterController : Component
+﻿public sealed partial class PhysicsCharacter : Component
 {
 	public SwimMoveMode Swimming { get; } = new SwimMoveMode();
 
@@ -29,14 +29,14 @@
 			body.AngularDamping = 1f;
 		}
 
-		public override int Score( PhysicalCharacterController controller )
+		public override int Score( PhysicsCharacter controller )
 		{
 			if ( controller.WaterLevel > 0.7f ) return 10;
 
 			return -10;
 		}
 
-		public override void OnDisabled( PhysicalCharacterController controller )
+		public override void OnDisabled( PhysicsCharacter controller )
 		{
 			// jump when leaving the water
 			if ( Input.Down( "Jump" ) )

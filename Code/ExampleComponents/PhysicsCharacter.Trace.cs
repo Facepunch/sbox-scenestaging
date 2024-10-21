@@ -1,5 +1,5 @@
 ﻿
-public sealed partial class PhysicalCharacterController : Component
+public sealed partial class PhysicsCharacter : Component
 {
 	/// <summary>
 	/// Return an aabb representing the body

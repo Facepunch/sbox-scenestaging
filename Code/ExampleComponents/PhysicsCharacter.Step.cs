@@ -1,4 +1,4 @@
-﻿public sealed partial class PhysicalCharacterController : Component
+﻿public sealed partial class PhysicsCharacter : Component
 {
 	[Property, ToggleGroup( "StepUp" )] public bool StepUp { get; set; } = true;
 	[Property, Group( "StepUp" )] public bool StepDebug { get; set; } = true;

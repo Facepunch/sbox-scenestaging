@@ -7,7 +7,7 @@ using Sandbox.Citizen;
 
 public class PhysicalPlayerController : Component, Component.ICollisionListener
 {
-	[RequireComponent] public PhysicalCharacterController Controller { get; set; }
+	[RequireComponent] public PhysicsCharacter Controller { get; set; }
 
 	public Vector3 WishVelocity { get; private set; }
 

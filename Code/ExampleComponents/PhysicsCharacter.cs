@@ -1,5 +1,6 @@
 ﻿[Icon( "🕺" ), EditorHandle( Icon = "🕺" )]
-public sealed partial class PhysicalCharacterController : Component, IScenePhysicsEvents, Component.ExecuteInEditor
+[Alias( "PhysicalCharacterController" )]
+public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, Component.ExecuteInEditor
 {
 	/// <summary>
 	/// This is used to keep a distance away from surfaces. For exmaple, when grounding, we'll

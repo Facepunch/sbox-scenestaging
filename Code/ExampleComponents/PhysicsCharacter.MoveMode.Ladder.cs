@@ -1,4 +1,4 @@
-﻿public sealed partial class PhysicalCharacterController : Component
+﻿public sealed partial class PhysicsCharacter : Component
 {
 	public ClimbMoveMode Climb { get; } = new ClimbMoveMode();
 
@@ -60,19 +60,19 @@
 			body.AngularDamping = 1f;
 		}
 
-		public override int Score( PhysicalCharacterController controller )
+		public override int Score( PhysicsCharacter controller )
 		{
 			if ( controller.ClimbingObject.IsValid() ) return 5;
 
 			return 0;
 		}
 
-		public override void OnUpdate( PhysicalCharacterController controller )
+		public override void OnUpdate( PhysicsCharacter controller )
 		{
 			UpdatePositionOnLadder( controller );
 		}
 
-		void UpdatePositionOnLadder( PhysicalCharacterController controller )
+		void UpdatePositionOnLadder( PhysicsCharacter controller )
 		{
 			if ( !controller.ClimbingObject.IsValid() ) return;
 
