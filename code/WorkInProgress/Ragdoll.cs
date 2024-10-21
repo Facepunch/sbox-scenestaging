@@ -249,6 +249,10 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Fixed )
 			{
 				var fixedJoint = body1.AddComponent<FixedJoint>( false );
+				fixedJoint.LinearFrequency = jointDesc.LinearFrequency;
+				fixedJoint.LinearDamping = jointDesc.LinearDampingRatio;
+				fixedJoint.AngularFrequency = jointDesc.AngularFrequency;
+				fixedJoint.AngularDamping = jointDesc.AngularDampingRatio;
 
 				joint = fixedJoint;
 			}
