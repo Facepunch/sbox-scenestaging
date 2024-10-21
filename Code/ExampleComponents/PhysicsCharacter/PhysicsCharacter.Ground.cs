@@ -39,7 +39,7 @@
 	/// <summary>
 	/// Lift player up and place a skin level above the ground
 	/// </summary>
-	void Reground()
+	internal void Reground( float stepSize )
 	{
 		if ( !IsOnGround )
 			return;
@@ -47,7 +47,7 @@
 		var currentPosition = WorldPosition;
 
 		float radiusScale = 1.0f;
-		var tr = TraceBody( currentPosition + Vector3.Up * StepHeight, currentPosition + Vector3.Down * StepHeight, radiusScale );
+		var tr = TraceBody( currentPosition + Vector3.Up * _skin, currentPosition + Vector3.Down * stepSize, radiusScale );
 
 		while ( tr.StartedSolid )
 		{
@@ -55,7 +55,7 @@
 			if ( radiusScale < 0.7f )
 				return;
 
-			tr = TraceBody( currentPosition + Vector3.Up * StepHeight, currentPosition + Vector3.Down * StepHeight, radiusScale );
+			tr = TraceBody( currentPosition + Vector3.Up * _skin, currentPosition + Vector3.Down * stepSize, radiusScale );
 		}
 
 		if ( tr.StartedSolid )
@@ -114,7 +114,7 @@
 		float radiusScale = 1;
 		var tr = TraceBody( from, to, radiusScale, 0.5f );
 
-		while ( tr.StartedSolid || (tr.Hit && !CanStandOnSurfaceNormal( tr.Normal )) )
+		while ( tr.StartedSolid || (tr.Hit && !Mode.IsStandableSurace( tr )) )
 		{
 			radiusScale = radiusScale - 0.1f;
 			if ( radiusScale < 0.7f )
@@ -132,25 +132,14 @@
 			return;
 		}
 
-		if ( !tr.StartedSolid && tr.Hit && CanStandOnSurfaceNormal( tr.Normal ) )
+		if ( !tr.StartedSolid && tr.Hit && Mode.IsStandableSurace( tr ) )
 		{
-			//DebugDrawSystem.Current.Normal( tr.EndPosition, tr.Normal * 10, Color.Green, 10 );
-
 			UpdateGroundFromTraceResult( tr );
-			Reground();
 		}
 		else
 		{
 			UpdateGroundFromTraceResult( default );
 		}
-	}
-
-	/// <summary>
-	/// Return true if this surface is less than GroundAngle
-	/// </summary>
-	public bool CanStandOnSurfaceNormal( Vector3 normal )
-	{
-		return Vector3.GetAngle( Vector3.Up, normal ) <= GroundAngle;
 	}
 
 	void UpdateGroundFromTraceResult( SceneTraceResult tr )

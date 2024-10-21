@@ -60,9 +60,6 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 		}
 	}
 
-	[Property, Group( "Ground" )] public float GroundAngle { get; set; } = 45.0f;
-
-
 	public Vector3 WishVelocity { get; set; }
 	public bool IsOnGround => GroundObject.IsValid();
 
@@ -84,10 +81,7 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 	{
 		base.OnAwake();
 
-		var walkMode = GetOrAddComponent<PhysicsCharacterWalkMode>();
-		walkMode.Flags = walkMode.Flags.WithFlag( ComponentFlags.Hidden, true );
-
-		Mode = GetComponent<PhysicsCharacterWalkMode>();
+		Mode = GetOrAddComponent<PhysicsCharacterWalkMode>();
 
 		EnsureComponentsCreated();
 		UpdateBody();
@@ -103,31 +97,21 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 
 	void IScenePhysicsEvents.PrePhysicsStep()
 	{
-		ChooseBestMoveMode();
 		UpdateBody();
 
 		Mode.AddVelocity();
-
-		TryStep();
+		Mode.PrePhysicsStep();
 	}
 
 	void IScenePhysicsEvents.PostPhysicsStep()
 	{
-		RestoreStep();
-
-		Reground();
-		CategorizeGround();
+		Velocity = Body.Velocity - GroundVelocity;
 		UpdateGroundVelocity();
 
-		Velocity = Body.Velocity - GroundVelocity;
+		RestoreStep();
 
 		Mode?.PostPhysicsStep();
-
-		DebugDrawSystem.Current.Box( BodyBox(), transform: WorldTransform, color: Color.Green, duration: 0 );
-		DebugDrawSystem.Current.Sphere( new Sphere( Body.MassCenterOverride, 2 ), transform: WorldTransform, color: Color.Green, duration: 0 );
-
-		//DebugDrawSystem.Current.Sphere( new Sphere( WorldPosition + Vector3.Up * 100, 10 ), color: Color.Green );
-		//DebugDrawSystem.Current.Text( WorldPosition + Vector3.Up * 100, "Hello!", duration: 0 );
+		CategorizeGround();
 
 		ChooseBestMoveMode();
 	}

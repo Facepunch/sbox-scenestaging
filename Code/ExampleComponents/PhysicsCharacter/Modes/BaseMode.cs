@@ -14,7 +14,15 @@ public partial class BaseMode : Component
 	public virtual int Score( PhysicsCharacter controller ) => 0;
 
 	/// <summary>
-	/// A nice place for you to do something
+	/// Called before the physics step is run
+	/// </summary>
+	public virtual void PrePhysicsStep()
+	{
+
+	}
+
+	/// <summary>
+	/// Called after the physics step is run
 	/// </summary>
 	public virtual void PostPhysicsStep()
 	{
@@ -82,5 +90,27 @@ public partial class BaseMode : Component
 	public virtual void OnModeEnd( BaseMode next )
 	{
 
+	}
+
+	/// <summary>
+	/// If we're approaching a step, step up if possible
+	/// </summary>
+	protected void TrySteppingUp( float maxDistance )
+	{
+		Controller.TryStep( maxDistance );
+	}
+
+	/// <summary>
+	/// If we're on the ground, make sure we stay there by falling to the ground
+	/// </summary>
+	protected void StickToGround( float maxDistance )
+	{
+		Controller.Reground( maxDistance );
+	}
+
+
+	public virtual bool IsStandableSurace( in SceneTraceResult result )
+	{
+		return false;
 	}
 }

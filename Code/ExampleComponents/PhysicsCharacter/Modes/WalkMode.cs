@@ -6,8 +6,12 @@
 [Icon( "👟" ), Group( "PhysicsCharacterMode" ), Title( "Walk Mode" )]
 public partial class PhysicsCharacterWalkMode : BaseMode
 {
-	[Property]
-	public int Priority { get; set; } = 0;
+	[Property] public int Priority { get; set; } = 0;
+
+	[Property] public float GroundAngle { get; set; } = 45.0f;
+	[Property] public float StepUpHeight { get; set; } = 18.0f;
+	[Property] public float StepDownHeight { get; set; } = 18.0f;
+
 
 	public override bool AllowGrounding => true;
 
@@ -17,5 +21,35 @@ public partial class PhysicsCharacterWalkMode : BaseMode
 	{
 		Controller.WishVelocity = Controller.WishVelocity.WithZ( 0 );
 		base.AddVelocity();
+	}
+
+	public override void PrePhysicsStep()
+	{
+		base.PrePhysicsStep();
+
+		if ( StepUpHeight > 0 )
+		{
+			TrySteppingUp( StepUpHeight );
+		}
+
+	}
+
+	public override void PostPhysicsStep()
+	{
+		base.PostPhysicsStep();
+
+		if ( StepDownHeight > 0 )
+		{
+			StickToGround( StepDownHeight );
+		}
+
+	}
+
+	public override bool IsStandableSurace( in SceneTraceResult result )
+	{
+		if ( Vector3.GetAngle( Vector3.Up, result.Normal ) > GroundAngle )
+			return false;
+
+		return true;
 	}
 }

@@ -1,8 +1,6 @@
 ﻿public sealed partial class PhysicsCharacter : Component
 {
-	[Property, ToggleGroup( "StepUp" )] public bool StepUp { get; set; } = true;
 	[Property, Group( "StepUp" )] public bool StepDebug { get; set; } = true;
-	[Property, Group( "StepUp" )] public float StepHeight { get; set; } = 18.0f;
 
 	// set when we stepped this tick, so at the end of the physics step we can restore our position
 	bool _didstep;
@@ -13,11 +11,10 @@
 	/// <summary>
 	/// Try to step up. Will trace forward, then up, then across, then down.
 	/// </summary>
-	void TryStep()
+	internal void TryStep( float maxDistance )
 	{
 		_didstep = false;
 
-		if ( !StepUp ) return;
 		if ( Velocity.WithZ( 0 ).IsNearlyZero( 0.0001f ) ) return;
 		if ( _timeUntilAllowedGround > 0 ) return;
 
@@ -65,7 +62,7 @@
 		//
 		{
 			from = result.EndPosition;
-			var uppoint = from + Vector3.Up * StepHeight;
+			var uppoint = from + Vector3.Up * maxDistance;
 
 			// move up 
 			result = TraceBody( from, uppoint, radiusScale );
@@ -109,7 +106,7 @@
 		{
 			var dist = result.Distance;
 			var top = result.EndPosition;
-			var bottom = result.EndPosition + Vector3.Down * StepHeight;
+			var bottom = result.EndPosition + Vector3.Down * maxDistance;
 
 			result = TraceBody( top, bottom, radiusScale );
 
@@ -121,7 +118,7 @@
 			}
 
 			// can't stand here
-			if ( !CanStandOnSurfaceNormal( result.Normal ) )
+			if ( !Mode.IsStandableSurace( result ) )
 				return;
 
 			_didstep = true;

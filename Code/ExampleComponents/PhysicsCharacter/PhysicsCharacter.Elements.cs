@@ -21,7 +21,7 @@
 	/// </summary>
 	void UpdateBody()
 	{
-		var feetHeight = StepHeight;
+		var feetHeight = BodyHeight * 0.25f;
 		var radius = (BodyRadius * MathF.Sqrt( 2 )) / 2;
 
 		BodyCollider.Radius = radius;
@@ -46,7 +46,7 @@
 		// Move the center of mass to the 
 		Body.OverrideMassCenter = true;
 
-		float massCenter = IsOnGround ? WishVelocity.Length.Clamp( 0, StepHeight ) : BodyHeight * 0.5f;
+		float massCenter = IsOnGround ? WishVelocity.Length.Clamp( 0, BodyHeight * 0.5f ) : BodyHeight * 0.5f;
 		Body.MassCenterOverride = Body.MassCenterOverride.LerpTo( new Vector3( 0, 0, massCenter ), Time.Delta * 10 );
 
 		Mode?.UpdateRigidBody( Body );
