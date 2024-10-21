@@ -14,6 +14,8 @@ public sealed partial class PhysicsCharacter : Component
 
 		Mode = best;
 
+		Body.PhysicsBody.Sleeping = false;
+
 		Mode?.OnModeBegin();
 	}
 }

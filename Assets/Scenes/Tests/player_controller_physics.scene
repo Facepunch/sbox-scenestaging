@@ -398,17 +398,16 @@
           "SurfaceVelocity": "0,0,0"
         },
         {
-          "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterWalkMode",
-          "__guid": "e466e7c9-62c1-4a05-9a55-a1e5732f5c6e"
-        },
-        {
           "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode",
-          "__guid": "2875f607-3fb2-4ca9-961a-fad90d008bee",
-          "ClimbableTags": "ladder"
+          "__guid": "7eaced9f-6b9b-46df-9fc1-88df14298020",
+          "ClimbableTags": "ladder",
+          "Priority": 5
         },
         {
           "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterSwimMode",
-          "__guid": "0c69d1f6-bc25-4b68-95cd-fe2cbd985ed6"
+          "__guid": "1bc170d5-b531-4f98-9c1b-3af7771f7fb0",
+          "Priority": 10,
+          "SwimLevel": 0.7
         }
       ],
       "Children": [

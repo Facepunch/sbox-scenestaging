@@ -70,13 +70,22 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 	public Vector3 GroundVelocity { get; set; }
 	public float GroundYaw { get; set; }
 
+	/// <summary>
+	/// True if we're using PhysicsCharacterLadderMode mode
+	/// </summary>
+	public bool IsClimbing => Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode;
+
+	/// <summary>
+	/// True if we're currently using PhysicsCharacterSwimMode mode
+	/// </summary>
+	public bool IsSwimming => Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterSwimMode;
+
 	protected override void OnAwake()
 	{
 		base.OnAwake();
 
-		GetOrAddComponent<PhysicsCharacterWalkMode>();
-		GetOrAddComponent<PhysicsCharacterLadderMode>();
-		GetOrAddComponent<PhysicsCharacterSwimMode>();
+		var walkMode = GetOrAddComponent<PhysicsCharacterWalkMode>();
+		walkMode.Flags = walkMode.Flags.WithFlag( ComponentFlags.Hidden, true );
 
 		Mode = GetComponent<PhysicsCharacterWalkMode>();
 
@@ -108,7 +117,6 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 
 		Reground();
 		CategorizeGround();
-		CategorizeTriggers();
 		UpdateGroundVelocity();
 
 		Velocity = Body.Velocity - GroundVelocity;

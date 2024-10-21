@@ -6,6 +6,9 @@
 [Icon( "🪜" ), Group( "PhysicsCharacterMode" ), Title( "Ladder Mode" )]
 public partial class PhysicsCharacterLadderMode : BaseMode
 {
+	[Property]
+	public int Priority { get; set; } = 5;
+
 	/// <summary>
 	/// A list of tags we can climb up - when they're on triggers
 	/// </summary>
@@ -39,9 +42,8 @@ public partial class PhysicsCharacterLadderMode : BaseMode
 
 	public override int Score( PhysicsCharacter controller )
 	{
-		if ( ClimbingObject.IsValid() ) return 5;
-
-		return 0;
+		if ( ClimbingObject.IsValid() ) return Priority;
+		return -100;
 	}
 
 	public override void PostPhysicsStep()
