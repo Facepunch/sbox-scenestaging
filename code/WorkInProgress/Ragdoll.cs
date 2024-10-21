@@ -260,6 +260,12 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			{
 				var sliderJoint = body1.AddComponent<SliderJoint>( false );
 
+				if ( jointDesc.EnableLinearLimit )
+				{
+					sliderJoint.MinLength = jointDesc.LinearMin;
+					sliderJoint.MaxLength = jointDesc.LinearMax;
+				}
+
 				joint = sliderJoint;
 			}
 
