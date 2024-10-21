@@ -239,9 +239,6 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Ball )
 			{
 				var ballJoint = body1.AddComponent<BallJoint>( false );
-				ballJoint.Attachment = BallJoint.AttachmentMode.LocalFrames;
-				ballJoint.LocalFrame1 = localFrame1;
-				ballJoint.LocalFrame2 = localFrame2;
 
 				if ( jointDesc.EnableSwingLimit )
 				{
@@ -284,6 +281,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			{
 				joint.Flags |= ComponentFlags.NotSaved;
 				joint.Body = body2.GameObject;
+				joint.Attachment = Joint.AttachmentMode.LocalFrames;
+				joint.LocalFrame1 = localFrame1;
+				joint.LocalFrame2 = localFrame2;
 				joint.EnableCollision = jointDesc.EnableCollision;
 				joint.BreakForce = jointDesc.LinearStrength;
 				joint.BreakTorque = jointDesc.AngularStrength;
