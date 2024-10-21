@@ -3,17 +3,17 @@
 	/// <summary>
 	/// The object we're standing on. Null if we're standing on nothing.
 	/// </summary>
-	GameObject GroundObject { get; set; }
+	public GameObject GroundObject { get; set; }
 
 	/// <summary>
 	/// The collider component we're standing on. Null if we're standing nothing
 	/// </summary>
-	Component GroundComponent { get; set; }
+	public Component GroundComponent { get; set; }
 
 	/// <summary>
 	/// The friction property of the ground we're standing on.
 	/// </summary>
-	float GroundFriction { get; set; }
+	public float GroundFriction { get; set; }
 
 	TimeUntil _timeUntilAllowedGround = 0;
 
@@ -86,7 +86,7 @@
 		var groundVel = GroundVelocity.z;
 		bool wasOnGround = IsOnGround;
 
-		if ( !CurrentMoveMode.AllowGrounding )
+		if ( !Mode.AllowGrounding )
 		{
 			PreventGrounding( 0.1f );
 			UpdateGroundFromTraceResult( default );

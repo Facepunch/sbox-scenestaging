@@ -128,8 +128,8 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
 			AnimationHelper.MoveStyle = IsRunning ? CitizenAnimationHelper.MoveStyles.Run : CitizenAnimationHelper.MoveStyles.Walk;
 			AnimationHelper.DuckLevel = IsDucked ? 1 : 0;
-			AnimationHelper.IsSwimming = Controller.CurrentMoveMode == Controller.Swimming;
-			AnimationHelper.IsClimbing = Controller.CurrentMoveMode == Controller.Climb;
+			AnimationHelper.IsSwimming = Controller.IsSwimming;
+			AnimationHelper.IsClimbing = Controller.IsClimbing;
 
 			var skidding = 0.0f;
 

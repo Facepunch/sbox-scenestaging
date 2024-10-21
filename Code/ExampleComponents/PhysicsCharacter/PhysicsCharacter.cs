@@ -1,4 +1,7 @@
-﻿[Icon( "🕺" ), EditorHandle( Icon = "🕺" )]
+﻿using Sandbox.PhysicsCharacterMode;
+
+
+[Icon( "🕺" ), EditorHandle( Icon = "🕺" )]
 [Alias( "PhysicalCharacterController" )]
 public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, Component.ExecuteInEditor
 {
@@ -71,11 +74,11 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 	{
 		base.OnAwake();
 
-		MoveModes.Add( DefaultMoveMode );
-		MoveModes.Add( Climb );
-		MoveModes.Add( Swimming );
+		GetOrAddComponent<PhysicsCharacterWalkMode>();
+		GetOrAddComponent<PhysicsCharacterLadderMode>();
+		GetOrAddComponent<PhysicsCharacterSwimMode>();
 
-		CurrentMoveMode = DefaultMoveMode;
+		Mode = GetComponent<PhysicsCharacterWalkMode>();
 
 		EnsureComponentsCreated();
 		UpdateBody();
@@ -94,7 +97,7 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 		ChooseBestMoveMode();
 		UpdateBody();
 
-		CurrentMoveMode.AddVelocity( this );
+		Mode.AddVelocity();
 
 		TryStep();
 	}
@@ -110,7 +113,7 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 
 		Velocity = Body.Velocity - GroundVelocity;
 
-		CurrentMoveMode?.OnUpdate( this );
+		Mode?.PostPhysicsStep();
 
 		DebugDrawSystem.Current.Box( BodyBox(), transform: WorldTransform, color: Color.Green, duration: 0 );
 		DebugDrawSystem.Current.Sphere( new Sphere( Body.MassCenterOverride, 2 ), transform: WorldTransform, color: Color.Green, duration: 0 );
