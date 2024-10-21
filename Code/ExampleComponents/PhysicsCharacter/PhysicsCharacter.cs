@@ -13,8 +13,8 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 
 	[Property, Hide, RequireComponent] public Rigidbody Body { get; set; }
 
-	CapsuleCollider BodyCollider { get; set; }
-	BoxCollider FeetCollider { get; set; }
+	public CapsuleCollider BodyCollider { get; private set; }
+	public BoxCollider FeetCollider { get; private set; }
 
 	bool _showRigidBodyComponent;
 

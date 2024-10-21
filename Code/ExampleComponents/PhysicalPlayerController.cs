@@ -88,9 +88,9 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 		// rotate body to look angles
 		if ( Body.IsValid() )
 		{
-			if ( Controller.IsClimbing )
+			if ( Controller.Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode ladderMode )
 			{
-				Body.WorldRotation = Rotation.Lerp( Body.WorldRotation, Controller.ClimbingRotation, Time.Delta * 5.0f );
+				Body.WorldRotation = Rotation.Lerp( Body.WorldRotation, ladderMode.ClimbingRotation, Time.Delta * 5.0f );
 			}
 			else
 			{
@@ -164,7 +164,7 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 
 			if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
 
-			if ( Controller.IsClimbing )
+			if ( Controller.Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode ladderMode )
 			{
 				WishVelocity = new Vector3( 0, 0, Input.AnalogMove.x );
 
@@ -173,7 +173,7 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 				if ( Input.Down( "jump" ) )
 				{
 					// Jump away from ladder
-					Controller.Jump( Controller.ClimbingRotation.Backward * 200 );
+					Controller.Jump( ladderMode.ClimbingRotation.Backward * 200 );
 				}
 			}
 			else

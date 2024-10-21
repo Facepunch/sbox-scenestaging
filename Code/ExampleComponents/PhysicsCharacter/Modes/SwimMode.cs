@@ -3,6 +3,7 @@
 /// <summary>
 /// The character is walking
 /// </summary>
+[Icon( "🏊" ), Group( "PhysicsCharacterMode" ), Title( "Swim Mode" )]
 public partial class PhysicsCharacterSwimMode : BaseMode
 {
 	public override void UpdateRigidBody( Rigidbody body )
