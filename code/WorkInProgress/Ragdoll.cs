@@ -223,6 +223,17 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 					hingeJoint.MaxAngle = jointDesc.TwistMax;
 				}
 
+				if ( jointDesc.EnableAngularMotor )
+				{
+					var worldFrame1 = body1.WorldTransform.ToWorld( localFrame1 );
+					var hingeAxis = worldFrame1.Rotation.Up;
+					var targetVelocity = hingeAxis.Dot( jointDesc.AngularTargetVelocity );
+
+					hingeJoint.Motor = HingeJoint.MotorMode.TargetVelocity;
+					hingeJoint.TargetVelocity = targetVelocity.RadianToDegree();
+					hingeJoint.MaxTorque = jointDesc.MaxTorque;
+				}
+
 				joint = hingeJoint;
 			}
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Ball )
