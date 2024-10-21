@@ -150,7 +150,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			var go = GameObject.Children.FirstOrDefault( x => x.Name == part.BoneName );
 			go ??= Scene.CreateObject();
-			go.Flags = GameObjectFlags.Absolute;
+			go.Flags |= GameObjectFlags.Absolute | GameObjectFlags.Bone;
 			go.Name = part.BoneName;
 			go.WorldTransform = boneWorld;
 			go.Parent = GameObject;
