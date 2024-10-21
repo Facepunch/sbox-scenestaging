@@ -18,6 +18,8 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	private record JointRecord( Joint Component, Transform Frame1, Transform Frame2 );
 	private readonly List<JointRecord> _joints = new();
 
+	private readonly List<Collider> _colliders = new();
+
 	[Property]
 	public Model Model
 	{
@@ -146,13 +148,15 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				boneWorld = world.ToWorld( part.Transform );
 			}
 
-			var go = Scene.CreateObject( false );
-			go.Flags = GameObjectFlags.NotSaved | GameObjectFlags.Absolute;
+			var go = GameObject.Children.FirstOrDefault( x => x.Name == part.BoneName );
+			go ??= Scene.CreateObject();
+			go.Flags = GameObjectFlags.Absolute;
 			go.Name = part.BoneName;
 			go.WorldTransform = boneWorld;
 			go.Parent = GameObject;
 
-			var body = go.AddComponent<Rigidbody>();
+			var body = go.AddComponent<Rigidbody>( false );
+			body.Flags |= ComponentFlags.NotSaved;
 			body.RigidbodyFlags = RigidbodyFlags;
 			body.Locking = Locking;
 			body.MotionEnabled = MotionEnabled;
@@ -164,26 +168,35 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			foreach ( var sphere in part.Spheres )
 			{
 				var collider = go.AddComponent<SphereCollider>();
+				collider.Flags |= ComponentFlags.NotSaved;
 				collider.Center = sphere.Sphere.Center;
 				collider.Radius = sphere.Sphere.Radius;
 				collider.Surface = sphere.Surface;
+
+				_colliders.Add( collider );
 			}
 
 			foreach ( var capsule in part.Capsules )
 			{
 				var collider = go.AddComponent<CapsuleCollider>();
+				collider.Flags |= ComponentFlags.NotSaved;
 				collider.Start = capsule.Capsule.CenterA;
 				collider.End = capsule.Capsule.CenterB;
 				collider.Radius = capsule.Capsule.Radius;
 				collider.Surface = capsule.Surface;
+
+				_colliders.Add( collider );
 			}
 
 			foreach ( var hull in part.Hulls )
 			{
 				var collider = go.AddComponent<HullCollider>();
+				collider.Flags |= ComponentFlags.NotSaved;
 				collider.Type = HullCollider.PrimitiveType.Points;
 				collider.Points = hull.GetPoints().ToList();
 				collider.Surface = hull.Surface;
+
+				_colliders.Add( collider );
 			}
 		}
 
@@ -199,7 +212,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			if ( jointDesc.Type == PhysicsGroupDescription.JointType.Hinge )
 			{
-				var hingeJoint = body1.AddComponent<HingeJoint>();
+				var hingeJoint = body1.AddComponent<HingeJoint>( false );
 				hingeJoint.Attachment = HingeJoint.AttachmentMode.LocalFrames;
 				hingeJoint.LocalFrame1 = localFrame1;
 				hingeJoint.LocalFrame2 = localFrame2;
@@ -214,7 +227,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			}
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Ball )
 			{
-				var ballJoint = body1.AddComponent<BallJoint>();
+				var ballJoint = body1.AddComponent<BallJoint>( false );
 				ballJoint.Attachment = BallJoint.AttachmentMode.LocalFrames;
 				ballJoint.LocalFrame1 = localFrame1;
 				ballJoint.LocalFrame2 = localFrame2;
@@ -235,19 +248,20 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			}
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Fixed )
 			{
-				var fixedJoint = body1.AddComponent<FixedJoint>();
+				var fixedJoint = body1.AddComponent<FixedJoint>( false );
 
 				joint = fixedJoint;
 			}
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Slider )
 			{
-				var sliderJoint = body1.AddComponent<SliderJoint>();
+				var sliderJoint = body1.AddComponent<SliderJoint>( false );
 
 				joint = sliderJoint;
 			}
 
 			if ( joint.IsValid() )
 			{
+				joint.Flags |= ComponentFlags.NotSaved;
 				joint.Body = body2.GameObject;
 				joint.EnableCollision = jointDesc.EnableCollision;
 				joint.BreakForce = jointDesc.LinearStrength;
@@ -261,24 +275,46 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		foreach ( var body in _bodies )
 		{
-			body.Component.GameObject.Enabled = true;
+			body.Component.Enabled = true;
+		}
+
+		foreach ( var joint in _joints )
+		{
+			joint.Component.Enabled = true;
 		}
 	}
 
 	private void DestroyPhysics()
 	{
+		foreach ( var joint in _joints )
+		{
+			if ( !joint.Component.IsValid() )
+				continue;
+
+			joint.Component.Destroy();
+		}
+
 		foreach ( var body in _bodies )
 		{
 			if ( !body.Component.IsValid() )
 				continue;
 
-			body.Component.DestroyGameObject();
+			body.Component.Destroy();
+		}
+
+		foreach ( var collider in _colliders )
+		{
+			if ( !collider.IsValid() )
+				continue;
+
+			collider.Destroy();
 		}
 
 		_rootBody = null;
 
 		_bodies.Clear();
 		_joints.Clear();
+		_colliders.Clear();
 
 		if ( Renderer.IsValid() )
 		{
