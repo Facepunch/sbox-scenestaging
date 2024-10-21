@@ -47,7 +47,7 @@
 		var currentPosition = WorldPosition;
 
 		float radiusScale = 1.0f;
-		var tr = TraceBody( currentPosition + Vector3.Up * _skin, currentPosition + Vector3.Down * stepSize, radiusScale );
+		var tr = TraceBody( currentPosition + Vector3.Up * 1, currentPosition + Vector3.Down * stepSize, radiusScale, 0.5f );
 
 		while ( tr.StartedSolid )
 		{
@@ -55,7 +55,7 @@
 			if ( radiusScale < 0.7f )
 				return;
 
-			tr = TraceBody( currentPosition + Vector3.Up * _skin, currentPosition + Vector3.Down * stepSize, radiusScale );
+			tr = TraceBody( currentPosition + Vector3.Up * 1, currentPosition + Vector3.Down * stepSize, radiusScale, 0.5f );
 		}
 
 		if ( tr.StartedSolid )
@@ -123,7 +123,7 @@
 				return;
 			}
 
-			tr = TraceBody( from, to, radiusScale );
+			tr = TraceBody( from, to, radiusScale, 0.5f );
 		}
 
 		if ( tr.StartedSolid )

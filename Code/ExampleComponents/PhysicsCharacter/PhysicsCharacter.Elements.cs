@@ -21,7 +21,7 @@
 	/// </summary>
 	void UpdateBody()
 	{
-		var feetHeight = BodyHeight * 0.25f;
+		var feetHeight = BodyHeight * 0.5f;
 		var radius = (BodyRadius * MathF.Sqrt( 2 )) / 2;
 
 		BodyCollider.Radius = radius;
