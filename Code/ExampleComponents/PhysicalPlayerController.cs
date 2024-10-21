@@ -1,5 +1,3 @@
-using Sandbox.Citizen;
-
 //
 // This all exists to test the PhysicsCharacterController 
 // It needs a clean up !
@@ -7,204 +5,12 @@ using Sandbox.Citizen;
 
 public class PhysicalPlayerController : Component, Component.ICollisionListener
 {
-	[RequireComponent] public PhysicsCharacter Controller { get; set; }
-
-	public Vector3 WishVelocity { get; private set; }
-
-	[Property] public GameObject Body { get; set; }
-	[Property] public GameObject Eye { get; set; }
-	[Property] public CitizenAnimationHelper AnimationHelper { get; set; }
-	[Property] public bool FirstPerson { get; set; }
 	[Property] public GameObject Gibs { get; set; }
-
-	[Sync] public Angles EyeAngles { get; set; }
-	[Sync] public bool IsRunning { get; set; }
-	[Sync] public bool IsDucked { get; set; }
-
-	protected override void OnEnabled()
-	{
-		base.OnEnabled();
-
-		if ( IsProxy )
-			return;
-
-		var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
-		if ( cam.IsValid() )
-		{
-			var ee = cam.WorldRotation.Angles();
-			ee.roll = 0;
-			EyeAngles = ee;
-		}
-	}
-
-	protected override void OnUpdate()
-	{
-		// Eye input
-		if ( !IsProxy )
-		{
-			var ee = EyeAngles;
-			ee += Input.AnalogLook * 0.5f;
-			ee.roll = 0;
-			EyeAngles = ee;
-
-			var cam = Scene.GetAllComponents<CameraComponent>().FirstOrDefault();
-
-			var lookDir = EyeAngles.ToRotation();
-
-			if ( FirstPerson )
-			{
-				cam.WorldPosition = Eye.WorldPosition;
-				cam.WorldRotation = lookDir;
-
-				foreach ( var c in Body.GetComponentsInChildren<ModelRenderer>() )
-				{
-					c.RenderType = ModelRenderer.ShadowRenderType.ShadowsOnly;
-				}
-
-			}
-			else
-			{
-				cam.WorldPosition = WorldPosition + lookDir.Backward * 300 + Vector3.Up * 75.0f;
-				cam.WorldRotation = lookDir;
-
-				foreach ( var c in Body.GetComponentsInChildren<ModelRenderer>() )
-				{
-					c.RenderType = ModelRenderer.ShadowRenderType.On;
-				}
-
-			}
-
-			IsRunning = Input.Down( "Run" );
-		}
-
-		if ( !Controller.IsValid() ) return;
-
-		var eee = EyeAngles;
-		eee.yaw += Controller.GroundYaw;
-		EyeAngles = eee;
-
-		float moveRotationSpeed = 0;
-
-		// rotate body to look angles
-		if ( Body.IsValid() )
-		{
-			if ( Controller.Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode ladderMode )
-			{
-				Body.WorldRotation = Rotation.Lerp( Body.WorldRotation, ladderMode.ClimbingRotation, Time.Delta * 5.0f );
-			}
-			else
-			{
-				var targetAngle = new Angles( 0, EyeAngles.yaw, 0 ).ToRotation();
-
-				var v = Controller.Velocity.WithZ( 0 );
-
-				if ( v.Length > 10.0f )
-				{
-					targetAngle = Rotation.LookAt( v, Vector3.Up );
-				}
-
-				float rotateDifference = Body.WorldRotation.Distance( targetAngle );
-
-				if ( rotateDifference > 50.0f || Controller.Velocity.Length > 10.0f )
-				{
-					var newRotation = Rotation.Lerp( Body.WorldRotation, targetAngle, Time.Delta * 2.0f );
-
-					// We won't end up actually moving to the targetAngle, so calculate how much we're actually moving
-					var angleDiff = Body.WorldRotation.Angles() - newRotation.Angles(); // Rotation.Distance is unsigned
-					moveRotationSpeed = angleDiff.yaw / Time.Delta;
-
-					Body.WorldRotation = newRotation;
-				}
-			}
-		}
-
-
-		if ( AnimationHelper.IsValid() )
-		{
-			AnimationHelper.WithVelocity( Controller.WishVelocity );
-			AnimationHelper.WithWishVelocity( Controller.WishVelocity );
-			AnimationHelper.MoveRotationSpeed = moveRotationSpeed;
-			AnimationHelper.WithLook( EyeAngles.Forward, 1, 1, 1.0f );
-			AnimationHelper.MoveStyle = IsRunning ? CitizenAnimationHelper.MoveStyles.Run : CitizenAnimationHelper.MoveStyles.Walk;
-			AnimationHelper.DuckLevel = IsDucked ? 1 : 0;
-			AnimationHelper.IsSwimming = Controller.Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterSwimMode;
-			AnimationHelper.IsClimbing = Controller.Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode;
-			AnimationHelper.IsGrounded = Controller.IsOnGround || AnimationHelper.IsClimbing;
-
-			var skidding = 0.0f;
-
-			if ( Controller.WishVelocity.IsNearZeroLength )
-				skidding = Controller.Velocity.Length.Remap( 0, 1000, 0, 1 );
-
-			AnimationHelper.Target.Set( "skid", skidding );
-
-		}
-	}
-
-	[Broadcast]
-	public void OnJump()
-	{
-		AnimationHelper?.TriggerJump();
-	}
-
-	TimeSince timeSinceJump;
 
 	protected override void OnFixedUpdate()
 	{
 		if ( IsProxy )
 			return;
-
-		// create WishVelocity
-		{
-			var rot = EyeAngles.ToRotation();
-
-			WishVelocity = rot * Input.AnalogMove;
-
-			if ( Controller.IsSwimming && Input.Down( "jump" ) ) WishVelocity += Vector3.Up;
-
-			if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
-
-			if ( Controller.Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode ladderMode )
-			{
-				WishVelocity = new Vector3( 0, 0, Input.AnalogMove.x );
-
-				WishVelocity *= 340.0f;
-
-				if ( Input.Down( "jump" ) )
-				{
-					// Jump away from ladder
-					Controller.Jump( ladderMode.ClimbingRotation.Backward * 200 );
-				}
-			}
-			else
-			{
-				if ( Input.Down( "Run" ) ) WishVelocity *= 320.0f;
-				else WishVelocity *= 110.0f;
-			}
-		}
-
-		if ( Controller.TimeSinceGrounded < 0.3f && Input.Pressed( "Jump" ) && timeSinceJump > 0.5f )
-		{
-			timeSinceJump = 0;
-
-			Controller.Jump( Vector3.Up * 300 );
-			OnJump();
-		}
-
-		if ( Input.Pressed( "score" ) ) FirstPerson = !FirstPerson;
-
-		IsDucked = Input.Down( "duck" );
-
-		if ( IsDucked )
-		{
-			Controller.BodyHeight = 40;
-		}
-		else
-		{
-			Controller.BodyHeight = 64;
-		}
-
-		Controller.WishVelocity = WishVelocity;
 
 		UpdatePressure();
 	}
@@ -227,19 +33,8 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 	float pressure;
 	int i = 0;
 
-	void ICollisionListener.OnCollisionStart( Collision collision )
-	{
-		//if ( float.IsNaN( collision.Contact.Impulse ) ) return;
+	void ICollisionListener.OnCollisionStart( Collision collision ) { }
 
-		//var imp = collision.Contact.Impulse / collision.Self.Body.Mass;
-
-		//if ( imp < nominalPressure ) return;
-		//if ( collision.Contact.NormalSpeed < 0 ) return;
-
-		//DebugDrawSystem.Current.AddText( collision.Contact.Point + Vector3.Up * i * 16, $"[{imp:n0}] {collision.Contact.Normal} {collision.Contact.NormalSpeed} {collision.Other.Collider}" );
-		//pressure += imp;
-		//i++;
-	}
 	void ICollisionListener.OnCollisionUpdate( Collision collision )
 	{
 		if ( float.IsNaN( collision.Contact.Impulse ) ) return;

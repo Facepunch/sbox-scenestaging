@@ -180,7 +180,7 @@
       "__guid": "7959ffa0-6e12-4c4f-927a-a38109217175",
       "Flags": 0,
       "Name": "Camera",
-      "Position": "830.004,661.5084,-1556.891",
+      "Position": "-272,1888,-1397.38",
       "Enabled": true,
       "Components": [
         {
@@ -193,7 +193,7 @@
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
-          "RenderExcludeTags": "",
+          "RenderExcludeTags": "firstperson,viewer",
           "RenderTags": "",
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
@@ -295,7 +295,7 @@
       "__guid": "eb96c376-46c8-4fdf-92e3-cc6f8bca0b2c",
       "Flags": 0,
       "Name": "Citizen",
-      "Position": "-16,1888,-1613.38",
+      "Position": "-16,1888,-1485.38",
       "Enabled": true,
       "Components": [
         {
@@ -327,17 +327,35 @@
           },
           "BodyHeight": 64,
           "BodyMass": 500,
-          "BodyRadius": 15.933333,
-          "GroundAngle": 45,
+          "BodyRadius": 16,
+          "CameraOffset": "256,0,32",
+          "DuckedHeight": 32,
+          "EyeDistanceFromTop": 8,
+          "HideBodyInFirstPerson": true,
+          "JumpSpeed": 300,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "f70e8a2f-8133-4c4d-bc89-bbc88bac37e4",
+            "go": "68b2a30b-650d-43ab-bee2-10dd59aae501",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RotationAngleLimit": 45,
+          "RotationSpeed": 1,
+          "RunSpeed": 320,
           "ShowColliderComponents": false,
           "ShowRigidbodyComponent": false,
-          "StepDebug": true,
-          "StepHeight": 18,
-          "StepUp": true
+          "StepDebug": false,
+          "ThirdPerson": true,
+          "ToggleCameraModeButton": "view",
+          "UseAnimatorControls": true,
+          "UseCameraControls": true,
+          "UseInputControls": true,
+          "WalkSpeed": 110
         },
         {
           "__type": "PhysicalPlayerController",
           "__guid": "a23a8fdb-a60a-4ca1-839c-358d4bc11265",
+          "__enabled": false,
           "AnimationHelper": {
             "_type": "component",
             "component_id": "18433e79-238c-4230-a6a9-3327674a228e",
@@ -347,10 +365,6 @@
           "Body": {
             "_type": "gameobject",
             "go": "68b2a30b-650d-43ab-bee2-10dd59aae501"
-          },
-          "Eye": {
-            "_type": "gameobject",
-            "go": "6dcac1b2-f3ce-4915-b96f-c45a736a8453"
           },
           "FirstPerson": false,
           "Gibs": {
@@ -369,7 +383,7 @@
             "Yaw": true,
             "Roll": true
           },
-          "MassCenterOverride": "0,0,32",
+          "MassCenterOverride": "0,0,31.73359",
           "MassOverride": 500,
           "MotionEnabled": true,
           "OverrideMassCenter": true,
@@ -379,23 +393,31 @@
         {
           "__type": "Sandbox.CapsuleCollider",
           "__guid": "add9a5ed-2ffe-45cc-986d-7e56cd97e630",
-          "End": "0,0,27.01325",
+          "End": "0,0,41.05097",
           "Friction": 0,
           "IsTrigger": false,
-          "Radius": 11.266568,
-          "Start": "0,0,52.73343",
+          "Radius": 11.313708,
+          "Start": "0,0,52.68629",
           "Static": false,
           "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "Sandbox.BoxCollider",
           "__guid": "95c97dce-7484-4cd0-accb-a8d7e6796e5d",
-          "Center": "0,0,9",
+          "Center": "0,0,16",
           "Friction": 0,
           "IsTrigger": false,
-          "Scale": "15.93333,15.93333,18",
+          "Scale": "16,16,32",
           "Static": false,
           "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterWalkMode",
+          "__guid": "b5aa95d0-80c5-4ed1-8501-b0197e533764",
+          "GroundAngle": 45,
+          "Priority": 0,
+          "StepDownHeight": 18,
+          "StepUpHeight": 18
         },
         {
           "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode",
@@ -9437,7 +9459,7 @@
               "__guid": "82e2bd12-f45a-4e9b-9fe1-8bad0031903b",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "367.7528,-0.001636486,1262.499",
+              "Position": "367.7528,-0.001677176,1262.499",
               "Enabled": true,
               "Components": [
                 {
@@ -9485,7 +9507,7 @@
               "__guid": "e8bf89e9-c689-43a0-87d3-82a358fb1986",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "404.0001,-24.00071,1262.499",
+              "Position": "404.0001,-24.00075,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -9534,7 +9556,7 @@
               "__guid": "deb2631d-3933-4088-9180-5e18f0b60415",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "403.0766,8.891652,1262.499",
+              "Position": "403.0766,8.891612,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -9583,7 +9605,7 @@
               "__guid": "d2e19fe7-c25b-4691-966b-b0a749ea86cd",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "454.751,-54.10698,1262.499",
+              "Position": "454.751,-54.10704,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -9779,7 +9801,7 @@
               "__guid": "ad9b7e6e-534a-43b2-befb-5d6db5acfbde",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "395.9955,-62.95517,1262.501",
+              "Position": "395.9955,-62.95522,1262.501",
               "Rotation": "0,0,-0.6087614,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9828,7 +9850,7 @@
               "__guid": "0e6b5275-e45e-4f5d-8bcf-821ad2a86375",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "391.2995,-30.6653,1259.191",
+              "Position": "391.2995,-30.66534,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9877,7 +9899,7 @@
               "__guid": "110e51dd-4f9b-4384-8940-f7d9c8f0f238",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "443.8012,3.559556,1259.192",
+              "Position": "443.8012,3.559495,1259.192",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9926,7 +9948,7 @@
               "__guid": "fff4db18-0ade-45da-8366-470c32ac9cfe",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "438.9766,-35.95262,1259.191",
+              "Position": "438.9766,-35.95268,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9975,7 +9997,7 @@
               "__guid": "e0638e56-32c4-4c91-875f-9c556232f1ad",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "488.9273,-15.98682,1259.191",
+              "Position": "488.9273,-15.98688,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -10024,7 +10046,7 @@
               "__guid": "0b2e21a8-a351-4275-b4ce-d4d0a348ccef",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "463.6745,-14.97625,1259.191",
+              "Position": "463.6745,-14.9763,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -10073,7 +10095,7 @@
               "__guid": "5bfbd1e5-a7b1-4ad8-b80d-e2f56b06f42c",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "491.5528,-43.12521,1259.191",
+              "Position": "491.5528,-43.12527,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -10122,7 +10144,7 @@
               "__guid": "e528984e-6e05-4039-b74d-d13afab344fa",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "483.6224,-74.90998,1259.191",
+              "Position": "483.6224,-74.91004,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -17205,6 +17227,108 @@
       ]
     },
     {
+      "__guid": "0c3bd712-29e6-4403-8b8c-146a3533150a",
+      "Flags": 0,
+      "Name": "Cube (2)",
+      "Position": "861.3785,973.6575,-1570.161",
+      "Rotation": "-0.0005409368,0.00234326,-0.2249131,0.9743757",
+      "Scale": "1,1,0.1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "82e58fd4-f0b3-4cc8-933f-3b3c2e16fc6e",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "708998b8-c8c7-416d-8299-7f6b4b67f1c2",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "ce581096-2966-428b-b2c0-88ca93c5f20a",
+      "Flags": 0,
+      "Name": "Cube (2)",
+      "Position": "816.2191,995.6843,-1567.944",
+      "Rotation": "-0.0005409368,0.00234326,-0.2249131,0.9743757",
+      "Scale": "1,1,0.1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "3347f7a8-5fb2-4df1-a4b6-7a1f48e13e80",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "73eaeb84-f58d-46b9-97c3-7f9292cf844b",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "d2d7738f-8656-4a83-8fbf-d1136757f87e",
+      "Flags": 0,
+      "Name": "Cube (2)",
+      "Position": "771.2884,1017.599,-1565.728",
+      "Rotation": "-0.0005409368,0.00234326,-0.2249131,0.9743757",
+      "Scale": "1,1,0.1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "76b76ed8-ebcf-410f-b338-a7b81a177b08",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "a72aa1e5-594d-45ec-9f72-904eaa33a599",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
       "__guid": "afc72905-e900-46c1-a5d0-fd8966fb99df",
       "Flags": 0,
       "Name": "Cube (2)",
@@ -17378,39 +17502,6 @@
           "IsTrigger": false,
           "Radius": 31.3,
           "Static": false,
-          "SurfaceVelocity": "0,0,0"
-        }
-      ]
-    },
-    {
-      "__guid": "2f5ccfce-c898-437d-b8c1-de0541c8e6e6",
-      "Flags": 0,
-      "Name": "Cube (2)",
-      "Position": "761.4496,1034.891,-1785.845",
-      "Rotation": "-0.00000003269055,0.002404885,-0.0000000000782748,0.999997",
-      "Scale": "42.1,42.1,42.1",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "cbfc1250-e128-470b-a0f2-ca66187b910e",
-          "BodyGroups": 18446744073709551615,
-          "Model": "models/soccerball.vmdl",
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "0.85644,0.12719,0.57932,1"
-        },
-        {
-          "__type": "Sandbox.ModelCollider",
-          "__guid": "57469884-477b-46e3-9779-f9a3f3d4d871",
-          "IsTrigger": false,
-          "Model": "models/soccerball.vmdl",
-          "Static": true,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -21378,7 +21469,6 @@
   "Description": "Simple source engine style player controller",
   "ResourceVersion": 1,
   "__references": [
-    "baik.soccerball#19459",
     "facepunch.beech_shrub_tall_small#29101",
     "facepunch.concrete_damaged#37801",
     "facepunch.dirtpile_03#37647",

@@ -23,6 +23,7 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 	[Property, Group( "Body" )] public float BodyHeight { get; set; } = 64.0f;
 	[Property, Group( "Body" )] public float BodyMass { get; set; } = 500;
 
+
 	[Property, Group( "Body" ), Title( "Show Rigidbody" )]
 	public bool ShowRigidbodyComponent
 	{
