@@ -102,11 +102,15 @@
 			// clip the camera
 			var tr = Scene.Trace.FromTo( eyePosition, eyePosition + cameraDelta )
 							.IgnoreGameObjectHierarchy( GameObject )
-							.Radius( 10 )
+							.Radius( 8 )
 							.Run();
 
 			// smooth the zoom in and out
-			if ( tr.Distance < _cameraDistance )
+			if ( tr.StartedSolid )
+			{
+				_cameraDistance = _cameraDistance.LerpTo( cameraDelta.Length, Time.Delta * 100.0f );
+			}
+			else if ( tr.Distance < _cameraDistance )
 			{
 				_cameraDistance = _cameraDistance.LerpTo( tr.Distance, Time.Delta * 200.0f );
 			}
@@ -119,7 +123,7 @@
 			eyePosition = eyePosition + cameraDelta.Normal * _cameraDistance;
 		}
 
-		GameObject.Tags.Set( "viewer", !ThirdPerson && HideBodyInFirstPerson );
+		GameObject.Tags.Set( "viewer", _cameraDistance < 20 || (!ThirdPerson && HideBodyInFirstPerson) );
 		cam.WorldPosition = eyePosition;
 	}
 
