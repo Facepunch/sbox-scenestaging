@@ -1,4 +1,5 @@
-﻿
+﻿namespace Sandbox;
+
 public sealed partial class PhysicsCharacter : Component
 {
 	/// <summary>

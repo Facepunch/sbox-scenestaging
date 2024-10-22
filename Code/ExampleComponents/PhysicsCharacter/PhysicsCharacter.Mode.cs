@@ -1,4 +1,5 @@
 ﻿using Sandbox.PhysicsCharacterMode;
+namespace Sandbox;
 
 
 public sealed partial class PhysicsCharacter : Component

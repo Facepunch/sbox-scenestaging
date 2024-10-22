@@ -1,4 +1,6 @@
-﻿public sealed partial class PhysicsCharacter : Component
+﻿namespace Sandbox;
+
+public sealed partial class PhysicsCharacter : Component
 {
 	/// <summary>
 	/// The object we're standing on. Null if we're standing on nothing.

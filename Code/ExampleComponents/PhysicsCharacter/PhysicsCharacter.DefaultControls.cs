@@ -1,4 +1,6 @@
-﻿public sealed partial class PhysicsCharacter : Component
+﻿namespace Sandbox;
+
+public sealed partial class PhysicsCharacter : Component
 {
 	/// <summary>
 	/// The direction we're looking.
@@ -26,6 +28,7 @@
 	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public float EyeDistanceFromTop { get; set; } = 8;
 	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public bool ThirdPerson { get; set; } = true;
 	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public bool HideBodyInFirstPerson { get; set; } = true;
+	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public bool RotateWithGround { get; set; } = true;
 	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public Vector3 CameraOffset { get; set; } = new Vector3( 256, 0, 12 );
 	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 ), InputAction] public string ToggleCameraModeButton { get; set; } = "view";
 
@@ -53,6 +56,8 @@
 
 	protected override void OnUpdate()
 	{
+		UpdateGroundEyeRotation();
+
 		if ( Scene.IsEditor )
 			return;
 
@@ -328,5 +333,53 @@
 
 			Renderer.WorldRotation = newRotation;
 		}
+	}
+
+	Transform localGroundTransform;
+	int groundHash;
+
+	void UpdateGroundEyeRotation()
+	{
+		if ( GroundObject is null )
+		{
+			groundHash = default;
+			return;
+		}
+
+		if ( !RotateWithGround )
+		{
+			groundHash = default;
+			return;
+		}
+
+		var hash = HashCode.Combine( GroundObject );
+
+		// Get out transform locally to the ground object
+		var localTransform = GroundObject.WorldTransform.ToLocal( WorldTransform );
+
+		// Work out the rotation delta chance since last frame
+		var delta = localTransform.Rotation.Inverse * localGroundTransform.Rotation;
+
+		// we only care about the yaw
+		var deltaYaw = delta.Angles().yaw;
+
+		//DebugDrawSystem.Current.Text( WorldPosition, $"{delta.Angles().yaw}" );
+
+		// If we're on the same ground and we've rotated
+		if ( hash == groundHash && deltaYaw != 0 )
+		{
+			// rotate the eye angles
+			EyeAngles = EyeAngles.WithYaw( EyeAngles.yaw + deltaYaw );
+
+			// rotate the body to avoid it animating to the new position
+			if ( UseAnimatorControls && Renderer.IsValid() )
+			{
+				Renderer.WorldRotation *= new Angles( 0, deltaYaw, 0 );
+			}
+		}
+
+		// Keep for next frame
+		groundHash = hash;
+		localGroundTransform = localTransform;
 	}
 }

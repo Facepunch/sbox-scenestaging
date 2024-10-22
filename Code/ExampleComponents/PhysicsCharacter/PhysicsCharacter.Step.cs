@@ -1,6 +1,11 @@
-﻿public sealed partial class PhysicsCharacter : Component
+﻿namespace Sandbox;
+
+public sealed partial class PhysicsCharacter : Component
 {
-	[Property, Group( "StepUp" )] public bool StepDebug { get; set; } = true;
+	/// <summary>
+	/// Enable debug overlays for this character
+	/// </summary>
+	public bool StepDebug { get; set; } = false;
 
 	// set when we stepped this tick, so at the end of the physics step we can restore our position
 	bool _didstep;

@@ -1,5 +1,5 @@
 ﻿using Sandbox.PhysicsCharacterMode;
-
+namespace Sandbox;
 
 [Icon( "🕺" ), EditorHandle( Icon = "🕺" )]
 [Alias( "PhysicalCharacterController" )]
