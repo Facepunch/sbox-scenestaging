@@ -26,13 +26,27 @@
 	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public float EyeDistanceFromTop { get; set; } = 8;
 	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public bool ThirdPerson { get; set; } = true;
 	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public bool HideBodyInFirstPerson { get; set; } = true;
-	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public Vector3 CameraOffset { get; set; } = new Vector3( 256, 0, 32 );
+	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public Vector3 CameraOffset { get; set; } = new Vector3( 256, 0, 12 );
 	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 ), InputAction] public string ToggleCameraModeButton { get; set; } = "view";
 
 	/// <summary>
 	/// The body will usually be a child object with SkinnedModelRenderer
 	/// </summary>
 	[Property, Group( "🕺 Animator" ), ShowIf( "UseAnimatorControls", true ), Order( 5000 )] public SkinnedModelRenderer Renderer { get; set; }
+
+	bool ShowCreateBodyRenderer => UseAnimatorControls && Renderer is null;
+
+	[Button( icon: "🪄" )]
+	[Property, Group( "🕺 Animator" ), ShowIf( nameof( ShowCreateBodyRenderer ), true ), Order( 5000 )]
+	public void CreateBodyRenderer()
+	{
+		var body = new GameObject( true, "Body" );
+		body.Parent = GameObject;
+
+		Renderer = body.AddComponent<SkinnedModelRenderer>();
+		Renderer.Model = Model.Load( "models/citizen/citizen.vmdl" );
+	}
+
 	[Property, Group( "🕺 Animator" ), ShowIf( "UseAnimatorControls", true ), Order( 5000 )] public float RotationAngleLimit { get; set; } = 45.0f;
 	[Property, Group( "🕺 Animator" ), ShowIf( "UseAnimatorControls", true ), Order( 5000 )] public float RotationSpeed { get; set; } = 1.0f;
 
