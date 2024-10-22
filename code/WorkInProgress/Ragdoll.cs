@@ -11,6 +11,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	private PhysicsLock _locking;
 	private bool _motionEnabled = true;
 	private Rigidbody _rootBody;
+	private Transform _rootBindPose;
 
 	private record BodyRecord( Rigidbody Component, BoneCollection.Bone Bone );
 	private readonly List<BodyRecord> _bodies = new();
@@ -118,6 +119,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			}
 		}
 	}
+
+	[Property, Group( "Physics" )]
+	public bool DriveFromAnimation { get; set; }
 
 	private void CreatePhysics()
 	{
@@ -292,6 +296,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 
 		_rootBody = _bodies[0].Component;
+		_rootBindPose = Model.GetBoneTransform( _bodies[0].Bone.Index );
 
 		foreach ( var body in _bodies )
 		{
@@ -368,12 +373,36 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			Renderer.SetBoneTransform( body.Bone, local );
 
 			if ( body.Component.MotionEnabled )
+			{
+				if ( DriveFromAnimation )
+				{
+					DriveBodyFromAnimation( body );
+				}
+
 				continue;
+			}
 
 			if ( Renderer.TryGetBoneTransformAnimation( body.Bone, out var boneWorld ) )
 			{
 				body.Component.SmoothMove( boneWorld, 0.01f, Time.Delta );
 			}
+		}
+	}
+
+	private void DriveBodyFromAnimation( BodyRecord body )
+	{
+		if ( !body.Component.IsValid() )
+			return;
+
+		if ( body.Bone.Parent is null )
+			return;
+
+		if ( Renderer.TryGetBoneTransformAnimation( body.Bone, out var boneWorld ) )
+		{
+			boneWorld = WorldTransform.ToLocal( boneWorld );
+			boneWorld = _rootBody.WorldTransform.ToWorld( _rootBindPose.ToLocal( boneWorld ) );
+
+			body.Component.SmoothRotate( boneWorld.Rotation, 0.01f, Time.Delta );
 		}
 	}
 
