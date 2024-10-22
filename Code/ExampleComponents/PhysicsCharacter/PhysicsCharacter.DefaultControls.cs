@@ -53,6 +53,9 @@
 
 	protected override void OnUpdate()
 	{
+		if ( Scene.IsEditor )
+			return;
+
 		UpdateEyeAngles();
 		UpdateCameraPosition();
 		UpdateAnimation();
