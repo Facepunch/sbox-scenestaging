@@ -138,6 +138,8 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		var world = WorldTransform;
 
+		const ComponentFlags componentFlags = ComponentFlags.NotSaved | ComponentFlags.NotCloned;
+
 		foreach ( var part in physics.Parts )
 		{
 			var bone = Model.Bones.GetBone( part.BoneName );
@@ -156,7 +158,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			go.Parent = GameObject;
 
 			var body = go.AddComponent<Rigidbody>( false );
-			body.Flags |= ComponentFlags.NotSaved;
+			body.Flags |= componentFlags;
 			body.RigidbodyFlags = RigidbodyFlags;
 			body.Locking = Locking;
 			body.MotionEnabled = MotionEnabled;
@@ -168,7 +170,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			foreach ( var sphere in part.Spheres )
 			{
 				var collider = go.AddComponent<SphereCollider>();
-				collider.Flags |= ComponentFlags.NotSaved;
+				collider.Flags |= componentFlags;
 				collider.Center = sphere.Sphere.Center;
 				collider.Radius = sphere.Sphere.Radius;
 				collider.Surface = sphere.Surface;
@@ -179,7 +181,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			foreach ( var capsule in part.Capsules )
 			{
 				var collider = go.AddComponent<CapsuleCollider>();
-				collider.Flags |= ComponentFlags.NotSaved;
+				collider.Flags |= componentFlags;
 				collider.Start = capsule.Capsule.CenterA;
 				collider.End = capsule.Capsule.CenterB;
 				collider.Radius = capsule.Capsule.Radius;
@@ -191,7 +193,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			foreach ( var hull in part.Hulls )
 			{
 				var collider = go.AddComponent<HullCollider>();
-				collider.Flags |= ComponentFlags.NotSaved;
+				collider.Flags |= componentFlags;
 				collider.Type = HullCollider.PrimitiveType.Points;
 				collider.Points = hull.GetPoints().ToList();
 				collider.Surface = hull.Surface;
@@ -276,7 +278,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			if ( joint.IsValid() )
 			{
-				joint.Flags |= ComponentFlags.NotSaved;
+				joint.Flags |= componentFlags;
 				joint.Body = body2.GameObject;
 				joint.Attachment = Joint.AttachmentMode.LocalFrames;
 				joint.LocalFrame1 = localFrame1.WithPosition( jointDesc.Frame1.Position * body1.WorldScale );
