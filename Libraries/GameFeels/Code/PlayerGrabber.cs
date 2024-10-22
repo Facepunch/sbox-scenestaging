@@ -78,6 +78,7 @@ public class PlayerGrabber : Component
 		}
 
 		var tr = Scene.Trace.Ray( Scene.Camera.WorldPosition, Scene.Camera.WorldPosition + Scene.Camera.WorldRotation.Forward * 1000 )
+			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.Run();
 
 		if ( !tr.Hit || tr.Body is null )
@@ -131,6 +132,7 @@ public class PlayerGrabber : Component
 		if ( grabbedBody is null )
 		{
 			var tr = Scene.Trace.Ray( Scene.Camera.ScreenNormalToRay( 0.5f ), 1000.0f )
+							.IgnoreGameObjectHierarchy( GameObject.Root )
 							.Run();
 
 			if ( tr.Hit )
@@ -158,6 +160,7 @@ public class PlayerGrabber : Component
 		ray.Forward += Vector3.Random * 0.03f;
 
 		var tr = Scene.Trace.Ray( ray, 3000.0f )
+				.IgnoreGameObjectHierarchy( GameObject.Root )
 				.Run();
 
 		if ( !tr.Hit || tr.GameObject is null )
