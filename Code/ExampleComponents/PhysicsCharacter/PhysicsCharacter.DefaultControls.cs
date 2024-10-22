@@ -67,6 +67,7 @@
 	}
 
 	float _eyez;
+	float _cameraDistance = 100;
 
 	void UpdateCameraPosition()
 	{
@@ -96,9 +97,26 @@
 
 		if ( ThirdPerson )
 		{
-			eyePosition = eyePosition
-									+ rot.Forward * -CameraOffset.x
-									+ rot.Up * CameraOffset.z;
+			var cameraDelta = rot.Forward * -CameraOffset.x + rot.Up * CameraOffset.z;
+
+			// clip the camera
+			var tr = Scene.Trace.FromTo( eyePosition, eyePosition + cameraDelta )
+							.IgnoreGameObjectHierarchy( GameObject )
+							.Radius( 10 )
+							.Run();
+
+			// smooth the zoom in and out
+			if ( tr.Distance < _cameraDistance )
+			{
+				_cameraDistance = _cameraDistance.LerpTo( tr.Distance, Time.Delta * 200.0f );
+			}
+			else
+			{
+				_cameraDistance = _cameraDistance.LerpTo( tr.Distance, Time.Delta * 2.0f );
+			}
+
+
+			eyePosition = eyePosition + cameraDelta.Normal * _cameraDistance;
 		}
 
 		GameObject.Tags.Set( "viewer", !ThirdPerson && HideBodyInFirstPerson );

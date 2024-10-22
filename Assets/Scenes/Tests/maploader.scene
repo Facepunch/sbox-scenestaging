@@ -5,7 +5,7 @@
       "__guid": "147e9b00-9738-48fc-b9b6-ec6a8ad86bdf",
       "Flags": 0,
       "Name": "Main Camera",
-      "Position": "685.3455,284.5508,965.2881",
+      "Position": "941.3455,284.5508,961.2881",
       "Enabled": true,
       "Components": [
         {
@@ -525,6 +525,15 @@
           },
           "RenderType": "On",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "d86e0411-b33b-440b-bdd2-db0be507a86e",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -534,6 +543,7 @@
       "Name": "Player",
       "Position": "941.3455,284.5508,897.2881",
       "Rotation": "0,0,-0.5,0.8660254",
+      "Tags": "viewer",
       "Enabled": true,
       "Components": [
         {
@@ -545,7 +555,7 @@
             "go": "03fa2175-35bb-4358-817a-8b7c3e219c6d",
             "component_type": "Rigidbody"
           },
-          "BodyHeight": 64,
+          "BodyHeight": 72,
           "BodyMass": 500,
           "BodyRadius": 16,
           "CameraOffset": "256,0,12",
@@ -565,7 +575,7 @@
           "ShowColliderComponents": false,
           "ShowRigidbodyComponent": false,
           "StepDebug": true,
-          "ThirdPerson": true,
+          "ThirdPerson": false,
           "ToggleCameraModeButton": "view",
           "UseAnimatorControls": true,
           "UseCameraControls": true,
@@ -583,11 +593,11 @@
             "Yaw": true,
             "Roll": true
           },
-          "MassCenterOverride": "0,0,1.330624",
+          "MassCenterOverride": "0,0,31.22223",
           "MassOverride": 500,
           "MotionEnabled": true,
           "OverrideMassCenter": true,
-          "RigidbodyFlags": 0,
+          "RigidbodyFlags": "DisableCollisionSounds",
           "StartAsleep": false
         },
         {
@@ -601,21 +611,21 @@
         {
           "__type": "Sandbox.CapsuleCollider",
           "__guid": "115d7a1e-80e9-4d95-bbd4-f958f3934ea5",
-          "End": "0,0,41.05097",
+          "End": "0,0,45.05097",
           "Friction": 0,
           "IsTrigger": false,
           "Radius": 11.313708,
-          "Start": "0,0,52.68629",
+          "Start": "0,0,60.68629",
           "Static": false,
           "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "Sandbox.BoxCollider",
           "__guid": "955e2ff1-dc75-4040-a32d-9e5cf5ba92cf",
-          "Center": "0,0,16",
+          "Center": "0,0,18",
           "Friction": 0,
           "IsTrigger": false,
-          "Scale": "16,16,32",
+          "Scale": "16,16,36",
           "Static": false,
           "SurfaceVelocity": "0,0,0"
         },

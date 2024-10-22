@@ -20,7 +20,7 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 
 
 	[Property, Group( "Body" )] public float BodyRadius { get; set; } = 16.0f;
-	[Property, Group( "Body" )] public float BodyHeight { get; set; } = 64.0f;
+	[Property, Group( "Body" )] public float BodyHeight { get; set; } = 72.0f;
 	[Property, Group( "Body" )] public float BodyMass { get; set; } = 500;
 
 
