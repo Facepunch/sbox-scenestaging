@@ -14,6 +14,11 @@
 		Body.Flags = Body.Flags.WithFlag( ComponentFlags.Hidden, !_showRigidBodyComponent );
 		BodyCollider.Flags = BodyCollider.Flags.WithFlag( ComponentFlags.Hidden, !_showColliderComponent );
 		FeetCollider.Flags = FeetCollider.Flags.WithFlag( ComponentFlags.Hidden, !_showColliderComponent );
+
+		if ( Renderer is null && UseAnimatorControls )
+		{
+			Renderer = GetComponentInChildren<SkinnedModelRenderer>();
+		}
 	}
 
 	/// <summary>
