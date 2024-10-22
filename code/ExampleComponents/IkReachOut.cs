@@ -1,5 +1,3 @@
-using Sandbox;
-
 public sealed class IkReachOut : Component
 {
 	[Property] public GameObject TargetGameObject { get; set; }
@@ -22,10 +20,11 @@ public sealed class IkReachOut : Component
 
 		var tr = Scene.Trace
 			.Sphere( 2, WorldPosition, WorldPosition + dir.Normal * Radius )
+			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.WithoutTags( IgnoreCollision )
 			.Run();
 
-		if  ( tr.Hit )
+		if ( tr.Hit )
 		{
 			TargetGameObject.WorldPosition = tr.EndPosition;
 			TargetGameObject.WorldRotation = Rotation.LookAt( tr.Normal ) * Rotation.From( HandRotation );
