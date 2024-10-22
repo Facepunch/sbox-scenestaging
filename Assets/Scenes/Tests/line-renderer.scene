@@ -1,53 +1,63 @@
 {
-  "Id": "a6b0e969-f051-466a-810e-f4bf29787039",
+  "__guid": "a6b0e969-f051-466a-810e-f4bf29787039",
   "GameObjects": [
     {
-      "Id": "52117bd2-8020-4fa0-b23a-903ed1473301",
+      "__guid": "52117bd2-8020-4fa0-b23a-903ed1473301",
+      "Flags": 0,
       "Name": "Surface",
       "Position": "906.3349,0,-1631.205",
       "Scale": "50,50,50",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "ModelRenderer",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "f2ca7ad0-9aa9-4353-a4bc-400cc3240262",
           "BodyGroups": 18446744073709551615,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Tint": "0.06127,0.13935,0.49505,1"
         }
       ],
       "Children": [
         {
-          "Id": "23c65f4f-bf21-4481-9e94-de77804161b5",
+          "__guid": "23c65f4f-bf21-4481-9e94-de77804161b5",
+          "Flags": 0,
           "Name": "Surface (1)",
           "Position": "0,0,-25",
           "Enabled": true,
-          "NetworkMode": 2,
           "Components": [
             {
-              "__type": "BoxCollider",
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "e5839696-b7db-4949-8885-79a7cbb8b175",
               "Center": "0,0,0",
               "IsTrigger": false,
               "Scale": "100,100,50",
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         }
       ]
     },
     {
-      "Id": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "__guid": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "Flags": 0,
       "Name": "Directional Light",
       "Position": "55.4718,-124.3322,91.5952",
       "Rotation": "0.4803084,0.2399953,-0.7546629,0.3770808",
       "Tags": "light_directional,light",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "DirectionalLight",
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "1fd38077-ed6b-4652-90d1-01e016584743",
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.57426,0.4891,0.42359,1",
@@ -57,15 +67,15 @@
       ]
     },
     {
-      "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "__guid": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "Flags": 0,
       "Name": "Camera",
-      "Position": "1011.863,273.6311,-1540.558",
-      "Rotation": "0.104912,0.06145444,-0.8564602,0.5016899",
+      "Position": "1185.693,375.8237,-1529.303",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "CameraComponent",
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "b1ed55ea-1ca1-4533-8684-fd77bdeee65f",
           "BackgroundColor": "0.25292,0.26086,0.29703,1",
           "ClearFlags": "All",
           "FieldOfView": 85.5,
@@ -73,7 +83,7 @@
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
-          "RenderExcludeTags": "",
+          "RenderExcludeTags": "viewer",
           "RenderTags": "",
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
@@ -82,6 +92,7 @@
         },
         {
           "__type": "CameraPhysicsDebug",
+          "__guid": "fb4b7d53-3902-457b-ade2-d515a968ae81",
           "__enabled": false,
           "Hitboxes": false,
           "MaxPoints": 10000,
@@ -90,7 +101,8 @@
           "TraceType": "Ray"
         },
         {
-          "__type": "Bloom",
+          "__type": "Sandbox.Bloom",
+          "__guid": "c82bcbf3-2de9-4ce0-9529-6390d4bbe09c",
           "BloomColor": {
             "color": [
               {
@@ -118,62 +130,60 @@
           "ThresholdWidth": 0.6
         },
         {
-          "__type": "Tonemapping",
+          "__type": "Sandbox.Tonemapping",
+          "__guid": "8d8ee982-76d4-4030-b047-913183be4106",
+          "__version": 1,
+          "AutoExposureEnabled": true,
+          "ExposureBias": 2,
           "ExposureCompensation": 0,
+          "ExposureMethod": "RGB",
           "MaximumExposure": 2,
           "MinimumExposure": 1,
+          "Mode": "Legacy",
           "Rate": 1
         }
       ]
     },
     {
-      "Id": "eed1d0da-fb94-44c7-b17b-638cddf71838",
+      "__guid": "eed1d0da-fb94-44c7-b17b-638cddf71838",
+      "Flags": 0,
       "Name": "Cubemap",
       "Position": "1099.505,-0.0033,-1162.002",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "EnvmapProbe",
+          "__type": "Sandbox.EnvmapProbe",
+          "__guid": "8a08e975-b4d2-43fa-918a-a928f499cb65",
+          "Texture": "textures/cubemaps/default2.vtex",
           "Bounds": {
             "Mins": "-5120,-5120,-5120",
             "Maxs": "5120,5120,5120"
           },
+          "DelayBetweenUpdates": 0.1,
           "Feathering": 0.02,
+          "FrameInterval": 5,
+          "MaxDistance": 512,
+          "MultiBounce": false,
           "Projection": "Box",
-          "Texture": "textures/cubemaps/default2.vtex",
-          "TintColor": "1,1,1,1"
+          "RenderDynamically": false,
+          "TintColor": "1,1,1,1",
+          "UpdateStrategy": "OnEnabled",
+          "ZFar": 4096,
+          "ZNear": 16
         }
       ]
     },
     {
-      "Id": "62c9abb3-c5a7-4717-8787-8f85f0c989b7",
+      "__guid": "62c9abb3-c5a7-4717-8787-8f85f0c989b7",
+      "Flags": 0,
       "Name": "Player",
       "Position": "1185.693,375.8237,-1585.303",
+      "Tags": "viewer",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "PlayerController",
-          "Eye": {
-            "_type": "gameobject",
-            "go": "0be956d0-5ab7-4de9-8ad7-301e2959034d"
-          },
-          "FirstPerson": true,
-          "Gravity": "0,0,800"
-        },
-        {
-          "__type": "CharacterController",
-          "Acceleration": 10,
-          "Bounciness": 0.3,
-          "GroundAngle": 45,
-          "Height": 64,
-          "IgnoreLayers": "debris",
-          "Radius": 16,
-          "StepHeight": 18
-        },
-        {
           "__type": "PlayerGrabber",
+          "__guid": "f971136a-d1a2-4a6a-9c4f-07414197a872",
           "DecalEffect": {
             "_type": "gameobject",
             "prefab": "effects/decal_bullet_default.prefab"
@@ -182,30 +192,147 @@
             "_type": "gameobject",
             "prefab": "effects/impact_default.prefab"
           },
+          "MovementSmoothness": 3,
           "ShootDamage": 9
+        },
+        {
+          "__type": "PhysicsCharacter",
+          "__guid": "2c825189-1a89-4e54-9722-81bb346cfa61",
+          "Body": {
+            "_type": "component",
+            "component_id": "66b6878e-c367-4f71-a4c4-5866ae00f05e",
+            "go": "62c9abb3-c5a7-4717-8787-8f85f0c989b7",
+            "component_type": "Rigidbody"
+          },
+          "BodyHeight": 64,
+          "BodyMass": 500,
+          "BodyRadius": 16,
+          "CameraOffset": "256,0,12",
+          "DuckedHeight": 40,
+          "EyeDistanceFromTop": 8,
+          "HideBodyInFirstPerson": true,
+          "JumpSpeed": 300,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "eee20b0f-fbda-4ade-a6a4-a5353301a18c",
+            "go": "35a8cdd8-47b0-4906-9ac7-653317c5c7aa",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RotationAngleLimit": 45,
+          "RotationSpeed": 1,
+          "RunSpeed": 320,
+          "ShowColliderComponents": false,
+          "ShowRigidbodyComponent": false,
+          "StepDebug": true,
+          "ThirdPerson": false,
+          "ToggleCameraModeButton": "view",
+          "UseAnimatorControls": true,
+          "UseCameraControls": true,
+          "UseInputControls": true,
+          "WalkSpeed": 110
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "66b6878e-c367-4f71-a4c4-5866ae00f05e",
+          "AngularDamping": 1,
+          "Gravity": true,
+          "LinearDamping": 0.1,
+          "Locking": {
+            "Pitch": true,
+            "Yaw": true,
+            "Roll": true
+          },
+          "MassCenterOverride": "0,0,1.971315",
+          "MassOverride": 500,
+          "MotionEnabled": true,
+          "OverrideMassCenter": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterWalkMode",
+          "__guid": "7e93e621-ff41-4d62-aefb-8f6a10ec9d84",
+          "GroundAngle": 45,
+          "Priority": 0,
+          "StepDownHeight": 18,
+          "StepUpHeight": 18
+        },
+        {
+          "__type": "Sandbox.CapsuleCollider",
+          "__guid": "654c1b16-1233-4b59-8b77-5c34ae92da15",
+          "End": "0,0,41.05097",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Radius": 11.313708,
+          "Start": "0,0,52.68629",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "a991b415-5cd1-4241-b28d-7e1c3c73a3a9",
+          "Center": "0,0,16",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Scale": "16,16,32",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
         {
-          "Id": "0be956d0-5ab7-4de9-8ad7-301e2959034d",
+          "__guid": "0be956d0-5ab7-4de9-8ad7-301e2959034d",
+          "Flags": 0,
           "Name": "Eye",
           "Position": "0,0,58",
+          "Enabled": true
+        },
+        {
+          "__guid": "35a8cdd8-47b0-4906-9ac7-653317c5c7aa",
+          "Flags": 0,
+          "Name": "Body",
           "Enabled": true,
-          "NetworkMode": 2
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "eee20b0f-fbda-4ade-a6a4-a5353301a18c",
+              "BodyGroups": 341,
+              "CreateBoneObjects": false,
+              "Model": "models/citizen/citizen.vmdl",
+              "Morphs": {},
+              "Parameters": {
+                "bools": {},
+                "ints": {},
+                "floats": {},
+                "vectors": {},
+                "rotations": {}
+              },
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
         }
       ]
     },
     {
-      "Id": "0d3cdac9-340c-4119-965f-baa96a5ce76f",
+      "__guid": "0d3cdac9-340c-4119-965f-baa96a5ce76f",
+      "Flags": 0,
       "Name": "Spot Light",
       "Position": "1223.259,-803.9999,-1087.162",
       "Rotation": "-0.1064454,0.2939645,0.588666,0.7454708",
       "Tags": "light_spot,light",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "SpotLight",
+          "__type": "Sandbox.SpotLight",
+          "__guid": "1220a3e8-6332-4bc5-8cba-d32c7d5275c3",
           "Attenuation": 1,
           "ConeInner": 71.55,
           "ConeOuter": 45.45,
@@ -219,14 +346,16 @@
       ]
     },
     {
-      "Id": "e401ed26-36ce-4b14-9030-03722777ebad",
+      "__guid": "e401ed26-36ce-4b14-9030-03722777ebad",
+      "Flags": 0,
       "Name": "Prop Line",
       "Position": "1267.84,150.9618,-1505.011",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "b37ef59f-549b-4fb3-98c7-0abdc0016b65",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -240,6 +369,7 @@
             "alpha": []
           },
           "EndCap": "None",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -263,11 +393,18 @@
               "go": "97576bb4-01c1-42c2-95ca-c8434f30b8e5"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 32,
           "SplineTension": 0,
           "StartCap": "None",
+          "UseVectorPoints": false,
           "Width": [
             {
               "x": 0.48660713,
@@ -279,106 +416,126 @@
       ]
     },
     {
-      "Id": "a2c11dee-a5c0-473f-9da6-e471ab90965d",
+      "__guid": "a2c11dee-a5c0-473f-9da6-e471ab90965d",
+      "Flags": 0,
       "Name": "soccerball",
       "Position": "1272,40,-1616",
       "Scale": "2,2,2",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "Prop",
+          "__type": "Sandbox.Prop",
+          "__guid": "f1af6dc3-e2e2-42d9-9a84-68b65ac6e5b9",
+          "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": false,
           "Model": "models/soccerball.vmdl",
-          "ShowCreatedComponents": false
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "bdc48bee-2ac6-490e-bd17-2fc07dda9512",
+      "__guid": "bdc48bee-2ac6-490e-bd17-2fc07dda9512",
+      "Flags": 0,
       "Name": "soccerball (1)",
       "Position": "1304,112,-1616",
       "Scale": "2,2,2",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "Prop",
+          "__type": "Sandbox.Prop",
+          "__guid": "b2014618-1625-4e36-918c-cd8e516fa405",
+          "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": false,
           "Model": "models/soccerball.vmdl",
-          "ShowCreatedComponents": false
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "76e91a70-fa00-404d-95f4-f4c3e90c9687",
+      "__guid": "76e91a70-fa00-404d-95f4-f4c3e90c9687",
+      "Flags": 0,
       "Name": "soccerball (2)",
       "Position": "1240,136,-1616",
       "Scale": "2,2,2",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "Prop",
+          "__type": "Sandbox.Prop",
+          "__guid": "6f40e1b3-1658-48e6-a958-ea4e7de94504",
+          "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": false,
           "Model": "models/soccerball.vmdl",
-          "ShowCreatedComponents": false
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "6977357e-fb93-41fb-9743-c5c55257100d",
+      "__guid": "6977357e-fb93-41fb-9743-c5c55257100d",
+      "Flags": 0,
       "Name": "soccerball (3)",
       "Position": "1256,208,-1616",
       "Scale": "2,2,2",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "Prop",
+          "__type": "Sandbox.Prop",
+          "__guid": "65d2d698-8ea8-4f9c-b86f-00d2e276fab3",
+          "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": false,
           "Model": "models/soccerball.vmdl",
-          "ShowCreatedComponents": false
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "97576bb4-01c1-42c2-95ca-c8434f30b8e5",
+      "__guid": "97576bb4-01c1-42c2-95ca-c8434f30b8e5",
+      "Flags": 0,
       "Name": "soccerball (4)",
       "Position": "1152,232,-1616",
       "Scale": "2,2,2",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "Prop",
+          "__type": "Sandbox.Prop",
+          "__guid": "85380975-f694-41a8-9395-e280327d2482",
+          "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": false,
           "Model": "models/soccerball.vmdl",
-          "ShowCreatedComponents": false
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "de936e2f-8c78-443a-b415-f2be113d4065",
+      "__guid": "de936e2f-8c78-443a-b415-f2be113d4065",
+      "Flags": 0,
       "Name": "Prop 3",
       "Position": "1386.643,-67.74564,-1600",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "Prop",
+          "__type": "Sandbox.Prop",
+          "__guid": "3c58e6bc-d430-4951-9428-4dab77eed746",
+          "BodyGroups": 18446744073709551615,
           "Health": 50,
           "IsStatic": false,
           "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
-          "ShowCreatedComponents": false
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
         },
         {
-          "__type": "SpringJoint",
+          "__type": "Sandbox.SpringJoint",
+          "__guid": "7eb5eb64-97c2-4477-80d6-852e500b7212",
+          "Attachment": "Auto",
           "Body": {
             "_type": "gameobject",
             "go": "c464be56-518d-4414-bbfc-a1483cc0a968"
@@ -388,20 +545,32 @@
           "Damping": 0.7,
           "EnableCollision": false,
           "Frequency": 5,
+          "LocalFrame1": {
+            "ForwardRay": {
+              "Forward": "1,0,0"
+            }
+          },
+          "LocalFrame2": {
+            "ForwardRay": {
+              "Forward": "1,0,0"
+            }
+          },
           "MaxLength": 20,
           "MinLength": 1
         }
       ],
       "Children": [
         {
-          "Id": "f8f6b579-f629-485c-a5c1-28659333e37b",
+          "__guid": "f8f6b579-f629-485c-a5c1-28659333e37b",
+          "Flags": 0,
           "Name": "Prop Line (1)",
           "Position": "0,0,15.22729",
           "Enabled": true,
-          "NetworkMode": 2,
           "Components": [
             {
-              "__type": "LineRenderer",
+              "__type": "Sandbox.LineRenderer",
+              "__guid": "57dfdb2b-779d-4ca9-a92a-9c71c9c67687",
+              "CastShadows": true,
               "Color": {
                 "color": [
                   {
@@ -411,6 +580,7 @@
                 "alpha": []
               },
               "EndCap": "None",
+              "Face": "Camera",
               "Opaque": true,
               "Points": [
                 {
@@ -422,11 +592,18 @@
                   "go": "8516b969-cea4-4e89-8a35-eda52dc2119e"
                 }
               ],
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "SplineBias": 0,
               "SplineContinuity": 0,
               "SplineInterpolation": 32,
               "SplineTension": 0,
               "StartCap": "None",
+              "UseVectorPoints": false,
               "Width": [
                 {
                   "x": 0.48660713,
@@ -440,39 +617,44 @@
       ]
     },
     {
-      "Id": "c464be56-518d-4414-bbfc-a1483cc0a968",
+      "__guid": "c464be56-518d-4414-bbfc-a1483cc0a968",
+      "Flags": 0,
       "Name": "Prop 3 (1)",
       "Position": "1392,8,-1600",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "Prop",
+          "__type": "Sandbox.Prop",
+          "__guid": "c4d93d4e-289c-4deb-9858-e70d3d5388fc",
+          "BodyGroups": 18446744073709551615,
           "Health": 50,
           "IsStatic": false,
           "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
-          "ShowCreatedComponents": false
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
         }
       ],
       "Children": [
         {
-          "Id": "8516b969-cea4-4e89-8a35-eda52dc2119e",
+          "__guid": "8516b969-cea4-4e89-8a35-eda52dc2119e",
+          "Flags": 0,
           "Name": "center",
           "Position": "0,0,13.85132",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "86ed57fb-4c48-4f9a-94c6-3e333876fd03",
+      "__guid": "86ed57fb-4c48-4f9a-94c6-3e333876fd03",
+      "Flags": 0,
       "Name": "Object",
       "Position": "1417.066,112,-1358.877",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "SpringJoint",
+          "__type": "Sandbox.SpringJoint",
+          "__guid": "88f8273c-50a8-4a56-94b8-1e73c64245aa",
+          "Attachment": "Auto",
           "Body": {
             "_type": "gameobject",
             "go": "de936e2f-8c78-443a-b415-f2be113d4065"
@@ -482,20 +664,32 @@
           "Damping": 0.7,
           "EnableCollision": false,
           "Frequency": 5,
+          "LocalFrame1": {
+            "ForwardRay": {
+              "Forward": "1,0,0"
+            }
+          },
+          "LocalFrame2": {
+            "ForwardRay": {
+              "Forward": "1,0,0"
+            }
+          },
           "MaxLength": 50,
           "MinLength": 40
         }
       ]
     },
     {
-      "Id": "05614582-621c-4594-bc22-f2a4284ac77e",
+      "__guid": "05614582-621c-4594-bc22-f2a4284ac77e",
+      "Flags": 0,
       "Name": "Line",
       "Position": "1117.775,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "bf84e4dd-99eb-4b1c-9fed-e9a7ea0bfcfd",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -506,6 +700,7 @@
             "alpha": []
           },
           "EndCap": "Rounded",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -525,11 +720,18 @@
               "go": "0fc4cc93-5c0c-40e1-84f2-1131fccec966"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 8,
           "SplineTension": 0,
           "StartCap": "Rounded",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -540,44 +742,45 @@
       ],
       "Children": [
         {
-          "Id": "cbbd36a2-36ca-495c-b540-57af78ca3991",
+          "__guid": "cbbd36a2-36ca-495c-b540-57af78ca3991",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "4c5e76fb-d32e-49a7-9c31-8e5a0f35080f",
+          "__guid": "4c5e76fb-d32e-49a7-9c31-8e5a0f35080f",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "501f3120-34f0-4665-8a12-8d142f8a6d1b",
+          "__guid": "501f3120-34f0-4665-8a12-8d142f8a6d1b",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "0fc4cc93-5c0c-40e1-84f2-1131fccec966",
+          "__guid": "0fc4cc93-5c0c-40e1-84f2-1131fccec966",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "43ed6af0-9d1d-4883-8599-6ceab89fe4b8",
+      "__guid": "43ed6af0-9d1d-4883-8599-6ceab89fe4b8",
+      "Flags": 0,
       "Name": "Line (1)",
       "Position": "1072,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "8decf59b-a10e-4e18-a7f0-3c46c756a9bd",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -588,6 +791,7 @@
             "alpha": []
           },
           "EndCap": "Rounded",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -607,11 +811,18 @@
               "go": "ab221379-96f0-4e3e-849f-4c781c05ec04"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 1,
           "SplineTension": 0,
           "StartCap": "Rounded",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -622,44 +833,45 @@
       ],
       "Children": [
         {
-          "Id": "6acda5c5-fb93-4d62-82f8-30e9849b14af",
+          "__guid": "6acda5c5-fb93-4d62-82f8-30e9849b14af",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "e01d0dbd-4c96-4cef-aaac-f26aea4277c8",
+          "__guid": "e01d0dbd-4c96-4cef-aaac-f26aea4277c8",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "303d57f0-5263-4a70-8a55-7db5f0917b76",
+          "__guid": "303d57f0-5263-4a70-8a55-7db5f0917b76",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "ab221379-96f0-4e3e-849f-4c781c05ec04",
+          "__guid": "ab221379-96f0-4e3e-849f-4c781c05ec04",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "ac6499dc-dd18-4750-a087-5954f6cb53ef",
+      "__guid": "ac6499dc-dd18-4750-a087-5954f6cb53ef",
+      "Flags": 0,
       "Name": "Line (2)",
       "Position": "1032,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "d8b1aafa-9987-4bb8-ac7a-90a5cf3bf4d4",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -670,6 +882,7 @@
             "alpha": []
           },
           "EndCap": "Rounded",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -689,11 +902,18 @@
               "go": "f7bc4abd-57a3-41bc-a2e9-e2b0340b9363"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 32,
           "SplineTension": -1,
           "StartCap": "Rounded",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -704,44 +924,45 @@
       ],
       "Children": [
         {
-          "Id": "12627e60-d6c6-45cc-87e3-dd187377c456",
+          "__guid": "12627e60-d6c6-45cc-87e3-dd187377c456",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "ef26531f-b11c-4a65-af7c-6584a09fbcb8",
+          "__guid": "ef26531f-b11c-4a65-af7c-6584a09fbcb8",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "9477c69a-2825-4738-ab83-9bac893ada01",
+          "__guid": "9477c69a-2825-4738-ab83-9bac893ada01",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "f7bc4abd-57a3-41bc-a2e9-e2b0340b9363",
+          "__guid": "f7bc4abd-57a3-41bc-a2e9-e2b0340b9363",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "1c70a90a-84e0-4750-a695-e8b0c5244044",
+      "__guid": "1c70a90a-84e0-4750-a695-e8b0c5244044",
+      "Flags": 0,
       "Name": "Line (3)",
       "Position": "992,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "713a8790-e70b-49d5-8271-9fbb37f075b0",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -752,6 +973,7 @@
             "alpha": []
           },
           "EndCap": "Rounded",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -771,11 +993,18 @@
               "go": "67ea913f-7c24-4153-a51b-042d252e2dc9"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 32,
           "SplineTension": 1,
           "StartCap": "Rounded",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -786,44 +1015,45 @@
       ],
       "Children": [
         {
-          "Id": "3cee580d-3f20-4def-a0e1-b54d777b81cb",
+          "__guid": "3cee580d-3f20-4def-a0e1-b54d777b81cb",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "f69b9116-80c6-4fdd-a4f3-7a5059c3c94f",
+          "__guid": "f69b9116-80c6-4fdd-a4f3-7a5059c3c94f",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "7c173009-77d0-4c00-a739-2863134b4afc",
+          "__guid": "7c173009-77d0-4c00-a739-2863134b4afc",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "67ea913f-7c24-4153-a51b-042d252e2dc9",
+          "__guid": "67ea913f-7c24-4153-a51b-042d252e2dc9",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "464f6f3a-bcc0-44df-9fe9-66947d5cd285",
+      "__guid": "464f6f3a-bcc0-44df-9fe9-66947d5cd285",
+      "Flags": 0,
       "Name": "Line (4)",
       "Position": "944,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "41dfc2f1-e525-4850-a785-494c2dbc879c",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -834,6 +1064,7 @@
             "alpha": []
           },
           "EndCap": "Rounded",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -853,11 +1084,18 @@
               "go": "9440d09c-c3f0-43b7-9893-dab9ded586d5"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 1,
           "SplineInterpolation": 32,
           "SplineTension": 0.01,
           "StartCap": "Rounded",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -868,44 +1106,45 @@
       ],
       "Children": [
         {
-          "Id": "22f02574-611f-4a92-ae74-90c176425b1f",
+          "__guid": "22f02574-611f-4a92-ae74-90c176425b1f",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "91f459df-aaf2-408e-aa23-4e479f7c3b3c",
+          "__guid": "91f459df-aaf2-408e-aa23-4e479f7c3b3c",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "2d2cfb53-39f0-4dea-867c-a2ebe5cee85f",
+          "__guid": "2d2cfb53-39f0-4dea-867c-a2ebe5cee85f",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "9440d09c-c3f0-43b7-9893-dab9ded586d5",
+          "__guid": "9440d09c-c3f0-43b7-9893-dab9ded586d5",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "7b317af7-8c11-498b-93ae-1851334f9584",
+      "__guid": "7b317af7-8c11-498b-93ae-1851334f9584",
+      "Flags": 0,
       "Name": "Line (5)",
       "Position": "912,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "efd026b7-ed86-4b88-b30f-3b33b14c2f17",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -916,6 +1155,7 @@
             "alpha": []
           },
           "EndCap": "Rounded",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -935,11 +1175,18 @@
               "go": "3b65a207-aade-4a08-b517-c112080944f3"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": -1,
           "SplineInterpolation": 32,
           "SplineTension": 0.01,
           "StartCap": "Rounded",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -950,44 +1197,45 @@
       ],
       "Children": [
         {
-          "Id": "029f5ac0-a9cf-4be1-a6e5-f3d031042bed",
+          "__guid": "029f5ac0-a9cf-4be1-a6e5-f3d031042bed",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "7b78fb06-fce3-4305-b549-a8d8b59071aa",
+          "__guid": "7b78fb06-fce3-4305-b549-a8d8b59071aa",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "35b58572-b9a7-4521-b071-dfc6c3365289",
+          "__guid": "35b58572-b9a7-4521-b071-dfc6c3365289",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "3b65a207-aade-4a08-b517-c112080944f3",
+          "__guid": "3b65a207-aade-4a08-b517-c112080944f3",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "189ed603-c15f-45f0-abab-6e8ef05f411b",
+      "__guid": "189ed603-c15f-45f0-abab-6e8ef05f411b",
+      "Flags": 0,
       "Name": "Line (6)",
       "Position": "872,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "13ff868d-ede4-483d-9d83-dfa8a9687bec",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -998,6 +1246,7 @@
             "alpha": []
           },
           "EndCap": "Rounded",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -1017,11 +1266,18 @@
               "go": "50c1da51-e628-4974-9f9d-f8131b2d61e5"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 1,
           "SplineContinuity": 0,
           "SplineInterpolation": 32,
           "SplineTension": 0.01,
           "StartCap": "Rounded",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1032,44 +1288,45 @@
       ],
       "Children": [
         {
-          "Id": "cbc4beb1-8be9-489a-81d8-9f36c6b8aaeb",
+          "__guid": "cbc4beb1-8be9-489a-81d8-9f36c6b8aaeb",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "5de4caa8-2382-458e-bb54-c25590c27292",
+          "__guid": "5de4caa8-2382-458e-bb54-c25590c27292",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "578a2ae7-7080-440b-8a9b-cb59c3458929",
+          "__guid": "578a2ae7-7080-440b-8a9b-cb59c3458929",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "50c1da51-e628-4974-9f9d-f8131b2d61e5",
+          "__guid": "50c1da51-e628-4974-9f9d-f8131b2d61e5",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "48da1b85-27f8-45a4-8d23-c071c786052a",
+      "__guid": "48da1b85-27f8-45a4-8d23-c071c786052a",
+      "Flags": 0,
       "Name": "Line (7)",
       "Position": "832,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "5c80d0e7-a5c2-4aad-a1b4-9d00de391211",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1080,6 +1337,7 @@
             "alpha": []
           },
           "EndCap": "Rounded",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -1099,11 +1357,18 @@
               "go": "994a7b7a-5f11-4cec-b874-112125c19028"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": -1,
           "SplineContinuity": 0,
           "SplineInterpolation": 32,
           "SplineTension": 0.01,
           "StartCap": "Rounded",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1114,44 +1379,45 @@
       ],
       "Children": [
         {
-          "Id": "0047894f-db5c-49e1-8713-506c36e62225",
+          "__guid": "0047894f-db5c-49e1-8713-506c36e62225",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "5461f4b5-c423-4ec3-85a4-347168931eb7",
+          "__guid": "5461f4b5-c423-4ec3-85a4-347168931eb7",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "2bd40525-eb2f-425f-b9e6-a0caabced5e3",
+          "__guid": "2bd40525-eb2f-425f-b9e6-a0caabced5e3",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "994a7b7a-5f11-4cec-b874-112125c19028",
+          "__guid": "994a7b7a-5f11-4cec-b874-112125c19028",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "98b7d7e7-a9a4-4a66-987c-aa484f2c5c9a",
+      "__guid": "98b7d7e7-a9a4-4a66-987c-aa484f2c5c9a",
+      "Flags": 0,
       "Name": "Line (8)",
       "Position": "784,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "ea3b3929-9b89-4459-81e1-92d1f2218333",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1162,6 +1428,7 @@
             "alpha": []
           },
           "EndCap": "Triangle",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -1181,11 +1448,18 @@
               "go": "e62ab636-84f5-4fcd-816c-db0cd7d58354"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 16,
           "SplineTension": 0,
           "StartCap": "Arrow",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1196,44 +1470,45 @@
       ],
       "Children": [
         {
-          "Id": "9c0ac600-104c-4938-ac04-3737b272e6bc",
+          "__guid": "9c0ac600-104c-4938-ac04-3737b272e6bc",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "8df73052-7095-417a-ab5f-3f4e984601de",
+          "__guid": "8df73052-7095-417a-ab5f-3f4e984601de",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "283d9b5e-06b9-4cbe-8108-dedd910cedbb",
+          "__guid": "283d9b5e-06b9-4cbe-8108-dedd910cedbb",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "e62ab636-84f5-4fcd-816c-db0cd7d58354",
+          "__guid": "e62ab636-84f5-4fcd-816c-db0cd7d58354",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "39e03bba-e6af-4da2-93ff-5302d3bd069c",
+      "__guid": "39e03bba-e6af-4da2-93ff-5302d3bd069c",
+      "Flags": 0,
       "Name": "Line (9)",
       "Position": "744,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "dea31201-fd5f-488c-8abe-1ec1b712795c",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1244,6 +1519,7 @@
             "alpha": []
           },
           "EndCap": "Arrow",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -1263,11 +1539,18 @@
               "go": "fa684b6c-de08-46bb-88ae-c3e50dbe831c"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 16,
           "SplineTension": 0,
           "StartCap": "Rounded",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1278,44 +1561,45 @@
       ],
       "Children": [
         {
-          "Id": "a43ad059-2224-4ac0-93e3-74c64a31f0db",
+          "__guid": "a43ad059-2224-4ac0-93e3-74c64a31f0db",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "4df36ffa-ec92-4e55-9bc0-bfaf4a69b296",
+          "__guid": "4df36ffa-ec92-4e55-9bc0-bfaf4a69b296",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "50c9e8e8-22cb-4ac1-bf46-48d592b918e0",
+          "__guid": "50c9e8e8-22cb-4ac1-bf46-48d592b918e0",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "fa684b6c-de08-46bb-88ae-c3e50dbe831c",
+          "__guid": "fa684b6c-de08-46bb-88ae-c3e50dbe831c",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "bfed5b81-b859-48f2-9b7e-43488d89e1af",
+      "__guid": "bfed5b81-b859-48f2-9b7e-43488d89e1af",
+      "Flags": 0,
       "Name": "Line (10)",
       "Position": "704,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "a0beb18c-513f-49be-864e-4ec72d4e8094",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1326,6 +1610,7 @@
             "alpha": []
           },
           "EndCap": "None",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -1345,11 +1630,18 @@
               "go": "92cb5de1-f3aa-4177-af9c-2d3308e45167"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 16,
           "SplineTension": 0,
           "StartCap": "None",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1360,44 +1652,45 @@
       ],
       "Children": [
         {
-          "Id": "f2e34c9d-82c8-41b4-93d6-cf91080f9413",
+          "__guid": "f2e34c9d-82c8-41b4-93d6-cf91080f9413",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "808e769b-d565-4777-a96e-3a06462d6bb2",
+          "__guid": "808e769b-d565-4777-a96e-3a06462d6bb2",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "941fcaed-9448-4115-80d1-43f7b82053c1",
+          "__guid": "941fcaed-9448-4115-80d1-43f7b82053c1",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "92cb5de1-f3aa-4177-af9c-2d3308e45167",
+          "__guid": "92cb5de1-f3aa-4177-af9c-2d3308e45167",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "8199d686-0bf1-48c4-a930-cc52efc3b2c5",
+      "__guid": "8199d686-0bf1-48c4-a930-cc52efc3b2c5",
+      "Flags": 0,
       "Name": "Line (11)",
       "Position": "664,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "5eda6be3-9f9f-46a7-a90d-0435935ccfb8",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1408,6 +1701,7 @@
             "alpha": []
           },
           "EndCap": "None",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -1427,11 +1721,18 @@
               "go": "38811c5d-da74-4cfa-b542-aa46f64404e1"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 16,
           "SplineTension": 0,
           "StartCap": "None",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1442,44 +1743,45 @@
       ],
       "Children": [
         {
-          "Id": "f3db76b6-9092-49d5-a193-d3448f727333",
+          "__guid": "f3db76b6-9092-49d5-a193-d3448f727333",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "57fa6c7a-698c-4de9-9ab6-3e288a6919db",
+          "__guid": "57fa6c7a-698c-4de9-9ab6-3e288a6919db",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "d10b0c59-a526-4142-94f4-8e2bd08b76ac",
+          "__guid": "d10b0c59-a526-4142-94f4-8e2bd08b76ac",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "38811c5d-da74-4cfa-b542-aa46f64404e1",
+          "__guid": "38811c5d-da74-4cfa-b542-aa46f64404e1",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "ac497ae7-fde6-419d-afe8-0d660eae6aa7",
+      "__guid": "ac497ae7-fde6-419d-afe8-0d660eae6aa7",
+      "Flags": 0,
       "Name": "Line (12)",
       "Position": "624,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "e1d4c900-264e-4905-aa4e-ed88574ba48c",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1490,6 +1792,7 @@
             "alpha": []
           },
           "EndCap": "None",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -1509,11 +1812,18 @@
               "go": "5eb222db-48b1-4812-9746-de4430f40a6d"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 8,
           "SplineTension": 0,
           "StartCap": "None",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1524,44 +1834,45 @@
       ],
       "Children": [
         {
-          "Id": "cd184bc3-3603-4bcf-a6e8-35fb6190b7f3",
+          "__guid": "cd184bc3-3603-4bcf-a6e8-35fb6190b7f3",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "17bc69c1-f8c4-491a-ac8c-f25c23c4ef03",
+          "__guid": "17bc69c1-f8c4-491a-ac8c-f25c23c4ef03",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "2019115f-b2a7-4989-9950-85f071b52255",
+          "__guid": "2019115f-b2a7-4989-9950-85f071b52255",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "5eb222db-48b1-4812-9746-de4430f40a6d",
+          "__guid": "5eb222db-48b1-4812-9746-de4430f40a6d",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "a776ca2b-0cda-4aa6-8abd-f14229324528",
+      "__guid": "a776ca2b-0cda-4aa6-8abd-f14229324528",
+      "Flags": 0,
       "Name": "Line (13)",
       "Position": "576,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "56c9b2a1-3d45-45bf-8265-5ceb252afea7",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1572,6 +1883,7 @@
             "alpha": []
           },
           "EndCap": "None",
+          "Face": "Camera",
           "Opaque": false,
           "Points": [
             {
@@ -1591,11 +1903,18 @@
               "go": "7d533c7f-1de4-462a-a0ac-f0ddb7614fe0"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 1,
           "SplineTension": 0,
           "StartCap": "None",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1606,44 +1925,45 @@
       ],
       "Children": [
         {
-          "Id": "747e5a45-ddc6-407d-84e3-812394b45574",
+          "__guid": "747e5a45-ddc6-407d-84e3-812394b45574",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "5acac010-eb91-4227-90d6-5a5e821f8d7b",
+          "__guid": "5acac010-eb91-4227-90d6-5a5e821f8d7b",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "92d2dabe-bff7-41fe-83bc-ea35bee0eda5",
+          "__guid": "92d2dabe-bff7-41fe-83bc-ea35bee0eda5",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "7d533c7f-1de4-462a-a0ac-f0ddb7614fe0",
+          "__guid": "7d533c7f-1de4-462a-a0ac-f0ddb7614fe0",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "cb8450bc-8ab0-43cd-a11f-2022e921abbe",
+      "__guid": "cb8450bc-8ab0-43cd-a11f-2022e921abbe",
+      "Flags": 0,
       "Name": "Line (14)",
       "Position": "536,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "93a9d549-b87b-4c9a-a536-ce76eb357476",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1654,6 +1974,7 @@
             "alpha": []
           },
           "EndCap": "None",
+          "Face": "Camera",
           "Opaque": true,
           "Points": [
             {
@@ -1673,11 +1994,18 @@
               "go": "39d28b3d-4b2f-4d98-9734-4e7055033224"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 1,
           "SplineTension": 0,
           "StartCap": "None",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1688,44 +2016,45 @@
       ],
       "Children": [
         {
-          "Id": "06d6c124-31aa-4d7d-ac5d-364faf2098c9",
+          "__guid": "06d6c124-31aa-4d7d-ac5d-364faf2098c9",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "b05742ed-012f-48ef-be5c-c5dac84dd8bd",
+          "__guid": "b05742ed-012f-48ef-be5c-c5dac84dd8bd",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "2a2e7b56-64cf-4b7c-a3b7-4bfaa7cd60f8",
+          "__guid": "2a2e7b56-64cf-4b7c-a3b7-4bfaa7cd60f8",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "39d28b3d-4b2f-4d98-9734-4e7055033224",
+          "__guid": "39d28b3d-4b2f-4d98-9734-4e7055033224",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "05406cd8-ba51-4c32-93b7-5bb1451ad2a8",
+      "__guid": "05406cd8-ba51-4c32-93b7-5bb1451ad2a8",
+      "Flags": 0,
       "Name": "Line (15)",
       "Position": "496,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "54732f93-c315-4704-9fab-ab205eed8175",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1736,6 +2065,7 @@
             "alpha": []
           },
           "EndCap": "None",
+          "Face": "Camera",
           "Opaque": true,
           "Points": [
             {
@@ -1755,11 +2085,18 @@
               "go": "e3197ad3-0109-4362-96eb-2d8c904dae82"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 8,
           "SplineTension": 0,
           "StartCap": "None",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1770,44 +2107,45 @@
       ],
       "Children": [
         {
-          "Id": "4a859d36-9c0e-41ba-b8f5-4d917b555850",
+          "__guid": "4a859d36-9c0e-41ba-b8f5-4d917b555850",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "1f683941-2ccc-4043-b878-dda3fdbc745a",
+          "__guid": "1f683941-2ccc-4043-b878-dda3fdbc745a",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "2dca5cdb-9362-4ad0-bdd2-2bedd3770f65",
+          "__guid": "2dca5cdb-9362-4ad0-bdd2-2bedd3770f65",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "e3197ad3-0109-4362-96eb-2d8c904dae82",
+          "__guid": "e3197ad3-0109-4362-96eb-2d8c904dae82",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "fb2c55a3-c433-4bd2-8e87-c0029559e6ea",
+      "__guid": "fb2c55a3-c433-4bd2-8e87-c0029559e6ea",
+      "Flags": 0,
       "Name": "Line (16)",
       "Position": "440,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "a1399a48-671b-451a-b88e-22c7837fef26",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1818,6 +2156,7 @@
             "alpha": []
           },
           "EndCap": "None",
+          "Face": "Camera",
           "Opaque": true,
           "Points": [
             {
@@ -1837,11 +2176,18 @@
               "go": "3eef747f-04c4-476c-b858-d21c5a4add81"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 16,
           "SplineTension": 0,
           "StartCap": "None",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1852,44 +2198,45 @@
       ],
       "Children": [
         {
-          "Id": "affc77ae-e2ec-4c1f-829d-c0c68a071a07",
+          "__guid": "affc77ae-e2ec-4c1f-829d-c0c68a071a07",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "2e7713ad-4d7e-4760-9e3d-5f6aa5ff53bb",
+          "__guid": "2e7713ad-4d7e-4760-9e3d-5f6aa5ff53bb",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "caa4079e-6e4d-4f8a-9f04-9d30fcbe080f",
+          "__guid": "caa4079e-6e4d-4f8a-9f04-9d30fcbe080f",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "3eef747f-04c4-476c-b858-d21c5a4add81",
+          "__guid": "3eef747f-04c4-476c-b858-d21c5a4add81",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "ddf591f1-1a5f-4a04-8478-1814e1960750",
+      "__guid": "ddf591f1-1a5f-4a04-8478-1814e1960750",
+      "Flags": 0,
       "Name": "Line (17)",
       "Position": "384,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "9ccb0c2b-4d1c-4fc2-b308-4dd6fa7b0b92",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1903,6 +2250,7 @@
             "alpha": []
           },
           "EndCap": "None",
+          "Face": "Camera",
           "Opaque": true,
           "Points": [
             {
@@ -1922,11 +2270,18 @@
               "go": "23e0a3ab-a432-4485-a35e-7a8f89778cf1"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 16,
           "SplineTension": 0,
           "StartCap": "None",
+          "UseVectorPoints": false,
           "Width": [
             {
               "y": 1
@@ -1937,44 +2292,45 @@
       ],
       "Children": [
         {
-          "Id": "98aaa906-1e3a-45c3-a2f7-bc2426e72c52",
+          "__guid": "98aaa906-1e3a-45c3-a2f7-bc2426e72c52",
+          "Flags": 0,
           "Name": "Point 1",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "35a93e42-1ba4-45d0-8ffc-1fe2e784a13d",
+          "__guid": "35a93e42-1ba4-45d0-8ffc-1fe2e784a13d",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "20daf3f6-eb5e-4f1a-8ba0-37e29d63b8a9",
+          "__guid": "20daf3f6-eb5e-4f1a-8ba0-37e29d63b8a9",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "23e0a3ab-a432-4485-a35e-7a8f89778cf1",
+          "__guid": "23e0a3ab-a432-4485-a35e-7a8f89778cf1",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,0,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     },
     {
-      "Id": "91911ac9-1694-4225-8d19-3e71bb6fc64a",
+      "__guid": "91911ac9-1694-4225-8d19-3e71bb6fc64a",
+      "Flags": 0,
       "Name": "Line (18)",
       "Position": "336,-116.952,-1620.55",
       "Enabled": true,
-      "NetworkMode": 2,
       "Components": [
         {
-          "__type": "LineRenderer",
+          "__type": "Sandbox.LineRenderer",
+          "__guid": "04c6fe04-09b0-4b5c-aa83-d49f599fa8ef",
+          "CastShadows": true,
           "Color": {
             "color": [
               {
@@ -1988,6 +2344,7 @@
             "alpha": []
           },
           "EndCap": "None",
+          "Face": "Camera",
           "Opaque": true,
           "Points": [
             {
@@ -2007,11 +2364,18 @@
               "go": "797543b6-8fcc-4a67-90be-aad0289b3ec7"
             }
           ],
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "SplineBias": 0,
           "SplineContinuity": 0,
           "SplineInterpolation": 32,
           "SplineTension": 0,
           "StartCap": "None",
+          "UseVectorPoints": false,
           "Width": {
             "rangey": "0,5",
             "frames": [
@@ -2077,41 +2441,42 @@
       ],
       "Children": [
         {
-          "Id": "4ffa2863-7ac7-4718-91f5-8d2c78584cab",
+          "__guid": "4ffa2863-7ac7-4718-91f5-8d2c78584cab",
+          "Flags": 0,
           "Name": "Point 1",
           "Position": "0,-219.048,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "bbdf8555-70bc-461f-814c-c367f547e5a5",
+          "__guid": "bbdf8555-70bc-461f-814c-c367f547e5a5",
+          "Flags": 0,
           "Name": "Point 2",
           "Position": "-16,56,0",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "7a104cc7-6351-4c32-8cf5-e144b648fb34",
+          "__guid": "7a104cc7-6351-4c32-8cf5-e144b648fb34",
+          "Flags": 0,
           "Name": "Point 3",
           "Position": "16,56,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         },
         {
-          "Id": "797543b6-8fcc-4a67-90be-aad0289b3ec7",
+          "__guid": "797543b6-8fcc-4a67-90be-aad0289b3ec7",
+          "Flags": 0,
           "Name": "Point 4",
           "Position": "0,-219.048,48",
-          "Enabled": true,
-          "NetworkMode": 2
+          "Enabled": true
         }
       ]
     }
   ],
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
-    "Lerping": true,
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
@@ -2130,9 +2495,10 @@
   },
   "Title": "Line Renderer",
   "Description": "Testing line renderer",
-  "LastSaved": "2024-03-12T15:12:29.3915041\u002B00:00",
+  "ResourceVersion": 1,
   "__references": [
     "baik.soccerball#19459",
     "facepunch.wooden_crate#29138"
-  ]
+  ],
+  "__version": 1
 }

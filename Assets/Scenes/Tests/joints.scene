@@ -33,7 +33,7 @@
           "__type": "Sandbox.SkyBox2D",
           "__guid": "c6589be1-b626-429c-a6d7-1da0366b5761",
           "SkyIndirectLighting": true,
-          "SkyMaterial": "materials/skybox/light_test_sky_night_basic.vmat",
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
           "Tint": "1,1,1,1"
         },
         {
@@ -94,7 +94,8 @@
           "Center": "0,0,0",
           "IsTrigger": false,
           "Scale": "100,100",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -103,30 +104,9 @@
       "Flags": 0,
       "Name": "Player",
       "Position": "936.6692,538.1973,-1585.303",
+      "Tags": "viewer",
       "Enabled": true,
       "Components": [
-        {
-          "__type": "PlayerController",
-          "__guid": "7dd9a2ee-c493-405a-ae5e-6aa1126422d8",
-          "Eye": {
-            "_type": "gameobject",
-            "go": "919b85bd-9fcf-45c7-9992-f0783512e19a"
-          },
-          "FirstPerson": true,
-          "Gravity": "0,0,800"
-        },
-        {
-          "__type": "Sandbox.CharacterController",
-          "__guid": "e1a2c6e5-c4bf-4dcc-8057-fb9d46fe371a",
-          "Acceleration": 10,
-          "Bounciness": 0.3,
-          "GroundAngle": 45,
-          "Height": 64,
-          "IgnoreLayers": "",
-          "Radius": 16,
-          "StepHeight": 18,
-          "UseCollisionRules": false
-        },
         {
           "__type": "PlayerGrabber",
           "__guid": "c5252bb9-2eaf-4b32-9e9f-6597902d3dbb",
@@ -140,6 +120,89 @@
           },
           "MovementSmoothness": 3,
           "ShootDamage": 9
+        },
+        {
+          "__type": "PhysicsCharacter",
+          "__guid": "22837b9e-9367-4458-aebe-78202e64992a",
+          "Body": {
+            "_type": "component",
+            "component_id": "2b1a5cc1-5407-492a-9292-432298d8701c",
+            "go": "dc374a13-9fb5-4f4b-937f-1aa506b8a20c",
+            "component_type": "Rigidbody"
+          },
+          "BodyHeight": 64,
+          "BodyMass": 500,
+          "BodyRadius": 16,
+          "CameraOffset": "256,0,12",
+          "DuckedHeight": 40,
+          "EyeDistanceFromTop": 8,
+          "HideBodyInFirstPerson": true,
+          "JumpSpeed": 300,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "77b5713d-73fb-439f-848e-f9c61f4c4a54",
+            "go": "8343c943-dbba-460b-b60c-d6c2a634472a",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RotationAngleLimit": 45,
+          "RotationSpeed": 1,
+          "RunSpeed": 320,
+          "ShowColliderComponents": false,
+          "ShowRigidbodyComponent": false,
+          "StepDebug": true,
+          "ThirdPerson": false,
+          "ToggleCameraModeButton": "view",
+          "UseAnimatorControls": true,
+          "UseCameraControls": true,
+          "UseInputControls": true,
+          "WalkSpeed": 110
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "2b1a5cc1-5407-492a-9292-432298d8701c",
+          "AngularDamping": 1,
+          "Gravity": true,
+          "LinearDamping": 0.1,
+          "Locking": {
+            "Pitch": true,
+            "Yaw": true,
+            "Roll": true
+          },
+          "MassCenterOverride": "0,0,15.06117",
+          "MassOverride": 500,
+          "MotionEnabled": true,
+          "OverrideMassCenter": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterWalkMode",
+          "__guid": "ea361339-0689-44b5-ab9f-d3c6f7550a9e",
+          "GroundAngle": 45,
+          "Priority": 0,
+          "StepDownHeight": 18,
+          "StepUpHeight": 18
+        },
+        {
+          "__type": "Sandbox.CapsuleCollider",
+          "__guid": "f0963ffa-629c-42be-9681-bd1c148ec4ba",
+          "End": "0,0,41.05097",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Radius": 11.313708,
+          "Start": "0,0,52.68629",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "1b4b1b97-6239-4c4e-b00a-191172e15e91",
+          "Center": "0,0,16",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Scale": "16,16,32",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
@@ -149,6 +212,38 @@
           "Name": "Eye",
           "Position": "0,0,58",
           "Enabled": true
+        },
+        {
+          "__guid": "8343c943-dbba-460b-b60c-d6c2a634472a",
+          "Flags": 0,
+          "Name": "Body",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "77b5713d-73fb-439f-848e-f9c61f4c4a54",
+              "BodyGroups": 341,
+              "CreateBoneObjects": false,
+              "Model": "models/citizen/citizen.vmdl",
+              "Morphs": {},
+              "Parameters": {
+                "bools": {},
+                "ints": {},
+                "floats": {},
+                "vectors": {},
+                "rotations": {}
+              },
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
         }
       ]
     },
@@ -192,11 +287,13 @@
           "__guid": "7052e272-20ac-4453-87b5-39e2199b6160",
           "IsTrigger": false,
           "Model": "models/sbox_props/industrial_light/industrial_light.vmdl",
-          "Static": false
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "Sandbox.SpringJoint",
           "__guid": "1842a69d-b31c-4164-acc9-24cd1fdbff0b",
+          "Attachment": "Auto",
           "Body": {
             "_type": "gameobject",
             "go": "26e5c59d-5fa4-4812-8bac-74c64a2308ac"
@@ -206,6 +303,16 @@
           "Damping": 0.7,
           "EnableCollision": false,
           "Frequency": 5,
+          "LocalFrame1": {
+            "ForwardRay": {
+              "Forward": "1,0,0"
+            }
+          },
+          "LocalFrame2": {
+            "ForwardRay": {
+              "Forward": "1,0,0"
+            }
+          },
           "MaxLength": 50,
           "MinLength": 50
         }
@@ -290,7 +397,8 @@
           "__guid": "faae21ea-7746-415d-8233-9bcce1a81252",
           "IsTrigger": false,
           "Model": "models/props/beam_railing_a/metal_beam_b_128.vmdl",
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
@@ -353,7 +461,8 @@
               "__guid": "4fa3ef72-6e03-456b-919b-5fc8c2e9daba",
               "IsTrigger": false,
               "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
-              "Static": false
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -381,6 +490,7 @@
             {
               "__type": "Sandbox.SliderJoint",
               "__guid": "2c07bc74-f6db-4889-9d89-b3cf265792c7",
+              "Attachment": "Auto",
               "Body": {
                 "_type": "gameobject",
                 "go": "13cb80b0-fb57-423a-8e76-68db48fbd865"
@@ -389,6 +499,16 @@
               "BreakTorque": 0,
               "EnableCollision": false,
               "Friction": 0,
+              "LocalFrame1": {
+                "ForwardRay": {
+                  "Forward": "1,0,0"
+                }
+              },
+              "LocalFrame2": {
+                "ForwardRay": {
+                  "Forward": "1,0,0"
+                }
+              },
               "MaxLength": 100,
               "MinLength": 0
             },
@@ -411,7 +531,8 @@
               "__guid": "8c66f852-2d4b-4b54-9896-c68539255d98",
               "IsTrigger": false,
               "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
-              "Static": false
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -497,7 +618,8 @@
               "__guid": "96cb9ceb-e057-4d81-8d0c-d1d301c3c7a1",
               "IsTrigger": false,
               "Model": "models/doors/door_2_window_a.vmdl",
-              "Static": false
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
             },
             {
               "__type": "Sandbox.HingeJoint",
@@ -635,7 +757,8 @@
               "__guid": "34caa947-2c9f-4ba6-b960-686419e0ceac",
               "IsTrigger": false,
               "Model": "models/doors/door_2_window_a.vmdl",
-              "Static": false
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
             },
             {
               "__type": "Sandbox.HingeJoint",
@@ -773,7 +896,8 @@
               "__guid": "f96ca43c-12de-4b80-b2c5-58428dd79667",
               "IsTrigger": false,
               "Model": "models/doors/door_2_window_a.vmdl",
-              "Static": false
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
             },
             {
               "__type": "Sandbox.HingeJoint",
@@ -869,7 +993,7 @@
       "__guid": "34e304b0-41c2-445d-978a-2d2a7709eaba",
       "Flags": 0,
       "Name": "Camera",
-      "Position": "1136.118,484.6284,-1498.151",
+      "Position": "936.6692,538.1973,-1529.303",
       "Tags": "maincamera",
       "Enabled": true,
       "Components": [
@@ -883,7 +1007,7 @@
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
-          "RenderExcludeTags": "",
+          "RenderExcludeTags": "viewer",
           "RenderTags": "",
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
@@ -927,16 +1051,165 @@
         {
           "__type": "Sandbox.Ragdoll",
           "__guid": "459dec3c-64cb-493e-a723-41ea834a82ac",
+          "IgnoreRoot": false,
+          "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
+          "MotionEnabled": true,
           "Renderer": {
             "_type": "component",
             "component_id": "dc4cb694-4644-4bb9-86c5-6aec22e9c2c0",
             "go": "2c984b2a-d596-4027-a664-0a58afa3bbb2",
             "component_type": "SkinnedModelRenderer"
-          }
+          },
+          "RigidbodyFlags": 0
         }
       ],
-      "Children": []
+      "Children": [
+        {
+          "__guid": "a26a3c0c-4e04-43ec-bf06-6d9540b87062",
+          "Flags": 4100,
+          "Name": "pelvis",
+          "Position": "1028.539,526.2427,-1593.612",
+          "Rotation": "0.4999996,-0.4999994,0.5000005,0.5000005",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "a16256bc-0957-4702-ad8b-eac0b94bf5eb",
+          "Flags": 4100,
+          "Name": "spine_0",
+          "Position": "1028.542,526.2428,-1589.691",
+          "Rotation": "0.500157,-0.4998423,0.5001013,0.4998994",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "0befc0cb-8d98-4d92-bad9-265286c9f56f",
+          "Flags": 4100,
+          "Name": "spine_2",
+          "Position": "1028.54,526.2427,-1578.47",
+          "Rotation": "0.5000082,-0.5002434,0.5000651,0.4996832",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "3340fca5-781b-4762-a85c-632becd57044",
+          "Flags": 4100,
+          "Name": "head",
+          "Position": "1028.808,526.2429,-1568.142",
+          "Rotation": "-0.4999972,0.5000019,-0.4999992,-0.5000018",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "5819e5d8-eedf-4911-9871-db338d6d4ea7",
+          "Flags": 4100,
+          "Name": "arm_upper_R",
+          "Position": "1029.732,533.3809,-1574.08",
+          "Rotation": "-0.1979054,0.3040943,0.6305994,0.6860791",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "bc4bef8b-4061-43ee-9f53-29d784964d72",
+          "Flags": 4100,
+          "Name": "arm_lower_R",
+          "Position": "1029.93,540.8637,-1580.778",
+          "Rotation": "-0.1505789,0.3301,0.7254449,0.5848843",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "3042668e-c0be-47d7-88fc-8ba29d0e2b16",
+          "Flags": 4100,
+          "Name": "hand_R",
+          "Position": "1027.845,546.6375,-1585.438",
+          "Rotation": "-0.2142489,0.287127,0.769891,0.5281318",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "292aeb38-8195-44e4-a54b-6bc166a7cd6a",
+          "Flags": 4100,
+          "Name": "arm_upper_L",
+          "Position": "1029.732,519.1047,-1574.08",
+          "Rotation": "-0.6860778,0.6306013,0.3040932,0.1979051",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "78625aba-f0fb-4451-88e8-0ff5d01fbdaa",
+          "Flags": 4100,
+          "Name": "arm_lower_L",
+          "Position": "1029.93,511.6218,-1580.778",
+          "Rotation": "-0.5848828,0.725447,0.3300985,0.1505782",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "bae51ccc-284e-427b-85aa-9cb43bce4b1d",
+          "Flags": 4100,
+          "Name": "hand_L",
+          "Position": "1027.845,505.848,-1585.438",
+          "Rotation": "-0.5281306,0.7698928,0.2871255,0.2142481",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "8d1a108c-5626-4415-9050-63e9c472cde5",
+          "Flags": 4100,
+          "Name": "leg_upper_R",
+          "Position": "1028.966,530.67,-1593.901",
+          "Rotation": "-0.5000018,0.5000001,0.4999984,0.4999997",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "6a4ffd1a-35bc-4972-9868-18c9f3860b91",
+          "Flags": 4100,
+          "Name": "leg_lower_R",
+          "Position": "1028.966,530.67,-1608.371",
+          "Rotation": "-0.5090595,0.4907754,0.490775,0.5090558",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "0a7cc47f-b355-4948-82bf-d188d180c37f",
+          "Flags": 4100,
+          "Name": "ankle_R",
+          "Position": "1029.423,530.67,-1620.878",
+          "Rotation": "-0.2762876,0.6508966,0.6508954,0.2762862",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "ae630597-0dbf-4849-ac5c-d9c7e76cbe90",
+          "Flags": 4100,
+          "Name": "leg_upper_L",
+          "Position": "1028.966,521.8153,-1593.901",
+          "Rotation": "-0.500002,0.5000002,0.4999983,0.4999996",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "56073ed4-62dd-4aed-b389-67fa036db296",
+          "Flags": 4100,
+          "Name": "leg_lower_L",
+          "Position": "1028.966,521.8152,-1608.371",
+          "Rotation": "-0.509061,0.4907738,0.4907753,0.5090557",
+          "Enabled": true,
+          "Components": []
+        },
+        {
+          "__guid": "eabb9298-a8ff-4629-a52f-303d275061bb",
+          "Flags": 4100,
+          "Name": "ankle_L",
+          "Position": "1029.424,521.8151,-1620.878",
+          "Rotation": "-0.2762884,0.6508969,0.6508941,0.2762875",
+          "Enabled": true,
+          "Components": []
+        }
+      ]
     }
   ],
   "SceneProperties": {

@@ -1,6 +1,3 @@
-using Sandbox;
-using System.Collections.Generic;
-
 public sealed class CameraPhysicsDebug : Component, Component.ExecuteInEditor
 {
 	[Property] public int MaxPoints { get; set; } = 10000;

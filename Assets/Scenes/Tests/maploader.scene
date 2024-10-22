@@ -1,16 +1,16 @@
 {
-  "Id": "91590e66-4e7f-4a6f-9f54-39d937ab4348",
+  "__guid": "91590e66-4e7f-4a6f-9f54-39d937ab4348",
   "GameObjects": [
     {
-      "Id": "147e9b00-9738-48fc-b9b6-ec6a8ad86bdf",
+      "__guid": "147e9b00-9738-48fc-b9b6-ec6a8ad86bdf",
+      "Flags": 0,
       "Name": "Main Camera",
-      "Position": "1046.614,496.5307,1018.043",
-      "Rotation": "0.07658708,0.05123314,-0.8276362,0.5536495",
+      "Position": "685.3455,284.5508,965.2881",
       "Enabled": true,
       "Components": [
         {
-          "__type": "CameraComponent",
-          "__enabled": true,
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "b46ba0df-35ce-4c29-835d-26f021378561",
           "BackgroundColor": "0.1329,0.14023,0.14356,1",
           "ClearFlags": "All",
           "FieldOfView": 96.69,
@@ -18,7 +18,7 @@
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
-          "RenderExcludeTags": "",
+          "RenderExcludeTags": "viewer",
           "RenderTags": "",
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
@@ -26,16 +26,21 @@
           "ZNear": 10
         },
         {
-          "__type": "Tonemapping",
-          "__enabled": true,
+          "__type": "Sandbox.Tonemapping",
+          "__guid": "1cc031f4-c264-4123-a19b-8c4797985bc0",
+          "__version": 1,
+          "AutoExposureEnabled": true,
+          "ExposureBias": 2,
           "ExposureCompensation": 0,
+          "ExposureMethod": "RGB",
           "MaximumExposure": 3,
           "MinimumExposure": 0,
+          "Mode": "Legacy",
           "Rate": 0.2
         },
         {
-          "__type": "Bloom",
-          "__enabled": true,
+          "__type": "Sandbox.Bloom",
+          "__guid": "3a8256e4-97ac-4192-ae4e-7fcfb58fe59a",
           "BloomColor": {
             "color": [
               {
@@ -58,31 +63,19 @@
           "ThresholdWidth": 0.71
         },
         {
-          "__type": "Sharpen",
-          "__enabled": true,
+          "__type": "Sandbox.Sharpen",
+          "__guid": "d08b4e13-dad1-4a6a-8bc0-38290038d1c6",
           "Scale": 0.43
         },
         {
-          "__type": "NoClip",
-          "__enabled": true,
-          "MoveSpeed": 600
-        },
-        {
-          "__type": "PlayerGrabber",
-          "__enabled": true,
-          "DecalEffect": "effects/decal_bullet_default.prefab",
-          "ImpactEffect": "effects/impact_default.prefab",
-          "ShootDamage": 9
-        },
-        {
-          "__type": "ChromaticAberration",
-          "__enabled": true,
+          "__type": "Sandbox.ChromaticAberration",
+          "__guid": "922b5f6b-0ba0-4902-a35d-a937b05f0e63",
           "Offset": "4,6,0",
           "Scale": 0.1
         },
         {
-          "__type": "Vignette",
-          "__enabled": true,
+          "__type": "Sandbox.Vignette",
+          "__guid": "00ff73f8-6bc3-4786-837d-125464161ad7",
           "Center": "0.5,0.5",
           "Color": "0,0,0,1",
           "Intensity": 0.5,
@@ -92,291 +85,616 @@
       ]
     },
     {
-      "Id": "c7b7a49f-d221-433f-b9df-5064d4d666ca",
+      "__guid": "c7b7a49f-d221-433f-b9df-5064d4d666ca",
+      "Flags": 0,
       "Name": "Map Loader",
       "Position": "-204.4842,-21.87878,112.047",
       "Enabled": true,
       "Components": [
         {
-          "__type": "MapInstance",
-          "__enabled": true,
+          "__type": "Sandbox.MapInstance",
+          "__guid": "ed3f4bf6-63a2-40a6-86a1-179488dcd05a",
+          "__version": 1,
+          "EnableCollision": true,
           "MapName": "facepunch.datacore",
+          "NoOrigin": true,
           "OnMapLoaded": null,
           "OnMapUnloaded": null,
           "UseMapFromLaunch": true
         },
         {
           "__type": "MapLoadedHandler",
-          "__enabled": true,
-          "MapInstance": "c7b7a49f-d221-433f-b9df-5064d4d666ca",
-          "PlayerObject": "147e9b00-9738-48fc-b9b6-ec6a8ad86bdf"
+          "__guid": "5e8f405e-f9b4-47aa-b665-57b9da8bbfd1",
+          "MapInstance": {
+            "_type": "component",
+            "component_id": "ed3f4bf6-63a2-40a6-86a1-179488dcd05a",
+            "go": "c7b7a49f-d221-433f-b9df-5064d4d666ca",
+            "component_type": "MapInstance"
+          },
+          "PlayerObject": {
+            "_type": "gameobject",
+            "go": "147e9b00-9738-48fc-b9b6-ec6a8ad86bdf"
+          }
         }
       ],
       "Children": []
     },
     {
-      "Id": "2069d55d-7b15-4165-878d-95d24ba9e257",
+      "__guid": "2069d55d-7b15-4165-878d-95d24ba9e257",
+      "Flags": 0,
       "Name": "Sphere",
       "Position": "872.9921,-24.2181,933.0619",
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__enabled": true,
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "f23db419-6498-4ffe-b588-cf03e39aab2c",
           "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/reflectivity_40b.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "57b321b2-5f33-438c-b75c-81062dbc49a3",
+      "__guid": "57b321b2-5f33-438c-b75c-81062dbc49a3",
+      "Flags": 0,
       "Name": "Sphere (3)",
       "Position": "786.1918,16.08045,952.6269",
       "Scale": "2,2,2",
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__enabled": true,
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "69037a51-e3f3-4903-96fc-462a4655310b",
           "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_metal_rough10.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "3afe8060-4f16-4f44-b9cd-11d4263995c8",
+      "__guid": "3afe8060-4f16-4f44-b9cd-11d4263995c8",
+      "Flags": 0,
       "Name": "Citizen - Ragdoll (3)",
       "Position": "1156.004,255.9007,1026.376",
       "Rotation": "0.4210569,-0.4984705,0.4889933,0.5788964",
       "Enabled": true,
       "Components": [
         {
-          "__type": "SkinnedModelRenderer",
-          "__enabled": true,
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "3f8daa3d-fe85-47f6-97d6-7659f386e673",
           "BodyGroups": 18446744073709551615,
-          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
         },
         {
-          "__type": "ModelPhysics",
-          "__enabled": true,
+          "__type": "Sandbox.ModelPhysics",
+          "__guid": "4980ba39-981e-40fd-baa0-ae84d3708332",
           "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
-          "Renderer": "3afe8060-4f16-4f44-b9cd-11d4263995c8"
+          "MotionEnabled": true,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "3f8daa3d-fe85-47f6-97d6-7659f386e673",
+            "go": "3afe8060-4f16-4f44-b9cd-11d4263995c8",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RigidbodyFlags": 0
         }
       ]
     },
     {
-      "Id": "c4c3c0f1-9502-4c7a-9d77-02c2444f90aa",
+      "__guid": "c4c3c0f1-9502-4c7a-9d77-02c2444f90aa",
+      "Flags": 0,
       "Name": "Citizen - Ragdoll (1)",
       "Position": "1114.409,10.61845,950.9271",
       "Rotation": "0.4210569,-0.4984705,0.4889933,0.5788964",
       "Enabled": true,
       "Components": [
         {
-          "__type": "SkinnedModelRenderer",
-          "__enabled": true,
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "5838a58a-8e90-46ab-ba73-ba0cd2a4d704",
           "BodyGroups": 18446744073709551615,
-          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
         },
         {
-          "__type": "ModelPhysics",
-          "__enabled": true,
+          "__type": "Sandbox.ModelPhysics",
+          "__guid": "da4d4f57-65c4-4de9-9210-c0cbdf09573c",
           "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
-          "Renderer": "c4c3c0f1-9502-4c7a-9d77-02c2444f90aa"
+          "MotionEnabled": true,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "5838a58a-8e90-46ab-ba73-ba0cd2a4d704",
+            "go": "c4c3c0f1-9502-4c7a-9d77-02c2444f90aa",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RigidbodyFlags": 0
         }
       ]
     },
     {
-      "Id": "bdccedfa-6ca9-4a69-9184-a40d370bffbc",
+      "__guid": "bdccedfa-6ca9-4a69-9184-a40d370bffbc",
+      "Flags": 0,
       "Name": "Citizen - Ragdoll (2)",
       "Position": "695.3353,544.7522,1020.874",
       "Rotation": "0.4210569,-0.4984705,0.4889933,0.5788964",
       "Enabled": true,
       "Components": [
         {
-          "__type": "SkinnedModelRenderer",
-          "__enabled": true,
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "d231585a-8898-46fe-935e-7deea4033395",
           "BodyGroups": 18446744073709551615,
-          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
         },
         {
-          "__type": "ModelPhysics",
-          "__enabled": true,
+          "__type": "Sandbox.ModelPhysics",
+          "__guid": "bb0ee266-74c3-4ea5-a499-7bc00a995ff5",
           "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
-          "Renderer": "bdccedfa-6ca9-4a69-9184-a40d370bffbc"
+          "MotionEnabled": true,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "d231585a-8898-46fe-935e-7deea4033395",
+            "go": "bdccedfa-6ca9-4a69-9184-a40d370bffbc",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RigidbodyFlags": 0
         }
       ]
     },
     {
-      "Id": "7e618b18-b0c7-4a5b-98a7-d472a0ff5751",
+      "__guid": "7e618b18-b0c7-4a5b-98a7-d472a0ff5751",
+      "Flags": 0,
       "Name": "Citizen - Ragdoll (4)",
       "Position": "696.0497,548.9646,1049.331",
       "Rotation": "0.4210569,-0.4984705,0.4889933,0.5788964",
       "Enabled": true,
       "Components": [
         {
-          "__type": "SkinnedModelRenderer",
-          "__enabled": true,
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "402c720e-1e57-42a0-9e02-0637dfd47a3e",
           "BodyGroups": 18446744073709551615,
-          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
         },
         {
-          "__type": "ModelPhysics",
-          "__enabled": true,
+          "__type": "Sandbox.ModelPhysics",
+          "__guid": "20ed2551-26ae-4c7e-9850-755c1ac887a8",
           "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
-          "Renderer": "7e618b18-b0c7-4a5b-98a7-d472a0ff5751"
+          "MotionEnabled": true,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "402c720e-1e57-42a0-9e02-0637dfd47a3e",
+            "go": "7e618b18-b0c7-4a5b-98a7-d472a0ff5751",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RigidbodyFlags": 0
         }
       ]
     },
     {
-      "Id": "33081249-26ec-4dee-b08e-cec69fe221d9",
+      "__guid": "33081249-26ec-4dee-b08e-cec69fe221d9",
+      "Flags": 0,
       "Name": "Citizen - Ragdoll (5)",
       "Position": "696.6021,552.2214,1071.333",
       "Rotation": "0.4210569,-0.4984705,0.4889933,0.5788964",
       "Enabled": true,
       "Components": [
         {
-          "__type": "SkinnedModelRenderer",
-          "__enabled": true,
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "a6e09acf-f727-4834-b005-3f0bed6ae2f5",
           "BodyGroups": 18446744073709551615,
-          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
         },
         {
-          "__type": "ModelPhysics",
-          "__enabled": true,
+          "__type": "Sandbox.ModelPhysics",
+          "__guid": "cfe64f0c-5191-423a-9212-efdcf8afa81a",
           "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
-          "Renderer": "33081249-26ec-4dee-b08e-cec69fe221d9"
+          "MotionEnabled": true,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "a6e09acf-f727-4834-b005-3f0bed6ae2f5",
+            "go": "33081249-26ec-4dee-b08e-cec69fe221d9",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RigidbodyFlags": 0
         }
       ]
     },
     {
-      "Id": "428fe3da-3202-4405-ade5-7a47393f5bfe",
+      "__guid": "428fe3da-3202-4405-ade5-7a47393f5bfe",
+      "Flags": 0,
       "Name": "Citizen - Ragdoll (6)",
       "Position": "697.2172,555.8483,1095.835",
       "Rotation": "0.4210569,-0.4984705,0.4889933,0.5788964",
       "Enabled": true,
       "Components": [
         {
-          "__type": "SkinnedModelRenderer",
-          "__enabled": true,
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "2cf9fa38-82fd-4593-ace4-aa55a05cdd8a",
           "BodyGroups": 18446744073709551615,
-          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
         },
         {
-          "__type": "ModelPhysics",
-          "__enabled": true,
+          "__type": "Sandbox.ModelPhysics",
+          "__guid": "9812aaeb-28dd-4d83-a10c-c36812880e7e",
           "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
-          "Renderer": "428fe3da-3202-4405-ade5-7a47393f5bfe"
+          "MotionEnabled": true,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "2cf9fa38-82fd-4593-ace4-aa55a05cdd8a",
+            "go": "428fe3da-3202-4405-ade5-7a47393f5bfe",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RigidbodyFlags": 0
         }
       ]
     },
     {
-      "Id": "efbe94e9-d3d6-4b8b-a570-b8aa52c1d93c",
+      "__guid": "efbe94e9-d3d6-4b8b-a570-b8aa52c1d93c",
+      "Flags": 0,
       "Name": "Citizen - Ragdoll (7)",
       "Position": "697.8613,559.6459,1121.49",
       "Rotation": "0.4210569,-0.4984705,0.4889933,0.5788964",
       "Enabled": true,
       "Components": [
         {
-          "__type": "SkinnedModelRenderer",
-          "__enabled": true,
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "51d4451d-9c89-410b-9b11-6a3c33b17478",
           "BodyGroups": 18446744073709551615,
-          "BoneMergeTarget": null,
           "CreateBoneObjects": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
         },
         {
-          "__type": "ModelPhysics",
-          "__enabled": true,
+          "__type": "Sandbox.ModelPhysics",
+          "__guid": "26c19be6-61b3-4c7b-9cfb-963dbb15bba6",
           "Locking": {},
           "Model": "models/citizen/citizen.vmdl",
-          "Renderer": "efbe94e9-d3d6-4b8b-a570-b8aa52c1d93c"
+          "MotionEnabled": true,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "51d4451d-9c89-410b-9b11-6a3c33b17478",
+            "go": "efbe94e9-d3d6-4b8b-a570-b8aa52c1d93c",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RigidbodyFlags": 0
         }
       ]
     },
     {
-      "Id": "3b1ca579-ed52-44b9-9539-9e30e71e53e2",
+      "__guid": "3b1ca579-ed52-44b9-9539-9e30e71e53e2",
+      "Flags": 0,
       "Name": "Cube",
       "Position": "1052.349,-67.4985,948.0671",
       "Scale": "0.4474457,6.109161,0.1454388",
       "Enabled": true,
       "Components": [
         {
-          "__type": "ModelRenderer",
-          "__enabled": true,
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "9219d608-7b8c-4c84-a4e4-6a7af7146ff0",
           "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "RenderType": "On",
           "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "03fa2175-35bb-4358-817a-8b7c3e219c6d",
+      "Flags": 0,
+      "Name": "Player",
+      "Position": "941.3455,284.5508,897.2881",
+      "Rotation": "0,0,-0.5,0.8660254",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "PhysicsCharacter",
+          "__guid": "c4e0d15d-428d-4656-821c-91011b2519f2",
+          "Body": {
+            "_type": "component",
+            "component_id": "a705ac73-7050-4fdb-97b0-941c97b120da",
+            "go": "03fa2175-35bb-4358-817a-8b7c3e219c6d",
+            "component_type": "Rigidbody"
+          },
+          "BodyHeight": 64,
+          "BodyMass": 500,
+          "BodyRadius": 16,
+          "CameraOffset": "256,0,12",
+          "DuckedHeight": 40,
+          "EyeDistanceFromTop": 8,
+          "HideBodyInFirstPerson": true,
+          "JumpSpeed": 300,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "e31f1162-b597-4bcd-82cc-5f8a9322f7a3",
+            "go": "2d1052bf-feac-41cc-abe2-6143d53e52da",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RotationAngleLimit": 45,
+          "RotationSpeed": 1,
+          "RunSpeed": 320,
+          "ShowColliderComponents": false,
+          "ShowRigidbodyComponent": false,
+          "StepDebug": true,
+          "ThirdPerson": true,
+          "ToggleCameraModeButton": "view",
+          "UseAnimatorControls": true,
+          "UseCameraControls": true,
+          "UseInputControls": true,
+          "WalkSpeed": 110
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "a705ac73-7050-4fdb-97b0-941c97b120da",
+          "AngularDamping": 1,
+          "Gravity": true,
+          "LinearDamping": 0.1,
+          "Locking": {
+            "Pitch": true,
+            "Yaw": true,
+            "Roll": true
+          },
+          "MassCenterOverride": "0,0,1.330624",
+          "MassOverride": 500,
+          "MotionEnabled": true,
+          "OverrideMassCenter": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterWalkMode",
+          "__guid": "7021c7be-6eb3-4e5b-b02a-f6bcaf8bc4e1",
+          "GroundAngle": 45,
+          "Priority": 0,
+          "StepDownHeight": 18,
+          "StepUpHeight": 18
+        },
+        {
+          "__type": "Sandbox.CapsuleCollider",
+          "__guid": "115d7a1e-80e9-4d95-bbd4-f958f3934ea5",
+          "End": "0,0,41.05097",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Radius": 11.313708,
+          "Start": "0,0,52.68629",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "955e2ff1-dc75-4040-a32d-9e5cf5ba92cf",
+          "Center": "0,0,16",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Scale": "16,16,32",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "PlayerGrabber",
+          "__guid": "12c3d4e3-312a-4dad-bc0e-5145c9801ca8",
+          "DecalEffect": {
+            "_type": "gameobject",
+            "prefab": "effects/decal_bullet_default.prefab"
+          },
+          "ImpactEffect": {
+            "_type": "gameobject",
+            "prefab": "effects/impact_default.prefab"
+          },
+          "MovementSmoothness": 3,
+          "ShootDamage": 9
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "2d1052bf-feac-41cc-abe2-6143d53e52da",
+          "Flags": 0,
+          "Name": "Body",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "e31f1162-b597-4bcd-82cc-5f8a9322f7a3",
+              "BodyGroups": 341,
+              "CreateBoneObjects": false,
+              "Model": "models/citizen/citizen.vmdl",
+              "Morphs": {},
+              "Parameters": {
+                "bools": {},
+                "ints": {},
+                "floats": {},
+                "vectors": {},
+                "rotations": {}
+              },
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
         }
       ]
     }
   ],
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
-    "Lerping": true,
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
     "ThreadedAnimation": true,
     "TimeScale": 1,
-    "UseFixedUpdate": true
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
   },
   "Title": "Map Loader",
   "Description": "A scene that can load maps",
-  "__references": []
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
 }
