@@ -11,6 +11,9 @@ public sealed partial class PhysicsCharacter : Component
 	/// </summary>
 	public SceneTraceResult TraceBody( Vector3 from, Vector3 to, float scale = 1.0f, float heightScale = 1.0f )
 	{
-		return Scene.Trace.Box( BodyBox( scale, heightScale ), from, to ).IgnoreGameObjectHierarchy( GameObject ).Run();
+		return Scene.Trace.Box( BodyBox( scale, heightScale ), from, to )
+								.IgnoreGameObjectHierarchy( GameObject )
+								.WithCollisionRules( Tags )
+								.Run();
 	}
 }
