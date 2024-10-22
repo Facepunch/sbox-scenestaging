@@ -7,6 +7,7 @@
 	{
 		Body.CollisionEventsEnabled = true;
 		Body.CollisionUpdateEventsEnabled = true;
+		Body.RigidbodyFlags = RigidbodyFlags.DisableCollisionSounds;
 
 		BodyCollider = Body.GameObject.GetOrAddComponent<CapsuleCollider>();
 		FeetCollider = Body.GameObject.GetOrAddComponent<BoxCollider>();
