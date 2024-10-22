@@ -9,8 +9,6 @@
       "Rotation": "-0.1297956,0.7231804,0.2447958,0.6326443",
       "Tags": "light_directional,light",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.DirectionalLight",
@@ -31,8 +29,6 @@
       "Rotation": "0,0,-0.9999999,0.0000001937151",
       "Tags": "maincamera",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
@@ -55,6 +51,7 @@
           "__type": "Sandbox.Tonemapping",
           "__guid": "c789f2b7-2a2a-47a2-873c-cfb2259f7b67",
           "__version": 1,
+          "AutoExposureEnabled": true,
           "ExposureBias": 2,
           "ExposureCompensation": 0,
           "ExposureMethod": "RGB",
@@ -100,8 +97,6 @@
       "Name": "Floor",
       "Position": "0,0,64",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.MeshComponent",
@@ -219,7 +214,8 @@
             ]
           },
           "SmoothingAngle": 40,
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -229,8 +225,6 @@
       "Name": "World Volume",
       "Position": "-416,96,191.9999",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "DspVolume",
@@ -260,8 +254,6 @@
       "Name": "World Volume (1)",
       "Position": "-832,96,191.9999",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "DspVolume",
@@ -291,8 +283,6 @@
       "Name": "Box (1)",
       "Position": "-512,320,144.0117",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.MeshComponent",
@@ -413,7 +403,8 @@
             ]
           },
           "SmoothingAngle": 40,
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
@@ -423,8 +414,6 @@
           "Name": "Volume",
           "Position": "0,0,47.9883",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "DspVolume",
@@ -454,8 +443,6 @@
           "Name": "Box",
           "Position": "0,-176,143.9722",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -578,7 +565,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -588,8 +576,6 @@
           "Name": "Box",
           "Position": "-0.001586914,176,143.9883",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -712,7 +698,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -722,8 +709,6 @@
           "Name": "Box",
           "Position": "-240,0,144.0003",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -846,7 +831,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -856,8 +842,6 @@
           "Name": "Box",
           "Position": "16,0.001800537,255.9883",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -980,7 +964,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -990,8 +975,6 @@
           "Name": "Box",
           "Position": "240,-96,127.9972",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -1114,7 +1097,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -1124,8 +1108,6 @@
           "Name": "Box",
           "Position": "240,15.9993,191.9883",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -1248,7 +1230,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -1258,8 +1241,6 @@
           "Name": "Box",
           "Position": "240,112,127.9691",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -1382,7 +1363,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -1392,8 +1374,6 @@
           "Name": "Box",
           "Position": "320.0009,16,-0.01170349",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -1512,7 +1492,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -1523,8 +1504,6 @@
           "Position": "160,32,207.9883",
           "Tags": "light_point,light",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.PointLight",
@@ -1546,8 +1525,6 @@
       "Name": "Box (2)",
       "Position": "-512,-128,144.0117",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.MeshComponent",
@@ -1668,7 +1645,8 @@
             ]
           },
           "SmoothingAngle": 40,
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": [
@@ -1678,8 +1656,6 @@
           "Name": "Volume",
           "Position": "0,0,47.9883",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "DspVolume",
@@ -1709,8 +1685,6 @@
           "Name": "Box",
           "Position": "0,-176,143.9722",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -1833,7 +1807,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -1843,8 +1818,6 @@
           "Name": "Box",
           "Position": "-0.001586914,176,143.9883",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -1967,7 +1940,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -1977,8 +1951,6 @@
           "Name": "Box",
           "Position": "-240,0,144.0003",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -2101,7 +2073,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -2111,8 +2084,6 @@
           "Name": "Box",
           "Position": "16,0.001800537,255.9883",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -2235,7 +2206,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -2245,8 +2217,6 @@
           "Name": "Box",
           "Position": "240,-96,127.9972",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -2369,7 +2339,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -2379,8 +2350,6 @@
           "Name": "Box",
           "Position": "240,15.9993,191.9883",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -2503,7 +2472,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -2513,8 +2483,6 @@
           "Name": "Box",
           "Position": "240,112,127.9691",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -2637,7 +2605,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -2647,8 +2616,6 @@
           "Name": "Box",
           "Position": "320.0009,16,-0.01170349",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.MeshComponent",
@@ -2767,7 +2734,8 @@
                 ]
               },
               "SmoothingAngle": 40,
-              "Static": true
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -2778,8 +2746,6 @@
           "Position": "160,32,207.9883",
           "Tags": "light_point,light",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.PointLight",
@@ -2796,140 +2762,10 @@
       ]
     },
     {
-      "__guid": "6bfeb774-766a-4911-98d6-18fc08d768c7",
-      "Flags": 0,
-      "Name": "Player",
-      "Position": "352,128,135.5486",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "Components": [
-        {
-          "__type": "PlayerFootsteps",
-          "__guid": "7fc771c4-d3ea-4cb8-8484-e01b0960f255",
-          "Source": {
-            "_type": "component",
-            "component_id": "4e430289-76fb-470f-9c89-6b4b1257c6cf",
-            "go": "1e34292c-f794-40f1-a71b-72750e6e69f9",
-            "component_type": "SkinnedModelRenderer"
-          }
-        },
-        {
-          "__type": "Sandbox.CharacterController",
-          "__guid": "c64cfe09-2b38-46e2-977e-1bb33c4f47d5",
-          "Acceleration": 10,
-          "Bounciness": 0.3,
-          "GroundAngle": 45,
-          "Height": 64,
-          "IgnoreLayers": "",
-          "Radius": 16,
-          "StepHeight": 18,
-          "UseCollisionRules": false
-        },
-        {
-          "__type": "PlayerController",
-          "__guid": "93d93888-4ffa-4a32-a411-378f7e192395",
-          "AnimationHelper": {
-            "_type": "component",
-            "component_id": "12cdc466-842f-49bc-bf8d-22752bf60cdc",
-            "go": "1e34292c-f794-40f1-a71b-72750e6e69f9",
-            "component_type": "CitizenAnimationHelper"
-          },
-          "Body": {
-            "_type": "gameobject",
-            "go": "1e34292c-f794-40f1-a71b-72750e6e69f9"
-          },
-          "Eye": {
-            "_type": "gameobject",
-            "go": "fecb100e-0de0-43b6-b795-8059e26beda3"
-          },
-          "FirstPerson": true,
-          "Gravity": "0,0,800"
-        },
-        {
-          "__type": "PlayerGrabber",
-          "__guid": "f8a303cb-724d-4873-b5d6-237ea97b74ea",
-          "DecalEffect": {
-            "_type": "gameobject",
-            "prefab": "effects/decal_bullet_default.prefab"
-          },
-          "ImpactEffect": {
-            "_type": "gameobject",
-            "prefab": "effects/impact_default.prefab"
-          },
-          "MovementSmoothness": 3,
-          "ShootDamage": 9
-        },
-        {
-          "__type": "Sandbox.Voice",
-          "__guid": "22f37282-7cc4-49d0-bf4e-5c828d4f0664",
-          "Loopback": true,
-          "Mode": "AlwaysOn",
-          "MorphScale": 3,
-          "MorphSmoothTime": 0.1,
-          "PushToTalkInput": "voice",
-          "Volume": 1,
-          "WorldspacePlayback": true
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "1e34292c-f794-40f1-a71b-72750e6e69f9",
-          "Flags": 0,
-          "Name": "Body",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "Components": [
-            {
-              "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "4e430289-76fb-470f-9c89-6b4b1257c6cf",
-              "BodyGroups": 341,
-              "CreateBoneObjects": false,
-              "Model": "models/citizen/citizen.vmdl",
-              "RenderType": "ShadowsOnly",
-              "Tint": "1,1,1,1",
-              "UseAnimGraph": true
-            },
-            {
-              "__type": "Sandbox.Citizen.CitizenAnimationHelper",
-              "__guid": "12cdc466-842f-49bc-bf8d-22752bf60cdc",
-              "BodyWeight": 1,
-              "EyeSource": {
-                "_type": "gameobject",
-                "go": "fecb100e-0de0-43b6-b795-8059e26beda3"
-              },
-              "EyesWeight": 1,
-              "HeadWeight": 1,
-              "LookAtEnabled": false,
-              "Target": {
-                "_type": "component",
-                "component_id": "4e430289-76fb-470f-9c89-6b4b1257c6cf",
-                "go": "1e34292c-f794-40f1-a71b-72750e6e69f9",
-                "component_type": "SkinnedModelRenderer"
-              }
-            }
-          ]
-        },
-        {
-          "__guid": "fecb100e-0de0-43b6-b795-8059e26beda3",
-          "Flags": 0,
-          "Name": "Eye",
-          "Position": "0,0,49.22736",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true
-        }
-      ]
-    },
-    {
       "__guid": "2efe1cd8-1cf1-46b2-83bc-eae7bbbe9d56",
       "Flags": 0,
       "Name": "Radio",
       "Position": "0,-358.0772,316.0629",
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.Rigidbody",
@@ -2938,8 +2774,10 @@
           "Gravity": true,
           "LinearDamping": 0,
           "Locking": {},
+          "MassCenterOverride": "0,0,0",
           "MassOverride": 0,
           "MotionEnabled": true,
+          "OverrideMassCenter": false,
           "RigidbodyFlags": 0,
           "StartAsleep": false
         }
@@ -2949,17 +2787,20 @@
           "__guid": "07290cce-40d5-400a-a926-b296eea26962",
           "Flags": 0,
           "Name": "Cube",
-          "Position": "0,0,0",
           "Scale": "0.2800001,0.7600001,0.3600001",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.ModelRenderer",
               "__guid": "3581deb4-4fec-4a85-9029-d65607e5edc3",
               "BodyGroups": 18446744073709551615,
               "Model": "models/dev/box.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
               "RenderType": "On",
               "Tint": "1,1,1,1"
             },
@@ -2969,7 +2810,8 @@
               "Center": "0,0,0",
               "IsTrigger": false,
               "Scale": "50,50,50",
-              "Static": false
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         },
@@ -2979,8 +2821,6 @@
           "Name": "Sound",
           "Position": "0,0,17.30664",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.SoundPointComponent",
@@ -3017,8 +2857,6 @@
       "Name": "Box",
       "Position": "-7952,-784,-912",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.MeshComponent",
@@ -3136,7 +2974,8 @@
             ]
           },
           "SmoothingAngle": 40,
-          "Static": true
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
         }
       ]
     },
@@ -3147,19 +2986,46 @@
       "Position": "-546.8307,-204.8618,224",
       "Rotation": "0,0,-0.9659258,0.2588192",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.TextRenderer",
           "__guid": "c5ab627c-c65c-4621-9c8d-036fd93e1eda",
-          "Color": "0.45103,0.47149,0.5297,1",
-          "FontFamily": "Poppins",
-          "FontSize": 64,
-          "FontWeight": 800,
+          "__version": 1,
+          "BlendMode": "Normal",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "Scale": 0.3,
-          "Text": "\u0022brite\u0022",
-          "TextAlignment": "Center"
+          "TextAlignment": "Center",
+          "TextScope": {
+            "Text": "\u0022brite\u0022",
+            "TextColor": "0.45103,0.47149,0.5297,1",
+            "FontName": "Poppins",
+            "FontSize": 64,
+            "FontWeight": 800,
+            "LineHeight": 1,
+            "Outline": {
+              "Size": 4,
+              "Color": "0,0,1,1"
+            },
+            "Shadow": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            },
+            "OutlineUnder": {
+              "Size": 4,
+              "Color": "0,1,0,1"
+            },
+            "ShadowUnder": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            }
+          }
         }
       ]
     },
@@ -3170,19 +3036,46 @@
       "Position": "-588.5538,251.4049,224",
       "Rotation": "0,0,-0.9659258,0.2588192",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.TextRenderer",
           "__guid": "647620b7-5de0-4daa-bb38-a44f505aca49",
-          "Color": "0.45103,0.47149,0.5297,1",
-          "FontFamily": "Poppins",
-          "FontSize": 64,
-          "FontWeight": 800,
+          "__version": 1,
+          "BlendMode": "Normal",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "Scale": 0.3,
-          "Text": "\u0022metallic\u0022",
-          "TextAlignment": "Center"
+          "TextAlignment": "Center",
+          "TextScope": {
+            "Text": "\u0022metallic\u0022",
+            "TextColor": "0.45103,0.47149,0.5297,1",
+            "FontName": "Poppins",
+            "FontSize": 64,
+            "FontWeight": 800,
+            "LineHeight": 1,
+            "Outline": {
+              "Size": 4,
+              "Color": "0,0,1,1"
+            },
+            "Shadow": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            },
+            "OutlineUnder": {
+              "Size": 4,
+              "Color": "0,1,0,1"
+            },
+            "ShadowUnder": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            }
+          }
         }
       ]
     },
@@ -3194,19 +3087,46 @@
       "Rotation": "0,0,-1,0.0000001788139",
       "Scale": "0.5,0.5,0.5",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.TextRenderer",
           "__guid": "cb6a5cab-b464-4f8d-8c15-cf7dc1945547",
-          "Color": "0.45103,0.47149,0.5297,1",
-          "FontFamily": "Poppins",
-          "FontSize": 64,
-          "FontWeight": 800,
+          "__version": 1,
+          "BlendMode": "Normal",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "Scale": 0.3,
-          "Text": "\u0022tunnel\u0022",
-          "TextAlignment": "Center"
+          "TextAlignment": "Center",
+          "TextScope": {
+            "Text": "\u0022tunnel\u0022",
+            "TextColor": "0.45103,0.47149,0.5297,1",
+            "FontName": "Poppins",
+            "FontSize": 64,
+            "FontWeight": 800,
+            "LineHeight": 1,
+            "Outline": {
+              "Size": 4,
+              "Color": "0,0,1,1"
+            },
+            "Shadow": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            },
+            "OutlineUnder": {
+              "Size": 4,
+              "Color": "0,1,0,1"
+            },
+            "ShadowUnder": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            }
+          }
         }
       ]
     },
@@ -3217,19 +3137,208 @@
       "Position": "-1020.208,-64.00035,140.1353",
       "Rotation": "0,0,-1,0.0000001788139",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.TextRenderer",
           "__guid": "e253980a-61a9-4ecc-bdc5-60bb4e80f306",
-          "Color": "0.45103,0.47149,0.5297,1",
-          "FontFamily": "Poppins",
-          "FontSize": 64,
-          "FontWeight": 800,
+          "__version": 1,
+          "BlendMode": "Normal",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
           "Scale": 0.3,
-          "Text": "\u0022cavern large\u0022",
-          "TextAlignment": "Center"
+          "TextAlignment": "Center",
+          "TextScope": {
+            "Text": "\u0022cavern large\u0022",
+            "TextColor": "0.45103,0.47149,0.5297,1",
+            "FontName": "Poppins",
+            "FontSize": 64,
+            "FontWeight": 800,
+            "LineHeight": 1,
+            "Outline": {
+              "Size": 4,
+              "Color": "0,0,1,1"
+            },
+            "Shadow": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            },
+            "OutlineUnder": {
+              "Size": 4,
+              "Color": "0,1,0,1"
+            },
+            "ShadowUnder": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "__guid": "5989a73d-96ba-4721-ba60-2142bdd95d41",
+      "Flags": 0,
+      "Name": "Player",
+      "Position": "336.5013,-0.00003658585,145.0334",
+      "Rotation": "0,0,-1,0.0000001947072",
+      "Tags": "red,green",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ApplyLocalClothing",
+          "__guid": "65bf770c-17c4-467a-b1c6-9c5770d2ae8a",
+          "BodyTarget": {
+            "_type": "component",
+            "component_id": "b2307af7-ddd7-4e8c-b816-23bf400e93eb",
+            "go": "03fb5c82-6602-4ada-b573-081831331b62",
+            "component_type": "SkinnedModelRenderer"
+          }
+        },
+        {
+          "__type": "PhysicsCharacter",
+          "__guid": "b054d2cd-06c5-4bc2-b48b-a5d73c438a7d",
+          "Body": {
+            "_type": "component",
+            "component_id": "e804584e-9e62-4494-8eb9-4528ef4d3fbf",
+            "go": "5989a73d-96ba-4721-ba60-2142bdd95d41",
+            "component_type": "Rigidbody"
+          },
+          "BodyHeight": 64,
+          "BodyMass": 500,
+          "BodyRadius": 16,
+          "CameraOffset": "256,0,12",
+          "DuckedHeight": 40,
+          "EyeDistanceFromTop": 8,
+          "HideBodyInFirstPerson": true,
+          "JumpSpeed": 300,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "b2307af7-ddd7-4e8c-b816-23bf400e93eb",
+            "go": "03fb5c82-6602-4ada-b573-081831331b62",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RotationAngleLimit": 45,
+          "RotationSpeed": 1,
+          "RunSpeed": 320,
+          "ShowColliderComponents": false,
+          "ShowRigidbodyComponent": false,
+          "StepDebug": true,
+          "ThirdPerson": false,
+          "ToggleCameraModeButton": "view",
+          "UseAnimatorControls": true,
+          "UseCameraControls": true,
+          "UseInputControls": true,
+          "WalkSpeed": 110
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "e804584e-9e62-4494-8eb9-4528ef4d3fbf",
+          "AngularDamping": 1,
+          "Gravity": true,
+          "LinearDamping": 0.1,
+          "Locking": {
+            "Pitch": true,
+            "Yaw": true,
+            "Roll": true
+          },
+          "MassCenterOverride": "0,0,32",
+          "MassOverride": 500,
+          "MotionEnabled": true,
+          "OverrideMassCenter": true,
+          "RigidbodyFlags": "DisableCollisionSounds",
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterWalkMode",
+          "__guid": "53fca0be-d327-47a1-8eda-fd49f84f8f0f",
+          "GroundAngle": 45,
+          "Priority": 0,
+          "StepDownHeight": 18,
+          "StepUpHeight": 18
+        },
+        {
+          "__type": "Sandbox.CapsuleCollider",
+          "__guid": "11a60a17-a0f8-4b44-b5a5-7cd4adbb90e8",
+          "End": "0,0,41.05097",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Radius": 11.313708,
+          "Start": "0,0,52.68629",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "5479dc56-7d3c-4b16-8b4b-46023a407e4c",
+          "Center": "0,0,16",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Scale": "16,16,32",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "PlayerGrabber",
+          "__guid": "d40c84e1-fd94-46b7-8316-7c0f986c89a4",
+          "DecalEffect": {
+            "_type": "gameobject",
+            "prefab": "effects/decal_bullet_default.prefab"
+          },
+          "ImpactEffect": {
+            "_type": "gameobject",
+            "prefab": "effects/impact_default.prefab"
+          },
+          "MovementSmoothness": 3,
+          "ShootDamage": 9
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "03fb5c82-6602-4ada-b573-081831331b62",
+          "Flags": 0,
+          "Name": "Body",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "b2307af7-ddd7-4e8c-b816-23bf400e93eb",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/citizen/citizen.vmdl",
+              "Morphs": {},
+              "Parameters": {
+                "bools": {},
+                "ints": {},
+                "floats": {},
+                "vectors": {},
+                "rotations": {}
+              },
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            },
+            {
+              "__type": "PlayerFootsteps",
+              "__guid": "4dbc6555-b90e-47ec-b079-d93b38f036da",
+              "Source": {
+                "_type": "component",
+                "component_id": "b2307af7-ddd7-4e8c-b816-23bf400e93eb",
+                "go": "03fb5c82-6602-4ada-b573-081831331b62",
+                "component_type": "SkinnedModelRenderer"
+              }
+            }
+          ]
         }
       ]
     }
@@ -3239,6 +3348,7 @@
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 60,
     "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
@@ -3257,7 +3367,6 @@
   },
   "Title": "Sound - Dsp",
   "Description": "Source Engine style DSP volumes",
-  "LastSaved": "2024-06-14T15:12:01.597104\u002B01:00",
   "ResourceVersion": 1,
   "__references": [
     "carsonk.mus_on_with_the_music#49033",
