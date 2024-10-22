@@ -1,0 +1,262 @@
+{
+  "__guid": "e5b69914-9eb5-417f-a6c6-f93206ea2ee3",
+  "GameObjects": [
+    {
+      "__guid": "d0c65ced-44d7-4002-92ca-8b074e6f8d1b",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "0afde223-568c-47e9-8f1c-1f958c55e5be",
+          "Description": "Testing visual scripting",
+          "Group": "Action Graph",
+          "SceneTags": "",
+          "Title": "Basics"
+        }
+      ]
+    },
+    {
+      "__guid": "bb8d26a2-2c61-4931-9f46-b21986b81c64",
+      "Flags": 0,
+      "Name": "Sun",
+      "Position": "0,0,100",
+      "Rotation": "-0.06201506,0.5347982,0.2700481,0.7982603",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "7fcf37fa-3d6b-4acf-bd0d-c35639976985",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "__guid": "e0911b0c-3700-4c9b-88b8-112b2332d6bf",
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "0,0,-256",
+      "Scale": "8,8,8",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "b122961b-626d-4790-9a4b-ff4aed8ae7ef",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "dev/helper/testgrid.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "f1663213-2fd7-4aba-9da8-e1f20ab9e0fb",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "1ad22c7e-8635-4a1e-b256-6c9843d07750",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-379.6557,-126.844,165.2387",
+      "Rotation": "-0.04510347,0.2281259,0.1886413,0.9541167",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "de265f01-c653-4472-b6a1-e0db070729b8",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 80,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "__guid": "610f500f-a7e4-4661-aec8-cca590d52161",
+      "Flags": 0,
+      "Name": "Sphere",
+      "Position": "0,0,32",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "28253bcb-3241-4851-b93e-90aa8fda8e0e",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/sphere.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "UpdateAction",
+          "__guid": "605deb7e-1e6f-4d0d-b533-554482ba4b0f",
+          "Update": {
+            "__version": 8,
+            "__guid": "d9b42e74-89f9-4c40-93f7-10fc38b8452e",
+            "__changeId": 0,
+            "UserData": {
+              "Title": "Update"
+            },
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "input",
+                "UserData": {
+                  "Position": "-0,-48"
+                }
+              },
+              {
+                "Id": 2,
+                "Type": "property",
+                "Properties": {
+                  "_type": "Sandbox.Game/Sandbox.GameObject",
+                  "_name": "Transform"
+                },
+                "UserData": {
+                  "Position": "288,-16"
+                }
+              },
+              {
+                "Id": 3,
+                "Type": "property",
+                "Properties": {
+                  "_type": "Sandbox.Game/Sandbox.GameTransform",
+                  "_name": "Position"
+                },
+                "UserData": {
+                  "Position": "560,-48"
+                }
+              },
+              {
+                "Id": 4,
+                "Type": "time.now",
+                "UserData": {
+                  "Position": "0,48"
+                }
+              },
+              {
+                "Id": 27,
+                "Type": "graph",
+                "Properties": {
+                  "graph": "actions/circle.action"
+                },
+                "UserData": {
+                  "Position": "288,64"
+                }
+              }
+            ],
+            "Links": [
+              {
+                "SrcId": 0,
+                "SrcName": "self",
+                "DstId": 2,
+                "DstName": "_target"
+              },
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 3,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 2,
+                "SrcName": "_result",
+                "DstId": 3,
+                "DstName": "_target"
+              },
+              {
+                "SrcId": 27,
+                "SrcName": "_out1",
+                "DstId": 3,
+                "DstName": "_value"
+              },
+              {
+                "SrcId": 4,
+                "SrcName": "_result",
+                "DstId": 27,
+                "DstName": "_in1"
+              },
+              {
+                "Id": 34,
+                "Value": 128,
+                "DstId": 27,
+                "DstName": "_in2"
+              },
+              {
+                "Id": 35,
+                "Value": 4,
+                "DstId": 27,
+                "DstName": "_in3"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Basics",
+      "Description": "Testing visual scripting",
+      "Group": "Action Graph"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "Basics",
+  "Description": "Testing visual scripting",
+  "__references": [],
+  "__version": 2
+}

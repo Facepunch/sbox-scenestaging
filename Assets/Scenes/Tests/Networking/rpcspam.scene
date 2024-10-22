@@ -1,0 +1,139 @@
+{
+  "__guid": "8461cac9-c111-40b7-a5ba-764ede7ca55d",
+  "GameObjects": [
+    {
+      "__guid": "359fbc11-d9e4-4362-b754-a4b9f101a715",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "2e0b3cde-40ff-4145-9a1d-96ba5cb90212",
+          "Description": "",
+          "Group": "Networking",
+          "SceneTags": "",
+          "Title": "Rpc Spam"
+        }
+      ]
+    },
+    {
+      "__guid": "08f076fb-00a0-4ae0-a7c1-ed0fb5bb02f4",
+      "Flags": 0,
+      "Name": "Text",
+      "Enabled": true,
+      "NetworkMode": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.TextRenderer",
+          "__guid": "b7d8751a-546f-41d2-8e24-5f5029ad11de",
+          "__version": 1,
+          "BlendMode": "Normal",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "Scale": 0.3,
+          "TextAlignment": "Center",
+          "TextScope": {
+            "Text": "Hello! \u2764",
+            "TextColor": "1,1,1,1",
+            "FontName": "Poppins",
+            "FontSize": 64,
+            "FontWeight": 800,
+            "LineHeight": 1,
+            "Outline": {
+              "Size": 4,
+              "Color": "0,0,1,1"
+            },
+            "Shadow": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            },
+            "OutlineUnder": {
+              "Size": 4,
+              "Color": "0,1,0,1"
+            },
+            "ShadowUnder": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            }
+          }
+        },
+        {
+          "__type": "SnapshotTest",
+          "__guid": "acfdf6d1-9b11-4730-b40d-d86a59ce9a0d",
+          "Counter": 0,
+          "Text": {
+            "_type": "component",
+            "component_id": "b7d8751a-546f-41d2-8e24-5f5029ad11de",
+            "go": "08f076fb-00a0-4ae0-a7c1-ed0fb5bb02f4",
+            "component_type": "TextRenderer"
+          }
+        }
+      ]
+    },
+    {
+      "__guid": "0f1b8a4c-8f95-403f-b442-9cfb8a453445",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-100,0,0",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "f6d46128-317c-4664-86b1-403a95b6954e",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Rpc Spam",
+      "Group": "Networking"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "Rpc Spam",
+  "Description": null,
+  "__references": [],
+  "__version": 2
+}

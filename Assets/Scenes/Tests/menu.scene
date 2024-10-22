@@ -1,51 +1,74 @@
 {
+  "__guid": "bdfff999-60b7-40c6-b6ff-1f327aafa071",
   "GameObjects": [
     {
-      "Id": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "__guid": "0425822c-bd0b-4eef-98e5-babd06731228",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "00ed2f07-6171-4ee1-93bc-9846e66c000d",
+          "Description": "",
+          "SceneTags": "",
+          "Title": "menu"
+        }
+      ]
+    },
+    {
+      "__guid": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "Flags": 0,
       "Name": "Camera",
       "Position": "1011.863,273.6311,-1540.558",
       "Rotation": "0.104912,0.06145444,-0.8564602,0.5016899",
       "Enabled": true,
       "Components": [
         {
-          "__type": "CameraComponent",
-          "__enabled": true,
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "5a438600-cee0-40d3-a455-df12c4bb823b",
           "BackgroundColor": "0.25292,0.26086,0.29703,1",
           "ClearFlags": "All",
           "FieldOfView": 85.5,
+          "IsMainCamera": true,
           "Orthographic": false,
           "OrthographicHeight": 1204,
+          "Priority": 1,
           "RenderExcludeTags": "",
           "RenderTags": "",
           "TargetEye": "None",
+          "Viewport": "0,0,1,1",
           "ZFar": 2136.4,
           "ZNear": 1
         }
       ]
     },
     {
-      "Id": "33577379-4b88-4a04-bb85-6a86b5e70db0",
+      "__guid": "33577379-4b88-4a04-bb85-6a86b5e70db0",
+      "Flags": 0,
       "Name": "Screen UI",
       "Enabled": true,
       "Components": [
         {
-          "__type": "ScreenPanel",
-          "__enabled": true,
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "22625778-af07-4873-abdc-46aaa6c85116",
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
+          "ScaleStrategy": "FollowDesktopScaling",
           "ZIndex": 100
         }
       ],
       "Children": [
         {
-          "Id": "4f9ab128-10e1-42f4-91ec-7122b047b4dc",
+          "__guid": "4f9ab128-10e1-42f4-91ec-7122b047b4dc",
+          "Flags": 0,
           "Name": "Scene Menu",
           "Enabled": true,
           "Components": [
             {
               "__type": "SceneMenuPanel",
-              "__enabled": true
+              "__guid": "1aa007e8-650f-4e59-b787-1afa4aed2c11"
             }
           ]
         }
@@ -53,15 +76,33 @@
     }
   ],
   "SceneProperties": {
-    "NetworkFrequency": 60,
     "FixedUpdateFrequency": 50,
-    "Lerping": true,
     "MaxFixedUpdates": 5,
-    "TimeScale": 1,
+    "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
     "ThreadedAnimation": true,
-    "UseFixedUpdate": true
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "menu"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
   },
+  "ResourceVersion": 2,
   "Title": "menu",
-  "Description": "",
-  "__references": []
+  "Description": null,
+  "__references": [],
+  "__version": 2
 }

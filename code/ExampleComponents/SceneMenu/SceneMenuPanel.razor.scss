@@ -9,7 +9,7 @@ SceneMenuPanel
     background-color: #333;
     pointer-events: all;
     flex-direction: row;
-    padding: 60px;
+    padding: 0px 60px;
     color: #ccc;
     font-family: Poppins;
     font-size: 14px;
@@ -19,6 +19,8 @@ SceneMenuPanel
     {
         width: 400px;
         flex-direction: column;
+        padding-top: 100px;
+        padding-right: 50px;
 
         > .title
         {
@@ -39,16 +41,38 @@ SceneMenuPanel
 
     .scene-list
     {
-        flex-direction: column;
-        flex-grow: 1;
-        margin: 20px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 50px 0px;
+        gap: 2rem;
         overflow: scroll;
-        mask-image: linear-gradient(to top, black 0%, white 10%);
-        padding-bottom: 100px;
 
         > *
         {
             flex-shrink: 0;
+        }
+
+        .group
+        {
+            flex-direction: column;
+            flex-grow: 1;
+            gap: 1px;
+
+            h1
+            {
+                padding: 10px 20px;
+                font-weight: bold;
+                font-size: 12px;
+                color: #fff;
+            }
+
+            .scenes
+            {
+                flex-wrap: wrap;
+                gap: 1px;
+                border-radius: 20px;
+                overflow: hidden;
+            }
         }
     }
 
@@ -73,24 +97,24 @@ SceneMenuPanel
 
 SceneButton
 {
-    color: #aaa;
     background-color: #4440;
     cursor: pointer;
-    opacity: 0.5;
-    border-radius: 7px;
     flex-direction: row;
     flex-grow: 1;
     flex-shrink: 0;
     gap: 8px;
     align-items: center;
+    justify-content: center;
     transition: all 0.1s ease-out;
+    padding: 10px 20px;
+    background-color: #555;
+    color: #aaa;
 
     .title
     {
-        font-size: 19px;
+        font-size: 17px;
         font-family: Poppins;
-        font-weight: bold;
-        color: white;
+        font-weight: normal;
     }
 
     &:hover
@@ -98,7 +122,6 @@ SceneButton
         opacity: 1;
         background-color: #3555d2;
         color: #fff;
-        padding: 5px 10px;
         sound-in: ui.button.over;
     }
 
@@ -107,48 +130,5 @@ SceneButton
         background-color: #fff;
         color: #666;
         sound-in: ui.button.press;
-    }
-}
-
-
-.lobby-list > .button
-{
-    background-color: transparent;
-    color: #aaa;
-    padding: 10px;
-    border-radius: 8px;
-    gap: 2px;
-    width: 280px;
-    cursor: pointer;
-    width: 100%;
-    flex-direction: column;
-
-    .title
-    {
-        flex-grow: 1;
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .meta
-    {
-        gap: 10px;
-        font-size: 12px;
-
-        .map
-        {
-            flex-grow: 1;
-        }
-
-        .count
-        {
-            white-space: nowrap;
-        }
-    }
-
-    &:hover
-    {
-        background-color: #f13edc;
-        color: #fff;
     }
 }

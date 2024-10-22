@@ -1,0 +1,962 @@
+{
+  "__guid": "06d0a0c1-aa6d-4ead-b2bd-4a9590dc8c38",
+  "GameObjects": [
+    {
+      "__guid": "31d49653-f302-4440-bbeb-028ea39fe6e7",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "ade86608-4e41-4c2d-a84a-5f69351518bf",
+          "Description": "Callbacks on collision",
+          "Group": "Physics",
+          "SceneTags": "",
+          "Title": "Collision"
+        }
+      ]
+    },
+    {
+      "__guid": "bea4636e-9e5b-485c-92d2-5214c73bf212",
+      "Flags": 0,
+      "Name": "Object",
+      "Position": "0,0,167.3376",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.EnvmapProbe",
+          "__guid": "08030484-74be-4115-916c-30a6b8fc24c6",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "Bounds": {},
+          "DelayBetweenUpdates": 0.1,
+          "Feathering": 0.25,
+          "FrameInterval": 5,
+          "MaxDistance": 512,
+          "MultiBounce": false,
+          "Projection": "Box",
+          "RenderDynamically": false,
+          "TintColor": "1,1,1,1",
+          "UpdateStrategy": "OnEnabled",
+          "ZFar": 4096,
+          "ZNear": 16
+        }
+      ]
+    },
+    {
+      "__guid": "52117bd2-8020-4fa0-b23a-903ed1473301",
+      "Flags": 0,
+      "Name": "Surface",
+      "Position": "968.0176,-225.5823,-74.32854",
+      "Rotation": "0.00000008429399,-0.7071065,0.00000008429342,0.707107",
+      "Scale": "10,10,10",
+      "Tags": "solid,world,static",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "49916f96-7254-4b7a-bf45-2b9712f0812d",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.06127,0.13935,0.49505,1"
+        }
+      ]
+    },
+    {
+      "__guid": "726c5e3b-7d44-4394-9b3a-cbb29401c7fc",
+      "Flags": 0,
+      "Name": "Directional Light",
+      "Position": "55.4718,-124.3322,91.5952",
+      "Rotation": "-0.1754926,0.2042828,0.1208522,0.9554401",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "d21baffd-7043-45c4-8f89-81993b3b85fc",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.92574,0.79106,0.68743,1",
+          "Shadows": true,
+          "SkyColor": "0.14356,0.14356,0.14356,1"
+        }
+      ]
+    },
+    {
+      "__guid": "7c163f9b-273d-41e8-91d6-9f096d02854b",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-4476.789,-269.5986,-0.712777",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "3bad6a7e-9bf3-4551-a9c4-cf3675159b61",
+          "BackgroundColor": "0.25292,0.26086,0.29703,1",
+          "ClearFlags": "All",
+          "FieldOfView": 19.22,
+          "IsMainCamera": true,
+          "Orthographic": true,
+          "OrthographicHeight": 297.52054,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 6000,
+          "ZNear": 5000
+        },
+        {
+          "__type": "CameraPhysicsDebug",
+          "__guid": "0bffeb12-8ef4-4eb6-81c8-c907d3422795",
+          "__enabled": false,
+          "Hitboxes": false,
+          "MaxPoints": 10000,
+          "NormalLength": 2,
+          "TracesPerFrame": 500,
+          "TraceType": "Ray"
+        }
+      ]
+    },
+    {
+      "__guid": "f936d200-813f-4f03-a36e-b726fbba8aaf",
+      "Flags": 0,
+      "Name": "Spot Light",
+      "Position": "631.1357,-47.85187,358.1124",
+      "Rotation": "0.2123716,0.2793965,-0.2815373,0.8930691",
+      "Components": [
+        {
+          "__type": "Sandbox.SpotLight",
+          "__guid": "177214f3-8c8a-4705-8a60-c40ba0f9652a",
+          "Attenuation": 1,
+          "ConeInner": 0,
+          "ConeOuter": 37.5,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "1,0.76059,0.61386,1",
+          "Radius": 4000,
+          "Shadows": true
+        }
+      ]
+    },
+    {
+      "__guid": "eed1d0da-fb94-44c7-b17b-638cddf71838",
+      "Flags": 0,
+      "Name": "Cubemap",
+      "Position": "1099.505,-0.0033,-1162.002",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.EnvmapProbe",
+          "__guid": "7e8d69c4-b800-4ac6-a26e-9473836a3ab5",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "Bounds": {
+            "Mins": "-5120,-5120,-5120",
+            "Maxs": "5120,5120,5120"
+          },
+          "DelayBetweenUpdates": 0.1,
+          "Feathering": 0.25,
+          "FrameInterval": 5,
+          "MaxDistance": 512,
+          "MultiBounce": false,
+          "Projection": "Box",
+          "RenderDynamically": false,
+          "TintColor": "1,1,1,1",
+          "UpdateStrategy": "OnEnabled",
+          "ZFar": 4096,
+          "ZNear": 16
+        }
+      ]
+    },
+    {
+      "__guid": "66e5c3e7-7c1f-4fe3-955a-ce12db43e66b",
+      "Flags": 0,
+      "Name": "Frame",
+      "Position": "973.0561,-262.0567,-0.001402989",
+      "Enabled": true,
+      "Children": [
+        {
+          "__guid": "d166817b-e146-4958-8728-092f57bd9edc",
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "26.94391,173.2801,-121.2935",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "b356b4ad-cd77-4a57-b3d2-936e566faad2",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.0172,0.03302,0.08911,1"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "ac1582a8-84e9-4db5-b198-e478adfd55eb",
+              "Flags": 0,
+              "Name": "collider",
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Tags": "solid,world",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "a4736a9b-9d5f-4cdf-aa40-4f7095b69779",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "09bb3a83-559c-4669-b6c2-485466931210",
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "26.94391,173.2801,120.5434",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "5d8492e0-5631-490d-9d59-affe69cc41b1",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "1c09e3e2-e77e-4026-8c5a-d6eb9a1b3554",
+              "Flags": 0,
+              "Name": "collider",
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Tags": "solid,world",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "cb35f3b2-7100-4121-9ace-50d1ef641999",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "39451dfc-c7f5-43c7-bb49-4970b1d4b50d",
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "26.94391,52.30974,-120.4035",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "f2bf1e0f-3823-4d70-940e-0f487c46fc4a",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "812659bc-abb1-41bf-9546-e41535e0de45",
+              "Flags": 0,
+              "Name": "collider",
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Tags": "solid,world",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "bfd89fce-ccb8-4a08-9b90-739dcee0f2e5",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "41a289cd-dab3-4c3a-b306-8bfe1b3216d4",
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "26.94391,52.30974,120.5434",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "4cb84d0d-f547-4aa1-9396-f2112e48f1a7",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "bb299273-04e0-4a04-a2fd-3890caac8696",
+              "Flags": 0,
+              "Name": "collider",
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Tags": "solid,world",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "e2f29ed9-1822-4dca-a344-5f2bf7a09938",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "cf5e1999-9af0-49e6-93cf-ab4f1ee324c3",
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "26.94391,-69.34135,-121.1455",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "48c1aef7-db46-4bdd-bfcc-563ea761672e",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "20e84c5f-ec2b-4721-bbeb-1896c54e2bb3",
+              "Flags": 0,
+              "Name": "collider",
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Tags": "solid,world",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "d0fe2741-342e-47f8-9be4-67d436187198",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "206dbb82-c71d-49c8-a58c-13e993b25cfd",
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "26.94391,-69.81863,120.5434",
+          "Rotation": "-0.5,-0.5000003,0.5,0.4999996",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "e6755173-613b-44c5-854e-2ccc22ee57e4",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "8743935e-7767-496d-b02e-524c22900fd7",
+              "Flags": 0,
+              "Name": "collider",
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Tags": "solid,world",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "981d171f-b8c4-4cde-beb7-10416790dafe",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "aeb7bba6-92b4-4b94-8762-aabb7023b907",
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "26.94391,167.4608,120.5434",
+          "Rotation": "0.00000002136507,-0.707107,0.00000002136506,0.7071065",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "3353f3cb-d3cf-4a8d-b28e-e3919d66a815",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "d53e9999-927e-4197-895d-db62778bc102",
+              "Flags": 0,
+              "Name": "collider",
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Tags": "solid,world",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "4befd6fd-ed6d-4429-acde-1c99d0740b21",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "633640cc-04c9-4f5e-8079-3c2c7089ce45",
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "26.94391,-184.589,120.5434",
+          "Rotation": "0.00000002136507,-0.707107,0.00000002136506,0.7071065",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "72d28cbe-89b6-4c8f-acaa-b42d46c45092",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "e3e5b8a3-3004-4589-b41f-0db5dabbbbe2",
+              "Flags": 0,
+              "Name": "collider",
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Tags": "solid,world",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "bed0fcac-23c4-4e2a-93ea-c5162139b595",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "97c29979-4693-4324-81b0-45a9cec743bb",
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "26.94391,167.0817,0.001402989",
+          "Rotation": "0.00000002136507,-0.707107,0.00000002136506,0.7071065",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "d97faa34-5d93-4e96-96cc-085b28e98232",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "dc5a78a9-9c8a-4adb-90c1-282dd496284c",
+              "Flags": 0,
+              "Name": "collider",
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Tags": "solid,world",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "eee09f81-1e15-49c3-ae1f-50f8959794b2",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "bf91c8c8-9dec-4792-8873-5534c40a0a73",
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "26.94391,-184.1647,0.001402989",
+          "Rotation": "0.00000002136507,-0.707107,0.00000002136506,0.7071065",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "bd3414ac-7376-492e-bd1a-f6021b4729d0",
+              "BodyGroups": 18446744073709551615,
+              "MaterialOverride": "materials/default.vmat",
+              "Model": "models/rust_structures/fences_walls/wall_125x300.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.01569,0.03137,0.08627,1"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "7ea6a15d-f400-4bd9-9e42-4a5da248a075",
+              "Flags": 0,
+              "Name": "collider",
+              "Position": "-60.5901,0.000001486993,24.60712",
+              "Tags": "solid,world",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "eed287b6-7e65-423c-aabc-d31c6282897d",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "128.2401,16.55991,52.31992",
+                  "Static": false,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "71d7ff99-1717-4e65-ad69-87dd2c4b95a7",
+      "Flags": 0,
+      "Name": "Bullet",
+      "Position": "965.4139,-164.2536,-56.79545",
+      "Scale": "0.1,0.1,0.1",
+      "Tags": "ball",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "8bd574a9-6d42-428c-965b-5806edad9275",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/lightemit.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "4119c39c-996c-406e-a647-b3c3276353bd",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "BrickBall",
+          "__guid": "465f2cc8-8d41-4ebb-a48c-71a2891ac315",
+          "CollisionIndicator": {
+            "_type": "gameobject",
+            "prefab": "scenes/tests/collision_indicator.prefab"
+          },
+          "Direction": "0,-0.2000015,0.3",
+          "Speed": 100
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "fa662e3a-8f6d-4992-96d4-8bb428a7bb21",
+          "AngularDamping": 0,
+          "Gravity": false,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "1cd1aa39-0976-4444-b9ca-25d729d736ab",
+          "Flags": 0,
+          "Name": "Point Light",
+          "Position": "7.70775,-8.597443,-0.0003993511",
+          "Tags": "light_point,light",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.PointLight",
+              "__guid": "c70f9958-54f5-4136-b3d6-94cf4a02d374",
+              "Attenuation": 1,
+              "FogMode": "Enabled",
+              "FogStrength": 1,
+              "LightColor": "22.21267,23.83321,24.31,1",
+              "Radius": 10000,
+              "Shadows": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "8fdc58a6-8bc3-48b4-8ba5-efdb92d785fc",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-136.3826,22.46868",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "dfdd48f8-56c7-492b-923d-50b3ef1f7d3c",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-168.5348,22.46868",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "ea7c6247-9acc-4589-9a60-e646d3b4a637",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-200.913,22.46868",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "771051af-cc6a-410f-be96-2dae585a3358",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-233.3424,22.46868",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "ea5e7940-0e8e-4bb8-a403-9fc31a751fb9",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-267.2426,22.46868",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "11827501-2019-4a6d-9ce4-abe115c87197",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-299.8086,22.46868",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "5f74b309-fd6d-4378-aa2f-c27b4cc866b1",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-332.7751,22.46868",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "43fd4c36-f219-4f31-9b5c-cd42f2604b4d",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-365.5654,22.46868",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "38b6c24a-4994-471d-ac7e-973fb548eaf8",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-397.8693,22.46868",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "b6480ca3-19a3-4f51-9761-345fca96bac0",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-397.8693,55.42264",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "9bb31a2a-2bc0-479e-9b3b-bdb676bdec43",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-364.7387,55.42264",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "76026018-6cf0-430d-b15c-03e8284c45bb",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-331.7392,55.42264",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "9c5a2e96-45a7-4702-b572-b7a5d5e8c0a0",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-298.8315,55.42264",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "b1e4dbfe-ba09-43f3-a6a2-fe0fb08a5833",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-266.6028,55.42264",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "b103380c-65e0-4684-a4f6-44fb4f9ad5c9",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-232.496,55.42264",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "2dc873ee-f7a5-4707-9b7f-a7a7d18349ca",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-200.7545,55.42264",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "c72e2b6f-4009-430b-8faf-893e2340fee6",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-168.5621,55.42264",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "b8d7ecdf-fa4c-4196-b28d-954359acbd8c",
+      "Flags": 0,
+      "Name": "Block",
+      "Position": "965.4139,-136.759,55.42264",
+      "Scale": "0.3,0.3,0.3",
+      "Tags": "ball",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/brick-1x1.prefab",
+      "__PrefabVariables": {}
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Collision",
+      "Description": "Callbacks on collision",
+      "Group": "Physics"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "Collision",
+  "Description": "Callbacks on collision",
+  "__references": [
+    "garry.wall_125x300#21871"
+  ],
+  "__version": 2
+}

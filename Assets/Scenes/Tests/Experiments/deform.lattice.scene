@@ -1,0 +1,385 @@
+{
+  "__guid": "4e9d1e99-1c44-4859-9a30-734e22227182",
+  "GameObjects": [
+    {
+      "__guid": "b76851ea-b4f9-4613-9f9e-022423485f04",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "bab31507-b621-4ee3-91ce-a43d73091733",
+          "Description": "what the hell dude come on what did u do to my car!!!",
+          "Group": "Experiments",
+          "SceneTags": "",
+          "Title": "Lattice Deformation"
+        }
+      ]
+    },
+    {
+      "__guid": "9a33afd5-7371-42a2-a99d-56b75f05e23e",
+      "Flags": 0,
+      "Name": "Main Camera",
+      "Position": "82.05553,-178.021,100.0001",
+      "Rotation": "0,0,0.9914448,0.1305264",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "c42d0b8f-afd0-4370-b026-b26d5feafd78",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "Sandbox.AmbientOcclusion",
+          "__guid": "0b62b085-cbc5-4a57-81e8-6574fd0f9843",
+          "FalloffDistance": 1,
+          "Intensity": 8,
+          "Quality": "High",
+          "Radius": 32
+        }
+      ]
+    },
+    {
+      "__guid": "7c1a60d6-cdbc-44b4-8f6b-ee1c5c4ac2a7",
+      "Flags": 0,
+      "Name": "Directional Light",
+      "Position": "0,0,200",
+      "Rotation": "-0.2459842,0.5938582,0.2931525,0.7077327",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "34c82fda-9ac8-4efc-8a5b-3191e730374c",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0,0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "1b46d092-9977-4e5f-8441-d4077647e390",
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "-36.93614,-217.0454,82.54935",
+      "Rotation": "0,0,0.9659258,0.2588192",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "5bc63c17-144a-4223-bb99-c51ca7b34cee",
+          "AnimationGraph": "models/citizen/citizen.vanmgrph",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "a79f5c94-603d-4384-a68a-3f2a57a2ae62",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "-5.61721,-30.8467,-1.540665",
+          "Scale": "15,52,73",
+          "Enabled": true
+        }
+      ]
+    },
+    {
+      "__guid": "8dabc0c4-860f-4f5e-b5a5-f6b5ca5afa2d",
+      "Flags": 0,
+      "Name": "2D Skybox",
+      "Position": "-0.1114807,5.234575,93.71728",
+      "Tags": "skybox",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "83175c14-eae6-4f98-8acd-37224e2b59e1",
+          "SkyIndirectLighting": true,
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "1f87dae7-7323-493e-9ec7-405e5f5a470e",
+      "Flags": 0,
+      "Name": "Car",
+      "Position": "-112.767,-106.5994,85.05305",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "592dff7e-409b-4445-916f-4a0511ae7e92",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/bendable_staging.vmat",
+          "Model": "models/sports_car.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "7ec6399a-c5ef-4939-bf04-e5509a95c9aa",
+          "Flags": 0,
+          "Name": "Deform",
+          "Position": "-84.71951,-44.23498,-2.13131",
+          "Scale": "186,85,56.66667",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ExampleComponents.LatticeDeform",
+              "__guid": "6ccf8953-2faa-484e-b795-b09886806693",
+              "Points": [
+                "0,-1,0,0",
+                "0,0,0.5,0",
+                "0,1,1,0",
+                "-0.25,0,0,0",
+                "-0.25,0,0,0",
+                "-0.25,0,1,0",
+                "-0.5,0.1,0,0",
+                "-0.5,0.1,0.5,0",
+                "-0.5,0.1,1,0",
+                "0,0,0,0",
+                "0,-0.5,0,0",
+                "0,0,1,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0"
+              ],
+              "Segments": "3,3,3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "1b48e561-3826-4793-b1e9-ecdcf55f1c68",
+      "Flags": 0,
+      "Name": "Plane",
+      "Position": "-104.4706,-13.07913,82.77145",
+      "Scale": "10,10,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "512b833f-8024-45c3-98c5-a910bffc4c36",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/plane.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "b0fe5a39-e41f-4909-8e56-cdf7897081f8",
+      "Flags": 0,
+      "Name": "bike",
+      "Position": "27.55806,-118.4987,96.59074",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "993fea33-4783-4fc6-bda1-9a6c167ba213",
+          "BodyGroups": 18446744073709551615,
+          "Health": 150,
+          "IsStatic": true,
+          "Model": "models/props/bike/bike.vmdl",
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "da738e45-9fe2-4c97-9ebc-0aed10d32c5f",
+      "Flags": 0,
+      "Name": "Sphere",
+      "Position": "-174.6933,14.42737,157.6295",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "24406c41-09df-40c2-b330-77b311099c99",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/bendable_staging.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "7647ccc1-8220-48f0-9fe7-20af52e80549",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "-29.80247,-41.28865,-27.17667",
+          "Scale": "70,70,70",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ExampleComponents.LatticeDeform",
+              "__guid": "f1871929-b78e-48ed-9627-93bd31c03cb6",
+              "Points": [
+                "0,0,-2,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,-2,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,-2,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,-2,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0",
+                "0,0,0,0"
+              ],
+              "Segments": "3,3,3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "657031a5-2176-47a0-aeef-5cda4bb29b7e",
+      "Flags": 0,
+      "Name": "Envmap Probe",
+      "Position": "-119.7636,-39.11157,96.28072",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.EnvmapProbe",
+          "__guid": "664764d3-67f8-4475-bd02-8533a2012137",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "Bounds": {
+            "Mins": "-1000,-1000,-1000",
+            "Maxs": "1000,1000,1000"
+          },
+          "DelayBetweenUpdates": 0.1,
+          "Feathering": 0.02,
+          "FrameInterval": 5,
+          "MaxDistance": 512,
+          "MultiBounce": false,
+          "Projection": "Box",
+          "RenderDynamically": true,
+          "TintColor": "1,1,1,1",
+          "UpdateStrategy": "OnEnabled",
+          "ZFar": 4096,
+          "ZNear": 16
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Lattice Deformation",
+      "Description": "what the hell dude come on what did u do to my car!!!",
+      "Group": "Experiments"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "Lattice Deformation",
+  "Description": "what the hell dude come on what did u do to my car!!!",
+  "__references": [
+    "facepunch.mountainbike#41787",
+    "simonkvien.sports_car#11498"
+  ],
+  "__version": 2
+}

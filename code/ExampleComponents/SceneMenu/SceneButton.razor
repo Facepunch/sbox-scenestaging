@@ -4,8 +4,7 @@
 
 <root onclick="@( () => OnSelected( Scene ) )">
 
-    <div class="title">@(Scene.Title ?? Scene.ResourceName)</div>
-    <div class="description">@Scene.Description</div>
+    <div class="title" tooltip="@Scene.GetMetadata( "Description" )">@Scene.GetMetadata("Title", Scene.ResourceName)</div>
 
 </root>
 

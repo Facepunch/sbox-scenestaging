@@ -25,55 +25,21 @@
     </div>
 
     <div class="scene-list">
-        <div class="header">
-            <div class="title">Scenes</div>
-        </div>
 
-    @foreach( var scene in ResourceLibrary.GetAll<SceneFile>().Where( x => x.ResourcePath.Contains( "/tests/" )).OrderBy( x => x.Title ) )
-    {
-        <SceneButton Scene="@scene" OnSelected=@OpenScene></SceneButton> 
-    }
-    </div>
-
-    <div class="lobby-list">
-
-        <div class="header">
-            <div class="title">Server List</div>
-        </div>
-
-        @if (refreshing)
+        @foreach( var group in ResourceLibrary.GetAll<SceneFile>().Where( x => x.ResourcePath.Contains( "/tests/" )).GroupBy( x => x.GetMetadata( "Group", "None" ) ).OrderBy( x => x.Key ) )
         {
-            <div>Refreshing..</div>
-        }
-        else if (list.Count == 0)
-        {
-            <div>No lobbies were found</div>
-        }
-        else
-        {
-            @foreach (var lobby in list)
-            {
-                <div class="button" onclick=@(() => OpenLobby( lobby ) )>
+            <div class="group">
+                <h1>@group.Key</h1>
 
-                    <div class="title">
-                        @lobby.Name
-                    </div>
-
-                    <div class="meta">
-
-                        <div class="map">
-                            @lobby.Map
-                        </div>
-
-                        <div class="count">
-                            @lobby.Members / @lobby.MaxMembers
-                        </div>
-
-                    </div>
-
+                <div class="scenes">
+                    @foreach( var scene in group.OrderBy( x => x.Title ) )
+                    {
+                        <SceneButton Scene="@scene" OnSelected=@OpenScene></SceneButton> 
+                    }
                 </div>
-            }
+            </div>
         }
+
     </div>
 
 </root>

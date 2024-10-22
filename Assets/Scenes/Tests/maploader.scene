@@ -2,6 +2,22 @@
   "__guid": "91590e66-4e7f-4a6f-9f54-39d937ab4348",
   "GameObjects": [
     {
+      "__guid": "d036cb8e-f45e-4e20-b314-aa1a76d98455",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "0db69a3d-203d-47c9-a1d3-92060bdf1561",
+          "Description": "A scene that can load maps",
+          "Group": "Systems",
+          "SceneTags": "",
+          "Title": "Map Loader"
+        }
+      ]
+    },
+    {
       "__guid": "147e9b00-9738-48fc-b9b6-ec6a8ad86bdf",
       "Flags": 0,
       "Name": "Main Camera",
@@ -594,7 +610,7 @@
             "Yaw": true,
             "Roll": true
           },
-          "MassCenterOverride": "0,0,31.22223",
+          "MassCenterOverride": "0,0,36",
           "MassOverride": 500,
           "MotionEnabled": true,
           "OverrideMassCenter": true,
@@ -690,6 +706,11 @@
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Map Loader",
+      "Description": "A scene that can load maps",
+      "Group": "Systems"
+    },
     "NavMesh": {
       "Enabled": false,
       "IncludeStaticBodies": true,
@@ -703,9 +724,9 @@
       "IncludedBodies": ""
     }
   },
+  "ResourceVersion": 2,
   "Title": "Map Loader",
   "Description": "A scene that can load maps",
-  "ResourceVersion": 1,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }

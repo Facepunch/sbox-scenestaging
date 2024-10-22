@@ -1,0 +1,596 @@
+{
+  "__guid": "731c5d8b-6e06-4e79-b883-d757d61e919b",
+  "GameObjects": [
+    {
+      "__guid": "89e7df9c-9b0e-4c87-880e-2f0d06e4e358",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "236e3948-cd95-4dda-aa68-a8b480d244d0",
+          "Description": "World panels and screen panels. Parenting, input, rotation.",
+          "Group": "UI",
+          "SceneTags": "",
+          "Title": "Simple"
+        }
+      ]
+    },
+    {
+      "__guid": "4d0891b8-3ac6-4e29-b40e-3460b2453d72",
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "0,178.2849,-58.79975",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "39a558fd-afad-41ad-b5e7-ec9b59a2fd8e",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "84d957bf-c018-4ccb-a4a0-887b7395088d",
+          "Flags": 0,
+          "Name": "World UI",
+          "Position": "-25.28594,-0.1865788,-0.1047413",
+          "Rotation": "0.00000005959918,-0.0000000005688116,1,-0.0000006397578",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "NameTagPanel",
+              "__guid": "3f10a026-2ac7-49b7-91c0-914eef6fc40c",
+              "Name": "A Square"
+            },
+            {
+              "__type": "Sandbox.WorldPanel",
+              "__guid": "666e95c9-4a2b-4bb2-a244-a43833ee670c",
+              "HorizontalAlign": "Center",
+              "InteractionRange": 1000,
+              "LookAtCamera": false,
+              "PanelSize": "1024,1024",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderScale": 3,
+              "VerticalAlign": "Center"
+            }
+          ]
+        },
+        {
+          "__guid": "192bd580-3fd9-44d0-8320-3bae97304bdf",
+          "Flags": 0,
+          "Name": "World UI",
+          "Position": "-50.47972,-0.1866177,-26.09694",
+          "Rotation": "0.5190907,0.0000003625464,0.8547185,-0.0000005471081",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.WorldPanel",
+              "__guid": "584cac58-4478-422d-8c61-2e96cb937d5b",
+              "HorizontalAlign": "Center",
+              "InteractionRange": 1000,
+              "LookAtCamera": false,
+              "PanelSize": "1024,1024",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderScale": 3,
+              "VerticalAlign": "Center"
+            },
+            {
+              "__type": "NameTagPanel",
+              "__guid": "326b0f20-cba9-4692-8883-383d8a973342",
+              "Name": "A Square",
+              "TargetObject": {
+                "_type": "gameobject",
+                "go": "4d0891b8-3ac6-4e29-b40e-3460b2453d72"
+              }
+            }
+          ]
+        },
+        {
+          "__guid": "8c06372b-3f52-4b13-acb2-7e4ea7234e9a",
+          "Flags": 0,
+          "Name": "World UI",
+          "Position": "-6.52694,-0.4599169,52.5299",
+          "Rotation": "-0.007454982,0.001371549,0.9834642,-0.1809356",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "NameTagPanel",
+              "__guid": "7c3e9e14-6fe6-4fc3-9186-dc6b387e313c",
+              "Name": "A Square"
+            },
+            {
+              "__type": "Sandbox.WorldPanel",
+              "__guid": "6679483f-5b46-483d-86fa-097aa534d9a0",
+              "HorizontalAlign": "Center",
+              "InteractionRange": 1000,
+              "LookAtCamera": true,
+              "PanelSize": "1024,1024",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderScale": 3,
+              "VerticalAlign": "Center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "b65e3be9-ba40-4ac1-9440-9a0f65068191",
+      "Flags": 0,
+      "Name": "Sphere",
+      "Position": "0,81.23104,-58.79975",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "3076e90a-f2ab-414a-8202-f9a601c4bd0e",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/sphere.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "09c23f98-3a63-4c2e-97d6-9d7cb721b17d",
+          "Flags": 0,
+          "Name": "World UI",
+          "Position": "-33.16663,-0.1865889,-0.1047403",
+          "Rotation": "0.00000005959918,-0.0000000005688116,1,-0.0000006397578",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.WorldPanel",
+              "__guid": "34f9eefa-0522-4ce7-87bb-a9dc142959d1",
+              "HorizontalAlign": "Center",
+              "InteractionRange": 1000,
+              "LookAtCamera": false,
+              "PanelSize": "1024,1024",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderScale": 3,
+              "VerticalAlign": "Center"
+            },
+            {
+              "__type": "NameTagPanel",
+              "__guid": "bf9ee2ed-ea57-4fb3-a871-28b686eb6df7",
+              "Name": "A Sphere"
+            }
+          ]
+        },
+        {
+          "__guid": "5c4868b8-1072-4383-93be-b3cb2231ec19",
+          "Flags": 0,
+          "Name": "World UI",
+          "Position": "-50.47972,-0.1866177,-26.09694",
+          "Rotation": "0.5190907,0.0000003625464,0.8547185,-0.0000005471081",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "NameTagPanel",
+              "__guid": "635d1bf9-f2af-41a9-a58f-cba240cfc037",
+              "Name": "A Sphere",
+              "TargetObject": {
+                "_type": "gameobject",
+                "go": "b65e3be9-ba40-4ac1-9440-9a0f65068191"
+              }
+            },
+            {
+              "__type": "Sandbox.WorldPanel",
+              "__guid": "8d05ea0d-0fa8-4851-b7b4-ec36a39bfeb8",
+              "HorizontalAlign": "Center",
+              "InteractionRange": 1000,
+              "LookAtCamera": false,
+              "PanelSize": "1024,1024",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderScale": 3,
+              "VerticalAlign": "Center"
+            }
+          ]
+        },
+        {
+          "__guid": "4501827b-cd69-4fe4-a3e0-c266d99893fa",
+          "Flags": 0,
+          "Name": "World UI",
+          "Position": "-7.519797,-1.273687,51.35894",
+          "Rotation": "-0.007413972,0.001578259,0.9780543,-0.2082045",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.WorldPanel",
+              "__guid": "09acee8c-b0ba-4211-bd7d-0477f8a69242",
+              "HorizontalAlign": "Center",
+              "InteractionRange": 1000,
+              "LookAtCamera": true,
+              "PanelSize": "1024,1024",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderScale": 3,
+              "VerticalAlign": "Center"
+            },
+            {
+              "__type": "NameTagPanel",
+              "__guid": "9bd58d5d-599a-4fdf-9be1-835022bcde1a",
+              "Name": "A Sphere"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "c6dd56f2-a90a-4b6c-b4b6-f3a094e2ac6e",
+      "Flags": 0,
+      "Name": "Bird",
+      "Position": "0,-20.71415,-58.79975",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "a431fdfd-c54e-4eb1-9383-f364a272ee63",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/plane.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "4e652c81-5bc6-4401-99be-7787e5c1014c",
+          "Flags": 0,
+          "Name": "World UI",
+          "Position": "-50.5653,-0.1866113,-0.1047382",
+          "Rotation": "0.00000005959918,-0.0000000005688116,1,-0.0000006397578",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "NameTagPanel",
+              "__guid": "bc657d07-51e3-4bc5-ab59-86433b79e463",
+              "Name": "A Plane"
+            },
+            {
+              "__type": "Sandbox.WorldPanel",
+              "__guid": "937dbb8e-2d0b-4699-9f35-1f5ad9af4206",
+              "HorizontalAlign": "Center",
+              "InteractionRange": 1000,
+              "LookAtCamera": false,
+              "PanelSize": "1024,1024",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderScale": 3,
+              "VerticalAlign": "Center"
+            }
+          ]
+        },
+        {
+          "__guid": "c89c1f60-0928-4644-a808-8f180f6ea286",
+          "Flags": 0,
+          "Name": "World UI",
+          "Position": "-50.47972,-0.1866177,-26.09694",
+          "Rotation": "0.5190907,0.0000003625464,0.8547185,-0.0000005471081",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.WorldPanel",
+              "__guid": "1a7b1904-3ec6-4c15-8308-4b814b35498a",
+              "HorizontalAlign": "Center",
+              "InteractionRange": 1000,
+              "LookAtCamera": false,
+              "PanelSize": "1024,1024",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderScale": 3,
+              "VerticalAlign": "Center"
+            },
+            {
+              "__type": "NameTagPanel",
+              "__guid": "f9f84b76-0fa2-4f7a-9a42-6660827e1bc0",
+              "Name": "A Plane",
+              "TargetObject": {
+                "_type": "gameobject",
+                "go": "c6dd56f2-a90a-4b6c-b4b6-f3a094e2ac6e"
+              }
+            }
+          ]
+        },
+        {
+          "__guid": "d329f33d-448c-4d32-ac53-77fa0966d551",
+          "Flags": 0,
+          "Name": "World UI",
+          "Position": "-7.519797,-1.273687,51.35894",
+          "Rotation": "-0.007413972,0.001578259,0.9780543,-0.2082045",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "NameTagPanel",
+              "__guid": "fae894d8-9096-4610-a546-90c667b74de7",
+              "Name": "A Plane"
+            },
+            {
+              "__type": "Sandbox.WorldPanel",
+              "__guid": "d90e9ca1-e115-40c1-b934-7e1d43a61589",
+              "HorizontalAlign": "Center",
+              "InteractionRange": 1000,
+              "LookAtCamera": true,
+              "PanelSize": "1024,1024",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderScale": 3,
+              "VerticalAlign": "Center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "22472f17-5de7-4462-b60f-cd2b0dc77a77",
+      "Flags": 0,
+      "Name": "Point Light",
+      "Position": "136.3133,372.9648,49.27744",
+      "Tags": "light_point,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.PointLight",
+          "__guid": "5f9c8c09-af9d-4787-8f56-3744a31c59e0",
+          "Attenuation": 1,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.49505,0.87756,0.9901,1",
+          "Radius": 4000,
+          "Shadows": true
+        }
+      ]
+    },
+    {
+      "__guid": "3ae18f03-2b0f-4017-aab0-64d24e5834ca",
+      "Flags": 0,
+      "Name": "Point Light",
+      "Position": "-259.587,-391.2967,213.6024",
+      "Tags": "light_point,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.PointLight",
+          "__guid": "c4fed3a2-7207-411f-bd68-a41ebc71ddd8",
+          "Attenuation": 1,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "10.8812,8.1609,5.4406,1",
+          "Radius": 4000,
+          "Shadows": true
+        }
+      ]
+    },
+    {
+      "__guid": "60c80a2a-e4f1-4042-a08e-af75703e4d0b",
+      "Flags": 0,
+      "Name": "Directional Light",
+      "Rotation": "0.4460604,0.4967057,-0.4974584,0.5539393",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "2e87bda6-2a92-4d36-b1d6-272f9e71a345",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.0198,0.01888,0.01627,1",
+          "Shadows": true,
+          "SkyColor": "0.00745,0.00908,0.0099,1"
+        }
+      ]
+    },
+    {
+      "__guid": "44a24d54-3a08-4bfb-bf8f-4a904cc7304e",
+      "Flags": 0,
+      "Name": "SkyBox",
+      "Tags": "skybox",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "e2f4c8a7-4c1f-439c-abf2-268f5167334a",
+          "SkyIndirectLighting": true,
+          "SkyMaterial": "materials/skybox/skybox_workshop.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "9e2c8158-34b6-4f98-bdbb-ae9a1b930588",
+      "Flags": 0,
+      "Name": "Screen Panel",
+      "Position": "-0.0000001020514,-74.18726,70.75726",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "f10ef5c2-04be-453a-86b0-040a1cd2d9be",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ScaleStrategy": "ConsistentHeight",
+          "ZIndex": 100
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "5018ae09-cb6f-4d88-a427-6263c76ee93d",
+          "Flags": 0,
+          "Name": "Health",
+          "Position": "-0.00000000000000000000001158053,-36.90044,20.0713",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "MockHudPanel",
+              "__guid": "4b11840d-f4b0-4610-8a42-9ce2ed61a67f"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "ea3699ec-87c5-4b70-982b-cce92cc614d6",
+      "Flags": 0,
+      "Name": "Spinner",
+      "Position": "-44.70381,74.48879,-92.92389",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "SpinComponent",
+          "__guid": "c7718924-8c36-45ee-b7b1-183cedf54e15",
+          "SpinAngles": "0,5,0"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "f1341dc9-bb2a-4418-8c6c-6076e0291e1f",
+          "Flags": 0,
+          "Name": "Camera",
+          "Position": "-279.8804,107.6391,197.6537",
+          "Rotation": "0.03534396,0.2239077,-0.1518613,0.9620573",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Tonemapping",
+              "__guid": "8d6d8d24-19db-44dd-905b-5013d2081958",
+              "__version": 1,
+              "AutoExposureEnabled": true,
+              "ExposureBias": 2,
+              "ExposureCompensation": 1.5,
+              "ExposureMethod": "RGB",
+              "MaximumExposure": 2,
+              "MinimumExposure": 1,
+              "Mode": "Legacy",
+              "Rate": 1
+            },
+            {
+              "__type": "Sandbox.CameraComponent",
+              "__guid": "f5646769-82f7-4ef3-9813-e6d2cc2496d6",
+              "BackgroundColor": "0.33333,0.46275,0.52157,1",
+              "ClearFlags": "All",
+              "FieldOfView": 80,
+              "IsMainCamera": true,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
+              "Priority": 1,
+              "RenderExcludeTags": "",
+              "RenderTags": "",
+              "TargetEye": "None",
+              "Viewport": "0,0,1,1",
+              "ZFar": 10000,
+              "ZNear": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "25dd0011-957b-4f4e-ac97-b93c4a981425",
+      "Flags": 0,
+      "Name": "Screen Gizmo Text",
+      "Position": "-68.50214,99.21661,-27.73784",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ScreenGizmoText",
+          "__guid": "ec66db65-8fcb-4f76-9948-0bb4bac4aa0e"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Simple",
+      "Description": "World panels and screen panels. Parenting, input, rotation.",
+      "Group": "UI"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "Simple",
+  "Description": "World panels and screen panels. Parenting, input, rotation.",
+  "__references": [],
+  "__version": 2
+}

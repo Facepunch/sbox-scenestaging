@@ -1,0 +1,574 @@
+{
+  "__guid": "e5b69914-9eb5-417f-a6c6-f93206ea2ee3",
+  "GameObjects": [
+    {
+      "__guid": "44421704-7959-40f5-a647-aa2dc52d573a",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "6ff699b0-b218-48bd-b830-e22a2cb53df1",
+          "Description": "How Colliders can have trigger actions",
+          "Group": "Action Graph",
+          "SceneTags": "",
+          "Title": "Triggers"
+        }
+      ]
+    },
+    {
+      "__guid": "bb8d26a2-2c61-4931-9f46-b21986b81c64",
+      "Flags": 0,
+      "Name": "Sun",
+      "Position": "0,0,100",
+      "Rotation": "-0.06201506,0.5347982,0.2700481,0.7982603",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "75ed1720-734f-4ef8-958a-746dc42ead0a",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "__guid": "e0911b0c-3700-4c9b-88b8-112b2332d6bf",
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "0,0,-256",
+      "Scale": "8,8,8",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "e57297da-fa4b-496b-9100-7d60ae641e80",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "dev/helper/testgrid.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "b5a88e11-d042-4383-9f17-53d91e1a5fec",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "1ad22c7e-8635-4a1e-b256-6c9843d07750",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-379.6557,-126.844,165.2387",
+      "Rotation": "-0.04510347,0.2281259,0.1886413,0.9541167",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "c1a68561-acf6-4d92-b69a-b6578779c84f",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 80,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "NoClip",
+          "__guid": "c0feeb19-0d68-4213-b5db-60e28a93b8c2",
+          "MoveSpeed": 600
+        },
+        {
+          "__type": "PlayerGrabber",
+          "__guid": "2cd3d0df-0684-411c-a157-8722a0db11ee",
+          "MovementSmoothness": 3,
+          "ShootDamage": 9
+        }
+      ]
+    },
+    {
+      "__guid": "610f500f-a7e4-4661-aec8-cca590d52161",
+      "Flags": 0,
+      "Name": "Sphere",
+      "Position": "-32,-24,-0.00003771868",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "3c89c0c9-9df1-4b29-8218-948f76e95b54",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/sphere.vmdl",
+          "OnComponentUpdate": {
+            "__version": 8,
+            "__guid": "1ee9176d-14bd-4452-bc4e-7dc1733525ea",
+            "__changeId": 0,
+            "UserData": {
+              "Title": "Move the sphere",
+              "ReferencedComponentTypes": []
+            },
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "input"
+              },
+              {
+                "Id": 1,
+                "Type": "property",
+                "Properties": {
+                  "_name": "Transform",
+                  "_type": "Sandbox.Game/Sandbox.GameObject"
+                },
+                "UserData": {
+                  "Position": "256,144"
+                }
+              },
+              {
+                "Id": 2,
+                "Type": "property",
+                "Properties": {
+                  "_type": "Sandbox.Game/Sandbox.GameTransform",
+                  "_name": "Position"
+                },
+                "UserData": {
+                  "Position": "576,144"
+                }
+              },
+              {
+                "Id": 3,
+                "Type": "time.now",
+                "UserData": {
+                  "Position": "16,240"
+                }
+              },
+              {
+                "Id": 4,
+                "Type": "graph",
+                "Properties": {
+                  "graph": "actions/circle.action"
+                },
+                "UserData": {
+                  "Position": "304,256"
+                }
+              }
+            ],
+            "Links": [
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 2,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 1,
+                "SrcName": "_result",
+                "DstId": 2,
+                "DstName": "_target"
+              },
+              {
+                "SrcId": 4,
+                "SrcName": "_out1",
+                "DstId": 2,
+                "DstName": "_value"
+              },
+              {
+                "SrcId": 3,
+                "SrcName": "_result",
+                "DstId": 4,
+                "DstName": "_in1"
+              },
+              {
+                "Id": 7,
+                "Value": 128,
+                "DstId": 4,
+                "DstName": "_in2"
+              },
+              {
+                "Id": 8,
+                "Value": 10,
+                "DstId": 4,
+                "DstName": "_in3"
+              }
+            ]
+          },
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.SphereCollider",
+          "__guid": "232f8161-2a1c-4bdf-8cbf-969e6547ac68",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Radius": 35.35983,
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "c6d2801f-e863-40ae-9fed-87e8cb53f7db",
+      "Flags": 0,
+      "Name": "Trigger Cube",
+      "Position": "-8,136,-0.00001034479",
+      "Scale": "3.799999,0.9999999,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "e6ca98b3-2573-48e6-9484-51b8ef5e0a79",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "e3638c20-b8ec-44bc-bed2-bba25f9bd223",
+          "Center": "0,0,0",
+          "IsTrigger": true,
+          "OnTriggerEnter": {
+            "__version": 8,
+            "__guid": "ec67dd63-5315-4514-99d0-1463898237ec",
+            "__changeId": 0,
+            "UserData": {
+              "Title": "Show text and change color",
+              "ReferencedComponentTypes": [
+                "Sandbox.Game/Sandbox.ModelRenderer"
+              ]
+            },
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "input",
+                "UserData": {
+                  "Position": "-96,112"
+                }
+              },
+              {
+                "Id": 1,
+                "Type": "scene.get",
+                "Properties": {
+                  "T": "Sandbox.Game/Sandbox.ModelRenderer"
+                },
+                "UserData": {
+                  "Position": "-64,-48"
+                }
+              },
+              {
+                "Id": 2,
+                "Type": "property",
+                "Properties": {
+                  "_name": "Tint",
+                  "_type": "Sandbox.Game/Sandbox.ModelRenderer"
+                },
+                "UserData": {
+                  "Position": "224,224"
+                }
+              },
+              {
+                "Id": 3,
+                "Type": "random.color",
+                "UserData": {
+                  "Position": "16,288"
+                }
+              },
+              {
+                "Id": 8,
+                "Type": "scene.ref",
+                "UserData": {
+                  "Position": "-0,-160"
+                }
+              },
+              {
+                "Id": 9,
+                "Type": "property",
+                "Properties": {
+                  "_name": "Enabled",
+                  "_type": "Sandbox.Game/Sandbox.GameObject"
+                },
+                "UserData": {
+                  "Position": "336,80"
+                }
+              }
+            ],
+            "Links": [
+              {
+                "SrcId": 0,
+                "SrcName": "_target",
+                "DstId": 1,
+                "DstName": "_this"
+              },
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 2,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 1,
+                "SrcName": "_result",
+                "DstId": 2,
+                "DstName": "_target"
+              },
+              {
+                "SrcId": 3,
+                "SrcName": "_result",
+                "DstId": 2,
+                "DstName": "_value"
+              },
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 9,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 8,
+                "SrcName": "_result",
+                "DstId": 9,
+                "DstName": "_target"
+              },
+              {
+                "Id": 11,
+                "Value": true,
+                "DstId": 9,
+                "DstName": "_value"
+              }
+            ],
+            "Defaults": {
+              "$8.gameobject": {
+                "_type": "gameobject",
+                "go": "02446df0-2579-468b-ae92-1f3faf442bfd"
+              }
+            }
+          },
+          "OnTriggerExit": {
+            "__version": 8,
+            "__guid": "28e62378-d466-46d0-aa85-43631c0aa086",
+            "__changeId": 0,
+            "UserData": {
+              "Title": "Hide text and change color back",
+              "ReferencedComponentTypes": []
+            },
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "input",
+                "UserData": {
+                  "Position": "32,-0"
+                }
+              },
+              {
+                "Id": 2,
+                "Type": "scene.ref",
+                "UserData": {
+                  "Position": "48,224"
+                }
+              },
+              {
+                "Id": 3,
+                "Type": "property",
+                "Properties": {
+                  "_name": "Tint",
+                  "_type": "Sandbox.Game/Sandbox.ModelRenderer"
+                },
+                "UserData": {
+                  "Position": "352,80"
+                }
+              },
+              {
+                "Id": 6,
+                "Type": "scene.ref",
+                "UserData": {
+                  "Position": "48,-128"
+                }
+              },
+              {
+                "Id": 7,
+                "Type": "property",
+                "Properties": {
+                  "_name": "Enabled",
+                  "_type": "Sandbox.Game/Sandbox.GameObject"
+                },
+                "UserData": {
+                  "Position": "336,-32"
+                }
+              }
+            ],
+            "Links": [
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 3,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 2,
+                "SrcName": "_result",
+                "DstId": 3,
+                "DstName": "_target"
+              },
+              {
+                "Id": 10,
+                "Value": "1,1,1,1",
+                "DstId": 3,
+                "DstName": "_value"
+              },
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 7,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 6,
+                "SrcName": "_result",
+                "DstId": 7,
+                "DstName": "_target"
+              },
+              {
+                "Id": 11,
+                "Value": false,
+                "DstId": 7,
+                "DstName": "_value"
+              }
+            ],
+            "Defaults": {
+              "$2.component": {
+                "_type": "component",
+                "component_id": "e6ca98b3-2573-48e6-9484-51b8ef5e0a79",
+                "go": "c6d2801f-e863-40ae-9fed-87e8cb53f7db",
+                "component_type": "ModelRenderer"
+              },
+              "$6.gameobject": {
+                "_type": "gameobject",
+                "go": "02446df0-2579-468b-ae92-1f3faf442bfd"
+              }
+            }
+          },
+          "Scale": "50.24,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "02446df0-2579-468b-ae92-1f3faf442bfd",
+      "Flags": 0,
+      "Name": "INSIDE!",
+      "Position": "-48,120,56.30142",
+      "Rotation": "0,0,0.3826834,0.9238796",
+      "Components": [
+        {
+          "__type": "Sandbox.TextRenderer",
+          "__guid": "4ecb12b4-f296-461d-ab3a-a30f77f1a1eb",
+          "__version": 1,
+          "BlendMode": "Normal",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "Scale": 0.3,
+          "TextAlignment": "Center",
+          "TextScope": {
+            "Text": "INSIDE!",
+            "TextColor": "1,1,1,1",
+            "FontName": "Poppins",
+            "FontSize": 64,
+            "FontWeight": 800,
+            "LineHeight": 1,
+            "Outline": {
+              "Size": 4,
+              "Color": "0,0,1,1"
+            },
+            "Shadow": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            },
+            "OutlineUnder": {
+              "Size": 4,
+              "Color": "0,1,0,1"
+            },
+            "ShadowUnder": {
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Triggers",
+      "Description": "How Colliders can have trigger actions",
+      "Group": "Action Graph"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "Triggers",
+  "Description": "How Colliders can have trigger actions",
+  "__references": [],
+  "__version": 2
+}
