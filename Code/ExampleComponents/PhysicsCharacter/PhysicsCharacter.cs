@@ -90,6 +90,20 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 		Body.Velocity = 0;
 	}
 
+	protected override void OnEnabled()
+	{
+		base.OnEnabled();
+
+
+		if ( !Scene.IsEditor )
+		{
+			EyeAngles = WorldRotation.Angles() with { pitch = 0, roll = 0 };
+			WorldRotation = Rotation.Identity;
+
+			if ( Renderer is not null ) Renderer.WorldRotation = new Angles( 0, EyeAngles.yaw, 0 );
+		}
+	}
+
 	protected override void OnValidate()
 	{
 		EnsureComponentsCreated();
