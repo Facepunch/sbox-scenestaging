@@ -277,6 +277,14 @@
           "Priority": 0,
           "StepDownHeight": 18,
           "StepUpHeight": 18
+        },
+        {
+          "__type": "PlayerSquish",
+          "__guid": "12cc412a-b572-4db4-a1fd-3ba5a9802ea4",
+          "Gibs": {
+            "_type": "gameobject",
+            "prefab": "prefabs/player/gibs.prefab"
+          }
         }
       ],
       "Children": [

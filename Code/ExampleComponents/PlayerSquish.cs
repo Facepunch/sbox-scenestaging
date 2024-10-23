@@ -1,9 +1,7 @@
-//
-// This all exists to test the PhysicsCharacterController 
-// It needs a clean up !
-//
-
-public class PhysicalPlayerController : Component, Component.ICollisionListener
+/// <summary>
+/// Swishes the player if the physics pressure exceeds a set amount
+/// </summary>
+public class PlayerSquish : Component, Component.ICollisionListener
 {
 	[Property] public GameObject Gibs { get; set; }
 
@@ -17,12 +15,11 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 
 	public void Explode()
 	{
-		Gibs.SetParent( Scene, true );
-		Gibs.Enabled = true;
+		var gibs = Gibs.Clone( WorldPosition );
 
-		foreach ( var rb in Gibs.GetComponentsInChildren<Rigidbody>() )
+		foreach ( var rb in gibs.GetComponentsInChildren<Rigidbody>() )
 		{
-			rb.Velocity = Vector3.Random * 1000;
+			rb.Velocity = Vector3.Random * 600;
 		}
 
 		GameObject.Destroy();
@@ -40,7 +37,6 @@ public class PhysicalPlayerController : Component, Component.ICollisionListener
 		if ( float.IsNaN( collision.Contact.Impulse ) ) return;
 
 		var imp = collision.Contact.Impulse / collision.Self.Body.Mass;
-
 		if ( imp < nominalPressure ) return;
 
 		//DebugDrawSystem.Current.AddText( collision.Contact.Point + Vector3.Up * i * 16, $"[{imp:n0}] {collision.Other.Collider}" );

@@ -3,7 +3,7 @@
 /// <summary>
 /// The character is walking
 /// </summary>
-[Icon( "transfer_within_a_station" ), Group( "Movement" ), Title( "MoveMode - Walk" ), Alias( "PhysicsCharacterWalkMode" )]
+[Icon( "transfer_within_a_station" ), Group( "Movement" ), Title( "MoveMode - Walk" ), Alias( "Sandbox.PhysicsCharacterMode.PhysicsCharacterWalkMode" )]
 public partial class MoveModeWalk : MoveMode
 {
 	[Property] public int Priority { get; set; } = 0;
