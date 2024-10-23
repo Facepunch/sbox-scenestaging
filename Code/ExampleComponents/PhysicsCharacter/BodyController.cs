@@ -1,9 +1,12 @@
-﻿using Sandbox.PhysicsCharacterMode;
+﻿using Sandbox.Movement;
 namespace Sandbox;
 
-[Icon( "🕺" ), EditorHandle( Icon = "🕺" )]
-[Alias( "PhysicalCharacterController" )]
-public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, Component.ExecuteInEditor
+[Icon( "directions_walk" )]
+[EditorHandle( Icon = "directions_walk" )]
+[Title( "Body Controller" )]
+[Category( "Physics" )]
+[Alias( "PhysicsCharacter", "Sandbox.PhysicsCharacter" )]
+public sealed partial class BodyController : Component, IScenePhysicsEvents, Component.ExecuteInEditor
 {
 	/// <summary>
 	/// This is used to keep a distance away from surfaces. For exmaple, when grounding, we'll
@@ -71,18 +74,18 @@ public sealed partial class PhysicsCharacter : Component, IScenePhysicsEvents, C
 	/// <summary>
 	/// True if we're using PhysicsCharacterLadderMode mode
 	/// </summary>
-	public bool IsClimbing => Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode;
+	public bool IsClimbing => Mode is Sandbox.Movement.MoveModeLadder;
 
 	/// <summary>
 	/// True if we're currently using PhysicsCharacterSwimMode mode
 	/// </summary>
-	public bool IsSwimming => Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterSwimMode;
+	public bool IsSwimming => Mode is Sandbox.Movement.MoveModeSwim;
 
 	protected override void OnAwake()
 	{
 		base.OnAwake();
 
-		Mode = GetOrAddComponent<PhysicsCharacterWalkMode>();
+		Mode = GetOrAddComponent<MoveModeWalk>();
 
 		EnsureComponentsCreated();
 		UpdateBody();

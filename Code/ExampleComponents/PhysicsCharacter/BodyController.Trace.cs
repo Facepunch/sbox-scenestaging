@@ -1,6 +1,6 @@
 ﻿namespace Sandbox;
 
-public sealed partial class PhysicsCharacter : Component
+public sealed partial class BodyController : Component
 {
 	/// <summary>
 	/// Return an aabb representing the body

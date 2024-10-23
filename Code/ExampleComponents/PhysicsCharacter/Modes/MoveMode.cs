@@ -1,17 +1,17 @@
 ﻿
-namespace Sandbox.PhysicsCharacterMode;
+namespace Sandbox.Movement;
 
 /// <summary>
 /// A move mode for this character
 /// </summary>
-public partial class BaseMode : Component
+public abstract partial class MoveMode : Component
 {
 	public virtual bool AllowGrounding => false;
 
 	[RequireComponent]
-	public PhysicsCharacter Controller { get; set; }
+	public BodyController Controller { get; set; }
 
-	public virtual int Score( PhysicsCharacter controller ) => 0;
+	public virtual int Score( BodyController controller ) => 0;
 
 	/// <summary>
 	/// Called before the physics step is run
@@ -87,7 +87,7 @@ public partial class BaseMode : Component
 	/// <summary>
 	/// This mode has stopped. We're swapping to another move mode.
 	/// </summary>
-	public virtual void OnModeEnd( BaseMode next )
+	public virtual void OnModeEnd( MoveMode next )
 	{
 
 	}
@@ -112,5 +112,13 @@ public partial class BaseMode : Component
 	public virtual bool IsStandableSurace( in SceneTraceResult result )
 	{
 		return false;
+	}
+
+	/// <summary>
+	/// Update the animator which is available at Controller.Renderer 
+	/// </summary>
+	public virtual void UpdateAnimator()
+	{
+
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace Sandbox;
 
-public sealed partial class PhysicsCharacter : Component
+public sealed partial class BodyController : Component
 {
 	/// <summary>
 	/// The direction we're looking.
@@ -166,7 +166,7 @@ public sealed partial class PhysicsCharacter : Component
 
 		if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
 
-		if ( Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode ladderMode )
+		if ( Mode is Sandbox.Movement.MoveModeLadder ladderMode )
 		{
 			WishVelocity = new Vector3( 0, 0, Input.AnalogMove.x );
 
@@ -306,7 +306,7 @@ public sealed partial class PhysicsCharacter : Component
 		_animRotationSpeed = 0;
 
 		// ladder likes to have us facing it
-		if ( Mode is Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode ladderMode )
+		if ( Mode is Sandbox.Movement.MoveModeLadder ladderMode )
 		{
 			Renderer.WorldRotation = Rotation.Lerp( Renderer.WorldRotation, ladderMode.ClimbingRotation, Time.Delta * 5.0f );
 			return;

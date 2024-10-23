@@ -1,10 +1,10 @@
-﻿namespace Sandbox.PhysicsCharacterMode;
+﻿namespace Sandbox.Movement;
 
 /// <summary>
 /// The character is climbing up a ladder
 /// </summary>
-[Icon( "🪜" ), Group( "PhysicsCharacterMode" ), Title( "Ladder Mode" )]
-public partial class PhysicsCharacterLadderMode : BaseMode
+[Icon( "hiking" ), Group( "Movement" ), Title( "MoveMode - Ladder" )]
+public partial class MoveModeLadder : MoveMode
 {
 	[Property]
 	public int Priority { get; set; } = 5;
@@ -27,7 +27,7 @@ public partial class PhysicsCharacterLadderMode : BaseMode
 	public Rotation ClimbingRotation { get; set; }
 
 
-	public PhysicsCharacterLadderMode()
+	public MoveModeLadder()
 	{
 		ClimbableTags = new TagSet();
 		ClimbableTags.Add( "ladder" );
@@ -40,7 +40,7 @@ public partial class PhysicsCharacterLadderMode : BaseMode
 		body.AngularDamping = 1f;
 	}
 
-	public override int Score( PhysicsCharacter controller )
+	public override int Score( BodyController controller )
 	{
 		if ( ClimbingObject.IsValid() ) return Priority;
 		return -100;

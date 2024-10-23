@@ -85,7 +85,7 @@
           "__guid": "2fb168b2-c1de-4fd1-ab41-8834db6461c2",
           "BackgroundColor": "0.25292,0.26086,0.29703,1",
           "ClearFlags": "All",
-          "FieldOfView": 94.33,
+          "FieldOfView": 93.52,
           "IsMainCamera": true,
           "Orthographic": false,
           "OrthographicHeight": 1204,
@@ -196,25 +196,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "Sandbox.Citizen.CitizenAnimationHelper",
-          "__guid": "18433e79-238c-4230-a6a9-3327674a228e",
-          "BodyWeight": 1,
-          "EyeSource": {
-            "_type": "gameobject",
-            "go": "6dcac1b2-f3ce-4915-b96f-c45a736a8453"
-          },
-          "EyesWeight": 1,
-          "HeadWeight": 1,
-          "LookAtEnabled": false,
-          "Target": {
-            "_type": "component",
-            "component_id": "f70e8a2f-8133-4c4d-bc89-bbc88bac37e4",
-            "go": "68b2a30b-650d-43ab-bee2-10dd59aae501",
-            "component_type": "SkinnedModelRenderer"
-          }
-        },
-        {
-          "__type": "Sandbox.PhysicsCharacter",
+          "__type": "Sandbox.BodyController",
           "__guid": "fad0eff1-c82f-43a3-99b3-53393af25536",
           "Body": {
             "_type": "component",
@@ -236,6 +218,7 @@
             "go": "68b2a30b-650d-43ab-bee2-10dd59aae501",
             "component_type": "SkinnedModelRenderer"
           },
+          "RotateWithGround": true,
           "RotationAngleLimit": 45,
           "RotationSpeed": 1,
           "RunSpeed": 320,
@@ -247,15 +230,6 @@
           "UseCameraControls": true,
           "UseInputControls": true,
           "WalkSpeed": 110
-        },
-        {
-          "__type": "PhysicalPlayerController",
-          "__guid": "a23a8fdb-a60a-4ca1-839c-358d4bc11265",
-          "__enabled": false,
-          "Gibs": {
-            "_type": "gameobject",
-            "go": "ce9b316d-ca55-4627-8520-97820675f98b"
-          }
         },
         {
           "__type": "Sandbox.Rigidbody",
@@ -297,24 +271,12 @@
           "SurfaceVelocity": "0,0,0"
         },
         {
-          "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterWalkMode",
-          "__guid": "b5aa95d0-80c5-4ed1-8501-b0197e533764",
+          "__type": "Sandbox.Movement.MoveModeWalk",
+          "__guid": "6a3baa67-6613-4aa1-8612-66365dc66c5d",
           "GroundAngle": 45,
           "Priority": 0,
           "StepDownHeight": 18,
           "StepUpHeight": 18
-        },
-        {
-          "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterLadderMode",
-          "__guid": "7eaced9f-6b9b-46df-9fc1-88df14298020",
-          "ClimbableTags": "ladder",
-          "Priority": 5
-        },
-        {
-          "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterSwimMode",
-          "__guid": "1bc170d5-b531-4f98-9c1b-3af7771f7fb0",
-          "Priority": 10,
-          "SwimLevel": 0.7
         }
       ],
       "Children": [
@@ -1395,7 +1357,6 @@
               "__type": "Sandbox.SpringJoint",
               "__guid": "a678d43f-e798-4ef5-ae05-981cd9cbc155",
               "Attachment": "Auto",
-              "Body": null,
               "BreakForce": 0,
               "BreakTorque": 0,
               "Damping": 0.7,
@@ -1924,21 +1885,6 @@
               "Scale": "2,2,0.1",
               "Enabled": true,
               "Components": [
-                {
-                  "__type": "Sandbox.Rigidbody",
-                  "__guid": "c7a66123-0191-40a7-9726-2ee7d2349e7f",
-                  "__enabled": false,
-                  "AngularDamping": 0,
-                  "Gravity": true,
-                  "LinearDamping": 0,
-                  "Locking": {},
-                  "MassCenterOverride": "0,0,0",
-                  "MassOverride": 0,
-                  "MotionEnabled": true,
-                  "OverrideMassCenter": false,
-                  "RigidbodyFlags": 0,
-                  "StartAsleep": false
-                },
                 {
                   "__type": "Sandbox.ModelRenderer",
                   "__guid": "ce77b280-9ed3-4106-bb27-a7c20ca09fc8",

@@ -1,10 +1,10 @@
-﻿namespace Sandbox.PhysicsCharacterMode;
+﻿namespace Sandbox.Movement;
 
 /// <summary>
 /// The character is walking
 /// </summary>
-[Icon( "🏊" ), Group( "PhysicsCharacterMode" ), Title( "Swim Mode" )]
-public partial class PhysicsCharacterSwimMode : BaseMode
+[Icon( "scuba_diving" ), Group( "Movement" ), Title( "MoveMode - Swim" )]
+public partial class MoveModeSwim : MoveMode
 {
 	[Property]
 	public int Priority { get; set; } = 10;
@@ -24,13 +24,13 @@ public partial class PhysicsCharacterSwimMode : BaseMode
 		body.AngularDamping = 1f;
 	}
 
-	public override int Score( PhysicsCharacter controller )
+	public override int Score( BodyController controller )
 	{
 		if ( WaterLevel > SwimLevel ) return Priority;
 		return -100;
 	}
 
-	public override void OnModeEnd( BaseMode next )
+	public override void OnModeEnd( MoveMode next )
 	{
 		// jump when leaving the water
 		if ( Input.Down( "Jump" ) )

@@ -1,6 +1,6 @@
 ﻿namespace Sandbox;
 
-public sealed partial class PhysicsCharacter : Component
+public sealed partial class BodyController : Component
 {
 	/// <summary>
 	/// Make sure the body and our components are created

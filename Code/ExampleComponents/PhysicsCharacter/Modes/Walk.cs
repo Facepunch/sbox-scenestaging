@@ -1,10 +1,10 @@
-﻿namespace Sandbox.PhysicsCharacterMode;
+﻿namespace Sandbox.Movement;
 
 /// <summary>
 /// The character is walking
 /// </summary>
-[Icon( "👟" ), Group( "PhysicsCharacterMode" ), Title( "Walk Mode" )]
-public partial class PhysicsCharacterWalkMode : BaseMode
+[Icon( "transfer_within_a_station" ), Group( "Movement" ), Title( "MoveMode - Walk" ), Alias( "PhysicsCharacterWalkMode" )]
+public partial class MoveModeWalk : MoveMode
 {
 	[Property] public int Priority { get; set; } = 0;
 
@@ -15,7 +15,7 @@ public partial class PhysicsCharacterWalkMode : BaseMode
 
 	public override bool AllowGrounding => true;
 
-	public override int Score( PhysicsCharacter controller ) => Priority;
+	public override int Score( BodyController controller ) => Priority;
 
 	public override void AddVelocity()
 	{
