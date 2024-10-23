@@ -13,13 +13,25 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	private Rigidbody _rootBody;
 	private Transform _rootBindPose;
 
-	private record BodyRecord( Rigidbody Component, BoneCollection.Bone Bone );
-	private readonly List<BodyRecord> _bodies = new();
+	public record Body( Rigidbody Component, BoneCollection.Bone Bone )
+	{
+		public Rigidbody Component { get; init; } = Component;
+		public BoneCollection.Bone Bone { get; init; } = Bone;
+	}
 
-	private record JointRecord( Joint Component, Transform Frame1, Transform Frame2 );
-	private readonly List<JointRecord> _joints = new();
+	public record Joint( Sandbox.Joint Component, Transform Frame1, Transform Frame2 )
+	{
+		public Sandbox.Joint Component { get; init; } = Component;
+		public Transform LocalFrame1 { get; init; } = Frame1;
+		public Transform LocalFrame2 { get; init; } = Frame2;
+	}
 
+	private readonly List<Body> _bodies = new();
+	private readonly List<Joint> _joints = new();
 	private readonly List<Collider> _colliders = new();
+
+	public IReadOnlyList<Body> Bodies => _bodies;
+	public IReadOnlyList<Joint> Joints => _joints;
 
 	[Property]
 	public Model Model
@@ -169,7 +181,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			body.LinearDamping = part.LinearDamping;
 			body.AngularDamping = part.AngularDamping;
 
-			_bodies.Add( new BodyRecord( body, bone ) );
+			_bodies.Add( new Body( body, bone ) );
 
 			foreach ( var sphere in part.Spheres )
 			{
@@ -214,7 +226,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			var localFrame1 = jointDesc.Frame1;
 			var localFrame2 = jointDesc.Frame2;
 
-			Joint joint = null;
+			Sandbox.Joint joint = null;
 
 			if ( jointDesc.Type == PhysicsGroupDescription.JointType.Hinge )
 			{
@@ -284,14 +296,14 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			{
 				joint.Flags |= componentFlags;
 				joint.Body = body2.GameObject;
-				joint.Attachment = Joint.AttachmentMode.LocalFrames;
+				joint.Attachment = Sandbox.Joint.AttachmentMode.LocalFrames;
 				joint.LocalFrame1 = localFrame1.WithPosition( jointDesc.Frame1.Position * body1.WorldScale );
 				joint.LocalFrame2 = localFrame2.WithPosition( jointDesc.Frame2.Position * body2.WorldScale );
 				joint.EnableCollision = jointDesc.EnableCollision;
 				joint.BreakForce = jointDesc.LinearStrength;
 				joint.BreakTorque = jointDesc.AngularStrength;
 
-				_joints.Add( new JointRecord( joint, localFrame1, localFrame2 ) );
+				_joints.Add( new Joint( joint, localFrame1, localFrame2 ) );
 			}
 		}
 
@@ -398,7 +410,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
-	private void DriveBodyFromAnimation( BodyRecord body )
+	private void DriveBodyFromAnimation( Body body )
 	{
 		if ( !body.Component.IsValid() )
 			return;
@@ -423,11 +435,11 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				continue;
 
 			var point1 = joint.Component.Point1;
-			point1.LocalPosition = joint.Frame1.Position * joint.Component.WorldTransform.UniformScale;
+			point1.LocalPosition = joint.LocalFrame1.Position * joint.Component.WorldTransform.UniformScale;
 			joint.Component.Point1 = point1;
 
 			var point2 = joint.Component.Point2;
-			point2.LocalPosition = joint.Frame2.Position * joint.Component.Body.WorldTransform.UniformScale;
+			point2.LocalPosition = joint.LocalFrame2.Position * joint.Component.Body.WorldTransform.UniformScale;
 			joint.Component.Point2 = point2;
 		}
 	}
