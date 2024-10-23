@@ -19,9 +19,11 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		public BoneCollection.Bone Bone { get; init; } = Bone;
 	}
 
-	public record Joint( Sandbox.Joint Component, Transform Frame1, Transform Frame2 )
+	public record Joint( Sandbox.Joint Component, Body Body1, Body Body2, Transform Frame1, Transform Frame2 )
 	{
 		public Sandbox.Joint Component { get; init; } = Component;
+		public Body Body1 { get; init; } = Body1;
+		public Body Body2 { get; init; } = Body2;
 		public Transform LocalFrame1 { get; init; } = Frame1;
 		public Transform LocalFrame2 { get; init; } = Frame2;
 	}
@@ -220,8 +222,8 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		foreach ( var jointDesc in physics.Joints )
 		{
-			var body1 = _bodies[jointDesc.Body1].Component;
-			var body2 = _bodies[jointDesc.Body2].Component;
+			var body1 = _bodies[jointDesc.Body1];
+			var body2 = _bodies[jointDesc.Body2];
 
 			var localFrame1 = jointDesc.Frame1;
 			var localFrame2 = jointDesc.Frame2;
@@ -230,7 +232,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			if ( jointDesc.Type == PhysicsGroupDescription.JointType.Hinge )
 			{
-				var hingeJoint = body1.AddComponent<HingeJoint>( false );
+				var hingeJoint = body1.Component.AddComponent<HingeJoint>( false );
 
 				if ( jointDesc.EnableTwistLimit )
 				{
@@ -240,7 +242,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 				if ( jointDesc.EnableAngularMotor )
 				{
-					var worldFrame1 = body1.WorldTransform.ToWorld( localFrame1 );
+					var worldFrame1 = body1.Component.WorldTransform.ToWorld( localFrame1 );
 					var hingeAxis = worldFrame1.Rotation.Up;
 					var targetVelocity = hingeAxis.Dot( jointDesc.AngularTargetVelocity );
 
@@ -253,7 +255,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			}
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Ball )
 			{
-				var ballJoint = body1.AddComponent<BallJoint>( false );
+				var ballJoint = body1.Component.AddComponent<BallJoint>( false );
 
 				if ( jointDesc.EnableSwingLimit )
 				{
@@ -271,7 +273,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			}
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Fixed )
 			{
-				var fixedJoint = body1.AddComponent<FixedJoint>( false );
+				var fixedJoint = body1.Component.AddComponent<FixedJoint>( false );
 				fixedJoint.LinearFrequency = jointDesc.LinearFrequency;
 				fixedJoint.LinearDamping = jointDesc.LinearDampingRatio;
 				fixedJoint.AngularFrequency = jointDesc.AngularFrequency;
@@ -281,7 +283,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			}
 			else if ( jointDesc.Type == PhysicsGroupDescription.JointType.Slider )
 			{
-				var sliderJoint = body1.AddComponent<SliderJoint>( false );
+				var sliderJoint = body1.Component.AddComponent<SliderJoint>( false );
 
 				if ( jointDesc.EnableLinearLimit )
 				{
@@ -295,15 +297,15 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			if ( joint.IsValid() )
 			{
 				joint.Flags |= componentFlags;
-				joint.Body = body2.GameObject;
+				joint.Body = body2.Component.GameObject;
 				joint.Attachment = Sandbox.Joint.AttachmentMode.LocalFrames;
-				joint.LocalFrame1 = localFrame1.WithPosition( jointDesc.Frame1.Position * body1.WorldScale );
-				joint.LocalFrame2 = localFrame2.WithPosition( jointDesc.Frame2.Position * body2.WorldScale );
+				joint.LocalFrame1 = localFrame1.WithPosition( jointDesc.Frame1.Position * body1.Component.WorldScale );
+				joint.LocalFrame2 = localFrame2.WithPosition( jointDesc.Frame2.Position * body2.Component.WorldScale );
 				joint.EnableCollision = jointDesc.EnableCollision;
 				joint.BreakForce = jointDesc.LinearStrength;
 				joint.BreakTorque = jointDesc.AngularStrength;
 
-				_joints.Add( new Joint( joint, localFrame1, localFrame2 ) );
+				_joints.Add( new Joint( joint, body1, body2, localFrame1, localFrame2 ) );
 			}
 		}
 
