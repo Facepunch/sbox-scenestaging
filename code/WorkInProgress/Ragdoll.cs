@@ -371,6 +371,15 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			var local = world.ToLocal( body.Component.WorldTransform );
 			Renderer.SetBoneTransform( body.Bone, local );
+		}
+	}
+
+	private void PositionPhysicsFromAnimation()
+	{
+		foreach ( var body in _bodies )
+		{
+			if ( !body.Component.IsValid() )
+				continue;
 
 			if ( body.Component.MotionEnabled )
 			{
@@ -425,7 +434,16 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 	protected override void OnUpdate()
 	{
+		base.OnUpdate();
+
 		PositionRendererBonesFromPhysics();
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		base.OnFixedUpdate();
+
+		PositionPhysicsFromAnimation();
 		UpdateJointScale();
 	}
 
