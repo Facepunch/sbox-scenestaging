@@ -1,10 +1,10 @@
 ﻿public partial class DebugDrawSystem : GameObjectSystem<DebugDrawSystem>
 {
 
-	public void Box( Vector3 position, Vector3 size, Color color = new Color(), float duration = 0, Transform transform = default )
-		=> Box( BBox.FromPositionAndSize( position, size ), color, duration, transform );
+	public void Box( Vector3 position, Vector3 size, Color color = new Color(), float duration = 0, Transform transform = default, bool overlay = false )
+		=> Box( BBox.FromPositionAndSize( position, size ), color, duration, transform, overlay );
 
-	public void Box( BBox box, Color color = new Color(), float duration = 0, Transform transform = default )
+	public void Box( BBox box, Color color = new Color(), float duration = 0, Transform transform = default, bool overlay = false )
 	{
 		if ( transform == default ) transform = Transform.Zero;
 		if ( color == default ) color = Color.White;
@@ -22,6 +22,7 @@
 		so.Transform = transform;
 		so.Material = LineMaterial;
 		so.Flags.CastShadows = false;
+		so.RenderLayer = overlay ? SceneRenderLayer.OverlayWithoutDepth : SceneRenderLayer.OverlayWithDepth;
 		so.Init( Graphics.PrimitiveType.Lines );
 
 		so.AddVertex( new Vertex( c0, color ) );
@@ -49,6 +50,6 @@
 		so.AddVertex( new Vertex( c7, color ) );
 		so.AddVertex( new Vertex( c4, color ) );
 
-		Add( new Entry( duration ) { sceneObject = so } );
+		Add( duration, so );
 	}
 }

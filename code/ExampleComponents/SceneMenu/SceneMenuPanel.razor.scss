@@ -46,6 +46,7 @@ SceneMenuPanel
         padding: 50px 0px;
         gap: 2rem;
         overflow: scroll;
+        align-items: flex-end;
 
         > *
         {
@@ -56,7 +57,8 @@ SceneMenuPanel
         {
             flex-direction: column;
             flex-grow: 1;
-            gap: 1px;
+            min-width: 300px;
+            max-width: 30%;
 
             h1
             {
@@ -68,9 +70,11 @@ SceneMenuPanel
 
             .scenes
             {
+                flex-direction: row;
                 flex-wrap: wrap;
-                gap: 1px;
-                border-radius: 20px;
+                align-content: stretch;
+                gap: 3px;
+                border-radius: 10px;
                 overflow: hidden;
             }
         }
@@ -97,12 +101,10 @@ SceneMenuPanel
 
 SceneButton
 {
-    background-color: #4440;
     cursor: pointer;
     flex-direction: row;
     flex-grow: 1;
     flex-shrink: 0;
-    gap: 8px;
     align-items: center;
     justify-content: center;
     transition: all 0.1s ease-out;

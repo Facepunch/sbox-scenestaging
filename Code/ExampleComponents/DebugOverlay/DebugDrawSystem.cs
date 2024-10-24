@@ -2,64 +2,6 @@
 {
 	bool inFixedUpdate;
 
-	class Entry : IDebugShape, IDisposable
-	{
-		public bool CreatedDuringFixed;
-		public bool SingleFrame = true;
-		public float life;
-		public SceneObject sceneObject;
-
-		public Entry( float duration )
-		{
-			if ( duration > 0 )
-			{
-				life = duration;
-				SingleFrame = false;
-			}
-		}
-
-		public void Dispose()
-		{
-			sceneObject?.Delete();
-			sceneObject = default;
-		}
-
-		IDebugShape IDebugShape.WithColor( Color color )
-		{
-			if ( color == default ) color = Color.White;
-
-			if ( sceneObject is not null )
-			{
-				sceneObject.Attributes.Set( "g_tint", color );
-				sceneObject.ColorTint = color;
-			}
-
-			return this;
-		}
-
-		IDebugShape IDebugShape.WithTime( float time )
-		{
-			if ( time <= 0 ) return this;
-
-			life = time;
-			SingleFrame = false;
-			return this;
-		}
-	}
-
-	List<Entry> entries = new List<Entry>();
-
-	public interface IDebugShape
-	{
-		public IDebugShape WithColor( Color color )
-		{
-			return this;
-		}
-
-		public IDebugShape WithTime( float time );
-	}
-
-
 	public DebugDrawSystem( Scene scene ) : base( scene )
 	{
 		Listen( Stage.StartUpdate, -10000, StartUpdate, "BuildDebugOverlays" );
@@ -67,13 +9,6 @@
 		Listen( Stage.FinishFixedUpdate, 10000, EndFixedUpdate, "BuildDebugOverlays" );
 
 		LineMaterial = Material.Load( "materials/gizmo/line.vmat" );
-	}
-
-	IDebugShape Add( Entry entry )
-	{
-		entries.Add( entry );
-		entry.CreatedDuringFixed = inFixedUpdate;
-		return entry;
 	}
 
 	void RemoveExpired()
