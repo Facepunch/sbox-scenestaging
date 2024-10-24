@@ -54,7 +54,7 @@ public sealed partial class BodyController : Component
 
 			if ( StepDebug )
 			{
-				DebugDrawSystem.Current.Line( a, b, duration: 10, color: Color.Green );
+				DebugOverlay.Line( a, b, duration: 10, color: Color.Green );
 			}
 
 			// Remove the distace travelled from our velocity
@@ -79,13 +79,13 @@ public sealed partial class BodyController : Component
 			// we need to draw the line somewhere
 			if ( result.Distance < 2 )
 			{
-				if ( StepDebug ) DebugDrawSystem.Current.Line( from, result.EndPosition, duration: 10, color: Color.Red );
+				if ( StepDebug ) DebugOverlay.Line( from, result.EndPosition, duration: 10, color: Color.Red );
 				return;
 			}
 
 			if ( StepDebug )
 			{
-				DebugDrawSystem.Current.Line( from, result.EndPosition, duration: 10, color: Color.Green );
+				DebugOverlay.Line( from, result.EndPosition, duration: 10, color: Color.Green );
 			}
 		}
 
@@ -101,7 +101,7 @@ public sealed partial class BodyController : Component
 
 			if ( StepDebug )
 			{
-				DebugDrawSystem.Current.Line( a, b, duration: 10, color: Color.Green );
+				DebugOverlay.Line( a, b, duration: 10, color: Color.Green );
 			}
 		}
 
@@ -118,7 +118,7 @@ public sealed partial class BodyController : Component
 			// no ground here (!)
 			if ( !result.Hit )
 			{
-				if ( StepDebug ) DebugDrawSystem.Current.Line( top, bottom, duration: 10, color: Color.Red );
+				if ( StepDebug ) DebugOverlay.Line( top, bottom, duration: 10, color: Color.Red );
 				return;
 			}
 
@@ -133,7 +133,7 @@ public sealed partial class BodyController : Component
 
 			if ( StepDebug )
 			{
-				DebugDrawSystem.Current.Line( top, _stepPosition, duration: 10, color: Color.Green );
+				DebugOverlay.Line( top, _stepPosition, duration: 10, color: Color.Green );
 			}
 		}
 	}

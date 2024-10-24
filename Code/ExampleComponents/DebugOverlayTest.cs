@@ -1,54 +1,135 @@
-using Sandbox.Utility;
+﻿using Sandbox.Utility;
 
 public sealed class DebugOverlayTest : Component, Component.ExecuteInEditor
 {
-	DebugDrawSystem Overlay => DebugDrawSystem.Current;
-
 	protected override void OnUpdate()
 	{
-		var unit = Vector3.Right * 300;
+		var unit = Vector3.Right * 150;
 		var up = Vector3.Up * 200;
-		int x = 0;
+		Vector3 pos = WorldPosition;
 
+		DrawAllBones();
+
+
+		{
+			DebugOverlay.Line( pos, pos + Vector3.Up * 50 + Vector3.Right * 50 );
+			DrawLabel( pos, "Line" );
+		}
+
+		pos += unit;
+
+		{
+			DebugOverlay.Line( pos, pos + Vector3.Random * 40, duration: 1, color: Color.White * Random.Shared.Float( 0.5f, 1f ) );
+			DrawLabel( pos, "1s Line" );
+		}
+
+		pos += unit;
+
+		{
+			DebugOverlay.Line( pos, pos + Vector3.Up * 50, duration: 2, overlay: true );
+			DrawLabel( pos, "Line with Overlay" );
+		}
+
+		pos += unit;
+
+		{
+			DebugOverlay.Line( pos, pos + Vector3.Up * 50, Color.Green );
+			DrawLabel( pos, "Green Line" );
+		}
+
+		pos += unit;
+
+		{
+			DebugOverlay.Text( pos, "Hello There" );
+			DrawLabel( pos, "Text" );
+		}
+
+		pos += unit;
+
+		{
+			DebugOverlay.Text( pos, "Hello There", overlay: true );
+			DrawLabel( pos, "Text Overlay" );
+		}
+
+		pos += unit;
+
+		{
+			DebugOverlay.Text( pos, "🥹", size: 128 );
+			DrawLabel( pos, "Text" );
+		}
+
+		pos += unit;
+
+		{
+			DebugOverlay.Sphere( new Sphere( pos, 30 ) );
+			DrawLabel( pos, "Sphere" );
+		}
+
+		pos += unit;
+
+		{
+			DebugOverlay.Sphere( new Sphere( 0, 30 ), transform: new Transform( pos, new Angles( Time.Now * 180f, Time.Now * 240f, 0 ) ) );
+			DrawLabel( pos, "Sphere" );
+		}
+
+		pos += unit;
+
+		{
+			DebugOverlay.Box( BBox.FromPositionAndSize( pos, 30 ) );
+			DrawLabel( pos, "Box" );
+		}
+
+		pos += unit;
+
+		{
+			DebugOverlay.Box( BBox.FromPositionAndSize( 0, 30 ), transform: new Transform( pos, new Angles( Time.Now * 180f, Time.Now * 240f, 0 ) ) );
+			DrawLabel( pos, "Transformed Box" );
+		}
+
+		pos += unit;
+
+
+		/*
 		DrawLineTest( "Line", WorldPosition, 0, false );
-		DrawLineTest( "Line - 2s", WorldPosition + up, 2, false );
 
 		x++;
 		DrawLineTest( "Overlay", WorldPosition + unit * x, 0, true );
-		DrawLineTest( "2s Overlay", WorldPosition + Vector3.Up * 200 + unit * x, 2, true );
 
 		x++;
 		DrawBoxTest( "Box", WorldPosition + unit * x, 0, false );
-		DrawBoxTest( "Box - 1s", WorldPosition + unit * x + up, 1, false );
 
 		x++;
 		DrawSphereTest( "Sphere", WorldPosition + unit * x, 0, false );
-		DrawSphereTest( "Sphere - 1s", WorldPosition + unit * x + up, 1, false );
+		*/
 
-		DrawAllBones();
+	}
+
+	private void DrawLabel( Vector3 pos, string text )
+	{
+		DebugOverlay.Text( pos + Vector3.Down * 50, text );
 	}
 
 	private void DrawLineTest( string text, Vector3 pos, float duration, bool ignorez )
 	{
-		Overlay.Line( pos + Vector3.Random * 100, pos + Vector3.Random * 100, duration: duration, overlay: ignorez );
-		Overlay.Text( pos + Vector3.Down * 50, text, overlay: ignorez );
+
+		DebugOverlay.Text( pos + Vector3.Down * 50, text, overlay: ignorez );
 	}
 
 	private void DrawBoxTest( string text, Vector3 pos, float duration, bool ignorez )
 	{
-		Overlay.Text( pos + Vector3.Down * 50, text, overlay: ignorez, color: Color.White );
+		DebugOverlay.Text( pos + Vector3.Down * 50, text, overlay: ignorez, color: Color.White );
 
 		if ( duration > 0 ) pos += Noise.FbmVector( 1, Time.Now * 200 ) * 200;
 
-		Overlay.Box( pos, new Vector3( 50 + MathF.Sin( Time.Now * 5.0f ) * 20, 50 + MathF.Cos( Time.Now * 5.0f ) * 20, 50 + MathF.Sin( Time.Now * 6.0f ) * 20 ), duration: duration, overlay: ignorez );
+		DebugOverlay.Box( pos, new Vector3( 50 + MathF.Sin( Time.Now * 5.0f ) * 20, 50 + MathF.Cos( Time.Now * 5.0f ) * 20, 50 + MathF.Sin( Time.Now * 6.0f ) * 20 ), duration: duration, overlay: ignorez );
 	}
 
 	private void DrawSphereTest( string text, Vector3 pos, float duration, bool ignorez )
 	{
-		Overlay.Text( pos + Vector3.Down * 50, text, overlay: ignorez );
+		DebugOverlay.Text( pos + Vector3.Down * 50, text, overlay: ignorez );
 
 		if ( duration > 0 ) pos += Noise.FbmVector( 1, Time.Now * 200 ) * 200;
-		Overlay.Sphere( new Sphere( pos, 50 ), duration: duration, overlay: ignorez );
+		DebugOverlay.Sphere( new Sphere( pos, 50 ), duration: duration, overlay: ignorez );
 	}
 
 	void DrawAllBones()
@@ -64,7 +145,7 @@ public sealed class DebugOverlayTest : Component, Component.ExecuteInEditor
 				if ( o.Name.Contains( "leg" ) ) color = Color.Orange;
 				if ( o.Name.Contains( "arm" ) ) color = Color.Cyan;
 
-				Overlay.Text( o.WorldPosition, o.Name, flags: TextFlag.LeftCenter, size: 8, overlay: true, color: color );
+				DebugOverlay.Text( o.WorldPosition, o.Name, flags: TextFlag.LeftCenter, size: 8, overlay: true, color: color );
 			}
 		}
 
