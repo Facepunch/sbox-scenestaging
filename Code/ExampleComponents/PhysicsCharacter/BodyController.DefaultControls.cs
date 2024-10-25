@@ -8,39 +8,53 @@ public sealed partial class BodyController : Component
 	[Sync]
 	public Angles EyeAngles { get; set; }
 
+	/// <summary>
+	/// The player's eye position, in first person mode
+	/// </summary>
+	public Vector3 EyePosition => WorldPosition + Vector3.Up * (BodyHeight - EyeDistanceFromTop);
+
+	/// <summary>
+	/// The player's eye position, in first person mode
+	/// </summary>
+	public Transform EyeTransform => new Transform( EyePosition, EyeAngles, 1 );
+
 
 	[Sync]
 	public bool IsDucking { get; set; }
 
-	float headHeight;
+	/// <summary>
+	/// The distance from the top of the head to to closest ceiling
+	/// </summary>
+	public float Headroom { get; set; }
 
 	TimeSince timeSinceJump = 0;
 
-	[Property, Group( "Helpers" ), Order( 3000 )] public bool UseInputControls { get; set; } = true;
-	[Property, Group( "Helpers" ), Order( 3000 )] public bool UseCameraControls { get; set; } = true;
-	[Property, Group( "Helpers" ), Order( 3000 )] public bool UseAnimatorControls { get; set; } = true;
+	[Property, FeatureEnabled( "Input", Icon = "sports_esports" )] public bool UseInputControls { get; set; } = true;
+	[Property, FeatureEnabled( "Camera", Icon = "videocam" )] public bool UseCameraControls { get; set; } = true;
+	[Property, FeatureEnabled( "Animator", Icon = "sports_martial_arts" )] public bool UseAnimatorControls { get; set; } = true;
 
-	[Property, Group( "🕹️ Input" ), ShowIf( "UseInputControls", true ), Order( 4000 )] public float WalkSpeed { get; set; } = 110;
-	[Property, Group( "🕹️ Input" ), ShowIf( "UseInputControls", true ), Order( 4000 )] public float RunSpeed { get; set; } = 320;
-	[Property, Group( "🕹️ Input" ), ShowIf( "UseInputControls", true ), Order( 4000 )] public float JumpSpeed { get; set; } = 300;
-	[Property, Group( "🕹️ Input" ), ShowIf( "UseInputControls", true ), Order( 4000 )] public float DuckedHeight { get; set; } = 40;
+	[Property, Feature( "Input" )] public float WalkSpeed { get; set; } = 110;
+	[Property, Feature( "Input" )] public float RunSpeed { get; set; } = 320;
+	[Property, Feature( "Input" )] public float DuckedSpeed { get; set; } = 70;
+	[Property, Feature( "Input" )] public float JumpSpeed { get; set; } = 300;
+	[Property, Feature( "Input" )] public float DuckedHeight { get; set; } = 36;
 
-	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public float EyeDistanceFromTop { get; set; } = 8;
-	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public bool ThirdPerson { get; set; } = true;
-	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public bool HideBodyInFirstPerson { get; set; } = true;
-	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public bool RotateWithGround { get; set; } = true;
-	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 )] public Vector3 CameraOffset { get; set; } = new Vector3( 256, 0, 12 );
-	[Property, Group( "📷 Camera" ), ShowIf( "UseCameraControls", true ), Order( 5000 ), InputAction] public string ToggleCameraModeButton { get; set; } = "view";
+	[Property, Feature( "Camera" ), Order( 5000 )] public float EyeDistanceFromTop { get; set; } = 8;
+	[Property, Feature( "Camera" ), Order( 5000 )] public bool ThirdPerson { get; set; } = true;
+	[Property, Feature( "Camera" ), Order( 5000 )] public bool HideBodyInFirstPerson { get; set; } = true;
+	[Property, Feature( "Camera" ), Order( 5000 )] public bool RotateWithGround { get; set; } = true;
+	[Property, Feature( "Camera" ), Order( 5000 )] public Vector3 CameraOffset { get; set; } = new Vector3( 256, 0, 12 );
+	[Property, Feature( "Camera" ), Order( 5000 ), InputAction] public string ToggleCameraModeButton { get; set; } = "view";
 
 	/// <summary>
 	/// The body will usually be a child object with SkinnedModelRenderer
 	/// </summary>
-	[Property, Group( "🕺 Animator" ), ShowIf( "UseAnimatorControls", true ), Order( 5000 )] public SkinnedModelRenderer Renderer { get; set; }
+	[Property, Feature( "Animator" ), Order( 5000 )] public SkinnedModelRenderer Renderer { get; set; }
 
 	bool ShowCreateBodyRenderer => UseAnimatorControls && Renderer is null;
 
 	[Button( icon: "🪄" )]
-	[Property, Group( "🕺 Animator" ), ShowIf( nameof( ShowCreateBodyRenderer ), true ), Order( 5000 )]
+	[Property, Feature( "Animator" ), ShowIf( nameof( ShowCreateBodyRenderer ), true ), Order( 5000 )]
 	public void CreateBodyRenderer()
 	{
 		var body = new GameObject( true, "Body" );
@@ -50,8 +64,8 @@ public sealed partial class BodyController : Component
 		Renderer.Model = Model.Load( "models/citizen/citizen.vmdl" );
 	}
 
-	[Property, Group( "🕺 Animator" ), ShowIf( "UseAnimatorControls", true ), Order( 5000 )] public float RotationAngleLimit { get; set; } = 45.0f;
-	[Property, Group( "🕺 Animator" ), ShowIf( "UseAnimatorControls", true ), Order( 5000 )] public float RotationSpeed { get; set; } = 1.0f;
+	[Property, Feature( "Animator" ), ShowIf( "UseAnimatorControls", true ), Order( 5000 )] public float RotationAngleLimit { get; set; } = 45.0f;
+	[Property, Feature( "Animator" ), ShowIf( "UseAnimatorControls", true ), Order( 5000 )] public float RotationSpeed { get; set; } = 1.0f;
 
 
 	protected override void OnUpdate()
@@ -61,21 +75,84 @@ public sealed partial class BodyController : Component
 		if ( Scene.IsEditor )
 			return;
 
-		UpdateEyeAngles();
-		UpdateCameraPosition();
-		UpdateAnimation();
+		if ( !IsProxy )
+		{
+			if ( UseInputControls )
+			{
+				UpdateEyeAngles();
+			}
+
+			if ( UseCameraControls )
+			{
+				UpdateCameraPosition();
+			}
+		}
+
+		UpdateVisibility();
+
+		if ( UseAnimatorControls && Renderer.IsValid() )
+		{
+			UpdateAnimation( Renderer );
+		}
+	}
+
+	public interface IEvents : ISceneEvent<IEvents>
+	{
+		/// <summary>
+		/// Our eye angles are changing. Allows you to change the sensitivity, or stomp all together.
+		/// </summary>
+		void OnEyeAngles( ref Angles angles ) { }
+
+		/// <summary>
+		/// Called after we've set the camera up
+		/// </summary>
+		void PostCameraSetup( CameraComponent cam ) { }
+
+		/// <summary>
+		/// The player has landed on the ground, after falling this distance.
+		/// </summary>
+		void OnLanded( float distance, Vector3 impactVelocity ) { }
 	}
 
 	void UpdateEyeAngles()
 	{
+		var input = Input.AnalogLook;
+
+		IEvents.PostToGameObject( GameObject, x => x.OnEyeAngles( ref input ) );
+
 		var ee = EyeAngles;
-		ee += Input.AnalogLook * 0.5f;
+		ee += input;
 		ee.roll = 0;
+		ee.pitch = ee.pitch.Clamp( -90, 90 );
+
 		EyeAngles = ee;
 	}
 
 	float _eyez;
 	float _cameraDistance = 100;
+
+	void UpdateVisibility()
+	{
+		if ( !UseCameraControls ) return;
+		if ( Scene.Camera is not CameraComponent cam ) return;
+
+		// we we looking through this GameObject?
+		bool viewer = !ThirdPerson;
+		viewer = viewer && HideBodyInFirstPerson;
+		viewer = viewer && !IsProxy;
+
+		if ( !IsProxy && _cameraDistance < 20 )
+		{
+			viewer = true;
+		}
+
+		if ( IsProxy )
+		{
+			viewer = false;
+		}
+
+		GameObject.Tags.Set( "viewer", viewer );
+	}
 
 	void UpdateCameraPosition()
 	{
@@ -85,7 +162,10 @@ public sealed partial class BodyController : Component
 		if ( !string.IsNullOrWhiteSpace( ToggleCameraModeButton ) )
 		{
 			if ( Input.Pressed( ToggleCameraModeButton ) )
+			{
 				ThirdPerson = !ThirdPerson;
+				_cameraDistance = 20;
+			}
 		}
 
 		var rot = EyeAngles.ToRotation();
@@ -133,27 +213,64 @@ public sealed partial class BodyController : Component
 
 		GameObject.Tags.Set( "viewer", _cameraDistance < 20 || (!ThirdPerson && HideBodyInFirstPerson) );
 		cam.WorldPosition = eyePosition;
+		cam.FieldOfView = Preferences.FieldOfView;
+
+		IEvents.PostToGameObject( GameObject, x => x.PostCameraSetup( cam ) );
 	}
 
 	protected override void OnFixedUpdate()
 	{
-		if ( IsProxy ) return;
-		if ( !UseInputControls ) return;
 		if ( Scene.IsEditor ) return;
 
+		UpdateHeadroom();
+		UpdateFalling();
 
-		{
-			var tr = TraceBody( WorldPosition, WorldPosition + Vector3.Up * 100 );
-			headHeight = tr.Distance;
-		}
+		if ( IsProxy ) return;
+		if ( !UseInputControls ) return;
 
 		InputMove();
-		UpdateDucking();
+		UpdateDucking( Input.Down( "duck" ) );
 		InputJump();
+	}
 
-		//WishVelocity = WishVelocity;
+	void UpdateHeadroom()
+	{
+		var tr = TraceBody( WorldPosition, WorldPosition + Vector3.Up * 100, 0.75f );
+		Headroom = tr.Distance;
+	}
 
-		//UpdatePressure();
+	bool _wasFalling = false;
+	float fallDistance = 0;
+	Vector3 fallVelocity = 0;
+
+	void UpdateFalling()
+	{
+		if ( !Mode.AllowFalling )
+		{
+			_wasFalling = false;
+			fallDistance = 0;
+			fallVelocity = default;
+			return;
+		}
+
+		if ( IsOnGround )
+		{
+			if ( _wasFalling )
+			{
+				IEvents.PostToGameObject( GameObject, x => x.OnLanded( fallDistance, fallVelocity ) );
+			}
+
+			_wasFalling = false;
+			fallDistance = 0;
+			return;
+		}
+
+		_wasFalling = true;
+		fallVelocity = Velocity;
+		fallDistance += fallVelocity.z * -1 * Time.Delta;
+
+		if ( fallDistance < 0 )
+			fallDistance = 0;
 	}
 
 	void InputMove()
@@ -180,17 +297,23 @@ public sealed partial class BodyController : Component
 		}
 		else
 		{
-			if ( Input.Down( "Run" ) ) WishVelocity *= RunSpeed;
-			else WishVelocity *= WalkSpeed;
+			var velocity = WalkSpeed;
+			if ( Input.Down( "Run" ) ) velocity = RunSpeed;
+			if ( IsDucking ) velocity = DuckedSpeed;
+
+			WishVelocity *= velocity;
 		}
 	}
 
 	float unduckedHeight = -1;
 	Vector3 bodyDuckOffset = 0;
 
-	void UpdateDucking()
+	/// <summary>
+	/// Called during FixedUpdate when UseInputControls is enmabled. Will duck if requested.
+	/// If not, and we're ducked, will unduck if there is room
+	/// </summary>
+	public void UpdateDucking( bool wantsDuck )
 	{
-		var wantsDuck = Input.Down( "duck" );
 		if ( wantsDuck == IsDucking ) return;
 
 		unduckedHeight = MathF.Max( unduckedHeight, BodyHeight );
@@ -202,7 +325,7 @@ public sealed partial class BodyController : Component
 			if ( !IsOnGround )
 				return;
 
-			if ( headHeight < unduckDelta )
+			if ( Headroom < unduckDelta )
 				return;
 		}
 
@@ -234,31 +357,37 @@ public sealed partial class BodyController : Component
 
 		timeSinceJump = 0;
 		Jump( Vector3.Up * JumpSpeed );
+		OnJumped();
+	}
 
+	[Broadcast]
+	public void OnJumped()
+	{
 		if ( UseAnimatorControls && Renderer.IsValid() )
 		{
 			Renderer.Set( "b_jump", true );
 		}
 	}
 
-	void UpdateAnimation()
+	/// <summary>
+	/// Update the animation for this renderer. This will update the body rotation etc too.
+	/// </summary>
+	public void UpdateAnimation( SkinnedModelRenderer renderer )
 	{
-		if ( !UseAnimatorControls ) return;
-		if ( !Renderer.IsValid() ) return;
-		if ( Scene.IsEditor ) return;
+		if ( !renderer.IsValid() ) return;
 
-		Renderer.LocalPosition = bodyDuckOffset;
+		renderer.LocalPosition = bodyDuckOffset;
 		bodyDuckOffset = bodyDuckOffset.LerpTo( 0, Time.Delta * 5.0f );
 
-		UpdateAnimationParameters();
-		RotateRenderBody();
+		UpdateAnimationParameters( renderer );
+		RotateRenderBody( renderer );
 	}
 
 	float _animRotationSpeed;
 
-	void UpdateAnimationParameters()
+	void UpdateAnimationParameters( SkinnedModelRenderer renderer )
 	{
-		var rot = Renderer.WorldRotation;
+		var rot = renderer.WorldRotation;
 
 		var skidding = 0.0f;
 
@@ -272,43 +401,43 @@ public sealed partial class BodyController : Component
 
 			var angle = MathF.Atan2( sideward, forward ).RadianToDegree().NormalizeDegrees();
 
-			Renderer.Set( "move_direction", angle );
-			Renderer.Set( "move_speed", Velocity.Length );
-			Renderer.Set( "move_groundspeed", Velocity.WithZ( 0 ).Length );
-			Renderer.Set( "move_y", sideward );
-			Renderer.Set( "move_x", forward );
-			Renderer.Set( "move_z", Velocity.z );
+			renderer.Set( "move_direction", angle );
+			renderer.Set( "move_speed", Velocity.Length );
+			renderer.Set( "move_groundspeed", Velocity.WithZ( 0 ).Length );
+			renderer.Set( "move_y", sideward );
+			renderer.Set( "move_x", forward );
+			renderer.Set( "move_z", Velocity.z );
 		}
 
-		Renderer.SetLookDirection( "aim_eyes", EyeAngles.Forward, 1 );
-		Renderer.SetLookDirection( "aim_head", EyeAngles.Forward, 1 );
-		Renderer.SetLookDirection( "aim_body", EyeAngles.Forward, 1 );
+		renderer.SetLookDirection( "aim_eyes", EyeAngles.Forward, 1 );
+		renderer.SetLookDirection( "aim_head", EyeAngles.Forward, 1 );
+		renderer.SetLookDirection( "aim_body", EyeAngles.Forward, 1 );
 
-		Renderer.Set( "b_swim", IsSwimming );
-		Renderer.Set( "b_grounded", IsOnGround || IsClimbing );
-		Renderer.Set( "b_climbing", IsClimbing );
-		Renderer.Set( "move_rotationspeed", _animRotationSpeed );
-		Renderer.Set( "skid", skidding );
-		Renderer.Set( "move_style", Input.Down( "Run" ) ? 2 : 1 );
+		renderer.Set( "b_swim", IsSwimming );
+		renderer.Set( "b_grounded", IsOnGround || IsClimbing );
+		renderer.Set( "b_climbing", IsClimbing );
+		renderer.Set( "move_rotationspeed", _animRotationSpeed );
+		renderer.Set( "skid", skidding );
+		renderer.Set( "move_style", WishVelocity.WithZ( 0 ).Length > WalkSpeed ? 2 : 1 );
 
-		float duck = headHeight.Remap( 50, 0, 0, 0.5f, true );
+		float duck = Headroom.Remap( 50, 0, 0, 0.5f, true );
 		if ( IsDucking )
 		{
 			duck *= 3.0f;
 			duck += 1.0f;
 		}
 
-		Renderer.Set( "duck", duck );
+		renderer.Set( "duck", duck );
 	}
 
-	void RotateRenderBody()
+	void RotateRenderBody( SkinnedModelRenderer renderer )
 	{
 		_animRotationSpeed = 0;
 
 		// ladder likes to have us facing it
 		if ( Mode is Sandbox.Movement.MoveModeLadder ladderMode )
 		{
-			Renderer.WorldRotation = Rotation.Lerp( Renderer.WorldRotation, ladderMode.ClimbingRotation, Time.Delta * 5.0f );
+			renderer.WorldRotation = Rotation.Lerp( renderer.WorldRotation, ladderMode.ClimbingRotation, Time.Delta * 5.0f );
 			return;
 		}
 
@@ -321,17 +450,17 @@ public sealed partial class BodyController : Component
 			targetAngle = Rotation.LookAt( velocity, Vector3.Up );
 		}
 
-		float rotateDifference = Renderer.WorldRotation.Distance( targetAngle );
+		float rotateDifference = renderer.WorldRotation.Distance( targetAngle );
 
 		if ( rotateDifference > RotationAngleLimit || velocity.Length > 50.0f )
 		{
-			var newRotation = Rotation.Lerp( Renderer.WorldRotation, targetAngle, Time.Delta * 4.0f * RotationSpeed );
+			var newRotation = Rotation.Lerp( renderer.WorldRotation, targetAngle, Time.Delta * 4.0f * RotationSpeed );
 
 			// We won't end up actually moving to the targetAngle, so calculate how much we're actually moving
-			var angleDiff = Renderer.WorldRotation.Angles() - newRotation.Angles(); // Rotation.Distance is unsigned
+			var angleDiff = renderer.WorldRotation.Angles() - newRotation.Angles(); // Rotation.Distance is unsigned
 			_animRotationSpeed = angleDiff.yaw / Time.Delta;
 
-			Renderer.WorldRotation = newRotation;
+			renderer.WorldRotation = newRotation;
 		}
 	}
 

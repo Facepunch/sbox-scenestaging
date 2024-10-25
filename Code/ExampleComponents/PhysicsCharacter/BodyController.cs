@@ -6,6 +6,7 @@ namespace Sandbox;
 [Title( "Body Controller" )]
 [Category( "Physics" )]
 [Alias( "PhysicsCharacter", "Sandbox.PhysicsCharacter" )]
+[Tint( EditorTint.Green )]
 public sealed partial class BodyController : Component, IScenePhysicsEvents, Component.ExecuteInEditor
 {
 	/// <summary>
@@ -27,7 +28,7 @@ public sealed partial class BodyController : Component, IScenePhysicsEvents, Com
 	[Property, Group( "Body" )] public float BodyMass { get; set; } = 500;
 
 
-	[Property, Group( "Body" ), Title( "Show Rigidbody" )]
+	[Property, Group( "Components" ), Title( "Show Rigidbody" )]
 	public bool ShowRigidbodyComponent
 	{
 		get => _showRigidBodyComponent;
@@ -44,7 +45,7 @@ public sealed partial class BodyController : Component, IScenePhysicsEvents, Com
 
 	bool _showColliderComponent;
 
-	[Property, Group( "Body" ), Title( "Show Colliders" )]
+	[Property, Group( "Components" ), Title( "Show Colliders" )]
 	public bool ShowColliderComponents
 	{
 		get => _showColliderComponent;
@@ -64,7 +65,9 @@ public sealed partial class BodyController : Component, IScenePhysicsEvents, Com
 		}
 	}
 
+	[Sync]
 	public Vector3 WishVelocity { get; set; }
+
 	public bool IsOnGround => GroundObject.IsValid();
 
 	public Vector3 Velocity { get; private set; }

@@ -7,6 +7,7 @@ namespace Sandbox.Movement;
 public abstract partial class MoveMode : Component
 {
 	public virtual bool AllowGrounding => false;
+	public virtual bool AllowFalling => false;
 
 	[RequireComponent]
 	public BodyController Controller { get; set; }

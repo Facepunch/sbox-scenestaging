@@ -14,6 +14,7 @@ public partial class MoveModeWalk : MoveMode
 
 
 	public override bool AllowGrounding => true;
+	public override bool AllowFalling => true;
 
 	public override int Score( BodyController controller ) => Priority;
 
