@@ -2,7 +2,8 @@ namespace Sandbox;
 
 public sealed class ApplyLocalClothing : Component
 {
-	[Property] public SkinnedModelRenderer BodyTarget { get; set; }
+	[Property]
+	public SkinnedModelRenderer BodyTarget { get; set; }
 
 	protected override void OnAwake()
 	{

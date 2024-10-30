@@ -1,6 +1,6 @@
 ﻿namespace Sandbox;
 
-public sealed partial class BodyController : Component
+public sealed partial class PlayerController : Component
 {
 	/// <summary>
 	/// The object we're standing on. Null if we're standing on nothing.

@@ -10,9 +10,12 @@ public abstract partial class MoveMode : Component
 	public virtual bool AllowFalling => false;
 
 	[RequireComponent]
-	public BodyController Controller { get; set; }
+	public PlayerController Controller { get; set; }
 
-	public virtual int Score( BodyController controller ) => 0;
+	/// <summary>
+	/// Highest number becomes the new control mode
+	/// </summary>
+	public virtual int Score( PlayerController controller ) => 0;
 
 	/// <summary>
 	/// Called before the physics step is run
@@ -118,8 +121,26 @@ public abstract partial class MoveMode : Component
 	/// <summary>
 	/// Update the animator which is available at Controller.Renderer 
 	/// </summary>
-	public virtual void UpdateAnimator()
+	public virtual void UpdateAnimator( SkinnedModelRenderer renderer )
 	{
 
+	}
+
+	/// <summary>
+	/// Read inputs, return WishVelocity
+	/// </summary>
+	public virtual Vector3 UpdateMove( Rotation eyes, Vector3 input )
+	{
+		// don't normalize, because analog input might want to go slow
+		input = input.ClampLength( 1 );
+
+		var vel = eyes * input;
+		if ( vel.IsNearZeroLength ) return default;
+
+		var velocity = Controller.WalkSpeed;
+		if ( Input.Down( "Run" ) ) velocity = Controller.RunSpeed;
+		if ( Controller.IsDucking ) velocity = Controller.DuckedSpeed;
+
+		return vel * velocity;
 	}
 }

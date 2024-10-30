@@ -40,7 +40,7 @@ public partial class MoveModeLadder : MoveMode
 		body.AngularDamping = 1f;
 	}
 
-	public override int Score( BodyController controller )
+	public override int Score( PlayerController controller )
 	{
 		if ( ClimbingObject.IsValid() ) return Priority;
 		return -100;
@@ -133,5 +133,20 @@ public partial class MoveModeLadder : MoveMode
 				ClimbingRotation *= new Angles( 0, 180, 0 );
 			}
 		}
+	}
+
+	public override Vector3 UpdateMove( Rotation eyes, Vector3 input )
+	{
+		var wishVelocity = new Vector3( 0, 0, Input.AnalogMove.x );
+
+		wishVelocity *= 340.0f;
+
+		if ( Input.Down( "jump" ) )
+		{
+			// Jump away from ladder
+			Controller.Jump( ClimbingRotation.Backward * 200 );
+		}
+
+		return wishVelocity;
 	}
 }

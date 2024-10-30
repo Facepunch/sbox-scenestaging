@@ -1,7 +1,7 @@
 ﻿namespace Sandbox.Movement;
 
 /// <summary>
-/// The character is walking
+/// The character is swimming
 /// </summary>
 [Icon( "scuba_diving" ), Group( "Movement" ), Title( "MoveMode - Swim" )]
 public partial class MoveModeSwim : MoveMode
@@ -24,7 +24,7 @@ public partial class MoveModeSwim : MoveMode
 		body.AngularDamping = 1f;
 	}
 
-	public override int Score( BodyController controller )
+	public override int Score( PlayerController controller )
 	{
 		if ( WaterLevel > SwimLevel ) return Priority;
 		return -100;
@@ -68,5 +68,15 @@ public partial class MoveModeSwim : MoveMode
 		{
 			WaterLevel = waterLevel;
 		}
+	}
+
+	public override Vector3 UpdateMove( Rotation eyes, Vector3 input )
+	{
+		if ( Input.Down( "jump" ) )
+		{
+			input += Vector3.Up;
+		}
+
+		return base.UpdateMove( eyes, input );
 	}
 }

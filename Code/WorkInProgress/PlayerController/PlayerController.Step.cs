@@ -1,6 +1,6 @@
 ﻿namespace Sandbox;
 
-public sealed partial class BodyController : Component
+public sealed partial class PlayerController : Component
 {
 	/// <summary>
 	/// Enable debug overlays for this character

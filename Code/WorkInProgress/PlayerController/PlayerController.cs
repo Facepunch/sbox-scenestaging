@@ -3,11 +3,11 @@ namespace Sandbox;
 
 [Icon( "directions_walk" )]
 [EditorHandle( Icon = "directions_walk" )]
-[Title( "Body Controller" )]
+[Title( "Player Controller" )]
 [Category( "Physics" )]
-[Alias( "PhysicsCharacter", "Sandbox.PhysicsCharacter" )]
+[Alias( "PhysicsCharacter", "Sandbox.PhysicsCharacter", "Sandbox.BodyController" )]
 [Tint( EditorTint.Green )]
-public sealed partial class BodyController : Component, IScenePhysicsEvents, Component.ExecuteInEditor
+public sealed partial class PlayerController : Component, IScenePhysicsEvents, Component.ExecuteInEditor
 {
 	/// <summary>
 	/// This is used to keep a distance away from surfaces. For exmaple, when grounding, we'll
@@ -108,6 +108,13 @@ public sealed partial class BodyController : Component, IScenePhysicsEvents, Com
 
 			if ( Renderer is not null ) Renderer.WorldRotation = new Angles( 0, EyeAngles.yaw, 0 );
 		}
+	}
+
+	protected override void OnDisabled()
+	{
+		base.OnDisabled();
+
+		DisableAnimationEvents();
 	}
 
 	protected override void OnValidate()

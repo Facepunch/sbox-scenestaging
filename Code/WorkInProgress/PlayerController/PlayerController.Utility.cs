@@ -1,6 +1,6 @@
 ﻿namespace Sandbox;
 
-public sealed partial class BodyController : Component
+public sealed partial class PlayerController : Component
 {
 	/// <summary>
 	/// Create a ragdoll gameobject version of our render body.

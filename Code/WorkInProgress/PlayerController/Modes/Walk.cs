@@ -16,7 +16,7 @@ public partial class MoveModeWalk : MoveMode
 	public override bool AllowGrounding => true;
 	public override bool AllowFalling => true;
 
-	public override int Score( BodyController controller ) => Priority;
+	public override int Score( PlayerController controller ) => Priority;
 
 	public override void AddVelocity()
 	{
@@ -52,5 +52,13 @@ public partial class MoveModeWalk : MoveMode
 			return false;
 
 		return true;
+	}
+
+	public override Vector3 UpdateMove( Rotation eyes, Vector3 input )
+	{
+		// ignore pitch when walking
+		eyes = eyes.Angles() with { pitch = 0 };
+
+		return base.UpdateMove( eyes, input );
 	}
 }

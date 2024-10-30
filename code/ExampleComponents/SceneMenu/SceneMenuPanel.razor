@@ -32,7 +32,7 @@
                 <h1>@group.Key</h1>
 
                 <div class="scenes">
-                    @foreach( var scene in group.OrderBy( x => x.Title ) )
+                    @foreach( var scene in group.OrderBy( x => x.GetMetadata( "Title" ) ) )
                     {
                         <SceneButton Scene="@scene" OnSelected=@OpenScene></SceneButton> 
                     }
@@ -53,38 +53,4 @@
         var go = new GameObject(true, "Return To Menu");
         go.Components.Create<ReturnToMenu>();
     }
-
-    bool refreshing;
-    List<LobbyInformation> list = new();
-
-    protected override void OnEnabled()
-    {
-        base.OnEnabled();
-
-        Assert.True(GameObject.IsValid());
-
-        _ = RefreshLobbyList();
-    }
-
-    async Task RefreshLobbyList()
-    {
-        while ( true )
-        {
-            refreshing = true;
-            StateHasChanged();
-
-            list = await Networking.QueryLobbies();
-
-            refreshing = false;
-            StateHasChanged();
-
-            await Task.DelayRealtimeSeconds( 5.0f );
-        }
-    }
-
-    void OpenLobby( LobbyInformation lobby )
-    {
-        Networking.Connect( lobby.LobbyId );
-    }
-
 }
