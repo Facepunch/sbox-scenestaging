@@ -158,9 +158,15 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		const ComponentFlags componentFlags = ComponentFlags.NotSaved | ComponentFlags.NotCloned;
 
+		var boneObjects = Model.CreateBoneObjects( GameObject );
+
 		foreach ( var part in physics.Parts )
 		{
 			var bone = Model.Bones.GetBone( part.BoneName );
+			if ( !boneObjects.TryGetValue( bone, out var go ) )
+				continue;
+
+			go.Flags |= GameObjectFlags.Absolute;
 
 			if ( !Renderer.IsValid() || !Renderer.TryGetBoneTransform( bone, out var boneWorld ) )
 			{
@@ -168,12 +174,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				boneWorld = world.ToWorld( part.Transform );
 			}
 
-			var go = GameObject.Children.FirstOrDefault( x => x.Name == part.BoneName );
-			go ??= Scene.CreateObject();
-			go.Flags |= GameObjectFlags.Absolute | GameObjectFlags.Bone;
-			go.Name = part.BoneName;
 			go.WorldTransform = boneWorld;
-			go.Parent = GameObject;
 
 			var body = go.AddComponent<Rigidbody>( false );
 			body.Flags |= componentFlags;
