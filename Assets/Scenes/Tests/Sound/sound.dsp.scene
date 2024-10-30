@@ -3217,16 +3217,6 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "Sandbox.ApplyLocalClothing",
-          "__guid": "65bf770c-17c4-467a-b1c6-9c5770d2ae8a",
-          "BodyTarget": {
-            "_type": "component",
-            "component_id": "b2307af7-ddd7-4e8c-b816-23bf400e93eb",
-            "go": "03fb5c82-6602-4ada-b573-081831331b62",
-            "component_type": "SkinnedModelRenderer"
-          }
-        },
-        {
           "__type": "Sandbox.PlayerController",
           "__guid": "b054d2cd-06c5-4bc2-b48b-a5d73c438a7d",
           "Body": {
