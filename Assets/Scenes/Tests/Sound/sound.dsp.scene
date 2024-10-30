@@ -243,7 +243,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "DspVolume",
+          "__type": "Sandbox.DspVolume",
           "__guid": "801aa399-48d2-48b5-bb82-51a712ee4b76",
           "Dsp": "tunnel.small",
           "Priority": 0,
@@ -253,13 +253,13 @@
               "Radius": 10
             },
             "Box": {
-              "Mins": "-324.7563,-33.17253,-77.48012",
-              "Maxs": "196.2391,31.6854,165.8832"
+              "Mins": "-324.7563,-33.17253,-77.48006",
+              "Maxs": "196.2391,31.6854,221.57"
             }
           },
           "TargetMixer": {
             "Name": "game",
-            "Id": "f0f5e284-9e9e-4072-b158-58718d86fa9b"
+            "Id": "15d757e9-180d-424a-b4a5-c0ac5d52fe15"
           }
         }
       ]
@@ -272,7 +272,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "DspVolume",
+          "__type": "Sandbox.DspVolume",
           "__guid": "a35dd381-6f3b-4791-b830-75c0be95a8fa",
           "Dsp": "cavern.large",
           "Priority": 0,
@@ -282,8 +282,8 @@
               "Radius": 10
             },
             "Box": {
-              "Mins": "-324.7563,-731.8145,-77.48012",
-              "Maxs": "65.15079,564.7159,165.8832"
+              "Mins": "-324.7563,-792.316,-77.48012",
+              "Maxs": "65.15079,564.7158,165.8832"
             }
           },
           "TargetMixer": {
@@ -432,7 +432,7 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "DspVolume",
+              "__type": "Sandbox.DspVolume",
               "__guid": "0cb9ff22-bbf8-4271-a9e5-3e86c1a83b19",
               "Dsp": "metallic.medium",
               "Priority": 0,
@@ -1674,7 +1674,7 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "DspVolume",
+              "__type": "Sandbox.DspVolume",
               "__guid": "c68f2d30-9520-4bc7-964f-f980ea57d42e",
               "Dsp": "brite.medium",
               "Priority": 0,
@@ -2841,8 +2841,19 @@
             {
               "__type": "Sandbox.SoundPointComponent",
               "__guid": "175970bf-e69a-4edf-8808-45a4fe6ef94b",
+              "Distance": 512,
               "DistanceAttenuation": false,
               "DistanceAttenuationOverride": false,
+              "Falloff": [
+                {
+                  "y": 1,
+                  "in": 3.1415927,
+                  "out": -3.1415927
+                },
+                {
+                  "x": 1
+                }
+              ],
               "Force2d": false,
               "MaxRepeatTime": 1,
               "MinRepeatTime": 1,
@@ -3216,7 +3227,7 @@
           }
         },
         {
-          "__type": "PhysicsCharacter",
+          "__type": "Sandbox.PlayerController",
           "__guid": "b054d2cd-06c5-4bc2-b48b-a5d73c438a7d",
           "Body": {
             "_type": "component",
@@ -3229,7 +3240,14 @@
           "BodyRadius": 16,
           "CameraOffset": "256,0,12",
           "DuckedHeight": 40,
+          "DuckedSpeed": 70,
+          "EnableFootstepSounds": true,
           "EyeDistanceFromTop": 8,
+          "FootstepMixer": {
+            "Name": "unknown",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          "FootstepVolume": 1,
           "HideBodyInFirstPerson": true,
           "JumpSpeed": 300,
           "Renderer": {
@@ -3238,12 +3256,12 @@
             "go": "03fb5c82-6602-4ada-b573-081831331b62",
             "component_type": "SkinnedModelRenderer"
           },
+          "RotateWithGround": true,
           "RotationAngleLimit": 45,
           "RotationSpeed": 1,
           "RunSpeed": 320,
           "ShowColliderComponents": false,
           "ShowRigidbodyComponent": false,
-          "StepDebug": true,
           "ThirdPerson": false,
           "ToggleCameraModeButton": "view",
           "UseAnimatorControls": true,
@@ -3270,7 +3288,7 @@
           "StartAsleep": false
         },
         {
-          "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterWalkMode",
+          "__type": "Sandbox.Movement.MoveModeWalk",
           "__guid": "53fca0be-d327-47a1-8eda-fd49f84f8f0f",
           "GroundAngle": 45,
           "Priority": 0,
