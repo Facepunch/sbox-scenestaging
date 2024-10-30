@@ -391,6 +391,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 	private void PositionPhysicsFromAnimation()
 	{
+		if ( Scene.IsEditor ) 
+			return;
+
 		foreach ( var body in _bodies )
 		{
 			if ( !body.Component.IsValid() )
@@ -452,6 +455,20 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		base.OnUpdate();
 
 		PositionRendererBonesFromPhysics();
+
+		if ( Scene.IsEditor )
+		{
+			foreach ( var body in _bodies )
+			{
+				if ( !body.Component.IsValid() )
+					continue;
+
+				if ( Renderer.TryGetBoneTransform( body.Bone, out var boneWorld ) )
+				{
+					body.Component.WorldTransform = boneWorld;
+				}
+			}
+		}
 	}
 
 	protected override void OnFixedUpdate()
