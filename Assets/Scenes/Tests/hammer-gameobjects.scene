@@ -16,7 +16,7 @@
           }
         },
         {
-          "__type": "Sandbox.BodyController",
+          "__type": "Sandbox.PlayerController",
           "__guid": "5f08791f-a943-4981-af43-e74c9c40db42",
           "Body": {
             "_type": "component",
@@ -29,7 +29,14 @@
           "BodyRadius": 16,
           "CameraOffset": "256,0,32",
           "DuckedHeight": 32,
+          "DuckedSpeed": 70,
+          "EnableFootstepSounds": true,
           "EyeDistanceFromTop": 8,
+          "FootstepMixer": {
+            "Name": "unknown",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          "FootstepVolume": 1,
           "HideBodyInFirstPerson": true,
           "JumpSpeed": 300,
           "Renderer": {
