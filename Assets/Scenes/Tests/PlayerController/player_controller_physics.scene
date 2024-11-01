@@ -323,7 +323,7 @@
           }
         },
         {
-          "__type": "Sandbox.BodyController",
+          "__type": "Sandbox.PlayerController",
           "__guid": "fad0eff1-c82f-43a3-99b3-53393af25536",
           "Body": {
             "_type": "component",
@@ -336,7 +336,14 @@
           "BodyRadius": 16,
           "CameraOffset": "256,0,32",
           "DuckedHeight": 32,
+          "DuckedSpeed": 70,
+          "EnableFootstepSounds": true,
           "EyeDistanceFromTop": 8,
+          "FootstepMixer": {
+            "Name": "unknown",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          "FootstepVolume": 1,
           "HideBodyInFirstPerson": true,
           "JumpSpeed": 300,
           "Renderer": {
@@ -8531,7 +8538,7 @@
               "__guid": "82e2bd12-f45a-4e9b-9fe1-8bad0031903b",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "367.7528,-0.001799246,1262.499",
+              "Position": "367.7528,-0.001839936,1262.499",
               "Enabled": true,
               "Components": [
                 {
@@ -8579,7 +8586,7 @@
               "__guid": "e8bf89e9-c689-43a0-87d3-82a358fb1986",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "404.0001,-24.00087,1262.499",
+              "Position": "404.0001,-24.00091,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -8628,7 +8635,7 @@
               "__guid": "deb2631d-3933-4088-9180-5e18f0b60415",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "403.0766,8.89149,1262.499",
+              "Position": "403.0766,8.891449,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -8677,7 +8684,7 @@
               "__guid": "d2e19fe7-c25b-4691-966b-b0a749ea86cd",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "454.751,-54.10722,1262.499",
+              "Position": "454.751,-54.10728,1262.499",
               "Rotation": "0,0,-0.258819,0.9659258",
               "Enabled": true,
               "Components": [
@@ -8873,7 +8880,7 @@
               "__guid": "ad9b7e6e-534a-43b2-befb-5d6db5acfbde",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "395.9955,-62.95534,1262.501",
+              "Position": "395.9955,-62.95538,1262.501",
               "Rotation": "0,0,-0.6087614,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8922,7 +8929,7 @@
               "__guid": "0e6b5275-e45e-4f5d-8bcf-821ad2a86375",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "391.2995,-30.66546,1259.191",
+              "Position": "391.2995,-30.6655,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -8971,7 +8978,7 @@
               "__guid": "110e51dd-4f9b-4384-8940-f7d9c8f0f238",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "443.8012,3.559312,1259.192",
+              "Position": "443.8012,3.559251,1259.192",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9020,7 +9027,7 @@
               "__guid": "fff4db18-0ade-45da-8366-470c32ac9cfe",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "438.9766,-35.95286,1259.191",
+              "Position": "438.9766,-35.95292,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9069,7 +9076,7 @@
               "__guid": "e0638e56-32c4-4c91-875f-9c556232f1ad",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "488.9273,-15.98706,1259.191",
+              "Position": "488.9273,-15.98712,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9118,7 +9125,7 @@
               "__guid": "0b2e21a8-a351-4275-b4ce-d4d0a348ccef",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "463.6745,-14.97648,1259.191",
+              "Position": "463.6745,-14.97654,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9167,7 +9174,7 @@
               "__guid": "5bfbd1e5-a7b1-4ad8-b80d-e2f56b06f42c",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "491.5528,-43.12545,1259.191",
+              "Position": "491.5528,-43.12551,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -9216,7 +9223,7 @@
               "__guid": "e528984e-6e05-4039-b74d-d13afab344fa",
               "Flags": 0,
               "Name": "Cube (2)",
-              "Position": "483.6224,-74.91022,1259.191",
+              "Position": "483.6224,-74.91029,1259.191",
               "Rotation": "0,0,-0.6087615,0.7933536",
               "Enabled": true,
               "Components": [
@@ -16208,12 +16215,7 @@
           "IsTrigger": false,
           "Scale": "50,50,50",
           "Static": true,
-          "SurfaceVelocity": "0,0,0"
-        },
-        {
-          "__type": "Sandbox.Conveyor",
-          "__guid": "f819f8a0-8948-4999-9aee-2887a813c70c",
-          "Velocity": "0,-100,0"
+          "SurfaceVelocity": "0,-100,0"
         },
         {
           "__type": "Sandbox.Rigidbody",
