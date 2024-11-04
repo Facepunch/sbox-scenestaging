@@ -1,5 +1,3 @@
-using Sandbox;
-
 public sealed class PlayerUse : Component
 {
 	CameraComponent camera { get; set; }
@@ -30,14 +28,14 @@ public sealed class PlayerUse : Component
 	void Use()
 	{
 		var tr = Scene.Trace.Ray( camera.WorldPosition, camera.WorldPosition + camera.WorldRotation.Forward * 100 )
-	.IgnoreGameObject( GameObject )
-	.Run();
+		.IgnoreGameObject( GameObject )
+		.Run();
 
 		if ( tr.Hit )
 		{
 			Sound.Play( useSound );
 
-			if(tr.GameObject.Components.Get<BaseInteractor>() is BaseInteractor interactable )
+			if ( tr.GameObject.Components.Get<BaseInteractor>() is BaseInteractor interactable )
 			{
 				interactable.OnUsed();
 			}

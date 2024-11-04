@@ -33,11 +33,7 @@ public sealed class Dresser : Component, Component.ExecuteInEditor
 		if ( !ApplyHeightScale )
 			clothing.Height = 1;
 
-		if ( Clothing is not null )
-		{
-			clothing.AddRange( Clothing );
-		}
-
+		clothing.AddRange( Clothing );
 		clothing.Normalize();
 
 		clothing.Apply( BodyTarget );
