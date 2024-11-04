@@ -1,0 +1,472 @@
+{
+  "__guid": "070e10ea-34a4-49bc-94b9-7b634dfe9cb6",
+  "GameObjects": [
+    {
+      "__guid": "0b39f938-eb59-456c-9b8d-f4ec7fca3632",
+      "Flags": 0,
+      "Name": "Main Camera",
+      "Position": "-300,0,100",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "518a71cf-8228-42cf-9ecc-a8fa6c9578c9",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 90,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "__guid": "e051ccfd-baf9-4131-bdb2-053dd6caf8bc",
+      "Flags": 0,
+      "Name": "Directional Light",
+      "Position": "0,0,200",
+      "Rotation": "-0.1103518,0.2664127,0.366428,0.884634",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "9a857dce-7b90-46fd-b22d-601d396fa249",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0,0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "cdd7e3d2-dd92-4133-b3b2-e1d6c20b6ca3",
+      "Flags": 0,
+      "Name": "Scene Info",
+      "Position": "0,0,100",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "be1ac5bd-ceba-46bc-8a1d-2dd7891928dc",
+          "Description": "Oil Ocean Zone",
+          "SceneTags": "",
+          "Title": "Liquid Test"
+        }
+      ]
+    },
+    {
+      "__guid": "d0ed6d61-f22f-4c2c-b9d7-641487ab6b8e",
+      "Flags": 0,
+      "Name": "Oil",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Facepunch.Oil",
+          "__guid": "06d75edd-062f-4da8-bc42-5aea51cc7a9d"
+        },
+        {
+          "__type": "Sandbox.PlaneCollider",
+          "__guid": "7de74d50-60d0-4388-8d92-1fc8b5807da2",
+          "Center": "0,0,-32",
+          "Friction": 0.05,
+          "IsTrigger": false,
+          "Scale": "5000,5000",
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Facepunch.FluidSimulation",
+          "__guid": "f19a61d6-75ab-436b-a2dc-46c7486b380d",
+          "SimulationBounds": {
+            "Mins": "-512,-512,1",
+            "Maxs": "512,512,0"
+          }
+        }
+      ]
+    },
+    {
+      "__guid": "d64def74-adb0-46ef-b1de-b08c53350993",
+      "Flags": 0,
+      "Name": "2D Skybox",
+      "Position": "-361.2741,7.112885,341.9241",
+      "Tags": "skybox",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "36169728-c662-4337-a529-2c8db0aa6266",
+          "SkyIndirectLighting": true,
+          "SkyMaterial": "materials/skybox/skybox_sunrise_01.vmat",
+          "Tint": "0.28837,0.20642,0.16229,1"
+        }
+      ]
+    },
+    {
+      "__guid": "7ec84ca1-493e-416a-a7cf-3fbe7fda7422",
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "17.59871,15,4.306556",
+      "Scale": "1.8,1.8,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "76d9d47b-1443-46f5-bde1-e0f815b12505",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "d79e0446-955d-4976-86da-d6c84a417c42",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "32,32,32",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "d0d27b07-6bef-40d3-ac46-6483e8e2f3ec",
+      "Flags": 0,
+      "Name": "Cubemap Fog",
+      "Position": "-162.9306,54.90535,59.22871",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CubemapFog",
+          "__guid": "ffc61f5d-116d-4f87-92dc-5f1de715c5ce",
+          "Blur": 0,
+          "EndDistance": 10240,
+          "FalloffExponent": 2,
+          "HeightExponent": 2,
+          "HeightStart": 2000,
+          "HeightWidth": 0,
+          "Sky": "materials/skybox/light_test_sky_sunny02.vmat",
+          "StartDistance": 0,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "222fa09e-f7a7-4568-95bb-9d179630a803",
+      "Flags": 0,
+      "Name": "Player",
+      "Position": "-167.7814,-21.31724,64.97727",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "15c0d0a1-c2f1-4df4-a811-064d3ddb0d79",
+          "AngularDamping": 1,
+          "Gravity": true,
+          "LinearDamping": 0.1,
+          "Locking": {
+            "Pitch": true,
+            "Yaw": true,
+            "Roll": true
+          },
+          "MassCenterOverride": "0,0,36",
+          "MassOverride": 500,
+          "MotionEnabled": true,
+          "OverrideMassCenter": true,
+          "RigidbodyFlags": "DisableCollisionSounds",
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.CapsuleCollider",
+          "__guid": "a30b7fa9-e0dd-4b23-b2a4-a3d16256fdb2",
+          "End": "0,0,45.05097",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Radius": 11.313708,
+          "Start": "0,0,60.68629",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "607decac-7704-447e-aedb-c22226f6c79a",
+          "Center": "0,0,18",
+          "Friction": 0,
+          "IsTrigger": false,
+          "Scale": "16,16,36",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Sandbox.PlayerController",
+          "__guid": "33e4fc5b-f270-4e66-80fb-3be9b71ff5b3",
+          "Body": {
+            "_type": "component",
+            "component_id": "15c0d0a1-c2f1-4df4-a811-064d3ddb0d79",
+            "go": "222fa09e-f7a7-4568-95bb-9d179630a803",
+            "component_type": "Rigidbody"
+          },
+          "BodyHeight": 72,
+          "BodyMass": 500,
+          "BodyRadius": 16,
+          "CameraOffset": "256,0,12",
+          "DuckedHeight": 36,
+          "DuckedSpeed": 70,
+          "EnableFootstepSounds": true,
+          "EnablePressing": true,
+          "EyeDistanceFromTop": 8,
+          "FootstepMixer": {
+            "Name": "unknown",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          "FootstepVolume": 1,
+          "HideBodyInFirstPerson": true,
+          "JumpSpeed": 100,
+          "ReachLength": 130,
+          "Renderer": {
+            "_type": "component",
+            "component_id": "0de42ab0-d211-40ec-9e5e-dbae9b9bcaee",
+            "go": "33b2ca37-f0f9-4974-88d4-f22052671cfc",
+            "component_type": "SkinnedModelRenderer"
+          },
+          "RotateWithGround": true,
+          "RotationAngleLimit": 45,
+          "RotationSpeed": 1,
+          "RunSpeed": 150,
+          "ShowColliderComponents": false,
+          "ShowRigidbodyComponent": false,
+          "ThirdPerson": true,
+          "ToggleCameraModeButton": "view",
+          "UseAnimatorControls": true,
+          "UseButton": "use",
+          "UseCameraControls": true,
+          "UseInputControls": true,
+          "WalkSpeed": 110
+        },
+        {
+          "__type": "Sandbox.Movement.MoveModeWalk",
+          "__guid": "612bc6df-6923-411a-8172-d601afe16e98",
+          "GroundAngle": 45,
+          "Priority": 0,
+          "StepDownHeight": 18,
+          "StepUpHeight": 18
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "33b2ca37-f0f9-4974-88d4-f22052671cfc",
+          "Flags": 0,
+          "Name": "Body",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkinnedModelRenderer",
+              "__guid": "0de42ab0-d211-40ec-9e5e-dbae9b9bcaee",
+              "BodyGroups": 341,
+              "CreateBoneObjects": false,
+              "Model": "models/citizen/citizen.vmdl",
+              "Morphs": {},
+              "Parameters": {
+                "bools": {},
+                "ints": {},
+                "floats": {},
+                "vectors": {},
+                "rotations": {}
+              },
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1",
+              "UseAnimGraph": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "f288d857-90f1-4101-826f-787557edd459",
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "0,1000,-207.0636",
+      "Scale": "20,20,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "e67e5171-5a12-4c48-96fd-4f8645588f01",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/dev/dev_metal_rough100.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "98611e94-5481-465a-94a3-6804490af2fa",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "32,32,32",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "4282284e-c53b-44f8-a35b-36b181510331",
+      "Flags": 0,
+      "Name": "Cube (3)",
+      "Position": "0,-1000,-207.0636",
+      "Scale": "20,20,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "d8cb4531-99d8-4c81-96a8-af7fef8cd6aa",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/dev/dev_metal_rough100.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "b99ca73e-33c2-4fbf-888c-a1d613126585",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "32,32,32",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "9395e823-6c27-4554-a2ae-dfa946fd7e42",
+      "Flags": 0,
+      "Name": "Cube (1)",
+      "Position": "-1000,0,-207.0636",
+      "Scale": "20,20,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "d1f14c69-f3a5-4ec1-8fea-68a9ce1d029f",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/dev/dev_metal_rough100.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "c27c7fee-2135-4a19-93b5-5dceeffb9885",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "32,32,32",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "0470d986-1484-4642-8972-b90a38a23e29",
+      "Flags": 0,
+      "Name": "Cube (2)",
+      "Position": "1000,0,-207.0636",
+      "Scale": "20,20,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "3807b37d-c60a-439d-ba90-cd31c809e872",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/dev/dev_metal_rough100.vmat",
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "d7614369-90e3-4176-bf52-b4c87938b47f",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "32,32,32",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Liquid Test",
+      "Description": "Oil Ocean Zone"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "Liquid Test",
+  "Description": "Oil Ocean Zone",
+  "__references": [],
+  "__version": 2
+}
