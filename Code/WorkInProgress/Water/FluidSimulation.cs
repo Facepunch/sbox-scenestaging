@@ -60,7 +60,7 @@ public class FluidSimulation : Component, Component.ExecuteInEditor
         _textures = null;
         _compute = null;
     }
-    protected override void OnUpdate()
+    protected override void OnFixedUpdate()
     {
         UpdateObjects();
         Update();
@@ -95,7 +95,7 @@ public class FluidSimulation : Component, Component.ExecuteInEditor
     {
         _compute.Attributes.Set( "GridSize", new Vector2( Texture.Width, Texture.Height ) );
         _compute.Attributes.Set( "TimeStep", Time.Delta );
-        _compute.Attributes.Set( "Time", Time.Now );
+        _compute.Attributes.Set( "Time", Time.Delta );
         _compute.Attributes.Set( "Viscosity", 0.0f );
         _compute.Attributes.Set( "Density", 1000.0f );
         _compute.Attributes.Set( "Pressure", 1.0f );

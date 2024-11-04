@@ -142,15 +142,19 @@ CS
             if (distance(vPosition, obj.Position) < obj.Radius)
             {
                 velocityToAdd -= obj.Velocity * TimeStep * 0.1;
+                cell.Smoke += length( obj.Velocity ) * TimeStep * 0.01;
             }
         }
 
         cell.Velocity += velocityToAdd * 100;
 
-        cell.Smoke += length(velocityToAdd) * abs(sin(Time )) * 0.1;
+        //cell.Smoke += length(velocityToAdd) * abs(sin(Time )) * 0.1;
 
-        cell.Smoke *= 1.0 - TimeStep;
-        cell.Pressure *= 1.0 - TimeStep;
+        // Falloff
+        float flFalloff = 0.25;
+        cell.Smoke *= 1.0 - TimeStep * flFalloff;
+        cell.Pressure *= 1.0 - TimeStep * flFalloff;
+
         cell.UVOffset = lerp(cell.UVOffset, vPosition/GridSize, TimeStep);
 
         // Not related to forces but showcasing stuff
