@@ -68,15 +68,6 @@
       ]
     },
     {
-      "__guid": "6b143cfc-3611-4136-87a6-fefd2e286d59",
-      "Flags": 0,
-      "Name": "impact.generic",
-      "Position": "-48.64307,16,47.86659",
-      "Enabled": true,
-      "__Prefab": "particles/surfaces/impact.generic.prefab",
-      "__PrefabVariables": {}
-    },
-    {
       "__guid": "3fec60f3-7586-4c75-a37b-06acc49e8cce",
       "Flags": 0,
       "Name": "Box",
@@ -155,7 +146,8 @@
               "materials/dev/reflectivity_30.vmat",
               "materials/generic/floor_asphalt_blend_02.vmat",
               "materials/dark/dev_grid_dark.vmat",
-              "materials/dev/dev_grid_04.vmat"
+              "materials/dev/dev_grid_04.vmat",
+              "materials/glass/glass_a.vmat"
             ]
           },
           "SmoothingAngle": 40,
@@ -286,7 +278,140 @@
               "materials/dev/reflectivity_30.vmat",
               "materials/trimsheets/wood/wood_trim_weathered_blend_02.vmat",
               "materials/generic/floor_wooden_deck_a.vmat",
-              "materials/trimsheets/wood/wood_trim_01.vmat"
+              "materials/trimsheets/wood/wood_trim_01.vmat",
+              "materials/glass/glass_a.vmat"
+            ]
+          },
+          "SmoothingAngle": 40,
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "35bb0bd8-19df-4367-bc47-0633f47eb42d",
+      "Flags": 0,
+      "Name": "Box (3)",
+      "Position": "-56,-80,48.13341",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.MeshComponent",
+          "__guid": "a52e21f4-8ff2-4ca0-a8f4-1afcc108f939",
+          "Collision": "Mesh",
+          "Color": "1,1,1,1",
+          "HideInGame": false,
+          "IsTrigger": false,
+          "Mesh": {
+            "Topology": "H4sIAAAAAAAACl2Qiw6CUAxDh1flgg/wAfr/X2pP0iWLJA25W9t16xHxFc4C30E4\u002Bt2FWbgKd2Ew4NTvIZxcb9ZH4b5db\u002Bb9z/oUzVh8m7lPc9FOzjRYQ8ZXyXxxXvrw4e72wvtWdoEPdzMXj8We9OHDXcvO7EqdN396eKaeLHjkLciePeYxi4z0mMFtMisablFvRXZ2Tj158KQOF78f9WSROMQBAAA=",
+            "Positions": [
+              "-8,-16,16",
+              "8,-16,16",
+              "8,16,16",
+              "-8,16,16",
+              "-8,16,-16",
+              "8,16,-16",
+              "8,-16,-16",
+              "-8,-16,-16"
+            ],
+            "TextureCoord": [
+              "1,1",
+              "0,0",
+              "1,0",
+              "0,0",
+              "0,0",
+              "0,0",
+              "0,1",
+              "0,0",
+              "1,0",
+              "1,1",
+              "1,1",
+              "1,1",
+              "0,1",
+              "1,1",
+              "0,0",
+              "1,1",
+              "1,0",
+              "0,1",
+              "0,1",
+              "1,0",
+              "0,1",
+              "1,0",
+              "1,0",
+              "0,1"
+            ],
+            "TextureUAxis": [
+              "1,0,0",
+              "1,0,-0",
+              "0,-1,0",
+              "0,1,0",
+              "-1,0,0",
+              "1,-0,0"
+            ],
+            "TextureVAxis": [
+              "0,-1,0",
+              "0,-1,0",
+              "0,0,-1",
+              "-0,0,-1",
+              "0,0,-1",
+              "-0,0,-1"
+            ],
+            "TextureScale": [
+              "0.03125,0.0625",
+              "0.03125,0.0625",
+              "0.0625,0.06249999",
+              "0.0625,0.06249999",
+              "0.03125,0.06249999",
+              "0.03125,0.06249999"
+            ],
+            "TextureOffset": [
+              "0,0",
+              "0,0",
+              "0,2.134644",
+              "0,2.134644",
+              "0,2.134644",
+              "0,2.134644"
+            ],
+            "MaterialIndex": [
+              4,
+              4,
+              4,
+              4,
+              4,
+              4
+            ],
+            "EdgeFlags": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "Materials": [
+              "materials/dev/reflectivity_30.vmat",
+              "materials/trimsheets/wood/wood_trim_weathered_blend_02.vmat",
+              "materials/generic/floor_wooden_deck_a.vmat",
+              "materials/trimsheets/wood/wood_trim_01.vmat",
+              "materials/glass/glass_a.vmat"
             ]
           },
           "SmoothingAngle": 40,
@@ -564,7 +689,7 @@
       "__guid": "9f2c39b1-2931-4b41-a186-46c41bfaa8be",
       "Flags": 0,
       "Name": "hazmatsuit",
-      "Position": "-48,160,0.5361",
+      "Position": "-48,112,0.5361",
       "Enabled": true,
       "Components": [
         {
@@ -583,7 +708,9 @@
       "__guid": "bb17bd75-592d-4470-85a4-3ac7985748b9",
       "Flags": 0,
       "Name": "Main Camera",
-      "Position": "-300,0,100",
+      "Position": "48,-192,100",
+      "Rotation": "-0.1411191,0.0888366,0.8344276,0.5252847",
+      "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
@@ -605,7 +732,7 @@
         {
           "__type": "Sandbox.Sharpen",
           "__guid": "369a5512-2c11-436f-bd44-7e9685016c69",
-          "Scale": 0.11
+          "Scale": 0.13
         },
         {
           "__type": "Sandbox.Bloom",
@@ -632,26 +759,17 @@
             }
           ],
           "Mode": "Additive",
-          "Strength": 0.17,
-          "Threshold": 0.5,
+          "Strength": 0.33,
+          "Threshold": 0.41,
           "ThresholdWidth": 0
         }
       ]
     },
     {
-      "__guid": "4974e4c6-147f-49cb-b305-9a788d51ef1c",
-      "Flags": 0,
-      "Name": "impact.metal",
-      "Position": "-46.00002,64,47.99999",
-      "Enabled": true,
-      "__Prefab": "particles/surfaces/impact.metal.prefab",
-      "__PrefabVariables": {}
-    },
-    {
       "__guid": "6b736e01-ec5f-432f-876c-6d30b00263e4",
       "Flags": 0,
       "Name": "Player Controller",
-      "Position": "-0.00003147125,176,-0.000002330398",
+      "Position": "48,176,-0.000002330398",
       "Rotation": "0,0,-0.7071067,0.7071068",
       "Enabled": true,
       "Components": [
@@ -712,7 +830,7 @@
             "Yaw": true,
             "Roll": true
           },
-          "MassCenterOverride": "0,0,8.891279",
+          "MassCenterOverride": "0,0,36",
           "MassOverride": 500,
           "MotionEnabled": true,
           "OverrideMassCenter": true,
@@ -799,19 +917,58 @@
       ]
     },
     {
-      "__guid": "48f3e53a-c99d-41ed-a1bd-b4f718cb5ea9",
+      "__guid": "9068b56a-bf8e-43ba-9064-a31d036732cd",
       "Flags": 0,
-      "Name": "GameObject",
-      "Enabled": true
-    },
-    {
-      "__guid": "d42ab193-35b1-4c71-a093-a46927d01b4b",
-      "Flags": 0,
-      "Name": "impact.wood",
-      "Position": "-48,-32,48",
+      "Name": "-Particles-",
+      "Position": "-4.399225,47.21404,-72.12627",
       "Enabled": true,
-      "__Prefab": "particles/surfaces/impact.wood.prefab",
-      "__PrefabVariables": {}
+      "Children": [
+        {
+          "__guid": "4974e4c6-147f-49cb-b305-9a788d51ef1c",
+          "Flags": 0,
+          "Name": "impact.metal",
+          "Position": "-41.60079,16.78596,120.1263",
+          "Enabled": true,
+          "__Prefab": "particles/surfaces/impact.metal.prefab",
+          "__PrefabVariables": {}
+        },
+        {
+          "__guid": "6b143cfc-3611-4136-87a6-fefd2e286d59",
+          "Flags": 0,
+          "Name": "impact.generic",
+          "Position": "-44.24384,-31.21404,119.9929",
+          "Enabled": true,
+          "__Prefab": "particles/surfaces/impact.generic.prefab",
+          "__PrefabVariables": {}
+        },
+        {
+          "__guid": "7dedfbf7-2cfe-456a-9d0a-e60fcbfd5308",
+          "Flags": 0,
+          "Name": "impact.flesh.mist",
+          "Position": "-38.3989,64.78596,136.1263",
+          "Enabled": true,
+          "__Prefab": "particles/surfaces/impact.flesh.mist.prefab",
+          "__PrefabVariables": {}
+        },
+        {
+          "__guid": "9c3a1979-7aeb-4b78-8c08-afd9d62afd60",
+          "Flags": 0,
+          "Name": "impact.glass",
+          "Position": "-41.60078,-127.214,120.1263",
+          "Enabled": true,
+          "__Prefab": "particles/surfaces/impact.glass.prefab",
+          "__PrefabVariables": {}
+        },
+        {
+          "__guid": "822a34d6-fdab-430c-af94-57155d38e27d",
+          "Flags": 0,
+          "Name": "impact.wood",
+          "Position": "-43.60078,-79.21404,120.1263",
+          "Enabled": true,
+          "__Prefab": "particles/surfaces/impact.wood.prefab",
+          "__PrefabVariables": {}
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -845,15 +1002,18 @@
     "facepunch.concrete_wall_bare_02#47059",
     "facepunch.floor_asphalt_blend_02#75646",
     "facepunch.floor_wooden_deck_a#18687",
-    "facepunch.impactgeneric#76286",
+    "facepunch.glass_a#70686",
+    "facepunch.impactfleshmist#76364",
+    "facepunch.impactgeneric#76351",
+    "facepunch.impactglass#76418",
     "facepunch.impactmetal#76342",
-    "facepunch.impactwood#76345",
+    "facepunch.impactwood#76353",
     "facepunch.metal_brushed_a_hs#28945",
     "facepunch.metal_galvanized#18748",
     "facepunch.metal_trim_02#47037",
     "facepunch.metal_trim_painted_blend_02#44577",
-    "facepunch.wood_trim_01#43509",
     "facepunch.wood_trim_weathered_blend_02#43521",
+    "facepunch.wooden_door_frame_single_02b#63899",
     "fpopium.dev_grid_04#55240",
     "matek.dev_grid_dark#46449",
     "sboxmp.hazmatsuit#58087"
