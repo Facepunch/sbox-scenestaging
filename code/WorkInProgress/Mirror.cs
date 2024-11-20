@@ -6,6 +6,9 @@ public class Mirror : Component, Component.ExecuteInEditor
 	private SceneCamera Camera;
 	private Texture ReflectionTexture;
 
+	[Property, Range( 0.25f, 1f )]
+	public float ResolutionScale { get; set; } = 1f;
+
 	protected override void OnPreRender()
 	{
 		base.OnPreRender();
@@ -19,12 +22,24 @@ public class Mirror : Component, Component.ExecuteInEditor
 		var cameraPosition = camera.WorldPosition;
 		var cameraRotation = camera.WorldRotation;
 
+		var targetSize = (camera.ScreenRect.Size * ResolutionScale).SnapToGrid( 4f );
+
+		if ( ReflectionTexture is null || !ReflectionTexture.Size.AlmostEqual( targetSize ) )
+		{
+			ReflectionTexture?.Dispose();
+			ReflectionTexture = Texture.CreateRenderTarget( "reflection", ImageFormat.RGBA8888, targetSize );
+
+			PlaneRender.Attributes.Set( "Reflection", ReflectionTexture );
+		}
+
 		var viewMatrix = Matrix.CreateWorld( cameraPosition, cameraRotation.Forward, cameraRotation.Up );
 		var reflectMatrix = ReflectMatrix( viewMatrix, new Plane( PlaneRender.Position, PlaneRender.Rotation.Up ) );
 
 		var reflectionPosition = reflectMatrix.Transform( cameraPosition );
 		var reflectionRotation = ReflectRotation( cameraRotation, PlaneRender.Rotation.Up );
 
+		Camera.ZNear = camera.ZNear;
+		Camera.ZFar = camera.ZFar;
 		Camera.Position = reflectionPosition;
 		Camera.Rotation = reflectionRotation;
 		Camera.FieldOfView = camera.FieldOfView;
@@ -48,15 +63,12 @@ public class Mirror : Component, Component.ExecuteInEditor
 
 		Camera.ExcludeTags.Add( "Reflection" );
 
-		ReflectionTexture = Texture.CreateRenderTarget( "reflection", ImageFormat.RGBA8888, new Vector2( 512, 512 ) );
-
 		PlaneRender = new SceneCustomObject( Scene.SceneWorld )
 		{
 			RenderOverride = Render
 		};
 
 		PlaneRender.Tags.Add( "Reflection" );
-		PlaneRender.Attributes.Set( "Reflection", ReflectionTexture );
 	}
 
 	protected override void OnDisabled()
@@ -113,5 +125,13 @@ public class Mirror : Component, Component.ExecuteInEditor
 	private static Rotation ReflectRotation( Rotation source, Vector3 normal )
 	{
 		return Rotation.LookAt( Vector3.Reflect( source * Vector3.Forward, normal ), Vector3.Reflect( source * Vector3.Up, normal ) );
+	}
+
+	protected override void DrawGizmos()
+	{
+		if ( !Gizmo.IsSelected ) return;
+
+		Gizmo.Transform = global::Transform.Zero;
+		Gizmo.Draw.LineFrustum( Camera.GetFrustum( new Rect( 0f, 0f, 512f, 512f ) ) );
 	}
 }
