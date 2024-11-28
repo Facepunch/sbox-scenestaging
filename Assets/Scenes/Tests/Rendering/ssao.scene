@@ -487,21 +487,17 @@
           "RenderExcludeTags": "",
           "RenderTags": "",
           "TargetEye": "None",
-          "Viewport": "0,0,0.5,1",
+          "Viewport": "0.5,0,0.5,1",
           "ZFar": 10000,
           "ZNear": 10
         },
         {
           "__type": "Sandbox.AmbientOcclusion",
           "__guid": "e4ab5ea9-a2d7-4742-b430-2b3535cc2425",
-          "__version": 1,
-          "DenoiseMode": "Temporal",
           "FalloffDistance": 0.98,
           "Intensity": 24,
-          "Mode": "SSAO",
           "Quality": "High",
-          "Radius": 53,
-          "Thickness": 0.2
+          "Radius": 53
         }
       ],
       "Children": [
@@ -524,21 +520,19 @@
               "RenderExcludeTags": "",
               "RenderTags": "",
               "TargetEye": "None",
-              "Viewport": "0.5,0,0.5,1",
+              "Viewport": "0,0,0.5,1",
               "ZFar": 10000,
               "ZNear": 10
             },
             {
-              "__type": "Sandbox.AmbientOcclusion",
-              "__guid": "5cc08d3a-830d-4568-a587-f88aa2dd342e",
-              "__version": 1,
+              "__type": "Sandbox.GroundTruthAmbientOcclusion",
+              "__guid": "659804df-4f2a-4e79-89ff-268385262150",
               "DenoiseMode": "Temporal",
-              "FalloffDistance": 0.95,
-              "Intensity": 24,
-              "Mode": "GTAO",
+              "FalloffDistance": 1,
+              "Intensity": 16,
               "Quality": "High",
               "Radius": 300,
-              "Thickness": 0.15
+              "Thickness": 0.2
             }
           ]
         }
@@ -847,5 +841,6 @@
   "__references": [
     "rust.rock_cliff_a#25118"
   ],
+  "IsValid": true,
   "__version": 2
 }
