@@ -1,0 +1,133 @@
+{
+  "RootObject": {
+    "__guid": "f3c3d9b8-e8c7-4410-b58b-d76139cf3040",
+    "Flags": 0,
+    "Name": "movingsphere",
+    "Enabled": true,
+    "Children": [
+      {
+        "__guid": "d5ac4ace-e0eb-4400-a46c-cf1eb27ab279",
+        "Flags": 0,
+        "Name": "Wall",
+        "Scale": "3,3,3",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "ba1246ae-d2b0-4a6e-8c24-d8f2e919f2f6",
+            "BodyGroups": 18446744073709551615,
+            "CreateAttachments": false,
+            "Model": "models/dev/sphere.vmdl",
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "0.07193,0.42953,0.44186,1"
+          },
+          {
+            "__type": "Sandbox.NavMeshArea",
+            "__guid": "48f36e41-a2f6-459a-9d9b-2d16c2226b30",
+            "IsBlocker": true,
+            "LinkedCollider": {
+              "_type": "component",
+              "component_id": "bcb81be1-47a2-4647-8b50-ea32db469fe2",
+              "go": "d5ac4ace-e0eb-4400-a46c-cf1eb27ab279",
+              "component_type": "SphereCollider"
+            }
+          },
+          {
+            "__type": "MoveComponent",
+            "__guid": "6a87379a-c926-4850-bde8-d0dfe8d65739",
+            "Distance": "500,0,0",
+            "Speed": 1
+          },
+          {
+            "__type": "Sandbox.SphereCollider",
+            "__guid": "bcb81be1-47a2-4647-8b50-ea32db469fe2",
+            "Center": "0,0,0",
+            "IsTrigger": true,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "Radius": 48,
+            "Static": false,
+            "SurfaceVelocity": "0,0,0"
+          }
+        ]
+      }
+    ],
+    "__variables": [
+      {
+        "Id": "Distance",
+        "Title": "Distance",
+        "Description": null,
+        "Group": null,
+        "Order": 0,
+        "Targets": [
+          {
+            "Id": "6a87379a-c926-4850-bde8-d0dfe8d65739",
+            "Property": "Distance"
+          }
+        ]
+      },
+      {
+        "Id": "Speed",
+        "Title": "Speed",
+        "Description": null,
+        "Group": null,
+        "Order": 0,
+        "Targets": [
+          {
+            "Id": "6a87379a-c926-4850-bde8-d0dfe8d65739",
+            "Property": "Speed"
+          }
+        ]
+      },
+      {
+        "Id": "Tint",
+        "Title": "Tint",
+        "Description": null,
+        "Group": null,
+        "Order": 0,
+        "Targets": [
+          {
+            "Id": "ba1246ae-d2b0-4a6e-8c24-d8f2e919f2f6",
+            "Property": "Tint"
+          }
+        ]
+      }
+    ],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}

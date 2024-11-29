@@ -1,0 +1,119 @@
+{
+  "RootObject": {
+    "__guid": "7af974b8-fa8b-4e3c-8bc1-f463fd6812f3",
+    "Flags": 0,
+    "Name": "slidingdoor",
+    "Enabled": true,
+    "Children": [
+      {
+        "__guid": "e07b6481-f80e-4c3a-ae0f-ac3afc09a106",
+        "Flags": 0,
+        "Name": "DoorModel",
+        "Scale": "12,0.3999998,4.000001",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "b541e376-133e-4af0-b960-8fc377d3e5ee",
+            "BodyGroups": 18446744073709551615,
+            "CreateAttachments": false,
+            "Model": "models/dev/box.vmdl",
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "0.20155,0,0.46512,1"
+          }
+        ]
+      },
+      {
+        "__guid": "6fbc6150-3b84-456c-818b-f98d10d39dd8",
+        "Flags": 0,
+        "Name": "DoorLogic",
+        "Scale": "12,0.3999998,10",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "NavigationSlidingDoor",
+            "__guid": "99698d3c-3fd4-4bfe-aa4a-ed800cf2b9c2",
+            "Blocker": {
+              "_type": "component",
+              "component_id": "3b71aca4-58e7-48d3-9738-cdbebd4b7341",
+              "go": "4ceb7763-997c-48e2-b597-60b4a6604bb5",
+              "component_type": "NavMeshArea"
+            },
+            "DoorModel": {
+              "_type": "gameobject",
+              "go": "e07b6481-f80e-4c3a-ae0f-ac3afc09a106"
+            }
+          }
+        ]
+      },
+      {
+        "__guid": "4ceb7763-997c-48e2-b597-60b4a6604bb5",
+        "Flags": 0,
+        "Name": "DoorBlocker",
+        "Scale": "12,0.3999998,10",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.NavMeshArea",
+            "__guid": "3b71aca4-58e7-48d3-9738-cdbebd4b7341",
+            "IsBlocker": true,
+            "LinkedCollider": {
+              "_type": "component",
+              "component_id": "18c9ce1f-b856-4f76-af31-902ee1779716",
+              "go": "4ceb7763-997c-48e2-b597-60b4a6604bb5",
+              "component_type": "BoxCollider"
+            }
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "18c9ce1f-b856-4f76-af31-902ee1779716",
+            "Center": "0,0,0",
+            "IsTrigger": true,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "Scale": "60,150,32",
+            "Static": false,
+            "SurfaceVelocity": "0,0,0"
+          }
+        ]
+      }
+    ],
+    "__variables": [],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}

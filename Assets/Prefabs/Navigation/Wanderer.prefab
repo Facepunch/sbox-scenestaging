@@ -1,0 +1,140 @@
+{
+  "RootObject": {
+    "__guid": "fe397676-8fd2-4485-8a26-a012aba851fe",
+    "Flags": 0,
+    "Name": "wanderer",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "NavigationTargetWanderer",
+        "__guid": "bb987e63-c5ef-42bd-a52b-be9eb4616917",
+        "Body": {
+          "_type": "component",
+          "component_id": "b609ad45-dab2-4d7d-acb9-c153a8cdf22d",
+          "go": "fe397676-8fd2-4485-8a26-a012aba851fe",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "PotentialTargets": []
+      },
+      {
+        "__type": "Sandbox.NavMeshAgent",
+        "__guid": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2",
+        "Acceleration": 10000,
+        "Height": 128,
+        "MaxSpeed": 300,
+        "Radius": 32,
+        "Separation": 0.25,
+        "UpdatePosition": true,
+        "UpdateRotation": true
+      },
+      {
+        "__type": "Sandbox.SkinnedModelRenderer",
+        "__guid": "b609ad45-dab2-4d7d-acb9-c153a8cdf22d",
+        "BodyGroups": 341,
+        "CreateAttachments": false,
+        "CreateBoneObjects": false,
+        "Model": "models/citizen/citizen.vmdl",
+        "Morphs": {},
+        "Parameters": {
+          "bools": {},
+          "ints": {},
+          "floats": {},
+          "vectors": {},
+          "rotations": {}
+        },
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Sequence": {
+          "Name": null
+        },
+        "Tint": "1,1,1,1",
+        "UseAnimGraph": true
+      },
+      {
+        "__type": "Sandbox.SkinnedModelRenderer",
+        "__guid": "0ff2da3d-247d-4d7d-8028-1a369a1dac48",
+        "BodyGroups": 18446744073709551615,
+        "BoneMergeTarget": {
+          "_type": "component",
+          "component_id": "b609ad45-dab2-4d7d-acb9-c153a8cdf22d",
+          "go": "fe397676-8fd2-4485-8a26-a012aba851fe",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "CreateAttachments": false,
+        "CreateBoneObjects": false,
+        "Model": "models/citizen_clothes/jacket/raincoat/models/raincoat.vmdl",
+        "Morphs": {},
+        "Parameters": {
+          "bools": {},
+          "ints": {},
+          "floats": {},
+          "vectors": {},
+          "rotations": {}
+        },
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Sequence": {
+          "Name": null
+        },
+        "Tint": "1,1,1,1",
+        "UseAnimGraph": true
+      }
+    ],
+    "Children": [],
+    "__variables": [
+      {
+        "Id": "Potential Targets",
+        "Title": "Potential Targets",
+        "Description": null,
+        "Group": null,
+        "Order": 0,
+        "Targets": [
+          {
+            "Id": "bb987e63-c5ef-42bd-a52b-be9eb4616917",
+            "Property": "PotentialTargets"
+          }
+        ]
+      }
+    ],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}

@@ -1,0 +1,86 @@
+{
+  "RootObject": {
+    "__guid": "7e0459c3-a303-4744-b2c9-a808c711a8f5",
+    "Flags": 0,
+    "Name": "target",
+    "Enabled": true,
+    "Children": [
+      {
+        "__guid": "da7b0c96-6cd4-4ac6-8c60-07b4e49293c6",
+        "Flags": 0,
+        "Name": "Srpite",
+        "Scale": "10,10,10",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.SpriteRenderer",
+            "__guid": "ce1039c1-687b-4d25-8a05-da92fe013ae2",
+            "Additive": true,
+            "CastShadows": false,
+            "Color": "0.31188,0.06176,0.06176,1",
+            "DepthFeather": 0,
+            "FlipHorizontal": false,
+            "FlipVertical": false,
+            "FogStrength": 1,
+            "Lighting": false,
+            "Opaque": true,
+            "Pivot": "0.5,0.5",
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "Size": "10,10",
+            "Texture": "materials/particles/shapes/star1.vtex"
+          }
+        ]
+      }
+    ],
+    "__variables": [
+      {
+        "Id": "Color",
+        "Title": "Color",
+        "Description": null,
+        "Group": null,
+        "Order": 0,
+        "Targets": [
+          {
+            "Id": "ce1039c1-687b-4d25-8a05-da92fe013ae2",
+            "Property": "Color"
+          }
+        ]
+      }
+    ],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}
