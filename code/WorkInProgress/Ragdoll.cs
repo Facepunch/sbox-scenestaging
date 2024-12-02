@@ -134,9 +134,6 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
-	[Property, Group( "Physics" )]
-	public bool DriveFromAnimation { get; set; }
-
 	private void CreatePhysics()
 	{
 		if ( !Active )
@@ -400,36 +397,12 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				continue;
 
 			if ( body.Component.MotionEnabled )
-			{
-				if ( DriveFromAnimation )
-				{
-					DriveBodyFromAnimation( body );
-				}
-
 				continue;
-			}
 
 			if ( Renderer.TryGetBoneTransformAnimation( body.Bone, out var boneWorld ) )
 			{
 				body.Component.SmoothMove( boneWorld, 0.01f, Time.Delta );
 			}
-		}
-	}
-
-	private void DriveBodyFromAnimation( Body body )
-	{
-		if ( !body.Component.IsValid() )
-			return;
-
-		if ( body.Bone.Parent is null )
-			return;
-
-		if ( Renderer.TryGetBoneTransformAnimation( body.Bone, out var boneWorld ) )
-		{
-			boneWorld = WorldTransform.ToLocal( boneWorld );
-			boneWorld = _rootBody.WorldTransform.ToWorld( _rootBindPose.ToLocal( boneWorld ) );
-
-			body.Component.SmoothRotate( boneWorld.Rotation, 0.01f, Time.Delta );
 		}
 	}
 
