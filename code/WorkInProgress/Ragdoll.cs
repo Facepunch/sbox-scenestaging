@@ -11,12 +11,12 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	private PhysicsLock _locking;
 	private bool _motionEnabled = true;
 	private Rigidbody _rootBody;
-	private Transform _rootBindPose;
 
-	public record Body( Rigidbody Component, BoneCollection.Bone Bone )
+	public record Body( Rigidbody Component, BoneCollection.Bone Bone, Transform LocalTransform )
 	{
 		public Rigidbody Component { get; init; } = Component;
 		public BoneCollection.Bone Bone { get; init; } = Bone;
+		public Transform LocalTransform { get; set; } = LocalTransform;
 	}
 
 	public record Joint( Sandbox.Joint Component, Body Body1, Body Body2, Transform Frame1, Transform Frame2 )
@@ -163,15 +163,18 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			if ( !boneObjects.TryGetValue( bone, out var go ) )
 				continue;
 
-			go.Flags |= GameObjectFlags.Absolute;
-
-			if ( !Renderer.IsValid() || !Renderer.TryGetBoneTransform( bone, out var boneWorld ) )
+			if ( !go.Flags.Contains( GameObjectFlags.Absolute ) )
 			{
-				// There's no renderer bones, use physics bind pose
-				boneWorld = world.ToWorld( part.Transform );
-			}
+				go.Flags |= GameObjectFlags.Absolute;
 
-			go.WorldTransform = boneWorld;
+				if ( !Renderer.IsValid() || !Renderer.TryGetBoneTransform( bone, out var boneWorld ) )
+				{
+					// There's no renderer bones, use physics bind pose
+					boneWorld = world.ToWorld( part.Transform );
+				}
+
+				go.WorldTransform = boneWorld;
+			}
 
 			var body = go.AddComponent<Rigidbody>( false );
 			body.Flags |= componentFlags;
@@ -181,7 +184,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			body.LinearDamping = part.LinearDamping;
 			body.AngularDamping = part.AngularDamping;
 
-			_bodies.Add( new Body( body, bone ) );
+			_bodies.Add( new Body( body, bone, WorldTransform.ToLocal( body.WorldTransform ) ) );
 
 			foreach ( var sphere in part.Spheres )
 			{
@@ -308,7 +311,6 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 
 		_rootBody = _bodies[0].Component;
-		_rootBindPose = Model.GetBoneTransform( _bodies[0].Bone.Index );
 
 		foreach ( var body in _bodies )
 		{
@@ -361,15 +363,19 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 	private void PositionRendererBonesFromPhysics()
 	{
-		if ( Scene.IsEditor )
-			return;
-
 		if ( !Renderer.IsValid() )
 			return;
 
 		Renderer.ClearPhysicsBones();
 
-		if ( !IgnoreRoot && _rootBody.IsValid() && _rootBody.MotionEnabled )
+		if ( Scene.IsEditor )
+		{
+			if ( _rootBody.IsValid() && _rootBody.PhysicsBody.MotionEnabled )
+			{
+				WorldTransform = _rootBody.WorldTransform;
+			}
+		}
+		else if ( !IgnoreRoot && _rootBody.IsValid() && _rootBody.MotionEnabled )
 		{
 			WorldTransform = _rootBody.WorldTransform;
 		}
@@ -388,7 +394,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 	private void PositionPhysicsFromAnimation()
 	{
-		if ( Scene.IsEditor ) 
+		if ( Scene.IsEditor )
 			return;
 
 		foreach ( var body in _bodies )
@@ -436,9 +442,16 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				if ( !body.Component.IsValid() )
 					continue;
 
+				if ( body.Component.PhysicsBody.MotionEnabled )
+				{
+					body.LocalTransform = WorldTransform.ToLocal( body.Component.WorldTransform );
+
+					continue;
+				}
+
 				if ( Renderer.TryGetBoneTransform( body.Bone, out var boneWorld ) )
 				{
-					body.Component.WorldTransform = boneWorld;
+					body.Component.WorldTransform = WorldTransform.ToWorld( body.LocalTransform );
 				}
 			}
 		}
