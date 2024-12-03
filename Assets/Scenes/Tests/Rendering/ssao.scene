@@ -491,8 +491,9 @@
           "ZNear": 10
         },
         {
-          "__type": "Sandbox.SSAO",
-          "__guid": "a499637b-ccfb-4f1e-a354-e1a6fe75d7ab",
+          "__type": "Sandbox.AmbientOcclusion",
+          "__guid": "e862a54c-07dd-4a32-a7b4-0048b492750e",
+          "__version": 1,
           "DenoiseMode": "Temporal",
           "FalloffRange": 0.75,
           "Intensity": 0.15,
