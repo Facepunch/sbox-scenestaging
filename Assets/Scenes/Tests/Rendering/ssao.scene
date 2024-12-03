@@ -466,17 +466,16 @@
       ]
     },
     {
-      "__guid": "27454866-f788-405d-b997-330409f75a15",
+      "__guid": "f69e902d-cc24-4397-ac41-870363533341",
       "Flags": 0,
-      "Name": "Camera",
+      "Name": "Camera (1)",
       "Position": "451.5583,-7.18688,222.3877",
       "Rotation": "-0.1080475,-0.000000004722905,0.9941458,-0.00000004345549",
-      "Tags": "maincamera",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
-          "__guid": "c356139a-c074-4386-bc04-25e8b968782c",
+          "__guid": "127348f1-d28a-4370-9b4c-01654c327635",
           "BackgroundColor": "0,0,0,1",
           "ClearFlags": "All",
           "FieldOfView": 70,
@@ -487,54 +486,19 @@
           "RenderExcludeTags": "",
           "RenderTags": "",
           "TargetEye": "None",
-          "Viewport": "0.5,0,0.5,1",
+          "Viewport": "0,0,1,1",
           "ZFar": 10000,
           "ZNear": 10
         },
         {
-          "__type": "Sandbox.AmbientOcclusion",
-          "__guid": "e4ab5ea9-a2d7-4742-b430-2b3535cc2425",
-          "FalloffDistance": 0.98,
-          "Intensity": 24,
+          "__type": "Sandbox.SSAO",
+          "__guid": "a499637b-ccfb-4f1e-a354-e1a6fe75d7ab",
+          "DenoiseMode": "Temporal",
+          "FalloffRange": 0.75,
+          "Intensity": 0.15,
           "Quality": "High",
-          "Radius": 53
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "f69e902d-cc24-4397-ac41-870363533341",
-          "Flags": 0,
-          "Name": "Camera (1)",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.CameraComponent",
-              "__guid": "127348f1-d28a-4370-9b4c-01654c327635",
-              "BackgroundColor": "0,0,0,1",
-              "ClearFlags": "All",
-              "FieldOfView": 70,
-              "IsMainCamera": true,
-              "Orthographic": false,
-              "OrthographicHeight": 1204,
-              "Priority": 1,
-              "RenderExcludeTags": "",
-              "RenderTags": "",
-              "TargetEye": "None",
-              "Viewport": "0,0,0.5,1",
-              "ZFar": 10000,
-              "ZNear": 10
-            },
-            {
-              "__type": "Sandbox.GroundTruthAmbientOcclusion",
-              "__guid": "659804df-4f2a-4e79-89ff-268385262150",
-              "DenoiseMode": "Temporal",
-              "FalloffDistance": 1,
-              "Intensity": 16,
-              "Quality": "High",
-              "Radius": 300,
-              "Thickness": 0.2
-            }
-          ]
+          "Radius": 128,
+          "ThinCompensation": 0
         }
       ]
     },
@@ -583,6 +547,9 @@
         {
           "__type": "Sandbox.PlayerController",
           "__guid": "30c4ff99-f5a3-4ae3-9f7d-3906c627609e",
+          "AimStrengthBody": 1,
+          "AimStrengthEyes": 1,
+          "AimStrengthHead": 1,
           "Body": {
             "_type": "component",
             "component_id": "a2c6f8fa-ce20-484b-8791-8bea86278bb2",
@@ -593,6 +560,10 @@
           "BodyMass": 500,
           "BodyRadius": 16,
           "CameraOffset": "256,0,12",
+          "ColliderObject": {
+            "_type": "gameobject",
+            "go": "f9ef3556-9e11-4575-8a44-69ec00fb817e"
+          },
           "DuckedHeight": 36,
           "DuckedSpeed": 70,
           "EnableFootstepSounds": true,
@@ -656,27 +627,6 @@
           "StepUpHeight": 18
         },
         {
-          "__type": "Sandbox.CapsuleCollider",
-          "__guid": "d0ae3949-467c-478b-b8b9-c97a9b0692e8",
-          "End": "0,0,45.05097",
-          "Friction": 0,
-          "IsTrigger": false,
-          "Radius": 11.313708,
-          "Start": "0,0,60.68629",
-          "Static": false,
-          "SurfaceVelocity": "0,0,0"
-        },
-        {
-          "__type": "Sandbox.BoxCollider",
-          "__guid": "604231da-515d-4f6a-aa3f-9cfd555e5a30",
-          "Center": "0,0,18",
-          "Friction": 0,
-          "IsTrigger": false,
-          "Scale": "16,16,36",
-          "Static": false,
-          "SurfaceVelocity": "0,0,0"
-        },
-        {
           "__type": "Sandbox.Movement.MoveModeSwim",
           "__guid": "4cd557b8-5a47-4b4e-ba28-21d36c6416fc",
           "Priority": 10,
@@ -723,6 +673,35 @@
               },
               "Tint": "1,1,1,1",
               "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "f9ef3556-9e11-4575-8a44-69ec00fb817e",
+          "Flags": 1,
+          "Name": "Colliders",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.CapsuleCollider",
+              "__guid": "10027361-3213-4200-9c07-c26f42be0549",
+              "End": "0,0,45.05097",
+              "Friction": 0,
+              "IsTrigger": false,
+              "Radius": 11.313708,
+              "Start": "0,0,60.68629",
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "774143ff-b49f-44b3-8629-b75b4027ab47",
+              "Center": "0,0,18",
+              "Friction": 0,
+              "IsTrigger": false,
+              "Scale": "16,16,36",
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         }
@@ -841,6 +820,5 @@
   "__references": [
     "rust.rock_cliff_a#25118"
   ],
-  "IsValid": true,
   "__version": 2
 }
