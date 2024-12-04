@@ -166,8 +166,7 @@ PS
 
 		// should we add surface normal to this?
 		float fres = saturate( 1 - dot( normalize( g_vCameraPositionWs - worldPos ), m.Normal ) );
-		fres = pow( fres, 1 );
-
+		fres = pow( fres, 5 ); // Schlick Fresnel which is just about equivalent to water BRDF with roughness 0
 
 		// refraction
 		{
@@ -180,11 +179,10 @@ PS
 
             float3 vRefractionColor = Tex2DLevel( g_tFrameBufferCopyTexture, uv * g_vInvViewportSize * g_vFrameBufferCopyInvSizeAndUvScale.zw, 0 ).rgb;
 
-			m.Albedo = vRefractionColor.rgb;
-			m.Albedo.rgb = lerp( m.Albedo.rgb, DepthColor.rgb, clamp( reyedepth / MaxDepth, 0, 1 ) * DepthColor.a );
+			m.Emission = vRefractionColor.rgb;
+			m.Emission.rgb = lerp( m.Emission.rgb, DepthColor.rgb, clamp( reyedepth / MaxDepth, 0, 1 ) * DepthColor.a );
 			
 		}
-
 		// get flatter the further away
 		{
 			float lval = distanceFromEye / 2048;
