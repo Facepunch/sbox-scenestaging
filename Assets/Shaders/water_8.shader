@@ -11,14 +11,11 @@ MODES
 {
 	VrForward();
 	ToolsVis( S_MODE_TOOLS_VIS );
-	//Depth( "depth_only.shader" ); 
-	Reflection( S_MODE_REFLECTIONS );
 }
 
 COMMON
 {
 	#define S_TRANSLUCENT 1
-	#define F_DYNAMIC_REFLECTIONS 1
 	#define S_SPECULAR 1
 	#include "common/shared.hlsl"
 }
@@ -47,15 +44,8 @@ VS
 
 PS
 {
-	StaticCombo( S_MODE_REFLECTIONS, 0..1, Sys( PC ) );
-
 	#include "common/pixel.hlsl"
-	#include "raytracing/reflections.hlsl"
-	#include "parallax_occlusion.fxc"
     
-
-#if S_MODE_REFLECTIONS == 0
-
     RenderState( BlendEnable, true );
     RenderState( SrcBlend, SRC_ALPHA );
     RenderState( DstBlend, INV_SRC_ALPHA );
@@ -66,11 +56,6 @@ PS
 
 	BoolAttribute( bWantsFBCopyTexture, true );
 
-#endif
-
-	
-	//BoolAttribute( UsesDynamicReflections, true );
-	
 	CreateTexture2D( g_tFrameBufferCopyTexture ) < Attribute("FrameBufferCopyTexture");   SrgbRead( false ); Filter(MIN_MAG_MIP_LINEAR);    AddressU( MIRROR );     AddressV( MIRROR ); > ;    
 
 	float4 SurfaceColor < UiType(Color); Default4(0.0, 0.5, 0.6, 0.5); UiGroup("Water"); > ;
@@ -96,7 +81,7 @@ PS
 	CreateInputTexture2D( EdgeFoam, Linear, 8, "", "", "Edge Foam", Default4( 0.5, 0.5, 1.0, 1 ) );
 	CreateTexture2D( g_tEdgeFoam ) < Channel( RGBA, Box( EdgeFoam ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 
-	FinalOutput MainPs( PixelInput i ) Target
+	float4 MainPs( PixelInput i ) : SV_Target
 	{
 		float3 worldPos = g_vCameraPositionWs + i.vPositionWithOffsetWs;
 		float distanceFromEye = length( i.vPositionWithOffsetWs );
@@ -179,10 +164,41 @@ PS
 
             float3 vRefractionColor = Tex2DLevel( g_tFrameBufferCopyTexture, uv * g_vInvViewportSize * g_vFrameBufferCopyInvSizeAndUvScale.zw, 0 ).rgb;
 
-			m.Emission = vRefractionColor.rgb;
-			m.Emission.rgb = lerp( m.Emission.rgb, DepthColor.rgb, clamp( reyedepth / MaxDepth, 0, 1 ) * DepthColor.a );
-			
+			m.Albedo = vRefractionColor.rgb;
+			m.Albedo.rgb = lerp( m.Albedo.rgb, DepthColor.rgb, clamp( reyedepth / MaxDepth, 0, 1 ) * DepthColor.a );
 		}
+
+        // Reflection
+        {
+            const float3 vRayWs = CalculateCameraToPositionDirWs( m.WorldPosition );
+
+            float3 vReflectWs = reflect(vRayWs, m.Normal);
+            float2 vPositionSs = i.vPositionSs.xy;
+
+            TraceResult trace = ScreenSpace::Trace(m.WorldPosition, vReflectWs, vPositionSs, 64);
+
+            // Composite result
+            {
+                float3 vReflectionColor = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, trace.HitClipSpace.xy, 0).rgb;
+
+                // Calculate derivatives
+                float2 dx = ddx(trace.HitClipSpace.xy);
+                float2 dy = ddy(trace.HitClipSpace.xy);
+
+                // Sample neighboring texels for anti-aliasing
+                float3 vReflectionColor_dx = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, trace.HitClipSpace.xy + dx, 0).rgb;
+                float3 vReflectionColor_dy = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, trace.HitClipSpace.xy + dy, 0).rgb;
+                float3 vReflectionColor_dxy = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, trace.HitClipSpace.xy + dx + dy, 0).rgb;
+
+                // Average the colors
+                float3 vReflectionColorAA = (vReflectionColor + vReflectionColor_dx + vReflectionColor_dy + vReflectionColor_dxy) / 4.0;
+
+                // Apply the reflection color with anti-aliasing
+                m.Roughness = trace.Confidence > 0; // Cut off specular from this texel
+                m.Albedo.rgb = lerp(m.Albedo.rgb, vReflectionColorAA, trace.Confidence * fres);
+            }
+        }
+
 		// get flatter the further away
 		{
 			float lval = distanceFromEye / 2048;
@@ -201,11 +217,11 @@ PS
 			m.Normal = normalize( lerp( m.Normal, float3( 0, 0, 1 ), lval ) ); 
 		}
 
-
 		// scale normals, artist adjustment
 		{
 			m.Normal = lerp( m.Normal, float3( 0, 0, 1 ), 1 - NormalScale );
 		}
+
 
 		surface = lerp( surface, SurfaceColor.rgb, SurfaceColor.a );		
 		m.Albedo.rgb = lerp( m.Albedo.rgb, surface, fres );
@@ -228,19 +244,6 @@ PS
 			m.Opacity *= saturate( depth / 0.1 );
 		}
 
-		//return Reflections::From( i, m, SampleCountIntersection ).vReflectionColor;
-		//return ShadingModelStandard::Shade( i, m );
-
-		#if ( S_MODE_REFLECTIONS )
-		{
-			//m.Normal = normalize( lerp( m.Normal, float3( 0, 0, 1 ), 0.5 ) );
-
-			return Reflections::From( i, m, SampleCountIntersection );
-		}
-		#else
-		{
-			return ShadingModelStandard::Shade( i, m );
-		}
-		#endif
+		return ShadingModelStandard::Shade( i, m );
 	}
 }

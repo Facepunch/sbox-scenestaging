@@ -606,13 +606,12 @@
           "__type": "Sandbox.AmbientOcclusion",
           "__guid": "e862a54c-07dd-4a32-a7b4-0048b492750e",
           "__version": 1,
-          "__enabled": false,
           "DenoiseMode": "Temporal",
-          "FalloffRange": 0.75,
-          "Intensity": 0.15,
+          "FalloffRange": 1,
+          "Intensity": 1,
           "Quality": "High",
-          "Radius": 128,
-          "ThinCompensation": 0
+          "Radius": 224,
+          "ThinCompensation": 0.5
         },
         {
           "__type": "Sandbox.Bloom",
@@ -923,9 +922,9 @@
           "__guid": "2fec98ab-ea60-493a-a0d3-46d16de5bd62",
           "FogMode": "Enabled",
           "FogStrength": 1,
-          "LightColor": "0.91373,0.98039,1,1",
+          "LightColor": "0.56924,0.69651,0.83256,1",
           "Shadows": true,
-          "SkyColor": "0.34202,0.39634,0.43256,1"
+          "SkyColor": "0.34202,0.39634,0.43256,0"
         }
       ]
     },
@@ -1297,7 +1296,7 @@
           "__type": "Sandbox.SkyBox2D",
           "__guid": "b04bbfb1-ddc2-4342-aefd-13477cc75440",
           "SkyIndirectLighting": true,
-          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "SkyMaterial": "materials/skybox/skybox_dark_01.vmat",
           "Tint": "1,1,1,1"
         }
       ]
