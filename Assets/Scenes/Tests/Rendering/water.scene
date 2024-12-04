@@ -693,7 +693,6 @@
       "Flags": 0,
       "Name": "Water Plane",
       "Position": "0,0,54.1474",
-      "Scale": "1000,1000,1000",
       "Enabled": true,
       "Components": [
         {
@@ -702,7 +701,7 @@
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialOverride": "watertest.vmat",
-          "Model": "models/dev/plane.vmdl",
+          "Model": "models/dev/plane_large.vmdl",
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
