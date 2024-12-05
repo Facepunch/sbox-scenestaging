@@ -168,37 +168,6 @@ PS
 			m.Albedo.rgb = lerp( m.Albedo.rgb, DepthColor.rgb, clamp( reyedepth / MaxDepth, 0, 1 ) * DepthColor.a );
 		}
 
-        // Reflection
-        {
-            const float3 vRayWs = CalculateCameraToPositionDirWs( m.WorldPosition );
-
-            float3 vReflectWs = reflect(vRayWs, m.Normal);
-            float2 vPositionSs = i.vPositionSs.xy;
-
-            TraceResult trace = ScreenSpace::Trace(m.WorldPosition, vReflectWs, vPositionSs, 64);
-
-            // Composite result
-            {
-                float3 vReflectionColor = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, trace.HitClipSpace.xy, 0).rgb;
-
-                // Calculate derivatives
-                float2 dx = ddx(trace.HitClipSpace.xy);
-                float2 dy = ddy(trace.HitClipSpace.xy);
-
-                // Sample neighboring texels for anti-aliasing
-                float3 vReflectionColor_dx = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, trace.HitClipSpace.xy + dx, 0).rgb;
-                float3 vReflectionColor_dy = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, trace.HitClipSpace.xy + dy, 0).rgb;
-                float3 vReflectionColor_dxy = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, trace.HitClipSpace.xy + dx + dy, 0).rgb;
-
-                // Average the colors
-                float3 vReflectionColorAA = (vReflectionColor + vReflectionColor_dx + vReflectionColor_dy + vReflectionColor_dxy) / 4.0;
-
-                // Apply the reflection color with anti-aliasing
-                m.Roughness = trace.Confidence > 0; // Cut off specular from this texel
-                m.Albedo.rgb = lerp(m.Albedo.rgb, vReflectionColorAA, trace.Confidence * fres);
-            }
-        }
-
 		// get flatter the further away
 		{
 			float lval = distanceFromEye / 2048;
@@ -221,6 +190,39 @@ PS
 		{
 			m.Normal = lerp( m.Normal, float3( 0, 0, 1 ), 1 - NormalScale );
 		}
+
+        // Reflection
+        {
+            const float3 vRayWs = CalculateCameraToPositionDirWs( m.WorldPosition );
+
+            float3 vReflectWs = reflect(vRayWs, m.Normal);
+            float2 vPositionSs = i.vPositionSs.xy;
+
+            TraceResult trace = ScreenSpace::Trace(m.WorldPosition, vReflectWs, vPositionSs, 64);
+
+            // Composite result
+            {
+				float2 uv = saturate( trace.HitClipSpace.xy * g_vFrameBufferCopyInvSizeAndUvScale.zw );
+                float3 vReflectionColor = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, uv, 0).rgb;
+
+                // Calculate derivatives
+                float2 dx = ddx(trace.HitClipSpace.xy);
+                float2 dy = ddy(trace.HitClipSpace.xy);
+
+                // Sample neighboring texels for anti-aliasing
+                float3 vReflectionColor_dx = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, uv + dx, 0).rgb;
+                float3 vReflectionColor_dy = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, uv + dy, 0).rgb;
+                float3 vReflectionColor_dxy = g_tFrameBufferCopyTexture.SampleLevel(g_tFrameBufferCopyTexture_sampler, uv + dx + dy, 0).rgb;
+
+                // Average the colors
+                float3 vReflectionColorAA = (vReflectionColor + vReflectionColor_dx + vReflectionColor_dy + vReflectionColor_dxy) / 4.0;
+
+                // Apply the reflection color with anti-aliasing
+
+				if ( trace.Confidence > 0 ) m.Roughness = 1; // Cut off specular from this texel
+                m.Albedo.rgb = lerp(m.Albedo.rgb, vReflectionColorAA, trace.Confidence * fres);
+            }
+        }
 
 
 		surface = lerp( surface, SurfaceColor.rgb, SurfaceColor.a );		
