@@ -12,6 +12,10 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	private bool _motionEnabled = true;
 	private Rigidbody _rootBody;
 
+	private bool _showRigidBodies;
+	private bool _showColliders;
+	private bool _showJoints;
+
 	public record Body( Rigidbody Component, BoneCollection.Bone Bone, Transform LocalTransform )
 	{
 		public Rigidbody Component { get; init; } = Component;
@@ -130,6 +134,60 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 					continue;
 
 				body.Component.MotionEnabled = value;
+			}
+		}
+	}
+
+	[Property, Group( "Components" )]
+	public bool ShowRigidbodies
+	{
+		get => _showRigidBodies;
+		set
+		{
+			_showRigidBodies = value;
+
+			foreach ( var body in _bodies )
+			{
+				if ( !body.Component.IsValid() )
+					continue;
+
+				body.Component.Flags = body.Component.Flags.WithFlag( ComponentFlags.Hidden, !value );
+			}
+		}
+	}
+
+	[Property, Group( "Components" )]
+	public bool ShowColliders
+	{
+		get => _showColliders;
+		set
+		{
+			_showColliders = value;
+
+			foreach ( var collider in _colliders )
+			{
+				if ( !collider.IsValid() )
+					continue;
+
+				collider.Flags = collider.Flags.WithFlag( ComponentFlags.Hidden, !value );
+			}
+		}
+	}
+
+	[Property, Group( "Components" )]
+	public bool ShowJoints
+	{
+		get => _showJoints;
+		set
+		{
+			_showJoints = value;
+
+			foreach ( var joint in _joints )
+			{
+				if ( !joint.Component.IsValid() )
+					continue;
+
+				joint.Component.Flags = joint.Component.Flags.WithFlag( ComponentFlags.Hidden, !value );
 			}
 		}
 	}
