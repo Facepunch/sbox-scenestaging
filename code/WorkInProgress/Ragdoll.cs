@@ -213,6 +213,10 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		const ComponentFlags componentFlags = ComponentFlags.NotSaved | ComponentFlags.NotCloned;
 
+		var bodyFlags = componentFlags.WithFlag( ComponentFlags.Hidden, !ShowRigidbodies );
+		var colliderFlags = componentFlags.WithFlag( ComponentFlags.Hidden, !ShowColliders );
+		var jointFlags = componentFlags.WithFlag( ComponentFlags.Hidden, !ShowJoints );
+
 		var boneObjects = Model.CreateBoneObjects( GameObject );
 
 		foreach ( var part in physics.Parts )
@@ -235,7 +239,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			}
 
 			var body = go.AddComponent<Rigidbody>( false );
-			body.Flags |= componentFlags;
+			body.Flags |= bodyFlags;
 			body.RigidbodyFlags = RigidbodyFlags;
 			body.Locking = Locking;
 			body.MotionEnabled = MotionEnabled;
@@ -247,7 +251,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			foreach ( var sphere in part.Spheres )
 			{
 				var collider = go.AddComponent<SphereCollider>();
-				collider.Flags |= componentFlags;
+				collider.Flags |= colliderFlags;
 				collider.Center = sphere.Sphere.Center;
 				collider.Radius = sphere.Sphere.Radius;
 				collider.Surface = sphere.Surface;
@@ -258,7 +262,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			foreach ( var capsule in part.Capsules )
 			{
 				var collider = go.AddComponent<CapsuleCollider>();
-				collider.Flags |= componentFlags;
+				collider.Flags |= colliderFlags;
 				collider.Start = capsule.Capsule.CenterA;
 				collider.End = capsule.Capsule.CenterB;
 				collider.Radius = capsule.Capsule.Radius;
@@ -270,7 +274,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			foreach ( var hull in part.Hulls )
 			{
 				var collider = go.AddComponent<HullCollider>();
-				collider.Flags |= componentFlags;
+				collider.Flags |= colliderFlags;
 				collider.Type = HullCollider.PrimitiveType.Points;
 				collider.Points = hull.GetPoints().ToList();
 				collider.Surface = hull.Surface;
@@ -355,7 +359,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			if ( joint.IsValid() )
 			{
-				joint.Flags |= componentFlags;
+				joint.Flags |= jointFlags;
 				joint.Body = body2.Component.GameObject;
 				joint.Attachment = Sandbox.Joint.AttachmentMode.LocalFrames;
 				joint.LocalFrame1 = localFrame1.WithPosition( jointDesc.Frame1.Position * body1.Component.WorldScale );
