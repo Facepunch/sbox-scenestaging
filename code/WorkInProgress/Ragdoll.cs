@@ -510,6 +510,18 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
+	protected override void OnAwake()
+	{
+		base.OnAwake();
+
+		_renderer ??= GetComponent<SkinnedModelRenderer>();
+
+		if ( _model is null && _renderer.IsValid() )
+		{
+			_model = _renderer.Model;
+		}
+	}
+
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
@@ -540,7 +552,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 					continue;
 				}
 
-				if ( Renderer.TryGetBoneTransform( body.Bone, out var boneWorld ) )
+				if ( Renderer.IsValid() && Renderer.TryGetBoneTransform( body.Bone, out var boneWorld ) )
 				{
 					body.Component.WorldTransform = WorldTransform.ToWorld( body.LocalTransform );
 				}
