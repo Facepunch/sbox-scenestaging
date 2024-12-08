@@ -219,7 +219,12 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		var world = WorldTransform;
 
-		const ComponentFlags componentFlags = ComponentFlags.NotSaved | ComponentFlags.NotCloned;
+		var componentFlags = ComponentFlags.NotSaved | ComponentFlags.NotCloned;
+
+		if ( Scene.IsEditor )
+		{
+			componentFlags |= ComponentFlags.NotEditable;
+		}
 
 		var bodyFlags = componentFlags.WithFlag( ComponentFlags.Hidden, !ShowRigidbodies );
 		var colliderFlags = componentFlags.WithFlag( ComponentFlags.Hidden, !ShowColliders );
