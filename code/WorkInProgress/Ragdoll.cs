@@ -11,6 +11,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	private PhysicsLock _locking;
 	private bool _motionEnabled = true;
 	private Rigidbody _rootBody;
+	private bool _updated;
 
 	private bool _showRigidBodies;
 	private bool _showColliders;
@@ -113,6 +114,12 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			}
 		}
 	}
+
+	/// <summary>
+	/// All bodies will be put to sleep on start.
+	/// </summary>
+	[Property, Group( "Physics" )]
+	public bool StartAsleep { get; set; }
 
 	/// <summary>
 	/// Enable to drive renderer from physics, disable to drive physics from renderer.
@@ -245,6 +252,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			body.MotionEnabled = MotionEnabled;
 			body.LinearDamping = part.LinearDamping;
 			body.AngularDamping = part.AngularDamping;
+			body.StartAsleep = StartAsleep;
 
 			_bodies.Add( new Body( body, bone, WorldTransform.ToLocal( body.WorldTransform ) ) );
 
@@ -491,9 +499,30 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
+	private void Sleep()
+	{
+		foreach ( var body in _bodies )
+		{
+			if ( !body.Component.IsValid() )
+				continue;
+
+			body.Component.Sleeping = true;
+		}
+	}
+
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
+
+		if ( !_updated )
+		{
+			if ( StartAsleep )
+			{
+				Sleep();
+			}
+
+			_updated = true;
+		}
 
 		PositionRendererBonesFromPhysics();
 
