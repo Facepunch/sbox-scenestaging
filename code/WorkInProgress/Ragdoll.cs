@@ -11,6 +11,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	private PhysicsLock _locking;
 	private bool _motionEnabled = true;
 	private Rigidbody _rootBody;
+	private BoneCollection _bones;
 	private bool _updated;
 
 	private bool _showRigidBodies;
@@ -226,9 +227,11 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		var boneObjects = Model.CreateBoneObjects( GameObject );
 
+		_bones = Model.Bones;
+
 		foreach ( var part in physics.Parts )
 		{
-			var bone = Model.Bones.GetBone( part.BoneName );
+			var bone = _bones.GetBone( part.BoneName );
 			if ( !boneObjects.TryGetValue( bone, out var go ) )
 				continue;
 
@@ -420,6 +423,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 
 		_rootBody = null;
+		_bones = null;
 
 		_bodies.Clear();
 		_joints.Clear();
@@ -525,6 +529,11 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
+
+		if ( _bones != Model?.Bones )
+		{
+			CreatePhysics();
+		}
 
 		if ( !_updated )
 		{
