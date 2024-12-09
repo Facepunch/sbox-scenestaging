@@ -1,0 +1,1635 @@
+{
+  "__guid": "483c45df-1d4e-47ce-b9b9-fa610417766d",
+  "GameObjects": [
+    {
+      "__guid": "0bae4823-962a-4ace-a77d-afe6241eefff",
+      "Flags": 0,
+      "Name": "Main Plattform",
+      "Scale": "120,120,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "9d8dd918-4734-4cd4-8d66-030a39c67c10",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "41cd958b-8d09-42f1-bc28-94c511328759",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": true,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "42ca44e1-5af3-4e00-9ace-ed076b3d24b1",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "35.20076,1025.514,1100.912",
+      "Rotation": "0.2851877,0.2851328,-0.6471199,0.6469954",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "04e83a02-bb4f-42d7-82ff-c73d9d135bc8",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 84.96,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "Sandbox.DepthOfField",
+          "__guid": "e4d0698a-3c9b-474c-a510-1c944a0dfbc0",
+          "__enabled": false,
+          "BackBlur": true,
+          "BlurSize": 100,
+          "FocalDistance": 419.06,
+          "FocusRange": 500,
+          "FrontBlur": true,
+          "QualityLevel": "High"
+        },
+        {
+          "__type": "Sandbox.Bloom",
+          "__guid": "151070fb-8151-4bee-81e4-ac4de87b46bd",
+          "BloomColor": {
+            "blend": "Linear",
+            "color": [
+              {
+                "t": 0,
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "BloomCurve": [
+            {
+              "x": 0,
+              "y": 0.5,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            }
+          ],
+          "Mode": "Additive",
+          "Strength": 1.48,
+          "Threshold": 0.73,
+          "ThresholdWidth": 1
+        },
+        {
+          "__type": "Sandbox.Tonemapping",
+          "__guid": "dcbdf828-d2f0-4a0c-b951-947e98b1ff09",
+          "__version": 1,
+          "AutoExposureEnabled": true,
+          "ExposureBias": 2,
+          "ExposureCompensation": 0,
+          "ExposureMethod": "RGB",
+          "MaximumExposure": 2,
+          "MinimumExposure": 1,
+          "Mode": "Legacy",
+          "Rate": 1
+        },
+        {
+          "__type": "NoClip",
+          "__guid": "3be2f556-6dbc-44cf-a94d-ca36c9d462e7",
+          "MoveSpeed": 600
+        },
+        {
+          "__type": "Sandbox.CubemapFog",
+          "__guid": "06506f01-2c86-4aa7-ac4d-decce289571d",
+          "Blur": 0.81,
+          "EndDistance": 16192,
+          "FalloffExponent": 1.0799992,
+          "HeightExponent": 2,
+          "HeightStart": 2000,
+          "HeightWidth": 0,
+          "Sky": "materials/skybox/light_test_sky_sunny02.vmat",
+          "StartDistance": 1024,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "b46fbdbd-b5f7-4ae2-8221-95a4131b798d",
+      "Flags": 0,
+      "Name": "SkyBox",
+      "Position": "1252.565,134.7641,-1378.779",
+      "Tags": "skybox",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "f60f3358-b26a-4cef-9e85-1325a42faebd",
+          "SkyIndirectLighting": true,
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "ca882ca5-349e-4273-af54-85b6f27933af",
+      "Flags": 0,
+      "Name": "Directional Light",
+      "Position": "0,0,200",
+      "Rotation": "0.3052165,0.475426,-0.4457583,0.6943433",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "0e7da7f3-445c-4f17-b720-0c2886007252",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "__guid": "cffd7f9d-c090-4e26-89f4-ae70d7db0f51",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "482c42c0-819c-4c7a-992c-2167b932bebf",
+          "Changes": "",
+          "Description": "Navmesh areas and obstacles",
+          "Group": "Navigation",
+          "SceneTags": "",
+          "Title": "Obstacles \u0026 Areas"
+        }
+      ]
+    },
+    {
+      "__guid": "8b7db181-4c9c-4d82-af28-8fca8ed435f0",
+      "Flags": 0,
+      "Name": "Cube (1)",
+      "Position": "0,1000,121.0379",
+      "Scale": "45,1,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "e75450fb-8f5f-46ee-9d04-ba6b3d5d7078",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "4d42e489-b513-4ffb-93c8-502410b38a4e",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "c4f7b35d-bb98-4213-9c41-a43fa350023b",
+      "Flags": 0,
+      "Name": "Cube (5)",
+      "Position": "0,-854.6343,37.427",
+      "Scale": "5,5,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "8ebb46b5-d3fe-4e77-8a45-7835923d09b0",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.30233,0.30233,0.30233,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "e69297e5-7c17-4bd6-8ae5-322761f2eb1f",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "159b2477-fe0c-42b6-a68f-2c9d8ee5fc56",
+      "Flags": 0,
+      "Name": "Cube (9)",
+      "Position": "-436.5732,443.0311,37.427",
+      "Scale": "5,5,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "e5e72b31-b64a-43b4-9d9d-4c5cbc7cd18a",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.30233,0.30233,0.30233,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "3458daf3-5cfb-4ba4-ab2c-e7977fcdcd8c",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "789dd1d2-6622-4498-a484-f570fb565c6d",
+      "Flags": 0,
+      "Name": "Cube (11)",
+      "Position": "324.3472,436.9724,37.42685",
+      "Scale": "7.995625,5,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "85ab4e28-e6a6-4e23-849c-05be35f8d031",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.30233,0.30233,0.30233,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "b86de5be-5082-4fd3-aac6-52c86999d696",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "b7a497ff-c494-4c16-b93c-42d6a0ae95f7",
+      "Flags": 0,
+      "Name": "Cube (13)",
+      "Position": "420.9344,-362.0976,37.42685",
+      "Scale": "7.995625,0.9411159,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "3145449b-3cb7-4902-9877-8f5151f3f160",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.30233,0.30233,0.30233,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "008a03ae-f9d4-4653-8842-11dfd12f930e",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "d10fb834-261a-491f-a20f-3cb456a3fe21",
+      "Flags": 0,
+      "Name": "Cube (10)",
+      "Position": "92.61884,0,64.25618",
+      "Scale": "3,3,3",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "2b9a519f-4178-4815-98ff-bb97710b2d63",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "3461f118-e4dc-4861-acc8-ecb684c62587",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "be331ec8-b144-4875-84bb-1e22364ae329",
+      "Flags": 0,
+      "Name": "Cube (12)",
+      "Position": "-927.9061,-901.4977,37.42684",
+      "Scale": "5,5,8",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "2b359efc-d88a-4803-8485-c758fc20fc6e",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "6e8e15b7-197d-4123-82a4-202db5e004de",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "8f2cc2b5-70bf-4293-8474-88af94a96060",
+      "Flags": 0,
+      "Name": "Cube (6)",
+      "Position": "250.2988,-854.6343,-33.80072",
+      "Scale": "5,5,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "59382b8f-3424-40f5-b4ed-c838df53c76b",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.30233,0.30233,0.30233,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "8165cd66-281a-4d5f-9cda-3150e923a18a",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "7380b3ed-9653-43e3-97ce-55d5a3b3f2bb",
+      "Flags": 0,
+      "Name": "Cube (3)",
+      "Position": "-999.9999,0.0001831055,121.0379",
+      "Rotation": "0,0,0.7071067,0.7071068",
+      "Scale": "45,1,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "83b301e6-20b7-4100-bc7f-51da9b99283c",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "117d977a-32e0-4774-8e8f-aab9dbf8ea12",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "271cbc99-61c2-46fe-8310-2e8230af4a34",
+      "Flags": 0,
+      "Name": "Cube (8)",
+      "Position": "0,0.0001000948,8.750214",
+      "Rotation": "0,0,0.9999999,0.0000001490116",
+      "Scale": "45,2.5,2",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "31f1d337-2bc8-469d-91da-00c10f272e95",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.30233,0.30233,0.30233,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "df16f6ed-d6a8-4d6a-bb26-bdb15913b123",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "6714a961-e5d6-47a1-bf7f-23a7ce153980",
+      "Flags": 0,
+      "Name": "Cube (7)",
+      "Position": "91.51627,122.8848,114.9685",
+      "Rotation": "0,0,0.7071067,0.7071068",
+      "Scale": "34.43468,1.5,5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "cb0c0222-bc09-4435-ace5-0c427d68fdcb",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "049d7d74-3ce6-4ae2-b7cc-a27216ada7b2",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "7d4001f4-3ef8-444c-a26d-f7e83843cf4c",
+      "Flags": 0,
+      "Name": "Cube (2)",
+      "Position": "0,-1000,121.0379",
+      "Scale": "45,1,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "a2ccd73f-c876-4261-bbf8-f7a92cddeac3",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "86c217d3-5863-48ae-a911-c072a0d89d5e",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "d0f8ac13-1f51-4344-80a8-8098ebd0405c",
+      "Flags": 0,
+      "Name": "Cube (4)",
+      "Position": "999.9999,-0.0001831055,121.0379",
+      "Rotation": "0,0,0.7071067,0.7071068",
+      "Scale": "45,1,10",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "9233a225-1cae-4237-a45e-49a94ac1c490",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "afe4902e-59c9-465b-adf5-ce6bc1b3a1c0",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "56a348e2-d54b-4e81-beb6-bd13598302a7",
+      "Flags": 0,
+      "Name": "NavLinks",
+      "Enabled": true,
+      "Children": [
+        {
+          "__guid": "75dbc3d6-1c78-4875-80c4-c020dfa5192d",
+          "Flags": 0,
+          "Name": "Link",
+          "Position": "382.8705,-859.4841,59.19928",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "f761a7ce-bc1a-41a9-a061-049cefca1eb7",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-26.87051,-3.991089,34",
+              "Start": "26.87051,3.99115,-34"
+            }
+          ]
+        },
+        {
+          "__guid": "1be9ff76-d6e9-4ba9-bce3-35d80d99ebd0",
+          "Flags": 0,
+          "Name": "Link (1)",
+          "Position": "127.3095,-802.7789,128.1993",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "d1010c31-cb7e-4f5e-a6fe-fc437bf6dbdb",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-19.30955,4.614136,35",
+              "Start": "19.30955,-4.614075,-34.99998"
+            }
+          ]
+        },
+        {
+          "__guid": "2aaba3fe-9805-4ec7-8d30-a3c419ab6c1c",
+          "Flags": 0,
+          "Name": "Link (1)",
+          "Position": "127.2718,-924.3364,128.1993",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "ffd4371b-9494-4ca8-881a-c094f30a2516",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-19.27177,8.879639,35",
+              "Start": "19.27177,-8.879578,-34.99998"
+            }
+          ]
+        },
+        {
+          "__guid": "e5f7c62c-cb52-498b-ba6f-03448b1308ae",
+          "Flags": 0,
+          "Name": "Link (1)",
+          "Position": "127.2718,-859.8015,128.1993",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "aa12f3f8-c230-4dac-92c3-d39d50958fb2",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-19.27177,12.28552,35",
+              "Start": "19.27177,-12.28546,-34.99998"
+            }
+          ]
+        },
+        {
+          "__guid": "c7c84f99-2379-4c25-aea9-4fd80e23fe12",
+          "Flags": 0,
+          "Name": "Link (2)",
+          "Position": "-22.97267,-711.053,94.23238",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "b0f93867-7529-4cb7-bb70-2b5ff2b9ed49",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "-10.80388,36.94696,-69.19447",
+              "Start": "10.80388,-36.94696,69.19447"
+            }
+          ]
+        },
+        {
+          "__guid": "4077bfc9-7b61-427c-a770-4b2e8d676515",
+          "Flags": 0,
+          "Name": "Link (3)",
+          "Position": "-149.1239,-872.796,94.23238",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "9c826fec-758c-4a0b-8180-b263778e03a3",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "-41.12386,2.064148,-69.19447",
+              "Start": "41.12386,-2.064209,69.19447"
+            }
+          ]
+        },
+        {
+          "__guid": "91f4108c-1a87-480b-a5eb-74cf8483441a",
+          "Flags": 0,
+          "Name": "Link (4)",
+          "Position": "103.1199,740.5689,25.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "62792c1e-2cae-4bce-b66a-274d24267f2f",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "73.84691,2.625916,0",
+              "Start": "-73.84691,-2.625916,0"
+            }
+          ]
+        },
+        {
+          "__guid": "5c1cf74c-d7a0-430f-a365-eecd4cb7b9fa",
+          "Flags": 0,
+          "Name": "Link (5)",
+          "Position": "-301.872,-55.28334,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "c9e17145-d616-4b75-8fb2-b2c148e5bd32",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-2.05069,23.9697,17",
+              "Start": "2.05072,-23.9697,-17"
+            }
+          ]
+        },
+        {
+          "__guid": "56def892-12b2-4185-b9fc-a8283efffd7b",
+          "Flags": 0,
+          "Name": "Link (5)",
+          "Position": "-104.2875,-55.28334,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "d43d2025-d0eb-45de-a7be-a81ae3381a21",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-2.05069,23.9697,17",
+              "Start": "2.05072,-23.9697,-17"
+            }
+          ]
+        },
+        {
+          "__guid": "452baba4-04c2-4f58-a888-692cf1db7b2f",
+          "Flags": 0,
+          "Name": "Link (5)",
+          "Position": "-889.0724,-55.28334,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "2f95e445-3756-4814-adbf-eb900e64cc69",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-2.05069,23.9697,17",
+              "Start": "2.05072,-23.9697,-17"
+            }
+          ]
+        },
+        {
+          "__guid": "73394943-506a-417f-9512-7e8d95dba6c4",
+          "Flags": 0,
+          "Name": "Link (5)",
+          "Position": "-629.6407,-55.28334,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "9a8623bc-2c09-4c13-bb19-ae5ce9ef3d5f",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-2.05069,23.9697,17",
+              "Start": "2.05072,-23.9697,-17"
+            }
+          ]
+        },
+        {
+          "__guid": "f72857d2-7865-4e28-b9c8-c1ff00d98ef7",
+          "Flags": 0,
+          "Name": "Link (6)",
+          "Position": "-723.756,76.43176,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "26c42f24-e432-492d-bfc9-539335cec897",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-3.604248,32.43176,-17",
+              "Start": "3.604187,-32.43176,17"
+            }
+          ]
+        },
+        {
+          "__guid": "35426777-d083-4c35-acbb-d2b4567c1e8c",
+          "Flags": 0,
+          "Name": "Link (6)",
+          "Position": "-556.6235,76.43176,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "45b0c5ca-a650-4777-be4e-20d88ea32eeb",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "3.408997,32.43176,-17",
+              "Start": "-3.409058,-32.43176,17"
+            }
+          ]
+        },
+        {
+          "__guid": "c92df981-7373-4303-ac37-356930d5e800",
+          "Flags": 0,
+          "Name": "Link (6)",
+          "Position": "-366.8038,76.43176,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "8695f484-85a7-4858-b2c0-87dd6723ccd8",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "3.408997,32.43176,-17",
+              "Start": "-3.409058,-32.43176,17"
+            }
+          ]
+        },
+        {
+          "__guid": "531eb7cd-a4bb-4b53-895a-41c1eecda1f3",
+          "Flags": 0,
+          "Name": "Link (6)",
+          "Position": "-153.9767,76.43176,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "957c5532-4e79-4f2c-a20d-7e238383b384",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "3.408997,32.43176,-17",
+              "Start": "-3.409058,-32.43176,17"
+            }
+          ]
+        },
+        {
+          "__guid": "7868b809-c9c8-4f49-8ada-b6569ed6de28",
+          "Flags": 0,
+          "Name": "Link (7)",
+          "Position": "606.2129,72.74608,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "46d5639d-d94b-417c-a29a-538f9c2f9ffb",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-2.906067,39.16884,-17",
+              "Start": "2.906128,-39.16885,17"
+            }
+          ]
+        },
+        {
+          "__guid": "27c7f733-ef12-4846-998b-f499e19a566a",
+          "Flags": 0,
+          "Name": "Link (7)",
+          "Position": "886.149,72.74608,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "ce1db7d9-a80b-48ac-8243-fcb2fa94a6bc",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-2.906067,39.16884,-17",
+              "Start": "2.906128,-39.16885,17"
+            }
+          ]
+        },
+        {
+          "__guid": "f1d03b75-0dda-40d8-b639-cc0756ecbc54",
+          "Flags": 0,
+          "Name": "Link (8)",
+          "Position": "857.1652,-75.21548,42.19928",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "fab7b6eb-964a-47ad-9801-74edf522ec54",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "8.415955,-31.21548,-17",
+              "Start": "-8.415955,31.21548,17"
+            }
+          ]
+        },
+        {
+          "__guid": "ead543e0-79b0-4a0f-8745-6d2c382faa2d",
+          "Flags": 0,
+          "Name": "Link (9)",
+          "Position": "307.8785,-67.69504,42.19928",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "73cf58e0-17e5-458b-b226-0134e01147e5",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "3.033936,-23.69504,-17",
+              "Start": "-3.033936,23.69504,17"
+            }
+          ]
+        },
+        {
+          "__guid": "60c2d2c2-819b-4f06-bc91-de59b06a66e7",
+          "Flags": 0,
+          "Name": "Link (9)",
+          "Position": "218.041,-67.69504,42.19928",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "9fb6f499-0bef-4944-a7cb-806a2d69100a",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "3.033936,-23.69504,-17",
+              "Start": "-3.033936,23.69504,17"
+            }
+          ]
+        },
+        {
+          "__guid": "feaf8912-53e2-447f-b8b6-d864efb78afd",
+          "Flags": 0,
+          "Name": "Link (9)",
+          "Position": "434.515,-70.43286,42.19928",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "e9566c71-622d-4a14-946b-0a86a5bb6959",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "5.806671,-26.43285,-17",
+              "Start": "-5.806702,26.43286,17"
+            }
+          ]
+        },
+        {
+          "__guid": "fca9cace-531a-43c2-acdc-248a3a9f8827",
+          "Flags": 0,
+          "Name": "Link (9)",
+          "Position": "676.8649,-75.12756,42.19928",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "11fc37ad-8808-40d7-87a1-4d971cfa48b3",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "3.065308,-31.12756,-17",
+              "Start": "-3.065308,31.12756,17"
+            }
+          ]
+        },
+        {
+          "__guid": "618ba81a-84cb-4fb0-88b9-234de92e3e04",
+          "Flags": 0,
+          "Name": "Link (10)",
+          "Position": "432.2932,75.22623,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "345b54e0-c47c-42a4-80d6-867b670ca99e",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "0.1025696,43.00179,-17",
+              "Start": "-0.1025696,-43.00179,17"
+            }
+          ]
+        },
+        {
+          "__guid": "a8d87a7f-ba96-4616-b706-0709df2cc9f9",
+          "Flags": 0,
+          "Name": "Link (10)",
+          "Position": "266.8304,75.22623,42.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "5bac58ed-4faa-40cf-9d18-842718bc1a8c",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "0.1025696,43.00179,-17",
+              "Start": "-0.1025696,-43.00179,17"
+            }
+          ]
+        },
+        {
+          "__guid": "e94a7310-dbfe-457c-8f62-d0ccb350c706",
+          "Flags": 0,
+          "Name": "Link (11)",
+          "Position": "409.2828,296.0037,94.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "0bab6a28-688f-4734-a44e-2176d2aef77e",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "2.655304,-31.99625,-69",
+              "Start": "-2.655304,31.99628,69"
+            }
+          ]
+        },
+        {
+          "__guid": "97ff51a4-c5b8-43d5-b08e-da6ff0608021",
+          "Flags": 0,
+          "Name": "Link (11)",
+          "Position": "234.6487,296.0037,94.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "5fb0d755-1157-4de9-92d3-05d50ee9c8a6",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "-4.037125,-31.99625,-69",
+              "Start": "4.03714,31.99628,69"
+            }
+          ]
+        },
+        {
+          "__guid": "060944fb-9474-49d6-87ba-57d66e74e8fb",
+          "Flags": 0,
+          "Name": "Link (12)",
+          "Position": "419.6867,569.3579,94.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "88b4d01b-cd6b-4743-8c9c-7c0276407283",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "5.695099,-25.35791,69",
+              "Start": "-5.695099,25.35785,-69"
+            }
+          ]
+        },
+        {
+          "__guid": "b6710f1c-6cde-43ce-9d65-c8ce484376bb",
+          "Flags": 0,
+          "Name": "Link (12)",
+          "Position": "236.3639,571.053,94.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "75c7e080-9706-418d-97c7-76b6a8f1e38b",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "16.1041,-30.62726,69",
+              "Start": "-16.1041,30.6272,-69"
+            }
+          ]
+        },
+        {
+          "__guid": "924d220c-88ab-4b7d-b2dc-02f11b752dd0",
+          "Flags": 0,
+          "Name": "Link (13)",
+          "Position": "373.4968,-728.8853,59.19928",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "6bed39ad-10d8-44e1-b1a7-9d5076370086",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-17.49677,-20.93964,34",
+              "Start": "17.49677,20.9397,-34"
+            }
+          ]
+        },
+        {
+          "__guid": "6a73db39-c027-4a7d-b2d6-b8c1eba5fb11",
+          "Flags": 0,
+          "Name": "Link (14)",
+          "Position": "-488.8057,571.6664,94.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "3b6a97ac-dc2e-45be-bffa-eaed11876bc1",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "6.955261,-20.04163,69",
+              "Start": "-6.955261,20.04163,-69"
+            }
+          ]
+        },
+        {
+          "__guid": "55e7b5f2-d2af-41f5-9fe8-a0ec3dc40049",
+          "Flags": 0,
+          "Name": "Link (15)",
+          "Position": "-477.281,306.6328,94.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "86f9ca3d-6147-46a8-a2ad-8907fb63e73e",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "-19.78595,-29.36728,-69",
+              "Start": "19.78595,29.36725,69"
+            }
+          ]
+        },
+        {
+          "__guid": "efcdcd39-3e6c-49bf-a53f-16ab7c08d38b",
+          "Flags": 0,
+          "Name": "Link (16)",
+          "Position": "254.4436,-727.2927,59.19928",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "095e4dff-b1e5-4452-9dfc-a827955bae75",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": true,
+              "End": "-3.026886,-23.28851,34",
+              "Start": "3.026886,23.28857,-34"
+            }
+          ]
+        },
+        {
+          "__guid": "1fcc1889-07d3-4baf-9b1f-d25ab99a65ea",
+          "Flags": 0,
+          "Name": "Link (17)",
+          "Position": "-131.015,-724.6431,94.23238",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "f1ddbefa-c8b3-4e5d-957b-72a8b09be395",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "-24.95203,23.35687,-69.19447",
+              "Start": "24.95203,-23.35687,69.19447"
+            }
+          ]
+        },
+        {
+          "__guid": "1c4ba773-136d-42ae-ac45-eee101512a7d",
+          "Flags": 0,
+          "Name": "Link (18)",
+          "Position": "-365.2954,574.4777,94.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "a7b93bdd-826e-447c-b92a-4e5111ccb785",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "-6.253296,-22.47772,69",
+              "Start": "6.253296,22.47772,-69"
+            }
+          ]
+        },
+        {
+          "__guid": "d7b7ba06-e534-4d7f-ac5d-4cffc053d636",
+          "Flags": 0,
+          "Name": "Link (19)",
+          "Position": "-299.412,324.4812,94.0379",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.NavMeshLink",
+              "__guid": "595a346a-64e7-44c3-a107-e82d94635987",
+              "ConnectionRadius": 16,
+              "IsBiDirectional": false,
+              "End": "28.58798,-24.40411,-69",
+              "Start": "-28.58801,24.40411,69"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "a4a783a4-2aae-4636-8319-d5dcbba72885",
+      "Flags": 0,
+      "Name": "target",
+      "Position": "-829.2561,-10.40658,120.0749",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/target.prefab",
+      "__PrefabVariables": {
+        "Color": "0.97674,0.87907,0,1"
+      }
+    },
+    {
+      "__guid": "645e8f0f-3bf1-4dcd-abbf-a1fd67e43721",
+      "Flags": 0,
+      "Name": "target (2)",
+      "Position": "-441.2166,461.3266,207.9066",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/target.prefab",
+      "__PrefabVariables": {
+        "Color": "1,0,0,1"
+      }
+    },
+    {
+      "__guid": "84b73581-d8ce-4e9f-9019-80a5bb8602dc",
+      "Flags": 0,
+      "Name": "target (1)",
+      "Position": "784.8871,6.752198,125.9173",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/target.prefab",
+      "__PrefabVariables": {
+        "Color": "0.06176,0.12012,0.31188,1"
+      }
+    },
+    {
+      "__guid": "ef36c19b-c88f-4167-9d45-0b8d501980b8",
+      "Flags": 0,
+      "Name": "target (3)",
+      "Position": "267.8897,-921.5278,157.6783",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/target.prefab",
+      "__PrefabVariables": {
+        "Color": "0.23814,1,0.12093,1"
+      }
+    },
+    {
+      "__guid": "7bfc14f9-c209-40a1-ade2-02f563d7aaf3",
+      "Flags": 0,
+      "Name": "target (4)",
+      "Position": "725.6079,518.9728,77.1048",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/target.prefab",
+      "__PrefabVariables": {
+        "Color": "0.10698,1,0.86605,1"
+      }
+    },
+    {
+      "__guid": "14e30453-e781-4e1a-89b3-c3b51d1108a1",
+      "Flags": 0,
+      "Name": "target (5)",
+      "Position": "-639.7983,-604.5706,77.1048",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/target.prefab",
+      "__PrefabVariables": {
+        "Color": "0.37519,0,0.51163,1"
+      }
+    },
+    {
+      "__guid": "baa5f5a8-57f8-49fa-a645-64d99c16ceda",
+      "Flags": 0,
+      "Name": "wanderer",
+      "Position": "469.1497,169.1147,29.00012",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabVariables": {
+        "Potential Targets": [
+          {
+            "_type": "gameobject",
+            "go": "a4a783a4-2aae-4636-8319-d5dcbba72885"
+          },
+          {
+            "_type": "gameobject",
+            "go": "84b73581-d8ce-4e9f-9019-80a5bb8602dc"
+          },
+          {
+            "_type": "gameobject",
+            "go": "645e8f0f-3bf1-4dcd-abbf-a1fd67e43721"
+          },
+          {
+            "_type": "gameobject",
+            "go": "ef36c19b-c88f-4167-9d45-0b8d501980b8"
+          },
+          {
+            "_type": "gameobject",
+            "go": "7bfc14f9-c209-40a1-ade2-02f563d7aaf3"
+          },
+          {
+            "_type": "gameobject",
+            "go": "14e30453-e781-4e1a-89b3-c3b51d1108a1"
+          }
+        ]
+      }
+    },
+    {
+      "__guid": "1d8455ce-b305-42dd-9d89-7d56c5f055bc",
+      "Flags": 0,
+      "Name": "wanderer (1)",
+      "Position": "-273.2995,169.1147,29.00012",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabVariables": {
+        "Potential Targets": [
+          {
+            "_type": "gameobject",
+            "go": "a4a783a4-2aae-4636-8319-d5dcbba72885"
+          },
+          {
+            "_type": "gameobject",
+            "go": "84b73581-d8ce-4e9f-9019-80a5bb8602dc"
+          },
+          {
+            "_type": "gameobject",
+            "go": "645e8f0f-3bf1-4dcd-abbf-a1fd67e43721"
+          },
+          {
+            "_type": "gameobject",
+            "go": "ef36c19b-c88f-4167-9d45-0b8d501980b8"
+          },
+          {
+            "_type": "gameobject",
+            "go": "7bfc14f9-c209-40a1-ade2-02f563d7aaf3"
+          },
+          {
+            "_type": "gameobject",
+            "go": "14e30453-e781-4e1a-89b3-c3b51d1108a1"
+          }
+        ]
+      }
+    },
+    {
+      "__guid": "59992f38-7d37-4c73-9d33-33a3ab90a58b",
+      "Flags": 0,
+      "Name": "wanderer (2)",
+      "Position": "-273.2995,-466.1012,29.00012",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabVariables": {
+        "Potential Targets": [
+          {
+            "_type": "gameobject",
+            "go": "a4a783a4-2aae-4636-8319-d5dcbba72885"
+          },
+          {
+            "_type": "gameobject",
+            "go": "84b73581-d8ce-4e9f-9019-80a5bb8602dc"
+          },
+          {
+            "_type": "gameobject",
+            "go": "645e8f0f-3bf1-4dcd-abbf-a1fd67e43721"
+          },
+          {
+            "_type": "gameobject",
+            "go": "ef36c19b-c88f-4167-9d45-0b8d501980b8"
+          },
+          {
+            "_type": "gameobject",
+            "go": "7bfc14f9-c209-40a1-ade2-02f563d7aaf3"
+          },
+          {
+            "_type": "gameobject",
+            "go": "14e30453-e781-4e1a-89b3-c3b51d1108a1"
+          }
+        ]
+      }
+    },
+    {
+      "__guid": "0e86e82f-b7df-4ec6-af2a-31e134ec9707",
+      "Flags": 0,
+      "Name": "wanderer (3)",
+      "Position": "734.478,-466.1012,29.00012",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabVariables": {
+        "Potential Targets": [
+          {
+            "_type": "gameobject",
+            "go": "a4a783a4-2aae-4636-8319-d5dcbba72885"
+          },
+          {
+            "_type": "gameobject",
+            "go": "84b73581-d8ce-4e9f-9019-80a5bb8602dc"
+          },
+          {
+            "_type": "gameobject",
+            "go": "645e8f0f-3bf1-4dcd-abbf-a1fd67e43721"
+          },
+          {
+            "_type": "gameobject",
+            "go": "ef36c19b-c88f-4167-9d45-0b8d501980b8"
+          },
+          {
+            "_type": "gameobject",
+            "go": "7bfc14f9-c209-40a1-ade2-02f563d7aaf3"
+          },
+          {
+            "_type": "gameobject",
+            "go": "14e30453-e781-4e1a-89b3-c3b51d1108a1"
+          }
+        ]
+      }
+    },
+    {
+      "__guid": "9eabea75-8921-49e7-bfb7-66c40f2da9ab",
+      "Flags": 0,
+      "Name": "wanderer (4)",
+      "Position": "-739.7146,-466.1012,29.00012",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabVariables": {
+        "Potential Targets": [
+          {
+            "_type": "gameobject",
+            "go": "a4a783a4-2aae-4636-8319-d5dcbba72885"
+          },
+          {
+            "_type": "gameobject",
+            "go": "84b73581-d8ce-4e9f-9019-80a5bb8602dc"
+          },
+          {
+            "_type": "gameobject",
+            "go": "645e8f0f-3bf1-4dcd-abbf-a1fd67e43721"
+          },
+          {
+            "_type": "gameobject",
+            "go": "ef36c19b-c88f-4167-9d45-0b8d501980b8"
+          },
+          {
+            "_type": "gameobject",
+            "go": "7bfc14f9-c209-40a1-ade2-02f563d7aaf3"
+          },
+          {
+            "_type": "gameobject",
+            "go": "14e30453-e781-4e1a-89b3-c3b51d1108a1"
+          }
+        ]
+      }
+    },
+    {
+      "__guid": "66e0c0eb-aea2-483e-99de-569666e2f6c3",
+      "Flags": 0,
+      "Name": "wanderer (5)",
+      "Position": "-739.7146,763.0291,29.00012",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabVariables": {
+        "Potential Targets": [
+          {
+            "_type": "gameobject",
+            "go": "a4a783a4-2aae-4636-8319-d5dcbba72885"
+          },
+          {
+            "_type": "gameobject",
+            "go": "84b73581-d8ce-4e9f-9019-80a5bb8602dc"
+          },
+          {
+            "_type": "gameobject",
+            "go": "645e8f0f-3bf1-4dcd-abbf-a1fd67e43721"
+          },
+          {
+            "_type": "gameobject",
+            "go": "ef36c19b-c88f-4167-9d45-0b8d501980b8"
+          },
+          {
+            "_type": "gameobject",
+            "go": "7bfc14f9-c209-40a1-ade2-02f563d7aaf3"
+          },
+          {
+            "_type": "gameobject",
+            "go": "14e30453-e781-4e1a-89b3-c3b51d1108a1"
+          }
+        ]
+      }
+    },
+    {
+      "__guid": "9711f1d6-7948-410e-9a50-d747ff9e212c",
+      "Flags": 0,
+      "Name": "wanderer (6)",
+      "Position": "673.0929,763.0291,29.00012",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabVariables": {
+        "Potential Targets": [
+          {
+            "_type": "gameobject",
+            "go": "a4a783a4-2aae-4636-8319-d5dcbba72885"
+          },
+          {
+            "_type": "gameobject",
+            "go": "84b73581-d8ce-4e9f-9019-80a5bb8602dc"
+          },
+          {
+            "_type": "gameobject",
+            "go": "645e8f0f-3bf1-4dcd-abbf-a1fd67e43721"
+          },
+          {
+            "_type": "gameobject",
+            "go": "ef36c19b-c88f-4167-9d45-0b8d501980b8"
+          },
+          {
+            "_type": "gameobject",
+            "go": "7bfc14f9-c209-40a1-ade2-02f563d7aaf3"
+          },
+          {
+            "_type": "gameobject",
+            "go": "14e30453-e781-4e1a-89b3-c3b51d1108a1"
+          }
+        ]
+      }
+    },
+    {
+      "__guid": "7050320f-0657-4486-b5fb-4372a99ab516",
+      "Flags": 0,
+      "Name": "wanderer (7)",
+      "Position": "673.0929,286.5929,29.00012",
+      "Enabled": true,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabVariables": {
+        "Potential Targets": [
+          {
+            "_type": "gameobject",
+            "go": "a4a783a4-2aae-4636-8319-d5dcbba72885"
+          },
+          {
+            "_type": "gameobject",
+            "go": "84b73581-d8ce-4e9f-9019-80a5bb8602dc"
+          },
+          {
+            "_type": "gameobject",
+            "go": "645e8f0f-3bf1-4dcd-abbf-a1fd67e43721"
+          },
+          {
+            "_type": "gameobject",
+            "go": "ef36c19b-c88f-4167-9d45-0b8d501980b8"
+          },
+          {
+            "_type": "gameobject",
+            "go": "7bfc14f9-c209-40a1-ade2-02f563d7aaf3"
+          },
+          {
+            "_type": "gameobject",
+            "go": "14e30453-e781-4e1a-89b3-c3b51d1108a1"
+          }
+        ]
+      }
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Obstacles \u0026 Areas",
+      "Description": "Navmesh areas and obstacles",
+      "Group": "Navigation"
+    },
+    "NavMesh": {
+      "Enabled": true,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "Obstacles \u0026 Areas",
+  "Description": "Navmesh areas and obstacles",
+  "__references": [],
+  "__version": 2
+}

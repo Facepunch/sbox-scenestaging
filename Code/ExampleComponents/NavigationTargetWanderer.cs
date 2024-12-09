@@ -14,9 +14,20 @@ public sealed class NavigationTargetWanderer : Component
 
     private Vector3 _currentTarget = Vector3.Zero;
 
+    private TimeSince _timeSinceLastTargetChange = 0;
+
+    private TimeSince _timeSinceLastMoveTo = 0;
+
     protected override void OnEnabled()
     {
         _currentTarget = PotentialTargets[Random.Shared.Next(0, PotentialTargets.Count)].WorldPosition;
+
+        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+
+        if (agent == null)
+            return;
+
+        agent.MoveTo(_currentTarget);
     }
 
     protected override void OnFixedUpdate()
@@ -39,11 +50,11 @@ public sealed class NavigationTargetWanderer : Component
         if (agent == null)
             return;
 
-        agent.MoveTo(_currentTarget);
-
-        if (WorldPosition.WithZ(0).Distance(_currentTarget.WithZ(0)) < 32f)
+        if (_timeSinceLastTargetChange > 10f || WorldPosition.WithZ(0).Distance(_currentTarget.WithZ(0)) < 32f)
         {
             _currentTarget = PotentialTargets[Random.Shared.Next(0, PotentialTargets.Count)].WorldPosition;
+            agent.MoveTo(_currentTarget);
+            _timeSinceLastTargetChange = 0;
         }
     }
 }
