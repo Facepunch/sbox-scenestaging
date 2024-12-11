@@ -21,7 +21,7 @@
 				if ( _segments.x * _segments.y * _segments.z != Points.Count )
 					Points = Enumerable.Repeat( Vector4.Zero, _segments.x * _segments.y * _segments.z ).ToList();
 
-				PointsBuffer = new ComputeBuffer<Vector4>( Points.Count );
+				PointsBuffer = new GpuBuffer<Vector4>( Points.Count );
 			}
 		}
 		internal Vector3Int _segments;
@@ -30,7 +30,7 @@
 		// Dirty doesn't seem to be called when list elements are changed
 		[Property, MakeDirty] public List<Vector4> Points { get; set; }
 
-		ComputeBuffer<Vector4> PointsBuffer;
+		GpuBuffer<Vector4> PointsBuffer;
 
 		public LatticeDeform()
 		{

@@ -67,7 +67,7 @@
 		AddText( Sandbox.Utility.Steam.PersonaName, text );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void AddText( string author, string message )
 	{
 		message = message.Truncate( 300 );

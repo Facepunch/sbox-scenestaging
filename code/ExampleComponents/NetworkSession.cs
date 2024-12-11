@@ -8,7 +8,7 @@ public sealed class NetworkSession : Component
 		//
 		if ( !Networking.IsActive )
 		{
-			Networking.CreateLobby();
+			Networking.CreateLobby( new() );
 		}
 	}
 

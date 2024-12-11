@@ -16,7 +16,7 @@ public sealed class SnapshotTest : Component
 		}
 	}
 
-	[Broadcast( NetPermission.HostOnly )]
+	[Rpc.Broadcast( NetFlags.HostOnly )]
 	public void Count( int value )
 	{
 		if ( Counter != value - 1 )

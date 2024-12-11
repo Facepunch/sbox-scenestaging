@@ -109,7 +109,7 @@ public class PlayerController : Component
 		}
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void OnJump( float floatValue, string dataString, object[] objects, Vector3 position )
 	{
 		AnimationHelper?.TriggerJump();
