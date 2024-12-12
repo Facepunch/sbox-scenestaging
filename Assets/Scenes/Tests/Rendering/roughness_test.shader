@@ -44,8 +44,8 @@ PS
 	float4 MainPs( PixelInput i ) : SV_Target0
 	{
 		Material m = Material::From( i );
-		m.Metalness = 1.0f;
-		m.Roughness = sin( g_flTime) * 0.5 + 0.5f;
+		m.Metalness = m.WorldPosition.z > 0 ? 0.0f : 1.0f;
+		m.Roughness = sin( g_flTime) * 0.45 + 0.5f;
 		return ShadingModelStandard::Shade( i, m );
 	}
 }
