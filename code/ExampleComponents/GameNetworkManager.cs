@@ -10,7 +10,7 @@ public sealed class GameNetworkManager : Component, Component.INetworkListener
 		var clothing = new ClothingContainer();
 		clothing.Deserialize( channel.GetUserData( "avatar" ) );
 
-		var player = PlayerPrefab.Clone( SpawnPoint.Transform.World );
+		var player = PlayerPrefab.Clone( SpawnPoint.WorldTransform );
 
 		var nameTag = player.Components.Get<NameTagPanel>( FindMode.EverythingInSelfAndDescendants );
 		if ( nameTag.IsValid() )

@@ -51,7 +51,7 @@ public sealed class ParticleLineEmitter : ParticleEmitter
 			Gizmo.Draw.Color = Color.White.WithAlpha( 0.05f );
 			Gizmo.Draw.Line( 0, TargetPosition );
 
-			var pos = Transform.World.PointToWorld( TargetPosition );
+			var pos = WorldTransform.PointToWorld( TargetPosition );
 
 			using ( Gizmo.Scope( "Tool", new Transform( TargetPosition ) ) )
 			{
@@ -69,8 +69,8 @@ public sealed class ParticleLineEmitter : ParticleEmitter
 		var count = base.GetBurstCount();
 		if ( count <= 0 ) return 0;
 
-		Vector3 from = Transform.World.Position;
-		Vector3 to = Transform.World.PointToWorld( TargetPosition );
+		Vector3 from = WorldTransform.Position;
+		Vector3 to = WorldTransform.PointToWorld( TargetPosition );
 		var moveDelta = (to - from).Length;
 
 		var minDistance = MinDistance;
@@ -88,8 +88,8 @@ public sealed class ParticleLineEmitter : ParticleEmitter
 		var count = base.GetRateCount();
 		if ( count <= 0 ) return 0;
 
-		Vector3 from = Transform.World.Position;
-		Vector3 to = Transform.World.PointToWorld( TargetPosition );
+		Vector3 from = WorldPosition;
+		Vector3 to = WorldTransform.PointToWorld( TargetPosition );
 		var moveDelta = (to - from).Length;
 
 		var minDistance = MinDistance;
@@ -105,8 +105,8 @@ public sealed class ParticleLineEmitter : ParticleEmitter
 
 	public override bool Emit( ParticleEffect target )
 	{
-		Vector3 from = Transform.World.Position;
-		Vector3 to = Transform.World.PointToWorld( TargetPosition );
+		Vector3 from = WorldPosition;
+		Vector3 to = WorldTransform.PointToWorld( TargetPosition );
 		var moveDelta = to - from;
 		var lineNormal = moveDelta.Normal;
 

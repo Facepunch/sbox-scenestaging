@@ -211,7 +211,7 @@ class SplineToolWindow : WidgetWindow
 	{
 		var _splinePoints = targetComponent.GetPoints();
 
-		using ( Gizmo.Scope( "spline_editor", targetComponent.Transform.World ) )
+		using ( Gizmo.Scope( "spline_editor", targetComponent.WorldTransform ) )
 		{
 			// foreach segment
 			for ( var i = 0; i < targetComponent.NumberOfSegments(); i++ )

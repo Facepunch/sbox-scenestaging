@@ -45,8 +45,8 @@ public sealed class TurretComponent : Component
 
 		// drive tank
 		Vector3 movement = 0;
-		if ( Input.Down( "Forward" ) ) movement += Transform.World.Forward;
-		if ( Input.Down( "backward" ) ) movement += Transform.World.Backward;
+		if ( Input.Down( "Forward" ) ) movement += WorldTransform.Forward;
+		if ( Input.Down( "backward" ) ) movement += WorldTransform.Backward;
 
 		var rot = GameObject.WorldRotation;
 		var pos = GameObject.WorldPosition + movement * Time.Delta * 100.0f;
@@ -61,7 +61,7 @@ public sealed class TurretComponent : Component
 			rot *= Rotation.From( 0, Time.Delta * -90.0f, 0 );
 		}
 
-		Transform.Local = new Transform( pos, rot, 1 );
+		LocalTransform = new Transform( pos, rot, 1 );
 
 		if ( Input.Pressed( "Attack1" ) )
 		{

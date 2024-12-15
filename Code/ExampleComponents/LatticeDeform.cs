@@ -40,15 +40,12 @@
 
 		protected override void OnEnabled()
 		{
-			if ( Transform == default )
-			{
-				// Get bounds from parent
-				var parent = Components.GetInParent<ModelRenderer>();
+			// Get bounds from parent
+			var parent = Components.GetInParent<ModelRenderer>();
 
-				// Make it use the same bounds as the parent
-				WorldScale = parent.Bounds.Size;
-				WorldPosition = parent.Bounds.Mins;
-			}
+			// Make it use the same bounds as the parent
+			WorldScale = parent.Bounds.Size;
+			WorldPosition = parent.Bounds.Mins;
 
 			base.OnEnabled();
 		}
@@ -89,7 +86,7 @@
 
 			// Matrix.FromTransform is internal, no way to pass Transform directly
 			var matrix = new Matrix();
-			var transform = Transform.Local;
+			var transform = LocalTransform;
 
 			matrix = Matrix.CreateScale( transform.Scale ) * Matrix.CreateRotation( transform.Rotation ) * Matrix.CreateTranslation( transform.Position );
 

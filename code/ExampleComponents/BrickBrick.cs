@@ -1,5 +1,3 @@
-using Sandbox;
-using System;
 
 public sealed class BrickBrick : Component, Component.ICollisionListener
 {
@@ -7,7 +5,7 @@ public sealed class BrickBrick : Component, Component.ICollisionListener
 	{
 		base.OnEnabled();
 
-	//	Transform.LocalRotation *= Rotation.From( Random.Shared.Float( -15, 15 ), Random.Shared.Float( -15, 15 ), 0 );
+		//LocalRotation *= Rotation.From( Random.Shared.Float( -15, 15 ), Random.Shared.Float( -15, 15 ), 0 );
 	}
 
 	public void OnCollisionStart( Collision o )
