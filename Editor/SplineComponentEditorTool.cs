@@ -336,7 +336,15 @@ class SplineToolWindow : WidgetWindow
 						if ( Gizmo.IsShiftPressed && !_draggingOutNewPoint )
 						{
 							_draggingOutNewPoint = true;
+							var newPointTangentMode = targetComponent.GetTangentModeForPoint( SelectedPointIndex );
+							var newpointRoll = targetComponent.GetRollForPoint( SelectedPointIndex );
+							var newPointScale = targetComponent.GetScaleForPoint( SelectedPointIndex );
+
 							targetComponent.InsertPoint( SelectedPointIndex + 1, _selectedPoint );
+							targetComponent.SetTangentModeForPoint( SelectedPointIndex + 1, newPointTangentMode );
+							targetComponent.SetRollForPoint( SelectedPointIndex + 1, newpointRoll );
+							targetComponent.SetScaleForPoint( SelectedPointIndex + 1, newPointScale );
+
 							SelectedPointIndex++;
 						}
 						else
