@@ -613,7 +613,8 @@ public static class Utils
 		SplineSegmentParams result = new SplineSegmentParams();
 		float closestDistanceSq = float.MaxValue;
 
-		Span<float> initialTs = stackalloc float[pointsChecked] { 0.0f, 0.5f, 1.0f };
+		// TODO convert to stack alloc
+		float[] initialTs = new float[pointsChecked] { 0.0f, 0.5f, 1.0f };
 
 		for ( int segmentIndex = 0; segmentIndex < SegmentNum( spline ); ++segmentIndex )
 		{
