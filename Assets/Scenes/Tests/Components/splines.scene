@@ -414,48 +414,458 @@
       ]
     },
     {
-      "__guid": "668dfbe9-369f-4772-afdd-ebac4c82d8f9",
+      "__guid": "15882710-ff5f-46af-a1d8-9a7068c240fb",
       "Flags": 0,
-      "Name": "Spline",
-      "Position": "-670.7473,1528.161,1435.731",
+      "Name": "Splines",
+      "Position": "1878.451,141,370.0355",
       "Enabled": true,
-      "Components": [
+      "Children": [
         {
-          "__type": "Sandbox.SplineComponent",
-          "__guid": "9d0765c1-5822-4c37-8e0b-ecd71c066f41",
-          "_splinePoints": [
+          "__guid": "e26eba0b-bdad-4ac8-869d-39bad9202d7f",
+          "Flags": 0,
+          "Name": "Plain",
+          "Position": "0,-429.4415,0",
+          "Enabled": true,
+          "Components": [
             {
-              "Location": "0,0,0",
-              "InLocationRelative": "-180.0273,17.4255,-38.61592",
-              "OutLocationRelative": "180.0273,-17.4255,38.61592",
-              "TangentMode": "Auto"
-            },
-            {
-              "Location": "1080.164,-104.553,231.6955",
-              "InLocationRelative": "-231.1558,-4.065172,-29.36377",
-              "OutLocationRelative": "231.1558,4.065172,29.36377",
-              "TangentMode": "Auto"
-            },
-            {
-              "Location": "1386.935,24.39103,176.1826",
-              "InLocationRelative": "-20.44552,-57.39213,38.61591",
-              "OutLocationRelative": "20.44552,57.39213,-38.61591",
-              "TangentMode": "Auto"
-            },
-            {
-              "Location": "1202.837,239.7998,0.00002753735",
-              "InLocationRelative": "231.1558,-162.6015,29.36377",
-              "OutLocationRelative": "-231.1558,162.6015,-29.36377",
-              "TangentMode": "Auto"
-            },
-            {
-              "Location": "0,1000,0",
-              "InLocationRelative": "200.4728,-126.7,0.000004589558",
-              "OutLocationRelative": "-200.4728,126.7,-0.000004589558",
-              "TangentMode": "Auto"
+              "__type": "Sandbox.SplineComponent",
+              "__guid": "17bd885d-df16-4813-accb-5dcffe20e7c8",
+              "_pointRolls": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "_pointScales": [
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1"
+              ],
+              "_positionSpline": [
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-33.33334,-0,-0",
+                  "OutPositionRelative": "33.33334,0,0"
+                },
+                {
+                  "Position": "200,0,0",
+                  "InPositionRelative": "-33.33334,-23.57022,-0",
+                  "OutPositionRelative": "33.33334,23.57022,0"
+                },
+                {
+                  "Position": "200,141.4213,0",
+                  "InPositionRelative": "-15.07128,-22.20848,-6.971",
+                  "OutPositionRelative": "15.07128,22.20848,6.971"
+                },
+                {
+                  "Position": "290.4277,133.2509,41.826",
+                  "InPositionRelative": "-21.67199,63.30104,-6.971",
+                  "OutPositionRelative": "21.67199,-63.30104,6.971"
+                },
+                {
+                  "Position": "330.032,-238.3849,41.826",
+                  "InPositionRelative": "39.59047,61.9393,-0",
+                  "OutPositionRelative": "-39.59047,-61.9393,0"
+                }
+              ],
+              "_positionTangentModes": [
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto"
+              ],
+              "IsLoop": false
             }
-          ],
-          "IsLoop": false
+          ]
+        },
+        {
+          "__guid": "89e48924-fbf9-4cd5-a43c-0880fbbfb4f7",
+          "Flags": 0,
+          "Name": "Loop",
+          "Position": "0,117.5592,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SplineComponent",
+              "__guid": "56db3596-87f4-494b-981e-7928dd631e92",
+              "_pointRolls": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "_pointScales": [
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1"
+              ],
+              "_positionSpline": [
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-33.33334,-0,-0",
+                  "OutPositionRelative": "33.33334,0,0"
+                },
+                {
+                  "Position": "200,0,0",
+                  "InPositionRelative": "-33.33334,-23.57022,-0",
+                  "OutPositionRelative": "33.33334,23.57022,0"
+                },
+                {
+                  "Position": "200,141.4213,0",
+                  "InPositionRelative": "-15.07128,-22.20848,-6.971",
+                  "OutPositionRelative": "15.07128,22.20848,6.971"
+                },
+                {
+                  "Position": "290.4277,133.2509,41.826",
+                  "InPositionRelative": "-21.67199,63.30104,-6.971",
+                  "OutPositionRelative": "21.67199,-63.30104,6.971"
+                },
+                {
+                  "Position": "330.032,-238.3849,41.826",
+                  "InPositionRelative": "39.59047,61.9393,-0",
+                  "OutPositionRelative": "-39.59047,-61.9393,0"
+                },
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-33.33334,-0,-0",
+                  "OutPositionRelative": "33.33334,0,0"
+                },
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-33.33334,-0,-0",
+                  "OutPositionRelative": "33.33334,0,0"
+                }
+              ],
+              "_positionTangentModes": [
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto"
+              ],
+              "IsLoop": true
+            }
+          ]
+        },
+        {
+          "__guid": "3d9b1c5b-68e2-401d-8b34-6f456ce20978",
+          "Flags": 0,
+          "Name": "Cuboid",
+          "Position": "0,590.7446,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SplineComponent",
+              "__guid": "bd790995-0ca4-45ea-bfea-0e155876f85d",
+              "_pointRolls": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "_pointScales": [
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1"
+              ],
+              "_positionSpline": [
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-33.33334,-0,-0",
+                  "OutPositionRelative": "33.33334,0,0"
+                },
+                {
+                  "Position": "200,0,0",
+                  "InPositionRelative": "-33.33334,-23.57022,-0",
+                  "OutPositionRelative": "33.33334,23.57022,0"
+                },
+                {
+                  "Position": "200,141.4213,0",
+                  "InPositionRelative": "-15.07128,-22.20848,-6.971",
+                  "OutPositionRelative": "15.07128,22.20848,6.971"
+                },
+                {
+                  "Position": "290.4277,133.2509,41.826",
+                  "InPositionRelative": "-15.07128,38.43369,-6.971",
+                  "OutPositionRelative": "15.07128,-38.43369,6.971"
+                },
+                {
+                  "Position": "290.4277,-89.18083,41.826",
+                  "InPositionRelative": "-0,37.07196,-0",
+                  "OutPositionRelative": "0,-37.07196,0"
+                }
+              ],
+              "_positionTangentModes": [
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto"
+              ],
+              "IsLoop": false
+            },
+            {
+              "__type": "Sandbox.SplineModelRendererComponent",
+              "__guid": "3c35eba5-bc87-4127-a114-00bd16c01fea",
+              "Model": "models/spline_cuboid_test.vmdl",
+              "Spline": {
+                "_type": "component",
+                "component_id": "bd790995-0ca4-45ea-bfea-0e155876f85d",
+                "go": "3d9b1c5b-68e2-401d-8b34-6f456ce20978",
+                "component_type": "SplineComponent"
+              }
+            }
+          ]
+        },
+        {
+          "__guid": "847c79b5-e801-4013-a2df-13a08e70cbd4",
+          "Flags": 0,
+          "Name": "Cuboid",
+          "Position": "1198.387,139.5447,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SplineComponent",
+              "__guid": "fa908eec-fe1f-4fe0-b544-4f4741a61f09",
+              "_pointRolls": [
+                0,
+                57.10001,
+                0,
+                0,
+                0,
+                0,
+                0,
+                60,
+                300,
+                45,
+                0,
+                0,
+                1148.5002
+              ],
+              "_pointScales": [
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "4.599999,6.600001",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "5,15"
+              ],
+              "_positionSpline": [
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-20.666,48.11775,-15.88974",
+                  "OutPositionRelative": "20.666,-48.11775,15.88974"
+                },
+                {
+                  "Position": "123.996,-288.7065,95.33846",
+                  "InPositionRelative": "-54.35531,39.57503,-0",
+                  "OutPositionRelative": "54.35531,-39.57503,0"
+                },
+                {
+                  "Position": "326.1319,-237.4501,0",
+                  "InPositionRelative": "-12.66733,-71.68797,15.88974",
+                  "OutPositionRelative": "12.66733,71.68797,-15.88974"
+                },
+                {
+                  "Position": "200,141.4213,0",
+                  "InPositionRelative": "0.7172852,-67.74017,-6.970993",
+                  "OutPositionRelative": "-0.7172852,67.74017,6.970993"
+                },
+                {
+                  "Position": "321.8282,168.9908,41.82595",
+                  "InPositionRelative": "-54.52139,49.65591,-6.970999",
+                  "OutPositionRelative": "54.52139,-49.65591,6.970999"
+                },
+                {
+                  "Position": "527.1283,-156.5141,41.82599",
+                  "InPositionRelative": "-25.06754,115.307,-0.000006357829",
+                  "OutPositionRelative": "25.06754,-115.307,0.000006357829"
+                },
+                {
+                  "Position": "472.2334,-522.8511,41.82599",
+                  "InPositionRelative": "46.59997,61.05616,-0",
+                  "OutPositionRelative": "-46.59997,-61.05616,0"
+                },
+                {
+                  "Position": "247.5285,-522.8511,41.82599",
+                  "InPositionRelative": "72.98899,-0,-0",
+                  "OutPositionRelative": "-72.98899,0,0"
+                },
+                {
+                  "Position": "34.29946,-522.8511,41.82599",
+                  "InPositionRelative": "61.64915,-0,-0",
+                  "OutPositionRelative": "-61.64915,0,0"
+                },
+                {
+                  "Position": "-122.3664,-522.8511,41.82599",
+                  "InPositionRelative": "51.13361,-7.863719,-0",
+                  "OutPositionRelative": "-51.13361,7.863719,0"
+                },
+                {
+                  "Position": "-272.5022,-475.6688,41.82599",
+                  "InPositionRelative": "33.9358,-47.37466,-0",
+                  "OutPositionRelative": "-33.9358,47.37466,0"
+                },
+                {
+                  "Position": "-325.9812,-238.6031,41.82599",
+                  "InPositionRelative": "14.74576,-133.4274,-0.000008900961",
+                  "OutPositionRelative": "-14.74576,133.4274,0.000008900961"
+                },
+                {
+                  "Position": "-360.9768,324.8955,41.82605",
+                  "InPositionRelative": "5.832596,-93.91644,-0.000008900961",
+                  "OutPositionRelative": "-5.832596,93.91644,0.000008900961"
+                }
+              ],
+              "_positionTangentModes": [
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto"
+              ],
+              "IsLoop": false
+            },
+            {
+              "__type": "Sandbox.SplineModelRendererComponent",
+              "__guid": "b443d49a-219d-4cea-b124-c8e89154b7b3",
+              "Model": "models/spline_cuboid_test.vmdl",
+              "Spline": {
+                "_type": "component",
+                "component_id": "fa908eec-fe1f-4fe0-b544-4f4741a61f09",
+                "go": "847c79b5-e801-4013-a2df-13a08e70cbd4",
+                "component_type": "SplineComponent"
+              }
+            }
+          ]
+        },
+        {
+          "__guid": "889fd368-bdef-48d5-b3a2-44c162b16882",
+          "Flags": 0,
+          "Name": "Pipe",
+          "Position": "0,944.533,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SplineComponent",
+              "__guid": "0d45c539-a8ec-40c0-a927-7bd2d58084b6",
+              "_pointRolls": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "_pointScales": [
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1"
+              ],
+              "_positionSpline": [
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-50,-0,-0",
+                  "OutPositionRelative": "50,0,0"
+                },
+                {
+                  "Position": "300,0,0",
+                  "InPositionRelative": "-50,-50,-0",
+                  "OutPositionRelative": "50,50,0"
+                },
+                {
+                  "Position": "300,300,0",
+                  "InPositionRelative": "-133.9469,-50,-18.39541",
+                  "OutPositionRelative": "133.9469,50,18.39541"
+                },
+                {
+                  "Position": "1103.682,300,110.3724",
+                  "InPositionRelative": "-133.9469,56.03883,-2.01914",
+                  "OutPositionRelative": "133.9469,-56.03883,2.01914"
+                },
+                {
+                  "Position": "1103.682,-36.23294,12.11484",
+                  "InPositionRelative": "125.6835,56.03883,-3.139715",
+                  "OutPositionRelative": "-125.6835,-56.03883,3.139715"
+                },
+                {
+                  "Position": "349.5804,-36.23294,129.2107",
+                  "InPositionRelative": "125.6835,-61.47763,-19.51598",
+                  "OutPositionRelative": "-125.6835,61.47763,19.51598"
+                },
+                {
+                  "Position": "349.5804,332.6328,129.2107",
+                  "InPositionRelative": "-85.36351,-142.1072,-0",
+                  "OutPositionRelative": "85.36351,142.1072,0"
+                },
+                {
+                  "Position": "861.7614,816.4101,129.2107",
+                  "InPositionRelative": "-85.36351,-80.62955,-0",
+                  "OutPositionRelative": "85.36351,80.62955,0"
+                }
+              ],
+              "_positionTangentModes": [
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto"
+              ],
+              "IsLoop": false
+            },
+            {
+              "__type": "Sandbox.SplineModelRendererComponent",
+              "__guid": "0051b513-2870-48fc-b8ce-73d51749c576",
+              "Model": "models/spline_pipe_test.vmdl",
+              "Spline": {
+                "_type": "component",
+                "component_id": "0d45c539-a8ec-40c0-a927-7bd2d58084b6",
+                "go": "889fd368-bdef-48d5-b3a2-44c162b16882",
+                "component_type": "SplineComponent"
+              }
+            }
+          ]
         }
       ]
     }

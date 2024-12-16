@@ -1,0 +1,20 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/spline_deform.shader"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Material ----
+	g_flTintColor "[1.000000 1.000000 1.000000 0.000000]"
+	TextureAmbientOcclusion "[1.000000 1.000000 1.000000 0.000000]"
+	TextureBlendMask "[1.000000 1.000000 1.000000 0.000000]"
+	TextureColor "Models/modular_industrial_pipes_01_group01_diff_2k.png"
+	TextureMetalness "models/modular_industrial_pipes_01_group01_metal_2k.png"
+	TextureNormal "models/modular_industrial_pipes_01_group01_nor_gl_2k.png"
+	TextureRoughness "models/modular_industrial_pipes_01_group01_rough_2k.png"
+	TextureTintMask "[1.000000 1.000000 1.000000 0.000000]"
+	TextureTranslucency "[1.000000 1.000000 1.000000 0.000000]"
+}
