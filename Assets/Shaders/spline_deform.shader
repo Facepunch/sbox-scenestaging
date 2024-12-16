@@ -35,17 +35,11 @@ VS
 	#include "common/vertex.hlsl"
 
 	// TODO can be packed more efficiently
-	struct SplineSegment
-	{
-		// float3 P0;
-		float4 P1;
-		float4 P2;
-		float4 P3;
-		float4 StartEndRoll;
-		float4 StartEndWidthHeightScale;
-	};
-
-	StructuredBuffer<SplineSegment> SplineSegments < Attribute("SplineSegments"); >;
+	float4 P1 < Attribute("P1"); >;
+	float4 P2 < Attribute("P2"); >;
+	float4 P3 < Attribute("P3"); >;
+	float4 StartEndRoll < Attribute("StartEndRoll"); >;
+	float4 StartEndWidthHeightScale < Attribute("WidthHeightScaleStartEnd"); >;
 
 	float MinInModelDir < Attribute("MinInModelDir"); >;
 	float SizeInModelDir < Attribute("SizeInModelDir"); >;
@@ -126,23 +120,23 @@ VS
 		return normal.x * forward + normal.y * right + normal.z * up;
 	}
 
-	PixelInput MainVs( VertexInput i, uint instanceID : SV_InstanceID )
+	PixelInput MainVs( VertexInput i )
 	{
 		float t = CalculateBezierT(i.vPositionOs, MinInModelDir, SizeInModelDir);
 
 		float3 p0 = float3(0, 0, 0);
-		float3 p1 = SplineSegments[instanceID].P1;
-		float3 p2 = SplineSegments[instanceID].P2;
-		float3 p3 = SplineSegments[instanceID].P3;
+		float3 p1 = P1.xyz;
+		float3 p2 = P2.xyz;
+		float3 p3 = P3.xyz;
 
-		float rollStart = SplineSegments[instanceID].StartEndRoll.x;
-		float rollEnd = SplineSegments[instanceID].StartEndRoll.y;
+		float rollStart = StartEndRoll.x;
+		float rollEnd = StartEndRoll.y;
 
 		float roll = CalculateRoll(t, rollStart, rollEnd);
 
 		// Maybbbeee we want to expose this in the future
-		float2 startScaleWidthHeight = SplineSegments[instanceID].StartEndWidthHeightScale.xy;
-		float2 endScaleWidthHeight = SplineSegments[instanceID].StartEndWidthHeightScale.zw;
+		float2 startScaleWidthHeight = StartEndWidthHeightScale.xy;
+		float2 endScaleWidthHeight = StartEndWidthHeightScale.zw;
 
 		float2 scale = CalculateScale(t, startScaleWidthHeight, endScaleWidthHeight);
 
@@ -225,7 +219,7 @@ PS
 	{
 		Material m = Material::From( i );
 
-		//return float4(1, 0, 0, 1);
+		//return i.vVertexColor;
 		return ShadingModelStandard::Shade( i, m );
 	}
 }

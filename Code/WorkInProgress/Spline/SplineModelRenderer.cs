@@ -20,40 +20,31 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		public Vector4 WidthHeightScaleStartEnd;
 	}
 
+	private List<SceneObject> sceneObjects;
+
 	protected override void OnEnabled()
 	{
 		if ( Model.IsValid() && Spline.IsValid() )
 		{
-			commands = new CommandList( "SplineModel" );
-			Scene.Camera.AddCommandList( commands, Stage.AfterOpaque );
+			sceneObjects = new();
 		}
 	}
-
-	CommandList commands = new CommandList( "SplineModel" );
-
-	GpuBuffer<GpuSplineSegment> segmentGpuBuffer;
-
-	GpuSplineSegment[] segmentBuffer;
-
-	Transform[] transformBuffer;
 
 	protected override void OnDisabled()
 	{
-		if ( commands != null )
+		foreach ( var sceneObject in sceneObjects )
 		{
-			Scene.Camera.RemoveCommandList( commands );
-			commands = null;
+			sceneObject.Delete();
 		}
+		sceneObjects.Clear();
 	}
 
-	protected override void OnUpdate()
+	protected override void OnPreRender()
 	{
 		if ( !Model.IsValid() || !Spline.IsValid() )
 		{
 			return;
 		}
-
-		commands.Reset();
 
 		var sizeInModelDir = Model.Bounds.Size.Dot( Vector3.Forward );
 
@@ -61,15 +52,28 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 		var meshesRequired = (int)Math.Round( Spline.GetLength() / sizeInModelDir );
 		var distancePerCurve = Spline.GetLength() / meshesRequired;
-		
-		if ( segmentBuffer == null || segmentBuffer.Length != meshesRequired )
+
+		// TODO handle somehow
+		if (meshesRequired == 0 )
 		{
-			segmentBuffer = new GpuSplineSegment[meshesRequired];
+			return;
 		}
 
-		if ( transformBuffer == null || transformBuffer.Length != meshesRequired )
+		// create enough sceneobjects
+		for ( int i = sceneObjects.Count; i < meshesRequired; i++ )
 		{
-			transformBuffer = new Transform[meshesRequired];
+			var sceneObject = new SceneObject(Scene.SceneWorld, Model);
+			sceneObject.Transform = WorldTransform;
+			sceneObject.SetComponentSource( this );
+			sceneObject.Tags.SetFrom( GameObject.Tags );
+			sceneObjects.Add( sceneObject );
+		}
+
+		// delete if there are too many
+		for ( int i = sceneObjects.Count - 1; i >= meshesRequired; i-- )
+		{
+			sceneObjects[i].Delete();
+			sceneObjects.RemoveAt( i );
 		}
 
 		for ( var meshIndex = 0; meshIndex < meshesRequired; meshIndex++ )
@@ -94,8 +98,6 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			var scaleAtStart = Spline.GetScaleAtDistance( meshIndex * distancePerCurve );
 			var scaleAtEnd = Spline.GetScaleAtDistance( (meshIndex + 1) * distancePerCurve );
 
-			transformBuffer[meshIndex] = segmentTransform;
-
 			var segment = new GpuSplineSegment
 			{
 				P1 = new Vector4( segmentTransform.PointToLocal( P1World ) ),
@@ -105,21 +107,21 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 				WidthHeightScaleStartEnd = new Vector4( scaleAtStart.x, scaleAtStart.y, scaleAtEnd.x, scaleAtEnd.y )
 			};
 
-			segmentBuffer[meshIndex] = segment;
+			// TODO pack this more efficiently
+			sceneObjects[meshIndex].Attributes.Set( "P1", segment.P1 );
+			sceneObjects[meshIndex].Attributes.Set( "P2", segment.P2 );
+			sceneObjects[meshIndex].Attributes.Set( "P3", segment.P3 );
+			sceneObjects[meshIndex].Attributes.Set( "RollStartEnd", segment.RollStartEnd );
+			sceneObjects[meshIndex].Attributes.Set( "WidthHeightScaleStartEnd", segment.WidthHeightScaleStartEnd );
+			sceneObjects[meshIndex].Attributes.Set( "MinInModelDir", minInModelDir );
+			sceneObjects[meshIndex].Attributes.Set( "SizeInModelDir", sizeInModelDir );
+
+			// :(
+			sceneObjects[meshIndex].Batchable = false;
+
+			sceneObjects[meshIndex].Transform = segmentTransform;
+
+			// TODO deform bounds to ennsure culling is working
 		}
-
-		if ( segmentGpuBuffer == null || segmentGpuBuffer.ElementCount != meshesRequired )
-		{
-			segmentGpuBuffer = new ( meshesRequired, GpuBuffer.UsageFlags.Structured, "SplineSegments" );
-		}
-		segmentGpuBuffer.SetData( segmentBuffer );
-
-		RenderAttributes attributes = new();
-		attributes.Set( "SplineSegments", segmentGpuBuffer );
-
-		attributes.Set( "MinInModelDir", minInModelDir );
-		attributes.Set( "SizeInModelDir", sizeInModelDir );
-
-		commands.DrawModelInstanced( Model, transformBuffer, attributes );	
 	}
 }
