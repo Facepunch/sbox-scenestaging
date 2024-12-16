@@ -41,11 +41,15 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 	private Spline.Utils.SplineSampler _distanceSampler = new();
 
 	private bool _areDistancesSampled = false;
+	public bool IsDirty => !_areDistancesSampled;
+
+	public Action SplineChanged;
 
 	// TODO should be itnernal to editor only
 	public void RequiresDistanceResample()
 	{
 		_areDistancesSampled = false;
+		SplineChanged?.Invoke();
 	}
 
 	private void SampleDistances()
