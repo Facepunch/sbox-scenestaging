@@ -1,5 +1,8 @@
+using Sandbox.Diagnostics;
 using Sandbox.Rendering;
+using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Sandbox;
 
@@ -56,12 +59,12 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	protected override void OnPreRender()
 	{
-		for ( var meshIndex = 0; meshIndex < sceneObjects.Count; meshIndex++ )
+		if ( !Model.IsValid() || !Spline.IsValid() )
 		{
-			DebugOverlay.Box( sceneObjects[meshIndex].Bounds );
+			return;
 		}
 
-		if ( !Model.IsValid() || !Spline.IsValid() || !Spline.IsDirty || !IsDirty )
+		if ( !Spline.IsDirty && !IsDirty )
 		{
 			return;
 		}
@@ -71,8 +74,6 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	private void UpdateRenderState()
 	{
-		Log.Info( "UpdateRenderState" );
-
 		var sizeInModelDir = Model.Bounds.Size.Dot( Vector3.Forward );
 
 		var minInModelDir = Model.Bounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
@@ -164,6 +165,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		IsDirty = false;
 	}
 
+	// replicates our vertex shader should always match the shader
     public static Vector3 DeformVertex(Vector3 localPosition, float MinInMeshDir, float SizeInMeshDir, Vector3 P1, Vector3 P2, Vector3 P3, Vector2 RollStartEnd, Vector4 WidthHeightScaleStartEnd)
     {
         float t = (localPosition.x - MinInMeshDir) / SizeInMeshDir;

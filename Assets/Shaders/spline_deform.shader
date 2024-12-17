@@ -38,7 +38,7 @@ VS
 	float4 P1 < Attribute("P1"); >;
 	float4 P2 < Attribute("P2"); >;
 	float4 P3 < Attribute("P3"); >;
-	float4 StartEndRoll < Attribute("StartEndRoll"); >;
+	float4 StartEndRoll < Attribute("RollStartEnd"); >;
 	float4 StartEndWidthHeightScale < Attribute("WidthHeightScaleStartEnd"); >;
 
 	float MinInModelDir < Attribute("MinInModelDir"); >;

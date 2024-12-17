@@ -84,7 +84,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 				_pointRolls.Add( _pointRolls[0] );
 				_pointScales.Add( _pointScales[0] );
 			}
-			else
+			else if ( Spline.Utils.IsLoop( _positionSpline.AsReadOnly() ) ) // only remove the last point if we are actually a loop
 			{
 				_positionSpline.RemoveAt( _positionSpline.Count - 1 );
 				_positionTangentModes.RemoveAt( _positionTangentModes.Count - 1 );
