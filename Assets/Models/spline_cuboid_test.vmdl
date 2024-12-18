@@ -47,10 +47,13 @@
 				children = 
 				[
 					{
-						_class = "PhysicsMeshFromRender"
+						_class = "PhysicsShapeBox"
 						parent_bone = ""
 						surface_prop = "default"
 						collision_tags = "solid"
+						origin = [ -0.022873, 0.000499, -0.002404 ]
+						angles = [ 0.0, 0.0, 0.0 ]
+						dimensions = [ 60.064034, 20.003447, 20.043362 ]
 					},
 				]
 			},

@@ -37,8 +37,10 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		if ( Model.IsValid() && Spline.IsValid() )
 		{
 			sceneObjects = new();
+			relativeSegmentTransforms = new();
 			IsDirty = true;
 			Spline.SplineChanged += MarkDirty;
+			Transform.OnTransformChanged += OnTransformChanged;
 		}
 	}
 
@@ -46,6 +48,16 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 	{
 		IsDirty = true;
 	}
+
+	private void OnTransformChanged()
+	{
+		for ( int i = 0; i < sceneObjects.Count; i++ )
+		{
+			sceneObjects[i].Transform = global::Transform.Concat( WorldTransform, relativeSegmentTransforms[i] );
+		}
+	}
+
+	List<Transform> relativeSegmentTransforms;
 
 	protected override void OnDisabled()
 	{
@@ -55,6 +67,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		}
 		sceneObjects.Clear();
 		Spline.SplineChanged -= MarkDirty;
+		Transform.OnTransformChanged -= OnTransformChanged;
 	}
 
 	protected override void OnPreRender()
@@ -95,6 +108,8 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			sceneObject.SetComponentSource( this );
 			sceneObject.Tags.SetFrom( GameObject.Tags );
 			sceneObjects.Add( sceneObject );
+
+			relativeSegmentTransforms.Add( new Transform() );
 		}
 
 		// delete if there are too many
@@ -102,6 +117,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		{
 			sceneObjects[i].Delete();
 			sceneObjects.RemoveAt( i );
+			relativeSegmentTransforms.RemoveAt( i );
 		}
 
 		for ( var meshIndex = 0; meshIndex < meshesRequired; meshIndex++ )
@@ -147,7 +163,8 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			// :(
 			sceneObjects[meshIndex].Batchable = false;
 
-			sceneObjects[meshIndex].Transform = segmentTransform;
+			relativeSegmentTransforms[meshIndex] = WorldTransform.ToLocal( segmentTransform );
+			sceneObjects[meshIndex].Transform = global::Transform.Concat(WorldTransform, relativeSegmentTransforms[meshIndex] );
 
 			var newBounds = new BBox( Vector3.Zero, Vector3.Zero );
 
