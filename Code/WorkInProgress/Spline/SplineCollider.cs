@@ -116,7 +116,8 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 				generator.SetVertices( subHull );
 				generator.DeformVertices( minInModelDir, sizeInModelDir, P1, P2, P3, RollStartEnd, WidthHeightScaleStartEnd, new Transform() );
 				collisionGeneratorPool.Return( generator );
-				_PhysicsBody.AddHullShape( segmentTransform.Position, segmentTransform.Rotation, generator.GetDeformedVertices() );
+				var vertices = generator.GetDeformedVertices();
+				_PhysicsBody.AddHullShape( segmentTransform.Position, segmentTransform.Rotation, vertices.ToList() );
 			}
 		}
 
@@ -182,51 +183,55 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 					.ToList();
 
 				// Now split the hull vertices into overlapping groups
-
-				float groupLength = maxProjectedEdgeLength * 2;
-				float overlapPercentage = 0.25f; // 10% overlap between groups
-				float overlapLength = groupLength * overlapPercentage;
-
-				int vertexCount = sortedVertices.Count;
-				int i = 0;
-
-				while ( i < vertexCount )
-				{
-					List<Vector3> currentGroup = new();
-
-					// Get the start projection for the current group
-					float groupStartProjection = GetProjection( sortedVertices[i], Vector3.Forward );
-					float groupEndProjection = groupStartProjection + groupLength;
-
-					// Collect vertices for the current group
-					int startIndex = i;
-					while ( i < vertexCount && GetProjection( sortedVertices[i], Vector3.Forward ) <= groupEndProjection )
-					{
-						currentGroup.Add( sortedVertices[i] );
-						i++;
-					}
-
-					// Add current group to subHullVertices
-					subHullVertices.Add( currentGroup );
-
-					if ( overlapLength > 0 && i < vertexCount )
-					{
-						// Find the starting index for the next group
-						float nextGroupStartProjection = groupEndProjection - overlapLength;
-
-						// Move i back to include overlap
-						int j = startIndex;
-						while ( j < i && GetProjection( sortedVertices[j], Vector3.Forward ) < nextGroupStartProjection )
-						{
-							j++;
-						}
-						i = j;
-					}
-				}
+				GroupVertices( sortedVertices, maxProjectedEdgeLength );
 			}
 		}
 
 		MarkDirty();
+	}
+
+	private void GroupVertices( List<Vector3> sortedVertices, float maxProjectedEdgeLength )
+	{
+		float groupLength = maxProjectedEdgeLength * 2;
+		float overlapPercentage = 0.25f; // 20% overlap between groups
+		float overlapLength = groupLength * overlapPercentage;
+
+		int vertexCount = sortedVertices.Count;
+		int i = 0;
+
+		while ( i < vertexCount )
+		{
+			List<Vector3> currentGroup = new();
+
+			// Get the start projection for the current group
+			float groupStartProjection = GetProjection( sortedVertices[i], Vector3.Forward );
+			float groupEndProjection = groupStartProjection + groupLength;
+
+			// Collect vertices for the current group
+			int startIndex = i;
+			while ( i < vertexCount && GetProjection( sortedVertices[i], Vector3.Forward ) <= groupEndProjection )
+			{
+				currentGroup.Add( sortedVertices[i] );
+				i++;
+			}
+
+			// Add current group to subHullVertices
+			subHullVertices.Add( currentGroup );
+
+			if ( overlapLength > 0 && i < vertexCount )
+			{
+				// Find the starting index for the next group
+				float nextGroupStartProjection = groupEndProjection - overlapLength;
+
+				// Move i back to include overlap
+				int j = startIndex;
+				while ( j < i && GetProjection( sortedVertices[j], Vector3.Forward ) < nextGroupStartProjection )
+				{
+					j++;
+				}
+				i = j;
+			}
+		}
 	}
 
 	private static float GetProjection( Vector3 v, Vector3 direction )
@@ -334,25 +339,23 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 		float projectedLength = MathF.Abs( Vector3.Dot( edgeVector, direction ) );
 		return projectedLength;
 	}
+}
 
-	class Vector3Comparer : IEqualityComparer<Vector3>
+// need to be less precise than default
+class Vector3Comparer : IEqualityComparer<Vector3>
+{
+	private const float Tolerance = 0.1f;
+
+	public bool Equals( Vector3 a, Vector3 b )
 	{
-		private const float Tolerance = 1e-1f;
+		return a.AlmostEqual( b, Tolerance );
+	}
 
-		public bool Equals( Vector3 a, Vector3 b )
+	public int GetHashCode( Vector3 v )
+	{
+		unchecked
 		{
-			return (a - b).LengthSquared <= Tolerance * Tolerance;
-		}
-
-		public int GetHashCode( Vector3 v )
-		{
-			unchecked
-			{
-				int hashX = MathF.Round( v.x / Tolerance ).GetHashCode();
-				int hashY = MathF.Round( v.y / Tolerance ).GetHashCode();
-				int hashZ = MathF.Round( v.z / Tolerance ).GetHashCode();
-				return hashX * 397 ^ hashY * 397 ^ hashZ;
-			}
+			return v.GetHashCode();
 		}
 	}
 }
@@ -365,14 +368,14 @@ class SplineCollisionGenerator
 		inVertices.AddRange( vertices );
 	}
 
-	public List<Vector3> GetDeformedVertices()
+	public HashSet<Vector3> GetDeformedVertices()
 	{
 		return outVertices;
 	}
 
 	public void DeformVertices( float MinInMeshDir, float SizeInMeshDir, Vector3 P1, Vector3 P2, Vector3 P3, Vector2 RollStartEnd, Vector4 WidthHeightScaleStartEnd, Transform SegmentTransform )
 	{
-		outVertices.Capacity = Math.Max( outVertices.Capacity, inVertices.Count );
+		outVertices.EnsureCapacity( inVertices.Count );
 		outVertices.Clear();
 		for ( int i = 0; i < inVertices.Count; i++ )
 		{
@@ -381,7 +384,7 @@ class SplineCollisionGenerator
 	}
 
 	private List<Vector3> inVertices = new();
-	private List<Vector3> outVertices = new();
+	private HashSet<Vector3> outVertices = new( new Vector3Comparer() );
 }
 
 
