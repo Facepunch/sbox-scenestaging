@@ -1,6 +1,5 @@
 ﻿using Sandbox.Diagnostics;
 using System.Collections.Concurrent;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Sandbox;
@@ -8,6 +7,19 @@ namespace Sandbox;
 public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteInEditor
 {
 	[Property] public SplineComponent Spline { get; set; }
+
+	[Property]
+	[Range( 0, 16 )]
+	public int Subdivision
+	{
+		get => _subdivision; set
+		{
+			_subdivision = value;
+			Rebuild();
+		}
+	}
+
+	private int _subdivision = 1;
 
 	private static SplineCollisionGeneratorPool collisionGeneratorPool = new( 100 );
 
@@ -36,9 +48,8 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 	protected override void OnDisabled()
 	{
 		Spline.SplineChanged -= MarkDirty;
-		meshVertices.Clear();
-		meshIndices.Clear();
-		subHullVertices.Clear();
+		subHulls.Clear();
+		subMeshes.Clear();
 		base.OnDisabled();
 	}
 
@@ -55,7 +66,7 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 		}
 
 		// Nothing to deform
-		if ( meshVertices.Count == 0 && subHullVertices.Count == 0 )
+		if ( subHulls.Count == 0 && subMeshes.Count == 0 )
 		{
 			return;
 		}
@@ -98,139 +109,347 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 			P2 = new Vector4( segmentTransform.PointToLocal( P2 ) );
 			P3 = new Vector4( segmentTransform.PointToLocal( P3 ) );
 
-			var RollStartEnd = new Vector2( rollAtStart, rollAtEnd);
+			var RollStartEnd = new Vector2( rollAtStart, rollAtEnd );
 			var WidthHeightScaleStartEnd = new Vector4( scaleAtStart.x, scaleAtStart.y, scaleAtEnd.x, scaleAtEnd.y );
 
-			// mesh
-			//var generator = collisionGeneratorPool.Get().Result;
-			//generator.SetVertices( meshVertices );
-			//generator.DeformVertices( minInModelDir, sizeInModelDir, P1, P2, P3, RollStartEnd, WidthHeightScaleStartEnd, segmentTransform );
-			//collisionGeneratorPool.Return( generator );
-
-			//KeyframeBody.AddMeshShape( generator.GetDeformedVertices(), meshIndices );
-
-			// hull
-			foreach ( var subHull in subHullVertices )
+			foreach ( var subMesh in subMeshes )
 			{
 				var generator = collisionGeneratorPool.Get().Result;
-				generator.SetVertices( subHull );
-				generator.DeformVertices( minInModelDir, sizeInModelDir, P1, P2, P3, RollStartEnd, WidthHeightScaleStartEnd, new Transform() );
+				generator.SetVertices( subMesh.Vertices );
+				generator.DeformVertices( minInModelDir, sizeInModelDir, P1, P2, P3, RollStartEnd, WidthHeightScaleStartEnd, subMesh.PartTransform );
 				collisionGeneratorPool.Return( generator );
 				var vertices = generator.GetDeformedVertices();
-				_PhysicsBody.AddHullShape( segmentTransform.Position, segmentTransform.Rotation, vertices.ToList() );
+				var shape = _PhysicsBody.AddMeshShape( vertices.ToList(), subMesh.Indices );
+				shape.Surface = subMesh.Surface;
+			}
+
+			// hull
+			foreach ( var subHull in subHulls )
+			{
+				var generator = collisionGeneratorPool.Get().Result;
+				generator.SetVertices( subHull.Vertices );
+				generator.DeformVertices( minInModelDir, sizeInModelDir, P1, P2, P3, RollStartEnd, WidthHeightScaleStartEnd, subHull.PartTransform );
+				collisionGeneratorPool.Return( generator );
+				var vertices = generator.GetDeformedVertices();
+				var shape = _PhysicsBody.AddHullShape( segmentTransform.Position, segmentTransform.Rotation, vertices.ToList() );
+				shape.Surface = subHull.Surface;
 			}
 		}
 
 		IsDirty = false;
 	}
 
-	protected override void RebuildImmediately()
+	protected override IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody )
 	{
-		base.RebuildImmediately();
+		if ( Model is null || Model.Physics is null )
+			yield break;
 
-		if ( !Model.IsValid() || !Spline.IsValid() )
+		if ( Model.Physics.Parts.Count == 0 )
+			yield break;
+
+		if ( Spline is null )
+			yield break;
+
+		subMeshes.Clear();
+		subHulls.Clear();
+
+		var bodyTransform = targetBody.Transform.ToLocal( WorldTransform );
+
+		foreach ( var part in Model.Physics.Parts )
 		{
-			return;
+			// Bone transform
+			var bx = bodyTransform.ToWorld( part.Transform );
+
+			foreach ( var sphere in part.Spheres )
+			{
+				const int rings = 8;
+				SubdivideSphere( rings, sphere.Sphere.Center, sphere.Sphere.Radius, sphere.Surface, bx );
+			}
+
+			foreach ( var capsule in part.Capsules )
+			{
+				const int rings = 8;
+				SubdivideCapsule( rings, capsule.Capsule.CenterA, capsule.Capsule.CenterB, capsule.Capsule.Radius, capsule.Surface, bx );
+			}
+
+			foreach ( var hull in part.Hulls )
+			{
+				SubdivideHull( hull, Subdivision, hull.Surface, bx );
+			}
+
+			foreach ( var mesh in part.Meshes )
+			{
+                var triangles = mesh.GetTriangles().ToList();
+
+				// TODO slow as fuck can be improved by getting the lists directly rather than the traingel objects
+				// can be done once we are out of scene staging.
+                var vertices = new List<Vector3>();
+                var indices = new List<int>(triangles.Count * 3);
+                var vertexMap = new Dictionary<Vector3, int>(new Vector3Comparer());
+
+                foreach (var triangle in triangles)
+                {
+                    if (!vertexMap.ContainsKey(triangle.A))
+                    {
+                        vertexMap[triangle.A] = vertices.Count;
+                        vertices.Add(triangle.A);
+                    }
+                    indices.Add(vertexMap[triangle.A]);
+
+                    if (!vertexMap.ContainsKey(triangle.B))
+                    {
+                        vertexMap[triangle.B] = vertices.Count;
+                        vertices.Add(triangle.B);
+                    }
+                    indices.Add(vertexMap[triangle.B]);
+
+                    if (!vertexMap.ContainsKey(triangle.C))
+                    {
+                        vertexMap[triangle.C] = vertices.Count;
+                        vertices.Add(triangle.C);
+                    }
+                    indices.Add(vertexMap[triangle.C]);
+                }
+
+                subMeshes.Add(new SubMesh
+                {
+                    Vertices = vertices,
+                    Indices = indices,
+                    Surface = mesh.Surface,
+					PartTransform = bx
+				} );
+			}
+
+			if ( part.Mass > 0 )
+				targetBody.Mass = part.Mass;
+
+			if ( part.OverrideMassCenter )
+				targetBody.LocalMassCenter = part.MassCenterOverride;
+
+			if ( part.LinearDamping > 0 )
+				targetBody.LinearDamping = part.LinearDamping;
+
+			if ( part.AngularDamping > 0 )
+				targetBody.AngularDamping = part.AngularDamping;
 		}
 
-		meshVertices.Clear();
-		subHullVertices.Clear();
+		UpdateCollisions();
+	}
 
+	private void SubdivideHull( PhysicsGroupDescription.BodyPart.HullPart hull, int ringCount, Surface surface, Transform transform )
+	{
 		var sizeInModelDir = Model.Bounds.Size.Dot( Vector3.Forward );
+		var minProj = Model.Bounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
+		var maxProj = Model.Bounds.Center.Dot( Vector3.Forward ) + sizeInModelDir / 2;
 
-		var minInModelDir = Model.Bounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
+		var allVertices = hull.GetPoints();
 
-		var meshesRequired = (int)Math.Round( Spline.GetLength() / sizeInModelDir );
-		var distancePerCurve = Spline.GetLength() / meshesRequired;
-		float maxProjectedEdgeLength = distancePerCurve / 4;
+		var interval = sizeInModelDir / ringCount;
+		var rings = new List<List<Vector3>>();
 
+		const float tolerance = 0.01f;
 
-		// TODO there are nicer ways to get the vertices, but that requires internal access and soem engine changes
-		// as long as we are in scenestaging hack it
-		foreach ( var shape in this._PhysicsBody.Shapes )
+		// Create rings and intersect with existing edges
+		for ( int i = 0; i <= ringCount; i++ )
 		{
-			if ( shape.IsMeshShape )
+			float ringProj = minProj + (i * interval);
+			var ringVertices = new HashSet<Vector3>( new Vector3Comparer() );
+
+			// Find intersections with existing edges
+			foreach ( var line in hull.GetLines() )
 			{
-				shape.Triangulate( out var vertices, out var indices );
-				meshVertices.AddRange( vertices );
-				for ( int i = 0; i < indices.Length; i++ )
+				float startProj = GetProjection( line.Start, Vector3.Forward );
+				float endProj = GetProjection( line.End, Vector3.Forward );
+
+				// Check if line crosses this ring plane
+				if ( (startProj <= ringProj + tolerance && endProj >= ringProj - tolerance) ||
+					(endProj <= ringProj + tolerance && startProj >= ringProj - tolerance) )
 				{
-					meshIndices.Add( (int)indices[i] );
+					// Calculate intersection point
+					float t = (ringProj - startProj) / (endProj - startProj);
+					Vector3 intersection = Vector3.Lerp( line.Start, line.End, t );
+					ringVertices.Add( intersection );
 				}
+			}
+
+			if ( ringVertices.Count > 0 )
+			{
+				rings.Add( ringVertices.ToList() );
+			}
+		}
+
+		for ( int i = 0; i < rings.Count - 1; i++ )
+		{
+			var currentGroup = new List<Vector3>();
+
+			// Add current ring
+			currentGroup.AddRange( rings[i] );
+
+			// Add next ring
+			currentGroup.AddRange( rings[i + 1] );
+
+			// Find and add original vertices that fall between these rings
+			float groupStart = GetProjection( rings[i][0], Vector3.Forward );
+			float groupEnd = GetProjection( rings[i + 1][0], Vector3.Forward );
+
+			foreach ( var vertex in allVertices )
+			{
+				float vertexProj = GetProjection( vertex, Vector3.Forward );
+
+				if ( groupStart <= vertexProj + tolerance && groupEnd >= vertexProj - tolerance )
+				{
+					currentGroup.Add( vertex );
+				}
+			}
+
+			subHulls.Add( new SubHull
+			{
+				Vertices = currentGroup.ToList(),
+				Surface = surface,
+				PartTransform = transform
+			} );
+		}
+	}
+
+	private void SubdivideSphere( int rings, Vector3 center, float radius, Surface surface, Transform transform )
+	{
+		var ringPoints = new List<Vector3>[rings];
+		for ( int i = 0; i < rings; ++i )
+		{
+			ringPoints[i] = new List<Vector3>();
+			for ( int j = 0; j < rings; ++j )
+			{
+				var u = j / (float)(rings - 1);
+				var v = i / (float)(rings - 1);
+				var t = 2.0f * MathF.PI * u;
+				var p = MathF.PI * v;
+
+				var point = new Vector3( center.x + (radius * MathF.Sin( p ) * MathF.Cos( t )),
+										center.y + (radius * MathF.Sin( p ) * MathF.Sin( t )),
+										center.z + (radius * MathF.Cos( p )) );
+
+				ringPoints[i].Add( point );
+			}
+		}
+
+		for ( int i = 0; i < rings - 1; ++i )
+		{
+			var currentGroup = new List<Vector3>();
+			currentGroup.AddRange( ringPoints[i] );
+			currentGroup.AddRange( ringPoints[i + 1] );
+
+			subHulls.Add( new SubHull
+			{
+				Vertices = currentGroup,
+				Surface = surface,
+				PartTransform = transform
+			} );
+		}
+	}
+
+	private void SubdivideCapsule( int rings, Vector3 centerA, Vector3 centerB, float radius, Surface surface, Transform transform )
+	{
+		if ( rings < 4 )
+		{
+			throw new ArgumentException( "Number of rings must be at least 4 to form a valid capsule." );
+		}
+
+		var capsuleDir = (centerB - centerA);
+		var length = capsuleDir.Length;
+		var direction = capsuleDir.Normal;
+
+		// Find perpendicular vectors to create the ring plane
+		var right = Vector3.Cross( direction, Vector3.Up );
+		if ( right.Length < 0.001f )
+		{
+			right = Vector3.Cross( direction, Vector3.Forward );
+		}
+		right = right.Normal;
+		var up = Vector3.Cross( right, direction ).Normal;
+
+		var ringPoints = new List<List<Vector3>>();
+
+		var hemisphereRings = rings / 4;
+		var cylinderRings = rings - (hemisphereRings * 2) + 1;
+		var totalRings = hemisphereRings * 2 + cylinderRings;
+
+		// Generate all rings
+		for ( int i = 0; i < totalRings; ++i )
+		{
+			var currentRing = new List<Vector3>();
+
+			bool isInHemisphereA = i < hemisphereRings;
+			bool isInHemisphereB = i >= (totalRings - hemisphereRings);
+
+			// Calculate the base position along the capsule axis
+			Vector3 basePos;
+			if ( isInHemisphereA )
+			{
+				float t = i / (float)hemisphereRings;
+				float angle = (MathF.PI / 2) * (1 - t);
+				basePos = centerA - direction * (radius * MathF.Cos( angle ));
+			}
+			else if ( isInHemisphereB )
+			{
+				float t = (i - (totalRings - hemisphereRings)) / (float)hemisphereRings;
+				float angle = (MathF.PI / 2) * t;
+				basePos = centerB + direction * (radius * MathF.Cos( angle ));
 			}
 			else
 			{
+				float t = (i - hemisphereRings) / (float)(cylinderRings - 1);
+				basePos = Vector3.Lerp( centerA, centerB, t );
+			}
 
-				// Hulls/spheres/capsules may have to little geoemtry to deform them properly
-				// Subdidivide them and split into multiple hulls
-				shape.Triangulate( out var verticesArray, out var indicesArray );
+			// Generate points around the ring
+			for ( int j = 0; j < rings; ++j )
+			{
+				var angle = j / (float)(rings - 1) * MathF.PI * 2;
 
+				float ringRadius = radius;
+				if ( isInHemisphereA )
+				{
+					float t = i / (float)hemisphereRings;
+					float hemAngle = (MathF.PI / 2) * (1 - t);
+					ringRadius = radius * MathF.Sin( hemAngle );
+				}
+				else if ( isInHemisphereB )
+				{
+					float t = (i - (totalRings - hemisphereRings)) / (float)hemisphereRings;
+					float hemAngle = (MathF.PI / 2) * t;
+					ringRadius = radius * MathF.Sin( hemAngle );
+				}
 
-				// Create a HashSet with custom comparer
-				var subdividedVertices = new HashSet<Vector3>( new Vector3Comparer() );
+				var point = basePos +
+					(right * MathF.Cos( angle ) * ringRadius) +
+					(up * MathF.Sin( angle ) * ringRadius);
 
-				// Subdivide the triangles
-				SubdivideTrianglesByProjectedEdgeLength(
-					verticesArray,
-					indicesArray,
-					Vector3.Forward,
-					maxProjectedEdgeLength,
-					subdividedVertices );
+				currentRing.Add( point );
+			}
 
-				// Convert the HashSet to a sorted list
-				var sortedVertices = subdividedVertices
-					.OrderBy( v => GetProjection( v, Vector3.Forward ) )
-					.ToList();
-
-				// Now split the hull vertices into overlapping groups
-				GroupVertices( sortedVertices, maxProjectedEdgeLength );
+			// For hemisphere B, insert at the beginning instead of adding to the end
+			if ( isInHemisphereB )
+			{
+				ringPoints.Insert( totalRings - hemisphereRings, currentRing );
+			}
+			else
+			{
+				ringPoints.Add( currentRing );
 			}
 		}
 
-		MarkDirty();
-	}
-
-	private void GroupVertices( List<Vector3> sortedVertices, float maxProjectedEdgeLength )
-	{
-		float groupLength = maxProjectedEdgeLength * 2;
-		float overlapPercentage = 0.25f; // 20% overlap between groups
-		float overlapLength = groupLength * overlapPercentage;
-
-		int vertexCount = sortedVertices.Count;
-		int i = 0;
-
-		while ( i < vertexCount )
+		for ( int i = 0; i < ringPoints.Count - 1; i++ )
 		{
-			List<Vector3> currentGroup = new();
+			var currentGroup = new List<Vector3>();
+			currentGroup.AddRange( ringPoints[i] );
+			currentGroup.AddRange( ringPoints[i + 1] );
 
-			// Get the start projection for the current group
-			float groupStartProjection = GetProjection( sortedVertices[i], Vector3.Forward );
-			float groupEndProjection = groupStartProjection + groupLength;
-
-			// Collect vertices for the current group
-			int startIndex = i;
-			while ( i < vertexCount && GetProjection( sortedVertices[i], Vector3.Forward ) <= groupEndProjection )
+			subHulls.Add( new SubHull
 			{
-				currentGroup.Add( sortedVertices[i] );
-				i++;
-			}
-
-			// Add current group to subHullVertices
-			subHullVertices.Add( currentGroup );
-
-			if ( overlapLength > 0 && i < vertexCount )
-			{
-				// Find the starting index for the next group
-				float nextGroupStartProjection = groupEndProjection - overlapLength;
-
-				// Move i back to include overlap
-				int j = startIndex;
-				while ( j < i && GetProjection( sortedVertices[j], Vector3.Forward ) < nextGroupStartProjection )
-				{
-					j++;
-				}
-				i = j;
-			}
+				Vertices = currentGroup,
+				Surface = surface,
+				PartTransform = transform
+			} );
 		}
 	}
 
@@ -239,106 +458,23 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 		return Vector3.Dot( v, direction );
 	}
 
-	private List<Vector3> meshVertices = new();
-	private List<int> meshIndices = new();
-
-	private List<List<Vector3>> subHullVertices = new();
-
-	public void SubdivideTrianglesByProjectedEdgeLength(
-		Vector3[] vertices,
-		uint[] indices,
-		Vector3 direction,
-		float maxProjectedEdgeLength,
-		HashSet<Vector3> subdividedVertices )
+	struct SubHull
 	{
-		// Normalize the direction vector
-		direction = direction.Normal;
-
-		// Initialize queue with original triangles represented by their vertex indices
-		Queue<(int i0, int i1, int i2)> triangleQueue = new();
-
-		// Enqueue the initial triangles using indices
-		for ( int i = 0; i < indices.Length; i += 3 )
-		{
-			int i0 = (int)indices[i];
-			int i1 = (int)indices[i + 1];
-			int i2 = (int)indices[i + 2];
-			triangleQueue.Enqueue( (i0, i1, i2) );
-		}
-
-		// Dictionary to cache midpoints and avoid duplicate calculations
-		Dictionary<(int, int), int> midpointCache = new();
-
-		// Create a list to hold all vertices, including new midpoints
-		List<Vector3> allVertices = new( vertices );
-
-		while ( triangleQueue.Count > 0 )
-		{
-			var (i0, i1, i2) = triangleQueue.Dequeue();
-
-			Vector3 v0 = allVertices[i0];
-			Vector3 v1 = allVertices[i1];
-			Vector3 v2 = allVertices[i2];
-
-			// Check projected edge lengths
-			bool needsSubdivision = false;
-
-			// Check each edge
-			if ( GetProjectedEdgeLength( v0, v1, direction ) > maxProjectedEdgeLength ||
-				 GetProjectedEdgeLength( v1, v2, direction ) > maxProjectedEdgeLength ||
-				 GetProjectedEdgeLength( v2, v0, direction ) > maxProjectedEdgeLength )
-			{
-				needsSubdivision = true;
-			}
-
-			if ( needsSubdivision )
-			{
-				// Get or create midpoints
-				int m0 = GetOrCreateMidpoint( i0, i1, allVertices, midpointCache );
-				int m1 = GetOrCreateMidpoint( i1, i2, allVertices, midpointCache );
-				int m2 = GetOrCreateMidpoint( i2, i0, allVertices, midpointCache );
-
-				// Enqueue the four new triangles for further subdivision
-				triangleQueue.Enqueue( (i0, m0, m2) );
-				triangleQueue.Enqueue( (m0, i1, m1) );
-				triangleQueue.Enqueue( (m2, m1, i2) );
-				triangleQueue.Enqueue( (m0, m1, m2) );
-			}
-			else
-			{
-				// Triangle meets the criterion; add its vertices to the HashSet
-				subdividedVertices.Add( v0 );
-				subdividedVertices.Add( v1 );
-				subdividedVertices.Add( v2 );
-			}
-		}
+		public List<Vector3> Vertices;
+		public Surface Surface;
+		public Transform PartTransform;
 	}
 
-	private int GetOrCreateMidpoint(
-		int indexA,
-		int indexB,
-		List<Vector3> vertexList,
-		Dictionary<(int, int), int> midpointCache )
+	struct SubMesh
 	{
-		// Ensure consistent ordering to avoid duplicate edges
-		var key = indexA < indexB ? (indexA, indexB) : (indexB, indexA);
-
-		if ( !midpointCache.TryGetValue( key, out int midpointIndex ) )
-		{
-			var midpoint = (vertexList[indexA] + vertexList[indexB]) * 0.5f;
-			midpointIndex = vertexList.Count;
-			vertexList.Add( midpoint );
-			midpointCache[key] = midpointIndex;
-		}
-		return midpointIndex;
+		public List<Vector3> Vertices;
+		public List<int> Indices;
+		public Surface Surface;
+		public Transform PartTransform;
 	}
 
-	private float GetProjectedEdgeLength( Vector3 vStart, Vector3 vEnd, Vector3 direction )
-	{
-		Vector3 edgeVector = vEnd - vStart;
-		float projectedLength = MathF.Abs( Vector3.Dot( edgeVector, direction ) );
-		return projectedLength;
-	}
+	private List<SubHull> subHulls = new();
+	private List<SubMesh> subMeshes = new();
 }
 
 // need to be less precise than default

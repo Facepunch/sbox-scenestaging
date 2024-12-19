@@ -18,7 +18,7 @@
 						angles = [ 0.0, 0.0, 0.0 ]
 						max_u = 1.0
 						max_v = 1.0
-						radius = 32.0
+						radius = 128.0
 						segments_u = 64
 						segments_v = 64
 					},
@@ -33,17 +33,8 @@
 						parent_bone = ""
 						surface_prop = "default"
 						collision_tags = "solid"
-						radius = 32.0
+						radius = 128.0
 						center = [ 0.0, 0.0, 0.0 ]
-					},
-					{
-						_class = "PhysicsShapeCylinder"
-						parent_bone = ""
-						surface_prop = "default"
-						collision_tags = "solid"
-						radius = 32.0
-						point0 = [ -32.0, 0.0, 0.0 ]
-						point1 = [ 32.0, 0.0, 0.0 ]
 					},
 				]
 			},
