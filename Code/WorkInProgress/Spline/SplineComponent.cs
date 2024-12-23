@@ -387,6 +387,11 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 		{
 			Spline.Utils.ConvertSplineToPolyLine( _positionSpline.AsReadOnly(), _drawCachePolyline, 0.01f );
 			_drawCacheSplineWorldBBox = BBox.FromPoints( _drawCachePolyline ).Transform( WorldTransform );
+			_drawCachePolylineLines.Clear();
+			for ( var i = 0; i < _drawCachePolyline.Count - 1; i++ )
+			{
+				_drawCachePolylineLines.Add( new Line( _drawCachePolyline[i], _drawCachePolyline[i + 1] ) );
+			}
 		}
 	}
 
@@ -439,6 +444,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 	}
 
 	private List<Vector3> _drawCachePolyline = new();
+	private List<Line> _drawCachePolylineLines = new();
 	private BBox _drawCacheSplineWorldBBox;
 
 	private SegmentHitResult? DrawLineSegmentHitbox( float thickness )
@@ -482,10 +488,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 
 		using ( Gizmo.Scope( "curve_gizmo" ) )
 		{
-			for ( var i = 0; i < _drawCachePolyline.Count - 1; i++ )
-			{
-				Gizmo.Draw.Line( _drawCachePolyline[i], _drawCachePolyline[i + 1] );
-			}
+			Gizmo.Draw.Lines( _drawCachePolylineLines );
 		}
 	}
 

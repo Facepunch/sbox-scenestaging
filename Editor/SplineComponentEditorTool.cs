@@ -98,11 +98,13 @@ class SplineToolWindow : WidgetWindow
 			row.Add( new IconButton( "skip_previous", () =>
 			{
 				SelectedPointIndex = Math.Max( 0, SelectedPointIndex - 1 );
+				Focus();
 			} )
 			{ ToolTip = "Go to previous point " } );
 			row.Add( new IconButton( "skip_next", () =>
 			{
 				SelectedPointIndex = Math.Min( targetComponent.NumberOfPoints() - 1, SelectedPointIndex + 1 );
+				Focus();
 			} )
 			{ ToolTip = "Go to next point" } );
 			row.Add( new IconButton( "delete", () =>
@@ -110,6 +112,7 @@ class SplineToolWindow : WidgetWindow
 				targetComponent.RemovePoint( SelectedPointIndex );
 				SelectedPointIndex = Math.Max( 0, SelectedPointIndex - 1 );
 				targetComponent.EditLog( "Deleted point", targetComponent );
+				Focus();
 			} )
 			{ ToolTip = "Delete point" } );
 			row.Add( new IconButton( "add", () =>
@@ -126,6 +129,8 @@ class SplineToolWindow : WidgetWindow
 				targetComponent.EditLog( "Added spline point", targetComponent );
 
 				SelectedPointIndex++;
+
+				Focus();
 			} )
 			{ ToolTip = "Insert point after curent point.\nYou can also hold shift while dragging a point to create a new point." } );
 
@@ -157,6 +162,11 @@ class SplineToolWindow : WidgetWindow
 
 	public void OnSelectionChanged( SplineComponent spline )
 	{
+		if ( targetComponent.IsValid() )
+		{
+			targetComponent.ShouldRenderGizmos = true;
+		}
+		
 		targetComponent = spline;
 
 		targetComponent.ShouldRenderGizmos = false;
@@ -349,7 +359,6 @@ class SplineToolWindow : WidgetWindow
 				}
 				if ( !_moveInProgress && Gizmo.WasLeftMouseReleased )
 				{
-					Log.Info( "Moved point" );
 					targetComponent.EditLog( "Moved spline point", targetComponent );
 				}
 			}
