@@ -43,6 +43,29 @@ VS
 
 	float MinInModelDir < Attribute("MinInModelDir"); >;
 	float SizeInModelDir < Attribute("SizeInModelDir"); >;
+	float4 ModelRotation < Attribute("ModelRotation"); >;
+
+	float3 VectorRotate( float3 v, float4 q )
+	{
+		// common factors
+		float x2 = q.x + q.x;	// 2x
+		float y2 = q.y + q.y;	// 2y
+		float z2 = q.z + q.z;	// 2z
+		float xx = q.x * x2;	// 2x^2
+		float xy = q.x * y2;	// 2xy
+		float xz = q.x * z2;	// 2xz
+		float yy = q.y * y2;	// 2y^2
+		float yz = q.y * z2;	// 2yz
+		float zz = q.z * z2;	// 2z^2
+		float wx = q.w * x2;	// 2xw
+		float wy = q.w * y2;	// 2yw
+		float wz = q.w * z2;	// 2zw
+
+		return float3(
+			dot( v, float3( 1.0 - ( yy + zz ), xy - wz, xz + wy ) ),
+			dot( v, float3( xy + wz, 1.0 - ( xx + zz ), yz - wx ) ),
+			dot( v, float3( xz - wy, yz + wx, 1.0 - ( xx + yy ) ) ) );
+	}
 
 	// calculate how far along we are in the bezier curve
 	float CalculateBezierT(float3 vertLocalPos, float minForwad, float sizeForward)
@@ -122,7 +145,8 @@ VS
 
 	PixelInput MainVs( VertexInput i )
 	{
-		float t = CalculateBezierT(i.vPositionOs, MinInModelDir, SizeInModelDir);
+		float3 rotatedLocalPos = VectorRotate(i.vPositionOs, ModelRotation);
+		float t = CalculateBezierT(rotatedLocalPos, MinInModelDir, SizeInModelDir);
 
 		float3 p0 = float3(0, 0, 0);
 		float3 p1 = P1.xyz;
@@ -153,7 +177,7 @@ VS
 		float3 upRotated = sine * right + cosine * up;
 
 		float3 curvePosition = CalculateBezierPosition(t, p0, p1, p2, p3);
-		float3 deformedPosition = ScaleAndRotateVector(t, i.vPositionOs, scale, rightRotated, upRotated);
+		float3 deformedPosition = ScaleAndRotateVector(t, rotatedLocalPos, scale, rightRotated, upRotated);
 
 		// Deform position
 		i.vPositionOs = curvePosition + deformedPosition;
@@ -167,7 +191,8 @@ VS
 		VS_DecodeObjectSpaceNormalAndTangent( i, vNormalOs, vTangentUOs_flTangentVSign );
 
 		// Deform normal
-		vNormalOs = RotateNormal(vNormalOs, forward, rightRotated, upRotated);
+		float3 rotatedNormal = VectorRotate(vNormalOs, ModelRotation);
+		vNormalOs = RotateNormal(rotatedNormal, forward, rightRotated, upRotated);
 
 		#if ( S_MODE_TOOLS_VIS )
 		{

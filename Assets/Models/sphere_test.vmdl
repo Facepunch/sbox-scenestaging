@@ -13,14 +13,14 @@
 						_class = "RenderPrimitiveSphere"
 						name = "sphere"
 						parent_bone = ""
-						material_name = "materials/default/white.vmat"
+						material_name = "dev/helper/testgrid.vmat"
 						origin = [ 0.0, 0.0, 0.0 ]
 						angles = [ 0.0, 0.0, 0.0 ]
 						max_u = 1.0
 						max_v = 1.0
-						radius = 128.0
-						segments_u = 64
-						segments_v = 64
+						radius = 64.0
+						segments_u = 16
+						segments_v = 16
 					},
 				]
 			},
@@ -33,7 +33,7 @@
 						parent_bone = ""
 						surface_prop = "default"
 						collision_tags = "solid"
-						radius = 128.0
+						radius = 64.0
 						center = [ 0.0, 0.0, 0.0 ]
 					},
 				]

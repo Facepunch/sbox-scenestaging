@@ -1,5 +1,6 @@
 ﻿using Sandbox.Diagnostics;
 using System.Collections.Concurrent;
+using System.Diagnostics.Contracts;
 using System.Threading;
 
 namespace Sandbox;
@@ -18,6 +19,11 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 			Rebuild();
 		}
 	}
+
+	[Property]
+	public Rotation ModelRotation { get; set; } = Rotation.Identity;
+
+	private Vector3 ModelForward => ModelRotation.Forward;
 
 	private int _subdivision = 1;
 
@@ -74,36 +80,57 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 		UpdateCollisions();
 	}
 
-	// This is internal hack it for not
+	// This is internal hack it for now
 	private PhysicsBody _PhysicsBody => Rigidbody.IsValid() ? Rigidbody.PhysicsBody : KeyframeBody;
 
+	private BBox? _physicPartBounds = null;
 
 	private void UpdateCollisions()
 	{
-		var sizeInModelDir = Model.Bounds.Size.Dot( Vector3.Forward );
+		// Ensure we have valid physics bounds
+		if ( _physicPartBounds is null )
+			return;
 
-		var minInModelDir = Model.Bounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
+		var rotatedModelBounds = Model.Bounds.Rotate( ModelRotation );
+
+		var sizeInModelDir = GetProjection( rotatedModelBounds.Size, Vector3.Forward );
+		var minInModelDir = GetProjection( rotatedModelBounds.Center, Vector3.Forward ) - sizeInModelDir / 2;
+
+		var sizeInPhysicDir = GetProjection( _physicPartBounds.Value.Size, Vector3.Forward );
+		var minInPhysicDir = GetProjection( _physicPartBounds.Value.Center, Vector3.Forward ) - sizeInPhysicDir / 2;
 
 		var meshesRequired = (int)Math.Round( Spline.GetLength() / sizeInModelDir );
 		var distancePerCurve = Spline.GetLength() / meshesRequired;
 
+		// Calculate the offset between physics and model bounds
+		float offsetInDir = minInPhysicDir - minInModelDir;
+		
+		// Calculate scaling factor to adjust offset proportionally
+		float scalingFactor = distancePerCurve / sizeInModelDir;
+		float adjustedOffsetInDir = offsetInDir * scalingFactor;
+
+		// Clear existing shapes
 		_PhysicsBody.ClearShapes();
 
 		for ( var meshIndex = 0; meshIndex < meshesRequired; meshIndex++ )
 		{
-			var P0 = Spline.GetPositionAtDistance( meshIndex * distancePerCurve );
-			var P1 = P0 + Spline.GetTangetAtDistance( meshIndex * distancePerCurve ) * distancePerCurve / 3;
-			var P3 = Spline.GetPositionAtDistance( (meshIndex + 1) * distancePerCurve );
-			var P2 = P3 - Spline.GetTangetAtDistance( (meshIndex + 1) * distancePerCurve ) * distancePerCurve / 3;
+			// Adjust distances by the scaled offset
+			float startDistance = meshIndex * distancePerCurve + adjustedOffsetInDir;
+			float endDistance = (meshIndex + 1) * distancePerCurve + adjustedOffsetInDir;
+
+			var P0 = Spline.GetPositionAtDistance( startDistance );
+			var P1 = P0 + Spline.GetTangetAtDistance( startDistance ) * distancePerCurve / 3;
+			var P3 = Spline.GetPositionAtDistance( endDistance );
+			var P2 = P3 - Spline.GetTangetAtDistance( endDistance ) * distancePerCurve / 3;
 
 			var segmentTransform = new Transform( P0, Rotation.LookAt( P3 - P0 ) );
 			segmentTransform.Rotation = new Angles( 0, segmentTransform.Rotation.Yaw(), 0 ).ToRotation();
 
-			var rollAtStart = MathX.DegreeToRadian( Spline.GetRollAtDistance( meshIndex * distancePerCurve ) );
-			var rollAtEnd = MathX.DegreeToRadian( Spline.GetRollAtDistance( (meshIndex + 1) * distancePerCurve ) );
+			var rollAtStart = MathX.DegreeToRadian( Spline.GetRollAtDistance( startDistance ) );
+			var rollAtEnd = MathX.DegreeToRadian( Spline.GetRollAtDistance( endDistance ) );
 
-			var scaleAtStart = Spline.GetScaleAtDistance( meshIndex * distancePerCurve );
-			var scaleAtEnd = Spline.GetScaleAtDistance( (meshIndex + 1) * distancePerCurve );
+			var scaleAtStart = Spline.GetScaleAtDistance( startDistance );
+			var scaleAtEnd = Spline.GetScaleAtDistance( endDistance );
 
 			P1 = new Vector4( segmentTransform.PointToLocal( P1 ) );
 			P2 = new Vector4( segmentTransform.PointToLocal( P2 ) );
@@ -112,6 +139,7 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 			var RollStartEnd = new Vector2( rollAtStart, rollAtEnd );
 			var WidthHeightScaleStartEnd = new Vector4( scaleAtStart.x, scaleAtStart.y, scaleAtEnd.x, scaleAtEnd.y );
 
+			// Deform meshes
 			foreach ( var subMesh in subMeshes )
 			{
 				var generator = collisionGeneratorPool.Get().Result;
@@ -123,12 +151,12 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 				shape.Surface = subMesh.Surface;
 			}
 
-			// hull
+			// Deform hulls
 			foreach ( var subHull in subHulls )
 			{
 				var generator = collisionGeneratorPool.Get().Result;
 				generator.SetVertices( subHull.Vertices );
-				generator.DeformVertices( minInModelDir, sizeInModelDir, P1, P2, P3, RollStartEnd, WidthHeightScaleStartEnd, subHull.PartTransform );
+				generator.DeformVertices( minInModelDir, sizeInModelDir, P1, P2, P3, RollStartEnd, WidthHeightScaleStartEnd, new Transform() );
 				collisionGeneratorPool.Return( generator );
 				var vertices = generator.GetDeformedVertices();
 				var shape = _PhysicsBody.AddHullShape( segmentTransform.Position, segmentTransform.Rotation, vertices.ToList() );
@@ -153,6 +181,8 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 		subMeshes.Clear();
 		subHulls.Clear();
 
+		_physicPartBounds = null;
+
 		var bodyTransform = targetBody.Transform.ToLocal( WorldTransform );
 
 		foreach ( var part in Model.Physics.Parts )
@@ -164,24 +194,45 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 			{
 				const int rings = 8;
 				SubdivideSphere( rings, sphere.Sphere.Center, sphere.Sphere.Radius, sphere.Surface, bx );
+
+				var sphereBounds = new BBox( sphere.Sphere.Center - new Vector3( sphere.Sphere.Radius ), sphere.Sphere.Center + new Vector3( sphere.Sphere.Radius ) );
+
+				sphereBounds = sphereBounds.Transform( bx );
+
+				_physicPartBounds = _physicPartBounds?.AddBBox( sphereBounds ) ?? sphereBounds;
 			}
 
 			foreach ( var capsule in part.Capsules )
 			{
-				const int rings = 8;
-				SubdivideCapsule( rings, capsule.Capsule.CenterA, capsule.Capsule.CenterB, capsule.Capsule.Radius, capsule.Surface, bx );
+				var rotatedCenterA = bx.PointToWorld( capsule.Capsule.CenterA ) * ModelRotation;
+				var rotatedCenterB = bx.PointToWorld( capsule.Capsule.CenterB ) * ModelRotation;
+				SubdivideCapsule( 4 + Subdivision, rotatedCenterA, rotatedCenterB, capsule.Capsule.Radius, capsule.Surface );
+
+				var capsuleBounds = BBox.FromPoints(
+					new Vector3[] {
+						rotatedCenterA - new Vector3( capsule.Capsule.Radius ),
+						rotatedCenterA + new Vector3( capsule.Capsule.Radius ),
+						rotatedCenterB - new Vector3( capsule.Capsule.Radius ),
+						rotatedCenterB + new Vector3( capsule.Capsule.Radius )
+					} );
+
+				_physicPartBounds = _physicPartBounds?.AddBBox( capsuleBounds ) ?? capsuleBounds;
 			}
 
 			foreach ( var hull in part.Hulls )
 			{
-				SubdivideHull( hull, Subdivision, hull.Surface, bx );
+				SubdivideHull( hull, Subdivision + 1, hull.Surface, bx );
+
+				var hullBounds = hull.Bounds.Transform( bx ).Rotate( ModelRotation );
+
+				_physicPartBounds = _physicPartBounds?.AddBBox( hullBounds ) ?? hullBounds;
 			}
 
 			foreach ( var mesh in part.Meshes )
 			{
                 var triangles = mesh.GetTriangles().ToList();
 
-				// TODO slow as fuck can be improved by getting the lists directly rather than the traingel objects
+				// TODO slow as fuck can be improved by getting the lists directly rather than the traingle objects
 				// can be done once we are out of scene staging.
                 var vertices = new List<Vector3>();
                 var indices = new List<int>(triangles.Count * 3);
@@ -218,6 +269,10 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
                     Surface = mesh.Surface,
 					PartTransform = bx
 				} );
+
+				var meshBounds = mesh.Bounds.Transform( bx );
+
+				_physicPartBounds = _physicPartBounds?.AddBBox( meshBounds ) ?? meshBounds;
 			}
 
 			if ( part.Mass > 0 )
@@ -238,16 +293,37 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 
 	private void SubdivideHull( PhysicsGroupDescription.BodyPart.HullPart hull, int ringCount, Surface surface, Transform transform )
 	{
-		var sizeInModelDir = Model.Bounds.Size.Dot( Vector3.Forward );
-		var minProj = Model.Bounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
-		var maxProj = Model.Bounds.Center.Dot( Vector3.Forward ) + sizeInModelDir / 2;
 
-		var allVertices = hull.GetPoints();
+		// Transform all the hull vertices once
+		// TODO can optimzie this all by getting vertices and lines directly from hull an transforming than once
+		// instead of this LINQ madness, will do once out of scenestaging.
+		List<Vector3> transformedVertices = hull.GetPoints().Select( vertex => transform.PointToWorld( vertex ) * ModelRotation ).ToList();
 
-		var interval = sizeInModelDir / ringCount;
-		var rings = new List<List<Vector3>>();
+		if ( ringCount == 0 )
+		{
+			subHulls.Add( new SubHull
+			{
+				Vertices = transformedVertices,
+				Surface = surface,
+			} );
+			return;
+		}
+
+		// Get the transformed edges
+		var transformedLines = hull.GetLines().Select( line => new Line(
+		transform.PointToWorld( line.Start ) * ModelRotation,
+		transform.PointToWorld( line.End )  * ModelRotation)).ToList();
+
+		// Project all vertices along Vector3.Forward
+		float minProj = transformedVertices.Min( vertex => Vector3.Dot( vertex, Vector3.Forward ) );
+		float maxProj = transformedVertices.Max( vertex => Vector3.Dot( vertex, Vector3.Forward ) );
+
+		float sizeInModelDir = maxProj - minProj;
+		float interval = sizeInModelDir / ringCount;
 
 		const float tolerance = 0.01f;
+
+		List<List<Vector3>> rings = new List<List<Vector3>>();
 
 		// Create rings and intersect with existing edges
 		for ( int i = 0; i <= ringCount; i++ )
@@ -256,14 +332,14 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 			var ringVertices = new HashSet<Vector3>( new Vector3Comparer() );
 
 			// Find intersections with existing edges
-			foreach ( var line in hull.GetLines() )
+			foreach ( var line in transformedLines )
 			{
-				float startProj = GetProjection( line.Start, Vector3.Forward );
-				float endProj = GetProjection( line.End, Vector3.Forward );
+				float startProj = Vector3.Dot( line.Start, Vector3.Forward );
+				float endProj = Vector3.Dot( line.End, Vector3.Forward );
 
 				// Check if line crosses this ring plane
 				if ( (startProj <= ringProj + tolerance && endProj >= ringProj - tolerance) ||
-					(endProj <= ringProj + tolerance && startProj >= ringProj - tolerance) )
+					 (endProj <= ringProj + tolerance && startProj >= ringProj - tolerance) )
 				{
 					// Calculate intersection point
 					float t = (ringProj - startProj) / (endProj - startProj);
@@ -278,6 +354,7 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 			}
 		}
 
+		// Group rings into SubHulls
 		for ( int i = 0; i < rings.Count - 1; i++ )
 		{
 			var currentGroup = new List<Vector3>();
@@ -289,14 +366,14 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 			currentGroup.AddRange( rings[i + 1] );
 
 			// Find and add original vertices that fall between these rings
-			float groupStart = GetProjection( rings[i][0], Vector3.Forward );
-			float groupEnd = GetProjection( rings[i + 1][0], Vector3.Forward );
+			float groupStart = rings[i].Min( v => Vector3.Dot( v, Vector3.Forward ) );
+			float groupEnd = rings[i + 1].Max( v => Vector3.Dot( v, Vector3.Forward ) );
 
-			foreach ( var vertex in allVertices )
+			foreach ( var vertex in transformedVertices )
 			{
-				float vertexProj = GetProjection( vertex, Vector3.Forward );
+				float vertexProj = Vector3.Dot( vertex, Vector3.Forward );
 
-				if ( groupStart <= vertexProj + tolerance && groupEnd >= vertexProj - tolerance )
+				if ( vertexProj >= groupStart - tolerance && vertexProj <= groupEnd + tolerance )
 				{
 					currentGroup.Add( vertex );
 				}
@@ -304,31 +381,53 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 
 			subHulls.Add( new SubHull
 			{
-				Vertices = currentGroup.ToList(),
+				Vertices = currentGroup,
 				Surface = surface,
-				PartTransform = transform
 			} );
 		}
 	}
 
+
 	private void SubdivideSphere( int rings, Vector3 center, float radius, Surface surface, Transform transform )
 	{
 		var ringPoints = new List<Vector3>[rings];
+
+		Vector3 direction = ModelForward;
+
+		// Find two vectors orthogonal to ModelForward to form a coordinate system
+		// TODO there are better ways todo this
+		Vector3 right = Vector3.Cross( direction, Vector3.Up );
+		if ( right.Length < 0.001f )
+		{
+			right = Vector3.Cross( direction, Vector3.Right );
+		}
+		right = right.Normal;
+		Vector3 up = Vector3.Cross( right, direction ).Normal;
+
 		for ( int i = 0; i < rings; ++i )
 		{
 			ringPoints[i] = new List<Vector3>();
+			float v = i / (float)(rings - 1);
+			float theta = v * MathF.PI; // Angle from 0 to PI
+
+			float sinTheta = MathF.Sin( theta );
+			float cosTheta = MathF.Cos( theta );
+
 			for ( int j = 0; j < rings; ++j )
 			{
-				var u = j / (float)(rings - 1);
-				var v = i / (float)(rings - 1);
-				var t = 2.0f * MathF.PI * u;
-				var p = MathF.PI * v;
+				float u = j / (float)(rings - 1);
+				float phi = u * 2.0f * MathF.PI;
 
-				var point = new Vector3( center.x + (radius * MathF.Sin( p ) * MathF.Cos( t )),
-										center.y + (radius * MathF.Sin( p ) * MathF.Sin( t )),
-										center.z + (radius * MathF.Cos( p )) );
+				float sinPhi = MathF.Sin( phi );
+				float cosPhi = MathF.Cos( phi );
 
-				ringPoints[i].Add( point );
+				// Convert spherical coordinates to Cartesian coordinates aligned along ModelForward
+				Vector3 point = center
+					+ (right * (sinTheta * cosPhi * radius))
+					+ (up * (sinTheta * sinPhi * radius))
+					+ (direction * (cosTheta * radius));
+
+				ringPoints[i].Add( transform.PointToWorld( point ) );
 			}
 		}
 
@@ -342,102 +441,23 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 			{
 				Vertices = currentGroup,
 				Surface = surface,
-				PartTransform = transform
 			} );
 		}
 	}
 
-	private void SubdivideCapsule( int rings, Vector3 centerA, Vector3 centerB, float radius, Surface surface, Transform transform )
+	private void SubdivideCapsule( int totalRings, Vector3 centerA, Vector3 centerB, float radius, Surface surface )
 	{
-		if ( rings < 4 )
+		const int segments = 8;
+		if ( totalRings < 4 )
 		{
 			throw new ArgumentException( "Number of rings must be at least 4 to form a valid capsule." );
 		}
 
-		var capsuleDir = (centerB - centerA);
-		var length = capsuleDir.Length;
-		var direction = capsuleDir.Normal;
+		// Generate all rings along the capsule
+		List<List<Vector3>> ringPoints = new();
+		GenerateCapsuleRings( centerA, centerB, radius, totalRings, segments, ringPoints );
 
-		// Find perpendicular vectors to create the ring plane
-		var right = Vector3.Cross( direction, Vector3.Up );
-		if ( right.Length < 0.001f )
-		{
-			right = Vector3.Cross( direction, Vector3.Forward );
-		}
-		right = right.Normal;
-		var up = Vector3.Cross( right, direction ).Normal;
-
-		var ringPoints = new List<List<Vector3>>();
-
-		var hemisphereRings = rings / 4;
-		var cylinderRings = rings - (hemisphereRings * 2) + 1;
-		var totalRings = hemisphereRings * 2 + cylinderRings;
-
-		// Generate all rings
-		for ( int i = 0; i < totalRings; ++i )
-		{
-			var currentRing = new List<Vector3>();
-
-			bool isInHemisphereA = i < hemisphereRings;
-			bool isInHemisphereB = i >= (totalRings - hemisphereRings);
-
-			// Calculate the base position along the capsule axis
-			Vector3 basePos;
-			if ( isInHemisphereA )
-			{
-				float t = i / (float)hemisphereRings;
-				float angle = (MathF.PI / 2) * (1 - t);
-				basePos = centerA - direction * (radius * MathF.Cos( angle ));
-			}
-			else if ( isInHemisphereB )
-			{
-				float t = (i - (totalRings - hemisphereRings)) / (float)hemisphereRings;
-				float angle = (MathF.PI / 2) * t;
-				basePos = centerB + direction * (radius * MathF.Cos( angle ));
-			}
-			else
-			{
-				float t = (i - hemisphereRings) / (float)(cylinderRings - 1);
-				basePos = Vector3.Lerp( centerA, centerB, t );
-			}
-
-			// Generate points around the ring
-			for ( int j = 0; j < rings; ++j )
-			{
-				var angle = j / (float)(rings - 1) * MathF.PI * 2;
-
-				float ringRadius = radius;
-				if ( isInHemisphereA )
-				{
-					float t = i / (float)hemisphereRings;
-					float hemAngle = (MathF.PI / 2) * (1 - t);
-					ringRadius = radius * MathF.Sin( hemAngle );
-				}
-				else if ( isInHemisphereB )
-				{
-					float t = (i - (totalRings - hemisphereRings)) / (float)hemisphereRings;
-					float hemAngle = (MathF.PI / 2) * t;
-					ringRadius = radius * MathF.Sin( hemAngle );
-				}
-
-				var point = basePos +
-					(right * MathF.Cos( angle ) * ringRadius) +
-					(up * MathF.Sin( angle ) * ringRadius);
-
-				currentRing.Add( point );
-			}
-
-			// For hemisphere B, insert at the beginning instead of adding to the end
-			if ( isInHemisphereB )
-			{
-				ringPoints.Insert( totalRings - hemisphereRings, currentRing );
-			}
-			else
-			{
-				ringPoints.Add( currentRing );
-			}
-		}
-
+		// Group the rings into SubHulls
 		for ( int i = 0; i < ringPoints.Count - 1; i++ )
 		{
 			var currentGroup = new List<Vector3>();
@@ -448,8 +468,88 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 			{
 				Vertices = currentGroup,
 				Surface = surface,
-				PartTransform = transform
 			} );
+		}
+	}
+
+	private void GenerateCapsuleRings( Vector3 centerA, Vector3 centerB, float radius, int totalRings, int segments, List<List<Vector3>> ringPoints )
+	{
+		Vector3 direction = (centerB - centerA).Normal;
+		float cylinderHeight = (centerB - centerA).Length;
+
+		float totalHeight = cylinderHeight + 2 * radius;
+
+		// Build orthonormal basis
+		// TODO there are better ways todo this
+		Vector3 up = direction;
+		Vector3 right = Vector3.Cross( direction, Vector3.Up );
+		if ( right.LengthSquared < 0.001f )
+		{
+			right = Vector3.Cross( direction, Vector3.Right );
+		}
+		right = right.Normal;
+		Vector3 forward = Vector3.Cross( right, up ).Normal;
+
+		for ( int i = 0; i <= totalRings; i++ )
+		{
+			float v = i / (float)totalRings;
+			float h = v * totalHeight;
+
+			List<Vector3> currentRing = new();
+
+			for ( int j = 0; j <= segments; j++ )
+			{
+				float u = j / (float)segments;
+				float phi = u * 2.0f * MathF.PI;
+
+				float sinPhi = MathF.Sin( phi );
+				float cosPhi = MathF.Cos( phi );
+
+				Vector3 point;
+
+				if ( h < radius )
+				{
+					// Bottom hemisphere
+					float t = h / radius; // t from 0 to 1
+					float theta = (MathF.PI / 2) + (1 - t) * (MathF.PI / 2); // theta from π to π/2
+
+					float sinTheta = MathF.Sin( theta );
+					float cosTheta = MathF.Cos( theta );
+
+					point = centerA
+						+ (right * (sinTheta * cosPhi * radius))
+						+ (forward * (sinTheta * sinPhi * radius))
+						+ (up * (cosTheta * radius));
+				}
+				else if ( h <= radius + cylinderHeight )
+				{
+					// Cylinder
+					float y = h - radius; // y from 0 to cylinderHeight
+
+					point = centerA
+						+ up * y
+						+ (right * (cosPhi * radius))
+						+ (forward * (sinPhi * radius));
+				}
+				else
+				{
+					// Top hemisphere
+					float t = (h - (radius + cylinderHeight)) / radius; // t from 0 to 1
+					float theta = (MathF.PI / 2) * (1 - t); // theta from π/2 to 0
+
+					float sinTheta = MathF.Sin( theta );
+					float cosTheta = MathF.Cos( theta );
+
+					point = centerB
+						+ (right * (sinTheta * cosPhi * radius))
+						+ (forward * (sinTheta * sinPhi * radius))
+						+ (up * (cosTheta * radius));
+				}
+
+				currentRing.Add( point );
+			}
+
+			ringPoints.Add( currentRing );
 		}
 	}
 
@@ -462,7 +562,6 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 	{
 		public List<Vector3> Vertices;
 		public Surface Surface;
-		public Transform PartTransform;
 	}
 
 	struct SubMesh

@@ -495,9 +495,17 @@
                 0,
                 0,
                 0,
+                0,
+                0,
+                0,
+                0,
                 0
               ],
               "_pointScales": [
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
                 "1,1",
                 "1,1",
                 "1,1",
@@ -565,9 +573,33 @@
                   "Position": "0,0,0",
                   "InPositionRelative": "-33.33334,-0,-0",
                   "OutPositionRelative": "33.33334,0,0"
+                },
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-33.33334,-0,-0",
+                  "OutPositionRelative": "33.33334,0,0"
+                },
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-33.33334,-0,-0",
+                  "OutPositionRelative": "33.33334,0,0"
+                },
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-33.33334,-0,-0",
+                  "OutPositionRelative": "33.33334,0,0"
+                },
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-33.33334,-0,-0",
+                  "OutPositionRelative": "33.33334,0,0"
                 }
               ],
               "_positionTangentModes": [
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
                 "Auto",
                 "Auto",
                 "Auto",
@@ -664,6 +696,7 @@
               "__type": "Sandbox.SplineModelRendererComponent",
               "__guid": "3c35eba5-bc87-4127-a114-00bd16c01fea",
               "Model": "models/spline_cuboid_test.vmdl",
+              "ModelRotation": "0,0,0,1",
               "Spline": {
                 "_type": "component",
                 "component_id": "bd790995-0ca4-45ea-bfea-0e155876f85d",
@@ -676,6 +709,7 @@
               "__guid": "39f6e112-d68b-47ae-b37c-e977a5979730",
               "IsTrigger": false,
               "Model": "models/spline_cuboid_test.vmdl",
+              "ModelRotation": "0,0,0,1",
               "Spline": {
                 "_type": "component",
                 "component_id": "bd790995-0ca4-45ea-bfea-0e155876f85d",
@@ -683,7 +717,7 @@
                 "component_type": "SplineComponent"
               },
               "Static": true,
-              "Subdivision": 0,
+              "Subdivision": 2,
               "SurfaceVelocity": "0,0,0"
             }
           ]
@@ -768,6 +802,7 @@
               "__type": "Sandbox.SplineModelRendererComponent",
               "__guid": "d3c8cbb9-3ca6-42fd-b855-af1749bb0745",
               "Model": "models/spline_cuboid_test.vmdl",
+              "ModelRotation": "0,0,0,1",
               "Spline": {
                 "_type": "component",
                 "component_id": "d58c3f75-86c5-4ed2-ae70-8898ceac804f",
@@ -780,6 +815,7 @@
               "__guid": "6750c368-a47d-4fa6-8481-6c50f5ff98dc",
               "IsTrigger": false,
               "Model": "models/spline_cuboid_test.vmdl",
+              "ModelRotation": "0,0,0,1",
               "Spline": {
                 "_type": "component",
                 "component_id": "d58c3f75-86c5-4ed2-ae70-8898ceac804f",
@@ -912,6 +948,7 @@
               "__type": "Sandbox.SplineModelRendererComponent",
               "__guid": "b443d49a-219d-4cea-b124-c8e89154b7b3",
               "Model": "models/spline_cuboid_test.vmdl",
+              "ModelRotation": "0,0,0,1",
               "Spline": {
                 "_type": "component",
                 "component_id": "fa908eec-fe1f-4fe0-b544-4f4741a61f09",
@@ -1001,6 +1038,7 @@
               "__type": "Sandbox.SplineModelRendererComponent",
               "__guid": "0051b513-2870-48fc-b8ce-73d51749c576",
               "Model": "models/spline_pipe_test.vmdl",
+              "ModelRotation": "0,0,0,1",
               "Spline": {
                 "_type": "component",
                 "component_id": "0d45c539-a8ec-40c0-a927-7bd2d58084b6",
@@ -1021,6 +1059,7 @@
               "__type": "Sandbox.SplineModelRendererComponent",
               "__guid": "2c7083fd-52f0-4d96-b790-95f671db99a7",
               "Model": "models/spline_cuboid_test.vmdl",
+              "ModelRotation": "0,0,0,0",
               "Spline": {
                 "_type": "component",
                 "component_id": "c55e301f-5640-453e-9349-099d988e5896",
@@ -1086,6 +1125,7 @@
               "__guid": "86a20338-39c6-4c10-bec1-91f33e016d8c",
               "IsTrigger": false,
               "Model": "models/spline_cuboid_test.vmdl",
+              "ModelRotation": "0,0,0,1",
               "Spline": {
                 "_type": "component",
                 "component_id": "c55e301f-5640-453e-9349-099d988e5896",
@@ -1115,6 +1155,7 @@
               "__type": "Sandbox.SplineModelRendererComponent",
               "__guid": "b06c8ace-27af-4345-8bef-eb2a5a87bed6",
               "Model": "models/spline_cuboid_test.vmdl",
+              "ModelRotation": "0,0,0,1",
               "Spline": {
                 "_type": "component",
                 "component_id": "3436b313-cea7-4263-9d44-349d940facf1",
@@ -1164,6 +1205,7 @@
               "__guid": "42390640-102a-44dd-8a09-d900363b50b2",
               "IsTrigger": false,
               "Model": "models/spline_cuboid_test.vmdl",
+              "ModelRotation": "0,0,0,1",
               "Spline": {
                 "_type": "component",
                 "component_id": "3436b313-cea7-4263-9d44-349d940facf1",
@@ -1359,75 +1401,6 @@
           "OverrideMassCenter": false,
           "RigidbodyFlags": 0,
           "StartAsleep": false
-        }
-      ]
-    },
-    {
-      "__guid": "095b6154-117d-4ecd-a639-5f7352d45bcd",
-      "Flags": 0,
-      "Name": "citizen",
-      "Position": "1043.821,311.1751,303.2976",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.SplineColliderComponent",
-          "__guid": "a87ba3d7-bb0c-4457-8f80-f1357aff1147",
-          "IsTrigger": false,
-          "Model": "models/sphere_test.vmdl",
-          "Spline": {
-            "_type": "component",
-            "component_id": "5e17652e-82ee-452e-9636-a0622546dae2",
-            "go": "095b6154-117d-4ecd-a639-5f7352d45bcd",
-            "component_type": "SplineComponent"
-          },
-          "Static": false,
-          "Subdivision": 0,
-          "SurfaceVelocity": "0,0,0"
-        },
-        {
-          "__type": "Sandbox.SplineComponent",
-          "__guid": "5e17652e-82ee-452e-9636-a0622546dae2",
-          "_pointRolls": [
-            0,
-            0,
-            0,
-            0
-          ],
-          "_pointScales": [
-            "1,1",
-            "1,1",
-            "1,1",
-            "1,1"
-          ],
-          "_positionSpline": [
-            {
-              "Position": "0,0,0",
-              "InPositionRelative": "-66.66667,-0,-0",
-              "OutPositionRelative": "66.66667,0,0"
-            },
-            {
-              "Position": "400,0,0",
-              "InPositionRelative": "-92.54364,153.5521,-0.00006195407",
-              "OutPositionRelative": "92.54364,-153.5521,0.00006195407"
-            },
-            {
-              "Position": "555.2618,-921.3125,0.0003717244",
-              "InPositionRelative": "47.62016,81.38098,-0.00008628145",
-              "OutPositionRelative": "-47.62016,-81.38098,0.00008628145"
-            },
-            {
-              "Position": "114.2791,-488.2859,0.0005176887",
-              "InPositionRelative": "73.49713,-72.17111,-0.00002432739",
-              "OutPositionRelative": "-73.49713,72.17111,0.00002432739"
-            }
-          ],
-          "_positionTangentModes": [
-            "Auto",
-            "Auto",
-            "Auto",
-            "Auto"
-          ],
-          "IsLoop": false
         }
       ]
     }

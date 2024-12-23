@@ -12,6 +12,8 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	[Property] public Model Model { get; set; }
 
+	[Property] public Rotation ModelRotation { get; set; }
+
 	[StructLayout( LayoutKind.Sequential, Pack = 0 )]
 	private struct GpuSplineSegment
 	{
@@ -87,9 +89,10 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	private void UpdateRenderState()
 	{
-		var sizeInModelDir = Model.Bounds.Size.Dot( Vector3.Forward );
+		var rotatedModelBounds = Model.Bounds.Rotate( ModelRotation );
+		var sizeInModelDir = rotatedModelBounds.Size.Dot( Vector3.Forward );
 
-		var minInModelDir = Model.Bounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
+		var minInModelDir = rotatedModelBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
 		var meshesRequired = (int)Math.Round( Spline.GetLength() / sizeInModelDir );
 		var distancePerCurve = Spline.GetLength() / meshesRequired;
@@ -159,6 +162,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			sceneObjects[meshIndex].Attributes.Set( "WidthHeightScaleStartEnd", segment.WidthHeightScaleStartEnd );
 			sceneObjects[meshIndex].Attributes.Set( "MinInModelDir", minInModelDir );
 			sceneObjects[meshIndex].Attributes.Set( "SizeInModelDir", sizeInModelDir );
+			sceneObjects[meshIndex].Attributes.Set( "ModelRotation", new Vector4( ModelRotation.x, ModelRotation.y, ModelRotation.z, ModelRotation.w ) );
 
 			// :(
 			sceneObjects[meshIndex].Batchable = false;
@@ -168,7 +172,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 			var newBounds = new BBox( Vector3.Zero, Vector3.Zero );
 
-			foreach ( var corner in Model.Bounds.Corners )
+			foreach ( var corner in rotatedModelBounds.Corners )
 			{
 				var deformed = DeformVertex( corner, minInModelDir, sizeInModelDir, segment.P1, segment.P2, segment.P3, new Vector2( rollAtStart, rollAtEnd ), segment.WidthHeightScaleStartEnd );
 				newBounds = newBounds.AddPoint( deformed );
