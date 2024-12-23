@@ -186,7 +186,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		IsDirty = false;
 	}
 
-	// replicates our vertex shader should always match the shader
+	// replicates our vertex shader, should always match the shader
     public static Vector3 DeformVertex(Vector3 localPosition, float MinInMeshDir, float SizeInMeshDir, Vector3 P1, Vector3 P2, Vector3 P3, Vector2 RollStartEnd, Vector4 WidthHeightScaleStartEnd)
     {
         float t = (localPosition.x - MinInMeshDir) / SizeInMeshDir;

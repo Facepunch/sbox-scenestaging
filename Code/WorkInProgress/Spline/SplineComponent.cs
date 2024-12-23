@@ -1,6 +1,4 @@
 ﻿using Sandbox.Spline;
-using static Sandbox.Spline.Utils;
-using System.Collections.ObjectModel;
 
 namespace Sandbox;
 public sealed class SplineComponent : Component, Component.ExecuteInEditor
@@ -14,7 +12,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 	[Property, Hide]
 	private List<float> _pointRolls = new();
 
-	// X = Scale Width, Y = Scale Hright
+	// X = Scale Width, Y = Scale Height
 	[Property, Hide]
 	private List<Vector2> _pointScales = new();
 
@@ -83,6 +81,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 				_positionTangentModes.Add( _positionTangentModes[0] );
 				_pointRolls.Add( _pointRolls[0] );
 				_pointScales.Add( _pointScales[0] );
+				RequiresDistanceResample();
 			}
 			else if ( Spline.Utils.IsLoop( _positionSpline.AsReadOnly() ) ) // only remove the last point if we are actually a loop
 			{
@@ -90,9 +89,15 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 				_positionTangentModes.RemoveAt( _positionTangentModes.Count - 1 );
 				_pointRolls.RemoveAt( _pointRolls.Count - 1 );
 				_pointScales.RemoveAt( _pointScales.Count - 1 );
+				RequiresDistanceResample();
 			}
-			RequiresDistanceResample();
 		}
+	}
+
+	protected override void OnEnabled()
+	{
+		UpdateDrawCache();
+		base.OnEnabled();
 	}
 
 	public Vector3 GetPositionAtDistance( float distance )
@@ -329,11 +334,13 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 		return _distanceSampler.GetDistanceAtSplineParams( splineParamsForClosestPosition );
 	}
 
-	public void ConvertToPolyline( List<Vector3> outPolyLine )
+	public void ConvertToPolyline( ref List<Vector3> outPolyLine )
 	{
 		outPolyLine.Clear();
 
-		Spline.Utils.ConvertSplineToPolyLine( _positionSpline.AsReadOnly(), outPolyLine, 0.1f );
+		EnsureSplineIsDistanceSampled();
+
+		Spline.Utils.ConvertSplineToPolyLineWithCachedSampler( _positionSpline.AsReadOnly(), outPolyLine, _distanceSampler, 0.1f );
 	}
 
 	private void CheckPointIndex( int pointIndex )
@@ -363,15 +370,36 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 
 	// TODO should be editor internal only
 	// maybe even make this a cross component functionality (mov to basec comp class)
-	public bool ShouldRenderGizmos = true;
+	public bool ShouldRenderGizmos {
+		get => _shouldRenderGizmos;
+		set {
+			_shouldRenderGizmos = value;
+			// Update polyline cache 
+			UpdateDrawCache();
+		}
+	}
+
+	private bool _shouldRenderGizmos = true;
+
+	private void UpdateDrawCache()
+	{
+		if ( Scene.IsEditor )
+		{
+			Spline.Utils.ConvertSplineToPolyLine( _positionSpline.AsReadOnly(), _drawCachePolyline, 0.01f );
+			_drawCacheSplineWorldBBox = BBox.FromPoints( _drawCachePolyline ).Transform( WorldTransform );
+		}
+	}
 
 	protected override void DrawGizmos()
 	{
 		if ( !ShouldRenderGizmos )
 			return;
 
-		// Update polyline cache 
-		Spline.Utils.ConvertSplineToPolyLine( _positionSpline.AsReadOnly(), _drawCachePolyline, 0.01f );
+		// spline gizmos are expensive so we actually want to frustum cull them here already
+		if ( !Gizmo.Camera.GetFrustum( Gizmo.Camera.Rect, 1 ).IsInside( _drawCacheSplineWorldBBox, true ) )
+		{
+			return;
+		}
 
 		using ( Gizmo.Scope( "spline" ) )
 		{
@@ -403,7 +431,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 	}
 
 
-	public struct SegmentHitResult
+	private struct SegmentHitResult
 	{
 		public float Distance;
 		public bool IsHovered;
@@ -411,9 +439,9 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 	}
 
 	private List<Vector3> _drawCachePolyline = new();
+	private BBox _drawCacheSplineWorldBBox;
 
-	///  TODO should be internal
-	public SegmentHitResult? DrawLineSegmentHitbox( float thickness )
+	private SegmentHitResult? DrawLineSegmentHitbox( float thickness )
 	{
 		SegmentHitResult result = new SegmentHitResult();
 
@@ -443,8 +471,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 		return result;
 	}
 
-	///  TODO should be internal
-	public void DrawLineSegmentGizmo( bool isHovered, float thickness )
+	private void DrawLineSegmentGizmo( bool isHovered, float thickness )
 	{
 		if ( isHovered )
 		{
@@ -462,26 +489,16 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 		}
 	}
 
-	public struct PointHitResult
+	private struct PointHitResult
 	{
-		public enum HitTarget
-		{
-			None,
-			Point,
-			InTangent,
-			OutTangent
-		}
-
 		public int PointIndex;
 		public bool IsHovered;
 		public bool IsClicked;
-
-		public HitTarget Target;
 	}
-	///  TODO should be internal
-	public PointHitResult? DrawPointHibtboxes()
+	private PointHitResult? DrawPointHibtboxes()
 	{
 		using ( Gizmo.Scope( "point_hitbox" ) )
+		using ( Gizmo.GizmoControls.PushFixedScale() )
 		{
 			for ( var i = 0; i < _positionSpline.Count; i++ )
 			{
@@ -489,21 +506,17 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 				{
 					var splinePoint = _positionSpline[i];
 
-					using ( Gizmo.Scope( "point_hitbox" + i, new Transform( splinePoint.Position ) ) )
-					using ( Gizmo.GizmoControls.PushFixedScale() )
+					Gizmo.Hitbox.BBox( BBox.FromPositionAndSize( splinePoint.Position, 2f ) );
+
+					if ( Gizmo.IsHovered )
 					{
-						Gizmo.Hitbox.BBox( BBox.FromPositionAndSize( Vector3.Zero, 2f ) );
+						PointHitResult result = new PointHitResult();
 
-						if ( Gizmo.IsHovered )
-						{
-							PointHitResult result = new PointHitResult();
+						result.IsHovered = Gizmo.IsHovered;
+						result.IsClicked = Gizmo.HasClicked && Gizmo.Pressed.This;
+						result.PointIndex = i;
 
-							result.IsHovered = Gizmo.IsHovered;
-							result.IsClicked = Gizmo.HasClicked && Gizmo.Pressed.This;
-							result.PointIndex = i;
-
-							return result;
-						}
+						return result;
 					}
 				}
 			}
@@ -521,9 +534,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 			}
 		}
 	}
-
-	// should be internal
-	public void DrawPointGizmo( int pointIndex, bool isHovered )
+	private void DrawPointGizmo( int pointIndex, bool isHovered )
 	{
 		CheckPointIndex( pointIndex );
 
@@ -540,8 +551,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 		}
 	}
 
-	// TODO should be internal
-	public void RecalculateTangentsForPointAndAdjacentPoints( int pointIndex )
+	private void RecalculateTangentsForPointAndAdjacentPoints( int pointIndex )
 	{
 		RecalculateTangentsForPoint( pointIndex );
 		if ( pointIndex > 0 )

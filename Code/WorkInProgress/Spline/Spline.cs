@@ -190,10 +190,10 @@ public static class Utils
 		}
 		var sampler = new SplineSampler();
 		sampler.Sample( spline );
-		ConvertBezierCompositeToPolyLineWithCachedSampler( spline, outPoints, sampler, maxSquareError );
+		ConvertSplineToPolyLineWithCachedSampler( spline, outPoints, sampler, maxSquareError );
 	}
 
-	public static void ConvertBezierCompositeToPolyLineWithCachedSampler(
+	public static void ConvertSplineToPolyLineWithCachedSampler(
 		ReadOnlyCollection<SplinePoint> spline,
 		List<Vector3> outPoints,
 		SplineSampler sampler,

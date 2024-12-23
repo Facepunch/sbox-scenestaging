@@ -22,7 +22,6 @@ public class SplineEditorTool : EditorTool<SplineComponent>
 
 	public override void OnSelectionChanged()
 	{
-
 		var target = GetSelectedComponent<SplineComponent>();
 		window.OnSelectionChanged( target );
 	}
@@ -110,8 +109,7 @@ class SplineToolWindow : WidgetWindow
 			{
 				targetComponent.RemovePoint( SelectedPointIndex );
 				SelectedPointIndex = Math.Max( 0, SelectedPointIndex - 1 );
-				RecalculateTangentsForSelecedPointAndAdjacentPoints();
-				targetComponent.RequiresDistanceResample();
+				targetComponent.EditLog( "Deleted point", targetComponent );
 			} )
 			{ ToolTip = "Delete point" } );
 			row.Add( new IconButton( "add", () =>
@@ -125,6 +123,8 @@ class SplineToolWindow : WidgetWindow
 					targetComponent.AddPointAtDistance( (targetComponent.GetDistanceAtPoint( SelectedPointIndex ) + targetComponent.GetDistanceAtPoint( SelectedPointIndex + 1 )) / 2 );
 					// TOOD infer tangent modes???
 				}
+				targetComponent.EditLog( "Added spline point", targetComponent );
+
 				SelectedPointIndex++;
 			} )
 			{ ToolTip = "Insert point after curent point.\nYou can also hold shift while dragging a point to create a new point." } );
@@ -200,8 +200,6 @@ class SplineToolWindow : WidgetWindow
 		set
 		{
 			targetComponent.UpdatePoint( SelectedPointIndex, value );
-			RecalculateTangentsForSelecedPointAndAdjacentPoints();
-			targetComponent.RequiresDistanceResample();
 		}
 	}
 
@@ -212,8 +210,6 @@ class SplineToolWindow : WidgetWindow
 		set
 		{
 			targetComponent.SetTangentModeForPoint( SelectedPointIndex, value );
-			RecalculateTangentsForSelecedPointAndAdjacentPoints();
-			targetComponent.RequiresDistanceResample();
 		}
 	}
 
@@ -224,7 +220,6 @@ class SplineToolWindow : WidgetWindow
 		set
 		{
 			targetComponent.SetRollForPoint( SelectedPointIndex, value );
-			targetComponent.RequiresDistanceResample();
 		}
 	}
 
@@ -235,13 +230,7 @@ class SplineToolWindow : WidgetWindow
 		set
 		{
 			targetComponent.SetScaleForPoint( SelectedPointIndex, value );
-			targetComponent.RequiresDistanceResample();
 		}
-	}
-
-	void RecalculateTangentsForSelecedPointAndAdjacentPoints()
-	{
-		targetComponent.RecalculateTangentsForPointAndAdjacentPoints( SelectedPointIndex );
 	}
 
 	bool _inTangentSelected = false;
@@ -250,6 +239,8 @@ class SplineToolWindow : WidgetWindow
 
 	bool _draggingOutNewPoint = false;
 
+	bool _moveInProgress = false;
+
 	List<Vector3> polyLine = new();
 
 	void DrawGizmos()
@@ -257,7 +248,7 @@ class SplineToolWindow : WidgetWindow
 
 		using ( Gizmo.Scope( "spline_editor", targetComponent.WorldTransform ) )
 		{
-			targetComponent.ConvertToPolyline( polyLine );
+			targetComponent.ConvertToPolyline( ref polyLine );
 
 			for ( var i = 0; i < polyLine.Count - 1; i++ )
 			{
@@ -278,7 +269,7 @@ class SplineToolWindow : WidgetWindow
 								return;
 
 							// It would be slighlty more efficient to use Spline.Utils directly,
-							// but doggfoding the simplified component API ensures a user of that one would also have the ability yo built a spline editor
+							// but doggfoding the simplified component API ensures a user of that one would also have the ability to built a spline editor
 							var hoverDistance = targetComponent.FindDistanceClosestToPosition( point_on_line );
 
 							using ( Gizmo.Scope( "hover_handle", new Transform( point_on_line,
@@ -296,6 +287,7 @@ class SplineToolWindow : WidgetWindow
 								SelectedPointIndex = newPointIndex;
 								_inTangentSelected = false;
 								_outTangentSelected = false;
+								targetComponent.EditLog( "Added spline point", targetComponent );
 							}
 						}
 					}
@@ -321,8 +313,10 @@ class SplineToolWindow : WidgetWindow
 
 			using ( Gizmo.Scope( "position", new Transform( positionGizmoLocation ) ) )
 			{
+				_moveInProgress = false;
 				if ( Gizmo.Control.Position( "spline_control_", Vector3.Zero, out var delta ) )
 				{
+					_moveInProgress = true;
 					if ( _inTangentSelected )
 					{
 						MoveSelectedPointInTanget( delta );
@@ -352,6 +346,11 @@ class SplineToolWindow : WidgetWindow
 							MoveSelectedPoint( delta );
 						}
 					}
+				}
+				if ( !_moveInProgress && Gizmo.WasLeftMouseReleased )
+				{
+					Log.Info( "Moved point" );
+					targetComponent.EditLog( "Moved spline point", targetComponent );
 				}
 			}
 
