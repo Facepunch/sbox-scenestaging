@@ -1,7 +1,11 @@
 ﻿using Sandbox.Spline;
 
 namespace Sandbox;
-public sealed class SplineComponent : Component, Component.ExecuteInEditor
+
+/// <summary>
+/// Represents a spline component that can be manipulated within the editor and at runtime.
+/// </summary>
+public sealed class SplineComponent : Component, Component.ExecuteInEditor, Component.IHasBounds
 {
 	[Property, Hide]
 	private List<Spline.SplinePoint> _positionSpline = new();
@@ -39,9 +43,18 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 	private Spline.Utils.SplineSampler _distanceSampler = new();
 
 	private bool _areDistancesSampled = false;
+
+	/// <summary>
+	/// Gets a value indicating whether the spline needs resampling.
+	/// </summary>
 	public bool IsDirty => !_areDistancesSampled;
 
+	/// <summary>
+	/// An event that is invoked when the spline changes.
+	/// </summary>
 	public Action SplineChanged;
+
+	public BBox LocalBounds { get => _distanceSampler.GetTotalBounds(); }
 
 	// TODO should be itnernal to editor only
 	public void RequiresDistanceResample()
@@ -63,8 +76,12 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 			return;
 		}
 		SampleDistances();
+		UpdateDrawCache();
 	}
 
+	/// <summary>
+	/// Whether the spline forms a loop.
+	/// </summary>
 	[Property]
 	public bool IsLoop
 	{
@@ -92,12 +109,6 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 				RequiresDistanceResample();
 			}
 		}
-	}
-
-	protected override void OnEnabled()
-	{
-		UpdateDrawCache();
-		base.OnEnabled();
 	}
 
 	public Vector3 GetPositionAtDistance( float distance )
@@ -142,7 +153,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 		return Spline.Utils.GetCurvature( _positionSpline.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
 	}
 
-    public float GetRollAtDistance( float distance )
+	public float GetRollAtDistance( float distance )
     {
         EnsureSplineIsDistanceSampled();
 		var splineParams = _distanceSampler.CalculateSegmentParamsAtDistance( distance );
@@ -167,6 +178,13 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 		return _distanceSampler.TotalLength();
 	}
 
+	public BBox GetBounds()
+	{
+		EnsureSplineIsDistanceSampled();
+
+		return _distanceSampler.GetTotalBounds();
+	}
+
 	public float GetDistanceAtPoint( int pointIndex )
 	{
 		CheckPointIndex( pointIndex );
@@ -185,6 +203,14 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 		EnsureSplineIsDistanceSampled();
 
 		return _distanceSampler.GetSegmentLength( segmentIndex );
+	}
+
+	public BBox GetSegmentBouds( int SegmentIneex )
+	{
+		CheckSegmentIndex( segmentIndex );
+		EnsureSplineIsDistanceSampled();
+
+		return _distanceSampler.GetSegmentBounds( SegmentIneex );
 	}
 
 	public SplinePoint GetPoint( int pointIndex )
@@ -374,8 +400,6 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 		get => _shouldRenderGizmos;
 		set {
 			_shouldRenderGizmos = value;
-			// Update polyline cache 
-			UpdateDrawCache();
 		}
 	}
 
@@ -385,8 +409,8 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 	{
 		if ( Scene.IsEditor )
 		{
-			Spline.Utils.ConvertSplineToPolyLine( _positionSpline.AsReadOnly(), _drawCachePolyline, 0.01f );
-			_drawCacheSplineWorldBBox = BBox.FromPoints( _drawCachePolyline ).Transform( WorldTransform );
+			Spline.Utils.ConvertSplineToPolyLineWithCachedSampler  ( _positionSpline.AsReadOnly(), ref _drawCachePolyline, _distanceSampler, 0.01f );
+
 			_drawCachePolylineLines.Clear();
 			for ( var i = 0; i < _drawCachePolyline.Count - 1; i++ )
 			{
@@ -401,7 +425,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 			return;
 
 		// spline gizmos are expensive so we actually want to frustum cull them here already
-		if ( !Gizmo.Camera.GetFrustum( Gizmo.Camera.Rect, 1 ).IsInside( _drawCacheSplineWorldBBox, true ) )
+		if ( !Gizmo.Camera.GetFrustum( Gizmo.Camera.Rect, 1 ).IsInside( _distanceSampler.GetTotalBounds(), true ) )
 		{
 			return;
 		}
@@ -445,7 +469,6 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor
 
 	private List<Vector3> _drawCachePolyline = new();
 	private List<Line> _drawCachePolylineLines = new();
-	private BBox _drawCacheSplineWorldBBox;
 
 	private SegmentHitResult? DrawLineSegmentHitbox( float thickness )
 	{

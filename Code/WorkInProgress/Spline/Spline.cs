@@ -181,7 +181,7 @@ public static class Utils
 
 	public static void ConvertSplineToPolyLine(
 		ReadOnlyCollection<SplinePoint> spline,
-		List<Vector3> outPoints,
+		ref List<Vector3> outPoints,
 		float maxSquareError = 0.1f )
 	{
 		if ( spline.Count == 0 )
@@ -190,12 +190,12 @@ public static class Utils
 		}
 		var sampler = new SplineSampler();
 		sampler.Sample( spline );
-		ConvertSplineToPolyLineWithCachedSampler( spline, outPoints, sampler, maxSquareError );
+		ConvertSplineToPolyLineWithCachedSampler( spline, ref outPoints, sampler, maxSquareError );
 	}
 
 	public static void ConvertSplineToPolyLineWithCachedSampler(
 		ReadOnlyCollection<SplinePoint> spline,
-		List<Vector3> outPoints,
+		ref List<Vector3> outPoints,
 		SplineSampler sampler,
 		float maxSquareError = 0.1f )
 	{
@@ -794,6 +794,10 @@ public static class Utils
 
 		private int _segmentNum;
 
+		private BBox[] _segmentBounds;
+
+		private BBox _bounds;
+
 		public void Sample( ReadOnlyCollection<SplinePoint> spline )
 		{
 			_segmentNum = SegmentNum( spline );
@@ -803,8 +807,11 @@ public static class Utils
 			int size = (SamplesPerSegment - 1) * Utils.SegmentNum( spline ) + 2;
 			_cumulativeDistances = new float[size];
 			_cumulativeDistances[0] = 0;
+			_segmentBounds = new BBox[_segmentNum];
+			_bounds = BBox.FromPositionAndSize( prevPt );
 			for ( int segmentIndex = 0; segmentIndex < Utils.SegmentNum( spline ); segmentIndex++ )
 			{
+				_segmentBounds[segmentIndex] = BBox.FromPositionAndSize( prevPt );
 				for ( int sampleIndex = 1; sampleIndex < SamplesPerSegment; sampleIndex++ )
 				{
 					Vector3 pt = Utils.GetPosition( spline,
@@ -815,8 +822,12 @@ public static class Utils
 						} );
 					cumulativeLength += prevPt.Distance( pt );
 					_cumulativeDistances[(segmentIndex * (SamplesPerSegment - 1)) + sampleIndex] = cumulativeLength;
+					_segmentBounds[segmentIndex].Mins = Vector3.Min( _segmentBounds[segmentIndex].Mins, pt );
+					_segmentBounds[segmentIndex].Maxs = Vector3.Max( _segmentBounds[segmentIndex].Maxs, pt );
 					prevPt = pt;
 				}
+				_bounds.Mins = Vector3.Min( _bounds.Mins, _segmentBounds[segmentIndex].Mins );
+				_bounds.Maxs = Vector3.Max( _bounds.Maxs, _segmentBounds[segmentIndex].Maxs );
 			}
 			// duplicate last point this allows (Segment = LastSegment, T = 1) as query in GetDistanceAtSplineParams
 			_cumulativeDistances[_cumulativeDistances.Length - 1] = cumulativeLength;
@@ -888,6 +899,16 @@ public static class Utils
 		public float GetSegmentLength( int segmentIndex )
 		{
 			return GetSegmentStartDistance( segmentIndex + 1 ) - GetSegmentStartDistance( segmentIndex );
+		}
+
+		public BBox GetSegmentBounds( int segmentIndex )
+		{
+			return _segmentBounds[segmentIndex];
+		}
+
+		public BBox GetTotalBounds()
+		{
+			return _bounds;
 		}
 
 		public float TotalLength()

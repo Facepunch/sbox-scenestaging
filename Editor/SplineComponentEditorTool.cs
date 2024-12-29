@@ -42,8 +42,8 @@ class SplineToolWindow : WidgetWindow
 	{
 		ContentMargins = 0;
 		Layout = Layout.Column();
-		MaximumWidth = 700;
-		MinimumWidth = 400;
+		MaximumWidth = 500;
+		MinimumWidth = 300;
 
 		Rebuild();
 	}
@@ -53,7 +53,7 @@ class SplineToolWindow : WidgetWindow
 		Layout.Clear( true );
 		Layout.Margin = 0;
 		Icon = IsClosed ? "" : "route";
-		WindowTitle = IsClosed ? "" : $"Spline Point [{SelectedPointIndex}] Editor - {targetComponent?.GameObject?.Name ?? ""}";
+		UpdateWindowTitle();
 		IsGrabbable = !IsClosed;
 
 		if ( IsClosed )
@@ -98,12 +98,16 @@ class SplineToolWindow : WidgetWindow
 			row.Add( new IconButton( "skip_previous", () =>
 			{
 				SelectedPointIndex = Math.Max( 0, SelectedPointIndex - 1 );
+
+				UpdateWindowTitle();
 				Focus();
 			} )
 			{ ToolTip = "Go to previous point " } );
 			row.Add( new IconButton( "skip_next", () =>
 			{
 				SelectedPointIndex = Math.Min( targetComponent.NumberOfPoints() - 1, SelectedPointIndex + 1 );
+
+				UpdateWindowTitle();
 				Focus();
 			} )
 			{ ToolTip = "Go to next point" } );
@@ -112,6 +116,8 @@ class SplineToolWindow : WidgetWindow
 				targetComponent.RemovePoint( SelectedPointIndex );
 				SelectedPointIndex = Math.Max( 0, SelectedPointIndex - 1 );
 				targetComponent.EditLog( "Deleted point", targetComponent );
+
+				UpdateWindowTitle();
 				Focus();
 			} )
 			{ ToolTip = "Delete point" } );
@@ -130,6 +136,7 @@ class SplineToolWindow : WidgetWindow
 
 				SelectedPointIndex++;
 
+				UpdateWindowTitle();
 				Focus();
 			} )
 			{ ToolTip = "Insert point after curent point.\nYou can also hold shift while dragging a point to create a new point." } );
@@ -141,6 +148,11 @@ class SplineToolWindow : WidgetWindow
 
 
 		Layout.Margin = 4;
+	}
+
+	void UpdateWindowTitle()
+	{
+		WindowTitle = IsClosed ? "" : $"Spline Point [{SelectedPointIndex}] Editor - {targetComponent?.GameObject?.Name ?? ""}";
 	}
 
 	void CloseWindow()
