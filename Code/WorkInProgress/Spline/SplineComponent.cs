@@ -205,12 +205,12 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		return _distanceSampler.GetSegmentLength( segmentIndex );
 	}
 
-	public BBox GetSegmentBouds( int SegmentIneex )
+	public BBox GetSegmentBouds( int segmentIndex )
 	{
 		CheckSegmentIndex( segmentIndex );
 		EnsureSplineIsDistanceSampled();
 
-		return _distanceSampler.GetSegmentBounds( SegmentIneex );
+		return _distanceSampler.GetSegmentBounds( segmentIndex );
 	}
 
 	public SplinePoint GetPoint( int pointIndex )
@@ -366,7 +366,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 
 		EnsureSplineIsDistanceSampled();
 
-		Spline.Utils.ConvertSplineToPolyLineWithCachedSampler( _positionSpline.AsReadOnly(), outPolyLine, _distanceSampler, 0.1f );
+		Spline.Utils.ConvertSplineToPolyLineWithCachedSampler( _positionSpline.AsReadOnly(), ref outPolyLine, _distanceSampler, 0.1f );
 	}
 
 	private void CheckPointIndex( int pointIndex )
