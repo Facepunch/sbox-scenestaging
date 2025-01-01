@@ -22,7 +22,7 @@ public class PlayerSquish : Component, Component.ICollisionListener
 			rb.Velocity = Vector3.Random * 600;
 		}
 
-		GameObject.Destroy();
+		GameObject.Parent.Destroy();
 	}
 
 
