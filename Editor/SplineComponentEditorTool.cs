@@ -82,7 +82,7 @@ class SplineToolWindow : WidgetWindow
 			this.GetSerialized().GetProperty( nameof ( _selectedPoint ) ).TryGetAsObject( out SerializedObject point );
 			var tangentMode = this.GetSerialized().GetProperty( nameof( _selectedPointTangentMode ) );
 			var roll = this.GetSerialized().GetProperty( nameof( _selectedPointRoll ) );
-			var scale = this.GetSerialized().GetProperty( nameof( _selectdPointScale ) );
+			var scale = this.GetSerialized().GetProperty( nameof( _selectedPointScale ) );
 
 			var controlSheet = new ControlSheet();
 
@@ -222,6 +222,7 @@ class SplineToolWindow : WidgetWindow
 		set
 		{
 			targetComponent.UpdatePoint( SelectedPointIndex, value );
+			targetComponent.EditLog( "Updated spline point", targetComponent );
 		}
 	}
 
@@ -242,16 +243,18 @@ class SplineToolWindow : WidgetWindow
 		set
 		{
 			targetComponent.SetRollForPoint( SelectedPointIndex, value );
+			targetComponent.EditLog( "Updated spline point", targetComponent );
 		}
 	}
 
 	[Title( "Scale (Width, Height)" )]
-	Vector2 _selectdPointScale
+	Vector2 _selectedPointScale
 	{
 		get => SelectedPointIndex > targetComponent.NumberOfPoints() - 1 ? 0f : targetComponent.GetScaleForPoint( SelectedPointIndex );
 		set
 		{
 			targetComponent.SetScaleForPoint( SelectedPointIndex, value );
+			targetComponent.EditLog( "Updated spline point", targetComponent );
 		}
 	}
 

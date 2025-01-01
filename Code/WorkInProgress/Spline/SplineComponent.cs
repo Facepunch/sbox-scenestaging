@@ -56,6 +56,11 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 
 	public BBox LocalBounds { get => _distanceSampler.GetTotalBounds(); }
 
+	protected override void OnValidate()
+	{
+		SplineChanged?.Invoke();
+	}
+
 	// TODO should be itnernal to editor only
 	public void RequiresDistanceResample()
 	{
@@ -255,7 +260,11 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		RequiresDistanceResample();
 	}
 
-	// returns index of new point
+	/// <summary>
+	/// Adds a point at a specific distance along the spline.
+	/// Returns the index of the added spline point.
+	/// Tangents of the new point and adjacent poinrs will be calculated so the spline shape remains the same.
+	/// </summary>
 	public int AddPointAtDistance( float distance )
 	{
 		EnsureSplineIsDistanceSampled();
@@ -271,7 +280,6 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		_positionSpline.Insert( splineParams.Index + 1, positionSplitResult.Mid );
 
 		// update tangent modes
-		// keep linear and auto modes, otherwise use custom
 		_positionTangentModes[splineParams.Index] = SplinePointTangentMode.Custom;
 		_positionTangentModes[splineParams.Index + 1] = SplinePointTangentMode.Custom;
 
@@ -409,7 +417,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	{
 		if ( Scene.IsEditor )
 		{
-			Spline.Utils.ConvertSplineToPolyLineWithCachedSampler  ( _positionSpline.AsReadOnly(), ref _drawCachePolyline, _distanceSampler, 0.01f );
+			Spline.Utils.ConvertSplineToPolyLineWithCachedSampler( _positionSpline.AsReadOnly(), ref _drawCachePolyline, _distanceSampler, 0.01f );
 
 			_drawCachePolylineLines.Clear();
 			for ( var i = 0; i < _drawCachePolyline.Count - 1; i++ )
@@ -458,7 +466,6 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 			}
 		}
 	}
-
 
 	private struct SegmentHitResult
 	{
