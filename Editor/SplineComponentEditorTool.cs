@@ -233,6 +233,7 @@ class SplineToolWindow : WidgetWindow
 		set
 		{
 			targetComponent.SetTangentModeForPoint( SelectedPointIndex, value );
+			targetComponent.EditLog( "Updated spline point", targetComponent );
 		}
 	}
 

@@ -58,6 +58,8 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 
 	protected override void OnValidate()
 	{
+		SampleDistances();
+		UpdateDrawCache();
 		SplineChanged?.Invoke();
 	}
 
