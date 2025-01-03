@@ -280,9 +280,12 @@ class SplineToolWindow : WidgetWindow
 			{
 				using ( Gizmo.Scope( "segment" + i ) )
 				{
-					Gizmo.Draw.LineThickness = 2f;
 					using ( Gizmo.Hitbox.LineScope() )
 					{
+						Gizmo.Draw.LineThickness = 2f;
+
+						Gizmo.Hitbox.AddPotentialLine( polyLine[i], polyLine[i + 1], Gizmo.Draw.LineThickness * 2f );
+
 						Gizmo.Draw.Line( polyLine[i], polyLine[i + 1] );
 
 						if ( Gizmo.IsHovered && Gizmo.HasMouseFocus )

@@ -444,16 +444,18 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		{
 			float lineThickness = 2f;
 
+			if ( _positionSpline.Count < 1 )
+			{
+				return;
+			}
+
 			// make line hitbox thicker to make it easier to hover/click.
-			var potentialLineHit = DrawLineSegmentHitbox( lineThickness * 8f );
+			var potentialLineHit = DrawLineSegmentHitbox( lineThickness * 16f );
 			var potentialPointHit = DrawPointHibtboxes();
 
 			bool hovered = (potentialLineHit?.IsHovered ?? false) || (potentialPointHit?.IsHovered ?? false);
 
-			if ( _positionSpline.Count > 1 )
-			{
-				DrawLineSegmentGizmo( hovered, lineThickness );
-			}
+			DrawLineSegmentGizmo( hovered, lineThickness );
 
 			DrawPointGizmos( hovered );
 
