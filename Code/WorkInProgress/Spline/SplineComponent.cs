@@ -282,10 +282,10 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		_positionSpline.Insert( splineParams.Index + 1, positionSplitResult.Mid );
 
 		// update tangent modes
-		_positionTangentModes[splineParams.Index] = SplinePointTangentMode.Custom;
-		_positionTangentModes[splineParams.Index + 1] = SplinePointTangentMode.Custom;
+		_positionTangentModes[splineParams.Index] = SplinePointTangentMode.Split;
+		_positionTangentModes[splineParams.Index + 1] = SplinePointTangentMode.Split;
 
-		_positionTangentModes.Insert( splineParams.Index + 1, SplinePointTangentMode.Custom );
+		_positionTangentModes.Insert( splineParams.Index + 1, SplinePointTangentMode.Split );
 
 		// split scale and roll
 		_pointRolls.Insert( splineParams.Index + 1, GetRollAtDistance( distance ) );
@@ -629,9 +629,9 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 			case Spline.SplinePointTangentMode.Linear:
 				_positionSpline[index] = Spline.Utils.CalculateLinearTangentForPoint( _positionSpline.AsReadOnly(), index );
 				break;
-			case Spline.SplinePointTangentMode.Custom:
+			case Spline.SplinePointTangentMode.Split:
 				break;
-			case Spline.SplinePointTangentMode.CustomMirrored:
+			case Spline.SplinePointTangentMode.Mirrored:
 				_positionSpline[index] = _positionSpline[index] with { OutPositionRelative = -_positionSpline[index].InPositionRelative };
 				break;
 		}

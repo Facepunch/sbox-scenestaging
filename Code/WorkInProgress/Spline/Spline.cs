@@ -14,21 +14,18 @@ public enum SplinePointTangentMode
 	/// <summary>
 	/// Tangents are set to zero, leading to a sharp corner.
 	/// </summary>
-	[Icon( "insights" )]
+	[Icon( "show_chart" )]
 	Linear,
 	/// <summary>
-	/// Tangents are set to custom values,
-	/// the in tangent and out tangent are mirroed.
+	/// The In and Out are user set, but are joined (mirrored)
 	/// </summary>
-	[Icon( "lock" )]
-	CustomMirrored,
+	[Icon( "open_in_full" )]
+	Mirrored,
 	/// <summary>
-	/// Tangents are set to custom values,
-	/// the in tangent and out tangent are independent.
-	/// Gives full control over the tangents and shape of the spline.
+	/// The In and Out are user set and operate independently
 	/// </summary>
-	[Icon( "mode" )]
-	Custom,
+	[Icon( "call_split" )]
+	Split,
 }
 
 public struct SplinePoint

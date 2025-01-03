@@ -426,7 +426,7 @@ class SplineToolWindow : WidgetWindow
 							using ( Gizmo.Scope( "in_tangent", new Transform( splinePoint.InPositionRelative ) ) )
 							{
 
-								if ( (_selectedPointTangentMode == SplinePointTangentMode.CustomMirrored || _selectedPointTangentMode == SplinePointTangentMode.Auto) && (_inTangentSelected || _outTangentSelected) )
+								if ( (_selectedPointTangentMode == SplinePointTangentMode.Mirrored || _selectedPointTangentMode == SplinePointTangentMode.Auto) && (_inTangentSelected || _outTangentSelected) )
 								{
 									Gizmo.Draw.Color = Color.Orange;
 								}
@@ -460,7 +460,7 @@ class SplineToolWindow : WidgetWindow
 
 							using ( Gizmo.Scope( "out_tangent", new Transform( splinePoint.OutPositionRelative ) ) )
 							{
-								if ( (_selectedPointTangentMode == SplinePointTangentMode.CustomMirrored || _selectedPointTangentMode == SplinePointTangentMode.Auto) && (_inTangentSelected || _outTangentSelected) )
+								if ( (_selectedPointTangentMode == SplinePointTangentMode.Mirrored || _selectedPointTangentMode == SplinePointTangentMode.Auto) && (_inTangentSelected || _outTangentSelected) )
 								{
 									Gizmo.Draw.Color = Color.Orange;
 								}
@@ -510,9 +510,9 @@ class SplineToolWindow : WidgetWindow
 		updatedPoint.InPositionRelative += delta;
 		if ( _selectedPointTangentMode == SplinePointTangentMode.Auto )
 		{
-			targetComponent.SetTangentModeForPoint( SelectedPointIndex, SplinePointTangentMode.CustomMirrored );
+			targetComponent.SetTangentModeForPoint( SelectedPointIndex, SplinePointTangentMode.Mirrored );
 		}
-		if ( _selectedPointTangentMode == SplinePointTangentMode.CustomMirrored )
+		if ( _selectedPointTangentMode == SplinePointTangentMode.Mirrored )
 		{
 			updatedPoint.OutPositionRelative = -updatedPoint.InPositionRelative;
 		}
@@ -525,9 +525,9 @@ class SplineToolWindow : WidgetWindow
 		updatedPoint.OutPositionRelative += delta;
 		if ( _selectedPointTangentMode == SplinePointTangentMode.Auto )
 		{
-			targetComponent.SetTangentModeForPoint( SelectedPointIndex, SplinePointTangentMode.CustomMirrored );
+			targetComponent.SetTangentModeForPoint( SelectedPointIndex, SplinePointTangentMode.Mirrored );
 		}
-		if ( _selectedPointTangentMode == SplinePointTangentMode.CustomMirrored )
+		if ( _selectedPointTangentMode == SplinePointTangentMode.Mirrored )
 		{
 			updatedPoint.InPositionRelative = -updatedPoint.OutPositionRelative;
 		}
