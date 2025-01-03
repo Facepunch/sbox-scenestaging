@@ -435,7 +435,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 			return;
 
 		// spline gizmos are expensive so we actually want to frustum cull them here already
-		if ( !Gizmo.Camera.GetFrustum( Gizmo.Camera.Rect, 1 ).IsInside( _distanceSampler.GetTotalBounds(), true ) )
+		if ( !Gizmo.Camera.GetFrustum( Gizmo.Camera.Rect, 1 ).IsInside( _distanceSampler.GetTotalBounds().Transform(WorldTransform), true ) )
 		{
 			return;
 		}
