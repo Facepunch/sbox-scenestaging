@@ -333,6 +333,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	{
 		CheckPointIndex( pointIndex );
 		_pointRolls[pointIndex] = roll;
+		SplineChanged?.Invoke();
 	}
 
 	public Vector2 GetScaleForPoint( int pointIndex )
@@ -344,6 +345,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	{
 		CheckPointIndex( pointIndex );
 		_pointScales[pointIndex] = scale;
+		SplineChanged?.Invoke();
 	}
 
 	public SplinePointTangentMode GetTangentModeForPoint( int pointIndex )
