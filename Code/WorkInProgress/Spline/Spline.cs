@@ -306,7 +306,7 @@ public static class Utils
 	}
 
 	// In 3D we can only calculate the Root for each axis separately
-	// We accmplish this by projecting the spline segment onto the axis and then solving the 1D cubic equation
+	// We accomplish this by projecting the spline segment onto the axis and then solving the 1D cubic equation
 	private static List<float> CalculateRootsForAxis( ReadOnlyCollection<SplinePoint> spline, int segmentIndex, int axis )
 	{
 		CheckSegmentIndex( spline, segmentIndex );
@@ -316,12 +316,12 @@ public static class Utils
 		var p2Component = P2( spline, segmentIndex )[axis];
 		var p3Component = P3( spline, segmentIndex )[axis];
 
-		var A = -p0Component + 3 * (p1Component - p2Component) + p3Component;
-		var B = 3 * (p0Component - 2 * p1Component + p2Component);
-		var C = 3 * (-p0Component + p1Component);
-		var D = p0Component;
+		var a = -p0Component + 3 * (p1Component - p2Component) + p3Component;
+		var b = 3 * (p0Component - 2 * p1Component + p2Component);
+		var c = 3 * (-p0Component + p1Component);
+		var d = p0Component;
 
-		var roots = MathY.SolveCubic( A, B, C, D );
+		var roots = MathY.SolveCubic( a, b, c, d );
 		roots.RemoveAll( root => root < 0.0f || root > 1.0f );
 
 		return roots;
@@ -340,11 +340,11 @@ public static class Utils
 		var p3Component = P3( spline, segmentIndex )[axis];
 
 		// Solve derivative for extrema
-		var A = 3 * (-p0Component + 3 * (p1Component - p2Component) + p3Component);
-		var B = 6 * (p0Component - 2 * p1Component + p2Component);
-		var C = 3 * (-p0Component + p1Component);
+		var a = 3 * (-p0Component + 3 * (p1Component - p2Component) + p3Component);
+		var b = 6 * (p0Component - 2 * p1Component + p2Component);
+		var c = 3 * (-p0Component + p1Component);
 
-		var roots = MathY.SolveQuadratic( A, B, C );
+		var roots = MathY.SolveQuadratic( a, b, c );
 		roots.RemoveAll( root => root < 0.0f || root > 1.0f );
 
 		return roots;
@@ -675,23 +675,23 @@ public static class Utils
 	private static SegmentAlignmentInfo CalculateAlignmentInfoForPoints( Vector3 axisOrigin,
 		Vector3 pointOnPositiveAxis )
 	{
-		var AlignmentTranslationInverse = axisOrigin;
-		var AlignmentTranslation = -AlignmentTranslationInverse;
+		var alignmentTranslationInverse = axisOrigin;
+		var alignmentTranslation = -alignmentTranslationInverse;
 
-		var TranslatedLastPoint = pointOnPositiveAxis + AlignmentTranslation;
-		var AlignmentRotationInverse = Rotation.From(
-			MathF.Atan2( TranslatedLastPoint.z,
-				MathF.Sqrt( TranslatedLastPoint.x * TranslatedLastPoint.x +
-							TranslatedLastPoint.y * TranslatedLastPoint.y ) ) * (180.0f / MathF.PI),
-			MathF.Atan2( TranslatedLastPoint.y, TranslatedLastPoint.x ) * (180.0f / MathF.PI), 0.0f );
-		var AlignmentRotation = AlignmentRotationInverse.Inverse;
+		var translatedLastPoint = pointOnPositiveAxis + alignmentTranslation;
+		var alignmentRotationInverse = Rotation.From(
+			MathF.Atan2( translatedLastPoint.z,
+				MathF.Sqrt( translatedLastPoint.x * translatedLastPoint.x +
+							translatedLastPoint.y * translatedLastPoint.y ) ) * (180.0f / MathF.PI),
+			MathF.Atan2( translatedLastPoint.y, translatedLastPoint.x ) * (180.0f / MathF.PI), 0.0f );
+		var alignmentRotation = alignmentRotationInverse.Inverse;
 
 		return new SegmentAlignmentInfo
 		{
-			Translation = AlignmentTranslation,
-			TranslationInverse = AlignmentTranslationInverse,
-			Rotation = AlignmentRotation,
-			RotationInverse = AlignmentRotationInverse
+			Translation = alignmentTranslation,
+			TranslationInverse = alignmentTranslationInverse,
+			Rotation = alignmentRotation,
+			RotationInverse = alignmentRotationInverse
 		};
 	}
 

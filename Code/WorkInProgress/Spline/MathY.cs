@@ -53,13 +53,13 @@ public static partial class MathY
 		{
 			// Casus irreducibilis: three real solutions
 			float phi = 1.0f / 3 * MathF.Acos( -q / MathF.Sqrt( -cubicP ) );
-			float T = 2.0f * MathF.Sqrt( -p );
+			float t = 2.0f * MathF.Sqrt( -p );
 
 			return new List<float>
 			{
-				T * MathF.Cos( phi ) - sub,
-				-T * MathF.Cos( phi + MathF.PI / 3  ) - sub,
-				-T * MathF.Cos( phi - MathF.PI / 3  ) - sub
+				t * MathF.Cos( phi ) - sub,
+				-t * MathF.Cos( phi + MathF.PI / 3  ) - sub,
+				-t * MathF.Cos( phi - MathF.PI / 3  ) - sub
 			};
 		}
 		else
