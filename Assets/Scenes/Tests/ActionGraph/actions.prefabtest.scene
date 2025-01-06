@@ -1,0 +1,112 @@
+{
+  "__guid": "b7f1fd2f-ed1a-4ad3-b8e4-d4810e227fc3",
+  "GameObjects": [
+    {
+      "__guid": "53e56e2d-ff97-49c8-b74e-8d37dbe8da94",
+      "Flags": 0,
+      "Name": "Left Cube",
+      "Position": "0,64,0",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/actiongraph/cube.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "0b49bd81-2089-4f5a-92d2-6c0cb892410e",
+      "Flags": 0,
+      "Name": "Right Cube",
+      "Position": "0,-64,0",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "7400373a-af54-445e-a2d9-431d5f336407",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "Model": "models/dev/box.vmdl",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "7fbd4b99-aea0-48d5-b425-5f3bf7aaef81",
+      "Flags": 0,
+      "Name": "Sun",
+      "Rotation": "-0.2110523,0.4037051,0.4124327,0.7889096",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "1f9d02ae-9954-4cc4-9774-42304369bf86",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Shadows": true,
+          "SkyColor": "0,0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "f8690c95-feb7-432b-b0d7-df54ec5f5675",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-256,0,0",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "fdec9e8a-c042-4d82-b166-c35b030f143c",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {},
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": null,
+  "Description": null,
+  "__references": [],
+  "__version": 2
+}
