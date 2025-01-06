@@ -28,9 +28,40 @@ public sealed class NavigationTargetWanderer : Component
             return;
 
         agent.MoveTo(_currentTarget);
-    }
 
-    protected override void OnFixedUpdate()
+		agent.LinkEnter += OnNavLinkEnter;
+		agent.LinkExit += OnNavLinkExit;
+		agent.LinkUpdate += OnNavLinkUpdate;
+	}
+
+	protected override void OnDisabled()
+	{
+		NavMeshAgent agent = GetComponent<NavMeshAgent>();
+		if ( agent == null )
+			return;
+
+		agent.LinkEnter -= OnNavLinkEnter;
+		agent.LinkExit -= OnNavLinkExit;
+		agent.LinkUpdate -= OnNavLinkUpdate;
+	}
+
+	private void OnNavLinkEnter()
+	{
+		Body.Set( "b_grounded", false );
+		Body.Set( "b_jump", true );
+	}
+
+	private void OnNavLinkExit()
+	{
+		Body.Set( "b_grounded", true );
+	}
+
+	private void OnNavLinkUpdate( float t )
+	{
+
+	}
+
+	protected override void OnUpdate()
     {
         var dir = Agent.Velocity;
         var forward = WorldRotation.Forward.Dot(dir);
@@ -45,7 +76,11 @@ public sealed class NavigationTargetWanderer : Component
         Body.Set("move_x", forward);
         Body.Set("move_z", Agent.Velocity.z);
 
-        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+		Body.Set( "wish_x", Agent.WishVelocity.x );
+		Body.Set( "wish_y", Agent.WishVelocity.y );
+		Body.Set( "wish_z", Agent.WishVelocity.z );
+
+		NavMeshAgent agent = GetComponent<NavMeshAgent>();
 
         if (agent == null)
             return;
