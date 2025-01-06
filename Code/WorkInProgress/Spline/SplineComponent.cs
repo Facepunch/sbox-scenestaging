@@ -8,10 +8,10 @@ namespace Sandbox;
 public sealed class SplineComponent : Component, Component.ExecuteInEditor, Component.IHasBounds
 {
 	[Property, Hide]
-	private List<Spline.SplinePoint> _positionSpline = new();
+	private List<Spline.SplinePoint> _splinePoints = new();
 
 	[Property, Hide]
-	private List<Spline.SplinePointTangentMode> _positionTangentModes = new();
+	private List<Spline.SplinePointTangentMode> _pointTangentModes = new();
 
 	[Property, Hide]
 	private List<float> _pointRolls = new();
@@ -22,12 +22,12 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 
 	public SplineComponent()
 	{
-		_positionSpline.Add( new SplinePoint { Position = new Vector3( 0, 0, 0 ) } );
-		_positionSpline.Add( new SplinePoint { Position = new Vector3( 100, 0, 0 ) } );
-		_positionSpline.Add( new SplinePoint { Position = new Vector3( 100, 100, 0 ) } );
-		_positionTangentModes.Add( SplinePointTangentMode.Auto );
-		_positionTangentModes.Add( SplinePointTangentMode.Auto );
-		_positionTangentModes.Add( SplinePointTangentMode.Auto );
+		_splinePoints.Add( new SplinePoint { Position = new Vector3( 0, 0, 0 ) } );
+		_splinePoints.Add( new SplinePoint { Position = new Vector3( 100, 0, 0 ) } );
+		_splinePoints.Add( new SplinePoint { Position = new Vector3( 100, 100, 0 ) } );
+		_pointTangentModes.Add( SplinePointTangentMode.Auto );
+		_pointTangentModes.Add( SplinePointTangentMode.Auto );
+		_pointTangentModes.Add( SplinePointTangentMode.Auto );
 		_pointRolls.Add( 0 );
 		_pointRolls.Add( 0 );
 		_pointRolls.Add( 0 );
@@ -63,8 +63,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		SplineChanged?.Invoke();
 	}
 
-	// TODO should be itnernal to editor only
-	public void RequiresDistanceResample()
+	private void RequiresDistanceResample()
 	{
 		_areDistancesSampled = false;
 		SplineChanged?.Invoke();
@@ -72,7 +71,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 
 	private void SampleDistances()
 	{
-		_distanceSampler.Sample( _positionSpline.AsReadOnly() );
+		_distanceSampler.Sample( _splinePoints.AsReadOnly() );
 		_areDistancesSampled = true;
 	}
 
@@ -92,7 +91,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	[Property]
 	public bool IsLoop
 	{
-		get => Spline.Utils.IsLoop( _positionSpline.AsReadOnly() );
+		get => Spline.Utils.IsLoop( _splinePoints.AsReadOnly() );
 		set
 		{
 			// We emulate loops by adding an addtional point at the end which matches the first point
@@ -101,16 +100,16 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 			// The fact that the last point exists will be hidden from the user in the Editor and API
 			if ( value )
 			{
-				_positionSpline.Add( _positionSpline[0] );
-				_positionTangentModes.Add( _positionTangentModes[0] );
+				_splinePoints.Add( _splinePoints[0] );
+				_pointTangentModes.Add( _pointTangentModes[0] );
 				_pointRolls.Add( _pointRolls[0] );
 				_pointScales.Add( _pointScales[0] );
 				RequiresDistanceResample();
 			}
-			else if ( Spline.Utils.IsLoop( _positionSpline.AsReadOnly() ) ) // only remove the last point if we are actually a loop
+			else if ( Spline.Utils.IsLoop( _splinePoints.AsReadOnly() ) ) // only remove the last point if we are actually a loop
 			{
-				_positionSpline.RemoveAt( _positionSpline.Count - 1 );
-				_positionTangentModes.RemoveAt( _positionTangentModes.Count - 1 );
+				_splinePoints.RemoveAt( _splinePoints.Count - 1 );
+				_pointTangentModes.RemoveAt( _pointTangentModes.Count - 1 );
 				_pointRolls.RemoveAt( _pointRolls.Count - 1 );
 				_pointScales.RemoveAt( _pointScales.Count - 1 );
 				RequiresDistanceResample();
@@ -122,42 +121,42 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	{
 		EnsureSplineIsDistanceSampled();
 
-		return Spline.Utils.GetPosition( _positionSpline.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
+		return Spline.Utils.GetPosition( _splinePoints.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
 	}
 
 	public Vector3 GetTangetAtDistance( float distance )
 	{
 		EnsureSplineIsDistanceSampled();
 
-		return Spline.Utils.GetTangent( _positionSpline.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
+		return Spline.Utils.GetTangent( _splinePoints.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
 	}
 
 	public Vector3 GetTangent2DAtDistance( float distance )
 	{
 		EnsureSplineIsDistanceSampled();
 
-		return Spline.Utils.GetTangent2D( _positionSpline.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
+		return Spline.Utils.GetTangent2D( _splinePoints.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
 	}
 
 	public Vector3 GetNormalAtDistance( float distance, Vector3 up )
 	{
 		EnsureSplineIsDistanceSampled();
 
-		return Spline.Utils.GetNormal( _positionSpline.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ), up );
+		return Spline.Utils.GetNormal( _splinePoints.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ), up );
 	}
 
 	public Vector3 GetNormal2DAtDistance( float distance )
 	{
 		EnsureSplineIsDistanceSampled();
 
-		return Spline.Utils.GetNormal2D( _positionSpline.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
+		return Spline.Utils.GetNormal2D( _splinePoints.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
 	}
 
 	public float GetCurvatureAtDistance( float distance )
 	{
 		EnsureSplineIsDistanceSampled();
 
-		return Spline.Utils.GetCurvature( _positionSpline.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
+		return Spline.Utils.GetCurvature( _splinePoints.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
 	}
 
 	public float GetRollAtDistance( float distance )
@@ -197,7 +196,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		CheckPointIndex( pointIndex );
 		EnsureSplineIsDistanceSampled();
 
-		if ( pointIndex == _positionSpline.Count - 1 )
+		if ( pointIndex == _splinePoints.Count - 1 )
 		{
 			return _distanceSampler.TotalLength();
 		}
@@ -224,24 +223,24 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	{
 		CheckPointIndex( pointIndex );
 
-		return _positionSpline[pointIndex];
+		return _splinePoints[pointIndex];
 	}
 
 	public int NumberOfPoints()
 	{
-		return IsLoop ? _positionSpline.Count - 1 : _positionSpline.Count;
+		return IsLoop ? _splinePoints.Count - 1 : _splinePoints.Count;
 	}
 
 	public int NumberOfSegments()
 	{
-		return Spline.Utils.SegmentNum( _positionSpline.AsReadOnly() );
+		return Spline.Utils.SegmentNum( _splinePoints.AsReadOnly() );
 	}
 
 	public void UpdatePoint( int pointIndex, SplinePoint updatedPoint )
 	{
 		CheckPointIndex( pointIndex );
 
-		_positionSpline[pointIndex] = updatedPoint;
+		_splinePoints[pointIndex] = updatedPoint;
 
 		RecalculateTangentsForPointAndAdjacentPoints( pointIndex );
 
@@ -252,8 +251,8 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	{
 		CheckInsertPointIndex( pointIndex );
 
-		_positionSpline.Insert( pointIndex, newPoint );
-		_positionTangentModes.Insert( pointIndex, SplinePointTangentMode.Auto );
+		_splinePoints.Insert( pointIndex, newPoint );
+		_pointTangentModes.Insert( pointIndex, SplinePointTangentMode.Auto );
 		_pointRolls.Insert( pointIndex, 0 );
 		_pointScales.Insert( pointIndex, new Vector2( 1, 1 ) );
 
@@ -267,25 +266,33 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	/// Returns the index of the added spline point.
 	/// Tangents of the new point and adjacent poinrs will be calculated so the spline shape remains the same.
 	/// </summary>
-	public int AddPointAtDistance( float distance )
+	public int AddPointAtDistance( float distance, bool inferTangentModes = false )
 	{
 		EnsureSplineIsDistanceSampled();
 
 		var splineParams = _distanceSampler.CalculateSegmentParamsAtDistance( distance );
 
-		var positionSplitResult = Spline.Utils.SplitSegment( _positionSpline.AsReadOnly(), splineParams );
+		var positionSplitResult = Spline.Utils.SplitSegment( _splinePoints.AsReadOnly(), splineParams );
 
 		// modify points before and after the split
-		_positionSpline[splineParams.Index] = positionSplitResult.Left;
-		_positionSpline[splineParams.Index + 1] = positionSplitResult.Right;
+		_splinePoints[splineParams.Index] = positionSplitResult.Left;
+		_splinePoints[splineParams.Index + 1] = positionSplitResult.Right;
 
-		_positionSpline.Insert( splineParams.Index + 1, positionSplitResult.Mid );
+		_splinePoints.Insert( splineParams.Index + 1, positionSplitResult.Mid );
 
-		// update tangent modes
-		_positionTangentModes[splineParams.Index] = SplinePointTangentMode.Split;
-		_positionTangentModes[splineParams.Index + 1] = SplinePointTangentMode.Split;
 
-		_positionTangentModes.Insert( splineParams.Index + 1, SplinePointTangentMode.Split );
+		if ( inferTangentModes )
+		{
+			var splinePointTangentMode = InferTangentModeForSplitPoint( splineParams );
+			_pointTangentModes.Insert( splineParams.Index + 1, splinePointTangentMode );
+		}
+		else
+		{
+			_pointTangentModes[splineParams.Index] = SplinePointTangentMode.Split;
+			_pointTangentModes[splineParams.Index + 1] = SplinePointTangentMode.Split;
+
+			_pointTangentModes.Insert( splineParams.Index + 1, SplinePointTangentMode.Split );
+		}
 
 		// split scale and roll
 		_pointRolls.Insert( splineParams.Index + 1, GetRollAtDistance( distance ) );
@@ -300,13 +307,39 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		return newPointIndex;
 	}
 
+	private SplinePointTangentMode InferTangentModeForSplitPoint( SplineSegmentParams segmentParams )
+	{
+		// If the tangent modes are the same on both sides we just assume the new points should have the same tangent mode
+		if ( _pointTangentModes[segmentParams.Index] == _pointTangentModes[segmentParams.Index + 1] )
+		{
+			return _pointTangentModes[segmentParams.Index];
+		}
+
+		// if one of them uses auto asume the new points should use auto
+		if ( _pointTangentModes[segmentParams.Index] == SplinePointTangentMode.Auto ||
+			 _pointTangentModes[segmentParams.Index + 1] == SplinePointTangentMode.Auto )
+		{
+			return SplinePointTangentMode.Auto;
+		}
+
+		// If one of them uses linear assume the new points should use linear
+		if ( _pointTangentModes[segmentParams.Index] == SplinePointTangentMode.Linear ||
+			 _pointTangentModes[segmentParams.Index + 1] == SplinePointTangentMode.Linear )
+		{
+			return SplinePointTangentMode.Linear;
+		}
+
+		// Otherwise we default to custom
+		return SplinePointTangentMode.Split;
+	}
+
 
 	public void RemovePoint( int pointIndex )
 	{
 		CheckPointIndex( pointIndex );
 
-		_positionSpline.RemoveAt( pointIndex );
-		_positionTangentModes.RemoveAt( pointIndex );
+		_splinePoints.RemoveAt( pointIndex );
+		_pointTangentModes.RemoveAt( pointIndex );
 		_pointRolls.RemoveAt( pointIndex );
 		_pointScales.RemoveAt( pointIndex );
 
@@ -315,7 +348,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 			RecalculateTangentsForPoint( pointIndex - 1 );
 		}
 
-		if ( pointIndex < _positionSpline.Count )
+		if ( pointIndex < _splinePoints.Count )
 		{
 			RecalculateTangentsForPoint( pointIndex );
 		}
@@ -351,13 +384,13 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	public SplinePointTangentMode GetTangentModeForPoint( int pointIndex )
 	{
 		CheckPointIndex( pointIndex );
-		return _positionTangentModes[pointIndex];
+		return _pointTangentModes[pointIndex];
 	}
 
 	public void SetTangentModeForPoint( int pointIndex, SplinePointTangentMode tangentMode )
 	{
 		CheckPointIndex( pointIndex );
-		_positionTangentModes[pointIndex] = tangentMode;
+		_pointTangentModes[pointIndex] = tangentMode;
 		RecalculateTangentsForPointAndAdjacentPoints( pointIndex );
 		RequiresDistanceResample();
 	}
@@ -367,7 +400,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	{
 		EnsureSplineIsDistanceSampled();
 
-		var splineParamsForClosestPosition = Spline.Utils.FindSegmentAndTClosestToPosition( _positionSpline.AsReadOnly(), position );
+		var splineParamsForClosestPosition = Spline.Utils.FindSegmentAndTClosestToPosition( _splinePoints.AsReadOnly(), position );
 
 		return _distanceSampler.GetDistanceAtSplineParams( splineParamsForClosestPosition );
 	}
@@ -378,12 +411,12 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 
 		EnsureSplineIsDistanceSampled();
 
-		Spline.Utils.ConvertSplineToPolyLineWithCachedSampler( _positionSpline.AsReadOnly(), ref outPolyLine, _distanceSampler, 0.1f );
+		Spline.Utils.ConvertSplineToPolyLineWithCachedSampler( _splinePoints.AsReadOnly(), ref outPolyLine, _distanceSampler, 0.1f );
 	}
 
 	private void CheckPointIndex( int pointIndex )
 	{
-		if ( pointIndex < 0 || pointIndex >= _positionSpline.Count || IsLoop && pointIndex == _positionSpline.Count - 1 )
+		if ( pointIndex < 0 || pointIndex >= _splinePoints.Count || IsLoop && pointIndex == _splinePoints.Count - 1 )
 		{
 			throw new ArgumentOutOfRangeException( nameof( pointIndex ), "Spline point index out of range." );
 		}
@@ -392,7 +425,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	// Edge case: pointIndex > _splinePoints.Count
 	private void CheckInsertPointIndex( int pointIndex )
 	{
-		if ( pointIndex < 0 || pointIndex > _positionSpline.Count )
+		if ( pointIndex < 0 || pointIndex > _splinePoints.Count )
 		{
 			throw new ArgumentOutOfRangeException( nameof( pointIndex ), "Spline point index out of range." );
 		}
@@ -400,7 +433,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 
 	private void CheckSegmentIndex( int segmentIndex )
 	{
-		if ( segmentIndex < 0 || segmentIndex >= Spline.Utils.SegmentNum( _positionSpline.AsReadOnly() ) )
+		if ( segmentIndex < 0 || segmentIndex >= Spline.Utils.SegmentNum( _splinePoints.AsReadOnly() ) )
 		{
 			throw new ArgumentOutOfRangeException( nameof( segmentIndex ), "Spline segment index out of range." );
 		}
@@ -421,7 +454,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	{
 		if ( Scene.IsEditor )
 		{
-			Spline.Utils.ConvertSplineToPolyLineWithCachedSampler( _positionSpline.AsReadOnly(), ref _drawCachePolyline, _distanceSampler, 0.01f );
+			Spline.Utils.ConvertSplineToPolyLineWithCachedSampler( _splinePoints.AsReadOnly(), ref _drawCachePolyline, _distanceSampler, 0.1f );
 
 			_drawCachePolylineLines.Clear();
 			for ( var i = 0; i < _drawCachePolyline.Count - 1; i++ )
@@ -446,7 +479,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		{
 			float lineThickness = 2f;
 
-			if ( _positionSpline.Count < 1 )
+			if ( _splinePoints.Count < 1 )
 			{
 				return;
 			}
@@ -539,11 +572,11 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		using ( Gizmo.Scope( "point_hitbox" ) )
 		using ( Gizmo.GizmoControls.PushFixedScale() )
 		{
-			for ( var i = 0; i < _positionSpline.Count; i++ )
+			for ( var i = 0; i < _splinePoints.Count; i++ )
 			{
-				if ( !IsLoop || i != _positionSpline.Count - 1 )
+				if ( !IsLoop || i != _splinePoints.Count - 1 )
 				{
-					var splinePoint = _positionSpline[i];
+					var splinePoint = _splinePoints[i];
 
 					Gizmo.Hitbox.BBox( BBox.FromPositionAndSize( splinePoint.Position, 2f ) );
 
@@ -565,9 +598,9 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	}
 	private void DrawPointGizmos( bool isHovered )
 	{
-		for ( var i = 0; i < _positionSpline.Count; i++ )
+		for ( var i = 0; i < _splinePoints.Count; i++ )
 		{
-			if ( !IsLoop || i != _positionSpline.Count - 1 )
+			if ( !IsLoop || i != _splinePoints.Count - 1 )
 			{
 				DrawPointGizmo( i, isHovered );
 			}
@@ -577,7 +610,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	{
 		CheckPointIndex( pointIndex );
 
-		var splinePoint = _positionSpline[pointIndex];
+		var splinePoint = _splinePoints[pointIndex];
 
 		using ( Gizmo.Scope( "point_gizmo" + pointIndex, new Transform( splinePoint.Position ) ) )
 		using ( Gizmo.GizmoControls.PushFixedScale() )
@@ -598,7 +631,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 			RecalculateTangentsForPoint( pointIndex - 1 );
 		}
 
-		if ( pointIndex < _positionSpline.Count - 1 )
+		if ( pointIndex < _splinePoints.Count - 1 )
 		{
 			RecalculateTangentsForPoint( pointIndex + 1 );
 		}
@@ -607,10 +640,10 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		{
 			if ( pointIndex == 0 )
 			{
-				RecalculateTangentsForPoint( _positionSpline.Count - 2 );
+				RecalculateTangentsForPoint( _splinePoints.Count - 2 );
 			}
 
-			if ( pointIndex == _positionSpline.Count - 2 )
+			if ( pointIndex == _splinePoints.Count - 2 )
 			{
 				RecalculateTangentsForPoint( 0 );
 			}
@@ -619,28 +652,28 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 
 	private void RecalculateTangentsForPoint( int index )
 	{
-		if ( IsLoop && index == _positionSpline.Count - 1 )
+		if ( IsLoop && index == _splinePoints.Count - 1 )
 		{
 			index = 0;
 		}
-		switch ( _positionTangentModes[index] )
+		switch ( _pointTangentModes[index] )
 		{
 			case Spline.SplinePointTangentMode.Auto:
-				_positionSpline[index] = Spline.Utils.CalculateSmoothTangentForPoint( _positionSpline.AsReadOnly(), index );
+				_splinePoints[index] = Spline.Utils.CalculateSmoothTangentForPoint( _splinePoints.AsReadOnly(), index );
 				break;
 			case Spline.SplinePointTangentMode.Linear:
-				_positionSpline[index] = Spline.Utils.CalculateLinearTangentForPoint( _positionSpline.AsReadOnly(), index );
+				_splinePoints[index] = Spline.Utils.CalculateLinearTangentForPoint( _splinePoints.AsReadOnly(), index );
 				break;
 			case Spline.SplinePointTangentMode.Split:
 				break;
 			case Spline.SplinePointTangentMode.Mirrored:
-				_positionSpline[index] = _positionSpline[index] with { OutPositionRelative = -_positionSpline[index].InPositionRelative };
+				_splinePoints[index] = _splinePoints[index] with { OutPositionRelative = -_splinePoints[index].InPositionRelative };
 				break;
 		}
 
 		if ( IsLoop && index == 0 )
 		{
-			_positionSpline[_positionSpline.Count - 1] = _positionSpline[0];
+			_splinePoints[_splinePoints.Count - 1] = _splinePoints[0];
 			_pointRolls[_pointRolls.Count - 1] = _pointRolls[0];
 			_pointScales[_pointScales.Count - 1] = _pointScales[0];
 		}

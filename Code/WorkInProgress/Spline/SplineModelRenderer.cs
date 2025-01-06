@@ -12,7 +12,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	[Property] public Model Model { get; set; }
 
-	[Property] public Rotation ModelRotation { get; set; }
+	[Property] public Rotation ModelRotation { get; set; } = Rotation.Identity;
 
 	[StructLayout( LayoutKind.Sequential, Pack = 0 )]
 	private struct GpuSplineSegment
@@ -40,6 +40,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		{
 			sceneObjects = new();
 			relativeSegmentTransforms = new();
+			localSegmentBounds = new();
 			IsDirty = true;
 			Spline.SplineChanged += MarkDirty;
 			Transform.OnTransformChanged += OnTransformChanged;
@@ -55,19 +56,26 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 	{
 		for ( int i = 0; i < sceneObjects.Count; i++ )
 		{
+			// TODO use interpolated world
 			sceneObjects[i].Transform = global::Transform.Concat( WorldTransform, relativeSegmentTransforms[i] );
+			sceneObjects[i].Bounds = localSegmentBounds[i].Transform( sceneObjects[i].Transform );
 		}
 	}
 
 	List<Transform> relativeSegmentTransforms;
+	List<BBox> localSegmentBounds;
 
 	protected override void OnDisabled()
 	{
-		foreach ( var sceneObject in sceneObjects )
+		if ( sceneObjects != null )
 		{
-			sceneObject.Delete();
+			foreach ( var sceneObject in sceneObjects )
+			{
+				sceneObject.Delete();
+			}
+			sceneObjects.Clear();
 		}
-		sceneObjects.Clear();
+
 		Spline.SplineChanged -= MarkDirty;
 		Transform.OnTransformChanged -= OnTransformChanged;
 	}
@@ -113,6 +121,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			sceneObjects.Add( sceneObject );
 
 			relativeSegmentTransforms.Add( new Transform() );
+			localSegmentBounds.Add( new BBox() );
 		}
 
 		// delete if there are too many
@@ -121,6 +130,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			sceneObjects[i].Delete();
 			sceneObjects.RemoveAt( i );
 			relativeSegmentTransforms.RemoveAt( i );
+			localSegmentBounds.RemoveAt( i );
 		}
 
 		for ( var meshIndex = 0; meshIndex < meshesRequired; meshIndex++ )
@@ -170,17 +180,15 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			relativeSegmentTransforms[meshIndex] = WorldTransform.ToLocal( segmentTransform );
 			sceneObjects[meshIndex].Transform = global::Transform.Concat(WorldTransform, relativeSegmentTransforms[meshIndex] );
 
-			var newBounds = new BBox( Vector3.Zero, Vector3.Zero );
+			localSegmentBounds[meshIndex] = new BBox( Vector3.Zero, Vector3.Zero );
 
 			foreach ( var corner in rotatedModelBounds.Corners )
 			{
 				var deformed = DeformVertex( corner, minInModelDir, sizeInModelDir, segment.P1, segment.P2, segment.P3, new Vector2( rollAtStart, rollAtEnd ), segment.WidthHeightScaleStartEnd );
-				newBounds = newBounds.AddPoint( deformed );
+				localSegmentBounds[meshIndex] = localSegmentBounds[meshIndex].AddPoint( deformed );
 			}
 
-			newBounds = newBounds.Rotate( segmentTransform.Rotation );
-
-			sceneObjects[meshIndex].LocalBounds = newBounds;
+			sceneObjects[meshIndex].Bounds = localSegmentBounds[meshIndex].Transform( sceneObjects[meshIndex].Transform );
 		}
 
 		IsDirty = false;

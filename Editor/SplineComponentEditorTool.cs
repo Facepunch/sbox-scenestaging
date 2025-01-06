@@ -129,7 +129,7 @@ class SplineToolWindow : WidgetWindow
 				}
 				else
 				{
-					targetComponent.AddPointAtDistance( (targetComponent.GetDistanceAtPoint( SelectedPointIndex ) + targetComponent.GetDistanceAtPoint( SelectedPointIndex + 1 )) / 2 );
+					targetComponent.AddPointAtDistance( (targetComponent.GetDistanceAtPoint( SelectedPointIndex ) + targetComponent.GetDistanceAtPoint( SelectedPointIndex + 1 )) / 2, true );
 					// TOOD infer tangent modes???
 				}
 				targetComponent.EditLog( "Added spline point", targetComponent );
@@ -144,6 +144,8 @@ class SplineToolWindow : WidgetWindow
 			controlSheet.AddLayout( row );
 
 			Layout.Add( controlSheet );
+
+			ToggleTangentInput();
 		}
 
 
@@ -194,24 +196,28 @@ class SplineToolWindow : WidgetWindow
 		}
 	}
 
+	private void ToggleTangentInput()
+	{
+		if ( targetComponent.GetTangentModeForPoint( _selectedPointIndex ) == Sandbox.Spline.SplinePointTangentMode.Auto || targetComponent.GetTangentModeForPoint( _selectedPointIndex ) == Sandbox.Spline.SplinePointTangentMode.Linear )
+		{
+			inTangentControl.Enabled = false;
+			outTangentControl.Enabled = false;
+		}
+		else
+		{
+			inTangentControl.Enabled = true;
+			outTangentControl.Enabled = true;
+		}
+	}
+
 	int SelectedPointIndex
 	{
 		get => _selectedPointIndex;
 		set
 		{
 			_selectedPointIndex = value;
-			if ( targetComponent.GetTangentModeForPoint( _selectedPointIndex ) == Sandbox.Spline.SplinePointTangentMode.Auto || targetComponent.GetTangentModeForPoint( _selectedPointIndex ) == Sandbox.Spline.SplinePointTangentMode.Linear )
-			{
-				inTangentControl.Enabled = false;
-				outTangentControl.Enabled = false;
-			}
-			else
-			{
-				inTangentControl.Enabled = true;
-				outTangentControl.Enabled = true;
-			}
+			ToggleTangentInput();
 		}
-
 	}
 
 	int _selectedPointIndex = 0;
@@ -234,6 +240,7 @@ class SplineToolWindow : WidgetWindow
 		{
 			targetComponent.SetTangentModeForPoint( SelectedPointIndex, value );
 			targetComponent.EditLog( "Updated spline point", targetComponent );
+			ToggleTangentInput();
 		}
 	}
 
@@ -312,7 +319,7 @@ class SplineToolWindow : WidgetWindow
 
 							if ( Gizmo.HasClicked && Gizmo.Pressed.This )
 							{
-								var newPointIndex = targetComponent.AddPointAtDistance( hoverDistance );
+								var newPointIndex = targetComponent.AddPointAtDistance( hoverDistance, true );
 								SelectedPointIndex = newPointIndex;
 								_inTangentSelected = false;
 								_outTangentSelected = false;
