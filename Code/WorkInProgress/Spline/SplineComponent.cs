@@ -107,7 +107,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 				_pointScales.Add( _pointScales[0] );
 				RequiresDistanceResample();
 			}
-			else if ( isAlreadyLoop ) // only remove the last point if we are actually a loop
+			else if ( !value && isAlreadyLoop ) // only remove the last point if we are actually a loop
 			{
 				_splinePoints.RemoveAt( _splinePoints.Count - 1 );
 				_pointTangentModes.RemoveAt( _pointTangentModes.Count - 1 );
@@ -137,20 +137,6 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		EnsureSplineIsDistanceSampled();
 
 		return Spline.Utils.GetTangent2D( _splinePoints.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
-	}
-
-	public Vector3 GetNormalAtDistance( float distance, Vector3 up )
-	{
-		EnsureSplineIsDistanceSampled();
-
-		return Spline.Utils.GetNormal( _splinePoints.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ), up );
-	}
-
-	public Vector3 GetNormal2DAtDistance( float distance )
-	{
-		EnsureSplineIsDistanceSampled();
-
-		return Spline.Utils.GetNormal2D( _splinePoints.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
 	}
 
 	public float GetCurvatureAtDistance( float distance )

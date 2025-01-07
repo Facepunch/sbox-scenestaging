@@ -106,20 +106,6 @@ public static class Utils
 		return GetDerivative( spline, segmentParams ).WithZ( 0 ).Normal;
 	}
 
-	public static Vector3 GetNormal( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams,
-		Vector3 up )
-	{
-		CheckSegmentParams( spline, segmentParams );
-		return Vector3.Cross( up, GetTangent( spline, segmentParams ) ).Normal;
-	}
-
-	public static Vector3 GetNormal2D( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
-	{
-		CheckSegmentParams( spline, segmentParams );
-		Vector3 tangent = GetTangent2D( spline, segmentParams );
-		return new Vector3( tangent.y, -tangent.x, 0 );
-	}
-
 	public static float GetCurvature( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
 	{
 		CheckSegmentParams( spline, segmentParams );
