@@ -25,7 +25,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		public Vector4 WidthHeightScaleStartEnd;
 	}
 
-	private List<SceneObject> sceneObjects;
+	private List<SceneObject> sceneObjects = new();
 
 	private bool IsDirty
 	{
@@ -62,8 +62,8 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		}
 	}
 
-	List<Transform> relativeSegmentTransforms;
-	List<BBox> localSegmentBounds;
+	List<Transform> relativeSegmentTransforms = new();
+	List<BBox> localSegmentBounds = new();
 
 	protected override void OnDisabled()
 	{
