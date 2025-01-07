@@ -103,7 +103,7 @@ public static class Utils
 	public static Vector3 GetTangent2D( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
 	{
 		CheckSegmentParams( spline, segmentParams );
-		return GetDerivative( spline, segmentParams ).WithZ( 0 ).Normal;
+		return GetTangent( spline, segmentParams ).WithZ( 0 ).Normal;
 	}
 
 	public static float GetCurvature( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
@@ -823,12 +823,30 @@ public static class Utils
 				return new SplineSegmentParams { Index = 0, T = 0 };
 			}
 
-			for ( int segmentIndex = 0; segmentIndex < _segmentNum; segmentIndex++ )
+			int low = 0;
+			int high = _segmentNum - 1;
+
+			while ( low <= high )
 			{
-				var candidateT = CalculateSegmentTAtDistance( segmentIndex, distance );
-				if ( candidateT.HasValue )
+				int mid = (low + high) / 2;
+				float startDist = GetSegmentStartDistance( mid );
+				float endDist = GetSegmentStartDistance( mid + 1 );
+
+				if ( distance < startDist )
 				{
-					return new SplineSegmentParams { Index = segmentIndex, T = candidateT.Value };
+					high = mid - 1;
+				}
+				else if ( distance > endDist )
+				{
+					low = mid + 1;
+				}
+				else
+				{
+					var candidateT = CalculateSegmentTAtDistance( mid, distance );
+					if ( candidateT.HasValue )
+					{
+						return new SplineSegmentParams { Index = mid, T = candidateT.Value };
+					}
 				}
 			}
 
