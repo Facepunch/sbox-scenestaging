@@ -94,11 +94,12 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		get => Spline.Utils.IsLoop( _splinePoints.AsReadOnly() );
 		set
 		{
+			var isAlreadyLoop = Spline.Utils.IsLoop( _splinePoints.AsReadOnly());
 			// We emulate loops by adding an addtional point at the end which matches the first point
 			// this might seem hacky at first but it makes things so much easier downstream,
 			// because we can handle open splines and looped splines exactly the same when doing complex calculations
 			// The fact that the last point exists will be hidden from the user in the Editor and API
-			if ( value )
+			if ( value && !isAlreadyLoop )
 			{
 				_splinePoints.Add( _splinePoints[0] );
 				_pointTangentModes.Add( _pointTangentModes[0] );
@@ -106,7 +107,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 				_pointScales.Add( _pointScales[0] );
 				RequiresDistanceResample();
 			}
-			else if ( Spline.Utils.IsLoop( _splinePoints.AsReadOnly() ) ) // only remove the last point if we are actually a loop
+			else if ( isAlreadyLoop ) // only remove the last point if we are actually a loop
 			{
 				_splinePoints.RemoveAt( _splinePoints.Count - 1 );
 				_pointTangentModes.RemoveAt( _pointTangentModes.Count - 1 );
