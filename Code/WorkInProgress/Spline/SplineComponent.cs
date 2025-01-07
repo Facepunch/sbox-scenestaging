@@ -1,4 +1,5 @@
 ﻿using Sandbox.Spline;
+using System.Numerics;
 
 namespace Sandbox;
 
@@ -545,7 +546,101 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		using ( Gizmo.Scope( "curve_gizmo" ) )
 		{
 			Gizmo.Draw.Lines( _drawCachePolylineLines );
+
+			// DrawFrames();
 		}
+	}
+
+	private void DrawFrames()
+	{
+		// Draw rotation-minimizing frames every 30 units, considering roll
+		float totalLength = GetLength();
+
+		Vector3 previousTangent = GetTangetAtDistance( 0f );
+
+		// This has to be the dumbest way to find a perpendicular vector
+		if ( previousTangent == Vector3.Up )
+		{
+			previousTangent = -Vector3.Forward;
+		}
+		else if ( previousTangent == -Vector3.Up )
+		{
+			previousTangent = Vector3.Forward;
+		}
+		else if ( previousTangent == Vector3.Zero )
+		{
+			previousTangent = Vector3.Forward;
+		}
+		Vector3 up = Vector3.Cross( previousTangent, new Vector3( -previousTangent.y, previousTangent.x, 0f ) ).Normal;
+
+		Vector3 previousPosition = GetPositionAtDistance( 0f );
+		float previousRoll = GetRollAtDistance( 0f );
+
+		// Apply initial roll to up vector
+		up = RotateVectorAroundAxis( up, previousTangent, MathX.DegreeToRadian( previousRoll ) );
+
+		float step = 5f;
+		for ( float distance = step; distance <= totalLength; distance += step )
+		{
+			Vector3 position = GetPositionAtDistance( distance );
+			Vector3 tangent = GetTangetAtDistance( distance );
+
+			// Calculate rotation-minimizing frame using parallel transport
+			Vector3 transportUp = ParallelTransport( up, previousTangent, tangent );
+
+			// Get interpolated roll at the current distance
+			float roll = GetRollAtDistance( distance );
+
+			// Apply roll to the up vector
+			float deltaRoll = roll - previousRoll;
+			Vector3 finalUp = RotateVectorAroundAxis( transportUp, tangent, MathX.DegreeToRadian( deltaRoll ) );
+
+			// Calculate right (binormal) vector
+			Vector3 right = Vector3.Cross( tangent, finalUp ).Normal;
+
+			float arrowLength = step * 1.5f;
+
+			// Draw tangent vector (forward)
+			Gizmo.Draw.Color = Color.Red;
+			Gizmo.Draw.Arrow( position, position + tangent * arrowLength, arrowLength / 10f, arrowLength / 15f );
+
+			// Draw up vector (normal)
+			Gizmo.Draw.Color = Color.Green;
+			Gizmo.Draw.Arrow( position, position + finalUp * arrowLength, arrowLength / 10f, arrowLength / 15f );
+
+			// Draw right vector (binormal)
+			Gizmo.Draw.Color = Color.Blue;
+			Gizmo.Draw.Arrow( position, position + right * arrowLength, arrowLength / 10f, arrowLength / 15f );
+
+			// Update previous vectors for the next iteration
+			up = finalUp;
+			previousTangent = tangent;
+			previousRoll = roll;
+		}
+	}
+
+	// Helper method to perform parallel transport of the up vector
+	private Vector3 ParallelTransport( Vector3 up, Vector3 previousTangent, Vector3 currentTangent )
+	{
+		Vector3 rotationAxis = Vector3.Cross( previousTangent, currentTangent );
+		float dotProduct = Vector3.Dot( previousTangent, currentTangent );
+		float angle = MathF.Acos( Math.Clamp( dotProduct, -1f, 1f ) );
+
+		if ( rotationAxis.LengthSquared > 0.0001f && angle > 0.0001f )
+		{
+			rotationAxis = rotationAxis.Normal;
+			Quaternion rotation = Quaternion.CreateFromAxisAngle( rotationAxis, angle );
+			up = System.Numerics.Vector3.Transform( up, rotation );
+		}
+
+		return up;
+	}
+
+	// Helper method to rotate a vector around an axis by an angle
+	private Vector3 RotateVectorAroundAxis( Vector3 vector, Vector3 axis, float angle )
+	{
+		Quaternion rotation = Quaternion.CreateFromAxisAngle( axis, angle );
+		return System.Numerics.Vector3.Transform( vector, rotation );
 	}
 
 	private struct PointHitResult
