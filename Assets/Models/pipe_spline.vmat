@@ -2,19 +2,36 @@
 
 Layer0
 {
-	shader "shaders/spline_deform.shader"
+	shader "shaders/complex.shader"
+
+	//---- Ambient Occlusion ----
+	g_flAmbientOcclusionDirectDiffuse "0.000"
+	g_flAmbientOcclusionDirectSpecular "0.000"
+	TextureAmbientOcclusion "[1.000000 1.000000 1.000000 0.000000]"
+
+	//---- Color ----
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	TextureColor "Models/modular_industrial_pipes_01_group01_diff_2k.png"
+
+	//---- Fade ----
+	g_flFadeExponent "1.000"
 
 	//---- Fog ----
 	g_bFogEnabled "1"
 
-	//---- Material ----
-	g_flTintColor "[1.000000 1.000000 1.000000 0.000000]"
-	TextureAmbientOcclusion "[1.000000 1.000000 1.000000 0.000000]"
-	TextureBlendMask "[1.000000 1.000000 1.000000 0.000000]"
-	TextureColor "Models/modular_industrial_pipes_01_group01_diff_2k.png"
-	TextureMetalness "models/modular_industrial_pipes_01_group01_metal_2k.png"
+	//---- Metalness ----
+	g_flMetalness "0.000"
+
+	//---- Normal ----
 	TextureNormal "models/modular_industrial_pipes_01_group01_nor_gl_2k.png"
+
+	//---- Roughness ----
+	g_flRoughnessScaleFactor "1.000"
 	TextureRoughness "models/modular_industrial_pipes_01_group01_rough_2k.png"
-	TextureTintMask "[1.000000 1.000000 1.000000 0.000000]"
-	TextureTranslucency "[1.000000 1.000000 1.000000 0.000000]"
+
+	//---- Texture Coordinates ----
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[1.000 1.000]"
+	g_vTexCoordScrollSpeed "[0.000 0.000]"
 }

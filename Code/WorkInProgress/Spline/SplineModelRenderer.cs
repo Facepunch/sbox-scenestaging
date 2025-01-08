@@ -1,6 +1,7 @@
 using Sandbox.Diagnostics;
 using Sandbox.Rendering;
 using System.Collections.Concurrent;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -14,18 +15,12 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	[Property] public Rotation ModelRotation { get; set; } = Rotation.Identity;
 
-	[StructLayout( LayoutKind.Sequential, Pack = 0 )]
-	private struct GpuSplineSegment
-	{
-		// public Vector4 P0; // P0 is ommited because it is always 0,0,0
-		public Vector4 P1;
-		public Vector4 P2;
-		public Vector4 P3;
-		public Vector4 RollStartEnd;
-		public Vector4 WidthHeightScaleStartEnd;
-	}
+	private SceneObject sceneObject;
+	private Mesh customMesh = new();
+	private Model customModel = Model.Error;
 
-	private List<SceneObject> sceneObjects = new();
+	List<Vertex> deformedVertices = new();
+	private List<int> deformedIndices = new();
 
 	private bool IsDirty
 	{
@@ -38,12 +33,17 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 	{
 		if ( Model.IsValid() && Spline.IsValid() )
 		{
-			sceneObjects = new();
-			relativeSegmentTransforms = new();
-			localSegmentBounds = new();
 			IsDirty = true;
 			Spline.SplineChanged += MarkDirty;
 			Transform.OnTransformChanged += OnTransformChanged;
+
+			// Create a new SceneObject and Mesh
+			customMesh = new();
+			customMesh.Material = Model.Materials.FirstOrDefault();
+			sceneObject = new SceneObject( Scene.SceneWorld, Model );
+			sceneObject.Transform = WorldTransform;
+			sceneObject.SetComponentSource( this );
+			sceneObject.Tags.SetFrom( GameObject.Tags );
 		}
 	}
 
@@ -54,26 +54,19 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	private void OnTransformChanged()
 	{
-		for ( int i = 0; i < sceneObjects.Count; i++ )
+		if ( sceneObject != null )
 		{
-			// TODO use interpolated world
-			sceneObjects[i].Transform = global::Transform.Concat( WorldTransform, relativeSegmentTransforms[i] );
-			sceneObjects[i].Bounds = localSegmentBounds[i].Transform( sceneObjects[i].Transform );
+			sceneObject.Transform = WorldTransform;
 		}
 	}
 
-	List<Transform> relativeSegmentTransforms = new();
-	List<BBox> localSegmentBounds = new();
-
 	protected override void OnDisabled()
 	{
-		if ( sceneObjects != null )
+		if ( sceneObject != null )
 		{
-			foreach ( var sceneObject in sceneObjects )
-			{
-				sceneObject.Delete();
-			}
-			sceneObjects.Clear();
+			sceneObject.Delete();
+			sceneObject = null;
+			customMesh = null;
 		}
 
 		Spline.SplineChanged -= MarkDirty;
@@ -102,167 +95,272 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 		var minInModelDir = rotatedModelBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
-		var meshesRequired = (int)Math.Round( Spline.GetLength() / sizeInModelDir );
-		var distancePerCurve = Spline.GetLength() / meshesRequired;
+		var splineLength = Spline.GetLength();
+		var meshesRequired = (int)Math.Ceiling( splineLength / sizeInModelDir );
+		var distancePerMesh = splineLength / meshesRequired;
 
-		// TODO handle somehow
 		if ( meshesRequired == 0 )
 		{
 			return;
 		}
 
-		// create enough sceneobjects
-		for ( int i = sceneObjects.Count; i < meshesRequired; i++ )
-		{
-			var sceneObject = new SceneObject( Scene.SceneWorld, Model );
-			sceneObject.Transform = WorldTransform;
-			sceneObject.SetComponentSource( this );
-			sceneObject.Tags.SetFrom( GameObject.Tags );
-			sceneObjects.Add( sceneObject );
+		// Get the mesh from the model
+		var modelVertices = Model.GetVertices();
+		var modelIndices = Model.GetIndices();
 
-			relativeSegmentTransforms.Add( new Transform() );
-			localSegmentBounds.Add( new BBox() );
-		}
+		deformedVertices.Capacity = Math.Max(modelVertices.Count() * meshesRequired, deformedVertices.Capacity);
+		deformedVertices.Clear();
 
-		// delete if there are too many
-		for ( int i = sceneObjects.Count - 1; i >= meshesRequired; i-- )
-		{
-			sceneObjects[i].Delete();
-			sceneObjects.RemoveAt( i );
-			relativeSegmentTransforms.RemoveAt( i );
-			localSegmentBounds.RemoveAt( i );
-		}
+		deformedIndices.Capacity = Math.Max( modelIndices.Count() * meshesRequired, deformedIndices.Capacity);
+		deformedIndices.Clear();
+
+		var frames = CalculateTangentFrames( meshesRequired, 16, distancePerMesh );
+
+		int vertexOffset = 0;
 
 		for ( var meshIndex = 0; meshIndex < meshesRequired; meshIndex++ )
 		{
-			var P0 = Spline.GetPositionAtDistance( meshIndex * distancePerCurve );
-			var P1 = P0 + Spline.GetTangetAtDistance( meshIndex * distancePerCurve ) * distancePerCurve / 3;
-			var P3 = Spline.GetPositionAtDistance( (meshIndex + 1) * distancePerCurve );
-			var P2 = P3 - Spline.GetTangetAtDistance( (meshIndex + 1) * distancePerCurve ) * distancePerCurve / 3;
+			float startDistance = meshIndex * distancePerMesh;
+			float endDistance = (meshIndex + 1) * distancePerMesh;
 
-			// convert to worldspace
-			var P0World = Spline.WorldTransform.PointToWorld( P0 );
-			var P1World = Spline.WorldTransform.PointToWorld( P1 );
-			var P2World = Spline.WorldTransform.PointToWorld( P2 );
-			var P3World = Spline.WorldTransform.PointToWorld( P3 );
+			float segmentLength = endDistance - startDistance;
 
-			var segmentTransform = new Transform( P0World, Rotation.LookAt( P3World - P0World ) );
-			segmentTransform.Rotation = new Angles( 0, segmentTransform.Rotation.Yaw(), 0 ).ToRotation();
-
-			var rollAtStart = MathX.DegreeToRadian( Spline.GetRollAtDistance( meshIndex * distancePerCurve ) );
-			var rollAtEnd = MathX.DegreeToRadian( Spline.GetRollAtDistance( (meshIndex + 1) * distancePerCurve ) );
-
-			var scaleAtStart = Spline.GetScaleAtDistance( meshIndex * distancePerCurve );
-			var scaleAtEnd = Spline.GetScaleAtDistance( (meshIndex + 1) * distancePerCurve );
-
-			var segment = new GpuSplineSegment
+			// Deform vertices for this segment
+			for ( int i = 0; i < modelVertices.Length; i++ )
 			{
-				P1 = new Vector4( segmentTransform.PointToLocal( P1World ) ),
-				P2 = new Vector4( segmentTransform.PointToLocal( P2World ) ),
-				P3 = new Vector4( segmentTransform.PointToLocal( P3World ) ),
-				RollStartEnd = new Vector4( rollAtStart, rollAtEnd, 0, 0 ),
-				WidthHeightScaleStartEnd = new Vector4( scaleAtStart.x, scaleAtStart.y, scaleAtEnd.x, scaleAtEnd.y )
-			};
+				var vertex = modelVertices[i];
 
-			// TODO pack this more efficiently
-			sceneObjects[meshIndex].Attributes.Set( "P1", segment.P1 );
-			sceneObjects[meshIndex].Attributes.Set( "P2", segment.P2 );
-			sceneObjects[meshIndex].Attributes.Set( "P3", segment.P3 );
-			sceneObjects[meshIndex].Attributes.Set( "RollStartEnd", segment.RollStartEnd );
-			sceneObjects[meshIndex].Attributes.Set( "WidthHeightScaleStartEnd", segment.WidthHeightScaleStartEnd );
-			sceneObjects[meshIndex].Attributes.Set( "MinInModelDir", minInModelDir );
-			sceneObjects[meshIndex].Attributes.Set( "SizeInModelDir", sizeInModelDir );
-			sceneObjects[meshIndex].Attributes.Set( "ModelRotation", new Vector4( ModelRotation.x, ModelRotation.y, ModelRotation.z, ModelRotation.w ) );
+				var deformedVertex = vertex;
 
-			// :(
-			sceneObjects[meshIndex].Batchable = false;
+				// Deform the vertex using tangent frames
+				Deform( vertex.Position, vertex.Normal, vertex.Tangent, frames.GetRange( meshIndex * 16, 16 ), minInModelDir, sizeInModelDir, out deformedVertex.Position, out deformedVertex.Normal, out deformedVertex.Tangent );
 
-			relativeSegmentTransforms[meshIndex] = WorldTransform.ToLocal( segmentTransform );
-			sceneObjects[meshIndex].Transform = global::Transform.Concat(WorldTransform, relativeSegmentTransforms[meshIndex] );
-
-			localSegmentBounds[meshIndex] = new BBox( Vector3.Zero, Vector3.Zero );
-
-			foreach ( var corner in rotatedModelBounds.Corners )
-			{
-				var deformed = DeformVertex( corner, minInModelDir, sizeInModelDir, segment.P1, segment.P2, segment.P3, new Vector2( rollAtStart, rollAtEnd ), segment.WidthHeightScaleStartEnd );
-				localSegmentBounds[meshIndex] = localSegmentBounds[meshIndex].AddPoint( deformed );
+				deformedVertices.Add( deformedVertex );
 			}
 
-			sceneObjects[meshIndex].Bounds = localSegmentBounds[meshIndex].Transform( sceneObjects[meshIndex].Transform );
+			// Copy indices for this segment
+			for ( int i = 0; i < modelIndices.Length; i++ )
+			{
+				deformedIndices.Add((int)(modelIndices[i] + vertexOffset));
+			}
+
+			vertexOffset += modelVertices.Length;
 		}
+
+		if ( customMesh.HasVertexBuffer )
+		{
+			customMesh.SetIndexBufferSize( deformedIndices.Count );
+			customMesh.SetVertexBufferSize( deformedVertices.Count );
+			customMesh.SetIndexBufferData( deformedIndices );
+			customMesh.SetVertexBufferData( deformedVertices );
+		}
+		else
+		{
+			customMesh.CreateVertexBuffer( deformedVertices.Count, Vertex.Layout, deformedVertices );
+			customMesh.CreateIndexBuffer( deformedIndices.Count, deformedIndices );
+		}
+
+		customModel = Model.Builder.AddMesh( customMesh ).Create();
+		sceneObject.Model = customModel;
 
 		IsDirty = false;
 	}
 
-	// replicates our vertex shader, should always match the shader
-    public static Vector3 DeformVertex(Vector3 localPosition, float MinInMeshDir, float SizeInMeshDir, Vector3 P1, Vector3 P2, Vector3 P3, Vector2 RollStartEnd, Vector4 WidthHeightScaleStartEnd)
-    {
-        float t = (localPosition.x - MinInMeshDir) / SizeInMeshDir;
+	private List<Transform> CalculateTangentFrames( int meshesRequired, int frameCount, float distancePerMesh )
+	{
+		List<Transform> frames = new(meshesRequired * frameCount);
 
-        Vector3 p0 = Vector3.Zero;
-        Vector3 p1 = P1;
-        Vector3 p2 = P2;
-        Vector3 p3 = P3;
+		Vector3 previousTangent = Spline.GetTangetAtDistance( 0f );
 
-        float rollStart = RollStartEnd.x;
-        float rollEnd = RollStartEnd.y;
+		// Initialize up vector
+		if ( previousTangent == Vector3.Up )
+		{
+			previousTangent = -Vector3.Forward;
+		}
+		else if ( previousTangent == -Vector3.Up )
+		{
+			previousTangent = Vector3.Forward;
+		}
+		else if ( previousTangent == Vector3.Zero )
+		{
+			previousTangent = Vector3.Forward;
+		}
+		Vector3 up = Vector3.Cross( previousTangent, new Vector3( -previousTangent.y, previousTangent.x, 0f ) ).Normal; float previousRoll = Spline.GetRollAtDistance( 0f );
 
-        float roll = MathX.Lerp(rollStart, rollEnd, t);
+		// Apply initial roll to up vector
+		up = Rotation.FromAxis( previousTangent, previousRoll ) * up;
 
-        Vector2 startScaleWidthHeight = new Vector2(WidthHeightScaleStartEnd.x, WidthHeightScaleStartEnd.y);
-        Vector2 endScaleWidthHeight = new Vector2(WidthHeightScaleStartEnd.z, WidthHeightScaleStartEnd.w);
+		for ( var meshIndex = 0; meshIndex < meshesRequired; meshIndex++ )
+		{
+			float startDistance = meshIndex * distancePerMesh;
+			float endDistance = (meshIndex + 1) * distancePerMesh;
 
-        Vector2 scale = Vector2.Lerp(startScaleWidthHeight, endScaleWidthHeight, t);
+			float step = (endDistance - startDistance) / (frameCount - 1);
 
-        Vector3 up = Vector3.Up;
-        Vector3 forward = CalculateBezierTangent(t, p0, p1, p2, p3);
-        Vector3 right = Vector3.Cross(up, forward).Normal;
-        up = Vector3.Cross(forward, right).Normal;
+			for ( int i = 0; i < frameCount; i++ )
+			{
+				float distance = startDistance + step * i;
+				Vector3 position = Spline.GetPositionAtDistance( distance );
+				Vector3 tangent = Spline.GetTangetAtDistance( distance );
 
-        float sine = MathF.Sin(roll);
-        float cosine = MathF.Cos(roll);
-        Vector3 rightRotated = cosine * right - sine * up;
-        Vector3 upRotated = sine * right + cosine * up;
+				// Parallel transport the up vector
+				Vector3 transportUp = ParallelTransport( up, previousTangent, tangent );
 
-        Vector3 curvePosition = CalculateBezierPosition(t, p0, p1, p2, p3);
-        Vector3 deformedPosition = ScaleAndRotateVector(localPosition, scale, rightRotated, upRotated);
+				// Get roll at the current distance
+				float roll = Spline.GetRollAtDistance( distance );
 
-        return curvePosition + deformedPosition;
-    }
+				// Apply roll to the up vector
+				float deltaRoll = roll - previousRoll;
+				Vector3 finalUp = Rotation.FromAxis( tangent, deltaRoll ) * transportUp;
 
-    private static Vector3 CalculateBezierPosition(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
-    {
-        float tSquare = t * t;
-        float tCubic = tSquare * t;
-        float oneMinusT = 1 - t;
-        float oneMinusTSquare = oneMinusT * oneMinusT;
-        float oneMinusTCubic = oneMinusTSquare * oneMinusT;
+				// Construct rotation
+				Rotation rotation = Rotation.LookAt( tangent, finalUp );
 
-        float w0 = oneMinusTCubic;
-        float w1 = 3 * oneMinusTSquare * t;
-        float w2 = 3 * oneMinusT * tSquare;
-        float w3 = tCubic;
+				frames.Add( new Transform( position, rotation ) );
 
-        return w0 * p0 + w1 * p1 + w2 * p2 + w3 * p3;
-    }
+				// Update previous values
+				up = finalUp;
+				previousTangent = tangent;
+				previousRoll = roll;
+			}
+		}
 
-    private static Vector3 CalculateBezierTangent(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
-    {
-        float t2 = t * t;
+		return frames;
+	}
 
-        float w0 = -3 * t2 + 6 * t - 3;
-        float w1 = 9 * t2 - 12 * t + 3;
-        float w2 = -9 * t2 + 6 * t;
-        float w3 = 3 * t2;
+	private Vector3 ParallelTransport( Vector3 up, Vector3 previousTangent, Vector3 currentTangent )
+	{
+		Vector3 rotationAxis = Vector3.Cross( previousTangent, currentTangent );
+		float dotProduct = Vector3.Dot( previousTangent, currentTangent );
+		float angle = MathF.Acos( Math.Clamp( dotProduct, -1f, 1f ) );
 
-        return w0 * p0 + w1 * p1 + w2 * p2 + w3 * p3;
-    }
+		if ( rotationAxis.LengthSquared > 0.0001f && angle > 0.0001f )
+		{
+			rotationAxis = rotationAxis.Normal;
+			up = Rotation.FromAxis( rotationAxis, angle.RadianToDegree() ) * up;
+		}
 
-    private static Vector3 ScaleAndRotateVector(Vector3 localPosition, Vector2 scale, Vector3 right, Vector3 up)
-    {
-        Vector3 scaledRight = right * scale.x;
-        Vector3 scaledUp = up * scale.y;
+		return up;
+	}
 
-        return localPosition.y * scaledRight + localPosition.z * scaledUp;
-    }
+	private void Deform( Vector3 localPosition, Vector3 localNormal, Vector4 localTangent, List<Transform> frames, float minInModelDir, float sizeInModelDir, out Vector3 deformedPosition, out Vector3 deformedNormal, out Vector4 deformedTangent )
+	{
+		// Map localPosition.x to t along the spline segment
+		float t = (localPosition.x - minInModelDir) / sizeInModelDir;
+		t = Math.Clamp( t, 0f, 1f );
+
+		// Calculate the frame index and interpolation factor
+		float frameFloatIndex = t * (frames.Count - 1);
+		int frameIndex = (int)Math.Floor( frameFloatIndex );
+		float frameT = frameFloatIndex - frameIndex;
+		if ( frameIndex >= frames.Count - 1 )
+		{
+			frameIndex = frames.Count - 2;
+			frameT = 1f;
+		}
+
+		Transform frame0 = frames[frameIndex];
+		Transform frame1 = frames[frameIndex + 1];
+
+		Vector3 position = Vector3.Lerp( frame0.Position, frame1.Position, frameT );
+		Rotation rotation = Rotation.Slerp( frame0.Rotation, frame1.Rotation, frameT );
+
+
+		// Apply model rotation and local offsets
+		deformedPosition = position + rotation * (ModelRotation * new Vector3( 0, localPosition.y, localPosition.z ));
+
+		deformedNormal = rotation * (ModelRotation * localNormal);
+
+		deformedTangent = new Vector4( rotation * (ModelRotation * localTangent), localTangent.w);
+
+	}
+
+	/// LEGACY STUFF
+	public static Vector3 DeformVertex( Vector3 localPosition, float MinInMeshDir, float SizeInMeshDir, Vector3 P1, Vector3 P2, Vector3 P3, Vector2 RollStartEnd, Vector4 WidthHeightScaleStartEnd )
+	{
+		float t = (localPosition.x - MinInMeshDir) / SizeInMeshDir;
+
+
+
+		Vector3 p0 = Vector3.Zero;
+		Vector3 p1 = P1;
+		Vector3 p2 = P2;
+		Vector3 p3 = P3;
+
+		float rollStart = RollStartEnd.x;
+		float rollEnd = RollStartEnd.y;
+
+		float roll = MathX.Lerp( rollStart, rollEnd, t );
+
+
+
+
+
+		Vector2 startScaleWidthHeight = new Vector2( WidthHeightScaleStartEnd.x, WidthHeightScaleStartEnd.y );
+		Vector2 endScaleWidthHeight = new Vector2( WidthHeightScaleStartEnd.z, WidthHeightScaleStartEnd.w );
+
+		Vector2 scale = Vector2.Lerp( startScaleWidthHeight, endScaleWidthHeight, t );
+
+
+		Vector3 up = Vector3.Up;
+		Vector3 forward = CalculateBezierTangent( t, p0, p1, p2, p3 );
+		Vector3 right = Vector3.Cross( up, forward ).Normal;
+		up = Vector3.Cross( forward, right ).Normal;
+
+		float sine = MathF.Sin( roll );
+		float cosine = MathF.Cos( roll );
+		Vector3 rightRotated = cosine * right - sine * up;
+		Vector3 upRotated = sine * right + cosine * up;
+
+		Vector3 curvePosition = CalculateBezierPosition( t, p0, p1, p2, p3 );
+		Vector3 deformedPosition = ScaleAndRotateVector( localPosition, scale, rightRotated, upRotated );
+
+		return curvePosition + deformedPosition;
+	}
+
+
+
+
+	private static Vector3 CalculateBezierPosition( float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3 )
+	{
+		float tSquare = t * t;
+		float tCubic = tSquare * t;
+		float oneMinusT = 1 - t;
+		float oneMinusTSquare = oneMinusT * oneMinusT;
+		float oneMinusTCubic = oneMinusTSquare * oneMinusT;
+
+		float w0 = oneMinusTCubic;
+		float w1 = 3 * oneMinusTSquare * t;
+		float w2 = 3 * oneMinusT * tSquare;
+		float w3 = tCubic;
+
+
+		return w0 * p0 + w1 * p1 + w2 * p2 + w3 * p3;
+	}
+
+
+
+
+	private static Vector3 CalculateBezierTangent( float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3 )
+	{
+		float t2 = t * t;
+
+		float w0 = -3 * t2 + 6 * t - 3;
+		float w1 = 9 * t2 - 12 * t + 3;
+		float w2 = -9 * t2 + 6 * t;
+		float w3 = 3 * t2;
+
+
+		return w0 * p0 + w1 * p1 + w2 * p2 + w3 * p3;
+	}
+
+
+
+	private static Vector3 ScaleAndRotateVector( Vector3 localPosition, Vector2 scale, Vector3 right, Vector3 up )
+	{
+		Vector3 scaledRight = right * scale.x;
+		Vector3 scaledUp = up * scale.y;
+
+		return localPosition.y * scaledRight + localPosition.z * scaledUp;
+	}
 }

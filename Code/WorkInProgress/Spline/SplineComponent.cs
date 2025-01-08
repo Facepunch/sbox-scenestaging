@@ -547,7 +547,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		{
 			Gizmo.Draw.Lines( _drawCachePolylineLines );
 
-			// DrawFrames();
+			//DrawFrames();
 		}
 	}
 
