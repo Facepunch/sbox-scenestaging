@@ -25,9 +25,20 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 
 	private Vector3 ModelForward => ModelRotation.Forward;
 
-	private int _subdivision = 1;
+	[Property]
+	public bool UseRotationMinimizingFrames
+	{
+		get => _useRotationMinimizingFrames;
+		set
+		{
+			_useRotationMinimizingFrames = value;
+			IsDirty = true;
+		}
+	}
 
-	private static SplineCollisionGeneratorPool collisionGeneratorPool = new( 100 );
+	private bool _useRotationMinimizingFrames = false;
+
+	private int _subdivision = 1;
 
 	private bool IsDirty
 	{
@@ -35,6 +46,19 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 	}
 
 	private bool _isDirty = true;
+
+	[Property]
+	public float Spacing
+	{
+		get => _spacing;
+		set
+		{
+			_spacing = value;
+			IsDirty = true;
+		}
+	}
+
+	private float _spacing = 0f;
 
 	protected override void OnEnabled()
 	{
@@ -92,74 +116,60 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 			return;
 
 		var rotatedModelBounds = Model.Bounds.Rotate( ModelRotation );
+		var sizeInModelDir = rotatedModelBounds.Size.Dot( Vector3.Forward );
+		var minInModelDir = rotatedModelBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
-		var sizeInModelDir = GetProjection( rotatedModelBounds.Size, Vector3.Forward );
-		var minInModelDir = GetProjection( rotatedModelBounds.Center, Vector3.Forward ) - sizeInModelDir / 2;
+		var splineLength = Spline.GetLength();
+		var sizeWithSpacing = sizeInModelDir + Spacing;
 
-		var sizeInPhysicDir = GetProjection( _physicPartBounds.Value.Size, Vector3.Forward );
-		var minInPhysicDir = GetProjection( _physicPartBounds.Value.Center, Vector3.Forward ) - sizeInPhysicDir / 2;
+		var meshesRequired = (int)Math.Ceiling( splineLength / sizeInModelDir );
+		var meshesRequiredWithSpacing = (int)Math.Ceiling( splineLength / sizeWithSpacing );
 
-		var meshesRequired = (int)Math.Round( Spline.GetLength() / sizeInModelDir );
-		var distancePerCurve = Spline.GetLength() / meshesRequired;
+		if ( meshesRequiredWithSpacing == 0 )
+		{
+			return;
+		}
 
-		// Calculate the offset between physics and model bounds
-		float offsetInDir = minInPhysicDir - minInModelDir;
-		
-		// Calculate scaling factor to adjust offset proportionally
-		float scalingFactor = distancePerCurve / sizeInModelDir;
-		float adjustedOffsetInDir = offsetInDir * scalingFactor;
+		// Calculate frames along the spline
+		int framesPerMesh = 12; // Adjust as needed
+		var totalFrames = meshesRequired * framesPerMesh + 1;
+
+		var frames = UseRotationMinimizingFrames
+			? SplineModelRendererComponent.CalculateRotationMinimizingTangentFrames( Spline, totalFrames )
+			: SplineModelRendererComponent.CalculateTangentFramesUsingUpDir( Spline, totalFrames );
 
 		// Clear existing shapes
 		_PhysicsBody.ClearShapes();
 
 		for ( var meshIndex = 0; meshIndex < meshesRequired; meshIndex++ )
 		{
-			// Adjust distances by the scaled offset
-			float startDistance = meshIndex * distancePerCurve + adjustedOffsetInDir;
-			float endDistance = (meshIndex + 1) * distancePerCurve + adjustedOffsetInDir;
+			float startDistance = meshIndex * sizeWithSpacing;
+			float endDistance = startDistance + sizeInModelDir;
 
-			var P0 = Spline.GetPositionAtDistance( startDistance );
-			var P1 = P0 + Spline.GetTangetAtDistance( startDistance ) * distancePerCurve / 3;
-			var P3 = Spline.GetPositionAtDistance( endDistance );
-			var P2 = P3 - Spline.GetTangetAtDistance( endDistance ) * distancePerCurve / 3;
-
-			var segmentTransform = new Transform( P0, Rotation.LookAt( P3 - P0 ) );
-			segmentTransform.Rotation = new Angles( 0, segmentTransform.Rotation.Yaw(), 0 ).ToRotation();
-
-			var rollAtStart = MathX.DegreeToRadian( Spline.GetRollAtDistance( startDistance ) );
-			var rollAtEnd = MathX.DegreeToRadian( Spline.GetRollAtDistance( endDistance ) );
-
-			var scaleAtStart = Spline.GetScaleAtDistance( startDistance );
-			var scaleAtEnd = Spline.GetScaleAtDistance( endDistance );
-
-			P1 = new Vector4( segmentTransform.PointToLocal( P1 ) );
-			P2 = new Vector4( segmentTransform.PointToLocal( P2 ) );
-			P3 = new Vector4( segmentTransform.PointToLocal( P3 ) );
-
-			var RollStartEnd = new Vector2( rollAtStart, rollAtEnd );
-			var WidthHeightScaleStartEnd = new Vector4( scaleAtStart.x, scaleAtStart.y, scaleAtEnd.x, scaleAtEnd.y );
 
 			// Deform meshes
 			foreach ( var subMesh in subMeshes )
 			{
-				var generator = collisionGeneratorPool.Get().Result;
-				generator.SetVertices( subMesh.Vertices );
-				generator.DeformVertices( minInModelDir, sizeInModelDir, P1, P2, P3, RollStartEnd, WidthHeightScaleStartEnd, subMesh.PartTransform );
-				collisionGeneratorPool.Return( generator );
-				var vertices = generator.GetDeformedVertices();
-				var shape = _PhysicsBody.AddMeshShape( vertices.ToList(), subMesh.Indices );
+				var deformedVertices = new List<Vector3>();
+				foreach ( var vertex in subMesh.Vertices )
+				{
+					SplineModelRendererComponent.Deform( Spline, ModelRotation, vertex, Vector3.Up, new Vector4( Vector3.Up, 0f ), frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out var deformedVertex, out var deformedNormal, out var deformedTangent );
+					deformedVertices.Add( deformedVertex );
+				}
+				var shape = _PhysicsBody.AddMeshShape( deformedVertices, subMesh.Indices );
 				shape.Surface = subMesh.Surface;
 			}
 
 			// Deform hulls
 			foreach ( var subHull in subHulls )
 			{
-				var generator = collisionGeneratorPool.Get().Result;
-				generator.SetVertices( subHull.Vertices );
-				generator.DeformVertices( minInModelDir, sizeInModelDir, P1, P2, P3, RollStartEnd, WidthHeightScaleStartEnd, new Transform() );
-				collisionGeneratorPool.Return( generator );
-				var vertices = generator.GetDeformedVertices();
-				var shape = _PhysicsBody.AddHullShape( segmentTransform.Position, segmentTransform.Rotation, vertices.ToList() );
+				var deformedVertices = new List<Vector3>();
+				foreach ( var vertex in subHull.Vertices )
+				{
+					SplineModelRendererComponent.Deform( Spline, ModelRotation, vertex, Vector3.Up, new Vector4( Vector3.Up, 0f ), frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out var deformedVertex, out var deformedNormal, out var deformedTangent );
+					deformedVertices.Add( deformedVertex );
+				}
+				var shape = _PhysicsBody.AddHullShape( Vector3.Zero, Rotation.Identity, deformedVertices );
 				shape.Surface = subHull.Surface;
 			}
 		}
@@ -592,73 +602,5 @@ class Vector3Comparer : IEqualityComparer<Vector3>
 		{
 			return v.GetHashCode();
 		}
-	}
-}
-
-class SplineCollisionGenerator
-{
-	public void SetVertices( List<Vector3> vertices )
-	{
-		inVertices.Clear();
-		inVertices.AddRange( vertices );
-	}
-
-	public HashSet<Vector3> GetDeformedVertices()
-	{
-		return outVertices;
-	}
-
-	public void DeformVertices( float MinInMeshDir, float SizeInMeshDir, Vector3 P1, Vector3 P2, Vector3 P3, Vector2 RollStartEnd, Vector4 WidthHeightScaleStartEnd, Transform SegmentTransform )
-	{
-		outVertices.EnsureCapacity( inVertices.Count );
-		outVertices.Clear();
-		for ( int i = 0; i < inVertices.Count; i++ )
-		{
-			outVertices.Add( SegmentTransform.PointToWorld( SplineModelRendererComponent.DeformVertex( inVertices[i], MinInMeshDir, SizeInMeshDir, P1, P2, P3, RollStartEnd, WidthHeightScaleStartEnd ) ) );
-		}
-	}
-
-	private List<Vector3> inVertices = new();
-	private HashSet<Vector3> outVertices = new( new Vector3Comparer() );
-}
-
-
-class SplineCollisionGeneratorPool
-{
-
-	private readonly ConcurrentBag<SplineCollisionGenerator> generatorInstances;
-
-	private readonly int _maxPoolSize;
-
-	private SemaphoreSlim generatorSemaphore;
-
-
-	public SplineCollisionGeneratorPool( int maxPoolSize )
-	{
-		generatorInstances = new ConcurrentBag<SplineCollisionGenerator>();
-		generatorSemaphore = new SemaphoreSlim( maxPoolSize );
-		_maxPoolSize = maxPoolSize;
-		for ( int i = 0; i < _maxPoolSize; i++ )
-		{
-			generatorInstances.Add( new SplineCollisionGenerator() );
-		}
-	}
-
-	public async Task<SplineCollisionGenerator> Get()
-	{
-		ThreadSafe.AssertIsMainThread();
-		await generatorSemaphore.WaitAsync();
-		var succeeded = generatorInstances.TryTake( out SplineCollisionGenerator generatorInstance );
-		Assert.True( succeeded );
-
-		return generatorInstance;
-	}
-
-	public void Return( SplineCollisionGenerator generatorInstance )
-	{
-		ThreadSafe.AssertIsMainThread();
-		// not worth to do in parallel it's too fast
-		generatorInstances.Add( generatorInstance );
-		generatorSemaphore.Release();
 	}
 }
