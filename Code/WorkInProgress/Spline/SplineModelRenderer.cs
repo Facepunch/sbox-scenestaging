@@ -88,6 +88,42 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		UpdateRenderState();
 	}
 
+	protected override void DrawGizmos()
+	{
+		var rotatedModelBounds = Model.Bounds.Rotate( ModelRotation );
+		var sizeInModelDir = rotatedModelBounds.Size.Dot( Vector3.Forward );
+
+		var minInModelDir = rotatedModelBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
+
+		var splineLength = Spline.GetLength();
+		var meshesRequired = (int)Math.Ceiling( splineLength / sizeInModelDir );
+		var distancePerMesh = splineLength / meshesRequired;
+
+		var frames = CalculateTangentFramesUsingUpDir( meshesRequired, 16, distancePerMesh );
+
+		float arrowLength = distancePerMesh / 4;
+
+		foreach ( var frame in frames )
+		{
+			var position = frame.Position;
+			var tangent = frame.Forward;
+			var finalUp = frame.Up;
+			var right = frame.Right;
+
+			// Draw tangent vector (forward)
+			Gizmo.Draw.Color = Color.Red;
+			Gizmo.Draw.Arrow( position, position + tangent * arrowLength, arrowLength / 10f, arrowLength / 15f );
+
+			// Draw up vector (normal)
+			Gizmo.Draw.Color = Color.Green;
+			Gizmo.Draw.Arrow( position, position + finalUp * arrowLength, arrowLength / 10f, arrowLength / 15f );
+
+			// Draw right vector (binormal)
+			Gizmo.Draw.Color = Color.Blue;
+			Gizmo.Draw.Arrow( position, position + right * arrowLength, arrowLength / 10f, arrowLength / 15f );
+		}
+	}
+
 	private void UpdateRenderState()
 	{
 		var rotatedModelBounds = Model.Bounds.Rotate( ModelRotation );
@@ -114,7 +150,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		deformedIndices.Capacity = Math.Max( modelIndices.Count() * meshesRequired, deformedIndices.Capacity);
 		deformedIndices.Clear();
 
-		var frames = CalculateTangentFrames( meshesRequired, 16, distancePerMesh );
+		var frames = CalculateTangentFramesUsingUpDir( meshesRequired, 16, distancePerMesh );
 
 		int vertexOffset = 0;
 
@@ -133,7 +169,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 				var deformedVertex = vertex;
 
 				// Deform the vertex using tangent frames
-				Deform( vertex.Position, vertex.Normal, vertex.Tangent, frames.GetRange( meshIndex * 16, 16 ), minInModelDir, sizeInModelDir, out deformedVertex.Position, out deformedVertex.Normal, out deformedVertex.Tangent );
+				Deform( vertex.Position, vertex.Normal, vertex.Tangent, frames.GetRange( Math.Max( meshIndex * 16 - 1, 0), meshIndex == 0 ? 16 : 17 ), minInModelDir, sizeInModelDir, out deformedVertex.Position, out deformedVertex.Normal, out deformedVertex.Tangent );
 
 				deformedVertices.Add( deformedVertex );
 			}
@@ -166,81 +202,138 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		IsDirty = false;
 	}
 
-	private List<Transform> CalculateTangentFrames( int meshesRequired, int frameCount, float distancePerMesh )
+	private List<Transform> CalculateTangentFramesUsingUpDir( int meshesRequired, int frameCount, float distancePerMesh  )
 	{
-		List<Transform> frames = new(meshesRequired * frameCount);
+		int totalFrames = meshesRequired * frameCount;
+		List<Transform> frames = new( totalFrames );
 
+		float totalSplineLength = Spline.GetLength();
+
+		Vector3 initialTangent = Spline.GetTangetAtDistance( 0f );
+		Vector3 up = Spline.GetUpVectorAtDistance( 0f );
+
+		// Choose an initial up vector if tangent is parallel to Up
+		if ( MathF.Abs( Vector3.Dot( initialTangent, up ) ) > 0.999f )
+		{
+			up = Vector3.Right;
+		}
+
+		for ( int i = 0; i < totalFrames; i++ )
+		{
+			float t = (float)i / (totalFrames - 1);
+			float distance = t * totalSplineLength;
+
+			Vector3 position = Spline.GetPositionAtDistance( distance );
+			Vector3 tangent = Spline.GetTangetAtDistance( distance );
+			up = Spline.GetUpVectorAtDistance( distance );
+
+			// Apply roll
+			float roll = Spline.GetRollAtDistance( distance );
+			var newUp = Rotation.FromAxis( tangent, roll ) * up;
+
+			Rotation rotation = Rotation.LookAt( tangent, newUp );
+
+			// Get scale for y and z directions from the spline
+			Vector2 scale2D = Spline.GetScaleAtDistance( distance );
+
+			// Create scale vector with 1 for x (since we're scaling along y and z)
+			Vector3 scale = new Vector3( 1f, scale2D.x, scale2D.y );
+
+			frames.Add( new Transform( position, rotation, scale ) );
+		}
+
+		return frames;
+	}
+
+	private List<Transform> CalculateRotationMinimizingTangentFrames( int meshesRequired, int frameCount, float distancePerMesh )
+	{
+		int totalFrames = meshesRequired * frameCount;
+		List<Transform> frames = new( totalFrames );
+
+		float totalSplineLength = Spline.GetLength();
+
+		// Initialize the up vector
 		Vector3 previousTangent = Spline.GetTangetAtDistance( 0f );
+		Vector3 up = Vector3.Up;
 
-		// Initialize up vector
-		if ( previousTangent == Vector3.Up )
+		// Choose an initial up vector if tangent is parallel to Up
+		if ( MathF.Abs( Vector3.Dot( previousTangent, up ) ) > 0.999f )
 		{
-			previousTangent = -Vector3.Forward;
+			up = Vector3.Right;
 		}
-		else if ( previousTangent == -Vector3.Up )
-		{
-			previousTangent = Vector3.Forward;
-		}
-		else if ( previousTangent == Vector3.Zero )
-		{
-			previousTangent = Vector3.Forward;
-		}
-		Vector3 up = Vector3.Cross( previousTangent, new Vector3( -previousTangent.y, previousTangent.x, 0f ) ).Normal; float previousRoll = Spline.GetRollAtDistance( 0f );
 
-		// Apply initial roll to up vector
+		float previousRoll = Spline.GetRollAtDistance( 0f );
 		up = Rotation.FromAxis( previousTangent, previousRoll ) * up;
 
-		for ( var meshIndex = 0; meshIndex < meshesRequired; meshIndex++ )
+		Vector3 previousPosition = Spline.GetPositionAtDistance( 0f );
+		frames.Add( new Transform( previousPosition, Rotation.LookAt( previousTangent, up ) ) );
+
+		for ( int i = 1; i < totalFrames; i++ )
 		{
-			float startDistance = meshIndex * distancePerMesh;
-			float endDistance = (meshIndex + 1) * distancePerMesh;
+			float t = (float)i / (totalFrames - 1);
+			float distance = t * totalSplineLength;
 
-			float step = (endDistance - startDistance) / (frameCount - 1);
+			Vector3 position = Spline.GetPositionAtDistance( distance );
+			Vector3 tangent = Spline.GetTangetAtDistance( distance );
 
-			for ( int i = 0; i < frameCount; i++ )
+			// Parallel transport the up vector
+			up = GetRotationMinimizingNormal( previousPosition, previousTangent, up, position, tangent );
+
+			// Apply roll
+			float roll = Spline.GetRollAtDistance( distance );
+			float deltaRoll = roll - previousRoll;
+			up = Rotation.FromAxis( tangent, deltaRoll ) * up;
+
+			Rotation rotation = Rotation.LookAt( tangent, up );
+
+			// Get scale for y and z directions from the spline
+			Vector2 scale2D = Spline.GetScaleAtDistance( distance );
+
+			// Create scale vector with 1 for x (since we're scaling along y and z)
+			Vector3 scale = new Vector3( 1f, scale2D.x, scale2D.y );
+
+			frames.Add( new Transform( position, rotation, scale ) );
+
+			previousTangent = tangent;
+			previousPosition = position;
+			previousRoll = roll;
+		}
+
+		// Correct up vectors for looped splines
+		if (Spline.IsLoop && frames.Count > 1)
+		{
+			Vector3 startUp = frames[0].Rotation.Up;
+			Vector3 endUp = frames[^1].Rotation.Up;
+
+			float theta = MathF.Acos(Vector3.Dot(startUp, endUp)) / (frames.Count - 1);
+			if (Vector3.Dot(frames[0].Rotation.Forward, Vector3.Cross(startUp, endUp)) > 0)
 			{
-				float distance = startDistance + step * i;
-				Vector3 position = Spline.GetPositionAtDistance( distance );
-				Vector3 tangent = Spline.GetTangetAtDistance( distance );
+				theta = -theta;
+			}
 
-				// Parallel transport the up vector
-				Vector3 transportUp = ParallelTransport( up, previousTangent, tangent );
-
-				// Get roll at the current distance
-				float roll = Spline.GetRollAtDistance( distance );
-
-				// Apply roll to the up vector
-				float deltaRoll = roll - previousRoll;
-				Vector3 finalUp = Rotation.FromAxis( tangent, deltaRoll ) * transportUp;
-
-				// Construct rotation
-				Rotation rotation = Rotation.LookAt( tangent, finalUp );
-
-				frames.Add( new Transform( position, rotation ) );
-
-				// Update previous values
-				up = finalUp;
-				previousTangent = tangent;
-				previousRoll = roll;
+			for (int i = 0; i < frames.Count; i++)
+			{
+				Rotation R = Rotation.FromAxis(frames[i].Rotation.Forward, (theta * i).RadianToDegree());
+				Vector3 correctedUp = R * frames[i].Rotation.Up;
+				frames[i] = new Transform(frames[i].Position, Rotation.LookAt(frames[i].Rotation.Forward, correctedUp), frames[i].Scale );
 			}
 		}
 
 		return frames;
 	}
 
-	private Vector3 ParallelTransport( Vector3 up, Vector3 previousTangent, Vector3 currentTangent )
+	private static Vector3 GetRotationMinimizingNormal( Vector3 posA, Vector3 tangentA, Vector3 normalA, Vector3 posB, Vector3 tangentB )
 	{
-		Vector3 rotationAxis = Vector3.Cross( previousTangent, currentTangent );
-		float dotProduct = Vector3.Dot( previousTangent, currentTangent );
-		float angle = MathF.Acos( Math.Clamp( dotProduct, -1f, 1f ) );
-
-		if ( rotationAxis.LengthSquared > 0.0001f && angle > 0.0001f )
-		{
-			rotationAxis = rotationAxis.Normal;
-			up = Rotation.FromAxis( rotationAxis, angle.RadianToDegree() ) * up;
-		}
-
-		return up;
+		// Source: https://www.microsoft.com/en-us/research/wp-content/uploads/2016/12/Computation-of-rotation-minimizing-frames.pdf
+		Vector3 v1 = posB - posA;
+		float v1DotV1Half = Vector3.Dot( v1, v1 ) / 2f;
+		float r1 = Vector3.Dot( v1, normalA ) / v1DotV1Half;
+		float r2 = Vector3.Dot( v1, tangentA ) / v1DotV1Half;
+		Vector3 nL = normalA - r1 * v1;
+		Vector3 tL = tangentA - r2 * v1;
+		Vector3 v2 = tangentB - tL;
+		float r3 = Vector3.Dot( v2, nL ) / Vector3.Dot( v2, v2 );
+		return (nL - 2f * r3 * v2).Normal;
 	}
 
 	private void Deform( Vector3 localPosition, Vector3 localNormal, Vector4 localTangent, List<Transform> frames, float minInModelDir, float sizeInModelDir, out Vector3 deformedPosition, out Vector3 deformedNormal, out Vector4 deformedTangent )
@@ -251,13 +344,8 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 		// Calculate the frame index and interpolation factor
 		float frameFloatIndex = t * (frames.Count - 1);
-		int frameIndex = (int)Math.Floor( frameFloatIndex );
-		float frameT = frameFloatIndex - frameIndex;
-		if ( frameIndex >= frames.Count - 1 )
-		{
-			frameIndex = frames.Count - 2;
-			frameT = 1f;
-		}
+		int frameIndex = Math.Clamp( (int)Math.Floor( frameFloatIndex ), 0, frames.Count - 2 );
+		float frameT = Math.Clamp( frameFloatIndex - frameIndex, 0f, 1f );
 
 		Transform frame0 = frames[frameIndex];
 		Transform frame1 = frames[frameIndex + 1];
@@ -265,14 +353,19 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		Vector3 position = Vector3.Lerp( frame0.Position, frame1.Position, frameT );
 		Rotation rotation = Rotation.Slerp( frame0.Rotation, frame1.Rotation, frameT );
 
+		// Interpolate scale from frames
+		Vector3 scale0 = frame0.Scale;
+		Vector3 scale1 = frame1.Scale;
+		Vector3 scale = Vector3.Lerp( scale0, scale1, frameT );
+
+		// Scale localPosition along y and z axes
+		Vector3 scaledLocalPosition = new Vector3( 0, localPosition.y * scale.y, localPosition.z * scale.z );
 
 		// Apply model rotation and local offsets
-		deformedPosition = position + rotation * (ModelRotation * new Vector3( 0, localPosition.y, localPosition.z ));
+		deformedPosition = position + rotation * (ModelRotation * scaledLocalPosition);
 
 		deformedNormal = rotation * (ModelRotation * localNormal);
-
-		deformedTangent = new Vector4( rotation * (ModelRotation * localTangent), localTangent.w);
-
+		deformedTangent = new Vector4( rotation * (ModelRotation * localTangent), localTangent.w );
 	}
 
 	/// LEGACY STUFF

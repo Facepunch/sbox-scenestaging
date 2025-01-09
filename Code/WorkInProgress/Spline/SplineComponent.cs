@@ -21,6 +21,9 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	[Property, Hide]
 	private List<Vector2> _pointScales = new();
 
+	[Property, Hide]
+	private List<Vector3> _pointUpVectors = new();
+
 	public SplineComponent()
 	{
 		_splinePoints.Add( new SplinePoint { Position = new Vector3( 0, 0, 0 ) } );
@@ -35,6 +38,9 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		_pointScales.Add( new Vector2( 1, 1 ) );
 		_pointScales.Add( new Vector2( 1, 1 ) );
 		_pointScales.Add( new Vector2( 1, 1 ) );
+		_pointUpVectors.Add( Vector3.Up );
+		_pointUpVectors.Add( Vector3.Up );
+		_pointUpVectors.Add( Vector3.Up );
 
 		RecalculateTangentsForPoint( 0 );
 		RecalculateTangentsForPoint( 1 );
@@ -106,14 +112,16 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 				_pointTangentModes.Add( _pointTangentModes[0] );
 				_pointRolls.Add( _pointRolls[0] );
 				_pointScales.Add( _pointScales[0] );
+				_pointUpVectors.Add( _pointUpVectors[0] );
 				RequiresDistanceResample();
 			}
-			else if ( !value && isAlreadyLoop ) // only remove the last point if we are actually a loop
+			else if ( !value && isAlreadyLoop )
 			{
 				_splinePoints.RemoveAt( _splinePoints.Count - 1 );
 				_pointTangentModes.RemoveAt( _pointTangentModes.Count - 1 );
 				_pointRolls.RemoveAt( _pointRolls.Count - 1 );
 				_pointScales.RemoveAt( _pointScales.Count - 1 );
+				_pointUpVectors.RemoveAt( _pointUpVectors.Count - 1 );
 				RequiresDistanceResample();
 			}
 		}
@@ -147,6 +155,13 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		return Spline.Utils.GetCurvature( _splinePoints.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
 	}
 
+	public Vector3 GetCurvatureAxisAtDistance( float distance )
+	{
+		EnsureSplineIsDistanceSampled();
+
+		return Spline.Utils.GetCurvatureAxis( _splinePoints.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
+	}
+
 	public float GetRollAtDistance( float distance )
     {
         EnsureSplineIsDistanceSampled();
@@ -163,6 +178,15 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		var distanceAlongSegment = distance - _distanceSampler.GetSegmentStartDistance( splineParams.Index );
 		var segmentLength = _distanceSampler.GetSegmentLength( splineParams.Index );
 		return Vector2.Lerp( _pointScales[splineParams.Index], _pointScales[splineParams.Index + 1], distanceAlongSegment / segmentLength );
+	}
+
+	public Vector3 GetUpVectorAtDistance( float distance )
+	{
+		EnsureSplineIsDistanceSampled();
+		var splineParams = _distanceSampler.CalculateSegmentParamsAtDistance( distance );
+		var distanceAlongSegment = distance - _distanceSampler.GetSegmentStartDistance( splineParams.Index );
+		var segmentLength = _distanceSampler.GetSegmentLength( splineParams.Index );
+		return Vector3.Lerp( _pointUpVectors[splineParams.Index], _pointUpVectors[splineParams.Index + 1], distanceAlongSegment / segmentLength );
 	}
 
 	public float GetLength()
@@ -243,6 +267,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		_pointTangentModes.Insert( pointIndex, SplinePointTangentMode.Auto );
 		_pointRolls.Insert( pointIndex, 0 );
 		_pointScales.Insert( pointIndex, new Vector2( 1, 1 ) );
+		_pointUpVectors.Insert( pointIndex, Vector3.Up );
 
 		RecalculateTangentsForPointAndAdjacentPoints( pointIndex );
 
@@ -285,6 +310,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		// split scale and roll
 		_pointRolls.Insert( splineParams.Index + 1, GetRollAtDistance( distance ) );
 		_pointScales.Insert( splineParams.Index + 1, GetScaleAtDistance( distance ) );
+		_pointUpVectors.Insert( splineParams.Index + 1, GetUpVectorAtDistance( distance ) );
 
 		var newPointIndex = splineParams.Index + 1;
 
@@ -366,6 +392,18 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	{
 		CheckPointIndex( pointIndex );
 		_pointScales[pointIndex] = scale;
+		SplineChanged?.Invoke();
+	}
+
+	public Vector3 GetUpVectorForPoint( int pointIndex )
+	{
+		CheckPointIndex( pointIndex );
+		return _pointUpVectors[pointIndex];
+	}
+	public void SetUpVectorForPoint( int pointIndex, Vector3 up )
+	{
+		CheckPointIndex( pointIndex );
+		_pointUpVectors[pointIndex] = up;
 		SplineChanged?.Invoke();
 	}
 
@@ -758,6 +796,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 			_splinePoints[_splinePoints.Count - 1] = _splinePoints[0];
 			_pointRolls[_pointRolls.Count - 1] = _pointRolls[0];
 			_pointScales[_pointScales.Count - 1] = _pointScales[0];
+			_pointUpVectors[_pointUpVectors.Count - 1] = _pointUpVectors[0];
 		}
 	}
 }

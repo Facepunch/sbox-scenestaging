@@ -120,6 +120,15 @@ public static class Utils
 		return curvatureAxis.Length;
 	}
 
+	public static Vector3 GetCurvatureAxis( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
+	{
+		CheckSegmentParams( spline, segmentParams );
+		var velocity = GetDerivative( spline, segmentParams );
+		var acceleration = GetSecondDerivative( spline, segmentParams );
+
+		return Vector3.Cross( velocity, acceleration ).Normal;
+	}
+
 	public static int SegmentNum( ReadOnlyCollection<SplinePoint> spline )
 	{
 		return spline.Count - 1;

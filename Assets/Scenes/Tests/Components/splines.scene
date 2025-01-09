@@ -163,6 +163,7 @@
               "UseAnimatorControls": true,
               "UseButton": "use",
               "UseCameraControls": true,
+              "UseFovFromPreferences": true,
               "UseInputControls": true,
               "WalkSpeed": 110
             },
@@ -274,6 +275,7 @@
               "Flags": 0,
               "Name": "Camera",
               "Position": "0,-292.6327,56",
+              "Rotation": "0,0,0.9659259,-0.2588189",
               "Enabled": true,
               "Components": [
                 {
@@ -421,16 +423,19 @@
       "Enabled": true,
       "Children": [
         {
-          "__guid": "2d456249-8d5c-4344-950b-3e1ea5d4d30b",
+          "__guid": "07e404c0-6c7e-42df-9644-bb875317caef",
           "Flags": 0,
-          "Name": "Spinning",
-          "Position": "-10.64661,0,-72.98575",
+          "Name": "Object",
+          "Position": "23.42664,-6.470764,0",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.SplineComponent",
-              "__guid": "7b44ea90-9a80-4324-83cb-2e1074cdd272",
+              "__guid": "d5a896fc-519a-4a39-9c50-b274f9676398",
               "_pointRolls": [
+                0,
+                0,
+                0,
                 0,
                 0,
                 0,
@@ -440,13 +445,16 @@
                 0
               ],
               "_pointScales": [
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1"
+                "10,1",
+                "10,1",
+                "10,1",
+                "10,1",
+                "10,1",
+                "10,1",
+                "10,1",
+                "10,1",
+                "10,1",
+                "10,1"
               ],
               "_pointTangentModes": [
                 "Auto",
@@ -455,259 +463,104 @@
                 "Auto",
                 "Auto",
                 "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
                 "Auto"
+              ],
+              "_pointUpVectors": [
+                "0,0,1",
+                "0,0,1",
+                "-2.5,0,1",
+                "-1,0,0",
+                "0,-0.025,-1",
+                "0,0.25,-1",
+                "1,0,0",
+                "2.5,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,-0.000001005828,1",
+                "0,0,1",
+                "-1,0,0",
+                "0,0,-1",
+                "0,0,-1",
+                "1.6,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1"
               ],
               "_splinePoints": [
                 {
-                  "Position": "-175,-75,0",
-                  "InPositionRelative": "4.166667,-12.5,-0",
-                  "OutPositionRelative": "-4.166667,12.5,0"
-                },
-                {
-                  "Position": "-200,0,0",
-                  "InPositionRelative": "-12.5,-16.66667,-0",
-                  "OutPositionRelative": "12.5,16.66667,0"
-                },
-                {
-                  "Position": "-100,25,0",
-                  "InPositionRelative": "-33.33334,-0,-0",
-                  "OutPositionRelative": "33.33334,0,0"
-                },
-                {
                   "Position": "0,0,0",
-                  "InPositionRelative": "-33.33334,8.333334,-0",
-                  "OutPositionRelative": "33.33334,-8.333334,0"
+                  "InPositionRelative": "-50,-0,-0.000002712012",
+                  "OutPositionRelative": "50,0,0.000002712012"
                 },
                 {
-                  "Position": "100,-25,0",
-                  "InPositionRelative": "-33.33334,-0,-0",
-                  "OutPositionRelative": "33.33334,0,0"
+                  "Position": "300,0,0.00001627207",
+                  "InPositionRelative": "-83.33334,-4.166667,-16.66667",
+                  "OutPositionRelative": "83.33334,4.166667,16.66667"
                 },
                 {
-                  "Position": "200,0,0",
-                  "InPositionRelative": "-12.5,-16.66667,-0",
-                  "OutPositionRelative": "12.5,16.66667,0"
+                  "Position": "500,25,100",
+                  "InPositionRelative": "-33.33334,-16.66667,-50",
+                  "OutPositionRelative": "33.33334,16.66667,50"
                 },
                 {
-                  "Position": "175,75,0",
-                  "InPositionRelative": "4.166667,-12.5,-0",
-                  "OutPositionRelative": "-4.166667,12.5,0"
+                  "Position": "500,100,300",
+                  "InPositionRelative": "25,-20.83333,-50",
+                  "OutPositionRelative": "-25,20.83333,50"
+                },
+                {
+                  "Position": "350,150,400",
+                  "InPositionRelative": "50,-12.5,-16.66667",
+                  "OutPositionRelative": "-50,12.5,16.66667"
+                },
+                {
+                  "Position": "200,175,400",
+                  "InPositionRelative": "58.33334,-12.5,16.66667",
+                  "OutPositionRelative": "-58.33334,12.5,-16.66667"
+                },
+                {
+                  "Position": "0,225,300",
+                  "InPositionRelative": "33.33334,-20.83333,50",
+                  "OutPositionRelative": "-33.33334,20.83333,-50"
+                },
+                {
+                  "Position": "0,300,100",
+                  "InPositionRelative": "-33.33334,-16.66667,50",
+                  "OutPositionRelative": "33.33334,16.66667,-50"
+                },
+                {
+                  "Position": "200,325,0",
+                  "InPositionRelative": "-83.33334,-4.166667,16.66667",
+                  "OutPositionRelative": "83.33334,4.166667,-16.66667"
+                },
+                {
+                  "Position": "500,325,0",
+                  "InPositionRelative": "-50,-0,-0",
+                  "OutPositionRelative": "50,0,0"
                 }
               ],
               "IsLoop": false
             },
             {
               "__type": "Sandbox.SplineModelRendererComponent",
-              "__guid": "bf9aff6c-57d0-493f-a666-f8187b530917",
+              "__guid": "638e5e9f-d682-4592-8ab0-322bc84b2761",
               "Model": "models/spline_cuboid_test.vmdl",
               "ModelRotation": "0,0,0,1",
               "Spline": {
                 "_type": "component",
-                "component_id": "7b44ea90-9a80-4324-83cb-2e1074cdd272",
-                "go": "2d456249-8d5c-4344-950b-3e1ea5d4d30b",
+                "component_id": "d5a896fc-519a-4a39-9c50-b274f9676398",
+                "go": "07e404c0-6c7e-42df-9644-bb875317caef",
                 "component_type": "SplineComponent"
               }
-            },
-            {
-              "__type": "Sandbox.SplineColliderComponent",
-              "__guid": "9a19a26f-7942-42b9-8bf2-1444f69e7ac6",
-              "IsTrigger": false,
-              "Model": "models/spline_cuboid_test.vmdl",
-              "ModelRotation": "0,0,0,1",
-              "Spline": {
-                "_type": "component",
-                "component_id": "7b44ea90-9a80-4324-83cb-2e1074cdd272",
-                "go": "2d456249-8d5c-4344-950b-3e1ea5d4d30b",
-                "component_type": "SplineComponent"
-              },
-              "Static": false,
-              "Subdivision": 1,
-              "SurfaceVelocity": "0,0,0"
-            },
-            {
-              "__type": "SpinComponent",
-              "__guid": "42279b09-496d-4849-8d0d-6546abe56910",
-              "SpinAngles": "0,10,0"
-            }
-          ]
-        },
-        {
-          "__guid": "c37638f7-8795-445d-8b41-ec4cbf312884",
-          "Flags": 0,
-          "Name": "Basic",
-          "Position": "-168.2433,236.5598,15.58524",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.SplineComponent",
-              "__guid": "f336ebf6-560c-4570-b08b-270456d74e28",
-              "_pointRolls": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ],
-              "_pointScales": [
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1"
-              ],
-              "_pointTangentModes": [
-                "Auto",
-                "Auto",
-                "Auto",
-                "Auto",
-                "Auto",
-                "Auto"
-              ],
-              "_splinePoints": [
-                {
-                  "Position": "0,0,0",
-                  "InPositionRelative": "-38.75439,-24.96036,-0",
-                  "OutPositionRelative": "38.75439,24.96036,0"
-                },
-                {
-                  "Position": "232.5263,149.7621,0",
-                  "InPositionRelative": "-52.78851,-81.62149,0.000004490217",
-                  "OutPositionRelative": "52.78851,81.62149,-0.000004490217"
-                },
-                {
-                  "Position": "316.7311,489.7289,-0.0000269413",
-                  "InPositionRelative": "63.23797,-45.84761,-23.69943",
-                  "OutPositionRelative": "-63.23797,45.84761,23.69943"
-                },
-                {
-                  "Position": "-146.9015,424.8478,142.1966",
-                  "InPositionRelative": "75.63985,80.64374,-0.000005086263",
-                  "OutPositionRelative": "-75.63985,-80.64374,0.000005086263"
-                },
-                {
-                  "Position": "-137.108,5.866502,0.000002797693",
-                  "InPositionRelative": "51.78376,38.69369,2.36798",
-                  "OutPositionRelative": "-51.78376,-38.69369,-2.36798"
-                },
-                {
-                  "Position": "-457.604,192.6856,127.9887",
-                  "InPositionRelative": "53.416,-31.13652,-21.33145",
-                  "OutPositionRelative": "-53.416,31.13652,21.33145"
-                }
-              ],
-              "IsLoop": false
-            }
-          ]
-        },
-        {
-          "__guid": "58ad5b35-451f-4466-8dc8-7814ee3b6055",
-          "Flags": 0,
-          "Name": "Polygon",
-          "Position": "-1520.201,0,0",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.SplineComponent",
-              "__guid": "3b521e5b-feba-4a71-9807-02aaf87ad3fd",
-              "_pointRolls": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ],
-              "_pointScales": [
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1",
-                "1,1"
-              ],
-              "_pointTangentModes": [
-                "Linear",
-                "Linear",
-                "Linear",
-                "Linear",
-                "Linear",
-                "Linear",
-                "Linear",
-                "Linear",
-                "Linear",
-                "Linear",
-                "Linear"
-              ],
-              "_splinePoints": [
-                {
-                  "Position": "0,0,0",
-                  "InPositionRelative": "0,0,0",
-                  "OutPositionRelative": "0,0,0"
-                },
-                {
-                  "Position": "100,0,0",
-                  "InPositionRelative": "0,0,0",
-                  "OutPositionRelative": "0,0,0"
-                },
-                {
-                  "Position": "34.90353,316.5912,-0.00004285574",
-                  "InPositionRelative": "0,0,0",
-                  "OutPositionRelative": "0,0,0"
-                },
-                {
-                  "Position": "340.7221,405.7933,-0.00005054474",
-                  "InPositionRelative": "0,0,0",
-                  "OutPositionRelative": "0,0,0"
-                },
-                {
-                  "Position": "593.6736,355.3158,-0.00005054474",
-                  "InPositionRelative": "0,0,0",
-                  "OutPositionRelative": "0,0,0"
-                },
-                {
-                  "Position": "697.631,114.6356,-0.00005054474",
-                  "InPositionRelative": "0,0,0",
-                  "OutPositionRelative": "0,0,0"
-                },
-                {
-                  "Position": "677.9955,-81.61675,-0.00002728023",
-                  "InPositionRelative": "0,0,0",
-                  "OutPositionRelative": "0,0,0"
-                },
-                {
-                  "Position": "650.0621,-277.6013,-0.000002861023",
-                  "InPositionRelative": "0,0,0",
-                  "OutPositionRelative": "0,0,0"
-                },
-                {
-                  "Position": "343.1061,-439.1318,-0.000002861023",
-                  "InPositionRelative": "0,0,0",
-                  "OutPositionRelative": "0,0,0"
-                },
-                {
-                  "Position": "0,0,0",
-                  "InPositionRelative": "0,0,0",
-                  "OutPositionRelative": "0,0,0"
-                },
-                {
-                  "Position": "0,0,0",
-                  "InPositionRelative": "0,0,0",
-                  "OutPositionRelative": "0,0,0"
-                }
-              ],
-              "IsLoop": true
             }
           ]
         }

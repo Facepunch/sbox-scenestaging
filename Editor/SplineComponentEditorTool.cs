@@ -83,6 +83,7 @@ class SplineToolWindow : WidgetWindow
 			var tangentMode = this.GetSerialized().GetProperty( nameof( _selectedPointTangentMode ) );
 			var roll = this.GetSerialized().GetProperty( nameof( _selectedPointRoll ) );
 			var scale = this.GetSerialized().GetProperty( nameof( _selectedPointScale ) );
+			var up = this.GetSerialized().GetProperty( nameof( _selectedPointUp ) );
 
 			var controlSheet = new ControlSheet();
 
@@ -90,7 +91,7 @@ class SplineToolWindow : WidgetWindow
 			controlSheet.AddRow( point.GetProperty( nameof( SplinePoint.Position ) ) );
 			inTangentControl = controlSheet.AddRow( point.GetProperty( nameof( SplinePoint.InPositionRelative ) ) );
 			outTangentControl = controlSheet.AddRow( point.GetProperty( nameof( SplinePoint.OutPositionRelative ) ) );
-			controlSheet.AddGroup( "Advanced", new[] { roll, scale } );
+			controlSheet.AddGroup( "Advanced", new[] { roll, scale, up } );
 
 			var row = Layout.Row();
 			row.Spacing = 16;
@@ -251,6 +252,17 @@ class SplineToolWindow : WidgetWindow
 		set
 		{
 			targetComponent.SetRollForPoint( SelectedPointIndex, value );
+			targetComponent.EditLog( "Updated spline point", targetComponent );
+		}
+	}
+
+	[Title( "Up Vector" )]
+	Vector3 _selectedPointUp
+	{
+		get => SelectedPointIndex > targetComponent.NumberOfPoints() - 1 ? Vector3.Zero : targetComponent.GetUpVectorForPoint( SelectedPointIndex );
+		set
+		{
+			targetComponent.SetUpVectorForPoint( SelectedPointIndex, value );
 			targetComponent.EditLog( "Updated spline point", targetComponent );
 		}
 	}
@@ -429,7 +441,6 @@ class SplineToolWindow : WidgetWindow
 						if ( SelectedPointIndex == i )
 						{
 							Gizmo.Draw.LineThickness = 0.8f;
-
 							using ( Gizmo.Scope( "in_tangent", new Transform( splinePoint.InPositionRelative ) ) )
 							{
 
