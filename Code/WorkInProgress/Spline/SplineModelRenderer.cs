@@ -23,7 +23,8 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	private Model _model = null;
 
-	[Property] public Rotation ModelRotation
+	[Property]
+	public Rotation ModelRotation
 	{
 		get => _modelRotation;
 		set
@@ -212,7 +213,8 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		Utility.Parallel.For(
 			0,
 			meshesRequiredWithSpacing,
-			meshIndex => {
+			meshIndex =>
+			{
 				float startDistance = meshIndex * sizeWithSpacing;
 				float endDistance = startDistance + sizeInModelDir;
 
@@ -244,7 +246,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			customMesh.SetIndexRange( 0, totalIndices );
 			customMesh.SetVertexBufferSize( totalVertices );
 			customMesh.SetVertexRange( 0, totalVertices );
-			customMesh.SetIndexBufferData( deformedIndices.AsSpan(0, totalIndices) );
+			customMesh.SetIndexBufferData( deformedIndices.AsSpan( 0, totalIndices ) );
 			customMesh.SetVertexBufferData( deformedVertices.AsSpan( 0, totalVertices ) );
 		}
 		else
@@ -259,7 +261,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		IsDirty = false;
 	}
 
-	public static Transform[] CalculateTangentFramesUsingUpDir( SplineComponent spline, int frameCount  )
+	public static Transform[] CalculateTangentFramesUsingUpDir( SplineComponent spline, int frameCount )
 	{
 		Transform[] frames = new Transform[frameCount];
 
@@ -355,22 +357,22 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		}
 
 		// Correct up vectors for looped splines
-		if ( spline.IsLoop && frames.Length > 1)
+		if ( spline.IsLoop && frames.Length > 1 )
 		{
 			Vector3 startUp = frames[0].Rotation.Up;
 			Vector3 endUp = frames[^1].Rotation.Up;
 
-			float theta = MathF.Acos(Vector3.Dot(startUp, endUp)) / (frames.Length - 1);
-			if (Vector3.Dot(frames[0].Rotation.Forward, Vector3.Cross(startUp, endUp)) > 0)
+			float theta = MathF.Acos( Vector3.Dot( startUp, endUp ) ) / (frames.Length - 1);
+			if ( Vector3.Dot( frames[0].Rotation.Forward, Vector3.Cross( startUp, endUp ) ) > 0 )
 			{
 				theta = -theta;
 			}
 
-			for (int i = 0; i < frames.Length; i++)
+			for ( int i = 0; i < frames.Length; i++ )
 			{
-				Rotation R = Rotation.FromAxis(frames[i].Rotation.Forward, (theta * i).RadianToDegree());
+				Rotation R = Rotation.FromAxis( frames[i].Rotation.Forward, (theta * i).RadianToDegree() );
 				Vector3 correctedUp = R * frames[i].Rotation.Up;
-				frames[i] = new Transform(frames[i].Position, Rotation.LookAt(frames[i].Rotation.Forward, correctedUp), frames[i].Scale );
+				frames[i] = new Transform( frames[i].Position, Rotation.LookAt( frames[i].Rotation.Forward, correctedUp ), frames[i].Scale );
 			}
 		}
 
@@ -428,92 +430,4 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		deformedTangent = new Vector4( rotation * (modelRoation * localTangent), localTangent.w );
 	}
 
-	/// LEGACY STUFF
-	public static Vector3 DeformVertex( Vector3 localPosition, float MinInMeshDir, float SizeInMeshDir, Vector3 P1, Vector3 P2, Vector3 P3, Vector2 RollStartEnd, Vector4 WidthHeightScaleStartEnd )
-	{
-		float t = (localPosition.x - MinInMeshDir) / SizeInMeshDir;
-
-
-
-		Vector3 p0 = Vector3.Zero;
-		Vector3 p1 = P1;
-		Vector3 p2 = P2;
-		Vector3 p3 = P3;
-
-		float rollStart = RollStartEnd.x;
-		float rollEnd = RollStartEnd.y;
-
-		float roll = MathX.Lerp( rollStart, rollEnd, t );
-
-
-
-
-
-		Vector2 startScaleWidthHeight = new Vector2( WidthHeightScaleStartEnd.x, WidthHeightScaleStartEnd.y );
-		Vector2 endScaleWidthHeight = new Vector2( WidthHeightScaleStartEnd.z, WidthHeightScaleStartEnd.w );
-
-		Vector2 scale = Vector2.Lerp( startScaleWidthHeight, endScaleWidthHeight, t );
-
-
-		Vector3 up = Vector3.Up;
-		Vector3 forward = CalculateBezierTangent( t, p0, p1, p2, p3 );
-		Vector3 right = Vector3.Cross( up, forward ).Normal;
-		up = Vector3.Cross( forward, right ).Normal;
-
-		float sine = MathF.Sin( roll );
-		float cosine = MathF.Cos( roll );
-		Vector3 rightRotated = cosine * right - sine * up;
-		Vector3 upRotated = sine * right + cosine * up;
-
-		Vector3 curvePosition = CalculateBezierPosition( t, p0, p1, p2, p3 );
-		Vector3 deformedPosition = ScaleAndRotateVector( localPosition, scale, rightRotated, upRotated );
-
-		return curvePosition + deformedPosition;
-	}
-
-
-
-
-	private static Vector3 CalculateBezierPosition( float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3 )
-	{
-		float tSquare = t * t;
-		float tCubic = tSquare * t;
-		float oneMinusT = 1 - t;
-		float oneMinusTSquare = oneMinusT * oneMinusT;
-		float oneMinusTCubic = oneMinusTSquare * oneMinusT;
-
-		float w0 = oneMinusTCubic;
-		float w1 = 3 * oneMinusTSquare * t;
-		float w2 = 3 * oneMinusT * tSquare;
-		float w3 = tCubic;
-
-
-		return w0 * p0 + w1 * p1 + w2 * p2 + w3 * p3;
-	}
-
-
-
-
-	private static Vector3 CalculateBezierTangent( float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3 )
-	{
-		float t2 = t * t;
-
-		float w0 = -3 * t2 + 6 * t - 3;
-		float w1 = 9 * t2 - 12 * t + 3;
-		float w2 = -9 * t2 + 6 * t;
-		float w3 = 3 * t2;
-
-
-		return w0 * p0 + w1 * p1 + w2 * p2 + w3 * p3;
-	}
-
-
-
-	private static Vector3 ScaleAndRotateVector( Vector3 localPosition, Vector2 scale, Vector3 right, Vector3 up )
-	{
-		Vector3 scaledRight = right * scale.x;
-		Vector3 scaledUp = up * scale.y;
-
-		return localPosition.y * scaledRight + localPosition.z * scaledUp;
-	}
 }
