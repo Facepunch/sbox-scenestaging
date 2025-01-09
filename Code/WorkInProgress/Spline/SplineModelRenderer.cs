@@ -1,26 +1,62 @@
-using Sandbox.Diagnostics;
-using Sandbox.Rendering;
-using System.Collections.Concurrent;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Threading;
-
 namespace Sandbox;
 
 public sealed class SplineModelRendererComponent : Component, Component.ExecuteInEditor
 {
 	[Property] public SplineComponent Spline { get; set; }
 
-	[Property] public Model Model { get; set; }
+	[Property]
+	public Model Model
+	{
+		get => _model;
+		set
+		{
+			_model = value;
+			// Create a new SceneObject and Mesh
+			customMesh = new();
+			customMesh.Material = Model.Materials.FirstOrDefault();
 
-	[Property] public Rotation ModelRotation { get; set; } = Rotation.Identity;
+			modelIndices = Model.GetIndices();
+			modelVertices = Model.GetVertices();
+			IsDirty = true;
+		}
+	}
+
+	private Model _model = null;
+
+	[Property] public Rotation ModelRotation
+	{
+		get => _modelRotation;
+		set
+		{
+			_modelRotation = value;
+			IsDirty = true;
+		}
+	}
+
+	private Rotation _modelRotation = Rotation.Identity;
+
+	[Property]
+	public bool UseRotationMinimizingFrames
+	{
+		get => _useRotationMinimizingFrames;
+		set
+		{
+			_useRotationMinimizingFrames = value;
+			IsDirty = true;
+		}
+	}
+
+	private bool _useRotationMinimizingFrames = true;
 
 	private SceneObject sceneObject;
 	private Mesh customMesh = new();
 	private Model customModel = Model.Error;
 
-	List<Vertex> deformedVertices = new();
-	private List<int> deformedIndices = new();
+	private Vertex[] modelVertices = null;
+	private uint[] modelIndices = null;
+
+	private Vertex[] deformedVertices;
+	private int[] deformedIndices;
 
 	private bool IsDirty
 	{
@@ -37,9 +73,6 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			Spline.SplineChanged += MarkDirty;
 			Transform.OnTransformChanged += OnTransformChanged;
 
-			// Create a new SceneObject and Mesh
-			customMesh = new();
-			customMesh.Material = Model.Materials.FirstOrDefault();
 			sceneObject = new SceneObject( Scene.SceneWorld, Model );
 			sceneObject.Transform = WorldTransform;
 			sceneObject.SetComponentSource( this );
@@ -90,38 +123,38 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	protected override void DrawGizmos()
 	{
-		var rotatedModelBounds = Model.Bounds.Rotate( ModelRotation );
-		var sizeInModelDir = rotatedModelBounds.Size.Dot( Vector3.Forward );
+		//var rotatedModelBounds = Model.Bounds.Rotate( ModelRotation );
+		//var sizeInModelDir = rotatedModelBounds.Size.Dot( Vector3.Forward );
 
-		var minInModelDir = rotatedModelBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
+		//var minInModelDir = rotatedModelBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
-		var splineLength = Spline.GetLength();
-		var meshesRequired = (int)Math.Ceiling( splineLength / sizeInModelDir );
-		var distancePerMesh = splineLength / meshesRequired;
+		//var splineLength = Spline.GetLength();
+		//var meshesRequired = (int)Math.Ceiling( splineLength / sizeInModelDir );
+		//var distancePerMesh = splineLength / meshesRequired;
 
-		var frames = CalculateTangentFramesUsingUpDir( meshesRequired, 16, distancePerMesh );
+		//var frames = CalculateTangentFramesUsingUpDir( meshesRequired, 16, distancePerMesh );
 
-		float arrowLength = distancePerMesh / 4;
+		//float arrowLength = distancePerMesh / 4;
 
-		foreach ( var frame in frames )
-		{
-			var position = frame.Position;
-			var tangent = frame.Forward;
-			var finalUp = frame.Up;
-			var right = frame.Right;
+		//foreach ( var frame in frames )
+		//{
+		//	var position = frame.Position;
+		//	var tangent = frame.Forward;
+		//	var finalUp = frame.Up;
+		//	var right = frame.Right;
 
-			// Draw tangent vector (forward)
-			Gizmo.Draw.Color = Color.Red;
-			Gizmo.Draw.Arrow( position, position + tangent * arrowLength, arrowLength / 10f, arrowLength / 15f );
+		//	// Draw tangent vector (forward)
+		//	Gizmo.Draw.Color = Color.Red;
+		//	Gizmo.Draw.Arrow( position, position + tangent * arrowLength, arrowLength / 10f, arrowLength / 15f );
 
-			// Draw up vector (normal)
-			Gizmo.Draw.Color = Color.Green;
-			Gizmo.Draw.Arrow( position, position + finalUp * arrowLength, arrowLength / 10f, arrowLength / 15f );
+		//	// Draw up vector (normal)
+		//	Gizmo.Draw.Color = Color.Green;
+		//	Gizmo.Draw.Arrow( position, position + finalUp * arrowLength, arrowLength / 10f, arrowLength / 15f );
 
-			// Draw right vector (binormal)
-			Gizmo.Draw.Color = Color.Blue;
-			Gizmo.Draw.Arrow( position, position + right * arrowLength, arrowLength / 10f, arrowLength / 15f );
-		}
+		//	// Draw right vector (binormal)
+		//	Gizmo.Draw.Color = Color.Blue;
+		//	Gizmo.Draw.Arrow( position, position + right * arrowLength, arrowLength / 10f, arrowLength / 15f );
+		//}
 	}
 
 	private void UpdateRenderState()
@@ -140,60 +173,57 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			return;
 		}
 
-		// Get the mesh from the model
-		var modelVertices = Model.GetVertices();
-		var modelIndices = Model.GetIndices();
+		var totalVertices = modelVertices.Length * meshesRequired;
+		var totalIndices = modelIndices.Length * meshesRequired;
 
-		deformedVertices.Capacity = Math.Max(modelVertices.Count() * meshesRequired, deformedVertices.Capacity);
-		deformedVertices.Clear();
-
-		deformedIndices.Capacity = Math.Max( modelIndices.Count() * meshesRequired, deformedIndices.Capacity);
-		deformedIndices.Clear();
-
-		var frames = CalculateTangentFramesUsingUpDir( meshesRequired, 16, distancePerMesh );
-
-		int vertexOffset = 0;
-
-		for ( var meshIndex = 0; meshIndex < meshesRequired; meshIndex++ )
+		if ( deformedVertices == null || deformedVertices.Length < totalVertices )
 		{
-			float startDistance = meshIndex * distancePerMesh;
-			float endDistance = (meshIndex + 1) * distancePerMesh;
-
-			float segmentLength = endDistance - startDistance;
-
-			// Deform vertices for this segment
-			for ( int i = 0; i < modelVertices.Length; i++ )
-			{
-				var vertex = modelVertices[i];
-
-				var deformedVertex = vertex;
-
-				// Deform the vertex using tangent frames
-				Deform( vertex.Position, vertex.Normal, vertex.Tangent, frames.GetRange( Math.Max( meshIndex * 16 - 1, 0), meshIndex == 0 ? 16 : 17 ), minInModelDir, sizeInModelDir, out deformedVertex.Position, out deformedVertex.Normal, out deformedVertex.Tangent );
-
-				deformedVertices.Add( deformedVertex );
-			}
-
-			// Copy indices for this segment
-			for ( int i = 0; i < modelIndices.Length; i++ )
-			{
-				deformedIndices.Add((int)(modelIndices[i] + vertexOffset));
-			}
-
-			vertexOffset += modelVertices.Length;
+			deformedVertices = new Vertex[totalVertices];
 		}
+		if ( deformedIndices == null || deformedIndices.Length < totalIndices )
+		{
+			deformedIndices = new int[totalIndices];
+		}
+
+		var frames = UseRotationMinimizingFrames ? CalculateRotationMinimizingTangentFrames( meshesRequired, 16, distancePerMesh ) : CalculateTangentFramesUsingUpDir( meshesRequired, 16, distancePerMesh );
+
+		Utility.Parallel.For( 0,
+				   meshesRequired,
+				   meshIndex => {
+					   // Deform vertices for this segment
+					   for ( int i = 0; i < modelVertices.Length; i++ )
+					   {
+						   var vertex = modelVertices[i];
+
+						   var deformedVertex = vertex;
+
+						   // Deform the vertex using tangent frames
+						   Deform( vertex.Position, vertex.Normal, vertex.Tangent, frames.AsSpan( meshIndex * 16, 17 ) , minInModelDir, sizeInModelDir, out deformedVertex.Position, out deformedVertex.Normal, out deformedVertex.Tangent );
+
+						   deformedVertices[modelVertices.Length * meshIndex + i] = deformedVertex;
+					   }
+
+					   for ( int i = 0; i < modelIndices.Length; i++ )
+					   {
+						   deformedIndices[modelIndices.Length * meshIndex + i] = (int)(modelIndices[i] + modelVertices.Length * meshIndex);
+					   }
+
+				   } );
+
 
 		if ( customMesh.HasVertexBuffer )
 		{
-			customMesh.SetIndexBufferSize( deformedIndices.Count );
-			customMesh.SetVertexBufferSize( deformedVertices.Count );
-			customMesh.SetIndexBufferData( deformedIndices );
-			customMesh.SetVertexBufferData( deformedVertices );
+			customMesh.SetIndexBufferSize( totalIndices );
+			customMesh.SetIndexRange( 0, totalIndices );
+			customMesh.SetVertexBufferSize( totalVertices );
+			customMesh.SetVertexRange( 0, totalVertices );
+			customMesh.SetIndexBufferData( deformedIndices.AsSpan(0, totalIndices) );
+			customMesh.SetVertexBufferData( deformedVertices.AsSpan( 0, totalVertices ) );
 		}
 		else
 		{
-			customMesh.CreateVertexBuffer( deformedVertices.Count, Vertex.Layout, deformedVertices );
-			customMesh.CreateIndexBuffer( deformedIndices.Count, deformedIndices );
+			customMesh.CreateVertexBuffer( totalVertices, Vertex.Layout, deformedVertices.AsSpan( 0, totalVertices ) );
+			customMesh.CreateIndexBuffer( totalIndices, deformedIndices.AsSpan( 0, totalIndices ) );
 		}
 
 		customModel = Model.Builder.AddMesh( customMesh ).Create();
@@ -202,10 +232,10 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		IsDirty = false;
 	}
 
-	private List<Transform> CalculateTangentFramesUsingUpDir( int meshesRequired, int frameCount, float distancePerMesh  )
+	private Transform[] CalculateTangentFramesUsingUpDir( int meshesRequired, int frameCount, float distancePerMesh  )
 	{
-		int totalFrames = meshesRequired * frameCount;
-		List<Transform> frames = new( totalFrames );
+		int totalFrames = meshesRequired * frameCount + 1;
+		Transform[] frames = new Transform[totalFrames];
 
 		float totalSplineLength = Spline.GetLength();
 
@@ -239,16 +269,16 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			// Create scale vector with 1 for x (since we're scaling along y and z)
 			Vector3 scale = new Vector3( 1f, scale2D.x, scale2D.y );
 
-			frames.Add( new Transform( position, rotation, scale ) );
+			frames[i] = new Transform( position, rotation, scale );
 		}
 
 		return frames;
 	}
 
-	private List<Transform> CalculateRotationMinimizingTangentFrames( int meshesRequired, int frameCount, float distancePerMesh )
+	private Transform[] CalculateRotationMinimizingTangentFrames( int meshesRequired, int frameCount, float distancePerMesh )
 	{
-		int totalFrames = meshesRequired * frameCount;
-		List<Transform> frames = new( totalFrames );
+		int totalFrames = meshesRequired * frameCount + 1;
+		Transform[] frames = new Transform[totalFrames];
 
 		float totalSplineLength = Spline.GetLength();
 
@@ -266,7 +296,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		up = Rotation.FromAxis( previousTangent, previousRoll ) * up;
 
 		Vector3 previousPosition = Spline.GetPositionAtDistance( 0f );
-		frames.Add( new Transform( previousPosition, Rotation.LookAt( previousTangent, up ) ) );
+		frames[0] = new Transform( previousPosition, Rotation.LookAt( previousTangent, up ) );
 
 		for ( int i = 1; i < totalFrames; i++ )
 		{
@@ -292,7 +322,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 			// Create scale vector with 1 for x (since we're scaling along y and z)
 			Vector3 scale = new Vector3( 1f, scale2D.x, scale2D.y );
 
-			frames.Add( new Transform( position, rotation, scale ) );
+			frames[i] = new Transform( position, rotation, scale );
 
 			previousTangent = tangent;
 			previousPosition = position;
@@ -300,18 +330,18 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		}
 
 		// Correct up vectors for looped splines
-		if (Spline.IsLoop && frames.Count > 1)
+		if ( Spline.IsLoop && frames.Length > 1)
 		{
 			Vector3 startUp = frames[0].Rotation.Up;
 			Vector3 endUp = frames[^1].Rotation.Up;
 
-			float theta = MathF.Acos(Vector3.Dot(startUp, endUp)) / (frames.Count - 1);
+			float theta = MathF.Acos(Vector3.Dot(startUp, endUp)) / (frames.Length - 1);
 			if (Vector3.Dot(frames[0].Rotation.Forward, Vector3.Cross(startUp, endUp)) > 0)
 			{
 				theta = -theta;
 			}
 
-			for (int i = 0; i < frames.Count; i++)
+			for (int i = 0; i < frames.Length; i++)
 			{
 				Rotation R = Rotation.FromAxis(frames[i].Rotation.Forward, (theta * i).RadianToDegree());
 				Vector3 correctedUp = R * frames[i].Rotation.Up;
@@ -336,15 +366,18 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		return (nL - 2f * r3 * v2).Normal;
 	}
 
-	private void Deform( Vector3 localPosition, Vector3 localNormal, Vector4 localTangent, List<Transform> frames, float minInModelDir, float sizeInModelDir, out Vector3 deformedPosition, out Vector3 deformedNormal, out Vector4 deformedTangent )
+	private void Deform( Vector3 localPosition, Vector3 localNormal, Vector4 localTangent, Span<Transform> frames, float minInModelDir, float sizeInModelDir, out Vector3 deformedPosition, out Vector3 deformedNormal, out Vector4 deformedTangent )
 	{
+		// rotate localPosition by model rotation
+		localPosition = ModelRotation * localPosition;
+
 		// Map localPosition.x to t along the spline segment
 		float t = (localPosition.x - minInModelDir) / sizeInModelDir;
 		t = Math.Clamp( t, 0f, 1f );
 
 		// Calculate the frame index and interpolation factor
-		float frameFloatIndex = t * (frames.Count - 1);
-		int frameIndex = Math.Clamp( (int)Math.Floor( frameFloatIndex ), 0, frames.Count - 2 );
+		float frameFloatIndex = t * (frames.Length - 1);
+		int frameIndex = Math.Clamp( (int)Math.Floor( frameFloatIndex ), 0, frames.Length - 2 );
 		float frameT = Math.Clamp( frameFloatIndex - frameIndex, 0f, 1f );
 
 		Transform frame0 = frames[frameIndex];
@@ -362,7 +395,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		Vector3 scaledLocalPosition = new Vector3( 0, localPosition.y * scale.y, localPosition.z * scale.z );
 
 		// Apply model rotation and local offsets
-		deformedPosition = position + rotation * (ModelRotation * scaledLocalPosition);
+		deformedPosition = position + rotation * scaledLocalPosition;
 
 		deformedNormal = rotation * (ModelRotation * localNormal);
 		deformedTangent = new Vector4( rotation * (ModelRotation * localTangent), localTangent.w );
