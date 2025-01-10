@@ -5,9 +5,9 @@ using System.Threading;
 
 namespace Sandbox;
 
-public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteInEditor
+public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 {
-	[Property, Category( "Spline" )] public SplineComponent Spline { get; set; }
+	[Property, Category( "Spline" )] public Spline Spline { get; set; }
 
 	[Property, Category("Spline")]
 	[Range( 0, 16 )]
@@ -83,7 +83,7 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 
 	private bool _isDirty = true;
 
-	[Property, Category( "Spline" )]
+	[Property, Category( "Spline" ), MinMax( 0, float.PositiveInfinity )]
 	public float Spacing
 	{
 		get => _spacing;
@@ -175,8 +175,8 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 		var totalFrames = meshesRequired * framesPerMesh + 1;
 
 		var frames = UseRotationMinimizingFrames
-			? SplineModelRendererComponent.CalculateRotationMinimizingTangentFrames( Spline, totalFrames )
-			: SplineModelRendererComponent.CalculateTangentFramesUsingUpDir( Spline, totalFrames );
+			? SplineModelRenderer.CalculateRotationMinimizingTangentFrames( Spline, totalFrames )
+			: SplineModelRenderer.CalculateTangentFramesUsingUpDir( Spline, totalFrames );
 
 		// Clear existing shapes
 		_PhysicsBody.ClearShapes();
@@ -193,7 +193,7 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 				var deformedVertices = new List<Vector3>();
 				foreach ( var vertex in subMesh.Vertices )
 				{
-					SplineModelRendererComponent.Deform( Spline, ModelRotation, ModelOffset, ModelScale, vertex, Vector3.Up, new Vector4( Vector3.Up, 0f ), frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out var deformedVertex, out var deformedNormal, out var deformedTangent );
+					SplineModelRenderer.Deform( Spline, ModelRotation, ModelOffset, ModelScale, vertex, Vector3.Up, new Vector4( Vector3.Up, 0f ), frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out var deformedVertex, out var deformedNormal, out var deformedTangent );
 					deformedVertices.Add( deformedVertex );
 				}
 				var shape = _PhysicsBody.AddMeshShape( deformedVertices, subMesh.Indices );
@@ -206,7 +206,7 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 				var deformedVertices = new List<Vector3>();
 				foreach ( var vertex in subHull.Vertices )
 				{
-					SplineModelRendererComponent.Deform( Spline, ModelRotation, ModelOffset, ModelScale, vertex, Vector3.Up, new Vector4( Vector3.Up, 0f ), frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out var deformedVertex, out var deformedNormal, out var deformedTangent );
+					SplineModelRenderer.Deform( Spline, ModelRotation, ModelOffset, ModelScale, vertex, Vector3.Up, new Vector4( Vector3.Up, 0f ), frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out var deformedVertex, out var deformedNormal, out var deformedTangent );
 					deformedVertices.Add( deformedVertex );
 				}
 				var shape = _PhysicsBody.AddHullShape( Vector3.Zero, Rotation.Identity, deformedVertices );

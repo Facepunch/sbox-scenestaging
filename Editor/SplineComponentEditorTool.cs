@@ -1,7 +1,6 @@
 using System;
-using Sandbox.Spline;
 
-public class SplineEditorTool : EditorTool<SplineComponent>
+public class SplineEditorTool : EditorTool<Spline>
 {
 
 	public override void OnEnabled()
@@ -22,7 +21,7 @@ public class SplineEditorTool : EditorTool<SplineComponent>
 
 	public override void OnSelectionChanged()
 	{
-		var target = GetSelectedComponent<SplineComponent>();
+		var target = GetSelectedComponent<Spline>();
 		window.OnSelectionChanged( target );
 	}
 
@@ -31,7 +30,7 @@ public class SplineEditorTool : EditorTool<SplineComponent>
 
 class SplineToolWindow : WidgetWindow
 {
-	SplineComponent targetComponent;
+	Spline targetComponent;
 
 	static bool IsClosed = false;
 
@@ -175,7 +174,7 @@ class SplineToolWindow : WidgetWindow
 		DrawGizmos();
 	}
 
-	public void OnSelectionChanged( SplineComponent spline )
+	public void OnSelectionChanged( Spline spline )
 	{
 		if ( targetComponent.IsValid() )
 		{
@@ -199,7 +198,7 @@ class SplineToolWindow : WidgetWindow
 
 	private void ToggleTangentInput()
 	{
-		if ( targetComponent.GetTangentModeForPoint( _selectedPointIndex ) == Sandbox.Spline.SplinePointTangentMode.Auto || targetComponent.GetTangentModeForPoint( _selectedPointIndex ) == Sandbox.Spline.SplinePointTangentMode.Linear )
+		if ( targetComponent.GetTangentModeForPoint( _selectedPointIndex ) == SplinePointTangentMode.Auto || targetComponent.GetTangentModeForPoint( _selectedPointIndex ) == SplinePointTangentMode.Linear )
 		{
 			inTangentControl.Enabled = false;
 			outTangentControl.Enabled = false;
@@ -223,7 +222,7 @@ class SplineToolWindow : WidgetWindow
 
 	int _selectedPointIndex = 0;
 
-	Sandbox.Spline.SplinePoint _selectedPoint
+	SplinePoint _selectedPoint
 	{
 		get => SelectedPointIndex > targetComponent.NumberOfPoints() - 1 ? new SplinePoint() : targetComponent.GetPoint( SelectedPointIndex );
 		set

@@ -558,7 +558,7 @@
           "Enabled": true,
           "Components": [
             {
-              "__type": "Sandbox.SplineComponent",
+              "__type": "Sandbox.Spline",
               "__guid": "d5a896fc-519a-4a39-9c50-b274f9676398",
               "_pointRolls": [
                 0,
@@ -685,7 +685,7 @@
               "OnComponentUpdate": null
             },
             {
-              "__type": "Sandbox.SplineModelRendererComponent",
+              "__type": "Sandbox.SplineModelRenderer",
               "__guid": "9af7574c-1a96-4896-b454-6e05890437d2",
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
