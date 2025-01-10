@@ -1,27 +1,8 @@
 namespace Sandbox;
 
-public sealed class SplineModelRendererComponent : Component, Component.ExecuteInEditor
+public sealed class SplineModelRendererComponent : ModelRenderer
 {
-	[Property] public SplineComponent Spline { get; set; }
-
-	[Property]
-	public Model Model
-	{
-		get => _model;
-		set
-		{
-			_model = value;
-			// Create a new SceneObject and Mesh
-			customMesh = new();
-			customMesh.Material = Model.Materials.FirstOrDefault();
-
-			modelIndices = Model.GetIndices();
-			modelVertices = Model.GetVertices();
-			IsDirty = true;
-		}
-	}
-
-	private Model _model = null;
+	[Property, Category( "Spline" )] public SplineComponent Spline { get; set; }
 
 	[Property, Category( "Spline" )]
 	public Rotation ModelRotation
@@ -30,7 +11,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		set
 		{
 			_modelRotation = value;
-			IsDirty = true;
+			UpdateObject();
 		}
 	}
 
@@ -43,7 +24,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		set
 		{
 			_modelScale = value;
-			IsDirty = true;
+			UpdateObject();
 		}
 	}
 
@@ -56,7 +37,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		set
 		{
 			_modelOffset = value;
-			IsDirty = true;
+			UpdateObject();
 		}
 	}
 
@@ -69,13 +50,12 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		set
 		{
 			_useRotationMinimizingFrames = value;
-			IsDirty = true;
+			UpdateObject();
 		}
 	}
 
 	private bool _useRotationMinimizingFrames = true;
 
-	private SceneObject sceneObject;
 	private Mesh customMesh = new();
 	private Model customModel = Model.Error;
 
@@ -85,13 +65,6 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 	private Vertex[] deformedVertices;
 	private int[] deformedIndices;
 
-	private bool IsDirty
-	{
-		get => _isDirty; set => _isDirty = value;
-	}
-
-	private bool _isDirty = true;
-
 	[Property, Category( "Spline" )]
 	public float Spacing
 	{
@@ -99,7 +72,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		set
 		{
 			_spacing = value;
-			IsDirty = true;
+			UpdateObject();
 		}
 	}
 
@@ -107,64 +80,24 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	protected override void OnEnabled()
 	{
-		if ( Model.IsValid() && Spline.IsValid() )
+		base.OnEnabled();
+
+		if ( Spline.IsValid() )
 		{
-			IsDirty = true;
-			Spline.SplineChanged += MarkDirty;
-			Transform.OnTransformChanged += OnTransformChanged;
-
-			customMesh = new();
-			customMesh.Material = Model.Materials.FirstOrDefault();
-
-			modelIndices = Model.GetIndices();
-			modelVertices = Model.GetVertices();
-
-			sceneObject = new SceneObject( Scene.SceneWorld, Model );
-			sceneObject.Transform = WorldTransform;
-			sceneObject.SetComponentSource( this );
-			sceneObject.Tags.SetFrom( GameObject.Tags );
-		}
-	}
-
-	private void MarkDirty()
-	{
-		IsDirty = true;
-	}
-
-	private void OnTransformChanged()
-	{
-		if ( sceneObject != null )
-		{
-			sceneObject.Transform = WorldTransform;
+			Spline.SplineChanged += UpdateObject;
 		}
 	}
 
 	protected override void OnDisabled()
 	{
-		if ( sceneObject != null )
+		base.OnDisabled();
+
+		customMesh = null;
+
+		if ( Spline.IsValid() )
 		{
-			sceneObject.Delete();
-			sceneObject = null;
-			customMesh = null;
+			Spline.SplineChanged -= UpdateObject;
 		}
-
-		Spline.SplineChanged -= MarkDirty;
-		Transform.OnTransformChanged -= OnTransformChanged;
-	}
-
-	protected override void OnPreRender()
-	{
-		if ( !Model.IsValid() || !Spline.IsValid() )
-		{
-			return;
-		}
-
-		if ( !Spline.IsDirty && !IsDirty )
-		{
-			return;
-		}
-
-		UpdateRenderState();
 	}
 
 	protected override void DrawGizmos()
@@ -203,13 +136,30 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		//}
 	}
 
-	private void UpdateRenderState()
+	protected override void UpdateObject()
 	{
-		var transformedBounds = Model.Bounds;
+		base.UpdateObject();
+
+		if ( customMesh == null)
+		{
+			customMesh = new();
+		}
+
+		if ( !Scene.IsValid() || !Spline.IsValid() )
+			return;
+
+		// Set by base call
+		var model = SceneObject.Model;
+
+		customMesh.Material = MaterialOverride ?? model.Materials.FirstOrDefault();
+
+		modelIndices = model.GetIndices();
+		modelVertices = model.GetVertices();
+
+		var transformedBounds = model.Bounds;
 		transformedBounds.Mins = transformedBounds.Mins * ModelScale;
 		transformedBounds.Maxs = transformedBounds.Maxs * ModelScale;
 		transformedBounds = transformedBounds.Rotate( ModelRotation );
-		
 
 		var sizeInModelDir = transformedBounds.Size.Dot( Vector3.Forward );
 		var minInModelDir = transformedBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
@@ -273,23 +223,28 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 		if ( customMesh.HasVertexBuffer )
 		{
-			customMesh.SetIndexBufferSize( totalIndices );
-			customMesh.SetIndexRange( 0, totalIndices );
-			customMesh.SetVertexBufferSize( totalVertices );
-			customMesh.SetVertexRange( 0, totalVertices );
+			if ( customMesh.IndexCount < totalIndices )
+			{
+				customMesh.SetIndexBufferSize( deformedIndices.Length );
+			}
 			customMesh.SetIndexBufferData( deformedIndices.AsSpan( 0, totalIndices ) );
+			customMesh.SetIndexRange( 0, totalIndices );
+
+			if ( customMesh.VertexCount < totalVertices )
+			{
+				customMesh.SetVertexBufferSize( deformedVertices.Length );
+			}
+			customMesh.SetVertexRange( 0, totalVertices );
 			customMesh.SetVertexBufferData( deformedVertices.AsSpan( 0, totalVertices ) );
 		}
 		else
 		{
-			customMesh.CreateVertexBuffer( totalVertices, Vertex.Layout, deformedVertices.AsSpan( 0, totalVertices ) );
-			customMesh.CreateIndexBuffer( totalIndices, deformedIndices.AsSpan( 0, totalIndices ) );
+			customMesh.CreateVertexBuffer( deformedVertices.Length, Vertex.Layout, deformedVertices.AsSpan( 0, totalVertices ) );
+			customMesh.CreateIndexBuffer( deformedIndices.Length, deformedIndices.AsSpan( 0, totalIndices ) );
 		}
 
 		customModel = Model.Builder.AddMesh( customMesh ).Create();
-		sceneObject.Model = customModel;
-
-		IsDirty = false;
+		SceneObject.Model = customModel;
 	}
 
 	public static Transform[] CalculateTangentFramesUsingUpDir( SplineComponent spline, int frameCount )
