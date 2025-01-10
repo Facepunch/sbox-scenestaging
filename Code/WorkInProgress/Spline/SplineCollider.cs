@@ -74,7 +74,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 
 	private bool _useRotationMinimizingFrames = false;
 
-	private int _subdivision = 1;
+	private int _subdivision = 0;
 
 	private bool IsDirty
 	{
@@ -95,6 +95,19 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 	}
 
 	private float _spacing = 0f;
+
+	[Property, Category( "Spline" )]
+	public bool FlexFit
+	{
+		get => _flexFit;
+		set
+		{
+			_flexFit = value;
+			IsDirty = true;
+		}
+	}
+
+	private bool _flexFit = false;
 
 	protected override void OnEnabled()
 	{
@@ -160,10 +173,19 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		var minInModelDir = transformedBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
 		var splineLength = Spline.GetLength();
-		var sizeWithSpacing = sizeInModelDir + Spacing;
 
-		var meshesRequired = (int)Math.Ceiling( splineLength / sizeInModelDir );
-		var meshesRequiredWithSpacing = (int)Math.Ceiling( splineLength / sizeWithSpacing );
+		var sizeInModelDirWithSpacing = sizeInModelDir + Spacing;
+		var frameSegments = (int)Math.Ceiling( splineLength / sizeInModelDir );
+		var meshesRequiredWithSpacing = (int)Math.Floor( splineLength / sizeInModelDirWithSpacing );
+		if ( FlexFit )
+		{
+			meshesRequiredWithSpacing = (int)Math.Ceiling( splineLength / sizeInModelDirWithSpacing ); ;
+		}
+		var distancePerMeshWitSpacing = sizeInModelDirWithSpacing;
+		if ( FlexFit )
+		{
+			distancePerMeshWitSpacing = splineLength / meshesRequiredWithSpacing;
+		}
 
 		if ( meshesRequiredWithSpacing == 0 )
 		{
@@ -172,7 +194,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 
 		// Calculate frames along the spline
 		int framesPerMesh = 12; // Adjust as needed
-		var totalFrames = meshesRequired * framesPerMesh + 1;
+		var totalFrames = frameSegments * framesPerMesh + 1;
 
 		var frames = UseRotationMinimizingFrames
 			? SplineModelRenderer.CalculateRotationMinimizingTangentFrames( Spline, totalFrames )
@@ -181,11 +203,10 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		// Clear existing shapes
 		_PhysicsBody.ClearShapes();
 
-		for ( var meshIndex = 0; meshIndex < meshesRequired; meshIndex++ )
+		for ( var meshIndex = 0; meshIndex < meshesRequiredWithSpacing; meshIndex++ )
 		{
-			float startDistance = meshIndex * sizeWithSpacing;
-			float endDistance = startDistance + sizeInModelDir;
-
+			float startDistance = meshIndex * distancePerMeshWitSpacing;
+			float endDistance = startDistance + distancePerMeshWitSpacing - Spacing;
 
 			// Deform meshes
 			foreach ( var subMesh in subMeshes )
@@ -254,8 +275,8 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 
 			foreach ( var capsule in part.Capsules )
 			{
-				var rotatedCenterA = bx.PointToWorld( capsule.Capsule.CenterA ) * ModelRotation;
-				var rotatedCenterB = bx.PointToWorld( capsule.Capsule.CenterB ) * ModelRotation;
+				var rotatedCenterA = bx.PointToWorld( capsule.Capsule.CenterA );
+				var rotatedCenterB = bx.PointToWorld( capsule.Capsule.CenterB );
 				SubdivideCapsule( 4 + Subdivision, rotatedCenterA, rotatedCenterB, capsule.Capsule.Radius, capsule.Surface );
 
 				var capsuleBounds = BBox.FromPoints(
@@ -271,7 +292,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 
 			foreach ( var hull in part.Hulls )
 			{
-				SubdivideHull( hull, Subdivision + 1, hull.Surface, bx );
+				SubdivideHull( hull, Subdivision, hull.Surface, bx );
 
 				var hullBounds = hull.Bounds.Transform( bx ).Rotate( ModelRotation );
 
@@ -347,8 +368,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		// Transform all the hull vertices once
 		// TODO can optimzie this all by getting vertices and lines directly from hull an transforming than once
 		// instead of this LINQ madness, will do once out of scenestaging.
-		List<Vector3> transformedVertices = hull.GetPoints().Select( vertex => transform.PointToWorld( vertex ) * ModelRotation ).ToList();
-
+		List<Vector3> transformedVertices = hull.GetPoints().Select( vertex => transform.PointToWorld( vertex ) ).ToList();
 		if ( ringCount == 0 )
 		{
 			subHulls.Add( new SubHull
@@ -361,8 +381,8 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 
 		// Get the transformed edges
 		var transformedLines = hull.GetLines().Select( line => new Line(
-		transform.PointToWorld( line.Start ) * ModelRotation,
-		transform.PointToWorld( line.End )  * ModelRotation)).ToList();
+		transform.PointToWorld( line.Start ) ,
+		transform.PointToWorld( line.End ) )).ToList();
 
 		// Project all vertices along Vector3.Forward
 		float minProj = transformedVertices.Min( vertex => Vector3.Dot( vertex, Vector3.Forward ) );

@@ -78,6 +78,19 @@ public sealed class SplineModelRenderer : ModelRenderer
 
 	private float _spacing = 0f;
 
+	[Property, Category( "Spline" )]
+	public bool FlexFit
+	{
+		get => _flexFit;
+		set
+		{
+			_flexFit = value;
+			UpdateObject();
+		}
+	}
+
+	private bool _flexFit = false;
+
 	protected override void OnEnabled()
 	{
 		base.OnEnabled();
@@ -165,10 +178,19 @@ public sealed class SplineModelRenderer : ModelRenderer
 		var minInModelDir = transformedBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
 		var splineLength = Spline.GetLength();
-		var sizeWithSpacing = sizeInModelDir + Spacing;
 
-		var meshesRequired = (int)Math.Ceiling( splineLength / sizeInModelDir );
-		var meshesRequiredWithSpacing = (int)Math.Ceiling( splineLength / sizeWithSpacing );
+		var sizeInModelDirWithSpacing = sizeInModelDir + Spacing;
+		var frameSegments = (int)Math.Ceiling( splineLength / sizeInModelDir );
+		var meshesRequiredWithSpacing = (int)Math.Floor( splineLength / sizeInModelDirWithSpacing );
+		if ( FlexFit )
+		{
+			meshesRequiredWithSpacing = (int)Math.Ceiling( splineLength / sizeInModelDirWithSpacing ); ;
+		}
+		var distancePerMeshWitSpacing = sizeInModelDirWithSpacing;
+		if ( FlexFit )
+		{
+			distancePerMeshWitSpacing = splineLength / meshesRequiredWithSpacing;
+		}
 
 		if ( meshesRequiredWithSpacing == 0 )
 		{
@@ -189,15 +211,15 @@ public sealed class SplineModelRenderer : ModelRenderer
 		}
 
 		int framesPerMesh = 12;
-		var frames = UseRotationMinimizingFrames ? CalculateRotationMinimizingTangentFrames( Spline, meshesRequired * framesPerMesh + 1 ) : CalculateTangentFramesUsingUpDir( Spline, meshesRequired * framesPerMesh + 1 );
+		var frames = UseRotationMinimizingFrames ? CalculateRotationMinimizingTangentFrames( Spline, frameSegments * framesPerMesh + 1 ) : CalculateTangentFramesUsingUpDir( Spline, frameSegments * framesPerMesh + 1 );
 
 		Utility.Parallel.For(
 			0,
 			meshesRequiredWithSpacing,
 			meshIndex =>
 			{
-				float startDistance = meshIndex * sizeWithSpacing;
-				float endDistance = startDistance + sizeInModelDir;
+				float startDistance = meshIndex * distancePerMeshWitSpacing;
+				float endDistance = startDistance + distancePerMeshWitSpacing - Spacing;
 
 				// Deform vertices for this segment
 				for ( int i = 0; i < modelVertices.Length; i++ )
@@ -239,12 +261,14 @@ public sealed class SplineModelRenderer : ModelRenderer
 		}
 		else
 		{
-			customMesh.CreateVertexBuffer( deformedVertices.Length, Vertex.Layout, deformedVertices.AsSpan( 0, totalVertices ) );
-			customMesh.CreateIndexBuffer( deformedIndices.Length, deformedIndices.AsSpan( 0, totalIndices ) );
+			customMesh.CreateVertexBuffer( totalVertices, Vertex.Layout, deformedVertices.AsSpan( 0, totalVertices ) );
+			customMesh.CreateIndexBuffer( totalIndices, deformedIndices.AsSpan( 0, totalIndices ) );
 		}
 
 		customModel = Model.Builder.AddMesh( customMesh ).Create();
+		// TODO use modelsystem.ChangeModel
 		SceneObject.Model = customModel;
+		SceneObject.LocalBounds = customModel.Bounds;
 	}
 
 	public static Transform[] CalculateTangentFramesUsingUpDir( Spline spline, int frameCount )

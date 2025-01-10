@@ -157,3 +157,59 @@ public sealed class MoveBrownianComponent : Component
 		//	LocalRotation = Rotation.LookAt( prev - LocalPosition );
 	}
 }
+
+public sealed class MoveAlongSplineComponent : Component
+{
+	[Property] public Spline Spline { get; set; }
+
+	[Property] public float Speed { get; set; } = 20.0f;
+
+	[Property] public bool UpdateRotation { get; set; } = false;
+
+	private float _currentDistance = 0;
+
+	protected override void OnEnabled()
+	{
+		base.OnEnabled();
+
+		if (!Spline.IsValid())
+		{
+			return;
+		}
+		LocalPosition = Spline.GetPositionAtDistance( 0 );
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		if ( IsProxy ) return;
+
+		if ( !Spline.IsValid() )
+		{
+			return;
+		}
+
+		_currentDistance += Time.Delta * Speed;
+
+		if (  _currentDistance > Spline.GetLength() )
+		{
+			_currentDistance = _currentDistance - Spline.GetLength();
+		}
+
+		LocalPosition = Spline.GetPositionAtDistance( _currentDistance );
+
+		if ( UpdateRotation )
+		{
+			// quick and dirty tangent frame
+			var tanget = Spline.GetTangetAtDistance( _currentDistance );
+			Vector3 up = Vector3.Up;
+
+			// Choose an initial up vector if tangent is parallel to Up
+			if ( MathF.Abs( Vector3.Dot( tanget, up ) ) > 0.999f )
+			{
+				up = Vector3.Right;
+			}
+
+			LocalRotation = Rotation.LookAt( tanget, up );
+		}
+	}
+}
