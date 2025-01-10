@@ -23,7 +23,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	private Model _model = null;
 
-	[Property]
+	[Property, Category( "Spline" )]
 	public Rotation ModelRotation
 	{
 		get => _modelRotation;
@@ -36,7 +36,33 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	private Rotation _modelRotation = Rotation.Identity;
 
-	[Property]
+	[Property, Category( "Spline" )]
+	public Vector3 ModelScale
+	{
+		get => _modelScale;
+		set
+		{
+			_modelScale = value;
+			IsDirty = true;
+		}
+	}
+
+	private Vector3 _modelScale = Vector3.One;
+
+	[Property, Category( "Spline" )]
+	public Vector3 ModelOffset
+	{
+		get => _modelOffset;
+		set
+		{
+			_modelOffset = value;
+			IsDirty = true;
+		}
+	}
+
+	private Vector3 _modelOffset = Vector3.Zero;
+
+	[Property, Category( "Spline" )]
 	public bool UseRotationMinimizingFrames
 	{
 		get => _useRotationMinimizingFrames;
@@ -66,7 +92,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	private bool _isDirty = true;
 
-	[Property]
+	[Property, Category( "Spline" )]
 	public float Spacing
 	{
 		get => _spacing;
@@ -179,9 +205,14 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 	private void UpdateRenderState()
 	{
-		var rotatedModelBounds = Model.Bounds.Rotate( ModelRotation );
-		var sizeInModelDir = rotatedModelBounds.Size.Dot( Vector3.Forward );
-		var minInModelDir = rotatedModelBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
+		var transformedBounds = Model.Bounds;
+		transformedBounds.Mins = transformedBounds.Mins * ModelScale;
+		transformedBounds.Maxs = transformedBounds.Maxs * ModelScale;
+		transformedBounds = transformedBounds.Rotate( ModelRotation );
+		
+
+		var sizeInModelDir = transformedBounds.Size.Dot( Vector3.Forward );
+		var minInModelDir = transformedBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
 		var splineLength = Spline.GetLength();
 		var sizeWithSpacing = sizeInModelDir + Spacing;
@@ -226,7 +257,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 					var deformedVertex = vertex;
 
 					// Deform the vertex using tangent frames
-					Deform( Spline, ModelRotation, vertex.Position, vertex.Normal, vertex.Tangent, frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out deformedVertex.Position, out deformedVertex.Normal, out deformedVertex.Tangent );
+					Deform( Spline, ModelRotation, ModelOffset, ModelScale, vertex.Position, vertex.Normal, vertex.Tangent, frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out deformedVertex.Position, out deformedVertex.Normal, out deformedVertex.Tangent );
 
 					deformedVertices[modelVertices.Length * meshIndex + i] = deformedVertex;
 				}
@@ -291,10 +322,9 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 			Rotation rotation = Rotation.LookAt( tangent, newUp );
 
-			// Get scale for y and z directions from the spline
 			Vector2 scale2D = spline.GetScaleAtDistance( distance );
 
-			// Create scale vector with 1 for x (since we're scaling along y and z)
+			// Create scale vector with 1 for x (since we're only scaling along y and z)
 			Vector3 scale = new Vector3( 1f, scale2D.x, scale2D.y );
 
 			frames[i] = new Transform( position, rotation, scale );
@@ -322,8 +352,13 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		float previousRoll = spline.GetRollAtDistance( 0f );
 		up = Rotation.FromAxis( previousTangent, previousRoll ) * up;
 
+		Vector2 scale2D = spline.GetScaleAtDistance( 0f );
+
+		// Create scale vector with 1 for x (since we're only scaling along y and z)
+		Vector3 scale = new Vector3( 1f, scale2D.x, scale2D.y );
+
 		Vector3 previousPosition = spline.GetPositionAtDistance( 0f );
-		frames[0] = new Transform( previousPosition, Rotation.LookAt( previousTangent, up ) );
+		frames[0] = new Transform( previousPosition, Rotation.LookAt( previousTangent, up ), scale );
 
 		for ( int i = 1; i < frameCount; i++ )
 		{
@@ -343,11 +378,10 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 
 			Rotation rotation = Rotation.LookAt( tangent, up );
 
-			// Get scale for y and z directions from the spline
-			Vector2 scale2D = spline.GetScaleAtDistance( distance );
+			scale2D = spline.GetScaleAtDistance( distance );
 
-			// Create scale vector with 1 for x (since we're scaling along y and z)
-			Vector3 scale = new Vector3( 1f, scale2D.x, scale2D.y );
+			// Create scale vector with 1 for x (since we're only scaling along y and z)
+			scale = new Vector3( 1f, scale2D.x, scale2D.y );
 
 			frames[i] = new Transform( position, rotation, scale );
 
@@ -393,10 +427,11 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		return (nL - 2f * r3 * v2).Normal;
 	}
 
-	public static void Deform( SplineComponent spline, Rotation modelRoation, Vector3 localPosition, Vector3 localNormal, Vector4 localTangent, Span<Transform> frames, float startDistance, float endDistance, float minInModelDir, float sizeInModelDir, out Vector3 deformedPosition, out Vector3 deformedNormal, out Vector4 deformedTangent )
+	// TODO Has there ever been a function with more args?
+	public static void Deform( SplineComponent spline, Rotation modelRoation, Vector3 modelOffset, Vector3 modelScale, Vector3 localPosition, Vector3 localNormal, Vector4 localTangent, Span<Transform> frames, float startDistance, float endDistance, float minInModelDir, float sizeInModelDir, out Vector3 deformedPosition, out Vector3 deformedNormal, out Vector4 deformedTangent )
 	{
 		// rotate localPosition by model rotation
-		localPosition = modelRoation * localPosition;
+		localPosition = modelRoation * (localPosition * modelScale);
 
 		// Map localPosition.x to t along the spline segment
 		float t = (localPosition.x - minInModelDir) / sizeInModelDir;
@@ -424,7 +459,7 @@ public sealed class SplineModelRendererComponent : Component, Component.ExecuteI
 		Vector3 scaledLocalPosition = new Vector3( 0, localPosition.y * scale.y, localPosition.z * scale.z );
 
 		// Apply model rotation and local offsets
-		deformedPosition = position + rotation * scaledLocalPosition;
+		deformedPosition = position + rotation * scaledLocalPosition + modelOffset;
 
 		deformedNormal = rotation * (modelRoation * localNormal);
 		deformedTangent = new Vector4( rotation * (modelRoation * localTangent), localTangent.w );

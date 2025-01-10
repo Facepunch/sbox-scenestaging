@@ -7,9 +7,9 @@ namespace Sandbox;
 
 public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteInEditor
 {
-	[Property] public SplineComponent Spline { get; set; }
+	[Property, Category( "Spline" )] public SplineComponent Spline { get; set; }
 
-	[Property]
+	[Property, Category("Spline")]
 	[Range( 0, 16 )]
 	public int Subdivision
 	{
@@ -20,12 +20,48 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 		}
 	}
 
-	[Property]
-	public Rotation ModelRotation { get; set; } = Rotation.Identity;
+	[Property, Category( "Spline" )]
+	public Rotation ModelRotation
+	{
+		get => _modelRotation;
+		set
+		{
+			_modelRotation = value;
+			IsDirty = true;
+		}
+	}
+
+	private Rotation _modelRotation = Rotation.Identity;
+
+	[Property, Category( "Spline" )]
+	public Vector3 ModelScale
+	{
+		get => _modelScale;
+		set
+		{
+			_modelScale = value;
+			IsDirty = true;
+		}
+	}
+
+	private Vector3 _modelScale = Vector3.One;
+
+	[Property, Category( "Spline" )]
+	public Vector3 ModelOffset
+	{
+		get => _modelOffset;
+		set
+		{
+			_modelOffset = value;
+			IsDirty = true;
+		}
+	}
+
+	private Vector3 _modelOffset = Vector3.Zero;
 
 	private Vector3 ModelForward => ModelRotation.Forward;
 
-	[Property]
+	[Property, Category( "Spline" )]
 	public bool UseRotationMinimizingFrames
 	{
 		get => _useRotationMinimizingFrames;
@@ -47,7 +83,7 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 
 	private bool _isDirty = true;
 
-	[Property]
+	[Property, Category( "Spline" )]
 	public float Spacing
 	{
 		get => _spacing;
@@ -115,9 +151,13 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 		if ( _physicPartBounds is null )
 			return;
 
-		var rotatedModelBounds = Model.Bounds.Rotate( ModelRotation );
-		var sizeInModelDir = rotatedModelBounds.Size.Dot( Vector3.Forward );
-		var minInModelDir = rotatedModelBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
+		var transformedBounds = Model.Bounds;
+		transformedBounds.Mins = transformedBounds.Mins * ModelScale;
+		transformedBounds.Maxs = transformedBounds.Maxs * ModelScale;
+		transformedBounds = transformedBounds.Rotate( ModelRotation );
+
+		var sizeInModelDir = transformedBounds.Size.Dot( Vector3.Forward );
+		var minInModelDir = transformedBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
 		var splineLength = Spline.GetLength();
 		var sizeWithSpacing = sizeInModelDir + Spacing;
@@ -153,7 +193,7 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 				var deformedVertices = new List<Vector3>();
 				foreach ( var vertex in subMesh.Vertices )
 				{
-					SplineModelRendererComponent.Deform( Spline, ModelRotation, vertex, Vector3.Up, new Vector4( Vector3.Up, 0f ), frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out var deformedVertex, out var deformedNormal, out var deformedTangent );
+					SplineModelRendererComponent.Deform( Spline, ModelRotation, ModelOffset, ModelScale, vertex, Vector3.Up, new Vector4( Vector3.Up, 0f ), frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out var deformedVertex, out var deformedNormal, out var deformedTangent );
 					deformedVertices.Add( deformedVertex );
 				}
 				var shape = _PhysicsBody.AddMeshShape( deformedVertices, subMesh.Indices );
@@ -166,7 +206,7 @@ public sealed class SplineColliderComponent : ModelCollider, Component.ExecuteIn
 				var deformedVertices = new List<Vector3>();
 				foreach ( var vertex in subHull.Vertices )
 				{
-					SplineModelRendererComponent.Deform( Spline, ModelRotation, vertex, Vector3.Up, new Vector4( Vector3.Up, 0f ), frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out var deformedVertex, out var deformedNormal, out var deformedTangent );
+					SplineModelRendererComponent.Deform( Spline, ModelRotation, ModelOffset, ModelScale, vertex, Vector3.Up, new Vector4( Vector3.Up, 0f ), frames, startDistance, endDistance, minInModelDir, sizeInModelDir, out var deformedVertex, out var deformedNormal, out var deformedTangent );
 					deformedVertices.Add( deformedVertex );
 				}
 				var shape = _PhysicsBody.AddHullShape( Vector3.Zero, Rotation.Identity, deformedVertices );
