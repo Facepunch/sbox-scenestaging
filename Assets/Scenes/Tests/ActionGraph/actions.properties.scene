@@ -1,0 +1,470 @@
+{
+  "__guid": "512db916-f863-4da7-966d-71755b4af3ef",
+  "GameObjects": [
+    {
+      "__guid": "e0f32e43-bc50-41ad-9aa4-4c0e454dc747",
+      "Flags": 0,
+      "Name": "Sun",
+      "Position": "0,0,100",
+      "Rotation": "-0.06201506,0.5347982,0.2700481,0.7982603",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "94a97b2f-9407-4782-8761-3b40fab9beb0",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ]
+    },
+    {
+      "__guid": "0f2468ba-fe3b-4d07-9d73-18aa24bf06e9",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-379.6557,-126.844,165.2387",
+      "Rotation": "-0.04510347,0.2281259,0.1886413,0.9541167",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "68456ecc-974c-428d-8b03-6198c5665372",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 80,
+          "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "__guid": "af74193f-d45d-463d-b5de-2c3063f2184b",
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "0,0,-256",
+      "Scale": "8,8,8",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "839f9ca6-9375-4c51-9506-3f2edea1141a",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": "dev/helper/testgrid.vmat",
+          "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "1271776a-9f50-4819-b5d7-6110e5cb65a0",
+          "Center": "0,0,0",
+          "Friction": null,
+          "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "d5dd95fa-ec67-4d5d-a5bd-49d2f29bc663",
+      "Flags": 0,
+      "Name": "Sphere",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "57f6ce99-f2f9-4362-9c6a-3f732c5832cd",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ActionGraphs.ActionsInvoker",
+          "__guid": "9689927c-161d-43ce-b734-d765ec4846bf",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnDestroyAction": null,
+          "OnDisabledAction": null,
+          "OnEnabledAction": null,
+          "OnFixedUpdateAction": null,
+          "OnUpdateAction": {
+            "__version": 9,
+            "__guid": "4b4a770a-fd9e-45d8-a01d-26b98e531fe5",
+            "__changeId": 77,
+            "UserData": {
+              "Title": "On Update Action",
+              "ReferencedComponentTypes": []
+            },
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "input",
+                "UserData": {
+                  "Position": "-252,-36"
+                }
+              },
+              {
+                "Id": 13,
+                "Type": "input.pressed",
+                "UserData": {
+                  "Position": "-228,12"
+                }
+              },
+              {
+                "Id": 15,
+                "Type": "if",
+                "UserData": {
+                  "Position": "-72,-24"
+                }
+              },
+              {
+                "Id": 18,
+                "Type": "property.dynamic",
+                "Properties": {
+                  "_kind": "Increment",
+                  "_name": "clicks",
+                  "_type": "System.Int32"
+                },
+                "UserData": {
+                  "Position": "72,0"
+                }
+              },
+              {
+                "Id": 22,
+                "Type": "property",
+                "Properties": {
+                  "_name": "Tint",
+                  "_type": "Sandbox.ModelRenderer"
+                },
+                "UserData": {
+                  "Position": "72,36"
+                }
+              },
+              {
+                "Id": 23,
+                "Type": "scene.ref",
+                "ParentId": 22
+              },
+              {
+                "Id": 24,
+                "Type": "random.color",
+                "UserData": {
+                  "Position": "-240,60"
+                }
+              },
+              {
+                "Id": 28,
+                "Type": "scene.ref",
+                "UserData": {
+                  "Position": "240,156"
+                }
+              },
+              {
+                "Id": 29,
+                "Type": "property",
+                "Properties": {
+                  "_name": "Text",
+                  "_type": "Sandbox.TextRenderer"
+                },
+                "UserData": {
+                  "Position": "372,36"
+                }
+              },
+              {
+                "Id": 30,
+                "Type": "call",
+                "Properties": {
+                  "_isStatic": true,
+                  "_name": "Format",
+                  "_type": "System.String"
+                },
+                "UserData": {
+                  "Position": "216,264"
+                }
+              },
+              {
+                "Id": 42,
+                "Type": "property.dynamic",
+                "Properties": {
+                  "_name": "clicks",
+                  "_type": "System.Int32"
+                },
+                "UserData": {
+                  "Position": "48,324"
+                }
+              }
+            ],
+            "Links": [
+              {
+                "Id": 19,
+                "Value": "attack1",
+                "DstId": 13,
+                "DstName": "action"
+              },
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 15,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 13,
+                "SrcName": "_result",
+                "DstId": 15,
+                "DstName": "condition"
+              },
+              {
+                "SrcId": 15,
+                "SrcName": "true",
+                "DstId": 18,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 0,
+                "SrcName": "_target",
+                "DstId": 18,
+                "DstName": "_target"
+              },
+              {
+                "SrcId": 15,
+                "SrcName": "true",
+                "DstId": 22,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 23,
+                "SrcName": "_result",
+                "DstId": 22,
+                "DstName": "_target"
+              },
+              {
+                "SrcId": 24,
+                "SrcName": "_result",
+                "DstId": 22,
+                "DstName": "_value"
+              },
+              {
+                "SrcId": 22,
+                "SrcName": "_signal",
+                "DstId": 29,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 28,
+                "SrcName": "_result",
+                "DstId": 29,
+                "DstName": "_target",
+                "UserData": {
+                  "x": -12
+                }
+              },
+              {
+                "SrcId": 30,
+                "SrcName": "_result",
+                "DstId": 29,
+                "DstName": "_value",
+                "UserData": {
+                  "x": 48
+                }
+              },
+              {
+                "SrcId": 42,
+                "SrcName": "_result",
+                "DstId": 30,
+                "DstName": "args",
+                "DstIndex": 0
+              },
+              {
+                "Id": 41,
+                "Value": "Clicks: {0}",
+                "DstId": 30,
+                "DstName": "format"
+              },
+              {
+                "SrcId": 0,
+                "SrcName": "_target",
+                "DstId": 42,
+                "DstName": "_target"
+              }
+            ],
+            "Defaults": {
+              "$23.component": {
+                "_type": "component",
+                "component_id": "57f6ce99-f2f9-4362-9c6a-3f732c5832cd",
+                "go": "d5dd95fa-ec67-4d5d-a5bd-49d2f29bc663",
+                "component_type": "ModelRenderer"
+              },
+              "$28.component": {
+                "_type": "component",
+                "component_id": "ce6fc3a0-7f3c-439e-8eb4-a2fe60770849",
+                "go": "28a9d264-23b5-497b-ac02-5300686f555d",
+                "component_type": "TextRenderer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "__guid": "28a9d264-23b5-497b-ac02-5300686f555d",
+      "Flags": 0,
+      "Name": "Text",
+      "Position": "-35.75093,34.02826,64",
+      "Rotation": "0,0,0.1719291,0.9851093",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.TextRenderer",
+          "__guid": "ce6fc3a0-7f3c-439e-8eb4-a2fe60770849",
+          "__version": 1,
+          "BlendMode": "Normal",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "Scale": 0.3,
+          "TextAlignment": "Left",
+          "TextScope": {
+            "Text": "Clicks: 0",
+            "TextColor": "1,1,1,1",
+            "FontName": "Poppins",
+            "FontSize": 64,
+            "FontWeight": 800,
+            "FontItalic": false,
+            "LineHeight": 1,
+            "LetterSpacing": 0,
+            "WordSpacing": 0,
+            "Outline": {
+              "Enabled": false,
+              "Size": 4,
+              "Color": "0,0,1,1"
+            },
+            "Shadow": {
+              "Enabled": false,
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            },
+            "OutlineUnder": {
+              "Enabled": false,
+              "Size": 4,
+              "Color": "0,1,0,1"
+            },
+            "ShadowUnder": {
+              "Enabled": false,
+              "Size": 4,
+              "Color": "0,0,0,1",
+              "Offset": "4,4"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {},
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": null,
+  "Description": null,
+  "__references": [],
+  "__version": 2
+}
