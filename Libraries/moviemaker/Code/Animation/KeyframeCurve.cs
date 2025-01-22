@@ -96,3 +96,35 @@ public class KeyframeCurve<T> : KeyframeCurve
 		return interpolator.Interpolate( prev.Value, next.Value, eased );
 	}
 }
+
+internal class KeyframeCurveEdit : IAnimationEdit
+{
+	private readonly KeyframeCurve _keyframes;
+	private readonly IReadOnlySet<AnimationTrack> _affectedTracks;
+
+	public float? StartTime => null;
+
+	public float? EndTime => null;
+
+	public AnimationTrack Track { get; }
+
+	public KeyframeCurveEdit( AnimationTrack track )
+	{
+		Track = track;
+
+		_keyframes = KeyframeCurve.Create( track.Type );
+		_affectedTracks = new HashSet<AnimationTrack> { track };
+	}
+
+	public IReadOnlySet<AnimationTrack> GetAffectedTracks( AnimationClip clip ) => _affectedTracks;
+
+	public T Apply<T>( AnimationTrack track, T value, float time )
+	{
+		if ( _keyframes is not KeyframeCurve<T> curve )
+		{
+			throw new InvalidOperationException( $"Incorrect value type, expected '{_keyframes.ValueType}' but got '{typeof(T)}'." );
+		}
+
+		return curve.GetValue( time );
+	}
+}
