@@ -5,8 +5,10 @@ namespace Editor.MovieMaker;
 
 public class ToolbarWidget : Widget
 {
-	public Session Session { get; private set; }
-	public MovieEditor Editor { get; private set; }
+	public Session Session { get; }
+	public MovieEditor Editor { get; }
+
+	public Layout EditModeControls { get; }
 
 	ComboBox PlayerDropdown;
 
@@ -21,21 +23,22 @@ public class ToolbarWidget : Widget
 
 		{
 			PlayerDropdown = new ComboBox( this );
-			PlayerDropdown.FixedWidth = 150;
+			PlayerDropdown.FixedWidth = 250;
 			Layout.Add( PlayerDropdown );
 		}
 
+		Layout.AddSpacingCell( 16f );
+
+		foreach ( var type in EditMode.AllTypes )
 		{
-			var btn = new IconButton( "radio_button_checked" );
-			btn.ToolTip = "Keyframe Record";
-			btn.IconSize = 16;
-			btn.IsToggle = true;
-			btn.Background = Color.Transparent;
-			btn.BackgroundActive = Color.Transparent;
-			btn.ForegroundActive = Theme.Red;
-			btn.Bind( "IsActive" ).From( () => Session.KeyframeRecording, x => Session.KeyframeRecording = x );
+			var btn = new IconButton( type.Icon ) { ToolTip = type.Title, IsToggle = true, IconSize = 16 };
+
+			btn.Bind( "IsActive" ).From( () => type.IsMatchingType( Session.EditMode ), x => Session.SetEditMode( type ) );
+
 			Layout.Add( btn );
 		}
+
+		Layout.AddSpacingCell( 16f );
 
 		{
 			var btn = new IconButton( "play_arrow" );
@@ -50,8 +53,8 @@ public class ToolbarWidget : Widget
 		}
 
 		{
-			var btn = new IconButton( "all_inclusive" );
-			btn.ToolTip = "Loop when reaching end";
+			var btn = new IconButton( "repeat" );
+			btn.ToolTip = "Loop at End of Playback";
 			btn.IsToggle = true;
 			btn.IconSize = 16;
 			btn.Background = Color.Transparent;
@@ -60,6 +63,9 @@ public class ToolbarWidget : Widget
 			btn.Bind( "IsActive" ).From( () => Session.Loop, x => Session.Loop = x );
 			Layout.Add( btn );
 		}
+
+		EditModeControls = Layout.AddRow();
+		EditModeControls.Spacing = 2;
 
 		Layout.AddStretchCell();
 	}
@@ -70,11 +76,11 @@ public class ToolbarWidget : Widget
 		Paint.DrawRect( LocalRect );
 	}
 
-	internal void UpdatePlayers( List<MovieClipPlayer> playersAvailable )
+	internal void UpdatePlayers( List<MoviePlayer> playersAvailable )
 	{
 		foreach ( var player in playersAvailable )
 		{
-			PlayerDropdown.AddItem( player.GameObject.Name, "movie", () => Editor.Switch( player ), null, player.clip == Session.Clip );
+			PlayerDropdown.AddItem( player.GameObject.Name, "movie", () => Editor.Switch( player ), null, player.MovieClip == Session.Clip );
 		}
 
 		PlayerDropdown.AddItem( "Create New..", "add_photo_alternate", () => Editor.CreateNew() );
