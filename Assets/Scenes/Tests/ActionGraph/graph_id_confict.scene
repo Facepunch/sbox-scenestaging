@@ -1,0 +1,206 @@
+{
+  "__guid": "ed8214d9-6866-4a24-9c20-63ba44ff4681",
+  "GameObjects": [
+    {
+      "__guid": "f23dd974-06c1-4453-94bd-3f49ae112b37",
+      "Flags": 0,
+      "Name": "Not Prefab",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "e16cb5f8-bc6a-40a0-9218-3d3f3b823782",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ActionGraphs.ActionsInvoker",
+          "__guid": "ef474a02-2114-4114-bd80-9d722581900a",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnDestroyAction": null,
+          "OnDisabledAction": null,
+          "OnEnabledAction": {
+            "__version": 9,
+            "__guid": "ccbeee2e-641b-4560-9d58-0da5679b6f8c",
+            "__changeId": 113,
+            "UserData": {
+              "Title": "On Enabled Action",
+              "ReferencedComponentTypes": []
+            },
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "input"
+              },
+              {
+                "Id": 5,
+                "Type": "property",
+                "Properties": {
+                  "_name": "Tint",
+                  "_type": "Sandbox.ModelRenderer"
+                },
+                "UserData": {
+                  "Position": "180,36"
+                }
+              },
+              {
+                "Id": 6,
+                "Type": "scene.ref",
+                "ParentId": 5
+              }
+            ],
+            "Links": [
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 5,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 6,
+                "SrcName": "_result",
+                "DstId": 5,
+                "DstName": "_target"
+              },
+              {
+                "Id": 136,
+                "Value": "1,0,0,1",
+                "DstId": 5,
+                "DstName": "_value"
+              }
+            ],
+            "Defaults": {
+              "$6.component": {
+                "_type": "component",
+                "component_id": "e16cb5f8-bc6a-40a0-9218-3d3f3b823782",
+                "go": "f23dd974-06c1-4453-94bd-3f49ae112b37",
+                "component_type": "ModelRenderer"
+              }
+            }
+          },
+          "OnFixedUpdateAction": null,
+          "OnUpdateAction": null
+        }
+      ]
+    },
+    {
+      "__guid": "eba287e1-d8e6-4243-ae1a-860e4799196d",
+      "Flags": 0,
+      "Name": "Prefab",
+      "Position": "0,95.9097,0",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/actiongraph/sphere_with_action.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "e3e67b91-1410-4646-b843-cc4bf51e2d3c",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-186.9372,44.58511,7.364919",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "e84e58e6-9aa5-4bcb-8b51-4a6ca263e37b",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "__guid": "4d7f95e5-3bc6-4149-9f57-5e338dfec52e",
+      "Flags": 0,
+      "Name": "Sun",
+      "Position": "0,0,256",
+      "Rotation": "0.2602554,0.2805596,-0.6283123,0.6773309",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "274b926d-599e-4b94-be16-97a6832c6007",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Shadows": true,
+          "SkyColor": "0,0,0,0"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {},
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": null,
+  "Description": null,
+  "__references": [],
+  "__version": 2
+}
