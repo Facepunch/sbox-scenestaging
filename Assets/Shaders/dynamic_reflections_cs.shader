@@ -38,11 +38,15 @@ COMMON
 CS
 {
     #include "common/classes/Depth.hlsl"
+    #include "common/classes/ScreenSpaceTrace.hlsl"
     #include "common/classes/Normals.hlsl"
 
 	#define floatx float4
-
+    
+    Texture2D               PrevFrameTexture        < Attribute( "PrevFrameTexture" ); >;
 	Texture2D 				BlueNoise  		 		< Attribute( "BlueNoise" ); >;			// Blue noise texture
+
+    Texture2D               Intersection            < Attribute( "Intersection" ); >;
 	Texture2D 				DownsampledDepth		< Attribute( "DepthChainDownsample" ); >;
 	Texture2D 				DownsampledDepthHistory	< Attribute( "DepthChainDownsamplePrevFrame" ); >;
 	Texture2D 				ReflectionGBuffer		< Attribute( "ReflectionGBuffer" ); >;	// Reflection GBuffer, xy: encoded Normal, z: ray length in projection space, w: roughness
@@ -57,7 +61,6 @@ CS
 	Texture2D 				SampleCount				< Attribute( "SampleCount" ); >;
 	Texture2D 				SampleCountHistory		< Attribute( "SampleCountHistory" ); >;
 	
-    RWTexture2D<float4>		OutIntersection	        < Attribute( "OutIntersection" ); >;
 	RWTexture2D<float4>		OutReprojectedRadiance	< Attribute( "OutReprojectedRadiance" ); >;
 	RWTexture2D<float4>		OutAverageRadiance		< Attribute( "OutAverageRadiance" ); >;
 	RWTexture2D<float>		OutVariance				< Attribute( "OutVariance" ); >;
@@ -81,35 +84,6 @@ CS
         return flDepth;
     }
 
-    // Transforms origin to uv space
-    // Mat must be able to transform origin from its current space into clip space.
-    float3 ProjectPosition(float3 origin, float4x4 mat)
-	{
-        float4 projected = Position4WsToPs(float4(origin, 1.0));
-        projected.xyz /= projected.w;
-        projected.xy = 0.5 * projected.xy + 0.5;
-        projected.y = (1 - projected.y);
-        return projected.xyz;
-    }
-
-    // Origin and direction must be in the same space and mat must be able to transform from that space into clip space.
-    float3 ProjectDirection(float3 origin, float3 direction, float3 screen_space_origin, float4x4 mat)
-	{
-        float3 offsetted = ProjectPosition(origin + direction, mat);
-        return offsetted - screen_space_origin;
-    }
-
-    // Mat must be able to transform origin from texture space to a linear space.
-    float3 InvProjectPosition(float3 coord, float4x4 mat)
-	{
-        coord.y = (1 - coord.y);
-        coord.xy = 2 * coord.xy - 1;
-        float4 projected = mul(mat, float4(coord, 1));
-        projected.xyz /= projected.w;
-        return projected.xyz;
-    }
-
-    float3 ScreenSpaceToWorldSpace(float3 screen_space_position) { return InvProjectPosition(screen_space_position, g_matProjectionToWorld);}
     float3 ScreenSpaceToViewSpace(float3 screen_space_position) { return InvProjectPosition(screen_space_position, g_matProjectionToView); }
 
     // Todo: Use Motion:: class instead
@@ -120,8 +94,35 @@ CS
     }
 
     //--------------------------------------------------------------------------------------
+    
+    // GGX importance sampling function
+    float3 ReferenceImportanceSampleGGX(float2 Xi, float roughness, float3 N)
+    {
+        float a = roughness * roughness;
 
-    float3 Intersect( int2 vDispatch, int2 vGroupId )
+        float phi = 2.0 * 3.141592 * Xi.x;
+        float cosTheta = sqrt((1.0 - Xi.y) / (1.0 + (a * a - 1.0) * Xi.y));
+        float sinTheta = sqrt(1.0 - cosTheta * cosTheta);
+
+        float3 H;
+        H.x = sinTheta * cos(phi);
+        H.y = sinTheta * sin(phi);
+        H.z = cosTheta;
+
+        // Tangent space to world space
+        float3 upVector = abs(N.z) < 0.999 ? float3(0, 0, 1) : float3(1, 0, 0);
+        float3 T = normalize(cross(upVector, N));
+        float3 B = cross(N, T);
+
+        float3 sampleDirection = H.x * T + H.y * B + H.z * N;
+
+        if ( any(isnan(sampleDirection) ) )
+            return N;
+
+        return normalize(sampleDirection);
+    }
+
+    void Pass_Reflections_Intersect( int2 vDispatch, int2 vGroupId )
     {
         const int nSamplesPerPixel = 1;
 
@@ -129,7 +130,7 @@ CS
         // Fetch stuff
         // ---------------------------------------------
         float3 vPositionWs = Depth::GetWorldPosition( vDispatch );
-        const float3 vRayWs = normalize( vPositionWs - g_vCameraPositionWs.xyz );
+        const float3 vRayWs = normalize(  vPositionWs - g_vCameraPositionWs );
 
         //----------------------------------------------
 
@@ -140,6 +141,8 @@ CS
 
         float InvSampleCount = 1.0 / nSamplesPerPixel;
 
+        int nDownsampleRatio = 0;
+
         //----------------------------------------------
         [unroll]
         for ( uint k = 0; k < nSamplesPerPixel; k++ )
@@ -148,10 +151,10 @@ CS
             // Get noise value
             // ---------------------------------------------
             float2 vDitherCoord = mad( vDispatch + (k * 50), ( 1.0f / 256.0f ), g_vRandomFloats.xy );
-            float3 vNoise = AttributeTex2DS(BlueNoise, PointWrap, vDitherCoord.xy).rgb;
+            float3 vNoise = BlueNoise[ vDitherCoord.xy ].rgb;
 
             // Randomize dir by roughness
-            float flRoughness = 0;
+            float flRoughness = Roughness::Sample( vDispatch );
             float3 vNormal = Normals::Sample( vDispatch );
             float3 H = ReferenceImportanceSampleGGX(vNoise.rg, flRoughness, vNormal);
 
@@ -161,7 +164,7 @@ CS
             //----------------------------------------------
             // Trace reflection
             // ---------------------------------------------
-            TraceResult trace = ScreenSpace::Trace( vPositionWs, vReflectWs, vPositionSs, 48, 0, 1 );
+            TraceResult trace = ScreenSpace::Trace( vPositionWs, vReflectWs, vPositionSs, 48, 0, nDownsampleRatio );
 
             //----------------------------------------------
             // Reproject
@@ -177,14 +180,15 @@ CS
             // ---------------------------------------------
             bool bValidSample = (trace.Confidence > 0.0);
 
-            //vColor += Tex2DLoad( g_tPrevFrameTexture, uint3( vLastFramePositionHitSs, 0) ).rgb * bValidSample;
+            vColor += Tex2DLoad( PrevFrameTexture, uint3( vLastFramePositionHitSs, 0) ).rgb * bValidSample;
+
+
+            //vColor = float3( trace.HitClipSpace.xy * g_vInvViewportSize, trace.HitClipSpace.z);
             flConfidence += bValidSample * InvSampleCount;
 
             nValidSamples += bValidSample;
         }
-        vColor /= max( nValidSamples, 1 );
-
-        OutIntersection[vDispatch] = float4(vColor, flConfidence);
+        OutRadiance[vDispatch] = float4(vColor, flConfidence);
     }
 
 	//--------------------------------------------------------------------------------------

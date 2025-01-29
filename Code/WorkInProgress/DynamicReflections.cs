@@ -42,9 +42,11 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
     protected override void OnEnabled()
     {
         commands = new Rendering.CommandList( "Dynamic Reflections" );
+        _getLastFrameColorCommand = new Rendering.CommandList( "Get Last Frame Color" );
         OnDirty();
 
-        Camera.AddCommandList( commands, Rendering.Stage.AfterDepthPrepass );
+        Camera.AddCommandList( commands, Rendering.Stage.AfterDepthPrepass, int.MaxValue );
+        Camera.AddCommandList( _getLastFrameColorCommand, Rendering.Stage.AfterOpaque, int.MaxValue );
     }
 
     protected override void OnDisabled()
@@ -64,16 +66,17 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
         if ( commands is null )
             return;
 
+        _getLastFrameColorCommand.Reset();
         commands.Reset();
         
 		bool pingPong = (Frame++ % 2) == 0;
-        int downsampleRatio = (int)Math.Pow( 2, Quality );
-
-        commands.Set( "BlueNoiseIndex", BlueNoise.Index );
-
-        commands.GrabFrameTexture( "PrevFrameTexture" );
+        int downsampleRatio = (int)Math.Pow( 2, 0 );
+        
+        commands.Set( "BlueNoiseIndex", Texture.Load( "textures/dev/blue_noise_256.vtex" ).Index );
 
         var PreviousFrameColorRT = commands.GetRenderTarget( "PrevFrameTexture", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
+        _getLastFrameColorCommand.GrabFrameTexture( "PrevFrameTexture" );
+
         var PreviousGBuffer	     = commands.GetRenderTarget( "PrevGBuffer",  ImageFormat.RGBA8888, sizeFactor: downsampleRatio );
 
         var Radiance0 = commands.GetRenderTarget( $"Radiance{pingPong}", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
@@ -104,6 +107,7 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
             //        break;
             //    }
             case Passes.Intersect:
+                commands.Set( "OutRadiance", Radiance0.ColorTexture );
                 break;
 
             case Passes.DenoiseReproject:
@@ -145,6 +149,7 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
             commands.Set( "PreviousFrameColor", PreviousFrameColorRT.ColorTexture );
             commands.Set( "AverageRadiance", AverageRadiance0.ColorTexture );
             commands.Set( "AverageRadianceHistory", AverageRadiance1.ColorTexture );
+            commands.Set( "PrevFrameTexture", PreviousFrameColorRT.ColorTexture );
 
             // Set the pass
             commands.SetCombo( "D_PASS", (int)pass );
@@ -153,5 +158,6 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 
         // Final SSR color to be used by shaders
         commands.SetGlobal( "ReflectionColorIndex", Radiance0.ColorIndex );
+        
     }
 }
