@@ -32,7 +32,7 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 
     enum Passes
     {
-        ClassifyTiles,
+        //ClassifyTiles,
         Intersect,
         DenoiseReproject,
         DenoisePrefilter,
