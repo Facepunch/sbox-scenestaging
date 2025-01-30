@@ -149,7 +149,8 @@ public class IES : Sandbox.Resources.TextureGenerator
 
 		float maxAngle = info.VerticalAngles.Max();
 
-		byte[] imageData = new byte[width * height * 4];
+		const int bpp = 1;
+		byte[] imageData = new byte[width * height * bpp];
 
 		for ( int y = 0; y < height; ++y )
 		{
@@ -159,22 +160,19 @@ public class IES : Sandbox.Resources.TextureGenerator
 
 				// Sample the IESInfo candela at the angle position
 				float candela = Math.Clamp( Sample1D( info, distance ) * invMaxValue, 0.0f, 1.0f );
+				candela = MathF.Sqrt( candela );
 
 				bool isEven = (x % 2 == 0) && (y % 2 == 0);
 
-				// Dither it to make it look a bit better on a low precision color space (like RGB8)
-				int sample =  (int)(candela * 255.0f); // ( int)Math.Floor( candela * 255.0f ) : (int)Math.Round( candela * 255.0f );
+				int sample =  (int)(candela * 255.0f);
 
 				// sample to our imagedata
-				int index = (y * width + x) * 4;
+				int index = (y * width + x) * bpp;
 				imageData[index + 0] = (byte)(sample);
-				imageData[index + 1] = (byte)(sample);
-				imageData[index + 2] = (byte)(sample);
-				imageData[index + 3] = 255;
 			}
 		}
 
-		return Texture.Create( width, height ).WithName( $"_IESLight{ info.GetHashCode() }" ).WithData( imageData ).Finish();
+		return Texture.Create( width, height ).WithName( $"_IESLight{ info.GetHashCode() }" ).WithFormat( ImageFormat.I8 ).WithData( imageData ).Finish();
 	}
 	
 	public static Texture Load( Stream stream )
