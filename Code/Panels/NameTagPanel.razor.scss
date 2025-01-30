@@ -1,0 +1,39 @@
+
+NameTagPanel
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    white-space: nowrap;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+
+    .card
+    {
+        flex-direction: column;
+        background-color: #0008;
+        border-radius: 5px;
+        overflow: hidden;
+        padding: 10px 20px;
+        justify-content: center;
+        align-items: center;
+        //backdrop-filter: blur( 2px ); - doesn't work on world panels!?!?!?
+        gap: 20px;
+
+        .name
+        {
+            font-size: 25px;
+            font-family: Poppins;
+            color: #fff;
+        }
+
+        .gameobject
+        {
+            color: #00ff21;
+            font-size: 20px;
+        }
+    }
+}

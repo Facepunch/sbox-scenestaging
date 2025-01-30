@@ -1,0 +1,20 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/spline_deform.shader"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Material ----
+	g_flTintColor "[1.000000 1.000000 1.000000 0.000000]"
+	TextureAmbientOcclusion "[1.000000 1.000000 1.000000 0.000000]"
+	TextureBlendMask "[1.000000 1.000000 1.000000 0.000000]"
+	TextureColor "[1.000000 1.000000 1.000000 0.000000]"
+	TextureMetalness "[0.000000 0.000000 0.000000 0.000000]"
+	TextureNormal "materials/default/default_normal.tga"
+	TextureRoughness "[0.500000 0.500000 0.500000 0.000000]"
+	TextureTintMask "[1.000000 1.000000 1.000000 0.000000]"
+	TextureTranslucency "[1.000000 1.000000 1.000000 0.000000]"
+}

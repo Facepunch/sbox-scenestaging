@@ -1,0 +1,139 @@
+{
+  "RootObject": {
+    "__guid": "f23dd974-06c1-4453-94bd-3f49ae112b37",
+    "Flags": 0,
+    "Name": "sphere_with_action",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "e16cb5f8-bc6a-40a0-9218-3d3f3b823782",
+        "BodyGroups": 18446744073709551615,
+        "CreateAttachments": false,
+        "MaterialGroup": null,
+        "MaterialOverride": null,
+        "Model": "models/dev/sphere.vmdl",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "Sandbox.ActionGraphs.ActionsInvoker",
+        "__guid": "ef474a02-2114-4114-bd80-9d722581900a",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OnDestroyAction": null,
+        "OnDisabledAction": null,
+        "OnEnabledAction": {
+          "__version": 9,
+          "__guid": "ccbeee2e-641b-4560-9d58-0da5679b6f8c",
+          "__changeId": 204,
+          "UserData": {
+            "Title": "On Enabled Action",
+            "ReferencedComponentTypes": []
+          },
+          "Variables": [],
+          "Nodes": [
+            {
+              "Id": 0,
+              "Type": "input"
+            },
+            {
+              "Id": 5,
+              "Type": "property",
+              "Properties": {
+                "_name": "Tint",
+                "_type": "Sandbox.ModelRenderer"
+              },
+              "UserData": {
+                "Position": "180,36"
+              }
+            },
+            {
+              "Id": 6,
+              "Type": "scene.ref",
+              "ParentId": 5
+            }
+          ],
+          "Links": [
+            {
+              "SrcId": 0,
+              "SrcName": "_signal",
+              "DstId": 5,
+              "DstName": "_signal"
+            },
+            {
+              "SrcId": 6,
+              "SrcName": "_result",
+              "DstId": 5,
+              "DstName": "_target"
+            },
+            {
+              "Id": 112,
+              "Value": "0.06667,1,0,1",
+              "DstId": 5,
+              "DstName": "_value"
+            }
+          ],
+          "Defaults": {
+            "$6.component": {
+              "_type": "component",
+              "component_id": "e16cb5f8-bc6a-40a0-9218-3d3f3b823782",
+              "go": "f23dd974-06c1-4453-94bd-3f49ae112b37",
+              "component_type": "ModelRenderer"
+            }
+          }
+        },
+        "OnFixedUpdateAction": null,
+        "OnUpdateAction": null
+      }
+    ],
+    "Children": [],
+    "__variables": [],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}

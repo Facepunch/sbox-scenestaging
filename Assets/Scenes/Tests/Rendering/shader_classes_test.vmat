@@ -1,0 +1,10 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "scenes/tests/rendering/shader_classes_test.shader"
+
+	//---- Material ----
+	TextureColor "materials/default/default_color.tga"
+	TextureTranslucency "materials/default/default_trans.tga"
+}

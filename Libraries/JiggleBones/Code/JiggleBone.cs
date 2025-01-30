@@ -27,7 +27,7 @@ public sealed class JiggleBone : TransformProxyComponent
 
 	protected override void OnEnabled()
 	{
-		LocalJigglePosition = Transform.Local;
+		LocalJigglePosition = LocalTransform;
 
 		base.OnEnabled();
 
@@ -42,7 +42,7 @@ public sealed class JiggleBone : TransformProxyComponent
 
 		using ( Transform.DisableProxy() )
 		{
-			var worldTx = Transform.World;
+			var worldTx = WorldTransform;
 
 			var startPoint = worldTx.PointToWorld( StartPoint );
 			var endPoint = worldTx.PointToWorld( EndPoint );
@@ -59,7 +59,7 @@ public sealed class JiggleBone : TransformProxyComponent
 			state.Update( startPoint, Time.Delta * Speed * 16.0f );
 
 			var tx = worldTx.RotateAround( startPoint, state.Rotation );
-			LocalJigglePosition = GameObject.Parent.Transform.World.ToLocal( tx );
+			LocalJigglePosition = GameObject.Parent.WorldTransform.ToLocal( tx );
 		}
 
 		if ( oldPos != LocalJigglePosition )
@@ -77,7 +77,7 @@ public sealed class JiggleBone : TransformProxyComponent
 
 		using ( Transform.DisableProxy() )
 		{
-			Gizmo.Transform = Transform.World;
+			Gizmo.Transform = WorldTransform;
 			Gizmo.Draw.IgnoreDepth = false;
 			Gizmo.Draw.Color = Gizmo.Colors.Yaw.WithAlpha( 0.5f );
 			Gizmo.Draw.Line( StartPoint, EndPoint );

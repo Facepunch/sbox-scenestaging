@@ -1,0 +1,89 @@
+
+MockHudPanel
+{
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    pointer-events: all;
+
+    .vitals
+    {
+        position: absolute;
+        left: 200px;
+        bottom: 100px;
+        gap: 10px;
+    }
+
+    .item
+    {
+        position: absolute;
+        right: 200px;
+        bottom: 100px;
+        gap: 10px;
+    }
+
+    .health, .armor, .item
+    {
+        background-color: #0004;
+        border-radius: 3px;
+        padding: 10px 20px;
+        color: white;
+        font-weight: bolder;
+        font-size: 30px;
+        font-family: poppins;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        backdrop-filter: blur( 20px );
+
+        .value
+        {
+        }
+
+        .icon
+        {
+            font-family: Material Icons;
+            opacity: 0.2;
+        }
+
+        .subvalue
+        {
+            padding-top: 6px;
+            opacity: 0.5;
+            font-size: 16px;
+        }
+    }
+
+    .overlay
+    {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+
+        // this is showing how to position things around things in the scene
+        // but in screen space instead of using a world panel
+        .model-overlay
+        {
+            position: absolute;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 5px 5px 32px rgba( black, 0.4 );
+            cursor: pointer;
+            flex-direction: column;
+
+            &:hover
+            {
+                background-color: #ff0;
+            }
+
+            &:active
+            {
+                background-color: #0ff;
+            }
+        }
+    }
+}

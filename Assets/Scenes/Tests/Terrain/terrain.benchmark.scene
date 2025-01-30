@@ -55,9 +55,9 @@
           "__guid": "90905cff-f9c0-46a3-b793-e1f4740cf016",
           "FogMode": "Enabled",
           "FogStrength": 1,
-          "LightColor": "1,0.59705,0.47442,1",
+          "LightColor": "1,0.78977,0.47442,1",
           "Shadows": true,
-          "SkyColor": "0.13162,0.15013,0.16744,1"
+          "SkyColor": "0.13162,0.15013,0.16744,0"
         }
       ]
     },
@@ -110,24 +110,28 @@
           "__version": 1,
           "AutoExposureEnabled": true,
           "ExposureBias": 2,
-          "ExposureCompensation": 0,
+          "ExposureCompensation": 1.54,
           "ExposureMethod": "RGB",
-          "MaximumExposure": 2,
-          "MinimumExposure": 1,
-          "Mode": "Legacy",
+          "MaximumExposure": 4.08,
+          "MinimumExposure": 0.5,
+          "Mode": "ACES",
           "Rate": 1
         },
         {
           "__type": "Sandbox.AmbientOcclusion",
           "__guid": "76a2febf-7b4f-4164-a6fd-b9f285e7d969",
-          "FalloffDistance": 1,
-          "Intensity": 12.5,
+          "__version": 1,
+          "DenoiseMode": "Temporal",
+          "FalloffRange": 1,
+          "Intensity": 1,
           "Quality": "High",
-          "Radius": 64
+          "Radius": 218,
+          "ThinCompensation": 5
         },
         {
           "__type": "Sandbox.ColorAdjustments",
           "__guid": "08d3456d-6739-4fb3-9630-8611155baa15",
+          "__enabled": false,
           "Brightness": 1.51,
           "Contrast": 1,
           "HueRotate": 0,
@@ -136,9 +140,12 @@
         {
           "__type": "Sandbox.Bloom",
           "__guid": "1280a932-861e-436b-9f22-0288d68f6af7",
+          "__enabled": false,
           "BloomColor": {
+            "blend": "Linear",
             "color": [
               {
+                "t": 0,
                 "c": "1,1,1,1"
               },
               {
@@ -150,15 +157,22 @@
           },
           "BloomCurve": [
             {
-              "y": 0.5
+              "x": 0,
+              "y": 0.5,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
             },
             {
               "x": 1,
-              "y": 1
+              "y": 1,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
             }
           ],
           "Mode": "Additive",
-          "Strength": 0.46,
+          "Strength": 0,
           "Threshold": 0.5,
           "ThresholdWidth": 0
         }
@@ -173,8 +187,10 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "Sandbox.ApplyLocalClothing",
+          "__type": "Sandbox.Dresser",
           "__guid": "f30272e9-7729-4afe-aa7d-9d1c40872277",
+          "ApplyHeightScale": false,
+          "ApplyLocalUserClothes": false,
           "BodyTarget": {
             "_type": "component",
             "component_id": "d54cd9b2-b360-4e54-9cc0-09b9a5cb69b2",
@@ -183,8 +199,11 @@
           }
         },
         {
-          "__type": "PhysicsCharacter",
+          "__type": "Sandbox.PlayerController",
           "__guid": "69c762e9-14fb-4259-a4b4-4f2fee2821dd",
+          "AimStrengthBody": 0,
+          "AimStrengthEyes": 0,
+          "AimStrengthHead": 0,
           "Body": {
             "_type": "component",
             "component_id": "ed30a10a-5ff1-486e-81e8-98d3bf137fb3",
@@ -195,22 +214,35 @@
           "BodyMass": 500,
           "BodyRadius": 16,
           "CameraOffset": "256,0,12",
+          "ColliderObject": {
+            "_type": "gameobject",
+            "go": "b18283ba-b7b1-455b-868d-eba6b16b4c88"
+          },
           "DuckedHeight": 40,
+          "DuckedSpeed": 0,
+          "EnableFootstepSounds": false,
+          "EnablePressing": false,
           "EyeDistanceFromTop": 8,
+          "FootstepMixer": {
+            "Name": "unknown",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          "FootstepVolume": 0,
           "HideBodyInFirstPerson": true,
           "JumpSpeed": 300,
+          "ReachLength": 0,
           "Renderer": {
             "_type": "component",
             "component_id": "d54cd9b2-b360-4e54-9cc0-09b9a5cb69b2",
             "go": "65b456bc-e693-4184-9393-6291b0c593f6",
             "component_type": "SkinnedModelRenderer"
           },
+          "RotateWithGround": false,
           "RotationAngleLimit": 45,
           "RotationSpeed": 1,
           "RunSpeed": 320,
           "ShowColliderComponents": false,
           "ShowRigidbodyComponent": false,
-          "StepDebug": true,
           "ThirdPerson": true,
           "ToggleCameraModeButton": "view",
           "UseAnimatorControls": true,
@@ -225,6 +257,9 @@
           "Gravity": true,
           "LinearDamping": 0.1,
           "Locking": {
+            "X": false,
+            "Y": false,
+            "Z": false,
             "Pitch": true,
             "Yaw": true,
             "Roll": true
@@ -237,33 +272,12 @@
           "StartAsleep": false
         },
         {
-          "__type": "Sandbox.PhysicsCharacterMode.PhysicsCharacterWalkMode",
+          "__type": "Sandbox.Movement.MoveModeWalk",
           "__guid": "3ae635a8-aa23-43f8-ad2d-7991e3b9cf8f",
           "GroundAngle": 45,
           "Priority": 0,
           "StepDownHeight": 18,
           "StepUpHeight": 18
-        },
-        {
-          "__type": "Sandbox.CapsuleCollider",
-          "__guid": "9f163b30-d62f-4e69-a236-21edbe3ff437",
-          "End": "0,0,41.05097",
-          "Friction": 0,
-          "IsTrigger": false,
-          "Radius": 11.313708,
-          "Start": "0,0,52.68629",
-          "Static": false,
-          "SurfaceVelocity": "0,0,0"
-        },
-        {
-          "__type": "Sandbox.BoxCollider",
-          "__guid": "6ba4f9ad-225f-4d50-8c02-bb79155d4712",
-          "Center": "0,0,16",
-          "Friction": 0,
-          "IsTrigger": false,
-          "Scale": "16,16,32",
-          "Static": false,
-          "SurfaceVelocity": "0,0,0"
         },
         {
           "__type": "PlayerGrabber",
@@ -290,8 +304,10 @@
             {
               "__type": "Sandbox.SkinnedModelRenderer",
               "__guid": "d54cd9b2-b360-4e54-9cc0-09b9a5cb69b2",
-              "BodyGroups": 18446744073709551615,
+              "BodyGroups": 341,
+              "CreateAttachments": false,
               "CreateBoneObjects": false,
+              "MaterialGroup": "default",
               "Model": "models/citizen/citizen.vmdl",
               "Morphs": {},
               "Parameters": {
@@ -308,8 +324,40 @@
                 "AfterUILayer": false
               },
               "RenderType": "On",
+              "Sequence": {
+                "Name": null
+              },
               "Tint": "1,1,1,1",
               "UseAnimGraph": true
+            }
+          ]
+        },
+        {
+          "__guid": "b18283ba-b7b1-455b-868d-eba6b16b4c88",
+          "Flags": 1,
+          "Name": "Colliders",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.CapsuleCollider",
+              "__guid": "f682707f-1d17-40ca-95c3-d9a11afcd3f6",
+              "End": "0,0,41.05097",
+              "Friction": 0,
+              "IsTrigger": false,
+              "Radius": 11.313708,
+              "Start": "0,0,52.68629",
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "615de720-2755-465c-a448-99a95b30104b",
+              "Center": "0,0,16",
+              "Friction": 0,
+              "IsTrigger": false,
+              "Scale": "16,16,32",
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
             }
           ]
         }
@@ -327,6 +375,7 @@
           "__type": "Sandbox.ModelRenderer",
           "__guid": "9e13a4fa-7057-47e5-bbbb-0d7660c620ed",
           "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
           "MaterialOverride": "materials/dev/simple/floor_simple_128.vmat",
           "Model": "models/dev/box.vmdl",
           "RenderOptions": {
@@ -359,7 +408,7 @@
         {
           "__type": "Sandbox.CubemapFog",
           "__guid": "45208776-9d8f-41d5-8266-7123268bcc65",
-          "Blur": 0.19,
+          "Blur": 0,
           "EndDistance": 30000,
           "FalloffExponent": 3,
           "HeightExponent": 2,
@@ -375,7 +424,7 @@
       "__guid": "ca6fe4bd-e523-4768-803a-76bbcb48d6ab",
       "Flags": 0,
       "Name": "Gradient Fog",
-      "Position": "1531.618,19196.57,3075.191",
+      "Position": "1531.618,19196.57,2690.824",
       "Enabled": true,
       "Components": [
         {
@@ -384,9 +433,9 @@
           "Color": "1,0.9631,0.86977,1",
           "EndDistance": 30000,
           "FalloffExponent": 2,
-          "Height": 245,
-          "StartDistance": 2000,
-          "VerticalFalloffExponent": 1
+          "Height": 750,
+          "StartDistance": 0,
+          "VerticalFalloffExponent": 2
         }
       ]
     },
@@ -417,21 +466,28 @@
             "FontName": "Roboto",
             "FontSize": 64,
             "FontWeight": 800,
+            "FontItalic": false,
             "LineHeight": 1,
+            "LetterSpacing": 0,
+            "WordSpacing": 0,
             "Outline": {
+              "Enabled": false,
               "Size": 4,
               "Color": "0,0,1,1"
             },
             "Shadow": {
+              "Enabled": false,
               "Size": 4,
               "Color": "0,0,0,1",
               "Offset": "4,4"
             },
             "OutlineUnder": {
+              "Enabled": false,
               "Size": 4,
               "Color": "0,1,0,1"
             },
             "ShadowUnder": {
+              "Enabled": false,
               "Size": 4,
               "Color": "0,0,0,1",
               "Offset": "4,4"
@@ -445,21 +501,20 @@
       "Flags": 0,
       "Name": "Probe",
       "Position": "11328,5760,4768",
-      "Scale": "-49.40707,-49.40707,-49.40707",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.EnvmapProbe",
           "__guid": "54892ffd-3bed-4721-93e5-07056bc37d1b",
           "Bounds": {
-            "Mins": "-512,-512,-512",
-            "Maxs": "512,512,512"
+            "Mins": "-51200,-51200,-51200",
+            "Maxs": "51200,51200,51200"
           },
           "DelayBetweenUpdates": 0.1,
           "Feathering": 0.02,
           "FrameInterval": 5,
           "MaxDistance": 512,
-          "MultiBounce": false,
+          "MultiBounce": true,
           "Projection": "Box",
           "RenderDynamically": true,
           "TintColor": "1,1,1,1",

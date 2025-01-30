@@ -23,7 +23,7 @@ public class PlayerGrabber : Component
 		if ( IsProxy )
 			return;
 
-		Transform aimTransform = Scene.Camera.Transform.World;
+		Transform aimTransform = Scene.Camera.WorldTransform;
 
 		if ( waitForUp )
 		{
@@ -49,7 +49,7 @@ public class PlayerGrabber : Component
 			var worldStart = grabbedBody.GetLerpedTransform( Time.Now ).PointToWorld( localOffset );
 			var worldEnd = targetTx.PointToWorld( localOffset );
 
-			//var delta = Scene.Camera.Transform.World.PointToWorld( new Vector3( 0, -10, -5 ) ) - worldStart;
+			//var delta = Scene.Camera.WorldTransform.PointToWorld( new Vector3( 0, -10, -5 ) ) - worldStart;
 			var delta = worldEnd - worldStart;
 			for ( var f = 0.0f; f < delta.Length; f += 2.0f )
 			{
@@ -101,7 +101,7 @@ public class PlayerGrabber : Component
 		if ( IsProxy )
 			return;
 
-		Transform aimTransform = Scene.Camera.Transform.World;
+		Transform aimTransform = Scene.Camera.WorldTransform;
 
 		if ( waitForUp )
 		{

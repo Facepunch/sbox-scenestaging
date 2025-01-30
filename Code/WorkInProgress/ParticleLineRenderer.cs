@@ -46,7 +46,7 @@ public sealed class ParticleLineRenderer : ParticleRenderer, Component.ExecuteIn
 	protected override void OnEnabled()
 	{
 		_so = new SceneLineObject( Scene.SceneWorld );
-		_so.Transform = Transform.World;
+		_so.Transform = WorldTransform;
 		_so.Tags.SetFrom( Tags );
 	}
 
@@ -82,7 +82,7 @@ public sealed class ParticleLineRenderer : ParticleRenderer, Component.ExecuteIn
 		var viewerPosition = Scene.Camera?.WorldPosition ?? Vector3.Zero;
 
 		_so.RenderingEnabled = true;
-		_so.Transform = Transform.World;
+		_so.Transform = WorldTransform;
 		//_so.Material = Material.FromShader( "shaders/sprite.shader" );
 		_so.Flags.CastShadows = Shadows && !Additive;
 		//	_so.Texture = Texture;

@@ -149,7 +149,7 @@ public sealed class TestWeapon : Component
 
 	void ShootBullet()
 	{
-		var ray = Scene.Camera.Transform.World.ForwardRay;
+		var ray = Scene.Camera.WorldTransform.ForwardRay;
 		ray.Forward += Vector3.Random * 0.01f;
 
 		var tr = Scene.Trace.Ray( ray, 4096 )
@@ -165,7 +165,7 @@ public sealed class TestWeapon : Component
 
 		{
 			var go = GameObject.Clone( "/effects/decal_bullet_default.prefab" );
-			go.Transform.World = new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( -tr.Normal, Vector3.Random ), System.Random.Shared.Float( 0.8f, 1.2f ) );
+			go.WorldTransform = new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( -tr.Normal, Vector3.Random ), System.Random.Shared.Float( 0.8f, 1.2f ) );
 			go.SetParent( tr.GameObject );
 		}
 
@@ -209,10 +209,10 @@ public sealed class TestWeapon : Component
 	{
 		if ( viewmodel is null ) return;
 
-		var targetPos = Scene.Camera.Transform.World;
+		var targetPos = Scene.Camera.WorldTransform;
 
 		targetPos.Position += targetPos.Rotation * ViewModelOffset;
 
-		viewmodel.Transform.World = targetPos;
+		viewmodel.WorldTransform = targetPos;
 	}
 }

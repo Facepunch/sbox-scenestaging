@@ -17,7 +17,7 @@ public sealed class BouncyBone : TransformProxyComponent
 	protected override void OnEnabled()
 	{
 		springer = new TransformSpring();
-		springer.Transform = Transform.World;
+		springer.Transform = WorldTransform;
 		LocalJigglePosition = springer.Transform;
 
 		base.OnEnabled();
@@ -31,13 +31,13 @@ public sealed class BouncyBone : TransformProxyComponent
 
 		using ( Transform.DisableProxy() )
 		{
-			var worldTx = Transform.World;
+			var worldTx = WorldTransform;
 
 			springer.Stiffness = Stiffness;
 			springer.Damping = Damping;
-			springer.UpdateSpring( Transform.World, Time.Delta );
+			springer.UpdateSpring( WorldTransform, Time.Delta );
 
-			var tx = GameObject.Parent.Transform.World.ToLocal( springer.Transform );
+			var tx = GameObject.Parent.WorldTransform.ToLocal( springer.Transform );
 			LocalJigglePosition = tx;
 		}
 

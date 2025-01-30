@@ -21,7 +21,7 @@
 				if ( _segments.x * _segments.y * _segments.z != Points.Count )
 					Points = Enumerable.Repeat( Vector4.Zero, _segments.x * _segments.y * _segments.z ).ToList();
 
-				PointsBuffer = new ComputeBuffer<Vector4>( Points.Count );
+				PointsBuffer = new GpuBuffer<Vector4>( Points.Count );
 			}
 		}
 		internal Vector3Int _segments;
@@ -30,7 +30,7 @@
 		// Dirty doesn't seem to be called when list elements are changed
 		[Property, MakeDirty] public List<Vector4> Points { get; set; }
 
-		ComputeBuffer<Vector4> PointsBuffer;
+		GpuBuffer<Vector4> PointsBuffer;
 
 		public LatticeDeform()
 		{
@@ -40,15 +40,12 @@
 
 		protected override void OnEnabled()
 		{
-			if ( Transform == default )
-			{
-				// Get bounds from parent
-				var parent = Components.GetInParent<ModelRenderer>();
+			// Get bounds from parent
+			var parent = Components.GetInParent<ModelRenderer>();
 
-				// Make it use the same bounds as the parent
-				WorldScale = parent.Bounds.Size;
-				WorldPosition = parent.Bounds.Mins;
-			}
+			// Make it use the same bounds as the parent
+			WorldScale = parent.Bounds.Size;
+			WorldPosition = parent.Bounds.Mins;
 
 			base.OnEnabled();
 		}
@@ -89,7 +86,7 @@
 
 			// Matrix.FromTransform is internal, no way to pass Transform directly
 			var matrix = new Matrix();
-			var transform = Transform.Local;
+			var transform = LocalTransform;
 
 			matrix = Matrix.CreateScale( transform.Scale ) * Matrix.CreateRotation( transform.Rotation ) * Matrix.CreateTranslation( transform.Position );
 

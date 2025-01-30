@@ -149,11 +149,11 @@ public sealed class Glass : Component, Component.ExecuteInEditor, Component.IDam
 			if ( !body.IsValid() )
 				continue;
 
-			Gizmo.Draw.LineSphere( Transform.World.ToLocal( body.Transform ).Position, 1 );
+			Gizmo.Draw.LineSphere( WorldTransform.ToLocal( body.Transform ).Position, 1 );
 
 			foreach ( var point in shard.Points )
 			{
-				var p = Transform.World.PointToLocal( body.Transform.PointToWorld( new Vector3( point.x, point.y, 0 ) ) );
+				var p = WorldTransform.PointToLocal( body.Transform.PointToWorld( new Vector3( point.x, point.y, 0 ) ) );
 				Gizmo.Draw.LineSphere( p, 1 );
 			}
 		}
@@ -192,7 +192,7 @@ public sealed class Glass : Component, Component.ExecuteInEditor, Component.IDam
 	private void CreatePrimaryShard()
 	{
 		var points = IsPathClockwise( Points ) ? Points.Reverse<Vector2>().ToList() : Points.ToList();
-		CreateShard( Transform.World, points );
+		CreateShard( WorldTransform, points );
 	}
 
 	private void DestroyShards()
@@ -219,7 +219,7 @@ public sealed class Glass : Component, Component.ExecuteInEditor, Component.IDam
 
 			if ( !shard.IsLoose )
 			{
-				body.Transform = Transform.World;
+				body.Transform = WorldTransform;
 			}
 
 			shard.SceneObject.Transform = body.Transform;

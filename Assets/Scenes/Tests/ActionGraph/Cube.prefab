@@ -1,0 +1,140 @@
+{
+  "RootObject": {
+    "__guid": "53e56e2d-ff97-49c8-b74e-8d37dbe8da94",
+    "Flags": 0,
+    "Name": "Left Cube",
+    "Position": "0,64,0",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "95b27999-dfbb-4893-9298-28b7bc65e897",
+        "BodyGroups": 18446744073709551615,
+        "CreateAttachments": false,
+        "Model": "models/dev/box.vmdl",
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "Sandbox.ActionGraphs.ActionsInvoker",
+        "__guid": "a31dd240-92fe-4f2d-83d7-00c4eac5e9a9",
+        "OnEnabledAction": {
+          "__version": 9,
+          "__guid": "4bfcedd8-3e5f-4e7d-8394-f0377b65f2b0",
+          "__changeId": 143,
+          "UserData": {
+            "Title": "Set cube colours",
+            "ReferencedComponentTypes": []
+          },
+          "Variables": [],
+          "Nodes": [
+            {
+              "Id": 0,
+              "Type": "input",
+              "UserData": {
+                "Position": "-48,0"
+              }
+            },
+            {
+              "Id": 3,
+              "Type": "property",
+              "Properties": {
+                "_name": "Tint",
+                "_type": "Sandbox.ModelRenderer"
+              },
+              "UserData": {
+                "Position": "228,0"
+              }
+            },
+            {
+              "Id": 4,
+              "Type": "scene.ref",
+              "ParentId": 3
+            },
+            {
+              "Id": 7,
+              "Type": "property",
+              "Properties": {
+                "_name": "Tint",
+                "_type": "Sandbox.ModelRenderer"
+              },
+              "UserData": {
+                "Position": "228,120"
+              }
+            },
+            {
+              "Id": 8,
+              "Type": "scene.ref",
+              "ParentId": 7
+            }
+          ],
+          "Links": [
+            {
+              "SrcId": 0,
+              "SrcName": "_signal",
+              "DstId": 3,
+              "DstName": "_signal"
+            },
+            {
+              "SrcId": 4,
+              "SrcName": "_result",
+              "DstId": 3,
+              "DstName": "_target"
+            },
+            {
+              "Id": 139,
+              "Value": "1,0,0,1",
+              "DstId": 3,
+              "DstName": "_value"
+            },
+            {
+              "SrcId": 0,
+              "SrcName": "_signal",
+              "DstId": 7,
+              "DstName": "_signal"
+            },
+            {
+              "SrcId": 8,
+              "SrcName": "_result",
+              "DstId": 7,
+              "DstName": "_target"
+            },
+            {
+              "Id": 183,
+              "Value": "0,0,1,1",
+              "DstId": 7,
+              "DstName": "_value"
+            }
+          ],
+          "Defaults": {
+            "$4.component": {
+              "_type": "component",
+              "component_id": "95b27999-dfbb-4893-9298-28b7bc65e897",
+              "go": "53e56e2d-ff97-49c8-b74e-8d37dbe8da94",
+              "component_type": "ModelRenderer"
+            },
+            "$8.component": {
+              "_type": "component",
+              "component_id": "7400373a-af54-445e-a2d9-431d5f336407",
+              "go": "0b49bd81-2089-4f5a-92d2-6c0cb892410e",
+              "component_type": "ModelRenderer"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}

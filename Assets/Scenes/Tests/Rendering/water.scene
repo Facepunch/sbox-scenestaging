@@ -10,11 +10,19 @@
         {
           "__type": "Sandbox.SceneInformation",
           "__guid": "ce8c67e2-a487-4fae-8077-0d0f3eac4c7c",
+          "Author": null,
           "Changes": "",
-          "Description": "Screen Space Ambient Occlusion",
+          "Description": "Water shader",
           "Group": "Rendering",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "SceneTags": "",
-          "Title": "SSAO"
+          "Title": "Water",
+          "Version": null
         }
       ]
     },
@@ -37,7 +45,15 @@
           "__guid": "26a67ec5-cd54-4215-9e86-370779c4a592",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -60,11 +76,21 @@
         {
           "__type": "Sandbox.SkinnedModelRenderer",
           "__guid": "61053899-0fdc-46c2-9cbd-be4b1d5da032",
+          "AnimationGraph": null,
           "BodyGroups": 341,
+          "BoneMergeTarget": null,
           "CreateAttachments": false,
           "CreateBoneObjects": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
           "Morphs": {},
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Parameters": {
             "bools": {},
             "ints": {},
@@ -98,11 +124,21 @@
         {
           "__type": "Sandbox.SkinnedModelRenderer",
           "__guid": "67c0b219-62fb-4545-9c3f-0eb46a8accf1",
+          "AnimationGraph": null,
           "BodyGroups": 341,
+          "BoneMergeTarget": null,
           "CreateAttachments": false,
           "CreateBoneObjects": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
           "Morphs": {},
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Parameters": {
             "bools": {},
             "ints": {},
@@ -136,11 +172,21 @@
         {
           "__type": "Sandbox.SkinnedModelRenderer",
           "__guid": "c17c39ef-4f7e-48de-9a19-0a020dd784e4",
+          "AnimationGraph": null,
           "BodyGroups": 341,
+          "BoneMergeTarget": null,
           "CreateAttachments": false,
           "CreateBoneObjects": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
           "Morphs": {},
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Parameters": {
             "bools": {},
             "ints": {},
@@ -174,11 +220,21 @@
         {
           "__type": "Sandbox.SkinnedModelRenderer",
           "__guid": "668ae4de-e438-4cc6-89fc-35180eb6b0fa",
+          "AnimationGraph": null,
           "BodyGroups": 341,
+          "BoneMergeTarget": null,
           "CreateAttachments": false,
           "CreateBoneObjects": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/citizen/citizen.vmdl",
           "Morphs": {},
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Parameters": {
             "bools": {},
             "ints": {},
@@ -213,8 +269,15 @@
           "__guid": "1820383b-f654-4fe7-90ab-2c1a3dc3d23c",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -238,8 +301,15 @@
           "__guid": "29386cb4-513c-454b-bc11-371c5b57b401",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -263,8 +333,15 @@
           "__guid": "f3dce767-7073-4c46-9436-2bdeddbccf43",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -288,8 +365,15 @@
           "__guid": "f4ef785d-eec9-486c-bce3-e78e3320070a",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -313,8 +397,15 @@
           "__guid": "b6c451f6-80ae-4956-9152-7a956eb59e31",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -338,8 +429,15 @@
           "__guid": "be4b0f8c-e556-4a75-8fd8-79e076375c02",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -363,8 +461,15 @@
           "__guid": "adbaa53f-03d2-43b5-a596-a5e5169c282c",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -388,8 +493,15 @@
           "__guid": "54a6cb65-13bc-40b5-83d0-f44edfbe9c1b",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -413,8 +525,15 @@
           "__guid": "25089596-4440-4666-b7ef-dbdb665724db",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -438,8 +557,15 @@
           "__guid": "072c7a0f-3a8f-4732-9196-20c3e880939a",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -463,8 +589,15 @@
           "__guid": "04863708-a5b2-41a8-ab26-fb5ccef528f4",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -488,8 +621,15 @@
           "__guid": "25672794-73e7-4bb4-a217-f5a7fb494a6c",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -513,8 +653,15 @@
           "__guid": "ffc46d6a-0291-4130-8b7a-5db5b7cb4bfd",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -539,8 +686,15 @@
           "__guid": "fea599fc-84a1-4454-92fe-3688642d39c0",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "watertest.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -564,8 +718,15 @@
           "__guid": "57262344-a997-4e5a-bf74-f245b8cc3414",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/dev_nonmetal_rough30.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -592,6 +753,12 @@
           "ClearFlags": "All",
           "FieldOfView": 106.18,
           "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
@@ -609,6 +776,12 @@
           "DenoiseMode": "Temporal",
           "FalloffRange": 1,
           "Intensity": 1,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Quality": "High",
           "Radius": 224,
           "ThinCompensation": 0.5
@@ -647,6 +820,12 @@
             }
           ],
           "Mode": "Additive",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Strength": 1,
           "Threshold": 0.5,
           "ThresholdWidth": 0
@@ -665,8 +844,15 @@
           "__guid": "1cbc6757-c07c-4f00-85e1-fdeea3c59af3",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/default.vmat",
           "Model": "models/dev/plane.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -680,9 +866,21 @@
           "__type": "Sandbox.PlaneCollider",
           "__guid": "5cd9b037-60c2-4773-9704-84ea250c46f3",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50",
           "Static": true,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -699,8 +897,15 @@
           "__guid": "3527e7b9-4409-44bb-8c55-5e60c6518e8c",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "watertest.vmat",
           "Model": "models/dev/plane_large.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -724,8 +929,15 @@
           "__guid": "a3082df2-0f50-4aea-9b9c-8ee8c3b556bb",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/dev/plane.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": false,
             "OverlayLayer": false,
@@ -748,23 +960,28 @@
         {
           "__type": "Sandbox.PlayerController",
           "__guid": "30c4ff99-f5a3-4ae3-9f7d-3906c627609e",
+          "AccelerationTime": 0,
           "AimStrengthBody": 1,
           "AimStrengthEyes": 1,
           "AimStrengthHead": 1,
+          "AltMoveButton": "run",
           "Body": {
             "_type": "component",
             "component_id": "a2c6f8fa-ce20-484b-8791-8bea86278bb2",
             "go": "185fb180-8ad0-4f23-9d7d-ca6c885b8212",
             "component_type": "Rigidbody"
           },
+          "BodyCollisionTags": null,
           "BodyHeight": 72,
           "BodyMass": 500,
           "BodyRadius": 16,
           "CameraOffset": "256,0,12",
           "ColliderObject": {
             "_type": "gameobject",
-            "go": "f9ef3556-9e11-4575-8a44-69ec00fb817e"
+            "go": "f9ef3556-9e11-4575-8a44-69ec00fb817e",
+            "prefab": null
           },
+          "DeaccelerationTime": 0,
           "DuckedHeight": 36,
           "DuckedSpeed": 70,
           "EnableFootstepSounds": true,
@@ -777,6 +994,12 @@
           "FootstepVolume": 1,
           "HideBodyInFirstPerson": true,
           "JumpSpeed": 300,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "ReachLength": 130,
           "Renderer": {
             "_type": "component",
@@ -787,6 +1010,7 @@
           "RotateWithGround": true,
           "RotationAngleLimit": 45,
           "RotationSpeed": 1,
+          "RunByDefault": false,
           "RunSpeed": 320,
           "ShowColliderComponents": false,
           "ShowRigidbodyComponent": false,
@@ -795,6 +1019,7 @@
           "UseAnimatorControls": true,
           "UseButton": "use",
           "UseCameraControls": true,
+          "UseFovFromPreferences": true,
           "UseInputControls": true,
           "WalkSpeed": 110
         },
@@ -815,6 +1040,12 @@
           "MassCenterOverride": "0,0,36",
           "MassOverride": 500,
           "MotionEnabled": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "OverrideMassCenter": true,
           "RigidbodyFlags": "DisableCollisionSounds",
           "StartAsleep": false
@@ -823,6 +1054,12 @@
           "__type": "Sandbox.Movement.MoveModeWalk",
           "__guid": "c76868e9-6bdf-438f-9026-8a01739ed9bd",
           "GroundAngle": 45,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Priority": 0,
           "StepDownHeight": 18,
           "StepUpHeight": 18
@@ -830,6 +1067,12 @@
         {
           "__type": "Sandbox.Movement.MoveModeSwim",
           "__guid": "4cd557b8-5a47-4b4e-ba28-21d36c6416fc",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Priority": 10,
           "SwimLevel": 0.7
         },
@@ -837,6 +1080,12 @@
           "__type": "Sandbox.Movement.MoveModeLadder",
           "__guid": "c80bac13-13b3-4b8e-99cf-a6bd2015f35f",
           "ClimbableTags": "ladder",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Priority": 5
         }
       ],
@@ -850,11 +1099,21 @@
             {
               "__type": "Sandbox.SkinnedModelRenderer",
               "__guid": "5a71cc7e-eec7-4c74-be9a-172135376d4d",
+              "AnimationGraph": null,
               "BodyGroups": 341,
+              "BoneMergeTarget": null,
               "CreateAttachments": false,
               "CreateBoneObjects": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
               "Model": "models/citizen/citizen.vmdl",
               "Morphs": {},
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Parameters": {
                 "bools": {},
                 "ints": {},
@@ -889,9 +1148,20 @@
               "End": "0,0,45.05097",
               "Friction": 0,
               "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
               "Radius": 11.313708,
               "Start": "0,0,60.68629",
               "Static": false,
+              "Surface": null,
               "SurfaceVelocity": "0,0,0"
             },
             {
@@ -900,8 +1170,19 @@
               "Center": "0,0,18",
               "Friction": 0,
               "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
               "Scale": "16,16,36",
               "Static": false,
+              "Surface": null,
               "SurfaceVelocity": "0,0,0"
             }
           ]
@@ -923,6 +1204,12 @@
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.56924,0.69651,0.83256,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Shadows": true,
           "SkyColor": "0.34202,0.39634,0.43256,0"
         }
@@ -941,7 +1228,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
+          "MaterialGroup": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -961,7 +1257,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
+          "MaterialGroup": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -981,7 +1286,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
+          "MaterialGroup": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1000,8 +1314,15 @@
           "__guid": "205543e0-8df6-409c-955c-935dff7dcfae",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/shine.vmat",
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -1014,9 +1335,21 @@
         {
           "__type": "Sandbox.ModelCollider",
           "__guid": "a18f607f-1f6e-4181-9d63-619df64c8af5",
+          "Friction": null,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Static": true,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -1035,7 +1368,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
+          "MaterialGroup": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1055,7 +1397,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
+          "MaterialGroup": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1074,7 +1425,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
+          "MaterialGroup": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1094,7 +1454,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
+          "MaterialGroup": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1114,7 +1483,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
+          "MaterialGroup": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1134,7 +1512,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
+          "MaterialGroup": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1153,7 +1540,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
+          "MaterialGroup": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "0.7814,0.62312,0.05088,1"
         }
@@ -1170,7 +1566,6 @@
           "__type": "Sandbox.EnvmapProbe",
           "__guid": "ef8764eb-dfe4-443f-b2a4-cfd6558d5a0b",
           "__enabled": false,
-          "Texture": "textures/cubemaps/default2.vtex",
           "Bounds": {
             "Mins": "-1000,-1000,-1000",
             "Maxs": "1000,1000,1000"
@@ -1180,8 +1575,15 @@
           "FrameInterval": 5,
           "MaxDistance": 512,
           "MultiBounce": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Projection": "Box",
           "RenderDynamically": true,
+          "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1",
           "UpdateStrategy": "EveryFrame",
           "ZFar": 4096,
@@ -1202,7 +1604,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": false,
+          "MaterialGroup": null,
           "Model": "models/woodcrate/woodcrate.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1221,7 +1632,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": false,
+          "MaterialGroup": null,
           "Model": "models/woodcrate/woodcrate.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1240,7 +1660,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": false,
+          "MaterialGroup": null,
           "Model": "models/woodcrate/woodcrate.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1259,7 +1688,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": false,
+          "MaterialGroup": null,
           "Model": "models/woodcrate/woodcrate.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1278,7 +1716,16 @@
           "BodyGroups": 18446744073709551615,
           "Health": 60,
           "IsStatic": false,
+          "MaterialGroup": null,
           "Model": "models/sbox_props/oil_drum/oil_drum_explosive.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
@@ -1295,6 +1742,12 @@
         {
           "__type": "Sandbox.SkyBox2D",
           "__guid": "b04bbfb1-ddc2-4342-aefd-13477cc75440",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "SkyIndirectLighting": true,
           "SkyMaterial": "materials/skybox/skybox_dark_01.vmat",
           "Tint": "1,1,1,1"
@@ -1318,6 +1771,12 @@
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.92636,0.11628,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Radius": 100,
           "Shadows": true
         }
@@ -1336,8 +1795,15 @@
               "__guid": "ea85d193-b17d-43fb-a0d9-05dfbeab931f",
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_emissive.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -1365,6 +1831,12 @@
           "__guid": "a5e19075-892f-4d69-a4d6-4b62dcc56119",
           "__version": 1,
           "BlendMode": "Normal",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -1491,29 +1963,7 @@
           "ApplyColor": true,
           "ApplyRotation": true,
           "ApplyShape": true,
-          "Bounce": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "1,0,0,0"
-          },
+          "Bounce": 1,
           "Brightness": {
             "Type": "Range",
             "Evaluation": "Particle",
@@ -1579,125 +2029,17 @@
             ],
             "Constants": "5,20,0,0"
           },
-          "Bumpiness": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "0,0,0,0"
-          },
+          "Bumpiness": 0,
           "Collision": false,
+          "CollisionIgnore": null,
           "CollisionRadius": 1,
-          "Damping": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "0,0,0,0"
-          },
-          "DieOnCollisionChance": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "0,0,0,0"
-          },
+          "Damping": 0,
+          "DieOnCollisionChance": 0,
           "Force": true,
           "ForceDirection": "0,0,30",
-          "ForceScale": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "1,0,0,0"
-          },
-          "Friction": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "1,0,0,0"
-          },
+          "ForceScale": 1,
+          "ForceSpace": "World",
+          "Friction": 1,
           "Gradient": {
             "Type": "Range",
             "Evaluation": "Particle",
@@ -1748,100 +2090,20 @@
             "Constants": "0.8,1.5,0,0"
           },
           "MaxParticles": 40,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnParticleCreated": null,
+          "OnParticleDestroyed": null,
           "OrbitalForce": {
-            "X": {
-              "Type": "Constant",
-              "Evaluation": "Life",
-              "CurveA": [
-                {
-                  "x": 0.5,
-                  "y": 0.5,
-                  "in": 0,
-                  "out": 0,
-                  "mode": "Mirrored"
-                }
-              ],
-              "CurveB": [
-                {
-                  "x": 0.5,
-                  "y": 0.5,
-                  "in": 0,
-                  "out": 0,
-                  "mode": "Mirrored"
-                }
-              ],
-              "Constants": "0,0,0,0"
-            },
-            "Y": {
-              "Type": "Constant",
-              "Evaluation": "Life",
-              "CurveA": [
-                {
-                  "x": 0.5,
-                  "y": 0.5,
-                  "in": 0,
-                  "out": 0,
-                  "mode": "Mirrored"
-                }
-              ],
-              "CurveB": [
-                {
-                  "x": 0.5,
-                  "y": 0.5,
-                  "in": 0,
-                  "out": 0,
-                  "mode": "Mirrored"
-                }
-              ],
-              "Constants": "0,0,0,0"
-            },
-            "Z": {
-              "Type": "Constant",
-              "Evaluation": "Life",
-              "CurveA": [
-                {
-                  "x": 0.5,
-                  "y": 0.5,
-                  "in": 0,
-                  "out": 0,
-                  "mode": "Mirrored"
-                }
-              ],
-              "CurveB": [
-                {
-                  "x": 0.5,
-                  "y": 0.5,
-                  "in": 0,
-                  "out": 0,
-                  "mode": "Mirrored"
-                }
-              ],
-              "Constants": "0,0,0,0"
-            }
+            "X": 0,
+            "Y": 0,
+            "Z": 0
           },
-          "OrbitalPull": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "0,0,0,0"
-          },
+          "OrbitalPull": 0,
           "PerParticleTimeScale": {
             "Type": "Range",
             "Evaluation": "Frame",
@@ -1865,53 +2127,9 @@
             ],
             "Constants": "1,2,0,0"
           },
-          "Pitch": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "0,0,0,0"
-          },
+          "Pitch": 0,
           "PreWarm": 1,
-          "PushStrength": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "0,0,0,0"
-          },
+          "PushStrength": 0,
           "Roll": {
             "Type": "Range",
             "Evaluation": "Particle",
@@ -1958,29 +2176,7 @@
             ],
             "Constants": "50,20,0,0"
           },
-          "SequenceId": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "0,0,0,0"
-          },
+          "SequenceId": 0,
           "SequenceSpeed": {
             "Type": "Range",
             "Evaluation": "Particle",
@@ -2029,52 +2225,8 @@
           },
           "SheetSequence": true,
           "Space": "World",
-          "StartDelay": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "0,0,0,0"
-          },
-          "StartVelocity": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "0,0,0,0"
-          },
+          "StartDelay": 0,
+          "StartVelocity": 0,
           "Stretch": {
             "Type": "CurveRange",
             "Evaluation": "Life",
@@ -2114,29 +2266,7 @@
           },
           "TimeScale": 1,
           "Tint": "1,1,1,1",
-          "Yaw": {
-            "Type": "Constant",
-            "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "Constants": "0,0,0,0"
-          }
+          "Yaw": 0
         },
         {
           "__type": "Sandbox.ParticleSpriteRenderer",
@@ -2152,6 +2282,12 @@
           "LeadingTrail": true,
           "Lighting": false,
           "MotionBlur": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Opaque": false,
           "Pivot": "0.5,0.5",
           "RenderOptions": {
@@ -2174,6 +2310,12 @@
           "DestroyOnEnd": false,
           "Duration": 10,
           "Loop": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "OnEdge": false,
           "Rate": 20,
           "RateOverDistance": 0,
@@ -2195,6 +2337,12 @@
               "FogMode": "Enabled",
               "FogStrength": 1,
               "LightColor": "1,0.71667,0,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Radius": 400,
               "Shadows": true
             }
@@ -2216,7 +2364,15 @@
           "__guid": "32cd4aef-fd2f-4796-a0e3-43b997c4967b",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/props_skybox/farm_house.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -2241,6 +2397,12 @@
           "EndDistance": 256,
           "FalloffExponent": 1,
           "Height": 52.800697,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "StartDistance": 1,
           "VerticalFalloffExponent": 0.001
         }
@@ -2255,7 +2417,6 @@
         {
           "__type": "Sandbox.EnvmapProbe",
           "__guid": "371f4bce-bd5f-4e00-b2ef-27726b655b44",
-          "Texture": "textures/cubemaps/default2.vtex",
           "Bounds": {
             "Mins": "-10000,-10000,-10000",
             "Maxs": "10000,10000,10000"
@@ -2265,8 +2426,15 @@
           "FrameInterval": 5,
           "MaxDistance": 512,
           "MultiBounce": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Projection": "Box",
           "RenderDynamically": true,
+          "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1",
           "UpdateStrategy": "EveryFrame",
           "ZFar": 4096,
@@ -2285,8 +2453,8 @@
     "TimeScale": 1,
     "UseFixedUpdate": true,
     "Metadata": {
-      "Title": "SSAO",
-      "Description": "Screen Space Ambient Occlusion",
+      "Title": "Water",
+      "Description": "Water shader",
       "Group": "Rendering"
     },
     "NavMesh": {
@@ -2303,8 +2471,8 @@
     }
   },
   "ResourceVersion": 2,
-  "Title": "SSAO",
-  "Description": "Screen Space Ambient Occlusion",
+  "Title": "Water",
+  "Description": "Water shader",
   "__references": [
     "facepunch.fire_particle_fast#60123",
     "facepunch.oildrumexplosive#26722",
