@@ -8,11 +8,11 @@ namespace Sandbox;
 [Hide]
 public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 {
-    Rendering.CommandList commands;
-    Rendering.CommandList _getLastFrameColorCommand;
+    Rendering.CommandList Commands;
+    Rendering.CommandList FBCopyCommand;
     int Frame;
 
-    Texture BlueNoise { get; set; } = Texture.Load( "textures/dev/blue_noise_256.vtex" );
+    Texture BlueNoise { get; set; } = Texture.Load( FileSystem.Mounted, "textures/dev/blue_noise_256.vtex" );
 
     /// <summary>
     /// Until which roughness value the effect should be applied
@@ -41,18 +41,24 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 
     protected override void OnEnabled()
     {
-        commands = new Rendering.CommandList( "Dynamic Reflections" );
-        _getLastFrameColorCommand = new Rendering.CommandList( "Get Last Frame Color" );
+        Commands = new Rendering.CommandList( "Dynamic Reflections" );
+        FBCopyCommand = new Rendering.CommandList( "Get Last Frame Color" );
+        
         OnDirty();
 
-        Camera.AddCommandList( commands, Rendering.Stage.AfterDepthPrepass, int.MaxValue );
-        Camera.AddCommandList( _getLastFrameColorCommand, Rendering.Stage.AfterOpaque, int.MaxValue );
+        Camera.AddCommandList( FBCopyCommand, Rendering.Stage.AfterOpaque, int.MaxValue );
+        Camera.AddCommandList( Commands, Rendering.Stage.AfterDepthPrepass, int.MaxValue );
+
     }
 
     protected override void OnDisabled()
     {
-        Camera.RemoveCommandList( commands );
-        commands = null;
+        Camera.RemoveCommandList( FBCopyCommand );
+        Camera.RemoveCommandList( Commands );
+
+        Commands = null;
+        FBCopyCommand = null;
+
         Frame = 0;
     }
 
@@ -63,35 +69,34 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 
     void Rebuild()
     {
-        if ( commands is null )
+        if ( Commands is null )
             return;
 
-        _getLastFrameColorCommand.Reset();
-        commands.Reset();
+        FBCopyCommand.Reset();
+        Commands.Reset();
         
 		bool pingPong = (Frame++ % 2) == 0;
         int downsampleRatio = (int)Math.Pow( 2, 0 );
         
-        commands.Set( "BlueNoiseIndex", Texture.Load( "textures/dev/blue_noise_256.vtex" ).Index );
+        Commands.Set( "BlueNoiseIndex", BlueNoise.Index );
 
-        var PreviousFrameColorRT = commands.GetRenderTarget( "PrevFrameTexture", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
-        _getLastFrameColorCommand.GrabFrameTexture( "PrevFrameTexture" );
+        var PreviousFrameColorRT = FBCopyCommand.GrabFrameTexture( "PrevFrameTexture" );
 
-        var PreviousGBuffer	     = commands.GetRenderTarget( "PrevGBuffer",  ImageFormat.RGBA8888, sizeFactor: downsampleRatio );
+        var PreviousGBuffer	     = Commands.GetRenderTarget( "PrevGBuffer",  ImageFormat.RGBA8888, sizeFactor: downsampleRatio );
+        
+        var Radiance0 = Commands.GetRenderTarget( $"Radiance{pingPong}", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
+        var Radiance1 = Commands.GetRenderTarget( $"Radiance{!pingPong}", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
 
-        var Radiance0 = commands.GetRenderTarget( $"Radiance{pingPong}", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
-        var Radiance1 = commands.GetRenderTarget( $"Radiance{!pingPong}", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
+        var Variance0 = Commands.GetRenderTarget( $"Variance{pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
+        var Variance1 = Commands.GetRenderTarget( $"Variance{!pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
 
-        var Variance0 = commands.GetRenderTarget( $"Variance{pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
-        var Variance1 = commands.GetRenderTarget( $"Variance{!pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
+        var SampleCount0 = Commands.GetRenderTarget( $"Sample Count{pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
+        var SampleCount1 = Commands.GetRenderTarget( $"Sample Count{!pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
 
-        var SampleCount0 = commands.GetRenderTarget( $"Sample Count{pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
-        var SampleCount1 = commands.GetRenderTarget( $"Sample Count{!pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
+        var AverageRadiance0 = Commands.GetRenderTarget( $"Average Radiance{pingPong}", ImageFormat.RGBA8888, sizeFactor: 8 * downsampleRatio );
+        var AverageRadiance1 = Commands.GetRenderTarget( $"Average Radiance{!pingPong}", ImageFormat.RGBA8888, sizeFactor: 8 * downsampleRatio );
 
-        var AverageRadiance0 = commands.GetRenderTarget( $"Average Radiance{pingPong}", ImageFormat.RGBA16161616F, sizeFactor: 8 * downsampleRatio );
-        var AverageRadiance1 = commands.GetRenderTarget( $"Average Radiance{!pingPong}", ImageFormat.RGBA16161616F, sizeFactor: 8 * downsampleRatio );
-
-        var ReprojectedRadiance	= commands.GetRenderTarget( "Reprojected Radiance", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
+        var ReprojectedRadiance	= Commands.GetRenderTarget( "Reprojected Radiance", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
 
         ComputeShader reflectionsCs = new ComputeShader("dynamic_reflections_cs");
 
@@ -107,57 +112,57 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
             //        break;
             //    }
             case Passes.Intersect:
-                commands.Set( "OutRadiance", Radiance0.ColorTexture );
+                Commands.Set( "OutRadiance", Radiance0.ColorTexture );
                 break;
 
             case Passes.DenoiseReproject:
-                commands.Set( "SampleCountIntersection", SamplesPerPixel );
-                commands.Set( "AverageRadianceHistory", AverageRadiance1.ColorTexture );
-                commands.Set( "VarianceHistory", Variance1.ColorTexture ); 
-                commands.Set( "SampleCountHistory", SampleCount1.ColorTexture );
+                Commands.Set( "SampleCountIntersection", SamplesPerPixel );
+                Commands.Set( "AverageRadianceHistory", AverageRadiance1.ColorTexture );
+                Commands.Set( "VarianceHistory", Variance1.ColorTexture ); 
+                Commands.Set( "SampleCountHistory", SampleCount1.ColorTexture );
 
-                commands.Set( "OutReprojectedRadiance", ReprojectedRadiance.ColorTexture );
-                commands.Set( "OutAverageRadiance", AverageRadiance0.ColorTexture );
-                commands.Set( "OutVariance", Variance0.ColorTexture );
-                commands.Set( "OutSampleCount", SampleCount0.ColorTexture );
+                Commands.Set( "OutReprojectedRadiance", ReprojectedRadiance.ColorTexture );
+                Commands.Set( "OutAverageRadiance", AverageRadiance0.ColorTexture );
+                Commands.Set( "OutVariance", Variance0.ColorTexture );
+                Commands.Set( "OutSampleCount", SampleCount0.ColorTexture );
                 break;
 
             case Passes.DenoisePrefilter:
-                commands.Set( "Radiance", Radiance0.ColorTexture );
-                commands.Set( "Variance", Variance0.ColorTexture );
-                commands.Set( "SampleCountHistory", SampleCount0.ColorTexture );
+                Commands.Set( "Radiance", Radiance0.ColorTexture );
+                Commands.Set( "Variance", Variance0.ColorTexture );
+                Commands.Set( "SampleCountHistory", SampleCount0.ColorTexture );
 
-                commands.Set( "OutRadiance", Radiance1.ColorTexture );
-                commands.Set( "OutVariance", Variance1.ColorTexture );
-                commands.Set( "OutSampleCount", SampleCount1.ColorTexture );
+                Commands.Set( "OutRadiance", Radiance1.ColorTexture );
+                Commands.Set( "OutVariance", Variance1.ColorTexture );
+                Commands.Set( "OutSampleCount", SampleCount1.ColorTexture );
                 break;
 
             case Passes.DenoiseResolveTemporal:
-                commands.Set( "Radiance", Radiance1.ColorTexture );
-                commands.Set( "ReprojectedRadiance", ReprojectedRadiance.ColorTexture );
-                commands.Set( "Variance", Variance1.ColorTexture );
-                commands.Set( "SampleCount", SampleCount1.ColorTexture );
+                Commands.Set( "Radiance", Radiance1.ColorTexture );
+                Commands.Set( "ReprojectedRadiance", ReprojectedRadiance.ColorTexture );
+                Commands.Set( "Variance", Variance1.ColorTexture );
+                Commands.Set( "SampleCount", SampleCount1.ColorTexture );
 
-                commands.Set( "OutRadiance", Radiance0.ColorTexture );
-                commands.Set( "OutVariance", Variance0.ColorTexture );
-                commands.Set( "OutSampleCount", SampleCount0.ColorTexture );
+                Commands.Set( "OutRadiance", Radiance0.ColorTexture );
+                Commands.Set( "OutVariance", Variance0.ColorTexture );
+                Commands.Set( "OutSampleCount", SampleCount0.ColorTexture );
                 break;
             }
 
             // Common settings for all passes
-            commands.Set( "PreviousGBuffer", PreviousGBuffer.ColorTexture );
-            commands.Set( "PreviousFrameColor", PreviousFrameColorRT.ColorTexture );
-            commands.Set( "AverageRadiance", AverageRadiance0.ColorTexture );
-            commands.Set( "AverageRadianceHistory", AverageRadiance1.ColorTexture );
-            commands.Set( "PrevFrameTexture", PreviousFrameColorRT.ColorTexture );
+            Commands.Set( "PreviousGBuffer", PreviousGBuffer.ColorTexture );
+            Commands.Set( "PreviousFrameColor", PreviousFrameColorRT.ColorTexture );
+            Commands.Set( "AverageRadiance", AverageRadiance0.ColorTexture );
+            Commands.Set( "AverageRadianceHistory", AverageRadiance1.ColorTexture );
 
             // Set the pass
-            commands.SetCombo( "D_PASS", (int)pass );
-            commands.DispatchCompute( reflectionsCs, ReprojectedRadiance.Size );
+            Commands.SetCombo( "D_PASS", (int)pass );
+            Commands.DispatchCompute( reflectionsCs, ReprojectedRadiance.Size );
+            break;
         }
 
         // Final SSR color to be used by shaders
-        commands.SetGlobal( "ReflectionColorIndex", Radiance0.ColorIndex );
+        Commands.SetGlobal( "ReflectionColorIndex", Radiance0.ColorIndex );
         
     }
 }

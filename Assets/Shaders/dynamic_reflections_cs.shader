@@ -43,8 +43,8 @@ CS
 
 	#define floatx float4
     
-    Texture2D               PrevFrameTexture        < Attribute( "PrevFrameTexture" ); >;
-	Texture2D 				BlueNoise  		 		< Attribute( "BlueNoise" ); >;			// Blue noise texture
+    Texture2D               PreviousFrameColor      < Attribute( "PreviousFrameColor" ); >;
+	int 				    BlueNoiseIndex  		< Attribute( "BlueNoiseIndex" ); >;			// Blue noise texture
 
     Texture2D               Intersection            < Attribute( "Intersection" ); >;
 	Texture2D 				DownsampledDepth		< Attribute( "DepthChainDownsample" ); >;
@@ -150,8 +150,8 @@ CS
             //----------------------------------------------
             // Get noise value
             // ---------------------------------------------
-            float2 vDitherCoord = mad( vDispatch + (k * 50), ( 1.0f / 256.0f ), g_vRandomFloats.xy );
-            float3 vNoise = BlueNoise[ vDitherCoord.xy ].rgb;
+            float2 vDitherCoord = ( vDispatch + ( g_vRandomFloats * 256 ) ) % 256;
+            float3 vNoise = Bindless::GetTexture2D(BlueNoiseIndex)[ vDitherCoord.xy ].rgb;
 
             // Randomize dir by roughness
             float flRoughness = Roughness::Sample( vDispatch );
@@ -180,20 +180,21 @@ CS
             // ---------------------------------------------
             bool bValidSample = (trace.Confidence > 0.0);
 
-            vColor += Tex2DLoad( PrevFrameTexture, uint3( vLastFramePositionHitSs, 0) ).rgb * bValidSample;
+            vColor += PreviousFrameColor[ vLastFramePositionHitSs ].rgb;
 
-
-            //vColor = float3( trace.HitClipSpace.xy * g_vInvViewportSize, trace.HitClipSpace.z);
             flConfidence += bValidSample * InvSampleCount;
 
             nValidSamples += bValidSample;
         }
-        OutRadiance[vDispatch] = float4(vColor, flConfidence);
+
+        vColor *= InvSampleCount;
+
+        OutRadiance[vDispatch] = float4(vColor * flConfidence, flConfidence);
     }
 
 	//--------------------------------------------------------------------------------------
 		
-	float	FFX_DNSR_Reflections_GetRandom(int2 pixel_coordinate) 					{ return Tex2DLoad( BlueNoise, int3( pixel_coordinate % TextureDimensions2D( BlueNoise, 0 ).xy, 0 ) ).x; }
+	float	FFX_DNSR_Reflections_GetRandom(int2 pixel_coordinate) 					{ return Bindless::GetTexture2D(BlueNoiseIndex)[ pixel_coordinate % 256 ].x; }
 
 	float	FFX_DNSR_Reflections_LoadDepth(int2 pixel_coordinate) 					{ return LoadDepth( pixel_coordinate ); }
 	float	FFX_DNSR_Reflections_LoadDepthHistory(int2 pixel_coordinate) 			{ return RemapValClamped( Tex2DLoad( DownsampledDepthHistory, int3( pixel_coordinate, ReflectionDownsampleRatio ) ).y, g_flViewportMinZ, g_flViewportMaxZ, 0.0f, 1.0f); } // Is this bullshit?
