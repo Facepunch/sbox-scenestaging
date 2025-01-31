@@ -1,8 +1,8 @@
-using System;
 using System.IO;
 using System.Threading;
-using Sandbox;
 
+[Title("IES Light Profile")]
+[Icon("lightbulb")]
 public class IES : Sandbox.Resources.TextureGenerator
 {
 	internal static bool IsAppropriate( string url )
@@ -105,74 +105,103 @@ public class IES : Sandbox.Resources.TextureGenerator
 		}
 		return info;
 	}
-
-	public static float Sample1D( IESInfo info, float angle )
+	public static float Sample2D(IESInfo info, float radius, float angleDeg)
 	{
-		float angleDegrees = angle;
-		int index = 0;
-
-		//Outside
-		if ( angle > info.VerticalAngles.Last() )
-			return 0;
+		// Early out if radius is beyond 1
+		if (radius > 1.0f) return 0;
 		
-		// Find the right index
-		for( int i=0; i < info.VerticalAngles.Count; i++ )
+		// Convert angle to 0-360 range
+		angleDeg = ((angleDeg % 360) + 360) % 360;
+		
+		// Mirror angles above 180 degrees back to 0-180 range
+		if (angleDeg > 180.0f)
 		{
-			if ( info.VerticalAngles[i] > angleDegrees )
+			angleDeg = 360.0f - angleDeg;
+		}
+		
+		// Find horizontal angle indices
+		int h1 = 0, h2 = 0;
+		float hBlend = 0;
+		
+		for (int i = 0; i < info.NumHorizontal - 1; i++)
+		{
+			if (angleDeg >= info.HorizontalAngles[i] && angleDeg <= info.HorizontalAngles[i + 1])
 			{
-				index = i;
+				h1 = i;
+				h2 = i + 1;
+				hBlend = (angleDeg - info.HorizontalAngles[i]) / (info.HorizontalAngles[i + 1] - info.HorizontalAngles[i]);
 				break;
 			}
 		}
-
-		index = index.Clamp( 1, info.VerticalAngles.Count );
-
-		// Interpolate between the two closest values
-		float a = info.VerticalAngles[index - 1];
-		float b = info.VerticalAngles[index];
-		float percentage = (angleDegrees - a) / (b - a);
-
-		float c = info.Candelas[index - 1];
-		float d = info.Candelas[index];
-
-		return c.LerpTo( d, percentage );
+		
+		// Convert radius to vertical angle (0 = straight down, 1 = horizontal)
+		float vertAngle = 90.0f * radius;
+		
+		// Find vertical angle indices
+		int v1 = 0, v2 = 0;
+		float vBlend = 0;
+		
+		for (int i = 0; i < info.NumVertical - 1; i++)
+		{
+			if (vertAngle >= info.VerticalAngles[i] && vertAngle <= info.VerticalAngles[i + 1])
+			{
+				v1 = i;
+				v2 = i + 1;
+				vBlend = (vertAngle - info.VerticalAngles[i]) / (info.VerticalAngles[i + 1] - info.VerticalAngles[i]);
+				break;
+			}
+		}
+		
+		// Bilinear interpolation of candela values
+		float c11 = info.Candelas[h1 * info.NumVertical + v1];
+		float c12 = info.Candelas[h1 * info.NumVertical + v2];
+		float c21 = info.Candelas[h2 * info.NumVertical + v1];
+		float c22 = info.Candelas[h2 * info.NumVertical + v2];
+		
+		float c1 = c11 * (1 - vBlend) + c12 * vBlend;
+		float c2 = c21 * (1 - vBlend) + c22 * vBlend;
+		
+		float candela = c1 * (1 - hBlend) + c2 * hBlend;
+		
+		// Apply candela multiplier
+		return candela * info.CandelaMultiplier;
 	}
-	
-	public static Texture Generate2DTexture( IESInfo info )
+
+	public static Texture Generate2DTexture(IESInfo info)
 	{
 		const int width = 512;
 		const int height = 512;
 		
-		float invW = 1.0f / width;
-		float invH = 1.0f / height;
-		float invMaxValue = 1.0f / ( info.Candelas.Max() );
-
-		float maxAngle = info.VerticalAngles.Max();
-
-		const int bpp = 1;
+		int bpp = 1; // Bytes per pixel
 		byte[] imageData = new byte[width * height * bpp];
-
-		for ( int y = 0; y < height; ++y )
+		
+		// Generate normalized texture
+		for (int y = 0; y < height; y++)
 		{
-			for ( int x = 0; x < width; ++x )
+			for (int x = 0; x < width; x++)
 			{
-				float distance = MathF.Sqrt( (x * invW - 0.5f) * (x * invW - 0.5f) + (y * invH - 0.5f) * (y * invH - 0.5f) )  * maxAngle;
+				float px = (x / (float)width) * 2 - 1;
+				float py = (y / (float)height) * 2 - 1;
+				
+				float radius = MathF.Sqrt(px * px + py * py);
+				float angle = MathF.Atan2(py, px) * 180 / MathF.PI;
+				
+				float candela = Sample2D(info, radius, angle);
+				candela /= info.Candelas.Max(); // Normalize to 0-1 range
 
-				// Sample the IESInfo candela at the angle position
-				float candela = Math.Clamp( Sample1D( info, distance ) * invMaxValue, 0.0f, 1.0f );
-				candela = MathF.Sqrt( candela );
-
-				bool isEven = (x % 2 == 0) && (y % 2 == 0);
-
-				int sample =  (int)(candela * 255.0f);
-
-				// sample to our imagedata
-				int index = (y * width + x) * bpp;
-				imageData[index + 0] = (byte)(sample);
+				candela = MathF.Pow(candela, 2.2f); // Gamma correction
+				
+				int idx = y * width + x;
+				imageData[idx] = (byte)(candela * 255.0f).Clamp(0, 255);
 			}
 		}
 
-		return Texture.Create( width, height ).WithName( $"_IESLight{ info.GetHashCode() }" ).WithFormat( ImageFormat.I8 ).WithData( imageData ).Finish();
+		return Texture
+			.Create(width, height)
+			.WithName($"_IESLight{info.GetHashCode()}")
+			.WithData(imageData)
+			.WithFormat(ImageFormat.I8)
+			.Finish();
 	}
 	
 	public static Texture Load( Stream stream )
