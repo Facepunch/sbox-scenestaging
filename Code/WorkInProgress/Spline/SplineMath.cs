@@ -39,6 +39,19 @@ public struct SplinePoint
 	[JsonInclude]
 	public Vector3 OutPositionRelative;
 
+	[JsonInclude]
+	public SplinePointTangentMode TangentMode = SplinePointTangentMode.Auto;
+
+	[JsonInclude]
+	public float Roll = 0f;
+
+	// X = Scale Width, Y = Scale Height
+	[JsonInclude]
+	public Vector2 Scale = Vector2.One;
+
+	[JsonInclude]
+	public Vector3 UpVector = Vector3.Up;
+
 	[JsonIgnore, Hide]
 	public Vector3 OutPosition
 	{
@@ -51,6 +64,11 @@ public struct SplinePoint
 	{
 		get { return Position + InPositionRelative; }
 		set { InPositionRelative = value - Position; }
+	}
+
+	public SplinePoint()
+	{
+
 	}
 }
 
@@ -551,7 +569,7 @@ public static class SplineUtils
 	}
 
 	// https://www.youtube.com/watch?v=lPJo1jayLdc
-	public static SplitSegmentResult SplitSegment( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
+	public static SplitSegmentResult SplitSegment( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams, float distanceParam, bool inferTangentMode = false )
 	{
 		CheckSegmentParams( spline, segmentParams );
 
@@ -574,23 +592,63 @@ public static class SplineUtils
 				Position = point0,
 				InPositionRelative = spline[segmentParams.Index].InPositionRelative,
 				OutPositionRelative = leftOut - point0,
+				TangentMode = inferTangentMode ? spline[segmentParams.Index].TangentMode : SplinePointTangentMode.Split,
+				Roll = spline[segmentParams.Index].Roll,
+				Scale = spline[segmentParams.Index].Scale,
+				UpVector = spline[segmentParams.Index].UpVector
 			},
 			Mid = new SplinePoint
 			{
 				Position = midPoint,
 				InPositionRelative = midIn - midPoint,
 				OutPositionRelative = midOut - midPoint,
+				TangentMode = inferTangentMode ? InferTangentModeForSplitPoint( spline, segmentParams ) : SplinePointTangentMode.Split,
+				Roll = MathX.Lerp( spline[segmentParams.Index].Roll, spline[segmentParams.Index + 1].Roll, distanceParam ),
+				Scale = Vector2.Lerp( spline[segmentParams.Index].Scale, spline[segmentParams.Index + 1].Scale, distanceParam ),
+				UpVector = Vector3.Lerp( spline[segmentParams.Index].UpVector, spline[segmentParams.Index + 1].UpVector, distanceParam )
+
 			},
 			Right = new SplinePoint
 			{
 				Position = point3,
 				InPositionRelative = rightIn - point3,
 				OutPositionRelative = spline[segmentParams.Index + 1].OutPositionRelative,
+				TangentMode = inferTangentMode ? spline[segmentParams.Index + 1].TangentMode : SplinePointTangentMode.Split,
+				Roll = spline[segmentParams.Index + 1].Roll,
+				Scale = spline[segmentParams.Index + 1].Scale,
+				UpVector = spline[segmentParams.Index + 1].UpVector
 			}
 		};
 
 		return result;
 	}
+
+	private static SplinePointTangentMode InferTangentModeForSplitPoint( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
+	{
+		// If the tangent modes are the same on both sides we just assume the new points should have the same tangent mode
+		if ( spline[segmentParams.Index].TangentMode == spline[segmentParams.Index + 1].TangentMode )
+		{
+			return spline[segmentParams.Index].TangentMode;
+		}
+
+		// if one of them uses auto asume the new points should use auto
+		if ( spline[segmentParams.Index].TangentMode == SplinePointTangentMode.Auto ||
+			 spline[segmentParams.Index + 1].TangentMode == SplinePointTangentMode.Auto )
+		{
+			return SplinePointTangentMode.Auto;
+		}
+
+		// If one of them uses linear assume the new points should use linear
+		if ( spline[segmentParams.Index].TangentMode == SplinePointTangentMode.Linear ||
+			 spline[segmentParams.Index + 1].TangentMode == SplinePointTangentMode.Linear )
+		{
+			return SplinePointTangentMode.Linear;
+		}
+
+		// Otherwise we default to custom
+		return SplinePointTangentMode.Split;
+	}
+
 
 	// https://github.com/erich666/GraphicsGems/blob/master/gems/FitCurves.c
 	public static SplineSegmentParams FindSegmentAndTClosestToPosition(
