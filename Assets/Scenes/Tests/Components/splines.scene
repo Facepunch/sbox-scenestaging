@@ -215,6 +215,7 @@
         {
           "__type": "Sandbox.PlayerController",
           "__guid": "b4a2c0d7-4255-457c-9aaa-b986fb7a2795",
+          "AccelerationTime": 0,
           "AimStrengthBody": 1,
           "AimStrengthEyes": 1,
           "AimStrengthHead": 1,
@@ -229,11 +230,13 @@
           "BodyHeight": 64,
           "BodyMass": 500,
           "BodyRadius": 16,
+          "BrakePower": 1,
           "CameraOffset": "256,0,12",
           "ColliderObject": {
             "_type": "gameobject",
             "go": "2f74d327-8049-4024-b573-b50b14fee90a"
           },
+          "DeaccelerationTime": 0,
           "DuckedHeight": 40,
           "DuckedSpeed": 70,
           "EnableFootstepSounds": true,
@@ -246,12 +249,14 @@
           "FootstepVolume": 1,
           "HideBodyInFirstPerson": true,
           "JumpSpeed": 300,
+          "LookSensitivity": 1,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
+          "PitchClamp": 90,
           "ReachLength": 130,
           "Renderer": {
             "_type": "component",
@@ -273,6 +278,7 @@
           "UseCameraControls": true,
           "UseFovFromPreferences": true,
           "UseInputControls": true,
+          "UseLookControls": true,
           "WalkSpeed": 110
         },
         {
@@ -535,6 +541,78 @@
       ]
     },
     {
+      "__guid": "f1af638a-09bf-402b-b68b-08535030b6e3",
+      "Flags": 0,
+      "Name": "Platform",
+      "Position": "546.9887,-1000,332.6101",
+      "Scale": "4,4,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "65ecd7f6-0464-4808-892e-dc214b805f53",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/dev/simple/floor_simple_128.vmat",
+          "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "a67a042c-03e4-4690-8d66-4d52eeba0d9d",
+          "Center": "0,0,0",
+          "Friction": null,
+          "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "MoveAlongSplineComponent",
+          "__guid": "6bb497ec-675e-4775-9d94-6bed2a3f28e6",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Speed": 120,
+          "Spline": {
+            "_type": "component",
+            "component_id": "b328b829-3617-4422-b470-12b0cd9f9953",
+            "go": "253ed027-16cb-4659-871d-91172037fdde",
+            "component_type": "Spline"
+          },
+          "UpdateRotation": true
+        }
+      ]
+    },
+    {
       "__guid": "253ed027-16cb-4659-871d-91172037fdde",
       "Flags": 0,
       "Name": "PlatformRide",
@@ -551,6 +629,7 @@
             0,
             0,
             0,
+            0,
             0
           ],
           "_pointScales": [
@@ -560,9 +639,11 @@
             "1,1",
             "1,1",
             "1,1",
+            "1,1",
             "1,1"
           ],
           "_pointTangentModes": [
+            "Auto",
             "Auto",
             "Auto",
             "Auto",
@@ -582,43 +663,49 @@
             "0,0,1",
             "0,0,1",
             "0,0,1",
+            "0,0,1",
             "0,0,1"
           ],
           "_splinePoints": [
             {
               "Position": "52.28896,-246.5949,0",
-              "InPositionRelative": "-163.2768,-66.93806,0.00002304713",
-              "OutPositionRelative": "163.2768,66.93806,-0.00002304713"
+              "InPositionRelative": "-214.2215,-24.07362,-0.0000853737",
+              "OutPositionRelative": "214.2215,24.07362,0.0000853737"
             },
             {
               "Position": "1031.95,155.0335,-0.0001382828",
-              "InPositionRelative": "-134.8902,-246.0957,-0",
-              "OutPositionRelative": "134.8902,246.0957,0"
+              "InPositionRelative": "-187.879,-177.5076,-0",
+              "OutPositionRelative": "187.879,177.5076,0"
             },
             {
-              "Position": "861.6298,1229.979,0",
-              "InPositionRelative": "123.9308,-76.65865,-0.00003492833",
-              "OutPositionRelative": "-123.9308,76.65865,0.00003492833"
+              "Position": "1179.563,818.4505,0",
+              "InPositionRelative": "53.37724,-148.7402,-0.00002304713",
+              "OutPositionRelative": "-53.37724,148.7402,0.00002304713"
             },
             {
-              "Position": "288.3649,614.9853,0.00007128716",
-              "InPositionRelative": "175.1459,102.3049,-0",
-              "OutPositionRelative": "-175.1459,-102.3049,0"
+              "Position": "711.6865,1047.475,0",
+              "InPositionRelative": "143.9453,-8.885203,0.00001481486",
+              "OutPositionRelative": "-143.9453,8.885203,-0.00001481486"
             },
             {
-              "Position": "-189.2454,616.1495,0",
-              "InPositionRelative": "101.134,120.4167,0.0001345078",
-              "OutPositionRelative": "-101.134,-120.4167,-0.0001345078"
+              "Position": "315.8915,871.7617,-0.00008888915",
+              "InPositionRelative": "168.7571,71.74957,-0",
+              "OutPositionRelative": "-168.7571,-71.74957,0"
             },
             {
-              "Position": "-318.439,-107.5149,-0.0007357597",
-              "InPositionRelative": "21.53226,120.6107,0.0001226266",
-              "OutPositionRelative": "-21.53226,-120.6107,-0.0001226266"
+              "Position": "-300.856,616.9775,0",
+              "InPositionRelative": "94.87847,143.5283,0.00009360598",
+              "OutPositionRelative": "-94.87847,-143.5283,-0.00009360598"
+            },
+            {
+              "Position": "-253.3793,10.59179,-0.000650525",
+              "InPositionRelative": "-58.85749,143.9287,-0",
+              "OutPositionRelative": "58.85749,-143.9287,0"
             },
             {
               "Position": "52.28896,-246.5949,0",
-              "InPositionRelative": "-163.2768,-66.93806,0.00002304713",
-              "OutPositionRelative": "163.2768,66.93806,-0.00002304713"
+              "InPositionRelative": "-214.2215,-24.07362,-0.0000853737",
+              "OutPositionRelative": "214.2215,24.07362,0.0000853737"
             }
           ],
           "IsLoop": true,
@@ -632,6 +719,7 @@
         {
           "__type": "Sandbox.SplineModelRenderer",
           "__guid": "60e1a5b9-0e25-42d5-8372-1ae81131c7c0",
+          "__enabled": false,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "FlexFit": true,
@@ -664,78 +752,102 @@
           "Tint": "0.62791,0.74574,1,1",
           "UseRotationMinimizingFrames": true
         }
-      ],
-      "Children": [
+      ]
+    },
+    {
+      "__guid": "c852b82d-5e2d-474c-9309-ad1ed839ca4e",
+      "Flags": 0,
+      "Name": "I",
+      "Position": "-1630.933,-3619.681,704.3996",
+      "Rotation": "0,0,-0.1305262,0.9914449",
+      "Enabled": true,
+      "Components": [
         {
-          "__guid": "f1af638a-09bf-402b-b68b-08535030b6e3",
-          "Flags": 0,
-          "Name": "Platform",
-          "Scale": "4,4,1",
-          "Enabled": true,
-          "Components": [
+          "__type": "Sandbox.Spline",
+          "__guid": "d733e756-b649-4808-831b-e4eefa65ff11",
+          "_pointRolls": [
+            0,
+            0,
+            0
+          ],
+          "_pointScales": [
+            "1,1",
+            "1,1",
+            "1,1"
+          ],
+          "_pointTangentModes": [
+            "Auto",
+            "Auto",
+            "Auto"
+          ],
+          "_pointUpVectors": [
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1"
+          ],
+          "_splinePoints": [
             {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "65ecd7f6-0464-4808-892e-dc214b805f53",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "MaterialGroup": null,
-              "MaterialOverride": "materials/dev/simple/floor_simple_128.vmat",
-              "Model": "models/dev/box.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
+              "Position": "0,0,0",
+              "InPositionRelative": "-3.537965,0.4297958,-28.73395",
+              "OutPositionRelative": "3.537965,-0.4297958,28.73395"
             },
             {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "a67a042c-03e4-4690-8d66-4d52eeba0d9d",
-              "Center": "0,0,0",
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "Scale": "50,50,50",
-              "Static": false,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
+              "Position": "21.22779,-2.578775,172.4037",
+              "InPositionRelative": "0.2523772,0.4297958,-57.45245",
+              "OutPositionRelative": "-0.2523772,-0.4297958,57.45245"
             },
             {
-              "__type": "MoveAlongSplineComponent",
-              "__guid": "6bb497ec-675e-4775-9d94-6bed2a3f28e6",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Speed": 150,
-              "Spline": {
-                "_type": "component",
-                "component_id": "b328b829-3617-4422-b470-12b0cd9f9953",
-                "go": "253ed027-16cb-4659-871d-91172037fdde",
-                "component_type": "Spline"
-              },
-              "UpdateRotation": false
+              "Position": "-1.514264,-2.578775,344.7147",
+              "InPositionRelative": "3.790342,-0,-28.7185",
+              "OutPositionRelative": "-3.790342,0,28.7185"
             }
-          ]
+          ],
+          "IsLoop": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        },
+        {
+          "__type": "Sandbox.SplineModelRenderer",
+          "__guid": "bec18bb1-a280-4f3b-a840-4a5169ae8473",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "FlexFit": true,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/shine.vmat",
+          "Model": "models/spline_cylinder_test.vmdl",
+          "ModelOffset": "0,0,0",
+          "ModelRotation": "0,0,0,1",
+          "ModelScale": "1,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Spacing": 0,
+          "Spline": {
+            "_type": "component",
+            "component_id": "d733e756-b649-4808-831b-e4eefa65ff11",
+            "go": "c852b82d-5e2d-474c-9309-ad1ed839ca4e",
+            "component_type": "Spline"
+          },
+          "Tint": "0,0.73953,0.69023,1",
+          "UseRotationMinimizingFrames": true
         }
       ]
     },
@@ -751,6 +863,7 @@
           "__guid": "516e388b-0cba-423b-8fa4-499fb0d5f0e3",
           "Flags": 0,
           "Name": "S",
+          "Position": "0.0001263765,-0.0004716435,-97.03723",
           "Enabled": true,
           "Components": [
             {
@@ -870,7 +983,7 @@
           "__guid": "adafad37-d557-47bb-8cab-542016ff74c9",
           "Flags": 0,
           "Name": "P",
-          "Position": "0,-404.8304,0",
+          "Position": "0.0001182556,-404.8309,-97.03723",
           "Enabled": true,
           "Components": [
             {
@@ -993,7 +1106,7 @@
           "__guid": "d1ff9987-c422-4793-b302-25fc0d777fc2",
           "Flags": 0,
           "Name": "L",
-          "Position": "0,-701.2224,362.9205",
+          "Position": "0.0001296997,-701.2231,265.8834",
           "Enabled": true,
           "Components": [
             {
@@ -1089,7 +1202,7 @@
           "__guid": "e5a04ef7-f195-4d4e-94b8-04563de8d25e",
           "Flags": 0,
           "Name": "I",
-          "Position": "0,-816.8486,0",
+          "Position": "0.00009155273,-816.8491,-97.03723",
           "Enabled": true,
           "Components": [
             {
@@ -1185,7 +1298,7 @@
           "__guid": "2aedd2bd-6e74-47fa-88b5-853d343da92e",
           "Flags": 0,
           "Name": "N",
-          "Position": "0,-927.4346,0",
+          "Position": "0.00003814697,-927.4351,-97.03723",
           "Enabled": true,
           "Components": [
             {
@@ -1296,10 +1409,143 @@
           ]
         },
         {
+          "__guid": "a55502ec-506a-4a78-a514-8e3347167333",
+          "Flags": 0,
+          "Name": "N",
+          "Position": "-2814.998,-4118.764,-11.04492",
+          "Rotation": "0,0,-0.7933534,0.6087615",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Spline",
+              "__guid": "45b8c2f1-258b-490c-acd5-96f40ba433a9",
+              "_pointRolls": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "_pointScales": [
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1",
+                "1,1"
+              ],
+              "_pointTangentModes": [
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto",
+                "Auto"
+              ],
+              "_pointUpVectors": [
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1",
+                "0,0,1"
+              ],
+              "_splinePoints": [
+                {
+                  "Position": "0,0,0",
+                  "InPositionRelative": "-3.537965,0.4297958,-28.73395",
+                  "OutPositionRelative": "3.537965,-0.4297958,28.73395"
+                },
+                {
+                  "Position": "21.22779,-2.578775,172.4037",
+                  "InPositionRelative": "0.2523772,0.4297958,-57.45245",
+                  "OutPositionRelative": "-0.2523772,-0.4297958,57.45245"
+                },
+                {
+                  "Position": "-1.514264,-2.578775,344.7147",
+                  "InPositionRelative": "-9.875624,-0.1428853,2.663496",
+                  "OutPositionRelative": "9.875624,0.1428853,-2.663496"
+                },
+                {
+                  "Position": "80.48153,-1.721463,156.4227",
+                  "InPositionRelative": "-3.537811,25.67808,29.5081",
+                  "OutPositionRelative": "3.537811,-25.67808,-29.5081"
+                },
+                {
+                  "Position": "19.7126,-156.6473,167.6661",
+                  "InPositionRelative": "10.12815,25.82097,21.17668",
+                  "OutPositionRelative": "-10.12815,-25.82097,-21.17668"
+                },
+                {
+                  "Position": "19.7126,-156.6473,29.36263",
+                  "InPositionRelative": "-6.051097,2.270439,-28.95404",
+                  "OutPositionRelative": "6.051097,-2.270439,28.95404"
+                },
+                {
+                  "Position": "56.01918,-170.2699,341.3903",
+                  "InPositionRelative": "-6.051097,2.270439,-52.00461",
+                  "OutPositionRelative": "6.051097,-2.270439,52.00461"
+                }
+              ],
+              "IsLoop": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "Sandbox.SplineModelRenderer",
+              "__guid": "a7c665d8-9987-4409-8500-94c806c5c9af",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "FlexFit": true,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/shine.vmat",
+              "Model": "models/spline_cuboid_test.vmdl",
+              "ModelOffset": "0,0,0",
+              "ModelRotation": "0,0,0,1",
+              "ModelScale": "1,1,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Spacing": 0,
+              "Spline": {
+                "_type": "component",
+                "component_id": "45b8c2f1-258b-490c-acd5-96f40ba433a9",
+                "go": "a55502ec-506a-4a78-a514-8e3347167333",
+                "component_type": "Spline"
+              },
+              "Tint": "0.73953,0,0.25884,1",
+              "UseRotationMinimizingFrames": true
+            }
+          ]
+        },
+        {
           "__guid": "5ad1fa72-f524-425c-b0ff-a6e4b7ab63ee",
           "Flags": 0,
           "Name": "E",
-          "Position": "0,-1338.493,0",
+          "Position": "0.0001525879,-1338.494,-97.03723",
           "Enabled": true,
           "Components": [
             {
@@ -1440,7 +1686,7 @@
           "__guid": "27057231-eed1-474e-89cf-a035ae3422b9",
           "Flags": 0,
           "Name": "S",
-          "Position": "0,-1533.407,0",
+          "Position": "0.0001525879,-1533.408,-97.03723",
           "Enabled": true,
           "Components": [
             {
@@ -1560,7 +1806,7 @@
           "__guid": "833cce0a-bdea-41b1-988e-ed9836421a48",
           "Flags": 0,
           "Name": "Background",
-          "Position": "430.0104,469.4755,-64.66838",
+          "Position": "413.3786,580.1827,-64.66833",
           "Enabled": true,
           "Components": [
             {
@@ -1702,7 +1948,7 @@
           "__guid": "a4455f0d-a882-4c4d-937a-7f055ac1c70f",
           "Flags": 0,
           "Name": "Spot Light",
-          "Position": "-831.5764,-1312.886,237.5284",
+          "Position": "-831.5766,-1312.886,176.5042",
           "Rotation": "0,0,0.1305262,0.9914449",
           "Tags": "light,light_spot",
           "Enabled": true,
@@ -1901,7 +2147,7 @@
           "Model": "models/spline_cuboid_test.vmdl",
           "ModelOffset": "0,0,0",
           "ModelRotation": "0,0,0,1",
-          "ModelScale": "1,1,60",
+          "ModelScale": "1,1,85",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -1994,7 +2240,7 @@
       "__guid": "6d6d3d4a-07e3-4a96-9218-cae78cfe890e",
       "Flags": 0,
       "Name": "RMF",
-      "Position": "1447.838,702.1139,655.2948",
+      "Position": "1420.336,804.7498,619.2046",
       "Rotation": "0,0,0.7933534,0.6087614",
       "Enabled": true,
       "Components": [
@@ -2056,9 +2302,9 @@
     {
       "__guid": "6eba90ae-4caf-4b2f-8b9a-aa9154034ce0",
       "Flags": 0,
-      "Name": "Scale Rotation \u0026 Go",
-      "Position": "688.5531,282.8011,371.2317",
-      "Rotation": "0,0,0.8660252,0.4999999",
+      "Name": "Scale Rotation & Go",
+      "Position": "740.0115,540.8306,371.2319",
+      "Rotation": "0,0,0.7933533,0.6087614",
       "Enabled": true,
       "Components": [
         {
@@ -2081,7 +2327,7 @@
           "Scale": 1.5,
           "TextAlignment": "Center",
           "TextScope": {
-            "Text": "Scale, Offset, Rotation \u0026 Spacing",
+            "Text": "Scale, Offset, Rotation & Spacing",
             "TextColor": "1,1,1,1",
             "FontName": "Poppins",
             "FontSize": 32,
@@ -2120,8 +2366,8 @@
       "__guid": "a0d25bca-be32-46b7-afd5-5e1240e13a70",
       "Flags": 0,
       "Name": "Polygon",
-      "Position": "973.726,-1921.512,527.8906",
-      "Rotation": "0,0,0.6087615,-0.7933531",
+      "Position": "706.1432,-2080.988,527.8907",
+      "Rotation": "0,0,0.5000001,-0.8660251",
       "Enabled": true,
       "Components": [
         {
@@ -2467,7 +2713,7 @@
       "__guid": "8094a8fd-c970-4248-be82-f2c68f88c90b",
       "Flags": 0,
       "Name": "Sphere (6)",
-      "Position": "0.7986298,-987.5837,296.0741",
+      "Position": "-43.41542,-1077.833,296.0741",
       "Scale": "0.5,0.5,0.5",
       "Enabled": true,
       "Components": [
@@ -2544,10 +2790,90 @@
       ]
     },
     {
+      "__guid": "abd51531-8403-4da0-811b-0d0fa59ed5a2",
+      "Flags": 0,
+      "Name": "Sphere (3)",
+      "Position": "-137.3255,-1805.639,296.074",
+      "Scale": "0.5,0.5,0.5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "a7f6290c-160d-4b42-ba95-601d6a445f5b",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/sphere_test.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,0,0,1"
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "f352b0d2-3c3c-493f-9997-59596b9cf153",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {
+            "X": false,
+            "Y": false,
+            "Z": false,
+            "Pitch": false,
+            "Yaw": false,
+            "Roll": false
+          },
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "3bb953c3-ee72-4bfb-b951-250940021141",
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/sphere_test.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
       "__guid": "fe5f6e56-82e9-4f16-8689-c50f7793deae",
       "Flags": 0,
       "Name": "Sphere (4)",
-      "Position": "-356.481,-1172.692,292.2939",
+      "Position": "-400.695,-1262.941,292.2939",
       "Scale": "0.5,0.5,0.5",
       "Enabled": true,
       "Components": [
@@ -2604,6 +2930,86 @@
         {
           "__type": "Sandbox.ModelCollider",
           "__guid": "ccfe0433-fd3a-4235-b69d-bff7fd9f16ce",
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/sphere_test.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "7f9dae04-755b-4999-88f0-35f30a46e690",
+      "Flags": 0,
+      "Name": "Sphere (7)",
+      "Position": "-494.6051,-1990.748,292.2938",
+      "Scale": "0.5,0.5,0.5",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "9370190f-199a-4ae8-9db2-3a1ef1dd6ba6",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/sphere_test.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,0,0,1"
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "8f2da329-9004-452a-b273-1d484d82e4bf",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {
+            "X": false,
+            "Y": false,
+            "Z": false,
+            "Pitch": false,
+            "Yaw": false,
+            "Roll": false
+          },
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "5094fc8f-5a60-41d2-ba9e-f61a1ddf08c4",
           "Friction": null,
           "IsTrigger": false,
           "Model": "models/sphere_test.vmdl",
@@ -2707,7 +3113,7 @@
       "__guid": "d3e606d4-eeac-41b1-954b-3cfb6fb585a1",
       "Flags": 0,
       "Name": "Spiral",
-      "Position": "1292.3,638.857,310.7877",
+      "Position": "1264.799,741.493,310.7876",
       "Enabled": true,
       "Components": [
         {
@@ -3119,7 +3525,8 @@
       "__guid": "b56bf052-c825-40c6-bf7e-03df0c4fb46f",
       "Flags": 0,
       "Name": "Polygon",
-      "Position": "986.9362,-1975.776,346.7113",
+      "Position": "732.9479,-2129.984,346.7114",
+      "Rotation": "0,0,0.1305262,0.9914449",
       "Enabled": true,
       "Components": [
         {
@@ -3517,7 +3924,7 @@
       "__guid": "6d3a4d42-e33f-4c72-b98e-b309e1aa5fd2",
       "Flags": 0,
       "Name": "RotatingCollision",
-      "Position": "-175.9296,-1068.023,295.94",
+      "Position": "-220.1436,-1158.272,295.94",
       "Enabled": true,
       "Components": [
         {
@@ -3688,10 +4095,184 @@
       ]
     },
     {
+      "__guid": "47a01560-d22c-4319-85df-4bd1e06eb7b5",
+      "Flags": 0,
+      "Name": "RotatingCollision (1)",
+      "Position": "-314.0537,-1886.079,295.9399",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Spline",
+          "__guid": "b06b752f-1423-4411-8ddb-a9139cb078e1",
+          "_pointRolls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "_pointScales": [
+            "1,1",
+            "1,1",
+            "1,1",
+            "1,1",
+            "1,1",
+            "1,1",
+            "1,1"
+          ],
+          "_pointTangentModes": [
+            "Auto",
+            "Auto",
+            "Auto",
+            "Auto",
+            "Auto",
+            "Auto",
+            "Auto"
+          ],
+          "_pointUpVectors": [
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1"
+          ],
+          "_splinePoints": [
+            {
+              "Position": "-200,-200,0",
+              "InPositionRelative": "16.66667,-16.66667,-0",
+              "OutPositionRelative": "-16.66667,16.66667,0"
+            },
+            {
+              "Position": "-300,-100,0",
+              "InPositionRelative": "-0,-33.33334,-0",
+              "OutPositionRelative": "0,33.33334,0"
+            },
+            {
+              "Position": "-200,0,0",
+              "InPositionRelative": "-50,-16.66667,-0",
+              "OutPositionRelative": "50,16.66667,0"
+            },
+            {
+              "Position": "0,0,0",
+              "InPositionRelative": "-66.66667,-0,-0",
+              "OutPositionRelative": "66.66667,0,0"
+            },
+            {
+              "Position": "200,0,0",
+              "InPositionRelative": "-50,-16.66667,-0",
+              "OutPositionRelative": "50,16.66667,0"
+            },
+            {
+              "Position": "300,100,0",
+              "InPositionRelative": "-0,-33.33334,-0",
+              "OutPositionRelative": "0,33.33334,0"
+            },
+            {
+              "Position": "200,200,0",
+              "InPositionRelative": "16.66667,-16.66667,-0",
+              "OutPositionRelative": "-16.66667,16.66667,0"
+            }
+          ],
+          "IsLoop": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        },
+        {
+          "__type": "Sandbox.SplineModelRenderer",
+          "__guid": "65ea3654-5adf-4cec-97e9-1228f5880ea8",
+          "BodyGroups": 341,
+          "CreateAttachments": false,
+          "FlexFit": true,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/citizen/citizen.vmdl",
+          "ModelOffset": "0,0,0",
+          "ModelRotation": "0,0.7071068,0,0.7071068",
+          "ModelScale": "1,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Spacing": 0,
+          "Spline": {
+            "_type": "component",
+            "component_id": "b06b752f-1423-4411-8ddb-a9139cb078e1",
+            "go": "47a01560-d22c-4319-85df-4bd1e06eb7b5",
+            "component_type": "Spline"
+          },
+          "Tint": "1,1,1,1",
+          "UseRotationMinimizingFrames": true
+        },
+        {
+          "__type": "Sandbox.SplineCollider",
+          "__guid": "2f466865-3347-4617-a7ee-b7a56e9335c4",
+          "FlexFit": true,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "ModelOffset": "0,0,0",
+          "ModelRotation": "0,0.7071068,0,0.7071068",
+          "ModelScale": "1,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "Spacing": 0,
+          "Spline": {
+            "_type": "component",
+            "component_id": "b06b752f-1423-4411-8ddb-a9139cb078e1",
+            "go": "47a01560-d22c-4319-85df-4bd1e06eb7b5",
+            "component_type": "Spline"
+          },
+          "Static": false,
+          "Subdivision": 0,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0",
+          "UseRotationMinimizingFrames": false
+        },
+        {
+          "__type": "SpinComponent",
+          "__guid": "327393d5-83c7-41ea-a83d-ee09f5fa9f02",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SpinAngles": "0,45,0"
+        }
+      ]
+    },
+    {
       "__guid": "d2944394-e049-4521-a308-df75228a1756",
       "Flags": 0,
       "Name": "ComplexCollisionSpawner",
-      "Position": "-64.83112,211.4277,731.6246",
+      "Position": "-238.9784,272.3214,731.6246",
       "Scale": "0.1,0.1,0.1",
       "Enabled": true,
       "Components": [
@@ -3891,7 +4472,7 @@
       "__guid": "2386918f-a435-4649-a360-70038f2353fa",
       "Flags": 0,
       "Name": "Spinner",
-      "Position": "-84.89153,252.3331,286.4176",
+      "Position": "-259.0388,313.2267,286.4176",
       "Scale": "8,2,5",
       "Enabled": true,
       "Components": [
@@ -3904,7 +4485,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "SpinAngles": "0,30,0"
+          "SpinAngles": "0,45,0"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -4217,6 +4798,239 @@
             "go": "26629761-7d01-401e-a07f-e35a69453c43"
           },
           "SpawnIntervalSeconds": 0.5
+        }
+      ]
+    },
+    {
+      "__guid": "40817113-ed54-4924-9f24-158db856f6b0",
+      "Flags": 0,
+      "Name": "CubeRide",
+      "Position": "3133.477,-174.58,704.6042",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Spline",
+          "__guid": "65d8a9bf-6cfa-4694-a2a8-c2f7d172a367",
+          "_pointRolls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "_pointScales": [
+            "1,1",
+            "1,1",
+            "1,1",
+            "1,1",
+            "1,1",
+            "1,1",
+            "1,1",
+            "1,1",
+            "1,1"
+          ],
+          "_pointTangentModes": [
+            "Auto",
+            "Auto",
+            "Auto",
+            "Auto",
+            "Auto",
+            "Auto",
+            "Auto",
+            "Auto",
+            "Auto"
+          ],
+          "_pointUpVectors": [
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1",
+            "0,0,1"
+          ],
+          "_splinePoints": [
+            {
+              "Position": "0,0,0",
+              "InPositionRelative": "35.35652,-260.5591,-19.09347",
+              "OutPositionRelative": "-35.35652,260.5591,19.09347"
+            },
+            {
+              "Position": "-212.1391,1563.354,114.5608",
+              "InPositionRelative": "198.2447,-370.5989,-96.68083",
+              "OutPositionRelative": "-198.2447,370.5989,96.68083"
+            },
+            {
+              "Position": "-1189.468,2223.593,580.085",
+              "InPositionRelative": "379.5798,-268.3203,5.590942",
+              "OutPositionRelative": "-379.5798,268.3203,-5.590942"
+            },
+            {
+              "Position": "-2489.618,3173.276,81.01513",
+              "InPositionRelative": "387.6729,-135.4346,127.6671",
+              "OutPositionRelative": "-387.6729,135.4346,-127.6671"
+            },
+            {
+              "Position": "-3515.505,3036.201,-185.9178",
+              "InPositionRelative": "420.3884,123.9583,-5.611465",
+              "OutPositionRelative": "-420.3884,-123.9583,5.611465"
+            },
+            {
+              "Position": "-5011.948,2429.526,114.6839",
+              "InPositionRelative": "353.8116,306.4313,-50.10029",
+              "OutPositionRelative": "-353.8116,-306.4313,50.10029"
+            },
+            {
+              "Position": "-5638.375,1197.613,114.684",
+              "InPositionRelative": "64.62541,394.3931,-37.88406",
+              "OutPositionRelative": "-64.62541,-394.3931,37.88406"
+            },
+            {
+              "Position": "-5399.701,63.1678,341.9882",
+              "InPositionRelative": "446.7222,189.0742,-37.88404",
+              "OutPositionRelative": "-446.7222,-189.0742,37.88404"
+            },
+            {
+              "Position": "-8318.708,63.16778,341.9882",
+              "InPositionRelative": "486.5012,0.000003814697,-0",
+              "OutPositionRelative": "-486.5012,-0.000003814697,0"
+            }
+          ],
+          "IsLoop": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        },
+        {
+          "__type": "Sandbox.SplineModelRenderer",
+          "__guid": "1c2ba249-7a09-4b95-b6d2-166218a40273",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "FlexFit": true,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": null,
+          "ModelOffset": "0,0,0",
+          "ModelRotation": "0,0,0,1",
+          "ModelScale": "1,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Spacing": 0,
+          "Spline": {
+            "_type": "component",
+            "component_id": "65d8a9bf-6cfa-4694-a2a8-c2f7d172a367",
+            "go": "40817113-ed54-4924-9f24-158db856f6b0",
+            "component_type": "Spline"
+          },
+          "Tint": "0.15872,0.33023,0.12441,1",
+          "UseRotationMinimizingFrames": true
+        }
+      ]
+    },
+    {
+      "__guid": "728f57c9-9215-4bab-a495-d98873bb5f89",
+      "Flags": 0,
+      "Name": "CubeLineRider",
+      "Position": "3256.714,-249.1317,1306.376",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "MoveAlongSplineComponent",
+          "__guid": "ed14e0a1-9ad5-4375-8020-c2b90c6faeed",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Speed": 800,
+          "Spline": {
+            "_type": "component",
+            "component_id": "65d8a9bf-6cfa-4694-a2a8-c2f7d172a367",
+            "go": "40817113-ed54-4924-9f24-158db856f6b0",
+            "component_type": "Spline"
+          },
+          "UpdateRotation": true
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "bdcfc56d-95c0-462d-aaab-2774a5ac9f56",
+          "Flags": 0,
+          "Name": "",
+          "Position": "0,0,50",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "6ab8107b-d4a2-42bd-b173-0945430c46e2",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.37209,0,0,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "4eb49974-c995-4d6e-b150-b574ed66a59c",
+      "Flags": 0,
+      "Name": "CubeLineRiderSpawner",
+      "Position": "3530.957,-771.9615,1157.994",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "SpawnObjectPeriodically",
+          "__guid": "266f0af6-f0bd-4499-836d-bf547072acfe",
+          "ObjectLifeTimeSeconds": 15,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "PrefabToSpawn": {
+            "_type": "gameobject",
+            "go": "728f57c9-9215-4bab-a495-d98873bb5f89"
+          },
+          "SpawnIntervalSeconds": 1.2
         }
       ]
     }

@@ -176,7 +176,7 @@ public sealed class MoveAlongSplineComponent : Component
 		{
 			return;
 		}
-		LocalPosition = Spline.GetPositionAtDistance( 0 );
+		WorldPosition = Spline.GetPositionAtDistance( 0 ) + Spline.GameObject.WorldPosition;
 	}
 
 	protected override void OnFixedUpdate()
@@ -195,7 +195,7 @@ public sealed class MoveAlongSplineComponent : Component
 			_currentDistance = _currentDistance - Spline.GetLength();
 		}
 
-		LocalPosition = Spline.GetPositionAtDistance( _currentDistance );
+		WorldPosition = Spline.GetPositionAtDistance( _currentDistance ) + Spline.GameObject.WorldPosition;
 
 		if ( UpdateRotation )
 		{
