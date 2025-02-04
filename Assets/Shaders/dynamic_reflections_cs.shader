@@ -47,9 +47,6 @@ CS
     Texture2D               PreviousFrameColor      < Attribute( "PreviousFrameColor" ); >;
 	int 				    BlueNoiseIndex  		< Attribute( "BlueNoiseIndex" ); >;			// Blue noise texture
 
-    Texture2D               Intersection            < Attribute( "Intersection" ); >;
-	Texture2D 				DownsampledDepth		< Attribute( "DepthChainDownsample" ); >;
-	Texture2D 				DownsampledDepthHistory	< Attribute( "DepthChainDownsamplePrevFrame" ); >;
 	Texture2D 				ReprojectedRadiance		< Attribute( "ReprojectedRadiance" ); >;
 	Texture2D 				Radiance				< Attribute( "Radiance" ); >;
 	Texture2D 				RadianceHistory			< Attribute( "RadianceHistory" ); >;
@@ -59,6 +56,12 @@ CS
 	Texture2D 				VarianceHistory			< Attribute( "VarianceHistory" ); >;
 	Texture2D 				SampleCount				< Attribute( "SampleCount" ); >;
 	Texture2D 				SampleCountHistory		< Attribute( "SampleCountHistory" ); >;
+
+    Texture2D              DepthHistory             < Attribute( "DepthHistory" ); >;
+    Texture2D              GBufferHistory           < Attribute( "GBufferHistory" ); >;
+    RWTexture2D<float>     RayLength                < Attribute( "RayLength" ); >;
+    RWTexture2D<float4>    GBufferHistoryRW         < Attribute( "GBufferHistoryRW" ); >;
+    RWTexture2D<float>     DepthHistoryRW           < Attribute( "DepthHistoryRW" ); >;
 	
 	RWTexture2D<float4>		OutReprojectedRadiance	< Attribute( "OutReprojectedRadiance" ); >;
 	RWTexture2D<float4>		OutAverageRadiance		< Attribute( "OutAverageRadiance" ); >;
@@ -137,7 +140,7 @@ CS
             //----------------------------------------------
             // Get noise value
             // ---------------------------------------------
-            float2 vDitherCoord = ( vDispatch + ( g_vRandomFloats * 256 ) ) % 256;
+            float2 vDitherCoord = ( vDispatch.xy + ( g_vRandomFloats.xy * 256 ) ) % 256;
             float3 vNoise = Bindless::GetTexture2D(BlueNoiseIndex)[ vDitherCoord.xy ].rgb;
 
             // Randomize dir by roughness
@@ -176,7 +179,14 @@ CS
 
         vColor *= InvSampleCount;
 
-        OutRadiance[vDispatch] = float4(vColor * flConfidence, flConfidence);
+        RayLength[vDispatch] = flHitLength;
+        OutRadiance[vDispatch] = float4(vColor , flConfidence);
+    }
+
+    void WriteLastFrameTextures(int2 vDispatch, int2 vGroupId)
+    {
+        GBufferHistoryRW[vDispatch] = float4( Normals::Sample( vDispatch ), Roughness::Sample( vDispatch ) );
+        DepthHistoryRW[vDispatch] = Depth::GetNormalized( vDispatch );
     }
 
 	//--------------------------------------------------------------------------------------
@@ -184,8 +194,8 @@ CS
 	float	FFX_DNSR_Reflections_GetRandom(int2 pixel_coordinate) 					{ return Bindless::GetTexture2D(BlueNoiseIndex)[ pixel_coordinate % 256 ].x; }
 
 	float	FFX_DNSR_Reflections_LoadDepth(int2 pixel_coordinate) 					{ return Depth::GetNormalized( pixel_coordinate ); }
-	float	FFX_DNSR_Reflections_LoadDepthHistory(int2 pixel_coordinate) 			{ return Depth::GetNormalized( pixel_coordinate ); } //{ return RemapValClamped( Tex2DLoad( DownsampledDepthHistory, int3( pixel_coordinate, ReflectionDownsampleRatio ) ).y, g_flViewportMinZ, g_flViewportMaxZ, 0.0f, 1.0f); } // Is this bullshit?
-	float	FFX_DNSR_Reflections_SampleDepthHistory(float2 uv) 						{ return Depth::GetNormalized( uv * Dimensions ); } //{ return RemapValClamped( Tex2DLevelS( DownsampledDepthHistory, BilinearWrap, uv, ReflectionDownsampleRatio ).y, g_flViewportMinZ, g_flViewportMaxZ, 0.0f, 1.0f); } // Is this bullshit?
+	float	FFX_DNSR_Reflections_LoadDepthHistory(int2 pixel_coordinate) 			{ return DepthHistory[pixel_coordinate].x; }
+	float	FFX_DNSR_Reflections_SampleDepthHistory(float2 uv) 						{ return DepthHistory.SampleLevel( BilinearWrap, uv, 0 ).x; }
 
     float4	FFX_DNSR_Reflections_SampleAverageRadiance(float2 uv) 					{ return Tex2DLevelS( AverageRadiance, 		  BilinearWrap,	 uv, 0 ); }
 	float4	FFX_DNSR_Reflections_SamplePreviousAverageRadiance(float2 uv) 			{ return Tex2DLevelS( AverageRadianceHistory, BilinearWrap, 	 uv, 0 ); }
@@ -199,19 +209,19 @@ CS
 	float	FFX_DNSR_Reflections_SampleNumSamplesHistory(float2 uv) 				{ return Tex2DLevelS( SampleCountHistory, 	BilinearWrap, uv, 	0.0f ).x; }
 
 	float3	FFX_DNSR_Reflections_LoadWorldSpaceNormal(int2 pixel_coordinate) 		{ return Normals::Sample( pixel_coordinate ); }
-	float3	FFX_DNSR_Reflections_LoadWorldSpaceNormalHistory(int2 pixel_coordinate) { return Normals::Sample( pixel_coordinate ); } // Todo: History
-	float3	FFX_DNSR_Reflections_SampleWorldSpaceNormalHistory(float2 uv) 			{ return Normals::Sample( uv * Dimensions ); } // Todo: bilinear fetch
+	float3	FFX_DNSR_Reflections_LoadWorldSpaceNormalHistory(int2 pixel_coordinate) { return GBufferHistory[pixel_coordinate].xyz; }
+	float3	FFX_DNSR_Reflections_SampleWorldSpaceNormalHistory(float2 uv) 			{ return GBufferHistory.SampleLevel( BilinearWrap, uv, 0).xyz; } // Todo: bilinear fetch
     
 	float3	FFX_DNSR_Reflections_LoadViewSpaceNormal(int2 pixel_coordinate) 		{ return Vector3WsToVs( Normals::Sample( pixel_coordinate ) ); }
 
 	float	FFX_DNSR_Reflections_LoadRoughness(int2 pixel_coordinate) 				{ return Roughness::Sample( pixel_coordinate ); }
-	float	FFX_DNSR_Reflections_LoadRoughnessHistory(int2 pixel_coordinate) 		{ return Roughness::Sample( pixel_coordinate ); } // Todo: History
-	float	FFX_DNSR_Reflections_SampleRoughnessHistory(float2 uv) 					{ return Roughness::Sample( uv * Dimensions ); } // Todo: bilinear fetch
+	float	FFX_DNSR_Reflections_LoadRoughnessHistory(int2 pixel_coordinate) 		{ return GBufferHistory[pixel_coordinate].w; } 
+	float	FFX_DNSR_Reflections_SampleRoughnessHistory(float2 uv) 					{ return GBufferHistory.SampleLevel( BilinearWrap, uv, 0).w; } // Todo: bilinear fetch
 
-    float2	FFX_DNSR_Reflections_LoadMotionVector(int2 pixel_coordinate) 			{ return ( pixel_coordinate - Motion::Get(pixel_coordinate).xy ) * g_vInvViewportSize.xy; } // No velocity buffer, sample the delta of the velocity from the last frame
+    float2	FFX_DNSR_Reflections_LoadMotionVector(int2 pixel_coordinate) 			{ return Motion::Get( pixel_coordinate).xy * InvDimensions; }
 
     float	FFX_DNSR_Reflections_SampleVarianceHistory(float2 uv) 					{ return Tex2DLevelS( VarianceHistory, BilinearWrap, uv, 0 ).x; }
-	float	FFX_DNSR_Reflections_LoadRayLength(int2 pixel_coordinate) 				{ return 0;} // Todo: Implement
+	float	FFX_DNSR_Reflections_LoadRayLength(int2 pixel_coordinate) 				{ return RayLength[pixel_coordinate]; } // Todo: Implement
 	float	FFX_DNSR_Reflections_LoadVariance(int2 pixel_coordinate) 				{ return Tex2DLoad	( Variance, int3( pixel_coordinate, 0 ) ).x; }
 
     void	FFX_DNSR_Reflections_StoreRadianceReprojected(int2 pixel_coordinate, float3 value) 							{ OutReprojectedRadiance[pixel_coordinate.xy] 	= float4( value, 1.0f); }
@@ -227,7 +237,7 @@ CS
 	void	FFX_DNSR_Reflections_StoreTemporalAccumulation(int2 pixel_coordinate, float4 radiance, float variance) 		{ OutRadiance[pixel_coordinate] = radiance; OutVariance[pixel_coordinate] = variance.x; }
     void	FFX_DNSR_Reflections_StorePrefilteredReflections(int2 pixel_coordinate, float4 radiance, float variance)	{ OutRadiance[pixel_coordinate] = radiance; OutVariance[pixel_coordinate] = variance.x; }
 
-	bool 	FFX_DNSR_Reflections_IsGlossyReflection(float roughness) 						{ return roughness > 0.001; }
+	bool 	FFX_DNSR_Reflections_IsGlossyReflection(float roughness) 						{ return roughness > 0.01; }
 	bool 	FFX_DNSR_Reflections_IsMirrorReflection(float roughness) 						{ return !FFX_DNSR_Reflections_IsGlossyReflection(roughness); }
 	float3 	FFX_DNSR_Reflections_ScreenSpaceToViewSpace(float3 screen_uv_coord) 			{ return ScreenSpaceToViewSpace(screen_uv_coord); } // UV and projection space depth
 	float3 	FFX_DNSR_Reflections_ViewSpaceToWorldSpace(float4 view_space_coord) 			{ float4 vPositionPs = Position4VsToPs( view_space_coord ); return mul( vPositionPs, g_matProjectionToWorld ).xyz; }
@@ -271,7 +281,7 @@ CS
         uint2 dispatch_thread_id = dispatchThreadID;
 
         const float flReconstructMin = 0.1f;
-        const float flReconstructMax = 0.9f;
+        const float flReconstructMax = 0.99f;
         const float flMotionVectorScale = 1.0f;
 
         const float g_temporal_stability_factor = RemapValClamped( length( FFX_DNSR_Reflections_LoadMotionVector( dispatchThreadID ) * Dimensions.xy ) * flMotionVectorScale, 1.0, 0.0, flReconstructMin, flReconstructMax );
@@ -318,6 +328,7 @@ CS
 			// Temporal Resolve
 			//
             FFX_DNSR_Reflections_ResolveTemporal(dispatch_thread_id, group_thread_id, Dimensions.xy, InvDimensions, g_temporal_stability_factor);
+            WriteLastFrameTextures(dispatch_thread_id, group_thread_id);
 		}
 		#endif
 

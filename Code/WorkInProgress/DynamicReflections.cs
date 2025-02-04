@@ -78,14 +78,12 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
         Commands.Reset();
         
 		bool pingPong = (Frame++ % 2) == 0;
-        int downsampleRatio = (int)Math.Pow( 2, 0 );
+        int downsampleRatio = 1;
         
         Commands.Set( "BlueNoiseIndex", BlueNoise.Index );
 
         var PreviousFrameColorRT = FBCopyCommand.GrabFrameTexture( "PrevFrameTexture" );
 
-        var PreviousGBuffer	     = Commands.GetRenderTarget( "PrevGBuffer",  ImageFormat.RGBA8888, sizeFactor: downsampleRatio );
-        
         var Radiance0 = Commands.GetRenderTarget( "Radiance0", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
         var Radiance1 = Commands.GetRenderTarget( "Radiance1", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
 
@@ -100,8 +98,20 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 
         var ReprojectedRadiance	= Commands.GetRenderTarget( "Reprojected Radiance", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
 
+        var RayLength       = Commands.GetRenderTarget( "Ray Length", ImageFormat.R16F, sizeFactor: downsampleRatio );
+        var DepthHistory   = Commands.GetRenderTarget( "Previous Depth", ImageFormat.R16F, sizeFactor: downsampleRatio );
+        var GBufferHistory	= Commands.GetRenderTarget( "Previous GBuffer",  ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
+
         ComputeShader reflectionsCs = new ComputeShader("dynamic_reflections_cs");
 
+        // Common settings for all passes
+        Commands.Set( "GBufferHistory", GBufferHistory.ColorTexture );
+        Commands.Set( "PreviousFrameColor", PreviousFrameColorRT.ColorTexture );
+        Commands.Set( "DepthHistory", DepthHistory.ColorTexture );
+        
+        Commands.Set( "RayLength", RayLength.ColorTexture );
+        Commands.Set( "RoughnessCutoff", RoughnessCutoff );
+        
         foreach( var pass in Enum.GetValues( typeof( Passes ) ) )
         {
             switch ( pass )
@@ -114,7 +124,7 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
             //        break;
             //    }
             case Passes.Intersect:
-                Commands.Set( "OutRadiance", Radiance0.ColorTexture );
+                Commands.Set( "OutRadiance", pingPong  ? Radiance0.ColorTexture : Radiance1.ColorTexture );
                 break;
 
             case Passes.DenoiseReproject:
@@ -150,15 +160,15 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
                 Commands.Set( "Variance",               !pingPong ? Variance0.ColorTexture : Variance1.ColorTexture );
                 Commands.Set( "SampleCount",            !pingPong ? SampleCount0.ColorTexture : SampleCount1.ColorTexture );
 
-                Commands.Set( "OutRadiance",            pingPong  ? Radiance0.ColorTexture : Variance1.ColorTexture );
+                Commands.Set( "OutRadiance",            pingPong  ? Radiance0.ColorTexture : Radiance1.ColorTexture );
                 Commands.Set( "OutVariance",            pingPong  ? Variance0.ColorTexture : Variance1.ColorTexture );
                 Commands.Set( "OutSampleCount",         pingPong  ? SampleCount0.ColorTexture : SampleCount1.ColorTexture );
+                
+                Commands.Set( "GBufferHistoryRW", GBufferHistory.ColorTexture );
+                Commands.Set( "DepthHistoryRW", DepthHistory.ColorTexture );
                 break;
             }
 
-            // Common settings for all passes
-            Commands.Set( "PreviousGBuffer", PreviousGBuffer.ColorTexture );
-            Commands.Set( "PreviousFrameColor", PreviousFrameColorRT.ColorTexture );
 
             // Set the pass
             Commands.SetCombo( "D_PASS", (int)pass );
@@ -169,7 +179,7 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
         }
 
         // Final SSR color to be used by shaders
-        Commands.SetGlobal( "ReflectionColorIndex", Radiance0.ColorIndex );
+        Commands.SetGlobal( "ReflectionColorIndex", pingPong ? Radiance0.ColorIndex : Radiance1.ColorIndex  );
         
     }
 }
