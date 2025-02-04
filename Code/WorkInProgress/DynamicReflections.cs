@@ -30,6 +30,8 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
     /// </summary>
     [Property, Hide] int SamplesPerPixel = 1;
 
+    [Property] bool Denoise;
+
     enum Passes
     {
         //ClassifyTiles,
@@ -84,17 +86,17 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 
         var PreviousGBuffer	     = Commands.GetRenderTarget( "PrevGBuffer",  ImageFormat.RGBA8888, sizeFactor: downsampleRatio );
         
-        var Radiance0 = Commands.GetRenderTarget( $"Radiance{pingPong}", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
-        var Radiance1 = Commands.GetRenderTarget( $"Radiance{!pingPong}", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
+        var Radiance0 = Commands.GetRenderTarget( "Radiance0", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
+        var Radiance1 = Commands.GetRenderTarget( "Radiance1", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
 
-        var Variance0 = Commands.GetRenderTarget( $"Variance{pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
-        var Variance1 = Commands.GetRenderTarget( $"Variance{!pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
+        var Variance0 = Commands.GetRenderTarget( "Variance0", ImageFormat.R16F, sizeFactor: downsampleRatio );
+        var Variance1 = Commands.GetRenderTarget( "Variance1", ImageFormat.R16F, sizeFactor: downsampleRatio );
 
-        var SampleCount0 = Commands.GetRenderTarget( $"Sample Count{pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
-        var SampleCount1 = Commands.GetRenderTarget( $"Sample Count{!pingPong}", ImageFormat.R16F, sizeFactor: downsampleRatio );
+        var SampleCount0 = Commands.GetRenderTarget( "Sample Count0", ImageFormat.R16F, sizeFactor: downsampleRatio );
+        var SampleCount1 = Commands.GetRenderTarget( "Sample Count1", ImageFormat.R16F, sizeFactor: downsampleRatio );
 
-        var AverageRadiance0 = Commands.GetRenderTarget( $"Average Radiance{pingPong}", ImageFormat.RGBA8888, sizeFactor: 8 * downsampleRatio );
-        var AverageRadiance1 = Commands.GetRenderTarget( $"Average Radiance{!pingPong}", ImageFormat.RGBA8888, sizeFactor: 8 * downsampleRatio );
+        var AverageRadiance0 = Commands.GetRenderTarget( "Average Radiance0", ImageFormat.RGBA8888, sizeFactor: 8 * downsampleRatio );
+        var AverageRadiance1 = Commands.GetRenderTarget( "Average Radiance1", ImageFormat.RGBA8888, sizeFactor: 8 * downsampleRatio );
 
         var ReprojectedRadiance	= Commands.GetRenderTarget( "Reprojected Radiance", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
 
@@ -116,49 +118,54 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
                 break;
 
             case Passes.DenoiseReproject:
-                Commands.Set( "SampleCountIntersection", SamplesPerPixel );
-                Commands.Set( "AverageRadianceHistory", AverageRadiance1.ColorTexture );
-                Commands.Set( "VarianceHistory", Variance1.ColorTexture ); 
-                Commands.Set( "SampleCountHistory", SampleCount1.ColorTexture );
+                Commands.Set( "Radiance",				pingPong  ? Radiance0.ColorTexture : Radiance1.ColorTexture );
+                Commands.Set( "RadianceHistory",		!pingPong ? Radiance0.ColorTexture : Radiance1.ColorTexture );
 
-                Commands.Set( "OutReprojectedRadiance", ReprojectedRadiance.ColorTexture );
-                Commands.Set( "OutAverageRadiance", AverageRadiance0.ColorTexture );
-                Commands.Set( "OutVariance", Variance0.ColorTexture );
-                Commands.Set( "OutSampleCount", SampleCount0.ColorTexture );
+                Commands.Set( "AverageRadianceHistory",	!pingPong ? AverageRadiance0.ColorTexture : AverageRadiance1.ColorTexture );
+                Commands.Set( "VarianceHistory",		!pingPong ? Variance0.ColorTexture : Variance1.ColorTexture );
+                Commands.Set( "SampleCountHistory",		!pingPong ? SampleCount0.ColorTexture : SampleCount1.ColorTexture );
+
+                Commands.Set( "OutReprojectedRadiance",	ReprojectedRadiance.ColorTexture );
+                Commands.Set( "OutAverageRadiance",		pingPong? AverageRadiance0.ColorTexture : AverageRadiance1.ColorTexture );
+                Commands.Set( "OutVariance",			pingPong? Variance0.ColorTexture : Variance1.ColorTexture );
+                Commands.Set( "OutSampleCount",			pingPong? SampleCount0.ColorTexture : SampleCount1.ColorTexture );
                 break;
 
             case Passes.DenoisePrefilter:
-                Commands.Set( "Radiance", Radiance0.ColorTexture );
-                Commands.Set( "Variance", Variance0.ColorTexture );
-                Commands.Set( "SampleCountHistory", SampleCount0.ColorTexture );
+                Commands.Set( "Radiance",               pingPong  ? Radiance0.ColorTexture : Radiance1.ColorTexture );
+                Commands.Set( "RadianceHistory",        !pingPong ? Radiance0.ColorTexture : Radiance1.ColorTexture );
+                Commands.Set( "AverageRadiance",        pingPong  ? AverageRadiance0.ColorTexture : AverageRadiance1.ColorTexture );
+                Commands.Set( "Variance",               pingPong  ? Variance0.ColorTexture : Variance1.ColorTexture );
+                Commands.Set( "SampleCountHistory",     pingPong  ? SampleCount0.ColorTexture : SampleCount1.ColorTexture );
 
-                Commands.Set( "OutRadiance", Radiance1.ColorTexture );
-                Commands.Set( "OutVariance", Variance1.ColorTexture );
-                Commands.Set( "OutSampleCount", SampleCount1.ColorTexture );
+                Commands.Set( "OutRadiance",            !pingPong ? Radiance0.ColorTexture : Radiance1.ColorTexture );
+                Commands.Set( "OutVariance",            !pingPong ? Variance0.ColorTexture : Variance1.ColorTexture );
+                Commands.Set( "OutSampleCount",         !pingPong ? SampleCount0.ColorTexture : SampleCount1.ColorTexture );
                 break;
 
             case Passes.DenoiseResolveTemporal:
-                Commands.Set( "Radiance", Radiance1.ColorTexture );
-                Commands.Set( "ReprojectedRadiance", ReprojectedRadiance.ColorTexture );
-                Commands.Set( "Variance", Variance1.ColorTexture );
-                Commands.Set( "SampleCount", SampleCount1.ColorTexture );
+                Commands.Set( "AverageRadiance",        pingPong  ? AverageRadiance0.ColorTexture : AverageRadiance1.ColorTexture );
+                Commands.Set( "Radiance",               !pingPong ? Radiance0.ColorTexture : Radiance1.ColorTexture );
+                Commands.Set( "ReprojectedRadiance",    ReprojectedRadiance.ColorTexture );
+                Commands.Set( "Variance",               !pingPong ? Variance0.ColorTexture : Variance1.ColorTexture );
+                Commands.Set( "SampleCount",            !pingPong ? SampleCount0.ColorTexture : SampleCount1.ColorTexture );
 
-                Commands.Set( "OutRadiance", Radiance0.ColorTexture );
-                Commands.Set( "OutVariance", Variance0.ColorTexture );
-                Commands.Set( "OutSampleCount", SampleCount0.ColorTexture );
+                Commands.Set( "OutRadiance",            pingPong  ? Radiance0.ColorTexture : Variance1.ColorTexture );
+                Commands.Set( "OutVariance",            pingPong  ? Variance0.ColorTexture : Variance1.ColorTexture );
+                Commands.Set( "OutSampleCount",         pingPong  ? SampleCount0.ColorTexture : SampleCount1.ColorTexture );
                 break;
             }
 
             // Common settings for all passes
             Commands.Set( "PreviousGBuffer", PreviousGBuffer.ColorTexture );
             Commands.Set( "PreviousFrameColor", PreviousFrameColorRT.ColorTexture );
-            Commands.Set( "AverageRadiance", AverageRadiance0.ColorTexture );
-            Commands.Set( "AverageRadianceHistory", AverageRadiance1.ColorTexture );
 
             // Set the pass
             Commands.SetCombo( "D_PASS", (int)pass );
             Commands.DispatchCompute( reflectionsCs, ReprojectedRadiance.Size );
-            break;
+
+            if( !Denoise )
+                break;
         }
 
         // Final SSR color to be used by shaders
