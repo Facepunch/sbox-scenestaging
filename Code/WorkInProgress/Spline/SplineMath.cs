@@ -1,83 +1,486 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 
-public enum SplinePointTangentMode
+public class Spline
 {
-	/// <summary>
-	/// Tangents are calculated automatically
-	/// based on the location of adjacent points.
-	/// </summary>
-	[Icon( "auto_fix_high" )]
-	Auto,
-	/// <summary>
-	/// Tangents are set to zero, leading to a sharp corner.
-	/// </summary>
-	[Icon( "show_chart" )]
-	Linear,
-	/// <summary>
-	/// The In and Out are user set, but are joined (mirrored)
-	/// </summary>
-	[Icon( "open_in_full" )]
-	Mirrored,
-	/// <summary>
-	/// The In and Out are user set and operate independently
-	/// </summary>
-	[Icon( "call_split" )]
-	Split,
-}
-
-public struct SplinePoint
-{
-	[JsonInclude]
-	public Vector3 Position;
-
-	// The vector between the Position and InPositionRelative forms the tangent at the end of the previous segment.
-	[JsonInclude]
-	public Vector3 InPositionRelative;
-
-	// The vector between the Position and OutPositionRelative forms the tangent at the start of the next segment.
-	[JsonInclude]
-	public Vector3 OutPositionRelative;
-
-	[JsonInclude]
-	public SplinePointTangentMode TangentMode = SplinePointTangentMode.Auto;
-
-	[JsonInclude]
-	public float Roll = 0f;
-
-	// X = Scale Width, Y = Scale Height
-	[JsonInclude]
-	public Vector2 Scale = Vector2.One;
-
-	[JsonInclude]
-	public Vector3 UpVector = Vector3.Up;
-
-	[JsonIgnore, Hide]
-	public Vector3 OutPosition
+	public struct Point
 	{
-		get { return Position + OutPositionRelative; }
-		set { OutPositionRelative = value - Position; }
+		[JsonInclude]
+		public Vector3 Position;
+
+		// The vector between the Position and InPositionRelative forms the tangent at the end of the previous segment.
+		[JsonInclude]
+		public Vector3 InPositionRelative;
+
+		// The vector between the Position and OutPositionRelative forms the tangent at the start of the next segment.
+		[JsonInclude]
+		public Vector3 OutPositionRelative;
+
+		[JsonInclude]
+		public TangentMode TangentMode = TangentMode.Auto;
+
+		[JsonInclude]
+		public float Roll = 0f;
+
+		// X = Scale Width, Y = Scale Height
+		[JsonInclude]
+		public Vector2 Scale = Vector2.One;
+
+		[JsonInclude]
+		public Vector3 UpVector = Vector3.Up;
+
+		[JsonIgnore, Hide]
+		public Vector3 OutPosition
+		{
+			get { return Position + OutPositionRelative; }
+			set { OutPositionRelative = value - Position; }
+		}
+
+		[JsonIgnore, Hide]
+		public Vector3 InPosition
+		{
+			get { return Position + InPositionRelative; }
+			set { InPositionRelative = value - Position; }
+		}
+
+		public Point()
+		{
+
+		}
 	}
 
-	[JsonIgnore, Hide]
-	public Vector3 InPosition
+	public enum TangentMode
 	{
-		get { return Position + InPositionRelative; }
-		set { InPositionRelative = value - Position; }
+		/// <summary>
+		/// Tangents are calculated automatically
+		/// based on the location of adjacent points.
+		/// </summary>
+		[Icon( "auto_fix_high" )]
+		Auto,
+		/// <summary>
+		/// Tangents are set to zero, leading to a sharp corner.
+		/// </summary>
+		[Icon( "show_chart" )]
+		Linear,
+		/// <summary>
+		/// The In and Out are user set, but are joined (mirrored)
+		/// </summary>
+		[Icon( "open_in_full" )]
+		Mirrored,
+		/// <summary>
+		/// The In and Out are user set and operate independently
+		/// </summary>
+		[Icon( "call_split" )]
+		Split,
 	}
 
-	public SplinePoint()
+	public struct SegmentParams
 	{
+		public int Index;
 
+		public float T;
+	}
+
+	// private because we need to ensure the points are always in a valid state
+	private List<Point> _points;
+
+	private bool _areDistancesSampled = false;
+
+	public Action SplineChanged;
+
+	private SplineUtils.SplineSampler _distanceSampler = new();
+
+	private void RequiresDistanceResample()
+	{
+		_areDistancesSampled = false;
+		SplineChanged?.Invoke();
+	}
+
+	private void SampleDistances()
+	{
+		_distanceSampler.Sample( _points.AsReadOnly() );
+		_areDistancesSampled = true;
+	}
+
+	private void EnsureSplineIsDistanceSampled()
+	{
+		if ( _areDistancesSampled )
+		{
+			return;
+		}
+		SampleDistances();
+	}
+
+	/// <summary>
+	/// Whether the spline forms a loop.
+	/// </summary>
+	[Property]
+	public bool IsLoop
+	{
+		get => SplineUtils.IsLoop( _points.AsReadOnly() );
+		set
+		{
+			var isAlreadyLoop = SplineUtils.IsLoop( _points.AsReadOnly() );
+			// We emulate loops by adding an addtional point at the end which matches the first point
+			// this might seem hacky at first but it makes things so much easier downstream,
+			// because we can handle open splines and looped splines exactly the same when doing complex calculations
+			// The fact that the last point exists will be hidden from the user in the Editor and API
+			if ( value && !isAlreadyLoop )
+			{
+				_points.Add( _points[0] );
+				RequiresDistanceResample();
+			}
+			else if ( !value && isAlreadyLoop )
+			{
+				_points.RemoveAt( _points.Count - 1 );
+				RequiresDistanceResample();
+			}
+		}
+	}
+
+	public Vector3 GetPositionAtDistance( float distance )
+	{
+		EnsureSplineIsDistanceSampled();
+
+		return SplineUtils.GetPosition( _points.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
+	}
+
+	public Vector3 GetTangetAtDistance( float distance )
+	{
+		EnsureSplineIsDistanceSampled();
+
+		return SplineUtils.GetTangent( _points.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
+	}
+
+	public Vector3 GetTangent2DAtDistance( float distance )
+	{
+		EnsureSplineIsDistanceSampled();
+
+		return SplineUtils.GetTangent2D( _points.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
+	}
+
+	public float GetCurvatureAtDistance( float distance )
+	{
+		EnsureSplineIsDistanceSampled();
+
+		return SplineUtils.GetCurvature( _points.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
+	}
+
+	public Vector3 GetCurvatureAxisAtDistance( float distance )
+	{
+		EnsureSplineIsDistanceSampled();
+
+		return SplineUtils.GetCurvatureAxis( _points.AsReadOnly(), _distanceSampler.CalculateSegmentParamsAtDistance( distance ) );
+	}
+
+	public float GetRollAtDistance( float distance )
+	{
+		EnsureSplineIsDistanceSampled();
+		var splineParams = _distanceSampler.CalculateSegmentParamsAtDistance( distance );
+		var distanceAlongSegment = distance - _distanceSampler.GetSegmentStartDistance( splineParams.Index );
+		var segmentLength = _distanceSampler.GetSegmentLength( splineParams.Index );
+		return MathX.Lerp( _points[splineParams.Index].Roll, _points[splineParams.Index + 1].Roll, distanceAlongSegment / segmentLength );
+	}
+
+	public Vector2 GetScaleAtDistance( float distance )
+	{
+		EnsureSplineIsDistanceSampled();
+		var splineParams = _distanceSampler.CalculateSegmentParamsAtDistance( distance );
+		var distanceAlongSegment = distance - _distanceSampler.GetSegmentStartDistance( splineParams.Index );
+		var segmentLength = _distanceSampler.GetSegmentLength( splineParams.Index );
+		return Vector2.Lerp( _points[splineParams.Index].Scale, _points[splineParams.Index + 1].Scale, distanceAlongSegment / segmentLength );
+	}
+
+	public Vector3 GetUpVectorAtDistance( float distance )
+	{
+		EnsureSplineIsDistanceSampled();
+		var splineParams = _distanceSampler.CalculateSegmentParamsAtDistance( distance );
+		var distanceAlongSegment = distance - _distanceSampler.GetSegmentStartDistance( splineParams.Index );
+		var segmentLength = _distanceSampler.GetSegmentLength( splineParams.Index );
+		return Vector3.Lerp( _points[splineParams.Index].UpVector, _points[splineParams.Index + 1].UpVector, distanceAlongSegment / segmentLength );
+	}
+
+	public float GetLength()
+	{
+		EnsureSplineIsDistanceSampled();
+
+		return _distanceSampler.TotalLength();
+	}
+
+	public BBox GetBounds()
+	{
+		EnsureSplineIsDistanceSampled();
+
+		return _distanceSampler.GetTotalBounds();
+	}
+
+	public float GetDistanceAtPoint( int pointIndex )
+	{
+		CheckPointIndex( pointIndex );
+		EnsureSplineIsDistanceSampled();
+
+		if ( pointIndex == _points.Count - 1 )
+		{
+			return _distanceSampler.TotalLength();
+		}
+		return _distanceSampler.GetSegmentStartDistance( pointIndex );
+	}
+
+	public float GetSegmentLength( int segmentIndex )
+	{
+		CheckSegmentIndex( segmentIndex );
+		EnsureSplineIsDistanceSampled();
+
+		return _distanceSampler.GetSegmentLength( segmentIndex );
+	}
+
+	public BBox GetSegmentBouds( int segmentIndex )
+	{
+		CheckSegmentIndex( segmentIndex );
+		EnsureSplineIsDistanceSampled();
+
+		return _distanceSampler.GetSegmentBounds( segmentIndex );
+	}
+
+	public Spline.Point GetPoint( int pointIndex )
+	{
+		CheckPointIndex( pointIndex );
+
+		return _points[pointIndex];
+	}
+
+	public int NumberOfPoints()
+	{
+		return IsLoop ? _points.Count - 1 : _points.Count;
+	}
+
+	public int NumberOfSegments()
+	{
+		return SplineUtils.SegmentNum( _points.AsReadOnly() );
+	}
+
+	public void UpdatePoint( int pointIndex, Spline.Point updatedPoint )
+	{
+		CheckPointIndex( pointIndex );
+
+		_points[pointIndex] = updatedPoint;
+
+		RecalculateTangentsForPointAndAdjacentPoints( pointIndex );
+
+		RequiresDistanceResample();
+	}
+
+	public void InsertPoint( int pointIndex, Spline.Point newPoint )
+	{
+		CheckInsertPointIndex( pointIndex );
+
+		_points.Insert( pointIndex, newPoint );
+
+		RecalculateTangentsForPointAndAdjacentPoints( pointIndex );
+
+		RequiresDistanceResample();
+	}
+
+	/// <summary>
+	/// Adds a point at a specific distance along the spline.
+	/// Returns the index of the added spline point.
+	/// Tangents of the new point and adjacent poinrs will be calculated so the spline shape remains the same.
+	/// </summary>
+	public int AddPointAtDistance( float distance, bool inferTangentModes = false )
+	{
+		EnsureSplineIsDistanceSampled();
+
+		var splineParams = _distanceSampler.CalculateSegmentParamsAtDistance( distance );
+
+		var distanceParam = (distance - _distanceSampler.GetSegmentStartDistance( splineParams.Index )) / _distanceSampler.GetSegmentLength( splineParams.Index );
+
+		var positionSplitResult = SplineUtils.SplitSegment( _points.AsReadOnly(), splineParams, distanceParam );
+
+		// modify points before and after the split
+		_points[splineParams.Index] = positionSplitResult.Left;
+		_points[splineParams.Index + 1] = positionSplitResult.Right;
+
+		var newPointIndex = splineParams.Index + 1;
+
+		_points.Insert( newPointIndex, positionSplitResult.Mid );
+
+		RecalculateTangentsForPointAndAdjacentPoints( newPointIndex );
+
+		RequiresDistanceResample();
+
+		return newPointIndex;
+	}
+
+
+	public void RemovePoint( int pointIndex )
+	{
+		CheckPointIndex( pointIndex );
+
+		_points.RemoveAt( pointIndex );
+
+		if ( pointIndex - 1 >= 0 )
+		{
+			RecalculateTangentsForPoint( pointIndex - 1 );
+		}
+
+		if ( pointIndex < _points.Count )
+		{
+			RecalculateTangentsForPoint( pointIndex );
+		}
+
+		RequiresDistanceResample();
+	}
+
+	public float GetRollForPoint( int pointIndex )
+	{
+		CheckPointIndex( pointIndex );
+		return _points[pointIndex].Roll;
+	}
+
+	public void SetRollForPoint( int pointIndex, float roll )
+	{
+		CheckPointIndex( pointIndex );
+		_points[pointIndex] = _points[pointIndex] with { Roll = roll };
+		SplineChanged?.Invoke();
+	}
+
+	public Vector2 GetScaleForPoint( int pointIndex )
+	{
+		CheckPointIndex( pointIndex );
+		return _points[pointIndex].Scale;
+	}
+	public void SetScaleForPoint( int pointIndex, Vector2 scale )
+	{
+		CheckPointIndex( pointIndex );
+		_points[pointIndex] = _points[pointIndex] with { Scale = scale };
+		SplineChanged?.Invoke();
+	}
+
+	public Vector3 GetUpVectorForPoint( int pointIndex )
+	{
+		CheckPointIndex( pointIndex );
+		return _points[pointIndex].UpVector;
+	}
+	public void SetUpVectorForPoint( int pointIndex, Vector3 up )
+	{
+		CheckPointIndex( pointIndex );
+		_points[pointIndex] = _points[pointIndex] with { UpVector = up };
+		SplineChanged?.Invoke();
+	}
+
+	public Spline.TangentMode GetTangentModeForPoint( int pointIndex )
+	{
+		CheckPointIndex( pointIndex );
+		return _points[pointIndex].TangentMode;
+	}
+
+	public void SetTangentModeForPoint( int pointIndex, Spline.TangentMode tangentMode )
+	{
+		CheckPointIndex( pointIndex );
+		_points[pointIndex] = _points[pointIndex] with { TangentMode = tangentMode };
+		RecalculateTangentsForPointAndAdjacentPoints( pointIndex );
+		RequiresDistanceResample();
+	}
+
+	// Can be used to get information via GetPositionAtDistance and GetTangentAtDistance etc.
+	public float FindDistanceClosestToPosition( Vector3 position )
+	{
+		EnsureSplineIsDistanceSampled();
+
+		var splineParamsForClosestPosition = SplineUtils.FindSegmentAndTClosestToPosition( _points.AsReadOnly(), position );
+
+		return _distanceSampler.GetDistanceAtSplineParams( splineParamsForClosestPosition );
+	}
+
+	public void ConvertToPolyline( ref List<Vector3> outPolyLine )
+	{
+		outPolyLine.Clear();
+
+		EnsureSplineIsDistanceSampled();
+
+		SplineUtils.ConvertSplineToPolyLineWithCachedSampler( _points.AsReadOnly(), ref outPolyLine, _distanceSampler, 0.1f );
+	}
+
+	private void CheckPointIndex( int pointIndex )
+	{
+		if ( pointIndex < 0 || pointIndex >= _points.Count || IsLoop && pointIndex == _points.Count - 1 )
+		{
+			throw new ArgumentOutOfRangeException( nameof( pointIndex ), "Spline point index out of range." );
+		}
+	}
+
+	// Edge case: pointIndex > _splinePoints.Count
+	private void CheckInsertPointIndex( int pointIndex )
+	{
+		if ( pointIndex < 0 || pointIndex > _points.Count )
+		{
+			throw new ArgumentOutOfRangeException( nameof( pointIndex ), "Spline point index out of range." );
+		}
+	}
+
+	private void CheckSegmentIndex( int segmentIndex )
+	{
+		if ( segmentIndex < 0 || segmentIndex >= SplineUtils.SegmentNum( _points.AsReadOnly() ) )
+		{
+			throw new ArgumentOutOfRangeException( nameof( segmentIndex ), "Spline segment index out of range." );
+		}
+	}
+
+	private void RecalculateTangentsForPointAndAdjacentPoints( int pointIndex )
+	{
+		RecalculateTangentsForPoint( pointIndex );
+		if ( pointIndex > 0 )
+		{
+			RecalculateTangentsForPoint( pointIndex - 1 );
+		}
+
+		if ( pointIndex < _points.Count - 1 )
+		{
+			RecalculateTangentsForPoint( pointIndex + 1 );
+		}
+
+		if ( IsLoop )
+		{
+			if ( pointIndex == 0 )
+			{
+				RecalculateTangentsForPoint( _points.Count - 2 );
+			}
+
+			if ( pointIndex == _points.Count - 2 )
+			{
+				RecalculateTangentsForPoint( 0 );
+			}
+		}
+	}
+
+	private void RecalculateTangentsForPoint( int index )
+	{
+		if ( IsLoop && index == _points.Count - 1 )
+		{
+			index = 0;
+		}
+		switch ( _points[index].TangentMode )
+		{
+			case Spline.TangentMode.Auto:
+				_points[index] = SplineUtils.CalculateSmoothTangentForPoint( _points.AsReadOnly(), index );
+				break;
+			case Spline.TangentMode.Linear:
+				_points[index] = SplineUtils.CalculateLinearTangentForPoint( _points.AsReadOnly(), index );
+				break;
+			case Spline.TangentMode.Split:
+				break;
+			case Spline.TangentMode.Mirrored:
+				_points[index] = _points[index] with { OutPositionRelative = -_points[index].InPositionRelative };
+				break;
+		}
+
+		if ( IsLoop && index == 0 )
+		{
+			_points[_points.Count - 1] = _points[0];
+		}
 	}
 }
 
-public struct SplineSegmentParams
-{
-	public int Index;
-
-	public float T;
-}
 
 // Immutable and stateless spline calculations and utilities.
 // Will be used by higher level abstractions such as the SplineComponent
@@ -85,7 +488,7 @@ public struct SplineSegmentParams
 // and we know exactly which of these functions are actually needed/desired
 public static class SplineUtils
 {
-	public static Vector3 GetPosition( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
+	public static Vector3 GetPosition( ReadOnlyCollection<Spline.Point> spline, Spline.SegmentParams segmentParams )
 	{
 		CheckSegmentParams( spline, segmentParams );
 
@@ -110,19 +513,19 @@ public static class SplineUtils
 		return weightedP0 + weightedP1 + weightedP2 + weightedP3;
 	}
 
-	public static Vector3 GetTangent( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
+	public static Vector3 GetTangent( ReadOnlyCollection<Spline.Point> spline, Spline.SegmentParams segmentParams )
 	{
 		CheckSegmentParams( spline, segmentParams );
 		return GetDerivative( spline, segmentParams ).Normal;
 	}
 
-	public static Vector3 GetTangent2D( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
+	public static Vector3 GetTangent2D( ReadOnlyCollection<Spline.Point> spline, Spline.SegmentParams segmentParams )
 	{
 		CheckSegmentParams( spline, segmentParams );
 		return GetTangent( spline, segmentParams ).WithZ( 0 ).Normal;
 	}
 
-	public static float GetCurvature( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
+	public static float GetCurvature( ReadOnlyCollection<Spline.Point> spline, Spline.SegmentParams segmentParams )
 	{
 		CheckSegmentParams( spline, segmentParams );
 
@@ -136,7 +539,7 @@ public static class SplineUtils
 		return curvatureAxis.Length;
 	}
 
-	public static Vector3 GetCurvatureAxis( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
+	public static Vector3 GetCurvatureAxis( ReadOnlyCollection<Spline.Point> spline, Spline.SegmentParams segmentParams )
 	{
 		CheckSegmentParams( spline, segmentParams );
 		var velocity = GetDerivative( spline, segmentParams );
@@ -145,13 +548,13 @@ public static class SplineUtils
 		return Vector3.Cross( velocity, acceleration ).Normal;
 	}
 
-	public static int SegmentNum( ReadOnlyCollection<SplinePoint> spline )
+	public static int SegmentNum( ReadOnlyCollection<Spline.Point> spline )
 	{
 		return spline.Count - 1;
 	}
 
 	private static void DivideSegmentRecursive(
-		ReadOnlyCollection<SplinePoint> spline,
+		ReadOnlyCollection<Spline.Point> spline,
 		int segmentIndex,
 		SplineSampler sampler,
 		float startDistance,
@@ -171,9 +574,9 @@ public static class SplineUtils
 		var middleT = sampler.CalculateSegmentTAtDistance( segmentIndex, middleDistance ).Value;
 		var endT = sampler.CalculateSegmentTAtDistance( segmentIndex, endDistance ).Value;
 
-		var startPosition = GetPosition( spline, new SplineSegmentParams { Index = segmentIndex, T = startT } );
-		var middlePosition = GetPosition( spline, new SplineSegmentParams { Index = segmentIndex, T = middleT } );
-		var endPosition = GetPosition( spline, new SplineSegmentParams { Index = segmentIndex, T = endT } );
+		var startPosition = GetPosition( spline, new Spline.SegmentParams { Index = segmentIndex, T = startT } );
+		var middlePosition = GetPosition( spline, new Spline.SegmentParams { Index = segmentIndex, T = middleT } );
+		var endPosition = GetPosition( spline, new Spline.SegmentParams { Index = segmentIndex, T = endT } );
 
 		var startEndLine = new Line( startPosition, endPosition );
 		if ( startEndLine.SqrDistance( middlePosition ) > maxSquareError )
@@ -188,7 +591,7 @@ public static class SplineUtils
 	}
 
 	public static void ConvertSplineToPolyLine(
-		ReadOnlyCollection<SplinePoint> spline,
+		ReadOnlyCollection<Spline.Point> spline,
 		ref List<Vector3> outPoints,
 		float maxSquareError = 0.1f )
 	{
@@ -202,7 +605,7 @@ public static class SplineUtils
 	}
 
 	public static void ConvertSplineToPolyLineWithCachedSampler(
-		ReadOnlyCollection<SplinePoint> spline,
+		ReadOnlyCollection<Spline.Point> spline,
 		ref List<Vector3> outPoints,
 		SplineSampler sampler,
 		float maxSquareError = 0.1f )
@@ -239,7 +642,7 @@ public static class SplineUtils
 		}
 	}
 
-	private static void CheckSegmentIndex( ReadOnlyCollection<SplinePoint> spline, int index )
+	private static void CheckSegmentIndex( ReadOnlyCollection<Spline.Point> spline, int index )
 	{
 		if ( index < 0 || index > SegmentNum( spline ) - 1 )
 		{
@@ -247,7 +650,7 @@ public static class SplineUtils
 		}
 	}
 
-	private static void CheckSegmentParams( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
+	private static void CheckSegmentParams( ReadOnlyCollection<Spline.Point> spline, Spline.SegmentParams segmentParams )
 	{
 		CheckSegmentIndex( spline, segmentParams.Index );
 		if ( segmentParams.T < 0.0f || segmentParams.T > 1.0f )
@@ -256,7 +659,7 @@ public static class SplineUtils
 		}
 	}
 
-	private static Vector3 GetDerivative( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
+	private static Vector3 GetDerivative( ReadOnlyCollection<Spline.Point> spline, Spline.SegmentParams segmentParams )
 	{
 		CheckSegmentParams( spline, segmentParams );
 
@@ -277,8 +680,8 @@ public static class SplineUtils
 		return weightedP0 + weightedP1 + weightedP2 + weightedP3;
 	}
 
-	private static Vector3 GetSecondDerivative( ReadOnlyCollection<SplinePoint> spline,
-		SplineSegmentParams segmentParams )
+	private static Vector3 GetSecondDerivative( ReadOnlyCollection<Spline.Point> spline,
+		Spline.SegmentParams segmentParams )
 	{
 		CheckSegmentParams( spline, segmentParams );
 
@@ -297,7 +700,7 @@ public static class SplineUtils
 		return weightedP0 + weightedP1 + weightedP2 + weightedP3;
 	}
 
-	private static Vector3 GetThirdDerivative( ReadOnlyCollection<SplinePoint> spline, int segmentIndex )
+	private static Vector3 GetThirdDerivative( ReadOnlyCollection<Spline.Point> spline, int segmentIndex )
 	{
 		CheckSegmentIndex( spline, segmentIndex );
 
@@ -318,7 +721,7 @@ public static class SplineUtils
 
 	// In 3D we can only calculate the Root for each axis separately
 	// We accomplish this by projecting the spline segment onto the axis and then solving the 1D cubic equation
-	private static List<float> CalculateRootsForAxis( ReadOnlyCollection<SplinePoint> spline, int segmentIndex, int axis )
+	private static List<float> CalculateRootsForAxis( ReadOnlyCollection<Spline.Point> spline, int segmentIndex, int axis )
 	{
 		CheckSegmentIndex( spline, segmentIndex );
 
@@ -340,7 +743,7 @@ public static class SplineUtils
 
 	// In 3D we can only calculate the extrema for each axis separately
 	// We accmplish this by projecting the spline segment onto the axis and then solving the 1D quadratic equation of the derivative
-	private static List<float> CalculateLocalExtremaForAxis( ReadOnlyCollection<SplinePoint> spline, int segmentIndex,
+	private static List<float> CalculateLocalExtremaForAxis( ReadOnlyCollection<Spline.Point> spline, int segmentIndex,
 		int axis )
 	{
 		CheckSegmentIndex( spline, segmentIndex );
@@ -362,7 +765,7 @@ public static class SplineUtils
 	}
 
 	// For the inflections we project the spline segment onto the axis and then solve the 1D cubic equation of the second derivative
-	public static List<float> CalculateInflections2D( ReadOnlyCollection<SplinePoint> spline, int segmentIndex )
+	public static List<float> CalculateInflections2D( ReadOnlyCollection<Spline.Point> spline, int segmentIndex )
 	{
 		CheckSegmentIndex( spline, segmentIndex );
 
@@ -392,7 +795,7 @@ public static class SplineUtils
 	}
 
 	// Helper function used to add the extrema to the bounding box
-	private static void AddExtremaToBox( ReadOnlyCollection<SplinePoint> spline, int segmentIndex, ref BBox inBox )
+	private static void AddExtremaToBox( ReadOnlyCollection<Spline.Point> spline, int segmentIndex, ref BBox inBox )
 	{
 		for ( int axis = 0; axis < 3; ++axis )
 		{
@@ -400,30 +803,30 @@ public static class SplineUtils
 			foreach ( var extremaT in extrema )
 			{
 				inBox = inBox.AddPoint( GetPosition( spline,
-					new SplineSegmentParams { Index = segmentIndex, T = extremaT } ) );
+					new Spline.SegmentParams { Index = segmentIndex, T = extremaT } ) );
 			}
 		}
 	}
 
 	// The bounding box of a spline segment is defined by the start and end points of the segment and local extrema.
-	private static BBox CalculateBoundingBoxForSegment( ReadOnlyCollection<SplinePoint> spline, int segmentIndex )
+	private static BBox CalculateBoundingBoxForSegment( ReadOnlyCollection<Spline.Point> spline, int segmentIndex )
 	{
-		BBox result = BBox.FromPositionAndSize( GetPosition( spline, new SplineSegmentParams { Index = segmentIndex, T = 0f } ) );
+		BBox result = BBox.FromPositionAndSize( GetPosition( spline, new Spline.SegmentParams { Index = segmentIndex, T = 0f } ) );
 
-		result = result.AddPoint( GetPosition( spline, new SplineSegmentParams { Index = segmentIndex, T = 1f } ) );
+		result = result.AddPoint( GetPosition( spline, new Spline.SegmentParams { Index = segmentIndex, T = 1f } ) );
 		AddExtremaToBox( spline, segmentIndex, ref result );
 
 		return result;
 	}
 
 
-	public static bool IsLoop( ReadOnlyCollection<SplinePoint> spline )
+	public static bool IsLoop( ReadOnlyCollection<Spline.Point> spline )
 	{
 		return spline.Count >= 3 && spline[0].Position.AlmostEqual( spline[spline.Count - 1].Position, 0.01f );
 	}
 
 	// Calculates the Bounding box of the entire spline, by combining the bounding boxes of each segment.
-	public static BBox CalculateBoundingBox( ReadOnlyCollection<SplinePoint> spline )
+	public static BBox CalculateBoundingBox( ReadOnlyCollection<Spline.Point> spline )
 	{
 		var inputSegmentNum = SegmentNum( spline );
 
@@ -442,7 +845,7 @@ public static class SplineUtils
 		return result;
 	}
 
-	private static BBox CalculateAlignedBoundingBoxForSegment( ReadOnlyCollection<SplinePoint> spline, int segmentIndex,
+	private static BBox CalculateAlignedBoundingBoxForSegment( ReadOnlyCollection<Spline.Point> spline, int segmentIndex,
 		SegmentAlignmentInfo alignmentInfo )
 	{
 		var alignedSplineSegment = AlignSegment( spline, segmentIndex, alignmentInfo );
@@ -461,7 +864,7 @@ public static class SplineUtils
 		return new OrientedBoundingBox { Transform = boxTransform, Extents = alignedBoundingBox.Extents };
 	}
 
-	public static OrientedBoundingBox CalculateMinOrientedBoundingBox( ReadOnlyCollection<SplinePoint> spline )
+	public static OrientedBoundingBox CalculateMinOrientedBoundingBox( ReadOnlyCollection<Spline.Point> spline )
 	{
 		var inputSegmentNum = SegmentNum( spline );
 
@@ -503,7 +906,7 @@ public static class SplineUtils
 		return currentMinBBox;
 	}
 
-	private static double CalculateArea2DForSegment( ReadOnlyCollection<SplinePoint> spline, int segmentIndex )
+	private static double CalculateArea2DForSegment( ReadOnlyCollection<Spline.Point> spline, int segmentIndex )
 	{
 		// http://ich.deanmcnamee.com/graphics/2016/03/30/CurveArea.html
 		var point0 = P0( spline, segmentIndex );
@@ -519,7 +922,7 @@ public static class SplineUtils
 			   20.0;
 	}
 
-	public static double CalculateArea2D( ReadOnlyCollection<SplinePoint> spline )
+	public static double CalculateArea2D( ReadOnlyCollection<Spline.Point> spline )
 	{
 		if ( !IsLoop( spline ) )
 		{
@@ -537,25 +940,25 @@ public static class SplineUtils
 		return result;
 	}
 
-	public static Vector3 P0( ReadOnlyCollection<SplinePoint> spline, int segmentIndex )
+	public static Vector3 P0( ReadOnlyCollection<Spline.Point> spline, int segmentIndex )
 	{
 		CheckSegmentIndex( spline, segmentIndex );
 		return spline[segmentIndex].Position;
 	}
 
-	public static Vector3 P1( ReadOnlyCollection<SplinePoint> spline, int segmentIndex )
+	public static Vector3 P1( ReadOnlyCollection<Spline.Point> spline, int segmentIndex )
 	{
 		CheckSegmentIndex( spline, segmentIndex );
 		return spline[segmentIndex].OutPosition;
 	}
 
-	public static Vector3 P2( ReadOnlyCollection<SplinePoint> spline, int segmentIndex )
+	public static Vector3 P2( ReadOnlyCollection<Spline.Point> spline, int segmentIndex )
 	{
 		CheckSegmentIndex( spline, segmentIndex );
 		return spline[segmentIndex + 1].InPosition;
 	}
 
-	public static Vector3 P3( ReadOnlyCollection<SplinePoint> spline, int segmentIndex )
+	public static Vector3 P3( ReadOnlyCollection<Spline.Point> spline, int segmentIndex )
 	{
 		CheckSegmentIndex( spline, segmentIndex );
 		return spline[segmentIndex + 1].Position;
@@ -563,13 +966,13 @@ public static class SplineUtils
 
 	public struct SplitSegmentResult
 	{
-		public SplinePoint Left;
-		public SplinePoint Mid;
-		public SplinePoint Right;
+		public Spline.Point Left;
+		public Spline.Point Mid;
+		public Spline.Point Right;
 	}
 
 	// https://www.youtube.com/watch?v=lPJo1jayLdc
-	public static SplitSegmentResult SplitSegment( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams, float distanceParam, bool inferTangentMode = false )
+	public static SplitSegmentResult SplitSegment( ReadOnlyCollection<Spline.Point> spline, Spline.SegmentParams segmentParams, float distanceParam, bool inferTangentMode = false )
 	{
 		CheckSegmentParams( spline, segmentParams );
 
@@ -587,33 +990,33 @@ public static class SplineUtils
 
 		var result = new SplitSegmentResult
 		{
-			Left = new SplinePoint
+			Left = new Spline.Point
 			{
 				Position = point0,
 				InPositionRelative = spline[segmentParams.Index].InPositionRelative,
 				OutPositionRelative = leftOut - point0,
-				TangentMode = inferTangentMode ? spline[segmentParams.Index].TangentMode : SplinePointTangentMode.Split,
+				TangentMode = inferTangentMode ? spline[segmentParams.Index].TangentMode : Spline.TangentMode.Split,
 				Roll = spline[segmentParams.Index].Roll,
 				Scale = spline[segmentParams.Index].Scale,
 				UpVector = spline[segmentParams.Index].UpVector
 			},
-			Mid = new SplinePoint
+			Mid = new Spline.Point
 			{
 				Position = midPoint,
 				InPositionRelative = midIn - midPoint,
 				OutPositionRelative = midOut - midPoint,
-				TangentMode = inferTangentMode ? InferTangentModeForSplitPoint( spline, segmentParams ) : SplinePointTangentMode.Split,
+				TangentMode = inferTangentMode ? InferTangentModeForSplitPoint( spline, segmentParams ) : Spline.TangentMode.Split,
 				Roll = MathX.Lerp( spline[segmentParams.Index].Roll, spline[segmentParams.Index + 1].Roll, distanceParam ),
 				Scale = Vector2.Lerp( spline[segmentParams.Index].Scale, spline[segmentParams.Index + 1].Scale, distanceParam ),
 				UpVector = Vector3.Lerp( spline[segmentParams.Index].UpVector, spline[segmentParams.Index + 1].UpVector, distanceParam )
 
 			},
-			Right = new SplinePoint
+			Right = new Spline.Point
 			{
 				Position = point3,
 				InPositionRelative = rightIn - point3,
 				OutPositionRelative = spline[segmentParams.Index + 1].OutPositionRelative,
-				TangentMode = inferTangentMode ? spline[segmentParams.Index + 1].TangentMode : SplinePointTangentMode.Split,
+				TangentMode = inferTangentMode ? spline[segmentParams.Index + 1].TangentMode : Spline.TangentMode.Split,
 				Roll = spline[segmentParams.Index + 1].Roll,
 				Scale = spline[segmentParams.Index + 1].Scale,
 				UpVector = spline[segmentParams.Index + 1].UpVector
@@ -623,7 +1026,7 @@ public static class SplineUtils
 		return result;
 	}
 
-	private static SplinePointTangentMode InferTangentModeForSplitPoint( ReadOnlyCollection<SplinePoint> spline, SplineSegmentParams segmentParams )
+	private static Spline.TangentMode InferTangentModeForSplitPoint( ReadOnlyCollection<Spline.Point> spline, Spline.SegmentParams segmentParams )
 	{
 		// If the tangent modes are the same on both sides we just assume the new points should have the same tangent mode
 		if ( spline[segmentParams.Index].TangentMode == spline[segmentParams.Index + 1].TangentMode )
@@ -632,33 +1035,33 @@ public static class SplineUtils
 		}
 
 		// if one of them uses auto asume the new points should use auto
-		if ( spline[segmentParams.Index].TangentMode == SplinePointTangentMode.Auto ||
-			 spline[segmentParams.Index + 1].TangentMode == SplinePointTangentMode.Auto )
+		if ( spline[segmentParams.Index].TangentMode == Spline.TangentMode.Auto ||
+			 spline[segmentParams.Index + 1].TangentMode == Spline.TangentMode.Auto )
 		{
-			return SplinePointTangentMode.Auto;
+			return Spline.TangentMode.Auto;
 		}
 
 		// If one of them uses linear assume the new points should use linear
-		if ( spline[segmentParams.Index].TangentMode == SplinePointTangentMode.Linear ||
-			 spline[segmentParams.Index + 1].TangentMode == SplinePointTangentMode.Linear )
+		if ( spline[segmentParams.Index].TangentMode == Spline.TangentMode.Linear ||
+			 spline[segmentParams.Index + 1].TangentMode == Spline.TangentMode.Linear )
 		{
-			return SplinePointTangentMode.Linear;
+			return Spline.TangentMode.Linear;
 		}
 
 		// Otherwise we default to custom
-		return SplinePointTangentMode.Split;
+		return Spline.TangentMode.Split;
 	}
 
 
 	// https://github.com/erich666/GraphicsGems/blob/master/gems/FitCurves.c
-	public static SplineSegmentParams FindSegmentAndTClosestToPosition(
-		ReadOnlyCollection<SplinePoint> spline,
+	public static Spline.SegmentParams FindSegmentAndTClosestToPosition(
+		ReadOnlyCollection<Spline.Point> spline,
 		Vector3 queryPosition )
 	{
 		const int pointsChecked = 3;
 		const int iterationNum = 3;
 
-		SplineSegmentParams result = new SplineSegmentParams();
+		Spline.SegmentParams result = new Spline.SegmentParams();
 		float closestDistanceSq = float.MaxValue;
 
 		// TODO convert to stack alloc
@@ -683,7 +1086,7 @@ public static class SplineUtils
 	}
 
 	private static (float, float) NewtonRaphsonRootFind(
-		ReadOnlyCollection<SplinePoint> spline,
+		ReadOnlyCollection<Spline.Point> spline,
 		int segmentIndex,
 		Vector3 queryPosition,
 		float currentCandidate,
@@ -692,9 +1095,9 @@ public static class SplineUtils
 		Vector3 delta = Vector3.Zero;
 		for ( int iteration = 0; iteration < iterationNum; ++iteration )
 		{
-			Vector3 position = GetPosition( spline, new SplineSegmentParams { Index = segmentIndex, T = currentCandidate } );
-			Vector3 firstDerivative = GetDerivative( spline, new SplineSegmentParams { Index = segmentIndex, T = currentCandidate } );
-			Vector3 secondDerivative = GetSecondDerivative( spline, new SplineSegmentParams { Index = segmentIndex, T = currentCandidate } );
+			Vector3 position = GetPosition( spline, new Spline.SegmentParams { Index = segmentIndex, T = currentCandidate } );
+			Vector3 firstDerivative = GetDerivative( spline, new Spline.SegmentParams { Index = segmentIndex, T = currentCandidate } );
+			Vector3 secondDerivative = GetSecondDerivative( spline, new Spline.SegmentParams { Index = segmentIndex, T = currentCandidate } );
 			delta = position - queryPosition;
 
 			float numerator = Vector3.Dot( delta, firstDerivative );
@@ -747,10 +1150,10 @@ public static class SplineUtils
 	}
 
 	// Align the segment to the x-axis using the translation and rotation calculated by CalculateAlignmentInfoForPoints.
-	private static SplinePoint[] AlignSegment( ReadOnlyCollection<SplinePoint> spline, int segmentIndex,
+	private static Spline.Point[] AlignSegment( ReadOnlyCollection<Spline.Point> spline, int segmentIndex,
 		SegmentAlignmentInfo alignmentInfo )
 	{
-		var alignedSegment = new SplinePoint[2];
+		var alignedSegment = new Spline.Point[2];
 		alignedSegment[0].Position = alignmentInfo.Rotation * (spline[segmentIndex].Position + alignmentInfo.Translation);
 		alignedSegment[0].InPositionRelative = Vector3.Zero;
 		alignedSegment[0].OutPositionRelative = alignmentInfo.Rotation * spline[segmentIndex].OutPositionRelative;
@@ -764,13 +1167,13 @@ public static class SplineUtils
 	}
 
 	// Calculates a linear tangent for a point on the spline and returns a new spline point with the tangent.
-	public static SplinePoint CalculateLinearTangentForPoint( ReadOnlyCollection<SplinePoint> spline, int pointIndex )
+	public static Spline.Point CalculateLinearTangentForPoint( ReadOnlyCollection<Spline.Point> spline, int pointIndex )
 	{
 		return spline[pointIndex] with { InPositionRelative = Vector3.Zero, OutPositionRelative = Vector3.Zero };
 	}
 
 	// Calculate a smooth tangent for a point on the spline and return new spline point with the tangent.
-	public static SplinePoint CalculateSmoothTangentForPoint( ReadOnlyCollection<SplinePoint> spline, int pointIndex )
+	public static Spline.Point CalculateSmoothTangentForPoint( ReadOnlyCollection<Spline.Point> spline, int pointIndex )
 	{
 		if ( spline.Count < 2 )
 		{
@@ -846,7 +1249,7 @@ public static class SplineUtils
 
 		private BBox _bounds;
 
-		public void Sample( ReadOnlyCollection<SplinePoint> spline )
+		public void Sample( ReadOnlyCollection<Spline.Point> spline )
 		{
 			_segmentNum = SegmentNum( spline );
 
@@ -863,7 +1266,7 @@ public static class SplineUtils
 				for ( int sampleIndex = 1; sampleIndex < SamplesPerSegment; sampleIndex++ )
 				{
 					Vector3 pt = SplineUtils.GetPosition( spline,
-						new SplineSegmentParams
+						new Spline.SegmentParams
 						{
 							Index = segmentIndex,
 							T = sampleIndex / (float)(SamplesPerSegment - 1)
@@ -881,11 +1284,11 @@ public static class SplineUtils
 			_cumulativeDistances[_cumulativeDistances.Length - 1] = cumulativeLength;
 		}
 
-		public SplineSegmentParams CalculateSegmentParamsAtDistance( float distance )
+		public Spline.SegmentParams CalculateSegmentParamsAtDistance( float distance )
 		{
 			if ( distance < 0 )
 			{
-				return new SplineSegmentParams { Index = 0, T = 0 };
+				return new Spline.SegmentParams { Index = 0, T = 0 };
 			}
 
 			int low = 0;
@@ -910,12 +1313,12 @@ public static class SplineUtils
 					var candidateT = CalculateSegmentTAtDistance( mid, distance );
 					if ( candidateT.HasValue )
 					{
-						return new SplineSegmentParams { Index = mid, T = candidateT.Value };
+						return new Spline.SegmentParams { Index = mid, T = candidateT.Value };
 					}
 				}
 			}
 
-			return new SplineSegmentParams { Index = _segmentNum - 1, T = 1 };
+			return new Spline.SegmentParams { Index = _segmentNum - 1, T = 1 };
 		}
 
 		public float? CalculateSegmentTAtDistance( int segmentIndex, float distance )
@@ -939,7 +1342,7 @@ public static class SplineUtils
 			return null;
 		}
 
-		public float GetDistanceAtSplineParams( SplineSegmentParams segmentParams )
+		public float GetDistanceAtSplineParams( Spline.SegmentParams segmentParams )
 		{
 			//Debug.Assert(segmentParams.T <= 1 && segmentParams.T >= 0);
 			//Debug.Assert(segmentParams.Index < _cumulativeDistances.Count - 1);

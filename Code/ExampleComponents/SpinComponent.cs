@@ -160,7 +160,7 @@ public sealed class MoveBrownianComponent : Component
 
 public sealed class MoveAlongSplineComponent : Component
 {
-	[Property] public Spline Spline { get; set; }
+	[Property] public SplineComponent Spline { get; set; }
 
 	[Property] public float Speed { get; set; } = 20.0f;
 

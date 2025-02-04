@@ -5,16 +5,19 @@ namespace Sandbox;
 /// <summary>
 /// Represents a spline component that can be manipulated within the editor and at runtime.
 /// </summary>
-public sealed class Spline : Component, Component.ExecuteInEditor, Component.IHasBounds
+public sealed class SplineComponent : Component, Component.ExecuteInEditor, Component.IHasBounds
 {
 	[Property, Hide]
-	private List<SplinePoint> _splinePoints = new();
+	private List<Spline.Point> _splinePoints = new();
 
-	public Spline()
+	[Property, Hide]
+	public Spline Spline;
+
+	public SplineComponent()
 	{
-		_splinePoints.Add( new SplinePoint { Position = new Vector3( 0, 0, 0 ) } );
-		_splinePoints.Add( new SplinePoint { Position = new Vector3( 100, 0, 0 ) } );
-		_splinePoints.Add( new SplinePoint { Position = new Vector3( 100, 100, 0 ) } );
+		_splinePoints.Add( new Spline.Point { Position = new Vector3( 0, 0, 0 ) } );
+		_splinePoints.Add( new Spline.Point { Position = new Vector3( 100, 0, 0 ) } );
+		_splinePoints.Add( new Spline.Point { Position = new Vector3( 100, 100, 0 ) } );
 
 		RecalculateTangentsForPoint( 0 );
 		RecalculateTangentsForPoint( 1 );
@@ -42,6 +45,12 @@ public sealed class Spline : Component, Component.ExecuteInEditor, Component.IHa
 		SampleDistances();
 		UpdateDrawCache();
 		SplineChanged?.Invoke();
+
+		// copy old data to _spline
+		for ( var i = 0; i < _splinePoints.Count; i++ )
+		{
+			Spline.InsertPoint( i, _splinePoints[i] );
+		}
 	}
 
 	private void RequiresDistanceResample()
@@ -197,7 +206,7 @@ public sealed class Spline : Component, Component.ExecuteInEditor, Component.IHa
 		return _distanceSampler.GetSegmentBounds( segmentIndex );
 	}
 
-	public SplinePoint GetPoint( int pointIndex )
+	public Spline.Point GetPoint( int pointIndex )
 	{
 		CheckPointIndex( pointIndex );
 
@@ -214,7 +223,7 @@ public sealed class Spline : Component, Component.ExecuteInEditor, Component.IHa
 		return SplineUtils.SegmentNum( _splinePoints.AsReadOnly() );
 	}
 
-	public void UpdatePoint( int pointIndex, SplinePoint updatedPoint )
+	public void UpdatePoint( int pointIndex, Spline.Point updatedPoint )
 	{
 		CheckPointIndex( pointIndex );
 
@@ -225,7 +234,7 @@ public sealed class Spline : Component, Component.ExecuteInEditor, Component.IHa
 		RequiresDistanceResample();
 	}
 
-	public void InsertPoint( int pointIndex, SplinePoint newPoint )
+	public void InsertPoint( int pointIndex, Spline.Point newPoint )
 	{
 		CheckInsertPointIndex( pointIndex );
 
@@ -323,13 +332,13 @@ public sealed class Spline : Component, Component.ExecuteInEditor, Component.IHa
 		SplineChanged?.Invoke();
 	}
 
-	public SplinePointTangentMode GetTangentModeForPoint( int pointIndex )
+	public Spline.TangentMode GetTangentModeForPoint( int pointIndex )
 	{
 		CheckPointIndex( pointIndex );
 		return _splinePoints[pointIndex].TangentMode;
 	}
 
-	public void SetTangentModeForPoint( int pointIndex, SplinePointTangentMode tangentMode )
+	public void SetTangentModeForPoint( int pointIndex, Spline.TangentMode tangentMode )
 	{
 		CheckPointIndex( pointIndex );
 		_splinePoints[pointIndex] = _splinePoints[pointIndex] with { TangentMode = tangentMode };
@@ -694,15 +703,15 @@ public sealed class Spline : Component, Component.ExecuteInEditor, Component.IHa
 		}
 		switch ( _splinePoints[index].TangentMode )
 		{
-			case SplinePointTangentMode.Auto:
+			case Spline.TangentMode.Auto:
 				_splinePoints[index] = SplineUtils.CalculateSmoothTangentForPoint( _splinePoints.AsReadOnly(), index );
 				break;
-			case SplinePointTangentMode.Linear:
+			case Spline.TangentMode.Linear:
 				_splinePoints[index] = SplineUtils.CalculateLinearTangentForPoint( _splinePoints.AsReadOnly(), index );
 				break;
-			case SplinePointTangentMode.Split:
+			case Spline.TangentMode.Split:
 				break;
-			case SplinePointTangentMode.Mirrored:
+			case Spline.TangentMode.Mirrored:
 				_splinePoints[index] = _splinePoints[index] with { OutPositionRelative = -_splinePoints[index].InPositionRelative };
 				break;
 		}

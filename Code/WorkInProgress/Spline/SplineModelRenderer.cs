@@ -2,7 +2,7 @@ namespace Sandbox;
 
 public sealed class SplineModelRenderer : ModelRenderer
 {
-	[Property, Category( "Spline" )] public Spline Spline { get; set; }
+	[Property, Category( "Spline" )] public SplineComponent Spline { get; set; }
 
 	[Property, Category( "Spline" )]
 	public Rotation ModelRotation
@@ -271,7 +271,7 @@ public sealed class SplineModelRenderer : ModelRenderer
 		SceneObject.LocalBounds = customModel.Bounds;
 	}
 
-	public static Transform[] CalculateTangentFramesUsingUpDir( Spline spline, int frameCount )
+	public static Transform[] CalculateTangentFramesUsingUpDir( SplineComponent spline, int frameCount )
 	{
 		Transform[] frames = new Transform[frameCount];
 
@@ -312,7 +312,7 @@ public sealed class SplineModelRenderer : ModelRenderer
 		return frames;
 	}
 
-	public static Transform[] CalculateRotationMinimizingTangentFrames( Spline spline, int frameCount )
+	public static Transform[] CalculateRotationMinimizingTangentFrames( SplineComponent spline, int frameCount )
 	{
 		Transform[] frames = new Transform[frameCount];
 
@@ -407,7 +407,7 @@ public sealed class SplineModelRenderer : ModelRenderer
 	}
 
 	// TODO Has there ever been a function with more args?
-	public static void Deform( Spline spline, Rotation modelRoation, Vector3 modelOffset, Vector3 modelScale, Vector3 localPosition, Vector3 localNormal, Vector4 localTangent, Span<Transform> frames, float startDistance, float endDistance, float minInModelDir, float sizeInModelDir, out Vector3 deformedPosition, out Vector3 deformedNormal, out Vector4 deformedTangent )
+	public static void Deform( SplineComponent spline, Rotation modelRoation, Vector3 modelOffset, Vector3 modelScale, Vector3 localPosition, Vector3 localNormal, Vector4 localTangent, Span<Transform> frames, float startDistance, float endDistance, float minInModelDir, float sizeInModelDir, out Vector3 deformedPosition, out Vector3 deformedNormal, out Vector4 deformedTangent )
 	{
 		// rotate localPosition by model rotation
 		localPosition = modelRoation * (localPosition * modelScale);

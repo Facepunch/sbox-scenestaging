@@ -7,7 +7,7 @@ namespace Sandbox;
 
 public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 {
-	[Property, Category( "Spline" )] public Spline Spline { get; set; }
+	[Property, Category( "Spline" )] public SplineComponent Spline { get; set; }
 
 	[Property, Category("Spline")]
 	[Range( 0, 16 )]
