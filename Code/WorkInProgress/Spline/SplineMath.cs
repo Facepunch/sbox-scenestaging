@@ -332,57 +332,6 @@ public class Spline
 		RequiresDistanceResample();
 	}
 
-	public float GetRollForPoint( int pointIndex )
-	{
-		CheckPointIndex( pointIndex );
-		return _points[pointIndex].Roll;
-	}
-
-	public void SetRollForPoint( int pointIndex, float roll )
-	{
-		CheckPointIndex( pointIndex );
-		_points[pointIndex] = _points[pointIndex] with { Roll = roll };
-		SplineChanged?.Invoke();
-	}
-
-	public Vector2 GetScaleForPoint( int pointIndex )
-	{
-		CheckPointIndex( pointIndex );
-		return _points[pointIndex].Scale;
-	}
-	public void SetScaleForPoint( int pointIndex, Vector2 scale )
-	{
-		CheckPointIndex( pointIndex );
-		_points[pointIndex] = _points[pointIndex] with { Scale = scale };
-		SplineChanged?.Invoke();
-	}
-
-	public Vector3 GetUpVectorForPoint( int pointIndex )
-	{
-		CheckPointIndex( pointIndex );
-		return _points[pointIndex].UpVector;
-	}
-	public void SetUpVectorForPoint( int pointIndex, Vector3 up )
-	{
-		CheckPointIndex( pointIndex );
-		_points[pointIndex] = _points[pointIndex] with { UpVector = up };
-		SplineChanged?.Invoke();
-	}
-
-	public Spline.TangentMode GetTangentModeForPoint( int pointIndex )
-	{
-		CheckPointIndex( pointIndex );
-		return _points[pointIndex].TangentMode;
-	}
-
-	public void SetTangentModeForPoint( int pointIndex, Spline.TangentMode tangentMode )
-	{
-		CheckPointIndex( pointIndex );
-		_points[pointIndex] = _points[pointIndex] with { TangentMode = tangentMode };
-		RecalculateTangentsForPointAndAdjacentPoints( pointIndex );
-		RequiresDistanceResample();
-	}
-
 	// Can be used to get information via GetPositionAtDistance and GetTangentAtDistance etc.
 	public float FindDistanceClosestToPosition( Vector3 position )
 	{
