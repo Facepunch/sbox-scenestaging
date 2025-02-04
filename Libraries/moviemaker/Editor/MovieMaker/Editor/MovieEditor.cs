@@ -48,7 +48,7 @@ public class MovieEditor : Widget
 		TrackList = Layout.Add( new TrackListWidget( this ) );
 		ScrubBarBottom = Layout.Add( new ScrubberWidget( this, false ) );
 
-		Session.SetEditMode( EditMode.DefaultType );
+		Session.SetEditMode( Session.Cookies.EditMode );
 	}
 
 	void CloseSession()

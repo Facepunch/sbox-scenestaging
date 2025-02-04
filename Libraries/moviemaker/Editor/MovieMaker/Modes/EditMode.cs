@@ -7,6 +7,7 @@ namespace Editor.MovieMaker;
 
 public record EditModeType( TypeDescription TypeDescription )
 {
+	public string Name => TypeDescription.Name;
 	public string Title => TypeDescription.Title;
 	public string Description => TypeDescription.Description;
 	public string Icon => TypeDescription.Icon;
@@ -87,8 +88,6 @@ public abstract class EditMode
 		DopeSheet = session.Editor.TrackList.DopeSheet;
 		Toolbar = new( Session.Editor.Toolbar.EditModeControls );
 
-		EditorShortcuts.Register( this, DopeSheet );
-
 		OnEnable();
 
 		foreach ( var track in DopeSheet.Items.OfType<DopeSheetTrack>() )
@@ -107,8 +106,6 @@ public abstract class EditMode
 		}
 
 		OnDisable();
-
-		EditorShortcuts.Unregister( this );
 
 		Session = null!;
 	}
@@ -184,5 +181,6 @@ public abstract class EditMode
 		.OrderBy( x => x.Order )
 		.ToArray();
 
-	public static EditModeType DefaultType => AllTypes.First();
+	public static EditModeType Get( string name ) => AllTypes.FirstOrDefault( x => x.TypeDescription.Name == name )
+		?? AllTypes.First();
 }

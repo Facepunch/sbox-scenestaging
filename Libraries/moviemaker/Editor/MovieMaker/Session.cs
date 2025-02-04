@@ -8,7 +8,7 @@ namespace Editor.MovieMaker;
 /// <summary>
 /// Centralizes the current state of a moviemaker editor session
 /// </summary>
-public sealed class Session
+public sealed partial class Session
 {
 	public static Session? Current { get; internal set; }
 
@@ -62,6 +62,11 @@ public sealed class Session
 
 		EditMode = type?.Create();
 		EditMode?.Enable( this );
+
+		if ( type is not null )
+		{
+			Cookies.EditMode = type;
+		}
 	}
 
 	public float PixelsToTime( float pixels, bool snap = false )
