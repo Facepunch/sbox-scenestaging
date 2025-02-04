@@ -97,7 +97,7 @@ public sealed class SplineModelRenderer : ModelRenderer
 
 		if ( Spline.IsValid() )
 		{
-			Spline.SplineChanged += UpdateObject;
+			Spline.Spline.SplineChanged += UpdateObject;
 		}
 	}
 
@@ -109,7 +109,7 @@ public sealed class SplineModelRenderer : ModelRenderer
 
 		if ( Spline.IsValid() )
 		{
-			Spline.SplineChanged -= UpdateObject;
+			Spline.Spline.SplineChanged -= UpdateObject;
 		}
 	}
 
@@ -177,7 +177,7 @@ public sealed class SplineModelRenderer : ModelRenderer
 		var sizeInModelDir = transformedBounds.Size.Dot( Vector3.Forward );
 		var minInModelDir = transformedBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
-		var splineLength = Spline.GetLength();
+		var splineLength = Spline.Spline.GetLength();
 
 		var sizeInModelDirWithSpacing = sizeInModelDir + Spacing;
 		var frameSegments = (int)Math.Ceiling( splineLength / sizeInModelDir );
@@ -275,10 +275,10 @@ public sealed class SplineModelRenderer : ModelRenderer
 	{
 		Transform[] frames = new Transform[frameCount];
 
-		float totalSplineLength = spline.GetLength();
+		float totalSplineLength = spline.Spline.GetLength();
 
-		Vector3 initialTangent = spline.GetTangetAtDistance( 0f );
-		Vector3 up = spline.GetUpVectorAtDistance( 0f );
+		Vector3 initialTangent = spline.Spline.GetTangetAtDistance( 0f );
+		Vector3 up = spline.Spline.GetUpVectorAtDistance( 0f );
 
 		// Choose an initial up vector if tangent is parallel to Up
 		if ( MathF.Abs( Vector3.Dot( initialTangent, up ) ) > 0.999f )
@@ -291,17 +291,17 @@ public sealed class SplineModelRenderer : ModelRenderer
 			float t = (float)i / (frameCount - 1);
 			float distance = t * totalSplineLength;
 
-			Vector3 position = spline.GetPositionAtDistance( distance );
-			Vector3 tangent = spline.GetTangetAtDistance( distance );
-			up = spline.GetUpVectorAtDistance( distance );
+			Vector3 position = spline.Spline.GetPositionAtDistance( distance );
+			Vector3 tangent = spline.Spline.GetTangetAtDistance( distance );
+			up = spline.Spline.GetUpVectorAtDistance( distance );
 
 			// Apply roll
-			float roll = spline.GetRollAtDistance( distance );
+			float roll = spline.Spline.GetRollAtDistance( distance );
 			var newUp = Rotation.FromAxis( tangent, roll ) * up;
 
 			Rotation rotation = Rotation.LookAt( tangent, newUp );
 
-			Vector2 scale2D = spline.GetScaleAtDistance( distance );
+			Vector2 scale2D = spline.Spline.GetScaleAtDistance( distance );
 
 			// Create scale vector with 1 for x (since we're only scaling along y and z)
 			Vector3 scale = new Vector3( 1f, scale2D.x, scale2D.y );
@@ -316,10 +316,10 @@ public sealed class SplineModelRenderer : ModelRenderer
 	{
 		Transform[] frames = new Transform[frameCount];
 
-		float totalSplineLength = spline.GetLength();
+		float totalSplineLength = spline.Spline.GetLength();
 
 		// Initialize the up vector
-		Vector3 previousTangent = spline.GetTangetAtDistance( 0f );
+		Vector3 previousTangent = spline.Spline.GetTangetAtDistance( 0f );
 		Vector3 up = Vector3.Up;
 
 		// Choose an initial up vector if tangent is parallel to Up
@@ -328,15 +328,15 @@ public sealed class SplineModelRenderer : ModelRenderer
 			up = Vector3.Right;
 		}
 
-		float previousRoll = spline.GetRollAtDistance( 0f );
+		float previousRoll = spline.Spline.GetRollAtDistance( 0f );
 		up = Rotation.FromAxis( previousTangent, previousRoll ) * up;
 
-		Vector2 scale2D = spline.GetScaleAtDistance( 0f );
+		Vector2 scale2D = spline.Spline.GetScaleAtDistance( 0f );
 
 		// Create scale vector with 1 for x (since we're only scaling along y and z)
 		Vector3 scale = new Vector3( 1f, scale2D.x, scale2D.y );
 
-		Vector3 previousPosition = spline.GetPositionAtDistance( 0f );
+		Vector3 previousPosition = spline.Spline.GetPositionAtDistance( 0f );
 		frames[0] = new Transform( previousPosition, Rotation.LookAt( previousTangent, up ), scale );
 
 		for ( int i = 1; i < frameCount; i++ )
@@ -344,20 +344,20 @@ public sealed class SplineModelRenderer : ModelRenderer
 			float t = (float)i / (frameCount - 1);
 			float distance = t * totalSplineLength;
 
-			Vector3 position = spline.GetPositionAtDistance( distance );
-			Vector3 tangent = spline.GetTangetAtDistance( distance );
+			Vector3 position = spline.Spline.GetPositionAtDistance( distance );
+			Vector3 tangent = spline.Spline.GetTangetAtDistance( distance );
 
 			// Parallel transport the up vector
 			up = GetRotationMinimizingNormal( previousPosition, previousTangent, up, position, tangent );
 
 			// Apply roll
-			float roll = spline.GetRollAtDistance( distance );
+			float roll = spline.Spline.GetRollAtDistance( distance );
 			float deltaRoll = roll - previousRoll;
 			up = Rotation.FromAxis( tangent, deltaRoll ) * up;
 
 			Rotation rotation = Rotation.LookAt( tangent, up );
 
-			scale2D = spline.GetScaleAtDistance( distance );
+			scale2D = spline.Spline.GetScaleAtDistance( distance );
 
 			// Create scale vector with 1 for x (since we're only scaling along y and z)
 			scale = new Vector3( 1f, scale2D.x, scale2D.y );
@@ -370,7 +370,7 @@ public sealed class SplineModelRenderer : ModelRenderer
 		}
 
 		// Correct up vectors for looped splines
-		if ( spline.IsLoop && frames.Length > 1 )
+		if ( spline.Spline.IsLoop && frames.Length > 1 )
 		{
 			Vector3 startUp = frames[0].Rotation.Up;
 			Vector3 endUp = frames[^1].Rotation.Up;
@@ -419,7 +419,7 @@ public sealed class SplineModelRenderer : ModelRenderer
 		float distanceAlongSpline = MathX.Lerp( startDistance, endDistance, t );
 
 		// Calculate the frame index and interpolation factor
-		float frameFloatIndex = (distanceAlongSpline / spline.GetLength()) * (frames.Length - 1);
+		float frameFloatIndex = (distanceAlongSpline / spline.Spline.GetLength()) * (frames.Length - 1);
 		int frameIndex = Math.Clamp( (int)Math.Floor( frameFloatIndex ), 0, frames.Length - 2 );
 		float frameT = Math.Clamp( frameFloatIndex - frameIndex, 0f, 1f );
 

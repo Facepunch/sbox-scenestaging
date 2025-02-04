@@ -82,7 +82,8 @@ public class Spline
 	}
 
 	// private because we need to ensure the points are always in a valid state
-	private List<Point> _points;
+	[JsonInclude]
+	private List<Point> _points = new();
 
 	private bool _areDistancesSampled = false;
 

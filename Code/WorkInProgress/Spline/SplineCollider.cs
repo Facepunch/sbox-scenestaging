@@ -114,7 +114,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		if ( Model.IsValid() && Spline.IsValid() )
 		{
 			IsDirty = true;
-			Spline.SplineChanged += MarkDirty;
+			Spline.Spline.SplineChanged += MarkDirty;
 		}
 		base.OnEnabled();
 	}
@@ -126,7 +126,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 
 	protected override void OnDisabled()
 	{
-		Spline.SplineChanged -= MarkDirty;
+		Spline.Spline.SplineChanged -= MarkDirty;
 		subHulls.Clear();
 		subMeshes.Clear();
 		base.OnDisabled();
@@ -139,7 +139,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 			return;
 		}
 
-		if ( !Spline.IsDirty && !IsDirty )
+		if ( !IsDirty )
 		{
 			return;
 		}
@@ -172,7 +172,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		var sizeInModelDir = transformedBounds.Size.Dot( Vector3.Forward );
 		var minInModelDir = transformedBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
-		var splineLength = Spline.GetLength();
+		var splineLength = Spline.Spline.GetLength();
 
 		var sizeInModelDirWithSpacing = sizeInModelDir + Spacing;
 		var frameSegments = (int)Math.Ceiling( splineLength / sizeInModelDir );
