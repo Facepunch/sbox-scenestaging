@@ -6,7 +6,7 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 [Title( "Keyframe Editor" ), Icon( "timeline" ), Order( 0 )]
-internal sealed class KeyframeEditMode : EditMode
+internal sealed partial class KeyframeEditMode : EditMode
 {
 	private IEnumerable<KeyframeHandle> SelectedHandles => SelectedItems.OfType<KeyframeHandle>();
 	private IEnumerable<TrackKeyframes> SelectedTracks => SelectedHandles.Select( x => x.Keyframes ).Distinct();
@@ -78,21 +78,6 @@ internal sealed class KeyframeEditMode : EditMode
 		}
 	}
 
-	[Shortcut( "keyframe-edit.interp-none", "0" )]
-	public void SetInterpolationNone() => SetInterpolation( InterpolationMode.None );
-
-	[Shortcut( "keyframe-edit.interp-linear", "1" )]
-	public void SetInterpolationLinear() => SetInterpolation( InterpolationMode.Linear );
-
-	[Shortcut( "keyframe-edit.interp-in", "2" )]
-	public void SetInterpolationIn() => SetInterpolation( InterpolationMode.QuadraticIn );
-
-	[Shortcut( "keyframe-edit.interp-out", "3" )]
-	public void SetInterpolationOut() => SetInterpolation( InterpolationMode.QuadraticOut );
-
-	[Shortcut( "keyframe-edit.interp-in-out", "4" )]
-	public void SetInterpolationInOut() => SetInterpolation( InterpolationMode.QuadraticInOut );
-
 	public void SetInterpolation( InterpolationMode value )
 	{
 		DefaultInterpolation = value;
@@ -103,18 +88,6 @@ internal sealed class KeyframeEditMode : EditMode
 		}
 
 		WriteTracks( SelectedTracks );
-	}
-
-	[Shortcut( "keyframe-edit.nudge-left", "LEFT" )]
-	public void NudgeLeft()
-	{
-		Nudge((Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0 ? -1.0f : -0.1f );
-	}
-
-	[Shortcut( "keyframe-edit.nudge-right", "RIGHT" )]
-	public void NudgeRight()
-	{
-		Nudge( (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0 ? 1.0f : 0.1f );
 	}
 
 	private void Nudge( float amount )

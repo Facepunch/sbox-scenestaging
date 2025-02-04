@@ -1,6 +1,4 @@
-﻿using static Editor.EditorEvent.MapEditor;
-
-namespace Editor.MovieMaker;
+﻿namespace Editor.MovieMaker;
 
 #nullable enable
 
@@ -47,25 +45,6 @@ internal sealed partial class MotionEditMode : EditMode
 			TimeSelection.Destroy();
 			TimeSelection = null;
 		}
-	}
-
-	[Shortcut( "motion-edit.clear", "ESC" )]
-	private void OnClear()
-	{
-		if ( TimeSelection is { HasChanges: true } )
-		{
-			ClearChanges();
-		}
-		else if ( TimeSelection is not null )
-		{
-			ClearSelection();
-		}
-	}
-
-	[Shortcut( "motion-edit.commit", "ENTER" )]
-	private void OnCommit()
-	{
-		CommitChanges();
 	}
 
 	protected override void OnDisable()
