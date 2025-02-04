@@ -115,7 +115,7 @@ public class Spline
 	/// <summary>
 	/// Whether the spline forms a loop.
 	/// </summary>
-	[Property]
+	[Property, JsonIgnore]
 	public bool IsLoop
 	{
 		get => SplineUtils.IsLoop( _points.AsReadOnly() );
