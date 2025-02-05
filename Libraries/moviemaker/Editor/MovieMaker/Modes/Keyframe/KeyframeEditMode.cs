@@ -100,6 +100,25 @@ internal sealed partial class KeyframeEditMode : EditMode
 		WriteTracks( SelectedTracks );
 	}
 
+	protected override void OnMousePress( MouseEvent e )
+	{
+		if ( !e.LeftMouseButton || !e.HasShift || Session.PreviewPointer is not { } time )
+		{
+			return;
+		}
+
+		Session.SetCurrentPointer( time );
+		Session.ClearPreviewPointer();
+
+		if ( GetTrackAt( DopeSheet.ToScene( e.LocalPosition ) ) is { } track && GetKeyframes( track ) is { } keyframes )
+		{
+			keyframes.AddKey( time );
+			WriteTracks( [keyframes] );
+		}
+
+		e.Accepted = true;
+	}
+
 	private record struct CopiedHandle( Guid Track, float Time, object? Value, InterpolationMode Interpolation );
 	private static List<CopiedHandle>? Copied { get; set; }
 

@@ -54,25 +54,27 @@ internal sealed partial class MotionEditMode : EditMode
 
 	protected override void OnMousePress( MouseEvent e )
 	{
-		if ( e.LeftMouseButton && e.HasShift && Session.PreviewPointer is { } time )
+		if ( !e.LeftMouseButton || !e.HasShift || Session.PreviewPointer is not { } time )
 		{
-			if ( TimeSelection is null )
-			{
-				TimeSelection = new TimeSelectionItem( this );
-				DopeSheet.Add( TimeSelection );
-			}
-
-			TimeSelection.Value = new TimeSelection(
-				new FadeTime( time, 0f, DefaultInterpolation ),
-				new FadeTime( time, 0f, DefaultInterpolation ) );
-
-			SelectionChanged();
-
-			_selectionStartTime = time;
-
-			e.Accepted = true;
 			return;
 		}
+
+		if ( TimeSelection is null )
+		{
+			TimeSelection = new TimeSelectionItem( this );
+			DopeSheet.Add( TimeSelection );
+		}
+
+		TimeSelection.Value = new TimeSelection(
+			new FadeTime( time, 0f, DefaultInterpolation ),
+			new FadeTime( time, 0f, DefaultInterpolation ) );
+
+		SelectionChanged();
+
+		_selectionStartTime = time;
+
+		e.Accepted = true;
+		return;
 	}
 
 	protected override void OnMouseMove( MouseEvent e )

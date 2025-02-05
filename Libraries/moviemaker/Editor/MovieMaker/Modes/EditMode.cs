@@ -136,6 +136,13 @@ public abstract class EditMode
 
 	protected virtual bool OnPostChange( DopeSheetTrack track ) => false;
 
+	protected DopeSheetTrack? GetTrackAt( Vector2 scenePos )
+	{
+		return DopeSheet.Items
+			.OfType<DopeSheetTrack>()
+			.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) );
+	}
+
 	#region UI Events
 
 	internal void MousePress( MouseEvent e ) => OnMousePress( e );
