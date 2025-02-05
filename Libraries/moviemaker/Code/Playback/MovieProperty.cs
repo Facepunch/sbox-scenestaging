@@ -206,19 +206,33 @@ file sealed class MemberMovieProperty<T> : IMovieProperty<T>, IMemberMovieProper
 
 		set
 		{
-			switch ( Member )
+			if ( Member.TypeDescription.IsValueType )
 			{
-				case PropertyDescription propDesc:
-					propDesc.SetValue( TargetProperty.Value, value );
-					return;
-
-				case FieldDescription fieldDesc:
-					fieldDesc.SetValue( TargetProperty.Value, value );
-					return;
-
-				default:
-					throw new NotImplementedException();
+				var target = TargetProperty.Value!;
+				SetInternal( target, value );
+				TargetProperty.Value = target;
 			}
+			else
+			{
+				SetInternal( TargetProperty.Value!, value );
+			}
+		}
+	}
+
+	private void SetInternal( object target, object? value )
+	{
+		switch ( Member )
+		{
+			case PropertyDescription propDesc:
+				propDesc.SetValue( target, value );
+				return;
+
+			case FieldDescription fieldDesc:
+				fieldDesc.SetValue( target, value );
+				return;
+
+			default:
+				throw new NotImplementedException();
 		}
 	}
 
