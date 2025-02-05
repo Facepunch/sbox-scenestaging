@@ -1,5 +1,4 @@
 ﻿using Sandbox.MovieMaker;
-using Sandbox.MovieMaker.Tracks;
 using System.Linq;
 
 namespace Editor.MovieMaker;
@@ -13,7 +12,8 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 	public Session Session { get; private set; }
 
 	Layout TrackList;
-	TrackDopesheet DopeSheet;
+
+	public DopeSheet DopeSheet { get; }
 
 	public Widget LeftWidget { get; init; }
 	public Widget RightWidget { get; init; }
@@ -21,6 +21,8 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 	public List<TrackWidget> Tracks = new List<TrackWidget>();
 
 	ScrollArea ScrollArea;
+
+	private int _lastTrackHash;
 
 	public TrackListWidget( MovieEditor parent ) : base( parent )
 	{
@@ -42,8 +44,8 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 			trackListWidget.VerticalSizeMode = SizeMode.CanShrink;
 			trackListWidget.MinimumWidth = 256;
 			trackListWidget.Layout = Layout.Column();
-			trackListWidget.Layout.Spacing = 4;
-			trackListWidget.Layout.Margin = new Sandbox.UI.Margin( 16, 0, 0, 0 );
+			trackListWidget.Layout.Spacing = 8f;
+			trackListWidget.Layout.Margin = new Sandbox.UI.Margin( 16, 0, 0, 16f );
 
 			TrackList = trackListWidget.Layout;
 
@@ -57,7 +59,7 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 			splitter.AddWidget( RightWidget );
 
 			RightWidget.Layout = Layout.Column();
-			DopeSheet = RightWidget.Layout.Add( new TrackDopesheet( this ), 1 );
+			DopeSheet = RightWidget.Layout.Add( new DopeSheet( this ), 1 );
 		}
 
 		splitter.SetCollapsible( 0, false );
@@ -75,7 +77,7 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 
 	void ScrubToTime( float time )
 	{
-		Session.Clip?.ScrubTo( time );
+		Session.Player.ApplyFrame( time );
 	}
 
 	private void Load( MovieClip clip )
@@ -91,27 +93,48 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 	/// </summary>
 	void RebuildTracks()
 	{
+		foreach ( var track in Tracks )
+		{
+			if ( track.DopeSheetTrack is { } channel )
+			{
+				Session.EditMode?.TrackRemoved( channel );
+			}
+		}
+
 		TrackList.Clear( true );
 		Tracks.Clear();
 
-		foreach ( var track in Session.Clip.Tracks )
+		if ( Session.Clip is { } clip )
 		{
-			AddTrack( track );
+			_lastTrackHash = clip.TrackHash;
+
+			var groups = new Dictionary<MovieTrack, TrackGroup>();
+
+			foreach ( var track in clip.AllTracks )
+			{
+				var editorTrack = AddTrack( track );
+
+				var parentGroup = track.Parent is null ? null : groups.GetValueOrDefault( track.Parent );
+
+				if ( track.Children.Count == 0 )
+				{
+					(parentGroup?.Content ?? TrackList).Add( editorTrack );
+					continue;
+				}
+
+				var group = new TrackGroup( editorTrack );
+
+				groups[track] = group;
+
+				(parentGroup?.Content ?? TrackList).Add( group );
+			}
+		}
+		else
+		{
+			_lastTrackHash = 0;
 		}
 
 		DopeSheet.UpdateTracks();
-
-		foreach ( var track in Tracks.Where( x => x.Source is PropertyTrack ).GroupBy( x => (x.Source as PropertyTrack).GameObject ) )
-		{
-			var group = new TrackGroup();
-
-			foreach ( var tr in track )
-			{
-				group.Content.Add( tr );
-			}
-
-			TrackList.Add( group );
-		}
 	}
 
 	/// <summary>
@@ -119,23 +142,23 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 	/// </summary>
 	public void RebuildTracksIfNeeded()
 	{
-		if ( Tracks.Count == Session.Clip.Tracks.Count )
-			return;
+		if ( (Session.Clip?.TrackHash ?? 0) == _lastTrackHash ) return;
 
 		RebuildTracks();
 	}
 
 	TrackWidget FindTrack( MovieTrack track )
 	{
-		return Tracks.FirstOrDefault( x => x.Source == track );
+		return Tracks.FirstOrDefault( x => x.MovieTrack == track );
 	}
 
-	public void AddTrack( MovieTrack track )
+	public TrackWidget AddTrack( MovieTrack track )
 	{
 		var trackWidget = new TrackWidget( track, this );
 
 		Tracks.Add( trackWidget );
-		TrackList.Add( trackWidget );
+
+		return trackWidget;
 	}
 
 	protected override void OnVisibilityChanged( bool visible )
@@ -156,7 +179,7 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		// scoll
 		if ( e.HasShift )
 		{
-			Session.ScrollBy( -e.Delta / 10.0f * (Session.TimeVisible / 10.0f), true );
+			Session.ScrollBy( -e.Delta / 10.0f * (Session.PixelsPerSecond / 10.0f), true );
 			DopeSheet?.UpdateTracks();
 			return true;
 		}
@@ -184,19 +207,8 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 	{
 		Paint.Antialiasing = true;
 
-		Paint.SetBrushAndPen( TrackDopesheet.Colors.Background );
+		Paint.SetBrushAndPen( DopeSheet.Colors.Background.WithAlpha( 0.75f ) );
 		Paint.DrawRect( LocalRect );
-	}
-
-	/// <summary>
-	/// Write all tracks from the editor to the clip
-	/// </summary>
-	public void WriteTracks()
-	{
-		foreach ( var t in Tracks )
-		{
-			t.Write();
-		}
 	}
 
 	public void OnCopy()
@@ -215,4 +227,3 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		DopeSheet?.OnDelete();
 	}
 }
-

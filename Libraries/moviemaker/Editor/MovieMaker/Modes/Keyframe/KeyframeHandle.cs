@@ -1,22 +1,26 @@
 ﻿
+using Sandbox.UI;
 using System.Linq;
 
 namespace Editor.MovieMaker;
 
-public class DopeHandle : GraphicsItem
+#nullable enable
+
+internal class KeyframeHandle : GraphicsItem
 {
+	public DopeSheetTrack Track { get; }
+	public TrackKeyframes Keyframes { get; }
+	private Color HandleColor { get; }
+
 	public float Time { get; set; }
-	public object Value { get; set; }
+	public object? Value { get; set; }
 
-	private DopesheetTrack track;
+	public InterpolationMode Interpolation { get; set; }
 
-	public DopesheetTrack Track => track;
-
-	Color HandleColor;
-
-	public DopeHandle( DopesheetTrack parent ) : base( parent )
+	public KeyframeHandle( TrackKeyframes keyframes ) : base( keyframes.DopeSheetTrack )
 	{
-		this.track = parent;
+		Track = keyframes.DopeSheetTrack;
+		Keyframes = keyframes;
 
 		HoverEvents = true;
 		HandlePosition = new Vector2( 0.5f, 0.0f );
@@ -26,7 +30,7 @@ public class DopeHandle : GraphicsItem
 		Focusable = true;
 		Selectable = true;
 
-		HandleColor = track.HandleColor;
+		HandleColor = keyframes.HandleColor;
 	}
 
 	protected override void OnMoved()
@@ -37,9 +41,7 @@ public class DopeHandle : GraphicsItem
 
 		if ( Time < 0 ) Time = 0;
 
-		track.Write();
-
-		var pixels = Session.Current.TimeToPixels( Time );
+		Keyframes.Write();
 
 		UpdatePosition();
 
@@ -52,15 +54,15 @@ public class DopeHandle : GraphicsItem
 
 		if ( Selected && GraphicsView.SelectedItems.Count() <= 1 )
 		{
-			track.OnSelected();
+			Track.OnSelected();
 		}
 	}
 
-
-
 	protected override void OnPaint()
 	{
-		var c = Extensions.PaintSelectColor( HandleColor.WithAlpha( 0.5f ), HandleColor, TrackDopesheet.Colors.HandleSelected );
+		if ( !Track.Visible ) return;
+
+		var c = Extensions.PaintSelectColor( HandleColor.WithAlpha( 0.5f ), HandleColor, DopeSheet.Colors.HandleSelected );
 		var b = Extensions.PaintSelectColor( Color.Black, Theme.Blue, Theme.White );
 
 		var w = Width;
@@ -76,8 +78,12 @@ public class DopeHandle : GraphicsItem
 
 	internal void UpdatePosition()
 	{
-		Position = new Vector2( Session.Current.TimeToPixels( Time ), 0 );
-		Size = new Vector2( 16, Parent.Height );
+		PrepareGeometryChange();
+
+		Position = new Vector2( Session.Current!.TimeToPixels( Time ), 0 );
+		Size = Track.Visible ? new Vector2( 16, Parent.Height ) : 0f;
+
+		Track.Update();
 	}
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
@@ -86,7 +92,7 @@ public class DopeHandle : GraphicsItem
 
 		if ( e.LeftMouseButton )
 		{
-			Session.Current.SetCurrentPointer( Time );
+			Session.Current!.SetCurrentPointer( Time );
 		}
 	}
 
@@ -94,6 +100,7 @@ public class DopeHandle : GraphicsItem
 	{
 		Time += v;
 		if ( Time < 0 ) Time = 0;
+
 		UpdatePosition();
 	}
 }

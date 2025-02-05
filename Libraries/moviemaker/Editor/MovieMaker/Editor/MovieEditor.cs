@@ -6,7 +6,8 @@ namespace Editor.MovieMaker;
 
 public class MovieEditor : Widget
 {
-	public ScrubberWidget ScrubBar { get; private set; }
+	public ScrubberWidget ScrubBarTop { get; private set; }
+	public ScrubberWidget ScrubBarBottom { get; private set; }
 	public TrackListWidget TrackList { get; private set; }
 	public ToolbarWidget Toolbar { get; private set; }
 
@@ -26,29 +27,38 @@ public class MovieEditor : Widget
 		}
 	}
 
-	public void Initialize( MovieClipPlayer player )
+	public void Initialize( MoviePlayer player )
 	{
 		Layout.Clear( true );
 
-		player.clip ??= new MovieClip();
+		if ( player.MovieClip is null )
+		{
+			// Default to an embedded clip, rather than a resource file
 
-		Session = new Session();
-		Session.SetClip( player.clip );
+			player.EmbeddedClip ??= new MovieClip();
+		}
+
+		Session = new Session { Editor = this };
+		Session.SetPlayer( player );
 		Session.Current = Session;
 
 		Layout?.Clear( true );
 		Toolbar = Layout.Add( new ToolbarWidget( this ) );
-		ScrubBar = Layout.Add( new ScrubberWidget( this ) );
+		ScrubBarTop = Layout.Add( new ScrubberWidget( this, true ) );
 		TrackList = Layout.Add( new TrackListWidget( this ) );
+		ScrubBarBottom = Layout.Add( new ScrubberWidget( this, false ) );
+
+		Session.SetEditMode( Session.Cookies.EditMode );
 	}
 
 	void CloseSession()
 	{
 		Layout.Clear( true );
 		Session = null;
-		ScrubBar = default;
-		TrackList = default;
-		Toolbar = default;
+		ScrubBarTop = null;
+		ScrubBarBottom = null;
+		TrackList = null;
+		Toolbar = null;
 
 		CreateStartupHelper();
 	}
@@ -63,8 +73,6 @@ public class MovieEditor : Widget
 		col.AddStretchCell();
 
 		col.Add( new Label( "Create a Timeline Player component to get started. The\nTimeline Player is responsible for playing the clip in game." ) );
-		col.AddSpacingCell( 32 );
-		col.Add( new Label( "The Timeline Clip is stored in the player component right \nnow. Eventually we should let you save the clip\ndata in an asset file." ) );
 		col.AddSpacingCell( 32 );
 
 		var button = col.Add( new Button.Primary( "Create Player Component", "add_circle" ) );
@@ -100,6 +108,12 @@ public class MovieEditor : Widget
 		}
 	}
 
+	[Shortcut( "editor.save", "CTRL+S" )]
+	public void OnSave()
+	{
+		Session?.Save();
+	}
+
 	[Shortcut( "timeline.copy", "CTRL+C", ShortcutType.Widget )]
 	public void OnCopy()
 	{
@@ -120,7 +134,7 @@ public class MovieEditor : Widget
 
 	int contextHash;
 
-	List<MovieClipPlayer> playersAvailable = new();
+	List<MoviePlayer> playersAvailable = new();
 
 	/// <summary>
 	/// Look for any clips we can edit. If the clip we're editing has gone - stop editing it.
@@ -128,10 +142,14 @@ public class MovieEditor : Widget
 	void UpdateEditorContext()
 	{
 		HashCode hash = new HashCode();
-		var allplayers = SceneEditorSession.Active.Scene.GetAllComponents<MovieClipPlayer>();
+
+		if ( SceneEditorSession.Active?.Scene is not { } scene ) return;
+
+		var allplayers = scene.GetAllComponents<MoviePlayer>();
 		foreach ( var player in allplayers )
 		{
 			hash.Add( player );
+			hash.Add( player.MovieClip );
 		}
 
 		var hc = hash.ToHashCode();
@@ -146,7 +164,7 @@ public class MovieEditor : Widget
 		if ( Session is not null )
 		{
 			// Whatever we were editing doesn't exist anymore!
-			if ( !playersAvailable.Any( x => x.clip == Session.Clip ) )
+			if ( playersAvailable.All( x => x.MovieClip != Session.Clip || x != Session.Player ) )
 			{
 				CloseSession();
 			}
@@ -162,10 +180,16 @@ public class MovieEditor : Widget
 		Toolbar.UpdatePlayers( playersAvailable );
 	}
 
-	public void Switch( MovieClipPlayer player )
+	public void Switch( MoviePlayer player )
 	{
 		Initialize( player );
 		contextHash = default;
+	}
+
+	public void UpdateScrubBars()
+	{
+		ScrubBarTop?.Update();
+		ScrubBarBottom?.Update();
 	}
 
 	public void CreateNew()
@@ -173,7 +197,7 @@ public class MovieEditor : Widget
 		using ( SceneEditorSession.Active.Scene.Push() )
 		{
 			var go = new GameObject( true, "New Timeline Player" );
-			go.Components.Create<MovieClipPlayer>();
+			go.Components.Create<MoviePlayer>();
 
 			SceneEditorSession.Active.Selection.Set( go );
 		}

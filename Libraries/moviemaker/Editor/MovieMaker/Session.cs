@@ -1,39 +1,77 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Linq;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
+
+#nullable enable
 
 /// <summary>
 /// Centralizes the current state of a moviemaker editor session
 /// </summary>
-public sealed class Session
+public sealed partial class Session
 {
-	public static Session Current { get; internal set; }
+	public static Session? Current { get; internal set; }
 
-	public MovieClip Clip { get; private set; }
+	public MoviePlayer Player { get; private set; } = null!;
 
-	/// <summary>
-	/// If true, we automatically record new keyframes when properties are changed
-	/// </summary>
-	public bool KeyframeRecording { get; set; }
-
+	internal MovieClip? Clip { get; private set; }
+	internal MovieEditor Editor { get; set; } = null!;
 
 	public bool Playing { get; set; }
 	public bool Loop { get; set; } = true;
-	public float TimeOffset = 0;
-	public float TimeVisible = 100.0f;
+	public float TimeOffset { get; private set; }
+	public float PixelsPerSecond { get; private set; } = 100.0f;
+
+	/// <summary>
+	/// When editing keyframes, what time are we changing.
+	/// </summary>
 	public float CurrentPointer { get; private set; }
+
+	/// <summary>
+	/// What time are we previewing (when holding shift and moving mouse over timeline).
+	/// </summary>
+	public float? PreviewPointer { get; private set; }
+
+	public bool HasUnsavedChanges { get; private set; }
+
+	public EditMode? EditMode { get; private set; }
 
 	SmoothDeltaFloat SmoothZoom = new SmoothDeltaFloat { Value = 100.0f, Target = 100.0f, SmoothTime = 0.3f };
 	SmoothDeltaFloat SmoothPan = new SmoothDeltaFloat { Value = 0.0f, Target = 0f, SmoothTime = 0.3f };
 
-	internal void SetClip( MovieClip clip )
+	private float? _lastPlayerPosition;
+
+	/// <summary>
+	/// Invoked when the view pans or changes scale.
+	/// </summary>
+	public event Action? ViewChanged;
+
+	internal void SetPlayer( MoviePlayer player )
 	{
-		Clip = clip;
+		Player = player;
+		Clip = player.MovieClip;
+	}
+
+	internal void SetEditMode( EditModeType? type )
+	{
+		if ( type?.IsMatchingType( EditMode ) ?? EditMode is null ) return;
+
+		EditMode?.Disable();
+
+		Editor.Toolbar.EditModeControls.Clear( true );
+
+		EditMode = type?.Create();
+		EditMode?.Enable( this );
+
+		if ( type is not null )
+		{
+			Cookies.EditMode = type;
+		}
 	}
 
 	public float PixelsToTime( float pixels, bool snap = false )
 	{
-		var t = pixels / TimeVisible;
+		var t = pixels / PixelsPerSecond;
 
 		if ( snap )
 		{
@@ -45,7 +83,7 @@ public sealed class Session
 
 	public float TimeToPixels( float time )
 	{
-		return time * TimeVisible;
+		return time * PixelsPerSecond;
 	}
 
 	public void ScrollBy( float x, bool smooth )
@@ -64,24 +102,38 @@ public sealed class Session
 			SmoothPan.Velocity = 0;
 			TimeOffset = SmoothPan.Target;
 		}
+
+		ViewChanged?.Invoke();
 	}
 
-	public Action<float> OnPointerChanged;
+	public event Action<float>? PointerChanged;
+	public event Action<float?>? PreviewChanged;
 
 	public void SetCurrentPointer( float time )
 	{
-		// gonna be using Json.* to lookup - so needs the session
-		using ( SceneEditorSession.Active.Scene.Push() )
-		{
-			CurrentPointer = time;
+		CurrentPointer = Math.Max( 0, time );
 
-			if ( CurrentPointer < 0 )
-				CurrentPointer = 0;
+		PointerChanged?.Invoke( CurrentPointer );
 
-			OnPointerChanged?.Invoke( CurrentPointer );
+		Player.ApplyFrame( CurrentPointer );
+	}
 
-			Clip?.ScrubTo( CurrentPointer );
-		}
+	public void SetPreviewPointer( float time )
+	{
+		PreviewPointer = Math.Max( 0, time );
+
+		PreviewChanged?.Invoke( PreviewPointer );
+
+		Player.ApplyFrame( PreviewPointer.Value );
+	}
+
+	public void ClearPreviewPointer()
+	{
+		PreviewPointer = null;
+
+		PreviewChanged?.Invoke( PreviewPointer );
+
+		Player.ApplyFrame( CurrentPointer );
 	}
 
 	public void Play()
@@ -100,6 +152,14 @@ public sealed class Session
 
 	public bool Frame()
 	{
+		if ( !Playing && _lastPlayerPosition is { } lastPlayerPosition && !lastPlayerPosition.AlmostEqual( Player.Position ) )
+		{
+			CurrentPointer = lastPlayerPosition;
+			PointerChanged?.Invoke( CurrentPointer );
+		}
+
+		_lastPlayerPosition = Player.Position;
+
 		if ( Playing )
 		{
 			var targetTime = CurrentPointer + RealTime.Delta;
@@ -126,16 +186,19 @@ public sealed class Session
 		{
 			var d = TimeToPixels( TimeOffset ) - TimeToPixels( CurrentPointer );
 
-			TimeVisible = SmoothZoom.Value;
-			TimeVisible = TimeVisible.Clamp( 5, 1024 );
+			PixelsPerSecond = SmoothZoom.Value;
+			PixelsPerSecond = PixelsPerSecond.Clamp( 5, 1024 );
 
 			var nd = TimeToPixels( TimeOffset ) - TimeToPixels( CurrentPointer );
 			ScrollBy( nd - d, false );
+
+			ViewChanged?.Invoke();
 		}
 
 		if ( SmoothPan.Update( RealTime.Delta ) )
 		{
 			TimeOffset = SmoothPan.Value;
+			ViewChanged?.Invoke();
 		}
 
 		return true;
@@ -146,5 +209,34 @@ public sealed class Session
 		SmoothZoom.Target = SmoothZoom.Target += (v * SmoothZoom.Target) * 0.01f;
 		SmoothZoom.Target = SmoothZoom.Target.Clamp( 5, 1024 );
 	}
-}
 
+	internal void ClipModified()
+	{
+		if ( Clip == Player.EmbeddedClip )
+		{
+			var property = Player.GetSerialized().GetProperty( nameof(MoviePlayer.EmbeddedClip) );
+
+			property.SetValue( Clip );
+			return;
+		}
+
+		HasUnsavedChanges = true;
+	}
+
+	public void Save()
+	{
+		HasUnsavedChanges = false;
+
+		// If we're referencing a .movie resource, save it to disk
+
+		if ( Clip != Player.ReferencedClip?.Clip )
+		{
+			return;
+		}
+
+		if ( AssetSystem.FindByPath( Player.ReferencedClip!.ResourcePath ) is { } asset )
+		{
+			asset.SaveToDisk( Player.ReferencedClip );
+		}
+	}
+}

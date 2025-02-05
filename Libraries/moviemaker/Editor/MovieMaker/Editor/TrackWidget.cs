@@ -1,63 +1,103 @@
-﻿
-using Sandbox.MovieMaker;
-using Sandbox.MovieMaker.Tracks;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
+#nullable enable
 
 public class TrackWidget : Widget
 {
-	public TrackListWidget TrackList;
-	public MovieTrack Source;
+	public TrackListWidget TrackList { get; }
+	public MovieTrack MovieTrack { get; }
+	internal IMovieProperty? Property { get; }
 
-	public DopesheetTrack Channel { get; set; }
+	public DopeSheetTrack? DopeSheetTrack { get; set; }
+
+	public Layout Buttons { get; }
 
 	RealTimeSince timeSinceInteraction = 1000;
 
-	public TrackWidget( MovieTrack source, TrackListWidget list ) : base()
+	private bool _wasVisible;
+
+	public TrackWidget( MovieTrack track, TrackListWidget list )
 	{
 		TrackList = list;
-		Source = source;
+		MovieTrack = track;
 		FocusMode = FocusMode.TabOrClickOrWheel;
 		VerticalSizeMode = SizeMode.CanGrow;
 
 		Layout = Layout.Row();
-		Layout.Margin = new Sandbox.UI.Margin( 4, 4, 32, 4 );
+		Layout.Spacing = 12f;
+		Layout.Margin = 4f;
 
-		if ( source is PropertyTrack pt )
+		Buttons = Layout.AddRow();
+		Buttons.Spacing = 2f;
+		Buttons.Margin = 2f;
+
+		Property = TrackList.Session.Player.GetOrAutoResolveProperty( MovieTrack );
+
+		// Track might not be mapped to any property in the current scene
+
+		if ( Property is null )
 		{
-			var so = pt.GetSerialized();
-
-			if ( pt.Component.IsValid() )
-			{
-				var ctrl = ControlWidget.Create( so.GetProperty( nameof( PropertyTrack.Component ) ) );
-				if ( ctrl.IsValid() )
-				{
-					ctrl.MaximumWidth = 300;
-					Layout.Add( ctrl );
-				}
-			}
-			else
-			{
-				var ctrl = ControlWidget.Create( so.GetProperty( nameof( PropertyTrack.GameObject ) ) );
-				if ( ctrl.IsValid() )
-				{
-					ctrl.MaximumWidth = 300;
-					Layout.Add( ctrl );
-				}
-			}
-
-			Layout.AddSpacingCell( 16 );
-			Layout.Add( new Label( pt.PropertyName ) );
+			return;
 		}
+
+		Layout.Add( new Label( Property.PropertyName ) );
+
+		if ( Property is ISceneReferenceMovieProperty )
+		{
+			// Add control to retarget a scene reference (Component / GameObject)
+
+			var so = Property.GetSerialized();
+			var ctrl = ControlWidget.Create( so.GetProperty( nameof( IMovieProperty.Value ) ) );
+
+			if ( ctrl.IsValid() )
+			{
+				ctrl.MaximumWidth = 300;
+				Layout.Add( ctrl );
+			}
+		}
+	}
+
+	protected override void OnMoved()
+	{
+		UpdateChannelPosition();
 	}
 
 	public override void OnDestroyed()
 	{
 		base.OnDestroyed();
 
-		Channel?.Destroy();
-		Channel = default;
+		DopeSheetTrack?.Destroy();
+		DopeSheetTrack = default;
+	}
+
+	protected override void OnMouseEnter()
+	{
+		base.OnMouseEnter();
+
+		if ( Parent is TrackGroup ) Parent.Update();
+	}
+
+	protected override void OnMouseLeave()
+	{
+		base.OnMouseLeave();
+
+		if ( Parent is TrackGroup ) Parent.Update();
+	}
+
+	protected override void OnFocus( FocusChangeReason reason )
+	{
+		base.OnFocus( reason );
+
+		if ( Parent is TrackGroup ) Parent.Update();
+	}
+
+	protected override void OnBlur( FocusChangeReason reason )
+	{
+		base.OnBlur( reason );
+
+		if ( Parent is TrackGroup ) Parent.Update();
 	}
 
 	protected override Vector2 SizeHint()
@@ -65,16 +105,36 @@ public class TrackWidget : Widget
 		return 32;
 	}
 
+	public Color BackgroundColor
+	{
+		get
+		{
+			var defaultColor = DopeSheet.Colors.ChannelBackground;
+			var hoveredColor = DopeSheet.Colors.ChannelBackground.Lighten( 0.1f );
+			var selectedColor = Color.Lerp( defaultColor, Theme.Primary, 0.5f );
+
+			var isHovered = IsUnderMouse;
+			var isSelected = IsFocused || menu.IsValid() && menu.Visible;
+
+			return isSelected ? selectedColor
+				: isHovered ? hoveredColor
+					: defaultColor;
+		}
+	}
+
 	protected override void OnPaint()
 	{
-		var bg = Extensions.PaintSelectColor( TrackDopesheet.Colors.ChannelBackground, TrackDopesheet.Colors.ChannelBackground.Lighten( 0.1f ), Theme.Primary );
-
-		if ( menu.IsValid() && menu.Visible )
-			bg = Color.Lerp( TrackDopesheet.Colors.ChannelBackground, Theme.Primary, 0.2f );
-
 		Paint.Antialiasing = false;
-		Paint.SetBrushAndPen( bg );
-		Paint.DrawRect( new Rect( LocalRect.Left, LocalRect.Top, LocalRect.Width + 100, LocalRect.Height ), 4 );
+		Paint.SetBrushAndPen( BackgroundColor );
+		Paint.DrawRect( new Rect( LocalRect.Left, LocalRect.Top, LocalRect.Width, LocalRect.Height ), 4 );
+
+		if ( !_wasVisible )
+		{
+			// TODO: I don't know why this is needed, fixes Visible not being true when first positioning channel
+
+			_wasVisible = true;
+			UpdateChannelPosition();
+		}
 
 		if ( timeSinceInteraction < 2.0f )
 		{
@@ -82,6 +142,7 @@ public class TrackWidget : Widget
 			Paint.SetBrush( Theme.Yellow.WithAlpha( delta ) );
 			Paint.DrawRect( new Rect( LocalRect.Right - 4, LocalRect.Top, 32, LocalRect.Height ) );
 			Update();
+			return;
 		}
 	}
 
@@ -89,27 +150,16 @@ public class TrackWidget : Widget
 	{
 		base.DoLayout();
 
-		var pos = Channel.GraphicsView.FromScreen( ScreenPosition );
-
-		Channel.DoLayout( new Rect( pos, Size ) );
+		UpdateChannelPosition();
 	}
 
-	internal void AddKey( float currentPointer )
+	public void UpdateChannelPosition()
 	{
-		Channel.AddKey( currentPointer );
-	}
+		if ( DopeSheetTrack is null ) return;
 
-	/// <summary>
-	/// Write data from this widget to the Clip
-	/// </summary>
-	public void Write()
-	{
-		Channel.Write();
-	}
+		var pos = DopeSheetTrack.GraphicsView.FromScreen( ScreenPosition );
 
-	internal void AddKey( float time, object value )
-	{
-		Channel.AddKey( time, value );
+		DopeSheetTrack.DoLayout( new Rect( pos, Size ) );
 	}
 
 	Menu menu;
@@ -123,8 +173,10 @@ public class TrackWidget : Widget
 
 	void RemoveTrack()
 	{
-		TrackList.Session.Clip.RemoveTrack( Source );
+		MovieTrack.Remove();
 		TrackList.RebuildTracksIfNeeded();
+
+		Session.Current?.ClipModified();
 	}
 
 	public void NoteInteraction()
@@ -133,4 +185,3 @@ public class TrackWidget : Widget
 		Update();
 	}
 }
-
