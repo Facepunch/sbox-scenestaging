@@ -4,7 +4,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace SplineMath;
-
 /// <summary>
 /// Collection of curves in 3D space.
 /// Shape and behavior of the curves are controled through points <see cref="Spline.Point"/>, each with customizable handles, roll, scale, and up vectors.
@@ -41,24 +40,14 @@ public class Spline
 		public Vector3 Position;
 
 		/// <summary>
-		/// The Out Position for the curve handle.
+		/// Position of the In handle relative to the point position.
 		/// </summary>
-		[Hide]
-		public Vector3 Out
-		{
-			get => Position + OutRelative;
-			set { OutRelative = value - Position; }
-		}
+		public Vector3 In;
 
 		/// <summary>
-		/// The In Position for the curve handle.
+		/// Position of the Out handle relative to the point position.
 		/// </summary>
-		[Hide]
-		public Vector3 In
-		{
-			get => Position + InRelative;
-			set { InRelative = value - Position; }
-		}
+		public Vector3 Out;
 
 		/// <summary>
 		/// Describes how the spline should behave when entering/leaving a point.
@@ -82,15 +71,6 @@ public class Spline
 		/// </summary>
 		public Vector3 Up = Vector3.Up;
 
-		/// <summary>
-		/// Position of the In handle relative to the point position.
-		/// </summary>
-		public Vector3 InRelative;
-
-		/// <summary>
-		/// Position of the Out handle relative to the point position.
-		/// </summary>
-		public Vector3 OutRelative;
 
 		public Point()
 		{
@@ -99,7 +79,7 @@ public class Spline
 
 		public override string ToString()
 		{
-			return $"Position: {Position}, In: {InRelative}, Out: {OutRelative}, Mode: {Mode}, Roll: {Roll}, Scale: {Scale}, Up: {Up}";
+			return $"Position: {Position}, In: {In}, Out: {Out}, Mode: {Mode}, Roll: {Roll}, Scale: {Scale}, Up: {Up}";
 		}
 	}
 
@@ -637,7 +617,7 @@ public class Spline
 			case HandleMode.Split:
 				break;
 			case HandleMode.Mirrored:
-				_points[index] = _points[index] with { OutRelative = -_points[index].InRelative };
+				_points[index] = _points[index] with { Out = -_points[index].In };
 				break;
 		}
 
@@ -647,7 +627,6 @@ public class Spline
 		}
 	}
 }
-
 
 // Immutable and stateless spline calculations and utilities.
 // Will be used by higher level abstractions such as the SplineComponent
@@ -1121,13 +1100,13 @@ internal static class SplineUtils
 	public static Vector3 P1( ReadOnlyCollection<Spline.Point> spline, int segmentIndex )
 	{
 		CheckSegmentIndex( spline, segmentIndex );
-		return spline[segmentIndex].Out;
+		return spline[segmentIndex].Position + spline[segmentIndex].Out;
 	}
 
 	public static Vector3 P2( ReadOnlyCollection<Spline.Point> spline, int segmentIndex )
 	{
 		CheckSegmentIndex( spline, segmentIndex );
-		return spline[segmentIndex + 1].In;
+		return spline[segmentIndex + 1].Position + spline[segmentIndex + 1].In;
 	}
 
 	public static Vector3 P3( ReadOnlyCollection<Spline.Point> spline, int segmentIndex )
@@ -1165,8 +1144,8 @@ internal static class SplineUtils
 			Left = new Spline.Point
 			{
 				Position = point0,
-				InRelative = spline[segmentParams.Index].InRelative,
-				OutRelative = leftOut - point0,
+				In = spline[segmentParams.Index].In,
+				Out = leftOut - point0,
 				Mode = inferTangentMode ? spline[segmentParams.Index].Mode : Spline.HandleMode.Split,
 				Roll = spline[segmentParams.Index].Roll,
 				Scale = spline[segmentParams.Index].Scale,
@@ -1175,8 +1154,8 @@ internal static class SplineUtils
 			Mid = new Spline.Point
 			{
 				Position = midPoint,
-				InRelative = midIn - midPoint,
-				OutRelative = midOut - midPoint,
+				In = midIn - midPoint,
+				Out = midOut - midPoint,
 				Mode = inferTangentMode ? InferTangentModeForSplitPoint( spline, segmentParams ) : Spline.HandleMode.Split,
 				Roll = MathX.Lerp( spline[segmentParams.Index].Roll, spline[segmentParams.Index + 1].Roll, distanceParam ),
 				Scale = Vector2.Lerp( spline[segmentParams.Index].Scale, spline[segmentParams.Index + 1].Scale, distanceParam ),
@@ -1186,8 +1165,8 @@ internal static class SplineUtils
 			Right = new Spline.Point
 			{
 				Position = point3,
-				InRelative = rightIn - point3,
-				OutRelative = spline[segmentParams.Index + 1].OutRelative,
+				In = rightIn - point3,
+				Out = spline[segmentParams.Index + 1].Out,
 				Mode = inferTangentMode ? spline[segmentParams.Index + 1].Mode : Spline.HandleMode.Split,
 				Roll = spline[segmentParams.Index + 1].Roll,
 				Scale = spline[segmentParams.Index + 1].Scale,
@@ -1326,13 +1305,13 @@ internal static class SplineUtils
 	{
 		var alignedSegment = new Spline.Point[2];
 		alignedSegment[0].Position = alignmentInfo.Rotation * (spline[segmentIndex].Position + alignmentInfo.Translation);
-		alignedSegment[0].InRelative = Vector3.Zero;
-		alignedSegment[0].OutRelative = alignmentInfo.Rotation * spline[segmentIndex].OutRelative;
+		alignedSegment[0].In = Vector3.Zero;
+		alignedSegment[0].Out = alignmentInfo.Rotation * spline[segmentIndex].Out;
 
 		alignedSegment[1].Position =
 			alignmentInfo.Rotation * (spline[segmentIndex + 1].Position + alignmentInfo.Translation);
-		alignedSegment[1].InRelative = alignmentInfo.Rotation * spline[segmentIndex + 1].InRelative;
-		alignedSegment[1].OutRelative = Vector3.Zero;
+		alignedSegment[1].In = alignmentInfo.Rotation * spline[segmentIndex + 1].Out;
+		alignedSegment[1].Out = Vector3.Zero;
 
 		return alignedSegment;
 	}
@@ -1340,7 +1319,7 @@ internal static class SplineUtils
 	// Calculates a linear tangent for a point on the spline and returns a new spline point with the tangent.
 	public static Spline.Point CalculateLinearTangentForPoint( ReadOnlyCollection<Spline.Point> spline, int pointIndex )
 	{
-		return spline[pointIndex] with { InRelative = Vector3.Zero, OutRelative = Vector3.Zero };
+		return spline[pointIndex] with { In = Vector3.Zero, Out = Vector3.Zero };
 	}
 
 	// Calculate a smooth tangent for a point on the spline and return new spline point with the tangent.
@@ -1377,7 +1356,7 @@ internal static class SplineUtils
 		Vector3 currentPoint = spline[pointIndex].Position;
 		Vector3 tangent = CalculateSmoothTangent( prevPoint, currentPoint, nextPoint );
 
-		return spline[pointIndex] with { InRelative = -tangent, OutRelative = tangent };
+		return spline[pointIndex] with { In = -tangent, Out = tangent };
 	}
 
 	// Calculate the tangent for a point on the spline.
@@ -1449,11 +1428,13 @@ internal static class SplineUtils
 					segmentBounds.Maxs = Vector3.Max( _segmentBounds[segmentIndex].Maxs, pt );
 					prevPt = pt;
 				}
+				_segmentBounds[segmentIndex] = segmentBounds;
 				_bounds.Mins = Vector3.Min( _bounds.Mins, _segmentBounds[segmentIndex].Mins );
 				_bounds.Maxs = Vector3.Max( _bounds.Maxs, _segmentBounds[segmentIndex].Maxs );
 			}
 			// duplicate last point this allows (Segment = LastSegment, T = 1) as query in GetDistanceAtSplineParams
 			_cumulativeDistances[_cumulativeDistances.Count - 1] = cumulativeLength;
+			Log.Info( $"BBox: {_bounds}" );
 		}
 
 		public SegmentParams CalculateSegmentParamsAtDistance( float distance )
@@ -1573,6 +1554,7 @@ internal static class SplineUtils
 	}
 }
 
+
 /// <summary>
 /// We use a custom converter for <see cref="Spline.Point"/> to allow for more compact serialization.
 /// For example we ommit default values for a lot of properties.
@@ -1584,6 +1566,9 @@ internal class SplinePointConverter : JsonConverter<Spline.Point>
 		if ( reader.TokenType == JsonTokenType.StartObject )
 		{
 			reader.Read();
+
+			var inX = Vector3.Zero;
+			var outX = Vector3.Zero;
 
 			Spline.Point point = new();
 			while ( reader.TokenType != JsonTokenType.EndObject )
