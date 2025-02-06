@@ -176,7 +176,7 @@ public sealed class MoveAlongSplineComponent : Component
 		{
 			return;
 		}
-		WorldPosition = Spline.Spline.GetPositionAtDistance( 0 ) + Spline.GameObject.WorldPosition;
+		WorldPosition = Spline.Spline.SampleAtDistance( 0 ).Position + Spline.GameObject.WorldPosition;
 	}
 
 	protected override void OnFixedUpdate()
@@ -190,17 +190,17 @@ public sealed class MoveAlongSplineComponent : Component
 
 		_currentDistance += Time.Delta * Speed;
 
-		if (  _currentDistance > Spline.Spline.GetLength() )
+		if (  _currentDistance > Spline.Spline.Length )
 		{
-			_currentDistance = _currentDistance - Spline.Spline.GetLength();
+			_currentDistance = _currentDistance - Spline.Spline.Length;
 		}
 
-		WorldPosition = Spline.Spline.GetPositionAtDistance( _currentDistance ) + Spline.GameObject.WorldPosition;
+		WorldPosition = Spline.Spline.SampleAtDistance( _currentDistance ).Position + Spline.GameObject.WorldPosition;
 
 		if ( UpdateRotation )
 		{
 			// quick and dirty tangent frame
-			var tanget = Spline.Spline.GetTangetAtDistance( _currentDistance );
+			var tanget = Spline.Spline.SampleAtDistance( _currentDistance ).Tangent;
 			Vector3 up = Vector3.Up;
 
 			// Choose an initial up vector if tangent is parallel to Up

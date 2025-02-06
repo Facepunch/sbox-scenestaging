@@ -8,16 +8,16 @@ namespace Sandbox;
 public sealed class SplineComponent : Component, Component.ExecuteInEditor, Component.IHasBounds
 {
 	[Property, Hide]
-	public Spline Spline = new();
+	public SplineMath.Spline Spline = new();
 
 	public SplineComponent()
 	{
-		Spline.InsertPoint( Spline.NumberOfPoints(), new Spline.Point { Position = new Vector3( 0, 0, 0 ) } );
-		Spline.InsertPoint( Spline.NumberOfPoints(), new Spline.Point { Position = new Vector3( 100, 0, 0 ) } );
-		Spline.InsertPoint( Spline.NumberOfPoints(), new Spline.Point { Position = new Vector3( 100, 100, 0 ) } );
+		Spline.InsertPoint( Spline.PointCount, new SplineMath.Spline.Point { Position = new Vector3( 0, 0, 0 ) } );
+		Spline.InsertPoint( Spline.PointCount, new SplineMath.Spline.Point { Position = new Vector3( 100, 0, 0 ) } );
+		Spline.InsertPoint( Spline.PointCount, new SplineMath.Spline.Point { Position = new Vector3( 100, 100, 0 ) } );
 	}
 
-	public BBox LocalBounds { get => Spline.GetBounds(); }
+	public BBox LocalBounds { get => Spline.Bounds; }
 
 	protected override void OnEnabled()
 	{
@@ -67,7 +67,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 			return;
 
 		// spline gizmos are expensive so we actually want to frustum cull them here already
-		if ( !Gizmo.Camera.GetFrustum( Gizmo.Camera.Rect, 1 ).IsInside( Spline.GetBounds().Transform(WorldTransform), true ) )
+		if ( !Gizmo.Camera.GetFrustum( Gizmo.Camera.Rect, 1 ).IsInside( Spline.Bounds.Transform(WorldTransform), true ) )
 		{
 			return;
 		}
@@ -76,7 +76,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		{
 			float lineThickness = 2f;
 
-			if ( Spline.NumberOfPoints() < 1 )
+			if ( Spline.PointCount < 1 )
 			{
 				return;
 			}
@@ -131,7 +131,7 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 					if ( new Line( _drawCachePolyline[i], _drawCachePolyline[i + 1] ).ClosestPoint(
 							Gizmo.CurrentRay.ToLocal( Gizmo.Transform ), out Vector3 point_on_line, out _ ) )
 					{
-						result.Distance = Spline.FindDistanceClosestToPosition( point_on_line );
+						result.Distance = Spline.SampleAtClosestPosition( point_on_line ).Distance;
 					}
 
 					result.IsHovered = Gizmo.IsHovered;
@@ -163,9 +163,11 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	private void DrawFrames()
 	{
 		// Draw rotation-minimizing frames every 30 units, considering roll
-		float totalLength = Spline.GetLength();
+		float totalLength = Spline.Length;
 
-		Vector3 previousTangent = Spline.GetTangetAtDistance( 0f );
+		var previousSample = Spline.SampleAtDistance( 0f );
+
+		Vector3 previousTangent = previousSample.Tangent;
 
 		// This has to be the dumbest way to find a perpendicular vector
 		if ( previousTangent == Vector3.Up )
@@ -182,8 +184,8 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		}
 		Vector3 up = Vector3.Cross( previousTangent, new Vector3( -previousTangent.y, previousTangent.x, 0f ) ).Normal;
 
-		Vector3 previousPosition = Spline.GetPositionAtDistance( 0f );
-		float previousRoll = Spline.GetRollAtDistance( 0f );
+		Vector3 previousPosition = previousSample.Position;
+		float previousRoll = previousSample.Roll;
 
 		// Apply initial roll to up vector
 		up = RotateVectorAroundAxis( up, previousTangent, MathX.DegreeToRadian( previousRoll ) );
@@ -191,14 +193,15 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		float step = 5f;
 		for ( float distance = step; distance <= totalLength; distance += step )
 		{
-			Vector3 position = Spline.GetPositionAtDistance( distance );
-			Vector3 tangent = Spline.GetTangetAtDistance( distance );
+			var sample = Spline.SampleAtDistance( distance );
+			Vector3 position = sample.Position;
+			Vector3 tangent = sample.Scale;
 
 			// Calculate rotation-minimizing frame using parallel transport
 			Vector3 transportUp = ParallelTransport( up, previousTangent, tangent );
 
 			// Get interpolated roll at the current distance
-			float roll = Spline.GetRollAtDistance( distance );
+			float roll = sample.Roll;
 
 			// Apply roll to the up vector
 			float deltaRoll = roll - previousRoll;
@@ -263,9 +266,9 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 		using ( Gizmo.Scope( "point_hitbox" ) )
 		using ( Gizmo.GizmoControls.PushFixedScale() )
 		{
-			for ( var i = 0; i < Spline.NumberOfPoints(); i++ )
+			for ( var i = 0; i < Spline.PointCount; i++ )
 			{
-				if ( !Spline.IsLoop || i != Spline.NumberOfPoints() - 1 )
+				if ( !Spline.IsLoop || i != Spline.PointCount - 1 )
 				{
 					var splinePoint = Spline.GetPoint( i );
 
@@ -289,9 +292,9 @@ public sealed class SplineComponent : Component, Component.ExecuteInEditor, Comp
 	}
 	private void DrawPointGizmos( bool isHovered )
 	{
-		for ( var i = 0; i < Spline.NumberOfPoints(); i++ )
+		for ( var i = 0; i < Spline.PointCount; i++ )
 		{
-			if ( !Spline.IsLoop || i != Spline.NumberOfPoints() - 1 )
+			if ( !Spline.IsLoop || i != Spline.PointCount - 1 )
 			{
 				DrawPointGizmo( i, isHovered );
 			}

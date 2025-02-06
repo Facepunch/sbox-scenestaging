@@ -172,7 +172,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		var sizeInModelDir = transformedBounds.Size.Dot( Vector3.Forward );
 		var minInModelDir = transformedBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
-		var splineLength = Spline.Spline.GetLength();
+		var splineLength = Spline.Spline.Length;
 
 		var sizeInModelDirWithSpacing = sizeInModelDir + Spacing;
 		var frameSegments = (int)Math.Ceiling( splineLength / sizeInModelDir );
@@ -197,8 +197,8 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		var totalFrames = frameSegments * framesPerMesh + 1;
 
 		var frames = UseRotationMinimizingFrames
-			? SplineModelRenderer.CalculateRotationMinimizingTangentFrames( Spline, totalFrames )
-			: SplineModelRenderer.CalculateTangentFramesUsingUpDir( Spline, totalFrames );
+			? Spline.Spline.CalculateRotationMinimizingTangentFrames( totalFrames )
+			: Spline.Spline.CalculateTangentFramesUsingUpDir( totalFrames );
 
 		// Clear existing shapes
 		_PhysicsBody.ClearShapes();
