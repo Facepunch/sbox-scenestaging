@@ -1,5 +1,7 @@
-﻿using Sandbox.MovieMaker;
+﻿using Sandbox;
+using Sandbox.MovieMaker;
 using System.Linq;
+using System.Reflection;
 
 namespace Editor.MovieMaker;
 
@@ -29,6 +31,8 @@ public class MovieEditor : Widget
 
 	public void Initialize( MoviePlayer player )
 	{
+		Log.Info( $"Initialize: {player.GameObject.Name}" );
+
 		Layout.Clear( true );
 
 		if ( player.MovieClip is null )
@@ -53,6 +57,8 @@ public class MovieEditor : Widget
 
 	void CloseSession()
 	{
+		Log.Info( "Close session" );
+
 		Layout.Clear( true );
 		Session = null;
 		ScrubBarTop = null;
@@ -146,6 +152,7 @@ public class MovieEditor : Widget
 		if ( SceneEditorSession.Active?.Scene is not { } scene ) return;
 
 		var allplayers = scene.GetAllComponents<MoviePlayer>();
+
 		foreach ( var player in allplayers )
 		{
 			hash.Add( player );
@@ -178,6 +185,7 @@ public class MovieEditor : Widget
 		}
 
 		Toolbar.UpdatePlayers( playersAvailable );
+		Toolbar.UpdateClips();
 	}
 
 	public void Switch( MoviePlayer player )
@@ -203,6 +211,62 @@ public class MovieEditor : Widget
 		}
 
 		contextHash = default;
+	}
+
+	public void SwitchToEmbedded()
+	{
+		if ( Session.Clip == Session.Player.EmbeddedClip ) return;
+
+		Session.Player.EmbeddedClip = Session.Clip?.Clone();
+
+		Switch( Session.Player );
+	}
+
+	public void SwitchFile( MovieFile file )
+	{
+		if ( Session.Clip == file.Clip ) return;
+
+		if ( Session.Clip == Session.Player.EmbeddedClip && Session.Clip?.TrackCount > 0 )
+		{
+			Dialog.AskConfirm( () =>
+			{
+				ConfirmedSwitchFile( file );
+			}, question: "Switching to a clip resource will cause your embedded clip to be lost. Are you sure?" );
+		}
+		else
+		{
+			ConfirmedSwitchFile( file );
+		}
+	}
+
+	private void ConfirmedSwitchFile( MovieFile file )
+	{
+		Session.Player.ReferencedClip = file;
+
+		Switch( Session.Player );
+	}
+
+	public void SaveFileAs()
+	{
+		var extension = typeof(MovieFile).GetCustomAttribute<GameResourceAttribute>()!.Extension;
+
+		var fd = new FileDialog( null );
+		fd.Title = $"Save Clip As..";
+		fd.Directory = Project.Current.GetAssetsPath();
+		fd.DefaultSuffix = $".{extension}";
+		fd.SetFindFile();
+		fd.SetModeSave();
+		fd.SetNameFilter( $"Movie Clip File (*.{extension})" );
+
+		if ( !fd.Execute() )
+			return;
+
+		var sceneAsset = AssetSystem.CreateResource( extension, fd.SelectedFile );
+		var file = new MovieFile { Clip = Session.Clip?.Clone() ?? new MovieClip() };
+
+		sceneAsset.SaveToDisk( file );
+
+		ConfirmedSwitchFile( file );
 	}
 }
 

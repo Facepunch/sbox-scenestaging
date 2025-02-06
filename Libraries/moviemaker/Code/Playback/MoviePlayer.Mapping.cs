@@ -58,7 +58,12 @@ partial class MoviePlayer
 
 		// Otherwise must be a named member property
 
-		return _memberMap[track.Id] = MovieProperty.FromMember( parentProperty, track.Name, track.PropertyType );
+		if ( MovieProperty.FromMember( parentProperty, track.Name, track.PropertyType ) is { } memberProperty )
+		{
+			return _memberMap[track.Id] = memberProperty;
+		}
+
+		return null;
 	}
 
 	public MovieTrack? GetTrack( GameObject go )

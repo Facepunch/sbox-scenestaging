@@ -5,7 +5,7 @@
 /// <summary>
 /// A <see cref="MovieClip"/> stored as a resource.
 /// </summary>
-[GameResource( "Movie Clip", "movie", $"A movie clip created with the {nameof(MoviePlayer)} component.", Icon = "movie" )]
+[GameResource( "Movie Clip", "movie", $"A movie clip created with the {nameof(MoviePlayer)} component.", Icon = "video_file" )]
 public sealed class MovieFile : GameResource
 {
 	/// <summary>

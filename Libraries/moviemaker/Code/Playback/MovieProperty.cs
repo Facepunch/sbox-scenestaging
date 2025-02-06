@@ -70,9 +70,9 @@ internal static partial class MovieProperty
 
 	public static IMemberMovieProperty FromMember( IMovieProperty target, string memberName, Type? expectedType )
 	{
-		if ( FromAnimParam( target, memberName, expectedType ) is { } animParamProperty )
+		if ( IsAnimParam( target, memberName ) )
 		{
-			return animParamProperty;
+			return FromAnimParam( target, memberName, expectedType );
 		}
 
 		var targetType = TypeLibrary.GetType( target.PropertyType );
@@ -197,24 +197,25 @@ file sealed class MemberMovieProperty<T> : IMovieProperty<T>, IMemberMovieProper
 	{
 		// TODO: we can avoid boxing / reflection here when we're in engine code using System.Linq.Expressions
 
-		get => Member switch
+		get => TargetProperty.Value is { } target ? Member switch
 		{
-			PropertyDescription propDesc => (T)propDesc.GetValue( TargetProperty.Value ),
-			FieldDescription fieldDesc => (T)fieldDesc.GetValue( TargetProperty.Value ),
+			PropertyDescription propDesc => (T)propDesc.GetValue( target ),
+			FieldDescription fieldDesc => (T)fieldDesc.GetValue( target ),
 			_ => throw new NotImplementedException()
-		};
+		} : default!;
 
 		set
 		{
+			if ( TargetProperty.Value is not { } target )
+			{
+				return;
+			}
+
+			SetInternal( target, value );
+
 			if ( Member.TypeDescription.IsValueType )
 			{
-				var target = TargetProperty.Value!;
-				SetInternal( target, value );
 				TargetProperty.Value = target;
-			}
-			else
-			{
-				SetInternal( TargetProperty.Value!, value );
 			}
 		}
 	}

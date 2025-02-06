@@ -151,4 +151,6 @@ public sealed partial class MovieClip
 	{
 		_trackHash = null;
 	}
+
+	public MovieClip Clone() => Json.FromNode<MovieClip>( Json.ToNode( this ) );
 }

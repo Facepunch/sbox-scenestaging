@@ -7,29 +7,28 @@ namespace Sandbox.MovieMaker;
 
 partial class MovieProperty
 {
-	private static IMemberMovieProperty? FromAnimParam( IMovieProperty target, string name, Type? expectedType )
+	private static bool IsAnimParam( IMovieProperty target, string name )
 	{
-		if ( target is not IMovieProperty<ParameterAccessor?> paramAccessorTarget ) return null;
-		if ( paramAccessorTarget.Value is not { } accessor ) return null;
+		return target is IMovieProperty<ParameterAccessor?>;
+	}
 
-		if ( accessor.Graph?.GetParameterType( name ) is not { } paramType )
-		{
-			if ( expectedType is null ) return null;
+	private static IMemberMovieProperty FromAnimParam( IMovieProperty target, string name, Type? expectedType )
+	{
+		var paramAccessorTarget = (IMovieProperty<ParameterAccessor?>)target;
 
-			paramType = expectedType;
-		}
+		expectedType ??= paramAccessorTarget.Value?.Graph?.GetParameterType( name ) ?? typeof(object);
 
 		try
 		{
-			var propGenType = TypeLibrary.GetType( typeof(AnimParamMovieProperty<>) );
-			var propType = propGenType.MakeGenericType( [paramType] );
+			var propGenType = TypeLibrary.GetType( typeof( AnimParamMovieProperty<> ) );
+			var propType = propGenType.MakeGenericType( [expectedType] );
 
 			return TypeLibrary.Create<IMemberMovieProperty>( propType, [target, name] );
 		}
 		catch ( Exception ex )
 		{
-			Log.Info( ex );
-			return null;
+			Log.Error( ex );
+			return new AnimParamMovieProperty<object>( paramAccessorTarget, name );
 		}
 	}
 }
