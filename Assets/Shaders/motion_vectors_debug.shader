@@ -42,7 +42,8 @@ struct VertexInput
 struct PixelInput
 {
     float4 PositionPs : SV_Position;
-    float3 VelocitySs : TEXCOORD0;
+    float3 VelocityPs : TEXCOORD0;
+    float3 VelocityWs : TEXCOORD1;
 };
 
 //-----------------------------------------------------------------------------
@@ -85,7 +86,8 @@ VS
         #endif
 
         output.PositionPs = Position3WsToPs( worldPosition );
-        output.VelocitySs = ReprojectFromLastFrameSs( worldPositionPrev );
+        output.VelocityPs = ReprojectFromLastFrameSs( worldPositionPrev );
+        output.VelocityWs = worldPosition - worldPositionPrev;
         
         return output;
     }
@@ -100,6 +102,6 @@ PS
 
     float2 MainPs( PixelInput input ) : SV_Target0
     {
-        return input.VelocitySs.xy;
+        return ( input.VelocityPs.xy % 8.0f < 1.0f ) + saturate( input.VelocityWs.xy );
     }
 }

@@ -1,0 +1,10 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/motion_vectors.shader"
+
+	//---- Material ----
+	TextureColor "materials/default/default_color.tga"
+	TextureTranslucency "materials/default/default_trans.tga"
+}
