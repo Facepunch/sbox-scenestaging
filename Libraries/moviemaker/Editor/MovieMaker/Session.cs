@@ -214,9 +214,7 @@ public sealed partial class Session
 	{
 		if ( Clip == Player.EmbeddedClip )
 		{
-			var property = Player.GetSerialized().GetProperty( nameof(MoviePlayer.EmbeddedClip) );
-
-			property.SetValue( Clip );
+			Player.Scene.Editor.HasUnsavedChanges = true;
 			return;
 		}
 
@@ -226,6 +224,14 @@ public sealed partial class Session
 	public void Save()
 	{
 		HasUnsavedChanges = false;
+
+		// If we're embedded, save the scene
+
+		if ( Clip == Player.EmbeddedClip )
+		{
+			Player.Scene.Editor.Save( false );
+			return;
+		}
 
 		// If we're referencing a .movie resource, save it to disk
 
