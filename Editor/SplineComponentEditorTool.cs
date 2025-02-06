@@ -266,8 +266,8 @@ class SplineToolWindow : WidgetWindow
 		}
 	}
 
-	[Title( "Scale (Width, Height)" )]
-	Vector2 _selectedPointScale
+	[Title( "Scale (_, Width, Height)" )]
+	Vector3 _selectedPointScale
 	{
 		get => SelectedPointIndex > targetComponent.Spline.PointCount - 1 ? 0f : _selectedPoint.Scale;
 		set
