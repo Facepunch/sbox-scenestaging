@@ -1,0 +1,20 @@
+{
+  "IsTextureSourceOnly": false,
+  "CollisionTags": "solid",
+  "Depth": 32,
+  "Offset": 0,
+  "TexCoordSize": 256,
+  "FrontFaceMaterial": "materials/sdf2d/examples/checkerboard.vmat",
+  "BackFaceMaterial": null,
+  "CutFaceMaterial": "materials/sdf2d/examples/checkerboard.vmat",
+  "LayerTextures": [
+    {
+      "TargetAttribute": "ScorchLayer",
+      "SourceLayer": "layers/examples/scorch.sdflayer"
+    }
+  ],
+  "QualityLevel": "Medium",
+  "ChunkResolution": 16,
+  "ChunkSize": 256,
+  "MaxDistance": 64
+}

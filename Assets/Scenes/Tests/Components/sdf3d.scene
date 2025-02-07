@@ -1,0 +1,147 @@
+{
+  "__guid": "41f7f39f-87df-4b0f-8696-28b6b4f50a1b",
+  "GameObjects": [
+    {
+      "__guid": "c46e3ffb-8877-4b52-af40-88518e422029",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-1849.829,0,700.4889",
+      "Rotation": "0,0.1736482,0,0.9848077",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "1b275df1-c939-4c1c-8631-8274c03edb42",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "__guid": "f7cf4546-7f92-44cb-9be6-b951ee5f706a",
+      "Flags": 0,
+      "Name": "Sun",
+      "Rotation": "-0.07486676,0.5686694,0.1069208,0.8121441",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "01d72899-1202-4d39-8ebe-aabd87478726",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Shadows": true,
+          "SkyColor": "0,0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "98e565fa-9129-4686-8d74-5c5edf723f4b",
+      "Flags": 0,
+      "Name": "SDF World",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Sdf.Sdf3DWorld",
+          "__guid": "ae7dc19d-aad2-40a4-9fc6-0c6daf802d5d",
+          "HasPhysics": true,
+          "IsFinite": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Size": "1024,1024,1024"
+        },
+        {
+          "__type": "Sdf3DWorldExample",
+          "__guid": "c5fabba9-4a3e-44e2-bec2-ea77c3940d69",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Volume": "scenes/tests/components/example.sdfvol"
+        }
+      ]
+    },
+    {
+      "__guid": "4eaa4f11-e4ad-48ff-aa72-82923a806c08",
+      "Flags": 0,
+      "Name": "2D Skybox",
+      "Position": "-763.1411,-2084.095,1123.335",
+      "Tags": "skybox",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "29ac0bda-e6d8-45f7-aeea-127dcfd3431a",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SkyIndirectLighting": true,
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {},
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": null,
+  "Description": null,
+  "__references": [],
+  "__version": 2
+}
