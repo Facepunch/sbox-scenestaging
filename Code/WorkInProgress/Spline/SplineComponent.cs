@@ -8,13 +8,13 @@ namespace Sandbox;
 public sealed class SplineComponent : Component, Component.ExecuteInEditor, Component.IHasBounds
 {
 	[Property, Hide]
-	public SplineMath.Spline Spline = new();
+	public Spline Spline = new();
 
 	public SplineComponent()
 	{
-		Spline.InsertPoint( Spline.PointCount, new SplineMath.Spline.Point { Position = new Vector3( 0, 0, 0 ) } );
-		Spline.InsertPoint( Spline.PointCount, new SplineMath.Spline.Point { Position = new Vector3( 100, 0, 0 ) } );
-		Spline.InsertPoint( Spline.PointCount, new SplineMath.Spline.Point { Position = new Vector3( 100, 100, 0 ) } );
+		Spline.InsertPoint( Spline.PointCount, new Spline.Point { Position = new Vector3( 0, 0, 0 ) } );
+		Spline.InsertPoint( Spline.PointCount, new Spline.Point { Position = new Vector3( 100, 0, 0 ) } );
+		Spline.InsertPoint( Spline.PointCount, new Spline.Point { Position = new Vector3( 100, 100, 0 ) } );
 	}
 
 	public BBox LocalBounds { get => Spline.Bounds; }

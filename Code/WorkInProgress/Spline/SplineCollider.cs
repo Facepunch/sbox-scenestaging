@@ -196,9 +196,8 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		int framesPerMesh = 12; // Adjust as needed
 		var totalFrames = frameSegments * framesPerMesh + 1;
 
-		var frames = UseRotationMinimizingFrames
-			? Spline.Spline.CalculateRotationMinimizingTangentFrames( totalFrames )
-			: Spline.Spline.CalculateTangentFramesUsingUpDir( totalFrames );
+		var frames = UseRotationMinimizingFrames ? SplineModelRenderer.CalculateRotationMinimizingTangentFrames( Spline.Spline, frameSegments * framesPerMesh + 1 ) : SplineModelRenderer.CalculateTangentFramesUsingUpDir( Spline.Spline, frameSegments * framesPerMesh + 1 );
+
 
 		// Clear existing shapes
 		_PhysicsBody.ClearShapes();
