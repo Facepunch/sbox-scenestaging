@@ -13,7 +13,7 @@
         {
           "__type": "Sandbox.CameraComponent",
           "__guid": "71179a94-6b5f-4ff5-8c40-6064b192f200",
-          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "BackgroundColor": "0,0,0,1",
           "ClearFlags": "All",
           "FieldOfView": 60,
           "IsMainCamera": true,
@@ -100,7 +100,8 @@
       "Enabled": true,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
       "__PrefabVariables": {
-        "Update Rate": 60
+        "Update Rate": 60,
+        "Variance": 0
       }
     },
     {
@@ -111,7 +112,8 @@
       "Enabled": true,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
       "__PrefabVariables": {
-        "Update Rate": 45
+        "Update Rate": 45,
+        "Variance": 0
       }
     },
     {
@@ -122,7 +124,8 @@
       "Enabled": true,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
       "__PrefabVariables": {
-        "Update Rate": 30
+        "Update Rate": 30,
+        "Variance": 0
       }
     },
     {
@@ -133,7 +136,8 @@
       "Enabled": true,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
       "__PrefabVariables": {
-        "Update Rate": 20
+        "Update Rate": 20,
+        "Variance": 0
       }
     },
     {
@@ -144,7 +148,8 @@
       "Enabled": true,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
       "__PrefabVariables": {
-        "Update Rate": 15
+        "Update Rate": 15,
+        "Variance": 0
       }
     },
     {
@@ -155,7 +160,8 @@
       "Enabled": true,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
       "__PrefabVariables": {
-        "Update Rate": 10
+        "Update Rate": 10,
+        "Variance": 0
       }
     },
     {
@@ -166,7 +172,8 @@
       "Enabled": true,
       "__Prefab": "scenes/tests/physics/dampen_test.prefab",
       "__PrefabVariables": {
-        "Update Rate": 5
+        "Update Rate": 5,
+        "Variance": 0
       }
     },
     {
@@ -196,12 +203,17 @@
       "__guid": "330d6f6a-3eba-4617-985d-47048e6883b3",
       "Flags": 0,
       "Name": "Manager",
-      "Position": "-314.5022,-57.58126,181.3468",
+      "Position": "-1536,1024,0",
       "Enabled": true,
       "Components": [
         {
           "__type": "DampenTestManager",
           "__guid": "9eaae853-a8b3-4a3a-b35e-76f91e25d6ce",
+          "Damping": 0.2,
+          "FrameRate": 120,
+          "Frequency": 0.34,
+          "InitialPosition": 128,
+          "InitialVelocity": 48,
           "KickAction": "Jump",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
