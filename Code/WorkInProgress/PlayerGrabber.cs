@@ -118,7 +118,7 @@ public class PlayerGrabber : Component
 			if ( Input.Down( "attack1" ) )
 			{
 				var targetTx = aimTransform.ToWorld( grabbedOffset );
-				grabbedBody.SmoothMove( targetTx, Time.Delta * MovementSmoothness, Time.Delta );
+				grabbedBody.SmoothMove( targetTx, 0.02f * MovementSmoothness, Time.Delta );
 				return;
 			}
 		}
