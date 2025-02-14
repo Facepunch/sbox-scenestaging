@@ -1,0 +1,3546 @@
+{
+  "Clip": {
+    "Tracks": [
+      {
+        "Id": "db058079-fd81-4203-89d6-43a05dc7d1dd",
+        "Name": "Player Controller",
+        "Type": "Sandbox.GameObject"
+      },
+      {
+        "Id": "e19ca6c1-794b-4484-ad25-fef13c85aa26",
+        "Name": "LocalPosition",
+        "Type": "Vector3",
+        "ParentId": "db058079-fd81-4203-89d6-43a05dc7d1dd",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                "0,0,0"
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "7ab9ab4a-5ad8-48e3-8288-be9216c80d0d",
+        "Name": "Body",
+        "Type": "Sandbox.GameObject"
+      },
+      {
+        "Id": "a6a931a6-288f-4387-ab34-46a5a057d357",
+        "Name": "LocalRotation",
+        "Type": "Rotation",
+        "ParentId": "7ab9ab4a-5ad8-48e3-8288-be9216c80d0d",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                "0,0,0,0"
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "b88da702-283e-4068-850a-f1c401313041",
+        "Name": "SkinnedModelRenderer",
+        "Type": "Sandbox.SkinnedModelRenderer",
+        "ParentId": "7ab9ab4a-5ad8-48e3-8288-be9216c80d0d"
+      },
+      {
+        "Id": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Name": "Parameters",
+        "Type": {
+          "$type": "Nested",
+          "DeclaringType": "Sandbox.SkinnedModelRenderer",
+          "Name": "ParameterAccessor"
+        },
+        "ParentId": "b88da702-283e-4068-850a-f1c401313041",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 7.82,
+            "Data": {
+              "SampleRate": 50,
+              "Interpolation": "Linear",
+              "Samples": [
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                }
+              ]
+            }
+          },
+          {
+            "Id": 2,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 11.3,
+            "Data": {
+              "SampleRate": 50,
+              "Interpolation": "Linear",
+              "Samples": [
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                },
+                {
+                  "Graph": null
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "Id": "5e0d5e20-0d05-493c-afd2-359131db790b",
+        "Name": "wish_speed",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "f91dea8b-5174-47ce-83b0-fb40d26972ee",
+        "Name": "wish_x",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "829aa751-cf2d-442d-88a7-0f8c3e257c03",
+        "Name": "wish_y",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "32f2a37f-8bea-405f-9702-5cac90099e8b",
+        "Name": "wish_z",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "6741ec82-33f1-4c06-a08f-603036386cc7",
+        "Name": "wish_groundspeed",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "1dbc1e14-d8c3-4bd2-ab39-a20cda64221d",
+        "Name": "wish_direction",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "af2dcaa7-a51e-46a0-ac08-46613c352905",
+        "Name": "skid",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "6dee28d2-a188-45e5-a3fb-1b48e36f09d3",
+        "Name": "skid_x",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "9bb32635-a716-4e8e-bacb-50d8e872b235",
+        "Name": "skid_y",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "74e9f578-fcc1-4fc9-a6ae-ba08abae2bbd",
+        "Name": "move_x",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "3069ed48-6923-4c22-8425-44653dde83b8",
+        "Name": "move_y",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "74dcdbd1-6927-4501-a269-5443994e9ddd",
+        "Name": "move_z",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "8899050c-386d-408e-9a1c-8fc92d62e4a3",
+        "Name": "move_speed",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "5ed7831f-4986-4cf5-9af6-2b01bffbc54d",
+        "Name": "move_rotationspeed",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "f9e6e473-d39d-48d2-9749-f9f519342524",
+        "Name": "move_groundspeed",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "6aa061d3-d399-42da-936e-8d841f93ae82",
+        "Name": "move_direction",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "bf335822-f22a-4cc2-8cf8-35e256b0365c",
+        "Name": "duck",
+        "Type": "System.Single",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                0
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "fc2c3f74-9a71-4e6b-8fbc-721946655b76",
+        "Name": "b_jump",
+        "Type": "System.Boolean",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "None",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "4e7b81bb-98c7-40ba-a18d-e2ecf87ee179",
+        "Name": "b_grounded",
+        "Type": "System.Boolean",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "None",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "f8a42669-bf69-4ccd-9ece-e8077467b785",
+        "Name": "aim_body",
+        "Type": "Vector3",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                "0,0,0"
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "bfbaab1e-96e5-432c-984c-1892e3d3d6cb",
+        "Name": "aim_eyes",
+        "Type": "Vector3",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                "0,0,0"
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      },
+      {
+        "Id": "3d6d10f0-a6bb-4469-b595-77251d1fe3cc",
+        "Name": "aim_head",
+        "Type": "Vector3",
+        "ParentId": "8b514245-700f-4afc-8aaa-6fdcaea47d78",
+        "Blocks": [
+          {
+            "Id": 1,
+            "Kind": "Samples",
+            "StartTime": 0,
+            "Duration": 0,
+            "Data": {
+              "SampleRate": 30,
+              "Interpolation": "Linear",
+              "Samples": [
+                "0,0,0"
+              ]
+            }
+          }
+        ],
+        "EditorData": {
+          "Keyframes": {
+            "Interpolation": "QuadraticInOut",
+            "Keyframes": []
+          }
+        }
+      }
+    ]
+  },
+  "__references": [],
+  "__version": 0
+}

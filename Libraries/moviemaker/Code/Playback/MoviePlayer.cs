@@ -60,6 +60,11 @@ public sealed partial class MoviePlayer : Component
 		}
 	}
 
+	[Property, Group( "Recording" )]
+	public bool IsRecording { get; private set; }
+
+	private float _recordingStartTime;
+
 	/// <summary>
 	/// Apply the movie clip to the scene at the current time position.
 	/// If we reach the end, check <see cref="IsLooping"/> to either jump back to the start, or stop playback.
@@ -137,6 +142,102 @@ public sealed partial class MoviePlayer : Component
 		if ( IsPlaying )
 		{
 			Position += Time.Delta * TimeScale;
+		}
+	}
+
+	private interface IRawRecording
+	{
+		void Record( float time );
+		void WriteBlocks();
+	}
+
+	private class RawRecording<T> : IRawRecording
+	{
+		public MovieTrack Track { get; }
+		public IMovieProperty<T> Property { get; }
+		public List<(float Time, T Value)> Samples { get; } = new List<(float Time, T Value)>();
+
+		public RawRecording( MovieTrack track, IMovieProperty<T> property )
+		{
+			Track = track;
+			Property = property;
+		}
+
+		public void Record( float time )
+		{
+			Samples.Add( (time, Property.Value) );
+		}
+
+		public void WriteBlocks()
+		{
+			// TODO: resample
+
+			var data = new SamplesData<T>( 50f, SampleInterpolationMode.Linear,
+				Samples.Select( x => x.Value ).ToArray() );
+
+			Track.AddBlock( 0f, Samples.Count / 50f, data );
+		}
+	}
+
+	private readonly Dictionary<MovieTrack, IRawRecording> _recordings = new();
+
+	[Property, Button( Icon = "radio_button_checked" ), ShowIf( nameof(IsRecording), false )]
+	public void StartRecording()
+	{
+		if ( MovieClip is not { } clip ) return;
+
+		_recordings.Clear();
+
+		var rawRecordingType = TypeLibrary.GetType( typeof(RawRecording<>) );
+
+		foreach ( var track in clip.AllTracks )
+		{
+			if ( GetProperty( track ) is not { IsBound: true } property )
+			{
+				continue;
+			}
+
+			if ( property is ISceneReferenceMovieProperty )
+			{
+				continue;
+			}
+
+			_recordings.Add( track, rawRecordingType.CreateGeneric<IRawRecording>( [track.PropertyType], [track, property] ) );
+		}
+
+		IsRecording = true;
+		_recordingStartTime = Time.Now;
+	}
+
+	[Property, Button( Icon = "stop_circle" ), ShowIf( nameof( IsRecording ), true )]
+	public void StopRecording()
+	{
+		if ( !IsRecording ) return;
+
+		IsRecording = false;
+
+		Log.Info( $"Finished recording {_recordings.Count} tracks!" );
+
+		foreach ( var recording in _recordings.Values )
+		{
+			recording.WriteBlocks();
+		}
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		if ( !IsRecording )
+		{
+			return;
+		}
+
+		var time = Time.Now - _recordingStartTime;
+
+		if ( time < 0f ) return;
+
+		foreach ( var recording in _recordings.Values )
+		{
+			recording.Record( time );
 		}
 	}
 }

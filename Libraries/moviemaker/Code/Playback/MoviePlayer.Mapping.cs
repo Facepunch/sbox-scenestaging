@@ -24,7 +24,7 @@ partial class MoviePlayer
 	/// </summary>
 	public IMovieProperty? GetProperty( MovieTrack track )
 	{
-		var property = (IMovieProperty)_sceneRefMap.GetValueOrDefault( track.Id ) ?? _memberMap.GetValueOrDefault( track.Id );
+		var property = (IMovieProperty?)_sceneRefMap!.GetValueOrDefault( track.Id ) ?? _memberMap!.GetValueOrDefault( track.Id );
 
 		if ( property is null ) return null;
 		if ( property.PropertyType != track.PropertyType ) return null;
