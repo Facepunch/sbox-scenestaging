@@ -170,6 +170,17 @@ public sealed partial class MoviePlayer : Component
 
 		public void WriteBlocks()
 		{
+			if ( Samples.Count == 0 ) return;
+
+			var first = Samples[0].Value;
+			var comparer = EqualityComparer<T>.Default;
+
+			if ( Samples.All( x => comparer.Equals( first, x.Value ) ) )
+			{
+				// Nothing to write
+				return;
+			}
+
 			// TODO: resample
 
 			var data = new SamplesData<T>( 50f, SampleInterpolationMode.Linear,
@@ -192,15 +203,9 @@ public sealed partial class MoviePlayer : Component
 
 		foreach ( var track in clip.AllTracks )
 		{
-			if ( GetProperty( track ) is not { IsBound: true } property )
-			{
-				continue;
-			}
-
-			if ( property is ISceneReferenceMovieProperty )
-			{
-				continue;
-			}
+			if ( track.Children.Count > 0 ) continue;
+			if ( GetProperty( track ) is not { IsBound: true } property ) continue;
+			if ( property is ISceneReferenceMovieProperty ) continue;
 
 			_recordings.Add( track, rawRecordingType.CreateGeneric<IRawRecording>( [track.PropertyType], [track, property] ) );
 		}

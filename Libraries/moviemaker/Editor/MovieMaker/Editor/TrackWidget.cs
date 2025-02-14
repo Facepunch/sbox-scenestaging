@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Linq;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -168,6 +169,12 @@ public class TrackWidget : Widget
 	{
 		menu = new Menu( this );
 		menu.AddOption( "Delete", "delete", RemoveTrack );
+
+		if ( MovieTrack.Children.Count > 0 )
+		{
+			menu.AddOption( "Delete Empty Children", "cleaning_services", RemoveEmptyChildren );
+		}
+
 		menu.OpenAtCursor();
 	}
 
@@ -177,6 +184,34 @@ public class TrackWidget : Widget
 		TrackList.RebuildTracksIfNeeded();
 
 		Session.Current?.ClipModified();
+	}
+
+	static bool RemoveEmptyChildTracks( MovieTrack track )
+	{
+		var changed = false;
+
+		foreach ( var child in track.Children.ToArray() )
+		{
+			changed |= RemoveEmptyChildTracks( child );
+
+			if ( child.Children.Count == 0 && child.Blocks.Count == 0 )
+			{
+				child.Remove();
+				changed = true;
+			}
+		}
+
+		return changed;
+	}
+
+	void RemoveEmptyChildren()
+	{
+		if ( RemoveEmptyChildTracks( MovieTrack ) )
+		{
+			TrackList.RebuildTracksIfNeeded();
+
+			Session.Current?.ClipModified();
+		}
 	}
 
 	public void NoteInteraction()

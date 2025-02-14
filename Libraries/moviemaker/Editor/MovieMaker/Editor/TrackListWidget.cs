@@ -1,4 +1,7 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Collections.Immutable;
+using Editor.ActionGraphs;
+using Sandbox.ActionGraphs;
+using Sandbox.MovieMaker;
 using System.Linq;
 
 namespace Editor.MovieMaker;
@@ -71,6 +74,7 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		Layout.Add( ScrollArea );
 
 		MouseTracking = true;
+		AcceptDrops = true;
 
 		Load( Session.Clip );
 	}
@@ -225,5 +229,79 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 	public void OnDelete()
 	{
 		DopeSheet?.OnDelete();
+	}
+
+	private IReadOnlyList<MovieTrack> _previewTracks;
+
+	private IEnumerable<MovieTrack> GetDraggedTracks( DragEvent ev )
+	{
+		if ( Session?.Player is not { MovieClip: not null } player ) yield break;
+
+		if ( ev.Data.OfType<GameObject>().FirstOrDefault() is { } go )
+		{
+			yield return player.GetOrCreateTrack( go );
+			yield return player.GetOrCreateTrack( go, nameof(GameObject.LocalPosition) );
+			yield return player.GetOrCreateTrack( go, nameof(GameObject.LocalRotation) );
+		}
+
+		if ( ev.Data.OfType<Component>().FirstOrDefault() is { } component )
+		{
+			yield return player.GetOrCreateTrack( component );
+
+			if ( component is SkinnedModelRenderer { Parameters.Graph: { } graph } )
+			{
+				for ( var i = 0; i < graph.ParamCount; ++i )
+				{
+					var paramName = graph.GetParameterName( i );
+
+					yield return player.GetOrCreateTrack( component, $"{nameof(SkinnedModelRenderer.Parameters)}.{paramName}" );
+				}
+			}
+		}
+
+		if ( ev.Data.OfType<SerializedProperty>().FirstOrDefault() is { } property )
+		{
+			if ( property.Parent.Targets?.FirstOrDefault() is Component parentComponent )
+			{
+				yield return player.GetOrCreateTrack( parentComponent, property.Name );
+			}
+		}
+	}
+
+	public override void OnDragHover( DragEvent ev )
+	{
+		if ( _previewTracks is null && Session?.Player is { MovieClip: { } clip } )
+		{
+			var knownTracks = clip.AllTracks.ToImmutableHashSet();
+			var dragged = GetDraggedTracks( ev ).ToImmutableHashSet();
+
+			_previewTracks = dragged.Except( knownTracks ).ToArray();
+
+			RebuildTracksIfNeeded();
+		}
+
+		ev.Action = _previewTracks.Count > 0
+			? DropAction.Link
+			: DropAction.Ignore;
+	}
+
+	public override void OnDragLeave()
+	{
+		if ( _previewTracks is { Count: > 0 } )
+		{
+			foreach ( var track in _previewTracks )
+			{
+				track.Remove();
+			}
+
+			RebuildTracksIfNeeded();
+		}
+
+		_previewTracks = null;
+	}
+
+	public override void OnDragDrop( DragEvent ev )
+	{
+		_previewTracks = null;
 	}
 }
