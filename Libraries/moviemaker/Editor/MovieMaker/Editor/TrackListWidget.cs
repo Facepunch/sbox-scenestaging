@@ -248,13 +248,21 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		{
 			yield return player.GetOrCreateTrack( component );
 
-			if ( component is SkinnedModelRenderer { Parameters.Graph: { } graph } )
+			if ( component is SkinnedModelRenderer skinnedRenderer )
 			{
-				for ( var i = 0; i < graph.ParamCount; ++i )
+				if ( skinnedRenderer.Parameters.Graph is { } graph )
 				{
-					var paramName = graph.GetParameterName( i );
+					for ( var i = 0; i < graph.ParamCount; ++i )
+					{
+						var paramName = graph.GetParameterName( i );
 
-					yield return player.GetOrCreateTrack( component, $"{nameof(SkinnedModelRenderer.Parameters)}.{paramName}" );
+						yield return player.GetOrCreateTrack( component, $"{nameof( SkinnedModelRenderer.Parameters )}.{paramName}" );
+					}
+				}
+
+				foreach ( var morphName in skinnedRenderer.Morphs.Names )
+				{
+					yield return player.GetOrCreateTrack( component, $"{nameof(SkinnedModelRenderer.Morphs)}.{morphName}" );
 				}
 			}
 		}

@@ -75,6 +75,11 @@ internal static partial class MovieProperty
 			return FromAnimParam( target, memberName, expectedType );
 		}
 
+		if ( IsMorph( target, memberName ) )
+		{
+			return FromMorph( target, memberName );
+		}
+
 		var targetType = TypeLibrary.GetType( target.PropertyType );
 		var member = targetType.Members
 			.Where( x => x is FieldDescription or PropertyDescription )
