@@ -93,6 +93,8 @@ public class ToolbarWidget : Widget
 
 	internal void UpdatePlayers( List<MoviePlayer> playersAvailable )
 	{
+		PlayerDropdown.Clear();
+
 		foreach ( var player in playersAvailable.OrderBy( x => x.GameObject.Name ) )
 		{
 			PlayerDropdown.AddItem( $"{player.GameObject.Name}", "movie", () => Editor.Switch( player ), null, player == Session.Player );
@@ -103,6 +105,8 @@ public class ToolbarWidget : Widget
 
 	internal void UpdateClips()
 	{
+		ClipDropDown.Clear();
+
 		ClipDropDown.AddItem( "Embedded", "attachment", () => Editor.SwitchToEmbedded(), "Use a clip stored in the player component.", Session?.Clip == Session?.Player.EmbeddedClip );
 
 		var icon = typeof(MovieFile).GetCustomAttribute<GameResourceAttribute>()!.Icon;
