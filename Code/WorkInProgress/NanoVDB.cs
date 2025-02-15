@@ -13,7 +13,7 @@ namespace Sandbox;
 	"NanoVDB", 
 	"nvdb", 
 	"Sparse Volumetric Data", 
-	Icon = "cube", 
+	Icon = "cloud_circle", 
 	Category="Rendering" ) ]
 public partial class NanoVDB : Resource
 
@@ -28,12 +28,10 @@ public partial class NanoVDB : Resource
 
     public static NanoVDB Load( string filePath )
     {
-		// Todo: move this outside of engine so we can use proper FileSystem.Mounted
-		// This could be a library
-
+        
 		using var fileStream = FileSystem.Mounted.OpenRead( filePath );
 
-		if ( filePath.EndsWith( ".nvdb" ) )
+		if ( !filePath.EndsWith( ".nvdb" ) )
             throw new Exception("Only NanoVDB files are supported for now");
             
         using var reader = new BinaryReader( fileStream );

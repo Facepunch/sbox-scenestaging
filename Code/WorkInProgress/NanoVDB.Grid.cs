@@ -7,7 +7,7 @@ public partial class NanoVDB
     public partial class Grid
     {
         public string Name { get; private set; } = "";
-        public List<byte> Data { get; private set; }
+        public uint[] Data { get; private set; }
         public GridHeader Header = new();
         
         public static Grid Read( BinaryReader reader, Metadata metadata )
@@ -21,7 +21,10 @@ public partial class NanoVDB
             if( grid.Header.GridSize > int.MaxValue )
                 throw new Exception("Grid size over 4GB is not supported");
 
-            grid.Data = reader.ReadBytes( (int)grid.Header.GridSize ).ToList<byte>();
+            int count = (int)(grid.Header.GridSize / 4);
+            byte[] bytes = reader.ReadBytes((int)grid.Header.GridSize);
+            grid.Data = new uint[count];
+            Buffer.BlockCopy(bytes, 0, grid.Data, 0, bytes.Length);
             return grid;
         }
         
@@ -76,4 +79,13 @@ public partial class NanoVDB
             }
         }
     }
+}
+
+/// <summary>
+/// When added to a string property, will become a VDB string selector
+/// </summary>
+[AttributeUsage( AttributeTargets.Property )]
+public class NVDBPathAttribute : AssetPathAttribute
+{
+	public override string AssetTypeExtension => "nvdb";
 }
