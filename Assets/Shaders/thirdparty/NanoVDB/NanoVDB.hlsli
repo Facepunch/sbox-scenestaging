@@ -18,7 +18,7 @@
 
 // platforms
 //#define PNANOVDB_C
-//#define PNANOVDB_HLSL
+#define PNANOVDB_HLSL
 //#define PNANOVDB_GLSL
 
 // addressing mode
@@ -971,17 +971,17 @@ void pnanovdb_write_vec3(pnanovdb_buf_t buf, pnanovdb_address_t address, PNANOVD
 
 // BuildType = Unknown, float, double, int16_t, int32_t, int64_t, Vec3f, Vec3d, Mask, ...
 // bit count of values in leaf nodes, i.e. 8*sizeof(*nanovdb::LeafNode<BuildType>::mValues) or zero if no values are stored
-uint pnanovdb_grid_type_value_strides_bits[PNANOVDB_GRID_TYPE_END]  = {  0, 32, 64, 16, 32, 64,  96, 192,  0, 16, 32,  1, 32,  4,  8, 16,  0, 128, 256,  0,  0,  0,  0, 16, 24, 48,  8 };
+static uint pnanovdb_grid_type_value_strides_bits[PNANOVDB_GRID_TYPE_END]  = {  0, 32, 64, 16, 32, 64,  96, 192,  0, 16, 32,  1, 32,  4,  8, 16,  0, 128, 256,  0,  0,  0,  0, 16, 24, 48,  8 };
 // bit count of the Tile union in InternalNodes, i.e. 8*sizeof(nanovdb::InternalData::Tile)
-uint pnanovdb_grid_type_table_strides_bits[PNANOVDB_GRID_TYPE_END]  = { 64, 64, 64, 64, 64, 64, 128, 192, 64, 64, 64, 64, 64, 64, 64, 64, 64, 128, 256, 64, 64, 64, 64, 64, 64, 64, 64 };
+static uint pnanovdb_grid_type_table_strides_bits[PNANOVDB_GRID_TYPE_END]  = { 64, 64, 64, 64, 64, 64, 128, 192, 64, 64, 64, 64, 64, 64, 64, 64, 64, 128, 256, 64, 64, 64, 64, 64, 64, 64, 64 };
 // bit count of min/max values, i.e. 8*sizeof(nanovdb::LeafData::mMinimum) or zero if no min/max exists
-uint pnanovdb_grid_type_minmax_strides_bits[PNANOVDB_GRID_TYPE_END] = {  0, 32, 64, 16, 32, 64,  96, 192,  8, 16, 32,  8, 32, 32, 32, 32, 32, 128, 256, 64, 64, 64, 64, 64, 24, 48,  8 };
+static uint pnanovdb_grid_type_minmax_strides_bits[PNANOVDB_GRID_TYPE_END] = {  0, 32, 64, 16, 32, 64,  96, 192,  8, 16, 32,  8, 32, 32, 32, 32, 32, 128, 256, 64, 64, 64, 64, 64, 24, 48,  8 };
 // bit alignment of the value type, controlled by the smallest native type, which is why it is always 0, 8, 16, 32, or 64, e.g. for Vec3f it is 32
-uint pnanovdb_grid_type_minmax_aligns_bits[PNANOVDB_GRID_TYPE_END]  = {  0, 32, 64, 16, 32, 64,  32,  64,  8, 16, 32,  8, 32, 32, 32, 32, 32,  32,  64, 64, 64, 64, 64, 64,  8, 16,  8 };
+static uint pnanovdb_grid_type_minmax_aligns_bits[PNANOVDB_GRID_TYPE_END]  = {  0, 32, 64, 16, 32, 64,  32,  64,  8, 16, 32,  8, 32, 32, 32, 32, 32,  32,  64, 64, 64, 64, 64, 64,  8, 16,  8 };
 // bit alignment of the stats (avg/std-dev) types, e.g. 8*sizeof(nanovdb::LeafData::mAverage)
-uint pnanovdb_grid_type_stat_strides_bits[PNANOVDB_GRID_TYPE_END]   = {  0, 32, 64, 32, 32, 64,  32,  64,  8, 32, 32,  8, 32, 32, 32, 32, 32,  32,  64, 64, 64, 64, 64, 64, 32, 32, 32 };
+static uint pnanovdb_grid_type_stat_strides_bits[PNANOVDB_GRID_TYPE_END]   = {  0, 32, 64, 32, 32, 64,  32,  64,  8, 32, 32,  8, 32, 32, 32, 32, 32,  32,  64, 64, 64, 64, 64, 64, 32, 32, 32 };
 // one of the 4 leaf types defined above, e.g. PNANOVDB_LEAF_TYPE_INDEX = 3
-uint pnanovdb_grid_type_leaf_type[PNANOVDB_GRID_TYPE_END]           = {  0,  0,  0,  0,  0,  0,  0,    0,  1,  0,  0,  1,  0,  2,  2,  2,  2,   0,   0,  3,  3,  4,  4,  5,  0,  0,  0 };
+static uint pnanovdb_grid_type_leaf_type[PNANOVDB_GRID_TYPE_END]           = {  0,  0,  0,  0,  0,  0,  0,    0,  1,  0,  0,  1,  0,  2,  2,  2,  2,   0,   0,  3,  3,  4,  4,  5,  0,  0,  0 };
 
 struct pnanovdb_map_t
 {
@@ -2468,6 +2468,45 @@ pnanovdb_uint64_t pnanovdb_root_pointindex_get_point_address_range(
     return range_size;
 }
 
+// BEGIN_CUSTOMIZATION
+// Copyright 2022 Eidos-Montreal / Eidos-Sherbrooke
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http ://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// Non-optimal, but allows reading a float whatever its format
+float pnanovdb_root_read_float_typed(pnanovdb_grid_type_t grid_type, pnanovdb_buf_t buf, pnanovdb_address_t address, PNANOVDB_IN(pnanovdb_coord_t) ijk, pnanovdb_uint32_t level)
+{
+	float ret;
+	if (level == 0 && grid_type != PNANOVDB_GRID_TYPE_FLOAT)
+	{
+		if (grid_type == PNANOVDB_GRID_TYPE_FPN)
+		{
+			ret = pnanovdb_leaf_fpn_read_float(buf, address, ijk);
+		}
+		else
+		{
+			ret = pnanovdb_leaf_fp_read_float(buf, address, ijk, grid_type - PNANOVDB_GRID_TYPE_FP4 + 2u);
+		}
+	}
+	else
+	{
+		ret = pnanovdb_read_float(buf, address);
+	}
+	return ret;
+}
+// END_CUSTOMIZATION
+
+
 // ------------------------------------------------ ReadAccessor -----------------------------------------------------------
 
 struct pnanovdb_readaccessor_t
@@ -3349,6 +3388,83 @@ pnanovdb_bool_t pnanovdb_hdda_zero_crossing(
     }
     return PNANOVDB_FALSE;
 }
+
+// BEGIN_CUSTOMIZATION
+// Copyright 2022 Eidos-Montreal / Eidos-Sherbrooke
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http ://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+
+// Almost same method, but modified to accept all types of format, and returns hit ijk
+pnanovdb_bool_t pnanovdb_hdda_zero_crossing_improved(
+	pnanovdb_grid_type_t grid_type,
+	pnanovdb_buf_t buf,
+	PNANOVDB_INOUT(pnanovdb_readaccessor_t) acc,
+	PNANOVDB_IN(pnanovdb_vec3_t) origin, float tmin,
+	PNANOVDB_IN(pnanovdb_vec3_t) direction, float tmax,
+	PNANOVDB_INOUT(float) thit,
+	PNANOVDB_INOUT(float) v,
+	PNANOVDB_INOUT(pnanovdb_coord_t) ijkhit
+)
+{
+	pnanovdb_coord_t bbox_min = pnanovdb_root_get_bbox_min(buf, PNANOVDB_DEREF(acc).root);
+	pnanovdb_coord_t bbox_max = pnanovdb_root_get_bbox_max(buf, PNANOVDB_DEREF(acc).root);
+	pnanovdb_vec3_t bbox_minf = pnanovdb_coord_to_vec3(bbox_min);
+	pnanovdb_vec3_t bbox_maxf = pnanovdb_coord_to_vec3(pnanovdb_coord_add(bbox_max, pnanovdb_coord_uniform(1)));
+
+	pnanovdb_bool_t hit = pnanovdb_hdda_ray_clip(PNANOVDB_REF(bbox_minf), PNANOVDB_REF(bbox_maxf), origin, PNANOVDB_REF(tmin), direction, PNANOVDB_REF(tmax));
+	if (!hit || tmax > 1.0e20f)
+	{
+		return PNANOVDB_FALSE;
+	}
+
+	pnanovdb_vec3_t pos = pnanovdb_hdda_ray_start(origin, tmin, direction);
+	pnanovdb_coord_t ijk = pnanovdb_hdda_pos_to_ijk(PNANOVDB_REF(pos));
+
+	pnanovdb_uint32_t level;
+	pnanovdb_address_t address = pnanovdb_readaccessor_get_value_address_and_level(grid_type, buf, acc, PNANOVDB_REF(ijk), PNANOVDB_REF(level));
+	float v0 = pnanovdb_root_read_float_typed(grid_type, buf, address, ijk, level);
+
+	pnanovdb_int32_t dim = pnanovdb_uint32_as_int32(pnanovdb_readaccessor_get_dim(grid_type, buf, acc, PNANOVDB_REF(ijk)));
+	pnanovdb_hdda_t hdda;
+	pnanovdb_hdda_init(PNANOVDB_REF(hdda), origin, tmin, direction, tmax, dim);
+	while (pnanovdb_hdda_step(PNANOVDB_REF(hdda)))
+	{
+		pnanovdb_vec3_t pos_start = pnanovdb_hdda_ray_start(origin, hdda.tmin + 1.0001f, direction);
+		ijk = pnanovdb_hdda_pos_to_ijk(PNANOVDB_REF(pos_start));
+		dim = pnanovdb_uint32_as_int32(pnanovdb_readaccessor_get_dim(grid_type, buf, acc, PNANOVDB_REF(ijk)));
+		pnanovdb_hdda_update(PNANOVDB_REF(hdda), origin, direction, dim);
+		if (hdda.dim > 1 || !pnanovdb_readaccessor_is_active(grid_type, buf, acc, PNANOVDB_REF(ijk)))
+		{
+			continue;
+		}
+		while (pnanovdb_hdda_step(PNANOVDB_REF(hdda)) && pnanovdb_readaccessor_is_active(grid_type, buf, acc, PNANOVDB_REF(hdda.voxel)))
+		{
+			ijk = hdda.voxel;
+			address = pnanovdb_readaccessor_get_value_address_and_level(grid_type, buf, acc, ijk, PNANOVDB_REF(level));
+			PNANOVDB_DEREF(v) = pnanovdb_root_read_float_typed(grid_type, buf, address, ijk, level);
+
+			if (PNANOVDB_DEREF(v) * v0 < 0.f)
+			{
+				PNANOVDB_DEREF(thit) = hdda.tmin;
+				PNANOVDB_DEREF(ijkhit) = ijk;
+				return PNANOVDB_TRUE;
+			}
+		}
+	}
+	return PNANOVDB_FALSE;
+}
+// END_CUSTOMIZATION
 
 #endif
 
