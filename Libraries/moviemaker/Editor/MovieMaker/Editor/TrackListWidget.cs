@@ -1,6 +1,4 @@
 ﻿using System.Collections.Immutable;
-using Editor.ActionGraphs;
-using Sandbox.ActionGraphs;
 using Sandbox.MovieMaker;
 using System.Linq;
 
@@ -13,6 +11,8 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 {
 	public MovieEditor Editor { get; init; }
 	public Session Session { get; private set; }
+
+	private SceneEditorSession SceneEditorSession { get; }
 
 	Layout TrackList;
 
@@ -32,6 +32,9 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		Session = parent.Session;
 		Editor = parent;
 		Layout = Layout.Column();
+
+		SceneEditorSession = SceneEditorSession.Resolve( Session.Player.Scene );
+		SceneEditorSession.Selection.OnItemAdded += OnSelectionAdded;
 
 		ScrollArea = new ScrollArea( this );
 		var splitter = new Splitter( ScrollArea );
@@ -77,6 +80,22 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		AcceptDrops = true;
 
 		Load( Session.Clip );
+	}
+
+	private void OnSelectionAdded( object item )
+	{
+		if ( Tracks.Any( x => x.IsFocused ) || DopeSheet.IsFocused ) return;
+
+		if ( item is GameObject go && Tracks.FirstOrDefault( x => x.Property is ISceneReferenceMovieProperty { IsBound: true } && x.Property.Value == go ) is { } track )
+		{
+			track.Focus( false );
+			ScrollArea.MakeVisible( track );
+		}
+	}
+
+	public override void OnDestroyed()
+	{
+		SceneEditorSession.Selection.OnItemAdded -= OnSelectionAdded;
 	}
 
 	void ScrubToTime( float time )

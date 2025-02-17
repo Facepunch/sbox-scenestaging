@@ -101,6 +101,38 @@ public class TrackWidget : Widget
 		if ( Parent is TrackGroup ) Parent.Update();
 	}
 
+	protected override void OnDoubleClick( MouseEvent e )
+	{
+		InspectProperty();
+	}
+
+	public void InspectProperty()
+	{
+		if ( Property is not { } property ) return;
+		if ( property.GetTargetGameObject() is not { } go ) return;
+
+		SceneEditorSession.Active.Selection.Clear();
+		SceneEditorSession.Active.Selection.Add( go );
+
+		if ( MovieTrack.Parent?.PropertyType == typeof(GameObject) )
+		{
+			switch ( property.PropertyName )
+			{
+				case nameof( GameObject.LocalPosition ):
+					EditorToolManager.SetSubTool( nameof( PositionEditorTool ) );
+					break;
+
+				case nameof( GameObject.LocalRotation ):
+					EditorToolManager.SetSubTool( nameof( RotationEditorTool ) );
+					break;
+
+				case nameof( GameObject.LocalScale ):
+					EditorToolManager.SetSubTool( nameof( ScaleEditorTool ) );
+					break;
+			}
+		}
+	}
+
 	protected override Vector2 SizeHint()
 	{
 		return 32;

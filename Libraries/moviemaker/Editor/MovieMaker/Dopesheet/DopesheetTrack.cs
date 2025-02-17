@@ -44,10 +44,7 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	internal void OnSelected()
 	{
-		if ( TrackWidget.Property?.GetTargetGameObject() is { } gameObject )
-		{
-			SceneEditorSession.Active.Selection.Set( gameObject );
-		}
+		TrackWidget.InspectProperty();
 	}
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )

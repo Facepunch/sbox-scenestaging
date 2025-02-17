@@ -67,7 +67,7 @@ public partial class MovieBlock
 		_track = null;
 	}
 
-	public bool Contains( float time ) => time >= StartTime && (Duration is null || time - StartTime < Duration);
+	public bool Contains( float time ) => time >= StartTime && (Duration is null || time - StartTime <= Duration + 0.001f);
 
 	private void AssertValidData( MovieBlockData value )
 	{

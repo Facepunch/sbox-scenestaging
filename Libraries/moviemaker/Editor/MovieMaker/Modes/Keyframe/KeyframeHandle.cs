@@ -12,6 +12,8 @@ internal class KeyframeHandle : GraphicsItem
 	public TrackKeyframes Keyframes { get; }
 	private Color HandleColor { get; }
 
+	public Session Session => Keyframes.TrackWidget.TrackList.Session;
+
 	public float Time { get; set; }
 	public object? Value { get; set; }
 
@@ -37,7 +39,7 @@ internal class KeyframeHandle : GraphicsItem
 	{
 		base.OnMoved();
 
-		Time = Session.Current.PixelsToTime( Position.x, true );
+		Time = Session.PixelsToTime( Position.x, true );
 
 		if ( Time < 0 ) Time = 0;
 
@@ -45,7 +47,7 @@ internal class KeyframeHandle : GraphicsItem
 
 		UpdatePosition();
 
-		Session.Current.SetCurrentPointer( Time );
+		Session.SetCurrentPointer( Time );
 	}
 
 	protected override void OnSelectionChanged()
@@ -55,6 +57,7 @@ internal class KeyframeHandle : GraphicsItem
 		if ( Selected && GraphicsView.SelectedItems.Count() <= 1 )
 		{
 			Track.OnSelected();
+			Session.SetCurrentPointer( Time );
 		}
 	}
 
@@ -80,7 +83,7 @@ internal class KeyframeHandle : GraphicsItem
 	{
 		PrepareGeometryChange();
 
-		Position = new Vector2( Session.Current!.TimeToPixels( Time ), 0 );
+		Position = new Vector2( Session.TimeToPixels( Time ), 0 );
 		Size = Track.Visible ? new Vector2( 16, Parent.Height ) : 0f;
 
 		Track.Update();
