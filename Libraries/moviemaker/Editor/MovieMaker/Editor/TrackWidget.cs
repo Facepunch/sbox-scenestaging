@@ -47,6 +47,11 @@ public class TrackWidget : Widget
 
 		if ( Property is ISceneReferenceMovieProperty )
 		{
+			if ( Property.IsBound && Property.Value is GameObject go && MovieTrack.Parent is not null )
+			{
+				return;
+			}
+
 			// Add control to retarget a scene reference (Component / GameObject)
 
 			var so = Property.GetSerialized();

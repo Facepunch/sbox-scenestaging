@@ -47,6 +47,13 @@ partial class MoviePlayer
 
 		if ( track.Parent is null || GetOrAutoResolveProperty( track.Parent ) is not { } parentProperty ) return null;
 
+		// If we're looking for a game object in a game object, check its children
+
+		if ( track.Parent.PropertyType == typeof(GameObject) && track.PropertyType == typeof(GameObject) )
+		{
+			return _sceneRefMap[track.Id] = MovieProperty.FromGameObject( parentProperty, track.Name );
+		}
+
 		// If we're looking for a component, find it in the containing GameObject
 
 		if ( track.Parent.PropertyType == typeof(GameObject) && track.PropertyType.IsAssignableTo( typeof(Component) ) )
@@ -133,8 +140,15 @@ partial class MoviePlayer
 	{
 		if ( GetTrack( go ) is { } existing ) return existing;
 
+		MovieTrack? parentTrack = null;
+
+		if ( (go.Flags & GameObjectFlags.Bone) != 0 && go.Parent is { } parentGo and not Sandbox.Scene )
+		{
+			parentTrack = GetOrCreateTrack( parentGo );
+		}
+
 		var property = MovieProperty.FromGameObject( go );
-		var track = MovieClip!.AddTrack( property.PropertyName, property.PropertyType );
+		var track = MovieClip!.AddTrack( property.PropertyName, property.PropertyType, parentTrack );
 
 		_sceneRefMap[track.Id] = property;
 

@@ -63,6 +63,11 @@ internal static partial class MovieProperty
 		return new GameObjectMovieProperty( placeholderName );
 	}
 
+	public static ISceneReferenceMovieProperty FromGameObject( IMovieProperty target, string placeholderName )
+	{
+		return new GameObjectMovieProperty( placeholderName );
+	}
+
 	public static ISceneReferenceMovieProperty FromComponent( IMovieProperty target, Component comp )
 	{
 		return new ComponentMovieProperty( target, comp );
@@ -109,7 +114,10 @@ internal static partial class MovieProperty
 /// </summary>
 file sealed class GameObjectMovieProperty : IMovieProperty<GameObject?>, ISceneReferenceMovieProperty
 {
+	private IMovieProperty? _target;
 	private string _placeholderName;
+
+	private GameObject? _value;
 
 	public string PropertyName => Value?.Name ?? _placeholderName;
 	public Type PropertyType => typeof(GameObject);
@@ -117,7 +125,11 @@ file sealed class GameObjectMovieProperty : IMovieProperty<GameObject?>, ISceneR
 	public bool IsBound => Value.IsValid();
 	public bool CanWrite => false;
 
-	public GameObject? Value { get; set; }
+	public GameObject? Value
+	{
+		get => _value ??= AttemptAutoResolve();
+		set => _value = value;
+	}
 
 	public GameObjectMovieProperty( GameObject value )
 		: this ( value.Name )
@@ -130,6 +142,12 @@ file sealed class GameObjectMovieProperty : IMovieProperty<GameObject?>, ISceneR
 		_placeholderName = placeholderName;
 	}
 
+	public GameObjectMovieProperty( IMovieProperty target, string placeholderName )
+	{
+		_target = target;
+		_placeholderName = placeholderName;
+	}
+
 	object? IMovieProperty.Value
 	{
 		get => Value;
@@ -138,6 +156,13 @@ file sealed class GameObjectMovieProperty : IMovieProperty<GameObject?>, ISceneR
 
 	GameObject? ISceneReferenceMovieProperty.GameObject => Value;
 	Component? ISceneReferenceMovieProperty.Component => null;
+
+	private GameObject? AttemptAutoResolve()
+	{
+		return _target is not { IsBound: true, Value: GameObject go } || _placeholderName is not { } name
+			? null
+			: go.Children.FirstOrDefault( x => x.Name == name );
+	}
 }
 
 /// <summary>
