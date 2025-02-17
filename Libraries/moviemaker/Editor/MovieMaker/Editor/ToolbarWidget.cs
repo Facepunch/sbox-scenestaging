@@ -44,17 +44,6 @@ public class ToolbarWidget : Widget
 
 		Layout.AddSpacingCell( 16f );
 
-		foreach ( var type in EditMode.AllTypes )
-		{
-			var btn = new IconButton( type.Icon ) { ToolTip = type.Title, IsToggle = true, IconSize = 16 };
-
-			btn.Bind( "IsActive" ).From( () => type.IsMatchingType( Session.EditMode ), x => Session.SetEditMode( type ) );
-
-			Layout.Add( btn );
-		}
-
-		Layout.AddSpacingCell( 16f );
-
 		{
 			var btn = new IconButton( "play_arrow" );
 			btn.ToolTip = "Toggle Play";
@@ -79,10 +68,44 @@ public class ToolbarWidget : Widget
 			Layout.Add( btn );
 		}
 
+		Layout.AddSpacingCell( 16f );
+
+		foreach ( var type in EditMode.AllTypes )
+		{
+			var btn = new IconButton( type.Icon ) { ToolTip = type.Title, IsToggle = true, IconSize = 16 };
+
+			btn.Bind( "IsActive" ).From( () => type.IsMatchingType( Session.EditMode ), x => Session.SetEditMode( type ) );
+
+			Layout.Add( btn );
+		}
+
+		Layout.AddSpacingCell( 16f );
+
 		EditModeControls = Layout.AddRow();
 		EditModeControls.Spacing = 2;
 
 		Layout.AddStretchCell();
+
+		{
+			var btn = new IconButton( "straighten" );
+			btn.ToolTip = "Frame Snap";
+			btn.IsToggle = true;
+			btn.IconSize = 16;
+			btn.Bind( "IsActive" ).From( () => Session.FrameSnap, x => Session.FrameSnap = x );
+			Layout.Add( btn );
+
+			var rate = new ComboBox();
+
+			IReadOnlyList<int> frameRates = [24, 30, 48, 60];
+
+			foreach ( var frameRate in frameRates )
+			{
+				rate.AddItem( $"{frameRate} FPS", onSelected: () => Session.FrameRate = frameRate,
+					selected: Session.FrameRate == frameRate );
+			}
+
+			Layout.Add( rate );
+		}
 	}
 
 	protected override void OnPaint()

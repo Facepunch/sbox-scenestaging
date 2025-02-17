@@ -109,10 +109,12 @@ internal sealed partial class MotionEditMode : EditMode
 	{
 		if ( TimeSelection is { } selection && e.HasShift )
 		{
-			var delta = e.Delta * 0.1f / Session.PixelsPerSecond;
+			var delta = Math.Sign( e.Delta ) * Session.MinorTick.Interval;
 
 			selection.Value = selection.Value.WithFadeDurationDelta( delta );
 			SelectionChanged();
+
+			e.Accept();
 		}
 	}
 

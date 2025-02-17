@@ -8,7 +8,7 @@ namespace Editor.MovieMaker;
 /// <summary>
 /// Data model for <see cref="MovieClip.EditorData"/>.
 /// </summary>
-public record MovieClipEditorData;
+public record MovieClipEditorData( int? FrameRate = null );
 
 /// <summary>
 /// Data model for <see cref="MovieTrack.EditorData"/>.

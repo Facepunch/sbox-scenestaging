@@ -50,6 +50,7 @@ file sealed class AnimParamMovieProperty<T> : IMovieProperty<T>, IMemberMoviePro
 	public Type PropertyType { get; } = typeof(T);
 
 	public bool IsBound => TargetProperty.Value?.Graph?.GetParameterType( PropertyName ) == PropertyType;
+	public bool CanWrite => true;
 
 	public T Value
 	{

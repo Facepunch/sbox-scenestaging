@@ -113,8 +113,8 @@ partial class MotionEditMode
 
 		protected override void OnMoved()
 		{
-			var startTime = EditMode.Session.PixelsToTime( Position.x );
-			var endTime = EditMode.Session.PixelsToTime( Position.x + Size.x );
+			var startTime = EditMode.Session.PixelsToTime( Position.x, true );
+			var endTime = EditMode.Session.PixelsToTime( Position.x + Size.x, true );
 
 			var value = Value;
 

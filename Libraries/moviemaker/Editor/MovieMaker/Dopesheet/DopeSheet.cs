@@ -149,12 +149,7 @@ public class DopeSheet : GraphicsView
 
 		Session.EditMode?.MouseWheel( e );
 
-		// TODO: Can't check if event was accepted?
-
-		if ( e.HasShift )
-		{
-			return;
-		}
+		if ( e.Accepted ) return;
 
 		if ( GetAncestor<TrackListWidget>().OnCanvasWheel( e ) )
 		{
@@ -178,7 +173,7 @@ public class DopeSheet : GraphicsView
 			tracklist.ScrollBy( delta.x );
 		}
 
-		var time = Session.PixelsToTime( ToScene( e.LocalPosition ).x );
+		var time = Session.PixelsToTime( ToScene( e.LocalPosition ).x, true );
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
@@ -213,7 +208,7 @@ public class DopeSheet : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.SetCurrentPointer( Session.PixelsToTime( ToScene( e.LocalPosition ).x ) );
+			Session.SetCurrentPointer( Session.PixelsToTime( ToScene( e.LocalPosition ).x, true ) );
 			return;
 		}
 	}
@@ -236,7 +231,7 @@ public class DopeSheet : GraphicsView
 		if ( e.Key == KeyCode.Shift )
 		{
 			e.Accepted = true;
-			Session.SetPreviewPointer( Session.PixelsToTime( ToScene( lastpos ).x ) );
+			Session.SetPreviewPointer( Session.PixelsToTime( ToScene( lastpos ).x, true ) );
 		}
 	}
 

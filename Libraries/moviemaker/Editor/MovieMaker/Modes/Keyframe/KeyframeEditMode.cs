@@ -110,7 +110,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 		Session.SetCurrentPointer( time );
 		Session.ClearPreviewPointer();
 
-		if ( GetTrackAt( DopeSheet.ToScene( e.LocalPosition ) ) is { } track && GetKeyframes( track ) is { } keyframes )
+		if ( GetTrackAt( DopeSheet.ToScene( e.LocalPosition ) ) is { } track && GetKeyframes( track ) is { TrackWidget.Property.CanWrite: true } keyframes )
 		{
 			keyframes.AddKey( time );
 			WriteTracks( [keyframes] );
@@ -186,6 +186,11 @@ internal sealed partial class KeyframeEditMode : EditMode
 			return false;
 		}
 
+		if ( keyframes.TrackWidget.Property is not { CanWrite: true } )
+		{
+			return false;
+		}
+
 		// When about to change a track that doesn't have any keyframes, make a keyframe at t=0
 		// with the old value.
 
@@ -205,6 +210,11 @@ internal sealed partial class KeyframeEditMode : EditMode
 	protected override bool OnPostChange( DopeSheetTrack track )
 	{
 		if ( GetKeyframes( track ) is not { } keyframes )
+		{
+			return false;
+		}
+
+		if ( keyframes.TrackWidget.Property is not { CanWrite: true } )
 		{
 			return false;
 		}
@@ -336,6 +346,7 @@ internal sealed class TrackKeyframes : IDisposable
 	public void Write()
 	{
 		if ( Curve is null ) return;
+		if ( Session.Current is not { } session ) return;
 
 		Curve.Clear();
 
@@ -344,9 +355,9 @@ internal sealed class TrackKeyframes : IDisposable
 			Curve.SetKeyframe( handle.Time, handle.Value, handle.Interpolation );
 		}
 
-		TrackWidget.MovieTrack.WriteKeyframes( Curve );
+		TrackWidget.MovieTrack.WriteKeyframes( Curve, session.FrameRate );
 
-		Session.Current?.ClipModified();
+		session.ClipModified();
 
 		DopeSheetTrack.UpdateBlockPreviews();
 	}

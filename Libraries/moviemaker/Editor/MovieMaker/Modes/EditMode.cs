@@ -114,6 +114,11 @@ public abstract class EditMode
 
 	internal bool PreChange( MovieTrack track )
 	{
+		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } )
+		{
+			return false;
+		}
+
 		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
 		{
 			return OnPreChange( channel );
@@ -126,6 +131,11 @@ public abstract class EditMode
 
 	internal bool PostChange( MovieTrack track )
 	{
+		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } )
+		{
+			return false;
+		}
+
 		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
 		{
 			return OnPostChange( channel );

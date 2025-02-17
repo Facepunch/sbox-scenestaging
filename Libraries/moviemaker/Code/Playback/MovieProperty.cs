@@ -14,6 +14,11 @@ public interface IMovieProperty
 
 	bool IsBound { get; }
 
+	/// <summary>
+	/// Can this property be controlled by a movie clip?
+	/// </summary>
+	bool CanWrite { get; }
+
 	object? Value { get; set; }
 }
 
@@ -110,6 +115,7 @@ file sealed class GameObjectMovieProperty : IMovieProperty<GameObject?>, ISceneR
 	public Type PropertyType => typeof(GameObject);
 
 	public bool IsBound => Value.IsValid();
+	public bool CanWrite => false;
 
 	public GameObject? Value { get; set; }
 
@@ -146,6 +152,7 @@ file sealed class ComponentMovieProperty : IMovieProperty<Component?>, ISceneRef
 	public Type PropertyType { get; }
 
 	public bool IsBound => Value.IsValid();
+	public bool CanWrite => false;
 
 	public Component? Value
 	{
@@ -197,6 +204,12 @@ file sealed class MemberMovieProperty<T> : IMovieProperty<T>, IMemberMovieProper
 	public MemberDescription Member { get; }
 
 	public bool IsBound => TargetProperty.IsBound;
+	public bool CanWrite => Member switch
+	{
+		PropertyDescription propDesc => propDesc.CanWrite,
+		FieldDescription fieldDesc => !fieldDesc.IsInitOnly,
+		_ => false
+	};
 
 	public T Value
 	{

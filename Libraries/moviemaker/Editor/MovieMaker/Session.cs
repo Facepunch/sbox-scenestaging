@@ -17,10 +17,41 @@ public sealed partial class Session
 	internal MovieClip? Clip { get; private set; }
 	internal MovieEditor Editor { get; set; } = null!;
 
+	private bool _frameSnap;
+	private float _timeOffset;
+	private float _pixelsPerSecond;
+
 	public bool Playing { get; set; }
+	public bool FrameSnap
+	{
+		get => _frameSnap;
+		set => _frameSnap = Cookies.FrameSnap = value;
+	}
 	public bool Loop { get; set; } = true;
-	public float TimeOffset { get; private set; }
-	public float PixelsPerSecond { get; private set; } = 100.0f;
+
+	public float TimeOffset
+	{
+		get => _timeOffset;
+		private set => _timeOffset = Cookies.TimeOffset = value;
+	}
+
+	public float PixelsPerSecond
+	{
+		get => _pixelsPerSecond;
+		private set => _pixelsPerSecond = Cookies.PixelsPerSecond = value;
+	}
+
+	public MovieClipEditorData EditorData
+	{
+		get => Clip?.ReadEditorData() ?? new MovieClipEditorData();
+		set => Clip?.WriteEditorData( value );
+	}
+
+	public int FrameRate
+	{
+		get => EditorData.FrameRate ?? 30;
+		set => EditorData = EditorData with { FrameRate = value };
+	}
 
 	/// <summary>
 	/// When editing keyframes, what time are we changing.
@@ -73,9 +104,9 @@ public sealed partial class Session
 	{
 		var t = pixels / PixelsPerSecond;
 
-		if ( snap )
+		if ( snap && FrameSnap )
 		{
-			t = t.SnapToGrid( 1 / 10.0f ); // todo grid size
+			t = t.SnapToGrid( MinorTick.Interval );
 		}
 
 		return t;
@@ -111,7 +142,7 @@ public sealed partial class Session
 
 	public void SetCurrentPointer( float time )
 	{
-		CurrentPointer = Math.Max( 0, time );
+		CurrentPointer = Math.Max( time, 0f );
 
 		PointerChanged?.Invoke( CurrentPointer );
 
@@ -120,7 +151,7 @@ public sealed partial class Session
 
 	public void SetPreviewPointer( float time )
 	{
-		PreviewPointer = Math.Max( 0, time );
+		PreviewPointer = Math.Max( time, 0f );
 
 		PreviewChanged?.Invoke( PreviewPointer );
 

@@ -9,40 +9,24 @@ public class GridItem : GraphicsItem
 
 	protected override void OnPaint()
 	{
-		float oneSecond = Session.Current.TimeToPixels( 1 );
+		if ( Session.Current is not { } session ) return;
 
-
-		var mul = 1;
-
-		while ( (oneSecond * mul) < 70 )
+		foreach ( var (style, interval) in session.Ticks )
 		{
-			mul *= 5;
-		}
+			if ( style == TickStyle.TimeLabel ) continue;
 
-		oneSecond *= mul;
+			var dx = session.TimeToPixels( interval );
+			var offset = SceneRect.Left % dx;
 
-		float offset = SceneRect.Left % oneSecond;
+			Paint.SetPen( Theme.ControlText.WithAlpha( 0.02f ), style == TickStyle.Minor ? 0 : 2 );
 
+			for ( float x = 0; x < Size.x + dx; x += dx )
+			{
+				if ( session.PixelsToTime( x ) < 0f )
+					continue;
 
-		// 1 / 10
-		Paint.SetPen( Theme.ControlText.WithAlpha( 0.02f ) );
-		for ( float x = 0; x < Size.x + oneSecond; x += oneSecond / 10.0f )
-		{
-			if ( Session.Current.PixelsToTime( x ) < 0 )
-				continue;
-
-
-			Paint.DrawLine( new Vector2( x - offset, 0 ), new Vector2( x - offset, Size.y ) );
-		}
-
-		Paint.SetPen( Theme.ControlText.WithAlpha( 0.02f ), 2 );
-		for ( float x = 0; x < Size.x + oneSecond; x += oneSecond )
-		{
-			if ( Session.Current.PixelsToTime( x ) < 0 )
-				continue;
-
-			Paint.DrawLine( new Vector2( x - offset, 0 ), new Vector2( x - offset, Size.y ) );
+				Paint.DrawLine( new Vector2( x - offset, 0 ), new Vector2( x - offset, Size.y ) );
+			}
 		}
 	}
-
 }

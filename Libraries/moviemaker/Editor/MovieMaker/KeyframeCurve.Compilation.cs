@@ -8,13 +8,11 @@ namespace Editor.MovieMaker;
 
 public static class KeyframeExtensions
 {
-	public const float DefaultSampleRate = 30f;
-
-	public static bool CanHaveKeyframes( this IMovieProperty property ) => property is IMemberMovieProperty;
+	public static bool CanHaveKeyframes( this IMovieProperty property ) => property is IMemberMovieProperty { CanWrite: true };
 
 	public static KeyframeCurve? ReadKeyframes( this MovieTrack track ) => track.ReadEditorData()?.Keyframes;
 
-	public static void WriteKeyframes( this MovieTrack track, KeyframeCurve keyframes, float sampleRate = DefaultSampleRate )
+	public static void WriteKeyframes( this MovieTrack track, KeyframeCurve keyframes, float sampleRate )
 	{
 		Assert.AreEqual( track.PropertyType, keyframes.ValueType );
 

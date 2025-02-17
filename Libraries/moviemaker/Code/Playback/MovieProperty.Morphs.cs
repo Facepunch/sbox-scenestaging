@@ -35,6 +35,7 @@ file sealed class MorphMovieProperty : IMovieProperty<float>, IMemberMovieProper
 	public Type PropertyType => typeof(float);
 
 	public bool IsBound => TargetProperty.Value?.Names.Contains( PropertyName ) ?? false; // TODO: cache?
+	public bool CanWrite => true;
 
 	public float Value
 	{

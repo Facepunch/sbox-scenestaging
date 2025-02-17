@@ -25,23 +25,23 @@ public class ScrubberWidget : Widget
 	{
 		base.OnMousePress( e );
 
-		Session.SetCurrentPointer( GetTimeAt( e.LocalPosition.x ) );
+		Session.SetCurrentPointer( GetTimeAt( e.LocalPosition.x, true ) );
 	}
 
 	protected override void OnMouseMove( MouseEvent e )
 	{
 		base.OnMouseMove( e );
 
-		Session.SetCurrentPointer( GetTimeAt( e.LocalPosition.x ) );
+		Session.SetCurrentPointer( GetTimeAt( e.LocalPosition.x, true ) );
 	}
 
-	public float GetTimeAt( float x )
+	public float GetTimeAt( float x, bool snap = false )
 	{
 		var zero = Editor.TrackList.RightWidget.ToScreen( 0 );
 		zero = FromScreen( zero );
 		zero.x += 8;
 
-		var time = Session.PixelsToTime( x - zero.x );
+		var time = Session.PixelsToTime( x - zero.x, snap );
 		time += Session.TimeOffset;
 
 		return time;
@@ -87,53 +87,51 @@ public class ScrubberWidget : Widget
 		}
 
 		Paint.Antialiasing = true;
-
-		float zero = GetTimeAt( 0 );
-		var oneSecond = Session.TimeToPixels( 1 );
-
-		var mul = 1;
-
-		while ( oneSecond * mul < 70 )
-		{
-			mul *= 5;
-		}
-
-		oneSecond *= mul;
-		var timeOffset = Session.TimeToPixels( zero ) % oneSecond;
-
 		Paint.SetFont( "Roboto", 8, 300 );
 
-		var tickMargin = 2f;
+		var zero = GetTimeAt( 0 );
 
-		var smallTickHeight = 6f;
-		var bigTickHeight = Height - 6f;
-
-		var smallTickY = IsTop ? Height - smallTickHeight - tickMargin : tickMargin;
-		var bigTickY = IsTop ? Height - bigTickHeight - tickMargin : tickMargin;
-
-		for ( var x = -timeOffset; x < Width; x += oneSecond )
+		foreach ( var (style, interval) in Session.Ticks )
 		{
-			var time = GetTimeAt( x );
-			if ( time <= -0.1f ) continue;
+			var dx = Session.TimeToPixels( interval );
+			var timeOffset = Session.TimeToPixels( zero ) % dx;
+			var height = Height;
+			var margin = 2f;
 
+			switch ( style )
 			{
-				Paint.SetPen( Color.White.WithAlpha( 0.1f ) );
-				Paint.DrawLine( new Vector2( x, bigTickY ), new Vector2( x, bigTickY + bigTickHeight ) );
+				case TickStyle.TimeLabel:
+					Paint.SetPen( Theme.Green.WithAlpha( 0.2f ) );
+					height -= 12f;
+					margin = 10f;
+					break;
+
+				case TickStyle.Major:
+					Paint.SetPen( Color.White.WithAlpha( 0.1f ) );
+					height -= 6f;
+					break;
+
+				case TickStyle.Minor:
+					Paint.SetPen( Color.White.WithAlpha( 0.1f ) );
+					height = 6f;
+					break;
 			}
 
-			{
-				var ts = TimeSpan.FromSeconds( (int)(time + 0.5f) );
-				Paint.SetPen( Theme.Green.WithAlpha( 0.2f ) );
-				Paint.DrawText( new Vector2( x + 6, IsTop ? 2 : Height - 14f ), $"{ts}" );
+			var y = IsTop ? Height - height - margin : margin;
 
-				if ( oneSecond > 80 )
+			for ( var x = -timeOffset; x < Width; x += dx )
+			{
+				var time = GetTimeAt( x );
+				if ( time <= -0.0005f ) continue;
+
+				if ( style == TickStyle.TimeLabel )
 				{
-					Paint.SetPen( Color.White.WithAlpha( oneSecond.Remap( 30, 100, 0, 0.1f ) ) );
-					var tenth = oneSecond / 10.0f;
-					for ( var i = 1; i < 10; i++ )
-					{
-						Paint.DrawLine( new Vector2( x + tenth * i, smallTickY ), new Vector2( x + tenth * i, smallTickY + smallTickHeight ) );
-					}
+					Paint.SetPen( Theme.Green.WithAlpha( 0.2f ) );
+					Paint.DrawText( new Vector2( x + 6, y ), TimeToString( time, interval ) );
+				}
+				else
+				{
+					Paint.DrawLine( new Vector2( x, y ), new Vector2( x, y + height ) );
 				}
 			}
 		}
@@ -146,6 +144,11 @@ public class ScrubberWidget : Widget
 		{
 			DrawPointer( preview, Theme.Blue.WithAlpha( 0.5f ) );
 		}
+	}
+
+	private static string TimeToString( float time, float interval )
+	{
+		return TimeSpan.FromSeconds( time + 0.00049f ).ToString( @"mm\:ss\.fff" );
 	}
 
 	public void DrawPointer( float time, Color color )
