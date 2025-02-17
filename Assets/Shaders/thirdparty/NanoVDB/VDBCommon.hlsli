@@ -243,6 +243,11 @@ float3 WorldToIndexPosition(float3 WorldPos, float4x4 WorldToLocal, pnanovdb_buf
 	return pnanovdb_grid_world_to_indexf(buf, grid, Pos);
 }
 
+float3 LocalToIndexPosition(float3 LocalPos, pnanovdb_buf_t buf, pnanovdb_grid_handle_t grid)
+{
+	return pnanovdb_grid_world_to_indexf(buf, grid, LocalPos);
+}
+
 float3 IndexToWorldDirection(float3 IndexDirection, float4x4 LocalToWorld, pnanovdb_buf_t buf, pnanovdb_grid_handle_t grid)
 {
 	float3 LocalDir = pnanovdb_grid_index_to_world_dirf(buf, grid, IndexDirection);
@@ -264,16 +269,15 @@ float IndexToWorldDistance(float3 IndexVec, float4x4 LocalToWorld, pnanovdb_buf_
 }
 
 
-VdbRay PrepareRayFromPixel(pnanovdb_buf_t grid_buf, pnanovdb_grid_handle_t grid, uint2 ScreenPosition, uint2 ScreenDimension, float2 Jitter, float DeviceZ, float4x4 WorldToLocal)
+VdbRay PrepareRayFromPixel(pnanovdb_buf_t grid_buf, pnanovdb_grid_handle_t grid, float3 StartPos, float3 EndPos)
 {
-	// World space, TODO
 	Segment Seg;
-    Seg.Start = float3(0.0, 0.0, 0.0);
-    Seg.End = float3(0.0, 0.0, 1.0);
+    Seg.Start = StartPos;
+    Seg.End = EndPos;
 	
 	// Index space
-	float3 Origin = WorldToIndexPosition(Seg.Start, WorldToLocal, grid_buf, grid);
-	float3 End = WorldToIndexPosition(Seg.End, WorldToLocal, grid_buf, grid);
+	float3 Origin = LocalToIndexPosition(Seg.Start, grid_buf, grid);
+	float3 End = LocalToIndexPosition(Seg.End, grid_buf, grid);
 
 	float Dist = length(End - Origin);
 
@@ -281,7 +285,7 @@ VdbRay PrepareRayFromPixel(pnanovdb_buf_t grid_buf, pnanovdb_grid_handle_t grid,
 	Ray.Origin = Origin;
 	Ray.Direction = (End - Origin) / Dist;
 	Ray.TMin = 0.0001f;
-	Ray.TMax = DeviceZ == 0.0 ? POSITIVE_INFINITY : Dist;
+	Ray.TMax = Dist;
 
 	return Ray;
 }

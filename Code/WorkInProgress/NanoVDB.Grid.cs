@@ -12,6 +12,7 @@ public partial class NanoVDB
 
         public static Grid Read( BinaryReader reader, Metadata metadata )
         {
+            var basePos = reader.BaseStream.Position;
             Grid grid = new()
             {
                 Name = new string( reader.ReadChars( (int)metadata.NameSize ) ),
@@ -19,10 +20,7 @@ public partial class NanoVDB
             };
 
             // Go back to the start of the grid data
-            reader.BaseStream.Position -= 672;
-
-            if( grid.Header.GridSize % 32 != 0 )
-                throw new Exception( "Grid size must be divisible by 32" );
+            reader.BaseStream.Position = basePos + (int)metadata.NameSize;
 
             grid.Data = new uint[grid.Header.GridSize / sizeof(uint)];
             for (int i = 0; i < grid.Data.Length; i++)
@@ -87,6 +85,9 @@ public partial class NanoVDB
 
                 if ( header.Magic != Magic.Grid && header.Magic != Magic.Numb )
                     throw new Exception( "Invalid NanoVDB grid header" );
+                
+                if( header.GridSize % 32 != 0 )
+                    throw new Exception( "Grid size must be divisible by 32" );
 
                 if( header.Data2 != Magic.Grid )
                     throw new Exception( "Expected NANOVDB_MAGIC_GRID on Data2" );
