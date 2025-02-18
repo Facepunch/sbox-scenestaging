@@ -8,6 +8,8 @@ internal readonly record struct FadeSelection( float PeakTime, float FadeTime, I
 
 internal readonly record struct TimeSelection( FadeSelection? Start, FadeSelection? End )
 {
+	public bool HasZeroWidthPeak => Start is { } start && End is { } end && start.PeakTime >= end.PeakTime - 0.001f;
+
 	public TimeSelection Clamp( float minTime, float maxTime )
 	{
 		return new TimeSelection(
@@ -34,6 +36,17 @@ internal readonly record struct TimeSelection( FadeSelection? Start, FadeSelecti
 		return new TimeSelection(
 			Start is { } start ? start with { FadeTime = Math.Min( start.PeakTime, start.FadeTime - delta ) } : null,
 			End is { } end ? end with { FadeTime = Math.Max( end.PeakTime, end.FadeTime + delta ) } : null );
+	}
+
+	public TimeSelection WithPeak( float time, InterpolationMode defaultInterpolation )
+	{
+		return new TimeSelection(
+			Start is { } start
+				? start with { PeakTime = time, FadeTime = time - start.Duration }
+				: new FadeSelection( time, time, defaultInterpolation ),
+			End is { } end
+				? end with { PeakTime = time, FadeTime = time + end.Duration }
+				: new FadeSelection( time, time, defaultInterpolation ) );
 	}
 
 	public TimeSelection WithPeakStart( float time, InterpolationMode defaultInterpolation, bool keepDuration = true )
@@ -243,14 +256,23 @@ partial class MotionEditMode
 		{
 			if ( EditMode.TimeSelection is not { } selection || Value is not { } value ) return;
 
-			var time = EditMode.Session.PixelsToTime( Position.x, true );
-
-			EditMode.TimeSelection = Kind switch
+			if ( selection is { Start: { } start, End: { } end } && start.PeakTime >= end.PeakTime - 0.01f )
 			{
-				FadeKind.FadeIn => selection.WithPeakStart( time + Sign * value.Duration, value.Interpolation ),
-				FadeKind.FadeOut => selection.WithPeakEnd( time + Sign * value.Duration, value.Interpolation ),
-				_ => selection
-			};
+				var offset = HandlePosition.x * 2f - 1f;
+				var time = EditMode.Session.PixelsToTime( Position.x - offset * Width, true );
+				EditMode.TimeSelection = selection.WithPeak( time, EditMode.DefaultInterpolation );
+			}
+			else
+			{
+				var time = EditMode.Session.PixelsToTime( Position.x, true );
+
+				EditMode.TimeSelection = Kind switch
+				{
+					FadeKind.FadeIn => selection.WithPeakStart( time + Sign * value.Duration, value.Interpolation ),
+					FadeKind.FadeOut => selection.WithPeakEnd( time + Sign * value.Duration, value.Interpolation ),
+					_ => selection
+				};
+			}
 		}
 
 		protected override void OnKeyPress( KeyEvent e )
