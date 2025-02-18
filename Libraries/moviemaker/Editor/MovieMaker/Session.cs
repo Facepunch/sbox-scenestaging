@@ -70,6 +70,17 @@ public sealed partial class Session
 	SmoothDeltaFloat SmoothZoom = new SmoothDeltaFloat { Value = 100.0f, Target = 100.0f, SmoothTime = 0.3f };
 	SmoothDeltaFloat SmoothPan = new SmoothDeltaFloat { Value = 0.0f, Target = 0f, SmoothTime = 0.3f };
 
+	public (float Min, float Max) VisibleTimeRange
+	{
+		get
+		{
+			var minTime = PixelsToTime( 0f ) + TimeOffset;
+			var maxTime = PixelsToTime( Editor.TrackList.RightWidget.Width ) + TimeOffset;
+
+			return (minTime, maxTime);
+		}
+	}
+
 	private float? _lastPlayerPosition;
 
 	/// <summary>

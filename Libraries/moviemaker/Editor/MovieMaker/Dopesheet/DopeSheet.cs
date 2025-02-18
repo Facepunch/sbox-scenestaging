@@ -20,6 +20,9 @@ public class DopeSheet : GraphicsView
 	private CurrentPointerItem _currentPointerItem;
 	private CurrentPointerItem _previewPointerItem;
 
+	public ScrubberItem ScrubBarTop { get; }
+	public ScrubberItem ScrubBarBottom { get; }
+
 	public DopeSheet( TrackListWidget timelineTracklist )
 	{
 		this.tracklist = timelineTracklist;
@@ -33,6 +36,11 @@ public class DopeSheet : GraphicsView
 
 		_previewPointerItem = new CurrentPointerItem( Theme.Blue );
 		Add( _previewPointerItem );
+
+		ScrubBarTop = new ScrubberItem( timelineTracklist.Session.Editor, true ) { Size = new Vector2( Width, 24f ) };
+		Add( ScrubBarTop );
+		ScrubBarBottom = new ScrubberItem( timelineTracklist.Session.Editor, false ) { Size = new Vector2( Width, 24f ) };
+		Add( ScrubBarBottom );
 
 		Session.PointerChanged += UpdateCurrentPosition;
 		Session.PreviewChanged += UpdatePreviewPosition;
@@ -60,6 +68,8 @@ public class DopeSheet : GraphicsView
 	[EditorEvent.Frame]
 	public void Frame()
 	{
+		UpdateScrubBars();
+
 		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset );
 
 		if ( state != lastState )
@@ -75,10 +85,27 @@ public class DopeSheet : GraphicsView
 		}
 	}
 
+	private void UpdateScrubBars()
+	{
+		ScrubBarTop.PrepareGeometryChange();
+		ScrubBarBottom.PrepareGeometryChange();
+
+		var screenRect = tracklist.ScreenRect;
+
+		screenRect.Left = tracklist.RightWidget.ScreenRect.Left;
+
+		ScrubBarTop.Position = ToScene( FromScreen( screenRect.TopLeft ) );
+		ScrubBarBottom.Position = ToScene( FromScreen( screenRect.BottomLeft ) );
+
+		ScrubBarTop.Width = Width;
+		ScrubBarBottom.Width = Width;
+	}
+
 	protected override void OnResize()
 	{
 		base.OnResize();
 
+		UpdateScrubBars();
 		UpdateTracks();
 	}
 
@@ -137,10 +164,6 @@ public class DopeSheet : GraphicsView
 		{
 			track.UpdateChannelPosition();
 		}
-
-		// Scrub bar position depends on width of track headers
-
-		tracklist.Editor.UpdateScrubBars();
 	}
 
 	protected override void OnWheel( WheelEvent e )

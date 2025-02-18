@@ -187,9 +187,6 @@ public abstract class EditMode
 	internal void TrackLayout( DopeSheetTrack track, Rect rect ) => OnTrackLayout( track, rect );
 	protected virtual void OnTrackLayout( DopeSheetTrack track, Rect rect ) { }
 
-	internal void ScrubberPaint( ScrubberWidget scrubber ) => OnScrubberPaint( scrubber );
-	protected virtual void OnScrubberPaint( ScrubberWidget scrubber ) { }
-
 	#endregion
 
 	public static IReadOnlyList<EditModeType> AllTypes => EditorTypeLibrary.GetTypes<EditMode>()

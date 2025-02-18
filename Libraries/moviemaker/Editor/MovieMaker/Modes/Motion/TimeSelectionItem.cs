@@ -21,16 +21,11 @@ internal record struct TimeSelection( FadeTime? Start, FadeTime? End )
 			End is { } end ? end with { Interpolation = interpolation } : null );
 	}
 
-	public TimeSelection WithTimeRange( float min, float max, InterpolationMode defaultInterpolation )
+	public TimeSelection WithTimeRange( float? min, float? max, InterpolationMode defaultInterpolation )
 	{
-		if ( min > max )
-		{
-			(min, max) = (max, min);
-		}
-
 		return new TimeSelection(
-			Start is { } start ? start with { PeakTime = min } : new FadeTime( min, 0f, defaultInterpolation ),
-			End is { } end ? end with { PeakTime = max } : new FadeTime( max, 0f, defaultInterpolation ) );
+			min is not { } minValue ? null : Start is { } start ? start with { PeakTime = minValue } : new FadeTime( minValue, 0f, defaultInterpolation ),
+			max is not { } maxValue ? null : End is { } end ? end with { PeakTime = maxValue } : new FadeTime( maxValue, 0f, defaultInterpolation ) );
 	}
 
 	public TimeSelection WithFadeDurationDelta( float delta )
@@ -82,7 +77,7 @@ partial class MotionEditMode
 			get => _value;
 			set
 			{
-				_value = value.Clamp( 0f, EditMode.Session.Clip?.Duration ?? float.PositiveInfinity );
+				_value = value.Clamp( 0f, float.PositiveInfinity );
 				UpdatePosition();
 			}
 		}
@@ -156,9 +151,6 @@ partial class MotionEditMode
 			Size = new Vector2( EditMode.Session.TimeToPixels( endTime - startTime ), EditMode.DopeSheet.Height );
 
 			Update();
-
-			EditMode.Session.Editor.ScrubBarTop.Update();
-			EditMode.Session.Editor.ScrubBarBottom.Update();
 		}
 
 		protected override void OnPaint()
@@ -198,6 +190,7 @@ partial class MotionEditMode
 
 		private List<Vector2> TempPoints { get; } = new();
 
+		/*
 		public void ScrubberPaint( ScrubberWidget scrubber )
 		{
 			var x1 = scrubber.ToPixels( Value.Start?.PeakTime ?? 0f );
@@ -221,6 +214,11 @@ partial class MotionEditMode
 					start.Interpolation,
 					false );
 			}
+			else
+			{
+				points.Add( new Vector2( x0, y0 ) );
+				points.Add( new Vector2( x0, y1 ) );
+			}
 
 			if ( Value.End is { } end )
 			{
@@ -229,6 +227,11 @@ partial class MotionEditMode
 					new Vector2( x3 - x2, y0 - y1 ),
 					end.Interpolation,
 					true );
+			}
+			else
+			{
+				points.Add( new Vector2( x3, y1 ) );
+				points.Add( new Vector2( x3, y0 ) );
 			}
 
 			Paint.SetBrushAndPen( Color );
@@ -241,6 +244,7 @@ partial class MotionEditMode
 			Paint.DrawLine( new Vector2( x1, 0f ), new Vector2( x1, LocalRect.Height ) );
 			Paint.DrawLine( new Vector2( x2, 0f ), new Vector2( x2, LocalRect.Height ) );
 		}
+		*/
 
 		private void AddCurve( List<Vector2> points, Vector2 origin, Vector2 delta, InterpolationMode interpolation, bool flip )
 		{

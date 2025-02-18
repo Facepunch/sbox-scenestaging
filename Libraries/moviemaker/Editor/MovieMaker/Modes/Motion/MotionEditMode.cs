@@ -84,19 +84,35 @@ internal sealed partial class MotionEditMode : EditMode
 			&& Session.PreviewPointer is { } time
 			&& _selectionStartTime is { } dragStartTime )
 		{
-			selection.Value = selection.Value.WithTimeRange( dragStartTime, time, DefaultInterpolation );
+			var (minTime, maxTime) = Session.VisibleTimeRange;
+
+			if ( time <= minTime )
+			{
+				selection.Value = selection.Value.WithTimeRange( null, dragStartTime, DefaultInterpolation );
+			}
+			else if ( time >= maxTime && time < Session.Clip?.Duration )
+			{
+				selection.Value = selection.Value.WithTimeRange( dragStartTime, null, DefaultInterpolation );
+			}
+			else
+			{
+				selection.Value = selection.Value.WithTimeRange( Math.Min( dragStartTime, time ), Math.Max( dragStartTime, time ), DefaultInterpolation );
+			}
+
 			SelectionChanged();
 		}
 	}
 
 	protected override void OnMouseRelease( MouseEvent e )
 	{
-		if ( _selectionStartTime is { } dragStartTime && TimeSelection is { } selection )
+		if ( _selectionStartTime is not null && TimeSelection is { } selection )
 		{
 			_selectionStartTime = null;
 
-			var startTime = selection.Value.Start?.PeakTime ?? 0f;
-			var endTime = selection.Value.End?.PeakTime ?? Session.Clip?.Duration ?? 0f;
+			var (minTime, maxTime) = Session.VisibleTimeRange;
+
+			var startTime = Math.Max( minTime, selection.Value.Start?.PeakTime ?? 0f );
+			var endTime = Math.Min( maxTime, selection.Value.End?.PeakTime ?? Session.Clip?.Duration ?? 0f );
 
 			var midTime = (startTime + endTime) * 0.5f;
 
@@ -116,10 +132,5 @@ internal sealed partial class MotionEditMode : EditMode
 
 			e.Accept();
 		}
-	}
-
-	protected override void OnScrubberPaint( ScrubberWidget scrubber )
-	{
-		TimeSelection?.ScrubberPaint( scrubber );
 	}
 }

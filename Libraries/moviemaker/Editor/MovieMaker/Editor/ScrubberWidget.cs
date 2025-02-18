@@ -3,60 +3,36 @@
 /// <summary>
 /// A bar with times and notches on it
 /// </summary>
-public class ScrubberWidget : Widget
+public class ScrubberItem : GraphicsItem
 {
 	public MovieEditor Editor { get; }
 	public Session Session { get; }
 
 	public bool IsTop { get; }
 
-	public ScrubberWidget( MovieEditor timelineEditor, bool isTop ) : base( timelineEditor )
+	public ScrubberItem( MovieEditor timelineEditor, bool isTop )
 	{
 		Session = timelineEditor.Session;
 		Editor = timelineEditor;
-		MinimumHeight = 24;
 		IsTop = isTop;
 
-		TranslucentBackground = false;
-		NoSystemBackground = false;
+		ZIndex = 5000;
+
+		HandlePosition = new Vector2( 0f, IsTop ? 0f : 1f );
 	}
 
-	protected override void OnMousePress( MouseEvent e )
+	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
-		base.OnMousePress( e );
+		base.OnMousePressed( e );
 
-		Session.SetCurrentPointer( GetTimeAt( e.LocalPosition.x, true ) );
+		Session.SetCurrentPointer( Session.PixelsToTime( e.LocalPosition.x, true ) );
 	}
 
-	protected override void OnMouseMove( MouseEvent e )
+	protected override void OnMouseMove( GraphicsMouseEvent e )
 	{
 		base.OnMouseMove( e );
 
-		Session.SetCurrentPointer( GetTimeAt( e.LocalPosition.x, true ) );
-	}
-
-	public float GetTimeAt( float x, bool snap = false )
-	{
-		var zero = Editor.TrackList.RightWidget.ToScreen( 0 );
-		zero = FromScreen( zero );
-		zero.x += 8;
-
-		var time = Session.PixelsToTime( x - zero.x, snap );
-		time += Session.TimeOffset;
-
-		return time;
-	}
-
-	public float ToPixels( float time )
-	{
-		var zero = Editor.TrackList.RightWidget.ToScreen( 0 );
-		zero = FromScreen( zero );
-		zero.x += 8;
-
-		var pixels = Session.TimeToPixels( time );
-		pixels -= Session.TimeToPixels( Session.TimeOffset );
-
-		return pixels + zero.x;
+		Session.SetCurrentPointer( Session.PixelsToTime( e.LocalPosition.x, true ) );
 	}
 
 	protected override void OnPaint()
@@ -68,8 +44,10 @@ public class ScrubberWidget : Widget
 
 		// Darker background for the clip duration
 
-		var startX = ToPixels( 0f );
-		var endX = ToPixels( duration );
+		var range = Session.VisibleTimeRange;
+
+		var startX = FromScene( Session.TimeToPixels( 0f ) ).x;
+		var endX = FromScene( Session.TimeToPixels( duration ) ).x;
 
 		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground );
 		Paint.DrawRect( new Rect( new Vector2( startX, LocalRect.Top ), new Vector2( endX - startX, LocalRect.Height ) ) );
@@ -89,12 +67,8 @@ public class ScrubberWidget : Widget
 		Paint.Antialiasing = true;
 		Paint.SetFont( "Roboto", 8, 300 );
 
-		var zero = GetTimeAt( 0 );
-
 		foreach ( var (style, interval) in Session.Ticks )
 		{
-			var dx = Session.TimeToPixels( interval );
-			var timeOffset = Session.TimeToPixels( zero ) % dx;
 			var height = Height;
 			var margin = 2f;
 
@@ -119,13 +93,17 @@ public class ScrubberWidget : Widget
 
 			var y = IsTop ? Height - height - margin : margin;
 
-			for ( var x = -timeOffset; x < Width; x += dx )
+			var t0 = Math.Max( MathF.Floor( range.Min / interval ) * interval, 0f );
+			var t1 = t0 + (range.Max - range.Min);
+
+			for ( var t = t0; t <= t1; t += interval )
 			{
-				var time = GetTimeAt( x );
-				if ( time <= -0.0005f ) continue;
+				var x = FromScene( Session.TimeToPixels( t ) ).x;
 
 				if ( style == TickStyle.TimeLabel )
 				{
+					var time = Session.PixelsToTime( ToScene( x ).x );
+
 					Paint.SetPen( Theme.Green.WithAlpha( 0.2f ) );
 					Paint.DrawText( new Vector2( x + 6, y ), TimeToString( time, interval ) );
 				}
@@ -135,15 +113,6 @@ public class ScrubberWidget : Widget
 				}
 			}
 		}
-
-		Editor.Session.EditMode?.ScrubberPaint( this );
-
-		DrawPointer( Session.CurrentPointer, Theme.Yellow );
-
-		if ( Session.PreviewPointer is { } preview )
-		{
-			DrawPointer( preview, Theme.Blue.WithAlpha( 0.5f ) );
-		}
 	}
 
 	private static string TimeToString( float time, float interval )
@@ -151,23 +120,7 @@ public class ScrubberWidget : Widget
 		return TimeSpan.FromSeconds( time + 0.00049f ).ToString( @"mm\:ss\.fff" );
 	}
 
-	public void DrawPointer( float time, Color color )
-	{
-		var pos = ToPixels( time );
-		Paint.SetBrushAndPen( color );
-
-		if ( IsTop )
-		{
-			Extensions.PaintBookmarkDown( pos, Height, 4, 4, 12 );
-		}
-		else
-		{
-			Extensions.PaintBookmarkUp( pos, 0f, 4, 4, 12 );
-		}
-	}
-
 	int lastState;
-
 
 	[EditorEvent.Frame]
 	public void Frame()
