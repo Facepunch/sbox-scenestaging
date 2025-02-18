@@ -23,6 +23,21 @@ public class DopeSheet : GraphicsView
 	public ScrubberItem ScrubBarTop { get; }
 	public ScrubberItem ScrubBarBottom { get; }
 
+	public Rect VisibleRect
+	{
+		get
+		{
+			var screenRect = tracklist.ScreenRect;
+
+			screenRect.Left = tracklist.RightWidget.ScreenRect.Left;
+
+			var topLeft = FromScreen( screenRect.TopLeft );
+			var bottomRight = FromScreen( screenRect.BottomRight );
+
+			return ToScene( new Rect( topLeft, bottomRight - topLeft ) );
+		}
+	}
+
 	public DopeSheet( TrackListWidget timelineTracklist )
 	{
 		this.tracklist = timelineTracklist;
@@ -90,12 +105,10 @@ public class DopeSheet : GraphicsView
 		ScrubBarTop.PrepareGeometryChange();
 		ScrubBarBottom.PrepareGeometryChange();
 
-		var screenRect = tracklist.ScreenRect;
+		var visibleRect = VisibleRect;
 
-		screenRect.Left = tracklist.RightWidget.ScreenRect.Left;
-
-		ScrubBarTop.Position = ToScene( FromScreen( screenRect.TopLeft ) );
-		ScrubBarBottom.Position = ToScene( FromScreen( screenRect.BottomLeft ) );
+		ScrubBarTop.Position = visibleRect.TopLeft;
+		ScrubBarBottom.Position = visibleRect.BottomLeft;
 
 		ScrubBarTop.Width = Width;
 		ScrubBarBottom.Width = Width;
@@ -111,16 +124,20 @@ public class DopeSheet : GraphicsView
 
 	private void UpdateCurrentPosition( float time )
 	{
-		_currentPointerItem.Position = new Vector2( Session.TimeToPixels( time ), 0 );
-		_currentPointerItem.Size = new Vector2( 1, Height );
+		_currentPointerItem.PrepareGeometryChange();
+
+		_currentPointerItem.Position = new Vector2( Session.TimeToPixels( time ), VisibleRect.Top + 12f );
+		_currentPointerItem.Size = new Vector2( 1, VisibleRect.Height - 24f );
 	}
 
 	private void UpdatePreviewPosition( float? time )
 	{
+		_previewPointerItem.PrepareGeometryChange();
+
 		if ( time is not null )
 		{
-			_previewPointerItem.Position = new Vector2( Session.TimeToPixels( time.Value ), 0 );
-			_previewPointerItem.Size = new Vector2( 1, Height );
+			_previewPointerItem.Position = new Vector2( Session.TimeToPixels( time.Value ), VisibleRect.Top + 12f );
+			_previewPointerItem.Size = new Vector2( 1, VisibleRect.Height - 24f );
 		}
 		else
 		{

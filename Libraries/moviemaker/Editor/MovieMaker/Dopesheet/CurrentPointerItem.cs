@@ -15,6 +15,10 @@ public class CurrentPointerItem : GraphicsItem
 	protected override void OnPaint()
 	{
 		Paint.SetPen( Color.WithAlpha( 0.5f ) );
-		Paint.DrawLine( 0, new Vector2( 0, Size.y ) );
+		Paint.DrawLine( new Vector2( 0f, 12f ), new Vector2( 0, Height - 12f ) );
+		Paint.SetBrushAndPen( Color );
+
+		Extensions.PaintBookmarkDown( Width * 0.5f, 12f, 4, 4, 12 );
+		Extensions.PaintBookmarkUp( Width * 0.5f, Height - 12f, 4, 4, 12 );
 	}
 }
