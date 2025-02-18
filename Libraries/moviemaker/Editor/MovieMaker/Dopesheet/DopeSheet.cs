@@ -59,6 +59,7 @@ public class DopeSheet : GraphicsView
 
 		Session.PointerChanged += UpdateCurrentPosition;
 		Session.PreviewChanged += UpdatePreviewPosition;
+		Session.ViewChanged += UpdateView;
 
 		FocusMode = FocusMode.TabOrClickOrWheel;
 
@@ -76,9 +77,11 @@ public class DopeSheet : GraphicsView
 
 		Session.PointerChanged -= UpdateCurrentPosition;
 		Session.PreviewChanged -= UpdatePreviewPosition;
+		Session.ViewChanged -= UpdateView;
 	}
 
-	int lastState;
+	private int _lastState;
+	private int _lastVisibleRectHash;
 
 	[EditorEvent.Frame]
 	public void Frame()
@@ -87,17 +90,30 @@ public class DopeSheet : GraphicsView
 
 		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset );
 
-		if ( state != lastState )
+		if ( state != _lastState )
 		{
-			lastState = state;
+			_lastState = state;
 			UpdateTracks();
 			Update();
+		}
+
+		var visibleRectHash = VisibleRect.GetHashCode();
+
+		if ( visibleRectHash != _lastVisibleRectHash )
+		{
+			_lastVisibleRectHash = visibleRectHash;
+			Session.DispatchViewChanged();
 		}
 
 		if ( (Application.KeyboardModifiers & KeyboardModifiers.Shift) == 0 && Session.PreviewPointer is not null )
 		{
 			Session.ClearPreviewPointer();
 		}
+	}
+
+	private void UpdateView()
+	{
+		UpdateScrubBars();
 	}
 
 	private void UpdateScrubBars()

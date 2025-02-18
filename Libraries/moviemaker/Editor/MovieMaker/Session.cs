@@ -287,4 +287,10 @@ public sealed partial class Session
 			asset.SaveToDisk( Player.ReferencedClip );
 		}
 	}
+
+	public void DispatchViewChanged()
+	{
+		ViewChanged?.Invoke();
+		EditMode?.ViewChanged( Editor.TrackList.DopeSheet.VisibleRect );
+	}
 }

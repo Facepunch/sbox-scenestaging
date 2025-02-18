@@ -1,11 +1,23 @@
-﻿namespace Editor.MovieMaker;
+﻿using System.Linq;
+
+namespace Editor.MovieMaker;
 
 #nullable enable
 
 [Title( "Motion Editor"), Icon( "brush" ), Order( 1 )]
 internal sealed partial class MotionEditMode : EditMode
 {
-	private TimeSelectionItem? TimeSelection { get; set; }
+	private TimeSelection? _timeSelection;
+
+	public TimeSelection? TimeSelection
+	{
+		get => _timeSelection;
+		set
+		{
+			_timeSelection = value;
+			SelectionChanged();
+		}
+	}
 	public InterpolationMode DefaultInterpolation { get; private set; } = InterpolationMode.QuadraticInOut;
 
 	public bool IsAdditive { get; private set; }
@@ -19,15 +31,14 @@ internal sealed partial class MotionEditMode : EditMode
 		foreach ( var interpolation in Enum.GetValues<InterpolationMode>() )
 		{
 			Toolbar.AddToggle( interpolation,
-				() => (TimeSelection?.Value.Start?.Interpolation ?? DefaultInterpolation) == interpolation,
+				() => (TimeSelection?.Start?.Interpolation ?? DefaultInterpolation) == interpolation,
 				_ =>
 				{
 					DefaultInterpolation = interpolation;
 
 					if ( TimeSelection is { } timeSelection )
 					{
-						timeSelection.Value = timeSelection.Value.WithInterpolation( interpolation );
-						SelectionChanged();
+						TimeSelection = timeSelection.WithInterpolation( interpolation );
 					}
 				} );
 		}
@@ -40,11 +51,7 @@ internal sealed partial class MotionEditMode : EditMode
 	{
 		ClearChanges();
 
-		if ( TimeSelection is not null )
-		{
-			TimeSelection.Destroy();
-			TimeSelection = null;
-		}
+		TimeSelection = null;
 	}
 
 	protected override void OnDisable()
@@ -59,17 +66,9 @@ internal sealed partial class MotionEditMode : EditMode
 			return;
 		}
 
-		if ( TimeSelection is null )
-		{
-			TimeSelection = new TimeSelectionItem( this );
-			DopeSheet.Add( TimeSelection );
-		}
-
-		TimeSelection.Value = new TimeSelection(
-			new FadeTime( time, 0f, DefaultInterpolation ),
-			new FadeTime( time, 0f, DefaultInterpolation ) );
-
-		SelectionChanged();
+		TimeSelection = new TimeSelection(
+			new FadeSelection( time, time, DefaultInterpolation ),
+			new FadeSelection( time, time, DefaultInterpolation ) );
 
 		_selectionStartTime = time;
 
@@ -88,18 +87,16 @@ internal sealed partial class MotionEditMode : EditMode
 
 			if ( time <= minTime )
 			{
-				selection.Value = selection.Value.WithTimeRange( null, dragStartTime, DefaultInterpolation );
+				TimeSelection = selection.WithTimeRange( null, dragStartTime, DefaultInterpolation );
 			}
 			else if ( time >= maxTime && time < Session.Clip?.Duration )
 			{
-				selection.Value = selection.Value.WithTimeRange( dragStartTime, null, DefaultInterpolation );
+				TimeSelection = selection.WithTimeRange( dragStartTime, null, DefaultInterpolation );
 			}
 			else
 			{
-				selection.Value = selection.Value.WithTimeRange( Math.Min( dragStartTime, time ), Math.Max( dragStartTime, time ), DefaultInterpolation );
+				TimeSelection = selection.WithTimeRange( Math.Min( dragStartTime, time ), Math.Max( dragStartTime, time ), DefaultInterpolation );
 			}
-
-			SelectionChanged();
 		}
 	}
 
@@ -111,8 +108,8 @@ internal sealed partial class MotionEditMode : EditMode
 
 			var (minTime, maxTime) = Session.VisibleTimeRange;
 
-			var startTime = Math.Max( minTime, selection.Value.Start?.PeakTime ?? 0f );
-			var endTime = Math.Min( maxTime, selection.Value.End?.PeakTime ?? Session.Clip?.Duration ?? 0f );
+			var startTime = Math.Max( minTime, selection.Start?.PeakTime ?? 0f );
+			var endTime = Math.Min( maxTime, selection.End?.PeakTime ?? Session.Clip?.Duration ?? 0f );
 
 			var midTime = (startTime + endTime) * 0.5f;
 
@@ -127,10 +124,19 @@ internal sealed partial class MotionEditMode : EditMode
 		{
 			var delta = Math.Sign( e.Delta ) * Session.MinorTick.Interval;
 
-			selection.Value = selection.Value.WithFadeDurationDelta( delta );
-			SelectionChanged();
+			TimeSelection = selection.WithFadeDurationDelta( delta );
 
 			e.Accept();
+		}
+	}
+
+	private void SetInterpolation( InterpolationMode mode )
+	{
+		DefaultInterpolation = mode;
+
+		if ( DopeSheet.GetItemAt( DopeSheet.ToScene( DopeSheet.FromScreen( Application.CursorPosition ) ) ) is TimeSelectionFadeItem { Value: { } value } fade )
+		{
+			fade.Value = value with { Interpolation = mode };
 		}
 	}
 }

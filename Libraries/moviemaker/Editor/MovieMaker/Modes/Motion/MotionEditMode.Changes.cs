@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using Editor.MapEditor;
+using System.Linq;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -8,7 +8,21 @@ namespace Editor.MovieMaker;
 
 partial class MotionEditMode
 {
+	private bool _hasChanges;
+
 	public override bool AllowTrackCreation => TimeSelection is not null;
+
+	public bool HasChanges
+	{
+		get => _hasChanges;
+		set
+		{
+			_hasChanges = value;
+			SelectionChanged();
+		}
+	}
+
+	public Color SelectionColor => (HasChanges ? Theme.Yellow : Theme.Blue).WithAlpha( 0.25f );
 
 	/// <summary>
 	/// Captures the state of a track before it was modified, and records any pending changes.
@@ -149,11 +163,7 @@ partial class MotionEditMode
 		}
 
 		TrackStates.Clear();
-
-		if ( TimeSelection is { } selection )
-		{
-			selection.HasChanges = false;
-		}
+		HasChanges = false;
 	}
 
 	private void CommitChanges()
@@ -165,11 +175,11 @@ partial class MotionEditMode
 
 		foreach ( var (track, state) in TrackStates )
 		{
-			state.Update( selection.Value );
+			state.Update( selection );
 		}
 
 		TrackStates.Clear();
-		selection.HasChanges = false;
+		HasChanges = false;
 
 		Session.Current?.ClipModified();
 	}
@@ -230,21 +240,64 @@ partial class MotionEditMode
 			state.ChangedValue = property.Value;
 		}
 
-		selection.HasChanges = true;
+		HasChanges = true;
 
-		return state.Update( selection.Value );
+		return state.Update( selection );
 	}
+
+	private bool _hasSelectionItems;
 
 	private void SelectionChanged()
 	{
-		if ( TimeSelection is not { } selection )
+		if ( TimeSelection is { } selection )
 		{
-			return;
-		}
+			foreach ( var (track, state) in TrackStates )
+			{
+				state.Update( selection );
+			}
 
-		foreach ( var (track, state) in TrackStates )
+			if ( !_hasSelectionItems )
+			{
+				_hasSelectionItems = true;
+
+				DopeSheet.Add( new TimeSelectionPeakItem( this ) );
+				DopeSheet.Add( new TimeSelectionFadeItem( this, FadeKind.FadeIn ) );
+				DopeSheet.Add( new TimeSelectionFadeItem( this, FadeKind.FadeOut ) );
+
+				// Peak edge handles
+
+				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.Start is { } start ? start.PeakTime : null, ( value, time ) => value.WithPeakStart( time, DefaultInterpolation, false ) ) );
+				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.End is { } end ? end.PeakTime : null, ( value, time ) => value.WithPeakEnd( time, DefaultInterpolation, false ) ) );
+
+				// Fade edge handles
+
+				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.Start is { } start ? start.FadeTime : null, (value, time) => value.WithFadeStart( time ) ) );
+				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.End is { } end ? end.FadeTime : null, ( value, time ) => value.WithFadeEnd( time ) ) );
+			}
+
+			foreach ( var item in DopeSheet.Items.OfType<ITimeSelectionItem>() )
+			{
+				item.UpdatePosition( selection, DopeSheet.VisibleRect );
+			}
+		}
+		else if ( _hasSelectionItems )
 		{
-			state.Update( selection.Value );
+			_hasSelectionItems = false;
+
+			foreach ( var item in DopeSheet.Items.OfType<ITimeSelectionItem>().ToArray() )
+			{
+				item.Destroy();
+			}
+		}
+	}
+
+	protected override void OnViewChanged( Rect viewRect )
+	{
+		if ( TimeSelection is not { } selection ) return;
+
+		foreach ( var item in DopeSheet.Items.OfType<ITimeSelectionItem>() )
+		{
+			item.UpdatePosition( selection, viewRect );
 		}
 	}
 }
