@@ -15,9 +15,23 @@ public class TrackWidget : Widget
 
 	public Layout Buttons { get; }
 
+	public bool Locked
+	{
+		get => MovieTrack.ReadEditorData()?.Locked ?? false;
+		set
+		{
+			MovieTrack.ModifyEditorData( x => x with { Locked = value } );
+			UpdateLockedState( true );
+		}
+	}
+
 	RealTimeSince timeSinceInteraction = 1000;
 
 	private bool _wasVisible;
+	private bool _couldModify;
+
+	private readonly Label _label;
+	private readonly Button _lockButton;
 
 	public TrackWidget( MovieTrack track, TrackListWidget list )
 	{
@@ -34,6 +48,8 @@ public class TrackWidget : Widget
 		Buttons.Spacing = 2f;
 		Buttons.Margin = 2f;
 
+		_lockButton = Buttons.Add( new LockButton( this ) );
+
 		Property = TrackList.Session.Player.GetOrAutoResolveProperty( MovieTrack );
 
 		// Track might not be mapped to any property in the current scene
@@ -43,7 +59,7 @@ public class TrackWidget : Widget
 			return;
 		}
 
-		Layout.Add( new Label( Property.PropertyName ) );
+		_label = Layout.Add( new Label( Property.PropertyName ) );
 
 		if ( Property is ISceneReferenceMovieProperty )
 		{
@@ -63,6 +79,41 @@ public class TrackWidget : Widget
 				Layout.Add( ctrl );
 			}
 		}
+
+		UpdateLockedState( false );
+	}
+
+	private void UpdateLockedState( bool dispatch )
+	{
+		Update();
+		DopeSheetTrack?.UpdateBlockItems();
+
+		var labelColor = new Color( 0.6f, 0.6f, 0.6f );
+
+		_lockButton.Update();
+		_label.Color = MovieTrack.CanModify() ? labelColor : labelColor.Darken( 0.5f );
+
+		if ( Parent is TrackGroup group && group.Header == this )
+		{
+			Parent.Update();
+		}
+
+		foreach ( var child in MovieTrack.Children )
+		{
+			if ( TrackList.FindTrack( child ) is { } childWidget )
+			{
+				childWidget.UpdateLockedState( dispatch );
+			}
+		}
+
+		var canModify = MovieTrack.CanModify();
+
+		if ( dispatch && DopeSheetTrack is { } dopeSheetTrack && canModify != _couldModify )
+		{
+			TrackList.Session.EditMode?.TrackStateChanged( dopeSheetTrack );
+		}
+
+		_couldModify = canModify;
 	}
 
 	protected override void OnMoved()
@@ -147,9 +198,11 @@ public class TrackWidget : Widget
 	{
 		get
 		{
-			var defaultColor = DopeSheet.Colors.ChannelBackground;
-			var hoveredColor = DopeSheet.Colors.ChannelBackground.Lighten( 0.1f );
-			var selectedColor = Color.Lerp( defaultColor, Theme.Primary, 0.5f );
+			var canModify = MovieTrack.CanModify();
+
+			var defaultColor = DopeSheet.Colors.ChannelBackground.Lighten( canModify ? 0f : 0.2f );
+			var hoveredColor = defaultColor.Lighten( 0.1f );
+			var selectedColor = Color.Lerp( defaultColor, Theme.Primary, canModify ? 0.5f : 0.2f );
 
 			var isHovered = IsUnderMouse;
 			var isSelected = IsFocused || menu.IsValid() && menu.Visible;
@@ -209,7 +262,10 @@ public class TrackWidget : Widget
 
 		if ( MovieTrack.Children.Count > 0 )
 		{
-			menu.AddOption( "Delete Empty Children", "cleaning_services", RemoveEmptyChildren );
+			menu.AddOption( "Delete Empty", "cleaning_services", RemoveEmptyChildren );
+			menu.AddSeparator();
+			menu.AddOption( "Lock Children", "lock", LockChildren );
+			menu.AddOption( "Unlock Children", "lock_open", UnlockChildren );
 		}
 
 		menu.OpenAtCursor();
@@ -251,9 +307,52 @@ public class TrackWidget : Widget
 		}
 	}
 
+	void LockChildren()
+	{
+		foreach ( var child in MovieTrack.Children )
+		{
+			child.ModifyEditorData( x => x with { Locked = true } );
+		}
+	}
+
+	void UnlockChildren()
+	{
+		foreach ( var child in MovieTrack.Children )
+		{
+			child.ModifyEditorData( x => x with { Locked = false } );
+		}
+	}
+
 	public void NoteInteraction()
 	{
 		timeSinceInteraction = 0;
 		Update();
+	}
+}
+
+file class LockButton : Button
+{
+	public TrackWidget TrackWidget { get; }
+
+	public LockButton( TrackWidget trackWidget )
+	{
+		TrackWidget = trackWidget;
+
+		FixedSize = 20f;
+	}
+
+	protected override void OnPaint()
+	{
+		Paint.SetBrushAndPen( Extensions.PaintSelectColor( DopeSheet.Colors.Background,
+			Theme.ControlBackground.Lighten( 0.5f ), Theme.Primary ) );
+		Paint.DrawRect( LocalRect, 4f );
+
+		Paint.SetPen( Theme.ControlText );
+		Paint.DrawIcon( LocalRect, TrackWidget.Locked ? "lock" : "lock_open", 12f );
+	}
+
+	protected override void OnClicked()
+	{
+		TrackWidget.Locked = !TrackWidget.Locked;
 	}
 }

@@ -2,22 +2,24 @@
 using System.Linq;
 using Sandbox.MovieMaker;
 
-namespace Editor.MovieMaker;
+namespace Editor.MovieMaker.BlockDisplays;
 
 #nullable enable
 
-partial class BlockPreview
+partial class BlockItem
 {
-	public static BlockPreview? Create( DopeSheetTrack parent, MovieBlock block )
+	public static BlockItem? Create( DopeSheetTrack parent, IMovieBlock block )
 	{
-		foreach ( var typeDesc in EditorTypeLibrary.GetTypes<BlockPreview>() )
+		if ( block.Data is not IMovieBlockValueData { ValueType: { } valueType } ) return null;
+
+		foreach ( var typeDesc in EditorTypeLibrary.GetTypes<BlockItem>() )
 		{
 			var type = typeDesc.TargetType;
 
 			if ( type.IsAbstract ) continue;
 			if ( type.IsGenericType )
 			{
-				if ( !TryMakeGenericType( type, block.Track.PropertyType, out var newType ) )
+				if ( !TryMakeGenericType( type, valueType, out var newType ) )
 				{
 					continue;
 				}
@@ -25,11 +27,11 @@ partial class BlockPreview
 				type = newType;
 			}
 
-			if ( !SupportsPropertyType( type, block.Track.PropertyType ) ) continue;
+			if ( !SupportsPropertyType( type, valueType ) ) continue;
 
 			try
 			{
-				var inst = (BlockPreview)Activator.CreateInstance( type )!;
+				var inst = (BlockItem)Activator.CreateInstance( type )!;
 
 				inst.Initialize( parent, block );
 
@@ -69,7 +71,7 @@ partial class BlockPreview
 	{
 		return trackPreviewType.GetInterfaces()
 			.Where( x => x.IsConstructedGenericType )
-			.Where( x => x.GetGenericTypeDefinition() == typeof(IBlockPreview<>) )
+			.Where( x => x.GetGenericTypeDefinition() == typeof(IBlockItem<>) )
 			.Any( x => x.GetGenericArguments()[0].IsAssignableFrom( propertyType ) );
 	}
 }

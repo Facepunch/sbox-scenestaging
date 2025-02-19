@@ -12,7 +12,7 @@
 	[Property] public Sandbox.MovieMaker.MoviePlayer Player { get; set; }
 
 
-    System.TimeSpan Position => System.TimeSpan.FromSeconds( Player?.Position ?? 0 );
+    System.TimeSpan Position => System.TimeSpan.FromSeconds( Player?.PositionSeconds ?? 0 );
 
     /// <summary>
     /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt

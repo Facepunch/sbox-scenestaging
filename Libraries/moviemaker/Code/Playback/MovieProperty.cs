@@ -168,7 +168,6 @@ file sealed class GameObjectMovieProperty : IMovieProperty<GameObject?>, ISceneR
 /// <summary>
 /// Movie property that references a <see cref="Component"/> in a scene.
 /// </summary>
-/// <typeparam name="T">Component type stored in the property.</typeparam>
 file sealed class ComponentMovieProperty : IMovieProperty<Component?>, ISceneReferenceMovieProperty, IMemberMovieProperty
 {
 	private Component? _value;

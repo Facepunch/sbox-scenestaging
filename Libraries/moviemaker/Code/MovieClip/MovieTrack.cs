@@ -14,6 +14,7 @@ public sealed partial class MovieTrack
 {
 	private MovieClip? _clip;
 	private MovieTrack? _parent;
+	private bool _cutsInvalid = true;
 
 	private readonly List<MovieTrack> _children = new();
 
@@ -21,7 +22,10 @@ public sealed partial class MovieTrack
 	/// List of blocks in this track, ordered by <see cref="MovieBlock.Id"/>.
 	/// </summary>
 	private readonly List<MovieBlock> _blocks = new();
+
 	private readonly Dictionary<int, MovieBlock> _blockDict = new();
+
+	private readonly List<(MovieTimeRange TimeRange, MovieBlock Block)> _cuts = new();
 
 	/// <summary>
 	/// Which clip contains this track.
@@ -69,6 +73,22 @@ public sealed partial class MovieTrack
 	public IReadOnlyList<MovieBlock> Blocks => _blocks;
 
 	/// <summary>
+	/// Maps time ranges to which block is active during that time.
+	/// </summary>
+	public IReadOnlyList<(MovieTimeRange TimeRange, MovieBlock Block)> Cuts
+	{
+		get
+		{
+			UpdateCuts();
+			return _cuts;
+		}
+	}
+
+	public MovieTimeRange TimeRange => Cuts is { Count: > 0 } cuts
+		? new MovieTimeRange( cuts[0].TimeRange.Start, cuts[^1].TimeRange.End )
+		: default;
+
+	/// <summary>
 	/// Editor-only information about this track.
 	/// </summary>
 	public JsonObject? EditorData { get; set; }
@@ -104,10 +124,17 @@ public sealed partial class MovieTrack
 		_children.Remove( track );
 	}
 
-	public MovieBlock AddBlock( float startTime, float? duration, MovieBlockData data )
+	internal void BlockChangedInternal( MovieBlock block )
+	{
+		_cutsInvalid = true;
+	}
+
+	public MovieBlock AddBlock( IMovieBlock block ) => AddBlock( block.TimeRange, block.Data );
+
+	public MovieBlock AddBlock( MovieTimeRange timeRange, IMovieBlockData data )
 	{
 		var nextId = _blocks.Count == 0 ? 1 : _blocks[^1].Id + 1;
-		var block = new MovieBlock( this, nextId, startTime, duration, data );
+		var block = new MovieBlock( this, nextId, timeRange, data );
 
 		AddBlockInternal( block );
 
@@ -118,6 +145,8 @@ public sealed partial class MovieTrack
 	{
 		_blocks.Add( block );
 		_blockDict.Add( block.Id, block );
+
+		BlockChangedInternal( block );
 	}
 
 	public MovieBlock? GetBlock( int id ) => _blockDict!.GetValueOrDefault( id );
@@ -126,7 +155,38 @@ public sealed partial class MovieTrack
 	/// Gets the block that has control at the given <paramref name="time"/>. If multiple
 	/// blocks overlap, returns the most recently added.
 	/// </summary>
-	public MovieBlock? GetBlock( float time ) => _blocks.LastOrDefault( x => x.Contains( time ) );
+	public MovieBlock? GetBlock( MovieTime time )
+	{
+		var cuts = Cuts;
+
+		if ( cuts.Count == 0 ) return null;
+		if ( cuts[0].TimeRange.Start >= time ) return cuts[0].Block;
+		if ( cuts[^1].TimeRange.End <= time ) return cuts[^1].Block;
+
+		// TODO: binary search?
+
+		foreach ( var cut in cuts )
+		{
+			if ( cut.TimeRange.Contains( time ) )
+			{
+				return cut.Block;
+			}
+		}
+
+		return Cuts[^1].Block;
+	}
+
+	public bool TryGetValue( MovieTime time, out object? value )
+	{
+		if ( GetBlock( time ) is not { Data: IMovieBlockValueData data } block )
+		{
+			value = null;
+			return false;
+		}
+
+		value = data.GetValue( time - block.Start );
+		return true;
+	}
 
 	public void RemoveBlocks()
 	{
@@ -161,8 +221,74 @@ public sealed partial class MovieTrack
 	{
 		if ( GetBlock( block.Id ) == block )
 		{
+			BlockChangedInternal( block );
+
 			_blocks.Remove( block );
 			_blockDict.Remove( block.Id );
+		}
+	}
+
+	private void UpdateCuts()
+	{
+		if ( !_cutsInvalid ) return;
+
+		_cutsInvalid = false;
+		_cuts.Clear();
+
+		if ( Blocks is not { Count: >0 } blocks ) return;
+
+		var cutTimes = blocks
+			.SelectMany<MovieBlock, MovieTime>( x => [x.TimeRange.Start, x.TimeRange.End] )
+			.Distinct()
+			.Order()
+			.ToArray();
+
+		var prev = cutTimes[0];
+		var prevBlock = blocks.LastOrDefault( x => x.TimeRange.Contains( prev ) ) ?? blocks.MinBy( x => x.Start );
+
+		for ( var i = 1; i < cutTimes.Length; i++ )
+		{
+			var next = cutTimes[i];
+			var nextBlock = blocks.LastOrDefault( x => x.TimeRange.Contains( prev ) ) ?? prevBlock;
+
+			if ( nextBlock == prevBlock && _cuts.Count > 0 )
+			{
+				_cuts[^1] = ((_cuts[^1].TimeRange.Start, next), nextBlock);
+			}
+			else
+			{
+				_cuts.Add( ((prev, next), nextBlock) );
+			}
+
+			prev = next;
+		}
+	}
+
+	public IEnumerable<(MovieTimeRange TimeRange, MovieBlock Block)> GetCuts( MovieTimeRange timeRange )
+	{
+		if ( Cuts is not { Count: > 0 } cuts ) yield break;
+
+		var firstCut = Cuts[0];
+		var lastCut = Cuts[^1];
+
+		if ( firstCut.TimeRange.Start > timeRange.Start )
+		{
+			yield return ((timeRange.Start, firstCut.TimeRange.Start), firstCut.Block);
+		}
+
+		foreach ( var cut in cuts )
+		{
+			if ( cut.TimeRange.End <= timeRange.Start ) continue;
+			if ( cut.TimeRange.Start >= timeRange.End ) break;
+
+			if ( cut.TimeRange.Intersect( timeRange ) is not { IsEmpty: false } intersection ) continue;
+
+			yield return (intersection, cut.Block);
+		}
+
+		if ( lastCut.TimeRange.End < timeRange.End )
+		{
+			yield return ((lastCut.TimeRange.End, timeRange.End), lastCut.Block);
 		}
 	}
 }

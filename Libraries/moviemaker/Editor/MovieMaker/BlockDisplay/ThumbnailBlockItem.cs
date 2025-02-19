@@ -1,10 +1,9 @@
-﻿using Editor.MovieMaker;
-
-namespace Editor.TrackPainter;
+﻿
+namespace Editor.MovieMaker.BlockDisplays;
 
 #nullable enable
 
-public abstract class ThumbnailPreview<T> : BlockPreview<T>
+public abstract class ThumbnailBlockItem<T> : BlockItem<T>
 {
 	protected abstract Pixmap? GetThumbnail();
 
@@ -19,7 +18,7 @@ public abstract class ThumbnailPreview<T> : BlockPreview<T>
 	}
 }
 
-public sealed class ResourcePreview<T> : ThumbnailPreview<T>
+public sealed class ResourceBlockItem<T> : ThumbnailBlockItem<T>
 	where T : Resource
 {
 	protected override Pixmap? GetThumbnail() => Constant?.Value is { ResourcePath: { } path }

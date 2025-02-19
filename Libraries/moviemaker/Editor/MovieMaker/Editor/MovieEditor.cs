@@ -114,22 +114,46 @@ public class MovieEditor : Widget
 		Session?.Save();
 	}
 
-	[Shortcut( "timeline.copy", "CTRL+C", ShortcutType.Widget )]
+	[Shortcut( "timeline.selectall", "CTRL+A" )]
+	public void OnSelectAll()
+	{
+		Session?.EditMode?.SelectAll();
+	}
+
+	[Shortcut( "timeline.cut", "CTRL+X" )]
+	public void OnCut()
+	{
+		Session?.EditMode?.Cut();
+	}
+
+	[Shortcut( "timeline.copy", "CTRL+C" )]
 	public void OnCopy()
 	{
-		TrackList?.OnCopy();
+		Session?.EditMode?.Copy();
 	}
 
-	[Shortcut( "timeline.paste", "CTRL+V", ShortcutType.Widget )]
+	[Shortcut( "timeline.paste", "CTRL+V" )]
 	public void OnPaste()
 	{
-		TrackList?.OnPaste();
+		Session?.EditMode?.Paste();
 	}
 
-	[Shortcut( "timeline.delete", "DEL", ShortcutType.Widget )]
+	[Shortcut( "timeline.delete", "DEL" )]
 	public void OnDelete()
 	{
-		TrackList?.OnDelete();
+		Session?.EditMode?.Delete( false );
+	}
+
+	[Shortcut( "timeline.shiftdelete", "SHIFT+DEL" )]
+	public void OnShiftDelete()
+	{
+		Session?.EditMode?.Delete( true );
+	}
+
+	[Shortcut( "timeline.insert", "TAB" )]
+	public void OnInsert()
+	{
+		Session?.EditMode?.Insert();
 	}
 
 	int contextHash;

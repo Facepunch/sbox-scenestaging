@@ -9,6 +9,9 @@ namespace Editor.MovieMaker;
 partial class MotionEditMode
 {
 	private bool _hasChanges;
+	private MovieTime? _changeDuration;
+
+	private RealTimeSince _lastActionTime;
 
 	public override bool AllowTrackCreation => TimeSelection is not null;
 
@@ -22,126 +25,179 @@ partial class MotionEditMode
 		}
 	}
 
-	public Color SelectionColor => (HasChanges ? Theme.Yellow : Theme.Blue).WithAlpha( 0.25f );
+	public Color SelectionColor
+	{
+		get
+		{
+			var t = MathF.Pow( Math.Clamp( 1f - _lastActionTime, 0f, 1f ), 8f );
+			var color = (HasChanges ? Theme.Yellow : Theme.Blue).WithAlpha( 0.25f );
+
+			return Color.Lerp( color, Theme.White.WithAlpha( 0.5f ), t );
+		}
+	}
+
+	public string? LastActionIcon { get; private set; }
 
 	/// <summary>
-	/// Captures the state of a track before it was modified, and records any pending changes.
+	/// Holds pending changes for a track.
 	/// </summary>
 	private sealed class TrackState
 	{
-		// TODO: we assume block start times / durations don't change
-
+		public EditMode EditMode { get; }
 		public MovieTrack Track { get; }
 
-		public IReadOnlyDictionary<int, MovieBlockData> Before { get; }
-		public Dictionary<int, MovieBlockData> After { get; } = new();
+		private MovieTime? _originTime;
 
-		private object? _changedValue;
-
-		public object? ChangedValue
+		private record ChangeMapping( MovieTimeRange TimeRange, IMovieBlock Original, IMovieBlock Change ) : IMovieBlock
 		{
-			get => _changedValue;
-			set
-			{
-				_changedValue = value;
-				HasChanges = true;
-			}
+			private IMovieBlockData? _originalData;
+
+			public IMovieBlockData? PreviewData { get; set; }
+
+			public IMovieBlockData OriginalData => _originalData ??= Original.Data.Slice( TimeRange - Original.TimeRange.Start );
+
+			IMovieBlockData IMovieBlock.Data => PreviewData ?? OriginalData;
 		}
 
-		public bool IsAdditive { get; set; }
+		private readonly List<IMovieBlock> _changes = new();
+		private readonly List<ChangeMapping> _changeMappings = new();
 
-		public bool HasChanges { get; private set; }
+		public bool HasChanges => _changes.Count > 0;
 
 		public TrackModifier? Modifier { get; }
 
-		public TrackState( MovieTrack track )
+		public TrackState( EditMode editMode, MovieTrack track )
 		{
+			EditMode = editMode;
 			Track = track;
-
-			Before = track.Blocks.ToImmutableDictionary(
-				x => x.Id,
-				x => x.Data );
-
 			Modifier = TrackModifier.Get( track.PropertyType );
 		}
 
-		private bool TryGetOriginalValue( float time, out object? value )
-		{
-			if ( Track.GetBlock( time ) is not { } block )
-			{
-				value = null;
-				return false;
-			}
-
-			var blockData = Before.TryGetValue( block.Id, out var before )
-				? before
-				: block.Data;
-
-			switch ( blockData )
-			{
-				case IConstantData constant:
-					value = constant.Value;
-					return true;
-
-				case ISamplesData samples:
-					value = samples.GetValue( time - block.StartTime );
-					return true;
-			}
-
-			value = null;
-			return false;
-		}
-
-		public bool TryGetLocalValue( float time, object? globalValue, out object? localValue )
+		public bool TryGetLocalValue( MovieTime time, object? globalValue, out object? localValue )
 		{
 			localValue = null;
 
 			if ( LocalTransformer.GetDefault( Track.PropertyType ) is not { } transformer ) return false;
-			if ( !TryGetOriginalValue( time, out var relativeTo ) ) return false;
+			if ( !Track.TryGetValue( time, out var relativeTo ) ) return false;
 
 			localValue = transformer.ToLocal( globalValue, relativeTo );
 			return true;
 		}
 
-		public bool Update( TimeSelection selection )
+		public void SetChanges( MovieTime? originTime, IEnumerable<IMovieBlock> blocks )
 		{
-			if ( Modifier is not { } modifier )
+			_originTime = originTime;
+
+			_changes.Clear();
+			_changes.AddRange( blocks );
+		}
+
+		public void SetChanges( MovieTime? originTime, params IMovieBlock[] blocks ) => SetChanges( originTime, blocks.AsEnumerable() );
+
+		public void SetChanges( MovieTime? originTime, object? constantValue )
+		{
+			if ( Modifier is null ) return;
+
+			SetChanges( originTime, new MovieBlockSlice( (MovieTime.Zero, MovieTime.MaxValue), EditHelpers.CreateConstantData( Track.PropertyType, constantValue ) ) );
+		}
+
+		public void ClearPreview()
+		{
+			_changeMappings.Clear();
+
+			EditMode.ClearPreviewBlocks( Track );
+		}
+
+		private void UpdateChangeMappings( MovieTimeRange timeRange, MovieTime changeOffset )
+		{
+			_changeMappings.Clear();
+
+			for ( var i = 0; i < _changes.Count; ++i )
+			{
+				var change = _changes[i];
+				var changeTimeRange = change.TimeRange + changeOffset;
+
+				// First / last change should be used outside the changed range
+
+				if ( i == 0 )
+				{
+					changeTimeRange = (MovieTime.Min( changeTimeRange.Start, timeRange.Start ), changeTimeRange.End);
+				}
+
+				if ( i == _changes.Count - 1 )
+				{
+					changeTimeRange = (changeTimeRange.Start, MovieTime.Max( changeTimeRange.End, timeRange.End ));
+				}
+
+				if ( changeTimeRange.Intersect( timeRange ) is not { IsEmpty: false } intersection ) continue;
+
+				var changeBlock = new MovieBlockSlice( change.TimeRange + changeOffset, change.Data );
+				var anyCuts = false;
+
+				foreach ( var cut in Track.GetCuts( intersection ) )
+				{
+					_changeMappings.Add( new ChangeMapping( cut.TimeRange, cut.Block, changeBlock ) );
+					anyCuts = true;
+				}
+
+				if ( !anyCuts )
+				{
+					_changeMappings.Add( new ChangeMapping( intersection, changeBlock, changeBlock ) );
+				}
+			}
+		}
+
+		public bool Update( TimeSelection selection, MovieTime offset, bool additive )
+		{
+			if ( !HasChanges || Modifier is not { } modifier || !Track.CanModify() )
+			{
+				ClearPreview();
+				return false;
+			}
+
+			if ( additive ) throw new NotImplementedException();
+
+			var timeRange = selection.TotalTimeRange;
+			var sampleRate = EditMode.Clip.DefaultSampleRate;
+
+			UpdateChangeMappings( timeRange, offset );
+
+			foreach ( var mapping in _changeMappings )
+			{
+				mapping.PreviewData = modifier.Blend( mapping.Original, mapping.Change, mapping.TimeRange, selection, additive, sampleRate );
+			}
+
+			EditMode.SetPreviewBlocks( Track, _changeMappings );
+
+			return true;
+		}
+
+		public bool Commit( TimeSelection selection, MovieTime offset, bool additive )
+		{
+			if ( !Update( selection, offset, additive ) ) return false;
+
+			var insertOptions = new InsertOptions( _changeMappings,
+				StitchStart: selection.FadeIn.Duration.IsPositive,
+				StitchEnd: selection.FadeOut.Duration.IsPositive );
+
+			if ( !Track.Splice( selection.TotalTimeRange, selection.TotalTimeRange.Duration, insertOptions ) )
 			{
 				return false;
 			}
 
-			var changed = false;
-
-			foreach ( var (id, data) in Before )
+			MovieBlock? prevBlock = null;
+			foreach ( var cut in Track.GetCuts( selection.PeakTimeRange ).ToArray() )
 			{
-				if ( Track.GetBlock( id ) is not { } block )
-				{
-					continue;
-				}
-
-				if ( !HasChanges )
-				{
-					After.Remove( id );
-					block.Data = data;
-					continue;
-				}
-
-				var newData = modifier.Modify( block, data, selection, ChangedValue, IsAdditive );
-
-				if ( ReferenceEquals( newData, data ) )
-				{
-					After.Remove( id );
-					block.Data = data;
-				}
-				else
-				{
-					After[id] = newData;
-					block.Data = newData;
-					changed = true;
-				}
+				prevBlock = prevBlock?.End == cut.Block.Start
+					? Track.Stitch( prevBlock, cut.Block ) ?? cut.Block
+					: cut.Block;
 			}
 
-			return changed;
+			ClearPreview();
+
+			_changeMappings.Clear();
+
+			return true;
 		}
 	}
 
@@ -149,39 +205,164 @@ partial class MotionEditMode
 
 	private void ClearChanges()
 	{
-		foreach ( var (track, state) in TrackStates )
-		{
-			if ( !track.IsValid ) continue;
+		if ( !HasChanges ) return;
 
-			foreach ( var (blockId, data) in state.Before )
-			{
-				if ( track.GetBlock( blockId ) is { } block )
-				{
-					block.Data = data;
-				}
-			}
+		foreach ( var state in TrackStates.Values )
+		{
+			state.ClearPreview();
 		}
+
+		_changeDuration = null;
 
 		TrackStates.Clear();
 		HasChanges = false;
+
+		DisplayAction( "clear" );
 	}
 
 	private void CommitChanges()
 	{
-		if ( TimeSelection is not { } selection )
+		if ( TimeSelection is not { } selection || !HasChanges ) return;
+
+		foreach ( var (_, state) in TrackStates )
 		{
-			return;
+			state.Commit( selection, ChangeOffset, IsAdditive );
 		}
 
-		foreach ( var (track, state) in TrackStates )
-		{
-			state.Update( selection );
-		}
+		_changeDuration = null;
+
+		DisplayAction( "approval" );
 
 		TrackStates.Clear();
 		HasChanges = false;
 
-		Session.Current?.ClipModified();
+		Session.ClipModified();
+	}
+
+	protected override void OnDelete( bool shift )
+	{
+		if ( TimeSelection is not { } selection ) return;
+
+		if ( Session.Delete( selection.PeakTimeRange, shift ) )
+		{
+			DisplayAction( "delete" );
+		}
+	}
+
+	protected override void OnInsert()
+	{
+		if ( TimeSelection is not { } selection ) return;
+
+		if ( Session.Insert( selection.PeakTimeRange ) )
+		{
+			DisplayAction( "keyboard_tab" );
+		}
+	}
+
+	private record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<Guid, IReadOnlyList<MovieBlockSlice>> Tracks );
+
+	private static ClipboardData? Clipboard { get; set; }
+
+	protected override void OnSelectAll()
+	{
+		TimeSelection = new TimeSelection( (MovieTime.Zero, Clip.Duration), DefaultInterpolation );
+	}
+
+	protected override void OnCut()
+	{
+		OnCopy();
+		Delete( true );
+
+		DisplayAction( "content_cut" );
+	}
+
+	protected override void OnCopy()
+	{
+		if ( TimeSelection is not { } selection || Session.Clip is not { } clip ) return;
+
+		var timeRange = selection.TotalTimeRange;
+		var offset = Session.CurrentPointer;
+		var tracks = new Dictionary<Guid, IReadOnlyList<MovieBlockSlice>>();
+		var slicedBlocks = new List<MovieBlockSlice>();
+
+		foreach ( var track in clip.AllTracks )
+		{
+			if ( !track.CanModify() ) continue;
+
+			slicedBlocks.Clear();
+			slicedBlocks.AddRange( track.Slice( timeRange ).Select( x => x with { TimeRange = x.TimeRange - offset } ) );
+
+			if ( slicedBlocks.Count > 0 )
+			{
+				tracks[track.Id] = slicedBlocks.ToImmutableList();
+			}
+		}
+
+		if ( tracks.Count > 0 )
+		{
+			Clipboard = new ClipboardData( selection - offset, tracks.ToImmutableDictionary() );
+
+			DisplayAction( "content_copy" );
+		}
+	}
+
+	protected override void OnPaste()
+	{
+		if ( Session.Clip is not { } clip || Clipboard is not { } clipboard ) return;
+
+		ClearChanges();
+
+		var selection = clipboard.Selection + Session.CurrentPointer;
+		var pasteTime = selection.TotalStart;
+
+		TimeSelection = selection;
+		ChangeOffset = pasteTime;
+
+		var changed = false;
+
+		foreach ( var (id, blocks) in clipboard.Tracks )
+		{
+			if ( clip.GetTrack( id ) is not { } track ) continue;
+
+			var state = GetOrCreateTrackState( track );
+
+			state.SetChanges( Session.CurrentPointer, blocks.Select( x => x with { TimeRange = x.TimeRange - clipboard.Selection.TotalStart } ) );
+			state.Update( selection, ChangeOffset, IsAdditive );
+
+			changed = true;
+		}
+
+		_changeDuration = changed ? clipboard.Selection.TotalTimeRange.Duration : null;
+		HasChanges = changed;
+
+		if ( changed )
+		{
+			DisplayAction( "content_paste" );
+		}
+	}
+
+	private TrackState? GetTrackState( MovieTrack track )
+	{
+		return TrackStates!.GetValueOrDefault( track );
+	}
+
+	private TrackState GetOrCreateTrackState( MovieTrack track )
+	{
+		if ( GetTrackState( track ) is { } state ) return state;
+
+		TrackStates.Add( track, state = new TrackState( this, track ) );
+
+		return state;
+	}
+
+	protected override void OnTrackStateChanged( DopeSheetTrack track )
+	{
+		if ( TimeSelection is not { } selection ) return;
+
+		if ( GetTrackState( track.TrackWidget.MovieTrack ) is { } state )
+		{
+			state.Update( selection, ChangeOffset, IsAdditive );
+		}
 	}
 
 	protected override bool OnPreChange( DopeSheetTrack track )
@@ -199,9 +380,7 @@ partial class MotionEditMode
 			return false;
 		}
 
-		var state = TrackStates[movieTrack] = new TrackState( movieTrack );
-
-		Log.Info( $"Adding change: {movieTrack.FullName}" );
+		var state = TrackStates[movieTrack] = new TrackState( this, movieTrack );
 
 		if ( state.Modifier is null )
 		{
@@ -222,27 +401,16 @@ partial class MotionEditMode
 			return false;
 		}
 
-		if ( !TrackStates.TryGetValue( movieTrack, out var state ) )
+		if ( GetTrackState( movieTrack ) is not { } state )
 		{
 			return false;
 		}
 
-		var globalValue = property.Value;
-
-		if ( IsAdditive && state.TryGetLocalValue( Session.CurrentPointer, globalValue, out var localValue ) )
-		{
-			state.IsAdditive = true;
-			state.ChangedValue = localValue;
-		}
-		else
-		{
-			state.IsAdditive = false;
-			state.ChangedValue = property.Value;
-		}
+		state.SetChanges( Session.CurrentPointer, property.Value );
 
 		HasChanges = true;
 
-		return state.Update( selection );
+		return state.Update( selection, ChangeOffset, IsAdditive );
 	}
 
 	private bool _hasSelectionItems;
@@ -251,9 +419,11 @@ partial class MotionEditMode
 	{
 		if ( TimeSelection is { } selection )
 		{
+			PasteTimeRange = _changeDuration is { } duration ? (ChangeOffset, ChangeOffset + duration) : null;
+
 			foreach ( var (track, state) in TrackStates )
 			{
-				state.Update( selection );
+				state.Update( selection, ChangeOffset, IsAdditive );
 			}
 
 			if ( !_hasSelectionItems )
@@ -261,43 +431,61 @@ partial class MotionEditMode
 				_hasSelectionItems = true;
 
 				DopeSheet.Add( new TimeSelectionPeakItem( this ) );
+
 				DopeSheet.Add( new TimeSelectionFadeItem( this, FadeKind.FadeIn ) );
 				DopeSheet.Add( new TimeSelectionFadeItem( this, FadeKind.FadeOut ) );
 
-				// Peak edge handles
-
-				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.Start is { } start ? start.PeakTime : null, ( value, time ) => value.WithPeakStart( time, DefaultInterpolation, false ) ) );
-				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.End is { } end ? end.PeakTime : null, ( value, time ) => value.WithPeakEnd( time, DefaultInterpolation, false ) ) );
-
-				// Fade edge handles
-
-				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.Start is { } start ? start.FadeTime : null, (value, time) => value.WithFadeStart( time ) ) );
-				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.End is { } end ? end.FadeTime : null, ( value, time ) => value.WithFadeEnd( time ) ) );
+				DopeSheet.Add( new TimeSelectionHandleItem( this ) );
+				DopeSheet.Add( new TimeSelectionHandleItem( this ) );
+				DopeSheet.Add( new TimeSelectionHandleItem( this ) );
+				DopeSheet.Add( new TimeSelectionHandleItem( this ) );
 			}
 
-			foreach ( var item in DopeSheet.Items.OfType<ITimeSelectionItem>() )
-			{
-				item.UpdatePosition( selection, DopeSheet.VisibleRect );
-			}
+			UpdateSelectionItems( DopeSheet.VisibleRect );
 		}
 		else if ( _hasSelectionItems )
 		{
 			_hasSelectionItems = false;
 
-			foreach ( var item in DopeSheet.Items.OfType<ITimeSelectionItem>().ToArray() )
+			PasteTimeRange = null;
+
+			foreach ( var item in DopeSheet.Items.OfType<TimeSelectionItem>().ToArray() )
 			{
 				item.Destroy();
 			}
 		}
+
+		Session.RefreshNextFrame();
 	}
 
 	protected override void OnViewChanged( Rect viewRect )
 	{
+		UpdateSelectionItems( viewRect );
+	}
+
+	private void UpdateSelectionItems( Rect viewRect )
+	{
 		if ( TimeSelection is not { } selection ) return;
 
-		foreach ( var item in DopeSheet.Items.OfType<ITimeSelectionItem>() )
+		foreach ( var item in DopeSheet.Items.OfType<TimeSelectionItem>() )
 		{
 			item.UpdatePosition( selection, viewRect );
+		}
+	}
+
+	public void DisplayAction( string icon )
+	{
+		_lastActionTime = 0f;
+		LastActionIcon = icon;
+
+		UpdateSelectionItems( DopeSheet.VisibleRect );
+	}
+
+	protected override void OnFrame()
+	{
+		if ( _lastActionTime < 1f )
+		{
+			UpdateSelectionItems( DopeSheet.VisibleRect );
 		}
 	}
 }

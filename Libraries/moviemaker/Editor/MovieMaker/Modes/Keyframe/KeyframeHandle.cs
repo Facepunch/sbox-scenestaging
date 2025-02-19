@@ -1,6 +1,5 @@
-﻿
-using Sandbox.UI;
-using System.Linq;
+﻿using System.Linq;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -14,7 +13,7 @@ internal class KeyframeHandle : GraphicsItem
 
 	public Session Session => Keyframes.TrackWidget.TrackList.Session;
 
-	public float Time { get; set; }
+	public MovieTime Time { get; set; }
 	public object? Value { get; set; }
 
 	public InterpolationMode Interpolation { get; set; }
@@ -39,9 +38,7 @@ internal class KeyframeHandle : GraphicsItem
 	{
 		base.OnMoved();
 
-		Time = Session.PixelsToTime( Position.x, true );
-
-		if ( Time < 0 ) Time = 0;
+		Time = MovieTime.Max( Session.PixelsToTime( Position.x, true ), MovieTime.Zero );
 
 		Keyframes.Write();
 
@@ -99,10 +96,9 @@ internal class KeyframeHandle : GraphicsItem
 		}
 	}
 
-	internal void Nudge( float v )
+	internal void Nudge( MovieTime v )
 	{
-		Time += v;
-		if ( Time < 0 ) Time = 0;
+		Time = MovieTime.Max( MovieTime.Zero, Time + v );
 
 		UpdatePosition();
 	}

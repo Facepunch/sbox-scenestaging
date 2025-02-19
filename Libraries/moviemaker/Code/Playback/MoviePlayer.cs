@@ -10,7 +10,7 @@ public sealed partial class MoviePlayer : Component
 	private MovieClip? _embeddedClip;
 	private MovieFile? _referencedClip;
 
-	private float _position;
+	private MovieTime _position;
 
 	[Property, Group( "Source" ), Hide]
 	public MovieClip? EmbeddedClip
@@ -49,8 +49,7 @@ public sealed partial class MoviePlayer : Component
 	[Property, Group( "Playback" )]
 	public float TimeScale { get; set; } = 1f;
 
-	[Property, Group( "Playback" )]
-	public float Position
+	public MovieTime Position
 	{
 		get => _position;
 		set
@@ -58,6 +57,13 @@ public sealed partial class MoviePlayer : Component
 			_position = value;
 			UpdatePosition();
 		}
+	}
+
+	[Property, Group( "Playback" ), Title( "Position" )]
+	public float PositionSeconds
+	{
+		get => (float)Position.TotalSeconds;
+		set => Position = MovieTime.FromSeconds( value );
 	}
 
 	[Property, Group( "Recording" )]
@@ -77,9 +83,9 @@ public sealed partial class MoviePlayer : Component
 
 		if ( _position >= duration )
 		{
-			if ( IsLooping && duration > 0f )
+			if ( IsLooping && !duration.IsNegative )
 			{
-				_position -= MathF.Floor( _position / duration ) * duration;
+				_position -= duration;
 			}
 			else
 			{
@@ -91,11 +97,11 @@ public sealed partial class MoviePlayer : Component
 		ApplyFrame( _position );
 	}
 
-	public void ApplyFrame( float time )
+	public void ApplyFrame( MovieTime time )
 	{
 		if ( MovieClip is null || _sceneRefMap.Count == 0 ) return;
 
-		time = Math.Clamp( time, 0f, MovieClip.Duration );
+		time = time.Clamp( (MovieTime.Zero, MovieClip.Duration) );
 
 		using var sceneScope = Scene.Push();
 
@@ -105,31 +111,25 @@ public sealed partial class MoviePlayer : Component
 		}
 	}
 
-	internal void ApplyFrame( MovieTrack track, float time )
+	internal void ApplyFrame( MovieTrack track, MovieTime time )
 	{
-		// TODO: this is a slow placeholder implementation, we can avoid boxing / reflection when we're in the engine
-
-		if ( GetOrAutoResolveProperty( track ) is { IsBound: true } property && track.GetBlock( time ) is { } block )
+		if ( track.GetBlock( time ) is { } block )
 		{
-			switch ( block.Data )
-			{
-				case IConstantData constantData:
-					property.Value = constantData.Value;
-					break;
-
-				case ISamplesData samplesData:
-					property.Value = samplesData.GetValue( time - block.StartTime );
-					break;
-
-				case ActionData:
-					throw new NotImplementedException();
-			}
+			ApplyFrame( track, block, time );
 		}
 
 		foreach ( var child in track.Children )
 		{
 			ApplyFrame( child, time );
 		}
+	}
+
+	public void ApplyFrame( MovieTrack track, IMovieBlock block, MovieTime time )
+	{
+		if ( block.Data is not IMovieBlockValueData valueData ) return;
+		if ( GetOrAutoResolveProperty( track ) is not { IsBound: true } property ) return;
+
+		property.Value = valueData.GetValue( time - block.TimeRange.Start );
 	}
 
 	protected override void OnEnabled()
@@ -141,21 +141,21 @@ public sealed partial class MoviePlayer : Component
 	{
 		if ( IsPlaying )
 		{
-			Position += Time.Delta * TimeScale;
+			Position += MovieTime.FromSeconds( Time.Delta * TimeScale );
 		}
 	}
 
 	private interface IRawRecording
 	{
-		void Record( float time );
-		void WriteBlocks();
+		void Record( MovieTime time );
+		void WriteBlocks( MovieTime startTime, int sampleRate );
 	}
 
 	private class RawRecording<T> : IRawRecording
 	{
 		public MovieTrack Track { get; }
 		public IMovieProperty<T> Property { get; }
-		public List<(float Time, T Value)> Samples { get; } = new List<(float Time, T Value)>();
+		public List<(MovieTime Time, T Value)> Samples { get; } = new();
 
 		public RawRecording( MovieTrack track, IMovieProperty<T> property )
 		{
@@ -163,12 +163,12 @@ public sealed partial class MoviePlayer : Component
 			Property = property;
 		}
 
-		public void Record( float time )
+		public void Record( MovieTime time )
 		{
 			Samples.Add( (time, Property.Value) );
 		}
 
-		public void WriteBlocks()
+		public void WriteBlocks( MovieTime startTime, int sampleRate )
 		{
 			if ( Samples.Count == 0 ) return;
 
@@ -181,16 +181,20 @@ public sealed partial class MoviePlayer : Component
 				return;
 			}
 
-			// TODO: resample
+			// TODO: don't assume fixed sample rate
 
-			var data = new SamplesData<T>( 50f, SampleInterpolationMode.Linear,
-				Samples.Select( x => x.Value ).ToArray() );
+			var data = new SamplesData<T>( 50, SampleInterpolationMode.Linear,
+					Samples.Select( x => x.Value ).ToArray() )
+				.Resample( sampleRate );
 
-			Track.AddBlock( 0f, Samples.Count / 50f, data );
+			Track.AddBlock( new MovieTimeRange( startTime, startTime + data.Duration ), data );
 		}
 	}
 
 	private readonly Dictionary<MovieTrack, IRawRecording> _recordings = new();
+	private static TypeDescription? _rawRecordingType;
+
+	private TypeDescription RawRecordingType => _rawRecordingType ??= TypeLibrary.GetType( typeof( RawRecording<> ) );
 
 	[Property, Button( Icon = "radio_button_checked" ), ShowIf( nameof(IsRecording), false )]
 	public void StartRecording()
@@ -199,25 +203,48 @@ public sealed partial class MoviePlayer : Component
 
 		_recordings.Clear();
 
-		var rawRecordingType = TypeLibrary.GetType( typeof(RawRecording<>) );
-
-		foreach ( var track in clip.AllTracks )
+		foreach ( var track in clip.RootTracks )
 		{
-			if ( track.Children.Count > 0 ) continue;
-			if ( GetProperty( track ) is not { IsBound: true } property ) continue;
-			if ( property is ISceneReferenceMovieProperty ) continue;
-
-			_recordings.Add( track, rawRecordingType.CreateGeneric<IRawRecording>( [track.PropertyType], [track, property] ) );
+			StartRecording( track );
 		}
 
 		IsRecording = true;
 		_recordingStartTime = Time.Now;
 	}
 
+	private bool StartRecording( MovieTrack track )
+	{
+		if ( track.EditorData?["Locked"]?.GetValue<bool>() is true ) return false;
+
+		if ( track.Children is { Count: > 0 } children )
+		{
+			// Don't record this track if any children are recorded instead
+
+			var childRecording = false;
+
+			foreach ( var childTrack in children )
+			{
+				childRecording |= StartRecording( childTrack );
+			}
+
+			if ( childRecording )
+			{
+				return true;
+			}
+		}
+
+		if ( GetProperty( track ) is not { IsBound: true } property ) return false;
+		if ( property is ISceneReferenceMovieProperty ) return false;
+
+		_recordings.Add( track, RawRecordingType.CreateGeneric<IRawRecording>( [track.PropertyType], [track, property] ) );
+
+		return true;
+	}
+
 	[Property, Button( Icon = "stop_circle" ), ShowIf( nameof( IsRecording ), true )]
 	public void StopRecording()
 	{
-		if ( !IsRecording ) return;
+		if ( !IsRecording || MovieClip is not { } clip ) return;
 
 		IsRecording = false;
 
@@ -225,7 +252,7 @@ public sealed partial class MoviePlayer : Component
 
 		foreach ( var recording in _recordings.Values )
 		{
-			recording.WriteBlocks();
+			recording.WriteBlocks( MovieTime.Zero, clip.DefaultSampleRate );
 		}
 	}
 
@@ -236,9 +263,9 @@ public sealed partial class MoviePlayer : Component
 			return;
 		}
 
-		var time = Time.Now - _recordingStartTime;
+		var time = MovieTime.FromSeconds( Time.Now - _recordingStartTime );
 
-		if ( time < 0f ) return;
+		if ( time < MovieTime.Zero ) return;
 
 		foreach ( var recording in _recordings.Values )
 		{

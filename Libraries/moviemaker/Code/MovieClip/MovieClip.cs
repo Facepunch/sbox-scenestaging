@@ -40,12 +40,12 @@ public sealed partial class MovieClip
 	public int TrackHash => _trackHash ??= CalculateTrackHash();
 
 	/// <summary>
-	/// How long this clip takes to fully play, in seconds.
+	/// How long this clip takes to fully play.
 	/// </summary>
-	public float Duration => _trackDict.Values
-		.SelectMany( x => x.Blocks.Select( y => y.StartTime + (y.Duration ?? 0f) ) )
-		.DefaultIfEmpty( 0f )
-		.Max();
+	public MovieTime Duration => _trackDict.Values
+		.Aggregate( MovieTime.Zero, ( s, x ) => MovieTime.Max( s, x.TimeRange.End ) );
+
+	public int DefaultSampleRate { get; private set; } = 30;
 
 	/// <summary>
 	/// Editor-only information about this movie.

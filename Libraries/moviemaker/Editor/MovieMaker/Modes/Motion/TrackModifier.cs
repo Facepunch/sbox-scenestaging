@@ -1,6 +1,4 @@
-﻿using Editor.MapEditor;
-using Sandbox.Diagnostics;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -24,54 +22,42 @@ internal abstract class TrackModifier
 		return Cache[type] = (TrackModifier)Activator.CreateInstance( typeof(TrackModifier<>).MakeGenericType( type ) )!;
 	}
 
-	public abstract MovieBlockData Modify( MovieBlock block, MovieBlockData data, TimeSelection selection, object? value, bool additive );
+	public abstract IMovieBlockData Blend( IMovieBlock original, IMovieBlock change, MovieTimeRange timeRange, TimeSelection selection, bool additive, int sampleRate );
 }
 
 internal sealed class TrackModifier<T> : TrackModifier
 {
-	public override MovieBlockData Modify( MovieBlock block, MovieBlockData data, TimeSelection selection, object? value, bool additive )
+	public override IMovieBlockData Blend( IMovieBlock original, IMovieBlock change, MovieTimeRange timeRange, TimeSelection selection, bool additive, int sampleRate )
 	{
-		Assert.AreEqual( typeof(T), block.Track.PropertyType );
+		if ( original.Data is not IMovieBlockValueData<T> originalData ) return original.Data.Slice( timeRange );
+		if ( change.Data is not IMovieBlockValueData<T> changeData ) return original.Data.Slice( timeRange );
 
-		return data switch
-		{
-			// TODO
-			IConstantData => data,
-			SamplesData<T> samples => ModifySamples( block, samples, selection, (T) value!, additive ),
-			_ => data
-		};
-	}
+		if ( additive ) throw new NotImplementedException();
 
-	private MovieBlockData ModifySamples( MovieBlock block, SamplesData<T> data, TimeSelection selection, T value, bool additive )
-	{
 		var interpolator = Interpolator.GetDefault<T>();
 		var transformer = additive ? LocalTransformer.GetDefault<T>() : null;
 
-		// Skip if time selection doesn't overlap this block
+		var sampleCount = timeRange.Duration.GetFrameCount( sampleRate );
 
-		var blockStart = block.StartTime;
-		var blockEnd = block.StartTime + (block.Duration ?? block.Clip.Duration);
+		var dstValues = new T[sampleCount];
 
-		if ( !selection.Overlaps( blockStart, blockEnd ) ) return data;
+		originalData.Sample( dstValues, timeRange - original.TimeRange.Start, sampleRate );
 
-		var srcValues = data.Samples;
-		var dstValues = new T[data.Samples.Count];
-
-		var dt = 1f / data.SampleRate;
-
-		for ( var i = 0; i < dstValues.Length; ++i )
+		for ( var i = 0; i < sampleCount; ++i )
 		{
-			var tLocal = i * dt;
-			var fade = selection.GetFadeValue( block.StartTime + tLocal );
+			var time = timeRange.Start + MovieTime.FromFrames( i, sampleRate );
+			var fade = selection.GetFadeValue( time );
 
-			var src = srcValues[i];
-			var dst = transformer is not null ? transformer.ToGlobal( value, src ) : value;
+			var src = dstValues[i];
+			var dst = changeData.GetValue( time - change.TimeRange.Start );
+
+			// todo: additive
 
 			dstValues[i] = interpolator is null
 				? fade >= 1f ? dst : src
 				: interpolator.Interpolate( src, dst, fade );
 		}
 
-		return new SamplesData<T>( data.SampleRate, data.Interpolation, dstValues );
+		return new SamplesData<T>( sampleRate, SampleInterpolationMode.Linear, dstValues );
 	}
 }

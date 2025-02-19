@@ -17,8 +17,8 @@ public class DopeSheet : GraphicsView
 
 	GridItem gridItem;
 
-	private CurrentPointerItem _currentPointerItem;
-	private CurrentPointerItem _previewPointerItem;
+	private readonly CurrentPointerItem _currentPointerItem;
+	private readonly CurrentPointerItem _previewPointerItem;
 
 	public ScrubberItem ScrubBarTop { get; }
 	public ScrubberItem ScrubBarBottom { get; }
@@ -88,22 +88,23 @@ public class DopeSheet : GraphicsView
 	{
 		UpdateScrubBars();
 
-		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset );
+		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.FrameRate );
 
 		if ( state != _lastState )
 		{
-			_lastState = state;
 			UpdateTracks();
 			Update();
 		}
 
 		var visibleRectHash = VisibleRect.GetHashCode();
 
-		if ( visibleRectHash != _lastVisibleRectHash )
+		if ( visibleRectHash != _lastVisibleRectHash || state != _lastState )
 		{
-			_lastVisibleRectHash = visibleRectHash;
 			Session.DispatchViewChanged();
 		}
+
+		_lastState = state;
+		_lastVisibleRectHash = visibleRectHash;
 
 		if ( (Application.KeyboardModifiers & KeyboardModifiers.Shift) == 0 && Session.PreviewPointer is not null )
 		{
@@ -114,6 +115,9 @@ public class DopeSheet : GraphicsView
 	private void UpdateView()
 	{
 		UpdateScrubBars();
+
+		UpdateCurrentPosition( Session.CurrentPointer );
+		UpdatePreviewPosition( Session.PreviewPointer );
 	}
 
 	private void UpdateScrubBars()
@@ -124,7 +128,7 @@ public class DopeSheet : GraphicsView
 		var visibleRect = VisibleRect;
 
 		ScrubBarTop.Position = visibleRect.TopLeft;
-		ScrubBarBottom.Position = visibleRect.BottomLeft;
+		ScrubBarBottom.Position = visibleRect.BottomLeft - new Vector2( 0f, ScrubBarBottom.Height );
 
 		ScrubBarTop.Width = Width;
 		ScrubBarBottom.Width = Width;
@@ -138,7 +142,7 @@ public class DopeSheet : GraphicsView
 		UpdateTracks();
 	}
 
-	private void UpdateCurrentPosition( float time )
+	private void UpdateCurrentPosition( MovieTime time )
 	{
 		_currentPointerItem.PrepareGeometryChange();
 
@@ -146,7 +150,7 @@ public class DopeSheet : GraphicsView
 		_currentPointerItem.Size = new Vector2( 1, VisibleRect.Height - 24f );
 	}
 
-	private void UpdatePreviewPosition( float? time )
+	private void UpdatePreviewPosition( MovieTime? time )
 	{
 		_previewPointerItem.PrepareGeometryChange();
 
@@ -229,16 +233,16 @@ public class DopeSheet : GraphicsView
 			tracklist.ScrollBy( delta.x );
 		}
 
-		var time = Session.PixelsToTime( ToScene( e.LocalPosition ).x, true );
+		var snapPointerPos = Session.ScenePositionToTimeIgnorePointer( ToScene( e.LocalPosition ) );
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.SetCurrentPointer( time );
+			Session.SetCurrentPointer( snapPointerPos );
 		}
 
 		if ( e.HasShift )
 		{
-			Session.SetPreviewPointer( time );
+			Session.SetPreviewPointer( e.ButtonState != 0 ? snapPointerPos : Session.PixelsToTime( ToScene( e.LocalPosition ).x ) );
 		}
 
 		lastpos = e.LocalPosition;
@@ -264,7 +268,7 @@ public class DopeSheet : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.SetCurrentPointer( Session.PixelsToTime( ToScene( e.LocalPosition ).x, true ) );
+			Session.SetCurrentPointer( Session.ScenePositionToTimeIgnorePointer( ToScene( e.LocalPosition ) ) );
 			return;
 		}
 	}
@@ -287,7 +291,7 @@ public class DopeSheet : GraphicsView
 		if ( e.Key == KeyCode.Shift )
 		{
 			e.Accepted = true;
-			Session.SetPreviewPointer( Session.PixelsToTime( ToScene( lastpos ).x, true ) );
+			Session.SetPreviewPointer( Session.PixelsToTime( ToScene( lastpos ).x ) );
 		}
 	}
 
@@ -298,18 +302,31 @@ public class DopeSheet : GraphicsView
 		Session.EditMode?.KeyRelease( e );
 	}
 
-	public void OnCopy()
+	public void GetSnapTimes( ref TimeSnapHelper snap, Vector2 scenePos, float height )
 	{
-		Session.EditMode?.Copy();
-	}
+		if ( height <= 0f && (scenePos.y <= ScrubBarTop.SceneRect.Bottom || scenePos.y >= ScrubBarBottom.SceneRect.Top) )
+		{
+			snap.Add( Session.PixelsToTime( scenePos.x, true ), -1 );
 
-	public void OnPaste()
-	{
-		Session.EditMode?.Paste();
-	}
+			if ( Session.EditMode?.PasteTimeRange is { } pasteRange )
+			{
+				snap.Add( pasteRange.Start );
+				snap.Add( pasteRange.End );
+			}
+		}
 
-	public void OnDelete()
-	{
-		Session.EditMode?.Delete();
+		foreach ( var trackWidget in tracklist.Tracks )
+		{
+			if ( trackWidget.DopeSheetTrack is not { Visible: true } dopeTrack ) continue;
+			if ( !trackWidget.MovieTrack.CanModify() ) continue;
+			if ( scenePos.y + height < dopeTrack.SceneRect.Top ) continue;
+			if ( scenePos.y > dopeTrack.SceneRect.Bottom ) continue;
+
+			foreach ( var cut in trackWidget.MovieTrack.Cuts )
+			{
+				snap.Add( cut.TimeRange.Start );
+				snap.Add( cut.TimeRange.End );
+			}
+		}
 	}
 }

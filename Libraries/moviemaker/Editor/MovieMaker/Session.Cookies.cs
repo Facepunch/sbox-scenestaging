@@ -1,4 +1,6 @@
-﻿namespace Editor.MovieMaker;
+﻿using Sandbox.MovieMaker;
+
+namespace Editor.MovieMaker;
 
 #nullable enable
 
@@ -30,10 +32,16 @@ partial class Session
 			set => session.SetCookie( nameof(FrameSnap), value );
 		}
 
-		public float TimeOffset
+		public bool BlockSnap
 		{
-			get => session.GetCookie( nameof(TimeOffset), 0f );
-			set => session.SetCookie( nameof(TimeOffset), value );
+			get => session.GetCookie( nameof(BlockSnap), true );
+			set => session.SetCookie( nameof(BlockSnap), value );
+		}
+
+		public MovieTime TimeOffset
+		{
+			get => MovieTime.FromTicks( session.GetCookie( nameof(TimeOffset), 0 ) );
+			set => session.SetCookie( nameof(TimeOffset), value.Ticks );
 		}
 
 		public float PixelsPerSecond
@@ -49,10 +57,11 @@ partial class Session
 	public void RestoreFromCookies()
 	{
 		FrameSnap = Cookies.FrameSnap;
+		BlockSnap = Cookies.BlockSnap;
 		TimeOffset = Cookies.TimeOffset;
 		PixelsPerSecond = Cookies.PixelsPerSecond;
 
-		SmoothPan.Target = SmoothPan.Value = TimeOffset;
+		SmoothPan.Target = SmoothPan.Value = (float)TimeOffset.TotalSeconds;
 		SmoothZoom.Target = SmoothZoom.Value = PixelsPerSecond;
 
 		SetEditMode( Cookies.EditMode );

@@ -1,5 +1,4 @@
-﻿using Sandbox.MovieMaker;
-using Sandbox.Utility;
+﻿using Sandbox.Utility;
 
 namespace Editor.MovieMaker;
 

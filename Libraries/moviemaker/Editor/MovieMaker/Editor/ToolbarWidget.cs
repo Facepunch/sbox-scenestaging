@@ -44,29 +44,26 @@ public class ToolbarWidget : Widget
 
 		Layout.AddSpacingCell( 16f );
 
+		Sandbox.Bind.Builder AddToggle( string title, string icon )
 		{
-			var btn = new IconButton( "play_arrow" );
-			btn.ToolTip = "Toggle Play";
+			var btn = new IconButton( icon );
+			btn.ToolTip = title;
 			btn.IsToggle = true;
 			btn.IconSize = 16;
 			btn.Background = Color.Transparent;
 			btn.BackgroundActive = Color.Transparent;
 			btn.ForegroundActive = Theme.Primary;
-			btn.Bind( "IsActive" ).From( () => Session.Playing, x => Session.Playing = x );
+
 			Layout.Add( btn );
+
+			return btn.Bind( "IsActive" );
 		}
 
-		{
-			var btn = new IconButton( "repeat" );
-			btn.ToolTip = "Loop at End of Playback";
-			btn.IsToggle = true;
-			btn.IconSize = 16;
-			btn.Background = Color.Transparent;
-			btn.BackgroundActive = Color.Transparent;
-			btn.ForegroundActive = Theme.Primary;
-			btn.Bind( "IsActive" ).From( () => Session.Loop, x => Session.Loop = x );
-			Layout.Add( btn );
-		}
+		AddToggle( "Toggle Play", "play_arrow" )
+			.From( () => Session.Playing, x => Session.Playing = x );
+
+		AddToggle( "Loop at End of Playback", "repeat" )
+			.From( () => Session.Loop, x => Session.Loop = x );
 
 		Layout.AddSpacingCell( 16f );
 
@@ -86,19 +83,16 @@ public class ToolbarWidget : Widget
 
 		Layout.AddStretchCell();
 
-		{
-			var btn = new IconButton( "straighten" );
-			btn.ToolTip = "Frame Snap";
-			btn.IsToggle = true;
-			btn.IconSize = 16;
-			btn.Bind( "IsActive" ).From( () => Session.FrameSnap, x => Session.FrameSnap = x );
-			Layout.Add( btn );
+		AddToggle( "Object Snap", "align_horizontal_left" )
+			.From( () => Session.BlockSnap, x => Session.BlockSnap = x );
 
+		AddToggle( "Frame Snap", "straighten" )
+			.From( () => Session.FrameSnap, x => Session.FrameSnap = x );
+
+		{
 			var rate = new ComboBox();
 
-			IReadOnlyList<int> frameRates = [24, 30, 48, 60];
-
-			foreach ( var frameRate in frameRates )
+			foreach ( var frameRate in MovieTime.SupportedFrameRates )
 			{
 				rate.AddItem( $"{frameRate} FPS", onSelected: () => Session.FrameRate = frameRate,
 					selected: Session.FrameRate == frameRate );

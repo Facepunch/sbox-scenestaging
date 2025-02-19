@@ -1,18 +1,44 @@
-﻿using Editor.MovieMaker;
+﻿using System.Linq;
 
-namespace Editor.TrackPainter;
+namespace Editor.MovieMaker.BlockDisplays;
 
 #nullable enable
 
-public abstract partial class CurvePreview<T> : BlockPreview<T>
+public interface ICurveBlockItem
 {
-	public record struct Element( string Name, Color Color, float? Min = null, float? Max = null );
+	public IReadOnlyList<Element> Elements { get; }
+	public IReadOnlyList<(float Min, float Max)> Ranges { get; }
+}
 
-	protected IReadOnlyList<Element> Elements { get; }
+public record struct Element( string Name, Color Color, float? Min = null, float? Max = null );
 
-	protected CurvePreview( params Element[] elements )
+public abstract partial class CurveBlockItem<T> : BlockItem<T>, ICurveBlockItem
+{
+	private readonly (float Min, float Max)[] _ranges;
+	private int _rangeDataHash;
+
+	public IReadOnlyList<Element> Elements { get; }
+
+	public IReadOnlyList<(float Min, float Max)> Ranges
+	{
+		get
+		{
+			var dataHash = DataHash;
+
+			if ( dataHash != _rangeDataHash )
+			{
+				_rangeDataHash = dataHash;
+				UpdateRanges();
+			}
+
+			return _ranges;
+		}
+	}
+
+	protected CurveBlockItem( params Element[] elements )
 	{
 		Elements = elements;
+		_ranges = new (float, float)[elements.Length];
 	}
 
 	protected abstract void Decompose( T value, Span<float> result );
@@ -20,7 +46,7 @@ public abstract partial class CurvePreview<T> : BlockPreview<T>
 
 #region Scalars
 
-public sealed class BooleanPreview() : CurvePreview<bool>(
+public sealed class BooleanBlockItem() : CurveBlockItem<bool>(
 	new Element( "X", Color.White, 0f, 1f ) )
 {
 	protected override void Decompose( bool value, Span<float> result )
@@ -29,7 +55,7 @@ public sealed class BooleanPreview() : CurvePreview<bool>(
 	}
 }
 
-public sealed class FloatPreview() : CurvePreview<float>(
+public sealed class FloatBlockItem() : CurveBlockItem<float>(
 	new Element( "X", Color.White ) )
 {
 	protected override void Decompose( float value, Span<float> result )
@@ -42,7 +68,7 @@ public sealed class FloatPreview() : CurvePreview<float>(
 
 #region Vectors
 
-public sealed class Vector2Preview() : CurvePreview<Vector2>(
+public sealed class Vector2BlockItem() : CurveBlockItem<Vector2>(
 	new Element( "X", Theme.Red ),
 	new Element( "Y", Theme.Green ) )
 {
@@ -53,7 +79,7 @@ public sealed class Vector2Preview() : CurvePreview<Vector2>(
 	}
 }
 
-public sealed class Vector3Preview() : CurvePreview<Vector3>(
+public sealed class Vector3BlockItem() : CurveBlockItem<Vector3>(
 	new Element( "X", Theme.Red ),
 	new Element( "Y", Theme.Green ),
 	new Element( "Z", Theme.Blue ) )
@@ -66,7 +92,7 @@ public sealed class Vector3Preview() : CurvePreview<Vector3>(
 	}
 }
 
-public sealed class Vector4Preview() : CurvePreview<Vector4>(
+public sealed class Vector4BlockItem() : CurveBlockItem<Vector4>(
 	new Element( "X", Theme.Red ),
 	new Element( "Y", Theme.Green ),
 	new Element( "Z", Theme.Blue ),
@@ -85,7 +111,7 @@ public sealed class Vector4Preview() : CurvePreview<Vector4>(
 
 #region Rotation
 
-public sealed class AnglesPreview() : CurvePreview<Angles>(
+public sealed class AnglesBlockItem() : CurveBlockItem<Angles>(
 	new Element( "P", Theme.Red, -180f, 180f ),
 	new Element( "Y", Theme.Green, -180f, 180f ),
 	new Element( "R", Theme.Blue, -180f, 180f ) )
@@ -98,7 +124,7 @@ public sealed class AnglesPreview() : CurvePreview<Angles>(
 	}
 }
 
-public sealed class RotationPreview() : CurvePreview<Rotation>(
+public sealed class RotationBlockItem() : CurveBlockItem<Rotation>(
 	new Element( "X", Theme.Red, -1f, 1f ),
 	new Element( "Y", Theme.Green, -1f, 1f ),
 	new Element( "Z", Theme.Blue, -1f, 1f ),
@@ -123,7 +149,7 @@ public sealed class RotationPreview() : CurvePreview<Rotation>(
 
 #region Color
 
-public sealed class ColorPreview() : CurvePreview<Color>(
+public sealed class ColorBlockItem() : CurveBlockItem<Color>(
 	new Element( "R", Color.Red, 0f, 1f ),
 	new Element( "G", Color.Green, 0f, 1f ),
 	new Element( "B", Color.Blue, 0f, 1f ),

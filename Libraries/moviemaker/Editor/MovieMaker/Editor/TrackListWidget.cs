@@ -98,9 +98,9 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		SceneEditorSession.Selection.OnItemAdded -= OnSelectionAdded;
 	}
 
-	void ScrubToTime( float time )
+	void ScrubToTime( MovieTime time )
 	{
-		Session.Player.ApplyFrame( time );
+		Session.ApplyFrame( time );
 	}
 
 	private void Load( MovieClip clip )
@@ -151,6 +151,11 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 
 				(parentGroup?.Content ?? TrackList).Add( group );
 			}
+
+			foreach ( var group in groups.Values )
+			{
+				group.UpdateCollapsedState();
+			}
 		}
 		else
 		{
@@ -170,7 +175,7 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		RebuildTracks();
 	}
 
-	TrackWidget FindTrack( MovieTrack track )
+	public TrackWidget FindTrack( MovieTrack track )
 	{
 		return Tracks.FirstOrDefault( x => x.MovieTrack == track );
 	}
@@ -194,8 +199,8 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		}
 	}
 
-	public float MinTimeVisible => 5;
-	public float MaxTimeVisible => 120;
+	public MovieTime MinTimeVisible => MovieTime.FromSeconds( 5d );
+	public MovieTime MaxTimeVisible => MovieTime.FromSeconds( 120d );
 
 	internal bool OnCanvasWheel( WheelEvent e )
 	{
@@ -232,22 +237,6 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 
 		Paint.SetBrushAndPen( DopeSheet.Colors.Background.WithAlpha( 0.75f ) );
 		Paint.DrawRect( LocalRect );
-	}
-
-	public void OnCopy()
-	{
-		DopeSheet?.OnCopy();
-	}
-
-	public void OnPaste()
-	{
-		DopeSheet?.OnPaste();
-	}
-
-
-	public void OnDelete()
-	{
-		DopeSheet?.OnDelete();
 	}
 
 	private IReadOnlyList<MovieTrack> _previewTracks;

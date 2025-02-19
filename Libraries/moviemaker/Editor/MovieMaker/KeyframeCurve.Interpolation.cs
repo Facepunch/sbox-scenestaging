@@ -1,4 +1,4 @@
-﻿using Sandbox.Utility;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -6,9 +6,9 @@ namespace Editor.MovieMaker;
 
 partial class KeyframeCurve<T>
 {
-	protected override object OnGetValue( float time ) => GetValue( time );
+	protected override object OnGetValue( MovieTime time ) => GetValue( time );
 
-	public new T GetValue( float time )
+	public new T GetValue( MovieTime time )
 	{
 		if ( _keyframes.Count == 0 ) return default!;
 
@@ -41,7 +41,7 @@ partial class KeyframeCurve<T>
 
 		var next = _keyframes[t1];
 
-		var t = (time - t0) / (t1 - t0);
+		var t = new MovieTimeRange( t0, t1 ).GetFraction( time );
 		var eased = (prev.Interpolation ?? Interpolation).Apply( t );
 
 		return interpolator.Interpolate( prev.Value, next.Value, eased );

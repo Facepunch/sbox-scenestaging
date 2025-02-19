@@ -70,9 +70,12 @@ public abstract class EditMode
 		public void AddSpacingCell() => toolbar.AddSpacingCell( 16f );
 	}
 
-	protected Session Session { get; private set; } = null!;
+	public Session Session { get; private set; } = null!;
+	public MovieClip Clip => Session.Clip!;
 	protected DopeSheet DopeSheet { get; private set; } = null!;
 	protected ToolbarHelper Toolbar { get; private set; }
+
+	public MovieTimeRange? PasteTimeRange { get; protected set; }
 
 	protected IEnumerable<GraphicsItem> SelectedItems => DopeSheet.SelectedItems;
 	protected TrackListWidget TrackList => Session.Editor.TrackList;
@@ -112,12 +115,13 @@ public abstract class EditMode
 
 	protected virtual void OnDisable() { }
 
+	internal void Frame() => OnFrame();
+	protected virtual void OnFrame() { }
+
 	internal bool PreChange( MovieTrack track )
 	{
-		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } )
-		{
-			return false;
-		}
+		if ( !track.CanModify() ) return false;
+		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } ) return false;
 
 		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
 		{
@@ -131,10 +135,8 @@ public abstract class EditMode
 
 	internal bool PostChange( MovieTrack track )
 	{
-		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } )
-		{
-			return false;
-		}
+		if ( !track.CanModify() ) return false;
+		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } ) return false;
 
 		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
 		{
@@ -168,6 +170,11 @@ public abstract class EditMode
 	protected virtual void OnKeyPress( KeyEvent e ) { }
 	internal void KeyRelease( KeyEvent e ) => OnKeyRelease( e );
 	protected virtual void OnKeyRelease( KeyEvent e ) { }
+	internal void SelectAll() => OnSelectAll();
+	protected virtual void OnSelectAll() { }
+
+	internal void Cut() => OnCut();
+	protected virtual void OnCut() { }
 
 	internal void Copy() => OnCopy();
 	protected virtual void OnCopy() { }
@@ -175,14 +182,20 @@ public abstract class EditMode
 	internal void Paste() => OnPaste();
 	protected virtual void OnPaste() { }
 
-	internal void Delete() => OnDelete();
-	protected virtual void OnDelete() { }
+	internal void Delete( bool shift ) => OnDelete( shift );
+	protected virtual void OnDelete( bool shift ) { }
+
+	internal void Insert() => OnInsert();
+	protected virtual void OnInsert() { }
 
 	internal void TrackAdded( DopeSheetTrack track ) => OnTrackAdded( track );
 	protected virtual void OnTrackAdded( DopeSheetTrack track ) { }
 
 	internal void TrackRemoved( DopeSheetTrack track ) => OnTrackRemoved( track );
 	protected virtual void OnTrackRemoved( DopeSheetTrack track ) { }
+
+	internal void TrackStateChanged( DopeSheetTrack track ) => OnTrackStateChanged( track );
+	protected virtual void OnTrackStateChanged( DopeSheetTrack track ) { }
 
 	internal void TrackLayout( DopeSheetTrack track, Rect rect ) => OnTrackLayout( track, rect );
 	protected virtual void OnTrackLayout( DopeSheetTrack track, Rect rect ) { }
@@ -200,4 +213,63 @@ public abstract class EditMode
 
 	public static EditModeType Get( string name ) => AllTypes.FirstOrDefault( x => x.TypeDescription.Name == name )
 		?? AllTypes.First();
+
+	public void GetSnapTimes( ref TimeSnapHelper snapHelper, Vector2 scenePos, float height ) => OnGetSnapTimes( ref snapHelper, scenePos, height );
+
+	protected virtual void OnGetSnapTimes( ref TimeSnapHelper snapHelper, Vector2 scenePos, float height ) { }
+
+	public void ApplyFrame( MovieTime time )
+	{
+		OnApplyFrame( time );
+	}
+
+	private readonly Dictionary<MovieTrack, List<IMovieBlock>> _previewBlocks = new();
+
+	protected virtual void OnApplyFrame( MovieTime time )
+	{
+		Session.Player.ApplyFrame( time );
+
+		foreach ( var (track, list) in _previewBlocks )
+		{
+			foreach ( var block in list )
+			{
+				if ( block.TimeRange.Contains( time ) )
+				{
+					Session.Player.ApplyFrame( track, block, time );
+				}
+			}
+		}
+	}
+
+	public void SetPreviewBlocks( MovieTrack track, IEnumerable<IMovieBlock> blocks )
+	{
+		if ( !_previewBlocks.TryGetValue( track, out var list ) )
+		{
+			_previewBlocks.Add( track, list = new List<IMovieBlock>() );
+		}
+
+		list.Clear();
+		list.AddRange( blocks );
+
+		if ( TrackList.FindTrack( track ) is { } trackWidget )
+		{
+			trackWidget.NoteInteraction();
+			trackWidget.DopeSheetTrack?.UpdateBlockItems();
+		}
+	}
+
+	public void ClearPreviewBlocks( MovieTrack track )
+	{
+		_previewBlocks.Remove( track );
+
+		if ( TrackList.FindTrack( track ) is { } trackWidget )
+		{
+			trackWidget.DopeSheetTrack?.UpdateBlockItems();
+		}
+	}
+
+	public IEnumerable<IMovieBlock> GetPreviewBlocks( MovieTrack track )
+	{
+		return _previewBlocks.GetValueOrDefault( track, [] );
+	}
 }

@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -56,7 +55,7 @@ internal static class Extensions
 			: null;
 	}
 
-	public static (float? Prev, float? Next) GetNeighborKeys<TValue>( this SortedList<float, TValue> list, float key )
+	public static (MovieTime? Prev, MovieTime? Next) GetNeighborKeys<TValue>( this SortedList<MovieTime, TValue> list, MovieTime key )
 	{
 		if ( list.Count == 0 ) return (default, default);
 

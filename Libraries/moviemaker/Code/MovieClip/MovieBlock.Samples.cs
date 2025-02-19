@@ -26,17 +26,12 @@ public enum SampleInterpolationMode
 /// This block contains an array of values sampled at uniform intervals, aiming to be quick
 /// to read from when playing back animations.
 /// </summary>
-public interface ISamplesData
+public interface ISamplesData : IMovieBlockValueData
 {
-	/// <summary>
-	/// Sample value type, must match <see cref="MovieTrack.PropertyType"/>.
-	/// </summary>
-	Type ValueType { get; }
-
 	/// <summary>
 	/// How many samples per second.
 	/// </summary>
-	float SampleRate { get; }
+	int SampleRate { get; }
 
 	/// <summary>
 	/// How to interpret values measured between samples.
@@ -51,12 +46,7 @@ public interface ISamplesData
 	/// <summary>
 	/// Total duration of the sampled signal.
 	/// </summary>
-	float Duration { get; }
-
-	/// <summary>
-	/// Samples the signal at the given <paramref name="time"/>, where <c>0</c> will return the first sample.
-	/// </summary>
-	object? GetValue( float time );
+	MovieTime Duration { get; }
 }
 
 /// <summary>
@@ -68,10 +58,11 @@ public interface ISamplesData
 /// <param name="Interpolation">How to interpret values measured between samples.</param>
 /// <param name="Samples">Array of raw sample values.</param>
 public sealed record SamplesData<T>(
-	float SampleRate,
+	int SampleRate,
 	SampleInterpolationMode Interpolation,
-	IReadOnlyList<T> Samples )
-	: MovieBlockData, ISamplesData
+	IReadOnlyList<T> Samples,
+	MovieTime FirstSampleTime = default )
+	: ISamplesData, IMovieBlockValueData<T>
 {
 	private readonly IInterpolator<T>? _interpolator = Interpolation is not SampleInterpolationMode.None ? Interpolator.GetDefault<T>() : null;
 
@@ -79,17 +70,18 @@ public sealed record SamplesData<T>(
 	/// Total duration of the sampled signal.
 	/// </summary>
 	[JsonIgnore]
-	public float Duration => SampleRate <= 0f ? float.PositiveInfinity : Samples.Count / SampleRate;
+	public MovieTime Duration => MovieTime.FromFrames( Samples.Count, SampleRate );
 
 	/// <summary>
 	/// Samples the signal at the given <paramref name="time"/>, where <c>0</c> will return the first sample.
 	/// </summary>
-	public T GetValue( float time )
+	public T GetValue( MovieTime time )
 	{
 		if ( Samples.Count == 0 ) return default!;
 
-		var index = time * SampleRate;
-		var i0 = (int)index.Floor();
+		time -= FirstSampleTime;
+
+		var i0 = time.GetFrameIndex( SampleRate, out var remainder );
 		var i1 = i0 + 1;
 
 		if ( i0 < 0 ) return Samples[0];
@@ -102,17 +94,80 @@ public sealed record SamplesData<T>(
 			return x0;
 		}
 
-		var t = Interpolation.Apply( index - i0 );
+		var t = Interpolation.Apply( (float)(remainder.TotalSeconds * SampleRate) );
 		var x1 = Samples[i1];
 
 		return _interpolator.Interpolate( x0, x1, t );
 	}
 
-	Type ISamplesData.ValueType => typeof( T );
+	public IMovieBlockValueData<T> Slice( MovieTimeRange timeRange )
+	{
+		if ( Samples.Count == 0 || timeRange.Start.IsZero && timeRange.End == Duration ) return this;
+
+		timeRange -= FirstSampleTime;
+
+		var i0 = timeRange.Start.GetFrameIndex( SampleRate, out var remainder );
+		var i1 = timeRange.End.GetFrameCount( SampleRate );
+
+		// Constants if we're off one end
+
+		if ( i1 <= 0 ) return new ConstantData<T>( Samples[0] );
+		if ( i0 >= Samples.Count ) return new ConstantData<T>( Samples[^1] );
+
+		var firstSampleTime = -remainder;
+
+		if ( i0 < 0 )
+		{
+			firstSampleTime += MovieTime.FromFrames( -i0, SampleRate );
+			i0 = 0;
+		}
+
+		i1 = Math.Clamp( i1, i0, Samples.Count );
+
+		return new SamplesData<T>( SampleRate, Interpolation, Samples.Slice( i0, i1 - i0 ), firstSampleTime );
+	}
+
+	IMovieBlockValueData IMovieBlockValueData.Slice( MovieTimeRange timeRange ) => Slice( timeRange );
+
+	void IMovieBlockValueData.Sample( Array dstSamples, int dstOffset, int sampleCount, MovieTimeRange srcTimeRange, int sampleRate )
+	{
+		var span = ((T[])dstSamples).AsSpan( dstOffset, sampleCount );
+
+		Sample( span, srcTimeRange, sampleRate );
+	}
+
+	public void Sample( Span<T> dstSamples, MovieTimeRange srcTimeRange, int sampleRate )
+	{
+		if ( Samples.Count == 0 || dstSamples.Length == 0 ) return;
+
+		for ( var i = 0; i < dstSamples.Length; ++i )
+		{
+			var time = srcTimeRange.Start + MovieTime.FromFrames( i, sampleRate );
+
+			dstSamples[i] = GetValue( time );
+		}
+	}
+
+	public SamplesData<T> Resample( int sampleRate )
+	{
+		var sampleCount = Duration.GetFrameCount( sampleRate );
+		var samples = new T[sampleCount];
+
+		Sample( samples, (MovieTime.Zero, Duration), sampleRate );
+
+		return new SamplesData<T>( sampleRate, Interpolation, samples );
+	}
+
+	Type IMovieBlockValueData.ValueType => typeof( T );
 
 	private IReadOnlyList<object?>? _untypedList;
 	IReadOnlyList<object?> ISamplesData.Samples => _untypedList ??= Samples.Cast<object?>().ToImmutableList();
-	object? ISamplesData.GetValue( float time ) => GetValue( time );
+	object? IMovieBlockValueData.GetValue( MovieTime time ) => GetValue( time );
+
+	public override string ToString()
+	{
+		return $"[{SampleRate}, {Duration}, {FirstSampleTime}, {(_interpolator is null ? "null" : Interpolation.ToString())}]";
+	}
 }
 
 internal static class SamplesExtensions

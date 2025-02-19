@@ -1,4 +1,6 @@
 ﻿
+using Sandbox.MovieMaker;
+
 namespace Editor.MovieMaker;
 
 #nullable enable
@@ -25,12 +27,24 @@ partial class KeyframeEditMode
 	[Shortcut( "keyframe-edit.nudge-left", "LEFT", typeof( MovieEditor ) )]
 	public static void Shortcut_NudgeLeft()
 	{
-		Current?.Nudge( (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0 ? -1.0f : -0.1f );
+		if ( Current is not { } current ) return;
+
+		var tick = (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0
+			? current.Session.MajorTick
+			: current.Session.MinorTick;
+
+		current.Nudge( -tick.Interval );
 	}
 
 	[Shortcut( "keyframe-edit.nudge-right", "RIGHT", typeof( MovieEditor ) )]
 	public static void Shortcut_NudgeRight()
 	{
-		Current?.Nudge( (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0 ? 1.0f : 0.1f );
+		if ( Current is not { } current ) return;
+
+		var tick = (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0
+			? current.Session.MajorTick
+			: current.Session.MinorTick;
+
+		current.Nudge( tick.Interval );
 	}
 }

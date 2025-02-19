@@ -5,33 +5,47 @@ namespace Sandbox.MovieMaker;
 
 #nullable enable
 
+public interface IMovieBlock
+{
+	MovieTimeRange TimeRange { get; }
+	IMovieBlockData Data { get; }
+}
+
+public record MovieBlockSlice( MovieTimeRange TimeRange, IMovieBlockData Data ) : IMovieBlock;
+
 /// <summary>
 /// A time region in a <see cref="MovieTrack"/> where something happens.
 /// </summary>
-public partial class MovieBlock
+public sealed partial class MovieBlock : IMovieBlock
 {
 	private MovieTrack? _track;
-	private MovieBlockData _data;
+	private IMovieBlockData _data;
+	private MovieTimeRange _timeRange;
 
 	public MovieTrack Track => _track ?? throw new Exception( $"{nameof(MovieBlock)} has been removed." );
 	public MovieClip Clip => Track.Clip;
 
 	public int Id { get; }
 
-	/// <summary>
-	/// Time that the block starts, in seconds.
-	/// </summary>
-	public float StartTime { get; set; }
+	public MovieTimeRange TimeRange
+	{
+		get => _timeRange;
+		set
+		{
+			_timeRange = value;
+			_track?.BlockChangedInternal( this );
+		}
+	}
 
-	/// <summary>
-	/// Duration of the block, in seconds. If null, it lasts until the end of the clip.
-	/// </summary>
-	public float? Duration { get; set; }
+	public MovieTime TimeOffset { get; set; }
+	public MovieTime Start => TimeRange.Start;
+	public MovieTime End => TimeRange.End;
+	public MovieTime Duration => TimeRange.Duration;
 
 	/// <summary>
 	/// Track data for this block. Either a constant, sample array, or invoked action information.
 	/// </summary>
-	public MovieBlockData Data
+	public IMovieBlockData Data
 	{
 		get => _data;
 		set
@@ -41,17 +55,14 @@ public partial class MovieBlock
 		}
 	}
 
-	internal MovieBlock( MovieTrack track, int id, float startTime, float? duration, MovieBlockData data )
+	internal MovieBlock( MovieTrack track, int id, MovieTimeRange timeRange, IMovieBlockData data )
 	{
-		_track = track;
-
 		Id = id;
 
-		StartTime = startTime;
-		Duration = duration;
+		_track = track;
+		_timeRange = timeRange;
 
 		AssertValidData( data );
-
 		_data = data;
 	}
 
@@ -67,9 +78,7 @@ public partial class MovieBlock
 		_track = null;
 	}
 
-	public bool Contains( float time ) => time >= StartTime && (Duration is null || time - StartTime <= Duration + 0.001f);
-
-	private void AssertValidData( MovieBlockData value )
+	private void AssertValidData( IMovieBlockData value )
 	{
 		switch ( value )
 		{
@@ -95,4 +104,27 @@ public partial class MovieBlock
 /// <summary>
 /// Base type for data describing how a track changes during a <see cref="MovieBlock"/>.
 /// </summary>
-public abstract record MovieBlockData;
+public interface IMovieBlockData;
+
+public interface IMovieBlockValueData : IMovieBlockData
+{
+	/// <summary>
+	/// Property value type, must match <see cref="MovieTrack.PropertyType"/>.
+	/// </summary>
+	Type ValueType { get; }
+
+	/// <summary>
+	/// Samples the signal at the given <paramref name="time"/>, where <c>0</c> will return the first sample.
+	/// </summary>
+	object? GetValue( MovieTime time );
+
+	void Sample( Array dstSamples, int dstOffset, int sampleCount, MovieTimeRange srcTimeRange, int sampleRate );
+	IMovieBlockValueData Slice( MovieTimeRange timeRange );
+}
+
+public interface IMovieBlockValueData<T> : IMovieBlockValueData
+{
+	new T GetValue( MovieTime time );
+	void Sample( Span<T> dstSamples, MovieTimeRange srcTimeRange, int sampleRate );
+	new IMovieBlockValueData<T> Slice( MovieTimeRange timeRange );
+}
