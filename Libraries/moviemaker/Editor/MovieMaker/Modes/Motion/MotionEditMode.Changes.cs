@@ -29,14 +29,14 @@ partial class MotionEditMode
 	/// </summary>
 	private sealed class TrackState
 	{
-		// TODO: we assume block start times / durations don't change
-
 		public MovieTrack Track { get; }
 
-		public IReadOnlyDictionary<int, MovieBlockData> Before { get; }
-		public Dictionary<int, MovieBlockData> After { get; } = new();
-
 		private object? _changedValue;
+
+		private record struct SampleRange( float Start, float Duration, int SampleRate );
+		private SampleRange _sampleRange;
+		private MovieBlockData? _originalData;
+		private MovieBlock? _previewBlock;
 
 		public object? ChangedValue
 		{
@@ -57,34 +57,19 @@ partial class MotionEditMode
 		public TrackState( MovieTrack track )
 		{
 			Track = track;
-
-			Before = track.Blocks.ToImmutableDictionary(
-				x => x.Id,
-				x => x.Data );
-
 			Modifier = TrackModifier.Get( track.PropertyType );
 		}
 
 		private bool TryGetOriginalValue( float time, out object? value )
 		{
-			if ( Track.GetBlock( time ) is not { } block )
+			switch ( _originalData )
 			{
-				value = null;
-				return false;
-			}
-
-			var blockData = Before.TryGetValue( block.Id, out var before )
-				? before
-				: block.Data;
-
-			switch ( blockData )
-			{
-				case IConstantData constant:
-					value = constant.Value;
+				case ISamplesData samples:
+					value = samples.GetValue( time );
 					return true;
 
-				case ISamplesData samples:
-					value = samples.GetValue( time - block.StartTime );
+				case IConstantData constant:
+					value = constant.Value;
 					return true;
 			}
 
@@ -103,45 +88,83 @@ partial class MotionEditMode
 			return true;
 		}
 
-		public bool Update( TimeSelection selection )
+		public void ClearPreview()
 		{
-			if ( Modifier is not { } modifier )
+			_sampleRange = default;
+			_originalData = null;
+
+			_previewBlock?.Remove();
+			_previewBlock = null;
+		}
+
+		private SampleRange GetAffectedSampleRange( TimeSelection selection, int sampleRate )
+		{
+			var min = selection.Start?.FadeTime ?? 0f;
+			var max = selection.End?.FadeTime ?? Track.Clip.Duration;
+
+			foreach ( var block in Track.Blocks )
 			{
+				if ( selection.Start is { Duration: > 0 } fadeIn )
+				{
+					if ( (Min: fadeIn.FadeTime, Max: fadeIn.PeakTime).Overlaps( block.StartTime, block.EndTime ) )
+					{
+						min = Math.Min( min, block.StartTime );
+					}
+				}
+
+				if ( selection.End is { Duration: > 0 } fadeOut )
+				{
+					if ( (Min: fadeOut.PeakTime, Max: fadeOut.FadeTime).Overlaps( block.StartTime, block.EndTime ) )
+					{
+						max = Math.Max( max, block.EndTime );
+					}
+				}
+			}
+
+			return new SampleRange( min, max - min, sampleRate );
+		}
+
+		public bool Update( TimeSelection selection, int sampleRate )
+		{
+			if ( !HasChanges || Modifier is not { } modifier )
+			{
+				ClearPreview();
 				return false;
 			}
 
-			var changed = false;
+			var range = GetAffectedSampleRange( selection, sampleRate );
 
-			foreach ( var (id, data) in Before )
+			if ( _sampleRange != range || _previewBlock is null || _originalData is null )
 			{
-				if ( Track.GetBlock( id ) is not { } block )
-				{
-					continue;
-				}
+				_sampleRange = range;
 
-				if ( !HasChanges )
-				{
-					After.Remove( id );
-					block.Data = data;
-					continue;
-				}
-
-				var newData = modifier.Modify( block, data, selection, ChangedValue, IsAdditive );
-
-				if ( ReferenceEquals( newData, data ) )
-				{
-					After.Remove( id );
-					block.Data = data;
-				}
-				else
-				{
-					After[id] = newData;
-					block.Data = newData;
-					changed = true;
-				}
+				_previewBlock?.Remove();
+				_originalData = modifier.SampleTrack( Track, range.Start, range.Duration, sampleRate );
+				_previewBlock = Track.AddBlock( range.Start, range.Duration, _originalData );
 			}
 
-			return changed;
+			_previewBlock.Data = modifier.Modify( _previewBlock, _originalData, selection, ChangedValue, IsAdditive );
+
+			return true;
+		}
+
+		public bool Commit( TimeSelection selection, int sampleRate )
+		{
+			if ( !Update( selection, sampleRate ) || _previewBlock is not { } previewBlock ) return false;
+
+			// Remove all blocks completely masked by the edit
+
+			var maskedBlocks = Track.Blocks
+				.Where( x => x != previewBlock )
+				.Where( x => x.StartTime >= previewBlock.StartTime && x.EndTime <= previewBlock.EndTime )
+				.ToArray();
+
+			foreach ( var block in maskedBlocks )
+			{
+				block.Remove();
+			}
+
+			return true;
 		}
 	}
 
@@ -153,13 +176,7 @@ partial class MotionEditMode
 		{
 			if ( !track.IsValid ) continue;
 
-			foreach ( var (blockId, data) in state.Before )
-			{
-				if ( track.GetBlock( blockId ) is { } block )
-				{
-					block.Data = data;
-				}
-			}
+			state.ClearPreview();
 		}
 
 		TrackStates.Clear();
@@ -175,7 +192,7 @@ partial class MotionEditMode
 
 		foreach ( var (track, state) in TrackStates )
 		{
-			state.Update( selection );
+			state.Commit( selection, Session.FrameRate );
 		}
 
 		TrackStates.Clear();
@@ -200,8 +217,6 @@ partial class MotionEditMode
 		}
 
 		var state = TrackStates[movieTrack] = new TrackState( movieTrack );
-
-		Log.Info( $"Adding change: {movieTrack.FullName}" );
 
 		if ( state.Modifier is null )
 		{
@@ -242,7 +257,7 @@ partial class MotionEditMode
 
 		HasChanges = true;
 
-		return state.Update( selection );
+		return state.Update( selection, Session.FrameRate );
 	}
 
 	private bool _hasSelectionItems;
@@ -253,7 +268,9 @@ partial class MotionEditMode
 		{
 			foreach ( var (track, state) in TrackStates )
 			{
-				state.Update( selection );
+				if ( !state.Update( selection, Session.FrameRate ) ) continue;
+
+				TrackList.FindTrack( track )?.DopeSheetTrack?.UpdateBlockPreviews();
 			}
 
 			if ( !_hasSelectionItems )

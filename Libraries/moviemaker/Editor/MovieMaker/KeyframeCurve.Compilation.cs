@@ -36,7 +36,6 @@ public static class KeyframeExtensions
 
 		// Compile keyframe data into a fast format for playback
 
-
 		if ( keyframes.CanInterpolate )
 		{
 			// Interpolated keyframes: sample at uniform time steps
@@ -79,7 +78,7 @@ public static class KeyframeExtensions
 				var prev = keyframes[i];
 				var next = i < keyframes.Count - 1 ? (Keyframe<T>?) keyframes[i + 1] : null;
 
-				track.AddBlock( prev.Time, next is null ? null : next.Value.Time - prev.Time, new ConstantData<T>( prev.Value ) );
+				track.AddBlock( prev.Time, next is null ? 0f : next.Value.Time - prev.Time, new ConstantData<T>( prev.Value ) );
 			}
 		}
 	}

@@ -43,7 +43,7 @@ public sealed partial class MovieClip
 	/// How long this clip takes to fully play, in seconds.
 	/// </summary>
 	public float Duration => _trackDict.Values
-		.SelectMany( x => x.Blocks.Select( y => y.StartTime + (y.Duration ?? 0f) ) )
+		.SelectMany( x => x.Blocks.Select( y => y.EndTime ) )
 		.DefaultIfEmpty( 0f )
 		.Max();
 

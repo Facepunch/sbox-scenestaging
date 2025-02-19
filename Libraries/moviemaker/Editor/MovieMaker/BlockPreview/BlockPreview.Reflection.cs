@@ -2,7 +2,7 @@
 using System.Linq;
 using Sandbox.MovieMaker;
 
-namespace Editor.MovieMaker;
+namespace Editor.MovieMaker.BlockPreviews;
 
 #nullable enable
 

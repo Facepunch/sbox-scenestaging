@@ -87,6 +87,16 @@ internal static class Extensions
 
 		return (keys[minIndex], keys[maxIndex]);
 	}
+
+	public static bool Overlaps( this (float Min, float Max) range, float min, float max )
+	{
+		return range.Min < max - 0.001f && range.Max > min + 0.001f;
+	}
+
+	public static bool Contains( this (float Min, float Max) range, float value )
+	{
+		return value >= range.Min && value <= range.Max;
+	}
 }
 
 public struct SmoothDeltaFloat

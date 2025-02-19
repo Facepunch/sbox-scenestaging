@@ -143,6 +143,6 @@ partial class MovieBlock
 
 		var data = (MovieBlockData)model.Data.Deserialize( dataType, options )!;
 
-		return new MovieBlock( track, model.Id, model.StartTime, model.Duration, data );
+		return new MovieBlock( track, model.Id, model.StartTime, model.Duration ?? 0f, data );
 	}
 }

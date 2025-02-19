@@ -1,6 +1,6 @@
 ﻿using Sandbox.MovieMaker;
 
-namespace Editor.MovieMaker;
+namespace Editor.MovieMaker.BlockPreviews;
 
 #nullable enable
 
@@ -12,7 +12,9 @@ public abstract partial class BlockPreview : GraphicsItem
 	protected MovieTrack Track => Block.Track;
 	protected MovieBlockData Data => Block.Data;
 	protected float StartTime => Block.StartTime;
-	protected float Duration => Block.Duration ?? Track.Clip.Duration - StartTime;
+	protected float Duration => Block.Duration;
+
+	protected int DataHash => HashCode.Combine( Block.Data, Block.Duration );
 
 	private void Initialize( DopeSheetTrack parent, MovieBlock block )
 	{
@@ -26,6 +28,11 @@ public abstract partial class BlockPreview : GraphicsItem
 	{
 		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground );
 		Paint.DrawRect( LocalRect );
+
+		Paint.ClearBrush();
+		Paint.SetPen( Color.White.WithAlpha( 0.1f ) );
+		Paint.DrawLine( LocalRect.BottomLeft, LocalRect.TopLeft );
+		Paint.DrawLine( LocalRect.BottomRight, LocalRect.TopRight );
 	}
 }
 

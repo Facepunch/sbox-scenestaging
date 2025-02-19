@@ -1,18 +1,44 @@
-﻿using Editor.MovieMaker;
+﻿using System.Linq;
 
-namespace Editor.TrackPainter;
+namespace Editor.MovieMaker.BlockPreviews;
 
 #nullable enable
 
-public abstract partial class CurvePreview<T> : BlockPreview<T>
+public interface ICurvePreview
 {
-	public record struct Element( string Name, Color Color, float? Min = null, float? Max = null );
+	public IReadOnlyList<Element> Elements { get; }
+	public IReadOnlyList<(float Min, float Max)> Ranges { get; }
+}
 
-	protected IReadOnlyList<Element> Elements { get; }
+public record struct Element( string Name, Color Color, float? Min = null, float? Max = null );
+
+public abstract partial class CurvePreview<T> : BlockPreview<T>, ICurvePreview
+{
+	private readonly (float Min, float Max)[] _ranges;
+	private int _rangeDataHash;
+
+	public IReadOnlyList<Element> Elements { get; }
+
+	public IReadOnlyList<(float Min, float Max)> Ranges
+	{
+		get
+		{
+			var dataHash = DataHash;
+
+			if ( dataHash != _rangeDataHash )
+			{
+				_rangeDataHash = dataHash;
+				UpdateRanges();
+			}
+
+			return _ranges;
+		}
+	}
 
 	protected CurvePreview( params Element[] elements )
 	{
 		Elements = elements;
+		_ranges = new (float, float)[elements.Length];
 	}
 
 	protected abstract void Decompose( T value, Span<float> result );

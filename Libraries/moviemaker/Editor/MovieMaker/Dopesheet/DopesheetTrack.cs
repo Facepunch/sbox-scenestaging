@@ -1,4 +1,6 @@
-﻿namespace Editor.MovieMaker;
+﻿using Editor.MovieMaker.BlockPreviews;
+
+namespace Editor.MovieMaker;
 
 #nullable enable
 
@@ -8,7 +10,9 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	private bool? _canCreatePreview;
 
-	private List<BlockPreview> BlockPreviews { get; } = new();
+	private readonly List<BlockPreview> _blockPreviews = new();
+
+	public IReadOnlyList<BlockPreview> BlockPreviews => _blockPreviews;
 
 	public bool Visible => TrackWidget.Visible;
 
@@ -32,14 +36,14 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	private void ClearBlockPreviews()
 	{
-		if ( BlockPreviews.Count == 0 ) return;
+		if ( _blockPreviews.Count == 0 ) return;
 
-		foreach ( var blockPreview in BlockPreviews )
+		foreach ( var blockPreview in _blockPreviews )
 		{
 			blockPreview.Destroy();
 		}
 
-		BlockPreviews.Clear();
+		_blockPreviews.Clear();
 	}
 
 	internal void OnSelected()
@@ -61,7 +65,9 @@ public partial class DopeSheetTrack : GraphicsItem
 	{
 		if ( Visible && _canCreatePreview is not false )
 		{
-			if ( TrackWidget.MovieTrack.Blocks.Count != BlockPreviews.Count )
+			var session = TrackWidget.TrackList.Session;
+
+			if ( TrackWidget.MovieTrack.Blocks.Count != _blockPreviews.Count )
 			{
 				ClearBlockPreviews();
 			}
@@ -72,7 +78,7 @@ public partial class DopeSheetTrack : GraphicsItem
 			{
 				var block = blocks[i];
 
-				if ( BlockPreviews.Count <= i )
+				if ( _blockPreviews.Count <= i )
 				{
 					if ( BlockPreview.Create( this, block ) is not { } newPreview )
 					{
@@ -80,16 +86,16 @@ public partial class DopeSheetTrack : GraphicsItem
 						return;
 					}
 
-					BlockPreviews.Add( newPreview );
+					_blockPreviews.Add( newPreview );
 				}
 
 				var preview = BlockPreviews[i];
-				var duration = block.Duration ?? TrackWidget.MovieTrack.Clip.Duration - block.StartTime;
+				var duration = block.Duration;
 
 				preview.Block = block;
 				preview.PrepareGeometryChange();
-				preview.Position = new Vector2( Session.Current.TimeToPixels( block.StartTime ), 0f );
-				preview.Size = new Vector2( Session.Current.TimeToPixels( duration ), LocalRect.Height );
+				preview.Position = new Vector2( session.TimeToPixels( block.StartTime ), 0f );
+				preview.Size = new Vector2( session.TimeToPixels( duration ), LocalRect.Height );
 
 				preview.Update();
 			}

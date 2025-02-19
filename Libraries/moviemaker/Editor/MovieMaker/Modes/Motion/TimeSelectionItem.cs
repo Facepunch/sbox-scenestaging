@@ -256,7 +256,7 @@ partial class MotionEditMode
 		{
 			if ( EditMode.TimeSelection is not { } selection || Value is not { } value ) return;
 
-			if ( selection is { Start: { } start, End: { } end } && start.PeakTime >= end.PeakTime - 0.01f )
+			if ( selection.HasZeroWidthPeak )
 			{
 				var offset = HandlePosition.x * 2f - 1f;
 				var time = EditMode.Session.PixelsToTime( Position.x - offset * Width, true );
@@ -277,8 +277,6 @@ partial class MotionEditMode
 
 		protected override void OnKeyPress( KeyEvent e )
 		{
-			Log.Info( $"Key press: {e.Key}" );
-
 			if ( Value is not { } value ) return;
 
 			if ( e.Key is >= KeyCode.Num0 and <= KeyCode.Num9 )

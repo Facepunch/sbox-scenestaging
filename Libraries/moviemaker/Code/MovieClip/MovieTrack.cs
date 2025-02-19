@@ -104,7 +104,7 @@ public sealed partial class MovieTrack
 		_children.Remove( track );
 	}
 
-	public MovieBlock AddBlock( float startTime, float? duration, MovieBlockData data )
+	public MovieBlock AddBlock( float startTime, float duration, MovieBlockData data )
 	{
 		var nextId = _blocks.Count == 0 ? 1 : _blocks[^1].Id + 1;
 		var block = new MovieBlock( this, nextId, startTime, duration, data );

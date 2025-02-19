@@ -1,6 +1,5 @@
-﻿using Editor.MovieMaker;
-
-namespace Editor.TrackPainter;
+﻿
+namespace Editor.MovieMaker.BlockPreviews;
 
 #nullable enable
 

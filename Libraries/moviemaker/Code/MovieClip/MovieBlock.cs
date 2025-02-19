@@ -24,9 +24,11 @@ public partial class MovieBlock
 	public float StartTime { get; set; }
 
 	/// <summary>
-	/// Duration of the block, in seconds. If null, it lasts until the end of the clip.
+	/// Duration of the block, in seconds.
 	/// </summary>
-	public float? Duration { get; set; }
+	public float Duration { get; set; }
+
+	public float EndTime => StartTime + Duration;
 
 	/// <summary>
 	/// Track data for this block. Either a constant, sample array, or invoked action information.
@@ -41,7 +43,7 @@ public partial class MovieBlock
 		}
 	}
 
-	internal MovieBlock( MovieTrack track, int id, float startTime, float? duration, MovieBlockData data )
+	internal MovieBlock( MovieTrack track, int id, float startTime, float duration, MovieBlockData data )
 	{
 		_track = track;
 
@@ -67,7 +69,7 @@ public partial class MovieBlock
 		_track = null;
 	}
 
-	public bool Contains( float time ) => time >= StartTime && (Duration is null || time - StartTime <= Duration + 0.001f);
+	public bool Contains( float time ) => time >= StartTime && time - StartTime <= Duration + 0.001f;
 
 	private void AssertValidData( MovieBlockData value )
 	{

@@ -66,6 +66,8 @@ internal sealed partial class MotionEditMode : EditMode
 			return;
 		}
 
+		ClearSelection();
+
 		TimeSelection = new TimeSelection(
 			new FadeSelection( time, time, DefaultInterpolation ),
 			new FadeSelection( time, time, DefaultInterpolation ) );

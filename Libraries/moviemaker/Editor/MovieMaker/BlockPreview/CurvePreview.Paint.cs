@@ -1,6 +1,4 @@
-﻿using Editor.MovieMaker;
-
-namespace Editor.TrackPainter;
+﻿namespace Editor.MovieMaker.BlockPreviews;
 
 #nullable enable
 
@@ -10,7 +8,7 @@ partial class CurvePreview<T>
 
 	protected virtual void GetCurveTimes( List<float> times )
 	{
-		if ( Constant is { } constant )
+		if ( Constant is not null )
 		{
 			times.Add( 0f );
 			times.Add( Duration );
@@ -19,10 +17,12 @@ partial class CurvePreview<T>
 		{
 			var dt = 1f / samples.SampleRate;
 
-			for ( var i = 0; i <= samples.Samples.Count; ++i )
+			for ( var t = 0f; t < Duration; t += dt )
 			{
-				times.Add( i * dt );
+				times.Add( t );
 			}
+
+			times.Add( Duration );
 		}
 	}
 
@@ -39,6 +39,39 @@ partial class CurvePreview<T>
 		}
 
 		return default!;
+	}
+
+	private void UpdateRanges()
+	{
+		if ( Elements.Count < 1 ) return;
+
+		var times = Static.PaintCurve_Times ??= new();
+
+		times.Clear();
+
+		GetCurveTimes( times );
+
+		if ( times.Count == 0 ) return;
+
+		Span<float> floats = stackalloc float[Elements.Count];
+
+		for ( var j = 0; j < Elements.Count; ++j )
+		{
+			_ranges[j] = (Elements[j].Min ?? float.PositiveInfinity, Elements[j].Max ?? float.NegativeInfinity);
+		}
+
+		foreach ( var t in times )
+		{
+			if ( t < 0f ) continue;
+
+			var value = GetValue( t );
+			Decompose( value, floats );
+
+			for ( var j = 0; j < Elements.Count; ++j )
+			{
+				_ranges[j] = (Math.Min( _ranges[j].Min, floats[j] ), Math.Max( _ranges[j].Max, floats[j] ));
+			}
+		}
 	}
 
 	protected override void OnPaint()
@@ -74,41 +107,35 @@ partial class CurvePreview<T>
 		var height = LocalRect.Height - margin * 2f;
 
 		Span<float> floats = stackalloc float[Elements.Count];
-
-		Span<float> mins = stackalloc float[Elements.Count];
-		Span<float> maxs = stackalloc float[Elements.Count];
+		Span<(float Min, float Max)> ranges = stackalloc (float, float)[Elements.Count];
 		Span<float> mids = stackalloc float[Elements.Count];
 
-		for ( var j = 0; j < Elements.Count; ++j )
-		{
-			mins[j] = Elements[j].Min ?? float.PositiveInfinity;
-			maxs[j] = Elements[j].Max ?? float.NegativeInfinity;
-		}
-
-		// First pass, find mins and maxs
-
-		foreach ( var t in times )
-		{
-			if ( t < 0f ) continue;
-
-			var value = GetValue( t );
-			Decompose( value, floats );
-
-			for ( var j = 0; j < Elements.Count; ++j )
-			{
-				mins[j] = Math.Min( mins[j], floats[j] );
-				maxs[j] = Math.Max( maxs[j], floats[j] );
-			}
-		}
+		_ranges.CopyTo( ranges );
 
 		var range = 0f;
 
+		// All previews on the same track should have the same range
+
+		foreach ( var preview in Parent.BlockPreviews )
+		{
+			if ( preview is not ICurvePreview { Ranges: { } curveRanges } ) continue;
+			if ( curveRanges.Count != ranges.Length ) continue;
+
+			for ( var j = 0; j < Elements.Count; ++j )
+			{
+				ranges[j] = (Math.Min( ranges[j].Min, curveRanges[j].Min ), Math.Max( ranges[j].Max, curveRanges[j].Max ));
+			}
+		}
+
 		for ( var j = 0; j < Elements.Count; ++j )
 		{
-			range = Math.Max( range, maxs[j] - mins[j] );
+			range = Math.Max( range, ranges[j].Max - ranges[j].Min );
 
-			mids[j] = (mins[j] + maxs[j]) * 0.5f;
+			mids[j] = (ranges[j].Min + ranges[j].Max) * 0.5f;
+		}
 
+		for ( var j = 0; j < Elements.Count; ++j )
+		{
 			Lines[j].Clear();
 			Lines[j].Position = new Vector2( 0f, margin );
 			Lines[j].Size = new Vector2( LocalRect.Width, height );

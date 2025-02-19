@@ -170,7 +170,7 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		RebuildTracks();
 	}
 
-	TrackWidget FindTrack( MovieTrack track )
+	public TrackWidget FindTrack( MovieTrack track )
 	{
 		return Tracks.FirstOrDefault( x => x.MovieTrack == track );
 	}
