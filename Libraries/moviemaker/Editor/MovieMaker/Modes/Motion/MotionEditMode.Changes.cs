@@ -33,7 +33,7 @@ partial class MotionEditMode
 
 		private object? _changedValue;
 
-		private record struct SampleRange( float Start, float Duration, int SampleRate );
+		private record struct SampleRange( MovieTimeRange TimeRange, int SampleRate );
 		private SampleRange _sampleRange;
 		private MovieBlockData? _originalData;
 		private MovieBlock? _previewBlock;
@@ -60,7 +60,7 @@ partial class MotionEditMode
 			Modifier = TrackModifier.Get( track.PropertyType );
 		}
 
-		private bool TryGetOriginalValue( float time, out object? value )
+		private bool TryGetOriginalValue( MovieTime time, out object? value )
 		{
 			switch ( _originalData )
 			{
@@ -77,7 +77,7 @@ partial class MotionEditMode
 			return false;
 		}
 
-		public bool TryGetLocalValue( float time, object? globalValue, out object? localValue )
+		public bool TryGetLocalValue( MovieTime time, object? globalValue, out object? localValue )
 		{
 			localValue = null;
 
@@ -99,29 +99,28 @@ partial class MotionEditMode
 
 		private SampleRange GetAffectedSampleRange( TimeSelection selection, int sampleRate )
 		{
-			var min = selection.Start?.FadeTime ?? 0f;
-			var max = selection.End?.FadeTime ?? Track.Clip.Duration;
+			var timeRange = selection.GetTimeRange( Track.Clip );
 
 			foreach ( var block in Track.Blocks )
 			{
-				if ( selection.Start is { Duration: > 0 } fadeIn )
+				if ( selection.FadeIn is { Duration.IsZero: false } fadeIn )
 				{
-					if ( (Min: fadeIn.FadeTime, Max: fadeIn.PeakTime).Overlaps( block.StartTime, block.EndTime ) )
+					if ( block.TimeRange.Intersect( fadeIn.TimeRange ) is not null )
 					{
-						min = Math.Min( min, block.StartTime );
+						timeRange = timeRange.Union( block.Start );
 					}
 				}
 
-				if ( selection.End is { Duration: > 0 } fadeOut )
+				if ( selection.FadeOut is { Duration.IsZero: false } fadeOut )
 				{
-					if ( (Min: fadeOut.PeakTime, Max: fadeOut.FadeTime).Overlaps( block.StartTime, block.EndTime ) )
+					if ( block.TimeRange.Intersect( fadeOut.TimeRange ) is not null )
 					{
-						max = Math.Max( max, block.EndTime );
+						timeRange = timeRange.Union( block.End );
 					}
 				}
 			}
 
-			return new SampleRange( min, max - min, sampleRate );
+			return new SampleRange( timeRange, sampleRate );
 		}
 
 		public bool Update( TimeSelection selection, int sampleRate )
@@ -139,8 +138,8 @@ partial class MotionEditMode
 				_sampleRange = range;
 
 				_previewBlock?.Remove();
-				_originalData = modifier.SampleTrack( Track, range.Start, range.Duration, sampleRate );
-				_previewBlock = Track.AddBlock( range.Start, range.Duration, _originalData );
+				_originalData = modifier.SampleTrack( Track, range.TimeRange, sampleRate );
+				_previewBlock = Track.AddBlock( range.TimeRange, _originalData );
 			}
 
 			_previewBlock.Data = modifier.Modify( _previewBlock, _originalData, selection, ChangedValue, IsAdditive );
@@ -156,7 +155,7 @@ partial class MotionEditMode
 
 			var maskedBlocks = Track.Blocks
 				.Where( x => x != previewBlock )
-				.Where( x => x.StartTime >= previewBlock.StartTime && x.EndTime <= previewBlock.EndTime )
+				.Where( x => previewBlock.TimeRange.Contains( x.TimeRange ) )
 				.ToArray();
 
 			foreach ( var block in maskedBlocks )
@@ -283,13 +282,13 @@ partial class MotionEditMode
 
 				// Peak edge handles
 
-				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.Start is { } start ? start.PeakTime : null, ( value, time ) => value.WithPeakStart( time, DefaultInterpolation, false ) ) );
-				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.End is { } end ? end.PeakTime : null, ( value, time ) => value.WithPeakEnd( time, DefaultInterpolation, false ) ) );
+				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.FadeIn is { } fadeIn ? fadeIn.End : null, ( value, time ) => value.WithPeakStart( time, DefaultInterpolation, false ) ) );
+				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.FadeOut is { } fadeOut ? fadeOut.Start : null, ( value, time ) => value.WithPeakEnd( time, DefaultInterpolation, false ) ) );
 
 				// Fade edge handles
 
-				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.Start is { } start ? start.FadeTime : null, (value, time) => value.WithFadeStart( time ) ) );
-				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.End is { } end ? end.FadeTime : null, ( value, time ) => value.WithFadeEnd( time ) ) );
+				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.FadeIn is { } fadeIn ? fadeIn.Start : null, (value, time) => value.WithFadeStart( time ) ) );
+				DopeSheet.Add( new TimeSelectionHandleItem( this, value => value.FadeOut is { } fadeOut ? fadeOut.End : null, ( value, time ) => value.WithFadeEnd( time ) ) );
 			}
 
 			foreach ( var item in DopeSheet.Items.OfType<ITimeSelectionItem>() )

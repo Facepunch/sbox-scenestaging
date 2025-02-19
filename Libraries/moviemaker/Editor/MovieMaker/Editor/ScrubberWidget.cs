@@ -1,4 +1,6 @@
-﻿namespace Editor.MovieMaker;
+﻿using Sandbox.MovieMaker;
+
+namespace Editor.MovieMaker;
 
 /// <summary>
 /// A bar with times and notches on it
@@ -37,7 +39,7 @@ public class ScrubberItem : GraphicsItem
 
 	protected override void OnPaint()
 	{
-		var duration = Session.Clip?.Duration ?? 0f;
+		var duration = Session.Clip?.Duration ?? MovieTime.Zero;
 
 		Paint.SetBrushAndPen( DopeSheet.Colors.Background );
 		Paint.DrawRect( LocalRect );
@@ -46,7 +48,7 @@ public class ScrubberItem : GraphicsItem
 
 		var range = Session.VisibleTimeRange;
 
-		var startX = FromScene( Session.TimeToPixels( 0f ) ).x;
+		var startX = FromScene( Session.TimeToPixels( MovieTime.Zero ) ).x;
 		var endX = FromScene( Session.TimeToPixels( duration ) ).x;
 
 		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground );
@@ -93,8 +95,8 @@ public class ScrubberItem : GraphicsItem
 
 			var y = IsTop ? Height - height - margin : margin;
 
-			var t0 = Math.Max( MathF.Floor( range.Min / interval ) * interval, 0f );
-			var t1 = t0 + (range.Max - range.Min);
+			var t0 = MovieTime.Max( (range.Start - interval).SnapToGrid( interval ), MovieTime.Zero );
+			var t1 = t0 + range.Duration;
 
 			for ( var t = t0; t <= t1; t += interval )
 			{
@@ -115,9 +117,9 @@ public class ScrubberItem : GraphicsItem
 		}
 	}
 
-	private static string TimeToString( float time, float interval )
+	private static string TimeToString( MovieTime time, MovieTime interval )
 	{
-		return TimeSpan.FromSeconds( time + 0.00049f ).ToString( @"mm\:ss\.fff" );
+		return time.ToString();
 	}
 
 	int lastState;

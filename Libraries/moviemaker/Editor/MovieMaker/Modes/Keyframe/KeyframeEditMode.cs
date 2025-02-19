@@ -90,7 +90,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 		WriteTracks( SelectedTracks );
 	}
 
-	private void Nudge( float amount )
+	private void Nudge( MovieTime amount )
 	{
 		foreach ( var h in SelectedHandles )
 		{
@@ -119,7 +119,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 		e.Accepted = true;
 	}
 
-	private record struct CopiedHandle( Guid Track, float Time, object? Value, InterpolationMode Interpolation );
+	private record struct CopiedHandle( Guid Track, MovieTime Time, object? Value, InterpolationMode Interpolation );
 	private static List<CopiedHandle>? Copied { get; set; }
 
 	protected override void OnCopy()
@@ -201,7 +201,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 			return false;
 		}
 
-		keyframes.AddKey( 0f );
+		keyframes.AddKey( MovieTime.Zero );
 		keyframes.Write();
 
 		return true;
@@ -278,18 +278,18 @@ internal sealed class TrackKeyframes : IDisposable
 		DopeSheetTrack.Update();
 	}
 
-	internal void AddKey( float time ) => AddKey( time, TrackWidget.Property!.Value );
+	internal void AddKey( MovieTime time ) => AddKey( time, TrackWidget.Property!.Value );
 
-	internal bool UpdateKey( float time ) => UpdateKey( time, TrackWidget.Property!.Value );
+	internal bool UpdateKey( MovieTime time ) => UpdateKey( time, TrackWidget.Property!.Value );
 
-	internal void AddKey( float time, object? value, InterpolationMode? interpolation = null )
+	internal void AddKey( MovieTime time, object? value, InterpolationMode? interpolation = null )
 	{
 		var h = FindKey( time ) ?? new KeyframeHandle( this ) { Interpolation = EditMode.DefaultInterpolation };
 
 		UpdateKey( h, time, value, interpolation );
 	}
 
-	internal bool UpdateKey( float time, object? value, InterpolationMode? interpolation = null )
+	internal bool UpdateKey( MovieTime time, object? value, InterpolationMode? interpolation = null )
 	{
 		if ( FindKey( time ) is not { } h ) return false;
 
@@ -298,7 +298,7 @@ internal sealed class TrackKeyframes : IDisposable
 		return true;
 	}
 
-	private void UpdateKey( KeyframeHandle h, float time, object? value, InterpolationMode? interpolation )
+	private void UpdateKey( KeyframeHandle h, MovieTime time, object? value, InterpolationMode? interpolation )
 	{
 		//EditorUtility.PlayRawSound( "sounds/editor/add.wav" );
 		h.Time = time;
@@ -310,7 +310,7 @@ internal sealed class TrackKeyframes : IDisposable
 		DopeSheetTrack.Update();
 	}
 
-	private KeyframeHandle? FindKey( float time ) => Handles.FirstOrDefault( x => x.Time.AlmostEqual( time, 0.001f ) );
+	private KeyframeHandle? FindKey( MovieTime time ) => Handles.FirstOrDefault( x => x.Time == time );
 
 	/// <summary>
 	/// Read from the Clip

@@ -9,13 +9,13 @@ namespace Editor.MovieMaker;
 
 public interface IKeyframe
 {
-	float Time { get; }
+	MovieTime Time { get; }
 	object? Value { get; }
 	InterpolationMode? Interpolation { get; }
 }
 
 public record struct Keyframe<T>(
-	float Time, T Value,
+	MovieTime Time, T Value,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
 	InterpolationMode? Interpolation ) : IKeyframe
 {
@@ -28,8 +28,7 @@ public abstract partial class KeyframeCurve : IEnumerable<IKeyframe>
 
 	public abstract Type ValueType { get; }
 	public abstract int Count { get; }
-	public abstract float StartTime { get; }
-	public abstract float Duration { get; }
+	public abstract MovieTimeRange TimeRange { get; }
 	public abstract bool CanInterpolate { get; }
 
 	public static KeyframeCurve Create( Type valueType )
@@ -41,10 +40,10 @@ public abstract partial class KeyframeCurve : IEnumerable<IKeyframe>
 
 	public abstract void Clear();
 
-	public abstract void SetKeyframe( float time, object? value, InterpolationMode? interpolation = null );
-	public object GetValue( float time ) => OnGetValue( time );
+	public abstract void SetKeyframe( MovieTime time, object? value, InterpolationMode? interpolation = null );
+	public object GetValue( MovieTime time ) => OnGetValue( time );
 
-	protected abstract object OnGetValue( float time );
+	protected abstract object OnGetValue( MovieTime time );
 
 	protected abstract IEnumerator<IKeyframe> OnGetEnumerator();
 
@@ -55,14 +54,15 @@ public abstract partial class KeyframeCurve : IEnumerable<IKeyframe>
 
 public partial class KeyframeCurve<T> : KeyframeCurve, IEnumerable<Keyframe<T>>
 {
-	private readonly SortedList<float, Keyframe<T>> _keyframes = new();
+	private readonly SortedList<MovieTime, Keyframe<T>> _keyframes = new();
 	private readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
 
 	public override Type ValueType => typeof( T );
 	public override int Count => _keyframes.Count;
 
-	public override float StartTime => _keyframes.Count == 0 ? 0f : _keyframes.Values[0].Time;
-	public override float Duration => _keyframes.Count == 0 ? 0f : _keyframes.Values[^1].Time - _keyframes.Values[0].Time;
+	public override MovieTimeRange TimeRange => _keyframes.Count == 0
+		? default
+		: new MovieTimeRange( _keyframes.Values[0].Time, _keyframes.Values[^1].Time );
 
 	public override bool CanInterpolate => _interpolator is not null;
 
@@ -79,10 +79,10 @@ public partial class KeyframeCurve<T> : KeyframeCurve, IEnumerable<Keyframe<T>>
 		set => _keyframes.Values[index] = value;
 	}
 
-	public override void SetKeyframe( float time, object? value, InterpolationMode? interpolation = null ) =>
+	public override void SetKeyframe( MovieTime time, object? value, InterpolationMode? interpolation = null ) =>
 		SetKeyframe( new Keyframe<T>( time, (T)value!, interpolation ) );
 
-	public void SetKeyframe( float time, T value, InterpolationMode? interpolation = null ) =>
+	public void SetKeyframe( MovieTime time, T value, InterpolationMode? interpolation = null ) =>
 		SetKeyframe( new Keyframe<T>( time, value, interpolation ) );
 
 	public void SetKeyframe( Keyframe<T> keyframe )
@@ -90,12 +90,12 @@ public partial class KeyframeCurve<T> : KeyframeCurve, IEnumerable<Keyframe<T>>
 		_keyframes[keyframe.Time] = keyframe;
 	}
 
-	public Keyframe<T> GetKeyframe( float time )
+	public Keyframe<T> GetKeyframe( MovieTime time )
 	{
 		return _keyframes[time];
 	}
 
-	public void RemoveKeyframe( float time )
+	public void RemoveKeyframe( MovieTime time )
 	{
 		_keyframes.Remove( time );
 	}

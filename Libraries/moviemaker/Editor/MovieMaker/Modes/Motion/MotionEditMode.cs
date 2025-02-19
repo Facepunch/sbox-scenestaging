@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -22,7 +22,7 @@ internal sealed partial class MotionEditMode : EditMode
 
 	public bool IsAdditive { get; private set; }
 
-	private float? _selectionStartTime;
+	private MovieTime? _selectionStartTime;
 
 	protected override void OnEnable()
 	{
@@ -31,7 +31,7 @@ internal sealed partial class MotionEditMode : EditMode
 		foreach ( var interpolation in Enum.GetValues<InterpolationMode>() )
 		{
 			Toolbar.AddToggle( interpolation,
-				() => (TimeSelection?.Start?.Interpolation ?? DefaultInterpolation) == interpolation,
+				() => (TimeSelection?.FadeIn?.Interpolation ?? DefaultInterpolation) == interpolation,
 				_ =>
 				{
 					DefaultInterpolation = interpolation;
@@ -68,9 +68,7 @@ internal sealed partial class MotionEditMode : EditMode
 
 		ClearSelection();
 
-		TimeSelection = new TimeSelection(
-			new FadeSelection( time, time, DefaultInterpolation ),
-			new FadeSelection( time, time, DefaultInterpolation ) );
+		TimeSelection = new TimeSelection( new( time, DefaultInterpolation ), new( time, DefaultInterpolation ) );
 
 		_selectionStartTime = time;
 
@@ -97,7 +95,7 @@ internal sealed partial class MotionEditMode : EditMode
 			}
 			else
 			{
-				TimeSelection = selection.WithTimeRange( Math.Min( dragStartTime, time ), Math.Max( dragStartTime, time ), DefaultInterpolation );
+				TimeSelection = selection.WithTimeRange( MovieTime.Min( dragStartTime, time ), MovieTime.Max( dragStartTime, time ), DefaultInterpolation );
 			}
 		}
 	}
@@ -108,14 +106,9 @@ internal sealed partial class MotionEditMode : EditMode
 		{
 			_selectionStartTime = null;
 
-			var (minTime, maxTime) = Session.VisibleTimeRange;
+			var timeRange = selection.GetPeakTimeRange( Session.Clip! ).Clamp( Session.VisibleTimeRange );
 
-			var startTime = Math.Max( minTime, selection.Start?.PeakTime ?? 0f );
-			var endTime = Math.Min( maxTime, selection.End?.PeakTime ?? Session.Clip?.Duration ?? 0f );
-
-			var midTime = (startTime + endTime) * 0.5f;
-
-			Session.SetCurrentPointer( midTime );
+			Session.SetCurrentPointer( MovieTime.FromTicks( (timeRange.Start.Ticks + timeRange.End.Ticks) / 2 ) );
 			Session.ClearPreviewPointer();
 		}
 	}

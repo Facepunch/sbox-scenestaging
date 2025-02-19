@@ -22,7 +22,7 @@ public class GridItem : GraphicsItem
 
 			for ( float x = 0; x < Size.x + dx; x += dx )
 			{
-				if ( session.PixelsToTime( x ) < 0f )
+				if ( session.PixelsToTime( x ).IsNegative )
 					continue;
 
 				Paint.DrawLine( new Vector2( x - offset, 0 ), new Vector2( x - offset, Size.y ) );

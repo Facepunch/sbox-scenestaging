@@ -11,10 +11,9 @@ public abstract partial class BlockPreview : GraphicsItem
 
 	protected MovieTrack Track => Block.Track;
 	protected MovieBlockData Data => Block.Data;
-	protected float StartTime => Block.StartTime;
-	protected float Duration => Block.Duration;
+	protected MovieTimeRange TimeRange => Block.TimeRange;
 
-	protected int DataHash => HashCode.Combine( Block.Data, Block.Duration );
+	protected int DataHash => HashCode.Combine( Block.Data, TimeRange.Duration );
 
 	private void Initialize( DopeSheetTrack parent, MovieBlock block )
 	{

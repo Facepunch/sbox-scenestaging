@@ -18,7 +18,7 @@ public sealed partial class Session
 	internal MovieEditor Editor { get; set; } = null!;
 
 	private bool _frameSnap;
-	private float _timeOffset;
+	private MovieTime _timeOffset;
 	private float _pixelsPerSecond;
 
 	public bool Playing { get; set; }
@@ -29,7 +29,7 @@ public sealed partial class Session
 	}
 	public bool Loop { get; set; } = true;
 
-	public float TimeOffset
+	public MovieTime TimeOffset
 	{
 		get => _timeOffset;
 		private set => _timeOffset = Cookies.TimeOffset = value;
@@ -56,12 +56,12 @@ public sealed partial class Session
 	/// <summary>
 	/// When editing keyframes, what time are we changing.
 	/// </summary>
-	public float CurrentPointer { get; private set; }
+	public MovieTime CurrentPointer { get; private set; }
 
 	/// <summary>
 	/// What time are we previewing (when holding shift and moving mouse over timeline).
 	/// </summary>
-	public float? PreviewPointer { get; private set; }
+	public MovieTime? PreviewPointer { get; private set; }
 
 	public bool HasUnsavedChanges { get; private set; }
 
@@ -70,18 +70,18 @@ public sealed partial class Session
 	SmoothDeltaFloat SmoothZoom = new SmoothDeltaFloat { Value = 100.0f, Target = 100.0f, SmoothTime = 0.3f };
 	SmoothDeltaFloat SmoothPan = new SmoothDeltaFloat { Value = 0.0f, Target = 0f, SmoothTime = 0.3f };
 
-	public (float Min, float Max) VisibleTimeRange
+	public MovieTimeRange VisibleTimeRange
 	{
 		get
 		{
 			var minTime = PixelsToTime( 0f ) + TimeOffset;
 			var maxTime = PixelsToTime( Editor.TrackList.RightWidget.Width ) + TimeOffset;
 
-			return (minTime, maxTime);
+			return new (minTime, maxTime);
 		}
 	}
 
-	private float? _lastPlayerPosition;
+	private MovieTime? _lastPlayerPosition;
 
 	/// <summary>
 	/// Invoked when the view pans or changes scale.
@@ -111,9 +111,9 @@ public sealed partial class Session
 		}
 	}
 
-	public float PixelsToTime( float pixels, bool snap = false )
+	public MovieTime PixelsToTime( float pixels, bool snap = false )
 	{
-		var t = pixels / PixelsPerSecond;
+		var t = MovieTime.FromSeconds( pixels / PixelsPerSecond );
 
 		if ( snap && FrameSnap )
 		{
@@ -123,9 +123,9 @@ public sealed partial class Session
 		return t;
 	}
 
-	public float TimeToPixels( float time )
+	public float TimeToPixels( MovieTime time )
 	{
-		return time * PixelsPerSecond;
+		return (float)(time.TotalSeconds * PixelsPerSecond);
 	}
 
 	public void ScrollBy( float x, bool smooth )
@@ -135,35 +135,33 @@ public sealed partial class Session
 
 		var time = PixelsToTime( x );
 
-		SmoothPan.Target -= time;
+		SmoothPan.Target -= (float)time.TotalSeconds;
 		if ( SmoothPan.Target < 0 ) SmoothPan.Target = 0;
 
 		if ( !smooth )
 		{
 			SmoothPan.Value = SmoothPan.Target;
 			SmoothPan.Velocity = 0;
-			TimeOffset = SmoothPan.Target;
+			TimeOffset = MovieTime.FromSeconds( SmoothPan.Target );
 		}
 
 		ViewChanged?.Invoke();
 	}
 
-	public event Action<float>? PointerChanged;
-	public event Action<float?>? PreviewChanged;
+	public event Action<MovieTime>? PointerChanged;
+	public event Action<MovieTime?>? PreviewChanged;
 
-	public void SetCurrentPointer( float time )
+	public void SetCurrentPointer( MovieTime time )
 	{
-		CurrentPointer = Math.Max( time, 0f );
-
+		CurrentPointer = MovieTime.Max( time, MovieTime.Zero );
 		PointerChanged?.Invoke( CurrentPointer );
 
 		Player.ApplyFrame( CurrentPointer );
 	}
 
-	public void SetPreviewPointer( float time )
+	public void SetPreviewPointer( MovieTime time )
 	{
-		PreviewPointer = Math.Max( time, 0f );
-
+		PreviewPointer = MovieTime.Max( time, MovieTime.Zero );
 		PreviewChanged?.Invoke( PreviewPointer );
 
 		Player.ApplyFrame( PreviewPointer.Value );
@@ -194,7 +192,7 @@ public sealed partial class Session
 
 	public bool Frame()
 	{
-		if ( !Playing && _lastPlayerPosition is { } lastPlayerPosition && !lastPlayerPosition.AlmostEqual( Player.Position ) )
+		if ( !Playing && _lastPlayerPosition is { } lastPlayerPosition && lastPlayerPosition != Player.Position )
 		{
 			CurrentPointer = lastPlayerPosition;
 			PointerChanged?.Invoke( CurrentPointer );
@@ -204,14 +202,14 @@ public sealed partial class Session
 
 		if ( Playing )
 		{
-			var targetTime = CurrentPointer + RealTime.Delta;
+			var targetTime = CurrentPointer + MovieTime.FromSeconds( RealTime.Delta );
 
 			// got to the end
-			if ( targetTime >= Clip.Duration && Clip.Duration > 0 )
+			if ( targetTime >= Clip.Duration && Clip.Duration > MovieTime.Zero )
 			{
 				if ( Loop )
 				{
-					targetTime = 0;
+					targetTime = MovieTime.Zero;
 				}
 				else
 				{
@@ -239,7 +237,7 @@ public sealed partial class Session
 
 		if ( SmoothPan.Update( RealTime.Delta ) )
 		{
-			TimeOffset = SmoothPan.Value;
+			TimeOffset = MovieTime.FromSeconds( SmoothPan.Value );
 			ViewChanged?.Invoke();
 		}
 

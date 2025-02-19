@@ -1,119 +1,120 @@
 ﻿
+using Sandbox.MovieMaker;
+
 namespace Editor.MovieMaker;
 
-internal readonly record struct FadeSelection( float PeakTime, float FadeTime, InterpolationMode Interpolation )
+internal readonly record struct TimeSelection( TimeSelection.Fade? FadeIn, TimeSelection.Fade? FadeOut )
 {
-	public float Duration => Math.Abs( PeakTime - FadeTime );
-}
+	internal readonly record struct Fade( MovieTimeRange TimeRange, InterpolationMode Interpolation )
+	{
+		public MovieTime Start => TimeRange.Start;
+		public MovieTime End => TimeRange.End;
+		public MovieTime Duration => TimeRange.Duration;
+	}
 
-internal readonly record struct TimeSelection( FadeSelection? Start, FadeSelection? End )
-{
-	public bool HasZeroWidthPeak => Start is { } start && End is { } end && start.PeakTime >= end.PeakTime - 0.001f;
+	public bool HasZeroWidthPeak => FadeIn is { } fadeIn && FadeOut is { } fadeOut && fadeIn.End >= fadeOut.Start;
 
-	public TimeSelection Clamp( float minTime, float maxTime )
+	public MovieTimeRange GetTimeRange( MovieClip clip )
+	{
+		return (FadeIn?.Start ?? MovieTime.Zero, FadeOut?.End ?? clip.Duration);
+	}
+
+	public MovieTimeRange GetPeakTimeRange( MovieClip clip )
+	{
+		return (FadeIn?.End ?? MovieTime.Zero, FadeOut?.Start ?? clip.Duration);
+	}
+
+	public TimeSelection Clamp( MovieTimeRange timeRange )
 	{
 		return new TimeSelection(
-			Start is { } start ? start with { PeakTime = Math.Max( minTime, start.PeakTime ) } : null,
-			End is { } end ? end with { PeakTime = Math.Min( maxTime, end.PeakTime ) } : null );
+			FadeIn is { } fadeIn ? fadeIn with { TimeRange = fadeIn.TimeRange.Clamp( timeRange ) } : null,
+			FadeOut is { } fadeOut ? fadeOut with { TimeRange = fadeOut.TimeRange.Clamp( timeRange ) } : null );
 	}
 
 	public TimeSelection WithInterpolation( InterpolationMode interpolation )
 	{
 		return new TimeSelection(
-			Start is { } start ? start with { Interpolation = interpolation } : null,
-			End is { } end ? end with { Interpolation = interpolation } : null );
+			FadeIn is { } fadeIn ? fadeIn with { Interpolation = interpolation } : null,
+			FadeOut is { } fadeOut ? fadeOut with { Interpolation = interpolation } : null );
 	}
 
-	public TimeSelection WithTimeRange( float? min, float? max, InterpolationMode defaultInterpolation )
+	public TimeSelection WithTimeRange( MovieTime? min, MovieTime? max, InterpolationMode defaultInterpolation )
 	{
 		return new TimeSelection(
-			min is not { } minValue ? null : Start is { } start ? start with { PeakTime = minValue, FadeTime = minValue } : new FadeSelection( minValue, minValue, defaultInterpolation ),
-			max is not { } maxValue ? null : End is { } end ? end with { PeakTime = maxValue, FadeTime = maxValue } : new FadeSelection( maxValue, maxValue, defaultInterpolation ) );
+			min is not { } minValue ? null : FadeIn is { } fadeIn ? fadeIn with { TimeRange = minValue } : new Fade( minValue, defaultInterpolation ),
+			max is not { } maxValue ? null : FadeOut is { } fadeOut ? fadeOut with { TimeRange = maxValue } : new Fade( maxValue, defaultInterpolation ) );
 	}
 
-	public TimeSelection WithFadeDurationDelta( float delta )
+	public TimeSelection WithFadeDurationDelta( MovieTime delta )
 	{
 		return new TimeSelection(
-			Start is { } start ? start with { FadeTime = Math.Min( start.PeakTime, start.FadeTime - delta ) } : null,
-			End is { } end ? end with { FadeTime = Math.Max( end.PeakTime, end.FadeTime + delta ) } : null );
+			FadeIn is { } fadeIn ? fadeIn with { TimeRange = fadeIn.TimeRange.Grow( delta, MovieTime.Zero ) } : null,
+			FadeOut is { } fadeOut ? fadeOut with { TimeRange = fadeOut.TimeRange.Grow( MovieTime.Zero, delta ) } : null );
 	}
 
-	public TimeSelection WithPeak( float time, InterpolationMode defaultInterpolation )
+	public TimeSelection WithPeak( MovieTime time, InterpolationMode defaultInterpolation )
 	{
 		return new TimeSelection(
-			Start is { } start
-				? start with { PeakTime = time, FadeTime = time - start.Duration }
-				: new FadeSelection( time, time, defaultInterpolation ),
-			End is { } end
-				? end with { PeakTime = time, FadeTime = time + end.Duration }
-				: new FadeSelection( time, time, defaultInterpolation ) );
+			FadeIn is { } fadeIn
+				? fadeIn with { TimeRange = (time - fadeIn.Duration, time) }
+				: new Fade( time, defaultInterpolation ),
+			FadeOut is { } fadeOut
+				? fadeOut with { TimeRange = (time, time + fadeOut.Duration) }
+				: new Fade( time, defaultInterpolation ) );
 	}
 
-	public TimeSelection WithPeakStart( float time, InterpolationMode defaultInterpolation, bool keepDuration = true )
+	public TimeSelection WithPeakStart( MovieTime time, InterpolationMode defaultInterpolation, bool keepDuration = true )
 	{
-		if ( Start is not { } start ) return this with { Start = new FadeSelection( time, time, defaultInterpolation ) };
+		if ( FadeIn is not { } fadeIn ) return this with { FadeIn = new Fade( time, defaultInterpolation ) };
 
-		time = Math.Min( time, End?.PeakTime ?? float.PositiveInfinity );
+		var fadeInStart = keepDuration ? MovieTime.Max( time - fadeIn.Duration, MovieTime.Zero ) : fadeIn.Start;
 
-		return this with { Start = start with
-		{
-			PeakTime = time,
-			FadeTime = keepDuration ? time - start.Duration : start.FadeTime
-		} };
+		time = time.Clamp( (fadeInStart, FadeOut?.TimeRange.Start ?? time) );
+
+		return this with { FadeIn = fadeIn with { TimeRange = (fadeInStart, time) } };
 	}
 
-	public TimeSelection WithPeakEnd( float time, InterpolationMode defaultInterpolation, bool keepDuration = true )
+	public TimeSelection WithPeakEnd( MovieTime time, InterpolationMode defaultInterpolation, bool keepDuration = true )
 	{
-		if ( End is not { } end ) return this with { End = new FadeSelection( time, time, defaultInterpolation ) };
+		if ( FadeOut is not { } fadeOut ) return this with { FadeOut = new Fade( time, defaultInterpolation ) };
 
-		time = Math.Max( time, Start?.PeakTime ?? 0f );
+		var fadeOutEnd = keepDuration ? time + fadeOut.Duration : fadeOut.End;
+
+		time = time.Clamp( (FadeIn?.TimeRange.End ?? time, fadeOutEnd) );
+
+		return this with { FadeOut = fadeOut with { TimeRange = (time, fadeOutEnd) } };
+	}
+
+	public TimeSelection WithFadeStart( MovieTime time )
+	{
+		if ( FadeIn is not { } fadeIn ) return this;
 
 		return this with
 		{
-			End = end with
-			{
-				PeakTime = time,
-				FadeTime = keepDuration ? time + end.Duration : end.FadeTime
-			}
+			FadeIn = fadeIn with { TimeRange = (time.Clamp( (MovieTime.Zero, fadeIn.End) ), fadeIn.End) }
 		};
 	}
 
-	public TimeSelection WithFadeStart( float time )
+	public TimeSelection WithFadeEnd( MovieTime time )
 	{
-		if ( Start is not { } start ) return this;
+		if ( FadeOut is not { } fadeOut ) return this;
 
-		return this with { Start = start with { FadeTime = Math.Min( start.PeakTime, time ) } };
-	}
-
-	public TimeSelection WithFadeEnd( float time )
-	{
-		if ( End is not { } end ) return this;
-
-		return this with { End = end with { FadeTime = Math.Max( end.PeakTime, time ) } };
-	}
-
-	public bool Overlaps( float minTime, float maxTime )
-	{
-		if ( Start is { } start && start.FadeTime > maxTime ) return false;
-		if ( End is { } end && end.FadeTime < minTime ) return false;
-
-		return true;
-	}
-
-	public float GetFadeValue( float time )
-	{
-		if ( Start is { } start && time < start.PeakTime )
+		return this with
 		{
-			return time > start.FadeTime
-				? start.Interpolation.Apply( (time - start.FadeTime) / start.Duration )
-				: 0f;
+			FadeOut = fadeOut with { TimeRange = (fadeOut.Start, MovieTime.Max( fadeOut.Start, time )) }
+		};
+	}
+
+	public float GetFadeValue( MovieTime time )
+	{
+		if ( FadeIn is { } fadeIn && time < fadeIn.End )
+		{
+			return fadeIn.Interpolation.Apply( (float)fadeIn.TimeRange.GetFraction( time ) );
 		}
 
-		if ( End is { } end && time > end.PeakTime )
+		if ( FadeOut is { } fadeOut && time > fadeOut.Start )
 		{
-			return time < end.FadeTime
-				? end.Interpolation.Apply( (end.FadeTime - time) / end.Duration )
-				: 0f;
+			return fadeOut.Interpolation.Apply( 1f - (float)fadeOut.TimeRange.GetFraction( time ) );
 		}
 
 		return 1f;
@@ -146,18 +147,18 @@ partial class MotionEditMode
 		{
 			if ( EditMode.TimeSelection is not { } value ) return;
 
-			if ( value.Start is { } start )
+			if ( value.FadeIn is { } fadeIn )
 			{
 				var time = EditMode.Session.PixelsToTime( Position.x, true );
 
-				value = value with { Start = start with { PeakTime = time, FadeTime = time - start.Duration } };
+				value = value with { FadeIn = fadeIn with { TimeRange = (time - fadeIn.Duration, time) } };
 			}
 
-			if ( value.End is { } end )
+			if ( value.FadeOut is { } fadeOut )
 			{
 				var time = EditMode.Session.PixelsToTime( Position.x + Size.x, true );
 
-				value = value with { End = end with { PeakTime = time, FadeTime = time + end.Duration } };
+				value = value with { FadeOut = fadeOut with { TimeRange = (time, time + fadeOut.Duration) } };
 			}
 
 			EditMode.TimeSelection = value;
@@ -167,11 +168,10 @@ partial class MotionEditMode
 		{
 			PrepareGeometryChange();
 
-			var startTime = value.Start?.PeakTime ?? 0f;
-			var endTime = value.End?.PeakTime ?? EditMode.Session.Clip?.Duration ?? 0f;
+			var timeRange = value.GetPeakTimeRange( EditMode.Session.Clip! );
 
-			Position = new Vector2( EditMode.Session.TimeToPixels( startTime ), viewRect.Top );
-			Size = new Vector2( EditMode.Session.TimeToPixels( endTime - startTime ), viewRect.Height );
+			Position = new Vector2( EditMode.Session.TimeToPixels( timeRange.Start ), viewRect.Top );
+			Size = new Vector2( EditMode.Session.TimeToPixels( timeRange.Duration ), viewRect.Height );
 
 			Update();
 		}
@@ -199,25 +199,23 @@ partial class MotionEditMode
 		public MotionEditMode EditMode { get; }
 		public FadeKind Kind { get; }
 
-		public FadeSelection? Value
+		public TimeSelection.Fade? Value
 		{
-			get => Kind == FadeKind.FadeIn ? EditMode.TimeSelection?.Start : EditMode.TimeSelection?.End;
+			get => Kind == FadeKind.FadeIn ? EditMode.TimeSelection?.FadeIn : EditMode.TimeSelection?.FadeOut;
 			set
 			{
 				if ( EditMode.TimeSelection is not { } selection ) return;
 
 				if ( Kind == FadeKind.FadeIn )
 				{
-					EditMode.TimeSelection = selection with { Start = value };
+					EditMode.TimeSelection = selection with { FadeIn = value };
 				}
 				else
 				{
-					EditMode.TimeSelection = selection with { End = value };
+					EditMode.TimeSelection = selection with { FadeOut = value };
 				}
 			}
 		}
-
-		public int Sign => Kind == FadeKind.FadeIn ? 1 : -1;
 
 		public TimeSelectionFadeItem( MotionEditMode editMode, FadeKind kind )
 		{
@@ -245,7 +243,7 @@ partial class MotionEditMode
 			}
 			else
 			{
-				Position = new Vector2( EditMode.Session.TimeToPixels( fade.PeakTime - Sign * fade.Duration ), viewRect.Top );
+				Position = new Vector2( EditMode.Session.TimeToPixels( Kind == FadeKind.FadeIn ? fade.Start : fade.End ), viewRect.Top );
 				Size = new Vector2( EditMode.Session.TimeToPixels( fade.Duration ), viewRect.Height );
 			}
 
@@ -268,8 +266,8 @@ partial class MotionEditMode
 
 				EditMode.TimeSelection = Kind switch
 				{
-					FadeKind.FadeIn => selection.WithPeakStart( time + Sign * value.Duration, value.Interpolation ),
-					FadeKind.FadeOut => selection.WithPeakEnd( time + Sign * value.Duration, value.Interpolation ),
+					FadeKind.FadeIn => selection.WithPeakStart( time + value.TimeRange.Duration, value.Interpolation ),
+					FadeKind.FadeOut => selection.WithPeakEnd( time - value.TimeRange.Duration, value.Interpolation ),
 					_ => selection
 				};
 			}
@@ -341,10 +339,10 @@ partial class MotionEditMode
 	{
 		public MotionEditMode EditMode { get; }
 
-		private readonly Func<TimeSelection, float?> _getTime;
-		private readonly Func<TimeSelection, float, TimeSelection> _setTime;
+		private readonly Func<TimeSelection, MovieTime?> _getTime;
+		private readonly Func<TimeSelection, MovieTime, TimeSelection> _setTime;
 
-		public TimeSelectionHandleItem( MotionEditMode editMode, Func<TimeSelection, float?> getTime, Func<TimeSelection, float, TimeSelection> setTime )
+		public TimeSelectionHandleItem( MotionEditMode editMode, Func<TimeSelection, MovieTime?> getTime, Func<TimeSelection, MovieTime, TimeSelection> setTime )
 		{
 			EditMode = editMode;
 

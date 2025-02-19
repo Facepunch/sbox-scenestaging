@@ -12,23 +12,26 @@ public partial class MovieBlock
 {
 	private MovieTrack? _track;
 	private MovieBlockData _data;
+	private MovieTimeRange _timeRange;
 
 	public MovieTrack Track => _track ?? throw new Exception( $"{nameof(MovieBlock)} has been removed." );
 	public MovieClip Clip => Track.Clip;
 
 	public int Id { get; }
 
-	/// <summary>
-	/// Time that the block starts, in seconds.
-	/// </summary>
-	public float StartTime { get; set; }
+	public MovieTimeRange TimeRange
+	{
+		get => _timeRange;
+		set
+		{
+			_timeRange = value;
+			_track?.BlockChangedInternal( this );
+		}
+	}
 
-	/// <summary>
-	/// Duration of the block, in seconds.
-	/// </summary>
-	public float Duration { get; set; }
-
-	public float EndTime => StartTime + Duration;
+	public MovieTime Start => TimeRange.Start;
+	public MovieTime End => TimeRange.End;
+	public MovieTime Duration => TimeRange.Duration;
 
 	/// <summary>
 	/// Track data for this block. Either a constant, sample array, or invoked action information.
@@ -43,17 +46,14 @@ public partial class MovieBlock
 		}
 	}
 
-	internal MovieBlock( MovieTrack track, int id, float startTime, float duration, MovieBlockData data )
+	internal MovieBlock( MovieTrack track, int id, MovieTimeRange timeRange, MovieBlockData data )
 	{
-		_track = track;
-
 		Id = id;
 
-		StartTime = startTime;
-		Duration = duration;
+		_track = track;
+		_timeRange = timeRange;
 
 		AssertValidData( data );
-
 		_data = data;
 	}
 
@@ -68,8 +68,6 @@ public partial class MovieBlock
 	{
 		_track = null;
 	}
-
-	public bool Contains( float time ) => time >= StartTime && time - StartTime <= Duration + 0.001f;
 
 	private void AssertValidData( MovieBlockData value )
 	{

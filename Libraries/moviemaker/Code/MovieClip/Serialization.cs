@@ -110,7 +110,7 @@ partial class MovieBlock
 		Action
 	}
 
-	internal record Model( int Id, Kind Kind, float StartTime, float? Duration, JsonNode Data );
+	internal record Model( int Id, Kind Kind, MovieTimeRange? TimeRange, JsonNode Data, float? Start = null, float? Duration = null );
 
 	private static Kind GetKind( MovieBlockData data )
 	{
@@ -125,7 +125,7 @@ partial class MovieBlock
 
 	internal Model Serialize( JsonSerializerOptions? options )
 	{
-		var model = new Model( Id, GetKind( Data ), StartTime, Duration,
+		var model = new Model( Id, GetKind( Data ), TimeRange,
 			JsonSerializer.SerializeToNode( Data, Data.GetType(), options )! );
 
 		return model;
@@ -143,6 +143,8 @@ partial class MovieBlock
 
 		var data = (MovieBlockData)model.Data.Deserialize( dataType, options )!;
 
-		return new MovieBlock( track, model.Id, model.StartTime, model.Duration ?? 0f, data );
+		return new MovieBlock( track, model.Id,
+			model.TimeRange ?? (MovieTime.FromSeconds( model.Start ?? 0f ),
+				MovieTime.FromSeconds( model.Duration ?? 0f )), data );
 	}
 }

@@ -10,7 +10,7 @@ public sealed partial class MoviePlayer : Component
 	private MovieClip? _embeddedClip;
 	private MovieFile? _referencedClip;
 
-	private float _position;
+	private MovieTime _position;
 
 	[Property, Group( "Source" ), Hide]
 	public MovieClip? EmbeddedClip
@@ -49,8 +49,7 @@ public sealed partial class MoviePlayer : Component
 	[Property, Group( "Playback" )]
 	public float TimeScale { get; set; } = 1f;
 
-	[Property, Group( "Playback" )]
-	public float Position
+	public MovieTime Position
 	{
 		get => _position;
 		set
@@ -58,6 +57,13 @@ public sealed partial class MoviePlayer : Component
 			_position = value;
 			UpdatePosition();
 		}
+	}
+
+	[Property, Group( "Playback" ), Title( "Position" )]
+	public float PositionSeconds
+	{
+		get => (float)Position.TotalSeconds;
+		set => Position = MovieTime.FromSeconds( value );
 	}
 
 	[Property, Group( "Recording" )]
@@ -77,9 +83,9 @@ public sealed partial class MoviePlayer : Component
 
 		if ( _position >= duration )
 		{
-			if ( IsLooping && duration > 0f )
+			if ( IsLooping && !duration.IsNegative )
 			{
-				_position -= MathF.Floor( _position / duration ) * duration;
+				_position -= duration;
 			}
 			else
 			{
@@ -91,11 +97,11 @@ public sealed partial class MoviePlayer : Component
 		ApplyFrame( _position );
 	}
 
-	public void ApplyFrame( float time )
+	public void ApplyFrame( MovieTime time )
 	{
 		if ( MovieClip is null || _sceneRefMap.Count == 0 ) return;
 
-		time = Math.Clamp( time, 0f, MovieClip.Duration );
+		time = time.Clamp( (MovieTime.Zero, MovieClip.Duration) );
 
 		using var sceneScope = Scene.Push();
 
@@ -105,7 +111,7 @@ public sealed partial class MoviePlayer : Component
 		}
 	}
 
-	internal void ApplyFrame( MovieTrack track, float time )
+	internal void ApplyFrame( MovieTrack track, MovieTime time )
 	{
 		// TODO: this is a slow placeholder implementation, we can avoid boxing / reflection when we're in the engine
 
@@ -118,7 +124,7 @@ public sealed partial class MoviePlayer : Component
 					break;
 
 				case ISamplesData samplesData:
-					property.Value = samplesData.GetValue( time - block.StartTime );
+					property.Value = samplesData.GetValue( time - block.Start );
 					break;
 
 				case ActionData:
@@ -141,21 +147,21 @@ public sealed partial class MoviePlayer : Component
 	{
 		if ( IsPlaying )
 		{
-			Position += Time.Delta * TimeScale;
+			Position += MovieTime.FromSeconds( Time.Delta * TimeScale );
 		}
 	}
 
 	private interface IRawRecording
 	{
-		void Record( float time );
-		void WriteBlocks();
+		void Record( MovieTime time );
+		void WriteBlocks( MovieTime startTime, int sampleRate );
 	}
 
 	private class RawRecording<T> : IRawRecording
 	{
 		public MovieTrack Track { get; }
 		public IMovieProperty<T> Property { get; }
-		public List<(float Time, T Value)> Samples { get; } = new List<(float Time, T Value)>();
+		public List<(MovieTime Time, T Value)> Samples { get; } = new();
 
 		public RawRecording( MovieTrack track, IMovieProperty<T> property )
 		{
@@ -163,12 +169,12 @@ public sealed partial class MoviePlayer : Component
 			Property = property;
 		}
 
-		public void Record( float time )
+		public void Record( MovieTime time )
 		{
 			Samples.Add( (time, Property.Value) );
 		}
 
-		public void WriteBlocks()
+		public void WriteBlocks( MovieTime startTime, int sampleRate )
 		{
 			if ( Samples.Count == 0 ) return;
 
@@ -181,12 +187,13 @@ public sealed partial class MoviePlayer : Component
 				return;
 			}
 
-			// TODO: resample
+			// TODO: don't assume fixed sample rate
 
-			var data = new SamplesData<T>( 50f, SampleInterpolationMode.Linear,
-				Samples.Select( x => x.Value ).ToArray() );
+			var data = new SamplesData<T>( 50, SampleInterpolationMode.Linear,
+					Samples.Select( x => x.Value ).ToArray() )
+				.Resample( sampleRate );
 
-			Track.AddBlock( 0f, Samples.Count / 50f, data );
+			Track.AddBlock( new MovieTimeRange( startTime, startTime + data.Duration ), data.Resample( 30 ) );
 		}
 	}
 
@@ -225,7 +232,7 @@ public sealed partial class MoviePlayer : Component
 
 		foreach ( var recording in _recordings.Values )
 		{
-			recording.WriteBlocks();
+			recording.WriteBlocks( MovieTime.Zero, 30 );
 		}
 	}
 
@@ -236,9 +243,9 @@ public sealed partial class MoviePlayer : Component
 			return;
 		}
 
-		var time = Time.Now - _recordingStartTime;
+		var time = MovieTime.FromSeconds( Time.Now - _recordingStartTime );
 
-		if ( time < 0f ) return;
+		if ( time < MovieTime.Zero ) return;
 
 		foreach ( var recording in _recordings.Values )
 		{

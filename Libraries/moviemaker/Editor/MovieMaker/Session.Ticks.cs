@@ -1,4 +1,6 @@
-﻿namespace Editor.MovieMaker;
+﻿using Sandbox.MovieMaker;
+
+namespace Editor.MovieMaker;
 
 #nullable enable
 
@@ -9,7 +11,7 @@ public enum TickStyle
 	Minor
 }
 
-public record struct TimelineTick( TickStyle Style, float Interval );
+public record struct TimelineTick( TickStyle Style, MovieTime Interval );
 
 partial class Session
 {
@@ -20,15 +22,13 @@ partial class Session
 	{
 		get
 		{
-			const float baseMajorTime = 1f;
-
-			var majorTime = baseMajorTime;
+			var majorTime = MovieTime.OneSecond;
 
 			foreach ( var tickScale in TickScales )
 			{
 				if ( TimeToPixels( majorTime ) < MinMajorTickWidth )
 				{
-					majorTime = baseMajorTime * tickScale;
+					majorTime = MovieTime.OneSecond * tickScale;
 				}
 				else
 				{
@@ -44,13 +44,11 @@ partial class Session
 	{
 		get
 		{
-			var minorTime = FrameSnap ? Math.Max( MajorTick.Interval, 1f ) / FrameRate : 0.1f;
-			var minorWidth = TimeToPixels( minorTime );
+			var minorTime = FrameSnap ? MovieTime.FromFrames( 1, FrameRate ) : MovieTime.FromFrames( 1, 10 );
 
-			while ( minorWidth < MinMinorTickWidth )
+			while ( TimeToPixels( minorTime ) < MinMinorTickWidth )
 			{
-				minorTime *= 2f;
-				minorWidth *= 2f;
+				minorTime *= 2;
 			}
 
 			return new TimelineTick( TickStyle.Minor, minorTime );

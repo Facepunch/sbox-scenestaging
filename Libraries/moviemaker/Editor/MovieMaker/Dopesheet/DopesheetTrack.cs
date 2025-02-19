@@ -90,12 +90,11 @@ public partial class DopeSheetTrack : GraphicsItem
 				}
 
 				var preview = BlockPreviews[i];
-				var duration = block.Duration;
 
 				preview.Block = block;
 				preview.PrepareGeometryChange();
-				preview.Position = new Vector2( session.TimeToPixels( block.StartTime ), 0f );
-				preview.Size = new Vector2( session.TimeToPixels( duration ), LocalRect.Height );
+				preview.Position = new Vector2( session.TimeToPixels( block.TimeRange.Start ), 0f );
+				preview.Size = new Vector2( session.TimeToPixels( block.TimeRange.Duration ), LocalRect.Height );
 
 				preview.Update();
 			}

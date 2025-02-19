@@ -96,9 +96,7 @@ public class ToolbarWidget : Widget
 
 			var rate = new ComboBox();
 
-			IReadOnlyList<int> frameRates = [24, 30, 48, 60];
-
-			foreach ( var frameRate in frameRates )
+			foreach ( var frameRate in MovieTime.SupportedFrameRates )
 			{
 				rate.AddItem( $"{frameRate} FPS", onSelected: () => Session.FrameRate = frameRate,
 					selected: Session.FrameRate == frameRate );

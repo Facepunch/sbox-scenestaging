@@ -36,7 +36,7 @@ public interface ISamplesData
 	/// <summary>
 	/// How many samples per second.
 	/// </summary>
-	float SampleRate { get; }
+	int SampleRate { get; }
 
 	/// <summary>
 	/// How to interpret values measured between samples.
@@ -51,12 +51,14 @@ public interface ISamplesData
 	/// <summary>
 	/// Total duration of the sampled signal.
 	/// </summary>
-	float Duration { get; }
+	MovieTime Duration { get; }
 
 	/// <summary>
 	/// Samples the signal at the given <paramref name="time"/>, where <c>0</c> will return the first sample.
 	/// </summary>
-	object? GetValue( float time );
+	object? GetValue( MovieTime time );
+
+	ISamplesData Resample( int sampleRate );
 }
 
 /// <summary>
@@ -68,7 +70,7 @@ public interface ISamplesData
 /// <param name="Interpolation">How to interpret values measured between samples.</param>
 /// <param name="Samples">Array of raw sample values.</param>
 public sealed record SamplesData<T>(
-	float SampleRate,
+	int SampleRate,
 	SampleInterpolationMode Interpolation,
 	IReadOnlyList<T> Samples )
 	: MovieBlockData, ISamplesData
@@ -79,17 +81,16 @@ public sealed record SamplesData<T>(
 	/// Total duration of the sampled signal.
 	/// </summary>
 	[JsonIgnore]
-	public float Duration => SampleRate <= 0f ? float.PositiveInfinity : Samples.Count / SampleRate;
+	public MovieTime Duration => MovieTime.FromFrames( Samples.Count, SampleRate );
 
 	/// <summary>
 	/// Samples the signal at the given <paramref name="time"/>, where <c>0</c> will return the first sample.
 	/// </summary>
-	public T GetValue( float time )
+	public T GetValue( MovieTime time )
 	{
 		if ( Samples.Count == 0 ) return default!;
 
-		var index = time * SampleRate;
-		var i0 = (int)index.Floor();
+		var i0 = time.GetFrameCount( SampleRate, out var remainder );
 		var i1 = i0 + 1;
 
 		if ( i0 < 0 ) return Samples[0];
@@ -102,17 +103,23 @@ public sealed record SamplesData<T>(
 			return x0;
 		}
 
-		var t = Interpolation.Apply( index - i0 );
+		var t = Interpolation.Apply( (float)remainder.TotalSeconds );
 		var x1 = Samples[i1];
 
 		return _interpolator.Interpolate( x0, x1, t );
+	}
+
+	public SamplesData<T> Resample( int sampleRate )
+	{
+		throw new NotImplementedException();
 	}
 
 	Type ISamplesData.ValueType => typeof( T );
 
 	private IReadOnlyList<object?>? _untypedList;
 	IReadOnlyList<object?> ISamplesData.Samples => _untypedList ??= Samples.Cast<object?>().ToImmutableList();
-	object? ISamplesData.GetValue( float time ) => GetValue( time );
+	object? ISamplesData.GetValue( MovieTime time ) => GetValue( time );
+	ISamplesData ISamplesData.Resample( int sampleRate ) => Resample( sampleRate );
 }
 
 internal static class SamplesExtensions

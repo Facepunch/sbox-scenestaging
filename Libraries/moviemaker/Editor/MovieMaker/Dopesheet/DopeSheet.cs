@@ -138,7 +138,7 @@ public class DopeSheet : GraphicsView
 		UpdateTracks();
 	}
 
-	private void UpdateCurrentPosition( float time )
+	private void UpdateCurrentPosition( MovieTime time )
 	{
 		_currentPointerItem.PrepareGeometryChange();
 
@@ -146,7 +146,7 @@ public class DopeSheet : GraphicsView
 		_currentPointerItem.Size = new Vector2( 1, VisibleRect.Height - 24f );
 	}
 
-	private void UpdatePreviewPosition( float? time )
+	private void UpdatePreviewPosition( MovieTime? time )
 	{
 		_previewPointerItem.PrepareGeometryChange();
 

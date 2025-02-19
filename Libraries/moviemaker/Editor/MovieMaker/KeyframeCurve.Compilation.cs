@@ -12,7 +12,7 @@ public static class KeyframeExtensions
 
 	public static KeyframeCurve? ReadKeyframes( this MovieTrack track ) => track.ReadEditorData()?.Keyframes;
 
-	public static void WriteKeyframes( this MovieTrack track, KeyframeCurve keyframes, float sampleRate )
+	public static void WriteKeyframes( this MovieTrack track, KeyframeCurve keyframes, int sampleRate )
 	{
 		Assert.AreEqual( track.PropertyType, keyframes.ValueType );
 
@@ -21,7 +21,7 @@ public static class KeyframeExtensions
 			.Invoke( null, [track, keyframes, sampleRate] );
 	}
 
-	private static void WriteKeyframesInternal<T>( this MovieTrack track, KeyframeCurve<T> keyframes, float sampleRate )
+	private static void WriteKeyframesInternal<T>( this MovieTrack track, KeyframeCurve<T> keyframes, int sampleRate )
 	{
 		// Write keyframes in editor data as a JsonObject, so in the future we can edit tracks in other ways
 
@@ -40,15 +40,13 @@ public static class KeyframeExtensions
 		{
 			// Interpolated keyframes: sample at uniform time steps
 
-			var startTime = keyframes.StartTime;
-			var duration = keyframes.Duration;
-			var sampleCount = Math.Max( 1, (int)MathF.Ceiling( sampleRate * duration ) );
+			var timeRange = keyframes.TimeRange;
+			var sampleCount = Math.Max( 1, timeRange.Duration.GetFrameCount( sampleRate ) );
 			var samples = new T[sampleCount];
 
 			for ( var i = 0; i < sampleCount; ++i )
 			{
-				var t = startTime + duration * i / sampleCount;
-				samples[i] = keyframes.GetValue( t );
+				samples[i] = keyframes.GetValue( MovieTime.FromFrames( i, sampleRate ) );
 			}
 
 			var data = new SamplesData<T>( sampleRate, SampleInterpolationMode.Linear, samples );
@@ -56,12 +54,11 @@ public static class KeyframeExtensions
 			if ( track.Blocks.Count != 1 )
 			{
 				track.RemoveBlocks();
-				track.AddBlock( startTime, duration, data );
+				track.AddBlock( keyframes.TimeRange, data );
 			}
 			else
 			{
-				track.Blocks[0].StartTime = startTime;
-				track.Blocks[0].Duration = duration;
+				track.Blocks[0].TimeRange = keyframes.TimeRange;
 				track.Blocks[0].Data = data;
 			}
 		}
@@ -78,7 +75,8 @@ public static class KeyframeExtensions
 				var prev = keyframes[i];
 				var next = i < keyframes.Count - 1 ? (Keyframe<T>?) keyframes[i + 1] : null;
 
-				track.AddBlock( prev.Time, next is null ? 0f : next.Value.Time - prev.Time, new ConstantData<T>( prev.Value ) );
+				track.AddBlock( new MovieTimeRange( prev.Time, (next ?? prev).Time ),
+					new ConstantData<T>( prev.Value ) );
 			}
 		}
 	}

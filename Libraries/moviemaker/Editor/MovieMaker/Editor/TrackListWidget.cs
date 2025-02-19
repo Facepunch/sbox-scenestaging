@@ -98,7 +98,7 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		SceneEditorSession.Selection.OnItemAdded -= OnSelectionAdded;
 	}
 
-	void ScrubToTime( float time )
+	void ScrubToTime( MovieTime time )
 	{
 		Session.Player.ApplyFrame( time );
 	}
@@ -194,8 +194,8 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		}
 	}
 
-	public float MinTimeVisible => 5;
-	public float MaxTimeVisible => 120;
+	public MovieTime MinTimeVisible => MovieTime.FromSeconds( 5d );
+	public MovieTime MaxTimeVisible => MovieTime.FromSeconds( 120d );
 
 	internal bool OnCanvasWheel( WheelEvent e )
 	{

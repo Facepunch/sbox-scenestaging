@@ -1,4 +1,6 @@
-﻿namespace Editor.MovieMaker.BlockPreviews;
+﻿using Sandbox.MovieMaker;
+
+namespace Editor.MovieMaker.BlockPreviews;
 
 #nullable enable
 
@@ -6,27 +8,29 @@ partial class CurvePreview<T>
 {
 	private GraphicsLine[]? Lines { get; set; }
 
-	protected virtual void GetCurveTimes( List<float> times )
+	protected virtual void GetCurveTimes( List<MovieTime> times )
 	{
 		if ( Constant is not null )
 		{
-			times.Add( 0f );
-			times.Add( Duration );
+			times.Add( MovieTime.Zero );
+			times.Add( TimeRange.Duration );
 		}
 		else if ( Samples is { } samples )
 		{
-			var dt = 1f / samples.SampleRate;
-
-			for ( var t = 0f; t < Duration; t += dt )
+			for ( var i = 0; i < samples.Samples.Count; ++i )
 			{
-				times.Add( t );
+				var time = MovieTime.FromFrames( i, samples.SampleRate );
+
+				if ( time >= TimeRange.Duration ) break;
+
+				times.Add( time );
 			}
 
-			times.Add( Duration );
+			times.Add( TimeRange.Duration );
 		}
 	}
 
-	protected T GetValue( float time )
+	protected T GetValue( MovieTime time )
 	{
 		if ( Samples is { } samples )
 		{
@@ -62,7 +66,7 @@ partial class CurvePreview<T>
 
 		foreach ( var t in times )
 		{
-			if ( t < 0f ) continue;
+			if ( t.IsNegative ) continue;
 
 			var value = GetValue( t );
 			Decompose( value, floats );
@@ -145,15 +149,15 @@ partial class CurvePreview<T>
 
 		// Second pass, update lines
 
-		var t0 = 0f;
-		var t1 = Duration;
+		var t0 = MovieTime.Zero;
+		var t1 = TimeRange.Duration;
 
-		var dxdt = LocalRect.Width / (t1 - t0);
+		var dxdt = LocalRect.Width / (t1 - t0).TotalSeconds;
 
 		foreach ( var t in times )
 		{
 			var value = GetValue( t );
-			var x = LocalRect.Left + (t - t0) * dxdt;
+			var x = LocalRect.Left + (float)((t - t0).TotalSeconds * dxdt);
 
 			Decompose( value, floats );
 
@@ -161,7 +165,7 @@ partial class CurvePreview<T>
 			{
 				var y = (mids[j] - floats[j]) * scale + 0.5f * height;
 
-				if ( t <= 0f )
+				if ( t <= MovieTime.Zero )
 				{
 					Lines[j].MoveTo( new Vector2( x, y ) );
 				}
@@ -177,7 +181,7 @@ partial class CurvePreview<T>
 file class Static
 {
 	[field: ThreadStatic]
-	public static List<float>? PaintCurve_Times { get; set; }
+	public static List<MovieTime>? PaintCurve_Times { get; set; }
 }
 
 file class CurveLine : GraphicsLine
