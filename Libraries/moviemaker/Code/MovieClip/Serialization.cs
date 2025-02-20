@@ -112,7 +112,7 @@ partial class MovieBlock
 
 	internal record Model( int Id, Kind Kind, MovieTimeRange? TimeRange, JsonNode Data, float? Start = null, float? Duration = null );
 
-	private static Kind GetKind( MovieBlockData data )
+	private static Kind GetKind( IMovieBlockData data )
 	{
 		return data switch
 		{
@@ -141,7 +141,7 @@ partial class MovieBlock
 			_ => throw new NotImplementedException()
 		};
 
-		var data = (MovieBlockData)model.Data.Deserialize( dataType, options )!;
+		var data = (IMovieBlockData)model.Data.Deserialize( dataType, options )!;
 
 		return new MovieBlock( track, model.Id,
 			model.TimeRange ?? (MovieTime.FromSeconds( model.Start ?? 0f ),

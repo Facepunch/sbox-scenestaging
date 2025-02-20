@@ -27,16 +27,18 @@ partial class MotionEditMode
 	/// <summary>
 	/// Captures the state of a track before it was modified, and records any pending changes.
 	/// </summary>
-	private sealed class TrackState
+	private sealed class TrackState : IMovieBlock
 	{
 		public MovieTrack Track { get; }
+		public IMovieBlockData Data => _modifiedData!;
+		public MovieTimeRange TimeRange => _sampleRange.TimeRange;
 
 		private object? _changedValue;
 
 		private record struct SampleRange( MovieTimeRange TimeRange, int SampleRate );
 		private SampleRange _sampleRange;
-		private MovieBlockData? _originalData;
-		private MovieBlock? _previewBlock;
+		private ISamplesData? _originalData;
+		private ISamplesData? _modifiedData;
 
 		public object? ChangedValue
 		{
@@ -51,6 +53,7 @@ partial class MotionEditMode
 		public bool IsAdditive { get; set; }
 
 		public bool HasChanges { get; private set; }
+		public bool HasPreview => HasChanges && _modifiedData is not null;
 
 		public TrackModifier? Modifier { get; }
 
@@ -62,15 +65,10 @@ partial class MotionEditMode
 
 		private bool TryGetOriginalValue( MovieTime time, out object? value )
 		{
-			switch ( _originalData )
+			if ( _originalData is { } original )
 			{
-				case ISamplesData samples:
-					value = samples.GetValue( time );
-					return true;
-
-				case IConstantData constant:
-					value = constant.Value;
-					return true;
+				value = original.GetValue( time );
+				return true;
 			}
 
 			value = null;
@@ -92,20 +90,21 @@ partial class MotionEditMode
 		{
 			_sampleRange = default;
 			_originalData = null;
-
-			_previewBlock?.Remove();
-			_previewBlock = null;
+			_modifiedData = null;
 		}
 
 		private SampleRange GetAffectedSampleRange( TimeSelection selection, int sampleRate )
 		{
 			var timeRange = selection.GetTimeRange( Track.Clip );
 
+			// If we fade in / out, include the block(s) the fade is overlapping so we have
+			// a smooth transition instead of a hard cut
+
 			foreach ( var block in Track.Blocks )
 			{
 				if ( selection.FadeIn is { Duration.IsZero: false } fadeIn )
 				{
-					if ( block.TimeRange.Intersect( fadeIn.TimeRange ) is not null )
+					if ( block.TimeRange.Intersect( fadeIn.TimeRange ) is { IsEmpty: false } )
 					{
 						timeRange = timeRange.Union( block.Start );
 					}
@@ -113,7 +112,7 @@ partial class MotionEditMode
 
 				if ( selection.FadeOut is { Duration.IsZero: false } fadeOut )
 				{
-					if ( block.TimeRange.Intersect( fadeOut.TimeRange ) is not null )
+					if ( block.TimeRange.Intersect( fadeOut.TimeRange ) is { IsEmpty: false } )
 					{
 						timeRange = timeRange.Union( block.End );
 					}
@@ -133,35 +132,27 @@ partial class MotionEditMode
 
 			var range = GetAffectedSampleRange( selection, sampleRate );
 
-			if ( _sampleRange != range || _previewBlock is null || _originalData is null )
+			if ( _sampleRange != range )
 			{
 				_sampleRange = range;
 
-				_previewBlock?.Remove();
 				_originalData = modifier.SampleTrack( Track, range.TimeRange, sampleRate );
-				_previewBlock = Track.AddBlock( range.TimeRange, _originalData );
+				_modifiedData = null;
 			}
 
-			_previewBlock.Data = modifier.Modify( _previewBlock, _originalData, selection, ChangedValue, IsAdditive );
+			if ( _originalData is { } originalData )
+			{
+				_modifiedData = modifier.Modify( originalData, _sampleRange.TimeRange, selection, ChangedValue, IsAdditive );
+			}
 
 			return true;
 		}
 
 		public bool Commit( TimeSelection selection, int sampleRate )
 		{
-			if ( !Update( selection, sampleRate ) || _previewBlock is not { } previewBlock ) return false;
+			if ( !Update( selection, sampleRate ) || _modifiedData is not { } modifiedData ) return false;
 
-			// Remove all blocks completely masked by the edit
-
-			var maskedBlocks = Track.Blocks
-				.Where( x => x != previewBlock )
-				.Where( x => previewBlock.TimeRange.Contains( x.TimeRange ) )
-				.ToArray();
-
-			foreach ( var block in maskedBlocks )
-			{
-				block.Remove();
-			}
+			Track.Replace( _sampleRange.TimeRange, modifiedData );
 
 			return true;
 		}
@@ -184,10 +175,7 @@ partial class MotionEditMode
 
 	private void CommitChanges()
 	{
-		if ( TimeSelection is not { } selection )
-		{
-			return;
-		}
+		if ( TimeSelection is not { } selection ) return;
 
 		foreach ( var (track, state) in TrackStates )
 		{
@@ -197,7 +185,28 @@ partial class MotionEditMode
 		TrackStates.Clear();
 		HasChanges = false;
 
-		Session.Current?.ClipModified();
+		Session.ClipModified();
+	}
+
+	protected override void OnDelete()
+	{
+		if ( TimeSelection is not { } selection || Session.Clip is not { } clip ) return;
+
+		var timeRange = selection.GetPeakTimeRange( clip );
+
+		ClearChanges();
+
+		var shift = (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0;
+
+		foreach ( var track in clip.AllTracks )
+		{
+			if ( track.Delete( timeRange, shift ) )
+			{
+				Session.TrackModified( track );
+			}
+		}
+
+		Session.ClipModified();
 	}
 
 	protected override bool OnPreChange( DopeSheetTrack track )
@@ -259,6 +268,13 @@ partial class MotionEditMode
 		return state.Update( selection, Session.FrameRate );
 	}
 
+	protected override IEnumerable<IMovieBlock> OnGetPreviewBlocks()
+	{
+		return HasChanges
+			? TrackStates.Values.Where( x => x.HasPreview )
+			: [];
+	}
+
 	private bool _hasSelectionItems;
 
 	private void SelectionChanged()
@@ -315,5 +331,10 @@ partial class MotionEditMode
 		{
 			item.UpdatePosition( selection, viewRect );
 		}
+	}
+
+	private void SelectAll()
+	{
+		TimeSelection = new TimeSelection();
 	}
 }

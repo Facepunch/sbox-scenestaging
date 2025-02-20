@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using System.Text.Json.Nodes;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -10,21 +10,11 @@ namespace Editor.MovieMaker;
 /// </summary>
 public record MovieClipEditorData( int? FrameRate = null );
 
-/// <summary>
-/// Data model for <see cref="MovieTrack.EditorData"/>.
-/// </summary>
-public interface IMovieTrackEditorData
-{
-	KeyframeCurve? Keyframes { get; }
-}
 
 /// <summary>
 /// Data model for <see cref="MovieTrack.EditorData"/>.
 /// </summary>
-public record MovieTrackEditorData<T>( KeyframeCurve<T>? Keyframes ) : IMovieTrackEditorData
-{
-	KeyframeCurve? IMovieTrackEditorData.Keyframes => Keyframes;
-}
+public record MovieTrackEditorData( bool? Locked = null, bool? Collapsed = null, JsonNode? Keyframes = null );
 
 public static class EditorDataExtensions
 {
@@ -34,10 +24,9 @@ public static class EditorDataExtensions
 	public static void WriteEditorData( this MovieClip clip, MovieClipEditorData? data ) =>
 		clip.EditorData = Json.ToNode( data, typeof(MovieClipEditorData) )?.AsObject();
 
-	public static IMovieTrackEditorData? ReadEditorData( this MovieTrack track ) =>
-		(IMovieTrackEditorData?)Json.FromNode( track.EditorData,
-			typeof(MovieTrackEditorData<>).MakeGenericType( track.PropertyType ) );
+	public static MovieTrackEditorData? ReadEditorData( this MovieTrack track ) =>
+		Json.FromNode<MovieTrackEditorData>( track.EditorData );
 
-	public static void WriteEditorData( this MovieTrack track, IMovieTrackEditorData? editorData ) =>
-		track.EditorData = Json.ToNode( editorData, typeof(MovieTrackEditorData<>).MakeGenericType( track.PropertyType ) )?.AsObject();
+	public static void WriteEditorData( this MovieTrack track, MovieTrackEditorData? editorData ) =>
+		track.EditorData = Json.ToNode( editorData, typeof(MovieTrackEditorData) )?.AsObject();
 }

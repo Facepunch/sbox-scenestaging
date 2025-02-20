@@ -20,6 +20,8 @@ public readonly struct MovieTime : IEquatable<MovieTime>, IComparable<MovieTime>
 
 	public static MovieTime Zero => default;
 	public static MovieTime OneSecond { get; } = FromSeconds( 1d );
+	public static MovieTime MinValue => FromTicks( int.MinValue );
+	public static MovieTime MaxValue => FromTicks( int.MaxValue );
 
 	public static IReadOnlyList<int> SupportedFrameRates { get; } = Enumerable.Range( 1, 120 )
 		.Where( x => TickRate % x == 0 )
@@ -47,6 +49,11 @@ public readonly struct MovieTime : IEquatable<MovieTime>, IComparable<MovieTime>
 		return FromTicks( Math.Min( a._ticks, b._ticks ) );
 	}
 
+	public static MovieTime Distance( MovieTime a, MovieTime b )
+	{
+		return (a - b).Absolute;
+	}
+
 	public static MovieTime Lerp( MovieTime a, MovieTime b, double fraction )
 	{
 		return fraction <= 0d ? a : fraction >= 1d ? b : FromTicks( (int)(a.Ticks + (b.Ticks - a.Ticks) * fraction) );
@@ -60,6 +67,8 @@ public readonly struct MovieTime : IEquatable<MovieTime>, IComparable<MovieTime>
 	public bool IsNegative => _ticks < 0;
 
 	public double TotalSeconds => (double)_ticks / TickRate;
+
+	public MovieTime Absolute => IsNegative ? -this : this;
 
 	private MovieTime( int ticks )
 	{
@@ -87,7 +96,7 @@ public readonly struct MovieTime : IEquatable<MovieTime>, IComparable<MovieTime>
 	{
 		var frameCount = GetFrameCount( frameRate );
 
-		remainder = FromTicks( _ticks - frameCount * frameRate );
+		remainder = this - FromFrames( frameCount, frameRate );
 
 		return frameCount;
 	}
@@ -124,6 +133,9 @@ public readonly record struct MovieTimeRange( MovieTime Start, MovieTime End )
 	public static implicit operator MovieTimeRange( MovieTime time ) => new( time, time );
 
 	public static implicit operator MovieTimeRange( (MovieTime, MovieTime) tuple ) => new( tuple.Item1, tuple.Item2 );
+
+	public static MovieTimeRange operator+( MovieTimeRange range, MovieTime offset ) => (range.Start + offset, range.End + offset);
+	public static MovieTimeRange operator-( MovieTimeRange range, MovieTime offset ) => (range.Start - offset, range.End - offset);
 
 	[JsonIgnore]
 	public MovieTime Duration => End - Start;

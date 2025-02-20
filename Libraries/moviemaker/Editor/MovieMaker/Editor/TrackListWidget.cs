@@ -100,7 +100,7 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 
 	void ScrubToTime( MovieTime time )
 	{
-		Session.Player.ApplyFrame( time );
+		Session.ApplyFrame( time );
 	}
 
 	private void Load( MovieClip clip )
@@ -150,6 +150,11 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 				groups[track] = group;
 
 				(parentGroup?.Content ?? TrackList).Add( group );
+			}
+
+			foreach ( var group in groups.Values )
+			{
+				group.UpdateCollapsedState();
 			}
 		}
 		else
@@ -232,22 +237,6 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 
 		Paint.SetBrushAndPen( DopeSheet.Colors.Background.WithAlpha( 0.75f ) );
 		Paint.DrawRect( LocalRect );
-	}
-
-	public void OnCopy()
-	{
-		DopeSheet?.OnCopy();
-	}
-
-	public void OnPaste()
-	{
-		DopeSheet?.OnPaste();
-	}
-
-
-	public void OnDelete()
-	{
-		DopeSheet?.OnDelete();
 	}
 
 	private IReadOnlyList<MovieTrack> _previewTracks;

@@ -20,7 +20,7 @@ public class ScrubberItem : GraphicsItem
 
 		ZIndex = 5000;
 
-		HandlePosition = new Vector2( 0f, IsTop ? 0f : 1f );
+		HoverEvents = true;
 	}
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
@@ -28,6 +28,8 @@ public class ScrubberItem : GraphicsItem
 		base.OnMousePressed( e );
 
 		Session.SetCurrentPointer( Session.PixelsToTime( e.LocalPosition.x, true ) );
+
+		e.Accepted = true;
 	}
 
 	protected override void OnMouseMove( GraphicsMouseEvent e )

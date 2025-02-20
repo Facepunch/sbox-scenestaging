@@ -17,8 +17,8 @@ public class DopeSheet : GraphicsView
 
 	GridItem gridItem;
 
-	private CurrentPointerItem _currentPointerItem;
-	private CurrentPointerItem _previewPointerItem;
+	private readonly CurrentPointerItem _currentPointerItem;
+	private readonly CurrentPointerItem _previewPointerItem;
 
 	public ScrubberItem ScrubBarTop { get; }
 	public ScrubberItem ScrubBarBottom { get; }
@@ -88,7 +88,7 @@ public class DopeSheet : GraphicsView
 	{
 		UpdateScrubBars();
 
-		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset );
+		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.FrameSnap, Session.FrameRate );
 
 		if ( state != _lastState )
 		{
@@ -114,6 +114,9 @@ public class DopeSheet : GraphicsView
 	private void UpdateView()
 	{
 		UpdateScrubBars();
+
+		UpdateCurrentPosition( Session.CurrentPointer );
+		UpdatePreviewPosition( Session.PreviewPointer );
 	}
 
 	private void UpdateScrubBars()
@@ -124,7 +127,7 @@ public class DopeSheet : GraphicsView
 		var visibleRect = VisibleRect;
 
 		ScrubBarTop.Position = visibleRect.TopLeft;
-		ScrubBarBottom.Position = visibleRect.BottomLeft;
+		ScrubBarBottom.Position = visibleRect.BottomLeft - new Vector2( 0f, ScrubBarBottom.Height );
 
 		ScrubBarTop.Width = Width;
 		ScrubBarBottom.Width = Width;
@@ -229,16 +232,14 @@ public class DopeSheet : GraphicsView
 			tracklist.ScrollBy( delta.x );
 		}
 
-		var time = Session.PixelsToTime( ToScene( e.LocalPosition ).x, true );
-
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.SetCurrentPointer( time );
+			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ) ) );
 		}
 
 		if ( e.HasShift )
 		{
-			Session.SetPreviewPointer( time );
+			Session.SetPreviewPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ) ) );
 		}
 
 		lastpos = e.LocalPosition;
@@ -264,7 +265,7 @@ public class DopeSheet : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.SetCurrentPointer( Session.PixelsToTime( ToScene( e.LocalPosition ).x, true ) );
+			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ) ) );
 			return;
 		}
 	}
@@ -287,7 +288,7 @@ public class DopeSheet : GraphicsView
 		if ( e.Key == KeyCode.Shift )
 		{
 			e.Accepted = true;
-			Session.SetPreviewPointer( Session.PixelsToTime( ToScene( lastpos ).x, true ) );
+			Session.SetPreviewPointer( Session.ScenePositionToTime( ToScene( lastpos ) ) );
 		}
 	}
 
@@ -298,18 +299,38 @@ public class DopeSheet : GraphicsView
 		Session.EditMode?.KeyRelease( e );
 	}
 
-	public void OnCopy()
+	public MovieTime? GetSnapTime( Vector2 scenePos, MovieTime snapRange )
 	{
-		Session.EditMode?.Copy();
+		if ( scenePos.y <= ScrubBarTop.SceneRect.Bottom || scenePos.y >= ScrubBarBottom.SceneRect.Top )
+		{
+			return Session.PixelsToTime( scenePos.x, true );
+		}
+
+		if ( GetTrackAt( scenePos ) is { } track )
+		{
+			var time = Session.PixelsToTime( scenePos.x );
+			var bestSnap = MovieTime.MaxValue;
+
+			foreach ( var cut in track.TrackWidget.MovieTrack.Cuts )
+			{
+				var startSnap = cut.TimeRange.Start - time;
+				var endSnap = cut.TimeRange.End - time;
+
+				if ( startSnap.Absolute < bestSnap.Absolute ) bestSnap = startSnap;
+				if ( endSnap.Absolute < bestSnap.Absolute ) bestSnap = endSnap;
+			}
+
+			if ( bestSnap.Absolute < snapRange )
+			{
+				return time + bestSnap;
+			}
+		}
+
+		return null;
 	}
 
-	public void OnPaste()
+	public DopeSheetTrack GetTrackAt( Vector2 scenePos )
 	{
-		Session.EditMode?.Paste();
-	}
-
-	public void OnDelete()
-	{
-		Session.EditMode?.Delete();
+		return tracklist.Tracks.FirstOrDefault( x => x.DopeSheetTrack is { } track && track.SceneRect.IsInside( scenePos ) )?.DopeSheetTrack;
 	}
 }

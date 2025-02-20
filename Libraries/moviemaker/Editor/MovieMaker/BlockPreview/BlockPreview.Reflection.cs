@@ -8,7 +8,7 @@ namespace Editor.MovieMaker.BlockPreviews;
 
 partial class BlockPreview
 {
-	public static BlockPreview? Create( DopeSheetTrack parent, MovieBlock block )
+	public static BlockPreview? Create( DopeSheetTrack parent, IMovieBlock block )
 	{
 		foreach ( var typeDesc in EditorTypeLibrary.GetTypes<BlockPreview>() )
 		{

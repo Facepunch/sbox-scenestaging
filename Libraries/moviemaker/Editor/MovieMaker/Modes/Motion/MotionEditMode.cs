@@ -61,10 +61,12 @@ internal sealed partial class MotionEditMode : EditMode
 
 	protected override void OnMousePress( MouseEvent e )
 	{
-		if ( !e.LeftMouseButton || !e.HasShift || Session.PreviewPointer is not { } time )
+		if ( !e.LeftMouseButton || !e.HasShift )
 		{
 			return;
 		}
+
+		var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ) );
 
 		ClearSelection();
 
@@ -80,9 +82,9 @@ internal sealed partial class MotionEditMode : EditMode
 	{
 		if ( (e.ButtonState & MouseButtons.Left) != 0 && e.HasShift
 			&& TimeSelection is { } selection
-			&& Session.PreviewPointer is { } time
 			&& _selectionStartTime is { } dragStartTime )
 		{
+			var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ) );
 			var (minTime, maxTime) = Session.VisibleTimeRange;
 
 			if ( time <= minTime )

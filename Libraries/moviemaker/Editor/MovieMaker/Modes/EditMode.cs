@@ -168,6 +168,11 @@ public abstract class EditMode
 	protected virtual void OnKeyPress( KeyEvent e ) { }
 	internal void KeyRelease( KeyEvent e ) => OnKeyRelease( e );
 	protected virtual void OnKeyRelease( KeyEvent e ) { }
+	internal void SelectAll() => OnSelectAll();
+	protected virtual void OnSelectAll() { }
+
+	internal void Cut() => OnCut();
+	protected virtual void OnCut() { }
 
 	internal void Copy() => OnCopy();
 	protected virtual void OnCopy() { }
@@ -200,4 +205,25 @@ public abstract class EditMode
 
 	public static EditModeType Get( string name ) => AllTypes.FirstOrDefault( x => x.TypeDescription.Name == name )
 		?? AllTypes.First();
+
+	public virtual MovieTime? GetSnapTime( Vector2 scenePos, MovieTime snapRange ) => null;
+
+	public void ApplyFrame( MovieTime time )
+	{
+		OnApplyFrame( time );
+	}
+
+	protected virtual void OnApplyFrame( MovieTime time )
+	{
+		Session.Player.ApplyFrame( time );
+
+		foreach ( var block in GetPreviewBlocks() )
+		{
+			Session.Player.ApplyFrame( block, time );
+		}
+	}
+
+	public IEnumerable<IMovieBlock> GetPreviewBlocks() => OnGetPreviewBlocks();
+
+	protected virtual IEnumerable<IMovieBlock> OnGetPreviewBlocks() => [];
 }

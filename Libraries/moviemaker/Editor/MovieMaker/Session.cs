@@ -111,11 +111,26 @@ public sealed partial class Session
 		}
 	}
 
+	public MovieTime ScenePositionToTime( Vector2 scenePos )
+	{
+		if ( EditMode?.GetSnapTime( scenePos, MinorTick.Interval ) is { } modeSnapTime )
+		{
+			return modeSnapTime;
+		}
+
+		if ( Editor.TrackList.DopeSheet.GetSnapTime( scenePos, MinorTick.Interval ) is { } scrubSnapTime )
+		{
+			return scrubSnapTime;
+		}
+
+		return PixelsToTime( scenePos.x );
+	}
+
 	public MovieTime PixelsToTime( float pixels, bool snap = false )
 	{
 		var t = MovieTime.FromSeconds( pixels / PixelsPerSecond );
 
-		if ( snap && FrameSnap )
+		if ( snap )
 		{
 			t = t.SnapToGrid( MinorTick.Interval );
 		}
@@ -148,6 +163,18 @@ public sealed partial class Session
 		ViewChanged?.Invoke();
 	}
 
+	public void ApplyFrame( MovieTime time )
+	{
+		if ( EditMode is null )
+		{
+			Player.ApplyFrame( time );
+		}
+		else
+		{
+			EditMode?.ApplyFrame( time );
+		}
+	}
+
 	public event Action<MovieTime>? PointerChanged;
 	public event Action<MovieTime?>? PreviewChanged;
 
@@ -156,7 +183,7 @@ public sealed partial class Session
 		CurrentPointer = MovieTime.Max( time, MovieTime.Zero );
 		PointerChanged?.Invoke( CurrentPointer );
 
-		Player.ApplyFrame( CurrentPointer );
+		ApplyFrame( CurrentPointer );
 	}
 
 	public void SetPreviewPointer( MovieTime time )
@@ -164,7 +191,7 @@ public sealed partial class Session
 		PreviewPointer = MovieTime.Max( time, MovieTime.Zero );
 		PreviewChanged?.Invoke( PreviewPointer );
 
-		Player.ApplyFrame( PreviewPointer.Value );
+		ApplyFrame( PreviewPointer.Value );
 	}
 
 	public void ClearPreviewPointer()
@@ -173,7 +200,7 @@ public sealed partial class Session
 
 		PreviewChanged?.Invoke( PreviewPointer );
 
-		Player.ApplyFrame( CurrentPointer );
+		ApplyFrame( CurrentPointer );
 	}
 
 	public void Play()
@@ -290,5 +317,12 @@ public sealed partial class Session
 	{
 		ViewChanged?.Invoke();
 		EditMode?.ViewChanged( Editor.TrackList.DopeSheet.VisibleRect );
+	}
+
+	public void TrackModified( MovieTrack track )
+	{
+		ClipModified();
+
+		Editor.TrackList.FindTrack( track )?.DopeSheetTrack?.UpdateBlockPreviews();
 	}
 }

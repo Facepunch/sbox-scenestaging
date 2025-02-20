@@ -10,7 +10,8 @@ public static class KeyframeExtensions
 {
 	public static bool CanHaveKeyframes( this IMovieProperty property ) => property is IMemberMovieProperty { CanWrite: true };
 
-	public static KeyframeCurve? ReadKeyframes( this MovieTrack track ) => track.ReadEditorData()?.Keyframes;
+	public static KeyframeCurve? ReadKeyframes( this MovieTrack track ) =>
+		(KeyframeCurve?)Json.FromNode( track.ReadEditorData()?.Keyframes, typeof(KeyframeCurve<>).MakeGenericType( track.PropertyType ) );
 
 	public static void WriteKeyframes( this MovieTrack track, KeyframeCurve keyframes, int sampleRate )
 	{
@@ -25,13 +26,15 @@ public static class KeyframeExtensions
 	{
 		// Write keyframes in editor data as a JsonObject, so in the future we can edit tracks in other ways
 
-		if ( track.ReadEditorData() is MovieTrackEditorData<T> editorData )
+		var node = Json.ToNode( keyframes, typeof(KeyframeCurve<T>) );
+
+		if ( track.ReadEditorData() is { } editorData )
 		{
-			track.WriteEditorData( editorData with { Keyframes = keyframes } );
+			track.WriteEditorData( editorData with { Keyframes = node } );
 		}
 		else
 		{
-			track.WriteEditorData( new MovieTrackEditorData<T>( keyframes ) );
+			track.WriteEditorData( new MovieTrackEditorData( Keyframes: node ) );
 		}
 
 		// Compile keyframe data into a fast format for playback

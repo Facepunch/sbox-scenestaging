@@ -1,10 +1,6 @@
-﻿
-using Sandbox.UI;
-
-namespace Editor.MovieMaker;
+﻿namespace Editor.MovieMaker;
 
 #nullable enable
-
 
 public class TrackGroup : Widget
 {
@@ -16,19 +12,13 @@ public class TrackGroup : Widget
 		set
 		{
 			_collapsed = value;
-			CollapseButton.Update();
 
-			foreach ( var child in Children )
+			Header.MovieTrack.WriteEditorData( (Header.MovieTrack.ReadEditorData() ?? new MovieTrackEditorData()) with
 			{
-				if ( child == Header ) continue;
+				Collapsed = value
+			} );
 
-				if ( child is TrackWidget or TrackGroup )
-				{
-					child.Hidden = _collapsed;
-				}
-			}
-
-			Header.TrackList.DopeSheet.UpdateTracks();
+			UpdateCollapsedState();
 		}
 	}
 
@@ -53,7 +43,26 @@ public class TrackGroup : Widget
 
 		CollapseButton = new CollapseButton( this );
 
+		_collapsed = Header.MovieTrack.ReadEditorData()?.Collapsed ?? false;
+
 		header.Buttons.Add( CollapseButton );
+	}
+
+	public void UpdateCollapsedState()
+	{
+		CollapseButton.Update();
+
+		foreach ( var child in Children )
+		{
+			if ( child == Header ) continue;
+
+			if ( child is TrackWidget or TrackGroup )
+			{
+				child.Hidden = _collapsed;
+			}
+		}
+
+		Header.TrackList.DopeSheet.UpdateTracks();
 	}
 
 	protected override void OnPaint()

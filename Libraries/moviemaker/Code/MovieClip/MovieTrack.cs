@@ -129,7 +129,7 @@ public sealed partial class MovieTrack
 		_cutsInvalid = true;
 	}
 
-	public MovieBlock AddBlock( MovieTimeRange timeRange, MovieBlockData data )
+	public MovieBlock AddBlock( MovieTimeRange timeRange, IMovieBlockData data )
 	{
 		var nextId = _blocks.Count == 0 ? 1 : _blocks[^1].Id + 1;
 		var block = new MovieBlock( this, nextId, timeRange, data );
@@ -229,12 +229,14 @@ public sealed partial class MovieTrack
 			.ToArray();
 
 		var prev = cutTimes[0];
+		var prevBlock = blocks.Last( x => x.TimeRange.Contains( prev ) );
 
 		for ( var i = 1; i < cutTimes.Length; i++ )
 		{
-			var next = cutTimes[1];
+			var next = cutTimes[i];
+			var nextBlock = blocks.LastOrDefault( x => x.TimeRange.Contains( prev ) ) ?? prevBlock;
 
-			_cuts.Add( (new MovieTimeRange( prev, next ), blocks.Last( x => x.TimeRange.Contains( prev ) )) );
+			_cuts.Add( (new MovieTimeRange( prev, next ), nextBlock) );
 
 			prev = next;
 		}

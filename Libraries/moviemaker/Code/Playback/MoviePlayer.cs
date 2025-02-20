@@ -113,28 +113,35 @@ public sealed partial class MoviePlayer : Component
 
 	internal void ApplyFrame( MovieTrack track, MovieTime time )
 	{
-		// TODO: this is a slow placeholder implementation, we can avoid boxing / reflection when we're in the engine
-
-		if ( GetOrAutoResolveProperty( track ) is { IsBound: true } property && track.GetBlock( time ) is { } block )
+		if ( track.GetBlock( time ) is { } block )
 		{
-			switch ( block.Data )
-			{
-				case IConstantData constantData:
-					property.Value = constantData.Value;
-					break;
-
-				case ISamplesData samplesData:
-					property.Value = samplesData.GetValue( time - block.Start );
-					break;
-
-				case ActionData:
-					throw new NotImplementedException();
-			}
+			ApplyFrame( block, time );
 		}
 
 		foreach ( var child in track.Children )
 		{
 			ApplyFrame( child, time );
+		}
+	}
+
+	public void ApplyFrame( IMovieBlock block, MovieTime time )
+	{
+		if ( GetOrAutoResolveProperty( block.Track ) is not { IsBound: true } property ) return;
+
+		// TODO: this is a slow placeholder implementation, we can avoid boxing / reflection when we're in the engine
+
+		switch ( block.Data )
+		{
+			case IConstantData constantData:
+				property.Value = constantData.Value;
+				break;
+
+			case ISamplesData samplesData:
+				property.Value = samplesData.GetValue( time - block.TimeRange.Start );
+				break;
+
+			case ActionData:
+				throw new NotImplementedException();
 		}
 	}
 
@@ -193,7 +200,7 @@ public sealed partial class MoviePlayer : Component
 					Samples.Select( x => x.Value ).ToArray() )
 				.Resample( sampleRate );
 
-			Track.AddBlock( new MovieTimeRange( startTime, startTime + data.Duration ), data.Resample( 30 ) );
+			Track.AddBlock( new MovieTimeRange( startTime, startTime + data.Duration ), data );
 		}
 	}
 
@@ -224,7 +231,7 @@ public sealed partial class MoviePlayer : Component
 	[Property, Button( Icon = "stop_circle" ), ShowIf( nameof( IsRecording ), true )]
 	public void StopRecording()
 	{
-		if ( !IsRecording ) return;
+		if ( !IsRecording || MovieClip is not { } clip ) return;
 
 		IsRecording = false;
 
@@ -232,7 +239,7 @@ public sealed partial class MoviePlayer : Component
 
 		foreach ( var recording in _recordings.Values )
 		{
-			recording.WriteBlocks( MovieTime.Zero, 30 );
+			recording.WriteBlocks( MovieTime.Zero, clip.IdealFrameRate );
 		}
 	}
 

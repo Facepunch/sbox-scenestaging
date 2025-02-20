@@ -4,18 +4,20 @@ namespace Editor.MovieMaker.BlockPreviews;
 
 #nullable enable
 
+
 public abstract partial class BlockPreview : GraphicsItem
 {
 	public new DopeSheetTrack Parent { get; private set; } = null!;
-	public MovieBlock Block { get; set; } = null!;
 
-	protected MovieTrack Track => Block.Track;
-	protected MovieBlockData Data => Block.Data;
+	public IMovieBlock Block { get; internal set; }
+
+	protected MovieTrack Track => Parent.TrackWidget.MovieTrack;
+	protected IMovieBlockData Data => Block.Data;
 	protected MovieTimeRange TimeRange => Block.TimeRange;
 
-	protected int DataHash => HashCode.Combine( Block.Data, TimeRange.Duration );
+	protected int DataHash => HashCode.Combine( Data, TimeRange.Duration, Width );
 
-	private void Initialize( DopeSheetTrack parent, MovieBlock block )
+	private void Initialize( DopeSheetTrack parent, IMovieBlock block )
 	{
 		base.Parent = Parent = parent;
 

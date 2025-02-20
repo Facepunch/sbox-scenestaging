@@ -5,13 +5,20 @@ namespace Sandbox.MovieMaker;
 
 #nullable enable
 
+public interface IMovieBlock
+{
+	MovieTrack Track { get; }
+	IMovieBlockData Data { get; }
+	MovieTimeRange TimeRange { get; }
+}
+
 /// <summary>
 /// A time region in a <see cref="MovieTrack"/> where something happens.
 /// </summary>
-public partial class MovieBlock
+public sealed partial class MovieBlock : IMovieBlock
 {
 	private MovieTrack? _track;
-	private MovieBlockData _data;
+	private IMovieBlockData _data;
 	private MovieTimeRange _timeRange;
 
 	public MovieTrack Track => _track ?? throw new Exception( $"{nameof(MovieBlock)} has been removed." );
@@ -36,7 +43,7 @@ public partial class MovieBlock
 	/// <summary>
 	/// Track data for this block. Either a constant, sample array, or invoked action information.
 	/// </summary>
-	public MovieBlockData Data
+	public IMovieBlockData Data
 	{
 		get => _data;
 		set
@@ -46,7 +53,7 @@ public partial class MovieBlock
 		}
 	}
 
-	internal MovieBlock( MovieTrack track, int id, MovieTimeRange timeRange, MovieBlockData data )
+	internal MovieBlock( MovieTrack track, int id, MovieTimeRange timeRange, IMovieBlockData data )
 	{
 		Id = id;
 
@@ -69,7 +76,7 @@ public partial class MovieBlock
 		_track = null;
 	}
 
-	private void AssertValidData( MovieBlockData value )
+	private void AssertValidData( IMovieBlockData value )
 	{
 		switch ( value )
 		{
@@ -95,4 +102,26 @@ public partial class MovieBlock
 /// <summary>
 /// Base type for data describing how a track changes during a <see cref="MovieBlock"/>.
 /// </summary>
-public abstract record MovieBlockData;
+public interface IMovieBlockData;
+
+public interface IMovieBlockValueData : IMovieBlockData
+{
+	/// <summary>
+	/// Property value type, must match <see cref="MovieTrack.PropertyType"/>.
+	/// </summary>
+	Type ValueType { get; }
+
+	/// <summary>
+	/// Samples the signal at the given <paramref name="time"/>, where <c>0</c> will return the first sample.
+	/// </summary>
+	object? GetValue( MovieTime time );
+
+	IMovieBlockValueData Slice( MovieTimeRange timeRange );
+}
+
+public interface IMovieBlockValueData<T> : IMovieBlockValueData
+{
+	new T GetValue( MovieTime time );
+	void Sample( Span<T> dstSamples, MovieTimeRange srcTimeRange, int sampleRate );
+	new IMovieBlockValueData<T> Slice( MovieTimeRange timeRange );
+}

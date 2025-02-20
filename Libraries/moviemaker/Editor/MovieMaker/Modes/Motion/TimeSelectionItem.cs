@@ -14,15 +14,19 @@ internal readonly record struct TimeSelection( TimeSelection.Fade? FadeIn, TimeS
 
 	public bool HasZeroWidthPeak => FadeIn is { } fadeIn && FadeOut is { } fadeOut && fadeIn.End >= fadeOut.Start;
 
-	public MovieTimeRange GetTimeRange( MovieClip clip )
+	public MovieTimeRange GetTimeRange( MovieTimeRange limits )
 	{
-		return (FadeIn?.Start ?? MovieTime.Zero, FadeOut?.End ?? clip.Duration);
+		return (FadeIn?.Start ?? limits.Start, FadeOut?.End ?? limits.End);
 	}
 
-	public MovieTimeRange GetPeakTimeRange( MovieClip clip )
+	public MovieTimeRange GetTimeRange( MovieClip clip ) => GetTimeRange( (MovieTime.Zero, clip.Duration) );
+
+	public MovieTimeRange GetPeakTimeRange( MovieTimeRange limits )
 	{
-		return (FadeIn?.End ?? MovieTime.Zero, FadeOut?.Start ?? clip.Duration);
+		return (FadeIn?.End ?? limits.Start, FadeOut?.Start ?? limits.End);
 	}
+
+	public MovieTimeRange GetPeakTimeRange( MovieClip clip ) => GetPeakTimeRange( (MovieTime.Zero, clip.Duration) );
 
 	public TimeSelection Clamp( MovieTimeRange timeRange )
 	{
