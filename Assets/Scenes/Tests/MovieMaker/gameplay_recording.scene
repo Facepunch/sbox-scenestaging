@@ -5,8 +5,8 @@
       "__guid": "4b6c2e79-4728-487f-b0d8-9af8d2c1b609",
       "Flags": 0,
       "Name": "Camera",
-      "Position": "282.1313,-612.7289,900.439",
-      "Rotation": "0.001563557,0.00001314017,0.9999635,-0.008403713",
+      "Position": "-126.1532,-254.6383,937.153",
+      "Rotation": "-0.06026993,0.0004769937,0.9981465,0.008409711",
       "Tags": "maincamera",
       "Enabled": true,
       "Components": [
@@ -99,7 +99,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Position": 0,
+          "PositionSeconds": 0,
           "ReferencedClip": "movieclips/recording.movie",
           "TimeScale": 1
         }
@@ -109,14 +109,14 @@
       "__guid": "3f64978b-784f-441c-a943-18a2d9705d9c",
       "Flags": 0,
       "Name": "Player Controller",
-      "Position": "115.9479,-615.5399,833.3937",
+      "Position": "-277.042,-276.1551,848.0413",
       "Enabled": true,
       "Children": [
         {
           "__guid": "db85ad2e-48a4-4189-8c02-3e2c1e73ee04",
           "Flags": 0,
           "Name": "Body",
-          "Rotation": "0,0,0.9571671,0.2895366",
+          "Rotation": "0,0,0.9989078,0.04672835",
           "Enabled": true,
           "Components": [
             {
@@ -141,27 +141,28 @@
                 "bools": {},
                 "ints": {},
                 "floats": {
-                  "wish_speed": 320,
-                  "move_direction": 340.61566,
-                  "wish_direction": 325.0267,
-                  "move_speed": 301.5113,
-                  "move_groundspeed": 301.5113,
-                  "wish_groundspeed": 320,
-                  "move_x": 284.4121,
-                  "move_y": -100.0739,
-                  "wish_x": 262.19843,
-                  "wish_y": -183.41127,
-                  "move_rotationspeed": -40.84778,
-                  "skid_x": 0.016049404,
-                  "skid_y": 0.05525054
+                  "wish_speed": 319.99997,
+                  "move_direction": 350.7753,
+                  "wish_direction": 25.535038,
+                  "move_speed": 314.79495,
+                  "move_groundspeed": 314.79495,
+                  "wish_groundspeed": 319.99997,
+                  "move_x": 310.7238,
+                  "move_y": -50.463753,
+                  "wish_x": 288.7431,
+                  "wish_y": 137.9402,
+                  "move_rotationspeed": -16.707764,
+                  "skid_x": 0.0025352242,
+                  "skid_y": -0.020111393
                 },
                 "vectors": {
-                  "aim_head": "0.8193654,0.5731567,0.003127202",
-                  "aim_body": "0.8193654,0.5731567,0.003127202",
-                  "aim_eyes": "0.8193654,0.5731567,0.003127202"
+                  "aim_head": "0.9070863,0.4130343,-0.08121571",
+                  "aim_body": "0.9070863,0.4130343,-0.08121571",
+                  "aim_eyes": "0.9070863,0.4130343,-0.08121571"
                 },
                 "rotations": {}
               },
+              "PlaybackRate": 1,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,

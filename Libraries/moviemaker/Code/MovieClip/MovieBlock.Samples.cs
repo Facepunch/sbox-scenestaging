@@ -99,7 +99,7 @@ public sealed record SamplesData<T>(
 
 	public IMovieBlockValueData<T> Slice( MovieTimeRange timeRange )
 	{
-		if ( Samples.Count == 0 ) return this;
+		if ( Samples.Count == 0 || timeRange.Start.IsZero && timeRange.End == Duration ) return this;
 
 		if ( timeRange.End <= MovieTime.Zero ) return new ConstantData<T>( Samples[0] );
 		if ( timeRange.Start >= Duration ) return new ConstantData<T>( Samples[^1] );

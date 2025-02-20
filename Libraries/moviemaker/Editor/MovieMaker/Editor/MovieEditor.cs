@@ -114,31 +114,31 @@ public class MovieEditor : Widget
 		Session?.Save();
 	}
 
-	[Shortcut( "timeline.selectall", "CTRL+A", ShortcutType.Widget )]
+	[Shortcut( "timeline.selectall", "CTRL+A" )]
 	public void OnSelectAll()
 	{
 		Session?.EditMode?.SelectAll();
 	}
 
-	[Shortcut( "timeline.cut", "CTRL+X", ShortcutType.Widget )]
+	[Shortcut( "timeline.cut", "CTRL+X" )]
 	public void OnCut()
 	{
 		Session?.EditMode?.Cut();
 	}
 
-	[Shortcut( "timeline.copy", "CTRL+C", ShortcutType.Widget )]
+	[Shortcut( "timeline.copy", "CTRL+C" )]
 	public void OnCopy()
 	{
 		Session?.EditMode?.Copy();
 	}
 
-	[Shortcut( "timeline.paste", "CTRL+V", ShortcutType.Widget )]
+	[Shortcut( "timeline.paste", "CTRL+V" )]
 	public void OnPaste()
 	{
 		Session?.EditMode?.Paste();
 	}
 
-	[Shortcut( "timeline.delete", "DEL", ShortcutType.Widget )]
+	[Shortcut( "timeline.delete", "DEL" )]
 	public void OnDelete()
 	{
 		Session?.EditMode?.Delete();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Channels;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -190,17 +191,102 @@ partial class MotionEditMode
 
 	protected override void OnDelete()
 	{
+		var shift = (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0;
+
+		Delete( shift );
+	}
+
+	private void Delete( bool shift )
+	{
 		if ( TimeSelection is not { } selection || Session.Clip is not { } clip ) return;
 
 		var timeRange = selection.GetPeakTimeRange( clip );
 
 		ClearChanges();
 
-		var shift = (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0;
-
 		foreach ( var track in clip.AllTracks )
 		{
 			if ( track.Delete( timeRange, shift ) )
+			{
+				Session.TrackModified( track );
+			}
+		}
+
+		Session.ClipModified();
+	}
+
+	private record ClipboardData( MovieTime Duration, IReadOnlyDictionary<Guid, IReadOnlyList<ClipboardBlock>> Tracks );
+	private record ClipboardBlock( MovieTimeRange TimeRange, IMovieBlockData Data );
+
+	private static ClipboardData? Clipboard { get; set; }
+
+	protected override void OnCut()
+	{
+		OnCopy();
+		Delete( true );
+	}
+
+	protected override void OnCopy()
+	{
+		if ( TimeSelection is not { } selection || Session.Clip is not { } clip ) return;
+
+		var range = selection.GetPeakTimeRange( clip );
+		var tracks = new Dictionary<Guid, IReadOnlyList<ClipboardBlock>>();
+
+		foreach ( var track in clip.AllTracks )
+		{
+			List<ClipboardBlock>? blocks = null;
+
+			foreach ( var block in track.Blocks )
+			{
+				if ( block.TimeRange.Intersect( range ) is not { IsEmpty: false } intersection ) continue;
+				if ( block.Data is not IMovieBlockValueData valueData ) continue;
+
+				blocks ??= new List<ClipboardBlock>();
+				blocks.Add( new ClipboardBlock( intersection - range.Start, valueData.Slice( range - block.Start ) ) );
+			}
+
+			if ( blocks is not null )
+			{
+				tracks[track.Id] = blocks.ToImmutableArray();
+			}
+		}
+
+		Clipboard = new ClipboardData( range.Duration, tracks.ToImmutableDictionary() );
+	}
+
+	protected override void OnPaste()
+	{
+		if ( TimeSelection is not { } selection || Session.Clip is not { } clip || Clipboard is not { } clipboard ) return;
+
+		var timeRange = selection.GetPeakTimeRange( clip );
+		var shift = clipboard.Duration - timeRange.Duration;
+
+		OnDelete();
+
+		foreach ( var track in clip.AllTracks )
+		{
+			var changed = track.Delete( timeRange, false );
+
+			foreach ( var block in track.Blocks )
+			{
+				if ( block.Start >= timeRange.End )
+				{
+					block.TimeRange += shift;
+					changed = true;
+				}
+			}
+
+			if ( clipboard.Tracks.TryGetValue( track.Id, out var blocks ) )
+			{
+				foreach ( var block in blocks )
+				{
+					track.AddBlock( block.TimeRange + timeRange.Start, block.Data );
+					changed = true;
+				}
+			}
+
+			if ( changed )
 			{
 				Session.TrackModified( track );
 			}

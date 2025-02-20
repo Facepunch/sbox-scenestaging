@@ -89,8 +89,6 @@ public partial class DopeSheetTrack : GraphicsItem
 			_blocks.Clear();
 			GetBlocks( _blocks );
 
-			Log.Info( $"UpdateBlockPreviews( {TrackWidget.MovieTrack.Name} )" );
-
 			if ( _blocks.Count != _blockPreviews.Count )
 			{
 				ClearBlockPreviews();
