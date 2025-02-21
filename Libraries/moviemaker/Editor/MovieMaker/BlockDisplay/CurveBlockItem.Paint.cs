@@ -1,10 +1,10 @@
 ﻿using Sandbox.MovieMaker;
 
-namespace Editor.MovieMaker.BlockPreviews;
+namespace Editor.MovieMaker.BlockDisplays;
 
 #nullable enable
 
-partial class CurvePreview<T>
+partial class CurveBlockItem<T>
 {
 	private GraphicsLine[]? Lines { get; set; }
 
@@ -19,7 +19,7 @@ partial class CurvePreview<T>
 		{
 			for ( var i = 0; i < samples.Samples.Count; ++i )
 			{
-				var time = MovieTime.FromFrames( i, samples.SampleRate );
+				var time = samples.FirstSampleTime + MovieTime.FromFrames( i, samples.SampleRate );
 
 				if ( time >= TimeRange.Duration ) break;
 
@@ -120,9 +120,9 @@ partial class CurvePreview<T>
 
 		// All previews on the same track should have the same range
 
-		foreach ( var preview in Parent.BlockPreviews )
+		foreach ( var preview in Parent.BlockItems )
 		{
-			if ( preview is not ICurvePreview { Ranges: { } curveRanges } ) continue;
+			if ( preview is not ICurveBlockItem { Ranges: { } curveRanges } ) continue;
 			if ( curveRanges.Count != ranges.Length ) continue;
 
 			for ( var j = 0; j < Elements.Count; ++j )

@@ -44,7 +44,7 @@ partial class Session
 	{
 		get
 		{
-			var minorTime = FrameSnap ? MovieTime.FromFrames( 1, FrameRate ) : MovieTime.FromFrames( 1, 10 );
+			var minorTime = MovieTime.FromFrames( 1, FrameRate );
 
 			while ( TimeToPixels( minorTime ) < MinMinorTickWidth )
 			{

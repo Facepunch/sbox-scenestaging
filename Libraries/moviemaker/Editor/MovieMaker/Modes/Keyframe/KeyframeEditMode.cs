@@ -346,7 +346,6 @@ internal sealed class TrackKeyframes : IDisposable
 	public void Write()
 	{
 		if ( Curve is null ) return;
-		if ( Session.Current is not { } session ) return;
 
 		Curve.Clear();
 
@@ -355,11 +354,11 @@ internal sealed class TrackKeyframes : IDisposable
 			Curve.SetKeyframe( handle.Time, handle.Value, handle.Interpolation );
 		}
 
-		TrackWidget.MovieTrack.WriteKeyframes( Curve, session.FrameRate );
+		TrackWidget.MovieTrack.WriteKeyframes( Curve, EditMode.Clip.DefaultSampleRate );
 
-		session.ClipModified();
+		EditMode.Session.ClipModified();
 
-		DopeSheetTrack.UpdateBlockPreviews();
+		DopeSheetTrack.UpdateBlockItems();
 	}
 
 	public void Dispose()

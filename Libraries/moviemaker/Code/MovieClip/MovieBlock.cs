@@ -7,10 +7,11 @@ namespace Sandbox.MovieMaker;
 
 public interface IMovieBlock
 {
-	MovieTrack Track { get; }
-	IMovieBlockData Data { get; }
 	MovieTimeRange TimeRange { get; }
+	IMovieBlockData Data { get; }
 }
+
+public record MovieBlockSlice( MovieTimeRange TimeRange, IMovieBlockData Data ) : IMovieBlock;
 
 /// <summary>
 /// A time region in a <see cref="MovieTrack"/> where something happens.
@@ -36,6 +37,7 @@ public sealed partial class MovieBlock : IMovieBlock
 		}
 	}
 
+	public MovieTime TimeOffset { get; set; }
 	public MovieTime Start => TimeRange.Start;
 	public MovieTime End => TimeRange.End;
 	public MovieTime Duration => TimeRange.Duration;

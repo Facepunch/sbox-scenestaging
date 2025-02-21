@@ -60,7 +60,8 @@ public interface ISamplesData : IMovieBlockValueData
 public sealed record SamplesData<T>(
 	int SampleRate,
 	SampleInterpolationMode Interpolation,
-	IReadOnlyList<T> Samples )
+	IReadOnlyList<T> Samples,
+	MovieTime FirstSampleTime = default )
 	: ISamplesData, IMovieBlockValueData<T>
 {
 	private readonly IInterpolator<T>? _interpolator = Interpolation is not SampleInterpolationMode.None ? Interpolator.GetDefault<T>() : null;
@@ -77,6 +78,8 @@ public sealed record SamplesData<T>(
 	public T GetValue( MovieTime time )
 	{
 		if ( Samples.Count == 0 ) return default!;
+
+		time -= FirstSampleTime;
 
 		var i0 = time.GetFrameCount( SampleRate, out var remainder );
 		var i1 = i0 + 1;
@@ -101,14 +104,27 @@ public sealed record SamplesData<T>(
 	{
 		if ( Samples.Count == 0 || timeRange.Start.IsZero && timeRange.End == Duration ) return this;
 
-		if ( timeRange.End <= MovieTime.Zero ) return new ConstantData<T>( Samples[0] );
-		if ( timeRange.Start >= Duration ) return new ConstantData<T>( Samples[^1] );
+		timeRange -= FirstSampleTime;
 
-		var dstSamples = new T[timeRange.Duration.GetFrameCount( SampleRate )];
+		var i0 = timeRange.Start.GetFrameCount( SampleRate, out var remainder );
+		var i1 = timeRange.End.GetFrameCount( SampleRate ) + 1;
 
-		Sample( dstSamples, timeRange, SampleRate );
+		// Constants if we're off one end
 
-		return new SamplesData<T>( SampleRate, Interpolation, dstSamples );
+		if ( i1 <= 0 ) return new ConstantData<T>( Samples[0] );
+		if ( i0 >= Samples.Count ) return new ConstantData<T>( Samples[^1] );
+
+		var firstSampleTime = -remainder;
+
+		if ( i0 < 0 )
+		{
+			firstSampleTime += MovieTime.FromFrames( -i0, SampleRate );
+			i0 = 0;
+		}
+
+		i1 = Math.Clamp( i1, i0, Samples.Count );
+
+		return new SamplesData<T>( SampleRate, Interpolation, Samples.Slice( i0, i1 - i0 ), firstSampleTime );
 	}
 
 	IMovieBlockValueData IMovieBlockValueData.Slice( MovieTimeRange timeRange ) => Slice( timeRange );
@@ -143,7 +159,7 @@ public sealed record SamplesData<T>(
 	private void CopySamples( Span<T> dstSamples, MovieTimeRange srcTimeRange, int sampleRate )
 	{
 		var srcStartIndex = srcTimeRange.Start.GetFrameCount( sampleRate );
-		var srcEndIndex = srcTimeRange.End.GetFrameCount( sampleRate );
+		var srcEndIndex = srcTimeRange.End.GetFrameCount( sampleRate ) + 1;
 
 		var dstStartIndex = -srcStartIndex;
 		var dstEndIndex = srcEndIndex - srcStartIndex;
@@ -162,15 +178,22 @@ public sealed record SamplesData<T>(
 
 		var sampleCount = srcEndIndex - srcStartIndex;
 
-		for ( var i = 0; i < sampleCount; ++i )
+		if ( Samples is T[] srcSamples )
 		{
-			dstSamples[dstStartIndex + i] = Samples[srcStartIndex + i];
+			srcSamples.AsSpan( srcStartIndex, sampleCount ).CopyTo( dstSamples[dstStartIndex..] );
+		}
+		else
+		{
+			for ( var i = 0; i < sampleCount; ++i )
+			{
+				dstSamples[dstStartIndex + i] = Samples[srcStartIndex + i];
+			}
 		}
 	}
 
 	public SamplesData<T> Resample( int sampleRate )
 	{
-		var sampleCount = Math.Max( 1, Duration.GetFrameCount( sampleRate ) );
+		var sampleCount = Math.Max( 1, Duration.GetFrameCount( sampleRate ) + 1 );
 		var samples = new T[sampleCount];
 
 		Sample( samples, (MovieTime.Zero, Duration), sampleRate );

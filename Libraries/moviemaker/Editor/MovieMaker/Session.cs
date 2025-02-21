@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Sandbox;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -18,15 +19,24 @@ public sealed partial class Session
 	internal MovieEditor Editor { get; set; } = null!;
 
 	private bool _frameSnap;
+	private bool _blockSnap;
 	private MovieTime _timeOffset;
 	private float _pixelsPerSecond;
 
 	public bool Playing { get; set; }
+
 	public bool FrameSnap
 	{
 		get => _frameSnap;
 		set => _frameSnap = Cookies.FrameSnap = value;
 	}
+
+	public bool BlockSnap
+	{
+		get => _blockSnap;
+		set => _blockSnap = Cookies.BlockSnap = value;
+	}
+
 	public bool Loop { get; set; } = true;
 
 	public MovieTime TimeOffset
@@ -52,6 +62,8 @@ public sealed partial class Session
 		get => EditorData.FrameRate ?? 30;
 		set => EditorData = EditorData with { FrameRate = value };
 	}
+
+	public int DefaultSampleRate => Clip!.DefaultSampleRate;
 
 	/// <summary>
 	/// When editing keyframes, what time are we changing.
@@ -111,19 +123,55 @@ public sealed partial class Session
 		}
 	}
 
-	public MovieTime ScenePositionToTime( Vector2 scenePos )
+	public MovieTime ScenePositionToTime( Vector2 scenePos, float height = 0f, params MovieTime[] snapOffsets ) 
 	{
-		if ( EditMode?.GetSnapTime( scenePos, MinorTick.Interval ) is { } modeSnapTime )
+		var time = PixelsToTime( scenePos.x );
+		var snapHelper = new TimeSnapHelper( time, PixelsToTime( 8f ) );
+
+		GetSnapTimes( ref snapHelper, scenePos, height, true );
+
+		foreach ( var offset in snapOffsets )
 		{
-			return modeSnapTime;
+			var offsetHelper = new TimeSnapHelper( time + offset, snapHelper.MaxSnap );
+
+			GetSnapTimes( ref offsetHelper, scenePos + new Vector2( TimeToPixels( offset ), 0f ), height, true );
+
+			snapHelper.Add( offsetHelper );
 		}
 
-		if ( Editor.TrackList.DopeSheet.GetSnapTime( scenePos, MinorTick.Interval ) is { } scrubSnapTime )
+		return snapHelper.BestTime;
+	}
+
+	public MovieTime ScenePositionToTimeIgnorePointer( Vector2 scenePos )
+	{
+		var time = PixelsToTime( scenePos.x );
+		var snapHelper = new TimeSnapHelper( time, PixelsToTime( 8f ) );
+
+		GetSnapTimes( ref snapHelper, scenePos, 0f, false );
+
+		return snapHelper.BestTime;
+	}
+
+	private void GetSnapTimes( ref TimeSnapHelper snapHelper, Vector2 scenePos, float height, bool includePointer )
+	{
+		if ( includePointer )
 		{
-			return scrubSnapTime;
+			snapHelper.Add( CurrentPointer );
 		}
 
-		return PixelsToTime( scenePos.x );
+		if ( FrameSnap )
+		{
+			var oneFrame = MovieTime.FromFrames( 1, FrameRate );
+
+			snapHelper.MaxSnap = MovieTime.Max( snapHelper.MaxSnap, oneFrame * 2 );
+			snapHelper.Add( PixelsToTime( scenePos.x ).SnapToGrid( oneFrame ), -1 );
+		}
+
+		if ( BlockSnap )
+		{
+			EditMode?.GetSnapTimes( ref snapHelper, scenePos, height );
+			Editor.TrackList.DopeSheet.GetSnapTimes( ref snapHelper, scenePos, height );
+		}
 	}
 
 	public MovieTime PixelsToTime( float pixels, bool snap = false )
@@ -323,6 +371,6 @@ public sealed partial class Session
 	{
 		ClipModified();
 
-		Editor.TrackList.FindTrack( track )?.DopeSheetTrack?.UpdateBlockPreviews();
+		Editor.TrackList.FindTrack( track )?.DopeSheetTrack?.UpdateBlockItems();
 	}
 }

@@ -32,6 +32,12 @@ partial class Session
 			set => session.SetCookie( nameof(FrameSnap), value );
 		}
 
+		public bool BlockSnap
+		{
+			get => session.GetCookie( nameof(BlockSnap), true );
+			set => session.SetCookie( nameof(BlockSnap), value );
+		}
+
 		public MovieTime TimeOffset
 		{
 			get => MovieTime.FromTicks( session.GetCookie( nameof(TimeOffset), 0 ) );
@@ -51,6 +57,7 @@ partial class Session
 	public void RestoreFromCookies()
 	{
 		FrameSnap = Cookies.FrameSnap;
+		BlockSnap = Cookies.BlockSnap;
 		TimeOffset = Cookies.TimeOffset;
 		PixelsPerSecond = Cookies.PixelsPerSecond;
 

@@ -144,6 +144,12 @@ public class MovieEditor : Widget
 		Session?.EditMode?.Delete();
 	}
 
+	[Shortcut( "timeline.insert", "TAB" )]
+	public void OnInsert()
+	{
+		Session?.EditMode?.Insert();
+	}
+
 	int contextHash;
 
 	List<MoviePlayer> playersAvailable = new();

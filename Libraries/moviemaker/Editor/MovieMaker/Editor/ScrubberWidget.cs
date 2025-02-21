@@ -27,7 +27,7 @@ public class ScrubberItem : GraphicsItem
 	{
 		base.OnMousePressed( e );
 
-		Session.SetCurrentPointer( Session.PixelsToTime( e.LocalPosition.x, true ) );
+		Session.SetCurrentPointer( Session.PixelsToTime( ToScene( e.LocalPosition ).x, true ) );
 
 		e.Accepted = true;
 	}
@@ -36,7 +36,7 @@ public class ScrubberItem : GraphicsItem
 	{
 		base.OnMouseMove( e );
 
-		Session.SetCurrentPointer( Session.PixelsToTime( e.LocalPosition.x, true ) );
+		Session.SetCurrentPointer( Session.PixelsToTime( ToScene( e.LocalPosition ).x, true ) );
 	}
 
 	protected override void OnPaint()

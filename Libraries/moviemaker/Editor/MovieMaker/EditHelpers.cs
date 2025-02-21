@@ -1,4 +1,5 @@
 ﻿
+using System.Linq;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -7,7 +8,7 @@ namespace Editor.MovieMaker;
 
 public static class EditHelpers
 {
-	public static bool Replace( this MovieTrack track, MovieTimeRange timeRange, IMovieBlockData? newData )
+	public static bool Splice( this MovieTrack track, MovieTimeRange timeRange, MovieTime newDuration, IEnumerable<IMovieBlock>? newBlocks = null, MovieTime newBlockOffset = default )
 	{
 		var changed = false;
 
@@ -22,25 +23,22 @@ public static class EditHelpers
 			var headRange = new MovieTimeRange( block.Start, intersection.Start );
 			var tailRange = new MovieTimeRange( intersection.End, block.End );
 
-			if ( !headRange.IsEmpty && block.Slice( headRange ) is { } head )
-			{
-				track.AddBlock( headRange, head );
-			}
-
-			if ( !tailRange.IsEmpty && block.Slice( tailRange ) is { } tail )
-			{
-				track.AddBlock( tailRange, tail );
-			}
+			if ( !headRange.IsEmpty ) track.AddBlock( block.Slice( headRange ) );
+			if ( !tailRange.IsEmpty ) track.AddBlock( block.Slice( tailRange ) );
 
 			block.Remove();
 		}
 
-		// TODO: can re-use one of the removed blocks
+		if ( newBlocks is null ) return changed;
 
-		if ( newData is not null )
+		// TODO: can re-use the removed blocks
+
+		foreach ( var block in newBlocks )
 		{
-			track.AddBlock( timeRange, newData );
-			return true;
+			if ( block.TimeRange.IsEmpty ) continue;
+
+			track.AddBlock( block );
+			changed = true;
 		}
 
 		return changed;
@@ -48,28 +46,48 @@ public static class EditHelpers
 
 	public static bool Delete( this MovieTrack track, MovieTimeRange timeRange, bool shift )
 	{
-		var changed = track.Replace( timeRange, null );
+		return track.Splice( timeRange, shift ? MovieTime.Zero : timeRange.Duration );
+	}
 
-		if ( shift )
+	public static bool Delete( this Session session, MovieTimeRange timeRange, bool shift )
+	{
+		if ( session.Clip is not { } clip ) return false;
+
+		var changed = false;
+
+		foreach ( var track in clip.AllTracks )
 		{
-			foreach ( var block in track.Blocks )
+			if ( track.Delete( timeRange, shift ) )
 			{
-				if ( block.Start >= timeRange.End )
-				{
-					block.TimeRange -= timeRange.Duration;
-					changed = true;
-				}
+				changed = true;
+				session.TrackModified( track );
 			}
 		}
 
 		return changed;
 	}
 
-	public static IMovieBlockData? Slice( this MovieBlock srcBlock, MovieTimeRange srcTimeRange )
+	public static bool Insert( this MovieTrack track, MovieTimeRange timeRange )
 	{
-		return srcBlock.Data is IMovieBlockValueData valueData
-			? valueData.Slice( srcTimeRange - srcBlock.Start )
-			: null;
+		return track.Splice( timeRange.Start, timeRange.Duration );
+	}
+
+	public static bool Insert( this Session session, MovieTimeRange timeRange )
+	{
+		if ( session.Clip is not { } clip ) return false;
+
+		var changed = false;
+
+		foreach ( var track in clip.AllTracks )
+		{
+			if ( track.Insert( timeRange ) )
+			{
+				changed = true;
+				session.TrackModified( track );
+			}
+		}
+
+		return changed;
 	}
 
 	public static void Sample<T>( this MovieBlock srcBlock, Span<T> dstSamples, MovieTimeRange dstTimeRange, MovieTimeRange srcTimeRange, int sampleRate )
@@ -79,8 +97,59 @@ public static class EditHelpers
 		if ( srcBlock.Data is not IMovieBlockValueData<T> valueData ) return;
 
 		var dstStartIndex = (intersection.Start - dstTimeRange.Start).GetFrameCount( sampleRate );
-		var dstEndIndex = (intersection.End - dstTimeRange.Start).GetFrameCount( sampleRate );
+		var dstEndIndex = (intersection.End - dstTimeRange.Start).GetFrameCount( sampleRate ) + 1;
 
 		valueData.Sample( dstSamples[dstStartIndex..dstEndIndex], intersection - srcTimeRange.Start, sampleRate );
+	}
+
+	public static IEnumerable<MovieBlockSlice> Slice( this MovieTrack track, MovieTimeRange timeRange ) =>
+		track.GetCuts( timeRange ).Select( x => x.Block.Slice( x.TimeRange ) );
+
+	public static MovieBlockSlice Slice( this MovieBlock srcBlock, MovieTimeRange timeRange ) =>
+		new( timeRange, srcBlock.Data.Slice( timeRange - srcBlock.Start ) );
+
+	public static IMovieBlockData Slice( this IMovieBlockData data, MovieTimeRange timeRange )
+	{
+		return data is not IMovieBlockValueData valueData ? data : valueData.Slice( timeRange );
+	}
+}
+
+public struct TimeSnapHelper
+{
+	private readonly MovieTime _defaultTime;
+
+	public MovieTime MaxSnap { get; set; }
+
+	public MovieTime BestTime { get; private set; }
+	public float BestScore { get; private set; } = float.MaxValue;
+
+	public TimeSnapHelper( MovieTime defaultTime, MovieTime maxSnap )
+	{
+		_defaultTime = BestTime = defaultTime;
+		BestScore = float.PositiveInfinity;
+
+		MaxSnap = maxSnap;
+	}
+
+	public void Add( MovieTime time, int priority = 0 )
+	{
+		var timeDiff = (time - _defaultTime).Absolute;
+
+		if ( timeDiff > MaxSnap ) return;
+
+		var score = (float)(timeDiff.TotalSeconds / MaxSnap.TotalSeconds) - priority;
+
+		if ( score >= BestScore ) return;
+
+		BestScore = score;
+		BestTime = time;
+	}
+
+	public void Add( TimeSnapHelper helper )
+	{
+		if ( helper.BestScore >= BestScore ) return;
+
+		BestScore = helper.BestScore;
+		BestTime = helper.BestTime - (helper._defaultTime - _defaultTime);
 	}
 }

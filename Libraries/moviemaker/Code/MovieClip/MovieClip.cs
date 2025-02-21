@@ -45,7 +45,7 @@ public sealed partial class MovieClip
 	public MovieTime Duration => _trackDict.Values
 		.Aggregate( MovieTime.Zero, ( s, x ) => MovieTime.Max( s, x.TimeRange.End ) );
 
-	internal int IdealFrameRate => EditorData?["FrameRate"]?.GetValue<int>() ?? 30;
+	public int DefaultSampleRate { get; private set; } = 30;
 
 	/// <summary>
 	/// Editor-only information about this movie.

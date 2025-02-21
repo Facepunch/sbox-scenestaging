@@ -1,4 +1,4 @@
-﻿using Editor.MovieMaker.BlockPreviews;
+﻿using Editor.MovieMaker.BlockDisplays;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -11,9 +11,10 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	private bool? _canCreatePreview;
 
-	private readonly List<BlockPreview> _blockPreviews = new();
+	private readonly List<IMovieBlock> _blocks = new();
+	private readonly List<BlockItem> _blockItems = new();
 
-	public IReadOnlyList<BlockPreview> BlockPreviews => _blockPreviews;
+	public IReadOnlyList<BlockItem> BlockItems => _blockItems;
 
 	public bool Visible => TrackWidget.Visible;
 
@@ -30,21 +31,21 @@ public partial class DopeSheetTrack : GraphicsItem
 		Position = new Vector2( 0, r.Top + 1 );
 		Size = Visible ? new Vector2( 50000, r.Height ) : 0f;
 
-		UpdateBlockPreviews();
+		UpdateBlockItems();
 
 		TrackWidget.TrackList.Session.EditMode?.TrackLayout( this, r );
 	}
 
-	private void ClearBlockPreviews()
+	private void ClearBlockItems()
 	{
-		if ( _blockPreviews.Count == 0 ) return;
+		if ( _blockItems.Count == 0 ) return;
 
-		foreach ( var blockPreview in _blockPreviews )
+		foreach ( var blockPreview in _blockItems )
 		{
 			blockPreview.Destroy();
 		}
 
-		_blockPreviews.Clear();
+		_blockItems.Clear();
 	}
 
 	internal void OnSelected()
@@ -64,23 +65,20 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	private void GetBlocks( List<IMovieBlock> result )
 	{
-		foreach ( var block in TrackWidget.MovieTrack.Blocks )
+		var track = TrackWidget.MovieTrack;
+
+		foreach ( var block in track.Blocks )
 		{
 			result.Add( block );
 		}
 
-		foreach ( var preview in TrackWidget.TrackList.Session.EditMode?.GetPreviewBlocks() ?? [] )
+		foreach ( var preview in TrackWidget.TrackList.Session.EditMode?.GetPreviewBlocks( track ) ?? [] )
 		{
-			if ( preview.Track == TrackWidget.MovieTrack )
-			{
-				result.Add( preview );
-			}
+			result.Add( preview );
 		}
 	}
 
-	private readonly List<IMovieBlock> _blocks = new();
-
-	public void UpdateBlockPreviews()
+	public void UpdateBlockItems()
 	{
 		if ( Visible && _canCreatePreview is not false )
 		{
@@ -89,27 +87,27 @@ public partial class DopeSheetTrack : GraphicsItem
 			_blocks.Clear();
 			GetBlocks( _blocks );
 
-			if ( _blocks.Count != _blockPreviews.Count )
+			if ( _blocks.Count != _blockItems.Count )
 			{
-				ClearBlockPreviews();
+				ClearBlockItems();
 			}
 
 			for ( var i = 0; i < _blocks.Count; ++i )
 			{
 				var block = _blocks[i];
 
-				if ( _blockPreviews.Count <= i )
+				if ( _blockItems.Count <= i )
 				{
-					if ( BlockPreview.Create( this, _blocks[i] ) is not { } newPreview )
+					if ( BlockItem.Create( this, _blocks[i] ) is not { } newPreview )
 					{
 						_canCreatePreview = false;
 						return;
 					}
 
-					_blockPreviews.Add( newPreview );
+					_blockItems.Add( newPreview );
 				}
 
-				var preview = BlockPreviews[i];
+				var preview = BlockItems[i];
 
 				preview.Block = block;
 
@@ -122,7 +120,7 @@ public partial class DopeSheetTrack : GraphicsItem
 		}
 		else
 		{
-			ClearBlockPreviews();
+			ClearBlockItems();
 		}
 	}
 }

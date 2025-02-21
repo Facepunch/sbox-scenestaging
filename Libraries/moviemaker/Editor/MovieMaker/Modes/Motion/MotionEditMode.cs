@@ -18,6 +18,7 @@ internal sealed partial class MotionEditMode : EditMode
 			SelectionChanged();
 		}
 	}
+
 	public InterpolationMode DefaultInterpolation { get; private set; } = InterpolationMode.QuadraticInOut;
 
 	public bool IsAdditive { get; private set; }
@@ -31,7 +32,7 @@ internal sealed partial class MotionEditMode : EditMode
 		foreach ( var interpolation in Enum.GetValues<InterpolationMode>() )
 		{
 			Toolbar.AddToggle( interpolation,
-				() => (TimeSelection?.FadeIn?.Interpolation ?? DefaultInterpolation) == interpolation,
+				() => (TimeSelection?.FadeIn.Interpolation ?? DefaultInterpolation) == interpolation,
 				_ =>
 				{
 					DefaultInterpolation = interpolation;
@@ -70,7 +71,7 @@ internal sealed partial class MotionEditMode : EditMode
 
 		ClearSelection();
 
-		TimeSelection = new TimeSelection( new( time, DefaultInterpolation ), new( time, DefaultInterpolation ) );
+		TimeSelection = new TimeSelection( time, DefaultInterpolation );
 
 		_selectionStartTime = time;
 
@@ -81,24 +82,15 @@ internal sealed partial class MotionEditMode : EditMode
 	protected override void OnMouseMove( MouseEvent e )
 	{
 		if ( (e.ButtonState & MouseButtons.Left) != 0 && e.HasShift
-			&& TimeSelection is { } selection
 			&& _selectionStartTime is { } dragStartTime )
 		{
 			var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ) );
 			var (minTime, maxTime) = Session.VisibleTimeRange;
 
-			if ( time <= minTime )
-			{
-				TimeSelection = selection.WithTimeRange( null, dragStartTime, DefaultInterpolation );
-			}
-			else if ( time >= maxTime && time < Session.Clip?.Duration )
-			{
-				TimeSelection = selection.WithTimeRange( dragStartTime, null, DefaultInterpolation );
-			}
-			else
-			{
-				TimeSelection = selection.WithTimeRange( MovieTime.Min( dragStartTime, time ), MovieTime.Max( dragStartTime, time ), DefaultInterpolation );
-			}
+			if ( time < minTime ) time = MovieTime.Zero;
+			if ( time > maxTime ) time = Session.Clip!.Duration;
+
+			TimeSelection = new TimeSelection( (MovieTime.Min( time, dragStartTime ), MovieTime.Max( time, dragStartTime )), DefaultInterpolation );
 		}
 	}
 
@@ -108,7 +100,7 @@ internal sealed partial class MotionEditMode : EditMode
 		{
 			_selectionStartTime = null;
 
-			var timeRange = selection.GetPeakTimeRange( Session.Clip! ).Clamp( Session.VisibleTimeRange );
+			var timeRange = selection.PeakTimeRange.Clamp( Session.VisibleTimeRange );
 
 			Session.SetCurrentPointer( MovieTime.FromTicks( (timeRange.Start.Ticks + timeRange.End.Ticks) / 2 ) );
 			Session.ClearPreviewPointer();
@@ -131,9 +123,9 @@ internal sealed partial class MotionEditMode : EditMode
 	{
 		DefaultInterpolation = mode;
 
-		if ( DopeSheet.GetItemAt( DopeSheet.ToScene( DopeSheet.FromScreen( Application.CursorPosition ) ) ) is TimeSelectionFadeItem { Value: { } value } fade )
+		if ( DopeSheet.GetItemAt( DopeSheet.ToScene( DopeSheet.FromScreen( Application.CursorPosition ) ) ) is TimeSelectionFadeItem fade )
 		{
-			fade.Value = value with { Interpolation = mode };
+			fade.Interpolation = mode;
 		}
 	}
 }

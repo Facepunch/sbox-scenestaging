@@ -115,7 +115,7 @@ public sealed partial class MoviePlayer : Component
 	{
 		if ( track.GetBlock( time ) is { } block )
 		{
-			ApplyFrame( block, time );
+			ApplyFrame( track, block, time );
 		}
 
 		foreach ( var child in track.Children )
@@ -124,25 +124,12 @@ public sealed partial class MoviePlayer : Component
 		}
 	}
 
-	public void ApplyFrame( IMovieBlock block, MovieTime time )
+	public void ApplyFrame( MovieTrack track, IMovieBlock block, MovieTime time )
 	{
-		if ( GetOrAutoResolveProperty( block.Track ) is not { IsBound: true } property ) return;
+		if ( block.Data is not IMovieBlockValueData valueData ) return;
+		if ( GetOrAutoResolveProperty( track ) is not { IsBound: true } property ) return;
 
-		// TODO: this is a slow placeholder implementation, we can avoid boxing / reflection when we're in the engine
-
-		switch ( block.Data )
-		{
-			case IConstantData constantData:
-				property.Value = constantData.Value;
-				break;
-
-			case ISamplesData samplesData:
-				property.Value = samplesData.GetValue( time - block.TimeRange.Start );
-				break;
-
-			case ActionData:
-				throw new NotImplementedException();
-		}
+		property.Value = valueData.GetValue( time - block.TimeRange.Start );
 	}
 
 	protected override void OnEnabled()
@@ -239,7 +226,7 @@ public sealed partial class MoviePlayer : Component
 
 		foreach ( var recording in _recordings.Values )
 		{
-			recording.WriteBlocks( MovieTime.Zero, clip.IdealFrameRate );
+			recording.WriteBlocks( MovieTime.Zero, clip.DefaultSampleRate );
 		}
 	}
 

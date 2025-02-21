@@ -1,11 +1,10 @@
 ﻿using Sandbox.MovieMaker;
 
-namespace Editor.MovieMaker.BlockPreviews;
+namespace Editor.MovieMaker.BlockDisplays;
 
 #nullable enable
 
-
-public abstract partial class BlockPreview : GraphicsItem
+public abstract partial class BlockItem : GraphicsItem
 {
 	public new DopeSheetTrack Parent { get; private set; } = null!;
 
@@ -37,9 +36,9 @@ public abstract partial class BlockPreview : GraphicsItem
 	}
 }
 
-internal interface IBlockPreview<T>;
+internal interface IBlockItem<T>;
 
-public abstract class BlockPreview<T> : BlockPreview, IBlockPreview<T>
+public abstract class BlockItem<T> : BlockItem, IBlockItem<T>
 {
 	public ConstantData<T>? Constant => Data as ConstantData<T>;
 	public SamplesData<T>? Samples => Data as SamplesData<T>;

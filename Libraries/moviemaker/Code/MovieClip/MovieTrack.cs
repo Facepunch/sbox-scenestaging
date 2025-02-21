@@ -129,6 +129,8 @@ public sealed partial class MovieTrack
 		_cutsInvalid = true;
 	}
 
+	public MovieBlock AddBlock( IMovieBlock block ) => AddBlock( block.TimeRange, block.Data );
+
 	public MovieBlock AddBlock( MovieTimeRange timeRange, IMovieBlockData data )
 	{
 		var nextId = _blocks.Count == 0 ? 1 : _blocks[^1].Id + 1;
@@ -158,11 +160,12 @@ public sealed partial class MovieTrack
 		var cuts = Cuts;
 
 		if ( cuts.Count == 0 ) return null;
-		if ( cuts[0].TimeRange.Start > time ) return cuts[0].Block;
+		if ( cuts[0].TimeRange.Start >= time ) return cuts[0].Block;
+		if ( cuts[^1].TimeRange.End <= time ) return cuts[^1].Block;
 
 		// TODO: binary search?
 
-		foreach ( var cut in Cuts )
+		foreach ( var cut in cuts )
 		{
 			if ( cut.TimeRange.Contains( time ) )
 			{
@@ -171,6 +174,18 @@ public sealed partial class MovieTrack
 		}
 
 		return Cuts[^1].Block;
+	}
+
+	public bool TryGetValue( MovieTime time, out object? value )
+	{
+		if ( GetBlock( time ) is not { Data: IMovieBlockValueData data } block )
+		{
+			value = null;
+			return false;
+		}
+
+		value = data.GetValue( time - block.Start );
+		return true;
 	}
 
 	public void RemoveBlocks()
@@ -236,9 +251,44 @@ public sealed partial class MovieTrack
 			var next = cutTimes[i];
 			var nextBlock = blocks.LastOrDefault( x => x.TimeRange.Contains( prev ) ) ?? prevBlock;
 
-			_cuts.Add( (new MovieTimeRange( prev, next ), nextBlock) );
+			if ( nextBlock == prevBlock && _cuts.Count > 0 )
+			{
+				_cuts[^1] = ((_cuts[^1].TimeRange.Start, next), nextBlock);
+			}
+			else
+			{
+				_cuts.Add( ((prev, next), nextBlock) );
+			}
 
 			prev = next;
+		}
+	}
+
+	public IEnumerable<(MovieTimeRange TimeRange, MovieBlock Block)> GetCuts( MovieTimeRange timeRange )
+	{
+		if ( Cuts is not { Count: > 0 } cuts ) yield break;
+
+		var firstCut = Cuts[0];
+		var lastCut = Cuts[^1];
+
+		if ( firstCut.TimeRange.Start > timeRange.Start )
+		{
+			yield return ((timeRange.Start, firstCut.TimeRange.Start), firstCut.Block);
+		}
+
+		foreach ( var cut in cuts )
+		{
+			if ( cut.TimeRange.End <= timeRange.Start ) continue;
+			if ( cut.TimeRange.Start >= timeRange.End ) break;
+
+			if ( cut.TimeRange.Intersect( timeRange ) is not { IsEmpty: false } intersection ) continue;
+
+			yield return (intersection, cut.Block);
+		}
+
+		if ( lastCut.TimeRange.End < timeRange.End )
+		{
+			yield return ((lastCut.TimeRange.End, timeRange.End), lastCut.Block);
 		}
 	}
 }

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Sandbox.Diagnostics;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -24,74 +22,48 @@ internal abstract class TrackModifier
 		return Cache[type] = (TrackModifier)Activator.CreateInstance( typeof(TrackModifier<>).MakeGenericType( type ) )!;
 	}
 
-	public abstract ISamplesData SampleTrack( MovieTrack track, MovieTimeRange timeRange, int sampleRate );
-	public abstract ISamplesData Modify( ISamplesData srcData, MovieTimeRange srcTimeRange, TimeSelection selection, object? value, bool additive );
+	public abstract IMovieBlockData Blend( IMovieBlock original, IMovieBlock change, MovieTimeRange timeRange, TimeSelection selection, bool additive, int sampleRate );
+	public abstract IConstantData GetConstant( object? value );
 }
 
 internal sealed class TrackModifier<T> : TrackModifier
 {
-	public override ISamplesData SampleTrack( MovieTrack track, MovieTimeRange timeRange, int sampleRate )
+	public override IMovieBlockData Blend( IMovieBlock original, IMovieBlock change, MovieTimeRange timeRange, TimeSelection selection, bool additive, int sampleRate )
 	{
-		var samples = new T[timeRange.Duration.GetFrameCount( sampleRate )];
+		if ( original.Data is not IMovieBlockValueData<T> originalData ) return original.Data.Slice( timeRange );
+		if ( change.Data is not IMovieBlockValueData<T> changeData ) return original.Data.Slice( timeRange );
 
-		// TODO: make this more generic? what do we do with scale?
+		if ( additive ) throw new NotImplementedException();
 
-		if ( Rotation.Identity is T defaultValue )
-		{
-			Array.Fill( samples, defaultValue );
-		}
-
-		if ( track.Cuts is not { Count: > 0 } cuts )
-		{
-			return new SamplesData<T>( sampleRate, SampleInterpolationMode.Linear, samples );
-		}
-
-		// Fill before first cut
-
-		cuts[0].Block.Sample<T>( samples, timeRange, (timeRange.Start, cuts[0].TimeRange.Start), sampleRate );
-		
-		// Fill within each cut
-		
-		foreach ( var cut in track.Cuts )
-		{
-			cut.Block.Sample<T>( samples, timeRange, cut.TimeRange, sampleRate );
-		}
-
-		// Fill after last cut
-
-		cuts[^1].Block.Sample<T>( samples, timeRange, (cuts[^1].TimeRange.End, timeRange.End), sampleRate );
-
-		return new SamplesData<T>( sampleRate, SampleInterpolationMode.Linear, samples );
-	}
-
-	public override ISamplesData Modify( ISamplesData srcData, MovieTimeRange srcTimeRange, TimeSelection selection, object? value, bool additive )
-	{
-		return Modify( (SamplesData<T>)srcData, srcTimeRange, selection, (T)value!, additive );
-	}
-
-	private ISamplesData Modify( SamplesData<T> srcData, MovieTimeRange srcTimeRange, TimeSelection selection, T value, bool additive )
-	{
 		var interpolator = Interpolator.GetDefault<T>();
 		var transformer = additive ? LocalTransformer.GetDefault<T>() : null;
 
-		if ( selection.GetTimeRange( srcTimeRange ).Intersect( srcTimeRange ) is not { } intersection ) return srcData;
+		var sampleCount = timeRange.Duration.GetFrameCount( sampleRate ) + 1;
 
-		var srcValues = srcData.Samples;
-		var dstValues = new T[srcValues.Count];
+		var dstValues = new T[sampleCount];
 
-		for ( var i = 0; i < dstValues.Length; ++i )
+		originalData.Sample( dstValues, timeRange - original.TimeRange.Start, sampleRate );
+
+		for ( var i = 0; i < sampleCount; ++i )
 		{
-			var time = srcTimeRange.Start + MovieTime.FromFrames( i, srcData.SampleRate );
+			var time = timeRange.Start + MovieTime.FromFrames( i, sampleRate );
 			var fade = selection.GetFadeValue( time );
 
-			var src = srcValues[i];
-			var dst = transformer is not null ? transformer.ToGlobal( value, src ) : value;
+			var src = dstValues[i];
+			var dst = changeData.GetValue( time );
+
+			// todo: additive
 
 			dstValues[i] = interpolator is null
 				? fade >= 1f ? dst : src
 				: interpolator.Interpolate( src, dst, fade );
 		}
 
-		return new SamplesData<T>( srcData.SampleRate, srcData.Interpolation, dstValues );
+		return new SamplesData<T>( sampleRate, SampleInterpolationMode.Linear, dstValues );
+	}
+
+	public override IConstantData GetConstant( object? value )
+	{
+		return new ConstantData<T>( (T)value! );
 	}
 }

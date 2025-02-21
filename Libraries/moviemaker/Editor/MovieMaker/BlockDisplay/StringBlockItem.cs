@@ -1,8 +1,8 @@
-﻿namespace Editor.MovieMaker.BlockPreviews;
+﻿namespace Editor.MovieMaker.BlockDisplays;
 
 #nullable enable
 
-public sealed class StringPreview : BlockPreview<string>
+public sealed class StringBlockItem : BlockItem<string>
 {
 	protected override void OnPaint()
 	{
