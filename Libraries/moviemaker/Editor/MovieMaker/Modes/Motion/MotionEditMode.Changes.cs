@@ -169,11 +169,14 @@ partial class MotionEditMode
 
 		foreach ( var (id, blocks) in clipboard.Tracks )
 		{
+			if ( blocks.Count == 0 ) continue;
+			if ( blocks[0].Data is not IMovieBlockValueData valueData ) continue;
 			if ( clip.GetTrack( id ) is not { } track ) continue;
 
 			var state = GetOrCreateTrackModification( track );
 
-			state.SetChanges( Session.CurrentPointer, blocks.Select( x => x with { TimeRange = x.TimeRange - clipboard.Selection.TotalStart } ) );
+			state.SetRelativeTo( valueData.GetValue( MovieTime.Zero ) );
+			state.SetChanges( blocks.Select( x => x with { TimeRange = x.TimeRange - clipboard.Selection.TotalStart } ) );
 			state.Update( selection, ChangeOffset, IsAdditive );
 
 			changed = true;
@@ -225,7 +228,13 @@ partial class MotionEditMode
 			return false;
 		}
 
-		GetOrCreateTrackModification( movieTrack );
+		// We create modifications in PreChange so we can capture the pre-change value,
+		// used for additive blending
+
+		var modification = GetOrCreateTrackModification( movieTrack );
+
+		modification.SetRelativeTo( property.Value );
+
 		return true;
 	}
 
@@ -245,7 +254,7 @@ partial class MotionEditMode
 			return false;
 		}
 
-		state.SetChanges( Session.CurrentPointer, property.Value );
+		state.SetChanges( property.Value );
 
 		HasChanges = true;
 

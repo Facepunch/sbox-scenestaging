@@ -264,7 +264,7 @@ public sealed partial class Session
 
 		_lastPlayerPosition = Player.Position;
 
-		if ( Playing && (Application.MouseButtons & MouseButtons.Right) == 0 )
+		if ( Playing )
 		{
 			var targetTime = CurrentPointer + MovieTime.FromSeconds( RealTime.Delta );
 

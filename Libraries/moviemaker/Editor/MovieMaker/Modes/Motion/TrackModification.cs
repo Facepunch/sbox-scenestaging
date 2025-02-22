@@ -12,25 +12,21 @@ internal interface ITrackModification
 {
 	MovieTrack Track { get; }
 
-	void SetChanges( MovieTime? originTime, IEnumerable<IMovieBlock> blocks );
+	void SetRelativeTo( object? value );
+	void SetChanges( IEnumerable<IMovieBlock> blocks );
 	void ClearPreview();
 	bool Update( TimeSelection selection, MovieTime offset, bool additive );
 	bool Commit( TimeSelection selection, MovieTime offset, bool additive );
 
-	public void SetChanges( MovieTime? originTime, params IMovieBlock[] blocks ) =>
-		SetChanges( originTime, blocks.AsEnumerable() );
-
-	public void SetChanges( MovieTime? originTime, object? constantValue ) =>
-		SetChanges( originTime, new MovieBlockSlice( (MovieTime.Zero, MovieTime.MaxValue),
-			EditHelpers.CreateConstantData( Track.PropertyType, constantValue ) ) );
+	public void SetChanges( object? constantValue ) =>
+		SetChanges( [new MovieBlockSlice( (MovieTime.Zero, MovieTime.MaxValue),
+			EditHelpers.CreateConstantData( Track.PropertyType, constantValue ) )] );
 }
 
 internal sealed class TrackModification<T> : ITrackModification
 {
 	public EditMode EditMode { get; }
 	public MovieTrack Track { get; }
-
-	private MovieTime? _originTime;
 
 	private record ChangeMapping( MovieTimeRange TimeRange, IMovieBlock Original, IMovieBlock Change ) : IMovieBlock
 	{
@@ -46,6 +42,8 @@ internal sealed class TrackModification<T> : ITrackModification
 	private readonly List<IMovieBlock> _changes = new();
 	private readonly List<ChangeMapping> _changeMappings = new();
 
+	private T _relativeTo;
+
 	public bool HasChanges => _changes.Count > 0;
 
 	public TrackModification( EditMode editMode, MovieTrack track )
@@ -54,10 +52,13 @@ internal sealed class TrackModification<T> : ITrackModification
 		Track = track;
 	}
 
-	public void SetChanges( MovieTime? originTime, IEnumerable<IMovieBlock> blocks )
+	public void SetRelativeTo( object? value )
 	{
-		_originTime = originTime;
+		_relativeTo = (T)value!;
+	}
 
+	public void SetChanges( IEnumerable<IMovieBlock> blocks )
+	{
 		_changes.Clear();
 		_changes.AddRange( blocks );
 	}
@@ -170,8 +171,6 @@ internal sealed class TrackModification<T> : ITrackModification
 		if ( original.Data is not IMovieBlockValueData<T> originalData ) return original.Data.Slice( timeRange );
 		if ( change.Data is not IMovieBlockValueData<T> changeData ) return original.Data.Slice( timeRange );
 
-		if ( additive ) throw new NotImplementedException();
-
 		var interpolator = Interpolator.GetDefault<T>();
 		var transformer = additive ? LocalTransformer.GetDefault<T>() : null;
 
@@ -189,7 +188,10 @@ internal sealed class TrackModification<T> : ITrackModification
 			var src = dstValues[i];
 			var dst = changeData.GetValue( time - change.TimeRange.Start );
 
-			// todo: additive
+			if ( transformer is not null )
+			{
+				dst = transformer.ToGlobal( transformer.ToLocal( dst, _relativeTo ), src );
+			}
 
 			dstValues[i] = interpolator is null
 				? fade >= 1f ? dst : src
