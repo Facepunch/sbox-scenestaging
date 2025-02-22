@@ -304,17 +304,27 @@ partial class MotionEditMode
 			}
 		}
 
-		if ( tracks.Count > 0 )
-		{
-			Clipboard = new ClipboardData( selection - offset, tracks.ToImmutableDictionary() );
+		if ( tracks.Count <= 0 ) return;
 
+		Clipboard = new ClipboardData( selection - offset, tracks.ToImmutableDictionary() );
+
+		if ( LoadChangesFromClipboard() )
+		{
 			DisplayAction( "content_copy" );
 		}
 	}
 
 	protected override void OnPaste()
 	{
-		if ( Session.Clip is not { } clip || Clipboard is not { } clipboard ) return;
+		if ( LoadChangesFromClipboard() )
+		{
+			DisplayAction( "content_paste" );
+		}
+	}
+
+	private bool LoadChangesFromClipboard()
+	{
+		if ( Session.Clip is not { } clip || Clipboard is not { } clipboard ) return false;
 
 		ClearChanges();
 
@@ -341,10 +351,7 @@ partial class MotionEditMode
 		_changeDuration = changed ? clipboard.Selection.TotalTimeRange.Duration : null;
 		HasChanges = changed;
 
-		if ( changed )
-		{
-			DisplayAction( "content_paste" );
-		}
+		return changed;
 	}
 
 	private TrackState? GetTrackState( MovieTrack track )
