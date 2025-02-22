@@ -73,6 +73,8 @@ internal sealed partial class MotionEditMode : EditMode
 
 		ClearSelection();
 
+		Session.SetPreviewPointer( time );
+
 		TimeSelection = new TimeSelection( time, DefaultInterpolation );
 
 		_selectionStartTime = time;
@@ -86,7 +88,7 @@ internal sealed partial class MotionEditMode : EditMode
 		if ( (e.ButtonState & MouseButtons.Left) != 0 && e.HasShift
 			&& _selectionStartTime is { } dragStartTime )
 		{
-			var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ) );
+			var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ), ignore: SnapFlag.Selection );
 			var (minTime, maxTime) = Session.VisibleTimeRange;
 
 			if ( time < minTime ) time = MovieTime.Zero;
@@ -128,6 +130,17 @@ internal sealed partial class MotionEditMode : EditMode
 		if ( DopeSheet.GetItemAt( DopeSheet.ToScene( DopeSheet.FromScreen( Application.CursorPosition ) ) ) is TimeSelectionFadeItem fade )
 		{
 			fade.Interpolation = mode;
+		}
+	}
+
+	protected override void OnGetSnapTimes( ref TimeSnapHelper snapHelper )
+	{
+		if ( TimeSelection is { } selection )
+		{
+			snapHelper.Add( SnapFlag.SelectionTotalStart, selection.TotalStart );
+			snapHelper.Add( SnapFlag.SelectionPeakStart, selection.PeakStart );
+			snapHelper.Add( SnapFlag.SelectionPeakEnd, selection.PeakEnd );
+			snapHelper.Add( SnapFlag.SelectionTotalEnd, selection.TotalEnd );
 		}
 	}
 }

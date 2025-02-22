@@ -38,7 +38,7 @@ internal class KeyframeHandle : GraphicsItem
 	{
 		base.OnMoved();
 
-		Time = MovieTime.Max( Session.PixelsToTime( Position.x, true ), MovieTime.Zero );
+		Time = Session.ScenePositionToTime( Position, ignore: SnapFlag.PlayHead );
 
 		Keyframes.Write();
 

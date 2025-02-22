@@ -214,9 +214,9 @@ public abstract class EditMode
 	public static EditModeType Get( string name ) => AllTypes.FirstOrDefault( x => x.TypeDescription.Name == name )
 		?? AllTypes.First();
 
-	public void GetSnapTimes( ref TimeSnapHelper snapHelper, Vector2 scenePos, float height ) => OnGetSnapTimes( ref snapHelper, scenePos, height );
+	public void GetSnapTimes( ref TimeSnapHelper snapHelper ) => OnGetSnapTimes( ref snapHelper );
 
-	protected virtual void OnGetSnapTimes( ref TimeSnapHelper snapHelper, Vector2 scenePos, float height ) { }
+	protected virtual void OnGetSnapTimes( ref TimeSnapHelper snapHelper ) { }
 
 	public void ApplyFrame( MovieTime time )
 	{

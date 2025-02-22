@@ -83,13 +83,13 @@ public class ToolbarWidget : Widget
 
 		Layout.AddStretchCell();
 
-		AddToggle( "Object Snap", "align_horizontal_left" )
-			.From( () => Session.BlockSnap, x => Session.BlockSnap = x );
-
-		AddToggle( "Frame Snap", "straighten" )
-			.From( () => Session.FrameSnap, x => Session.FrameSnap = x );
-
 		{
+			AddToggle( "Object Snap", "align_horizontal_left" )
+				.From( () => Session.ObjectSnap, x => Session.ObjectSnap = x );
+
+			AddToggle( "Frame Snap", "straighten" )
+				.From( () => Session.FrameSnap, x => Session.FrameSnap = x );
+
 			var rate = new ComboBox();
 
 			foreach ( var frameRate in MovieTime.SupportedFrameRates )
