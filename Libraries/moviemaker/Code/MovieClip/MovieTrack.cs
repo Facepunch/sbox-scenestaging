@@ -273,7 +273,7 @@ public sealed partial class MovieTrack
 
 		if ( firstCut.TimeRange.Start > timeRange.Start )
 		{
-			yield return ((timeRange.Start, firstCut.TimeRange.Start), firstCut.Block);
+			yield return ((timeRange.Start, MovieTime.Min( timeRange.End, firstCut.TimeRange.Start )), firstCut.Block);
 		}
 
 		foreach ( var cut in cuts )
@@ -288,7 +288,7 @@ public sealed partial class MovieTrack
 
 		if ( lastCut.TimeRange.End < timeRange.End )
 		{
-			yield return ((lastCut.TimeRange.End, timeRange.End), lastCut.Block);
+			yield return ((MovieTime.Max( timeRange.Start, lastCut.TimeRange.End ), timeRange.End), lastCut.Block);
 		}
 	}
 }
