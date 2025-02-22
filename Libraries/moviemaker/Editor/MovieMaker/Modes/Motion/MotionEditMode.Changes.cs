@@ -38,20 +38,20 @@ partial class MotionEditMode
 
 	public string? LastActionIcon { get; private set; }
 
-	private Dictionary<MovieTrack, ITrackModification> TrackStates { get; } = new();
+	private Dictionary<MovieTrack, ITrackModification> TrackModifications { get; } = new();
 
 	private void ClearChanges()
 	{
 		if ( !HasChanges ) return;
 
-		foreach ( var state in TrackStates.Values )
+		foreach ( var state in TrackModifications.Values )
 		{
 			state.ClearPreview();
 		}
 
 		_changeDuration = null;
 
-		TrackStates.Clear();
+		TrackModifications.Clear();
 		HasChanges = false;
 
 		DisplayAction( "clear" );
@@ -61,7 +61,7 @@ partial class MotionEditMode
 	{
 		if ( TimeSelection is not { } selection || !HasChanges ) return;
 
-		foreach ( var (_, state) in TrackStates )
+		foreach ( var (_, state) in TrackModifications )
 		{
 			state.Commit( selection, ChangeOffset, IsAdditive );
 		}
@@ -70,7 +70,7 @@ partial class MotionEditMode
 
 		DisplayAction( "approval" );
 
-		TrackStates.Clear();
+		TrackModifications.Clear();
 		HasChanges = false;
 
 		Session.ClipModified();
@@ -171,7 +171,7 @@ partial class MotionEditMode
 		{
 			if ( clip.GetTrack( id ) is not { } track ) continue;
 
-			var state = GetOrCreateTrackChangePreview( track );
+			var state = GetOrCreateTrackModification( track );
 
 			state.SetChanges( Session.CurrentPointer, blocks.Select( x => x with { TimeRange = x.TimeRange - clipboard.Selection.TotalStart } ) );
 			state.Update( selection, ChangeOffset, IsAdditive );
@@ -185,17 +185,17 @@ partial class MotionEditMode
 		return changed;
 	}
 
-	private ITrackModification? GetTrackChangePreview( MovieTrack track )
+	private ITrackModification? GetTrackModification( MovieTrack track )
 	{
-		return TrackStates!.GetValueOrDefault( track );
+		return TrackModifications!.GetValueOrDefault( track );
 	}
 
-	private ITrackModification GetOrCreateTrackChangePreview( MovieTrack track )
+	private ITrackModification GetOrCreateTrackModification( MovieTrack track )
 	{
-		if ( GetTrackChangePreview( track ) is { } state ) return state;
+		if ( GetTrackModification( track ) is { } state ) return state;
 
 		var type = typeof(TrackModification<>).MakeGenericType( track.PropertyType );
-		TrackStates.Add( track, state = (ITrackModification)Activator.CreateInstance( type, this, track )! );
+		TrackModifications.Add( track, state = (ITrackModification)Activator.CreateInstance( type, this, track )! );
 
 		return state;
 	}
@@ -204,7 +204,7 @@ partial class MotionEditMode
 	{
 		if ( TimeSelection is not { } selection ) return;
 
-		if ( GetTrackChangePreview( track.TrackWidget.MovieTrack ) is { } state )
+		if ( GetTrackModification( track.TrackWidget.MovieTrack ) is { } state )
 		{
 			state.Update( selection, ChangeOffset, IsAdditive );
 		}
@@ -220,12 +220,12 @@ partial class MotionEditMode
 
 		var movieTrack = track.TrackWidget.MovieTrack;
 
-		if ( TrackStates.ContainsKey( movieTrack ) )
+		if ( TrackModifications.ContainsKey( movieTrack ) )
 		{
 			return false;
 		}
 
-		GetOrCreateTrackChangePreview( movieTrack );
+		GetOrCreateTrackModification( movieTrack );
 		return true;
 	}
 
@@ -240,7 +240,7 @@ partial class MotionEditMode
 			return false;
 		}
 
-		if ( GetTrackChangePreview( movieTrack ) is not { } state )
+		if ( GetTrackModification( movieTrack ) is not { } state )
 		{
 			return false;
 		}
@@ -260,7 +260,7 @@ partial class MotionEditMode
 		{
 			PasteTimeRange = _changeDuration is { } duration ? (ChangeOffset, ChangeOffset + duration) : null;
 
-			foreach ( var (track, state) in TrackStates )
+			foreach ( var (track, state) in TrackModifications )
 			{
 				state.Update( selection, ChangeOffset, IsAdditive );
 			}
