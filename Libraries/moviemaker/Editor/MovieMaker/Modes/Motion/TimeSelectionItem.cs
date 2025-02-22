@@ -61,7 +61,7 @@ partial class MotionEditMode
 			if ( OriginalSelection is not { } selection || OriginalChangeOffset is not { } changeOffset ) return;
 
 			var origTime = selection.PeakStart;
-			var startTime = EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection,
+			var startTime = EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection | SnapFlag.PasteBlock,
 				selection.TotalStart - origTime, selection.PeakEnd - origTime, selection.TotalEnd - origTime );
 
 			startTime = MovieTime.Max( selection.FadeIn.Duration, startTime );
