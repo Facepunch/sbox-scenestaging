@@ -22,6 +22,7 @@ public readonly struct MovieTime : IEquatable<MovieTime>, IComparable<MovieTime>
 	public const int TickRate = 3600;
 
 	public static MovieTime Zero => default;
+	public static MovieTime Epsilon => FromTicks( 1 );
 	public static MovieTime OneSecond { get; } = FromSeconds( 1d );
 	public static MovieTime MinValue => FromTicks( int.MinValue );
 	public static MovieTime MaxValue => FromTicks( int.MaxValue );

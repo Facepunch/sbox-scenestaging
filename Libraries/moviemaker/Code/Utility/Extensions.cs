@@ -33,13 +33,6 @@ public static class Extensions
 
 		// Slow copy
 
-		var copy = new T[count];
-
-		for ( var i = 0; i < count; ++i )
-		{
-			copy[i] = list[i + offset];
-		}
-
-		return copy;
+		return list.Skip( offset ).Take( count ).ToArray();
 	}
 }

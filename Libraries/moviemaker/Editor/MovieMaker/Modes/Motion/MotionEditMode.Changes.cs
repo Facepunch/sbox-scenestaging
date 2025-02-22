@@ -185,10 +185,16 @@ partial class MotionEditMode
 				return false;
 			}
 
+			var stitchTimeRange = selection.PeakTimeRange.Grow(
+				insertOptions.StitchStart ? MovieTime.Epsilon : MovieTime.Zero,
+				insertOptions.StitchEnd ? MovieTime.Epsilon : MovieTime.Zero );
+
 			MovieBlock? prevBlock = null;
-			foreach ( var cut in Track.GetCuts( selection.PeakTimeRange ).ToArray() )
+			foreach ( var cut in Track.GetCuts( stitchTimeRange ).ToArray() )
 			{
-				prevBlock = prevBlock?.End == cut.Block.Start
+				// Stitch adjacent blocks if there isn't a cut in the original change
+
+				prevBlock = prevBlock?.End == cut.Block.Start && _changes.All( x => x.TimeRange.Start + offset != cut.Block.Start )
 					? Track.Stitch( prevBlock, cut.Block ) ?? cut.Block
 					: cut.Block;
 			}

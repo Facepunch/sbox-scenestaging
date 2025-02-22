@@ -75,7 +75,7 @@ public static class EditHelpers
 
 	public static bool Delete( this MovieTrack track, MovieTimeRange timeRange, bool shift )
 	{
-		return track.Splice( timeRange, shift ? timeRange.Duration : MovieTime.Zero );
+		return track.Splice( timeRange, shift ? MovieTime.Zero : timeRange.Duration );
 	}
 
 	public static bool Delete( this Session session, MovieTimeRange timeRange, bool shift )
@@ -169,7 +169,7 @@ public static class EditHelpers
 		if ( block.Data is not IMovieBlockValueData valueData ) return;
 
 		var dstStartIndex = dstTimeRange.Start.GetFrameIndex( sampleRate );
-		var dstEndIndex = dstTimeRange.End.GetFrameCount( sampleRate );
+		var dstEndIndex = dstStartIndex + dstTimeRange.Duration.GetFrameCount( sampleRate );
 
 		if ( dstStartIndex < 0 )
 		{

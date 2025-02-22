@@ -107,7 +107,7 @@ public sealed record SamplesData<T>(
 		timeRange -= FirstSampleTime;
 
 		var i0 = timeRange.Start.GetFrameIndex( SampleRate, out var remainder );
-		var i1 = timeRange.End.GetFrameCount( SampleRate );
+		var i1 = i0 + timeRange.Duration.GetFrameCount( SampleRate );
 
 		// Constants if we're off one end
 
