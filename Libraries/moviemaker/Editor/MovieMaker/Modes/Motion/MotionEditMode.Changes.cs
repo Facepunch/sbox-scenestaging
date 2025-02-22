@@ -38,176 +38,7 @@ partial class MotionEditMode
 
 	public string? LastActionIcon { get; private set; }
 
-	/// <summary>
-	/// Holds pending changes for a track.
-	/// </summary>
-	private sealed class TrackState
-	{
-		public EditMode EditMode { get; }
-		public MovieTrack Track { get; }
-
-		private MovieTime? _originTime;
-
-		private record ChangeMapping( MovieTimeRange TimeRange, IMovieBlock Original, IMovieBlock Change ) : IMovieBlock
-		{
-			private IMovieBlockData? _originalData;
-
-			public IMovieBlockData? PreviewData { get; set; }
-
-			public IMovieBlockData OriginalData => _originalData ??= Original.Data.Slice( TimeRange - Original.TimeRange.Start );
-
-			IMovieBlockData IMovieBlock.Data => PreviewData ?? OriginalData;
-		}
-
-		private readonly List<IMovieBlock> _changes = new();
-		private readonly List<ChangeMapping> _changeMappings = new();
-
-		public bool HasChanges => _changes.Count > 0;
-
-		public TrackModifier? Modifier { get; }
-
-		public TrackState( EditMode editMode, MovieTrack track )
-		{
-			EditMode = editMode;
-			Track = track;
-			Modifier = TrackModifier.Get( track.PropertyType );
-		}
-
-		public bool TryGetLocalValue( MovieTime time, object? globalValue, out object? localValue )
-		{
-			localValue = null;
-
-			if ( LocalTransformer.GetDefault( Track.PropertyType ) is not { } transformer ) return false;
-			if ( !Track.TryGetValue( time, out var relativeTo ) ) return false;
-
-			localValue = transformer.ToLocal( globalValue, relativeTo );
-			return true;
-		}
-
-		public void SetChanges( MovieTime? originTime, IEnumerable<IMovieBlock> blocks )
-		{
-			_originTime = originTime;
-
-			_changes.Clear();
-			_changes.AddRange( blocks );
-		}
-
-		public void SetChanges( MovieTime? originTime, params IMovieBlock[] blocks ) => SetChanges( originTime, blocks.AsEnumerable() );
-
-		public void SetChanges( MovieTime? originTime, object? constantValue )
-		{
-			if ( Modifier is null ) return;
-
-			SetChanges( originTime, new MovieBlockSlice( (MovieTime.Zero, MovieTime.MaxValue), EditHelpers.CreateConstantData( Track.PropertyType, constantValue ) ) );
-		}
-
-		public void ClearPreview()
-		{
-			_changeMappings.Clear();
-
-			EditMode.ClearPreviewBlocks( Track );
-		}
-
-		private void UpdateChangeMappings( MovieTimeRange timeRange, MovieTime changeOffset )
-		{
-			_changeMappings.Clear();
-
-			for ( var i = 0; i < _changes.Count; ++i )
-			{
-				var change = _changes[i];
-				var changeTimeRange = change.TimeRange + changeOffset;
-
-				// First / last change should be used outside the changed range
-
-				if ( i == 0 )
-				{
-					changeTimeRange = (MovieTime.Min( changeTimeRange.Start, timeRange.Start ), changeTimeRange.End);
-				}
-
-				if ( i == _changes.Count - 1 )
-				{
-					changeTimeRange = (changeTimeRange.Start, MovieTime.Max( changeTimeRange.End, timeRange.End ));
-				}
-
-				if ( changeTimeRange.Intersect( timeRange ) is not { IsEmpty: false } intersection ) continue;
-
-				var changeBlock = new MovieBlockSlice( change.TimeRange + changeOffset, change.Data );
-				var anyCuts = false;
-
-				foreach ( var cut in Track.GetCuts( intersection ) )
-				{
-					_changeMappings.Add( new ChangeMapping( cut.TimeRange, cut.Block, changeBlock ) );
-					anyCuts = true;
-				}
-
-				if ( !anyCuts )
-				{
-					_changeMappings.Add( new ChangeMapping( intersection, changeBlock, changeBlock ) );
-				}
-			}
-		}
-
-		public bool Update( TimeSelection selection, MovieTime offset, bool additive )
-		{
-			if ( !HasChanges || Modifier is not { } modifier || !Track.CanModify() )
-			{
-				ClearPreview();
-				return false;
-			}
-
-			if ( additive ) throw new NotImplementedException();
-
-			var timeRange = selection.TotalTimeRange;
-			var sampleRate = EditMode.Clip.DefaultSampleRate;
-
-			UpdateChangeMappings( timeRange, offset );
-
-			foreach ( var mapping in _changeMappings )
-			{
-				mapping.PreviewData = modifier.Blend( mapping.Original, mapping.Change, mapping.TimeRange, selection, additive, sampleRate );
-			}
-
-			EditMode.SetPreviewBlocks( Track, _changeMappings );
-
-			return true;
-		}
-
-		public bool Commit( TimeSelection selection, MovieTime offset, bool additive )
-		{
-			if ( !Update( selection, offset, additive ) ) return false;
-
-			var insertOptions = new InsertOptions( _changeMappings,
-				StitchStart: selection.FadeIn.Duration.IsPositive,
-				StitchEnd: selection.FadeOut.Duration.IsPositive );
-
-			if ( !Track.Splice( selection.TotalTimeRange, selection.TotalTimeRange.Duration, insertOptions ) )
-			{
-				return false;
-			}
-
-			var stitchTimeRange = selection.PeakTimeRange.Grow(
-				insertOptions.StitchStart ? MovieTime.Epsilon : MovieTime.Zero,
-				insertOptions.StitchEnd ? MovieTime.Epsilon : MovieTime.Zero );
-
-			MovieBlock? prevBlock = null;
-			foreach ( var cut in Track.GetCuts( stitchTimeRange ).ToArray() )
-			{
-				// Stitch adjacent blocks if there isn't a cut in the original change
-
-				prevBlock = prevBlock?.End == cut.Block.Start && _changes.All( x => x.TimeRange.Start + offset != cut.Block.Start )
-					? Track.Stitch( prevBlock, cut.Block ) ?? cut.Block
-					: cut.Block;
-			}
-
-			ClearPreview();
-
-			_changeMappings.Clear();
-
-			return true;
-		}
-	}
-
-	private Dictionary<MovieTrack, TrackState> TrackStates { get; } = new();
+	private Dictionary<MovieTrack, ITrackModification> TrackStates { get; } = new();
 
 	private void ClearChanges()
 	{
@@ -340,7 +171,7 @@ partial class MotionEditMode
 		{
 			if ( clip.GetTrack( id ) is not { } track ) continue;
 
-			var state = GetOrCreateTrackState( track );
+			var state = GetOrCreateTrackChangePreview( track );
 
 			state.SetChanges( Session.CurrentPointer, blocks.Select( x => x with { TimeRange = x.TimeRange - clipboard.Selection.TotalStart } ) );
 			state.Update( selection, ChangeOffset, IsAdditive );
@@ -354,16 +185,17 @@ partial class MotionEditMode
 		return changed;
 	}
 
-	private TrackState? GetTrackState( MovieTrack track )
+	private ITrackModification? GetTrackChangePreview( MovieTrack track )
 	{
 		return TrackStates!.GetValueOrDefault( track );
 	}
 
-	private TrackState GetOrCreateTrackState( MovieTrack track )
+	private ITrackModification GetOrCreateTrackChangePreview( MovieTrack track )
 	{
-		if ( GetTrackState( track ) is { } state ) return state;
+		if ( GetTrackChangePreview( track ) is { } state ) return state;
 
-		TrackStates.Add( track, state = new TrackState( this, track ) );
+		var type = typeof(TrackModification<>).MakeGenericType( track.PropertyType );
+		TrackStates.Add( track, state = (ITrackModification)Activator.CreateInstance( type, this, track )! );
 
 		return state;
 	}
@@ -372,7 +204,7 @@ partial class MotionEditMode
 	{
 		if ( TimeSelection is not { } selection ) return;
 
-		if ( GetTrackState( track.TrackWidget.MovieTrack ) is { } state )
+		if ( GetTrackChangePreview( track.TrackWidget.MovieTrack ) is { } state )
 		{
 			state.Update( selection, ChangeOffset, IsAdditive );
 		}
@@ -393,13 +225,7 @@ partial class MotionEditMode
 			return false;
 		}
 
-		var state = TrackStates[movieTrack] = new TrackState( this, movieTrack );
-
-		if ( state.Modifier is null )
-		{
-			Log.Warning( $"Can't motion edit tracks of type '{movieTrack.PropertyType}'." );
-		}
-
+		GetOrCreateTrackChangePreview( movieTrack );
 		return true;
 	}
 
@@ -414,7 +240,7 @@ partial class MotionEditMode
 			return false;
 		}
 
-		if ( GetTrackState( movieTrack ) is not { } state )
+		if ( GetTrackChangePreview( movieTrack ) is not { } state )
 		{
 			return false;
 		}
