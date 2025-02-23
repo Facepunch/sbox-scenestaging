@@ -4,7 +4,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-[Title( "Motion Editor"), Icon( "brush" ), Order( 1 )]
+[Title( "Motion Editor"), Icon( "brush" ), Order( 0 )]
 internal sealed partial class MotionEditMode : EditMode
 {
 	private TimeSelection? _timeSelection;

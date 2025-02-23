@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Sandbox.MovieMaker;
+using static Sandbox.VertexLayout;
 
 namespace Editor.MovieMaker;
 
@@ -85,6 +86,11 @@ public abstract class EditMode
 	/// </summary>
 	public virtual bool AllowTrackCreation => false;
 
+	/// <summary>
+	/// Can we start / stop recording?
+	/// </summary>
+	public virtual bool AllowRecording => false;
+
 	internal void Enable( Session session )
 	{
 		Session = session;
@@ -114,6 +120,12 @@ public abstract class EditMode
 	}
 
 	protected virtual void OnDisable() { }
+
+	internal bool StartRecording() => OnStartRecording();
+	protected virtual bool OnStartRecording() => false;
+
+	internal void StopRecording() => OnStopRecording();
+	protected virtual void OnStopRecording() { }
 
 	internal void Frame() => OnFrame();
 	protected virtual void OnFrame() { }
@@ -239,6 +251,8 @@ public abstract class EditMode
 				}
 			}
 		}
+
+		Session.Player.UpdateModels( time );
 	}
 
 	public void SetPreviewBlocks( MovieTrack track, IEnumerable<IMovieBlock> blocks )

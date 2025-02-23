@@ -5,7 +5,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-[Title( "Keyframe Editor" ), Icon( "timeline" ), Order( 0 )]
+[Title( "Keyframe Editor" ), Icon( "timeline" ), Order( 1 )]
 internal sealed partial class KeyframeEditMode : EditMode
 {
 	private IEnumerable<KeyframeHandle> SelectedHandles => SelectedItems.OfType<KeyframeHandle>();
@@ -13,13 +13,10 @@ internal sealed partial class KeyframeEditMode : EditMode
 
 	private readonly Dictionary<DopeSheetTrack, TrackKeyframes> _keyframeMap = new();
 
-	/// <summary>
-	/// If true, we automatically record new keyframes when properties are changed
-	/// </summary>
-	public bool KeyframeRecording { get; set; }
 	public InterpolationMode DefaultInterpolation { get; private set; } = InterpolationMode.QuadraticInOut;
 
-	public override bool AllowTrackCreation => KeyframeRecording;
+	public override bool AllowTrackCreation => Session.Recording;
+	public override bool AllowRecording => true;
 
 	private TrackKeyframes? GetKeyframes( TrackWidget? track )
 	{
@@ -41,14 +38,6 @@ internal sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnEnable()
 	{
-		var btn = Toolbar.AddToggle( "Create Keyframes on Edit", "radio_button_checked",
-			() => KeyframeRecording,
-			x => KeyframeRecording = x );
-
-		btn.ForegroundActive = Theme.Red;
-
-		Toolbar.AddSpacingCell();
-
 		foreach ( var interpolation in Enum.GetValues<InterpolationMode>() )
 		{
 			Toolbar.AddToggle( interpolation,
@@ -176,7 +165,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 
 	protected override bool OnPreChange( DopeSheetTrack track )
 	{
-		if ( !KeyframeRecording )
+		if ( !Session.Recording )
 		{
 			return false;
 		}
@@ -219,11 +208,20 @@ internal sealed partial class KeyframeEditMode : EditMode
 			return false;
 		}
 
-		if ( KeyframeRecording )
+		if ( !keyframes.UpdateKey( Session.CurrentPointer ) && Session.Recording )
 		{
-			keyframes.AddKey( Session.CurrentPointer );
+			var time = Session.CurrentPointer;
+
+			if ( Session.IsPlaying )
+			{
+				// Don't spam keyframes while live recording, do at most one per frame
+
+				time = time.SnapToGrid( MovieTime.FromFrames( 1, Session.FrameRate ) );
+			}
+
+			keyframes.AddKey( time );
 		}
-		else if ( !keyframes.UpdateKey( Session.CurrentPointer ) )
+		else
 		{
 			return false;
 		}

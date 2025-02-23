@@ -4,7 +4,6 @@ using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
-
 public class ToolbarWidget : Widget
 {
 	public Session Session { get; }
@@ -44,7 +43,7 @@ public class ToolbarWidget : Widget
 
 		Layout.AddSpacingCell( 16f );
 
-		Sandbox.Bind.Builder AddToggle( string title, string icon )
+		Sandbox.Bind.Builder AddToggle( string title, string icon, Color? activeColor = null )
 		{
 			var btn = new IconButton( icon );
 			btn.ToolTip = title;
@@ -52,18 +51,51 @@ public class ToolbarWidget : Widget
 			btn.IconSize = 16;
 			btn.Background = Color.Transparent;
 			btn.BackgroundActive = Color.Transparent;
-			btn.ForegroundActive = Theme.Primary;
+			btn.ForegroundActive = activeColor ?? Theme.Primary;
 
 			Layout.Add( btn );
 
 			return btn.Bind( "IsActive" );
 		}
 
+		AddToggle( "Toggle Record", "radio_button_checked", activeColor: Theme.Red )
+			.From( () => Session.Recording, x => Session.Recording = x );
+
 		AddToggle( "Toggle Play", "play_arrow" )
-			.From( () => Session.Playing, x => Session.Playing = x );
+			.From( () => Session.IsPlaying, x => Session.IsPlaying = x );
 
 		AddToggle( "Loop at End of Playback", "repeat" )
-			.From( () => Session.Loop, x => Session.Loop = x );
+			.From( () => Session.IsLooping, x => Session.IsLooping = x );
+
+		{
+			var slider = new FloatSlider( this )
+			{
+				ToolTip = "Playback Rate", FixedWidth = 80f,
+				Minimum = 0f, Maximum = 2f,
+				Step = 0.1f
+			};
+
+			slider.Bind( nameof(FloatSlider.Value) )
+				.From( () => Session.TimeScale, value => Session.TimeScale = value );
+
+			Layout.Add( slider );
+
+			var speed = new Label( this )
+			{
+				Color = Color.White.Darken( 0.5f ),
+				FixedWidth = 30f, Margin = 4f,
+				Alignment = TextFlag.Center
+			};
+
+			speed.Bind( nameof(Label.Text) )
+				.ReadOnly()
+				.From( () => $"x{Session.TimeScale:F1}", null );
+
+			slider.MouseRightClick += () => Session.TimeScale = 1f;
+			speed.MouseRightClick += () => Session.TimeScale = 1f;
+
+			Layout.Add( speed );
+		}
 
 		Layout.AddSpacingCell( 16f );
 

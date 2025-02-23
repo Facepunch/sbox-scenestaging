@@ -11,6 +11,7 @@ public sealed partial class MoviePlayer : Component
 	private MovieFile? _referencedClip;
 
 	private MovieTime _position;
+	private bool _isPlaying;
 
 	[Property, Group( "Source" ), Hide]
 	public MovieClip? EmbeddedClip
@@ -41,12 +42,20 @@ public sealed partial class MoviePlayer : Component
 	public MovieClip? MovieClip => _embeddedClip ?? _referencedClip?.Clip;
 
 	[Property, Group( "Playback" )]
-	public bool IsPlaying { get; set; }
+	public bool IsPlaying
+	{
+		get => _isPlaying;
+		set
+		{
+			_isPlaying = value;
+			UpdatePosition();
+		}
+	}
 
 	[Property, Group( "Playback" )]
 	public bool IsLooping { get; set; }
 
-	[Property, Group( "Playback" )]
+	[Property, Group( "Playback" ), Range( 0f, 2f, 0.1f )]
 	public float TimeScale { get; set; } = 1f;
 
 	public MovieTime Position
@@ -95,6 +104,28 @@ public sealed partial class MoviePlayer : Component
 		}
 
 		ApplyFrame( _position );
+		UpdateModels( _position );
+	}
+
+	public IEnumerable<GameObject> GetControlledGameObjects()
+	{
+		if ( MovieClip is not { } clip ) return [];
+
+		return _sceneRefMap
+			.Where( x => x.Value.IsBound && x.Value.PropertyType == typeof(GameObject) && clip.GetTrack( x.Key ) is not null )
+			.Select( x => x.Value.GameObject )
+			.OfType<GameObject>();
+	}
+
+	public IEnumerable<T> GetControlledComponents<T>()
+		where T : class
+	{
+		if ( MovieClip is not { } clip ) return [];
+
+		return _sceneRefMap
+			.Where( x => x.Value.IsBound && x.Value.PropertyType == typeof(T) && clip.GetTrack( x.Key ) is not null )
+			.Select( x => x.Value.Component )
+			.OfType<T>();
 	}
 
 	public void ApplyFrame( MovieTime time )
@@ -108,6 +139,30 @@ public sealed partial class MoviePlayer : Component
 		foreach ( var track in MovieClip.RootTracks )
 		{
 			ApplyFrame( track, time );
+		}
+	}
+
+	private MovieTime _lastModelPosition;
+
+	public void UpdateModels( MovieTime time )
+	{
+		// Negative deltas aren't supported :(
+
+		var dt = Math.Min( (float)(time - _lastModelPosition).Absolute.TotalSeconds, 1f );
+
+		_lastModelPosition = time;
+
+		foreach ( var renderer in GetControlledComponents<SkinnedModelRenderer>() )
+		{
+			if ( renderer.SceneModel is not { } model ) continue;
+
+			if ( dt > 0f )
+			{
+				model.PlaybackRate = 1f;
+				model.Update( dt );
+			}
+
+			model.PlaybackRate = 0f;
 		}
 	}
 

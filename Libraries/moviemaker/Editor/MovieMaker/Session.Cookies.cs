@@ -26,6 +26,18 @@ partial class Session
 			set => session.SetCookie( nameof(EditMode), value.Name );
 		}
 
+		public bool IsLooping
+		{
+			get => session.GetCookie( nameof(IsLooping), true );
+			set => session.SetCookie( nameof(IsLooping), value );
+		}
+
+		public float TimeScale
+		{
+			get => session.GetCookie( nameof(TimeScale), 1f );
+			set => session.SetCookie( nameof(TimeScale), value );
+		}
+
 		public bool FrameSnap
 		{
 			get => session.GetCookie( nameof(FrameSnap), true );
@@ -56,6 +68,12 @@ partial class Session
 
 	public void RestoreFromCookies()
 	{
+		if ( IsEditorScene )
+		{
+			IsLooping = Cookies.IsLooping;
+			TimeScale = Cookies.TimeScale;
+		}
+
 		FrameSnap = Cookies.FrameSnap;
 		ObjectSnap = Cookies.ObjectSnap;
 		TimeOffset = Cookies.TimeOffset;

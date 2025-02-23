@@ -98,14 +98,7 @@ public class MovieEditor : Widget
 		if ( Session is null )
 			return;
 
-		if ( !Session.Playing )
-		{
-			Session.Play();
-		}
-		else
-		{
-			Session.Stop();
-		}
+		Session.IsPlaying = !Session.IsPlaying;
 	}
 
 	[Shortcut( "editor.save", "CTRL+S" )]

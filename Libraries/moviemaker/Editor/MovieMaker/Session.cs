@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Sandbox;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -23,7 +21,7 @@ public sealed partial class Session
 	private MovieTime _timeOffset;
 	private float _pixelsPerSecond;
 
-	public bool Playing { get; set; }
+	public bool IsEditorScene => Player?.Scene?.IsEditor ?? true;
 
 	public bool FrameSnap
 	{
@@ -36,8 +34,6 @@ public sealed partial class Session
 		get => _objectSnap;
 		set => _objectSnap = Cookies.ObjectSnap = value;
 	}
-
-	public bool Loop { get; set; } = true;
 
 	public MovieTime TimeOffset
 	{
@@ -59,14 +55,14 @@ public sealed partial class Session
 
 	public int FrameRate
 	{
-		get => EditorData.FrameRate ?? 30;
+		get => EditorData.FrameRate ?? 10;
 		set => EditorData = EditorData with { FrameRate = value };
 	}
 
 	public int DefaultSampleRate => Clip!.DefaultSampleRate;
 
 	/// <summary>
-	/// When editing keyframes, what time are we changing.
+	/// Current time being edited. In play mode, this is the current playback time.
 	/// </summary>
 	public MovieTime CurrentPointer { get; private set; }
 
@@ -93,9 +89,6 @@ public sealed partial class Session
 		}
 	}
 
-	private MovieTime? _lastPlayerPosition;
-	private bool _applyNextFrame;
-
 	/// <summary>
 	/// Invoked when the view pans or changes scale.
 	/// </summary>
@@ -110,6 +103,8 @@ public sealed partial class Session
 	internal void SetEditMode( EditModeType? type )
 	{
 		if ( type?.IsMatchingType( EditMode ) ?? EditMode is null ) return;
+
+		Recording = false;
 
 		EditMode?.Disable();
 
@@ -191,25 +186,6 @@ public sealed partial class Session
 		ViewChanged?.Invoke();
 	}
 
-	public void ApplyFrame( MovieTime time )
-	{
-		_applyNextFrame = false;
-
-		if ( EditMode is null )
-		{
-			Player.ApplyFrame( time );
-		}
-		else
-		{
-			EditMode?.ApplyFrame( time );
-		}
-	}
-
-	public void RefreshNextFrame()
-	{
-		_applyNextFrame = true;
-	}
-
 	public event Action<MovieTime>? PointerChanged;
 	public event Action<MovieTime?>? PreviewChanged;
 
@@ -218,7 +194,17 @@ public sealed partial class Session
 		CurrentPointer = MovieTime.Max( time, MovieTime.Zero );
 		PointerChanged?.Invoke( CurrentPointer );
 
-		ApplyFrame( CurrentPointer );
+		if ( IsEditorScene )
+		{
+			ApplyFrame( CurrentPointer );
+		}
+		else
+		{
+			_applyNextFrame = false;
+			_lastPlayerPosition = null;
+
+			Player.Position = CurrentPointer;
+		}
 	}
 
 	public void SetPreviewPointer( MovieTime time )
@@ -238,53 +224,11 @@ public sealed partial class Session
 		ApplyFrame( CurrentPointer );
 	}
 
-	public void Play()
-	{
-		if ( Playing ) return;
-
-		Playing = true;
-	}
-
-	public void Stop()
-	{
-		if ( !Playing ) return;
-
-		Playing = false;
-	}
-
 	public bool Frame()
 	{
 		if ( Clip is not { } clip ) return false;
 
-		if ( !Playing && _lastPlayerPosition is { } lastPlayerPosition && lastPlayerPosition != Player.Position )
-		{
-			CurrentPointer = lastPlayerPosition;
-			PointerChanged?.Invoke( CurrentPointer );
-		}
-
-		_lastPlayerPosition = Player.Position;
-
-		if ( Playing )
-		{
-			var targetTime = CurrentPointer + MovieTime.FromSeconds( RealTime.Delta );
-
-			// got to the end
-			if ( targetTime >= clip.Duration && clip.Duration.IsPositive )
-			{
-				if ( Loop )
-				{
-					targetTime = MovieTime.Zero;
-				}
-				else
-				{
-					targetTime = clip.Duration;
-
-					Playing = false;
-				}
-			}
-
-			SetCurrentPointer( targetTime );
-		}
+		PlaybackFrame( clip );
 
 		if ( SmoothZoom.Update( RealTime.Delta ) )
 		{
