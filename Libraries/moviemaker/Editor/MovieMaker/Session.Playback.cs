@@ -79,7 +79,7 @@ public sealed partial class Session
 			var targetTime = CurrentPointer + MovieTime.FromSeconds( RealTime.Delta * TimeScale );
 
 			// got to the end
-			if ( targetTime >= clip.Duration && clip.Duration.IsPositive )
+			if ( !IsRecording && targetTime >= clip.Duration && clip.Duration.IsPositive )
 			{
 				if ( IsLooping )
 				{

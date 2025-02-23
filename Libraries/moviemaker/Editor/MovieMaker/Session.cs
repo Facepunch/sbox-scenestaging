@@ -104,7 +104,7 @@ public sealed partial class Session
 	{
 		if ( type?.IsMatchingType( EditMode ) ?? EditMode is null ) return;
 
-		Recording = false;
+		IsRecording = false;
 
 		EditMode?.Disable();
 

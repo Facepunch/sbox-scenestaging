@@ -253,11 +253,11 @@ public sealed partial class MovieTrack
 
 			if ( nextBlock == prevBlock && _cuts.Count > 0 )
 			{
-				_cuts[^1] = ((_cuts[^1].TimeRange.Start, next), nextBlock);
+				_cuts[^1] = ((_cuts[^1].TimeRange.Start, next), nextBlock!);
 			}
 			else
 			{
-				_cuts.Add( ((prev, next), nextBlock) );
+				_cuts.Add( ((prev, next), nextBlock!) );
 			}
 
 			prev = next;

@@ -59,7 +59,7 @@ public class ToolbarWidget : Widget
 		}
 
 		AddToggle( "Toggle Record", "radio_button_checked", activeColor: Theme.Red )
-			.From( () => Session.Recording, x => Session.Recording = x );
+			.From( () => Session.IsRecording, x => Session.IsRecording = x );
 
 		AddToggle( "Toggle Play", "play_arrow" )
 			.From( () => Session.IsPlaying, x => Session.IsPlaying = x );

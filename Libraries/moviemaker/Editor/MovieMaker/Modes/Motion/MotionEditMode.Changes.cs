@@ -331,6 +331,8 @@ partial class MotionEditMode
 
 	protected override void OnFrame()
 	{
+		RecordingFrame();
+
 		if ( _lastActionTime < 1f )
 		{
 			UpdateSelectionItems( DopeSheet.VisibleRect );

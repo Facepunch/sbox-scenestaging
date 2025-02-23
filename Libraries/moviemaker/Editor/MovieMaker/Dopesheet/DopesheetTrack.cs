@@ -111,12 +111,7 @@ public partial class DopeSheetTrack : GraphicsItem
 				var preview = BlockItems[i];
 
 				preview.Block = block;
-
-				preview.PrepareGeometryChange();
-				preview.Position = new Vector2( session.TimeToPixels( block.TimeRange.Start ), 0f );
-				preview.Size = new Vector2( session.TimeToPixels( block.TimeRange.Duration ), LocalRect.Height );
-
-				preview.Update();
+				preview.Layout();
 			}
 		}
 		else

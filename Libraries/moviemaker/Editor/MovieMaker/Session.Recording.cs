@@ -7,7 +7,7 @@ public sealed partial class Session
 {
 	private bool _isRecording;
 
-	public bool Recording
+	public bool IsRecording
 	{
 		get => EditMode is { AllowRecording: true } && _isRecording;
 

@@ -15,7 +15,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 
 	public InterpolationMode DefaultInterpolation { get; private set; } = InterpolationMode.QuadraticInOut;
 
-	public override bool AllowTrackCreation => Session.Recording;
+	public override bool AllowTrackCreation => Session.IsRecording;
 	public override bool AllowRecording => true;
 
 	private TrackKeyframes? GetKeyframes( TrackWidget? track )
@@ -25,7 +25,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 
 	private TrackKeyframes? GetKeyframes( DopeSheetTrack? track )
 	{
-		return track is not null ? _keyframeMap.GetValueOrDefault( track ) : null;
+		return track is not null ? _keyframeMap!.GetValueOrDefault( track ) : null;
 	}
 
 	private void WriteTracks( IEnumerable<TrackKeyframes> tracks )
@@ -165,7 +165,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 
 	protected override bool OnPreChange( DopeSheetTrack track )
 	{
-		if ( !Session.Recording )
+		if ( !Session.IsRecording )
 		{
 			return false;
 		}
@@ -208,7 +208,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 			return false;
 		}
 
-		if ( !keyframes.UpdateKey( Session.CurrentPointer ) && Session.Recording )
+		if ( !keyframes.UpdateKey( Session.CurrentPointer ) && Session.IsRecording )
 		{
 			var time = Session.CurrentPointer;
 

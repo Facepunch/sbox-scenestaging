@@ -11,6 +11,11 @@ public interface IMovieBlock
 	IMovieBlockData Data { get; }
 }
 
+public interface IPreviewMovieBlock : IMovieBlock
+{
+	event Action? Changed;
+}
+
 public record MovieBlockSlice( MovieTimeRange TimeRange, IMovieBlockData Data ) : IMovieBlock;
 
 /// <summary>

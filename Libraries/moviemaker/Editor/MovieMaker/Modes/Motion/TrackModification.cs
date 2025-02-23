@@ -42,7 +42,7 @@ internal sealed class TrackModification<T> : ITrackModification
 	private readonly List<IMovieBlock> _changes = new();
 	private readonly List<ChangeMapping> _changeMappings = new();
 
-	private T _relativeTo;
+	private T _relativeTo = default!;
 
 	public bool HasChanges => _changes.Count > 0;
 

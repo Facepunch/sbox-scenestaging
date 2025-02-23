@@ -26,7 +26,7 @@ public interface IMovieProperty
 /// Typed <see cref="IMovieProperty"/>.
 /// </summary>
 /// <typeparam name="T">Value type stored in the property.</typeparam>
-internal interface IMovieProperty<T> : IMovieProperty
+public interface IMovieProperty<T> : IMovieProperty
 {
 	new T Value { get; set; }
 }
