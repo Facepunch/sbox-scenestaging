@@ -110,13 +110,13 @@ public sealed partial class MoviePlayer : Component
 
 	public void ApplyFrame( MovieTime time )
 	{
-		if ( MovieClip is null || _sceneRefMap.Count == 0 ) return;
-
-		time = time.Clamp( (MovieTime.Zero, MovieClip.Duration) );
+		if ( MovieClip is not { } clip || _sceneRefMap.Count == 0 ) return;
+		if ( time > clip.Duration ) return;
+		if ( time < MovieTime.Zero ) return;
 
 		using var sceneScope = Scene.Push();
 
-		foreach ( var track in MovieClip.RootTracks )
+		foreach ( var track in clip.RootTracks )
 		{
 			ApplyFrame( track, time );
 		}

@@ -5,8 +5,8 @@
       "__guid": "4b6c2e79-4728-487f-b0d8-9af8d2c1b609",
       "Flags": 0,
       "Name": "Camera",
-      "Position": "-404.56,-235.0703,915.7274",
-      "Rotation": "-0.00366353,-0.002929271,0.7810217,-0.6244863",
+      "Position": "885.3533,-172.961,1015.738",
+      "Rotation": "-0.0711121,0.07296283,0.6943339,0.7124043",
       "Tags": "maincamera",
       "Enabled": true,
       "Components": [
@@ -88,7 +88,7 @@
               "GameObject": "6071cf1b-16df-4fc7-ae75-7dd42995e377"
             },
             {
-              "TrackId": "e58eade9-7f2b-4c8d-9fb0-66a01df3dadb",
+              "TrackId": "ffc07ec1-c4b1-41c4-b884-9ade871cadee",
               "Component": "19737d8e-cb8e-40ab-9420-c37db251141d"
             }
           ],
@@ -108,7 +108,7 @@
       "__guid": "920f02d6-5d5b-47d9-814e-956a0ffde1e7",
       "Flags": 0,
       "Name": "Player Controller",
-      "Position": "-25.41383,-1000.804,800.0413",
+      "Position": "891.7302,75.20959,888.0933",
       "Enabled": true,
       "Components": [
         {
@@ -252,7 +252,7 @@
           "__guid": "6071cf1b-16df-4fc7-ae75-7dd42995e377",
           "Flags": 0,
           "Name": "Body",
-          "Rotation": "0,0,0.01149429,0.9999338",
+          "Rotation": "0,0,0.7016474,0.7125244",
           "Enabled": true,
           "Components": [
             {
@@ -277,24 +277,25 @@
                 "bools": {},
                 "ints": {},
                 "floats": {
-                  "wish_speed": 110.000015,
-                  "move_direction": 359.0528,
-                  "wish_direction": 359.04138,
-                  "move_speed": 109.9998,
-                  "move_groundspeed": 109.9998,
-                  "wish_groundspeed": 110.000015,
-                  "move_x": 109.98476,
-                  "move_y": -1.8184055,
-                  "wish_x": 109.98457,
-                  "wish_y": -1.8403502,
-                  "move_rotationspeed": -1.2139893,
-                  "skid_x": 1.5677097E-07,
-                  "skid_y": 1.283184E-05
+                  "wish_speed": 0,
+                  "move_direction": 0,
+                  "wish_direction": 0,
+                  "move_speed": 0,
+                  "move_groundspeed": 0,
+                  "wish_groundspeed": 0,
+                  "move_x": 0,
+                  "move_y": 0,
+                  "wish_x": 0,
+                  "wish_y": 0,
+                  "move_rotationspeed": 0,
+                  "skid_x": 0,
+                  "skid_y": 0,
+                  "duck": 0
                 },
                 "vectors": {
-                  "aim_head": "0.9990034,0.01671613,-0.04138686",
-                  "aim_body": "0.9990034,0.01671613,-0.04138686",
-                  "aim_eyes": "0.9990034,0.01671613,-0.04138686"
+                  "aim_head": "0.979187,-0.01009303,-0.2027091",
+                  "aim_body": "0.979187,-0.01009303,-0.2027091",
+                  "aim_eyes": "0.979187,-0.01009303,-0.2027091"
                 },
                 "rotations": {}
               },

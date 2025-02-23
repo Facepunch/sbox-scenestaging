@@ -8,6 +8,7 @@ namespace Editor.MovieMaker;
 internal sealed partial class MotionEditMode : EditMode
 {
 	private TimeSelection? _timeSelection;
+	private bool _additive;
 
 	public TimeSelection? TimeSelection
 	{
@@ -23,7 +24,16 @@ internal sealed partial class MotionEditMode : EditMode
 
 	public InterpolationMode DefaultInterpolation { get; private set; } = InterpolationMode.QuadraticInOut;
 
-	public bool IsAdditive { get; private set; }
+	public bool IsAdditive
+	{
+		get => _additive;
+
+		private set
+		{
+			_additive = value;
+			SelectionChanged();
+		}
+	}
 
 	private MovieTime? _selectionStartTime;
 

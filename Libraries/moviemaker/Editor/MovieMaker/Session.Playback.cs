@@ -12,13 +12,6 @@ public sealed partial class Session
 	private MovieTime? _lastPlayerPosition;
 	private bool _applyNextFrame;
 
-	private float _scrubbingTimeScale;
-
-	private readonly Queue<(RealTimeSince TimeSince, MovieTime MovieTime)> _scrubHistory =
-		new Queue<(RealTimeSince RealTime, MovieTime MovieTime)>();
-
-	private const float ScrubHistoryWindow = 0.25f;
-
 	public bool IsPlaying
 	{
 		get => IsEditorScene ? _isPlaying : Player.IsPlaying;
@@ -49,8 +42,6 @@ public sealed partial class Session
 		}
 	}
 
-	internal float ScrubbingTimeScale => IsPlaying ? TimeScale : _scrubbingTimeScale;
-
 	public void ApplyFrame( MovieTime time )
 	{
 		_applyNextFrame = false;
@@ -72,8 +63,6 @@ public sealed partial class Session
 
 	private void PlaybackFrame( MovieClip clip )
 	{
-		_scrubbingTimeScale = UpdateScrubbingTimeScale();
-
 		if ( IsPlaying && IsEditorScene )
 		{
 			var targetTime = CurrentPointer + MovieTime.FromSeconds( RealTime.Delta * TimeScale );
@@ -102,27 +91,5 @@ public sealed partial class Session
 		}
 
 		_lastPlayerPosition = Player.Position;
-	}
-
-	private float UpdateScrubbingTimeScale()
-	{
-		// While scrubbing, find average scrub speed
-
-		while ( _scrubHistory.TryPeek( out var item ) && item.TimeSince > ScrubHistoryWindow )
-		{
-			_scrubHistory.Dequeue();
-
-			if ( !IsPlaying ) RefreshNextFrame();
-		}
-
-		var time = PreviewPointer ?? CurrentPointer;
-
-		_scrubHistory.Enqueue( (0f, time) );
-
-		var first = _scrubHistory.Peek();
-
-		return time != first.MovieTime
-			? Math.Min( MathF.Abs( (float)(time - first.MovieTime).TotalSeconds / ScrubHistoryWindow ), 4f )
-			: 0f;
 	}
 }
