@@ -38,7 +38,7 @@ partial class MotionEditMode
 
 	public string? LastActionIcon { get; private set; }
 
-	private Dictionary<MovieTrack, ITrackModification> TrackModifications { get; } = new();
+	private Dictionary<ProjectTrack, ITrackModification> TrackModifications { get; } = new();
 
 	private void ClearChanges()
 	{
@@ -96,13 +96,13 @@ partial class MotionEditMode
 		}
 	}
 
-	private record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<Guid, IReadOnlyList<MovieBlockSlice>> Tracks );
+	private record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<Guid, IReadOnlyList<PropertyBlockSlice>> Tracks );
 
 	private static ClipboardData? Clipboard { get; set; }
 
 	protected override void OnSelectAll()
 	{
-		TimeSelection = new TimeSelection( (MovieTime.Zero, Clip.Duration), DefaultInterpolation );
+		TimeSelection = new TimeSelection( (MovieTime.Zero, Project.Duration), DefaultInterpolation );
 	}
 
 	protected override void OnCut()
@@ -115,16 +115,16 @@ partial class MotionEditMode
 
 	protected override void OnCopy()
 	{
-		if ( TimeSelection is not { } selection || Session.Clip is not { } clip ) return;
+		if ( TimeSelection is not { } selection || Session.Project is not { } project ) return;
 
 		var timeRange = selection.TotalTimeRange;
 		var offset = Session.CurrentPointer;
-		var tracks = new Dictionary<Guid, IReadOnlyList<MovieBlockSlice>>();
-		var slicedBlocks = new List<MovieBlockSlice>();
+		var tracks = new Dictionary<Guid, IReadOnlyList<PropertyBlockSlice>>();
+		var slicedBlocks = new List<PropertyBlockSlice>();
 
-		foreach ( var track in clip.AllTracks )
+		foreach ( var track in project.Tracks )
 		{
-			if ( !track.CanModify() ) continue;
+			if ( !Session.CanEdit( track ) ) continue;
 
 			slicedBlocks.Clear();
 			slicedBlocks.AddRange( track.Slice( timeRange ).Select( x => x with { TimeRange = x.TimeRange - offset } ) );
@@ -155,7 +155,7 @@ partial class MotionEditMode
 
 	private bool LoadChangesFromClipboard()
 	{
-		if ( Session.Clip is not { } clip || Clipboard is not { } clipboard ) return false;
+		if ( Session.Project is not { } clip || Clipboard is not { } clipboard ) return false;
 
 		ClearChanges();
 
@@ -170,7 +170,7 @@ partial class MotionEditMode
 		foreach ( var (id, blocks) in clipboard.Tracks )
 		{
 			if ( blocks.Count == 0 ) continue;
-			if ( blocks[0].Data is not IMovieBlockValueData valueData ) continue;
+			if ( blocks[0].Data is not IValueData valueData ) continue;
 			if ( clip.GetTrack( id ) is not { } track ) continue;
 
 			var state = GetOrCreateTrackModification( track );
@@ -188,16 +188,16 @@ partial class MotionEditMode
 		return changed;
 	}
 
-	private ITrackModification? GetTrackModification( MovieTrack track )
+	private ITrackModification? GetTrackModification( ProjectTrack track )
 	{
 		return TrackModifications!.GetValueOrDefault( track );
 	}
 
-	private ITrackModification GetOrCreateTrackModification( MovieTrack track )
+	private ITrackModification GetOrCreateTrackModification( ProjectTrack track )
 	{
 		if ( GetTrackModification( track ) is { } state ) return state;
 
-		var type = typeof(TrackModification<>).MakeGenericType( track.PropertyType );
+		var type = typeof(TrackModification<>).MakeGenericType( track.TargetType );
 		TrackModifications.Add( track, state = (ITrackModification)Activator.CreateInstance( type, this, track )! );
 
 		return state;
@@ -207,7 +207,7 @@ partial class MotionEditMode
 	{
 		if ( TimeSelection is not { } selection ) return;
 
-		if ( GetTrackModification( track.TrackWidget.MovieTrack ) is { } state )
+		if ( GetTrackModification( track.TrackWidget.ProjectTrack ) is { } state )
 		{
 			state.Update( selection, ChangeOffset, IsAdditive );
 		}
@@ -221,7 +221,7 @@ partial class MotionEditMode
 			return false;
 		}
 
-		var movieTrack = track.TrackWidget.MovieTrack;
+		var movieTrack = track.TrackWidget.ProjectTrack;
 
 		if ( TrackModifications.ContainsKey( movieTrack ) )
 		{
@@ -242,7 +242,7 @@ partial class MotionEditMode
 	{
 		if ( TimeSelection is not { } selection ) return false;
 
-		var movieTrack = track.TrackWidget.MovieTrack;
+		var movieTrack = track.TrackWidget.ProjectTrack;
 
 		if ( track.TrackWidget.Property is not { } property )
 		{
@@ -269,7 +269,7 @@ partial class MotionEditMode
 		{
 			PasteTimeRange = _changeDuration is { } duration ? (ChangeOffset, ChangeOffset + duration) : null;
 
-			foreach ( var (track, state) in TrackModifications )
+			foreach ( var (_, state) in TrackModifications )
 			{
 				state.Update( selection, ChangeOffset, IsAdditive );
 			}

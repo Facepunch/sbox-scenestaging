@@ -36,7 +36,7 @@ public class ToolbarWidget : Widget
 		{
 			ClipDropDown = new ComboBox( this );
 			ClipDropDown.MinimumWidth = 150;
-			ClipDropDown.ToolTip = $"Selected {nameof(MovieClip)}";
+			ClipDropDown.ToolTip = $"Selected {nameof(CompiledMovieClip)}";
 
 			Layout.Add( ClipDropDown );
 		}
@@ -156,13 +156,13 @@ public class ToolbarWidget : Widget
 	{
 		ClipDropDown.Clear();
 
-		ClipDropDown.AddItem( "Embedded", "attachment", () => Editor.SwitchToEmbedded(), "Use a clip stored in the player component.", Session?.Clip == Session?.Player.EmbeddedClip );
+		ClipDropDown.AddItem( "Embedded", "attachment", Editor.SwitchToEmbedded, "Use a clip stored in the player component.", Session?.Source is EmbeddedMovieResource );
 
-		var icon = typeof(MovieFile).GetCustomAttribute<GameResourceAttribute>()!.Icon;
+		var icon = typeof(MovieResource).GetCustomAttribute<GameResourceAttribute>()!.Icon;
 
-		foreach ( var file in ResourceLibrary.GetAll<MovieFile>().OrderBy( x => x.ResourcePath ) )
+		foreach ( var resource in ResourceLibrary.GetAll<MovieResource>().OrderBy( x => x.ResourcePath ) )
 		{
-			ClipDropDown.AddItem( file.ResourceName, icon, () => Editor.SwitchFile( file ), file.ResourcePath, Session?.Clip == file.Clip );
+			ClipDropDown.AddItem( resource.ResourceName, icon, () => Editor.SwitchResource( resource ), resource.ResourcePath, Session?.Source == resource );
 		}
 
 		ClipDropDown.AddItem( "Save As..", "save_as", Editor.SaveFileAs, "Save the current clip as a new movie file." );

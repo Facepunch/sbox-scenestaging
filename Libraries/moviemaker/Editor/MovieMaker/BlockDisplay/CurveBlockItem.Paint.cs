@@ -14,9 +14,9 @@ partial class CurveBlockItem<T>
 		
 		if ( Samples is { } samples )
 		{
-			for ( var i = 0; i < samples.Samples.Count; ++i )
+			for ( var i = 0; i < samples.Samples.Length; ++i )
 			{
-				var time = samples.FirstSampleTime + MovieTime.FromFrames( i, samples.SampleRate );
+				var time = samples.Offset + MovieTime.FromFrames( i, samples.SampleRate );
 
 				if ( !time.IsPositive ) continue;
 				if ( time >= TimeRange.Duration ) break;

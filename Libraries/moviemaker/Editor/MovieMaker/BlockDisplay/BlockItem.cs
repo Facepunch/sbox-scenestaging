@@ -6,11 +6,11 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 public abstract partial class BlockItem : GraphicsItem
 {
-	private IMovieBlock? _block;
+	private IBlock? _block;
 
 	public new DopeSheetTrack Parent { get; private set; } = null!;
 
-	public IMovieBlock Block
+	public IBlock Block
 	{
 		get => _block ?? throw new InvalidOperationException();
 		set
@@ -31,15 +31,14 @@ public abstract partial class BlockItem : GraphicsItem
 		}
 	}
 
-	protected MovieTrack Track => Parent.TrackWidget.MovieTrack;
-	protected IMovieBlockData Data => Block.Data;
+	protected ProjectTrack Track => Parent.TrackWidget.ProjectTrack;
 	protected MovieTimeRange TimeRange => Block.TimeRange;
 
-	protected int DataHash => HashCode.Combine( Data, TimeRange.Duration, Width );
+	protected int DataHash => HashCode.Combine( TimeRange.Duration, Width );
 
 	protected string? DebugText { get; set; }
 
-	private void Initialize( DopeSheetTrack parent, IMovieBlock block )
+	private void Initialize( DopeSheetTrack parent, IBlock block )
 	{
 		base.Parent = Parent = parent;
 
@@ -58,7 +57,7 @@ public abstract partial class BlockItem : GraphicsItem
 
 	public void Layout()
 	{
-		var session = Parent.TrackWidget.TrackList.Session;
+		var session = Parent.TrackWidget.Session;
 
 		PrepareGeometryChange();
 
@@ -70,12 +69,10 @@ public abstract partial class BlockItem : GraphicsItem
 
 	protected override void OnPaint()
 	{
-		var canModify = Track.CanModify();
-
-		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground.Lighten( Track.CanModify() ? 0f : 0.2f ) );
+		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground.Lighten( Parent.TrackWidget.IsLocked ? 0.2f : 0f ) );
 		Paint.DrawRect( LocalRect );
 
-		if ( !canModify ) return;
+		if ( Parent.TrackWidget.IsLocked ) return;
 
 		Paint.ClearBrush();
 		Paint.SetPen( Color.White.WithAlpha( 0.1f ) );
@@ -94,6 +91,6 @@ internal interface IBlockItem<T>;
 
 public abstract class BlockItem<T> : BlockItem, IBlockItem<T>
 {
-	public ConstantData<T>? Constant => Data as ConstantData<T>;
-	public SamplesData<T>? Samples => Data as SamplesData<T>;
+	public IConstantBlock<T>? Constant => Block as IConstantBlock<T>;
+	public ISampleBlock<T>? Samples => Block as ISampleBlock<T>;
 }

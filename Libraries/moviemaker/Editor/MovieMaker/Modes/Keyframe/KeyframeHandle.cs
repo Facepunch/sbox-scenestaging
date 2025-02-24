@@ -62,15 +62,15 @@ internal class KeyframeHandle : GraphicsItem
 	{
 		if ( !Track.Visible ) return;
 
-		var c = Extensions.PaintSelectColor( HandleColor.WithAlpha( 0.5f ), HandleColor, DopeSheet.Colors.HandleSelected );
-		var b = Extensions.PaintSelectColor( Color.Black, Theme.Blue, Theme.White );
+		var c = PaintExtensions.PaintSelectColor( HandleColor.WithAlpha( 0.5f ), HandleColor, DopeSheet.Colors.HandleSelected );
+		var b = PaintExtensions.PaintSelectColor( Color.Black, Theme.Blue, Theme.White );
 
 		var w = Width;
 		var h = Height;
 
 		Paint.SetBrushAndPen( c );
 
-		Extensions.PaintTriangle( Size * 0.5f, 10 );
+		PaintExtensions.PaintTriangle( Size * 0.5f, 10 );
 
 		Paint.SetPen( c.WithAlphaMultiplied( 0.3f ) );
 		Paint.DrawLine( new Vector2( Width * 0.5f, 0 ), new Vector2( Width * 0.5f, Height ) );
@@ -92,7 +92,7 @@ internal class KeyframeHandle : GraphicsItem
 
 		if ( e.LeftMouseButton )
 		{
-			Session.Current!.SetCurrentPointer( Time );
+			Session.SetCurrentPointer( Time );
 		}
 	}
 

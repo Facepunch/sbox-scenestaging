@@ -1,28 +1,19 @@
-﻿namespace Editor.MovieMaker;
+﻿using System.Linq;
+
+namespace Editor.MovieMaker;
 
 #nullable enable
 
 public class TrackGroup : Widget
 {
-	private bool _collapsed;
-
-	public bool Collapsed
-	{
-		get => _collapsed;
-		set
-		{
-			_collapsed = value;
-
-			Header.MovieTrack.ModifyEditorData( x => x with { Collapsed = value } );
-
-			UpdateCollapsedState();
-		}
-	}
-
 	public TrackWidget Header { get; }
 	public Layout Content { get; set; }
 
 	public Button CollapseButton { get; }
+
+	public new IEnumerable<TrackWidget> Children => base.Children
+		.OfType<TrackWidget>()
+		.Where( x => x != Header );
 
 	public TrackGroup( TrackWidget header ) : base()
 	{
@@ -40,8 +31,6 @@ public class TrackGroup : Widget
 
 		CollapseButton = new CollapseButton( this );
 
-		_collapsed = Header.MovieTrack.ReadEditorData()?.Collapsed ?? false;
-
 		header.Buttons.Add( CollapseButton );
 	}
 
@@ -51,12 +40,7 @@ public class TrackGroup : Widget
 
 		foreach ( var child in Children )
 		{
-			if ( child == Header ) continue;
-
-			if ( child is TrackWidget or TrackGroup )
-			{
-				child.Hidden = _collapsed;
-			}
+			child.Hidden = Header.Hidden;
 		}
 
 		Header.TrackList.DopeSheet.UpdateTracks();
@@ -83,16 +67,16 @@ file class CollapseButton : Button
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( Extensions.PaintSelectColor( DopeSheet.Colors.Background,
+		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor( DopeSheet.Colors.Background,
 			Theme.ControlBackground.Lighten( 0.5f ), Theme.Primary ) );
 		Paint.DrawRect( LocalRect, 4f );
 
 		Paint.SetPen( Theme.ControlText );
-		Paint.DrawIcon( LocalRect, Group.Collapsed ? "add" : "remove", 12f );
+		Paint.DrawIcon( LocalRect, Group.Header.IsCollapsed ? "add" : "remove", 12f );
 	}
 
 	protected override void OnClicked()
 	{
-		Group.Collapsed = !Group.Collapsed;
+		Group.Header.IsCollapsed = !Group.Header.IsCollapsed;
 	}
 }
