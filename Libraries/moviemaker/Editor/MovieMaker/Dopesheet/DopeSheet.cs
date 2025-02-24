@@ -1,7 +1,8 @@
-﻿using System.Linq;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
+
+#nullable enable
 
 public class DopeSheet : GraphicsView
 {
@@ -12,10 +13,10 @@ public class DopeSheet : GraphicsView
 		public static Color HandleSelected => Theme.White;
 	}
 
-	private TrackListWidget tracklist;
-	private Session Session => tracklist.Session;
+	private TrackListWidget TrackList { get; }
+	private Session Session => TrackList.Session;
 
-	GridItem gridItem;
+	private readonly GridItem _gridItem;
 
 	private readonly CurrentPointerItem _currentPointerItem;
 	private readonly CurrentPointerItem _previewPointerItem;
@@ -27,9 +28,9 @@ public class DopeSheet : GraphicsView
 	{
 		get
 		{
-			var screenRect = tracklist.ScreenRect;
+			var screenRect = TrackList.ScreenRect;
 
-			screenRect.Left = tracklist.RightWidget.ScreenRect.Left;
+			screenRect.Left = TrackList.RightWidget.ScreenRect.Left;
 
 			var topLeft = FromScreen( screenRect.TopLeft );
 			var bottomRight = FromScreen( screenRect.BottomRight );
@@ -38,13 +39,13 @@ public class DopeSheet : GraphicsView
 		}
 	}
 
-	public DopeSheet( TrackListWidget timelineTracklist )
+	public DopeSheet( TrackListWidget trackList )
 	{
-		this.tracklist = timelineTracklist;
+		TrackList = trackList;
 		MinimumWidth = 256;
 
-		gridItem = new GridItem();
-		Add( gridItem );
+		_gridItem = new GridItem( Session );
+		Add( _gridItem );
 
 		_currentPointerItem = new CurrentPointerItem( Theme.Yellow );
 		Add( _currentPointerItem );
@@ -52,9 +53,9 @@ public class DopeSheet : GraphicsView
 		_previewPointerItem = new CurrentPointerItem( Theme.Blue );
 		Add( _previewPointerItem );
 
-		ScrubBarTop = new ScrubberItem( timelineTracklist.Session.Editor, true ) { Size = new Vector2( Width, 24f ) };
+		ScrubBarTop = new ScrubberItem( Session.Editor, true ) { Size = new Vector2( Width, 24f ) };
 		Add( ScrubBarTop );
-		ScrubBarBottom = new ScrubberItem( timelineTracklist.Session.Editor, false ) { Size = new Vector2( Width, 24f ) };
+		ScrubBarBottom = new ScrubberItem( Session.Editor, false ) { Size = new Vector2( Width, 24f ) };
 		Add( ScrubBarBottom );
 
 		Session.PointerChanged += UpdateCurrentPosition;
@@ -64,7 +65,7 @@ public class DopeSheet : GraphicsView
 		FocusMode = FocusMode.TabOrClickOrWheel;
 
 		var bg = new Pixmap( 8 );
-		bg.Clear( DopeSheet.Colors.Background );
+		bg.Clear( Colors.Background );
 
 		SetBackgroundImage( bg );
 
@@ -169,8 +170,8 @@ public class DopeSheet : GraphicsView
 	{
 		var x = Session.TimeToPixels( Session.TimeOffset );
 		SceneRect = new Rect( x - 8, 0, Width - 4, Height - 4 ); // I don't know where the fuck this 4 comes from, but it stops it having some scroll
-		gridItem.SceneRect = SceneRect;
-		gridItem.Update();
+		_gridItem.SceneRect = SceneRect;
+		_gridItem.Update();
 
 		UpdateCurrentPosition( Session.CurrentPointer );
 		UpdatePreviewPosition( Session.PreviewPointer );
@@ -178,26 +179,25 @@ public class DopeSheet : GraphicsView
 
 	public void UpdateTracks()
 	{
-		var maxWidth = Session.TimeToPixels( tracklist.MaxTimeVisible );
-
 		UpdateSceneFrame();
 
-		foreach ( var track in tracklist.Tracks )
+		foreach ( var widget in TrackList.Tracks )
 		{
-			if ( track.Property is ISceneReferenceMovieProperty ) continue;
+			if ( widget.Target is not ITrackProperty { CanWrite: true } ) continue;
+			if ( widget.ProjectTrack is not IProjectPropertyTrack propertyTrack ) continue;
 
-			if ( track.DopeSheetTrack is null )
+			if ( widget.DopeSheetTrack is null )
 			{
-				track.DopeSheetTrack = new DopeSheetTrack( track );
-				Add( track.DopeSheetTrack );
+				widget.DopeSheetTrack = new DopeSheetTrack( widget, propertyTrack );
+				Add( widget.DopeSheetTrack );
 
-				Session.EditMode?.TrackAdded( track.DopeSheetTrack );
+				Session.EditMode?.TrackAdded( widget.DopeSheetTrack );
 			}
 		}
 
 		Update();
 
-		foreach ( var track in tracklist.Tracks )
+		foreach ( var track in TrackList.Tracks )
 		{
 			track.UpdateChannelPosition();
 		}
@@ -215,8 +215,6 @@ public class DopeSheet : GraphicsView
 		{
 			e.Accept();
 		}
-
-		return;
 	}
 
 	private Vector2 _lastMouseLocalPos;
@@ -230,7 +228,7 @@ public class DopeSheet : GraphicsView
 		if ( e.ButtonState == MouseButtons.Middle )
 		{
 			//var delta = Application.CursorDelta.x;
-			tracklist.ScrollBy( delta.x );
+			TrackList.ScrollBy( delta.x );
 		}
 
 		if ( e.ButtonState == MouseButtons.Right )
@@ -318,17 +316,18 @@ public class DopeSheet : GraphicsView
 			snap.Add( SnapFlag.PasteBlock, pasteRange.End );
 		}
 
-		foreach ( var trackWidget in tracklist.Tracks )
+		foreach ( var trackWidget in TrackList.Tracks )
 		{
+			if ( trackWidget.ProjectTrack is not IProjectPropertyTrack propertyTrack ) continue;
 			if ( trackWidget.DopeSheetTrack is not { Visible: true } dopeTrack ) continue;
-			if ( !trackWidget.MovieTrack.CanModify() ) continue;
+			if ( trackWidget.IsLocked ) continue;
 			if ( mouseScenePos.y < dopeTrack.SceneRect.Top ) continue;
 			if ( mouseScenePos.y > dopeTrack.SceneRect.Bottom ) continue;
 
-			foreach ( var cut in trackWidget.MovieTrack.Cuts )
+			foreach ( var block in propertyTrack.Blocks )
 			{
-				snap.Add( SnapFlag.TrackBlock, cut.Block.Start );
-				snap.Add( SnapFlag.TrackBlock, cut.Block.End );
+				snap.Add( SnapFlag.TrackBlock, block.TimeRange.Start );
+				snap.Add( SnapFlag.TrackBlock, block.TimeRange.End );
 			}
 		}
 	}

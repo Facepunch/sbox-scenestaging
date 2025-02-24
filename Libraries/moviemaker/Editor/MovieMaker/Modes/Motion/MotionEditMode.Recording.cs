@@ -1,6 +1,9 @@
 ﻿using Sandbox.MovieMaker;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
+using System.Text.Json.Nodes;
+using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker;
 
@@ -12,7 +15,7 @@ partial class MotionEditMode
 
 	public override bool AllowRecording => true;
 
-	private readonly Dictionary<MovieTrack, ITrackRecording> _recordings = new();
+	private readonly Dictionary<IProjectPropertyTrack, ITrackRecording> _recordings = new();
 
 	protected override bool OnStartRecording()
 	{
@@ -20,7 +23,7 @@ partial class MotionEditMode
 
 		var time = Session.CurrentPointer;
 
-		foreach ( var track in Clip.RootTracks )
+		foreach ( var track in Project.RootTracks )
 		{
 			StartRecording( track, time );
 		}
@@ -33,9 +36,10 @@ partial class MotionEditMode
 		return true;
 	}
 
-	private bool StartRecording( MovieTrack track, MovieTime time )
+	private bool StartRecording( IProjectTrack track, MovieTime time )
 	{
-		if ( track.ReadEditorData()?.Locked is true ) return false;
+		if ( track is not IProjectPropertyTrack propertyTrack ) return false;
+		if ( !Session.CanEdit( track ) ) return false;
 
 		if ( track.Children is { Count: > 0 } children )
 		{
@@ -54,15 +58,14 @@ partial class MotionEditMode
 			}
 		}
 
-		if ( Session.Player.GetProperty( track ) is not { IsBound: true } property ) return false;
-		if ( property is ISceneReferenceMovieProperty ) return false;
+		if ( Session.Binder.Get( propertyTrack ) is not { IsBound: true, CanWrite: true } property ) return false;
 
-		var recordingType = typeof(TrackRecording<>).MakeGenericType( track.PropertyType );
+		var recordingType = typeof(TrackRecording<>).MakeGenericType( track.TargetType );
 		var recording = (ITrackRecording)Activator.CreateInstance( recordingType, track, property, time )!;
 
-		_recordings.Add( track, recording );
+		_recordings.Add( propertyTrack, recording );
 
-		SetPreviewBlocks( track, [recording] );
+		SetPreviewBlocks( propertyTrack, [recording] );
 
 		return true;
 	}
@@ -76,35 +79,56 @@ partial class MotionEditMode
 
 		Log.Info( $"Finished recording {_recordings.Count} tracks!" );
 
-		var tracks = new Dictionary<Guid, IReadOnlyList<MovieBlockSlice>>();
-
+		var tracks = new Dictionary<IProjectTrack, CompiledTrack>();
 		MovieTimeRange? timeRange = null;
 
 		foreach ( var (track, recording) in _recordings )
 		{
 			ClearPreviewBlocks( track );
 
-			if ( recording.GetBlocks() is not { Count: > 0 } blocks ) continue;
+			var compiledParent = GetOrCreateCompiledTrack( tracks, track.Parent! );
 
-			tracks.Add( track.Id, blocks );
-
-			foreach ( var block in blocks )
+			if ( recording.Compile( track, compiledParent ) is not { } compiledTrack )
 			{
-				timeRange = timeRange?.Union( block.TimeRange ) ?? block.TimeRange;
+				continue;
 			}
+
+			tracks[track] = compiledTrack;
+			timeRange = timeRange?.Union( compiledTrack.TimeRange ) ?? compiledTrack.TimeRange;
 		}
 
-		if ( tracks.Count <= 0 || timeRange is not { } range ) return;
+		if ( tracks.Count <= 0 || timeRange is not { Duration.IsPositive: true } range ) return;
 
-		var offset = Session.CurrentPointer;
+		var sourceClip = Project.AddSourceClip( new CompiledClip( tracks.Values ), new JsonObject
+		{
+			{ "Date", DateTime.UtcNow.ToString( "o", CultureInfo.InvariantCulture ) },
+			{ "IsEditor", Session.Player.Scene.IsEditor },
+			{ "SceneSource", Json.ToNode( Session.Player.Scene.Source ) },
+			{ "MoviePlayer", Json.ToNode( Session.Player ) }
+		} );
 
-		Clipboard = new ClipboardData( new TimeSelection( range - offset, DefaultInterpolation ), tracks.ToImmutableDictionary( x => x.Key,
-				x => (IReadOnlyList<MovieBlockSlice>)x.Value.Select( y => y with { TimeRange = y.TimeRange - offset } ).ToImmutableArray() ) );
+		Clipboard = new ClipboardData( new TimeSelection( range, DefaultInterpolation ), tracks.Keys
+			.OfType<IProjectPropertyTrack>()
+			.ToImmutableDictionary( x => x.Id, x => x.CreateSourceBlocks( sourceClip ) ) );
 
 		if ( LoadChangesFromClipboard() )
 		{
 			DisplayAction( "radio_button_checked" );
 		}
+	}
+
+	private static CompiledTrack GetOrCreateCompiledTrack( Dictionary<IProjectTrack, CompiledTrack> dict, IProjectTrack track )
+	{
+		if ( dict.TryGetValue( track, out var compiled ) ) return compiled;
+
+		var compiledParent = track.Parent is { } parent ? GetOrCreateCompiledTrack( dict, parent ) : null;
+
+		return dict[track] = track switch
+		{
+			IProjectReferenceTrack refTrack => refTrack.Compile( compiledParent, true ),
+			IProjectPropertyTrack propertyTrack => propertyTrack.Compile( compiledParent, true ),
+			_ => throw new NotImplementedException()
+		};
 	}
 
 	private void RecordingFrame()
@@ -120,44 +144,40 @@ partial class MotionEditMode
 	}
 }
 
-internal interface ITrackRecording : IPreviewMovieBlock
+internal interface ITrackRecording : IPropertyBlock, IDynamicBlock
 {
 	void Record( MovieTime time );
-	IReadOnlyList<MovieBlockSlice> GetBlocks();
+	CompiledPropertyTrack? Compile( IProjectPropertyTrack track, CompiledTrack compiledParent );
 }
 
-file class TrackRecording<T> : ITrackRecording
+file class TrackRecording<T> : ITrackRecording, IPropertyBlock<T>
 {
-	public MovieTrack Track { get; }
-	public IMovieProperty<T> Property { get; }
+	public ProjectPropertyTrack<T> Track { get; }
+	public ITrackProperty<T> Property { get; }
 	public int SampleRate { get; }
 	public MovieTime SampleInterval { get; }
 
 	public MovieTimeRange TimeRange => (_startTime, _startTime + MovieTime.FromFrames( _samples.Count, SampleRate ));
-	IMovieBlockData IMovieBlock.Data => _previewData;
 
 	private readonly MovieTime _startTime;
 	private readonly IInterpolator<T>? _interpolator;
 
 	private readonly List<T> _samples = new();
-	private readonly SamplesData<T> _previewData;
 
 	public event Action? Changed;
 
-	public TrackRecording( MovieTrack track, IMovieProperty<T> property, MovieTime startTime )
+	public TrackRecording( ProjectPropertyTrack<T> track, ITrackProperty<T> property, MovieTime startTime )
 	{
 		Track = track;
 		Property = property;
 
-		SampleRate = track.Clip.DefaultSampleRate;
+		SampleRate = track.Project.SampleRate;
 		SampleInterval = MovieTime.FromFrames( 1, SampleRate );
 
 		_interpolator = Interpolator.GetDefault<T>();
 
 		_startTime = startTime.SnapToGrid( SampleInterval );
 		_samples.Add( property.Value );
-
-		_previewData = new SamplesData<T>( SampleRate, SampleInterpolationMode.Linear, _samples );
 	}
 
 	public void Record( MovieTime time )
@@ -195,17 +215,24 @@ file class TrackRecording<T> : ITrackRecording
 		Changed?.Invoke();
 	}
 
-	public IReadOnlyList<MovieBlockSlice> GetBlocks()
+	public CompiledPropertyTrack? Compile( IProjectPropertyTrack track, CompiledTrack compiledParent )
 	{
-		if ( _samples.Count == 0 ) return [];
+		if ( _samples.Count == 0 ) return null;
 
 		var first = _samples[0];
 		var comparer = EqualityComparer<T>.Default;
 
-		if ( _samples.All( x => comparer.Equals( first, x ) ) ) return [];
+		if ( _samples.All( x => comparer.Equals( first, x ) ) ) return null;
 
-		var data = new SamplesData<T>( SampleRate, SampleInterpolationMode.Linear, _samples.ToArray() );
+		var data = new CompiledSampleBlock<T>( TimeRange - _startTime, 0d, SampleRate, [.._samples] );
 
-		return [new MovieBlockSlice( TimeRange, data )];
+		return new CompiledPropertyTrack<T>( track.Name, compiledParent, [data] );
+	}
+
+	public T GetValue( MovieTime time ) => _samples.Sample( time - TimeRange.Start, SampleRate, _interpolator );
+
+	public IEnumerable<MovieTime> GetPaintHintTimes( MovieTimeRange timeRange )
+	{
+		return timeRange.GetSampleTimes( _startTime, _samples.Count, SampleRate );
 	}
 }

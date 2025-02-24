@@ -1,9 +1,12 @@
 ﻿namespace Editor.MovieMaker;
 
+#nullable enable
 
 [Dock( "Editor", "Movie Maker", "movie_creation" )]
 public class MovieMakerDock : Widget
 {
+	private MovieEditor? _editor;
+
 	public MovieMakerDock( Widget parent ) : base( parent )
 	{
 		Layout = Layout.Column();
@@ -16,7 +19,7 @@ public class MovieMakerDock : Widget
 	private void Build()
 	{
 		Layout.Clear( true );
-		Layout.Add( new MovieEditor( this ) );
+		Layout.Add( _editor = new MovieEditor( this ) );
 	}
 
 	private int _titleHash;
@@ -29,17 +32,11 @@ public class MovieMakerDock : Widget
 
 	private void UpdateTitle()
 	{
-		var titleHash = HashCode.Combine( Session.Current?.HasUnsavedChanges );
+		var titleHash = HashCode.Combine( _editor?.Session?.HasUnsavedChanges );
 
 		if ( _titleHash != titleHash )
 		{
-			if ( Session.Current is not { Player: { } player } session )
-			{
-				WindowTitle = "Movie Maker";
-				return;
-			}
-
-			WindowTitle = session.HasUnsavedChanges
+			WindowTitle = _editor?.Session is { HasUnsavedChanges: true }
 				? "Movie Maker*"
 				: "Movie Maker";
 		}

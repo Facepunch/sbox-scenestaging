@@ -1,0 +1,50 @@
+﻿using System.Collections.Immutable;
+using System.Linq;
+using Sandbox.MovieMaker;
+
+namespace Editor.MovieMaker;
+
+#nullable enable
+
+[JsonDiscriminator( "Constant" )]
+file sealed record ConstantSignal<T>( T Value ) : PropertySignal<T>
+{
+	public override T GetValue( MovieTime time ) => Value;
+}
+
+partial record PropertySignal<T>
+{
+	public static implicit operator PropertySignal<T>( T value ) => new ConstantSignal<T>( value );
+}
+
+partial class PropertySignalExtensions
+{
+	/// <summary>
+	/// Creates a constant signal with the given value.
+	/// </summary>
+
+	public static PropertySignal<T> AsSignal<T>( this T value ) => value;
+
+	/// <inheritdoc cref="AsSignal{T}(IReadOnlyList{PropertyBlock{T}})"/>
+	public static PropertySignal<T>? AsSignal<T>( this IEnumerable<PropertyBlock<T>> blocks ) =>
+		blocks.ToImmutableArray().AsSignal<T>();
+
+	/// <summary>
+	/// Creates a signal that joins together the given blocks.
+	/// </summary>
+	public static PropertySignal<T>? AsSignal<T>( this IReadOnlyList<PropertyBlock<T>> blocks )
+	{
+		if ( blocks.Count == 0 ) return null;
+
+		// TODO: balance?
+
+		var signal = blocks[0].Signal.Clamp( blocks[0].TimeRange );
+
+		foreach ( var block in blocks.Skip( 1 ) )
+		{
+			signal = signal.HardCut( block.Signal.ClampEnd( block.TimeRange.End ), block.TimeRange.Start );
+		}
+
+		return signal;
+	}
+}

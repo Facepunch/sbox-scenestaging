@@ -102,7 +102,7 @@ internal sealed partial class MotionEditMode : EditMode
 			var (minTime, maxTime) = Session.VisibleTimeRange;
 
 			if ( time < minTime ) time = MovieTime.Zero;
-			if ( time > maxTime ) time = Session.Clip!.Duration;
+			if ( time > maxTime ) time = Session.Project!.Duration;
 
 			TimeSelection = new TimeSelection( (MovieTime.Min( time, dragStartTime ), MovieTime.Max( time, dragStartTime )), DefaultInterpolation );
 		}

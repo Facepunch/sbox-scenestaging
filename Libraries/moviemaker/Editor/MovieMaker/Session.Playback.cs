@@ -11,6 +11,7 @@ public sealed partial class Session
 
 	private MovieTime? _lastPlayerPosition;
 	private bool _applyNextFrame;
+	private MovieTime _lastAppliedTime;
 
 	public bool IsPlaying
 	{
@@ -46,14 +47,16 @@ public sealed partial class Session
 	{
 		_applyNextFrame = false;
 
-		if ( EditMode is null )
+		foreach ( var track in Project.Tracks )
 		{
-			Player.ApplyFrame( time );
+			ApplyFrame( track, time );
 		}
-		else
-		{
-			EditMode?.ApplyFrame( time );
-		}
+
+		EditMode?.ApplyFrame( time );
+
+		AdvanceAnimations( time - _lastAppliedTime );
+
+		_lastAppliedTime = time;
 	}
 
 	public void RefreshNextFrame()
@@ -61,14 +64,14 @@ public sealed partial class Session
 		_applyNextFrame = true;
 	}
 
-	private void PlaybackFrame( MovieClip clip )
+	private void PlaybackFrame()
 	{
 		if ( IsPlaying && IsEditorScene )
 		{
 			var targetTime = CurrentPointer + MovieTime.FromSeconds( RealTime.Delta * TimeScale );
 
 			// got to the end
-			if ( !IsRecording && targetTime >= clip.Duration && clip.Duration.IsPositive )
+			if ( !IsRecording && targetTime >= Project.Duration && Project.Duration.IsPositive )
 			{
 				if ( IsLooping )
 				{
@@ -76,7 +79,7 @@ public sealed partial class Session
 				}
 				else
 				{
-					targetTime = clip.Duration;
+					targetTime = Project.Duration;
 
 					IsPlaying = false;
 				}

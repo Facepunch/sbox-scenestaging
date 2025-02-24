@@ -4,26 +4,29 @@ using System.Linq;
 
 namespace Editor.MovieMaker;
 
+#nullable enable
+
 /// <summary>
 /// A split view, with a list of tracks on the left and the dopesheet/curve view on the right
 /// </summary>
-public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
+public partial class TrackListWidget : Widget
 {
-	public MovieEditor Editor { get; init; }
-	public Session Session { get; private set; }
+	public MovieEditor Editor { get; }
+	public Session Session { get; }
 
 	private SceneEditorSession SceneEditorSession { get; }
 
-	Layout TrackList;
-
 	public DopeSheet DopeSheet { get; }
 
-	public Widget LeftWidget { get; init; }
-	public Widget RightWidget { get; init; }
+	public Widget LeftWidget { get; }
+	public Widget RightWidget { get; }
 
-	public List<TrackWidget> Tracks = new List<TrackWidget>();
+	private readonly List<TrackWidget> _tracks = new();
 
-	ScrollArea ScrollArea;
+	public IReadOnlyList<TrackWidget> Tracks => _tracks;
+
+	private readonly ScrollArea _scrollArea;
+	private readonly Layout _trackListLayout;
 
 	private int _lastTrackHash;
 
@@ -36,12 +39,12 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		SceneEditorSession = SceneEditorSession.Resolve( Session.Player.Scene );
 		SceneEditorSession.Selection.OnItemAdded += OnSelectionAdded;
 
-		ScrollArea = new ScrollArea( this );
-		var splitter = new Splitter( ScrollArea );
+		_scrollArea = new ScrollArea( this );
+		var splitter = new Splitter( _scrollArea );
 
 		{
-			var left = new Widget( this );
-			splitter.AddWidget( left );
+			LeftWidget = new Widget( this );
+			splitter.AddWidget( LeftWidget );
 
 			var leftLayout = Layout.Column();
 			leftLayout.AddSpacingCell( 24 );
@@ -53,9 +56,9 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 			trackListWidget.Layout.Spacing = 8f;
 			trackListWidget.Layout.Margin = new Sandbox.UI.Margin( 16, 0, 0, 16f );
 
-			TrackList = trackListWidget.Layout;
+			_trackListLayout = trackListWidget.Layout;
 
-			left.Layout = leftLayout;
+			LeftWidget.Layout = leftLayout;
 
 			leftLayout.AddStretchCell();
 		}
@@ -73,23 +76,23 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		splitter.SetCollapsible( 1, false );
 		splitter.SetStretch( 1, 3 );
 
-		ScrollArea.Canvas = splitter;
-		Layout.Add( ScrollArea );
+		_scrollArea.Canvas = splitter;
+		Layout.Add( _scrollArea );
 
 		MouseTracking = true;
 		AcceptDrops = true;
 
-		Load( Session.Clip );
+		Load( Session.Project );
 	}
 
 	private void OnSelectionAdded( object item )
 	{
 		if ( Tracks.Any( x => x.IsFocused ) || DopeSheet.IsFocused ) return;
 
-		if ( item is GameObject go && Tracks.FirstOrDefault( x => x.Property is ISceneReferenceMovieProperty { IsBound: true } && x.Property.Value == go ) is { } track )
+		if ( item is GameObject go && Tracks.FirstOrDefault( x => x.Target is ITrackReference<GameObject> { IsBound: true } && x.Target.Value == go ) is { } track )
 		{
 			track.Focus( false );
-			ScrollArea.MakeVisible( track );
+			_scrollArea.MakeVisible( track );
 		}
 	}
 
@@ -98,16 +101,8 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		SceneEditorSession.Selection.OnItemAdded -= OnSelectionAdded;
 	}
 
-	void ScrubToTime( MovieTime time )
+	private void Load( MovieProject project )
 	{
-		Session.ApplyFrame( time );
-	}
-
-	private void Load( MovieClip clip )
-	{
-		if ( clip is null )
-			return;
-
 		RebuildTracks();
 	}
 
@@ -124,45 +119,50 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 			}
 		}
 
-		TrackList.Clear( true );
-		Tracks.Clear();
+		_trackListLayout.Clear( true );
+		_tracks.Clear();
 
-		if ( Session.Clip is { } clip )
+		_lastTrackHash = GetTrackHash();
+
+		var groups = new Dictionary<IProjectTrack, TrackGroup>();
+
+		foreach ( var track in Session.Project.Tracks )
 		{
-			_lastTrackHash = clip.TrackHash;
+			var editorTrack = AddTrack( track );
 
-			var groups = new Dictionary<MovieTrack, TrackGroup>();
+			var parentGroup = track.Parent is null ? null : groups!.GetValueOrDefault( track.Parent );
 
-			foreach ( var track in clip.AllTracks )
+			if ( track.Children.Count == 0 )
 			{
-				var editorTrack = AddTrack( track );
-
-				var parentGroup = track.Parent is null ? null : groups.GetValueOrDefault( track.Parent );
-
-				if ( track.Children.Count == 0 )
-				{
-					(parentGroup?.Content ?? TrackList).Add( editorTrack );
-					continue;
-				}
-
-				var group = new TrackGroup( editorTrack );
-
-				groups[track] = group;
-
-				(parentGroup?.Content ?? TrackList).Add( group );
+				(parentGroup?.Content ?? _trackListLayout).Add( editorTrack );
+				continue;
 			}
 
-			foreach ( var group in groups.Values )
-			{
-				group.UpdateCollapsedState();
-			}
+			var group = new TrackGroup( editorTrack );
+
+			groups[track] = group;
+
+			(parentGroup?.Content ?? _trackListLayout).Add( group );
 		}
-		else
+
+		foreach ( var group in groups.Values )
 		{
-			_lastTrackHash = 0;
+			group.UpdateCollapsedState();
 		}
 
 		DopeSheet.UpdateTracks();
+	}
+
+	private int GetTrackHash()
+	{
+		var hashCode = new HashCode();
+
+		foreach ( var track in Session.Project.Tracks )
+		{
+			hashCode.Add( track );
+		}
+
+		return hashCode.ToHashCode();
 	}
 
 	/// <summary>
@@ -170,21 +170,21 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 	/// </summary>
 	public void RebuildTracksIfNeeded()
 	{
-		if ( (Session.Clip?.TrackHash ?? 0) == _lastTrackHash ) return;
+		if ( GetTrackHash() == _lastTrackHash ) return;
 
 		RebuildTracks();
 	}
 
-	public TrackWidget FindTrack( MovieTrack track )
+	public TrackWidget? FindTrack( IProjectTrack track )
 	{
-		return Tracks.FirstOrDefault( x => x.MovieTrack == track );
+		return Tracks.FirstOrDefault( x => x.ProjectTrack == track );
 	}
 
-	public TrackWidget AddTrack( MovieTrack track )
+	public TrackWidget AddTrack( IProjectTrack track )
 	{
 		var trackWidget = new TrackWidget( track, this );
 
-		Tracks.Add( trackWidget );
+		_tracks.Add( trackWidget );
 
 		return trackWidget;
 	}
@@ -198,9 +198,6 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 			DopeSheet?.UpdateTracks();
 		}
 	}
-
-	public MovieTime MinTimeVisible => MovieTime.FromSeconds( 5d );
-	public MovieTime MaxTimeVisible => MovieTime.FromSeconds( 120d );
 
 	internal bool OnCanvasWheel( WheelEvent e )
 	{
@@ -239,22 +236,20 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		Paint.DrawRect( LocalRect );
 	}
 
-	private IReadOnlyList<MovieTrack> _previewTracks;
+	private IReadOnlyList<IProjectTrack>? _previewTracks;
 
-	private IEnumerable<MovieTrack> GetDraggedTracks( DragEvent ev )
+	private IEnumerable<IProjectTrack> GetDraggedTracks( DragEvent ev )
 	{
-		if ( Session?.Player is not { MovieClip: not null } player ) yield break;
-
 		if ( ev.Data.OfType<GameObject>().FirstOrDefault() is { } go )
 		{
-			yield return player.GetOrCreateTrack( go );
-			yield return player.GetOrCreateTrack( go, nameof(GameObject.LocalPosition) );
-			yield return player.GetOrCreateTrack( go, nameof(GameObject.LocalRotation) );
+			yield return Session.GetOrCreateTrack( go );
+			yield return Session.GetOrCreateTrack( go, nameof(GameObject.LocalPosition) );
+			yield return Session.GetOrCreateTrack( go, nameof(GameObject.LocalRotation) );
 		}
 
 		if ( ev.Data.OfType<Component>().FirstOrDefault() is { } component )
 		{
-			yield return player.GetOrCreateTrack( component );
+			yield return Session.GetOrCreateTrack( component );
 
 			if ( component is SkinnedModelRenderer skinnedRenderer )
 			{
@@ -264,13 +259,13 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 					{
 						var paramName = graph.GetParameterName( i );
 
-						yield return player.GetOrCreateTrack( component, $"{nameof( SkinnedModelRenderer.Parameters )}.{paramName}" );
+						yield return Session.GetOrCreateTrack( component, $"{nameof( SkinnedModelRenderer.Parameters )}.{paramName}" );
 					}
 				}
 
 				foreach ( var morphName in skinnedRenderer.Morphs.Names )
 				{
-					yield return player.GetOrCreateTrack( component, $"{nameof(SkinnedModelRenderer.Morphs)}.{morphName}" );
+					yield return Session.GetOrCreateTrack( component, $"{nameof(SkinnedModelRenderer.Morphs)}.{morphName}" );
 				}
 			}
 		}
@@ -279,16 +274,16 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		{
 			if ( property.Parent.Targets?.FirstOrDefault() is Component parentComponent )
 			{
-				yield return player.GetOrCreateTrack( parentComponent, property.Name );
+				yield return Session.GetOrCreateTrack( parentComponent, property.Name );
 			}
 		}
 	}
 
 	public override void OnDragHover( DragEvent ev )
 	{
-		if ( _previewTracks is null && Session?.Player is { MovieClip: { } clip } )
+		if ( _previewTracks is null )
 		{
-			var knownTracks = clip.AllTracks.ToImmutableHashSet();
+			var knownTracks = Session.Project.Tracks.ToImmutableHashSet();
 			var dragged = GetDraggedTracks( ev ).ToImmutableHashSet();
 
 			_previewTracks = dragged.Except( knownTracks ).ToArray();
