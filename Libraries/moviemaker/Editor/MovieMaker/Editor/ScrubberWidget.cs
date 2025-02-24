@@ -41,7 +41,7 @@ public class ScrubberItem : GraphicsItem
 
 	protected override void OnPaint()
 	{
-		var duration = Session.Clip?.Duration ?? MovieTime.Zero;
+		var duration = Session.Project?.Duration ?? MovieTime.Zero;
 
 		Paint.SetBrushAndPen( DopeSheet.Colors.Background );
 		Paint.DrawRect( LocalRect );
@@ -151,7 +151,7 @@ public class ScrubberItem : GraphicsItem
 	public void Frame()
 	{
 		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.CurrentPointer,
-			Session.PreviewPointer, Session.Clip?.Duration, Session.EditMode?.PasteTimeRange );
+			Session.PreviewPointer, Session.Project?.Duration, Session.EditMode?.PasteTimeRange );
 
 		if ( state != lastState )
 		{

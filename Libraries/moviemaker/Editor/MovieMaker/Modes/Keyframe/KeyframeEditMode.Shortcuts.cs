@@ -7,7 +7,7 @@ namespace Editor.MovieMaker;
 
 partial class KeyframeEditMode
 {
-	private static KeyframeEditMode? Current => Session.Current?.EditMode as KeyframeEditMode;
+	private static KeyframeEditMode? Current => Focused as KeyframeEditMode;
 
 	[Shortcut( "keyframe-edit.interp-none", "0", typeof( MovieEditor ) )]
 	public static void Shortcut_SetInterpolationNone() => Current?.SetInterpolation( InterpolationMode.None );

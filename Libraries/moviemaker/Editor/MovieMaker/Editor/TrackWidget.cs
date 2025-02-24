@@ -5,27 +5,72 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public class TrackWidget : Widget
+public partial class TrackWidget : Widget
 {
+	public MovieEditor Editor { get; }
+	public Session Session { get; }
 	public TrackListWidget TrackList { get; }
-	public MovieTrack MovieTrack { get; }
-	internal IMovieProperty? Property { get; }
+
+	public IProjectTrack ProjectTrack { get; }
+	internal ITrackTarget Target { get; }
 
 	public DopeSheetTrack? DopeSheetTrack { get; set; }
 
+	public TrackGroup? Group => Parent is TrackGroup group
+		? group.Header == this ? group.Parent as TrackGroup : group
+		: null;
+
+	public TrackWidget? ParentTrack => ProjectTrack.Parent is { } parent
+		? TrackList.FindTrack( parent )
+		: null;
+
+	public IEnumerable<TrackWidget> ChildTracks => ProjectTrack.Children
+		.Select( TrackList.FindTrack )
+		.OfType<TrackWidget>();
+
 	public Layout Buttons { get; }
 
-	public bool Locked
+	private bool _isLocked;
+	private bool _isCollapsed;
+
+	public bool IsLockedSelf
 	{
-		get => MovieTrack.ReadEditorData()?.Locked ?? false;
+		get => _isLocked;
 		set
 		{
-			MovieTrack.ModifyEditorData( x => x with { Locked = value } );
+			_isLocked = Cookies.IsLocked = value;
 			UpdateLockedState( true );
 		}
 	}
+	public bool IsLocked => IsLockedSelf || ParentTrack is { IsLocked: true };
 
-	RealTimeSince timeSinceInteraction = 1000;
+	public bool IsCollapsed
+	{
+		get => _isCollapsed;
+		set
+		{
+			_isCollapsed = Cookies.IsCollapsed = value;
+			Group?.UpdateCollapsedState();
+		}
+	}
+
+	public new bool Hidden
+	{
+		get => base.Hidden;
+		set
+		{
+			base.Hidden = value;
+
+			if ( Group?.Header == this )
+			{
+				Group.Hidden = value;
+			}
+		}
+	}
+
+	public bool CanEdit => Target is ITrackProperty { CanWrite: true } && !IsLocked;
+
+	RealTimeSince _timeSinceInteraction = 1000;
 
 	private bool _wasVisible;
 	private bool _couldModify;
@@ -33,10 +78,13 @@ public class TrackWidget : Widget
 	private readonly Label _label;
 	private readonly Button _lockButton;
 
-	public TrackWidget( MovieTrack track, TrackListWidget list )
+	public TrackWidget( IProjectTrack track, TrackListWidget list )
 	{
+		Editor = list.Editor;
+		Session = list.Session;
 		TrackList = list;
-		MovieTrack = track;
+
+		ProjectTrack = track;
 		FocusMode = FocusMode.TabOrClickOrWheel;
 		VerticalSizeMode = SizeMode.CanGrow;
 
@@ -48,30 +96,23 @@ public class TrackWidget : Widget
 		Buttons.Spacing = 2f;
 		Buttons.Margin = 2f;
 
+		Target = Session.Binder.Get( ProjectTrack );
+
 		_lockButton = Buttons.Add( new LockButton( this ) );
+		_label = Layout.Add( new Label( Target.Name ) );
 
-		Property = TrackList.Session.Player.GetOrAutoResolveProperty( MovieTrack );
-
-		// Track might not be mapped to any property in the current scene
-
-		if ( Property is null )
+		if ( Target is ITrackReference reference )
 		{
-			return;
-		}
-
-		_label = Layout.Add( new Label( Property.PropertyName ) );
-
-		if ( Property is ISceneReferenceMovieProperty )
-		{
-			if ( Property.IsBound && Property.Value is GameObject go && MovieTrack.Parent is not null )
+			if ( Target is { IsBound: true, Value: GameObject } && ProjectTrack.Parent is not null )
 			{
 				return;
 			}
 
 			// Add control to retarget a scene reference (Component / GameObject)
 
-			var so = Property.GetSerialized();
-			var ctrl = ControlWidget.Create( so.GetProperty( nameof( IMovieProperty.Value ) ) );
+			var ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
+				() => reference.Value,
+				value => reference.Bind( (IValid?)value ) ) );
 
 			if ( ctrl.IsValid() )
 			{
@@ -91,14 +132,14 @@ public class TrackWidget : Widget
 		var labelColor = new Color( 0.6f, 0.6f, 0.6f );
 
 		_lockButton.Update();
-		_label.Color = MovieTrack.CanModify() ? labelColor : labelColor.Darken( 0.5f );
+		_label.Color = !IsLocked ? labelColor : labelColor.Darken( 0.5f );
 
 		if ( Parent is TrackGroup group && group.Header == this )
 		{
 			Parent.Update();
 		}
 
-		foreach ( var child in MovieTrack.Children )
+		foreach ( var child in ProjectTrack.Children )
 		{
 			if ( TrackList.FindTrack( child ) is { } childWidget )
 			{
@@ -106,7 +147,7 @@ public class TrackWidget : Widget
 			}
 		}
 
-		var canModify = MovieTrack.CanModify();
+		var canModify = !IsLocked;
 
 		if ( dispatch && DopeSheetTrack is { } dopeSheetTrack && canModify != _couldModify )
 		{
@@ -164,28 +205,30 @@ public class TrackWidget : Widget
 
 	public void InspectProperty()
 	{
-		if ( Property is not { } property ) return;
+		if ( Target is not { } property ) return;
 		if ( property.GetTargetGameObject() is not { } go ) return;
 
 		SceneEditorSession.Active.Selection.Clear();
 		SceneEditorSession.Active.Selection.Add( go );
 
-		if ( MovieTrack.Parent?.PropertyType == typeof(GameObject) )
+		if ( ProjectTrack.Parent is not IReferenceTrack<GameObject> )
 		{
-			switch ( property.PropertyName )
-			{
-				case nameof( GameObject.LocalPosition ):
-					EditorToolManager.SetSubTool( nameof( PositionEditorTool ) );
-					break;
+			return;
+		}
 
-				case nameof( GameObject.LocalRotation ):
-					EditorToolManager.SetSubTool( nameof( RotationEditorTool ) );
-					break;
+		switch ( property.Name )
+		{
+			case nameof(GameObject.LocalPosition):
+				EditorToolManager.SetSubTool( nameof(PositionEditorTool) );
+				break;
 
-				case nameof( GameObject.LocalScale ):
-					EditorToolManager.SetSubTool( nameof( ScaleEditorTool ) );
-					break;
-			}
+			case nameof(GameObject.LocalRotation):
+				EditorToolManager.SetSubTool( nameof(RotationEditorTool) );
+				break;
+
+			case nameof(GameObject.LocalScale):
+				EditorToolManager.SetSubTool( nameof(ScaleEditorTool) );
+				break;
 		}
 	}
 
@@ -198,7 +241,7 @@ public class TrackWidget : Widget
 	{
 		get
 		{
-			var canModify = MovieTrack.CanModify();
+			var canModify = !IsLocked;
 
 			var defaultColor = DopeSheet.Colors.ChannelBackground.Lighten( canModify ? 0f : 0.2f );
 			var hoveredColor = defaultColor.Lighten( 0.1f );
@@ -227,9 +270,9 @@ public class TrackWidget : Widget
 			UpdateChannelPosition();
 		}
 
-		if ( timeSinceInteraction < 2.0f )
+		if ( _timeSinceInteraction < 2.0f )
 		{
-			var delta = timeSinceInteraction.Relative.Remap( 2.0f, 0, 0, 1 );
+			var delta = _timeSinceInteraction.Relative.Remap( 2.0f, 0, 0, 1 );
 			Paint.SetBrush( Theme.Yellow.WithAlpha( delta ) );
 			Paint.DrawRect( new Rect( LocalRect.Right - 4, LocalRect.Top, 32, LocalRect.Height ) );
 			Update();
@@ -260,7 +303,7 @@ public class TrackWidget : Widget
 		menu = new Menu( this );
 		menu.AddOption( "Delete", "delete", RemoveTrack );
 
-		if ( MovieTrack.Children.Count > 0 )
+		if ( ProjectTrack.Children.Count > 0 )
 		{
 			menu.AddOption( "Delete Empty", "cleaning_services", RemoveEmptyChildren );
 			menu.AddSeparator();
@@ -273,13 +316,13 @@ public class TrackWidget : Widget
 
 	void RemoveTrack()
 	{
-		MovieTrack.Remove();
+		ProjectTrack.Remove();
 		TrackList.RebuildTracksIfNeeded();
 
-		Session.Current?.ClipModified();
+		Session?.ClipModified();
 	}
 
-	static bool RemoveEmptyChildTracks( MovieTrack track )
+	static bool RemoveEmptyChildTracks( IProjectTrack track )
 	{
 		var changed = false;
 
@@ -287,7 +330,7 @@ public class TrackWidget : Widget
 		{
 			changed |= RemoveEmptyChildTracks( child );
 
-			if ( child.Children.Count == 0 && child.Blocks.Count == 0 )
+			if ( child.Children.Count == 0 && child.IsEmpty )
 			{
 				child.Remove();
 				changed = true;
@@ -299,33 +342,33 @@ public class TrackWidget : Widget
 
 	void RemoveEmptyChildren()
 	{
-		if ( RemoveEmptyChildTracks( MovieTrack ) )
+		if ( RemoveEmptyChildTracks( ProjectTrack ) )
 		{
 			TrackList.RebuildTracksIfNeeded();
 
-			Session.Current?.ClipModified();
+			Session.ClipModified();
 		}
 	}
 
 	void LockChildren()
 	{
-		foreach ( var child in MovieTrack.Children )
+		foreach ( var child in ChildTracks )
 		{
-			child.ModifyEditorData( x => x with { Locked = true } );
+			child.IsLockedSelf = true;
 		}
 	}
 
 	void UnlockChildren()
 	{
-		foreach ( var child in MovieTrack.Children )
+		foreach ( var child in ChildTracks )
 		{
-			child.ModifyEditorData( x => x with { Locked = false } );
+			child.IsLockedSelf = false;
 		}
 	}
 
 	public void NoteInteraction()
 	{
-		timeSinceInteraction = 0;
+		_timeSinceInteraction = 0;
 		Update();
 	}
 }
@@ -343,16 +386,16 @@ file class LockButton : Button
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( Extensions.PaintSelectColor( DopeSheet.Colors.Background,
+		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor( DopeSheet.Colors.Background,
 			Theme.ControlBackground.Lighten( 0.5f ), Theme.Primary ) );
 		Paint.DrawRect( LocalRect, 4f );
 
 		Paint.SetPen( Theme.ControlText );
-		Paint.DrawIcon( LocalRect, TrackWidget.Locked ? "lock" : "lock_open", 12f );
+		Paint.DrawIcon( LocalRect, TrackWidget.IsLockedSelf ? "lock" : "lock_open", 12f );
 	}
 
 	protected override void OnClicked()
 	{
-		TrackWidget.Locked = !TrackWidget.Locked;
+		TrackWidget.IsLockedSelf = !TrackWidget.IsLockedSelf;
 	}
 }

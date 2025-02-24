@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Sandbox.MovieMaker;
-using static Sandbox.VertexLayout;
 
 namespace Editor.MovieMaker;
 
@@ -27,6 +26,22 @@ public record EditModeType( TypeDescription TypeDescription )
 
 public abstract class EditMode
 {
+	protected static EditMode? Focused
+	{
+		get
+		{
+			var widget = Application.FocusWidget;
+
+			while ( widget != null )
+			{
+				if ( widget is MovieEditor editor ) return editor.Session?.EditMode;
+				widget = widget.Parent;
+			}
+
+			return null;
+		}
+	}
+
 	protected readonly struct ToolbarHelper( Layout toolbar )
 	{
 		public IconButton AddToggle( string title, string icon, Func<bool> getState, Action<bool> setState )
@@ -72,7 +87,7 @@ public abstract class EditMode
 	}
 
 	public Session Session { get; private set; } = null!;
-	public MovieClip Clip => Session.Clip!;
+	public MovieProject Project => Session.Project;
 	protected DopeSheet DopeSheet { get; private set; } = null!;
 	protected ToolbarHelper Toolbar { get; private set; }
 
@@ -130,12 +145,14 @@ public abstract class EditMode
 	internal void Frame() => OnFrame();
 	protected virtual void OnFrame() { }
 
-	internal bool PreChange( MovieTrack track )
+	internal bool PreChange( IProjectTrack track )
 	{
-		if ( !track.CanModify() ) return false;
-		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } ) return false;
+		if ( Session.Binder.Get( track ) is not ITrackProperty { CanWrite: true } ) return false;
 
-		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
+		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
+		if ( trackWidget is not { CanEdit: true } ) return false;
+
+		if ( trackWidget.DopeSheetTrack is { } channel )
 		{
 			return OnPreChange( channel );
 		}
@@ -145,12 +162,14 @@ public abstract class EditMode
 
 	protected virtual bool OnPreChange( DopeSheetTrack track ) => false;
 
-	internal bool PostChange( MovieTrack track )
+	internal bool PostChange( IProjectTrack track )
 	{
-		if ( !track.CanModify() ) return false;
-		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } ) return false;
+		if ( Session.Binder.Get( track ) is not ITrackProperty { CanWrite: true } ) return false;
 
-		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
+		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
+		if ( trackWidget is not { CanEdit: true } ) return false;
+
+		if ( trackWidget.DopeSheetTrack is { } channel )
 		{
 			return OnPostChange( channel );
 		}
@@ -235,31 +254,27 @@ public abstract class EditMode
 		OnApplyFrame( time );
 	}
 
-	private readonly Dictionary<MovieTrack, List<IMovieBlock>> _previewBlocks = new();
+	private readonly Dictionary<IProjectPropertyTrack, List<IPropertyBlock>> _previewBlocks = new();
 
 	protected virtual void OnApplyFrame( MovieTime time )
 	{
-		Session.Player.ApplyFrame( time );
-
 		foreach ( var (track, list) in _previewBlocks )
 		{
 			foreach ( var block in list )
 			{
-				if ( block.TimeRange.Contains( time ) )
+				if ( block.TimeRange.Contains( time ) && Session.Binder.Get( track ) is {  } target )
 				{
-					Session.Player.ApplyFrame( track, block, time );
+					target.Value = block.GetValue( time );
 				}
 			}
 		}
-
-		Session.Player.UpdateModels( time );
 	}
 
-	public void SetPreviewBlocks( MovieTrack track, IEnumerable<IMovieBlock> blocks )
+	public void SetPreviewBlocks( IProjectPropertyTrack track, params IEnumerable<IPropertyBlock> blocks )
 	{
 		if ( !_previewBlocks.TryGetValue( track, out var list ) )
 		{
-			_previewBlocks.Add( track, list = new List<IMovieBlock>() );
+			_previewBlocks.Add( track, list = new List<IPropertyBlock>() );
 		}
 
 		list.Clear();
@@ -272,7 +287,7 @@ public abstract class EditMode
 		}
 	}
 
-	public void ClearPreviewBlocks( MovieTrack track )
+	public void ClearPreviewBlocks( IProjectPropertyTrack track )
 	{
 		_previewBlocks.Remove( track );
 
@@ -282,7 +297,7 @@ public abstract class EditMode
 		}
 	}
 
-	public IEnumerable<IMovieBlock> GetPreviewBlocks( MovieTrack track )
+	public IEnumerable<IPropertyBlock> GetPreviewBlocks( IProjectPropertyTrack track )
 	{
 		return _previewBlocks.GetValueOrDefault( track, [] );
 	}

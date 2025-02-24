@@ -50,6 +50,8 @@ internal sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnTrackAdded( DopeSheetTrack track )
 	{
+		if ( track.TrackWidget.Target is not ITrackProperty { CanWrite: true } ) return;
+
 		var keyframes = new TrackKeyframes( track, this );
 
 		_keyframeMap[track] = keyframes;
@@ -99,7 +101,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 		Session.SetCurrentPointer( time );
 		Session.ClearPreviewPointer();
 
-		if ( GetTrackAt( DopeSheet.ToScene( e.LocalPosition ) ) is { } track && GetKeyframes( track ) is { TrackWidget.Property.CanWrite: true } keyframes )
+		if ( GetTrackAt( DopeSheet.ToScene( e.LocalPosition ) ) is { } track && GetKeyframes( track ) is { } keyframes )
 		{
 			keyframes.AddKey( time );
 			WriteTracks( [keyframes] );
@@ -117,7 +119,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 
 		foreach ( var handle in SelectedHandles )
 		{
-			Copied.Add( new CopiedHandle( handle.Track.TrackWidget.MovieTrack.Id, handle.Time, handle.Value, handle.Interpolation ) );
+			Copied.Add( new CopiedHandle( handle.Track.TrackWidget.ProjectTrack.Id, handle.Time, handle.Value, handle.Interpolation ) );
 		}
 	}
 
@@ -133,7 +135,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 
 		foreach ( var entry in Copied )
 		{
-			var track = TrackList.Tracks.FirstOrDefault( x => x.MovieTrack.Id == entry.Track );
+			var track = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack.Id == entry.Track );
 			if ( track is null || GetKeyframes( track ) is not { } keyframes ) continue;
 
 			keyframes.AddKey( entry.Time + pastePointer, entry.Value, entry.Interpolation );
@@ -175,15 +177,10 @@ internal sealed partial class KeyframeEditMode : EditMode
 			return false;
 		}
 
-		if ( keyframes.TrackWidget.Property is not { CanWrite: true } )
-		{
-			return false;
-		}
-
 		// When about to change a track that doesn't have any keyframes, make a keyframe at t=0
 		// with the old value.
 
-		var movieTrack = track.TrackWidget.MovieTrack;
+		var movieTrack = (IProjectPropertyTrack)track.TrackWidget.ProjectTrack;
 
 		if ( movieTrack.Blocks.Count > 0 )
 		{
@@ -199,11 +196,6 @@ internal sealed partial class KeyframeEditMode : EditMode
 	protected override bool OnPostChange( DopeSheetTrack track )
 	{
 		if ( GetKeyframes( track ) is not { } keyframes )
-		{
-			return false;
-		}
-
-		if ( keyframes.TrackWidget.Property is not { CanWrite: true } )
 		{
 			return false;
 		}
@@ -242,8 +234,13 @@ internal sealed class TrackKeyframes : IDisposable
 		{ typeof(float), Theme.Yellow },
 	};
 
-	public KeyframeCurve? Curve { get; private set; }
+	public KeyframeCurve? Curve
+	{
+		get => throw new NotImplementedException();
+		set => throw new NotImplementedException();
+	}
 
+	public IProjectPropertyTrack ProjectTrack { get; }
 	public DopeSheetTrack DopeSheetTrack { get; }
 	public TrackWidget TrackWidget { get; }
 	public KeyframeEditMode EditMode { get; }
@@ -252,13 +249,14 @@ internal sealed class TrackKeyframes : IDisposable
 
 	public TrackKeyframes( DopeSheetTrack track, KeyframeEditMode editMode )
 	{
+		ProjectTrack = track.ProjectTrack;
 		DopeSheetTrack = track;
 		TrackWidget = track.TrackWidget;
 		EditMode = editMode;
 
 		HandleColor = Theme.Grey;
 
-		if ( HandleColors.TryGetValue( track.TrackWidget.MovieTrack.PropertyType, out var color ) )
+		if ( HandleColors.TryGetValue( track.TrackWidget.ProjectTrack.TargetType, out var color ) )
 		{
 			HandleColor = color;
 		}
@@ -276,9 +274,9 @@ internal sealed class TrackKeyframes : IDisposable
 		DopeSheetTrack.Update();
 	}
 
-	internal void AddKey( MovieTime time ) => AddKey( time, TrackWidget.Property!.Value );
+	internal void AddKey( MovieTime time ) => AddKey( time, TrackWidget.Target.Value );
 
-	internal bool UpdateKey( MovieTime time ) => UpdateKey( time, TrackWidget.Property!.Value );
+	internal bool UpdateKey( MovieTime time ) => UpdateKey( time, TrackWidget.Target.Value );
 
 	internal void AddKey( MovieTime time, object? value, InterpolationMode? interpolation = null )
 	{
@@ -320,9 +318,9 @@ internal sealed class TrackKeyframes : IDisposable
 			h.Destroy();
 		}
 
-		if ( TrackWidget.Property?.CanHaveKeyframes() ?? false )
+		if ( TrackWidget.Target is ITrackProperty { CanWrite: true } )
 		{
-			Curve = TrackWidget.MovieTrack.ReadKeyframes() ?? KeyframeCurve.Create( TrackWidget.MovieTrack.PropertyType );
+			Curve ??= KeyframeCurve.Create( TrackWidget.ProjectTrack.TargetType );
 
 			foreach ( var keyframe in Curve )
 			{
@@ -351,8 +349,6 @@ internal sealed class TrackKeyframes : IDisposable
 		{
 			Curve.SetKeyframe( handle.Time, handle.Value, handle.Interpolation );
 		}
-
-		TrackWidget.MovieTrack.WriteKeyframes( Curve, EditMode.Clip.DefaultSampleRate );
 
 		EditMode.Session.ClipModified();
 

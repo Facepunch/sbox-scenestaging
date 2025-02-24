@@ -74,7 +74,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		return true;
 	}
 
-	private MovieTrack? GetOrCreateTrack( GameObject go, string propertyPath )
+	private IProjectTrack? GetOrCreateTrack( GameObject go, string propertyPath )
 	{
 		if ( !CanRecord( typeof(GameObject), ref propertyPath ) ) return null;
 
@@ -82,10 +82,10 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		{
 			if ( Session.EditMode?.AllowTrackCreation is not true )
 			{
-				return Session.Player.GetTrack( go, propertyPath );
+				return Session.GetTrack( go, propertyPath );
 			}
 
-			var track = Session.Player.GetOrCreateTrack( go, propertyPath );
+			var track = Session.GetOrCreateTrack( go, propertyPath );
 
 			// Make sure the track widget exists for this track
 			RebuildTracksIfNeeded();
@@ -99,7 +99,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		}
 	}
 
-	private MovieTrack? GetOrCreateTrack( Component cmp, string propertyPath )
+	private IProjectTrack? GetOrCreateTrack( Component cmp, string propertyPath )
 	{
 		if ( !CanRecord( cmp.GetType(), ref propertyPath ) ) return null;
 
@@ -107,10 +107,10 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		{
 			if ( Session.EditMode?.AllowTrackCreation is not true )
 			{
-				return Session.Player.GetTrack( cmp, propertyPath );
+				return Session.GetTrack( cmp, propertyPath );
 			}
 
-			var track = Session.Player.GetOrCreateTrack( cmp, propertyPath );
+			var track = Session.GetOrCreateTrack( cmp, propertyPath );
 
 			// Make sure the track widget exists for this track
 			RebuildTracksIfNeeded();
@@ -124,7 +124,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		}
 	}
 
-	private bool PreChange( MovieTrack track )
+	private bool PreChange( IProjectTrack track )
 	{
 		if ( Session.EditMode?.PreChange( track ) is true )
 		{
@@ -135,7 +135,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		return false;
 	}
 
-	private bool PostChange( MovieTrack track )
+	private bool PostChange( IProjectTrack track )
 	{
 		if ( Session.EditMode?.PostChange( track ) is true )
 		{
@@ -146,7 +146,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		return false;
 	}
 
-	private void NoteInteraction( MovieTrack track )
+	private void NoteInteraction( IProjectTrack track )
 	{
 		var trackWidget = FindTrack( track );
 
@@ -154,6 +154,6 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 
 		trackWidget.NoteInteraction();
 
-		ScrollArea.MakeVisible( trackWidget );
+		_scrollArea.MakeVisible( trackWidget );
 	}
 }

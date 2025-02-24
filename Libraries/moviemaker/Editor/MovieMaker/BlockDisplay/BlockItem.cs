@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Text.Json;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker.BlockDisplays;
 
@@ -6,40 +7,48 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 public abstract partial class BlockItem : GraphicsItem
 {
-	private IMovieBlock? _block;
+	private IPropertyBlock? _block;
 
 	public new DopeSheetTrack Parent { get; private set; } = null!;
 
-	public IMovieBlock Block
+	public IPropertyBlock Block
 	{
 		get => _block ?? throw new InvalidOperationException();
 		set
 		{
-			if ( _block == value ) return;
+			if ( ReferenceEquals( _block, value ) ) return;
 
-			if ( _block is IPreviewMovieBlock oldBlock )
+			if ( _block is IDynamicBlock oldBlock )
 			{
 				oldBlock.Changed -= Block_Changed;
 			}
 
 			_block = value;
 
-			if ( _block is IPreviewMovieBlock newBlock )
+			try
+			{
+				ToolTip = value?.ToString();
+			}
+			catch ( Exception ex )
+			{
+				Log.Error( ex );
+			}
+
+			if ( _block is IDynamicBlock newBlock )
 			{
 				newBlock.Changed += Block_Changed;
 			}
 		}
 	}
 
-	protected MovieTrack Track => Parent.TrackWidget.MovieTrack;
-	protected IMovieBlockData Data => Block.Data;
+	protected IProjectTrack Track => Parent.TrackWidget.ProjectTrack;
 	protected MovieTimeRange TimeRange => Block.TimeRange;
 
-	protected int DataHash => HashCode.Combine( Data, TimeRange.Duration, Width );
+	protected int DataHash => HashCode.Combine( Block, TimeRange.Duration, Width );
 
 	protected string? DebugText { get; set; }
 
-	private void Initialize( DopeSheetTrack parent, IMovieBlock block )
+	private void Initialize( DopeSheetTrack parent, IPropertyBlock block )
 	{
 		base.Parent = Parent = parent;
 
@@ -58,7 +67,7 @@ public abstract partial class BlockItem : GraphicsItem
 
 	public void Layout()
 	{
-		var session = Parent.TrackWidget.TrackList.Session;
+		var session = Parent.TrackWidget.Session;
 
 		PrepareGeometryChange();
 
@@ -70,12 +79,10 @@ public abstract partial class BlockItem : GraphicsItem
 
 	protected override void OnPaint()
 	{
-		var canModify = Track.CanModify();
-
-		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground.Lighten( Track.CanModify() ? 0f : 0.2f ) );
+		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground.Lighten( Parent.TrackWidget.IsLocked ? 0.2f : 0f ) );
 		Paint.DrawRect( LocalRect );
 
-		if ( !canModify ) return;
+		if ( Parent.TrackWidget.IsLocked ) return;
 
 		Paint.ClearBrush();
 		Paint.SetPen( Color.White.WithAlpha( 0.1f ) );
@@ -94,6 +101,5 @@ internal interface IBlockItem<T>;
 
 public abstract class BlockItem<T> : BlockItem, IBlockItem<T>
 {
-	public ConstantData<T>? Constant => Data as ConstantData<T>;
-	public SamplesData<T>? Samples => Data as SamplesData<T>;
+	public new IPropertyBlock<T> Block => (IPropertyBlock<T>)base.Block;
 }

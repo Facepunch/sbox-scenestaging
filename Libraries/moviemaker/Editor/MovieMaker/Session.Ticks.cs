@@ -22,13 +22,13 @@ partial class Session
 	{
 		get
 		{
-			var majorTime = MovieTime.OneSecond;
+			MovieTime majorTime = 1d;
 
 			foreach ( var tickScale in TickScales )
 			{
 				if ( TimeToPixels( majorTime ) < MinMajorTickWidth )
 				{
-					majorTime = MovieTime.OneSecond * tickScale;
+					majorTime = 1d * tickScale;
 				}
 				else
 				{

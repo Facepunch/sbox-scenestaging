@@ -6,7 +6,7 @@ namespace Editor.MovieMaker;
 
 partial class Session
 {
-	private string CookiePrefix => $"moviemaker.{Player.ReferencedClip?.ResourceId.ToString() ?? Player.Id.ToString()}";
+	internal string CookiePrefix => $"moviemaker.{(Player.Resource as MovieResource)?.ResourceId.ToString() ?? Player.Id.ToString()}";
 
 	public T GetCookie<T>( string key, T fallback )
 	{
@@ -36,6 +36,12 @@ partial class Session
 		{
 			get => session.GetCookie( nameof(TimeScale), 1f );
 			set => session.SetCookie( nameof(TimeScale), value );
+		}
+
+		public int FrameRate
+		{
+			get => session.GetCookie( nameof( FrameRate ), 10 );
+			set => session.SetCookie( nameof( FrameRate ), value );
 		}
 
 		public bool FrameSnap
@@ -70,14 +76,15 @@ partial class Session
 	{
 		if ( IsEditorScene )
 		{
-			IsLooping = Cookies.IsLooping;
-			TimeScale = Cookies.TimeScale;
+			_isLooping = Cookies.IsLooping;
+			_timeScale = Cookies.TimeScale;
 		}
 
-		FrameSnap = Cookies.FrameSnap;
-		ObjectSnap = Cookies.ObjectSnap;
-		TimeOffset = Cookies.TimeOffset;
-		PixelsPerSecond = Cookies.PixelsPerSecond;
+		_frameRate = Cookies.FrameRate;
+		_frameSnap = Cookies.FrameSnap;
+		_objectSnap = Cookies.ObjectSnap;
+		_timeOffset = Cookies.TimeOffset;
+		_pixelsPerSecond = Cookies.PixelsPerSecond;
 
 		SmoothPan.Target = SmoothPan.Value = (float)TimeOffset.TotalSeconds;
 		SmoothZoom.Target = SmoothZoom.Value = PixelsPerSecond;

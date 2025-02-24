@@ -7,19 +7,23 @@ namespace Editor.MovieMaker;
 
 public partial class DopeSheetTrack : GraphicsItem
 {
+	public Session Session { get; }
+	public IProjectPropertyTrack ProjectTrack { get; }
 	public TrackWidget TrackWidget { get; }
 
 	private bool? _canCreatePreview;
 
-	private readonly List<IMovieBlock> _blocks = new();
+	private readonly List<IPropertyBlock> _blocks = new();
 	private readonly List<BlockItem> _blockItems = new();
 
 	public IReadOnlyList<BlockItem> BlockItems => _blockItems;
 
 	public bool Visible => TrackWidget.Visible;
 
-	public DopeSheetTrack( TrackWidget track )
+	public DopeSheetTrack( TrackWidget track, IProjectPropertyTrack propertyTrack )
 	{
+		Session = track.Session;
+		ProjectTrack = propertyTrack;
 		TrackWidget = track;
 		HoverEvents = true;
 	}
@@ -33,7 +37,7 @@ public partial class DopeSheetTrack : GraphicsItem
 
 		UpdateBlockItems();
 
-		TrackWidget.TrackList.Session.EditMode?.TrackLayout( this, r );
+		Session.EditMode?.TrackLayout( this, r );
 	}
 
 	private void ClearBlockItems()
@@ -63,16 +67,14 @@ public partial class DopeSheetTrack : GraphicsItem
 		}
 	}
 
-	private void GetBlocks( List<IMovieBlock> result )
+	private void GetBlocks( List<IPropertyBlock> result )
 	{
-		var track = TrackWidget.MovieTrack;
-
-		foreach ( var block in track.Blocks )
+		foreach ( var block in ProjectTrack.Blocks )
 		{
 			result.Add( block );
 		}
 
-		foreach ( var preview in TrackWidget.TrackList.Session.EditMode?.GetPreviewBlocks( track ) ?? [] )
+		foreach ( var preview in Session.EditMode?.GetPreviewBlocks( ProjectTrack ) ?? [] )
 		{
 			result.Add( preview );
 		}

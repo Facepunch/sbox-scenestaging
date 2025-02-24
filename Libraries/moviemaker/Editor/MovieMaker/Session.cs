@@ -1,4 +1,6 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Linq;
+using System.Text.Json;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -9,19 +11,25 @@ namespace Editor.MovieMaker;
 /// </summary>
 public sealed partial class Session
 {
-	public static Session? Current { get; internal set; }
+	public MovieEditor Editor { get; }
+	public MoviePlayer Player { get; }
+	public MovieProject Project { get; }
+	public IMovieResource Resource { get; }
 
-	public MoviePlayer Player { get; private set; } = null!;
-
-	internal MovieClip? Clip { get; private set; }
-	internal MovieEditor Editor { get; set; } = null!;
-
+	private int _frameRate;
 	private bool _frameSnap;
 	private bool _objectSnap;
 	private MovieTime _timeOffset;
 	private float _pixelsPerSecond;
 
 	public bool IsEditorScene => Player?.Scene?.IsEditor ?? true;
+	public TrackBinder Binder => Player.Binder;
+
+	public int FrameRate
+	{
+		get => _frameRate;
+		set => _frameRate = Cookies.FrameRate = value;
+	}
 
 	public bool FrameSnap
 	{
@@ -46,20 +54,6 @@ public sealed partial class Session
 		get => _pixelsPerSecond;
 		private set => _pixelsPerSecond = Cookies.PixelsPerSecond = value;
 	}
-
-	public MovieClipEditorData EditorData
-	{
-		get => Clip?.ReadEditorData() ?? new MovieClipEditorData();
-		set => Clip?.WriteEditorData( value );
-	}
-
-	public int FrameRate
-	{
-		get => EditorData.FrameRate ?? 10;
-		set => EditorData = EditorData with { FrameRate = value };
-	}
-
-	public int DefaultSampleRate => Clip!.DefaultSampleRate;
 
 	/// <summary>
 	/// Current time being edited. In play mode, this is the current playback time.
@@ -94,10 +88,12 @@ public sealed partial class Session
 	/// </summary>
 	public event Action? ViewChanged;
 
-	internal void SetPlayer( MoviePlayer player )
+	public Session( MovieEditor editor, MoviePlayer player )
 	{
+		Editor = editor;
 		Player = player;
-		Clip = player.MovieClip;
+		Resource = player.Resource ??= new EmbeddedMovieResource();
+		Project = Resource.EditorData?.Deserialize<MovieProject>( EditorJsonOptions ) ?? new MovieProject();
 	}
 
 	internal void SetEditMode( EditModeType? type )
@@ -118,6 +114,14 @@ public sealed partial class Session
 			Cookies.EditMode = type;
 		}
 	}
+
+	public IEnumerable<IProjectPropertyTrack> EditableTracks =>
+		Editor.TrackList.Tracks
+			.Where( x => x.CanEdit )
+			.Select( x => x.ProjectTrack )
+			.OfType<IProjectPropertyTrack>();
+
+	public bool CanEdit( IProjectTrack track ) => track is IPropertyTrack && (Editor.TrackList.FindTrack( track )?.CanEdit ?? false);
 
 	public MovieTime ScenePositionToTime( Vector2 scenePos, SnapFlag ignore = 0, params MovieTime[] snapOffsets ) 
 	{
@@ -226,9 +230,7 @@ public sealed partial class Session
 
 	public bool Frame()
 	{
-		if ( Clip is not { } clip ) return false;
-
-		PlaybackFrame( clip );
+		PlaybackFrame();
 
 		if ( SmoothZoom.Update( RealTime.Delta ) )
 		{
@@ -267,7 +269,7 @@ public sealed partial class Session
 
 	internal void ClipModified()
 	{
-		if ( Clip == Player.EmbeddedClip )
+		if ( Resource is EmbeddedMovieResource )
 		{
 			Player.Scene.Editor.HasUnsavedChanges = true;
 			return;
@@ -280,9 +282,12 @@ public sealed partial class Session
 	{
 		HasUnsavedChanges = false;
 
+		Resource.EditorData = Project.Serialize();
+		Resource.Clip = Project.Compile();
+
 		// If we're embedded, save the scene
 
-		if ( Clip == Player.EmbeddedClip )
+		if ( Resource is EmbeddedMovieResource )
 		{
 			Player.Scene.Editor.Save( false );
 			return;
@@ -290,14 +295,14 @@ public sealed partial class Session
 
 		// If we're referencing a .movie resource, save it to disk
 
-		if ( Clip != Player.ReferencedClip?.Clip )
+		if ( Resource is not MovieResource resource )
 		{
 			return;
 		}
 
-		if ( AssetSystem.FindByPath( Player.ReferencedClip!.ResourcePath ) is { } asset )
+		if ( AssetSystem.FindByPath( resource.ResourcePath ) is { } asset )
 		{
-			asset.SaveToDisk( Player.ReferencedClip );
+			asset.SaveToDisk( resource );
 		}
 	}
 
@@ -307,7 +312,7 @@ public sealed partial class Session
 		EditMode?.ViewChanged( Editor.TrackList.DopeSheet.VisibleRect );
 	}
 
-	public void TrackModified( MovieTrack track )
+	public void TrackModified( IProjectTrack track )
 	{
 		ClipModified();
 
