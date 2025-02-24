@@ -1,14 +1,15 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Linq;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
 [Title( "Motion Editor"), Icon( "brush" ), Order( 0 )]
-internal sealed partial class MotionEditMode : EditMode
+public sealed partial class MotionEditMode : EditMode
 {
 	private TimeSelection? _timeSelection;
-	private bool _additive;
+	private bool _newTimeSelection;
 
 	public TimeSelection? TimeSelection
 	{
@@ -20,105 +21,137 @@ internal sealed partial class MotionEditMode : EditMode
 		}
 	}
 
-	public MovieTime ChangeOffset { get; set; }
-
 	public InterpolationMode DefaultInterpolation { get; private set; } = InterpolationMode.QuadraticInOut;
-
-	public bool IsAdditive
-	{
-		get => _additive;
-
-		private set
-		{
-			_additive = value;
-			SelectionChanged();
-		}
-	}
 
 	private MovieTime? _selectionStartTime;
 
-	protected override void OnEnable()
+	public MotionEditMode()
 	{
-		Toolbar.AddSpacingCell();
-
-		foreach ( var interpolation in Enum.GetValues<InterpolationMode>() )
-		{
-			Toolbar.AddToggle( interpolation,
-				() => (TimeSelection?.FadeIn.Interpolation ?? DefaultInterpolation) == interpolation,
-				_ =>
-				{
-					DefaultInterpolation = interpolation;
-
-					if ( TimeSelection is { } timeSelection )
-					{
-						TimeSelection = timeSelection.WithInterpolation( interpolation );
-					}
-				} );
-		}
-
-		Toolbar.AddSpacingCell();
-		Toolbar.AddToggle( "Additive", "layers", () => IsAdditive, state => IsAdditive = state );
+		History = new EditModeHistory<MotionEditMode>( this );
 	}
 
-	private void ClearSelection()
+	protected override void OnEnable()
+	{
+		var undoGroup = Toolbar.AddGroup();
+
+		undoGroup.AddAction( "Undo", "undo", Session.Undo, () => Session.History.CanUndo );
+		undoGroup.AddAction( "Redo", "redo", Session.Redo, () => Session.History.CanRedo );
+
+		var clipboardGroup = Toolbar.AddGroup();
+
+		clipboardGroup.AddAction( "Cut", "content_cut", Cut, () => TimeSelection is not null );
+		clipboardGroup.AddAction( "Copy", "content_copy", Copy, () => TimeSelection is not null );
+		clipboardGroup.AddAction( "Paste", "content_paste", Paste, () => Clipboard is not null );
+
+		var editGroup = Toolbar.AddGroup();
+
+		editGroup.AddAction( "Insert", "keyboard_tab", Insert, () => TimeSelection is not null );
+		editGroup.AddAction( "Remove", "backspace", () => Delete( true ), () => TimeSelection is not null );
+		editGroup.AddAction( "Clear", "delete", () => Delete( false ), () => TimeSelection is not null );
+
+		var modificationTypes = EditorTypeLibrary
+			.GetTypesWithAttribute<MovieModificationAttribute>()
+			.OrderBy( x => x.Attribute.Order );
+
+		foreach ( var (type, attribute) in modificationTypes )
+		{
+			if ( type.IsAbstract || type.IsGenericType ) continue;
+
+			var toggle = editGroup.AddToggle( attribute.Title, attribute.Icon,
+				() => Modification?.GetType() == type.TargetType,
+				value =>
+				{
+					if ( value && TimeSelection is { } selection )
+					{
+						var modification = SetModification( type.TargetType, selection );
+
+						modification.Start( selection );
+					}
+					else if ( !value )
+					{
+						ClearChanges();
+					}
+				} );
+
+			toggle.Bind( nameof(IconButton.Enabled) )
+				.ReadOnly()
+				.From( () => TimeSelection is not null, (Action<bool>?)null );
+		}
+
+		var selectionGroup = Toolbar.AddGroup();
+
+		selectionGroup.AddInterpolationSelector( () => DefaultInterpolation, value =>
+		{
+			DefaultInterpolation = value;
+
+			if ( TimeSelection is { } timeSelection )
+			{
+				TimeSelection = timeSelection.WithInterpolation( value );
+			}
+		} );
+
+		SelectionChanged();
+	}
+
+	protected override void OnDisable()
 	{
 		ClearChanges();
 
 		TimeSelection = null;
 	}
 
-	protected override void OnDisable()
-	{
-		ClearSelection();
-	}
-
 	protected override void OnMousePress( MouseEvent e )
 	{
-		if ( !e.LeftMouseButton || !e.HasShift )
-		{
-			return;
-		}
+		if ( !e.LeftMouseButton ) return;
 
-		var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ) );
+		var scenePos = DopeSheet.ToScene( e.LocalPosition );
 
-		ClearSelection();
+		if ( DopeSheet.GetItemAt( scenePos ) is TimeSelectionItem && !e.HasShift ) return;
 
-		Session.SetPreviewPointer( time );
-
-		TimeSelection = new TimeSelection( time, DefaultInterpolation );
-
-		_selectionStartTime = time;
+		_selectionStartTime = Session.ScenePositionToTime( scenePos );
+		_newTimeSelection = false;
 
 		e.Accepted = true;
-		return;
 	}
 
 	protected override void OnMouseMove( MouseEvent e )
 	{
-		if ( (e.ButtonState & MouseButtons.Left) != 0 && e.HasShift
-			&& _selectionStartTime is { } dragStartTime )
-		{
-			var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ), ignore: SnapFlag.Selection );
-			var (minTime, maxTime) = Session.VisibleTimeRange;
+		if ( (e.ButtonState & MouseButtons.Left) == 0 ) return;
+		if ( _selectionStartTime is not { } dragStartTime ) return;
 
-			if ( time < minTime ) time = MovieTime.Zero;
-			if ( time > maxTime ) time = Session.Clip!.Duration;
+		e.Accepted = true;
 
-			TimeSelection = new TimeSelection( (MovieTime.Min( time, dragStartTime ), MovieTime.Max( time, dragStartTime )), DefaultInterpolation );
-		}
+		var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ), ignore: SnapFlag.Selection );
+
+		// Only create a time selection when mouse has moved enough
+
+		if ( time == dragStartTime && TimeSelection is null ) return;
+
+		var (minTime, maxTime) = Session.VisibleTimeRange;
+
+		if ( time < minTime ) time = MovieTime.Zero;
+		if ( time > maxTime ) time = Session.Project!.Duration;
+
+		TimeSelection = new TimeSelection( (MovieTime.Min( time, dragStartTime ), MovieTime.Max( time, dragStartTime )), DefaultInterpolation );
+		_newTimeSelection = true;
+
+		Session.SetPreviewPointer( time );
 	}
 
 	protected override void OnMouseRelease( MouseEvent e )
 	{
-		if ( _selectionStartTime is not null && TimeSelection is { } selection )
-		{
-			_selectionStartTime = null;
+		if ( _selectionStartTime is null ) return;
+		_selectionStartTime = null;
 
-			var timeRange = selection.PeakTimeRange.Clamp( Session.VisibleTimeRange );
+		if ( !_newTimeSelection ) return;
+		_newTimeSelection = false;
 
-			Session.SetCurrentPointer( MovieTime.FromTicks( (timeRange.Start.Ticks + timeRange.End.Ticks) / 2 ) );
-			Session.ClearPreviewPointer();
-		}
+		if ( TimeSelection is not { } selection ) return;
+
+		var timeRange = selection.PeakTimeRange.Clamp( Session.VisibleTimeRange );
+
+		Session.SetCurrentPointer( MovieTime.FromTicks( (timeRange.Start.Ticks + timeRange.End.Ticks) / 2 ) );
+		Session.ClearPreviewPointer();
 	}
 
 	protected override void OnMouseWheel( WheelEvent e )

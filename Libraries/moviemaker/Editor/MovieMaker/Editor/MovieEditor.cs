@@ -1,18 +1,17 @@
-﻿using Sandbox;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 using System.Linq;
 using System.Reflection;
 
 namespace Editor.MovieMaker;
 
+#nullable enable
 
-public class MovieEditor : Widget
+public partial class MovieEditor : Widget
 {
-	public TrackListWidget TrackList { get; private set; }
-	public ToolbarWidget Toolbar { get; private set; }
+	public Session? Session { get; private set; }
 
-
-	public Session Session { get; private set; }
+	public ListPanel? ListPanel { get; private set; }
+	public DopeSheetPanel? DopeSheetPanel { get; private set; }
 
 	public MovieEditor( Widget parent ) : base( parent )
 	{
@@ -29,36 +28,42 @@ public class MovieEditor : Widget
 
 	public void Initialize( MoviePlayer player )
 	{
-		Log.Info( $"Initialize: {player.GameObject.Name}" );
+		Session = new Session( this, player );
+
+		player.Clip = Session.Project;
 
 		Layout.Clear( true );
 
-		if ( player.MovieClip is null )
-		{
-			// Default to an embedded clip, rather than a resource file
+		var splitter = new Splitter( this );
 
-			player.EmbeddedClip ??= new MovieClip();
-		}
+		Layout.Add( splitter );
 
-		Session = new Session { Editor = this };
-		Session.SetPlayer( player );
-		Session.Current = Session;
+		ListPanel = new ListPanel( this, Session );
+		DopeSheetPanel = new DopeSheetPanel( this, Session );
 
-		Layout?.Clear( true );
-		Toolbar = Layout.Add( new ToolbarWidget( this ) );
-		TrackList = Layout.Add( new TrackListWidget( this ) );
+		splitter.AddWidget( ListPanel );
+		splitter.AddWidget( DopeSheetPanel );
+
+		splitter.SetCollapsible( 0, false );
+		splitter.SetStretch( 0, 1 );
+		splitter.SetCollapsible( 1, false );
+		splitter.SetStretch( 1, 3 );
 
 		Session.RestoreFromCookies();
 	}
 
 	void CloseSession()
 	{
-		Log.Info( "Close session" );
-
 		Layout.Clear( true );
+
+		if ( Session is { } session )
+		{
+			session.Player.Clip = session.Player.Resource?.Compiled;
+		}
+
 		Session = null;
-		TrackList = null;
-		Toolbar = null;
+		ListPanel = null;
+		DopeSheetPanel = null;
 
 		CreateStartupHelper();
 	}
@@ -131,22 +136,34 @@ public class MovieEditor : Widget
 		Session?.EditMode?.Paste();
 	}
 
+	[Shortcut( "timeline.backspace", "BACKSPACE" )]
+	public void OnBackspace()
+	{
+		Session?.EditMode?.Backspace();
+	}
+
 	[Shortcut( "timeline.delete", "DEL" )]
 	public void OnDelete()
 	{
-		Session?.EditMode?.Delete( false );
-	}
-
-	[Shortcut( "timeline.shiftdelete", "SHIFT+DEL" )]
-	public void OnShiftDelete()
-	{
-		Session?.EditMode?.Delete( true );
+		Session?.EditMode?.Delete();
 	}
 
 	[Shortcut( "timeline.insert", "TAB" )]
 	public void OnInsert()
 	{
 		Session?.EditMode?.Insert();
+	}
+
+	[Shortcut( "editor.undo", "CTRL+Z" )]
+	public void OnUndo()
+	{
+		Session?.Undo();
+	}
+
+	[Shortcut( "editor.redo", "CTRL+Y" )]
+	public void OnRedo()
+	{
+		Session?.Redo();
 	}
 
 	int contextHash;
@@ -167,7 +184,7 @@ public class MovieEditor : Widget
 		foreach ( var player in allplayers )
 		{
 			hash.Add( player );
-			hash.Add( player.MovieClip );
+			hash.Add( player.Resource );
 		}
 
 		var hc = hash.ToHashCode();
@@ -182,7 +199,7 @@ public class MovieEditor : Widget
 		if ( Session is not null )
 		{
 			// Whatever we were editing doesn't exist anymore!
-			if ( playersAvailable.All( x => x.MovieClip != Session.Clip || x != Session.Player ) )
+			if ( playersAvailable.All( x => x.Resource != Session.Resource || x != Session.Player ) )
 			{
 				CloseSession();
 			}
@@ -195,8 +212,8 @@ public class MovieEditor : Widget
 			Initialize( playersAvailable.First() );
 		}
 
-		Toolbar.UpdatePlayers( playersAvailable );
-		Toolbar.UpdateClips();
+		ListPanel?.UpdatePlayers( Session, playersAvailable );
+		ListPanel?.UpdateSources( Session );
 	}
 
 	public void Switch( MoviePlayer player )
@@ -220,40 +237,44 @@ public class MovieEditor : Widget
 
 	public void SwitchToEmbedded()
 	{
-		if ( Session.Clip == Session.Player.EmbeddedClip ) return;
+		if ( Session.Resource is EmbeddedMovieResource ) return;
 
-		Session.Player.EmbeddedClip = Session.Clip?.Clone();
+		Session.Player.Resource = new EmbeddedMovieResource
+		{
+			Compiled = Session.Resource.Compiled,
+			EditorData = Session.Project.Serialize()
+		};
 
 		Switch( Session.Player );
 	}
 
-	public void SwitchFile( MovieFile file )
+	public void SwitchResource( MovieResource resource )
 	{
-		if ( Session.Clip == file.Clip ) return;
+		if ( Session.Resource == resource ) return;
 
-		if ( Session.Clip == Session.Player.EmbeddedClip && Session.Clip?.TrackCount > 0 )
+		if ( Session.Resource is EmbeddedMovieResource && !Session.Project.IsEmpty )
 		{
 			Dialog.AskConfirm( () =>
 			{
-				ConfirmedSwitchFile( file );
+				ConfirmedSwitchResource( resource );
 			}, question: "Switching to a clip resource will cause your embedded clip to be lost. Are you sure?" );
 		}
 		else
 		{
-			ConfirmedSwitchFile( file );
+			ConfirmedSwitchResource( resource );
 		}
 	}
 
-	private void ConfirmedSwitchFile( MovieFile file )
+	private void ConfirmedSwitchResource( MovieResource resource )
 	{
-		Session.Player.ReferencedClip = file;
+		Session.Player.Resource = resource;
 
 		Switch( Session.Player );
 	}
 
 	public void SaveFileAs()
 	{
-		var extension = typeof(MovieFile).GetCustomAttribute<GameResourceAttribute>()!.Extension;
+		var extension = typeof(MovieResource).GetCustomAttribute<GameResourceAttribute>()!.Extension;
 
 		var fd = new FileDialog( null );
 		fd.Title = $"Save Clip As..";
@@ -267,11 +288,11 @@ public class MovieEditor : Widget
 			return;
 
 		var sceneAsset = AssetSystem.CreateResource( extension, fd.SelectedFile );
-		var file = new MovieFile { Clip = Session.Clip?.Clone() ?? new MovieClip() };
+		var file = new MovieResource { Compiled = Session.Project.Compile(), EditorData = Session.Project.Serialize() };
 
 		sceneAsset.SaveToDisk( file );
 
-		ConfirmedSwitchFile( file );
+		ConfirmedSwitchResource( file );
 	}
 }
 

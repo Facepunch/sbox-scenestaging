@@ -7,9 +7,9 @@ namespace Editor.MovieMaker;
 /// <summary>
 /// Describes a selected region of the timeline, including fade in / out.
 /// </summary>
-internal readonly record struct TimeSelection( MovieTimeRange PeakTimeRange, TimeSelection.Fade FadeIn, TimeSelection.Fade FadeOut )
+public readonly record struct TimeSelection( MovieTimeRange PeakTimeRange, TimeSelection.Fade FadeIn, TimeSelection.Fade FadeOut )
 {
-	internal readonly record struct Fade( MovieTime Duration, InterpolationMode Interpolation );
+	public readonly record struct Fade( MovieTime Duration, InterpolationMode Interpolation );
 
 	public static TimeSelection operator +( TimeSelection selection, MovieTime offset ) =>
 		selection with { PeakTimeRange = selection.PeakTimeRange + offset };
@@ -18,6 +18,15 @@ internal readonly record struct TimeSelection( MovieTimeRange PeakTimeRange, Tim
 
 	public TimeSelection( MovieTimeRange peakTimeRange, InterpolationMode interpolation )
 		: this( peakTimeRange, new Fade( MovieTime.Zero, interpolation ), new Fade( MovieTime.Zero, interpolation ) )
+	{
+
+	}
+
+	public TimeSelection( MovieTimeRange peakTimeRange, MovieTime fadeDuration,
+		InterpolationMode interpolationMode = InterpolationMode.Linear )
+		: this( peakTimeRange,
+			new Fade( fadeDuration, interpolationMode ),
+			new Fade( fadeDuration, interpolationMode ) )
 	{
 
 	}
