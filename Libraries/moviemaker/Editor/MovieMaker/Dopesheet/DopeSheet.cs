@@ -1,10 +1,16 @@
-﻿using System.Linq;
+﻿using System.Collections.Immutable;
+using System.Linq;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
+#nullable enable
+
 public class DopeSheet : GraphicsView
 {
+	public const float TrackHeight = 32f;
+	public const float RootTrackSpacing = 8f;
+
 	public static class Colors
 	{
 		public static Color Background => Theme.ControlBackground.Lighten( 0.1f );
@@ -12,10 +18,11 @@ public class DopeSheet : GraphicsView
 		public static Color HandleSelected => Theme.White;
 	}
 
-	private TrackListWidget tracklist;
-	private Session Session => tracklist.Session;
+	public Session Session { get; }
 
-	GridItem gridItem;
+	private readonly BackgroundItem _backgroundItem;
+	private readonly GridItem _gridItem;
+	private readonly Dictionary<ITrackView, DopeSheetTrack> _tracks = new();
 
 	private readonly CurrentPointerItem _currentPointerItem;
 	private readonly CurrentPointerItem _previewPointerItem;
@@ -27,10 +34,7 @@ public class DopeSheet : GraphicsView
 	{
 		get
 		{
-			var screenRect = tracklist.ScreenRect;
-
-			screenRect.Left = tracklist.RightWidget.ScreenRect.Left;
-
+			var screenRect = ScreenRect;
 			var topLeft = FromScreen( screenRect.TopLeft );
 			var bottomRight = FromScreen( screenRect.BottomRight );
 
@@ -38,13 +42,16 @@ public class DopeSheet : GraphicsView
 		}
 	}
 
-	public DopeSheet( TrackListWidget timelineTracklist )
+	public DopeSheet( Session session )
 	{
-		this.tracklist = timelineTracklist;
+		Session = session;
 		MinimumWidth = 256;
 
-		gridItem = new GridItem();
-		Add( gridItem );
+		_backgroundItem = new BackgroundItem( Session );
+		Add( _backgroundItem );
+
+		_gridItem = new GridItem( Session );
+		Add( _gridItem );
 
 		_currentPointerItem = new CurrentPointerItem( Theme.Yellow );
 		Add( _currentPointerItem );
@@ -52,9 +59,9 @@ public class DopeSheet : GraphicsView
 		_previewPointerItem = new CurrentPointerItem( Theme.Blue );
 		Add( _previewPointerItem );
 
-		ScrubBarTop = new ScrubberItem( timelineTracklist.Session.Editor, true ) { Size = new Vector2( Width, 24f ) };
+		ScrubBarTop = new ScrubberItem( Session.Editor, true ) { Size = new Vector2( Width, 24f ) };
 		Add( ScrubBarTop );
-		ScrubBarBottom = new ScrubberItem( timelineTracklist.Session.Editor, false ) { Size = new Vector2( Width, 24f ) };
+		ScrubBarBottom = new ScrubberItem( Session.Editor, false ) { Size = new Vector2( Width, 24f ) };
 		Add( ScrubBarBottom );
 
 		Session.PointerChanged += UpdateCurrentPosition;
@@ -64,7 +71,7 @@ public class DopeSheet : GraphicsView
 		FocusMode = FocusMode.TabOrClickOrWheel;
 
 		var bg = new Pixmap( 8 );
-		bg.Clear( DopeSheet.Colors.Background );
+		bg.Clear( Colors.Background );
 
 		SetBackgroundImage( bg );
 
@@ -73,7 +80,7 @@ public class DopeSheet : GraphicsView
 
 	public override void OnDestroyed()
 	{
-		base.OnDestroyed();
+		DeleteAllItems();
 
 		Session.PointerChanged -= UpdateCurrentPosition;
 		Session.PreviewChanged -= UpdatePreviewPosition;
@@ -87,41 +94,52 @@ public class DopeSheet : GraphicsView
 	public void Frame()
 	{
 		UpdateScrubBars();
-
-		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.FrameRate );
-
-		if ( state != _lastState )
-		{
-			UpdateTracks();
-			Update();
-		}
+		UpdateTracksIfNeeded();
 
 		var visibleRectHash = VisibleRect.GetHashCode();
 
-		if ( visibleRectHash != _lastVisibleRectHash || state != _lastState )
+		if ( visibleRectHash != _lastVisibleRectHash )
 		{
 			Session.DispatchViewChanged();
 		}
 
-		_lastState = state;
 		_lastVisibleRectHash = visibleRectHash;
 
-		if ( (Application.KeyboardModifiers & KeyboardModifiers.Shift) == 0 && Session.PreviewPointer is not null )
+		if ( Session.PreviewPointer is not null
+			&& (Application.KeyboardModifiers & KeyboardModifiers.Shift) == 0
+			&& (Application.MouseButtons & MouseButtons.Left) == 0 )
 		{
 			Session.ClearPreviewPointer();
 		}
 	}
 
+	private void UpdateTracksIfNeeded()
+	{
+		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.FrameRate, Session.TrackList.StateHash );
+
+		if ( state == _lastState ) return;
+
+		_lastState = state;
+
+		UpdateTracks();
+		Update();
+	}
+
 	private void UpdateView()
 	{
+		UpdateSceneFrame();
 		UpdateScrubBars();
 
 		UpdateCurrentPosition( Session.CurrentPointer );
 		UpdatePreviewPosition( Session.PreviewPointer );
+
+		UpdateTracksIfNeeded();
 	}
 
 	private void UpdateScrubBars()
 	{
+		_backgroundItem.Update();
+
 		ScrubBarTop.PrepareGeometryChange();
 		ScrubBarBottom.PrepareGeometryChange();
 
@@ -167,10 +185,18 @@ public class DopeSheet : GraphicsView
 
 	void UpdateSceneFrame()
 	{
+		Session.TrackListViewHeight = Height - 64f;
+
 		var x = Session.TimeToPixels( Session.TimeOffset );
-		SceneRect = new Rect( x - 8, 0, Width - 4, Height - 4 ); // I don't know where the fuck this 4 comes from, but it stops it having some scroll
-		gridItem.SceneRect = SceneRect;
-		gridItem.Update();
+		SceneRect = new Rect( x - 8, Session.TrackListScrollPosition - Session.TrackListScrollOffset, Width - 4, Height - 4 ); // I don't know where the fuck this 4 comes from, but it stops it having some scroll
+
+		_backgroundItem.PrepareGeometryChange();
+		_backgroundItem.SceneRect = SceneRect;
+		_backgroundItem.Update();
+
+		_gridItem.PrepareGeometryChange();
+		_gridItem.SceneRect = SceneRect;
+		_gridItem.Update();
 
 		UpdateCurrentPosition( Session.CurrentPointer );
 		UpdatePreviewPosition( Session.PreviewPointer );
@@ -178,28 +204,39 @@ public class DopeSheet : GraphicsView
 
 	public void UpdateTracks()
 	{
-		var maxWidth = Session.TimeToPixels( tracklist.MaxTimeVisible );
-
 		UpdateSceneFrame();
 
-		foreach ( var track in tracklist.Tracks )
+		var allTracks = Session.TrackList.VisibleTracks
+			.ToHashSet();
+
+		var toRemove = _tracks.Keys
+			.Where( x => !allTracks.Contains( x ) )
+			.ToImmutableArray();
+
+		foreach ( var view in toRemove )
 		{
-			if ( track.Property is ISceneReferenceMovieProperty ) continue;
-
-			if ( track.DopeSheetTrack is null )
+			if ( _tracks.Remove( view, out var track ) )
 			{
-				track.DopeSheetTrack = new DopeSheetTrack( track );
-				Add( track.DopeSheetTrack );
-
-				Session.EditMode?.TrackAdded( track.DopeSheetTrack );
+				track.Destroy();
 			}
+		}
+
+		foreach ( var view in allTracks )
+		{
+			if ( _tracks.ContainsKey( view ) ) continue;
+
+			var track = new DopeSheetTrack( this, view );
+
+			_tracks[view] = track;
+
+			Add( track );
 		}
 
 		Update();
 
-		foreach ( var track in tracklist.Tracks )
+		foreach ( var track in _tracks.Values )
 		{
-			track.UpdateChannelPosition();
+			track.UpdateLayout();
 		}
 	}
 
@@ -211,15 +248,28 @@ public class DopeSheet : GraphicsView
 
 		if ( e.Accepted ) return;
 
-		if ( GetAncestor<TrackListWidget>().OnCanvasWheel( e ) )
+		// scoll
+		if ( e.HasShift )
 		{
+			Session.ScrollBy( -e.Delta / 10.0f * (Session.PixelsPerSecond / 10.0f), true );
 			e.Accept();
+			return;
 		}
 
-		return;
+		// zoom
+		if ( e.HasCtrl )
+		{
+			Session.Zoom( e.Delta / 10.0f, _lastMouseTime );
+			e.Accept();
+			return;
+		}
+
+		Session.TrackListScrollPosition -= e.Delta / 5f;
+		e.Accept();
 	}
 
 	private Vector2 _lastMouseLocalPos;
+	private MovieTime _lastMouseTime;
 
 	protected override void OnMouseMove( MouseEvent e )
 	{
@@ -229,13 +279,12 @@ public class DopeSheet : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Middle )
 		{
-			//var delta = Application.CursorDelta.x;
-			tracklist.ScrollBy( delta.x );
+			Session.ScrollBy( delta.x, false );
 		}
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), ignore: SnapFlag.PlayHead ) );
+			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
 		}
 
 		if ( e.HasShift )
@@ -246,8 +295,24 @@ public class DopeSheet : GraphicsView
 		}
 
 		_lastMouseLocalPos = e.LocalPosition;
+		_lastMouseTime = Session.PixelsToTime( ToScene( e.LocalPosition ).x );
 
 		Session.EditMode?.MouseMove( e );
+	}
+
+	public new GraphicsItem? GetItemAt( Vector2 scenePosition )
+	{
+		// TODO: Is there a nicer way?
+
+		var oldGridZIndex = _gridItem.ZIndex;
+
+		_gridItem.ZIndex = -1000;
+
+		var item = base.GetItemAt( scenePosition );
+
+		_gridItem.ZIndex = oldGridZIndex;
+
+		return item;
 	}
 
 	protected override void OnMousePress( MouseEvent e )
@@ -255,6 +320,12 @@ public class DopeSheet : GraphicsView
 		base.OnMousePress( e );
 
 		DragType = DragTypes.None;
+
+		var scenePos = ToScene( e.LocalPosition );
+
+		if ( GetItemAt( scenePos ) is { Selectable: true } ) return;
+
+		DeselectAll();
 
 		Session.EditMode?.MousePress( e );
 
@@ -268,7 +339,7 @@ public class DopeSheet : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), ignore: SnapFlag.PlayHead ) );
+			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
 			return;
 		}
 	}
@@ -278,6 +349,14 @@ public class DopeSheet : GraphicsView
 		base.OnMouseReleased( e );
 
 		Session.EditMode?.MouseRelease( e );
+	}
+
+	public void DeselectAll()
+	{
+		foreach ( var item in SelectedItems.ToArray() )
+		{
+			item.Selected = false;
+		}
 	}
 
 	protected override void OnKeyPress( KeyEvent e )
@@ -308,27 +387,29 @@ public class DopeSheet : GraphicsView
 
 		if ( mouseScenePos.y <= ScrubBarTop.SceneRect.Bottom || mouseScenePos.y >= ScrubBarBottom.SceneRect.Top )
 		{
-			snap.Add( SnapFlag.MinorTick, snap.Time.SnapToGrid( Session.MinorTick.Interval ), -2, force: true );
-			snap.Add( SnapFlag.MajorTick, snap.Time.SnapToGrid( Session.MajorTick.Interval ), -1 );
+			snap.Add( SnapFlag.MinorTick, snap.Time.Round( Session.MinorTick.Interval ), -2, force: true );
+			snap.Add( SnapFlag.MajorTick, snap.Time.Round( Session.MajorTick.Interval ), -1 );
 		}
 
-		if ( Session.EditMode?.PasteTimeRange is { } pasteRange )
+		if ( Session.EditMode?.SourceTimeRange is { } pasteRange )
 		{
 			snap.Add( SnapFlag.PasteBlock, pasteRange.Start );
 			snap.Add( SnapFlag.PasteBlock, pasteRange.End );
 		}
 
-		foreach ( var trackWidget in tracklist.Tracks )
+		foreach ( var dopeTrack in _tracks.Values )
 		{
-			if ( trackWidget.DopeSheetTrack is not { Visible: true } dopeTrack ) continue;
-			if ( !trackWidget.MovieTrack.CanModify() ) continue;
+			if ( dopeTrack.View == snap.Options.IgnoreTrack ) continue;
+			if ( dopeTrack.View.IsLocked ) continue;
 			if ( mouseScenePos.y < dopeTrack.SceneRect.Top ) continue;
 			if ( mouseScenePos.y > dopeTrack.SceneRect.Bottom ) continue;
 
-			foreach ( var cut in trackWidget.MovieTrack.Cuts )
+			foreach ( var block in dopeTrack.View.Blocks )
 			{
-				snap.Add( SnapFlag.TrackBlock, cut.Block.Start );
-				snap.Add( SnapFlag.TrackBlock, cut.Block.End );
+				if ( block == snap.Options.IgnoreBlock ) continue;
+
+				snap.Add( SnapFlag.TrackBlock, block.TimeRange.Start );
+				snap.Add( SnapFlag.TrackBlock, block.TimeRange.End );
 			}
 		}
 	}

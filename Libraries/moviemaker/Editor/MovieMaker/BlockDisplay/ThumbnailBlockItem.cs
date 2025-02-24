@@ -3,7 +3,7 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 #nullable enable
 
-public abstract class ThumbnailBlockItem<T> : BlockItem<T>
+public abstract class ThumbnailBlockItem<T> : PropertyBlockItem<T>
 {
 	protected abstract Pixmap? GetThumbnail();
 
@@ -21,7 +21,7 @@ public abstract class ThumbnailBlockItem<T> : BlockItem<T>
 public sealed class ResourceBlockItem<T> : ThumbnailBlockItem<T>
 	where T : Resource
 {
-	protected override Pixmap? GetThumbnail() => Constant?.Value is { ResourcePath: { } path }
+	protected override Pixmap? GetThumbnail() => Block.GetValue( Block.TimeRange.Start ) is { ResourcePath: { } path }
 		? AssetSystem.FindByPath( path )?.GetAssetThumb()
 		: null;
 }

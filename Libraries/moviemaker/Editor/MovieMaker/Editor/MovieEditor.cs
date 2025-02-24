@@ -1,18 +1,17 @@
-﻿using Sandbox;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 using System.Linq;
 using System.Reflection;
 
 namespace Editor.MovieMaker;
 
+#nullable enable
 
-public class MovieEditor : Widget
+public partial class MovieEditor : Widget
 {
-	public TrackListWidget TrackList { get; private set; }
-	public ToolbarWidget Toolbar { get; private set; }
+	public Session? Session { get; private set; }
 
-
-	public Session Session { get; private set; }
+	public ListPanel? ListPanel { get; private set; }
+	public DopeSheetPanel? DopeSheetPanel { get; private set; }
 
 	public MovieEditor( Widget parent ) : base( parent )
 	{
@@ -27,38 +26,47 @@ public class MovieEditor : Widget
 		}
 	}
 
-	public void Initialize( MoviePlayer player )
+	public void Initialize( Session session )
 	{
-		Log.Info( $"Initialize: {player.GameObject.Name}" );
+		Session = session;
+
+		if ( Session.Parent is null )
+		{
+			Session.Player.Clip = Session.Project;
+		}
 
 		Layout.Clear( true );
 
-		if ( player.MovieClip is null )
-		{
-			// Default to an embedded clip, rather than a resource file
+		var splitter = new Splitter( this );
 
-			player.EmbeddedClip ??= new MovieClip();
-		}
+		Layout.Add( splitter );
 
-		Session = new Session { Editor = this };
-		Session.SetPlayer( player );
-		Session.Current = Session;
+		ListPanel = new ListPanel( this, Session );
+		DopeSheetPanel = new DopeSheetPanel( this, Session );
 
-		Layout?.Clear( true );
-		Toolbar = Layout.Add( new ToolbarWidget( this ) );
-		TrackList = Layout.Add( new TrackListWidget( this ) );
+		splitter.AddWidget( ListPanel );
+		splitter.AddWidget( DopeSheetPanel );
+
+		splitter.SetCollapsible( 0, false );
+		splitter.SetStretch( 0, 1 );
+		splitter.SetCollapsible( 1, false );
+		splitter.SetStretch( 1, 3 );
 
 		Session.RestoreFromCookies();
 	}
 
 	void CloseSession()
 	{
-		Log.Info( "Close session" );
-
 		Layout.Clear( true );
+
+		if ( Session is { } session )
+		{
+			session.Player.Clip = session.Player.Resource?.Compiled;
+		}
+
 		Session = null;
-		TrackList = null;
-		Toolbar = null;
+		ListPanel = null;
+		DopeSheetPanel = null;
 
 		CreateStartupHelper();
 	}
@@ -131,16 +139,16 @@ public class MovieEditor : Widget
 		Session?.EditMode?.Paste();
 	}
 
+	[Shortcut( "timeline.backspace", "BACKSPACE" )]
+	public void OnBackspace()
+	{
+		Session?.EditMode?.Backspace();
+	}
+
 	[Shortcut( "timeline.delete", "DEL" )]
 	public void OnDelete()
 	{
-		Session?.EditMode?.Delete( false );
-	}
-
-	[Shortcut( "timeline.shiftdelete", "SHIFT+DEL" )]
-	public void OnShiftDelete()
-	{
-		Session?.EditMode?.Delete( true );
+		Session?.EditMode?.Delete();
 	}
 
 	[Shortcut( "timeline.insert", "TAB" )]
@@ -149,40 +157,30 @@ public class MovieEditor : Widget
 		Session?.EditMode?.Insert();
 	}
 
-	int contextHash;
+	[Shortcut( "editor.undo", "CTRL+Z" )]
+	public void OnUndo()
+	{
+		Session?.Undo();
+	}
 
-	List<MoviePlayer> playersAvailable = new();
+	[Shortcut( "editor.redo", "CTRL+Y" )]
+	public void OnRedo()
+	{
+		Session?.Redo();
+	}
 
 	/// <summary>
 	/// Look for any clips we can edit. If the clip we're editing has gone - stop editing it.
 	/// </summary>
 	void UpdateEditorContext()
 	{
-		HashCode hash = new HashCode();
-
 		if ( SceneEditorSession.Active?.Scene is not { } scene ) return;
 
-		var allplayers = scene.GetAllComponents<MoviePlayer>();
-
-		foreach ( var player in allplayers )
-		{
-			hash.Add( player );
-			hash.Add( player.MovieClip );
-		}
-
-		var hc = hash.ToHashCode();
-
-		if ( contextHash == hc ) return;
-		contextHash = hc;
-
-		playersAvailable.Clear();
-		playersAvailable.AddRange( allplayers );
-
 		// The current session exists
-		if ( Session is not null )
+		if ( Session is { } session )
 		{
 			// Whatever we were editing doesn't exist anymore!
-			if ( playersAvailable.All( x => x.MovieClip != Session.Clip || x != Session.Player ) )
+			if ( !session.Player.IsValid || session.Player.Scene != scene )
 			{
 				CloseSession();
 			}
@@ -191,18 +189,48 @@ public class MovieEditor : Widget
 		// session is null, lets load the first player
 		if ( Session is null )
 		{
-			if ( playersAvailable.Count == 0 ) return;
-			Initialize( playersAvailable.First() );
+			if ( scene.GetAllComponents<MoviePlayer>().FirstOrDefault() is { } player )
+			{
+				Switch( player );
+			}
 		}
-
-		Toolbar.UpdatePlayers( playersAvailable );
-		Toolbar.UpdateClips();
 	}
 
 	public void Switch( MoviePlayer player )
 	{
-		Initialize( player );
-		contextHash = default;
+		Initialize( new Session( this, player ) );
+	}
+
+	public void EnterSequence( MovieResource resource, MovieTransform transform, MovieTimeRange timeRange )
+	{
+		var timeOffset = transform.Inverse * Session!.TimeOffset;
+		var pixelsPerSecond = (float)(transform.Inverse.Scale.FrequencyScale * Session.PixelsPerSecond);
+
+		Session!.SetEditMode( null );
+		Initialize( new Session( Session!, resource, transform, timeRange ) );
+
+		Session.SetView( timeOffset, pixelsPerSecond );
+	}
+
+	public void ExitSequence()
+	{
+		if ( Session?.Parent is { } parent )
+		{
+			var timeOffset = Session.SequenceTransform * Session!.TimeOffset;
+			var pixelsPerSecond = (float)(Session.SequenceTransform.Scale.FrequencyScale * Session.PixelsPerSecond);
+
+			var resource = Session.Resource;
+
+			Session.Save();
+			Initialize( parent );
+
+			Session.SetView( timeOffset, pixelsPerSecond );
+
+			if ( resource is MovieResource movieResource )
+			{
+				Session.Project.RefreshSequenceTracks( movieResource );
+			}
+		}
 	}
 
 	public void CreateNew()
@@ -214,49 +242,55 @@ public class MovieEditor : Widget
 
 			SceneEditorSession.Active.Selection.Set( go );
 		}
-
-		contextHash = default;
 	}
 
 	public void SwitchToEmbedded()
 	{
-		if ( Session.Clip == Session.Player.EmbeddedClip ) return;
+		if ( Session!.Resource is EmbeddedMovieResource ) return;
 
-		Session.Player.EmbeddedClip = Session.Clip?.Clone();
+		Session.Player.Resource = new EmbeddedMovieResource
+		{
+			Compiled = Session.Resource.Compiled,
+			EditorData = Session.Project.Serialize()
+		};
 
 		Switch( Session.Player );
 	}
 
-	public void SwitchFile( MovieFile file )
+	public void SwitchResource( MovieResource resource )
 	{
-		if ( Session.Clip == file.Clip ) return;
+		if ( Session?.Root.Resource == resource ) return;
 
-		if ( Session.Clip == Session.Player.EmbeddedClip && Session.Clip?.TrackCount > 0 )
+		if ( Session is { Resource: EmbeddedMovieResource, Project.IsEmpty: false } )
 		{
 			Dialog.AskConfirm( () =>
 			{
-				ConfirmedSwitchFile( file );
+				ConfirmedSwitchResource( resource );
 			}, question: "Switching to a clip resource will cause your embedded clip to be lost. Are you sure?" );
 		}
 		else
 		{
-			ConfirmedSwitchFile( file );
+			ConfirmedSwitchResource( resource );
 		}
 	}
 
-	private void ConfirmedSwitchFile( MovieFile file )
+	private void ConfirmedSwitchResource( MovieResource resource )
 	{
-		Session.Player.ReferencedClip = file;
+		Session!.Player.Resource = resource;
 
 		Switch( Session.Player );
 	}
 
-	public void SaveFileAs()
+	public void SaveFileAs() => SaveAsDialog( "Save Movie As..",
+		() => new MovieResource { Compiled = Session!.Project.Compile(), EditorData = Session.Project.Serialize() },
+		ConfirmedSwitchResource );
+
+	public void SaveAsDialog( string title, Func<MovieResource> createResource, Action<MovieResource>? afterSave = null )
 	{
-		var extension = typeof(MovieFile).GetCustomAttribute<GameResourceAttribute>()!.Extension;
+		var extension = typeof(MovieResource).GetCustomAttribute<GameResourceAttribute>()!.Extension;
 
 		var fd = new FileDialog( null );
-		fd.Title = $"Save Clip As..";
+		fd.Title = title;
 		fd.Directory = Project.Current.GetAssetsPath();
 		fd.DefaultSuffix = $".{extension}";
 		fd.SetFindFile();
@@ -267,11 +301,10 @@ public class MovieEditor : Widget
 			return;
 
 		var sceneAsset = AssetSystem.CreateResource( extension, fd.SelectedFile );
-		var file = new MovieFile { Clip = Session.Clip?.Clone() ?? new MovieClip() };
+		var file = createResource();
 
 		sceneAsset.SaveToDisk( file );
 
-		ConfirmedSwitchFile( file );
+		afterSave?.Invoke( file );
 	}
 }
-

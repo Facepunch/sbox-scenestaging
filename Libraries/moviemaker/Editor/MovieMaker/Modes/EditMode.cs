@@ -1,6 +1,7 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
+using System.Threading.Channels;
 using Sandbox.MovieMaker;
-using static Sandbox.VertexLayout;
 
 namespace Editor.MovieMaker;
 
@@ -25,61 +26,30 @@ public record EditModeType( TypeDescription TypeDescription )
 	}
 }
 
-public abstract class EditMode
+public abstract partial class EditMode
 {
-	protected readonly struct ToolbarHelper( Layout toolbar )
+	protected static EditMode? Focused
 	{
-		public IconButton AddToggle( string title, string icon, Func<bool> getState, Action<bool> setState )
+		get
 		{
-			var btn = new IconButton( icon )
+			var widget = Application.FocusWidget;
+
+			while ( widget != null )
 			{
-				ToolTip = title,
-				IconSize = 16,
-				IsToggle = true,
-				Background = Color.Transparent,
-				BackgroundActive = Color.Transparent,
-				ForegroundActive = Theme.Primary
-			};
+				if ( widget is MovieEditor editor ) return editor.Session?.EditMode;
+				widget = widget.Parent;
+			}
 
-			btn.Bind( "IsActive" ).From( getState, setState );
-
-			toolbar.Add( btn );
-
-			return btn;
+			return null;
 		}
-
-		public IconButton AddToggle( InterpolationMode value, Func<bool> getState, Action<bool> setState )
-		{
-			var entry = EditorTypeLibrary.GetEnumDescription( typeof(InterpolationMode) )
-				.FirstOrDefault( x => x.IntegerValue == (long)value );
-
-			var btn = new InterpolationButton( value )
-			{
-				ToolTip = entry.Title ?? value.ToString().ToTitleCase(),
-				IconSize = 14f,
-				IsToggle = true,
-				ForegroundActive = Theme.Primary
-			};
-
-			btn.Bind( "IsActive" ).From( getState, setState );
-
-			toolbar.Add( btn );
-
-			return btn;
-		}
-
-		public void AddSpacingCell() => toolbar.AddSpacingCell( 16f );
 	}
 
 	public Session Session { get; private set; } = null!;
-	public MovieClip Clip => Session.Clip!;
+	public MovieProject Project => Session.Project;
 	protected DopeSheet DopeSheet { get; private set; } = null!;
-	protected ToolbarHelper Toolbar { get; private set; }
+	protected ToolbarWidget Toolbar { get; private set; } = null!;
 
-	public MovieTimeRange? PasteTimeRange { get; protected set; }
-
-	protected IEnumerable<GraphicsItem> SelectedItems => DopeSheet.SelectedItems;
-	protected TrackListWidget TrackList => Session.Editor.TrackList;
+	public MovieTimeRange? SourceTimeRange { get; protected set; }
 
 	/// <summary>
 	/// Can we create new tracks when properties are edited in the scene?
@@ -94,26 +64,16 @@ public abstract class EditMode
 	internal void Enable( Session session )
 	{
 		Session = session;
-		DopeSheet = session.Editor.TrackList.DopeSheet;
-		Toolbar = new( Session.Editor.Toolbar.EditModeControls );
+		DopeSheet = session.Editor.DopeSheetPanel!.DopeSheet;
+		Toolbar = session.Editor.DopeSheetPanel!.ToolBar;
 
 		OnEnable();
-
-		foreach ( var track in DopeSheet.Items.OfType<DopeSheetTrack>() )
-		{
-			OnTrackAdded( track );
-		}
 	}
 
 	protected virtual void OnEnable() { }
 
 	internal void Disable()
 	{
-		foreach ( var track in DopeSheet.Items.OfType<DopeSheetTrack>() )
-		{
-			OnTrackRemoved( track );
-		}
-
 		OnDisable();
 
 		Session = null!;
@@ -130,42 +90,13 @@ public abstract class EditMode
 	internal void Frame() => OnFrame();
 	protected virtual void OnFrame() { }
 
-	internal bool PreChange( MovieTrack track )
-	{
-		if ( !track.CanModify() ) return false;
-		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } ) return false;
+	internal bool PreChange( ITrackView view ) => OnPreChange( view );
 
-		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
-		{
-			return OnPreChange( channel );
-		}
+	protected virtual bool OnPreChange( ITrackView track ) => false;
 
-		return false;
-	}
+	internal bool PostChange( ITrackView view ) => OnPostChange( view );
 
-	protected virtual bool OnPreChange( DopeSheetTrack track ) => false;
-
-	internal bool PostChange( MovieTrack track )
-	{
-		if ( !track.CanModify() ) return false;
-		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } ) return false;
-
-		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
-		{
-			return OnPostChange( channel );
-		}
-
-		return false;
-	}
-
-	protected virtual bool OnPostChange( DopeSheetTrack track ) => false;
-
-	protected DopeSheetTrack? GetTrackAt( Vector2 scenePos )
-	{
-		return DopeSheet.Items
-			.OfType<DopeSheetTrack>()
-			.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) );
-	}
+	protected virtual bool OnPostChange( ITrackView track ) => false;
 
 	#region UI Events
 
@@ -194,23 +125,17 @@ public abstract class EditMode
 	internal void Paste() => OnPaste();
 	protected virtual void OnPaste() { }
 
-	internal void Delete( bool shift ) => OnDelete( shift );
-	protected virtual void OnDelete( bool shift ) { }
+	internal void Backspace() => OnBackspace();
+	protected virtual void OnBackspace() { }
+
+	internal void Delete() => OnDelete();
+	protected virtual void OnDelete() { }
 
 	internal void Insert() => OnInsert();
 	protected virtual void OnInsert() { }
 
-	internal void TrackAdded( DopeSheetTrack track ) => OnTrackAdded( track );
-	protected virtual void OnTrackAdded( DopeSheetTrack track ) { }
-
-	internal void TrackRemoved( DopeSheetTrack track ) => OnTrackRemoved( track );
-	protected virtual void OnTrackRemoved( DopeSheetTrack track ) { }
-
-	internal void TrackStateChanged( DopeSheetTrack track ) => OnTrackStateChanged( track );
-	protected virtual void OnTrackStateChanged( DopeSheetTrack track ) { }
-
-	internal void TrackLayout( DopeSheetTrack track, Rect rect ) => OnTrackLayout( track, rect );
-	protected virtual void OnTrackLayout( DopeSheetTrack track, Rect rect ) { }
+	internal void TrackStateChanged( ITrackView view ) => OnTrackStateChanged( view );
+	protected virtual void OnTrackStateChanged( ITrackView view ) { }
 
 	internal void ViewChanged( Rect viewRect ) => OnViewChanged( viewRect );
 	protected virtual void OnViewChanged( Rect viewRect ) { }
@@ -235,54 +160,55 @@ public abstract class EditMode
 		OnApplyFrame( time );
 	}
 
-	private readonly Dictionary<MovieTrack, List<IMovieBlock>> _previewBlocks = new();
+	private readonly Dictionary<IProjectPropertyTrack, List<IPropertyBlock>> _previewBlocks = new();
 
 	protected virtual void OnApplyFrame( MovieTime time )
 	{
-		Session.Player.ApplyFrame( time );
-
 		foreach ( var (track, list) in _previewBlocks )
 		{
 			foreach ( var block in list )
 			{
-				if ( block.TimeRange.Contains( time ) )
-				{
-					Session.Player.ApplyFrame( track, block, time );
-				}
+				if ( !block.TimeRange.Contains( time ) ) continue;
+				if ( Session.Binder.Get( track ) is not { } target ) continue;
+
+				target.Value = block.GetValue( time );
 			}
 		}
-
-		Session.Player.UpdateModels( time );
 	}
 
-	public void SetPreviewBlocks( MovieTrack track, IEnumerable<IMovieBlock> blocks )
+	public void SetPreviewBlocks( IProjectPropertyTrack track, IEnumerable<IPropertyBlock> blocks, MovieTime offset = default )
 	{
 		if ( !_previewBlocks.TryGetValue( track, out var list ) )
 		{
-			_previewBlocks.Add( track, list = new List<IMovieBlock>() );
+			_previewBlocks.Add( track, list = new List<IPropertyBlock>() );
 		}
+
+		PreviewBlockOffset = offset;
 
 		list.Clear();
 		list.AddRange( blocks );
 
-		if ( TrackList.FindTrack( track ) is { } trackWidget )
+		if ( Session.TrackList.Find( track ) is { } view )
 		{
-			trackWidget.NoteInteraction();
-			trackWidget.DopeSheetTrack?.UpdateBlockItems();
+			view.MarkValueChanged();
 		}
 	}
 
-	public void ClearPreviewBlocks( MovieTrack track )
+	public void ClearPreviewBlocks( IProjectPropertyTrack track )
 	{
+		PreviewBlockOffset = default;
+
 		_previewBlocks.Remove( track );
 
-		if ( TrackList.FindTrack( track ) is { } trackWidget )
+		if ( Session.TrackList.Find( track ) is { } view )
 		{
-			trackWidget.DopeSheetTrack?.UpdateBlockItems();
+			view.MarkValueChanged();
 		}
 	}
 
-	public IEnumerable<IMovieBlock> GetPreviewBlocks( MovieTrack track )
+	public MovieTime PreviewBlockOffset { get; private set; }
+
+	public IEnumerable<IPropertyBlock> GetPreviewBlocks( IProjectPropertyTrack track )
 	{
 		return _previewBlocks.GetValueOrDefault( track, [] );
 	}

@@ -13,7 +13,7 @@ partial class MotionEditMode
 		/// Capture time selection before being dragged so we can revert etc.
 		/// </summary>
 		protected TimeSelection? OriginalSelection { get; private set; }
-		protected MovieTime? OriginalChangeOffset { get; private set; }
+		protected IModificationOptions? OriginalModificationOptions { get; private set; }
 
 		public MotionEditMode EditMode { get; }
 
@@ -29,7 +29,7 @@ partial class MotionEditMode
 			base.OnMousePressed( e );
 
 			OriginalSelection = EditMode.TimeSelection;
-			OriginalChangeOffset = EditMode.ChangeOffset;
+			OriginalModificationOptions = EditMode.Modification?.Options;
 		}
 
 		protected override void OnMouseReleased( GraphicsMouseEvent e )
@@ -45,8 +45,6 @@ partial class MotionEditMode
 	/// </summary>
 	private sealed class TimeSelectionPeakItem : TimeSelectionItem
 	{
-		public override Rect BoundingRect => base.BoundingRect.Grow( 64f, 0f );
-
 		public TimeSelectionPeakItem( MotionEditMode editMode )
 			: base( editMode )
 		{
@@ -58,15 +56,20 @@ partial class MotionEditMode
 
 		protected override void OnMoved()
 		{
-			if ( OriginalSelection is not { } selection || OriginalChangeOffset is not { } changeOffset ) return;
+			if ( OriginalSelection is not { } selection ) return;
 
 			var origTime = selection.PeakStart;
-			var startTime = EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection | SnapFlag.PasteBlock,
-				selection.TotalStart - origTime, selection.PeakEnd - origTime, selection.TotalEnd - origTime );
+			var snapOptions = new SnapOptions( SnapFlag.Selection | SnapFlag.PasteBlock,
+				SnapOffsets: [selection.TotalStart - origTime, selection.PeakEnd - origTime, selection.TotalEnd - origTime] );
+			var startTime = EditMode.Session.ScenePositionToTime( Position, snapOptions );
 
 			startTime = MovieTime.Max( selection.FadeIn.Duration, startTime );
 
-			EditMode.ChangeOffset = startTime + (changeOffset - selection.PeakStart);
+			if ( OriginalModificationOptions is ITranslatableOptions translatable )
+			{
+				EditMode.Modification!.Options = translatable.WithOffset( startTime + translatable.Offset - selection.PeakStart );
+			}
+
 			EditMode.TimeSelection = selection with { PeakTimeRange = (startTime, startTime + selection.PeakTimeRange.Duration) };
 		}
 
@@ -188,13 +191,15 @@ partial class MotionEditMode
 
 		protected override void OnMoved()
 		{
-			if ( OriginalSelection is not { } selection || OriginalChangeOffset is not { } changeOffset ) return;
+			if ( OriginalSelection is not { } selection ) return;
 
-			var time = _moveWholeSelection is true
-				? EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection, -selection.FadeIn.Duration, selection.FadeOut.Duration )
-				: EditMode.Session.ScenePositionToTime( Position,
-					ignore: Kind == FadeKind.FadeIn ? SnapFlag.SelectionStart : SnapFlag.SelectionEnd,
-					Kind == FadeKind.FadeIn ? -selection.FadeIn.Duration : selection.FadeOut.Duration );
+			var snapOptions = _moveWholeSelection is true
+				? new SnapOptions( SnapFlag.Selection,
+					SnapOffsets: [-selection.FadeIn.Duration, selection.FadeOut.Duration] )
+				: new SnapOptions( Kind == FadeKind.FadeIn ? SnapFlag.SelectionStart : SnapFlag.SelectionEnd,
+					SnapOffsets: [Kind == FadeKind.FadeIn ? -selection.FadeIn.Duration : selection.FadeOut.Duration] );
+
+			var time = EditMode.Session.ScenePositionToTime( Position, snapOptions );
 
 			if ( time != selection.PeakStart )
 			{
@@ -207,7 +212,11 @@ partial class MotionEditMode
 			{
 				time = MovieTime.Max( selection.FadeIn.Duration, time );
 
-				EditMode.ChangeOffset = time + (changeOffset - selection.PeakStart);
+				if ( OriginalModificationOptions is ITranslatableOptions translatable )
+				{
+					EditMode.Modification!.Options = translatable.WithOffset( time + translatable.Offset - selection.PeakStart );
+				}
+
 				EditMode.TimeSelection = selection.WithTimes(
 					totalStart: time - selection.FadeIn.Duration, peakStart: time,
 					peakEnd: time, totalEnd: time + selection.FadeOut.Duration );
@@ -310,7 +319,7 @@ partial class MotionEditMode
 		protected override void OnMoved()
 		{
 			var ignore = (SnapFlag)((int)SnapFlag.SelectionTotalStart << (int)_minIndex);
-			var time = EditMode.Session.ScenePositionToTime( Position, ignore: ignore );
+			var time = EditMode.Session.ScenePositionToTime( Position, ignore );
 
 			if ( OriginalSelection is not { } value ) return;
 

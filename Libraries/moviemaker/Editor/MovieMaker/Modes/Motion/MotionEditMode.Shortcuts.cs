@@ -1,11 +1,13 @@
 ﻿
+using System.Linq;
+
 namespace Editor.MovieMaker;
 
 #nullable enable
 
 partial class MotionEditMode
 {
-	private static MotionEditMode? Current => Session.Current?.EditMode as MotionEditMode;
+	private static MotionEditMode? Current => Focused as MotionEditMode;
 
 	[Shortcut( "motion-edit.interp-none", "0", typeof( MovieEditor ) )]
 	public static void Shortcut_SetInterpolationNone() => Current?.SetInterpolation( InterpolationMode.None );
@@ -33,7 +35,7 @@ partial class MotionEditMode
 		}
 		else if ( inst.TimeSelection is not null )
 		{
-			inst.ClearSelection();
+			inst.TimeSelection = null;
 		}
 	}
 

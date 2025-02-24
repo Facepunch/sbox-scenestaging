@@ -5,7 +5,8 @@
       "__guid": "4b6c2e79-4728-487f-b0d8-9af8d2c1b609",
       "Flags": 0,
       "Name": "Camera",
-      "Position": "699.5648,-25.27259,960.2068",
+      "Position": "-79.24995,-432.9088,1096.093",
+      "Rotation": "0.001380271,0.0174719,-0.07874178,0.9967409",
       "Tags": "maincamera",
       "Enabled": true,
       "Components": [
@@ -62,67 +63,50 @@
       "Children": []
     },
     {
-      "__guid": "d2479fa3-8710-4ecd-889c-f3c05203ccab",
+      "__guid": "d1779c22-e5aa-4396-a0fb-2945d3bc72b5",
       "Flags": 0,
-      "Name": "Movie Player",
-      "Position": "-752.1801,-484.5197,956.8084",
+      "Name": "Scene Information",
       "Enabled": true,
       "Components": [
         {
-          "__type": "Sandbox.MovieMaker.MoviePlayer",
-          "__guid": "e68ac2d3-ca2f-4a1a-96b0-d53d0343af39",
-          "EmbeddedClip": null,
-          "IsLooping": false,
-          "IsPlaying": false,
-          "Mapping": [
-            {
-              "TrackId": "11d611af-fa69-480b-8475-b99598908ae9",
-              "GameObject": "920f02d6-5d5b-47d9-814e-956a0ffde1e7"
-            },
-            {
-              "TrackId": "1baedefe-2655-47d3-b97c-66abde8a48af",
-              "GameObject": "4b6c2e79-4728-487f-b0d8-9af8d2c1b609"
-            },
-            {
-              "TrackId": "9ac58f4a-309b-4af1-a96b-a1e7b7fdde43",
-              "GameObject": "6071cf1b-16df-4fc7-ae75-7dd42995e377"
-            },
-            {
-              "TrackId": "ffc07ec1-c4b1-41c4-b884-9ade871cadee",
-              "Component": "19737d8e-cb8e-40ab-9420-c37db251141d"
-            }
-          ],
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "3482be1a-057a-4fd8-a880-b1ede9738245",
+          "Author": null,
+          "Changes": "",
+          "Description": "",
+          "Group": "Movie Maker",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "PositionSeconds": 0,
-          "ReferencedClip": "movieclips/recording.movie",
-          "TimeScale": 1
+          "SceneTags": "",
+          "Title": "Gameplay Recording",
+          "Version": null
         }
       ]
     },
     {
-      "__guid": "920f02d6-5d5b-47d9-814e-956a0ffde1e7",
+      "__guid": "4c3d2c6f-85ff-4cfd-8d95-60952d1ac155",
       "Flags": 0,
       "Name": "Player Controller",
-      "Position": "872.6519,-25.27259,888.0933",
+      "Position": "83.80743,-419.5956,1032.093",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.PlayerController",
-          "__guid": "b0386193-51a9-4167-85f7-017ad00cd356",
+          "__guid": "92822c46-3cb8-4194-99d7-0050f1327db0",
           "AccelerationTime": 0,
           "AimStrengthBody": 1,
           "AimStrengthEyes": 1,
           "AimStrengthHead": 1,
+          "AirFriction": 0.1,
           "AltMoveButton": "run",
           "Body": {
             "_type": "component",
-            "component_id": "ff2f12ec-899e-4ebc-b39f-20014535d1a6",
-            "go": "920f02d6-5d5b-47d9-814e-956a0ffde1e7",
+            "component_id": "02a3324e-233d-4ca3-aacb-e91fedfd8baf",
+            "go": "4c3d2c6f-85ff-4cfd-8d95-60952d1ac155",
             "component_type": "Rigidbody"
           },
           "BodyCollisionTags": null,
@@ -133,7 +117,7 @@
           "CameraOffset": "256,0,12",
           "ColliderObject": {
             "_type": "gameobject",
-            "go": "6daf6c37-b5e9-48cb-a7e9-6991ed0a1159"
+            "go": "60233dce-4665-44bd-9019-c959c9521037"
           },
           "DeaccelerationTime": 0,
           "DuckedHeight": 36,
@@ -159,8 +143,8 @@
           "ReachLength": 130,
           "Renderer": {
             "_type": "component",
-            "component_id": "19737d8e-cb8e-40ab-9420-c37db251141d",
-            "go": "6071cf1b-16df-4fc7-ae75-7dd42995e377",
+            "component_id": "9294ee74-6c62-4778-b1cd-188a271ea729",
+            "go": "5af4f18c-ef8d-4f08-b8ac-3acb9477b83a",
             "component_type": "SkinnedModelRenderer"
           },
           "RotateWithGround": true,
@@ -174,18 +158,18 @@
           "ToggleCameraModeButton": "view",
           "UseAnimatorControls": true,
           "UseButton": "use",
-          "UseCameraControls": true,
+          "UseCameraControls": false,
           "UseFovFromPreferences": true,
-          "UseInputControls": true,
+          "UseInputControls": false,
           "UseLookControls": true,
           "WalkSpeed": 110
         },
         {
           "__type": "Sandbox.Rigidbody",
-          "__guid": "ff2f12ec-899e-4ebc-b39f-20014535d1a6",
+          "__guid": "02a3324e-233d-4ca3-aacb-e91fedfd8baf",
           "AngularDamping": 1,
-          "Gravity": true,
-          "LinearDamping": 0.1,
+          "Gravity": false,
+          "LinearDamping": 10,
           "Locking": {
             "X": false,
             "Y": false,
@@ -194,9 +178,9 @@
             "Yaw": true,
             "Roll": true
           },
-          "MassCenterOverride": "0,0,36",
+          "MassCenterOverride": "0,0,0",
           "MassOverride": 500,
-          "MotionEnabled": true,
+          "MotionEnabled": false,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -209,7 +193,7 @@
         },
         {
           "__type": "Sandbox.Movement.MoveModeWalk",
-          "__guid": "24f4ec2b-c6eb-4ef7-90db-e4df814036ca",
+          "__guid": "f5160d14-73d3-4110-860a-20b6c8b8f5bf",
           "GroundAngle": 45,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -223,7 +207,7 @@
         },
         {
           "__type": "Sandbox.Movement.MoveModeSwim",
-          "__guid": "411f3bfe-09ab-455c-a943-5c10c854ae5b",
+          "__guid": "b6389c3f-28d6-407f-8331-e1d9978ce4cf",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -235,7 +219,7 @@
         },
         {
           "__type": "Sandbox.Movement.MoveModeLadder",
-          "__guid": "f9320ac1-1b25-41d4-b6b7-2bc3068c1a79",
+          "__guid": "5d2dcb6a-353f-46fb-8bdf-c47c44053fba",
           "ClimbableTags": "ladder",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -249,14 +233,15 @@
       ],
       "Children": [
         {
-          "__guid": "6071cf1b-16df-4fc7-ae75-7dd42995e377",
+          "__guid": "5af4f18c-ef8d-4f08-b8ac-3acb9477b83a",
           "Flags": 0,
           "Name": "Body",
+          "Rotation": "0,0,0.7784004,-0.6277682",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "19737d8e-cb8e-40ab-9420-c37db251141d",
+              "__guid": "9294ee74-6c62-4778-b1cd-188a271ea729",
               "AnimationGraph": null,
               "BodyGroups": 341,
               "BoneMergeTarget": null,
@@ -275,27 +260,8 @@
               "Parameters": {
                 "bools": {},
                 "ints": {},
-                "floats": {
-                  "wish_speed": 0,
-                  "move_direction": 0,
-                  "wish_direction": 0,
-                  "move_speed": 0,
-                  "move_groundspeed": 0,
-                  "wish_groundspeed": 0,
-                  "move_x": 0,
-                  "move_y": 0,
-                  "wish_x": 0,
-                  "wish_y": 0,
-                  "move_rotationspeed": 0,
-                  "skid_x": 0,
-                  "skid_y": 0,
-                  "duck": 0
-                },
-                "vectors": {
-                  "aim_head": "0.979187,-0.01009303,-0.2027091",
-                  "aim_body": "0.979187,-0.01009303,-0.2027091",
-                  "aim_eyes": "0.979187,-0.01009303,-0.2027091"
-                },
+                "floats": {},
+                "vectors": {},
                 "rotations": {}
               },
               "PlaybackRate": 1,
@@ -315,14 +281,14 @@
           ]
         },
         {
-          "__guid": "6daf6c37-b5e9-48cb-a7e9-6991ed0a1159",
+          "__guid": "60233dce-4665-44bd-9019-c959c9521037",
           "Flags": 1,
           "Name": "Colliders",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.CapsuleCollider",
-              "__guid": "9083c8f3-c504-4f3e-ba29-8e6265581ff2",
+              "__guid": "9bdcc3d9-e110-4f93-b26e-688c3cb0ab88",
               "End": "0,0,45.05097",
               "Friction": 0,
               "IsTrigger": false,
@@ -344,9 +310,9 @@
             },
             {
               "__type": "Sandbox.BoxCollider",
-              "__guid": "76eee16b-82bf-4b0e-8bc1-312ddfd4c475",
+              "__guid": "79c7de39-9c88-4604-a009-073cd2d9ba12",
               "Center": "0,0,18",
-              "Friction": 0,
+              "Friction": 81,
               "IsTrigger": false,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -368,27 +334,29 @@
       ]
     },
     {
-      "__guid": "d1779c22-e5aa-4396-a0fb-2945d3bc72b5",
+      "__guid": "0c491859-1830-45fc-874f-75ae5a447d84",
       "Flags": 0,
-      "Name": "Scene Information",
+      "Name": "Movie Player",
       "Enabled": true,
       "Components": [
         {
-          "__type": "Sandbox.SceneInformation",
-          "__guid": "3482be1a-057a-4fd8-a880-b1ede9738245",
-          "Author": null,
-          "Changes": "",
-          "Description": "",
-          "Group": "Movie Maker",
+          "__type": "Sandbox.MovieMaker.MoviePlayer",
+          "__guid": "155b1d66-c8d7-4633-9009-578ebb6e6bf9",
+          "Binder": {
+            "GameObjects": [],
+            "Components": []
+          },
+          "IsLooping": true,
+          "IsPlaying": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "SceneTags": "",
-          "Title": "Gameplay Recording",
-          "Version": null
+          "PositionSeconds": 0,
+          "Resource": "movies/example.movie",
+          "TimeScale": 1
         }
       ]
     }

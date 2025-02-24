@@ -1,4 +1,5 @@
 ﻿using Sandbox.MovieMaker;
+using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker.BlockDisplays;
 
@@ -8,39 +9,50 @@ partial class CurveBlockItem<T>
 {
 	private GraphicsLine[]? Lines { get; set; }
 
+	private IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange )
+	{
+		return Block switch
+		{
+			IPaintHintBlock paintHintBlock => paintHintBlock.GetPaintHints( timeRange ),
+			CompiledSampleBlock<T> => [timeRange.Clamp( Block.TimeRange )],
+			_ => []
+		};
+	}
+
 	protected virtual void GetCurveTimes( List<MovieTime> times )
 	{
-		times.Add( MovieTime.Zero );
-		
-		if ( Samples is { } samples )
+		var timeRange = TimeRange;
+
+		times.Add( timeRange.Start );
+
+		void TryAddTime( MovieTime time )
 		{
-			for ( var i = 0; i < samples.Samples.Count; ++i )
+			time += Offset;
+
+			if ( time < timeRange.Start ) return;
+			if ( time > timeRange.End ) return;
+
+			if ( times[^1] < time )
 			{
-				var time = samples.FirstSampleTime + MovieTime.FromFrames( i, samples.SampleRate );
-
-				if ( !time.IsPositive ) continue;
-				if ( time >= TimeRange.Duration ) break;
-
 				times.Add( time );
 			}
 		}
 
-		times.Add( TimeRange.Duration );
-	}
-
-	protected T GetValue( MovieTime time )
-	{
-		if ( Samples is { } samples )
+		foreach ( var hintRange in GetPaintHints( timeRange ) )
 		{
-			return samples.GetValue( time );
+			TryAddTime( hintRange.Start );
+
+			var clamped = hintRange with { End = hintRange.End - MovieTime.Epsilon };
+
+			foreach ( var time in clamped.GetSampleTimes( 30 ) )
+			{
+				TryAddTime( time );
+			}
+
+			TryAddTime( hintRange.End - MovieTime.Epsilon );
 		}
 
-		if ( Constant is { } constant )
-		{
-			return constant.Value;
-		}
-
-		return default!;
+		TryAddTime( timeRange.End );
 	}
 
 	private void UpdateRanges()
@@ -66,7 +78,7 @@ partial class CurveBlockItem<T>
 		{
 			if ( t.IsNegative ) continue;
 
-			var value = GetValue( t );
+			var value = Block.GetValue( t - Offset );
 			Decompose( value, floats );
 
 			for ( var j = 0; j < Elements.Count; ++j )
@@ -81,6 +93,11 @@ partial class CurveBlockItem<T>
 		base.OnPaint();
 
 		if ( Elements.Count < 1 ) return;
+
+		var paintHash = PaintHash;
+		if ( paintHash == _lastPaintHash ) return;
+
+		_lastPaintHash = paintHash;
 
 		if ( Lines is null )
 		{
@@ -148,14 +165,14 @@ partial class CurveBlockItem<T>
 
 		// Second pass, update lines
 
-		var t0 = MovieTime.Zero;
-		var t1 = TimeRange.Duration;
+		var t0 = TimeRange.Start;
+		var t1 = TimeRange.End;
 
 		var dxdt = LocalRect.Width / (t1 - t0).TotalSeconds;
 
 		foreach ( var t in times )
 		{
-			var value = GetValue( t );
+			var value = Block.GetValue( t - Offset );
 			var x = LocalRect.Left + (float)((t - t0).TotalSeconds * dxdt);
 
 			Decompose( value, floats );
@@ -164,13 +181,13 @@ partial class CurveBlockItem<T>
 			{
 				var y = (mids[j] - floats[j]) * scale + 0.5f * height;
 
-				if ( t.IsPositive )
+				if ( t <= Block.TimeRange.Start )
 				{
-					Lines[j].LineTo( new Vector2( x, y ) );
+					Lines[j].MoveTo( new Vector2( x, y ) );
 				}
 				else
 				{
-					Lines[j].MoveTo( new Vector2( x, y ) );
+					Lines[j].LineTo( new Vector2( x, y ) );
 				}
 			}
 		}

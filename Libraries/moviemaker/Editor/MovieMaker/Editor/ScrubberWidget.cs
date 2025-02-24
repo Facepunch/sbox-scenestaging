@@ -27,7 +27,7 @@ public class ScrubberItem : GraphicsItem
 	{
 		base.OnMousePressed( e );
 
-		Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), ignore: SnapFlag.PlayHead ) );
+		Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
 
 		e.Accepted = true;
 	}
@@ -36,29 +36,31 @@ public class ScrubberItem : GraphicsItem
 	{
 		base.OnMouseMove( e );
 
-		Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), ignore: SnapFlag.PlayHead ) );
+		Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
 	}
 
 	protected override void OnPaint()
 	{
-		var duration = Session.Clip?.Duration ?? MovieTime.Zero;
+		var duration = Session.Project.Duration;
 
-		Paint.SetBrushAndPen( DopeSheet.Colors.Background );
+		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground );
 		Paint.DrawRect( LocalRect );
 
 		// Darker background for the clip duration
 
 		{
-			var startX = FromScene( Session.TimeToPixels( MovieTime.Zero ) ).x;
-			var endX = FromScene( Session.TimeToPixels( duration ) ).x;
+			var timeRange = Session.SequenceTimeRange ?? (MovieTime.Zero, duration);
 
-			Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground );
+			var startX = FromScene( Session.TimeToPixels( timeRange.Start ) ).x;
+			var endX = FromScene( Session.TimeToPixels( timeRange.End ) ).x;
+
+			Paint.SetBrushAndPen( DopeSheet.Colors.Background );
 			Paint.DrawRect( new Rect( new Vector2( startX, LocalRect.Top ), new Vector2( endX - startX, LocalRect.Height ) ) );
 		}
 
 		// Paste time range
 
-		if ( Session.EditMode?.PasteTimeRange is { } pasteRange )
+		if ( Session.EditMode?.SourceTimeRange is { } pasteRange )
 		{
 			var startX = FromScene( Session.TimeToPixels( pasteRange.Start ) ).x;
 			var endX = FromScene( Session.TimeToPixels( pasteRange.End ) ).x;
@@ -118,8 +120,8 @@ public class ScrubberItem : GraphicsItem
 
 			var y = IsTop ? Height - height - margin : margin;
 
-			var t0 = MovieTime.Max( (range.Start - interval).SnapToGrid( interval ), MovieTime.Zero );
-			var t1 = t0 + range.Duration;
+			var t0 = MovieTime.Max( (range.Start - interval).Round( interval ), MovieTime.Zero );
+			var t1 = t0 + range.Duration + interval;
 
 			for ( var t = t0; t <= t1; t += interval )
 			{
@@ -144,20 +146,4 @@ public class ScrubberItem : GraphicsItem
 	{
 		return time.ToString();
 	}
-
-	int lastState;
-
-	[EditorEvent.Frame]
-	public void Frame()
-	{
-		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.CurrentPointer,
-			Session.PreviewPointer, Session.Clip?.Duration, Session.EditMode?.PasteTimeRange );
-
-		if ( state != lastState )
-		{
-			lastState = state;
-			Update();
-		}
-	}
 }
-

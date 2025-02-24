@@ -1,5 +1,7 @@
-﻿using Sandbox.MovieMaker;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
+using Sandbox.MovieMaker;
+using System.Globalization;
+using System.Text.Json.Nodes;
 using System.Linq;
 
 namespace Editor.MovieMaker;
@@ -12,94 +14,90 @@ partial class MotionEditMode
 
 	public override bool AllowRecording => true;
 
-	private readonly Dictionary<MovieTrack, ITrackRecording> _recordings = new();
+	private MovieClipRecorder? _recorder;
+	private MovieTime _recordingStartTime;
+	private MovieTime _recordingLastTime;
+
+	private sealed class FilteredClip : IClip
+	{
+		private readonly ImmutableArray<ITrack> _tracks;
+		private readonly MovieClipRecorder _recorder;
+		private readonly ImmutableDictionary<Guid, IReferenceTrack> _referenceTracks;
+
+		public FilteredClip( IEnumerable<ITrack> tracks, MovieClipRecorder recorder )
+		{
+			_tracks = [..tracks];
+			_recorder = recorder;
+			_referenceTracks = _tracks.OfType<IReferenceTrack>()
+				.ToImmutableDictionary( x => x.Id, x => x );
+		}
+
+		public IEnumerable<ITrack> Tracks => _tracks;
+
+		public MovieTime Duration => _recorder.Duration + 1d;
+
+		public IReferenceTrack? GetTrack( Guid trackId ) => _referenceTracks.GetValueOrDefault( trackId );
+	}
 
 	protected override bool OnStartRecording()
 	{
-		_recordings.Clear();
+		var options = new RecorderOptions( Project.SampleRate );
 
-		var time = Session.CurrentPointer;
-
-		foreach ( var track in Clip.RootTracks )
-		{
-			StartRecording( track, time );
-		}
-
-		if ( _recordings.Count == 0 ) return false;
-
+		_recorder = new MovieClipRecorder( Session.Binder, options );
 		_stopPlayingAfterRecording = !Session.IsPlaying;
-		Session.IsPlaying = true;
+		_recordingStartTime = Session.CurrentPointer;
+		_recordingLastTime = _recordingStartTime;
 
-		return true;
-	}
-
-	private bool StartRecording( MovieTrack track, MovieTime time )
-	{
-		if ( track.ReadEditorData()?.Locked is true ) return false;
-
-		if ( track.Children is { Count: > 0 } children )
+		foreach ( var view in Session.TrackList.EditableTracks )
 		{
-			// Don't record this track if any children are recorded instead
-
-			var childRecording = false;
-
-			foreach ( var childTrack in children )
-			{
-				childRecording |= StartRecording( childTrack, time );
-			}
-
-			if ( childRecording )
-			{
-				return true;
-			}
+			_recorder.Tracks.Add( (IProjectPropertyTrack)view.Track );
 		}
 
-		if ( Session.Player.GetProperty( track ) is not { IsBound: true } property ) return false;
-		if ( property is ISceneReferenceMovieProperty ) return false;
+		var playbackIgnoreTracks = Session.TrackList.AllTracks
+			.Where( x => !x.IsLocked )
+			.Select( x => x.Track );
 
-		var recordingType = typeof(TrackRecording<>).MakeGenericType( track.PropertyType );
-		var recording = (ITrackRecording)Activator.CreateInstance( recordingType, track, property, time )!;
-
-		_recordings.Add( track, recording );
-
-		SetPreviewBlocks( track, [recording] );
+		Session.Player.Clip = new FilteredClip( ((IClip)Session.Project).Tracks.Except( playbackIgnoreTracks ), _recorder );
+		Session.IsPlaying = true;
 
 		return true;
 	}
 
 	protected override void OnStopRecording()
 	{
+		if ( _recorder is not { } recorder ) return;
+
+		var timeRange = new MovieTimeRange( 0d, recorder.Duration );
+
 		if ( _stopPlayingAfterRecording )
 		{
 			Session.IsPlaying = false;
 		}
 
-		Log.Info( $"Finished recording {_recordings.Count} tracks!" );
+		Session.Player.Clip = Session.Project;
 
-		var tracks = new Dictionary<Guid, IReadOnlyList<MovieBlockSlice>>();
-
-		MovieTimeRange? timeRange = null;
-
-		foreach ( var (track, recording) in _recordings )
+		foreach ( var trackRecorder in recorder.Tracks )
 		{
-			ClearPreviewBlocks( track );
-
-			if ( recording.GetBlocks() is not { Count: > 0 } blocks ) continue;
-
-			tracks.Add( track.Id, blocks );
-
-			foreach ( var block in blocks )
-			{
-				timeRange = timeRange?.Union( block.TimeRange ) ?? block.TimeRange;
-			}
+			ClearPreviewBlocks( (IProjectPropertyTrack)trackRecorder.Track );
 		}
 
-		if ( tracks.Count <= 0 || timeRange is not { } range ) return;
+		var compiled = recorder.ToClip();
 
-		var offset = Session.CurrentPointer;
+		var sourceClip = new ProjectSourceClip( Guid.NewGuid(), compiled, new JsonObject
+		{
+			{ "Date", DateTime.UtcNow.ToString( "o", CultureInfo.InvariantCulture ) },
+			{ "IsEditor", Session.Player.Scene.IsEditor },
+			{ "SceneSource", Json.ToNode( Session.Player.Scene.Source ) },
+			{ "MoviePlayer", Json.ToNode( Session.Player.Id ) }
+		} );
 
-		Clipboard = new ClipboardData( new TimeSelection( range - offset, DefaultInterpolation ), tracks.ToImmutableDictionary( x => x.Key,
-				x => (IReadOnlyList<MovieBlockSlice>)x.Value.Select( y => y with { TimeRange = y.TimeRange - offset } ).ToImmutableArray() ) );
+		Clipboard = new ClipboardData( new TimeSelection( timeRange, DefaultInterpolation ), compiled.Tracks
+			.OfType<IPropertyTrack>()
+			.Select( Project.GetTrack )
+			.OfType<IProjectPropertyTrack>()
+			.ToImmutableDictionary( x => x.Id, x => x.CreateSourceBlocks( sourceClip ) ) );
+
+		Session.SetCurrentPointer( _recordingStartTime );
 
 		if ( LoadChangesFromClipboard() )
 		{
@@ -112,100 +110,26 @@ partial class MotionEditMode
 		if ( !Session.IsRecording ) return;
 
 		var time = Session.CurrentPointer;
+		var deltaTime = MovieTime.Max( time - _recordingLastTime, 0d );
 
-		foreach ( var recording in _recordings.Values )
+		if ( _recorder?.Advance( deltaTime ) is true )
 		{
-			recording.Record( time );
-		}
-	}
-}
-
-internal interface ITrackRecording : IPreviewMovieBlock
-{
-	void Record( MovieTime time );
-	IReadOnlyList<MovieBlockSlice> GetBlocks();
-}
-
-file class TrackRecording<T> : ITrackRecording
-{
-	public MovieTrack Track { get; }
-	public IMovieProperty<T> Property { get; }
-	public int SampleRate { get; }
-	public MovieTime SampleInterval { get; }
-
-	public MovieTimeRange TimeRange => (_startTime, _startTime + MovieTime.FromFrames( _samples.Count, SampleRate ));
-	IMovieBlockData IMovieBlock.Data => _previewData;
-
-	private readonly MovieTime _startTime;
-	private readonly IInterpolator<T>? _interpolator;
-
-	private readonly List<T> _samples = new();
-	private readonly SamplesData<T> _previewData;
-
-	public event Action? Changed;
-
-	public TrackRecording( MovieTrack track, IMovieProperty<T> property, MovieTime startTime )
-	{
-		Track = track;
-		Property = property;
-
-		SampleRate = track.Clip.DefaultSampleRate;
-		SampleInterval = MovieTime.FromFrames( 1, SampleRate );
-
-		_interpolator = Interpolator.GetDefault<T>();
-
-		_startTime = startTime.SnapToGrid( SampleInterval );
-		_samples.Add( property.Value );
-
-		_previewData = new SamplesData<T>( SampleRate, SampleInterpolationMode.Linear, _samples );
-	}
-
-	public void Record( MovieTime time )
-	{
-		var index = (time - _startTime).GetFrameIndex( SampleRate );
-
-		if ( index < 0 ) return;
-
-		if ( index < _samples.Count )
-		{
-			_samples.RemoveRange( index, _samples.Count - index );
-		}
-
-		AddSample( Property.Value, index - _samples.Count + 1 );
-	}
-
-	private void AddSample( T value, int offset )
-	{
-		_samples.EnsureCapacity( _samples.Count + offset );
-
-		if ( offset > 1 )
-		{
-			var prev = _samples[^1];
-
-			for ( var i = 1; i < offset; ++i )
+			foreach ( var trackRecorder in _recorder.Tracks )
 			{
-				_samples.Add( _interpolator is not null
-					? _interpolator.Interpolate( prev, value, (float)i / offset )
-					: prev );
+				var track = (IProjectPropertyTrack)trackRecorder.Track;
+				var finishedBlocks = trackRecorder.FinishedBlocks;
+
+				if ( trackRecorder.CurrentBlock is { } current )
+				{
+					SetPreviewBlocks( track, [..finishedBlocks, current], _recordingStartTime );
+				}
+				else
+				{
+					SetPreviewBlocks( track, finishedBlocks, _recordingStartTime );
+				}
 			}
 		}
 
-		_samples.Add( value );
-
-		Changed?.Invoke();
-	}
-
-	public IReadOnlyList<MovieBlockSlice> GetBlocks()
-	{
-		if ( _samples.Count == 0 ) return [];
-
-		var first = _samples[0];
-		var comparer = EqualityComparer<T>.Default;
-
-		if ( _samples.All( x => comparer.Equals( first, x ) ) ) return [];
-
-		var data = new SamplesData<T>( SampleRate, SampleInterpolationMode.Linear, _samples.ToArray() );
-
-		return [new MovieBlockSlice( TimeRange, data )];
+		_recordingLastTime = time;
 	}
 }

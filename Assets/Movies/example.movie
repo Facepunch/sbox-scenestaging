@@ -1,0 +1,64 @@
+{
+  "EditorData": {
+    "SampleRate": 30,
+    "Tracks": {
+      "ecfc29a4-b8a2-494f-9d92-b58f59c6c4d4": {
+        "$type": "Sequence",
+        "Blocks": [
+          {
+            "TimeRange": {
+              "Start": 0,
+              "End": 16560
+            },
+            "Transform": {
+              "Translation": -50400
+            },
+            "Resource": "movies/camera.movie"
+          },
+          {
+            "TimeRange": {
+              "Start": 16560,
+              "End": 40320
+            },
+            "Transform": {
+              "Translation": -68400
+            },
+            "Resource": "movies/camera.movie"
+          }
+        ],
+        "Name": "Camera Sequence",
+        "TargetType": "Sandbox.MovieMaker.MovieResource"
+      },
+      "de071259-a958-468a-8a09-ed20216b0eee": {
+        "$type": "Sequence",
+        "Blocks": [
+          {
+            "TimeRange": {
+              "Start": 0,
+              "End": 16560
+            },
+            "Transform": {
+              "Translation": -50400
+            },
+            "Resource": "movies/player_recording_1.movie"
+          },
+          {
+            "TimeRange": {
+              "Start": 16560,
+              "End": 40320
+            },
+            "Transform": {
+              "Translation": -68400
+            },
+            "Resource": "movies/player_recording_1.movie"
+          }
+        ],
+        "Name": "Player Sequence",
+        "TargetType": "Sandbox.MovieMaker.MovieResource"
+      }
+    },
+    "Sources": {}
+  },
+  "__references": [],
+  "__version": 0
+}

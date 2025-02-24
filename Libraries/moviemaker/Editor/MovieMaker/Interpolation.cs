@@ -1,4 +1,5 @@
-﻿using Sandbox.Utility;
+﻿using Sandbox.MovieMaker;
+using Sandbox.Utility;
 
 namespace Editor.MovieMaker;
 
@@ -36,6 +37,8 @@ public static class InterpolationExtensions
 
 public interface ILocalTransformer<T>
 {
+	T Identity => default!;
+
 	T ToLocal( T value, T relativeTo );
 	T ToGlobal( T value, T relativeTo );
 }
@@ -49,31 +52,8 @@ public static class LocalTransformer
 		return DefaultILocalTransformer.Instance as ILocalTransformer<T>;
 	}
 
-	[SkipHotload]
-	private static Dictionary<Type, ILocalTransformer<object?>?> Wrappers { get; } = new();
-
-	[EditorEvent.Hotload]
-	private static void OnHotload()
-	{
-		Wrappers.Clear();
-	}
-
-	public static ILocalTransformer<object?>? GetDefault( Type type )
-	{
-		if ( Wrappers.TryGetValue( type, out var cached ) ) return cached;
-
-		try
-		{
-			var wrapperType = typeof(LocalTransformerWrapper<>).MakeGenericType( type );
-			var wrapper = (ILocalTransformer<object?>)Activator.CreateInstance( wrapperType )!;
-
-			return Wrappers[type] = wrapper;
-		}
-		catch
-		{
-			return Wrappers[type] = null;
-		}
-	}
+	public static ILocalTransformer<T> GetDefaultOrThrow<T>() =>
+		GetDefault<T>() ?? throw new Exception( $"Type {typeof(T)} can't be transformed to local." );
 }
 
 file sealed class DefaultILocalTransformer :
@@ -95,6 +75,7 @@ file sealed class DefaultILocalTransformer :
 	public Vector4 ToLocal( Vector4 value, Vector4 relativeTo ) => value - relativeTo;
 	public Vector4 ToGlobal( Vector4 value, Vector4 relativeTo ) => value + relativeTo;
 
+	Rotation ILocalTransformer<Rotation>.Identity => Rotation.Identity;
 	public Rotation ToLocal( Rotation value, Rotation relativeTo ) => Rotation.Difference( relativeTo, value );
 	public Rotation ToGlobal( Rotation value, Rotation relativeTo ) => (value * relativeTo).Normal;
 

@@ -12,10 +12,12 @@ public interface ICurveBlockItem
 
 public record struct Element( string Name, Color Color, float? Min = null, float? Max = null );
 
-public abstract partial class CurveBlockItem<T> : BlockItem<T>, ICurveBlockItem
+public abstract partial class CurveBlockItem<T> : PropertyBlockItem<T>, ICurveBlockItem
 {
 	private readonly (float Min, float Max)[] _ranges;
-	private int _rangeDataHash;
+
+	private int _lastRangeDataHash;
+	private int _lastPaintHash;
 
 	public IReadOnlyList<Element> Elements { get; }
 
@@ -25,9 +27,9 @@ public abstract partial class CurveBlockItem<T> : BlockItem<T>, ICurveBlockItem
 		{
 			var dataHash = DataHash;
 
-			if ( dataHash != _rangeDataHash )
+			if ( dataHash != _lastRangeDataHash )
 			{
-				_rangeDataHash = dataHash;
+				_lastRangeDataHash = dataHash;
 				UpdateRanges();
 			}
 
@@ -35,9 +37,35 @@ public abstract partial class CurveBlockItem<T> : BlockItem<T>, ICurveBlockItem
 		}
 	}
 
+	protected int PaintHash
+	{
+		get
+		{
+			var hash = new HashCode();
+			var elementCount = Elements.Count;
+
+			hash.Add( DataHash );
+
+			foreach ( var preview in Parent.BlockItems )
+			{
+				if ( preview is not ICurveBlockItem { Ranges: { } curveRanges } ) continue;
+				if ( curveRanges.Count != elementCount ) continue;
+
+				foreach ( var (min, max) in curveRanges )
+				{
+					hash.Add( min );
+					hash.Add( max );
+				}
+			}
+
+			return hash.ToHashCode();
+		}
+	}
+
 	protected CurveBlockItem( params Element[] elements )
 	{
 		Elements = elements;
+
 		_ranges = new (float, float)[elements.Length];
 	}
 

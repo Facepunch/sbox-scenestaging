@@ -1,4 +1,6 @@
-﻿using Editor.MovieMaker.BlockDisplays;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Editor.MovieMaker.BlockDisplays;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -7,33 +9,56 @@ namespace Editor.MovieMaker;
 
 public partial class DopeSheetTrack : GraphicsItem
 {
-	public TrackWidget TrackWidget { get; }
+	public DopeSheet DopeSheet { get; }
+	public Session Session { get; }
+	public ITrackView View { get; }
 
-	private bool? _canCreatePreview;
+	private bool? _canCreateItem;
 
-	private readonly List<IMovieBlock> _blocks = new();
+	private readonly List<(ITrackBlock Block, MovieTime? Offset)> _visibleBlocks = new();
 	private readonly List<BlockItem> _blockItems = new();
 
 	public IReadOnlyList<BlockItem> BlockItems => _blockItems;
 
-	public bool Visible => TrackWidget.Visible;
-
-	public DopeSheetTrack( TrackWidget track )
+	public DopeSheetTrack( DopeSheet dopeSheet, ITrackView view )
 	{
-		TrackWidget = track;
+		DopeSheet = dopeSheet;
+		Session = dopeSheet.Session;
+		View = view;
+
 		HoverEvents = true;
+		ToolTip = view.Description;
+
+		View.Changed += View_Changed;
+		View.ValueChanged += View_ValueChanged;
 	}
 
-	internal void DoLayout( Rect r )
+	protected override void OnDestroy()
+	{
+		View.Changed -= View_Changed;
+		View.ValueChanged -= View_ValueChanged;
+	}
+
+	private void View_Changed( ITrackView view )
+	{
+		UpdateBlockItems();
+	}
+
+	private void View_ValueChanged( ITrackView view )
+	{
+		UpdateBlockItems();
+	}
+
+	internal void UpdateLayout()
 	{
 		PrepareGeometryChange();
 
-		Position = new Vector2( 0, r.Top + 1 );
-		Size = Visible ? new Vector2( 50000, r.Height ) : 0f;
+		var position = View.Position;
+
+		Position = new Vector2( 0, position );
+		Size = new Vector2( 50000, DopeSheet.TrackHeight );
 
 		UpdateBlockItems();
-
-		TrackWidget.TrackList.Session.EditMode?.TrackLayout( this, r );
 	}
 
 	private void ClearBlockItems()
@@ -50,7 +75,7 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	internal void OnSelected()
 	{
-		TrackWidget.InspectProperty();
+		View.InspectProperty();
 	}
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
@@ -63,60 +88,46 @@ public partial class DopeSheetTrack : GraphicsItem
 		}
 	}
 
-	private void GetBlocks( List<IMovieBlock> result )
-	{
-		var track = TrackWidget.MovieTrack;
-
-		foreach ( var block in track.Blocks )
-		{
-			result.Add( block );
-		}
-
-		foreach ( var preview in TrackWidget.TrackList.Session.EditMode?.GetPreviewBlocks( track ) ?? [] )
-		{
-			result.Add( preview );
-		}
-	}
-
 	public void UpdateBlockItems()
 	{
-		if ( Visible && _canCreatePreview is not false )
-		{
-			var session = TrackWidget.TrackList.Session;
+		var previewOffset = Session.TrackList.PreviewOffset;
 
-			_blocks.Clear();
-			GetBlocks( _blocks );
+		_visibleBlocks.Clear();
+		_visibleBlocks.AddRange( View.Blocks.Select( x => (x, (MovieTime?)null) ) );
+		_visibleBlocks.AddRange( View.PreviewBlocks.Select( x => (x, (MovieTime?)previewOffset) ) );
 
-			while ( _blockItems.Count > _blocks.Count )
-			{
-				_blockItems[^1].Destroy();
-				_blockItems.RemoveAt( _blockItems.Count - 1 );
-			}
-
-			for ( var i = 0; i < _blocks.Count; ++i )
-			{
-				var block = _blocks[i];
-
-				if ( _blockItems.Count <= i )
-				{
-					if ( BlockItem.Create( this, _blocks[i] ) is not { } newPreview )
-					{
-						_canCreatePreview = false;
-						return;
-					}
-
-					_blockItems.Add( newPreview );
-				}
-
-				var preview = BlockItems[i];
-
-				preview.Block = block;
-				preview.Layout();
-			}
-		}
-		else
+		if ( _canCreateItem is false )
 		{
 			ClearBlockItems();
+			return;
+		}
+
+		while ( _blockItems.Count > _visibleBlocks.Count )
+		{
+			_blockItems[^1].Destroy();
+			_blockItems.RemoveAt( _blockItems.Count - 1 );
+		}
+
+		for ( var i = 0; i < _visibleBlocks.Count; ++i )
+		{
+			var (block, offset) = _visibleBlocks[i];
+
+			if ( _blockItems.Count <= i )
+			{
+				if ( BlockItem.Create( this, block, offset ?? default ) is not { } newPreview )
+				{
+					_canCreateItem = false;
+					return;
+				}
+
+				_blockItems.Add( newPreview );
+			}
+
+			var item = BlockItems[i];
+
+			item.Block = block;
+			item.Offset = offset ?? default;
+			item.Layout();
 		}
 	}
 }
