@@ -8,7 +8,7 @@ namespace Editor.MovieMaker;
 public class TrackWidget : Widget
 {
 	public TrackListWidget TrackList { get; }
-	public MovieTrack MovieTrack { get; }
+	public MovieProjectTrack MovieTrack { get; }
 	internal IMovieProperty? Property { get; }
 
 	public DopeSheetTrack? DopeSheetTrack { get; set; }
@@ -33,7 +33,7 @@ public class TrackWidget : Widget
 	private readonly Label _label;
 	private readonly Button _lockButton;
 
-	public TrackWidget( MovieTrack track, TrackListWidget list )
+	public TrackWidget( MovieProjectTrack track, TrackListWidget list )
 	{
 		TrackList = list;
 		MovieTrack = track;

@@ -9,49 +9,43 @@ partial class MovieProperty
 {
 	private static bool IsMorph( IMovieProperty target, string name )
 	{
-		return target is IMovieProperty<MorphAccessor?>;
+		return target is IMemberProperty<MorphAccessor?>;
 	}
 
-	private static IMemberMovieProperty FromMorph( IMovieProperty target, string name )
+	private static IMemberProperty FromMorph( IMovieProperty target, string name )
 	{
-		var morphAccessorTarget = (IMovieProperty<MorphAccessor?>)target;
+		var morphAccessorTarget = (IMemberProperty<MorphAccessor?>)target;
 
 		return new MorphMovieProperty( morphAccessorTarget, name );
 	}
 }
 
-file sealed class MorphMovieProperty : IMovieProperty<float>, IMemberMovieProperty
+file sealed class MorphMovieProperty( IMemberProperty<MorphAccessor?> parent, string name )
+	: IMemberProperty<float>
 {
-	public IMovieProperty<MorphAccessor?> TargetProperty { get; }
-
-	public MorphMovieProperty( IMovieProperty<MorphAccessor?> targetProperty, string name )
-	{
-		TargetProperty = targetProperty;
-		PropertyName = name;
-	}
-
-	public string PropertyName { get; }
+	public string PropertyName { get; } = name;
 
 	public Type PropertyType => typeof(float);
 
-	public bool IsBound => TargetProperty.Value?.Names.Contains( PropertyName ) ?? false; // TODO: cache?
+	public bool IsBound => parent.Value?.Names.Contains( PropertyName ) ?? false; // TODO: cache?
 	public bool CanWrite => true;
 
 	public float Value
 	{
-		get => TargetProperty.Value is { } accessor ? accessor.Get( PropertyName ) : default!;
+		get => parent.Value is { } accessor ? accessor.Get( PropertyName ) : default!;
 		set
 		{
-			if ( TargetProperty.Value is { } accessor )
+			if ( parent.Value is { } accessor )
 			{
 				accessor.Set( PropertyName, value );
 			}
 		}
 	}
 
-	IMovieProperty IMemberMovieProperty.TargetProperty => TargetProperty;
+	IMovieProperty IMemberProperty.Parent => parent;
 
-	object? IMovieProperty.Value
+	object IMovieProperty.Value => Value;
+	object? IMemberProperty.Value
 	{
 		get => Value;
 		set => Value = (float)value!;

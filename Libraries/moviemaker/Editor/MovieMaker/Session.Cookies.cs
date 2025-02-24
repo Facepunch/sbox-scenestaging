@@ -6,12 +6,14 @@ namespace Editor.MovieMaker;
 
 partial class Session
 {
-	private string CookiePrefix => $"moviemaker.{Player.ReferencedClip?.ResourceId.ToString() ?? Player.Id.ToString()}";
+	private string CookiePrefix => $"moviemaker.{Player.MovieResource?.ResourceId.ToString() ?? Player.Id.ToString()}";
 
 	public T GetCookie<T>( string key, T fallback )
 	{
 		return ProjectCookie.Get( $"{CookiePrefix}.{key}", fallback );
 	}
+
+	public T GetCookie<T>( MovieProjectTrack track, string key, T fallback ) => GetCookie( $"track.{track.}" )
 
 	public void SetCookie<T>( string key, T value )
 	{
@@ -36,6 +38,12 @@ partial class Session
 		{
 			get => session.GetCookie( nameof(TimeScale), 1f );
 			set => session.SetCookie( nameof(TimeScale), value );
+		}
+
+		public int FrameRate
+		{
+			get => session.GetCookie( nameof( FrameRate ), 10 );
+			set => session.SetCookie( nameof( FrameRate ), value );
 		}
 
 		public bool FrameSnap
@@ -74,6 +82,7 @@ partial class Session
 			TimeScale = Cookies.TimeScale;
 		}
 
+		FrameRate = Cookies.FrameRate;
 		FrameSnap = Cookies.FrameSnap;
 		ObjectSnap = Cookies.ObjectSnap;
 		TimeOffset = Cookies.TimeOffset;

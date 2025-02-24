@@ -352,7 +352,7 @@ internal sealed class TrackKeyframes : IDisposable
 			Curve.SetKeyframe( handle.Time, handle.Value, handle.Interpolation );
 		}
 
-		TrackWidget.MovieTrack.WriteKeyframes( Curve, EditMode.Clip.DefaultSampleRate );
+		TrackWidget.MovieTrack.WriteKeyframes( Curve, EditMode.Project.DefaultSampleRate );
 
 		EditMode.Session.ClipModified();
 

@@ -102,7 +102,7 @@ partial class MotionEditMode
 
 	protected override void OnSelectAll()
 	{
-		TimeSelection = new TimeSelection( (MovieTime.Zero, Clip.Duration), DefaultInterpolation );
+		TimeSelection = new TimeSelection( (MovieTime.Zero, Project.Duration), DefaultInterpolation );
 	}
 
 	protected override void OnCut()
@@ -115,7 +115,7 @@ partial class MotionEditMode
 
 	protected override void OnCopy()
 	{
-		if ( TimeSelection is not { } selection || Session.Clip is not { } clip ) return;
+		if ( TimeSelection is not { } selection || Session.Project is not { } clip ) return;
 
 		var timeRange = selection.TotalTimeRange;
 		var offset = Session.CurrentPointer;
@@ -155,7 +155,7 @@ partial class MotionEditMode
 
 	private bool LoadChangesFromClipboard()
 	{
-		if ( Session.Clip is not { } clip || Clipboard is not { } clipboard ) return false;
+		if ( Session.Project is not { } clip || Clipboard is not { } clipboard ) return false;
 
 		ClearChanges();
 
@@ -170,7 +170,7 @@ partial class MotionEditMode
 		foreach ( var (id, blocks) in clipboard.Tracks )
 		{
 			if ( blocks.Count == 0 ) continue;
-			if ( blocks[0].Data is not IMovieBlockValueData valueData ) continue;
+			if ( blocks[0].Data is not IValueData valueData ) continue;
 			if ( clip.GetTrack( id ) is not { } track ) continue;
 
 			var state = GetOrCreateTrackModification( track );

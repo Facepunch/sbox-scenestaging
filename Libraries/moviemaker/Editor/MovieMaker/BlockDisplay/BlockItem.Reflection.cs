@@ -10,7 +10,7 @@ partial class BlockItem
 {
 	public static BlockItem? Create( DopeSheetTrack parent, IMovieBlock block )
 	{
-		if ( block.Data is not IMovieBlockValueData { ValueType: { } valueType } ) return null;
+		if ( block.Data is not IValueData { ValueType: { } valueType } ) return null;
 
 		foreach ( var typeDesc in EditorTypeLibrary.GetTypes<BlockItem>() )
 		{

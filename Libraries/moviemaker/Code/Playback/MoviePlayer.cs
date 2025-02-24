@@ -1,45 +1,32 @@
-﻿using System;
-
-namespace Sandbox.MovieMaker;
+﻿namespace Sandbox.MovieMaker;
 
 #nullable enable
 
 [Icon( "movie" )]
-public sealed partial class MoviePlayer : Component
+public sealed class MoviePlayer : Component
 {
-	private MovieClip? _embeddedClip;
-	private MovieFile? _referencedClip;
-
 	private MovieTime _position;
 	private bool _isPlaying;
 
-	[Property, Group( "Source" ), Hide]
-	public MovieClip? EmbeddedClip
+	private IMovieSource? _source;
+	private MovieClip? _lastClip;
+	private MovieProperties? _properties;
+
+	[Property, Hide]
+	public MovieProperties Properties => _properties ??= new MovieProperties( Scene );
+
+	[Property, Group( "Source" )]
+	public IMovieSource? MovieSource
 	{
-		get => _embeddedClip;
+		get => _source;
 		set
 		{
-			_embeddedClip = value;
-			_referencedClip = value is not null ? null : _referencedClip;
-
+			_source = value;
 			UpdatePosition();
 		}
 	}
 
-	[Property, Group( "Source" ), Title( "Movie File" )]
-	public MovieFile? ReferencedClip
-	{
-		get => _referencedClip;
-		set
-		{
-			_referencedClip = value;
-			_embeddedClip = value is not null ? null : _embeddedClip;
-
-			UpdatePosition();
-		}
-	}
-
-	public MovieClip? MovieClip => _embeddedClip ?? _referencedClip?.Clip;
+	public MovieClip? MovieClip => MovieSource?.Clip;
 
 	[Property, Group( "Playback" )]
 	public bool IsPlaying
@@ -75,103 +62,34 @@ public sealed partial class MoviePlayer : Component
 		set => Position = MovieTime.FromSeconds( value );
 	}
 
+	private void UpdateClip()
+	{
+		var clip = MovieClip;
+
+		if ( _lastClip == clip ) return;
+
+		_lastClip = clip;
+
+		if ( clip?.RootTracks is { } tracks )
+		{
+			Properties.RegisterTracksRecursive( tracks );
+		}
+	}
+
 	/// <summary>
 	/// Apply the movie clip to the scene at the current time position.
-	/// If we reach the end, check <see cref="IsLooping"/> to either jump back to the start, or stop playback.
 	/// </summary>
 	private void UpdatePosition()
 	{
-		if ( MovieClip is null ) return;
+		if ( !Enabled ) return;
 
-		ApplyFrame( _position );
-		UpdateModels( _position );
-	}
+		UpdateClip();
 
-	public IEnumerable<GameObject> GetControlledGameObjects()
-	{
-		if ( MovieClip is not { } clip ) return [];
+		if ( MovieClip is not { } clip ) return;
 
-		return _sceneRefMap
-			.Where( x => x.Value.IsBound && x.Value.PropertyType == typeof(GameObject) && clip.GetTrack( x.Key ) is not null )
-			.Select( x => x.Value.GameObject )
-			.OfType<GameObject>();
-	}
+		Properties.ApplyFrame( clip, _position );
 
-	public IEnumerable<T> GetControlledComponents<T>()
-		where T : class
-	{
-		if ( MovieClip is not { } clip ) return [];
-
-		return _sceneRefMap
-			.Where( x => x.Value.IsBound && x.Value.PropertyType == typeof(T) && clip.GetTrack( x.Key ) is not null )
-			.Select( x => x.Value.Component )
-			.OfType<T>();
-	}
-
-	public void ApplyFrame( MovieTime time )
-	{
-		if ( MovieClip is not { } clip || _sceneRefMap.Count == 0 ) return;
-		if ( time > clip.Duration ) return;
-		if ( time < MovieTime.Zero ) return;
-
-		using var sceneScope = Scene.Push();
-
-		foreach ( var track in clip.RootTracks )
-		{
-			ApplyFrame( track, time );
-		}
-	}
-
-	private MovieTime _lastModelPosition;
-
-	public void UpdateModels( MovieTime time )
-	{
-		// Negative deltas aren't supported :(
-
-		var dt = Math.Min( (float)(time - _lastModelPosition).Absolute.TotalSeconds, 1f );
-
-		_lastModelPosition = time;
-
-		foreach ( var renderer in GetControlledComponents<SkinnedModelRenderer>() )
-		{
-			if ( renderer.SceneModel is not { } model ) continue;
-
-			if ( !Scene.IsEditor )
-			{
-				renderer.PlaybackRate = TimeScale;
-			}
-			else
-			{
-				if ( dt > 0f )
-				{
-					model.PlaybackRate = 1f;
-					model.Update( dt );
-				}
-
-				model.PlaybackRate = 0f;
-			}
-		}
-	}
-
-	internal void ApplyFrame( MovieTrack track, MovieTime time )
-	{
-		if ( track.GetBlock( time ) is { } block )
-		{
-			ApplyFrame( track, block, time );
-		}
-
-		foreach ( var child in track.Children )
-		{
-			ApplyFrame( child, time );
-		}
-	}
-
-	public void ApplyFrame( MovieTrack track, IMovieBlock block, MovieTime time )
-	{
-		if ( block.Data is not IMovieBlockValueData valueData ) return;
-		if ( GetOrAutoResolveProperty( track ) is not { IsBound: true } property ) return;
-
-		property.Value = valueData.GetValue( time - block.TimeRange.Start );
+		UpdateAnimationPlaybackRate( clip );
 	}
 
 	protected override void OnEnabled()
@@ -199,5 +117,26 @@ public sealed partial class MoviePlayer : Component
 		}
 
 		UpdatePosition();
+	}
+
+	/// <summary>
+	/// Set the <see cref="SkinnedModelRenderer.PlaybackRate"/> of all bound renderers.
+	/// </summary>
+	private void UpdateAnimationPlaybackRate( MovieClip clip )
+	{
+		var renderers = clip.Tracks
+			.Where( x => x.PropertyType == typeof(SkinnedModelRenderer) )
+			.Select( x => (Properties[x] as IComponentReferenceProperty)?.Component )
+			.OfType<SkinnedModelRenderer>();
+
+		foreach ( var renderer in renderers )
+		{
+			if ( renderer.SceneModel is not { } model ) continue;
+
+			// We're assuming SkinnedModelRenderer.PlaybackRate persists even if we change SceneModel.PlaybackRate,
+			// so we don't stomp relative playback rates
+
+			model.PlaybackRate = renderer.PlaybackRate * TimeScale;
+		}
 	}
 }

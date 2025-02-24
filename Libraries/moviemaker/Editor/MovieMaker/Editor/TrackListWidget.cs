@@ -79,7 +79,7 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		MouseTracking = true;
 		AcceptDrops = true;
 
-		Load( Session.Clip );
+		Load( Session.Project );
 	}
 
 	private void OnSelectionAdded( object item )
@@ -127,11 +127,11 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 		TrackList.Clear( true );
 		Tracks.Clear();
 
-		if ( Session.Clip is { } clip )
+		if ( Session.Project is { } clip )
 		{
 			_lastTrackHash = clip.TrackHash;
 
-			var groups = new Dictionary<MovieTrack, TrackGroup>();
+			var groups = new Dictionary<MovieProjectTrack, TrackGroup>();
 
 			foreach ( var track in clip.AllTracks )
 			{
@@ -170,7 +170,7 @@ public partial class TrackListWidget : Widget, EditorEvent.ISceneEdited
 	/// </summary>
 	public void RebuildTracksIfNeeded()
 	{
-		if ( (Session.Clip?.TrackHash ?? 0) == _lastTrackHash ) return;
+		if ( (Session.Project?.TrackHash ?? 0) == _lastTrackHash ) return;
 
 		RebuildTracks();
 	}

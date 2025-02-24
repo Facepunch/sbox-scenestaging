@@ -8,143 +8,92 @@ namespace Sandbox.MovieMaker;
 
 #nullable enable
 
-[JsonConverter( typeof(MovieClipConverter) )]
-partial class MovieClip
+[JsonConverter( typeof( MovieTrackConverter ) )]
+partial record MovieTrack;
+
+/// <summary>
+/// Handles deserializing <see cref="MovieBlock"/>s because they need to match <see cref="MovieTrack.PropertyType"/>.
+/// </summary>
+file sealed class MovieTrackConverter : JsonConverter<MovieTrack>
 {
-	/// <summary>
-	/// Copy editor data so nothing surprising happens if it gets modified.
-	/// Returns null if we're not in the editor because we'll never use the data anyway.
-	/// </summary>
-	internal static JsonObject? CopyEditorData( JsonObject? editorData, JsonSerializerOptions? options )
+	public override MovieTrack Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
 	{
-		return Application.IsEditor ? editorData?.Deserialize<JsonObject>( options ) : null;
+		return JsonSerializer.Deserialize<TrackModel>( ref reader, options )!.Deserialize( options );
 	}
 
-	internal MovieTrack AddTrack( MovieTrack.Model model, JsonSerializerOptions? options )
+	public override void Write( Utf8JsonWriter writer, MovieTrack value, JsonSerializerOptions options )
 	{
-		var track = MovieTrack.Deserialize( this, model, options );
-
-		AddTrackInternal( track );
-
-		return track;
-	}
-}
-
-file class MovieClipConverter : JsonConverter<MovieClip>
-{
-	private record Model( IReadOnlyList<MovieTrack.Model> Tracks,
-		[property:JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]JsonObject? EditorData = null );
-
-	public override void Write( Utf8JsonWriter writer, MovieClip value, JsonSerializerOptions options )
-	{
-		var model = new Model( value.AllTracks.Select( x => x.Serialize( options ) ).ToImmutableList(),
-			MovieClip.CopyEditorData( value.EditorData, options ) );
-
-		JsonSerializer.Serialize( writer, model, options );
+		JsonSerializer.Serialize( new TrackModel( value, options ), options );
 	}
 
-	public override MovieClip Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
+	private record TrackModel( Guid Id, string Name, Type Type,
+		[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
+		ImmutableArray<TrackModel>? Children,
+		[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
+		ImmutableArray<BlockModel>? Blocks )
 	{
-		var model = JsonSerializer.Deserialize<Model>( ref reader, options )!;
-		var clip = new MovieClip { EditorData = MovieClip.CopyEditorData( model.EditorData, options ) };
-
-		foreach ( var trackModel in model.Tracks )
+		public TrackModel( MovieTrack track, JsonSerializerOptions? options )
+			: this( track.Id, track.Name, track.PropertyType,
+				track.Children is { Length: > 0 }
+					? track.Children.Select( x => new TrackModel( x, options ) ).ToImmutableArray()
+					: null,
+				track.Blocks is { Length: > 0 }
+					? track.Blocks.Select( x => new BlockModel( x, options ) ).ToImmutableArray()
+					: null )
 		{
-			clip.AddTrack( trackModel, options );
+
 		}
 
-		return clip;
-	}
-}
-
-partial class MovieTrack
-{
-	internal record Model( Guid Id, string Name, Type Type,
-		[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
-		Guid? ParentId,
-		[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
-		IReadOnlyList<MovieBlock.Model>? Blocks,
-		[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
-		JsonObject? EditorData );
-
-	internal Model Serialize( JsonSerializerOptions? options ) =>
-		new ( Id, Name, PropertyType, Parent?.Id,
-			Blocks.Count == 0 ? null : Blocks.Select( x => x.Serialize( options ) ).ToImmutableList(),
-			MovieClip.CopyEditorData( EditorData, options ) );
-
-	private MovieBlock AddBlock( MovieBlock.Model model, JsonSerializerOptions? options )
-	{
-		var block = MovieBlock.Deserialize( this, model, options );
-
-		AddBlockInternal( block );
-
-		return block;
-	}
-
-	internal static MovieTrack Deserialize( MovieClip clip, Model model, JsonSerializerOptions? options )
-	{
-		var parent = model.ParentId is { } parentId ? clip.GetTrack( parentId ) : null;
-		var track = new MovieTrack( clip, model.Id, model.Name, model.Type, parent )
+		public MovieTrack Deserialize( JsonSerializerOptions? options )
 		{
-			EditorData = MovieClip.CopyEditorData( model.EditorData, options )
-		};
+			// TODO: handle missing Type?
 
-		if ( model.Blocks is { } blockModels )
-		{
-			foreach ( var blockModel in blockModels )
-			{
-				track.AddBlock( blockModel, options );
-			}
+			return new MovieTrack( Id, Name, Type,
+				Children?.Select( x => x.Deserialize( options ) ).ToImmutableArray() ?? [],
+				Blocks?.Select( x => x.Deserialize( Type, options ) ).ToImmutableArray() ?? [] );
 		}
-
-		return track;
 	}
-}
 
-partial class MovieBlock
-{
-	internal enum Kind
+	private enum BlockKind
 	{
 		Constant,
 		Samples,
 		Action
 	}
 
-	internal record Model( int Id, Kind Kind, MovieTimeRange? TimeRange, JsonNode Data, float? Start = null, float? Duration = null );
-
-	private static Kind GetKind( IMovieBlockData data )
+	private record BlockModel( BlockKind Kind, MovieTimeRange TimeRange, JsonNode Data )
 	{
-		return data switch
+		private static BlockKind GetKind( IBlockData data )
 		{
-			IConstantData => Kind.Constant,
-			ISamplesData => Kind.Samples,
-			ActionData => Kind.Action,
-			_ => throw new NotImplementedException()
-		};
-	}
+			return data switch
+			{
+				IConstantData => BlockKind.Constant,
+				ISamplesData => BlockKind.Samples,
+				ActionData => BlockKind.Action,
+				_ => throw new NotImplementedException()
+			};
+		}
 
-	internal Model Serialize( JsonSerializerOptions? options )
-	{
-		var model = new Model( Id, GetKind( Data ), TimeRange,
-			JsonSerializer.SerializeToNode( Data, Data.GetType(), options )! );
-
-		return model;
-	}
-
-	internal static MovieBlock Deserialize( MovieTrack track, Model model, JsonSerializerOptions? options )
-	{
-		var dataType = model.Kind switch
+		public BlockModel( MovieBlock block, JsonSerializerOptions? options )
+			: this( GetKind( block.Data ), block.TimeRange,
+				JsonSerializer.SerializeToNode( block.Data, block.Data.GetType(), options )! )
 		{
-			Kind.Constant => TypeLibrary.GetType( typeof( ConstantData<> ) ).MakeGenericType( [track.PropertyType] ),
-			Kind.Samples => TypeLibrary.GetType( typeof( SamplesData<> ) ).MakeGenericType( [track.PropertyType] ),
-			Kind.Action => typeof( ActionData ),
-			_ => throw new NotImplementedException()
-		};
 
-		var data = (IMovieBlockData)model.Data.Deserialize( dataType, options )!;
+		}
 
-		return new MovieBlock( track, model.Id,
-			model.TimeRange ?? (MovieTime.FromSeconds( model.Start ?? 0f ),
-				MovieTime.FromSeconds( model.Duration ?? 0f )), data );
+		public MovieBlock Deserialize( Type propertyType, JsonSerializerOptions? options )
+		{
+			var dataType = Kind switch
+			{
+				BlockKind.Constant => TypeLibrary.GetType( typeof(ConstantData<>) ).MakeGenericType( [propertyType] ),
+				BlockKind.Samples => TypeLibrary.GetType( typeof(SamplesData<>) ).MakeGenericType( [propertyType] ),
+				BlockKind.Action => typeof(ActionData),
+				_ => throw new NotImplementedException()
+			};
+
+			var data = (IBlockData)Data.Deserialize( dataType, options )!;
+
+			return new MovieBlock( TimeRange, data );
+		}
 	}
 }

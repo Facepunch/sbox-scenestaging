@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Text.Json;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -11,17 +12,25 @@ public sealed partial class Session
 {
 	public static Session? Current { get; internal set; }
 
-	public MoviePlayer Player { get; private set; } = null!;
+	public MovieEditor Editor { get; }
+	public MoviePlayer Player { get; }
+	public MovieProject Project { get; }
+	public IMovieSource Source { get; }
 
-	internal MovieClip? Clip { get; private set; }
-	internal MovieEditor Editor { get; set; } = null!;
-
+	private int _frameRate;
 	private bool _frameSnap;
 	private bool _objectSnap;
 	private MovieTime _timeOffset;
 	private float _pixelsPerSecond;
 
 	public bool IsEditorScene => Player?.Scene?.IsEditor ?? true;
+	public MovieProperties Properties => Player.Properties;
+
+	public int FrameRate
+	{
+		get => _frameRate;
+		set => _frameRate = Cookies.FrameRate = value;
+	}
 
 	public bool FrameSnap
 	{
@@ -46,20 +55,6 @@ public sealed partial class Session
 		get => _pixelsPerSecond;
 		private set => _pixelsPerSecond = Cookies.PixelsPerSecond = value;
 	}
-
-	public MovieClipEditorData EditorData
-	{
-		get => Clip?.ReadEditorData() ?? new MovieClipEditorData();
-		set => Clip?.WriteEditorData( value );
-	}
-
-	public int FrameRate
-	{
-		get => EditorData.FrameRate ?? 10;
-		set => EditorData = EditorData with { FrameRate = value };
-	}
-
-	public int DefaultSampleRate => Clip!.DefaultSampleRate;
 
 	/// <summary>
 	/// Current time being edited. In play mode, this is the current playback time.
@@ -94,10 +89,12 @@ public sealed partial class Session
 	/// </summary>
 	public event Action? ViewChanged;
 
-	internal void SetPlayer( MoviePlayer player )
+	public Session( MovieEditor editor, MoviePlayer player )
 	{
+		Editor = editor;
 		Player = player;
-		Clip = player.MovieClip;
+		Source = player.MovieSource ??= new EmbeddedMovieResource();
+		Project = Source.EditorData?.Deserialize<MovieProject>( EditorJsonOptions ) ?? new MovieProject();
 	}
 
 	internal void SetEditMode( EditModeType? type )
@@ -226,7 +223,7 @@ public sealed partial class Session
 
 	public bool Frame()
 	{
-		if ( Clip is not { } clip ) return false;
+		if ( Project is not { } clip ) return false;
 
 		PlaybackFrame( clip );
 
@@ -267,7 +264,7 @@ public sealed partial class Session
 
 	internal void ClipModified()
 	{
-		if ( Clip == Player.EmbeddedClip )
+		if ( Project == Player.EmbeddedClip )
 		{
 			Player.Scene.Editor.HasUnsavedChanges = true;
 			return;
@@ -282,7 +279,7 @@ public sealed partial class Session
 
 		// If we're embedded, save the scene
 
-		if ( Clip == Player.EmbeddedClip )
+		if ( Project == Player.EmbeddedClip )
 		{
 			Player.Scene.Editor.Save( false );
 			return;
@@ -290,7 +287,7 @@ public sealed partial class Session
 
 		// If we're referencing a .movie resource, save it to disk
 
-		if ( Clip != Player.ReferencedClip?.Clip )
+		if ( Project != Player.ReferencedClip?.Clip )
 		{
 			return;
 		}

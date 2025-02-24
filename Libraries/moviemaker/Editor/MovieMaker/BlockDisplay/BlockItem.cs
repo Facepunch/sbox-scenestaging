@@ -31,8 +31,8 @@ public abstract partial class BlockItem : GraphicsItem
 		}
 	}
 
-	protected MovieTrack Track => Parent.TrackWidget.MovieTrack;
-	protected IMovieBlockData Data => Block.Data;
+	protected MovieProjectTrack Track => Parent.TrackWidget.MovieTrack;
+	protected IBlockData Data => Block.Data;
 	protected MovieTimeRange TimeRange => Block.TimeRange;
 
 	protected int DataHash => HashCode.Combine( Data, TimeRange.Duration, Width );

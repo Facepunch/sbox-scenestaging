@@ -8,7 +8,7 @@ namespace Editor.MovieMaker;
 
 public static class KeyframeExtensions
 {
-	public static bool CanHaveKeyframes( this IMovieProperty property ) => property is IMemberMovieProperty { CanWrite: true };
+	public static bool CanHaveKeyframes( this IMovieProperty property ) => property is IMemberProperty { CanWrite: true };
 
 	public static KeyframeCurve? ReadKeyframes( this MovieTrack track ) =>
 		(KeyframeCurve?)Json.FromNode( track.ReadEditorData()?.Keyframes, typeof(KeyframeCurve<>).MakeGenericType( track.PropertyType ) );

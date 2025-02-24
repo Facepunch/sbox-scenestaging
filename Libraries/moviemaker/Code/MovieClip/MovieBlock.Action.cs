@@ -5,7 +5,7 @@
 /// <summary>
 /// This block invokes a game action, optionally with some parameters.
 /// </summary>
-public sealed record ActionData : IMovieBlockData
+public sealed record ActionData : IBlockData
 {
 	// TODO
 }

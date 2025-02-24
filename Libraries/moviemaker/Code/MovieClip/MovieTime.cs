@@ -215,8 +215,7 @@ public readonly record struct MovieTimeRange( MovieTime Start, MovieTime End )
 		return MovieTime.Lerp( start, start + startDelta, t );
 	}
 
-	public bool Contains( MovieTime time ) => time >= Start && time < End;
-
+	public bool Contains( MovieTime time ) => time >= Start && time <= End;
 	public bool Contains( MovieTimeRange timeRange ) => timeRange.Start >= Start && timeRange.End <= End;
 	public float GetFraction( MovieTime time ) => Duration.GetFraction( time - Start );
 
@@ -232,29 +231,6 @@ public readonly record struct MovieTimeRange( MovieTime Start, MovieTime End )
 	public static MovieTimeRange operator -( MovieTimeRange range, MovieTime offset ) => (range.Start - offset, range.End - offset);
 
 	#endregion
-}
-
-public interface ITimeRanged
-{
-	MovieTimeRange TimeRange { get; }
-}
-
-public static class TimeRangedExtensions
-{
-	public static MovieTime Start<T>( this T timeRanged ) where T : ITimeRanged
-	{
-		return timeRanged.TimeRange.Start;
-	}
-
-	public static MovieTime End<T>( this T timeRanged ) where T : ITimeRanged
-	{
-		return timeRanged.TimeRange.End;
-	}
-
-	public static MovieTime Duration<T>( this T timeRanged ) where T : ITimeRanged
-	{
-		return timeRanged.TimeRange.Duration;
-	}
 }
 
 file class MovieTimeConverter : JsonConverter<MovieTime>

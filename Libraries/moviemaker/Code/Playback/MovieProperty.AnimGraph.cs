@@ -9,12 +9,12 @@ partial class MovieProperty
 {
 	private static bool IsAnimParam( IMovieProperty target, string name )
 	{
-		return target is IMovieProperty<ParameterAccessor?>;
+		return target is IMemberProperty<ParameterAccessor?>;
 	}
 
-	private static IMemberMovieProperty FromAnimParam( IMovieProperty target, string name, Type? expectedType )
+	private static IMemberProperty FromAnimParam( IMovieProperty target, string name, Type? expectedType )
 	{
-		var paramAccessorTarget = (IMovieProperty<ParameterAccessor?>)target;
+		var paramAccessorTarget = (IMemberProperty<ParameterAccessor?>)target;
 
 		expectedType ??= paramAccessorTarget.Value?.Graph?.GetParameterType( name ) ?? typeof(object);
 
@@ -23,7 +23,7 @@ partial class MovieProperty
 			var propGenType = TypeLibrary.GetType( typeof( AnimParamMovieProperty<> ) );
 			var propType = propGenType.MakeGenericType( [expectedType] );
 
-			return TypeLibrary.Create<IMemberMovieProperty>( propType, [target, name] );
+			return TypeLibrary.Create<IMemberProperty>( propType, [target, name] );
 		}
 		catch ( Exception ex )
 		{
@@ -33,40 +33,35 @@ partial class MovieProperty
 	}
 }
 
-file sealed class AnimParamMovieProperty<T> : IMovieProperty<T>, IMemberMovieProperty
+file sealed class AnimParamMovieProperty<T>( IMemberProperty<ParameterAccessor?> parent, string name )
+	: IMemberProperty<T>
 {
-	public IMovieProperty<ParameterAccessor?> TargetProperty { get; }
-	public IAnimParamAccessor<T> Accessor { get; }
+	private IAnimParamAccessor<T> Accessor { get; } = DefaultAnimParamAccessor.Instance as IAnimParamAccessor<T> ?? throw new NotImplementedException();
 
-	public AnimParamMovieProperty( IMovieProperty<ParameterAccessor?> targetProperty, string name )
-	{
-		TargetProperty = targetProperty;
-		Accessor = DefaultAnimParamAccessor.Instance as IAnimParamAccessor<T> ?? throw new NotImplementedException();
-		PropertyName = name;
-	}
-
-	public string PropertyName { get; }
+	public string PropertyName { get; } = name;
 
 	public Type PropertyType { get; } = typeof(T);
 
-	public bool IsBound => TargetProperty.Value?.Graph?.GetParameterType( PropertyName ) == PropertyType;
+	public bool IsBound => parent.Value?.Graph?.GetParameterType( PropertyName ) == PropertyType;
 	public bool CanWrite => true;
 
 	public T Value
 	{
-		get => TargetProperty.Value is { } accessor ? Accessor.Get( accessor, PropertyName ) : default!;
+		get => parent.Value is { } accessor ? Accessor.Get( accessor, PropertyName ) : default!;
 		set
 		{
-			if ( TargetProperty.Value is { } accessor )
+			if ( parent.Value is { } accessor )
 			{
 				Accessor.Set( accessor, PropertyName, value );
 			}
 		}
 	}
 
-	IMovieProperty IMemberMovieProperty.TargetProperty => TargetProperty;
+	IMovieProperty IMemberProperty.Parent => parent;
 
-	object? IMovieProperty.Value
+	object? IMovieProperty.Value => Value;
+
+	object? IMemberProperty.Value
 	{
 		get => Value;
 		set => Value = (T)value!;

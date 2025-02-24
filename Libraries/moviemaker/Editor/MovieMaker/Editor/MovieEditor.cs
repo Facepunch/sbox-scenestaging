@@ -182,7 +182,7 @@ public class MovieEditor : Widget
 		if ( Session is not null )
 		{
 			// Whatever we were editing doesn't exist anymore!
-			if ( playersAvailable.All( x => x.MovieClip != Session.Clip || x != Session.Player ) )
+			if ( playersAvailable.All( x => x.MovieResource != Session.Project || x != Session.Player ) )
 			{
 				CloseSession();
 			}
@@ -220,18 +220,18 @@ public class MovieEditor : Widget
 
 	public void SwitchToEmbedded()
 	{
-		if ( Session.Clip == Session.Player.EmbeddedClip ) return;
+		if ( Session.Project == Session.Player.EmbeddedClip ) return;
 
-		Session.Player.EmbeddedClip = Session.Clip?.Clone();
+		Session.Player.EmbeddedClip = Session.Project?.Clone();
 
 		Switch( Session.Player );
 	}
 
 	public void SwitchFile( MovieFile file )
 	{
-		if ( Session.Clip == file.Clip ) return;
+		if ( Session.Project == file.Clip ) return;
 
-		if ( Session.Clip == Session.Player.EmbeddedClip && Session.Clip?.TrackCount > 0 )
+		if ( Session.Project == Session.Player.EmbeddedClip && Session.Project?.TrackCount > 0 )
 		{
 			Dialog.AskConfirm( () =>
 			{
@@ -267,7 +267,7 @@ public class MovieEditor : Widget
 			return;
 
 		var sceneAsset = AssetSystem.CreateResource( extension, fd.SelectedFile );
-		var file = new MovieFile { Clip = Session.Clip?.Clone() ?? new MovieClip() };
+		var file = new MovieFile { Clip = Session.Project?.Clone() ?? new MovieClip() };
 
 		sceneAsset.SaveToDisk( file );
 

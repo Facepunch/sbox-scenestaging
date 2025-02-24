@@ -72,7 +72,7 @@ public abstract class EditMode
 	}
 
 	public Session Session { get; private set; } = null!;
-	public MovieClip Clip => Session.Clip!;
+	public MovieProject Project => Session.Project;
 	protected DopeSheet DopeSheet { get; private set; } = null!;
 	protected ToolbarHelper Toolbar { get; private set; }
 
@@ -130,10 +130,10 @@ public abstract class EditMode
 	internal void Frame() => OnFrame();
 	protected virtual void OnFrame() { }
 
-	internal bool PreChange( MovieTrack track )
+	internal bool PreChange( MovieProjectTrack track )
 	{
-		if ( !track.CanModify() ) return false;
-		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } ) return false;
+		if ( !track.CanRecord ) return false;
+		if ( Session.Map.GetProperty( track ) is not IMemberProperty { CanWrite: true } ) return false;
 
 		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
 		{
@@ -145,10 +145,10 @@ public abstract class EditMode
 
 	protected virtual bool OnPreChange( DopeSheetTrack track ) => false;
 
-	internal bool PostChange( MovieTrack track )
+	internal bool PostChange( MovieProjectTrack track )
 	{
-		if ( !track.CanModify() ) return false;
-		if ( Session.Player.GetProperty( track ) is not { CanWrite: true } ) return false;
+		if ( !track.CanRecord ) return false;
+		if ( Session.Map.GetProperty( track ) is not IMemberProperty { CanWrite: true } ) return false;
 
 		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
 		{

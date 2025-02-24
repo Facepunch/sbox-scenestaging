@@ -4,11 +4,9 @@
 
 public class TrackGroup : Widget
 {
-	private bool _collapsed;
-
 	public bool Collapsed
 	{
-		get => _collapsed;
+		get => Header.TrackList.Session.GetCookie(  ).MovieTrack.IsCollapsed;
 		set
 		{
 			_collapsed = value;

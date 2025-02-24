@@ -1,93 +1,36 @@
 ﻿using System;
-using System.Text.Json.Nodes;
-using Sandbox.Diagnostics;
+using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 
 namespace Sandbox.MovieMaker;
 
 #nullable enable
 
 /// <summary>
-/// A timeline describing changing property values and actions to run in a scene.
+/// A compiled timeline of <see cref="MovieTrack"/>s describing properties changing over time and actions being invoked.
 /// </summary>
-public sealed partial class MovieClip
+/// <param name="RootTracks">Set of tracks in this clip that are at the root level in the hierarchy.</param>
+public sealed record MovieClip( params ImmutableArray<MovieTrack> RootTracks ) : ValidatedRecord
 {
-	/// <summary>
-	/// List of tracks, sorted by <see cref="MovieTrack.Id"/>.
-	/// </summary>
-	private readonly List<MovieTrack> _rootTracks = new();
-	private readonly Dictionary<Guid, MovieTrack> _trackDict = new();
-
-	private int? _trackHash;
-
-	/// <summary>
-	/// Set of tracks in this clip that are at the root level in the hierarchy.
-	/// </summary>
-	public IReadOnlyList<MovieTrack> RootTracks => _rootTracks;
+	private readonly ImmutableDictionary<Guid, MovieTrack> _trackDict = RootTracks
+		.SelectMany( EnumerateDescendants )
+		.DistinctBy( x => x.Id )
+		.ToImmutableDictionary( x => x.Id, x => x );
 
 	/// <summary>
 	/// All tracks in this clip, including children of other tracks.
 	/// </summary>
-	public IEnumerable<MovieTrack> AllTracks => _rootTracks.SelectMany( EnumerateAllDescendants );
-
-	/// <summary>
-	/// Total number of tracks in the clip, including children of other tracks.
-	/// </summary>
-	public int TrackCount => _trackDict.Count;
-
-	/// <summary>
-	/// Hash of the track list, as a quick way to see if any tracks have been added / removed.
-	/// </summary>
-	public int TrackHash => _trackHash ??= CalculateTrackHash();
+	[JsonIgnore]
+	public ImmutableArray<MovieTrack> Tracks { get; } = [..RootTracks.SelectMany( EnumerateDescendants )];
 
 	/// <summary>
 	/// How long this clip takes to fully play.
 	/// </summary>
-	public MovieTime Duration => _trackDict.Values
-		.Aggregate( MovieTime.Zero, ( s, x ) => MovieTime.Max( s, x.TimeRange.End ) );
-
-	public int DefaultSampleRate { get; private set; } = 30;
-
-	/// <summary>
-	/// Editor-only information about this movie.
-	/// </summary>
-	public JsonObject? EditorData { get; set; }
-
-	/// <summary>
-	/// Adds a new track to this clip, with the given property type.
-	/// </summary>
-	/// <param name="name">Display name of the track, used in the editor and when auto-resolving.</param>
-	/// <param name="type">Property type for this track.</param>
-	/// <param name="parent">Optional parent track, for grouping in the hierarchy and auto-resolving.</param>
-	public MovieTrack AddTrack( string name, Type type, MovieTrack? parent = null )
-	{
-		if ( parent is not null )
-		{
-			Assert.True( parent.IsValid && parent.Clip == this,
-				$"Can't parent to a track from a different {nameof(MovieClip)}." );
-		}
-
-		var track = new MovieTrack( this, Guid.NewGuid(), name, type, parent );
-
-		AddTrackInternal( track );
-
-		return track;
-	}
-
-	private void AddTrackInternal( MovieTrack track )
-	{
-		_trackDict.Add( track.Id, track );
-
-		if ( track.Parent is null )
-		{
-			_rootTracks.Add( track );
-		}
-		else
-		{
-			track.Parent.AddChildInternal( track );
-		}
-
-		InvalidateTrackHash();
-	}
+	[JsonIgnore]
+	public MovieTime Duration { get; } = RootTracks
+		.SelectMany( EnumerateDescendants )
+		.Select( x => x.TimeRange.End )
+		.DefaultIfEmpty().Max();
 
 	/// <summary>
 	/// Attempts to get a track with the given <paramref name="trackId"/>.
@@ -95,62 +38,22 @@ public sealed partial class MovieClip
 	/// <returns>The matching track, or <see langword="null"/> if not found.</returns>
 	public MovieTrack? GetTrack( Guid trackId )
 	{
-		return _trackDict!.GetValueOrDefault( trackId );
+		return _trackDict.GetValueOrDefault( trackId );
 	}
 
-	/// <summary>
-	/// Should only be called from <see cref="MovieTrack.Remove"/>
-	/// </summary>
-	internal void RemoveTrackInternal( MovieTrack track )
+	protected override void OnValidate()
 	{
-		if ( GetTrack( track.Id ) == track )
+		var allUniqueIds = RootTracks
+			.SelectMany( EnumerateDescendants )
+			.GroupBy( x => x.Id )
+			.All( x => x.Count() == 1 );
+
+		if ( !allUniqueIds )
 		{
-			_trackDict.Remove( track.Id );
-		}
-
-		if ( track.Parent is null )
-		{
-			_rootTracks.Remove( track );
-		}
-		else
-		{
-			track.Parent.RemoveChildInternal( track );
-		}
-
-		InvalidateTrackHash();
-	}
-
-	private static IEnumerable<MovieTrack> EnumerateAllDescendants( MovieTrack track )
-	{
-		yield return track;
-
-		// Show tracks with no children first
-
-		foreach ( var child in track.Children.OrderBy( x => x.Children.Count > 0 ) )
-		{
-			foreach ( var descendant in EnumerateAllDescendants( child ) )
-			{
-				yield return descendant;
-			}
+			throw new ArgumentException( "Tracks must have unique IDs.", nameof(Tracks) );
 		}
 	}
 
-	private int CalculateTrackHash()
-	{
-		var hash = new HashCode();
-
-		foreach ( var track in AllTracks )
-		{
-			hash.Add( track.Id );
-		}
-
-		return hash.ToHashCode();
-	}
-
-	private void InvalidateTrackHash()
-	{
-		_trackHash = null;
-	}
-
-	public MovieClip Clone() => Json.FromNode<MovieClip>( Json.ToNode( this ) );
+	private static IEnumerable<MovieTrack> EnumerateDescendants( MovieTrack track ) =>
+		[track, ..track.Children.SelectMany( EnumerateDescendants )];
 }

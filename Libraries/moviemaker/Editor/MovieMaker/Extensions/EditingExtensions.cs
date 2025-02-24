@@ -10,7 +10,7 @@ public record struct InsertOptions(
 	bool StitchStart = false,
 	bool StitchEnd = false );
 
-public static class EditHelpers
+public static class EditingExtensions
 {
 	public static bool Splice( this MovieTrack track, MovieTimeRange timeRange, MovieTime newDuration, InsertOptions? insertOptions = null )
 	{
@@ -59,12 +59,12 @@ public static class EditHelpers
 
 			var body = track.AddBlock( block );
 
-			if ( options.StitchStart && head is not null && block.TimeRange.Start == timeRange.Start )
+			if ( options.StitchStart && head is not null && block.Start() == timeRange.Start )
 			{
 				body = track.Stitch( head, body ) ?? body;
 			}
 
-			if ( options.StitchEnd && tail is not null && block.TimeRange.End == timeRange.End )
+			if ( options.StitchEnd && tail is not null && block.End() == timeRange.End )
 			{
 				body = track.Stitch( body, tail ) ?? body;
 			}
@@ -80,7 +80,7 @@ public static class EditHelpers
 
 	public static bool Delete( this Session session, MovieTimeRange timeRange, bool shift )
 	{
-		if ( session.Clip is not { } clip ) return false;
+		if ( session.Project is not { } clip ) return false;
 
 		var changed = false;
 
@@ -105,7 +105,7 @@ public static class EditHelpers
 
 	public static bool Insert( this Session session, MovieTimeRange timeRange )
 	{
-		if ( session.Clip is not { } clip ) return false;
+		if ( session.Project is not { } clip ) return false;
 
 		var changed = false;
 
@@ -150,56 +150,7 @@ public static class EditHelpers
 		left.Remove();
 		right.Remove();
 
-		return track.AddBlock( timeRange, CreateSamplesData( track.PropertyType, sampleRate, samples ) );
-	}
-
-	public static IEnumerable<MovieBlockSlice> Slice( this MovieTrack track, MovieTimeRange timeRange ) =>
-		track.GetCuts( timeRange ).Select( x => x.Block.Slice( x.TimeRange ) );
-
-	public static MovieBlockSlice Slice( this MovieBlock srcBlock, MovieTimeRange timeRange ) =>
-		new( timeRange, srcBlock.Data.Slice( timeRange - srcBlock.Start() ) );
-
-	public static IMovieBlockData Slice( this IMovieBlockData data, MovieTimeRange timeRange )
-	{
-		return data is not IMovieBlockValueData valueData ? data : valueData.Slice( timeRange );
-	}
-
-	public static void Sample( this IMovieBlock block, Array dstSamples, MovieTimeRange srcTimeRange, MovieTimeRange dstTimeRange, int sampleRate )
-	{
-		if ( block.Data is not IMovieBlockValueData valueData ) return;
-
-		var dstStartIndex = dstTimeRange.Start.GetFrameIndex( sampleRate );
-		var dstEndIndex = dstStartIndex + dstTimeRange.Duration.GetFrameCount( sampleRate );
-
-		if ( dstStartIndex < 0 )
-		{
-			srcTimeRange = (srcTimeRange.Start + MovieTime.FromFrames( -dstStartIndex, sampleRate ), srcTimeRange.End);
-			dstStartIndex = 0;
-		}
-
-		if ( dstEndIndex > dstSamples.Length )
-		{
-			srcTimeRange = (srcTimeRange.Start, srcTimeRange.End - MovieTime.FromFrames( dstEndIndex - dstSamples.Length, sampleRate ));
-			dstEndIndex = dstSamples.Length;
-		}
-
-		if ( dstEndIndex <= dstStartIndex || srcTimeRange.IsEmpty ) return;
-
-		valueData.Sample( dstSamples, dstStartIndex, dstEndIndex - dstStartIndex, srcTimeRange - block.TimeRange.Start, sampleRate );
-	}
-
-	public static IConstantData CreateConstantData( Type type, object? value )
-	{
-		return (IConstantData)Activator.CreateInstance( typeof(ConstantData<>).MakeGenericType( type ), value )!;
-	}
-
-	public static ISamplesData CreateSamplesData( Type type,
-		int sampleRate,
-		Array samples,
-		MovieTime firstSampleTime = default )
-	{
-		return (ISamplesData)Activator.CreateInstance( typeof(SamplesData<>).MakeGenericType( type ),
-			sampleRate, samples, firstSampleTime )!;
+		return track.AddBlock( timeRange, track.PropertyType.CreateSamplesData( sampleRate, samples ) );
 	}
 
 	public static bool CanModify( this MovieTrack? track )

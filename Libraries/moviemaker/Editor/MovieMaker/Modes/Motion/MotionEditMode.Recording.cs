@@ -20,7 +20,7 @@ partial class MotionEditMode
 
 		var time = Session.CurrentPointer;
 
-		foreach ( var track in Clip.RootTracks )
+		foreach ( var track in Project.RootTracks )
 		{
 			StartRecording( track, time );
 		}
@@ -134,7 +134,7 @@ file class TrackRecording<T> : ITrackRecording
 	public MovieTime SampleInterval { get; }
 
 	public MovieTimeRange TimeRange => (_startTime, _startTime + MovieTime.FromFrames( _samples.Count, SampleRate ));
-	IMovieBlockData IMovieBlock.Data => _previewData;
+	IBlockData IMovieBlock.Data => _previewData;
 
 	private readonly MovieTime _startTime;
 	private readonly IInterpolator<T>? _interpolator;

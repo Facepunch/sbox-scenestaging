@@ -1,111 +1,41 @@
 ﻿using System;
-using Sandbox.Diagnostics;
 
 namespace Sandbox.MovieMaker;
 
 #nullable enable
 
-public interface IMovieBlock : ITimeRanged
-{
-	IMovieBlockData Data { get; }
-}
-
-public interface IPreviewMovieBlock : IMovieBlock
-{
-	event Action? Changed;
-}
-
-public record MovieBlockSlice( MovieTimeRange TimeRange, IMovieBlockData Data ) : IMovieBlock;
-
 /// <summary>
-/// A time region in a <see cref="MovieTrack"/> where something happens.
+/// A time region where something happens.
 /// </summary>
-public sealed partial class MovieBlock : IMovieBlock
+public interface IMovieBlock
 {
-	private MovieTrack? _track;
-	private IMovieBlockData _data;
-	private MovieTimeRange _timeRange;
-
-	public MovieTrack Track => _track ?? throw new Exception( $"{nameof(MovieBlock)} has been removed." );
-	public MovieClip Clip => Track.Clip;
-
-	public int Id { get; }
-
-	public MovieTimeRange TimeRange
-	{
-		get => _timeRange;
-		set
-		{
-			_timeRange = value;
-			_track?.BlockChangedInternal( this );
-		}
-	}
+	/// <summary>
+	/// Start and end time of this block.
+	/// </summary>
+	MovieTimeRange TimeRange { get; }
 
 	/// <summary>
 	/// Track data for this block. Either a constant, sample array, or invoked action information.
 	/// </summary>
-	public IMovieBlockData Data
-	{
-		get => _data;
-		set
-		{
-			AssertValidData( value );
-			_data = value;
-		}
-	}
-
-	internal MovieBlock( MovieTrack track, int id, MovieTimeRange timeRange, IMovieBlockData data )
-	{
-		Id = id;
-
-		_track = track;
-		_timeRange = timeRange;
-
-		AssertValidData( data );
-		_data = data;
-	}
-
-	public void Remove()
-	{
-		_track?.RemoveBlockInternal( this );
-
-		InvalidateInternal();
-	}
-
-	internal void InvalidateInternal()
-	{
-		_track = null;
-	}
-
-	private void AssertValidData( IMovieBlockData value )
-	{
-		switch ( value )
-		{
-			case IConstantData constantData:
-				Assert.True( constantData.ValueType.IsAssignableTo( Track.PropertyType ),
-					"Incompatible constant value type." );
-				break;
-
-			case ISamplesData samplesData:
-				Assert.True( samplesData.ValueType.IsAssignableTo( Track.PropertyType ),
-					"Incompatible sample value type." );
-				break;
-
-			case ActionData:
-				throw new NotImplementedException();
-
-			case null:
-				throw new ArgumentNullException( nameof(value) );
-		}
-	}
+	IBlockData Data { get; }
 }
 
 /// <summary>
-/// Base type for data describing how a track changes during a <see cref="MovieBlock"/>.
+/// A time region where something happens.
 /// </summary>
-public interface IMovieBlockData;
+/// <param name="TimeRange">Start and end time of this block.</param>
+/// <param name="Data">Track data for this block. Either a constant, sample array, or invoked action information.</param>
+public readonly record struct MovieBlock( MovieTimeRange TimeRange, IBlockData Data ) : IMovieBlock;
 
-public interface IMovieBlockValueData : IMovieBlockData
+/// <summary>
+/// Base interface for action or value block data.
+/// </summary>
+public interface IBlockData;
+
+/// <summary>
+/// Interface for data describing how a track animates a property during a <see cref="MovieBlock"/>.
+/// </summary>
+public interface IValueData : IBlockData
 {
 	/// <summary>
 	/// Property value type, must match <see cref="MovieTrack.PropertyType"/>.
@@ -116,14 +46,13 @@ public interface IMovieBlockValueData : IMovieBlockData
 	/// Samples the signal at the given <paramref name="time"/>, where <c>0</c> will return the first sample.
 	/// </summary>
 	object? GetValue( MovieTime time );
-
-	void Sample( Array dstSamples, int dstOffset, int sampleCount, MovieTimeRange srcTimeRange, int sampleRate );
-	IMovieBlockValueData Slice( MovieTimeRange timeRange );
 }
 
-public interface IMovieBlockValueData<T> : IMovieBlockValueData
+/// <summary>
+/// Typed version of <see cref="IValueData"/>.
+/// </summary>
+/// <typeparam name="T">Property value type.</typeparam>
+public interface IValueData<out T> : IValueData
 {
 	new T GetValue( MovieTime time );
-	void Sample( Span<T> dstSamples, MovieTimeRange srcTimeRange, int sampleRate );
-	new IMovieBlockValueData<T> Slice( MovieTimeRange timeRange );
 }

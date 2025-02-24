@@ -156,13 +156,13 @@ public class ToolbarWidget : Widget
 	{
 		ClipDropDown.Clear();
 
-		ClipDropDown.AddItem( "Embedded", "attachment", () => Editor.SwitchToEmbedded(), "Use a clip stored in the player component.", Session?.Clip == Session?.Player.EmbeddedClip );
+		ClipDropDown.AddItem( "Embedded", "attachment", () => Editor.SwitchToEmbedded(), "Use a clip stored in the player component.", Session?.Project == Session?.Player.EmbeddedClip );
 
 		var icon = typeof(MovieFile).GetCustomAttribute<GameResourceAttribute>()!.Icon;
 
 		foreach ( var file in ResourceLibrary.GetAll<MovieFile>().OrderBy( x => x.ResourcePath ) )
 		{
-			ClipDropDown.AddItem( file.ResourceName, icon, () => Editor.SwitchFile( file ), file.ResourcePath, Session?.Clip == file.Clip );
+			ClipDropDown.AddItem( file.ResourceName, icon, () => Editor.SwitchFile( file ), file.ResourcePath, Session?.Project == file.Clip );
 		}
 
 		ClipDropDown.AddItem( "Save As..", "save_as", Editor.SaveFileAs, "Save the current clip as a new movie file." );
