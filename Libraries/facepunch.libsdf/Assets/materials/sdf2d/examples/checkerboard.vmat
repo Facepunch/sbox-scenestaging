@@ -1,0 +1,27 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/sdf2d/scorched.shader_c"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Material ----
+	g_flTintColor "[1.000000 1.000000 1.000000 0.000000]"
+	TextureAmbientOcclusion "materials/default/default_ao.tga"
+	TextureColor "materials/dev/simple/simple_tile_color.png"
+	TextureMetalness "materials/default/default_metal.tga"
+	TextureNormal "materials/default/default_normal.tga"
+	TextureRoughness "materials/dev/simple/simple_tile_rough.png"
+	TextureTintMask "materials/default/default.tga"
+	TextureTranslucency "materials/default/default_trans.tga"
+
+	//---- Scorch ----
+	ScorchAmbientOcclusion "materials/nature/leaves_ao.png"
+	ScorchBlendMask "materials/nature/leaves_height.png"
+	ScorchColor "materials/nature/leaves_color.png"
+	ScorchMetalness "materials/default/default_metal.tga"
+	ScorchNormal "materials/nature/leaves_normal.png"
+	ScorchRoughness "materials/nature/leaves_rough.png"
+}

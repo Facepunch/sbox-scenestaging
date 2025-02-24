@@ -1,6 +1,6 @@
 using System;
 
-public class SplineEditorTool : EditorTool<Spline>
+public class SplineEditorTool : EditorTool<SplineComponent>
 {
 
 	public override void OnEnabled()
@@ -21,7 +21,7 @@ public class SplineEditorTool : EditorTool<Spline>
 
 	public override void OnSelectionChanged()
 	{
-		var target = GetSelectedComponent<Spline>();
+		var target = GetSelectedComponent<SplineComponent>();
 		window.OnSelectionChanged( target );
 	}
 
@@ -30,7 +30,7 @@ public class SplineEditorTool : EditorTool<Spline>
 
 class SplineToolWindow : WidgetWindow
 {
-	Spline targetComponent;
+	SplineComponent targetComponent;
 
 	static bool IsClosed = false;
 
@@ -87,9 +87,9 @@ class SplineToolWindow : WidgetWindow
 			var controlSheet = new ControlSheet();
 
 			controlSheet.AddRow( tangentMode );
-			controlSheet.AddRow( point.GetProperty( nameof( SplinePoint.Position ) ) );
-			inTangentControl = controlSheet.AddRow( point.GetProperty( nameof( SplinePoint.InPositionRelative ) ) );
-			outTangentControl = controlSheet.AddRow( point.GetProperty( nameof( SplinePoint.OutPositionRelative ) ) );
+			controlSheet.AddRow( point.GetProperty( nameof( Spline.Point.Position ) ) );
+			inTangentControl = controlSheet.AddRow( point.GetProperty( nameof( Spline.Point.In ) ) );
+			outTangentControl = controlSheet.AddRow( point.GetProperty( nameof( Spline.Point.Out ) ) );
 			controlSheet.AddGroup( "Advanced", new[] { roll, scale, up } );
 
 			var row = Layout.Row();
@@ -105,7 +105,7 @@ class SplineToolWindow : WidgetWindow
 			{ ToolTip = "Go to previous point " } );
 			row.Add( new IconButton( "skip_next", () =>
 			{
-				SelectedPointIndex = Math.Min( targetComponent.NumberOfPoints() - 1, SelectedPointIndex + 1 );
+				SelectedPointIndex = Math.Min( targetComponent.Spline.PointCount - 1, SelectedPointIndex + 1 );
 
 				UpdateWindowTitle();
 				Focus();
@@ -113,7 +113,7 @@ class SplineToolWindow : WidgetWindow
 			{ ToolTip = "Go to next point" } );
 			row.Add( new IconButton( "delete", () =>
 			{
-				targetComponent.RemovePoint( SelectedPointIndex );
+				targetComponent.Spline.RemovePoint( SelectedPointIndex );
 				SelectedPointIndex = Math.Max( 0, SelectedPointIndex - 1 );
 				targetComponent.EditLog( "Deleted point", targetComponent );
 
@@ -123,13 +123,13 @@ class SplineToolWindow : WidgetWindow
 			{ ToolTip = "Delete point" } );
 			row.Add( new IconButton( "add", () =>
 			{
-				if ( SelectedPointIndex == targetComponent.NumberOfPoints() - 1 )
+				if ( SelectedPointIndex == targetComponent.Spline.PointCount - 1 )
 				{
-					targetComponent.InsertPoint( SelectedPointIndex + 1, _selectedPoint with { Position = _selectedPoint.Position + targetComponent.GetTangetAtDistance( targetComponent.GetDistanceAtPoint( SelectedPointIndex ) ) * 200 } );
+					targetComponent.Spline.InsertPoint( SelectedPointIndex + 1, _selectedPoint with { Position = _selectedPoint.Position + targetComponent.Spline.SampleAtDistance( targetComponent.Spline.GetDistanceAtPoint( SelectedPointIndex ) ).Tangent * 200 } );
 				}
 				else
 				{
-					targetComponent.AddPointAtDistance( (targetComponent.GetDistanceAtPoint( SelectedPointIndex ) + targetComponent.GetDistanceAtPoint( SelectedPointIndex + 1 )) / 2, true );
+					targetComponent.Spline.AddPointAtDistance( (targetComponent.Spline.GetDistanceAtPoint( SelectedPointIndex ) + targetComponent.Spline.GetDistanceAtPoint( SelectedPointIndex + 1 )) / 2, true );
 					// TOOD infer tangent modes???
 				}
 				targetComponent.EditLog( "Added spline point", targetComponent );
@@ -174,7 +174,7 @@ class SplineToolWindow : WidgetWindow
 		DrawGizmos();
 	}
 
-	public void OnSelectionChanged( Spline spline )
+	public void OnSelectionChanged( SplineComponent spline )
 	{
 		if ( targetComponent.IsValid() )
 		{
@@ -198,7 +198,7 @@ class SplineToolWindow : WidgetWindow
 
 	private void ToggleTangentInput()
 	{
-		if ( targetComponent.GetTangentModeForPoint( _selectedPointIndex ) == SplinePointTangentMode.Auto || targetComponent.GetTangentModeForPoint( _selectedPointIndex ) == SplinePointTangentMode.Linear )
+		if ( _selectedPoint.Mode == Spline.HandleMode.Auto || _selectedPoint.Mode == Spline.HandleMode.Linear )
 		{
 			inTangentControl.Enabled = false;
 			outTangentControl.Enabled = false;
@@ -222,23 +222,23 @@ class SplineToolWindow : WidgetWindow
 
 	int _selectedPointIndex = 0;
 
-	SplinePoint _selectedPoint
+	Spline.Point _selectedPoint
 	{
-		get => SelectedPointIndex > targetComponent.NumberOfPoints() - 1 ? new SplinePoint() : targetComponent.GetPoint( SelectedPointIndex );
+		get => SelectedPointIndex > targetComponent.Spline.PointCount - 1 ? new Spline.Point() : targetComponent.Spline.GetPoint( SelectedPointIndex );
 		set
 		{
-			targetComponent.UpdatePoint( SelectedPointIndex, value );
+			targetComponent.Spline.UpdatePoint( SelectedPointIndex, value );
 			targetComponent.EditLog( "Updated spline point", targetComponent );
 		}
 	}
 
 	[Title( "Tangent Mode" )]
-	SplinePointTangentMode _selectedPointTangentMode
+	Spline.HandleMode _selectedPointTangentMode
 	{
-		get => SelectedPointIndex > targetComponent.NumberOfPoints() - 1 ? SplinePointTangentMode.Auto : targetComponent.GetTangentModeForPoint( SelectedPointIndex );
+		get => SelectedPointIndex > targetComponent.Spline.PointCount - 1 ? Spline.HandleMode.Auto : _selectedPoint.Mode;
 		set
 		{
-			targetComponent.SetTangentModeForPoint( SelectedPointIndex, value );
+			_selectedPoint = _selectedPoint with { Mode = value };
 			targetComponent.EditLog( "Updated spline point", targetComponent );
 			ToggleTangentInput();
 		}
@@ -247,10 +247,10 @@ class SplineToolWindow : WidgetWindow
 	[Title( "Roll (Degrees)" )]
 	float _selectedPointRoll
 	{
-		get => SelectedPointIndex > targetComponent.NumberOfPoints() - 1 ? 0f : targetComponent.GetRollForPoint( SelectedPointIndex );
+		get => SelectedPointIndex > targetComponent.Spline.PointCount - 1 ? 0f : _selectedPoint.Roll;
 		set
 		{
-			targetComponent.SetRollForPoint( SelectedPointIndex, value );
+			_selectedPoint = _selectedPoint with { Roll = value };
 			targetComponent.EditLog( "Updated spline point", targetComponent );
 		}
 	}
@@ -258,21 +258,21 @@ class SplineToolWindow : WidgetWindow
 	[Title( "Up Vector" )]
 	Vector3 _selectedPointUp
 	{
-		get => SelectedPointIndex > targetComponent.NumberOfPoints() - 1 ? Vector3.Zero : targetComponent.GetUpVectorForPoint( SelectedPointIndex );
+		get => SelectedPointIndex > targetComponent.Spline.PointCount - 1 ? Vector3.Zero : _selectedPoint.Up;
 		set
 		{
-			targetComponent.SetUpVectorForPoint( SelectedPointIndex, value );
+			_selectedPoint = _selectedPoint with { Up = value };
 			targetComponent.EditLog( "Updated spline point", targetComponent );
 		}
 	}
 
-	[Title( "Scale (Width, Height)" )]
-	Vector2 _selectedPointScale
+	[Title( "Scale (_, Width, Height)" )]
+	Vector3 _selectedPointScale
 	{
-		get => SelectedPointIndex > targetComponent.NumberOfPoints() - 1 ? 0f : targetComponent.GetScaleForPoint( SelectedPointIndex );
+		get => SelectedPointIndex > targetComponent.Spline.PointCount - 1 ? 0f : _selectedPoint.Scale;
 		set
 		{
-			targetComponent.SetScaleForPoint( SelectedPointIndex, value );
+			_selectedPoint = _selectedPoint with { Scale = value };
 			targetComponent.EditLog( "Updated spline point", targetComponent );
 		}
 	}
@@ -292,7 +292,7 @@ class SplineToolWindow : WidgetWindow
 
 		using ( Gizmo.Scope( "spline_editor", targetComponent.WorldTransform ) )
 		{
-			targetComponent.ConvertToPolyline( ref polyLine );
+			targetComponent.Spline.ConvertToPolyline( ref polyLine );
 
 			for ( var i = 0; i < polyLine.Count - 1; i++ )
 			{
@@ -317,10 +317,10 @@ class SplineToolWindow : WidgetWindow
 
 							// It would be slighlty more efficient to use Spline.Utils directly,
 							// but doggfoding the simplified component API ensures a user of that one would also have the ability to built a spline editor
-							var hoverDistance = targetComponent.FindDistanceClosestToPosition( point_on_line );
+							var hoverSample = targetComponent.Spline.SampleAtClosestPosition( point_on_line );
 
 							using ( Gizmo.Scope( "hover_handle", new Transform( point_on_line,
-									   Rotation.LookAt( targetComponent.GetTangetAtDistance( hoverDistance ) ) ) ) )
+									   Rotation.LookAt( hoverSample.Tangent ) ) ) )
 							{
 								using ( Gizmo.GizmoControls.PushFixedScale() )
 								{
@@ -330,7 +330,7 @@ class SplineToolWindow : WidgetWindow
 
 							if ( Gizmo.HasClicked && Gizmo.Pressed.This )
 							{
-								var newPointIndex = targetComponent.AddPointAtDistance( hoverDistance, true );
+								var newPointIndex = targetComponent.Spline.AddPointAtDistance( hoverSample.Distance, true );
 								SelectedPointIndex = newPointIndex;
 								_inTangentSelected = false;
 								_outTangentSelected = false;
@@ -345,12 +345,12 @@ class SplineToolWindow : WidgetWindow
 			var positionGizmoLocation = _selectedPoint.Position;
 			if ( _inTangentSelected )
 			{
-				positionGizmoLocation = _selectedPoint.InPosition;
+				positionGizmoLocation += _selectedPoint.In;
 			}
 
 			if ( _outTangentSelected )
 			{
-				positionGizmoLocation = _selectedPoint.OutPosition;
+				positionGizmoLocation += _selectedPoint.Out;
 			}
 
 			if ( !Gizmo.IsShiftPressed )
@@ -377,14 +377,11 @@ class SplineToolWindow : WidgetWindow
 						if ( Gizmo.IsShiftPressed && !_draggingOutNewPoint )
 						{
 							_draggingOutNewPoint = true;
-							var newPointTangentMode = targetComponent.GetTangentModeForPoint( SelectedPointIndex );
-							var newpointRoll = targetComponent.GetRollForPoint( SelectedPointIndex );
-							var newPointScale = targetComponent.GetScaleForPoint( SelectedPointIndex );
 
-							targetComponent.InsertPoint( SelectedPointIndex + 1, _selectedPoint );
-							targetComponent.SetTangentModeForPoint( SelectedPointIndex + 1, newPointTangentMode );
-							targetComponent.SetRollForPoint( SelectedPointIndex + 1, newpointRoll );
-							targetComponent.SetScaleForPoint( SelectedPointIndex + 1, newPointScale );
+							var currentPoint = targetComponent.Spline.GetPoint( SelectedPointIndex );
+
+							targetComponent.Spline.InsertPoint( SelectedPointIndex + 1, currentPoint );
+		
 
 							SelectedPointIndex++;
 						}
@@ -400,11 +397,11 @@ class SplineToolWindow : WidgetWindow
 				}
 			}
 
-			for ( var i = 0; i < targetComponent.NumberOfPoints(); i++ )
+			for ( var i = 0; i < targetComponent.Spline.PointCount; i++ )
 			{
-				if ( !targetComponent.IsLoop || i != targetComponent.NumberOfSegments() )
+				if ( !targetComponent.Spline.IsLoop || i != targetComponent.Spline.SegmentCount )
 				{
-					var splinePoint = targetComponent.GetPoint( i );
+					var splinePoint = targetComponent.Spline.GetPoint( i );
 
 					using ( Gizmo.Scope( "point_controls" + i, new Transform( splinePoint.Position ) ) )
 					{
@@ -440,19 +437,19 @@ class SplineToolWindow : WidgetWindow
 						if ( SelectedPointIndex == i )
 						{
 							Gizmo.Draw.LineThickness = 0.8f;
-							using ( Gizmo.Scope( "in_tangent", new Transform( splinePoint.InPositionRelative ) ) )
+							using ( Gizmo.Scope( "in_tangent", new Transform( splinePoint.In ) ) )
 							{
 
-								if ( (_selectedPointTangentMode == SplinePointTangentMode.Mirrored || _selectedPointTangentMode == SplinePointTangentMode.Auto) && (_inTangentSelected || _outTangentSelected) )
+								if ( (_selectedPointTangentMode == Spline.HandleMode.Mirrored || _selectedPointTangentMode == Spline.HandleMode.Auto) && (_inTangentSelected || _outTangentSelected) )
 								{
 									Gizmo.Draw.Color = Color.Orange;
 								}
 
-								Gizmo.Draw.Line( -splinePoint.InPositionRelative, Vector3.Zero );
+								Gizmo.Draw.Line( -splinePoint.In, Vector3.Zero );
 
 								using ( Gizmo.GizmoControls.PushFixedScale() )
 								{
-									if ( _selectedPointTangentMode != SplinePointTangentMode.Linear )
+									if ( _selectedPointTangentMode != Spline.HandleMode.Linear )
 									{
 										Gizmo.Hitbox.DepthBias = 0.1f;
 										Gizmo.Hitbox.BBox( BBox.FromPositionAndSize( Vector3.Zero, 2f ) );
@@ -475,18 +472,18 @@ class SplineToolWindow : WidgetWindow
 								}
 							}
 
-							using ( Gizmo.Scope( "out_tangent", new Transform( splinePoint.OutPositionRelative ) ) )
+							using ( Gizmo.Scope( "out_tangent", new Transform( splinePoint.Out ) ) )
 							{
-								if ( (_selectedPointTangentMode == SplinePointTangentMode.Mirrored || _selectedPointTangentMode == SplinePointTangentMode.Auto) && (_inTangentSelected || _outTangentSelected) )
+								if ( (_selectedPointTangentMode == Spline.HandleMode.Mirrored || _selectedPointTangentMode == Spline.HandleMode.Auto) && (_inTangentSelected || _outTangentSelected) )
 								{
 									Gizmo.Draw.Color = Color.Orange;
 								}
 
-								Gizmo.Draw.Line( -splinePoint.OutPositionRelative, Vector3.Zero );
+								Gizmo.Draw.Line( -splinePoint.Out, Vector3.Zero );
 
 								using ( Gizmo.GizmoControls.PushFixedScale() )
 								{
-									if ( _selectedPointTangentMode != SplinePointTangentMode.Linear )
+									if ( _selectedPointTangentMode != Spline.HandleMode.Linear )
 									{
 
 										Gizmo.Hitbox.BBox( BBox.FromPositionAndSize( Vector3.Zero, 2f ) );
@@ -518,36 +515,36 @@ class SplineToolWindow : WidgetWindow
 	private void MoveSelectedPoint( Vector3 delta )
 	{
 		var updatedPoint = _selectedPoint with { Position = _selectedPoint.Position + delta };
-		targetComponent.UpdatePoint( SelectedPointIndex, updatedPoint );
+		targetComponent.Spline.UpdatePoint( SelectedPointIndex, updatedPoint );
 	}
 
 	private void MoveSelectedPointInTanget( Vector3 delta )
 	{
 		var updatedPoint = _selectedPoint;
-		updatedPoint.InPositionRelative += delta;
-		if ( _selectedPointTangentMode == SplinePointTangentMode.Auto )
+		updatedPoint.In += delta;
+		if ( _selectedPointTangentMode == Spline.HandleMode.Auto )
 		{
-			targetComponent.SetTangentModeForPoint( SelectedPointIndex, SplinePointTangentMode.Mirrored );
+			updatedPoint = _selectedPoint with { Mode = Spline.HandleMode.Mirrored };
 		}
-		if ( _selectedPointTangentMode == SplinePointTangentMode.Mirrored )
+		if ( _selectedPointTangentMode == Spline.HandleMode.Mirrored )
 		{
-			updatedPoint.OutPositionRelative = -updatedPoint.InPositionRelative;
+			updatedPoint.Out = -updatedPoint.In;
 		}
-		targetComponent.UpdatePoint( SelectedPointIndex, updatedPoint );
+		targetComponent.Spline.UpdatePoint( SelectedPointIndex, updatedPoint );
 	}
 
 	private void MoveSelectedPointOutTanget( Vector3 delta )
 	{
 		var updatedPoint = _selectedPoint;
-		updatedPoint.OutPositionRelative += delta;
-		if ( _selectedPointTangentMode == SplinePointTangentMode.Auto )
+		updatedPoint.Out += delta;
+		if ( _selectedPointTangentMode == Spline.HandleMode.Auto )
 		{
-			targetComponent.SetTangentModeForPoint( SelectedPointIndex, SplinePointTangentMode.Mirrored );
+			updatedPoint = _selectedPoint with { Mode = Spline.HandleMode.Mirrored };
 		}
-		if ( _selectedPointTangentMode == SplinePointTangentMode.Mirrored )
+		if ( _selectedPointTangentMode == Spline.HandleMode.Mirrored )
 		{
-			updatedPoint.InPositionRelative = -updatedPoint.OutPositionRelative;
+			updatedPoint.In = -updatedPoint.Out;
 		}
-		targetComponent.UpdatePoint( SelectedPointIndex, updatedPoint );
+		targetComponent.Spline.UpdatePoint( SelectedPointIndex, updatedPoint );
 	}
 }

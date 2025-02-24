@@ -1,0 +1,27 @@
+{
+  "Title": "SDF Mesh Library",
+  "Type": "library",
+  "Org": "facepunch",
+  "Ident": "libsdf",
+  "Schema": 1,
+  "IncludeSourceFiles": false,
+  "Resources": "/shaders/*.hlsl\n",
+  "PackageReferences": [],
+  "EditorReferences": null,
+  "IsWhitelistDisabled": false,
+  "Metadata": {
+    "ProjectTemplate": null,
+    "CsProjName": "",
+    "Summary": "Marching cubes \u0026 squares mesh generation",
+    "Description": "* Sdf2DWorld for 2D layers\n* Sdf3DWorld for 3D volumes",
+    "Public": true,
+    "Compiler": {
+      "RootNamespace": "Sandbox",
+      "DefineConstants": "SANDBOX;ADDON;DEBUG",
+      "NoWarn": "1701;1702;1591;",
+      "References": [],
+      "DistinctReferences": []
+    },
+    "ReplaceTags": "procgen mesh 3d 2d"
+  }
+}

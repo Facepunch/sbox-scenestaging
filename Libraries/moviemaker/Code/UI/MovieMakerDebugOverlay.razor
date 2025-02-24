@@ -1,0 +1,21 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<root>
+	<div class="title">@Position.ToString("mm':'ss':'ff")</div>
+</root>
+
+@code
+{
+
+	[Property] public Sandbox.MovieMaker.MoviePlayer Player { get; set; }
+
+
+    System.TimeSpan Position => System.TimeSpan.FromSeconds( Player?.Position ?? 0 );
+
+    /// <summary>
+    /// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+    /// </summary>
+    protected override int BuildHash() => System.HashCode.Combine( Player, Position );
+}

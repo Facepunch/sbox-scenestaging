@@ -7,22 +7,32 @@
       "Name": "Left Cube",
       "Position": "0,64,0",
       "Enabled": true,
+      "NetworkMode": 1,
       "__Prefab": "scenes/tests/actiongraph/cube.prefab",
       "__PrefabVariables": {}
     },
     {
-      "__guid": "0b49bd81-2089-4f5a-92d2-6c0cb892410e",
+      "__guid": "3587ffe3-aa7f-4d20-ad77-896caca3000d",
       "Flags": 0,
       "Name": "Right Cube",
-      "Position": "0,-64,0",
+      "Position": "0,-77.09155,0",
       "Enabled": true,
+      "NetworkMode": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
-          "__guid": "7400373a-af54-445e-a2d9-431d5f336407",
+          "__guid": "a0515a84-a276-4590-82a1-8f25a6def01c",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -31,6 +41,83 @@
           },
           "RenderType": "On",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ActionGraphs.ActionsInvoker",
+          "__guid": "44c012f3-92c3-4c02-b0a3-cdd0b12c814d",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnDestroyAction": null,
+          "OnDisabledAction": null,
+          "OnEnabledAction": {
+            "__version": 9,
+            "__guid": "4bfcedd8-3e5f-4e7d-8394-f0377b65f2b0",
+            "__changeId": 419,
+            "UserData": {
+              "Title": "Set cube colours",
+              "ReferencedComponentTypes": []
+            },
+            "Variables": [],
+            "Nodes": [
+              {
+                "Id": 0,
+                "Type": "input",
+                "UserData": {
+                  "Position": "-48,0"
+                }
+              },
+              {
+                "Id": 74,
+                "Type": "property",
+                "Properties": {
+                  "_name": "Tint",
+                  "_type": "Sandbox.ModelRenderer"
+                },
+                "UserData": {
+                  "Position": "204,-0"
+                }
+              },
+              {
+                "Id": 75,
+                "Type": "scene.ref",
+                "ParentId": 74
+              }
+            ],
+            "Links": [
+              {
+                "SrcId": 0,
+                "SrcName": "_signal",
+                "DstId": 74,
+                "DstName": "_signal"
+              },
+              {
+                "SrcId": 75,
+                "SrcName": "_result",
+                "DstId": 74,
+                "DstName": "_target"
+              },
+              {
+                "Id": 77,
+                "Value": "0,0.01667,1,1",
+                "DstId": 74,
+                "DstName": "_value"
+              }
+            ],
+            "Defaults": {
+              "$75.component": {
+                "_type": "component",
+                "component_id": "a0515a84-a276-4590-82a1-8f25a6def01c",
+                "go": "3587ffe3-aa7f-4d20-ad77-896caca3000d",
+                "component_type": "ModelRenderer"
+              }
+            }
+          },
+          "OnFixedUpdateAction": null,
+          "OnUpdateAction": null
         }
       ]
     },
@@ -48,6 +135,12 @@
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.91373,0.98039,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Shadows": true,
           "SkyColor": "0,0,0,0"
         }
@@ -68,6 +161,12 @@
           "ClearFlags": "All",
           "FieldOfView": 60,
           "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,

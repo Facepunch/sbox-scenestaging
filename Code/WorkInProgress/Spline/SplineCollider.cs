@@ -7,7 +7,7 @@ namespace Sandbox;
 
 public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 {
-	[Property, Category( "Spline" )] public Spline Spline { get; set; }
+	[Property, Category( "Spline" )] public SplineComponent Spline { get; set; }
 
 	[Property, Category("Spline")]
 	[Range( 0, 16 )]
@@ -114,7 +114,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		if ( Model.IsValid() && Spline.IsValid() )
 		{
 			IsDirty = true;
-			Spline.SplineChanged += MarkDirty;
+			Spline.Spline.SplineChanged += MarkDirty;
 		}
 		base.OnEnabled();
 	}
@@ -126,7 +126,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 
 	protected override void OnDisabled()
 	{
-		Spline.SplineChanged -= MarkDirty;
+		Spline.Spline.SplineChanged -= MarkDirty;
 		subHulls.Clear();
 		subMeshes.Clear();
 		base.OnDisabled();
@@ -139,7 +139,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 			return;
 		}
 
-		if ( !Spline.IsDirty && !IsDirty )
+		if ( !IsDirty )
 		{
 			return;
 		}
@@ -172,7 +172,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		var sizeInModelDir = transformedBounds.Size.Dot( Vector3.Forward );
 		var minInModelDir = transformedBounds.Center.Dot( Vector3.Forward ) - sizeInModelDir / 2;
 
-		var splineLength = Spline.GetLength();
+		var splineLength = Spline.Spline.Length;
 
 		var sizeInModelDirWithSpacing = sizeInModelDir + Spacing;
 		var frameSegments = (int)Math.Ceiling( splineLength / sizeInModelDir );
@@ -196,9 +196,8 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		int framesPerMesh = 12; // Adjust as needed
 		var totalFrames = frameSegments * framesPerMesh + 1;
 
-		var frames = UseRotationMinimizingFrames
-			? SplineModelRenderer.CalculateRotationMinimizingTangentFrames( Spline, totalFrames )
-			: SplineModelRenderer.CalculateTangentFramesUsingUpDir( Spline, totalFrames );
+		var frames = UseRotationMinimizingFrames ? SplineModelRenderer.CalculateRotationMinimizingTangentFrames( Spline.Spline, frameSegments * framesPerMesh + 1 ) : SplineModelRenderer.CalculateTangentFramesUsingUpDir( Spline.Spline, frameSegments * framesPerMesh + 1 );
+
 
 		// Clear existing shapes
 		_PhysicsBody.ClearShapes();

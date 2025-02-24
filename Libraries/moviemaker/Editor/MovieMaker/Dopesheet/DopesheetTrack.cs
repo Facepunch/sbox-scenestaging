@@ -1,76 +1,52 @@
-﻿
-using Sandbox.Diagnostics;
-using Sandbox.MovieMaker.Tracks;
-using System.Linq;
+﻿namespace Editor.MovieMaker;
 
-namespace Editor.MovieMaker;
+#nullable enable
 
-public class DopesheetTrack : GraphicsItem
+public partial class DopeSheetTrack : GraphicsItem
 {
-	public TrackWidget Track;
-	IEnumerable<DopeHandle> Handles => Children.OfType<DopeHandle>();
+	public TrackWidget TrackWidget { get; }
 
-	public Color HandleColor { get; private set; }
+	private bool? _canCreatePreview;
 
-	public DopesheetTrack( TrackWidget track ) : base()
+	private List<BlockPreview> BlockPreviews { get; } = new();
+
+	public bool Visible => TrackWidget.Visible;
+
+	public DopeSheetTrack( TrackWidget track )
 	{
-		Track = track;
+		TrackWidget = track;
 		HoverEvents = true;
-
-		HandleColor = Theme.Grey;
-
-		if ( Track.Source is PropertyVector3Track )
-		{
-			HandleColor = Theme.Blue;
-		}
-
-		if ( Track.Source is PropertyRotationTrack )
-		{
-			HandleColor = Theme.Green;
-		}
-
-		if ( Track.Source is PropertyColorTrack )
-		{
-			HandleColor = Theme.Pink;
-		}
-
-		if ( Track.Source is PropertyFloatTrack )
-		{
-			HandleColor = Theme.Yellow;
-		}
-	}
-
-	protected override void OnPaint()
-	{
-		base.OnPaint();
-
-		Paint.SetBrushAndPen( TrackDopesheet.Colors.ChannelBackground );
-		Paint.DrawRect( LocalRect );
-	}
-
-	public void PositionHandles()
-	{
-		foreach ( var handle in Handles )
-		{
-			handle.UpdatePosition();
-		}
-
-		Update();
 	}
 
 	internal void DoLayout( Rect r )
 	{
-		Position = new Vector2( 0, r.Top + 1 );
-		Size = new Vector2( 50000, r.Height );
+		PrepareGeometryChange();
 
-		PositionHandles();
+		Position = new Vector2( 0, r.Top + 1 );
+		Size = Visible ? new Vector2( 50000, r.Height ) : 0f;
+
+		UpdateBlockPreviews();
+
+		TrackWidget.TrackList.Session.EditMode?.TrackLayout( this, r );
+	}
+
+	private void ClearBlockPreviews()
+	{
+		if ( BlockPreviews.Count == 0 ) return;
+
+		foreach ( var blockPreview in BlockPreviews )
+		{
+			blockPreview.Destroy();
+		}
+
+		BlockPreviews.Clear();
 	}
 
 	internal void OnSelected()
 	{
-		if ( Track.Source is PropertyTrack pt )
+		if ( TrackWidget.Property?.GetTargetGameObject() is { } gameObject )
 		{
-			SceneEditorSession.Active.Selection.Set( pt.GameObject );
+			SceneEditorSession.Active.Selection.Set( gameObject );
 		}
 	}
 
@@ -84,69 +60,46 @@ public class DopesheetTrack : GraphicsItem
 		}
 	}
 
-	internal void AddKey( float time )
+	public void UpdateBlockPreviews()
 	{
-		object value = null;
-
-		if ( Track.Source is PropertyTrack pt )
+		if ( Visible && _canCreatePreview is not false )
 		{
-			value = pt.ReadCurrentValue();
-		}
-
-		AddKey( time, value );
-	}
-
-	internal void AddKey( float currentPointer, object value )
-	{
-		var h = Handles.Where( x => MathX.AlmostEqual( x.Time, currentPointer ) ).FirstOrDefault();
-
-		if ( h is null )
-		{
-			h = new DopeHandle( this );
-
-			//EditorUtility.PlayRawSound( "sounds/editor/add.wav" );
-		}
-
-		h.Time = currentPointer;
-		h.Value = value;
-
-		h.UpdatePosition();
-	}
-
-	/// <summary>
-	/// Read from the Clip
-	/// </summary>
-	public void Read()
-	{
-		foreach ( var h in Handles )
-		{
-			h.Destroy();
-		}
-
-		if ( Track.Source is PropertyTrack provider )
-		{
-			var frames = provider.ReadFrames();
-			Assert.NotNull( frames, "Frames returned null!" );
-			for ( int i = 0; i < frames.Length; i++ )
+			if ( TrackWidget.MovieTrack.Blocks.Count != BlockPreviews.Count )
 			{
-				var h = new DopeHandle( this );
-				h.Time = frames[i].time;
-				h.Value = frames[i].value;
+				ClearBlockPreviews();
+			}
+
+			var blocks = TrackWidget.MovieTrack.Blocks;
+
+			for ( var i = 0; i < blocks.Count; ++i )
+			{
+				var block = blocks[i];
+
+				if ( BlockPreviews.Count <= i )
+				{
+					if ( BlockPreview.Create( this, block ) is not { } newPreview )
+					{
+						_canCreatePreview = false;
+						return;
+					}
+
+					BlockPreviews.Add( newPreview );
+				}
+
+				var preview = BlockPreviews[i];
+				var duration = block.Duration ?? TrackWidget.MovieTrack.Clip.Duration - block.StartTime;
+
+				preview.Block = block;
+				preview.PrepareGeometryChange();
+				preview.Position = new Vector2( Session.Current.TimeToPixels( block.StartTime ), 0f );
+				preview.Size = new Vector2( Session.Current.TimeToPixels( duration ), LocalRect.Height );
+
+				preview.Update();
 			}
 		}
-
-		PositionHandles();
-	}
-
-	/// <summary>
-	/// Write from this sheet to the target
-	/// </summary>
-	public void Write()
-	{
-		if ( Track.Source is not PropertyTrack pt )
-			return;
-
-		pt.WriteFrames( Handles.OrderBy( x => x.Time ).Select( x => new PropertyTrack.PropertyKeyframe { time = x.Time, value = x.Value } ).ToArray() );
-
+		else
+		{
+			ClearBlockPreviews();
+		}
 	}
 }
