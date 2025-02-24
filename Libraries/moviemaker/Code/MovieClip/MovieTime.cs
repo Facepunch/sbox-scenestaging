@@ -111,11 +111,11 @@ public readonly struct MovieTime : IEquatable<MovieTime>, IComparable<MovieTime>
 	/// </summary>
 	public int GetFrameIndex( int frameRate, out MovieTime remainder )
 	{
-		var frameCount = GetFrameIndex( frameRate );
+		var index = GetFrameIndex( frameRate );
 
-		remainder = this - FromFrames( frameCount, frameRate );
+		remainder = this - FromFrames( index, frameRate );
 
-		return frameCount;
+		return index;
 	}
 
 	/// <summary>
@@ -127,6 +127,11 @@ public readonly struct MovieTime : IEquatable<MovieTime>, IComparable<MovieTime>
 	public int GetFrameCount( int frameRate )
 	{
 		return Math.Max( 1, (int)(((long)_ticks * frameRate + TickRate - 1) / TickRate) );
+	}
+
+	public float GetFraction( MovieTime time )
+	{
+		return time <= Zero ? 0f : time >= this ? 1f : (float)time.Ticks / Ticks;
 	}
 
 	public bool Equals( MovieTime other ) => _ticks == other._ticks;
@@ -210,20 +215,10 @@ public readonly record struct MovieTimeRange( MovieTime Start, MovieTime End )
 		return MovieTime.Lerp( start, start + startDelta, t );
 	}
 
-	public bool Contains( MovieTime time )
-	{
-		return time >= Start && time < End;
-	}
+	public bool Contains( MovieTime time ) => time >= Start && time < End;
 
-	public bool Contains( MovieTimeRange timeRange )
-	{
-		return timeRange.Start >= Start && timeRange.End <= End;
-	}
-
-	public float GetFraction( MovieTime time )
-	{
-		return time <= Start ? 0f : time >= End ? 1f : (float)(time - Start).Ticks / (End - Start).Ticks;
-	}
+	public bool Contains( MovieTimeRange timeRange ) => timeRange.Start >= Start && timeRange.End <= End;
+	public float GetFraction( MovieTime time ) => Duration.GetFraction( time - Start );
 
 	public override string ToString() => $"[{Start}, {End}]";
 
@@ -237,6 +232,29 @@ public readonly record struct MovieTimeRange( MovieTime Start, MovieTime End )
 	public static MovieTimeRange operator -( MovieTimeRange range, MovieTime offset ) => (range.Start - offset, range.End - offset);
 
 	#endregion
+}
+
+public interface ITimeRanged
+{
+	MovieTimeRange TimeRange { get; }
+}
+
+public static class TimeRangedExtensions
+{
+	public static MovieTime Start<T>( this T timeRanged ) where T : ITimeRanged
+	{
+		return timeRanged.TimeRange.Start;
+	}
+
+	public static MovieTime End<T>( this T timeRanged ) where T : ITimeRanged
+	{
+		return timeRanged.TimeRange.End;
+	}
+
+	public static MovieTime Duration<T>( this T timeRanged ) where T : ITimeRanged
+	{
+		return timeRanged.TimeRange.Duration;
+	}
 }
 
 file class MovieTimeConverter : JsonConverter<MovieTime>

@@ -184,7 +184,7 @@ public sealed partial class MovieTrack
 			return false;
 		}
 
-		value = data.GetValue( time - block.Start );
+		value = data.GetValue( time - block.Start() );
 		return true;
 	}
 
@@ -244,7 +244,7 @@ public sealed partial class MovieTrack
 			.ToArray();
 
 		var prev = cutTimes[0];
-		var prevBlock = blocks.LastOrDefault( x => x.TimeRange.Contains( prev ) ) ?? blocks.MinBy( x => x.Start );
+		var prevBlock = blocks.LastOrDefault( x => x.TimeRange.Contains( prev ) ) ?? blocks.MinBy( x => x.Start() );
 
 		for ( var i = 1; i < cutTimes.Length; i++ )
 		{

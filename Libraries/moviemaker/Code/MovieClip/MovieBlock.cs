@@ -5,9 +5,8 @@ namespace Sandbox.MovieMaker;
 
 #nullable enable
 
-public interface IMovieBlock
+public interface IMovieBlock : ITimeRanged
 {
-	MovieTimeRange TimeRange { get; }
 	IMovieBlockData Data { get; }
 }
 
@@ -41,11 +40,6 @@ public sealed partial class MovieBlock : IMovieBlock
 			_track?.BlockChangedInternal( this );
 		}
 	}
-
-	public MovieTime TimeOffset { get; set; }
-	public MovieTime Start => TimeRange.Start;
-	public MovieTime End => TimeRange.End;
-	public MovieTime Duration => TimeRange.Duration;
 
 	/// <summary>
 	/// Track data for this block. Either a constant, sample array, or invoked action information.

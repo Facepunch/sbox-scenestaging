@@ -27,8 +27,8 @@ public static class EditHelpers
 
 			changed = true;
 
-			var headRange = new MovieTimeRange( block.Start, intersection.Start );
-			var tailRange = new MovieTimeRange( intersection.End, block.End );
+			var headRange = new MovieTimeRange( block.Start(), intersection.Start );
+			var tailRange = new MovieTimeRange( intersection.End, block.End() );
 
 			if ( !headRange.IsEmpty ) head = track.AddBlock( block.Slice( headRange ) );
 			if ( !tailRange.IsEmpty ) tail = track.AddBlock( block.Slice( tailRange ) );
@@ -40,7 +40,7 @@ public static class EditHelpers
 
 		foreach ( var block in track.Blocks )
 		{
-			if ( block.Start < timeRange.End ) continue;
+			if ( block.Start() < timeRange.End ) continue;
 
 			block.TimeRange += newDuration - timeRange.Duration;
 
@@ -137,7 +137,7 @@ public static class EditHelpers
 			throw new ArgumentException( "Block doesn't belong to this track.", nameof(right) );
 		}
 
-		if ( left.End != right.Start ) return null;
+		if ( left.End() != right.Start() ) return null;
 
 		var sampleRate = track.Clip.DefaultSampleRate;
 		var timeRange = left.TimeRange.Union( right.TimeRange );
@@ -150,14 +150,14 @@ public static class EditHelpers
 		left.Remove();
 		right.Remove();
 
-		return track.AddBlock( timeRange, CreateSamplesData( track.PropertyType, sampleRate, SampleInterpolationMode.Linear, samples ) );
+		return track.AddBlock( timeRange, CreateSamplesData( track.PropertyType, sampleRate, samples ) );
 	}
 
 	public static IEnumerable<MovieBlockSlice> Slice( this MovieTrack track, MovieTimeRange timeRange ) =>
 		track.GetCuts( timeRange ).Select( x => x.Block.Slice( x.TimeRange ) );
 
 	public static MovieBlockSlice Slice( this MovieBlock srcBlock, MovieTimeRange timeRange ) =>
-		new( timeRange, srcBlock.Data.Slice( timeRange - srcBlock.Start ) );
+		new( timeRange, srcBlock.Data.Slice( timeRange - srcBlock.Start() ) );
 
 	public static IMovieBlockData Slice( this IMovieBlockData data, MovieTimeRange timeRange )
 	{
@@ -195,12 +195,11 @@ public static class EditHelpers
 
 	public static ISamplesData CreateSamplesData( Type type,
 		int sampleRate,
-		SampleInterpolationMode interpolation,
 		Array samples,
 		MovieTime firstSampleTime = default )
 	{
 		return (ISamplesData)Activator.CreateInstance( typeof(SamplesData<>).MakeGenericType( type ),
-			sampleRate, interpolation, samples, firstSampleTime )!;
+			sampleRate, samples, firstSampleTime )!;
 	}
 
 	public static bool CanModify( this MovieTrack? track )

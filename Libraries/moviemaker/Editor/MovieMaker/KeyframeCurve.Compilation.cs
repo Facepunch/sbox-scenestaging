@@ -45,7 +45,7 @@ public static class KeyframeExtensions
 				samples[i] = keyframes.GetValue( MovieTime.FromFrames( i, sampleRate ) );
 			}
 
-			var data = new SamplesData<T>( sampleRate, SampleInterpolationMode.Linear, samples );
+			var data = new SamplesData<T>( sampleRate, samples );
 
 			if ( track.Blocks.Count != 1 )
 			{

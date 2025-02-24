@@ -157,7 +157,7 @@ file class TrackRecording<T> : ITrackRecording
 		_startTime = startTime.SnapToGrid( SampleInterval );
 		_samples.Add( property.Value );
 
-		_previewData = new SamplesData<T>( SampleRate, SampleInterpolationMode.Linear, _samples );
+		_previewData = new SamplesData<T>( SampleRate, _samples );
 	}
 
 	public void Record( MovieTime time )
@@ -204,7 +204,7 @@ file class TrackRecording<T> : ITrackRecording
 
 		if ( _samples.All( x => comparer.Equals( first, x ) ) ) return [];
 
-		var data = new SamplesData<T>( SampleRate, SampleInterpolationMode.Linear, _samples.ToArray() );
+		var data = new SamplesData<T>( SampleRate, _samples.ToArray() );
 
 		return [new MovieBlockSlice( TimeRange, data )];
 	}

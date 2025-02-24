@@ -327,8 +327,8 @@ public class DopeSheet : GraphicsView
 
 			foreach ( var cut in trackWidget.MovieTrack.Cuts )
 			{
-				snap.Add( SnapFlag.TrackBlock, cut.Block.Start );
-				snap.Add( SnapFlag.TrackBlock, cut.Block.End );
+				snap.Add( SnapFlag.TrackBlock, cut.Block.Start() );
+				snap.Add( SnapFlag.TrackBlock, cut.Block.End() );
 			}
 		}
 	}

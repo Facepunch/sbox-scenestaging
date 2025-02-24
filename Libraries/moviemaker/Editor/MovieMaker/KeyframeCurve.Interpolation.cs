@@ -32,7 +32,7 @@ partial class KeyframeCurve<T>
 
 		// Can't interpolate? Use previous value.
 
-		if ( _interpolator is not { } interpolator )
+		if ( Interpolator is not { } interpolator )
 		{
 			return prev.Value;
 		}

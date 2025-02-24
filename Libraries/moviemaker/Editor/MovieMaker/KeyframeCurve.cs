@@ -54,8 +54,9 @@ public abstract partial class KeyframeCurve : IEnumerable<IKeyframe>
 
 public partial class KeyframeCurve<T> : KeyframeCurve, IEnumerable<Keyframe<T>>
 {
+	private static IInterpolator<T>? Interpolator { get; } = Sandbox.MovieMaker.Interpolator.GetDefault<T>();
+
 	private readonly SortedList<MovieTime, Keyframe<T>> _keyframes = new();
-	private readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
 
 	public override Type ValueType => typeof( T );
 	public override int Count => _keyframes.Count;
@@ -64,11 +65,11 @@ public partial class KeyframeCurve<T> : KeyframeCurve, IEnumerable<Keyframe<T>>
 		? default
 		: new MovieTimeRange( _keyframes.Values[0].Time, _keyframes.Values[^1].Time );
 
-	public override bool CanInterpolate => _interpolator is not null;
+	public override bool CanInterpolate => Interpolator is not null;
 
 	public KeyframeCurve()
 	{
-		Interpolation = _interpolator is not null
+		Interpolation = Interpolator is not null
 			? InterpolationMode.QuadraticInOut
 			: InterpolationMode.None;
 	}

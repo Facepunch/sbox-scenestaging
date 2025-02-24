@@ -154,7 +154,7 @@ internal sealed class TrackModification<T> : ITrackModification
 		{
 			// Stitch adjacent blocks if there isn't a cut in the original change
 
-			prevBlock = prevBlock?.End == cut.Block.Start && _changes.All( x => x.TimeRange.Start + offset != cut.Block.Start )
+			prevBlock = prevBlock?.End() == cut.Block.Start() && _changes.All( x => x.TimeRange.Start + offset != cut.Block.Start() )
 				? Track.Stitch( prevBlock, cut.Block ) ?? cut.Block
 				: cut.Block;
 		}
@@ -198,6 +198,6 @@ internal sealed class TrackModification<T> : ITrackModification
 				: interpolator.Interpolate( src, dst, fade );
 		}
 
-		return new SamplesData<T>( sampleRate, SampleInterpolationMode.Linear, dstValues );
+		return new SamplesData<T>( sampleRate, dstValues );
 	}
 }
