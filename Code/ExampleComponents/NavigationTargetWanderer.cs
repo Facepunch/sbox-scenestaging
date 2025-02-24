@@ -45,18 +45,18 @@ public sealed class NavigationTargetWanderer : Component
 		agent.LinkUpdate -= OnNavLinkUpdate;
 	}
 
-	private void OnNavLinkEnter()
+	private void OnNavLinkEnter( NavMeshLink link )
 	{
 		Body.Set( "b_grounded", false );
 		Body.Set( "b_jump", true );
 	}
 
-	private void OnNavLinkExit()
+	private void OnNavLinkExit( NavMeshLink link )
 	{
 		Body.Set( "b_grounded", true );
 	}
 
-	private void OnNavLinkUpdate( float t )
+	private void OnNavLinkUpdate( NavMeshLink link, float t )
 	{
 
 	}
