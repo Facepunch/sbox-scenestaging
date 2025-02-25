@@ -68,7 +68,7 @@ public partial class TrackWidget : Widget
 		}
 	}
 
-	public bool CanEdit => Property is IMemberProperty { CanWrite: true } && !IsLocked;
+	public bool CanEdit => Property is IMember { CanWrite: true } && !IsLocked;
 
 	RealTimeSince timeSinceInteraction = 1000;
 
@@ -98,7 +98,7 @@ public partial class TrackWidget : Widget
 
 		_lockButton = Buttons.Add( new LockButton( this ) );
 
-		Property = Session.Properties[ProjectTrack];
+		Property = Session.Properties.Get( ProjectTrack );
 
 		// Track might not be mapped to any property in the current scene
 
@@ -109,7 +109,7 @@ public partial class TrackWidget : Widget
 
 		_label = Layout.Add( new Label( Property.PropertyName ) );
 
-		if ( Property is IGameObjectReferenceProperty or IComponentReferenceProperty )
+		if ( Property is IGameObjectReference or IComponentReference )
 		{
 			if ( Property.IsBound && Property.Value is GameObject && ProjectTrack.Parent is not null )
 			{
@@ -119,7 +119,7 @@ public partial class TrackWidget : Widget
 			// Add control to retarget a scene reference (Component / GameObject)
 
 			var so = Property.GetSerialized();
-			var ctrl = ControlWidget.Create( so.GetProperty( nameof( IGameObjectReferenceProperty.Value ) ) );
+			var ctrl = ControlWidget.Create( so.GetProperty( nameof( IGameObjectReference.Value ) ) );
 
 			if ( ctrl.IsValid() )
 			{

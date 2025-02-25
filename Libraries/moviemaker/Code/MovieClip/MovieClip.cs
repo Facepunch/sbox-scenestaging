@@ -41,6 +41,12 @@ public sealed record MovieClip( params ImmutableArray<MovieTrack> RootTracks ) :
 		return _trackDict.GetValueOrDefault( trackId );
 	}
 
+	/// <summary>
+	/// Attempts to get a root track with the given <paramref name="name"/>.
+	/// </summary>
+	/// <returns>The matching track, or <see langword="null"/> if not found.</returns>
+	public MovieTrack? this[ string name ] => RootTracks.FirstOrDefault( x => x.Name == name );
+
 	protected override void OnValidate()
 	{
 		var allUniqueIds = RootTracks

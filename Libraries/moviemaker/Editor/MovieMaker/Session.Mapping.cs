@@ -11,7 +11,7 @@ partial class Session
 	{
 		foreach ( var (trackId, property) in Properties )
 		{
-			if ( property is not IGameObjectReferenceProperty goProperty ) continue;
+			if ( property is not IGameObjectReference goProperty ) continue;
 			if ( goProperty.Value == go ) return Project.GetTrack( trackId );
 		}
 
@@ -22,7 +22,7 @@ partial class Session
 	{
 		foreach ( var (trackId, property) in Properties )
 		{
-			if ( property is not IComponentReferenceProperty cmpProperty ) continue;
+			if ( property is not IComponentReference cmpProperty ) continue;
 			if ( cmpProperty.Value == cmp ) return Project.GetTrack( trackId );
 		}
 
@@ -76,7 +76,8 @@ partial class Session
 
 		var track = Project.AddTrack( go.Name, typeof(GameObject), parentTrack );
 
-		Properties.RegisterTrack( track, go, parentTrack );
+		Properties.RegisterTrack( track, parentTrack );
+		Properties.GetGameObject( track )!.Value = go;
 
 		return track;
 	}
@@ -89,7 +90,8 @@ partial class Session
 		var goTrack = GetOrCreateTrack( cmp.GameObject );
 		var track = Project.AddTrack( cmp.GetType().Name, cmp.GetType(), goTrack );
 
-		Properties.RegisterTrack( track, cmp, goTrack );
+		Properties.RegisterTrack( track, goTrack );
+		Properties.GetComponent( track )!.Value = cmp;
 
 		return track;
 	}
@@ -143,7 +145,7 @@ partial class Session
 			return existingTrack;
 		}
 
-		if ( Properties[parentTrack] is not { } parentProperty )
+		if ( Properties.Get( parentTrack ) is not { } parentProperty )
 		{
 			throw new Exception( "Parent track not registered." );
 		}
@@ -175,7 +177,7 @@ partial class Session
 
 		var renderers = Project.Tracks
 			.Where( x => x.PropertyType == typeof( SkinnedModelRenderer ) )
-			.Select( x => (Properties[x] as IComponentReferenceProperty)?.Value )
+			.Select( x => Properties.GetComponent( x )?.Value )
 			.OfType<SkinnedModelRenderer>();
 
 		foreach ( var renderer in renderers )

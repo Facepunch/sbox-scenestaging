@@ -183,7 +183,7 @@ public class DopeSheet : GraphicsView
 
 		foreach ( var track in TrackList.Tracks )
 		{
-			if ( track.Property is not IMemberProperty { CanWrite: true } ) continue;
+			if ( track.Property is not IMember { CanWrite: true } ) continue;
 
 			if ( track.DopeSheetTrack is null )
 			{

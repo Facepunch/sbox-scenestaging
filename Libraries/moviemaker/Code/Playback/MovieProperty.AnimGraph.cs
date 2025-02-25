@@ -9,12 +9,12 @@ partial class MovieProperty
 {
 	private static bool IsAnimParam( IMovieProperty target, string name )
 	{
-		return target is IMemberProperty<ParameterAccessor?>;
+		return target is IMember<ParameterAccessor?>;
 	}
 
-	private static IMemberProperty FromAnimParam( IMovieProperty target, string name, Type? expectedType )
+	private static IMember FromAnimParam( IMovieProperty target, string name, Type? expectedType )
 	{
-		var paramAccessorTarget = (IMemberProperty<ParameterAccessor?>)target;
+		var paramAccessorTarget = (IMember<ParameterAccessor?>)target;
 
 		expectedType ??= paramAccessorTarget.Value?.Graph?.GetParameterType( name ) ?? typeof(object);
 
@@ -23,7 +23,7 @@ partial class MovieProperty
 			var propGenType = TypeLibrary.GetType( typeof( AnimParamMovieProperty<> ) );
 			var propType = propGenType.MakeGenericType( [expectedType] );
 
-			return TypeLibrary.Create<IMemberProperty>( propType, [target, name] );
+			return TypeLibrary.Create<IMember>( propType, [target, name] );
 		}
 		catch ( Exception ex )
 		{
@@ -33,8 +33,8 @@ partial class MovieProperty
 	}
 }
 
-file sealed class AnimParamMovieProperty<T>( IMemberProperty<ParameterAccessor?> parent, string name )
-	: IMemberProperty<T>
+file sealed class AnimParamMovieProperty<T>( IMember<ParameterAccessor?> parent, string name )
+	: IMember<T>
 {
 	private IAnimParamAccessor<T> Accessor { get; } = DefaultAnimParamAccessor.Instance as IAnimParamAccessor<T> ?? throw new NotImplementedException();
 
@@ -57,11 +57,11 @@ file sealed class AnimParamMovieProperty<T>( IMemberProperty<ParameterAccessor?>
 		}
 	}
 
-	IMovieProperty IMemberProperty.Parent => parent;
+	IMovieProperty IMember.Parent => parent;
 
 	object? IMovieProperty.Value => Value;
 
-	object? IMemberProperty.Value
+	object? IMember.Value
 	{
 		get => Value;
 		set => Value = (T)value!;

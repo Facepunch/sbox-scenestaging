@@ -5,7 +5,7 @@ namespace Sandbox.MovieMaker;
 #nullable enable
 
 /// <summary>
-/// A time region where something happens.
+/// A time region where something happens in a movie.
 /// </summary>
 public interface IMovieBlock
 {
@@ -21,7 +21,7 @@ public interface IMovieBlock
 }
 
 /// <summary>
-/// A time region where something happens.
+/// A time region where something happens in a movie.
 /// </summary>
 /// <param name="TimeRange">Start and end time of this block.</param>
 /// <param name="Data">Track data for this block. Either a constant, sample array, or invoked action information.</param>

@@ -6,7 +6,7 @@ namespace Sandbox.MovieMaker;
 
 internal static partial class MovieProperty
 {
-	public static IMemberProperty FromMember( IMovieProperty parent, string memberName, Type? expectedType )
+	public static IMember FromMember( IMovieProperty parent, string memberName, Type? expectedType )
 	{
 		if ( IsAnimParam( parent, memberName ) )
 		{
@@ -36,7 +36,7 @@ internal static partial class MovieProperty
 
 		var propType = TypeLibrary.GetType( typeof( MemberMovieProperty<> ) ).MakeGenericType( [memberType] );
 
-		return TypeLibrary.Create<IMemberProperty>( propType, [parent, member] );
+		return TypeLibrary.Create<IMember>( propType, [parent, member] );
 	}
 }
 
@@ -46,7 +46,7 @@ internal static partial class MovieProperty
 /// </summary>
 /// <typeparam name="T">Value type stored in the property.</typeparam>
 file sealed class MemberMovieProperty<T>( IMovieProperty parent, MemberDescription member )
-	: IMemberProperty<T>
+	: IMember<T>
 {
 	public IMovieProperty Parent => parent;
 
@@ -80,7 +80,7 @@ file sealed class MemberMovieProperty<T>( IMovieProperty parent, MemberDescripti
 
 			SetInternal( target, value );
 
-			if ( parent is IMemberProperty { PropertyType.IsValueType: true } parentMember )
+			if ( parent is IMember { PropertyType.IsValueType: true } parentMember )
 			{
 				parentMember.Value = target;
 			}
@@ -107,7 +107,7 @@ file sealed class MemberMovieProperty<T>( IMovieProperty parent, MemberDescripti
 	string IMovieProperty.PropertyName => member.Name;
 	Type IMovieProperty.PropertyType => typeof( T );
 
-	object? IMemberProperty.Value
+	object? IMember.Value
 	{
 		get => Value;
 		set => Value = (T)value!;

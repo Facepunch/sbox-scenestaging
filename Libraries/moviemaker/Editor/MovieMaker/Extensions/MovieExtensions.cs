@@ -11,15 +11,15 @@ internal static class MovieExtensions
 	/// </summary>
 	public static GameObject? GetTargetGameObject( this IMovieProperty property )
 	{
-		while ( property is IMemberProperty memberProperty )
+		while ( property is IMember memberProperty )
 		{
 			property = memberProperty.Parent;
 		}
 
 		return property switch
 		{
-			IGameObjectReferenceProperty goProperty => goProperty.Value,
-			IComponentReferenceProperty cmpProperty => cmpProperty.Value?.GameObject,
+			IGameObjectReference goProperty => goProperty.Value,
+			IComponentReference cmpProperty => cmpProperty.Value?.GameObject,
 			_ => null
 		};
 	}

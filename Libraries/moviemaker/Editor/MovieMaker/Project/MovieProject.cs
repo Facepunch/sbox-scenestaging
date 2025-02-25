@@ -8,7 +8,7 @@ namespace Editor.MovieMaker;
 
 /// <summary>
 /// All the info needed to compile a <see cref="MovieClip"/>. Gets serialized
-/// and stored in <see cref="MovieResource.EditorData"/>.
+/// and stored in <see cref="IMovieSource.EditorData"/>.
 /// </summary>
 public sealed class MovieProject : IJsonPopulator
 {

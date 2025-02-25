@@ -9,19 +9,19 @@ partial class MovieProperty
 {
 	private static bool IsMorph( IMovieProperty target, string name )
 	{
-		return target is IMemberProperty<MorphAccessor?>;
+		return target is IMember<MorphAccessor?>;
 	}
 
-	private static IMemberProperty FromMorph( IMovieProperty target, string name )
+	private static IMember FromMorph( IMovieProperty target, string name )
 	{
-		var morphAccessorTarget = (IMemberProperty<MorphAccessor?>)target;
+		var morphAccessorTarget = (IMember<MorphAccessor?>)target;
 
 		return new MorphMovieProperty( morphAccessorTarget, name );
 	}
 }
 
-file sealed class MorphMovieProperty( IMemberProperty<MorphAccessor?> parent, string name )
-	: IMemberProperty<float>
+file sealed class MorphMovieProperty( IMember<MorphAccessor?> parent, string name )
+	: IMember<float>
 {
 	public string PropertyName { get; } = name;
 
@@ -42,10 +42,10 @@ file sealed class MorphMovieProperty( IMemberProperty<MorphAccessor?> parent, st
 		}
 	}
 
-	IMovieProperty IMemberProperty.Parent => parent;
+	IMovieProperty IMember.Parent => parent;
 
 	object IMovieProperty.Value => Value;
-	object? IMemberProperty.Value
+	object? IMember.Value
 	{
 		get => Value;
 		set => Value = (float)value!;

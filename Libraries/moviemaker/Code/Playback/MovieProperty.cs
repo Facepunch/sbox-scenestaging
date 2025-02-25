@@ -35,9 +35,9 @@ public interface IMovieProperty
 /// <summary>
 /// A property referencing a <see cref="GameObject"/> in the scene.
 /// </summary>
-public interface IGameObjectReferenceProperty : IMovieProperty
+public interface IGameObjectReference : IMovieProperty
 {
-	IGameObjectReferenceProperty? Parent { get; }
+	IGameObjectReference? Parent { get; }
 
 	public new GameObject? Value { get; set; }
 }
@@ -45,9 +45,9 @@ public interface IGameObjectReferenceProperty : IMovieProperty
 /// <summary>
 /// A property referencing a <see cref="Component"/> in the scene.
 /// </summary>
-public interface IComponentReferenceProperty : IMovieProperty
+public interface IComponentReference : IMovieProperty
 {
-	IGameObjectReferenceProperty Parent { get; }
+	IGameObjectReference Parent { get; }
 
 	public new Component? Value { get; set; }
 }
@@ -55,7 +55,7 @@ public interface IComponentReferenceProperty : IMovieProperty
 /// <summary>
 /// Movie property that represents a member inside another property.
 /// </summary>
-public interface IMemberProperty : IMovieProperty
+public interface IMember : IMovieProperty
 {
 	/// <summary>
 	/// Property that this member belongs to.
@@ -74,11 +74,11 @@ public interface IMemberProperty : IMovieProperty
 }
 
 /// <summary>
-/// Typed <see cref="IMemberProperty"/>.
+/// Typed <see cref="IMember"/>.
 /// </summary>
 /// <typeparam name="T">Value type stored in the property.</typeparam>
-public interface IMemberProperty<T> : IMemberProperty
+public interface IMember<T> : IMember
 {
-	/// <inheritdoc cref="IMemberProperty.Value"/>
+	/// <inheritdoc cref="IMember.Value"/>
 	new T Value { get; set; }
 }

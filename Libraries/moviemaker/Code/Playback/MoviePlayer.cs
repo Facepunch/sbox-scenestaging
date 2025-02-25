@@ -12,9 +12,15 @@ public sealed class MoviePlayer : Component
 	private MovieClip? _lastClip;
 	private MovieProperties? _properties;
 
+	/// <summary>
+	/// Maps tracks in movie clips to objects and properties in the scene.
+	/// </summary>
 	[Property, Hide]
 	public MovieProperties Properties => _properties ??= new MovieProperties( Scene );
 
+	/// <summary>
+	/// Contains a <see cref="MovieMaker.MovieClip"/>. Can be a <see cref="MovieResource"/> or <see cref="EmbeddedMovieResource"/>.
+	/// </summary>
 	[Property, Group( "Source" )]
 	public IMovieSource? Source
 	{
@@ -26,6 +32,9 @@ public sealed class MoviePlayer : Component
 		}
 	}
 
+	/// <summary>
+	/// Currently loaded clip to play.
+	/// </summary>
 	public MovieClip? MovieClip => Source?.Clip;
 
 	[Property, Group( "Playback" )]
@@ -126,7 +135,7 @@ public sealed class MoviePlayer : Component
 	{
 		var renderers = clip.Tracks
 			.Where( x => x.PropertyType == typeof(SkinnedModelRenderer) )
-			.Select( x => (Properties[x] as IComponentReferenceProperty)?.Value )
+			.Select( x => Properties.GetComponent( x )?.Value )
 			.OfType<SkinnedModelRenderer>();
 
 		foreach ( var renderer in renderers )

@@ -54,7 +54,7 @@ partial class MotionEditMode
 			}
 		}
 
-		if ( Session.Properties[track] is not IMemberProperty { IsBound: true } property ) return false;
+		if ( Session.Properties.GetMember( track ) is not { IsBound: true, CanWrite: true } property ) return false;
 
 		var recordingType = typeof(TrackRecording<>).MakeGenericType( track.PropertyType );
 		var recording = (ITrackRecording)Activator.CreateInstance( recordingType, track, property, time )!;
@@ -128,7 +128,7 @@ internal interface ITrackRecording : IPreviewMovieBlock
 file class TrackRecording<T> : ITrackRecording
 {
 	public MovieProjectTrack Track { get; }
-	public IMemberProperty<T> Property { get; }
+	public IMember<T> Property { get; }
 	public int SampleRate { get; }
 	public MovieTime SampleInterval { get; }
 
@@ -143,7 +143,7 @@ file class TrackRecording<T> : ITrackRecording
 
 	public event Action? Changed;
 
-	public TrackRecording( MovieProjectTrack track, IMemberProperty<T> property, MovieTime startTime )
+	public TrackRecording( MovieProjectTrack track, IMember<T> property, MovieTime startTime )
 	{
 		Track = track;
 		Property = property;

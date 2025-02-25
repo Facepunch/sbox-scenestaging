@@ -49,18 +49,6 @@ partial class MovieProperties
 		RegisterTrackCore( track, GetRegisteredParent( parent ) );
 	}
 
-	public void RegisterTrack( IMovieTrackDescription track, GameObject reference, IMovieTrackDescription? parent = null )
-	{
-		_gameObjectMap[track.Id] = reference;
-		RegisterTrackCore( track, GetRegisteredParent( parent ) );
-	}
-
-	public void RegisterTrack( IMovieTrackDescription track, Component reference, IMovieTrackDescription? parent = null )
-	{
-		_componentMap[track.Id] = reference;
-		RegisterTrackCore( track, GetRegisteredParent( parent ) );
-	}
-
 	public void RegisterTracks( IEnumerable<IMovieTrackDescription> tracks, IMovieTrackDescription? parent = null )
 	{
 		var registeredParent = GetRegisteredParent( parent );
@@ -176,7 +164,7 @@ partial class MovieProperties
 	/// </summary>
 	private IMovieProperty? ResolveChild( IMovieProperty parentProperty, RegisteredTrack track )
 	{
-		if ( parentProperty is IGameObjectReferenceProperty parentGameObjectProperty )
+		if ( parentProperty is IGameObjectReference parentGameObjectProperty )
 		{
 			// If we're looking for a game object in a game object, check its children
 

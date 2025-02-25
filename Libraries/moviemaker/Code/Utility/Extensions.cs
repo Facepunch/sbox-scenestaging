@@ -60,6 +60,11 @@ public static class Extensions
 		return true;
 	}
 
+	public static T? GetValueOrDefault<T>( this MovieTrack track, MovieTime time, T? defaultValue = default )
+	{
+		return TryGetValue( track, time, out T value ) ? value : defaultValue;
+	}
+
 	/// <summary>
 	/// Looks for a block that contains the given <paramref name="time"/>.
 	/// </summary>

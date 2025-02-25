@@ -18,14 +18,14 @@ public interface ISamplesData : IValueData
 	int SampleRate { get; }
 
 	/// <summary>
-	/// Raw sample values. Guaranteed to contain at least 1 value.
-	/// </summary>
-	ImmutableArray<object?> Samples { get; }
-
-	/// <summary>
 	/// Time offset of the first sample in the list.
 	/// </summary>
 	MovieTime Offset { get; }
+
+	/// <summary>
+	/// Retrieves the sample at the given index.
+	/// </summary>
+	object? this[int index] { get; }
 }
 
 /// <summary>
@@ -39,12 +39,12 @@ public sealed class SamplesData<T> : ISamplesData, IValueData<T>
 	private static IInterpolator<T>? Interpolator { get; } = MovieMaker.Interpolator.GetDefault<T>();
 #pragma warning restore SB3000
 
-	private ImmutableArray<object?>? _untypedSamples;
-
 	/// <inheritdoc />
 	public int SampleRate { get; }
 
-	/// <inheritdoc cref="ISamplesData.Samples"/>
+	/// <summary>
+	/// Values sampled at <see cref="SampleRate"/>.
+	/// </summary>
 	public ImmutableArray<T> Samples { get; }
 
 	/// <inheritdoc />
@@ -99,5 +99,5 @@ public sealed class SamplesData<T> : ISamplesData, IValueData<T>
 
 	Type IValueData.ValueType => typeof( T );
 	object? IValueData.GetValue( MovieTime time ) => GetValue( time );
-	ImmutableArray<object?> ISamplesData.Samples => _untypedSamples ??= [..Samples.Cast<object?>()];
+	object? ISamplesData.this[int index] => Samples[index];
 }

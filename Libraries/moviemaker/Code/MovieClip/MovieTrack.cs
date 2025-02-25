@@ -30,6 +30,12 @@ public sealed partial record MovieTrack( Guid Id, string Name, Type PropertyType
 
 	}
 
+	/// <summary>
+	/// Gets the first child track with the given <paramref name="name"/>.
+	/// </summary>
+	/// <returns>The matching track, or <see langword="null"/> if not found.</returns>
+	public MovieTrack? this[ string name ] => Children.FirstOrDefault( x => x.Name == name );
+
 	protected override void OnValidate()
 	{
 		if ( Blocks.Length == 0 ) return;
