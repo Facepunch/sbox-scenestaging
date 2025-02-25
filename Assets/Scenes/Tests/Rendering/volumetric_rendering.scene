@@ -1,0 +1,301 @@
+{
+  "__guid": "b16b266e-85ce-4e82-bba8-ed729a974fbd",
+  "GameObjects": [
+    {
+      "__guid": "86adfaef-d4d2-428b-a6e0-130b86291f61",
+      "Flags": 0,
+      "Name": "Main Camera",
+      "Position": "-695.5367,20.45459,159.7174",
+      "Rotation": "-0.0004386136,0.08011299,-0.005457258,0.9967708",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "38fd7886-b0aa-478c-b383-8350c9ec63de",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "FovAxis": "Horizontal",
+          "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "Sandbox.Tonemapping",
+          "__guid": "584826f4-fe93-4ef7-8a2e-635dcef7043e",
+          "__version": 1,
+          "AutoExposureEnabled": true,
+          "ExposureBias": 2,
+          "ExposureCompensation": 0,
+          "ExposureMethod": "RGB",
+          "MaximumExposure": 3,
+          "MinimumExposure": 1,
+          "Mode": "ACES",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Rate": 1
+        },
+        {
+          "__type": "Sandbox.AmbientOcclusion",
+          "__guid": "ccab187a-21c3-4ae2-83fe-071090ca294e",
+          "__version": 1,
+          "__enabled": false,
+          "DenoiseMode": "Temporal",
+          "FalloffRange": 1,
+          "Intensity": 1,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Quality": "High",
+          "Radius": 158,
+          "ThinCompensation": 5
+        }
+      ]
+    },
+    {
+      "__guid": "93d5e2cf-328f-49f1-aad5-1475e93b6802",
+      "Flags": 0,
+      "Name": "Directional Light",
+      "Position": "0,0,200",
+      "Rotation": "-0.09206078,0.2222542,0.3714455,0.8967475",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "a7a7c196-4563-4d98-84cb-7a7668bfaa3f",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "1,1,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Shadows": true,
+          "SkyColor": "1,1,1,0"
+        }
+      ]
+    },
+    {
+      "__guid": "ff2a3d15-8eda-447f-98c7-785a10ed3a33",
+      "Flags": 0,
+      "Name": "Cloud",
+      "Position": "-51.66491,-13.98703,65.35052",
+      "Rotation": "0,0,-0.3184591,0.9479364",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.VolumetricMaterialRenderer",
+          "__guid": "33dfdc62-9308-4fb0-a771-0f0dddbd94a5",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "VDBPath": "volumetrics/cloud01.nvdb"
+        },
+        {
+          "__type": "SpinComponent",
+          "__guid": "64d7b268-5252-4b2e-9ee9-d48701abfb8d",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SpinAngles": "10,30,0"
+        },
+        {
+          "__type": "MoveSinComponent",
+          "__guid": "30351e3a-cbdc-4441-995c-7c0936ee2394",
+          "__enabled": false,
+          "Height": 32,
+          "Offset": 0,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Scale": "300,100,100",
+          "Speed": 0.01
+        }
+      ]
+    },
+    {
+      "__guid": "ca2787fe-ec61-430d-befd-4c68d758f8e0",
+      "Flags": 0,
+      "Name": "Plane",
+      "Position": "-17.67512,5.065281,-184.8365",
+      "Scale": "100,100,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "d8587cb7-e40e-4b9a-8403-a4147c6286bf",
+          "__enabled": false,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/dev/dev_metal_rough60.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "6c15e184-f04c-4493-856a-1f282d253d9b",
+      "Flags": 0,
+      "Name": "2D Skybox",
+      "Position": "-637.8425,99.48476,366.7216",
+      "Tags": "skybox",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "3ad75fa9-fd0e-4fda-8711-90392f858c4f",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SkyIndirectLighting": true,
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "bf411b42-5818-498d-94dd-f14fc0f449ba",
+      "Flags": 0,
+      "Name": "Scene Info",
+      "Position": "-827.0167,-405.7696,342.2903",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "c03f7c5e-a939-4549-ab2c-7980eb652ac1",
+          "Author": null,
+          "Changes": "",
+          "Description": "Happy Little Clouds\nProof of concept reference implementation, currently renders at full resolution with no temporal integration.",
+          "Group": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneTags": "",
+          "Title": "Volumetric Rendering",
+          "Version": null
+        }
+      ]
+    },
+    {
+      "__guid": "66952618-c0f0-463c-81b0-f26a1d8f495f",
+      "Flags": 0,
+      "Name": "Sphere (1)",
+      "Position": "108.2105,-43.94318,179.7785",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "93234ac0-dd70-4eb1-97e7-4c0f86046f00",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Volumetric Rendering",
+      "Description": "Happy Little Clouds\nProof of concept reference implementation, currently renders at full resolution with no temporal integration."
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "Volumetric Rendering",
+  "Description": "Happy Little Clouds\nProof of concept reference implementation, currently renders at full resolution with no temporal integration.",
+  "__references": [],
+  "__version": 2
+}

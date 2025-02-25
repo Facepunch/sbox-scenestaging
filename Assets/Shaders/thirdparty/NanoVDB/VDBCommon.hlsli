@@ -380,18 +380,14 @@ float PhaseHG(float CosTheta, float g)
 	float denom = 1.0 + g * g - 2.0 * g * CosTheta;
 	return 1.0 / (4.0 * PI) * (1.0 - g * g) / (denom * sqrt(denom));
 }
-
 // From NanoVDB samples
 float GetTransmittance(
 	pnanovdb_vec3_t bbox_min,
 	pnanovdb_vec3_t bbox_max,
 	VdbRay ray,
-	pnanovdb_buf_t buf,
-	pnanovdb_uint32_t grid_type,
-	pnanovdb_readaccessor_t acc,
+	VdbSampler sampler,
 	HeterogenousMedium medium,
-	float StepMultiplier,
-	in out RandomSequence RandSequence)
+	float StepMultiplier = 1.0f )
 {
 	pnanovdb_bool_t hit = pnanovdb_hdda_ray_clip(bbox_min, bbox_max, ray.Origin, ray.TMin, ray.Direction, ray.TMax);
 	if (!hit)
@@ -403,17 +399,65 @@ float GetTransmittance(
 	float t = ray.TMin;
 	while (true) 
 	{
-		t += densityMaxInvMultStep * (RandomSequence_GenerateSample1D(RandSequence) + 0.5);
+		t += densityMaxInvMultStep;
 		if (t >= ray.TMax)
 			break;
 
-		float density = ReadValue(ray.Origin + t * ray.Direction, buf, grid_type, acc) * medium.densityScale;
+		float density = ReadValue(ray.Origin + t * ray.Direction, sampler.GridBuffer, sampler.GridType, sampler.Accessor) * medium.densityScale;
 
-		transmittance *= 1.0f - density * densityMaxInv;
+		transmittance *= 1.0f - density * densityMaxInv * densityMaxInvMultStep;
 		if (transmittance < 0.1f)
 			return 0.f;
 	}
 	return transmittance;
+}
+
+float GetTransmittanceHDDA(
+    pnanovdb_vec3_t bbox_min,
+    pnanovdb_vec3_t bbox_max,
+    VdbRay ray,
+    VdbSampler sampler,
+    HeterogenousMedium medium)
+{
+    // Early exit if ray misses grid bounds
+    if (!pnanovdb_hdda_ray_clip(bbox_min, bbox_max, ray.Origin, ray.TMin, ray.Direction, ray.TMax))
+        return 1.0f;
+
+    // Initialize HDDA traversal
+    pnanovdb_hdda_t hdda;
+    pnanovdb_hdda_init(hdda, ray.Origin, ray.TMin, ray.Direction, ray.TMax, 4);
+
+    float transmittance = 1.0f;
+    float densityMaxInv = 1.0f / medium.densityMax;
+
+    // Step through the volume using HDDA
+    while (pnanovdb_hdda_step(hdda))
+    {
+        // Get current position and cell coordinates
+        pnanovdb_vec3_t pos = pnanovdb_hdda_ray_start(ray.Origin, hdda.tmin + 0.0001f, ray.Direction);
+        pnanovdb_coord_t ijk = pnanovdb_hdda_pos_to_ijk(PNANOVDB_REF(pos));
+        int dim = pnanovdb_uint32_as_int32(pnanovdb_readaccessor_get_dim(PNANOVDB_GRID_TYPE_FLOAT, sampler.GridBuffer, sampler.Accessor, PNANOVDB_REF(ijk)));
+
+        // Update HDDA dimension and skip inactive or large cells
+        pnanovdb_hdda_update(PNANOVDB_REF(hdda), ray.Origin, ray.Direction, dim);
+        if (hdda.dim > 1 || !pnanovdb_readaccessor_is_active(sampler.GridType, sampler.GridBuffer, sampler.Accessor, PNANOVDB_REF(ijk)))
+            continue;
+
+        // Calculate density at current position
+        float density = ReadValue(pos, sampler.GridBuffer, sampler.GridType, sampler.Accessor) * medium.densityScale;
+        
+        // Calculate step size using HDDA traversal distances
+        float dt = pnanovdb_grid_get_voxel_size(sampler.GridBuffer, sampler.Grid, hdda.dim)  * medium.densityScale;
+        
+        // Update transmittance
+        transmittance *= exp(-density * dt);
+
+        // Early exit if transmittance is too low
+        if (transmittance < 0.2f)
+            return 0.0f;
+    }
+
+    return transmittance;
 }
 
 // Cf FLinearColor::MakeFromColorTemperature
