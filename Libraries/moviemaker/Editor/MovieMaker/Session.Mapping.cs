@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Linq;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -11,7 +12,7 @@ partial class Session
 		foreach ( var (trackId, property) in Properties )
 		{
 			if ( property is not IGameObjectReferenceProperty goProperty ) continue;
-			if ( goProperty.GameObject == go ) return Project.GetTrack( trackId );
+			if ( goProperty.Value == go ) return Project.GetTrack( trackId );
 		}
 
 		return null;
@@ -19,12 +20,10 @@ partial class Session
 
 	public MovieProjectTrack? GetTrack( Component cmp )
 	{
-		if ( MovieClip is null ) return null;
-
-		foreach ( var track in MovieClip.Tracks )
+		foreach ( var (trackId, property) in Properties )
 		{
-			if ( GetProperty( track ) is not ISceneReferenceMovieProperty property ) continue;
-			if ( property.Component == cmp ) return track;
+			if ( property is not IComponentReferenceProperty cmpProperty ) continue;
+			if ( cmpProperty.Value == cmp ) return Project.GetTrack( trackId );
 		}
 
 		return null;
@@ -68,17 +67,16 @@ partial class Session
 	{
 		if ( GetTrack( go ) is { } existing ) return existing;
 
-		MovieTrack? parentTrack = null;
+		MovieProjectTrack? parentTrack = null;
 
-		if ( (go.Flags & GameObjectFlags.Bone) != 0 && go.Parent is { } parentGo and not Sandbox.Scene )
+		if ( (go.Flags & GameObjectFlags.Bone) != 0 && go.Parent is { } parentGo and not Scene )
 		{
 			parentTrack = GetOrCreateTrack( parentGo );
 		}
 
-		var property = MovieProperty.FromGameObject( go );
-		var track = Project.AddTrack( property.PropertyName, property.PropertyType, parentTrack );
+		var track = Project.AddTrack( go.Name, typeof(GameObject), parentTrack );
 
-		_sceneRefMap[track.Id] = property;
+		Properties.RegisterTrack( track, go, parentTrack );
 
 		return track;
 	}
@@ -89,12 +87,9 @@ partial class Session
 
 		// Nest component tracks inside the containing game object's track
 		var goTrack = GetOrCreateTrack( cmp.GameObject );
-		var goProperty = Map.GetProperty( goTrack )!;
+		var track = Project.AddTrack( cmp.GetType().Name, cmp.GetType(), goTrack );
 
-		var property = MovieProperty.FromComponent( goProperty, cmp );
-		var track = Project.AddTrack( property.PropertyName, property.PropertyType, goTrack );
-
-		_sceneRefMap[track.Id] = property;
+		Properties.RegisterTrack( track, cmp, goTrack );
 
 		return track;
 	}
@@ -119,8 +114,6 @@ partial class Session
 
 	public MovieProjectTrack GetOrCreateTrack( MovieProjectTrack parentTrack, string propertyPath )
 	{
-		var parentProperty = Map.GetProperty( parentTrack )!;
-
 		while ( propertyPath.Length > 0 )
 		{
 			var propertyName = propertyPath;
@@ -137,30 +130,38 @@ partial class Session
 				propertyPath = string.Empty;
 			}
 
-			(parentTrack, parentProperty) = GetOrCreateTrack( parentTrack, parentProperty, propertyName );
+			parentTrack = GetOrCreateTrackCore( parentTrack, propertyName );
 		}
 
 		return parentTrack;
 	}
 
-	private (MovieProjectTrack Track, IMovieProperty Property) GetOrCreateTrack( MovieProjectTrack parentTrack, IMovieProperty parentProperty, string propertyName )
+	private MovieProjectTrack GetOrCreateTrackCore( MovieProjectTrack parentTrack, string propertyName )
 	{
 		if ( parentTrack.Children.FirstOrDefault( x => x.Name == propertyName ) is { } existingTrack )
 		{
-			if ( GetProperty( existingTrack ) is not IMemberProperty existingProperty )
-			{
-				_memberMap[existingTrack.Id] = existingProperty = MovieProperty.FromMember( parentProperty, propertyName, existingTrack.PropertyType )!;
-			}
+			return existingTrack;
+		}
 
-			return (existingTrack, existingProperty);
+		if ( Properties[parentTrack] is not { } parentProperty )
+		{
+			throw new Exception( "Parent track not registered." );
 		}
 
 		var property = MovieProperty.FromMember( parentProperty, propertyName, null );
-		var track = MovieClip!.AddTrack( property.PropertyName, property.PropertyType, parentTrack );
+		var track = Project.AddTrack( property.PropertyName, property.PropertyType, parentTrack );
 
-		_memberMap[track.Id] = property;
+		Properties.RegisterTrack( track, parentTrack );
 
-		return (track, property);
+		return track;
+	}
+
+	public void ApplyFrame( MovieProjectTrack track, MovieTime time )
+	{
+		if ( track.GetBlock( time ) is { } block )
+		{
+			Properties.ApplyFrame( track, block, time );
+		}
 	}
 
 	/// <summary>
@@ -174,7 +175,7 @@ partial class Session
 
 		var renderers = Project.Tracks
 			.Where( x => x.PropertyType == typeof( SkinnedModelRenderer ) )
-			.Select( x => (Properties[x] as IComponentReferenceProperty)?.Component )
+			.Select( x => (Properties[x] as IComponentReferenceProperty)?.Value )
 			.OfType<SkinnedModelRenderer>();
 
 		foreach ( var renderer in renderers )

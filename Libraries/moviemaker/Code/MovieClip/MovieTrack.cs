@@ -30,49 +30,6 @@ public sealed partial record MovieTrack( Guid Id, string Name, Type PropertyType
 
 	}
 
-	/// <summary>
-	/// Looks for a block that contains the given <paramref name="time"/>.
-	/// </summary>
-	public MovieBlock? GetBlock( MovieTime time )
-	{
-		var blocks = Blocks;
-
-		if ( blocks.Length == 0 ) return null;
-
-		if ( blocks[0].TimeRange.Start > time ) return null;
-		if ( blocks[^1].TimeRange.End < time ) return null;
-
-		// TODO: binary search?
-
-		// We go backwards because if we're exactly on a block boundary, we want to use the later block
-
-		for ( var i = Blocks.Length - 1; i >= 0; --i )
-		{
-			var block = Blocks[i];
-
-			if ( block.TimeRange.Contains( time ) )
-			{
-				return block;
-			}
-		}
-
-		return null;
-	}
-
-	/// <summary>
-	/// Enumerate blocks that intersect <paramref name="timeRange"/>.
-	/// </summary>
-	public IEnumerable<MovieBlock> GetBlocks( MovieTimeRange timeRange )
-	{
-		foreach ( var block in Blocks )
-		{
-			if ( block.TimeRange.Intersect( timeRange ) is not null )
-			{
-				yield return block;
-			}
-		}
-	}
-
 	protected override void OnValidate()
 	{
 		if ( Blocks.Length == 0 ) return;

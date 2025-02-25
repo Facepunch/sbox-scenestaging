@@ -1,5 +1,4 @@
-﻿using Sandbox;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 using System.Linq;
 using System.Reflection;
 
@@ -8,9 +7,9 @@ namespace Editor.MovieMaker;
 
 public class MovieEditor : Widget
 {
-	public TrackListWidget TrackList { get; private set; }
 	public ToolbarWidget Toolbar { get; private set; }
-
+	public TrackListWidget TrackList { get; private set; }
+	public DopeSheet DopeSheet => TrackList.DopeSheet;
 
 	public Session Session { get; private set; }
 
@@ -29,22 +28,7 @@ public class MovieEditor : Widget
 
 	public void Initialize( MoviePlayer player )
 	{
-		Log.Info( $"Initialize: {player.GameObject.Name}" );
-
 		Layout.Clear( true );
-
-		if ( player.MovieClip is null )
-		{
-			// Default to an embedded clip, rather than a resource file
-
-			player.EmbeddedClip ??= new MovieClip();
-		}
-
-		Session = new Session { Editor = this };
-		Session.SetPlayer( player );
-		Session.Current = Session;
-
-		Layout?.Clear( true );
 		Toolbar = Layout.Add( new ToolbarWidget( this ) );
 		TrackList = Layout.Add( new TrackListWidget( this ) );
 
@@ -53,8 +37,6 @@ public class MovieEditor : Widget
 
 	void CloseSession()
 	{
-		Log.Info( "Close session" );
-
 		Layout.Clear( true );
 		Session = null;
 		TrackList = null;
@@ -182,7 +164,7 @@ public class MovieEditor : Widget
 		if ( Session is not null )
 		{
 			// Whatever we were editing doesn't exist anymore!
-			if ( playersAvailable.All( x => x.MovieResource != Session.Project || x != Session.Player ) )
+			if ( playersAvailable.All( x => x.Source != Session.Source || x != Session.Player ) )
 			{
 				CloseSession();
 			}
@@ -220,40 +202,44 @@ public class MovieEditor : Widget
 
 	public void SwitchToEmbedded()
 	{
-		if ( Session.Project == Session.Player.EmbeddedClip ) return;
+		if ( Session.Source is EmbeddedMovieResource ) return;
 
-		Session.Player.EmbeddedClip = Session.Project?.Clone();
+		Session.Player.Source = new EmbeddedMovieResource
+		{
+			Clip = Session.Source.Clip,
+			EditorData = Session.Project.Serialize()
+		};
 
 		Switch( Session.Player );
 	}
 
-	public void SwitchFile( MovieFile file )
+	public void SwitchResource( MovieResource resource )
 	{
-		if ( Session.Project == file.Clip ) return;
+		if ( Session.Source == resource ) return;
 
-		if ( Session.Project == Session.Player.EmbeddedClip && Session.Project?.TrackCount > 0 )
+		if ( Session.Source is EmbeddedMovieResource && !Session.Project.IsEmpty )
 		{
 			Dialog.AskConfirm( () =>
 			{
-				ConfirmedSwitchFile( file );
+				ConfirmedSwitchResource( resource );
 			}, question: "Switching to a clip resource will cause your embedded clip to be lost. Are you sure?" );
 		}
 		else
 		{
-			ConfirmedSwitchFile( file );
+			ConfirmedSwitchResource( resource );
 		}
 	}
 
-	private void ConfirmedSwitchFile( MovieFile file )
+	private void ConfirmedSwitchResource( MovieResource resource )
 	{
-		Session.Player.ReferencedClip = file;
+		Session.Player.Source = resource;
 
 		Switch( Session.Player );
 	}
 
 	public void SaveFileAs()
 	{
-		var extension = typeof(MovieFile).GetCustomAttribute<GameResourceAttribute>()!.Extension;
+		var extension = typeof(MovieResource).GetCustomAttribute<GameResourceAttribute>()!.Extension;
 
 		var fd = new FileDialog( null );
 		fd.Title = $"Save Clip As..";
@@ -267,11 +253,11 @@ public class MovieEditor : Widget
 			return;
 
 		var sceneAsset = AssetSystem.CreateResource( extension, fd.SelectedFile );
-		var file = new MovieFile { Clip = Session.Project?.Clone() ?? new MovieClip() };
+		var file = new MovieResource { Clip = Session.Project.Compile(), EditorData = Session.Project.Serialize() };
 
 		sceneAsset.SaveToDisk( file );
 
-		ConfirmedSwitchFile( file );
+		ConfirmedSwitchResource( file );
 	}
 }
 

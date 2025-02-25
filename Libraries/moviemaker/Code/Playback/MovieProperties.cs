@@ -20,36 +20,44 @@ public interface IMovieTrackDescription
 public sealed partial class MovieProperties( Scene scene ) : IReadOnlyDictionary<Guid, IMovieProperty>
 {
 	private readonly Dictionary<Guid, IMovieProperty> _properties = new();
-	public int Count => _properties.Count;
 
-	public IMovieProperty this[ Guid key ] =>
-		_properties[key];
+	private IReadOnlyDictionary<Guid, IMovieProperty> Properties
+	{
+		get
+		{
+			UpdateProperties();
+			return _properties;
+		}
+	}
+
+	public int Count => Properties.Count;
+
+	public IMovieProperty this[ Guid key ] => Properties[key];
 
 	/// <summary>
 	/// Tries to get a property mapped to the given track with matching property type, returning <see langword="null"/> if not found.
 	/// </summary>
 	public IMovieProperty? this[ IMovieTrackDescription track ] =>
-		_properties.TryGetValue( track.Id, out var property ) && property.PropertyType == track.PropertyType
+		Properties.TryGetValue( track.Id, out var property ) && property.PropertyType == track.PropertyType
 			? property
 			: null;
 
 	/// <summary>
 	/// All track IDs we have mapped properties for.
 	/// </summary>
-	public IEnumerable<Guid> Keys => _properties.Keys;
+	public IEnumerable<Guid> Keys => Properties.Keys;
 
 	/// <summary>
 	/// All properties mapped to known tracks.
 	/// </summary>
-	public IEnumerable<IMovieProperty> Values => _properties.Values;
+	public IEnumerable<IMovieProperty> Values => Properties.Values;
 
-	public bool ContainsKey( Guid key ) =>
-		_properties.ContainsKey( key );
+	public bool ContainsKey( Guid key ) => Properties.ContainsKey( key );
 
 	public bool TryGetValue( Guid key, [MaybeNullWhen( false )] out IMovieProperty value ) =>
-		_properties.TryGetValue( key, out value );
+		Properties.TryGetValue( key, out value );
 
-	public IEnumerator<KeyValuePair<Guid, IMovieProperty>> GetEnumerator() => _properties.GetEnumerator();
+	public IEnumerator<KeyValuePair<Guid, IMovieProperty>> GetEnumerator() => Properties.GetEnumerator();
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

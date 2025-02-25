@@ -44,6 +44,23 @@ partial class MovieProperties
 	private readonly Dictionary<Guid, RegisteredTrack> _tracks = new();
 	private bool _propertiesInvalid;
 
+	public void RegisterTrack( IMovieTrackDescription track, IMovieTrackDescription? parent = null )
+	{
+		RegisterTrackCore( track, GetRegisteredParent( parent ) );
+	}
+
+	public void RegisterTrack( IMovieTrackDescription track, GameObject reference, IMovieTrackDescription? parent = null )
+	{
+		_gameObjectMap[track.Id] = reference;
+		RegisterTrackCore( track, GetRegisteredParent( parent ) );
+	}
+
+	public void RegisterTrack( IMovieTrackDescription track, Component reference, IMovieTrackDescription? parent = null )
+	{
+		_componentMap[track.Id] = reference;
+		RegisterTrackCore( track, GetRegisteredParent( parent ) );
+	}
+
 	public void RegisterTracks( IEnumerable<IMovieTrackDescription> tracks, IMovieTrackDescription? parent = null )
 	{
 		var registeredParent = GetRegisteredParent( parent );

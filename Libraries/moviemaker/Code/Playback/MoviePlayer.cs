@@ -16,7 +16,7 @@ public sealed class MoviePlayer : Component
 	public MovieProperties Properties => _properties ??= new MovieProperties( Scene );
 
 	[Property, Group( "Source" )]
-	public IMovieSource? MovieSource
+	public IMovieSource? Source
 	{
 		get => _source;
 		set
@@ -26,7 +26,7 @@ public sealed class MoviePlayer : Component
 		}
 	}
 
-	public MovieClip? MovieClip => MovieSource?.Clip;
+	public MovieClip? MovieClip => Source?.Clip;
 
 	[Property, Group( "Playback" )]
 	public bool IsPlaying
@@ -126,7 +126,7 @@ public sealed class MoviePlayer : Component
 	{
 		var renderers = clip.Tracks
 			.Where( x => x.PropertyType == typeof(SkinnedModelRenderer) )
-			.Select( x => (Properties[x] as IComponentReferenceProperty)?.Component )
+			.Select( x => (Properties[x] as IComponentReferenceProperty)?.Value )
 			.OfType<SkinnedModelRenderer>();
 
 		foreach ( var renderer in renderers )

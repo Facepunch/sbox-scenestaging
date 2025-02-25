@@ -12,7 +12,7 @@ partial class MotionEditMode
 
 	public override bool AllowRecording => true;
 
-	private readonly Dictionary<MovieTrack, ITrackRecording> _recordings = new();
+	private readonly Dictionary<MovieProjectTrack, ITrackRecording> _recordings = new();
 
 	protected override bool OnStartRecording()
 	{
@@ -33,9 +33,9 @@ partial class MotionEditMode
 		return true;
 	}
 
-	private bool StartRecording( MovieTrack track, MovieTime time )
+	private bool StartRecording( MovieProjectTrack track, MovieTime time )
 	{
-		if ( track.ReadEditorData()?.Locked is true ) return false;
+		if ( !Session.CanEdit( track ) ) return false;
 
 		if ( track.Children is { Count: > 0 } children )
 		{
@@ -54,8 +54,7 @@ partial class MotionEditMode
 			}
 		}
 
-		if ( Session.Player.GetProperty( track ) is not { IsBound: true } property ) return false;
-		if ( property is ISceneReferenceMovieProperty ) return false;
+		if ( Session.Properties[track] is not IMemberProperty { IsBound: true } property ) return false;
 
 		var recordingType = typeof(TrackRecording<>).MakeGenericType( track.PropertyType );
 		var recording = (ITrackRecording)Activator.CreateInstance( recordingType, track, property, time )!;
@@ -128,8 +127,8 @@ internal interface ITrackRecording : IPreviewMovieBlock
 
 file class TrackRecording<T> : ITrackRecording
 {
-	public MovieTrack Track { get; }
-	public IMovieProperty<T> Property { get; }
+	public MovieProjectTrack Track { get; }
+	public IMemberProperty<T> Property { get; }
 	public int SampleRate { get; }
 	public MovieTime SampleInterval { get; }
 
@@ -144,12 +143,12 @@ file class TrackRecording<T> : ITrackRecording
 
 	public event Action? Changed;
 
-	public TrackRecording( MovieTrack track, IMovieProperty<T> property, MovieTime startTime )
+	public TrackRecording( MovieProjectTrack track, IMemberProperty<T> property, MovieTime startTime )
 	{
 		Track = track;
 		Property = property;
 
-		SampleRate = track.Clip.DefaultSampleRate;
+		SampleRate = track.Project.SampleRate;
 		SampleInterval = MovieTime.FromFrames( 1, SampleRate );
 
 		_interpolator = Interpolator.GetDefault<T>();

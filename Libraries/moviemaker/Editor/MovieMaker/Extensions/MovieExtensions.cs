@@ -13,12 +13,15 @@ internal static class MovieExtensions
 	{
 		while ( property is IMemberProperty memberProperty )
 		{
-			property = memberProperty.ParentProperty;
+			property = memberProperty.Parent;
 		}
 
-		return property is ISceneReferenceMovieProperty sceneRefProperty
-			? sceneRefProperty.GameObject
-			: null;
+		return property switch
+		{
+			IGameObjectReferenceProperty goProperty => goProperty.Value,
+			IComponentReferenceProperty cmpProperty => cmpProperty.Value?.GameObject,
+			_ => null
+		};
 	}
 
 	public static (MovieTime? Prev, MovieTime? Next) GetNeighborKeys<TValue>( this SortedList<MovieTime, TValue> list, MovieTime key )

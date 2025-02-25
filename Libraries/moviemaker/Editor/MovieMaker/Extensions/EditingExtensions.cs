@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -12,12 +11,12 @@ public record struct InsertOptions(
 
 public static class EditingExtensions
 {
-	public static bool Splice( this MovieTrack track, MovieTimeRange timeRange, MovieTime newDuration, InsertOptions? insertOptions = null )
+	public static bool Splice( this MovieProjectTrack track, MovieTimeRange timeRange, MovieTime newDuration, InsertOptions? insertOptions = null )
 	{
 		var changed = false;
 
-		MovieBlock? head = null;
-		MovieBlock? tail = null;
+		MovieProjectBlock? head = null;
+		MovieProjectBlock? tail = null;
 
 		for ( var i = track.Blocks.Count - 1; i >= 0; --i )
 		{
@@ -73,21 +72,17 @@ public static class EditingExtensions
 		return changed;
 	}
 
-	public static bool Delete( this MovieTrack track, MovieTimeRange timeRange, bool shift )
+	public static bool Delete( this MovieProjectTrack track, MovieTimeRange timeRange, bool shift )
 	{
 		return track.Splice( timeRange, shift ? MovieTime.Zero : timeRange.Duration );
 	}
 
 	public static bool Delete( this Session session, MovieTimeRange timeRange, bool shift )
 	{
-		if ( session.Project is not { } clip ) return false;
-
 		var changed = false;
 
-		foreach ( var track in clip.AllTracks )
+		foreach ( var track in session.EditableTracks )
 		{
-			if ( !track.CanModify() ) continue;
-
 			if ( track.Delete( timeRange, shift ) )
 			{
 				changed = true;
@@ -98,21 +93,17 @@ public static class EditingExtensions
 		return changed;
 	}
 
-	public static bool Insert( this MovieTrack track, MovieTimeRange timeRange )
+	public static bool Insert( this MovieProjectTrack track, MovieTimeRange timeRange )
 	{
 		return track.Splice( timeRange.Start, timeRange.Duration );
 	}
 
 	public static bool Insert( this Session session, MovieTimeRange timeRange )
 	{
-		if ( session.Project is not { } clip ) return false;
-
 		var changed = false;
 
-		foreach ( var track in clip.AllTracks )
+		foreach ( var track in session.EditableTracks )
 		{
-			if ( !track.CanModify() ) continue;
-
 			if ( track.Insert( timeRange ) )
 			{
 				changed = true;
@@ -123,7 +114,7 @@ public static class EditingExtensions
 		return changed;
 	}
 
-	public static MovieBlock? Stitch( this MovieTrack track, MovieBlock? left, MovieBlock? right )
+	public static MovieProjectBlock? Stitch( this MovieProjectTrack track, MovieProjectBlock? left, MovieProjectBlock? right )
 	{
 		if ( left is null || right is null ) return null;
 
@@ -139,7 +130,7 @@ public static class EditingExtensions
 
 		if ( left.End() != right.Start() ) return null;
 
-		var sampleRate = track.Clip.DefaultSampleRate;
+		var sampleRate = track.Project.SampleRate;
 		var timeRange = left.TimeRange.Union( right.TimeRange );
 		var sampleCount = timeRange.Duration.GetFrameCount( sampleRate );
 		var samples = Array.CreateInstance( track.PropertyType, sampleCount );
@@ -151,20 +142,6 @@ public static class EditingExtensions
 		right.Remove();
 
 		return track.AddBlock( timeRange, track.PropertyType.CreateSamplesData( sampleRate, samples ) );
-	}
-
-	public static bool CanModify( this MovieTrack? track )
-	{
-		if ( track is not { IsValid: true } ) return false;
-
-		while ( track is not null )
-		{
-			if ( track.ReadEditorData()?.Locked is true ) return false;
-
-			track = track.Parent;
-		}
-
-		return true;
 	}
 }
 

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Linq;
+using System.Text.Json;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -10,8 +11,6 @@ namespace Editor.MovieMaker;
 /// </summary>
 public sealed partial class Session
 {
-	public static Session? Current { get; internal set; }
-
 	public MovieEditor Editor { get; }
 	public MoviePlayer Player { get; }
 	public MovieProject Project { get; }
@@ -93,7 +92,7 @@ public sealed partial class Session
 	{
 		Editor = editor;
 		Player = player;
-		Source = player.MovieSource ??= new EmbeddedMovieResource();
+		Source = player.Source ??= new EmbeddedMovieResource();
 		Project = Source.EditorData?.Deserialize<MovieProject>( EditorJsonOptions ) ?? new MovieProject();
 	}
 
@@ -115,6 +114,11 @@ public sealed partial class Session
 			Cookies.EditMode = type;
 		}
 	}
+
+	public IEnumerable<MovieProjectTrack> EditableTracks =>
+		Editor.TrackList.Tracks.Where( x => x.CanEdit ).Select( x => x.ProjectTrack );
+
+	public bool CanEdit( MovieProjectTrack track ) => Editor.TrackList.FindTrack( track )?.CanEdit ?? false;
 
 	public MovieTime ScenePositionToTime( Vector2 scenePos, SnapFlag ignore = 0, params MovieTime[] snapOffsets ) 
 	{
@@ -223,9 +227,7 @@ public sealed partial class Session
 
 	public bool Frame()
 	{
-		if ( Project is not { } clip ) return false;
-
-		PlaybackFrame( clip );
+		PlaybackFrame();
 
 		if ( SmoothZoom.Update( RealTime.Delta ) )
 		{
@@ -264,7 +266,7 @@ public sealed partial class Session
 
 	internal void ClipModified()
 	{
-		if ( Project == Player.EmbeddedClip )
+		if ( Source is EmbeddedMovieResource )
 		{
 			Player.Scene.Editor.HasUnsavedChanges = true;
 			return;
@@ -277,9 +279,12 @@ public sealed partial class Session
 	{
 		HasUnsavedChanges = false;
 
+		Source.EditorData = Project.Serialize();
+		Source.Clip = Project.Compile();
+
 		// If we're embedded, save the scene
 
-		if ( Project == Player.EmbeddedClip )
+		if ( Source is EmbeddedMovieResource )
 		{
 			Player.Scene.Editor.Save( false );
 			return;
@@ -287,14 +292,14 @@ public sealed partial class Session
 
 		// If we're referencing a .movie resource, save it to disk
 
-		if ( Project != Player.ReferencedClip?.Clip )
+		if ( Source is not MovieResource resource )
 		{
 			return;
 		}
 
-		if ( AssetSystem.FindByPath( Player.ReferencedClip!.ResourcePath ) is { } asset )
+		if ( AssetSystem.FindByPath( resource.ResourcePath ) is { } asset )
 		{
-			asset.SaveToDisk( Player.ReferencedClip );
+			asset.SaveToDisk( resource );
 		}
 	}
 
@@ -304,7 +309,7 @@ public sealed partial class Session
 		EditMode?.ViewChanged( Editor.TrackList.DopeSheet.VisibleRect );
 	}
 
-	public void TrackModified( MovieTrack track )
+	public void TrackModified( MovieProjectTrack track )
 	{
 		ClipModified();
 

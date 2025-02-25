@@ -29,13 +29,9 @@ partial class MovieProperties : IJsonPopulator
 
 	private IGameObjectReferenceProperty CreateReferenceProperty( Guid trackId, string gameObjectName, IGameObjectReferenceProperty? parent = null ) =>
 		new GameObjectMovieProperty( this, trackId, parent, gameObjectName );
-	private IGameObjectReferenceProperty CreateReferenceProperty( Guid trackId, GameObject gameObject, IGameObjectReferenceProperty? parent = null ) =>
-		new GameObjectMovieProperty( this, trackId, parent, gameObject.Name ) { GameObject = gameObject };
 
 	private IComponentReferenceProperty CreateReferenceProperty( Guid trackId, Type componentType, IGameObjectReferenceProperty parent ) =>
 		new ComponentMovieProperty( this, trackId, parent, componentType );
-	private IComponentReferenceProperty CreateReferenceProperty( Guid trackId, Component component, IGameObjectReferenceProperty parent ) =>
-		new ComponentMovieProperty( this, trackId, parent, component.GetType() ) { Component = component };
 
 	private record struct Model( ImmutableArray<MappingModel>? GameObjects = null, ImmutableArray<MappingModel>? Components = null );
 	private record struct MappingModel( Guid Track, Guid Reference );
@@ -89,31 +85,30 @@ file sealed class GameObjectMovieProperty( MovieProperties properties, Guid trac
 {
 	private GameObject? _value;
 
-	public string PropertyName => GameObject?.Name ?? name;
+	public string PropertyName => Value?.Name ?? name;
 
-	public bool IsBound => GameObject.IsValid();
+	public bool IsBound => Value.IsValid();
 
 	public IGameObjectReferenceProperty? Parent => parent;
 
-	public GameObject? GameObject
+	public GameObject? Value
 	{
 		get => _value.IsValid() ? _value : _value = AttemptAutoBind();
 		set => properties.SetReference( trackId, _value = value );
 	}
 
 	/// <summary>
-	/// If our parent object is bound, and we have a <see cref="_placeholderName"/>,
-	/// try to bind to a matching child object.
+	/// If our parent object is bound, try to bind to a child object with a matching name.
 	/// </summary>
 	private GameObject? AttemptAutoBind()
 	{
-		return Parent is { GameObject: { } go }
+		return Parent is { Value: { } go }
 			? go.Children.FirstOrDefault( x => x.Name == name )
 			: null;
 	}
 
 	Type IMovieProperty.PropertyType => typeof( GameObject );
-	object? IMovieProperty.Value => GameObject;
+	object? IMovieProperty.Value => Value;
 }
 
 /// <summary>
@@ -126,11 +121,11 @@ file sealed class ComponentMovieProperty( MovieProperties properties, Guid track
 
 	public string PropertyName { get; } = componentType.Name;
 
-	public bool IsBound => Component.IsValid();
+	public bool IsBound => Value.IsValid();
 
 	public IGameObjectReferenceProperty Parent => parent;
 
-	public Component? Component
+	public Component? Value
 	{
 		get => _value.IsValid() ? _value : _value = AttemptAutoBind();
 		set
@@ -150,11 +145,11 @@ file sealed class ComponentMovieProperty( MovieProperties properties, Guid track
 	/// </summary>
 	private Component? AttemptAutoBind()
 	{
-		return parent is { GameObject: { } go }
+		return parent is { Value: { } go }
 			? go.Components.Get( componentType, FindMode.EverythingInSelf )
 			: null;
 	}
 
 	Type IMovieProperty.PropertyType => componentType;
-	object? IMovieProperty.Value => Component;
+	object? IMovieProperty.Value => Value;
 }

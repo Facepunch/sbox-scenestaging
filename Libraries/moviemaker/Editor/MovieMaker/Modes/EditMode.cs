@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Sandbox.MovieMaker;
-using static Sandbox.VertexLayout;
 
 namespace Editor.MovieMaker;
 
@@ -27,6 +26,22 @@ public record EditModeType( TypeDescription TypeDescription )
 
 public abstract class EditMode
 {
+	protected static EditMode? Focused
+	{
+		get
+		{
+			var widget = Application.FocusWidget;
+
+			while ( widget != null )
+			{
+				if ( widget is MovieEditor editor ) return editor.Session?.EditMode;
+				widget = widget.Parent;
+			}
+
+			return null;
+		}
+	}
+
 	protected readonly struct ToolbarHelper( Layout toolbar )
 	{
 		public IconButton AddToggle( string title, string icon, Func<bool> getState, Action<bool> setState )
@@ -132,10 +147,12 @@ public abstract class EditMode
 
 	internal bool PreChange( MovieProjectTrack track )
 	{
-		if ( !track.CanRecord ) return false;
-		if ( Session.Map.GetProperty( track ) is not IMemberProperty { CanWrite: true } ) return false;
+		if ( Session.Properties[track] is not IMemberProperty { CanWrite: true } ) return false;
 
-		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
+		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
+		if ( trackWidget is not { CanEdit: true } ) return false;
+
+		if ( trackWidget.DopeSheetTrack is { } channel )
 		{
 			return OnPreChange( channel );
 		}
@@ -147,10 +164,12 @@ public abstract class EditMode
 
 	internal bool PostChange( MovieProjectTrack track )
 	{
-		if ( !track.CanRecord ) return false;
-		if ( Session.Map.GetProperty( track ) is not IMemberProperty { CanWrite: true } ) return false;
+		if ( Session.Properties[track] is not IMemberProperty { CanWrite: true } ) return false;
 
-		if ( TrackList.Tracks.FirstOrDefault( x => x.MovieTrack == track )?.DopeSheetTrack is { } channel )
+		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
+		if ( trackWidget is not { CanEdit: true } ) return false;
+
+		if ( trackWidget.DopeSheetTrack is { } channel )
 		{
 			return OnPostChange( channel );
 		}
@@ -235,27 +254,24 @@ public abstract class EditMode
 		OnApplyFrame( time );
 	}
 
-	private readonly Dictionary<MovieTrack, List<IMovieBlock>> _previewBlocks = new();
+	private readonly Dictionary<MovieProjectTrack, List<IMovieBlock>> _previewBlocks = new();
 
 	protected virtual void OnApplyFrame( MovieTime time )
 	{
-		Session.Player.ApplyFrame( time );
-
 		foreach ( var (track, list) in _previewBlocks )
 		{
 			foreach ( var block in list )
 			{
 				if ( block.TimeRange.Contains( time ) )
 				{
-					Session.Player.ApplyFrame( track, block, time );
+					Session.Properties.ApplyFrame( track, block, time );
+					break;
 				}
 			}
 		}
-
-		Session.Player.UpdateModels( time );
 	}
 
-	public void SetPreviewBlocks( MovieTrack track, IEnumerable<IMovieBlock> blocks )
+	public void SetPreviewBlocks( MovieProjectTrack track, IEnumerable<IMovieBlock> blocks )
 	{
 		if ( !_previewBlocks.TryGetValue( track, out var list ) )
 		{
@@ -272,7 +288,7 @@ public abstract class EditMode
 		}
 	}
 
-	public void ClearPreviewBlocks( MovieTrack track )
+	public void ClearPreviewBlocks( MovieProjectTrack track )
 	{
 		_previewBlocks.Remove( track );
 
@@ -282,7 +298,7 @@ public abstract class EditMode
 		}
 	}
 
-	public IEnumerable<IMovieBlock> GetPreviewBlocks( MovieTrack track )
+	public IEnumerable<IMovieBlock> GetPreviewBlocks( MovieProjectTrack track )
 	{
 		return _previewBlocks.GetValueOrDefault( track, [] );
 	}

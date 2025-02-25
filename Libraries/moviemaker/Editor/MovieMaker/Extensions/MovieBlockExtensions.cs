@@ -56,10 +56,10 @@ internal static class MovieBlockExtensions
 			sampleRate, samples, firstSampleTime )!;
 	}
 
-	public static IEnumerable<MovieBlockSlice> Slice( this MovieTrack track, MovieTimeRange timeRange ) =>
+	public static IEnumerable<MovieBlockSlice> Slice( this MovieProjectTrack track, MovieTimeRange timeRange ) =>
 		track.GetCuts( timeRange ).Select( x => x.Block.Slice( x.TimeRange ) );
 
-	public static MovieBlockSlice Slice( this MovieBlock srcBlock, MovieTimeRange timeRange ) =>
+	public static MovieBlockSlice Slice( this IMovieBlock srcBlock, MovieTimeRange timeRange ) =>
 		new( timeRange, srcBlock.Data.Slice( timeRange - srcBlock.Start() ) );
 
 	public static IBlockData Slice( this IBlockData data, MovieTimeRange timeRange )

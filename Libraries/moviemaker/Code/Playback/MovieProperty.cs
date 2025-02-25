@@ -39,7 +39,7 @@ public interface IGameObjectReferenceProperty : IMovieProperty
 {
 	IGameObjectReferenceProperty? Parent { get; }
 
-	public GameObject? GameObject { get; set; }
+	public new GameObject? Value { get; set; }
 }
 
 /// <summary>
@@ -49,7 +49,7 @@ public interface IComponentReferenceProperty : IMovieProperty
 {
 	IGameObjectReferenceProperty Parent { get; }
 
-	public Component? Component { get; set; }
+	public new Component? Value { get; set; }
 }
 
 /// <summary>
