@@ -31,7 +31,6 @@ public sealed class NavigationTargetWanderer : Component
 
 		agent.LinkEnter += OnNavLinkEnter;
 		agent.LinkExit += OnNavLinkExit;
-		agent.LinkUpdate += OnNavLinkUpdate;
 	}
 
 	protected override void OnDisabled()
@@ -42,7 +41,6 @@ public sealed class NavigationTargetWanderer : Component
 
 		agent.LinkEnter -= OnNavLinkEnter;
 		agent.LinkExit -= OnNavLinkExit;
-		agent.LinkUpdate -= OnNavLinkUpdate;
 	}
 
 	private void OnNavLinkEnter( NavMeshLink link )
@@ -54,11 +52,6 @@ public sealed class NavigationTargetWanderer : Component
 	private void OnNavLinkExit( NavMeshLink link )
 	{
 		Body.Set( "b_grounded", true );
-	}
-
-	private void OnNavLinkUpdate( NavMeshLink link, float t )
-	{
-
 	}
 
 	protected override void OnUpdate()
