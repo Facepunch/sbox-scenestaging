@@ -13,7 +13,7 @@ internal interface ITrackModification
 	MovieProjectTrack Track { get; }
 
 	void SetRelativeTo( object? value );
-	void SetChanges( IEnumerable<IMovieBlock> blocks );
+	void SetChanges( IEnumerable<IBlock> blocks );
 	void ClearPreview();
 	bool Update( TimeSelection selection, MovieTime offset, bool additive );
 	bool Commit( TimeSelection selection, MovieTime offset, bool additive );
@@ -27,7 +27,7 @@ internal sealed class TrackModification<T> : ITrackModification
 	public EditMode EditMode { get; }
 	public MovieProjectTrack Track { get; }
 
-	private record ChangeMapping( MovieTimeRange TimeRange, IMovieBlock Original, IMovieBlock Change ) : IMovieBlock
+	private record ChangeMapping( MovieTimeRange TimeRange, IBlock Original, IBlock Change ) : IBlock
 	{
 		private IBlockData? _originalData;
 
@@ -35,10 +35,10 @@ internal sealed class TrackModification<T> : ITrackModification
 
 		public IBlockData OriginalData => _originalData ??= Original.Data.Slice( TimeRange - Original.TimeRange.Start );
 
-		IBlockData IMovieBlock.Data => PreviewData ?? OriginalData;
+		IBlockData IBlock.Data => PreviewData ?? OriginalData;
 	}
 
-	private readonly List<IMovieBlock> _changes = new();
+	private readonly List<IBlock> _changes = new();
 	private readonly List<ChangeMapping> _changeMappings = new();
 
 	private T _relativeTo = default!;
@@ -56,7 +56,7 @@ internal sealed class TrackModification<T> : ITrackModification
 		_relativeTo = (T)value!;
 	}
 
-	public void SetChanges( IEnumerable<IMovieBlock> blocks )
+	public void SetChanges( IEnumerable<IBlock> blocks )
 	{
 		_changes.Clear();
 		_changes.AddRange( blocks );
@@ -165,7 +165,7 @@ internal sealed class TrackModification<T> : ITrackModification
 		return true;
 	}
 
-	private IBlockData Blend( IMovieBlock original, IMovieBlock change, MovieTimeRange timeRange, TimeSelection selection, bool additive, int sampleRate )
+	private IBlockData Blend( IBlock original, IBlock change, MovieTimeRange timeRange, TimeSelection selection, bool additive, int sampleRate )
 	{
 		if ( original.Data is not IValueData<T> originalData ) return original.Data.Slice( timeRange );
 		if ( change.Data is not IValueData<T> changeData ) return original.Data.Slice( timeRange );

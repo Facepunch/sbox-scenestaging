@@ -133,7 +133,7 @@ file class TrackRecording<T> : ITrackRecording
 	public MovieTime SampleInterval { get; }
 
 	public MovieTimeRange TimeRange => (_startTime, _startTime + MovieTime.FromFrames( _samples.Count, SampleRate ));
-	IBlockData IMovieBlock.Data => _previewData;
+	IBlockData IBlock.Data => _previewData;
 
 	private readonly MovieTime _startTime;
 	private readonly IInterpolator<T>? _interpolator;

@@ -19,5 +19,9 @@ public abstract record ValidatedRecord
 		OnValidate();
 	}
 
+	/// <summary>
+	/// Called when this instance is being constructed.
+	/// Only primary constructor arguments can be accessed here.
+	/// </summary>
 	protected virtual void OnValidate() { }
 }

@@ -21,7 +21,7 @@ public sealed partial class MovieProjectTrack( MovieProject project, Guid id, st
 
 	public void RemoveBlocks() => throw new NotImplementedException();
 	public MovieProjectBlock AddBlock( MovieTimeRange timeRange, IBlockData data ) => throw new NotImplementedException();
-	public MovieProjectBlock AddBlock( IMovieBlock block ) => AddBlock( block.TimeRange, block.Data );
+	public MovieProjectBlock AddBlock( IBlock block ) => AddBlock( block.TimeRange, block.Data );
 	public MovieProjectBlock GetBlock( MovieTime time ) => throw new NotImplementedException();
 
 	public IReadOnlyList<(MovieTimeRange TimeRange, MovieProjectBlock Block)> Cuts => throw new NotImplementedException();
@@ -29,6 +29,6 @@ public sealed partial class MovieProjectTrack( MovieProject project, Guid id, st
 
 	ITrackDescription? ITrackDescription.Parent => Parent;
 
-	public MovieTrack Compile( MovieTrack? compiledParent ) =>
+	public CompiledTrack Compile( CompiledTrack? compiledParent ) =>
 		new( Id, Name, TargetType, compiledParent, [..Blocks.Select( x => x.Compile() )] );
 }

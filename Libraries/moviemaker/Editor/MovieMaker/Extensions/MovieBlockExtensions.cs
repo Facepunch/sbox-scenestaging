@@ -5,20 +5,20 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public record struct MovieBlockSlice( MovieTimeRange TimeRange, IBlockData Data ) : IMovieBlock;
+public record struct MovieBlockSlice( MovieTimeRange TimeRange, IBlockData Data ) : IBlock;
 
-public interface IPreviewMovieBlock : IMovieBlock
+public interface IPreviewMovieBlock : IBlock
 {
 	event Action? Changed;
 }
 
 internal static class MovieBlockExtensions
 {
-	public static MovieTime Start<T>( this T block ) where T : IMovieBlock => block.TimeRange.Start;
-	public static MovieTime End<T>( this T block ) where T : IMovieBlock => block.TimeRange.End;
-	public static MovieTime Duration<T>( this T block ) where T : IMovieBlock => block.TimeRange.Duration;
+	public static MovieTime Start<T>( this T block ) where T : IBlock => block.TimeRange.Start;
+	public static MovieTime End<T>( this T block ) where T : IBlock => block.TimeRange.End;
+	public static MovieTime Duration<T>( this T block ) where T : IBlock => block.TimeRange.Duration;
 
-	public static void Sample( this IMovieBlock block, Array dstSamples, MovieTimeRange srcTimeRange, MovieTimeRange dstTimeRange, int sampleRate )
+	public static void Sample( this IBlock block, Array dstSamples, MovieTimeRange srcTimeRange, MovieTimeRange dstTimeRange, int sampleRate )
 	{
 		if ( block.Data is not IValueData valueData ) return;
 
@@ -59,7 +59,7 @@ internal static class MovieBlockExtensions
 	public static IEnumerable<MovieBlockSlice> Slice( this MovieProjectTrack track, MovieTimeRange timeRange ) =>
 		track.GetCuts( timeRange ).Select( x => x.Block.Slice( x.TimeRange ) );
 
-	public static MovieBlockSlice Slice( this IMovieBlock srcBlock, MovieTimeRange timeRange ) =>
+	public static MovieBlockSlice Slice( this IBlock srcBlock, MovieTimeRange timeRange ) =>
 		new( timeRange, srcBlock.Data.Slice( timeRange - srcBlock.Start() ) );
 
 	public static IBlockData Slice( this IBlockData data, MovieTimeRange timeRange )
@@ -74,7 +74,6 @@ internal static class MovieBlockExtensions
 		BlockDataHelper.Get( data.ValueType )
 			.Sample( data, dstSamples, dstOffset, sampleCount, srcTimeRange, sampleRate );
 	}
-
 
 	public static void Sample<T>( this IValueData<T> data, Span<T> dstSamples, MovieTimeRange srcTimeRange, int sampleRate )
 	{

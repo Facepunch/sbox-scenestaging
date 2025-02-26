@@ -4,7 +4,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed class MovieProjectBlock : IMovieBlock
+public sealed class MovieProjectBlock : IBlock
 {
 	public MovieProject Project => Track.Project;
 	public MovieProjectTrack Track => throw new NotImplementedException();

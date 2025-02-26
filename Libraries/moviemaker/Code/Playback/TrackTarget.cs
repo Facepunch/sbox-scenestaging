@@ -5,7 +5,7 @@ namespace Sandbox.MovieMaker;
 #nullable enable
 
 /// <summary>
-/// Something that is being controlled by a <see cref="MovieTrack"/>. If <see cref="IsBound"/> is true,
+/// Something that is being controlled by a <see cref="CompiledTrack"/>. If <see cref="IsBound"/> is true,
 /// this target is connected to a live instance of something in the scene, so accessing it will affect that
 /// connected instance.
 /// </summary>

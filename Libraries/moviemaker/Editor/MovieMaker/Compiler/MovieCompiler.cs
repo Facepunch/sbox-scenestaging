@@ -11,7 +11,7 @@ namespace Editor.MovieMaker;
 [ResourceIdentity( "movie" )]
 public sealed class MovieCompiler : ResourceCompiler
 {
-	private record CompiledResourceModel( MovieClip? Clip );
+	private record CompiledResourceModel( CompiledMovieClip? Clip );
 
 	protected override async Task<bool> Compile()
 	{

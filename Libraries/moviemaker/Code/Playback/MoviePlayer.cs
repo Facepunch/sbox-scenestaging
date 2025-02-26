@@ -18,7 +18,7 @@ public sealed class MoviePlayer : Component
 	public MovieTargets Targets => _targets ??= new MovieTargets( Scene );
 
 	/// <summary>
-	/// Contains a <see cref="MovieMaker.MovieClip"/>. Can be a <see cref="MovieResource"/> or <see cref="EmbeddedMovieResource"/>.
+	/// Contains a <see cref="CompiledMovieClip"/>. Can be a <see cref="MovieResource"/> or <see cref="EmbeddedMovieResource"/>.
 	/// </summary>
 	[Property, Group( "Source" )]
 	public IMovieSource? Source
@@ -30,11 +30,6 @@ public sealed class MoviePlayer : Component
 			UpdatePosition();
 		}
 	}
-
-	/// <summary>
-	/// Currently loaded clip to play.
-	/// </summary>
-	public MovieClip? MovieClip => Source?.Clip;
 
 	[Property, Group( "Playback" )]
 	public bool IsPlaying
@@ -77,7 +72,7 @@ public sealed class MoviePlayer : Component
 	{
 		if ( !Enabled ) return;
 
-		if ( MovieClip is not { } clip ) return;
+		if ( Source is not { Compiled: { } clip } ) return;
 
 		Targets.ApplyFrame( clip, _position );
 
@@ -91,21 +86,15 @@ public sealed class MoviePlayer : Component
 
 	protected override void OnUpdate()
 	{
-		if ( !IsPlaying || MovieClip is not { } clip ) return;
+		if ( !IsPlaying ) return;
 
 		_position += MovieTime.FromSeconds( Time.Delta * TimeScale );
 
-		var duration = clip.Duration;
+		// Rewind if looping
 
-		if ( _position >= duration )
+		if ( IsLooping && Source?.Compiled?.Duration is { IsPositive: true } duration && _position >= duration )
 		{
-			if ( IsLooping )
-			{
-				while ( duration.IsPositive && _position >= duration )
-				{
-					_position -= duration;
-				}
-			}
+			_position.GetFrameIndex( duration, remainder: out _position );
 		}
 
 		UpdatePosition();
@@ -114,7 +103,7 @@ public sealed class MoviePlayer : Component
 	/// <summary>
 	/// Set the <see cref="SkinnedModelRenderer.PlaybackRate"/> of all bound renderers.
 	/// </summary>
-	private void UpdateAnimationPlaybackRate( MovieClip clip )
+	private void UpdateAnimationPlaybackRate( IClip clip )
 	{
 		var renderers = clip.Tracks
 			.Where( x => x.TargetType == typeof(SkinnedModelRenderer) )

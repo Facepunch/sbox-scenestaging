@@ -6,11 +6,11 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 public abstract partial class BlockItem : GraphicsItem
 {
-	private IMovieBlock? _block;
+	private IBlock? _block;
 
 	public new DopeSheetTrack Parent { get; private set; } = null!;
 
-	public IMovieBlock Block
+	public IBlock Block
 	{
 		get => _block ?? throw new InvalidOperationException();
 		set
@@ -39,7 +39,7 @@ public abstract partial class BlockItem : GraphicsItem
 
 	protected string? DebugText { get; set; }
 
-	private void Initialize( DopeSheetTrack parent, IMovieBlock block )
+	private void Initialize( DopeSheetTrack parent, IBlock block )
 	{
 		base.Parent = Parent = parent;
 

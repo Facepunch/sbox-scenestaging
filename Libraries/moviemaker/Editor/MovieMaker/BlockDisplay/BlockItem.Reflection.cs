@@ -8,7 +8,7 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 partial class BlockItem
 {
-	public static BlockItem? Create( DopeSheetTrack parent, IMovieBlock block )
+	public static BlockItem? Create( DopeSheetTrack parent, IBlock block )
 	{
 		if ( block.Data is not IValueData { ValueType: { } valueType } ) return null;
 

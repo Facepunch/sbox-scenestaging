@@ -13,7 +13,7 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	private bool? _canCreatePreview;
 
-	private readonly List<IMovieBlock> _blocks = new();
+	private readonly List<IBlock> _blocks = new();
 	private readonly List<BlockItem> _blockItems = new();
 
 	public IReadOnlyList<BlockItem> BlockItems => _blockItems;
@@ -67,7 +67,7 @@ public partial class DopeSheetTrack : GraphicsItem
 		}
 	}
 
-	private void GetBlocks( List<IMovieBlock> result )
+	private void GetBlocks( List<IBlock> result )
 	{
 		var track = TrackWidget.ProjectTrack;
 

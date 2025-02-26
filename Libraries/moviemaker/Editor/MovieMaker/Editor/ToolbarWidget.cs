@@ -36,7 +36,7 @@ public class ToolbarWidget : Widget
 		{
 			ClipDropDown = new ComboBox( this );
 			ClipDropDown.MinimumWidth = 150;
-			ClipDropDown.ToolTip = $"Selected {nameof(MovieClip)}";
+			ClipDropDown.ToolTip = $"Selected {nameof(CompiledMovieClip)}";
 
 			Layout.Add( ClipDropDown );
 		}

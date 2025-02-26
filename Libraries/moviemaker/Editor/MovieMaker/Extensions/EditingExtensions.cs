@@ -5,7 +5,7 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 public record struct InsertOptions(
-	IEnumerable<IMovieBlock> Blocks,
+	IEnumerable<IBlock> Blocks,
 	bool StitchStart = false,
 	bool StitchEnd = false );
 

@@ -6,35 +6,7 @@ namespace Sandbox.MovieMaker;
 #nullable enable
 
 /// <summary>
-/// Everything needed to bind a movie track to an <see cref="ITrackTarget"/> in a scene.
-/// </summary>
-public interface ITrackDescription
-{
-	/// <summary>
-	/// ID for referencing this track. Must be unique in the containing <see cref="MovieClip"/>,
-	/// but different clips can share tracks as long as they are identical.
-	/// </summary>
-	Guid Id { get; }
-
-	/// <summary>
-	/// Property or object name, used when auto-binding this track in a scene.
-	/// </summary>
-	string Name { get; }
-
-	/// <summary>
-	/// What type of value is this track controlling.
-	/// </summary>
-	Type TargetType { get; }
-
-	/// <summary>
-	/// Tracks can be nested, which means child tracks can auto-bind to targets in the scene
-	/// if their parent is bound.
-	/// </summary>
-	ITrackDescription? Parent { get; }
-}
-
-/// <summary>
-/// Maps tracks in a <see cref="MovieClip"/> to game objects, components, and properties in the scene.
+/// Maps tracks in a <see cref="CompiledMovieClip"/> to game objects, components, and properties in the scene.
 /// We reference tracks by <see cref="Guid"/> so tracks from different clips can bind to the same target if they share an ID.
 /// </summary>
 public sealed partial class MovieTargets( Scene scene ) : IEnumerable<KeyValuePair<Guid, ITrackTarget>>
