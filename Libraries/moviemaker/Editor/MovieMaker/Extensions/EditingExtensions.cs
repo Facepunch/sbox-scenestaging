@@ -133,7 +133,7 @@ public static class EditingExtensions
 		var sampleRate = track.Project.SampleRate;
 		var timeRange = left.TimeRange.Union( right.TimeRange );
 		var sampleCount = timeRange.Duration.GetFrameCount( sampleRate );
-		var samples = Array.CreateInstance( track.PropertyType, sampleCount );
+		var samples = Array.CreateInstance( track.TargetType, sampleCount );
 
 		left.Sample( samples, left.TimeRange, left.TimeRange - timeRange.Start, sampleRate );
 		right.Sample( samples, right.TimeRange, right.TimeRange - timeRange.Start, sampleRate );
@@ -141,7 +141,7 @@ public static class EditingExtensions
 		left.Remove();
 		right.Remove();
 
-		return track.AddBlock( timeRange, track.PropertyType.CreateSamplesData( sampleRate, samples ) );
+		return track.AddBlock( timeRange, track.TargetType.CreateSamplesData( sampleRate, samples ) );
 	}
 }
 

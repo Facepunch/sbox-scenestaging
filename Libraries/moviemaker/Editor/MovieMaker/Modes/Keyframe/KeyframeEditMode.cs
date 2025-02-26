@@ -256,7 +256,7 @@ internal sealed class TrackKeyframes : IDisposable
 
 		HandleColor = Theme.Grey;
 
-		if ( HandleColors.TryGetValue( track.TrackWidget.ProjectTrack.PropertyType, out var color ) )
+		if ( HandleColors.TryGetValue( track.TrackWidget.ProjectTrack.TargetType, out var color ) )
 		{
 			HandleColor = color;
 		}
@@ -320,7 +320,7 @@ internal sealed class TrackKeyframes : IDisposable
 
 		if ( TrackWidget.Property is IMember { CanWrite: true } )
 		{
-			Curve ??= KeyframeCurve.Create( TrackWidget.ProjectTrack.PropertyType );
+			Curve ??= KeyframeCurve.Create( TrackWidget.ProjectTrack.TargetType );
 
 			foreach ( var keyframe in Curve )
 			{

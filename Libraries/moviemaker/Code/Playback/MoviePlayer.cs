@@ -9,14 +9,13 @@ public sealed class MoviePlayer : Component
 	private bool _isPlaying;
 
 	private IMovieSource? _source;
-	private MovieClip? _lastClip;
-	private MovieProperties? _properties;
+	private MovieTargets? _targets;
 
 	/// <summary>
-	/// Maps tracks in movie clips to objects and properties in the scene.
+	/// Maps tracks in movie clips to game objects, components, and properties in the scene.
 	/// </summary>
 	[Property, Hide]
-	public MovieProperties Properties => _properties ??= new MovieProperties( Scene );
+	public MovieTargets Targets => _targets ??= new MovieTargets( Scene );
 
 	/// <summary>
 	/// Contains a <see cref="MovieMaker.MovieClip"/>. Can be a <see cref="MovieResource"/> or <see cref="EmbeddedMovieResource"/>.
@@ -71,20 +70,6 @@ public sealed class MoviePlayer : Component
 		set => Position = MovieTime.FromSeconds( value );
 	}
 
-	private void UpdateClip()
-	{
-		var clip = MovieClip;
-
-		if ( _lastClip == clip ) return;
-
-		_lastClip = clip;
-
-		if ( clip?.RootTracks is { } tracks )
-		{
-			Properties.RegisterTracksRecursive( tracks );
-		}
-	}
-
 	/// <summary>
 	/// Apply the movie clip to the scene at the current time position.
 	/// </summary>
@@ -92,11 +77,9 @@ public sealed class MoviePlayer : Component
 	{
 		if ( !Enabled ) return;
 
-		UpdateClip();
-
 		if ( MovieClip is not { } clip ) return;
 
-		Properties.ApplyFrame( clip, _position );
+		Targets.ApplyFrame( clip, _position );
 
 		UpdateAnimationPlaybackRate( clip );
 	}
@@ -134,8 +117,8 @@ public sealed class MoviePlayer : Component
 	private void UpdateAnimationPlaybackRate( MovieClip clip )
 	{
 		var renderers = clip.Tracks
-			.Where( x => x.PropertyType == typeof(SkinnedModelRenderer) )
-			.Select( x => Properties.GetComponent( x )?.Value )
+			.Where( x => x.TargetType == typeof(SkinnedModelRenderer) )
+			.Select( x => Targets.GetComponent( x )?.Value )
 			.OfType<SkinnedModelRenderer>();
 
 		foreach ( var renderer in renderers )

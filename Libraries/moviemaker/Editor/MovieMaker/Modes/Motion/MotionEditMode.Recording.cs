@@ -54,9 +54,9 @@ partial class MotionEditMode
 			}
 		}
 
-		if ( Session.Properties.GetMember( track ) is not { IsBound: true, CanWrite: true } property ) return false;
+		if ( Session.Targets.GetMember( track ) is not { IsBound: true, CanWrite: true } property ) return false;
 
-		var recordingType = typeof(TrackRecording<>).MakeGenericType( track.PropertyType );
+		var recordingType = typeof(TrackRecording<>).MakeGenericType( track.TargetType );
 		var recording = (ITrackRecording)Activator.CreateInstance( recordingType, track, property, time )!;
 
 		_recordings.Add( track, recording );

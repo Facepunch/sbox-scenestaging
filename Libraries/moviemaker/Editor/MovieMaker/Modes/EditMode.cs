@@ -147,7 +147,7 @@ public abstract class EditMode
 
 	internal bool PreChange( MovieProjectTrack track )
 	{
-		if ( Session.Properties.GetMember( track ) is not { CanWrite: true } ) return false;
+		if ( Session.Targets.GetMember( track ) is not { CanWrite: true } ) return false;
 
 		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
 		if ( trackWidget is not { CanEdit: true } ) return false;
@@ -164,7 +164,7 @@ public abstract class EditMode
 
 	internal bool PostChange( MovieProjectTrack track )
 	{
-		if ( Session.Properties.GetMember( track ) is not { CanWrite: true } ) return false;
+		if ( Session.Targets.GetMember( track ) is not { CanWrite: true } ) return false;
 
 		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
 		if ( trackWidget is not { CanEdit: true } ) return false;
@@ -264,7 +264,7 @@ public abstract class EditMode
 			{
 				if ( block.TimeRange.Contains( time ) )
 				{
-					Session.Properties.ApplyFrame( track, block, time );
+					Session.Targets.ApplyFrame( track, block, time );
 					break;
 				}
 			}

@@ -23,7 +23,7 @@ public sealed partial class Session
 	private float _pixelsPerSecond;
 
 	public bool IsEditorScene => Player?.Scene?.IsEditor ?? true;
-	public MovieProperties Properties => Player.Properties;
+	public MovieTargets Targets => Player.Targets;
 
 	public int FrameRate
 	{

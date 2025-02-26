@@ -12,7 +12,7 @@ public partial class TrackWidget : Widget
 	public TrackListWidget TrackList { get; }
 
 	public MovieProjectTrack ProjectTrack { get; }
-	internal IMovieProperty? Property { get; }
+	internal ITrackTarget Property => Session.Targets.Get( ProjectTrack );
 
 	public DopeSheetTrack? DopeSheetTrack { get; set; }
 
@@ -70,7 +70,7 @@ public partial class TrackWidget : Widget
 
 	public bool CanEdit => Property is IMember { CanWrite: true } && !IsLocked;
 
-	RealTimeSince timeSinceInteraction = 1000;
+	RealTimeSince _timeSinceInteraction = 1000;
 
 	private bool _wasVisible;
 	private bool _couldModify;
@@ -97,26 +97,18 @@ public partial class TrackWidget : Widget
 		Buttons.Margin = 2f;
 
 		_lockButton = Buttons.Add( new LockButton( this ) );
-
-		Property = Session.Properties.Get( ProjectTrack );
-
-		// Track might not be mapped to any property in the current scene
-
-		if ( Property is null )
-		{
-			return;
-		}
-
-		_label = Layout.Add( new Label( Property.PropertyName ) );
+		_label = Layout.Add( new Label( Property.Name ) );
 
 		if ( Property is IGameObjectReference or IComponentReference )
 		{
-			if ( Property.IsBound && Property.Value is GameObject && ProjectTrack.Parent is not null )
+			if ( Property is { IsBound: true, Value: GameObject } && ProjectTrack.Parent is not null )
 			{
 				return;
 			}
 
 			// Add control to retarget a scene reference (Component / GameObject)
+
+			// TODO: need to call Session.Targets.SetReference
 
 			var so = Property.GetSerialized();
 			var ctrl = ControlWidget.Create( so.GetProperty( nameof( IGameObjectReference.Value ) ) );
@@ -218,12 +210,12 @@ public partial class TrackWidget : Widget
 		SceneEditorSession.Active.Selection.Clear();
 		SceneEditorSession.Active.Selection.Add( go );
 
-		if ( ProjectTrack.Parent?.PropertyType != typeof(GameObject) )
+		if ( ProjectTrack.Parent?.TargetType != typeof(GameObject) )
 		{
 			return;
 		}
 
-		switch ( property.PropertyName )
+		switch ( property.Name )
 		{
 			case nameof(GameObject.LocalPosition):
 				EditorToolManager.SetSubTool( nameof(PositionEditorTool) );
@@ -277,9 +269,9 @@ public partial class TrackWidget : Widget
 			UpdateChannelPosition();
 		}
 
-		if ( timeSinceInteraction < 2.0f )
+		if ( _timeSinceInteraction < 2.0f )
 		{
-			var delta = timeSinceInteraction.Relative.Remap( 2.0f, 0, 0, 1 );
+			var delta = _timeSinceInteraction.Relative.Remap( 2.0f, 0, 0, 1 );
 			Paint.SetBrush( Theme.Yellow.WithAlpha( delta ) );
 			Paint.DrawRect( new Rect( LocalRect.Right - 4, LocalRect.Top, 32, LocalRect.Height ) );
 			Update();
@@ -375,7 +367,7 @@ public partial class TrackWidget : Widget
 
 	public void NoteInteraction()
 	{
-		timeSinceInteraction = 0;
+		_timeSinceInteraction = 0;
 		Update();
 	}
 }

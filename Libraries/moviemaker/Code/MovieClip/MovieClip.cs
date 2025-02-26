@@ -9,26 +9,31 @@ namespace Sandbox.MovieMaker;
 /// <summary>
 /// A compiled timeline of <see cref="MovieTrack"/>s describing properties changing over time and actions being invoked.
 /// </summary>
-/// <param name="RootTracks">Set of tracks in this clip that are at the root level in the hierarchy.</param>
-public sealed record MovieClip( params ImmutableArray<MovieTrack> RootTracks ) : ValidatedRecord
+/// <param name="Tracks">All tracks within the clip.</param>
+public sealed partial record MovieClip( params ImmutableArray<MovieTrack> Tracks ) : ValidatedRecord
 {
-	private readonly ImmutableDictionary<Guid, MovieTrack> _trackDict = RootTracks
-		.SelectMany( EnumerateDescendants )
+	public static MovieClip Empty { get; } = new();
+
+	private readonly ImmutableDictionary<Guid, MovieTrack> _trackDict = Tracks
 		.DistinctBy( x => x.Id )
 		.ToImmutableDictionary( x => x.Id, x => x );
 
+	private readonly ImmutableDictionary<Guid, ImmutableArray<MovieTrack>> _childDict = Tracks
+		.Where( x => x.Parent is not null )
+		.GroupBy( x => x.Parent!.Id )
+		.ToImmutableDictionary( x => x.Key, x => x.ToImmutableArray() );
+
 	/// <summary>
-	/// All tracks in this clip, including children of other tracks.
+	/// Tracks in the clip that don't have parents.
 	/// </summary>
 	[JsonIgnore]
-	public ImmutableArray<MovieTrack> Tracks { get; } = [..RootTracks.SelectMany( EnumerateDescendants )];
+	public ImmutableArray<MovieTrack> RootTracks { get; } = [..Tracks.Where( x => x.Parent is null )];
 
 	/// <summary>
 	/// How long this clip takes to fully play.
 	/// </summary>
 	[JsonIgnore]
-	public MovieTime Duration { get; } = RootTracks
-		.SelectMany( EnumerateDescendants )
+	public MovieTime Duration { get; } = Tracks
 		.Select( x => x.TimeRange.End )
 		.DefaultIfEmpty().Max();
 
@@ -42,24 +47,63 @@ public sealed record MovieClip( params ImmutableArray<MovieTrack> RootTracks ) :
 	}
 
 	/// <summary>
-	/// Attempts to get a root track with the given <paramref name="name"/>.
+	/// Gets sub-tracks immediately nested within the track with given <paramref name="trackId"/>.
 	/// </summary>
-	/// <returns>The matching track, or <see langword="null"/> if not found.</returns>
-	public MovieTrack? this[ string name ] => RootTracks.FirstOrDefault( x => x.Name == name );
+	public ImmutableArray<MovieTrack> GetChildren( Guid trackId )
+	{
+		return _childDict.GetValueOrDefault( trackId, ImmutableArray<MovieTrack>.Empty );
+	}
+
+	/// <summary>
+	/// Gets sub-tracks immediately nested within the given <paramref name="track"/>.
+	/// </summary>
+	public ImmutableArray<MovieTrack> GetChildren( ITrackDescription track ) => GetChildren( track.Id );
 
 	protected override void OnValidate()
 	{
-		var allUniqueIds = RootTracks
-			.SelectMany( EnumerateDescendants )
-			.GroupBy( x => x.Id )
-			.All( x => x.Count() == 1 );
+		var trackDict = new Dictionary<Guid, MovieTrack>();
 
-		if ( !allUniqueIds )
+		// IDs must be unique
+
+		foreach ( var track in Tracks )
 		{
-			throw new ArgumentException( "Tracks must have unique IDs.", nameof(Tracks) );
+			if ( !trackDict.TryAdd( track.Id, track ) )
+			{
+				throw new ArgumentException( "Tracks must have unique IDs.", nameof(Tracks) );
+			}
+		}
+
+		// Parents must be in Tracks too
+
+		foreach ( var track in Tracks )
+		{
+			if ( track.Parent is null ) continue;
+
+			if ( trackDict!.GetValueOrDefault( track.Parent.Id ) != track.Parent )
+			{
+				throw new ArgumentException( "All parent tracks must be included in track array.", nameof(Tracks) );
+			}
+		}
+
+		// No cycles!
+
+		var visited = new HashSet<MovieTrack>();
+
+		foreach ( var track in Tracks )
+		{
+			visited.Clear();
+
+			var parent = track;
+
+			while ( parent is not null )
+			{
+				if ( !visited.Add( parent ) )
+				{
+					throw new ArgumentException( "Track hierarchy must not have cycles.", nameof( Tracks ) );
+				}
+
+				parent = parent.Parent;
+			}
 		}
 	}
-
-	private static IEnumerable<MovieTrack> EnumerateDescendants( MovieTrack track ) =>
-		[track, ..track.Children.SelectMany( EnumerateDescendants )];
 }

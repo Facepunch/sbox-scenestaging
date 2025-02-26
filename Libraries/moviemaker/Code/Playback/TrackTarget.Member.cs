@@ -4,10 +4,12 @@ namespace Sandbox.MovieMaker;
 
 #nullable enable
 
-internal static partial class MovieProperty
+internal static partial class TrackTarget
 {
-	public static IMember FromMember( IMovieProperty parent, string memberName, Type? expectedType )
+	public static ITrackTarget FromMember( ITrackTarget? parent, string memberName, Type? expectedType )
 	{
+		if ( parent is null ) return FromUnknown( parent, memberName, expectedType );
+
 		if ( IsAnimParam( parent, memberName ) )
 		{
 			return FromAnimParam( parent, memberName, expectedType );
@@ -18,9 +20,9 @@ internal static partial class MovieProperty
 			return FromMorph( parent, memberName );
 		}
 
-		if ( TypeLibrary.GetType( parent.PropertyType ) is not { } typeDesc )
+		if ( TypeLibrary.GetType( parent.TargetType ) is not { } typeDesc )
 		{
-			throw new ArgumentException( $"Unable to access type '{parent.PropertyType.Name}'.", nameof(parent) );
+			return FromUnknown( parent, memberName, expectedType );
 		}
 
 		var member = typeDesc.Members
@@ -31,24 +33,41 @@ internal static partial class MovieProperty
 		{
 			PropertyDescription propDesc => propDesc.PropertyType,
 			FieldDescription fieldDesc => fieldDesc.FieldType,
-			_ => throw new ArgumentException( $"Unable to find property or field '{memberName}' in type '{parent.PropertyType.Name}'.", nameof(memberName) )
+			_ => null
 		};
 
-		var propType = TypeLibrary.GetType( typeof( MemberMovieProperty<> ) ).MakeGenericType( [memberType] );
+		if ( memberType is null )
+		{
+			return FromUnknown( parent, memberName, expectedType );
+		}
 
-		return TypeLibrary.Create<IMember>( propType, [parent, member] );
+		try
+		{
+			var propType = TypeLibrary.GetType( typeof(MemberMovieProperty<>) ).MakeGenericType( [memberType] );
+
+			return TypeLibrary.Create<IMember>( propType, [parent, member] );
+		}
+		catch
+		{
+			return FromUnknown( parent, memberName, expectedType );
+		}
+	}
+
+	private static ITrackTarget FromUnknown( ITrackTarget? parent, string memberName, Type? expectedType )
+	{
+		return new UnknownTarget( parent, memberName, expectedType ?? typeof( object ) );
 	}
 }
 
 /// <summary>
-/// Movie property that references a field or property contained in another <see cref="IMovieProperty"/>.
+/// Movie property that references a field or property contained in another <see cref="ITrackTarget"/>.
 /// For example, a property in a <see cref="Component"/>.
 /// </summary>
 /// <typeparam name="T">Value type stored in the property.</typeparam>
-file sealed class MemberMovieProperty<T>( IMovieProperty parent, MemberDescription member )
+file sealed class MemberMovieProperty<T>( ITrackTarget parent, MemberDescription member )
 	: IMember<T>
 {
-	public IMovieProperty Parent => parent;
+	public ITrackTarget Parent => parent;
 
 	public bool IsBound => parent.IsBound;
 	public bool CanWrite { get; } = member switch
@@ -80,7 +99,7 @@ file sealed class MemberMovieProperty<T>( IMovieProperty parent, MemberDescripti
 
 			SetInternal( target, value );
 
-			if ( parent is IMember { PropertyType.IsValueType: true } parentMember )
+			if ( parent is IMember { TargetType.IsValueType: true } parentMember )
 			{
 				parentMember.Value = target;
 			}
@@ -104,8 +123,8 @@ file sealed class MemberMovieProperty<T>( IMovieProperty parent, MemberDescripti
 		}
 	}
 
-	string IMovieProperty.PropertyName => member.Name;
-	Type IMovieProperty.PropertyType => typeof( T );
+	string ITrackTarget.Name => member.Name;
+	Type ITrackTarget.TargetType => typeof( T );
 
 	object? IMember.Value
 	{
@@ -113,5 +132,11 @@ file sealed class MemberMovieProperty<T>( IMovieProperty parent, MemberDescripti
 		set => Value = (T)value!;
 	}
 
-	object? IMovieProperty.Value => Value;
+	object? ITrackTarget.Value => Value;
+}
+
+file sealed record UnknownTarget( ITrackTarget? Parent, string Name, Type TargetType ) : ITrackTarget
+{
+	public bool IsBound => false;
+	public object? Value => null;
 }

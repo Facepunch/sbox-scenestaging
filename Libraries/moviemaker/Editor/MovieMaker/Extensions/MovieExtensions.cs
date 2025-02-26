@@ -9,7 +9,7 @@ internal static class MovieExtensions
 	/// <summary>
 	/// Gets the <see cref="GameObject"/> that the given property is contained within.
 	/// </summary>
-	public static GameObject? GetTargetGameObject( this IMovieProperty property )
+	public static GameObject? GetTargetGameObject( this ITrackTarget property )
 	{
 		while ( property is IMember memberProperty )
 		{

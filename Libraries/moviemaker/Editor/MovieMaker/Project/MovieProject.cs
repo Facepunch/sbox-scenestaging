@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Immutable;
+using System.Linq;
 using System.Text.Json.Nodes;
 using Sandbox.MovieMaker;
 
@@ -25,7 +26,20 @@ public sealed class MovieProject : IJsonPopulator
 		throw new NotImplementedException();
 	}
 
-	public MovieClip Compile() => new ( [..RootTracks.Select( x => x.Compile() )] );
+	public MovieClip Compile()
+	{
+		var result = new List<MovieTrack>();
+
+		foreach ( var track in RootTracks )
+		{
+			CompileTrack( track, result );
+		}
+
+		return new MovieClip( [..result] );
+	}
+
+	private void CompileTrack( MovieProjectTrack track, List<MovieTrack> result ) =>
+		result.Add( track.Compile( track.Parent is { } parent ? result.First( x => x.Id == parent.Id ) : null ) );
 
 	public JsonNode Serialize()
 	{

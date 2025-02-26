@@ -5,14 +5,14 @@ namespace Sandbox.MovieMaker;
 
 #nullable enable
 
-partial class MovieProperty
+partial class TrackTarget
 {
-	private static bool IsAnimParam( IMovieProperty target, string name )
+	private static bool IsAnimParam( ITrackTarget target, string name )
 	{
 		return target is IMember<ParameterAccessor?>;
 	}
 
-	private static IMember FromAnimParam( IMovieProperty target, string name, Type? expectedType )
+	private static IMember FromAnimParam( ITrackTarget target, string name, Type? expectedType )
 	{
 		var paramAccessorTarget = (IMember<ParameterAccessor?>)target;
 
@@ -20,7 +20,7 @@ partial class MovieProperty
 
 		try
 		{
-			var propGenType = TypeLibrary.GetType( typeof( AnimParamMovieProperty<> ) );
+			var propGenType = TypeLibrary.GetType( typeof( AnimParamTarget<> ) );
 			var propType = propGenType.MakeGenericType( [expectedType] );
 
 			return TypeLibrary.Create<IMember>( propType, [target, name] );
@@ -28,38 +28,37 @@ partial class MovieProperty
 		catch ( Exception ex )
 		{
 			Log.Error( ex );
-			return new AnimParamMovieProperty<object>( paramAccessorTarget, name );
+			return new AnimParamTarget<object>( paramAccessorTarget, name );
 		}
 	}
 }
 
-file sealed class AnimParamMovieProperty<T>( IMember<ParameterAccessor?> parent, string name )
+file sealed class AnimParamTarget<T>( IMember<ParameterAccessor?> parent, string name )
 	: IMember<T>
 {
 	private IAnimParamAccessor<T> Accessor { get; } = DefaultAnimParamAccessor.Instance as IAnimParamAccessor<T> ?? throw new NotImplementedException();
 
-	public string PropertyName { get; } = name;
+	public string Name { get; } = name;
 
-	public Type PropertyType { get; } = typeof(T);
+	public Type TargetType { get; } = typeof(T);
+	public ITrackTarget Parent => parent;
 
-	public bool IsBound => parent.Value?.Graph?.GetParameterType( PropertyName ) == PropertyType;
+	public bool IsBound => parent.Value?.Graph?.GetParameterType( Name ) == TargetType;
 	public bool CanWrite => true;
 
 	public T Value
 	{
-		get => parent.Value is { } accessor ? Accessor.Get( accessor, PropertyName ) : default!;
+		get => parent.Value is { } accessor ? Accessor.Get( accessor, Name ) : default!;
 		set
 		{
 			if ( parent.Value is { } accessor )
 			{
-				Accessor.Set( accessor, PropertyName, value );
+				Accessor.Set( accessor, Name, value );
 			}
 		}
 	}
 
-	IMovieProperty IMember.Parent => parent;
-
-	object? IMovieProperty.Value => Value;
+	object? ITrackTarget.Value => Value;
 
 	object? IMember.Value
 	{

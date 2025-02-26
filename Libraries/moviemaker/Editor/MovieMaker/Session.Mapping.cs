@@ -9,7 +9,7 @@ partial class Session
 {
 	public MovieProjectTrack? GetTrack( GameObject go )
 	{
-		foreach ( var (trackId, property) in Properties )
+		foreach ( var (trackId, property) in Targets )
 		{
 			if ( property is not IGameObjectReference goProperty ) continue;
 			if ( goProperty.Value == go ) return Project.GetTrack( trackId );
@@ -20,7 +20,7 @@ partial class Session
 
 	public MovieProjectTrack? GetTrack( Component cmp )
 	{
-		foreach ( var (trackId, property) in Properties )
+		foreach ( var (trackId, property) in Targets )
 		{
 			if ( property is not IComponentReference cmpProperty ) continue;
 			if ( cmpProperty.Value == cmp ) return Project.GetTrack( trackId );
@@ -47,7 +47,7 @@ partial class Session
 
 			// TODO: Hack for anim graph parameters including periods
 
-			if ( parentTrack.PropertyType != typeof( SkinnedModelRenderer.ParameterAccessor ) && propertyPath.IndexOf( '.' ) is var index and > -1 )
+			if ( parentTrack.TargetType != typeof( SkinnedModelRenderer.ParameterAccessor ) && propertyPath.IndexOf( '.' ) is var index and > -1 )
 			{
 				propertyName = propertyPath[..index];
 				propertyPath = propertyPath[(index + 1)..];
@@ -76,8 +76,7 @@ partial class Session
 
 		var track = Project.AddTrack( go.Name, typeof(GameObject), parentTrack );
 
-		Properties.RegisterTrack( track, parentTrack );
-		Properties.GetGameObject( track )!.Value = go;
+		Targets.SetReference( track, go );
 
 		return track;
 	}
@@ -90,8 +89,7 @@ partial class Session
 		var goTrack = GetOrCreateTrack( cmp.GameObject );
 		var track = Project.AddTrack( cmp.GetType().Name, cmp.GetType(), goTrack );
 
-		Properties.RegisterTrack( track, goTrack );
-		Properties.GetComponent( track )!.Value = cmp;
+		Targets.SetReference( track, cmp );
 
 		return track;
 	}
@@ -122,7 +120,7 @@ partial class Session
 
 			// TODO: Hack for anim graph parameters including periods
 
-			if ( parentTrack.PropertyType != typeof( SkinnedModelRenderer.ParameterAccessor ) && propertyPath.IndexOf( '.' ) is var index and > -1 )
+			if ( parentTrack.TargetType != typeof( SkinnedModelRenderer.ParameterAccessor ) && propertyPath.IndexOf( '.' ) is var index and > -1 )
 			{
 				propertyName = propertyPath[..index];
 				propertyPath = propertyPath[(index + 1)..];
@@ -145,15 +143,15 @@ partial class Session
 			return existingTrack;
 		}
 
-		if ( Properties.Get( parentTrack ) is not { } parentProperty )
+		if ( Targets.Get( parentTrack ) is not { } parentProperty )
 		{
 			throw new Exception( "Parent track not registered." );
 		}
 
-		var property = MovieProperty.FromMember( parentProperty, propertyName, null );
-		var track = Project.AddTrack( property.PropertyName, property.PropertyType, parentTrack );
+		var property = TrackTarget.FromMember( parentProperty, propertyName, null );
+		var track = Project.AddTrack( property.Name, property.TargetType, parentTrack );
 
-		Properties.RegisterTrack( track, parentTrack );
+		Targets.Touch( track );
 
 		return track;
 	}
@@ -162,7 +160,7 @@ partial class Session
 	{
 		if ( track.GetBlock( time ) is { } block )
 		{
-			Properties.ApplyFrame( track, block, time );
+			Targets.ApplyFrame( track, block, time );
 		}
 	}
 
@@ -176,8 +174,8 @@ partial class Session
 		var dt = Math.Min( (float)deltaTime.Absolute.TotalSeconds, 1f );
 
 		var renderers = Project.Tracks
-			.Where( x => x.PropertyType == typeof( SkinnedModelRenderer ) )
-			.Select( x => Properties.GetComponent( x )?.Value )
+			.Where( x => x.TargetType == typeof( SkinnedModelRenderer ) )
+			.Select( x => Targets.GetComponent( x )?.Value )
 			.OfType<SkinnedModelRenderer>();
 
 		foreach ( var renderer in renderers )

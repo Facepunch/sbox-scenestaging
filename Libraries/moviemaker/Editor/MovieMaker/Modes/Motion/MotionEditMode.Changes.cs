@@ -197,7 +197,7 @@ partial class MotionEditMode
 	{
 		if ( GetTrackModification( track ) is { } state ) return state;
 
-		var type = typeof(TrackModification<>).MakeGenericType( track.PropertyType );
+		var type = typeof(TrackModification<>).MakeGenericType( track.TargetType );
 		TrackModifications.Add( track, state = (ITrackModification)Activator.CreateInstance( type, this, track )! );
 
 		return state;

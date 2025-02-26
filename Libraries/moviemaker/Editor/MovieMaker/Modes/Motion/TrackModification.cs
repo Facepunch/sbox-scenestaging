@@ -19,7 +19,7 @@ internal interface ITrackModification
 	bool Commit( TimeSelection selection, MovieTime offset, bool additive );
 
 	public void SetChanges( object? constantValue ) =>
-		SetChanges( [new MovieBlockSlice( (MovieTime.Zero, MovieTime.MaxValue), Track.PropertyType.CreateConstantData( constantValue ) )] );
+		SetChanges( [new MovieBlockSlice( (MovieTime.Zero, MovieTime.MaxValue), Track.TargetType.CreateConstantData( constantValue ) )] );
 }
 
 internal sealed class TrackModification<T> : ITrackModification

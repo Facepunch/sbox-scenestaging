@@ -12,10 +12,10 @@ public sealed partial class MovieProjectTrack
 
 	public void WriteKeyframes( KeyframeCurve keyframes, int sampleRate )
 	{
-		Assert.AreEqual( PropertyType, keyframes.ValueType );
+		Assert.AreEqual( TargetType, keyframes.ValueType );
 
 		typeof( MovieProjectTrack ).GetMethod( nameof( WriteKeyframesInternal ), BindingFlags.NonPublic | BindingFlags.Static )!
-			.MakeGenericMethod( PropertyType )
+			.MakeGenericMethod( TargetType )
 			.Invoke( this, [keyframes, sampleRate] );
 	}
 

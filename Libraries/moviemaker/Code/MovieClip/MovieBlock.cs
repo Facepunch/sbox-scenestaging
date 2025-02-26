@@ -38,7 +38,7 @@ public interface IBlockData;
 public interface IValueData : IBlockData
 {
 	/// <summary>
-	/// Property value type, must match <see cref="MovieTrack.PropertyType"/>.
+	/// Property value type, must match <see cref="MovieTrack.TargetType"/>.
 	/// </summary>
 	Type ValueType { get; }
 
