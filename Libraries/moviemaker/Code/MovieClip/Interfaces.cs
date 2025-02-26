@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Sandbox.MovieMaker;
 
@@ -27,9 +28,9 @@ public interface IClip
 }
 
 /// <summary>
-/// Everything needed to bind a <see cref="ITrack"/> to an <see cref="ITrackTarget"/> in a scene.
+/// Maps to a <see cref="ITrackTarget"/> in a scene.
 /// </summary>
-public interface ITrackDescription
+public interface ITrack
 {
 	/// <summary>
 	/// ID for referencing this track. Must be unique in the containing <see cref="IClip"/>,
@@ -43,7 +44,7 @@ public interface ITrackDescription
 	string Name { get; }
 
 	/// <summary>
-	/// What type of value is this track controlling.
+	/// What type of object or property is this track targeting.
 	/// </summary>
 	Type TargetType { get; }
 
@@ -51,24 +52,27 @@ public interface ITrackDescription
 	/// Tracks can be nested, which means child tracks can auto-bind to targets in the scene
 	/// if their parent is bound.
 	/// </summary>
-	ITrackDescription? Parent { get; }
+	ITrack? Parent { get; }
 }
 
 /// <summary>
-/// Maps to a <see cref="ITrackTarget"/> in a scene. Describes how that target should change
-/// over time, with time split into <see cref="Blocks"/>.
+/// Unused, will describe running actions in the scene.
 /// </summary>
-public interface ITrack : ITrackDescription
-{
-	/// <summary>
-	/// Time ranges that have actions or property values stored.
-	/// </summary>
-	IReadOnlyList<IBlock> Blocks { get; }
+public interface IActionTrack : ITrack;
 
-	/// <summary>
-	/// Gets whichever block is in control at the given <paramref name="time"/>.
-	/// </summary>
-	IBlock? GetBlock( MovieTime time );
+/// <summary>
+/// This track controls a property in the scene.
+/// </summary>
+public interface IValueTrack : ITrack
+{
+	bool TryGetValue( MovieTime time, out object? value );
+}
+
+/// <inheritdoc cref="IValueTrack"/>
+/// <typeparam name="T">Property value type, must match <see cref="ITrack.TargetType"/>.</typeparam>
+public interface IValueTrack<T> : IValueTrack
+{
+	bool TryGetValue( MovieTime time, [MaybeNullWhen( false )] out T value );
 }
 
 /// <summary>

@@ -39,11 +39,11 @@ partial class MovieTargets
 	/// If we have a mapped property for <paramref name="track"/>, set the property value to whatever value
 	/// is stored in <paramref name="block"/> at the given <paramref name="time"/>.
 	/// </summary>
-	public void ApplyFrame( ITrackDescription track, IBlock block, MovieTime time )
+	public void ApplyFrame( ITrack track, IBlock block, MovieTime time )
 	{
-		if ( block.Data is not IValueData valueData ) return;
+		if ( block is not IValueBlock valueBlock ) return;
 		if ( GetMember( track ) is not { IsBound: true, CanWrite: true } property ) return;
 
-		property.Value = valueData.GetValue( time - block.TimeRange.Start );
+		property.Value = valueBlock.GetValue( time - block.TimeRange.Start );
 	}
 }

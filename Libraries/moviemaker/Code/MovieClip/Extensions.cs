@@ -9,7 +9,7 @@ public static class MovieClipExtensions
 	/// <summary>
 	/// How deeply are we nested? Root tracks have depth <c>0</c>.
 	/// </summary>
-	public static int GetDepth( this ITrackDescription track ) => track.Parent is null ? 0 : track.Parent.GetDepth() + 1;
+	public static int GetDepth( this ITrack track ) => track.Parent is null ? 0 : track.Parent.GetDepth() + 1;
 
 	public static bool TryGetValue<T>( this ITrack track, MovieTime time, [MaybeNullWhen( false )] out T value )
 	{

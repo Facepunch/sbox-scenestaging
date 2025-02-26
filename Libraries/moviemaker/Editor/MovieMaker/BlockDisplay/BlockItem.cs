@@ -32,10 +32,9 @@ public abstract partial class BlockItem : GraphicsItem
 	}
 
 	protected MovieProjectTrack Track => Parent.TrackWidget.ProjectTrack;
-	protected IBlockData Data => Block.Data;
 	protected MovieTimeRange TimeRange => Block.TimeRange;
 
-	protected int DataHash => HashCode.Combine( Data, TimeRange.Duration, Width );
+	protected int DataHash => HashCode.Combine( TimeRange.Duration, Width );
 
 	protected string? DebugText { get; set; }
 
@@ -92,6 +91,6 @@ internal interface IBlockItem<T>;
 
 public abstract class BlockItem<T> : BlockItem, IBlockItem<T>
 {
-	public ConstantData<T>? Constant => Data as ConstantData<T>;
-	public SamplesData<T>? Samples => Data as SamplesData<T>;
+	public IConstantBlock<T>? Constant => Block as IConstantBlock<T>;
+	public ISampleBlock<T>? Samples => Block as ISampleBlock<T>;
 }

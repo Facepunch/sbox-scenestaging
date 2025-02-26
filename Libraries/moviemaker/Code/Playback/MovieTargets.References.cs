@@ -28,7 +28,7 @@ partial class MovieTargets : IJsonPopulator
 		UpdateReference( trackId, component );
 	}
 
-	public void SetReference( ITrackDescription track, GameObject? gameObject )
+	public void SetReference( ITrack track, GameObject? gameObject )
 	{
 		if ( track.TargetType != typeof(GameObject) )
 		{
@@ -39,7 +39,7 @@ partial class MovieTargets : IJsonPopulator
 		SetReference( track.Id, gameObject );
 	}
 
-	public void SetReference( ITrackDescription track, Component? component )
+	public void SetReference( ITrack track, Component? component )
 	{
 		if ( !track.TargetType.IsAssignableTo( typeof(Component) ) )
 		{

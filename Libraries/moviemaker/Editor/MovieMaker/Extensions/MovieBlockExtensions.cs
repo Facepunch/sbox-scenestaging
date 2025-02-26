@@ -14,10 +14,6 @@ public interface IPreviewMovieBlock : IBlock
 
 internal static class MovieBlockExtensions
 {
-	public static MovieTime Start<T>( this T block ) where T : IBlock => block.TimeRange.Start;
-	public static MovieTime End<T>( this T block ) where T : IBlock => block.TimeRange.End;
-	public static MovieTime Duration<T>( this T block ) where T : IBlock => block.TimeRange.Duration;
-
 	public static void Sample( this IBlock block, Array dstSamples, MovieTimeRange srcTimeRange, MovieTimeRange dstTimeRange, int sampleRate )
 	{
 		if ( block.Data is not IValueData valueData ) return;
@@ -39,7 +35,7 @@ internal static class MovieBlockExtensions
 
 		if ( dstEndIndex <= dstStartIndex || srcTimeRange.IsEmpty ) return;
 
-		valueData.Sample( dstSamples, dstStartIndex, dstEndIndex - dstStartIndex, srcTimeRange - block.Start(), sampleRate );
+		valueData.Sample( dstSamples, dstStartIndex, dstEndIndex - dstStartIndex, srcTimeRange - block.TimeRange.Start, sampleRate );
 	}
 
 	public static IConstantData CreateConstantData( this Type type, object? value )

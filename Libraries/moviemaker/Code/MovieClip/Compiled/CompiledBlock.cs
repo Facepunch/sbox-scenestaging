@@ -47,10 +47,10 @@ public sealed record ConstantBlock<T>( MovieTimeRange TimeRange, T Value )
 
 /// <inheritdoc cref="ISampleBlock{T}"/>
 /// <param name="TimeRange">Start and end time of this block.</param>
+/// <param name="Offset">Time offset of the first sample.</param>
 /// <param name="SampleRate">How many samples per second.</param>
 /// <param name="Samples">Raw sample values.</param>
-/// <param name="Offset">Time offset of the first sample.</param>
-public sealed record SampleBlock<T>( MovieTimeRange TimeRange, int SampleRate, ImmutableArray<T> Samples, MovieTime Offset )
+public sealed record SampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, params ImmutableArray<T> Samples )
 	: CompiledBlock( TimeRange ), ISampleBlock<T>
 {
 	internal override BlockKind Kind => BlockKind.Sample;

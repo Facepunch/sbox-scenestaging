@@ -70,7 +70,7 @@ public sealed record CompiledTrack( Guid Id, string Name, Type TargetType, Compi
 		}
 	}
 
-	ITrackDescription? ITrackDescription.Parent => Parent;
+	ITrack? ITrack.Parent => Parent;
 
 	private ReadOnlyListWrapper<CompiledBlock, IBlock>? _blocksWrapper;
 

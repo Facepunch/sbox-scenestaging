@@ -30,14 +30,14 @@ public sealed partial class MovieTargets( Scene scene ) : IEnumerable<KeyValuePa
 
 	/// <summary>
 	/// Tries to find an existing property mapped to the given track, returning <see langword="null"/> if not found.
-	/// This won't create new target mappings, use <see cref="Get(ITrackDescription)"/> instead.
+	/// This won't create new target mappings, use <see cref="Get(ITrack)"/> instead.
 	/// </summary>
 	public ITrackTarget? Get( Guid trackId ) => _targets!.GetValueOrDefault( trackId );
 
 	/// <summary>
 	/// Gets or creates a target that maps to the given <paramref name="track"/>.
 	/// </summary>
-	public ITrackTarget Get( ITrackDescription track )
+	public ITrackTarget Get( ITrack track )
 	{
 		Touch( track );
 
@@ -47,19 +47,19 @@ public sealed partial class MovieTargets( Scene scene ) : IEnumerable<KeyValuePa
 	/// <summary>
 	/// Tries to find a target mapped to the given track that represents a <see cref="GameObject"/> reference, returning <see langword="null"/> if not found.
 	/// </summary>
-	public IGameObjectReference? GetGameObject( ITrackDescription track ) =>
+	public IGameObjectReference? GetGameObject( ITrack track ) =>
 		Get( track ) as IGameObjectReference;
 
 	/// <summary>
 	/// Tries to find a target mapped to the given track that represents a <see cref="Component"/> reference, returning <see langword="null"/> if not found.
 	/// </summary>
-	public IComponentReference? GetComponent( ITrackDescription track ) =>
+	public IComponentReference? GetComponent( ITrack track ) =>
 		Get( track ) as IComponentReference;
 
-	public IMember? GetMember( ITrackDescription track ) =>
+	public IMember? GetMember( ITrack track ) =>
 		Get( track ) as IMember;
 
-	public IMember<T>? GetMember<T>( ITrackDescription track ) =>
+	public IMember<T>? GetMember<T>( ITrack track ) =>
 		Get( track ) as IMember<T>;
 
 	/// <summary>

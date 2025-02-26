@@ -5,7 +5,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed partial class MovieProjectTrack( MovieProject project, Guid id, string name, Type propertyType ) : ITrackDescription
+public sealed partial class MovieProjectTrack( MovieProject project, Guid id, string name, Type propertyType ) : ITrack
 {
 	public MovieProject Project => project;
 	public Guid Id => id;
@@ -27,7 +27,7 @@ public sealed partial class MovieProjectTrack( MovieProject project, Guid id, st
 	public IReadOnlyList<(MovieTimeRange TimeRange, MovieProjectBlock Block)> Cuts => throw new NotImplementedException();
 	public IReadOnlyList<(MovieTimeRange TimeRange, MovieProjectBlock Block)> GetCuts( MovieTimeRange timeRange ) => throw new NotImplementedException();
 
-	ITrackDescription? ITrackDescription.Parent => Parent;
+	ITrack? ITrack.Parent => Parent;
 
 	public CompiledTrack Compile( CompiledTrack? compiledParent ) =>
 		new( Id, Name, TargetType, compiledParent, [..Blocks.Select( x => x.Compile() )] );

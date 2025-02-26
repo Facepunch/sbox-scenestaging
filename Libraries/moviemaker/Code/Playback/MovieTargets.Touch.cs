@@ -8,7 +8,7 @@ partial class MovieTargets
 	/// Creates a target mapped to this <paramref name="track"/> if it doesn't exist.
 	/// </summary>
 	/// <returns><see langword="true"/> if a new target was created.</returns>
-	public bool Touch( ITrackDescription track )
+	public bool Touch( ITrack track )
 	{
 		var parent = track.Parent;
 		var parentTarget = parent is not null ? Get( parent ) : null;
@@ -25,7 +25,7 @@ partial class MovieTargets
 		return true;
 	}
 
-	private ITrackTarget CreateTarget( ITrackDescription track, ITrackTarget? parent = null )
+	private ITrackTarget CreateTarget( ITrack track, ITrackTarget? parent = null )
 	{
 		if ( parent is IGameObjectReference or null )
 		{
