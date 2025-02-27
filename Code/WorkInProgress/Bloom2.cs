@@ -3,39 +3,57 @@ namespace Sandbox;
 [Title( "Bloom (Scene Staging)" )]
 [Category( "Post Processing" )]
 [Icon( "exposure" )]
-public class Bloom2 : Bloom, Component.ExecuteInEditor
+public class Bloom2 : PostProcess, Component.ExecuteInEditor
 {
-	IDisposable renderHook;
+    [Property] public SceneCamera.BloomAccessor.BloomMode Mode { get; set; }
 
-	protected override void OnEnabled()
-	{
-		renderHook?.Dispose();
+    [Range( 0, 10 )]
+    [Property] public float Strength { get; set; } = 1.0f;
 
-		renderHook = Camera.AddHookAfterTransparent( "Bloom", 1, RenderEffect );
-	}
+    [Range( 0, 2 )]
+    [Property] public float Threshold { get; set; } = 0.5f;
 
-	protected override void OnDisabled()
-	{
-		renderHook?.Dispose();
-		renderHook = null;
-	}
+    [Range( 0, 5 )]
+    [Property] public float ThresholdWidth { get; set; }
+    [Property] public Curve BloomCurve { get; set; } = new Curve( new Curve.Frame( 0.0f, 0.5f ), new Curve.Frame( 1.0f, 1.0f ) );
+    [Property] public Gradient BloomColor { get; set; } = new Gradient( new Gradient.ColorFrame( 0.0f, Color.White ), new Gradient.ColorFrame( 1.0f, Color.White ) );
 
-	RenderAttributes attributes = new RenderAttributes();
+    Rendering.CommandList Commands;
+    protected override void OnEnabled()
+    {
+        Commands = new Rendering.CommandList( "Bloom" );
+        Camera.AddCommandList( Commands, Rendering.Stage.BeforePostProcess, 1 );
+        OnDirty();
+    }
 
-	public void RenderEffect( SceneCamera camera )
-	{
-		if ( !camera.EnablePostProcessing )
-			return;
+    protected override void OnDisabled()
+    {
+        Camera.RemoveCommandList( Commands );
+        Commands = null;
+    }
 
-		if ( Strength == 0.0f )
-			return;
+    protected override void OnUpdate()
+    {
+        Rebuild();
+    }
 
-		attributes.Set( "Strength", Strength );
+    void Rebuild()
+    {
+        if ( Commands is null )
+            return;
+        Commands.Reset();
+
+        if ( Strength == 0.0f )
+            return;
+
+
+        Commands.Set( "Threshold", Threshold );
+        Commands.Set( "Strength", Strength );
+        Commands.Set( "CompositeMode", (int)Mode );
 
         var material = Material.FromShader( "postprocess_bloom_staging" );
 
-		Graphics.GrabFrameTexture( "ColorBuffer", attributes, withMips: true );
-		Graphics.Blit( material, attributes );
-	}
-
+        Commands.GrabFrameTexture( "ColorBuffer", true );
+        Commands.Blit( material );
+    }
 }

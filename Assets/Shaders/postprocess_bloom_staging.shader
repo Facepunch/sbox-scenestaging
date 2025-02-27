@@ -64,10 +64,15 @@ PS
     Texture2D ColorBuffer < Attribute( "ColorBuffer" ); >;
     
     float Strength< Attribute("Strength"); Default(0.0f); >;
+    float Threshold< Attribute("Threshold"); Default(0.0f); >;
+    int CompositeMode< Attribute("CompositeMode"); Default(0); >;
 	
+    
     // Add these functions in the PS section before MainPs:
-    float3 SampleTextureBicubic(Texture2D tex, SamplerState samp, float2 uv, float level)
+    float3 SampleBicubicLevel(Texture2D tex,float2 uv, float level)
     {
+        SamplerState samp = g_sBilinearClamp;
+
         float2 texSize;
         tex.GetDimensions(texSize.x, texSize.y);
         texSize /= pow(2, level);
@@ -118,59 +123,84 @@ PS
         return row0 + row1 + row2 + row3;
     }
 
-    float4 MainPs( PixelInput input ) : SV_Target0
+    float3 ScreenHDR(float3 base, float3 blend)
     {
-        float2 vScreenUv = input.vPositionSs.xy / g_vViewportSize;
+        // Prevent negative contributions by ensuring inputs are non-negative
+        base = max(base, 0.0f);
+        blend = max(blend, 0.0f);
+        
+        // HDR-aware Screen: scale the blend contribution and additively combine
+        float3 screenTerm = 1.0f - (1.0f - saturate(base)) * (1.0f - saturate(blend));
+        
+        // For HDR values > 1, preserve excess energy additively
+        float3 excessBase = max(base - 1.0f, 0.0f);
+        float3 excessBlend = max(blend - 1.0f, 0.0f);
+        
+        return screenTerm + excessBase + excessBlend;
+    }
+
+    float4 MainPs(PixelInput input) : SV_Target0
+    {
+        float2 vScreenUv = (input.vPositionSs.xy + g_vViewportOffset) / g_vViewportSize;
         
         // Sample base color
-        float4 vFinalColor = ColorBuffer.Sample( g_sBilinearMirror, vScreenUv.xy );
+        float4 vFinalColor = ColorBuffer.Sample(g_sBilinearMirror, vScreenUv.xy);
         
-        // Use more mip levels for better bloom falloff
-        float4 vBloomTaps[6] = 
-        {
-            float4(SampleTextureBicubic(ColorBuffer, g_sBilinearMirror, vScreenUv.xy, 2  ), 1.0), // Higher frequency detail
-            float4(SampleTextureBicubic(ColorBuffer, g_sBilinearMirror, vScreenUv.xy, 3  ), 1.0),
-            float4(SampleTextureBicubic(ColorBuffer, g_sBilinearMirror, vScreenUv.xy, 4  ), 1.0),
-            float4(SampleTextureBicubic(ColorBuffer, g_sBilinearMirror, vScreenUv.xy, 5  ), 1.0),
-            float4(SampleTextureBicubic(ColorBuffer, g_sBilinearMirror, vScreenUv.xy, 6  ), 1.0),
-            float4(SampleTextureBicubic(ColorBuffer, g_sBilinearMirror, vScreenUv.xy, 7  ), 1.0)  // Very wide bloom
-        };
-
-    
-        // Energy-conserving weights that sum to ~1.0
-        // Each mip level covers 4x more area, so we adjust weights accordingly
-        float bloomWeights[6] = 
-        { 
-            0.35f,  // Fine detail
-            0.25f,  // Medium detail
-            0.18f,  // Regular bloom
-            0.12f,  // Wide bloom
-            0.07f,  // Very wide bloom
-            0.03f   // Ultra-wide bloom
-        };
-        
-        // Combine bloom samples with careful color grading
+        // Initialize bloom color
         float4 vBloomColor = float4(0, 0, 0, 0);
         
+        // Get texture dimensions and mip levels
+        uint width, height, mipLevels;
+        ColorBuffer.GetDimensions(0, width, height, mipLevels);
+        
+        // Bloom contribution parameters
+        const float bloomIntensity = Strength;    // Overall bloom strength
+        const float falloffScale = 1.0 - ( Threshold * 0.5 );      // Controls how quickly bloom fades across mips
+        const float gammaCorrection = 2.2f;   // Gamma space for color accuracy
+        
         [unroll]
-        for(int i = 0; i < 6; i++)
+        for (int i = 0; i < mipLevels - 1; i++)
         {
-            // Apply subtle curve to each bloom sample to prevent over-saturation
-            float3 bloomSample = pow( vBloomTaps[i].rgb, 1.0 / 2.2 );
-            bloomSample = max(0, bloomSample - 0.004); // Remove dark noise
-            bloomSample *= bloomSample; // Quadratic falloff
-            vBloomColor.rgb += bloomSample * bloomWeights[i];
+            // Sample each mip level with bicubic filtering
+            float3 sample = SampleBicubicLevel(ColorBuffer, vScreenUv.xy, i + 1);
+            
+            // Convert to linear space and apply subtle curve to prevent over-saturation
+            float3 bloomSample = max( pow(sample, gammaCorrection), 0 );
+            
+            // Calculate falloff based on mip level (larger mips = wider blur, less contribution)
+            float mipWeight = (float)i / (float)mipLevels; // Exponential decay for smooth falloff
+            mipWeight *= falloffScale;
+            // Accumulate bloom with weight
+            vBloomColor.rgb += bloomSample * mipWeight;
         }
         
-        // Softly clamp bloom intensity to prevent excessive values
-        vBloomColor.rgb = 1.0 - exp(-vBloomColor.rgb * Strength);
+        // Apply bloom intensity
+        vBloomColor.rgb *= bloomIntensity;
         
-        // Blend bloom additively with scene color
-        vFinalColor.rgb += vBloomColor.rgb;
+        // High-quality compositing: additive bloom with soft clamping
+        float3 finalColor = 0; 
+
+        {
+            if (CompositeMode == 0)
+            {
+                // Additive compositing (original)
+                finalColor = vFinalColor.rgb + vBloomColor.rgb;
+            }
+            else if (CompositeMode == 1)
+            {
+                // Screen blending: result = 1 - ((1 - base) * (1 - bloom))
+                finalColor = ScreenHDR(vFinalColor.rgb, vBloomColor.rgb);
+            }
+            else if (CompositeMode == 2)
+            {
+                // Blur blending: blend base and bloom based on bloom luminance
+                float bloomLuminance = Luminance(vBloomColor.rgb);
+                finalColor = lerp(vFinalColor.rgb, vBloomColor.rgb, saturate(bloomLuminance));
+            }
+        }
         
-        // Ensure we don't lose energy in very bright areas
-        vFinalColor.rgb = max(vFinalColor.rgb, vBloomColor.rgb * 0.5);
-        
-        return float4(vFinalColor.rgb, 1.0f);
+        // Ensure alpha is 1.0 for the final output
+        return float4(finalColor, 1.0f);
     }
+
 }
