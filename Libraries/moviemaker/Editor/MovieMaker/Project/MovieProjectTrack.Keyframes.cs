@@ -6,7 +6,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed partial class MovieProjectTrack
+partial class ProjectTrack
 {
 	public KeyframeCurve? Keyframes { get; set; }
 
@@ -14,7 +14,7 @@ public sealed partial class MovieProjectTrack
 	{
 		Assert.AreEqual( TargetType, keyframes.ValueType );
 
-		typeof( MovieProjectTrack ).GetMethod( nameof( WriteKeyframesInternal ), BindingFlags.NonPublic | BindingFlags.Static )!
+		typeof( ProjectTrack ).GetMethod( nameof( WriteKeyframesInternal ), BindingFlags.NonPublic | BindingFlags.Static )!
 			.MakeGenericMethod( TargetType )
 			.Invoke( this, [keyframes, sampleRate] );
 	}

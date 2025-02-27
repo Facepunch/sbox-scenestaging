@@ -2,6 +2,9 @@
 
 #nullable enable
 
+/// <summary>
+/// Plays a <see cref="IClip"/> in a <see cref="Scene"/> to animate properties over time.
+/// </summary>
 [Icon( "movie" )]
 public sealed class MoviePlayer : Component
 {
@@ -9,16 +12,16 @@ public sealed class MoviePlayer : Component
 	private bool _isPlaying;
 
 	private IMovieSource? _source;
-	private MovieTargets? _targets;
+	private TrackTargetMap? _targets;
 
 	/// <summary>
-	/// Maps tracks in movie clips to game objects, components, and properties in the scene.
+	/// Maps <see cref="ITrack"/>s to game objects, components, and property <see cref="ITarget"/>s in the scene.
 	/// </summary>
 	[Property, Hide]
-	public MovieTargets Targets => _targets ??= new MovieTargets( Scene );
+	public TrackTargetMap Targets => _targets ??= new TrackTargetMap( Scene );
 
 	/// <summary>
-	/// Contains a <see cref="CompiledMovieClip"/>. Can be a <see cref="MovieResource"/> or <see cref="EmbeddedMovieResource"/>.
+	/// Contains a <see cref="IClip"/> to play. Can be a <see cref="MovieResource"/> or <see cref="EmbeddedMovieResource"/>.
 	/// </summary>
 	[Property, Group( "Source" )]
 	public IMovieSource? Source
@@ -72,7 +75,7 @@ public sealed class MoviePlayer : Component
 	{
 		if ( !Enabled ) return;
 
-		if ( Source is not { Compiled: { } clip } ) return;
+		if ( Source is not { Clip: { } clip } ) return;
 
 		Targets.ApplyFrame( clip, _position );
 
@@ -92,7 +95,7 @@ public sealed class MoviePlayer : Component
 
 		// Rewind if looping
 
-		if ( IsLooping && Source?.Compiled?.Duration is { IsPositive: true } duration && _position >= duration )
+		if ( IsLooping && Source?.Clip?.Duration is { IsPositive: true } duration && _position >= duration )
 		{
 			_position.GetFrameIndex( duration, remainder: out _position );
 		}

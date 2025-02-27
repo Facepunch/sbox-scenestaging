@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using Sandbox.MovieMaker;
+using Sandbox.MovieMaker.Compiled;
 using Sandbox.Resources;
 
 namespace Editor.MovieMaker;
@@ -11,7 +12,7 @@ namespace Editor.MovieMaker;
 [ResourceIdentity( "movie" )]
 public sealed class MovieCompiler : ResourceCompiler
 {
-	private record CompiledResourceModel( CompiledMovieClip? Clip );
+	private record CompiledResourceModel( Clip? Clip );
 
 	protected override async Task<bool> Compile()
 	{

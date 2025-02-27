@@ -5,16 +5,16 @@ namespace Sandbox.MovieMaker;
 
 #nullable enable
 
-partial class TrackTarget
+partial class Target
 {
-	private static bool IsAnimParam( ITrackTarget target, string name )
+	private static bool IsAnimParam( ITarget target, string name )
 	{
-		return target is IMember<ParameterAccessor?>;
+		return target is IProperty<ParameterAccessor?>;
 	}
 
-	private static IMember FromAnimParam( ITrackTarget target, string name, Type? expectedType )
+	private static IProperty FromAnimParam( ITarget target, string name, Type? expectedType )
 	{
-		var paramAccessorTarget = (IMember<ParameterAccessor?>)target;
+		var paramAccessorTarget = (IProperty<ParameterAccessor?>)target;
 
 		expectedType ??= paramAccessorTarget.Value?.Graph?.GetParameterType( name ) ?? typeof(object);
 
@@ -23,7 +23,7 @@ partial class TrackTarget
 			var propGenType = TypeLibrary.GetType( typeof( AnimParamTarget<> ) );
 			var propType = propGenType.MakeGenericType( [expectedType] );
 
-			return TypeLibrary.Create<IMember>( propType, [target, name] );
+			return TypeLibrary.Create<IProperty>( propType, [target, name] );
 		}
 		catch ( Exception ex )
 		{
@@ -33,15 +33,15 @@ partial class TrackTarget
 	}
 }
 
-file sealed class AnimParamTarget<T>( IMember<ParameterAccessor?> parent, string name )
-	: IMember<T>
+file sealed class AnimParamTarget<T>( IProperty<ParameterAccessor?> parent, string name )
+	: IProperty<T>
 {
 	private IAnimParamAccessor<T> Accessor { get; } = DefaultAnimParamAccessor.Instance as IAnimParamAccessor<T> ?? throw new NotImplementedException();
 
 	public string Name { get; } = name;
 
 	public Type TargetType { get; } = typeof(T);
-	public ITrackTarget Parent => parent;
+	public ITarget Parent => parent;
 
 	public bool IsBound => parent.Value?.Graph?.GetParameterType( Name ) == TargetType;
 	public bool CanWrite => true;
@@ -58,9 +58,9 @@ file sealed class AnimParamTarget<T>( IMember<ParameterAccessor?> parent, string
 		}
 	}
 
-	object? ITrackTarget.Value => Value;
+	object? ITarget.Value => Value;
 
-	object? IMember.Value
+	object? IProperty.Value
 	{
 		get => Value;
 		set => Value = (T)value!;

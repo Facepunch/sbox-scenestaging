@@ -38,7 +38,7 @@ partial class MotionEditMode
 
 	public string? LastActionIcon { get; private set; }
 
-	private Dictionary<MovieProjectTrack, ITrackModification> TrackModifications { get; } = new();
+	private Dictionary<ProjectTrack, ITrackModification> TrackModifications { get; } = new();
 
 	private void ClearChanges()
 	{
@@ -188,12 +188,12 @@ partial class MotionEditMode
 		return changed;
 	}
 
-	private ITrackModification? GetTrackModification( MovieProjectTrack track )
+	private ITrackModification? GetTrackModification( ProjectTrack track )
 	{
 		return TrackModifications!.GetValueOrDefault( track );
 	}
 
-	private ITrackModification GetOrCreateTrackModification( MovieProjectTrack track )
+	private ITrackModification GetOrCreateTrackModification( ProjectTrack track )
 	{
 		if ( GetTrackModification( track ) is { } state ) return state;
 

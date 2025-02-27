@@ -74,7 +74,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		return true;
 	}
 
-	private MovieProjectTrack? GetOrCreateTrack( GameObject go, string propertyPath )
+	private ProjectTrack? GetOrCreateTrack( GameObject go, string propertyPath )
 	{
 		if ( !CanRecord( typeof(GameObject), ref propertyPath ) ) return null;
 
@@ -99,7 +99,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		}
 	}
 
-	private MovieProjectTrack? GetOrCreateTrack( Component cmp, string propertyPath )
+	private ProjectTrack? GetOrCreateTrack( Component cmp, string propertyPath )
 	{
 		if ( !CanRecord( cmp.GetType(), ref propertyPath ) ) return null;
 
@@ -124,7 +124,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		}
 	}
 
-	private bool PreChange( MovieProjectTrack track )
+	private bool PreChange( ProjectTrack track )
 	{
 		if ( Session.EditMode?.PreChange( track ) is true )
 		{
@@ -135,7 +135,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		return false;
 	}
 
-	private bool PostChange( MovieProjectTrack track )
+	private bool PostChange( ProjectTrack track )
 	{
 		if ( Session.EditMode?.PostChange( track ) is true )
 		{
@@ -146,7 +146,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 		return false;
 	}
 
-	private void NoteInteraction( MovieProjectTrack track )
+	private void NoteInteraction( ProjectTrack track )
 	{
 		var trackWidget = FindTrack( track );
 

@@ -7,7 +7,7 @@ namespace Sandbox.MovieMaker;
 #nullable enable
 
 /// <summary>
-/// A container for a <see cref="CompiledClip"/>, including optional <see cref="EditorData"/>.
+/// A container for a <see cref="Compiled.Clip"/>, including optional <see cref="EditorData"/>.
 /// </summary>
 [JsonPolymorphic]
 [JsonDerivedType( typeof(MovieResource), "Resource" )]
@@ -17,7 +17,7 @@ public interface IMovieSource
 	/// <summary>
 	/// Compiled movie clip.
 	/// </summary>
-	CompiledClip? Compiled { get; set; }
+	Clip? Clip { get; set; }
 
 	/// <summary>
 	/// Editor-only data used to generate <see cref="Clip"/>.
@@ -33,7 +33,7 @@ public sealed class MovieResource : GameResource, IMovieSource
 {
 	/// <inheritdoc />
 	[Hide]
-	public CompiledClip? Compiled { get; set; }
+	public Clip? Clip { get; set; }
 
 	/// <inheritdoc />
 	[Hide]
@@ -46,7 +46,7 @@ public sealed class MovieResource : GameResource, IMovieSource
 public sealed class EmbeddedMovieResource : IMovieSource
 {
 	/// <inheritdoc />
-	public CompiledClip? Compiled { get; set; }
+	public Clip? Clip { get; set; }
 
 	/// <inheritdoc />
 	public JsonNode? EditorData { get; set; }

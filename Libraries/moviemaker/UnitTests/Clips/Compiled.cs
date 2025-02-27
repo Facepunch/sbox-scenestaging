@@ -10,28 +10,24 @@ public sealed class Compiled
 	[TestMethod]
 	public void Serialize()
 	{
-		var cameraTrack = new CompiledTrack(
-			Id: Guid.NewGuid(),
-			Name: "Camera",
-			TargetType: typeof(CameraComponent) );
+		var timeRange = new MovieTimeRange( MovieTime.Zero, MovieTime.FromSeconds( 4 ) );
 
-		var cameraPosTrack = new CompiledTrack(
-			Id: Guid.NewGuid(),
-			Name: nameof(GameObject.LocalPosition),
-			TargetType: typeof(Vector3),
-			Parent: cameraTrack,
-			new SampleBlock<Vector3>(
-				TimeRange: (MovieTime.Zero, MovieTime.FromSeconds( 1d )),
-				Offset: MovieTime.Zero,
-				SampleRate: 1,
-				new Vector3( 100f, 0f, 200f ),
-				new Vector3( 500f, 300f, 200f ) ) );
+		var rootTrack = Track.GameObject( "Camera" );
+		var cameraPosTrack = Track.Property<Vector3>( nameof(GameObject.LocalPosition), rootTrack )
+			.WithConstant( timeRange, new Vector3( 100f, 200f, 300f ) );
 
-		var clip = new CompiledClip( cameraTrack, cameraPosTrack );
+		var cameraTrack = Track.Component<CameraComponent>( rootTrack );
+		var fovTrack = Track.Property<float>( nameof(CameraComponent.FieldOfView), cameraTrack )
+			.WithSamples( timeRange, sampleRate: 1, [60f, 75f, 65f, 90f, 50f] );
 
-		if ( cameraPosTrack.TryGetValue( MovieTime.FromSeconds( 0.5 ), out Vector3 value ) )
+		var clip = new Clip( rootTrack, cameraTrack, cameraPosTrack, fovTrack );
+
+		for ( var t = timeRange.Start; t <= timeRange.End; t += MovieTime.FromSeconds( 0.25 ) )
 		{
-			Console.WriteLine( value );
+			if ( cameraPosTrack.TryGetValue( MovieTime.FromSeconds( 0.5 ), out Vector3 value ) )
+			{
+				Console.WriteLine( $"{t}: {value}" );
+			}
 		}
 	}
 }

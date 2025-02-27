@@ -145,9 +145,9 @@ public abstract class EditMode
 	internal void Frame() => OnFrame();
 	protected virtual void OnFrame() { }
 
-	internal bool PreChange( MovieProjectTrack track )
+	internal bool PreChange( ProjectTrack track )
 	{
-		if ( Session.Targets.GetMember( track ) is not { CanWrite: true } ) return false;
+		if ( Session.Targets.GetProperty( track ) is not { CanWrite: true } ) return false;
 
 		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
 		if ( trackWidget is not { CanEdit: true } ) return false;
@@ -162,9 +162,9 @@ public abstract class EditMode
 
 	protected virtual bool OnPreChange( DopeSheetTrack track ) => false;
 
-	internal bool PostChange( MovieProjectTrack track )
+	internal bool PostChange( ProjectTrack track )
 	{
-		if ( Session.Targets.GetMember( track ) is not { CanWrite: true } ) return false;
+		if ( Session.Targets.GetProperty( track ) is not { CanWrite: true } ) return false;
 
 		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
 		if ( trackWidget is not { CanEdit: true } ) return false;
@@ -254,7 +254,7 @@ public abstract class EditMode
 		OnApplyFrame( time );
 	}
 
-	private readonly Dictionary<MovieProjectTrack, List<IBlock>> _previewBlocks = new();
+	private readonly Dictionary<ProjectPropertyTrack, List<IPropertyBlock>> _previewBlocks = new();
 
 	protected virtual void OnApplyFrame( MovieTime time )
 	{
@@ -262,20 +262,19 @@ public abstract class EditMode
 		{
 			foreach ( var block in list )
 			{
-				if ( block.TimeRange.Contains( time ) )
+				if ( block.TimeRange.Contains( time ) && Session.Targets.GetProperty( track ) is { } target )
 				{
-					Session.Targets.ApplyFrame( track, block, time );
-					break;
+					target.Value = block.GetValue( time );
 				}
 			}
 		}
 	}
 
-	public void SetPreviewBlocks( MovieProjectTrack track, IEnumerable<IBlock> blocks )
+	public void SetPreviewBlocks( ProjectPropertyTrack track, IEnumerable<IPropertyBlock> blocks )
 	{
 		if ( !_previewBlocks.TryGetValue( track, out var list ) )
 		{
-			_previewBlocks.Add( track, list = new List<IBlock>() );
+			_previewBlocks.Add( track, list = new List<IPropertyBlock>() );
 		}
 
 		list.Clear();
@@ -288,7 +287,7 @@ public abstract class EditMode
 		}
 	}
 
-	public void ClearPreviewBlocks( MovieProjectTrack track )
+	public void ClearPreviewBlocks( ProjectPropertyTrack track )
 	{
 		_previewBlocks.Remove( track );
 
@@ -298,7 +297,7 @@ public abstract class EditMode
 		}
 	}
 
-	public IEnumerable<IBlock> GetPreviewBlocks( MovieProjectTrack track )
+	public IEnumerable<IBlock> GetPreviewBlocks( ProjectPropertyTrack track )
 	{
 		return _previewBlocks.GetValueOrDefault( track, [] );
 	}

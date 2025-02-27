@@ -10,7 +10,7 @@ namespace Editor.MovieMaker;
 /// </summary>
 internal interface ITrackModification
 {
-	MovieProjectTrack Track { get; }
+	ProjectPropertyTrack Track { get; }
 
 	void SetRelativeTo( object? value );
 	void SetChanges( IEnumerable<IBlock> blocks );
@@ -25,7 +25,7 @@ internal interface ITrackModification
 internal sealed class TrackModification<T> : ITrackModification
 {
 	public EditMode EditMode { get; }
-	public MovieProjectTrack Track { get; }
+	public ProjectPropertyTrack Track { get; }
 
 	private record ChangeMapping( MovieTimeRange TimeRange, IBlock Original, IBlock Change ) : IBlock
 	{
@@ -45,7 +45,7 @@ internal sealed class TrackModification<T> : ITrackModification
 
 	public bool HasChanges => _changes.Count > 0;
 
-	public TrackModification( EditMode editMode, MovieProjectTrack track )
+	public TrackModification( EditMode editMode, ProjectTrack track )
 	{
 		EditMode = editMode;
 		Track = track;
@@ -148,7 +148,7 @@ internal sealed class TrackModification<T> : ITrackModification
 			insertOptions.StitchStart ? MovieTime.Epsilon : MovieTime.Zero,
 			insertOptions.StitchEnd ? MovieTime.Epsilon : MovieTime.Zero );
 
-		MovieProjectBlock? prevBlock = null;
+		ProjectBlock? prevBlock = null;
 		foreach ( var cut in Track.GetCuts( stitchTimeRange ).ToArray() )
 		{
 			// Stitch adjacent blocks if there isn't a cut in the original change

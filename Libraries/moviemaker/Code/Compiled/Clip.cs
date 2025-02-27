@@ -10,24 +10,25 @@ namespace Sandbox.MovieMaker.Compiled;
 /// An immutable compiled <see cref="IClip"/> designed to be serialized, and efficient to play back.
 /// </summary>
 /// <param name="Tracks">All tracks within the clip.</param>
-public sealed partial record CompiledClip( params ImmutableArray<CompiledTrack> Tracks ) : ValidatedRecord, IClip
+public sealed partial record Clip( params ImmutableArray<Track> Tracks ) : ValidatedRecord, IClip
 {
 	/// <summary>
 	/// A clip with no tracks.
 	/// </summary>
-	public static CompiledClip Empty { get; } = new();
+	public static Clip Empty { get; } = new();
 
-	private readonly ImmutableDictionary<Guid, CompiledTrack> _trackDict = Tracks
+	private readonly ImmutableDictionary<Guid, Track> _trackDict = Tracks
 		.DistinctBy( x => x.Id )
 		.ToImmutableDictionary( x => x.Id, x => x );
 
 	[JsonIgnore]
 	public MovieTime Duration { get; } = Tracks
+		.OfType<IBlockTrack>()
 		.Select( x => x.TimeRange.End )
 		.DefaultIfEmpty().Max();
 
 	/// <inheritdoc cref="IClip.GetTrack"/>
-	public CompiledTrack? GetTrack( Guid trackId )
+	public Track? GetTrack( Guid trackId )
 	{
 		return _trackDict.GetValueOrDefault( trackId );
 	}
@@ -37,7 +38,7 @@ public sealed partial record CompiledClip( params ImmutableArray<CompiledTrack> 
 
 	protected override void OnValidate()
 	{
-		var trackDict = new Dictionary<Guid, CompiledTrack>();
+		var trackDict = new Dictionary<Guid, Track>();
 
 		// IDs must be unique
 
@@ -63,7 +64,7 @@ public sealed partial record CompiledClip( params ImmutableArray<CompiledTrack> 
 
 		// No cycles!
 
-		var visited = new HashSet<CompiledTrack>();
+		var visited = new HashSet<Track>();
 
 		foreach ( var track in Tracks )
 		{

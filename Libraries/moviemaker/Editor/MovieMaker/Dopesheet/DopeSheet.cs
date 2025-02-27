@@ -181,16 +181,17 @@ public class DopeSheet : GraphicsView
 	{
 		UpdateSceneFrame();
 
-		foreach ( var track in TrackList.Tracks )
+		foreach ( var widget in TrackList.Tracks )
 		{
-			if ( track.Property is not IMember { CanWrite: true } ) continue;
+			if ( widget.Property is not IProperty { CanWrite: true } ) continue;
+			if ( widget.ProjectTrack is not ProjectPropertyTrack propertyTrack ) continue;
 
-			if ( track.DopeSheetTrack is null )
+			if ( widget.DopeSheetTrack is null )
 			{
-				track.DopeSheetTrack = new DopeSheetTrack( track );
-				Add( track.DopeSheetTrack );
+				widget.DopeSheetTrack = new DopeSheetTrack( widget, propertyTrack );
+				Add( widget.DopeSheetTrack );
 
-				Session.EditMode?.TrackAdded( track.DopeSheetTrack );
+				Session.EditMode?.TrackAdded( widget.DopeSheetTrack );
 			}
 		}
 
@@ -317,15 +318,16 @@ public class DopeSheet : GraphicsView
 
 		foreach ( var trackWidget in TrackList.Tracks )
 		{
+			if ( trackWidget.ProjectTrack is not ProjectPropertyTrack propertyTrack ) continue;
 			if ( trackWidget.DopeSheetTrack is not { Visible: true } dopeTrack ) continue;
 			if ( trackWidget.IsLocked ) continue;
 			if ( mouseScenePos.y < dopeTrack.SceneRect.Top ) continue;
 			if ( mouseScenePos.y > dopeTrack.SceneRect.Bottom ) continue;
 
-			foreach ( var cut in trackWidget.ProjectTrack.Cuts )
+			foreach ( var cut in propertyTrack.Cuts )
 			{
-				snap.Add( SnapFlag.TrackBlock, cut.Block.Start() );
-				snap.Add( SnapFlag.TrackBlock, cut.Block.End() );
+				snap.Add( SnapFlag.TrackBlock, cut.Block.TimeRange.Start );
+				snap.Add( SnapFlag.TrackBlock, cut.Block.TimeRange.End );
 			}
 		}
 	}

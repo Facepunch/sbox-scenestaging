@@ -12,7 +12,7 @@ partial class MotionEditMode
 
 	public override bool AllowRecording => true;
 
-	private readonly Dictionary<MovieProjectTrack, ITrackRecording> _recordings = new();
+	private readonly Dictionary<ProjectTrack, ITrackRecording> _recordings = new();
 
 	protected override bool OnStartRecording()
 	{
@@ -33,7 +33,7 @@ partial class MotionEditMode
 		return true;
 	}
 
-	private bool StartRecording( MovieProjectTrack track, MovieTime time )
+	private bool StartRecording( ProjectTrack track, MovieTime time )
 	{
 		if ( !Session.CanEdit( track ) ) return false;
 
@@ -54,7 +54,7 @@ partial class MotionEditMode
 			}
 		}
 
-		if ( Session.Targets.GetMember( track ) is not { IsBound: true, CanWrite: true } property ) return false;
+		if ( Session.Targets.GetProperty( track ) is not { IsBound: true, CanWrite: true } property ) return false;
 
 		var recordingType = typeof(TrackRecording<>).MakeGenericType( track.TargetType );
 		var recording = (ITrackRecording)Activator.CreateInstance( recordingType, track, property, time )!;
@@ -127,8 +127,8 @@ internal interface ITrackRecording : IPreviewMovieBlock
 
 file class TrackRecording<T> : ITrackRecording
 {
-	public MovieProjectTrack Track { get; }
-	public IMember<T> Property { get; }
+	public ProjectTrack Track { get; }
+	public IProperty<T> Property { get; }
 	public int SampleRate { get; }
 	public MovieTime SampleInterval { get; }
 
@@ -143,7 +143,7 @@ file class TrackRecording<T> : ITrackRecording
 
 	public event Action? Changed;
 
-	public TrackRecording( MovieProjectTrack track, IMember<T> property, MovieTime startTime )
+	public TrackRecording( ProjectTrack track, IProperty<T> property, MovieTime startTime )
 	{
 		Track = track;
 		Property = property;

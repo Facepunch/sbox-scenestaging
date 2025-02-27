@@ -11,8 +11,8 @@ public partial class TrackWidget : Widget
 	public Session Session { get; }
 	public TrackListWidget TrackList { get; }
 
-	public MovieProjectTrack ProjectTrack { get; }
-	internal ITrackTarget Property => Session.Targets.Get( ProjectTrack );
+	public ProjectTrack ProjectTrack { get; }
+	internal ITarget Property => Session.Targets.GetOrCreate( ProjectTrack );
 
 	public DopeSheetTrack? DopeSheetTrack { get; set; }
 
@@ -68,7 +68,7 @@ public partial class TrackWidget : Widget
 		}
 	}
 
-	public bool CanEdit => Property is IMember { CanWrite: true } && !IsLocked;
+	public bool CanEdit => Property is IProperty { CanWrite: true } && !IsLocked;
 
 	RealTimeSince _timeSinceInteraction = 1000;
 
@@ -78,7 +78,7 @@ public partial class TrackWidget : Widget
 	private readonly Label _label;
 	private readonly Button _lockButton;
 
-	public TrackWidget( MovieProjectTrack track, TrackListWidget list )
+	public TrackWidget( ProjectTrack track, TrackListWidget list )
 	{
 		Editor = list.Editor;
 		Session = list.Session;
@@ -321,7 +321,7 @@ public partial class TrackWidget : Widget
 		Session?.ClipModified();
 	}
 
-	static bool RemoveEmptyChildTracks( MovieProjectTrack track )
+	static bool RemoveEmptyChildTracks( ProjectTrack track )
 	{
 		var changed = false;
 

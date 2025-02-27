@@ -6,42 +6,33 @@ namespace Sandbox.MovieMaker.Compiled;
 
 #nullable enable
 
-internal enum BlockKind
-{
-	Action,
-	Constant,
-	Sample
-}
-
 /// <summary>
 /// A time region where something happens in a movie.
 /// </summary>
 /// <param name="TimeRange">Start and end time of this block.</param>
-public abstract record CompiledBlock( MovieTimeRange TimeRange ) : ValidatedRecord, IBlock
-{
-	[JsonInclude]
-	internal abstract BlockKind Kind { get; }
-}
+public abstract record Block( MovieTimeRange TimeRange ) : ValidatedRecord, IBlock;
 
 /// <inheritdoc cref="IActionBlock"/>
-public sealed record ActionBlock( MovieTimeRange TimeRange ) : CompiledBlock( TimeRange ), IActionBlock
+public sealed record ActionBlock( MovieTimeRange TimeRange ) : Block( TimeRange ), IActionBlock;
+
+public abstract record PropertyBlock<T>( MovieTimeRange TimeRange ) : Block( TimeRange ), IPropertyBlock<T>
 {
-	internal override BlockKind Kind => BlockKind.Action;
+	[JsonIgnore]
+	public Type PropertyType => typeof(T);
+
+	public abstract T GetValue( MovieTime time );
+
+	object? IPropertyBlock.GetValue( MovieTime time ) => GetValue( time );
 }
 
 /// <inheritdoc cref="IConstantBlock{T}"/>
 /// <param name="TimeRange">Start and end time of this block.</param>
 /// <param name="Value">Constant value.</param>
 public sealed record ConstantBlock<T>( MovieTimeRange TimeRange, T Value )
-	: CompiledBlock( TimeRange ), IConstantBlock<T>
+	: PropertyBlock<T>( TimeRange ), IConstantBlock<T>
 {
-	internal override BlockKind Kind => BlockKind.Constant;
+	public override T GetValue( MovieTime time ) => Value;
 
-	public Type ValueType => typeof(T);
-
-	public T GetValue( MovieTime time ) => Value;
-
-	object? IValueBlock.GetValue( MovieTime time ) => Value;
 	object? IConstantBlock.Value => Value;
 }
 
@@ -51,19 +42,15 @@ public sealed record ConstantBlock<T>( MovieTimeRange TimeRange, T Value )
 /// <param name="SampleRate">How many samples per second.</param>
 /// <param name="Samples">Raw sample values.</param>
 public sealed record SampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, params ImmutableArray<T> Samples )
-	: CompiledBlock( TimeRange ), ISampleBlock<T>
+	: PropertyBlock<T>( TimeRange ), ISampleBlock<T>
 {
-	internal override BlockKind Kind => BlockKind.Sample;
-
 	private ReadOnlyListWrapper<T, object?>? _samplesWrapper;
 
 #pragma warning disable SB3000
 	private static readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
 #pragma warning restore SB3000
 
-	public Type ValueType => typeof(T);
-
-	public T GetValue( MovieTime time )
+	public override T GetValue( MovieTime time )
 	{
 		var localTime = time.Clamp( TimeRange ) - TimeRange.Start - Offset;
 
@@ -85,8 +72,6 @@ public sealed record SampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset,
 
 		return _interpolator.Interpolate( x0, x1, t );
 	}
-
-	object? IValueBlock.GetValue( MovieTime time ) => GetValue( time );
 
 	IReadOnlyList<object?> ISampleBlock.Samples => _samplesWrapper ??= new( Samples );
 	IReadOnlyList<T> ISampleBlock<T>.Samples => Samples;

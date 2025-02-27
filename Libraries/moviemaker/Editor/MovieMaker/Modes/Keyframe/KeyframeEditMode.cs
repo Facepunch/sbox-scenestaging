@@ -50,7 +50,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnTrackAdded( DopeSheetTrack track )
 	{
-		if ( track.TrackWidget.Property is not IMember { CanWrite: true } ) return;
+		if ( track.TrackWidget.Property is not IProperty { CanWrite: true } ) return;
 
 		var keyframes = new TrackKeyframes( track, this );
 
@@ -240,7 +240,7 @@ internal sealed class TrackKeyframes : IDisposable
 		set => ProjectTrack.Keyframes = value;
 	}
 
-	public MovieProjectTrack ProjectTrack { get; }
+	public ProjectTrack ProjectTrack { get; }
 	public DopeSheetTrack DopeSheetTrack { get; }
 	public TrackWidget TrackWidget { get; }
 	public KeyframeEditMode EditMode { get; }
@@ -318,7 +318,7 @@ internal sealed class TrackKeyframes : IDisposable
 			h.Destroy();
 		}
 
-		if ( TrackWidget.Property is IMember { CanWrite: true } )
+		if ( TrackWidget.Property is IProperty { CanWrite: true } )
 		{
 			Curve ??= KeyframeCurve.Create( TrackWidget.ProjectTrack.TargetType );
 

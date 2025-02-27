@@ -7,7 +7,7 @@ namespace Editor.MovieMaker;
 
 partial class Session
 {
-	public MovieProjectTrack? GetTrack( GameObject go )
+	public ProjectTrack? GetTrack( GameObject go )
 	{
 		foreach ( var (trackId, property) in Targets )
 		{
@@ -18,7 +18,7 @@ partial class Session
 		return null;
 	}
 
-	public MovieProjectTrack? GetTrack( Component cmp )
+	public ProjectTrack? GetTrack( Component cmp )
 	{
 		foreach ( var (trackId, property) in Targets )
 		{
@@ -29,17 +29,17 @@ partial class Session
 		return null;
 	}
 
-	public MovieProjectTrack? GetTrack( GameObject go, string propertyPath )
+	public ProjectTrack? GetTrack( GameObject go, string propertyPath )
 	{
 		return GetTrack( GetTrack( go ), propertyPath );
 	}
 
-	public MovieProjectTrack? GetTrack( Component cmp, string propertyPath )
+	public ProjectTrack? GetTrack( Component cmp, string propertyPath )
 	{
 		return GetTrack( GetTrack( cmp ), propertyPath );
 	}
 
-	private MovieProjectTrack? GetTrack( MovieProjectTrack? parentTrack, string propertyPath )
+	private ProjectTrack? GetTrack( ProjectTrack? parentTrack, string propertyPath )
 	{
 		while ( parentTrack is not null && propertyPath.Length > 0 )
 		{
@@ -63,11 +63,11 @@ partial class Session
 		return parentTrack;
 	}
 
-	public MovieProjectTrack GetOrCreateTrack( GameObject go )
+	public ProjectTrack GetOrCreateTrack( GameObject go )
 	{
 		if ( GetTrack( go ) is { } existing ) return existing;
 
-		MovieProjectTrack? parentTrack = null;
+		ProjectTrack? parentTrack = null;
 
 		if ( (go.Flags & GameObjectFlags.Bone) != 0 && go.Parent is { } parentGo and not Scene )
 		{
@@ -81,7 +81,7 @@ partial class Session
 		return track;
 	}
 
-	public MovieProjectTrack GetOrCreateTrack( Component cmp )
+	public ProjectTrack GetOrCreateTrack( Component cmp )
 	{
 		if ( GetTrack( cmp ) is { } existing ) return existing;
 
@@ -94,7 +94,7 @@ partial class Session
 		return track;
 	}
 
-	public MovieProjectTrack GetOrCreateTrack( GameObject go, string propertyPath )
+	public ProjectTrack GetOrCreateTrack( GameObject go, string propertyPath )
 	{
 		if ( GetTrack( go, propertyPath ) is { } existing ) return existing;
 
@@ -103,7 +103,7 @@ partial class Session
 		return GetOrCreateTrack( GetOrCreateTrack( go ), propertyPath );
 	}
 
-	public MovieProjectTrack GetOrCreateTrack( Component cmp, string propertyPath )
+	public ProjectTrack GetOrCreateTrack( Component cmp, string propertyPath )
 	{
 		if ( GetTrack( cmp, propertyPath ) is { } existing ) return existing;
 
@@ -112,7 +112,7 @@ partial class Session
 		return GetOrCreateTrack( GetOrCreateTrack( cmp ), propertyPath );
 	}
 
-	public MovieProjectTrack GetOrCreateTrack( MovieProjectTrack parentTrack, string propertyPath )
+	public ProjectTrack GetOrCreateTrack( ProjectTrack parentTrack, string propertyPath )
 	{
 		while ( propertyPath.Length > 0 )
 		{
@@ -136,31 +136,31 @@ partial class Session
 		return parentTrack;
 	}
 
-	private MovieProjectTrack GetOrCreateTrackCore( MovieProjectTrack parentTrack, string propertyName )
+	private ProjectTrack GetOrCreateTrackCore( ProjectTrack parentTrack, string propertyName )
 	{
 		if ( parentTrack.Children.FirstOrDefault( x => x.Name == propertyName ) is { } existingTrack )
 		{
 			return existingTrack;
 		}
 
-		if ( Targets.Get( parentTrack ) is not { } parentProperty )
+		if ( Targets.GetOrCreate( parentTrack ) is not { } parentProperty )
 		{
 			throw new Exception( "Parent track not registered." );
 		}
 
-		var property = TrackTarget.FromMember( parentProperty, propertyName, null );
+		var property = Target.Member( parentProperty, propertyName, null );
 		var track = Project.AddTrack( property.Name, property.TargetType, parentTrack );
 
-		Targets.Touch( track );
+		Targets.GetOrCreate( track );
 
 		return track;
 	}
 
-	public void ApplyFrame( MovieProjectTrack track, MovieTime time )
+	public void ApplyFrame( ProjectTrack track, MovieTime time )
 	{
-		if ( track.GetBlock( time ) is { } block )
+		if ( track is IPropertyTrack propertyTrack )
 		{
-			Targets.ApplyFrame( track, block, time );
+			Targets.ApplyFrame( propertyTrack, time );
 		}
 	}
 

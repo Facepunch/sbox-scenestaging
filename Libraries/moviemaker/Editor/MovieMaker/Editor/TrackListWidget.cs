@@ -124,7 +124,7 @@ public partial class TrackListWidget : Widget
 
 		_lastTrackHash = GetTrackHash();
 
-		var groups = new Dictionary<MovieProjectTrack, TrackGroup>();
+		var groups = new Dictionary<ProjectTrack, TrackGroup>();
 
 		foreach ( var track in Session.Project.Tracks )
 		{
@@ -175,12 +175,12 @@ public partial class TrackListWidget : Widget
 		RebuildTracks();
 	}
 
-	public TrackWidget? FindTrack( MovieProjectTrack track )
+	public TrackWidget? FindTrack( ProjectTrack track )
 	{
 		return Tracks.FirstOrDefault( x => x.ProjectTrack == track );
 	}
 
-	public TrackWidget AddTrack( MovieProjectTrack track )
+	public TrackWidget AddTrack( ProjectTrack track )
 	{
 		var trackWidget = new TrackWidget( track, this );
 
@@ -236,12 +236,10 @@ public partial class TrackListWidget : Widget
 		Paint.DrawRect( LocalRect );
 	}
 
-	private IReadOnlyList<MovieProjectTrack>? _previewTracks;
+	private IReadOnlyList<ProjectTrack>? _previewTracks;
 
-	private IEnumerable<MovieProjectTrack> GetDraggedTracks( DragEvent ev )
+	private IEnumerable<ProjectTrack> GetDraggedTracks( DragEvent ev )
 	{
-		if ( Session?.Player is not { MovieClip: not null } player ) yield break;
-
 		if ( ev.Data.OfType<GameObject>().FirstOrDefault() is { } go )
 		{
 			yield return Session.GetOrCreateTrack( go );

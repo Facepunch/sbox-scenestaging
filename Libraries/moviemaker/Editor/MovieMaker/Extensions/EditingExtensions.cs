@@ -11,12 +11,12 @@ public record struct InsertOptions(
 
 public static class EditingExtensions
 {
-	public static bool Splice( this MovieProjectTrack track, MovieTimeRange timeRange, MovieTime newDuration, InsertOptions? insertOptions = null )
+	public static bool Splice( this ProjectPropertyTrack track, MovieTimeRange timeRange, MovieTime newDuration, InsertOptions? insertOptions = null )
 	{
 		var changed = false;
 
-		MovieProjectBlock? head = null;
-		MovieProjectBlock? tail = null;
+		ProjectBlock? head = null;
+		ProjectBlock? tail = null;
 
 		for ( var i = track.Blocks.Count - 1; i >= 0; --i )
 		{
@@ -26,8 +26,8 @@ public static class EditingExtensions
 
 			changed = true;
 
-			var headRange = new MovieTimeRange( block.Start(), intersection.Start );
-			var tailRange = new MovieTimeRange( intersection.End, block.End() );
+			var headRange = block.TimeRange with { End = intersection.Start };
+			var tailRange = block.TimeRange with { Start = intersection.End };
 
 			if ( !headRange.IsEmpty ) head = track.AddBlock( block.Slice( headRange ) );
 			if ( !tailRange.IsEmpty ) tail = track.AddBlock( block.Slice( tailRange ) );
@@ -39,7 +39,7 @@ public static class EditingExtensions
 
 		foreach ( var block in track.Blocks )
 		{
-			if ( block.Start() < timeRange.End ) continue;
+			if ( block.TimeRange.Start < timeRange.End ) continue;
 
 			block.TimeRange += newDuration - timeRange.Duration;
 
@@ -58,12 +58,12 @@ public static class EditingExtensions
 
 			var body = track.AddBlock( block );
 
-			if ( options.StitchStart && head is not null && block.Start() == timeRange.Start )
+			if ( options.StitchStart && head is not null && block.TimeRange.Start == timeRange.Start )
 			{
 				body = track.Stitch( head, body ) ?? body;
 			}
 
-			if ( options.StitchEnd && tail is not null && block.End() == timeRange.End )
+			if ( options.StitchEnd && tail is not null && block.TimeRange.End == timeRange.End )
 			{
 				body = track.Stitch( body, tail ) ?? body;
 			}
@@ -72,7 +72,7 @@ public static class EditingExtensions
 		return changed;
 	}
 
-	public static bool Delete( this MovieProjectTrack track, MovieTimeRange timeRange, bool shift )
+	public static bool Delete( this ProjectPropertyTrack track, MovieTimeRange timeRange, bool shift )
 	{
 		return track.Splice( timeRange, shift ? MovieTime.Zero : timeRange.Duration );
 	}
@@ -93,7 +93,7 @@ public static class EditingExtensions
 		return changed;
 	}
 
-	public static bool Insert( this MovieProjectTrack track, MovieTimeRange timeRange )
+	public static bool Insert( this ProjectPropertyTrack track, MovieTimeRange timeRange )
 	{
 		return track.Splice( timeRange.Start, timeRange.Duration );
 	}
@@ -114,7 +114,7 @@ public static class EditingExtensions
 		return changed;
 	}
 
-	public static MovieProjectBlock? Stitch( this MovieProjectTrack track, MovieProjectBlock? left, MovieProjectBlock? right )
+	public static ProjectBlock? Stitch( this ProjectPropertyTrack track, ProjectBlock? left, ProjectBlock? right )
 	{
 		if ( left is null || right is null ) return null;
 

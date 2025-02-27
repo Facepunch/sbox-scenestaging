@@ -7,53 +7,12 @@ namespace Sandbox.MovieMaker;
 #nullable enable
 
 // When MovieProperties get serialized, we write track mappings to GameObject or Component references.
-// Here we store those mappings, and handle creating IMovieProperty instances that access them.
+// Here we store those mappings, and handle creating ITarget instances that access them.
 
-partial class MovieTargets : IJsonPopulator
+partial class TrackTargetMap : IJsonPopulator
 {
 	private readonly Dictionary<Guid, GameObject?> _gameObjectMap = new();
 	private readonly Dictionary<Guid, Component?> _componentMap = new();
-
-	public void SetReference( Guid trackId, GameObject? gameObject )
-	{
-		_gameObjectMap[trackId] = gameObject;
-
-		UpdateReference( trackId, gameObject );
-	}
-
-	public void SetReference( Guid trackId, Component? component )
-	{
-		_componentMap[trackId] = component;
-
-		UpdateReference( trackId, component );
-	}
-
-	public void SetReference( ITrack track, GameObject? gameObject )
-	{
-		if ( track.TargetType != typeof(GameObject) )
-		{
-			throw new ArgumentException( $"Expected a {nameof(GameObject)} track.", nameof(track) );
-		}
-
-		Touch( track );
-		SetReference( track.Id, gameObject );
-	}
-
-	public void SetReference( ITrack track, Component? component )
-	{
-		if ( !track.TargetType.IsAssignableTo( typeof(Component) ) )
-		{
-			throw new ArgumentException( $"Expected a {nameof(Component)} track.", nameof(track) );
-		}
-
-		if ( component is not null && !track.TargetType.IsInstanceOfType( component ) )
-		{
-			throw new ArgumentException( $"Expected a {track.TargetType} instance.", nameof(component) );
-		}
-
-		Touch( track );
-		SetReference( track.Id, component );
-	}
 
 	private void UpdateReference<T>( Guid trackId, T? value )
 		where T : class, IValid
@@ -113,14 +72,14 @@ partial class MovieTargets : IJsonPopulator
 
 	#endregion
 
-	#region Reference Properties
+	#region Reference Targets
 
 	/// <summary>
 	/// Base class for properties that reference objects in a scene, rather than being members of other properties.
-	/// These references get serialized in <see cref="MovieTargets"/> to make them persist. If they haven't got
+	/// These references get serialized in <see cref="TrackTargetMap"/> to make them persist. If they haven't got
 	/// an explicit mapping in the scene, they can <see cref="AutoBind"/> if they have a bound parent property
 	/// </summary>
-	private abstract class ReferenceProperty<T>( IGameObjectReference? parent, T? value ) : ITrackTarget
+	private abstract class ReferenceProperty<T>( IGameObjectReference? parent, T? value ) : IReference
 		where T : class, IValid
 	{
 		private T? _value = value;
@@ -138,8 +97,8 @@ partial class MovieTargets : IJsonPopulator
 
 		protected abstract T? AutoBind();
 
-		ITrackTarget? ITrackTarget.Parent { get; }
-		object? ITrackTarget.Value => Value;
+		ITarget? ITarget.Parent { get; }
+		object? ITarget.Value => Value;
 	}
 
 	/// <summary>

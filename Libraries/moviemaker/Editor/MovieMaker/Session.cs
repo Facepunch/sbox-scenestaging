@@ -23,7 +23,7 @@ public sealed partial class Session
 	private float _pixelsPerSecond;
 
 	public bool IsEditorScene => Player?.Scene?.IsEditor ?? true;
-	public MovieTargets Targets => Player.Targets;
+	public TrackTargetMap Targets => Player.Targets;
 
 	public int FrameRate
 	{
@@ -115,10 +115,13 @@ public sealed partial class Session
 		}
 	}
 
-	public IEnumerable<MovieProjectTrack> EditableTracks =>
-		Editor.TrackList.Tracks.Where( x => x.CanEdit ).Select( x => x.ProjectTrack );
+	public IEnumerable<ProjectPropertyTrack> EditableTracks =>
+		Editor.TrackList.Tracks
+			.Where( x => x.CanEdit )
+			.Select( x => x.ProjectTrack )
+			.OfType<ProjectPropertyTrack>();
 
-	public bool CanEdit( MovieProjectTrack track ) => Editor.TrackList.FindTrack( track )?.CanEdit ?? false;
+	public bool CanEdit( ProjectTrack track ) => Editor.TrackList.FindTrack( track )?.CanEdit ?? false;
 
 	public MovieTime ScenePositionToTime( Vector2 scenePos, SnapFlag ignore = 0, params MovieTime[] snapOffsets ) 
 	{
@@ -309,7 +312,7 @@ public sealed partial class Session
 		EditMode?.ViewChanged( Editor.TrackList.DopeSheet.VisibleRect );
 	}
 
-	public void TrackModified( MovieProjectTrack track )
+	public void TrackModified( ProjectTrack track )
 	{
 		ClipModified();
 

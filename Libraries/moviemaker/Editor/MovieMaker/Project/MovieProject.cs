@@ -18,10 +18,10 @@ public sealed class MovieProject : IJsonPopulator
 	public bool IsEmpty => throw new NotImplementedException();
 	public MovieTime Duration => throw new NotImplementedException();
 
-	public IReadOnlyList<MovieProjectTrack> Tracks => throw new NotImplementedException();
-	public IReadOnlyList<MovieProjectTrack> RootTracks => throw new NotImplementedException();
+	public IReadOnlyList<ProjectTrack> Tracks => throw new NotImplementedException();
+	public IReadOnlyList<ProjectTrack> RootTracks => throw new NotImplementedException();
 
-	public MovieProjectTrack? GetTrack( Guid trackId )
+	public ProjectTrack? GetTrack( Guid trackId )
 	{
 		throw new NotImplementedException();
 	}
@@ -38,7 +38,7 @@ public sealed class MovieProject : IJsonPopulator
 		return new CompiledMovieClip( [..result] );
 	}
 
-	private void CompileTrack( MovieProjectTrack track, List<CompiledTrack> result ) =>
+	private void CompileTrack( ProjectTrack track, List<CompiledTrack> result ) =>
 		result.Add( track.Compile( track.Parent is { } parent ? result.First( x => x.Id == parent.Id ) : null ) );
 
 	public JsonNode Serialize()
@@ -51,7 +51,7 @@ public sealed class MovieProject : IJsonPopulator
 		throw new NotImplementedException();
 	}
 
-	public MovieProjectTrack AddTrack( string name, Type propertyType, MovieProjectTrack? parentTrack = null )
+	public ProjectTrack AddTrack( string name, Type propertyType, ProjectTrack? parentTrack = null )
 	{
 		throw new NotImplementedException();
 	}

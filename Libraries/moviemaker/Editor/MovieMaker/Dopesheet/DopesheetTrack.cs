@@ -8,7 +8,7 @@ namespace Editor.MovieMaker;
 public partial class DopeSheetTrack : GraphicsItem
 {
 	public Session Session { get; }
-	public MovieProjectTrack ProjectTrack { get; }
+	public ProjectPropertyTrack ProjectTrack { get; }
 	public TrackWidget TrackWidget { get; }
 
 	private bool? _canCreatePreview;
@@ -20,10 +20,10 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	public bool Visible => TrackWidget.Visible;
 
-	public DopeSheetTrack( TrackWidget track )
+	public DopeSheetTrack( TrackWidget track, ProjectPropertyTrack propertyTrack )
 	{
 		Session = track.Session;
-		ProjectTrack = track.ProjectTrack;
+		ProjectTrack = propertyTrack;
 		TrackWidget = track;
 		HoverEvents = true;
 	}
@@ -69,14 +69,12 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	private void GetBlocks( List<IBlock> result )
 	{
-		var track = TrackWidget.ProjectTrack;
-
-		foreach ( var block in track.Blocks )
+		foreach ( var block in ProjectTrack.Blocks )
 		{
 			result.Add( block );
 		}
 
-		foreach ( var preview in Session.EditMode?.GetPreviewBlocks( track ) ?? [] )
+		foreach ( var preview in Session.EditMode?.GetPreviewBlocks( ProjectTrack ) ?? [] )
 		{
 			result.Add( preview );
 		}

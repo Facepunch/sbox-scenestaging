@@ -1,34 +1,80 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Sandbox.MovieMaker;
+using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed partial class MovieProjectTrack( MovieProject project, Guid id, string name, Type propertyType ) : ITrack
+public abstract partial class ProjectTrack( MovieProject project, Guid id, string name, Type targetType ) : ITrack
 {
 	public MovieProject Project => project;
 	public Guid Id => id;
 	public string Name => name;
-	public Type TargetType => propertyType;
-	public MovieProjectTrack? Parent => throw new NotImplementedException();
-	public bool IsEmpty => Blocks.Count == 0;
+	public Type TargetType => targetType;
+	public ProjectTrack? Parent => throw new NotImplementedException();
+	public bool IsEmpty => throw new NotImplementedException();
 
-	public IReadOnlyList<MovieProjectTrack> Children => throw new NotImplementedException();
-	public IReadOnlyList<MovieProjectBlock> Blocks => throw new NotImplementedException();
+	public IReadOnlyList<ProjectTrack> Children => throw new NotImplementedException();
 
 	public void Remove() => throw new NotImplementedException();
 
 	public void RemoveBlocks() => throw new NotImplementedException();
-	public MovieProjectBlock AddBlock( MovieTimeRange timeRange, IBlockData data ) => throw new NotImplementedException();
-	public MovieProjectBlock AddBlock( IBlock block ) => AddBlock( block.TimeRange, block.Data );
-	public MovieProjectBlock GetBlock( MovieTime time ) => throw new NotImplementedException();
-
-	public IReadOnlyList<(MovieTimeRange TimeRange, MovieProjectBlock Block)> Cuts => throw new NotImplementedException();
-	public IReadOnlyList<(MovieTimeRange TimeRange, MovieProjectBlock Block)> GetCuts( MovieTimeRange timeRange ) => throw new NotImplementedException();
+	public ProjectBlock AddBlock( IBlock block ) => throw new NotImplementedException();
+	public ProjectBlock GetBlock( MovieTime time ) => throw new NotImplementedException();
 
 	ITrack? ITrack.Parent => Parent;
 
-	public CompiledTrack Compile( CompiledTrack? compiledParent ) =>
-		new( Id, Name, TargetType, compiledParent, [..Blocks.Select( x => x.Compile() )] );
+	public abstract Track Compile( Track? compiledParent );
+}
+
+public sealed class ProjectReferenceTrack( MovieProject project, Guid id, string name, Type targetType )
+	: ProjectTrack( project, id, name, targetType ),
+	 IReferenceTrack
+{
+	public override Track Compile( Track? compiledParent ) =>
+		new ReferenceTrack( Id, Name, TargetType, compiledParent );
+}
+
+public abstract class ProjectPropertyTrack( MovieProject project, Guid id, string name, Type targetType )
+	: ProjectTrack( project, id, name, targetType ), IPropertyTrack, IBlockTrack<ProjectBlock>
+{
+	public MovieTimeRange TimeRange => throw new NotImplementedException();
+	public IReadOnlyList<ProjectBlock> Blocks => throw new NotImplementedException();
+	public abstract IReadOnlyList<(MovieTimeRange TimeRange, ProjectBlock Block)> Cuts { get; }
+	public abstract IReadOnlyList<(MovieTimeRange TimeRange, ProjectBlock Block)> GetCuts( MovieTimeRange timeRange );
+
+	public abstract bool TryGetValue( MovieTime time, out object? value );
+
+	IReadOnlyList<IBlock> IBlockTrack.Blocks => throw new NotImplementedException();
+}
+
+public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, string name )
+	: ProjectPropertyTrack( project, id, name, typeof(T) ), IPropertyTrack<T>
+{
+	public override IReadOnlyList<(MovieTimeRange TimeRange, ProjectBlock Block)> Cuts => throw new NotImplementedException();
+	public override IReadOnlyList<(MovieTimeRange TimeRange, ProjectBlock Block)> GetCuts( MovieTimeRange timeRange ) => throw new NotImplementedException();
+
+	public override Track Compile( Track? compiledParent )
+	{
+		throw new NotImplementedException();
+	}
+
+	public bool TryGetValue( MovieTime time, [MaybeNullWhen( false )] out T value )
+	{
+		throw new NotImplementedException();
+	}
+
+	public override bool TryGetValue( MovieTime time, out object? value )
+	{
+		if ( TryGetValue( time, out var val ) )
+		{
+			value = val;
+			return true;
+		}
+
+		value = null;
+		return false;
+	}
 }
