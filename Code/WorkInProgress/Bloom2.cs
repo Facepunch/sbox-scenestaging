@@ -5,18 +5,15 @@ namespace Sandbox;
 [Icon( "exposure" )]
 public class Bloom2 : PostProcess, Component.ExecuteInEditor
 {
-    [Property] public SceneCamera.BloomAccessor.BloomMode Mode { get; set; }
+    [Property, MakeDirty] public SceneCamera.BloomAccessor.BloomMode Mode { get; set; }
 
     [Range( 0, 10 )]
-    [Property] public float Strength { get; set; } = 1.0f;
+    [Property, MakeDirty] public float Strength { get; set; } = 1.0f;
 
     [Range( 0, 2 )]
-    [Property] public float Threshold { get; set; } = 0.5f;
+    [Property, MakeDirty] public float Threshold { get; set; } = 0.5f;
+    [Property, MakeDirty] public Color Tint { get; set; } = Color.White;
 
-    [Range( 0, 5 )]
-    [Property] public float ThresholdWidth { get; set; }
-    [Property] public Curve BloomCurve { get; set; } = new Curve( new Curve.Frame( 0.0f, 0.5f ), new Curve.Frame( 1.0f, 1.0f ) );
-    [Property] public Gradient BloomColor { get; set; } = new Gradient( new Gradient.ColorFrame( 0.0f, Color.White ), new Gradient.ColorFrame( 1.0f, Color.White ) );
 
     Rendering.CommandList Commands;
     protected override void OnEnabled()
@@ -32,7 +29,7 @@ public class Bloom2 : PostProcess, Component.ExecuteInEditor
         Commands = null;
     }
 
-    protected override void OnUpdate()
+    protected override void OnDirty()
     {
         Rebuild();
     }
@@ -50,6 +47,7 @@ public class Bloom2 : PostProcess, Component.ExecuteInEditor
         Commands.Set( "Threshold", Threshold );
         Commands.Set( "Strength", Strength );
         Commands.Set( "CompositeMode", (int)Mode );
+        Commands.Set( "Tint", Tint );
 
         var material = Material.FromShader( "postprocess_bloom_staging" );
 

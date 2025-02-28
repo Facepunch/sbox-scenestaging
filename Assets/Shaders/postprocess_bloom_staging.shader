@@ -55,8 +55,6 @@ VS
 PS
 {
     #include "postprocess/common.hlsl"
-    #include "postprocess/functions.hlsl"
-    #include "procedural.hlsl"
 
     RenderState( DepthWriteEnable, false );
     RenderState( DepthEnable, false );
@@ -65,6 +63,7 @@ PS
     
     float Strength< Attribute("Strength"); Default(0.0f); >;
     float Threshold< Attribute("Threshold"); Default(0.0f); >;
+    float3 Tint< Attribute("Tint"); Default3(1.0f, 1.0f, 1.0f); >;
     int CompositeMode< Attribute("CompositeMode"); Default(0); >;
 	
     
@@ -77,50 +76,9 @@ PS
         tex.GetDimensions(texSize.x, texSize.y);
         texSize /= pow(2, level);
         float2 invTexSize = 1.0 / texSize;
-        
-        // Calculate texture coordinates
-        float2 texel = uv * texSize;
-        float2 fraction = frac(texel);
-        texel = floor(texel) * invTexSize;
-        
-        // Cubic weights
-        float2 w0 = fraction * (-0.5 + fraction * (1.0 - 0.5 * fraction));
-        float2 w1 = 1.0 + fraction * fraction * (-2.5 + 1.5 * fraction);
-        float2 w2 = fraction * (0.5 + fraction * (2.0 - 1.5 * fraction));
-        float2 w3 = fraction * fraction * (-0.5 + 0.5 * fraction);
-        
-        // Calculate texture coordinates for sampling
-        float2 s0 = texel + (-1.0 * invTexSize);
-        float2 s1 = texel +   0.0 * invTexSize;
-        float2 s2 = texel +   1.0 * invTexSize;
-        float2 s3 = texel +   2.0 * invTexSize;
-        
-        // Sample the texture at 16 points
-        float3 row0 = 
-            tex.SampleLevel(samp, float2(s0.x, s0.y), level).rgb * w0.x * w0.y +
-            tex.SampleLevel(samp, float2(s1.x, s0.y), level).rgb * w1.x * w0.y +
-            tex.SampleLevel(samp, float2(s2.x, s0.y), level).rgb * w2.x * w0.y +
-            tex.SampleLevel(samp, float2(s3.x, s0.y), level).rgb * w3.x * w0.y;
-            
-        float3 row1 = 
-            tex.SampleLevel(samp, float2(s0.x, s1.y), level).rgb * w0.x * w1.y +
-            tex.SampleLevel(samp, float2(s1.x, s1.y), level).rgb * w1.x * w1.y +
-            tex.SampleLevel(samp, float2(s2.x, s1.y), level).rgb * w2.x * w1.y +
-            tex.SampleLevel(samp, float2(s3.x, s1.y), level).rgb * w3.x * w1.y;
-            
-        float3 row2 = 
-            tex.SampleLevel(samp, float2(s0.x, s2.y), level).rgb * w0.x * w2.y +
-            tex.SampleLevel(samp, float2(s1.x, s2.y), level).rgb * w1.x * w2.y +
-            tex.SampleLevel(samp, float2(s2.x, s2.y), level).rgb * w2.x * w2.y +
-            tex.SampleLevel(samp, float2(s3.x, s2.y), level).rgb * w3.x * w2.y;
-            
-        float3 row3 = 
-            tex.SampleLevel(samp, float2(s0.x, s3.y), level).rgb * w0.x * w3.y +
-            tex.SampleLevel(samp, float2(s1.x, s3.y), level).rgb * w1.x * w3.y +
-            tex.SampleLevel(samp, float2(s2.x, s3.y), level).rgb * w2.x * w3.y +
-            tex.SampleLevel(samp, float2(s3.x, s3.y), level).rgb * w3.x * w3.y;
-            
-        return row0 + row1 + row2 + row3;
+
+        // Todo: Actually bicubic? barely makes a difference in practice but this is 16x faster
+        return tex.SampleLevel(samp, uv, level).rgb;
     }
 
     float3 ScreenHDR(float3 base, float3 blend)
@@ -168,18 +126,20 @@ PS
             float3 bloomSample = max( pow(sample, gammaCorrection), 0 );
             
             // Calculate falloff based on mip level (larger mips = wider blur, less contribution)
-            float mipWeight = (float)i / (float)mipLevels; // Exponential decay for smooth falloff
-            mipWeight *= falloffScale;
+            float mipWeight = ( (float)i * falloffScale ) / (float)mipLevels; // Exponential decay for smooth falloff
+
             // Accumulate bloom with weight
             vBloomColor.rgb += bloomSample * mipWeight;
         }
         
         // Apply bloom intensity
         vBloomColor.rgb *= bloomIntensity;
-        
-        // High-quality compositing: additive bloom with soft clamping
-        float3 finalColor = 0; 
 
+        // Apply tint
+        vBloomColor.rgb *= Tint;
+
+        // High-quality compositing
+        float3 finalColor = 0; 
         {
             if (CompositeMode == 0)
             {
