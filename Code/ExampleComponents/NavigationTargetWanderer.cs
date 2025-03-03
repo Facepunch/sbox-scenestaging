@@ -102,13 +102,15 @@ public sealed class NavigationLinkTraversal : Component
 		// We will drive GO animation ourlselves
 		Agent.UpdatePosition = false;
 
-		if ( Agent.CurrentLinkData.Value.LinkComponent.Tags.Has( "ladder" ) && Agent.CurrentLinkData.Value.LinkEndPosition.z > WorldPosition.z )
+		// If Link is a ladder and we are going up, climb it
+		if ( Agent.CurrentLinkTraversal.Value.LinkComponent.Tags.Has( "ladder" ) &&
+			Agent.CurrentLinkTraversal.Value.LinkExitPosition.z > WorldPosition.z )
 		{
 			ClimbLadder();
 		}
 		else
 		{
-			// 50/50 chance of jumping or physics jump
+			// 50/50 chance of paraobolic jump or physics jump
 			if ( Random.Shared.Next( 0, 2 ) == 0 )
 				PhysicsJump();
 			else
@@ -122,17 +124,13 @@ public sealed class NavigationLinkTraversal : Component
 		Agent.UpdatePosition = true;
 	}
 
-	protected override void OnUpdate()
-	{
-	}
-
 	private async void ClimbLadder()
 	{
-		var initialPos = Agent.CurrentLinkData.Value.AgentInitialPosition;
+		var initialPos = Agent.CurrentLinkTraversal.Value.AgentInitialPosition;
 
-		var start = Agent.CurrentLinkData.Value.LinkStartPosition;
-		var endVertical = start.WithZ( Agent.CurrentLinkData.Value.LinkEndPosition.z );
-		var end = Agent.CurrentLinkData.Value.LinkEndPosition;
+		var start = Agent.CurrentLinkTraversal.Value.LinkEnterPosition;
+		var endVertical = start.WithZ( Agent.CurrentLinkTraversal.Value.LinkExitPosition.z );
+		var end = Agent.CurrentLinkTraversal.Value.LinkExitPosition;
 
 		var startTime = (start - initialPos).Length / 100f;
 		var ladderTime = (endVertical - start).Length / 100f;
@@ -175,8 +173,8 @@ public sealed class NavigationLinkTraversal : Component
 		Model.Set( "b_grounded", false );
 		Model.Set( "b_jump", true );
 
-		var start = Agent.CurrentLinkData.Value.AgentInitialPosition;
-		var end = Agent.CurrentLinkData.Value.LinkEndPosition;
+		var start = Agent.CurrentLinkTraversal.Value.AgentInitialPosition;
+		var end = Agent.CurrentLinkTraversal.Value.LinkExitPosition;
 
 		// Calculate peak height for the parabolic arc
 		var heightDifference = end.z - start.z;
@@ -204,7 +202,6 @@ public sealed class NavigationLinkTraversal : Component
 			var yOffset = 4f * peakHeight * t * (1f - t);
 			position.z = MathX.Lerp( start.z, end.z, t ) + yOffset;
 
-			// Update position and velocity
 			Agent.Velocity = (position - WorldPosition) / Time.Delta;
 			WorldPosition = position;
 
@@ -227,8 +224,8 @@ public sealed class NavigationLinkTraversal : Component
 		Model.Set( "b_grounded", false );
 		Model.Set( "b_jump", true );
 
-		var start = Agent.CurrentLinkData.Value.AgentInitialPosition;
-		var end = Agent.CurrentLinkData.Value.LinkEndPosition;
+		var start = Agent.CurrentLinkTraversal.Value.AgentInitialPosition;
+		var end = Agent.CurrentLinkTraversal.Value.LinkExitPosition;
 
 		var xyVelocity = Agent.MaxSpeed * (end.WithZ( 0 ) - start.WithZ( 0 )).Normal * 1.25f; 
 
@@ -245,6 +242,7 @@ public sealed class NavigationLinkTraversal : Component
 			await Task.Frame();
 		}
 	}
+
 	private bool FindGround()
 	{
 		var tr = Scene.Trace.Ray( WorldPosition + Vector3.Up * 0.1f, WorldPosition + Vector3.Down * 1000 )
