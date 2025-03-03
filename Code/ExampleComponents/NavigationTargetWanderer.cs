@@ -97,42 +97,155 @@ public sealed class NavigationLinkTraversal : Component
 		agent.LinkExit -= OnNavLinkExit;
 	}
 
-	private void OnNavLinkEnter( NavMeshLink link )
+	private void OnNavLinkEnter()
 	{
-		Model.Set( "b_grounded", false );
-		Model.Set( "b_jump", true );
+		// We will drive GO animation ourlselves
+		Agent.UpdatePosition = false;
 
-		// we don't know if we are at start or the end
-		// use the closest one as source and the one furthes away as target
-		var distanceToStart = WorldPosition.DistanceSquared( link.StartOnNavmesh.Value );
-		var distanceToEnd = WorldPosition.DistanceSquared( link.EndOnNavmesh.Value );
-
-		var source = distanceToStart > distanceToEnd ? link.EndOnNavmesh.Value : link.StartOnNavmesh.Value;
-		var target = distanceToStart > distanceToEnd ? link.StartOnNavmesh.Value : link.EndOnNavmesh.Value;
-
-		var xyVelocity = Agent.MaxSpeed * (target.WithZ( 0 ) - WorldPosition.WithZ( 0 )).Normal;
-		// DEbug start end
-		DebugOverlay.Line( WorldPosition, target, Color.Red, 0.5f );
-		DebugOverlay.Sphere( new Sphere( WorldPosition, 8 ), Color.Green, 2f );
-
-
-		var velocity = xyVelocity + Vector3.Up * Math.Max( 450f, (target.z - WorldPosition.z) * 8f );
-		DebugOverlay.Text( WorldPosition + Vector3.Up * 10f, velocity.ToString(), 32f, TextFlag.Center, Color.Red, 2f );
-
-		Jump( velocity );
+		if ( Agent.CurrentLinkData.Value.LinkComponent.Tags.Has( "ladder" ) && Agent.CurrentLinkData.Value.LinkEndPosition.z > WorldPosition.z )
+		{
+			ClimbLadder();
+		}
+		else
+		{
+			// 50/50 chance of jumping or physics jump
+			if ( Random.Shared.Next( 0, 2 ) == 0 )
+				PhysicsJump();
+			else
+				ParabolicJump();
+		}
 	}
 
-	private void OnNavLinkExit( NavMeshLink link )
+	private void OnNavLinkExit()
 	{
-		Model.Set( "b_grounded", true );
+		// Let the agent drive the GO position
+		Agent.UpdatePosition = true;
 	}
 
 	protected override void OnUpdate()
 	{
-		FindGround();
 	}
 
-	public void FindGround()
+	private async void ClimbLadder()
+	{
+		var initialPos = Agent.CurrentLinkData.Value.AgentInitialPosition;
+
+		var start = Agent.CurrentLinkData.Value.LinkStartPosition;
+		var endVertical = start.WithZ( Agent.CurrentLinkData.Value.LinkEndPosition.z );
+		var end = Agent.CurrentLinkData.Value.LinkEndPosition;
+
+		var startTime = (start - initialPos).Length / 100f;
+		var ladderTime = (endVertical - start).Length / 100f;
+		var endTime = (end - endVertical).Length / 100f;
+
+		var totalLadderTime = startTime + ladderTime + endTime;
+
+		TimeSince timeSinceStart = 0;
+
+		var previousPosition = WorldPosition;
+
+		while ( timeSinceStart < totalLadderTime )
+		{
+			if ( timeSinceStart < startTime )
+			{
+				WorldPosition = Vector3.Lerp( initialPos, start, timeSinceStart / startTime );
+			}
+			else if ( timeSinceStart < startTime + ladderTime )
+			{
+				WorldPosition = Vector3.Lerp( start, endVertical, (timeSinceStart - startTime) / ladderTime );
+			}
+			else
+			{
+				WorldPosition = Vector3.Lerp( endVertical, end, (timeSinceStart - startTime - ladderTime) / endTime );
+			}
+
+			Agent.Velocity = (WorldPosition - previousPosition) / Time.Delta;
+			previousPosition = WorldPosition;
+
+			await Task.Frame();
+		}
+
+		WorldPosition = end;
+
+		Agent.CompleteLink();
+	}
+
+	private async void ParabolicJump()
+	{
+		Model.Set( "b_grounded", false );
+		Model.Set( "b_jump", true );
+
+		var start = Agent.CurrentLinkData.Value.AgentInitialPosition;
+		var end = Agent.CurrentLinkData.Value.LinkEndPosition;
+
+		// Calculate peak height for the parabolic arc
+		var heightDifference = end.z - start.z;
+		var peakHeight = MathF.Abs( heightDifference ) + 25f;
+
+		var mid = (start + end) / 2f;
+
+		// Estimate prabolic duraion size using a triangle /\ between start, mid, end 
+		var startToMid = mid.WithZ( peakHeight ) - start;
+		var midToEnd = end - mid.WithZ( peakHeight );
+		var duration = ( startToMid + midToEnd ).Length / Agent.MaxSpeed;
+		duration = MathF.Max( 0.75f, duration ); // Ensure minimum duration
+
+		TimeSince timeSinceStart = 0;
+
+
+		while ( timeSinceStart < duration )
+		{
+			var t = timeSinceStart / duration;
+
+			// Linearly interpolate XY positions
+			var position = Vector3.Lerp( start, end, t );
+
+			// Apply parabolic curve to Z position using a quadratic function
+			var yOffset = 4f * peakHeight * t * (1f - t);
+			position.z = MathX.Lerp( start.z, end.z, t ) + yOffset;
+
+			// Update position and velocity
+			Agent.Velocity = (position - WorldPosition) / Time.Delta;
+			WorldPosition = position;
+
+			await Task.Frame();
+		}
+
+		WorldPosition = end;
+
+		Model.Set( "b_grounded", true );
+		Model.Set( "b_jump", false );
+
+		Agent.CompleteLink();
+	}
+
+	private TimeUntil nextGround = 0;
+	private bool isGrounded = false;
+
+	private async void PhysicsJump()
+	{
+		Model.Set( "b_grounded", false );
+		Model.Set( "b_jump", true );
+
+		var start = Agent.CurrentLinkData.Value.AgentInitialPosition;
+		var end = Agent.CurrentLinkData.Value.LinkEndPosition;
+
+		var xyVelocity = Agent.MaxSpeed * (end.WithZ( 0 ) - start.WithZ( 0 )).Normal * 1.25f; 
+
+		var velocity = xyVelocity + Vector3.Up * Math.Max( 500f, (end.z - start.z) * 8f );
+
+		nextGround = 0.5f;
+		isGrounded = false;
+
+		Body.Velocity = velocity;
+
+		while ( !FindGround() )
+		{
+			Agent.Velocity = Body.Velocity;
+			await Task.Frame();
+		}
+	}
+	private bool FindGround()
 	{
 		var tr = Scene.Trace.Ray( WorldPosition + Vector3.Up * 0.1f, WorldPosition + Vector3.Down * 1000 )
 			.IgnoreGameObjectHierarchy( GameObject )
@@ -140,24 +253,14 @@ public sealed class NavigationLinkTraversal : Component
 
 		if ( !isGrounded && tr.Hit && nextGround < 0 && tr.Distance < 4f )
 		{
-			Log.Info( "Grounded" );
 			isGrounded = true;
 			Model.Set( "b_grounded", true );
-			Agent.UpdatePosition = true;
+			Model.Set( "b_jump", false );
 			Agent.SetAgentPosition( tr.EndPosition );
-			Agent.CompleteLink();
+			Agent.CompleteLink( tr.EndPosition );
+			return true;
 		}
-	}
 
-	private TimeUntil nextGround = 0;
-	private bool isGrounded = false;
-
-	public void Jump( Vector3 velocity )
-	{
-		nextGround = 0.5f;
-		isGrounded = false;
-		Agent.UpdatePosition = false;
-
-		Body.Velocity = velocity;
+		return false;
 	}
 }

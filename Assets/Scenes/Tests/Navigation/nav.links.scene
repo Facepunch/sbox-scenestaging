@@ -1050,15 +1050,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "f761a7ce-bc1a-41a9-a061-049cefca1eb7",
               "ConnectionRadius": 16,
-              "End": "-26.87051,-3.991089,34",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-26.87051,-3.991089,34",
+              "LocalStartPosition": "26.87051,3.99115,-34",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "26.87051,3.99115,-34"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1073,15 +1073,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "d1010c31-cb7e-4f5e-a6fe-fc437bf6dbdb",
               "ConnectionRadius": 16,
-              "End": "-19.30955,4.614136,35",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-19.30955,4.614136,35",
+              "LocalStartPosition": "19.30955,-4.614075,-34.99998",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "19.30955,-4.614075,-34.99998"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1096,15 +1096,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "ffd4371b-9494-4ca8-881a-c094f30a2516",
               "ConnectionRadius": 16,
-              "End": "-19.27177,8.879639,35",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-19.27177,8.879639,35",
+              "LocalStartPosition": "19.27177,-8.879578,-34.99998",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "19.27177,-8.879578,-34.99998"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1119,15 +1119,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "aa12f3f8-c230-4dac-92c3-d39d50958fb2",
               "ConnectionRadius": 16,
-              "End": "-19.27177,12.28552,35",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-19.27177,12.28552,35",
+              "LocalStartPosition": "19.27177,-12.28546,-34.99998",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "19.27177,-12.28546,-34.99998"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1142,15 +1142,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "b0f93867-7529-4cb7-bb70-2b5ff2b9ed49",
               "ConnectionRadius": 16,
-              "End": "-10.80388,36.94696,-69.19447",
               "IsBiDirectional": false,
+              "LocalEndPosition": "-10.80388,36.94696,-69.19447",
+              "LocalStartPosition": "10.80388,-36.94696,69.19447",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "10.80388,-36.94696,69.19447"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1165,15 +1165,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "9c826fec-758c-4a0b-8180-b263778e03a3",
               "ConnectionRadius": 16,
-              "End": "-41.12386,2.064148,-69.19447",
               "IsBiDirectional": false,
+              "LocalEndPosition": "-41.12386,2.064148,-69.19447",
+              "LocalStartPosition": "41.12386,-2.064209,69.19447",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "41.12386,-2.064209,69.19447"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1188,15 +1188,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "62792c1e-2cae-4bce-b66a-274d24267f2f",
               "ConnectionRadius": 16,
-              "End": "73.84691,2.625916,0",
               "IsBiDirectional": false,
+              "LocalEndPosition": "73.84691,2.625916,0",
+              "LocalStartPosition": "-73.84691,-2.625916,0",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-73.84691,-2.625916,0"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1211,15 +1211,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "c9e17145-d616-4b75-8fb2-b2c148e5bd32",
               "ConnectionRadius": 16,
-              "End": "-2.05069,23.9697,17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-2.05069,23.9697,17",
+              "LocalStartPosition": "2.05072,-23.9697,-17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "2.05072,-23.9697,-17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1234,15 +1234,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "d43d2025-d0eb-45de-a7be-a81ae3381a21",
               "ConnectionRadius": 16,
-              "End": "-2.05069,23.9697,17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-2.05069,23.9697,17",
+              "LocalStartPosition": "2.05072,-23.9697,-17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "2.05072,-23.9697,-17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1257,15 +1257,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "2f95e445-3756-4814-adbf-eb900e64cc69",
               "ConnectionRadius": 16,
-              "End": "-2.05069,23.9697,17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-2.05069,23.9697,17",
+              "LocalStartPosition": "2.05072,-23.9697,-17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "2.05072,-23.9697,-17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1280,15 +1280,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "9a8623bc-2c09-4c13-bb19-ae5ce9ef3d5f",
               "ConnectionRadius": 16,
-              "End": "-2.05069,23.9697,17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-2.05069,23.9697,17",
+              "LocalStartPosition": "2.05072,-23.9697,-17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "2.05072,-23.9697,-17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1303,15 +1303,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "26c42f24-e432-492d-bfc9-539335cec897",
               "ConnectionRadius": 16,
-              "End": "-3.604248,32.43176,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-3.604248,32.43176,-17",
+              "LocalStartPosition": "3.604187,-32.43176,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "3.604187,-32.43176,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1326,15 +1326,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "45b0c5ca-a650-4777-be4e-20d88ea32eeb",
               "ConnectionRadius": 16,
-              "End": "3.408997,32.43176,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "3.408997,32.43176,-17",
+              "LocalStartPosition": "-3.409058,-32.43176,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-3.409058,-32.43176,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1349,15 +1349,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "8695f484-85a7-4858-b2c0-87dd6723ccd8",
               "ConnectionRadius": 16,
-              "End": "3.408997,32.43176,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "3.408997,32.43176,-17",
+              "LocalStartPosition": "-3.409058,-32.43176,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-3.409058,-32.43176,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1372,15 +1372,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "957c5532-4e79-4f2c-a20d-7e238383b384",
               "ConnectionRadius": 16,
-              "End": "3.408997,32.43176,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "3.408997,32.43176,-17",
+              "LocalStartPosition": "-3.409058,-32.43176,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-3.409058,-32.43176,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1395,15 +1395,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "46d5639d-d94b-417c-a29a-538f9c2f9ffb",
               "ConnectionRadius": 16,
-              "End": "-5.077637,28.00694,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-5.077637,28.00694,-17",
+              "LocalStartPosition": "5.077637,-28.00693,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "5.077637,-28.00693,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1418,15 +1418,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "ce1db7d9-a80b-48ac-8243-fcb2fa94a6bc",
               "ConnectionRadius": 16,
-              "End": "-2.326355,29.87151,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-2.326355,29.87151,-17",
+              "LocalStartPosition": "2.326355,-29.8715,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "2.326355,-29.8715,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1441,15 +1441,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "fab7b6eb-964a-47ad-9801-74edf522ec54",
               "ConnectionRadius": 16,
-              "End": "8.415955,-31.21548,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "8.415955,-31.21548,-17",
+              "LocalStartPosition": "-8.415955,31.21548,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-8.415955,31.21548,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1464,15 +1464,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "73cf58e0-17e5-458b-b226-0134e01147e5",
               "ConnectionRadius": 16,
-              "End": "3.033936,-23.69504,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "3.033936,-23.69504,-17",
+              "LocalStartPosition": "-3.033936,23.69504,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-3.033936,23.69504,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1487,15 +1487,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "9fb6f499-0bef-4944-a7cb-806a2d69100a",
               "ConnectionRadius": 16,
-              "End": "3.033936,-23.69504,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "3.033936,-23.69504,-17",
+              "LocalStartPosition": "-3.033936,23.69504,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-3.033936,23.69504,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1510,15 +1510,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "e9566c71-622d-4a14-946b-0a86a5bb6959",
               "ConnectionRadius": 16,
-              "End": "5.806671,-26.43285,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "5.806671,-26.43285,-17",
+              "LocalStartPosition": "-5.806702,26.43286,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-5.806702,26.43286,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1533,15 +1533,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "11fc37ad-8808-40d7-87a1-4d971cfa48b3",
               "ConnectionRadius": 16,
-              "End": "3.065308,-31.12756,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "3.065308,-31.12756,-17",
+              "LocalStartPosition": "-3.065308,31.12756,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-3.065308,31.12756,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1556,15 +1556,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "345b54e0-c47c-42a4-80d6-867b670ca99e",
               "ConnectionRadius": 16,
-              "End": "0.4888611,32.22797,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "0.4888611,32.22797,-17",
+              "LocalStartPosition": "-0.4888611,-32.22797,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-0.4888611,-32.22797,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1579,15 +1579,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "5bac58ed-4faa-40cf-9d18-842718bc1a8c",
               "ConnectionRadius": 16,
-              "End": "-5.534943,30.64658,-17",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-5.534943,30.64658,-17",
+              "LocalStartPosition": "5.534973,-30.64659,17",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "5.534973,-30.64659,17"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1602,15 +1602,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "0bab6a28-688f-4734-a44e-2176d2aef77e",
               "ConnectionRadius": 16,
-              "End": "2.655304,-31.99625,-69",
               "IsBiDirectional": false,
+              "LocalEndPosition": "2.655304,-31.99625,-69",
+              "LocalStartPosition": "-2.655304,31.99628,69",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-2.655304,31.99628,69"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1625,15 +1625,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "5fb0d755-1157-4de9-92d3-05d50ee9c8a6",
               "ConnectionRadius": 16,
-              "End": "-4.037125,-31.99625,-69",
               "IsBiDirectional": false,
+              "LocalEndPosition": "-4.037125,-31.99625,-69",
+              "LocalStartPosition": "4.03714,31.99628,69",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "4.03714,31.99628,69"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1641,22 +1641,23 @@
           "__guid": "060944fb-9474-49d6-87ba-57d66e74e8fb",
           "Flags": 0,
           "Name": "Link (12)",
-          "Position": "419.6867,569.3579,94.0379",
+          "Position": "426.144,562,94.0379",
+          "Tags": "ladder",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.NavMeshLink",
               "__guid": "88b4d01b-cd6b-4743-8c9c-7c0276407283",
               "ConnectionRadius": 16,
-              "End": "5.695099,-25.35791,69",
               "IsBiDirectional": false,
+              "LocalEndPosition": "-1.181519,-18,69",
+              "LocalStartPosition": "1.181519,18,-69",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-5.695099,25.35785,-69"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1664,22 +1665,23 @@
           "__guid": "b6710f1c-6cde-43ce-9d65-c8ce484376bb",
           "Flags": 0,
           "Name": "Link (12)",
-          "Position": "236.3639,571.053,94.0379",
+          "Position": "248.6843,562,94.0379",
+          "Tags": "ladder",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.NavMeshLink",
               "__guid": "75c7e080-9706-418d-97c7-76b6a8f1e38b",
               "ConnectionRadius": 16,
-              "End": "16.1041,-30.62726,69",
               "IsBiDirectional": false,
+              "LocalEndPosition": "1.606323,-18,69",
+              "LocalStartPosition": "-1.606323,18,-69",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-16.1041,30.6272,-69"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1694,15 +1696,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "6bed39ad-10d8-44e1-b1a7-9d5076370086",
               "ConnectionRadius": 16,
-              "End": "-17.49677,-20.93964,34",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-17.49677,-20.93964,34",
+              "LocalStartPosition": "17.49677,20.9397,-34",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "17.49677,20.9397,-34"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1710,22 +1712,23 @@
           "__guid": "6a73db39-c027-4a7d-b2d6-b8c1eba5fb11",
           "Flags": 0,
           "Name": "Link (14)",
-          "Position": "-489.8085,590.511,94.0379",
+          "Position": "-491.8924,570,94.0379",
+          "Tags": "ladder",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.NavMeshLink",
               "__guid": "3b6a97ac-dc2e-45be-bffa-eaed11876bc1",
               "ConnectionRadius": 16,
-              "End": "7.958099,-38.88623,69",
               "IsBiDirectional": false,
+              "LocalEndPosition": "4.352081,-18,69",
+              "LocalStartPosition": "-4.352081,18,-69",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-7.958069,38.88623,-69"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1740,15 +1743,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "86f9ca3d-6147-46a8-a2ad-8907fb63e73e",
               "ConnectionRadius": 16,
-              "End": "-19.78595,-29.36728,-69",
               "IsBiDirectional": false,
+              "LocalEndPosition": "-19.78595,-29.36728,-69",
+              "LocalStartPosition": "19.78595,29.36725,69",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "19.78595,29.36725,69"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1763,15 +1766,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "095e4dff-b1e5-4452-9dfc-a827955bae75",
               "ConnectionRadius": 16,
-              "End": "-3.026886,-23.28851,34",
               "IsBiDirectional": true,
+              "LocalEndPosition": "-3.026886,-23.28851,34",
+              "LocalStartPosition": "3.026886,23.28857,-34",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "3.026886,23.28857,-34"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1786,15 +1789,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "f1ddbefa-c8b3-4e5d-957b-72a8b09be395",
               "ConnectionRadius": 16,
-              "End": "-24.95203,23.35687,-69.19447",
               "IsBiDirectional": false,
+              "LocalEndPosition": "-24.95203,23.35687,-69.19447",
+              "LocalStartPosition": "24.95203,-23.35687,69.19447",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "24.95203,-23.35687,69.19447"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1802,22 +1805,23 @@
           "__guid": "1c4ba773-136d-42ae-ac45-eee101512a7d",
           "Flags": 0,
           "Name": "Link (18)",
-          "Position": "-367.8796,588.3561,94.0379",
+          "Position": "-364.9572,570,94.0379",
+          "Tags": "ladder",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.NavMeshLink",
               "__guid": "a7b93bdd-826e-447c-b92a-4e5111ccb785",
               "ConnectionRadius": 16,
-              "End": "-3.669067,-36.35608,69",
               "IsBiDirectional": false,
+              "LocalEndPosition": "-1.002655,-18,69",
+              "LocalStartPosition": "1.002655,18,-69",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "3.669067,36.35608,-69"
+              "OnComponentUpdate": null
             }
           ]
         },
@@ -1832,15 +1836,15 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "595a346a-64e7-44c3-a107-e82d94635987",
               "ConnectionRadius": 16,
-              "End": "28.58798,-24.40411,-69",
               "IsBiDirectional": false,
+              "LocalEndPosition": "28.58798,-24.40411,-69",
+              "LocalStartPosition": "-28.58801,24.40411,69",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Start": "-28.58801,24.40411,69"
+              "OnComponentUpdate": null
             }
           ]
         }
@@ -2199,6 +2203,1230 @@
           }
         ]
       }
+    },
+    {
+      "__guid": "f2e88ea1-16bb-4fea-8313-126bda13968e",
+      "Flags": 0,
+      "Name": "Ladder",
+      "Position": "425.1139,591.7155,122.5823",
+      "Enabled": true,
+      "Children": [
+        {
+          "__guid": "7e54a419-60e3-495b-8be7-511b1d69ebbe",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "-14.59088,-27.31836,-35.07422",
+          "Scale": "0.1,0.1,3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "d1825060-39ce-43ad-bd93-faf9642a9c0c",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "05da567b-3984-4448-b0a0-4a879c203f5f",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "19.42499,-27.31836,-35.07422",
+          "Scale": "0.1,0.1,3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "b8e62db8-9f0d-40e7-99c4-63d2ca359f85",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "a1d8c5f9-560c-4879-b648-5ef3e9b0925f",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-82.50018",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "4d967ae4-7f3b-4163-8c00-78e0b8a6a714",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "50d6aa42-90a1-4744-aa54-dc68978eb8b5",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-61.80722",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "2080e77c-f0ca-47aa-9a23-1dbc3c5fde16",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "2d6be139-5735-4a4c-bce8-4492dc6a543c",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-40.15488",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "dbd7889c-a723-455e-aef2-ef3fe6a0d878",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ffe92712-49b1-4cdf-8c59-954e574ac744",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-22.76086",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "add87e48-8f60-4cb3-b754-adda568bbcda",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9b3e6acc-5a8f-4373-8a51-ee1dbf76a88a",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-6.409279",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "f21cddf4-bd15-4059-babd-1eb1c79443a1",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "c391d649-13aa-45cf-abd9-09c368f762e6",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,11.14078",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "a5c006f4-d97e-4257-afa4-b008b2d53c0f",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "7308b1ab-34e3-4198-85cb-ffb8bd475d85",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,27.36053",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "15ba6763-5504-45d8-9970-eef10577b827",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "adb8881a-bd69-4583-8582-edb980b21696",
+      "Flags": 0,
+      "Name": "Ladder (1)",
+      "Position": "248.8662,591.7155,122.5823",
+      "Enabled": true,
+      "Children": [
+        {
+          "__guid": "8c689f96-1335-49ef-ab42-c78bb5280e16",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "-14.59088,-27.31836,-35.07422",
+          "Scale": "0.1,0.1,3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "1c40c32f-7732-41da-b448-f8b13c299fa3",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "fe868097-775b-406a-a031-413a4455b968",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "19.42499,-27.31836,-35.07422",
+          "Scale": "0.1,0.1,3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "b7b84d3e-c004-4fcc-ae8d-f342a2513f3c",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "07664a90-174e-4afb-afb5-91035038d4d1",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-82.50018",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "741caba5-75bb-456c-9e5b-1fb7e178cdb1",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "16eae2f0-4866-4e41-91b7-b4a85431eff6",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-61.80722",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "08d55efb-56bf-4742-9e9d-a31affdad55f",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "dea32139-dfcc-47ce-9962-922ce91fcf9c",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-40.15488",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "9d3c4f84-73aa-4c58-97af-c8a2d371bc99",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "d8f4a0c5-03f0-4518-a04e-1cdc54361484",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-22.76086",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "b1b5647a-d8c9-43c1-8020-b8173a52cce9",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "c90cd706-0865-44fe-867a-c8d686c08350",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-6.409279",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "e2b50695-2234-4eef-9cee-1e50d91c9675",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "08a07f16-34be-41ac-8750-f428edc5aaea",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,11.14078",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "e877c8df-355b-43dd-a35d-ed75349690ae",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "4a2a4e3a-2747-49a1-bcf4-05e26b1ba262",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,27.36053",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "cf22eaea-0b1c-4b2c-a53f-d4234ef9a101",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "3142ccbc-16e8-49b3-8adf-36e455b0bee7",
+      "Flags": 0,
+      "Name": "Ladder (2)",
+      "Position": "-370.3323,596.1654,122.5823",
+      "Enabled": true,
+      "Children": [
+        {
+          "__guid": "2dc4e0f5-229a-4bec-a06d-f480ad576038",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "-14.59088,-27.31836,-35.07422",
+          "Scale": "0.1,0.1,3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "fe18f0a7-919b-40a5-b597-69cd25559b32",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "df9ab752-38cc-46f3-a2b6-deeb588dbe69",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "19.42499,-27.31836,-35.07422",
+          "Scale": "0.1,0.1,3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "bcf41d93-0608-4e0b-9eba-51ec8e59ff1d",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ea8782db-34bb-4035-9910-d497170be5ab",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-82.50018",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "47d7d57b-d6bf-4afd-8e6a-9dd88c4100a8",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b2bd593f-e472-4735-a907-f4ee9b14fff6",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-61.80722",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "434ea528-7ec0-4d87-ad11-b3c25b566c95",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9c56df69-7a00-4133-952d-b2f9a71e17ae",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-40.15488",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "69357248-98c0-4781-8681-816a4d642025",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "47db5459-6033-4faa-858b-c9a2cf4f51ab",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-22.76086",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "0da45f2e-0fc9-4b7f-bf9f-98e81ecfcb51",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "0ce61652-f235-42a4-82c0-bc024b194709",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-6.409279",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "44719a88-43ec-4077-80d8-448f3a2d4457",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "03e854e6-eb39-49bf-a66c-1ff2cc84dd5b",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,11.14078",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "6bcf3446-816a-4cb4-9ac3-f8f76cd73b28",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b5fd2a5c-8d0e-4a5f-9558-cee04dc09406",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,27.36053",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "9e97a0ab-d025-4152-bf04-43079787213f",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "fd39f66a-9ed6-44b9-a41f-c0643b41d174",
+      "Flags": 0,
+      "Name": "Ladder (3)",
+      "Position": "-489.0063,596.1654,122.5823",
+      "Enabled": true,
+      "Children": [
+        {
+          "__guid": "30069360-47ff-4b74-b968-968b3a42c69e",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "-14.59088,-27.31836,-35.07422",
+          "Scale": "0.1,0.1,3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "32fb049a-62f8-405e-9545-0e320d0a041a",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "051e5cd2-2f97-458f-b33c-186b2e3d84a8",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "19.42499,-27.31836,-35.07422",
+          "Scale": "0.1,0.1,3",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "77e574aa-d12d-4bfd-81a9-abde42ba326e",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "be7d67c9-551f-41ba-b66f-220928ff8d99",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-82.50018",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "a9713a06-3d44-4ed4-96e3-faf24f2a984f",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "93537eb4-1639-40c2-8b01-736db9e3f112",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-61.80722",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "722484bf-5b0c-4943-a07c-daee83e615ee",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "4989f197-098a-4bd3-9770-074696e14d28",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-40.15488",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "b445d73e-cfe9-43cc-9262-163d9aff38b2",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "a0be2614-4953-424a-afdd-987fa62f7b54",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-22.76086",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "214cf5e3-3ffa-4f21-8805-079fa62715ce",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "cb15b4e2-f67e-433e-9c3a-c940fbb8c5fb",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,-6.409279",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "3365d3f7-416b-4d44-aef6-05eb30b9dcb2",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "4b560e64-8207-4a10-94f4-fdcf9f2dc375",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,11.14078",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "01a6e7e2-6db1-4ac4-84d4-3e989740bdcc",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "112adbf2-d03c-46d7-9df9-e9871beb2847",
+          "Flags": 0,
+          "Name": "HandRailL",
+          "Position": "2.384613,-27.31836,27.36053",
+          "Scale": "0.75,0.05,0.05",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "94c8c88e-5b84-48e3-8703-fe6a29d9257d",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
     }
   ],
   "SceneProperties": {
