@@ -84,7 +84,6 @@ public sealed class NavigationLinkTraversal : Component
 			return;
 
 		agent.LinkEnter += OnNavLinkEnter;
-		agent.LinkExit += OnNavLinkExit;
 	}
 
 	protected override void OnDisabled()
@@ -94,15 +93,11 @@ public sealed class NavigationLinkTraversal : Component
 			return;
 
 		agent.LinkEnter -= OnNavLinkEnter;
-		agent.LinkExit -= OnNavLinkExit;
 	}
 
 	private void OnNavLinkEnter()
 	{
-		// We will drive GO animation ourlselves
-		Agent.UpdatePosition = false;
-
-		// If Link is a ladder and we are going up, climb it
+		// If link is a ladder and we are going up, climb it
 		if ( Agent.CurrentLinkTraversal.Value.LinkComponent.Tags.Has( "ladder" ) &&
 			Agent.CurrentLinkTraversal.Value.LinkExitPosition.z > WorldPosition.z )
 		{
@@ -110,18 +105,12 @@ public sealed class NavigationLinkTraversal : Component
 		}
 		else
 		{
-			// 50/50 chance of paraobolic jump or physics jump
+			// 50/50 chance of physics jump or paraobolic jump
 			if ( Random.Shared.Next( 0, 2 ) == 0 )
 				PhysicsJump();
 			else
 				ParabolicJump();
 		}
-	}
-
-	private void OnNavLinkExit()
-	{
-		// Let the agent drive the GO position
-		Agent.UpdatePosition = true;
 	}
 
 	private async void ClimbLadder()
@@ -132,38 +121,46 @@ public sealed class NavigationLinkTraversal : Component
 		var endVertical = start.WithZ( Agent.CurrentLinkTraversal.Value.LinkExitPosition.z );
 		var end = Agent.CurrentLinkTraversal.Value.LinkExitPosition;
 
-		var startTime = (start - initialPos).Length / 100f;
-		var ladderTime = (endVertical - start).Length / 100f;
-		var endTime = (end - endVertical).Length / 100f;
+		var climbSpeed = 100f;
 
-		var totalLadderTime = startTime + ladderTime + endTime;
+		var startDuration = (start - initialPos).Length / climbSpeed;
+		var climbDuration = (endVertical - start).Length / climbSpeed;
+		var endDuration = (end - endVertical).Length / climbSpeed;
+
+		var totalLadderTime = startDuration + climbDuration + endDuration;
 
 		TimeSince timeSinceStart = 0;
 
-		var previousPosition = WorldPosition;
+		var previousPosition = start;
 
 		while ( timeSinceStart < totalLadderTime )
 		{
-			if ( timeSinceStart < startTime )
+			var newPosition = previousPosition;
+
+			// 1. Make sure we are positioned at the link start
+			if ( timeSinceStart < startDuration )
 			{
-				WorldPosition = Vector3.Lerp( initialPos, start, timeSinceStart / startTime );
+				newPosition = Vector3.Lerp( initialPos, start, timeSinceStart / startDuration );
 			}
-			else if ( timeSinceStart < startTime + ladderTime )
+			// 2. Vertical Movement
+			else if ( timeSinceStart < startDuration + climbDuration )
 			{
-				WorldPosition = Vector3.Lerp( start, endVertical, (timeSinceStart - startTime) / ladderTime );
+				newPosition = Vector3.Lerp( start, endVertical, (timeSinceStart - startDuration) / climbDuration );
 			}
+			// 3. Move off ladder to link end position
 			else
 			{
-				WorldPosition = Vector3.Lerp( endVertical, end, (timeSinceStart - startTime - ladderTime) / endTime );
+				newPosition = Vector3.Lerp( endVertical, end, (timeSinceStart - startDuration - climbDuration) / endDuration );
 			}
 
-			Agent.Velocity = (WorldPosition - previousPosition) / Time.Delta;
-			previousPosition = WorldPosition;
+			Agent.Velocity = (newPosition - previousPosition) / Time.Delta;
+			Agent.SetAgentPosition( newPosition );
+			previousPosition = newPosition;
 
 			await Task.Frame();
 		}
 
-		WorldPosition = end;
+		Agent.SetAgentPosition( end );
 
 		Agent.CompleteLink();
 	}
@@ -190,25 +187,28 @@ public sealed class NavigationLinkTraversal : Component
 
 		TimeSince timeSinceStart = 0;
 
+		var previousPosition = start;
 
 		while ( timeSinceStart < duration )
 		{
 			var t = timeSinceStart / duration;
 
 			// Linearly interpolate XY positions
-			var position = Vector3.Lerp( start, end, t );
+			var newPosition = Vector3.Lerp( start, end, t );
 
 			// Apply parabolic curve to Z position using a quadratic function
 			var yOffset = 4f * peakHeight * t * (1f - t);
-			position.z = MathX.Lerp( start.z, end.z, t ) + yOffset;
+			newPosition.z = MathX.Lerp( start.z, end.z, t ) + yOffset;
 
-			Agent.Velocity = (position - WorldPosition) / Time.Delta;
-			WorldPosition = position;
+			Agent.Velocity = (newPosition - previousPosition) / Time.Delta;
+			Agent.SetAgentPosition( newPosition );
+			previousPosition = newPosition;
 
 			await Task.Frame();
 		}
 
-		WorldPosition = end;
+		Agent.Velocity = (end - previousPosition) / Time.Delta;
+		Agent.SetAgentPosition( end );
 
 		Model.Set( "b_grounded", true );
 		Model.Set( "b_jump", false );
@@ -216,13 +216,14 @@ public sealed class NavigationLinkTraversal : Component
 		Agent.CompleteLink();
 	}
 
-	private TimeUntil nextGround = 0;
-	private bool isGrounded = false;
 
 	private async void PhysicsJump()
 	{
 		Model.Set( "b_grounded", false );
 		Model.Set( "b_jump", true );
+
+		// Physiscs will drive our jump so disable game object position sync
+		Agent.UpdatePosition = false;
 
 		var start = Agent.CurrentLinkTraversal.Value.AgentInitialPosition;
 		var end = Agent.CurrentLinkTraversal.Value.LinkExitPosition;
@@ -230,35 +231,39 @@ public sealed class NavigationLinkTraversal : Component
 		var xyVelocity = Agent.MaxSpeed * (end.WithZ( 0 ) - start.WithZ( 0 )).Normal * 1.25f; 
 
 		var velocity = xyVelocity + Vector3.Up * Math.Max( 500f, (end.z - start.z) * 8f );
-
-		nextGround = 0.5f;
-		isGrounded = false;
-
+		// Launch the agent into the air
 		Body.Velocity = velocity;
 
-		while ( !FindGround() )
+		TimeSince timeSinceStart = 0;
+
+		while ( true )
 		{
 			Agent.Velocity = Body.Velocity;
+			Agent.SetAgentPosition( WorldPosition );
+
+			// Try to find ground
+			var tr = Scene.Trace.Ray( WorldPosition + Vector3.Up * 0.1f, WorldPosition + Vector3.Down * 1000 )
+				.IgnoreGameObjectHierarchy( GameObject )
+				.Run();
+
+			if ( tr.Hit && timeSinceStart > 0.5f && tr.Distance < 4f )
+			{
+				Agent.SetAgentPosition( WorldPosition );
+				break;
+			}
+
 			await Task.Frame();
 		}
-	}
 
-	private bool FindGround()
-	{
-		var tr = Scene.Trace.Ray( WorldPosition + Vector3.Up * 0.1f, WorldPosition + Vector3.Down * 1000 )
-			.IgnoreGameObjectHierarchy( GameObject )
-			.Run();
+		Agent.Velocity = Body.Velocity;
+		Agent.SetAgentPosition( WorldPosition );
 
-		if ( !isGrounded && tr.Hit && nextGround < 0 && tr.Distance < 4f )
-		{
-			isGrounded = true;
-			Model.Set( "b_grounded", true );
-			Model.Set( "b_jump", false );
-			Agent.SetAgentPosition( tr.EndPosition );
-			Agent.CompleteLink( tr.EndPosition );
-			return true;
-		}
+		// Hand back position control to the agent
+		Agent.UpdatePosition = true;
 
-		return false;
+		Model.Set( "b_grounded", true );
+		Model.Set( "b_jump", false );
+
+		Agent.CompleteLink();
 	}
 }
