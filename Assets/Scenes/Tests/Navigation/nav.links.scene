@@ -13,7 +13,15 @@
           "__guid": "9d8dd918-4734-4cd4-8d66-030a39c67c10",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -27,9 +35,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "41cd958b-8d09-42f1-bc28-94c511328759",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": true,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -50,6 +70,12 @@
           "ClearFlags": "All",
           "FieldOfView": 84.96,
           "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
@@ -69,6 +95,12 @@
           "FocalDistance": 419.06,
           "FocusRange": 500,
           "FrontBlur": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "QualityLevel": "High"
         },
         {
@@ -105,6 +137,12 @@
             }
           ],
           "Mode": "Additive",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Strength": 1.48,
           "Threshold": 0.73,
           "ThresholdWidth": 1
@@ -120,12 +158,24 @@
           "MaximumExposure": 2,
           "MinimumExposure": 1,
           "Mode": "Legacy",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Rate": 1
         },
         {
           "__type": "NoClip",
           "__guid": "3be2f556-6dbc-44cf-a94d-ca36c9d462e7",
-          "MoveSpeed": 600
+          "MoveSpeed": 600,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
         },
         {
           "__type": "Sandbox.CubemapFog",
@@ -136,6 +186,12 @@
           "HeightExponent": 2,
           "HeightStart": 2000,
           "HeightWidth": 0,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Sky": "materials/skybox/light_test_sky_sunny02.vmat",
           "StartDistance": 1024,
           "Tint": "1,1,1,1"
@@ -153,6 +209,12 @@
         {
           "__type": "Sandbox.SkyBox2D",
           "__guid": "f60f3358-b26a-4cef-9e85-1325a42faebd",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "SkyIndirectLighting": true,
           "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
           "Tint": "1,1,1,1"
@@ -174,6 +236,12 @@
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.91373,0.98039,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Shadows": true,
           "SkyColor": "0.05882,0.07451,0.08235,1"
         }
@@ -188,11 +256,19 @@
         {
           "__type": "Sandbox.SceneInformation",
           "__guid": "482c42c0-819c-4c7a-992c-2167b932bebf",
+          "Author": null,
           "Changes": "",
           "Description": "Navmesh areas and obstacles",
           "Group": "Navigation",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "SceneTags": "",
-          "Title": "Obstacles \u0026 Areas"
+          "Title": "Obstacles & Areas",
+          "Version": null
         }
       ]
     },
@@ -209,7 +285,15 @@
           "__guid": "e75450fb-8f5f-46ee-9d04-ba6b3d5d7078",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -223,9 +307,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "4d42e489-b513-4ffb-93c8-502410b38a4e",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -243,7 +339,15 @@
           "__guid": "8ebb46b5-d3fe-4e77-8a45-7835923d09b0",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -257,9 +361,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "e69297e5-7c17-4bd6-8ae5-322761f2eb1f",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -277,7 +393,15 @@
           "__guid": "e5e72b31-b64a-43b4-9d9d-4c5cbc7cd18a",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -291,9 +415,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "3458daf3-5cfb-4ba4-ab2c-e7977fcdcd8c",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -311,7 +447,15 @@
           "__guid": "85ab4e28-e6a6-4e23-849c-05be35f8d031",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -325,9 +469,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "b86de5be-5082-4fd3-aac6-52c86999d696",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -345,7 +501,15 @@
           "__guid": "3145449b-3cb7-4902-9877-8f5151f3f160",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -359,9 +523,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "008a03ae-f9d4-4653-8842-11dfd12f930e",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -379,7 +555,15 @@
           "__guid": "2b9a519f-4178-4815-98ff-bb97710b2d63",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -393,9 +577,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "3461f118-e4dc-4861-acc8-ecb684c62587",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -413,7 +609,15 @@
           "__guid": "2b359efc-d88a-4803-8485-c758fc20fc6e",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -427,9 +631,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "6e8e15b7-197d-4123-82a4-202db5e004de",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -447,7 +663,15 @@
           "__guid": "59382b8f-3424-40f5-b4ed-c838df53c76b",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -461,9 +685,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "8165cd66-281a-4d5f-9cda-3150e923a18a",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -482,7 +718,15 @@
           "__guid": "83b301e6-20b7-4100-bc7f-51da9b99283c",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -496,9 +740,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "117d977a-32e0-4774-8e8f-aab9dbf8ea12",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -517,7 +773,15 @@
           "__guid": "31f1d337-2bc8-469d-91da-00c10f272e95",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -531,9 +795,76 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "df16f6ed-d6a8-4d6a-bb26-bdb15913b123",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "c5d3a620-84cf-4cc8-9062-9f38b9309a12",
+      "Flags": 0,
+      "Name": "Cube (14)",
+      "Position": "93.10233,839.9301,8.750256",
+      "Rotation": "0,0,0.7071066,0.7071068",
+      "Scale": "6,0.833427,2",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "03bd0a97-cfb9-4391-837a-72c7c978ef50",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.30233,0.30233,0.30233,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "d00d8ed3-0104-4982-b802-bf6cf3aaa41c",
+          "Center": "0,0,0",
+          "Friction": null,
+          "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -542,9 +873,9 @@
       "__guid": "6714a961-e5d6-47a1-bf7f-23a7ce153980",
       "Flags": 0,
       "Name": "Cube (7)",
-      "Position": "91.51627,122.8848,114.9685",
+      "Position": "91.51625,22.26827,114.9685",
       "Rotation": "0,0,0.7071067,0.7071068",
-      "Scale": "34.43468,1.5,5",
+      "Scale": "30.13469,1.5,5",
       "Enabled": true,
       "Components": [
         {
@@ -552,7 +883,15 @@
           "__guid": "cb0c0222-bc09-4435-ace5-0c427d68fdcb",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -566,9 +905,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "049d7d74-3ce6-4ae2-b7cc-a27216ada7b2",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -586,7 +937,15 @@
           "__guid": "a2ccd73f-c876-4261-bbf8-f7a92cddeac3",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -600,9 +959,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "86c217d3-5863-48ae-a911-c072a0d89d5e",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -621,7 +992,15 @@
           "__guid": "9233a225-1cae-4237-a45e-49a94ac1c490",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -635,9 +1014,21 @@
           "__type": "Sandbox.BoxCollider",
           "__guid": "afe4902e-59c9-465b-adf5-ce6bc1b3a1c0",
           "Center": "0,0,0",
+          "Friction": null,
           "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
           "Scale": "50,50,50",
           "Static": false,
+          "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
       ]
@@ -659,8 +1050,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "f761a7ce-bc1a-41a9-a061-049cefca1eb7",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "-26.87051,-3.991089,34",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "26.87051,3.99115,-34"
             }
           ]
@@ -676,8 +1073,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "d1010c31-cb7e-4f5e-a6fe-fc437bf6dbdb",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "-19.30955,4.614136,35",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "19.30955,-4.614075,-34.99998"
             }
           ]
@@ -693,8 +1096,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "ffd4371b-9494-4ca8-881a-c094f30a2516",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "-19.27177,8.879639,35",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "19.27177,-8.879578,-34.99998"
             }
           ]
@@ -710,8 +1119,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "aa12f3f8-c230-4dac-92c3-d39d50958fb2",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "-19.27177,12.28552,35",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "19.27177,-12.28546,-34.99998"
             }
           ]
@@ -727,8 +1142,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "b0f93867-7529-4cb7-bb70-2b5ff2b9ed49",
               "ConnectionRadius": 16,
-              "IsBiDirectional": false,
               "End": "-10.80388,36.94696,-69.19447",
+              "IsBiDirectional": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "10.80388,-36.94696,69.19447"
             }
           ]
@@ -744,8 +1165,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "9c826fec-758c-4a0b-8180-b263778e03a3",
               "ConnectionRadius": 16,
-              "IsBiDirectional": false,
               "End": "-41.12386,2.064148,-69.19447",
+              "IsBiDirectional": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "41.12386,-2.064209,69.19447"
             }
           ]
@@ -754,15 +1181,21 @@
           "__guid": "91f4108c-1a87-480b-a5eb-74cf8483441a",
           "Flags": 0,
           "Name": "Link (4)",
-          "Position": "103.1199,740.5689,25.0379",
+          "Position": "103.1199,898.2231,25.0379",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.NavMeshLink",
               "__guid": "62792c1e-2cae-4bce-b66a-274d24267f2f",
               "ConnectionRadius": 16,
-              "IsBiDirectional": false,
               "End": "73.84691,2.625916,0",
+              "IsBiDirectional": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-73.84691,-2.625916,0"
             }
           ]
@@ -778,8 +1211,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "c9e17145-d616-4b75-8fb2-b2c148e5bd32",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "-2.05069,23.9697,17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "2.05072,-23.9697,-17"
             }
           ]
@@ -795,8 +1234,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "d43d2025-d0eb-45de-a7be-a81ae3381a21",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "-2.05069,23.9697,17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "2.05072,-23.9697,-17"
             }
           ]
@@ -812,8 +1257,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "2f95e445-3756-4814-adbf-eb900e64cc69",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "-2.05069,23.9697,17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "2.05072,-23.9697,-17"
             }
           ]
@@ -829,8 +1280,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "9a8623bc-2c09-4c13-bb19-ae5ce9ef3d5f",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "-2.05069,23.9697,17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "2.05072,-23.9697,-17"
             }
           ]
@@ -846,8 +1303,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "26c42f24-e432-492d-bfc9-539335cec897",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "-3.604248,32.43176,-17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "3.604187,-32.43176,17"
             }
           ]
@@ -863,8 +1326,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "45b0c5ca-a650-4777-be4e-20d88ea32eeb",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "3.408997,32.43176,-17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-3.409058,-32.43176,17"
             }
           ]
@@ -880,8 +1349,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "8695f484-85a7-4858-b2c0-87dd6723ccd8",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "3.408997,32.43176,-17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-3.409058,-32.43176,17"
             }
           ]
@@ -897,8 +1372,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "957c5532-4e79-4f2c-a20d-7e238383b384",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "3.408997,32.43176,-17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-3.409058,-32.43176,17"
             }
           ]
@@ -907,16 +1388,22 @@
           "__guid": "7868b809-c9c8-4f49-8ada-b6569ed6de28",
           "Flags": 0,
           "Name": "Link (7)",
-          "Position": "606.2129,72.74608,42.0379",
+          "Position": "604.0414,61.58416,42.0379",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.NavMeshLink",
               "__guid": "46d5639d-d94b-417c-a29a-538f9c2f9ffb",
               "ConnectionRadius": 16,
+              "End": "-5.077637,28.00694,-17",
               "IsBiDirectional": true,
-              "End": "-2.906067,39.16884,-17",
-              "Start": "2.906128,-39.16885,17"
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Start": "5.077637,-28.00693,17"
             }
           ]
         },
@@ -924,16 +1411,22 @@
           "__guid": "27c7f733-ef12-4846-998b-f499e19a566a",
           "Flags": 0,
           "Name": "Link (7)",
-          "Position": "886.149,72.74608,42.0379",
+          "Position": "886.7288,63.44873,42.0379",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.NavMeshLink",
               "__guid": "ce1db7d9-a80b-48ac-8243-fcb2fa94a6bc",
               "ConnectionRadius": 16,
+              "End": "-2.326355,29.87151,-17",
               "IsBiDirectional": true,
-              "End": "-2.906067,39.16884,-17",
-              "Start": "2.906128,-39.16885,17"
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Start": "2.326355,-29.8715,17"
             }
           ]
         },
@@ -948,8 +1441,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "fab7b6eb-964a-47ad-9801-74edf522ec54",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "8.415955,-31.21548,-17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-8.415955,31.21548,17"
             }
           ]
@@ -965,8 +1464,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "73cf58e0-17e5-458b-b226-0134e01147e5",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "3.033936,-23.69504,-17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-3.033936,23.69504,17"
             }
           ]
@@ -982,8 +1487,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "9fb6f499-0bef-4944-a7cb-806a2d69100a",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "3.033936,-23.69504,-17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-3.033936,23.69504,17"
             }
           ]
@@ -999,8 +1510,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "e9566c71-622d-4a14-946b-0a86a5bb6959",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "5.806671,-26.43285,-17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-5.806702,26.43286,17"
             }
           ]
@@ -1016,8 +1533,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "11fc37ad-8808-40d7-87a1-4d971cfa48b3",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "3.065308,-31.12756,-17",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-3.065308,31.12756,17"
             }
           ]
@@ -1026,16 +1549,22 @@
           "__guid": "618ba81a-84cb-4fb0-88b9-234de92e3e04",
           "Flags": 0,
           "Name": "Link (10)",
-          "Position": "432.2932,75.22623,42.0379",
+          "Position": "432.6795,64.45241,42.0379",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.NavMeshLink",
               "__guid": "345b54e0-c47c-42a4-80d6-867b670ca99e",
               "ConnectionRadius": 16,
+              "End": "0.4888611,32.22797,-17",
               "IsBiDirectional": true,
-              "End": "0.1025696,43.00179,-17",
-              "Start": "-0.1025696,-43.00179,17"
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Start": "-0.4888611,-32.22797,17"
             }
           ]
         },
@@ -1043,16 +1572,22 @@
           "__guid": "a8d87a7f-ba96-4616-b706-0709df2cc9f9",
           "Flags": 0,
           "Name": "Link (10)",
-          "Position": "266.8304,75.22623,42.0379",
+          "Position": "261.1929,62.87103,42.0379",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.NavMeshLink",
               "__guid": "5bac58ed-4faa-40cf-9d18-842718bc1a8c",
               "ConnectionRadius": 16,
+              "End": "-5.534943,30.64658,-17",
               "IsBiDirectional": true,
-              "End": "0.1025696,43.00179,-17",
-              "Start": "-0.1025696,-43.00179,17"
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Start": "5.534973,-30.64659,17"
             }
           ]
         },
@@ -1067,8 +1602,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "0bab6a28-688f-4734-a44e-2176d2aef77e",
               "ConnectionRadius": 16,
-              "IsBiDirectional": false,
               "End": "2.655304,-31.99625,-69",
+              "IsBiDirectional": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-2.655304,31.99628,69"
             }
           ]
@@ -1084,8 +1625,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "5fb0d755-1157-4de9-92d3-05d50ee9c8a6",
               "ConnectionRadius": 16,
-              "IsBiDirectional": false,
               "End": "-4.037125,-31.99625,-69",
+              "IsBiDirectional": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "4.03714,31.99628,69"
             }
           ]
@@ -1101,8 +1648,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "88b4d01b-cd6b-4743-8c9c-7c0276407283",
               "ConnectionRadius": 16,
-              "IsBiDirectional": false,
               "End": "5.695099,-25.35791,69",
+              "IsBiDirectional": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-5.695099,25.35785,-69"
             }
           ]
@@ -1118,8 +1671,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "75c7e080-9706-418d-97c7-76b6a8f1e38b",
               "ConnectionRadius": 16,
-              "IsBiDirectional": false,
               "End": "16.1041,-30.62726,69",
+              "IsBiDirectional": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-16.1041,30.6272,-69"
             }
           ]
@@ -1135,8 +1694,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "6bed39ad-10d8-44e1-b1a7-9d5076370086",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "-17.49677,-20.93964,34",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "17.49677,20.9397,-34"
             }
           ]
@@ -1145,16 +1710,22 @@
           "__guid": "6a73db39-c027-4a7d-b2d6-b8c1eba5fb11",
           "Flags": 0,
           "Name": "Link (14)",
-          "Position": "-488.8057,571.6664,94.0379",
+          "Position": "-489.8085,590.511,94.0379",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.NavMeshLink",
               "__guid": "3b6a97ac-dc2e-45be-bffa-eaed11876bc1",
               "ConnectionRadius": 16,
+              "End": "7.958099,-38.88623,69",
               "IsBiDirectional": false,
-              "End": "6.955261,-20.04163,69",
-              "Start": "-6.955261,20.04163,-69"
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Start": "-7.958069,38.88623,-69"
             }
           ]
         },
@@ -1169,8 +1740,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "86f9ca3d-6147-46a8-a2ad-8907fb63e73e",
               "ConnectionRadius": 16,
-              "IsBiDirectional": false,
               "End": "-19.78595,-29.36728,-69",
+              "IsBiDirectional": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "19.78595,29.36725,69"
             }
           ]
@@ -1186,8 +1763,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "095e4dff-b1e5-4452-9dfc-a827955bae75",
               "ConnectionRadius": 16,
-              "IsBiDirectional": true,
               "End": "-3.026886,-23.28851,34",
+              "IsBiDirectional": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "3.026886,23.28857,-34"
             }
           ]
@@ -1203,8 +1786,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "f1ddbefa-c8b3-4e5d-957b-72a8b09be395",
               "ConnectionRadius": 16,
-              "IsBiDirectional": false,
               "End": "-24.95203,23.35687,-69.19447",
+              "IsBiDirectional": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "24.95203,-23.35687,69.19447"
             }
           ]
@@ -1213,16 +1802,22 @@
           "__guid": "1c4ba773-136d-42ae-ac45-eee101512a7d",
           "Flags": 0,
           "Name": "Link (18)",
-          "Position": "-365.2954,574.4777,94.0379",
+          "Position": "-367.8796,588.3561,94.0379",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.NavMeshLink",
               "__guid": "a7b93bdd-826e-447c-b92a-4e5111ccb785",
               "ConnectionRadius": 16,
+              "End": "-3.669067,-36.35608,69",
               "IsBiDirectional": false,
-              "End": "-6.253296,-22.47772,69",
-              "Start": "6.253296,22.47772,-69"
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Start": "3.669067,36.35608,-69"
             }
           ]
         },
@@ -1237,8 +1832,14 @@
               "__type": "Sandbox.NavMeshLink",
               "__guid": "595a346a-64e7-44c3-a107-e82d94635987",
               "ConnectionRadius": 16,
-              "IsBiDirectional": false,
               "End": "28.58798,-24.40411,-69",
+              "IsBiDirectional": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Start": "-28.58801,24.40411,69"
             }
           ]
@@ -1610,7 +2211,7 @@
     "TimeScale": 1,
     "UseFixedUpdate": true,
     "Metadata": {
-      "Title": "Obstacles \u0026 Areas",
+      "Title": "Obstacles & Areas",
       "Description": "Navmesh areas and obstacles",
       "Group": "Navigation"
     },
@@ -1628,7 +2229,7 @@
     }
   },
   "ResourceVersion": 2,
-  "Title": "Obstacles \u0026 Areas",
+  "Title": "Obstacles & Areas",
   "Description": "Navmesh areas and obstacles",
   "__references": [],
   "__version": 2
