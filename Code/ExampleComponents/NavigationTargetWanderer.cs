@@ -162,7 +162,7 @@ public sealed class NavigationLinkTraversal : Component
 
 		Agent.SetAgentPosition( end );
 
-		Agent.CompleteLink();
+		Agent.CompleteLinkTraversal();
 	}
 
 	private async void ParabolicJump()
@@ -213,7 +213,7 @@ public sealed class NavigationLinkTraversal : Component
 		Model.Set( "b_grounded", true );
 		Model.Set( "b_jump", false );
 
-		Agent.CompleteLink();
+		Agent.CompleteLinkTraversal();
 	}
 
 
@@ -264,6 +264,6 @@ public sealed class NavigationLinkTraversal : Component
 		Model.Set( "b_grounded", true );
 		Model.Set( "b_jump", false );
 
-		Agent.CompleteLink();
+		Agent.CompleteLinkTraversal();
 	}
 }
