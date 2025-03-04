@@ -46,6 +46,8 @@
 
 @code
 {
+    [Parameter, EditorRequired] public RenderFragment Body { get; set; }
+
     void OpenScene( SceneFile file )
     {
         Game.ActiveScene.Load(file);
