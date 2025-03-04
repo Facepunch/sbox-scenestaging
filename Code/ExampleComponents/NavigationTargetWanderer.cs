@@ -160,6 +160,7 @@ public sealed class NavigationLinkTraversal : Component
 			await Task.Frame();
 		}
 
+		Agent.Velocity = (end - previousPosition) / Time.Delta;
 		Agent.SetAgentPosition( end );
 
 		Agent.CompleteLinkTraversal();
