@@ -9,13 +9,7 @@ namespace Sandbox;
 ///     * MetaData
 ///     * List of Grids
 /// </summary>
-[GameResource( 
-	"NanoVDB", 
-	"nvdb", 
-	"Sparse Volumetric Data", 
-	Icon = "cloud_circle", 
-	Category="Rendering" ) ]
-public partial class NanoVDB : Resource
+public partial class NanoVDB
 
 {
     public Header FileHeader { get; set; }
