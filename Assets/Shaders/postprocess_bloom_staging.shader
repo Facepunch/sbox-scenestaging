@@ -112,8 +112,8 @@ PS
         ColorBuffer.GetDimensions(0, width, height, mipLevels);
         
         // Bloom contribution parameters
-        const float bloomIntensity = Strength;    // Overall bloom strength
-        const float falloffScale = 1.0 - ( Threshold * 0.5 );      // Controls how quickly bloom fades across mips
+        const float bloomIntensity = Strength * 0.1f;    // Overall bloom strength
+        const float falloffScale = Threshold + 0.1f;      // Controls how quickly bloom fades across mips
         const float gammaCorrection = 2.2f;   // Gamma space for color accuracy
         
         [unroll]
@@ -126,7 +126,8 @@ PS
             float3 bloomSample = max( pow(sample, gammaCorrection), 0 );
             
             // Calculate falloff based on mip level (larger mips = wider blur, less contribution)
-            float mipWeight = ( (float)i * falloffScale ) / (float)mipLevels; // Exponential decay for smooth falloff
+            float mipWeight = ( (float)i ) / (float)mipLevels; // Exponential decay for smooth falloff
+            mipWeight = pow( mipWeight,  falloffScale * falloffScale ); // Apply falloff scale
 
             // Accumulate bloom with weight
             vBloomColor.rgb += bloomSample * mipWeight;
