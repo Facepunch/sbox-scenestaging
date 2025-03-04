@@ -236,7 +236,6 @@ public sealed class NavigationLinkTraversal : Component
 
 			if ( tr.Hit && timeSinceStart > 0.5f && tr.Distance < 4f )
 			{
-				Agent.SetAgentPosition( WorldPosition );
 				break;
 			}
 
