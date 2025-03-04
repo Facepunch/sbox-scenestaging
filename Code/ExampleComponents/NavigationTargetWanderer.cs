@@ -59,8 +59,6 @@ public sealed class NavigationTargetWanderer : Component
 			_timeSinceLastTargetChange = 0;
 		}
 	}
-
-
 }
 
 public sealed class NavigationLinkTraversal : Component
@@ -131,11 +129,9 @@ public sealed class NavigationLinkTraversal : Component
 
 		TimeSince timeSinceStart = 0;
 
-		var previousPosition = start;
-
 		while ( timeSinceStart < totalLadderTime )
 		{
-			var newPosition = previousPosition;
+			Vector3 newPosition = start;
 
 			// 1. Make sure we are positioned at the link start
 			if ( timeSinceStart < startDuration )
@@ -153,14 +149,11 @@ public sealed class NavigationLinkTraversal : Component
 				newPosition = Vector3.Lerp( endVertical, end, (timeSinceStart - startDuration - climbDuration) / endDuration );
 			}
 
-			Agent.Velocity = (newPosition - previousPosition) / Time.Delta;
 			Agent.SetAgentPosition( newPosition );
-			previousPosition = newPosition;
 
 			await Task.Frame();
 		}
 
-		Agent.Velocity = (end - previousPosition) / Time.Delta;
 		Agent.SetAgentPosition( end );
 
 		Agent.CompleteLinkTraversal();
@@ -188,8 +181,6 @@ public sealed class NavigationLinkTraversal : Component
 
 		TimeSince timeSinceStart = 0;
 
-		var previousPosition = start;
-
 		while ( timeSinceStart < duration )
 		{
 			var t = timeSinceStart / duration;
@@ -201,14 +192,11 @@ public sealed class NavigationLinkTraversal : Component
 			var yOffset = 4f * peakHeight * t * (1f - t);
 			newPosition.z = MathX.Lerp( start.z, end.z, t ) + yOffset;
 
-			Agent.Velocity = (newPosition - previousPosition) / Time.Delta;
 			Agent.SetAgentPosition( newPosition );
-			previousPosition = newPosition;
 
 			await Task.Frame();
 		}
 
-		Agent.Velocity = (end - previousPosition) / Time.Delta;
 		Agent.SetAgentPosition( end );
 
 		Model.Set( "b_grounded", true );
@@ -239,7 +227,6 @@ public sealed class NavigationLinkTraversal : Component
 
 		while ( true )
 		{
-			Agent.Velocity = Body.Velocity;
 			Agent.SetAgentPosition( WorldPosition );
 
 			// Try to find ground
@@ -256,7 +243,6 @@ public sealed class NavigationLinkTraversal : Component
 			await Task.Frame();
 		}
 
-		Agent.Velocity = Body.Velocity;
 		Agent.SetAgentPosition( WorldPosition );
 
 		// Hand back position control to the agent
