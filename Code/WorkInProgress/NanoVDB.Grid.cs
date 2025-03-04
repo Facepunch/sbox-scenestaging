@@ -92,8 +92,6 @@ public partial class NanoVDB
                 if( header.Data2 != Magic.Grid )
                     throw new Exception( "Expected NANOVDB_MAGIC_GRID on Data2" );
                     
-                Log.Info( $"Grid: {header}" );
-
                 return header;
             }
         }
