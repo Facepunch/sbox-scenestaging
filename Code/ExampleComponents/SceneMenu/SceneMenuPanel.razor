@@ -6,39 +6,35 @@
 
 <root>
 
-    <div class="left">
-
-        <div class="title">
-            Scene Tests
-        </div>
-
-        <div class="explanation">
-            <p>
-                The scenes below are used as tests and examples of the scene system. 
-            </p>
-
-            <p>
-                Click a scene to enter it - press escape to return to this menu.
-            </p>
-        </div>
-
+    <div class="header">
+        <div class="title">Scene Tests</div>
+        <div class="explanation">The scenes below are used as tests and examples of the scene system. Press escape to leave the scene. Hold escape to leave the game.</div>
     </div>
 
-    <div class="scene-list">
+    <div class="body">
 
-        @foreach( var group in ResourceLibrary.GetAll<SceneFile>().Where( x => x.ResourcePath.Contains( "/tests/" )).GroupBy( x => x.GetMetadata( "Group", "None" ) ).OrderBy( x => x.Key ) )
-        {
-            <div class="group">
-                <h1>@group.Key</h1>
+        <div class="sidebar">
 
-                <div class="scenes">
-                    @foreach( var scene in group.OrderBy( x => x.GetMetadata( "Title" ) ) )
-                    {
-                        <SceneButton Scene="@scene" OnSelected=@OpenScene></SceneButton> 
-                    }
+            @foreach (var group in ResourceLibrary.GetAll<SceneFile>().Where(x => x.ResourcePath.Contains("/tests/")).GroupBy(x => x.GetMetadata("Group", "None")).OrderBy(x => x.Key))
+            {
+                var c = SceneCategory == group.Key ? "active" : "";
+
+                <div class="option @c" @onclick="@(() => SceneCategory = group.Key)">
+                    <label class="name">@group.Key</label>
+                    <label class="count">@group.Count()</label>
                 </div>
-            </div>
-        }
+            }
+
+        </div>
+
+        <div class="scene-list">
+
+            @foreach (var scene in ResourceLibrary.GetAll<SceneFile>().Where(x => x.ResourcePath.Contains("/tests/") && x.GetMetadata("Group", "None") == SceneCategory).OrderBy(x => x.GetMetadata("Title")))
+            {
+                <SceneButton Scene="@scene" OnSelected=@OpenScene></SceneButton> 
+            }
+
+        </div>
 
     </div>
 
@@ -46,7 +42,11 @@
 
 @code
 {
+    [ConVar( "testbed_category", ConVarFlags.Saved )]
+    public static string SceneCategory { get; set; } = "Fog";
+
     [Parameter, EditorRequired] public RenderFragment Body { get; set; }
+
 
     void OpenScene( SceneFile file )
     {

@@ -1,136 +1,91 @@
 
 SceneMenuPanel
 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #333;
-    pointer-events: all;
-    flex-direction: row;
-    padding: 0px 60px;
-    color: #ccc;
-    font-family: Poppins;
-    font-size: 14px;
-
-
-    .left
-    {
-        width: 400px;
-        flex-direction: column;
-        padding-top: 100px;
-        padding-right: 50px;
-
-        > .title
-        {
-            font-size: 40px;
-            font-weight: bold;
-        }
-
-        > .explanation
-        {
-            color: #aaaa;
-            font-size: 17px;
-            margin-bottom: 50px;
-            width: 100%;
-            flex-direction: column;
-            gap: 20px;
-        }
-    }
-
-    .scene-list
-    {
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: 50px 0px;
-        gap: 2rem;
-        overflow: scroll;
-        align-items: flex-end;
-
-        > *
-        {
-            flex-shrink: 0;
-        }
-
-        .group
-        {
-            flex-direction: column;
-            flex-grow: 1;
-            min-width: 300px;
-            max-width: 30%;
-
-            h1
-            {
-                padding: 10px 20px;
-                font-weight: bold;
-                font-size: 12px;
-                color: #fff;
-            }
-
-            .scenes
-            {
-                flex-direction: row;
-                flex-wrap: wrap;
-                align-content: stretch;
-                gap: 3px;
-                border-radius: 10px;
-                overflow: hidden;
-            }
-        }
-    }
-
-    .lobby-list
-    {
-        width: 500px;
-        flex-direction: column;
-        margin: 20px;
-        overflow: scroll;
-        gap: 5px;
-    }
-
-    .header
-    {
-        margin-bottom: 10px;
-        font-size: 20px;
-        width: 100%;
-        font-weight: bold;
-    }
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #333;
+	pointer-events: all;
+	flex-direction: column;
+	padding: 0px 60px;
+	color: #ccc;
+	font-family: Poppins;
+	font-size: 14px;
 }
 
-
-SceneButton
+.header
 {
-    cursor: pointer;
-    flex-direction: row;
-    flex-grow: 1;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.1s ease-out;
-    padding: 10px 20px;
-    background-color: #555;
-    color: #aaa;
+	flex-direction: column;
+	padding: 5rem;
+	padding-bottom: 0;
 
-    .title
-    {
-        font-size: 17px;
-        font-family: Poppins;
-        font-weight: normal;
-    }
-
-    &:hover
-    {
-        opacity: 1;
-        background-color: #3555d2;
-        color: #fff;
-        sound-in: ui.button.over;
-    }
-
-    &:active
-    {
-        background-color: #fff;
-        color: #666;
-        sound-in: ui.button.press;
-    }
+	.title
+	{
+		font-size: 32px;
+		font-family: Poppins;
+		font-weight: bold;
+	}
 }
+
+.body
+{
+	flex-direction: row;
+	padding: 4rem;
+	flex-grow: 1;
+	gap: 2rem;
+}
+
+.sidebar
+{
+	flex-direction: column;
+	flex-shrink: 0;
+	padding: 1rem;
+	width: 300px;
+	background-color: #0006;
+	border-radius: 8px;
+	justify-content: flex-start;
+
+	.option
+	{
+		flex-grow: 0;
+		flex-shrink: 0;
+		cursor: pointer;
+		opacity: 0.4;
+		padding: 5px 10px;
+		font-weight: 550;
+		border-radius: 5px;
+
+		.name
+		{
+			flex-grow: 1;
+		}
+
+		&:hover
+		{
+			opacity: 1;
+			background-color: #3273eb22;
+			color: white;
+		}
+
+		&.active
+		{
+			opacity: 1;
+			background-color: #3273eb;
+			color: white;
+			font-weight: bold;
+		}
+	}
+}
+
+.scene-list
+{
+	flex-wrap: wrap;
+	gap: 1rem;
+	padding: 2rem;
+	background-color: #0006;
+	flex-grow: 1;
+	border-radius: 8px;
+}
+

@@ -101,7 +101,7 @@
                 "DstName": "_target"
               },
               {
-                "Id": 77,
+                "Id": 78,
                 "Value": "0,0.01667,1,1",
                 "DstId": 74,
                 "DstName": "_value"
@@ -160,6 +160,7 @@
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
           "ClearFlags": "All",
           "FieldOfView": 60,
+          "FovAxis": "Horizontal",
           "IsMainCamera": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -178,6 +179,31 @@
           "ZNear": 10
         }
       ]
+    },
+    {
+      "__guid": "f64953e3-5996-47ed-ac39-774805297c47",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "7c8ce541-4b85-4eeb-acb5-2486bde8be72",
+          "Author": null,
+          "Changes": "",
+          "Description": "",
+          "Group": "Action Graph",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneTags": "",
+          "Title": "Prefab Test",
+          "Version": null
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -189,7 +215,10 @@
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
-    "Metadata": {},
+    "Metadata": {
+      "Title": "Prefab Test",
+      "Group": "Action Graph"
+    },
     "NavMesh": {
       "Enabled": false,
       "IncludeStaticBodies": true,
@@ -204,7 +233,7 @@
     }
   },
   "ResourceVersion": 2,
-  "Title": null,
+  "Title": "Prefab Test",
   "Description": null,
   "__references": [],
   "__version": 2

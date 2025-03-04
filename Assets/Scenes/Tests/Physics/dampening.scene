@@ -16,6 +16,7 @@
           "BackgroundColor": "0,0,0,1",
           "ClearFlags": "All",
           "FieldOfView": 60,
+          "FovAxis": "Horizontal",
           "IsMainCamera": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -229,6 +230,31 @@
       "Flags": 0,
       "Name": "GameObject",
       "Enabled": true
+    },
+    {
+      "__guid": "54cafc91-4fa9-43ef-9870-46a853bca7e9",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "9954b4dd-e215-4b07-b583-e3168d46fdb0",
+          "Author": null,
+          "Changes": "",
+          "Description": "Test to make sure our dampening functions work correctly at any timestep",
+          "Group": "Debug",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneTags": "",
+          "Title": "Dampening",
+          "Version": null
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -240,7 +266,11 @@
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
-    "Metadata": {},
+    "Metadata": {
+      "Title": "Dampening",
+      "Description": "Test to make sure our dampening functions work correctly at any timestep",
+      "Group": "Debug"
+    },
     "NavMesh": {
       "Enabled": false,
       "IncludeStaticBodies": true,
@@ -255,8 +285,8 @@
     }
   },
   "ResourceVersion": 2,
-  "Title": null,
-  "Description": null,
+  "Title": "Dampening",
+  "Description": "Test to make sure our dampening functions work correctly at any timestep",
   "__references": [],
   "__version": 2
 }

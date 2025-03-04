@@ -221,7 +221,7 @@
           "Author": null,
           "Changes": "",
           "Description": "Happy Little Clouds\nProof of concept reference implementation, currently renders at full resolution with no temporal integration.",
-          "Group": null,
+          "Group": "Rendering",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -278,7 +278,8 @@
     "UseFixedUpdate": true,
     "Metadata": {
       "Title": "Volumetric Rendering",
-      "Description": "Happy Little Clouds\nProof of concept reference implementation, currently renders at full resolution with no temporal integration."
+      "Description": "Happy Little Clouds\nProof of concept reference implementation, currently renders at full resolution with no temporal integration.",
+      "Group": "Rendering"
     },
     "NavMesh": {
       "Enabled": false,
