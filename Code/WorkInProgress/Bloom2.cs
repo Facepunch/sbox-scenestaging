@@ -12,6 +12,7 @@ public class Bloom2 : PostProcess, Component.ExecuteInEditor
 
     [Range( 0, 2 )]
     [Property, MakeDirty] public float Threshold { get; set; } = 0.5f;
+    [Property, MakeDirty, Range( 1.5f, 2.2f) ] public float Gamma { get; set; } = 2.2f;
     [Property, MakeDirty] public Color Tint { get; set; } = Color.White;
 
 
@@ -46,6 +47,7 @@ public class Bloom2 : PostProcess, Component.ExecuteInEditor
 
         Commands.Set( "Threshold", Threshold );
         Commands.Set( "Strength", Strength );
+        Commands.Set( "Gamma", Gamma );
         Commands.Set( "CompositeMode", (int)Mode );
         Commands.Set( "Tint", Tint );
 
