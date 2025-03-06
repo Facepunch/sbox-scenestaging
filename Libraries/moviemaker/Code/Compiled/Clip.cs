@@ -8,29 +8,29 @@ namespace Sandbox.MovieMaker.Compiled;
 /// <summary>
 /// An immutable compiled <see cref="IClip"/> designed to be serialized.
 /// </summary>
-public sealed partial class Clip : IClip
+public sealed partial class CompiledClip : IClip
 {
 	/// <summary>
 	/// A clip with no tracks.
 	/// </summary>
-	public static Clip Empty { get; } = new();
+	public static CompiledClip Empty { get; } = new();
 
 	private readonly ImmutableDictionary<Guid, ReferenceTrack> _referenceTracks;
 
 	/// <inheritdoc cref="IClip.Tracks"/>
-	public ImmutableArray<Track> Tracks { get; }
+	public ImmutableArray<CompiledTrack> Tracks { get; }
 
 	public MovieTime Duration { get; }
 
-	public Clip( params Track[] tracks )
+	public CompiledClip( params CompiledTrack[] tracks )
 		: this( tracks.AsEnumerable() )
 	{
 
 	}
 
-	public Clip( IEnumerable<Track> tracks )
+	public CompiledClip( IEnumerable<CompiledTrack> tracks )
 	{
-		var allTracks = new HashSet<Track>();
+		var allTracks = new HashSet<CompiledTrack>();
 
 		// Find all root tracks
 

@@ -11,7 +11,7 @@ partial class ProjectTrack
 {
 	public KeyframeCurve? Keyframes { get; set; }
 
-	public IEnumerable<PropertyBlock> CompileKeyframes()
+	public IEnumerable<CompiledPropertyBlock> CompileKeyframes()
 	{
 
 	}

@@ -9,8 +9,8 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 /// <summary>
-/// All the info needed to compile a <see cref="CompiledMovieClip"/>. Gets serialized
-/// and stored in <see cref="IMovieSource.EditorData"/>.
+/// All the info needed to compile a <see cref="CompiledClip"/>. Gets serialized
+/// and stored in <see cref="IMovieResource.EditorData"/>.
 /// </summary>
 public sealed class MovieProject : IJsonPopulator
 {
@@ -27,19 +27,19 @@ public sealed class MovieProject : IJsonPopulator
 		throw new NotImplementedException();
 	}
 
-	public Clip Compile()
+	public CompiledClip Compile()
 	{
-		var result = new Dictionary<ProjectTrack, Track>();
+		var result = new Dictionary<ProjectTrack, CompiledTrack>();
 
 		foreach ( var track in RootTracks )
 		{
 			CompileTrack( track, result );
 		}
 
-		return new Clip( result.Values );
+		return new CompiledClip( result.Values );
 	}
 
-	private void CompileTrack( ProjectTrack track, Dictionary<ProjectTrack, Track> result ) =>
+	private void CompileTrack( ProjectTrack track, Dictionary<ProjectTrack, CompiledTrack> result ) =>
 		result.Add( track, track.Compile( track.Parent is { } parent ? result[parent] : null ) );
 
 	public JsonNode Serialize()
@@ -52,7 +52,12 @@ public sealed class MovieProject : IJsonPopulator
 		throw new NotImplementedException();
 	}
 
-	public ProjectTrack AddTrack( string name, Type propertyType, ProjectTrack? parentTrack = null )
+	public ProjectReferenceTrack AddReferenceTrack( string name, Type targetType, ProjectTrack? parentTrack = null )
+	{
+		throw new NotImplementedException();
+	}
+
+	public ProjectPropertyTrack AddPropertyTrack( string name, Type targetType, ProjectTrack? parentTrack = null )
 	{
 		throw new NotImplementedException();
 	}

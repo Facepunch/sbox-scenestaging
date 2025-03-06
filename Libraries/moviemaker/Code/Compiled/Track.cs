@@ -7,7 +7,7 @@ namespace Sandbox.MovieMaker.Compiled;
 #nullable enable
 
 /// <inheritdoc cref="ITrack"/>
-public abstract record Track( string Name, Type TargetType, Track? Parent ) : ITrack
+public abstract record CompiledTrack( string Name, Type TargetType, CompiledTrack? Parent ) : ITrack
 {
 	ITrack? ITrack.Parent => Parent;
 
@@ -34,7 +34,7 @@ public abstract record Track( string Name, Type TargetType, Track? Parent ) : IT
 
 /// <inheritdoc cref="IReferenceTrack"/>
 public abstract record ReferenceTrack( Guid Id, string Name, Type TargetType, ReferenceTrack<GameObject>? Parent )
-	: Track( Name, TargetType, Parent ), IReferenceTrack
+	: CompiledTrack( Name, TargetType, Parent ), IReferenceTrack
 {
 	public new ReferenceTrack<GameObject>? Parent => (ReferenceTrack<GameObject>?)base.Parent;
 
@@ -46,20 +46,20 @@ public sealed record ReferenceTrack<T>( Guid Id, string Name, ReferenceTrack<Gam
 
 internal interface IBlockTrack
 {
-	protected static MovieTimeRange GetTimeRange( IReadOnlyList<Block> blocks ) =>
+	protected static MovieTimeRange GetTimeRange( IReadOnlyList<CompiledBlock> blocks ) =>
 		blocks.Count > 0 ? (blocks.Min( x => x.TimeRange.Start ), blocks.Max( x => x.TimeRange.End )) : default;
 
 	MovieTimeRange TimeRange { get; }
-	IReadOnlyList<Block> Blocks { get; }
+	IReadOnlyList<CompiledBlock> Blocks { get; }
 }
 
 /// <inheritdoc cref="IActionTrack"/>
-public sealed record ActionTrack( string Name, Type TargetType, Track Parent, ImmutableArray<ActionBlock> Blocks )
-	: Track( Name, TargetType, Parent ), IActionTrack, IBlockTrack
+public sealed record ActionTrack( string Name, Type TargetType, CompiledTrack Parent, ImmutableArray<CompiledActionBlock> Blocks )
+	: CompiledTrack( Name, TargetType, Parent ), IActionTrack, IBlockTrack
 {
-	public new Track Parent => base.Parent!;
+	public new CompiledTrack Parent => base.Parent!;
 
-	IReadOnlyList<Block> IBlockTrack.Blocks => Blocks;
+	IReadOnlyList<CompiledBlock> IBlockTrack.Blocks => Blocks;
 
 	public MovieTimeRange TimeRange { get; } = IBlockTrack.GetTimeRange( Blocks );
 
@@ -67,10 +67,10 @@ public sealed record ActionTrack( string Name, Type TargetType, Track Parent, Im
 }
 
 /// <inheritdoc cref="IPropertyTrack"/>
-public abstract record PropertyTrack( string Name, Type TargetType, Track Parent )
-	: Track( Name, TargetType, Parent ), IPropertyTrack
+public abstract record PropertyTrack( string Name, Type TargetType, CompiledTrack Parent )
+	: CompiledTrack( Name, TargetType, Parent ), IPropertyTrack
 {
-	public new Track Parent => base.Parent!;
+	public new CompiledTrack Parent => base.Parent!;
 
 	public bool TryGetValue( MovieTime time, out object? value )
 	{
@@ -84,24 +84,24 @@ public abstract record PropertyTrack( string Name, Type TargetType, Track Parent
 		return false;
 	}
 
-	public PropertyBlock? GetBlock( MovieTime time ) => OnGetBlock( time );
+	public CompiledPropertyBlock? GetBlock( MovieTime time ) => OnGetBlock( time );
 
-	protected abstract PropertyBlock? OnGetBlock( MovieTime time );
+	protected abstract CompiledPropertyBlock? OnGetBlock( MovieTime time );
 
 	ITrack IPropertyTrack.Parent => Parent!;
 }
 
 /// <inheritdoc cref="IPropertyTrack{T}"/>
-public sealed record PropertyTrack<T>( string Name, Track Parent, ImmutableArray<PropertyBlock<T>> Blocks )
+public sealed record PropertyTrack<T>( string Name, CompiledTrack Parent, ImmutableArray<CompiledPropertyBlock<T>> Blocks )
 	: PropertyTrack( Name, typeof(T), Parent ), IPropertyTrack<T>, IBlockTrack
 {
 	private readonly bool _validated = Validate( Blocks );
 
-	IReadOnlyList<Block> IBlockTrack.Blocks => Blocks;
+	IReadOnlyList<CompiledBlock> IBlockTrack.Blocks => Blocks;
 
 	public MovieTimeRange TimeRange { get; } = IBlockTrack.GetTimeRange( Blocks );
 
-	public new PropertyBlock<T>? GetBlock( MovieTime time )
+	public new CompiledPropertyBlock<T>? GetBlock( MovieTime time )
 	{
 		if ( !TimeRange.Contains( time ) ) return default;
 
@@ -134,9 +134,9 @@ public sealed record PropertyTrack<T>( string Name, Track Parent, ImmutableArray
 		return false;
 	}
 
-	protected override PropertyBlock? OnGetBlock( MovieTime time ) => GetBlock( time );
+	protected override CompiledPropertyBlock? OnGetBlock( MovieTime time ) => GetBlock( time );
 
-	private static bool Validate( ImmutableArray<PropertyBlock<T>> blocks )
+	private static bool Validate( ImmutableArray<CompiledPropertyBlock<T>> blocks )
 	{
 		if ( blocks.IsDefault )
 		{

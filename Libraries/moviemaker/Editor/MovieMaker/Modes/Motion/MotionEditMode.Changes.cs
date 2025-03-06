@@ -170,12 +170,13 @@ partial class MotionEditMode
 		foreach ( var (id, blocks) in clipboard.Tracks )
 		{
 			if ( blocks.Count == 0 ) continue;
-			if ( blocks[0].Data is not IValueData valueData ) continue;
 			if ( clip.GetTrack( id ) is not { } track ) continue;
 
 			var state = GetOrCreateTrackModification( track );
 
-			state.SetRelativeTo( valueData.GetValue( MovieTime.Zero ) );
+			// Additive blending is relative to the start of the first block
+
+			state.SetRelativeTo( blocks[0].GetValue( MovieTime.Zero ) );
 			state.SetChanges( blocks.Select( x => x with { TimeRange = x.TimeRange - clipboard.Selection.TotalStart } ) );
 			state.Update( selection, ChangeOffset, IsAdditive );
 
@@ -216,7 +217,7 @@ partial class MotionEditMode
 	protected override bool OnPreChange( DopeSheetTrack track )
 	{
 		if ( TimeSelection is not { } selection ) return false;
-		if ( track.TrackWidget.Property is not { } property )
+		if ( track.TrackWidget.Target is not { } property )
 		{
 			return false;
 		}
@@ -244,7 +245,7 @@ partial class MotionEditMode
 
 		var movieTrack = track.TrackWidget.ProjectTrack;
 
-		if ( track.TrackWidget.Property is not { } property )
+		if ( track.TrackWidget.Target is not { } property )
 		{
 			return false;
 		}

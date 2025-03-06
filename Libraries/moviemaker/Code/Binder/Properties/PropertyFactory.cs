@@ -84,6 +84,9 @@ internal static class TrackProperty
 {
 	private static MethodInfo? _createPropertyMethod;
 
+	private static MethodInfo CreatePropertyMethod => _createPropertyMethod ??= typeof(ITrackPropertyFactory)
+		.GetMethod( nameof(ITrackPropertyFactory.CreateProperty) )!;
+
 	[SkipHotload]
 	private static ImmutableArray<ITrackPropertyFactory>? _factories;
 
@@ -96,24 +99,43 @@ internal static class TrackProperty
 			.OrderBy( x => x.Order )
 	];
 
+	public static ITrackProperty? Create( ITrackTarget parent, string name )
+	{
+		var factory = Factories.FirstOrDefault( x => IsMatchingFactory( x, parent, name ) );
+		var targetType = factory?.GetTargetType( parent, name );
+
+		if ( targetType is null ) return null;
+
+		return (ITrackProperty)CreatePropertyMethod
+			.MakeGenericMethod( targetType )
+			.Invoke( factory, [parent, name] )!;
+	}
+
 	public static ITrackProperty Create( ITrackTarget parent, string name, Type targetType )
 	{
-		var factory = GetFactory( parent, name, targetType );
+		var factory = Factories.FirstOrDefault( x => IsMatchingFactory( x, parent, name, targetType ) )
+			?? throw new Exception( "We should have at least found the UnknownPropertyFactory." );
 
-		_createPropertyMethod ??= typeof(ITrackPropertyFactory)
-			.GetMethod( nameof(ITrackPropertyFactory.CreateProperty) )!;
-
-		return (ITrackProperty)_createPropertyMethod.MakeGenericMethod( targetType )
+		return (ITrackProperty)CreatePropertyMethod
+			.MakeGenericMethod( targetType )
 			.Invoke( factory, [parent, name] )!;
 	}
 
 	public static ITrackProperty<T> Create<T>( ITrackTarget parent, string name ) =>
 		(ITrackProperty<T>)Create( parent, name, typeof( T ) );
 
-	private static ITrackPropertyFactory GetFactory( ITrackTarget parent, string name, Type targetType )
+	private static bool IsMatchingFactory( ITrackPropertyFactory factory,
+		ITrackTarget parent, string name )
 	{
-		return Factories.FirstOrDefault( x => x.GetTargetType( parent, name ) == targetType )
-			?? throw new Exception( "We should have at least found the UnknownPropertyFactory." );
+		if ( factory.GetTargetType( parent, name ) is not { } valueType ) return false;
+		return valueType != typeof(Unknown);
+	}
+
+	private static bool IsMatchingFactory( ITrackPropertyFactory factory,
+		ITrackTarget parent, string name, Type targetType )
+	{
+		if ( factory.GetTargetType( parent, name ) is not { } valueType ) return false;
+		return valueType == targetType;
 	}
 
 	private static ITrackPropertyFactory? CreateFactory( TypeDescription factoryType )

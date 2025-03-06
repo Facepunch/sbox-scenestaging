@@ -149,7 +149,7 @@ public class MovieEditor : Widget
 		foreach ( var player in allplayers )
 		{
 			hash.Add( player );
-			hash.Add( player.MovieClip );
+			hash.Add( player.Resource );
 		}
 
 		var hc = hash.ToHashCode();
@@ -164,7 +164,7 @@ public class MovieEditor : Widget
 		if ( Session is not null )
 		{
 			// Whatever we were editing doesn't exist anymore!
-			if ( playersAvailable.All( x => x.Source != Session.Source || x != Session.Player ) )
+			if ( playersAvailable.All( x => x.Resource != Session.Resource || x != Session.Player ) )
 			{
 				CloseSession();
 			}
@@ -202,11 +202,11 @@ public class MovieEditor : Widget
 
 	public void SwitchToEmbedded()
 	{
-		if ( Session.Source is EmbeddedMovieResource ) return;
+		if ( Session.Resource is EmbeddedMovieResource ) return;
 
-		Session.Player.Source = new EmbeddedMovieResource
+		Session.Player.Resource = new EmbeddedMovieResource
 		{
-			Clip = Session.Source.Clip,
+			Clip = Session.Resource.Clip,
 			EditorData = Session.Project.Serialize()
 		};
 
@@ -215,9 +215,9 @@ public class MovieEditor : Widget
 
 	public void SwitchResource( MovieResource resource )
 	{
-		if ( Session.Source == resource ) return;
+		if ( Session.Resource == resource ) return;
 
-		if ( Session.Source is EmbeddedMovieResource && !Session.Project.IsEmpty )
+		if ( Session.Resource is EmbeddedMovieResource && !Session.Project.IsEmpty )
 		{
 			Dialog.AskConfirm( () =>
 			{
@@ -232,7 +232,7 @@ public class MovieEditor : Widget
 
 	private void ConfirmedSwitchResource( MovieResource resource )
 	{
-		Session.Player.Source = resource;
+		Session.Player.Resource = resource;
 
 		Switch( Session.Player );
 	}

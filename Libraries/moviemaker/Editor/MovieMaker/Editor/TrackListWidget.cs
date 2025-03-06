@@ -89,7 +89,7 @@ public partial class TrackListWidget : Widget
 	{
 		if ( Tracks.Any( x => x.IsFocused ) || DopeSheet.IsFocused ) return;
 
-		if ( item is GameObject go && Tracks.FirstOrDefault( x => x.Property is IGameObjectReference { IsBound: true } && x.Property.Value == go ) is { } track )
+		if ( item is GameObject go && Tracks.FirstOrDefault( x => x.Target is ITrackReference<GameObject> { IsBound: true } && x.Target.Value == go ) is { } track )
 		{
 			track.Focus( false );
 			_scrollArea.MakeVisible( track );

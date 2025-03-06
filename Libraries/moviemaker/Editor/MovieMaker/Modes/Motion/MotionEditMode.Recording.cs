@@ -1,6 +1,7 @@
 ﻿using Sandbox.MovieMaker;
 using System.Collections.Immutable;
 using System.Linq;
+using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker;
 
@@ -12,7 +13,7 @@ partial class MotionEditMode
 
 	public override bool AllowRecording => true;
 
-	private readonly Dictionary<ProjectTrack, ITrackRecording> _recordings = new();
+	private readonly Dictionary<ProjectPropertyTrack, ITrackRecording> _recordings = new();
 
 	protected override bool OnStartRecording()
 	{
@@ -35,6 +36,7 @@ partial class MotionEditMode
 
 	private bool StartRecording( ProjectTrack track, MovieTime time )
 	{
+		if ( track is not ProjectPropertyTrack propertyTrack ) return false;
 		if ( !Session.CanEdit( track ) ) return false;
 
 		if ( track.Children is { Count: > 0 } children )
@@ -54,14 +56,14 @@ partial class MotionEditMode
 			}
 		}
 
-		if ( Session.Targets.GetProperty( track ) is not { IsBound: true, CanWrite: true } property ) return false;
+		if ( Session.Binder.Get( propertyTrack ) is not { IsBound: true, CanWrite: true } property ) return false;
 
 		var recordingType = typeof(TrackRecording<>).MakeGenericType( track.TargetType );
 		var recording = (ITrackRecording)Activator.CreateInstance( recordingType, track, property, time )!;
 
-		_recordings.Add( track, recording );
+		_recordings.Add( propertyTrack, recording );
 
-		SetPreviewBlocks( track, [recording] );
+		SetPreviewBlocks( propertyTrack, [recording] );
 
 		return true;
 	}
@@ -83,7 +85,7 @@ partial class MotionEditMode
 		{
 			ClearPreviewBlocks( track );
 
-			if ( recording.GetBlocks() is not { Count: > 0 } blocks ) continue;
+			if ( recording.Compile() is not { Count: > 0 } blocks ) continue;
 
 			tracks.Add( track.Id, blocks );
 
@@ -122,10 +124,10 @@ partial class MotionEditMode
 internal interface ITrackRecording : IPreviewMovieBlock
 {
 	void Record( MovieTime time );
-	IReadOnlyList<PropertyBlockSlice> GetBlocks();
+	IReadOnlyList<CompiledPropertyBlock> Compile();
 }
 
-file class TrackRecording<T> : ITrackRecording
+file class TrackRecording<T> : ITrackRecording, IPropertyBlock<T>
 {
 	public ProjectTrack Track { get; }
 	public ITrackProperty<T> Property { get; }
@@ -133,13 +135,11 @@ file class TrackRecording<T> : ITrackRecording
 	public MovieTime SampleInterval { get; }
 
 	public MovieTimeRange TimeRange => (_startTime, _startTime + MovieTime.FromFrames( _samples.Count, SampleRate ));
-	IBlockData IBlock.Data => _previewData;
 
 	private readonly MovieTime _startTime;
 	private readonly IInterpolator<T>? _interpolator;
 
 	private readonly List<T> _samples = new();
-	private readonly SamplesData<T> _previewData;
 
 	public event Action? Changed;
 
@@ -155,8 +155,6 @@ file class TrackRecording<T> : ITrackRecording
 
 		_startTime = startTime.SnapToGrid( SampleInterval );
 		_samples.Add( property.Value );
-
-		_previewData = new SamplesData<T>( SampleRate, _samples );
 	}
 
 	public void Record( MovieTime time )
@@ -194,7 +192,7 @@ file class TrackRecording<T> : ITrackRecording
 		Changed?.Invoke();
 	}
 
-	public IReadOnlyList<PropertyBlockSlice> GetBlocks()
+	public IReadOnlyList<CompiledPropertyBlock> Compile()
 	{
 		if ( _samples.Count == 0 ) return [];
 
@@ -203,8 +201,10 @@ file class TrackRecording<T> : ITrackRecording
 
 		if ( _samples.All( x => comparer.Equals( first, x ) ) ) return [];
 
-		var data = new SamplesData<T>( SampleRate, _samples.ToArray() );
+		var data = new SampleBlock<T>( TimeRange, TimeRange.Start, SampleRate, [.._samples] );
 
-		return [new PropertyBlockSlice( TimeRange, data )];
+		return [data];
 	}
+
+	public T GetValue( MovieTime time ) => _samples.Sample( time - TimeRange.Start, SampleRate, _interpolator );
 }

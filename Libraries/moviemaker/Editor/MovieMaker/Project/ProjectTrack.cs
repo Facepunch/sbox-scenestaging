@@ -7,10 +7,9 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public abstract partial class ProjectTrack( MovieProject project, Guid id, string name, Type targetType ) : ITrack
+public abstract partial class ProjectTrack( MovieProject project, string name, Type targetType ) : ITrack
 {
 	public MovieProject Project => project;
-	public Guid Id => id;
 	public string Name => name;
 	public Type TargetType => targetType;
 	public ProjectTrack? Parent => throw new NotImplementedException();
@@ -20,52 +19,64 @@ public abstract partial class ProjectTrack( MovieProject project, Guid id, strin
 
 	public void Remove() => throw new NotImplementedException();
 
-	public void RemoveBlocks() => throw new NotImplementedException();
-	public ProjectBlock AddBlock( IBlock block ) => throw new NotImplementedException();
-	public ProjectBlock GetBlock( MovieTime time ) => throw new NotImplementedException();
-
 	ITrack? ITrack.Parent => Parent;
 
-	public abstract Track Compile( Track? compiledParent );
+	public abstract CompiledTrack Compile( CompiledTrack? compiledParent );
+}
+
+public abstract class ProjectReferenceTrack( MovieProject project, Guid id, string name, Type targetType )
+	: ProjectTrack( project, name, targetType ), IReferenceTrack
+{
+	public Guid Id => id;
+	public new ProjectReferenceTrack<GameObject>? Parent => (ProjectReferenceTrack<GameObject>?)base.Parent;
+
+	IReferenceTrack<GameObject>? IReferenceTrack.Parent => Parent;
 }
 
 public sealed class ProjectReferenceTrack<T>( MovieProject project, Guid id, string name )
-	: ProjectTrack( project, id, name, typeof(T) ), IReferenceTrack<T>
+	: ProjectReferenceTrack( project, id, name, typeof(T) ), IReferenceTrack<T>
 {
-	public override Track Compile( Track? compiledParent ) =>
+	public override CompiledTrack Compile( CompiledTrack? compiledParent ) =>
 		new ReferenceTrack<T>( Id, Name, (ReferenceTrack<GameObject>)compiledParent! );
 }
 
-public abstract class ProjectPropertyTrack( MovieProject project, Guid id, string name, Type targetType )
-	: ProjectTrack( project, id, name, targetType ), IPropertyTrack, IBlockTrack<ProjectBlock>
+public abstract class ProjectPropertyTrack( MovieProject project, string name, Type targetType )
+	: ProjectTrack( project, name, targetType ), IPropertyTrack
 {
-	public MovieTimeRange TimeRange => throw new NotImplementedException();
-	public IReadOnlyList<ProjectBlock> Blocks => throw new NotImplementedException();
-	public abstract IReadOnlyList<(MovieTimeRange TimeRange, ProjectBlock Block)> Cuts { get; }
-	public abstract IReadOnlyList<(MovieTimeRange TimeRange, ProjectBlock Block)> GetCuts( MovieTimeRange timeRange );
+	public abstract IReadOnlyList<PropertyBlock> Blocks { get; }
+
+	public MovieTimeRange TimeRange => Blocks is { Count: > 0 } blocks
+		? (blocks[0].TimeRange.Start, blocks[^1].TimeRange.End)
+		: default;
+
+	public abstract IReadOnlyList<MovieTime> Cuts { get; }
 
 	public abstract bool TryGetValue( MovieTime time, out object? value );
 
-	IReadOnlyList<IBlock> IBlockTrack.Blocks => throw new NotImplementedException();
-
 	ITrack IPropertyTrack.Parent => Parent!;
+
+	public abstract void RemoveBlocks();
+	public void AddBlock( PropertyBlock block ) => OnAddBlock( block );
+	protected abstract void OnAddBlock( PropertyBlock block );
+
+	public PropertyBlock? GetBlock( MovieTime time ) => OnGetBlock( time );
+	protected abstract PropertyBlock? OnGetBlock( MovieTime time );
 }
 
-public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, string name )
-	: ProjectPropertyTrack( project, id, name, typeof(T) ), IPropertyTrack<T>
+public sealed class ProjectPropertyTrack<T>( MovieProject project, string name )
+	: ProjectPropertyTrack( project, name, typeof(T) ), IPropertyTrack<T>
 {
-	public override IReadOnlyList<(MovieTimeRange TimeRange, ProjectBlock Block)> Cuts => throw new NotImplementedException();
-	public override IReadOnlyList<(MovieTimeRange TimeRange, ProjectBlock Block)> GetCuts( MovieTimeRange timeRange ) => throw new NotImplementedException();
+	public override IReadOnlyList<MovieTime> Cuts => throw new NotImplementedException();
 
-	public override Track Compile( Track? compiledParent )
+	public override CompiledTrack Compile( CompiledTrack? compiledParent )
 	{
-		var compiled = new PropertyTrack<T>( Name, compiledParent! );
+		var compiled = new PropertyTrack<T>( Name, compiledParent!, [] );
 
 		if ( Keyframes is { } keyframes )
 		{
 			var blocks = keyframes.Compile( Project.SampleRate );
 
-			compiled = compiled with { Blocks = [..blocks.Cast<PropertyBlock<T>>()] };
+			compiled = compiled with { Blocks = [..blocks.Cast<CompiledPropertyBlock<T>>()] };
 		}
 
 		return compiled;

@@ -9,16 +9,16 @@ namespace Sandbox.MovieMaker.Compiled;
 #nullable enable
 
 [JsonConverter( typeof( ClipConverter ) )]
-partial class Clip;
+partial class CompiledClip;
 
-file sealed class ClipConverter : JsonConverter<Clip>
+file sealed class ClipConverter : JsonConverter<CompiledClip>
 {
-	public override Clip Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
+	public override CompiledClip Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
 	{
 		return JsonSerializer.Deserialize<ClipModel>( ref reader, options )!.Deserialize( options );
 	}
 
-	public override void Write( Utf8JsonWriter writer, Clip value, JsonSerializerOptions options )
+	public override void Write( Utf8JsonWriter writer, CompiledClip value, JsonSerializerOptions options )
 	{
 		var childDict = value.Tracks
 			.Where( x => x.Parent is not null )
@@ -34,7 +34,7 @@ file sealed record ClipModel(
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
 	ImmutableArray<TrackModel>? Tracks )
 {
-	public ClipModel( Clip clip, ImmutableDictionary<Track, ImmutableArray<Track>> childDict, JsonSerializerOptions? options )
+	public ClipModel( CompiledClip clip, ImmutableDictionary<CompiledTrack, ImmutableArray<CompiledTrack>> childDict, JsonSerializerOptions? options )
 		: this( clip.Tracks is { Length: > 0 }
 			? clip.Tracks.Where( x => x.Parent is null ).Select( x => new TrackModel( x, childDict, options ) ).ToImmutableArray()
 			: null )
@@ -42,11 +42,11 @@ file sealed record ClipModel(
 
 	}
 
-	public Clip Deserialize( JsonSerializerOptions? options )
+	public CompiledClip Deserialize( JsonSerializerOptions? options )
 	{
 		return Tracks is { Length: > 0 } rootTracks
-			? new Clip( [..rootTracks.SelectMany( x => x.Deserialize( null, options ) )] )
-			: Clip.Empty;
+			? new CompiledClip( [..rootTracks.SelectMany( x => x.Deserialize( null, options ) )] )
+			: CompiledClip.Empty;
 	}
 }
 
@@ -63,7 +63,7 @@ file sealed record TrackModel( TrackKind Kind, string Name, Type Type,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] ImmutableArray<TrackModel>? Children,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] ImmutableArray<JsonObject>? Blocks )
 {
-	public TrackModel( Track track, ImmutableDictionary<Track, ImmutableArray<Track>> childDict, JsonSerializerOptions? options )
+	public TrackModel( CompiledTrack track, ImmutableDictionary<CompiledTrack, ImmutableArray<CompiledTrack>> childDict, JsonSerializerOptions? options )
 		: this( GetKind( track ), track.Name, track.TargetType, (track as IReferenceTrack)?.Id,
 			childDict.TryGetValue( track, out var children ) ? [..children.Select( x => new TrackModel( x, childDict, options ) )] : null,
 			track is IBlockTrack { Blocks.Count: > 0 } blockTrack
@@ -73,7 +73,7 @@ file sealed record TrackModel( TrackKind Kind, string Name, Type Type,
 
 	}
 
-	public IEnumerable<Track> Deserialize( Track? parent, JsonSerializerOptions? options )
+	public IEnumerable<CompiledTrack> Deserialize( CompiledTrack? parent, JsonSerializerOptions? options )
 	{
 		var track = Kind switch
 		{
@@ -81,7 +81,7 @@ file sealed record TrackModel( TrackKind Kind, string Name, Type Type,
 				Id ?? Guid.NewGuid(), Name, (ReferenceTrack<GameObject>?)parent ),
 			TrackKind.Reference => TypeLibrary.GetType( typeof( ReferenceTrack<> ) ).CreateGeneric<ReferenceTrack>( [Type],
 				[Id ?? Guid.NewGuid(), Type.Name, (ReferenceTrack<GameObject>?)parent] ),
-			TrackKind.Action => new ActionTrack( Name, Type, parent!, ImmutableArray<ActionBlock>.Empty ),
+			TrackKind.Action => new ActionTrack( Name, Type, parent!, ImmutableArray<CompiledActionBlock>.Empty ),
 			TrackKind.Property => DeserializeHelper.Get( Type ).DeserializePropertyTrack( this, parent!, options ),
 			_ => throw new NotImplementedException()
 		};
@@ -91,7 +91,7 @@ file sealed record TrackModel( TrackKind Kind, string Name, Type Type,
 			: [track];
 	}
 
-	private static TrackKind GetKind( Track track )
+	private static TrackKind GetKind( CompiledTrack track )
 	{
 		return track switch
 		{
@@ -102,7 +102,7 @@ file sealed record TrackModel( TrackKind Kind, string Name, Type Type,
 		};
 	}
 
-	private static JsonObject SerializeBlock( Block block, JsonSerializerOptions? options ) =>
+	private static JsonObject SerializeBlock( CompiledBlock block, JsonSerializerOptions? options ) =>
 		JsonSerializer.SerializeToNode( block, block.GetType(), options )!.AsObject();
 }
 
@@ -119,17 +119,17 @@ file abstract class DeserializeHelper
 			.CreateGeneric<DeserializeHelper>( [type] );
 	}
 
-	public abstract Track DeserializePropertyTrack( TrackModel model, Track parent, JsonSerializerOptions? options );
+	public abstract CompiledTrack DeserializePropertyTrack( TrackModel model, CompiledTrack parent, JsonSerializerOptions? options );
 }
 
 file sealed class DeserializeHelper<T> : DeserializeHelper
 {
-	public override Track DeserializePropertyTrack( TrackModel model, Track parent, JsonSerializerOptions? options )
+	public override CompiledTrack DeserializePropertyTrack( TrackModel model, CompiledTrack parent, JsonSerializerOptions? options )
 	{
 		return new PropertyTrack<T>( model.Name, parent, model.Blocks?.Select( x => DeserializePropertyBlock( x, options ) ).ToImmutableArray() ?? [] );
 	}
 
-	private static PropertyBlock<T> DeserializePropertyBlock( JsonObject node, JsonSerializerOptions? options )
+	private static CompiledPropertyBlock<T> DeserializePropertyBlock( JsonObject node, JsonSerializerOptions? options )
 	{
 		var hasSamples = node[nameof( SampleBlock<object>.Samples )] is not null;
 

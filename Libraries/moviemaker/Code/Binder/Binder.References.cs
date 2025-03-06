@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -17,6 +16,20 @@ partial class TrackBinder : IJsonPopulator
 {
 	private readonly Dictionary<Guid, GameObject?> _gameObjectMap = new();
 	private readonly Dictionary<Guid, Component?> _componentMap = new();
+
+	/// <summary>
+	/// Finds track IDs currently explicitly bound to the given <paramref name="gameObject"/>.
+	/// </summary>
+	public IEnumerable<Guid> GetTrackIds( GameObject gameObject ) => _gameObjectMap
+		.Where( x => x.Value == gameObject )
+		.Select( x => x.Key );
+
+	/// <summary>
+	/// Finds track IDs currently explicitly bound to the given <paramref name="component"/>.
+	/// </summary>
+	public IEnumerable<Guid> GetTrackIds( Component component ) => _componentMap
+		.Where( x => x.Value == component )
+		.Select( x => x.Key );
 
 	#region Serialization
 

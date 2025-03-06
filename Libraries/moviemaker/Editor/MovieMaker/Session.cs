@@ -14,7 +14,7 @@ public sealed partial class Session
 	public MovieEditor Editor { get; }
 	public MoviePlayer Player { get; }
 	public MovieProject Project { get; }
-	public IMovieSource Source { get; }
+	public IMovieResource Resource { get; }
 
 	private int _frameRate;
 	private bool _frameSnap;
@@ -23,7 +23,7 @@ public sealed partial class Session
 	private float _pixelsPerSecond;
 
 	public bool IsEditorScene => Player?.Scene?.IsEditor ?? true;
-	public TrackTargetMap Targets => Player.Targets;
+	public TrackBinder Binder => Player.Binder;
 
 	public int FrameRate
 	{
@@ -92,8 +92,8 @@ public sealed partial class Session
 	{
 		Editor = editor;
 		Player = player;
-		Source = player.Source ??= new EmbeddedMovieResource();
-		Project = Source.EditorData?.Deserialize<MovieProject>( EditorJsonOptions ) ?? new MovieProject();
+		Resource = player.Resource ??= new EmbeddedMovieResource();
+		Project = Resource.EditorData?.Deserialize<MovieProject>( EditorJsonOptions ) ?? new MovieProject();
 	}
 
 	internal void SetEditMode( EditModeType? type )
@@ -121,7 +121,7 @@ public sealed partial class Session
 			.Select( x => x.ProjectTrack )
 			.OfType<ProjectPropertyTrack>();
 
-	public bool CanEdit( ProjectTrack track ) => Editor.TrackList.FindTrack( track )?.CanEdit ?? false;
+	public bool CanEdit( ProjectTrack track ) => track is IPropertyTrack && (Editor.TrackList.FindTrack( track )?.CanEdit ?? false);
 
 	public MovieTime ScenePositionToTime( Vector2 scenePos, SnapFlag ignore = 0, params MovieTime[] snapOffsets ) 
 	{
@@ -269,7 +269,7 @@ public sealed partial class Session
 
 	internal void ClipModified()
 	{
-		if ( Source is EmbeddedMovieResource )
+		if ( Resource is EmbeddedMovieResource )
 		{
 			Player.Scene.Editor.HasUnsavedChanges = true;
 			return;
@@ -282,12 +282,12 @@ public sealed partial class Session
 	{
 		HasUnsavedChanges = false;
 
-		Source.EditorData = Project.Serialize();
-		Source.Clip = Project.Compile();
+		Resource.EditorData = Project.Serialize();
+		Resource.Clip = Project.Compile();
 
 		// If we're embedded, save the scene
 
-		if ( Source is EmbeddedMovieResource )
+		if ( Resource is EmbeddedMovieResource )
 		{
 			Player.Scene.Editor.Save( false );
 			return;
@@ -295,7 +295,7 @@ public sealed partial class Session
 
 		// If we're referencing a .movie resource, save it to disk
 
-		if ( Source is not MovieResource resource )
+		if ( Resource is not MovieResource resource )
 		{
 			return;
 		}

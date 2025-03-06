@@ -12,7 +12,7 @@ public partial class TrackWidget : Widget
 	public TrackListWidget TrackList { get; }
 
 	public ProjectTrack ProjectTrack { get; }
-	internal ITrackTarget Property => Session.Targets.GetOrCreate( ProjectTrack );
+	internal ITrackTarget Target { get; }
 
 	public DopeSheetTrack? DopeSheetTrack { get; set; }
 
@@ -68,7 +68,7 @@ public partial class TrackWidget : Widget
 		}
 	}
 
-	public bool CanEdit => Property is ITrackProperty { CanWrite: true } && !IsLocked;
+	public bool CanEdit => Target is ITrackProperty { CanWrite: true } && !IsLocked;
 
 	RealTimeSince _timeSinceInteraction = 1000;
 
@@ -96,22 +96,23 @@ public partial class TrackWidget : Widget
 		Buttons.Spacing = 2f;
 		Buttons.Margin = 2f;
 
-		_lockButton = Buttons.Add( new LockButton( this ) );
-		_label = Layout.Add( new Label( Property.Name ) );
+		Target = Session.Binder.Get( ProjectTrack );
 
-		if ( Property is IGameObjectReference or IComponentReference )
+		_lockButton = Buttons.Add( new LockButton( this ) );
+		_label = Layout.Add( new Label( Target.Name ) );
+
+		if ( Target is ITrackReference reference )
 		{
-			if ( Property is { IsBound: true, Value: GameObject } && ProjectTrack.Parent is not null )
+			if ( Target is { IsBound: true, Value: GameObject } && ProjectTrack.Parent is not null )
 			{
 				return;
 			}
 
 			// Add control to retarget a scene reference (Component / GameObject)
 
-			// TODO: need to call Session.Targets.SetReference
-
-			var so = Property.GetSerialized();
-			var ctrl = ControlWidget.Create( so.GetProperty( nameof( IGameObjectReference.Value ) ) );
+			var ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
+				() => reference.Value,
+				value => reference.Bind( (IValid?)value ) ) );
 
 			if ( ctrl.IsValid() )
 			{
@@ -204,13 +205,13 @@ public partial class TrackWidget : Widget
 
 	public void InspectProperty()
 	{
-		if ( Property is not { } property ) return;
+		if ( Target is not { } property ) return;
 		if ( property.GetTargetGameObject() is not { } go ) return;
 
 		SceneEditorSession.Active.Selection.Clear();
 		SceneEditorSession.Active.Selection.Add( go );
 
-		if ( ProjectTrack.Parent?.TargetType != typeof(GameObject) )
+		if ( ProjectTrack.Parent is not IReferenceTrack<GameObject> )
 		{
 			return;
 		}

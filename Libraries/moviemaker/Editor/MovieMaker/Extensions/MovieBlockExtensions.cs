@@ -4,7 +4,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public interface IPreviewMovieBlock : IBlock
+public interface IPreviewMovieBlock : IPropertyBlock
 {
 	event Action? Changed;
 }

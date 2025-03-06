@@ -113,36 +113,6 @@ public static class EditingExtensions
 
 		return changed;
 	}
-
-	public static ProjectBlock? Stitch( this ProjectPropertyTrack track, ProjectBlock? left, ProjectBlock? right )
-	{
-		if ( left is null || right is null ) return null;
-
-		if ( left.Track != track )
-		{
-			throw new ArgumentException( "Block doesn't belong to this track.", nameof(left) );
-		}
-
-		if ( right.Track != track )
-		{
-			throw new ArgumentException( "Block doesn't belong to this track.", nameof(right) );
-		}
-
-		if ( left.TimeRange.End != right.TimeRange.Start ) return null;
-
-		var sampleRate = track.Project.SampleRate;
-		var timeRange = left.TimeRange.Union( right.TimeRange );
-		var sampleCount = timeRange.Duration.GetFrameCount( sampleRate );
-		var samples = Array.CreateInstance( track.TargetType, sampleCount );
-
-		left.Sample( samples, left.TimeRange, left.TimeRange - timeRange.Start, sampleRate );
-		right.Sample( samples, right.TimeRange, right.TimeRange - timeRange.Start, sampleRate );
-
-		left.Remove();
-		right.Remove();
-
-		return track.AddBlock( timeRange, track.TargetType.CreateSamplesData( sampleRate, samples ) );
-	}
 }
 
 [Flags]

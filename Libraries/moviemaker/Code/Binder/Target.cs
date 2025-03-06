@@ -21,6 +21,11 @@ namespace Sandbox.MovieMaker;
 public interface ITrackTarget
 {
 	/// <summary>
+	/// Name of this target, for debugging and editing.
+	/// </summary>
+	string Name { get; }
+
+	/// <summary>
 	/// Value type of this target.
 	/// </summary>
 	Type TargetType { get; }

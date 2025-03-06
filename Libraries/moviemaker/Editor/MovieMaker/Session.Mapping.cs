@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Sandbox.MovieMaker;
+using Sandbox.MovieMaker.Properties;
 
 namespace Editor.MovieMaker;
 
@@ -9,24 +10,18 @@ partial class Session
 {
 	public ProjectTrack? GetTrack( GameObject go )
 	{
-		foreach ( var (trackId, property) in Targets )
-		{
-			if ( property is not IGameObjectReference goProperty ) continue;
-			if ( goProperty.Value == go ) return Project.GetTrack( trackId );
-		}
-
-		return null;
+		return Binder.GetTrackIds( go )
+			.Select( Project.GetTrack )
+			.OfType<ProjectTrack>()
+			.FirstOrDefault();
 	}
 
 	public ProjectTrack? GetTrack( Component cmp )
 	{
-		foreach ( var (trackId, property) in Targets )
-		{
-			if ( property is not IComponentReference cmpProperty ) continue;
-			if ( cmpProperty.Value == cmp ) return Project.GetTrack( trackId );
-		}
-
-		return null;
+		return Binder.GetTrackIds( cmp )
+			.Select( Project.GetTrack )
+			.OfType<ProjectTrack>()
+			.FirstOrDefault();
 	}
 
 	public ProjectTrack? GetTrack( GameObject go, string propertyPath )
@@ -74,9 +69,9 @@ partial class Session
 			parentTrack = GetOrCreateTrack( parentGo );
 		}
 
-		var track = Project.AddTrack( go.Name, typeof(GameObject), parentTrack );
+		var track = Project.AddReferenceTrack( go.Name, typeof(GameObject), parentTrack );
 
-		Targets.SetReference( track, go );
+		Binder.Get( track ).Bind( go );
 
 		return track;
 	}
@@ -87,9 +82,9 @@ partial class Session
 
 		// Nest component tracks inside the containing game object's track
 		var goTrack = GetOrCreateTrack( cmp.GameObject );
-		var track = Project.AddTrack( cmp.GetType().Name, cmp.GetType(), goTrack );
+		var track = Project.AddReferenceTrack( cmp.GetType().Name, cmp.GetType(), goTrack );
 
-		Targets.SetReference( track, cmp );
+		Binder.Get( track ).Bind( cmp );
 
 		return track;
 	}
@@ -143,24 +138,22 @@ partial class Session
 			return existingTrack;
 		}
 
-		if ( Targets.GetOrCreate( parentTrack ) is not { } parentProperty )
+		if ( Binder.Get( parentTrack ) is not { } parentProperty )
 		{
 			throw new Exception( "Parent track not registered." );
 		}
 
-		var property = Target.Member( parentProperty, propertyName, null );
-		var track = Project.AddTrack( property.Name, property.TargetType, parentTrack );
+		var property = TrackProperty.Create( parentProperty, propertyName )
+			?? throw new Exception( $"Unknown property \"{propertyName}\" in type \"{parentProperty.TargetType}\"." );
 
-		Targets.GetOrCreate( track );
-
-		return track;
+		return Project.AddPropertyTrack( property.Name, property.TargetType, parentTrack );
 	}
 
 	public void ApplyFrame( ProjectTrack track, MovieTime time )
 	{
 		if ( track is IPropertyTrack propertyTrack )
 		{
-			Targets.ApplyFrame( propertyTrack, time );
+			propertyTrack.Update( time, Binder );
 		}
 	}
 
@@ -174,8 +167,8 @@ partial class Session
 		var dt = Math.Min( (float)deltaTime.Absolute.TotalSeconds, 1f );
 
 		var renderers = Project.Tracks
-			.Where( x => x.TargetType == typeof( SkinnedModelRenderer ) )
-			.Select( x => Targets.GetComponent( x )?.Value )
+			.OfType<IReferenceTrack<SkinnedModelRenderer>>()
+			.Select( x => Binder.Get( x ).Value )
 			.OfType<SkinnedModelRenderer>();
 
 		foreach ( var renderer in renderers )

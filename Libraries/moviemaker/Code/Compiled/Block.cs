@@ -10,20 +10,20 @@ namespace Sandbox.MovieMaker.Compiled;
 /// A time region where something happens in a movie.
 /// </summary>
 /// <param name="TimeRange">Start and end time of this block.</param>
-public abstract record Block( [property: JsonPropertyOrder( -1 )] MovieTimeRange TimeRange );
+public abstract record CompiledBlock( [property: JsonPropertyOrder( -1 )] MovieTimeRange TimeRange );
 
 /// <summary>
 /// Unused, will describe starting / stopping an action in the scene.
 /// </summary>
 /// <param name="TimeRange">Start and end time of this block.</param>
-public sealed record ActionBlock( MovieTimeRange TimeRange ) : Block( TimeRange );
+public sealed record CompiledActionBlock( MovieTimeRange TimeRange ) : CompiledBlock( TimeRange );
 
 /// <summary>
 /// Interface for blocks describing a property changing value over time.
 /// </summary>
 /// <param name="TimeRange">Start and end time of this block.</param>
-/// <param name="PropertyType">Property value type, must match <see cref="Track.TargetType"/>.</param>
-public abstract record PropertyBlock( MovieTimeRange TimeRange, [property: JsonIgnore] Type PropertyType ) : Block( TimeRange )
+/// <param name="PropertyType">Property value type, must match <see cref="CompiledTrack.TargetType"/>.</param>
+public abstract record CompiledPropertyBlock( MovieTimeRange TimeRange, [property: JsonIgnore] Type PropertyType ) : CompiledBlock( TimeRange )
 {
 	/// <summary>
 	/// Reads from this block at the given <paramref name="time"/>.
@@ -35,11 +35,11 @@ public abstract record PropertyBlock( MovieTimeRange TimeRange, [property: JsonI
 
 /// <summary>
 /// Interface for blocks describing a property changing value over time.
-/// Typed version of <see cref="PropertyBlock"/>.
+/// Typed version of <see cref="CompiledPropertyBlock"/>.
 /// </summary>
 /// <typeparam name="T">Property value type.</typeparam>
 /// <param name="TimeRange">Start and end time of this block.</param>
-public abstract record PropertyBlock<T>( MovieTimeRange TimeRange ) : PropertyBlock( TimeRange, typeof(T) )
+public abstract record CompiledPropertyBlock<T>( MovieTimeRange TimeRange ) : CompiledPropertyBlock( TimeRange, typeof(T) )
 {
 	/// <summary>
 	/// Reads from this block at the given <paramref name="time"/>.
@@ -57,7 +57,7 @@ public abstract record PropertyBlock<T>( MovieTimeRange TimeRange ) : PropertyBl
 /// <param name="TimeRange">Start and end time of this block.</param>
 /// <param name="Value">Constant value.</param>
 public sealed record ConstantBlock<T>( MovieTimeRange TimeRange, T Value )
-	: PropertyBlock<T>( TimeRange )
+	: CompiledPropertyBlock<T>( TimeRange )
 {
 	public override T GetValue( MovieTime time ) => Value;
 }
@@ -71,7 +71,7 @@ public sealed record ConstantBlock<T>( MovieTimeRange TimeRange, T Value )
 /// <param name="SampleRate">How many samples per second.</param>
 /// <param name="Samples">Raw sample values.</param>
 public sealed record SampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, ImmutableArray<T> Samples )
-	: PropertyBlock<T>( TimeRange )
+	: CompiledPropertyBlock<T>( TimeRange )
 {
 	private readonly bool _validated = Validate( Samples );
 
@@ -79,28 +79,8 @@ public sealed record SampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset,
 	private static readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
 #pragma warning restore SB3000
 
-	public override T GetValue( MovieTime time )
-	{
-		var localTime = time.Clamp( TimeRange ) - TimeRange.Start - Offset;
-
-		var i0 = localTime.GetFrameIndex( SampleRate, out var remainder );
-		var i1 = i0 + 1;
-
-		if ( i0 < 0 ) return Samples[0];
-		if ( i1 >= Samples.Length ) return Samples[^1];
-
-		var x0 = Samples[i0];
-
-		if ( _interpolator is null )
-		{
-			return x0;
-		}
-
-		var t = (float)(remainder.TotalSeconds * SampleRate);
-		var x1 = Samples[i1];
-
-		return _interpolator.Interpolate( x0, x1, t );
-	}
+	public override T GetValue( MovieTime time ) =>
+		Samples.Sample( time.Clamp( TimeRange ) - TimeRange.Start - Offset, SampleRate, _interpolator );
 
 	private static bool Validate( ImmutableArray<T> samples )
 	{

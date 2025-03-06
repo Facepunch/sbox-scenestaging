@@ -70,7 +70,7 @@ public interface IReferenceTrack : ITrack
 
 /// <inheritdoc cref="IPropertyTrack"/>
 /// <typeparam name="T">Reference value type, must match <see cref="ITrack.TargetType"/>.</typeparam>
-public interface IReferenceTrack<T> : ITrack
+public interface IReferenceTrack<out T> : ITrack
 {
 	Type ITrack.TargetType => typeof( T );
 }

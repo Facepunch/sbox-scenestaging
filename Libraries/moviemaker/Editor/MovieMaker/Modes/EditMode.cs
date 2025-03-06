@@ -147,7 +147,7 @@ public abstract class EditMode
 
 	internal bool PreChange( ProjectTrack track )
 	{
-		if ( Session.Targets.GetProperty( track ) is not { CanWrite: true } ) return false;
+		if ( Session.Binder.Get( track ) is not ITrackProperty { CanWrite: true } ) return false;
 
 		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
 		if ( trackWidget is not { CanEdit: true } ) return false;
@@ -164,7 +164,7 @@ public abstract class EditMode
 
 	internal bool PostChange( ProjectTrack track )
 	{
-		if ( Session.Targets.GetProperty( track ) is not { CanWrite: true } ) return false;
+		if ( Session.Binder.Get( track ) is not ITrackProperty { CanWrite: true } ) return false;
 
 		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
 		if ( trackWidget is not { CanEdit: true } ) return false;
@@ -262,7 +262,7 @@ public abstract class EditMode
 		{
 			foreach ( var block in list )
 			{
-				if ( block.TimeRange.Contains( time ) && Session.Targets.GetProperty( track ) is { } target )
+				if ( block.TimeRange.Contains( time ) && Session.Binder.Get( track ) is {  } target )
 				{
 					target.Value = block.GetValue( time );
 				}

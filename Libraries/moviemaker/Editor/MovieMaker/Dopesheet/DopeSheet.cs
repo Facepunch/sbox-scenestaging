@@ -183,7 +183,7 @@ public class DopeSheet : GraphicsView
 
 		foreach ( var widget in TrackList.Tracks )
 		{
-			if ( widget.Property is not ITrackProperty { CanWrite: true } ) continue;
+			if ( widget.Target is not ITrackProperty { CanWrite: true } ) continue;
 			if ( widget.ProjectTrack is not ProjectPropertyTrack propertyTrack ) continue;
 
 			if ( widget.DopeSheetTrack is null )
@@ -326,8 +326,7 @@ public class DopeSheet : GraphicsView
 
 			foreach ( var cut in propertyTrack.Cuts )
 			{
-				snap.Add( SnapFlag.TrackBlock, cut.Block.TimeRange.Start );
-				snap.Add( SnapFlag.TrackBlock, cut.Block.TimeRange.End );
+				snap.Add( SnapFlag.TrackBlock, cut );
 			}
 		}
 	}

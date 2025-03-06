@@ -121,8 +121,7 @@ public sealed class MoviePlayer : Component
 	private void UpdateAnimationPlaybackRate( IClip clip )
 	{
 		var renderers = clip.Tracks
-			.OfType<IReferenceTrack>()
-			.Where( x => x.TargetType == typeof(SkinnedModelRenderer) )
+			.OfType<IReferenceTrack<SkinnedModelRenderer>>()
 			.Select( x => Binder.Get( x ).Value )
 			.OfType<SkinnedModelRenderer>();
 

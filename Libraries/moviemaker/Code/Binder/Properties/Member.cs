@@ -12,6 +12,8 @@ namespace Sandbox.MovieMaker.Properties;
 file sealed record MemberProperty<T>( ITrackTarget Parent, MemberDescription Member )
 	: ITrackProperty<T>
 {
+	public string Name => Member.Name;
+
 	public bool CanWrite => Member switch
 	{
 		PropertyDescription propDesc => propDesc.CanWrite,

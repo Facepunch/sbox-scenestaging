@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Reflection;
 using Sandbox.MovieMaker;
+using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker;
 
@@ -36,7 +37,7 @@ public class ToolbarWidget : Widget
 		{
 			ClipDropDown = new ComboBox( this );
 			ClipDropDown.MinimumWidth = 150;
-			ClipDropDown.ToolTip = $"Selected {nameof(CompiledMovieClip)}";
+			ClipDropDown.ToolTip = $"Selected {nameof(CompiledClip)}";
 
 			Layout.Add( ClipDropDown );
 		}
@@ -156,13 +157,13 @@ public class ToolbarWidget : Widget
 	{
 		ClipDropDown.Clear();
 
-		ClipDropDown.AddItem( "Embedded", "attachment", Editor.SwitchToEmbedded, "Use a clip stored in the player component.", Session?.Source is EmbeddedMovieResource );
+		ClipDropDown.AddItem( "Embedded", "attachment", Editor.SwitchToEmbedded, "Use a clip stored in the player component.", Session?.Resource is EmbeddedMovieResource );
 
 		var icon = typeof(MovieResource).GetCustomAttribute<GameResourceAttribute>()!.Icon;
 
 		foreach ( var resource in ResourceLibrary.GetAll<MovieResource>().OrderBy( x => x.ResourcePath ) )
 		{
-			ClipDropDown.AddItem( resource.ResourceName, icon, () => Editor.SwitchResource( resource ), resource.ResourcePath, Session?.Source == resource );
+			ClipDropDown.AddItem( resource.ResourceName, icon, () => Editor.SwitchResource( resource ), resource.ResourcePath, Session?.Resource == resource );
 		}
 
 		ClipDropDown.AddItem( "Save As..", "save_as", Editor.SaveFileAs, "Save the current clip as a new movie file." );
