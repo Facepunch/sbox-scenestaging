@@ -78,7 +78,12 @@ public interface IReferenceTrack<T> : ITrack
 /// <summary>
 /// Unused, will describe running actions in the scene.
 /// </summary>
-public interface IActionTrack : ITrack;
+public interface IActionTrack : ITrack
+{
+	new ITrack Parent { get; }
+
+	ITrack ITrack.Parent => Parent;
+}
 
 /// <summary>
 /// Controls an <see cref="ITrackProperty"/> in the scene. Defines what value that property should have

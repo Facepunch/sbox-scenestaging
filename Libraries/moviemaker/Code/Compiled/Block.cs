@@ -70,7 +70,7 @@ public sealed record ConstantBlock<T>( MovieTimeRange TimeRange, T Value )
 /// <param name="Offset">Time offset of the first sample.</param>
 /// <param name="SampleRate">How many samples per second.</param>
 /// <param name="Samples">Raw sample values.</param>
-public sealed record SampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, params ImmutableArray<T> Samples )
+public sealed record SampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, ImmutableArray<T> Samples )
 	: PropertyBlock<T>( TimeRange )
 {
 	private readonly bool _validated = Validate( Samples );

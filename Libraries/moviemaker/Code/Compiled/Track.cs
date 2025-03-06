@@ -38,7 +38,7 @@ public abstract record ReferenceTrack( Guid Id, string Name, Type TargetType, Re
 {
 	public new ReferenceTrack<GameObject>? Parent => (ReferenceTrack<GameObject>?)base.Parent;
 
-	IReferenceTrack? IReferenceTrack.Parent => Parent;
+	IReferenceTrack<GameObject>? IReferenceTrack.Parent => Parent;
 }
 
 public sealed record ReferenceTrack<T>( Guid Id, string Name, ReferenceTrack<GameObject>? Parent = null )
@@ -54,12 +54,16 @@ internal interface IBlockTrack
 }
 
 /// <inheritdoc cref="IActionTrack"/>
-public sealed record ActionTrack( string Name, Type TargetType, Track? Parent = null, params ImmutableArray<ActionBlock> Blocks )
+public sealed record ActionTrack( string Name, Type TargetType, Track Parent, ImmutableArray<ActionBlock> Blocks )
 	: Track( Name, TargetType, Parent ), IActionTrack, IBlockTrack
 {
+	public new Track Parent => base.Parent!;
+
 	IReadOnlyList<Block> IBlockTrack.Blocks => Blocks;
 
 	public MovieTimeRange TimeRange { get; } = IBlockTrack.GetTimeRange( Blocks );
+
+	ITrack IActionTrack.Parent => Parent!;
 }
 
 /// <inheritdoc cref="IPropertyTrack"/>
@@ -88,7 +92,7 @@ public abstract record PropertyTrack( string Name, Type TargetType, Track Parent
 }
 
 /// <inheritdoc cref="IPropertyTrack{T}"/>
-public sealed record PropertyTrack<T>( string Name, Track Parent, params ImmutableArray<PropertyBlock<T>> Blocks )
+public sealed record PropertyTrack<T>( string Name, Track Parent, ImmutableArray<PropertyBlock<T>> Blocks )
 	: PropertyTrack( Name, typeof(T), Parent ), IPropertyTrack<T>, IBlockTrack
 {
 	private readonly bool _validated = Validate( Blocks );

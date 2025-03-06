@@ -81,7 +81,7 @@ file sealed record TrackModel( TrackKind Kind, string Name, Type Type,
 				Id ?? Guid.NewGuid(), Name, (ReferenceTrack<GameObject>?)parent ),
 			TrackKind.Reference => TypeLibrary.GetType( typeof( ReferenceTrack<> ) ).CreateGeneric<ReferenceTrack>( [Type],
 				[Id ?? Guid.NewGuid(), Type.Name, (ReferenceTrack<GameObject>?)parent] ),
-			TrackKind.Action => new ActionTrack( Name, Type, parent ),
+			TrackKind.Action => new ActionTrack( Name, Type, parent!, ImmutableArray<ActionBlock>.Empty ),
 			TrackKind.Property => DeserializeHelper.Get( Type ).DeserializePropertyTrack( this, parent!, options ),
 			_ => throw new NotImplementedException()
 		};

@@ -22,7 +22,13 @@ public sealed partial class Clip : IClip
 
 	public MovieTime Duration { get; }
 
-	public Clip( params IEnumerable<Track> tracks )
+	public Clip( params Track[] tracks )
+		: this( tracks.AsEnumerable() )
+	{
+
+	}
+
+	public Clip( IEnumerable<Track> tracks )
 	{
 		var allTracks = new HashSet<Track>();
 

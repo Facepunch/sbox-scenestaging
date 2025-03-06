@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Immutable;
 
 namespace Sandbox.MovieMaker.Compiled;
 
@@ -35,7 +36,7 @@ public static class CompiledClipExtensions
 	/// Create a nested <see cref="PropertyTrack"/> that targets a property with the given <paramref name="name"/>
 	/// in the parent track.
 	/// </summary>
-	public static PropertyTrack<T> Property<T>( this Track track, string name ) => new( name, track );
+	public static PropertyTrack<T> Property<T>( this Track track, string name ) => new( name, track, ImmutableArray<PropertyBlock<T>>.Empty );
 
 	/// <summary>
 	/// Returns a clone of <paramref name="track"/> with an appended <see cref="ConstantBlock{T}"/> with the given
@@ -52,7 +53,7 @@ public static class CompiledClipExtensions
 	/// <paramref name="timeRange"/>, <paramref name="sampleRate"/>, and list of sample <paramref name="values"/>.
 	/// </summary>
 	public static PropertyTrack<T> WithSamples<T>( this PropertyTrack<T> track,
-		MovieTimeRange timeRange, int sampleRate, params IEnumerable<T> values )
+		MovieTimeRange timeRange, int sampleRate, IEnumerable<T> values )
 	{
 		return track with
 		{
