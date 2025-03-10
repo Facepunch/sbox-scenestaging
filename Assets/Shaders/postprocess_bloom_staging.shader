@@ -66,20 +66,44 @@ PS
     float Gamma< Attribute("Gamma"); Default(2.2f); >;
     float3 Tint< Attribute("Tint"); Default3(1.0f, 1.0f, 1.0f); >;
     int CompositeMode< Attribute("CompositeMode"); Default(0); >;
-	
-    
-    // Add these functions in the PS section before MainPs:
-    float3 SampleBicubicLevel(Texture2D tex,float2 uv, float level)
+        
+    float3 SampleBiquadraticLevel(Texture2D tex, float2 uv, int level)
     {
         SamplerState samp = g_sBilinearClamp;
-
+        
+        // Get accurate dimensions for the specified mip level
         float2 texSize;
         tex.GetDimensions(texSize.x, texSize.y);
         texSize /= pow(2, level);
         float2 invTexSize = 1.0 / texSize;
-
-        // Todo: Actually bicubic? barely makes a difference in practice but this is 16x faster
-        return tex.SampleLevel(samp, uv, level).rgb;
+        
+        // Calculate texel position and fractional offset
+        float2 texelPos = uv * texSize;
+        float2 fracOffset = frac(texelPos);
+        float2 baseTexel = floor(texelPos);
+        
+        // Pre-calculate offsets for our 4 samples
+        // These sample positions are chosen to approximate a biquadratic filter
+        const float2 offset1 = float2(-1.0, -1.0) / 3.0;
+        const float2 offset2 = float2( 1.0, -1.0) / 3.0;
+        const float2 offset3 = float2(-1.0,  1.0) / 3.0;
+        const float2 offset4 = float2( 1.0,  1.0) / 3.0;
+        
+        // Calculate sample positions
+        float2 samplePos1 = (baseTexel + 0.5 + offset1 + fracOffset) * invTexSize;
+        float2 samplePos2 = (baseTexel + 0.5 + offset2 + fracOffset) * invTexSize;
+        float2 samplePos3 = (baseTexel + 0.5 + offset3 + fracOffset) * invTexSize;
+        float2 samplePos4 = (baseTexel + 0.5 + offset4 + fracOffset) * invTexSize;
+        
+        // Sample texture with weights
+        // The hardware bilinear filtering already gives us 4 texels per sample
+        float3 color = 0;
+        color += tex.SampleLevel(samp, samplePos1, level).rgb * 0.25;
+        color += tex.SampleLevel(samp, samplePos2, level).rgb * 0.25;
+        color += tex.SampleLevel(samp, samplePos3, level).rgb * 0.25;
+        color += tex.SampleLevel(samp, samplePos4, level).rgb * 0.25;
+        return color;
+        
     }
 
     float3 ScreenHDR(float3 base, float3 blend)
@@ -114,14 +138,14 @@ PS
         
         // Bloom contribution parameters
         const float bloomIntensity = pow(Strength * 0.1, 2);    // Overall bloom strength
-        const float falloffScale = Threshold - 1;      // Controls how quickly bloom fades across mips
+        const float falloffScale = Threshold - 2;      // Controls how quickly bloom fades across mips
         const float gammaCorrection = Gamma;   // Gamma space for color accuracy
         
         [unroll]
         for (int i = 0; i < mipLevels - 1; i++)
         {
-            // Sample each mip level with bicubic filtering
-            float3 sample = SampleBicubicLevel(ColorBuffer, vScreenUv.xy, i + 1);
+            // Sample each mip level with biquadratic filtering
+            float3 sample = SampleBiquadraticLevel(ColorBuffer, vScreenUv.xy, i + 1);
             
             // Convert to linear space and apply subtle curve to prevent over-saturation
             float3 bloomSample = max( pow(sample, gammaCorrection), 0 );

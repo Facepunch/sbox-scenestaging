@@ -11,8 +11,8 @@ public class Bloom2 : PostProcess, Component.ExecuteInEditor
     [Property, MakeDirty] public float Strength { get; set; } = 1.0f;
 
     [Range( 0, 2 )]
-    [Property, MakeDirty] public float Threshold { get; set; } = 0.5f;
-    [Property, MakeDirty, Range( 1.5f, 2.2f) ] public float Gamma { get; set; } = 2.2f;
+    [Property, MakeDirty] public float Threshold { get; set; } = 1.0f;
+    [Property, MakeDirty, Range( 1.0f, 2.2f) ] public float Gamma { get; set; } = 2.2f;
     [Property, MakeDirty] public Color Tint { get; set; } = Color.White;
 
 
