@@ -254,7 +254,7 @@ public abstract class EditMode
 		OnApplyFrame( time );
 	}
 
-	private readonly Dictionary<ProjectPropertyTrack, List<PropertyBlock>> _previewBlocks = new();
+	private readonly Dictionary<ProjectPropertyTrack, List<IPropertyBlock>> _previewBlocks = new();
 
 	protected virtual void OnApplyFrame( MovieTime time )
 	{
@@ -270,11 +270,11 @@ public abstract class EditMode
 		}
 	}
 
-	public void SetPreviewBlocks( ProjectPropertyTrack track, IEnumerable<PropertyBlock> blocks )
+	public void SetPreviewBlocks( ProjectPropertyTrack track, IEnumerable<IPropertyBlock> blocks )
 	{
 		if ( !_previewBlocks.TryGetValue( track, out var list ) )
 		{
-			_previewBlocks.Add( track, list = new List<PropertyBlock>() );
+			_previewBlocks.Add( track, list = new List<IPropertyBlock>() );
 		}
 
 		list.Clear();
@@ -297,7 +297,7 @@ public abstract class EditMode
 		}
 	}
 
-	public IEnumerable<PropertyBlock> GetPreviewBlocks( ProjectPropertyTrack track )
+	public IEnumerable<IPropertyBlock> GetPreviewBlocks( ProjectPropertyTrack track )
 	{
 		return _previewBlocks.GetValueOrDefault( track, [] );
 	}

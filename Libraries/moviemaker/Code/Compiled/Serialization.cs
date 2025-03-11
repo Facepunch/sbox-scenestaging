@@ -77,10 +77,10 @@ file sealed record TrackModel( TrackKind Kind, string Name, Type Type,
 	{
 		var track = Kind switch
 		{
-			TrackKind.Reference when Type == typeof(GameObject) => new ReferenceTrack<GameObject>(
-				Id ?? Guid.NewGuid(), Name, (ReferenceTrack<GameObject>?)parent ),
-			TrackKind.Reference => TypeLibrary.GetType( typeof( ReferenceTrack<> ) ).CreateGeneric<CompiledReferenceTrack>( [Type],
-				[Id ?? Guid.NewGuid(), Type.Name, (ReferenceTrack<GameObject>?)parent] ),
+			TrackKind.Reference when Type == typeof(GameObject) => new CompiledReferenceTrack<GameObject>(
+				Id ?? Guid.NewGuid(), Name, (CompiledReferenceTrack<GameObject>?)parent ),
+			TrackKind.Reference => TypeLibrary.GetType( typeof( CompiledReferenceTrack<> ) ).CreateGeneric<CompiledReferenceTrack>( [Type],
+				[Id ?? Guid.NewGuid(), Type.Name, (CompiledReferenceTrack<GameObject>?)parent] ),
 			TrackKind.Action => new CompiledActionTrack( Name, Type, parent!, ImmutableArray<CompiledActionBlock>.Empty ),
 			TrackKind.Property => DeserializeHelper.Get( Type ).DeserializePropertyTrack( this, parent!, options ),
 			_ => throw new NotImplementedException()

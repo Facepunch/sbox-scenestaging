@@ -67,7 +67,7 @@ public partial class DopeSheetTrack : GraphicsItem
 		}
 	}
 
-	private void GetBlocks( List<IBlock> result )
+	private void GetBlocks( List<IPropertyBlock> result )
 	{
 		foreach ( var block in ProjectTrack.Blocks )
 		{

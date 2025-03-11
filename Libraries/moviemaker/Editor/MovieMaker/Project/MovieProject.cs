@@ -22,9 +22,16 @@ public sealed class MovieProject : IJsonPopulator
 	public IReadOnlyList<ProjectTrack> Tracks => throw new NotImplementedException();
 	public IReadOnlyList<ProjectTrack> RootTracks => throw new NotImplementedException();
 
-	public ProjectTrack? GetTrack( Guid trackId )
+	public ProjectReferenceTrack? GetTrack( Guid trackId ) => Tracks
+		.OfType<ProjectReferenceTrack>()
+		.FirstOrDefault( x => x.Id == trackId );
+
+	public ProjectTrack? GetTrack( TrackPath path )
 	{
-		throw new NotImplementedException();
+		ProjectTrack? track = GetTrack( path.ReferenceId );
+
+		return path.PropertyNames.Aggregate( track,
+			( current, propertyName ) => current?.GetChild( propertyName ) );
 	}
 
 	public CompiledClip Compile()

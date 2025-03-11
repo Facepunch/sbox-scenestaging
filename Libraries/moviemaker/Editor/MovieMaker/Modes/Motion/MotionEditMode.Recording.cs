@@ -121,7 +121,7 @@ partial class MotionEditMode
 	}
 }
 
-internal interface ITrackRecording : IPreviewMovieBlock
+internal interface ITrackRecording : IPropertyBlock, IDynamicBlock
 {
 	void Record( MovieTime time );
 	IReadOnlyList<CompiledPropertyBlock> Compile();

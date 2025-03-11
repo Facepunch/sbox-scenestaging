@@ -1,5 +1,5 @@
-﻿using Sandbox.MovieMaker;
-using System.Linq;
+﻿using System.Linq;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -13,40 +13,29 @@ internal interface ITrackModification
 	ProjectPropertyTrack Track { get; }
 
 	void SetRelativeTo( object? value );
-	void SetChanges( IEnumerable<IPropertyBlock> blocks );
+	void SetChanges( object? constantValue );
+	void SetChanges( IEnumerable<PropertyBlock> blocks );
 	void ClearPreview();
 	bool Update( TimeSelection selection, MovieTime offset, bool additive );
 	bool Commit( TimeSelection selection, MovieTime offset, bool additive );
-
-	public void SetChanges( object? constantValue ) =>
-		SetChanges( [new PropertyBlockSlice( (MovieTime.Zero, MovieTime.MaxValue), Track.TargetType.CreateConstantData( constantValue ) )] );
 }
 
 internal sealed class TrackModification<T> : ITrackModification
 {
 	public EditMode EditMode { get; }
-	public ProjectPropertyTrack Track { get; }
+	public ProjectPropertyTrack<T> Track { get; }
 
-	private record ChangeMapping( MovieTimeRange TimeRange, IPropertyBlock<T> Original, IPropertyBlock<T> Change ) : IPropertyBlock<T>
-	{
-		public IPropertyBlock<T>? Applied { get; set; }
+	ProjectPropertyTrack ITrackModification.Track => Track;
 
-		public Type PropertyType => typeof(T);
-
-		public T GetValue( MovieTime time ) =>
-			Applied is { } applied ? applied.GetValue( time ) : Original.GetValue( time );
-
-		object? IPropertyBlock.GetValue( MovieTime time ) => GetValue( time );
-	}
-
-	private readonly List<IBlock> _changes = new();
-	private readonly List<ChangeMapping> _changeMappings = new();
+	private PropertyBlock<T>? _original;
+	private PropertyBlock<T>? _overlay;
+	private PropertyBlock<T>? _blended;
 
 	private T _relativeTo = default!;
 
-	public bool HasChanges => _changes.Count > 0;
+	public bool HasChanges => _overlay != null;
 
-	public TrackModification( EditMode editMode, ProjectTrack track )
+	public TrackModification( EditMode editMode, ProjectPropertyTrack<T> track )
 	{
 		EditMode = editMode;
 		Track = track;
@@ -57,147 +46,47 @@ internal sealed class TrackModification<T> : ITrackModification
 		_relativeTo = (T)value!;
 	}
 
-	public void SetChanges( IEnumerable<IBlock> blocks )
+	public void SetChanges( object? constantValue ) => SetChanges(
+		[new ConstantPropertyBlock<T>( (MovieTime.Zero, MovieTime.MaxValue), (T)constantValue! )] );
+
+	public void SetChanges( IEnumerable<PropertyBlock> blocks )
 	{
-		_changes.Clear();
-		_changes.AddRange( blocks );
+		_overlay = blocks.Cast<PropertyBlock<T>>().Stitch();
 	}
 
 	public void ClearPreview()
 	{
-		_changeMappings.Clear();
-
 		EditMode.ClearPreviewBlocks( Track );
-	}
-
-	private void UpdateChangeMappings( MovieTimeRange timeRange, MovieTime changeOffset )
-	{
-		_changeMappings.Clear();
-
-		for ( var i = 0; i < _changes.Count; ++i )
-		{
-			var change = _changes[i];
-			var changeTimeRange = change.TimeRange + changeOffset;
-
-			// First / last change should be used outside the changed range
-
-			if ( i == 0 )
-			{
-				changeTimeRange = (MovieTime.Min( changeTimeRange.Start, timeRange.Start ), changeTimeRange.End);
-			}
-
-			if ( i == _changes.Count - 1 )
-			{
-				changeTimeRange = (changeTimeRange.Start, MovieTime.Max( changeTimeRange.End, timeRange.End ));
-			}
-
-			if ( changeTimeRange.Intersect( timeRange ) is not { IsEmpty: false } intersection ) continue;
-
-			var changeBlock = new PropertyBlockSlice( change.TimeRange + changeOffset, change.Data );
-			var anyCuts = false;
-
-			foreach ( var cut in Track.GetCuts( intersection ) )
-			{
-				_changeMappings.Add( new ChangeMapping( cut.TimeRange, cut.Block, changeBlock ) );
-				anyCuts = true;
-			}
-
-			if ( !anyCuts )
-			{
-				_changeMappings.Add( new ChangeMapping( intersection, changeBlock, changeBlock ) );
-			}
-		}
 	}
 
 	public bool Update( TimeSelection selection, MovieTime offset, bool additive )
 	{
-		if ( !HasChanges || !EditMode.Session.CanEdit( Track ) )
+		if ( _overlay is null || !EditMode.Session.CanEdit( Track ) )
 		{
 			ClearPreview();
 			return false;
 		}
 
 		var timeRange = selection.TotalTimeRange;
-		var sampleRate = EditMode.Project.SampleRate;
 
-		UpdateChangeMappings( timeRange, offset );
-
-		foreach ( var mapping in _changeMappings )
+		if ( _original is null || _original.TimeRange != timeRange )
 		{
-			mapping.Applied = Blend( mapping.Original, mapping.Change, mapping.TimeRange, selection, additive, sampleRate );
+			_original = Track.Slice( timeRange ).Stitch().Slice( timeRange );
 		}
 
-		EditMode.SetPreviewBlocks( Track, _changeMappings );
+		_blended = new PropertyBlockBlend<T>( _original, _overlay.Shift( offset ), selection );
+
+		EditMode.SetPreviewBlocks( Track, [_blended] );
 
 		return true;
 	}
 
 	public bool Commit( TimeSelection selection, MovieTime offset, bool additive )
 	{
-		if ( !Update( selection, offset, additive ) ) return false;
-
-		var insertOptions = new InsertOptions( _changeMappings,
-			StitchStart: selection.FadeIn.Duration.IsPositive,
-			StitchEnd: selection.FadeOut.Duration.IsPositive );
-
-		if ( !Track.Splice( selection.TotalTimeRange, selection.TotalTimeRange.Duration, insertOptions ) )
-		{
-			return false;
-		}
-
-		var stitchTimeRange = selection.PeakTimeRange.Grow(
-			insertOptions.StitchStart ? MovieTime.Epsilon : MovieTime.Zero,
-			insertOptions.StitchEnd ? MovieTime.Epsilon : MovieTime.Zero );
-
-		ProjectBlock? prevBlock = null;
-		foreach ( var cut in Track.GetCuts( stitchTimeRange ).ToArray() )
-		{
-			// Stitch adjacent blocks if there isn't a cut in the original change
-
-			prevBlock = prevBlock?.TimeRange.End == cut.Block.TimeRange.Start && _changes.All( x => x.TimeRange.Start + offset != cut.Block.TimeRange.Start )
-				? Track.Stitch( prevBlock, cut.Block ) ?? cut.Block
-				: cut.Block;
-		}
+		if ( !Update( selection, offset, additive ) || _blended is not { } blended ) return false;
 
 		ClearPreview();
 
-		_changeMappings.Clear();
-
-		return true;
-	}
-
-	private IBlockData Blend( IBlock original, IBlock change, MovieTimeRange timeRange, TimeSelection selection, bool additive, int sampleRate )
-	{
-		if ( original.Data is not IValueData<T> originalData ) return original.Data.Slice( timeRange );
-		if ( change.Data is not IValueData<T> changeData ) return original.Data.Slice( timeRange );
-
-		var interpolator = Interpolator.GetDefault<T>();
-		var transformer = additive ? LocalTransformer.GetDefault<T>() : null;
-
-		var sampleCount = timeRange.Duration.GetFrameCount( sampleRate );
-
-		var dstValues = new T[sampleCount];
-
-		originalData.Sample( dstValues, timeRange - original.TimeRange.Start, sampleRate );
-
-		for ( var i = 0; i < sampleCount; ++i )
-		{
-			var time = timeRange.Start + MovieTime.FromFrames( i, sampleRate );
-			var fade = selection.GetFadeValue( time );
-
-			var src = dstValues[i];
-			var dst = changeData.GetValue( time - change.TimeRange.Start );
-
-			if ( transformer is not null )
-			{
-				dst = transformer.ToGlobal( transformer.ToLocal( dst, _relativeTo ), src );
-			}
-
-			dstValues[i] = interpolator is null
-				? fade >= 1f ? dst : src
-				: interpolator.Interpolate( src, dst, fade );
-		}
-
-		return new SamplesData<T>( sampleRate, dstValues );
+		return Track.Add( blended );
 	}
 }

@@ -80,7 +80,21 @@ partial class MotionEditMode
 	{
 		if ( TimeSelection is not { } selection ) return;
 
-		if ( Session.Delete( selection.PeakTimeRange, shift ) )
+		var changed = false;
+
+		foreach ( var track in Session.EditableTracks )
+		{
+			if ( shift )
+			{
+				changed |= track.Remove( selection.PeakTimeRange );
+			}
+			else
+			{
+				changed |= track.Clear( selection.PeakTimeRange );
+			}
+		}
+
+		if ( changed )
 		{
 			DisplayAction( "delete" );
 		}
@@ -90,13 +104,20 @@ partial class MotionEditMode
 	{
 		if ( TimeSelection is not { } selection ) return;
 
-		if ( Session.Insert( selection.PeakTimeRange ) )
+		var changed = false;
+
+		foreach ( var track in Session.EditableTracks )
+		{
+			changed |= track.Insert( selection.PeakTimeRange );
+		}
+
+		if ( changed )
 		{
 			DisplayAction( "keyboard_tab" );
 		}
 	}
 
-	private record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<Guid, IReadOnlyList<PropertyBlockSlice>> Tracks );
+	private record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<TrackPath, IReadOnlyList<PropertyBlock>> Tracks );
 
 	private static ClipboardData? Clipboard { get; set; }
 
@@ -115,23 +136,21 @@ partial class MotionEditMode
 
 	protected override void OnCopy()
 	{
-		if ( TimeSelection is not { } selection || Session.Project is not { } project ) return;
+		if ( TimeSelection is not { } selection ) return;
 
 		var timeRange = selection.TotalTimeRange;
 		var offset = Session.CurrentPointer;
-		var tracks = new Dictionary<Guid, IReadOnlyList<PropertyBlockSlice>>();
-		var slicedBlocks = new List<PropertyBlockSlice>();
+		var tracks = new Dictionary<TrackPath, IReadOnlyList<PropertyBlock>>();
+		var slicedBlocks = new List<PropertyBlock>();
 
-		foreach ( var track in project.Tracks )
+		foreach ( var track in Session.EditableTracks )
 		{
-			if ( !Session.CanEdit( track ) ) continue;
-
 			slicedBlocks.Clear();
-			slicedBlocks.AddRange( track.Slice( timeRange ).Select( x => x with { TimeRange = x.TimeRange - offset } ) );
+			slicedBlocks.AddRange( track.Slice( timeRange ).Select( x => x.Shift( -offset ) ) );
 
 			if ( slicedBlocks.Count > 0 )
 			{
-				tracks[track.Id] = slicedBlocks.ToImmutableList();
+				tracks[TrackPath.FromTrack( track )] = slicedBlocks.ToImmutableList();
 			}
 		}
 

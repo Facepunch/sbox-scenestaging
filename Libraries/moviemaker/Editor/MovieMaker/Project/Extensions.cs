@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Collections.Immutable;
+using Sandbox.MovieMaker;
 using System.Linq;
 
 namespace Editor.MovieMaker;
@@ -10,38 +11,65 @@ namespace Editor.MovieMaker;
 /// </summary>
 public static class ProjectExtensions
 {
-	public static IEnumerable<IBlock> GetBlocks( this IBlockTrack track, MovieTimeRange timeRange )
+	public static IEnumerable<PropertyBlock> GetBlocks( this ProjectPropertyTrack track, MovieTimeRange timeRange )
 	{
 		return track.Blocks.Where( x => x.TimeRange.Intersect( timeRange ) is not null );
 	}
 
-	public static IEnumerable<T> GetBlocks<T>( this IBlockTrack<T> track, MovieTimeRange timeRange )
-		where T : IBlock
+	public static IEnumerable<PropertyBlock<T>> GetBlocks<T>( this ProjectPropertyTrack<T> track, MovieTimeRange timeRange )
 	{
 		return track.Blocks.Where( x => x.TimeRange.Intersect( timeRange ) is not null );
 	}
 
-	public static T? GetBlock<T>( this IBlockTrack<T> track, MovieTime time )
-		where T : IBlock
+	public static T GetValue<T>( this IReadOnlyList<IPropertyBlock<T>> blocks, MovieTime time )
 	{
-		if ( !track.TimeRange.Contains( time ) ) return default;
+		return blocks.GetNearestBlock( time ).GetValue( time );
+	}
+
+	public static T GetNearestBlock<T>( this IReadOnlyList<T> blocks, MovieTime time )
+		where T : IPropertyBlock
+	{
+		if ( blocks.Count == 0 ) throw new ArgumentException( "Expected at least one block.", nameof( blocks ) );
+
+		if ( time <= blocks[0].TimeRange.Start ) return blocks[0];
+		if ( time >= blocks[^1].TimeRange.End ) return blocks[^1];
 
 		// TODO: binary search?
 
 		// We go backwards because if we're exactly on a block boundary, we want to use the later block
-
-		var blocks = track.Blocks;
 
 		for ( var i = blocks.Count - 1; i >= 0; --i )
 		{
 			var block = blocks[i];
 
 			if ( block.TimeRange.Start > time ) continue;
-			if ( block.TimeRange.End < time ) break;
 
 			return block;
 		}
 
-		return default;
+		return blocks[0];
+
+	}
+
+	public static T? GetBlock<T>( this IReadOnlyList<T> blocks, MovieTime time )
+		where T : IPropertyBlock
+	{
+		if ( blocks.Count == 0 ) return default;
+
+		var block = blocks.GetNearestBlock( time );
+
+		return block.TimeRange.Contains( time ) ? block : default;
+	}
+
+	public static PropertyBlock<T> Stitch<T>( this IEnumerable<PropertyBlock<T>> blocks )
+	{
+		var array = blocks.ToImmutableArray();
+
+		return array.Length switch
+		{
+			0 => throw new ArgumentException( "Expected at least one block.", nameof(blocks) ),
+			1 => array[0],
+			_ => new PropertyBlockStitch<T>( array )
+		};
 	}
 }

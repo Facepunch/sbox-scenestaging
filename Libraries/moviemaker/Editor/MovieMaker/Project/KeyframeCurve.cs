@@ -110,6 +110,7 @@ public partial class KeyframeCurve<T> : KeyframeCurve, IEnumerable<Keyframe<T>>
 	{
 		_keyframes.Clear();
 	}
+
 	public override IEnumerable<CompiledPropertyBlock> Compile( int sampleRate )
 	{
 		if ( _keyframes.Count == 0 ) yield break;

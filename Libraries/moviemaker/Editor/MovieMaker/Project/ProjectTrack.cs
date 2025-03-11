@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
@@ -9,15 +10,18 @@ namespace Editor.MovieMaker;
 
 public abstract partial class ProjectTrack( MovieProject project, string name, Type targetType ) : ITrack
 {
-	public MovieProject Project => project;
-	public string Name => name;
-	public Type TargetType => targetType;
+	public MovieProject Project { get; } = project;
+	public string Name { get; } = name;
+	public Type TargetType { get; } = targetType;
+
 	public ProjectTrack? Parent => throw new NotImplementedException();
 	public bool IsEmpty => throw new NotImplementedException();
 
 	public IReadOnlyList<ProjectTrack> Children => throw new NotImplementedException();
 
 	public void Remove() => throw new NotImplementedException();
+
+	public ProjectTrack? GetChild( string name ) => Children.FirstOrDefault( x => x.Name == name );
 
 	ITrack? ITrack.Parent => Parent;
 
@@ -37,7 +41,7 @@ public sealed class ProjectReferenceTrack<T>( MovieProject project, Guid id, str
 	: ProjectReferenceTrack( project, id, name, typeof(T) ), IReferenceTrack<T>
 {
 	public override CompiledTrack Compile( CompiledTrack? compiledParent ) =>
-		new ReferenceTrack<T>( Id, Name, (ReferenceTrack<GameObject>)compiledParent! );
+		new CompiledReferenceTrack<T>( Id, Name, (CompiledReferenceTrack<GameObject>)compiledParent! );
 }
 
 public abstract class ProjectPropertyTrack( MovieProject project, string name, Type targetType )
@@ -63,26 +67,35 @@ public abstract class ProjectPropertyTrack( MovieProject project, string name, T
 	/// the duration of <paramref name="timeRange"/>. Will split any blocks that
 	/// span the start time.
 	/// </summary>
-	public abstract void Insert( MovieTimeRange timeRange );
+	public abstract bool Insert( MovieTimeRange timeRange );
 
 	/// <summary>
 	/// Remove the given <paramref name="timeRange"/>, then collapse the removed
 	/// time range so any blocks after the end of the range will start earlier.
 	/// </summary>
-	public abstract void Remove( MovieTimeRange timeRange );
+	public abstract bool Remove( MovieTimeRange timeRange );
 
 	/// <summary>
 	/// Remove any blocks within the <paramref name="timeRange"/>, splitting any
 	/// blocks that span the start or end. This doesn't shift any blocks, so will
 	/// leave an empty region of time.
 	/// </summary>
-	public abstract void Clear( MovieTimeRange timeRange );
+	public abstract bool Clear( MovieTimeRange timeRange );
 
 	/// <summary>
 	/// Adds a <paramref name="block"/>, replacing any blocks that overlap its time range.
 	/// This will split any blocks that partially overlap.
 	/// </summary>
-	public abstract void Add( PropertyBlock block );
+	public abstract bool Add( PropertyBlock block );
+
+	/// <summary>
+	/// Copies blocks that overlap the given <paramref name="timeRange"/> and returns
+	/// the copies.
+	/// </summary>
+	public IEnumerable<PropertyBlock> Slice( MovieTimeRange timeRange )
+	{
+		throw new NotImplementedException();
+	}
 }
 
 public sealed class ProjectPropertyTrack<T>( MovieProject project, string name )
@@ -127,22 +140,33 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, string name )
 		return false;
 	}
 
-	public override void Insert( MovieTimeRange timeRange )
+	public override bool Insert( MovieTimeRange timeRange )
 	{
 		throw new NotImplementedException();
 	}
 
-	public override void Remove( MovieTimeRange timeRange )
+	public override bool Remove( MovieTimeRange timeRange )
 	{
 		throw new NotImplementedException();
 	}
 
-	public override void Clear( MovieTimeRange timeRange )
+	public override bool Clear( MovieTimeRange timeRange )
 	{
 		throw new NotImplementedException();
 	}
 
-	public override void Add( PropertyBlock block )
+	public override bool Add( PropertyBlock block )
+	{
+		throw new NotImplementedException();
+	}
+
+	public new IEnumerable<PropertyBlock<T>> Slice( MovieTimeRange timeRange ) =>
+		base.Slice( timeRange ).Cast<PropertyBlock<T>>();
+}
+
+public record struct TrackPath( Guid ReferenceId, ImmutableArray<string> PropertyNames )
+{
+	public static TrackPath FromTrack( ITrack track )
 	{
 		throw new NotImplementedException();
 	}
