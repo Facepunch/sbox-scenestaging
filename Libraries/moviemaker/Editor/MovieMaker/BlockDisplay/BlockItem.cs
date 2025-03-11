@@ -6,28 +6,28 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 public abstract partial class BlockItem : GraphicsItem
 {
-	private IBlock? _block;
+	private PropertyBlock? _block;
 
 	public new DopeSheetTrack Parent { get; private set; } = null!;
 
-	public IBlock Block
+	public PropertyBlock Block
 	{
 		get => _block ?? throw new InvalidOperationException();
 		set
 		{
 			if ( _block == value ) return;
 
-			if ( _block is IPreviewMovieBlock oldBlock )
-			{
-				oldBlock.Changed -= Block_Changed;
-			}
+			//if ( _block is IPreviewMovieBlock oldBlock )
+			//{
+			//	oldBlock.Changed -= Block_Changed;
+			//}
 
 			_block = value;
 
-			if ( _block is IPreviewMovieBlock newBlock )
-			{
-				newBlock.Changed += Block_Changed;
-			}
+			//if ( _block is IPreviewMovieBlock newBlock )
+			//{
+			//	newBlock.Changed += Block_Changed;
+			//}
 		}
 	}
 
@@ -38,7 +38,7 @@ public abstract partial class BlockItem : GraphicsItem
 
 	protected string? DebugText { get; set; }
 
-	private void Initialize( DopeSheetTrack parent, IBlock block )
+	private void Initialize( DopeSheetTrack parent, PropertyBlock block )
 	{
 		base.Parent = Parent = parent;
 
@@ -91,6 +91,5 @@ internal interface IBlockItem<T>;
 
 public abstract class BlockItem<T> : BlockItem, IBlockItem<T>
 {
-	public IConstantBlock<T>? Constant => Block as IConstantBlock<T>;
-	public ISampleBlock<T>? Samples => Block as ISampleBlock<T>;
+
 }

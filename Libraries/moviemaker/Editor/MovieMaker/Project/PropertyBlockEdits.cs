@@ -21,6 +21,19 @@ public abstract record PropertyBlock( MovieTimeRange TimeRange, Type PropertyTyp
 
 	public PropertyBlock Stitch( PropertyBlock next ) => OnStitch( next );
 	protected abstract PropertyBlock OnStitch( PropertyBlock next );
+
+	/// <summary>
+	/// For painting a curve of this property block's value, gets
+	/// times that should have a vertex because of a discontinuity.
+	/// </summary>
+	public IEnumerable<MovieTime> GetPaintHintTimes() => OnGetPaintHintTimes();
+
+	/// <inheritdoc cref="GetPaintHintTimes"/>
+	protected virtual IEnumerable<MovieTime> OnGetPaintHintTimes()
+	{
+		yield return TimeRange.Start;
+		yield return TimeRange.End;
+	}
 }
 
 public abstract record PropertyBlock<T>( MovieTimeRange TimeRange ) : PropertyBlock( TimeRange, typeof(T) )
@@ -29,7 +42,7 @@ public abstract record PropertyBlock<T>( MovieTimeRange TimeRange ) : PropertyBl
 
 	public new virtual PropertyBlock<T> Slice( MovieTimeRange timeRange ) => new PropertyBlockSlice<T>( this, TimeRange, 0d );
 	public new virtual PropertyBlock<T> Shift( MovieTime offset ) => new PropertyBlockSlice<T>( this, TimeRange + offset, offset );
-	public new virtual PropertyBlock<T> Stitch( PropertyBlock<T> next ) => new PropertyBlockStitch<T>( [this, next] );
+	public virtual PropertyBlock<T> Stitch( PropertyBlock<T> next ) => new PropertyBlockStitch<T>( [this, next] );
 
 	protected sealed override object? OnGetValue( MovieTime time ) => GetValue( time );
 	protected sealed override PropertyBlock OnSlice( MovieTimeRange timeRange ) => Slice( timeRange );
@@ -37,7 +50,7 @@ public abstract record PropertyBlock<T>( MovieTimeRange TimeRange ) : PropertyBl
 	protected sealed override PropertyBlock OnStitch( PropertyBlock next ) => Stitch( (PropertyBlock<T>)next );
 }
 
-public sealed record SourceClipPropertyBlock<T>( ProjectSourceClip Source, PropertyTrack<T> Track, PropertyBlock<T> Block )
+public sealed record SourceClipPropertyBlock<T>( ProjectSourceClip Source, CompiledPropertyTrack<T> Track, PropertyBlock<T> Block )
 	: PropertyBlock<T>( Block.TimeRange )
 {
 	public override T GetValue( MovieTime time ) => Block.GetValue( time );

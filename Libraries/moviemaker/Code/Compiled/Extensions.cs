@@ -11,53 +11,53 @@ namespace Sandbox.MovieMaker.Compiled;
 public static class CompiledClipExtensions
 {
 	/// <summary>
-	/// Create a nested <see cref="ReferenceTrack"/> that targets a <see cref="Sandbox.GameObject"/> with
+	/// Create a nested <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.GameObject"/> with
 	/// the given <paramref name="name"/>.
 	/// </summary>
 	public static ReferenceTrack<GameObject> GameObject( this ReferenceTrack<GameObject> track, string name ) =>
 		new( Guid.NewGuid(), name, track );
 
 	/// <summary>
-	/// Create a nested <see cref="ReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
+	/// Create a nested <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the given <paramref name="type"/>.
 	/// </summary>
-	public static ReferenceTrack Component( this ReferenceTrack<GameObject> track, Type type ) =>
+	public static CompiledReferenceTrack Component( this ReferenceTrack<GameObject> track, Type type ) =>
 		TypeLibrary.GetType( typeof(ReferenceTrack<>) )
-			.CreateGeneric<ReferenceTrack>( [type], [Guid.NewGuid(), type.Name, track] );
+			.CreateGeneric<CompiledReferenceTrack>( [type], [Guid.NewGuid(), type.Name, track] );
 
 	/// <summary>
-	/// Create a nested <see cref="ReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
+	/// Create a nested <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the type <typeparamref name="T"/>.
 	/// </summary>
 	public static ReferenceTrack<T> Component<T>( this ReferenceTrack<GameObject> track ) =>
 		new( Guid.NewGuid(), typeof(T).Name, track );
 
 	/// <summary>
-	/// Create a nested <see cref="PropertyTrack"/> that targets a property with the given <paramref name="name"/>
+	/// Create a nested <see cref="CompiledPropertyTrack"/> that targets a property with the given <paramref name="name"/>
 	/// in the parent track.
 	/// </summary>
-	public static PropertyTrack<T> Property<T>( this CompiledTrack track, string name ) => new( name, track, ImmutableArray<CompiledPropertyBlock<T>>.Empty );
+	public static CompiledPropertyTrack<T> Property<T>( this CompiledTrack track, string name ) => new( name, track, ImmutableArray<CompiledPropertyBlock<T>>.Empty );
 
 	/// <summary>
-	/// Returns a clone of <paramref name="track"/> with an appended <see cref="ConstantBlock{T}"/> with the given
+	/// Returns a clone of <paramref name="track"/> with an appended <see cref="CompiledConstantBlock{T}"/> with the given
 	/// <paramref name="timeRange"/> and <paramref name="value"/>.
 	/// </summary>
-	public static PropertyTrack<T> WithConstant<T>( this PropertyTrack<T> track,
+	public static CompiledPropertyTrack<T> WithConstant<T>( this CompiledPropertyTrack<T> track,
 		MovieTimeRange timeRange, T value )
 	{
-		return track with { Blocks = [..track.Blocks, new ConstantBlock<T>( timeRange, value )] };
+		return track with { Blocks = [..track.Blocks, new CompiledConstantBlock<T>( timeRange, value )] };
 	}
 
 	/// <summary>
-	/// Returns a clone of <paramref name="track"/> with an appended <see cref="SampleBlock{T}"/> with the given
+	/// Returns a clone of <paramref name="track"/> with an appended <see cref="CompiledSampleBlock{T}"/> with the given
 	/// <paramref name="timeRange"/>, <paramref name="sampleRate"/>, and list of sample <paramref name="values"/>.
 	/// </summary>
-	public static PropertyTrack<T> WithSamples<T>( this PropertyTrack<T> track,
+	public static CompiledPropertyTrack<T> WithSamples<T>( this CompiledPropertyTrack<T> track,
 		MovieTimeRange timeRange, int sampleRate, IEnumerable<T> values )
 	{
 		return track with
 		{
-			Blocks = [..track.Blocks, new SampleBlock<T>( timeRange, 0d, sampleRate, [..values] )]
+			Blocks = [..track.Blocks, new CompiledSampleBlock<T>( timeRange, 0d, sampleRate, [..values] )]
 		};
 	}
 	

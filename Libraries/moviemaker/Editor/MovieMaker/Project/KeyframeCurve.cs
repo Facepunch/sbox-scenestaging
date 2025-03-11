@@ -112,7 +112,9 @@ public partial class KeyframeCurve<T> : KeyframeCurve, IEnumerable<Keyframe<T>>
 	}
 	public override IEnumerable<CompiledPropertyBlock> Compile( int sampleRate )
 	{
-		if ( CanInterpolate )
+		if ( _keyframes.Count == 0 ) yield break;
+
+		if ( CanInterpolate && _keyframes.Count > 1 )
 		{
 			// Interpolated keyframes: sample at uniform time steps
 
@@ -122,22 +124,23 @@ public partial class KeyframeCurve<T> : KeyframeCurve, IEnumerable<Keyframe<T>>
 
 			for ( var i = 0; i < sampleCount; ++i )
 			{
-				samples[i] = keyframes.GetValue( MovieTime.FromFrames( i, sampleRate ) );
+				samples[i] = GetValue( MovieTime.FromFrames( i, sampleRate ) );
 			}
 
-			var data = new SampleBlock<T>( timeRange, 0d, sampleRate, [.. samples] );
-
-			if ( Blocks.Count != 1 )
-			{
-				RemoveBlocks();
-				AddBlock( keyframes.TimeRange, data );
-			}
-			else
-			{
-				Blocks[0].TimeRange = keyframes.TimeRange;
-				Blocks[0].Data = data;
-			}
+			yield return new CompiledSampleBlock<T>( timeRange, timeRange.Start, sampleRate, [..samples] );
+			yield break;
 		}
+
+		var prev = _keyframes[0];
+
+		foreach ( var next in _keyframes.Values.Skip( 1 ) )
+		{
+			yield return new CompiledConstantBlock<T>( (prev.Time, next.Time), prev.Value );
+
+			prev = next;
+		}
+
+		yield return new CompiledConstantBlock<T>( (prev.Time, prev.Time), prev.Value );
 	}
 
 	protected override IEnumerator<IKeyframe> OnGetEnumerator()

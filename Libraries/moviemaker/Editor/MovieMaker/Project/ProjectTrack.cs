@@ -43,7 +43,10 @@ public sealed class ProjectReferenceTrack<T>( MovieProject project, Guid id, str
 public abstract class ProjectPropertyTrack( MovieProject project, string name, Type targetType )
 	: ProjectTrack( project, name, targetType ), IPropertyTrack
 {
-	public abstract IReadOnlyList<PropertyBlock> Blocks { get; }
+	public KeyframeCurve? Keyframes { get; set; }
+
+	public IReadOnlyList<PropertyBlock> Blocks => OnGetBlocks();
+	protected abstract IReadOnlyList<PropertyBlock> OnGetBlocks();
 
 	public MovieTimeRange TimeRange => Blocks is { Count: > 0 } blocks
 		? (blocks[0].TimeRange.Start, blocks[^1].TimeRange.End)
@@ -55,22 +58,47 @@ public abstract class ProjectPropertyTrack( MovieProject project, string name, T
 
 	ITrack IPropertyTrack.Parent => Parent!;
 
-	public abstract void RemoveBlocks();
-	public void AddBlock( PropertyBlock block ) => OnAddBlock( block );
-	protected abstract void OnAddBlock( PropertyBlock block );
+	/// <summary>
+	/// Add empty space from the start of <paramref name="timeRange"/>, with
+	/// the duration of <paramref name="timeRange"/>. Will split any blocks that
+	/// span the start time.
+	/// </summary>
+	public abstract void Insert( MovieTimeRange timeRange );
 
-	public PropertyBlock? GetBlock( MovieTime time ) => OnGetBlock( time );
-	protected abstract PropertyBlock? OnGetBlock( MovieTime time );
+	/// <summary>
+	/// Remove the given <paramref name="timeRange"/>, then collapse the removed
+	/// time range so any blocks after the end of the range will start earlier.
+	/// </summary>
+	public abstract void Remove( MovieTimeRange timeRange );
+
+	/// <summary>
+	/// Remove any blocks within the <paramref name="timeRange"/>, splitting any
+	/// blocks that span the start or end. This doesn't shift any blocks, so will
+	/// leave an empty region of time.
+	/// </summary>
+	public abstract void Clear( MovieTimeRange timeRange );
+
+	/// <summary>
+	/// Adds a <paramref name="block"/>, replacing any blocks that overlap its time range.
+	/// This will split any blocks that partially overlap.
+	/// </summary>
+	public abstract void Add( PropertyBlock block );
 }
 
 public sealed class ProjectPropertyTrack<T>( MovieProject project, string name )
 	: ProjectPropertyTrack( project, name, typeof(T) ), IPropertyTrack<T>
 {
+	private readonly List<PropertyBlock<T>> _blocks = new();
+
+	public new IReadOnlyList<PropertyBlock<T>> Blocks => _blocks;
+
+	protected override IReadOnlyList<PropertyBlock> OnGetBlocks() => _blocks;
+
 	public override IReadOnlyList<MovieTime> Cuts => throw new NotImplementedException();
 
 	public override CompiledTrack Compile( CompiledTrack? compiledParent )
 	{
-		var compiled = new PropertyTrack<T>( Name, compiledParent!, [] );
+		var compiled = new CompiledPropertyTrack<T>( Name, compiledParent!, [] );
 
 		if ( Keyframes is { } keyframes )
 		{
@@ -97,5 +125,25 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, string name )
 
 		value = null;
 		return false;
+	}
+
+	public override void Insert( MovieTimeRange timeRange )
+	{
+		throw new NotImplementedException();
+	}
+
+	public override void Remove( MovieTimeRange timeRange )
+	{
+		throw new NotImplementedException();
+	}
+
+	public override void Clear( MovieTimeRange timeRange )
+	{
+		throw new NotImplementedException();
+	}
+
+	public override void Add( PropertyBlock block )
+	{
+		throw new NotImplementedException();
 	}
 }

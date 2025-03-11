@@ -8,9 +8,9 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 partial class BlockItem
 {
-	public static BlockItem? Create( DopeSheetTrack parent, IBlock block )
+	public static BlockItem? Create( DopeSheetTrack parent, PropertyBlock block )
 	{
-		if ( block.Data is not IValueData { ValueType: { } valueType } ) return null;
+		var valueType = block.PropertyType;
 
 		foreach ( var typeDesc in EditorTypeLibrary.GetTypes<BlockItem>() )
 		{

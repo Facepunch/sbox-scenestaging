@@ -10,6 +10,10 @@ namespace Sandbox.MovieMaker.Properties;
 file sealed record LookAtProperty( ITrackReference<GameObject> Parent )
 	: ITrackProperty<Vector3>
 {
+	public const string PropertyName = "LookAt";
+
+	public string Name => PropertyName;
+
 	public Vector3 Value
 	{
 		get => Parent.Value is { } go ? go.WorldPosition + go.WorldRotation.Forward * 200f : default;
@@ -27,6 +31,6 @@ file sealed record LookAtProperty( ITrackReference<GameObject> Parent )
 
 file sealed class LookAtPropertyFactory : ITrackPropertyFactory<ITrackReference<GameObject>, Vector3>
 {
-	public bool PropertyExists( ITrackReference<GameObject> parent, string name ) => name == "LookAt";
+	public bool PropertyExists( ITrackReference<GameObject> parent, string name ) => name == LookAtProperty.PropertyName;
 	public ITrackProperty<Vector3> CreateProperty( ITrackReference<GameObject> parent, string name ) => new LookAtProperty( parent );
 }

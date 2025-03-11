@@ -15,7 +15,7 @@ public sealed partial class CompiledClip : IClip
 	/// </summary>
 	public static CompiledClip Empty { get; } = new();
 
-	private readonly ImmutableDictionary<Guid, ReferenceTrack> _referenceTracks;
+	private readonly ImmutableDictionary<Guid, CompiledReferenceTrack> _referenceTracks;
 
 	/// <inheritdoc cref="IClip.Tracks"/>
 	public ImmutableArray<CompiledTrack> Tracks { get; }
@@ -51,11 +51,11 @@ public sealed partial class CompiledClip : IClip
 			}
 		}
 
-		var referenceTracks = new Dictionary<Guid, ReferenceTrack>();
+		var referenceTracks = new Dictionary<Guid, CompiledReferenceTrack>();
 
 		// IDs must be unique
 
-		foreach ( var track in allTracks.OfType<ReferenceTrack>() )
+		foreach ( var track in allTracks.OfType<CompiledReferenceTrack>() )
 		{
 			if ( !referenceTracks.TryAdd( track.Id, track ) )
 			{
@@ -76,7 +76,7 @@ public sealed partial class CompiledClip : IClip
 	}
 
 	/// <inheritdoc cref="IClip.GetTrack"/>
-	public ReferenceTrack? GetTrack( Guid trackId )
+	public CompiledReferenceTrack? GetTrack( Guid trackId )
 	{
 		return _referenceTracks.GetValueOrDefault( trackId );
 	}

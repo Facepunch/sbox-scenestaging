@@ -7,7 +7,7 @@ namespace Sandbox.MovieMaker.Properties;
 /// <summary>
 /// Fallback property that can never be bound.
 /// </summary>
-file sealed record UnknownProperty<T>( ITrackTarget Parent ) : ITrackProperty<T>
+file sealed record UnknownProperty<T>( ITrackTarget Parent, string Name ) : ITrackProperty<T>
 {
 	public bool IsBound => false;
 	public bool CanWrite => false;
@@ -26,7 +26,7 @@ file sealed class UnknownPropertyFactory : ITrackPropertyFactory<ITrackTarget>
 	public Type GetTargetType( ITrackTarget parent, string name ) => typeof(Unknown);
 
 	public ITrackProperty<T> CreateProperty<T>( ITrackTarget parent, string name ) =>
-		new UnknownProperty<T>( parent );
+		new UnknownProperty<T>( parent, name );
 }
 
 /// <summary>

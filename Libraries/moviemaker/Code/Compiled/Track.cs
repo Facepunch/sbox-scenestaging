@@ -12,28 +12,28 @@ public abstract record CompiledTrack( string Name, Type TargetType, CompiledTrac
 	ITrack? ITrack.Parent => Parent;
 
 	/// <summary>
-	/// Create a root <see cref="ReferenceTrack"/> that targets a <see cref="Sandbox.GameObject"/> with
+	/// Create a root <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.GameObject"/> with
 	/// the given <paramref name="name"/>. To create a nested track, use <see cref="CompiledClipExtensions.GameObject"/>.
 	/// </summary>
 	public static ReferenceTrack<GameObject> GameObject( string name ) => new( Guid.NewGuid(), name );
 
 	/// <summary>
-	/// Create a root <see cref="ReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
+	/// Create a root <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the given <paramref name="type"/>. To create a nested track, use <see cref="CompiledClipExtensions.Component"/>.
 	/// </summary>
-	public static ReferenceTrack Component( Type type ) =>
+	public static CompiledReferenceTrack Component( Type type ) =>
 		TypeLibrary.GetType( typeof( ReferenceTrack<> ) )
-			.CreateGeneric<ReferenceTrack>( [type], [Guid.NewGuid(), type.Name, null] );
+			.CreateGeneric<CompiledReferenceTrack>( [type], [Guid.NewGuid(), type.Name, null] );
 
 	/// <summary>
-	/// Create a root <see cref="ReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
+	/// Create a root <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the type <typeparamref name="T"/>. To create a nested track, use <see cref="CompiledClipExtensions.Component{T}"/>.
 	/// </summary>
 	public static ReferenceTrack<T> Component<T>() => new ( Guid.NewGuid(), typeof(T).Name );
 }
 
 /// <inheritdoc cref="IReferenceTrack"/>
-public abstract record ReferenceTrack( Guid Id, string Name, Type TargetType, ReferenceTrack<GameObject>? Parent )
+public abstract record CompiledReferenceTrack( Guid Id, string Name, Type TargetType, ReferenceTrack<GameObject>? Parent )
 	: CompiledTrack( Name, TargetType, Parent ), IReferenceTrack
 {
 	public new ReferenceTrack<GameObject>? Parent => (ReferenceTrack<GameObject>?)base.Parent;
@@ -42,7 +42,7 @@ public abstract record ReferenceTrack( Guid Id, string Name, Type TargetType, Re
 }
 
 public sealed record ReferenceTrack<T>( Guid Id, string Name, ReferenceTrack<GameObject>? Parent = null )
-	: ReferenceTrack( Id, Name, typeof(T), Parent ), IReferenceTrack<T>;
+	: CompiledReferenceTrack( Id, Name, typeof(T), Parent ), IReferenceTrack<T>;
 
 internal interface IBlockTrack
 {
@@ -54,7 +54,7 @@ internal interface IBlockTrack
 }
 
 /// <inheritdoc cref="IActionTrack"/>
-public sealed record ActionTrack( string Name, Type TargetType, CompiledTrack Parent, ImmutableArray<CompiledActionBlock> Blocks )
+public sealed record CompiledActionTrack( string Name, Type TargetType, CompiledTrack Parent, ImmutableArray<CompiledActionBlock> Blocks )
 	: CompiledTrack( Name, TargetType, Parent ), IActionTrack, IBlockTrack
 {
 	public new CompiledTrack Parent => base.Parent!;
@@ -67,7 +67,7 @@ public sealed record ActionTrack( string Name, Type TargetType, CompiledTrack Pa
 }
 
 /// <inheritdoc cref="IPropertyTrack"/>
-public abstract record PropertyTrack( string Name, Type TargetType, CompiledTrack Parent )
+public abstract record CompiledPropertyTrack( string Name, Type TargetType, CompiledTrack Parent )
 	: CompiledTrack( Name, TargetType, Parent ), IPropertyTrack
 {
 	public new CompiledTrack Parent => base.Parent!;
@@ -92,8 +92,8 @@ public abstract record PropertyTrack( string Name, Type TargetType, CompiledTrac
 }
 
 /// <inheritdoc cref="IPropertyTrack{T}"/>
-public sealed record PropertyTrack<T>( string Name, CompiledTrack Parent, ImmutableArray<CompiledPropertyBlock<T>> Blocks )
-	: PropertyTrack( Name, typeof(T), Parent ), IPropertyTrack<T>, IBlockTrack
+public sealed record CompiledPropertyTrack<T>( string Name, CompiledTrack Parent, ImmutableArray<CompiledPropertyBlock<T>> Blocks )
+	: CompiledPropertyTrack( Name, typeof(T), Parent ), IPropertyTrack<T>, IBlockTrack
 {
 	private readonly bool _validated = Validate( Blocks );
 

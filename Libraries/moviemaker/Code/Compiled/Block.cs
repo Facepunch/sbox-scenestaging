@@ -56,7 +56,7 @@ public abstract record CompiledPropertyBlock<T>( MovieTimeRange TimeRange ) : Co
 /// <typeparam name="T">Property value type.</typeparam>
 /// <param name="TimeRange">Start and end time of this block.</param>
 /// <param name="Value">Constant value.</param>
-public sealed record ConstantBlock<T>( MovieTimeRange TimeRange, T Value )
+public sealed record CompiledConstantBlock<T>( MovieTimeRange TimeRange, T Value )
 	: CompiledPropertyBlock<T>( TimeRange )
 {
 	public override T GetValue( MovieTime time ) => Value;
@@ -70,7 +70,7 @@ public sealed record ConstantBlock<T>( MovieTimeRange TimeRange, T Value )
 /// <param name="Offset">Time offset of the first sample.</param>
 /// <param name="SampleRate">How many samples per second.</param>
 /// <param name="Samples">Raw sample values.</param>
-public sealed record SampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, ImmutableArray<T> Samples )
+public sealed record CompiledSampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, ImmutableArray<T> Samples )
 	: CompiledPropertyBlock<T>( TimeRange )
 {
 	private readonly bool _validated = Validate( Samples );

@@ -201,7 +201,7 @@ file class TrackRecording<T> : ITrackRecording, IPropertyBlock<T>
 
 		if ( _samples.All( x => comparer.Equals( first, x ) ) ) return [];
 
-		var data = new SampleBlock<T>( TimeRange, TimeRange.Start, SampleRate, [.._samples] );
+		var data = new CompiledSampleBlock<T>( TimeRange, TimeRange.Start, SampleRate, [.._samples] );
 
 		return [data];
 	}
