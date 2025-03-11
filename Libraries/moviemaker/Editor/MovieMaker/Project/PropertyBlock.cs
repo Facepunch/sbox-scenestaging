@@ -90,6 +90,23 @@ public abstract record PropertyBlock<T>( MovieTimeRange TimeRange ) : PropertyBl
 
 	public new virtual PropertyBlock<T> Reduce() => this;
 
+	public virtual CompiledPropertyBlock<T> Compile( ProjectTrack track )
+	{
+		var sampleRate = track.Project.SampleRate;
+		var sampleCount = TimeRange.Duration.GetFrameCount( sampleRate );
+
+		var samples = new T[sampleCount];
+
+		for ( var i = 0; i < sampleCount; ++i )
+		{
+			var time = TimeRange.Start + MovieTime.FromFrames( i, sampleCount );
+
+			samples[i] = GetValue( time );
+		}
+
+		return new CompiledSampleBlock<T>( TimeRange, TimeRange.Start, sampleRate, [..samples] );
+	}
+
 	protected sealed override object? OnGetValue( MovieTime time ) => GetValue( time );
 	protected sealed override PropertyBlock OnSlice( MovieTimeRange timeRange ) => Slice( timeRange );
 	protected sealed override PropertyBlock OnShift( MovieTime offset ) => Shift( offset );
@@ -106,6 +123,9 @@ public sealed record SourceClipPropertyBlock<T>( ProjectSourceClip Source, Compi
 public sealed record ConstantPropertyBlock<T>( MovieTimeRange TimeRange, T Value ) : PropertyBlock<T>( TimeRange )
 {
 	public override T GetValue( MovieTime time ) => Value;
+
+	public override CompiledPropertyBlock<T> Compile( ProjectTrack track ) =>
+		new CompiledConstantBlock<T>( TimeRange, Value );
 }
 
 public sealed record PropertyBlockSlice<T>( PropertyBlock<T> Block, MovieTimeRange TimeRange, MovieTime Offset = default )

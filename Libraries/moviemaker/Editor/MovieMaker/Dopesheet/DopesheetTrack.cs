@@ -13,7 +13,7 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	private bool? _canCreatePreview;
 
-	private readonly List<PropertyBlock> _blocks = new();
+	private readonly List<IPropertyBlock> _blocks = new();
 	private readonly List<BlockItem> _blockItems = new();
 
 	public IReadOnlyList<BlockItem> BlockItems => _blockItems;

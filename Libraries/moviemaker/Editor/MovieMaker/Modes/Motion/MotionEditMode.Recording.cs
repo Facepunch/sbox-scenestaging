@@ -77,7 +77,7 @@ partial class MotionEditMode
 
 		Log.Info( $"Finished recording {_recordings.Count} tracks!" );
 
-		var tracks = new Dictionary<Guid, IReadOnlyList<PropertyBlockSlice>>();
+		var tracks = new Dictionary<ProjectTrack, CompiledTrack>();
 
 		MovieTimeRange? timeRange = null;
 
@@ -87,7 +87,9 @@ partial class MotionEditMode
 
 			if ( recording.Compile() is not { Count: > 0 } blocks ) continue;
 
-			tracks.Add( track.Id, blocks );
+			var parentTrack = GetOrCreateCompiledTrack( tracks, track );
+
+			tracks.Add( TrackPath.FromTrack( track ), blocks );
 
 			foreach ( var block in blocks )
 			{
@@ -100,12 +102,21 @@ partial class MotionEditMode
 		var offset = Session.CurrentPointer;
 
 		Clipboard = new ClipboardData( new TimeSelection( range - offset, DefaultInterpolation ), tracks.ToImmutableDictionary( x => x.Key,
-				x => (IReadOnlyList<PropertyBlockSlice>)x.Value.Select( y => y with { TimeRange = y.TimeRange - offset } ).ToImmutableArray() ) );
+				x => x.Value.Select( y => y with { TimeRange = y.TimeRange - offset } ).ToImmutableArray() ) );
 
 		if ( LoadChangesFromClipboard() )
 		{
 			DisplayAction( "radio_button_checked" );
 		}
+	}
+
+	private static CompiledTrack GetOrCreateCompiledTrack( Dictionary<ProjectTrack, CompiledTrack> dict, ProjectTrack track )
+	{
+		if ( dict.TryGetValue( track, out var compiled ) ) return compiled;
+
+		var compiledParent = track.Parent is { } parent ? GetOrCreateCompiledTrack( dict, parent ) : null;
+
+		if ( track is )
 	}
 
 	private void RecordingFrame()

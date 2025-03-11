@@ -25,7 +25,7 @@ public abstract partial class ProjectTrack( MovieProject project, string name, T
 
 	ITrack? ITrack.Parent => Parent;
 
-	public abstract CompiledTrack Compile( CompiledTrack? compiledParent );
+	public abstract CompiledTrack Compile( CompiledTrack? compiledParent, bool headerOnly );
 }
 
 public abstract class ProjectReferenceTrack( MovieProject project, Guid id, string name, Type targetType )
@@ -40,7 +40,7 @@ public abstract class ProjectReferenceTrack( MovieProject project, Guid id, stri
 public sealed class ProjectReferenceTrack<T>( MovieProject project, Guid id, string name )
 	: ProjectReferenceTrack( project, id, name, typeof(T) ), IReferenceTrack<T>
 {
-	public override CompiledTrack Compile( CompiledTrack? compiledParent ) =>
+	public override CompiledTrack Compile( CompiledTrack? compiledParent, bool headerOnly ) =>
 		new CompiledReferenceTrack<T>( Id, Name, (CompiledReferenceTrack<GameObject>)compiledParent! );
 }
 
@@ -109,18 +109,13 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, string name )
 
 	public override IReadOnlyList<MovieTime> Cuts => throw new NotImplementedException();
 
-	public override CompiledTrack Compile( CompiledTrack? compiledParent )
+	public override CompiledTrack Compile( CompiledTrack? compiledParent, bool headerOnly )
 	{
 		var compiled = new CompiledPropertyTrack<T>( Name, compiledParent!, [] );
 
-		if ( Keyframes is { } keyframes )
-		{
-			var blocks = keyframes.Compile( Project.SampleRate );
+		if ( headerOnly ) return compiled;
 
-			compiled = compiled with { Blocks = [..blocks.Cast<CompiledPropertyBlock<T>>()] };
-		}
-
-		return compiled;
+		return compiled with { Blocks = [..Blocks.Select( x => x.Compile( this ) )] };
 	}
 
 	public bool TryGetValue( MovieTime time, [MaybeNullWhen( false )] out T value )
@@ -168,6 +163,18 @@ public record struct TrackPath( Guid ReferenceId, ImmutableArray<string> Propert
 {
 	public static TrackPath FromTrack( ITrack track )
 	{
-		throw new NotImplementedException();
+		if ( track is IReferenceTrack refTrack )
+		{
+			return new TrackPath( refTrack.Id, ImmutableArray<string>.Empty );
+		}
+
+		if ( track.Parent is not { } parent )
+		{
+			throw new ArgumentException( "Expected root track to be a reference track.", nameof(track) );
+		}
+
+		var parentPath = FromTrack( parent );
+
+		return parentPath with { PropertyNames = [..parentPath.PropertyNames, track.Name] };
 	}
 }
