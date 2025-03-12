@@ -50,7 +50,7 @@ public abstract record PropertyBlock( MovieTimeRange TimeRange, Type PropertyTyp
 	{
 		var block = this;
 
-		while ( block.Reduce() is { } reduced && reduced != block )
+		while ( block.OnReduce() is { } reduced && reduced != block )
 		{
 			block = reduced;
 		}

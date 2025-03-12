@@ -28,6 +28,8 @@ public class MovieEditor : Widget
 
 	public void Initialize( MoviePlayer player )
 	{
+		Session = new Session( this, player );
+
 		Layout.Clear( true );
 		Toolbar = Layout.Add( new ToolbarWidget( this ) );
 		TrackList = Layout.Add( new TrackListWidget( this ) );

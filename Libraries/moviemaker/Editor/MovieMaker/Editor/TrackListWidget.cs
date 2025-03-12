@@ -130,7 +130,7 @@ public partial class TrackListWidget : Widget
 		{
 			var editorTrack = AddTrack( track );
 
-			var parentGroup = track.Parent is null ? null : groups.GetValueOrDefault( track.Parent );
+			var parentGroup = track.Parent is null ? null : groups!.GetValueOrDefault( track.Parent );
 
 			if ( track.Children.Count == 0 )
 			{

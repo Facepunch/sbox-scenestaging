@@ -23,10 +23,10 @@ public static class ProjectExtensions
 
 	public static T GetValue<T>( this IReadOnlyList<IPropertyBlock<T>> blocks, MovieTime time )
 	{
-		return blocks.GetNearestBlock( time ).GetValue( time );
+		return blocks.GetLastBlock( time ).GetValue( time );
 	}
 
-	public static T GetNearestBlock<T>( this IReadOnlyList<T> blocks, MovieTime time )
+	public static T GetLastBlock<T>( this IReadOnlyList<T> blocks, MovieTime time )
 		where T : IPropertyBlock
 	{
 		if ( blocks.Count == 0 ) throw new ArgumentException( "Expected at least one block.", nameof( blocks ) );
@@ -56,7 +56,7 @@ public static class ProjectExtensions
 	{
 		if ( blocks.Count == 0 ) return default;
 
-		var block = blocks.GetNearestBlock( time );
+		var block = blocks.GetLastBlock( time );
 
 		return block.TimeRange.Contains( time ) ? block : default;
 	}

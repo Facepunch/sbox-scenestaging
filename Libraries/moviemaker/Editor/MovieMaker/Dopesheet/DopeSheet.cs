@@ -324,9 +324,10 @@ public class DopeSheet : GraphicsView
 			if ( mouseScenePos.y < dopeTrack.SceneRect.Top ) continue;
 			if ( mouseScenePos.y > dopeTrack.SceneRect.Bottom ) continue;
 
-			foreach ( var cut in propertyTrack.Cuts )
+			foreach ( var block in propertyTrack.Blocks )
 			{
-				snap.Add( SnapFlag.TrackBlock, cut );
+				snap.Add( SnapFlag.TrackBlock, block.TimeRange.Start );
+				snap.Add( SnapFlag.TrackBlock, block.TimeRange.End );
 			}
 		}
 	}

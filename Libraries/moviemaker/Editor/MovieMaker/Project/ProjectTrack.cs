@@ -85,7 +85,9 @@ public abstract class ProjectReferenceTrack( MovieProject project, Guid id, stri
 {
 	public static ProjectReferenceTrack Create( MovieProject project, Guid id, string name, Type targetType )
 	{
-		throw new NotImplementedException();
+		var trackType = typeof(ProjectReferenceTrack<>).MakeGenericType( targetType );
+
+		return (ProjectReferenceTrack)Activator.CreateInstance( trackType, project, id, name )!;
 	}
 
 	public new ProjectReferenceTrack<GameObject>? Parent => (ProjectReferenceTrack<GameObject>?)base.Parent;
@@ -95,6 +97,7 @@ public abstract class ProjectReferenceTrack( MovieProject project, Guid id, stri
 
 public sealed class ProjectReferenceTrack<T>( MovieProject project, Guid id, string name )
 	: ProjectReferenceTrack( project, id, name, typeof(T) ), IReferenceTrack<T>
+	where T : class, IValid
 {
 	public override CompiledTrack Compile( CompiledTrack? compiledParent, bool headerOnly ) =>
 		new CompiledReferenceTrack<T>( Id, Name, (CompiledReferenceTrack<GameObject>)compiledParent! );
@@ -105,7 +108,9 @@ public abstract class ProjectPropertyTrack( MovieProject project, Guid id, strin
 {
 	public static ProjectPropertyTrack Create( MovieProject project, Guid id, string name, Type targetType )
 	{
-		throw new NotImplementedException();
+		var trackType = typeof(ProjectPropertyTrack<>).MakeGenericType( targetType );
+
+		return (ProjectPropertyTrack)Activator.CreateInstance( trackType, project, id, name )!;
 	}
 
 	public KeyframeCurve? Keyframes { get; set; }
@@ -118,8 +123,6 @@ public abstract class ProjectPropertyTrack( MovieProject project, Guid id, strin
 	public MovieTimeRange TimeRange => Blocks is { Count: > 0 } blocks
 		? (blocks[0].TimeRange.Start, blocks[^1].TimeRange.End)
 		: default;
-
-	public abstract IReadOnlyList<MovieTime> Cuts { get; }
 
 	public abstract bool TryGetValue( MovieTime time, out object? value );
 
@@ -157,7 +160,12 @@ public abstract class ProjectPropertyTrack( MovieProject project, Guid id, strin
 	/// </summary>
 	public IEnumerable<PropertyBlock> Slice( MovieTimeRange timeRange )
 	{
-		throw new NotImplementedException();
+		return Blocks
+			.Select( x =>
+				x.TimeRange.Intersect( timeRange ) is { Duration.IsPositive: true } intersection
+					? x.Slice( intersection )
+					: null )
+			.OfType<PropertyBlock>();
 	}
 
 	public abstract IReadOnlyList<PropertyBlock> CreateSourceBlocks( ProjectSourceClip source );
@@ -167,12 +175,18 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 	: ProjectPropertyTrack( project, id, name, typeof(T) ), IPropertyTrack<T>
 {
 	private readonly List<PropertyBlock<T>> _blocks = new();
+	private bool _blocksChanged;
 
-	public new IReadOnlyList<PropertyBlock<T>> Blocks => _blocks;
+	public new IReadOnlyList<PropertyBlock<T>> Blocks
+	{
+		get
+		{
+			UpdateBlocks();
+			return _blocks;
+		}
+	}
 
-	protected override IReadOnlyList<PropertyBlock> OnGetBlocks() => _blocks;
-
-	public override IReadOnlyList<MovieTime> Cuts => throw new NotImplementedException();
+	protected override IReadOnlyList<PropertyBlock> OnGetBlocks() => Blocks;
 
 	public override CompiledTrack Compile( CompiledTrack? compiledParent, bool headerOnly )
 	{
@@ -185,7 +199,14 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 
 	public bool TryGetValue( MovieTime time, [MaybeNullWhen( false )] out T value )
 	{
-		throw new NotImplementedException();
+		if ( Blocks.GetBlock( time ) is { } block )
+		{
+			value = block.GetValue( time );
+			return true;
+		}
+
+		value = default;
+		return false;
 	}
 
 	public override bool TryGetValue( MovieTime time, out object? value )
@@ -217,14 +238,67 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 
 	public override bool Add( PropertyBlock block )
 	{
-		throw new NotImplementedException();
+		if ( block is not PropertyBlock<T> typedBlock ) return false;
+
+		if ( typedBlock.TimeRange.End <= 0 ) return false;
+		if ( typedBlock.TimeRange.Start < 0 )
+		{
+			typedBlock = typedBlock.Slice( (0d, typedBlock.TimeRange.End) );
+		}
+
+		_blocksChanged = true;
+
+		for ( var i = _blocks.Count - 1; i >= 0; i-- )
+		{
+			var overlappingBlock = _blocks[i];
+
+			if ( overlappingBlock.TimeRange.Intersect( typedBlock.TimeRange ) is null )
+			{
+				continue;
+			}
+
+			_blocks.RemoveAt( i );
+
+			// Is old block completely inside new block? Remove it.
+
+			if ( typedBlock.TimeRange.Contains( overlappingBlock.TimeRange ) )
+			{
+				continue;
+			}
+
+			// Does old block start before new block? Add the old block head.
+
+			if ( typedBlock.TimeRange.Start > overlappingBlock.TimeRange.Start )
+			{
+				_blocks.Add( overlappingBlock.Slice( (overlappingBlock.TimeRange.Start, typedBlock.TimeRange.Start) ) );
+			}
+
+			// Does old block end after the new block? Add the old block tail.
+
+			if ( typedBlock.TimeRange.End < overlappingBlock.TimeRange.End )
+			{
+				_blocks.Add( overlappingBlock.Slice( (typedBlock.TimeRange.End, overlappingBlock.TimeRange.End) ) );
+			}
+		}
+
+		_blocks.Add( typedBlock );
+
+		return true;
 	}
 
-	public new IEnumerable<PropertyBlock<T>> Slice( MovieTimeRange timeRange ) =>
-		base.Slice( timeRange ).Cast<PropertyBlock<T>>();
+	public new IReadOnlyList<PropertyBlock<T>> Slice( MovieTimeRange timeRange ) =>
+		base.Slice( timeRange ).Cast<PropertyBlock<T>>().ToArray();
 
 	public override IReadOnlyList<PropertyBlock> CreateSourceBlocks( ProjectSourceClip source )
 	{
 		throw new NotImplementedException();
+	}
+
+	private void UpdateBlocks()
+	{
+		if ( !_blocksChanged ) return;
+
+		_blocksChanged = false;
+		_blocks.Sort( ( a, b ) => a.TimeRange.Start.CompareTo( b.TimeRange.Start ) );
 	}
 }

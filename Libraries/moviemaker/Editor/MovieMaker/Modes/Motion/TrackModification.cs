@@ -71,7 +71,19 @@ internal sealed class TrackModification<T> : ITrackModification
 
 		if ( _original is null || _original.TimeRange != timeRange )
 		{
-			_original = Track.Slice( timeRange ).Stitch().Slice( timeRange );
+			var slice = Track.Slice( timeRange );
+
+			if ( slice.Count == 0 )
+			{
+				slice =
+				[
+					Track.Blocks.Count == 0
+						? new ConstantPropertyBlock<T>( timeRange, _relativeTo )
+						: Track.Blocks.GetLastBlock( selection.TotalStart )
+				];
+			}
+
+			_original = slice.Stitch().Slice( timeRange );
 		}
 
 		_blended = new PropertyBlockBlend<T>( _original, _overlay.Shift( offset ), selection );
