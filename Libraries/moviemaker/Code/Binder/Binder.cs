@@ -47,19 +47,15 @@ public sealed partial class TrackBinder( Scene scene )
 	}
 
 	/// <inheritdoc cref="Get(ITrack)"/>
-	[OverloadResolutionPriority( 1 )]
 	public ITrackReference Get( IReferenceTrack track ) => (ITrackReference)Get( (ITrack)track );
 
 	/// <inheritdoc cref="Get(ITrack)"/>
-	[OverloadResolutionPriority( 2 )]
 	public ITrackReference<T> Get<T>( IReferenceTrack<T> track ) where T : class, IValid => (ITrackReference<T>)Get( (ITrack)track );
 
 	/// <inheritdoc cref="Get(ITrack)"/>
-	[OverloadResolutionPriority( 1 )]
 	public ITrackProperty Get( IPropertyTrack track ) => (ITrackProperty)Get( (ITrack)track );
 
 	/// <inheritdoc cref="Get(ITrack)"/>
-	[OverloadResolutionPriority( 2 )]
 	public ITrackProperty<T> Get<T>( IPropertyTrack<T> track ) => (ITrackProperty<T>)Get( (ITrack)track );
 
 	private ITrackTarget CreateTarget( ITrack track, ITrackTarget? parent = null )

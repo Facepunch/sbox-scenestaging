@@ -80,35 +80,29 @@ public interface ITrackPropertyFactory<in TParent, TValue> : ITrackPropertyFacto
 		(ITrackProperty<T>)CreateProperty( parent, name );
 }
 
-internal static class TrackProperty
+public static class TrackProperty
 {
-	private static MethodInfo? _createPropertyMethod;
-
-	private static MethodInfo CreatePropertyMethod => _createPropertyMethod ??= typeof(ITrackPropertyFactory)
-		.GetMethod( nameof(ITrackPropertyFactory.CreateProperty) )!;
-
 	[SkipHotload]
 	private static ImmutableArray<ITrackPropertyFactory>? _factories;
 
 	private static IReadOnlyList<ITrackPropertyFactory> Factories => _factories ??=
-	[
-		..TypeLibrary.GetTypes<ITrackPropertyFactory>()
+		TypeLibrary.GetTypes<ITrackPropertyFactory>()
 			.Where( x => x is { IsAbstract: false, IsInterface: false, IsGenericType: false } )
 			.Select( CreateFactory )
 			.OfType<ITrackPropertyFactory>()
 			.OrderBy( x => x.Order )
-	];
+			// ReSharper disable once UseCollectionExpression
+			.ToImmutableArray();
 
 	public static ITrackProperty? Create( ITrackTarget parent, string name )
 	{
 		var factory = Factories.FirstOrDefault( x => IsMatchingFactory( x, parent, name ) );
 		var targetType = factory?.GetTargetType( parent, name );
 
-		if ( targetType is null ) return null;
+		if ( factory is null || targetType is null ) return null;
 
-		return (ITrackProperty)CreatePropertyMethod
-			.MakeGenericMethod( targetType )
-			.Invoke( factory, [parent, name] )!;
+		return GenericHelper.Get( targetType )
+			.CreateProperty( factory, parent, name );
 	}
 
 	public static ITrackProperty Create( ITrackTarget parent, string name, Type targetType )
@@ -116,9 +110,8 @@ internal static class TrackProperty
 		var factory = Factories.FirstOrDefault( x => IsMatchingFactory( x, parent, name, targetType ) )
 			?? throw new Exception( "We should have at least found the UnknownPropertyFactory." );
 
-		return (ITrackProperty)CreatePropertyMethod
-			.MakeGenericMethod( targetType )
-			.Invoke( factory, [parent, name] )!;
+		return GenericHelper.Get( targetType )
+			.CreateProperty( factory, parent, name );
 	}
 
 	public static ITrackProperty<T> Create<T>( ITrackTarget parent, string name ) =>
@@ -148,5 +141,38 @@ internal static class TrackProperty
 		{
 			return null;
 		}
+	}
+}
+
+/// <summary>
+/// To get around TypeLibrary not having a way to call generic methods.
+/// </summary>
+file abstract class GenericHelper
+{
+	[SkipHotload]
+	private static Dictionary<Type, GenericHelper> Cache { get; } = new();
+
+	public static GenericHelper Get( Type propertyType )
+	{
+		if ( Cache.TryGetValue( propertyType, out var cached ) )
+		{
+			return cached;
+		}
+
+		cached = TypeLibrary.GetType( typeof(GenericHelper<>) ).CreateGeneric<GenericHelper>( [propertyType] );
+
+		Cache[propertyType] = cached;
+
+		return cached;
+	}
+
+	public abstract ITrackProperty CreateProperty( ITrackPropertyFactory factory, ITrackTarget parent, string name );
+}
+
+file sealed class GenericHelper<T> : GenericHelper
+{
+	public override ITrackProperty CreateProperty( ITrackPropertyFactory factory, ITrackTarget parent, string name )
+	{
+		return factory.CreateProperty<T>( parent, name );
 	}
 }

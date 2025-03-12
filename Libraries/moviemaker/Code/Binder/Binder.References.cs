@@ -61,16 +61,23 @@ partial class TrackBinder : IJsonPopulator
 
 		if ( Json.FromNode<Model?>( node ) is not { } model ) return;
 
-		foreach ( var mapping in model.GameObjects ?? [] )
+		if ( model.GameObjects is { } objects )
 		{
-			_gameObjectMap[mapping.Track] = mapping.Reference is { } id && scene.Directory.FindByGuid( id ) is { } gameObject
-				? gameObject : null;
+			foreach ( var mapping in objects )
+			{
+				_gameObjectMap[mapping.Track] = mapping.Reference is { } id && scene.Directory.FindByGuid( id ) is { } gameObject
+					? gameObject : null;
+			}
 		}
 
-		foreach ( var mapping in model.Components ?? [] )
+		if ( model.Components is { } components )
 		{
-			_componentMap[mapping.Track] = mapping.Reference is { } id && scene.Directory.FindComponentByGuid( id ) is { } component
-				? component : null;
+			foreach ( var mapping in components )
+			{
+				_componentMap[mapping.Track] = mapping.Reference is { } id && scene.Directory.FindComponentByGuid( id ) is { } component
+					? component
+					: null;
+			}
 		}
 	}
 

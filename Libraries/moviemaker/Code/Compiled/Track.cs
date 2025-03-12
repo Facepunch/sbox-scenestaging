@@ -22,18 +22,23 @@ public abstract record CompiledTrack( string Name, Type TargetType, CompiledTrac
 	/// the given <paramref name="type"/>. To create a nested track, use <see cref="CompiledClipExtensions.Component"/>.
 	/// </summary>
 	public static CompiledReferenceTrack Component( Type type ) =>
-		TypeLibrary.GetType( typeof( CompiledReferenceTrack<> ) )
+		TypeLibrary.GetType( typeof(CompiledReferenceTrack<>) )
 			.CreateGeneric<CompiledReferenceTrack>( [type], [Guid.NewGuid(), type.Name, null] );
 
 	/// <summary>
 	/// Create a root <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the type <typeparamref name="T"/>. To create a nested track, use <see cref="CompiledClipExtensions.Component{T}"/>.
 	/// </summary>
-	public static CompiledReferenceTrack<T> Component<T>() => new ( Guid.NewGuid(), typeof(T).Name );
+	public static CompiledReferenceTrack<T> Component<T>()
+		where T : Component => new( Guid.NewGuid(), typeof(T).Name );
 }
 
 /// <inheritdoc cref="IReferenceTrack"/>
-public abstract record CompiledReferenceTrack( Guid Id, string Name, Type TargetType, CompiledReferenceTrack<GameObject>? Parent )
+public abstract record CompiledReferenceTrack(
+	Guid Id,
+	string Name,
+	Type TargetType,
+	CompiledReferenceTrack<GameObject>? Parent )
 	: CompiledTrack( Name, TargetType, Parent ), IReferenceTrack
 {
 	public new CompiledReferenceTrack<GameObject>? Parent => (CompiledReferenceTrack<GameObject>?)base.Parent;
@@ -41,8 +46,12 @@ public abstract record CompiledReferenceTrack( Guid Id, string Name, Type Target
 	IReferenceTrack<GameObject>? IReferenceTrack.Parent => Parent;
 }
 
-public sealed record CompiledReferenceTrack<T>( Guid Id, string Name, CompiledReferenceTrack<GameObject>? Parent = null )
-	: CompiledReferenceTrack( Id, Name, typeof(T), Parent ), IReferenceTrack<T>;
+public sealed record CompiledReferenceTrack<T>(
+	Guid Id,
+	string Name,
+	CompiledReferenceTrack<GameObject>? Parent = null )
+	: CompiledReferenceTrack( Id, Name, typeof(T), Parent ), IReferenceTrack<T>
+	where T : class, IValid;
 
 internal interface IBlockTrack
 {
@@ -54,7 +63,11 @@ internal interface IBlockTrack
 }
 
 /// <inheritdoc cref="IActionTrack"/>
-public sealed record CompiledActionTrack( string Name, Type TargetType, CompiledTrack Parent, ImmutableArray<CompiledActionBlock> Blocks )
+public sealed record CompiledActionTrack(
+	string Name,
+	Type TargetType,
+	CompiledTrack Parent,
+	ImmutableArray<CompiledActionBlock> Blocks )
 	: CompiledTrack( Name, TargetType, Parent ), IActionTrack, IBlockTrack
 {
 	public new CompiledTrack Parent => base.Parent!;

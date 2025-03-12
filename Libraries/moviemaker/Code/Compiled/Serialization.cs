@@ -65,7 +65,7 @@ file sealed record TrackModel( TrackKind Kind, string Name, Type Type,
 {
 	public TrackModel( CompiledTrack track, ImmutableDictionary<CompiledTrack, ImmutableArray<CompiledTrack>> childDict, JsonSerializerOptions? options )
 		: this( GetKind( track ), track.Name, track.TargetType, (track as IReferenceTrack)?.Id,
-			childDict.TryGetValue( track, out var children ) ? [..children.Select( x => new TrackModel( x, childDict, options ) )] : null,
+			childDict.TryGetValue( track, out var children ) ? children.Select( x => new TrackModel( x, childDict, options ) ).ToImmutableArray() : null,
 			track is IBlockTrack { Blocks.Count: > 0 } blockTrack
 				? blockTrack.Blocks.Select( x => SerializeBlock( x, options ) ).ToImmutableArray()
 				: null )
@@ -126,7 +126,11 @@ file sealed class DeserializeHelper<T> : DeserializeHelper
 {
 	public override CompiledTrack DeserializePropertyTrack( TrackModel model, CompiledTrack parent, JsonSerializerOptions? options )
 	{
-		return new CompiledPropertyTrack<T>( model.Name, parent, model.Blocks?.Select( x => DeserializePropertyBlock( x, options ) ).ToImmutableArray() ?? [] );
+		return new CompiledPropertyTrack<T>( model.Name, parent,
+			model.Blocks?
+				.Select( x => DeserializePropertyBlock( x, options ) )
+				.ToImmutableArray()
+			?? ImmutableArray<CompiledPropertyBlock<T>>.Empty );
 	}
 
 	private static CompiledPropertyBlock<T> DeserializePropertyBlock( JsonObject node, JsonSerializerOptions? options )

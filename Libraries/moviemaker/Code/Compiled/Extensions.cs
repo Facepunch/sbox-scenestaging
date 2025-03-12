@@ -29,8 +29,8 @@ public static class CompiledClipExtensions
 	/// Create a nested <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the type <typeparamref name="T"/>.
 	/// </summary>
-	public static CompiledReferenceTrack<T> Component<T>( this CompiledReferenceTrack<GameObject> track ) =>
-		new( Guid.NewGuid(), typeof(T).Name, track );
+	public static CompiledReferenceTrack<T> Component<T>( this CompiledReferenceTrack<GameObject> track )
+		where T : Component => new( Guid.NewGuid(), typeof(T).Name, track );
 
 	/// <summary>
 	/// Create a nested <see cref="CompiledPropertyTrack"/> that targets a property with the given <paramref name="name"/>
@@ -45,7 +45,11 @@ public static class CompiledClipExtensions
 	public static CompiledPropertyTrack<T> WithConstant<T>( this CompiledPropertyTrack<T> track,
 		MovieTimeRange timeRange, T value )
 	{
-		return track with { Blocks = [..track.Blocks, new CompiledConstantBlock<T>( timeRange, value )] };
+		return track with
+		{
+			// ReSharper disable once UseCollectionExpression
+			Blocks = track.Blocks.Concat( [new CompiledConstantBlock<T>( timeRange, value )] ).ToImmutableArray()
+		};
 	}
 
 	/// <summary>
@@ -57,7 +61,9 @@ public static class CompiledClipExtensions
 	{
 		return track with
 		{
-			Blocks = [..track.Blocks, new CompiledSampleBlock<T>( timeRange, 0d, sampleRate, [..values] )]
+			// ReSharper disable UseCollectionExpression
+			Blocks = track.Blocks.Concat( [new CompiledSampleBlock<T>( timeRange, 0d, sampleRate, values.ToImmutableArray() )] ).ToImmutableArray()
+			// ReSharper enable UseCollectionExpression
 		};
 	}
 	

@@ -65,7 +65,8 @@ public sealed partial class CompiledClip : IClip
 
 		// Initialize
 
-		Tracks = [.. allTracks.OrderBy( x => x.GetDepth() ).ThenBy( x => x.Name )];
+		// ReSharper disable once UseCollectionExpression
+		Tracks = allTracks.OrderBy( x => x.GetDepth() ).ThenBy( x => x.Name ).ToImmutableArray();
 
 		_referenceTracks = referenceTracks.ToImmutableDictionary();
 
