@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.Json.Nodes;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
@@ -14,17 +13,51 @@ namespace Editor.MovieMaker;
 /// </summary>
 public sealed class MovieProject : IJsonPopulator
 {
+	private readonly Dictionary<Guid, ProjectSourceClip> _sourceClipDict = new();
+
+	private readonly List<ProjectTrack> _rootTrackList = new();
+	private readonly List<ProjectTrack> _trackList = new();
+	private readonly Dictionary<Guid, ProjectTrack> _trackDict = new();
+
+	private bool _tracksChanged;
+
+	/// <summary>
+	/// When compiling, what sample rate to use.
+	/// </summary>
 	public int SampleRate { get; set; } = 30;
 
-	public bool IsEmpty => throw new NotImplementedException();
-	public MovieTime Duration => throw new NotImplementedException();
+	public bool IsEmpty => Tracks.Count == 0 && SourceClips.Count == 0;
 
-	public IReadOnlyDictionary<Guid, ProjectSourceClip> SourceClips => throw new NotImplementedException();
-	public IReadOnlyList<ProjectTrack> Tracks => throw new NotImplementedException();
-	public IReadOnlyList<ProjectTrack> RootTracks => throw new NotImplementedException();
+	public MovieTime Duration => _trackList.OfType<ProjectPropertyTrack>()
+		.Select( x => x.TimeRange.End )
+		.DefaultIfEmpty( 0d )
+		.Max();
 
-	public ProjectTrack? GetTrack( Guid trackId ) => Tracks
-		.FirstOrDefault( x => x.Id == trackId );
+	public IReadOnlyDictionary<Guid, ProjectSourceClip> SourceClips => _sourceClipDict;
+
+	public IReadOnlyList<ProjectTrack> Tracks
+	{
+		get
+		{
+			UpdateTracks();
+			return _trackList;
+		}
+	}
+
+	public IReadOnlyList<ProjectTrack> RootTracks
+	{
+		get
+		{
+			UpdateTracks();
+			return _rootTrackList;
+		}
+	}
+
+	public ProjectTrack? GetTrack( Guid trackId )
+	{
+		UpdateTracks();
+		return _trackDict!.GetValueOrDefault( trackId );
+	}
 
 	public CompiledClip Compile()
 	{
@@ -53,16 +86,63 @@ public sealed class MovieProject : IJsonPopulator
 
 	public ProjectSourceClip AddSourceClip( CompiledClip clip, JsonObject? metadata = null )
 	{
-		throw new NotImplementedException();
+		var guid = Guid.NewGuid();
+
+		return _sourceClipDict[guid] = new ProjectSourceClip( guid, clip, metadata );
 	}
 
 	public ProjectReferenceTrack AddReferenceTrack( string name, Type targetType, ProjectTrack? parentTrack = null )
 	{
-		throw new NotImplementedException();
+		var guid = Guid.NewGuid();
+		var track = ProjectReferenceTrack.Create( this, guid, name, targetType );
+
+		AddTrackInternal( track, parentTrack );
+
+		return track;
 	}
 
 	public ProjectPropertyTrack AddPropertyTrack( string name, Type targetType, ProjectTrack? parentTrack = null )
 	{
-		throw new NotImplementedException();
+		var guid = Guid.NewGuid();
+		var track = ProjectPropertyTrack.Create( this, guid, name, targetType );
+
+		AddTrackInternal( track, parentTrack );
+
+		return track;
+	}
+
+	private void AddTrackInternal( ProjectTrack track, ProjectTrack? parentTrack )
+	{
+		if ( _trackDict.ContainsKey( track.Id ) )
+		{
+			throw new Exception( "Conflicting track IDs!" );
+		}
+
+		parentTrack?.AddChildInternal( track );
+
+		_trackList.Add( track );
+		_tracksChanged = true;
+	}
+
+	private void UpdateTracks()
+	{
+		if ( !_tracksChanged ) return;
+
+		_tracksChanged = false;
+
+		_trackList.Sort();
+
+		_rootTrackList.Clear();
+		_trackDict.Clear();
+
+		foreach ( var track in _trackList )
+		{
+			_trackDict[track.Id] = track;
+
+			if ( track.Parent is null )
+			{
+				_rootTrackList.Add( track );
+			}
+		}
 	}
 }

@@ -8,7 +8,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public abstract partial class ProjectTrack( MovieProject project, Guid id, string name, Type targetType ) : ITrack
+public abstract partial class ProjectTrack( MovieProject project, Guid id, string name, Type targetType ) : ITrack, IComparable<ProjectTrack>
 {
 	public MovieProject Project { get; } = project;
 	public Guid Id { get; } = id;
@@ -27,11 +27,37 @@ public abstract partial class ProjectTrack( MovieProject project, Guid id, strin
 	ITrack? ITrack.Parent => Parent;
 
 	public abstract CompiledTrack Compile( CompiledTrack? compiledParent, bool headerOnly );
+
+	public int CompareTo( ProjectTrack? other )
+	{
+		if ( ReferenceEquals( this, other ) )
+		{
+			return 0;
+		}
+
+		if ( other is null )
+		{
+			return 1;
+		}
+
+		var depthComparison = this.GetDepth().CompareTo( other.GetDepth() );
+		return depthComparison != 0 ? depthComparison : string.Compare( Name, other.Name, StringComparison.Ordinal );
+	}
+
+	internal void AddChildInternal( ProjectTrack child )
+	{
+		throw new NotImplementedException();
+	}
 }
 
 public abstract class ProjectReferenceTrack( MovieProject project, Guid id, string name, Type targetType )
 	: ProjectTrack( project, id, name, targetType ), IReferenceTrack
 {
+	public static ProjectReferenceTrack Create( MovieProject project, Guid id, string name, Type targetType )
+	{
+		throw new NotImplementedException();
+	}
+
 	public new ProjectReferenceTrack<GameObject>? Parent => (ProjectReferenceTrack<GameObject>?)base.Parent;
 
 	IReferenceTrack<GameObject>? IReferenceTrack.Parent => Parent;
@@ -47,6 +73,11 @@ public sealed class ProjectReferenceTrack<T>( MovieProject project, Guid id, str
 public abstract class ProjectPropertyTrack( MovieProject project, Guid id, string name, Type targetType )
 	: ProjectTrack( project, id, name, targetType ), IPropertyTrack
 {
+	public static ProjectPropertyTrack Create( MovieProject project, Guid id, string name, Type targetType )
+	{
+		throw new NotImplementedException();
+	}
+
 	public KeyframeCurve? Keyframes { get; set; }
 
 	public IReadOnlyList<PropertyBlock> Blocks => OnGetBlocks();
