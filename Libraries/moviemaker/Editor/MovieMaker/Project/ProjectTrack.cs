@@ -8,9 +8,10 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public abstract partial class ProjectTrack( MovieProject project, string name, Type targetType ) : ITrack
+public abstract partial class ProjectTrack( MovieProject project, Guid id, string name, Type targetType ) : ITrack
 {
 	public MovieProject Project { get; } = project;
+	public Guid Id { get; } = id;
 	public string Name { get; } = name;
 	public Type TargetType { get; } = targetType;
 
@@ -29,9 +30,8 @@ public abstract partial class ProjectTrack( MovieProject project, string name, T
 }
 
 public abstract class ProjectReferenceTrack( MovieProject project, Guid id, string name, Type targetType )
-	: ProjectTrack( project, name, targetType ), IReferenceTrack
+	: ProjectTrack( project, id, name, targetType ), IReferenceTrack
 {
-	public Guid Id => id;
 	public new ProjectReferenceTrack<GameObject>? Parent => (ProjectReferenceTrack<GameObject>?)base.Parent;
 
 	IReferenceTrack<GameObject>? IReferenceTrack.Parent => Parent;
@@ -44,8 +44,8 @@ public sealed class ProjectReferenceTrack<T>( MovieProject project, Guid id, str
 		new CompiledReferenceTrack<T>( Id, Name, (CompiledReferenceTrack<GameObject>)compiledParent! );
 }
 
-public abstract class ProjectPropertyTrack( MovieProject project, string name, Type targetType )
-	: ProjectTrack( project, name, targetType ), IPropertyTrack
+public abstract class ProjectPropertyTrack( MovieProject project, Guid id, string name, Type targetType )
+	: ProjectTrack( project, id, name, targetType ), IPropertyTrack
 {
 	public KeyframeCurve? Keyframes { get; set; }
 
@@ -96,10 +96,12 @@ public abstract class ProjectPropertyTrack( MovieProject project, string name, T
 	{
 		throw new NotImplementedException();
 	}
+
+	public abstract IReadOnlyList<PropertyBlock> CreateSourceBlocks( ProjectSourceClip source );
 }
 
-public sealed class ProjectPropertyTrack<T>( MovieProject project, string name )
-	: ProjectPropertyTrack( project, name, typeof(T) ), IPropertyTrack<T>
+public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, string name )
+	: ProjectPropertyTrack( project, id, name, typeof(T) ), IPropertyTrack<T>
 {
 	private readonly List<PropertyBlock<T>> _blocks = new();
 
@@ -157,24 +159,9 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, string name )
 
 	public new IEnumerable<PropertyBlock<T>> Slice( MovieTimeRange timeRange ) =>
 		base.Slice( timeRange ).Cast<PropertyBlock<T>>();
-}
 
-public record struct TrackPath( Guid ReferenceId, ImmutableArray<string> PropertyNames )
-{
-	public static TrackPath FromTrack( ITrack track )
+	public override IReadOnlyList<PropertyBlock> CreateSourceBlocks( ProjectSourceClip source )
 	{
-		if ( track is IReferenceTrack refTrack )
-		{
-			return new TrackPath( refTrack.Id, ImmutableArray<string>.Empty );
-		}
-
-		if ( track.Parent is not { } parent )
-		{
-			throw new ArgumentException( "Expected root track to be a reference track.", nameof(track) );
-		}
-
-		var parentPath = FromTrack( parent );
-
-		return parentPath with { PropertyNames = [..parentPath.PropertyNames, track.Name] };
+		throw new NotImplementedException();
 	}
 }

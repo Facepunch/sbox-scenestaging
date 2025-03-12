@@ -117,7 +117,7 @@ partial class MotionEditMode
 		}
 	}
 
-	private record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<TrackPath, IReadOnlyList<PropertyBlock>> Tracks );
+	private record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<Guid, IReadOnlyList<PropertyBlock>> Tracks );
 
 	private static ClipboardData? Clipboard { get; set; }
 
@@ -140,7 +140,7 @@ partial class MotionEditMode
 
 		var timeRange = selection.TotalTimeRange;
 		var offset = Session.CurrentPointer;
-		var tracks = new Dictionary<TrackPath, IReadOnlyList<PropertyBlock>>();
+		var tracks = new Dictionary<Guid, IReadOnlyList<PropertyBlock>>();
 		var slicedBlocks = new List<PropertyBlock>();
 
 		foreach ( var track in Session.EditableTracks )
@@ -150,7 +150,7 @@ partial class MotionEditMode
 
 			if ( slicedBlocks.Count > 0 )
 			{
-				tracks[TrackPath.FromTrack( track )] = slicedBlocks.ToImmutableList();
+				tracks[track.Id] = slicedBlocks.ToImmutableList();
 			}
 		}
 

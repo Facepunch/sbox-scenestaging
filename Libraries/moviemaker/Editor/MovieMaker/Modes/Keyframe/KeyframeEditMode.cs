@@ -50,7 +50,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnTrackAdded( DopeSheetTrack track )
 	{
-		if ( track.TrackWidget.Property is not ITrackProperty { CanWrite: true } ) return;
+		if ( track.TrackWidget.Target is not ITrackProperty { CanWrite: true } ) return;
 
 		var keyframes = new TrackKeyframes( track, this );
 
@@ -180,7 +180,7 @@ internal sealed partial class KeyframeEditMode : EditMode
 		// When about to change a track that doesn't have any keyframes, make a keyframe at t=0
 		// with the old value.
 
-		var movieTrack = track.TrackWidget.ProjectTrack;
+		var movieTrack = (ProjectPropertyTrack)track.TrackWidget.ProjectTrack;
 
 		if ( movieTrack.Blocks.Count > 0 )
 		{
@@ -240,7 +240,7 @@ internal sealed class TrackKeyframes : IDisposable
 		set => ProjectTrack.Keyframes = value;
 	}
 
-	public ProjectTrack ProjectTrack { get; }
+	public ProjectPropertyTrack ProjectTrack { get; }
 	public DopeSheetTrack DopeSheetTrack { get; }
 	public TrackWidget TrackWidget { get; }
 	public KeyframeEditMode EditMode { get; }
@@ -274,9 +274,9 @@ internal sealed class TrackKeyframes : IDisposable
 		DopeSheetTrack.Update();
 	}
 
-	internal void AddKey( MovieTime time ) => AddKey( time, TrackWidget.Property!.Value );
+	internal void AddKey( MovieTime time ) => AddKey( time, TrackWidget.Target.Value );
 
-	internal bool UpdateKey( MovieTime time ) => UpdateKey( time, TrackWidget.Property!.Value );
+	internal bool UpdateKey( MovieTime time ) => UpdateKey( time, TrackWidget.Target.Value );
 
 	internal void AddKey( MovieTime time, object? value, InterpolationMode? interpolation = null )
 	{
@@ -318,7 +318,7 @@ internal sealed class TrackKeyframes : IDisposable
 			h.Destroy();
 		}
 
-		if ( TrackWidget.Property is ITrackProperty { CanWrite: true } )
+		if ( TrackWidget.Target is ITrackProperty { CanWrite: true } )
 		{
 			Curve ??= KeyframeCurve.Create( TrackWidget.ProjectTrack.TargetType );
 
@@ -349,8 +349,6 @@ internal sealed class TrackKeyframes : IDisposable
 		{
 			Curve.SetKeyframe( handle.Time, handle.Value, handle.Interpolation );
 		}
-
-		TrackWidget.ProjectTrack.WriteKeyframes( Curve, EditMode.Project.SampleRate );
 
 		EditMode.Session.ClipModified();
 

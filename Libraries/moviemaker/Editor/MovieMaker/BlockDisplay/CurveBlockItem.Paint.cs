@@ -10,37 +10,10 @@ partial class CurveBlockItem<T>
 
 	protected virtual void GetCurveTimes( List<MovieTime> times )
 	{
-		times.Add( MovieTime.Zero );
-		
-		if ( Samples is { } samples )
+		foreach ( var time in Block.GetPaintHintTimes() )
 		{
-			for ( var i = 0; i < samples.Samples.Length; ++i )
-			{
-				var time = samples.Offset + MovieTime.FromFrames( i, samples.SampleRate );
-
-				if ( !time.IsPositive ) continue;
-				if ( time >= TimeRange.Duration ) break;
-
-				times.Add( time );
-			}
+			times.Add( time );
 		}
-
-		times.Add( TimeRange.Duration );
-	}
-
-	protected T GetValue( MovieTime time )
-	{
-		if ( Samples is { } samples )
-		{
-			return samples.GetValue( time );
-		}
-
-		if ( Constant is { } constant )
-		{
-			return constant.Value;
-		}
-
-		return default!;
 	}
 
 	private void UpdateRanges()
@@ -66,7 +39,7 @@ partial class CurveBlockItem<T>
 		{
 			if ( t.IsNegative ) continue;
 
-			var value = GetValue( t );
+			var value = Block.GetValue( t );
 			Decompose( value, floats );
 
 			for ( var j = 0; j < Elements.Count; ++j )
@@ -155,7 +128,7 @@ partial class CurveBlockItem<T>
 
 		foreach ( var t in times )
 		{
-			var value = GetValue( t );
+			var value = Block.GetValue( t );
 			var x = LocalRect.Left + (float)((t - t0).TotalSeconds * dxdt);
 
 			Decompose( value, floats );

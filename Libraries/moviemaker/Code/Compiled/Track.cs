@@ -68,9 +68,11 @@ public sealed record CompiledActionTrack( string Name, Type TargetType, Compiled
 
 /// <inheritdoc cref="IPropertyTrack"/>
 public abstract record CompiledPropertyTrack( string Name, Type TargetType, CompiledTrack Parent )
-	: CompiledTrack( Name, TargetType, Parent ), IPropertyTrack
+	: CompiledTrack( Name, TargetType, Parent ), IPropertyTrack, IBlockTrack
 {
 	public new CompiledTrack Parent => base.Parent!;
+	public abstract MovieTimeRange TimeRange { get; }
+	public IReadOnlyList<CompiledPropertyBlock> Blocks => OnGetBlocks();
 
 	public bool TryGetValue( MovieTime time, out object? value )
 	{
@@ -87,19 +89,25 @@ public abstract record CompiledPropertyTrack( string Name, Type TargetType, Comp
 	public CompiledPropertyBlock? GetBlock( MovieTime time ) => OnGetBlock( time );
 
 	protected abstract CompiledPropertyBlock? OnGetBlock( MovieTime time );
+	protected abstract IReadOnlyList<CompiledPropertyBlock> OnGetBlocks();
 
-	ITrack IPropertyTrack.Parent => Parent!;
+	ITrack IPropertyTrack.Parent => Parent;
+	IReadOnlyList<CompiledBlock> IBlockTrack.Blocks => OnGetBlocks();
 }
 
 /// <inheritdoc cref="IPropertyTrack{T}"/>
-public sealed record CompiledPropertyTrack<T>( string Name, CompiledTrack Parent, ImmutableArray<CompiledPropertyBlock<T>> Blocks )
+public sealed record CompiledPropertyTrack<T>(
+	string Name,
+	CompiledTrack Parent,
+	ImmutableArray<CompiledPropertyBlock<T>> Blocks )
 	: CompiledPropertyTrack( Name, typeof(T), Parent ), IPropertyTrack<T>, IBlockTrack
 {
 	private readonly bool _validated = Validate( Blocks );
 
-	IReadOnlyList<CompiledBlock> IBlockTrack.Blocks => Blocks;
+	public override MovieTimeRange TimeRange { get; } = IBlockTrack.GetTimeRange( Blocks );
+	public new ImmutableArray<CompiledPropertyBlock<T>> Blocks { get; init; } = Blocks;
 
-	public MovieTimeRange TimeRange { get; } = IBlockTrack.GetTimeRange( Blocks );
+	IReadOnlyList<CompiledBlock> IBlockTrack.Blocks => Blocks;
 
 	public new CompiledPropertyBlock<T>? GetBlock( MovieTime time )
 	{
@@ -135,6 +143,7 @@ public sealed record CompiledPropertyTrack<T>( string Name, CompiledTrack Parent
 	}
 
 	protected override CompiledPropertyBlock? OnGetBlock( MovieTime time ) => GetBlock( time );
+	protected override IReadOnlyList<CompiledPropertyBlock> OnGetBlocks() => Blocks;
 
 	private static bool Validate( ImmutableArray<CompiledPropertyBlock<T>> blocks )
 	{

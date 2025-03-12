@@ -19,20 +19,12 @@ public sealed class MovieProject : IJsonPopulator
 	public bool IsEmpty => throw new NotImplementedException();
 	public MovieTime Duration => throw new NotImplementedException();
 
+	public IReadOnlyDictionary<Guid, ProjectSourceClip> SourceClips => throw new NotImplementedException();
 	public IReadOnlyList<ProjectTrack> Tracks => throw new NotImplementedException();
 	public IReadOnlyList<ProjectTrack> RootTracks => throw new NotImplementedException();
 
-	public ProjectReferenceTrack? GetTrack( Guid trackId ) => Tracks
-		.OfType<ProjectReferenceTrack>()
+	public ProjectTrack? GetTrack( Guid trackId ) => Tracks
 		.FirstOrDefault( x => x.Id == trackId );
-
-	public ProjectTrack? GetTrack( TrackPath path )
-	{
-		ProjectTrack? track = GetTrack( path.ReferenceId );
-
-		return path.PropertyNames.Aggregate( track,
-			( current, propertyName ) => current?.GetChild( propertyName ) );
-	}
 
 	public CompiledClip Compile()
 	{
@@ -47,7 +39,7 @@ public sealed class MovieProject : IJsonPopulator
 	}
 
 	private void CompileTrack( ProjectTrack track, Dictionary<ProjectTrack, CompiledTrack> result ) =>
-		result.Add( track, track.Compile( track.Parent is { } parent ? result[parent] : null ) );
+		result.Add( track, track.Compile( track.Parent is { } parent ? result[parent] : null, false ) );
 
 	public JsonNode Serialize()
 	{
@@ -55,6 +47,11 @@ public sealed class MovieProject : IJsonPopulator
 	}
 
 	public void Deserialize( JsonNode node )
+	{
+		throw new NotImplementedException();
+	}
+
+	public ProjectSourceClip AddSourceClip( CompiledClip clip, JsonObject? metadata = null )
 	{
 		throw new NotImplementedException();
 	}

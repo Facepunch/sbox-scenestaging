@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker.Compiled;
+﻿using System.Text.Json.Nodes;
+using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker;
 
@@ -7,9 +8,4 @@ namespace Editor.MovieMaker;
 /// <summary>
 /// Stores a raw gameplay recording.
 /// </summary>
-public sealed class ProjectSourceClip( Guid id, string title, CompiledClip clip )
-{
-	public Guid Id { get; }
-	public string Title { get; set; } = title;
-	public CompiledClip Clip { get; set; } = clip;
-}
+public sealed record ProjectSourceClip( Guid Id, CompiledClip Clip, JsonObject? Metadata );

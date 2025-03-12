@@ -159,7 +159,7 @@ public partial class TrackListWidget : Widget
 
 		foreach ( var track in Session.Project.Tracks )
 		{
-			hashCode.Add( track.Id );
+			hashCode.Add( track );
 		}
 
 		return hashCode.ToHashCode();

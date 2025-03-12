@@ -18,8 +18,8 @@ internal static class MovieExtensions
 
 		return property switch
 		{
-			IGameObjectReference goProperty => goProperty.Value,
-			IComponentReference cmpProperty => cmpProperty.Value?.GameObject,
+			ITrackReference<GameObject> goProperty => goProperty.Value,
+			ITrackReference { Value: Component cmp } => cmp.GameObject,
 			_ => null
 		};
 	}

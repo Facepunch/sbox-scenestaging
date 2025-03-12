@@ -1,6 +1,8 @@
 ﻿using Sandbox.MovieMaker;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
+using System.Text.Json.Nodes;
 using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker;
@@ -78,31 +80,36 @@ partial class MotionEditMode
 		Log.Info( $"Finished recording {_recordings.Count} tracks!" );
 
 		var tracks = new Dictionary<ProjectTrack, CompiledTrack>();
-
 		MovieTimeRange? timeRange = null;
 
 		foreach ( var (track, recording) in _recordings )
 		{
 			ClearPreviewBlocks( track );
 
-			if ( recording.Compile() is not { Count: > 0 } blocks ) continue;
+			var compiledParent = GetOrCreateCompiledTrack( tracks, track.Parent! );
 
-			var parentTrack = GetOrCreateCompiledTrack( tracks, track );
-
-			tracks.Add( TrackPath.FromTrack( track ), blocks );
-
-			foreach ( var block in blocks )
+			if ( recording.Compile( track, compiledParent ) is not { } compiledTrack )
 			{
-				timeRange = timeRange?.Union( block.TimeRange ) ?? block.TimeRange;
+				continue;
 			}
+
+			tracks[track] = compiledTrack;
+			timeRange = timeRange?.Union( compiledTrack.TimeRange ) ?? compiledTrack.TimeRange;
 		}
 
-		if ( tracks.Count <= 0 || timeRange is not { } range ) return;
+		if ( tracks.Count <= 0 || timeRange is not { Duration.IsPositive: true } range ) return;
 
-		var offset = Session.CurrentPointer;
+		var sourceClip = Project.AddSourceClip( new CompiledClip( tracks.Values ), new JsonObject
+		{
+			{ "Date", DateTime.UtcNow.ToString( "o", CultureInfo.InvariantCulture ) },
+			{ "IsEditor", Session.Player.Scene.IsEditor },
+			{ "SceneSource", Json.ToNode( Session.Player.Scene.Source ) },
+			{ "MoviePlayer", Json.ToNode( Session.Player ) }
+		} );
 
-		Clipboard = new ClipboardData( new TimeSelection( range - offset, DefaultInterpolation ), tracks.ToImmutableDictionary( x => x.Key,
-				x => x.Value.Select( y => y with { TimeRange = y.TimeRange - offset } ).ToImmutableArray() ) );
+		Clipboard = new ClipboardData( new TimeSelection( range, DefaultInterpolation ), tracks.Keys
+			.OfType<ProjectPropertyTrack>()
+			.ToImmutableDictionary( x => x.Id, x => x.CreateSourceBlocks( sourceClip ) ) );
 
 		if ( LoadChangesFromClipboard() )
 		{
@@ -116,7 +123,12 @@ partial class MotionEditMode
 
 		var compiledParent = track.Parent is { } parent ? GetOrCreateCompiledTrack( dict, parent ) : null;
 
-		if ( track is )
+		return dict[track] = track switch
+		{
+			ProjectReferenceTrack refTrack => refTrack.Compile( compiledParent, true ),
+			ProjectPropertyTrack propertyTrack => propertyTrack.Compile( compiledParent, true ),
+			_ => throw new NotImplementedException()
+		};
 	}
 
 	private void RecordingFrame()
@@ -135,7 +147,7 @@ partial class MotionEditMode
 internal interface ITrackRecording : IPropertyBlock, IDynamicBlock
 {
 	void Record( MovieTime time );
-	IReadOnlyList<CompiledPropertyBlock> Compile();
+	CompiledPropertyTrack? Compile( ProjectPropertyTrack track, CompiledTrack compiledParent );
 }
 
 file class TrackRecording<T> : ITrackRecording, IPropertyBlock<T>
@@ -203,19 +215,27 @@ file class TrackRecording<T> : ITrackRecording, IPropertyBlock<T>
 		Changed?.Invoke();
 	}
 
-	public IReadOnlyList<CompiledPropertyBlock> Compile()
+	public CompiledPropertyTrack? Compile( ProjectPropertyTrack track, CompiledTrack compiledParent )
 	{
-		if ( _samples.Count == 0 ) return [];
+		if ( _samples.Count == 0 ) return null;
 
 		var first = _samples[0];
 		var comparer = EqualityComparer<T>.Default;
 
-		if ( _samples.All( x => comparer.Equals( first, x ) ) ) return [];
+		if ( _samples.All( x => comparer.Equals( first, x ) ) ) return null;
 
-		var data = new CompiledSampleBlock<T>( TimeRange, TimeRange.Start, SampleRate, [.._samples] );
+		var data = new CompiledSampleBlock<T>( TimeRange - _startTime, 0d, SampleRate, [.._samples] );
 
-		return [data];
+		return new CompiledPropertyTrack<T>( track.Name, compiledParent, [data] );
 	}
 
 	public T GetValue( MovieTime time ) => _samples.Sample( time - TimeRange.Start, SampleRate, _interpolator );
+
+	public IEnumerable<MovieTime> GetPaintHintTimes()
+	{
+		for ( var i = 0; i < _samples.Count; ++i )
+		{
+			yield return _startTime + MovieTime.FromFrames( i, SampleRate );
+		}
+	}
 }

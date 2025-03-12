@@ -14,6 +14,8 @@ public interface IPropertyBlock
 	Type PropertyType { get; }
 
 	object? GetValue( MovieTime time );
+
+	IEnumerable<MovieTime> GetPaintHintTimes();
 }
 
 public interface IDynamicBlock
@@ -68,7 +70,11 @@ public abstract record PropertyBlock( MovieTimeRange TimeRange, Type PropertyTyp
 	protected virtual IEnumerable<MovieTime> OnGetPaintHintTimes()
 	{
 		yield return TimeRange.Start;
-		yield return TimeRange.End;
+
+		if ( TimeRange.End - MovieTime.Epsilon > TimeRange.Start )
+		{
+			yield return TimeRange.End - MovieTime.Epsilon;
+		}
 	}
 }
 
