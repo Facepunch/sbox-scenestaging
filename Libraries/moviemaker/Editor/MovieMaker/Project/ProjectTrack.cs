@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
@@ -10,17 +9,27 @@ namespace Editor.MovieMaker;
 
 public abstract partial class ProjectTrack( MovieProject project, Guid id, string name, Type targetType ) : ITrack, IComparable<ProjectTrack>
 {
+	private readonly List<ProjectTrack> _children = new();
+	private bool _childrenChanged;
+
 	public MovieProject Project { get; } = project;
 	public Guid Id { get; } = id;
 	public string Name { get; } = name;
 	public Type TargetType { get; } = targetType;
 
-	public ProjectTrack? Parent => throw new NotImplementedException();
-	public bool IsEmpty => throw new NotImplementedException();
+	public ProjectTrack? Parent { get; private set; }
+	public virtual bool IsEmpty => Children.Count == 0;
 
-	public IReadOnlyList<ProjectTrack> Children => throw new NotImplementedException();
+	public IReadOnlyList<ProjectTrack> Children
+	{
+		get
+		{
+			UpdateChildren();
+			return _children;
+		}
+	}
 
-	public void Remove() => throw new NotImplementedException();
+	public void Remove() => Project.RemoveTrackInternal( this );
 
 	public ProjectTrack? GetChild( string name ) => Children.FirstOrDefault( x => x.Name == name );
 
@@ -46,7 +55,28 @@ public abstract partial class ProjectTrack( MovieProject project, Guid id, strin
 
 	internal void AddChildInternal( ProjectTrack child )
 	{
-		throw new NotImplementedException();
+		if ( child.Parent != null )
+		{
+			throw new ArgumentException( "Track already has a parent!", nameof(child) );
+		}
+
+		child.Parent = this;
+		_children.Add( child );
+		_childrenChanged = true;
+	}
+
+	internal void RemoveChildInternal( ProjectTrack child )
+	{
+		_children.Remove( child );
+		_childrenChanged = true;
+	}
+
+	private void UpdateChildren()
+	{
+		if ( !_childrenChanged ) return;
+
+		_childrenChanged = false;
+		_children.Sort();
 	}
 }
 
@@ -82,6 +112,8 @@ public abstract class ProjectPropertyTrack( MovieProject project, Guid id, strin
 
 	public IReadOnlyList<PropertyBlock> Blocks => OnGetBlocks();
 	protected abstract IReadOnlyList<PropertyBlock> OnGetBlocks();
+
+	public override bool IsEmpty => Blocks.Count == 0;
 
 	public MovieTimeRange TimeRange => Blocks is { Count: > 0 } blocks
 		? (blocks[0].TimeRange.Start, blocks[^1].TimeRange.End)

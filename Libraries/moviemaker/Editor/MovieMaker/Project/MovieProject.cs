@@ -124,6 +124,20 @@ public sealed class MovieProject : IJsonPopulator
 		_tracksChanged = true;
 	}
 
+	public void RemoveTrackInternal( ProjectTrack projectTrack )
+	{
+		if ( !_trackList.Remove( projectTrack ) ) return;
+
+		foreach ( var child in projectTrack.Children.ToArray() )
+		{
+			child.Remove();
+		}
+
+		projectTrack.Parent?.RemoveChildInternal( projectTrack );
+
+		_tracksChanged = true;
+	}
+
 	private void UpdateTracks()
 	{
 		if ( !_tracksChanged ) return;
