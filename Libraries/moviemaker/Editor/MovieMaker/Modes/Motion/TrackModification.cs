@@ -14,7 +14,7 @@ internal interface ITrackModification
 
 	void SetRelativeTo( object? value );
 	void SetChanges( object? constantValue );
-	void SetChanges( IEnumerable<PropertyBlock> blocks );
+	void SetChanges( IEnumerable<IProjectPropertyBlock> blocks );
 	void ClearPreview();
 	bool Update( TimeSelection selection, MovieTime offset, bool additive );
 	bool Commit( TimeSelection selection, MovieTime offset, bool additive );
@@ -47,11 +47,11 @@ internal sealed class TrackModification<T> : ITrackModification
 	}
 
 	public void SetChanges( object? constantValue ) => SetChanges(
-		[new ConstantPropertyBlock<T>( (MovieTime.Zero, MovieTime.MaxValue), (T)constantValue! )] );
+		[new ConstantPropertyBlock<T>( MovieTime.Zero, (T)constantValue! )] );
 
-	public void SetChanges( IEnumerable<PropertyBlock> blocks )
+	public void SetChanges( IEnumerable<IProjectPropertyBlock> blocks )
 	{
-		_overlay = blocks.Cast<PropertyBlock<T>>().Stitch();
+		_overlay = blocks.Cast<PropertyBlock<T>>().Join( false );
 	}
 
 	public void ClearPreview()
@@ -83,10 +83,10 @@ internal sealed class TrackModification<T> : ITrackModification
 				];
 			}
 
-			_original = slice.Stitch().Slice( timeRange );
+			_original = slice.Join( false ).Slice( timeRange );
 		}
 
-		_blended = new PropertyBlockBlend<T>( _original, _overlay.Shift( offset ), selection );
+		_blended = _original.Blend( _overlay.Shift( offset ), selection );
 
 		EditMode.SetPreviewBlocks( Track, [_blended] );
 
@@ -97,8 +97,10 @@ internal sealed class TrackModification<T> : ITrackModification
 	{
 		if ( !Update( selection, offset, additive ) || _blended is not { } blended ) return false;
 
+		var changed = Track.Add( blended );
+
 		ClearPreview();
 
-		return Track.Add( blended );
+		return changed;
 	}
 }

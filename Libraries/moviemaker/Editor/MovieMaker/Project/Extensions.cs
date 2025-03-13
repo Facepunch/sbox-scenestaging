@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Sandbox.MovieMaker;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Editor.MovieMaker;
 
@@ -11,7 +12,7 @@ namespace Editor.MovieMaker;
 /// </summary>
 public static class ProjectExtensions
 {
-	public static IEnumerable<PropertyBlock> GetBlocks( this ProjectPropertyTrack track, MovieTimeRange timeRange )
+	public static IEnumerable<IProjectPropertyBlock> GetBlocks( this ProjectPropertyTrack track, MovieTimeRange timeRange )
 	{
 		return track.Blocks.Where( x => x.TimeRange.Intersect( timeRange ) is not null );
 	}
@@ -61,15 +62,69 @@ public static class ProjectExtensions
 		return block.TimeRange.Contains( time ) ? block : default;
 	}
 
-	public static PropertyBlock<T> Stitch<T>( this IEnumerable<PropertyBlock<T>> blocks )
+	public static PropertyBlock<T> Join<T>( this IEnumerable<PropertyBlock<T>> blocks, bool smooth )
 	{
-		var array = blocks.ToImmutableArray();
+		return blocks.Aggregate( (PropertyBlock<T>?)null, ( s, x ) => s?.Join( x, smooth ) ?? x )
+			?? throw new ArgumentException( "Expected at least one block.", nameof(blocks) );
+	}
 
-		return array.Length switch
+	public static PropertyBlock<T> Clamp<T>( this PropertyBlock<T> block, MovieTimeRange timeRange )
+	{
+		return block.Slice( block.TimeRange.Clamp( timeRange ) );
+	}
+
+	public static PropertyBlock<T> ClampStart<T>( this PropertyBlock<T> block, MovieTime start )
+	{
+		return block.Slice( block.TimeRange.ClampStart( start ) );
+	}
+
+	public static PropertyBlock<T> ClampEnd<T>( this PropertyBlock<T> block, MovieTime end )
+	{
+		return block.Slice( block.TimeRange.ClampEnd( end ) );
+	}
+
+	public static PropertyBlock<T> CrossFade<T>( this PropertyBlock<T> from, PropertyBlock<T> to,
+		MovieTimeRange fadeRange, InterpolationMode mode, bool invert )
+	{
+		if ( to.TimeRange.End < from.TimeRange.Start )
 		{
-			0 => throw new ArgumentException( "Expected at least one block.", nameof(blocks) ),
-			1 => array[0],
-			_ => new PropertyBlockStitch<T>( array )
-		};
+			throw new ArgumentException( "Can't cross fade to a block that ends before this block starts.", nameof( to ) );
+		}
+
+		var timeRange = from.TimeRange with { End = to.TimeRange.End };
+
+		// No fade if fadeRange starts after timeRange
+
+		if ( fadeRange.Start > timeRange.End )
+		{
+			return from;
+		}
+
+		// No fade if fadeRange ends before timeRange
+
+		if ( fadeRange.End < timeRange.Start )
+		{
+			return to;
+		}
+
+		Log.Info( $"CrossFade( {from.TimeRange}, {to.TimeRange}, {fadeRange} )" );
+
+		var before = from.ClampEnd( fadeRange.Start );
+		var after = to.ClampStart( fadeRange.End );
+
+		Log.Info( $"before: {before.TimeRange}, after: {after.TimeRange}" );
+
+		// Hard join if fadeRange duration is zero
+
+		if ( fadeRange.IsEmpty )
+		{
+			return before.Join( after, false );
+		}
+
+		var fade = from.Slice( fadeRange )
+			.CrossFade( to.Slice( fadeRange ), mode, invert )
+			.Clamp( timeRange );
+
+		return before.Join( fade, true ).Join( after, true );
 	}
 }

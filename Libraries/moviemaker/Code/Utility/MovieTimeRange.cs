@@ -37,6 +37,16 @@ public readonly record struct MovieTimeRange( MovieTime Start, MovieTime End )
 		return new MovieTimeRange( Start.Clamp( range ), End.Clamp( range ) );
 	}
 
+	public MovieTimeRange ClampStart( MovieTime start )
+	{
+		return new MovieTimeRange( MovieTime.Max( start, Start ), MovieTime.Max( start, End ) );
+	}
+
+	public MovieTimeRange ClampEnd( MovieTime end )
+	{
+		return new MovieTimeRange( MovieTime.Min( end, Start ), MovieTime.Min( end, End ) );
+	}
+
 	public MovieTimeRange Grow( MovieTime startEndDelta ) => Grow( startEndDelta, startEndDelta );
 
 	public MovieTimeRange Grow( MovieTime startDelta, MovieTime endDelta )

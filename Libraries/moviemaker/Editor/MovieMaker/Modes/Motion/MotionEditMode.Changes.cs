@@ -117,7 +117,7 @@ partial class MotionEditMode
 		}
 	}
 
-	private record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<Guid, IReadOnlyList<PropertyBlock>> Tracks );
+	private record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<Guid, IReadOnlyList<IProjectPropertyBlock>> Tracks );
 
 	private static ClipboardData? Clipboard { get; set; }
 
@@ -140,8 +140,8 @@ partial class MotionEditMode
 
 		var timeRange = selection.TotalTimeRange;
 		var offset = Session.CurrentPointer;
-		var tracks = new Dictionary<Guid, IReadOnlyList<PropertyBlock>>();
-		var slicedBlocks = new List<PropertyBlock>();
+		var tracks = new Dictionary<Guid, IReadOnlyList<IProjectPropertyBlock>>();
+		var slicedBlocks = new List<IProjectPropertyBlock>();
 
 		foreach ( var track in Session.EditableTracks )
 		{
@@ -196,7 +196,7 @@ partial class MotionEditMode
 			// Additive blending is relative to the start of the first block
 
 			state.SetRelativeTo( blocks[0].GetValue( MovieTime.Zero ) );
-			state.SetChanges( blocks.Select( x => x with { TimeRange = x.TimeRange - clipboard.Selection.TotalStart } ) );
+			state.SetChanges( blocks.Select( x => x.Shift( -clipboard.Selection.TotalStart ) ) );
 			state.Update( selection, ChangeOffset, IsAdditive );
 
 			changed = true;

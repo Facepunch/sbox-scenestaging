@@ -115,8 +115,8 @@ public abstract class ProjectPropertyTrack( MovieProject project, Guid id, strin
 
 	public KeyframeCurve? Keyframes { get; set; }
 
-	public IReadOnlyList<PropertyBlock> Blocks => OnGetBlocks();
-	protected abstract IReadOnlyList<PropertyBlock> OnGetBlocks();
+	public IReadOnlyList<IProjectPropertyBlock> Blocks => OnGetBlocks();
+	protected abstract IReadOnlyList<IProjectPropertyBlock> OnGetBlocks();
 
 	public override bool IsEmpty => Blocks.Count == 0;
 
@@ -152,23 +152,23 @@ public abstract class ProjectPropertyTrack( MovieProject project, Guid id, strin
 	/// Adds a <paramref name="block"/>, replacing any blocks that overlap its time range.
 	/// This will split any blocks that partially overlap.
 	/// </summary>
-	public abstract bool Add( PropertyBlock block );
+	public abstract bool Add( IProjectPropertyBlock block );
 
 	/// <summary>
 	/// Copies blocks that overlap the given <paramref name="timeRange"/> and returns
 	/// the copies.
 	/// </summary>
-	public IEnumerable<PropertyBlock> Slice( MovieTimeRange timeRange )
+	public IEnumerable<IProjectPropertyBlock> Slice( MovieTimeRange timeRange )
 	{
 		return Blocks
 			.Select( x =>
 				x.TimeRange.Intersect( timeRange ) is { Duration.IsPositive: true } intersection
 					? x.Slice( intersection )
 					: null )
-			.OfType<PropertyBlock>();
+			.OfType<IProjectPropertyBlock>();
 	}
 
-	public abstract IReadOnlyList<PropertyBlock> CreateSourceBlocks( ProjectSourceClip source );
+	public abstract IReadOnlyList<IProjectPropertyBlock> CreateSourceBlocks( ProjectSourceClip source );
 }
 
 public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, string name )
@@ -186,7 +186,7 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 		}
 	}
 
-	protected override IReadOnlyList<PropertyBlock> OnGetBlocks() => Blocks;
+	protected override IReadOnlyList<IProjectPropertyBlock> OnGetBlocks() => Blocks;
 
 	public override CompiledTrack Compile( CompiledTrack? compiledParent, bool headerOnly )
 	{
@@ -236,7 +236,7 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 		throw new NotImplementedException();
 	}
 
-	public override bool Add( PropertyBlock block )
+	public override bool Add( IProjectPropertyBlock block )
 	{
 		if ( block is not PropertyBlock<T> typedBlock ) return false;
 
@@ -289,7 +289,7 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 	public new IReadOnlyList<PropertyBlock<T>> Slice( MovieTimeRange timeRange ) =>
 		base.Slice( timeRange ).Cast<PropertyBlock<T>>().ToArray();
 
-	public override IReadOnlyList<PropertyBlock> CreateSourceBlocks( ProjectSourceClip source )
+	public override IReadOnlyList<IProjectPropertyBlock> CreateSourceBlocks( ProjectSourceClip source )
 	{
 		throw new NotImplementedException();
 	}

@@ -37,4 +37,33 @@ public static class CollectionExtensions
 
 		return list.Skip( offset ).Take( count ).ToArray();
 	}
+
+	public static IEnumerable<T> Merge<T>( this IEnumerable<T> a, IEnumerable<T> b )
+		where T : IComparable<T>
+	{
+		using var enumeratorA = a.GetEnumerator();
+		using var enumeratorB = b.GetEnumerator();
+
+		var hasItemA = enumeratorA.MoveNext();
+		var hasItemB = enumeratorB.MoveNext();
+
+		while ( hasItemA || hasItemB )
+		{
+			var lastItem = !hasItemB || hasItemA && enumeratorA.Current.CompareTo( enumeratorB.Current ) <= 0
+				? enumeratorA.Current
+				: enumeratorB.Current;
+
+			yield return lastItem;
+
+			while ( hasItemA && lastItem.CompareTo( enumeratorA.Current ) == 0 )
+			{
+				hasItemA = enumeratorA.MoveNext();
+			}
+
+			while ( hasItemB && lastItem.CompareTo( enumeratorB.Current ) == 0 )
+			{
+				hasItemB = enumeratorB.MoveNext();
+			}
+		}
+	}
 }

@@ -10,8 +10,13 @@ partial class CurveBlockItem<T>
 
 	protected virtual void GetCurveTimes( List<MovieTime> times )
 	{
-		foreach ( var time in Block.GetPaintHintTimes() )
+		var timeRange = Block.TimeRange;
+
+		foreach ( var time in Block.GetPaintHintTimes( timeRange ) )
 		{
+			if ( time < timeRange.Start ) continue;
+			if ( time > timeRange.End ) break;
+
 			times.Add( time );
 		}
 	}

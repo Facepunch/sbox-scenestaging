@@ -24,6 +24,8 @@ public abstract partial class BlockItem : GraphicsItem
 
 			_block = value;
 
+			ToolTip = value?.ToString();
+
 			if ( _block is IDynamicBlock newBlock )
 			{
 				newBlock.Changed += Block_Changed;
@@ -34,7 +36,7 @@ public abstract partial class BlockItem : GraphicsItem
 	protected ProjectTrack Track => Parent.TrackWidget.ProjectTrack;
 	protected MovieTimeRange TimeRange => Block.TimeRange;
 
-	protected int DataHash => HashCode.Combine( TimeRange.Duration, Width );
+	protected int DataHash => HashCode.Combine( Block, TimeRange.Duration, Width );
 
 	protected string? DebugText { get; set; }
 

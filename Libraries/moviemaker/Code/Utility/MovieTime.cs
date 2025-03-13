@@ -152,7 +152,13 @@ public readonly struct MovieTime : IEquatable<MovieTime>, IComparable<MovieTime>
 
 	public override bool Equals( [NotNullWhen( true )] object? obj ) => obj is MovieTime span && Equals( span );
 	public override int GetHashCode() => _ticks.GetHashCode();
-	public override string ToString() => TimeSpan.FromSeconds( TotalSeconds ).ToString( @"mm\:ss\.fff" );
+	public override string ToString()
+	{
+		var timeSpan = TimeSpan.FromSeconds( TotalSeconds );
+		return timeSpan.TotalHours < 1
+			? timeSpan.ToString( @"mm\:ss\.fff" )
+			: timeSpan.ToString( @"hh\:mm\:ss\.fff" );
+	}
 
 	#region Operators
 
