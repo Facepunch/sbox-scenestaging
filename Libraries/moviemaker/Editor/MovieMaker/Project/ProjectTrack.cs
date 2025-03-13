@@ -248,6 +248,10 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 
 		_blocksChanged = true;
 
+		var addedBlocks = new Queue<PropertyBlock<T>>();
+
+		addedBlocks.Enqueue( typedBlock );
+
 		for ( var i = _blocks.Count - 1; i >= 0; i-- )
 		{
 			var overlappingBlock = _blocks[i];
@@ -266,22 +270,31 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 				continue;
 			}
 
-			// Does old block start before new block? Add the old block head.
-
 			if ( typedBlock.TimeRange.Start > overlappingBlock.TimeRange.Start )
 			{
-				_blocks.Add( overlappingBlock.Slice( (overlappingBlock.TimeRange.Start, typedBlock.TimeRange.Start) ) );
+				addedBlocks.Enqueue( overlappingBlock.ClampEnd( typedBlock.TimeRange.Start ) );
 			}
-
-			// Does old block end after the new block? Add the old block tail.
 
 			if ( typedBlock.TimeRange.End < overlappingBlock.TimeRange.End )
 			{
-				_blocks.Add( overlappingBlock.Slice( (typedBlock.TimeRange.End, overlappingBlock.TimeRange.End) ) );
+				addedBlocks.Enqueue( overlappingBlock.ClampStart( typedBlock.TimeRange.End ) );
 			}
 		}
 
-		_blocks.Add( typedBlock );
+		while ( addedBlocks.TryDequeue( out var added ) )
+		{
+			if ( added.TrySplit() is { } parts )
+			{
+				foreach ( var part in parts )
+				{
+					addedBlocks.Enqueue( part );
+				}
+
+				continue;
+			}
+
+			_blocks.Add( added );
+		}
 
 		return true;
 	}
@@ -299,6 +312,7 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 		if ( !_blocksChanged ) return;
 
 		_blocksChanged = false;
+
 		_blocks.Sort( ( a, b ) => a.TimeRange.Start.CompareTo( b.TimeRange.Start ) );
 	}
 }

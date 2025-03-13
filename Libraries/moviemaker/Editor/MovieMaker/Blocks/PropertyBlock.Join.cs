@@ -1,20 +1,18 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
-using System.Text.Json.Serialization;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
-[JsonDerivedType( typeof(PropertyBlockJoin<>), "Join" )]
 partial record PropertyBlock<T>
 {
-	public PropertyBlock<T> Join( PropertyBlock<T> next, bool smooth )
+	public PropertyBlock<T> Join( PropertyBlock<T> next )
 	{
 		if ( next.TimeRange.Start < TimeRange.End )
 		{
-			throw new ArgumentException( "Can't join overlapping blocks.", nameof(next) );
+			throw new ArgumentException( $"Can't join overlapping blocks ({TimeRange}, {next.TimeRange}).", nameof(next) );
 		}
 
 		var prev = this;
@@ -24,14 +22,39 @@ partial record PropertyBlock<T>
 			prev = prev.Slice( prev.TimeRange with { End = next.TimeRange.Start } );
 		}
 
-		return new PropertyBlockJoin<T>( [prev, next], smooth ).Reduce();
+		var prevJoin = prev as PropertyBlockJoin<T>;
+		var nextJoin = next as PropertyBlockJoin<T>;
+
+		if ( prevJoin is not null && nextJoin is not null )
+		{
+			return new PropertyBlockJoin<T>( [..prevJoin.Blocks, ..nextJoin.Blocks] ).Reduce();
+		}
+
+		if ( prevJoin is not null )
+		{
+			return new PropertyBlockJoin<T>( [..prevJoin.Blocks, next] ).Reduce();
+		}
+
+		if ( nextJoin is not null )
+		{
+			return new PropertyBlockJoin<T>( [prev, ..nextJoin.Blocks] ).Reduce();
+		}
+
+		return new PropertyBlockJoin<T>( [prev, next] ).Reduce();
 	}
 
-	IProjectPropertyBlock IProjectPropertyBlock.Join( IProjectPropertyBlock next, bool smooth ) =>
-		Join( (PropertyBlock<T>)next, smooth );
+	public IReadOnlyList<PropertyBlock<T>>? TrySplit() => OnTrySplit();
+
+	protected virtual IReadOnlyList<PropertyBlock<T>>? OnTrySplit() => null;
+
+	IProjectPropertyBlock IProjectPropertyBlock.Join( IProjectPropertyBlock next ) =>
+		Join( (PropertyBlock<T>)next );
+
+	IReadOnlyList<IProjectPropertyBlock>? IProjectPropertyBlock.TrySplit() => TrySplit();
 }
 
-file sealed record PropertyBlockJoin<T>( ImmutableArray<PropertyBlock<T>> Blocks, bool Smooth )
+[JsonDiscriminator( "Join" )]
+file sealed record PropertyBlockJoin<T>( ImmutableArray<PropertyBlock<T>> Blocks )
 	: PropertyBlock<T>( (Blocks[0].TimeRange.Start, Blocks[^1].TimeRange.End) )
 {
 	private readonly bool _validated = Validate( Blocks );
@@ -68,12 +91,36 @@ file sealed record PropertyBlockJoin<T>( ImmutableArray<PropertyBlock<T>> Blocks
 		return true;
 	}
 
-	protected override IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )
+	protected override IReadOnlyList<PropertyBlock<T>> OnTrySplit() => Blocks;
+
+	protected override PropertyBlock<T> OnSlice( MovieTimeRange timeRange )
 	{
-		return Blocks
-			.SelectMany( x => x.TimeRange.Intersect( timeRange ) is { } intersection
-				? x.GetPaintHintTimes( intersection.Grow( 0, -MovieTime.Epsilon ) )
-				: [] );
+		if ( timeRange.End <= TimeRange.Start )
+		{
+			return Blocks[0].Slice( timeRange );
+		}
+
+		if ( timeRange.Start >= TimeRange.End )
+		{
+			return Blocks[^1].Slice( timeRange );
+		}
+
+		var blocks = Blocks
+			.Where( x => x.TimeRange.Intersect( timeRange ) is not null )
+			.Select( x => x.Slice( x.TimeRange.Clamp( timeRange ) ) )
+			.ToArray();
+
+		// Extend first / last block so we cover the whole time range
+
+		blocks[0] = blocks[0].Slice( (timeRange.Start, blocks[0].TimeRange.End) );
+		blocks[^1] = blocks[^1].Slice( (blocks[^1].TimeRange.Start, timeRange.End) );
+
+		return blocks.Join();
+	}
+
+	protected override PropertyBlock<T> OnShift( MovieTime offset )
+	{
+		return Blocks.Select( x => x.Shift( offset ) ).Join();
 	}
 
 	private bool CanReduce()
@@ -90,7 +137,7 @@ file sealed record PropertyBlockJoin<T>( ImmutableArray<PropertyBlock<T>> Blocks
 
 			// Can flatten nested joined blocks
 
-			if ( nextBlock is PropertyBlockJoin<T> inner && inner.Smooth == Smooth ) return true;
+			if ( nextBlock is PropertyBlockJoin<T> ) return true;
 
 			// Check if neighbors can be merged
 
@@ -118,12 +165,11 @@ file sealed record PropertyBlockJoin<T>( ImmutableArray<PropertyBlock<T>> Blocks
 
 		// Can flatten nested joined blocks, and remove inner blocks with zero length
 
-		var firstIndex = 0;
 		var lastIndex = Blocks.Length;
 
 		var reduced = Blocks
-			.Where( ( x, i ) => !x.TimeRange.IsEmpty && i != firstIndex && i != lastIndex )
-			.SelectMany( x => x is PropertyBlockJoin<T> inner && inner.Smooth == Smooth ? inner.Blocks : [x] )
+			.Where( ( x, i ) => !x.TimeRange.IsEmpty && i != lastIndex )
+			.SelectMany( x => x is PropertyBlockJoin<T> inner ? inner.Blocks : [x] )
 			.ToList();
 
 		for ( var i = reduced.Count - 2; i >= 0; i-- )
@@ -140,11 +186,14 @@ file sealed record PropertyBlockJoin<T>( ImmutableArray<PropertyBlock<T>> Blocks
 			}
 		}
 
-		return this;
+		return new PropertyBlockJoin<T>( [..reduced] );
 	}
 
-	public override string ToString()
+	protected override IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )
 	{
-		return $"Join {{ Smooth = {Smooth}, Blocks = [{string.Join( ", ", Blocks )}] }}";
+		return Blocks
+			.SelectMany( x => x.TimeRange.Intersect( timeRange ) is { } intersection
+				? x.GetPaintHintTimes( intersection.Grow( 0, -MovieTime.Epsilon ) )
+				: [] );
 	}
 }

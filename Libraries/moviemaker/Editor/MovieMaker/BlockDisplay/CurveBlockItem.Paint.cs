@@ -126,8 +126,8 @@ partial class CurveBlockItem<T>
 
 		// Second pass, update lines
 
-		var t0 = MovieTime.Zero;
-		var t1 = TimeRange.Duration;
+		var t0 = TimeRange.Start;
+		var t1 = TimeRange.End;
 
 		var dxdt = LocalRect.Width / (t1 - t0).TotalSeconds;
 

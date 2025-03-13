@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Text.Json;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker.BlockDisplays;
 
@@ -24,7 +25,16 @@ public abstract partial class BlockItem : GraphicsItem
 
 			_block = value;
 
-			ToolTip = value?.ToString();
+			try
+			{
+				ToolTip = value is IProjectPropertyBlock projectBlock
+					? projectBlock.Serialize()?.ToJsonString( new JsonSerializerOptions { WriteIndented = true } )
+					: value?.ToString();
+			}
+			catch ( Exception ex )
+			{
+				Log.Error( ex );
+			}
 
 			if ( _block is IDynamicBlock newBlock )
 			{

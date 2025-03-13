@@ -47,11 +47,11 @@ internal sealed class TrackModification<T> : ITrackModification
 	}
 
 	public void SetChanges( object? constantValue ) => SetChanges(
-		[new ConstantPropertyBlock<T>( MovieTime.Zero, (T)constantValue! )] );
+		[new ConstantPropertyBlock<T>( (T)constantValue! )] );
 
 	public void SetChanges( IEnumerable<IProjectPropertyBlock> blocks )
 	{
-		_overlay = blocks.Cast<PropertyBlock<T>>().Join( false );
+		_overlay = blocks.Cast<PropertyBlock<T>>().Join();
 	}
 
 	public void ClearPreview()
@@ -78,12 +78,12 @@ internal sealed class TrackModification<T> : ITrackModification
 				slice =
 				[
 					Track.Blocks.Count == 0
-						? new ConstantPropertyBlock<T>( timeRange, _relativeTo )
+						? new ConstantPropertyBlock<T>( _relativeTo ).Slice( timeRange )
 						: Track.Blocks.GetLastBlock( selection.TotalStart )
 				];
 			}
 
-			_original = slice.Join( false ).Slice( timeRange );
+			_original = slice.Join().Slice( timeRange );
 		}
 
 		_blended = _original.Blend( _overlay.Shift( offset ), selection );

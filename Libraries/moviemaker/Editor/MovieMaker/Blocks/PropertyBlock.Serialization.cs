@@ -1,0 +1,132 @@
+﻿using System.Collections.Immutable;
+using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+
+namespace Editor.MovieMaker;
+
+#nullable enable
+
+[JsonConverter( typeof(PropertyBlockConverterFactory) )]
+partial record PropertyBlock<T>
+{
+	public JsonNode? Serialize()
+	{
+		((PropertyBlockReferenceConverter<T>)EditorJsonOptions.GetConverter( typeof(PropertyBlock<T>) ))
+			.Reset();
+
+		return JsonSerializer.SerializeToNode( this, EditorJsonOptions )!;
+	}
+}
+
+public sealed class JsonDiscriminatorAttribute( string value ) : Attribute
+{
+	public string Value { get; } = value;
+}
+
+file sealed class PropertyBlockReferenceConverter<T>
+	: JsonConverter<PropertyBlock<T>>
+{
+	private readonly Dictionary<PropertyBlock<T>, int> _idDict = new();
+
+	private static string GetDiscriminator( Type type )
+	{
+		return type.GetCustomAttribute<JsonDiscriminatorAttribute>()?.Value ?? type.Name;
+	}
+
+	public void Reset()
+	{
+		_idDict.Clear();
+	}
+
+	public override PropertyBlock<T>? Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
+	{
+		throw new NotImplementedException();
+	}
+
+	public override void Write( Utf8JsonWriter writer, PropertyBlock<T> value, JsonSerializerOptions options )
+	{
+		if ( _idDict.TryGetValue( value, out var id ) )
+		{
+			JsonSerializer.Serialize( writer, id, options );
+			return;
+		}
+
+		id = _idDict.Count + 1;
+
+		_idDict.Add( value, id );
+
+		var type = value.GetType();
+		var node = JsonSerializer.SerializeToNode( value, type, options )!.AsObject();
+
+		node.Insert( 0, "$id", id );
+		node.Insert( 1, "$type", GetDiscriminator( type ) );
+
+		JsonSerializer.Serialize( writer, node, options );
+	}
+}
+
+file sealed class PropertyBlockConverterFactory : JsonConverterFactory
+{
+	public override bool CanConvert( Type typeToConvert )
+	{
+		return typeToConvert.IsConstructedGenericType && typeToConvert.GetGenericTypeDefinition() == typeof(PropertyBlock<>);
+	}
+
+	public override JsonConverter CreateConverter( Type typeToConvert, JsonSerializerOptions options )
+	{
+		var valueType = typeToConvert.GetGenericArguments()[0];
+
+		return (JsonConverter)Activator.CreateInstance( typeof( PropertyBlockReferenceConverter<>).MakeGenericType( valueType ) )!;
+	}
+}
+
+file sealed class PropertyBlockConverter<T> : JsonConverter<PropertyBlock<T>>
+{
+	[SkipHotload]
+	private ImmutableDictionary<string, Type>? _types;
+
+	private Type? GetType( string? discriminator )
+	{
+		if ( discriminator is null ) return null;
+
+		_types ??= FindTypes();
+
+		return _types.GetValueOrDefault( discriminator );
+	}
+
+	private ImmutableDictionary<string, Type> FindTypes()
+	{
+		return EditorTypeLibrary.GetTypesWithAttribute<JsonDiscriminatorAttribute>()
+			.ToImmutableDictionary( x => x.Attribute.Value, x => x.Type.TargetType );
+	}
+
+	private static string GetDiscriminator( Type type )
+	{
+		return type.GetCustomAttribute<JsonDiscriminatorAttribute>()?.Value ?? type.Name;
+	}
+
+	public override PropertyBlock<T> Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
+	{
+		var obj = JsonSerializer.Deserialize<JsonObject>( ref reader, options );
+		var discriminator = obj?["$type"]?.GetValue<string>();
+
+		if ( GetType( discriminator ) is not { } type )
+		{
+			throw new Exception( $"Unrecognized block type \"{discriminator ?? "null"}\"." );
+		}
+
+		return (PropertyBlock<T>)obj.Deserialize( type, options )!;
+	}
+
+	public override void Write( Utf8JsonWriter writer, PropertyBlock<T> value, JsonSerializerOptions options )
+	{
+		var type = value.GetType();
+		var node = JsonSerializer.SerializeToNode( value, type, options )!.AsObject();
+
+		node.Insert( 0, "$type", GetDiscriminator( type ) );
+
+		JsonSerializer.Serialize( writer, node, options );
+	}
+}

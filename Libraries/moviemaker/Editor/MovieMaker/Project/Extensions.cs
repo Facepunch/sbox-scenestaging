@@ -1,7 +1,5 @@
-﻿using System.Collections.Immutable;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 using System.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Editor.MovieMaker;
 
@@ -62,9 +60,14 @@ public static class ProjectExtensions
 		return block.TimeRange.Contains( time ) ? block : default;
 	}
 
-	public static PropertyBlock<T> Join<T>( this IEnumerable<PropertyBlock<T>> blocks, bool smooth )
+	public static PropertyBlock<T> Join<T>( this IEnumerable<PropertyBlock<T>> blocks )
 	{
-		return blocks.Aggregate( (PropertyBlock<T>?)null, ( s, x ) => s?.Join( x, smooth ) ?? x )
+		Log.Info( $"Join! {string.Join( ", ", blocks.Select( x => x.TimeRange ) )}" );
+		return blocks.Aggregate( (PropertyBlock<T>?)null, ( s, x ) =>
+		       {
+			       Log.Info( $"{s?.TimeRange}, {x.TimeRange}" );
+			       return s?.Join( x ) ?? x;
+		       } )
 			?? throw new ArgumentException( "Expected at least one block.", nameof(blocks) );
 	}
 
@@ -81,50 +84,5 @@ public static class ProjectExtensions
 	public static PropertyBlock<T> ClampEnd<T>( this PropertyBlock<T> block, MovieTime end )
 	{
 		return block.Slice( block.TimeRange.ClampEnd( end ) );
-	}
-
-	public static PropertyBlock<T> CrossFade<T>( this PropertyBlock<T> from, PropertyBlock<T> to,
-		MovieTimeRange fadeRange, InterpolationMode mode, bool invert )
-	{
-		if ( to.TimeRange.End < from.TimeRange.Start )
-		{
-			throw new ArgumentException( "Can't cross fade to a block that ends before this block starts.", nameof( to ) );
-		}
-
-		var timeRange = from.TimeRange with { End = to.TimeRange.End };
-
-		// No fade if fadeRange starts after timeRange
-
-		if ( fadeRange.Start > timeRange.End )
-		{
-			return from;
-		}
-
-		// No fade if fadeRange ends before timeRange
-
-		if ( fadeRange.End < timeRange.Start )
-		{
-			return to;
-		}
-
-		Log.Info( $"CrossFade( {from.TimeRange}, {to.TimeRange}, {fadeRange} )" );
-
-		var before = from.ClampEnd( fadeRange.Start );
-		var after = to.ClampStart( fadeRange.End );
-
-		Log.Info( $"before: {before.TimeRange}, after: {after.TimeRange}" );
-
-		// Hard join if fadeRange duration is zero
-
-		if ( fadeRange.IsEmpty )
-		{
-			return before.Join( after, false );
-		}
-
-		var fade = from.Slice( fadeRange )
-			.CrossFade( to.Slice( fadeRange ), mode, invert )
-			.Clamp( timeRange );
-
-		return before.Join( fade, true ).Join( after, true );
 	}
 }

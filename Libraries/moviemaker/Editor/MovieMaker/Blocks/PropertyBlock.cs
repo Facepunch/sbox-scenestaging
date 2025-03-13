@@ -1,8 +1,13 @@
 ﻿using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using Facepunch.ActionGraphs;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
+using Sandbox.Utility;
 
 namespace Editor.MovieMaker;
 
@@ -47,23 +52,22 @@ public interface IProjectPropertyBlock : IPropertyBlock
 {
 	IProjectPropertyBlock Slice( MovieTimeRange timeRange );
 	IProjectPropertyBlock Shift( MovieTime offset );
-	IProjectPropertyBlock Join( IProjectPropertyBlock next, bool smooth );
+	IProjectPropertyBlock Join( IProjectPropertyBlock next );
 	IProjectPropertyBlock CrossFade( IProjectPropertyBlock next, InterpolationMode mode, bool invert );
+	IReadOnlyList<IProjectPropertyBlock>? TrySplit();
+
+	JsonNode? Serialize();
 }
 
-[JsonPolymorphic]
-public abstract partial record PropertyBlock<T>( MovieTimeRange TimeRange ) : IPropertyBlock<T>, IProjectPropertyBlock
+public abstract partial record PropertyBlock<T>( [property: JsonIgnore] MovieTimeRange TimeRange ) : IPropertyBlock<T>, IProjectPropertyBlock
 {
 	public abstract T GetValue( MovieTime time );
 
 	public IEnumerable<MovieTime> GetPaintHintTimes( MovieTimeRange timeRange ) =>
-		OnGetPaintHintTimes( timeRange.Clamp( TimeRange ) );
+		OnGetPaintHintTimes( timeRange.Clamp( TimeRange ) )
+			.Merge( [timeRange.Start, timeRange.End - MovieTime.Epsilon] );
 
-	protected virtual IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )
-	{
-		yield return timeRange.Start;
-		yield return timeRange.End;
-	}
+	protected virtual IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange ) => [];
 
 	public PropertyBlock<T> Blend( PropertyBlock<T> overlay, TimeSelection envelope )
 	{
@@ -92,7 +96,7 @@ public abstract partial record PropertyBlock<T>( MovieTimeRange TimeRange ) : IP
 
 	protected virtual PropertyBlock<T> OnReduce() => this;
 
-	public PropertyBlock<T>? TryMerge( PropertyBlock<T> next ) => OnTryMerge( next );
+	public PropertyBlock<T>? TryMerge( PropertyBlock<T> next ) => OnTryMerge( next )?.Reduce();
 
 	protected virtual PropertyBlock<T>? OnTryMerge( PropertyBlock<T> next ) => null;
 
@@ -114,6 +118,7 @@ public abstract partial record PropertyBlock<T>( MovieTimeRange TimeRange ) : IP
 	}
 }
 
+[JsonDiscriminator( "Clip" )]
 public sealed record SourceClipPropertyBlock<T>( ProjectSourceClip Source, CompiledPropertyTrack<T> Track, CompiledPropertyBlock<T> Block )
 	: PropertyBlock<T>( Block.TimeRange )
 {
@@ -124,34 +129,27 @@ public sealed record SourceClipPropertyBlock<T>( ProjectSourceClip Source, Compi
 		switch ( Block )
 		{
 			case CompiledSampleBlock<T> sampleBlock:
-				return IProjectPropertyBlock.GetSampleTimes( timeRange, sampleBlock.TimeRange.Start + sampleBlock.Offset,
+				return IPropertyBlock.GetSampleTimes( timeRange, sampleBlock.TimeRange.Start + sampleBlock.Offset,
 					sampleBlock.Samples.Length, sampleBlock.SampleRate );
 
 			default:
-				return [timeRange.Start, timeRange.End - MovieTime.Epsilon];
+				return [];
 		}
-	}
-
-	public override string ToString()
-	{
-		return $"SourceClip {{ Source = {Source.Id}, TrackName = {Track.Name}, TimeRange = {Block.TimeRange} }}";
 	}
 }
 
-public sealed record ConstantPropertyBlock<T>( MovieTimeRange TimeRange, T Value ) : PropertyBlock<T>( TimeRange )
+[JsonDiscriminator( "Constant" )]
+public sealed record ConstantPropertyBlock<T>( T Value ) : PropertyBlock<T>( MovieTime.Zero )
 {
 	public override T GetValue( MovieTime time ) => Value;
 
 	public override CompiledPropertyBlock<T> Compile( ProjectTrack track ) =>
 		new CompiledConstantBlock<T>( TimeRange, Value );
 
-	public override string ToString()
+	protected override PropertyBlock<T>? OnTryMerge( PropertyBlock<T> next )
 	{
-		return $"Constant {{ Value = {Value}, TimeRange = {TimeRange} }}";
-	}
+		if ( next is not ConstantPropertyBlock<T> nextConstant ) return null;
 
-	protected override IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )
-	{
-		return [timeRange.Start, timeRange.End - MovieTime.Epsilon];
+		return EqualityComparer<T>.Default.Equals( Value, nextConstant.Value ) ? this : null;
 	}
 }
