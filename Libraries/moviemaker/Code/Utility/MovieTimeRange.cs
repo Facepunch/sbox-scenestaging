@@ -27,24 +27,30 @@ public readonly record struct MovieTimeRange( MovieTime Start, MovieTime End )
 		return new MovieTimeRange( MovieTime.Max( Start, other.Start ), MovieTime.Min( End, other.End ) );
 	}
 
-	public MovieTimeRange Union( MovieTimeRange other )
+	public MovieTimeRange Union( MovieTimeRange? other )
 	{
-		return new MovieTimeRange( MovieTime.Min( Start, other.Start ), MovieTime.Max( End, other.End ) );
+		return other is { } value
+			? new MovieTimeRange( MovieTime.Min( Start, value.Start ), MovieTime.Max( End, value.End ) )
+			: this;
 	}
 
-	public MovieTimeRange Clamp( MovieTimeRange range )
+	public MovieTimeRange Clamp( MovieTimeRange? range )
 	{
 		return new MovieTimeRange( Start.Clamp( range ), End.Clamp( range ) );
 	}
 
-	public MovieTimeRange ClampStart( MovieTime start )
+	public MovieTimeRange ClampStart( MovieTime? start )
 	{
-		return new MovieTimeRange( MovieTime.Max( start, Start ), MovieTime.Max( start, End ) );
+		return start is { } value
+			? new MovieTimeRange( MovieTime.Max( value, Start ), MovieTime.Max( value, End ) )
+			: this;
 	}
 
-	public MovieTimeRange ClampEnd( MovieTime end )
+	public MovieTimeRange ClampEnd( MovieTime? end )
 	{
-		return new MovieTimeRange( MovieTime.Min( end, Start ), MovieTime.Min( end, End ) );
+		return end is { } value
+			? new MovieTimeRange( MovieTime.Min( value, Start ), MovieTime.Min( value, End ) )
+			: this;
 	}
 
 	public MovieTimeRange Grow( MovieTime startEndDelta ) => Grow( startEndDelta, startEndDelta );

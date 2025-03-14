@@ -1,13 +1,8 @@
-﻿using System.Collections.Immutable;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
+﻿using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using Facepunch.ActionGraphs;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
-using Sandbox.Utility;
 
 namespace Editor.MovieMaker;
 
@@ -61,6 +56,10 @@ public interface IProjectPropertyBlock : IPropertyBlock
 
 public abstract partial record PropertyBlock<T>( [property: JsonIgnore] MovieTimeRange TimeRange ) : IPropertyBlock<T>, IProjectPropertyBlock
 {
+	public static PropertyBlock<T> Constant( T value ) => new ConstantPropertyBlock<T>( value );
+	public static PropertyBlock<T> SourceClip( ProjectSourceClip source, CompiledPropertyTrack<T> track, CompiledPropertyBlock<T> block )
+		=> new SourceClipPropertyBlock<T>( source, track, block );
+
 	public abstract T GetValue( MovieTime time );
 
 	public IEnumerable<MovieTime> GetPaintHintTimes( MovieTimeRange timeRange ) =>
@@ -118,11 +117,24 @@ public abstract partial record PropertyBlock<T>( [property: JsonIgnore] MovieTim
 	}
 }
 
+[JsonConverter( typeof( PropertyBlockConverterFactory ) )]
+file abstract record SourcePropertyBlock<T>( MovieTimeRange TimeRange ) : PropertyBlock<T>( TimeRange );
+
 [JsonDiscriminator( "Clip" )]
-public sealed record SourceClipPropertyBlock<T>( ProjectSourceClip Source, CompiledPropertyTrack<T> Track, CompiledPropertyBlock<T> Block )
-	: PropertyBlock<T>( Block.TimeRange )
+file sealed record SourceClipPropertyBlock<T>( ProjectSourceClip Source, CompiledPropertyTrack<T> Track, CompiledPropertyBlock<T> Block )
+	: SourcePropertyBlock<T>( Block.TimeRange )
 {
 	public override T GetValue( MovieTime time ) => Block.GetValue( time );
+
+	protected override PropertyBlock<T> OnSlice( MovieTimeRange timeRange )
+	{
+		return new SourcePropertyBlockSlice<T>( this, timeRange, TimeRange, MovieTime.Zero );
+	}
+
+	protected override PropertyBlock<T> OnShift( MovieTime offset )
+	{
+		return new SourcePropertyBlockSlice<T>( this, TimeRange + offset, TimeRange, offset );
+	}
 
 	protected override IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )
 	{
@@ -139,17 +151,71 @@ public sealed record SourceClipPropertyBlock<T>( ProjectSourceClip Source, Compi
 }
 
 [JsonDiscriminator( "Constant" )]
-public sealed record ConstantPropertyBlock<T>( T Value ) : PropertyBlock<T>( MovieTime.Zero )
+file sealed record ConstantPropertyBlock<T>( T Value ) : SourcePropertyBlock<T>( MovieTime.Zero )
 {
 	public override T GetValue( MovieTime time ) => Value;
 
 	public override CompiledPropertyBlock<T> Compile( ProjectTrack track ) =>
 		new CompiledConstantBlock<T>( TimeRange, Value );
 
+	protected override PropertyBlock<T> OnSlice( MovieTimeRange timeRange )
+	{
+		return new SourcePropertyBlockSlice<T>( this, timeRange );
+	}
+
+	protected override PropertyBlock<T> OnShift( MovieTime offset )
+	{
+		return new SourcePropertyBlockSlice<T>( this, TimeRange + offset );
+	}
+
 	protected override PropertyBlock<T>? OnTryMerge( PropertyBlock<T> next )
 	{
 		if ( next is not ConstantPropertyBlock<T> nextConstant ) return null;
 
 		return EqualityComparer<T>.Default.Equals( Value, nextConstant.Value ) ? this : null;
+	}
+}
+
+[JsonDiscriminator( "Slice" )]
+file sealed record SourcePropertyBlockSlice<T>( SourcePropertyBlock<T> Block,
+	MovieTimeRange TimeRange,
+	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] MovieTimeRange? SourceTimeRange = null,
+	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] MovieTime? Offset = null )
+	: PropertyBlock<T>( TimeRange )
+{
+	[JsonInclude] public new MovieTimeRange TimeRange { get => base.TimeRange; init => base.TimeRange = value; }
+
+	public override T GetValue( MovieTime time ) => Block.GetValue( (time - (Offset ?? MovieTime.Zero)).Clamp( SourceTimeRange ) );
+
+	protected override PropertyBlock<T> OnSlice( MovieTimeRange timeRange )
+	{
+		return this with { TimeRange = timeRange, SourceTimeRange = SourceTimeRange?.Clamp( timeRange - (Offset ?? MovieTime.Zero) ) };
+	}
+
+	protected override PropertyBlock<T> OnShift( MovieTime offset )
+	{
+		return this with { TimeRange = TimeRange + offset, Offset = Offset + offset };
+	}
+
+	protected override PropertyBlock<T>? OnTryMerge( PropertyBlock<T> next )
+	{
+		if ( next is not SourcePropertyBlockSlice<T> nextSlice ) return null;
+
+		if ( Block != nextSlice.Block ) return null;
+		if ( Offset != nextSlice.Offset ) return null;
+		if ( SourceTimeRange?.End < nextSlice.SourceTimeRange?.Start ) return null;
+
+		return this with
+		{
+			TimeRange = TimeRange.Union( nextSlice.TimeRange ),
+			SourceTimeRange = SourceTimeRange?.Union( nextSlice.SourceTimeRange )
+		};
+	}
+
+	protected override IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )
+	{
+		return Offset is { IsZero: false } offset
+			? Block.GetPaintHintTimes( (timeRange - offset).Clamp( SourceTimeRange ) ).Select( x => x + offset )
+			: Block.GetPaintHintTimes( timeRange.Clamp( SourceTimeRange ) );
 	}
 }

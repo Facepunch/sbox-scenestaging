@@ -10,8 +10,8 @@ public sealed class EditingTests
 	public void SimpleCrossFade()
 	{
 		var timeRange = new MovieTimeRange( 0d, 1d );
-		var from = new ConstantPropertyBlock<float>( 1f ).Slice( timeRange );
-		var to = new ConstantPropertyBlock<float>( 2f ).Slice( timeRange );
+		var from = PropertyBlock<float>.Constant( 1f ).Slice( timeRange );
+		var to = PropertyBlock<float>.Constant( 2f ).Slice( timeRange );
 
 		var fade = from.CrossFade( to );
 
@@ -25,8 +25,8 @@ public sealed class EditingTests
 
 	private static PropertyBlock<float> CreateCrossFadeWithRange( MovieTimeRange timeRange, MovieTimeRange fadeRange )
 	{
-		var from = new ConstantPropertyBlock<float>( 1f ).Slice( timeRange );
-		var to = new ConstantPropertyBlock<float>( 2f ).Slice( timeRange );
+		var from = PropertyBlock<float>.Constant( 1f ).Slice( timeRange );
+		var to = PropertyBlock<float>.Constant( 2f ).Slice( timeRange );
 
 		return from.CrossFade( to, fadeRange );
 	}

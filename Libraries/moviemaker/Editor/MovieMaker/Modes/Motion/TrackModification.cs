@@ -46,8 +46,7 @@ internal sealed class TrackModification<T> : ITrackModification
 		_relativeTo = (T)value!;
 	}
 
-	public void SetChanges( object? constantValue ) => SetChanges(
-		[new ConstantPropertyBlock<T>( (T)constantValue! )] );
+	public void SetChanges( object? constantValue ) => SetChanges( [PropertyBlock<T>.Constant( (T)constantValue! )] );
 
 	public void SetChanges( IEnumerable<IProjectPropertyBlock> blocks )
 	{
@@ -78,7 +77,7 @@ internal sealed class TrackModification<T> : ITrackModification
 				slice =
 				[
 					Track.Blocks.Count == 0
-						? new ConstantPropertyBlock<T>( _relativeTo ).Slice( timeRange )
+						? PropertyBlock<T>.Constant( _relativeTo ).Slice( timeRange )
 						: Track.Blocks.GetLastBlock( selection.TotalStart )
 				];
 			}

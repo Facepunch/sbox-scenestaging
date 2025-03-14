@@ -83,9 +83,11 @@ public readonly struct MovieTime : IEquatable<MovieTime>, IComparable<MovieTime>
 		_ticks = ticks;
 	}
 
-	public MovieTime Clamp( MovieTimeRange range )
+	public MovieTime Clamp( MovieTimeRange? range )
 	{
-		return Max( range.Start, Min( range.End, this ) );
+		return range is { Start: var start, End: var end }
+			? Max( start, Min( end, this ) )
+			: this;
 	}
 
 	public MovieTime SnapToGrid( MovieTime gridInterval )

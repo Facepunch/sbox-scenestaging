@@ -13,8 +13,7 @@ partial record PropertyBlock<T>
 {
 	public JsonNode? Serialize()
 	{
-		((PropertyBlockReferenceConverter<T>)EditorJsonOptions.GetConverter( typeof(PropertyBlock<T>) ))
-			.Reset();
+		PropertyBlockReferenceConverter<T>.Reset();
 
 		return JsonSerializer.SerializeToNode( this, EditorJsonOptions )!;
 	}
@@ -28,15 +27,16 @@ public sealed class JsonDiscriminatorAttribute( string value ) : Attribute
 file sealed class PropertyBlockReferenceConverter<T>
 	: JsonConverter<PropertyBlock<T>>
 {
-	private readonly Dictionary<PropertyBlock<T>, int> _idDict = new();
+	[ThreadStatic] private static Dictionary<PropertyBlock<T>, int>? _idDict;
 
 	private static string GetDiscriminator( Type type )
 	{
 		return type.GetCustomAttribute<JsonDiscriminatorAttribute>()?.Value ?? type.Name;
 	}
 
-	public void Reset()
+	public static void Reset()
 	{
+		_idDict ??= new Dictionary<PropertyBlock<T>, int>();
 		_idDict.Clear();
 	}
 
@@ -47,17 +47,24 @@ file sealed class PropertyBlockReferenceConverter<T>
 
 	public override void Write( Utf8JsonWriter writer, PropertyBlock<T> value, JsonSerializerOptions options )
 	{
-		if ( _idDict.TryGetValue( value, out var id ) )
+		var type = value.GetType();
+
+		if ( _idDict is not { } idDict )
+		{
+			JsonSerializer.Serialize( writer, value, type, options );
+			return;
+		}
+
+		if ( idDict.TryGetValue( value, out var id ) )
 		{
 			JsonSerializer.Serialize( writer, id, options );
 			return;
 		}
 
-		id = _idDict.Count + 1;
+		id = idDict.Count + 1;
 
-		_idDict.Add( value, id );
+		idDict.Add( value, id );
 
-		var type = value.GetType();
 		var node = JsonSerializer.SerializeToNode( value, type, options )!.AsObject();
 
 		node.Insert( 0, "$id", id );
@@ -67,11 +74,17 @@ file sealed class PropertyBlockReferenceConverter<T>
 	}
 }
 
-file sealed class PropertyBlockConverterFactory : JsonConverterFactory
+internal sealed class PropertyBlockConverterFactory : JsonConverterFactory
 {
 	public override bool CanConvert( Type typeToConvert )
 	{
-		return typeToConvert.IsConstructedGenericType && typeToConvert.GetGenericTypeDefinition() == typeof(PropertyBlock<>);
+		while ( true )
+		{
+			if ( typeToConvert is not { IsAbstract: true, IsConstructedGenericType: true } ) return false;
+			if ( typeToConvert.GetGenericTypeDefinition() == typeof(PropertyBlock<>) ) return true;
+
+			typeToConvert = typeToConvert.BaseType!;
+		}
 	}
 
 	public override JsonConverter CreateConverter( Type typeToConvert, JsonSerializerOptions options )

@@ -127,11 +127,14 @@ file sealed record PropertyBlockCrossFade<T>( PropertyBlock<T> From, PropertyBlo
 		return interpolator.Interpolate( From.GetValue( time ), To.GetValue( time ), blend );
 	}
 
-	protected override IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )
+	protected override PropertyBlock<T> OnShift( MovieTime offset )
 	{
-		return From.GetPaintHintTimes( timeRange )
-			.Merge( To.GetPaintHintTimes( timeRange ) )
-			.Merge( IPropertyBlock.GetSampleTimes( TimeRange, TimeRange.Start, int.MaxValue, 30 ) );
+		return this with { From = From.Shift( offset ), To = To.Shift( offset ) };
+	}
+
+	protected override PropertyBlock<T> OnSlice( MovieTimeRange timeRange )
+	{
+		return this with { From = From.Slice( timeRange ), To = To.Slice( timeRange ) };
 	}
 
 	protected override PropertyBlock<T> OnReduce()
@@ -157,5 +160,12 @@ file sealed record PropertyBlockCrossFade<T>( PropertyBlock<T> From, PropertyBlo
 		}
 
 		return true;
+	}
+
+	protected override IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )
+	{
+		return From.GetPaintHintTimes( timeRange )
+			.Merge( To.GetPaintHintTimes( timeRange ) )
+			.Merge( IPropertyBlock.GetSampleTimes( TimeRange, TimeRange.Start, int.MaxValue, 30 ) );
 	}
 }
