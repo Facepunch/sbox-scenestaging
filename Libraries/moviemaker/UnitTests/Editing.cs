@@ -89,6 +89,8 @@ public sealed class EditingTests
 
 		var fade = fade1.CrossFade( fade2 );
 
+		Console.WriteLine( fade.Serialize() );
+
 		var split = fade.TrySplit()!;
 
 		Assert.AreEqual( 3, split.Count );

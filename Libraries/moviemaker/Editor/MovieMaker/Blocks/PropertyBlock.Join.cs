@@ -6,7 +6,13 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-partial record PropertyBlock<T>
+partial interface IProjectPropertyBlock
+{
+	IProjectPropertyBlock Join( IProjectPropertyBlock next );
+	IReadOnlyList<IProjectPropertyBlock>? TrySplit();
+}
+
+partial class PropertyBlock<T>
 {
 	public PropertyBlock<T> Join( PropertyBlock<T> next )
 	{
@@ -54,10 +60,40 @@ partial record PropertyBlock<T>
 }
 
 [JsonDiscriminator( "Join" )]
-file sealed record PropertyBlockJoin<T>( ImmutableArray<PropertyBlock<T>> Blocks )
-	: PropertyBlock<T>( (Blocks[0].TimeRange.Start, Blocks[^1].TimeRange.End) )
+file sealed class PropertyBlockJoin<T> : PropertyBlock<T>
 {
-	private readonly bool _validated = Validate( Blocks );
+	public ImmutableArray<PropertyBlock<T>> Blocks { get; }
+
+	public PropertyBlockJoin( ImmutableArray<PropertyBlock<T>> blocks )
+		: base( (blocks[0].TimeRange.Start, blocks[^1].TimeRange.End) )
+	{
+		if ( blocks.Length < 2 )
+		{
+			throw new ArgumentException( "Expected at least 2 blocks.", nameof(blocks) );
+		}
+
+		var prevTime = blocks[0].TimeRange.End;
+
+		foreach ( var block in blocks.Skip( 1 ) )
+		{
+			if ( block.TimeRange.Start != prevTime )
+			{
+				throw new ArgumentException( "Expected blocks to be contiguous and ordered.", nameof(blocks) );
+			}
+
+			prevTime = block.TimeRange.End;
+		}
+
+		foreach ( var block in blocks.Skip( 1 ).Take( blocks.Length - 2 ) )
+		{
+			if ( block.TimeRange.IsEmpty )
+			{
+				throw new ArgumentException( "Expected inner blocks to have non-zero duration.", nameof(blocks) );
+			}
+		}
+
+		Blocks = blocks;
+	}
 
 	public override T GetValue( MovieTime time )
 	{
@@ -70,25 +106,6 @@ file sealed record PropertyBlockJoin<T>( ImmutableArray<PropertyBlock<T>> Blocks
 		}
 
 		throw new Exception( "Expected blocks to be connected." );
-	}
-
-	private static bool Validate( ImmutableArray<PropertyBlock<T>> blocks )
-	{
-		if ( blocks.IsDefaultOrEmpty ) throw new ArgumentException( "Expected at least 2 blocks.", nameof( Blocks ) );
-
-		var prevTime = blocks[0].TimeRange.End;
-
-		foreach ( var block in blocks.Skip( 1 ) )
-		{
-			if ( block.TimeRange.Start != prevTime )
-			{
-				throw new ArgumentException( "Expected blocks to be contiguous and ordered.", nameof( Blocks ) );
-			}
-
-			prevTime = block.TimeRange.End;
-		}
-
-		return true;
 	}
 
 	protected override IReadOnlyList<PropertyBlock<T>> OnTrySplit() => Blocks;

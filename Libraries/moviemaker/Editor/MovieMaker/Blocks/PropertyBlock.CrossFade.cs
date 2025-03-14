@@ -6,67 +6,43 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-partial record PropertyBlock<T>
+public enum FadeDirection
 {
-	public PropertyBlock<T> CrossFade( PropertyBlock<T> next, InterpolationMode mode = InterpolationMode.Linear, bool invert = false )
+	FadeIn,
+	FadeOut
+}
+
+partial interface IProjectPropertyBlock
+{
+	IProjectPropertyBlock CrossFade( IProjectPropertyBlock next, InterpolationMode mode, FadeDirection direction = FadeDirection.FadeIn );
+	IProjectPropertyBlock Blend( IProjectPropertyBlock overlay, TimeSelection envelope );
+}
+
+partial class PropertyBlock<T>
+{
+	public PropertyBlock<T> CrossFade( PropertyBlock<T> next, InterpolationMode mode = InterpolationMode.Linear, FadeDirection direction = FadeDirection.FadeIn )
 	{
-		if ( next.TimeRange.End < TimeRange.Start )
-		{
-			throw new ArgumentException( "Can't cross fade to a block that ends before this block starts.", nameof( next ) );
-		}
+		var fadeRange = TimeRange with { End = next.TimeRange.End };
 
-		var timeRange = TimeRange with { End = next.TimeRange.End };
-
-		if ( timeRange.IsEmpty )
-		{
-			return Slice( timeRange );
-		}
-
-		var from = Slice( timeRange );
-		var to = next.Slice( timeRange );
-
-		var fromParts = from.TrySplit();
-		var toParts = to.TrySplit();
-
-		if ( fromParts == null && toParts == null )
-		{
-			return new PropertyBlockCrossFade<T>( from, to, mode, invert );
-		}
-
-		fromParts ??= [from];
-		toParts ??= [to];
-
-		var resultParts = new List<PropertyBlock<T>>();
-
-		foreach ( var fromPart in fromParts )
-		{
-			foreach ( var toPart in toParts )
-			{
-				if ( fromPart.TimeRange.Intersect( toPart.TimeRange ) is not { IsEmpty: false } intersection ) continue;
-
-				Log.Info( $"{fromPart.TimeRange}, {toPart.TimeRange}, {intersection}" );
-				resultParts.Add( fromPart.Slice( intersection ).CrossFade( toPart.Slice( intersection ), timeRange, mode, invert ) );
-			}
-		}
-
-		return resultParts.Join();
+		return CrossFade( next, fadeRange, mode, direction );
 	}
 
-	public PropertyBlock<T> CrossFade( PropertyBlock<T> next,
-		MovieTimeRange fadeRange, InterpolationMode mode = InterpolationMode.Linear, bool invert = false )
+	public PropertyBlock<T> CrossFade( PropertyBlock<T> next, MovieTimeRange fadeRange, InterpolationMode mode = InterpolationMode.Linear, FadeDirection direction = FadeDirection.FadeIn )
 	{
-		if ( next.TimeRange.End < TimeRange.Start )
+		var prev = this;
+
+		if ( next.TimeRange.End < prev.TimeRange.Start )
 		{
 			throw new ArgumentException( "Can't cross fade to a block that ends before this block starts.", nameof( next ) );
 		}
 
-		var timeRange = TimeRange with { End = next.TimeRange.End };
+		var timeRange = prev.TimeRange with { End = next.TimeRange.End };
 
 		// No fade if fadeRange starts after timeRange
 
 		if ( fadeRange.Start > timeRange.End )
 		{
-			return this;
+			return prev;
 		}
 
 		// No fade if fadeRange ends before timeRange
@@ -76,45 +52,133 @@ partial record PropertyBlock<T>
 			return next;
 		}
 
-		var before = this.ClampEnd( fadeRange.Start );
-		var after = next.ClampStart( fadeRange.End );
+		// If mode is None, or we can't interpolate this type, make fade range empty
+
+		if ( Interpolator.GetDefault<T>() is null || mode == InterpolationMode.None )
+		{
+			fadeRange = direction == FadeDirection.FadeIn
+				? fadeRange.End
+				: fadeRange.Start;
+		}
 
 		// Hard join if fadeRange duration is zero
 
 		if ( fadeRange.IsEmpty )
 		{
+			var before = prev.ClampEnd( fadeRange.Start );
+			var after = next.ClampStart( fadeRange.End );
+
 			return before.Join( after );
 		}
 
-		var fade = Slice( fadeRange )
-			.CrossFade( next.Slice( fadeRange ), mode, invert )
-			.Clamp( timeRange );
+		// Cross-fade each individual intersecting pair of sub-blocks
 
-		return before.Join( fade ).Join( after );
+		return prev.Cut( fadeRange ).Zip( next.Cut( fadeRange ) )
+			.Select( pair => CrossFadeCore( pair.Left, pair.Right, fadeRange, mode, direction ) )
+			.Join();
 	}
 
-	IProjectPropertyBlock IProjectPropertyBlock.CrossFade( IProjectPropertyBlock next, InterpolationMode mode, bool invert ) =>
-		CrossFade( (PropertyBlock<T>)next, mode, invert );
+	private static PropertyBlock<T> CrossFadeCore( PropertyBlock<T> from, PropertyBlock<T> to, MovieTimeRange fadeRange, InterpolationMode mode, FadeDirection direction )
+	{
+		if ( from.TimeRange != to.TimeRange )
+		{
+			throw new ArgumentException( "Expected time ranges to exactly overlap.", nameof(to) );
+		}
+
+		if ( from == to )
+		{
+			return from;
+		}
+
+		if ( from.TimeRange.End <= fadeRange.Start )
+		{
+			return from;
+		}
+
+		if ( from.TimeRange.Start >= fadeRange.End )
+		{
+			return to;
+		}
+
+		return new PropertyBlockCrossFade<T>( from, to, fadeRange, mode, direction ).Reduce();
+	}
+
+	public PropertyBlock<T> Blend( PropertyBlock<T> overlay, TimeSelection envelope )
+	{
+		if ( envelope.TotalTimeRange.Intersect( TimeRange ) is null )
+		{
+			return this;
+		}
+
+		overlay = overlay.Slice( envelope.TotalTimeRange );
+
+		return CrossFade( overlay, envelope.FadeInTimeRange, envelope.FadeIn.Interpolation )
+			.CrossFade( this, envelope.FadeOutTimeRange, envelope.FadeOut.Interpolation, FadeDirection.FadeOut );
+	}
+
+	IProjectPropertyBlock IProjectPropertyBlock.CrossFade( IProjectPropertyBlock next, InterpolationMode mode, FadeDirection direction ) =>
+		CrossFade( (PropertyBlock<T>)next, mode, direction );
+
+	IProjectPropertyBlock IProjectPropertyBlock.Blend( IProjectPropertyBlock overlay, TimeSelection envelope ) =>
+		Blend( (PropertyBlock<T>)overlay, envelope );
 }
 
 [JsonDiscriminator( "CrossFade" )]
-file sealed record PropertyBlockCrossFade<T>( PropertyBlock<T> From, PropertyBlock<T> To,
-	[property: JsonPropertyOrder( -2 )] InterpolationMode Mode,
-	[property: JsonPropertyOrder( -1 ), JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] bool Invert )
-	: PropertyBlock<T>( (From.TimeRange.Start, To.TimeRange.End) )
+file sealed class PropertyBlockCrossFade<T> : PropertyBlock<T>
 {
-	private readonly bool _validated = Validate( From, To );
+	public MovieTimeRange FadeTimeRange { get; }
+	public InterpolationMode Mode { get; }
+	public FadeDirection Direction { get; }
 
-	private readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
+	public PropertyBlock<T> From { get; }
+	public PropertyBlock<T> To { get; }
+
+	private readonly IInterpolator<T> _interpolator = Interpolator.GetDefault<T>()
+		?? throw new Exception( $"Can't interpolate type {typeof(T)}." );
+
+	public PropertyBlockCrossFade( PropertyBlock<T> from, PropertyBlock<T> to,
+		MovieTimeRange fadeTimeRange, InterpolationMode mode, FadeDirection direction )
+		: base( (from.TimeRange.Start, to.TimeRange.End) )
+	{
+		if ( mode == InterpolationMode.None )
+		{
+			throw new ArgumentException( $"Interpolation mode must not be {InterpolationMode.None}.",
+				nameof( mode ) );
+		}
+
+		if ( from == to )
+		{
+			throw new ArgumentException( "From and To blocks must be different.",
+				nameof( to ) );
+		}
+
+		if ( from.TimeRange != to.TimeRange )
+		{
+			throw new ArgumentException( "From and To blocks must exactly overlap.",
+				nameof( to ) );
+		}
+
+		if ( !fadeTimeRange.Contains( from.TimeRange ) )
+		{
+			throw new ArgumentException( "Fade time range needs to contain the faded blocks' time range.",
+				nameof( fadeTimeRange ) );
+		}
+
+		From = from;
+		To = to;
+		FadeTimeRange = fadeTimeRange;
+		Mode = mode;
+		Direction = direction;
+	}
 
 	public override T GetValue( MovieTime time )
 	{
-		var fraction = TimeRange.GetFraction( time );
-		var blend = Invert
-			? 1f - Mode.Apply( 1f - fraction )
-			: Mode.Apply( fraction );
+		var fraction = FadeTimeRange.GetFraction( time );
+		var blend = Direction == FadeDirection.FadeIn
+			? Mode.Apply( fraction )
+			: 1f - Mode.Apply( 1f - fraction );
 
-		if ( blend <= 0f || _interpolator is not { } interpolator )
+		if ( blend <= 0f )
 		{
 			return From.GetValue( time );
 		}
@@ -124,42 +188,17 @@ file sealed record PropertyBlockCrossFade<T>( PropertyBlock<T> From, PropertyBlo
 			return To.GetValue( time );
 		}
 
-		return interpolator.Interpolate( From.GetValue( time ), To.GetValue( time ), blend );
+		return _interpolator.Interpolate( From.GetValue( time ), To.GetValue( time ), blend );
 	}
 
 	protected override PropertyBlock<T> OnShift( MovieTime offset )
 	{
-		return this with { From = From.Shift( offset ), To = To.Shift( offset ) };
+		return From.Shift( offset ).CrossFade( To.Shift( offset ), FadeTimeRange + offset, Mode, Direction );
 	}
 
 	protected override PropertyBlock<T> OnSlice( MovieTimeRange timeRange )
 	{
-		return this with { From = From.Slice( timeRange ), To = To.Slice( timeRange ) };
-	}
-
-	protected override PropertyBlock<T> OnReduce()
-	{
-		if ( From == To )
-		{
-			return From;
-		}
-
-		if ( _interpolator is null || Mode is InterpolationMode.None )
-		{
-			return From.Join( To.Slice( TimeRange.End ) );
-		}
-
-		return this;
-	}
-
-	private static bool Validate( PropertyBlock<T> from, PropertyBlock<T> to )
-	{
-		if ( from.TimeRange != to.TimeRange )
-		{
-			throw new ArgumentException( "From and To blocks must exactly overlap.", nameof( To ) );
-		}
-
-		return true;
+		return From.Slice( timeRange ).CrossFade( To.Slice( timeRange ), FadeTimeRange, Mode, Direction );
 	}
 
 	protected override IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )

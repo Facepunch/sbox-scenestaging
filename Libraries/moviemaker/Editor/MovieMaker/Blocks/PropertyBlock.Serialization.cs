@@ -9,7 +9,7 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 [JsonConverter( typeof(PropertyBlockConverterFactory) )]
-partial record PropertyBlock<T>
+partial class PropertyBlock<T>
 {
 	public JsonNode? Serialize()
 	{

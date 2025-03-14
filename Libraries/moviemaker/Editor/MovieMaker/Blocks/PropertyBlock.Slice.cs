@@ -4,7 +4,13 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-partial record PropertyBlock<T>
+partial interface IProjectPropertyBlock
+{
+	IProjectPropertyBlock Slice( MovieTimeRange timeRange );
+	IProjectPropertyBlock Shift( MovieTime offset );
+}
+
+partial class PropertyBlock<T>
 {
 	public PropertyBlock<T> Slice( MovieTimeRange timeRange ) => timeRange == TimeRange ? this : OnSlice( timeRange ).Reduce();
 	protected abstract PropertyBlock<T> OnSlice( MovieTimeRange timeRange );
