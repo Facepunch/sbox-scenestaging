@@ -16,7 +16,7 @@ public abstract partial class BlockItem : GraphicsItem
 		get => _block ?? throw new InvalidOperationException();
 		set
 		{
-			if ( _block == value ) return;
+			if ( ReferenceEquals( _block, value ) ) return;
 
 			if ( _block is IDynamicBlock oldBlock )
 			{

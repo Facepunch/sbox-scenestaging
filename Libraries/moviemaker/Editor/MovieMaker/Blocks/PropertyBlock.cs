@@ -48,7 +48,7 @@ public partial interface IProjectPropertyBlock : IPropertyBlock
 	JsonNode? Serialize();
 }
 
-public abstract partial class PropertyBlock<T> : IPropertyBlock<T>, IProjectPropertyBlock
+public abstract partial class PropertyBlock<T> : IPropertyBlock<T>, IProjectPropertyBlock, IEquatable<PropertyBlock<T>>
 {
 	[JsonIgnore]
 	public MovieTimeRange TimeRange { get; }
@@ -58,7 +58,8 @@ public abstract partial class PropertyBlock<T> : IPropertyBlock<T>, IProjectProp
 		TimeRange = timeRange;
 	}
 
-	public abstract T GetValue( MovieTime time );
+	public T GetValue( MovieTime time ) => OnGetValue( time.Clamp( TimeRange ) );
+	protected abstract T OnGetValue( MovieTime time );
 
 	public IEnumerable<MovieTime> GetPaintHintTimes( MovieTimeRange timeRange ) =>
 		OnGetPaintHintTimes( timeRange.Clamp( TimeRange ) )
@@ -66,14 +67,20 @@ public abstract partial class PropertyBlock<T> : IPropertyBlock<T>, IProjectProp
 
 	protected virtual IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange ) => [];
 
+	private bool _isReduced;
+
 	public PropertyBlock<T> Reduce()
 	{
+		if ( _isReduced ) return this;
+
 		var block = this;
 
 		while ( block.OnReduce() is { } reduced && reduced != block )
 		{
 			block = reduced;
 		}
+
+		block._isReduced = true;
 
 		return block;
 	}
@@ -99,5 +106,51 @@ public abstract partial class PropertyBlock<T> : IPropertyBlock<T>, IProjectProp
 		}
 
 		return new CompiledSampleBlock<T>( TimeRange, TimeRange.Start, sampleRate, [..samples] );
+	}
+
+	public virtual bool Equals( PropertyBlock<T>? other )
+	{
+		if ( other is null )
+		{
+			return false;
+		}
+
+		if ( ReferenceEquals( this, other ) )
+		{
+			return true;
+		}
+
+		return TimeRange.Equals( other.TimeRange ) && EqualsBlock( other );
+	}
+
+	protected abstract int OnGetHashCode();
+	protected abstract bool EqualsBlock( PropertyBlock<T> other );
+
+	public override bool Equals( object? obj )
+	{
+		if ( obj is null )
+		{
+			return false;
+		}
+
+		if ( ReferenceEquals( this, obj ) )
+		{
+			return true;
+		}
+
+		if ( obj.GetType() != GetType() )
+		{
+			return false;
+		}
+
+		return Equals( (PropertyBlock<T>)obj );
+	}
+
+	private int? _hashCode;
+
+	public sealed override int GetHashCode()
+	{
+		// ReSharper disable once NonReadonlyMemberInGetHashCode
+		return _hashCode ??= OnGetHashCode();
 	}
 }

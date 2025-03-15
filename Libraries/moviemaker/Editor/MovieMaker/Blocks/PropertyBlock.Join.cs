@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Sandbox.MovieMaker;
 
@@ -14,8 +15,16 @@ partial interface IProjectPropertyBlock
 
 partial class PropertyBlock<T>
 {
-	public PropertyBlock<T> Join( PropertyBlock<T> next )
+	[return: NotNullIfNotNull( nameof(lhs) ), NotNullIfNotNull( nameof(rhs) )]
+	public static PropertyBlock<T>? operator +( PropertyBlock<T>? lhs, PropertyBlock<T>? rhs )
 	{
+		return lhs is null ? rhs : lhs.Join( rhs );
+	}
+
+	public PropertyBlock<T> Join( PropertyBlock<T>? next )
+	{
+		if ( next is null ) return this;
+
 		if ( next.TimeRange.Start < TimeRange.End )
 		{
 			throw new ArgumentException( $"Can't join overlapping blocks ({TimeRange}, {next.TimeRange}).", nameof(next) );
@@ -95,11 +104,8 @@ file sealed class PropertyBlockJoin<T> : PropertyBlock<T>
 		Blocks = blocks;
 	}
 
-	public override T GetValue( MovieTime time )
+	protected override T OnGetValue( MovieTime time )
 	{
-		if ( time < TimeRange.Start ) return Blocks[0].GetValue( time );
-		if ( time > TimeRange.End ) return Blocks[^1].GetValue( time );
-
 		for ( var i = Blocks.Length - 1; i >= 0; --i )
 		{
 			if ( Blocks[i].TimeRange.Contains( time ) ) return Blocks[i].GetValue( time );
@@ -112,27 +118,10 @@ file sealed class PropertyBlockJoin<T> : PropertyBlock<T>
 
 	protected override PropertyBlock<T> OnSlice( MovieTimeRange timeRange )
 	{
-		if ( timeRange.End <= TimeRange.Start )
-		{
-			return Blocks[0].Slice( timeRange );
-		}
-
-		if ( timeRange.Start >= TimeRange.End )
-		{
-			return Blocks[^1].Slice( timeRange );
-		}
-
-		var blocks = Blocks
+		return Blocks
 			.Where( x => x.TimeRange.Intersect( timeRange ) is not null )
 			.Select( x => x.Slice( x.TimeRange.Clamp( timeRange ) ) )
-			.ToArray();
-
-		// Extend first / last block so we cover the whole time range
-
-		blocks[0] = blocks[0].Slice( (timeRange.Start, blocks[0].TimeRange.End) );
-		blocks[^1] = blocks[^1].Slice( (blocks[^1].TimeRange.Start, timeRange.End) );
-
-		return blocks.Join();
+			.Join();
 	}
 
 	protected override PropertyBlock<T> OnShift( MovieTime offset )
@@ -204,6 +193,24 @@ file sealed class PropertyBlockJoin<T> : PropertyBlock<T>
 		}
 
 		return new PropertyBlockJoin<T>( [..reduced] );
+	}
+
+	protected override int OnGetHashCode()
+	{
+		var hash = new HashCode();
+
+		foreach ( var block in Blocks )
+		{
+			hash.Add( block );
+		}
+
+		return hash.ToHashCode();
+	}
+
+	protected override bool EqualsBlock( PropertyBlock<T> other )
+	{
+		return other is PropertyBlockJoin<T> join
+			&& Blocks.SequenceEqual( join.Blocks );
 	}
 
 	protected override IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )

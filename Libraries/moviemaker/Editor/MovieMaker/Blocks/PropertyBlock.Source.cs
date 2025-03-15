@@ -9,63 +9,35 @@ namespace Editor.MovieMaker;
 
 partial class PropertyBlock<T>
 {
-	public static PropertyBlock<T> Constant( T value ) => new ConstantPropertyBlock<T>( value );
 	public static PropertyBlock<T> SourceClip( ProjectSourceClip source, CompiledPropertyTrack<T> track, CompiledPropertyBlock<T> block )
-		=> new SourceClipPropertyBlock<T>( source, track, block );
-}
-
-/// <summary>
-/// A <see cref="PropertyBlock{T}"/> that contains source data, like a constant or a reference to an external clip.
-/// </summary>
-[JsonConverter( typeof(PropertyBlockConverterFactory) )]
-file abstract class SourcePropertyBlock<T>( MovieTimeRange timeRange ) : PropertyBlock<T>( timeRange );
-
-[JsonDiscriminator( "Constant" )]
-file sealed class ConstantPropertyBlock<T>( T value ) : SourcePropertyBlock<T>( default )
-{
-	public T Value { get; } = value;
-
-	public override T GetValue( MovieTime time ) => Value;
-
-	public override CompiledPropertyBlock<T> Compile( ProjectTrack track ) =>
-		new CompiledConstantBlock<T>( TimeRange, Value );
-
-	protected override PropertyBlock<T> OnSlice( MovieTimeRange timeRange )
 	{
-		return new SourcePropertyBlockSlice<T>( this, timeRange );
-	}
+		if ( block is CompiledConstantBlock<T> constant )
+		{
+			return Constant( constant.Value, block.TimeRange );
+		}
 
-	protected override PropertyBlock<T> OnShift( MovieTime offset )
-	{
-		return new SourcePropertyBlockSlice<T>( this, TimeRange + offset );
-	}
-
-	protected override PropertyBlock<T>? OnTryMerge( PropertyBlock<T> next )
-	{
-		if ( next is not ConstantPropertyBlock<T> nextConstant ) return null;
-
-		return EqualityComparer<T>.Default.Equals( Value, nextConstant.Value ) ? this : null;
+		return new SourceClipPropertyBlock<T>( source, track, block );
 	}
 }
 
 [JsonDiscriminator( "Clip" )]
 file sealed class SourceClipPropertyBlock<T>( ProjectSourceClip source, CompiledPropertyTrack<T> track, CompiledPropertyBlock<T> block )
-	: SourcePropertyBlock<T>( block.TimeRange )
+	: PropertyBlock<T>( block.TimeRange )
 {
 	public ProjectSourceClip Source { get; } = source;
 	public CompiledPropertyTrack<T> Track { get; } = track;
 	public CompiledPropertyBlock<T> Block { get; } = block;
 
-	public override T GetValue( MovieTime time ) => Block.GetValue( time );
+	protected override T OnGetValue( MovieTime time ) => Block.GetValue( time );
 
 	protected override PropertyBlock<T> OnSlice( MovieTimeRange timeRange )
 	{
-		return new SourcePropertyBlockSlice<T>( this, timeRange, TimeRange, MovieTime.Zero );
+		return new SourcePropertyBlockSlice<T>( this, timeRange, MovieTime.Zero );
 	}
 
 	protected override PropertyBlock<T> OnShift( MovieTime offset )
 	{
-		return new SourcePropertyBlockSlice<T>( this, TimeRange + offset, TimeRange, offset );
+		return new SourcePropertyBlockSlice<T>( this, TimeRange + offset, offset );
 	}
 
 	protected override IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )
@@ -80,52 +52,69 @@ file sealed class SourceClipPropertyBlock<T>( ProjectSourceClip source, Compiled
 				return [];
 		}
 	}
+
+	protected override int OnGetHashCode()
+	{
+		return Block.GetHashCode();
+	}
+
+	protected override bool EqualsBlock( PropertyBlock<T> other )
+	{
+		return other is SourceClipPropertyBlock<T> sourceClipBlock
+			&& Block.Equals( sourceClipBlock.Block );
+	}
 }
 
 [JsonDiscriminator( "Slice" )]
-file sealed class SourcePropertyBlockSlice<T>( SourcePropertyBlock<T> block,
-	MovieTimeRange timeRange,
-	MovieTimeRange? sourceTimeRange = null,
-	MovieTime? offset = null )
+file sealed class SourcePropertyBlockSlice<T>( SourceClipPropertyBlock<T> block, MovieTimeRange timeRange, MovieTime offset )
 	: PropertyBlock<T>( timeRange )
 {
 	[JsonInclude] public new MovieTimeRange TimeRange => base.TimeRange;
 
-	[JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
-	public MovieTimeRange? SourceTimeRange { get; } = sourceTimeRange;
+	[JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )]
+	public MovieTime Offset { get; } = offset;
 
-	[JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
-	public MovieTime? Offset { get; } = offset;
+	public SourceClipPropertyBlock<T> Block { get; } = block;
 
-	public SourcePropertyBlock<T> Block { get; } = block;
-
-	public override T GetValue( MovieTime time ) => Block.GetValue( (time - (Offset ?? MovieTime.Zero)).Clamp( SourceTimeRange ) );
+	protected override T OnGetValue( MovieTime time ) => Block.GetValue( time - Offset );
 
 	protected override PropertyBlock<T> OnSlice( MovieTimeRange timeRange )
 	{
-		return new SourcePropertyBlockSlice<T>( Block, timeRange, SourceTimeRange?.Clamp( timeRange - (Offset ?? MovieTime.Zero) ), Offset );
+		return new SourcePropertyBlockSlice<T>( Block, timeRange, Offset );
 	}
 
 	protected override PropertyBlock<T> OnShift( MovieTime offset )
 	{
-		return new SourcePropertyBlockSlice<T>( Block, TimeRange + offset, SourceTimeRange, Offset + offset );
+		return new SourcePropertyBlockSlice<T>( Block, TimeRange + offset, Offset + offset );
 	}
 
 	protected override PropertyBlock<T>? OnTryMerge( PropertyBlock<T> next )
 	{
 		if ( next is not SourcePropertyBlockSlice<T> nextSlice ) return null;
 
-		if ( Block != nextSlice.Block ) return null;
+		if ( !Block.Equals( nextSlice.Block ) ) return null;
 		if ( Offset != nextSlice.Offset ) return null;
-		if ( SourceTimeRange?.End < nextSlice.SourceTimeRange?.Start ) return null;
 
-		return new SourcePropertyBlockSlice<T>( Block, TimeRange.Union( nextSlice.TimeRange ), SourceTimeRange?.Union( nextSlice.SourceTimeRange ), Offset );
+		return new SourcePropertyBlockSlice<T>( Block, TimeRange.Union( nextSlice.TimeRange ), Offset );
 	}
 
 	protected override IEnumerable<MovieTime> OnGetPaintHintTimes( MovieTimeRange timeRange )
 	{
 		return Offset is { IsZero: false } offset
-			? Block.GetPaintHintTimes( (timeRange - offset).Clamp( SourceTimeRange ) ).Select( x => x + offset )
-			: Block.GetPaintHintTimes( timeRange.Clamp( SourceTimeRange ) );
+			? Block.GetPaintHintTimes( timeRange - offset ).Select( x => x + offset )
+			: Block.GetPaintHintTimes( timeRange );
+	}
+
+	protected override int OnGetHashCode()
+	{
+		return HashCode.Combine( Block, TimeRange, Offset );
+	}
+
+	protected override bool EqualsBlock( PropertyBlock<T> other )
+	{
+		return other is SourcePropertyBlockSlice<T> slice
+			&& slice.Block.Equals( Block )
+			&& slice.TimeRange == TimeRange
+			&& slice.Offset == Offset;
 	}
 }

@@ -85,7 +85,7 @@ internal sealed class TrackModification<T> : ITrackModification
 			_original = slice.Join().Slice( timeRange );
 		}
 
-		_blended = _original.Blend( _overlay.Shift( offset ), selection );
+		_blended = _original.CrossFade( _overlay.Shift( offset ), selection );
 
 		EditMode.SetPreviewBlocks( Track, [_blended] );
 

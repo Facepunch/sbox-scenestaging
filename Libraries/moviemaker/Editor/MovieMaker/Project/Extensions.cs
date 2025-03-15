@@ -65,7 +65,7 @@ public static class ProjectExtensions
 
 	public static PropertyBlock<T> Join<T>( this IEnumerable<PropertyBlock<T>> blocks )
 	{
-		return blocks.Aggregate( (PropertyBlock<T>?)null, ( s, x ) => s?.Join( x ) ?? x )
+		return blocks.Aggregate( (PropertyBlock<T>?)null, ( s, x ) => s + x )
 			?? throw new ArgumentException( "Expected at least one block.", nameof(blocks) );
 	}
 
