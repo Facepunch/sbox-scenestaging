@@ -297,45 +297,6 @@
       ]
     },
     {
-      "__guid": "1dfc0e7e-bd4a-41e9-8b88-47eeb55c0abe",
-      "Flags": 0,
-      "Name": "Spot Light",
-      "Position": "392.1022,190.8812,81.74723",
-      "Rotation": "-0.0000002682208,-0.7071068,-0.7071068,-0.0000001788139",
-      "Tags": "light_spot,light,light_rect",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.RectLight",
-          "__guid": "42367c9b-95d6-42f5-8321-b3b7c8a967d0",
-          "__enabled": false,
-          "Cookie": null,
-          "FogMode": "Enabled",
-          "FogStrength": 1,
-          "LightColor": "1,1,1,1",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "Radius": 1000,
-          "Size": "20.63162,264.3911"
-        },
-        {
-          "__type": "SpinComponent",
-          "__guid": "99a4fc8c-bc9e-4972-99f6-6d956a72284c",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "SpinAngles": "5,10,15"
-        }
-      ]
-    },
-    {
       "__guid": "31f2498d-673b-4e75-a854-700fbe332a1f",
       "Flags": 0,
       "Name": "Sphere (1)",
@@ -381,28 +342,49 @@
           "Attenuation": 1,
           "Cookie": {
             "$compiler": "texture",
-            "$source": "imagefile",
+            "$source": "gradientradial",
             "data": {
-              "FilePath": "materials/tools/terrain/brushes/2_circle.png",
-              "MaxSize": 4096,
-              "ConvertHeightToNormals": false,
-              "NormalScale": 1,
-              "Rotate": 0,
-              "FlipVertical": false,
-              "FlipHorizontal": false,
-              "Padding": {
-                "Size": "0,0",
-                "EdgeSize": "0,0"
+              "Size": "128,128",
+              "IsHdr": false,
+              "Scale": 1,
+              "Center": "0.5,0.5",
+              "Gradient": {
+                "blend": "Linear",
+                "color": [
+                  {
+                    "t": 0,
+                    "c": "1,1,1,1"
+                  },
+                  {
+                    "t": 0.29347825,
+                    "c": "1,1,1,1"
+                  },
+                  {
+                    "t": 0.33913043,
+                    "c": "0.01087,0.01087,0.01087,1"
+                  },
+                  {
+                    "t": 0.8630435,
+                    "c": "0.0108,0.0108,0.0108,1"
+                  },
+                  {
+                    "t": 1,
+                    "c": "0,0,0,1"
+                  }
+                ],
+                "alpha": [
+                  {
+                    "t": 0,
+                    "a": 1
+                  },
+                  {
+                    "t": 1,
+                    "a": 1
+                  }
+                ]
               },
-              "Sharpen": 0,
-              "Blur": 0,
-              "Brightness": 1,
-              "Contrast": 1,
-              "Saturation": 1,
-              "Hue": 0,
-              "Colorize": false,
-              "TargetColor": "0,1,0,1",
-              "CacheToDisk": true
+              "ConvertHeightToNormals": false,
+              "NormalScale": 1
             },
             "compiled": null
           },
@@ -449,7 +431,7 @@
       "Flags": 0,
       "Name": "Object",
       "Position": "190.462,0,166.4596",
-      "Rotation": "0.6123724,0.3535535,-0.3535535,0.6123724",
+      "Rotation": "0,0.5000002,0,0.8660253",
       "Tags": "light_rect,light",
       "Enabled": true,
       "Components": [
@@ -458,28 +440,54 @@
           "__guid": "845a9d63-3ead-4e54-bd1a-f04af19a1b76",
           "Cookie": {
             "$compiler": "texture",
-            "$source": "imagefile",
+            "$source": "gradientlinear",
             "data": {
-              "FilePath": "materials/models/editor/axis_helper.tga",
-              "MaxSize": 4096,
-              "ConvertHeightToNormals": false,
-              "NormalScale": 1,
-              "Rotate": 0,
-              "FlipVertical": false,
-              "FlipHorizontal": false,
-              "Padding": {
-                "Size": "0,0",
-                "EdgeSize": "0,0"
+              "Size": "128,128",
+              "IsHdr": false,
+              "Angle": 0,
+              "Scale": 1,
+              "Center": "0.5,0.5",
+              "Gradient": {
+                "blend": "Linear",
+                "color": [
+                  {
+                    "t": 0,
+                    "c": "1,0,0,1"
+                  },
+                  {
+                    "t": 0.38913044,
+                    "c": "0.92007,0.08564,0,1"
+                  },
+                  {
+                    "t": 0.41086957,
+                    "c": "0.06667,1,0,1"
+                  },
+                  {
+                    "t": 0.5847826,
+                    "c": "0,1,0.01667,1"
+                  },
+                  {
+                    "t": 0.6021739,
+                    "c": "0,0.13225,0.91579,1"
+                  },
+                  {
+                    "t": 1,
+                    "c": "0,0.05098,1,1"
+                  }
+                ],
+                "alpha": [
+                  {
+                    "t": 0,
+                    "a": 1
+                  },
+                  {
+                    "t": 1,
+                    "a": 1
+                  }
+                ]
               },
-              "Sharpen": 0,
-              "Blur": 0,
-              "Brightness": 1,
-              "Contrast": 1,
-              "Saturation": 1,
-              "Hue": 0,
-              "Colorize": false,
-              "TargetColor": "0,1,0,1",
-              "CacheToDisk": true
+              "ConvertHeightToNormals": false,
+              "NormalScale": 1
             },
             "compiled": null
           },
@@ -536,7 +544,7 @@
       "__guid": "87e26582-54ad-4585-ab0b-8cfd61d4615a",
       "Flags": 0,
       "Name": "Object (1)",
-      "Position": "199.6719,166.3121,143.4467",
+      "Position": "212.4206,166.3121,150.8072",
       "Rotation": "0,0.5,0,0.8660256",
       "Tags": "light_rect,light,light_point",
       "Enabled": true,
@@ -574,7 +582,7 @@
           "OnComponentUpdate": null,
           "Radius": 1000,
           "Shadows": true,
-          "Size": "94.64002,5"
+          "Size": "84,5"
         }
       ],
       "Children": [
@@ -582,7 +590,6 @@
           "__guid": "0911f860-080b-4cc2-a453-68b626297326",
           "Flags": 0,
           "Name": "Object",
-          "Position": "-0.1600002,0,0",
           "Rotation": "0,0,0.7071068,0.7071068",
           "Scale": "0.5,0.2,0.2",
           "Enabled": true,
