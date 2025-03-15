@@ -5,8 +5,8 @@
       "__guid": "ef1ade3e-4cbf-4455-adc5-7f0226f11336",
       "Flags": 0,
       "Name": "Main Camera",
-      "Position": "23.59756,436.644,163.0365",
-      "Rotation": "0.04294121,0.1304909,-0.3096209,0.9408842",
+      "Position": "-374.439,-0.0000002614732,239.7915",
+      "Rotation": "-0.000000003834708,0.1373747,0.0000000005318342,0.9905192",
       "Enabled": true,
       "Components": [
         {
@@ -28,7 +28,6 @@
           "Priority": 1,
           "RenderExcludeTags": "",
           "RenderTags": "",
-          "RenderUI": true,
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
           "ZFar": 10000,
@@ -52,6 +51,38 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "Rate": 1
+        },
+        {
+          "__type": "Sandbox.Bloom2",
+          "__guid": "47121688-1324-4a1c-bfa2-c3cac73bb0bc",
+          "Gamma": 1.35,
+          "Mode": "Additive",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Strength": 2.9,
+          "Threshold": 2,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.AmbientOcclusion",
+          "__guid": "6aed8794-1b2a-4c74-86ff-add64634ca73",
+          "__version": 1,
+          "DenoiseMode": "Temporal",
+          "FalloffRange": 0.75,
+          "Intensity": 0.68,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Quality": "High",
+          "Radius": 128,
+          "ThinCompensation": 0
         }
       ]
     },
@@ -73,8 +104,27 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "SkyIndirectLighting": true,
-          "SkyMaterial": "materials/skybox/skybox_studio_02.vmat",
-          "Tint": "0.27907,0.27907,0.27907,1"
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "Tint": "0.05581,0.05581,0.05581,1"
+        },
+        {
+          "__type": "Sandbox.CubemapFog",
+          "__guid": "3cd6f3d5-3832-43a4-a6a5-f3d04694f2a4",
+          "Blur": 0.5,
+          "EndDistance": 1000,
+          "FalloffExponent": 1,
+          "HeightExponent": 2,
+          "HeightStart": 2000,
+          "HeightWidth": 0,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Sky": null,
+          "StartDistance": 512,
+          "Tint": "1,1,1,1"
         }
       ]
     },
@@ -92,7 +142,7 @@
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
-          "MaterialOverride": "materials/dev/dev_nonmetal_rough40.vmat",
+          "MaterialOverride": "materials/dev/dev_nonmetal_rough00.vmat",
           "Model": "models/dev/plane.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -115,13 +165,48 @@
       "__guid": "3e4bda0e-f938-41b4-9f6c-a2eee4b1ab7a",
       "Flags": 0,
       "Name": "Plane (1)",
-      "Position": "379.9188,168.6058,5.757785",
-      "Scale": "3,3,1",
+      "Position": "212.2269,0,91.68719",
+      "Rotation": "0,-0.258819,0,0.9659258",
+      "Scale": "0.6,5,1",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "779ad452-ca5c-4fc6-9db3-cf4bc44ed95c",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/dev/dev_metal_rough00.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "eeea3807-c393-41b4-9dd1-653bc161b51e",
+      "Flags": 0,
+      "Name": "Plane (2)",
+      "Position": "157.6987,0,65.98092",
+      "Rotation": "0,-0.1736482,0,0.9848077",
+      "Scale": "0.6,5,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "3552fc9f-b6bc-4cbb-9081-87ab49cc58f3",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
@@ -145,17 +230,232 @@
       ]
     },
     {
+      "__guid": "4f248900-4c5a-4b5c-83fd-87a26d1468a1",
+      "Flags": 0,
+      "Name": "Plane (3)",
+      "Position": "100.5853,0,49.45035",
+      "Rotation": "0,-0.08715574,0,0.9961947",
+      "Scale": "0.6,5,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "251ce18a-e23c-474d-88cd-a3d612ceb72f",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/dev/dev_metal_rough20.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "ca0b81d4-6f53-4a42-bce4-5943a4ee2556",
+      "Flags": 0,
+      "Name": "Plane (4)",
+      "Position": "40.64185,0,43.51654",
+      "Scale": "0.6,5,1",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "244112d5-fddb-4d3d-8448-18e1fc6ec38f",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/dev/dev_metal_rough30.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
       "__guid": "1dfc0e7e-bd4a-41e9-8b88-47eeb55c0abe",
       "Flags": 0,
       "Name": "Spot Light",
-      "Position": "466.7714,162.822,55.43787",
-      "Rotation": "0.09229569,-0.7010575,-0.7010575,-0.09229615",
+      "Position": "392.1022,190.8812,81.74723",
+      "Rotation": "-0.0000002682208,-0.7071068,-0.7071068,-0.0000001788139",
       "Tags": "light_spot,light,light_rect",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.RectLight",
           "__guid": "42367c9b-95d6-42f5-8321-b3b7c8a967d0",
+          "__enabled": false,
+          "Cookie": null,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "1,1,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Radius": 1000,
+          "Size": "20.63162,264.3911"
+        },
+        {
+          "__type": "SpinComponent",
+          "__guid": "99a4fc8c-bc9e-4972-99f6-6d956a72284c",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SpinAngles": "5,10,15"
+        }
+      ]
+    },
+    {
+      "__guid": "31f2498d-673b-4e75-a854-700fbe332a1f",
+      "Flags": 0,
+      "Name": "Sphere (1)",
+      "Position": "-1595.52,-835.4536,230.5863",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "8ddde4c8-4231-4ce7-b33c-d2d55b21476e",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "85ab6624-24bd-4bc8-a9d1-769d74942fac",
+      "Flags": 0,
+      "Name": "Object",
+      "Position": "205.723,-198.1758,124.2402",
+      "Tags": "light_point,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.PointLight2",
+          "__guid": "d36624f3-c675-447f-b810-1eeb92af9050",
+          "Attenuation": 1,
+          "Cookie": {
+            "$compiler": "texture",
+            "$source": "imagefile",
+            "data": {
+              "FilePath": "materials/tools/terrain/brushes/2_circle.png",
+              "MaxSize": 4096,
+              "ConvertHeightToNormals": false,
+              "NormalScale": 1,
+              "Rotate": 0,
+              "FlipVertical": false,
+              "FlipHorizontal": false,
+              "Padding": {
+                "Size": "0,0",
+                "EdgeSize": "0,0"
+              },
+              "Sharpen": 0,
+              "Blur": 0,
+              "Brightness": 1,
+              "Contrast": 1,
+              "Saturation": 1,
+              "Hue": 0,
+              "Colorize": false,
+              "TargetColor": "0,1,0,1",
+              "CacheToDisk": true
+            },
+            "compiled": null
+          },
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "1,0.21667,0,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Radius": 990.3201,
+          "Shadows": true,
+          "Size": 34.239967
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "2db8fca5-cfa7-480b-aab9-48e0333ed85b",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/dev/primary_white_emissive.vmat",
+          "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,0.01569,0,1"
+        }
+      ]
+    },
+    {
+      "__guid": "5ab9bcb1-d4d4-4f7e-a8f1-dbe43235b097",
+      "Flags": 0,
+      "Name": "Object",
+      "Position": "190.462,0,166.4596",
+      "Rotation": "0.6123724,0.3535535,-0.3535535,0.6123724",
+      "Tags": "light_rect,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.RectLight",
+          "__guid": "845a9d63-3ead-4e54-bd1a-f04af19a1b76",
           "Cookie": {
             "$compiler": "texture",
             "$source": "imagefile",
@@ -181,11 +481,11 @@
               "TargetColor": "0,1,0,1",
               "CacheToDisk": true
             },
-            "compiled": "textures/generated/imagefile/bb72f124505dfc11.vtex"
+            "compiled": null
           },
           "FogMode": "Enabled",
           "FogStrength": 1,
-          "LightColor": "1,1,1,1",
+          "LightColor": "0.39535,0.39535,0.39535,1",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -193,35 +493,142 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "Radius": 1000,
-          "Size": "131.0944,96.61591"
+          "Size": "100,100"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "b0930da5-6fa3-4d9e-8c98-d722380caadc",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "-0.1600002,0,0",
+          "Rotation": "0,-0.7071068,0,0.7071068",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "85444737-e58c-42ed-aa49-f34e79bcabc9",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/dev/primary_white_emissive.vmat",
+              "Model": "models/dev/plane.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.72342,0.88372,0.857,1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "87e26582-54ad-4585-ab0b-8cfd61d4615a",
+      "Flags": 0,
+      "Name": "Object (1)",
+      "Position": "199.6719,166.3121,143.4467",
+      "Rotation": "0,0.5,0,0.8660256",
+      "Tags": "light_rect,light,light_point",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.RectLight",
+          "__guid": "dbeda368-87f6-49e7-bf50-194f1bba75d7",
+          "__enabled": false,
+          "Cookie": null,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0,0.65,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Radius": 1000,
+          "Size": "10,150"
         },
         {
-          "__type": "SpinComponent",
-          "__guid": "99a4fc8c-bc9e-4972-99f6-6d956a72284c",
+          "__type": "Sandbox.CapusleLight",
+          "__guid": "c89032b6-e6c7-4d2f-9fbf-7f3fbad1b595",
+          "Attenuation": 1,
+          "Cookie": null,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0,1,0.83529,1",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "SpinAngles": "5,10,15"
+          "Radius": 1000,
+          "Shadows": true,
+          "Size": "94.64002,5"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "0911f860-080b-4cc2-a453-68b626297326",
+          "Flags": 0,
+          "Name": "Object",
+          "Position": "-0.1600002,0,0",
+          "Rotation": "0,0,0.7071068,0.7071068",
+          "Scale": "0.5,0.2,0.2",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "7568771b-3b06-49a1-89f1-97bf7af48501",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": "materials/dev/primary_white_emissive.vmat",
+              "Model": "models/spline_cylinder_test.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0,1,0.83333,1"
+            }
+          ]
         }
       ]
     },
     {
-      "__guid": "3d61f58a-0407-4cd6-85dd-81a0f218f5e7",
+      "__guid": "c1ce3443-13c2-44b7-8384-25967fbfc02c",
       "Flags": 0,
       "Name": "Sphere",
-      "Position": "437.9104,-6.393112,35.03791",
+      "Position": "125,25,65",
+      "Scale": "0.5,0.5,0.5",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
-          "__guid": "33111a3c-adbf-47e9-bec7-b86be305a5e5",
+          "__guid": "79bc86e2-1c91-498a-b12e-affce34f6e41",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
-          "MaterialOverride": "materials/dev/dev_nonmetal_rough80.vmat",
+          "MaterialOverride": "materials/dev/dev_metal_rough00.vmat",
           "Model": "models/dev/sphere.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -241,83 +648,20 @@
       ]
     },
     {
-      "__guid": "7b6ac8de-8f4c-416a-8b80-f5a4733f650f",
+      "__guid": "5bcf01bd-6517-4143-86bf-d7937875f25d",
       "Flags": 0,
       "Name": "Sphere (2)",
-      "Position": "333.925,-6.393143,35.03791",
+      "Position": "125,-25,65",
+      "Scale": "0.5,0.5,0.5",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
-          "__guid": "b9584273-3d6c-44c2-8fdc-1f2b0f8a3991",
+          "__guid": "40a18f40-ae3e-49f6-abbc-d3158e5ebc95",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
-          "MaterialOverride": "materials/dev/dev_nonmetal_rough80.vmat",
-          "Model": "models/dev/sphere.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "32b5b562-389a-412f-ac24-8a376ddbbe92",
-      "Flags": 0,
-      "Name": "Sphere (3)",
-      "Position": "207.9855,-6.393143,35.03791",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "45b99a6b-13e6-4084-bb77-26a63424f2c4",
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": "materials/dev/dev_nonmetal_rough80.vmat",
-          "Model": "models/dev/sphere.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "31f2498d-673b-4e75-a854-700fbe332a1f",
-      "Flags": 0,
-      "Name": "Sphere (1)",
-      "Position": "-1595.52,-835.4536,230.5863",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "8ddde4c8-4231-4ce7-b33c-d2d55b21476e",
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
+          "MaterialOverride": "materials/dev/dev_nonmetal_rough00.vmat",
           "Model": "models/dev/sphere.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
