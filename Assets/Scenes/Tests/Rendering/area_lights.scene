@@ -105,7 +105,7 @@
           "OnComponentUpdate": null,
           "SkyIndirectLighting": true,
           "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
-          "Tint": "0.05581,0.05581,0.05581,1"
+          "Tint": "0.08971,0.07312,0.09302,1"
         },
         {
           "__type": "Sandbox.CubemapFog",
@@ -399,7 +399,7 @@
           "OnComponentUpdate": null,
           "Radius": 990.3201,
           "Shadows": true,
-          "Size": 34.239967
+          "Size": 45
         },
         {
           "__type": "Sandbox.ModelRenderer",
@@ -460,11 +460,11 @@
                   },
                   {
                     "t": 0.41086957,
-                    "c": "0.06667,1,0,1"
+                    "c": "0,1,0,1"
                   },
                   {
                     "t": 0.5847826,
-                    "c": "0,1,0.01667,1"
+                    "c": "0,1,0,1"
                   },
                   {
                     "t": 0.6021739,
@@ -582,7 +582,7 @@
           "OnComponentUpdate": null,
           "Radius": 1000,
           "Shadows": true,
-          "Size": "84,5"
+          "Size": "60,5"
         }
       ],
       "Children": [
@@ -625,7 +625,7 @@
       "__guid": "c1ce3443-13c2-44b7-8384-25967fbfc02c",
       "Flags": 0,
       "Name": "Sphere",
-      "Position": "125,25,65",
+      "Position": "139.4758,25.00003,67.85504",
       "Scale": "0.5,0.5,0.5",
       "Enabled": true,
       "Components": [
@@ -658,7 +658,7 @@
       "__guid": "5bcf01bd-6517-4143-86bf-d7937875f25d",
       "Flags": 0,
       "Name": "Sphere (2)",
-      "Position": "125,-25,65",
+      "Position": "139.4758,-24.99997,67.85504",
       "Scale": "0.5,0.5,0.5",
       "Enabled": true,
       "Components": [
@@ -686,6 +686,32 @@
           "Tint": "1,1,1,1"
         }
       ]
+    },
+    {
+      "__guid": "e9164ba0-7a00-4145-876f-86f28203edf9",
+      "Flags": 0,
+      "Name": "Description",
+      "Position": "-86.63052,-2.407469,189.2169",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "39dccbae-ed5c-4ae1-8e21-51bfc36f0054",
+          "Author": null,
+          "Changes": "",
+          "Description": "Test of pretty diffuse lights of all shapes and sizes",
+          "Group": "Rendering",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneTags": "",
+          "Title": "Area Lights",
+          "Version": null
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -697,7 +723,11 @@
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
-    "Metadata": {},
+    "Metadata": {
+      "Title": "Area Lights",
+      "Description": "Test of pretty diffuse lights of all shapes and sizes",
+      "Group": "Rendering"
+    },
     "NavMesh": {
       "Enabled": false,
       "IncludeStaticBodies": true,
@@ -712,8 +742,8 @@
     }
   },
   "ResourceVersion": 2,
-  "Title": null,
-  "Description": null,
+  "Title": "Area Lights",
+  "Description": "Test of pretty diffuse lights of all shapes and sizes",
   "__references": [],
   "__version": 2
 }
