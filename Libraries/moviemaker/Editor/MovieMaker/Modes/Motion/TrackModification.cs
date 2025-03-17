@@ -86,7 +86,7 @@ internal sealed class TrackModification<T> : ITrackModification
 	{
 		if ( !Update( selection, offset, additive ) || _blended is not { } blended ) return false;
 
-		var changed = Track.Add( blended );
+		var changed = Track.Add( blended.Signal, blended.TimeRange );
 
 		ClearPreview();
 
