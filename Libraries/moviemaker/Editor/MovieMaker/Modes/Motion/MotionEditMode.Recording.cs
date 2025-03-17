@@ -231,8 +231,5 @@ file class TrackRecording<T> : ITrackRecording, IPropertyBlock<T>
 
 	public T GetValue( MovieTime time ) => _samples.Sample( time - TimeRange.Start, SampleRate, _interpolator );
 
-	public IEnumerable<MovieTime> GetPaintHintTimes( MovieTimeRange timeRange )
-	{
-		return timeRange.GetSampleTimes( _startTime, _samples.Count, SampleRate );
-	}
+	public IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange ) => [TimeRange];
 }

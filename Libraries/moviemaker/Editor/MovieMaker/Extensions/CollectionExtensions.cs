@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using Sandbox.MovieMaker;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Editor.MovieMaker;
@@ -38,8 +39,7 @@ public static class CollectionExtensions
 		return list.Skip( offset ).Take( count ).ToArray();
 	}
 
-	public static IEnumerable<T> Merge<T>( this IEnumerable<T> a, IEnumerable<T> b )
-		where T : IComparable<T>
+	public static IEnumerable<MovieTimeRange> Union( this IEnumerable<MovieTimeRange> a, IEnumerable<MovieTimeRange> b )
 	{
 		using var enumeratorA = a.GetEnumerator();
 		using var enumeratorB = b.GetEnumerator();
@@ -49,21 +49,30 @@ public static class CollectionExtensions
 
 		while ( hasItemA || hasItemB )
 		{
-			var lastItem = !hasItemB || hasItemA && enumeratorA.Current.CompareTo( enumeratorB.Current ) <= 0
+			var next = !hasItemB || hasItemA && enumeratorA.Current.Start <= enumeratorB.Current.Start
 				? enumeratorA.Current
 				: enumeratorB.Current;
 
-			yield return lastItem;
-
-			while ( hasItemA && lastItem.CompareTo( enumeratorA.Current ) == 0 )
+			while ( true )
 			{
-				hasItemA = enumeratorA.MoveNext();
+				if ( hasItemA && next.Intersect( enumeratorA.Current ) is not null )
+				{
+					next = next.Union( enumeratorA.Current );
+					hasItemA = enumeratorA.MoveNext();
+					continue;
+				}
+
+				if ( hasItemB && next.Intersect( enumeratorB.Current ) is not null )
+				{
+					next = next.Union( enumeratorB.Current );
+					hasItemB = enumeratorB.MoveNext();
+					continue;
+				}
+
+				break;
 			}
 
-			while ( hasItemB && lastItem.CompareTo( enumeratorB.Current ) == 0 )
-			{
-				hasItemB = enumeratorB.MoveNext();
-			}
+			yield return next;
 		}
 	}
 }

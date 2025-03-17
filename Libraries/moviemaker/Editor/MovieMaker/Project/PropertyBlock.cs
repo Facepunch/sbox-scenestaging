@@ -12,7 +12,7 @@ public interface IPropertyBlock : IPropertySignal
 {
 	MovieTimeRange TimeRange { get; }
 
-	IEnumerable<MovieTime> GetPaintHintTimes( MovieTimeRange timeRange );
+	IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange );
 }
 
 /// <summary>
@@ -40,8 +40,8 @@ public sealed record PropertyBlock<T>( PropertySignal<T> Signal, MovieTimeRange 
 {
 	public T GetValue( MovieTime time ) => Signal.GetValue( time.Clamp( TimeRange ) );
 
-	public IEnumerable<MovieTime> GetPaintHintTimes( MovieTimeRange timeRange ) =>
-		timeRange.Clamp( TimeRange ).GetSampleTimes( 30 );
+	public IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange ) =>
+		Signal.GetPaintHints( timeRange.Clamp( TimeRange ) );
 
 	public PropertyBlock<T>? Slice( MovieTimeRange timeRange )
 	{

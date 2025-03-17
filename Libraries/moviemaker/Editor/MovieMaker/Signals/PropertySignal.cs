@@ -50,6 +50,13 @@ public abstract partial record PropertySignal<T> : IPropertySignal<T>
 	}
 
 	protected abstract PropertySignal<T> OnReduce( MovieTime offset, MovieTime? start, MovieTime? end );
+
+	/// <summary>
+	/// Gets time ranges within the given <paramref name="timeRange"/> that have changing values.
+	/// For painting in the timeline.
+	/// </summary>
+	public virtual IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange ) =>
+		[timeRange];
 }
 
 /// <summary>

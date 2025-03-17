@@ -20,17 +20,32 @@ file sealed record CompiledSignal<T>( CompiledPropertyBlock<T> Block, MovieTime 
 
 		return this with { Offset = Offset + offset };
 	}
+
+	public override IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange )
+	{
+		if ( timeRange.Intersect( Block.TimeRange + Offset ) is { } intersection )
+		{
+			return [intersection];
+		}
+
+		return [];
+	}
 }
 
 partial record PropertySignal<T>
 {
-	public static implicit operator PropertySignal<T>( CompiledPropertyBlock<T> block ) => new CompiledSignal<T>( block );
+	public static implicit operator PropertySignal<T>( CompiledPropertyBlock<T> block ) => block.AsSignal<T>();
 }
 
 partial class PropertySignalExtensions
 {
 	public static PropertySignal<T> AsSignal<T>( this CompiledPropertyBlock<T> block, MovieTime offset = default )
 	{
+		if ( block is CompiledConstantBlock<T> constant )
+		{
+			return constant.Value;
+		}
+
 		return new CompiledSignal<T>( block, offset );
 	}
 
