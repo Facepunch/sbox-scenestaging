@@ -86,16 +86,17 @@ partial class MotionEditMode
 		{
 			if ( shift )
 			{
-				changed |= track.Remove( selection.PeakTimeRange );
+				changed |= track.Remove( selection.PeakTimeRange ) && Session.TrackModified( track );
 			}
 			else
 			{
-				changed |= track.Clear( selection.PeakTimeRange );
+				changed |= track.Clear( selection.PeakTimeRange ) && Session.TrackModified( track );
 			}
 		}
 
 		if ( changed )
 		{
+			Session.ClipModified();
 			DisplayAction( "delete" );
 		}
 	}
@@ -108,7 +109,7 @@ partial class MotionEditMode
 
 		foreach ( var track in Session.EditableTracks )
 		{
-			changed |= track.Insert( selection.PeakTimeRange );
+			changed |= track.Insert( selection.PeakTimeRange ) && Session.TrackModified( track );
 		}
 
 		if ( changed )
@@ -196,7 +197,7 @@ partial class MotionEditMode
 			// Additive blending is relative to the start of the first block
 
 			state.SetRelativeTo( blocks[0].GetValue( MovieTime.Zero ) );
-			state.SetOverlay( blocks.Select( x => x.Shift( -clipboard.Selection.TotalStart ) ) );
+			state.SetOverlay( blocks, -clipboard.Selection.TotalStart );
 			state.Update( selection, ChangeOffset, IsAdditive );
 
 			changed = true;

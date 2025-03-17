@@ -22,6 +22,15 @@ public readonly record struct TimeSelection( MovieTimeRange PeakTimeRange, TimeS
 
 	}
 
+	public TimeSelection( MovieTimeRange peakTimeRange, MovieTime fadeDuration,
+		InterpolationMode interpolationMode = InterpolationMode.Linear )
+		: this( peakTimeRange,
+			new Fade( fadeDuration, interpolationMode ),
+			new Fade( fadeDuration, interpolationMode ) )
+	{
+
+	}
+
 	public MovieTime PeakStart => PeakTimeRange.Start;
 	public MovieTime PeakEnd => PeakTimeRange.End;
 	public MovieTime TotalStart => PeakStart - FadeIn.Duration;

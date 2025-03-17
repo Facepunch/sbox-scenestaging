@@ -270,7 +270,7 @@ public abstract class EditMode
 		}
 	}
 
-	public void SetPreviewBlocks( IProjectPropertyTrack track, params IEnumerable<IPropertyBlock> blocks )
+	public void SetPreviewBlocks( IProjectPropertyTrack track, IEnumerable<IPropertyBlock> blocks )
 	{
 		if ( !_previewBlocks.TryGetValue( track, out var list ) )
 		{

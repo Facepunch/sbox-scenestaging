@@ -38,10 +38,32 @@ public interface IPropertySignal<T> : IPropertySignal
 public abstract partial record PropertySignal<T> : IPropertySignal<T>
 {
 	public abstract T GetValue( MovieTime time );
+
+	public PropertySignal<T> Reduce( MovieTime offset, MovieTime? start, MovieTime? end )
+	{
+		if ( start >= end )
+		{
+			return GetValue( start.Value );
+		}
+
+		return OnReduce( offset, start, end );
+	}
+
+	protected abstract PropertySignal<T> OnReduce( MovieTime offset, MovieTime? start, MovieTime? end );
 }
 
 /// <summary>
 /// Extension methods for creating and composing <see cref="IPropertySignal"/>s.
 /// </summary>
 // ReSharper disable once UnusedMember.Global
-public static partial class PropertySignalExtensions;
+public static partial class PropertySignalExtensions
+{
+	public static PropertySignal<T> Reduce<T>( this PropertySignal<T> signal ) =>
+		signal.Reduce( default, null, null );
+
+	public static PropertySignal<T> Reduce<T>( this PropertySignal<T> signal, MovieTimeRange timeRange ) =>
+		signal.Reduce( default, timeRange.Start, timeRange.End );
+
+	public static PropertySignal<T> Reduce<T>( this PropertySignal<T> signal, MovieTime offset, MovieTimeRange timeRange ) =>
+		signal.Reduce( offset, timeRange.Start, timeRange.End );
+}

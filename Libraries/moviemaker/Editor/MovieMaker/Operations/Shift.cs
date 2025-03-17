@@ -4,9 +4,13 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-file sealed record ShiftOperation<T>( PropertySignal<T> Signal, MovieTime Offset ) : UnaryOperation<T>( Signal )
+file sealed record ShiftOperation<T>( PropertySignal<T> Signal, MovieTime Offset )
+	: UnaryOperation<T>( Signal )
 {
-	public override T GetValue( MovieTime time ) => Signal.GetValue( time + Offset );
+	public override T GetValue( MovieTime time ) => Signal.GetValue( time - Offset );
+
+	protected override PropertySignal<T> OnReduce( MovieTime offset, MovieTime? start, MovieTime? end ) =>
+		Signal.Reduce( Offset + offset, start, end );
 }
 
 partial class PropertySignalExtensions

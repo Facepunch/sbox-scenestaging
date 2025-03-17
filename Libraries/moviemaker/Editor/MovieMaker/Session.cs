@@ -312,10 +312,12 @@ public sealed partial class Session
 		EditMode?.ViewChanged( Editor.TrackList.DopeSheet.VisibleRect );
 	}
 
-	public void TrackModified( IProjectTrack track )
+	public bool TrackModified( IProjectTrack track )
 	{
 		ClipModified();
 
 		Editor.TrackList.FindTrack( track )?.DopeSheetTrack?.UpdateBlockItems();
+
+		return true;
 	}
 }

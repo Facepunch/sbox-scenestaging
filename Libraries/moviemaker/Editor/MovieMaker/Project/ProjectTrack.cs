@@ -1,8 +1,10 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Channels;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
+using static Editor.Button;
 
 namespace Editor.MovieMaker;
 
@@ -253,30 +255,72 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 
 	public bool Insert( MovieTimeRange timeRange )
 	{
-		throw new NotImplementedException();
+		return Clear( timeRange.Start )
+			| Shift( timeRange.Start, timeRange.Duration );
 	}
 
 	public bool Remove( MovieTimeRange timeRange )
 	{
-		throw new NotImplementedException();
+		return Clear( timeRange )
+			| Shift( timeRange.End, -timeRange.Duration );
+	}
+
+	private bool Shift( MovieTime from, MovieTime offset )
+	{
+		var changed = false;
+
+		for ( var i = 0; i < _blocks.Count; ++i )
+		{
+			var block = _blocks[i];
+
+			if ( block.TimeRange.Start >= from )
+			{
+				_blocks[i] = _blocks[i].Shift( offset );
+				_blocksChanged = changed = true;
+			}
+		}
+
+		return changed;
 	}
 
 	public bool Clear( MovieTimeRange timeRange )
 	{
-		throw new NotImplementedException();
-	}
+		var overlaps = this.GetBlocks( timeRange ).ToArray();
 
-	public bool Add( PropertyBlock<T> block )
-	{
-		if ( block.TimeRange.End <= 0 ) return false;
-		if ( block.TimeRange.Start < 0 )
+		if ( overlaps.Length == 0 ) return false;
+
+		foreach ( var overlap in overlaps )
 		{
-			block = block.Slice( (0d, block.TimeRange.End) );
+			_blocks.Remove( overlap );
+
+			if ( overlap.TimeRange.Start < timeRange.Start )
+			{
+				_blocks.Add( overlap.Slice( (overlap.TimeRange.Start, timeRange.Start) )! );
+			}
+
+			if ( overlap.TimeRange.End > timeRange.End )
+			{
+				_blocks.Add( overlap.Slice( (timeRange.End, overlap.TimeRange.End) )! );
+			}
 		}
 
 		_blocksChanged = true;
 
-		throw new NotImplementedException();
+		return true;
+	}
+
+	public bool Add( PropertyBlock<T> block )
+	{
+		// Track blocks can't go before the start of the track!
+
+		if ( block.Slice( block.TimeRange.ClampStart( 0d ) ) is not { } slice ) return false;
+
+		Clear( slice.TimeRange );
+
+		_blocksChanged = true;
+		_blocks.Add( block );
+
+		return true;
 	}
 
 	bool IProjectPropertyTrack.Add( IProjectPropertyBlock block ) => Add( (PropertyBlock<T>)block );
