@@ -53,4 +53,17 @@ partial class PropertySignalExtensions
 
 	public static PropertySignal<T> ClampEnd<T>( this PropertySignal<T> signal, MovieTime time ) =>
 		signal.HardCut( signal.GetValue( time ), time );
+
+	public static IEnumerable<PropertyBlock<T>> AsBlocks<T>( this PropertySignal<T> signal, MovieTimeRange timeRange )
+	{
+		signal = signal.Reduce( timeRange );
+
+		if ( signal is not HardCutOperation<T> hardCut ) return [new PropertyBlock<T>( signal, timeRange )];
+
+		return
+		[
+			..hardCut.First.AsBlocks( timeRange with { End = hardCut.Time } ),
+			..hardCut.Second.AsBlocks( timeRange with { Start = hardCut.Time } )
+		];
+	}
 }

@@ -182,10 +182,10 @@ public interface IProjectPropertyTrack : IPropertyTrack, IProjectTrack
 	bool Clear( MovieTimeRange timeRange );
 
 	/// <summary>
-	/// Adds a <paramref name="block"/>, replacing any blocks that overlap its time range.
+	/// Adds a block, replacing any blocks that overlap its time range.
 	/// This will split any blocks that partially overlap.
 	/// </summary>
-	bool Add( IProjectPropertyBlock block );
+	bool Add( IPropertySignal signal, MovieTimeRange timeRange );
 
 	/// <summary>
 	/// Copies blocks that overlap the given <paramref name="timeRange"/> and returns
@@ -309,25 +309,31 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 		return true;
 	}
 
-	public bool Add( PropertyBlock<T> block )
+	public bool Add( PropertySignal<T> signal, MovieTimeRange timeRange )
 	{
-		// Track blocks can't go before the start of the track!
+		if ( timeRange.End < 0 ) return false;
 
-		if ( block.Slice( block.TimeRange.ClampStart( 0d ) ) is not { } slice ) return false;
+		timeRange = timeRange.ClampStart( 0 );
 
-		Clear( slice.TimeRange );
+		// Remove any overlaps
+
+		Clear( timeRange );
+
+		// Add to the end of _blocks, it'll get sorted later
 
 		_blocksChanged = true;
-		_blocks.Add( block );
+		_blocks.AddRange( signal.AsBlocks( timeRange ) );
 
 		return true;
 	}
 
-	bool IProjectPropertyTrack.Add( IProjectPropertyBlock block ) => Add( (PropertyBlock<T>)block );
+	bool IProjectPropertyTrack.Add( IPropertySignal signal, MovieTimeRange timeRange ) =>
+		Add( (PropertySignal<T>)signal, timeRange );
 
 	public IReadOnlyList<PropertyBlock<T>> Slice( MovieTimeRange timeRange )
 	{
 		return Blocks
+			.Where( x => x.TimeRange.Intersect( timeRange ) is { } intersection && (!intersection.IsEmpty || timeRange.IsEmpty) )
 			.Select( x => x.Slice( timeRange ) )
 			.OfType<PropertyBlock<T>>()
 			.ToImmutableArray();
@@ -349,6 +355,34 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 
 		_blocksChanged = false;
 
+		// Sort by time
+
 		_blocks.Sort( ( a, b ) => a.TimeRange.Start.CompareTo( b.TimeRange.Start ) );
+
+		// Merge touching blocks that have identical values at their interface
+
+		var comparer = EqualityComparer<T>.Default;
+
+		for ( var i = _blocks.Count - 2; i >= 0; --i )
+		{
+			var prev = _blocks[i];
+			var next = _blocks[i + 1];
+
+			if ( prev.TimeRange.End != next.TimeRange.Start ) continue;
+
+			var prevValue = prev.GetValue( prev.TimeRange.End );
+			var nextValue = next.GetValue( next.TimeRange.Start );
+
+			if ( !comparer.Equals( prevValue, nextValue ) )
+			{
+				continue;
+			}
+
+			var combinedTimeRange = prev.TimeRange.Union( next.TimeRange );
+			var combinedSignal = prev.Signal.HardCut( next.Signal, prev.TimeRange.End ).Reduce( combinedTimeRange );
+
+			_blocks[i] = new PropertyBlock<T>( combinedSignal, combinedTimeRange );
+			_blocks.RemoveAt( i + 1 );
+		}
 	}
 }
