@@ -10,6 +10,8 @@ namespace Editor.MovieMaker;
 file sealed record ConstantSignal<T>( T Value ) : PropertySignal<T>
 {
 	public override T GetValue( MovieTime time ) => Value;
+
+	protected override PropertySignal<T> OnReduce( MovieTime offset, MovieTime? start, MovieTime? end ) => this;
 }
 
 partial record PropertySignal<T>

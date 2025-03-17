@@ -52,9 +52,7 @@ public sealed record PropertyBlock<T>( PropertySignal<T> Signal, MovieTimeRange 
 			return null;
 		}
 
-		return intersection.IsEmpty
-			? new PropertyBlock<T>( Signal.GetValue( intersection.Start ), intersection )
-			: this with { TimeRange = intersection };
+		return new PropertyBlock<T>( Signal.Reduce( intersection ), intersection );
 	}
 
 	IProjectPropertyBlock? IProjectPropertyBlock.Slice( MovieTimeRange timeRange ) => Slice( timeRange );

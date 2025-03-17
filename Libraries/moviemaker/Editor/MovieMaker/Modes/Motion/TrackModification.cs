@@ -14,7 +14,7 @@ internal interface ITrackModification
 
 	void SetRelativeTo( object? value );
 	void SetOverlay( object? constantValue );
-	void SetOverlay( IPropertySignal signal );
+	void SetOverlay( IEnumerable<IProjectPropertyBlock> blocks, MovieTime offset );
 	void ClearPreview();
 	bool Update( TimeSelection selection, MovieTime offset, bool additive );
 	bool Commit( TimeSelection selection, MovieTime offset, bool additive );
@@ -49,9 +49,9 @@ internal sealed class TrackModification<T> : ITrackModification
 
 	public void SetOverlay( object? constantValue ) => _overlay = (T)constantValue!;
 
-	public void SetOverlay( IPropertySignal signal )
+	public void SetOverlay( IEnumerable<IProjectPropertyBlock> blocks, MovieTime offset )
 	{
-		_overlay = (PropertySignal<T>)signal;
+		_overlay = blocks.Cast<PropertyBlock<T>>().AsSignal()?.Shift( offset );
 	}
 
 	public void ClearPreview()
@@ -75,9 +75,9 @@ internal sealed class TrackModification<T> : ITrackModification
 			_original = Track.Slice( timeRange ).AsSignal() ?? _relativeTo;
 		}
 
-		_blended = new PropertyBlock<T>( _original.CrossFade( _overlay.Shift( offset ), selection ), timeRange );
+		_blended = new PropertyBlock<T>( _original.CrossFade( _overlay.Shift( offset ), selection ).Reduce( timeRange ), timeRange );
 
-		EditMode.SetPreviewBlocks( Track, _blended );
+		EditMode.SetPreviewBlocks( Track, [_blended] );
 
 		return true;
 	}

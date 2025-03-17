@@ -52,6 +52,38 @@ public sealed class EditingTests
 	}
 
 	[TestMethod]
+	public void ReduceHardCut()
+	{
+		var signal = 1f.AsSignal()
+			.HardCut( 2f, 2d )
+			.HardCut( 1f, 1d )
+			.Reduce();
+
+		Assert.AreEqual( 1f, signal );
+	}
+
+	[TestMethod]
+	public void ReduceCrossFade()
+	{
+		var signal = 1f.AsSignal()
+			.CrossFade( 2f, (3d, 4d) )
+			.CrossFade( 1f, (1d, 2d) )
+			.Reduce();
+
+		Assert.AreEqual( 1f, signal );
+	}
+
+	[TestMethod]
+	public void ReduceShift()
+	{
+		var signal = 1f.AsSignal()
+			.Shift( 1d )
+			.Reduce();
+
+		Assert.AreEqual( 1f, signal );
+	}
+
+	[TestMethod]
 	public void HardCut()
 	{
 		var signal = 1f.AsSignal().HardCut( 2f, 1d );

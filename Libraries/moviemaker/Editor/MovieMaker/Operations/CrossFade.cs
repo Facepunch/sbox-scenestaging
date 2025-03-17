@@ -17,6 +17,22 @@ file sealed record CrossFadeOperation<T>( PropertySignal<T> First, PropertySigna
 	public override float GetAlpha( MovieTime time ) => Direction == FadeDirection.FadeOut
 		? 1f - Mode.Apply( 1f - FadeTimeRange.GetFraction( time ) )
 		: Mode.Apply( FadeTimeRange.GetFraction( time ) );
+
+	protected override PropertySignal<T> OnReduce( MovieTime offset, MovieTime? start, MovieTime? end )
+	{
+		if ( start >= FadeTimeRange.End + offset ) return Second.Reduce( offset, start, end );
+		if ( end <= FadeTimeRange.Start + offset ) return First.Reduce( offset, start, end );
+
+		var first = First.Reduce( offset, start, FadeTimeRange.End + offset );
+		var second = Second.Reduce( offset, FadeTimeRange.Start + offset, end );
+
+		if ( offset.IsZero && first.Equals( First ) && second.Equals( Second ) )
+		{
+			return this;
+		}
+
+		return first.CrossFade( second, FadeTimeRange + offset, Mode, Direction );
+	}
 }
 
 partial class PropertySignalExtensions
