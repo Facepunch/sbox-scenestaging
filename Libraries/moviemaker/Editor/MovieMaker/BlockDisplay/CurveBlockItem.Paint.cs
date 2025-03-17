@@ -12,13 +12,34 @@ partial class CurveBlockItem<T>
 	{
 		var timeRange = Block.TimeRange;
 
-		foreach ( var time in Block.GetPaintHintTimes( timeRange ) )
-		{
-			if ( time < timeRange.Start ) continue;
-			if ( time > timeRange.End ) break;
+		times.Add( timeRange.Start );
 
-			times.Add( time );
+		void TryAddTime( MovieTime time )
+		{
+			if ( time < timeRange.Start ) return;
+			if ( time > timeRange.End ) return;
+
+			if ( times[^1] < time )
+			{
+				times.Add( time );
+			}
 		}
+
+		foreach ( var hintRange in Block.GetPaintHints( timeRange ) )
+		{
+			TryAddTime( hintRange.Start );
+
+			var clamped = hintRange with { End = hintRange.End - MovieTime.Epsilon };
+
+			foreach ( var time in clamped.GetSampleTimes( 30 ) )
+			{
+				TryAddTime( time );
+			}
+
+			TryAddTime( hintRange.End - MovieTime.Epsilon );
+		}
+
+		TryAddTime( timeRange.End );
 	}
 
 	private void UpdateRanges()
@@ -142,13 +163,13 @@ partial class CurveBlockItem<T>
 			{
 				var y = (mids[j] - floats[j]) * scale + 0.5f * height;
 
-				if ( t.IsPositive )
+				if ( t <= Block.TimeRange.Start )
 				{
-					Lines[j].LineTo( new Vector2( x, y ) );
+					Lines[j].MoveTo( new Vector2( x, y ) );
 				}
 				else
 				{
-					Lines[j].MoveTo( new Vector2( x, y ) );
+					Lines[j].LineTo( new Vector2( x, y ) );
 				}
 			}
 		}

@@ -33,6 +33,16 @@ file sealed record CrossFadeOperation<T>( PropertySignal<T> First, PropertySigna
 
 		return first.CrossFade( second, FadeTimeRange + offset, Mode, Direction );
 	}
+
+	public override IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange )
+	{
+		var hints = First.GetPaintHints( timeRange.ClampEnd( FadeTimeRange.End ) )
+			.Union( Second.GetPaintHints( timeRange.ClampStart( FadeTimeRange.Start ) ) );
+
+		return timeRange.Intersect( FadeTimeRange ) is { } intersection
+			? hints.Union( [intersection] )
+			: hints;
+	}
 }
 
 partial class PropertySignalExtensions

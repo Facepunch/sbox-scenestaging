@@ -24,6 +24,9 @@ public abstract record UnaryOperation<T>( PropertySignal<T> Signal ) : PropertyO
 	{
 		return this with { Signal = Signal.Reduce( offset, start, end ) };
 	}
+
+	public override IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange ) =>
+		Signal.GetPaintHints( timeRange );
 }
 
 public abstract record BinaryOperation<T>( PropertySignal<T> First, PropertySignal<T> Second )
@@ -35,4 +38,7 @@ public abstract record BinaryOperation<T>( PropertySignal<T> First, PropertySign
 	{
 		return this with { First = First.Reduce( offset, start, end ), Second = Second.Reduce( offset, start, end ) };
 	}
+
+	public override IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange ) =>
+		First.GetPaintHints( timeRange ).Union( Second.GetPaintHints( timeRange ) );
 }

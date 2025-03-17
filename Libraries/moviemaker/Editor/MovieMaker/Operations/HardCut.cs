@@ -28,6 +28,12 @@ file sealed record HardCutOperation<T>( PropertySignal<T> First, PropertySignal<
 
 		return first.HardCut( second, Time + offset );
 	}
+
+	public override IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange )
+	{
+		return First.GetPaintHints( timeRange.ClampEnd( Time ) )
+			.Union( Second.GetPaintHints( timeRange.ClampStart( Time ) ) );
+	}
 }
 
 partial class PropertySignalExtensions
