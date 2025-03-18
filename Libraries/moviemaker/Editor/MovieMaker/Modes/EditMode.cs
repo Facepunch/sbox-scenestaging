@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -81,6 +82,39 @@ public abstract class EditMode
 			toolbar.Add( btn );
 
 			return btn;
+		}
+
+		public (FloatSlider Slider, Label Label) AddSlider( string title, Func<float> getValue, Action<float> setValue, float minimum = 0f,
+			float maximum = 1f, float step = 0.01f, Func<string>? getLabel = null )
+		{
+			var slider = new FloatSlider( null )
+			{
+				ToolTip = title,
+				FixedWidth = 80f,
+				Minimum = minimum,
+				Maximum = maximum,
+				Step = step
+			};
+
+			slider.Bind( nameof( FloatSlider.Value ) )
+				.From( getValue, setValue );
+
+			toolbar.Add( slider );
+
+			var label = new Label( null )
+			{
+				Color = Color.White.Darken( 0.5f ),
+				Margin = 4f,
+				Alignment = TextFlag.Left
+			};
+
+			label.Bind( nameof( Label.Text ) )
+				.ReadOnly()
+				.From( getLabel ?? (() => slider.Value.ToString( CultureInfo.InvariantCulture )), (Action<string>?) null );
+
+			toolbar.Add( label );
+
+			return (slider, label);
 		}
 
 		public void AddSpacingCell() => toolbar.AddSpacingCell( 16f );

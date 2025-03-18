@@ -11,7 +11,11 @@ file sealed record ConstantSignal<T>( T Value ) : PropertySignal<T>
 {
 	public override T GetValue( MovieTime time ) => Value;
 
-	protected override PropertySignal<T> OnReduce( MovieTime offset, MovieTime? start, MovieTime? end ) => this;
+	public override bool CanSmooth => true;
+
+	protected override PropertySignal<T> OnTransform( MovieTime offset ) => this;
+	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end ) => this;
+	protected override PropertySignal<T> OnSmooth( MovieTime size ) => this;
 
 	public override IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange ) => [timeRange.Start, timeRange.End - MovieTime.Epsilon];
 }

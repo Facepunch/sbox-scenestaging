@@ -341,13 +341,8 @@ public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, stri
 
 	IReadOnlyList<IProjectPropertyBlock> IProjectPropertyTrack.Slice( MovieTimeRange timeRange ) => Slice( timeRange );
 
-	public IReadOnlyList<PropertyBlock<T>> CreateSourceBlocks( ProjectSourceClip source )
-	{
-		throw new NotImplementedException();
-	}
-
 	IReadOnlyList<IProjectPropertyBlock> IProjectPropertyTrack.CreateSourceBlocks( ProjectSourceClip source ) =>
-		CreateSourceBlocks( source );
+		source.AsBlocks<T>( this );
 
 	private void UpdateBlocks()
 	{

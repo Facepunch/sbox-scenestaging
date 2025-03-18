@@ -63,7 +63,7 @@ partial class MotionEditMode
 
 		foreach ( var (_, state) in TrackModifications )
 		{
-			state.Commit( selection, ChangeOffset, IsAdditive );
+			state.Commit( new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSize ) );
 		}
 
 		_changeDuration = null;
@@ -198,7 +198,7 @@ partial class MotionEditMode
 
 			state.SetRelativeTo( blocks[0].GetValue( MovieTime.Zero ) );
 			state.SetOverlay( blocks, -clipboard.Selection.TotalStart );
-			state.Update( selection, ChangeOffset, IsAdditive );
+			state.Update( new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSize ) );
 
 			changed = true;
 		}
@@ -230,7 +230,7 @@ partial class MotionEditMode
 
 		if ( GetTrackModification( track.TrackWidget.ProjectTrack ) is { } state )
 		{
-			state.Update( selection, ChangeOffset, IsAdditive );
+			state.Update( new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSize ) );
 		}
 	}
 
@@ -279,20 +279,26 @@ partial class MotionEditMode
 
 		HasChanges = true;
 
-		return state.Update( selection, ChangeOffset, IsAdditive );
+		return state.Update( new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSize ) );
 	}
 
 	private bool _hasSelectionItems;
 
 	private void SelectionChanged()
 	{
+		if ( _smoothSlider is { } slider )
+		{
+			slider.Slider.Hidden = !SmoothingEnabled;
+			slider.Label.Hidden = !SmoothingEnabled;
+		}
+
 		if ( TimeSelection is { } selection )
 		{
 			PasteTimeRange = _changeDuration is { } duration ? (ChangeOffset, ChangeOffset + duration) : null;
 
 			foreach ( var (_, state) in TrackModifications )
 			{
-				state.Update( selection, ChangeOffset, IsAdditive );
+				state.Update( new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSize ) );
 			}
 
 			if ( !_hasSelectionItems )

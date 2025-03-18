@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Immutable;
 using Sandbox.MovieMaker.Compiled;
 
 namespace Sandbox.MovieMaker;
@@ -14,6 +15,19 @@ public static class ClipExtensions
 	/// How deeply are we nested? Root tracks have depth <c>0</c>.
 	/// </summary>
 	public static int GetDepth( this ITrack track ) => track.Parent is null ? 0 : track.Parent.GetDepth() + 1;
+
+	public static (IReferenceTrack ReferenceTrack, IReadOnlyList<string> PropertyNames) GetPath( this IPropertyTrack propertyTrack )
+	{
+		var names = new List<string> { propertyTrack.Name };
+
+		while ( propertyTrack.Parent is IPropertyTrack parentProperty )
+		{
+			propertyTrack = parentProperty;
+			names.Add( propertyTrack.Name );
+		}
+
+		return ((IReferenceTrack)propertyTrack.Parent, names);
+	}
 
 	/// <summary>
 	/// Searches <paramref name="clip"/> for a track with the given <paramref name="path"/>,
@@ -61,10 +75,24 @@ public static class ClipExtensions
 			.FirstOrDefault( x => x.HasMatchingFullPath( path ) );
 	}
 
+	public static IPropertyTrack<T>? GetProperty<T>( this IClip clip, Guid refTrackId, IReadOnlyList<string> path )
+	{
+		if ( clip.GetTrack( refTrackId ) is not { } refTrack ) return null;
+
+		return clip.Tracks
+			.OfType<IPropertyTrack<T>>()
+			.FirstOrDefault( x => x.HasMatchingFullPath( refTrack, path ) );
+	}
+
 	/// <inheritdoc cref="GetProperty{T}(IClip,string[])"/>
 	public static CompiledPropertyTrack<T>? GetProperty<T>( this CompiledClip clip, params string[] path )
 	{
-		return (CompiledPropertyTrack<T>)((IClip)clip).GetProperty<T>( path )!;
+		return (CompiledPropertyTrack<T>?)((IClip)clip).GetProperty<T>( path );
+	}
+
+	public static CompiledPropertyTrack<T>? GetProperty<T>( this CompiledClip clip, Guid refTrackId, IReadOnlyList<string> path )
+	{
+		return (CompiledPropertyTrack<T>?)((IClip)clip).GetProperty<T>( refTrackId, path );
 	}
 
 	private static bool HasMatchingFullPath( this ITrack track, IReadOnlyList<string> path )
@@ -83,6 +111,24 @@ public static class ClipExtensions
 		}
 
 		return true;
+	}
+
+	private static bool HasMatchingFullPath( this ITrack track, IReferenceTrack refTrack, IReadOnlyList<string> propertyPath )
+	{
+		if ( track.GetDepth() - refTrack.GetDepth() != propertyPath.Count ) return false;
+
+		var parent = track;
+
+		for ( var i = propertyPath.Count - 1; i >= 0 && parent is not null; --i )
+		{
+			var name = propertyPath[i];
+
+			if ( parent.Name != name ) return false;
+
+			parent = parent.Parent;
+		}
+
+		return parent == refTrack;
 	}
 
 	/// <summary>
