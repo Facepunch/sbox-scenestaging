@@ -43,7 +43,6 @@ internal sealed class TrackModification<T> : ITrackModification
 	private MovieTime _lastSmoothSize;
 
 	public bool HasChanges => _overlay != null;
-	public bool CanSmooth => _overlay?.CanSmooth ?? false;
 
 	public TrackModification( EditMode editMode, ProjectPropertyTrack<T> track )
 	{
@@ -92,7 +91,7 @@ internal sealed class TrackModification<T> : ITrackModification
 		if ( _smoothedOverlay is null || _lastSmoothSize != options.SmoothSize )
 		{
 			_lastSmoothSize = options.SmoothSize;
-			_smoothedOverlay = _overlay.CanSmooth ? _overlay.Smooth( options.SmoothSize ) : _overlay;
+			_smoothedOverlay = _overlay.Smooth( options.SmoothSize );
 		}
 
 		_blended = new PropertyBlock<T>( _original.CrossFade( _smoothedOverlay.Shift( options.Offset ), options.Selection ).Reduce( timeRange ), timeRange );

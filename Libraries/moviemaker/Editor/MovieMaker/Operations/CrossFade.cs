@@ -1,4 +1,5 @@
 ﻿using Sandbox.MovieMaker;
+using System.Text.Json.Serialization;
 
 namespace Editor.MovieMaker;
 
@@ -12,7 +13,8 @@ public enum FadeDirection
 
 [JsonDiscriminator( "CrossFade" )]
 file sealed record CrossFadeOperation<T>( PropertySignal<T> First, PropertySignal<T> Second, MovieTimeRange FadeTimeRange,
-	InterpolationMode Mode, FadeDirection Direction ) : InterpolateOperation<T>( First, Second )
+	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] InterpolationMode Mode,
+	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] FadeDirection Direction ) : InterpolateOperation<T>( First, Second )
 {
 	public override float GetAlpha( MovieTime time ) => Direction == FadeDirection.FadeOut
 		? 1f - Mode.Apply( 1f - FadeTimeRange.GetFraction( time ) )

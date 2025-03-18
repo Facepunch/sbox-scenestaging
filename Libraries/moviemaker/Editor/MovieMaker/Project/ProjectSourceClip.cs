@@ -9,7 +9,7 @@ namespace Editor.MovieMaker;
 /// <summary>
 /// Stores a raw gameplay recording.
 /// </summary>
-public sealed record ProjectSourceClip( Guid Id, CompiledClip Clip, JsonObject? Metadata )
+public sealed partial record ProjectSourceClip( Guid Id, CompiledClip Clip, JsonObject? Metadata )
 {
 	private bool PrintMembers( StringBuilder builder )
 	{

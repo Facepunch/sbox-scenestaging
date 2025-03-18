@@ -11,8 +11,6 @@ file sealed record ConstantSignal<T>( T Value ) : PropertySignal<T>
 {
 	public override T GetValue( MovieTime time ) => Value;
 
-	public override bool CanSmooth => true;
-
 	protected override PropertySignal<T> OnTransform( MovieTime offset ) => this;
 	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end ) => this;
 	protected override PropertySignal<T> OnSmooth( MovieTime size ) => this;

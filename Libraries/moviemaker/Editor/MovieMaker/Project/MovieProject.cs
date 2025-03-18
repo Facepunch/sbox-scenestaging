@@ -11,7 +11,7 @@ namespace Editor.MovieMaker;
 /// All the info needed to compile a <see cref="CompiledClip"/>. Gets serialized
 /// and stored in <see cref="IMovieResource.EditorData"/>.
 /// </summary>
-public sealed class MovieProject : IJsonPopulator
+public sealed partial class MovieProject
 {
 	private readonly Dictionary<Guid, ProjectSourceClip> _sourceClipDict = new();
 
@@ -73,16 +73,6 @@ public sealed class MovieProject : IJsonPopulator
 
 	private void CompileTrack( IProjectTrack track, Dictionary<IProjectTrack, CompiledTrack> result ) =>
 		result.Add( track, track.Compile( track.Parent is { } parent ? result[parent] : null, false ) );
-
-	public JsonNode Serialize()
-	{
-		throw new NotImplementedException();
-	}
-
-	public void Deserialize( JsonNode node )
-	{
-		throw new NotImplementedException();
-	}
 
 	public ProjectSourceClip AddSourceClip( CompiledClip clip, JsonObject? metadata = null )
 	{
