@@ -60,7 +60,7 @@ file sealed class DefaultInterpolator :
 	public Vector2 Interpolate( Vector2 a, Vector2 b, float delta ) => a + (b - a) * delta;
 	public Vector3 Interpolate( Vector3 a, Vector3 b, float delta ) => a + (b - a) * delta;
 	public Vector4 Interpolate( Vector4 a, Vector4 b, float delta ) => a + (b - a) * delta;
-	public Rotation Interpolate( Rotation a, Rotation b, float delta ) => Rotation.Slerp( a, b, delta );
-	public Angles Interpolate( Angles a, Angles b, float delta ) => Rotation.Slerp( a, b, delta );
+	public Rotation Interpolate( Rotation a, Rotation b, float delta ) => Interpolate( a.Angles(), b.Angles(), delta );
+	public Angles Interpolate( Angles a, Angles b, float delta ) => a.LerpTo( b, delta );
 	public Color Interpolate( Color a, Color b, float delta ) => a + (b - a) * delta;
 }
