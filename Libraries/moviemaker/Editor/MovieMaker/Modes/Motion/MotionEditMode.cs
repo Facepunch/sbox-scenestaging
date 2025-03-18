@@ -9,6 +9,10 @@ internal sealed partial class MotionEditMode : EditMode
 {
 	private TimeSelection? _timeSelection;
 	private bool _additive;
+	private bool _smooth;
+	private int _smoothSteps;
+
+	private (FloatSlider Slider, Label Label)? _smoothSlider;
 
 	public TimeSelection? TimeSelection
 	{
@@ -35,6 +39,33 @@ internal sealed partial class MotionEditMode : EditMode
 		}
 	}
 
+	public bool SmoothingEnabled
+	{
+		get => _smooth;
+
+		private set
+		{
+			_smooth = value;
+			SelectionChanged();
+		}
+	}
+
+	public MovieTime SmoothingSize
+	{
+		get => _smooth ? Math.Pow( 2d, SmoothingSteps ) / 32d : default;
+	}
+
+	public int SmoothingSteps
+	{
+		get => _smoothSteps;
+		private set
+		{
+			_smoothSteps = Math.Clamp( value, 0, 8 );
+
+			if ( SmoothingEnabled ) SelectionChanged();
+		}
+	}
+
 	private MovieTime? _selectionStartTime;
 
 	protected override void OnEnable()
@@ -58,6 +89,15 @@ internal sealed partial class MotionEditMode : EditMode
 
 		Toolbar.AddSpacingCell();
 		Toolbar.AddToggle( "Additive", "layers", () => IsAdditive, state => IsAdditive = state );
+		Toolbar.AddToggle( "Smooth", "blur_on", () => SmoothingEnabled, state => SmoothingEnabled = state );
+
+		_smoothSlider = Toolbar.AddSlider( "Smooth Size", () => SmoothingSteps, value => SmoothingSteps = (int)value,
+			minimum: 0,
+			maximum: 8,
+			step: 1,
+			getLabel: () => $"{SmoothingSize.TotalSeconds:F2}s" );
+
+		SelectionChanged();
 	}
 
 	private void ClearSelection()

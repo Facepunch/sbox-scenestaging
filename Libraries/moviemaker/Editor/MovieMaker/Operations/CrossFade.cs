@@ -18,26 +18,24 @@ file sealed record CrossFadeOperation<T>( PropertySignal<T> First, PropertySigna
 		? 1f - Mode.Apply( 1f - FadeTimeRange.GetFraction( time ) )
 		: Mode.Apply( FadeTimeRange.GetFraction( time ) );
 
-	protected override PropertySignal<T> OnReduce( MovieTime offset, MovieTime? start, MovieTime? end )
+	protected override PropertySignal<T> OnTransform( MovieTime offset ) => this with
 	{
-		if ( start >= FadeTimeRange.End + offset ) return Second.Reduce( offset, start, end );
-		if ( end <= FadeTimeRange.Start + offset ) return First.Reduce( offset, start, end );
+		First = First.Transform( offset ),
+		Second = Second.Transform( offset ),
+		FadeTimeRange = FadeTimeRange + offset
+	};
 
-		var first = First.Reduce( offset, start, FadeTimeRange.End + offset );
-		var second = Second.Reduce( offset, FadeTimeRange.Start + offset, end );
-
-		if ( offset.IsZero && first.Equals( First ) && second.Equals( Second ) )
-		{
-			return this;
-		}
-
-		return first.CrossFade( second, FadeTimeRange + offset, Mode, Direction );
+	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end )
+	{
+		return !TryReduceTransition( start, end, FadeTimeRange, out var reduced,
+			out var before, out var after )
+			? before.CrossFade( after, FadeTimeRange )
+			: reduced;
 	}
 
 	public override IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange )
 	{
-		var hints = First.GetPaintHints( timeRange.ClampEnd( FadeTimeRange.End ) )
-			.Union( Second.GetPaintHints( timeRange.ClampStart( FadeTimeRange.Start ) ) );
+		var hints = GetTransitionPaintHints( timeRange, FadeTimeRange );
 
 		return timeRange.Intersect( FadeTimeRange ) is { } intersection
 			? hints.Union( [intersection] )

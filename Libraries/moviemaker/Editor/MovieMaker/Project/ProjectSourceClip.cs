@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Text;
+using System.Text.Json.Nodes;
 using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker;
@@ -10,5 +11,10 @@ namespace Editor.MovieMaker;
 /// </summary>
 public sealed record ProjectSourceClip( Guid Id, CompiledClip Clip, JsonObject? Metadata )
 {
+	private bool PrintMembers( StringBuilder builder )
+	{
+		builder.Append( $"Id = {Id}" );
 
+		return true;
+	}
 }

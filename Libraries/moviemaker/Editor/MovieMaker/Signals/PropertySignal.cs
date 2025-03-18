@@ -39,17 +39,29 @@ public abstract partial record PropertySignal<T> : IPropertySignal<T>
 {
 	public abstract T GetValue( MovieTime time );
 
-	public PropertySignal<T> Reduce( MovieTime offset, MovieTime? start, MovieTime? end )
+	public PropertySignal<T> Transform( MovieTime offset )
 	{
-		if ( start >= end )
-		{
-			return GetValue( start.Value );
-		}
-
-		return OnReduce( offset, start, end );
+		return !offset.IsZero ? OnTransform( offset ) : this;
 	}
 
-	protected abstract PropertySignal<T> OnReduce( MovieTime offset, MovieTime? start, MovieTime? end );
+	protected abstract PropertySignal<T> OnTransform( MovieTime offset );
+
+	/// <summary>
+	/// Try to make a more minimal composition for this signal, optionally within a time range.
+	/// </summary>
+	/// <param name="start">Optional start time, we can discard any features before this if given.</param>
+	/// <param name="end">Optional end time, we can discard any features after this if given.</param>
+	public PropertySignal<T> Reduce( MovieTime? start = null, MovieTime? end = null )
+	{
+		return start >= end ? GetValue( start.Value ) : OnReduce( start, end );
+	}
+
+	protected abstract PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end );
+
+	public virtual bool CanSmooth => false;
+
+	public PropertySignal<T> Smooth( MovieTime size ) => size <= 0d ? this : OnSmooth( size );
+	protected virtual PropertySignal<T> OnSmooth( MovieTime size ) => throw new NotImplementedException();
 
 	/// <summary>
 	/// Gets time ranges within the given <paramref name="timeRange"/> that have changing values.
@@ -65,12 +77,6 @@ public abstract partial record PropertySignal<T> : IPropertySignal<T>
 // ReSharper disable once UnusedMember.Global
 public static partial class PropertySignalExtensions
 {
-	public static PropertySignal<T> Reduce<T>( this PropertySignal<T> signal ) =>
-		signal.Reduce( default, null, null );
-
 	public static PropertySignal<T> Reduce<T>( this PropertySignal<T> signal, MovieTimeRange timeRange ) =>
-		signal.Reduce( default, timeRange.Start, timeRange.End );
-
-	public static PropertySignal<T> Reduce<T>( this PropertySignal<T> signal, MovieTime offset, MovieTimeRange timeRange ) =>
-		signal.Reduce( offset, timeRange.Start, timeRange.End );
+		signal.Reduce( timeRange.Start, timeRange.End );
 }

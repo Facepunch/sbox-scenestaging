@@ -9,8 +9,11 @@ file sealed record ShiftOperation<T>( PropertySignal<T> Signal, MovieTime Offset
 {
 	public override T GetValue( MovieTime time ) => Signal.GetValue( time - Offset );
 
-	protected override PropertySignal<T> OnReduce( MovieTime offset, MovieTime? start, MovieTime? end ) =>
-		Signal.Reduce( Offset + offset, start, end );
+	protected override PropertySignal<T> OnTransform( MovieTime offset ) =>
+		this with { Offset = Offset + offset };
+
+	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end ) =>
+		Signal.Transform( Offset ).Reduce( start, end );
 }
 
 partial class PropertySignalExtensions

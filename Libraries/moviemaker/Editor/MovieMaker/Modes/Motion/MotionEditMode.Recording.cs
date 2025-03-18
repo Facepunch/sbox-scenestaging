@@ -23,9 +23,9 @@ partial class MotionEditMode
 
 		var time = Session.CurrentPointer;
 
-		foreach ( var track in Project.RootTracks )
+		foreach ( var track in Session.EditableTracks )
 		{
-			StartRecording( track, time );
+			Log.Info( $"{track.Name}: {StartRecording( track, time )}" );
 		}
 
 		if ( _recordings.Count == 0 ) return false;
@@ -104,12 +104,14 @@ partial class MotionEditMode
 			{ "Date", DateTime.UtcNow.ToString( "o", CultureInfo.InvariantCulture ) },
 			{ "IsEditor", Session.Player.Scene.IsEditor },
 			{ "SceneSource", Json.ToNode( Session.Player.Scene.Source ) },
-			{ "MoviePlayer", Json.ToNode( Session.Player ) }
+			{ "MoviePlayer", Json.ToNode( Session.Player.Id ) }
 		} );
 
 		Clipboard = new ClipboardData( new TimeSelection( range, DefaultInterpolation ), tracks.Keys
 			.OfType<IProjectPropertyTrack>()
 			.ToImmutableDictionary( x => x.Id, x => x.CreateSourceBlocks( sourceClip ) ) );
+
+		Session.SetCurrentPointer( range.Start );
 
 		if ( LoadChangesFromClipboard() )
 		{

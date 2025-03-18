@@ -13,26 +13,24 @@ file sealed record HardCutOperation<T>( PropertySignal<T> First, PropertySignal<
 		return time < Time ? First.GetValue( time ) : Second.GetValue( time );
 	}
 
-	protected override PropertySignal<T> OnReduce( MovieTime offset, MovieTime? start, MovieTime? end )
+	protected override PropertySignal<T> OnTransform( MovieTime offset ) => this with
 	{
-		if ( start >= Time + offset ) return Second.Reduce( offset, start, end );
-		if ( end <= Time + offset ) return First.Reduce( offset, start, end );
+		First = First.Transform( offset ),
+		Second = Second.Transform( offset ),
+		Time = Time + offset
+	};
 
-		var first = First.Reduce( offset, start, Time + offset );
-		var second = Second.Reduce( offset, Time + offset, end );
-
-		if ( offset.IsZero && first.Equals( First ) && second.Equals( Second ) )
-		{
-			return this;
-		}
-
-		return first.HardCut( second, Time + offset );
+	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end )
+	{
+		return !TryReduceTransition( start, end, Time, out var reduced,
+			out var before, out var after )
+			? before.HardCut( after, Time )
+			: reduced;
 	}
 
 	public override IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange )
 	{
-		return First.GetPaintHints( timeRange.ClampEnd( Time ) )
-			.Union( Second.GetPaintHints( timeRange.ClampStart( Time ) ) );
+		return GetTransitionPaintHints( timeRange, Time );
 	}
 }
 

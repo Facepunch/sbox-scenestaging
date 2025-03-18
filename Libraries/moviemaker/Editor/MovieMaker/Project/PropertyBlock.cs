@@ -60,7 +60,7 @@ public sealed record PropertyBlock<T>( PropertySignal<T> Signal, MovieTimeRange 
 	public PropertyBlock<T> Shift( MovieTime offset )
 	{
 		return !offset.IsZero
-			? new PropertyBlock<T>( Signal.Shift( offset ), TimeRange + offset )
+			? new PropertyBlock<T>( Signal.Shift( offset ).Reduce( TimeRange + offset ), TimeRange + offset )
 			: this;
 	}
 

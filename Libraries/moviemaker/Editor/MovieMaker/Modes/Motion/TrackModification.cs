@@ -5,6 +5,12 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
+public readonly record struct ModificationOptions(
+	TimeSelection Selection,
+	MovieTime Offset,
+	bool Additive,
+	MovieTime SmoothSize );
+
 /// <summary>
 /// Holds and applies pending changes for a track.
 /// </summary>
@@ -16,8 +22,8 @@ internal interface ITrackModification
 	void SetOverlay( object? constantValue );
 	void SetOverlay( IEnumerable<IProjectPropertyBlock> blocks, MovieTime offset );
 	void ClearPreview();
-	bool Update( TimeSelection selection, MovieTime offset, bool additive );
-	bool Commit( TimeSelection selection, MovieTime offset, bool additive );
+	bool Update( ModificationOptions options );
+	bool Commit( ModificationOptions options );
 }
 
 internal sealed class TrackModification<T> : ITrackModification
@@ -29,12 +35,15 @@ internal sealed class TrackModification<T> : ITrackModification
 
 	private PropertySignal<T>? _original;
 	private PropertySignal<T>? _overlay;
+	private PropertySignal<T>? _smoothedOverlay;
 	private PropertyBlock<T>? _blended;
 
 	private T _relativeTo = default!;
 	private MovieTimeRange? _lastSliceRange;
+	private MovieTime _lastSmoothSize;
 
 	public bool HasChanges => _overlay != null;
+	public bool CanSmooth => _overlay?.CanSmooth ?? false;
 
 	public TrackModification( EditMode editMode, ProjectPropertyTrack<T> track )
 	{
@@ -47,11 +56,16 @@ internal sealed class TrackModification<T> : ITrackModification
 		_relativeTo = (T)value!;
 	}
 
-	public void SetOverlay( object? constantValue ) => _overlay = (T)constantValue!;
+	public void SetOverlay( object? constantValue )
+	{
+		_overlay = (T)constantValue!;
+		_smoothedOverlay = null;
+	}
 
 	public void SetOverlay( IEnumerable<IProjectPropertyBlock> blocks, MovieTime offset )
 	{
-		_overlay = blocks.Cast<PropertyBlock<T>>().AsSignal()?.Shift( offset );
+		_overlay = blocks.Cast<PropertyBlock<T>>().AsSignal()?.Shift( offset ).Reduce();
+		_smoothedOverlay = null;
 	}
 
 	public void ClearPreview()
@@ -59,7 +73,7 @@ internal sealed class TrackModification<T> : ITrackModification
 		EditMode.ClearPreviewBlocks( Track );
 	}
 
-	public bool Update( TimeSelection selection, MovieTime offset, bool additive )
+	public bool Update( ModificationOptions options )
 	{
 		if ( _overlay is null || !EditMode.Session.CanEdit( Track ) )
 		{
@@ -67,7 +81,7 @@ internal sealed class TrackModification<T> : ITrackModification
 			return false;
 		}
 
-		var timeRange = selection.TotalTimeRange;
+		var timeRange = options.Selection.TotalTimeRange;
 
 		if ( _original is null || _lastSliceRange != timeRange )
 		{
@@ -75,16 +89,22 @@ internal sealed class TrackModification<T> : ITrackModification
 			_original = Track.Slice( timeRange ).AsSignal() ?? _relativeTo;
 		}
 
-		_blended = new PropertyBlock<T>( _original.CrossFade( _overlay.Shift( offset ), selection ).Reduce( timeRange ), timeRange );
+		if ( _smoothedOverlay is null || _lastSmoothSize != options.SmoothSize )
+		{
+			_lastSmoothSize = options.SmoothSize;
+			_smoothedOverlay = _overlay.CanSmooth ? _overlay.Smooth( options.SmoothSize ) : _overlay;
+		}
+
+		_blended = new PropertyBlock<T>( _original.CrossFade( _smoothedOverlay.Shift( options.Offset ), options.Selection ).Reduce( timeRange ), timeRange );
 
 		EditMode.SetPreviewBlocks( Track, [_blended] );
 
 		return true;
 	}
 
-	public bool Commit( TimeSelection selection, MovieTime offset, bool additive )
+	public bool Commit( ModificationOptions options )
 	{
-		if ( !Update( selection, offset, additive ) || _blended is not { } blended ) return false;
+		if ( !Update( options ) || _blended is not { } blended ) return false;
 
 		var changed = Track.Add( blended.Signal, blended.TimeRange );
 
