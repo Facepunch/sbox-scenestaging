@@ -9,8 +9,6 @@ file sealed record BlendOperation<T>( PropertySignal<T> First, PropertySignal<T>
 {
 	public override float GetAlpha( MovieTime time ) => Alpha;
 
-	public override bool CanSmooth => First.CanSmooth && Second.CanSmooth;
-
 	protected override PropertySignal<T> OnSmooth( MovieTime size ) =>
 		this with { First = First.Smooth( size ), Second = Second.Smooth( size ) };
 }

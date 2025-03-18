@@ -8,8 +8,6 @@ namespace Editor.MovieMaker;
 
 public abstract record PropertyOperation<T> : PropertySignal<T>
 {
-	public abstract IReadOnlyList<PropertySignal<T>> Operands { get; }
-
 	protected override bool PrintMembers( StringBuilder builder )
 	{
 		return false;
@@ -18,15 +16,11 @@ public abstract record PropertyOperation<T> : PropertySignal<T>
 
 public abstract record UnaryOperation<T>( PropertySignal<T> Signal ) : PropertyOperation<T>
 {
-	public override IReadOnlyList<PropertySignal<T>> Operands => [Signal];
-
 	protected override PropertySignal<T> OnTransform( MovieTime offset ) =>
 		this with { Signal = Signal.Transform( offset ) };
 
 	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end ) =>
 		this with { Signal = Signal.Reduce( start, end ) };
-
-	public override bool CanSmooth => Signal.CanSmooth;
 
 	protected override PropertySignal<T> OnSmooth( MovieTime size ) => this with { Signal = Signal.Smooth( size ) };
 
@@ -37,8 +31,6 @@ public abstract record UnaryOperation<T>( PropertySignal<T> Signal ) : PropertyO
 public abstract record BinaryOperation<T>( PropertySignal<T> First, PropertySignal<T> Second )
 	: PropertyOperation<T>
 {
-	public override IReadOnlyList<PropertySignal<T>> Operands => [First, Second];
-
 	protected override PropertySignal<T> OnTransform( MovieTime offset ) =>
 		this with { First = First.Transform( offset ), Second = Second.Transform( offset ) };
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using Sandbox.MovieMaker.Compiled;
 using Sandbox.MovieMaker;
 
@@ -9,17 +10,28 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 [JsonDiscriminator( "Compiled" )]
-file sealed record CompiledSignal<T>( ProjectSourceClip Source, CompiledSampleBlock<T> Block,
-	MovieTime Offset = default,
-	MovieTime SmoothingSize = default ) : PropertySignal<T>
+file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, int BlockIndex,
+	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTime Offset = default,
+	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTime SmoothingSize = default ) : PropertySignal<T>
 {
 	private readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
 
 	private ImmutableArray<T>? _samples;
+	private CompiledSampleBlock<T>? _block;
+
+	private CompiledSampleBlock<T> Block => _block ??= (CompiledSampleBlock<T>)((CompiledPropertyTrack<T>)Source.Clip.Tracks[TrackIndex]).Blocks[BlockIndex];
 
 	private ImmutableArray<T> Samples => _samples ??= Block.Resample( Block.SampleRate, SmoothingSize, _interpolator );
 
-	public override bool CanSmooth => _interpolator is not null;
+	public CompiledSignal( CompiledSignal<T> copy )
+		: base( copy )
+	{
+		Source = copy.Source;
+		TrackIndex = copy.TrackIndex;
+		BlockIndex = copy.BlockIndex;
+		Offset = copy.Offset;
+		SmoothingSize = copy.SmoothingSize;
+	}
 
 	public override T GetValue( MovieTime time )
 	{
@@ -40,7 +52,7 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, CompiledSampleBl
 	}
 
 	protected override PropertySignal<T> OnSmooth( MovieTime size ) =>
-		this with { SmoothingSize = size, _samples = null };
+		_interpolator is null ? this : this with { SmoothingSize = size };
 
 	public override IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange )
 	{
@@ -82,11 +94,13 @@ partial class PropertySignalExtensions
 			return [];
 		}
 
+		var trackIndex = source.Clip.Tracks.IndexOf( matchingTrack );
+
 		return matchingTrack.Blocks
-			.Select( x => new PropertyBlock<T>( x switch
+			.Select( (x, i) => new PropertyBlock<T>( x switch
 			{
 				CompiledConstantBlock<T> constant => constant.Value,
-				CompiledSampleBlock<T> sample => new CompiledSignal<T>( source, sample ),
+				CompiledSampleBlock<T> => new CompiledSignal<T>( source, trackIndex, i ),
 				_ => throw new NotImplementedException()
 			}, x.TimeRange ) )
 			.ToImmutableArray();

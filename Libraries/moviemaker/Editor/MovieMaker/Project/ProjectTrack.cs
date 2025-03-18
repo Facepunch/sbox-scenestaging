@@ -1,16 +1,15 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading.Channels;
+using System.Text.Json.Serialization;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
-using static Editor.Button;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
-public interface IProjectTrack : ITrack, IComparable<IProjectTrack>
+public partial interface IProjectTrack : ITrack, IComparable<IProjectTrack>
 {
 	Guid Id { get; }
 
@@ -58,6 +57,7 @@ public abstract partial class ProjectTrack<T>( MovieProject project, Guid id, st
 	private bool _childrenChanged;
 
 	public MovieProject Project { get; } = project;
+
 	public Guid Id { get; } = id;
 	public string Name { get; } = name;
 	public Type TargetType { get; } = typeof(T);
@@ -114,7 +114,7 @@ public abstract partial class ProjectTrack<T>( MovieProject project, Guid id, st
 	}
 }
 
-public interface IProjectReferenceTrack : IProjectTrack, IReferenceTrack
+public partial interface IProjectReferenceTrack : IProjectTrack, IReferenceTrack
 {
 	public static IProjectReferenceTrack Create( MovieProject project, Guid id, string name, Type targetType )
 	{
@@ -133,7 +133,7 @@ public interface IProjectReferenceTrack : IProjectTrack, IReferenceTrack
 	Guid IProjectTrack.Id => Id;
 }
 
-public sealed class ProjectReferenceTrack<T>( MovieProject project, Guid id, string name )
+public sealed partial class ProjectReferenceTrack<T>( MovieProject project, Guid id, string name )
 	: ProjectTrack<T>( project, id, name ), IProjectReferenceTrack, IReferenceTrack<T>
 	where T : class, IValid
 {
@@ -145,7 +145,7 @@ public sealed class ProjectReferenceTrack<T>( MovieProject project, Guid id, str
 	ITrack? ITrack.Parent => Parent;
 }
 
-public interface IProjectPropertyTrack : IPropertyTrack, IProjectTrack
+public partial interface IProjectPropertyTrack : IPropertyTrack, IProjectTrack
 {
 	public static IProjectPropertyTrack Create( MovieProject project, Guid id, string name, Type targetType )
 	{
@@ -199,7 +199,7 @@ public interface IProjectPropertyTrack : IPropertyTrack, IProjectTrack
 	ITrack? ITrack.Parent => Parent;
 }
 
-public sealed class ProjectPropertyTrack<T>( MovieProject project, Guid id, string name )
+public sealed partial class ProjectPropertyTrack<T>( MovieProject project, Guid id, string name )
 	: ProjectTrack<T>( project, id, name ), IProjectPropertyTrack, IPropertyTrack<T>
 {
 	private readonly List<PropertyBlock<T>> _blocks = new();

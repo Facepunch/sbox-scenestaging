@@ -4,6 +4,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
+[JsonDiscriminator( "Shift" )]
 file sealed record ShiftOperation<T>( PropertySignal<T> Signal, MovieTime Offset )
 	: UnaryOperation<T>( Signal )
 {

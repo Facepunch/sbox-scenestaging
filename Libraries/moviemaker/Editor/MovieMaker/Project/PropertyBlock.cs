@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Text.Json.Serialization;
+using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker;
@@ -35,7 +36,7 @@ public interface IProjectPropertyBlock : IPropertyBlock
 	IProjectPropertyBlock Shift( MovieTime offset );
 }
 
-public sealed record PropertyBlock<T>( PropertySignal<T> Signal, MovieTimeRange TimeRange )
+public sealed partial record PropertyBlock<T>( [property: JsonPropertyOrder( 100 )] PropertySignal<T> Signal, MovieTimeRange TimeRange )
 	: IPropertyBlock<T>, IProjectPropertyBlock
 {
 	public T GetValue( MovieTime time ) => Signal.GetValue( time.Clamp( TimeRange ) );

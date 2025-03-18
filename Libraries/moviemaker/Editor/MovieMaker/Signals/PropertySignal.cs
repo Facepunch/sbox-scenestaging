@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Text.Json.Serialization;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -58,10 +59,8 @@ public abstract partial record PropertySignal<T> : IPropertySignal<T>
 
 	protected abstract PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end );
 
-	public virtual bool CanSmooth => false;
-
 	public PropertySignal<T> Smooth( MovieTime size ) => size <= 0d ? this : OnSmooth( size );
-	protected virtual PropertySignal<T> OnSmooth( MovieTime size ) => throw new NotImplementedException();
+	protected virtual PropertySignal<T> OnSmooth( MovieTime size ) => this;
 
 	/// <summary>
 	/// Gets time ranges within the given <paramref name="timeRange"/> that have changing values.
