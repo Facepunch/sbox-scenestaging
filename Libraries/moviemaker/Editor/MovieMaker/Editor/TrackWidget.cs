@@ -110,9 +110,18 @@ public partial class TrackWidget : Widget
 
 			// Add control to retarget a scene reference (Component / GameObject)
 
-			var ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
-				() => reference.Value,
-				value => reference.Bind( (IValid?)value ) ) );
+			ControlWidget ctrl;
+
+			if ( reference is ITrackReference<GameObject> goReference )
+			{
+				ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
+					() => goReference.Value, goReference.Bind ) );
+			}
+			else
+			{
+				ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
+					() => (Component?)reference.Value, reference.Bind ) );
+			}
 
 			if ( ctrl.IsValid() )
 			{
