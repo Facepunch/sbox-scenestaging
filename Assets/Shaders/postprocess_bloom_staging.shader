@@ -60,6 +60,7 @@ PS
     RenderState( DepthEnable, false );
 
     Texture2D ColorBuffer < Attribute( "ColorBuffer" ); >;
+    Texture2D QuarterResEffectsBloomInputTexture < Attribute( "QuarterResEffectsBloomInputTexture" ); >;
     
     float Strength< Attribute("Strength"); Default(0.0f); >;
     float Threshold< Attribute("Threshold"); Default(0.0f); >;
@@ -122,6 +123,25 @@ PS
         return screenTerm + excessBase + excessBlend;
     }
 
+    float3 SampleBloom(Texture2D tex, float2 uv, float gammaCorrection, float falloffScale)
+    {
+        // Get texture dimensions and mip levels
+        uint width, height, mipLevels;
+        tex.GetDimensions(0, width, height, mipLevels);
+        
+        float3 bloom = 0;
+        
+        [unroll]
+        for (int i = 0; i < mipLevels - 1; i++)
+        {
+            // Sample, apply gamma correction, and accumulate with mip-based weight
+            float3 sample = SampleBiquadraticLevel(tex, uv, i + 1);
+            bloom += max(pow(sample, gammaCorrection), 0) * exp2(-falloffScale * i);
+        }
+        
+        return bloom;
+    }
+
     float4 MainPs(PixelInput input) : SV_Target0
     {
         float2 vScreenUv = (input.vPositionSs.xy + g_vViewportOffset) / g_vViewportSize;
@@ -132,36 +152,20 @@ PS
         // Initialize bloom color
         float4 vBloomColor = float4(0, 0, 0, 0);
         
-        // Get texture dimensions and mip levels
-        uint width, height, mipLevels;
-        ColorBuffer.GetDimensions(0, width, height, mipLevels);
         
         // Bloom contribution parameters
         const float bloomIntensity = pow(Strength * 0.1, 2);    // Overall bloom strength
         const float falloffScale = Threshold - 2;      // Controls how quickly bloom fades across mips
         const float gammaCorrection = Gamma;   // Gamma space for color accuracy
-        
-        [unroll]
-        for (int i = 0; i < mipLevels - 1; i++)
-        {
-            // Sample each mip level with biquadratic filtering
-            float3 sample = SampleBiquadraticLevel(ColorBuffer, vScreenUv.xy, i + 1);
-            
-            // Convert to linear space and apply subtle curve to prevent over-saturation
-            float3 bloomSample = max( pow(sample, gammaCorrection), 0 );
-            
-            // Calculate falloff based on mip level (larger mips = wider blur, less contribution)
-            float mipWeight = exp2(-falloffScale * i);
 
-            // Accumulate bloom with weight
-            vBloomColor.rgb += bloomSample * mipWeight;
-        }
-        
         // Apply bloom intensity
-        vBloomColor.rgb *= bloomIntensity;
+        vBloomColor.rgb = SampleBloom( ColorBuffer, vScreenUv, gammaCorrection, falloffScale ) * bloomIntensity;
 
         // Apply tint
         vBloomColor.rgb *= Tint;
+
+        // Apply bloom to quarter-res effects buffer, constant intensity
+        vBloomColor.rgb += SampleBloom( QuarterResEffectsBloomInputTexture, vScreenUv, gammaCorrection, falloffScale );
 
         // High-quality compositing
         float3 finalColor = 0; 
