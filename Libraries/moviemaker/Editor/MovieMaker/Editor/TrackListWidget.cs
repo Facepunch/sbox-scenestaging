@@ -245,6 +245,23 @@ public partial class TrackListWidget : Widget
 			yield return Session.GetOrCreateTrack( go );
 			yield return Session.GetOrCreateTrack( go, nameof(GameObject.LocalPosition) );
 			yield return Session.GetOrCreateTrack( go, nameof(GameObject.LocalRotation) );
+
+			if ( go.GetComponent<PlayerController>() is { } controller )
+			{
+				yield return Session.GetOrCreateTrack( controller );
+				yield return Session.GetOrCreateTrack( controller, nameof(PlayerController.EyeAngles) );
+				yield return Session.GetOrCreateTrack( controller, nameof(PlayerController.WishVelocity) );
+				yield return Session.GetOrCreateTrack( controller, nameof(PlayerController.IsSwimming) );
+				yield return Session.GetOrCreateTrack( controller, nameof(PlayerController.IsClimbing) );
+				yield return Session.GetOrCreateTrack( controller, nameof(PlayerController.IsDucking) );
+			}
+
+
+			if ( go.GetComponent<Rigidbody>() is { } rigidBody )
+			{
+				yield return Session.GetOrCreateTrack( rigidBody );
+				yield return Session.GetOrCreateTrack( rigidBody, nameof(Rigidbody.Velocity) );
+			}
 		}
 
 		if ( ev.Data.OfType<Component>().FirstOrDefault() is { } component )
