@@ -9,7 +9,8 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-[JsonDiscriminator( "Compiled" )]
+[JsonDiscriminator( "Source" )]
+[method: JsonConstructor]
 file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, int BlockIndex,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTime Offset = default,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTime SmoothingSize = default ) : PropertySignal<T>

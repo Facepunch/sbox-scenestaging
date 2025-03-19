@@ -85,7 +85,7 @@ partial class TrackBinder : IJsonPopulator
 
 	#region Reference Targets
 
-	private abstract class Reference<T>( ITrackReference<GameObject>? parent, Guid id ) : ITrackReference<T>
+	private abstract class Reference<T>( ITrackReference<GameObject>? parent ) : ITrackReference<T>
 		where T : class, IValid
 	{
 		private T? _autoBound;
@@ -94,13 +94,11 @@ partial class TrackBinder : IJsonPopulator
 		public virtual Type TargetType => typeof(T);
 		public ITrackReference<GameObject>? Parent => parent;
 
-		protected abstract Dictionary<Guid, T?> Bindings { get; }
-
 		public T? Value
 		{
 			get
 			{
-				if ( Bindings.TryGetValue( id, out var bound ) ) return bound;
+				if ( TryGetBinding( out var bound ) ) return bound;
 
 				return _autoBound.IsValid() ? _autoBound : _autoBound ??= AutoBind();
 			}
@@ -108,27 +106,27 @@ partial class TrackBinder : IJsonPopulator
 
 		public void Reset()
 		{
-			Bindings.Remove( id );
+			OnReset();
 			_autoBound = null;
 		}
 
-		public void Bind( T? value )
-		{
-			Bindings[id] = value;
-		}
+		public abstract void Bind( T? value );
 
 		protected abstract T? AutoBind();
+
+		protected abstract bool TryGetBinding( out T? value );
+		protected abstract void OnReset();
 	}
 
 	/// <summary>
 	/// Target that references a <see cref="GameObject"/> in a scene.
 	/// </summary>
 	private sealed class GameObjectReference( ITrackReference<GameObject>? parent, string name, TrackBinder binder, Guid id )
-		: Reference<GameObject>( parent, id ), ITrackReference<GameObject>
+		: Reference<GameObject>( parent ), ITrackReference<GameObject>
 	{
 		public override string Name => Value?.Name ?? name;
 
-		protected override Dictionary<Guid, GameObject?> Bindings => binder._gameObjectMap;
+		public override void Bind( GameObject? value ) => binder._gameObjectMap[id] = value;
 
 		/// <summary>
 		/// If our parent object is bound, try to bind to a child object with a matching name.
@@ -145,28 +143,54 @@ partial class TrackBinder : IJsonPopulator
 				? go.Children.FirstOrDefault( x => x.Name == name )
 				: null;
 		}
+
+		protected override bool TryGetBinding( out GameObject? value ) => binder._gameObjectMap.TryGetValue( id, out value );
+		protected override void OnReset() => binder._gameObjectMap.Remove( id );
+	}
+
+	private TypeDescription? _componentReferenceType;
+
+	private ITrackReference CreateComponentReference( ITrackReference<GameObject>? parent, Type componentType, TrackBinder binder, Guid id )
+	{
+		_componentReferenceType ??= TypeLibrary.GetType( typeof(ComponentReference<>) );
+
+		return _componentReferenceType.CreateGeneric<ITrackReference>( [componentType], [parent, binder, id] );
 	}
 
 	/// <summary>
 	/// Target that references a <see cref="Component"/> in a scene.
 	/// </summary>
-	private sealed class ComponentReference( ITrackReference<GameObject>? parent, Type componentType, TrackBinder binder, Guid id )
-		: Reference<Component>( parent, id ), ITrackReference<Component>
+	private sealed class ComponentReference<T>( ITrackReference<GameObject>? parent, TrackBinder binder, Guid id )
+		: Reference<T>( parent ) where T : Component
 	{
-		public override string Name => componentType.Name;
-		public override Type TargetType => componentType;
+		public override string Name => typeof(T).Name;
+		public override Type TargetType => typeof(T);
 
-		protected override Dictionary<Guid, Component?> Bindings => binder._componentMap;
+		public override void Bind( T? value ) => binder._componentMap[id] = value;
 
 		/// <summary>
 		/// If our parent object is bound, try to bind to a component with a matching type.
 		/// </summary>
-		protected override Component? AutoBind()
+		protected override T? AutoBind()
 		{
 			return Parent?.Value is { } go
-				? go.Components.Get( componentType, FindMode.EverythingInSelf )
+				? go.Components.Get<T>( FindMode.EverythingInSelf )
 				: null;
 		}
+
+		protected override bool TryGetBinding( out T? value )
+		{
+			if ( binder._componentMap.TryGetValue( id, out var binding ) )
+			{
+				value = binding as T;
+				return true;
+			}
+
+			value = default;
+			return false;
+		}
+
+		protected override void OnReset() => binder._componentMap.Remove( id );
 	}
 
 	#endregion

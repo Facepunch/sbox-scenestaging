@@ -39,9 +39,9 @@ public static class ClipExtensions
 	}
 
 	/// <inheritdoc cref="GetTrack(IClip,string[])"/>
-	public static CompiledTrack? GetTrack( this CompiledClip clip, params string[] path )
+	public static ICompiledTrack? GetTrack( this CompiledClip clip, params string[] path )
 	{
-		return (CompiledTrack)((IClip)clip).GetTrack( path )!;
+		return (ICompiledTrack)((IClip)clip).GetTrack( path )!;
 	}
 
 	/// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -78,4 +79,19 @@ public static partial class PropertySignalExtensions
 {
 	public static PropertySignal<T> Reduce<T>( this PropertySignal<T> signal, MovieTimeRange timeRange ) =>
 		signal.Reduce( timeRange.Start, timeRange.End );
+
+	public static T[] Sample<T>( this PropertySignal<T> signal, MovieTimeRange timeRange, int sampleRate )
+	{
+		var sampleCount = timeRange.Duration.GetFrameCount( sampleRate );
+		var samples = new T[sampleCount];
+
+		for ( var i = 0; i < sampleCount; i++ )
+		{
+			var time = timeRange.Start + MovieTime.FromFrames( i, sampleRate );
+
+			samples[i] = signal.GetValue( time );
+		}
+
+		return samples;
+	}
 }

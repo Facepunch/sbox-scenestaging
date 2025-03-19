@@ -54,7 +54,7 @@ public abstract partial class KeyframeCurve : IEnumerable<IKeyframe>
 
 	IEnumerator IEnumerable.GetEnumerator() => OnGetEnumerator();
 
-	public abstract IEnumerable<CompiledPropertyBlock> Compile( int sampleRate );
+	public abstract IEnumerable<ICompiledPropertyBlock> Compile( int sampleRate );
 }
 
 public partial class KeyframeCurve<T> : KeyframeCurve, IEnumerable<Keyframe<T>>
@@ -111,7 +111,7 @@ public partial class KeyframeCurve<T> : KeyframeCurve, IEnumerable<Keyframe<T>>
 		_keyframes.Clear();
 	}
 
-	public override IEnumerable<CompiledPropertyBlock> Compile( int sampleRate )
+	public override IEnumerable<ICompiledPropertyBlock> Compile( int sampleRate )
 	{
 		if ( _keyframes.Count == 0 ) yield break;
 

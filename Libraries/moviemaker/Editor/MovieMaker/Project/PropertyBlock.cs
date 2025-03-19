@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Linq;
+using System.Text.Json.Serialization;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
 
@@ -67,8 +68,17 @@ public sealed partial record PropertyBlock<T>( [property: JsonPropertyOrder( 100
 
 	IProjectPropertyBlock IProjectPropertyBlock.Shift( MovieTime offset ) => Shift( offset );
 
-	public CompiledPropertyBlock<T> Compile( ProjectPropertyTrack<T> track )
+	public ICompiledPropertyBlock<T> Compile( ProjectPropertyTrack<T> track )
 	{
-		throw new NotImplementedException();
+		var sampleRate = track.Project.SampleRate;
+		var samples = Signal.Sample( TimeRange, sampleRate );
+		var comparer = EqualityComparer<T>.Default;
+
+		if ( samples.All( x => comparer.Equals( x, samples[0] ) ) )
+		{
+			return new CompiledConstantBlock<T>( TimeRange, samples[0] );
+		}
+
+		return new CompiledSampleBlock<T>( TimeRange, 0d, sampleRate, [..samples] );
 	}
 }

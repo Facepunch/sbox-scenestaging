@@ -68,7 +68,7 @@ public sealed partial class TrackBinder( Scene scene )
 
 			// Component reference
 			IReferenceTrack refTrack =>
-				new ComponentReference( parent as ITrackReference<GameObject>, track.TargetType, this, refTrack.Id ),
+				CreateComponentReference( parent as ITrackReference<GameObject>, track.TargetType, this, refTrack.Id ),
 
 			// Member property within another track
 			IPropertyTrack =>

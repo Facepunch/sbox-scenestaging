@@ -16,7 +16,7 @@ public sealed class BinderTests : SceneTests
 	public void BindRootGameObjectMatchingName()
 	{
 		var exampleObject = new GameObject( true, "Example" );
-		var exampleTrack = CompiledTrack.GameObject( exampleObject.Name );
+		var exampleTrack = CompiledClip.RootGameObject( exampleObject.Name );
 
 		var target = TrackBinder.Default.Get( exampleTrack );
 
@@ -31,7 +31,7 @@ public sealed class BinderTests : SceneTests
 	public void BindRootGameObjectNoMatchingName()
 	{
 		var exampleObject = new GameObject( true, "Examble" );
-		var exampleTrack = CompiledTrack.GameObject( "Example" );
+		var exampleTrack = CompiledClip.RootGameObject( "Example" );
 
 		var target = TrackBinder.Default.Get( exampleTrack );
 
@@ -45,7 +45,7 @@ public sealed class BinderTests : SceneTests
 	public void LateBindRootGameObjectMatchingName()
 	{
 		var exampleObject = new GameObject( true, "Examble" );
-		var exampleTrack = CompiledTrack.GameObject( "Example" );
+		var exampleTrack = CompiledClip.RootGameObject( "Example" );
 
 		var target = TrackBinder.Default.Get( exampleTrack );
 
@@ -64,7 +64,7 @@ public sealed class BinderTests : SceneTests
 	public void StickyBinding()
 	{
 		var exampleObject = new GameObject( true, "Example" );
-		var exampleTrack = CompiledTrack.GameObject( exampleObject.Name );
+		var exampleTrack = CompiledClip.RootGameObject( exampleObject.Name );
 
 		var target = TrackBinder.Default.Get( exampleTrack );
 
@@ -88,7 +88,7 @@ public sealed class BinderTests : SceneTests
 	public void ExplicitBinding()
 	{
 		var exampleObject = new GameObject( true, "Examble" );
-		var exampleTrack = CompiledTrack.GameObject( "Example" );
+		var exampleTrack = CompiledClip.RootGameObject( "Example" );
 
 		var target = TrackBinder.Default.Get( exampleTrack );
 
@@ -106,7 +106,7 @@ public sealed class BinderTests : SceneTests
 	[TestMethod]
 	public void PropertyBinding()
 	{
-		var exampleTrack = CompiledTrack.GameObject( "Example" )
+		var exampleTrack = CompiledClip.RootGameObject( "Example" )
 			.Property<Vector3>( nameof(GameObject.LocalPosition) );
 
 		var target = TrackBinder.Default.Get( exampleTrack );
@@ -128,7 +128,7 @@ public sealed class BinderTests : SceneTests
 	[TestMethod]
 	public void SubPropertyBinding()
 	{
-		var exampleTrack = CompiledTrack.GameObject( "Example" )
+		var exampleTrack = CompiledClip.RootGameObject( "Example" )
 			.Property<Vector3>( nameof(GameObject.LocalPosition) )
 			.Property<float>( nameof(Vector3.y) );
 
@@ -152,7 +152,7 @@ public sealed class BinderTests : SceneTests
 	public void CustomPropertyBinding()
 	{
 		var exampleObject = new GameObject( true, "Example" );
-		var exampleTrack = CompiledTrack.GameObject( "Example" )
+		var exampleTrack = CompiledClip.RootGameObject( "Example" )
 			.Property<Vector3>( "LookAt" );
 
 		var target = TrackBinder.Default.Get( exampleTrack );

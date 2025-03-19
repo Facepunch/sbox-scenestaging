@@ -8,10 +8,10 @@ public sealed class CompiledTests
 {
 	public IClip CreateExampleClip()
 	{
-		var rootTrack = CompiledTrack.GameObject( "Camera" );
+		var rootTrack = CompiledClip.RootGameObject( "Camera" );
 		var cameraTrack = rootTrack.Component<CameraComponent>();
 
-		return new CompiledClip( rootTrack, cameraTrack,
+		return CompiledClip.FromTracks( rootTrack, cameraTrack,
 			rootTrack.Property<Vector3>( nameof(GameObject.LocalPosition) )
 				.WithConstant( (0f, 2f), new Vector3( 100f, 200f, 300f ) ),
 			cameraTrack.Property<float>( nameof(CameraComponent.FieldOfView) )
