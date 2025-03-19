@@ -9,6 +9,7 @@ public readonly record struct ModificationOptions(
 	TimeSelection Selection,
 	MovieTime Offset,
 	bool Additive,
+	int SmoothSteps,
 	MovieTime SmoothSize );
 
 /// <summary>
@@ -18,13 +19,20 @@ internal interface ITrackModification
 {
 	IProjectPropertyTrack Track { get; }
 
+	bool HasChanges { get; }
+
 	void SetRelativeTo( object? value );
 	void SetOverlay( object? constantValue );
 	void SetOverlay( IEnumerable<IProjectPropertyBlock> blocks, MovieTime offset );
 	void ClearPreview();
 	bool Update( ModificationOptions options );
 	bool Commit( ModificationOptions options );
+
+	TrackModificationSnapshot Snapshot();
+	void Restore( TrackModificationSnapshot state );
 }
+
+internal record TrackModificationSnapshot( IPropertySignal? Overlay, object? RelativeTo );
 
 internal sealed class TrackModification<T> : ITrackModification
 {
@@ -110,5 +118,17 @@ internal sealed class TrackModification<T> : ITrackModification
 		ClearPreview();
 
 		return changed;
+	}
+
+	public TrackModificationSnapshot Snapshot() => new ( _overlay, _relativeTo );
+
+	public void Restore( TrackModificationSnapshot state )
+	{
+		_overlay = (PropertySignal<T>?)state.Overlay;
+		_relativeTo = (T)state.RelativeTo!;
+
+		_original = null;
+		_lastSliceRange = null;
+		_smoothedOverlay = null;
 	}
 }

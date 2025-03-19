@@ -83,12 +83,8 @@ partial class Session
 		_frameRate = Cookies.FrameRate;
 		_frameSnap = Cookies.FrameSnap;
 		_objectSnap = Cookies.ObjectSnap;
-		_timeOffset = Cookies.TimeOffset;
-		_pixelsPerSecond = Cookies.PixelsPerSecond;
 
-		SmoothPan.Target = SmoothPan.Value = (float)TimeOffset.TotalSeconds;
-		SmoothZoom.Target = SmoothZoom.Value = PixelsPerSecond;
-
+		SetView( Cookies.TimeOffset, Cookies.PixelsPerSecond );
 		SetEditMode( Cookies.EditMode );
 	}
 }

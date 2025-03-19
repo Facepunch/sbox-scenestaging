@@ -194,6 +194,8 @@ public partial interface IProjectPropertyTrack : IPropertyTrack, IProjectTrack
 	/// </summary>
 	bool Add( IProjectPropertyBlock block );
 
+	void SetBlocks( IReadOnlyList<IProjectPropertyBlock> blocks );
+
 	/// <summary>
 	/// Copies blocks that overlap the given <paramref name="timeRange"/> and returns
 	/// the copies.
@@ -355,6 +357,14 @@ public sealed partial class ProjectPropertyTrack<T>( MovieProject project, Guid 
 		Add( (PropertySignal<T>)signal, timeRange );
 
 	bool IProjectPropertyTrack.Add( IProjectPropertyBlock block ) => Add( (PropertyBlock<T>)block );
+
+	public void SetBlocks( IReadOnlyList<IProjectPropertyBlock> blocks )
+	{
+		_blocksChanged = true;
+		_blocks.Clear();
+
+		_blocks.AddRange( blocks.Cast<PropertyBlock<T>>() );
+	}
 
 	public IReadOnlyList<PropertyBlock<T>> Slice( MovieTimeRange timeRange )
 	{
