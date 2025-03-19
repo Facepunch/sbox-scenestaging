@@ -82,7 +82,7 @@ internal sealed partial class MotionEditMode : EditMode
 
 					if ( TimeSelection is { } timeSelection )
 					{
-						TimeSelection = timeSelection.WithInterpolation( interpolation );
+						UserSetTimeSelection( timeSelection.WithInterpolation( interpolation ) );
 					}
 				} );
 		}
@@ -100,16 +100,42 @@ internal sealed partial class MotionEditMode : EditMode
 		SelectionChanged();
 	}
 
-	private void ClearSelection()
+	private record ChangeTimeSelectionAction( TimeSelection? Prev, TimeSelection? Next )
+		: ISessionAction<MotionEditMode>
 	{
-		ClearChanges();
+		public string Title => "Change Time Selection";
 
-		TimeSelection = null;
+		public bool Apply( MotionEditMode editMode )
+		{
+			editMode.TimeSelection = Next;
+			return true;
+		}
+
+		public bool Revert( MotionEditMode editMode )
+		{
+			editMode.TimeSelection = Prev;
+			return true;
+		}
+
+		public ISessionAction? Merge( ISessionAction next )
+		{
+			if ( next is not ChangeTimeSelectionAction changeSelection ) return null;
+			if ( changeSelection.Next == Prev ) return new NullAction();
+
+			return new ChangeTimeSelectionAction( Prev, changeSelection.Next );
+		}
+	}
+
+	public void UserSetTimeSelection( TimeSelection? value )
+	{
+		Session.History.Push( new ChangeTimeSelectionAction( TimeSelection, value ) );
 	}
 
 	protected override void OnDisable()
 	{
-		ClearSelection();
+		ClearChanges();
+
+		TimeSelection = null;
 	}
 
 	protected override void OnMousePress( MouseEvent e )
@@ -121,11 +147,9 @@ internal sealed partial class MotionEditMode : EditMode
 
 		var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ) );
 
-		ClearSelection();
-
 		Session.SetPreviewPointer( time );
 
-		TimeSelection = new TimeSelection( time, DefaultInterpolation );
+		UserSetTimeSelection( new TimeSelection( time, DefaultInterpolation ) );
 
 		_selectionStartTime = time;
 
@@ -144,7 +168,7 @@ internal sealed partial class MotionEditMode : EditMode
 			if ( time < minTime ) time = MovieTime.Zero;
 			if ( time > maxTime ) time = Session.Project!.Duration;
 
-			TimeSelection = new TimeSelection( (MovieTime.Min( time, dragStartTime ), MovieTime.Max( time, dragStartTime )), DefaultInterpolation );
+			UserSetTimeSelection( new TimeSelection( (MovieTime.Min( time, dragStartTime ), MovieTime.Max( time, dragStartTime )), DefaultInterpolation ) );
 		}
 	}
 
@@ -167,7 +191,7 @@ internal sealed partial class MotionEditMode : EditMode
 		{
 			var delta = Math.Sign( e.Delta ) * Session.MinorTick.Interval;
 
-			TimeSelection = selection.WithFadeDurationDelta( delta );
+			UserSetTimeSelection( selection.WithFadeDurationDelta( delta ) );
 
 			e.Accept();
 		}

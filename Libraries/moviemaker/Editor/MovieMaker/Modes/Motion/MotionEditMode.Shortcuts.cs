@@ -29,15 +29,13 @@ partial class MotionEditMode
 	{
 		if ( Current is not { } inst ) return;
 
-		
-
 		if ( inst.HasChanges )
 		{
 			inst.ClearChanges();
 		}
 		else if ( inst.TimeSelection is not null )
 		{
-			inst.ClearSelection();
+			inst.UserSetTimeSelection( null );
 		}
 	}
 
