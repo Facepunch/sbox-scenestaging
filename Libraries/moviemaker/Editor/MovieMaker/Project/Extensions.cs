@@ -1,5 +1,6 @@
 ﻿using Sandbox.MovieMaker;
 using System.Linq;
+using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker;
 
@@ -10,6 +11,9 @@ namespace Editor.MovieMaker;
 /// </summary>
 public static class ProjectExtensions
 {
+	public static MovieProject FromCompiled( this CompiledClip clip ) =>
+		new MovieProject( clip );
+
 	public static IEnumerable<IProjectPropertyBlock> GetBlocks( this IProjectPropertyTrack track, MovieTimeRange timeRange )
 	{
 		return track.Blocks.Where( x => x.TimeRange.Intersect( timeRange ) is not null );

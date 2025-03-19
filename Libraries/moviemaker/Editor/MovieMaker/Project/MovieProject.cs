@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.Json.Nodes;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
@@ -19,6 +20,9 @@ public sealed partial class MovieProject
 	private readonly List<IProjectTrack> _trackList = new();
 	private readonly Dictionary<Guid, IProjectTrack> _trackDict = new();
 
+	/// <summary>
+	/// Set to true when tracks need sorting / root tracks might have changed.
+	/// </summary>
 	private bool _tracksChanged;
 
 	/// <summary>
@@ -53,10 +57,69 @@ public sealed partial class MovieProject
 		}
 	}
 
+	public MovieProject()
+	{
+
+	}
+
+	/// <summary>
+	/// Create a project based on a compiled clip, so that clip can be edited.
+	/// </summary>
+	internal MovieProject( CompiledClip clip )
+	{
+		var source = AddSourceClip( clip );
+
+		foreach ( var compiledTrack in clip.Tracks )
+		{
+			var parentTrack = compiledTrack.Parent is { } parent ? GetTrack( parent ) : null;
+
+			switch ( compiledTrack )
+			{
+				case ICompiledReferenceTrack refTrack:
+				{
+					var track = IProjectReferenceTrack.Create( this, refTrack.Id, refTrack.Name, refTrack.TargetType );
+
+					AddTrackInternal( track, parentTrack );
+					continue;
+				}
+				case ICompiledPropertyTrack propertyTrack:
+				{
+					var track = IProjectPropertyTrack.Create( this, Guid.NewGuid(), propertyTrack.Name, propertyTrack.TargetType );
+
+					foreach ( var block in track.CreateSourceBlocks( source ) )
+					{
+						track.Add( block );
+					}
+
+					AddTrackInternal( track, parentTrack );
+					continue;
+				}
+				default:
+					throw new NotImplementedException();
+			}
+		}
+	}
+
 	public IProjectTrack? GetTrack( Guid trackId )
 	{
-		UpdateTracks();
 		return _trackDict!.GetValueOrDefault( trackId );
+	}
+
+	public IProjectTrack? GetTrack( ITrack track )
+	{
+		if ( track is IProjectTrack projTrack && projTrack.Project == this )
+		{
+			return projTrack;
+		}
+
+		if ( track is IReferenceTrack refTrack )
+		{
+			return GetTrack( refTrack.Id );
+		}
+
+		return track.Parent is { } parent
+			? GetTrack( parent )?.GetChild( track.Name )
+			: null;
 	}
 
 	public CompiledClip Compile()
@@ -141,6 +204,9 @@ public sealed partial class MovieProject
 		_tracksChanged = true;
 	}
 
+	/// <summary>
+	/// Makes sure tracks are sorted / root tracks are correct.
+	/// </summary>
 	private void UpdateTracks()
 	{
 		if ( !_tracksChanged ) return;

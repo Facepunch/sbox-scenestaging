@@ -1,0 +1,111 @@
+{
+  "Compiled": null,
+  "EditorData": {
+    "SampleRate": 30,
+    "Tracks": {
+      "e3a64427-54b5-4570-abcb-5aa37e506f9c": {
+        "$type": "Reference",
+        "Name": "Camera",
+        "TargetType": "Sandbox.GameObject"
+      },
+      "db25af01-455a-4dc8-a28f-7bc2d9f322bf": {
+        "$type": "Property",
+        "Name": "LocalPosition",
+        "TargetType": "Vector3",
+        "ParentId": "e3a64427-54b5-4570-abcb-5aa37e506f9c",
+        "Blocks": [
+          {
+            "TimeRange": {
+              "Start": 0,
+              "End": 18000
+            },
+            "Signal": {
+              "$id": 1,
+              "$type": "CrossFade",
+              "FadeTimeRange": {
+                "Start": 17280,
+                "End": 18000
+              },
+              "Mode": "Linear",
+              "First": {
+                "$id": 2,
+                "$type": "CrossFade",
+                "FadeTimeRange": {
+                  "Start": 10440,
+                  "End": 11160
+                },
+                "Mode": "Linear",
+                "First": {
+                  "$id": 3,
+                  "$type": "Source",
+                  "Source": "26c48464-9a8f-44a9-8dc5-63df0a685c7b",
+                  "TrackIndex": 1,
+                  "BlockIndex": 0
+                },
+                "Second": {
+                  "$id": 4,
+                  "$type": "Source",
+                  "Source": "26c48464-9a8f-44a9-8dc5-63df0a685c7b",
+                  "TrackIndex": 1,
+                  "BlockIndex": 0,
+                  "Offset": 6840
+                }
+              },
+              "Second": {
+                "$id": 5,
+                "$type": "Constant",
+                "Value": "851.4652,50.42216,952.0933"
+              }
+            }
+          }
+        ]
+      },
+      "e20addc9-4787-4082-ab91-8a31d5f68aa7": {
+        "$type": "Property",
+        "Name": "LocalRotation",
+        "TargetType": "Rotation",
+        "ParentId": "e3a64427-54b5-4570-abcb-5aa37e506f9c"
+      }
+    },
+    "Sources": {
+      "26c48464-9a8f-44a9-8dc5-63df0a685c7b": {
+        "Metadata": {
+          "Date": "2025-03-19T00:38:07.8783061Z",
+          "IsEditor": true,
+          "SceneSource": "scenes/tests/moviemaker/gameplay_recording.scene",
+          "MoviePlayer": "e68ac2d3-ca2f-4a1a-96b0-d53d0343af39"
+        },
+        "Clip": {
+          "Tracks": [
+            {
+              "Kind": "Reference",
+              "Name": "Camera",
+              "Type": "Sandbox.GameObject",
+              "Id": "e3a64427-54b5-4570-abcb-5aa37e506f9c",
+              "Children": [
+                {
+                  "Kind": "Property",
+                  "Name": "LocalPosition",
+                  "Type": "Vector3",
+                  "Blocks": [
+                    {
+                      "TimeRange": {
+                        "Start": 0,
+                        "End": 16440
+                      },
+                      "Offset": 0,
+                      "SampleRate": 30,
+                      "Samples": "H4sIAAAAAAACCu3TWUiUYRQG4GHE1lEpScgsiWxBSlucTCoZ9WVQkeBfZlzKcdJSWxxnsgXNssXIskiLSkvNNoo2y8IlYogWsRVLJBIN0bIakkIRc8nK97/0ruvunovD+T7OOe8hlUrVfMyAhppnIf3OFvz3v7nygAHfHfV0UJQBebl1tM7NAGPAU9pySIY27TF94pyEjLGP6HJfCWFOj0e5ZKqI+MEX9OsGAffUTfSVfQJ8jB20iyzgudBDTwoUEBc9NnTEfsEC3H+50+skAac6vOmcYgGWwwH0m0YB1U0hdMsyEXPeSfQrtYQurVWpL5Sw2HMPfTZQRmtyHi1uM8AcfppuXmXEoqpyun5JNO7rrtHfXsRg/4NauuhnLAq8ntDZD1dD69lIn1TFw2l+Cx20woQt0z/RiZFmJFR104uPrsXELQO0qzkJh2V12Ihv3VyHKO0YOqNnPeoc4+gfbSk43q+hQ76m4uobF7r8+UZsb3OlM22b4W91o9e0pOG8SqmX3NKhXTqBtgRaEZmhvOXlakPx5X7+YabdhqQZDjrBakNXexOdNtcGb1M97a6x4oz1Dt0+Jh2z0s+PctHgRlgzlTk3fE+F2hRBF5ekwFixiL4urEfLxMn0htokhFqHuOt2fSKGHc30kVVmaDbdpSMTTchOPEHLv9eg0y+LnvdhNboRS9dsjcOrzkDaXhaLadmzaVNyDPQ3NPSN5GiM+zCkG/GUi0YsvNRF3/I2IrfsEy3GGbDMpLivTYbG4xs99PdOAgL6aFurhKV71ezpVSIh1O6qZMdfgiFoAd3hLKHibTBdZBehtpjprgsigp120un5IvR9+XRmigjR9wrdGy2i/XoN/T5WRFlHI90WIyK5VMnI7lQRn3cMK5nKFFF5aTznWVAtorPIk851iMgp9aGz9BLsK/2Umzwo4UvvErquX0J87XLaQycjfJeOLiyTkfVRTw+8lOGTHzHKda0yom7/9x8DTQIwcAYAAA=="
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "__references": [],
+  "__version": 0
+}

@@ -6,7 +6,7 @@ namespace Editor.MovieMaker;
 
 public abstract record InterpolateOperation<T>( PropertySignal<T> First, PropertySignal<T> Second ) : BinaryOperation<T>( First, Second )
 {
-	private readonly IInterpolator<T> _interpolator = Interpolator.GetDefaultOrThrow<T>();
+	private static readonly IInterpolator<T> _interpolator = Interpolator.GetDefaultOrThrow<T>();
 
 	public abstract float GetAlpha( MovieTime time );
 
