@@ -124,7 +124,7 @@ partial class MotionEditMode
 
 	protected override void OnSelectAll()
 	{
-		TimeSelection = new TimeSelection( (MovieTime.Zero, Project.Duration), DefaultInterpolation );
+		UserSetTimeSelection( new TimeSelection( (MovieTime.Zero, Project.Duration), DefaultInterpolation ) );
 	}
 
 	protected override void OnCut()

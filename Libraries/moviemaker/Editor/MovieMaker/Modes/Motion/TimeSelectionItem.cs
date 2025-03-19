@@ -67,7 +67,7 @@ partial class MotionEditMode
 			startTime = MovieTime.Max( selection.FadeIn.Duration, startTime );
 
 			EditMode.ChangeOffset = startTime + (changeOffset - selection.PeakStart);
-			EditMode.TimeSelection = selection with { PeakTimeRange = (startTime, startTime + selection.PeakTimeRange.Duration) };
+			EditMode.UserSetTimeSelection( selection with { PeakTimeRange = (startTime, startTime + selection.PeakTimeRange.Duration) } );
 		}
 
 		public override void UpdatePosition( TimeSelection value, Rect viewRect )
@@ -138,9 +138,9 @@ partial class MotionEditMode
 				if ( EditMode.TimeSelection is not { } selection ) return;
 				if ( value is not { } mode ) return;
 
-				EditMode.TimeSelection = Kind == FadeKind.FadeIn
+				EditMode.UserSetTimeSelection( Kind == FadeKind.FadeIn
 					? selection with { FadeIn = selection.FadeIn with { Interpolation = mode } }
-					: selection with { FadeOut = selection.FadeOut with { Interpolation = mode } };
+					: selection with { FadeOut = selection.FadeOut with { Interpolation = mode } } );
 			}
 		}
 
@@ -208,21 +208,21 @@ partial class MotionEditMode
 				time = MovieTime.Max( selection.FadeIn.Duration, time );
 
 				EditMode.ChangeOffset = time + (changeOffset - selection.PeakStart);
-				EditMode.TimeSelection = selection.WithTimes(
+				EditMode.UserSetTimeSelection( selection.WithTimes(
 					totalStart: time - selection.FadeIn.Duration, peakStart: time,
-					peakEnd: time, totalEnd: time + selection.FadeOut.Duration );
+					peakEnd: time, totalEnd: time + selection.FadeOut.Duration ) );
 			}
 			else if ( Kind == FadeKind.FadeIn )
 			{
 				time = time.Clamp( (selection.FadeIn.Duration, selection.PeakEnd) );
 
-				EditMode.TimeSelection = selection.WithTimes( totalStart: time - selection.FadeIn.Duration, peakStart: time );
+				EditMode.UserSetTimeSelection( selection.WithTimes( totalStart: time - selection.FadeIn.Duration, peakStart: time ) );
 			}
 			else
 			{
 				time = MovieTime.Max( selection.PeakStart, time );
 
-				EditMode.TimeSelection = selection.WithTimes( peakEnd: time, totalEnd: time + selection.FadeOut.Duration );
+				EditMode.UserSetTimeSelection( selection.WithTimes( peakEnd: time, totalEnd: time + selection.FadeOut.Duration ) );
 			}
 		}
 
@@ -327,7 +327,7 @@ partial class MotionEditMode
 			var minTime = GetTime( value, _minIndex - 1 );
 			var maxTime = GetTime( value, _maxIndex + 1 );
 
-			EditMode.TimeSelection = SetTime( value, _minIndex, time.Clamp( (minTime, maxTime) ) );
+			EditMode.UserSetTimeSelection( SetTime( value, _minIndex, time.Clamp( (minTime, maxTime) ) ) );
 		}
 
 		private static MovieTime GetTime( TimeSelection value, Index index ) => index switch

@@ -96,6 +96,8 @@ public sealed partial class Session
 		Player = player;
 		Resource = player.Resource ??= new EmbeddedMovieResource();
 		Project = LoadProject( Resource );
+
+		History = new SessionHistory( this );
 	}
 
 	private static MovieProject LoadProject( IMovieResource resource )
@@ -139,6 +141,13 @@ public sealed partial class Session
 
 		return resourceNode?[nameof(IMovieResource.EditorData)];
 
+	}
+
+	internal void SetEditMode<T>()
+	{
+		if ( EditMode is T ) return;
+
+		SetEditMode( new EditModeType( EditorTypeLibrary.GetType<T>() ) );
 	}
 
 	internal void SetEditMode( EditModeType? type )
@@ -352,6 +361,24 @@ public sealed partial class Session
 		if ( AssetSystem.FindByPath( resource.ResourcePath ) is { } asset )
 		{
 			asset.SaveToDisk( resource );
+		}
+	}
+
+	public void Undo()
+	{
+		if ( History.Undo() )
+		{
+			Application.FocusWidget?.Blur();
+			EditorUtility.PlayRawSound( "sounds/editor/success.wav" );
+		}
+	}
+
+	public void Redo()
+	{
+		if ( History.Redo() )
+		{
+			Application.FocusWidget?.Blur();
+			EditorUtility.PlayRawSound( "sounds/editor/success.wav" );
 		}
 	}
 

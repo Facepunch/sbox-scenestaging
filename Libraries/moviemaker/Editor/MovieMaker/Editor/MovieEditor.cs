@@ -4,7 +4,6 @@ using System.Reflection;
 
 namespace Editor.MovieMaker;
 
-
 public class MovieEditor : Widget
 {
 	public ToolbarWidget Toolbar { get; private set; }
@@ -131,6 +130,18 @@ public class MovieEditor : Widget
 	public void OnInsert()
 	{
 		Session?.EditMode?.Insert();
+	}
+
+	[Shortcut( "editor.undo", "CTRL+Z" )]
+	public void OnUndo()
+	{
+		Session?.Undo();
+	}
+
+	[Shortcut( "editor.redo", "CTRL+Y" )]
+	public void OnRedo()
+	{
+		Session?.Redo();
 	}
 
 	int contextHash;
