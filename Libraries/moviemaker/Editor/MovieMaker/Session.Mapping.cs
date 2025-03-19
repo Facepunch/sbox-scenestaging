@@ -181,7 +181,7 @@ partial class Session
 				model.Update( dt );
 			}
 
-			model.PlaybackRate = 0f;
+			model.PlaybackRate = IsEditorScene ? 0f : 1f;
 		}
 	}
 }
