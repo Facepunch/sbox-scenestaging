@@ -52,4 +52,15 @@ public sealed class CompiledTests
 
 		Assert.AreEqual( (60f + 75f) / 2f, fov );
 	}
+
+	[TestMethod]
+	public void ValidateBlocks()
+	{
+		var track = CompiledClip.RootGameObject( "Example" )
+			.Property<Vector3>( "LocalPosition" )
+			.WithConstant( (0d, 2d), default );
+
+		Assert.ThrowsException<ArgumentException>( () => track.WithConstant( (1d, 3d), default ),
+			"Overlapping blocks" );
+	}
 }

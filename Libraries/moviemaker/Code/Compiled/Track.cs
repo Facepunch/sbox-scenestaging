@@ -132,6 +132,8 @@ public sealed record CompiledPropertyTrack<T>(
 			{
 				throw new ArgumentException( "Blocks must not overlap.", nameof(Blocks) );
 			}
+
+			prevTime = block.TimeRange.End;
 		}
 
 		return blocks;
