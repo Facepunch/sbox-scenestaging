@@ -25,7 +25,7 @@ partial class MotionEditMode
 
 		foreach ( var track in Session.EditableTracks )
 		{
-			Log.Info( $"{track.Name}: {StartRecording( track, time )}" );
+			StartRecording( track, time );
 		}
 
 		if ( _recordings.Count == 0 ) return false;
