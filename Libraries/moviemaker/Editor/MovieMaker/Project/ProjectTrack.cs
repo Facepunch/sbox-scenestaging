@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.Json;
+using Facepunch.ActionGraphs;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
 
@@ -188,6 +189,12 @@ public partial interface IProjectPropertyTrack : IPropertyTrack, IProjectTrack
 	bool Add( IPropertySignal signal, MovieTimeRange timeRange );
 
 	/// <summary>
+	/// Adds a block, replacing any blocks that overlap its time range.
+	/// This will split any blocks that partially overlap.
+	/// </summary>
+	bool Add( IProjectPropertyBlock block );
+
+	/// <summary>
 	/// Copies blocks that overlap the given <paramref name="timeRange"/> and returns
 	/// the copies.
 	/// </summary>
@@ -329,8 +336,25 @@ public sealed partial class ProjectPropertyTrack<T>( MovieProject project, Guid 
 		return true;
 	}
 
+	public bool Add( PropertyBlock<T> block )
+	{
+		if ( block.TimeRange.Start < 0 )
+		{
+			throw new ArgumentException( "Block can't have negative start time." );
+		}
+
+		Clear( block.TimeRange );
+
+		_blocksChanged = true;
+		_blocks.Add( block );
+
+		return true;
+	}
+
 	bool IProjectPropertyTrack.Add( IPropertySignal signal, MovieTimeRange timeRange ) =>
 		Add( (PropertySignal<T>)signal, timeRange );
+
+	bool IProjectPropertyTrack.Add( IProjectPropertyBlock block ) => Add( (PropertyBlock<T>)block );
 
 	public IReadOnlyList<PropertyBlock<T>> Slice( MovieTimeRange timeRange )
 	{

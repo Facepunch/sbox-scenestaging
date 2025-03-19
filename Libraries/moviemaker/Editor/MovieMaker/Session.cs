@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -93,7 +95,50 @@ public sealed partial class Session
 		Editor = editor;
 		Player = player;
 		Resource = player.Resource ??= new EmbeddedMovieResource();
-		Project = Resource.EditorData?.Deserialize<MovieProject>( EditorJsonOptions ) ?? new MovieProject();
+		Project = LoadProject( Resource );
+	}
+
+	private static MovieProject LoadProject( IMovieResource resource )
+	{
+		// Try to load from Resource.EditorData
+
+		if ( LoadEditorData( resource ) is { } node )
+		{
+			return node.Deserialize<MovieProject>( EditorJsonOptions )!;
+		}
+
+		// Try to create a project from compiled clip
+
+		if ( resource.Compiled is { } compiled )
+		{
+			return new MovieProject( compiled );
+		}
+
+		// Fall back to an empty project
+
+		return new MovieProject();
+	}
+
+	private static JsonNode? LoadEditorData( IMovieResource resource )
+	{
+		if ( resource.EditorData is { } editorData )
+		{
+			return editorData;
+		}
+
+		if ( resource is not MovieResource diskResource ) return null;
+
+		// resource might be the .movie_c, which doesn't contain the project.
+
+		var asset = AssetSystem.FindByPath( diskResource.ResourcePath );
+		var sourcePath = asset?.GetSourceFile( true );
+
+		if ( !File.Exists( sourcePath ) ) return null;
+
+		var resourceNode = JsonSerializer.Deserialize<JsonNode>( File.ReadAllText( sourcePath ) );
+
+		return resourceNode?[nameof(IMovieResource.EditorData)];
+
 	}
 
 	internal void SetEditMode( EditModeType? type )
@@ -283,17 +328,21 @@ public sealed partial class Session
 		HasUnsavedChanges = false;
 
 		Resource.EditorData = Project.Serialize();
-		Resource.Compiled = Project.Compile();
 
 		// If we're embedded, save the scene
 
 		if ( Resource is EmbeddedMovieResource )
 		{
+			Resource.Compiled = Project.Compile();
 			Player.Scene.Editor.Save( false );
 			return;
 		}
 
 		// If we're referencing a .movie resource, save it to disk
+
+		// The .movie_c will contain the compiled version, see MovieCompiler
+
+		Resource.Compiled = null;
 
 		if ( Resource is not MovieResource resource )
 		{
