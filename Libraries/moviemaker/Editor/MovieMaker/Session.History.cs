@@ -12,7 +12,7 @@ public interface ISessionAction
 	ISessionAction? Merge( ISessionAction next ) => null;
 }
 
-public interface ISessionAction<T> : ISessionAction
+public interface IEditModeAction<T> : ISessionAction
 	where T : EditMode
 {
 	bool Apply( T editMode );
@@ -53,7 +53,7 @@ public sealed class SessionHistory
 
 	public void Push( ISessionAction action )
 	{
-		if ( !action.Apply( _session ) ) return;
+		if ( action is NullAction ) return;
 
 		if ( _undoStack.TryPeek( out var last ) && last.Merge( action ) is { } merged )
 		{
@@ -85,6 +85,36 @@ public sealed class SessionHistory
 		_undoStack.Push( action );
 
 		return action.Apply( _session );
+	}
+}
+
+public sealed class EditModeHistory<T>( EditMode editMode )
+	where T : EditMode
+{
+	public void Push( IEditModeAction<T> action )
+	{
+		editMode.Session.History.Push( action );
+	}
+
+	public void Push( string title, Action<T> apply, Action<T> revert ) =>
+		Push( new SimpleAction( title, mode =>
+		{
+			apply( mode );
+			return true;
+		}, mode =>
+		{
+			revert( mode );
+			return true;
+		} ) );
+
+	public void Push( string title, Func<T, bool> apply, Func<T, bool> revert ) =>
+		Push( new SimpleAction( title, apply, revert ) );
+
+	private record SimpleAction( string Title, Func<T, bool> Apply, Func<T, bool> Revert ) : IEditModeAction<T>
+	{
+		bool IEditModeAction<T>.Apply( T editMode ) => Apply( editMode );
+
+		bool IEditModeAction<T>.Revert( T editMode ) => Revert( editMode );
 	}
 }
 

@@ -25,7 +25,7 @@ public record EditModeType( TypeDescription TypeDescription )
 	}
 }
 
-public abstract class EditMode
+public abstract partial class EditMode
 {
 	protected static EditMode? Focused
 	{

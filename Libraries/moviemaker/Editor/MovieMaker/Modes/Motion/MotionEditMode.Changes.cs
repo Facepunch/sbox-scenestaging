@@ -15,15 +15,30 @@ partial class MotionEditMode
 
 	public override bool AllowTrackCreation => TimeSelection is not null;
 
-	public bool HasChanges
+	public ModificationOptions? ModificationOptions
 	{
-		get => _hasChanges;
+		get => TimeSelection is { } selection
+				? new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSteps, SmoothingSize )
+				: null;
+
 		set
 		{
-			_hasChanges = value;
+			if ( value is not { } options )
+			{
+				TimeSelection = null;
+				return;
+			}
+
+			_timeSelection = options.Selection;
+			_additive = options.Additive;
+			_smoothSteps = options.SmoothSteps;
+			ChangeOffset = options.Offset;
+
 			SelectionChanged();
 		}
 	}
+
+	public bool HasChanges => TrackModifications.Values.Any( x => x.HasChanges );
 
 	public Color SelectionColor
 	{
@@ -38,7 +53,7 @@ partial class MotionEditMode
 
 	public string? LastActionIcon { get; private set; }
 
-	private Dictionary<IProjectTrack, ITrackModification> TrackModifications { get; } = new();
+	private Dictionary<IProjectPropertyTrack, ITrackModification> TrackModifications { get; } = new();
 
 	private void ClearChanges()
 	{
@@ -52,26 +67,27 @@ partial class MotionEditMode
 		_changeDuration = null;
 
 		TrackModifications.Clear();
-		HasChanges = false;
 
 		DisplayAction( "clear" );
 	}
 
 	private void CommitChanges()
 	{
-		if ( TimeSelection is not { } selection || !HasChanges ) return;
+		if ( ModificationOptions is not { } options || !HasChanges ) return;
 
-		foreach ( var (_, state) in TrackModifications )
+		using ( PushTrackModification( "Commit", true ) )
 		{
-			state.Commit( new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSize ) );
+			foreach ( var (_, state) in TrackModifications )
+			{
+				state.Commit( options );
+			}
+
+			TrackModifications.Clear();
 		}
 
 		_changeDuration = null;
 
 		DisplayAction( "approval" );
-
-		TrackModifications.Clear();
-		HasChanges = false;
 
 		Session.ClipModified();
 	}
@@ -82,15 +98,18 @@ partial class MotionEditMode
 
 		var changed = false;
 
-		foreach ( var track in Session.EditableTracks )
+		using ( PushTrackModification( shift ? "Delete" : "Clear" ) )
 		{
-			if ( shift )
+			foreach ( var track in Session.EditableTracks )
 			{
-				changed |= track.Remove( selection.PeakTimeRange ) && Session.TrackModified( track );
-			}
-			else
-			{
-				changed |= track.Clear( selection.PeakTimeRange ) && Session.TrackModified( track );
+				if ( shift )
+				{
+					changed |= track.Remove( selection.PeakTimeRange ) && Session.TrackModified( track );
+				}
+				else
+				{
+					changed |= track.Clear( selection.PeakTimeRange ) && Session.TrackModified( track );
+				}
 			}
 		}
 
@@ -107,9 +126,12 @@ partial class MotionEditMode
 
 		var changed = false;
 
-		foreach ( var track in Session.EditableTracks )
+		using ( PushTrackModification( "Insert" ) )
 		{
-			changed |= track.Insert( selection.PeakTimeRange ) && Session.TrackModified( track );
+			foreach ( var track in Session.EditableTracks )
+			{
+				changed |= track.Insert( selection.PeakTimeRange ) && Session.TrackModified( track );
+			}
 		}
 
 		if ( changed )
@@ -124,13 +146,13 @@ partial class MotionEditMode
 
 	protected override void OnSelectAll()
 	{
-		UserSetTimeSelection( new TimeSelection( (MovieTime.Zero, Project.Duration), DefaultInterpolation ) );
+		TimeSelection = new TimeSelection( (MovieTime.Zero, Project.Duration), DefaultInterpolation );
 	}
 
 	protected override void OnCut()
 	{
 		OnCopy();
-		Delete( true );
+		Delete( false );
 
 		DisplayAction( "content_cut" );
 	}
@@ -175,7 +197,7 @@ partial class MotionEditMode
 
 	private bool LoadChangesFromClipboard()
 	{
-		if ( Session.Project is not { } clip || Clipboard is not { } clipboard ) return false;
+		if ( Clipboard is not { } clipboard ) return false;
 
 		ClearChanges();
 
@@ -190,7 +212,7 @@ partial class MotionEditMode
 		foreach ( var (id, blocks) in clipboard.Tracks )
 		{
 			if ( blocks.Count == 0 ) continue;
-			if ( clip.GetTrack( id ) is not { } track ) continue;
+			if ( Project.GetTrack( id ) is not IProjectPropertyTrack track ) continue;
 
 			var state = GetOrCreateTrackModification( track );
 
@@ -198,23 +220,24 @@ partial class MotionEditMode
 
 			state.SetRelativeTo( blocks[0].GetValue( MovieTime.Zero ) );
 			state.SetOverlay( blocks, -clipboard.Selection.TotalStart );
-			state.Update( new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSize ) );
+			state.Update( ModificationOptions!.Value );
 
 			changed = true;
 		}
 
 		_changeDuration = changed ? clipboard.Selection.TotalTimeRange.Duration : null;
-		HasChanges = changed;
+
+		SelectionChanged();
 
 		return changed;
 	}
 
-	private ITrackModification? GetTrackModification( IProjectTrack track )
+	private ITrackModification? GetTrackModification( IProjectPropertyTrack track )
 	{
 		return TrackModifications!.GetValueOrDefault( track );
 	}
 
-	private ITrackModification GetOrCreateTrackModification( IProjectTrack track )
+	private ITrackModification GetOrCreateTrackModification( IProjectPropertyTrack track )
 	{
 		if ( GetTrackModification( track ) is { } state ) return state;
 
@@ -226,11 +249,11 @@ partial class MotionEditMode
 
 	protected override void OnTrackStateChanged( DopeSheetTrack track )
 	{
-		if ( TimeSelection is not { } selection ) return;
+		if ( ModificationOptions is not { } options ) return;
 
-		if ( GetTrackModification( track.TrackWidget.ProjectTrack ) is { } state )
+		if ( GetTrackModification( track.ProjectTrack ) is { } state )
 		{
-			state.Update( new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSize ) );
+			state.Update( options );
 		}
 	}
 
@@ -242,9 +265,7 @@ partial class MotionEditMode
 			return false;
 		}
 
-		var movieTrack = track.TrackWidget.ProjectTrack;
-
-		if ( TrackModifications.ContainsKey( movieTrack ) )
+		if ( TrackModifications.ContainsKey( track.ProjectTrack ) )
 		{
 			return false;
 		}
@@ -252,7 +273,7 @@ partial class MotionEditMode
 		// We create modifications in PreChange so we can capture the pre-change value,
 		// used for additive blending
 
-		var modification = GetOrCreateTrackModification( movieTrack );
+		var modification = GetOrCreateTrackModification( track.ProjectTrack );
 
 		modification.SetRelativeTo( property.Value );
 
@@ -261,25 +282,21 @@ partial class MotionEditMode
 
 	protected override bool OnPostChange( DopeSheetTrack track )
 	{
-		if ( TimeSelection is not { } selection ) return false;
-
-		var movieTrack = track.TrackWidget.ProjectTrack;
+		if ( ModificationOptions is not { } options ) return false;
 
 		if ( track.TrackWidget.Target is not { } property )
 		{
 			return false;
 		}
 
-		if ( GetTrackModification( movieTrack ) is not { } state )
+		if ( GetTrackModification( track.ProjectTrack ) is not { } state )
 		{
 			return false;
 		}
 
 		state.SetOverlay( property.Value );
 
-		HasChanges = true;
-
-		return state.Update( new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSize ) );
+		return state.Update( options );
 	}
 
 	private bool _hasSelectionItems;
@@ -292,13 +309,13 @@ partial class MotionEditMode
 			slider.Label.Hidden = !SmoothingEnabled;
 		}
 
-		if ( TimeSelection is { } selection )
+		if ( ModificationOptions is { } options )
 		{
 			PasteTimeRange = _changeDuration is { } duration ? (ChangeOffset, ChangeOffset + duration) : null;
 
 			foreach ( var (_, state) in TrackModifications )
 			{
-				state.Update( new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSize ) );
+				state.Update( options );
 			}
 
 			if ( !_hasSelectionItems )

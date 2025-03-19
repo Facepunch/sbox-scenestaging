@@ -86,10 +86,7 @@ public sealed partial class MovieProject
 				{
 					var track = IProjectPropertyTrack.Create( this, Guid.NewGuid(), propertyTrack.Name, propertyTrack.TargetType );
 
-					foreach ( var block in track.CreateSourceBlocks( source ) )
-					{
-						track.Add( block );
-					}
+					track.SetBlocks( track.CreateSourceBlocks( source ) );
 
 					AddTrackInternal( track, parentTrack );
 					continue;

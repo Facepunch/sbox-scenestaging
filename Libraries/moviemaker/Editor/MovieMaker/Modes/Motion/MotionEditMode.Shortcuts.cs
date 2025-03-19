@@ -35,7 +35,7 @@ partial class MotionEditMode
 		}
 		else if ( inst.TimeSelection is not null )
 		{
-			inst.UserSetTimeSelection( null );
+			inst.TimeSelection = null;
 		}
 	}
 

@@ -282,6 +282,17 @@ public sealed partial class Session
 		ApplyFrame( CurrentPointer );
 	}
 
+	public void SetView( MovieTime timeOffset, float pixelsPerSecond )
+	{
+		_timeOffset = timeOffset;
+		_pixelsPerSecond = pixelsPerSecond;
+
+		SmoothPan.Target = SmoothPan.Value = (float)TimeOffset.TotalSeconds;
+		SmoothZoom.Target = SmoothZoom.Value = PixelsPerSecond;
+
+		ViewChanged?.Invoke();
+	}
+
 	public bool Frame()
 	{
 		PlaybackFrame();
@@ -368,7 +379,6 @@ public sealed partial class Session
 	{
 		if ( History.Undo() )
 		{
-			Application.FocusWidget?.Blur();
 			EditorUtility.PlayRawSound( "sounds/editor/success.wav" );
 		}
 	}
@@ -377,7 +387,6 @@ public sealed partial class Session
 	{
 		if ( History.Redo() )
 		{
-			Application.FocusWidget?.Blur();
 			EditorUtility.PlayRawSound( "sounds/editor/success.wav" );
 		}
 	}
