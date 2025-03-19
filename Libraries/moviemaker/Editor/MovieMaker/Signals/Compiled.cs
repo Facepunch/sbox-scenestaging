@@ -32,6 +32,9 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, 
 		BlockIndex = copy.BlockIndex;
 		Offset = copy.Offset;
 		SmoothingSize = copy.SmoothingSize;
+
+		_samples = null;
+		_block = null;
 	}
 
 	public override T GetValue( MovieTime time )
@@ -81,6 +84,22 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, 
 		}
 
 		return true;
+	}
+
+	public override int GetHashCode()
+	{
+		return HashCode.Combine( Source, TrackIndex, BlockIndex, Offset, SmoothingSize );
+	}
+
+	public bool Equals( CompiledSignal<T>? other )
+	{
+		if ( other is null ) return false;
+
+		return Source.Equals( other.Source )
+			&& TrackIndex == other.TrackIndex
+			&& BlockIndex == other.BlockIndex
+			&& Offset == other.Offset
+			&& SmoothingSize == other.SmoothingSize;
 	}
 }
 
