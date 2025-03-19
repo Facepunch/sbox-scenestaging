@@ -31,7 +31,7 @@ file sealed record CrossFadeOperation<T>( PropertySignal<T> First, PropertySigna
 	{
 		return !TryReduceTransition( start, end, FadeTimeRange, out var reduced,
 			out var before, out var after )
-			? before.CrossFade( after, FadeTimeRange )
+			? before.CrossFade( after, FadeTimeRange, Mode, Direction )
 			: reduced;
 	}
 
