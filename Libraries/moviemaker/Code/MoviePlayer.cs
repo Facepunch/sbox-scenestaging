@@ -106,7 +106,6 @@ public sealed class MoviePlayer : Component
 		_position += MovieTime.FromSeconds( Time.Delta * TimeScale );
 
 		// Rewind if looping
-		Log.Info( $"IsLooping: {IsLooping}, Duration: {Clip?.Duration}, _position: {_position}" );
 
 		if ( IsLooping && Clip?.Duration is { IsPositive: true } duration && _position >= duration )
 		{
