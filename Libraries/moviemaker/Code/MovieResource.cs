@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sandbox.MovieMaker.Compiled;
@@ -10,18 +11,16 @@ namespace Sandbox.MovieMaker;
 /// <summary>
 /// A container for a <see cref="CompiledClip"/>, including optional <see cref="EditorData"/>.
 /// </summary>
-[JsonPolymorphic]
-[JsonDerivedType( typeof(MovieResource), "Resource" )]
-[JsonDerivedType( typeof(EmbeddedMovieResource), "Embedded" )]
+[JsonConverter( typeof(MovieResourceConverter) )]
 public interface IMovieResource
 {
 	/// <summary>
 	/// Compiled movie clip.
 	/// </summary>
-	CompiledClip? Clip { get; set; }
+	CompiledClip? Compiled { get; set; }
 
 	/// <summary>
-	/// Editor-only data used to generate <see cref="Clip"/>.
+	/// Editor-only data used to generate <see cref="Compiled"/>.
 	/// </summary>
 	JsonNode? EditorData { get; set; }
 }
@@ -34,7 +33,7 @@ public sealed class MovieResource : GameResource, IMovieResource
 {
 	/// <inheritdoc />
 	[Hide]
-	public CompiledClip? Clip { get; set; }
+	public CompiledClip? Compiled { get; set; }
 
 	/// <inheritdoc />
 	[Hide]
@@ -47,8 +46,43 @@ public sealed class MovieResource : GameResource, IMovieResource
 public sealed class EmbeddedMovieResource : IMovieResource
 {
 	/// <inheritdoc />
-	public CompiledClip? Clip { get; set; }
+	public CompiledClip? Compiled { get; set; }
 
 	/// <inheritdoc />
 	public JsonNode? EditorData { get; set; }
+}
+
+file sealed class MovieResourceConverter : JsonConverter<IMovieResource>
+{
+	public override void Write( Utf8JsonWriter writer, IMovieResource value, JsonSerializerOptions options )
+	{
+		switch ( value )
+		{
+			case MovieResource resource:
+				writer.WriteStringValue( resource.ResourcePath );
+				return;
+
+			case EmbeddedMovieResource embedded:
+				JsonSerializer.Serialize( writer, embedded, options );
+				return;
+
+			default:
+				throw new NotImplementedException();
+		}
+	}
+
+	public override IMovieResource Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
+	{
+		switch ( reader.TokenType )
+		{
+			case JsonTokenType.String:
+				return JsonSerializer.Deserialize<MovieResource>( ref reader, options )!;
+
+			case JsonTokenType.StartObject:
+				return JsonSerializer.Deserialize<EmbeddedMovieResource>( ref reader, options )!;
+
+			default:
+				throw new Exception( "Expected resource path or embedded resource object." );
+		}
+	}
 }

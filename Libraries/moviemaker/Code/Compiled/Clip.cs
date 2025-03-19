@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace Sandbox.MovieMaker.Compiled;
 
@@ -13,24 +14,49 @@ public sealed partial class CompiledClip : IClip
 	/// <summary>
 	/// A clip with no tracks.
 	/// </summary>
-	public static CompiledClip Empty { get; } = new();
+	public static CompiledClip Empty { get; } = FromTracks();
 
-	private readonly ImmutableDictionary<Guid, CompiledReferenceTrack> _referenceTracks;
+	private readonly ImmutableDictionary<Guid, ICompiledReferenceTrack> _referenceTracks;
 
 	/// <inheritdoc cref="IClip.Tracks"/>
-	public ImmutableArray<CompiledTrack> Tracks { get; }
+	public ImmutableArray<ICompiledTrack> Tracks { get; }
 
 	public MovieTime Duration { get; }
 
-	public CompiledClip( params CompiledTrack[] tracks )
-		: this( tracks.AsEnumerable() )
+	private CompiledClip( IReadOnlySet<ICompiledTrack> tracks )
 	{
+		// ReSharper disable once UseCollectionExpression
+		Tracks = tracks
+			.OrderBy( x => x.GetDepth() )
+			.ThenBy( x => x.Name )
+			.ToImmutableArray();
 
+		_referenceTracks = tracks
+			.OfType<ICompiledReferenceTrack>()
+			.ToImmutableDictionary( x => x.Id, x => x );
+
+		Duration = tracks
+			.OfType<ICompiledBlockTrack>()
+			.Select( x => x.TimeRange.End )
+			.DefaultIfEmpty()
+			.Max();
 	}
 
-	public CompiledClip( IEnumerable<CompiledTrack> tracks )
+	/// <inheritdoc cref="IClip.GetTrack"/>
+	public ICompiledReferenceTrack? GetTrack( Guid trackId )
 	{
-		var allTracks = new HashSet<CompiledTrack>();
+		return _referenceTracks.GetValueOrDefault( trackId );
+	}
+
+	IEnumerable<ITrack> IClip.Tracks => Tracks.CastArray<ITrack>();
+	IReferenceTrack? IClip.GetTrack( Guid trackId ) => GetTrack( trackId );
+
+	public static CompiledClip FromTracks( params ICompiledTrack[] tracks ) =>
+		FromTracks( tracks.AsEnumerable() );
+
+	public static CompiledClip FromTracks( IEnumerable<ICompiledTrack> tracks )
+	{
+		var allTracks = new HashSet<ICompiledTrack>();
 
 		// Find all root tracks
 
@@ -51,11 +77,11 @@ public sealed partial class CompiledClip : IClip
 			}
 		}
 
-		var referenceTracks = new Dictionary<Guid, CompiledReferenceTrack>();
+		var referenceTracks = new Dictionary<Guid, ICompiledReferenceTrack>();
 
 		// IDs must be unique
 
-		foreach ( var track in allTracks.OfType<CompiledReferenceTrack>() )
+		foreach ( var track in allTracks.OfType<ICompiledReferenceTrack>() )
 		{
 			if ( !referenceTracks.TryAdd( track.Id, track ) )
 			{
@@ -63,25 +89,27 @@ public sealed partial class CompiledClip : IClip
 			}
 		}
 
-		// Initialize
-
-		// ReSharper disable once UseCollectionExpression
-		Tracks = allTracks.OrderBy( x => x.GetDepth() ).ThenBy( x => x.Name ).ToImmutableArray();
-
-		_referenceTracks = referenceTracks.ToImmutableDictionary();
-
-		Duration = allTracks
-			.OfType<IBlockTrack>()
-			.Select( x => x.TimeRange.End )
-			.DefaultIfEmpty().Max();
+		return new CompiledClip( allTracks );
 	}
 
-	/// <inheritdoc cref="IClip.GetTrack"/>
-	public CompiledReferenceTrack? GetTrack( Guid trackId )
-	{
-		return _referenceTracks.GetValueOrDefault( trackId );
-	}
+	/// <summary>
+	/// Create a root <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.GameObject"/> with
+	/// the given <paramref name="name"/>. To create a nested track, use <see cref="CompiledClipExtensions.GameObject"/>.
+	/// </summary>
+	public static CompiledReferenceTrack<GameObject> RootGameObject( string name ) => new( Guid.NewGuid(), name );
 
-	IEnumerable<ITrack> IClip.Tracks => Tracks.CastArray<ITrack>();
-	IReferenceTrack? IClip.GetTrack( Guid trackId ) => GetTrack( trackId );
+	/// <summary>
+	/// Create a root <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
+	/// the given <paramref name="type"/>. To create a nested track, use <see cref="CompiledClipExtensions.Component"/>.
+	/// </summary>
+	public static ICompiledReferenceTrack RootComponent( Type type ) =>
+		TypeLibrary.GetType( typeof( CompiledReferenceTrack<> ) )
+			.CreateGeneric<ICompiledReferenceTrack>( [type], [Guid.NewGuid(), type.Name, null] );
+
+	/// <summary>
+	/// Create a root <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
+	/// the type <typeparamref name="T"/>. To create a nested track, use <see cref="CompiledClipExtensions.Component{T}"/>.
+	/// </summary>
+	public static CompiledReferenceTrack<T> RootComponent<T>()
+		where T : Component => new( Guid.NewGuid(), typeof( T ).Name );
 }

@@ -61,18 +61,31 @@ public sealed partial class MovieProject
 
 	public CompiledClip Compile()
 	{
-		var result = new Dictionary<IProjectTrack, CompiledTrack>();
+		var result = new Dictionary<IProjectTrack, ICompiledTrack>();
 
 		foreach ( var track in RootTracks )
 		{
+			if ( track.IsEmpty ) continue;
+
 			CompileTrack( track, result );
 		}
 
-		return new CompiledClip( result.Values );
+		return CompiledClip.FromTracks( result.Values );
 	}
 
-	private void CompileTrack( IProjectTrack track, Dictionary<IProjectTrack, CompiledTrack> result ) =>
-		result.Add( track, track.Compile( track.Parent is { } parent ? result[parent] : null, false ) );
+	private void CompileTrack( IProjectTrack track, Dictionary<IProjectTrack, ICompiledTrack> result )
+	{
+		var compiled = track.Compile( track.Parent is { } parent ? result[parent] : null, false );
+
+		result.Add( track, compiled );
+
+		foreach ( var childTrack in track.Children )
+		{
+			if ( childTrack.IsEmpty ) continue;
+
+			CompileTrack( childTrack, result );
+		}
+	}
 
 	public ProjectSourceClip AddSourceClip( CompiledClip clip, JsonObject? metadata = null )
 	{
@@ -86,7 +99,7 @@ public sealed partial class MovieProject
 		var guid = Guid.NewGuid();
 		var track = IProjectReferenceTrack.Create( this, guid, name, targetType );
 
-		AddTrackInternal( (IProjectTrackInternal)track, (IProjectTrackInternal?)parentTrack );
+		AddTrackInternal( track, parentTrack );
 
 		return track;
 	}
@@ -96,19 +109,19 @@ public sealed partial class MovieProject
 		var guid = Guid.NewGuid();
 		var track = IProjectPropertyTrack.Create( this, guid, name, targetType );
 
-		AddTrackInternal( (IProjectTrackInternal)track, (IProjectTrackInternal?)parentTrack );
+		AddTrackInternal( track, parentTrack );
 
 		return track;
 	}
 
-	private void AddTrackInternal( IProjectTrackInternal track, IProjectTrackInternal? parentTrack )
+	private void AddTrackInternal( IProjectTrack track, IProjectTrack? parentTrack )
 	{
-		if ( _trackDict.ContainsKey( track.Id ) )
+		if ( !_trackDict.TryAdd( track.Id, track ) )
 		{
 			throw new Exception( "Conflicting track IDs!" );
 		}
 
-		parentTrack?.AddChild( track );
+		((IProjectTrackInternal?)parentTrack)?.AddChild( (IProjectTrackInternal)track );
 
 		_trackList.Add( track );
 		_tracksChanged = true;
@@ -116,7 +129,7 @@ public sealed partial class MovieProject
 
 	internal void RemoveTrackInternal( IProjectTrackInternal projectTrack )
 	{
-		if ( !_trackList.Remove( projectTrack ) ) return;
+		if ( !_trackList.Remove( projectTrack ) || !_trackDict.Remove( projectTrack.Id ) ) return;
 
 		foreach ( var child in projectTrack.Children.ToArray() )
 		{
@@ -135,14 +148,10 @@ public sealed partial class MovieProject
 		_tracksChanged = false;
 
 		_trackList.Sort();
-
 		_rootTrackList.Clear();
-		_trackDict.Clear();
 
 		foreach ( var track in _trackList )
 		{
-			_trackDict[track.Id] = track;
-
 			if ( track.Parent is null )
 			{
 				_rootTrackList.Add( track );

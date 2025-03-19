@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -10,36 +11,103 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
+[JsonConverter( typeof(MovieProjectConverter) )]
 partial class MovieProject : IJsonPopulator
 {
 	internal sealed record Model(
 		int SampleRate,
-		ImmutableDictionary<Guid, ProjectSourceClip.Model> Sources,
-		ImmutableDictionary<Guid, IProjectTrack.Model> Tracks );
+		ImmutableDictionary<Guid, IProjectTrack.Model> Tracks,
+		ImmutableDictionary<Guid, ProjectSourceClip.Model> Sources );
 
 	public JsonNode Serialize()
 	{
 		var model = new Model(
 			SampleRate,
-			SourceClips.ToImmutableDictionary( x => x.Key, x => x.Value.Serialize() ),
-			Tracks.ToImmutableDictionary( x => x.Id, x => x.Serialize( EditorJsonOptions ) ) );
+			Tracks.ToImmutableDictionary( x => x.Id, x => x.Serialize( EditorJsonOptions ) ),
+			SourceClips.ToImmutableDictionary( x => x.Key, x => x.Value.Serialize() ) );
 
 		return JsonSerializer.SerializeToNode( model, EditorJsonOptions )!;
 	}
 
 	public void Deserialize( JsonNode node )
 	{
-		throw new NotImplementedException();
+		var model = node.Deserialize<Model>( EditorJsonOptions )!;
+
+		SampleRate = model.SampleRate;
+
+		_sourceClipDict.Clear();
+
+		foreach ( var (id, sourceModel) in model.Sources )
+		{
+			_sourceClipDict[id] = new ProjectSourceClip( id, sourceModel.Clip, sourceModel.Metadata );
+		}
+
+		_rootTrackList.Clear();
+		_trackDict.Clear();
+		_trackList.Clear();
+		_tracksChanged = true;
+
+		var addedTracks = new Dictionary<Guid, IProjectTrack>();
+
+		foreach ( var (id, trackModel) in model.Tracks )
+		{
+			switch ( trackModel )
+			{
+				case IProjectReferenceTrack.Model refModel:
+					addedTracks[id] = IProjectReferenceTrack.Create( this, id, refModel.Name, refModel.TargetType );
+					break;
+
+				case IProjectPropertyTrack.Model propertyModel:
+					addedTracks[id] = IProjectPropertyTrack.Create( this, id, propertyModel.Name, propertyModel.TargetType );
+					break;
+
+				default:
+					throw new NotImplementedException();
+			}
+		}
+
+		foreach ( var (id, trackModel) in model.Tracks )
+		{
+			var addedTrack = addedTracks[id];
+			var parentTrack = trackModel.ParentId is { } parentId ? addedTracks[parentId] : null;
+
+			AddTrackInternal( addedTrack, parentTrack );
+		}
+
+		foreach ( var (id, trackModel) in model.Tracks )
+		{
+			var addedTrack = addedTracks[id];
+
+			addedTrack.Deserialize( trackModel, EditorJsonOptions );
+		}
 	}
 }
 
-file class MovieSerializationContext
+file sealed class MovieProjectConverter : JsonConverter<MovieProject>
 {
-	public static IDisposable Push()
+	public override void Write( Utf8JsonWriter writer, MovieProject value, JsonSerializerOptions options )
+	{
+		JsonSerializer.Serialize( value.Serialize(), options );
+	}
+
+	public override MovieProject? Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
+	{
+		var project = new MovieProject();
+		var node = JsonSerializer.Deserialize<JsonNode>( ref reader, options )!;
+
+		project.Deserialize( node );
+
+		return project;
+	}
+}
+
+file sealed class MovieSerializationContext( MovieProject project )
+{
+	public static IDisposable Push( MovieProject project )
 	{
 		var old = Current;
 
-		Current = new MovieSerializationContext();
+		Current = new MovieSerializationContext( project );
 
 		return new DisposeAction( () =>
 		{
@@ -50,25 +118,25 @@ file class MovieSerializationContext
 	[field: ThreadStatic]
 	public static MovieSerializationContext? Current { get; private set; }
 
-	private readonly Dictionary<IPropertySignal, int> _signalIds = new();
-	private readonly Dictionary<CompiledPropertyBlock, int> _compiledBlockIds = new();
-
-	public void Reset()
-	{
-		_signalIds.Clear();
-	}
+	private readonly Dictionary<IPropertySignal, int> _signalsToId = new();
+	private readonly Dictionary<int, IPropertySignal> _signalsFromId = new();
 
 	public bool TryRegisterSignal( IPropertySignal signal, out int id )
 	{
-		if ( _signalIds.TryGetValue( signal, out id ) )
+		if ( _signalsToId.TryGetValue( signal, out id ) )
 		{
 			return false;
 		}
 
-		_signalIds[signal] = id = _signalIds.Count + 1;
+		_signalsToId[signal] = id = _signalsToId.Count + 1;
 
 		return true;
 	}
+
+	public void RegisterSignal( int id, IPropertySignal signal ) => _signalsFromId[id] = signal;
+	public IPropertySignal GetSignal( int id ) => _signalsFromId[id];
+
+	public ProjectSourceClip GetSourceClip( Guid id ) => project.SourceClips[id];
 }
 
 partial interface IProjectTrack
@@ -80,11 +148,13 @@ partial interface IProjectTrack
 		[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] Guid? ParentId );
 
 	Model Serialize( JsonSerializerOptions options );
+	void Deserialize( Model model, JsonSerializerOptions options );
 }
 
 partial class ProjectTrack<T>
 {
 	public abstract IProjectTrack.Model Serialize( JsonSerializerOptions options );
+	public abstract void Deserialize( IProjectTrack.Model model, JsonSerializerOptions options );
 }
 
 partial interface IProjectReferenceTrack
@@ -98,6 +168,11 @@ partial class ProjectReferenceTrack<T>
 	public override IProjectTrack.Model Serialize( JsonSerializerOptions options )
 	{
 		return new IProjectReferenceTrack.Model( Name, TargetType, Parent?.Id );
+	}
+
+	public override void Deserialize( IProjectTrack.Model model, JsonSerializerOptions options )
+	{
+		if ( model is not IProjectReferenceTrack.Model refModel ) return;
 	}
 }
 
@@ -113,12 +188,29 @@ partial class ProjectPropertyTrack<T>
 {
 	public override IProjectTrack.Model Serialize( JsonSerializerOptions options )
 	{
-		using var contextScope = MovieSerializationContext.Push();
+		using var contextScope = MovieSerializationContext.Push( Project );
 
 		return new IProjectPropertyTrack.Model( Name, TargetType, Parent?.Id,
 			Blocks.Count != 0
 				? JsonSerializer.SerializeToNode( Blocks, EditorJsonOptions )!.AsArray()
 				: null );
+	}
+
+	public override void Deserialize( IProjectTrack.Model model, JsonSerializerOptions options )
+	{
+		if ( model is not IProjectPropertyTrack.Model propertyModel ) return;
+
+		using var contextScope = MovieSerializationContext.Push( Project );
+
+		_blocks.Clear();
+		_blocksChanged = true;
+
+		if ( propertyModel.Blocks?.Deserialize<ImmutableArray<PropertyBlock<T>>>( options ) is not { } blocks )
+		{
+			return;
+		}
+
+		_blocks.AddRange( blocks );
 	}
 }
 
@@ -146,9 +238,22 @@ file class PropertySignalConverterFactory : JsonConverterFactory
 
 file class PropertySignalConverter<T> : JsonConverter<PropertySignal<T>>
 {
+	[SkipHotload]
+	private static ImmutableDictionary<string, Type>? _discriminatorLookup;
+
 	private static string GetDiscriminator( Type type )
 	{
 		return type.GetCustomAttribute<JsonDiscriminatorAttribute>()?.Value ?? type.Name;
+	}
+
+	private static Type GetType( string discriminator )
+	{
+		_discriminatorLookup ??= EditorTypeLibrary.GetTypesWithAttribute<JsonDiscriminatorAttribute>()
+			.Where( x => !x.Type.IsAbstract && x.Type.IsGenericType )
+			.Select( x => (Name: x.Attribute.Value, Type: x.Type.TargetType.MakeGenericType( typeof(T) )) )
+			.ToImmutableDictionary( x => x.Name, x => x.Type );
+
+		return _discriminatorLookup[discriminator];
 	}
 
 	public override void Write( Utf8JsonWriter writer, PropertySignal<T> value, JsonSerializerOptions options )
@@ -172,7 +277,23 @@ file class PropertySignalConverter<T> : JsonConverter<PropertySignal<T>>
 
 	public override PropertySignal<T>? Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
 	{
-		throw new NotImplementedException();
+		if ( reader.TokenType == JsonTokenType.Number )
+		{
+			var refId = JsonSerializer.Deserialize<int>( ref reader, options );
+
+			return (PropertySignal<T>)MovieSerializationContext.Current!.GetSignal( refId );
+		}
+
+		var node = JsonSerializer.Deserialize<JsonObject>( ref reader, options )!;
+		var id = node["$id"]!.GetValue<int>();
+		var discriminator = node["$type"]!.GetValue<string>();
+		var type = GetType( discriminator );
+
+		var signal = (PropertySignal<T>)node.Deserialize( type, options )!;
+
+		MovieSerializationContext.Current!.RegisterSignal( id, signal );
+
+		return signal;
 	}
 }
 
@@ -193,6 +314,8 @@ file class ProjectSourceClipConverter : JsonConverter<ProjectSourceClip>
 
 	public override ProjectSourceClip? Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
 	{
-		throw new NotImplementedException();
+		var id = JsonSerializer.Deserialize<Guid>( ref reader, options );
+
+		return MovieSerializationContext.Current!.GetSourceClip( id );
 	}
 }

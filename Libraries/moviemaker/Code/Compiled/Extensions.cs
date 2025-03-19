@@ -6,37 +6,37 @@ namespace Sandbox.MovieMaker.Compiled;
 #nullable enable
 
 /// <summary>
-/// Helper methods for working with <see cref="CompiledClip"/>, <see cref="CompiledTrack"/>, or <see cref="CompiledBlock"/>.
+/// Helper methods for working with <see cref="CompiledClip"/>, <see cref="ICompiledTrack"/>, or <see cref="ICompiledBlock"/>.
 /// </summary>
 public static class CompiledClipExtensions
 {
 	/// <summary>
-	/// Create a nested <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.GameObject"/> with
+	/// Create a nested <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.GameObject"/> with
 	/// the given <paramref name="name"/>.
 	/// </summary>
 	public static CompiledReferenceTrack<GameObject> GameObject( this CompiledReferenceTrack<GameObject> track, string name ) =>
 		new( Guid.NewGuid(), name, track );
 
 	/// <summary>
-	/// Create a nested <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
+	/// Create a nested <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the given <paramref name="type"/>.
 	/// </summary>
-	public static CompiledReferenceTrack Component( this CompiledReferenceTrack<GameObject> track, Type type ) =>
+	public static ICompiledReferenceTrack Component( this CompiledReferenceTrack<GameObject> track, Type type ) =>
 		TypeLibrary.GetType( typeof(CompiledReferenceTrack<>) )
-			.CreateGeneric<CompiledReferenceTrack>( [type], [Guid.NewGuid(), type.Name, track] );
+			.CreateGeneric<ICompiledReferenceTrack>( [type], [Guid.NewGuid(), type.Name, track] );
 
 	/// <summary>
-	/// Create a nested <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
+	/// Create a nested <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the type <typeparamref name="T"/>.
 	/// </summary>
 	public static CompiledReferenceTrack<T> Component<T>( this CompiledReferenceTrack<GameObject> track )
 		where T : Component => new( Guid.NewGuid(), typeof(T).Name, track );
 
 	/// <summary>
-	/// Create a nested <see cref="CompiledPropertyTrack"/> that targets a property with the given <paramref name="name"/>
+	/// Create a nested <see cref="ICompiledPropertyTrack"/> that targets a property with the given <paramref name="name"/>
 	/// in the parent track.
 	/// </summary>
-	public static CompiledPropertyTrack<T> Property<T>( this CompiledTrack track, string name ) => new( name, track, ImmutableArray<CompiledPropertyBlock<T>>.Empty );
+	public static CompiledPropertyTrack<T> Property<T>( this ICompiledTrack track, string name ) => new( name, track, ImmutableArray<ICompiledPropertyBlock<T>>.Empty );
 
 	/// <summary>
 	/// Returns a clone of <paramref name="track"/> with an appended <see cref="CompiledConstantBlock{T}"/> with the given

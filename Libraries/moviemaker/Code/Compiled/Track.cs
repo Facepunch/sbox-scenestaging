@@ -7,125 +7,77 @@ namespace Sandbox.MovieMaker.Compiled;
 #nullable enable
 
 /// <inheritdoc cref="ITrack"/>
-public abstract record CompiledTrack( string Name, Type TargetType, CompiledTrack? Parent ) : ITrack
+public interface ICompiledTrack : ITrack
 {
-	ITrack? ITrack.Parent => Parent;
-
-	/// <summary>
-	/// Create a root <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.GameObject"/> with
-	/// the given <paramref name="name"/>. To create a nested track, use <see cref="CompiledClipExtensions.GameObject"/>.
-	/// </summary>
-	public static CompiledReferenceTrack<GameObject> GameObject( string name ) => new( Guid.NewGuid(), name );
-
-	/// <summary>
-	/// Create a root <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
-	/// the given <paramref name="type"/>. To create a nested track, use <see cref="CompiledClipExtensions.Component"/>.
-	/// </summary>
-	public static CompiledReferenceTrack Component( Type type ) =>
-		TypeLibrary.GetType( typeof(CompiledReferenceTrack<>) )
-			.CreateGeneric<CompiledReferenceTrack>( [type], [Guid.NewGuid(), type.Name, null] );
-
-	/// <summary>
-	/// Create a root <see cref="CompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
-	/// the type <typeparamref name="T"/>. To create a nested track, use <see cref="CompiledClipExtensions.Component{T}"/>.
-	/// </summary>
-	public static CompiledReferenceTrack<T> Component<T>()
-		where T : Component => new( Guid.NewGuid(), typeof(T).Name );
+	new ICompiledTrack? Parent { get; }
 }
 
 /// <inheritdoc cref="IReferenceTrack"/>
-public abstract record CompiledReferenceTrack(
-	Guid Id,
-	string Name,
-	Type TargetType,
-	CompiledReferenceTrack<GameObject>? Parent )
-	: CompiledTrack( Name, TargetType, Parent ), IReferenceTrack
+public interface ICompiledReferenceTrack : ICompiledTrack, IReferenceTrack
 {
-	public new CompiledReferenceTrack<GameObject>? Parent => (CompiledReferenceTrack<GameObject>?)base.Parent;
+	new CompiledReferenceTrack<GameObject>? Parent { get; }
 
+	ICompiledTrack? ICompiledTrack.Parent => Parent;
 	IReferenceTrack<GameObject>? IReferenceTrack.Parent => Parent;
+}
+
+public interface ICompiledBlockTrack : ICompiledTrack
+{
+	IReadOnlyList<ICompiledBlock> Blocks { get; }
+
+	public MovieTimeRange TimeRange => Blocks.Count == 0 ? default : (Blocks[0].TimeRange.Start, Blocks[^1].TimeRange.End);
 }
 
 public sealed record CompiledReferenceTrack<T>(
 	Guid Id,
 	string Name,
 	CompiledReferenceTrack<GameObject>? Parent = null )
-	: CompiledReferenceTrack( Id, Name, typeof(T), Parent ), IReferenceTrack<T>
-	where T : class, IValid;
-
-internal interface IBlockTrack
-{
-	protected static MovieTimeRange GetTimeRange( IReadOnlyList<CompiledBlock> blocks ) =>
-		blocks.Count > 0 ? (blocks.Min( x => x.TimeRange.Start ), blocks.Max( x => x.TimeRange.End )) : default;
-
-	MovieTimeRange TimeRange { get; }
-	IReadOnlyList<CompiledBlock> Blocks { get; }
-}
+	: ICompiledReferenceTrack, IReferenceTrack<T> where T : class, IValid;
 
 /// <inheritdoc cref="IActionTrack"/>
 public sealed record CompiledActionTrack(
 	string Name,
 	Type TargetType,
-	CompiledTrack Parent,
+	ICompiledTrack Parent,
 	ImmutableArray<CompiledActionBlock> Blocks )
-	: CompiledTrack( Name, TargetType, Parent ), IActionTrack, IBlockTrack
+	: IActionTrack, ICompiledBlockTrack
 {
-	public new CompiledTrack Parent => base.Parent!;
+	public IEnumerable<CompiledActionBlock> GetBlocks( MovieTime time ) =>
+		Blocks.Where( x => x.TimeRange.Contains( time ) );
 
-	IReadOnlyList<CompiledBlock> IBlockTrack.Blocks => Blocks;
-
-	public MovieTimeRange TimeRange { get; } = IBlockTrack.GetTimeRange( Blocks );
-
-	ITrack IActionTrack.Parent => Parent!;
+	ITrack IActionTrack.Parent => Parent;
+	IReadOnlyList<ICompiledBlock> ICompiledBlockTrack.Blocks => Blocks;
 }
 
 /// <inheritdoc cref="IPropertyTrack"/>
-public abstract record CompiledPropertyTrack( string Name, Type TargetType, CompiledTrack Parent )
-	: CompiledTrack( Name, TargetType, Parent ), IPropertyTrack, IBlockTrack
+public interface ICompiledPropertyTrack : IPropertyTrack, ICompiledBlockTrack
 {
-	public new CompiledTrack Parent => base.Parent!;
-	public abstract MovieTimeRange TimeRange { get; }
-	public IReadOnlyList<CompiledPropertyBlock> Blocks => OnGetBlocks();
+	new ICompiledTrack Parent { get; }
+	new IReadOnlyList<ICompiledPropertyBlock> Blocks { get; }
 
-	public bool TryGetValue( MovieTime time, out object? value )
-	{
-		if ( OnGetBlock( time ) is { } block )
-		{
-			value = block.GetValue( time );
-			return true;
-		}
-
-		value = null;
-		return false;
-	}
-
-	public CompiledPropertyBlock? GetBlock( MovieTime time ) => OnGetBlock( time );
-
-	protected abstract CompiledPropertyBlock? OnGetBlock( MovieTime time );
-	protected abstract IReadOnlyList<CompiledPropertyBlock> OnGetBlocks();
+	ICompiledPropertyBlock? GetBlock( MovieTime time );
 
 	ITrack IPropertyTrack.Parent => Parent;
-	IReadOnlyList<CompiledBlock> IBlockTrack.Blocks => OnGetBlocks();
+	IReadOnlyList<ICompiledBlock> ICompiledBlockTrack.Blocks => Blocks;
 }
 
 /// <inheritdoc cref="IPropertyTrack{T}"/>
 public sealed record CompiledPropertyTrack<T>(
 	string Name,
-	CompiledTrack Parent,
-	ImmutableArray<CompiledPropertyBlock<T>> Blocks )
-	: CompiledPropertyTrack( Name, typeof(T), Parent ), IPropertyTrack<T>, IBlockTrack
+	ICompiledTrack Parent,
+	ImmutableArray<ICompiledPropertyBlock<T>> Blocks )
+	: ICompiledPropertyTrack, IPropertyTrack<T>
 {
-	private readonly bool _validated = Validate( Blocks );
+	private readonly ImmutableArray<ICompiledPropertyBlock<T>> _blocks = Validate( Blocks );
 
-	public override MovieTimeRange TimeRange { get; } = IBlockTrack.GetTimeRange( Blocks );
-	public new ImmutableArray<CompiledPropertyBlock<T>> Blocks { get; init; } = Blocks;
-
-	IReadOnlyList<CompiledBlock> IBlockTrack.Blocks => Blocks;
-
-	public new CompiledPropertyBlock<T>? GetBlock( MovieTime time )
+	public ImmutableArray<ICompiledPropertyBlock<T>> Blocks
 	{
-		if ( !TimeRange.Contains( time ) ) return default;
+		get => _blocks;
+		init => _blocks = Validate( value );
+	}
 
+	public ICompiledPropertyBlock<T>? GetBlock( MovieTime time )
+	{
 		// TODO: binary search?
 
 		// We go backwards because if we're exactly on a block boundary, we want to use the later block
@@ -155,17 +107,17 @@ public sealed record CompiledPropertyTrack<T>(
 		return false;
 	}
 
-	protected override CompiledPropertyBlock? OnGetBlock( MovieTime time ) => GetBlock( time );
-	protected override IReadOnlyList<CompiledPropertyBlock> OnGetBlocks() => Blocks;
+	IReadOnlyList<ICompiledPropertyBlock> ICompiledPropertyTrack.Blocks => Blocks;
+	ICompiledPropertyBlock? ICompiledPropertyTrack.GetBlock( MovieTime time ) => GetBlock( time );
 
-	private static bool Validate( ImmutableArray<CompiledPropertyBlock<T>> blocks )
+	private static ImmutableArray<ICompiledPropertyBlock<T>> Validate( ImmutableArray<ICompiledPropertyBlock<T>> blocks )
 	{
 		if ( blocks.IsDefault )
 		{
 			throw new ArgumentException( "Blocks must be an array.", nameof(Blocks) );
 		}
 
-		if ( blocks.Length == 0 ) return true;
+		if ( blocks.Length == 0 ) return blocks;
 
 		var prevTime = blocks[0].TimeRange.Start;
 
@@ -182,6 +134,6 @@ public sealed record CompiledPropertyTrack<T>(
 			}
 		}
 
-		return true;
+		return blocks;
 	}
 }

@@ -208,7 +208,7 @@ public class MovieEditor : Widget
 
 		Session.Player.Resource = new EmbeddedMovieResource
 		{
-			Clip = Session.Resource.Clip,
+			Compiled = Session.Resource.Compiled,
 			EditorData = Session.Project.Serialize()
 		};
 
@@ -255,7 +255,7 @@ public class MovieEditor : Widget
 			return;
 
 		var sceneAsset = AssetSystem.CreateResource( extension, fd.SelectedFile );
-		var file = new MovieResource { Clip = Session.Project.Compile(), EditorData = Session.Project.Serialize() };
+		var file = new MovieResource { Compiled = Session.Project.Compile(), EditorData = Session.Project.Serialize() };
 
 		sceneAsset.SaveToDisk( file );
 

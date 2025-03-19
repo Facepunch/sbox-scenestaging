@@ -79,7 +79,7 @@ partial class MotionEditMode
 
 		Log.Info( $"Finished recording {_recordings.Count} tracks!" );
 
-		var tracks = new Dictionary<IProjectTrack, CompiledTrack>();
+		var tracks = new Dictionary<IProjectTrack, ICompiledTrack>();
 		MovieTimeRange? timeRange = null;
 
 		foreach ( var (track, recording) in _recordings )
@@ -99,7 +99,7 @@ partial class MotionEditMode
 
 		if ( tracks.Count <= 0 || timeRange is not { Duration.IsPositive: true } range ) return;
 
-		var sourceClip = Project.AddSourceClip( new CompiledClip( tracks.Values ), new JsonObject
+		var sourceClip = Project.AddSourceClip( CompiledClip.FromTracks( tracks.Values ), new JsonObject
 		{
 			{ "Date", DateTime.UtcNow.ToString( "o", CultureInfo.InvariantCulture ) },
 			{ "IsEditor", Session.Player.Scene.IsEditor },
@@ -119,7 +119,7 @@ partial class MotionEditMode
 		}
 	}
 
-	private static CompiledTrack GetOrCreateCompiledTrack( Dictionary<IProjectTrack, CompiledTrack> dict, IProjectTrack track )
+	private static ICompiledTrack GetOrCreateCompiledTrack( Dictionary<IProjectTrack, ICompiledTrack> dict, IProjectTrack track )
 	{
 		if ( dict.TryGetValue( track, out var compiled ) ) return compiled;
 
@@ -149,7 +149,7 @@ partial class MotionEditMode
 internal interface ITrackRecording : IPropertyBlock, IDynamicBlock
 {
 	void Record( MovieTime time );
-	CompiledPropertyTrack? Compile( IProjectPropertyTrack track, CompiledTrack compiledParent );
+	ICompiledPropertyTrack? Compile( IProjectPropertyTrack track, ICompiledTrack compiledParent );
 }
 
 file class TrackRecording<T> : ITrackRecording, IPropertyBlock<T>
@@ -217,7 +217,7 @@ file class TrackRecording<T> : ITrackRecording, IPropertyBlock<T>
 		Changed?.Invoke();
 	}
 
-	public CompiledPropertyTrack? Compile( IProjectPropertyTrack track, CompiledTrack compiledParent )
+	public ICompiledPropertyTrack? Compile( IProjectPropertyTrack track, ICompiledTrack compiledParent )
 	{
 		if ( _samples.Count == 0 ) return null;
 

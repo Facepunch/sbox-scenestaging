@@ -24,7 +24,7 @@ public sealed class MoviePlayer : Component
 	/// <summary>
 	/// Contains a <see cref="IClip"/> to play. Can be a <see cref="MovieResource"/> or <see cref="EmbeddedMovieResource"/>.
 	/// </summary>
-	[Property, Group( "Source" )]
+	[Property, Hide]
 	public IMovieResource? Resource
 	{
 		get => _source;
@@ -38,7 +38,7 @@ public sealed class MoviePlayer : Component
 
 	public IClip? Clip
 	{
-		get => _clip ?? _source?.Clip;
+		get => _clip ?? _source?.Compiled;
 		set
 		{
 			_clip = value;
@@ -106,6 +106,7 @@ public sealed class MoviePlayer : Component
 		_position += MovieTime.FromSeconds( Time.Delta * TimeScale );
 
 		// Rewind if looping
+		Log.Info( $"IsLooping: {IsLooping}, Duration: {Clip?.Duration}, _position: {_position}" );
 
 		if ( IsLooping && Clip?.Duration is { IsPositive: true } duration && _position >= duration )
 		{

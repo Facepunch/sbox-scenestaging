@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Text.Json.Serialization;
 
 namespace Sandbox.MovieMaker.Compiled;
 
@@ -10,43 +9,48 @@ namespace Sandbox.MovieMaker.Compiled;
 /// A time region where something happens in a movie.
 /// </summary>
 /// <param name="TimeRange">Start and end time of this block.</param>
-public abstract record CompiledBlock( [property: JsonPropertyOrder( -1 )] MovieTimeRange TimeRange );
+public interface ICompiledBlock
+{
+	MovieTimeRange TimeRange { get; }
+}
 
 /// <summary>
 /// Unused, will describe starting / stopping an action in the scene.
 /// </summary>
 /// <param name="TimeRange">Start and end time of this block.</param>
-public sealed record CompiledActionBlock( MovieTimeRange TimeRange ) : CompiledBlock( TimeRange );
+public sealed record CompiledActionBlock( MovieTimeRange TimeRange ) : ICompiledBlock;
 
 /// <summary>
 /// Interface for blocks describing a property changing value over time.
 /// </summary>
 /// <param name="TimeRange">Start and end time of this block.</param>
-/// <param name="PropertyType">Property value type, must match <see cref="CompiledTrack.TargetType"/>.</param>
-public abstract record CompiledPropertyBlock( MovieTimeRange TimeRange, [property: JsonIgnore] Type PropertyType ) : CompiledBlock( TimeRange )
+/// <param name="PropertyType">Property value type, must match <see cref="ICompiledTrack.TargetType"/>.</param>
+public interface ICompiledPropertyBlock : ICompiledBlock
 {
+	Type PropertyType { get; }
+
 	/// <summary>
 	/// Reads from this block at the given <paramref name="time"/>.
 	/// </summary>
-	public object? GetValue( MovieTime time ) => OnGetValue( time );
-
-	protected abstract object? OnGetValue( MovieTime time );
+	object? GetValue( MovieTime time );
 }
 
 /// <summary>
 /// Interface for blocks describing a property changing value over time.
-/// Typed version of <see cref="CompiledPropertyBlock"/>.
+/// Typed version of <see cref="ICompiledPropertyBlock"/>.
 /// </summary>
 /// <typeparam name="T">Property value type.</typeparam>
 /// <param name="TimeRange">Start and end time of this block.</param>
-public abstract record CompiledPropertyBlock<T>( MovieTimeRange TimeRange ) : CompiledPropertyBlock( TimeRange, typeof(T) )
+// ReSharper disable once TypeParameterCanBeVariant
+public interface ICompiledPropertyBlock<T> : ICompiledPropertyBlock
 {
 	/// <summary>
 	/// Reads from this block at the given <paramref name="time"/>.
 	/// </summary>
-	public new abstract T GetValue( MovieTime time );
+	public new T GetValue( MovieTime time );
 
-	protected sealed override object? OnGetValue( MovieTime time ) => GetValue( time );
+	Type ICompiledPropertyBlock.PropertyType => typeof(T);
+	object? ICompiledPropertyBlock.GetValue( MovieTime time ) => GetValue( time );
 }
 
 /// <summary>
@@ -57,9 +61,9 @@ public abstract record CompiledPropertyBlock<T>( MovieTimeRange TimeRange ) : Co
 /// <param name="TimeRange">Start and end time of this block.</param>
 /// <param name="Value">Constant value.</param>
 public sealed record CompiledConstantBlock<T>( MovieTimeRange TimeRange, T Value )
-	: CompiledPropertyBlock<T>( TimeRange )
+	: ICompiledPropertyBlock<T>
 {
-	public override T GetValue( MovieTime time ) => Value;
+	public T GetValue( MovieTime time ) => Value;
 }
 
 /// <summary>
@@ -70,25 +74,31 @@ public sealed record CompiledConstantBlock<T>( MovieTimeRange TimeRange, T Value
 /// <param name="Offset">Time offset of the first sample.</param>
 /// <param name="SampleRate">How many samples per second.</param>
 /// <param name="Samples">Raw sample values.</param>
-public sealed record CompiledSampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, ImmutableArray<T> Samples )
-	: CompiledPropertyBlock<T>( TimeRange )
+public sealed partial record CompiledSampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, ImmutableArray<T> Samples )
+	: ICompiledPropertyBlock<T>
 {
-	private readonly bool _validated = Validate( Samples );
+	private readonly ImmutableArray<T> _samples = Validate( Samples );
 
-#pragma warning disable SB3000
-	private static readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
-#pragma warning restore SB3000
+	public ImmutableArray<T> Samples
+	{
+		get => _samples;
+		init => _samples = Validate( value );
+	}
 
-	public override T GetValue( MovieTime time ) =>
+	public T GetValue( MovieTime time ) =>
 		Samples.Sample( time.Clamp( TimeRange ) - TimeRange.Start - Offset, SampleRate, _interpolator );
 
-	private static bool Validate( ImmutableArray<T> samples )
+	private static ImmutableArray<T> Validate( ImmutableArray<T> samples )
 	{
 		if ( samples.IsDefaultOrEmpty )
 		{
 			throw new ArgumentException( "Expected at least one sample.", nameof(Samples) );
 		}
 
-		return true;
+		return samples;
 	}
+
+#pragma warning disable SB3000
+	private static readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
+#pragma warning restore SB3000
 }

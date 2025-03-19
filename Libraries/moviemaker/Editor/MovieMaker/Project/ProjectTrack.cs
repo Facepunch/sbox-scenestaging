@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text.Json.Serialization;
+using System.Text.Json;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
 
@@ -22,7 +22,7 @@ public partial interface IProjectTrack : ITrack, IComparable<IProjectTrack>
 	void Remove();
 	IProjectTrack? GetChild( string name );
 
-	CompiledTrack Compile( CompiledTrack? compiledParent, bool headerOnly );
+	ICompiledTrack Compile( ICompiledTrack? compiledParent, bool headerOnly );
 
 	ITrack? ITrack.Parent => Parent;
 
@@ -79,7 +79,7 @@ public abstract partial class ProjectTrack<T>( MovieProject project, Guid id, st
 
 	public IProjectTrack? GetChild( string name ) => Children.FirstOrDefault( x => x.Name == name );
 
-	public abstract CompiledTrack Compile( CompiledTrack? compiledParent, bool headerOnly );
+	public abstract ICompiledTrack Compile( ICompiledTrack? compiledParent, bool headerOnly );
 
 	IProjectTrackInternal? IProjectTrackInternal.Parent
 	{
@@ -139,7 +139,7 @@ public sealed partial class ProjectReferenceTrack<T>( MovieProject project, Guid
 {
 	public new ProjectReferenceTrack<GameObject>? Parent => (ProjectReferenceTrack<GameObject>?)base.Parent;
 
-	public override CompiledTrack Compile( CompiledTrack? compiledParent, bool headerOnly ) =>
+	public override ICompiledTrack Compile( ICompiledTrack? compiledParent, bool headerOnly ) =>
 		new CompiledReferenceTrack<T>( Id, Name, (CompiledReferenceTrack<GameObject>)compiledParent! );
 
 	ITrack? ITrack.Parent => Parent;
@@ -218,9 +218,11 @@ public sealed partial class ProjectPropertyTrack<T>( MovieProject project, Guid 
 		}
 	}
 
+	public override bool IsEmpty => base.IsEmpty && Blocks.Count == 0;
+
 	IReadOnlyList<IProjectPropertyBlock> IProjectPropertyTrack.Blocks => Blocks;
 
-	public override CompiledTrack Compile( CompiledTrack? compiledParent, bool headerOnly )
+	public override ICompiledTrack Compile( ICompiledTrack? compiledParent, bool headerOnly )
 	{
 		var compiled = new CompiledPropertyTrack<T>( Name, compiledParent!, [] );
 

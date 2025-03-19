@@ -283,7 +283,7 @@ public sealed partial class Session
 		HasUnsavedChanges = false;
 
 		Resource.EditorData = Project.Serialize();
-		Resource.Clip = Project.Compile();
+		Resource.Compiled = Project.Compile();
 
 		// If we're embedded, save the scene
 
