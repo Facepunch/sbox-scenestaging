@@ -26,6 +26,8 @@ public static class ClipExtensions
 			names.Add( propertyTrack.Name );
 		}
 
+		names.Reverse();
+
 		return ((IReferenceTrack)propertyTrack.Parent, names);
 	}
 
