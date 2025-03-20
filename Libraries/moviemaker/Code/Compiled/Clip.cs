@@ -95,20 +95,20 @@ public sealed partial class MovieClip : IClip
 	/// Create a root <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.GameObject"/> with
 	/// the given <paramref name="name"/>. To create a nested track, use <see cref="CompiledClipExtensions.GameObject"/>.
 	/// </summary>
-	public static CompiledReferenceTrack<GameObject> RootGameObject( string name ) => new( Guid.NewGuid(), name );
+	public static CompiledReferenceTrack<GameObject> RootGameObject( string name, Guid? id = null ) => new( id ?? Guid.NewGuid(), name );
 
 	/// <summary>
 	/// Create a root <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the given <paramref name="type"/>. To create a nested track, use <see cref="CompiledClipExtensions.Component"/>.
 	/// </summary>
-	public static ICompiledReferenceTrack RootComponent( Type type ) =>
+	public static ICompiledReferenceTrack RootComponent( Type type, Guid? id = null ) =>
 		TypeLibrary.GetType( typeof( CompiledReferenceTrack<> ) )
-			.CreateGeneric<ICompiledReferenceTrack>( [type], [Guid.NewGuid(), type.Name, null] );
+			.CreateGeneric<ICompiledReferenceTrack>( [type], [id ?? Guid.NewGuid(), type.Name, null] );
 
 	/// <summary>
 	/// Create a root <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the type <typeparamref name="T"/>. To create a nested track, use <see cref="CompiledClipExtensions.Component{T}"/>.
 	/// </summary>
-	public static CompiledReferenceTrack<T> RootComponent<T>()
-		where T : Component => new( Guid.NewGuid(), typeof( T ).Name );
+	public static CompiledReferenceTrack<T> RootComponent<T>( Guid? id = null )
+		where T : Component => new( id ?? Guid.NewGuid(), typeof( T ).Name );
 }

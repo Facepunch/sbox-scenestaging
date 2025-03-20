@@ -10,6 +10,7 @@ namespace Sandbox.MovieMaker.Properties;
 file sealed record UnknownProperty<T>( ITrackTarget Parent, string Name ) : ITrackProperty<T>
 {
 	public bool IsBound => false;
+	public bool IsActive => false;
 	public bool CanWrite => false;
 
 	public T Value

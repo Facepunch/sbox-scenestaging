@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Sandbox.MovieMaker.Compiled;
 
@@ -42,9 +43,6 @@ public sealed record CompiledActionTrack(
 	ImmutableArray<CompiledActionBlock> Blocks )
 	: IActionTrack, ICompiledBlockTrack
 {
-	public IEnumerable<CompiledActionBlock> GetBlocks( MovieTime time ) =>
-		Blocks.Where( x => x.TimeRange.Contains( time ) );
-
 	ITrack IActionTrack.Parent => Parent;
 	IReadOnlyList<ICompiledBlock> ICompiledBlockTrack.Blocks => Blocks;
 }
@@ -62,12 +60,19 @@ public interface ICompiledPropertyTrack : IPropertyTrack, ICompiledBlockTrack
 }
 
 /// <inheritdoc cref="IPropertyTrack{T}"/>
+[method: JsonConstructor]
 public sealed record CompiledPropertyTrack<T>(
 	string Name,
 	ICompiledTrack Parent,
 	ImmutableArray<ICompiledPropertyBlock<T>> Blocks )
 	: ICompiledPropertyTrack, IPropertyTrack<T>
 {
+	internal CompiledPropertyTrack( string name, ICompiledTrack parent, IEnumerable<ICompiledPropertyBlock>? blocks )
+		: this( name, parent, blocks?.Cast<ICompiledPropertyBlock<T>>().ToImmutableArray() ?? ImmutableArray<ICompiledPropertyBlock<T>>.Empty )
+	{
+
+	}
+
 	private readonly ImmutableArray<ICompiledPropertyBlock<T>> _blocks = Validate( Blocks );
 
 	public ImmutableArray<ICompiledPropertyBlock<T>> Blocks

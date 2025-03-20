@@ -10,14 +10,14 @@ namespace Sandbox.MovieMaker;
 /// Controls which <see cref="ITrackTarget"/>s from a scene are controlled by which <see cref="ITrack"/> from a <see cref="IClip"/>.
 /// Can be serialized to save which tracks are bound to which targets.
 /// </summary>
-public sealed partial class TrackBinder( Scene scene )
+public sealed partial class TrackBinder( Scene? scene = null )
 {
 	private readonly ConditionalWeakTable<ITrack, ITrackTarget> _cache = new();
 
 	/// <summary>
 	/// The scene this binder is targeting.
 	/// </summary>
-	public Scene Scene => scene;
+	public Scene Scene { get; } = scene ?? Game.ActiveScene ?? throw new Exception( "No active scene!" );
 
 	/// <summary>
 	/// Gets or creates a target that maps to the given <paramref name="track"/>.
