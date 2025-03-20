@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Immutable;
 using Sandbox.MovieMaker.Compiled;
 
 namespace Sandbox.MovieMaker;
@@ -41,7 +40,7 @@ public static class ClipExtensions
 	}
 
 	/// <inheritdoc cref="GetTrack(IClip,string[])"/>
-	public static ICompiledTrack? GetTrack( this CompiledClip clip, params string[] path )
+	public static ICompiledTrack? GetTrack( this MovieClip clip, params string[] path )
 	{
 		return (ICompiledTrack)((IClip)clip).GetTrack( path )!;
 	}
@@ -59,7 +58,7 @@ public static class ClipExtensions
 	}
 
 	/// <inheritdoc cref="GetReference{T}(IClip,string[])"/>
-	public static CompiledReferenceTrack<T>? GetReference<T>( this CompiledClip clip, params string[] path )
+	public static CompiledReferenceTrack<T>? GetReference<T>( this MovieClip clip, params string[] path )
 		where T : class, IValid
 	{
 		return (CompiledReferenceTrack<T>)((IClip)clip).GetReference<T>( path )!;
@@ -87,12 +86,12 @@ public static class ClipExtensions
 	}
 
 	/// <inheritdoc cref="GetProperty{T}(IClip,string[])"/>
-	public static CompiledPropertyTrack<T>? GetProperty<T>( this CompiledClip clip, params string[] path )
+	public static CompiledPropertyTrack<T>? GetProperty<T>( this MovieClip clip, params string[] path )
 	{
 		return (CompiledPropertyTrack<T>?)((IClip)clip).GetProperty<T>( path );
 	}
 
-	public static CompiledPropertyTrack<T>? GetProperty<T>( this CompiledClip clip, Guid refTrackId, IReadOnlyList<string> path )
+	public static CompiledPropertyTrack<T>? GetProperty<T>( this MovieClip clip, Guid refTrackId, IReadOnlyList<string> path )
 	{
 		return (CompiledPropertyTrack<T>?)((IClip)clip).GetProperty<T>( refTrackId, path );
 	}

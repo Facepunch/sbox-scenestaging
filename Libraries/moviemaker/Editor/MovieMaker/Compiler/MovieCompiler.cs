@@ -14,7 +14,7 @@ public sealed class MovieCompiler : ResourceCompiler
 {
 	private record ResourceModel(
 		[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
-		CompiledClip? Compiled,
+		MovieClip? Compiled,
 		[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
 		MovieProject? EditorData );
 

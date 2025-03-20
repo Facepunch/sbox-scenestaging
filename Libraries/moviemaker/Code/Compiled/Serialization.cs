@@ -9,16 +9,16 @@ namespace Sandbox.MovieMaker.Compiled;
 #nullable enable
 
 [JsonConverter( typeof( ClipConverter ) )]
-partial class CompiledClip;
+partial class MovieClip;
 
-file sealed class ClipConverter : JsonConverter<CompiledClip>
+file sealed class ClipConverter : JsonConverter<MovieClip>
 {
-	public override CompiledClip Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
+	public override MovieClip Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options )
 	{
 		return JsonSerializer.Deserialize<ClipModel>( ref reader, options )!.Deserialize( options );
 	}
 
-	public override void Write( Utf8JsonWriter writer, CompiledClip value, JsonSerializerOptions options )
+	public override void Write( Utf8JsonWriter writer, MovieClip value, JsonSerializerOptions options )
 	{
 		var childDict = value.Tracks
 			.Where( x => x.Parent is not null )
@@ -34,7 +34,7 @@ file sealed record ClipModel(
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
 	ImmutableArray<TrackModel>? Tracks )
 {
-	public ClipModel( CompiledClip clip, ImmutableDictionary<ICompiledTrack, ImmutableArray<ICompiledTrack>> childDict, JsonSerializerOptions? options )
+	public ClipModel( MovieClip clip, ImmutableDictionary<ICompiledTrack, ImmutableArray<ICompiledTrack>> childDict, JsonSerializerOptions? options )
 		: this( clip.Tracks is { Length: > 0 }
 			? clip.Tracks.Where( x => x.Parent is null ).Select( x => new TrackModel( x, childDict, options ) ).ToImmutableArray()
 			: null )
@@ -42,11 +42,11 @@ file sealed record ClipModel(
 
 	}
 
-	public CompiledClip Deserialize( JsonSerializerOptions? options )
+	public MovieClip Deserialize( JsonSerializerOptions? options )
 	{
 		return Tracks is { Length: > 0 } rootTracks
-			? CompiledClip.FromTracks( rootTracks.SelectMany( x => x.Deserialize( null, options ) ) )
-			: CompiledClip.Empty;
+			? MovieClip.FromTracks( rootTracks.SelectMany( x => x.Deserialize( null, options ) ) )
+			: MovieClip.Empty;
 	}
 }
 

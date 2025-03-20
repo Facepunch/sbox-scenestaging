@@ -300,7 +300,7 @@ file class PropertySignalConverter<T> : JsonConverter<PropertySignal<T>>
 [JsonConverter( typeof(ProjectSourceClipConverter) )]
 partial record ProjectSourceClip
 {
-	public record Model( CompiledClip Clip, [property: JsonPropertyOrder( -1 )] JsonObject? Metadata );
+	public record Model( MovieClip Clip, [property: JsonPropertyOrder( -1 )] JsonObject? Metadata );
 
 	public Model Serialize() => new Model( Clip, Metadata );
 }

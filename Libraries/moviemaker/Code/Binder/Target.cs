@@ -95,7 +95,7 @@ public interface ITrackReference<T> : ITrackReference, ITrackTarget<T?>
 /// <summary>
 /// A target referencing a member property or field of another target.
 /// </summary>
-public interface ITrackProperty : ITrackTarget
+public partial interface ITrackProperty : ITrackTarget
 {
 	/// <summary>
 	/// Target that this member belongs to.
@@ -124,7 +124,7 @@ public interface ITrackProperty : ITrackTarget
 
 /// <inheritdoc cref="ITrackProperty"/>
 /// <typeparam name="T">Property value type.</typeparam>
-public interface ITrackProperty<T> : ITrackProperty, ITrackTarget<T>
+public partial interface ITrackProperty<T> : ITrackProperty, ITrackTarget<T>
 {
 	/// <inheritdoc cref="ITrackProperty.Value"/>
 	new T Value { get; set; }

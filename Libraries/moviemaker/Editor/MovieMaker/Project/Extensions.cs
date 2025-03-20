@@ -11,7 +11,7 @@ namespace Editor.MovieMaker;
 /// </summary>
 public static class ProjectExtensions
 {
-	public static MovieProject FromCompiled( this CompiledClip clip ) =>
+	public static MovieProject FromCompiled( this MovieClip clip ) =>
 		new MovieProject( clip );
 
 	public static IEnumerable<IProjectPropertyBlock> GetBlocks( this IProjectPropertyTrack track, MovieTimeRange timeRange )
