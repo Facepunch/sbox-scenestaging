@@ -36,6 +36,11 @@ public interface ITrackTarget
 	bool IsBound { get; }
 
 	/// <summary>
+	/// If true, the target is bound and active in the scene hierarchy.
+	/// </summary>
+	bool IsActive { get; }
+
+	/// <summary>
 	/// If bound, the current value of this target in the scene.
 	/// </summary>
 	object? Value { get; }
@@ -62,6 +67,11 @@ public interface ITrackTarget<out T> : ITrackTarget
 /// </summary>
 public interface ITrackReference : ITrackTarget
 {
+	/// <summary>
+	/// The <see cref="IReferenceTrack.Id"/> of the reference track this target was created from.
+	/// </summary>
+	Guid Id { get; }
+
 	/// <summary>
 	/// Optional game object target that contains this one, if from a nested track.
 	/// </summary>
@@ -119,6 +129,7 @@ public partial interface ITrackProperty : ITrackTarget
 	bool Update( IPropertyTrack track, MovieTime time );
 
 	bool ITrackTarget.IsBound => Parent.IsBound;
+	bool ITrackTarget.IsActive => Parent.IsActive;
 	ITrackTarget ITrackTarget.Parent => Parent;
 }
 

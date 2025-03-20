@@ -85,13 +85,15 @@ partial class TrackBinder : IJsonPopulator
 
 	#region Reference Targets
 
-	private abstract class Reference<T>( ITrackReference<GameObject>? parent ) : ITrackReference<T>
+	private abstract class Reference<T>( ITrackReference<GameObject>? parent, Guid id ) : ITrackReference<T>
 		where T : class, IValid
 	{
 		private T? _autoBound;
 
+		public Guid Id => id;
 		public abstract string Name { get; }
 		public virtual Type TargetType => typeof(T);
+		public abstract bool IsActive { get; }
 		public ITrackReference<GameObject>? Parent => parent;
 
 		public T? Value
@@ -122,11 +124,12 @@ partial class TrackBinder : IJsonPopulator
 	/// Target that references a <see cref="GameObject"/> in a scene.
 	/// </summary>
 	private sealed class GameObjectReference( ITrackReference<GameObject>? parent, string name, TrackBinder binder, Guid id )
-		: Reference<GameObject>( parent ), ITrackReference<GameObject>
+		: Reference<GameObject>( parent, id ), ITrackReference<GameObject>
 	{
 		public override string Name => Value?.Name ?? name;
+		public override bool IsActive => Value is { IsValid: true, Active: true };
 
-		public override void Bind( GameObject? value ) => binder._gameObjectMap[id] = value;
+		public override void Bind( GameObject? value ) => binder._gameObjectMap[Id] = value;
 
 		/// <summary>
 		/// If our parent object is bound, try to bind to a child object with a matching name.
@@ -144,8 +147,8 @@ partial class TrackBinder : IJsonPopulator
 				: null;
 		}
 
-		protected override bool TryGetBinding( out GameObject? value ) => binder._gameObjectMap.TryGetValue( id, out value );
-		protected override void OnReset() => binder._gameObjectMap.Remove( id );
+		protected override bool TryGetBinding( out GameObject? value ) => binder._gameObjectMap.TryGetValue( Id, out value );
+		protected override void OnReset() => binder._gameObjectMap.Remove( Id );
 	}
 
 	private TypeDescription? _componentReferenceType;
@@ -161,12 +164,13 @@ partial class TrackBinder : IJsonPopulator
 	/// Target that references a <see cref="Component"/> in a scene.
 	/// </summary>
 	private sealed class ComponentReference<T>( ITrackReference<GameObject>? parent, TrackBinder binder, Guid id )
-		: Reference<T>( parent ) where T : Component
+		: Reference<T>( parent, id ) where T : Component
 	{
 		public override string Name => typeof(T).Name;
 		public override Type TargetType => typeof(T);
+		public override bool IsActive => Value is { IsValid: true, Active: true };
 
-		public override void Bind( T? value ) => binder._componentMap[id] = value;
+		public override void Bind( T? value ) => binder._componentMap[Id] = value;
 
 		/// <summary>
 		/// If our parent object is bound, try to bind to a component with a matching type.
@@ -180,7 +184,7 @@ partial class TrackBinder : IJsonPopulator
 
 		protected override bool TryGetBinding( out T? value )
 		{
-			if ( binder._componentMap.TryGetValue( id, out var binding ) )
+			if ( binder._componentMap.TryGetValue( Id, out var binding ) )
 			{
 				value = binding as T;
 				return true;
@@ -190,7 +194,7 @@ partial class TrackBinder : IJsonPopulator
 			return false;
 		}
 
-		protected override void OnReset() => binder._componentMap.Remove( id );
+		protected override void OnReset() => binder._componentMap.Remove( Id );
 	}
 
 	#endregion

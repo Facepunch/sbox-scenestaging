@@ -14,6 +14,12 @@ file sealed record MemberProperty<T>( ITrackTarget Parent, MemberDescription Mem
 {
 	public string Name => Member.Name;
 
+	/// <summary>
+	/// Default behaviour is to check if the parent is active. We need a special case for properties bound to
+	/// <see cref="GameObject.Enabled"/> or <see cref="Component.Enabled"/>, otherwise we'd never be able to record them
+	/// being false.
+	/// </summary>
+	public bool IsActive => Parent.IsActive || Name == nameof(GameObject.Enabled) && Parent is ITrackReference { IsBound: true };
 	public bool CanWrite => Member switch
 	{
 		PropertyDescription propDesc => propDesc.CanWrite,

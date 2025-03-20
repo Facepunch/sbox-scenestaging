@@ -14,29 +14,34 @@ public static class CompiledClipExtensions
 	/// Create a nested <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.GameObject"/> with
 	/// the given <paramref name="name"/>.
 	/// </summary>
-	public static CompiledReferenceTrack<GameObject> GameObject( this CompiledReferenceTrack<GameObject> track, string name ) =>
-		new( Guid.NewGuid(), name, track );
+	public static CompiledReferenceTrack<GameObject> GameObject( this CompiledReferenceTrack<GameObject> track, string name, Guid? id = null ) =>
+		new( id ?? Guid.NewGuid(), name, track );
 
 	/// <summary>
 	/// Create a nested <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the given <paramref name="type"/>.
 	/// </summary>
-	public static ICompiledReferenceTrack Component( this CompiledReferenceTrack<GameObject> track, Type type ) =>
+	public static ICompiledReferenceTrack Component( this CompiledReferenceTrack<GameObject> track, Type type, Guid? id = null ) =>
 		TypeLibrary.GetType( typeof(CompiledReferenceTrack<>) )
-			.CreateGeneric<ICompiledReferenceTrack>( [type], [Guid.NewGuid(), type.Name, track] );
+			.CreateGeneric<ICompiledReferenceTrack>( [type], [id ?? Guid.NewGuid(), type.Name, track] );
 
 	/// <summary>
 	/// Create a nested <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the type <typeparamref name="T"/>.
 	/// </summary>
-	public static CompiledReferenceTrack<T> Component<T>( this CompiledReferenceTrack<GameObject> track )
-		where T : Component => new( Guid.NewGuid(), typeof(T).Name, track );
+	public static CompiledReferenceTrack<T> Component<T>( this CompiledReferenceTrack<GameObject> track, Guid? id = null )
+		where T : Component => new( id ?? Guid.NewGuid(), typeof(T).Name, track );
 
 	/// <summary>
 	/// Create a nested <see cref="ICompiledPropertyTrack"/> that targets a property with the given <paramref name="name"/>
 	/// in the parent track.
 	/// </summary>
-	public static CompiledPropertyTrack<T> Property<T>( this ICompiledTrack track, string name ) => new( name, track, ImmutableArray<ICompiledPropertyBlock<T>>.Empty );
+	public static CompiledPropertyTrack<T> Property<T>( this ICompiledTrack track, string name, IEnumerable<ICompiledPropertyBlock<T>>? blocks = null ) =>
+		new( name, track, blocks?.ToImmutableArray() ?? ImmutableArray<ICompiledPropertyBlock<T>>.Empty );
+
+	public static ICompiledPropertyTrack Property( this ICompiledTrack track, string name, Type type, IEnumerable<ICompiledPropertyBlock>? blocks = null ) =>
+		TypeLibrary.GetType( typeof(CompiledPropertyTrack<>) )
+			.CreateGeneric<ICompiledPropertyTrack>( [type], [name, track, blocks ?? []] );
 
 	/// <summary>
 	/// Returns a clone of <paramref name="track"/> with an appended <see cref="CompiledConstantBlock{T}"/> with the given

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 
 namespace Sandbox.MovieMaker.Compiled;
 
@@ -74,7 +75,9 @@ public sealed record CompiledConstantBlock<T>( MovieTimeRange TimeRange, T Value
 /// <param name="Offset">Time offset of the first sample.</param>
 /// <param name="SampleRate">How many samples per second.</param>
 /// <param name="Samples">Raw sample values.</param>
-public sealed partial record CompiledSampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, ImmutableArray<T> Samples )
+public sealed partial record CompiledSampleBlock<T>( MovieTimeRange TimeRange,
+	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )]
+	MovieTime Offset, int SampleRate, ImmutableArray<T> Samples )
 	: ICompiledPropertyBlock<T>
 {
 	private readonly ImmutableArray<T> _samples = Validate( Samples );
