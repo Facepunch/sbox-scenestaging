@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace Sandbox.MovieMaker.Compiled;
 
@@ -9,12 +8,12 @@ namespace Sandbox.MovieMaker.Compiled;
 /// <summary>
 /// An immutable compiled <see cref="IClip"/> designed to be serialized.
 /// </summary>
-public sealed partial class CompiledClip : IClip
+public sealed partial class MovieClip : IClip
 {
 	/// <summary>
 	/// A clip with no tracks.
 	/// </summary>
-	public static CompiledClip Empty { get; } = FromTracks();
+	public static MovieClip Empty { get; } = FromTracks();
 
 	private readonly ImmutableDictionary<Guid, ICompiledReferenceTrack> _referenceTracks;
 
@@ -23,7 +22,7 @@ public sealed partial class CompiledClip : IClip
 
 	public MovieTime Duration { get; }
 
-	private CompiledClip( IReadOnlySet<ICompiledTrack> tracks )
+	private MovieClip( IReadOnlySet<ICompiledTrack> tracks )
 	{
 		// ReSharper disable once UseCollectionExpression
 		Tracks = tracks
@@ -51,10 +50,10 @@ public sealed partial class CompiledClip : IClip
 	IEnumerable<ITrack> IClip.Tracks => Tracks.CastArray<ITrack>();
 	IReferenceTrack? IClip.GetTrack( Guid trackId ) => GetTrack( trackId );
 
-	public static CompiledClip FromTracks( params ICompiledTrack[] tracks ) =>
+	public static MovieClip FromTracks( params ICompiledTrack[] tracks ) =>
 		FromTracks( tracks.AsEnumerable() );
 
-	public static CompiledClip FromTracks( IEnumerable<ICompiledTrack> tracks )
+	public static MovieClip FromTracks( IEnumerable<ICompiledTrack> tracks )
 	{
 		var allTracks = new HashSet<ICompiledTrack>();
 
@@ -89,7 +88,7 @@ public sealed partial class CompiledClip : IClip
 			}
 		}
 
-		return new CompiledClip( allTracks );
+		return new MovieClip( allTracks );
 	}
 
 	/// <summary>

@@ -8,10 +8,10 @@ public sealed class CompiledTests
 {
 	public IClip CreateExampleClip()
 	{
-		var rootTrack = CompiledClip.RootGameObject( "Camera" );
+		var rootTrack = MovieClip.RootGameObject( "Camera" );
 		var cameraTrack = rootTrack.Component<CameraComponent>();
 
-		return CompiledClip.FromTracks( rootTrack, cameraTrack,
+		return MovieClip.FromTracks( rootTrack, cameraTrack,
 			rootTrack.Property<Vector3>( nameof(GameObject.LocalPosition) )
 				.WithConstant( (0f, 2f), new Vector3( 100f, 200f, 300f ) ),
 			cameraTrack.Property<float>( nameof(CameraComponent.FieldOfView) )
@@ -20,7 +20,7 @@ public sealed class CompiledTests
 
 	public IClip RoundTripSerialize( IClip clip )
 	{
-		return Json.Deserialize<CompiledClip>( Json.Serialize( clip ) );
+		return Json.Deserialize<MovieClip>( Json.Serialize( clip ) );
 	}
 
 	[TestMethod]
@@ -31,7 +31,7 @@ public sealed class CompiledTests
 
 		Console.WriteLine( json );
 
-		clip = Json.Deserialize<CompiledClip>( json );
+		clip = Json.Deserialize<MovieClip>( json );
 
 		Assert.AreEqual( 3d, clip.Duration.TotalSeconds );
 
@@ -56,7 +56,7 @@ public sealed class CompiledTests
 	[TestMethod]
 	public void ValidateBlocks()
 	{
-		var track = CompiledClip.RootGameObject( "Example" )
+		var track = MovieClip.RootGameObject( "Example" )
 			.Property<Vector3>( "LocalPosition" )
 			.WithConstant( (0d, 2d), default );
 

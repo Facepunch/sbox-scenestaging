@@ -9,7 +9,7 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 /// <summary>
-/// All the info needed to compile a <see cref="CompiledClip"/>. Gets serialized
+/// All the info needed to compile a <see cref="MovieClip"/>. Gets serialized
 /// and stored in <see cref="IMovieResource.EditorData"/>.
 /// </summary>
 public sealed partial class MovieProject
@@ -65,7 +65,7 @@ public sealed partial class MovieProject
 	/// <summary>
 	/// Create a project based on a compiled clip, so that clip can be edited.
 	/// </summary>
-	internal MovieProject( CompiledClip clip )
+	internal MovieProject( MovieClip clip )
 	{
 		var source = AddSourceClip( clip );
 
@@ -119,7 +119,7 @@ public sealed partial class MovieProject
 			: null;
 	}
 
-	public CompiledClip Compile()
+	public MovieClip Compile()
 	{
 		var result = new Dictionary<IProjectTrack, ICompiledTrack>();
 
@@ -130,7 +130,7 @@ public sealed partial class MovieProject
 			CompileTrack( track, result );
 		}
 
-		return CompiledClip.FromTracks( result.Values );
+		return MovieClip.FromTracks( result.Values );
 	}
 
 	private void CompileTrack( IProjectTrack track, Dictionary<IProjectTrack, ICompiledTrack> result )
@@ -147,7 +147,7 @@ public sealed partial class MovieProject
 		}
 	}
 
-	public ProjectSourceClip AddSourceClip( CompiledClip clip, JsonObject? metadata = null )
+	public ProjectSourceClip AddSourceClip( MovieClip clip, JsonObject? metadata = null )
 	{
 		var guid = Guid.NewGuid();
 

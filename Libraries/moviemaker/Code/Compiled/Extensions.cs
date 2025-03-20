@@ -6,7 +6,7 @@ namespace Sandbox.MovieMaker.Compiled;
 #nullable enable
 
 /// <summary>
-/// Helper methods for working with <see cref="CompiledClip"/>, <see cref="ICompiledTrack"/>, or <see cref="ICompiledBlock"/>.
+/// Helper methods for working with <see cref="MovieClip"/>, <see cref="ICompiledTrack"/>, or <see cref="ICompiledBlock"/>.
 /// </summary>
 public static class CompiledClipExtensions
 {
