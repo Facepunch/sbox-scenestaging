@@ -42,41 +42,45 @@ internal interface ITrackOverlay<T> : ITrackOverlay
 {
 	IEnumerable<PropertyBlock<T>> Blend( IReadOnlyList<PropertyBlock<T>> original, ModificationOptions options );
 
-	protected static PropertyBlock<T> Blend( PropertySignal<T>? original, PropertySignal<T>? overlay, MovieTimeRange timeRange, ModificationOptions options )
+	protected static PropertyBlock<T> Blend(PropertySignal<T>? original, PropertySignal<T>? overlay, PropertySignal<T> relativeTo,
+		MovieTimeRange timeRange, ModificationOptions options )
 	{
-		overlay = overlay?.Shift( options.Offset );
-
 		if ( original is null && overlay is null )
 		{
 			throw new ArgumentNullException( nameof(overlay), "Expected at least one signal." );
 		}
+
+		overlay = overlay?.Shift( options.Offset );
 
 		if ( original is null || overlay is null )
 		{
 			return new PropertyBlock<T>( (original ?? overlay)!.Reduce( timeRange ), timeRange );
 		}
 
+		if ( options.Additive )
+		{
+			overlay = overlay.ToLocal( relativeTo ).ToGlobal( original );
+		}
+
 		return new PropertyBlock<T>( original.CrossFade( overlay, options.Selection ).Reduce( timeRange ), timeRange );
 	}
 }
 
-file sealed record SignalOverlay<T>( PropertySignal<T> Original, PropertySignal<T> Changed ) : ITrackOverlay<T>
+file sealed record SignalOverlay<T>( PropertySignal<T> Signal, PropertySignal<T> RelativeTo ) : ITrackOverlay<T>
 {
 	public IEnumerable<PropertyBlock<T>> Blend( IReadOnlyList<PropertyBlock<T>> original, ModificationOptions options )
 	{
-		if ( options.Additive ) throw new NotImplementedException();
-
 		var timeRange = options.Selection.TotalTimeRange;
 
 		// Fill in gaps between blocks in original track with AsSignal()
 
 		if ( original.AsSignal() is not { } originalSignal )
 		{
-			yield return new PropertyBlock<T>( Changed, timeRange );
+			yield return new PropertyBlock<T>( Signal, timeRange );
 			yield break;
 		}
 
-		yield return ITrackOverlay<T>.Blend( originalSignal, Changed, timeRange, options );
+		yield return ITrackOverlay<T>.Blend( originalSignal, Signal, RelativeTo, timeRange, options );
 	}
 }
 
@@ -84,10 +88,10 @@ file sealed record ClipboardOverlay<T>( ImmutableArray<PropertyBlock<T>> Blocks 
 {
 	public IEnumerable<PropertyBlock<T>> Blend( IReadOnlyList<PropertyBlock<T>> original, ModificationOptions options )
 	{
-		if ( options.Additive ) throw new NotImplementedException();
-
 		var timeRanges = original.Select( x => x.TimeRange )
 			.Union( Blocks.Select( x => x.TimeRange + options.Offset ) );
+
+		PropertySignal<T> relativeTo = Blocks[0].GetValue( Blocks[0].TimeRange.Start );
 
 		foreach ( var timeRange in timeRanges )
 		{
@@ -99,7 +103,7 @@ file sealed record ClipboardOverlay<T>( ImmutableArray<PropertyBlock<T>> Blocks 
 				.Where( x => timeRange.Contains( x.TimeRange + options.Offset ) )
 				.AsSignal();
 
-			yield return ITrackOverlay<T>.Blend( originalSignal, overlaySignal, timeRange, options );
+			yield return ITrackOverlay<T>.Blend( originalSignal, overlaySignal, relativeTo, timeRange, options );
 		}
 	}
 }
@@ -132,7 +136,7 @@ internal sealed class TrackModification<T> : ITrackModification
 
 		_overlay = _overlay is not SignalOverlay<T> signalOverlay
 			? new SignalOverlay<T>( constantSignal, constantSignal )
-			: signalOverlay with { Original = constantSignal };
+			: signalOverlay with { RelativeTo = constantSignal };
 	}
 
 	public void SetConstantOverlay( object? constantValue )
@@ -141,7 +145,7 @@ internal sealed class TrackModification<T> : ITrackModification
 
 		_overlay = _overlay is not SignalOverlay<T> signalOverlay
 			? new SignalOverlay<T>( constantSignal, constantSignal )
-			: signalOverlay with { Changed = constantSignal };
+			: signalOverlay with { Signal = constantSignal };
 	}
 
 	public void SetClipboardOverlay( IEnumerable<IProjectPropertyBlock> blocks )

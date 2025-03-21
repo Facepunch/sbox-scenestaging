@@ -7,7 +7,7 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 [JsonDiscriminator( "Constant" )]
-file sealed record ConstantSignal<T>( T Value ) : PropertySignal<T>
+public sealed record ConstantSignal<T>( T Value ) : PropertySignal<T>
 {
 	public override T GetValue( MovieTime time ) => Value;
 
