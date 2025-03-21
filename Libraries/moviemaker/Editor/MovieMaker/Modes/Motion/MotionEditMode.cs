@@ -75,24 +75,6 @@ internal sealed partial class MotionEditMode : EditMode
 
 	protected override void OnEnable()
 	{
-		Toolbar.AddSpacingCell();
-
-		foreach ( var interpolation in Enum.GetValues<InterpolationMode>() )
-		{
-			Toolbar.AddToggle( interpolation,
-				() => (TimeSelection?.FadeIn.Interpolation ?? DefaultInterpolation) == interpolation,
-				_ =>
-				{
-					DefaultInterpolation = interpolation;
-
-					if ( TimeSelection is { } timeSelection )
-					{
-						TimeSelection = timeSelection.WithInterpolation( interpolation );
-					}
-				} );
-		}
-
-		Toolbar.AddSpacingCell();
 		Toolbar.AddToggle( "Additive", "layers", () => IsAdditive, state => IsAdditive = state );
 		Toolbar.AddToggle( "Smooth", "blur_on", () => SmoothingEnabled, state => SmoothingEnabled = state );
 
@@ -101,6 +83,18 @@ internal sealed partial class MotionEditMode : EditMode
 			maximum: 8,
 			step: 1,
 			getLabel: () => $"{SmoothingSize.TotalSeconds:F2}s" );
+
+		Toolbar.AddSpacingCell();
+
+		Toolbar.AddInterpolationSelector( () => DefaultInterpolation, value =>
+		{
+			DefaultInterpolation = value;
+
+			if ( TimeSelection is { } timeSelection )
+			{
+				TimeSelection = timeSelection.WithInterpolation( value );
+			}
+		} );
 
 		SelectionChanged();
 	}

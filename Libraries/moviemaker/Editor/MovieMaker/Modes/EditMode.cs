@@ -64,24 +64,15 @@ public abstract partial class EditMode
 			return btn;
 		}
 
-		public IconButton AddToggle( InterpolationMode value, Func<bool> getState, Action<bool> setState )
+		public InterpolationSelector AddInterpolationSelector( Func<InterpolationMode> getValue, Action<InterpolationMode> setValue )
 		{
-			var entry = EditorTypeLibrary.GetEnumDescription( typeof(InterpolationMode) )
-				.FirstOrDefault( x => x.IntegerValue == (long)value );
+			var selector = new InterpolationSelector();
 
-			var btn = new InterpolationButton( value )
-			{
-				ToolTip = entry.Title ?? value.ToString().ToTitleCase(),
-				IconSize = 14f,
-				IsToggle = true,
-				ForegroundActive = Theme.Primary
-			};
+			selector.Bind( "Value" ).From( getValue, setValue );
 
-			btn.Bind( "IsActive" ).From( getState, setState );
+			toolbar.Add( selector );
 
-			toolbar.Add( btn );
-
-			return btn;
+			return selector;
 		}
 
 		public (FloatSlider Slider, Label Label) AddSlider( string title, Func<float> getValue, Action<float> setValue, float minimum = 0f,
