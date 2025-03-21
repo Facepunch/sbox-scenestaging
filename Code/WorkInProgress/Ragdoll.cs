@@ -425,6 +425,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			if ( !body.Component.IsValid() )
 				continue;
 
+			body.Component.GameObject.Flags &= ~GameObjectFlags.Absolute;
 			body.Component.Destroy();
 		}
 
