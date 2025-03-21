@@ -8,9 +8,9 @@ namespace Sandbox.MovieMaker;
 
 #nullable enable
 
-public record RecorderOptions( int SampleRate )
+public record RecorderOptions( int SampleRate = 30 )
 {
-	public static RecorderOptions Default { get; } = new( 30 );
+	public static RecorderOptions Default { get; } = new();
 }
 
 public interface ITrackRecorder
@@ -137,14 +137,14 @@ public sealed class MovieClipRecorder
 
 public sealed class TrackRecorder<T> : ITrackRecorder
 {
-	private readonly int _sampleRate;
-
 	private readonly List<ICompiledPropertyBlock<T>> _blocks = new();
 	private readonly BlockWriter<T> _writer;
 
 	private MovieTime _elapsed;
 
-	private int _sampleCount;
+	private MovieTime _sampleTime;
+	private readonly MovieTime _sampleInterval;
+	private T _lastValue = default!;
 
 	public IPropertyTrack<T> Track { get; }
 	public ITrackProperty<T> Target { get; }
@@ -157,10 +157,9 @@ public sealed class TrackRecorder<T> : ITrackRecorder
 		Track = track;
 		Target = target;
 
-		_sampleRate = options.SampleRate;
-
 		_elapsed = startTime;
-		_sampleCount = _elapsed.GetFrameIndex( options.SampleRate );
+		_sampleInterval = MovieTime.FromFrames( 1, options.SampleRate );
+		_sampleTime = _elapsed.SnapToGrid( _sampleInterval );
 		_writer = new BlockWriter<T>( options.SampleRate );
 
 		RecordSample();
@@ -170,13 +169,13 @@ public sealed class TrackRecorder<T> : ITrackRecorder
 	{
 		_elapsed += deltaTime;
 
-		var nextCount = _elapsed.GetFrameCount( _sampleRate );
 		var anySamplesWritten = false;
 
-		while ( _sampleCount < nextCount )
+		while ( _sampleTime <= _elapsed - _sampleInterval )
 		{
 			RecordSample();
-			++_sampleCount;
+
+			_sampleTime += _sampleInterval;
 
 			anySamplesWritten = true;
 		}
@@ -184,16 +183,34 @@ public sealed class TrackRecorder<T> : ITrackRecorder
 		return anySamplesWritten;
 	}
 
+	private static MovieTime MinimumConstantBlockDuration => 1d;
+
+	private bool ShouldFinishBlockEarly( T nextValue )
+	{
+		return _writer is { IsEmpty: false, IsConstant: true }
+			&& _interpolator is null
+			&& _writer.TimeRange.Duration >= MinimumConstantBlockDuration
+			&& !_comparer.Equals( _lastValue, nextValue );
+	}
+
 	private void RecordSample()
 	{
 		if ( Target.IsActive )
 		{
-			if ( _writer.IsEmpty )
+			var nextValue = Target.Value;
+
+			if ( ShouldFinishBlockEarly( nextValue ) )
 			{
-				_writer.StartTime = MovieTime.FromFrames( _sampleCount, _sampleRate );
+				FinishBlock();
 			}
 
-			_writer.Write( Target.Value );
+			if ( _writer.IsEmpty )
+			{
+				_writer.StartTime = _sampleTime;
+			}
+
+			_writer.Write( nextValue );
+			_lastValue = nextValue;
 		}
 		else
 		{
@@ -205,7 +222,7 @@ public sealed class TrackRecorder<T> : ITrackRecorder
 	{
 		if ( _writer.IsEmpty ) return;
 
-		_blocks.Add( _writer.Compile() );
+		_blocks.Add( _writer.Compile( (_writer.StartTime, _sampleTime) ) );
 
 		_writer.Clear();
 	}
@@ -222,16 +239,18 @@ public sealed class TrackRecorder<T> : ITrackRecorder
 	IReadOnlyList<ICompiledPropertyBlock> ITrackRecorder.FinishedBlocks => FinishedBlocks;
 	IPropertyBlock? ITrackRecorder.CurrentBlock => CurrentBlock;
 	IReadOnlyList<ICompiledPropertyBlock> ITrackRecorder.ToBlocks() => ToBlocks();
+
+	private static readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
+	private static readonly EqualityComparer<T> _comparer = EqualityComparer<T>.Default;
 }
 
 internal class BlockWriter<T>( int sampleRate ) : IPropertyBlock<T>, IDynamicBlock, IPaintHintBlock
 {
-	private static readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
-
 	private readonly List<T> _samples = new();
-	private T _defaultValue;
+	private T _defaultValue = default!;
 
 	public bool IsEmpty => _samples.Count == 0;
+	public bool IsConstant { get; private set; }
 
 	public event Action? Changed;
 
@@ -246,17 +265,28 @@ internal class BlockWriter<T>( int sampleRate ) : IPropertyBlock<T>, IDynamicBlo
 
 	public void Write( T value )
 	{
+		if ( _samples.Count == 0 )
+		{
+			IsConstant = true;
+		}
+		else if ( IsConstant )
+		{
+			IsConstant = _comparer.Equals( _samples[0], value );
+		}
+
 		_samples.Add( value );
 		_defaultValue = value;
 
 		Changed?.Invoke();
 	}
 
-	public ICompiledPropertyBlock<T> Compile()
+	public ICompiledPropertyBlock<T> Compile( MovieTimeRange timeRange )
 	{
 		if ( IsEmpty ) throw new InvalidOperationException( "Block is empty!" );
 
-		return new CompiledSampleBlock<T>( TimeRange, 0d, sampleRate, [.._samples] );
+		if ( IsConstant ) return new CompiledConstantBlock<T>( timeRange, _samples[0] );
+
+		return new CompiledSampleBlock<T>( timeRange, 0d, sampleRate, [.._samples] );
 	}
 
 	public IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange ) => [TimeRange];
@@ -267,4 +297,7 @@ internal class BlockWriter<T>( int sampleRate ) : IPropertyBlock<T>, IDynamicBlo
 			? _samples.Sample( time - StartTime, sampleRate, _interpolator )
 			: _defaultValue;
 	}
+
+	private static readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
+	private static readonly EqualityComparer<T> _comparer = EqualityComparer<T>.Default;
 }
