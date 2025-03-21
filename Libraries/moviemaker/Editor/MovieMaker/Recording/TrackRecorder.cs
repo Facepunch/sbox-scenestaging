@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Reflection;
+using System.Linq;
 using Sandbox.MovieMaker.Compiled;
-using static Sandbox.Resources.ResourceGenerator;
 
 namespace Sandbox.MovieMaker;
 
@@ -13,7 +12,7 @@ public record RecorderOptions( int SampleRate )
 	public static RecorderOptions Default { get; } = new( 30 );
 }
 
-public interface ITrackRecorder
+internal interface ITrackRecorder
 {
 	ITrackProperty Target { get; }
 
@@ -21,74 +20,31 @@ public interface ITrackRecorder
 	IReadOnlyList<ICompiledPropertyBlock> ToBlocks();
 }
 
-partial interface ITrackProperty
-{
-	ITrackRecorder CreateRecorder( RecorderOptions? options = null );
-}
-
-partial interface ITrackProperty<T>
-{
-	new TrackRecorder<T> CreateRecorder( RecorderOptions? options = null ) =>
-		new ( this, options ?? RecorderOptions.Default );
-
-	ITrackRecorder ITrackProperty.CreateRecorder( RecorderOptions? options ) => CreateRecorder( options );
-}
-
-public static class RecorderExtensions
-{
-	public static MovieClipRecorder CreateRecorder( this IClip clip,
-		RecorderOptions? options = null, TrackBinder? binder = null ) =>
-			clip.Tracks.CreateRecorder( options, binder );
-
-	public static MovieClipRecorder CreateRecorder( this IEnumerable<ITrack> tracks,
-		RecorderOptions? options = null, TrackBinder? binder = null )
-	{
-		binder ??= TrackBinder.Default;
-		options ??= RecorderOptions.Default;
-
-		var properties = tracks
-			.OfType<IPropertyTrack>()
-			.Select( binder.Get )
-			.Distinct();
-
-		return new MovieClipRecorder( properties, options );
-	}
-
-	public static ITrackRecorder CreateRecorder( this IPropertyTrack track,
-		RecorderOptions? options = null, TrackBinder? binder = null )
-	{
-		binder ??= TrackBinder.Default;
-
-		return binder.Get( track ).CreateRecorder( options );
-	}
-
-	public static TrackRecorder<T> CreateRecorder<T>( this IPropertyTrack<T> track,
-		RecorderOptions? options = null, TrackBinder? binder = null )
-	{
-		binder ??= TrackBinder.Default;
-
-		return binder.Get( track ).CreateRecorder( options );
-	}
-}
-
 public sealed class MovieClipRecorder
 {
-	private readonly ImmutableArray<ITrackRecorder> _recorders;
+	private readonly List<ITrackRecorder> _recorders = new();
 
-	public MovieClipRecorder( IEnumerable<ITrack> tracks, TrackBinder? binder = null, RecorderOptions? options = null )
+	public TrackBinder Binder { get; }
+	public RecorderOptions Options { get; }
+
+	public MovieClipRecorder( Scene scene, RecorderOptions? options = null )
+		: this( new TrackBinder( scene ), options )
 	{
-		binder ??= TrackBinder.Default;
 
-		var properties = tracks
-			.OfType<IPropertyTrack>()
-			.Select( binder.Get );
-
-		_recorders = CreateRecorders( properties, options ?? RecorderOptions.Default );
 	}
 
-	public MovieClipRecorder( IEnumerable<ITrackProperty> properties, RecorderOptions? options = null )
+	public MovieClipRecorder( TrackBinder binder, RecorderOptions? options = null )
 	{
-		_recorders = CreateRecorders( properties, options ?? RecorderOptions.Default );
+		Binder = binder;
+		Options = options ?? RecorderOptions.Default;
+	}
+
+	public void Add( IPropertyTrack track )
+	{
+		var property = Binder.Get( track );
+		var recorderType = typeof(TrackRecorder<>).MakeGenericType( track.TargetType );
+
+		_recorders.Add( (ITrackRecorder)Activator.CreateInstance( recorderType, property, Options )! );
 	}
 
 	public void Update( MovieTime deltaTime )
@@ -144,17 +100,9 @@ public sealed class MovieClipRecorder
 
 		return compiledParent.Property( target.Name, target.TargetType, recorder?.ToBlocks() );
 	}
-
-	private static ImmutableArray<ITrackRecorder> CreateRecorders( IEnumerable<ITrackProperty> properties, RecorderOptions options )
-	{
-		return properties
-			.Distinct()
-			.Select( x => x.CreateRecorder( options ) )
-			.ToImmutableArray();
-	}
 }
 
-public sealed class TrackRecorder<T> : ITrackRecorder
+file sealed class TrackRecorder<T> : ITrackRecorder
 {
 	private readonly int _sampleRate;
 

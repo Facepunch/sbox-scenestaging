@@ -23,7 +23,7 @@ partial class MotionEditMode
 	{
 		var options = new RecorderOptions( Project.SampleRate );
 
-		_recorder = Session.EditableTracks.CreateRecorder( options, Session.Binder );
+		_recorder = new MovieClipRecorder( Session.Binder, options );
 		_recordingStartTime = Session.CurrentPointer;
 		_stopPlayingAfterRecording = !Session.IsPlaying;
 
