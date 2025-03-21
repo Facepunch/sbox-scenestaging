@@ -39,10 +39,13 @@ public static class CollectionExtensions
 		return list.Skip( offset ).Take( count ).ToArray();
 	}
 
-	public static IEnumerable<MovieTimeRange> Union( this IEnumerable<MovieTimeRange> a, IEnumerable<MovieTimeRange> b )
+	/// <summary>
+	/// Given two ascending lists of time ranges, union any overlapping pairs between the two lists and return them.
+	/// </summary>
+	public static IEnumerable<MovieTimeRange> Union( this IEnumerable<MovieTimeRange> first, IEnumerable<MovieTimeRange> second )
 	{
-		using var enumeratorA = a.GetEnumerator();
-		using var enumeratorB = b.GetEnumerator();
+		using var enumeratorA = first.GetEnumerator();
+		using var enumeratorB = second.GetEnumerator();
 
 		var hasItemA = enumeratorA.MoveNext();
 		var hasItemB = enumeratorB.MoveNext();
