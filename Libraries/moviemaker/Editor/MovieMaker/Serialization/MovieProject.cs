@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
 using Sandbox.Utility;
 

@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Text.Json.Serialization;
 
 namespace Sandbox.MovieMaker.Compiled;
 
 #nullable enable
-
 /// <summary>
-/// A time region where something happens in a movie.
+/// A block of time where something happens in an <see cref="ICompiledTrack"/>.
 /// </summary>
-/// <param name="TimeRange">Start and end time of this block.</param>
-public interface ICompiledBlock
-{
-	MovieTimeRange TimeRange { get; }
-}
+public interface ICompiledBlock : ITrackBlock;
 
 /// <summary>
 /// Unused, will describe starting / stopping an action in the scene.
@@ -24,35 +18,14 @@ public sealed record CompiledActionBlock( MovieTimeRange TimeRange ) : ICompiled
 /// <summary>
 /// Interface for blocks describing a property changing value over time.
 /// </summary>
-/// <param name="TimeRange">Start and end time of this block.</param>
-/// <param name="PropertyType">Property value type, must match <see cref="ICompiledTrack.TargetType"/>.</param>
-public interface ICompiledPropertyBlock : ICompiledBlock
-{
-	Type PropertyType { get; }
-
-	/// <summary>
-	/// Reads from this block at the given <paramref name="time"/>.
-	/// </summary>
-	object? GetValue( MovieTime time );
-}
+public interface ICompiledPropertyBlock : ICompiledBlock, IPropertyBlock;
 
 /// <summary>
 /// Interface for blocks describing a property changing value over time.
 /// Typed version of <see cref="ICompiledPropertyBlock"/>.
 /// </summary>
-/// <typeparam name="T">Property value type.</typeparam>
-/// <param name="TimeRange">Start and end time of this block.</param>
 // ReSharper disable once TypeParameterCanBeVariant
-public interface ICompiledPropertyBlock<T> : ICompiledPropertyBlock
-{
-	/// <summary>
-	/// Reads from this block at the given <paramref name="time"/>.
-	/// </summary>
-	public new T GetValue( MovieTime time );
-
-	Type ICompiledPropertyBlock.PropertyType => typeof(T);
-	object? ICompiledPropertyBlock.GetValue( MovieTime time ) => GetValue( time );
-}
+public interface ICompiledPropertyBlock<T> : ICompiledPropertyBlock, IPropertyBlock<T>;
 
 /// <summary>
 /// This block has a single constant value for the whole duration.
@@ -75,9 +48,7 @@ public sealed record CompiledConstantBlock<T>( MovieTimeRange TimeRange, T Value
 /// <param name="Offset">Time offset of the first sample.</param>
 /// <param name="SampleRate">How many samples per second.</param>
 /// <param name="Samples">Raw sample values.</param>
-public sealed partial record CompiledSampleBlock<T>( MovieTimeRange TimeRange,
-	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )]
-	MovieTime Offset, int SampleRate, ImmutableArray<T> Samples )
+public sealed partial record CompiledSampleBlock<T>( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, ImmutableArray<T> Samples )
 	: ICompiledPropertyBlock<T>
 {
 	private readonly ImmutableArray<T> _samples = Validate( Samples );

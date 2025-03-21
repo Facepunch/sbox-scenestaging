@@ -243,6 +243,7 @@ public partial class TrackListWidget : Widget
 		if ( ev.Data.OfType<GameObject>().FirstOrDefault() is { } go )
 		{
 			yield return Session.GetOrCreateTrack( go );
+			yield return Session.GetOrCreateTrack( go, nameof(GameObject.Enabled) );
 			yield return Session.GetOrCreateTrack( go, nameof(GameObject.LocalPosition) );
 			yield return Session.GetOrCreateTrack( go, nameof(GameObject.LocalRotation) );
 

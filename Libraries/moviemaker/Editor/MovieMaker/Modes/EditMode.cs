@@ -296,10 +296,10 @@ public abstract partial class EditMode
 		{
 			foreach ( var block in list )
 			{
-				if ( block.TimeRange.Contains( time ) && Session.Binder.Get( track ) is {  } target )
-				{
-					target.Value = block.GetValue( time );
-				}
+				if ( !block.TimeRange.Contains( time ) ) continue;
+				if ( Session.Binder.Get( track ) is not { } target ) continue;
+
+				target.Value = block.GetValue( time );
 			}
 		}
 	}

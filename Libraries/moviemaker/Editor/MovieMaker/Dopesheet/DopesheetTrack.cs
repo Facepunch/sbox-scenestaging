@@ -84,8 +84,6 @@ public partial class DopeSheetTrack : GraphicsItem
 	{
 		if ( Visible && _canCreatePreview is not false )
 		{
-			var session = TrackWidget.TrackList.Session;
-
 			_blocks.Clear();
 			GetBlocks( _blocks );
 

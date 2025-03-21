@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sandbox.MovieMaker.Compiled;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Sandbox.MovieMaker;
@@ -127,3 +128,52 @@ public interface IPropertyTrack<T> : IPropertyTrack
 		return false;
 	}
 }
+
+/// <summary>
+/// A time region where something happens in a movie track.
+/// </summary>
+public interface ITrackBlock
+{
+	/// <summary>
+	/// Start and end time of this block.
+	/// </summary>
+	MovieTimeRange TimeRange { get; }
+}
+
+/// <summary>
+/// Describes a value that changes over time.
+/// </summary>
+public interface IPropertySignal
+{
+	/// <summary>
+	/// What type of value does this signal describe?
+	/// </summary>
+	Type PropertyType { get; }
+
+	/// <summary>
+	/// What value does this signal have at the given time?
+	/// </summary>
+	object? GetValue( MovieTime time );
+}
+
+/// <inheritdoc cref="IPropertySignal{T}"/>
+// ReSharper disable once TypeParameterCanBeVariant
+public interface IPropertySignal<T> : IPropertySignal
+{
+	/// <inheritdoc cref="IPropertySignal.GetValue"/>
+	new T GetValue( MovieTime time );
+
+	object? IPropertySignal.GetValue( MovieTime time ) => GetValue( time );
+	Type IPropertySignal.PropertyType => typeof( T );
+}
+
+/// <summary>
+/// A <see cref="IPropertySignal"/> with a defined start and end time.
+/// </summary>
+public interface IPropertyBlock : ITrackBlock, IPropertySignal;
+
+/// <summary>
+/// A <see cref="IPropertySignal{T}"/> with a defined start and end time.
+/// </summary>
+// ReSharper disable once TypeParameterCanBeVariant
+public interface IPropertyBlock<T> : IPropertyBlock, IPropertySignal<T>;

@@ -3,7 +3,6 @@ using Sandbox.MovieMaker;
 using System.Globalization;
 using System.Text.Json.Nodes;
 using System.Linq;
-using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker;
 
@@ -27,10 +26,12 @@ partial class MotionEditMode
 		_recordingStartTime = Session.CurrentPointer;
 		_stopPlayingAfterRecording = !Session.IsPlaying;
 
-		Session.IsPlaying = true;
+		foreach ( var track in Session.EditableTracks )
+		{
+			_recorder.Tracks.Add( track );
+		}
 
-		// SetPreviewBlocks( propertyTrack, [recording] );
-		throw new NotImplementedException();
+		Session.IsPlaying = true;
 
 		return true;
 	}
@@ -44,8 +45,10 @@ partial class MotionEditMode
 			Session.IsPlaying = false;
 		}
 
-		// ClearPreviewBlocks( track );
-		throw new NotImplementedException();
+		foreach ( var trackRecorder in recorder.Tracks )
+		{
+			ClearPreviewBlocks( (IProjectPropertyTrack)trackRecorder.Track );
+		}
 
 		var compiled = recorder.ToClip();
 
@@ -79,7 +82,23 @@ partial class MotionEditMode
 
 		var time = Session.CurrentPointer;
 
-		_recorder?.Update( MovieTime.Max( time - _recordingLastTime, 0d ) );
+		if ( _recorder?.Update( MovieTime.Max( time - _recordingLastTime, 0d ) ) is true )
+		{
+			foreach ( var trackRecorder in _recorder.Tracks )
+			{
+				var track = (IProjectPropertyTrack)trackRecorder.Track;
+
+				if ( trackRecorder.CurrentBlock is { } current )
+				{
+					SetPreviewBlocks( track, [..trackRecorder.FinishedBlocks, current] );
+				}
+				else
+				{
+					SetPreviewBlocks( track, trackRecorder.FinishedBlocks );
+				}
+			}
+		}
+
 		_recordingLastTime = time;
 	}
 }

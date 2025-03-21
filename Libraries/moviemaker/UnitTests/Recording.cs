@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.Json;
 using Sandbox.MovieMaker.Compiled;
 
 namespace Sandbox.MovieMaker.Test;
@@ -24,23 +23,28 @@ public sealed class RecordingTests : SceneTests
 	[TestMethod]
 	public void Clip()
 	{
-		// Create a recorder
-
-		var recorder = new MovieClipRecorder( Game.ActiveScene, RecorderOptions.Default );
-
-		// Create some tracks to record
-
 		var rootTrack = MovieClip.RootGameObject( "Example" );
-
-		recorder.Add( rootTrack.Property<bool>( nameof( GameObject.Enabled ) ) );
-		recorder.Add( rootTrack.Property<Vector3>( nameof( GameObject.LocalPosition ) ) );
-		recorder.Add( rootTrack.Property<Rotation>( nameof( GameObject.LocalRotation ) ) );
 
 		// Create an object we want to record
 
 		var gameObject = new GameObject( true, "Example" );
 
-		recorder.Binder.Get( rootTrack ).Bind( gameObject );
+		// Create a recorder
+
+		var recorder = new MovieClipRecorder( Game.ActiveScene, RecorderOptions.Default )
+		{
+			Tracks =
+			{
+				rootTrack.Property<bool>( nameof(GameObject.Enabled) ),
+				rootTrack.Property<Vector3>( nameof(GameObject.LocalPosition) ),
+				rootTrack.Property<Rotation>( nameof(GameObject.LocalRotation) )
+			},
+
+			Binder =
+			{
+				{ rootTrack, gameObject }
+			}
+		};
 
 		// Simulate a scene
 
