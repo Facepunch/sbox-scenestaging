@@ -56,7 +56,7 @@ internal interface ITrackOverlay<T> : ITrackOverlay
 			return new PropertyBlock<T>( (original ?? overlay)!.Reduce( timeRange ), timeRange );
 		}
 
-		return new PropertyBlock<T>( original.CrossFade( overlay.Shift( options.Offset ), options.Selection ).Reduce( timeRange ), timeRange );
+		return new PropertyBlock<T>( original.CrossFade( overlay, options.Selection ).Reduce( timeRange ), timeRange );
 	}
 }
 
