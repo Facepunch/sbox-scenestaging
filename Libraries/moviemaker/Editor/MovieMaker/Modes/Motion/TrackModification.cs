@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Immutable;
+using System.Linq;
+using System.Threading.Channels;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -21,9 +23,9 @@ internal interface ITrackModification
 
 	bool HasChanges { get; }
 
-	void SetRelativeTo( object? value );
-	void SetOverlay( object? constantValue );
-	void SetOverlay( IEnumerable<IProjectPropertyBlock> blocks, MovieTime offset );
+	void SetRelativeTo( object? constantValue );
+	void SetConstantOverlay( object? constantValue );
+	void SetClipboardOverlay( IEnumerable<IProjectPropertyBlock> blocks );
 	void ClearPreview();
 	bool Update( ModificationOptions options );
 	bool Commit( ModificationOptions options );
@@ -32,7 +34,75 @@ internal interface ITrackModification
 	void Restore( TrackModificationSnapshot state );
 }
 
-internal record TrackModificationSnapshot( IPropertySignal? Overlay, object? RelativeTo );
+internal record TrackModificationSnapshot( ITrackOverlay? Overlay );
+
+internal interface ITrackOverlay;
+
+internal interface ITrackOverlay<T> : ITrackOverlay
+{
+	IEnumerable<PropertyBlock<T>> Blend( IReadOnlyList<PropertyBlock<T>> original, ModificationOptions options );
+
+	protected static PropertyBlock<T> Blend( PropertySignal<T>? original, PropertySignal<T>? overlay, MovieTimeRange timeRange, ModificationOptions options )
+	{
+		overlay = overlay?.Shift( options.Offset );
+
+		if ( original is null && overlay is null )
+		{
+			throw new ArgumentNullException( nameof(overlay), "Expected at least one signal." );
+		}
+
+		if ( original is null || overlay is null )
+		{
+			return new PropertyBlock<T>( (original ?? overlay)!.Reduce( timeRange ), timeRange );
+		}
+
+		return new PropertyBlock<T>( original.CrossFade( overlay.Shift( options.Offset ), options.Selection ).Reduce( timeRange ), timeRange );
+	}
+}
+
+file sealed record SignalOverlay<T>( PropertySignal<T> Original, PropertySignal<T> Changed ) : ITrackOverlay<T>
+{
+	public IEnumerable<PropertyBlock<T>> Blend( IReadOnlyList<PropertyBlock<T>> original, ModificationOptions options )
+	{
+		if ( options.Additive ) throw new NotImplementedException();
+
+		var timeRange = options.Selection.TotalTimeRange;
+
+		// Fill in gaps between blocks in original track with AsSignal()
+
+		if ( original.AsSignal() is not { } originalSignal )
+		{
+			yield return new PropertyBlock<T>( Changed, timeRange );
+			yield break;
+		}
+
+		yield return ITrackOverlay<T>.Blend( originalSignal, Changed, timeRange, options );
+	}
+}
+
+file sealed record ClipboardOverlay<T>( ImmutableArray<PropertyBlock<T>> Blocks ) : ITrackOverlay<T>
+{
+	public IEnumerable<PropertyBlock<T>> Blend( IReadOnlyList<PropertyBlock<T>> original, ModificationOptions options )
+	{
+		if ( options.Additive ) throw new NotImplementedException();
+
+		var timeRanges = original.Select( x => x.TimeRange )
+			.Union( Blocks.Select( x => x.TimeRange + options.Offset ) );
+
+		foreach ( var timeRange in timeRanges )
+		{
+			var originalSignal = original
+				.Where( x => timeRange.Contains( x.TimeRange ) )
+				.AsSignal();
+
+			var overlaySignal = Blocks
+				.Where( x => timeRange.Contains( x.TimeRange + options.Offset ) )
+				.AsSignal();
+
+			yield return ITrackOverlay<T>.Blend( originalSignal, overlaySignal, timeRange, options );
+		}
+	}
+}
 
 internal sealed class TrackModification<T> : ITrackModification
 {
@@ -41,16 +111,14 @@ internal sealed class TrackModification<T> : ITrackModification
 
 	IProjectPropertyTrack ITrackModification.Track => Track;
 
-	private PropertySignal<T>? _original;
-	private PropertySignal<T>? _overlay;
-	private PropertySignal<T>? _smoothedOverlay;
-	private PropertyBlock<T>? _blended;
+	private readonly List<PropertyBlock<T>> _original = new();
+	private ITrackOverlay<T>? _overlay;
 
-	private T _relativeTo = default!;
+	private readonly List<PropertyBlock<T>> _blended = new();
+
 	private MovieTimeRange? _lastSliceRange;
-	private MovieTime _lastSmoothSize;
 
-	public bool HasChanges => _overlay != null;
+	public bool HasChanges => _overlay is not null;
 
 	public TrackModification( EditMode editMode, ProjectPropertyTrack<T> track )
 	{
@@ -58,21 +126,31 @@ internal sealed class TrackModification<T> : ITrackModification
 		Track = track;
 	}
 
-	public void SetRelativeTo( object? value )
+	public void SetRelativeTo( object? constantValue )
 	{
-		_relativeTo = (T)value!;
+		PropertySignal<T> constantSignal = (T)constantValue!;
+
+		_overlay = _overlay is not SignalOverlay<T> signalOverlay
+			? new SignalOverlay<T>( constantSignal, constantSignal )
+			: signalOverlay with { Original = constantSignal };
 	}
 
-	public void SetOverlay( object? constantValue )
+	public void SetConstantOverlay( object? constantValue )
 	{
-		_overlay = (T)constantValue!;
-		_smoothedOverlay = null;
+		PropertySignal<T> constantSignal = (T)constantValue!;
+
+		_overlay = _overlay is not SignalOverlay<T> signalOverlay
+			? new SignalOverlay<T>( constantSignal, constantSignal )
+			: signalOverlay with { Changed = constantSignal };
 	}
 
-	public void SetOverlay( IEnumerable<IProjectPropertyBlock> blocks, MovieTime offset )
+	public void SetClipboardOverlay( IEnumerable<IProjectPropertyBlock> blocks )
 	{
-		_overlay = blocks.Cast<PropertyBlock<T>>().AsSignal()?.Shift( offset ).Reduce();
-		_smoothedOverlay = null;
+		var overlay = new ClipboardOverlay<T>( [.. blocks.Cast<PropertyBlock<T>>()] );
+
+		_overlay = overlay.Blocks.Length > 0
+			? overlay
+			: null;
 	}
 
 	public void ClearPreview()
@@ -90,21 +168,18 @@ internal sealed class TrackModification<T> : ITrackModification
 
 		var timeRange = options.Selection.TotalTimeRange;
 
-		if ( _original is null || _lastSliceRange != timeRange )
+		if ( _lastSliceRange != timeRange )
 		{
 			_lastSliceRange = timeRange;
-			_original = Track.Slice( timeRange ).AsSignal() ?? _relativeTo;
+
+			_original.Clear();
+			_original.AddRange( Track.Slice( timeRange ) );
 		}
 
-		if ( _smoothedOverlay is null || _lastSmoothSize != options.SmoothSize )
-		{
-			_lastSmoothSize = options.SmoothSize;
-			_smoothedOverlay = _overlay.Smooth( options.SmoothSize );
-		}
+		_blended.Clear();
+		_blended.AddRange( _overlay.Blend( _original, options ) );
 
-		_blended = new PropertyBlock<T>( _original.CrossFade( _smoothedOverlay.Shift( options.Offset ), options.Selection ).Reduce( timeRange ), timeRange );
-
-		EditMode.SetPreviewBlocks( Track, [_blended] );
+		EditMode.SetPreviewBlocks( Track, _blended );
 
 		return true;
 	}
@@ -113,22 +188,20 @@ internal sealed class TrackModification<T> : ITrackModification
 	{
 		if ( !Update( options ) || _blended is not { } blended ) return false;
 
-		var changed = Track.Add( blended.Signal, blended.TimeRange );
+		var changed = Track.AddRange( blended );
 
 		ClearPreview();
 
 		return changed;
 	}
 
-	public TrackModificationSnapshot Snapshot() => new ( _overlay, _relativeTo );
+	public TrackModificationSnapshot Snapshot() => new ( _overlay );
 
 	public void Restore( TrackModificationSnapshot state )
 	{
-		_overlay = (PropertySignal<T>?)state.Overlay;
-		_relativeTo = (T)state.RelativeTo!;
+		_overlay = (ITrackOverlay<T>?)state.Overlay;
 
-		_original = null;
+		_original.Clear();
 		_lastSliceRange = null;
-		_smoothedOverlay = null;
 	}
 }

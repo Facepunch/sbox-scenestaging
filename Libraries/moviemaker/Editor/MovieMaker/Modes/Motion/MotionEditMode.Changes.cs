@@ -216,10 +216,7 @@ partial class MotionEditMode
 
 			var state = GetOrCreateTrackModification( track );
 
-			// Additive blending is relative to the start of the first block
-
-			state.SetRelativeTo( blocks[0].GetValue( MovieTime.Zero ) );
-			state.SetOverlay( blocks, -clipboard.Selection.TotalStart );
+			state.SetClipboardOverlay( blocks.Select( x => x.Shift( -clipboard.Selection.TotalStart ) ) );
 			state.Update( ModificationOptions!.Value );
 
 			changed = true;
@@ -294,7 +291,7 @@ partial class MotionEditMode
 			return false;
 		}
 
-		state.SetOverlay( property.Value );
+		state.SetConstantOverlay( property.Value );
 
 		return state.Update( options );
 	}

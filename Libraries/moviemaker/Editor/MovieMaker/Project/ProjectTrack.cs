@@ -345,12 +345,29 @@ public sealed partial class ProjectPropertyTrack<T>( MovieProject project, Guid 
 			throw new ArgumentException( "Block can't have negative start time." );
 		}
 
+		if ( _blocks.Any( x => x.TimeRange.Contains( block.TimeRange ) && x.Signal.Equals( block.Signal ) ) )
+		{
+			return false;
+		}
+
 		Clear( block.TimeRange );
 
 		_blocksChanged = true;
 		_blocks.Add( block );
 
 		return true;
+	}
+
+	public bool AddRange( IEnumerable<PropertyBlock<T>> blocks )
+	{
+		var changed = false;
+
+		foreach ( var block in blocks )
+		{
+			changed |= Add( block );
+		}
+
+		return changed;
 	}
 
 	bool IProjectPropertyTrack.Add( IPropertySignal signal, MovieTimeRange timeRange ) =>
