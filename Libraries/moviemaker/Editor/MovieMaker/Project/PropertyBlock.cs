@@ -8,33 +8,32 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 /// <summary>
-/// A <see cref="IPropertySignal"/> with a defined start and end time.
+/// A <see cref="ITrackBlock"/> that has hints for UI painting.
 /// </summary>
-public interface IPropertyBlock : IPropertySignal
+public interface IPaintHintBlock : ITrackBlock
 {
-	MovieTimeRange TimeRange { get; }
-
+	/// <summary>
+	/// Gets time regions, within <paramref name="timeRange"/>, that have constantly changing values.
+	/// </summary>
 	IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange );
 }
 
 /// <summary>
-/// A <see cref="IPropertyBlock"/> that can change dynamically, usually for previewing edits / live recordings.
+/// A <see cref="ITrackBlock"/> that can change dynamically, usually for previewing edits / live recordings.
 /// </summary>
-public interface IDynamicBlock : IPropertyBlock
+public interface IDynamicBlock : ITrackBlock
 {
 	event Action? Changed;
 }
 
-/// <inheritdoc cref="IPropertyBlock"/>
-public interface IPropertyBlock<T> : IPropertyBlock, IPropertySignal<T>;
-
 /// <summary>
 /// A <see cref="IPropertyBlock"/> that can be added to a <see cref="IProjectPropertyTrack"/>.
 /// </summary>
-public interface IProjectPropertyBlock : IPropertyBlock
+public interface IProjectPropertyBlock : IPropertyBlock, IPaintHintBlock
 {
 	IProjectPropertyBlock? Slice( MovieTimeRange timeRange );
 	IProjectPropertyBlock Shift( MovieTime offset );
+
 }
 
 public sealed partial record PropertyBlock<T>( [property: JsonPropertyOrder( 100 )] PropertySignal<T> Signal, MovieTimeRange TimeRange )

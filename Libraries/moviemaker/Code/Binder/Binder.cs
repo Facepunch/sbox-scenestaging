@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using Sandbox.MovieMaker.Properties;
 
@@ -10,7 +11,7 @@ namespace Sandbox.MovieMaker;
 /// Controls which <see cref="ITrackTarget"/>s from a scene are controlled by which <see cref="ITrack"/> from a <see cref="IClip"/>.
 /// Can be serialized to save which tracks are bound to which targets.
 /// </summary>
-public sealed partial class TrackBinder( Scene? scene = null )
+public sealed partial class TrackBinder( Scene? scene = null ) : IEnumerable<KeyValuePair<Guid, IValid?>>
 {
 	private readonly ConditionalWeakTable<ITrack, ITrackTarget> _cache = new();
 
@@ -18,6 +19,8 @@ public sealed partial class TrackBinder( Scene? scene = null )
 	/// The scene this binder is targeting.
 	/// </summary>
 	public Scene Scene { get; } = scene ?? Game.ActiveScene ?? throw new Exception( "No active scene!" );
+
+	public void Add( IReferenceTrack track, IValid? target ) => Get( track ).Bind( target );
 
 	/// <summary>
 	/// Gets or creates a target that maps to the given <paramref name="track"/>.
@@ -103,4 +106,19 @@ public sealed partial class TrackBinder( Scene? scene = null )
 			return binder;
 		}
 	}
+
+	public IEnumerator<KeyValuePair<Guid, IValid?>> GetEnumerator()
+	{
+		foreach ( var (guid, gameObject) in _gameObjectMap )
+		{
+			yield return new KeyValuePair<Guid, IValid?>( guid, gameObject );
+		}
+
+		foreach ( var (guid, component) in _componentMap )
+		{
+			yield return new KeyValuePair<Guid, IValid?>( guid, component );
+		}
+	}
+
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

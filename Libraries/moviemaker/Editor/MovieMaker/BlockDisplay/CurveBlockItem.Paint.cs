@@ -1,4 +1,5 @@
 ﻿using Sandbox.MovieMaker;
+using Sandbox.MovieMaker.Compiled;
 
 namespace Editor.MovieMaker.BlockDisplays;
 
@@ -7,6 +8,16 @@ namespace Editor.MovieMaker.BlockDisplays;
 partial class CurveBlockItem<T>
 {
 	private GraphicsLine[]? Lines { get; set; }
+
+	private IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange )
+	{
+		return Block switch
+		{
+			IPaintHintBlock paintHintBlock => paintHintBlock.GetPaintHints( timeRange ),
+			CompiledSampleBlock<T> => [timeRange.Clamp( Block.TimeRange )],
+			_ => []
+		};
+	}
 
 	protected virtual void GetCurveTimes( List<MovieTime> times )
 	{
@@ -25,7 +36,7 @@ partial class CurveBlockItem<T>
 			}
 		}
 
-		foreach ( var hintRange in Block.GetPaintHints( timeRange ) )
+		foreach ( var hintRange in GetPaintHints( timeRange ) )
 		{
 			TryAddTime( hintRange.Start );
 

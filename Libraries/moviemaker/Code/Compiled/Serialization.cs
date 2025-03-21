@@ -170,7 +170,9 @@ file sealed class CompiledSampleBlockConverterFactory : JsonConverterFactory
 file sealed class CompressedSampleBlockConverter<T> : JsonConverter<CompiledSampleBlock<T>>
 	where T : unmanaged
 {
-	private sealed record Model( MovieTimeRange TimeRange, MovieTime Offset, int SampleRate, JsonNode Samples );
+	private sealed record Model( MovieTimeRange TimeRange,
+		[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTime Offset,
+		int SampleRate, JsonNode Samples );
 
 	public override void Write( Utf8JsonWriter writer, CompiledSampleBlock<T> value, JsonSerializerOptions options )
 	{
