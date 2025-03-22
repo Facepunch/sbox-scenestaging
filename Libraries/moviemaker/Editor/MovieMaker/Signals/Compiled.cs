@@ -15,8 +15,6 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, 
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTime Offset = default,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTime SmoothingSize = default ) : PropertySignal<T>
 {
-	private readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
-
 	private ImmutableArray<T>? _samples;
 	private CompiledSampleBlock<T>? _block;
 
@@ -101,6 +99,8 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, 
 			&& Offset == other.Offset
 			&& SmoothingSize == other.SmoothingSize;
 	}
+
+	private static readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
 }
 
 partial class PropertySignalExtensions

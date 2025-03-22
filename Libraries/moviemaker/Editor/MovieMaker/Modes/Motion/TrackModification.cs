@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
-using System.Threading.Channels;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -84,14 +83,34 @@ file sealed record SignalOverlay<T>( PropertySignal<T> Signal, PropertySignal<T>
 	}
 }
 
-file sealed record ClipboardOverlay<T>( ImmutableArray<PropertyBlock<T>> Blocks ) : ITrackOverlay<T>
+file sealed class ClipboardOverlay<T>( ImmutableArray<PropertyBlock<T>> sourceBlocks ) : ITrackOverlay<T>
 {
+	private ImmutableArray<PropertyBlock<T>>? _smoothedBlocks;
+	private MovieTime _smoothTime;
+
+	public bool IsEmpty => sourceBlocks.IsDefaultOrEmpty;
+
+	public ImmutableArray<PropertyBlock<T>> GetBlocks( MovieTime smoothTime )
+	{
+		if ( _smoothedBlocks is { } smoothed && _smoothTime == smoothTime )
+		{
+			return smoothed;
+		}
+
+		_smoothedBlocks = smoothed = [..sourceBlocks.Select( x => x with { Signal = x.Signal.Smooth( smoothTime ) } )];
+		_smoothTime = smoothTime;
+
+		return smoothed;
+	}
+
 	public IEnumerable<PropertyBlock<T>> Blend( IReadOnlyList<PropertyBlock<T>> original, ModificationOptions options )
 	{
-		var timeRanges = original.Select( x => x.TimeRange )
-			.Union( Blocks.Select( x => x.TimeRange + options.Offset ) );
+		var blocks = GetBlocks( options.SmoothSize );
 
-		PropertySignal<T> relativeTo = Blocks[0].GetValue( Blocks[0].TimeRange.Start );
+		var timeRanges = original.Select( x => x.TimeRange )
+			.Union( blocks.Select( x => x.TimeRange + options.Offset ) );
+
+		PropertySignal<T> relativeTo = blocks[0].GetValue( blocks[0].TimeRange.Start );
 
 		foreach ( var timeRange in timeRanges )
 		{
@@ -99,7 +118,7 @@ file sealed record ClipboardOverlay<T>( ImmutableArray<PropertyBlock<T>> Blocks 
 				.Where( x => timeRange.Contains( x.TimeRange ) )
 				.AsSignal();
 
-			var overlaySignal = Blocks
+			var overlaySignal = blocks
 				.Where( x => timeRange.Contains( x.TimeRange + options.Offset ) )
 				.AsSignal();
 
@@ -152,9 +171,7 @@ internal sealed class TrackModification<T> : ITrackModification
 	{
 		var overlay = new ClipboardOverlay<T>( [.. blocks.Cast<PropertyBlock<T>>()] );
 
-		_overlay = overlay.Blocks.Length > 0
-			? overlay
-			: null;
+		_overlay = !overlay.IsEmpty ? overlay : null;
 	}
 
 	public void ClearPreview()
