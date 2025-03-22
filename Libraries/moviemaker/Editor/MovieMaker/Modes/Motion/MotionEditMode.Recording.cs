@@ -23,8 +23,9 @@ partial class MotionEditMode
 		var options = new RecorderOptions( Project.SampleRate );
 
 		_recorder = new MovieClipRecorder( Session.Binder, options );
-		_recordingStartTime = Session.CurrentPointer;
 		_stopPlayingAfterRecording = !Session.IsPlaying;
+		_recordingStartTime = Session.CurrentPointer;
+		_recordingLastTime = _recordingStartTime;
 
 		foreach ( var track in Session.EditableTracks )
 		{
@@ -39,6 +40,8 @@ partial class MotionEditMode
 	protected override void OnStopRecording()
 	{
 		if ( _recorder is not { } recorder ) return;
+
+		var timeRange = new MovieTimeRange( 0d, recorder.Duration );
 
 		if ( _stopPlayingAfterRecording )
 		{
@@ -60,15 +63,13 @@ partial class MotionEditMode
 			{ "MoviePlayer", Json.ToNode( Session.Player.Id ) }
 		} );
 
-		var range = new MovieTimeRange( _recordingStartTime, _recordingStartTime + compiled.Duration );
-
-		Clipboard = new ClipboardData( new TimeSelection( range, DefaultInterpolation ), compiled.Tracks
+		Clipboard = new ClipboardData( new TimeSelection( timeRange, DefaultInterpolation ), compiled.Tracks
 			.OfType<IPropertyTrack>()
-			.Select( x => Project.GetTrack( x ) )
+			.Select( Project.GetTrack )
 			.OfType<IProjectPropertyTrack>()
 			.ToImmutableDictionary( x => x.Id, x => x.CreateSourceBlocks( sourceClip ) ) );
 
-		Session.SetCurrentPointer( range.Start );
+		Session.SetCurrentPointer( _recordingStartTime );
 
 		if ( LoadChangesFromClipboard() )
 		{
@@ -81,20 +82,22 @@ partial class MotionEditMode
 		if ( !Session.IsRecording ) return;
 
 		var time = Session.CurrentPointer;
+		var deltaTime = MovieTime.Max( time - _recordingLastTime, 0d );
 
-		if ( _recorder?.Update( MovieTime.Max( time - _recordingLastTime, 0d ) ) is true )
+		if ( _recorder?.Advance( deltaTime ) is true )
 		{
 			foreach ( var trackRecorder in _recorder.Tracks )
 			{
 				var track = (IProjectPropertyTrack)trackRecorder.Track;
+				var finishedBlocks = trackRecorder.FinishedBlocks;
 
 				if ( trackRecorder.CurrentBlock is { } current )
 				{
-					SetPreviewBlocks( track, [..trackRecorder.FinishedBlocks, current] );
+					SetPreviewBlocks( track, [..finishedBlocks, current], _recordingStartTime );
 				}
 				else
 				{
-					SetPreviewBlocks( track, trackRecorder.FinishedBlocks );
+					SetPreviewBlocks( track, finishedBlocks, _recordingStartTime );
 				}
 			}
 		}

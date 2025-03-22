@@ -21,7 +21,7 @@ public interface ITrackRecorder
 	IReadOnlyList<ICompiledPropertyBlock> FinishedBlocks { get; }
 	IPropertyBlock? CurrentBlock { get; }
 
-	bool Update( MovieTime deltaTime );
+	bool Advance( MovieTime deltaTime );
 	IReadOnlyList<ICompiledPropertyBlock> ToBlocks();
 }
 
@@ -68,19 +68,19 @@ public sealed class MovieClipRecorder
 
 	public MovieClipRecorder( TrackBinder binder, RecorderOptions? options = null )
 	{
-		Tracks = new( this );
-
 		Binder = binder;
 		Options = options ?? RecorderOptions.Default;
+
+		Tracks = new( this );
 	}
 
-	public bool Update( MovieTime deltaTime )
+	public bool Advance( MovieTime deltaTime )
 	{
 		var anySamplesWritten = false;
 
 		foreach ( var recorder in Tracks )
 		{
-			anySamplesWritten |= recorder.Update( deltaTime );
+			anySamplesWritten |= recorder.Advance( deltaTime );
 		}
 
 		Duration += deltaTime;
@@ -159,13 +159,13 @@ public sealed class TrackRecorder<T> : ITrackRecorder
 
 		_elapsed = startTime;
 		_sampleInterval = MovieTime.FromFrames( 1, options.SampleRate );
-		_sampleTime = _elapsed.SnapToGrid( _sampleInterval );
+		_sampleTime = _elapsed.Floor( _sampleInterval );
 		_writer = new BlockWriter<T>( options.SampleRate );
 
 		RecordSample();
 	}
 
-	public bool Update( MovieTime deltaTime )
+	public bool Advance( MovieTime deltaTime )
 	{
 		_elapsed += deltaTime;
 

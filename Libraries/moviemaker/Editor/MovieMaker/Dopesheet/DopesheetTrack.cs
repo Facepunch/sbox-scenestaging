@@ -11,9 +11,9 @@ public partial class DopeSheetTrack : GraphicsItem
 	public IProjectPropertyTrack ProjectTrack { get; }
 	public TrackWidget TrackWidget { get; }
 
-	private bool? _canCreatePreview;
+	private bool? _canCreateItem;
 
-	private readonly List<IPropertyBlock> _blocks = new();
+	private readonly List<(IPropertyBlock Block, MovieTime Offset)> _blocks = new();
 	private readonly List<BlockItem> _blockItems = new();
 
 	public IReadOnlyList<BlockItem> BlockItems => _blockItems;
@@ -67,22 +67,22 @@ public partial class DopeSheetTrack : GraphicsItem
 		}
 	}
 
-	private void GetBlocks( List<IPropertyBlock> result )
+	private void GetBlocks( List<(IPropertyBlock Block, MovieTime Offset)> result )
 	{
 		foreach ( var block in ProjectTrack.Blocks )
 		{
-			result.Add( block );
+			result.Add( (block, default) );
 		}
 
 		foreach ( var preview in Session.EditMode?.GetPreviewBlocks( ProjectTrack ) ?? [] )
 		{
-			result.Add( preview );
+			result.Add( (preview, Session.EditMode!.PreviewBlockOffset) );
 		}
 	}
 
 	public void UpdateBlockItems()
 	{
-		if ( Visible && _canCreatePreview is not false )
+		if ( Visible && _canCreateItem is not false )
 		{
 			_blocks.Clear();
 			GetBlocks( _blocks );
@@ -95,23 +95,24 @@ public partial class DopeSheetTrack : GraphicsItem
 
 			for ( var i = 0; i < _blocks.Count; ++i )
 			{
-				var block = _blocks[i];
+				var (block, offset) = _blocks[i];
 
 				if ( _blockItems.Count <= i )
 				{
-					if ( BlockItem.Create( this, _blocks[i] ) is not { } newPreview )
+					if ( BlockItem.Create( this, block, offset ) is not { } newPreview )
 					{
-						_canCreatePreview = false;
+						_canCreateItem = false;
 						return;
 					}
 
 					_blockItems.Add( newPreview );
 				}
 
-				var preview = BlockItems[i];
+				var item = BlockItems[i];
 
-				preview.Block = block;
-				preview.Layout();
+				item.Block = block;
+				item.Offset = offset;
+				item.Layout();
 			}
 		}
 		else

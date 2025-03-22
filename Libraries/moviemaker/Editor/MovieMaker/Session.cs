@@ -202,7 +202,7 @@ public sealed partial class Session
 		{
 			var oneFrame = MovieTime.FromFrames( 1, FrameRate );
 
-			snapHelper.Add( SnapFlag.Frame, snapHelper.Time.SnapToGrid( oneFrame ), -3, force: true );
+			snapHelper.Add( SnapFlag.Frame, snapHelper.Time.Round( oneFrame ), -3, force: true );
 		}
 
 		if ( ObjectSnap )

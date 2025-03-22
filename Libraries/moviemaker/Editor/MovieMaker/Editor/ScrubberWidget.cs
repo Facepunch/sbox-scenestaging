@@ -118,7 +118,7 @@ public class ScrubberItem : GraphicsItem
 
 			var y = IsTop ? Height - height - margin : margin;
 
-			var t0 = MovieTime.Max( (range.Start - interval).SnapToGrid( interval ), MovieTime.Zero );
+			var t0 = MovieTime.Max( (range.Start - interval).Round( interval ), MovieTime.Zero );
 			var t1 = t0 + range.Duration;
 
 			for ( var t = t0; t <= t1; t += interval )

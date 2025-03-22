@@ -306,8 +306,8 @@ public class DopeSheet : GraphicsView
 
 		if ( mouseScenePos.y <= ScrubBarTop.SceneRect.Bottom || mouseScenePos.y >= ScrubBarBottom.SceneRect.Top )
 		{
-			snap.Add( SnapFlag.MinorTick, snap.Time.SnapToGrid( Session.MinorTick.Interval ), -2, force: true );
-			snap.Add( SnapFlag.MajorTick, snap.Time.SnapToGrid( Session.MajorTick.Interval ), -1 );
+			snap.Add( SnapFlag.MinorTick, snap.Time.Round( Session.MinorTick.Interval ), -2, force: true );
+			snap.Add( SnapFlag.MajorTick, snap.Time.Round( Session.MajorTick.Interval ), -1 );
 		}
 
 		if ( Session.EditMode?.PasteTimeRange is { } pasteRange )

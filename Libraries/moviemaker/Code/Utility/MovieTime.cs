@@ -90,7 +90,14 @@ public readonly struct MovieTime : IEquatable<MovieTime>, IComparable<MovieTime>
 			: this;
 	}
 
-	public MovieTime SnapToGrid( MovieTime gridInterval )
+	public MovieTime Floor( MovieTime gridInterval )
+	{
+		if ( gridInterval.Ticks <= 0 ) return this;
+
+		return FromTicks( Ticks / gridInterval.Ticks * gridInterval.Ticks );
+	}
+
+	public MovieTime Round( MovieTime gridInterval )
 	{
 		if ( gridInterval.Ticks <= 0 ) return this;
 

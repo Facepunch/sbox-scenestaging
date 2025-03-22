@@ -21,12 +21,14 @@ partial class CurveBlockItem<T>
 
 	protected virtual void GetCurveTimes( List<MovieTime> times )
 	{
-		var timeRange = Block.TimeRange;
+		var timeRange = TimeRange;
 
 		times.Add( timeRange.Start );
 
 		void TryAddTime( MovieTime time )
 		{
+			time += Offset;
+
 			if ( time < timeRange.Start ) return;
 			if ( time > timeRange.End ) return;
 
@@ -76,7 +78,7 @@ partial class CurveBlockItem<T>
 		{
 			if ( t.IsNegative ) continue;
 
-			var value = Block.GetValue( t );
+			var value = Block.GetValue( t - Offset );
 			Decompose( value, floats );
 
 			for ( var j = 0; j < Elements.Count; ++j )
@@ -165,7 +167,7 @@ partial class CurveBlockItem<T>
 
 		foreach ( var t in times )
 		{
-			var value = Block.GetValue( t );
+			var value = Block.GetValue( t - Offset );
 			var x = LocalRect.Left + (float)((t - t0).TotalSeconds * dxdt);
 
 			Decompose( value, floats );

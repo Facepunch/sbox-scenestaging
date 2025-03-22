@@ -18,11 +18,8 @@ public class IconComboBox<T> : IconButton
 
 	private static EnumDescription.Entry GetEntry( T option )
 	{
-		// This is shit, why doesn't EnumDescription.GetEntry(object) work??
-
-		var intValue = (long)Convert.ChangeType( option, typeof(long) );
 		var typeDesc = EditorTypeLibrary.GetEnumDescription( typeof( T ) );
-		return typeDesc.FirstOrDefault( x => x.IntegerValue == intValue );
+		return typeDesc.GetEntry( option );
 	}
 
 	protected virtual string OnGetOptionTitle( T option )

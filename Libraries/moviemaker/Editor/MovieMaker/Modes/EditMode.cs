@@ -295,12 +295,14 @@ public abstract partial class EditMode
 		}
 	}
 
-	public void SetPreviewBlocks( IProjectPropertyTrack track, IEnumerable<IPropertyBlock> blocks )
+	public void SetPreviewBlocks( IProjectPropertyTrack track, IEnumerable<IPropertyBlock> blocks, MovieTime offset = default )
 	{
 		if ( !_previewBlocks.TryGetValue( track, out var list ) )
 		{
 			_previewBlocks.Add( track, list = new List<IPropertyBlock>() );
 		}
+
+		PreviewBlockOffset = offset;
 
 		list.Clear();
 		list.AddRange( blocks );
@@ -314,6 +316,8 @@ public abstract partial class EditMode
 
 	public void ClearPreviewBlocks( IProjectPropertyTrack track )
 	{
+		PreviewBlockOffset = default;
+
 		_previewBlocks.Remove( track );
 
 		if ( TrackList.FindTrack( track ) is { } trackWidget )
@@ -321,6 +325,8 @@ public abstract partial class EditMode
 			trackWidget.DopeSheetTrack?.UpdateBlockItems();
 		}
 	}
+
+	public MovieTime PreviewBlockOffset { get; private set; }
 
 	public IEnumerable<IPropertyBlock> GetPreviewBlocks( IProjectPropertyTrack track )
 	{

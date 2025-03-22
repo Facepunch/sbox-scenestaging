@@ -41,18 +41,21 @@ public abstract partial class BlockItem : GraphicsItem
 		}
 	}
 
+	public MovieTime Offset { get; set; }
+
 	protected IProjectTrack Track => Parent.TrackWidget.ProjectTrack;
-	protected MovieTimeRange TimeRange => Block.TimeRange;
+	protected MovieTimeRange TimeRange => Block.TimeRange + Offset;
 
 	protected int DataHash => HashCode.Combine( Block, TimeRange.Duration, Width );
 
 	protected string? DebugText { get; set; }
 
-	private void Initialize( DopeSheetTrack parent, IPropertyBlock block )
+	private void Initialize( DopeSheetTrack parent, IPropertyBlock block, MovieTime offset )
 	{
 		base.Parent = Parent = parent;
 
 		Block = block;
+		Offset = offset;
 		ZIndex = -1;
 	}
 

@@ -65,7 +65,9 @@ file sealed record TrackModel( TrackKind Kind, string Name, Type Type,
 {
 	public TrackModel( ICompiledTrack track, ImmutableDictionary<ICompiledTrack, ImmutableArray<ICompiledTrack>> childDict, JsonSerializerOptions? options )
 		: this( GetKind( track ), track.Name, track.TargetType, (track as IReferenceTrack)?.Id,
-			childDict.TryGetValue( track, out var children ) ? children.Select( x => new TrackModel( x, childDict, options ) ).ToImmutableArray() : null,
+			childDict.TryGetValue( track, out var children )
+				? children.Select( x => new TrackModel( x, childDict, options ) ).ToImmutableArray() 
+				: null,
 			track is ICompiledBlockTrack { Blocks.Count: > 0 } blockTrack
 				? blockTrack.Blocks.Select( x => SerializeBlock( x, options ) ).ToImmutableArray()
 				: null )

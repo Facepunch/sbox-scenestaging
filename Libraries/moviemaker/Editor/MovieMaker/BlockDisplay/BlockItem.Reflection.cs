@@ -8,7 +8,7 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 partial class BlockItem
 {
-	public static BlockItem? Create( DopeSheetTrack parent, IPropertyBlock block )
+	public static BlockItem? Create( DopeSheetTrack parent, IPropertyBlock block, MovieTime offset )
 	{
 		var valueType = block.PropertyType;
 
@@ -33,7 +33,7 @@ partial class BlockItem
 			{
 				var inst = (BlockItem)Activator.CreateInstance( type )!;
 
-				inst.Initialize( parent, block );
+				inst.Initialize( parent, block, offset );
 
 				return inst;
 			}
