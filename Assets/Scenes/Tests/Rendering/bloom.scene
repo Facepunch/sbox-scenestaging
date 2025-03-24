@@ -2,131 +2,6 @@
   "__guid": "a8ca976b-12e5-4fc2-8652-b637fd581131",
   "GameObjects": [
     {
-      "__guid": "e49546f1-4319-4e56-84a8-6ed92c38fb64",
-      "Flags": 0,
-      "Name": "Main Camera",
-      "Position": "-300,0,100",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.CameraComponent",
-          "__guid": "490b0136-fcf1-4d24-8db8-6af578b9575a",
-          "BackgroundColor": "0,0,0,1",
-          "ClearFlags": "All",
-          "FieldOfView": 60,
-          "FovAxis": "Horizontal",
-          "IsMainCamera": true,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "Orthographic": false,
-          "OrthographicHeight": 1204,
-          "Priority": 1,
-          "RenderExcludeTags": "",
-          "RenderTags": "",
-          "TargetEye": "None",
-          "Viewport": "0,0,0.5,1",
-          "ZFar": 10000,
-          "ZNear": 10
-        },
-        {
-          "__type": "Sandbox.Bloom2",
-          "__guid": "26fb889e-eb9c-4eeb-9a94-20d6da1253d3",
-          "Gamma": 1,
-          "Mode": "Screen",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "Strength": 5,
-          "Threshold": 1,
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "Sandbox.Tonemapping",
-          "__guid": "21a8e037-24b1-4b97-9ae1-4478a01b6b81",
-          "__version": 1,
-          "AutoExposureEnabled": true,
-          "ExposureBias": 2,
-          "ExposureCompensation": 0,
-          "ExposureMethod": "RGB",
-          "MaximumExposure": 3,
-          "MinimumExposure": 1,
-          "Mode": "ACES",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "Rate": 1
-        },
-        {
-          "__type": "Sandbox.ChromaticAberration",
-          "__guid": "d625a177-8ea2-4e66-a4d9-767301152a3f",
-          "__enabled": false,
-          "Offset": "4,6,0",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "Scale": 1
-        },
-        {
-          "__type": "Sandbox.Bloom",
-          "__guid": "706c031c-cec3-491f-806f-d42fce0143d4",
-          "__enabled": false,
-          "BloomColor": {
-            "blend": "Linear",
-            "color": [
-              {
-                "t": 0,
-                "c": "1,1,1,1"
-              },
-              {
-                "t": 1,
-                "c": "1,1,1,1"
-              }
-            ],
-            "alpha": null
-          },
-          "BloomCurve": [
-            {
-              "x": 0,
-              "y": 0.5,
-              "in": 0,
-              "out": 0,
-              "mode": "Mirrored"
-            },
-            {
-              "x": 1,
-              "y": 1,
-              "in": 0,
-              "out": 0,
-              "mode": "Mirrored"
-            }
-          ],
-          "Mode": "Additive",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "Strength": 10,
-          "Threshold": 0,
-          "ThresholdWidth": 0
-        }
-      ]
-    },
-    {
       "__guid": "5420595f-463b-4f27-911a-beec49815b7e",
       "Flags": 0,
       "Name": "Main Camera (1)",
@@ -153,7 +28,7 @@
           "RenderExcludeTags": "",
           "RenderTags": "",
           "TargetEye": "None",
-          "Viewport": "0.5,0,0.5,1",
+          "Viewport": "0,0,1,1",
           "ZFar": 10000,
           "ZNear": 10
         },
@@ -176,9 +51,8 @@
         {
           "__type": "Sandbox.Tonemapping",
           "__guid": "20f74e9c-91b3-4c8b-9e57-200a07f0ace6",
-          "__version": 1,
+          "__version": 3,
           "AutoExposureEnabled": true,
-          "ExposureBias": 2,
           "ExposureCompensation": 0,
           "ExposureMethod": "RGB",
           "MaximumExposure": 3,
@@ -208,36 +82,8 @@
         {
           "__type": "Sandbox.Bloom",
           "__guid": "c8d37d39-1771-42b4-af6d-09589f373747",
-          "BloomColor": {
-            "blend": "Linear",
-            "color": [
-              {
-                "t": 0,
-                "c": "1,1,1,1"
-              },
-              {
-                "t": 1,
-                "c": "1,1,1,1"
-              }
-            ],
-            "alpha": null
-          },
-          "BloomCurve": [
-            {
-              "x": 0,
-              "y": 0.5,
-              "in": 0,
-              "out": 0,
-              "mode": "Mirrored"
-            },
-            {
-              "x": 1,
-              "y": 1,
-              "in": 0,
-              "out": 0,
-              "mode": "Mirrored"
-            }
-          ],
+          "__version": 1,
+          "Gamma": 1.5,
           "Mode": "Additive",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -245,9 +91,9 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Strength": 10,
-          "Threshold": 0,
-          "ThresholdWidth": 0
+          "Strength": 3.93,
+          "Threshold": 0.5,
+          "Tint": "1,1,1,1"
         }
       ]
     },
