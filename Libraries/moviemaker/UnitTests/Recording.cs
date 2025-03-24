@@ -59,7 +59,7 @@ public sealed class RecordingTests : SceneTests
 			// Advance the recorder by deltaTime, it will capture samples as
 			// needed to match its sample rate
 
-			recorder.Update( deltaTime );
+			recorder.Advance( deltaTime );
 		}
 
 		// Compile to a MovieClip that you can write to disk / play back in a MoviePlayer

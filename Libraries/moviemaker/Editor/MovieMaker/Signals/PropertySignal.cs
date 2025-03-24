@@ -12,13 +12,6 @@ public abstract partial record PropertySignal<T> : IPropertySignal<T>
 {
 	public abstract T GetValue( MovieTime time );
 
-	public PropertySignal<T> Transform( MovieTime offset )
-	{
-		return !offset.IsZero ? OnTransform( offset ) : this;
-	}
-
-	protected abstract PropertySignal<T> OnTransform( MovieTime offset );
-
 	/// <summary>
 	/// Try to make a more minimal composition for this signal, optionally within a time range.
 	/// </summary>
@@ -27,6 +20,24 @@ public abstract partial record PropertySignal<T> : IPropertySignal<T>
 	public PropertySignal<T> Reduce( MovieTime? start = null, MovieTime? end = null )
 	{
 		return start >= end ? GetValue( start.Value ) : OnReduce( start, end );
+	}
+
+	public PropertySignal<T> Reduce( MovieTimeRange timeRange ) =>
+		Reduce( timeRange.Start, timeRange.End );
+
+	public T[] Sample( MovieTimeRange timeRange, int sampleRate )
+	{
+		var sampleCount = timeRange.Duration.GetFrameCount( sampleRate );
+		var samples = new T[sampleCount];
+
+		for ( var i = 0; i < sampleCount; i++ )
+		{
+			var time = timeRange.Start + MovieTime.FromFrames( i, sampleRate );
+
+			samples[i] = GetValue( time );
+		}
+
+		return samples;
 	}
 
 	protected abstract PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end );
@@ -46,23 +57,4 @@ public abstract partial record PropertySignal<T> : IPropertySignal<T>
 /// Extension methods for creating and composing <see cref="IPropertySignal"/>s.
 /// </summary>
 // ReSharper disable once UnusedMember.Global
-public static partial class PropertySignalExtensions
-{
-	public static PropertySignal<T> Reduce<T>( this PropertySignal<T> signal, MovieTimeRange timeRange ) =>
-		signal.Reduce( timeRange.Start, timeRange.End );
-
-	public static T[] Sample<T>( this PropertySignal<T> signal, MovieTimeRange timeRange, int sampleRate )
-	{
-		var sampleCount = timeRange.Duration.GetFrameCount( sampleRate );
-		var samples = new T[sampleCount];
-
-		for ( var i = 0; i < sampleCount; i++ )
-		{
-			var time = timeRange.Start + MovieTime.FromFrames( i, sampleRate );
-
-			samples[i] = signal.GetValue( time );
-		}
-
-		return samples;
-	}
-}
+public static partial class PropertySignalExtensions;

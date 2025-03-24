@@ -11,6 +11,37 @@ public enum FadeDirection
 	FadeOut
 }
 
+partial record PropertySignal<T>
+{
+	public PropertySignal<T> CrossFade( PropertySignal<T> overlay,
+		MovieTimeRange fadeTimeRange, InterpolationMode mode = InterpolationMode.Linear, FadeDirection direction = FadeDirection.FadeIn )
+	{
+		if ( Equals( overlay ) )
+		{
+			return this;
+		}
+
+		if ( Interpolator.GetDefault<T>() is null || mode == InterpolationMode.None )
+		{
+			fadeTimeRange = direction == FadeDirection.FadeIn
+				? fadeTimeRange.End
+				: fadeTimeRange.Start;
+		}
+
+		return !fadeTimeRange.IsEmpty
+			? new CrossFadeOperation<T>( this, overlay, fadeTimeRange, mode, direction )
+			: HardCut( overlay, fadeTimeRange.Start );
+	}
+
+	public PropertySignal<T> CrossFade( PropertySignal<T> second,
+		TimeSelection envelope )
+	{
+		// ReSharper disable once RedundantArgumentDefaultValue
+		return CrossFade( second, envelope.FadeInTimeRange, envelope.FadeIn.Interpolation, FadeDirection.FadeIn )
+			.CrossFade( this, envelope.FadeOutTimeRange, envelope.FadeOut.Interpolation, FadeDirection.FadeOut );
+	}
+}
+
 [JsonDiscriminator( "CrossFade" )]
 file sealed record CrossFadeOperation<T>( PropertySignal<T> First, PropertySignal<T> Second, MovieTimeRange FadeTimeRange,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] InterpolationMode Mode,
@@ -20,11 +51,11 @@ file sealed record CrossFadeOperation<T>( PropertySignal<T> First, PropertySigna
 		? 1f - Mode.Apply( 1f - FadeTimeRange.GetFraction( time ) )
 		: Mode.Apply( FadeTimeRange.GetFraction( time ) );
 
-	protected override PropertySignal<T> OnTransform( MovieTime offset ) => this with
+	protected override PropertySignal<T> OnTransform( MovieTransform value ) => this with
 	{
-		First = First.Transform( offset ),
-		Second = Second.Transform( offset ),
-		FadeTimeRange = FadeTimeRange + offset
+		First = value * First,
+		Second = value * Second,
+		FadeTimeRange = value * FadeTimeRange
 	};
 
 	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end )
@@ -42,37 +73,5 @@ file sealed record CrossFadeOperation<T>( PropertySignal<T> First, PropertySigna
 		return timeRange.Intersect( FadeTimeRange ) is { } intersection
 			? hints.Union( [intersection] )
 			: hints;
-	}
-}
-
-partial class PropertySignalExtensions
-{
-	public static PropertySignal<T> CrossFade<T>( this PropertySignal<T> first, PropertySignal<T> second,
-		MovieTimeRange fadeTimeRange, InterpolationMode mode = InterpolationMode.Linear, FadeDirection direction = FadeDirection.FadeIn )
-	{
-		if ( first.Equals( second ) )
-		{
-			return first;
-		}
-
-		if ( Interpolator.GetDefault<T>() is null || mode == InterpolationMode.None )
-		{
-			fadeTimeRange = direction == FadeDirection.FadeIn
-				? fadeTimeRange.End
-				: fadeTimeRange.Start;
-		}
-
-		return !fadeTimeRange.IsEmpty
-			? new CrossFadeOperation<T>( first, second, fadeTimeRange, mode, direction )
-			: first.HardCut( second, fadeTimeRange.Start );
-	}
-
-	public static PropertySignal<T> CrossFade<T>( this PropertySignal<T> first, PropertySignal<T> second,
-		TimeSelection envelope )
-	{
-		// ReSharper disable once RedundantArgumentDefaultValue
-		return first
-			.CrossFade( second, envelope.FadeInTimeRange, envelope.FadeIn.Interpolation, FadeDirection.FadeIn )
-			.CrossFade( first, envelope.FadeOutTimeRange, envelope.FadeOut.Interpolation, FadeDirection.FadeOut );
 	}
 }

@@ -16,8 +16,8 @@ public abstract record PropertyOperation<T> : PropertySignal<T>
 
 public abstract record UnaryOperation<T>( PropertySignal<T> Signal ) : PropertyOperation<T>
 {
-	protected override PropertySignal<T> OnTransform( MovieTime offset ) =>
-		this with { Signal = Signal.Transform( offset ) };
+	protected override PropertySignal<T> OnTransform( MovieTransform value ) =>
+		this with { Signal = value * Signal };
 
 	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end ) =>
 		this with { Signal = Signal.Reduce( start, end ) };
@@ -31,8 +31,8 @@ public abstract record UnaryOperation<T>( PropertySignal<T> Signal ) : PropertyO
 public abstract record BinaryOperation<T>( PropertySignal<T> First, PropertySignal<T> Second )
 	: PropertyOperation<T>
 {
-	protected override PropertySignal<T> OnTransform( MovieTime offset ) =>
-		this with { First = First.Transform( offset ), Second = Second.Transform( offset ) };
+	protected override PropertySignal<T> OnTransform( MovieTransform value ) =>
+		this with { First = value * First, Second = value * Second };
 
 	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end ) =>
 		this with { First = First.Reduce( start, end ), Second = Second.Reduce( start, end ) };

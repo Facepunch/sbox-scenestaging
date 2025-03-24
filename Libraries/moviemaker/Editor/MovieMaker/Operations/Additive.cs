@@ -1,8 +1,38 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Diagnostics.CodeAnalysis;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
+
+partial record PropertySignal<T>
+{
+	[return: NotNullIfNotNull( nameof(a) )]
+	public static PropertySignal<T>? operator -( PropertySignal<T>? a, PropertySignal<T> b )
+	{
+		if ( a is null ) return null;
+
+		if ( LocalTransformer.GetDefault<T>() is not { } transformer ) return a;
+		if ( a.Equals( b ) ) return transformer.Identity;
+		if ( b.IsIdentity ) return a;
+
+		return new ToLocalOperation<T>( a, b );
+	}
+
+	[return: NotNullIfNotNull( nameof(a) )]
+	public static PropertySignal<T>? operator +( PropertySignal<T>? a, PropertySignal<T> b )
+	{
+		if ( a is null ) return null;
+
+		if ( LocalTransformer.GetDefault<T>() is null ) return a;
+		if ( a.IsIdentity ) return b;
+		if ( b.IsIdentity ) return a;
+
+		return new ToGlobalOperation<T>( a, b );
+	}
+
+	public virtual bool IsIdentity => false;
+}
 
 [JsonDiscriminator( "ToLocal" )]
 file sealed record ToLocalOperation<T>( PropertySignal<T> First, PropertySignal<T> Second )
@@ -24,31 +54,4 @@ file sealed record ToGlobalOperation<T>( PropertySignal<T> First, PropertySignal
 		Second.GetValue( time ) );
 
 	private static ILocalTransformer<T> _transformer = LocalTransformer.GetDefaultOrThrow<T>();
-}
-
-
-partial class PropertySignalExtensions
-{
-	public static PropertySignal<T> ToLocal<T>( this PropertySignal<T> first, PropertySignal<T> second )
-	{
-		if ( LocalTransformer.GetDefault<T>() is not { } transformer ) return first;
-		if ( first.Equals( second ) ) return transformer.Identity;
-
-		return new ToLocalOperation<T>( first, second );
-	}
-
-	public static PropertySignal<T> ToGlobal<T>( this PropertySignal<T> first, PropertySignal<T> second )
-	{
-		if ( LocalTransformer.GetDefault<T>() is not { } transformer ) return first;
-		if ( first.IsIdentity() ) return second;
-
-		return new ToGlobalOperation<T>( first, second );
-	}
-
-	public static bool IsIdentity<T>( this PropertySignal<T> signal )
-	{
-		return LocalTransformer.GetDefault<T>() is { } transformer
-			&& signal is ConstantSignal<T> constant
-			&& EqualityComparer<T>.Default.Equals( constant.Value, transformer.Identity );
-	}
 }

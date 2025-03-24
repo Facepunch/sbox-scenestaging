@@ -284,7 +284,7 @@ public sealed partial class ProjectPropertyTrack<T>( MovieProject project, Guid 
 
 			if ( block.TimeRange.Start >= from )
 			{
-				_blocks[i] = _blocks[i].Shift( offset );
+				_blocks[i] += offset;
 				_blocksChanged = changed = true;
 			}
 		}

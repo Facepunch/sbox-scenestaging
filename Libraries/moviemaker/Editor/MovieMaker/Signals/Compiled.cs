@@ -12,7 +12,7 @@ namespace Editor.MovieMaker;
 [JsonDiscriminator( "Source" )]
 [method: JsonConstructor]
 file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, int BlockIndex,
-	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTime Offset = default,
+	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTransform Transform = default,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTime SmoothingSize = default ) : PropertySignal<T>
 {
 	private ImmutableArray<T>? _samples;
@@ -28,27 +28,26 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, 
 		Source = copy.Source;
 		TrackIndex = copy.TrackIndex;
 		BlockIndex = copy.BlockIndex;
-		Offset = copy.Offset;
+		Transform = copy.Transform;
 		SmoothingSize = copy.SmoothingSize;
 
 		_samples = null;
 		_block = null;
 	}
 
-	public override T GetValue( MovieTime time )
-	{
-		var localTime = (time - Offset).Clamp( Block.TimeRange ) - Block.TimeRange.Start - Block.Offset;
+	private MovieTime GetLocalTime( MovieTime time ) =>
+		(Transform.Inverse * time).Clamp( Block.TimeRange ) - Block.TimeRange.Start - Block.Offset;
 
-		return Samples.Sample( localTime, Block.SampleRate, _interpolator );
-	}
+	public override T GetValue( MovieTime time ) =>
+		Samples.Sample( GetLocalTime( time ), Block.SampleRate, _interpolator );
 
-	protected override PropertySignal<T> OnTransform( MovieTime offset ) =>
-		this with { Offset = Offset + offset };
+	protected override PropertySignal<T> OnTransform( MovieTransform transform ) =>
+		this with { Transform = transform * Transform };
 
 	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end )
 	{
-		if ( start >= Block.TimeRange.End + Offset ) return Block.GetValue( Block.TimeRange.End );
-		if ( end <= Block.TimeRange.Start + Offset ) return Block.GetValue( Block.TimeRange.Start );
+		if ( start is { } s && GetLocalTime( s ) >= Block.TimeRange.Duration ) return Block.GetValue( Block.TimeRange.End );
+		if ( end is { } e && GetLocalTime( e ) <= 0d ) return Block.GetValue( Block.TimeRange.Start );
 
 		return this;
 	}
@@ -58,7 +57,7 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, 
 
 	public override IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange )
 	{
-		if ( timeRange.Intersect( Block.TimeRange + Offset ) is { } intersection )
+		if ( timeRange.Intersect( Transform * Block.TimeRange ) is { } intersection )
 		{
 			return [intersection];
 		}
@@ -71,9 +70,9 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, 
 		builder.Append( $"Source = {Source}, " );
 		builder.Append( $"Block = {Block.TimeRange}" );
 
-		if ( Offset != default )
+		if ( Transform != MovieTransform.Identity )
 		{
-			builder.Append( $", Offset = {Offset}" );
+			builder.Append( $", Transform = {Transform}" );
 		}
 
 		if ( SmoothingSize != default )
@@ -86,7 +85,7 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, 
 
 	public override int GetHashCode()
 	{
-		return HashCode.Combine( Source, TrackIndex, BlockIndex, Offset, SmoothingSize );
+		return HashCode.Combine( Source, TrackIndex, BlockIndex, Transform, SmoothingSize );
 	}
 
 	public bool Equals( CompiledSignal<T>? other )
@@ -96,7 +95,7 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, 
 		return Source.Equals( other.Source )
 			&& TrackIndex == other.TrackIndex
 			&& BlockIndex == other.BlockIndex
-			&& Offset == other.Offset
+			&& Transform == other.Transform
 			&& SmoothingSize == other.SmoothingSize;
 	}
 

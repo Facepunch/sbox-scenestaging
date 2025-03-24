@@ -57,15 +57,7 @@ public sealed partial record PropertyBlock<T>( [property: JsonPropertyOrder( 100
 	}
 
 	IProjectPropertyBlock? IProjectPropertyBlock.Slice( MovieTimeRange timeRange ) => Slice( timeRange );
-
-	public PropertyBlock<T> Shift( MovieTime offset )
-	{
-		return !offset.IsZero
-			? new PropertyBlock<T>( Signal.Shift( offset ).Reduce( TimeRange + offset ), TimeRange + offset )
-			: this;
-	}
-
-	IProjectPropertyBlock IProjectPropertyBlock.Shift( MovieTime offset ) => Shift( offset );
+	IProjectPropertyBlock IProjectPropertyBlock.Shift( MovieTime offset ) => new MovieTransform( offset ) * this;
 
 	public ICompiledPropertyBlock<T> Compile( ProjectPropertyTrack<T> track )
 	{

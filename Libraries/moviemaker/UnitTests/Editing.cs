@@ -1,6 +1,5 @@
 ﻿using System;
 using Editor.MovieMaker;
-using static Editor.MovieMaker.TimeSelection;
 
 namespace Sandbox.MovieMaker.Test;
 
@@ -119,8 +118,7 @@ public sealed class EditingTests
 	[TestMethod]
 	public void ReduceShift()
 	{
-		var signal = 1f.AsSignal()
-			.Shift( 1d )
+		var signal = (1f.AsSignal() + 1d)
 			.Reduce();
 
 		Assert.AreEqual( 1f, signal );

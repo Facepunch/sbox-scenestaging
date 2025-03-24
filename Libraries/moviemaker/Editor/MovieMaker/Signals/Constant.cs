@@ -6,21 +6,25 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
+partial record PropertySignal<T>
+{
+	public static implicit operator PropertySignal<T>( T value ) => new ConstantSignal<T>( value );
+}
+
 [JsonDiscriminator( "Constant" )]
-public sealed record ConstantSignal<T>( T Value ) : PropertySignal<T>
+file sealed record ConstantSignal<T>( T Value ) : PropertySignal<T>
 {
 	public override T GetValue( MovieTime time ) => Value;
 
-	protected override PropertySignal<T> OnTransform( MovieTime offset ) => this;
+	public override bool IsIdentity =>
+		LocalTransformer.GetDefault<T>() is { } transformer
+		&& EqualityComparer<T>.Default.Equals( Value, transformer.Identity );
+
+	protected override PropertySignal<T> OnTransform( MovieTransform value ) => this;
 	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end ) => this;
 	protected override PropertySignal<T> OnSmooth( MovieTime size ) => this;
 
 	public override IEnumerable<MovieTimeRange> GetPaintHints( MovieTimeRange timeRange ) => [timeRange.Start, timeRange.End - MovieTime.Epsilon];
-}
-
-partial record PropertySignal<T>
-{
-	public static implicit operator PropertySignal<T>( T value ) => new ConstantSignal<T>( value );
 }
 
 partial class PropertySignalExtensions

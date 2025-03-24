@@ -49,7 +49,7 @@ internal interface ITrackOverlay<T> : ITrackOverlay
 			throw new ArgumentNullException( nameof(overlay), "Expected at least one signal." );
 		}
 
-		overlay = overlay?.Shift( options.Offset );
+		overlay += options.Offset;
 
 		if ( original is null || overlay is null )
 		{
@@ -58,7 +58,7 @@ internal interface ITrackOverlay<T> : ITrackOverlay
 
 		if ( options.Additive )
 		{
-			overlay = overlay.ToLocal( relativeTo ).ToGlobal( original );
+			overlay = overlay - relativeTo + original;
 		}
 
 		return new PropertyBlock<T>( original.CrossFade( overlay, options.Selection ).Reduce( timeRange ), timeRange );
