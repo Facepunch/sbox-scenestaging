@@ -32,8 +32,14 @@ partial class PropertySignalExtensions
 	/// <summary>
 	/// Creates a constant signal with the given value.
 	/// </summary>
-
 	public static PropertySignal<T> AsSignal<T>( this T value ) => value;
+
+	public static IPropertySignal AsSignal( this object? value, Type targetType )
+	{
+		var signalType = typeof(ConstantSignal<>).MakeGenericType( targetType );
+
+		return (IPropertySignal)Activator.CreateInstance( signalType, value )!;
+	}
 
 	/// <inheritdoc cref="AsSignal{T}(IReadOnlyList{PropertyBlock{T}})"/>
 	public static PropertySignal<T>? AsSignal<T>( this IEnumerable<PropertyBlock<T>> blocks ) =>

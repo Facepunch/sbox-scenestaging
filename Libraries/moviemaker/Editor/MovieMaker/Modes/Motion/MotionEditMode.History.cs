@@ -36,7 +36,8 @@ partial class MotionEditMode : EditMode
 	private record ProjectSnapshot( ImmutableDictionary<Guid, PropertyTrackSnapshot> Tracks, int SampleRate );
 
 	private record MotionEditorSnapshot(
-		ModificationOptions Options,
+		TimeSelection? Selection,
+		ITrackModificationOptions? Options,
 		ImmutableDictionary<Guid, TrackModificationSnapshot> Modifications );
 
 	private record SessionSnapshot( ProjectSnapshot? Project, MotionEditorSnapshot? MotionEditor, MovieTime TimeOffset, float PixelsPerSecond, int FrameRate );
@@ -47,11 +48,12 @@ partial class MotionEditMode : EditMode
 			x => x.Id,
 			x => new PropertyTrackSnapshot( [..x.Blocks] ) ), Project.SampleRate);
 
-		var editorSnapshot = ModificationOptions is { } options
-			? new MotionEditorSnapshot( options, TrackModifications.ToImmutableDictionary(
+		var editorSnapshot = new MotionEditorSnapshot(
+			TimeSelection,
+			ModificationOptions,
+			TrackModificationPreviews.ToImmutableDictionary(
 				x => x.Key.Id,
-				x => x.Value.Snapshot() ) )
-			: null;
+				x => x.Value.Snapshot() ) );
 
 		return new SessionSnapshot( projectSnapshot, editorSnapshot, Session.TimeOffset, Session.PixelsPerSecond, Session.FrameRate );
 	}
@@ -73,16 +75,20 @@ partial class MotionEditMode : EditMode
 		{
 			ClearChanges();
 
+			TimeSelection = editorSnapshot.Selection;
 			ModificationOptions = editorSnapshot.Options;
 
-			foreach ( var (guid, modificationSnapshot) in editorSnapshot.Modifications )
+			if ( TimeSelection is { } selection && ModificationOptions is { } options )
 			{
-				if ( Project.GetTrack( guid ) is not IProjectPropertyTrack propertyTrack ) continue;
+				foreach ( var (guid, modificationSnapshot) in editorSnapshot.Modifications )
+				{
+					if ( Project.GetTrack( guid ) is not IProjectPropertyTrack propertyTrack ) continue;
 
-				var modification = GetOrCreateTrackModification( propertyTrack );
+					var modification = GetOrCreateTrackModificationPreview( propertyTrack );
 
-				modification.Restore( modificationSnapshot );
-				modification.Update( editorSnapshot.Options );
+					modification.Restore( modificationSnapshot );
+					modification.Update( selection, options );
+				}
 			}
 		}
 

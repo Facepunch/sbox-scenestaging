@@ -10,35 +10,24 @@ partial class MotionEditMode
 {
 	private bool _hasChanges;
 	private MovieTime? _changeDuration;
+	private ITrackModificationOptions? _options;
 
 	private RealTimeSince _lastActionTime;
 
 	public override bool AllowTrackCreation => TimeSelection is not null;
 
-	public ModificationOptions? ModificationOptions
+	public ITrackModificationOptions? ModificationOptions
 	{
-		get => TimeSelection is { } selection
-				? new ModificationOptions( selection, ChangeOffset, IsAdditive, SmoothingSteps, SmoothingSize )
-				: null;
+		get => _options;
 
 		set
 		{
-			if ( value is not { } options )
-			{
-				TimeSelection = null;
-				return;
-			}
-
-			_timeSelection = options.Selection;
-			_additive = options.Additive;
-			_smoothSteps = options.SmoothSteps;
-			ChangeOffset = options.Offset;
-
+			_options = value;
 			SelectionChanged();
 		}
 	}
 
-	public bool HasChanges => TrackModifications.Values.Any( x => x.HasChanges );
+	public bool HasChanges => TrackModificationPreviews.Values.Any( x => x.Modification is not null );
 
 	public Color SelectionColor
 	{
@@ -53,36 +42,36 @@ partial class MotionEditMode
 
 	public string? LastActionIcon { get; private set; }
 
-	private Dictionary<IProjectPropertyTrack, ITrackModification> TrackModifications { get; } = new();
+	private Dictionary<IProjectPropertyTrack, ITrackModificationPreview> TrackModificationPreviews { get; } = new();
 
 	private void ClearChanges()
 	{
 		if ( !HasChanges ) return;
 
-		foreach ( var state in TrackModifications.Values )
+		foreach ( var state in TrackModificationPreviews.Values )
 		{
-			state.ClearPreview();
+			state.Clear();
 		}
 
 		_changeDuration = null;
 
-		TrackModifications.Clear();
+		TrackModificationPreviews.Clear();
 
 		DisplayAction( "clear" );
 	}
 
 	private void CommitChanges()
 	{
-		if ( ModificationOptions is not { } options || !HasChanges ) return;
+		if ( TimeSelection is not { } selection || ModificationOptions is not { } options || !HasChanges ) return;
 
 		using ( PushTrackModification( "Commit", true ) )
 		{
-			foreach ( var (_, state) in TrackModifications )
+			foreach ( var (_, state) in TrackModificationPreviews )
 			{
-				state.Commit( options );
+				state.Commit( selection, options );
 			}
 
-			TrackModifications.Clear();
+			TrackModificationPreviews.Clear();
 		}
 
 		_changeDuration = null;
@@ -209,15 +198,17 @@ partial class MotionEditMode
 
 		var changed = false;
 
+		ModificationOptions = new BlendModificationOptions( IsAdditive, ChangeOffset );
+
 		foreach ( var (id, blocks) in clipboard.Tracks )
 		{
 			if ( blocks.Count == 0 ) continue;
 			if ( Project.GetTrack( id ) is not IProjectPropertyTrack track ) continue;
 
-			var state = GetOrCreateTrackModification( track );
+			var state = GetOrCreateTrackModificationPreview( track );
 
-			state.SetClipboardOverlay( blocks.Select( x => x.Shift( -clipboard.Selection.TotalStart ) ) );
-			state.Update( ModificationOptions!.Value );
+			state.Modification = blocks.Select( x => x.Shift( -clipboard.Selection.TotalStart ) ).AsModification();
+			state.Update( selection, ModificationOptions );
 
 			changed = true;
 		}
@@ -229,40 +220,40 @@ partial class MotionEditMode
 		return changed;
 	}
 
-	private ITrackModification? GetTrackModification( IProjectPropertyTrack track )
+	private ITrackModificationPreview? GetTrackModificationPreview( IProjectPropertyTrack track )
 	{
-		return TrackModifications!.GetValueOrDefault( track );
+		return TrackModificationPreviews!.GetValueOrDefault( track );
 	}
 
-	private ITrackModification GetOrCreateTrackModification( IProjectPropertyTrack track )
+	private ITrackModificationPreview GetOrCreateTrackModificationPreview( IProjectPropertyTrack track )
 	{
-		if ( GetTrackModification( track ) is { } state ) return state;
+		if ( GetTrackModificationPreview( track ) is { } state ) return state;
 
-		var type = typeof(TrackModification<>).MakeGenericType( track.TargetType );
-		TrackModifications.Add( track, state = (ITrackModification)Activator.CreateInstance( type, this, track )! );
+		var type = typeof(TrackModificationPreview<>).MakeGenericType( track.TargetType );
+		TrackModificationPreviews.Add( track, state = (ITrackModificationPreview)Activator.CreateInstance( type, this, track )! );
 
 		return state;
 	}
 
 	protected override void OnTrackStateChanged( DopeSheetTrack track )
 	{
-		if ( ModificationOptions is not { } options ) return;
+		if ( TimeSelection is not { } selection || ModificationOptions is not { } options ) return;
 
-		if ( GetTrackModification( track.ProjectTrack ) is { } state )
+		if ( GetTrackModificationPreview( track.ProjectTrack ) is { } state )
 		{
-			state.Update( options );
+			state.Update( selection, options );
 		}
 	}
 
 	protected override bool OnPreChange( DopeSheetTrack track )
 	{
-		if ( TimeSelection is not { } selection ) return false;
+		if ( TimeSelection is null ) return false;
 		if ( track.TrackWidget.Target is not { } property )
 		{
 			return false;
 		}
 
-		if ( TrackModifications.ContainsKey( track.ProjectTrack ) )
+		if ( TrackModificationPreviews.ContainsKey( track.ProjectTrack ) )
 		{
 			return false;
 		}
@@ -270,30 +261,32 @@ partial class MotionEditMode
 		// We create modifications in PreChange so we can capture the pre-change value,
 		// used for additive blending
 
-		var modification = GetOrCreateTrackModification( track.ProjectTrack );
+		var preview = GetOrCreateTrackModificationPreview( track.ProjectTrack );
 
-		modification.SetRelativeTo( property.Value );
+		preview.Modification = property.Value.AsSignal( property.TargetType ).AsModification();
 
 		return true;
 	}
 
 	protected override bool OnPostChange( DopeSheetTrack track )
 	{
-		if ( ModificationOptions is not { } options ) return false;
+		if ( TimeSelection is not { } selection || ModificationOptions is not { } options ) return false;
 
 		if ( track.TrackWidget.Target is not { } property )
 		{
 			return false;
 		}
 
-		if ( GetTrackModification( track.ProjectTrack ) is not { } state )
+		if ( GetTrackModificationPreview( track.ProjectTrack ) is not { Modification: ISignalBlendModification blend } preview )
 		{
 			return false;
 		}
 
-		state.SetConstantOverlay( property.Value );
+		ModificationOptions = new BlendModificationOptions( IsAdditive, ChangeOffset );
 
-		return state.Update( options );
+		preview.Modification = blend.WithSignal( property.Value.AsSignal( property.TargetType ) );
+
+		return preview.Update( selection, options );
 	}
 
 	private bool _hasSelectionItems;
@@ -306,13 +299,16 @@ partial class MotionEditMode
 			slider.Label.Hidden = !SmoothingEnabled;
 		}
 
-		if ( ModificationOptions is { } options )
+		if ( TimeSelection is { } selection )
 		{
 			PasteTimeRange = _changeDuration is { } duration ? (ChangeOffset, ChangeOffset + duration) : null;
 
-			foreach ( var (_, state) in TrackModifications )
+			if ( ModificationOptions is { } options )
 			{
-				state.Update( options );
+				foreach ( var (_, state) in TrackModificationPreviews )
+				{
+					state.Update( selection, options );
+				}
 			}
 
 			if ( !_hasSelectionItems )

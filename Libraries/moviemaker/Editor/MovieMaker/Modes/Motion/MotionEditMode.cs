@@ -8,6 +8,7 @@ namespace Editor.MovieMaker;
 internal sealed partial class MotionEditMode : EditMode
 {
 	private TimeSelection? _timeSelection;
+	private MovieTime _offset;
 	private bool _additive;
 	private bool _smooth;
 	private int _smoothSteps;
@@ -24,7 +25,19 @@ internal sealed partial class MotionEditMode : EditMode
 		}
 	}
 
-	public MovieTime ChangeOffset { get; set; }
+	public MovieTime ChangeOffset
+	{
+		get => _offset;
+		set
+		{
+			_offset = value;
+
+			if ( ModificationOptions is BlendModificationOptions blendOptions )
+			{
+				ModificationOptions = blendOptions with { Offset = value };
+			}
+		}
+	}
 
 	public InterpolationMode DefaultInterpolation { get; private set; } = InterpolationMode.QuadraticInOut;
 
@@ -35,7 +48,11 @@ internal sealed partial class MotionEditMode : EditMode
 		private set
 		{
 			_additive = value;
-			SelectionChanged();
+
+			if ( ModificationOptions is BlendModificationOptions blendOptions )
+			{
+				ModificationOptions = blendOptions with { IsAdditive = value };
+			}
 		}
 	}
 
