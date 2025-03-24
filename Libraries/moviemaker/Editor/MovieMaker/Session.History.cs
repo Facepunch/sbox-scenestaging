@@ -46,6 +46,9 @@ public sealed class SessionHistory
 	private readonly Stack<ISessionAction> _undoStack = new();
 	private readonly Stack<ISessionAction> _redoStack = new();
 
+	public bool CanUndo => _undoStack.Count > 0;
+	public bool CanRedo => _redoStack.Count > 0;
+
 	public SessionHistory( Session session )
 	{
 		_session = session;

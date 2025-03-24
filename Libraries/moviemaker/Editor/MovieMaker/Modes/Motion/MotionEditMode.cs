@@ -1,19 +1,14 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Linq;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
 [Title( "Motion Editor"), Icon( "brush" ), Order( 0 )]
-internal sealed partial class MotionEditMode : EditMode
+public sealed partial class MotionEditMode : EditMode
 {
 	private TimeSelection? _timeSelection;
-	private MovieTime _offset;
-	private bool _additive;
-	private bool _smooth;
-	private int _smoothSteps;
-
-	private (FloatSlider Slider, Label Label)? _smoothSlider;
 
 	public TimeSelection? TimeSelection
 	{
@@ -25,65 +20,11 @@ internal sealed partial class MotionEditMode : EditMode
 		}
 	}
 
-	public MovieTime ChangeOffset
-	{
-		get => _offset;
-		set
-		{
-			_offset = value;
-
-			if ( ModificationOptions is BlendModificationOptions blendOptions )
-			{
-				ModificationOptions = blendOptions with { Offset = value };
-			}
-		}
-	}
-
 	public InterpolationMode DefaultInterpolation { get; private set; } = InterpolationMode.QuadraticInOut;
 
-	public bool IsAdditive
-	{
-		get => _additive;
-
-		private set
-		{
-			_additive = value;
-
-			if ( ModificationOptions is BlendModificationOptions blendOptions )
-			{
-				ModificationOptions = blendOptions with { IsAdditive = value };
-			}
-		}
-	}
-
-	public bool SmoothingEnabled
-	{
-		get => _smooth;
-
-		private set
-		{
-			_smooth = value;
-			SelectionChanged();
-		}
-	}
-
-	public MovieTime SmoothingSize
-	{
-		get => _smooth ? Math.Pow( 2d, SmoothingSteps ) / 32d : default;
-	}
-
-	public int SmoothingSteps
-	{
-		get => _smoothSteps;
-		private set
-		{
-			_smoothSteps = Math.Clamp( value, 0, 8 );
-
-			if ( SmoothingEnabled ) SelectionChanged();
-		}
-	}
-
 	private MovieTime? _selectionStartTime;
+
+	public Layout ModificationControls { get; private set; } = null!;
 
 	public MotionEditMode()
 	{
@@ -92,14 +33,8 @@ internal sealed partial class MotionEditMode : EditMode
 
 	protected override void OnEnable()
 	{
-		Toolbar.AddToggle( "Additive", "layers", () => IsAdditive, state => IsAdditive = state );
-		Toolbar.AddToggle( "Smooth", "blur_on", () => SmoothingEnabled, state => SmoothingEnabled = state );
-
-		_smoothSlider = Toolbar.AddSlider( "Smooth Size", () => SmoothingSteps, value => SmoothingSteps = (int)value,
-			minimum: 0,
-			maximum: 8,
-			step: 1,
-			getLabel: () => $"{SmoothingSize.TotalSeconds:F2}s" );
+		Toolbar.AddAction( "Undo", "undo", Session.Undo, () => Session.History.CanUndo );
+		Toolbar.AddAction( "Redo", "redo", Session.Redo, () => Session.History.CanRedo );
 
 		Toolbar.AddSpacingCell();
 
@@ -112,6 +47,50 @@ internal sealed partial class MotionEditMode : EditMode
 				TimeSelection = timeSelection.WithInterpolation( value );
 			}
 		} );
+
+		Toolbar.AddSpacingCell();
+
+		Toolbar.AddAction( "Cut", "content_cut", Cut, () => TimeSelection is not null );
+		Toolbar.AddAction( "Copy", "content_copy", Copy, () => TimeSelection is not null );
+		Toolbar.AddAction( "Paste", "content_paste", Paste, () => Clipboard is not null );
+		Toolbar.AddSpacingCell();
+		Toolbar.AddAction( "Shift", "keyboard_tab", Insert, () => TimeSelection is not null );
+		Toolbar.AddAction( "Delete", "delete", () => Delete( true ), () => TimeSelection is not null );
+		Toolbar.AddSpacingCell();
+
+		var modificationTypes = EditorTypeLibrary
+			.GetTypesWithAttribute<MovieModificationAttribute>()
+			.OrderBy( x => x.Attribute.Order );
+
+		foreach ( var (type, attribute) in modificationTypes )
+		{
+			if ( type.IsAbstract || type.IsGenericType ) continue;
+
+			var toggle = Toolbar.AddToggle( attribute.Title, attribute.Icon,
+				() => Modification?.GetType() == type.TargetType,
+				value =>
+				{
+					if ( value && TimeSelection is { } selection )
+					{
+						var modification = SetModification( type.TargetType, selection );
+
+						modification.Start();
+					}
+					else if ( !value )
+					{
+						ClearChanges();
+					}
+				} );
+
+			toggle.Bind( nameof(IconButton.Enabled) )
+				.ReadOnly()
+				.From( () => TimeSelection is not null, (Action<bool>?)null );
+		}
+
+		Toolbar.AddSpacingCell();
+
+		ModificationControls = Toolbar.Layout.AddRow();
+		ModificationControls.Spacing = 2;
 
 		SelectionChanged();
 	}

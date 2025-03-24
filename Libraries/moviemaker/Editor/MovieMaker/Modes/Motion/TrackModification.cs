@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -8,21 +7,16 @@ namespace Editor.MovieMaker;
 /// <summary>
 /// Holds and applies pending changes for a track.
 /// </summary>
-internal interface ITrackModificationPreview
+public interface ITrackModificationPreview
 {
 	IProjectPropertyTrack Track { get; }
 
 	ITrackModification? Modification { get; set; }
 
 	void Clear();
-	bool Update( TimeSelection selection, ITrackModificationOptions options );
-	bool Commit( TimeSelection selection, ITrackModificationOptions options );
-
-	TrackModificationSnapshot Snapshot();
-	void Restore( TrackModificationSnapshot state );
+	bool Update( TimeSelection selection, IModificationOptions options );
+	bool Commit( TimeSelection selection, IModificationOptions options );
 }
-
-internal record TrackModificationSnapshot( ITrackModification? Modification );
 
 internal sealed class TrackModificationPreview<T> : ITrackModificationPreview
 {
@@ -41,7 +35,13 @@ internal sealed class TrackModificationPreview<T> : ITrackModificationPreview
 	ITrackModification? ITrackModificationPreview.Modification
 	{
 		get => Modification;
-		set => Modification = (ITrackModification<T>?)value;
+		set
+		{
+			Modification = (ITrackModification<T>?)value;
+
+			_original.Clear();
+			_lastSliceRange = null;
+		}
 	}
 
 	public TrackModificationPreview( EditMode editMode, ProjectPropertyTrack<T> track )
@@ -55,7 +55,7 @@ internal sealed class TrackModificationPreview<T> : ITrackModificationPreview
 		EditMode.ClearPreviewBlocks( Track );
 	}
 
-	public bool Update( TimeSelection selection, ITrackModificationOptions options )
+	public bool Update( TimeSelection selection, IModificationOptions options )
 	{
 		if ( Modification is not { } modification || !EditMode.Session.CanEdit( Track ) )
 		{
@@ -81,7 +81,7 @@ internal sealed class TrackModificationPreview<T> : ITrackModificationPreview
 		return true;
 	}
 
-	public bool Commit( TimeSelection selection, ITrackModificationOptions options )
+	public bool Commit( TimeSelection selection, IModificationOptions options )
 	{
 		if ( !Update( selection, options ) || _applied is not { } blended ) return false;
 
@@ -90,15 +90,5 @@ internal sealed class TrackModificationPreview<T> : ITrackModificationPreview
 		Clear();
 
 		return changed;
-	}
-
-	public TrackModificationSnapshot Snapshot() => new ( Modification );
-
-	public void Restore( TrackModificationSnapshot state )
-	{
-		Modification = (ITrackModification<T>?)state.Modification;
-
-		_original.Clear();
-		_lastSliceRange = null;
 	}
 }

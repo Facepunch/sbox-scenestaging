@@ -100,16 +100,19 @@ public class ToolbarWidget : Widget
 
 		Layout.AddSpacingCell( 16f );
 
-		foreach ( var type in EditMode.AllTypes )
+		if ( EditMode.AllTypes.Count > 1 )
 		{
-			var btn = new IconButton( type.Icon ) { ToolTip = type.Title, IsToggle = true, IconSize = 16 };
+			foreach ( var type in EditMode.AllTypes )
+			{
+				var btn = new IconButton( type.Icon ) { ToolTip = type.Title, IsToggle = true, IconSize = 16 };
 
-			btn.Bind( "IsActive" ).From( () => type.IsMatchingType( Session.EditMode ), x => Session.SetEditMode( type ) );
+				btn.Bind( "IsActive" ).From( () => type.IsMatchingType( Session.EditMode ), x => Session.SetEditMode( type ) );
 
-			Layout.Add( btn );
+				Layout.Add( btn );
+			}
+
+			Layout.AddSpacingCell( 16f );
 		}
-
-		Layout.AddSpacingCell( 16f );
 
 		EditModeControls = Layout.AddRow();
 		EditModeControls.Spacing = 2;

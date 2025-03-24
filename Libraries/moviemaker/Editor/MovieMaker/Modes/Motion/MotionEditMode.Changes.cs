@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
+using Sandbox;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -8,26 +9,18 @@ namespace Editor.MovieMaker;
 
 partial class MotionEditMode
 {
-	private bool _hasChanges;
-	private MovieTime? _changeDuration;
-	private ITrackModificationOptions? _options;
+	private IMovieModification? _modification;
 
 	private RealTimeSince _lastActionTime;
 
 	public override bool AllowTrackCreation => TimeSelection is not null;
 
-	public ITrackModificationOptions? ModificationOptions
+	public IMovieModification? Modification
 	{
-		get => _options;
-
-		set
-		{
-			_options = value;
-			SelectionChanged();
-		}
+		get => _modification;
 	}
 
-	public bool HasChanges => TrackModificationPreviews.Values.Any( x => x.Modification is not null );
+	public bool HasChanges => Modification?.HasChanges is true;
 
 	public Color SelectionColor
 	{
@@ -42,40 +35,60 @@ partial class MotionEditMode
 
 	public string? LastActionIcon { get; private set; }
 
-	private Dictionary<IProjectPropertyTrack, ITrackModificationPreview> TrackModificationPreviews { get; } = new();
+	public IMovieModification SetModification( Type type, TimeSelection selection )
+	{
+		if ( _modification?.GetType() == type )
+		{
+			TimeSelection = selection;
+			return _modification;
+		}
+
+		_modification?.ClearPreview();
+		ModificationControls.Clear( true );
+
+		_modification = (IMovieModification)Activator.CreateInstance( type )!;
+		_modification.Initialize( this );
+
+		var toolbar = new ToolbarHelper( ModificationControls );
+
+		_modification.AddControls( toolbar );
+
+		var commit = toolbar.AddAction( "Apply", "done", CommitChanges );
+		var cancel = toolbar.AddAction( "Cancel", "clear", ClearChanges );
+
+		commit.Background = Theme.Green;
+		cancel.Background = Theme.Red;
+
+		TimeSelection = selection;
+
+		return _modification;
+	}
+
+	public T SetModification<T>( TimeSelection selection ) where T : IMovieModification =>
+		(T)SetModification( typeof(T), selection );
 
 	private void ClearChanges()
 	{
-		if ( !HasChanges ) return;
+		if ( Modification is null ) return;
 
-		foreach ( var state in TrackModificationPreviews.Values )
-		{
-			state.Clear();
-		}
+		Modification?.ClearPreview();
+		ModificationControls.Clear( true );
 
-		_changeDuration = null;
-
-		TrackModificationPreviews.Clear();
+		_modification = null;
 
 		DisplayAction( "clear" );
 	}
 
 	private void CommitChanges()
 	{
-		if ( TimeSelection is not { } selection || ModificationOptions is not { } options || !HasChanges ) return;
+		if ( TimeSelection is not { } selection || Modification is not { } modification || !HasChanges ) return;
 
 		using ( PushTrackModification( "Commit", true ) )
 		{
-			foreach ( var (_, state) in TrackModificationPreviews )
-			{
-				state.Commit( selection, options );
-			}
-
-			TrackModificationPreviews.Clear();
+			modification.Commit( selection );
 		}
 
-		_changeDuration = null;
-
+		ClearChanges();
 		DisplayAction( "approval" );
 
 		Session.ClipModified();
@@ -128,8 +141,6 @@ partial class MotionEditMode
 			DisplayAction( "keyboard_tab" );
 		}
 	}
-
-	private record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<Guid, IReadOnlyList<IProjectPropertyBlock>> Tracks );
 
 	private static ClipboardData? Clipboard { get; set; }
 
@@ -194,122 +205,58 @@ partial class MotionEditMode
 		var pasteTime = selection.TotalStart;
 
 		TimeSelection = selection;
-		ChangeOffset = pasteTime;
 
-		var changed = false;
-
-		ModificationOptions = new BlendModificationOptions( IsAdditive, ChangeOffset );
-
-		foreach ( var (id, blocks) in clipboard.Tracks )
-		{
-			if ( blocks.Count == 0 ) continue;
-			if ( Project.GetTrack( id ) is not IProjectPropertyTrack track ) continue;
-
-			var state = GetOrCreateTrackModificationPreview( track );
-
-			state.Modification = blocks.Select( x => x.Shift( -clipboard.Selection.TotalStart ) ).AsModification();
-			state.Update( selection, ModificationOptions );
-
-			changed = true;
-		}
-
-		_changeDuration = changed ? clipboard.Selection.TotalTimeRange.Duration : null;
+		SetModification<BlendModification>( selection )
+			.SetFromClipboard( clipboard, pasteTime, Project );
 
 		SelectionChanged();
-
-		return changed;
-	}
-
-	private ITrackModificationPreview? GetTrackModificationPreview( IProjectPropertyTrack track )
-	{
-		return TrackModificationPreviews!.GetValueOrDefault( track );
-	}
-
-	private ITrackModificationPreview GetOrCreateTrackModificationPreview( IProjectPropertyTrack track )
-	{
-		if ( GetTrackModificationPreview( track ) is { } state ) return state;
-
-		var type = typeof(TrackModificationPreview<>).MakeGenericType( track.TargetType );
-		TrackModificationPreviews.Add( track, state = (ITrackModificationPreview)Activator.CreateInstance( type, this, track )! );
-
-		return state;
-	}
-
-	protected override void OnTrackStateChanged( DopeSheetTrack track )
-	{
-		if ( TimeSelection is not { } selection || ModificationOptions is not { } options ) return;
-
-		if ( GetTrackModificationPreview( track.ProjectTrack ) is { } state )
-		{
-			state.Update( selection, options );
-		}
-	}
-
-	protected override bool OnPreChange( DopeSheetTrack track )
-	{
-		if ( TimeSelection is null ) return false;
-		if ( track.TrackWidget.Target is not { } property )
-		{
-			return false;
-		}
-
-		if ( TrackModificationPreviews.ContainsKey( track.ProjectTrack ) )
-		{
-			return false;
-		}
-
-		// We create modifications in PreChange so we can capture the pre-change value,
-		// used for additive blending
-
-		var preview = GetOrCreateTrackModificationPreview( track.ProjectTrack );
-
-		preview.Modification = property.Value.AsSignal( property.TargetType ).AsModification();
 
 		return true;
 	}
 
+	protected override void OnTrackStateChanged( DopeSheetTrack track )
+	{
+		if ( TimeSelection is not { } selection || Modification is not { } modification ) return;
+
+		modification.UpdatePreview( selection, track.ProjectTrack );
+	}
+
+	protected override bool OnPreChange( DopeSheetTrack track )
+	{
+		if ( TimeSelection is not { } selection ) return false;
+		if ( track.TrackWidget.Target is not ITrackProperty property )
+		{
+			return false;
+		}
+
+		if ( Modification is not BlendModification blend )
+		{
+			Modification?.Commit( selection );
+
+			blend = SetModification<BlendModification>( selection );
+		}
+
+		return blend.PreChange( track.ProjectTrack, property );
+	}
+
 	protected override bool OnPostChange( DopeSheetTrack track )
 	{
-		if ( TimeSelection is not { } selection || ModificationOptions is not { } options ) return false;
+		if ( TimeSelection is not { } selection || Modification is not BlendModification blend ) return false;
 
-		if ( track.TrackWidget.Target is not { } property )
-		{
-			return false;
-		}
-
-		if ( GetTrackModificationPreview( track.ProjectTrack ) is not { Modification: ISignalBlendModification blend } preview )
-		{
-			return false;
-		}
-
-		ModificationOptions = new BlendModificationOptions( IsAdditive, ChangeOffset );
-
-		preview.Modification = blend.WithSignal( property.Value.AsSignal( property.TargetType ) );
-
-		return preview.Update( selection, options );
+		return track.TrackWidget.Target is ITrackProperty property
+			&& blend.PostChange( track.ProjectTrack, property )
+			&& blend.UpdatePreview( selection, track.ProjectTrack );
 	}
 
 	private bool _hasSelectionItems;
 
 	private void SelectionChanged()
 	{
-		if ( _smoothSlider is { } slider )
-		{
-			slider.Slider.Hidden = !SmoothingEnabled;
-			slider.Label.Hidden = !SmoothingEnabled;
-		}
-
 		if ( TimeSelection is { } selection )
 		{
-			PasteTimeRange = _changeDuration is { } duration ? (ChangeOffset, ChangeOffset + duration) : null;
+			SourceTimeRange = Modification?.SourceTimeRange;
 
-			if ( ModificationOptions is { } options )
-			{
-				foreach ( var (_, state) in TrackModificationPreviews )
-				{
-					state.Update( selection, options );
-				}
-			}
+			Modification?.UpdatePreview( selection );
 
 			if ( !_hasSelectionItems )
 			{
@@ -332,7 +279,7 @@ partial class MotionEditMode
 		{
 			_hasSelectionItems = false;
 
-			PasteTimeRange = null;
+			SourceTimeRange = null;
 
 			foreach ( var item in DopeSheet.Items.OfType<TimeSelectionItem>().ToArray() )
 			{

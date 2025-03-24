@@ -6,12 +6,85 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public record BlendModificationOptions( bool IsAdditive, MovieTime Offset ) : ITrackModificationOptions;
+public class BlendModification() : PerTrackModification<BlendOptions>( BlendOptions.Default, false )
+{
+	public override MovieTimeRange? SourceTimeRange => Options.SourceDuration is { } duration
+		? (Options.Offset, Options.Offset + duration)
+		: null;
 
-public abstract class BlendModification<T> : ITrackModification<T, BlendModificationOptions>
+	public override void Start()
+	{
+		EditMode.Copy();
+	}
+
+	public void SetFromClipboard( ClipboardData clipboard, MovieTime offset, MovieProject project )
+	{
+		Options = Options with
+		{
+			SourceDuration = clipboard.Selection.TotalTimeRange.Duration,
+			Offset = offset
+		};
+
+		foreach ( var (id, blocks) in clipboard.Tracks )
+		{
+			if ( blocks.Count == 0 ) continue;
+			if ( project.GetTrack( id ) is not IProjectPropertyTrack track ) continue;
+
+			var state = GetOrCreateTrackModificationPreview( track );
+
+			state.Modification = blocks.Select( x => x.Shift( -clipboard.Selection.TotalStart ) ).AsModification();
+		}
+	}
+
+	public override void AddControls( ToolbarHelper toolbar )
+	{
+		toolbar.AddToggle( "Additive", "layers",
+			() => Options.IsAdditive,
+			state => Options = Options with { IsAdditive = state } );
+	}
+
+	public bool PreChange( IProjectPropertyTrack track, ITrackProperty property )
+	{
+		if ( GetTrackModificationPreview( track ) is not null )
+		{
+			return false;
+		}
+
+		var preview = GetOrCreateTrackModificationPreview( track );
+
+		// We create modifications in PreChange so we can capture the pre-change value,
+		// used for additive blending
+
+		preview.Modification = property.Value.AsSignal( property.TargetType ).AsModification();
+
+		return true;
+	}
+
+	public bool PostChange( IProjectPropertyTrack track, ITrackProperty property )
+	{
+		if ( GetTrackModificationPreview( track ) is not { Modification: ISignalBlendModification blend } preview )
+		{
+			return false;
+		}
+
+		preview.Modification = blend.WithSignal( property.Value.AsSignal( property.TargetType ) );
+		return true;
+	}
+}
+
+public record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<Guid, IReadOnlyList<IProjectPropertyBlock>> Tracks );
+
+public record BlendOptions( bool IsAdditive, MovieTime Offset, MovieTime? SourceDuration ) : ITranslatableOptions
+{
+	public static BlendOptions Default { get; } = new( false, default, default );
+
+	public ITranslatableOptions WithOffset( MovieTime offset ) => this with { Offset = offset };
+}
+
+public abstract class BlendTrackModification<T> : ITrackModification<T, BlendOptions>
 {
 	protected PropertyBlock<T> Blend( PropertySignal<T>? original, PropertySignal<T>? overlay,
-		PropertySignal<T> relativeTo, MovieTimeRange timeRange, TimeSelection selection, BlendModificationOptions options )
+		PropertySignal<T> relativeTo, MovieTimeRange timeRange, TimeSelection selection, BlendOptions options )
 	{
 		if ( original is null && overlay is null )
 		{
@@ -33,7 +106,7 @@ public abstract class BlendModification<T> : ITrackModification<T, BlendModifica
 		return new PropertyBlock<T>( original.CrossFade( overlay, selection ).Reduce( timeRange ), timeRange );
 	}
 
-	public abstract IEnumerable<PropertyBlock<T>> Apply( IReadOnlyList<PropertyBlock<T>> original, TimeSelection selection, BlendModificationOptions options );
+	public abstract IEnumerable<PropertyBlock<T>> Apply( IReadOnlyList<PropertyBlock<T>> original, TimeSelection selection, BlendOptions options );
 }
 
 public interface ISignalBlendModification : ITrackModification
@@ -41,9 +114,9 @@ public interface ISignalBlendModification : ITrackModification
 	ISignalBlendModification WithSignal( IPropertySignal signal );
 }
 
-public sealed class SignalBlendModification<T>( PropertySignal<T> signal, PropertySignal<T> relativeTo ) : BlendModification<T>, ISignalBlendModification
+public sealed class SignalBlendModification<T>( PropertySignal<T> signal, PropertySignal<T> relativeTo ) : BlendTrackModification<T>, ISignalBlendModification
 {
-	public override IEnumerable<PropertyBlock<T>> Apply( IReadOnlyList<PropertyBlock<T>> original, TimeSelection selection, BlendModificationOptions options )
+	public override IEnumerable<PropertyBlock<T>> Apply( IReadOnlyList<PropertyBlock<T>> original, TimeSelection selection, BlendOptions options )
 	{
 		var timeRange = selection.TotalTimeRange;
 
@@ -62,7 +135,7 @@ public sealed class SignalBlendModification<T>( PropertySignal<T> signal, Proper
 		new SignalBlendModification<T>( (PropertySignal<T>)newSignal, relativeTo );
 }
 
-public sealed class ClipboardBlendModification<T>( ImmutableArray<PropertyBlock<T>> sourceBlocks ) : BlendModification<T>
+public sealed class ClipboardBlendModification<T>( ImmutableArray<PropertyBlock<T>> sourceBlocks ) : BlendTrackModification<T>
 {
 	public ClipboardBlendModification( IEnumerable<IProjectPropertyBlock> blocks )
 		: this( [..blocks.Cast<PropertyBlock<T>>()] )
@@ -70,7 +143,7 @@ public sealed class ClipboardBlendModification<T>( ImmutableArray<PropertyBlock<
 
 	}
 
-	public override IEnumerable<PropertyBlock<T>> Apply( IReadOnlyList<PropertyBlock<T>> original, TimeSelection selection, BlendModificationOptions options )
+	public override IEnumerable<PropertyBlock<T>> Apply( IReadOnlyList<PropertyBlock<T>> original, TimeSelection selection, BlendOptions options )
 	{
 		var blocks = sourceBlocks;
 

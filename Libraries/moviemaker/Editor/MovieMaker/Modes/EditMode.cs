@@ -24,6 +24,100 @@ public record EditModeType( TypeDescription TypeDescription )
 		return TypeDescription.TargetType == editMode?.GetType();
 	}
 }
+public readonly struct ToolbarHelper( Layout toolbar )
+{
+	public Layout Layout => toolbar;
+
+	public IconButton AddAction( string title, string icon, Action action, Func<bool>? enabled = null )
+	{
+		var btn = new IconButton( icon )
+		{
+			ToolTip = title,
+			IconSize = 16,
+			//Background = Color.Transparent,
+			//BackgroundActive = Color.Transparent,
+			//ForegroundActive = Theme.Primary
+		};
+
+		btn.OnClick += action;
+
+		if ( enabled != null )
+		{
+			btn.Bind( nameof( IconButton.Enabled ) )
+				.ReadOnly()
+				.From( enabled, (Action<bool>?)null );
+		}
+
+		toolbar.Add( btn );
+
+		return btn;
+	}
+
+	public IconButton AddToggle( string title, string icon, Func<bool> getState, Action<bool> setState )
+	{
+		var btn = new IconButton( icon )
+		{
+			ToolTip = title,
+			IconSize = 16,
+			IsToggle = true,
+			//Background = Color.Transparent,
+			//BackgroundActive = Color.Transparent,
+			//ForegroundActive = Theme.Primary
+		};
+
+		btn.Bind( "IsActive" ).From( getState, setState );
+
+		toolbar.Add( btn );
+
+		return btn;
+	}
+
+	public InterpolationSelector AddInterpolationSelector( Func<InterpolationMode> getValue, Action<InterpolationMode> setValue )
+	{
+		var selector = new InterpolationSelector();
+
+		selector.Bind( "Value" ).From( getValue, setValue );
+
+		toolbar.Add( selector );
+
+		return selector;
+	}
+
+	public (FloatSlider Slider, Label Label) AddSlider( string title, Func<float> getValue, Action<float> setValue, float minimum = 0f,
+		float maximum = 1f, float step = 0.01f, Func<string>? getLabel = null )
+	{
+		var slider = new FloatSlider( null )
+		{
+			ToolTip = title,
+			FixedWidth = 80f,
+			Minimum = minimum,
+			Maximum = maximum,
+			Step = step
+		};
+
+		slider.Bind( nameof( FloatSlider.Value ) )
+			.From( getValue, setValue );
+
+		toolbar.Add( slider );
+
+		var label = new Label( null )
+		{
+			Color = Color.White.Darken( 0.5f ),
+			Margin = 4f,
+			Alignment = TextFlag.Left
+		};
+
+		label.Bind( nameof( Label.Text ) )
+			.ReadOnly()
+			.From( getLabel ?? (() => slider.Value.ToString( CultureInfo.InvariantCulture )), (Action<string>?)null );
+
+		toolbar.Add( label );
+
+		return (slider, label);
+	}
+
+	public void AddSpacingCell() => toolbar.AddSpacingCell( 16f );
+}
 
 public abstract partial class EditMode
 {
@@ -43,80 +137,12 @@ public abstract partial class EditMode
 		}
 	}
 
-	protected readonly struct ToolbarHelper( Layout toolbar )
-	{
-		public IconButton AddToggle( string title, string icon, Func<bool> getState, Action<bool> setState )
-		{
-			var btn = new IconButton( icon )
-			{
-				ToolTip = title,
-				IconSize = 16,
-				IsToggle = true,
-				Background = Color.Transparent,
-				BackgroundActive = Color.Transparent,
-				ForegroundActive = Theme.Primary
-			};
-
-			btn.Bind( "IsActive" ).From( getState, setState );
-
-			toolbar.Add( btn );
-
-			return btn;
-		}
-
-		public InterpolationSelector AddInterpolationSelector( Func<InterpolationMode> getValue, Action<InterpolationMode> setValue )
-		{
-			var selector = new InterpolationSelector();
-
-			selector.Bind( "Value" ).From( getValue, setValue );
-
-			toolbar.Add( selector );
-
-			return selector;
-		}
-
-		public (FloatSlider Slider, Label Label) AddSlider( string title, Func<float> getValue, Action<float> setValue, float minimum = 0f,
-			float maximum = 1f, float step = 0.01f, Func<string>? getLabel = null )
-		{
-			var slider = new FloatSlider( null )
-			{
-				ToolTip = title,
-				FixedWidth = 80f,
-				Minimum = minimum,
-				Maximum = maximum,
-				Step = step
-			};
-
-			slider.Bind( nameof( FloatSlider.Value ) )
-				.From( getValue, setValue );
-
-			toolbar.Add( slider );
-
-			var label = new Label( null )
-			{
-				Color = Color.White.Darken( 0.5f ),
-				Margin = 4f,
-				Alignment = TextFlag.Left
-			};
-
-			label.Bind( nameof( Label.Text ) )
-				.ReadOnly()
-				.From( getLabel ?? (() => slider.Value.ToString( CultureInfo.InvariantCulture )), (Action<string>?) null );
-
-			toolbar.Add( label );
-
-			return (slider, label);
-		}
-
-		public void AddSpacingCell() => toolbar.AddSpacingCell( 16f );
-	}
-
 	public Session Session { get; private set; } = null!;
 	public MovieProject Project => Session.Project;
 	protected DopeSheet DopeSheet { get; private set; } = null!;
 	protected ToolbarHelper Toolbar { get; private set; }
 
-	public MovieTimeRange? PasteTimeRange { get; protected set; }
+	public MovieTimeRange? SourceTimeRange { get; protected set; }
 
 	protected IEnumerable<GraphicsItem> SelectedItems => DopeSheet.SelectedItems;
 	protected TrackListWidget TrackList => Session.Editor.TrackList;

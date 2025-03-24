@@ -310,7 +310,7 @@ public class DopeSheet : GraphicsView
 			snap.Add( SnapFlag.MajorTick, snap.Time.Round( Session.MajorTick.Interval ), -1 );
 		}
 
-		if ( Session.EditMode?.PasteTimeRange is { } pasteRange )
+		if ( Session.EditMode?.SourceTimeRange is { } pasteRange )
 		{
 			snap.Add( SnapFlag.PasteBlock, pasteRange.Start );
 			snap.Add( SnapFlag.PasteBlock, pasteRange.End );

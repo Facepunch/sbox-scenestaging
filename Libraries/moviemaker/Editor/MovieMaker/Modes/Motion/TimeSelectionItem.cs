@@ -13,7 +13,7 @@ partial class MotionEditMode
 		/// Capture time selection before being dragged so we can revert etc.
 		/// </summary>
 		protected TimeSelection? OriginalSelection { get; private set; }
-		protected MovieTime? OriginalChangeOffset { get; private set; }
+		protected IModificationOptions? OriginalModificationOptions { get; private set; }
 
 		public MotionEditMode EditMode { get; }
 
@@ -29,7 +29,7 @@ partial class MotionEditMode
 			base.OnMousePressed( e );
 
 			OriginalSelection = EditMode.TimeSelection;
-			OriginalChangeOffset = EditMode.ChangeOffset;
+			OriginalModificationOptions = EditMode.Modification?.Options;
 		}
 
 		protected override void OnMouseReleased( GraphicsMouseEvent e )
@@ -58,7 +58,7 @@ partial class MotionEditMode
 
 		protected override void OnMoved()
 		{
-			if ( OriginalSelection is not { } selection || OriginalChangeOffset is not { } changeOffset ) return;
+			if ( OriginalSelection is not { } selection ) return;
 
 			var origTime = selection.PeakStart;
 			var startTime = EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection | SnapFlag.PasteBlock,
@@ -66,7 +66,11 @@ partial class MotionEditMode
 
 			startTime = MovieTime.Max( selection.FadeIn.Duration, startTime );
 
-			EditMode.ChangeOffset = startTime + (changeOffset - selection.PeakStart);
+			if ( OriginalModificationOptions is ITranslatableOptions translatable )
+			{
+				EditMode.Modification!.Options = translatable.WithOffset( startTime + translatable.Offset - selection.PeakStart );
+			}
+
 			EditMode.TimeSelection = selection with { PeakTimeRange = (startTime, startTime + selection.PeakTimeRange.Duration) };
 		}
 
@@ -188,7 +192,7 @@ partial class MotionEditMode
 
 		protected override void OnMoved()
 		{
-			if ( OriginalSelection is not { } selection || OriginalChangeOffset is not { } changeOffset ) return;
+			if ( OriginalSelection is not { } selection ) return;
 
 			var time = _moveWholeSelection is true
 				? EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection, -selection.FadeIn.Duration, selection.FadeOut.Duration )
@@ -207,7 +211,11 @@ partial class MotionEditMode
 			{
 				time = MovieTime.Max( selection.FadeIn.Duration, time );
 
-				EditMode.ChangeOffset = time + (changeOffset - selection.PeakStart);
+				if ( OriginalModificationOptions is ITranslatableOptions translatable )
+				{
+					EditMode.Modification!.Options = translatable.WithOffset( time + translatable.Offset - selection.PeakStart );
+				}
+
 				EditMode.TimeSelection = selection.WithTimes(
 					totalStart: time - selection.FadeIn.Duration, peakStart: time,
 					peakEnd: time, totalEnd: time + selection.FadeOut.Duration );
