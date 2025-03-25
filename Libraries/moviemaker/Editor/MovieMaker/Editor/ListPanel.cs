@@ -42,13 +42,12 @@ public sealed class ListPanel : MovieEditorPanel
 
 		Layout.Add( ScrollArea );
 
-		MinimumWidth = 300;
+		MinimumWidth = 250;
 
 		var sourceGroup = ToolBar.AddGroup( true );
 
 		{
 			PlayerDropdown = new ComboBox( this );
-			PlayerDropdown.MinimumWidth = 150;
 			PlayerDropdown.ToolTip = $"Selected {nameof( MoviePlayer )} component";
 
 			sourceGroup.Layout.Add( PlayerDropdown );
@@ -56,7 +55,6 @@ public sealed class ListPanel : MovieEditorPanel
 
 		{
 			ClipDropDown = new ComboBox( this );
-			ClipDropDown.MinimumWidth = 150;
 			ClipDropDown.ToolTip = $"Selected {nameof( MovieClip )}";
 
 			sourceGroup.Layout.Add( ClipDropDown );

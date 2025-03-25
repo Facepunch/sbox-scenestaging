@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Sandbox.MovieMaker;
-using static Sandbox.VertexLayout;
 
 namespace Editor.MovieMaker;
 
@@ -57,6 +56,11 @@ public interface ITrackView
 	event Action<ITrackView> Changed;
 
 	/// <summary>
+	/// Invoked when the contents of the track are modified.
+	/// </summary>
+	event Action<ITrackView> ValueChanged;
+
+	/// <summary>
 	/// Invoked when this track is removed.
 	/// </summary>
 	event Action<ITrackView> Removed;
@@ -104,9 +108,9 @@ partial class Session
 	public ITrackListView TrackList => _trackList ??= new DefaultTrackListView( this );
 }
 
-file sealed class DefaultTrackListView( Session session ) : ITrackListView
+file sealed class DefaultTrackListView : ITrackListView
 {
-	public Session Session { get; } = session;
+	public Session Session { get; }
 
 	private readonly List<DefaultTrackView> _rootTracks = new();
 
@@ -114,9 +118,15 @@ file sealed class DefaultTrackListView( Session session ) : ITrackListView
 
 	public event Action<ITrackListView>? Changed;
 
+	public DefaultTrackListView( Session session )
+	{
+		Session = session;
+		Update();
+	}
+
 	public bool Update()
 	{
-		_rootTracks.RemoveAll( x => Session.Project.RootTracks.Contains( x.Track ) );
+		_rootTracks.RemoveAll( x => !Session.Project.RootTracks.Contains( x.Track ) );
 
 		foreach ( var track in Session.Project.RootTracks )
 		{
@@ -144,23 +154,23 @@ file sealed class DefaultTrackListView( Session session ) : ITrackListView
 	}
 }
 
-file sealed class DefaultTrackView( DefaultTrackListView trackList, DefaultTrackView? parent, IProjectTrack track, ITrackTarget target )
+file sealed class DefaultTrackView
 	: ITrackView, IComparable<DefaultTrackView>
 {
-	private DefaultTrackListView TrackList { get; } = trackList;
+	private DefaultTrackListView TrackList { get; }
 
 	ITrackListView ITrackView.TrackList => TrackList;
 
-	public float Position { get; set; }
+	public float Position { get; private set; }
 
-	public ITrackView? Parent { get; } = parent;
-	public IProjectTrack Track { get; } = track;
-	public ITrackTarget Target { get; } = target;
+	public ITrackView? Parent { get; }
+	public IProjectTrack Track { get; }
+	public ITrackTarget Target { get; }
 
 	public bool IsLocked => IsLockedSelf || Parent?.IsLocked is true;
 	public bool HasChildren => Track.Children.Count > 0;
 
-	public bool IsExpanded { get; set; }
+	public bool IsExpanded { get; set; } = true;
 	public bool IsLockedSelf { get; set; }
 
 	private readonly List<DefaultTrackView> _children = new();
@@ -170,6 +180,15 @@ file sealed class DefaultTrackView( DefaultTrackListView trackList, DefaultTrack
 	public event Action<ITrackView>? Changed;
 	public event Action<ITrackView>? Removed;
 	public event Action<ITrackView>? ValueChanged;
+
+	public DefaultTrackView( DefaultTrackListView trackList, DefaultTrackView? parent, IProjectTrack track,
+		ITrackTarget target )
+	{
+		TrackList = trackList;
+		Parent = parent;
+		Track = track;
+		Target = target;
+	}
 
 	public bool Update( ref float position )
 	{

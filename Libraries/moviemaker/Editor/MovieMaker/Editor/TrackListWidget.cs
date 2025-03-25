@@ -28,6 +28,7 @@ public partial class TrackListWidget : Widget
 	{
 		Session = session;
 		Layout = Layout.Column();
+		Layout.Margin = 4f;
 
 		SceneEditorSession = SceneEditorSession.Resolve( Session.Player.Scene );
 		SceneEditorSession.Selection.OnItemAdded += OnSelectionAdded;
@@ -40,7 +41,7 @@ public partial class TrackListWidget : Widget
 
 	private void OnSelectionAdded( object item )
 	{
-		if ( Tracks.Any( x => x.IsFocused ) || Session.Editor.DopeSheetPanel!.DopeSheet.IsFocused ) return;
+		if ( Tracks.Any( x => x.IsFocused ) || Session.Editor.DopeSheetPanel?.DopeSheet.IsFocused is not true ) return;
 		if ( item is not GameObject go ) return;
 		if ( Tracks.FirstOrDefault( x => x.View.Target is ITrackReference<GameObject> { IsBound: true } target && target.Value == go ) is not { } track ) return;
 		
@@ -75,6 +76,8 @@ public partial class TrackListWidget : Widget
 		{
 			Layout.Add( new TrackWidget( this, null, track ) );
 		}
+
+		Layout.AddStretchCell();
 	}
 
 	private int GetTrackHash()
@@ -102,26 +105,6 @@ public partial class TrackListWidget : Widget
 	public TrackWidget? FindTrack( IProjectTrack track )
 	{
 		return Tracks.FirstOrDefault( x => x.View.Track == track );
-	}
-
-	internal bool OnCanvasWheel( WheelEvent e )
-	{
-		// scoll
-		if ( e.HasShift )
-		{
-			Session.ScrollBy( -e.Delta / 10.0f * (Session.PixelsPerSecond / 10.0f), true );
-			return true;
-		}
-
-		// zoom
-		if ( e.HasCtrl )
-		{
-			Session.Zoom( e.Delta / 10.0f );
-			Update();
-			return true;
-		}
-
-		return false;
 	}
 
 	public void ScrollBy( float x )

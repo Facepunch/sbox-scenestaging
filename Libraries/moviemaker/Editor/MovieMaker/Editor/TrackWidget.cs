@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Sandbox.MovieMaker;
+using Sandbox.UI;
 
 namespace Editor.MovieMaker;
 
@@ -14,12 +15,11 @@ public partial class TrackWidget : Widget
 
 	public ITrackView View { get; }
 
-	public Layout Buttons { get; }
-
 	RealTimeSince _timeSinceInteraction = 1000;
 
-	private readonly Label _label;
+	private readonly Label? _label;
 	private readonly Button _lockButton;
+	private readonly Layout _children;
 
 	public TrackWidget( TrackListWidget trackList, TrackWidget? parent, ITrackView view )
 		: base( (Widget?)parent ?? trackList )
@@ -32,60 +32,86 @@ public partial class TrackWidget : Widget
 		VerticalSizeMode = SizeMode.CanGrow;
 
 		View.Changed += View_Changed;
+		View.ValueChanged += View_ValueChanged;
 
-		Layout = Layout.Row();
-		Layout.Spacing = 12f;
-		Layout.Margin = 4f;
+		Layout = Layout.Column();
 
-		Buttons = Layout.AddRow();
-		Buttons.Spacing = 2f;
-		Buttons.Margin = 2f;
+		var row = Layout.AddRow();
 
-		_lockButton = Buttons.Add( new LockButton( this ) );
-		_label = Layout.Add( new Label( view.Target.Name ) );
+		row.Spacing = 4f;
+		row.Margin = 4f;
 
-		if ( View.Target is ITrackReference reference )
+		_children = Layout.Add( Layout.Column() );
+		_children.Margin = new Margin( 8f, 0f, 0f, 0f );
+
+		if ( !AddReferenceControl( row ) )
 		{
-			if ( reference is { IsBound: true, Value: GameObject } && View.Parent is not null )
-			{
-				return;
-			}
+			row.Margin = row.Margin with { Left = 12f };
+			_label = row.Add( new Label( view.Target.Name ) );
+		}
 
-			// Add control to retarget a scene reference (Component / GameObject)
+		row.AddStretchCell();
+		_lockButton = row.Add( new LockButton( this ) );
 
-			ControlWidget ctrl;
+		View_Changed( view );
+	}
 
-			if ( reference is ITrackReference<GameObject> goReference )
-			{
-				ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
-					() => goReference.Value, goReference.Bind ) );
-			}
-			else
-			{
-				ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
-					() => (Component?)reference.Value, reference.Bind ) );
-			}
+	private bool AddReferenceControl( Layout layout )
+	{
+		if ( View.Target is not ITrackReference reference ) return false;
+		if ( reference is { IsBound: true, Value: GameObject } && View.Parent is not null ) return false;
 
-			if ( ctrl.IsValid() )
-			{
-				ctrl.MaximumWidth = 300;
-				Layout.Add( ctrl );
-			}
+		// Add control to retarget a scene reference (Component / GameObject)
+
+		ControlWidget ctrl;
+
+		if ( reference is ITrackReference<GameObject> goReference )
+		{
+			ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
+				() => goReference.Value, goReference.Bind ) );
+		}
+		else
+		{
+			ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
+				() => (Component?)reference.Value, reference.Bind ) );
+		}
+
+		if ( !ctrl.IsValid() ) return false;
+		
+		ctrl.MaximumWidth = 300;
+		layout.Add( ctrl );
+		return true;
+	}
+
+	private void View_Changed( ITrackView view )
+	{
+		var toRemove = Children
+			.Where( x => !view.VisibleChildren.Contains( x.View ) )
+			.ToArray();
+
+		foreach ( var child in toRemove )
+		{
+			child.Destroy();
+		}
+
+		foreach ( var child in view.VisibleChildren )
+		{
+			_children.Add( new TrackWidget( TrackList, this, child ) );
 		}
 
 		UpdateLockedState();
 	}
 
-	private void View_Changed( ITrackView view )
+	private void View_ValueChanged( ITrackView view )
 	{
 		_timeSinceInteraction = 0f;
-
-		UpdateLockedState();
+		Update();
 	}
 
 	public override void OnDestroyed()
 	{
 		View.Changed -= View_Changed;
+		View.ValueChanged -= View_ValueChanged;
 
 		base.OnDestroyed();
 	}
@@ -97,12 +123,17 @@ public partial class TrackWidget : Widget
 		var labelColor = new Color( 0.6f, 0.6f, 0.6f );
 
 		_lockButton.Update();
-		_label.Color = !View.IsLocked ? labelColor : labelColor.Darken( 0.5f );
+
+		if ( _label is not null )
+		{
+			_label.Color = !View.IsLocked ? labelColor : labelColor.Darken( 0.5f );
+		}
 	}
 
 	protected override void OnDoubleClick( MouseEvent e )
 	{
 		View.InspectProperty();
+		e.Accepted = true;
 	}
 
 	protected override Vector2 SizeHint()
@@ -133,7 +164,7 @@ public partial class TrackWidget : Widget
 	{
 		Paint.Antialiasing = false;
 		Paint.SetBrushAndPen( BackgroundColor );
-		Paint.DrawRect( new Rect( LocalRect.Left, LocalRect.Top, LocalRect.Width, LocalRect.Height ), 4 );
+		Paint.DrawRect( new Rect( LocalRect.Left + 1f, LocalRect.Top + 1f, LocalRect.Width - 2f, DopeSheet.TrackHeight - 2f ), 4 );
 
 		if ( _timeSinceInteraction < 2.0f )
 		{
@@ -148,6 +179,8 @@ public partial class TrackWidget : Widget
 
 	protected override void OnContextMenu( ContextMenuEvent e )
 	{
+		e.Accepted = true;
+
 		_menu = new Menu( this );
 		_menu.AddOption( "Delete", "delete", View.Remove );
 
@@ -186,7 +219,7 @@ file class LockButton : Button
 	{
 		TrackWidget = trackWidget;
 
-		FixedSize = 20f;
+		FixedSize = 24f;
 	}
 
 	protected override void OnPaint()
@@ -212,7 +245,7 @@ file class CollapseButton : Button
 	public CollapseButton( TrackWidget track )
 	{
 		Track = track;
-		FixedSize = 20f;
+		FixedSize = 24f;
 	}
 
 	protected override void OnPaint()

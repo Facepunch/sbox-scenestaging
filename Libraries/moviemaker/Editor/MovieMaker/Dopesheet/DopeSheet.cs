@@ -226,9 +226,20 @@ public class DopeSheet : GraphicsView
 
 		if ( e.Accepted ) return;
 
-		if ( GetAncestor<TrackListWidget>().OnCanvasWheel( e ) )
+		// scoll
+		if ( e.HasShift )
 		{
+			Session.ScrollBy( -e.Delta / 10.0f * (Session.PixelsPerSecond / 10.0f), true );
 			e.Accept();
+			return;
+		}
+
+		// zoom
+		if ( e.HasCtrl )
+		{
+			Session.Zoom( e.Delta / 10.0f );
+			e.Accept();
+			return;
 		}
 	}
 

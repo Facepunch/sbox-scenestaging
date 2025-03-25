@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
+using Sandbox.UI;
 
 namespace Editor.MovieMaker;
 
@@ -14,8 +15,8 @@ public sealed class ToolbarWidget : Widget
 		Parent = parent;
 
 		Layout = Layout.Row();
-		Layout.Spacing = 8f;
-		Layout.Margin = 4f;
+		Layout.Spacing = 4f;
+		Layout.Margin = new Margin( 0f, 4f );
 
 		VerticalSizeMode = SizeMode.CanShrink;
 	}
@@ -91,6 +92,8 @@ public sealed class ToolbarGroup : Widget
 
 	public override void OnDestroyed()
 	{
+		if ( !IsValid ) return;
+
 		if ( Parent is ToolbarWidget { IsValid: true } toolbar )
 		{
 			toolbar.RemoveGroup( this );
