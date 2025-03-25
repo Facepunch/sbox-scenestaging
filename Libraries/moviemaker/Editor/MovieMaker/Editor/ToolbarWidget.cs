@@ -2,6 +2,7 @@
 using System.Reflection;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
+using Sandbox.UI;
 
 namespace Editor.MovieMaker;
 
@@ -21,30 +22,34 @@ public class ToolbarWidget : Widget
 		Session = parent.Session;
 
 		Layout = Layout.Row();
-		Layout.Spacing = 2;
-		Layout.Margin = 4;
+		Layout.Spacing = 4f;
+		Layout.Margin = 4f;
+
+		var targetControls = new ControlGroup();
+
+		Layout.Add( targetControls );
 
 		{
 			PlayerDropdown = new ComboBox( this );
-			PlayerDropdown.MinimumWidth = 200;
-			PlayerDropdown.ToolTip = $"Selected {nameof(MoviePlayer)} component";
+			PlayerDropdown.MinimumWidth = 150;
+			PlayerDropdown.ToolTip = $"Selected {nameof( MoviePlayer )} component";
 
-			Layout.Add( PlayerDropdown );
+			targetControls.Layout.Add( PlayerDropdown );
 		}
-
-		Layout.AddSpacingCell( 4f );
 
 		{
 			ClipDropDown = new ComboBox( this );
 			ClipDropDown.MinimumWidth = 150;
-			ClipDropDown.ToolTip = $"Selected {nameof(MovieClip)}";
+			ClipDropDown.ToolTip = $"Selected {nameof( MovieClip )}";
 
-			Layout.Add( ClipDropDown );
+			targetControls.Layout.Add( ClipDropDown );
 		}
 
-		Layout.AddSpacingCell( 16f );
+		var playbackControls = new ControlGroup();
 
-		Sandbox.Bind.Builder AddToggle( string title, string icon, Color? activeColor = null )
+		Layout.Add( playbackControls );
+
+		Sandbox.Bind.Builder AddToggle( string title, string icon, Color? activeColor = null, Layout parent = null )
 		{
 			var btn = new IconButton( icon );
 			btn.ToolTip = title;
@@ -54,22 +59,22 @@ public class ToolbarWidget : Widget
 			btn.BackgroundActive = Color.Transparent;
 			btn.ForegroundActive = activeColor ?? Theme.Primary;
 
-			Layout.Add( btn );
+			(parent ?? Layout).Add( btn );
 
 			return btn.Bind( "IsActive" );
 		}
 
-		AddToggle( "Toggle Record", "radio_button_checked", activeColor: Theme.Red )
+		AddToggle( "Toggle Record", "radio_button_checked", activeColor: Theme.Red, parent: playbackControls.Layout )
 			.From( () => Session.IsRecording, x => Session.IsRecording = x );
 
-		AddToggle( "Toggle Play", "play_arrow" )
+		AddToggle( "Toggle Play", "play_arrow", parent: playbackControls.Layout )
 			.From( () => Session.IsPlaying, x => Session.IsPlaying = x );
 
-		AddToggle( "Loop at End of Playback", "repeat" )
+		AddToggle( "Loop at End of Playback", "repeat", parent: playbackControls.Layout )
 			.From( () => Session.IsLooping, x => Session.IsLooping = x );
 
 		{
-			var slider = new FloatSlider( this )
+			var slider = new FloatSlider( null )
 			{
 				ToolTip = "Playback Rate", FixedWidth = 80f,
 				Minimum = 0f, Maximum = 2f,
@@ -79,9 +84,9 @@ public class ToolbarWidget : Widget
 			slider.Bind( nameof(FloatSlider.Value) )
 				.From( () => Session.TimeScale, value => Session.TimeScale = value );
 
-			Layout.Add( slider );
+			playbackControls.Layout.Add( slider );
 
-			var speed = new Label( this )
+			var speed = new Label( null )
 			{
 				Color = Color.White.Darken( 0.5f ),
 				FixedWidth = 30f, Margin = 4f,
@@ -95,10 +100,8 @@ public class ToolbarWidget : Widget
 			slider.MouseRightClick += () => Session.TimeScale = 1f;
 			speed.MouseRightClick += () => Session.TimeScale = 1f;
 
-			Layout.Add( speed );
+			playbackControls.Layout.Add( speed );
 		}
-
-		Layout.AddSpacingCell( 16f );
 
 		if ( EditMode.AllTypes.Count > 1 )
 		{
@@ -114,16 +117,23 @@ public class ToolbarWidget : Widget
 			Layout.AddSpacingCell( 16f );
 		}
 
-		EditModeControls = Layout.AddRow();
-		EditModeControls.Spacing = 2;
+		var editModeControls = new ControlGroup();
+
+		EditModeControls = editModeControls.Layout;
+
+		Layout.Add( editModeControls );
 
 		Layout.AddStretchCell();
 
+		var viewControls = new ControlGroup();
+
+		Layout.Add( viewControls );
+
 		{
-			AddToggle( "Object Snap", "align_horizontal_left" )
+			AddToggle( "Object Snap", "align_horizontal_left", parent: viewControls.Layout )
 				.From( () => Session.ObjectSnap, x => Session.ObjectSnap = x );
 
-			AddToggle( "Frame Snap", "straighten" )
+			AddToggle( "Frame Snap", "straighten", parent: viewControls.Layout )
 				.From( () => Session.FrameSnap, x => Session.FrameSnap = x );
 
 			var rate = new ComboBox();
@@ -134,7 +144,7 @@ public class ToolbarWidget : Widget
 					selected: Session.FrameRate == frameRate );
 			}
 
-			Layout.Add( rate );
+			viewControls.Layout.Add( rate );
 		}
 	}
 
@@ -173,3 +183,21 @@ public class ToolbarWidget : Widget
 	}
 }
 
+file sealed class ControlGroup : Widget
+{
+	public ControlGroup()
+	{
+		HorizontalSizeMode = SizeMode.CanGrow;
+
+		Layout = Layout.Row();
+		Layout.Spacing = 2f;
+		Layout.Margin = 4f;
+	}
+
+	protected override void OnPaint()
+	{
+		Paint.ClearPen();
+		Paint.SetBrush( Theme.ControlBackground.LerpTo( Theme.WidgetBackground, 0.5f ) );
+		Paint.DrawRect( LocalRect, 3f );
+	}
+}

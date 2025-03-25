@@ -38,18 +38,6 @@ public sealed partial class MotionEditMode : EditMode
 
 		Toolbar.AddSpacingCell();
 
-		Toolbar.AddInterpolationSelector( () => DefaultInterpolation, value =>
-		{
-			DefaultInterpolation = value;
-
-			if ( TimeSelection is { } timeSelection )
-			{
-				TimeSelection = timeSelection.WithInterpolation( value );
-			}
-		} );
-
-		Toolbar.AddSpacingCell();
-
 		Toolbar.AddAction( "Cut", "content_cut", Cut, () => TimeSelection is not null );
 		Toolbar.AddAction( "Copy", "content_copy", Copy, () => TimeSelection is not null );
 		Toolbar.AddAction( "Paste", "content_paste", Paste, () => Clipboard is not null );
@@ -57,7 +45,6 @@ public sealed partial class MotionEditMode : EditMode
 		Toolbar.AddAction( "Insert Time", "keyboard_tab", Insert, () => TimeSelection is not null );
 		Toolbar.AddAction( "Remove Time", "backspace", () => Delete( true ), () => TimeSelection is not null );
 		Toolbar.AddAction( "Clear Time", "delete", () => Delete( false ), () => TimeSelection is not null );
-		Toolbar.AddSpacingCell();
 
 		var modificationTypes = EditorTypeLibrary
 			.GetTypesWithAttribute<MovieModificationAttribute>()
@@ -89,6 +76,16 @@ public sealed partial class MotionEditMode : EditMode
 		}
 
 		Toolbar.AddSpacingCell();
+
+		Toolbar.AddInterpolationSelector( () => DefaultInterpolation, value =>
+		{
+			DefaultInterpolation = value;
+
+			if ( TimeSelection is { } timeSelection )
+			{
+				TimeSelection = timeSelection.WithInterpolation( value );
+			}
+		} );
 
 		ModificationControls = Toolbar.Layout.AddRow();
 		ModificationControls.Spacing = 2;

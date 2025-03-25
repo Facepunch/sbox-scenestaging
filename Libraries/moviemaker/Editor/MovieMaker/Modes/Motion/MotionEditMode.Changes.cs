@@ -51,6 +51,8 @@ partial class MotionEditMode
 
 		var toolbar = new ToolbarHelper( ModificationControls );
 
+		toolbar.AddSpacingCell();
+
 		_modification.AddControls( toolbar );
 
 		var commit = toolbar.AddAction( "Apply", "done", CommitChanges );
