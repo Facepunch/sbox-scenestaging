@@ -264,8 +264,11 @@ public abstract partial class EditMode
 	internal void Paste() => OnPaste();
 	protected virtual void OnPaste() { }
 
-	internal void Delete( bool shift ) => OnDelete( shift );
-	protected virtual void OnDelete( bool shift ) { }
+	internal void Backspace() => OnBackspace();
+	protected virtual void OnBackspace() { }
+
+	internal void Delete() => OnDelete();
+	protected virtual void OnDelete() { }
 
 	internal void Insert() => OnInsert();
 	protected virtual void OnInsert() { }

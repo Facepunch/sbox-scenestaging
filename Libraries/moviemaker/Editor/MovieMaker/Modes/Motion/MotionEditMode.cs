@@ -54,8 +54,9 @@ public sealed partial class MotionEditMode : EditMode
 		Toolbar.AddAction( "Copy", "content_copy", Copy, () => TimeSelection is not null );
 		Toolbar.AddAction( "Paste", "content_paste", Paste, () => Clipboard is not null );
 		Toolbar.AddSpacingCell();
-		Toolbar.AddAction( "Shift", "keyboard_tab", Insert, () => TimeSelection is not null );
-		Toolbar.AddAction( "Delete", "delete", () => Delete( true ), () => TimeSelection is not null );
+		Toolbar.AddAction( "Insert Time", "keyboard_tab", Insert, () => TimeSelection is not null );
+		Toolbar.AddAction( "Remove Time", "backspace", () => Delete( true ), () => TimeSelection is not null );
+		Toolbar.AddAction( "Clear Time", "delete", () => Delete( false ), () => TimeSelection is not null );
 		Toolbar.AddSpacingCell();
 
 		var modificationTypes = EditorTypeLibrary
@@ -74,7 +75,7 @@ public sealed partial class MotionEditMode : EditMode
 					{
 						var modification = SetModification( type.TargetType, selection );
 
-						modification.Start();
+						modification.Start( selection );
 					}
 					else if ( !value )
 					{

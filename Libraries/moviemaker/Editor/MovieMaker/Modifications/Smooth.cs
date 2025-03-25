@@ -25,7 +25,7 @@ file sealed class SmoothModification() : PerTrackModification<SmoothOptions>( Sm
 
 file sealed record SmoothOptions( int Steps ) : IModificationOptions
 {
-	public static SmoothOptions Default => new( 0 );
+	public static SmoothOptions Default => new( 4 );
 
 	public MovieTime Size => Math.Pow( 2d, Steps ) / 32d;
 }

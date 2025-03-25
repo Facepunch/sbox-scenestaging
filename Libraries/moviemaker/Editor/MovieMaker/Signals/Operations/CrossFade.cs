@@ -13,10 +13,10 @@ public enum FadeDirection
 
 partial record PropertySignal<T>
 {
-	public PropertySignal<T> CrossFade( PropertySignal<T> overlay,
+	public PropertySignal<T> CrossFade( PropertySignal<T> after,
 		MovieTimeRange fadeTimeRange, InterpolationMode mode = InterpolationMode.Linear, FadeDirection direction = FadeDirection.FadeIn )
 	{
-		if ( Equals( overlay ) )
+		if ( Equals( after ) )
 		{
 			return this;
 		}
@@ -29,8 +29,8 @@ partial record PropertySignal<T>
 		}
 
 		return !fadeTimeRange.IsEmpty
-			? new CrossFadeOperation<T>( this, overlay, fadeTimeRange, mode, direction )
-			: HardCut( overlay, fadeTimeRange.Start );
+			? new CrossFadeOperation<T>( this, after, fadeTimeRange, mode, direction )
+			: HardCut( after, fadeTimeRange.Start );
 	}
 
 	public PropertySignal<T> CrossFade( PropertySignal<T> second,

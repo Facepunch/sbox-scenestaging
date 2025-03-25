@@ -12,11 +12,6 @@ public class BlendModification() : PerTrackModification<BlendOptions>( BlendOpti
 		? (Options.Offset, Options.Offset + duration)
 		: null;
 
-	public override void Start()
-	{
-		EditMode.Copy();
-	}
-
 	public void SetFromClipboard( ClipboardData clipboard, MovieTime offset, MovieProject project )
 	{
 		Options = Options with

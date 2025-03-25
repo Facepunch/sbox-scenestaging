@@ -114,16 +114,16 @@ public class MovieEditor : Widget
 		Session?.EditMode?.Paste();
 	}
 
+	[Shortcut( "timeline.backspace", "BACKSPACE" )]
+	public void OnBackspace()
+	{
+		Session?.EditMode?.Backspace();
+	}
+
 	[Shortcut( "timeline.delete", "DEL" )]
 	public void OnDelete()
 	{
-		Session?.EditMode?.Delete( false );
-	}
-
-	[Shortcut( "timeline.shiftdelete", "SHIFT+DEL" )]
-	public void OnShiftDelete()
-	{
-		Session?.EditMode?.Delete( true );
+		Session?.EditMode?.Delete();
 	}
 
 	[Shortcut( "timeline.insert", "TAB" )]

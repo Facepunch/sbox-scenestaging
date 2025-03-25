@@ -145,4 +145,36 @@ public sealed class EditingTests
 
 		Assert.AreEqual( 1.5f, signal.GetValue( default ) );
 	}
+
+	[TestMethod]
+	public void SlidingStretch()
+	{
+		var slideTransform = new SlidingStretchTransform( MovieTimeScale.FromCents( -1200 ), new MovieTimeRange( 1d, 2d ) );
+
+		Assert.AreEqual( MovieTransform.Identity, slideTransform.GetTransformAt( 0d ) );
+		Assert.AreEqual( MovieTransform.Identity, slideTransform.GetTransformAt( 1d ) );
+		Assert.AreEqual( new MovieTransform( 1d / 3d, MovieTimeScale.FromCents( -1200 ) ), slideTransform.GetTransformAt( 2d ) );
+		Assert.AreEqual( new MovieTransform( 1d / 3d, MovieTimeScale.FromCents( -1200 ) ), slideTransform.GetTransformAt( 3d ) );
+	}
+
+	[TestMethod]
+	[DataRow( 0d, 0d )]
+	[DataRow( 1d, 0d )]
+	[DataRow( 0d, 1d )]
+	[DataRow( 1d, 1d )]
+	public void SlidingStretchFromEnvelope( double fadeIn, double fadeOut )
+	{
+		var sourceDuration = MovieTime.FromSeconds( 1d );
+
+		var envelope = new TimeSelection( (2d, 4d),
+			new TimeSelection.Fade( fadeIn, InterpolationMode.Linear ),
+			new TimeSelection.Fade( fadeOut, InterpolationMode.Linear ) );
+
+		var (slideIn, slideOut) = SlidingStretchTransform.FromEnvelope( sourceDuration, envelope );
+
+		var finalTransform = slideOut.GetTransformAt( 1000d ) * slideIn.GetTransformAt( 1000d );
+
+		Assert.AreEqual( MovieTimeScale.Identity, finalTransform.Scale );
+		Assert.AreEqual( envelope.TotalTimeRange.Duration - sourceDuration, finalTransform.Translation );
+	}
 }

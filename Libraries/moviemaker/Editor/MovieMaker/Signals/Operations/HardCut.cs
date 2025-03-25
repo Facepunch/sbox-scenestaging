@@ -6,10 +6,10 @@ namespace Editor.MovieMaker;
 
 partial record PropertySignal<T>
 {
-	public PropertySignal<T> HardCut( PropertySignal<T> second, MovieTime time )
+	public PropertySignal<T> HardCut( PropertySignal<T> after, MovieTime time )
 	{
-		return !Equals( second )
-			? new HardCutOperation<T>( this, second, time )
+		return !Equals( after )
+			? new HardCutOperation<T>( this, after, time )
 			: this;
 	}
 

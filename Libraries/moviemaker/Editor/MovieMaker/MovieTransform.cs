@@ -25,7 +25,10 @@ public readonly struct MovieTimeScale : IEquatable<MovieTimeScale>
 
 	public static MovieTimeScale FromCents( int cents ) => new( cents );
 	public static MovieTimeScale FromDurationScale( double scale ) => FromFrequencyScale( scale ).Inverse;
-	public static MovieTimeScale FromFrequencyScale( double scale ) => new( (int)Math.Round( -Math.Log2( scale ) * 1200 ) );
+	public static MovieTimeScale FromFrequencyScale( double scale ) => new( (int)Math.Round( Math.Log2( scale ) * 1200 ) );
+
+	public static MovieTimeScale FromDurationChange( MovieTime oldDuration, MovieTime newDuration ) =>
+		FromDurationScale( newDuration.TotalSeconds / oldDuration.TotalSeconds );
 
 	public static MovieTimeScale Identity => default;
 
@@ -43,16 +46,11 @@ public readonly struct MovieTimeScale : IEquatable<MovieTimeScale>
 	public static MovieTimeScale operator *( MovieTimeScale a, MovieTimeScale b ) => FromCents( a.Cents + b.Cents );
 	public static MovieTimeScale operator /( MovieTimeScale a, MovieTimeScale b ) => FromCents( a.Cents - b.Cents );
 
-	private bool PrintMembers( StringBuilder builder )
+	public override string ToString()
 	{
-		if ( this == Identity )
-		{
-			builder.Append( "Identity" );
-			return true;
-		}
-
-		builder.Append( $"{nameof(Cents)} = {Cents}" );
-		return true;
+		return this == Identity
+			? $"{nameof(MovieTimeScale)} {{ {nameof(Identity)} }}"
+			: $"{nameof(MovieTimeScale)} {{ {nameof(Cents)} = {Cents} }}";
 	}
 }
 
@@ -77,6 +75,16 @@ public readonly record struct MovieTransform( MovieTime Translation = default, M
 		new( a * b.Translation, a.Scale * b.Scale );
 	public static MovieTransform operator *( MovieTimeScale a, MovieTransform b ) =>
 		new( a * b.Translation, a * b.Scale );
+
+	public static MovieTransform operator +( MovieTransform transform, MovieTime translation ) =>
+		transform with { Translation = transform.Translation + translation };
+
+	public static MovieTransform FromTo( MovieTimeRange from, MovieTimeRange to )
+	{
+		var scale = MovieTimeScale.FromDurationChange( from.Duration, to.Duration );
+
+		return scale * new MovieTransform( -from.Start ) + to.Start;
+	}
 
 	private bool PrintMembers( StringBuilder builder )
 	{

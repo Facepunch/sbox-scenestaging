@@ -67,7 +67,7 @@ public interface IMovieModification
 	/// <summary>
 	/// Called when this modification's toolbar button was pressed.
 	/// </summary>
-	void Start();
+	void Start( TimeSelection selection );
 
 	bool UpdatePreview( TimeSelection selection );
 	bool UpdatePreview( TimeSelection selection, IProjectPropertyTrack track );
@@ -127,7 +127,7 @@ public abstract class PerTrackModification<T>( T defaultOptions, bool autoCreate
 
 	public virtual void AddControls( ToolbarHelper toolbar ) { }
 
-	public virtual void Start() { }
+	public virtual void Start( TimeSelection selection ) { }
 
 	protected ITrackModificationPreview? GetTrackModificationPreview( IProjectPropertyTrack track )
 	{

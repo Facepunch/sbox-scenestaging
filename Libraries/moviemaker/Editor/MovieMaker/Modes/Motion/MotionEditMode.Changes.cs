@@ -94,17 +94,17 @@ partial class MotionEditMode
 		Session.ClipModified();
 	}
 
-	protected override void OnDelete( bool shift )
+	private void Delete( bool shiftTime )
 	{
 		if ( TimeSelection is not { } selection ) return;
 
 		var changed = false;
 
-		using ( PushTrackModification( shift ? "Delete" : "Clear" ) )
+		using ( PushTrackModification( shiftTime ? "Remove Time" : "Clear Time" ) )
 		{
 			foreach ( var track in Session.EditableTracks )
 			{
-				if ( shift )
+				if ( shiftTime )
 				{
 					changed |= track.Remove( selection.PeakTimeRange ) && Session.TrackModified( track );
 				}
@@ -120,6 +120,16 @@ partial class MotionEditMode
 			Session.ClipModified();
 			DisplayAction( "delete" );
 		}
+	}
+
+	protected override void OnBackspace()
+	{
+		Delete( true );
+	}
+
+	protected override void OnDelete()
+	{
+		Delete( false );
 	}
 
 	protected override void OnInsert()
