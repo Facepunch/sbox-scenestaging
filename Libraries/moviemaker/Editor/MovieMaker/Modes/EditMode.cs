@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
+using System.Threading.Channels;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -24,100 +25,6 @@ public record EditModeType( TypeDescription TypeDescription )
 		return TypeDescription.TargetType == editMode?.GetType();
 	}
 }
-public readonly struct ToolbarHelper( Layout toolbar )
-{
-	public Layout Layout => toolbar;
-
-	public IconButton AddAction( string title, string icon, Action action, Func<bool>? enabled = null )
-	{
-		var btn = new IconButton( icon )
-		{
-			ToolTip = title,
-			IconSize = 16,
-			//Background = Color.Transparent,
-			//BackgroundActive = Color.Transparent,
-			//ForegroundActive = Theme.Primary
-		};
-
-		btn.OnClick += action;
-
-		if ( enabled != null )
-		{
-			btn.Bind( nameof( IconButton.Enabled ) )
-				.ReadOnly()
-				.From( enabled, (Action<bool>?)null );
-		}
-
-		toolbar.Add( btn );
-
-		return btn;
-	}
-
-	public IconButton AddToggle( string title, string icon, Func<bool> getState, Action<bool> setState )
-	{
-		var btn = new IconButton( icon )
-		{
-			ToolTip = title,
-			IconSize = 16,
-			IsToggle = true,
-			//Background = Color.Transparent,
-			//BackgroundActive = Color.Transparent,
-			//ForegroundActive = Theme.Primary
-		};
-
-		btn.Bind( "IsActive" ).From( getState, setState );
-
-		toolbar.Add( btn );
-
-		return btn;
-	}
-
-	public InterpolationSelector AddInterpolationSelector( Func<InterpolationMode> getValue, Action<InterpolationMode> setValue )
-	{
-		var selector = new InterpolationSelector();
-
-		selector.Bind( "Value" ).From( getValue, setValue );
-
-		toolbar.Add( selector );
-
-		return selector;
-	}
-
-	public (FloatSlider Slider, Label Label) AddSlider( string title, Func<float> getValue, Action<float> setValue, float minimum = 0f,
-		float maximum = 1f, float step = 0.01f, Func<string>? getLabel = null )
-	{
-		var slider = new FloatSlider( null )
-		{
-			ToolTip = title,
-			FixedWidth = 80f,
-			Minimum = minimum,
-			Maximum = maximum,
-			Step = step
-		};
-
-		slider.Bind( nameof( FloatSlider.Value ) )
-			.From( getValue, setValue );
-
-		toolbar.Add( slider );
-
-		var label = new Label( null )
-		{
-			Color = Color.White.Darken( 0.5f ),
-			Margin = 4f,
-			Alignment = TextFlag.Left
-		};
-
-		label.Bind( nameof( Label.Text ) )
-			.ReadOnly()
-			.From( getLabel ?? (() => slider.Value.ToString( CultureInfo.InvariantCulture )), (Action<string>?)null );
-
-		toolbar.Add( label );
-
-		return (slider, label);
-	}
-
-	public void AddSpacingCell() => toolbar.AddSpacingCell( 16f );
-}
 
 public abstract partial class EditMode
 {
@@ -140,12 +47,9 @@ public abstract partial class EditMode
 	public Session Session { get; private set; } = null!;
 	public MovieProject Project => Session.Project;
 	protected DopeSheet DopeSheet { get; private set; } = null!;
-	protected ToolbarHelper Toolbar { get; private set; }
+	protected ToolbarWidget Toolbar { get; private set; } = null!;
 
 	public MovieTimeRange? SourceTimeRange { get; protected set; }
-
-	protected IEnumerable<GraphicsItem> SelectedItems => DopeSheet.SelectedItems;
-	protected TrackListWidget TrackList => Session.Editor.TrackList;
 
 	/// <summary>
 	/// Can we create new tracks when properties are edited in the scene?
@@ -160,26 +64,16 @@ public abstract partial class EditMode
 	internal void Enable( Session session )
 	{
 		Session = session;
-		DopeSheet = session.Editor.TrackList.DopeSheet;
-		Toolbar = new( Session.Editor.Toolbar.EditModeControls );
+		DopeSheet = session.Editor.DopeSheetPanel!.DopeSheet;
+		Toolbar = session.Editor.DopeSheetPanel!.ToolBar;
 
 		OnEnable();
-
-		foreach ( var track in DopeSheet.Items.OfType<DopeSheetTrack>() )
-		{
-			OnTrackAdded( track );
-		}
 	}
 
 	protected virtual void OnEnable() { }
 
 	internal void Disable()
 	{
-		foreach ( var track in DopeSheet.Items.OfType<DopeSheetTrack>() )
-		{
-			OnTrackRemoved( track );
-		}
-
 		OnDisable();
 
 		Session = null!;
@@ -198,44 +92,17 @@ public abstract partial class EditMode
 
 	internal bool PreChange( IProjectTrack track )
 	{
-		if ( Session.Binder.Get( track ) is not ITrackProperty { CanWrite: true } ) return false;
-
-		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
-		if ( trackWidget is not { CanEdit: true } ) return false;
-
-		if ( trackWidget.DopeSheetTrack is { } channel )
-		{
-			return OnPreChange( channel );
-		}
-
-		return false;
+		return Session.TrackList.FindEditable( track ) is { } view && OnPreChange( view );
 	}
 
-	protected virtual bool OnPreChange( DopeSheetTrack track ) => false;
+	protected virtual bool OnPreChange( ITrackView track ) => false;
 
 	internal bool PostChange( IProjectTrack track )
 	{
-		if ( Session.Binder.Get( track ) is not ITrackProperty { CanWrite: true } ) return false;
-
-		var trackWidget = TrackList.Tracks.FirstOrDefault( x => x.ProjectTrack == track );
-		if ( trackWidget is not { CanEdit: true } ) return false;
-
-		if ( trackWidget.DopeSheetTrack is { } channel )
-		{
-			return OnPostChange( channel );
-		}
-
-		return false;
+		return Session.TrackList.FindEditable( track ) is { } view && OnPostChange( view );
 	}
 
-	protected virtual bool OnPostChange( DopeSheetTrack track ) => false;
-
-	protected DopeSheetTrack? GetTrackAt( Vector2 scenePos )
-	{
-		return DopeSheet.Items
-			.OfType<DopeSheetTrack>()
-			.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) );
-	}
+	protected virtual bool OnPostChange( ITrackView track ) => false;
 
 	#region UI Events
 
@@ -273,17 +140,8 @@ public abstract partial class EditMode
 	internal void Insert() => OnInsert();
 	protected virtual void OnInsert() { }
 
-	internal void TrackAdded( DopeSheetTrack track ) => OnTrackAdded( track );
-	protected virtual void OnTrackAdded( DopeSheetTrack track ) { }
-
-	internal void TrackRemoved( DopeSheetTrack track ) => OnTrackRemoved( track );
-	protected virtual void OnTrackRemoved( DopeSheetTrack track ) { }
-
-	internal void TrackStateChanged( DopeSheetTrack track ) => OnTrackStateChanged( track );
-	protected virtual void OnTrackStateChanged( DopeSheetTrack track ) { }
-
-	internal void TrackLayout( DopeSheetTrack track, Rect rect ) => OnTrackLayout( track, rect );
-	protected virtual void OnTrackLayout( DopeSheetTrack track, Rect rect ) { }
+	internal void TrackStateChanged( ITrackView view ) => OnTrackStateChanged( view );
+	protected virtual void OnTrackStateChanged( ITrackView view ) { }
 
 	internal void ViewChanged( Rect viewRect ) => OnViewChanged( viewRect );
 	protected virtual void OnViewChanged( Rect viewRect ) { }
@@ -336,10 +194,9 @@ public abstract partial class EditMode
 		list.Clear();
 		list.AddRange( blocks );
 
-		if ( TrackList.FindTrack( track ) is { } trackWidget )
+		if ( Session.TrackList.Find( track ) is { } view )
 		{
-			trackWidget.NoteInteraction();
-			trackWidget.DopeSheetTrack?.UpdateBlockItems();
+			view.NoteInteraction();
 		}
 	}
 
@@ -349,9 +206,9 @@ public abstract partial class EditMode
 
 		_previewBlocks.Remove( track );
 
-		if ( TrackList.FindTrack( track ) is { } trackWidget )
+		if ( Session.TrackList.Find( track ) is { } view )
 		{
-			trackWidget.DopeSheetTrack?.UpdateBlockItems();
+			view.NoteInteraction();
 		}
 	}
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Linq;
 using Sandbox.MovieMaker;
 using Sandbox.Utility;
 
@@ -38,7 +39,7 @@ partial class MotionEditMode : EditMode
 	private SessionSnapshot Snapshot()
 	{
 		var projectSnapshot = new ProjectSnapshot(
-			Session.EditableTracks.ToImmutableDictionary(
+			Project.Tracks.OfType<IProjectPropertyTrack>().ToImmutableDictionary(
 				x => x.Id,
 				x => new PropertyTrackSnapshot( [..x.Blocks] ) ),
 			Project.SampleRate );
@@ -56,7 +57,8 @@ partial class MotionEditMode : EditMode
 				if ( Project.GetTrack( guid ) is not IProjectPropertyTrack propertyTrack ) continue;
 
 				propertyTrack.SetBlocks( trackSnapshot.Blocks );
-				Session.TrackModified( propertyTrack );
+
+				Session.TrackList.Find( propertyTrack )?.NoteInteraction();
 			}
 		}
 

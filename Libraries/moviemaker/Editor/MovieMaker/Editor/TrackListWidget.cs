@@ -11,73 +11,26 @@ namespace Editor.MovieMaker;
 /// </summary>
 public partial class TrackListWidget : Widget
 {
-	public MovieEditor Editor { get; }
 	public Session Session { get; }
 
 	private SceneEditorSession SceneEditorSession { get; }
 
-	public DopeSheet DopeSheet { get; }
+	public IEnumerable<TrackWidget> RootTracks => Children.OfType<TrackWidget>();
+	public IEnumerable<TrackWidget> Tracks => RootTracks.SelectMany( EnumerateDescendants );
 
-	public Widget LeftWidget { get; }
-	public Widget RightWidget { get; }
-
-	private readonly List<TrackWidget> _tracks = new();
-
-	public IReadOnlyList<TrackWidget> Tracks => _tracks;
-
-	private readonly ScrollArea _scrollArea;
-	private readonly Layout _trackListLayout;
+	private static IEnumerable<TrackWidget> EnumerateDescendants( TrackWidget track ) =>
+		[track, ..track.Children.SelectMany( EnumerateDescendants )];
 
 	private int _lastTrackHash;
 
-	public TrackListWidget( MovieEditor parent ) : base( parent )
+	public TrackListWidget( ScrollArea parent, Session session )
+		: base( parent )
 	{
-		Session = parent.Session;
-		Editor = parent;
+		Session = session;
 		Layout = Layout.Column();
 
 		SceneEditorSession = SceneEditorSession.Resolve( Session.Player.Scene );
 		SceneEditorSession.Selection.OnItemAdded += OnSelectionAdded;
-
-		_scrollArea = new ScrollArea( this );
-		var splitter = new Splitter( _scrollArea );
-
-		{
-			LeftWidget = new Widget( this );
-			splitter.AddWidget( LeftWidget );
-
-			var leftLayout = Layout.Column();
-			leftLayout.AddSpacingCell( 24 );
-
-			var trackListWidget = leftLayout.Add( new Widget( this ) );
-			trackListWidget.VerticalSizeMode = SizeMode.CanShrink;
-			trackListWidget.MinimumWidth = 256;
-			trackListWidget.Layout = Layout.Column();
-			trackListWidget.Layout.Spacing = 8f;
-			trackListWidget.Layout.Margin = new Sandbox.UI.Margin( 16, 0, 0, 16f );
-
-			_trackListLayout = trackListWidget.Layout;
-
-			LeftWidget.Layout = leftLayout;
-
-			leftLayout.AddStretchCell();
-		}
-
-		{
-			RightWidget = new Widget( this );
-			splitter.AddWidget( RightWidget );
-
-			RightWidget.Layout = Layout.Column();
-			DopeSheet = RightWidget.Layout.Add( new DopeSheet( this ), 1 );
-		}
-
-		splitter.SetCollapsible( 0, false );
-		splitter.SetStretch( 0, 1 );
-		splitter.SetCollapsible( 1, false );
-		splitter.SetStretch( 1, 3 );
-
-		_scrollArea.Canvas = splitter;
-		Layout.Add( _scrollArea );
 
 		MouseTracking = true;
 		AcceptDrops = true;
@@ -87,12 +40,15 @@ public partial class TrackListWidget : Widget
 
 	private void OnSelectionAdded( object item )
 	{
-		if ( Tracks.Any( x => x.IsFocused ) || DopeSheet.IsFocused ) return;
+		if ( Tracks.Any( x => x.IsFocused ) || Session.Editor.DopeSheetPanel!.DopeSheet.IsFocused ) return;
+		if ( item is not GameObject go ) return;
+		if ( Tracks.FirstOrDefault( x => x.View.Target is ITrackReference<GameObject> { IsBound: true } target && target.Value == go ) is not { } track ) return;
+		
+		track.Focus( false );
 
-		if ( item is GameObject go && Tracks.FirstOrDefault( x => x.Target is ITrackReference<GameObject> { IsBound: true } && x.Target.Value == go ) is { } track )
+		if ( Parent is ScrollArea scrollArea )
 		{
-			track.Focus( false );
-			_scrollArea.MakeVisible( track );
+			scrollArea.MakeVisible( track );
 		}
 	}
 
@@ -111,46 +67,14 @@ public partial class TrackListWidget : Widget
 	/// </summary>
 	void RebuildTracks()
 	{
-		foreach ( var track in Tracks )
-		{
-			if ( track.DopeSheetTrack is { } channel )
-			{
-				Session.EditMode?.TrackRemoved( channel );
-			}
-		}
-
-		_trackListLayout.Clear( true );
-		_tracks.Clear();
+		Layout.Clear( true );
 
 		_lastTrackHash = GetTrackHash();
 
-		var groups = new Dictionary<IProjectTrack, TrackGroup>();
-
-		foreach ( var track in Session.Project.Tracks )
+		foreach ( var track in Session.TrackList.RootTracks )
 		{
-			var editorTrack = AddTrack( track );
-
-			var parentGroup = track.Parent is null ? null : groups!.GetValueOrDefault( track.Parent );
-
-			if ( track.Children.Count == 0 )
-			{
-				(parentGroup?.Content ?? _trackListLayout).Add( editorTrack );
-				continue;
-			}
-
-			var group = new TrackGroup( editorTrack );
-
-			groups[track] = group;
-
-			(parentGroup?.Content ?? _trackListLayout).Add( group );
+			Layout.Add( new TrackWidget( this, null, track ) );
 		}
-
-		foreach ( var group in groups.Values )
-		{
-			group.UpdateCollapsedState();
-		}
-
-		DopeSheet.UpdateTracks();
 	}
 
 	private int GetTrackHash()
@@ -177,26 +101,7 @@ public partial class TrackListWidget : Widget
 
 	public TrackWidget? FindTrack( IProjectTrack track )
 	{
-		return Tracks.FirstOrDefault( x => x.ProjectTrack == track );
-	}
-
-	public TrackWidget AddTrack( IProjectTrack track )
-	{
-		var trackWidget = new TrackWidget( track, this );
-
-		_tracks.Add( trackWidget );
-
-		return trackWidget;
-	}
-
-	protected override void OnVisibilityChanged( bool visible )
-	{
-		base.OnVisibilityChanged( visible );
-
-		if ( visible )
-		{
-			DopeSheet?.UpdateTracks();
-		}
+		return Tracks.FirstOrDefault( x => x.View.Track == track );
 	}
 
 	internal bool OnCanvasWheel( WheelEvent e )
@@ -205,7 +110,6 @@ public partial class TrackListWidget : Widget
 		if ( e.HasShift )
 		{
 			Session.ScrollBy( -e.Delta / 10.0f * (Session.PixelsPerSecond / 10.0f), true );
-			DopeSheet?.UpdateTracks();
 			return true;
 		}
 
@@ -214,7 +118,6 @@ public partial class TrackListWidget : Widget
 		{
 			Session.Zoom( e.Delta / 10.0f );
 			Update();
-			DopeSheet?.UpdateTracks();
 			return true;
 		}
 
@@ -225,7 +128,6 @@ public partial class TrackListWidget : Widget
 	{
 		Session.ScrollBy( x, false );
 		Update();
-		DopeSheet?.UpdateTracks();
 	}
 
 	protected override void OnPaint()

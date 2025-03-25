@@ -62,7 +62,7 @@ public interface IMovieModification
 	MovieTimeRange? SourceTimeRange { get; }
 
 	void Initialize( MotionEditMode editMode );
-	void AddControls( ToolbarHelper toolbar );
+	void AddControls( ToolbarGroup group );
 
 	/// <summary>
 	/// Called when this modification's toolbar button was pressed.
@@ -125,7 +125,7 @@ public abstract class PerTrackModification<T>( T defaultOptions, bool autoCreate
 
 	public void Initialize( MotionEditMode editMode ) => EditMode = editMode;
 
-	public virtual void AddControls( ToolbarHelper toolbar ) { }
+	public virtual void AddControls( ToolbarGroup group ) { }
 
 	public virtual void Start( TimeSelection selection ) { }
 
@@ -138,7 +138,7 @@ public abstract class PerTrackModification<T>( T defaultOptions, bool autoCreate
 	{
 		if ( GetTrackModificationPreview( track ) is { } state ) return state;
 
-		var type = typeof( TrackModificationPreview<> ).MakeGenericType( track.TargetType );
+		var type = typeof(TrackModificationPreview<>).MakeGenericType( track.TargetType );
 		TrackPreviews.Add( track, state = (ITrackModificationPreview)Activator.CreateInstance( type, EditMode, track )! );
 
 		return state;
@@ -150,9 +150,9 @@ public abstract class PerTrackModification<T>( T defaultOptions, bool autoCreate
 
 		if ( autoCreate )
 		{
-			foreach ( var track in EditMode.Session.EditableTracks )
+			foreach ( var view in EditMode.Session.TrackList.EditableTracks )
 			{
-				GetOrCreateTrackModificationPreview( track );
+				GetOrCreateTrackModificationPreview( (IProjectPropertyTrack)view.Track );
 			}
 		}
 

@@ -1,4 +1,6 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Collections.Immutable;
+using System.Linq;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -6,6 +8,8 @@ namespace Editor.MovieMaker;
 
 public class DopeSheet : GraphicsView
 {
+	public const float TrackHeight = 32f;
+
 	public static class Colors
 	{
 		public static Color Background => Theme.ControlBackground.Lighten( 0.1f );
@@ -13,10 +17,10 @@ public class DopeSheet : GraphicsView
 		public static Color HandleSelected => Theme.White;
 	}
 
-	private TrackListWidget TrackList { get; }
-	private Session Session => TrackList.Session;
+	public Session Session { get; }
 
 	private readonly GridItem _gridItem;
+	private readonly Dictionary<ITrackView, DopeSheetTrack> _tracks = new();
 
 	private readonly CurrentPointerItem _currentPointerItem;
 	private readonly CurrentPointerItem _previewPointerItem;
@@ -28,10 +32,7 @@ public class DopeSheet : GraphicsView
 	{
 		get
 		{
-			var screenRect = TrackList.ScreenRect;
-
-			screenRect.Left = TrackList.RightWidget.ScreenRect.Left;
-
+			var screenRect = ScreenRect;
 			var topLeft = FromScreen( screenRect.TopLeft );
 			var bottomRight = FromScreen( screenRect.BottomRight );
 
@@ -39,9 +40,9 @@ public class DopeSheet : GraphicsView
 		}
 	}
 
-	public DopeSheet( TrackListWidget trackList )
+	public DopeSheet( Session session )
 	{
-		TrackList = trackList;
+		Session = session;
 		MinimumWidth = 256;
 
 		_gridItem = new GridItem( Session );
@@ -181,25 +182,39 @@ public class DopeSheet : GraphicsView
 	{
 		UpdateSceneFrame();
 
-		foreach ( var widget in TrackList.Tracks )
+		var allTracks = Session.TrackList.AllTracks
+			.Where( x => x.Target is ITrackProperty { CanWrite: true } )
+			.Where( x => x.Track is IProjectPropertyTrack )
+			.ToHashSet();
+
+		var toRemove = _tracks.Keys
+			.Where( x => !allTracks.Contains( x ) )
+			.ToImmutableArray();
+
+		foreach ( var view in toRemove )
 		{
-			if ( widget.Target is not ITrackProperty { CanWrite: true } ) continue;
-			if ( widget.ProjectTrack is not IProjectPropertyTrack propertyTrack ) continue;
-
-			if ( widget.DopeSheetTrack is null )
+			if ( _tracks.Remove( view, out var track ) )
 			{
-				widget.DopeSheetTrack = new DopeSheetTrack( widget, propertyTrack );
-				Add( widget.DopeSheetTrack );
-
-				Session.EditMode?.TrackAdded( widget.DopeSheetTrack );
+				track.Destroy();
 			}
+		}
+
+		foreach ( var view in allTracks )
+		{
+			if ( _tracks.ContainsKey( view ) ) continue;
+
+			var track = new DopeSheetTrack( this, view );
+
+			_tracks[view] = track;
+
+			Add( track );
 		}
 
 		Update();
 
-		foreach ( var track in TrackList.Tracks )
+		foreach ( var track in _tracks.Values )
 		{
-			track.UpdateChannelPosition();
+			track.UpdateLayout();
 		}
 	}
 
@@ -228,7 +243,7 @@ public class DopeSheet : GraphicsView
 		if ( e.ButtonState == MouseButtons.Middle )
 		{
 			//var delta = Application.CursorDelta.x;
-			TrackList.ScrollBy( delta.x );
+			//TrackList.ScrollBy( delta.x );
 		}
 
 		if ( e.ButtonState == MouseButtons.Right )
@@ -316,11 +331,10 @@ public class DopeSheet : GraphicsView
 			snap.Add( SnapFlag.PasteBlock, pasteRange.End );
 		}
 
-		foreach ( var trackWidget in TrackList.Tracks )
+		foreach ( var dopeTrack in _tracks.Values )
 		{
-			if ( trackWidget.ProjectTrack is not IProjectPropertyTrack propertyTrack ) continue;
-			if ( trackWidget.DopeSheetTrack is not { Visible: true } dopeTrack ) continue;
-			if ( trackWidget.IsLocked ) continue;
+			if ( dopeTrack.View.IsLocked ) continue;
+			if ( dopeTrack.View.Track is not IProjectPropertyTrack propertyTrack ) continue;
 			if ( mouseScenePos.y < dopeTrack.SceneRect.Top ) continue;
 			if ( mouseScenePos.y > dopeTrack.SceneRect.Bottom ) continue;
 

@@ -24,8 +24,6 @@ public sealed partial class MotionEditMode : EditMode
 
 	private MovieTime? _selectionStartTime;
 
-	public Layout ModificationControls { get; private set; } = null!;
-
 	public MotionEditMode()
 	{
 		History = new EditModeHistory<MotionEditMode>( this );
@@ -33,18 +31,22 @@ public sealed partial class MotionEditMode : EditMode
 
 	protected override void OnEnable()
 	{
-		Toolbar.AddAction( "Undo", "undo", Session.Undo, () => Session.History.CanUndo );
-		Toolbar.AddAction( "Redo", "redo", Session.Redo, () => Session.History.CanRedo );
+		var undoGroup = Toolbar.AddGroup();
 
-		Toolbar.AddSpacingCell();
+		undoGroup.AddAction( "Undo", "undo", Session.Undo, () => Session.History.CanUndo );
+		undoGroup.AddAction( "Redo", "redo", Session.Redo, () => Session.History.CanRedo );
 
-		Toolbar.AddAction( "Cut", "content_cut", Cut, () => TimeSelection is not null );
-		Toolbar.AddAction( "Copy", "content_copy", Copy, () => TimeSelection is not null );
-		Toolbar.AddAction( "Paste", "content_paste", Paste, () => Clipboard is not null );
-		Toolbar.AddSpacingCell();
-		Toolbar.AddAction( "Insert Time", "keyboard_tab", Insert, () => TimeSelection is not null );
-		Toolbar.AddAction( "Remove Time", "backspace", () => Delete( true ), () => TimeSelection is not null );
-		Toolbar.AddAction( "Clear Time", "delete", () => Delete( false ), () => TimeSelection is not null );
+		var clipboardGroup = Toolbar.AddGroup();
+
+		clipboardGroup.AddAction( "Cut", "content_cut", Cut, () => TimeSelection is not null );
+		clipboardGroup.AddAction( "Copy", "content_copy", Copy, () => TimeSelection is not null );
+		clipboardGroup.AddAction( "Paste", "content_paste", Paste, () => Clipboard is not null );
+
+		var editGroup = Toolbar.AddGroup();
+
+		editGroup.AddAction( "Insert", "keyboard_tab", Insert, () => TimeSelection is not null );
+		editGroup.AddAction( "Remove", "backspace", () => Delete( true ), () => TimeSelection is not null );
+		editGroup.AddAction( "Clear", "delete", () => Delete( false ), () => TimeSelection is not null );
 
 		var modificationTypes = EditorTypeLibrary
 			.GetTypesWithAttribute<MovieModificationAttribute>()
@@ -54,7 +56,7 @@ public sealed partial class MotionEditMode : EditMode
 		{
 			if ( type.IsAbstract || type.IsGenericType ) continue;
 
-			var toggle = Toolbar.AddToggle( attribute.Title, attribute.Icon,
+			var toggle = editGroup.AddToggle( attribute.Title, attribute.Icon,
 				() => Modification?.GetType() == type.TargetType,
 				value =>
 				{
@@ -75,9 +77,9 @@ public sealed partial class MotionEditMode : EditMode
 				.From( () => TimeSelection is not null, (Action<bool>?)null );
 		}
 
-		Toolbar.AddSpacingCell();
+		var selectionGroup = Toolbar.AddGroup();
 
-		Toolbar.AddInterpolationSelector( () => DefaultInterpolation, value =>
+		selectionGroup.AddInterpolationSelector( () => DefaultInterpolation, value =>
 		{
 			DefaultInterpolation = value;
 
@@ -86,9 +88,6 @@ public sealed partial class MotionEditMode : EditMode
 				TimeSelection = timeSelection.WithInterpolation( value );
 			}
 		} );
-
-		ModificationControls = Toolbar.Layout.AddRow();
-		ModificationControls.Spacing = 2;
 
 		SelectionChanged();
 	}

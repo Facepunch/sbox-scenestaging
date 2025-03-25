@@ -22,6 +22,7 @@ internal sealed class TrackModificationPreview<T> : ITrackModificationPreview
 {
 	public EditMode EditMode { get; }
 	public ProjectPropertyTrack<T> Track { get; }
+	public ITrackView View { get; }
 
 	IProjectPropertyTrack ITrackModificationPreview.Track => Track;
 
@@ -48,6 +49,8 @@ internal sealed class TrackModificationPreview<T> : ITrackModificationPreview
 	{
 		EditMode = editMode;
 		Track = track;
+		View = EditMode.Session.TrackList.Find( track )
+			?? throw new Exception( "Can't find view for track!" );
 	}
 
 	public void Clear()
@@ -57,7 +60,7 @@ internal sealed class TrackModificationPreview<T> : ITrackModificationPreview
 
 	public bool Update( TimeSelection selection, IModificationOptions options )
 	{
-		if ( Modification is not { } modification || !EditMode.Session.CanEdit( Track ) )
+		if ( Modification is not { } modification || View.IsLocked )
 		{
 			Clear();
 			return false;

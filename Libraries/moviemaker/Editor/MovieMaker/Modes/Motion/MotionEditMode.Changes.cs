@@ -10,6 +10,7 @@ namespace Editor.MovieMaker;
 partial class MotionEditMode
 {
 	private IMovieModification? _modification;
+	private ToolbarGroup? _modificationControls;
 
 	private RealTimeSince _lastActionTime;
 
@@ -44,19 +45,17 @@ partial class MotionEditMode
 		}
 
 		_modification?.ClearPreview();
-		ModificationControls.Clear( true );
+		_modificationControls?.Destroy();
 
 		_modification = (IMovieModification)Activator.CreateInstance( type )!;
 		_modification.Initialize( this );
 
-		var toolbar = new ToolbarHelper( ModificationControls );
+		_modificationControls = Toolbar.AddGroup();
 
-		toolbar.AddSpacingCell();
+		_modification.AddControls( _modificationControls );
 
-		_modification.AddControls( toolbar );
-
-		var commit = toolbar.AddAction( "Apply", "done", CommitChanges );
-		var cancel = toolbar.AddAction( "Cancel", "clear", ClearChanges );
+		var commit = _modificationControls.AddAction( "Apply", "done", CommitChanges );
+		var cancel = _modificationControls.AddAction( "Cancel", "clear", ClearChanges );
 
 		commit.Background = Theme.Green;
 		cancel.Background = Theme.Red;
@@ -74,7 +73,9 @@ partial class MotionEditMode
 		if ( Modification is null ) return;
 
 		Modification?.ClearPreview();
-		ModificationControls.Clear( true );
+
+		_modificationControls?.Destroy();
+		_modificationControls = null;
 
 		_modification = null;
 
@@ -104,15 +105,17 @@ partial class MotionEditMode
 
 		using ( PushTrackModification( shiftTime ? "Remove Time" : "Clear Time" ) )
 		{
-			foreach ( var track in Session.EditableTracks )
+			foreach ( var view in Session.TrackList.EditableTracks )
 			{
+				var track = (IProjectPropertyTrack)view.Track;
+
 				if ( shiftTime )
 				{
-					changed |= track.Remove( selection.PeakTimeRange ) && Session.TrackModified( track );
+					changed |= track.Remove( selection.PeakTimeRange ) && view.NoteInteraction();
 				}
 				else
 				{
-					changed |= track.Clear( selection.PeakTimeRange ) && Session.TrackModified( track );
+					changed |= track.Clear( selection.PeakTimeRange ) && view.NoteInteraction();
 				}
 			}
 		}
@@ -142,9 +145,11 @@ partial class MotionEditMode
 
 		using ( PushTrackModification( "Insert" ) )
 		{
-			foreach ( var track in Session.EditableTracks )
+			foreach ( var view in Session.TrackList.EditableTracks )
 			{
-				changed |= track.Insert( selection.PeakTimeRange ) && Session.TrackModified( track );
+				var track = (IProjectPropertyTrack)view.Track;
+
+				changed |= track.Insert( selection.PeakTimeRange ) && view.NoteInteraction();
 			}
 		}
 
@@ -178,8 +183,10 @@ partial class MotionEditMode
 		var tracks = new Dictionary<Guid, IReadOnlyList<IProjectPropertyBlock>>();
 		var slicedBlocks = new List<IProjectPropertyBlock>();
 
-		foreach ( var track in Session.EditableTracks )
+		foreach ( var view in Session.TrackList.EditableTracks )
 		{
+			var track = (IProjectPropertyTrack)view.Track;
+
 			slicedBlocks.Clear();
 			slicedBlocks.AddRange( track.Slice( timeRange ).Select( x => x.Shift( -offset ) ) );
 
@@ -226,20 +233,19 @@ partial class MotionEditMode
 		return true;
 	}
 
-	protected override void OnTrackStateChanged( DopeSheetTrack track )
+	protected override void OnTrackStateChanged( ITrackView view )
 	{
+		if ( view.Track is not IProjectPropertyTrack track ) return;
 		if ( TimeSelection is not { } selection || Modification is not { } modification ) return;
 
-		modification.UpdatePreview( selection, track.ProjectTrack );
+		modification.UpdatePreview( selection, track );
 	}
 
-	protected override bool OnPreChange( DopeSheetTrack track )
+	protected override bool OnPreChange( ITrackView view )
 	{
 		if ( TimeSelection is not { } selection ) return false;
-		if ( track.TrackWidget.Target is not ITrackProperty property )
-		{
-			return false;
-		}
+		if ( view.Track is not IProjectPropertyTrack track ) return false;
+		if ( view.Target is not ITrackProperty property ) return false;
 
 		if ( Modification is not BlendModification blend )
 		{
@@ -248,16 +254,16 @@ partial class MotionEditMode
 			blend = SetModification<BlendModification>( selection );
 		}
 
-		return blend.PreChange( track.ProjectTrack, property );
+		return blend.PreChange( track, property );
 	}
 
-	protected override bool OnPostChange( DopeSheetTrack track )
+	protected override bool OnPostChange( ITrackView view )
 	{
 		if ( TimeSelection is not { } selection || Modification is not BlendModification blend ) return false;
+		if ( view.Track is not IProjectPropertyTrack track ) return false;
+		if ( view.Target is not ITrackProperty property ) return false;
 
-		return track.TrackWidget.Target is ITrackProperty property
-			&& blend.PostChange( track.ProjectTrack, property )
-			&& blend.UpdatePreview( selection, track.ProjectTrack );
+		return blend.PostChange( track, property ) && blend.UpdatePreview( selection, track );
 	}
 
 	private bool _hasSelectionItems;

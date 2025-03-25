@@ -27,9 +27,9 @@ partial class MotionEditMode
 		_recordingStartTime = Session.CurrentPointer;
 		_recordingLastTime = _recordingStartTime;
 
-		foreach ( var track in Session.EditableTracks )
+		foreach ( var view in Session.TrackList.EditableTracks )
 		{
-			_recorder.Tracks.Add( track );
+			_recorder.Tracks.Add( (IProjectPropertyTrack)view.Track );
 		}
 
 		Session.IsPlaying = true;

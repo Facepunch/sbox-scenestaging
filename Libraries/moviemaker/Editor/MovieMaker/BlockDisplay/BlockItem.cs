@@ -43,7 +43,7 @@ public abstract partial class BlockItem : GraphicsItem
 
 	public MovieTime Offset { get; set; }
 
-	protected IProjectTrack Track => Parent.TrackWidget.ProjectTrack;
+	protected IProjectTrack Track => Parent.View.Track;
 	protected MovieTimeRange TimeRange => Block.TimeRange + Offset;
 
 	protected int DataHash => HashCode.Combine( Block, TimeRange.Duration, Width );
@@ -70,7 +70,7 @@ public abstract partial class BlockItem : GraphicsItem
 
 	public void Layout()
 	{
-		var session = Parent.TrackWidget.Session;
+		var session = Parent.Session;
 
 		PrepareGeometryChange();
 
@@ -82,10 +82,10 @@ public abstract partial class BlockItem : GraphicsItem
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground.Lighten( Parent.TrackWidget.IsLocked ? 0.2f : 0f ) );
+		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground.Lighten( Parent.View.IsLocked ? 0.2f : 0f ) );
 		Paint.DrawRect( LocalRect );
 
-		if ( Parent.TrackWidget.IsLocked ) return;
+		if ( Parent.View.IsLocked ) return;
 
 		Paint.ClearBrush();
 		Paint.SetPen( Color.White.WithAlpha( 0.1f ) );

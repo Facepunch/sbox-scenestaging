@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Sandbox.MovieMaker;
@@ -18,7 +17,7 @@ public sealed partial class Session
 	public MovieProject Project { get; }
 	public IMovieResource Resource { get; }
 
-	private int _frameRate;
+	private int _frameRate = 10;
 	private bool _frameSnap;
 	private bool _objectSnap;
 	private MovieTime _timeOffset;
@@ -79,7 +78,7 @@ public sealed partial class Session
 		get
 		{
 			var minTime = PixelsToTime( 0f ) + TimeOffset;
-			var maxTime = PixelsToTime( Editor.TrackList.RightWidget.Width ) + TimeOffset;
+			var maxTime = PixelsToTime( Editor.DopeSheetPanel!.Width ) + TimeOffset;
 
 			return new (minTime, maxTime);
 		}
@@ -158,7 +157,7 @@ public sealed partial class Session
 
 		EditMode?.Disable();
 
-		Editor.Toolbar.EditModeControls.Clear( true );
+		Editor.DopeSheetPanel!.ToolBar.Reset();
 
 		EditMode = type?.Create();
 		EditMode?.Enable( this );
@@ -168,14 +167,6 @@ public sealed partial class Session
 			Cookies.EditMode = type;
 		}
 	}
-
-	public IEnumerable<IProjectPropertyTrack> EditableTracks =>
-		Editor.TrackList.Tracks
-			.Where( x => x.CanEdit )
-			.Select( x => x.ProjectTrack )
-			.OfType<IProjectPropertyTrack>();
-
-	public bool CanEdit( IProjectTrack track ) => track is IPropertyTrack && (Editor.TrackList.FindTrack( track )?.CanEdit ?? false);
 
 	public MovieTime ScenePositionToTime( Vector2 scenePos, SnapFlag ignore = 0, params MovieTime[] snapOffsets ) 
 	{
@@ -210,7 +201,7 @@ public sealed partial class Session
 			snapHelper.Add( SnapFlag.PlayHead, CurrentPointer );
 
 			EditMode?.GetSnapTimes( ref snapHelper );
-			Editor.TrackList.DopeSheet.GetSnapTimes( ref snapHelper );
+			Editor.DopeSheetPanel?.DopeSheet.GetSnapTimes( ref snapHelper );
 		}
 	}
 
@@ -394,15 +385,6 @@ public sealed partial class Session
 	public void DispatchViewChanged()
 	{
 		ViewChanged?.Invoke();
-		EditMode?.ViewChanged( Editor.TrackList.DopeSheet.VisibleRect );
-	}
-
-	public bool TrackModified( IProjectTrack track )
-	{
-		ClipModified();
-
-		Editor.TrackList.FindTrack( track )?.DopeSheetTrack?.UpdateBlockItems();
-
-		return true;
+		EditMode?.ViewChanged( Editor.DopeSheetPanel!.DopeSheet.VisibleRect );
 	}
 }

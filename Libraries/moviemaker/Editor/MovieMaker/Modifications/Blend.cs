@@ -31,9 +31,9 @@ public class BlendModification() : PerTrackModification<BlendOptions>( BlendOpti
 		}
 	}
 
-	public override void AddControls( ToolbarHelper toolbar )
+	public override void AddControls( ToolbarGroup group )
 	{
-		toolbar.AddToggle( "Additive", "layers",
+		group.AddToggle( "Additive", "layers",
 			() => Options.IsAdditive,
 			state => Options = Options with { IsAdditive = state } );
 	}

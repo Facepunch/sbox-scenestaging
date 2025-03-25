@@ -4,7 +4,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public partial class TrackListWidget : EditorEvent.ISceneEdited
+partial class MovieEditor : EditorEvent.ISceneEdited
 {
 	void EditorEvent.ISceneEdited.GameObjectPreEdited( GameObject go, string propertyPath )
 	{
@@ -79,17 +79,12 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 
 		try
 		{
-			if ( Session.EditMode?.AllowTrackCreation is not true )
+			if ( Session?.EditMode?.AllowTrackCreation is not true )
 			{
-				return Session.GetTrack( go, propertyPath );
+				return Session?.GetTrack( go, propertyPath );
 			}
 
-			var track = Session.GetOrCreateTrack( go, propertyPath );
-
-			// Make sure the track widget exists for this track
-			RebuildTracksIfNeeded();
-
-			return track;
+			return Session.GetOrCreateTrack( go, propertyPath );
 		}
 		catch
 		{
@@ -104,17 +99,12 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 
 		try
 		{
-			if ( Session.EditMode?.AllowTrackCreation is not true )
+			if ( Session?.EditMode?.AllowTrackCreation is not true )
 			{
-				return Session.GetTrack( cmp, propertyPath );
+				return Session?.GetTrack( cmp, propertyPath );
 			}
 
-			var track = Session.GetOrCreateTrack( cmp, propertyPath );
-
-			// Make sure the track widget exists for this track
-			RebuildTracksIfNeeded();
-
-			return track;
+			return Session.GetOrCreateTrack( cmp, propertyPath );
 		}
 		catch
 		{
@@ -125,7 +115,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 
 	private bool PreChange( IProjectTrack track )
 	{
-		if ( Session.EditMode?.PreChange( track ) is true )
+		if ( Session?.EditMode?.PreChange( track ) is true )
 		{
 			NoteInteraction( track );
 			return true;
@@ -136,7 +126,7 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 
 	private bool PostChange( IProjectTrack track )
 	{
-		if ( Session.EditMode?.PostChange( track ) is true )
+		if ( Session?.EditMode?.PostChange( track ) is true )
 		{
 			NoteInteraction( track );
 			return true;
@@ -147,12 +137,6 @@ public partial class TrackListWidget : EditorEvent.ISceneEdited
 
 	private void NoteInteraction( IProjectTrack track )
 	{
-		var trackWidget = FindTrack( track );
-
-		Assert.NotNull( trackWidget, "Track should have been created" );
-
-		trackWidget.NoteInteraction();
-
-		_scrollArea.MakeVisible( trackWidget );
+		Session?.TrackList.Find( track )?.NoteInteraction();
 	}
 }
