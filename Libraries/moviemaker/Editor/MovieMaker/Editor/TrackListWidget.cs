@@ -15,13 +15,14 @@ public partial class TrackListWidget : Widget
 
 	private SceneEditorSession SceneEditorSession { get; }
 
-	public IEnumerable<TrackWidget> RootTracks => Children.OfType<TrackWidget>();
+	public IEnumerable<TrackWidget> RootTracks => _rootTracks;
 	public IEnumerable<TrackWidget> Tracks => RootTracks.SelectMany( EnumerateDescendants );
 
 	private static IEnumerable<TrackWidget> EnumerateDescendants( TrackWidget track ) =>
 		[track, ..track.Children.SelectMany( EnumerateDescendants )];
 
-	private int _lastTrackHash;
+	private ITrackListView? _trackList;
+	private readonly SynchronizedList<ITrackView, TrackWidget> _rootTracks;
 
 	public TrackListWidget( ScrollArea parent, Session session )
 		: base( parent )
@@ -35,8 +36,15 @@ public partial class TrackListWidget : Widget
 
 		AcceptDrops = true;
 
-		Load( Session.Project );
+		_rootTracks = new SynchronizedList<ITrackView, TrackWidget>(
+			AddRootTrack, RemoveRootTrack, UpdateChildTrack );
+
+		Load( Session.TrackList );
 	}
+
+	private TrackWidget AddRootTrack( ITrackView source ) => new( this, null, source );
+	private void RemoveRootTrack( ITrackView source, TrackWidget item ) => item.Destroy();
+	private bool UpdateChildTrack( ITrackView source, TrackWidget item ) => item.UpdateLayout();
 
 	private void OnSelectionAdded( object item )
 	{
@@ -54,51 +62,43 @@ public partial class TrackListWidget : Widget
 
 	public override void OnDestroyed()
 	{
+		if ( _trackList is not null )
+		{
+			_trackList.Changed -= TrackList_Changed;
+		}
+
 		SceneEditorSession.Selection.OnItemAdded -= OnSelectionAdded;
 	}
 
-	private void Load( MovieProject project )
+	private void Load( ITrackListView trackList )
 	{
-		RebuildTracks();
+		if ( _trackList == trackList ) return;
+
+		if ( _trackList is not null )
+		{
+			_trackList.Changed -= TrackList_Changed;
+		}
+
+		_trackList = trackList;
+		_trackList.Changed += TrackList_Changed;
+
+		TrackList_Changed( trackList );
 	}
 
-	/// <summary>
-	/// Called when a track was added or removed
-	/// </summary>
-	void RebuildTracks()
+	private void TrackList_Changed( ITrackListView trackList )
 	{
-		Layout.Clear( true );
+		_rootTracks.Update( trackList.RootTracks );
 
-		_lastTrackHash = GetTrackHash();
+		Layout.Clear( false );
+		Layout.AddSpacingCell( 32f );
 
-		foreach ( var track in Session.TrackList.RootTracks )
+		foreach ( var track in _rootTracks )
 		{
-			Layout.Add( new TrackWidget( this, null, track ) );
+			Layout.Add( track );
 		}
 
 		Layout.AddStretchCell();
-	}
-
-	private int GetTrackHash()
-	{
-		var hashCode = new HashCode();
-
-		foreach ( var track in Session.Project.Tracks )
-		{
-			hashCode.Add( track );
-		}
-
-		return hashCode.ToHashCode();
-	}
-
-	/// <summary>
-	/// Check tracks hash, rebuild if needed
-	/// </summary>
-	public void RebuildTracksIfNeeded()
-	{
-		if ( GetTrackHash() == _lastTrackHash ) return;
-
-		RebuildTracks();
+		Layout.AddSpacingCell( 32f );
 	}
 
 	protected override void OnPaint()
@@ -179,7 +179,7 @@ public partial class TrackListWidget : Widget
 
 			_previewTracks = dragged.Except( knownTracks ).ToArray();
 
-			RebuildTracksIfNeeded();
+			Session.TrackList.Update();
 		}
 
 		ev.Action = _previewTracks.Count > 0
@@ -196,7 +196,7 @@ public partial class TrackListWidget : Widget
 				track.Remove();
 			}
 
-			RebuildTracksIfNeeded();
+			Session.TrackList.Update();
 		}
 
 		_previewTracks = null;

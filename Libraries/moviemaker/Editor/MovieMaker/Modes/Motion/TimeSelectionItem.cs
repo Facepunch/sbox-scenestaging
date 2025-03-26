@@ -45,8 +45,6 @@ partial class MotionEditMode
 	/// </summary>
 	private sealed class TimeSelectionPeakItem : TimeSelectionItem
 	{
-		public override Rect BoundingRect => base.BoundingRect.Grow( 64f, 0f );
-
 		public TimeSelectionPeakItem( MotionEditMode editMode )
 			: base( editMode )
 		{

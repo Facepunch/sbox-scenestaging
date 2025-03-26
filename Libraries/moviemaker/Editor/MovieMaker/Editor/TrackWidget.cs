@@ -11,7 +11,7 @@ public partial class TrackWidget : Widget
 	public TrackListWidget TrackList { get; }
 	public TrackWidget? Parent { get; }
 
-	public new IEnumerable<TrackWidget> Children => base.Children.OfType<TrackWidget>();
+	public new IEnumerable<TrackWidget> Children => _children;
 
 	public ITrackView View { get; }
 
@@ -19,7 +19,8 @@ public partial class TrackWidget : Widget
 
 	private readonly Label? _label;
 	private readonly Button _lockButton;
-	private readonly Layout _children;
+	private readonly Layout _childLayout;
+	private readonly SynchronizedList<ITrackView, TrackWidget> _children;
 
 	public TrackWidget( TrackListWidget trackList, TrackWidget? parent, ITrackView view )
 		: base( (Widget?)parent ?? trackList )
@@ -31,6 +32,14 @@ public partial class TrackWidget : Widget
 		FocusMode = FocusMode.TabOrClickOrWheel;
 		VerticalSizeMode = SizeMode.CanGrow;
 
+		_children = new SynchronizedList<ITrackView, TrackWidget>(
+			AddChildTrack, RemoveChildTrack, UpdateChildTrack );
+
+		var path = view.Track.GetPath();
+		string[] propertyNames = [path.ReferenceTrack.Name, .. path.PropertyNames];
+
+		ToolTip = string.Join( $" \u2192 ", propertyNames );
+
 		View.Changed += View_Changed;
 		View.ValueChanged += View_ValueChanged;
 
@@ -41,8 +50,8 @@ public partial class TrackWidget : Widget
 		row.Spacing = 4f;
 		row.Margin = 4f;
 
-		_children = Layout.Add( Layout.Column() );
-		_children.Margin = new Margin( 8f, 0f, 0f, 0f );
+		_childLayout = Layout.Add( Layout.Column() );
+		_childLayout.Margin = new Margin( 8f, 0f, 0f, 0f );
 
 		if ( !AddReferenceControl( row ) )
 		{
@@ -54,6 +63,23 @@ public partial class TrackWidget : Widget
 		_lockButton = row.Add( new LockButton( this ) );
 
 		View_Changed( view );
+	}
+
+	private TrackWidget AddChildTrack( ITrackView source ) => new( TrackList, this, source );
+	private void RemoveChildTrack( ITrackView source, TrackWidget item ) => item.Destroy();
+	private bool UpdateChildTrack( ITrackView source, TrackWidget item ) => item.UpdateLayout();
+
+	public bool UpdateLayout()
+	{
+		_children.Update( View.VisibleChildren );
+		_childLayout.Clear( false );
+
+		foreach ( var child in _children )
+		{
+			_childLayout.Add( child );
+		}
+
+		return true;
 	}
 
 	private bool AddReferenceControl( Layout layout )
@@ -85,20 +111,6 @@ public partial class TrackWidget : Widget
 
 	private void View_Changed( ITrackView view )
 	{
-		var toRemove = Children
-			.Where( x => !view.VisibleChildren.Contains( x.View ) )
-			.ToArray();
-
-		foreach ( var child in toRemove )
-		{
-			child.Destroy();
-		}
-
-		foreach ( var child in view.VisibleChildren )
-		{
-			_children.Add( new TrackWidget( TrackList, this, child ) );
-		}
-
 		UpdateLockedState();
 	}
 

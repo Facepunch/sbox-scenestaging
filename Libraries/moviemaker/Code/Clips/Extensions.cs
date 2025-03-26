@@ -15,19 +15,19 @@ public static class ClipExtensions
 	/// </summary>
 	public static int GetDepth( this ITrack track ) => track.Parent is null ? 0 : track.Parent.GetDepth() + 1;
 
-	public static (IReferenceTrack ReferenceTrack, IReadOnlyList<string> PropertyNames) GetPath( this IPropertyTrack propertyTrack )
+	public static (IReferenceTrack ReferenceTrack, IReadOnlyList<string> PropertyNames) GetPath( this ITrack track )
 	{
-		var names = new List<string> { propertyTrack.Name };
+		var names = new List<string>();
 
-		while ( propertyTrack.Parent is IPropertyTrack parentProperty )
+		while ( track is not IReferenceTrack )
 		{
-			propertyTrack = parentProperty;
-			names.Add( propertyTrack.Name );
+			names.Add( track.Name );
+			track = track.Parent;
 		}
 
 		names.Reverse();
 
-		return ((IReferenceTrack)propertyTrack.Parent, names);
+		return ((IReferenceTrack)track, names);
 	}
 
 	/// <summary>

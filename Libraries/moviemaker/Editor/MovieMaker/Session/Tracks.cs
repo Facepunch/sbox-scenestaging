@@ -27,6 +27,8 @@ public interface ITrackListView
 
 	private static IEnumerable<ITrackView> EnumerateDescendants( ITrackView track ) =>
 		[track, ..track.VisibleChildren.SelectMany( EnumerateDescendants )];
+
+	void Update();
 }
 
 /// <summary>
@@ -112,7 +114,7 @@ file sealed class DefaultTrackListView : ITrackListView
 {
 	public Session Session { get; }
 
-	private readonly List<DefaultTrackView> _rootTracks = new();
+	private readonly SynchronizedList<IProjectTrack, DefaultTrackView> _rootTracks;
 
 	public IReadOnlyList<ITrackView> RootTracks => _rootTracks;
 
@@ -121,36 +123,34 @@ file sealed class DefaultTrackListView : ITrackListView
 	public DefaultTrackListView( Session session )
 	{
 		Session = session;
+
+		_rootTracks = new SynchronizedList<IProjectTrack, DefaultTrackView>(
+			AddRootTrack, RemoveRootTrack, UpdateRootTrack );
+
 		Update();
 	}
 
-	public bool Update()
+	private DefaultTrackView AddRootTrack( IProjectTrack source ) =>
+		new ( this, null, source, Session.Binder.Get( source ) );
+
+	private void RemoveRootTrack( IProjectTrack source, DefaultTrackView item ) =>
+		item.OnRemoved();
+
+	private bool UpdateRootTrack( IProjectTrack source, DefaultTrackView item ) =>
+		item.Update();
+
+	public void Update()
 	{
-		_rootTracks.RemoveAll( x => !Session.Project.RootTracks.Contains( x.Track ) );
+		if ( !_rootTracks.Update( Session.Project.RootTracks ) ) return;
 
-		foreach ( var track in Session.Project.RootTracks )
-		{
-			if ( _rootTracks.Any( x => x.Track == track ) ) continue;
-
-			_rootTracks.Add( new DefaultTrackView( this, null, track, Session.Binder.Get( track ) ) );
-		}
-
-		_rootTracks.Sort();
-
-		var changed = false;
 		var position = 0f;
 
 		foreach ( var track in _rootTracks )
 		{
-			changed |= track.Update( ref position );
+			track.UpdatePosition( ref position );
 		}
 
-		if ( changed )
-		{
-			Changed?.Invoke( this );
-		}
-
-		return changed;
+		Changed?.Invoke( this );
 	}
 }
 
@@ -161,7 +161,7 @@ file sealed class DefaultTrackView
 
 	ITrackListView ITrackView.TrackList => TrackList;
 
-	public float Position { get; private set; }
+	public float Position { get; private set; } = -1f;
 
 	public ITrackView? Parent { get; }
 	public IProjectTrack Track { get; }
@@ -173,7 +173,7 @@ file sealed class DefaultTrackView
 	public bool IsExpanded { get; set; } = true;
 	public bool IsLockedSelf { get; set; }
 
-	private readonly List<DefaultTrackView> _children = new();
+	private readonly SynchronizedList<IProjectTrack, DefaultTrackView> _children;
 
 	public IReadOnlyList<ITrackView> VisibleChildren => _children;
 
@@ -188,9 +188,20 @@ file sealed class DefaultTrackView
 		Parent = parent;
 		Track = track;
 		Target = target;
+
+		_children = new SynchronizedList<IProjectTrack, DefaultTrackView>(
+			AddChildTrack, RemoveChildTrack, UpdateChildTrack );
 	}
 
-	public bool Update( ref float position )
+	private DefaultTrackView AddChildTrack( IProjectTrack source ) =>
+		new( TrackList, this, source, TrackList.Session.Binder.Get( source ) );
+
+	private void RemoveChildTrack( IProjectTrack source, DefaultTrackView item ) => item.OnRemoved();
+	private bool UpdateChildTrack( IProjectTrack source, DefaultTrackView item ) => item.Update();
+
+	public bool Update() => _children.Update( IsExpanded ? Track.Children : [] );
+
+	public bool UpdatePosition( ref float position )
 	{
 		var changed = !Position.Equals( position );
 
@@ -198,51 +209,22 @@ file sealed class DefaultTrackView
 
 		position += DopeSheet.TrackHeight;
 
-		var toRemove = IsExpanded
-			? _children.Where( x => !Track.Children.Contains( x.Track ) ).ToArray()
-			: _children.ToArray();
-
-		foreach ( var track in toRemove )
+		foreach ( var child in _children )
 		{
-			_children.Remove( track );
-			track.OnRemoved();
-
-			changed = true;
+			changed |= child.UpdatePosition( ref position );
 		}
 
-		if ( IsExpanded )
-		{
-			foreach ( var track in Track.Children )
-			{
-				if ( _children.Any( x => x.Track == track ) ) continue;
-
-				_children.Add( new DefaultTrackView( TrackList, this, track, TrackList.Session.Binder.Get( track ) ) );
-
-				changed = true;
-			}
-
-			_children.Sort();
-
-			foreach ( var child in _children )
-			{
-				changed |= child.Update( ref position );
-			}
-		}
-
-		if ( changed )
-		{
-			Changed?.Invoke( this );
-		}
+		if ( changed ) Changed?.Invoke( this );
 
 		return changed;
 	}
 
-	private void OnRemoved()
+	private bool _removed;
+
+	internal void OnRemoved()
 	{
-		foreach ( var child in _children )
-		{
-			child.OnRemoved();
-		}
+		if ( _removed ) return;
+		_removed = true;
 
 		_children.Clear();
 
