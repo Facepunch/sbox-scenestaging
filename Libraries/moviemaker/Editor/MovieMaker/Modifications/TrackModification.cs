@@ -44,24 +44,53 @@ public interface ITrackModification<TValue, in TOptions> : ITrackModification<TV
 		Apply( original, selection, (TOptions)options );
 }
 
+/// <summary>
+/// When added to a class that derives from <see cref="IMovieModification"/>, adds a button to the
+/// toolbar that starts performing that modification when pressed.
+/// </summary>
+/// <param name="title"></param>
 [AttributeUsage( AttributeTargets.Class )]
 public sealed class MovieModificationAttribute( string title ) : Attribute
 {
+	/// <summary>
+	/// Tooltip title text.
+	/// </summary>
 	public string Title { get; } = title;
+
+	/// <summary>
+	/// Button icon.
+	/// </summary>
 	public string Icon { get; init; } = "edit";
+
+	/// <summary>
+	/// Button sort order, defaults to <c>0</c>.
+	/// </summary>
 	public int Order { get; init; }
 }
 
 public record ModificationSnapshot( Type Type, IModificationOptions Options, ImmutableDictionary<Guid, ITrackModification>? Tracks = null );
 
+/// <summary>
+/// Describes an edit being made to one or more tracks in a movie.
+/// </summary>
 public interface IMovieModification
 {
+	/// <summary>
+	/// Contains any state about this modification that we'd want to store in the undo stack.
+	/// </summary>
 	IModificationOptions Options { get; set; }
 
 	bool HasChanges { get; }
 	MovieTimeRange? SourceTimeRange { get; }
 
+	/// <summary>
+	/// Called after this instance was created to perform any initialization.
+	/// </summary>
 	void Initialize( MotionEditMode editMode );
+
+	/// <summary>
+	/// Add any custom controls that modify <see cref="Options"/> to <paramref name="group"/>.
+	/// </summary>
 	void AddControls( ToolbarGroup group );
 
 	/// <summary>
@@ -77,15 +106,17 @@ public interface IMovieModification
 
 	public ModificationSnapshot Snapshot() => new( GetType(), Options );
 
-	public void Restore( ModificationSnapshot snapshot )
-	{
-		Options = snapshot.Options;
-	}
+	public void Restore( ModificationSnapshot snapshot ) => Options = snapshot.Options;
 }
 
+/// <summary>
+/// A <see cref="IMovieModification"/> with a particular option type <typeparamref name="T"/>.
+/// </summary>
+/// <typeparam name="T">Option type, contains any state about this modification that we'd want to store in the undo stack.</typeparam>
 public interface IMovieModification<T> : IMovieModification
 	where T : IModificationOptions
 {
+	/// <inheritdoc cref="IMovieModification.Options"/>
 	new T Options { get; set; }
 
 	IModificationOptions IMovieModification.Options
@@ -95,6 +126,12 @@ public interface IMovieModification<T> : IMovieModification
 	}
 }
 
+/// <summary>
+/// A <see cref="IMovieModification"/>
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="defaultOptions"></param>
+/// <param name="autoCreate"></param>
 public abstract class PerTrackModification<T>( T defaultOptions, bool autoCreate ) : IMovieModification<T>
 	where T : IModificationOptions
 {
