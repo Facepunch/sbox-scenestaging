@@ -253,8 +253,7 @@ public class DopeSheet : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Middle )
 		{
-			//var delta = Application.CursorDelta.x;
-			//TrackList.ScrollBy( delta.x );
+			Session.ScrollBy( delta.x, false );
 		}
 
 		if ( e.ButtonState == MouseButtons.Right )

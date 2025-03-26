@@ -33,7 +33,6 @@ public partial class TrackListWidget : Widget
 		SceneEditorSession = SceneEditorSession.Resolve( Session.Player.Scene );
 		SceneEditorSession.Selection.OnItemAdded += OnSelectionAdded;
 
-		MouseTracking = true;
 		AcceptDrops = true;
 
 		Load( Session.Project );
@@ -100,17 +99,6 @@ public partial class TrackListWidget : Widget
 		if ( GetTrackHash() == _lastTrackHash ) return;
 
 		RebuildTracks();
-	}
-
-	public TrackWidget? FindTrack( IProjectTrack track )
-	{
-		return Tracks.FirstOrDefault( x => x.View.Track == track );
-	}
-
-	public void ScrollBy( float x )
-	{
-		Session.ScrollBy( x, false );
-		Update();
 	}
 
 	protected override void OnPaint()

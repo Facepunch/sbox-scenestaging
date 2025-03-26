@@ -101,6 +101,8 @@ public sealed class DopeSheetPanel : MovieEditorPanel
 	{
 		DopeSheet = new DopeSheet( session );
 
+		MouseTracking = true;
+
 		Layout.Add( DopeSheet );
 
 		var playbackGroup = ToolBar.AddGroup( true );
