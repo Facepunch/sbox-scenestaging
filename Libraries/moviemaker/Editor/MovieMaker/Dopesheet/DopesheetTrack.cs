@@ -23,6 +23,18 @@ public partial class DopeSheetTrack : GraphicsItem
 		View = view;
 
 		HoverEvents = true;
+
+		View.ValueChanged += View_ValueChanged;
+	}
+
+	protected override void OnDestroy()
+	{
+		View.ValueChanged -= View_ValueChanged;
+	}
+
+	private void View_ValueChanged( ITrackView view )
+	{
+		UpdateBlockItems();
 	}
 
 	internal void UpdateLayout()
