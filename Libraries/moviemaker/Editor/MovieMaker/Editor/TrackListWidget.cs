@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Sandbox.MovieMaker;
 using System.Linq;
+using Sandbox.UI;
 
 namespace Editor.MovieMaker;
 
@@ -41,6 +42,8 @@ public partial class TrackListWidget : Widget
 			Layout = Layout.Column(),
 			FixedWidth = Width
 		};
+
+		_trackContainer.Layout.Margin = new Margin( 4f, 0f );
 
 		_rootTracks = new SynchronizedList<ITrackView, TrackWidget>(
 			AddRootTrack, RemoveRootTrack, UpdateChildTrack );

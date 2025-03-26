@@ -25,15 +25,6 @@ public abstract partial class BlockItem : GraphicsItem
 
 			_block = value;
 
-			try
-			{
-				ToolTip = value?.ToString();
-			}
-			catch ( Exception ex )
-			{
-				Log.Error( ex );
-			}
-
 			if ( _block is IDynamicBlock newBlock )
 			{
 				newBlock.Changed += Block_Changed;

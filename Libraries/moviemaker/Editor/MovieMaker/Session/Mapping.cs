@@ -166,22 +166,37 @@ partial class Session
 
 		var dt = Math.Min( (float)deltaTime.Absolute.TotalSeconds, 1f );
 
-		var renderers = Project.Tracks
-			.OfType<IReferenceTrack<SkinnedModelRenderer>>()
-			.Select( x => Binder.Get( x ).Value )
-			.OfType<SkinnedModelRenderer>();
+		using var sceneScope = Player.Scene.Push();
 
-		foreach ( var renderer in renderers )
+		foreach ( var controller in Binder.GetComponents<PlayerController>( Project ) )
 		{
-			if ( renderer.SceneModel is not { } model ) continue;
+			((IScenePhysicsEvents)controller).PrePhysicsStep();
+			((IScenePhysicsEvents)controller).PostPhysicsStep();
 
-			if ( dt > 0f )
+			if ( controller.Renderer is { } renderer )
 			{
-				model.PlaybackRate = renderer.PlaybackRate;
-				model.Update( dt );
-			}
+				controller.UpdateAnimation( renderer );
 
-			model.PlaybackRate = IsEditorScene ? 0f : 1f;
+				UpdateAnimationPlaybackRate( renderer, dt );
+			}
 		}
+
+		foreach ( var renderer in Binder.GetComponents<SkinnedModelRenderer>( Project ) )
+		{
+			UpdateAnimationPlaybackRate( renderer, dt );
+		}
+	}
+
+	private void UpdateAnimationPlaybackRate( SkinnedModelRenderer renderer, float dt )
+	{
+		if ( renderer.SceneModel is not { } model ) return;
+
+		if ( dt > 0f )
+		{
+			model.PlaybackRate = renderer.PlaybackRate;
+			model.Update( dt );
+		}
+
+		model.PlaybackRate = IsEditorScene ? 0f : 1f;
 	}
 }

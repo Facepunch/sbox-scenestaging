@@ -120,19 +120,32 @@ public sealed class MoviePlayer : Component
 	/// </summary>
 	private void UpdateAnimationPlaybackRate( IClip clip )
 	{
-		var renderers = clip.Tracks
-			.OfType<IReferenceTrack<SkinnedModelRenderer>>()
-			.Select( x => Binder.Get( x ).Value )
-			.OfType<SkinnedModelRenderer>();
-
-		foreach ( var renderer in renderers )
+		foreach ( var rigidbody in Binder.GetComponents<Rigidbody>( clip ) )
 		{
-			if ( renderer.SceneModel is not { } model ) continue;
-
-			// We're assuming SkinnedModelRenderer.PlaybackRate persists even if we change SceneModel.PlaybackRate,
-			// so we don't stomp relative playback rates
-
-			model.PlaybackRate = renderer.PlaybackRate * TimeScale;
+			rigidbody.MotionEnabled = false;
 		}
+
+		foreach ( var controller in Binder.GetComponents<PlayerController>( clip ) )
+		{
+			if ( controller.Renderer is { } renderer )
+			{
+				UpdateAnimationPlaybackRate( renderer );
+			}
+		}
+
+		foreach ( var renderer in Binder.GetComponents<SkinnedModelRenderer>( clip ) )
+		{
+			UpdateAnimationPlaybackRate( renderer );
+		}
+	}
+
+	private void UpdateAnimationPlaybackRate( SkinnedModelRenderer renderer )
+	{
+		if ( renderer.SceneModel is not { } model ) return;
+
+		// We're assuming SkinnedModelRenderer.PlaybackRate persists even if we change SceneModel.PlaybackRate,
+		// so we don't stomp relative playback rates
+
+		model.PlaybackRate = renderer.PlaybackRate * TimeScale;
 	}
 }

@@ -158,7 +158,7 @@ public partial class TrackWidget : Widget
 		{
 			var canModify = !View.IsLocked;
 
-			var defaultColor = DopeSheet.Colors.ChannelBackground.Lighten( canModify ? 0f : 0.2f );
+			var defaultColor = DopeSheet.Colors.ChannelBackground.Lighten( canModify ? 0f : 0.1f );
 			var hoveredColor = defaultColor.Lighten( 0.1f );
 			var selectedColor = Color.Lerp( defaultColor, Theme.Primary, canModify ? 0.5f : 0.2f );
 
