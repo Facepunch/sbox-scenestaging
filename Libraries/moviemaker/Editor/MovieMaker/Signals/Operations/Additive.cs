@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -31,6 +32,7 @@ partial record PropertySignal<T>
 		return new ToGlobalOperation<T>( a, b );
 	}
 
+	[JsonIgnore]
 	public virtual bool IsIdentity => false;
 }
 
