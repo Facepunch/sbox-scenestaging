@@ -27,7 +27,6 @@ public class MovieEditorPanel : Widget
 public sealed class ListPanel : MovieEditorPanel
 {
 	public TrackListWidget TrackList { get; }
-	public ScrollArea ScrollArea { get; }
 
 	private ComboBox PlayerDropdown { get; }
 	private ComboBox ClipDropDown { get; }
@@ -35,12 +34,9 @@ public sealed class ListPanel : MovieEditorPanel
 	public ListPanel( MovieEditor parent, Session session )
 		: base( parent )
 	{
-		ScrollArea = new ScrollArea( this );
-		TrackList = new TrackListWidget( ScrollArea, session );
+		TrackList = new TrackListWidget( this, session );
 
-		ScrollArea.Canvas = TrackList;
-
-		Layout.Add( ScrollArea );
+		Layout.Add( TrackList );
 
 		MinimumWidth = 250;
 

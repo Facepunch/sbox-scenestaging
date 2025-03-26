@@ -11,6 +11,7 @@ namespace Editor.MovieMaker;
 public interface ITrackListView
 {
 	IReadOnlyList<ITrackView> RootTracks { get; }
+	int StateHash { get; }
 
 	/// <summary>
 	/// Invoked when tracks are added or removed.
@@ -45,12 +46,15 @@ public interface ITrackView
 	bool IsLockedSelf { get; set; }
 
 	float Position { get; }
+	float Height { get; }
 
 	ITrackView? Parent { get; }
 
 	IProjectTrack Track { get; }
 	ITrackTarget Target { get; }
 	IReadOnlyList<ITrackView> VisibleChildren { get; }
+
+	int StateHash { get; }
 
 	/// <summary>
 	/// Invoked when properties of this track are changed.
@@ -103,16 +107,30 @@ public interface ITrackView
 partial class Session
 {
 	private ITrackListView? _trackList;
+	private float _trackListOffset;
 
 	/// <summary>
 	/// Which tracks should be visible in the track list / dope sheet.
 	/// </summary>
 	public ITrackListView TrackList => _trackList ??= new DefaultTrackListView( this );
+
+	public float TrackListOffset
+	{
+		get => _trackListOffset;
+		set
+		{
+			if ( _trackListOffset.Equals( value ) ) return;
+
+			_trackListOffset = value;
+			ViewChanged?.Invoke();
+		}
+	}
 }
 
 file sealed class DefaultTrackListView : ITrackListView
 {
 	public Session Session { get; }
+	public int StateHash { get; private set; }
 
 	private readonly SynchronizedList<IProjectTrack, DefaultTrackView> _rootTracks;
 
@@ -144,11 +162,15 @@ file sealed class DefaultTrackListView : ITrackListView
 		if ( !_rootTracks.Update( Session.Project.RootTracks ) ) return;
 
 		var position = 0f;
+		var hashCode = new HashCode();
 
 		foreach ( var track in _rootTracks )
 		{
+			hashCode.Add( track );
 			track.UpdatePosition( ref position );
 		}
+
+		StateHash = hashCode.ToHashCode();
 
 		Changed?.Invoke( this );
 	}
@@ -162,6 +184,7 @@ file sealed class DefaultTrackView
 	ITrackListView ITrackView.TrackList => TrackList;
 
 	public float Position { get; private set; } = -1f;
+	public float Height { get; private set; } = -1f;
 
 	public ITrackView? Parent { get; }
 	public IProjectTrack Track { get; }
@@ -176,6 +199,8 @@ file sealed class DefaultTrackView
 	private readonly SynchronizedList<IProjectTrack, DefaultTrackView> _children;
 
 	public IReadOnlyList<ITrackView> VisibleChildren => _children;
+
+	public int StateHash { get; private set; }
 
 	public event Action<ITrackView>? Changed;
 	public event Action<ITrackView>? Removed;
@@ -204,6 +229,9 @@ file sealed class DefaultTrackView
 	public bool UpdatePosition( ref float position )
 	{
 		var changed = !Position.Equals( position );
+		var hashCode = new HashCode();
+
+		hashCode.Add( Track );
 
 		Position = position;
 
@@ -211,10 +239,15 @@ file sealed class DefaultTrackView
 
 		foreach ( var child in _children )
 		{
+			hashCode.Add( child );
 			changed |= child.UpdatePosition( ref position );
 		}
 
+		Height = position - Position;
+
 		if ( changed ) Changed?.Invoke( this );
+
+		StateHash = hashCode.ToHashCode();
 
 		return changed;
 	}

@@ -24,25 +24,33 @@ public partial class TrackListWidget : Widget
 	private ITrackListView? _trackList;
 	private readonly SynchronizedList<ITrackView, TrackWidget> _rootTracks;
 
-	public TrackListWidget( ScrollArea parent, Session session )
+	private readonly Widget _trackContainer;
+
+	public TrackListWidget( ListPanel parent, Session session )
 		: base( parent )
 	{
 		Session = session;
-		Layout = Layout.Column();
-		Layout.Margin = 4f;
 
 		SceneEditorSession = SceneEditorSession.Resolve( Session.Player.Scene );
 		SceneEditorSession.Selection.OnItemAdded += OnSelectionAdded;
 
 		AcceptDrops = true;
 
+		_trackContainer = new Widget( this )
+		{
+			Layout = Layout.Column(),
+			FixedWidth = Width
+		};
+
 		_rootTracks = new SynchronizedList<ITrackView, TrackWidget>(
 			AddRootTrack, RemoveRootTrack, UpdateChildTrack );
+
+		Session.ViewChanged += Session_ViewChanged;
 
 		Load( Session.TrackList );
 	}
 
-	private TrackWidget AddRootTrack( ITrackView source ) => new( this, null, source );
+	private TrackWidget AddRootTrack( ITrackView source ) => _trackContainer.Layout.Add( new TrackWidget( this, null, source ) );
 	private void RemoveRootTrack( ITrackView source, TrackWidget item ) => item.Destroy();
 	private bool UpdateChildTrack( ITrackView source, TrackWidget item ) => item.UpdateLayout();
 
@@ -67,7 +75,38 @@ public partial class TrackListWidget : Widget
 			_trackList.Changed -= TrackList_Changed;
 		}
 
+		Session.ViewChanged -= Session_ViewChanged;
 		SceneEditorSession.Selection.OnItemAdded -= OnSelectionAdded;
+	}
+
+	protected override void OnWheel( WheelEvent e )
+	{
+		Session.TrackListOffset -= e.Delta / 5f;
+		e.Accept();
+	}
+
+	private Vector2 _lastMouseScreenPos;
+
+	protected override void OnMousePress( MouseEvent e )
+	{
+		base.OnMousePress( e );
+
+		_lastMouseScreenPos = e.ScreenPosition;
+	}
+
+	protected override void OnMouseMove( MouseEvent e )
+	{
+		base.OnMouseMove( e );
+
+		var delta = e.ScreenPosition - _lastMouseScreenPos;
+
+		if ( e.ButtonState == MouseButtons.Middle )
+		{
+			Session.TrackListOffset -= delta.y;
+			e.Accepted = true;
+		}
+
+		_lastMouseScreenPos = e.ScreenPosition;
 	}
 
 	private void Load( ITrackListView trackList )
@@ -85,20 +124,28 @@ public partial class TrackListWidget : Widget
 		TrackList_Changed( trackList );
 	}
 
+	private void Session_ViewChanged()
+	{
+		_trackContainer.Position = new Vector2( 0f, -Session.TrackListOffset );
+		_trackContainer.FixedWidth = Width;
+		_trackContainer.FixedHeight = _rootTracks
+			.Select( x => x.View.Position + x.View.Height )
+			.DefaultIfEmpty( 0f )
+			.Max();
+	}
+
 	private void TrackList_Changed( ITrackListView trackList )
 	{
 		_rootTracks.Update( trackList.RootTracks );
 
-		Layout.Clear( false );
-		Layout.AddSpacingCell( 32f );
+		_trackContainer.Layout.Clear( false );
 
 		foreach ( var track in _rootTracks )
 		{
-			Layout.Add( track );
+			_trackContainer.Layout.Add( track );
 		}
 
-		Layout.AddStretchCell();
-		Layout.AddSpacingCell( 32f );
+		Session_ViewChanged();
 	}
 
 	protected override void OnPaint()

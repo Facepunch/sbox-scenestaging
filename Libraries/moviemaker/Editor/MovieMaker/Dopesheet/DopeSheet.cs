@@ -90,7 +90,7 @@ public class DopeSheet : GraphicsView
 	{
 		UpdateScrubBars();
 
-		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.FrameRate );
+		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.FrameRate, Session.TrackList.StateHash );
 
 		if ( state != _lastState )
 		{
@@ -116,6 +116,7 @@ public class DopeSheet : GraphicsView
 
 	private void UpdateView()
 	{
+		UpdateSceneFrame();
 		UpdateScrubBars();
 
 		UpdateCurrentPosition( Session.CurrentPointer );
@@ -170,7 +171,7 @@ public class DopeSheet : GraphicsView
 	void UpdateSceneFrame()
 	{
 		var x = Session.TimeToPixels( Session.TimeOffset );
-		SceneRect = new Rect( x - 8, 0, Width - 4, Height - 4 ); // I don't know where the fuck this 4 comes from, but it stops it having some scroll
+		SceneRect = new Rect( x - 8, Session.TrackListOffset, Width - 4, Height - 4 ); // I don't know where the fuck this 4 comes from, but it stops it having some scroll
 		_gridItem.SceneRect = SceneRect;
 		_gridItem.Update();
 
@@ -241,6 +242,9 @@ public class DopeSheet : GraphicsView
 			e.Accept();
 			return;
 		}
+
+		Session.TrackListOffset -= e.Delta / 5f;
+		e.Accept();
 	}
 
 	private Vector2 _lastMouseLocalPos;
