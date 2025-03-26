@@ -53,6 +53,8 @@ public sealed class ToolbarWidget : Widget
 	{
 		Layout.Clear( false );
 
+		_groups.RemoveAll( x => !x.IsValid );
+
 		foreach ( var group in _groups.Where( x => !x.AlignRight ) )
 		{
 			Layout.Add( group );
