@@ -157,7 +157,9 @@ public sealed class ClipboardBlendModification<T>( ImmutableArray<PropertyBlock<
 				.Where( x => timeRange.Contains( x.TimeRange + options.Offset ) )
 				.AsSignal();
 
-			yield return Blend( originalSignal, overlaySignal, relativeTo, timeRange, selection, options );
+			var clamped = timeRange.Clamp( selection.TotalTimeRange );
+
+			yield return Blend( originalSignal, overlaySignal, relativeTo, clamped, selection, options );
 		}
 	}
 }
