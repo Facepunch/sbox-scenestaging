@@ -1,4 +1,5 @@
-﻿using Editor.MovieMaker.BlockDisplays;
+﻿using System.Linq;
+using Editor.MovieMaker.BlockDisplays;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -12,7 +13,7 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	private bool? _canCreateItem;
 
-	private readonly List<(IPropertyBlock Block, MovieTime Offset)> _blocks = new();
+	private readonly List<(IPropertyBlock Block, MovieTime? Offset)> _visibleBlocks = new();
 	private readonly List<BlockItem> _blockItems = new();
 
 	public IReadOnlyList<BlockItem> BlockItems => _blockItems;
@@ -23,13 +24,21 @@ public partial class DopeSheetTrack : GraphicsItem
 		View = view;
 
 		HoverEvents = true;
+		ToolTip = view.Description;
 
+		View.Changed += View_Changed;
 		View.ValueChanged += View_ValueChanged;
 	}
 
 	protected override void OnDestroy()
 	{
+		View.Changed -= View_Changed;
 		View.ValueChanged -= View_ValueChanged;
+	}
+
+	private void View_Changed( ITrackView view )
+	{
+		UpdateBlockItems();
 	}
 
 	private void View_ValueChanged( ITrackView view )
@@ -43,8 +52,8 @@ public partial class DopeSheetTrack : GraphicsItem
 
 		var position = View.Position;
 
-		Position = new Vector2( 0, position + 1f );
-		Size = new Vector2( 50000, DopeSheet.TrackHeight - 2f );
+		Position = new Vector2( 0, position );
+		Size = new Vector2( 50000, DopeSheet.TrackHeight );
 
 		UpdateBlockItems();
 	}
@@ -76,45 +85,30 @@ public partial class DopeSheetTrack : GraphicsItem
 		}
 	}
 
-	private void GetBlocks( List<(IPropertyBlock Block, MovieTime Offset)> result )
-	{
-		if ( View.Track is not IProjectPropertyTrack propertyTrack ) return;
-
-		foreach ( var block in propertyTrack.Blocks )
-		{
-			result.Add( (block, default) );
-		}
-
-		foreach ( var preview in Session.EditMode?.GetPreviewBlocks( propertyTrack ) ?? [] )
-		{
-			result.Add( (preview, Session.EditMode!.PreviewBlockOffset) );
-		}
-	}
-
 	public void UpdateBlockItems()
 	{
+		_visibleBlocks.Clear();
+		_visibleBlocks.AddRange( View.Blocks );
+
 		if ( _canCreateItem is false )
 		{
 			ClearBlockItems();
 			return;
 		}
 
-		_blocks.Clear();
-		GetBlocks( _blocks );
-
-		while ( _blockItems.Count > _blocks.Count )
+		while ( _blockItems.Count > _visibleBlocks.Count )
 		{
 			_blockItems[^1].Destroy();
 			_blockItems.RemoveAt( _blockItems.Count - 1 );
 		}
 
-		for ( var i = 0; i < _blocks.Count; ++i )
+		for ( var i = 0; i < _visibleBlocks.Count; ++i )
 		{
-			var (block, offset) = _blocks[i];
+			var (block, offset) = _visibleBlocks[i];
 
 			if ( _blockItems.Count <= i )
 			{
-				if ( BlockItem.Create( this, block, offset ) is not { } newPreview )
+				if ( BlockItem.Create( this, block, offset ?? default ) is not { } newPreview )
 				{
 					_canCreateItem = false;
 					return;
@@ -126,7 +120,7 @@ public partial class DopeSheetTrack : GraphicsItem
 			var item = BlockItems[i];
 
 			item.Block = block;
-			item.Offset = offset;
+			item.Offset = offset ?? default;
 			item.Layout();
 		}
 	}

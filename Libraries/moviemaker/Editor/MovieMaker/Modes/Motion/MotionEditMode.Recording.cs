@@ -3,6 +3,7 @@ using Sandbox.MovieMaker;
 using System.Globalization;
 using System.Text.Json.Nodes;
 using System.Linq;
+using System.Text;
 
 namespace Editor.MovieMaker;
 
@@ -18,6 +19,27 @@ partial class MotionEditMode
 	private MovieTime _recordingStartTime;
 	private MovieTime _recordingLastTime;
 
+	private sealed class FilteredClip : IClip
+	{
+		private readonly ImmutableArray<ITrack> _tracks;
+		private readonly MovieClipRecorder _recorder;
+		private readonly ImmutableDictionary<Guid, IReferenceTrack> _referenceTracks;
+
+		public FilteredClip( IEnumerable<ITrack> tracks, MovieClipRecorder recorder )
+		{
+			_tracks = [..tracks];
+			_recorder = recorder;
+			_referenceTracks = _tracks.OfType<IReferenceTrack>()
+				.ToImmutableDictionary( x => x.Id, x => x );
+		}
+
+		public IEnumerable<ITrack> Tracks => _tracks;
+
+		public MovieTime Duration => _recorder.Duration + 1d;
+
+		public IReferenceTrack? GetTrack( Guid trackId ) => _referenceTracks.GetValueOrDefault( trackId );
+	}
+
 	protected override bool OnStartRecording()
 	{
 		var options = new RecorderOptions( Project.SampleRate );
@@ -32,6 +54,7 @@ partial class MotionEditMode
 			_recorder.Tracks.Add( (IProjectPropertyTrack)view.Track );
 		}
 
+		Session.Player.Clip = new FilteredClip( Session.Project.Tracks.Except( Session.TrackList.EditableTracks.Select( x => x.Track ) ), _recorder );
 		Session.IsPlaying = true;
 
 		return true;
@@ -47,6 +70,8 @@ partial class MotionEditMode
 		{
 			Session.IsPlaying = false;
 		}
+
+		Session.Player.Clip = Session.Project;
 
 		foreach ( var trackRecorder in recorder.Tracks )
 		{

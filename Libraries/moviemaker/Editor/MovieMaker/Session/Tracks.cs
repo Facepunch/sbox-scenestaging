@@ -19,6 +19,7 @@ public interface ITrackListView
 	event Action<ITrackListView> Changed;
 
 	public IEnumerable<ITrackView> AllTracks => RootTracks.SelectMany( EnumerateDescendants );
+	public IEnumerable<ITrackView> VisibleTracks => RootTracks.SelectMany( EnumerateVisibleDescendants );
 
 	public IEnumerable<ITrackView> EditableTracks =>
 		AllTracks.Where( x => x is { IsLocked: false, Target: ITrackProperty { CanWrite: true } } );
@@ -27,7 +28,12 @@ public interface ITrackListView
 	public ITrackView? FindEditable( IProjectTrack track ) => EditableTracks.FirstOrDefault( x => x.Track == track );
 
 	private static IEnumerable<ITrackView> EnumerateDescendants( ITrackView track ) =>
-		[track, ..track.VisibleChildren.SelectMany( EnumerateDescendants )];
+		[track, ..track.Children.SelectMany( EnumerateDescendants )];
+
+	private static IEnumerable<ITrackView> EnumerateVisibleDescendants( ITrackView track ) =>
+		track.IsExpanded
+			? [track, ..track.Children.SelectMany( EnumerateVisibleDescendants )]
+			: [track];
 
 	void Update();
 }
@@ -39,20 +45,32 @@ public interface ITrackView
 {
 	ITrackListView TrackList { get; }
 
-	bool IsLocked { get; }
 	bool IsExpanded { get; set; }
-	bool HasChildren { get; }
-
 	bool IsLockedSelf { get; set; }
+	bool IsPlaybackDisabled { get; set; }
+
+	public bool IsLocked => IsLockedSelf || Parent?.IsLocked is true;
 
 	float Position { get; }
 	float Height { get; }
 
 	ITrackView? Parent { get; }
 
+	public string Title => Track.Name;
+	public string Description
+	{
+		get
+		{
+			var path = Track.GetPath();
+			string[] propertyNames = [path.ReferenceTrack.Name, .. path.PropertyNames];
+			return string.Join( $" \u2192 ", propertyNames );
+		}
+	}
+
 	IProjectTrack Track { get; }
 	ITrackTarget Target { get; }
-	IReadOnlyList<ITrackView> VisibleChildren { get; }
+	IReadOnlyList<ITrackView> Children { get; }
+	IEnumerable<(IPropertyBlock Block, MovieTime? Offset)> Blocks { get; }
 
 	int StateHash { get; }
 
@@ -168,6 +186,8 @@ file sealed class DefaultTrackListView : ITrackListView
 		{
 			track.UpdatePosition( ref position );
 			hashCode.Add( track.StateHash );
+
+			position += 8f;
 		}
 
 		StateHash = hashCode.ToHashCode();
@@ -190,11 +210,10 @@ file sealed class DefaultTrackView
 	public IProjectTrack Track { get; }
 	public ITrackTarget Target { get; }
 
-	public bool IsLocked => IsLockedSelf || Parent?.IsLocked is true;
-	public bool HasChildren => Track.Children.Count > 0;
-
 	private bool _isExpanded;
 	private bool _isLockedSelf;
+
+	private bool _wasExpanded;
 
 	public bool IsExpanded
 	{
@@ -224,15 +243,34 @@ file sealed class DefaultTrackView
 		}
 	}
 
+	public bool IsPlaybackDisabled { get; set; }
+
 	private readonly SynchronizedList<IProjectTrack, DefaultTrackView> _children;
 
-	public IReadOnlyList<ITrackView> VisibleChildren => _children;
+	public IReadOnlyList<ITrackView> Children => _children;
 
 	public int StateHash { get; private set; }
 
 	public event Action<ITrackView>? Changed;
 	public event Action<ITrackView>? Removed;
 	public event Action<ITrackView>? ValueChanged;
+
+	public IEnumerable<(IPropertyBlock Block, MovieTime? Offset)> Blocks
+	{
+		get
+		{
+			if ( Track is not IProjectPropertyTrack propertyTrack ) return [];
+
+			var editMode = TrackList.Session.EditMode;
+
+			var previewBlocks = editMode?.GetPreviewBlocks( propertyTrack )
+				.Select( x => (x, (MovieTime?)editMode.PreviewBlockOffset) );
+
+			return propertyTrack.Blocks
+				.Select( x => ((IPropertyBlock)x, (MovieTime?)null) )
+				.Concat( previewBlocks ?? [] );
+		}
+	}
 
 	public DefaultTrackView( DefaultTrackListView trackList, DefaultTrackView? parent, IProjectTrack track,
 		ITrackTarget target )
@@ -261,36 +299,46 @@ file sealed class DefaultTrackView
 		}
 	}
 
-	private DefaultTrackView AddChildTrack( IProjectTrack source ) =>
-		new( TrackList, this, source, TrackList.Session.Binder.Get( source ) );
+	private DefaultTrackView AddChildTrack( IProjectTrack source )
+	{
+		return new( TrackList, this, source, TrackList.Session.Binder.Get( source ) );
+	}
 
 	private void RemoveChildTrack( IProjectTrack source, DefaultTrackView item ) => item.OnRemoved();
 	private bool UpdateChildTrack( IProjectTrack source, DefaultTrackView item ) => item.Update();
 
-	public bool Update() => _children.Update( IsExpanded ? Track.Children : [] );
+	public bool Update() => _children.Update( Track.Children ) || _wasExpanded != IsExpanded;
 
 	public bool UpdatePosition( ref float position )
 	{
-		var changed = !Position.Equals( position );
+		var changed = !Position.Equals( position ) || _wasExpanded != IsExpanded;
 		var hashCode = new HashCode();
 
 		hashCode.Add( Track );
+		hashCode.Add( IsExpanded );
 
 		Position = position;
+		_wasExpanded = IsExpanded;
 
 		position += DopeSheet.TrackHeight;
 
+		var childPosition = position;
+
 		foreach ( var child in _children )
 		{
-			changed |= child.UpdatePosition( ref position );
+			changed |= child.UpdatePosition( ref childPosition );
 			hashCode.Add( child.StateHash );
 		}
 
+		if ( IsExpanded )
+		{
+			position = childPosition;
+		}
+
 		Height = position - Position;
+		StateHash = hashCode.ToHashCode();
 
 		if ( changed ) Changed?.Invoke( this );
-
-		StateHash = hashCode.ToHashCode();
 
 		return changed;
 	}
@@ -331,7 +379,7 @@ file sealed class DefaultTrackView
 			return 1;
 		}
 
-		var childrenCompare = HasChildren.CompareTo( other.HasChildren );
+		var childrenCompare = (Children.Count > 0).CompareTo( other.Children.Count > 0 );
 		if ( childrenCompare != 0 ) return childrenCompare;
 
 		return string.Compare( Track.Name, other.Track.Name, StringComparison.Ordinal );

@@ -129,7 +129,7 @@ public partial class TrackListWidget : Widget
 		_trackContainer.Position = new Vector2( 0f, -Session.TrackListOffset );
 		_trackContainer.FixedWidth = Width;
 		_trackContainer.FixedHeight = _rootTracks
-			.Select( x => x.View.Position + x.View.Height )
+			.Select( x => x.View.Position + x.View.Height + DopeSheet.RootTrackSpacing )
 			.DefaultIfEmpty( 0f )
 			.Max();
 	}
@@ -143,6 +143,7 @@ public partial class TrackListWidget : Widget
 		foreach ( var track in _rootTracks )
 		{
 			_trackContainer.Layout.Add( track );
+			_trackContainer.Layout.AddSpacingCell( DopeSheet.RootTrackSpacing );
 		}
 
 		Session_ViewChanged();

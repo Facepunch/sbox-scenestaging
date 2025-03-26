@@ -23,7 +23,7 @@ public sealed partial class Session
 	private MovieTime _timeOffset;
 	private float _pixelsPerSecond;
 
-	public bool IsEditorScene => Player?.Scene?.IsEditor ?? true;
+	public bool IsEditorScene => Player.Scene?.IsEditor ?? true;
 	public TrackBinder Binder => Player.Binder;
 
 	public int FrameRate

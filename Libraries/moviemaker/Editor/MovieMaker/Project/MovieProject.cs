@@ -12,7 +12,7 @@ namespace Editor.MovieMaker;
 /// All the info needed to compile a <see cref="MovieClip"/>. Gets serialized
 /// and stored in <see cref="IMovieResource.EditorData"/>.
 /// </summary>
-public sealed partial class MovieProject
+public sealed partial class MovieProject : IClip
 {
 	private readonly Dictionary<Guid, ProjectSourceClip> _sourceClipDict = new();
 
@@ -47,6 +47,8 @@ public sealed partial class MovieProject
 			return _trackList;
 		}
 	}
+
+	IEnumerable<ITrack> IClip.Tracks => Tracks;
 
 	public IReadOnlyList<IProjectTrack> RootTracks
 	{
@@ -101,6 +103,8 @@ public sealed partial class MovieProject
 	{
 		return _trackDict!.GetValueOrDefault( trackId );
 	}
+
+	IReferenceTrack? IClip.GetTrack( Guid trackId ) => GetTrack( trackId ) as IReferenceTrack;
 
 	public IProjectTrack? GetTrack( ITrack track )
 	{

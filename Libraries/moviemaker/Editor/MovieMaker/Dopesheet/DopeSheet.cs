@@ -9,6 +9,7 @@ namespace Editor.MovieMaker;
 public class DopeSheet : GraphicsView
 {
 	public const float TrackHeight = 32f;
+	public const float RootTrackSpacing = 8f;
 
 	public static class Colors
 	{
@@ -183,9 +184,7 @@ public class DopeSheet : GraphicsView
 	{
 		UpdateSceneFrame();
 
-		var allTracks = Session.TrackList.AllTracks
-			.Where( x => x.Target is ITrackProperty { CanWrite: true } )
-			.Where( x => x.Track is IProjectPropertyTrack )
+		var allTracks = Session.TrackList.VisibleTracks
 			.ToHashSet();
 
 		var toRemove = _tracks.Keys
@@ -348,12 +347,14 @@ public class DopeSheet : GraphicsView
 		foreach ( var dopeTrack in _tracks.Values )
 		{
 			if ( dopeTrack.View.IsLocked ) continue;
-			if ( dopeTrack.View.Track is not IProjectPropertyTrack propertyTrack ) continue;
 			if ( mouseScenePos.y < dopeTrack.SceneRect.Top ) continue;
 			if ( mouseScenePos.y > dopeTrack.SceneRect.Bottom ) continue;
 
-			foreach ( var block in propertyTrack.Blocks )
+			foreach ( var (block, offset) in dopeTrack.View.Blocks )
 			{
+				// Don't snap on preview blocks (which have offsets)
+				if ( offset is not null ) continue;
+
 				snap.Add( SnapFlag.TrackBlock, block.TimeRange.Start );
 				snap.Add( SnapFlag.TrackBlock, block.TimeRange.End );
 			}

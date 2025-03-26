@@ -36,10 +36,7 @@ public partial class TrackWidget : Widget
 		_children = new SynchronizedList<ITrackView, TrackWidget>(
 			AddChildTrack, RemoveChildTrack, UpdateChildTrack );
 
-		var path = view.Track.GetPath();
-		string[] propertyNames = [path.ReferenceTrack.Name, .. path.PropertyNames];
-
-		ToolTip = string.Join( $" \u2192 ", propertyNames );
+		ToolTip = View.Description;
 
 		View.Changed += View_Changed;
 		View.ValueChanged += View_ValueChanged;
@@ -75,7 +72,7 @@ public partial class TrackWidget : Widget
 
 	public bool UpdateLayout()
 	{
-		_children.Update( View.VisibleChildren );
+		_children.Update( View.IsExpanded ? View.Children : [] );
 		_childLayout.Clear( false );
 
 		foreach ( var child in _children )
@@ -117,7 +114,7 @@ public partial class TrackWidget : Widget
 	{
 		var labelColor = new Color( 0.6f, 0.6f, 0.6f );
 
-		_collapseButton.Visible = view.HasChildren;
+		_collapseButton.Visible = view.Children.Count > 0;
 
 		_lockButton.Update();
 		_collapseButton.Update();
@@ -184,7 +181,7 @@ public partial class TrackWidget : Widget
 		{
 			var delta = _timeSinceInteraction.Relative.Remap( 2.0f, 0, 0, 1 );
 			Paint.SetBrush( Theme.Yellow.WithAlpha( delta ) );
-			Paint.DrawRect( new Rect( LocalRect.Right - 4, LocalRect.Top, 32, LocalRect.Height ) );
+			Paint.DrawRect( new Rect( LocalRect.Right - 4, LocalRect.Top, 32, DopeSheet.TrackHeight ) );
 			Update();
 		}
 	}
@@ -198,7 +195,7 @@ public partial class TrackWidget : Widget
 		_menu = new Menu( this );
 		_menu.AddOption( "Delete", "delete", View.Remove );
 
-		if ( View.HasChildren )
+		if ( View.Children.Count > 0 )
 		{
 			_menu.AddOption( "Delete Empty", "cleaning_services", RemoveEmptyChildren );
 			_menu.AddSeparator();

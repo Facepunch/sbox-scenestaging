@@ -108,7 +108,7 @@ public static class TrackProperty
 	public static ITrackProperty Create( ITrackTarget parent, string name, Type targetType )
 	{
 		var factory = Factories.FirstOrDefault( x => IsMatchingFactory( x, parent, name, targetType ) )
-			?? throw new Exception( "We should have at least found the UnknownPropertyFactory." );
+			?? throw new Exception( $"We should have at least found the UnknownPropertyFactory." );
 
 		return GenericHelper.Get( targetType )
 			.CreateProperty( factory, parent, name );
@@ -128,7 +128,7 @@ public static class TrackProperty
 		ITrackTarget parent, string name, Type targetType )
 	{
 		if ( factory.GetTargetType( parent, name ) is not { } valueType ) return false;
-		return valueType == targetType;
+		return valueType == targetType || valueType == typeof(Unknown);
 	}
 
 	private static ITrackPropertyFactory? CreateFactory( TypeDescription factoryType )

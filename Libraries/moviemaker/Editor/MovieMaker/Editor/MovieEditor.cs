@@ -30,6 +30,8 @@ public partial class MovieEditor : Widget
 	{
 		Session = new Session( this, player );
 
+		player.Clip = Session.Project;
+
 		Layout.Clear( true );
 
 		var splitter = new Splitter( this );
@@ -53,6 +55,11 @@ public partial class MovieEditor : Widget
 	void CloseSession()
 	{
 		Layout.Clear( true );
+
+		if ( Session is { } session )
+		{
+			session.Player.Clip = session.Player.Resource?.Compiled;
+		}
 
 		Session = null;
 		ListPanel = null;

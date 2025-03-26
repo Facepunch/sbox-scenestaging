@@ -48,15 +48,12 @@ public abstract partial class BlockItem : GraphicsItem
 
 	protected int DataHash => HashCode.Combine( Block, TimeRange.Duration, Width );
 
-	protected string? DebugText { get; set; }
-
 	private void Initialize( DopeSheetTrack parent, IPropertyBlock block, MovieTime offset )
 	{
 		base.Parent = Parent = parent;
 
 		Block = block;
 		Offset = offset;
-		ZIndex = -1;
 	}
 
 	private void Block_Changed() => Layout();
@@ -74,8 +71,8 @@ public abstract partial class BlockItem : GraphicsItem
 
 		PrepareGeometryChange();
 
-		Position = new Vector2( session.TimeToPixels( TimeRange.Start ), 0f );
-		Size = new Vector2( session.TimeToPixels( TimeRange.Duration ), Parent.Height );
+		Position = new Vector2( session.TimeToPixels( TimeRange.Start ), 1f );
+		Size = new Vector2( session.TimeToPixels( TimeRange.Duration ), Parent.Height - 2f );
 
 		Update();
 	}
@@ -91,12 +88,6 @@ public abstract partial class BlockItem : GraphicsItem
 		Paint.SetPen( Color.White.WithAlpha( 0.1f ) );
 		Paint.DrawLine( LocalRect.BottomLeft, LocalRect.TopLeft );
 		Paint.DrawLine( LocalRect.BottomRight, LocalRect.TopRight );
-
-		if ( DebugText is { } debugText )
-		{
-			Paint.SetPen( Color.White );
-			Paint.DrawText( LocalRect.TopLeft, debugText );
-		}
 	}
 }
 
