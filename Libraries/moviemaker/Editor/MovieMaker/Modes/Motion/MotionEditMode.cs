@@ -9,6 +9,7 @@ namespace Editor.MovieMaker;
 public sealed partial class MotionEditMode : EditMode
 {
 	private TimeSelection? _timeSelection;
+	private bool _newTimeSelection;
 
 	public TimeSelection? TimeSelection
 	{
@@ -107,43 +108,50 @@ public sealed partial class MotionEditMode : EditMode
 
 		if ( DopeSheet.GetItemAt( scenePos ) is TimeSelectionItem && !e.HasShift ) return;
 
-		var time = Session.ScenePositionToTime( scenePos );
-
-		Session.SetPreviewPointer( time );
-
-		TimeSelection = new TimeSelection( time, DefaultInterpolation );
-
-		_selectionStartTime = time;
+		_selectionStartTime = Session.ScenePositionToTime( scenePos );
+		_newTimeSelection = false;
 
 		e.Accepted = true;
-		return;
 	}
 
 	protected override void OnMouseMove( MouseEvent e )
 	{
-		if ( (e.ButtonState & MouseButtons.Left) != 0 && _selectionStartTime is { } dragStartTime )
-		{
-			var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ), ignore: SnapFlag.Selection );
-			var (minTime, maxTime) = Session.VisibleTimeRange;
+		if ( (e.ButtonState & MouseButtons.Left) == 0 ) return;
+		if ( _selectionStartTime is not { } dragStartTime ) return;
 
-			if ( time < minTime ) time = MovieTime.Zero;
-			if ( time > maxTime ) time = Session.Project!.Duration;
+		e.Accepted = true;
 
-			TimeSelection = new TimeSelection( (MovieTime.Min( time, dragStartTime ), MovieTime.Max( time, dragStartTime )), DefaultInterpolation );
-		}
+		var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ), ignore: SnapFlag.Selection );
+
+		// Only create a time selection when mouse has moved enough
+
+		if ( time == dragStartTime && TimeSelection is null ) return;
+
+		var (minTime, maxTime) = Session.VisibleTimeRange;
+
+		if ( time < minTime ) time = MovieTime.Zero;
+		if ( time > maxTime ) time = Session.Project!.Duration;
+
+		TimeSelection = new TimeSelection( (MovieTime.Min( time, dragStartTime ), MovieTime.Max( time, dragStartTime )), DefaultInterpolation );
+		_newTimeSelection = true;
+
+		Session.SetPreviewPointer( time );
 	}
 
 	protected override void OnMouseRelease( MouseEvent e )
 	{
-		if ( _selectionStartTime is not null && TimeSelection is { } selection )
-		{
-			_selectionStartTime = null;
+		if ( _selectionStartTime is null ) return;
+		_selectionStartTime = null;
 
-			var timeRange = selection.PeakTimeRange.Clamp( Session.VisibleTimeRange );
+		if ( !_newTimeSelection ) return;
+		_newTimeSelection = false;
 
-			Session.SetCurrentPointer( MovieTime.FromTicks( (timeRange.Start.Ticks + timeRange.End.Ticks) / 2 ) );
-			Session.ClearPreviewPointer();
-		}
+		if ( TimeSelection is not { } selection ) return;
+
+		var timeRange = selection.PeakTimeRange.Clamp( Session.VisibleTimeRange );
+
+		Session.SetCurrentPointer( MovieTime.FromTicks( (timeRange.Start.Ticks + timeRange.End.Ticks) / 2 ) );
+		Session.ClearPreviewPointer();
 	}
 
 	protected override void OnMouseWheel( WheelEvent e )
