@@ -18,6 +18,7 @@ public partial class TrackWidget : Widget
 	RealTimeSince _timeSinceInteraction = 1000;
 
 	private readonly Label? _label;
+	private readonly Button _collapseButton;
 	private readonly Button _lockButton;
 	private readonly Layout _childLayout;
 	private readonly SynchronizedList<ITrackView, TrackWidget> _children;
@@ -53,9 +54,12 @@ public partial class TrackWidget : Widget
 		_childLayout = Layout.Add( Layout.Column() );
 		_childLayout.Margin = new Margin( 8f, 0f, 0f, 0f );
 
+		_collapseButton = new CollapseButton( this );
+		row.Add( _collapseButton );
+
 		if ( !AddReferenceControl( row ) )
 		{
-			row.Margin = row.Margin with { Left = 12f };
+			row.AddSpacingCell( 8f );
 			_label = row.Add( new Label( view.Target.Name ) );
 		}
 
@@ -111,7 +115,19 @@ public partial class TrackWidget : Widget
 
 	private void View_Changed( ITrackView view )
 	{
-		UpdateLockedState();
+		var labelColor = new Color( 0.6f, 0.6f, 0.6f );
+
+		_collapseButton.Visible = view.HasChildren;
+
+		_lockButton.Update();
+		_collapseButton.Update();
+
+		if ( _label is not null )
+		{
+			_label.Color = !View.IsLocked ? labelColor : labelColor.Darken( 0.5f );
+		}
+
+		Update();
 	}
 
 	private void View_ValueChanged( ITrackView view )
@@ -126,20 +142,6 @@ public partial class TrackWidget : Widget
 		View.ValueChanged -= View_ValueChanged;
 
 		base.OnDestroyed();
-	}
-
-	private void UpdateLockedState()
-	{
-		Update();
-
-		var labelColor = new Color( 0.6f, 0.6f, 0.6f );
-
-		_lockButton.Update();
-
-		if ( _label is not null )
-		{
-			_label.Color = !View.IsLocked ? labelColor : labelColor.Darken( 0.5f );
-		}
 	}
 
 	protected override void OnDoubleClick( MouseEvent e )

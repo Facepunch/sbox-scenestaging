@@ -166,8 +166,8 @@ file sealed class DefaultTrackListView : ITrackListView
 
 		foreach ( var track in _rootTracks )
 		{
-			hashCode.Add( track );
 			track.UpdatePosition( ref position );
+			hashCode.Add( track.StateHash );
 		}
 
 		StateHash = hashCode.ToHashCode();
@@ -193,8 +193,36 @@ file sealed class DefaultTrackView
 	public bool IsLocked => IsLockedSelf || Parent?.IsLocked is true;
 	public bool HasChildren => Track.Children.Count > 0;
 
-	public bool IsExpanded { get; set; } = true;
-	public bool IsLockedSelf { get; set; }
+	private bool _isExpanded;
+	private bool _isLockedSelf;
+
+	public bool IsExpanded
+	{
+		get => _isExpanded;
+		set
+		{
+			if ( _isExpanded == value ) return;
+
+			_isExpanded = value;
+
+			SetCookie( nameof(IsExpanded), value );
+			TrackList.Update();
+		}
+	}
+
+	public bool IsLockedSelf
+	{
+		get => _isLockedSelf;
+		set
+		{
+			if ( _isLockedSelf == value ) return;
+
+			_isLockedSelf = value;
+
+			SetCookie( nameof(IsLockedSelf), value );
+			DispatchChanged( true );
+		}
+	}
 
 	private readonly SynchronizedList<IProjectTrack, DefaultTrackView> _children;
 
@@ -214,8 +242,23 @@ file sealed class DefaultTrackView
 		Track = track;
 		Target = target;
 
+		_isExpanded = GetCookie( nameof(IsExpanded), true );
+		_isLockedSelf = GetCookie( nameof(IsLockedSelf), false );
+
 		_children = new SynchronizedList<IProjectTrack, DefaultTrackView>(
 			AddChildTrack, RemoveChildTrack, UpdateChildTrack );
+	}
+
+	private void DispatchChanged( bool recurse )
+	{
+		Changed?.Invoke( this );
+
+		if ( !recurse ) return;
+
+		foreach ( var child in _children )
+		{
+			child.DispatchChanged( true );
+		}
 	}
 
 	private DefaultTrackView AddChildTrack( IProjectTrack source ) =>
@@ -239,8 +282,8 @@ file sealed class DefaultTrackView
 
 		foreach ( var child in _children )
 		{
-			hashCode.Add( child );
 			changed |= child.UpdatePosition( ref position );
+			hashCode.Add( child.StateHash );
 		}
 
 		Height = position - Position;
@@ -293,4 +336,10 @@ file sealed class DefaultTrackView
 
 		return string.Compare( Track.Name, other.Track.Name, StringComparison.Ordinal );
 	}
+
+	private T GetCookie<T>( string name, T fallback ) =>
+		TrackList.Session.GetCookie( $"{Track.Id}.{name}", fallback );
+
+	private void SetCookie<T>( string name, T value ) =>
+		TrackList.Session.SetCookie( $"{Track.Id}.{name}", value );
 }
