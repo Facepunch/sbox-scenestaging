@@ -36,9 +36,8 @@
         {
           "__type": "Sandbox.Tonemapping",
           "__guid": "ac2bb532-e109-4b95-82ee-c25a5666eddb",
-          "__version": 2,
+          "__version": 3,
           "AutoExposureEnabled": true,
-          "ExposureBias": 2,
           "ExposureCompensation": 0.26000005,
           "ExposureMethod": "RGB",
           "MaximumExposure": 1.66,
@@ -83,6 +82,22 @@
           "Quality": "High",
           "Radius": 128,
           "ThinCompensation": 0
+        },
+        {
+          "__type": "Sandbox.Bloom",
+          "__guid": "c899699d-212d-41b4-ae68-0d7c7ff87326",
+          "__version": 1,
+          "Gamma": 2.2,
+          "Mode": "Additive",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Strength": 1.41,
+          "Threshold": 0.52,
+          "Tint": "1,1,1,1"
         }
       ]
     },
@@ -386,7 +401,7 @@
               "ConvertHeightToNormals": false,
               "NormalScale": 1
             },
-            "compiled": null
+            "compiled": "textures/generated/gradientradial/e64f8daa8a807d0e.vtex"
           },
           "FogMode": "Enabled",
           "FogStrength": 1,
@@ -489,7 +504,7 @@
               "ConvertHeightToNormals": false,
               "NormalScale": 1
             },
-            "compiled": null
+            "compiled": "textures/generated/gradientlinear/21f237a11dca7f88.vtex"
           },
           "FogMode": "Enabled",
           "FogStrength": 1,
@@ -545,7 +560,7 @@
       "Flags": 0,
       "Name": "Object (1)",
       "Position": "212.4206,166.3121,150.8072",
-      "Rotation": "0,0.5,0,0.8660256",
+      "Rotation": "0,0,0.7071068,0.7071068",
       "Tags": "light_rect,light,light_point",
       "Enabled": true,
       "Components": [
@@ -564,15 +579,15 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "Radius": 1000,
-          "Size": "10,150"
+          "Size": "90,10"
         },
         {
           "__type": "Sandbox.CapusleLight",
           "__guid": "c89032b6-e6c7-4d2f-9fbf-7f3fbad1b595",
           "Attenuation": 1,
-          "Cookie": null,
           "FogMode": "Enabled",
           "FogStrength": 1,
+          "Length": 125,
           "LightColor": "0,1,0.83529,1",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -580,9 +595,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Radius": 1000,
-          "Shadows": true,
-          "Size": "60,5"
+          "Radius": 5
         }
       ],
       "Children": [
@@ -590,7 +603,6 @@
           "__guid": "0911f860-080b-4cc2-a453-68b626297326",
           "Flags": 0,
           "Name": "Object",
-          "Rotation": "0,0,0.7071068,0.7071068",
           "Scale": "0.5,0.2,0.2",
           "Enabled": true,
           "Components": [
