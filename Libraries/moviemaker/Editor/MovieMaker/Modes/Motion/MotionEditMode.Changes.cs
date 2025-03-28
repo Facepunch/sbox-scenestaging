@@ -21,7 +21,7 @@ partial class MotionEditMode
 		get => _modification;
 	}
 
-	public bool HasChanges => Modification?.HasChanges is true;
+	public bool HasChanges => Modification is not null;
 
 	public Color SelectionColor
 	{
@@ -80,6 +80,7 @@ partial class MotionEditMode
 		_modification = null;
 
 		DisplayAction( "clear" );
+		SelectionChanged();
 	}
 
 	private void CommitChanges()
