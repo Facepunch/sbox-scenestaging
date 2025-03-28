@@ -36,8 +36,12 @@ public class RectLight : Light
 		base.UpdateSceneObject( o );
 
 		o.Radius = Radius;
-		o.QuadraticAttenuation = 1.0f;
 		o.LightCookie = Cookie;
+
+		// Attenuation is mostly handled by LTC already, just make this mostly respect range
+		o.QuadraticAttenuation = 1.0f;
+		o.ConstantAttenuation = 0.0f;
+		o.LinearAttenuation = 0.0f;
 
 		if ( o is SceneSpotLight spot )
 		{
@@ -55,7 +59,7 @@ public class RectLight : Light
 
 		Gizmo.Draw.Color = LightColor.WithAlpha( Gizmo.IsSelected ? 0.5f : 0.05f );
 		
-		var size = new Vector3( 0, Size.y, Size.x );
+		var size = new Vector3( 0, Size.x, Size.y );
 		var box = new BBox( -size / 2, size / 2 );
 		Gizmo.Draw.LineBBox( new BBox( -size / 2, size / 2 ) );
 
@@ -65,7 +69,7 @@ public class RectLight : Light
 			return;
 
 		Gizmo.Control.BoundingBox( "Size", box, out box );
-		Size = new Vector2( box.Size.z, box.Size.y );
+		Size = new Vector2( box.Size.y, box.Size.z );
 
 	}
 }

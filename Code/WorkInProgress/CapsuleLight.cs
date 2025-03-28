@@ -14,11 +14,16 @@ public class CapusleLight : PointLight
 		base.UpdateSceneObject( o );
 
 		o.Radius = MathF.Max( Length * ( MathF.PI ), 256.0f );
+
+		// Attenuation is mostly handled by LTC already, just make this mostly respect range
+		o.QuadraticAttenuation = 0.1f;
+		o.ConstantAttenuation = 0.0f;
+		o.LinearAttenuation = 0.0f;
         
 		if ( o is SceneLight light )
 		{
 			light.Shape = SceneLight.LightShape.Capsule;
-			light.ShapeSize = new Vector2( Length, Radius );
+			light.ShapeSize = new Vector2( Radius, Length );
 		}
 	}
 

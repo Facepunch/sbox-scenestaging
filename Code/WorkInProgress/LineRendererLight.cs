@@ -64,8 +64,9 @@ public class LineRendererLight : Component, Component.ExecuteInEditor
         so.Position = ( p1 + p2 ) / 2.0f;
         so.Radius = 256 + p1.Distance( p2 );
 		so.LightColor = Renderer.Color.Evaluate( 0.5f ) * Brightness;
-		so.ShapeSize = new Vector2( p1.Distance( p2 ), Renderer.Width.Evaluate( 0.5f ) * 0.5f );
+		so.ShapeSize = new Vector2( Renderer.Width.Evaluate( 0.5f ) * 0.5f, p1.Distance( p2 ) );
 		so.Rotation = Rotation.LookAt( p2 - p1 );
 		so.Shape = SceneLight.LightShape.Capsule;
+        so.QuadraticAttenuation = 0.01f;
     }
 }
