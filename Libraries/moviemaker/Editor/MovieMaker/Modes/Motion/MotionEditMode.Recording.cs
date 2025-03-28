@@ -25,7 +25,7 @@ partial class MotionEditMode
 		private readonly MovieClipRecorder _recorder;
 		private readonly ImmutableDictionary<Guid, IReferenceTrack> _referenceTracks;
 
-		public FilteredClip( IEnumerable<ITrack> tracks, MovieClipRecorder recorder )
+		public FilteredClip( IEnumerable<IProjectTrack> tracks, MovieClipRecorder recorder )
 		{
 			_tracks = [..tracks];
 			_recorder = recorder;
@@ -54,7 +54,11 @@ partial class MotionEditMode
 			_recorder.Tracks.Add( (IProjectPropertyTrack)view.Track );
 		}
 
-		Session.Player.Clip = new FilteredClip( Session.Project.Tracks.Except( Session.TrackList.EditableTracks.Select( x => x.Track ) ), _recorder );
+		var playbackIgnoreTracks = Session.TrackList.AllTracks
+			.Where( x => !x.IsLocked )
+			.Select( x => x.Track );
+
+		Session.Player.Clip = new FilteredClip( Session.Project.Tracks.Except( playbackIgnoreTracks ), _recorder );
 		Session.IsPlaying = true;
 
 		return true;

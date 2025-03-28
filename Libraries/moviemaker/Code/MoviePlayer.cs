@@ -91,7 +91,10 @@ public sealed class MoviePlayer : Component
 
 		clip.Update( _position, Binder );
 
-		UpdateAnimationPlaybackRate( clip );
+		if ( IsPlaying )
+		{
+			UpdateAnimationPlaybackRate( clip );
+		}
 	}
 
 	protected override void OnEnabled()
