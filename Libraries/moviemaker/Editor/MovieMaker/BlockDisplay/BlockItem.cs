@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker.BlockDisplays;
 

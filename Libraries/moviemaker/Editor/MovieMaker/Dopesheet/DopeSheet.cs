@@ -350,11 +350,8 @@ public class DopeSheet : GraphicsView
 			if ( mouseScenePos.y < dopeTrack.SceneRect.Top ) continue;
 			if ( mouseScenePos.y > dopeTrack.SceneRect.Bottom ) continue;
 
-			foreach ( var (block, offset) in dopeTrack.View.Blocks )
+			foreach ( var block in dopeTrack.View.Blocks )
 			{
-				// Don't snap on preview blocks (which have offsets)
-				if ( offset is not null ) continue;
-
 				snap.Add( SnapFlag.TrackBlock, block.TimeRange.Start );
 				snap.Add( SnapFlag.TrackBlock, block.TimeRange.End );
 			}

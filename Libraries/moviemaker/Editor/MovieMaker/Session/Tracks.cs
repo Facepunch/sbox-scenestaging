@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Sandbox.MovieMaker;
+using Sandbox.MovieMaker.Properties;
 
 namespace Editor.MovieMaker;
 
@@ -12,6 +13,7 @@ public interface ITrackListView
 {
 	IReadOnlyList<ITrackView> RootTracks { get; }
 	int StateHash { get; }
+	MovieTime PreviewOffset { get; }
 
 	/// <summary>
 	/// Invoked when tracks are added or removed.
@@ -70,7 +72,8 @@ public interface ITrackView
 	IProjectTrack Track { get; }
 	ITrackTarget Target { get; }
 	IReadOnlyList<ITrackView> Children { get; }
-	IEnumerable<(IPropertyBlock Block, MovieTime? Offset)> Blocks { get; }
+	IEnumerable<IPropertyBlock> Blocks { get; }
+	IEnumerable<IPropertyBlock> PreviewBlocks { get; }
 
 	int StateHash { get; }
 
@@ -90,7 +93,7 @@ public interface ITrackView
 	event Action<ITrackView> Removed;
 
 	void Remove();
-	bool NoteInteraction();
+	bool DispatchValueChanged();
 
 	public void InspectProperty()
 	{
@@ -149,6 +152,8 @@ file sealed class DefaultTrackListView : ITrackListView
 {
 	public Session Session { get; }
 	public int StateHash { get; private set; }
+
+	public MovieTime PreviewOffset => Session.EditMode?.PreviewBlockOffset ?? default;
 
 	private readonly SynchronizedList<IProjectTrack, DefaultTrackView> _rootTracks;
 
@@ -247,6 +252,12 @@ file sealed class DefaultTrackView
 
 	private readonly SynchronizedList<IProjectTrack, DefaultTrackView> _children;
 
+	private readonly List<IPropertyBlock> _blocks = new();
+	private readonly List<IPropertyBlock> _previewBlocks = new();
+
+	private bool _blocksInvalid = true;
+	private bool _previewBlocksInvalid = true;
+
 	public IReadOnlyList<ITrackView> Children => _children;
 
 	public int StateHash { get; private set; }
@@ -255,20 +266,21 @@ file sealed class DefaultTrackView
 	public event Action<ITrackView>? Removed;
 	public event Action<ITrackView>? ValueChanged;
 
-	public IEnumerable<(IPropertyBlock Block, MovieTime? Offset)> Blocks
+	public IEnumerable<IPropertyBlock> Blocks
 	{
 		get
 		{
-			if ( Track is not IProjectPropertyTrack propertyTrack ) return [];
+			UpdateBlocks();
+			return _blocks;
+		}
+	}
 
-			var editMode = TrackList.Session.EditMode;
-
-			var previewBlocks = editMode?.GetPreviewBlocks( propertyTrack )
-				.Select( x => (x, (MovieTime?)editMode.PreviewBlockOffset) );
-
-			return propertyTrack.Blocks
-				.Select( x => ((IPropertyBlock)x, (MovieTime?)null) )
-				.Concat( previewBlocks ?? [] );
+	public IEnumerable<IPropertyBlock> PreviewBlocks
+	{
+		get
+		{
+			UpdatePreviewBlocks();
+			return _previewBlocks;
 		}
 	}
 
@@ -296,6 +308,56 @@ file sealed class DefaultTrackView
 		foreach ( var child in _children )
 		{
 			child.DispatchChanged( true );
+		}
+	}
+
+	private void UpdateBlocks()
+	{
+		if ( !_blocksInvalid ) return;
+
+		_blocksInvalid = false;
+		_blocks.Clear();
+
+		foreach ( var child in Children )
+		{
+			AddBlocks( _blocks, child.Blocks );
+		}
+
+		if ( Track is IProjectPropertyTrack propertyTrack )
+		{
+			AddBlocks( _blocks, propertyTrack.Blocks );
+		}
+	}
+
+	private void UpdatePreviewBlocks()
+	{
+		if ( !_previewBlocksInvalid ) return;
+
+		_previewBlocksInvalid = false;
+		_previewBlocks.Clear();
+
+		foreach ( var child in Children )
+		{
+			AddBlocks( _previewBlocks, child.PreviewBlocks );
+		}
+
+		if ( Track is IProjectPropertyTrack propertyTrack && TrackList.Session.EditMode is { } editMode )
+		{
+			AddBlocks( _previewBlocks, editMode.GetPreviewBlocks( propertyTrack ) );
+		}
+	}
+
+	private void AddBlocks( List<IPropertyBlock> list, IEnumerable<IPropertyBlock> blocks )
+	{
+		// TODO: clip?
+
+		var targetType = Track.TargetType;
+
+		foreach ( var block in blocks )
+		{
+			list.Add( block.PropertyType != targetType
+				? new PropertyBlock<object?>( (object?)null, block.TimeRange )
+				: block );
 		}
 	}
 
@@ -361,9 +423,14 @@ file sealed class DefaultTrackView
 		TrackList.Update();
 	}
 
-	public bool NoteInteraction()
+	public bool DispatchValueChanged()
 	{
+		_blocksInvalid = true;
+		_previewBlocksInvalid = true;
+
 		ValueChanged?.Invoke( this );
+		Parent?.DispatchValueChanged();
+
 		return true;
 	}
 

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Editor.MovieMaker.BlockDisplays;
 using Sandbox.MovieMaker;
 
@@ -87,8 +88,11 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	public void UpdateBlockItems()
 	{
+		var previewOffset = Session.EditMode?.PreviewBlockOffset ?? default;
+
 		_visibleBlocks.Clear();
-		_visibleBlocks.AddRange( View.Blocks );
+		_visibleBlocks.AddRange( View.Blocks.Select( x => (x, (MovieTime?)null) ) );
+		_visibleBlocks.AddRange( View.PreviewBlocks.Select( x => (x, (MovieTime?)previewOffset) ) );
 
 		if ( _canCreateItem is false )
 		{

@@ -58,7 +58,7 @@ partial class MotionEditMode : EditMode
 
 				propertyTrack.SetBlocks( trackSnapshot.Blocks );
 
-				Session.TrackList.Find( propertyTrack )?.NoteInteraction();
+				Session.TrackList.Find( propertyTrack )?.DispatchValueChanged();
 			}
 		}
 

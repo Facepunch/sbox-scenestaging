@@ -2,7 +2,7 @@
 
 #nullable enable
 
-public sealed class StringBlockItem : BlockItem<string>
+public sealed class StringBlockItem : BlockItem<string?>
 {
 	protected override void OnPaint()
 	{

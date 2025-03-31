@@ -137,6 +137,6 @@ partial class MovieEditor : EditorEvent.ISceneEdited
 
 	private void NoteInteraction( IProjectTrack track )
 	{
-		Session?.TrackList.Find( track )?.NoteInteraction();
+		Session?.TrackList.Find( track )?.DispatchValueChanged();
 	}
 }
