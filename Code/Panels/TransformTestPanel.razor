@@ -1,0 +1,214 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<root>
+
+    <div class="header">
+        <label class="title">UI Transform Tests</label>
+        <label class="subtitle">A bunch of UI transform tests (including nesting)</label>
+    </div>
+
+    <div class="body">
+        <div class="panel">
+            <label class="title">rotateX</label>
+            <div class="content">
+                <label class="rotate-x">rotating text!</label>
+            </div>
+            <div class="description">
+                <label>
+label {
+    transform: rotateX(30deg);
+}
+                </label>
+            </div>
+        </div>
+
+        <div class="panel">
+            <label class="title">rotateY</label>
+            <div class="content">
+                <label class="rotate-y">rotating text!</label>
+            </div>
+            <div class="description">
+                <label>
+label {
+    transform: rotateY(30deg);
+}
+                </label>
+            </div>
+        </div>
+
+        <div class="panel">
+            <label class="title">rotateZ</label>
+            <div class="content">
+                <label class="rotate-z">rotating text!</label>
+            </div>
+            <div class="description">
+                <label>
+label {
+    transform: rotateZ(30deg);
+}
+                </label>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <label class="title">scale</label>
+            <div class="content">
+                <label class="scale">scaling text!</label>
+            </div>
+            <div class="description">
+                <label>
+label {
+    transform: scale(1.5);
+}
+                </label>
+            </div>
+        </div>
+
+        <div class="panel">
+            <label class="title">scaleX</label>
+            <div class="content">
+                <label class="scale-x">scaling text!</label>
+            </div>
+            <div class="description">
+                <label>
+label {
+    transform: scaleX(1.5);
+}
+                </label>
+            </div>
+        </div>
+
+        <div class="panel">
+            <label class="title">scaleY</label>
+            <div class="content">
+                <label class="scale-y">scaling text!</label>
+            </div>
+            <div class="description">
+                <label>
+label {
+    transform: scaleY(1.5);
+}
+                </label>
+            </div>
+        </div>
+
+        <div class="panel">
+            <label class="title">skewX</label>
+            <div class="content">
+                <label class="skew-x">skewing text!</label>
+            </div>
+            <div class="description">
+                <label>
+label {
+    transform: skewX(30deg);
+}
+                </label>
+            </div>
+        </div>
+
+        <div class="panel">
+            <label class="title">skewY</label>
+            <div class="content">
+                <label class="skew-y">skewing text!</label>
+            </div>
+            <div class="description">
+                <label>
+label {
+    transform: skewY(30deg);
+}
+                </label>
+            </div>
+        </div>
+
+        <div class="panel">
+            <label class="title">rotate with nested scale</label>
+            <div class="content">
+                <div class="test-panel rotate-z">
+					<label class="scale">scaling text!</label>
+                </div>
+            </div>
+            <div class="description">
+                <label>
+div {
+    transform: rotateZ(30deg);
+    label {
+        transform: scale(1.5);
+    }
+}
+                </label>
+            </div>
+        </div>
+
+        <div class="panel">
+            <label class="title">scale with nested rotate</label>
+            <div class="content">
+                <div class="test-panel scale">
+                    <label class="rotate-z">rotating text!</label>
+                </div>
+            </div>
+            <div class="description">
+                <label>
+div {
+    transform: scale(1.5);
+    label {
+        transform: rotateZ(30deg);
+    }
+}
+                </label>
+            </div>
+        </div>
+
+        <div class="panel">
+            <label class="title">skew with rotate and scale</label>
+            <div class="content">
+                <div class="test-panel test-2 skew-x">
+                    <div class="test-panel rotate-z">
+					    <label class="scale">scaling text!</label>
+                    </div>
+                </div>
+            </div>
+            <div class="description">
+                <label>
+div {
+  transform: skewX(30deg);
+  div {
+    transform: rotateZ(30deg);    
+    label {
+      transform: scale(1.5);
+    }
+  }
+}
+                </label>
+            </div>
+        </div>
+
+        <div class="panel">
+            <label class="title">rotate with scale on hover</label>
+            <div class="content">
+                <div class="test-button">
+                    <div class="inner-panel">
+                        <label class="scale">button!</label>
+                    </div>
+                </div>
+            </div>
+            <div class="description">
+                <label>
+.button {
+  transform: scale(1);
+  .inner {
+    transform: rotateZ(30deg);    
+    label {
+      transform: scale(1.5);
+    }
+  }
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+                </label>
+            </div>
+        </div>
+    </div>
+</root>
