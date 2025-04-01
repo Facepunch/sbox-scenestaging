@@ -61,6 +61,11 @@ public sealed partial class MovieProject : IClip
 					continue;
 				}
 
+				foreach ( var subTrack in sequenceTrack.ReferenceTracks )
+				{
+					yield return subTrack;
+				}
+
 				foreach ( var subTrack in sequenceTrack.PropertyTracks )
 				{
 					yield return subTrack;
@@ -199,9 +204,9 @@ public sealed partial class MovieProject : IClip
 
 	private void CompileSequenceTrack( ProjectSequenceTrack track, CompileResult result )
 	{
-		foreach ( var propertyTrack in track.PropertyTracks )
+		foreach ( var inner in track.PropertyTracks )
 		{
-			result.Add( propertyTrack.Compile() );
+			result.Add( inner.Compile() );
 		}
 	}
 

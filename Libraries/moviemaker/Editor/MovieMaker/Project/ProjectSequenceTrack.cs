@@ -14,7 +14,8 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 	: ProjectReferenceTrack<GameObject>( project, id, name )
 {
 	private readonly List<ProjectSequenceBlock> _blocks = new();
-	private readonly HashSet<IProjectSequencePropertyTrack> _tracks = new();
+	private readonly HashSet<ICompiledReferenceTrack> _referenceTracks = new();
+	private readonly HashSet<IProjectSequencePropertyTrack> _propertyTracks = new();
 	private bool _tracksInvalid = true;
 
 	public override int Order => -2000;
@@ -23,12 +24,21 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 
 	public IReadOnlyList<ProjectSequenceBlock> Blocks => _blocks;
 
+	public IEnumerable<ICompiledReferenceTrack> ReferenceTracks
+	{
+		get
+		{
+			UpdateTracks();
+			return _referenceTracks;
+		}
+	}
+
 	public IEnumerable<IProjectSequencePropertyTrack> PropertyTracks
 	{
 		get
 		{
 			UpdateTracks();
-			return _tracks;
+			return _propertyTracks;
 		}
 	}
 
@@ -58,7 +68,8 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 		if ( !_tracksInvalid ) return;
 
 		_tracksInvalid = false;
-		_tracks.Clear();
+		_propertyTracks.Clear();
+		_referenceTracks.Clear();
 
 		var resourceGroups = Blocks
 			.GroupBy( x => x.Resource )
@@ -70,6 +81,12 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 		{
 			foreach ( var track in group.Key!.Compiled!.Tracks )
 			{
+				if ( track is ICompiledReferenceTrack referenceTrack )
+				{
+					_referenceTracks.Add( referenceTrack );
+					continue;
+				}
+
 				if ( track is not IPropertyTrack propertyTrack ) continue;
 
 				var propertyTrackType = propertyTrackGenericType
@@ -77,7 +94,7 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 
 				var sequencePropertyTrack = (IProjectSequencePropertyTrack)Activator.CreateInstance( propertyTrackType, propertyTrack, group.AsEnumerable() )!;
 
-				_tracks.Add( sequencePropertyTrack );
+				_propertyTracks.Add( sequencePropertyTrack );
 			}
 		}
 	}
