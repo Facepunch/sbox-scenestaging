@@ -76,7 +76,7 @@ public class DopeSheet : GraphicsView
 
 	public override void OnDestroyed()
 	{
-		base.OnDestroyed();
+		DeleteAllItems();
 
 		Session.PointerChanged -= UpdateCurrentPosition;
 		Session.PreviewChanged -= UpdatePreviewPosition;
