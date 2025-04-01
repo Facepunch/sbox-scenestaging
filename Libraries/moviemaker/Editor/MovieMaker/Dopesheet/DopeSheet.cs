@@ -109,7 +109,9 @@ public class DopeSheet : GraphicsView
 		_lastState = state;
 		_lastVisibleRectHash = visibleRectHash;
 
-		if ( (Application.KeyboardModifiers & KeyboardModifiers.Shift) == 0 && Session.PreviewPointer is not null )
+		if ( Session.PreviewPointer is not null
+			&& (Application.KeyboardModifiers & KeyboardModifiers.Shift) == 0
+			&& (Application.MouseButtons & MouseButtons.Left) == 0 )
 		{
 			Session.ClearPreviewPointer();
 		}
