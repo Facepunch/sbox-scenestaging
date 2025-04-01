@@ -450,6 +450,8 @@ file sealed class DefaultTrackView
 		ValueChanged?.Invoke( this );
 		Parent?.DispatchValueChanged();
 
+		TrackList.Session.ClipModified();
+
 		return true;
 	}
 

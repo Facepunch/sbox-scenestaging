@@ -29,7 +29,6 @@ public sealed class ListPanel : MovieEditorPanel
 	public TrackListWidget TrackList { get; }
 
 	private ComboBox PlayerDropdown { get; }
-	private ComboBox ClipDropDown { get; }
 
 	public ListPanel( MovieEditor parent, Session session )
 		: base( parent )
@@ -38,22 +37,56 @@ public sealed class ListPanel : MovieEditorPanel
 
 		Layout.Add( TrackList );
 
-		MinimumWidth = 250;
+		MinimumWidth = 300;
+
+		var fileGroup = ToolBar.AddGroup( true );
+		var resourceIcon = typeof( MovieResource ).GetCustomAttribute<GameResourceAttribute>()!.Icon;
+
+		fileGroup.AddAction( "Open Movie", "file_open", () =>
+		{
+			var menu = new Menu();
+
+			menu.AddHeading( "Open Movie" );
+
+			foreach ( var resource in ResourceLibrary.GetAll<MovieResource>().OrderBy( x => x.ResourcePath ) )
+			{
+				var option = menu.AddOption( resource.ResourcePath, resourceIcon, () => Editor.SwitchResource( resource ) );
+
+				option.Checkable = true;
+				option.Checked = session.Resource == resource;
+			}
+
+			menu.OpenAtCursor();
+		} );
+
+		fileGroup.AddAction( "Save Movie", "save", parent.OnSave, () => session.HasUnsavedChanges );
+		fileGroup.AddAction( "Save Movie As..", "save_as", () =>
+		{
+			var menu = new Menu();
+
+			menu.AddHeading( "Save Movie As.." );
+
+			var embed = menu.AddOption( "Embedded", "attach_file", parent.SwitchToEmbedded );
+
+			embed.Checkable = true;
+			embed.Checked = session.Resource is EmbeddedMovieResource;
+			embed.ToolTip = "Store the movie inside this Movie Player component, embedded in the current scene or prefab.";
+
+			menu.AddOption( "New Movie Resource", resourceIcon, parent.SaveFileAs );
+
+			menu.OpenAtCursor();
+		} );
 
 		var sourceGroup = ToolBar.AddGroup( true );
 
 		{
-			PlayerDropdown = new ComboBox( this );
-			PlayerDropdown.ToolTip = $"Selected {nameof( MoviePlayer )} component";
+			PlayerDropdown = new ComboBox( this )
+			{
+				ToolTip = $"Selected {nameof( MoviePlayer )} component",
+				HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand
+			};
 
 			sourceGroup.Layout.Add( PlayerDropdown );
-		}
-
-		{
-			ClipDropDown = new ComboBox( this );
-			ClipDropDown.ToolTip = $"Selected {nameof( MovieClip )}";
-
-			sourceGroup.Layout.Add( ClipDropDown );
 		}
 	}
 
@@ -63,33 +96,17 @@ public sealed class ListPanel : MovieEditorPanel
 
 		foreach ( var player in available.OrderBy( x => x.GameObject.Name ) )
 		{
-			PlayerDropdown.AddItem( player.GameObject.Name, "movie", () => Editor.Switch( player ), null, player == session?.Player );
+			var resourceName = player.Resource switch
+			{
+				EmbeddedMovieResource => "Embedded",
+				MovieResource resource => resource.ResourceName,
+				_ => "None"
+			};
+
+			PlayerDropdown.AddItem( $"{player.GameObject.Name} ({resourceName})", "movie", () => Editor.Switch( player ), null, player == session?.Player );
 		}
 
 		PlayerDropdown.AddItem( "Create New..", "movie_filter", Editor.CreateNew );
-	}
-
-	public void UpdateSources( Session? session )
-	{
-		ClipDropDown.Clear();
-
-		// TODO: Hack because first item immediately runs onSelected??
-		MovieEditor? editor = null;
-
-		ClipDropDown.AddItem( "Embedded", "attachment", () => editor?.SwitchToEmbedded(),
-			"Use a clip stored in the player component.", session?.Resource is EmbeddedMovieResource );
-
-		editor = Editor;
-
-		var icon = typeof( MovieResource ).GetCustomAttribute<GameResourceAttribute>()!.Icon;
-
-		foreach ( var resource in ResourceLibrary.GetAll<MovieResource>().OrderBy( x => x.ResourcePath ) )
-		{
-			ClipDropDown.AddItem( resource.ResourceName, icon, () => Editor.SwitchResource( resource ),
-				resource.ResourcePath, session?.Root.Resource == resource );
-		}
-
-		ClipDropDown.AddItem( "Save As..", "save_as", Editor.SaveFileAs, "Save the current clip as a new movie file." );
 	}
 }
 
@@ -108,12 +125,8 @@ public sealed class DopeSheetPanel : MovieEditorPanel
 
 		var navigateGroup = ToolBar.AddGroup( true );
 
-		navigateGroup.AddAction( "Exit Sequence", "arrow_back", parent.ExitSequence,
+		navigateGroup.AddAction( "Back", "arrow_back", parent.ExitSequence,
 			() => parent.Session?.Parent is not null );
-
-		var fileGroup = ToolBar.AddGroup( true );
-
-		fileGroup.AddAction( "Save", "save", parent.OnSave, () => parent.Session?.HasUnsavedChanges ?? false );
 
 		var playbackGroup = ToolBar.AddGroup( true );
 

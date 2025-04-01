@@ -1,4 +1,6 @@
-﻿namespace Sandbox.MovieMaker;
+﻿using System.Text.Json.Serialization;
+
+namespace Sandbox.MovieMaker;
 
 #nullable enable
 
@@ -35,6 +37,15 @@ public sealed class MoviePlayer : Component
 			UpdatePosition();
 		}
 	}
+
+	[JsonIgnore, Property, Title( "Movie" ), Group( "Source" ), Order( -100 ), HideIf( nameof(IsEmbedded), true )]
+	private MovieResource? InspectorResource
+	{
+		get => Resource as MovieResource;
+		set => Resource = value;
+	}
+
+	private bool IsEmbedded => Resource is EmbeddedMovieResource;
 
 	public IClip? Clip
 	{

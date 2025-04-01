@@ -42,7 +42,11 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
+		if ( Parent.View.IsLocked ) return;
+
 		e.Accepted = true;
+
+		Selected = true;
 
 		_dragMode = GetDragMode( e.LocalPosition );
 		_dragStartTime = Parent.Session.ScenePositionToTime( e.ScenePosition, SnapFlag.TrackBlock );
@@ -112,6 +116,9 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		}
 
 		Layout();
+
+		Parent.View.DispatchValueChanged();
+		Parent.Session.ApplyFrame( Parent.View.Track, Parent.Session.CurrentPointer );
 	}
 
 	protected override void OnMouseReleased( GraphicsMouseEvent e )
@@ -149,6 +156,12 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 	private void UpdateCursor( Vector2 localMousePos )
 	{
+		if ( Parent.View.IsLocked )
+		{
+			Cursor = CursorShape.Arrow;
+			return;
+		}
+
 		Cursor = GetDragMode( localMousePos ) switch
 		{
 			DragMode.MoveStart or DragMode.MoveEnd => CursorShape.SizeH,
@@ -170,9 +183,11 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 	protected override void OnPaint()
 	{
-		var isHovered = Paint.HasMouseOver;
+		var isLocked = Parent.View.IsLocked;
+		var isSelected = !isLocked && Selected;
+		var isHovered = !isLocked && Paint.HasMouseOver;
 
-		Paint.SetBrushAndPen( Theme.Primary.Darken( isHovered ? 0.1f : 0.25f ) );
+		Paint.SetBrushAndPen( Theme.Primary.Desaturate( isLocked ? 0.25f : 0f ).Darken( isLocked ? 0.5f : isSelected ? 0f : isHovered ? 0.1f : 0.25f ) );
 		Paint.DrawRect( LocalRect, 2 );
 
 		var viewMin = FromScene( Parent.GraphicsView.SceneRect.TopLeft );
@@ -188,7 +203,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		}
 
 		Paint.ClearBrush();
-		Paint.SetPen( Theme.ControlText );
+		Paint.SetPen( Theme.ControlText.Darken( isLocked ? 0.25f : 0f ) );
 
 		var textRect = new Rect( minX + 8f, LocalRect.Top + 4f, maxX - minX - 16f, LocalRect.Height - 4f );
 		var fullTimeRange = FullTimeRange;

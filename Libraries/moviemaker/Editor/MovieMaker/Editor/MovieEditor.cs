@@ -216,7 +216,6 @@ public partial class MovieEditor : Widget
 		}
 
 		ListPanel?.UpdatePlayers( Session, playersAvailable );
-		ListPanel?.UpdateSources( Session );
 	}
 
 	public void Switch( MoviePlayer player )
@@ -256,8 +255,6 @@ public partial class MovieEditor : Widget
 	{
 		if ( Session!.Resource is EmbeddedMovieResource ) return;
 
-		Log.Info( $"Switching to embedded!" );
-
 		Session.Player.Resource = new EmbeddedMovieResource
 		{
 			Compiled = Session.Resource.Compiled,
@@ -270,8 +267,6 @@ public partial class MovieEditor : Widget
 	public void SwitchResource( MovieResource resource )
 	{
 		if ( Session?.Root.Resource == resource ) return;
-
-		Log.Info( $"We're embedded!" );
 
 		if ( Session is { Resource: EmbeddedMovieResource, Project.IsEmpty: false } )
 		{
