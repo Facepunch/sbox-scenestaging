@@ -91,12 +91,12 @@ public partial class TrackWidget : Widget
 
 		// Add control to retarget a scene reference (Component / GameObject)
 
-		ControlWidget ctrl;
+		ControlWidget? ctrl = null;
 
 		if ( View.Track is ProjectSequenceTrack sequence )
 		{
-			ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( "Sequence",
-				() => sequence.Resource, resource => sequence.Resource = resource ) );
+			//ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( "Sequence",
+			//	() => sequence.Resource, resource => sequence.Resource = resource ) );
 		}
 		else if ( reference is ITrackReference<GameObject> goReference )
 		{

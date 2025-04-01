@@ -61,11 +61,9 @@ public sealed partial class MovieProject : IClip
 					continue;
 				}
 
-				if ( sequenceTrack.Resource?.Compiled is not { } compiled ) continue;
-
-				foreach ( var compiledTrack in compiled.Tracks )
+				foreach ( var subTrack in sequenceTrack.PropertyTracks )
 				{
-					yield return compiledTrack;
+					yield return subTrack;
 				}
 			}
 		}
@@ -201,11 +199,9 @@ public sealed partial class MovieProject : IClip
 
 	private void CompileSequenceTrack( ProjectSequenceTrack track, CompileResult result )
 	{
-		if ( track.Resource?.Compiled is not { } clip ) return;
-
-		foreach ( var rootTrack in clip.Tracks )
+		foreach ( var propertyTrack in track.PropertyTracks )
 		{
-			result.Add( rootTrack );
+			result.Add( propertyTrack.Compile() );
 		}
 	}
 
@@ -239,7 +235,16 @@ public sealed partial class MovieProject : IClip
 	public ProjectSequenceTrack AddSequenceTrack( MovieResource resource, IProjectTrack? parentTrack = null )
 	{
 		var guid = Guid.NewGuid();
-		var track = new ProjectSequenceTrack( this, guid, resource.ResourceName ) { Resource = resource };
+		var track = new ProjectSequenceTrack( this, guid, resource.ResourceName );
+
+		if ( resource.Compiled is { Duration.IsPositive: true } clip )
+		{
+			track.AddBlock( (0d, clip.Duration), default, resource );
+		}
+		else
+		{
+			Log.Info( $"Empty clip! {resource.ResourcePath}" );
+		}
 
 		AddTrackInternal( track, parentTrack );
 

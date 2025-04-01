@@ -64,7 +64,7 @@ partial class Session
 	{
 		return Project.Tracks
 			.OfType<ProjectSequenceTrack>()
-			.Where( x => x.Resource == resource )
+			.Where( x => x.Blocks.Any( y => y.Resource == resource ) )
 			.OrderByDescending( x => TrackList.Find( x ) is not null ? 1 : 0 )
 			.FirstOrDefault();
 	}
@@ -171,8 +171,12 @@ partial class Session
 	{
 		switch ( track )
 		{
-			case ProjectSequenceTrack { Resource.Compiled: { } clip }:
-				clip.Update( time, Binder );
+			case ProjectSequenceTrack sequenceTrack:
+				foreach ( var propertyTrack in sequenceTrack.PropertyTracks )
+				{
+					propertyTrack.Update( time, Binder );
+				}
+
 				break;
 			case IPropertyTrack propertyTrack:
 				propertyTrack.Update( time, Binder );

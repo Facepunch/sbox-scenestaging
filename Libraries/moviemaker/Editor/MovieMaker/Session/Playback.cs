@@ -52,6 +52,7 @@ public sealed partial class Session
 			ApplyFrame( track, time );
 		}
 
+		Parent?.ApplyFrame( time );
 		EditMode?.ApplyFrame( time );
 
 		AdvanceAnimations( time - _lastAppliedTime );

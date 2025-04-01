@@ -63,25 +63,30 @@ public sealed class ListPanel : MovieEditorPanel
 
 		foreach ( var player in available.OrderBy( x => x.GameObject.Name ) )
 		{
-			PlayerDropdown.AddItem( $"{player.GameObject.Name}", "movie", () => Editor.Switch( player ), null, player == session?.Player );
+			PlayerDropdown.AddItem( player.GameObject.Name, "movie", () => Editor.Switch( player ), null, player == session?.Player );
 		}
 
-		PlayerDropdown.AddItem( "Create New..", "movie_filter", () => Editor.CreateNew() );
+		PlayerDropdown.AddItem( "Create New..", "movie_filter", Editor.CreateNew );
 	}
 
 	public void UpdateSources( Session? session )
 	{
 		ClipDropDown.Clear();
 
-		ClipDropDown.AddItem( "Embedded", "attachment", Editor.SwitchToEmbedded,
+		// TODO: Hack because first item immediately runs onSelected??
+		MovieEditor? editor = null;
+
+		ClipDropDown.AddItem( "Embedded", "attachment", () => editor?.SwitchToEmbedded(),
 			"Use a clip stored in the player component.", session?.Resource is EmbeddedMovieResource );
+
+		editor = Editor;
 
 		var icon = typeof( MovieResource ).GetCustomAttribute<GameResourceAttribute>()!.Icon;
 
 		foreach ( var resource in ResourceLibrary.GetAll<MovieResource>().OrderBy( x => x.ResourcePath ) )
 		{
 			ClipDropDown.AddItem( resource.ResourceName, icon, () => Editor.SwitchResource( resource ),
-				resource.ResourcePath, session?.Resource == resource );
+				resource.ResourcePath, session?.Root.Resource == resource );
 		}
 
 		ClipDropDown.AddItem( "Save As..", "save_as", Editor.SaveFileAs, "Save the current clip as a new movie file." );
@@ -100,6 +105,11 @@ public sealed class DopeSheetPanel : MovieEditorPanel
 		MouseTracking = true;
 
 		Layout.Add( DopeSheet );
+
+		var navigateGroup = ToolBar.AddGroup( true );
+
+		navigateGroup.AddAction( "Exit Sequence", "arrow_back", parent.ExitSequence,
+			() => parent.Session?.Parent is not null );
 
 		var fileGroup = ToolBar.AddGroup( true );
 

@@ -12,6 +12,7 @@ public sealed class SequenceBlockItem : BlockItem<MovieResource?>
 	{
 		HoverEvents = true;
 		Selectable = true;
+		Movable = true;
 
 		Cursor = CursorShape.Finger;
 	}
@@ -37,8 +38,17 @@ public sealed class SequenceBlockItem : BlockItem<MovieResource?>
 	{
 		if ( Block.GetValue( TimeRange.Start ) is { } resource )
 		{
-			Parent.Session.Editor.SwitchResource( resource );
+			Parent.Session.Editor.EnterSequence( resource );
 		}
+	}
+
+	protected override void OnMoved()
+	{
+		var left = ToScene( LocalRect.TopLeft );
+		var right = ToScene( LocalRect.TopRight );
+		var startTime = Parent.Session.ScenePositionToTime( left, SnapFlag.TrackBlock );
+
+
 	}
 
 	protected override void OnPaint()
@@ -63,6 +73,8 @@ public sealed class SequenceBlockItem : BlockItem<MovieResource?>
 		Paint.ClearBrush();
 		Paint.SetPen( Theme.ControlText );
 
-		Paint.DrawText( LocalRect.Shrink( 8f, 4f, 8f, 0f ), Block.GetValue( TimeRange.Start )?.ResourcePath );
+		var textRect = new Rect( minX + 8f, LocalRect.Top + 4f, maxX - minX - 16f, LocalRect.Height - 4f );
+
+		Paint.DrawText( textRect, Block.GetValue( TimeRange.Start )?.ResourcePath, TextFlag.LeftCenter );
 	}
 }

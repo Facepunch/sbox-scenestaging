@@ -16,6 +16,8 @@ public sealed partial class Session
 	public MovieEditor Editor { get; }
 	public MoviePlayer Player { get; }
 	public MovieProject Project { get; }
+	public Session? Parent { get; }
+	public Session Root => Parent?.Root ?? this;
 	public IMovieResource Resource { get; }
 
 	private int _frameRate = 10;
@@ -92,9 +94,26 @@ public sealed partial class Session
 
 	public Session( MovieEditor editor, MoviePlayer player )
 	{
+		if ( player.Resource is null )
+		{
+			Log.Info( $"Creating new embedded!" );
+		}
+
 		Editor = editor;
 		Player = player;
+		Parent = null;
 		Resource = player.Resource ??= new EmbeddedMovieResource();
+		Project = LoadProject( Resource );
+
+		History = new SessionHistory( this );
+	}
+
+	public Session( Session parent, MovieResource resource )
+	{
+		Editor = parent.Editor;
+		Player = parent.Player;
+		Parent = parent;
+		Resource = resource;
 		Project = LoadProject( Resource );
 
 		History = new SessionHistory( this );

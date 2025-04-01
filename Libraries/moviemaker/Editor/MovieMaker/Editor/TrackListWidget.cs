@@ -228,15 +228,13 @@ public partial class TrackListWidget : Widget
 
 		if ( ev.Data.Assets.FirstOrDefault( x => x.AssetPath?.EndsWith( ".movie" ) ?? false ) is { } assetData )
 		{
-			Log.Info( "Has asset!" );
-
 			var assetTask = assetData.GetAssetAsync();
 
 			if ( !assetTask.IsCompleted ) yield break;
 
 			var resource = assetTask.Result?.LoadResource<MovieResource>();
 
-			if ( resource is null ) yield break;
+			if ( resource?.Compiled is null ) yield break;
 
 			yield return Session.GetOrCreateTrack( resource );
 		}

@@ -26,6 +26,11 @@ public interface IClip
 	/// </summary>
 	/// <returns>The matching track, or <see langword="null"/> if not found.</returns>
 	IReferenceTrack? GetTrack( Guid trackId );
+
+	/// <summary>
+	/// Get tracks that are active at the given <paramref name="time"/>.
+	/// </summary>
+	public IEnumerable<ITrack> GetTracks( MovieTime time ) => Tracks;
 }
 
 /// <summary>

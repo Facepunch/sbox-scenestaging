@@ -34,8 +34,10 @@ public sealed partial class MotionEditMode : EditMode
 	{
 		var undoGroup = Toolbar.AddGroup();
 
-		undoGroup.AddAction( "Undo", "undo", Session.Undo, () => Session.History.CanUndo );
-		undoGroup.AddAction( "Redo", "redo", Session.Redo, () => Session.History.CanRedo );
+		var session = Session;
+
+		undoGroup.AddAction( "Undo", "undo", session.Undo, () => session.History.CanUndo );
+		undoGroup.AddAction( "Redo", "redo", session.Redo, () => session.History.CanRedo );
 
 		var clipboardGroup = Toolbar.AddGroup();
 

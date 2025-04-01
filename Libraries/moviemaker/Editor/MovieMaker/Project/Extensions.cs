@@ -30,7 +30,7 @@ public static class ProjectExtensions
 	}
 
 	public static T GetLastBlock<T>( this IReadOnlyList<T> blocks, MovieTime time )
-		where T : IPropertyBlock
+		where T : ITrackBlock
 	{
 		if ( blocks.Count == 0 ) throw new ArgumentException( "Expected at least one block.", nameof( blocks ) );
 
@@ -55,7 +55,7 @@ public static class ProjectExtensions
 	}
 
 	public static T? GetBlock<T>( this IReadOnlyList<T> blocks, MovieTime time )
-		where T : IPropertyBlock
+		where T : ITrackBlock
 	{
 		if ( blocks.Count == 0 ) return default;
 

@@ -3,12 +3,6 @@
   "EditorData": {
     "SampleRate": 30,
     "Tracks": {
-      "aee7bc18-6917-4d3b-a409-c6efaa2aac99": {
-        "$type": "Sequence",
-        "Resource": "movies/player_recording_1.movie",
-        "Name": "player_recording_1",
-        "TargetType": "Sandbox.MovieMaker.MovieResource"
-      },
       "3ff83609-8354-4ea6-b3f7-2641a680549b": {
         "$type": "Property",
         "Name": "LocalRotation",
@@ -78,6 +72,21 @@
             }
           }
         ]
+      },
+      "de071259-a958-468a-8a09-ed20216b0eee": {
+        "$type": "Sequence",
+        "Blocks": [
+          {
+            "TimeRange": {
+              "Start": 0,
+              "End": 117000
+            },
+            "Transform": {},
+            "Resource": "movies/player_recording_1.movie"
+          }
+        ],
+        "Name": "player_recording_1",
+        "TargetType": "Sandbox.MovieMaker.MovieResource"
       },
       "d548b4f2-a0ee-468e-aa9f-3928fbafcae3": {
         "$type": "Reference",

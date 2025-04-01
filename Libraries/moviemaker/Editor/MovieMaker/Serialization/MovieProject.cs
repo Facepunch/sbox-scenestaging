@@ -222,19 +222,26 @@ partial class ProjectPropertyTrack<T>
 
 partial class ProjectSequenceTrack
 {
-	public sealed record Model( string Name, Guid? ParentId, MovieResource? Resource )
+	public sealed record Model( string Name, Guid? ParentId, ImmutableArray<ProjectSequenceBlock> Blocks )
 		: IProjectTrack.Model( Name, typeof(MovieResource), ParentId );
 
 	public override IProjectTrack.Model Serialize( JsonSerializerOptions options )
 	{
-		return new Model( Name, Parent?.Id, Resource );
+		return new Model( Name, Parent?.Id, [..Blocks] );
 	}
 
 	public override void Deserialize( IProjectTrack.Model model, JsonSerializerOptions options )
 	{
 		if ( model is not Model sequenceModel ) return;
 
-		Resource = sequenceModel.Resource;
+		_tracksInvalid = true;
+
+		_blocks.Clear();
+
+		if ( sequenceModel.Blocks is { IsDefaultOrEmpty: false } blocks )
+		{
+			_blocks.AddRange( blocks );
+		}
 	}
 }
 

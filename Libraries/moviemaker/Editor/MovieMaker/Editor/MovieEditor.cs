@@ -26,11 +26,14 @@ public partial class MovieEditor : Widget
 		}
 	}
 
-	public void Initialize( MoviePlayer player )
+	public void Initialize( Session session )
 	{
-		Session = new Session( this, player );
+		Session = session;
 
-		player.Clip = Session.Project;
+		if ( Session.Parent is null )
+		{
+			Session.Player.Clip = Session.Project;
+		}
 
 		Layout.Clear( true );
 
@@ -50,6 +53,8 @@ public partial class MovieEditor : Widget
 		splitter.SetStretch( 1, 3 );
 
 		Session.RestoreFromCookies();
+
+		contextHash = default;
 	}
 
 	void CloseSession()
@@ -179,9 +184,10 @@ public partial class MovieEditor : Widget
 
 		if ( SceneEditorSession.Active?.Scene is not { } scene ) return;
 
-		var allplayers = scene.GetAllComponents<MoviePlayer>();
+		playersAvailable.Clear();
+		playersAvailable.AddRange( scene.GetAllComponents<MoviePlayer>() );
 
-		foreach ( var player in allplayers )
+		foreach ( var player in playersAvailable )
 		{
 			hash.Add( player );
 			hash.Add( player.Resource );
@@ -192,14 +198,11 @@ public partial class MovieEditor : Widget
 		if ( contextHash == hc ) return;
 		contextHash = hc;
 
-		playersAvailable.Clear();
-		playersAvailable.AddRange( allplayers );
-
 		// The current session exists
 		if ( Session is not null )
 		{
 			// Whatever we were editing doesn't exist anymore!
-			if ( playersAvailable.All( x => x.Resource != Session.Resource || x != Session.Player ) )
+			if ( playersAvailable.All( x => x.Resource != Session.Root.Resource || x != Session.Player ) )
 			{
 				CloseSession();
 			}
@@ -209,7 +212,7 @@ public partial class MovieEditor : Widget
 		if ( Session is null )
 		{
 			if ( playersAvailable.Count == 0 ) return;
-			Initialize( playersAvailable.First() );
+			Switch( playersAvailable.First() );
 		}
 
 		ListPanel?.UpdatePlayers( Session, playersAvailable );
@@ -218,8 +221,22 @@ public partial class MovieEditor : Widget
 
 	public void Switch( MoviePlayer player )
 	{
-		Initialize( player );
-		contextHash = default;
+		Initialize( new Session( this, player ) );
+	}
+
+	public void EnterSequence( MovieResource resource )
+	{
+		Session!.SetEditMode( null );
+		Initialize( new Session( Session!, resource ) );
+	}
+
+	public void ExitSequence()
+	{
+		if ( Session?.Parent is { } parent )
+		{
+			Session.Save();
+			Initialize( parent );
+		}
 	}
 
 	public void CreateNew()
@@ -237,7 +254,9 @@ public partial class MovieEditor : Widget
 
 	public void SwitchToEmbedded()
 	{
-		if ( Session.Resource is EmbeddedMovieResource ) return;
+		if ( Session!.Resource is EmbeddedMovieResource ) return;
+
+		Log.Info( $"Switching to embedded!" );
 
 		Session.Player.Resource = new EmbeddedMovieResource
 		{
@@ -250,9 +269,11 @@ public partial class MovieEditor : Widget
 
 	public void SwitchResource( MovieResource resource )
 	{
-		if ( Session.Resource == resource ) return;
+		if ( Session?.Root.Resource == resource ) return;
 
-		if ( Session.Resource is EmbeddedMovieResource && !Session.Project.IsEmpty )
+		Log.Info( $"We're embedded!" );
+
+		if ( Session is { Resource: EmbeddedMovieResource, Project.IsEmpty: false } )
 		{
 			Dialog.AskConfirm( () =>
 			{

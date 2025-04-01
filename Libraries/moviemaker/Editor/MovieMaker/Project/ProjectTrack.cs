@@ -151,21 +151,6 @@ public partial class ProjectReferenceTrack<T>( MovieProject project, Guid id, st
 	ITrack? ITrack.Parent => Parent;
 }
 
-public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id, string name )
-	: ProjectReferenceTrack<GameObject>( project, id, name )
-{
-	public override int Order => -2000;
-
-	public override bool IsEmpty => Resource?.Compiled is null;
-
-	public MovieResource? Resource { get; set; }
-
-	public override ICompiledTrack Compile( ICompiledTrack? compiledParent, bool headerOnly )
-	{
-		return new CompiledReferenceTrack<GameObject>( Id, Name, (CompiledReferenceTrack<GameObject>)compiledParent! );
-	}
-}
-
 public partial interface IProjectPropertyTrack : IPropertyTrack, IProjectTrack
 {
 	public static IProjectPropertyTrack Create( MovieProject project, Guid id, string name, Type targetType )

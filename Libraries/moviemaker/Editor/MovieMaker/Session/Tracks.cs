@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Sandbox;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Properties;
 
@@ -328,9 +329,12 @@ file sealed class DefaultTrackView
 			_blocks.AddRange( propertyTrack.Blocks );
 		}
 
-		if ( Track is ProjectSequenceTrack { Resource: { Compiled: { Duration: var duration } } resource } )
+		if ( Track is ProjectSequenceTrack sequenceTrack )
 		{
-			_blocks.Add( new PropertyBlock<MovieResource>( resource, (0d, duration) ) );
+			foreach ( var block in sequenceTrack.Blocks )
+			{
+				_blocks.Add( new PropertyBlock<MovieResource?>( block.Resource, block.TimeRange ) );
+			}
 		}
 	}
 

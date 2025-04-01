@@ -3,7 +3,6 @@ using Sandbox.MovieMaker;
 using System.Globalization;
 using System.Text.Json.Nodes;
 using System.Linq;
-using System.Text;
 
 namespace Editor.MovieMaker;
 
