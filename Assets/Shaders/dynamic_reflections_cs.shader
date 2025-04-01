@@ -79,6 +79,9 @@ CS
     #define InvDimensions g_vInvViewportSize
     #define SampleCountIntersection 1
 
+    // Add roughness cutoff parameter - could be exposed through material properties
+    float RoughnessCutoff < Attribute("RoughnessCutoff"); Default(0.8); > ; // Skip reflections on materials rougher than this
+
 	//--------------------------------------------------------------------------------------
 
     float3 ScreenSpaceToViewSpace(float3 screen_space_position) { return InvProjectPosition(screen_space_position, g_matProjectionToView); }
@@ -130,8 +133,26 @@ CS
         float flHitLength = 0;
 
         float InvSampleCount = 1.0 / nSamplesPerPixel;
+        float flRoughness = Roughness::Sample(vDispatch);
+        float3 vNormal = Normals::Sample(vDispatch);
+        
+        // Early out for non-reflective surfaces, backfaces, or surfaces exceeding roughness threshold
+        if (flRoughness > RoughnessCutoff || dot(vNormal, -vRayWs) <= 0.01) {
+            OutRadiance[vDispatch] = float4(0, 0, 0, 0);
+            RayLength[vDispatch] = 0;
+            return;
+        }
 
-        int nDownsampleRatio = 0;
+        // Use wave intrinsics to check if all threads in a wave are over roughness threshold
+        // This allows entire waves to skip processing for better performance
+#if HLSL_VERSION > 2016 // Only use wave intrinsics if available
+        bool allThreadsOverThreshold = WaveActiveAllTrue(flRoughness > RoughnessCutoff);
+        if (allThreadsOverThreshold) {
+            OutRadiance[vDispatch] = float4(0, 0, 0, 0);
+            RayLength[vDispatch] = 0;
+            return;
+        }
+#endif
 
         //----------------------------------------------
         [unroll]
@@ -144,8 +165,6 @@ CS
             float3 vNoise = Bindless::GetTexture2D(BlueNoiseIndex)[ vDitherCoord.xy ].rgb;
 
             // Randomize dir by roughness
-            float flRoughness = Roughness::Sample( vDispatch );
-            float3 vNormal = Normals::Sample( vDispatch );
             float3 H = ReferenceImportanceSampleGGX(vNoise.rg, flRoughness, vNormal);
 
             float3 vReflectWs = reflect(vRayWs, H);
@@ -154,7 +173,10 @@ CS
             //----------------------------------------------
             // Trace reflection
             // ---------------------------------------------
-            TraceResult trace = ScreenSpace::Trace( vPositionWs, vReflectWs, vPositionSs, 48, 0, nDownsampleRatio );
+            TraceResult trace = ScreenSpace::Trace( vPositionWs, vReflectWs, vPositionSs, 128, 0, 0 );
+
+            if( !trace.ValidHit )
+                continue;
 
             //----------------------------------------------
             // Reproject
@@ -218,7 +240,7 @@ CS
 	float	FFX_DNSR_Reflections_LoadRoughnessHistory(int2 pixel_coordinate) 		{ return GBufferHistory[pixel_coordinate].w; } 
 	float	FFX_DNSR_Reflections_SampleRoughnessHistory(float2 uv) 					{ return GBufferHistory.SampleLevel( BilinearWrap, uv, 0).w; } // Todo: bilinear fetch
 
-    float2	FFX_DNSR_Reflections_LoadMotionVector(int2 pixel_coordinate) 			{ return Motion::Get( pixel_coordinate).xy * InvDimensions; }
+    float2	FFX_DNSR_Reflections_LoadMotionVector(int2 pixel_coordinate) 			{ return ( Motion::Get( pixel_coordinate).xy - pixel_coordinate ) * InvDimensions; }
 
     float	FFX_DNSR_Reflections_SampleVarianceHistory(float2 uv) 					{ return Tex2DLevelS( VarianceHistory, BilinearWrap, uv, 0 ).x; }
 	float	FFX_DNSR_Reflections_LoadRayLength(int2 pixel_coordinate) 				{ return RayLength[pixel_coordinate]; } // Todo: Implement
@@ -237,7 +259,7 @@ CS
 	void	FFX_DNSR_Reflections_StoreTemporalAccumulation(int2 pixel_coordinate, float4 radiance, float variance) 		{ OutRadiance[pixel_coordinate] = radiance; OutVariance[pixel_coordinate] = variance.x; }
     void	FFX_DNSR_Reflections_StorePrefilteredReflections(int2 pixel_coordinate, float4 radiance, float variance)	{ OutRadiance[pixel_coordinate] = radiance; OutVariance[pixel_coordinate] = variance.x; }
 
-	bool 	FFX_DNSR_Reflections_IsGlossyReflection(float roughness) 						{ return roughness > 0.02; }
+	bool 	FFX_DNSR_Reflections_IsGlossyReflection(float roughness) 						{ return roughness > 0.0; }
 	bool 	FFX_DNSR_Reflections_IsMirrorReflection(float roughness) 						{ return !FFX_DNSR_Reflections_IsGlossyReflection(roughness); }
 	float3 	FFX_DNSR_Reflections_ScreenSpaceToViewSpace(float3 screen_uv_coord) 			{ return ScreenSpaceToViewSpace(screen_uv_coord); } // UV and projection space depth
 	float3 	FFX_DNSR_Reflections_ViewSpaceToWorldSpace(float4 view_space_coord) 			{ float4 vPositionPs = Position4VsToPs( view_space_coord ); return mul( vPositionPs, g_matProjectionToWorld ).xyz; }
@@ -280,11 +302,11 @@ CS
         uint2 group_thread_id 		= groupThreadID;
         uint2 dispatch_thread_id = dispatchThreadID;
 
-        const float flReconstructMin = 0.1f;
+        const float flReconstructMin = 0.2f;
         const float flReconstructMax = 0.99f;
-        const float flMotionVectorScale = 1.0f;
+        const float flMotionVectorScale = Dimensions.x;
 
-        const float g_temporal_stability_factor = RemapValClamped( length( FFX_DNSR_Reflections_LoadMotionVector( dispatchThreadID ) * Dimensions.xy ) * flMotionVectorScale, 1.0, 0.0, flReconstructMin, flReconstructMax );
+        const float g_temporal_stability_factor = RemapValClamped( length( FFX_DNSR_Reflections_LoadMotionVector( dispatchThreadID ) ) * flMotionVectorScale, 1.0, 0.0, flReconstructMin, flReconstructMax );
 
         #if ( D_PASS == PASS_INTERSECT )
         {
@@ -326,7 +348,7 @@ CS
         {
 			//
 			// Temporal Resolve
-			//
+            //
             FFX_DNSR_Reflections_ResolveTemporal(dispatch_thread_id, group_thread_id, Dimensions.xy, InvDimensions, g_temporal_stability_factor);
             WriteLastFrameTextures(dispatch_thread_id, group_thread_id);
 		}
