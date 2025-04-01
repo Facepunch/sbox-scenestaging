@@ -39,6 +39,18 @@ public sealed class ListPanel : MovieEditorPanel
 
 		MinimumWidth = 300;
 
+		var sourceGroup = ToolBar.AddGroup( true );
+
+		{
+			PlayerDropdown = new ComboBox( this )
+			{
+				ToolTip = $"Selected {nameof( MoviePlayer )} component",
+				HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand
+			};
+
+			sourceGroup.Layout.Add( PlayerDropdown );
+		}
+
 		var fileGroup = ToolBar.AddGroup( true );
 		var resourceIcon = typeof( MovieResource ).GetCustomAttribute<GameResourceAttribute>()!.Icon;
 
@@ -76,18 +88,6 @@ public sealed class ListPanel : MovieEditorPanel
 
 			menu.OpenAtCursor();
 		} );
-
-		var sourceGroup = ToolBar.AddGroup( true );
-
-		{
-			PlayerDropdown = new ComboBox( this )
-			{
-				ToolTip = $"Selected {nameof( MoviePlayer )} component",
-				HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand
-			};
-
-			sourceGroup.Layout.Add( PlayerDropdown );
-		}
 	}
 
 	public void UpdatePlayers( Session? session, IReadOnlyList<MoviePlayer> available )

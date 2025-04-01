@@ -118,15 +118,28 @@ file sealed class ProjectSequencePropertyTrack<T> : IProjectSequencePropertyTrac
 
 	public ITrack Parent => SourceTrack.Parent;
 
-	public ICompiledPropertyTrack Compile()
-	{
-		throw new NotImplementedException();
-	}
-
 	public ProjectSequencePropertyTrack( CompiledPropertyTrack<T> sourceTrack, IEnumerable<ProjectSequenceBlock> blocks )
 	{
 		SourceTrack = sourceTrack;
-		Blocks = [..blocks];
+		Blocks = [.. blocks];
+	}
+
+	public ICompiledPropertyTrack Compile() => SourceTrack with { Blocks = [..CompileBlocks()] };
+
+	private IEnumerable<ICompiledPropertyBlock<T>> CompileBlocks()
+	{
+		foreach ( var sequenceBlock in Blocks )
+		{
+			var sourceRange = sequenceBlock.Transform.Inverse * sequenceBlock.TimeRange;
+			var sourceBlocks = SourceTrack.Blocks.Where( x => sourceRange.Intersect( x.TimeRange ) is { IsEmpty: false } );
+
+			foreach ( var sourceBlock in sourceBlocks )
+			{
+				yield return sourceBlock
+					.Transform( sequenceBlock.Transform )
+					.Slice( sequenceBlock.TimeRange );
+			}
+		}
 	}
 
 	public bool TryGetValue( MovieTime time, [MaybeNullWhen( false )] out T value )
@@ -138,5 +151,59 @@ file sealed class ProjectSequencePropertyTrack<T> : IProjectSequencePropertyTrac
 		}
 
 		return SourceTrack.TryGetValue( sequenceBlock.Transform.Inverse * time, out value );
+	}
+}
+
+file static class CompiledBlockExtensions
+{
+	public static ICompiledPropertyBlock<T> Transform<T>( this ICompiledPropertyBlock<T> block, MovieTransform transform )
+	{
+		if ( transform == MovieTransform.Identity ) return block;
+
+		return block switch
+		{
+			CompiledConstantBlock<T> constantBlock => constantBlock.Transform( transform ),
+			CompiledSampleBlock<T> sampleBlock => sampleBlock.Transform( transform ),
+			_ => throw new NotImplementedException()
+		};
+	}
+
+	public static CompiledConstantBlock<T> Transform<T>( this CompiledConstantBlock<T> block, MovieTransform transform ) =>
+		block with { TimeRange = transform * block.TimeRange };
+
+	public static CompiledSampleBlock<T> Transform<T>( this CompiledSampleBlock<T> block, MovieTransform transform )
+	{
+		if ( transform.Scale != MovieTimeScale.Identity )
+		{
+			throw new NotImplementedException();
+		}
+
+		return block with { TimeRange = transform * block.TimeRange };
+	}
+
+	public static ICompiledPropertyBlock<T> Slice<T>( this ICompiledPropertyBlock<T> block, MovieTimeRange timeRange )
+	{
+		if ( timeRange.Contains( block.TimeRange ) ) return block;
+
+		return block switch
+		{
+			CompiledConstantBlock<T> constantBlock => constantBlock.Slice( timeRange ),
+			CompiledSampleBlock<T> sampleBlock => sampleBlock.Slice( timeRange ),
+			_ => throw new NotImplementedException()
+		};
+	}
+
+	public static CompiledConstantBlock<T> Slice<T>( this CompiledConstantBlock<T> block, MovieTimeRange timeRange ) =>
+		block with { TimeRange = block.TimeRange.Clamp( timeRange ) };
+
+	public static CompiledSampleBlock<T> Slice<T>( this CompiledSampleBlock<T> block, MovieTimeRange timeRange )
+	{
+		timeRange = block.TimeRange.Clamp( timeRange );
+
+		var offset = block.Offset + timeRange.Start - block.TimeRange.Start;
+
+		// TODO: slice sample array
+
+		return block with { TimeRange = timeRange, Offset = offset };
 	}
 }
