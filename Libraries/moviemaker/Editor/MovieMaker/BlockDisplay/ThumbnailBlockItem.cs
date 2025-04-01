@@ -3,7 +3,7 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 #nullable enable
 
-public abstract class ThumbnailBlockItem<T> : BlockItem<T>
+public abstract class ThumbnailBlockItem<T> : PropertyBlockItem<T>
 {
 	protected abstract Pixmap? GetThumbnail();
 

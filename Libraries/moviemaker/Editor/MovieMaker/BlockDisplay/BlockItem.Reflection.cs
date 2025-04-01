@@ -8,9 +8,9 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 partial class BlockItem
 {
-	public static BlockItem? Create( DopeSheetTrack parent, IPropertyBlock block, MovieTime offset )
+	public static BlockItem? Create( DopeSheetTrack parent, ITrackBlock block, MovieTime offset )
 	{
-		if ( GetBlockItemType( block.PropertyType ) is not { } blockType )
+		if ( GetBlockItemType( block.GetType(), (block as IPropertyBlock)?.PropertyType ) is not { } blockType )
 		{
 			return null;
 		}
@@ -37,11 +37,11 @@ partial class BlockItem
 		BlockItemTypeCache.Clear();
 	}
 
-	private static Type? GetBlockItemType( Type targetType )
+	private static Type? GetBlockItemType( Type targetBlockType, Type? propertyType )
 	{
-		if ( BlockItemTypeCache.TryGetValue( targetType, out var blockType ) ) return blockType;
+		if ( BlockItemTypeCache.TryGetValue( targetBlockType, out var blockItemType ) ) return blockItemType;
 
-		Type? bestBlockType = null;
+		Type? bestBlockItemType = null;
 		var bestScore = int.MaxValue;
 
 		foreach ( var typeDesc in EditorTypeLibrary.GetTypes<BlockItem>() )
@@ -52,7 +52,9 @@ partial class BlockItem
 			if ( type.IsAbstract ) continue;
 			if ( type.IsGenericType )
 			{
-				if ( !TryMakeGenericType( type, targetType, out var newType ) )
+				if ( propertyType is null ) continue;
+
+				if ( !TryMakeGenericType( type, propertyType, out var newType ) )
 				{
 					continue;
 				}
@@ -61,17 +63,17 @@ partial class BlockItem
 				baseDistance = 1;
 			}
 
-			var score = baseDistance + GetScore( type, targetType );
+			var score = baseDistance + GetScore( type, targetBlockType, propertyType );
 
 			if ( score > bestScore ) continue;
 
-			bestBlockType = type;
+			bestBlockItemType = type;
 			bestScore = score;
 		}
 
-		BlockItemTypeCache[targetType] = bestBlockType;
+		BlockItemTypeCache[targetBlockType] = bestBlockItemType;
 
-		return bestBlockType;
+		return bestBlockItemType;
 	}
 
 	private static bool TryMakeGenericType( Type trackPreviewType, Type propertyType,
@@ -95,20 +97,28 @@ partial class BlockItem
 		}
 	}
 
-	private static int GetScore( Type blockType, Type targetType )
+	private static int GetScore( Type blockItemType, Type targetBlockType, Type? propertyType )
 	{
 		var score = int.MaxValue;
 
-		foreach ( var iFace  in blockType.GetInterfaces() )
+		foreach ( var iFace in blockItemType.GetInterfaces() )
 		{
 			if ( !iFace.IsConstructedGenericType ) continue;
-			if ( iFace.GetGenericTypeDefinition() != typeof(IBlockItem<>) ) continue;
 
-			var iFaceTargetType = iFace.GetGenericArguments()[0];
+			if ( iFace.GetGenericTypeDefinition() == typeof(IBlockItem<>) )
+			{
+				var iFaceTargetType = iFace.GetGenericArguments()[0];
 
-			score = Math.Min( score, GetDistance( iFaceTargetType, targetType ) );
+				score = Math.Min( score, GetDistance( iFaceTargetType, targetBlockType ) );
+			}
+
+			if ( iFace.GetGenericTypeDefinition() == typeof(IPropertyBlockItem<>) && propertyType != null )
+			{
+				var iFaceTargetType = iFace.GetGenericArguments()[0];
+
+				score = Math.Min( score, GetDistance( iFaceTargetType, propertyType ) );
+			}
 		}
-
 		return score;
 	}
 

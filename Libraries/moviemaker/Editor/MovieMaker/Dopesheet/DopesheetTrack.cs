@@ -14,7 +14,7 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	private bool? _canCreateItem;
 
-	private readonly List<(IPropertyBlock Block, MovieTime? Offset)> _visibleBlocks = new();
+	private readonly List<(ITrackBlock Block, MovieTime? Offset)> _visibleBlocks = new();
 	private readonly List<BlockItem> _blockItems = new();
 
 	public IReadOnlyList<BlockItem> BlockItems => _blockItems;

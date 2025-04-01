@@ -164,9 +164,9 @@ public readonly struct MovieTime : IEquatable<MovieTime>, IComparable<MovieTime>
 	public override string ToString()
 	{
 		var timeSpan = TimeSpan.FromSeconds( TotalSeconds );
-		return timeSpan.TotalHours < 1
-			? timeSpan.ToString( @"mm\:ss\.fff" )
-			: timeSpan.ToString( @"hh\:mm\:ss\.fff" );
+		return Math.Abs( timeSpan.TotalHours ) < 1
+			? timeSpan.ToString( timeSpan >= TimeSpan.Zero ? @"mm\:ss\.fff" : @"\-mm\:ss\.fff" )
+			: timeSpan.ToString( timeSpan >= TimeSpan.Zero ? @"hh\:mm\:ss\.fff" : @"\-hh\:mm\:ss\.fff" );
 	}
 
 	#region Operators

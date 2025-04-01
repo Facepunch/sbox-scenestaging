@@ -1,25 +1,117 @@
 ﻿using Sandbox.MovieMaker;
+using System.Runtime.InteropServices.JavaScript;
 
 namespace Editor.MovieMaker.BlockDisplays;
 
 #nullable enable
 
-public sealed class SequenceBlockItem : BlockItem<MovieResource?>
+public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 {
 	private RealTimeSince _lastClick;
+
+	private enum DragMode
+	{
+		None,
+		Translate,
+		MoveStart,
+		MoveEnd
+	}
+
+	public override Rect BoundingRect => base.BoundingRect.Grow( 8f, 0f );
+
+	private DragMode _dragMode;
+	private MovieTime _dragStartTime;
+	private MovieTimeRange _originalTimeRange;
+	private MovieTransform _originalTransform;
+
+	private GraphicsItem? _ghost;
 
 	public SequenceBlockItem()
 	{
 		HoverEvents = true;
 		Selectable = true;
-		Movable = true;
 
 		Cursor = CursorShape.Finger;
+	}
+
+	protected override void OnDestroy()
+	{
+		_ghost?.Destroy();
+		_ghost = null;
 	}
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
 		e.Accepted = true;
+
+		_dragMode = GetDragMode( e.LocalPosition );
+		_dragStartTime = Parent.Session.ScenePositionToTime( e.ScenePosition, SnapFlag.TrackBlock );
+		_originalTimeRange = Block.TimeRange;
+		_originalTransform = Block.Transform;
+
+		if ( _dragMode is DragMode.MoveStart or DragMode.MoveEnd )
+		{
+			var fullSceneRect = FullSceneRect;
+
+			_ghost = new FullBlockGhostItem();
+			_ghost.Position = new Vector2( fullSceneRect.Left, Position.y );
+			_ghost.Size = new Vector2( fullSceneRect.Width, Height );
+			_ghost.Parent = Parent;
+		}
+	}
+
+	private MovieTimeRange FullTimeRange
+	{
+		get
+		{
+			var sourceTimeRange = new MovieTimeRange( 0d, Block.Resource.Compiled?.Duration ?? 1d );
+			return new MovieTimeRange( _originalTransform * sourceTimeRange.Start, _originalTransform * sourceTimeRange.End ).ClampStart( 0d );
+		}
+	}
+
+	public Rect FullSceneRect
+	{
+		get
+		{
+			var fullTimeRange = FullTimeRange;
+
+			var min = Parent.Session.TimeToPixels( fullTimeRange.Start );
+			var max = Parent.Session.TimeToPixels( fullTimeRange.End );
+
+			return SceneRect with { Left = min, Right = max };
+		}
+	}
+
+	protected override void OnMouseMove( GraphicsMouseEvent e )
+	{
+		if ( _dragMode == DragMode.None ) return;
+
+		e.Accepted = true;
+
+		// To avoid double-click
+		_lastClick = 1f;
+
+		var time = Parent.Session.ScenePositionToTime( e.ScenePosition, SnapFlag.TrackBlock );
+		var fullTimeRange = FullTimeRange;
+
+		switch ( _dragMode )
+		{
+			case DragMode.MoveStart:
+				Block.TimeRange = fullTimeRange.Clamp( (time, _originalTimeRange.End) );
+				break;
+
+			case DragMode.MoveEnd:
+				Block.TimeRange = fullTimeRange.Clamp( (_originalTimeRange.Start, time) );
+				break;
+
+			case DragMode.Translate:
+				var difference = MovieTime.Max( time - _dragStartTime, -_originalTimeRange.Start );
+				Block.TimeRange = _originalTimeRange + difference;
+				Block.Transform = _originalTransform + difference;
+				break;
+		}
+
+		Layout();
 	}
 
 	protected override void OnMouseReleased( GraphicsMouseEvent e )
@@ -30,25 +122,50 @@ public sealed class SequenceBlockItem : BlockItem<MovieResource?>
 		}
 
 		_lastClick = 0f;
+		_dragMode = DragMode.None;
+		_ghost?.Destroy();
+		_ghost = null;
 
 		e.Accepted = true;
+
+		Layout();
 	}
 
 	private void DoubleClicked()
 	{
-		if ( Block.GetValue( TimeRange.Start ) is { } resource )
+		if ( Block.Resource is { } resource )
 		{
 			Parent.Session.Editor.EnterSequence( resource );
 		}
 	}
 
-	protected override void OnMoved()
+	private DragMode GetDragMode( Vector2 localMousePos )
 	{
-		var left = ToScene( LocalRect.TopLeft );
-		var right = ToScene( LocalRect.TopRight );
-		var startTime = Parent.Session.ScenePositionToTime( left, SnapFlag.TrackBlock );
+		if ( localMousePos.x <= 8f ) return DragMode.MoveStart;
+		if ( localMousePos.x >= LocalRect.Width - 8f ) return DragMode.MoveEnd;
 
+		return DragMode.Translate;
+	}
 
+	private void UpdateCursor( Vector2 localMousePos )
+	{
+		Cursor = GetDragMode( localMousePos ) switch
+		{
+			DragMode.MoveStart or DragMode.MoveEnd => CursorShape.SizeH,
+			_ => CursorShape.Finger
+		};
+	}
+
+	protected override void OnHoverEnter( GraphicsHoverEvent e )
+	{
+		base.OnHoverEnter( e );
+		UpdateCursor( e.LocalPosition );
+	}
+
+	protected override void OnHoverMove( GraphicsHoverEvent e )
+	{
+		base.OnHoverMove( e );
+		UpdateCursor( e.LocalPosition );
 	}
 
 	protected override void OnPaint()
@@ -74,7 +191,32 @@ public sealed class SequenceBlockItem : BlockItem<MovieResource?>
 		Paint.SetPen( Theme.ControlText );
 
 		var textRect = new Rect( minX + 8f, LocalRect.Top + 4f, maxX - minX - 16f, LocalRect.Height - 4f );
+		var fullTimeRange = FullTimeRange;
 
-		Paint.DrawText( textRect, Block.GetValue( TimeRange.Start )?.ResourcePath, TextFlag.LeftCenter );
+		switch ( _dragMode )
+		{
+			case DragMode.MoveStart or DragMode.MoveEnd:
+				Paint.DrawText( textRect, $"+{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
+				Paint.DrawText( textRect, $"{Block.TimeRange.End - fullTimeRange.End}", TextFlag.RightCenter );
+				break;
+
+			default:
+				Paint.DrawText( textRect, Block.Resource.ResourcePath, TextFlag.Center );
+				break;
+		}
+	}
+}
+
+file sealed class FullBlockGhostItem : GraphicsItem
+{
+	public FullBlockGhostItem()
+	{
+		ZIndex = -100;
+	}
+
+	protected override void OnPaint()
+	{
+		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground );
+		Paint.DrawRect( LocalRect, 2 );
 	}
 }

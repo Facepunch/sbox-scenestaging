@@ -2,4 +2,4 @@
 
 #nullable enable
 
-public sealed class DefaultBlockItem : BlockItem<object?>;
+public sealed class DefaultBlockItem : PropertyBlockItem<object?>;

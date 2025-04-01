@@ -12,7 +12,7 @@ public interface ICurveBlockItem
 
 public record struct Element( string Name, Color Color, float? Min = null, float? Max = null );
 
-public abstract partial class CurveBlockItem<T> : BlockItem<T>, ICurveBlockItem
+public abstract partial class CurveBlockItem<T> : PropertyBlockItem<T>, ICurveBlockItem
 {
 	private readonly (float Min, float Max)[] _ranges;
 	private int _rangeDataHash;

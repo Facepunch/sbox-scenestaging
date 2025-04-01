@@ -73,8 +73,8 @@ public interface ITrackView
 	IProjectTrack Track { get; }
 	ITrackTarget Target { get; }
 	IReadOnlyList<ITrackView> Children { get; }
-	IEnumerable<IPropertyBlock> Blocks { get; }
-	IEnumerable<IPropertyBlock> PreviewBlocks { get; }
+	IEnumerable<ITrackBlock> Blocks { get; }
+	IEnumerable<ITrackBlock> PreviewBlocks { get; }
 
 	int StateHash { get; }
 
@@ -253,8 +253,8 @@ file sealed class DefaultTrackView
 
 	private readonly SynchronizedList<IProjectTrack, DefaultTrackView> _children;
 
-	private readonly List<IPropertyBlock> _blocks = new();
-	private readonly List<IPropertyBlock> _previewBlocks = new();
+	private readonly List<ITrackBlock> _blocks = new();
+	private readonly List<ITrackBlock> _previewBlocks = new();
 
 	private bool _blocksInvalid = true;
 	private bool _previewBlocksInvalid = true;
@@ -267,7 +267,7 @@ file sealed class DefaultTrackView
 	public event Action<ITrackView>? Removed;
 	public event Action<ITrackView>? ValueChanged;
 
-	public IEnumerable<IPropertyBlock> Blocks
+	public IEnumerable<ITrackBlock> Blocks
 	{
 		get
 		{
@@ -276,7 +276,7 @@ file sealed class DefaultTrackView
 		}
 	}
 
-	public IEnumerable<IPropertyBlock> PreviewBlocks
+	public IEnumerable<ITrackBlock> PreviewBlocks
 	{
 		get
 		{
@@ -331,10 +331,7 @@ file sealed class DefaultTrackView
 
 		if ( Track is ProjectSequenceTrack sequenceTrack )
 		{
-			foreach ( var block in sequenceTrack.Blocks )
-			{
-				_blocks.Add( new PropertyBlock<MovieResource?>( block.Resource, block.TimeRange ) );
-			}
+			_blocks.AddRange( sequenceTrack.Blocks );
 		}
 	}
 
@@ -362,7 +359,7 @@ file sealed class DefaultTrackView
 	/// Merge the current <paramref name="list"/> with blocks from <paramref name="blocks"/>, assuming
 	/// both are already sorted.
 	/// </summary>
-	private void AddChildBlocks( List<IPropertyBlock> list, IEnumerable<IPropertyBlock> blocks )
+	private void AddChildBlocks( List<ITrackBlock> list, IEnumerable<ITrackBlock> blocks )
 	{
 		if ( list.Count == 0 )
 		{

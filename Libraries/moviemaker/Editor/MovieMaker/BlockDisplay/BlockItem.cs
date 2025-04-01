@@ -6,11 +6,11 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 public abstract partial class BlockItem : GraphicsItem
 {
-	private IPropertyBlock? _block;
+	private ITrackBlock? _block;
 
 	public new DopeSheetTrack Parent { get; private set; } = null!;
 
-	public IPropertyBlock Block
+	public ITrackBlock Block
 	{
 		get => _block ?? throw new InvalidOperationException();
 		set
@@ -38,7 +38,7 @@ public abstract partial class BlockItem : GraphicsItem
 
 	protected int DataHash => HashCode.Combine( Block, TimeRange.Duration, Width );
 
-	private void Initialize( DopeSheetTrack parent, IPropertyBlock block, MovieTime offset )
+	private void Initialize( DopeSheetTrack parent, ITrackBlock block, MovieTime offset )
 	{
 		base.Parent = Parent = parent;
 
@@ -81,9 +81,14 @@ public abstract partial class BlockItem : GraphicsItem
 	}
 }
 
-internal interface IBlockItem<T>;
+public interface IBlockItem<T>;
 
 public abstract class BlockItem<T> : BlockItem, IBlockItem<T>
+	where T : ITrackBlock
 {
-	public new IPropertyBlock<T> Block => (IPropertyBlock<T>)base.Block;
+	public new T Block => (T)base.Block;
 }
+
+public interface IPropertyBlockItem<T>;
+
+public abstract class PropertyBlockItem<T> : BlockItem<IPropertyBlock<T>>, IPropertyBlockItem<T>;

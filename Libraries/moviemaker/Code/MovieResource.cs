@@ -32,7 +32,7 @@ public interface IMovieResource
 public sealed class MovieResource : GameResource, IMovieResource
 {
 	/// <inheritdoc />
-	[Hide]
+	[Hide, JsonIgnore]
 	public MovieClip? Compiled { get; set; }
 
 	/// <inheritdoc />

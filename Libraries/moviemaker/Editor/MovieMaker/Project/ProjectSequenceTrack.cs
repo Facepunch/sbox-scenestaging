@@ -2,6 +2,7 @@
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text.Json.Serialization;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
 
@@ -41,6 +42,12 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 		return block;
 	}
 
+	public void RemoveBlock( ProjectSequenceBlock block )
+	{
+		_blocks.Remove( block );
+		_tracksInvalid = true;
+	}
+
 	public override ICompiledTrack Compile( ICompiledTrack? compiledParent, bool headerOnly )
 	{
 		return new CompiledReferenceTrack<GameObject>( Id, Name, (CompiledReferenceTrack<GameObject>)compiledParent! );
@@ -76,9 +83,21 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 	}
 }
 
-public sealed record ProjectSequenceBlock( MovieTimeRange TimeRange, MovieTransform Transform, MovieResource? Resource )
+public sealed class ProjectSequenceBlock
 	: ITrackBlock
 {
+	public MovieTimeRange TimeRange { get; set; }
+	public MovieTransform Transform { get; set; }
+	public MovieResource Resource { get; }
+
+	[JsonConstructor]
+	public ProjectSequenceBlock( MovieTimeRange timeRange, MovieTransform transform, MovieResource resource )
+	{
+		TimeRange = timeRange;
+		Transform = transform;
+		Resource = resource;
+	}
+
 
 }
 

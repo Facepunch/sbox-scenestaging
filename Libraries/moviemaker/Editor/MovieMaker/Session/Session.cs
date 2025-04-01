@@ -382,21 +382,17 @@ public sealed partial class Session
 		HasUnsavedChanges = false;
 
 		Resource.EditorData = Project.Serialize();
+		Resource.Compiled = Project.Compile();
 
 		// If we're embedded, save the scene
 
 		if ( Resource is EmbeddedMovieResource )
 		{
-			Resource.Compiled = Project.Compile();
 			Player.Scene.Editor.Save( false );
 			return;
 		}
 
 		// If we're referencing a .movie resource, save it to disk
-
-		// The .movie_c will contain the compiled version, see MovieCompiler
-
-		Resource.Compiled = null;
 
 		if ( Resource is not MovieResource resource )
 		{
