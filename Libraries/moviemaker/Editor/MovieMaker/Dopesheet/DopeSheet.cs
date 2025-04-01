@@ -299,7 +299,7 @@ public class DopeSheet : GraphicsView
 
 		var scenePos = ToScene( e.LocalPosition );
 
-		if ( GetItemAt( scenePos ) is { } item ) return;
+		if ( GetItemAt( scenePos ) is { Selectable: true } ) return;
 
 		Session.EditMode?.MousePress( e );
 

@@ -42,7 +42,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
-		if ( Parent.View.IsLocked ) return;
+		if ( Parent.View.IsLocked || !e.LeftMouseButton ) return;
 
 		e.Accepted = true;
 
@@ -123,6 +123,8 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 	protected override void OnMouseReleased( GraphicsMouseEvent e )
 	{
+		if ( !e.LeftMouseButton ) return;
+
 		if ( _lastClick < 0.5f )
 		{
 			DoubleClicked();
