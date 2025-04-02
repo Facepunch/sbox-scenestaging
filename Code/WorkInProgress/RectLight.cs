@@ -38,11 +38,6 @@ public class RectLight : Light
 		o.Radius = Radius;
 		o.LightCookie = Cookie;
 
-		// Attenuation is mostly handled by LTC already, just make this mostly respect range
-		o.QuadraticAttenuation = 1.0f;
-		o.ConstantAttenuation = 0.0f;
-		o.LinearAttenuation = 0.0f;
-
 		if ( o is SceneSpotLight spot )
 		{
 			spot.FallOff = 1;
