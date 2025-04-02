@@ -21,6 +21,7 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 	public override int Order => -2000;
 
 	public override bool IsEmpty => _blocks.Count == 0;
+	public override IEnumerable<MovieResource> References => _blocks.Select( x => x.Resource ).Distinct();
 
 	public IReadOnlyList<ProjectSequenceBlock> Blocks => _blocks;
 
@@ -72,14 +73,13 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 		_referenceTracks.Clear();
 
 		var resourceGroups = Blocks
-			.GroupBy( x => x.Resource )
-			.Where( x => x.Key?.Compiled is not null );
+			.GroupBy( x => x.Resource );
 
 		var propertyTrackGenericType = typeof(ProjectSequencePropertyTrack<>);
 
 		foreach ( var group in resourceGroups )
 		{
-			foreach ( var track in group.Key!.Compiled!.Tracks )
+			foreach ( var track in group.Key.GetCompiled().Tracks )
 			{
 				if ( track is ICompiledReferenceTrack referenceTrack )
 				{
@@ -114,8 +114,6 @@ public sealed class ProjectSequenceBlock
 		Transform = transform;
 		Resource = resource;
 	}
-
-
 }
 
 public interface IProjectSequencePropertyTrack : IPropertyTrack

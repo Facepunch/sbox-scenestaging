@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
@@ -46,6 +48,24 @@ public sealed partial class MovieProject : IClip
 		{
 			UpdateTracks();
 			return _trackList;
+		}
+	}
+
+	public IEnumerable<MovieResource> References
+	{
+		get
+		{
+			var resources = new HashSet<MovieResource>();
+
+			foreach ( var track in Tracks )
+			{
+				foreach ( var reference in track.References )
+				{
+					resources.Add( reference );
+				}
+			}
+
+			return resources;
 		}
 	}
 
@@ -147,7 +167,7 @@ public sealed partial class MovieProject : IClip
 			: null;
 	}
 
-	private sealed class CompileResult : IEnumerable<ICompiledTrack>
+	internal sealed class CompileResult : IEnumerable<ICompiledTrack>
 	{
 		private readonly List<ICompiledTrack> _allCompiled = new();
 		private readonly Dictionary<IProjectTrack, ICompiledTrack> _compiledProjectTracks = new();
@@ -168,15 +188,30 @@ public sealed partial class MovieProject : IClip
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 
+	[ThreadStatic]
+	internal static CompileResult? RootCompileResult;
+
 	public MovieClip Compile()
 	{
 		var result = new CompileResult();
 
-		foreach ( var track in RootTracks )
-		{
-			if ( track.IsEmpty ) continue;
+		RootCompileResult ??= result;
 
-			CompileTrack( track, result );
+		try
+		{
+			foreach ( var track in RootTracks )
+			{
+				if ( track.IsEmpty ) continue;
+
+				CompileTrack( track, result );
+			}
+		}
+		finally
+		{
+			if ( RootCompileResult == result )
+			{
+				RootCompileResult = null;
+			}
 		}
 
 		return MovieClip.FromTracks( result );
@@ -241,15 +276,9 @@ public sealed partial class MovieProject : IClip
 	{
 		var guid = Guid.NewGuid();
 		var track = new ProjectSequenceTrack( this, guid, resource.ResourceName );
+		var clip = resource.GetCompiled();
 
-		if ( resource.Compiled is { Duration.IsPositive: true } clip )
-		{
-			track.AddBlock( (0d, clip.Duration), default, resource );
-		}
-		else
-		{
-			Log.Info( $"Empty clip! {resource.ResourcePath}" );
-		}
+		track.AddBlock( (0d, clip.Duration), default, resource );
 
 		AddTrackInternal( track, parentTrack );
 
@@ -302,5 +331,28 @@ public sealed partial class MovieProject : IClip
 				_rootTrackList.Add( track );
 			}
 		}
+	}
+}
+
+public static class MovieResourceExtensions
+{
+	public static MovieClip GetCompiled( this MovieResource resource )
+	{
+		if ( resource.Compiled is { } compiled ) return compiled;
+
+		// To avoid cycles
+
+		resource.Compiled = MovieClip.Empty;
+
+		// TODO: hack because resource compiler might try to compile a movie before its references are compiled
+
+		if ( AssetSystem.FindByPath( resource.ResourcePath ) is not { HasSourceFile: true } asset ) return MovieClip.Empty;
+
+		using var stream = File.OpenRead( asset.GetSourceFile( true ) );
+
+		var model = JsonSerializer.Deserialize<EmbeddedMovieResource>( stream, EditorJsonOptions );
+		var project = model?.EditorData?.Deserialize<MovieProject>( EditorJsonOptions );
+
+		return resource.Compiled = project?.Compile() ?? MovieClip.Empty;
 	}
 }

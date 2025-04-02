@@ -304,7 +304,7 @@ public partial class MovieEditor : Widget
 			return;
 
 		var sceneAsset = AssetSystem.CreateResource( extension, fd.SelectedFile );
-		var file = new MovieResource { Compiled = Session.Project.Compile(), EditorData = Session.Project.Serialize() };
+		var file = new MovieResource { Compiled = Session!.Project.Compile(), EditorData = Session.Project.Serialize() };
 
 		sceneAsset.SaveToDisk( file );
 

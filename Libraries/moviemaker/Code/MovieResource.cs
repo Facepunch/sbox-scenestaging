@@ -46,9 +46,11 @@ public sealed class MovieResource : GameResource, IMovieResource
 public sealed class EmbeddedMovieResource : IMovieResource
 {
 	/// <inheritdoc />
+	[JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
 	public MovieClip? Compiled { get; set; }
 
 	/// <inheritdoc />
+	[JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )]
 	public JsonNode? EditorData { get; set; }
 }
 

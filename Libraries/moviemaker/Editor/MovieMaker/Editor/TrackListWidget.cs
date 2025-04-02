@@ -232,9 +232,7 @@ public partial class TrackListWidget : Widget
 
 			if ( !assetTask.IsCompleted ) yield break;
 
-			var resource = assetTask.Result?.LoadResource<MovieResource>();
-
-			if ( resource?.Compiled is null ) yield break;
+			if ( assetTask.Result?.LoadResource<MovieResource>() is not { } resource ) yield break;
 
 			yield return Session.GetOrCreateTrack( resource );
 		}

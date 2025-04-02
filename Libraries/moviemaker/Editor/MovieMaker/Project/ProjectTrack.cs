@@ -25,6 +25,7 @@ public partial interface IProjectTrack : ITrack, IComparable<IProjectTrack>
 	ICompiledTrack Compile( ICompiledTrack? compiledParent, bool headerOnly );
 
 	ITrack? ITrack.Parent => Parent;
+	IEnumerable<MovieResource> References { get; }
 
 	int IComparable<IProjectTrack>.CompareTo( IProjectTrack? other )
 	{
@@ -65,6 +66,7 @@ public abstract partial class ProjectTrack<T>( MovieProject project, Guid id, st
 	public Type TargetType { get; } = typeof(T);
 
 	public IProjectTrack? Parent { get; private set; }
+	public virtual IEnumerable<MovieResource> References => [];
 
 	public virtual bool IsEmpty => Children.Count == 0;
 

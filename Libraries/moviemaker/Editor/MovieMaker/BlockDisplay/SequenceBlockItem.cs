@@ -1,5 +1,4 @@
 ﻿using Sandbox.MovieMaker;
-using System.Runtime.InteropServices.JavaScript;
 
 namespace Editor.MovieMaker.BlockDisplays;
 
@@ -68,7 +67,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 	{
 		get
 		{
-			var sourceTimeRange = new MovieTimeRange( 0d, Block.Resource.Compiled?.Duration ?? 1d );
+			var sourceTimeRange = new MovieTimeRange( 0d, Block.Resource.GetCompiled().Duration );
 			return new MovieTimeRange( _originalTransform * sourceTimeRange.Start, _originalTransform * sourceTimeRange.End ).ClampStart( 0d );
 		}
 	}
