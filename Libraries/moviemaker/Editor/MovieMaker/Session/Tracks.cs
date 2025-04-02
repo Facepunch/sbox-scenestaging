@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using Sandbox;
 using Sandbox.MovieMaker;
-using Sandbox.MovieMaker.Properties;
 
 namespace Editor.MovieMaker;
 
@@ -94,7 +92,7 @@ public interface ITrackView
 	event Action<ITrackView> Removed;
 
 	void Remove();
-	bool DispatchValueChanged();
+	bool MarkValueChanged();
 
 	public void InspectProperty()
 	{
@@ -146,6 +144,11 @@ partial class Session
 			_trackListOffset = value;
 			ViewChanged?.Invoke();
 		}
+	}
+
+	private void TrackFrame()
+	{
+		((DefaultTrackListView?)_trackList)?.Frame();
 	}
 }
 
@@ -199,6 +202,14 @@ file sealed class DefaultTrackListView : ITrackListView
 		StateHash = hashCode.ToHashCode();
 
 		Changed?.Invoke( this );
+	}
+
+	public void Frame()
+	{
+		foreach ( var track in _rootTracks )
+		{
+			track.Frame();
+		}
 	}
 }
 
@@ -258,6 +269,7 @@ file sealed class DefaultTrackView
 
 	private bool _blocksInvalid = true;
 	private bool _previewBlocksInvalid = true;
+	private bool _dispatchValueChanged = false;
 
 	public IReadOnlyList<ITrackView> Children => _children;
 
@@ -442,17 +454,30 @@ file sealed class DefaultTrackView
 		TrackList.Update();
 	}
 
-	public bool DispatchValueChanged()
+	public bool MarkValueChanged()
 	{
 		_blocksInvalid = true;
 		_previewBlocksInvalid = true;
+		_dispatchValueChanged = true;
 
-		ValueChanged?.Invoke( this );
-		Parent?.DispatchValueChanged();
-
+		Parent?.MarkValueChanged();
 		TrackList.Session.ClipModified();
 
 		return true;
+	}
+
+	public void Frame()
+	{
+		if ( _dispatchValueChanged )
+		{
+			_dispatchValueChanged = false;
+			ValueChanged?.Invoke( this );
+		}
+
+		foreach ( var child in _children )
+		{
+			child.Frame();
+		}
 	}
 
 	public int CompareTo( DefaultTrackView? other )

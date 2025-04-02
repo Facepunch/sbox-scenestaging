@@ -196,7 +196,7 @@ public abstract partial class EditMode
 
 		if ( Session.TrackList.Find( track ) is { } view )
 		{
-			view.DispatchValueChanged();
+			view.MarkValueChanged();
 		}
 	}
 
@@ -208,7 +208,7 @@ public abstract partial class EditMode
 
 		if ( Session.TrackList.Find( track ) is { } view )
 		{
-			view.DispatchValueChanged();
+			view.MarkValueChanged();
 		}
 	}
 

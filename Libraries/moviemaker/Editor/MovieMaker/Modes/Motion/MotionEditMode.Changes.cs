@@ -112,11 +112,11 @@ partial class MotionEditMode
 
 				if ( shiftTime )
 				{
-					changed |= track.Remove( selection.PeakTimeRange ) && view.DispatchValueChanged();
+					changed |= track.Remove( selection.PeakTimeRange ) && view.MarkValueChanged();
 				}
 				else
 				{
-					changed |= track.Clear( selection.PeakTimeRange ) && view.DispatchValueChanged();
+					changed |= track.Clear( selection.PeakTimeRange ) && view.MarkValueChanged();
 				}
 			}
 		}
@@ -150,7 +150,7 @@ partial class MotionEditMode
 			{
 				var track = (IProjectPropertyTrack)view.Track;
 
-				changed |= track.Insert( selection.PeakTimeRange ) && view.DispatchValueChanged();
+				changed |= track.Insert( selection.PeakTimeRange ) && view.MarkValueChanged();
 			}
 		}
 

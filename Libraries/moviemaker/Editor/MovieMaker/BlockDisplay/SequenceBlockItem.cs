@@ -117,7 +117,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		Layout();
 
-		Parent.View.DispatchValueChanged();
+		Parent.View.MarkValueChanged();
 		Parent.Session.ApplyFrame( Parent.View.Track, Parent.Session.CurrentPointer );
 	}
 
