@@ -18,8 +18,6 @@ namespace Editor.MovieMaker;
 /// </summary>
 public sealed partial class MovieProject : IClip
 {
-	private readonly Dictionary<Guid, ProjectSourceClip> _sourceClipDict = new();
-
 	private readonly List<IProjectTrack> _rootTrackList = new();
 	private readonly List<IProjectTrack> _trackList = new();
 	private readonly Dictionary<Guid, IProjectTrack> _trackDict = new();
@@ -34,14 +32,12 @@ public sealed partial class MovieProject : IClip
 	/// </summary>
 	public int SampleRate { get; set; } = 30;
 
-	public bool IsEmpty => Tracks.Count == 0 && SourceClips.Count == 0;
+	public bool IsEmpty => Tracks.Count == 0;
 
 	public MovieTime Duration => _trackList.OfType<IProjectPropertyTrack>()
 		.Select( x => x.TimeRange.End )
 		.DefaultIfEmpty( 0d )
 		.Max();
-
-	public IReadOnlyDictionary<Guid, ProjectSourceClip> SourceClips => _sourceClipDict;
 
 	public IReadOnlyList<IProjectTrack> Tracks
 	{
@@ -114,7 +110,7 @@ public sealed partial class MovieProject : IClip
 	/// </summary>
 	internal MovieProject( MovieClip clip )
 	{
-		var source = AddSourceClip( clip );
+		var source = new ProjectSourceClip( Guid.NewGuid(), clip, null );
 
 		foreach ( var compiledTrack in clip.Tracks )
 		{
@@ -244,13 +240,6 @@ public sealed partial class MovieProject : IClip
 		{
 			result.Add( inner.Compile() );
 		}
-	}
-
-	public ProjectSourceClip AddSourceClip( MovieClip clip, JsonObject? metadata = null )
-	{
-		var guid = Guid.NewGuid();
-
-		return _sourceClipDict[guid] = new ProjectSourceClip( guid, clip, metadata );
 	}
 
 	public IProjectTrack GetOrAddTrack( ITrack track )

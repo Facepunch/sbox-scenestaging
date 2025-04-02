@@ -83,7 +83,7 @@ partial class MotionEditMode
 
 		var compiled = recorder.ToClip();
 
-		var sourceClip = Project.AddSourceClip( compiled, new JsonObject
+		var sourceClip = new ProjectSourceClip( Guid.NewGuid(), compiled, new JsonObject
 		{
 			{ "Date", DateTime.UtcNow.ToString( "o", CultureInfo.InvariantCulture ) },
 			{ "IsEditor", Session.Player.Scene.IsEditor },

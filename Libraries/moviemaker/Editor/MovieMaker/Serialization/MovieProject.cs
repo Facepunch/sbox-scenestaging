@@ -22,25 +22,27 @@ partial class MovieProject : IJsonPopulator
 
 	public JsonNode Serialize()
 	{
+		using var scope = MovieSerializationContext.Push();
+
 		var model = new Model(
 			SampleRate,
 			Tracks.ToImmutableDictionary( x => x.Id, x => x.Serialize( EditorJsonOptions ) ),
-			SourceClips.ToImmutableDictionary( x => x.Key, x => x.Value.Serialize() ) );
+			scope.SourceClips.ToImmutableDictionary( x => x.Id, x => x.Serialize() ) );
 
 		return JsonSerializer.SerializeToNode( model, EditorJsonOptions )!;
 	}
 
 	public void Deserialize( JsonNode node )
 	{
+		using var scope = MovieSerializationContext.Push();
+
 		var model = node.Deserialize<Model>( EditorJsonOptions )!;
 
 		SampleRate = model.SampleRate;
 
-		_sourceClipDict.Clear();
-
 		foreach ( var (id, sourceModel) in model.Sources ?? ImmutableDictionary<Guid, ProjectSourceClip.Model>.Empty )
 		{
-			_sourceClipDict[id] = new ProjectSourceClip( id, sourceModel.Clip, sourceModel.Metadata );
+			scope.RegisterSourceClip( new ProjectSourceClip( id, sourceModel.Clip, sourceModel.Metadata ) );
 		}
 
 		_rootTrackList.Clear();
@@ -106,18 +108,11 @@ file sealed class MovieProjectConverter : JsonConverter<MovieProject>
 	}
 }
 
-file sealed class MovieSerializationContext( MovieProject project )
+file sealed class MovieSerializationContext : IDisposable
 {
-	public static IDisposable Push( MovieProject project )
+	public static MovieSerializationContext Push()
 	{
-		var old = Current;
-
-		Current = new MovieSerializationContext( project );
-
-		return new DisposeAction( () =>
-		{
-			Current = old;
-		} );
+		return Current = new MovieSerializationContext( Current );
 	}
 
 	[field: ThreadStatic]
@@ -125,6 +120,23 @@ file sealed class MovieSerializationContext( MovieProject project )
 
 	private readonly Dictionary<IPropertySignal, int> _signalsToId = new();
 	private readonly Dictionary<int, IPropertySignal> _signalsFromId = new();
+
+	private readonly Dictionary<Guid, ProjectSourceClip> _sources = new();
+
+	private readonly MovieSerializationContext? _parent;
+
+	public IEnumerable<ProjectSourceClip> SourceClips => _sources.Values.OrderBy( x => x.Id );
+
+	private MovieSerializationContext( MovieSerializationContext? parent )
+	{
+		_parent = parent;
+	}
+
+	public void ResetSignals()
+	{
+		_signalsToId.Clear();
+		_signalsFromId.Clear();
+	}
 
 	public bool TryRegisterSignal( IPropertySignal signal, out int id )
 	{
@@ -140,8 +152,19 @@ file sealed class MovieSerializationContext( MovieProject project )
 
 	public void RegisterSignal( int id, IPropertySignal signal ) => _signalsFromId[id] = signal;
 	public IPropertySignal GetSignal( int id ) => _signalsFromId[id];
+	public ProjectSourceClip GetSourceClip( Guid id ) => _sources[id];
 
-	public ProjectSourceClip GetSourceClip( Guid id ) => project.SourceClips[id];
+	public void Dispose()
+	{
+		if ( Current != this ) throw new InvalidOperationException();
+
+		Current = _parent;
+	}
+
+	public void RegisterSourceClip( ProjectSourceClip value )
+	{
+		_sources[value.Id] = value;
+	}
 }
 
 partial interface IProjectTrack
@@ -194,7 +217,7 @@ partial class ProjectPropertyTrack<T>
 {
 	public override IProjectTrack.Model Serialize( JsonSerializerOptions options )
 	{
-		using var contextScope = MovieSerializationContext.Push( Project );
+		MovieSerializationContext.Current?.ResetSignals();
 
 		return new IProjectPropertyTrack.Model( Name, TargetType, Parent?.Id,
 			Blocks.Count != 0
@@ -206,7 +229,7 @@ partial class ProjectPropertyTrack<T>
 	{
 		if ( model is not IProjectPropertyTrack.Model propertyModel ) return;
 
-		using var contextScope = MovieSerializationContext.Push( Project );
+		MovieSerializationContext.Current?.ResetSignals();
 
 		_blocks.Clear();
 		_blocksChanged = true;
@@ -333,13 +356,15 @@ partial record ProjectSourceClip
 {
 	public record Model( MovieClip Clip, [property: JsonPropertyOrder( -1 )] JsonObject? Metadata );
 
-	public Model Serialize() => new Model( Clip, Metadata );
+	public Model Serialize() => new ( Clip, Metadata );
 }
 
 file class ProjectSourceClipConverter : JsonConverter<ProjectSourceClip>
 {
 	public override void Write( Utf8JsonWriter writer, ProjectSourceClip value, JsonSerializerOptions options )
 	{
+		MovieSerializationContext.Current?.RegisterSourceClip( value );
+
 		writer.WriteStringValue( value.Id );
 	}
 
