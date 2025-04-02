@@ -306,7 +306,7 @@ public sealed partial class Session
 
 	public bool Frame()
 	{
-		GizmoFrame();
+		TrackFrame();
 		PlaybackFrame();
 
 		if ( SmoothZoom.Update( RealTime.Delta ) )
@@ -336,28 +336,6 @@ public sealed partial class Session
 		}
 
 		return true;
-	}
-
-	private void GizmoFrame()
-	{
-		if ( SceneViewportWidget.LastSelected is not { } sceneViewport ) return;
-		if ( sceneViewport.SceneView.Session.Scene != Player.Scene ) return;
-
-		using var scope = sceneViewport.GizmoInstance.Push();
-
-		foreach ( var go in SceneEditorSession.Active.Selection.OfType<GameObject>() )
-		{
-			foreach ( var trackId in Binder.GetTrackIds( go ) )
-			{
-				if ( Project.GetTrack( trackId ) is not { } track ) continue;
-				if ( TrackList.Find( track ) is not { } view ) continue;
-
-				if ( track.GetChild( nameof( GameObject.LocalPosition ) ) is not { } positionTrack ) continue;
-
-				Gizmo.Transform = go.Parent?.WorldTransform ?? Transform.Zero;
-				Gizmo.Draw.LineSphere( go.LocalPosition, 8f );
-			}
-		}
 	}
 
 	internal void Zoom( float v )
