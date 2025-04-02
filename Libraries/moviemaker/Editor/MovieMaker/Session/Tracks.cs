@@ -8,7 +8,7 @@ namespace Editor.MovieMaker;
 /// <summary>
 /// Describes which tracks should be shown in the track list / dope sheet.
 /// </summary>
-public interface ITrackListView
+public partial interface ITrackListView
 {
 	IReadOnlyList<ITrackView> RootTracks { get; }
 	int StateHash { get; }
@@ -26,7 +26,13 @@ public interface ITrackListView
 		AllTracks.Where( x => x is { IsLocked: false, Target: ITrackProperty { CanWrite: true } } );
 
 	public ITrackView? Find( IProjectTrack track ) => AllTracks.FirstOrDefault( x => x.Track == track );
-	public ITrackView? FindEditable( IProjectTrack track ) => EditableTracks.FirstOrDefault( x => x.Track == track );
+
+	public ITrackView? Find( GameObject go ) => AllTracks.FirstOrDefault( x =>
+		x.Target is ITrackReference<GameObject> { IsBound: true } target && target.Value == go );
+	public ITrackView? Find( Component cmp ) => AllTracks.FirstOrDefault( x =>
+		x.Target is ITrackReference { IsBound: true } target && target.Value == cmp );
+	public ITrackView? Find( MovieResource resource ) => AllTracks.FirstOrDefault( x =>
+		x.Track is ProjectSequenceTrack );
 
 	private static IEnumerable<ITrackView> EnumerateDescendants( ITrackView track ) =>
 		[track, ..track.Children.SelectMany( EnumerateDescendants )];
@@ -48,7 +54,6 @@ public interface ITrackView
 
 	bool IsExpanded { get; set; }
 	bool IsLockedSelf { get; set; }
-	bool IsPlaybackDisabled { get; set; }
 
 	public bool IsLocked => IsLockedSelf || Parent?.IsLocked is true;
 
@@ -122,6 +127,32 @@ public interface ITrackView
 				break;
 		}
 	}
+
+	public ITrackView? Find( string propertyPath )
+	{
+		var parent = this;
+
+		while ( parent is not null && propertyPath.Length > 0 )
+		{
+			var propertyName = propertyPath;
+
+			// TODO: Hack for anim graph parameters including periods
+
+			if ( parent.Track.TargetType != typeof( SkinnedModelRenderer.ParameterAccessor ) && propertyPath.IndexOf( '.' ) is var index and > -1 )
+			{
+				propertyName = propertyPath[..index];
+				propertyPath = propertyPath[(index + 1)..];
+			}
+			else
+			{
+				propertyPath = string.Empty;
+			}
+
+			parent = parent.Children.FirstOrDefault( x => x.Track.Name == propertyName );
+		}
+
+		return parent;
+	}
 }
 
 partial class Session
@@ -134,7 +165,7 @@ partial class Session
 	/// </summary>
 	public ITrackListView TrackList => _trackList ??= new DefaultTrackListView( this );
 
-	public float TrackListOffset
+	public float TrackListScrollOffset
 	{
 		get => _trackListOffset;
 		set
@@ -259,8 +290,6 @@ file sealed class DefaultTrackView
 			DispatchChanged( true );
 		}
 	}
-
-	public bool IsPlaybackDisabled { get; set; }
 
 	private readonly SynchronizedList<IProjectTrack, DefaultTrackView> _children;
 

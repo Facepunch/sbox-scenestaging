@@ -88,7 +88,7 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	public void UpdateBlockItems()
 	{
-		var previewOffset = Session.EditMode?.PreviewBlockOffset ?? default;
+		var previewOffset = Session.TrackList.PreviewOffset;
 
 		_visibleBlocks.Clear();
 		_visibleBlocks.AddRange( View.Blocks.Select( x => (x, (MovieTime?)null) ) );

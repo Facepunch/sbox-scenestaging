@@ -90,17 +90,11 @@ public abstract partial class EditMode
 	internal void Frame() => OnFrame();
 	protected virtual void OnFrame() { }
 
-	internal bool PreChange( IProjectTrack track )
-	{
-		return Session.TrackList.FindEditable( track ) is { } view && OnPreChange( view );
-	}
+	internal bool PreChange( ITrackView view ) => OnPreChange( view );
 
 	protected virtual bool OnPreChange( ITrackView track ) => false;
 
-	internal bool PostChange( IProjectTrack track )
-	{
-		return Session.TrackList.FindEditable( track ) is { } view && OnPostChange( view );
-	}
+	internal bool PostChange( ITrackView view ) => OnPostChange( view );
 
 	protected virtual bool OnPostChange( ITrackView track ) => false;
 

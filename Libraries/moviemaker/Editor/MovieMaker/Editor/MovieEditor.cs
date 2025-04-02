@@ -283,7 +283,7 @@ public partial class MovieEditor : Widget
 
 	private void ConfirmedSwitchResource( MovieResource resource )
 	{
-		Session.Player.Resource = resource;
+		Session!.Player.Resource = resource;
 
 		Switch( Session.Player );
 	}

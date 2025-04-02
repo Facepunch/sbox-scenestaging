@@ -8,33 +8,33 @@ partial class MovieEditor : EditorEvent.ISceneEdited
 {
 	void EditorEvent.ISceneEdited.GameObjectPreEdited( GameObject go, string propertyPath )
 	{
-		if ( GetOrCreateTrack( go, propertyPath ) is { } track )
+		if ( GetOrCreateTrack( go, propertyPath ) is { } view )
 		{
-			PreChange( track );
+			PreChange( view );
 		}
 	}
 
 	void EditorEvent.ISceneEdited.ComponentPreEdited( Component cmp, string propertyPath )
 	{
-		if ( GetOrCreateTrack( cmp, propertyPath ) is { } track )
+		if ( GetOrCreateTrack( cmp, propertyPath ) is { } view )
 		{
-			PreChange( track );
+			PreChange( view );
 		}
 	}
 
 	void EditorEvent.ISceneEdited.GameObjectEdited( GameObject go, string propertyPath )
 	{
-		if ( GetOrCreateTrack( go, propertyPath ) is { } track )
+		if ( GetOrCreateTrack( go, propertyPath ) is { } view )
 		{
-			PostChange( track );
+			PostChange( view );
 		}
 	}
 
 	void EditorEvent.ISceneEdited.ComponentEdited( Component cmp, string propertyPath )
 	{
-		if ( GetOrCreateTrack( cmp, propertyPath ) is { } track )
+		if ( GetOrCreateTrack( cmp, propertyPath ) is { } view )
 		{
-			PostChange( track );
+			PostChange( view );
 		}
 	}
 
@@ -73,7 +73,7 @@ partial class MovieEditor : EditorEvent.ISceneEdited
 		return true;
 	}
 
-	private IProjectTrack? GetOrCreateTrack( GameObject go, string propertyPath )
+	private ITrackView? GetOrCreateTrack( GameObject go, string propertyPath )
 	{
 		if ( !CanRecord( typeof(GameObject), ref propertyPath ) ) return null;
 
@@ -81,10 +81,14 @@ partial class MovieEditor : EditorEvent.ISceneEdited
 		{
 			if ( Session?.EditMode?.AllowTrackCreation is not true )
 			{
-				return Session?.GetTrack( go, propertyPath );
+				return Session?.TrackList.Find( go )?.Find( propertyPath );
 			}
 
-			return Session.GetOrCreateTrack( go, propertyPath );
+			var track = Session.GetOrCreateTrack( go, propertyPath );
+
+			Session.TrackList.Update();
+
+			return Session.TrackList.Find( track );
 		}
 		catch
 		{
@@ -93,7 +97,7 @@ partial class MovieEditor : EditorEvent.ISceneEdited
 		}
 	}
 
-	private IProjectTrack? GetOrCreateTrack( Component cmp, string propertyPath )
+	private ITrackView? GetOrCreateTrack( Component cmp, string propertyPath )
 	{
 		if ( !CanRecord( cmp.GetType(), ref propertyPath ) ) return null;
 
@@ -101,10 +105,14 @@ partial class MovieEditor : EditorEvent.ISceneEdited
 		{
 			if ( Session?.EditMode?.AllowTrackCreation is not true )
 			{
-				return Session?.GetTrack( cmp, propertyPath );
+				return Session?.TrackList.Find( cmp )?.Find( propertyPath );
 			}
 
-			return Session.GetOrCreateTrack( cmp, propertyPath );
+			var track = Session.GetOrCreateTrack( cmp, propertyPath );
+
+			Session.TrackList.Update();
+
+			return Session.TrackList.Find( track );
 		}
 		catch
 		{
@@ -113,30 +121,29 @@ partial class MovieEditor : EditorEvent.ISceneEdited
 		}
 	}
 
-	private bool PreChange( IProjectTrack track )
+	private bool PreChange( ITrackView view )
 	{
-		if ( Session?.EditMode?.PreChange( track ) is true )
+		if ( view.IsLocked ) return false;
+
+		if ( Session?.EditMode?.PreChange( view ) is true )
 		{
-			NoteInteraction( track );
+			view.MarkValueChanged();
 			return true;
 		}
 
 		return false;
 	}
 
-	private bool PostChange( IProjectTrack track )
+	private bool PostChange( ITrackView view )
 	{
-		if ( Session?.EditMode?.PostChange( track ) is true )
+		if ( view.IsLocked ) return false;
+
+		if ( Session?.EditMode?.PostChange( view ) is true )
 		{
-			NoteInteraction( track );
+			view.MarkValueChanged();
 			return true;
 		}
 
 		return false;
-	}
-
-	private void NoteInteraction( IProjectTrack track )
-	{
-		Session?.TrackList.Find( track )?.MarkValueChanged();
 	}
 }

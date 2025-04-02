@@ -10,20 +10,16 @@ partial class Session
 {
 	public IProjectTrack? GetTrack( GameObject go )
 	{
-		return Binder.GetTrackIds( go )
-			.Select( Project.GetTrack )
-			.OfType<IProjectTrack>()
-			.OrderByDescending( x => TrackList.Find( x ) is not null ? 1 : 0 )
-			.FirstOrDefault();
+		return Project.Tracks
+			.OfType<ProjectReferenceTrack<GameObject>>()
+			.FirstOrDefault( x => Binder.Get( x ) is { IsBound: true } binder && binder.Value == go );
 	}
 
 	public IProjectTrack? GetTrack( Component cmp )
 	{
-		return Binder.GetTrackIds( cmp )
-			.Select( Project.GetTrack )
-			.OfType<IProjectTrack>()
-			.OrderByDescending( x => TrackList.Find( x ) is not null ? 1 : 0 )
-			.FirstOrDefault();
+		return Project.Tracks
+			.OfType<IProjectReferenceTrack>()
+			.FirstOrDefault( x => Binder.Get( x ) is { IsBound: true } binder && binder.Value == cmp );
 	}
 
 	public IProjectTrack? GetTrack( GameObject go, string propertyPath )
@@ -64,9 +60,7 @@ partial class Session
 	{
 		return Project.Tracks
 			.OfType<ProjectSequenceTrack>()
-			.Where( x => x.Blocks.Any( y => y.Resource == resource ) )
-			.OrderByDescending( x => TrackList.Find( x ) is not null ? 1 : 0 )
-			.FirstOrDefault();
+			.FirstOrDefault( x => x.Blocks.Any( y => y.Resource == resource ) );
 	}
 
 	public IProjectTrack GetOrCreateTrack( GameObject go )

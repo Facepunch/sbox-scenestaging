@@ -10,7 +10,7 @@ namespace Editor.MovieMaker;
 public partial class TrackWidget : Widget
 {
 	public TrackListWidget TrackList { get; }
-	public TrackWidget? Parent { get; }
+	public new TrackWidget? Parent { get; }
 
 	public new IEnumerable<TrackWidget> Children => _children;
 

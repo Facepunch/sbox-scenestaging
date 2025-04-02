@@ -36,6 +36,8 @@ public class MovieMakerDock : Widget
 
 		if ( _titleHash != titleHash )
 		{
+			_titleHash = titleHash;
+
 			WindowTitle = _editor?.Session is { HasUnsavedChanges: true }
 				? "Movie Maker*"
 				: "Movie Maker";

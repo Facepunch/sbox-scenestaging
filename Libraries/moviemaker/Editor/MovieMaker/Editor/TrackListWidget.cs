@@ -84,7 +84,7 @@ public partial class TrackListWidget : Widget
 
 	protected override void OnWheel( WheelEvent e )
 	{
-		Session.TrackListOffset -= e.Delta / 5f;
+		Session.TrackListScrollOffset -= e.Delta / 5f;
 		e.Accept();
 	}
 
@@ -105,7 +105,7 @@ public partial class TrackListWidget : Widget
 
 		if ( e.ButtonState == MouseButtons.Middle )
 		{
-			Session.TrackListOffset -= delta.y;
+			Session.TrackListScrollOffset -= delta.y;
 			e.Accepted = true;
 		}
 
@@ -129,7 +129,7 @@ public partial class TrackListWidget : Widget
 
 	private void Session_ViewChanged()
 	{
-		_trackContainer.Position = new Vector2( 0f, -Session.TrackListOffset );
+		_trackContainer.Position = new Vector2( 0f, -Session.TrackListScrollOffset );
 		_trackContainer.FixedWidth = Width;
 		_trackContainer.FixedHeight = _rootTracks
 			.Select( x => x.View.Position + x.View.Height + DopeSheet.RootTrackSpacing )

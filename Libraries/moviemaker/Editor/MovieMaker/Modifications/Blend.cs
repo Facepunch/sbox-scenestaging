@@ -36,6 +36,11 @@ public class BlendModification() : PerTrackModification<BlendOptions>( BlendOpti
 		group.AddToggle( "Additive", "layers",
 			() => Options.IsAdditive,
 			state => Options = Options with { IsAdditive = state } );
+
+		group.AddAction( "Save As Sequence..", "save_as", () =>
+		{
+
+		}, () => Options.SourceDuration is not null );
 	}
 
 	public bool PreChange( IProjectPropertyTrack track, ITrackProperty property )
