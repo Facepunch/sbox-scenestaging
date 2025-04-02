@@ -44,12 +44,18 @@ public sealed partial class MotionEditMode : EditMode
 		clipboardGroup.AddAction( "Cut", "content_cut", Cut, () => TimeSelection is not null );
 		clipboardGroup.AddAction( "Copy", "content_copy", Copy, () => TimeSelection is not null );
 		clipboardGroup.AddAction( "Paste", "content_paste", Paste, () => Clipboard is not null );
+		clipboardGroup.AddAction( "Save As Sequence..", "theaters",
+			() => Session.Editor.SaveAsDialog( "Save As Sequence..",
+				() => CreateSequence( TimeSelection!.Value.TotalTimeRange ) ),
+				() => TimeSelection is not null );
 
 		var editGroup = Toolbar.AddGroup();
 
 		editGroup.AddAction( "Insert", "keyboard_tab", Insert, () => TimeSelection is not null );
 		editGroup.AddAction( "Remove", "backspace", () => Delete( true ), () => TimeSelection is not null );
 		editGroup.AddAction( "Clear", "delete", () => Delete( false ), () => TimeSelection is not null );
+
+		ToolbarGroup? customGroup = null;
 
 		var modificationTypes = EditorTypeLibrary
 			.GetTypesWithAttribute<MovieModificationAttribute>()
@@ -59,7 +65,9 @@ public sealed partial class MotionEditMode : EditMode
 		{
 			if ( type.IsAbstract || type.IsGenericType ) continue;
 
-			var toggle = editGroup.AddToggle( attribute.Title, attribute.Icon,
+			customGroup ??= Toolbar.AddGroup();
+
+			var toggle = customGroup.AddToggle( attribute.Title, attribute.Icon,
 				() => Modification?.GetType() == type.TargetType,
 				value =>
 				{

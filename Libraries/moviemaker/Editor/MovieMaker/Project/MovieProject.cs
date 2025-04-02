@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -252,6 +253,37 @@ public sealed partial class MovieProject : IClip
 		return _sourceClipDict[guid] = new ProjectSourceClip( guid, clip, metadata );
 	}
 
+	public IProjectTrack GetOrAddTrack( ITrack track )
+	{
+		switch ( track )
+		{
+			case IProjectTrack projectTrack when projectTrack.Project == this:
+				return projectTrack;
+
+			case ProjectSequenceTrack sequenceTrack:
+				throw new NotImplementedException();
+
+			case IReferenceTrack referenceTrack:
+			{
+				if ( GetTrack( referenceTrack.Id ) is { } refTrackCopy ) return refTrackCopy;
+
+				refTrackCopy = IProjectReferenceTrack.Create( this, referenceTrack.Id, referenceTrack.Name, referenceTrack.TargetType );
+
+				var parentCopy = track.Parent is { } parent ? GetOrAddTrack( parent ) : null;
+
+				AddTrackInternal( refTrackCopy, parentCopy );
+
+				return refTrackCopy;
+			}
+
+			case IPropertyTrack propertyTrack:
+				return AddPropertyTrack( propertyTrack.Name, propertyTrack.TargetType, GetOrAddTrack( propertyTrack.Parent ) );
+
+			default:
+				throw new NotImplementedException();
+		}
+	}
+
 	public IProjectReferenceTrack AddReferenceTrack( string name, Type targetType, IProjectTrack? parentTrack = null )
 	{
 		var guid = Guid.NewGuid();
@@ -272,13 +304,10 @@ public sealed partial class MovieProject : IClip
 		return track;
 	}
 
-	public ProjectSequenceTrack AddSequenceTrack( MovieResource resource, IProjectTrack? parentTrack = null )
+	public ProjectSequenceTrack AddSequenceTrack( string name, IProjectTrack? parentTrack = null )
 	{
 		var guid = Guid.NewGuid();
-		var track = new ProjectSequenceTrack( this, guid, resource.ResourceName );
-		var clip = resource.GetCompiled();
-
-		track.AddBlock( (0d, clip.Duration), default, resource );
+		var track = new ProjectSequenceTrack( this, guid, name );
 
 		AddTrackInternal( track, parentTrack );
 

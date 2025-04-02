@@ -288,12 +288,16 @@ public partial class MovieEditor : Widget
 		Switch( Session.Player );
 	}
 
-	public void SaveFileAs()
+	public void SaveFileAs() => SaveAsDialog( "Save Movie As..",
+		() => new MovieResource { Compiled = Session!.Project.Compile(), EditorData = Session.Project.Serialize() },
+		ConfirmedSwitchResource );
+
+	public void SaveAsDialog( string title, Func<MovieResource> createResource, Action<MovieResource>? afterSave = null )
 	{
 		var extension = typeof(MovieResource).GetCustomAttribute<GameResourceAttribute>()!.Extension;
 
 		var fd = new FileDialog( null );
-		fd.Title = $"Save Clip As..";
+		fd.Title = title;
 		fd.Directory = Project.Current.GetAssetsPath();
 		fd.DefaultSuffix = $".{extension}";
 		fd.SetFindFile();
@@ -304,11 +308,10 @@ public partial class MovieEditor : Widget
 			return;
 
 		var sceneAsset = AssetSystem.CreateResource( extension, fd.SelectedFile );
-		var file = new MovieResource { Compiled = Session!.Project.Compile(), EditorData = Session.Project.Serialize() };
+		var file = createResource();
 
 		sceneAsset.SaveToDisk( file );
 
-		ConfirmedSwitchResource( file );
+		afterSave?.Invoke( file );
 	}
 }
-

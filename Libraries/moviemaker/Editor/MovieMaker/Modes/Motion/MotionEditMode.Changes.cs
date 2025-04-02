@@ -100,8 +100,11 @@ partial class MotionEditMode
 
 	private void Delete( bool shiftTime )
 	{
-		if ( TimeSelection is not { } selection ) return;
+		if ( TimeSelection is { } selection ) Delete( selection.PeakTimeRange, shiftTime );
+	}
 
+	private void Delete( MovieTimeRange timeRange, bool shiftTime )
+	{
 		var changed = false;
 
 		using ( PushTrackModification( shiftTime ? "Remove Time" : "Clear Time" ) )
@@ -112,11 +115,11 @@ partial class MotionEditMode
 
 				if ( shiftTime )
 				{
-					changed |= track.Remove( selection.PeakTimeRange ) && view.MarkValueChanged();
+					changed |= track.Remove( timeRange ) && view.MarkValueChanged();
 				}
 				else
 				{
-					changed |= track.Clear( selection.PeakTimeRange ) && view.MarkValueChanged();
+					changed |= track.Clear( timeRange ) && view.MarkValueChanged();
 				}
 			}
 		}
@@ -232,6 +235,33 @@ partial class MotionEditMode
 		SelectionChanged();
 
 		return true;
+	}
+
+	private MovieResource CreateSequence( MovieTimeRange timeRange )
+	{
+		var project = new MovieProject();
+		var offset = -timeRange.Start;
+
+		foreach ( var editable in Session.TrackList.EditableTracks )
+		{
+			if ( editable.Track is not IProjectPropertyTrack propertyTrack ) continue; // TODO
+			if ( propertyTrack.Slice( timeRange ) is not { Count: > 0 } slice ) continue;
+
+			var trackCopy = (IProjectPropertyTrack)project.GetOrAddTrack( editable.Track );
+
+			trackCopy.SetBlocks( [.. slice.Select( x => x.Shift( offset ) )] );
+		}
+
+		Delete( timeRange, false );
+
+		var resource = new MovieResource { EditorData = project.Serialize(), Compiled = project.Compile() };
+		var track = Project.AddSequenceTrack( "Sequences" );
+
+		track.AddBlock( timeRange, new MovieTransform( -offset ), resource );
+
+		Session.TrackList.Update();
+
+		return resource;
 	}
 
 	protected override void OnTrackStateChanged( ITrackView view )
