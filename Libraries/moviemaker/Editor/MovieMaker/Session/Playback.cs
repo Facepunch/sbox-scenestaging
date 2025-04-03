@@ -52,7 +52,7 @@ public sealed partial class Session
 			ApplyFrame( track, time );
 		}
 
-		Parent?.ApplyFrame( time );
+		Parent?.ApplyFrame( Transform * time );
 		EditMode?.ApplyFrame( time );
 
 		AdvanceAnimations( time - _lastAppliedTime );

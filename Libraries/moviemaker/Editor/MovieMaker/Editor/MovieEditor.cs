@@ -223,10 +223,10 @@ public partial class MovieEditor : Widget
 		Initialize( new Session( this, player ) );
 	}
 
-	public void EnterSequence( MovieResource resource )
+	public void EnterSequence( MovieResource resource, MovieTransform transform )
 	{
 		Session!.SetEditMode( null );
-		Initialize( new Session( Session!, resource ) );
+		Initialize( new Session( Session!, resource, transform ) );
 	}
 
 	public void ExitSequence()

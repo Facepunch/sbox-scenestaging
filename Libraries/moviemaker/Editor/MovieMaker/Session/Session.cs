@@ -17,6 +17,11 @@ public sealed partial class Session
 	public MoviePlayer Player { get; }
 	public MovieProject Project { get; }
 	public Session? Parent { get; }
+
+	/// <summary>
+	/// If this session has a <see cref="Parent"/>, how do we transform from this session's timeline to the parent's?
+	/// </summary>
+	public MovieTransform Transform { get; }
 	public Session Root => Parent?.Root ?? this;
 	public IMovieResource Resource { get; }
 
@@ -103,17 +108,19 @@ public sealed partial class Session
 		Player = player;
 		Parent = null;
 		Resource = player.Resource ??= new EmbeddedMovieResource();
+		Transform = MovieTransform.Identity;
 		Project = LoadProject( Resource );
 
 		History = new SessionHistory( this );
 	}
 
-	public Session( Session parent, MovieResource resource )
+	public Session( Session parent, MovieResource resource, MovieTransform transform )
 	{
 		Editor = parent.Editor;
 		Player = parent.Player;
 		Parent = parent;
 		Resource = resource;
+		Transform = transform;
 		Project = LoadProject( Resource );
 
 		History = new SessionHistory( this );
