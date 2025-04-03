@@ -305,7 +305,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		switch ( _editMode )
 		{
 			case EditMode.None:
-				Paint.DrawText( textRect, Block.Resource.ResourcePath, TextFlag.Center );
+				Paint.DrawText( textRect, Block.Resource.ResourceName, TextFlag.Center );
 				break;
 
 			default:

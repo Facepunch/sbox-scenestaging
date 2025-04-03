@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
+using Editor.NodeEditor;
 using Sandbox.MovieMaker;
 using Sandbox.UI;
 
@@ -202,6 +203,14 @@ public partial class TrackWidget : Widget
 		e.Accepted = true;
 
 		_menu = new Menu( this );
+
+		if ( View.Track is ProjectSequenceTrack sequenceTrack )
+		{
+			var rename = _menu.AddMenu( "Rename", "edit" );
+
+			rename.AddLineEdit( "Name", sequenceTrack.Name, autoFocus: true, onSubmit: OnRename );
+		}
+
 		_menu.AddOption( "Delete", "delete", View.Remove );
 
 		if ( View.Children.Count > 0 )
@@ -213,6 +222,15 @@ public partial class TrackWidget : Widget
 		}
 
 		_menu.OpenAtCursor();
+	}
+
+	private void OnRename( string name )
+	{
+		if ( View.Track is not ProjectSequenceTrack sequenceTrack ) return;
+
+		sequenceTrack.Name = name;
+
+		if ( _label is { } label ) label.Text = name;
 	}
 
 	void RemoveEmptyChildren()

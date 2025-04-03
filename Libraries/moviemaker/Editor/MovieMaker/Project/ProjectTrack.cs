@@ -62,7 +62,7 @@ public abstract partial class ProjectTrack<T>( MovieProject project, Guid id, st
 	public MovieProject Project { get; } = project;
 
 	public Guid Id { get; } = id;
-	public string Name { get; } = name;
+	public string Name { get; set; } = name;
 	public Type TargetType { get; } = typeof(T);
 
 	public IProjectTrack? Parent { get; private set; }

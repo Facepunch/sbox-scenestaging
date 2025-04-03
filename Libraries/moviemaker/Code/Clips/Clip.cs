@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Sandbox.MovieMaker.Properties;
 
 namespace Sandbox.MovieMaker;
 
