@@ -53,8 +53,6 @@ public partial class MovieEditor : Widget
 		splitter.SetStretch( 1, 3 );
 
 		Session.RestoreFromCookies();
-
-		contextHash = default;
 	}
 
 	void CloseSession()
@@ -171,38 +169,18 @@ public partial class MovieEditor : Widget
 		Session?.Redo();
 	}
 
-	int contextHash;
-
-	List<MoviePlayer> playersAvailable = new();
-
 	/// <summary>
 	/// Look for any clips we can edit. If the clip we're editing has gone - stop editing it.
 	/// </summary>
 	void UpdateEditorContext()
 	{
-		HashCode hash = new HashCode();
-
 		if ( SceneEditorSession.Active?.Scene is not { } scene ) return;
 
-		playersAvailable.Clear();
-		playersAvailable.AddRange( scene.GetAllComponents<MoviePlayer>() );
-
-		foreach ( var player in playersAvailable )
-		{
-			hash.Add( player );
-			hash.Add( player.Resource );
-		}
-
-		var hc = hash.ToHashCode();
-
-		if ( contextHash == hc ) return;
-		contextHash = hc;
-
 		// The current session exists
-		if ( Session is not null )
+		if ( Session is { } session )
 		{
 			// Whatever we were editing doesn't exist anymore!
-			if ( playersAvailable.All( x => x.Resource != Session.Root.Resource || x != Session.Player ) )
+			if ( !session.Player.IsValid || session.Player.Scene != scene )
 			{
 				CloseSession();
 			}
@@ -211,11 +189,11 @@ public partial class MovieEditor : Widget
 		// session is null, lets load the first player
 		if ( Session is null )
 		{
-			if ( playersAvailable.Count == 0 ) return;
-			Switch( playersAvailable.First() );
+			if ( scene.GetAllComponents<MoviePlayer>().FirstOrDefault() is { } player )
+			{
+				Switch( player );
+			}
 		}
-
-		ListPanel?.UpdatePlayers( Session, playersAvailable );
 	}
 
 	public void Switch( MoviePlayer player )
@@ -241,10 +219,17 @@ public partial class MovieEditor : Widget
 			var timeOffset = Session.SequenceTransform * Session!.TimeOffset;
 			var pixelsPerSecond = (float)(Session.SequenceTransform.Scale.FrequencyScale * Session.PixelsPerSecond);
 
+			var resource = Session.Resource;
+
 			Session.Save();
 			Initialize( parent );
 
 			Session.SetView( timeOffset, pixelsPerSecond );
+
+			if ( resource is MovieResource movieResource )
+			{
+				Session.Project.RefreshSequenceTracks( movieResource );
+			}
 		}
 	}
 
@@ -257,8 +242,6 @@ public partial class MovieEditor : Widget
 
 			SceneEditorSession.Active.Selection.Set( go );
 		}
-
-		contextHash = default;
 	}
 
 	public void SwitchToEmbedded()

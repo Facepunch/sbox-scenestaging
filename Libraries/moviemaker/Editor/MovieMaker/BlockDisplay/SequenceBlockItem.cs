@@ -318,7 +318,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
 		}
 
-		TryDrawText( ref textRect, Block.Resource.ResourceName, icon: "movie" );
+		TryDrawText( ref textRect, Block.Resource.ResourceName.ToTitleCase(), icon: "movie" );
 	}
 
 	private void TryDrawText( ref Rect rect, string text, TextFlag flags = TextFlag.Center, string? icon = null, float iconSize = 16f )

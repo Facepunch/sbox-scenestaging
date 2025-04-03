@@ -48,12 +48,17 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 		}
 	}
 
+	public void Invalidate()
+	{
+		_tracksInvalid = true;
+	}
+
 	public ProjectSequenceBlock AddBlock( MovieTimeRange timeRange, MovieTransform transform, MovieResource resource )
 	{
 		var block = new ProjectSequenceBlock( timeRange, transform, resource );
 
 		_blocks.Add( block );
-		_tracksInvalid = true;
+		Invalidate();
 
 		return block;
 	}
@@ -61,7 +66,7 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 	public void RemoveBlock( ProjectSequenceBlock block )
 	{
 		_blocks.Remove( block );
-		_tracksInvalid = true;
+		Invalidate();
 	}
 
 	public override ICompiledTrack Compile( ICompiledTrack? compiledParent, bool headerOnly )

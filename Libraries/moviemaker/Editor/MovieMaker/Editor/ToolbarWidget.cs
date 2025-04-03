@@ -109,6 +109,21 @@ public sealed class ToolbarGroup : Widget
 		Paint.DrawRect( LocalRect, 3f );
 	}
 
+	public Label AddLabel( string text )
+	{
+		var label = new Label( null )
+		{
+			Color = Color.White.Darken( 0.5f ),
+			Margin = 4f,
+			Alignment = TextFlag.Left,
+			Text = text
+		};
+
+		Layout.Add( label );
+
+		return label;
+	}
+
 	public IconButton AddAction( string title, string icon, Action action, Func<bool>? enabled = null )
 	{
 		var btn = new IconButton( icon )

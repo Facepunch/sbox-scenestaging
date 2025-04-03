@@ -8,9 +8,21 @@
           {
             "TimeRange": {
               "Start": 0,
-              "End": 115200
+              "End": 16560
             },
-            "Transform": {},
+            "Transform": {
+              "Translation": -50400
+            },
+            "Resource": "movies/camera.movie"
+          },
+          {
+            "TimeRange": {
+              "Start": 16560,
+              "End": 40320
+            },
+            "Transform": {
+              "Translation": -68400
+            },
             "Resource": "movies/camera.movie"
           }
         ],
@@ -23,9 +35,21 @@
           {
             "TimeRange": {
               "Start": 0,
-              "End": 115200
+              "End": 16560
             },
-            "Transform": {},
+            "Transform": {
+              "Translation": -50400
+            },
+            "Resource": "movies/player_recording_1.movie"
+          },
+          {
+            "TimeRange": {
+              "Start": 16560,
+              "End": 40320
+            },
+            "Transform": {
+              "Translation": -68400
+            },
             "Resource": "movies/player_recording_1.movie"
           }
         ],

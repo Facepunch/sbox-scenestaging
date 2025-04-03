@@ -11,18 +11,110 @@
           {
             "TimeRange": {
               "Start": 0,
-              "End": 115200
+              "End": 68400
             },
             "Signal": {
               "$id": 1,
-              "$type": "Source",
-              "Source": "56c81b03-9b6f-4a77-80e9-7a2cbba69674",
-              "TrackIndex": 3,
-              "BlockIndex": 0,
-              "Transform": {
-                "Translation": -1800
+              "$type": "HardCut",
+              "Time": 63000,
+              "First": {
+                "$id": 2,
+                "$type": "CrossFade",
+                "FadeTimeRange": {
+                  "Start": 60120,
+                  "End": 63000
+                },
+                "Mode": "QuadraticInOut",
+                "Direction": "FadeOut",
+                "First": {
+                  "$id": 3,
+                  "$type": "CrossFade",
+                  "FadeTimeRange": {
+                    "Start": 51120,
+                    "End": 57060
+                  },
+                  "Mode": "QuadraticInOut",
+                  "First": {
+                    "$id": 4,
+                    "$type": "Source",
+                    "Source": "56c81b03-9b6f-4a77-80e9-7a2cbba69674",
+                    "TrackIndex": 3,
+                    "BlockIndex": 0,
+                    "Transform": {
+                      "Translation": -1800
+                    },
+                    "SmoothingSize": 14400
+                  },
+                  "Second": {
+                    "$id": 5,
+                    "$type": "Constant",
+                    "Value": "0.04497509,0.0991502,-0.4106379,0.9052751",
+                    "IsIdentity": false
+                  }
+                },
+                "Second": 4
               },
-              "SmoothingSize": 14400
+              "Second": {
+                "$id": 6,
+                "$type": "CrossFade",
+                "FadeTimeRange": {
+                  "Start": 63000,
+                  "End": 68400
+                },
+                "Mode": "QuadraticIn",
+                "First": {
+                  "$id": 7,
+                  "$type": "CrossFade",
+                  "FadeTimeRange": {
+                    "Start": 64080,
+                    "End": 68400
+                  },
+                  "Mode": "QuadraticIn",
+                  "First": 4,
+                  "Second": {
+                    "$id": 8,
+                    "$type": "Constant",
+                    "Value": "0.02766115,0.03373606,-0.6334428,0.7725587",
+                    "IsIdentity": false
+                  }
+                },
+                "Second": {
+                  "$id": 9,
+                  "$type": "Constant",
+                  "Value": "0.01180952,0.01514317,-0.6148488,0.7884111",
+                  "IsIdentity": false
+                }
+              }
+            }
+          },
+          {
+            "TimeRange": {
+              "Start": 68400,
+              "End": 84960
+            },
+            "Signal": 4
+          },
+          {
+            "TimeRange": {
+              "Start": 84960,
+              "End": 115200
+            },
+            "Signal": {
+              "$id": 10,
+              "$type": "CrossFade",
+              "FadeTimeRange": {
+                "Start": 84960,
+                "End": 89280
+              },
+              "Mode": "QuadraticIn",
+              "Direction": "FadeOut",
+              "First": {
+                "$id": 11,
+                "$type": "Constant",
+                "Value": "-0.002615408,0.0002241839,0.996343,0.08540313",
+                "IsIdentity": false
+              },
+              "Second": 4
             }
           }
         ]
@@ -56,18 +148,111 @@
           {
             "TimeRange": {
               "Start": 0,
-              "End": 115200
+              "End": 63000
             },
             "Signal": {
               "$id": 1,
-              "$type": "Source",
-              "Source": "56c81b03-9b6f-4a77-80e9-7a2cbba69674",
-              "TrackIndex": 2,
-              "BlockIndex": 0,
-              "Transform": {
-                "Translation": -1800
+              "$type": "CrossFade",
+              "FadeTimeRange": {
+                "Start": 60120,
+                "End": 63000
               },
-              "SmoothingSize": 14400
+              "Mode": "QuadraticInOut",
+              "Direction": "FadeOut",
+              "First": {
+                "$id": 2,
+                "$type": "CrossFade",
+                "FadeTimeRange": {
+                  "Start": 51120,
+                  "End": 57060
+                },
+                "Mode": "QuadraticInOut",
+                "First": {
+                  "$id": 3,
+                  "$type": "Source",
+                  "Source": "56c81b03-9b6f-4a77-80e9-7a2cbba69674",
+                  "TrackIndex": 2,
+                  "BlockIndex": 0,
+                  "Transform": {
+                    "Translation": -1800
+                  },
+                  "SmoothingSize": 14400
+                },
+                "Second": {
+                  "$id": 4,
+                  "$type": "Constant",
+                  "Value": "-148.8143,-232.7994,958.6849",
+                  "IsIdentity": false
+                }
+              },
+              "Second": 3
+            }
+          },
+          {
+            "TimeRange": {
+              "Start": 63000,
+              "End": 68400
+            },
+            "Signal": {
+              "$id": 5,
+              "$type": "CrossFade",
+              "FadeTimeRange": {
+                "Start": 63000,
+                "End": 68400
+              },
+              "Mode": "QuadraticIn",
+              "First": {
+                "$id": 6,
+                "$type": "CrossFade",
+                "FadeTimeRange": {
+                  "Start": 64080,
+                  "End": 68400
+                },
+                "Mode": "QuadraticIn",
+                "First": 3,
+                "Second": {
+                  "$id": 7,
+                  "$type": "Constant",
+                  "Value": "144.9971,-652.0991,911.3826",
+                  "IsIdentity": false
+                }
+              },
+              "Second": {
+                "$id": 8,
+                "$type": "Constant",
+                "Value": "107.4702,-646.1766,926.7081",
+                "IsIdentity": false
+              }
+            }
+          },
+          {
+            "TimeRange": {
+              "Start": 68400,
+              "End": 84960
+            },
+            "Signal": 3
+          },
+          {
+            "TimeRange": {
+              "Start": 84960,
+              "End": 115200
+            },
+            "Signal": {
+              "$id": 9,
+              "$type": "CrossFade",
+              "FadeTimeRange": {
+                "Start": 84960,
+                "End": 89280
+              },
+              "Mode": "QuadraticIn",
+              "Direction": "FadeOut",
+              "First": {
+                "$id": 10,
+                "$type": "Constant",
+                "Value": "-700.0675,-690.6854,945.8782",
+                "IsIdentity": false
+              },
+              "Second": 3
             }
           }
         ]

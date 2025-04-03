@@ -350,6 +350,20 @@ public sealed partial class MovieProject : IClip
 			}
 		}
 	}
+
+	/// <summary>
+	/// Force any project tracks using this resource to update.
+	/// </summary>
+	public void RefreshSequenceTracks( MovieResource resource )
+	{
+		foreach ( var track in Tracks.OfType<ProjectSequenceTrack>() )
+		{
+			if ( track.References.Contains( resource ) )
+			{
+				track.Invalidate();
+			}
+		}
+	}
 }
 
 public static class MovieResourceExtensions
