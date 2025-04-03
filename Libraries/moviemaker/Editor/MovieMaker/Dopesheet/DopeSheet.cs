@@ -305,6 +305,8 @@ public class DopeSheet : GraphicsView
 
 		if ( GetItemAt( scenePos ) is { Selectable: true } ) return;
 
+		DeselectAll();
+
 		Session.EditMode?.MousePress( e );
 
 		if ( e.Accepted ) return;
@@ -327,6 +329,14 @@ public class DopeSheet : GraphicsView
 		base.OnMouseReleased( e );
 
 		Session.EditMode?.MouseRelease( e );
+	}
+
+	public void DeselectAll()
+	{
+		foreach ( var item in SelectedItems.ToArray() )
+		{
+			item.Selected = false;
+		}
 	}
 
 	protected override void OnKeyPress( KeyEvent e )

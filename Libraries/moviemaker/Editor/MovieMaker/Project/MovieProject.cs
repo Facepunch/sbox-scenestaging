@@ -34,7 +34,7 @@ public sealed partial class MovieProject : IClip
 
 	public bool IsEmpty => Tracks.Count == 0;
 
-	public MovieTime Duration => _trackList.OfType<IProjectPropertyTrack>()
+	public MovieTime Duration => _trackList.OfType<IProjectBlockTrack>()
 		.Select( x => x.TimeRange.End )
 		.DefaultIfEmpty( 0d )
 		.Max();

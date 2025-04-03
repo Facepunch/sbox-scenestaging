@@ -1,6 +1,4 @@
-﻿using Editor.ShaderGraph.Nodes;
-using Sandbox.MovieMaker;
-using System.Runtime.InteropServices.JavaScript;
+﻿using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker.BlockDisplays;
 
@@ -57,6 +55,11 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		}
 
 		if ( !e.LeftMouseButton ) return;
+
+		if ( !e.HasShift )
+		{
+			Parent.DopeSheet.DeselectAll();
+		}
 
 		Selected = true;
 
@@ -189,7 +192,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		if ( _lastClick < 0.5f )
 		{
-			DoubleClicked();
+			OnEdit();
 		}
 
 		_lastClick = 0f;
@@ -214,6 +217,8 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		menu.AddHeading( "Sequence Block" );
 
+		menu.AddOption( "Edit", "edit", OnEdit );
+
 		if ( time > TimeRange.Start && time < TimeRange.End )
 		{
 			menu.AddOption( "Split", "carpenter", () => OnSplit( time ) );
@@ -230,7 +235,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		Parent.View.MarkValueChanged();
 	}
 
-	private void DoubleClicked()
+	private void OnEdit()
 	{
 		if ( Block.Resource is { } resource )
 		{
@@ -299,19 +304,61 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		Paint.ClearBrush();
 		Paint.SetPen( Theme.ControlText.Darken( isLocked ? 0.25f : 0f ) );
 
-		var textRect = new Rect( minX + 8f, LocalRect.Top + 4f, maxX - minX - 16f, LocalRect.Height - 4f );
+		var textRect = new Rect( minX + 4f, LocalRect.Top + 4f, maxX - minX - 8f, LocalRect.Height - 4f );
 		var fullTimeRange = FullTimeRange;
 
-		switch ( _editMode )
+		if ( _editMode == EditMode.MoveEnd )
 		{
-			case EditMode.None:
-				Paint.DrawText( textRect, Block.Resource.ResourceName, TextFlag.Center );
-				break;
+			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
+			TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
+		}
+		else if ( _editMode != EditMode.None )
+		{
+			TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
+			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
+		}
 
-			default:
-				Paint.DrawText( textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
-				Paint.DrawText( textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
-				break;
+		TryDrawText( ref textRect, Block.Resource.ResourceName, icon: "movie" );
+	}
+
+	private void TryDrawText( ref Rect rect, string text, TextFlag flags = TextFlag.Center, string? icon = null, float iconSize = 16f )
+	{
+		var originalRect = rect;
+
+		if ( icon != null )
+		{
+			if ( rect.Width < iconSize ) return;
+
+			rect.Left += iconSize + 4f;
+		}
+
+		var textRect = Paint.MeasureText( rect, text, flags );
+
+		if ( textRect.Width > rect.Width )
+		{
+			if ( icon != null )
+			{
+				Paint.DrawIcon( originalRect, icon, iconSize, flags );
+			}
+
+			rect = default;
+			return;
+		}
+
+		if ( icon != null )
+		{
+			Paint.DrawIcon( new Rect( textRect.Left - iconSize - 4f, rect.Top, iconSize, rect.Height ), icon, iconSize, flags );
+		}
+
+		Paint.DrawText( rect, text, flags );
+
+		if ( (flags & TextFlag.Left) != 0 )
+		{
+			rect.Left = textRect.Right;
+		}
+		else if ( (flags & TextFlag.Right) != 0 )
+		{
+			rect.Right = textRect.Left;
 		}
 	}
 }

@@ -153,7 +153,13 @@ public partial class ProjectReferenceTrack<T>( MovieProject project, Guid id, st
 	ITrack? ITrack.Parent => Parent;
 }
 
-public partial interface IProjectPropertyTrack : IPropertyTrack, IProjectTrack
+public interface IProjectBlockTrack : IProjectTrack
+{
+	MovieTimeRange TimeRange { get; }
+	IReadOnlyList<ITrackBlock> Blocks { get; }
+}
+
+public partial interface IProjectPropertyTrack : IPropertyTrack, IProjectBlockTrack
 {
 	public static IProjectPropertyTrack Create( MovieProject project, Guid id, string name, Type targetType )
 	{
@@ -164,8 +170,7 @@ public partial interface IProjectPropertyTrack : IPropertyTrack, IProjectTrack
 
 	new IProjectTrack? Parent { get; }
 
-	IReadOnlyList<IProjectPropertyBlock> Blocks { get; }
-	MovieTimeRange TimeRange { get; }
+	new IReadOnlyList<IProjectPropertyBlock> Blocks { get; }
 
 	ITrack IPropertyTrack.Parent => Parent!;
 
@@ -210,7 +215,8 @@ public partial interface IProjectPropertyTrack : IPropertyTrack, IProjectTrack
 	IReadOnlyList<IProjectPropertyBlock> Slice( MovieTimeRange timeRange );
 
 	IReadOnlyList<IProjectPropertyBlock> CreateSourceBlocks( ProjectSourceClip source );
-
+	
+	IReadOnlyList<ITrackBlock> IProjectBlockTrack.Blocks => Blocks;
 	IProjectTrack? IProjectTrack.Parent => Parent;
 	ITrack? ITrack.Parent => Parent;
 }

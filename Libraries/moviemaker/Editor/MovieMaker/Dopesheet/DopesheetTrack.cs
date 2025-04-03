@@ -9,6 +9,7 @@ namespace Editor.MovieMaker;
 
 public partial class DopeSheetTrack : GraphicsItem
 {
+	public DopeSheet DopeSheet { get; }
 	public Session Session { get; }
 	public ITrackView View { get; }
 
@@ -21,6 +22,7 @@ public partial class DopeSheetTrack : GraphicsItem
 
 	public DopeSheetTrack( DopeSheet dopeSheet, ITrackView view )
 	{
+		DopeSheet = dopeSheet;
 		Session = dopeSheet.Session;
 		View = view;
 

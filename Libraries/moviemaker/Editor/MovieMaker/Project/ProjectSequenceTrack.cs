@@ -11,7 +11,7 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id, string name )
-	: ProjectReferenceTrack<GameObject>( project, id, name )
+	: ProjectReferenceTrack<GameObject>( project, id, name ), IProjectBlockTrack
 {
 	private readonly List<ProjectSequenceBlock> _blocks = new();
 	private readonly HashSet<ICompiledReferenceTrack> _referenceTracks = new();
@@ -22,6 +22,11 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 
 	public override bool IsEmpty => _blocks.Count == 0;
 	public override IEnumerable<MovieResource> References => _blocks.Select( x => x.Resource ).Distinct();
+
+	public MovieTimeRange TimeRange => _blocks
+		.Select( x => x.TimeRange.End )
+		.DefaultIfEmpty( 0d )
+		.Max();
 
 	public IReadOnlyList<ProjectSequenceBlock> Blocks => _blocks;
 
@@ -98,6 +103,8 @@ public sealed partial class ProjectSequenceTrack( MovieProject project, Guid id,
 			}
 		}
 	}
+
+	IReadOnlyList<ITrackBlock> IProjectBlockTrack.Blocks => Blocks;
 }
 
 public sealed class ProjectSequenceBlock
