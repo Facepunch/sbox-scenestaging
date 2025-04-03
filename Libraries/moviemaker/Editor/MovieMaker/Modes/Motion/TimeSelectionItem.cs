@@ -59,7 +59,7 @@ partial class MotionEditMode
 			if ( OriginalSelection is not { } selection ) return;
 
 			var origTime = selection.PeakStart;
-			var startTime = EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection | SnapFlag.PasteBlock,
+			var startTime = EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection | SnapFlag.PasteBlock, null,
 				selection.TotalStart - origTime, selection.PeakEnd - origTime, selection.TotalEnd - origTime );
 
 			startTime = MovieTime.Max( selection.FadeIn.Duration, startTime );
@@ -193,9 +193,10 @@ partial class MotionEditMode
 			if ( OriginalSelection is not { } selection ) return;
 
 			var time = _moveWholeSelection is true
-				? EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection, -selection.FadeIn.Duration, selection.FadeOut.Duration )
+				? EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection, null,
+					-selection.FadeIn.Duration, selection.FadeOut.Duration )
 				: EditMode.Session.ScenePositionToTime( Position,
-					ignore: Kind == FadeKind.FadeIn ? SnapFlag.SelectionStart : SnapFlag.SelectionEnd,
+					ignore: Kind == FadeKind.FadeIn ? SnapFlag.SelectionStart : SnapFlag.SelectionEnd, null,
 					Kind == FadeKind.FadeIn ? -selection.FadeIn.Duration : selection.FadeOut.Duration );
 
 			if ( time != selection.PeakStart )

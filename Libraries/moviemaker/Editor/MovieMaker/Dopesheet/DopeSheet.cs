@@ -369,6 +369,7 @@ public class DopeSheet : GraphicsView
 
 		foreach ( var dopeTrack in _tracks.Values )
 		{
+			if ( dopeTrack.View == snap.IgnoreTrack ) continue;
 			if ( dopeTrack.View.IsLocked ) continue;
 			if ( mouseScenePos.y < dopeTrack.SceneRect.Top ) continue;
 			if ( mouseScenePos.y > dopeTrack.SceneRect.Bottom ) continue;

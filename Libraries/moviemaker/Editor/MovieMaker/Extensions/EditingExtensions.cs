@@ -37,17 +37,19 @@ public struct TimeSnapHelper
 
 	public MovieTime MaxSnap { get; set; }
 	public SnapFlag Ignore { get; set; }
+	public ITrackView? IgnoreTrack { get; set; }
 
 	public MovieTime BestTime { get; private set; }
 	public float BestScore { get; private set; } = float.MaxValue;
 
-	public TimeSnapHelper( MovieTime time, MovieTime maxSnap, SnapFlag ignore )
+	public TimeSnapHelper( MovieTime time, MovieTime maxSnap, SnapFlag ignore, ITrackView? ignoreTrack )
 	{
 		Time = BestTime = time;
 		BestScore = float.PositiveInfinity;
 
 		MaxSnap = maxSnap;
 		Ignore = ignore;
+		IgnoreTrack = ignoreTrack;
 	}
 
 	public void Add( SnapFlag flag, MovieTime time, int priority = 0, bool force = false )

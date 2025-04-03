@@ -94,7 +94,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		// To avoid double-click
 		_lastClick = 1f;
 
-		var time = Parent.Session.ScenePositionToTime( e.ScenePosition, SnapFlag.TrackBlock );
+		var time = Parent.Session.ScenePositionToTime( e.ScenePosition, ignoreTrack: Parent.View );
 		var fullTimeRange = FullTimeRange;
 
 		switch ( _dragMode )
