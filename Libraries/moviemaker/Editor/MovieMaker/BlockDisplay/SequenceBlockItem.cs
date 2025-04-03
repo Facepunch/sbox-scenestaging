@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using Editor.ShaderGraph.Nodes;
+using Sandbox.MovieMaker;
 using System.Runtime.InteropServices.JavaScript;
 
 namespace Editor.MovieMaker.BlockDisplays;
@@ -9,22 +10,23 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 {
 	private RealTimeSince _lastClick;
 
-	private enum DragMode
+	private enum EditMode
 	{
 		None,
 		Translate,
 		MoveStart,
-		MoveEnd
+		MoveEnd,
+		Split
 	}
 
-	public override Rect BoundingRect => base.BoundingRect.Grow( 8f, 0f );
-
-	private DragMode _dragMode;
+	private EditMode _editMode;
 	private float _dragOffset;
 	private MovieTimeRange _originalTimeRange;
 	private MovieTransform _originalTransform;
 
 	private GraphicsItem? _ghost;
+
+	public new ProjectSequenceTrack Track => (ProjectSequenceTrack)Parent.View.Track;
 
 	public SequenceBlockItem()
 	{
@@ -42,16 +44,33 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
-		if ( Parent.View.IsLocked || !e.LeftMouseButton ) return;
+		if ( Parent.View.IsLocked ) return;
+		if ( !e.LeftMouseButton && !e.RightMouseButton ) return;
 
 		e.Accepted = true;
 
+		var time = Parent.Session.ScenePositionToTime( e.ScenePosition );
+
+		if ( e.RightMouseButton )
+		{
+			Parent.Session.SetCurrentPointer( time );
+		}
+
+		if ( !e.LeftMouseButton ) return;
+
 		Selected = true;
 
-		_dragMode = GetDragMode( e.LocalPosition );
+		_editMode = GetEditMode( e.LocalPosition );
 		_dragOffset = e.ScenePosition.x - SceneRect.Left;
 		_originalTimeRange = Block.TimeRange;
 		_originalTransform = Block.Transform;
+
+		if ( _editMode == EditMode.Split )
+		{
+			OnSplit( time );
+			_editMode = EditMode.None;
+			return;
+		}
 
 		var fullSceneRect = FullSceneRect;
 
@@ -85,20 +104,20 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 	protected override void OnMouseMove( GraphicsMouseEvent e )
 	{
-		if ( _dragMode == DragMode.None ) return;
+		if ( _editMode == EditMode.None ) return;
 
 		e.Accepted = true;
 
 		// To avoid double-click
 		_lastClick = 1f;
 
-		switch ( _dragMode )
+		switch ( _editMode )
 		{
-			case DragMode.MoveStart or DragMode.MoveEnd:
+			case EditMode.MoveStart or EditMode.MoveEnd:
 				OnDragStartEnd( e.ScenePosition );
 				break;
 
-			case DragMode.Translate:
+			case EditMode.Translate:
 				OnTranslate( e.ScenePosition );
 				break;
 		}
@@ -109,15 +128,28 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		Parent.Session.ApplyFrame( Parent.View.Track, Parent.Session.CurrentPointer );
 	}
 
+	private void OnSplit( MovieTime time )
+	{
+		if ( time <= TimeRange.Start ) return;
+		if ( time >= TimeRange.End ) return;
+
+		Track.AddBlock( (time, Block.TimeRange.End), Block.Transform, Block.Resource );
+
+		Block.TimeRange = (Block.TimeRange.Start, time);
+
+		Layout();
+		Parent.View.MarkValueChanged();
+	}
+
 	private void OnDragStartEnd( Vector2 scenePosition )
 	{
 		var time = Parent.Session.ScenePositionToTime( scenePosition, new SnapOptions( IgnoreBlock: Block ) );
 		var minDuration = MovieTime.FromFrames( 1, Parent.Session.FrameRate );
 
-		Block.TimeRange = FullTimeRange.Clamp( _dragMode switch
+		Block.TimeRange = FullTimeRange.Clamp( _editMode switch
 		{
-			DragMode.MoveStart => (MovieTime.Min( time, _originalTimeRange.End - minDuration ), _originalTimeRange.End),
-			DragMode.MoveEnd => (_originalTimeRange.Start, MovieTime.Max( time, _originalTimeRange.Start + minDuration )),
+			EditMode.MoveStart => (MovieTime.Min( time, _originalTimeRange.End - minDuration ), _originalTimeRange.End),
+			EditMode.MoveEnd => (_originalTimeRange.Start, MovieTime.Max( time, _originalTimeRange.Start + minDuration )),
 			_ => null
 		} );
 	}
@@ -147,6 +179,12 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 	protected override void OnMouseReleased( GraphicsMouseEvent e )
 	{
+		if ( e.RightMouseButton )
+		{
+			OnOpenContextMenu( e );
+			return;
+		}
+
 		if ( !e.LeftMouseButton ) return;
 
 		if ( _lastClick < 0.5f )
@@ -155,13 +193,41 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		}
 
 		_lastClick = 0f;
-		_dragMode = DragMode.None;
+		_editMode = EditMode.None;
 		_ghost?.Destroy();
 		_ghost = null;
 
 		e.Accepted = true;
 
 		Layout();
+	}
+
+	private void OnOpenContextMenu( GraphicsMouseEvent e )
+	{
+		e.Accepted = true;
+
+		Selected = true;
+
+		var time = Parent.Session.CurrentPointer;
+
+		var menu = new Menu();
+
+		menu.AddHeading( "Sequence Block" );
+
+		if ( time > TimeRange.Start && time < TimeRange.End )
+		{
+			menu.AddOption( "Split", "carpenter", () => OnSplit( time ) );
+		}
+
+		menu.AddOption( "Delete", "delete", OnDelete );
+
+		menu.OpenAt( e.ScreenPosition );
+	}
+
+	private void OnDelete()
+	{
+		Track.RemoveBlock( Block );
+		Parent.View.MarkValueChanged();
 	}
 
 	private void DoubleClicked()
@@ -172,12 +238,13 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		}
 	}
 
-	private DragMode GetDragMode( Vector2 localMousePos )
+	private EditMode GetEditMode( Vector2 localMousePos )
 	{
-		if ( localMousePos.x <= 8f ) return DragMode.MoveStart;
-		if ( localMousePos.x >= LocalRect.Width - 8f ) return DragMode.MoveEnd;
+		if ( localMousePos.x <= 8f ) return EditMode.MoveStart;
+		if ( localMousePos.x >= LocalRect.Width - 8f ) return EditMode.MoveEnd;
+		// if ( (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0 ) return EditMode.Split;
 
-		return DragMode.Translate;
+		return EditMode.Translate;
 	}
 
 	private void UpdateCursor( Vector2 localMousePos )
@@ -188,9 +255,10 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 			return;
 		}
 
-		Cursor = GetDragMode( localMousePos ) switch
+		Cursor = GetEditMode( localMousePos ) switch
 		{
-			DragMode.MoveStart or DragMode.MoveEnd => CursorShape.SizeH,
+			EditMode.MoveStart or EditMode.MoveEnd => CursorShape.SizeH,
+			EditMode.Split => CursorShape.SplitH,
 			_ => CursorShape.Finger
 		};
 	}
@@ -234,15 +302,15 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		var textRect = new Rect( minX + 8f, LocalRect.Top + 4f, maxX - minX - 16f, LocalRect.Height - 4f );
 		var fullTimeRange = FullTimeRange;
 
-		switch ( _dragMode )
+		switch ( _editMode )
 		{
-			case DragMode.None:
+			case EditMode.None:
 				Paint.DrawText( textRect, Block.Resource.ResourcePath, TextFlag.Center );
 				break;
 
 			default:
-				Paint.DrawText( textRect, $"+{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
-				Paint.DrawText( textRect, $"{Block.TimeRange.End - fullTimeRange.End}", TextFlag.RightCenter );
+				Paint.DrawText( textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
+				Paint.DrawText( textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
 				break;
 		}
 	}
