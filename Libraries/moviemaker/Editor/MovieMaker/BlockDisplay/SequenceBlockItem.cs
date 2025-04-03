@@ -95,16 +95,17 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		_lastClick = 1f;
 
 		var time = Parent.Session.ScenePositionToTime( e.ScenePosition, ignoreTrack: Parent.View );
+		var minDuration = MovieTime.FromFrames( 1, Parent.Session.FrameRate );
 		var fullTimeRange = FullTimeRange;
 
 		switch ( _dragMode )
 		{
 			case DragMode.MoveStart:
-				Block.TimeRange = fullTimeRange.Clamp( (time, _originalTimeRange.End) );
+				Block.TimeRange = fullTimeRange.Clamp( (MovieTime.Min( time, _originalTimeRange.End - minDuration ), _originalTimeRange.End) );
 				break;
 
 			case DragMode.MoveEnd:
-				Block.TimeRange = fullTimeRange.Clamp( (_originalTimeRange.Start, time) );
+				Block.TimeRange = fullTimeRange.Clamp( (_originalTimeRange.Start, MovieTime.Max( time, _originalTimeRange.Start + minDuration )) );
 				break;
 
 			case DragMode.Translate:
