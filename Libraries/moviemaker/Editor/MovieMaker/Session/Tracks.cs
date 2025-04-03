@@ -158,21 +158,23 @@ public interface ITrackView
 partial class Session
 {
 	private ITrackListView? _trackList;
-	private float _trackListOffset;
+	private float _trackListScrollPosition;
 
 	/// <summary>
 	/// Which tracks should be visible in the track list / dope sheet.
 	/// </summary>
 	public ITrackListView TrackList => _trackList ??= new DefaultTrackListView( this );
 
-	public float TrackListScrollOffset
+	public float TrackListScrollPosition
 	{
-		get => _trackListOffset;
+		get => _trackListScrollPosition;
 		set
 		{
-			if ( _trackListOffset.Equals( value ) ) return;
+			if ( _trackListScrollPosition.Equals( value ) ) return;
 
-			_trackListOffset = value;
+			_trackListScrollPosition = value;
+			Cookies.ScrollPosition = value;
+
 			ViewChanged?.Invoke();
 		}
 	}

@@ -67,6 +67,12 @@ partial class Session
 			get => session.GetCookie( nameof( PixelsPerSecond ), 100f );
 			set => session.SetCookie( nameof( PixelsPerSecond ), value );
 		}
+
+		public float ScrollPosition
+		{
+			get => session.GetCookie( nameof(ScrollPosition), 0f );
+			set => session.SetCookie( nameof(ScrollPosition), value );
+		}
 	}
 
 	private CookieHelper? _cookieHelper;
@@ -83,6 +89,7 @@ partial class Session
 		_frameRate = Cookies.FrameRate;
 		_frameSnap = Cookies.FrameSnap;
 		_objectSnap = Cookies.ObjectSnap;
+		_trackListScrollPosition = Cookies.ScrollPosition;
 
 		SetView( Cookies.TimeOffset, Cookies.PixelsPerSecond );
 		SetEditMode( Cookies.EditMode );
