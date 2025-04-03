@@ -94,6 +94,11 @@ partial class CurveBlockItem<T>
 
 		if ( Elements.Count < 1 ) return;
 
+		var paintHash = PaintHash;
+		if ( paintHash == _lastPaintHash ) return;
+
+		_lastPaintHash = paintHash;
+
 		if ( Lines is null )
 		{
 			Lines = new GraphicsLine[Elements.Count];
