@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sandbox.MovieMaker.Compiled;
@@ -15,12 +16,12 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, 
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTransform Transform = default,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingDefault )] MovieTime SmoothingSize = default ) : PropertySignal<T>
 {
-	private ImmutableArray<T>? _samples;
+	private IReadOnlyList<T>? _samples;
 	private CompiledSampleBlock<T>? _block;
 
 	private CompiledSampleBlock<T> Block => _block ??= (CompiledSampleBlock<T>)((CompiledPropertyTrack<T>)Source.Clip.Tracks[TrackIndex]).Blocks[BlockIndex];
 
-	private ImmutableArray<T> Samples => _samples ??= Block.Resample( Block.SampleRate, SmoothingSize, _interpolator );
+	private IReadOnlyList<T> Samples => _samples ??= Block.Resample( Block.SampleRate, SmoothingSize, _interpolator );
 
 	public CompiledSignal( CompiledSignal<T> copy )
 		: base( copy )
@@ -102,6 +103,30 @@ file sealed record CompiledSignal<T>( ProjectSourceClip Source, int TrackIndex, 
 	private static readonly IInterpolator<T>? _interpolator = Interpolator.GetDefault<T>();
 }
 
+file sealed class ResampleCache<T>
+{
+	private readonly record struct Key( int SampleRate, MovieTime SmoothingSize );
+
+	private static ConditionalWeakTable<CompiledSampleBlock<T>, Dictionary<Key, WeakReference<T[]>>> Cache { get; } = new();
+
+	public static T[]? Get( CompiledSampleBlock<T> block, int sampleRate, MovieTime smoothingSize )
+	{
+		return Cache.TryGetValue( block, out var dict )
+			&& dict.TryGetValue( new( sampleRate, smoothingSize ), out var weakRef )
+			&& weakRef.TryGetTarget( out var array ) ? array : null;
+	}
+
+	public static void Set( CompiledSampleBlock<T> block, int sampleRate, MovieTime smoothingSize, T[] array )
+	{
+		if ( !Cache.TryGetValue( block, out var dict ) )
+		{
+			Cache.TryAdd( block, dict = new Dictionary<Key, WeakReference<T[]>>() );
+		}
+
+		dict[new( sampleRate, smoothingSize )] = new WeakReference<T[]>( array );
+	}
+}
+
 partial class PropertySignalExtensions
 {
 	public static IReadOnlyList<PropertyBlock<T>> AsBlocks<T>( this ProjectSourceClip source, IProjectPropertyTrack track )
@@ -125,7 +150,7 @@ partial class PropertySignalExtensions
 			.ToImmutableArray();
 	}
 
-	public static ImmutableArray<T> Resample<T>( this CompiledSampleBlock<T> source, int sampleRate,
+	public static IReadOnlyList<T> Resample<T>( this CompiledSampleBlock<T> source, int sampleRate,
 		MovieTime smoothingSize, IInterpolator<T>? interpolator )
 	{
 		if ( interpolator is null )
@@ -136,6 +161,11 @@ partial class PropertySignalExtensions
 		if ( sampleRate == source.SampleRate && smoothingSize <= 0d )
 		{
 			return source.Samples;
+		}
+
+		if ( ResampleCache<T>.Get( source, sampleRate, smoothingSize ) is { } cached )
+		{
+			return cached;
 		}
 
 		var sampleCount = sampleRate == source.SampleRate
@@ -160,7 +190,8 @@ partial class PropertySignalExtensions
 
 		if ( smoothingSize <= 0d || interpolator is null )
 		{
-			return [..samples];
+			ResampleCache<T>.Set( source, sampleRate, smoothingSize, samples );
+			return samples;
 		}
 
 		var smoothingPasses = smoothingSize.GetFrameCount( sampleRate );
@@ -184,6 +215,7 @@ partial class PropertySignalExtensions
 			(back, front) = (front, back);
 		}
 
-		return [..back];
+		ResampleCache<T>.Set( source, sampleRate, smoothingSize, back );
+		return back;
 	}
 }
