@@ -19,7 +19,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 	public override Rect BoundingRect => base.BoundingRect.Grow( 8f, 0f );
 
 	private DragMode _dragMode;
-	private MovieTime _dragStartTime;
+	private float _dragOffset;
 	private MovieTimeRange _originalTimeRange;
 	private MovieTransform _originalTransform;
 
@@ -48,7 +48,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		Selected = true;
 
 		_dragMode = GetDragMode( e.LocalPosition );
-		_dragStartTime = Parent.Session.ScenePositionToTime( e.ScenePosition, SnapFlag.TrackBlock );
+		_dragOffset = e.ScenePosition.x - SceneRect.Left;
 		_originalTimeRange = Block.TimeRange;
 		_originalTransform = Block.Transform;
 
@@ -94,24 +94,14 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		// To avoid double-click
 		_lastClick = 1f;
 
-		var time = Parent.Session.ScenePositionToTime( e.ScenePosition, ignoreTrack: Parent.View );
-		var minDuration = MovieTime.FromFrames( 1, Parent.Session.FrameRate );
-		var fullTimeRange = FullTimeRange;
-
 		switch ( _dragMode )
 		{
-			case DragMode.MoveStart:
-				Block.TimeRange = fullTimeRange.Clamp( (MovieTime.Min( time, _originalTimeRange.End - minDuration ), _originalTimeRange.End) );
-				break;
-
-			case DragMode.MoveEnd:
-				Block.TimeRange = fullTimeRange.Clamp( (_originalTimeRange.Start, MovieTime.Max( time, _originalTimeRange.Start + minDuration )) );
+			case DragMode.MoveStart or DragMode.MoveEnd:
+				OnDragStartEnd( e.ScenePosition );
 				break;
 
 			case DragMode.Translate:
-				var difference = MovieTime.Max( time - _dragStartTime, -_originalTimeRange.Start );
-				Block.TimeRange = _originalTimeRange + difference;
-				Block.Transform = _originalTransform + difference;
+				OnTranslate( e.ScenePosition );
 				break;
 		}
 
@@ -119,6 +109,33 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		Parent.View.MarkValueChanged();
 		Parent.Session.ApplyFrame( Parent.View.Track, Parent.Session.CurrentPointer );
+	}
+
+	private void OnDragStartEnd( Vector2 scenePosition )
+	{
+		var time = Parent.Session.ScenePositionToTime( scenePosition, ignoreTrack: Parent.View );
+		var minDuration = MovieTime.FromFrames( 1, Parent.Session.FrameRate );
+
+		Block.TimeRange = FullTimeRange.Clamp( _dragMode switch
+		{
+			DragMode.MoveStart => (MovieTime.Min( time, _originalTimeRange.End - minDuration ), _originalTimeRange.End),
+			DragMode.MoveEnd => (_originalTimeRange.Start, MovieTime.Max( time, _originalTimeRange.Start + minDuration )),
+			_ => null
+		} );
+	}
+
+	private void OnTranslate( Vector2 scenePosition )
+	{
+		scenePosition.x -= _dragOffset;
+
+		var time = Parent.Session.ScenePositionToTime( scenePosition,
+			ignoreTrack: Parent.View,
+			snapOffsets: Block.TimeRange.Duration );
+
+		var difference = time - _originalTimeRange.Start;
+
+		Block.TimeRange = _originalTimeRange + difference;
+		Block.Transform = _originalTransform + difference;
 	}
 
 	protected override void OnMouseReleased( GraphicsMouseEvent e )
