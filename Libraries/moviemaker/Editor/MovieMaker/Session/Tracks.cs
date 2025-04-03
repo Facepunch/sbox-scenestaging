@@ -13,6 +13,7 @@ public partial interface ITrackListView
 	IReadOnlyList<ITrackView> RootTracks { get; }
 	int StateHash { get; }
 	MovieTime PreviewOffset { get; }
+	float Height { get; }
 
 	/// <summary>
 	/// Invoked when tracks are added or removed.
@@ -159,15 +160,27 @@ partial class Session
 {
 	private ITrackListView? _trackList;
 	private float _trackListScrollPosition;
+	private float _minTrackListScrollPosition = float.NegativeInfinity;
 
 	/// <summary>
 	/// Which tracks should be visible in the track list / dope sheet.
 	/// </summary>
 	public ITrackListView TrackList => _trackList ??= new DefaultTrackListView( this );
 
+	public float TrackListScrollOffset => 32f;
+
 	public float TrackListScrollPosition
 	{
-		get => _trackListScrollPosition;
+		get
+		{
+			var viewHeight = TrackListViewHeight;
+			var contentsHeight = TrackList.Height;
+
+			var min = Math.Min( 0f, contentsHeight - viewHeight );
+			var max = Math.Max( 0f, contentsHeight - viewHeight );
+
+			return Math.Clamp( _trackListScrollPosition, min, max );
+		}
 		set
 		{
 			if ( _trackListScrollPosition.Equals( value ) ) return;
@@ -178,6 +191,8 @@ partial class Session
 			ViewChanged?.Invoke();
 		}
 	}
+
+	public float TrackListViewHeight { get; set; } = float.PositiveInfinity;
 
 	private void TrackFrame()
 	{
@@ -191,6 +206,8 @@ file sealed class DefaultTrackListView : ITrackListView
 	public int StateHash { get; private set; }
 
 	public MovieTime PreviewOffset => Session.EditMode?.PreviewBlockOffset ?? default;
+
+	public float Height { get; private set; }
 
 	private readonly SynchronizedList<IProjectTrack, DefaultTrackView> _rootTracks;
 
@@ -233,6 +250,8 @@ file sealed class DefaultTrackListView : ITrackListView
 		}
 
 		StateHash = hashCode.ToHashCode();
+
+		Height = position - 8f;
 
 		Changed?.Invoke( this );
 	}

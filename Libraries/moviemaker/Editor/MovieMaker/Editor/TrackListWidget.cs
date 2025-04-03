@@ -129,7 +129,7 @@ public partial class TrackListWidget : Widget
 
 	private void Session_ViewChanged()
 	{
-		_trackContainer.Position = new Vector2( 0f, -Session.TrackListScrollPosition );
+		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition );
 		_trackContainer.FixedWidth = Width;
 		_trackContainer.FixedHeight = _rootTracks
 			.Select( x => x.View.Position + x.View.Height + DopeSheet.RootTrackSpacing )

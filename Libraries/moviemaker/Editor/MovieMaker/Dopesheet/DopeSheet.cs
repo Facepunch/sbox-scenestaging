@@ -173,8 +173,10 @@ public class DopeSheet : GraphicsView
 
 	void UpdateSceneFrame()
 	{
+		Session.TrackListViewHeight = Height - 64f;
+
 		var x = Session.TimeToPixels( Session.TimeOffset );
-		SceneRect = new Rect( x - 8, Session.TrackListScrollPosition, Width - 4, Height - 4 ); // I don't know where the fuck this 4 comes from, but it stops it having some scroll
+		SceneRect = new Rect( x - 8, Session.TrackListScrollPosition - Session.TrackListScrollOffset, Width - 4, Height - 4 ); // I don't know where the fuck this 4 comes from, but it stops it having some scroll
 		_gridItem.SceneRect = SceneRect;
 		_gridItem.Update();
 
