@@ -21,7 +21,13 @@ public sealed partial class Session
 	/// <summary>
 	/// If this session has a <see cref="Parent"/>, how do we transform from this session's timeline to the parent's?
 	/// </summary>
-	public MovieTransform Transform { get; }
+	public MovieTransform SequenceTransform { get; }
+
+	/// <summary>
+	/// If this session has a <see cref="Parent"/>, what time range from this session is visible in the parent?
+	/// </summary>
+	public MovieTimeRange? SequenceTimeRange { get; }
+
 	public Session Root => Parent?.Root ?? this;
 	public IMovieResource Resource { get; }
 
@@ -108,19 +114,21 @@ public sealed partial class Session
 		Player = player;
 		Parent = null;
 		Resource = player.Resource ??= new EmbeddedMovieResource();
-		Transform = MovieTransform.Identity;
+		SequenceTransform = MovieTransform.Identity;
+		SequenceTimeRange = null;
 		Project = LoadProject( Resource );
 
 		History = new SessionHistory( this );
 	}
 
-	public Session( Session parent, MovieResource resource, MovieTransform transform )
+	public Session( Session parent, MovieResource resource, MovieTransform transform, MovieTimeRange timeRange )
 	{
 		Editor = parent.Editor;
 		Player = parent.Player;
 		Parent = parent;
 		Resource = resource;
-		Transform = transform;
+		SequenceTransform = transform;
+		SequenceTimeRange = timeRange;
 		Project = LoadProject( Resource );
 
 		History = new SessionHistory( this );
@@ -252,7 +260,6 @@ public sealed partial class Session
 		var time = PixelsToTime( x );
 
 		SmoothPan.Target -= (float)time.TotalSeconds;
-		if ( SmoothPan.Target < 0 ) SmoothPan.Target = 0;
 
 		if ( !smooth )
 		{
@@ -320,15 +327,13 @@ public sealed partial class Session
 
 		if ( SmoothZoom.Update( RealTime.Delta ) )
 		{
-			var d = TimeToPixels( TimeOffset ) - TimeToPixels( CurrentPointer );
+			var d = TimeToPixels( TimeOffset ) - TimeToPixels( _zoomOrigin );
 
 			PixelsPerSecond = SmoothZoom.Value;
 			PixelsPerSecond = PixelsPerSecond.Clamp( 5, 1024 );
 
-			var nd = TimeToPixels( TimeOffset ) - TimeToPixels( CurrentPointer );
+			var nd = TimeToPixels( TimeOffset ) - TimeToPixels( _zoomOrigin );
 			ScrollBy( nd - d, false );
-
-			ViewChanged?.Invoke();
 		}
 
 		if ( SmoothPan.Update( RealTime.Delta ) )
@@ -347,8 +352,12 @@ public sealed partial class Session
 		return true;
 	}
 
-	internal void Zoom( float v )
+	private MovieTime _zoomOrigin;
+
+	internal void Zoom( float v, MovieTime origin )
 	{
+		_zoomOrigin = origin;
+
 		SmoothZoom.Target = SmoothZoom.Target += (v * SmoothZoom.Target) * 0.01f;
 		SmoothZoom.Target = SmoothZoom.Target.Clamp( 5, 1024 );
 	}

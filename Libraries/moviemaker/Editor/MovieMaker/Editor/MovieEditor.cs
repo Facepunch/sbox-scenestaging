@@ -223,18 +223,28 @@ public partial class MovieEditor : Widget
 		Initialize( new Session( this, player ) );
 	}
 
-	public void EnterSequence( MovieResource resource, MovieTransform transform )
+	public void EnterSequence( MovieResource resource, MovieTransform transform, MovieTimeRange timeRange )
 	{
+		var timeOffset = transform.Inverse * Session!.TimeOffset;
+		var pixelsPerSecond = (float)(transform.Inverse.Scale.FrequencyScale * Session.PixelsPerSecond);
+
 		Session!.SetEditMode( null );
-		Initialize( new Session( Session!, resource, transform ) );
+		Initialize( new Session( Session!, resource, transform, timeRange ) );
+
+		Session.SetView( timeOffset, pixelsPerSecond );
 	}
 
 	public void ExitSequence()
 	{
 		if ( Session?.Parent is { } parent )
 		{
+			var timeOffset = Session.SequenceTransform * Session!.TimeOffset;
+			var pixelsPerSecond = (float)(Session.SequenceTransform.Scale.FrequencyScale * Session.PixelsPerSecond);
+
 			Session.Save();
 			Initialize( parent );
+
+			Session.SetView( timeOffset, pixelsPerSecond );
 		}
 	}
 

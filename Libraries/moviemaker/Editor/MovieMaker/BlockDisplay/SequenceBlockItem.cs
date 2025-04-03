@@ -239,7 +239,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 	{
 		if ( Block.Resource is { } resource )
 		{
-			Parent.Session.Editor.EnterSequence( resource, Block.Transform );
+			Parent.Session.Editor.EnterSequence( resource, Block.Transform, Block.Transform.Inverse * Block.TimeRange );
 		}
 	}
 

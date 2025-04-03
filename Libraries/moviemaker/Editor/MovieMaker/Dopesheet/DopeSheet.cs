@@ -20,6 +20,7 @@ public class DopeSheet : GraphicsView
 
 	public Session Session { get; }
 
+	private readonly BackgroundItem _backgroundItem;
 	private readonly GridItem _gridItem;
 	private readonly Dictionary<ITrackView, DopeSheetTrack> _tracks = new();
 
@@ -45,6 +46,9 @@ public class DopeSheet : GraphicsView
 	{
 		Session = session;
 		MinimumWidth = 256;
+
+		_backgroundItem = new BackgroundItem( Session );
+		Add( _backgroundItem );
 
 		_gridItem = new GridItem( Session );
 		Add( _gridItem );
@@ -90,23 +94,15 @@ public class DopeSheet : GraphicsView
 	public void Frame()
 	{
 		UpdateScrubBars();
-
-		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.FrameRate, Session.TrackList.StateHash );
-
-		if ( state != _lastState )
-		{
-			UpdateTracks();
-			Update();
-		}
+		UpdateTracksIfNeeded();
 
 		var visibleRectHash = VisibleRect.GetHashCode();
 
-		if ( visibleRectHash != _lastVisibleRectHash || state != _lastState )
+		if ( visibleRectHash != _lastVisibleRectHash )
 		{
 			Session.DispatchViewChanged();
 		}
 
-		_lastState = state;
 		_lastVisibleRectHash = visibleRectHash;
 
 		if ( Session.PreviewPointer is not null
@@ -117,6 +113,18 @@ public class DopeSheet : GraphicsView
 		}
 	}
 
+	private void UpdateTracksIfNeeded()
+	{
+		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.FrameRate, Session.TrackList.StateHash );
+
+		if ( state == _lastState ) return;
+
+		_lastState = state;
+
+		UpdateTracks();
+		Update();
+	}
+
 	private void UpdateView()
 	{
 		UpdateSceneFrame();
@@ -124,10 +132,14 @@ public class DopeSheet : GraphicsView
 
 		UpdateCurrentPosition( Session.CurrentPointer );
 		UpdatePreviewPosition( Session.PreviewPointer );
+
+		UpdateTracksIfNeeded();
 	}
 
 	private void UpdateScrubBars()
 	{
+		_backgroundItem.Update();
+
 		ScrubBarTop.PrepareGeometryChange();
 		ScrubBarBottom.PrepareGeometryChange();
 
@@ -177,6 +189,12 @@ public class DopeSheet : GraphicsView
 
 		var x = Session.TimeToPixels( Session.TimeOffset );
 		SceneRect = new Rect( x - 8, Session.TrackListScrollPosition - Session.TrackListScrollOffset, Width - 4, Height - 4 ); // I don't know where the fuck this 4 comes from, but it stops it having some scroll
+
+		_backgroundItem.PrepareGeometryChange();
+		_backgroundItem.SceneRect = SceneRect;
+		_backgroundItem.Update();
+
+		_gridItem.PrepareGeometryChange();
 		_gridItem.SceneRect = SceneRect;
 		_gridItem.Update();
 
@@ -241,7 +259,7 @@ public class DopeSheet : GraphicsView
 		// zoom
 		if ( e.HasCtrl )
 		{
-			Session.Zoom( e.Delta / 10.0f );
+			Session.Zoom( e.Delta / 10.0f, _lastMouseTime );
 			e.Accept();
 			return;
 		}
@@ -251,6 +269,7 @@ public class DopeSheet : GraphicsView
 	}
 
 	private Vector2 _lastMouseLocalPos;
+	private MovieTime _lastMouseTime;
 
 	protected override void OnMouseMove( MouseEvent e )
 	{
@@ -276,6 +295,7 @@ public class DopeSheet : GraphicsView
 		}
 
 		_lastMouseLocalPos = e.LocalPosition;
+		_lastMouseTime = Session.PixelsToTime( ToScene( e.LocalPosition ).x );
 
 		Session.EditMode?.MouseMove( e );
 	}

@@ -41,18 +41,20 @@ public class ScrubberItem : GraphicsItem
 
 	protected override void OnPaint()
 	{
-		var duration = Session.Project?.Duration ?? MovieTime.Zero;
+		var duration = Session.Project.Duration;
 
-		Paint.SetBrushAndPen( DopeSheet.Colors.Background );
+		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground );
 		Paint.DrawRect( LocalRect );
 
 		// Darker background for the clip duration
 
 		{
-			var startX = FromScene( Session.TimeToPixels( MovieTime.Zero ) ).x;
-			var endX = FromScene( Session.TimeToPixels( duration ) ).x;
+			var timeRange = Session.SequenceTimeRange ?? (MovieTime.Zero, duration);
 
-			Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground );
+			var startX = FromScene( Session.TimeToPixels( timeRange.Start ) ).x;
+			var endX = FromScene( Session.TimeToPixels( timeRange.End ) ).x;
+
+			Paint.SetBrushAndPen( DopeSheet.Colors.Background );
 			Paint.DrawRect( new Rect( new Vector2( startX, LocalRect.Top ), new Vector2( endX - startX, LocalRect.Height ) ) );
 		}
 
@@ -144,20 +146,4 @@ public class ScrubberItem : GraphicsItem
 	{
 		return time.ToString();
 	}
-
-	int lastState;
-
-	[EditorEvent.Frame]
-	public void Frame()
-	{
-		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.CurrentPointer,
-			Session.PreviewPointer, Session.Project?.Duration, Session.EditMode?.SourceTimeRange );
-
-		if ( state != lastState )
-		{
-			lastState = state;
-			Update();
-		}
-	}
 }
-
