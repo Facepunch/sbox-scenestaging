@@ -188,16 +188,18 @@ public sealed partial class Session
 		}
 	}
 
-	public MovieTime ScenePositionToTime( Vector2 scenePos, SnapFlag ignore = 0, ITrackView? ignoreTrack = null, params MovieTime[] snapOffsets ) 
+	public MovieTime ScenePositionToTime( Vector2 scenePos, SnapOptions? options = null )
 	{
+		var optionsOrDefault = options ?? new SnapOptions( SnapFlag.None );
+
 		var time = PixelsToTime( scenePos.x );
-		var snapHelper = new TimeSnapHelper( time, PixelsToTime( 16f ), ignore, ignoreTrack );
+		var snapHelper = new TimeSnapHelper( time, PixelsToTime( 16f ), optionsOrDefault );
 
 		GetSnapTimes( ref snapHelper );
 
-		foreach ( var offset in snapOffsets )
+		foreach ( var offset in optionsOrDefault.SnapOffsets )
 		{
-			var offsetHelper = new TimeSnapHelper( time + offset, snapHelper.MaxSnap, snapHelper.Ignore, ignoreTrack );
+			var offsetHelper = new TimeSnapHelper( time + offset, snapHelper.MaxSnap, optionsOrDefault );
 
 			GetSnapTimes( ref offsetHelper );
 

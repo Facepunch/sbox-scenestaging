@@ -131,7 +131,7 @@ public sealed partial class MotionEditMode : EditMode
 
 		e.Accepted = true;
 
-		var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ), ignore: SnapFlag.Selection );
+		var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ), SnapFlag.Selection );
 
 		// Only create a time selection when mouse has moved enough
 

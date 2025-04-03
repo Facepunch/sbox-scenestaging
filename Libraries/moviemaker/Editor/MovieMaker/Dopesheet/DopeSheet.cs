@@ -265,7 +265,7 @@ public class DopeSheet : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), ignore: SnapFlag.PlayHead ) );
+			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
 		}
 
 		if ( e.HasShift )
@@ -317,7 +317,7 @@ public class DopeSheet : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), ignore: SnapFlag.PlayHead ) );
+			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
 			return;
 		}
 	}
@@ -369,13 +369,15 @@ public class DopeSheet : GraphicsView
 
 		foreach ( var dopeTrack in _tracks.Values )
 		{
-			if ( dopeTrack.View == snap.IgnoreTrack ) continue;
+			if ( dopeTrack.View == snap.Options.IgnoreTrack ) continue;
 			if ( dopeTrack.View.IsLocked ) continue;
 			if ( mouseScenePos.y < dopeTrack.SceneRect.Top ) continue;
 			if ( mouseScenePos.y > dopeTrack.SceneRect.Bottom ) continue;
 
 			foreach ( var block in dopeTrack.View.Blocks )
 			{
+				if ( block == snap.Options.IgnoreBlock ) continue;
+
 				snap.Add( SnapFlag.TrackBlock, block.TimeRange.Start );
 				snap.Add( SnapFlag.TrackBlock, block.TimeRange.End );
 			}

@@ -31,30 +31,37 @@ public enum SnapFlag
 	Selection = SelectionStart | SelectionEnd
 }
 
+public readonly record struct SnapOptions(
+	SnapFlag IgnoreFlags = SnapFlag.None,
+	ITrackView? IgnoreTrack = null,
+	ITrackBlock? IgnoreBlock = null,
+	params MovieTime[] SnapOffsets )
+{
+	public static implicit operator SnapOptions( SnapFlag flags ) => new( flags );
+}
+
 public struct TimeSnapHelper
 {
 	public MovieTime Time { get; }
 
 	public MovieTime MaxSnap { get; set; }
-	public SnapFlag Ignore { get; set; }
-	public ITrackView? IgnoreTrack { get; set; }
+	public SnapOptions Options { get; }
 
 	public MovieTime BestTime { get; private set; }
 	public float BestScore { get; private set; } = float.MaxValue;
 
-	public TimeSnapHelper( MovieTime time, MovieTime maxSnap, SnapFlag ignore, ITrackView? ignoreTrack )
+	public TimeSnapHelper( MovieTime time, MovieTime maxSnap, SnapOptions options )
 	{
 		Time = BestTime = time;
 		BestScore = float.PositiveInfinity;
 
 		MaxSnap = maxSnap;
-		Ignore = ignore;
-		IgnoreTrack = ignoreTrack;
+		Options = options;
 	}
 
 	public void Add( SnapFlag flag, MovieTime time, int priority = 0, bool force = false )
 	{
-		if ( (Ignore & flag) != 0 ) return;
+		if ( (Options.IgnoreFlags & flag) != 0 ) return;
 
 		var timeDiff = (time - Time).Absolute;
 

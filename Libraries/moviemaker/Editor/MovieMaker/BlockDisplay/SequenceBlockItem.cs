@@ -1,4 +1,5 @@
 ﻿using Sandbox.MovieMaker;
+using System.Runtime.InteropServices.JavaScript;
 
 namespace Editor.MovieMaker.BlockDisplays;
 
@@ -52,15 +53,12 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		_originalTimeRange = Block.TimeRange;
 		_originalTransform = Block.Transform;
 
-		if ( _dragMode is DragMode.MoveStart or DragMode.MoveEnd )
-		{
-			var fullSceneRect = FullSceneRect;
+		var fullSceneRect = FullSceneRect;
 
-			_ghost = new FullBlockGhostItem();
-			_ghost.Position = new Vector2( fullSceneRect.Left, Position.y );
-			_ghost.Size = new Vector2( fullSceneRect.Width, Height );
-			_ghost.Parent = Parent;
-		}
+		_ghost = new FullBlockGhostItem();
+		_ghost.Position = new Vector2( fullSceneRect.Left, Position.y );
+		_ghost.Size = new Vector2( fullSceneRect.Width, Height );
+		_ghost.Parent = Parent;
 	}
 
 	private MovieTimeRange FullTimeRange
@@ -68,7 +66,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		get
 		{
 			var sourceTimeRange = new MovieTimeRange( 0d, Block.Resource.GetCompiled().Duration );
-			return new MovieTimeRange( _originalTransform * sourceTimeRange.Start, _originalTransform * sourceTimeRange.End ).ClampStart( 0d );
+			return new MovieTimeRange( Block.Transform * sourceTimeRange.Start, Block.Transform * sourceTimeRange.End );
 		}
 	}
 
@@ -76,7 +74,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 	{
 		get
 		{
-			var fullTimeRange = FullTimeRange;
+			var fullTimeRange = FullTimeRange.ClampStart( 0d );
 
 			var min = Parent.Session.TimeToPixels( fullTimeRange.Start );
 			var max = Parent.Session.TimeToPixels( fullTimeRange.End );
@@ -113,7 +111,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 	private void OnDragStartEnd( Vector2 scenePosition )
 	{
-		var time = Parent.Session.ScenePositionToTime( scenePosition, ignoreTrack: Parent.View );
+		var time = Parent.Session.ScenePositionToTime( scenePosition, new SnapOptions( IgnoreBlock: Block ) );
 		var minDuration = MovieTime.FromFrames( 1, Parent.Session.FrameRate );
 
 		Block.TimeRange = FullTimeRange.Clamp( _dragMode switch
@@ -128,14 +126,23 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 	{
 		scenePosition.x -= _dragOffset;
 
+		var fullTimeRange = FullTimeRange;
 		var time = Parent.Session.ScenePositionToTime( scenePosition,
-			ignoreTrack: Parent.View,
-			snapOffsets: Block.TimeRange.Duration );
+			new SnapOptions( IgnoreBlock: Block, SnapOffsets: [TimeRange.Duration, fullTimeRange.Start - TimeRange.Start, fullTimeRange.End - TimeRange.End] ) );
 
 		var difference = time - _originalTimeRange.Start;
 
 		Block.TimeRange = _originalTimeRange + difference;
 		Block.Transform = _originalTransform + difference;
+
+		if ( _ghost is not { } ghost ) return;
+
+		ghost.PrepareGeometryChange();
+
+		var fullSceneRect = FullSceneRect;
+
+		_ghost.Position = new Vector2( FullSceneRect.Left, Position.y );
+		_ghost.Width = fullSceneRect.Width;
 	}
 
 	protected override void OnMouseReleased( GraphicsMouseEvent e )
@@ -229,13 +236,13 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		switch ( _dragMode )
 		{
-			case DragMode.MoveStart or DragMode.MoveEnd:
-				Paint.DrawText( textRect, $"+{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
-				Paint.DrawText( textRect, $"{Block.TimeRange.End - fullTimeRange.End}", TextFlag.RightCenter );
+			case DragMode.None:
+				Paint.DrawText( textRect, Block.Resource.ResourcePath, TextFlag.Center );
 				break;
 
 			default:
-				Paint.DrawText( textRect, Block.Resource.ResourcePath, TextFlag.Center );
+				Paint.DrawText( textRect, $"+{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
+				Paint.DrawText( textRect, $"{Block.TimeRange.End - fullTimeRange.End}", TextFlag.RightCenter );
 				break;
 		}
 	}

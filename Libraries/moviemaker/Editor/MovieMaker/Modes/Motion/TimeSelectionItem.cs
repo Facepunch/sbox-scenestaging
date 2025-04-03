@@ -59,8 +59,9 @@ partial class MotionEditMode
 			if ( OriginalSelection is not { } selection ) return;
 
 			var origTime = selection.PeakStart;
-			var startTime = EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection | SnapFlag.PasteBlock, null,
-				selection.TotalStart - origTime, selection.PeakEnd - origTime, selection.TotalEnd - origTime );
+			var snapOptions = new SnapOptions( SnapFlag.Selection | SnapFlag.PasteBlock,
+				SnapOffsets: [selection.TotalStart - origTime, selection.PeakEnd - origTime, selection.TotalEnd - origTime] );
+			var startTime = EditMode.Session.ScenePositionToTime( Position, snapOptions );
 
 			startTime = MovieTime.Max( selection.FadeIn.Duration, startTime );
 
@@ -192,12 +193,13 @@ partial class MotionEditMode
 		{
 			if ( OriginalSelection is not { } selection ) return;
 
-			var time = _moveWholeSelection is true
-				? EditMode.Session.ScenePositionToTime( Position, ignore: SnapFlag.Selection, null,
-					-selection.FadeIn.Duration, selection.FadeOut.Duration )
-				: EditMode.Session.ScenePositionToTime( Position,
-					ignore: Kind == FadeKind.FadeIn ? SnapFlag.SelectionStart : SnapFlag.SelectionEnd, null,
-					Kind == FadeKind.FadeIn ? -selection.FadeIn.Duration : selection.FadeOut.Duration );
+			var snapOptions = _moveWholeSelection is true
+				? new SnapOptions( SnapFlag.Selection,
+					SnapOffsets: [-selection.FadeIn.Duration, selection.FadeOut.Duration] )
+				: new SnapOptions( Kind == FadeKind.FadeIn ? SnapFlag.SelectionStart : SnapFlag.SelectionEnd,
+					SnapOffsets: [Kind == FadeKind.FadeIn ? -selection.FadeIn.Duration : selection.FadeOut.Duration] );
+
+			var time = EditMode.Session.ScenePositionToTime( Position, snapOptions );
 
 			if ( time != selection.PeakStart )
 			{
@@ -317,7 +319,7 @@ partial class MotionEditMode
 		protected override void OnMoved()
 		{
 			var ignore = (SnapFlag)((int)SnapFlag.SelectionTotalStart << (int)_minIndex);
-			var time = EditMode.Session.ScenePositionToTime( Position, ignore: ignore );
+			var time = EditMode.Session.ScenePositionToTime( Position, ignore );
 
 			if ( OriginalSelection is not { } value ) return;
 
