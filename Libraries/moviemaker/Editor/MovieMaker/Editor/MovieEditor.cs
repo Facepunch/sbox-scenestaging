@@ -18,6 +18,8 @@ public partial class MovieEditor : Widget
 		Layout = Layout.Column();
 		FocusMode = FocusMode.TabOrClickOrWheel;
 
+		MinimumSize = new Vector2( 800, 300 );
+
 		UpdateEditorContext();
 
 		if ( Session is null )
