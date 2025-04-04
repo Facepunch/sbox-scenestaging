@@ -26,6 +26,7 @@ public partial class TrackListWidget : Widget
 	private readonly SynchronizedList<ITrackView, TrackWidget> _rootTracks;
 
 	private readonly Widget _trackContainer;
+	private Widget? _placeholder;
 
 	public TrackListWidget( ListPanel parent, Session session )
 		: base( parent )
@@ -56,6 +57,8 @@ public partial class TrackListWidget : Widget
 	private TrackWidget AddRootTrack( ITrackView source ) => _trackContainer.Layout.Add( new TrackWidget( this, null, source ) );
 	private void RemoveRootTrack( ITrackView source, TrackWidget item ) => item.Destroy();
 	private bool UpdateChildTrack( ITrackView source, TrackWidget item ) => item.UpdateLayout();
+
+	public bool IsPreview( TrackWidget widget ) => _previewTracks?.Contains( widget.View.Track ) ?? false;
 
 	private void OnSelectionAdded( object item )
 	{
@@ -129,16 +132,24 @@ public partial class TrackListWidget : Widget
 
 	private void Session_ViewChanged()
 	{
+		if ( _rootTracks.Count == 0 )
+		{
+			_trackContainer.Position = 0f;
+			_trackContainer.FixedSize = Size;
+			return;
+		}
+
 		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition );
 		_trackContainer.FixedWidth = Width;
 		_trackContainer.FixedHeight = _rootTracks
 			.Select( x => x.View.Position + x.View.Height + DopeSheet.RootTrackSpacing )
-			.DefaultIfEmpty( 0f )
+			.DefaultIfEmpty( 64f )
 			.Max();
 	}
 
 	private void TrackList_Changed( ITrackListView trackList )
 	{
+		_placeholder?.Destroy();
 		_rootTracks.Update( trackList.RootTracks );
 
 		_trackContainer.Layout.Clear( false );
@@ -149,15 +160,27 @@ public partial class TrackListWidget : Widget
 			_trackContainer.Layout.AddSpacingCell( DopeSheet.RootTrackSpacing );
 		}
 
+		if ( _rootTracks.Count == 0 )
+		{
+			CreatePlaceholder();
+		}
+
 		Session_ViewChanged();
 	}
 
-	protected override void OnPaint()
+	private void CreatePlaceholder()
 	{
-		Paint.Antialiasing = true;
+		var row = _trackContainer.Layout.AddRow();
 
-		Paint.SetBrushAndPen( DopeSheet.Colors.Background.WithAlpha( 0.75f ) );
-		Paint.DrawRect( LocalRect );
+		row.Margin = 32f;
+
+		_placeholder = new Label( "Drag a <b>GameObject</b>, <b>Component</b>, <b>MovieResource</b> or <b>inspector property</b> here to create a track." )
+		{
+			Alignment = TextFlag.Center | TextFlag.WordWrap,
+			WordWrap = true
+		};
+
+		row.Add( _placeholder );
 	}
 
 	private IReadOnlyList<IProjectTrack>? _previewTracks;
@@ -272,6 +295,10 @@ public partial class TrackListWidget : Widget
 
 	public override void OnDragDrop( DragEvent ev )
 	{
+		if ( _previewTracks is null ) return;
+
+		Session.ClipModified();
+
 		_previewTracks = null;
 	}
 }

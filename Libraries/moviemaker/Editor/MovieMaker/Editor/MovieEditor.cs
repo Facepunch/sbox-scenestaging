@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using Sandbox;
+using Sandbox.MovieMaker;
 using System.Linq;
 using System.Reflection;
 
@@ -86,7 +87,7 @@ public partial class MovieEditor : Widget
 		col.AddSpacingCell( 32 );
 
 		var button = col.Add( new Button.Primary( "Create Player Component", "add_circle" ) );
-		button.Clicked = CreateNew;
+		button.Clicked = CreateNewPlayer;
 
 
 		col.AddStretchCell();
@@ -235,7 +236,7 @@ public partial class MovieEditor : Widget
 		}
 	}
 
-	public void CreateNew()
+	public void CreateNewPlayer()
 	{
 		using ( SceneEditorSession.Active.Scene.Push() )
 		{
@@ -259,21 +260,66 @@ public partial class MovieEditor : Widget
 		Switch( Session.Player );
 	}
 
+	public void SwitchToNewEmbedded()
+	{
+		if ( Session is not { } session ) return;
+
+		if ( session is { Resource: EmbeddedMovieResource, Project.IsEmpty: false } )
+		{
+			Dialog.AskConfirm( ConfirmSwitchToNewEmbedded, question: "The current embedded clip will be lost. Are you sure?" );
+			return;
+		}
+
+		if ( session is { Resource: MovieResource resource, HasUnsavedChanges: true } )
+		{
+			Dialog.AskConfirm( () =>
+			{
+				session.Save();
+				ConfirmSwitchToNewEmbedded();
+			}, ConfirmSwitchToNewEmbedded, question: $"Save unsaved changes to {resource.ResourceName}.movie?", okay: "Save", cancel: "Don't Save" );
+			return;
+		}
+
+		ConfirmSwitchToNewEmbedded();
+	}
+
+	private void ConfirmSwitchToNewEmbedded()
+	{
+		if ( Session is not { } session ) return;
+
+		var player = session.Player;
+
+		player.Resource = new EmbeddedMovieResource();
+
+		Switch( player );
+	}
+
 	public void SwitchResource( MovieResource resource )
 	{
-		if ( Session?.Root.Resource == resource ) return;
+		if ( Session is not { } session ) return;
+		if ( session.Root.Resource == resource ) return;
 
-		if ( Session is { Resource: EmbeddedMovieResource, Project.IsEmpty: false } )
+		if ( session is { Resource: EmbeddedMovieResource, Project.IsEmpty: false } )
 		{
 			Dialog.AskConfirm( () =>
 			{
 				ConfirmedSwitchResource( resource );
 			}, question: "Switching to a clip resource will cause your embedded clip to be lost. Are you sure?" );
+			return;
 		}
-		else
+
+		if ( session is { Resource: MovieResource unsaved, HasUnsavedChanges: true } )
 		{
-			ConfirmedSwitchResource( resource );
+			Dialog.AskConfirm( () =>
+				{
+					session.Save();
+					ConfirmedSwitchResource( resource );
+				}, () => ConfirmedSwitchResource( resource ), question: $"Save unsaved changes to {unsaved.ResourceName}.movie?",
+				okay: "Save", cancel: "Don't Save" );
+			return;
 		}
+
+		ConfirmedSwitchResource( resource );
 	}
 
 	private void ConfirmedSwitchResource( MovieResource resource )

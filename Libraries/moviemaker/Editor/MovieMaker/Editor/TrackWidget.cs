@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Editor.NodeEditor;
 using Sandbox.MovieMaker;
 using Sandbox.UI;
@@ -24,6 +23,8 @@ public partial class TrackWidget : Widget
 	private readonly Button _lockButton;
 	private readonly Layout _childLayout;
 	private readonly SynchronizedList<ITrackView, TrackWidget> _children;
+
+	private ControlWidget? _controlWidget;
 
 	public TrackWidget( TrackListWidget trackList, TrackWidget? parent, ITrackView view )
 		: base( (Widget?)parent ?? trackList )
@@ -92,16 +93,15 @@ public partial class TrackWidget : Widget
 
 		// Add control to retarget a scene reference (Component / GameObject)
 
-		ControlWidget? ctrl = null;
+		_controlWidget = null;
 
-		if ( View.Track is ProjectSequenceTrack sequence )
+		if ( View.Track is ProjectSequenceTrack )
 		{
-			//ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( "Sequence",
-			//	() => sequence.Resource, resource => sequence.Resource = resource ) );
+			//
 		}
 		else if ( reference is ITrackReference<GameObject> goReference )
 		{
-			ctrl = ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
+			_controlWidget = ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
 				() => goReference.Value, goReference.Bind ) );
 		}
 		else
@@ -110,13 +110,14 @@ public partial class TrackWidget : Widget
 			var createControlMethod = helperType.GetMethod( nameof(ReflectionHelper<IValid>.CreateControlWidget),
 				BindingFlags.Static | BindingFlags.Public )!;
 
-			ctrl = (ControlWidget)createControlMethod.Invoke( null, [reference] )!;
+			_controlWidget = (ControlWidget)createControlMethod.Invoke( null, [reference] )!;
 		}
 
-		if ( !ctrl.IsValid() ) return false;
-		
-		ctrl.MaximumWidth = 300;
-		layout.Add( ctrl );
+		if ( !_controlWidget.IsValid() ) return false;
+
+		_controlWidget.MaximumWidth = 300;
+
+		layout.Add( _controlWidget );
 		return true;
 	}
 
@@ -129,9 +130,14 @@ public partial class TrackWidget : Widget
 		_lockButton.Update();
 		_collapseButton.Update();
 
+		if ( _controlWidget is not null )
+		{
+			_controlWidget.Enabled = !View.IsLocked && !TrackList.IsPreview( this );
+		}
+
 		if ( _label is not null )
 		{
-			_label.Color = !View.IsLocked ? labelColor : labelColor.Darken( 0.5f );
+			_label.Color = !View.IsLocked ? IsSelected ? Color.White : labelColor : labelColor.Darken( 0.25f );
 		}
 
 		Update();
@@ -162,20 +168,21 @@ public partial class TrackWidget : Widget
 		return 32;
 	}
 
+	public bool IsSelected => IsFocused || _menu.IsValid() && _menu.Visible;
+
 	public Color BackgroundColor
 	{
 		get
 		{
 			var canModify = !View.IsLocked;
 
-			var defaultColor = DopeSheet.Colors.ChannelBackground.Lighten( canModify ? 0f : 0.1f );
-			var hoveredColor = defaultColor.Lighten( 0.1f );
+			var defaultColor = Theme.ControlBackground.LerpTo( Theme.WidgetBackground, canModify ? 0.5f : 1f );
+			var hoveredColor = defaultColor.Darken( 0.1f );
 			var selectedColor = Color.Lerp( defaultColor, Theme.Primary, canModify ? 0.5f : 0.2f );
 
-			var isHovered = IsUnderMouse;
-			var isSelected = IsFocused || _menu.IsValid() && _menu.Visible;
+			var isHovered = canModify && IsUnderMouse;
 
-			return isSelected ? selectedColor
+			return IsSelected ? selectedColor
 				: isHovered ? hoveredColor
 					: defaultColor;
 		}

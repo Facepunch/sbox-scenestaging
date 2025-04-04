@@ -2,6 +2,23 @@
   "EditorData": {
     "SampleRate": 30,
     "Tracks": {
+      "295bc566-6213-4d4d-874c-4bd5d276c972": {
+        "$type": "Sequence",
+        "Blocks": [
+          {
+            "TimeRange": {
+              "Start": 0,
+              "End": 40320
+            },
+            "Transform": {
+              "Translation": -3840
+            },
+            "Resource": "movies/player_recording_2.movie"
+          }
+        ],
+        "Name": "Player 2 Sequence",
+        "TargetType": "Sandbox.MovieMaker.MovieResource"
+      },
       "ecfc29a4-b8a2-494f-9d92-b58f59c6c4d4": {
         "$type": "Sequence",
         "Blocks": [
@@ -53,7 +70,7 @@
             "Resource": "movies/player_recording_1.movie"
           }
         ],
-        "Name": "Player Sequence",
+        "Name": "Player 1 Sequence",
         "TargetType": "Sandbox.MovieMaker.MovieResource"
       }
     },

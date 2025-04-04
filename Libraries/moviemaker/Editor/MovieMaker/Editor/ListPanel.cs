@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using Sandbox.MovieMaker;
 using System.Reflection;
+using Sandbox.Resources;
 using Sandbox.UI;
+using Sandbox;
 
 namespace Editor.MovieMaker;
 
@@ -37,10 +39,71 @@ public sealed class ListPanel : MovieEditorPanel
 
 		MinimumWidth = 300;
 
-		var navigateGroup = ToolBar.AddGroup( true );
+		// File menu
 
-		navigateGroup.AddAction( "Back", "arrow_back", parent.ExitSequence,
-			() => parent.Session?.Parent is not null );
+		var fileGroup = ToolBar.AddGroup( true );
+		var resourceIcon = typeof( MovieResource ).GetCustomAttribute<GameResourceAttribute>()!.Icon;
+
+		var fileAction = fileGroup.AddAction( "File", "folder", () =>
+		{
+			var menu = new Menu();
+
+			menu.AddHeading( "File" );
+
+			menu.AddOption( "New Movie", "note_add", Editor.SwitchToNewEmbedded );
+
+			menu.AddSeparator();
+
+			var openMenu = menu.AddMenu( "Open Movie", "folder_open" );
+
+			var movies = ResourceLibrary.GetAll<MovieResource>().ToArray();
+
+			openMenu.AddOptions( movies, x => $"{x.ResourcePath}:{resourceIcon}", Editor.SwitchResource );
+
+			var importMenu = menu.AddMenu( "Import Movie", "folder_open" );
+
+			importMenu.AddOptions( movies, x => $"{x.ResourcePath}:{resourceIcon}", x =>
+			{
+				session.GetOrCreateTrack( x );
+				session.TrackList.Update();
+			} );
+
+			menu.AddSeparator();
+
+			menu.AddOption( $"Save Movie", "save", parent.OnSave, shortcut: "CTRL+S" );
+
+			var saveAsMenu = menu.AddMenu( $"Save Movie As..", "save_as" );
+
+			var embed = saveAsMenu.AddOption( "Embedded", "attach_file", parent.SwitchToEmbedded );
+
+			embed.Checkable = true;
+			embed.Checked = session.Resource is EmbeddedMovieResource;
+			embed.ToolTip = "Store the movie inside this Movie Player component, embedded in the current scene or prefab.";
+
+			saveAsMenu.AddOption( "New Movie Resource", resourceIcon, parent.SaveFileAs );
+
+			menu.AddSeparator();
+
+			var playerMenu = menu.AddMenu( "Select Player", "movie" );
+			var scene = SceneEditorSession.Active?.Scene;
+			var players = scene?.GetAllComponents<MoviePlayer>() ?? [];
+
+			foreach ( var player in players )
+			{
+				var option = playerMenu.AddOption( player.GameObject.Name, "movie", () => Editor.Switch( player ) );
+
+				option.Checkable = true;
+				option.Checked = session.Player == player;
+			}
+
+			playerMenu.AddOption( "Create New..", "movie_filter", Editor.CreateNewPlayer );
+
+			menu.OpenAtCursor();
+		} );
+
+		fileAction.ToolTip = "File menu for opening, importing, or saving movie projects.";
+
+		// File name label
 
 		var resourceGroup = ToolBar.AddGroup( true );
 
@@ -49,6 +112,13 @@ public sealed class ListPanel : MovieEditorPanel
 		label.Alignment = TextFlag.Center;
 		label.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
 		label.ToolTip = session.Resource is MovieResource res ? res.ResourcePath : "";
+
+		// Navigation buttons
+
+		var navigateGroup = ToolBar.AddGroup( true );
+
+		navigateGroup.AddAction( "Back", "arrow_back", parent.ExitSequence,
+			() => parent.Session?.Parent is not null );
 	}
 
 	private static string GetFullPath( Session session )
@@ -73,64 +143,6 @@ public sealed class DopeSheetPanel : MovieEditorPanel
 		MouseTracking = true;
 
 		Layout.Add( DopeSheet );
-
-		var fileGroup = ToolBar.AddGroup( true );
-		var resourceIcon = typeof( MovieResource ).GetCustomAttribute<GameResourceAttribute>()!.Icon;
-
-		fileGroup.AddAction( "Open", "file_open", () =>
-		{
-			var menu = new Menu();
-
-			menu.AddHeading( "Open" );
-
-			var playerMenu = menu.AddMenu( "Player" );
-			var scene = SceneEditorSession.Active?.Scene;
-			var players = scene?.GetAllComponents<MoviePlayer>() ?? [];
-
-			playerMenu.AddHeading( "Select Movie Player" );
-
-			foreach ( var player in players )
-			{
-				var option = playerMenu.AddOption( player.GameObject.Name, "movie", () => Editor.Switch( player ) );
-
-				option.Checkable = true;
-				option.Checked = session.Player == player;
-			}
-
-			playerMenu.AddOption( "Create New..", "movie_filter", Editor.CreateNew );
-
-			var movieMenu = menu.AddMenu( "Movie" );
-
-			movieMenu.AddHeading( "Select Movie Resource" );
-
-			foreach ( var resource in ResourceLibrary.GetAll<MovieResource>().OrderBy( x => x.ResourcePath ) )
-			{
-				var option = movieMenu.AddOption( resource.ResourcePath, resourceIcon, () => Editor.SwitchResource( resource ) );
-
-				option.Checkable = true;
-				option.Checked = session.Resource == resource;
-			}
-
-			menu.OpenAtCursor();
-		} );
-
-		fileGroup.AddAction( "Save Movie", "save", parent.OnSave, () => session.HasUnsavedChanges );
-		fileGroup.AddAction( "Save Movie As..", "save_as", () =>
-		{
-			var menu = new Menu();
-
-			menu.AddHeading( "Save Movie As.." );
-
-			var embed = menu.AddOption( "Embedded", "attach_file", parent.SwitchToEmbedded );
-
-			embed.Checkable = true;
-			embed.Checked = session.Resource is EmbeddedMovieResource;
-			embed.ToolTip = "Store the movie inside this Movie Player component, embedded in the current scene or prefab.";
-
-			menu.AddOption( "New Movie Resource", resourceIcon, parent.SaveFileAs );
-
-			menu.OpenAtCursor();
-		} );
 
 		var playbackGroup = ToolBar.AddGroup( true );
 
