@@ -63,7 +63,7 @@ public class GridItem : GraphicsItem
 
 			for ( var x = 0f; x < Size.x + dx; x += dx )
 			{
-				if ( Session.PixelsToTime( x + Position.x ).IsNegative )
+				if ( Session.PixelsToTime( x + Position.x ) <= -interval )
 					continue;
 
 				Paint.DrawLine( new Vector2( x - offset, 0 ), new Vector2( x - offset, Size.y ) );
