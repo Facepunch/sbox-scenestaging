@@ -235,8 +235,6 @@ partial class MotionEditMode
 			}
 		}
 
-		private readonly List<Vector2> _points = new();
-
 		protected override void OnPaint()
 		{
 			if ( Width < 1f || Interpolation is not { } interpolation ) return;
@@ -246,35 +244,17 @@ partial class MotionEditMode
 			if ( Hovered ) color = color.Lighten( 0.1f );
 
 			var fadeColor = color.WithAlpha( 0.02f );
-			var scrubBarHeight = EditMode.DopeSheet.ScrubBarTop.Height;
+			var scrubBarHeight = EditMode.Timeline.ScrubBarTop.Height;
 
 			var (x0, x1) = Kind == FadeKind.FadeIn
 				? (0f, Width)
 				: (Width, 0f);
 
-			_points.Clear();
-
-			AddPoints( _points, interpolation, new Vector2( x0, LocalRect.Top + scrubBarHeight ), new Vector2( x1, LocalRect.Top ), false );
-			AddPoints( _points, interpolation, new Vector2( x1, LocalRect.Bottom ), new Vector2( x0, LocalRect.Bottom - scrubBarHeight ), true );
-
 			Paint.Antialiasing = true;
 
 			Paint.SetBrushLinear( new Vector2( x0, 0f ), new Vector2( x1, 0f ), fadeColor, color );
 			Paint.SetPen( color.WithAlpha( 0.5f ), 0.5f );
-			Paint.DrawPolygon( _points );
-		}
-
-		private void AddPoints( List<Vector2> points, InterpolationMode interpolation, Vector2 start, Vector2 end, bool flip )
-		{
-			var pointCount = (int)Math.Clamp( Width / 4f, 2f, 32f );
-
-			for ( var i = 0; i <= pointCount; ++i )
-			{
-				var t = (float)i / pointCount;
-				var v = flip ? 1f - interpolation.Apply( 1f - t ) : interpolation.Apply( t );
-
-				points.Add( start + new Vector2( t * (end.x - start.x), v * (end.y - start.y) ) );
-			}
+			PaintExtensions.PaintMirroredCurve( t => interpolation.Apply( t ), LocalRect, scrubBarHeight, Kind == FadeKind.FadeOut );
 		}
 	}
 
@@ -376,7 +356,7 @@ partial class MotionEditMode
 		{
 			if ( EditMode.TimeSelection is not { } value ) return default;
 
-			var handles = EditMode.DopeSheet.Items.OfType<TimeSelectionHandleItem>()
+			var handles = EditMode.Timeline.Items.OfType<TimeSelectionHandleItem>()
 				.OrderBy( x => x.Position.x );
 
 			var index = Index.TotalStart + handles.TakeWhile( x => x != this ).Count();

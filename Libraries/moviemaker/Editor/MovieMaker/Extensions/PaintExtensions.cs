@@ -39,6 +39,57 @@ internal static class PaintExtensions
 		if ( Paint.HasMouseOver ) return hover;
 		return normal;
 	}
+
+	[ThreadStatic] private static List<Vector2>? CurvePoints;
+
+	public static void PaintCurve( Func<float, float> func, Rect rect, bool flipX, bool flipY )
+	{
+		var points = CurvePoints ??= new List<Vector2>();
+
+		points.Clear();
+
+		var x0 = flipX ? rect.Right : rect.Left;
+		var x1 = flipX ? rect.Left : rect.Right;
+
+		var y0 = flipY ? rect.Top : rect.Bottom;
+		var y1 = flipY ? rect.Bottom : rect.Top;
+
+		AddPoints( points, func, new Vector2( x0, y0 ), new Vector2( x1, y1 ), flipX ^ flipY );
+
+		points.Add( new Vector2( x1, y0 ) );
+		points.Add( new Vector2( x0, y0 ) );
+
+		Paint.DrawPolygon( points );
+	}
+
+	public static void PaintMirroredCurve( Func<float, float> func, Rect rect, float curveHeight, bool flipX )
+	{
+		var points = CurvePoints ??= new List<Vector2>();
+
+		points.Clear();
+
+		var x0 = flipX ? rect.Right : rect.Left;
+		var x1 = flipX ? rect.Left : rect.Right;
+
+		AddPoints( points, func, new Vector2( x0, rect.Top + curveHeight ), new Vector2( x1, rect.Top ), false );
+		AddPoints( points, func, new Vector2( x1, rect.Bottom ), new Vector2( x0, rect.Bottom - curveHeight ), true );
+
+		Paint.DrawPolygon( points );
+	}
+
+	private static void AddPoints( List<Vector2> points, Func<float, float> func, Vector2 start, Vector2 end, bool flip )
+	{
+		var width = Math.Abs( end.x - start.x );
+		var pointCount = (int)Math.Clamp( width / 4f, 2f, 32f );
+
+		for ( var i = 0; i <= pointCount; ++i )
+		{
+			var t = (float)i / pointCount;
+			var v = flip ? 1f - func( 1f - t ) : func( t );
+
+			points.Add( start + new Vector2( t * (end.x - start.x), v * (end.y - start.y) ) );
+		}
+	}
 }
 
 public struct SmoothDeltaFloat

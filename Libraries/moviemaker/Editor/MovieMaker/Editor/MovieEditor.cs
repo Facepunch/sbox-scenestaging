@@ -12,7 +12,7 @@ public partial class MovieEditor : Widget
 	public Session? Session { get; private set; }
 
 	public ListPanel? ListPanel { get; private set; }
-	public DopeSheetPanel? DopeSheetPanel { get; private set; }
+	public TimelinePanel? TimelinePanel { get; private set; }
 
 	public MovieEditor( Widget parent ) : base( parent )
 	{
@@ -45,10 +45,10 @@ public partial class MovieEditor : Widget
 		Layout.Add( splitter );
 
 		ListPanel = new ListPanel( this, Session );
-		DopeSheetPanel = new DopeSheetPanel( this, Session );
+		TimelinePanel = new TimelinePanel( this, Session );
 
 		splitter.AddWidget( ListPanel );
-		splitter.AddWidget( DopeSheetPanel );
+		splitter.AddWidget( TimelinePanel );
 
 		splitter.SetCollapsible( 0, false );
 		splitter.SetStretch( 0, 1 );
@@ -69,7 +69,7 @@ public partial class MovieEditor : Widget
 
 		Session = null;
 		ListPanel = null;
-		DopeSheetPanel = null;
+		TimelinePanel = null;
 
 		CreateStartupHelper();
 	}
@@ -240,7 +240,7 @@ public partial class MovieEditor : Widget
 	{
 		using ( SceneEditorSession.Active.Scene.Push() )
 		{
-			var go = new GameObject( true, "New Timeline Player" );
+			var go = new GameObject( true, "New Movie Player" );
 			go.Components.Create<MoviePlayer>();
 
 			SceneEditorSession.Active.Selection.Set( go );

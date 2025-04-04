@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Sandbox.MovieMaker;
+using Sandbox.UI;
 
 namespace Editor.MovieMaker;
 
@@ -92,7 +93,7 @@ public sealed partial class Session
 		get
 		{
 			var minTime = PixelsToTime( 0f ) + TimeOffset;
-			var maxTime = PixelsToTime( Editor.DopeSheetPanel!.Width ) + TimeOffset;
+			var maxTime = PixelsToTime( Editor.TimelinePanel!.Width ) + TimeOffset;
 
 			return new (minTime, maxTime);
 		}
@@ -192,7 +193,7 @@ public sealed partial class Session
 
 		EditMode?.Disable();
 
-		Editor.DopeSheetPanel!.ToolBar.Reset();
+		Editor.TimelinePanel!.ToolBar.Reset();
 
 		EditMode = type?.Create();
 		EditMode?.Enable( this );
@@ -238,7 +239,7 @@ public sealed partial class Session
 			snapHelper.Add( SnapFlag.PlayHead, CurrentPointer );
 
 			EditMode?.GetSnapTimes( ref snapHelper );
-			Editor.DopeSheetPanel?.DopeSheet.GetSnapTimes( ref snapHelper );
+			Editor.TimelinePanel?.Timeline.GetSnapTimes( ref snapHelper );
 		}
 	}
 
@@ -276,7 +277,11 @@ public sealed partial class Session
 
 	public void SetCurrentPointer( MovieTime time )
 	{
-		CurrentPointer = MovieTime.Max( time, MovieTime.Zero );
+		time = MovieTime.Max( time, MovieTime.Zero );
+
+		if ( CurrentPointer == time ) return;
+
+		CurrentPointer = time;
 		PointerChanged?.Invoke( CurrentPointer );
 
 		if ( IsEditorScene )
@@ -420,6 +425,58 @@ public sealed partial class Session
 	public void DispatchViewChanged()
 	{
 		ViewChanged?.Invoke();
-		EditMode?.ViewChanged( Editor.DopeSheetPanel!.DopeSheet.VisibleRect );
+		EditMode?.ViewChanged( Editor.TimelinePanel!.Timeline.VisibleRect );
+	}
+
+	public static float GetGizmoAlpha( MovieTime time, MovieTimeRange range )
+	{
+		var diff = (time * 2 - (range.Start + range.End)).Absolute;
+		var fraction = diff.TotalSeconds / range.Duration.TotalSeconds;
+
+		return Math.Clamp( 2f - (float)fraction * 2f, 0f, 1f );
+	}
+
+	public void DrawGizmos()
+	{
+		var selectedTrackView = TrackList.SelectedTracks.FirstOrDefault();
+
+		if ( selectedTrackView is null ) return;
+		if ( selectedTrackView.TransformTrack is not { } transformTrack ) return;
+
+		using var rootScope = Gizmo.Scope( "MovieMaker" );
+
+		Gizmo.Draw.IgnoreDepth = true;
+
+		var timeRange = new MovieTimeRange( 0d, Project.Duration )
+			.Clamp( (CurrentPointer - 5d, CurrentPointer + 5d) );
+
+		EditMode?.DrawGizmos( selectedTrackView, timeRange );
+
+		var timeScale = MovieTimeScale.FromDurationScale( TimeScale );
+
+		(timeScale * MovieTime.FromSeconds( RealTime.Now )).GetFrameIndex( 1d, out var timeOffset );
+
+		for ( var baseTime = timeRange.Start.Floor( 1d ); baseTime < timeRange.End; baseTime += 1d )
+		{
+			var t = baseTime + timeOffset;
+
+			if ( !transformTrack.TryGetValue( t, out var transform ) ) continue;
+
+			var dist = Gizmo.CameraTransform.Position.Distance( transform.Position );
+			var scale = GetGizmoAlpha( t, timeRange ) * dist / 512f;
+
+			var length = 16f * scale;
+			var arrowLength = 3f * scale;
+			var arrowWidth = 1f * scale;
+
+			Gizmo.Draw.Color = Theme.Red;
+			Gizmo.Draw.Arrow( transform.Position, transform.Position + transform.Rotation * Vector3.Forward * length, arrowLength, arrowWidth );
+
+			Gizmo.Draw.Color = Theme.Green;
+			Gizmo.Draw.Arrow( transform.Position, transform.Position + transform.Rotation * Vector3.Right * length, arrowLength, arrowWidth );
+
+			Gizmo.Draw.Color = Theme.Blue;
+			Gizmo.Draw.Arrow( transform.Position, transform.Position + transform.Rotation * Vector3.Up * length, arrowLength, arrowWidth );
+		}
 	}
 }

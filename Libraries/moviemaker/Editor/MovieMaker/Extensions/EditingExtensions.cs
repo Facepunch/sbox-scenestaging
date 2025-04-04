@@ -33,7 +33,7 @@ public enum SnapFlag
 
 public readonly record struct SnapOptions(
 	SnapFlag IgnoreFlags = SnapFlag.None,
-	ITrackView? IgnoreTrack = null,
+	TrackView? IgnoreTrack = null,
 	ITrackBlock? IgnoreBlock = null,
 	params MovieTime[] SnapOffsets )
 {

@@ -22,7 +22,7 @@ public class BackgroundItem : GraphicsItem
 		var startX = FromScene( Session.TimeToPixels( timeRange.Start ) ).x;
 		var endX = FromScene( Session.TimeToPixels( timeRange.End ) ).x;
 
-		Paint.SetBrushAndPen( DopeSheet.Colors.Background );
+		Paint.SetBrushAndPen( Timeline.Colors.Background );
 		Paint.DrawRect( new Rect( new Vector2( startX, LocalRect.Top ), new Vector2( endX - startX, LocalRect.Height ) ) );
 	}
 

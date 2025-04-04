@@ -51,7 +51,6 @@ public static class ProjectExtensions
 		}
 
 		return blocks[0];
-
 	}
 
 	public static T? GetBlock<T>( this IReadOnlyList<T> blocks, MovieTime time )

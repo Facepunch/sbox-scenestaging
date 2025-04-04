@@ -22,7 +22,7 @@ internal sealed class TrackModificationPreview<T> : ITrackModificationPreview
 {
 	public EditMode EditMode { get; }
 	public ProjectPropertyTrack<T> Track { get; }
-	public ITrackView View { get; }
+	public TrackView View { get; }
 
 	IProjectPropertyTrack ITrackModificationPreview.Track => Track;
 
@@ -55,7 +55,7 @@ internal sealed class TrackModificationPreview<T> : ITrackModificationPreview
 
 	public void Clear()
 	{
-		EditMode.ClearPreviewBlocks( Track );
+		View.ClearPreviewBlocks();
 	}
 
 	public bool Update( TimeSelection selection, IModificationOptions options )
@@ -79,7 +79,7 @@ internal sealed class TrackModificationPreview<T> : ITrackModificationPreview
 		_applied.Clear();
 		_applied.AddRange( modification.Apply( _original, selection, options ) );
 
-		EditMode.SetPreviewBlocks( Track, _applied );
+		View.SetPreviewBlocks( _original, _applied );
 
 		return true;
 	}

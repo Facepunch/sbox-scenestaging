@@ -7,14 +7,27 @@ namespace Editor.MovieMaker;
 public class IconComboBox<T> : IconButton
 	where T : struct, Enum
 {
-	public T Value { get; set; }
+	private T _value;
+
+	public T Value
+	{
+		get => _value;
+		set
+		{
+			if ( Equals( _value, value ) ) return;
+
+			_value = value;
+
+			Update();
+		}
+	}
 
 	public IconComboBox() : base( "" )
 	{
 		FixedWidth = FixedHeight * 1.5f;
 	}
 
-	protected virtual IEnumerable<T> OnGetOptions() => Enum.GetValues<T>();
+	protected virtual IEnumerable<T> OnGetOptions() => Enum.GetValues<T>().Where( x => Convert.ToInt64( x ) >= 0 );
 
 	private static EnumDescription.Entry GetEntry( T option )
 	{
@@ -99,20 +112,32 @@ public class IconComboBox<T> : IconButton
 	}
 }
 
-public class InterpolationSelector : IconComboBox<InterpolationMode>
+public class FunctionSelector<T> : IconComboBox<T>
+	where T : struct, Enum
 {
-	public InterpolationSelector()
+	private readonly Func<T, Func<float, float>?> _getFunc;
+
+	public FunctionSelector( string title, Func<T, Func<float, float>?> getFunc )
 	{
-		ToolTip = "Interpolation Mode";
+		ToolTip = title;
+
+		_getFunc = getFunc;
 	}
 
-	protected override void OnPaintOptionIcon( InterpolationMode option, Rect rect )
+	protected override void OnPaintOptionIcon( T option, Rect rect )
 	{
-		Paint.SetPen( Paint.Pen, size: 2f );
-		Paint.DrawLine( BuildIconPath( Value, rect ) );
+		if ( _getFunc( option ) is { } func )
+		{
+			Paint.SetPen( Paint.Pen, size: 2f );
+			Paint.DrawLine( BuildIconPath( func, rect ) );
+		}
+		else
+		{
+			Paint.DrawIcon( rect, "question_mark", IconSize );
+		}
 	}
 
-	private static IEnumerable<Vector2> BuildIconPath( InterpolationMode mode, Rect rect )
+	private static IEnumerable<Vector2> BuildIconPath( Func<float, float> func, Rect rect )
 	{
 		const int steps = 16;
 
@@ -122,7 +147,7 @@ public class InterpolationSelector : IconComboBox<InterpolationMode>
 		{
 			var t = (float)i / steps;
 			var x = rect.Left + t * rect.Width;
-			var y = rect.Bottom - mode.Apply( t ) * rect.Height;
+			var y = rect.Bottom - func( t ) * rect.Height;
 
 			yield return new Vector2( x, y );
 		}

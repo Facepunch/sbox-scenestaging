@@ -12,7 +12,7 @@ namespace Editor.MovieMaker;
 public class MovieEditorPanel : Widget
 {
 	public MovieEditor Editor { get; }
-	public ToolbarWidget ToolBar { get; }
+	public ToolBarWidget ToolBar { get; }
 
 	public MovieEditorPanel( MovieEditor parent )
 		: base( parent )
@@ -20,7 +20,7 @@ public class MovieEditorPanel : Widget
 		Editor = parent;
 		Layout = Layout.Column();
 
-		ToolBar = new ToolbarWidget( this );
+		ToolBar = new ToolBarWidget( this );
 
 		Layout.Add( ToolBar );
 	}
@@ -44,7 +44,8 @@ public sealed class ListPanel : MovieEditorPanel
 		var fileGroup = ToolBar.AddGroup( true );
 		var resourceIcon = typeof( MovieResource ).GetCustomAttribute<GameResourceAttribute>()!.Icon;
 
-		var fileAction = fileGroup.AddAction( "File", "folder", () =>
+		var fileDisplay = new ToolBarItemDisplay( "File", "folder", "Actions for saving / loading / importing movies, or switching player components." );
+		var fileAction = fileGroup.AddAction( fileDisplay, () =>
 		{
 			var menu = new Menu();
 
@@ -116,8 +117,9 @@ public sealed class ListPanel : MovieEditorPanel
 		// Navigation buttons
 
 		var navigateGroup = ToolBar.AddGroup( true );
+		var backDisplay = new ToolBarItemDisplay( "Back", "arrow_back", "Return to the parent Movie project." );
 
-		navigateGroup.AddAction( "Back", "arrow_back", parent.ExitSequence,
+		navigateGroup.AddAction( backDisplay, parent.ExitSequence,
 			() => parent.Session?.Parent is not null );
 	}
 
@@ -131,32 +133,39 @@ public sealed class ListPanel : MovieEditorPanel
 	}
 }
 
-public sealed class DopeSheetPanel : MovieEditorPanel
+public sealed class TimelinePanel : MovieEditorPanel
 {
-	public DopeSheet DopeSheet { get; }
+	public Timeline Timeline { get; }
 
-	public DopeSheetPanel( MovieEditor parent, Session session )
+	public TimelinePanel( MovieEditor parent, Session session )
 		: base( parent )
 	{
-		DopeSheet = new DopeSheet( session );
+		Timeline = new Timeline( session );
 
 		MouseTracking = true;
 
-		Layout.Add( DopeSheet );
+		Layout.Add( Timeline );
 
 		var playbackGroup = ToolBar.AddGroup( true );
 
-		playbackGroup.AddToggle( "Toggle Record", "radio_button_checked",
-			() => session.IsRecording, x => session.IsRecording = x,
-			background: false ).ForegroundActive = Theme.Red;
+		var recordDisplay = new ToolBarItemDisplay( "Toggle Record", "radio_button_checked",
+			"Start or stop recording live changes to tracks in the track list.",
+			Background: false );
 
-		playbackGroup.AddToggle( "Toggle Play", "play_arrow",
-			() => session.IsPlaying, x => session.IsPlaying = x,
-			background: false );
+		playbackGroup.AddToggle( recordDisplay, () => session.IsRecording, x => session.IsRecording = x )
+			.ForegroundActive = Theme.Red;
 
-		playbackGroup.AddToggle( "Loop at End of Playback", "repeat",
-			() => session.IsLooping, x => session.IsLooping = x,
-			background: false );
+		var playDisplay = new ToolBarItemDisplay( "Toggle Play", "play_arrow",
+			"Start or stop playback.",
+			Background: false );
+
+		playbackGroup.AddToggle( playDisplay, () => session.IsPlaying, x => session.IsPlaying = x );
+
+		var loopDisplay = new ToolBarItemDisplay( "Toggle Looping", "repeat",
+			"When enabled, playback will jump back to the start when reaching the end of the clip.",
+			Background: false );
+
+		playbackGroup.AddToggle( loopDisplay, () => session.IsLooping, x => session.IsLooping = x );
 
 		var slider = new FloatSlider( null )
 		{
@@ -189,15 +198,41 @@ public sealed class DopeSheetPanel : MovieEditorPanel
 
 		playbackGroup.Layout.Add( speed );
 
+		var undoGroup = ToolBar.AddGroup( true );
+
+		var undoDisplay = new ToolBarItemDisplay( "Undo", "undo", "Revert the last change made to the movie clip." );
+		var redoDisplay = new ToolBarItemDisplay( "Redo", "redo", "Reapply the last undone change made to the movie clip." );
+
+		undoGroup.AddAction( undoDisplay, session.Undo, () => session.History.CanUndo );
+		undoGroup.AddAction( redoDisplay, session.Redo, () => session.History.CanRedo );
+
+		if ( EditMode.AllTypes is { Count: > 1 } editModes )
+		{
+			var editModeGroup = ToolBar.AddGroup( true );
+
+			foreach ( var editModeType in editModes )
+			{
+				var display = new ToolBarItemDisplay( editModeType.Title, editModeType.Icon, editModeType.Description );
+
+				editModeGroup.AddToggle( display,
+					() => editModeType.IsMatchingType( session.EditMode ),
+					state => session.SetEditMode( state ? editModeType : null ) );
+			}
+		}
+
 		var snapGroup = ToolBar.AddGroup( true, true );
 
-		snapGroup.AddToggle( "Object Snap", "align_horizontal_left", 
-			() => session.ObjectSnap, x => session.ObjectSnap = x,
-			background: false );
+		var objectSnapDisplay = new ToolBarItemDisplay( "Object Snap", "align_horizontal_left",
+			"Snap to objects in the timeline.",
+			Background: false );
 
-		snapGroup.AddToggle( "Frame Snap", "straighten",
-			() => session.FrameSnap, x => session.FrameSnap = x,
-			background: false );
+		var frameSnapDisplay = new ToolBarItemDisplay( "Frame Snap", "straighten",
+			"Snap to the selected frame rate.",
+			Background: false);
+
+		snapGroup.AddToggle( objectSnapDisplay, () => session.ObjectSnap, x => session.ObjectSnap = x );
+
+		snapGroup.AddToggle( frameSnapDisplay, () => session.FrameSnap, x => session.FrameSnap = x );
 
 		snapGroup.AddSpacingCell();
 

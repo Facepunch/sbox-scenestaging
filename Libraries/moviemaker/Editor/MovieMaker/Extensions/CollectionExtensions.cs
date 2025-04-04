@@ -81,23 +81,39 @@ public static class CollectionExtensions
 	}
 }
 
-public sealed class SynchronizedList<TSrc, TItem> : IReadOnlyList<TItem>
+public interface ISynchronizedList<TSrc, TItem> : IReadOnlyList<TItem>
+{
+	public void Clear() => Update( [] );
+	bool Update( IEnumerable<TSrc> source );
+	int IndexOf( TSrc src );
+}
+
+/// <summary>
+/// Maintains a set of <typeparamref name="TItem"/>, mapped from a collection of <see cref="TSrc"/>.
+/// </summary>
+public sealed class SynchronizedSet<TSrc, TItem> : ISynchronizedList<TSrc, TItem>
 	where TSrc : notnull
 {
-	private readonly Dictionary<TSrc, TItem> _items = new();
-	private readonly Dictionary<TSrc, int> _indices = new();
+	private readonly Dictionary<TSrc, TItem> _items;
+	private readonly Dictionary<TSrc, int> _indices;
 
 	private readonly List<TSrc> _orderedSources = new();
 
 	private readonly Func<TSrc, TItem> _addFunc;
-	private readonly Action<TSrc, TItem>? _removeAction;
+	private readonly Action<TItem>? _removeAction;
 	private readonly Func<TSrc, TItem, bool>? _updateAction;
 
-	public SynchronizedList( Func<TSrc, TItem> addFunc, Action<TSrc, TItem>? removeAction, Func<TSrc, TItem, bool>? updateAction = null )
+	public SynchronizedSet( Func<TSrc, TItem> addFunc,
+		Action<TItem>? removeAction = null,
+		Func<TSrc, TItem, bool>? updateAction = null,
+		IEqualityComparer<TSrc>? comparer = null )
 	{
 		_addFunc = addFunc;
 		_removeAction = removeAction;
 		_updateAction = updateAction;
+
+		_items = new Dictionary<TSrc, TItem>( comparer );
+		_indices = new Dictionary<TSrc, int>( comparer );
 	}
 
 	public void Clear() => Update( [] );
@@ -125,7 +141,7 @@ public sealed class SynchronizedList<TSrc, TItem> : IReadOnlyList<TItem>
 
 			if ( !_items.Remove( src, out var item ) ) continue;
 
-			_removeAction?.Invoke( src, item );
+			_removeAction?.Invoke( item );
 
 			changed = true;
 		}
@@ -159,10 +175,90 @@ public sealed class SynchronizedList<TSrc, TItem> : IReadOnlyList<TItem>
 		return changed;
 	}
 
+	public int IndexOf( TSrc src ) => _indices.TryGetValue( src, out var index ) ? index : -1;
+
 	public IEnumerator<TItem> GetEnumerator() => _orderedSources.Select(x => _items[x] ).GetEnumerator();
 	IEnumerator IEnumerable.GetEnumerator() => _items.GetEnumerator();
 
 	public int Count => _items.Count;
 
 	public TItem this[ int index ] => _items[_orderedSources[index]];
+}
+
+/// <summary>
+/// Maintains a list of <typeparamref name="TItem"/> with the same length as a list of <typeparamref name="TSrc"/>.
+/// </summary>
+public sealed class SynchronizedList<TSrc, TItem> : ISynchronizedList<TSrc, TItem>
+{
+	private readonly List<TSrc> _sources = new();
+	private readonly List<TItem> _items = new();
+
+	private readonly Func<TSrc, TItem> _addFunc;
+	private readonly Action<TItem>? _removeAction;
+	private readonly UpdateItemDelegate? _updateAction;
+
+	public delegate bool UpdateItemDelegate( TSrc source, ref TItem item );
+
+	public SynchronizedList( Func<TSrc, TItem> addFunc,
+		Action<TItem>? removeAction = null,
+		UpdateItemDelegate? updateAction = null )
+	{
+		_addFunc = addFunc;
+		_removeAction = removeAction;
+		_updateAction = updateAction;
+	}
+
+	public void Clear() => Update( [] );
+
+	public bool Update( IEnumerable<TSrc> source )
+	{
+		_sources.Clear();
+		_sources.AddRange( source );
+
+		var changed = false;
+
+		// Remove items
+
+		while ( _items.Count > _sources.Count )
+		{
+			_removeAction?.Invoke( _items[^1] );
+			_items.RemoveAt( _items.Count - 1 );
+
+			changed = true;
+		}
+
+		// Add items
+
+		while ( _items.Count < _sources.Count )
+		{
+			_items.Add( _addFunc( _sources[_items.Count] ) );
+
+			changed = true;
+		}
+
+		if ( _updateAction is { } updateAction )
+		{
+			for ( var i = 0; i < _sources.Count; ++i )
+			{
+				var item = _items[i];
+
+				if ( updateAction( _sources[i], ref item ) )
+				{
+					_items[i] = item;
+					changed = true;
+				}
+			}
+		}
+
+		return changed;
+	}
+
+	public int IndexOf( TSrc src ) => _sources.IndexOf( src );
+
+	public IEnumerator<TItem> GetEnumerator() => _items.GetEnumerator();
+	IEnumerator IEnumerable.GetEnumerator() => _items.GetEnumerator();
+
+	public int Count => _items.Count;
+
+	public TItem this[int index] => _items[index];
 }
