@@ -83,7 +83,7 @@ public partial class MovieEditor : Widget
 		var col = row.AddColumn();
 		col.AddStretchCell();
 
-		col.Add( new Label( "Create a Timeline Player component to get started. The\nTimeline Player is responsible for playing the clip in game." ) );
+		col.Add( new Label( "Create a Movie Player component to get started. The\nMovie Player is responsible for playing the clip in-game." ) );
 		col.AddSpacingCell( 32 );
 
 		var button = col.Add( new Button.Primary( "Create Player Component", "add_circle" ) );
