@@ -65,7 +65,7 @@ partial class TrackBinder : IJsonPopulator
 		{
 			foreach ( var mapping in objects )
 			{
-				_gameObjectMap[mapping.Track] = mapping.Reference is { } id && scene.Directory.FindByGuid( id ) is { } gameObject
+				_gameObjectMap[mapping.Track] = mapping.Reference is { } id && Scene.Directory.FindByGuid( id ) is { } gameObject
 					? gameObject : null;
 			}
 		}
@@ -74,7 +74,7 @@ partial class TrackBinder : IJsonPopulator
 		{
 			foreach ( var mapping in components )
 			{
-				_componentMap[mapping.Track] = mapping.Reference is { } id && scene.Directory.FindComponentByGuid( id ) is { } component
+				_componentMap[mapping.Track] = mapping.Reference is { } id && Scene.Directory.FindComponentByGuid( id ) is { } component
 					? component
 					: null;
 			}

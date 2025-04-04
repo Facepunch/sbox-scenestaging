@@ -39,30 +39,10 @@ public readonly record struct SlidingStretchTransform( MovieTimeScale TimeScale,
 	public static (SlidingStretchTransform In, SlidingStretchTransform Out) FromEnvelope( MovieTime sourceDuration, TimeSelection envelope )
 	{
 		throw new NotImplementedException();
-
-		var fadeDuration = envelope.FadeIn.Duration + envelope.FadeOut.Duration;
-		var peakTimeScale = MovieTimeScale.FromFrequencyScale( (2 * sourceDuration.TotalSeconds - fadeDuration.TotalSeconds)
-			/ (2 * envelope.PeakTimeRange.Duration.TotalSeconds + fadeDuration.TotalSeconds) );
-
-		var slideIn = new SlidingStretchTransform( peakTimeScale, envelope.FadeInTimeRange );
-		var slideOut = new SlidingStretchTransform( peakTimeScale.Inverse,
-			slideIn.GetTransformAt( envelope.FadeInTimeRange.End ) * envelope.FadeOutTimeRange );
-
-		return (slideIn, slideOut);
 	}
 
 	public MovieTransform GetTransformAt( MovieTime time )
 	{
 		throw new NotImplementedException();
-
-		if ( time <= SlideTimeRange.Start ) return MovieTransform.Identity;
-
-		var avgTimeScale = MovieTimeScale.FromFrequencyScale( 1d + (TimeScale.FrequencyScale - 1d) * 0.5 );
-		var slideEndTranslation = avgTimeScale * SlideTimeRange.Duration - SlideTimeRange.Duration;
-		var slideProgress = SlideTimeRange.GetFraction( time );
-		var scale = MovieTimeScale.FromFrequencyScale( 1d + (TimeScale.FrequencyScale - 1d) * slideProgress );
-		var translation = MovieTime.FromSeconds( slideProgress * slideEndTranslation.TotalSeconds );
-
-		return new MovieTransform( SlideTimeRange.Start ) * new MovieTransform( translation, scale ) * new MovieTransform( -SlideTimeRange.Start );
 	}
 }

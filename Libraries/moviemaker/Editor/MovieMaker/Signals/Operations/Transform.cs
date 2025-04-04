@@ -7,20 +7,16 @@ namespace Editor.MovieMaker;
 
 partial record PropertySignal<T>
 {
-	[return: NotNullIfNotNull( nameof(signal) )]
-	public static PropertySignal<T>? operator *( MovieTransform transform, PropertySignal<T>? signal ) =>
-		transform == MovieTransform.Identity ? signal : signal?.OnTransform( transform );
+	public static PropertySignal<T> operator *( MovieTransform transform, PropertySignal<T> signal ) =>
+		transform == MovieTransform.Identity ? signal : signal.OnTransform( transform );
 
-	[return: NotNullIfNotNull( nameof(signal) )]
-	public static PropertySignal<T>? operator +( PropertySignal<T>? signal, MovieTime translation ) =>
+	public static PropertySignal<T> operator +( PropertySignal<T> signal, MovieTime translation ) =>
 		new MovieTransform( Translation: translation ) * signal;
 
-	[return: NotNullIfNotNull( nameof(signal) )]
-	public static PropertySignal<T>? operator *( MovieTimeScale scale, PropertySignal<T>? signal ) =>
+	public static PropertySignal<T> operator *( MovieTimeScale scale, PropertySignal<T> signal ) =>
 		new MovieTransform( Scale: scale ) * signal;
 
-	[return: NotNullIfNotNull( nameof(signal) )]
-	public static PropertySignal<T>? operator *( PropertySignal<T>? signal, MovieTimeScale scale ) =>
+	public static PropertySignal<T> operator *( PropertySignal<T> signal, MovieTimeScale scale ) =>
 		new MovieTransform( Scale: scale ) * signal;
 
 	protected virtual PropertySignal<T> OnTransform( MovieTransform value ) =>

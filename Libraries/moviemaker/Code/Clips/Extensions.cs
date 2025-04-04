@@ -22,7 +22,7 @@ public static class ClipExtensions
 		while ( track is not IReferenceTrack )
 		{
 			names.Add( track.Name );
-			track = track.Parent;
+			track = track.Parent ?? throw new Exception( "Expected root tracks to be reference tracks." );
 		}
 
 		names.Reverse();

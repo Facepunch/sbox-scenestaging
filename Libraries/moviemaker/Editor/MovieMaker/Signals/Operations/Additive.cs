@@ -8,11 +8,8 @@ namespace Editor.MovieMaker;
 
 partial record PropertySignal<T>
 {
-	[return: NotNullIfNotNull( nameof(a) )]
-	public static PropertySignal<T>? operator -( PropertySignal<T>? a, PropertySignal<T> b )
+	public static PropertySignal<T> operator -( PropertySignal<T> a, PropertySignal<T> b )
 	{
-		if ( a is null ) return null;
-
 		if ( LocalTransformer.GetDefault<T>() is not { } transformer ) return a;
 		if ( a.Equals( b ) ) return transformer.Identity;
 		if ( b.IsIdentity ) return a;
@@ -21,10 +18,8 @@ partial record PropertySignal<T>
 	}
 
 	[return: NotNullIfNotNull( nameof(a) )]
-	public static PropertySignal<T>? operator +( PropertySignal<T>? a, PropertySignal<T> b )
+	public static PropertySignal<T> operator +( PropertySignal<T> a, PropertySignal<T> b )
 	{
-		if ( a is null ) return null;
-
 		if ( LocalTransformer.GetDefault<T>() is null ) return a;
 		if ( a.IsIdentity ) return b;
 		if ( b.IsIdentity ) return a;

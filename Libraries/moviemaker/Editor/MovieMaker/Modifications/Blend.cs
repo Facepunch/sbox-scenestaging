@@ -86,7 +86,10 @@ public abstract class BlendTrackModification<T> : ITrackModification<T, BlendOpt
 			throw new ArgumentNullException( nameof( overlay ), "Expected at least one signal." );
 		}
 
-		overlay += options.Offset;
+		if ( overlay is not null )
+		{
+			overlay += options.Offset;
+		}
 
 		if ( original is null || overlay is null )
 		{

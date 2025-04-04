@@ -107,7 +107,10 @@ file sealed class ResampleCache<T>
 {
 	private readonly record struct Key( int SampleRate, MovieTime SmoothingSize );
 
+#pragma warning disable SB3000
+	[SkipHotload]
 	private static ConditionalWeakTable<CompiledSampleBlock<T>, Dictionary<Key, WeakReference<T[]>>> Cache { get; } = new();
+#pragma warning restore SB3000
 
 	public static T[]? Get( CompiledSampleBlock<T> block, int sampleRate, MovieTime smoothingSize )
 	{

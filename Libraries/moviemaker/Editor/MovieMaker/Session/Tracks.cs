@@ -160,7 +160,6 @@ partial class Session
 {
 	private ITrackListView? _trackList;
 	private float _trackListScrollPosition;
-	private float _minTrackListScrollPosition = float.NegativeInfinity;
 
 	/// <summary>
 	/// Which tracks should be visible in the track list / dope sheet.

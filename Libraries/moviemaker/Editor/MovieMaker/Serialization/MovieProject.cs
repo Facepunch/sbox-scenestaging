@@ -6,7 +6,6 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sandbox.MovieMaker;
 using Sandbox.MovieMaker.Compiled;
-using Sandbox.Utility;
 
 namespace Editor.MovieMaker;
 
@@ -17,7 +16,7 @@ partial class MovieProject : IJsonPopulator
 {
 	internal sealed record Model(
 		int SampleRate,
-		ImmutableDictionary<Guid, IProjectTrack.Model> Tracks,
+		ImmutableDictionary<Guid, ProjectTrackModel> Tracks,
 		ImmutableDictionary<Guid, ProjectSourceClip.Model>? Sources );
 
 	public JsonNode Serialize()
@@ -56,15 +55,15 @@ partial class MovieProject : IJsonPopulator
 		{
 			switch ( trackModel )
 			{
-				case IProjectReferenceTrack.Model refModel:
+				case ProjectReferenceTrackModel refModel:
 					addedTracks[id] = IProjectReferenceTrack.Create( this, id, refModel.Name, refModel.TargetType );
 					break;
 
-				case IProjectPropertyTrack.Model propertyModel:
+				case ProjectPropertyTrackModel propertyModel:
 					addedTracks[id] = IProjectPropertyTrack.Create( this, id, propertyModel.Name, propertyModel.TargetType );
 					break;
 
-				case ProjectSequenceTrack.Model sequenceModel:
+				case ProjectSequenceTrackModel sequenceModel:
 					addedTracks[id] = new ProjectSequenceTrack( this, id, sequenceModel.Name );
 					break;
 
@@ -167,67 +166,63 @@ file sealed class MovieSerializationContext : IDisposable
 	}
 }
 
+[JsonPolymorphic]
+[JsonDerivedType( typeof( ProjectReferenceTrackModel ), "Reference" )]
+[JsonDerivedType( typeof( ProjectPropertyTrackModel ), "Property" )]
+[JsonDerivedType( typeof( ProjectSequenceTrackModel ), "Sequence" )]
+public abstract record ProjectTrackModel( string Name, Type TargetType,
+	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] Guid? ParentId );
+
+file sealed record ProjectReferenceTrackModel( string Name, Type TargetType, Guid? ParentId )
+	: ProjectTrackModel( Name, TargetType, ParentId );
+
+file sealed record ProjectPropertyTrackModel( string Name, Type TargetType, Guid? ParentId,
+	[property: JsonPropertyOrder( 100 ), JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] JsonArray? Blocks )
+	: ProjectTrackModel( Name, TargetType, ParentId );
+
+file sealed record ProjectSequenceTrackModel( string Name, Guid? ParentId, ImmutableArray<ProjectSequenceBlock> Blocks )
+	: ProjectTrackModel( Name, typeof( MovieResource ), ParentId );
+
 partial interface IProjectTrack
 {
-	[JsonPolymorphic]
-	[JsonDerivedType( typeof( IProjectReferenceTrack.Model ), "Reference" )]
-	[JsonDerivedType( typeof( IProjectPropertyTrack.Model ), "Property" )]
-	[JsonDerivedType( typeof( ProjectSequenceTrack.Model ), "Sequence" )]
-	public abstract record Model( string Name, Type TargetType,
-		[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] Guid? ParentId );
-
-	Model Serialize( JsonSerializerOptions options );
-	void Deserialize( Model model, JsonSerializerOptions options );
+	ProjectTrackModel Serialize( JsonSerializerOptions options );
+	void Deserialize( ProjectTrackModel model, JsonSerializerOptions options );
 }
 
 partial class ProjectTrack<T>
 {
-	public abstract IProjectTrack.Model Serialize( JsonSerializerOptions options );
-	public abstract void Deserialize( IProjectTrack.Model model, JsonSerializerOptions options );
-}
-
-partial interface IProjectReferenceTrack
-{
-	public sealed record Model( string Name, Type TargetType, Guid? ParentId )
-		: IProjectTrack.Model( Name, TargetType, ParentId );
+	public abstract ProjectTrackModel Serialize( JsonSerializerOptions options );
+	public abstract void Deserialize( ProjectTrackModel model, JsonSerializerOptions options );
 }
 
 partial class ProjectReferenceTrack<T>
 {
-	public override IProjectTrack.Model Serialize( JsonSerializerOptions options )
+	public override ProjectTrackModel Serialize( JsonSerializerOptions options )
 	{
-		return new IProjectReferenceTrack.Model( Name, TargetType, Parent?.Id );
+		return new ProjectReferenceTrackModel( Name, TargetType, Parent?.Id );
 	}
 
-	public override void Deserialize( IProjectTrack.Model model, JsonSerializerOptions options )
+	public override void Deserialize( ProjectTrackModel model, JsonSerializerOptions options )
 	{
-		if ( model is not IProjectReferenceTrack.Model refModel ) return;
+		if ( model is not ProjectReferenceTrackModel refModel ) return;
 	}
-}
-
-partial interface IProjectPropertyTrack
-{
-	public sealed record Model( string Name, Type TargetType,
-		Guid? ParentId,
-		[property: JsonPropertyOrder( 100 ), JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] JsonArray? Blocks )
-		: IProjectTrack.Model( Name, TargetType, ParentId );
 }
 
 partial class ProjectPropertyTrack<T>
 {
-	public override IProjectTrack.Model Serialize( JsonSerializerOptions options )
+	public override ProjectTrackModel Serialize( JsonSerializerOptions options )
 	{
 		MovieSerializationContext.Current?.ResetSignals();
 
-		return new IProjectPropertyTrack.Model( Name, TargetType, Parent?.Id,
+		return new ProjectPropertyTrackModel( Name, TargetType, Parent?.Id,
 			Blocks.Count != 0
 				? JsonSerializer.SerializeToNode( Blocks, EditorJsonOptions )!.AsArray()
 				: null );
 	}
 
-	public override void Deserialize( IProjectTrack.Model model, JsonSerializerOptions options )
+	public override void Deserialize( ProjectTrackModel model, JsonSerializerOptions options )
 	{
-		if ( model is not IProjectPropertyTrack.Model propertyModel ) return;
+		if ( model is not ProjectPropertyTrackModel propertyModel ) return;
 
 		MovieSerializationContext.Current?.ResetSignals();
 
@@ -245,17 +240,14 @@ partial class ProjectPropertyTrack<T>
 
 partial class ProjectSequenceTrack
 {
-	public sealed record Model( string Name, Guid? ParentId, ImmutableArray<ProjectSequenceBlock> Blocks )
-		: IProjectTrack.Model( Name, typeof(MovieResource), ParentId );
-
-	public override IProjectTrack.Model Serialize( JsonSerializerOptions options )
+	public override ProjectTrackModel Serialize( JsonSerializerOptions options )
 	{
-		return new Model( Name, Parent?.Id, [..Blocks] );
+		return new ProjectSequenceTrackModel( Name, Parent?.Id, [..Blocks] );
 	}
 
-	public override void Deserialize( IProjectTrack.Model model, JsonSerializerOptions options )
+	public override void Deserialize( ProjectTrackModel model, JsonSerializerOptions options )
 	{
-		if ( model is not Model sequenceModel ) return;
+		if ( model is not ProjectSequenceTrackModel sequenceModel ) return;
 
 		_tracksInvalid = true;
 
