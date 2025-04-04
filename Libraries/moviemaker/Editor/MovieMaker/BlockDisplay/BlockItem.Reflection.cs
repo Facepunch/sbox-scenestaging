@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker.BlockDisplays;
@@ -8,28 +7,31 @@ namespace Editor.MovieMaker.BlockDisplays;
 
 partial class BlockItem
 {
-	public static BlockItem? Create( DopeSheetTrack parent, ITrackBlock block, MovieTime offset )
+	public static BlockItem Create( TimelineTrack parent, ITrackBlock block, MovieTime offset )
 	{
-		if ( GetBlockItemType( block.GetType(), (block as IPropertyBlock)?.PropertyType ) is not { } blockType )
-		{
-			return null;
-		}
+		var blockType = block.GetType();
+		var propertyType = (block as IPropertyBlock)?.PropertyType;
+
+		var inst = (BlockItem)Activator.CreateInstance( GetBlockItemType( blockType, propertyType ) )!;
+
 		try
 		{
-			var inst = (BlockItem)Activator.CreateInstance( blockType )!;
-
 			inst.Initialize( parent, block, offset );
-
-			return inst;
 		}
 		catch ( Exception ex )
 		{
 			Log.Error( ex );
-			return null;
+
+			BlockItemTypeCache[blockType] = typeof(DefaultBlockItem);
+
+			inst = new DefaultBlockItem();
+			inst.Initialize( parent, block, offset );
 		}
+
+		return inst;
 	}
 
-	[SkipHotload] private static Dictionary<Type, Type?> BlockItemTypeCache { get; } = new();
+	[SkipHotload] private static Dictionary<Type, Type> BlockItemTypeCache { get; } = new();
 
 	[EditorEvent.Hotload]
 	private static void OnHotload()
@@ -37,11 +39,11 @@ partial class BlockItem
 		BlockItemTypeCache.Clear();
 	}
 
-	private static Type? GetBlockItemType( Type targetBlockType, Type? propertyType )
+	private static Type GetBlockItemType( Type targetBlockType, Type? propertyType )
 	{
 		if ( BlockItemTypeCache.TryGetValue( targetBlockType, out var blockItemType ) ) return blockItemType;
 
-		Type? bestBlockItemType = null;
+		var bestBlockItemType = typeof(DefaultBlockItem);
 		var bestScore = int.MaxValue;
 
 		foreach ( var typeDesc in EditorTypeLibrary.GetTypes<BlockItem>() )

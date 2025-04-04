@@ -8,7 +8,7 @@ public abstract partial class BlockItem : GraphicsItem
 {
 	private ITrackBlock? _block;
 
-	public new DopeSheetTrack Parent { get; private set; } = null!;
+	public new TimelineTrack Parent { get; private set; } = null!;
 
 	public ITrackBlock Block
 	{
@@ -38,7 +38,7 @@ public abstract partial class BlockItem : GraphicsItem
 
 	protected int DataHash => HashCode.Combine( Block, TimeRange.Duration, Width );
 
-	private void Initialize( DopeSheetTrack parent, ITrackBlock block, MovieTime offset )
+	private void Initialize( TimelineTrack parent, ITrackBlock block, MovieTime offset )
 	{
 		base.Parent = Parent = parent;
 
@@ -69,7 +69,7 @@ public abstract partial class BlockItem : GraphicsItem
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground.Lighten( Parent.View.IsLocked ? 0.2f : 0f ) );
+		Paint.SetBrushAndPen( Timeline.Colors.ChannelBackground.Lighten( Parent.View.IsLocked ? 0.2f : 0f ) );
 		Paint.DrawRect( LocalRect );
 
 		if ( Parent.View.IsLocked ) return;

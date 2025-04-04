@@ -47,13 +47,12 @@ public sealed partial class Session
 	{
 		_applyNextFrame = false;
 
-		foreach ( var track in Project.Tracks )
-		{
-			ApplyFrame( track, time );
-		}
-
 		Parent?.ApplyFrame( SequenceTransform * time );
-		EditMode?.ApplyFrame( time );
+
+		foreach ( var view in TrackList.AllTracks )
+		{
+			view.ApplyFrame( time );
+		}
 
 		AdvanceAnimations( time - _lastAppliedTime );
 

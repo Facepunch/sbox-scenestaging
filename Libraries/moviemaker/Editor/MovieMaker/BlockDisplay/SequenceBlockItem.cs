@@ -58,7 +58,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		if ( !e.HasShift )
 		{
-			Parent.DopeSheet.DeselectAll();
+			Parent.Timeline.DeselectAll();
 		}
 
 		Selected = true;
@@ -128,7 +128,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		Layout();
 
 		Parent.View.MarkValueChanged();
-		Parent.Session.ApplyFrame( Parent.View.Track, Parent.Session.CurrentPointer );
+		Parent.View.ApplyFrame( Parent.Session.CurrentPointer );
 	}
 
 	private void OnSplit( MovieTime time )
@@ -372,7 +372,7 @@ file sealed class FullBlockGhostItem : GraphicsItem
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground );
+		Paint.SetBrushAndPen( Timeline.Colors.ChannelBackground );
 		Paint.DrawRect( LocalRect, 2 );
 	}
 }

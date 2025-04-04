@@ -8,7 +8,7 @@ namespace Editor.MovieMaker;
 [MovieModification( "Smoothen", Icon = "blur_on" )]
 file sealed class SmoothModification() : PerTrackModification<SmoothOptions>( SmoothOptions.Default, true )
 {
-	public override void AddControls( ToolbarGroup group )
+	public override void AddControls( ToolBarGroup group )
 	{
 		group.AddSlider( "Smooth Size",
 			() => Options.Steps,

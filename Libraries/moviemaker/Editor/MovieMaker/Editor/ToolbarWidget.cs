@@ -1,16 +1,19 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using Sandbox.UI;
+using Sandbox.Utility;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed class ToolbarWidget : Widget
+public sealed class ToolBarWidget : Widget
 {
-	private readonly List<ToolbarGroup> _groups = new();
+	private readonly List<ToolBarGroup> _groups = new();
 
-	public ToolbarWidget( MovieEditorPanel parent ) : base( parent )
+	public ToolBarWidget( MovieEditorPanel parent ) : base( parent )
 	{
 		Parent = parent;
 
@@ -21,9 +24,9 @@ public sealed class ToolbarWidget : Widget
 		VerticalSizeMode = SizeMode.CanShrink;
 	}
 
-	public ToolbarGroup AddGroup( bool permanent = false, bool alignRight = false )
+	public ToolBarGroup AddGroup( bool permanent = false, bool alignRight = false )
 	{
-		var group = new ToolbarGroup( this ) { IsPermanent = permanent, AlignRight = alignRight };
+		var group = new ToolBarGroup( this ) { IsPermanent = permanent, AlignRight = alignRight };
 
 		_groups.Add( group );
 
@@ -32,7 +35,7 @@ public sealed class ToolbarWidget : Widget
 		return group;
 	}
 
-	internal void RemoveGroup( ToolbarGroup group )
+	internal void RemoveGroup( ToolBarGroup group )
 	{
 		_groups.Remove( group );
 
@@ -77,12 +80,14 @@ public sealed class ToolbarWidget : Widget
 	}
 }
 
-public sealed class ToolbarGroup : Widget
+public sealed record ToolBarItemDisplay( string Title, string Icon, string? Description, bool Background = true );
+
+public sealed class ToolBarGroup : Widget
 {
 	public bool IsPermanent { get; init; }
 	public bool AlignRight { get; init; }
 
-	public ToolbarGroup( ToolbarWidget parent )
+	public ToolBarGroup( ToolBarWidget parent )
 		: base( parent )
 	{
 		HorizontalSizeMode = SizeMode.CanGrow;
@@ -96,7 +101,7 @@ public sealed class ToolbarGroup : Widget
 	{
 		if ( !IsValid ) return;
 
-		if ( Parent is ToolbarWidget { IsValid: true } toolbar )
+		if ( Parent is ToolBarWidget { IsValid: true } toolbar )
 		{
 			toolbar.RemoveGroup( this );
 		}
@@ -124,13 +129,20 @@ public sealed class ToolbarGroup : Widget
 		return label;
 	}
 
-	public IconButton AddAction( string title, string icon, Action action, Func<bool>? enabled = null )
+	public IconButton AddAction( ToolBarItemDisplay display, Action action, Func<bool>? enabled = null )
 	{
-		var btn = new IconButton( icon )
+		var btn = new IconButton( display.Icon )
 		{
-			ToolTip = title,
+			ToolTip = $"<h3>{display.Title}</h3>{display.Description}",
 			IconSize = 16
 		};
+
+		if ( !display.Background )
+		{
+			btn.Background = Color.Transparent;
+			btn.BackgroundActive = Color.Transparent;
+			btn.ForegroundActive = Theme.Primary;
+		}
 
 		btn.OnClick += action;
 
@@ -146,16 +158,16 @@ public sealed class ToolbarGroup : Widget
 		return btn;
 	}
 
-	public IconButton AddToggle( string title, string icon, Func<bool> getState, Action<bool> setState, bool background = true )
+	public IconButton AddToggle( ToolBarItemDisplay display, Func<bool> getState, Action<bool> setState )
 	{
-		var btn = new IconButton( icon )
+		var btn = new IconButton( display.Icon )
 		{
-			ToolTip = title,
+			ToolTip = $"<h3>{display.Title}</h3>{display.Description}",
 			IconSize = 16,
 			IsToggle = true
 		};
 
-		if ( !background )
+		if ( !display.Background )
 		{
 			btn.Background = Color.Transparent;
 			btn.BackgroundActive = Color.Transparent;
@@ -169,9 +181,86 @@ public sealed class ToolbarGroup : Widget
 		return btn;
 	}
 
-	public InterpolationSelector AddInterpolationSelector( Func<InterpolationMode> getValue, Action<InterpolationMode> setValue )
+	public FunctionSelector<InterpolationMode> AddInterpolationSelector( Func<InterpolationMode> getValue, Action<InterpolationMode> setValue )
 	{
-		var selector = new InterpolationSelector();
+		var selector = new FunctionSelector<InterpolationMode>( "Interpolation Mode", mode => t => mode.Apply( t ) );
+
+		selector.Bind( "Value" ).From( getValue, setValue );
+
+		Layout.Add( selector );
+
+		return selector;
+	}
+
+	private static ImmutableArray<float> ExampleValues { get; } =
+	[
+		-0.5f,
+		0f,
+		0.67f,
+		0.33f,
+		1f,
+		1.5f
+	];
+
+	private static float CubicInterpolationExample( float t )
+	{
+		const int margin = 1;
+
+		var segments = ExampleValues.Length - 1;
+		
+		t *= segments - margin * 2;
+
+		var index = (int)MathF.Floor( t ) + margin;
+
+		var i1 = Math.Clamp( index, 0, segments );
+		var i2 = Math.Clamp( index + 1, 0, segments );
+
+		t -= i1 - margin;
+
+		t = Math.Clamp( t, 0f, 1f );
+
+		var v1 = ExampleValues[i1];
+		var v2 = ExampleValues[i2];
+
+		if ( t <= 0f ) return v1;
+		if ( t >= 1f ) return v2;
+
+		var i0 = Math.Clamp( index - 1, 0, segments );
+		var i3 = Math.Clamp( index + 2, 0, segments );
+
+		var v0 = ExampleValues[i0];
+		var v3 = ExampleValues[i3];
+
+		var t0 = (v2 - v0) * 0.5f;
+		var t1 = (v3 - v1) * 0.5f;
+
+		var c0 = v1 + t0 / 3f;
+		var c1 = v2 - t1 / 3f;
+
+		var a0 = MathX.Lerp( v1, c0, t );
+		var a1 = MathX.Lerp( c0, c1, t );
+		var a2 = MathX.Lerp( c1, v2, t );
+
+		var b0 = MathX.Lerp( a0, a1, t );
+		var b1 = MathX.Lerp( a1, a2, t );
+
+		return MathX.Lerp( b0, b1, t );
+	}
+
+	private static Func<float, float>? GetInterpolationFunc( KeyframeInterpolation interpolation )
+	{
+		return interpolation switch
+		{
+			KeyframeInterpolation.Linear => Easing.Linear,
+			KeyframeInterpolation.Quadratic => Easing.QuadraticInOut,
+			KeyframeInterpolation.Cubic => CubicInterpolationExample,
+			_ => null
+		};
+	}
+
+	public FunctionSelector<KeyframeInterpolation> AddInterpolationSelector( Func<KeyframeInterpolation> getValue, Action<KeyframeInterpolation> setValue )
+	{
+		var selector = new FunctionSelector<KeyframeInterpolation>( "Keyframe Interpolation", GetInterpolationFunc );
 
 		selector.Bind( "Value" ).From( getValue, setValue );
 

@@ -5,7 +5,8 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-[Title( "Motion Editor"), Icon( "brush" ), Order( 0 )]
+[Title( "Motion Editor" ), Icon( "brush" ), Order( 0 )]
+[Description( "Sculpt changes on selected time ranges. Ideal for tweaking recordings." )]
 public sealed partial class MotionEditMode : EditMode
 {
 	private TimeSelection? _timeSelection;
@@ -25,37 +26,46 @@ public sealed partial class MotionEditMode : EditMode
 
 	private MovieTime? _selectionStartTime;
 
-	public MotionEditMode()
-	{
-		History = new EditModeHistory<MotionEditMode>( this );
-	}
-
 	protected override void OnEnable()
 	{
-		var undoGroup = Toolbar.AddGroup();
+		var clipboardGroup = ToolBar.AddGroup();
 
-		var session = Session;
+		var cutDisplay = new ToolBarItemDisplay( "Cut", "content_cut",
+			"Copy the selected time range to be a pending modification, and clear the copied tracks in that range." );
 
-		undoGroup.AddAction( "Undo", "undo", session.Undo, () => session.History.CanUndo );
-		undoGroup.AddAction( "Redo", "redo", session.Redo, () => session.History.CanRedo );
+		var copyDisplay = new ToolBarItemDisplay( "Copy", "content_copy",
+			"Copy the selected time range to be a pending modification." );
 
-		var clipboardGroup = Toolbar.AddGroup();
+		var pasteDisplay = new ToolBarItemDisplay( "Paste", "content_paste",
+			"Load the most recently copied time range to be a pending modification." );
 
-		clipboardGroup.AddAction( "Cut", "content_cut", Cut, () => TimeSelection is not null );
-		clipboardGroup.AddAction( "Copy", "content_copy", Copy, () => TimeSelection is not null );
-		clipboardGroup.AddAction( "Paste", "content_paste", Paste, () => Clipboard is not null );
-		clipboardGroup.AddAction( "Save As Sequence..", "theaters",
+		var saveSequenceDisplay = new ToolBarItemDisplay( "Save As Sequence..", "theaters",
+			"Save the time selection as a new movie project, and reference it in this timeline as a sequence block." );
+
+		clipboardGroup.AddAction( cutDisplay, Cut, () => TimeSelection is not null );
+		clipboardGroup.AddAction( copyDisplay, Copy, () => TimeSelection is not null );
+		clipboardGroup.AddAction( pasteDisplay, Paste, () => Clipboard is not null );
+		clipboardGroup.AddAction( saveSequenceDisplay,
 			() => Session.Editor.SaveAsDialog( "Save As Sequence..",
 				() => CreateSequence( TimeSelection!.Value.TotalTimeRange ) ),
 				() => TimeSelection is not null );
 
-		var editGroup = Toolbar.AddGroup();
+		var editGroup = ToolBar.AddGroup();
 
-		editGroup.AddAction( "Insert", "keyboard_tab", Insert, () => TimeSelection is not null );
-		editGroup.AddAction( "Remove", "backspace", () => Delete( true ), () => TimeSelection is not null );
-		editGroup.AddAction( "Clear", "delete", () => Delete( false ), () => TimeSelection is not null );
+		var insertDisplay = new ToolBarItemDisplay( "Insert", "keyboard_tab",
+			"Insert time inside the selected range, right-shifting track data after the insertion point." );
 
-		ToolbarGroup? customGroup = null;
+		var removeDisplay = new ToolBarItemDisplay( "Remove", "backspace",
+			"Delete track data inside the selected range, left-shifting everything after the deletion." );
+
+		var clearDisplay = new ToolBarItemDisplay( "Clear", "delete",
+			"Delete track data inside the selected range, without shifting anything after the deletion. This will leave an empty range without track data." );
+
+		editGroup.AddAction( insertDisplay, Insert, () => TimeSelection is not null );
+		editGroup.AddAction( removeDisplay, () => Delete( true ), () => TimeSelection is not null );
+		editGroup.AddAction( clearDisplay, () => Delete( false ), () => TimeSelection is not null );
+
+		ToolBarGroup? customGroup = null;
 
 		var modificationTypes = EditorTypeLibrary
 			.GetTypesWithAttribute<MovieModificationAttribute>()
@@ -65,9 +75,11 @@ public sealed partial class MotionEditMode : EditMode
 		{
 			if ( type.IsAbstract || type.IsGenericType ) continue;
 
-			customGroup ??= Toolbar.AddGroup();
+			customGroup ??= ToolBar.AddGroup();
 
-			var toggle = customGroup.AddToggle( attribute.Title, attribute.Icon,
+			var display = new ToolBarItemDisplay( attribute.Title, attribute.Icon, attribute.Description );
+
+			var toggle = customGroup.AddToggle( display,
 				() => Modification?.GetType() == type.TargetType,
 				value =>
 				{
@@ -88,7 +100,7 @@ public sealed partial class MotionEditMode : EditMode
 				.From( () => TimeSelection is not null, (Action<bool>?)null );
 		}
 
-		var selectionGroup = Toolbar.AddGroup();
+		var selectionGroup = ToolBar.AddGroup();
 
 		selectionGroup.AddInterpolationSelector( () => DefaultInterpolation, value =>
 		{
@@ -114,9 +126,9 @@ public sealed partial class MotionEditMode : EditMode
 	{
 		if ( !e.LeftMouseButton ) return;
 
-		var scenePos = DopeSheet.ToScene( e.LocalPosition );
+		var scenePos = Timeline.ToScene( e.LocalPosition );
 
-		if ( DopeSheet.GetItemAt( scenePos ) is TimeSelectionItem && !e.HasShift ) return;
+		if ( Timeline.GetItemAt( scenePos ) is TimeSelectionItem && !e.HasShift ) return;
 
 		_selectionStartTime = Session.ScenePositionToTime( scenePos );
 		_newTimeSelection = false;
@@ -131,7 +143,7 @@ public sealed partial class MotionEditMode : EditMode
 
 		e.Accepted = true;
 
-		var time = Session.ScenePositionToTime( DopeSheet.ToScene( e.LocalPosition ), SnapFlag.Selection );
+		var time = Session.ScenePositionToTime( Timeline.ToScene( e.LocalPosition ), SnapFlag.Selection );
 
 		// Only create a time selection when mouse has moved enough
 
@@ -180,7 +192,7 @@ public sealed partial class MotionEditMode : EditMode
 	{
 		DefaultInterpolation = mode;
 
-		if ( DopeSheet.GetItemAt( DopeSheet.ToScene( DopeSheet.FromScreen( Application.CursorPosition ) ) ) is TimeSelectionFadeItem fade )
+		if ( Timeline.GetItemAt( Timeline.ToScene( Timeline.FromScreen( Application.CursorPosition ) ) ) is TimeSelectionFadeItem fade )
 		{
 			fade.Interpolation = mode;
 		}
@@ -188,12 +200,18 @@ public sealed partial class MotionEditMode : EditMode
 
 	protected override void OnGetSnapTimes( ref TimeSnapHelper snapHelper )
 	{
-		if ( TimeSelection is { } selection )
-		{
-			snapHelper.Add( SnapFlag.SelectionTotalStart, selection.TotalStart );
-			snapHelper.Add( SnapFlag.SelectionPeakStart, selection.PeakStart );
-			snapHelper.Add( SnapFlag.SelectionPeakEnd, selection.PeakEnd );
-			snapHelper.Add( SnapFlag.SelectionTotalEnd, selection.TotalEnd );
-		}
+		if ( TimeSelection is not { } selection ) return;
+
+		snapHelper.Add( SnapFlag.SelectionTotalStart, selection.TotalStart );
+		snapHelper.Add( SnapFlag.SelectionPeakStart, selection.PeakStart );
+		snapHelper.Add( SnapFlag.SelectionPeakEnd, selection.PeakEnd );
+		snapHelper.Add( SnapFlag.SelectionTotalEnd, selection.TotalEnd );
+	}
+
+	protected override Color GetTrailColor( MovieTime time )
+	{
+		if ( TimeSelection is not { } selection ) return base.GetTrailColor( time );
+
+		return Color.Gray.LerpTo( SelectionColor, selection.GetFadeValue( time ) );
 	}
 }

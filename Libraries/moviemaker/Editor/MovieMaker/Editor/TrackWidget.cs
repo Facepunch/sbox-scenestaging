@@ -9,12 +9,12 @@ namespace Editor.MovieMaker;
 
 public partial class TrackWidget : Widget
 {
-	public TrackListWidget TrackList { get; }
+	public TrackListPage TrackList { get; }
 	public new TrackWidget? Parent { get; }
 
 	public new IEnumerable<TrackWidget> Children => _children;
 
-	public ITrackView View { get; }
+	public TrackView View { get; }
 
 	RealTimeSince _timeSinceInteraction = 1000;
 
@@ -22,11 +22,11 @@ public partial class TrackWidget : Widget
 	private readonly Button _collapseButton;
 	private readonly Button _lockButton;
 	private readonly Layout _childLayout;
-	private readonly SynchronizedList<ITrackView, TrackWidget> _children;
+	private readonly SynchronizedSet<TrackView, TrackWidget> _children;
 
 	private ControlWidget? _controlWidget;
 
-	public TrackWidget( TrackListWidget trackList, TrackWidget? parent, ITrackView view )
+	public TrackWidget( TrackListPage trackList, TrackWidget? parent, TrackView view )
 		: base( (Widget?)parent ?? trackList )
 	{
 		TrackList = trackList;
@@ -36,7 +36,7 @@ public partial class TrackWidget : Widget
 		FocusMode = FocusMode.TabOrClickOrWheel;
 		VerticalSizeMode = SizeMode.CanGrow;
 
-		_children = new SynchronizedList<ITrackView, TrackWidget>(
+		_children = new SynchronizedSet<TrackView, TrackWidget>(
 			AddChildTrack, RemoveChildTrack, UpdateChildTrack );
 
 		ToolTip = View.Description;
@@ -69,9 +69,9 @@ public partial class TrackWidget : Widget
 		View_Changed( view );
 	}
 
-	private TrackWidget AddChildTrack( ITrackView source ) => new( TrackList, this, source );
-	private void RemoveChildTrack( ITrackView source, TrackWidget item ) => item.Destroy();
-	private bool UpdateChildTrack( ITrackView source, TrackWidget item ) => item.UpdateLayout();
+	private TrackWidget AddChildTrack( TrackView source ) => new( TrackList, this, source );
+	private void RemoveChildTrack( TrackWidget item ) => item.Destroy();
+	private bool UpdateChildTrack( TrackView source, TrackWidget item ) => item.UpdateLayout();
 
 	public bool UpdateLayout()
 	{
@@ -121,7 +121,7 @@ public partial class TrackWidget : Widget
 		return true;
 	}
 
-	private void View_Changed( ITrackView view )
+	private void View_Changed( TrackView view )
 	{
 		var labelColor = new Color( 0.6f, 0.6f, 0.6f );
 
@@ -132,7 +132,7 @@ public partial class TrackWidget : Widget
 
 		if ( _controlWidget is not null )
 		{
-			_controlWidget.Enabled = !View.IsLocked && !TrackList.IsPreview( this );
+			_controlWidget.Enabled = !View.IsLocked;
 		}
 
 		if ( _label is not null )
@@ -143,7 +143,7 @@ public partial class TrackWidget : Widget
 		Update();
 	}
 
-	private void View_ValueChanged( ITrackView view )
+	private void View_ValueChanged( TrackView view )
 	{
 		_timeSinceInteraction = 0f;
 		Update();
@@ -157,9 +157,22 @@ public partial class TrackWidget : Widget
 		base.OnDestroyed();
 	}
 
+	protected override void OnMouseClick( MouseEvent e )
+	{
+		base.OnMouseClick( e );
+
+		if ( e.LeftMouseButton )
+		{
+			View.Select();
+
+			e.Accepted = true;
+		}
+	}
+
 	protected override void OnDoubleClick( MouseEvent e )
 	{
 		View.InspectProperty();
+
 		e.Accepted = true;
 	}
 
@@ -168,7 +181,7 @@ public partial class TrackWidget : Widget
 		return 32;
 	}
 
-	public bool IsSelected => IsFocused || _menu.IsValid() && _menu.Visible;
+	public bool IsSelected => View.IsSelected;
 
 	public Color BackgroundColor
 	{
@@ -192,13 +205,13 @@ public partial class TrackWidget : Widget
 	{
 		Paint.Antialiasing = false;
 		Paint.SetBrushAndPen( BackgroundColor );
-		Paint.DrawRect( new Rect( LocalRect.Left + 1f, LocalRect.Top + 1f, LocalRect.Width - 2f, DopeSheet.TrackHeight - 2f ), 4 );
+		Paint.DrawRect( new Rect( LocalRect.Left + 1f, LocalRect.Top + 1f, LocalRect.Width - 2f, Timeline.TrackHeight - 2f ), 4 );
 
 		if ( _timeSinceInteraction < 2.0f )
 		{
 			var delta = _timeSinceInteraction.Relative.Remap( 2.0f, 0, 0, 1 );
 			Paint.SetBrush( Theme.Yellow.WithAlpha( delta ) );
-			Paint.DrawRect( new Rect( LocalRect.Right - 4, LocalRect.Top, 32, DopeSheet.TrackHeight ) );
+			Paint.DrawRect( new Rect( LocalRect.Right - 4, LocalRect.Top, 32, Timeline.TrackHeight ) );
 			Update();
 		}
 	}
@@ -269,7 +282,7 @@ file sealed class LockButton : Button
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor( DopeSheet.Colors.Background,
+		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor( Timeline.Colors.Background,
 			Theme.ControlBackground.Lighten( 0.5f ), Theme.Primary ) );
 		Paint.DrawRect( LocalRect, 4f );
 
@@ -295,7 +308,7 @@ file sealed class CollapseButton : Button
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor( DopeSheet.Colors.Background,
+		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor( Timeline.Colors.Background,
 			Theme.ControlBackground.Lighten( 0.5f ), Theme.Primary ) );
 		Paint.DrawRect( LocalRect, 4f );
 

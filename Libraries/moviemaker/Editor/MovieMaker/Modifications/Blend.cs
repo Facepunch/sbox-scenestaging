@@ -31,9 +31,12 @@ public class BlendModification() : PerTrackModification<BlendOptions>( BlendOpti
 		}
 	}
 
-	public override void AddControls( ToolbarGroup group )
+	public override void AddControls( ToolBarGroup group )
 	{
-		group.AddToggle( "Additive", "layers",
+		var additiveDisplay = new ToolBarItemDisplay( "Additive", "layers",
+			"When enabled, changes will be additively blended to existing track contents instead of overwriting." );
+
+		group.AddToggle( additiveDisplay,
 			() => Options.IsAdditive,
 			state => Options = Options with { IsAdditive = state } );
 	}
@@ -71,7 +74,7 @@ public record ClipboardData( TimeSelection Selection, IReadOnlyDictionary<Guid, 
 
 public record BlendOptions( bool IsAdditive, MovieTime Offset, MovieTime? SourceDuration ) : ITranslatableOptions
 {
-	public static BlendOptions Default { get; } = new( false, default, default );
+	public static BlendOptions Default { get; } = new( true, default, default );
 
 	public ITranslatableOptions WithOffset( MovieTime offset ) => this with { Offset = offset };
 }
@@ -98,7 +101,7 @@ public abstract class BlendTrackModification<T> : ITrackModification<T, BlendOpt
 
 		if ( options.IsAdditive )
 		{
-			overlay = overlay - relativeTo + original;
+			overlay = original + (overlay - relativeTo);
 		}
 
 		return new PropertyBlock<T>( original.CrossFade( overlay, selection ).Reduce( timeRange ), timeRange );

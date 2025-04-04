@@ -10,7 +10,7 @@ namespace Editor.MovieMaker;
 partial class MotionEditMode
 {
 	private IMovieModification? _modification;
-	private ToolbarGroup? _modificationControls;
+	private ToolBarGroup? _modificationControls;
 
 	private RealTimeSince _lastActionTime;
 
@@ -50,12 +50,15 @@ partial class MotionEditMode
 		_modification = (IMovieModification)Activator.CreateInstance( type )!;
 		_modification.Initialize( this );
 
-		_modificationControls = Toolbar.AddGroup();
+		_modificationControls = ToolBar.AddGroup();
 
 		_modification.AddControls( _modificationControls );
 
-		var commit = _modificationControls.AddAction( "Apply", "done", CommitChanges );
-		var cancel = _modificationControls.AddAction( "Cancel", "clear", ClearChanges );
+		var commitDisplay = new ToolBarItemDisplay( "Apply", "done", "Commit all pending track changes." );
+		var cancelDisplay = new ToolBarItemDisplay( "Cancel", "clear", "Cancel all pending track changes." );
+
+		var commit = _modificationControls.AddAction( commitDisplay, CommitChanges );
+		var cancel = _modificationControls.AddAction( cancelDisplay, ClearChanges );
 
 		commit.Background = Theme.Green;
 		cancel.Background = Theme.Red;
@@ -87,7 +90,7 @@ partial class MotionEditMode
 	{
 		if ( TimeSelection is not { } selection || Modification is not { } modification || !HasChanges ) return;
 
-		using ( PushTrackModification( "Commit", true ) )
+		using ( Session.History.Push( "Commit" ) )
 		{
 			modification.Commit( selection );
 		}
@@ -107,7 +110,7 @@ partial class MotionEditMode
 	{
 		var changed = false;
 
-		using ( PushTrackModification( shiftTime ? "Remove Time" : "Clear Time" ) )
+		using ( Session.History.Push( shiftTime ? "Remove Time" : "Clear Time" ) )
 		{
 			foreach ( var view in Session.TrackList.EditableTracks )
 			{
@@ -147,7 +150,7 @@ partial class MotionEditMode
 
 		var changed = false;
 
-		using ( PushTrackModification( "Insert" ) )
+		using ( Session.History.Push( "Insert" ) )
 		{
 			foreach ( var view in Session.TrackList.EditableTracks )
 			{
@@ -264,7 +267,7 @@ partial class MotionEditMode
 		return resource;
 	}
 
-	protected override void OnTrackStateChanged( ITrackView view )
+	protected override void OnTrackStateChanged( TrackView view )
 	{
 		if ( view.Track is not IProjectPropertyTrack track ) return;
 		if ( TimeSelection is not { } selection || Modification is not { } modification ) return;
@@ -272,7 +275,7 @@ partial class MotionEditMode
 		modification.UpdatePreview( selection, track );
 	}
 
-	protected override bool OnPreChange( ITrackView view )
+	protected override bool OnPreChange( TrackView view )
 	{
 		if ( TimeSelection is not { } selection ) return false;
 		if ( view.Track is not IProjectPropertyTrack track ) return false;
@@ -288,7 +291,7 @@ partial class MotionEditMode
 		return blend.PreChange( track, property );
 	}
 
-	protected override bool OnPostChange( ITrackView view )
+	protected override bool OnPostChange( TrackView view )
 	{
 		if ( TimeSelection is not { } selection || Modification is not BlendModification blend ) return false;
 		if ( view.Track is not IProjectPropertyTrack track ) return false;
@@ -311,18 +314,18 @@ partial class MotionEditMode
 			{
 				_hasSelectionItems = true;
 
-				DopeSheet.Add( new TimeSelectionPeakItem( this ) );
+				Timeline.Add( new TimeSelectionPeakItem( this ) );
 
-				DopeSheet.Add( new TimeSelectionFadeItem( this, FadeKind.FadeIn ) );
-				DopeSheet.Add( new TimeSelectionFadeItem( this, FadeKind.FadeOut ) );
+				Timeline.Add( new TimeSelectionFadeItem( this, FadeKind.FadeIn ) );
+				Timeline.Add( new TimeSelectionFadeItem( this, FadeKind.FadeOut ) );
 
-				DopeSheet.Add( new TimeSelectionHandleItem( this ) );
-				DopeSheet.Add( new TimeSelectionHandleItem( this ) );
-				DopeSheet.Add( new TimeSelectionHandleItem( this ) );
-				DopeSheet.Add( new TimeSelectionHandleItem( this ) );
+				Timeline.Add( new TimeSelectionHandleItem( this ) );
+				Timeline.Add( new TimeSelectionHandleItem( this ) );
+				Timeline.Add( new TimeSelectionHandleItem( this ) );
+				Timeline.Add( new TimeSelectionHandleItem( this ) );
 			}
 
-			UpdateSelectionItems( DopeSheet.VisibleRect );
+			UpdateSelectionItems( Timeline.VisibleRect );
 		}
 		else if ( _hasSelectionItems )
 		{
@@ -330,7 +333,7 @@ partial class MotionEditMode
 
 			SourceTimeRange = null;
 
-			foreach ( var item in DopeSheet.Items.OfType<TimeSelectionItem>().ToArray() )
+			foreach ( var item in Timeline.Items.OfType<TimeSelectionItem>().ToArray() )
 			{
 				item.Destroy();
 			}
@@ -348,7 +351,7 @@ partial class MotionEditMode
 	{
 		if ( TimeSelection is not { } selection ) return;
 
-		foreach ( var item in DopeSheet.Items.OfType<TimeSelectionItem>() )
+		foreach ( var item in Timeline.Items.OfType<TimeSelectionItem>() )
 		{
 			item.UpdatePosition( selection, viewRect );
 		}
@@ -359,7 +362,7 @@ partial class MotionEditMode
 		_lastActionTime = 0f;
 		LastActionIcon = icon;
 
-		UpdateSelectionItems( DopeSheet.VisibleRect );
+		UpdateSelectionItems( Timeline.VisibleRect );
 	}
 
 	protected override void OnFrame()
@@ -368,7 +371,7 @@ partial class MotionEditMode
 
 		if ( _lastActionTime < 1f )
 		{
-			UpdateSelectionItems( DopeSheet.VisibleRect );
+			UpdateSelectionItems( Timeline.VisibleRect );
 		}
 	}
 }

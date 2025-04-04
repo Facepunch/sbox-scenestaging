@@ -1,50 +1,66 @@
-﻿using System.Linq;
+﻿using System.Collections.Immutable;
+using System.Linq;
 using Sandbox.MovieMaker;
 using System.Reflection;
-using Sandbox.Resources;
-using Sandbox.UI;
-using Sandbox;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
-public class MovieEditorPanel : Widget
+public interface IListPanelPage
 {
-	public MovieEditor Editor { get; }
-	public ToolbarWidget ToolBar { get; }
-
-	public MovieEditorPanel( MovieEditor parent )
-		: base( parent )
-	{
-		Editor = parent;
-		Layout = Layout.Column();
-
-		ToolBar = new ToolbarWidget( this );
-
-		Layout.Add( ToolBar );
-	}
+	ToolBarItemDisplay Display { get; }
+	bool Visible { get; set; }
 }
 
+file sealed class DummyPage( ToolBarItemDisplay display ) : Widget, IListPanelPage
+{
+	public ToolBarItemDisplay Display => display;
+
+	public bool Visible { get; set; }
+}
+
+/// <summary>
+/// Panel containing the track list.
+/// </summary>
 public sealed class ListPanel : MovieEditorPanel
 {
-	public TrackListWidget TrackList { get; }
+	public TrackListPage TrackList { get; }
+
+	private readonly ImmutableArray<IListPanelPage> _pages;
 
 	public ListPanel( MovieEditor parent, Session session )
 		: base( parent )
 	{
-		TrackList = new TrackListWidget( this, session );
+		_pages =
+		[
+			TrackList = new TrackListPage( this, session ),
+			new DummyPage( new ToolBarItemDisplay( "Movies", "video_library",
+				"Lists movie clips in the current project, letting you load or import them." ) ),
+			new DummyPage( new ToolBarItemDisplay( "Players", "movie",
+				"Lists movie playback components in the scene, so you can switch between them." ) ),
+			new HistoryPage( this, session )
+		];
 
-		Layout.Add( TrackList );
+		SetPage( TrackList );
 
 		MinimumWidth = 300;
 
 		// File menu
 
 		var fileGroup = ToolBar.AddGroup( true );
+
+		foreach ( var page in _pages )
+		{
+			fileGroup.AddToggle( page.Display,
+				() => page.Visible,
+				_ => SetPage( page ) );
+		}
+
 		var resourceIcon = typeof( MovieResource ).GetCustomAttribute<GameResourceAttribute>()!.Icon;
 
-		var fileAction = fileGroup.AddAction( "File", "folder", () =>
+		var fileDisplay = new ToolBarItemDisplay( "File", "folder", "Actions for saving / loading / importing movies, or switching player components." );
+		var fileAction = fileGroup.AddAction( fileDisplay, () =>
 		{
 			var menu = new Menu();
 
@@ -116,9 +132,22 @@ public sealed class ListPanel : MovieEditorPanel
 		// Navigation buttons
 
 		var navigateGroup = ToolBar.AddGroup( true );
+		var backDisplay = new ToolBarItemDisplay( "Back", "arrow_back", "Return to the parent Movie project." );
 
-		navigateGroup.AddAction( "Back", "arrow_back", parent.ExitSequence,
+		navigateGroup.AddAction( backDisplay, parent.ExitSequence,
 			() => parent.Session?.Parent is not null );
+	}
+
+	private void SetPage( IListPanelPage page )
+	{
+		foreach ( var widget in _pages )
+		{
+			widget.Visible = widget == page;
+		}
+
+		Layout.Clear( false );
+		Layout.Add( ToolBar );
+		Layout.Add( (Widget)page );
 	}
 
 	private static string GetFullPath( Session session )
@@ -128,87 +157,5 @@ public sealed class ListPanel : MovieEditorPanel
 		return session.Parent is { } parent
 			? $"{GetFullPath( parent )} → {name}"
 			: name;
-	}
-}
-
-public sealed class DopeSheetPanel : MovieEditorPanel
-{
-	public DopeSheet DopeSheet { get; }
-
-	public DopeSheetPanel( MovieEditor parent, Session session )
-		: base( parent )
-	{
-		DopeSheet = new DopeSheet( session );
-
-		MouseTracking = true;
-
-		Layout.Add( DopeSheet );
-
-		var playbackGroup = ToolBar.AddGroup( true );
-
-		playbackGroup.AddToggle( "Toggle Record", "radio_button_checked",
-			() => session.IsRecording, x => session.IsRecording = x,
-			background: false ).ForegroundActive = Theme.Red;
-
-		playbackGroup.AddToggle( "Toggle Play", "play_arrow",
-			() => session.IsPlaying, x => session.IsPlaying = x,
-			background: false );
-
-		playbackGroup.AddToggle( "Loop at End of Playback", "repeat",
-			() => session.IsLooping, x => session.IsLooping = x,
-			background: false );
-
-		var slider = new FloatSlider( null )
-		{
-			ToolTip = "Playback Rate",
-			FixedWidth = 80f,
-			Minimum = 0f,
-			Maximum = 2f,
-			Step = 0.1f
-		};
-
-		slider.Bind( nameof( FloatSlider.Value ) )
-			.From( () => session.TimeScale, value => session.TimeScale = value );
-
-		playbackGroup.Layout.Add( slider );
-
-		var speed = new Label( null )
-		{
-			Color = Color.White.Darken( 0.5f ),
-			FixedWidth = 30f,
-			Margin = 4f,
-			Alignment = TextFlag.Center
-		};
-
-		speed.Bind( nameof( Label.Text ) )
-			.ReadOnly()
-			.From( () => $"x{session.TimeScale:F1}", null );
-
-		slider.MouseRightClick += () => session.TimeScale = 1f;
-		speed.MouseRightClick += () => session.TimeScale = 1f;
-
-		playbackGroup.Layout.Add( speed );
-
-		var snapGroup = ToolBar.AddGroup( true, true );
-
-		snapGroup.AddToggle( "Object Snap", "align_horizontal_left", 
-			() => session.ObjectSnap, x => session.ObjectSnap = x,
-			background: false );
-
-		snapGroup.AddToggle( "Frame Snap", "straighten",
-			() => session.FrameSnap, x => session.FrameSnap = x,
-			background: false );
-
-		snapGroup.AddSpacingCell();
-
-		var rate = new ComboBox { ToolTip = "Snap Frame Rate" };
-
-		foreach ( var frameRate in MovieTime.SupportedFrameRates )
-		{
-			rate.AddItem( $"{frameRate} FPS", onSelected: () => session.FrameRate = frameRate,
-				selected: session.FrameRate == frameRate );
-		}
-
-		snapGroup.Layout.Add( rate );
 	}
 }

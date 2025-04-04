@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Linq;
-using System.Threading.Channels;
+﻿using System.Linq;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -44,10 +42,11 @@ public abstract partial class EditMode
 		}
 	}
 
+	public EditModeType Type { get; }
 	public Session Session { get; private set; } = null!;
 	public MovieProject Project => Session.Project;
-	protected DopeSheet DopeSheet { get; private set; } = null!;
-	protected ToolbarWidget Toolbar { get; private set; } = null!;
+	protected Timeline Timeline { get; private set; } = null!;
+	protected ToolBarWidget ToolBar { get; private set; } = null!;
 
 	public MovieTimeRange? SourceTimeRange { get; protected set; }
 
@@ -61,19 +60,41 @@ public abstract partial class EditMode
 	/// </summary>
 	public virtual bool AllowRecording => false;
 
+	protected EditMode()
+	{
+		Type = new( EditorTypeLibrary.GetType( GetType() ) );
+	}
+
 	internal void Enable( Session session )
 	{
 		Session = session;
-		DopeSheet = session.Editor.DopeSheetPanel!.DopeSheet;
-		Toolbar = session.Editor.DopeSheetPanel!.ToolBar;
+		Timeline = session.Editor.TimelinePanel!.Timeline;
+		ToolBar = session.Editor.TimelinePanel!.ToolBar;
 
 		OnEnable();
+
+		foreach ( var track in Timeline.Tracks )
+		{
+			if ( track.View.IsLocked )
+			{
+				ClearTimelineItems( track );
+			}
+			else
+			{
+				UpdateTimelineItems( track );
+			}
+		}
 	}
 
 	protected virtual void OnEnable() { }
 
 	internal void Disable()
 	{
+		foreach ( var track in Timeline.Tracks )
+		{
+			ClearTimelineItems( track );
+		}
+
 		OnDisable();
 
 		Session = null!;
@@ -90,13 +111,19 @@ public abstract partial class EditMode
 	internal void Frame() => OnFrame();
 	protected virtual void OnFrame() { }
 
-	internal bool PreChange( ITrackView view ) => OnPreChange( view );
+	internal bool PreChange( TrackView view ) => OnPreChange( view );
 
-	protected virtual bool OnPreChange( ITrackView track ) => false;
+	protected virtual bool OnPreChange( TrackView view ) => false;
 
-	internal bool PostChange( ITrackView view ) => OnPostChange( view );
+	internal bool PostChange( TrackView view ) => OnPostChange( view );
 
-	protected virtual bool OnPostChange( ITrackView track ) => false;
+	protected virtual bool OnPostChange( TrackView view ) => false;
+
+	internal void UpdateTimelineItems( TimelineTrack timelineTrack ) => OnUpdateTimelineItems( timelineTrack );
+	protected virtual void OnUpdateTimelineItems( TimelineTrack timelineTrack ) { }
+
+	internal void ClearTimelineItems( TimelineTrack timelineTrack ) => OnClearTimelineItems( timelineTrack );
+	protected virtual void OnClearTimelineItems( TimelineTrack timelineTrack ) { }
 
 	#region UI Events
 
@@ -134,8 +161,8 @@ public abstract partial class EditMode
 	internal void Insert() => OnInsert();
 	protected virtual void OnInsert() { }
 
-	internal void TrackStateChanged( ITrackView view ) => OnTrackStateChanged( view );
-	protected virtual void OnTrackStateChanged( ITrackView view ) { }
+	internal void TrackStateChanged( TrackView view ) => OnTrackStateChanged( view );
+	protected virtual void OnTrackStateChanged( TrackView view ) { }
 
 	internal void ViewChanged( Rect viewRect ) => OnViewChanged( viewRect );
 	protected virtual void OnViewChanged( Rect viewRect ) { }
@@ -155,61 +182,51 @@ public abstract partial class EditMode
 
 	protected virtual void OnGetSnapTimes( ref TimeSnapHelper snapHelper ) { }
 
-	public void ApplyFrame( MovieTime time )
-	{
-		OnApplyFrame( time );
-	}
+	public void DrawGizmos( TrackView trackView, MovieTimeRange timeRange ) => OnDrawGizmos( trackView, timeRange );
 
-	private readonly Dictionary<IProjectPropertyTrack, List<IPropertyBlock>> _previewBlocks = new();
-
-	protected virtual void OnApplyFrame( MovieTime time )
+	protected virtual void OnDrawGizmos( TrackView trackView, MovieTimeRange timeRange )
 	{
-		foreach ( var (track, list) in _previewBlocks )
+		var interval = MovieTime.FromFrames( 1, 30 );
+
+		Transform? prevTransform = null;
+
+		var gap = false;
+
+		for ( var t = timeRange.Start; t <= timeRange.End; t += interval )
 		{
-			foreach ( var block in list )
+			if ( trackView.TransformTrack.TryGetValue( t, out var next ) )
 			{
-				if ( !block.TimeRange.Contains( time ) ) continue;
-				if ( Session.Binder.Get( track ) is not { } target ) continue;
+				var alpha = Session.GetGizmoAlpha( t, timeRange );
+				var dist = Gizmo.CameraTransform.Position.Distance( next.Position );
+				var scale = dist / 32f;
 
-				target.Value = block.GetValue( time );
+				if ( trackView.Track is IPropertyTrack<Rotation> rotationTrack && rotationTrack.TryGetValue( t, out var rotation ) )
+				{
+					Gizmo.Draw.Color = Theme.Red.WithAlpha( alpha );
+					Gizmo.Draw.Line( next.Position, next.Position + rotation.Forward * scale );
+
+					Gizmo.Draw.Color = Theme.Green.WithAlpha( alpha );
+					Gizmo.Draw.Line( next.Position, next.Position + rotation.Right * scale );
+
+					Gizmo.Draw.Color = Theme.Blue.WithAlpha( alpha );
+					Gizmo.Draw.Line( next.Position, next.Position + rotation.Up * scale );
+				}
+				else if ( !gap && prevTransform is { } prev )
+				{
+					Gizmo.Draw.Color = GetTrailColor( t ).WithAlpha( alpha );
+					Gizmo.Draw.Line( prev.Position, next.Position );
+				}
+
+				prevTransform = next;
 			}
+			else
+			{
+				prevTransform = null;
+			}
+
+			gap = !gap;
 		}
 	}
 
-	public void SetPreviewBlocks( IProjectPropertyTrack track, IEnumerable<IPropertyBlock> blocks, MovieTime offset = default )
-	{
-		if ( !_previewBlocks.TryGetValue( track, out var list ) )
-		{
-			_previewBlocks.Add( track, list = new List<IPropertyBlock>() );
-		}
-
-		PreviewBlockOffset = offset;
-
-		list.Clear();
-		list.AddRange( blocks );
-
-		if ( Session.TrackList.Find( track ) is { } view )
-		{
-			view.MarkValueChanged();
-		}
-	}
-
-	public void ClearPreviewBlocks( IProjectPropertyTrack track )
-	{
-		PreviewBlockOffset = default;
-
-		_previewBlocks.Remove( track );
-
-		if ( Session.TrackList.Find( track ) is { } view )
-		{
-			view.MarkValueChanged();
-		}
-	}
-
-	public MovieTime PreviewBlockOffset { get; private set; }
-
-	public IEnumerable<IPropertyBlock> GetPreviewBlocks( IProjectPropertyTrack track )
-	{
-		return _previewBlocks.GetValueOrDefault( track, [] );
-	}
+	protected virtual Color GetTrailColor( MovieTime time ) => Color.White;
 }

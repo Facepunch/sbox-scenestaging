@@ -5,8 +5,8 @@
       "__guid": "4b6c2e79-4728-487f-b0d8-9af8d2c1b609",
       "Flags": 0,
       "Name": "Camera",
-      "Position": "473.2531,-395.684,941.2163",
-      "Rotation": "-0.08389096,0.02171332,0.9644572,0.2496262",
+      "Position": "-43.08848,-706.9748,1173.282",
+      "Rotation": "-0.04243343,0.11054,0.3558549,0.92701",
       "Tags": "maincamera",
       "Enabled": true,
       "Components": [
@@ -34,7 +34,8 @@
           "ZFar": 10000,
           "ZNear": 10
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "09ee12b7-93c5-4696-ac9d-930d93ac4f3b",
@@ -85,7 +86,8 @@
           "Title": "Gameplay Recording",
           "Version": null
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "54c100cf-7aa4-4758-bf4d-270ee0fd0049",
@@ -144,6 +146,10 @@
               },
               {
                 "Track": "7d2af0e2-aa99-4530-b4f3-293d7363144a",
+                "Reference": "89f60ed0-adbc-4e1a-836c-c5a2a6e40c65"
+              },
+              {
+                "Track": "d7704d1a-fa35-4d91-bf50-0f31a07dac79",
                 "Reference": "89f60ed0-adbc-4e1a-836c-c5a2a6e40c65"
               }
             ],
@@ -255,16 +261,17 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "PositionSeconds": 0,
-          "Resource": "movies/example.movie",
+          "Resource": "movies/player_recording_1.movie",
           "TimeScale": 1
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "89f60ed0-adbc-4e1a-836c-c5a2a6e40c65",
       "Flags": 0,
       "Name": "Player Controller 1",
-      "Position": "-13.5331,-345.1942,848.0933",
+      "Position": "-0.9839168,-337.2369,848.0413",
       "Enabled": true,
       "Components": [
         {
@@ -341,8 +348,8 @@
           "__type": "Sandbox.Rigidbody",
           "__guid": "78ac278f-f455-404a-a3f9-4abfbf18402d",
           "AngularDamping": 1,
-          "Gravity": false,
-          "LinearDamping": 10,
+          "Gravity": true,
+          "LinearDamping": 0.1,
           "Locking": {
             "X": false,
             "Y": false,
@@ -351,7 +358,7 @@
             "Yaw": true,
             "Roll": true
           },
-          "MassCenterOverride": "0,0,0",
+          "MassCenterOverride": "0,0,36",
           "MassOverride": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
@@ -451,7 +458,8 @@
               "Tint": "1,1,1,1",
               "UseAnimGraph": true
             }
-          ]
+          ],
+          "Children": []
         },
         {
           "__guid": "111d8779-93b8-4f1e-aedd-9f1c2569ab19",
@@ -485,7 +493,7 @@
               "__type": "Sandbox.BoxCollider",
               "__guid": "53070b84-e078-465d-b38f-24efbac1398d",
               "Center": "0,0,18",
-              "Friction": 81,
+              "Friction": 0,
               "IsTrigger": false,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -502,7 +510,8 @@
               "Surface": null,
               "SurfaceVelocity": "0,0,0"
             }
-          ]
+          ],
+          "Children": []
         }
       ]
     },
@@ -696,7 +705,8 @@
               "Tint": "1,1,1,1",
               "UseAnimGraph": true
             }
-          ]
+          ],
+          "Children": []
         },
         {
           "__guid": "a63bf4ee-dc21-4101-8bdd-846e6352c591",
@@ -747,20 +757,16 @@
               "Surface": null,
               "SurfaceVelocity": "0,0,0"
             }
-          ]
+          ],
+          "Children": []
         }
       ]
     }
   ],
   "SceneProperties": {
-    "FixedUpdateFrequency": 50,
-    "MaxFixedUpdates": 5,
-    "NetworkFrequency": 30,
     "NetworkInterpolation": true,
-    "PhysicsSubSteps": 1,
-    "ThreadedAnimation": true,
     "TimeScale": 1,
-    "UseFixedUpdate": true,
+    "WantsSystemScene": true,
     "Metadata": {
       "Title": "Gameplay Recording",
       "Group": "Movie Maker"

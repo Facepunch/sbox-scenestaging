@@ -6,7 +6,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public class DopeSheet : GraphicsView
+public class Timeline : GraphicsView
 {
 	public const float TrackHeight = 32f;
 	public const float RootTrackSpacing = 8f;
@@ -22,13 +22,15 @@ public class DopeSheet : GraphicsView
 
 	private readonly BackgroundItem _backgroundItem;
 	private readonly GridItem _gridItem;
-	private readonly Dictionary<ITrackView, DopeSheetTrack> _tracks = new();
+	private readonly Dictionary<TrackView, TimelineTrack> _tracks = new();
 
 	private readonly CurrentPointerItem _currentPointerItem;
 	private readonly CurrentPointerItem _previewPointerItem;
 
 	public ScrubberItem ScrubBarTop { get; }
 	public ScrubberItem ScrubBarBottom { get; }
+
+	public IEnumerable<TimelineTrack> Tracks => _tracks.Values;
 
 	public Rect VisibleRect
 	{
@@ -42,7 +44,7 @@ public class DopeSheet : GraphicsView
 		}
 	}
 
-	public DopeSheet( Session session )
+	public Timeline( Session session )
 	{
 		Session = session;
 		MinimumWidth = 256;
@@ -225,7 +227,7 @@ public class DopeSheet : GraphicsView
 		{
 			if ( _tracks.ContainsKey( view ) ) continue;
 
-			var track = new DopeSheetTrack( this, view );
+			var track = new TimelineTrack( this, view );
 
 			_tracks[view] = track;
 
@@ -325,20 +327,19 @@ public class DopeSheet : GraphicsView
 
 		if ( GetItemAt( scenePos ) is { Selectable: true } ) return;
 
-		DeselectAll();
-
 		Session.EditMode?.MousePress( e );
 
 		if ( e.Accepted ) return;
 
-		if ( e.ButtonState == MouseButtons.Left )
+		if ( e.LeftMouseButton )
 		{
 			DragType = DragTypes.SelectionRect;
 			return;
 		}
 
-		if ( e.ButtonState == MouseButtons.Right )
+		if ( e.RightMouseButton )
 		{
+			e.Accepted = true;
 			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
 			return;
 		}
@@ -353,6 +354,8 @@ public class DopeSheet : GraphicsView
 
 	public void DeselectAll()
 	{
+		Session.TrackList.DeselectAll();
+
 		foreach ( var item in SelectedItems.ToArray() )
 		{
 			item.Selected = false;

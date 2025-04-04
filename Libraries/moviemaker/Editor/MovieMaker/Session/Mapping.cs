@@ -166,23 +166,6 @@ partial class Session
 		return Project.AddPropertyTrack( property.Name, property.TargetType, parentTrack );
 	}
 
-	public void ApplyFrame( IProjectTrack track, MovieTime time )
-	{
-		switch ( track )
-		{
-			case ProjectSequenceTrack sequenceTrack:
-				foreach ( var propertyTrack in sequenceTrack.PropertyTracks )
-				{
-					propertyTrack.Update( time, Binder );
-				}
-
-				break;
-			case IPropertyTrack propertyTrack:
-				propertyTrack.Update( time, Binder );
-				break;
-		}
-	}
-
 	/// <summary>
 	/// Advance all bound <see cref="SkinnedModelRenderer"/>s by the given <paramref name="deltaTime"/>.
 	/// </summary>

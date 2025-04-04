@@ -78,7 +78,10 @@ partial class MotionEditMode
 
 		foreach ( var trackRecorder in recorder.Tracks )
 		{
-			ClearPreviewBlocks( (IProjectPropertyTrack)trackRecorder.Track );
+			if ( Session.TrackList.Find( (IProjectTrack)trackRecorder.Track ) is { } view )
+			{
+				view.ClearPreviewBlocks();
+			}
 		}
 
 		var compiled = recorder.ToClip();
@@ -112,20 +115,25 @@ partial class MotionEditMode
 		var time = Session.CurrentPointer;
 		var deltaTime = MovieTime.Max( time - _recordingLastTime, 0d );
 
+		Session.TrackList.PreviewOffset = _recordingStartTime;
+
 		if ( _recorder?.Advance( deltaTime ) is true )
 		{
 			foreach ( var trackRecorder in _recorder.Tracks )
 			{
 				var track = (IProjectPropertyTrack)trackRecorder.Track;
+
+				if ( Session.TrackList.Find( track ) is not { } view ) continue;
+
 				var finishedBlocks = trackRecorder.FinishedBlocks;
 
 				if ( trackRecorder.CurrentBlock is { } current )
 				{
-					SetPreviewBlocks( track, [..finishedBlocks, current], _recordingStartTime );
+					view.SetPreviewBlocks( [], [..finishedBlocks, current] );
 				}
 				else
 				{
-					SetPreviewBlocks( track, finishedBlocks, _recordingStartTime );
+					view.SetPreviewBlocks( [], finishedBlocks );
 				}
 			}
 		}

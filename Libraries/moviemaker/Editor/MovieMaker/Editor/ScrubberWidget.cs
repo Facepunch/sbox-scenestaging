@@ -43,7 +43,7 @@ public class ScrubberItem : GraphicsItem
 	{
 		var duration = Session.Project.Duration;
 
-		Paint.SetBrushAndPen( DopeSheet.Colors.ChannelBackground );
+		Paint.SetBrushAndPen( Timeline.Colors.ChannelBackground );
 		Paint.DrawRect( LocalRect );
 
 		// Darker background for the clip duration
@@ -54,7 +54,7 @@ public class ScrubberItem : GraphicsItem
 			var startX = FromScene( Session.TimeToPixels( timeRange.Start ) ).x;
 			var endX = FromScene( Session.TimeToPixels( timeRange.End ) ).x;
 
-			Paint.SetBrushAndPen( DopeSheet.Colors.Background );
+			Paint.SetBrushAndPen( Timeline.Colors.Background );
 			Paint.DrawRect( new Rect( new Vector2( startX, LocalRect.Top ), new Vector2( endX - startX, LocalRect.Height ) ) );
 		}
 

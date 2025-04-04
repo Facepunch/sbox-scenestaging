@@ -1,78 +1,36 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
+using Editor.MapEditor;
+using Editor.ShaderGraph.Nodes;
 using Sandbox.MovieMaker;
 using Sandbox.Utility;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
-partial class MotionEditMode : EditMode
+
+partial class MotionEditMode
 {
-	public EditModeHistory<MotionEditMode> History { get; }
+	protected override ISnapshot OnSnapshot() => new Snapshot( TimeSelection, Modification?.Snapshot() );
 
-	public IDisposable PushTrackModification( string title, bool includeClipboard = false )
+	protected override void OnRestore( ISnapshot snapshot )
 	{
-		var before = Snapshot();
+		if ( snapshot is not Snapshot data ) return;
 
-		return new DisposeAction( () =>
+		_timeSelection = data.Selection;
+
+		if ( data is { Modification: { } modification, Selection: { } selection } )
 		{
-			var after = Snapshot();
-
-			History.Push( $"Changed Tracks", editMode =>
-			{
-				editMode.Restore( after );
-				DisplayAction( "redo" );
-			}, editMode =>
-			{
-				editMode.Restore( before );
-				DisplayAction( "undo" );
-			} );
-		} );
-	}
-
-	private record PropertyTrackSnapshot( ImmutableArray<IProjectPropertyBlock> Blocks );
-	private record ProjectSnapshot( ImmutableDictionary<Guid, PropertyTrackSnapshot> Tracks, int SampleRate );
-
-	private record SessionSnapshot( ProjectSnapshot? Project, TimeSelection? Selection, ModificationSnapshot? Modification,
-		MovieTime TimeOffset, float PixelsPerSecond, int FrameRate );
-
-	private SessionSnapshot Snapshot()
-	{
-		var projectSnapshot = new ProjectSnapshot(
-			Project.Tracks.OfType<IProjectPropertyTrack>().ToImmutableDictionary(
-				x => x.Id,
-				x => new PropertyTrackSnapshot( [..x.Blocks] ) ),
-			Project.SampleRate );
-
-		return new SessionSnapshot( projectSnapshot, TimeSelection, Modification?.Snapshot(),
-			Session.TimeOffset, Session.PixelsPerSecond, Session.FrameRate );
-	}
-
-	private void Restore( SessionSnapshot snapshot )
-	{
-		if ( snapshot.Project is { } projectSnapshot )
+			SetModification( modification.Type, selection )
+				.Restore( modification );
+		}
+		else
 		{
-			foreach ( var (guid, trackSnapshot) in projectSnapshot.Tracks )
-			{
-				if ( Project.GetTrack( guid ) is not IProjectPropertyTrack propertyTrack ) continue;
-
-				propertyTrack.SetBlocks( trackSnapshot.Blocks );
-
-				Session.TrackList.Find( propertyTrack )?.MarkValueChanged();
-			}
+			ClearChanges();
 		}
 
-		ClearChanges();
-
-		if ( snapshot is { Selection: { } selection, Modification: { } modificationSnapshot } )
-		{
-			_timeSelection = selection;
-
-			SetModification( modificationSnapshot.Type, selection )
-				.Restore( modificationSnapshot );
-		}
-
-		Session.SetView( snapshot.TimeOffset, snapshot.PixelsPerSecond );
 		SelectionChanged();
 	}
 }
+
+file sealed record Snapshot( TimeSelection? Selection, ModificationSnapshot? Modification ) : EditMode.ISnapshot;

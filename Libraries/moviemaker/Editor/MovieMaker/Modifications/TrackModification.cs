@@ -63,6 +63,11 @@ public sealed class MovieModificationAttribute( string title ) : Attribute
 	public string Icon { get; init; } = "edit";
 
 	/// <summary>
+	/// Tooltip description text.
+	/// </summary>
+	public string? Description { get; init; }
+
+	/// <summary>
 	/// Button sort order, defaults to <c>0</c>.
 	/// </summary>
 	public int Order { get; init; }
@@ -91,7 +96,7 @@ public interface IMovieModification
 	/// <summary>
 	/// Add any custom controls that modify <see cref="Options"/> to <paramref name="group"/>.
 	/// </summary>
-	void AddControls( ToolbarGroup group );
+	void AddControls( ToolBarGroup group );
 
 	/// <summary>
 	/// Called when this modification's toolbar button was pressed.
@@ -162,7 +167,7 @@ public abstract class PerTrackModification<T>( T defaultOptions, bool autoCreate
 
 	public void Initialize( MotionEditMode editMode ) => EditMode = editMode;
 
-	public virtual void AddControls( ToolbarGroup group ) { }
+	public virtual void AddControls( ToolBarGroup group ) { }
 
 	public virtual void Start( TimeSelection selection ) { }
 

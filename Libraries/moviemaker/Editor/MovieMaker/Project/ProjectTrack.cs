@@ -198,13 +198,15 @@ public partial interface IProjectPropertyTrack : IPropertyTrack, IProjectBlockTr
 	/// Adds a block, replacing any blocks that overlap its time range.
 	/// This will split any blocks that partially overlap.
 	/// </summary>
-	bool Add( IPropertySignal signal, MovieTimeRange timeRange );
+	bool Add( MovieTimeRange timeRange, IPropertySignal signal );
 
 	/// <summary>
 	/// Adds a block, replacing any blocks that overlap its time range.
 	/// This will split any blocks that partially overlap.
 	/// </summary>
 	bool Add( IProjectPropertyBlock block );
+
+	bool AddRange( IEnumerable<IProjectPropertyBlock> blocks );
 
 	void SetBlocks( IReadOnlyList<IProjectPropertyBlock> blocks );
 
@@ -333,7 +335,7 @@ public sealed partial class ProjectPropertyTrack<T>( MovieProject project, Guid 
 		return true;
 	}
 
-	public bool Add( PropertySignal<T> signal, MovieTimeRange timeRange )
+	public bool Add( MovieTimeRange timeRange, PropertySignal<T> signal )
 	{
 		if ( timeRange.End < 0 ) return false;
 
@@ -383,10 +385,13 @@ public sealed partial class ProjectPropertyTrack<T>( MovieProject project, Guid 
 		return changed;
 	}
 
-	bool IProjectPropertyTrack.Add( IPropertySignal signal, MovieTimeRange timeRange ) =>
-		Add( (PropertySignal<T>)signal, timeRange );
+	bool IProjectPropertyTrack.Add( MovieTimeRange timeRange, IPropertySignal signal ) =>
+		Add( timeRange, (PropertySignal<T>)signal );
 
 	bool IProjectPropertyTrack.Add( IProjectPropertyBlock block ) => Add( (PropertyBlock<T>)block );
+
+	bool IProjectPropertyTrack.AddRange( IEnumerable<IProjectPropertyBlock> blocks ) =>
+		AddRange( blocks.Cast<PropertyBlock<T>>() );
 
 	public void SetBlocks( IReadOnlyList<IProjectPropertyBlock> blocks )
 	{

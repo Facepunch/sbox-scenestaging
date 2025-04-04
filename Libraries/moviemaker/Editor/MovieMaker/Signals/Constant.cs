@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
-using System.Text.Json.Serialization;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -18,7 +17,7 @@ file sealed record ConstantSignal<T>( T Value ) : PropertySignal<T>
 	public override T GetValue( MovieTime time ) => Value;
 
 	public override bool IsIdentity =>
-		LocalTransformer.GetDefault<T>() is { } transformer
+		Transformer.GetDefault<T>() is { } transformer
 		&& EqualityComparer<T>.Default.Equals( Value, transformer.Identity );
 
 	protected override PropertySignal<T> OnTransform( MovieTransform value ) => this;

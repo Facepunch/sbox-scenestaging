@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Numerics;
+using Sandbox.MovieMaker;
 using Sandbox.Utility;
 
 namespace Editor.MovieMaker;
@@ -35,75 +36,82 @@ public static class InterpolationExtensions
 	};
 }
 
-public interface ILocalTransformer<T>
+public interface ITransformer<T>
 {
 	T Identity => default!;
 
-	T ToLocal( T value, T relativeTo );
-	T ToGlobal( T value, T relativeTo );
+	T Invert( T value );
+	T Apply( T outer, T inner );
+
+	public T Difference( T from, T to ) => Apply( Invert( from ), to );
 }
 
-public static class LocalTransformer
+public static class Transformer
 {
-	public static ILocalTransformer<T>? GetDefault<T>()
+	public static ITransformer<T>? GetDefault<T>()
 	{
 		// TODO: type library lookup?
 
-		return DefaultILocalTransformer.Instance as ILocalTransformer<T>;
+		return DefaultTransformer.Instance as ITransformer<T>;
 	}
 
-	public static ILocalTransformer<T> GetDefaultOrThrow<T>() =>
+	public static ITransformer<T> GetDefaultOrThrow<T>() =>
 		GetDefault<T>() ?? throw new Exception( $"Type {typeof(T)} can't be transformed to local." );
 }
 
-file sealed class DefaultILocalTransformer :
-	ILocalTransformer<float>, ILocalTransformer<Vector2>, ILocalTransformer<Vector3>, ILocalTransformer<Vector4>,
-	ILocalTransformer<Rotation>, ILocalTransformer<Angles>,
-	ILocalTransformer<Color>
+file interface INumericTransformer<T> : ITransformer<T>
+	where T : INumber<T>
 {
-	public static DefaultILocalTransformer Instance { get; } = new();
-
-	public float ToLocal( float value, float relativeTo ) => value - relativeTo;
-	public float ToGlobal( float value, float relativeTo ) => value + relativeTo;
-
-	public Vector2 ToLocal( Vector2 value, Vector2 relativeTo ) => value - relativeTo;
-	public Vector2 ToGlobal( Vector2 value, Vector2 relativeTo ) => value + relativeTo;
-
-	public Vector3 ToLocal( Vector3 value, Vector3 relativeTo ) => value - relativeTo;
-	public Vector3 ToGlobal( Vector3 value, Vector3 relativeTo ) => value + relativeTo;
-
-	public Vector4 ToLocal( Vector4 value, Vector4 relativeTo ) => value - relativeTo;
-	public Vector4 ToGlobal( Vector4 value, Vector4 relativeTo ) => value + relativeTo;
-
-	Rotation ILocalTransformer<Rotation>.Identity => Rotation.Identity;
-	public Rotation ToLocal( Rotation value, Rotation relativeTo ) => Rotation.Difference( relativeTo, value );
-	public Rotation ToGlobal( Rotation value, Rotation relativeTo ) => (value * relativeTo).Normal;
-
-	public Angles ToLocal( Angles value, Angles relativeTo ) => Rotation.Difference( relativeTo, value );
-	public Angles ToGlobal( Angles value, Angles relativeTo ) => ((Rotation) value * relativeTo).Normal;
-
-	public Color ToLocal( Color value, Color relativeTo ) => value - relativeTo;
-	public Color ToGlobal( Color value, Color relativeTo ) => value + relativeTo;
+	T ITransformer<T>.Invert( T value ) => -value;
+	T ITransformer<T>.Apply( T outer, T inner ) => outer + inner;
 }
 
-
-file sealed class LocalTransformerWrapper<T> : ILocalTransformer<object?>
+file sealed class DefaultTransformer :
+	INumericTransformer<float>, INumericTransformer<double>,
+	ITransformer<Vector2>, ITransformer<Vector3>, ITransformer<Vector4>,
+	ITransformer<Rotation>, ITransformer<Angles>,
+	ITransformer<Color>
 {
-	private readonly ILocalTransformer<T> _inner;
+	public static DefaultTransformer Instance { get; } = new();
+
+	Rotation ITransformer<Rotation>.Identity => Rotation.Identity;
+
+	public Color Invert( Color value ) => new( -value.r, -value.g, -value.b, -value.a );
+	public Color Apply( Color outer, Color inner ) => outer + inner;
+
+	public Angles Invert( Angles value ) => value.ToRotation().Inverse;
+	public Angles Apply( Angles outer, Angles inner ) => outer.ToRotation() * inner.ToRotation();
+
+	public Rotation Invert( Rotation value ) => value.Inverse;
+	public Rotation Apply( Rotation outer, Rotation inner ) => outer * inner;
+
+	public Vector4 Invert( Vector4 value ) => -value;
+	public Vector4 Apply( Vector4 outer, Vector4 inner ) => outer + inner;
+
+	public Vector3 Invert( Vector3 value ) => -value;
+	public Vector3 Apply( Vector3 outer, Vector3 inner ) => outer + inner;
+
+	public Vector2 Invert( Vector2 value ) => -value;
+	public Vector2 Apply( Vector2 outer, Vector2 inner ) => outer + inner;
+}
+
+file sealed class LocalTransformerWrapper<T> : ITransformer<object?>
+{
+	private readonly ITransformer<T> _inner;
 
 	public LocalTransformerWrapper()
 	{
-		_inner = LocalTransformer.GetDefault<T>()
+		_inner = Transformer.GetDefault<T>()
 			?? throw new Exception( $"Can't transform type '{typeof(T)}'." );
 	}
 
-	public object? ToLocal( object? value, object? relativeTo )
+	public object? Invert( object? value )
 	{
-		return _inner.ToLocal( (T)value!, (T)relativeTo! );
+		return _inner.Invert( (T)value! );
 	}
 
-	public object? ToGlobal( object? value, object? relativeTo )
+	public object? Apply( object? outer, object? inner )
 	{
-		return _inner.ToGlobal( (T)value!, (T)relativeTo! );
+		return _inner.Apply( (T)outer!, (T)inner! );
 	}
 }

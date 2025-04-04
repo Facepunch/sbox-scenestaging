@@ -73,7 +73,7 @@ partial class MovieEditor : EditorEvent.ISceneEdited
 		return true;
 	}
 
-	private ITrackView? GetOrCreateTrack( GameObject go, string propertyPath )
+	private TrackView? GetOrCreateTrack( GameObject go, string propertyPath )
 	{
 		if ( !CanRecord( typeof(GameObject), ref propertyPath ) ) return null;
 
@@ -97,7 +97,7 @@ partial class MovieEditor : EditorEvent.ISceneEdited
 		}
 	}
 
-	private ITrackView? GetOrCreateTrack( Component cmp, string propertyPath )
+	private TrackView? GetOrCreateTrack( Component cmp, string propertyPath )
 	{
 		if ( !CanRecord( cmp.GetType(), ref propertyPath ) ) return null;
 
@@ -121,7 +121,7 @@ partial class MovieEditor : EditorEvent.ISceneEdited
 		}
 	}
 
-	private bool PreChange( ITrackView view )
+	private bool PreChange( TrackView view )
 	{
 		if ( view.IsLocked ) return false;
 
@@ -134,7 +134,7 @@ partial class MovieEditor : EditorEvent.ISceneEdited
 		return false;
 	}
 
-	private bool PostChange( ITrackView view )
+	private bool PostChange( TrackView view )
 	{
 		if ( view.IsLocked ) return false;
 

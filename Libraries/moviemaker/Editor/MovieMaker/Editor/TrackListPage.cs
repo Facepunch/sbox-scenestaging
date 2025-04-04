@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Sandbox.MovieMaker;
 using System.Linq;
+using System.Reflection;
 using Sandbox.UI;
 
 namespace Editor.MovieMaker;
@@ -8,13 +9,16 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 /// <summary>
-/// A split view, with a list of tracks on the left and the dopesheet/curve view on the right
+/// Lists tracks in the current movie, and allows you to add or remove them.
 /// </summary>
-public partial class TrackListWidget : Widget
+public sealed class TrackListPage : Widget, IListPanelPage
 {
 	public Session Session { get; }
 
 	private SceneEditorSession SceneEditorSession { get; }
+
+	public ToolBarItemDisplay Display { get; } = new( "Track List", "list_alt",
+		"Lists tracks in the current movie, and allows you to add or remove them." );
 
 	public IEnumerable<TrackWidget> RootTracks => _rootTracks;
 	public IEnumerable<TrackWidget> Tracks => RootTracks.SelectMany( EnumerateDescendants );
@@ -22,21 +26,20 @@ public partial class TrackListWidget : Widget
 	private static IEnumerable<TrackWidget> EnumerateDescendants( TrackWidget track ) =>
 		[track, ..track.Children.SelectMany( EnumerateDescendants )];
 
-	private ITrackListView? _trackList;
-	private readonly SynchronizedList<ITrackView, TrackWidget> _rootTracks;
+	private TrackListView? _trackList;
+	private readonly SynchronizedSet<TrackView, TrackWidget> _rootTracks;
 
 	private readonly Widget _trackContainer;
+	private readonly Widget _dragTarget;
 	private Widget? _placeholder;
 
-	public TrackListWidget( ListPanel parent, Session session )
+	public TrackListPage( ListPanel parent, Session session )
 		: base( parent )
 	{
 		Session = session;
 
 		SceneEditorSession = SceneEditorSession.Resolve( Session.Player.Scene );
 		SceneEditorSession.Selection.OnItemAdded += OnSelectionAdded;
-
-		AcceptDrops = true;
 
 		_trackContainer = new Widget( this )
 		{
@@ -46,7 +49,9 @@ public partial class TrackListWidget : Widget
 
 		_trackContainer.Layout.Margin = new Margin( 4f, 0f );
 
-		_rootTracks = new SynchronizedList<ITrackView, TrackWidget>(
+		_dragTarget = new DragTargetWidget( this ) { FixedWidth = Width };
+
+		_rootTracks = new SynchronizedSet<TrackView, TrackWidget>(
 			AddRootTrack, RemoveRootTrack, UpdateChildTrack );
 
 		Session.ViewChanged += Session_ViewChanged;
@@ -54,15 +59,13 @@ public partial class TrackListWidget : Widget
 		Load( Session.TrackList );
 	}
 
-	private TrackWidget AddRootTrack( ITrackView source ) => _trackContainer.Layout.Add( new TrackWidget( this, null, source ) );
-	private void RemoveRootTrack( ITrackView source, TrackWidget item ) => item.Destroy();
-	private bool UpdateChildTrack( ITrackView source, TrackWidget item ) => item.UpdateLayout();
-
-	public bool IsPreview( TrackWidget widget ) => _previewTracks?.Contains( widget.View.Track ) ?? false;
+	private TrackWidget AddRootTrack( TrackView source ) => _trackContainer.Layout.Add( new TrackWidget( this, null, source ) );
+	private void RemoveRootTrack( TrackWidget item ) => item.Destroy();
+	private bool UpdateChildTrack( TrackView source, TrackWidget item ) => item.UpdateLayout();
 
 	private void OnSelectionAdded( object item )
 	{
-		if ( Tracks.Any( x => x.IsFocused ) || Session.Editor.DopeSheetPanel?.DopeSheet.IsFocused is not true ) return;
+		if ( Tracks.Any( x => x.IsFocused ) || Session.Editor.TimelinePanel?.Timeline.IsFocused is not true ) return;
 		if ( item is not GameObject go ) return;
 		if ( Tracks.FirstOrDefault( x => x.View.Target is ITrackReference<GameObject> { IsBound: true } target && target.Value == go ) is not { } track ) return;
 		
@@ -115,7 +118,7 @@ public partial class TrackListWidget : Widget
 		_lastMouseScreenPos = e.ScreenPosition;
 	}
 
-	private void Load( ITrackListView trackList )
+	private void Load( TrackListView trackList )
 	{
 		if ( _trackList == trackList ) return;
 
@@ -132,6 +135,9 @@ public partial class TrackListWidget : Widget
 
 	private void Session_ViewChanged()
 	{
+		_dragTarget.Position = 0f;
+		_dragTarget.FixedSize = new Vector2( Width, 64f );
+
 		if ( _rootTracks.Count == 0 )
 		{
 			_trackContainer.Position = 0f;
@@ -142,12 +148,12 @@ public partial class TrackListWidget : Widget
 		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition );
 		_trackContainer.FixedWidth = Width;
 		_trackContainer.FixedHeight = _rootTracks
-			.Select( x => x.View.Position + x.View.Height + DopeSheet.RootTrackSpacing )
+			.Select( x => x.View.Position + x.View.Height + Timeline.RootTrackSpacing )
 			.DefaultIfEmpty( 64f )
 			.Max();
 	}
 
-	private void TrackList_Changed( ITrackListView trackList )
+	private void TrackList_Changed( TrackListView trackList )
 	{
 		_placeholder?.Destroy();
 		_rootTracks.Update( trackList.RootTracks );
@@ -157,7 +163,7 @@ public partial class TrackListWidget : Widget
 		foreach ( var track in _rootTracks )
 		{
 			_trackContainer.Layout.Add( track );
-			_trackContainer.Layout.AddSpacingCell( DopeSheet.RootTrackSpacing );
+			_trackContainer.Layout.AddSpacingCell( Timeline.RootTrackSpacing );
 		}
 
 		if ( _rootTracks.Count == 0 )
@@ -183,11 +189,37 @@ public partial class TrackListWidget : Widget
 		row.Add( _placeholder );
 	}
 
-	private IReadOnlyList<IProjectTrack>? _previewTracks;
-
-	private IEnumerable<IProjectTrack> GetDraggedTracks( DragEvent ev )
+	internal static bool HasDraggedTracks( DragData data )
 	{
-		if ( ev.Data.OfType<GameObject>().FirstOrDefault() is { } go )
+		if ( data.OfType<GameObject>().Any() ) return true;
+		if ( data.OfType<Component>().Any() ) return true;
+
+		if ( data.OfType<SerializedProperty>().FirstOrDefault() is { } property )
+		{
+			if ( property.Parent.Targets?.FirstOrDefault() is Component parentComponent )
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		if ( data.Assets.FirstOrDefault( x => x.AssetPath?.EndsWith( ".movie" ) ?? false ) is { } assetData )
+		{
+			var assetTask = assetData.GetAssetAsync();
+
+			if ( !assetTask.IsCompleted ) return false;
+			if ( assetTask.Result?.LoadResource<MovieResource>() is not { } resource ) return false;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private IEnumerable<IProjectTrack> CreateDraggedTracks( DragData data )
+	{
+		if ( data.OfType<GameObject>().FirstOrDefault() is { } go )
 		{
 			yield return Session.GetOrCreateTrack( go );
 			yield return Session.GetOrCreateTrack( go, nameof(GameObject.Enabled) );
@@ -214,7 +246,7 @@ public partial class TrackListWidget : Widget
 			yield break;
 		}
 
-		if ( ev.Data.OfType<Component>().FirstOrDefault() is { } component )
+		if ( data.OfType<Component>().FirstOrDefault() is { } component )
 		{
 			yield return Session.GetOrCreateTrack( component );
 
@@ -239,7 +271,7 @@ public partial class TrackListWidget : Widget
 			yield break;
 		}
 
-		if ( ev.Data.OfType<SerializedProperty>().FirstOrDefault() is { } property )
+		if ( data.OfType<SerializedProperty>().FirstOrDefault() is { } property )
 		{
 			if ( property.Parent.Targets?.FirstOrDefault() is Component parentComponent )
 			{
@@ -249,7 +281,7 @@ public partial class TrackListWidget : Widget
 			yield break;
 		}
 
-		if ( ev.Data.Assets.FirstOrDefault( x => x.AssetPath?.EndsWith( ".movie" ) ?? false ) is { } assetData )
+		if ( data.Assets.FirstOrDefault( x => x.AssetPath?.EndsWith( ".movie" ) ?? false ) is { } assetData )
 		{
 			var assetTask = assetData.GetAssetAsync();
 
@@ -261,44 +293,119 @@ public partial class TrackListWidget : Widget
 		}
 	}
 
-	public override void OnDragHover( DragEvent ev )
+	private static PropertyInfo? DragData_Current { get; } = typeof(DragData)
+		.GetProperty( "Current", BindingFlags.Static | BindingFlags.NonPublic );
+
+	private static DragData? CurrentDrag => (DragData?)DragData_Current?.GetValue( null );
+
+	[EditorEvent.Frame]
+	private void Frame()
 	{
-		if ( _previewTracks is null )
+		_dragTarget.Visible = CurrentDrag is { } data && HasDraggedTracks( data );
+	}
+
+	internal void AddTracksFromDrag( DragData data )
+	{
+		CreateDraggedTracks( data ).ToImmutableArray();
+
+		_dragTarget.Hide();
+
+		Session.TrackList.Update();
+		Session.ClipModified();
+	}
+}
+
+file sealed class DragTargetWidget : Widget
+{
+	public bool HasDrag { get; private set; }
+
+	public new TrackListPage Parent { get; }
+
+	public DragTargetWidget( TrackListPage parent )
+		: base ( parent )
+	{
+		Parent = parent;
+
+		AcceptDrops = true;
+
+		Layout = Layout.Row();
+		Layout.Margin = new Margin( 32f, 8f, 32f, 8f );
+		Layout.Spacing = 8f;
+
+		Layout.AddStretchCell();
+		Layout.Add( new Icon( "playlist_add" )
 		{
-			var knownTracks = Session.Project.Tracks.ToImmutableHashSet();
-			var dragged = GetDraggedTracks( ev ).ToImmutableHashSet();
+			Color = Theme.Green,
+			PixelHeight = 32f,
+			Alignment = TextFlag.RightCenter,
+			FixedSize = 32f
+		} );
+		Layout.Add( new Label( "Drag here to create a new track." )
+		{
+			Color = Theme.Green,
+			Alignment = TextFlag.LeftCenter | TextFlag.WordWrap, WordWrap = true
+		} );
+		Layout.AddStretchCell();
+	}
 
-			_previewTracks = dragged.Except( knownTracks ).ToArray();
+	protected override void OnPaint()
+	{
+		var background = Theme.WidgetBackground;
 
-			Session.TrackList.Update();
+		Paint.ClearPen();
+		Paint.SetBrushLinear( LocalRect.BottomLeft, LocalRect.BottomLeft - new Vector2( 0f, 8f ), background.WithAlpha( 0f ), background );
+		Paint.DrawRect( LocalRect );
+
+		if ( HasDrag )
+		{
+			Paint.SetBrush( Theme.ControlBackground );
+		}
+		else
+		{
+			Paint.ClearBrush();
 		}
 
-		ev.Action = _previewTracks.Count > 0
+		Paint.SetPen( Theme.Green, 2f, PenStyle.Dash );
+		Paint.DrawRect( LocalRect.Shrink( 8f ), 4f );
+	}
+
+	public override void OnDragHover( DragEvent ev )
+	{
+		HasDrag = true;
+
+		ev.Action = TrackListPage.HasDraggedTracks( ev.Data )
 			? DropAction.Link
 			: DropAction.Ignore;
 	}
 
 	public override void OnDragLeave()
 	{
-		if ( _previewTracks is { Count: > 0 } )
-		{
-			foreach ( var track in _previewTracks )
-			{
-				track.Remove();
-			}
-
-			Session.TrackList.Update();
-		}
-
-		_previewTracks = null;
+		HasDrag = false;
 	}
 
 	public override void OnDragDrop( DragEvent ev )
 	{
-		if ( _previewTracks is null ) return;
+		Parent.AddTracksFromDrag( ev.Data );
 
-		Session.ClipModified();
+		HasDrag = false;
+	}
+}
 
-		_previewTracks = null;
+file sealed class Icon : Widget
+{
+	public TextFlag Alignment { get; set; } = TextFlag.Center;
+	public Color Color { get; set; } = Theme.ControlText;
+	public string IconName { get; set; }
+	public float PixelHeight { get; set; } = 16f;
+
+	public Icon( string name )
+	{
+		IconName = name;
+	}
+
+	protected override void OnPaint()
+	{
+		Paint.SetPen( Color );
+		Paint.DrawIcon( LocalRect, IconName, PixelHeight, Alignment );
 	}
 }
