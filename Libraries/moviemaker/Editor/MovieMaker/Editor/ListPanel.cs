@@ -98,7 +98,7 @@ public sealed class ListPanel : MovieEditorPanel
 
 			playerMenu.AddOption( "Create New..", "movie_filter", Editor.CreateNewPlayer );
 
-			menu.OpenAtCursor();
+			menu.OpenAt( fileGroup.ScreenRect.BottomLeft );
 		} );
 
 		fileAction.ToolTip = "File menu for opening, importing, or saving movie projects.";
