@@ -3,7 +3,8 @@ using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;
 using System.Threading;
 
-namespace Sandbox;
+using Sandbox;
+using System;
 
 public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 {

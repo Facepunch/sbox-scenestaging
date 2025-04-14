@@ -1,4 +1,7 @@
+using Sandbox;
 using System;
+
+namespace Editor;
 
 public class SplineEditorTool : EditorTool<SplineComponent>
 {

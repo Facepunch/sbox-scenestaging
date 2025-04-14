@@ -1,3 +1,5 @@
+using System;
+
 namespace Sandbox;
 
 public sealed class SplineModelRenderer : ModelRenderer
