@@ -73,6 +73,11 @@ public sealed partial class KeyframeEditMode : EditMode
 		return _changeScope.HistoryScope;
 	}
 
+	private void ClearKeyframeChangeScope()
+	{
+		_changeScope = null;
+	}
+
 	protected override bool OnPreChange( TrackView view )
 	{
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return false;
@@ -179,6 +184,10 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		var value = propertyTrack.TryGetValue( time, out var val ) ? val : target.Value;
 
+		ClearKeyframeChangeScope();
+
+		using var scope = Session.History.Push( "Create Keyframe" );
+
 		if ( !propertyTrack.AddKeyframe( time, value, DefaultInterpolation ) ) return;
 
 		view.MarkValueChanged();
@@ -241,6 +250,8 @@ public sealed partial class KeyframeEditMode : EditMode
 			modification.Commit();
 		}
 
+		ClearKeyframeChangeScope();
+
 		_modifications.Clear();
 	}
 
@@ -260,6 +271,10 @@ public sealed partial class KeyframeEditMode : EditMode
 	public bool ApplyChangeToSelection( KeyframeChanges change )
 	{
 		var anyChanges = false;
+
+		ClearKeyframeChangeScope();
+
+		using var scope = Session.History.Push( "Modify Keyframes" );
 
 		foreach ( var group in GetSelectedKeyframes() )
 		{
