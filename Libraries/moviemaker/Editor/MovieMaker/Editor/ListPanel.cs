@@ -7,38 +7,56 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
+public interface IListPanelPage
+{
+	ToolBarItemDisplay Display { get; }
+	bool Visible { get; set; }
+}
+
+file sealed class DummyPage( ToolBarItemDisplay display ) : Widget, IListPanelPage
+{
+	public ToolBarItemDisplay Display => display;
+
+	public bool Visible { get; set; }
+}
+
 /// <summary>
 /// Panel containing the track list.
 /// </summary>
 public sealed class ListPanel : MovieEditorPanel
 {
-	public TrackListWidget TrackList { get; }
-	public Widget History { get; }
-	public Widget Movies { get; }
-	public Widget Players { get; }
+	public TrackListPage TrackList { get; }
 
-	private readonly ImmutableArray<Widget> _pages;
+	private readonly ImmutableArray<IListPanelPage> _pages;
 
 	public ListPanel( MovieEditor parent, Session session )
 		: base( parent )
 	{
-		TrackList = new TrackListWidget( this, session );
-		History = new Widget( this ) { Visible = false };
-		Movies = new Widget( this ) { Visible = false };
-		Players = new Widget( this ) { Visible = false };
+		_pages =
+		[
+			TrackList = new TrackListPage( this, session ),
+			new DummyPage( new ToolBarItemDisplay( "Movies", "video_library",
+				"Lists movie clips in the current project, letting you load or import them." ) ),
+			new DummyPage( new ToolBarItemDisplay( "Players", "movie",
+				"Lists movie playback components in the scene, so you can switch between them." ) ),
+			new HistoryPage( this, session )
+		];
 
-		Layout.Add( TrackList );
-		Layout.Add( History );
-		Layout.Add( Movies );
-		Layout.Add( Players );
-
-		_pages = [TrackList, History, Movies, Players];
+		SetPage( TrackList );
 
 		MinimumWidth = 300;
 
 		// File menu
 
 		var fileGroup = ToolBar.AddGroup( true );
+
+		foreach ( var page in _pages )
+		{
+			fileGroup.AddToggle( page.Display,
+				() => page.Visible,
+				_ => SetPage( page ) );
+		}
+
 		var resourceIcon = typeof( MovieResource ).GetCustomAttribute<GameResourceAttribute>()!.Icon;
 
 		var fileDisplay = new ToolBarItemDisplay( "File", "folder", "Actions for saving / loading / importing movies, or switching player components." );
@@ -99,30 +117,6 @@ public sealed class ListPanel : MovieEditorPanel
 			menu.OpenAt( fileGroup.ScreenRect.BottomLeft );
 		} );
 
-		fileGroup.AddToggle(
-			new ToolBarItemDisplay( "Track List", "list_alt",
-				"Lists tracks in the current movie, and allows you to add or remove them." ),
-			() => TrackList.Visible,
-			value => SetPage( TrackList ) );
-
-		fileGroup.AddToggle(
-			new ToolBarItemDisplay( "History", "history",
-				"Lists changes made in this editor session, and lets you revert or reapply them." ),
-			() => History.Visible,
-			value => SetPage( History ) );
-
-		fileGroup.AddToggle(
-			new ToolBarItemDisplay( "Movies", "video_library",
-				"Lists movie clips in the current project, letting you load or import them." ),
-			() => Movies.Visible,
-			value => SetPage( Movies ) );
-
-		fileGroup.AddToggle(
-			new ToolBarItemDisplay( "Players", "movie",
-				"Lists movie playback components in the scene, so you can switch between them." ),
-			() => Players.Visible,
-			value => SetPage( Players ) );
-
 		fileAction.ToolTip = "File menu for opening, importing, or saving movie projects.";
 
 		// File name label
@@ -144,12 +138,16 @@ public sealed class ListPanel : MovieEditorPanel
 			() => parent.Session?.Parent is not null );
 	}
 
-	private void SetPage( Widget page )
+	private void SetPage( IListPanelPage page )
 	{
 		foreach ( var widget in _pages )
 		{
 			widget.Visible = widget == page;
 		}
+
+		Layout.Clear( false );
+		Layout.Add( ToolBar );
+		Layout.Add( (Widget)page );
 	}
 
 	private static string GetFullPath( Session session )

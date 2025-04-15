@@ -9,7 +9,7 @@ namespace Editor.MovieMaker;
 
 public partial class TrackWidget : Widget
 {
-	public TrackListWidget TrackList { get; }
+	public TrackListPage TrackList { get; }
 	public new TrackWidget? Parent { get; }
 
 	public new IEnumerable<TrackWidget> Children => _children;
@@ -26,7 +26,7 @@ public partial class TrackWidget : Widget
 
 	private ControlWidget? _controlWidget;
 
-	public TrackWidget( TrackListWidget trackList, TrackWidget? parent, TrackView view )
+	public TrackWidget( TrackListPage trackList, TrackWidget? parent, TrackView view )
 		: base( (Widget?)parent ?? trackList )
 	{
 		TrackList = trackList;
