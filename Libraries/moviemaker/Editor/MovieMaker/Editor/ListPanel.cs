@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Immutable;
+using System.Linq;
 using Sandbox.MovieMaker;
 using System.Reflection;
 
@@ -12,13 +13,26 @@ namespace Editor.MovieMaker;
 public sealed class ListPanel : MovieEditorPanel
 {
 	public TrackListWidget TrackList { get; }
+	public Widget History { get; }
+	public Widget Movies { get; }
+	public Widget Players { get; }
+
+	private readonly ImmutableArray<Widget> _pages;
 
 	public ListPanel( MovieEditor parent, Session session )
 		: base( parent )
 	{
 		TrackList = new TrackListWidget( this, session );
+		History = new Widget( this ) { Visible = false };
+		Movies = new Widget( this ) { Visible = false };
+		Players = new Widget( this ) { Visible = false };
 
 		Layout.Add( TrackList );
+		Layout.Add( History );
+		Layout.Add( Movies );
+		Layout.Add( Players );
+
+		_pages = [TrackList, History, Movies, Players];
 
 		MinimumWidth = 300;
 
@@ -85,6 +99,30 @@ public sealed class ListPanel : MovieEditorPanel
 			menu.OpenAt( fileGroup.ScreenRect.BottomLeft );
 		} );
 
+		fileGroup.AddToggle(
+			new ToolBarItemDisplay( "Track List", "list_alt",
+				"Lists tracks in the current movie, and allows you to add or remove them." ),
+			() => TrackList.Visible,
+			value => SetPage( TrackList ) );
+
+		fileGroup.AddToggle(
+			new ToolBarItemDisplay( "History", "history",
+				"Lists changes made in this editor session, and lets you revert or reapply them." ),
+			() => History.Visible,
+			value => SetPage( History ) );
+
+		fileGroup.AddToggle(
+			new ToolBarItemDisplay( "Movies", "video_library",
+				"Lists movie clips in the current project, letting you load or import them." ),
+			() => Movies.Visible,
+			value => SetPage( Movies ) );
+
+		fileGroup.AddToggle(
+			new ToolBarItemDisplay( "Players", "movie",
+				"Lists movie playback components in the scene, so you can switch between them." ),
+			() => Players.Visible,
+			value => SetPage( Players ) );
+
 		fileAction.ToolTip = "File menu for opening, importing, or saving movie projects.";
 
 		// File name label
@@ -104,6 +142,14 @@ public sealed class ListPanel : MovieEditorPanel
 
 		navigateGroup.AddAction( backDisplay, parent.ExitSequence,
 			() => parent.Session?.Parent is not null );
+	}
+
+	private void SetPage( Widget page )
+	{
+		foreach ( var widget in _pages )
+		{
+			widget.Visible = widget == page;
+		}
 	}
 
 	private static string GetFullPath( Session session )
