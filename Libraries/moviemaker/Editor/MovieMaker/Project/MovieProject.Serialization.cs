@@ -19,23 +19,21 @@ partial class MovieProject : IJsonPopulator
 		ImmutableDictionary<Guid, ProjectTrackModel> Tracks,
 		ImmutableDictionary<Guid, ProjectSourceClip.Model>? Sources );
 
-	public JsonNode Serialize()
+	public JsonNode Serialize() => JsonSerializer.SerializeToNode( Snapshot(), EditorJsonOptions )!;
+
+	internal Model Snapshot()
 	{
 		using var scope = MovieSerializationContext.Push();
 
-		var model = new Model(
+		return new Model(
 			SampleRate,
 			Tracks.ToImmutableDictionary( x => x.Id, x => x.Serialize( EditorJsonOptions ) ),
 			scope.SourceClips.ToImmutableDictionary( x => x.Id, x => x.Serialize() ) );
-
-		return JsonSerializer.SerializeToNode( model, EditorJsonOptions )!;
 	}
 
-	public void Deserialize( JsonNode node )
+	internal void Restore( Model model )
 	{
 		using var scope = MovieSerializationContext.Push();
-
-		var model = node.Deserialize<Model>( EditorJsonOptions )!;
 
 		SampleRate = model.SampleRate;
 
@@ -87,6 +85,9 @@ partial class MovieProject : IJsonPopulator
 			addedTrack.Deserialize( trackModel, EditorJsonOptions );
 		}
 	}
+
+	public void Deserialize( JsonNode node ) =>
+		Restore( node.Deserialize<Model>( EditorJsonOptions )! );
 }
 
 file sealed class MovieProjectConverter : JsonConverter<MovieProject>

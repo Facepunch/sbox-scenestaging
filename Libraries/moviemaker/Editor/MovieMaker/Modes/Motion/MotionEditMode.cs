@@ -26,11 +26,6 @@ public sealed partial class MotionEditMode : EditMode
 
 	private MovieTime? _selectionStartTime;
 
-	public MotionEditMode()
-	{
-		History = new EditModeHistory<MotionEditMode>( this );
-	}
-
 	protected override void OnEnable()
 	{
 		var clipboardGroup = ToolBar.AddGroup();

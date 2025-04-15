@@ -1,50 +1,55 @@
-﻿namespace Editor.MovieMaker;
+﻿using Sandbox.MovieMaker;
+
+namespace Editor.MovieMaker;
 
 #nullable enable
-
-public interface ISessionAction
-{
-	string Title { get; }
-
-	bool Apply( Session session );
-	bool Revert( Session session );
-
-	ISessionAction? Merge( ISessionAction next ) => null;
-}
-
-public interface IEditModeAction<T> : ISessionAction
-	where T : EditMode
-{
-	bool Apply( T editMode );
-	bool Revert( T editMode );
-
-	bool ISessionAction.Apply( Session session )
-	{
-		session.SetEditMode<T>();
-		return Apply( (T)session.EditMode! );
-	}
-
-	bool ISessionAction.Revert( Session session )
-	{
-		session.SetEditMode<T>();
-		return Revert( (T)session.EditMode! );
-	}
-}
-
-public sealed class NullAction : ISessionAction
-{
-	public string Title => "Null";
-
-	public bool Apply( Session session ) => false;
-	public bool Revert( Session session ) => false;
-}
 
 public sealed class SessionHistory
 {
 	private readonly Session _session;
 
-	private readonly Stack<ISessionAction> _undoStack = new();
-	private readonly Stack<ISessionAction> _redoStack = new();
+	private sealed class Item
+	{
+		public string Title { get; }
+		public SessionSnapshot Before { get; }
+		public SessionSnapshot After { get; set; }
+
+		public bool IsEmpty => Before.Equals( After );
+
+		public Item( string title, SessionSnapshot before )
+		{
+			Title = title;
+			Before = before;
+			After = before;
+		}
+
+		public bool Apply( Session session )
+		{
+			return session.Restore( After );
+		}
+
+		public bool Revert( Session session )
+		{
+			return session.Restore( Before );
+		}
+	}
+
+	public interface IScope : IDisposable
+	{
+		void PostChange();
+		void IDisposable.Dispose() => PostChange();
+	}
+
+	private sealed record Scope( Session Session, Item Item ) : IScope
+	{
+		public void PostChange()
+		{
+			Item.After = Session.Snapshot();
+		}
+	}
+
+	private readonly Stack<Item> _undoStack = new();
+	private readonly Stack<Item> _redoStack = new();
 
 	public bool CanUndo => _undoStack.Count > 0;
 	public bool CanRedo => _redoStack.Count > 0;
@@ -54,74 +59,87 @@ public sealed class SessionHistory
 		_session = session;
 	}
 
-	public void Push( ISessionAction action )
+	public IScope Push( string title )
 	{
-		if ( action is NullAction ) return;
+		var before = _undoStack.TryPeek( out var last )
+			? last.After
+			: _session.Snapshot();
 
-		if ( _undoStack.TryPeek( out var last ) && last.Merge( action ) is { } merged )
-		{
-			_undoStack.Pop();
-
-			if ( merged is NullAction ) return;
-
-			_undoStack.Push( merged );
-			return;
-		}
+		var item = new Item( title, before );
 
 		_redoStack.Clear();
-		_undoStack.Push( action );
+		_undoStack.Push( item );
+
+		return new Scope( _session, item );
 	}
 
 	public bool Undo()
 	{
-		if ( !_undoStack.TryPop( out var action ) ) return false;
+		if ( !_undoStack.TryPop( out var item ) ) return false;
 
-		_redoStack.Push( action );
+		_redoStack.Push( item );
 
-		return action.Revert( _session );
+		return item.Revert( _session );
 	}
 
 	public bool Redo()
 	{
-		if ( !_redoStack.TryPop( out var action ) ) return false;
+		if ( !_redoStack.TryPop( out var item ) ) return false;
 
-		_undoStack.Push( action );
+		_undoStack.Push( item );
 
-		return action.Apply( _session );
+		return item.Apply( _session );
 	}
 }
 
-public sealed class EditModeHistory<T>( EditMode editMode )
-	where T : EditMode
-{
-	public void Push( IEditModeAction<T> action )
-	{
-		editMode.Session.History.Push( action );
-	}
+internal sealed record SessionProperties(
+	MovieTime TimeOffset,
+	float PixelsPerSecond,
+	int FrameRate );
 
-	public void Push( string title, Action<T> apply, Action<T> revert ) =>
-		Push( new SimpleAction( title, mode =>
-		{
-			apply( mode );
-			return true;
-		}, mode =>
-		{
-			revert( mode );
-			return true;
-		} ) );
-
-	public void Push( string title, Func<T, bool> apply, Func<T, bool> revert ) =>
-		Push( new SimpleAction( title, apply, revert ) );
-
-	private record SimpleAction( string Title, Func<T, bool> Apply, Func<T, bool> Revert ) : IEditModeAction<T>
-	{
-		bool IEditModeAction<T>.Apply( T editMode ) => Apply( editMode );
-
-		bool IEditModeAction<T>.Revert( T editMode ) => Revert( editMode );
-	}
-}
+internal sealed record EditModeSnapshot(
+	Type Type, EditMode.ISnapshot? Data );
+internal sealed record SessionSnapshot(
+	MovieProject.Model Project,
+	EditModeSnapshot? EditMode,
+	SessionProperties Properties );
 
 partial class Session
 {
 	public SessionHistory History { get; }
+
+	internal SessionSnapshot Snapshot() => new (
+		Project.Snapshot(), 
+		EditMode?.Snapshot(),
+		new SessionProperties( TimeOffset, PixelsPerSecond, FrameRate ) );
+
+	internal bool Restore( SessionSnapshot snapshot )
+	{
+		Project.Restore( snapshot.Project );
+
+		if ( snapshot.EditMode is { } editMode && SetEditMode( editMode.Type ) && editMode.Data is { } data )
+		{
+			EditMode?.Restore( data );
+		}
+
+		SetView( snapshot.Properties.TimeOffset, snapshot.Properties.PixelsPerSecond );
+
+		FrameRate = snapshot.Properties.FrameRate;
+
+		TrackList.Update();
+
+		return true;
+	}
+}
+
+partial class EditMode
+{
+	protected internal interface ISnapshot;
+
+	internal EditModeSnapshot Snapshot() => new( GetType(), OnSnapshot() );
+
+	protected virtual ISnapshot? OnSnapshot() => null;
+
+	internal void Restore( ISnapshot snapshot ) => OnRestore( snapshot );
+	protected virtual void OnRestore( ISnapshot snapshot ) { }
 }

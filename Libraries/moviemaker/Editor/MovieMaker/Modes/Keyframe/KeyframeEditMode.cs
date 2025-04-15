@@ -56,10 +56,29 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	private TangentControl? _tangentControl;
 
+	private sealed record KeyframeChangeScope( TrackView? TrackView, SessionHistory.IScope HistoryScope ) : IDisposable
+	{
+		public void Dispose() => HistoryScope.Dispose();
+	}
+
+	private KeyframeChangeScope? _changeScope;
+
+	private SessionHistory.IScope GetKeyframeChangeScope( TrackView? trackView = null )
+	{
+		if ( _changeScope is { } scope && scope.TrackView == trackView ) return _changeScope.HistoryScope;
+
+		_changeScope = new KeyframeChangeScope( trackView,
+			Session.History.Push( trackView is null ? "Modify Keyframes" : $"Modify Keyframe ({trackView.Track.Name})" ) );
+
+		return _changeScope.HistoryScope;
+	}
+
 	protected override bool OnPreChange( TrackView view )
 	{
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return false;
 		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } ) return false;
+
+		using var scope = GetKeyframeChangeScope( view );
 
 		return propertyTrack.AddKeyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation );
 	}
@@ -68,6 +87,8 @@ public sealed partial class KeyframeEditMode : EditMode
 	{
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return false;
 		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } ) return false;
+
+		using var scope = GetKeyframeChangeScope( view );
 
 		return propertyTrack.AddKeyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation );
 	}
@@ -190,6 +211,8 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		_isDraggingKeyframes = true;
 
+		using var scope = GetKeyframeChangeScope();
+
 		var time = Session.ScenePositionToTime( e.ScenePosition, new SnapOptions( SnapFlag.PlayHead ) );
 		var transform = new MovieTransform( time - _dragStartTime );
 
@@ -210,6 +233,8 @@ public sealed partial class KeyframeEditMode : EditMode
 		e.Accepted = true;
 
 		_isDraggingKeyframes = false;
+
+		using var scope = GetKeyframeChangeScope();
 
 		foreach ( var modification in _modifications.Values )
 		{

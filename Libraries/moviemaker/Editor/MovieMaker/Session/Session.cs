@@ -178,16 +178,18 @@ public sealed partial class Session
 
 	}
 
-	internal void SetEditMode<T>()
-	{
-		if ( EditMode is T ) return;
+	internal bool SetEditMode<T>() => SetEditMode( typeof(T) );
 
-		SetEditMode( new EditModeType( EditorTypeLibrary.GetType<T>() ) );
+	internal bool SetEditMode( Type type )
+	{
+		if ( type.IsInstanceOfType( EditMode ) ) return true;
+
+		return SetEditMode( new EditModeType( EditorTypeLibrary.GetType( type ) ) );
 	}
 
-	internal void SetEditMode( EditModeType? type )
+	internal bool SetEditMode( EditModeType? type )
 	{
-		if ( type?.IsMatchingType( EditMode ) ?? EditMode is null ) return;
+		if ( type?.IsMatchingType( EditMode ) ?? EditMode is null ) return EditMode is not null;
 
 		IsRecording = false;
 
@@ -202,6 +204,8 @@ public sealed partial class Session
 		{
 			Cookies.EditMode = type;
 		}
+
+		return EditMode is not null;
 	}
 
 	public MovieTime ScenePositionToTime( Vector2 scenePos, SnapOptions? options = null )

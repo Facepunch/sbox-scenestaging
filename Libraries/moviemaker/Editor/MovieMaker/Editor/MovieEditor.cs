@@ -209,7 +209,7 @@ public partial class MovieEditor : Widget
 		var timeOffset = transform.Inverse * Session!.TimeOffset;
 		var pixelsPerSecond = (float)(transform.Inverse.Scale.FrequencyScale * Session.PixelsPerSecond);
 
-		Session!.SetEditMode( null );
+		Session!.SetEditMode( (EditModeType?)null );
 		Initialize( new Session( Session!, resource, transform, timeRange ) );
 
 		Session.SetView( timeOffset, pixelsPerSecond );

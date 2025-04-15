@@ -90,7 +90,7 @@ partial class MotionEditMode
 	{
 		if ( TimeSelection is not { } selection || Modification is not { } modification || !HasChanges ) return;
 
-		using ( PushTrackModification( "Commit", true ) )
+		using ( Session.History.Push( "Commit" ) )
 		{
 			modification.Commit( selection );
 		}
@@ -110,7 +110,7 @@ partial class MotionEditMode
 	{
 		var changed = false;
 
-		using ( PushTrackModification( shiftTime ? "Remove Time" : "Clear Time" ) )
+		using ( Session.History.Push( shiftTime ? "Remove Time" : "Clear Time" ) )
 		{
 			foreach ( var view in Session.TrackList.EditableTracks )
 			{
@@ -150,7 +150,7 @@ partial class MotionEditMode
 
 		var changed = false;
 
-		using ( PushTrackModification( "Insert" ) )
+		using ( Session.History.Push( "Insert" ) )
 		{
 			foreach ( var view in Session.TrackList.EditableTracks )
 			{
