@@ -42,6 +42,7 @@ public abstract partial class EditMode
 		}
 	}
 
+	public EditModeType Type { get; }
 	public Session Session { get; private set; } = null!;
 	public MovieProject Project => Session.Project;
 	protected Timeline Timeline { get; private set; } = null!;
@@ -58,6 +59,11 @@ public abstract partial class EditMode
 	/// Can we start / stop recording?
 	/// </summary>
 	public virtual bool AllowRecording => false;
+
+	protected EditMode()
+	{
+		Type = new( EditorTypeLibrary.GetType( GetType() ) );
+	}
 
 	internal void Enable( Session session )
 	{

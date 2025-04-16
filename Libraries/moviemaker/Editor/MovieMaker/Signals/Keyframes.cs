@@ -96,6 +96,8 @@ partial class ProjectPropertyTrack<T>
 
 public abstract record KeyframeChanges( ImmutableHashSet<MovieTime> KeyframeTimes )
 {
+	public abstract string Name { get; }
+
 	public virtual MovieTime? Apply( MovieTime time ) => time;
 
 	public virtual IEnumerable<MovieTime> Apply( IEnumerable<MovieTime> keyframeTimes ) => keyframeTimes;
@@ -104,6 +106,8 @@ public abstract record KeyframeChanges( ImmutableHashSet<MovieTime> KeyframeTime
 public sealed record KeyframeTransform( ImmutableHashSet<MovieTime> KeyframeTimes, MovieTransform Transform )
 	: KeyframeChanges( KeyframeTimes )
 {
+	public override string Name => "Move";
+
 	public override MovieTime? Apply( MovieTime time ) => KeyframeTimes.Contains( time ) ? Transform * time : time;
 
 	public override IEnumerable<MovieTime> Apply( IEnumerable<MovieTime> keyframeTimes ) => keyframeTimes
@@ -115,14 +119,21 @@ public sealed record KeyframeTransform( ImmutableHashSet<MovieTime> KeyframeTime
 public sealed record KeyframeDeletion( ImmutableHashSet<MovieTime> KeyframeTimes )
 	: KeyframeChanges( KeyframeTimes )
 {
+	public override string Name => "Delete";
+
 	public override MovieTime? Apply( MovieTime time ) => KeyframeTimes.Contains( time ) ? null : time;
 
 	public override IEnumerable<MovieTime> Apply( IEnumerable<MovieTime> keyframeTimes ) => keyframeTimes
 		.Except( KeyframeTimes );
 }
 
-public sealed record KeyframeSetInterpolation( ImmutableHashSet<MovieTime> KeyframeTimes, KeyframeInterpolation Interpolation )
-	: KeyframeChanges( KeyframeTimes );
+public sealed record KeyframeSetInterpolation(
+	ImmutableHashSet<MovieTime> KeyframeTimes,
+	KeyframeInterpolation Interpolation )
+	: KeyframeChanges( KeyframeTimes )
+{
+	public override string Name => "Modify";
+}
 
 public readonly record struct Keyframe<T>(
 	MovieTime Time,

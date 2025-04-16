@@ -1,95 +1,119 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Collections;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed class SessionHistory
+public interface IHistoryItem
+{
+	int Index { get; }
+	string Title { get; }
+	string Icon { get; }
+	DateTime Time { get; }
+
+	bool Apply();
+}
+
+public interface IHistoryScope : IDisposable
+{
+	void PostChange();
+	void IDisposable.Dispose() => PostChange();
+}
+
+public sealed class SessionHistory : IReadOnlyList<IHistoryItem>
 {
 	private readonly Session _session;
 
-	private sealed class Item
+	private sealed class HistoryItem : IHistoryItem, IHistoryScope
 	{
+		private readonly SessionHistory _history;
+
+		public int Index { get; }
 		public string Title { get; }
-		public SessionSnapshot Before { get; }
-		public SessionSnapshot After { get; set; }
+		public string Icon { get; }
 
-		public bool IsEmpty => Before.Equals( After );
+		public DateTime Time { get; private set; }
+		public SessionSnapshot Snapshot { get; private set; }
 
-		public Item( string title, SessionSnapshot before )
+		public HistoryItem( SessionHistory history, int index, string title, string icon, DateTime time, SessionSnapshot snapshot )
 		{
+			_history = history;
+
+			Index = index;
 			Title = title;
-			Before = before;
-			After = before;
+			Icon = icon;
+			Time = time;
+
+			Snapshot = snapshot;
 		}
 
-		public bool Apply( Session session )
+		public bool Apply()
 		{
-			return session.Restore( After );
+			_history._index = Index;
+
+			return _history._session.Restore( Snapshot );
 		}
 
-		public bool Revert( Session session )
-		{
-			return session.Restore( Before );
-		}
-	}
-
-	public interface IScope : IDisposable
-	{
-		void PostChange();
-		void IDisposable.Dispose() => PostChange();
-	}
-
-	private sealed record Scope( Session Session, Item Item ) : IScope
-	{
 		public void PostChange()
 		{
-			Item.After = Session.Snapshot();
+			if ( _history.Index != Index )
+			{
+				Log.Warning( "Trying to change a closed history scope." );
+				return;
+			}
+
+			Time = DateTime.UtcNow;
+			Snapshot = _history._session.Snapshot();
 		}
+
+		public override string ToString() => Title;
 	}
 
-	private readonly Stack<Item> _undoStack = new();
-	private readonly Stack<Item> _redoStack = new();
+	private readonly List<HistoryItem> _items = new();
+	private int _index;
 
-	public bool CanUndo => _undoStack.Count > 0;
-	public bool CanRedo => _redoStack.Count > 0;
+	public bool CanUndo => Previous is not null;
+	public bool CanRedo => Next is not null;
+
+	public int Count => _items.Count;
+	public int Index => _index;
+
+	public IHistoryItem? Previous => _index > 0 ? _items[_index - 1] : null;
+	public IHistoryItem Current => _items[_index];
+	public IHistoryItem? Next => _index < _items.Count - 1 ? _items[_index + 1] : null;
 
 	public SessionHistory( Session session )
 	{
 		_session = session;
 	}
 
-	public IScope Push( string title )
+	internal void Initialize()
 	{
-		var before = _undoStack.TryPeek( out var last )
-			? last.After
-			: _session.Snapshot();
-
-		var item = new Item( title, before );
-
-		_redoStack.Clear();
-		_undoStack.Push( item );
-
-		return new Scope( _session, item );
+		if ( _items.Count == 0 )
+		{
+			_items.Add( new HistoryItem( this, 0, "Loaded Project", "file_open", DateTime.UtcNow, _session.Snapshot() ) );
+		}
 	}
 
-	public bool Undo()
+	public IHistoryScope Push( string title )
 	{
-		if ( !_undoStack.TryPop( out var item ) ) return false;
+		var before = _items[_index].Snapshot;
+		var item = new HistoryItem( this, ++_index, title, _session.EditMode?.Type.Icon ?? "edit", DateTime.UtcNow, before );
 
-		_redoStack.Push( item );
+		_items.RemoveRange( _index, _items.Count - _index );
+		_items.Add( item );
 
-		return item.Revert( _session );
+		return item;
 	}
 
-	public bool Redo()
-	{
-		if ( !_redoStack.TryPop( out var item ) ) return false;
+	public bool Undo() => Previous?.Apply() ?? false;
+	public bool Redo() => Next?.Apply() ?? false;
 
-		_undoStack.Push( item );
+	public IEnumerator<IHistoryItem> GetEnumerator() => _items.GetEnumerator();
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		return item.Apply( _session );
-	}
+	public IHistoryItem this[ int index ] => _items[index];
 }
 
 internal sealed record SessionProperties(

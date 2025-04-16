@@ -56,19 +56,19 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	private TangentControl? _tangentControl;
 
-	private sealed record KeyframeChangeScope( TrackView? TrackView, SessionHistory.IScope HistoryScope ) : IDisposable
+	private sealed record KeyframeChangeScope( string Name, TrackView? TrackView, IHistoryScope HistoryScope ) : IDisposable
 	{
 		public void Dispose() => HistoryScope.Dispose();
 	}
 
 	private KeyframeChangeScope? _changeScope;
 
-	private SessionHistory.IScope GetKeyframeChangeScope( TrackView? trackView = null )
+	private IHistoryScope GetKeyframeChangeScope( string name, TrackView? trackView = null )
 	{
-		if ( _changeScope is { } scope && scope.TrackView == trackView ) return _changeScope.HistoryScope;
+		if ( _changeScope is { } scope && scope.TrackView == trackView && scope.Name == name ) return _changeScope.HistoryScope;
 
-		_changeScope = new KeyframeChangeScope( trackView,
-			Session.History.Push( trackView is null ? "Modify Keyframes" : $"Modify Keyframe ({trackView.Track.Name})" ) );
+		_changeScope = new KeyframeChangeScope( name, trackView,
+			Session.History.Push( trackView is null ? $"{name} Keyframes" : $"{name} Keyframes ({trackView.Track.Name})" ) );
 
 		return _changeScope.HistoryScope;
 	}
@@ -83,7 +83,7 @@ public sealed partial class KeyframeEditMode : EditMode
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return false;
 		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } ) return false;
 
-		using var scope = GetKeyframeChangeScope( view );
+		using var scope = GetKeyframeChangeScope( "Set", view );
 
 		return propertyTrack.AddKeyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation );
 	}
@@ -93,7 +93,7 @@ public sealed partial class KeyframeEditMode : EditMode
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return false;
 		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } ) return false;
 
-		using var scope = GetKeyframeChangeScope( view );
+		using var scope = GetKeyframeChangeScope( "Set", view );
 
 		return propertyTrack.AddKeyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation );
 	}
@@ -186,7 +186,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		ClearKeyframeChangeScope();
 
-		using var scope = Session.History.Push( "Create Keyframe" );
+		using var scope = Session.History.Push( "Add Keyframe" );
 
 		if ( !propertyTrack.AddKeyframe( time, value, DefaultInterpolation ) ) return;
 
@@ -220,7 +220,12 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		_isDraggingKeyframes = true;
 
-		using var scope = GetKeyframeChangeScope();
+		var view = SelectedKeyframes.GroupBy( x => x.View )
+			.Count() == 1
+			? handle.View
+			: null;
+
+		using var scope = GetKeyframeChangeScope( "Move", view );
 
 		var time = Session.ScenePositionToTime( e.ScenePosition, new SnapOptions( SnapFlag.PlayHead ) );
 		var transform = new MovieTransform( time - _dragStartTime );
@@ -243,7 +248,12 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		_isDraggingKeyframes = false;
 
-		using var scope = GetKeyframeChangeScope();
+		var view = SelectedKeyframes.GroupBy( x => x.View )
+			.Count() == 1
+			? handle.View
+			: null;
+
+		using var scope = GetKeyframeChangeScope( "Move", view );
 
 		foreach ( var modification in _modifications.Values )
 		{
@@ -274,7 +284,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		ClearKeyframeChangeScope();
 
-		using var scope = Session.History.Push( "Modify Keyframes" );
+		using var scope = Session.History.Push( $"{change.Name} Keyframes" );
 
 		foreach ( var group in GetSelectedKeyframes() )
 		{

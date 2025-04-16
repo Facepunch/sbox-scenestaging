@@ -56,6 +56,7 @@ public partial class MovieEditor : Widget
 		splitter.SetStretch( 1, 3 );
 
 		Session.RestoreFromCookies();
+		Session.History.Initialize();
 	}
 
 	void CloseSession()
