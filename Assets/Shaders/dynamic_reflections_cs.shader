@@ -143,15 +143,6 @@ CS
             return;
         }
 
-        // Use wave intrinsics to check if all threads in a wave are over roughness threshold
-        // This allows entire waves to skip processing for better performance
-        bool allThreadsOverThreshold = WaveActiveAllTrue(flRoughness > RoughnessCutoff);
-        if (allThreadsOverThreshold) {
-            OutRadiance[vDispatch] = float4(0, 0, 0, 0);
-            RayLength[vDispatch] = 0;
-            return;
-        }
-
         //----------------------------------------------
         [unroll]
         for ( uint k = 0; k < nSamplesPerPixel; k++ )
@@ -182,7 +173,7 @@ CS
             float3 vHitWs = InvProjectPosition(trace.HitClipSpace.xyz, g_matProjectionToWorld) + g_vCameraPositionWs.xyz;
             flHitLength = distance(vPositionWs, vHitWs); // Used for contact hardening
 
-            int2 vLastFramePositionHitSs = ReprojectFromLastFrameSs(vHitWs).xy - 0.5f;
+            float2 vLastFramePositionHitSs = ReprojectFromLastFrameSs(vHitWs).xy;
             vLastFramePositionHitSs = clamp(vLastFramePositionHitSs, 0, g_vViewportSize - 1); // Clamp to avoid out of bounds, allows us to reconstruct better
 
             //----------------------------------------------
@@ -304,7 +295,7 @@ CS
         uint2 dispatch_thread_id = dispatchThreadID;
 
         const float flReconstructMin = 0.2f;
-        const float flReconstructMax = 0.9f;
+        const float flReconstructMax = 0.7f;
         const float flMotionVectorScale = Dimensions.y;
 
         const float g_temporal_stability_factor = RemapValClamped( length( FFX_DNSR_Reflections_LoadMotionVector( dispatchThreadID ) ) * flMotionVectorScale, 1.0, 0.0, flReconstructMin, flReconstructMax );

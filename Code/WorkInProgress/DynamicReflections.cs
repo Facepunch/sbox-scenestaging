@@ -5,8 +5,6 @@ namespace Sandbox;
 [Icon( "local_mall" )]
 public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 {
-	Rendering.CommandList Commands;
-	Rendering.CommandList FBCopyCommand;
 	int Frame;
 
 	Texture BlueNoise { get; set; } = Texture.Load( FileSystem.Mounted, "textures/dev/blue_noise_256.vtex" );
@@ -16,7 +14,7 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 	/// </summary>
 	[Property, Range( 0.0f, 0.9f )] float RoughnessCutoff { get; set; } = 0.5f;
 
-	[Property] bool Denoise;
+	[Property] bool Denoise = true;
 
 	enum Passes
 	{
@@ -26,26 +24,29 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 		DenoisePrefilter,
 		DenoiseResolveTemporal
 	}
+	
+	Rendering.CommandList Commands;
+	IDisposable FetchLastFrameHook;
+	RenderTarget LastFrameRT { get; set; } = null;
 
 	protected override void OnEnabled()
 	{
 		Commands = new Rendering.CommandList( "Dynamic Reflections" );
-		FBCopyCommand = new Rendering.CommandList( "Get Last Frame Color" );
 
 		OnDirty();
 
-		Camera.AddCommandList( FBCopyCommand, Rendering.Stage.AfterOpaque, int.MaxValue );
 		Camera.AddCommandList( Commands, Rendering.Stage.AfterDepthPrepass, int.MaxValue );
+		FetchLastFrameHook = Camera.AddHookAfterTransparent( "FetchLastFrameColor", 0, FetchLastFrameColor );
 
 	}
 
 	protected override void OnDisabled()
 	{
-		Camera.RemoveCommandList( FBCopyCommand );
 		Camera.RemoveCommandList( Commands );
+		FetchLastFrameHook?.Dispose();
 
 		Commands = null;
-		FBCopyCommand = null;
+		FetchLastFrameHook = null;
 
 		Frame = 0;
 	}
@@ -60,7 +61,6 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 		if ( Commands is null )
 			return;
 
-		FBCopyCommand.Reset();
 		Commands.Reset();
 
 		bool pingPong = (Frame++ % 2) == 0;
@@ -88,12 +88,9 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 
 		ComputeShader reflectionsCs = new ComputeShader( "dynamic_reflections_cs" );
 
-		var PreviousFrameColorRT = FBCopyCommand.GrabFrameTexture( "PreviousFrameColor" );
-		var prev = FBCopyCommand.TransferRenderTarget(PreviousFrameColorRT, Commands);
-
 		// Common settings for all passes
 		Commands.Set( "GBufferHistory", GBufferHistory.ColorTexture );
-		Commands.Set( "PreviousFrameColor", prev.ColorTexture );
+		Commands.Set( "PreviousFrameColor", LastFrameRT.ColorTarget );
 		Commands.Set( "DepthHistory", DepthHistory.ColorTexture );
 
 		Commands.Set( "RayLength", RayLength.ColorTexture );
@@ -169,4 +166,11 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 		Commands.SetGlobal( "ReflectionColorIndex", pingPong ? Radiance0.ColorIndex : Radiance1.ColorIndex );
 
 	}
+
+	// This should be called after opaque pass
+	protected void FetchLastFrameColor( SceneCamera camera )
+	{
+		LastFrameRT = Graphics.GrabFrameTexture( "LastFrameColor" );
+	}
+
 }
