@@ -72,8 +72,8 @@ CS
 	float4 					Dimensions 	 	 		< Attribute("Dimensions"); >;	 		// Dimensions of the reflection buffer, xy: resolution, zw: 1 / resolution
     int                     ReflectionDownsampleRatio < Attribute("ReflectionDownsampleRatio"); Default(0); > ; // Denominator of how much smaller the output buffer is than the hierarchical depth buffer, 0 means same size, 1 means half size, 2 means quarter size, etc.
 
-    SamplerState            PointWrap < Filter( POINT ); >;
-	SamplerState 			BilinearWrap < Filter( BILINEAR ); >;
+    SamplerState            PointWrap < Filter( POINT ); AddressU( CLAMP ); AddressV( CLAMP ); AddressW( CLAMP ); >;
+	SamplerState 			BilinearWrap < Filter( BILINEAR ); AddressU( CLAMP ); AddressV( CLAMP ); AddressW( CLAMP ); >;
 
     #define Dimensions g_vViewportSize
     #define InvDimensions g_vInvViewportSize
@@ -145,14 +145,12 @@ CS
 
         // Use wave intrinsics to check if all threads in a wave are over roughness threshold
         // This allows entire waves to skip processing for better performance
-#if HLSL_VERSION > 2016 // Only use wave intrinsics if available
         bool allThreadsOverThreshold = WaveActiveAllTrue(flRoughness > RoughnessCutoff);
         if (allThreadsOverThreshold) {
             OutRadiance[vDispatch] = float4(0, 0, 0, 0);
             RayLength[vDispatch] = 0;
             return;
         }
-#endif
 
         //----------------------------------------------
         [unroll]
@@ -161,7 +159,7 @@ CS
             //----------------------------------------------
             // Get noise value
             // ---------------------------------------------
-            float2 vDitherCoord = ( vDispatch.xy + ( g_vRandomFloats.xy * 256 ) ) % 256;
+            int2 vDitherCoord = ( vDispatch.xy + ( g_vRandomFloats.xy * 256 ) ) % 256;
             float3 vNoise = Bindless::GetTexture2D(BlueNoiseIndex)[ vDitherCoord.xy ].rgb;
 
             // Randomize dir by roughness
@@ -173,7 +171,7 @@ CS
             //----------------------------------------------
             // Trace reflection
             // ---------------------------------------------
-            TraceResult trace = ScreenSpace::Trace( vPositionWs, vReflectWs, vPositionSs, 128, 0, 0 );
+            TraceResult trace = ScreenSpace::Trace( vPositionWs, vReflectWs, 128 );
 
             if( !trace.ValidHit )
                 continue;
@@ -181,7 +179,7 @@ CS
             //----------------------------------------------
             // Reproject
             // ---------------------------------------------
-            float3 vHitWs = ScreenSpaceToWorldSpace(trace.HitClipSpace.xyz) + g_vCameraPositionWs.xyz;
+            float3 vHitWs = InvProjectPosition(trace.HitClipSpace.xyz, g_matProjectionToWorld) + g_vCameraPositionWs.xyz;
             flHitLength = distance(vPositionWs, vHitWs); // Used for contact hardening
 
             int2 vLastFramePositionHitSs = ReprojectFromLastFrameSs(vHitWs).xy - 0.5f;
@@ -190,7 +188,7 @@ CS
             //----------------------------------------------
             // Fetch and accumulate color and confidence
             // ---------------------------------------------
-            bool bValidSample = (trace.Confidence > 0.0);
+            bool bValidSample = (trace.Confidence > 0.0f);
 
             vColor += PreviousFrameColor[ vLastFramePositionHitSs ].rgb;
 
@@ -299,12 +297,15 @@ CS
                 uint localIndex: SV_GroupIndex,
                 uint2 groupID: SV_GroupID)
     {
+        if( dispatchThreadID.x > Dimensions.x || dispatchThreadID.y > Dimensions.y )
+            return;
+
         uint2 group_thread_id 		= groupThreadID;
         uint2 dispatch_thread_id = dispatchThreadID;
 
         const float flReconstructMin = 0.2f;
-        const float flReconstructMax = 0.99f;
-        const float flMotionVectorScale = Dimensions.x;
+        const float flReconstructMax = 0.9f;
+        const float flMotionVectorScale = Dimensions.y;
 
         const float g_temporal_stability_factor = RemapValClamped( length( FFX_DNSR_Reflections_LoadMotionVector( dispatchThreadID ) ) * flMotionVectorScale, 1.0, 0.0, flReconstructMin, flReconstructMax );
 
@@ -328,21 +329,6 @@ CS
             // Prefilter
             //
             FFX_DNSR_Reflections_Prefilter( dispatch_thread_id, group_thread_id, Dimensions.xy );
-
-            // Edge Gap Hardening
-            /*
-            int2 offsets[] = { int2(0,-3), int2(0,3), int2(-3,0), int2(3,0) };
-
-            for( int i = 0; i < 4; i++ )
-            {
-                int2 offset = offsets[i];
-                if ( any( ReflectionGBuffer[dispatch_thread_id].xy ) && !any( ReflectionGBuffer[dispatch_thread_id + offset].xy ) )
-                {
-                    OutRadiance[dispatch_thread_id] = OutRadiance[dispatch_thread_id - offset];
-                    return;
-                }
-            }
-            */
 		}
 		#elif ( D_PASS == PASS_RESOLVE_TEMPORAL )
         {

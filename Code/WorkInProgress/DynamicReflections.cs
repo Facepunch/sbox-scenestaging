@@ -3,7 +3,6 @@ namespace Sandbox;
 [Title( "Dynamic Reflections (SSR)" )]
 [Category( "Post Processing" )]
 [Icon( "local_mall" )]
-[Hide]
 public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 {
 	Rendering.CommandList Commands;
@@ -69,8 +68,6 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 
 		Commands.Set( "BlueNoiseIndex", BlueNoise.Index );
 
-		var PreviousFrameColorRT = FBCopyCommand.GrabFrameTexture( "PrevFrameTexture" );
-
 		var Radiance0 = Commands.GetRenderTarget( "Radiance0", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
 		var Radiance1 = Commands.GetRenderTarget( "Radiance1", ImageFormat.RGBA16161616F, sizeFactor: downsampleRatio );
 
@@ -91,9 +88,12 @@ public class DynamicReflections : PostProcess, Component.ExecuteInEditor
 
 		ComputeShader reflectionsCs = new ComputeShader( "dynamic_reflections_cs" );
 
+		var PreviousFrameColorRT = FBCopyCommand.GrabFrameTexture( "PreviousFrameColor" );
+		var prev = FBCopyCommand.TransferRenderTarget(PreviousFrameColorRT, Commands);
+
 		// Common settings for all passes
 		Commands.Set( "GBufferHistory", GBufferHistory.ColorTexture );
-		Commands.Set( "PreviousFrameColor", PreviousFrameColorRT.ColorTexture );
+		Commands.Set( "PreviousFrameColor", prev.ColorTexture );
 		Commands.Set( "DepthHistory", DepthHistory.ColorTexture );
 
 		Commands.Set( "RayLength", RayLength.ColorTexture );
