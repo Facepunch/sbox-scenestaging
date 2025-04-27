@@ -67,7 +67,7 @@ public sealed record CompiledPropertyTrack<T>(
 	ImmutableArray<ICompiledPropertyBlock<T>> Blocks )
 	: ICompiledPropertyTrack, IPropertyTrack<T>
 {
-	internal CompiledPropertyTrack( string name, ICompiledTrack parent, IEnumerable<ICompiledPropertyBlock>? blocks )
+	public CompiledPropertyTrack( string name, ICompiledTrack parent, IEnumerable<ICompiledPropertyBlock>? blocks )
 		: this( name, parent, blocks?.Cast<ICompiledPropertyBlock<T>>().ToImmutableArray() ?? ImmutableArray<ICompiledPropertyBlock<T>>.Empty )
 	{
 
