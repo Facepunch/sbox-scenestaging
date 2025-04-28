@@ -7,7 +7,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-[Title( "Keyframe Editor" ), Icon( "key" ), Order( 1 )]
+[Title( "Keyframe Editor" ), Icon( "key" ), Order( 0 )]
 [Description( "Add or modify keyframes on tracks." )]
 public sealed partial class KeyframeEditMode : EditMode
 {

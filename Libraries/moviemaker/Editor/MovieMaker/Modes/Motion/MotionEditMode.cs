@@ -5,7 +5,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-[Title( "Motion Editor" ), Icon( "brush" ), Order( 0 )]
+[Title( "Motion Editor" ), Icon( "brush" ), Order( 1 )]
 [Description( "Sculpt changes on selected time ranges. Ideal for tweaking recordings." )]
 public sealed partial class MotionEditMode : EditMode
 {
