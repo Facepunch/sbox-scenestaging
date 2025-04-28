@@ -383,10 +383,12 @@ public sealed partial class KeyframeEditMode : EditMode
 	{
 		base.OnDrawGizmos( trackView, timeRange );
 
+		var clampedTimeRange = timeRange.Clamp( (0d, Project.Duration) );
+
 		foreach ( var keyframe in trackView.Keyframes )
 		{
-			if ( keyframe.Time < timeRange.Start ) continue;
-			if ( keyframe.Time >= timeRange.End ) continue;
+			if ( keyframe.Time < clampedTimeRange.Start ) continue;
+			if ( keyframe.Time > clampedTimeRange.End ) break;
 
 			if ( keyframe.Time == Session.CurrentPointer ) continue;
 

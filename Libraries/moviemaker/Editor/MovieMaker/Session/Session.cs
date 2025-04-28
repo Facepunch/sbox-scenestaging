@@ -451,8 +451,8 @@ public sealed partial class Session
 
 		Gizmo.Draw.IgnoreDepth = true;
 
-		var timeRange = new MovieTimeRange( 0d, Project.Duration )
-			.Clamp( (CurrentPointer - 5d, CurrentPointer + 5d) );
+		var timeRange = new MovieTimeRange( CurrentPointer - 5d, CurrentPointer + 5d );
+		var clampedTimeRange = timeRange.Clamp( (0d, Project.Duration) );
 
 		EditMode?.DrawGizmos( selectedTrackView, timeRange );
 
@@ -460,7 +460,7 @@ public sealed partial class Session
 
 		(timeScale * MovieTime.FromSeconds( RealTime.Now )).GetFrameIndex( 1d, out var timeOffset );
 
-		for ( var baseTime = timeRange.Start.Floor( 1d ); baseTime < timeRange.End; baseTime += 1d )
+		for ( var baseTime = clampedTimeRange.Start.Floor( 1d ); baseTime < clampedTimeRange.End; baseTime += 1d )
 		{
 			var t = baseTime + timeOffset;
 

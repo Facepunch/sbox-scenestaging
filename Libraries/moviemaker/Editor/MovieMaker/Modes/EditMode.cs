@@ -187,18 +187,19 @@ public abstract partial class EditMode
 	protected virtual void OnDrawGizmos( TrackView trackView, MovieTimeRange timeRange )
 	{
 		var interval = MovieTime.FromFrames( 1, 30 );
+		var clampedTimeRange = timeRange.Clamp( (0d, Project.Duration) );
 
 		Transform? prevTransform = null;
 
 		var gap = false;
 
-		for ( var t = timeRange.Start; t <= timeRange.End; t += interval )
+		for ( var t = clampedTimeRange.Start.Floor( interval * 2 ); t <= clampedTimeRange.End; t += interval )
 		{
 			if ( trackView.TransformTrack.TryGetValue( t, out var next ) )
 			{
 				var alpha = Session.GetGizmoAlpha( t, timeRange );
 				var dist = Gizmo.CameraTransform.Position.Distance( next.Position );
-				var scale = dist / 32f;
+				var scale = dist / 64f;
 
 				if ( trackView.Track is IPropertyTrack<Rotation> rotationTrack && rotationTrack.TryGetValue( t, out var rotation ) )
 				{
