@@ -25,7 +25,12 @@ file sealed class DummyPage( ToolBarItemDisplay display ) : Widget, IListPanelPa
 /// </summary>
 public sealed class ListPanel : MovieEditorPanel
 {
+	public const float TitleHeight = 32f;
+
+	private readonly Label _pageTitle;
+
 	public TrackListPage TrackList { get; }
+	public PlayerListPage PlayerList { get; }
 
 	private readonly ImmutableArray<IListPanelPage> _pages;
 
@@ -35,12 +40,16 @@ public sealed class ListPanel : MovieEditorPanel
 		_pages =
 		[
 			TrackList = new TrackListPage( this, session ),
-			new DummyPage( new ToolBarItemDisplay( "Movies", "video_library",
+			new DummyPage( new ToolBarItemDisplay( "Movie Resources", "movie",
 				"Lists movie clips in the current project, letting you load or import them." ) ),
-			new DummyPage( new ToolBarItemDisplay( "Players", "movie",
-				"Lists movie playback components in the scene, so you can switch between them." ) ),
+			PlayerList = new PlayerListPage( this, session ),
 			new HistoryPage( this, session )
 		];
+
+		_pageTitle = new Label.Header( this );
+		_pageTitle.Alignment = TextFlag.Center;
+		_pageTitle.FixedHeight = TitleHeight;
+		_pageTitle.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
 
 		SetPage( TrackList );
 
@@ -138,7 +147,12 @@ public sealed class ListPanel : MovieEditorPanel
 			() => parent.Session?.Parent is not null );
 	}
 
-	private void SetPage( IListPanelPage page )
+	public void OpenPlayerPage()
+	{
+		SetPage( PlayerList );
+	}
+
+	public void SetPage( IListPanelPage page )
 	{
 		foreach ( var widget in _pages )
 		{
@@ -147,7 +161,10 @@ public sealed class ListPanel : MovieEditorPanel
 
 		Layout.Clear( false );
 		Layout.Add( ToolBar );
+		Layout.Add( _pageTitle );
 		Layout.Add( (Widget)page );
+
+		_pageTitle.Text = page.Display.Title;
 	}
 
 	private static string GetFullPath( Session session )

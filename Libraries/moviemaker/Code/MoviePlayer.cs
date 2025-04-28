@@ -7,7 +7,7 @@ namespace Sandbox.MovieMaker;
 /// <summary>
 /// Plays a <see cref="IClip"/> in a <see cref="Scene"/> to animate properties over time.
 /// </summary>
-[Icon( "movie" )]
+[Icon( "live_tv" )]
 public sealed class MoviePlayer : Component
 {
 	private MovieTime _position;
