@@ -20,6 +20,9 @@ public sealed partial class Session
 
 	private void StartRecording()
 	{
+		// TODO: dedicated recording mode?
+		SetEditMode( typeof(MotionEditMode) );
+
 		if ( EditMode is not { AllowRecording: true } editMode ) return;
 		if ( _isRecording ) return;
 
