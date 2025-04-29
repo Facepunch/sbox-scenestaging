@@ -15,7 +15,7 @@ namespace Editor.MovieMaker;
 partial class MovieProject : IJsonPopulator
 {
 	internal sealed record Model(
-		int SampleRate,
+		int SampleRate, MovieTime? Duration,
 		ImmutableDictionary<Guid, ProjectTrackModel> Tracks,
 		ImmutableDictionary<Guid, ProjectSourceClip.Model>? Sources );
 
@@ -26,7 +26,7 @@ partial class MovieProject : IJsonPopulator
 		using var scope = MovieSerializationContext.Push();
 
 		return new Model(
-			SampleRate,
+			SampleRate, Duration,
 			Tracks.ToImmutableDictionary( x => x.Id, x => x.Serialize( EditorJsonOptions ) ),
 			scope.SourceClips.ToImmutableDictionary( x => x.Id, x => x.Serialize() ) );
 	}

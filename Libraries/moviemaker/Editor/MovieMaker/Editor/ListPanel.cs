@@ -30,7 +30,8 @@ public sealed class ListPanel : MovieEditorPanel
 	private readonly Label _pageTitle;
 
 	public TrackListPage TrackList { get; }
-	public PlayerListPage PlayerList { get; }
+	public MovieResourceListPage MovieList { get; }
+	public MoviePlayerListPage PlayerList { get; }
 
 	private readonly ImmutableArray<IListPanelPage> _pages;
 
@@ -40,9 +41,8 @@ public sealed class ListPanel : MovieEditorPanel
 		_pages =
 		[
 			TrackList = new TrackListPage( this, session ),
-			new DummyPage( new ToolBarItemDisplay( "Movie Resources", "movie",
-				"Lists movie clips in the current project, letting you load or import them." ) ),
-			PlayerList = new PlayerListPage( this, session ),
+			MovieList = new MovieResourceListPage( this, session ),
+			PlayerList = new MoviePlayerListPage( this, session ),
 			new HistoryPage( this, session )
 		];
 
