@@ -24,7 +24,7 @@ public sealed class MoviePlayerListPage : ListView, IListPanelPage
 		if ( Session.Player != player )
 		{
 			Session.Editor.Switch( player );
-			Session.Editor.ListPanel?.OpenPlayerPage();
+			Session.Editor.ListPanel?.OpenPlayersPage();
 		}
 	}
 

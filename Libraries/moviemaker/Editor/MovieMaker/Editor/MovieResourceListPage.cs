@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using Sandbox.MovieMaker;
-using static Sandbox.Services.Inventory;
 
 namespace Editor.MovieMaker;
 
@@ -19,6 +18,8 @@ public sealed class MovieResourceListPage : ListView, IListPanelPage
 		Session = session;
 
 		ItemSize = new Vector2( 128f, 64f );
+
+		IsDraggable = true;
 
 		CheckItems();
 	}
@@ -76,7 +77,7 @@ public sealed class MovieResourceListPage : ListView, IListPanelPage
 			?? MovieTime.Zero;
 
 		var trackCount = resource.Compiled?.Tracks.Length
-			?? resource.EditorData?["Tracks"]?.AsObject()?.Count
+			?? resource.EditorData?["Tracks"]?.AsObject().Count
 			?? 0;
 
 		Paint.SetPen( col.WithAlpha( 0.5f ) );
@@ -89,5 +90,30 @@ public sealed class MovieResourceListPage : ListView, IListPanelPage
 		if ( obj is not MovieResource resource ) return "";
 
 		return resource.ResourcePath;
+	}
+
+	protected override void OnItemActivated( object item )
+	{
+		if ( item is not MovieResource resource ) return;
+
+		Session.Editor.SwitchResource( resource );
+		Session.Editor.ListPanel?.OpenMoviesPage();
+	}
+
+	protected override bool OnDragItem( VirtualWidget item )
+	{
+		if ( item.Object is not MovieResource resource ) return false;
+		if ( !Session.CanReferenceMovie( resource ) ) return false;
+
+		var asset = AssetSystem.FindByPath( resource.ResourcePath );
+		var drag = new Drag( this ) { Data =
+		{
+			Text = resource.ResourcePath,
+			Url = new System.Uri( $"file://{asset.AbsolutePath}" )
+		} };
+
+		drag.Execute();
+
+		return true;
 	}
 }

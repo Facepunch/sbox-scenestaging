@@ -17,7 +17,8 @@ partial class MovieProject : IJsonPopulator
 	internal sealed record Model(
 		int SampleRate, MovieTime? Duration,
 		ImmutableDictionary<Guid, ProjectTrackModel> Tracks,
-		ImmutableDictionary<Guid, ProjectSourceClip.Model>? Sources );
+		ImmutableDictionary<Guid, ProjectSourceClip.Model>? Sources,
+		ImmutableHashSet<MovieResource>? References );
 
 	public JsonNode Serialize() => JsonSerializer.SerializeToNode( Snapshot(), EditorJsonOptions )!;
 
@@ -28,7 +29,8 @@ partial class MovieProject : IJsonPopulator
 		return new Model(
 			SampleRate, Duration,
 			Tracks.ToImmutableDictionary( x => x.Id, x => x.Serialize( EditorJsonOptions ) ),
-			scope.SourceClips.ToImmutableDictionary( x => x.Id, x => x.Serialize() ) );
+			scope.SourceClips.ToImmutableDictionary( x => x.Id, x => x.Serialize() ),
+			Tracks.OfType<ProjectSequenceTrack>().SelectMany( x => x.References ).ToImmutableHashSet() );
 	}
 
 	internal void Restore( Model model )

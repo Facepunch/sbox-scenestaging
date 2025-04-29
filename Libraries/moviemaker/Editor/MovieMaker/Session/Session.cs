@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -482,5 +483,39 @@ public sealed partial class Session
 			Gizmo.Draw.Color = Theme.Blue;
 			Gizmo.Draw.Arrow( transform.Position, transform.Position + transform.Rotation * Vector3.Up * length, arrowLength, arrowWidth );
 		}
+	}
+
+	public bool CanReferenceMovie( MovieResource resource )
+	{
+		var references = new HashSet<MovieResource>();
+		var refQueue = new Queue<MovieResource>();
+
+		references.Add( resource );
+		refQueue.Enqueue( resource );
+
+		while ( refQueue.TryDequeue( out var next ) )
+		{
+			var refs = next.EditorData?["References"]?.Deserialize<ImmutableHashSet<MovieResource>>()
+				?? ImmutableHashSet<MovieResource>.Empty;
+
+			foreach ( var @ref in refs )
+			{
+				if ( references.Add( @ref ) )
+				{
+					refQueue.Enqueue( @ref );
+				}
+			}
+		}
+
+		return CanReferenceMovieCore( references );
+	}
+
+	private bool CanReferenceMovieCore( IReadOnlySet<MovieResource> references )
+	{
+		// Don't allow cyclic references!
+
+		if ( references.Contains( Resource ) ) return false;
+
+		return Parent?.CanReferenceMovieCore( references ) ?? true;
 	}
 }

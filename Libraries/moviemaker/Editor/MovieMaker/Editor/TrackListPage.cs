@@ -280,17 +280,6 @@ public sealed class TrackListPage : Widget, IListPanelPage
 
 			yield break;
 		}
-
-		if ( data.Assets.FirstOrDefault( x => x.AssetPath?.EndsWith( ".movie" ) ?? false ) is { } assetData )
-		{
-			var assetTask = assetData.GetAssetAsync();
-
-			if ( !assetTask.IsCompleted ) yield break;
-
-			if ( assetTask.Result?.LoadResource<MovieResource>() is not { } resource ) yield break;
-
-			yield return Session.GetOrCreateTrack( resource );
-		}
 	}
 
 	private static PropertyInfo? DragData_Current { get; } = typeof(DragData)

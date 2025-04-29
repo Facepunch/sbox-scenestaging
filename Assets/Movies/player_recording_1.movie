@@ -1,6 +1,7 @@
 {
   "EditorData": {
     "SampleRate": 30,
+    "Duration": 117000,
     "Tracks": {
       "17ef9ab1-9922-46a6-9e45-12898ca6ff51": {
         "$type": "Property",
@@ -99,50 +100,42 @@
                 {
                   "Time": 0,
                   "Value": "-0.04243343,0.11054,0.3558549,0.92701",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 2880,
                   "Value": "-0.04243343,0.11054,0.3558549,0.92701",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 7200,
                   "Value": "-0.01323744,0.07909968,0.1645243,0.9831072",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 9000,
                   "Value": "-0.05129413,0.04466711,0.7523964,0.6551895",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 15120,
                   "Value": "-0.01550674,0.01534494,0.7106363,0.7032213",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 19800,
                   "Value": "-0.01253818,0.02198124,0.495309,0.8683482",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 21600,
                   "Value": "0.05084994,0.1821314,-0.2640582,0.9457884",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 23400,
                   "Value": "0.07742094,0.1029302,-0.5961025,0.7925107",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 }
               ]
             }
@@ -294,50 +287,42 @@
                 {
                   "Time": 0,
                   "Value": "-43.08848,-706.9748,1173.282",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 2880,
                   "Value": "-43.08848,-706.9748,1173.282",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 7200,
                   "Value": "346.4694,-562.5444,1106.638",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 9000,
                   "Value": "599.2042,-518.0599,1119.4",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 15120,
                   "Value": "593.9376,-217.8601,1091.749",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 19800,
                   "Value": "547.6102,296.017,1093.307",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 21600,
                   "Value": "700.7175,563.3954,1058.086",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 },
                 {
                   "Time": 23400,
                   "Value": "833.0989,603.3909,1043.154",
-                  "In": 0.5,
-                  "Out": 0.5
+                  "Interpolation": "Linear"
                 }
               ]
             }
@@ -512,7 +497,8 @@
           ]
         }
       }
-    }
+    },
+    "References": []
   },
   "__references": [],
   "__version": 0

@@ -147,9 +147,14 @@ public sealed class ListPanel : MovieEditorPanel
 			() => parent.Session?.Parent is not null );
 	}
 
-	public void OpenPlayerPage()
+	public void OpenPlayersPage()
 	{
 		SetPage( PlayerList );
+	}
+
+	public void OpenMoviesPage()
+	{
+		SetPage( MovieList );
 	}
 
 	public void SetPage( IListPanelPage page )

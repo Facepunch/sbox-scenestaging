@@ -72,6 +72,8 @@ public class Timeline : GraphicsView
 
 		FocusMode = FocusMode.TabOrClickOrWheel;
 
+		AcceptDrops = true;
+
 		var bg = new Pixmap( 8 );
 		bg.Clear( Colors.Background );
 
@@ -382,6 +384,87 @@ public class Timeline : GraphicsView
 		base.OnKeyRelease( e );
 
 		Session.EditMode?.KeyRelease( e );
+	}
+
+	private MovieResource? GetDraggedClip( DragData data )
+	{
+		if ( data.Assets.FirstOrDefault( x => x.AssetPath?.EndsWith( ".movie" ) ?? false ) is not { } assetData )
+		{
+			return null;
+		}
+
+		var assetTask = assetData.GetAssetAsync();
+
+		if ( !assetTask.IsCompleted ) return null;
+		if ( assetTask.Result?.LoadResource<MovieResource>() is not { } resource ) return null;
+
+		if ( !Session.CanReferenceMovie( resource ) ) return null;
+
+		return resource;
+	}
+
+	private ProjectSequenceTrack? _draggedTrack;
+	private ProjectSequenceBlock? _draggedBlock;
+
+	public override void OnDragHover( DragEvent ev )
+	{
+		if ( _draggedBlock is null || _draggedTrack is null )
+		{
+			if ( GetDraggedClip( ev.Data ) is not { } resource )
+			{
+				ev.Action = DropAction.Ignore;
+				return;
+			}
+
+			var clip = resource.GetCompiled();
+
+			_draggedTrack = Session.GetOrCreateTrack( resource );
+			_draggedBlock = _draggedTrack.AddBlock( (0d, clip.Duration), default, resource );
+
+			Session.TrackList.Update();
+			UpdateTracksIfNeeded();
+		}
+
+		var time = Session.ScenePositionToTime( ToScene( ev.LocalPosition ),
+			new SnapOptions( IgnoreBlock: _draggedBlock ) );
+
+		_draggedBlock.TimeRange = (time, time + _draggedBlock.TimeRange.Duration);
+		_draggedBlock.Transform = new MovieTransform( -time );
+
+		Session.TrackList.Find( _draggedTrack )?.MarkValueChanged();
+
+		Log.Info( time );
+
+		ev.Action = DropAction.Link;
+	}
+
+	public override void OnDragLeave()
+	{
+		base.OnDragLeave();
+
+		if ( _draggedBlock is { } block && _draggedTrack is { } track )
+		{
+			track.RemoveBlock( block );
+
+			if ( track.IsEmpty )
+			{
+				track.Remove();
+			}
+
+			_draggedTrack = null;
+			_draggedBlock = null;
+		}
+	}
+
+	public override void OnDragDrop( DragEvent ev )
+	{
+		if ( GetDraggedClip( ev.Data ) is not { } movie )
+		{
+			return;
+		}
+
+		_draggedTrack = null;
+		_draggedBlock = null;
 	}
 
 	public void GetSnapTimes( ref TimeSnapHelper snap )

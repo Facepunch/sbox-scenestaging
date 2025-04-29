@@ -1,6 +1,7 @@
 {
   "EditorData": {
     "SampleRate": 30,
+    "Duration": 40320,
     "Tracks": {
       "295bc566-6213-4d4d-874c-4bd5d276c972": {
         "$type": "Sequence",
@@ -74,7 +75,12 @@
         "TargetType": "Sandbox.MovieMaker.MovieResource"
       }
     },
-    "Sources": {}
+    "Sources": {},
+    "References": [
+      "movies/player_recording_2.movie",
+      "movies/player_recording_1.movie",
+      "movies/camera.movie"
+    ]
   },
   "__references": [],
   "__version": 0

@@ -116,12 +116,7 @@ partial class Session
 	{
 		if ( GetTrack( resource ) is { } existing ) return existing;
 
-		var track = Project.AddSequenceTrack( resource.ResourceName );
-		var clip = resource.GetCompiled();
-
-		track.AddBlock( (0d, clip.Duration), default, resource );
-
-		return track;
+		return Project.AddSequenceTrack( $"{resource.ResourceName.ToTitleCase()} Sequence" );
 	}
 
 	public IProjectTrack GetOrCreateTrack( IProjectTrack parentTrack, string propertyPath )
