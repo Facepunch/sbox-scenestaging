@@ -124,6 +124,7 @@ partial class MotionEditMode
 				var track = (IProjectPropertyTrack)trackRecorder.Track;
 
 				if ( Session.TrackList.Find( track ) is not { } view ) continue;
+				if ( !view.IsExpanded ) continue;
 
 				var finishedBlocks = trackRecorder.FinishedBlocks;
 

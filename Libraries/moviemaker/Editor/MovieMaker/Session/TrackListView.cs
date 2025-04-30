@@ -18,6 +18,7 @@ public sealed class TrackListView
 	public float Height { get; private set; }
 
 	private readonly SynchronizedSet<IProjectTrack, TrackView> _rootTracks;
+	private readonly Dictionary<IProjectTrack, TrackView> _trackDict = new();
 
 	public IReadOnlyList<TrackView> RootTracks => _rootTracks;
 
@@ -30,7 +31,7 @@ public sealed class TrackListView
 	public IEnumerable<TrackView> EditableTracks =>
 		AllTracks.Where( x => x is { IsLocked: false, Target: ITrackProperty { CanWrite: true } } );
 
-	public TrackView? Find( IProjectTrack track ) => AllTracks.FirstOrDefault( x => x.Track == track );
+	public TrackView? Find( IProjectTrack track ) => _trackDict.GetValueOrDefault( track );
 
 	public TrackView? Find( GameObject go ) => AllTracks.FirstOrDefault( x =>
 		x.Target is ITrackReference<GameObject> { IsBound: true } target && target.Value == go );
@@ -67,6 +68,13 @@ public sealed class TrackListView
 	public void Update()
 	{
 		if ( !_rootTracks.Update( Session.Project.RootTracks.Order() ) ) return;
+
+		_trackDict.Clear();
+
+		foreach ( var trackView in AllTracks )
+		{
+			_trackDict[trackView.Track] = trackView;
+		}
 
 		var position = 0f;
 		var hashCode = new HashCode();

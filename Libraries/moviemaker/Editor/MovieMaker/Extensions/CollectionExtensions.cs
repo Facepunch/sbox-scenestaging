@@ -116,6 +116,8 @@ public sealed class SynchronizedSet<TSrc, TItem> : ISynchronizedList<TSrc, TItem
 		_indices = new Dictionary<TSrc, int>( comparer );
 	}
 
+	public TItem? Find( TSrc key ) => _items.GetValueOrDefault( key );
+
 	public void Clear() => Update( [] );
 
 	public bool Update( IEnumerable<TSrc> source )
