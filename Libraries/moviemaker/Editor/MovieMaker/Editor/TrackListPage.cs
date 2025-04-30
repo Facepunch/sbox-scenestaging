@@ -219,28 +219,30 @@ public sealed class TrackListPage : Widget, IListPanelPage
 
 	private IEnumerable<IProjectTrack> CreateDraggedTracks( DragData data )
 	{
-		if ( data.OfType<GameObject>().FirstOrDefault() is { } go )
+		if ( data.OfType<GameObject>().ToArray() is { Length: > 0 } gos )
 		{
-			yield return Session.GetOrCreateTrack( go );
-			yield return Session.GetOrCreateTrack( go, nameof(GameObject.Enabled) );
-			yield return Session.GetOrCreateTrack( go, nameof(GameObject.LocalPosition) );
-			yield return Session.GetOrCreateTrack( go, nameof(GameObject.LocalRotation) );
-
-			if ( go.GetComponent<PlayerController>() is { } controller )
+			foreach ( var go in gos )
 			{
-				yield return Session.GetOrCreateTrack( controller );
-				yield return Session.GetOrCreateTrack( controller, nameof(PlayerController.EyeAngles) );
-				yield return Session.GetOrCreateTrack( controller, nameof(PlayerController.WishVelocity) );
-				yield return Session.GetOrCreateTrack( controller, nameof(PlayerController.IsSwimming) );
-				yield return Session.GetOrCreateTrack( controller, nameof(PlayerController.IsClimbing) );
-				yield return Session.GetOrCreateTrack( controller, nameof(PlayerController.IsDucking) );
-			}
+				yield return Session.GetOrCreateTrack( go );
+				yield return Session.GetOrCreateTrack( go, nameof( GameObject.Enabled ) );
+				yield return Session.GetOrCreateTrack( go, nameof( GameObject.LocalPosition ) );
+				yield return Session.GetOrCreateTrack( go, nameof( GameObject.LocalRotation ) );
 
+				if ( go.GetComponent<PlayerController>() is { } controller )
+				{
+					yield return Session.GetOrCreateTrack( controller );
+					yield return Session.GetOrCreateTrack( controller, nameof( PlayerController.EyeAngles ) );
+					yield return Session.GetOrCreateTrack( controller, nameof( PlayerController.WishVelocity ) );
+					yield return Session.GetOrCreateTrack( controller, nameof( PlayerController.IsSwimming ) );
+					yield return Session.GetOrCreateTrack( controller, nameof( PlayerController.IsClimbing ) );
+					yield return Session.GetOrCreateTrack( controller, nameof( PlayerController.IsDucking ) );
+				}
 
-			if ( go.GetComponent<Rigidbody>() is { } rigidBody )
-			{
-				yield return Session.GetOrCreateTrack( rigidBody );
-				yield return Session.GetOrCreateTrack( rigidBody, nameof(Rigidbody.Velocity) );
+				if ( go.GetComponent<Rigidbody>() is { } rigidBody )
+				{
+					yield return Session.GetOrCreateTrack( rigidBody );
+					yield return Session.GetOrCreateTrack( rigidBody, nameof( Rigidbody.Velocity ) );
+				}
 			}
 
 			yield break;
