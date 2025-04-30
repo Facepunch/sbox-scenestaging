@@ -2,13 +2,22 @@
 using Sandbox.MovieMaker;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
-public partial class MovieEditor : Widget
+public partial class MovieEditor : Widget, IHotloadManaged
 {
+	private static readonly ConditionalWeakTable<MovieEditor, object?> _editors = new();
+
+	public static IEnumerable<Session> ActiveSessions => _editors
+		.Select( x => x.Key )
+		.Where( x => x.IsValid() )
+		.Where( x => x.Session is not null )
+		.Select( x => x.Session! );
+
 	public Session? Session { get; private set; }
 
 	public ListPanel? ListPanel { get; private set; }
@@ -16,6 +25,8 @@ public partial class MovieEditor : Widget
 
 	public MovieEditor( Widget parent ) : base( parent )
 	{
+		_editors.Add( this, null );
+
 		Layout = Layout.Column();
 		FocusMode = FocusMode.TabOrClickOrWheel;
 
@@ -27,6 +38,13 @@ public partial class MovieEditor : Widget
 		{
 			CreateStartupHelper();
 		}
+	}
+
+	public override void OnDestroyed()
+	{
+		_editors.Remove( this );
+
+		base.OnDestroyed();
 	}
 
 	public void Initialize( Session session )

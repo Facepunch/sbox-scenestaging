@@ -18,6 +18,8 @@ public class MovieMakerDock : Widget
 	[EditorEvent.Hotload]
 	private void Build()
 	{
+		_editor?.Destroy();
+
 		Layout.Clear( true );
 		Layout.Add( _editor = new MovieEditor( this ) );
 	}
