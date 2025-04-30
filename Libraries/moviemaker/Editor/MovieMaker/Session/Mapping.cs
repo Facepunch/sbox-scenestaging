@@ -160,47 +160,4 @@ partial class Session
 
 		return Project.AddPropertyTrack( property.Name, property.TargetType, parentTrack );
 	}
-
-	/// <summary>
-	/// Advance all bound <see cref="SkinnedModelRenderer"/>s by the given <paramref name="deltaTime"/>.
-	/// </summary>
-	public void AdvanceAnimations( MovieTime deltaTime )
-	{
-		// Negative deltas aren't supported :(
-
-		var dt = Math.Min( (float)deltaTime.Absolute.TotalSeconds, 1f );
-
-		using var sceneScope = Player.Scene.Push();
-
-		foreach ( var controller in Binder.GetComponents<PlayerController>( Project ) )
-		{
-			((IScenePhysicsEvents)controller).PrePhysicsStep();
-			((IScenePhysicsEvents)controller).PostPhysicsStep();
-
-			if ( controller.Renderer is { } renderer )
-			{
-				controller.UpdateAnimation( renderer );
-
-				UpdateAnimationPlaybackRate( renderer, dt );
-			}
-		}
-
-		foreach ( var renderer in Binder.GetComponents<SkinnedModelRenderer>( Project ) )
-		{
-			UpdateAnimationPlaybackRate( renderer, dt );
-		}
-	}
-
-	private void UpdateAnimationPlaybackRate( SkinnedModelRenderer renderer, float dt )
-	{
-		if ( renderer.SceneModel is not { } model ) return;
-
-		if ( dt > 0f )
-		{
-			model.PlaybackRate = renderer.PlaybackRate;
-			model.Update( dt );
-		}
-
-		model.PlaybackRate = IsEditorScene ? 0f : 1f;
-	}
 }

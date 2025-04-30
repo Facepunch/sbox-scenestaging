@@ -140,7 +140,7 @@ public static class ClipExtensions
 	{
 		var anyChanges = false;
 
-		foreach ( var track in clip.GetTracks( time ).OfType<IPropertyTrack>() )
+		foreach ( var track in clip.Tracks.OfType<IPropertyTrack>() )
 		{
 			anyChanges |= track.Update( time, binder );
 		}

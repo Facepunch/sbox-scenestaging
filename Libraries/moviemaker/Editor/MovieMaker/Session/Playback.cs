@@ -11,7 +11,6 @@ public sealed partial class Session
 
 	private MovieTime? _lastPlayerPosition;
 	private bool _applyNextFrame;
-	private MovieTime _lastAppliedTime;
 
 	public bool IsPlaying
 	{
@@ -53,10 +52,6 @@ public sealed partial class Session
 		{
 			view.ApplyFrame( time );
 		}
-
-		AdvanceAnimations( time - _lastAppliedTime );
-
-		_lastAppliedTime = time;
 	}
 
 	public void RefreshNextFrame()

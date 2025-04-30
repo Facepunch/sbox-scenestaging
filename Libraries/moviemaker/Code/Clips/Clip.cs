@@ -29,7 +29,30 @@ public interface IClip
 	/// <summary>
 	/// Get tracks that are active at the given <paramref name="time"/>.
 	/// </summary>
-	public IEnumerable<ITrack> GetTracks( MovieTime time ) => Tracks;
+	public IEnumerable<ITrack> GetActiveTracks( MovieTime time )
+	{
+		var active = new HashSet<ITrack>();
+
+		static void AddActive( HashSet<ITrack> active, ITrack track )
+		{
+			if ( !active.Add( track ) ) return;
+
+			if ( track.Parent is { } parent )
+			{
+				AddActive( active, parent );
+			}
+		}
+
+		foreach ( var track in Tracks )
+		{
+			if ( track is IPropertyTrack propTrack && propTrack.TryGetValue( time, out _ ) )
+			{
+				AddActive( active, track );
+			}
+		}
+
+		return active;
+	}
 }
 
 /// <summary>

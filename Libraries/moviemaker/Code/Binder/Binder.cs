@@ -82,13 +82,16 @@ public sealed partial class TrackBinder( Scene? scene = null ) : IEnumerable<Key
 		};
 	}
 
-	public IEnumerable<T> GetComponents<T>( IClip clip )
-		where T : Component
+	public IEnumerable<T> GetActive<T>( IClip clip, MovieTime time )
+		where T : IValid
 	{
-		return clip.Tracks
-			.OfType<IReferenceTrack<T>>()
-			.Select( x => Get( x ).Value )
-			.OfType<T>();
+		foreach ( var track in clip.GetActiveTracks( time ) )
+		{
+			if ( track is IReferenceTrack refTrack && Get( refTrack ) is { IsBound: true, Value: T value } )
+			{
+				yield return value;
+			}
+		}
 	}
 
 	private static ConditionalWeakTable<Scene, TrackBinder> DefaultBinders { get; } = new();
