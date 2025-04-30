@@ -176,7 +176,7 @@ file sealed class MovieSerializationContext : IDisposable
 public abstract record ProjectTrackModel( string Name, Type TargetType,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] Guid? ParentId );
 
-file sealed record ProjectReferenceTrackModel( string Name, Type TargetType, Guid? ParentId )
+file sealed record ProjectReferenceTrackModel( string Name, Type TargetType, Guid? ParentId, Guid? ReferenceId )
 	: ProjectTrackModel( Name, TargetType, ParentId );
 
 file sealed record ProjectPropertyTrackModel( string Name, Type TargetType, Guid? ParentId,
@@ -202,12 +202,14 @@ partial class ProjectReferenceTrack<T>
 {
 	public override ProjectTrackModel Serialize( JsonSerializerOptions options )
 	{
-		return new ProjectReferenceTrackModel( Name, TargetType, Parent?.Id );
+		return new ProjectReferenceTrackModel( Name, TargetType, Parent?.Id, ReferenceId );
 	}
 
 	public override void Deserialize( ProjectTrackModel model, JsonSerializerOptions options )
 	{
 		if ( model is not ProjectReferenceTrackModel refModel ) return;
+
+		ReferenceId = refModel.ReferenceId;
 	}
 }
 

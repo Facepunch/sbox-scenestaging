@@ -123,7 +123,7 @@ partial class TrackBinder : IJsonPopulator
 	/// <summary>
 	/// Target that references a <see cref="GameObject"/> in a scene.
 	/// </summary>
-	private sealed class GameObjectReference( ITrackReference<GameObject>? parent, string name, TrackBinder binder, Guid id )
+	private sealed class GameObjectReference( ITrackReference<GameObject>? parent, string name, TrackBinder binder, Guid id, Guid? referenceId )
 		: Reference<GameObject>( parent, id ), ITrackReference<GameObject>
 	{
 		public override string Name => Value?.Name ?? name;
@@ -133,12 +133,17 @@ partial class TrackBinder : IJsonPopulator
 
 		/// <summary>
 		/// If our parent object is bound, try to bind to a child object with a matching name.
-		/// If we have no parent, look for a root object with the right name.
+		/// If we have no parent, look up by referenceId, or default to a root object with the right name.
 		/// </summary>
 		protected override GameObject? AutoBind()
 		{
 			if ( Parent is null )
 			{
+				if ( referenceId is { } refId && binder.Scene.Directory.FindByGuid( refId ) is { } match )
+				{
+					return match;
+				}
+
 				return binder.Scene.Children.FirstOrDefault( x => x.Name == name );
 			}
 

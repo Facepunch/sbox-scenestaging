@@ -60,11 +60,12 @@ file enum TrackKind
 [method: JsonConstructor]
 file sealed record TrackModel( TrackKind Kind, string Name, Type Type,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] Guid? Id,
+	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] Guid? ReferenceId,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] ImmutableArray<TrackModel>? Children,
 	[property: JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] ImmutableArray<JsonObject>? Blocks )
 {
 	public TrackModel( ICompiledTrack track, ImmutableDictionary<ICompiledTrack, ImmutableArray<ICompiledTrack>> childDict, JsonSerializerOptions? options )
-		: this( GetKind( track ), track.Name, track.TargetType, (track as IReferenceTrack)?.Id,
+		: this( GetKind( track ), track.Name, track.TargetType, (track as IReferenceTrack)?.Id, (track as IReferenceTrack)?.ReferenceId,
 			childDict.TryGetValue( track, out var children )
 				? children.Select( x => new TrackModel( x, childDict, options ) ).ToImmutableArray() 
 				: null,
@@ -80,9 +81,9 @@ file sealed record TrackModel( TrackKind Kind, string Name, Type Type,
 		var track = Kind switch
 		{
 			TrackKind.Reference when Type == typeof(GameObject) => new CompiledReferenceTrack<GameObject>(
-				Id ?? Guid.NewGuid(), Name, (CompiledReferenceTrack<GameObject>?)parent ),
+				Id ?? Guid.NewGuid(), Name, (CompiledReferenceTrack<GameObject>?)parent, ReferenceId ),
 			TrackKind.Reference => TypeLibrary.GetType( typeof( CompiledReferenceTrack<> ) ).CreateGeneric<ICompiledReferenceTrack>( [Type],
-				[Id ?? Guid.NewGuid(), Type.Name, (CompiledReferenceTrack<GameObject>?)parent] ),
+				[Id ?? Guid.NewGuid(), Type.Name, (CompiledReferenceTrack<GameObject>?)parent, ReferenceId] ),
 			TrackKind.Action => new CompiledActionTrack( Name, Type, parent!, ImmutableArray<CompiledActionBlock>.Empty ),
 			TrackKind.Property => DeserializeHelper.Get( Type ).DeserializePropertyTrack( this, parent!, options ),
 			_ => throw new NotImplementedException()

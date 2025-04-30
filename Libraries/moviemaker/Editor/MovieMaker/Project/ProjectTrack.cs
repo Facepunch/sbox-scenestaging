@@ -131,12 +131,14 @@ public partial interface IProjectReferenceTrack : IProjectTrack, IReferenceTrack
 
 	new ProjectReferenceTrack<GameObject>? Parent { get; }
 	new Guid Id { get; }
+	new Guid? ReferenceId { get; set; }
 
 	IReferenceTrack<GameObject>? IReferenceTrack.Parent => Parent;
 	IProjectTrack? IProjectTrack.Parent => Parent;
 
 	Guid IReferenceTrack.Id => Id;
 	Guid IProjectTrack.Id => Id;
+	Guid? IReferenceTrack.ReferenceId => ReferenceId;
 }
 
 public partial class ProjectReferenceTrack<T>( MovieProject project, Guid id, string name )
@@ -147,8 +149,10 @@ public partial class ProjectReferenceTrack<T>( MovieProject project, Guid id, st
 
 	public new ProjectReferenceTrack<GameObject>? Parent => (ProjectReferenceTrack<GameObject>?)base.Parent;
 
+	public Guid? ReferenceId { get; set; }
+
 	public override ICompiledTrack Compile( ICompiledTrack? compiledParent, bool headerOnly ) =>
-		new CompiledReferenceTrack<T>( Id, Name, (CompiledReferenceTrack<GameObject>)compiledParent! );
+		new CompiledReferenceTrack<T>( Id, Name, (CompiledReferenceTrack<GameObject>)compiledParent!, ReferenceId );
 
 	ITrack? ITrack.Parent => Parent;
 }

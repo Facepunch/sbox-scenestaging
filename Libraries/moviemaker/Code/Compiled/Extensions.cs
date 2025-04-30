@@ -14,16 +14,16 @@ public static class CompiledClipExtensions
 	/// Create a nested <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.GameObject"/> with
 	/// the given <paramref name="name"/>.
 	/// </summary>
-	public static CompiledReferenceTrack<GameObject> GameObject( this CompiledReferenceTrack<GameObject> track, string name, Guid? id = null ) =>
-		new( id ?? Guid.NewGuid(), name, track );
+	public static CompiledReferenceTrack<GameObject> GameObject( this CompiledReferenceTrack<GameObject> track, string name, Guid? id = null, Guid? referenceId = null ) =>
+		new( id ?? Guid.NewGuid(), name, track, referenceId );
 
 	/// <summary>
 	/// Create a nested <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with
 	/// the given <paramref name="type"/>.
 	/// </summary>
-	public static ICompiledReferenceTrack Component( this CompiledReferenceTrack<GameObject> track, Type type, Guid? id = null ) =>
+	public static ICompiledReferenceTrack Component( this CompiledReferenceTrack<GameObject> track, Type type, Guid? id = null, Guid? referenceId = null ) =>
 		TypeLibrary.GetType( typeof(CompiledReferenceTrack<>) )
-			.CreateGeneric<ICompiledReferenceTrack>( [type], [id ?? Guid.NewGuid(), type.Name, track] );
+			.CreateGeneric<ICompiledReferenceTrack>( [type], [id ?? Guid.NewGuid(), type.Name, track, referenceId] );
 
 	/// <summary>
 	/// Create a nested <see cref="ICompiledReferenceTrack"/> that targets a <see cref="Sandbox.Component"/> with

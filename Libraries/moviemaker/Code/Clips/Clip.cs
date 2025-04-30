@@ -69,6 +69,7 @@ public interface IReferenceTrack : ITrack
 
 	/// <inheritdoc cref="ITrack.Parent"/>
 	new IReferenceTrack<GameObject>? Parent { get; }
+	Guid? ReferenceId { get; }
 
 	ITrack? ITrack.Parent => Parent;
 }

@@ -69,12 +69,26 @@ partial class Session
 
 		IProjectTrack? parentTrack = null;
 
-		if ( (go.Flags & GameObjectFlags.Bone) != 0 && go.Parent is { } parentGo and not Scene )
+		if ( go.Parent is { } parentGo and not Scene )
 		{
-			parentTrack = GetOrCreateTrack( parentGo );
+			// Procedural bone objects need a parent track
+
+			if ( (go.Flags & GameObjectFlags.Bone) != 0 )
+			{
+				parentTrack = GetOrCreateTrack( parentGo );
+			}
+
+			// Otherwise, if parent has a track, use it
+
+			else
+			{
+				parentTrack = GetTrack( parentGo );
+			}
 		}
 
 		var track = Project.AddReferenceTrack( go.Name, typeof(GameObject), parentTrack );
+
+		track.ReferenceId = go.Id;
 
 		Binder.Get( track ).Bind( go );
 
@@ -88,6 +102,8 @@ partial class Session
 		// Nest component tracks inside the containing game object's track
 		var goTrack = GetOrCreateTrack( cmp.GameObject );
 		var track = Project.AddReferenceTrack( cmp.GetType().Name, cmp.GetType(), goTrack );
+
+		track.ReferenceId = cmp.Id;
 
 		Binder.Get( track ).Bind( cmp );
 

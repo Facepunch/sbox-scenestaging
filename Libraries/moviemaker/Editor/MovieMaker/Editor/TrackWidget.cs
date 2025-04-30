@@ -110,7 +110,7 @@ public partial class TrackWidget : Widget
 			var createControlMethod = helperType.GetMethod( nameof(ReflectionHelper<IValid>.CreateControlWidget),
 				BindingFlags.Static | BindingFlags.Public )!;
 
-			_controlWidget = (ControlWidget)createControlMethod.Invoke( null, [reference] )!;
+			_controlWidget = (ControlWidget)createControlMethod.Invoke( null, [View.Track, reference] )!;
 		}
 
 		if ( !_controlWidget.IsValid() ) return false;
@@ -325,9 +325,19 @@ file sealed class CollapseButton : Button
 file sealed class ReflectionHelper<T>
 	where T : class, IValid
 {
-	public static ControlWidget CreateControlWidget( ITrackReference<T> reference )
+	public static ControlWidget CreateControlWidget( IProjectReferenceTrack track, ITrackReference<T> target )
 	{
-		return ControlWidget.Create( EditorTypeLibrary.CreateProperty( reference.Name,
-			() => reference.Value, reference.Bind ) );
+		return ControlWidget.Create( EditorTypeLibrary.CreateProperty( target.Name,
+			() => target.Value, value =>
+			{
+				track.ReferenceId = value switch
+				{
+					Component cmp => cmp.Id,
+					GameObject go => go.Id,
+					_ => null
+				};
+
+				target.Bind( value );
+			} ) );
 	}
 }

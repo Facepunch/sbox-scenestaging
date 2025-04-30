@@ -67,7 +67,7 @@ public sealed partial class TrackBinder( Scene? scene = null ) : IEnumerable<Key
 		{
 			// GameObject reference
 			IReferenceTrack refTrack when track.TargetType == typeof(GameObject) =>
-				new GameObjectReference( parent as ITrackReference<GameObject>, track.Name, this, refTrack.Id ),
+				new GameObjectReference( parent as ITrackReference<GameObject>, track.Name, this, refTrack.Id, refTrack.ReferenceId ),
 
 			// Component reference
 			IReferenceTrack refTrack =>
