@@ -298,6 +298,7 @@ file sealed class LockButton : Button
 
 	protected override void OnClicked()
 	{
+		using var scope = TrackWidget.TrackList.Session.History.Push( $"{(TrackWidget.View.IsLockedSelf ? "Unlocked" : "Locked")} Track" );
 		TrackWidget.View.IsLockedSelf = !TrackWidget.View.IsLockedSelf;
 	}
 }
