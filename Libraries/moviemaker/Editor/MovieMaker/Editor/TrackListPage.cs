@@ -1,8 +1,8 @@
-﻿using System.Collections.Immutable;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
+using Sandbox.UI;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using Sandbox.UI;
 
 namespace Editor.MovieMaker;
 
@@ -24,7 +24,7 @@ public sealed class TrackListPage : Widget, IListPanelPage
 	public IEnumerable<TrackWidget> Tracks => RootTracks.SelectMany( EnumerateDescendants );
 
 	private static IEnumerable<TrackWidget> EnumerateDescendants( TrackWidget track ) =>
-		[track, ..track.Children.SelectMany( EnumerateDescendants )];
+		[track, .. track.Children.SelectMany( EnumerateDescendants )];
 
 	private TrackListView? _trackList;
 	private readonly SynchronizedSet<TrackView, TrackWidget> _rootTracks;
@@ -68,7 +68,7 @@ public sealed class TrackListPage : Widget, IListPanelPage
 		if ( Tracks.Any( x => x.IsFocused ) || Session.Editor.TimelinePanel?.Timeline.IsFocused is not true ) return;
 		if ( item is not GameObject go ) return;
 		if ( Tracks.FirstOrDefault( x => x.View.Target is ITrackReference<GameObject> { IsBound: true } target && target.Value == go ) is not { } track ) return;
-		
+
 		track.Focus( false );
 
 		if ( Parent is ScrollArea scrollArea )
@@ -219,6 +219,8 @@ public sealed class TrackListPage : Widget, IListPanelPage
 
 	private IEnumerable<IProjectTrack> CreateDraggedTracks( DragData data )
 	{
+		using var scope = Session.History.Push( "Create New Track(s)" );
+
 		if ( data.OfType<GameObject>().ToArray() is { Length: > 0 } gos )
 		{
 			foreach ( var go in gos )
@@ -266,7 +268,7 @@ public sealed class TrackListPage : Widget, IListPanelPage
 
 				foreach ( var morphName in skinnedRenderer.Morphs.Names )
 				{
-					yield return Session.GetOrCreateTrack( component, $"{nameof(SkinnedModelRenderer.Morphs)}.{morphName}" );
+					yield return Session.GetOrCreateTrack( component, $"{nameof( SkinnedModelRenderer.Morphs )}.{morphName}" );
 				}
 			}
 
@@ -284,7 +286,7 @@ public sealed class TrackListPage : Widget, IListPanelPage
 		}
 	}
 
-	private static PropertyInfo? DragData_Current { get; } = typeof(DragData)
+	private static PropertyInfo? DragData_Current { get; } = typeof( DragData )
 		.GetProperty( "Current", BindingFlags.Static | BindingFlags.NonPublic );
 
 	private static DragData? CurrentDrag => (DragData?)DragData_Current?.GetValue( null );
@@ -313,7 +315,7 @@ file sealed class DragTargetWidget : Widget
 	public new TrackListPage Parent { get; }
 
 	public DragTargetWidget( TrackListPage parent )
-		: base ( parent )
+		: base( parent )
 	{
 		Parent = parent;
 
@@ -334,7 +336,8 @@ file sealed class DragTargetWidget : Widget
 		Layout.Add( new Label( "Drag here to create a new track." )
 		{
 			Color = Theme.Green,
-			Alignment = TextFlag.LeftCenter | TextFlag.WordWrap, WordWrap = true
+			Alignment = TextFlag.LeftCenter | TextFlag.WordWrap,
+			WordWrap = true
 		} );
 		Layout.AddStretchCell();
 	}

@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using Editor.NodeEditor;
+﻿using Editor.NodeEditor;
 using Sandbox.MovieMaker;
 using Sandbox.UI;
+using System.Reflection;
 
 namespace Editor.MovieMaker;
 
@@ -106,8 +106,8 @@ public partial class TrackWidget : Widget
 		}
 		else
 		{
-			var helperType = typeof(ReflectionHelper<>).MakeGenericType( reference.TargetType );
-			var createControlMethod = helperType.GetMethod( nameof(ReflectionHelper<IValid>.CreateControlWidget),
+			var helperType = typeof( ReflectionHelper<> ).MakeGenericType( reference.TargetType );
+			var createControlMethod = helperType.GetMethod( nameof( ReflectionHelper<IValid>.CreateControlWidget ),
 				BindingFlags.Static | BindingFlags.Public )!;
 
 			_controlWidget = (ControlWidget)createControlMethod.Invoke( null, [View.Track, reference] )!;
@@ -231,7 +231,7 @@ public partial class TrackWidget : Widget
 			rename.AddLineEdit( "Name", sequenceTrack.Name, autoFocus: true, onSubmit: OnRename );
 		}
 
-		_menu.AddOption( "Delete", "delete", View.Remove );
+		_menu.AddOption( "Delete", "delete", Remove );
 
 		if ( View.Children.Count > 0 )
 		{
@@ -251,6 +251,12 @@ public partial class TrackWidget : Widget
 		sequenceTrack.Name = name;
 
 		if ( _label is { } label ) label.Text = name;
+	}
+
+	void Remove()
+	{
+		using var scope = TrackList.Session.History.Push( "Remove Track(s)" );
+		View.Remove();
 	}
 
 	void RemoveEmptyChildren()
