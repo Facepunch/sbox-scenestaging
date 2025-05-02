@@ -25,6 +25,8 @@ file sealed class DummyPage( ToolBarItemDisplay display ) : Widget, IListPanelPa
 /// </summary>
 public sealed class ListPanel : MovieEditorPanel
 {
+	private const string PageCookieName = "moviemaker.listpage";
+
 	public const float TitleHeight = 32f;
 
 	private readonly Label _pageTitle;
@@ -51,7 +53,11 @@ public sealed class ListPanel : MovieEditorPanel
 		_pageTitle.FixedHeight = TitleHeight;
 		_pageTitle.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
 
-		SetPage( TrackList );
+		var initialPageTypeName = Cookie.Get<string>( PageCookieName, null! );
+		var initialPage = _pages.FirstOrDefault( x => x.GetType().Name == initialPageTypeName )
+			?? _pages.First();
+
+		SetPage( initialPage );
 
 		MinimumWidth = 300;
 
@@ -109,7 +115,11 @@ public sealed class ListPanel : MovieEditorPanel
 		{
 			fileGroup.AddToggle( page.Display,
 				() => page.Visible,
-				_ => SetPage( page ) );
+				_ =>
+				{
+					Cookie.Set( PageCookieName, page.GetType().Name );
+					SetPage( page );
+				} );
 		}
 
 		// File name label
@@ -129,16 +139,6 @@ public sealed class ListPanel : MovieEditorPanel
 
 		navigateGroup.AddAction( backDisplay, parent.ExitSequence,
 			() => parent.Session?.Parent is not null );
-	}
-
-	public void OpenPlayersPage()
-	{
-		SetPage( PlayerList );
-	}
-
-	public void OpenMoviesPage()
-	{
-		SetPage( MovieList );
 	}
 
 	public void SetPage( IListPanelPage page )

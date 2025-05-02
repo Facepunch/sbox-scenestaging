@@ -97,7 +97,6 @@ public sealed class MovieResourceListPage : ListView, IListPanelPage
 		if ( item is not MovieResource resource ) return;
 
 		Session.Editor.SwitchResource( resource );
-		Session.Editor.ListPanel?.OpenMoviesPage();
 	}
 
 	protected override bool OnDragItem( VirtualWidget item )
