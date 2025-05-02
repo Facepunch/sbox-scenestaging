@@ -18,10 +18,12 @@ public class MovieMakerDock : Widget
 	[EditorEvent.Hotload]
 	private void Build()
 	{
+		var sessions = _editor?.Sessions;
+
 		_editor?.Destroy();
 
 		Layout.Clear( true );
-		Layout.Add( _editor = new MovieEditor( this ) );
+		Layout.Add( _editor = new MovieEditor( this, sessions ) );
 	}
 
 	private int _titleHash;

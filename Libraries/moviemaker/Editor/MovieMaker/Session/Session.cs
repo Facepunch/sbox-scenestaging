@@ -17,9 +17,9 @@ public readonly record struct SessionContext( Session Parent,MovieTransform Tran
 /// </summary>
 public sealed partial class Session
 {
-	public MovieEditor Editor { get; }
 	public MovieProject Project { get; }
 
+	public MovieEditor Editor { get; private set; }
 	public MoviePlayer Player { get; private set; }
 	public SessionContext? Context { get; private set; }
 
@@ -110,14 +110,13 @@ public sealed partial class Session
 	/// </summary>
 	public event Action? ViewChanged;
 
-	public Session( MovieEditor editor, IMovieResource? resource )
+	public Session( IMovieResource? resource )
 	{
 		if ( resource is null )
 		{
 			Log.Info( $"Creating new embedded!" );
 		}
 
-		Editor = editor;
 		Resource = resource ?? new EmbeddedMovieResource();
 		Project = LoadProject( Resource );
 
@@ -125,10 +124,11 @@ public sealed partial class Session
 	}
 
 	/// <summary>
-	/// Called when <see cref="MoviePlayer"/> is switching to this session.
+	/// Called when a <see cref="MovieEditor"/> is switching to this session.
 	/// </summary>
-	internal void SetPlayer( MoviePlayer player, SessionContext? context )
+	internal void Initialize( MovieEditor editor, MoviePlayer player, SessionContext? context )
 	{
+		Editor = editor;
 		Player = player;
 		Context = context;
 

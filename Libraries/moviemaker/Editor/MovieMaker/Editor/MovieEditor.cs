@@ -1,4 +1,4 @@
-﻿using Sandbox;
+﻿using System.Collections.Immutable;
 using Sandbox.MovieMaker;
 using System.Linq;
 using System.Reflection;
@@ -21,18 +21,19 @@ public partial class MovieEditor : Widget, IHotloadManaged
 	// We want sessions to survive entering play mode etc., so identify by MoviePlayer component ID
 	// and which resource they're editing. A null resource means embedded.
 
-	private readonly record struct SessionKey( Guid PlayerId, string? ResourcePath );
+	public readonly record struct SessionKey( Guid PlayerId, string? ResourcePath );
 
-	private readonly Dictionary<SessionKey, Session> _sessions = new();
+	private readonly Dictionary<SessionKey, Session> _sessions;
 
 	public Session? Session { get; private set; }
 
 	public ListPanel? ListPanel { get; private set; }
 	public TimelinePanel? TimelinePanel { get; private set; }
 
-	public MovieEditor( Widget parent ) : base( parent )
+	public MovieEditor( Widget parent, IReadOnlyDictionary<SessionKey, Session>? sessions = null ) : base( parent )
 	{
 		_editors.Add( this, null );
+		_sessions = sessions?.ToDictionary() ?? new Dictionary<SessionKey, Session>();
 
 		Layout = Layout.Column();
 		FocusMode = FocusMode.TabOrClickOrWheel;
@@ -46,6 +47,8 @@ public partial class MovieEditor : Widget, IHotloadManaged
 			CreateStartupHelper();
 		}
 	}
+
+	internal IReadOnlyDictionary<SessionKey, Session> Sessions => _sessions.ToImmutableDictionary();
 
 	public override void OnDestroyed()
 	{
@@ -66,10 +69,10 @@ public partial class MovieEditor : Widget, IHotloadManaged
 		}
 		else
 		{
-			Session = _sessions[key] = new Session( this, resource );
+			Session = _sessions[key] = new Session( resource );
 		}
 
-		Session.SetPlayer( player, context );
+		Session.Initialize( this, player, context );
 
 		Layout.Clear( true );
 
