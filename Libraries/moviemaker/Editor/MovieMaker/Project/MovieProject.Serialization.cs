@@ -183,8 +183,13 @@ file sealed record ProjectPropertyTrackModel( string Name, Type TargetType, Guid
 	[property: JsonPropertyOrder( 100 ), JsonIgnore( Condition = JsonIgnoreCondition.WhenWritingNull )] JsonArray? Blocks )
 	: ProjectTrackModel( Name, TargetType, ParentId );
 
-file sealed record ProjectSequenceTrackModel( string Name, Guid? ParentId, ImmutableArray<ProjectSequenceBlock> Blocks )
+file sealed record ProjectSequenceTrackModel( string Name, Guid? ParentId, ImmutableArray<ProjectSequenceBlockModel> Blocks )
 	: ProjectTrackModel( Name, typeof( MovieResource ), ParentId );
+
+file sealed record ProjectSequenceBlockModel(
+	MovieTimeRange TimeRange,
+	MovieTransform Transform,
+	MovieResource Resource );
 
 partial interface IProjectTrack
 {
@@ -247,7 +252,7 @@ partial class ProjectSequenceTrack
 {
 	public override ProjectTrackModel Serialize( JsonSerializerOptions options )
 	{
-		return new ProjectSequenceTrackModel( Name, Parent?.Id, [..Blocks] );
+		return new ProjectSequenceTrackModel( Name, Parent?.Id, [..Blocks.Select( x => new ProjectSequenceBlockModel( x.TimeRange, x.Transform, x.Resource ) )] );
 	}
 
 	public override void Deserialize( ProjectTrackModel model, JsonSerializerOptions options )
@@ -260,7 +265,7 @@ partial class ProjectSequenceTrack
 
 		if ( sequenceModel.Blocks is { IsDefaultOrEmpty: false } blocks )
 		{
-			_blocks.AddRange( blocks );
+			_blocks.AddRange( blocks.Select( x => new ProjectSequenceBlock( x.TimeRange, x.Transform, x.Resource ) ) );
 		}
 	}
 }
