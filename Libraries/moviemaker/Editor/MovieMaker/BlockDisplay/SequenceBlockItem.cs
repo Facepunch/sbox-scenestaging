@@ -23,8 +23,11 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 	private MovieTransform _originalTransform;
 
 	private GraphicsItem? _ghost;
+	private IHistoryScope? _historyScope;
 
 	public new ProjectSequenceTrack Track => (ProjectSequenceTrack)Parent.View.Track;
+
+	public string BlockTitle => Block.Resource.ResourceName.ToTitleCase();
 
 	public SequenceBlockItem()
 	{
@@ -117,10 +120,13 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		switch ( _editMode )
 		{
 			case EditMode.MoveStart or EditMode.MoveEnd:
+				var end = _editMode is EditMode.MoveStart ? "Start" : "End";
+				_historyScope ??= Parent.Session.History.Push( $"Move Sequence {end} ({BlockTitle})" );
 				OnDragStartEnd( e.ScenePosition );
 				break;
 
 			case EditMode.Translate:
+				_historyScope ??= Parent.Session.History.Push( $"Move Sequence ({BlockTitle})" );
 				OnTranslate( e.ScenePosition );
 				break;
 		}
@@ -136,9 +142,13 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		if ( time <= TimeRange.Start ) return;
 		if ( time >= TimeRange.End ) return;
 
-		Track.AddBlock( (time, Block.TimeRange.End), Block.Transform, Block.Resource );
 
-		Block.TimeRange = (Block.TimeRange.Start, time);
+		using ( Parent.Session.History.Push( $"Split Sequence ({BlockTitle})" ) )
+		{
+			Track.AddBlock( (time, Block.TimeRange.End), Block.Transform, Block.Resource );
+
+			Block.TimeRange = (Block.TimeRange.Start, time);
+		}
 
 		Layout();
 		Parent.View.MarkValueChanged();
@@ -195,6 +205,9 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 			OnEdit();
 		}
 
+		_historyScope?.Dispose();
+		_historyScope = null;
+
 		_lastClick = 0f;
 		_editMode = EditMode.None;
 		_ghost?.Destroy();
@@ -231,7 +244,11 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 	private void OnDelete()
 	{
-		Track.RemoveBlock( Block );
+		using ( Parent.Session.History.Push( "Sequence Deleted" ) )
+		{
+			Track.RemoveBlock( Block );
+		}
+
 		Parent.View.MarkValueChanged();
 	}
 
@@ -318,7 +335,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
 		}
 
-		TryDrawText( ref textRect, Block.Resource.ResourceName.ToTitleCase(), icon: "movie" );
+		TryDrawText( ref textRect, BlockTitle, icon: "movie" );
 	}
 
 	private void TryDrawText( ref Rect rect, string text, TextFlag flags = TextFlag.Center, string? icon = null, float iconSize = 16f )
