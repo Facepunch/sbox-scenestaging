@@ -59,13 +59,6 @@ public sealed class ListPanel : MovieEditorPanel
 
 		var fileGroup = ToolBar.AddGroup( true );
 
-		foreach ( var page in _pages )
-		{
-			fileGroup.AddToggle( page.Display,
-				() => page.Visible,
-				_ => SetPage( page ) );
-		}
-
 		var resourceIcon = typeof( MovieResource ).GetCustomAttribute<GameResourceAttribute>()!.Icon;
 
 		var fileDisplay = new ToolBarItemDisplay( "File", "folder", "Actions for saving / loading / importing movies, or switching player components." );
@@ -107,26 +100,17 @@ public sealed class ListPanel : MovieEditorPanel
 
 			saveAsMenu.AddOption( "New Movie Resource", resourceIcon, parent.SaveFileAs );
 
-			menu.AddSeparator();
-
-			var playerMenu = menu.AddMenu( "Select Player", "movie" );
-			var scene = SceneEditorSession.Active?.Scene;
-			var players = scene?.GetAllComponents<MoviePlayer>() ?? [];
-
-			foreach ( var player in players )
-			{
-				var option = playerMenu.AddOption( player.GameObject.Name, "movie", () => Editor.Switch( player ) );
-
-				option.Checkable = true;
-				option.Checked = session.Player == player;
-			}
-
-			playerMenu.AddOption( "Create New..", "movie_filter", Editor.CreateNewPlayer );
-
 			menu.OpenAt( fileGroup.ScreenRect.BottomLeft );
 		} );
 
 		fileAction.ToolTip = "File menu for opening, importing, or saving movie projects.";
+
+		foreach ( var page in _pages )
+		{
+			fileGroup.AddToggle( page.Display,
+				() => page.Visible,
+				_ => SetPage( page ) );
+		}
 
 		// File name label
 
