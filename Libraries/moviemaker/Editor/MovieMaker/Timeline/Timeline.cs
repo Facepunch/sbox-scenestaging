@@ -22,7 +22,7 @@ public class Timeline : GraphicsView
 
 	private readonly BackgroundItem _backgroundItem;
 	private readonly GridItem _gridItem;
-	private readonly Dictionary<TrackView, TimelineTrack> _tracks = new();
+	private readonly SynchronizedSet<TrackView, TimelineTrack> _tracks;
 
 	private readonly CurrentPointerItem _currentPointerItem;
 	private readonly CurrentPointerItem _previewPointerItem;
@@ -30,7 +30,7 @@ public class Timeline : GraphicsView
 	public ScrubberItem ScrubBarTop { get; }
 	public ScrubberItem ScrubBarBottom { get; }
 
-	public IEnumerable<TimelineTrack> Tracks => _tracks.Values;
+	public IEnumerable<TimelineTrack> Tracks => _tracks;
 
 	public Rect VisibleRect
 	{
@@ -48,6 +48,9 @@ public class Timeline : GraphicsView
 	{
 		Session = session;
 		MinimumWidth = 256;
+
+		_tracks = new SynchronizedSet<TrackView, TimelineTrack>(
+			AddTrack, RemoveTrack, UpdateTrack );
 
 		_backgroundItem = new BackgroundItem( Session );
 		Add( _backgroundItem );
@@ -210,38 +213,26 @@ public class Timeline : GraphicsView
 	{
 		UpdateSceneFrame();
 
-		var allTracks = Session.TrackList.VisibleTracks
-			.ToHashSet();
-
-		var toRemove = _tracks.Keys
-			.Where( x => !allTracks.Contains( x ) )
-			.ToImmutableArray();
-
-		foreach ( var view in toRemove )
-		{
-			if ( _tracks.Remove( view, out var track ) )
-			{
-				track.Destroy();
-			}
-		}
-
-		foreach ( var view in allTracks )
-		{
-			if ( _tracks.ContainsKey( view ) ) continue;
-
-			var track = new TimelineTrack( this, view );
-
-			_tracks[view] = track;
-
-			Add( track );
-		}
+		_tracks.Update( Session.TrackList.VisibleTracks );
 
 		Update();
+	}
 
-		foreach ( var track in _tracks.Values )
-		{
-			track.UpdateLayout();
-		}
+	private TimelineTrack AddTrack( TrackView source )
+	{
+		var item = new TimelineTrack( this, source );
+
+		Add( item );
+
+		return item;
+	}
+
+	private void RemoveTrack( TimelineTrack item ) => item.Destroy();
+	private bool UpdateTrack( TrackView source, TimelineTrack item )
+	{
+		item.UpdateLayout();
+
+		return true;
 	}
 
 	protected override void OnWheel( WheelEvent e )
@@ -483,7 +474,7 @@ public class Timeline : GraphicsView
 			snap.Add( SnapFlag.PasteBlock, pasteRange.End );
 		}
 
-		foreach ( var dopeTrack in _tracks.Values )
+		foreach ( var dopeTrack in _tracks )
 		{
 			if ( dopeTrack.View == snap.Options.IgnoreTrack ) continue;
 			if ( dopeTrack.View.IsLocked ) continue;
