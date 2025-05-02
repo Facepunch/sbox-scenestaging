@@ -278,7 +278,8 @@ public sealed partial class KeyframeEditMode : EditMode
 		ApplyChangeToSelection( new KeyframeDeletion( [] ) );
 	}
 
-	public bool ApplyChangeToSelection( KeyframeChanges change )
+	public bool ApplyChangeToSelection<T>( T change )
+		where T : KeyframeChanges, ISelectionKeyframeChanges
 	{
 		var anyChanges = false;
 
