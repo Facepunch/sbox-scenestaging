@@ -10,27 +10,32 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
+public readonly record struct SessionContext( Session Parent,MovieTransform Transform, MovieTimeRange TimeRange );
+
 /// <summary>
 /// Centralizes the current state of a moviemaker editor session
 /// </summary>
 public sealed partial class Session
 {
 	public MovieEditor Editor { get; }
-	public MoviePlayer Player { get; }
 	public MovieProject Project { get; }
-	public Session? Parent { get; }
+
+	public MoviePlayer Player { get; private set; }
+	public SessionContext? Context { get; private set; }
+
+	public Session? Parent => Context?.Parent;
 
 	/// <summary>
-	/// If this session has a <see cref="Parent"/>, how do we transform from this session's timeline to the parent's?
+	/// If this session has a <see cref="Context"/>, how do we transform from this session's timeline to the parent's?
 	/// </summary>
-	public MovieTransform SequenceTransform { get; }
+	public MovieTransform SequenceTransform => Context?.Transform ?? MovieTransform.Identity;
 
 	/// <summary>
-	/// If this session has a <see cref="Parent"/>, what time range from this session is visible in the parent?
+	/// If this session has a <see cref="Context"/>, what time range from this session is visible in the parent?
 	/// </summary>
-	public MovieTimeRange? SequenceTimeRange { get; }
+	public MovieTimeRange? SequenceTimeRange => Context?.TimeRange;
 
-	public Session Root => Parent?.Root ?? this;
+	public Session Root => Context?.Parent.Root ?? this;
 	public IMovieResource Resource { get; }
 
 	private int _frameRate = 10;
@@ -105,35 +110,45 @@ public sealed partial class Session
 	/// </summary>
 	public event Action? ViewChanged;
 
-	public Session( MovieEditor editor, MoviePlayer player )
+	public Session( MovieEditor editor, IMovieResource? resource )
 	{
-		if ( player.Resource is null )
+		if ( resource is null )
 		{
 			Log.Info( $"Creating new embedded!" );
 		}
 
 		Editor = editor;
-		Player = player;
-		Parent = null;
-		Resource = player.Resource ??= new EmbeddedMovieResource();
-		SequenceTransform = MovieTransform.Identity;
-		SequenceTimeRange = null;
+		Resource = resource ?? new EmbeddedMovieResource();
 		Project = LoadProject( Resource );
 
 		History = new SessionHistory( this );
 	}
 
-	public Session( Session parent, MovieResource resource, MovieTransform transform, MovieTimeRange timeRange )
+	/// <summary>
+	/// Called when <see cref="MoviePlayer"/> is switching to this session.
+	/// </summary>
+	internal void SetPlayer( MoviePlayer player, SessionContext? context )
 	{
-		Editor = parent.Editor;
-		Player = parent.Player;
-		Parent = parent;
-		Resource = resource;
-		SequenceTransform = transform;
-		SequenceTimeRange = timeRange;
-		Project = LoadProject( Resource );
+		Player = player;
+		Context = context;
 
-		History = new SessionHistory( this );
+		Player.Clip = Root.Project;
+	}
+
+	internal void Activate()
+	{
+		RestoreFromCookies();
+		History.Initialize();
+	}
+
+	internal void Deactivate()
+	{
+		SetEditMode( (EditModeType?)null );
+
+		if ( Player.Clip == Project )
+		{
+			Player.Clip = Player.Resource?.Compiled;
+		}
 	}
 
 	private static MovieProject LoadProject( IMovieResource resource )

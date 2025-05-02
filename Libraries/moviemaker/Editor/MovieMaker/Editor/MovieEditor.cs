@@ -18,6 +18,13 @@ public partial class MovieEditor : Widget, IHotloadManaged
 		.Where( x => x.Session is not null )
 		.Select( x => x.Session! );
 
+	// We want sessions to survive entering play mode etc., so identify by MoviePlayer component ID
+	// and which resource they're editing. A null resource means embedded.
+
+	private readonly record struct SessionKey( Guid PlayerId, string? ResourcePath );
+
+	private readonly Dictionary<SessionKey, Session> _sessions = new();
+
 	public Session? Session { get; private set; }
 
 	public ListPanel? ListPanel { get; private set; }
@@ -47,14 +54,22 @@ public partial class MovieEditor : Widget, IHotloadManaged
 		base.OnDestroyed();
 	}
 
-	public void Initialize( Session session )
+	private void Initialize( MoviePlayer player, IMovieResource? resource, SessionContext? context )
 	{
-		Session = session;
+		Session?.Deactivate();
 
-		if ( Session.Parent is null )
+		var key = new SessionKey( player.Id, (resource as MovieResource)?.ResourcePath );
+
+		if ( _sessions.TryGetValue( key, out var session ) )
 		{
-			Session.Player.Clip = Session.Project;
+			Session = session;
 		}
+		else
+		{
+			Session = _sessions[key] = new Session( this, resource );
+		}
+
+		Session.SetPlayer( player, context );
 
 		Layout.Clear( true );
 
@@ -73,20 +88,16 @@ public partial class MovieEditor : Widget, IHotloadManaged
 		splitter.SetCollapsible( 1, false );
 		splitter.SetStretch( 1, 3 );
 
-		Session.RestoreFromCookies();
-		Session.History.Initialize();
+		Session.Activate();
 	}
 
 	void CloseSession()
 	{
 		Layout.Clear( true );
 
-		if ( Session is { } session )
-		{
-			session.Player.Clip = session.Player.Resource?.Compiled;
-		}
-
+		Session?.Deactivate();
 		Session = null;
+
 		ListPanel = null;
 		TimelinePanel = null;
 
@@ -220,7 +231,7 @@ public partial class MovieEditor : Widget, IHotloadManaged
 
 	public void Switch( MoviePlayer player )
 	{
-		Initialize( new Session( this, player ) );
+		Initialize( player, player.Resource, null );
 	}
 
 	public void EnterSequence( MovieResource resource, MovieTransform transform, MovieTimeRange timeRange )
@@ -228,30 +239,28 @@ public partial class MovieEditor : Widget, IHotloadManaged
 		var timeOffset = transform.Inverse * Session!.TimeOffset;
 		var pixelsPerSecond = (float)(transform.Inverse.Scale.FrequencyScale * Session.PixelsPerSecond);
 
-		Session!.SetEditMode( (EditModeType?)null );
-		Initialize( new Session( Session!, resource, transform, timeRange ) );
+		Initialize( Session.Player, resource, new SessionContext( Session, transform, timeRange ) );
 
 		Session.SetView( timeOffset, pixelsPerSecond );
 	}
 
 	public void ExitSequence()
 	{
-		if ( Session?.Parent is { } parent )
+		if ( Session?.Context is not { } context ) return;
+
+		var timeOffset = Session.SequenceTransform * Session!.TimeOffset;
+		var pixelsPerSecond = (float)(Session.SequenceTransform.Scale.FrequencyScale * Session.PixelsPerSecond);
+
+		var resource = Session.Resource;
+
+		Session.Save();
+		Initialize( Session.Player, context.Parent.Resource, context.Parent.Context );
+
+		Session.SetView( timeOffset, pixelsPerSecond );
+
+		if ( resource is MovieResource movieResource )
 		{
-			var timeOffset = Session.SequenceTransform * Session!.TimeOffset;
-			var pixelsPerSecond = (float)(Session.SequenceTransform.Scale.FrequencyScale * Session.PixelsPerSecond);
-
-			var resource = Session.Resource;
-
-			Session.Save();
-			Initialize( parent );
-
-			Session.SetView( timeOffset, pixelsPerSecond );
-
-			if ( resource is MovieResource movieResource )
-			{
-				Session.Project.RefreshSequenceTracks( movieResource );
-			}
+			Session.Project.RefreshSequenceTracks( movieResource );
 		}
 	}
 
