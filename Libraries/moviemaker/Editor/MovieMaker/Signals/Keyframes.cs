@@ -340,6 +340,18 @@ file sealed record KeyframeSignal<T>( ImmutableArray<Keyframe<T>> Keyframes ) : 
 			j = Math.Min( FindIndex( e ) + 1, Keyframes.Length - 1);
 		}
 
+		// Cubic needs to know about previous / next keyframe
+
+		if ( i > 0 && Keyframes[i].Interpolation is KeyframeInterpolation.Cubic )
+		{
+			i -= 1;
+		}
+
+		if ( j < Keyframes.Length - 1 && Keyframes[j].Interpolation is KeyframeInterpolation.Cubic )
+		{
+			j += 1;
+		}
+
 		if ( i == 0 && j == Keyframes.Length - 1 ) return this;
 
 		return this with { Keyframes = Keyframes[i..(j + 1)] };
