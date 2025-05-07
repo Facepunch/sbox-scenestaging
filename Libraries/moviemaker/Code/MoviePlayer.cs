@@ -119,11 +119,19 @@ public sealed class MoviePlayer : Component
 
 		_position += MovieTime.FromSeconds( Time.Delta * TimeScale );
 
-		// Rewind if looping
-
-		if ( IsLooping && Clip?.Duration is { IsPositive: true } duration && _position >= duration )
+		if ( Clip?.Duration is { IsPositive: true } duration && _position >= duration )
 		{
-			_position.GetFrameIndex( duration, remainder: out _position );
+			if ( IsLooping )
+			{
+				// Rewind if looping
+				_position.GetFrameIndex( duration, remainder: out _position );
+			}
+			else
+			{
+				// Otherwise stop
+				_isPlaying = false;
+				_position = duration;
+			}
 		}
 
 		UpdatePosition();
