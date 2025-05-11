@@ -3,9 +3,18 @@
   "GameObjects": [
     {
       "__guid": "100e8e3c-e759-47e9-a427-db1b1fa74f43",
+      "__version": 1,
       "Flags": 0,
       "Name": "Scene Information",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SceneInformation",
@@ -24,21 +33,40 @@
           "Title": "Water",
           "Version": null
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "46ff82b7-b07a-4995-946a-e13dc40cdf72",
+      "__version": 1,
       "Flags": 0,
       "Name": "Object",
       "Position": "149.995,149.995,-212.125",
-      "Enabled": true
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": []
     },
     {
       "__guid": "adbea4c1-8d4f-4cf2-a2b5-8372f75dd201",
+      "__version": 1,
       "Flags": 0,
       "Name": "Cube",
       "Position": "131.4279,125.595,-238.635",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -63,15 +91,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "b4703c82-1ffa-4643-964b-81b15964a3ed",
+      "__version": 1,
       "Flags": 0,
       "Name": "Cube",
       "Position": "-13.47926,0.9163313,6.390217",
       "Rotation": "0,0,-1,0.0000001947072",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SkinnedModelRenderer",
@@ -98,6 +134,7 @@
             "vectors": {},
             "rotations": {}
           },
+          "PlaybackRate": 1,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -106,20 +143,30 @@
           },
           "RenderType": "On",
           "Sequence": {
-            "Name": null
+            "Name": null,
+            "Looping": true,
+            "Blending": false
           },
           "Tint": "1,1,1,1",
           "UseAnimGraph": true
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "27ec13cd-a2fe-4cf2-b132-330340f86554",
+      "__version": 1,
       "Flags": 0,
       "Name": "Cube (1)",
       "Position": "294.3453,-228.6438,2.900247",
       "Rotation": "-0.7071067,0.0000001376788,-0.7071068,0.0000001376788",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SkinnedModelRenderer",
@@ -146,6 +193,7 @@
             "vectors": {},
             "rotations": {}
           },
+          "PlaybackRate": 1,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -154,20 +202,30 @@
           },
           "RenderType": "On",
           "Sequence": {
-            "Name": null
+            "Name": null,
+            "Looping": true,
+            "Blending": false
           },
           "Tint": "1,1,1,1",
           "UseAnimGraph": true
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "eba8742d-5d3a-4904-923e-4150661569fd",
+      "__version": 1,
       "Flags": 0,
       "Name": "Cube (2)",
       "Position": "331.5822,-307.6172,2.448709",
       "Rotation": "0,0,-1,0.0000001947072",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SkinnedModelRenderer",
@@ -194,6 +252,7 @@
             "vectors": {},
             "rotations": {}
           },
+          "PlaybackRate": 1,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -202,20 +261,30 @@
           },
           "RenderType": "On",
           "Sequence": {
-            "Name": null
+            "Name": null,
+            "Looping": true,
+            "Blending": false
           },
           "Tint": "1,1,1,1",
           "UseAnimGraph": true
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "0170d4e4-dad4-409b-ba9a-f54b445d5425",
+      "__version": 1,
       "Flags": 0,
       "Name": "Cube (3)",
       "Position": "282.9114,-357.4393,2.448709",
       "Rotation": "0,0,-1,0.0000001947072",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SkinnedModelRenderer",
@@ -242,6 +311,7 @@
             "vectors": {},
             "rotations": {}
           },
+          "PlaybackRate": 1,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -250,19 +320,30 @@
           },
           "RenderType": "On",
           "Sequence": {
-            "Name": null
+            "Name": null,
+            "Looping": true,
+            "Blending": false
           },
           "Tint": "1,1,1,1",
           "UseAnimGraph": true
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "19acda07-2525-4a9d-94bf-1bbe4d965e26",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (1)",
       "Position": "-145.1991,152.5624,10.58996",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -287,14 +368,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "baadd538-d012-4751-92b2-56e69d64dd79",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (2)",
       "Position": "-145.1991,201.9956,10.58996",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -319,14 +409,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "5e6d6ce9-a8d4-49da-a9a5-44167793192e",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (3)",
       "Position": "-145.1991,180.0569,45.46648",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -351,14 +450,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "2547eb8b-3701-4a37-a697-a5d69ff7f756",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (4)",
       "Position": "-145.1991,224.8199,45.46648",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -383,14 +491,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "d0d95622-0a49-4383-b99c-d8f0f4131801",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (5)",
       "Position": "-145.1991,249.3348,6.391933",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -415,14 +532,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "c373c553-e80a-4f01-975c-2f952eda302d",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (6)",
       "Position": "-145.1991,265.5364,41.79694",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -447,14 +573,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "956f037b-fd4e-4afb-ae6d-14884dcabdd8",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (7)",
       "Position": "-145.1991,291.9759,1.093155",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -479,14 +614,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "d656c72f-b4e8-4d33-9776-5d80b7e4bb86",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (8)",
       "Position": "-145.1991,312.1695,39.5597",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -511,14 +655,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "513cbf77-471c-4f13-8a3b-56933f82b676",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (9)",
       "Position": "-145.1991,287.019,84.97697",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -543,14 +696,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "09f5aa9f-f3d6-462a-a1e9-64ca96df8938",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (10)",
       "Position": "-145.1991,245.941,85.42052",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -575,14 +737,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "30ec4f02-fe7d-4ffc-9d4f-2c3fa3255fd8",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (11)",
       "Position": "-145.1991,201.7333,86.33172",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -607,14 +778,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "228b0493-1ba2-462e-b4aa-10c761e06420",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (12)",
       "Position": "-145.1991,226.7596,129.1914",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -639,14 +819,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "71fcd16a-b198-44f3-93c0-057c24dc5803",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (13)",
       "Position": "-145.1991,264.7164,130.3131",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -671,15 +860,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "fa63df8a-14c6-48df-8d29-4962bebeb03b",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (15)",
       "Position": "209.4521,-695.6637,177.6808",
+      "Rotation": "0,0,0,1",
       "Scale": "3,3,3",
-      "Enabled": true,
+      "Tags": "",
+      "Enabled": false,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -704,14 +901,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "1e82de69-2285-4e1a-898f-009110520963",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere (14)",
       "Position": "-145.1991,246.5728,174.413",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -736,15 +942,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "f69e902d-cc24-4397-ac41-870363533341",
+      "__version": 1,
       "Flags": 0,
       "Name": "Camera (1)",
       "Position": "451.5583,-7.18688,222.3877",
       "Rotation": "-0.1080475,-0.000000004722905,0.9941458,-0.00000004345549",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
@@ -752,6 +966,7 @@
           "BackgroundColor": "0.2167,0.5304,0.73953,1",
           "ClearFlags": "All",
           "FieldOfView": 106.18,
+          "FovAxis": "Horizontal",
           "IsMainCamera": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -773,6 +988,7 @@
           "__type": "Sandbox.AmbientOcclusion",
           "__guid": "e862a54c-07dd-4a32-a7b4-0048b492750e",
           "__version": 1,
+          "__enabled": false,
           "DenoiseMode": "Temporal",
           "FalloffRange": 1,
           "Intensity": 1,
@@ -789,36 +1005,8 @@
         {
           "__type": "Sandbox.Bloom",
           "__guid": "f09bf1e7-67d9-4ea6-8e03-24294a4638eb",
-          "BloomColor": {
-            "blend": "Linear",
-            "color": [
-              {
-                "t": 0,
-                "c": "1,1,1,1"
-              },
-              {
-                "t": 1,
-                "c": "1,1,1,1"
-              }
-            ],
-            "alpha": null
-          },
-          "BloomCurve": [
-            {
-              "x": 0,
-              "y": 0.5,
-              "in": 0,
-              "out": 0,
-              "mode": "Mirrored"
-            },
-            {
-              "x": 1,
-              "y": 1,
-              "in": 0,
-              "out": 0,
-              "mode": "Mirrored"
-            }
-          ],
+          "__version": 1,
+          "Gamma": 2.2,
           "Mode": "Additive",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -827,17 +1015,26 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "Strength": 1,
-          "Threshold": 0.5,
-          "ThresholdWidth": 0
+          "Threshold": 1.25,
+          "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "20e27050-9785-43d7-a83a-137dbf27f0a4",
+      "__version": 1,
       "Flags": 0,
       "Name": "Ground Plane",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
       "Scale": "100,100,100",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -883,14 +1080,23 @@
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "cae86d62-9cad-4f23-9b80-47aea5f419bd",
+      "__version": 1,
       "Flags": 0,
       "Name": "Water Plane",
       "Position": "0,0,54.1474",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "planereflect",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -912,17 +1118,82 @@
             "BloomLayer": false,
             "AfterUILayer": false
           },
-          "RenderType": "On",
+          "RenderType": "Off",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "WaterPlane",
+          "__guid": "411ba524-f42e-4e5a-a99e-06a674d99e55",
+          "DynamicReflections": true,
+          "DynamicRefraction": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "ReflectionSurfaceOffset": 5,
+          "ReflectionTexture": null,
+          "RefractionTexture": null,
+          "WaterRenderer": {
+            "_type": "component",
+            "component_id": "3527e7b9-4409-44bb-8c55-5e60c6518e8c",
+            "go": "cae86d62-9cad-4f23-9b80-47aea5f419bd",
+            "component_type": "ModelRenderer"
+          }
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "d85243ef-38b5-4cd7-9697-1f367152254f",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Fog",
+          "Position": "0,0,-256",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": false,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.GradientFog",
+              "__guid": "625adb2e-a2c1-42f6-9b72-411fa4966a3b",
+              "Color": "1,1,1,1",
+              "EndDistance": 10,
+              "FalloffExponent": 1,
+              "Height": 200,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "StartDistance": 0,
+              "VerticalFalloffExponent": 1
+            }
+          ],
+          "Children": []
         }
       ]
     },
     {
       "__guid": "3d054889-f888-47d7-8dce-96ee2404bad1",
+      "__version": 1,
       "Flags": 0,
       "Name": "Regular Plane",
       "Position": "0,0,56.01484",
+      "Rotation": "0,0,0,1",
       "Scale": "100,100,100",
+      "Tags": "",
+      "Enabled": false,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -947,15 +1218,23 @@
           "RenderType": "On",
           "Tint": "0,0,0,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "185fb180-8ad0-4f23-9d7d-ca6c885b8212",
+      "__version": 1,
       "Flags": 0,
       "Name": "Player Controller",
       "Position": "212.1376,75.39673,3.911726",
       "Rotation": "0,0,0.9914448,0.1305264",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.PlayerController",
@@ -964,6 +1243,7 @@
           "AimStrengthBody": 1,
           "AimStrengthEyes": 1,
           "AimStrengthHead": 1,
+          "AirFriction": 0.1,
           "AltMoveButton": "run",
           "Body": {
             "_type": "component",
@@ -975,11 +1255,11 @@
           "BodyHeight": 72,
           "BodyMass": 500,
           "BodyRadius": 16,
+          "BrakePower": 1,
           "CameraOffset": "256,0,12",
           "ColliderObject": {
             "_type": "gameobject",
-            "go": "f9ef3556-9e11-4575-8a44-69ec00fb817e",
-            "prefab": null
+            "go": "f9ef3556-9e11-4575-8a44-69ec00fb817e"
           },
           "DeaccelerationTime": 0,
           "DuckedHeight": 36,
@@ -994,12 +1274,14 @@
           "FootstepVolume": 1,
           "HideBodyInFirstPerson": true,
           "JumpSpeed": 300,
+          "LookSensitivity": 1,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
+          "PitchClamp": 90,
           "ReachLength": 130,
           "Renderer": {
             "_type": "component",
@@ -1021,6 +1303,7 @@
           "UseCameraControls": true,
           "UseFovFromPreferences": true,
           "UseInputControls": true,
+          "UseLookControls": true,
           "WalkSpeed": 110
         },
         {
@@ -1086,15 +1369,25 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Priority": 5
+          "Priority": 5,
+          "Speed": 1
         }
       ],
       "Children": [
         {
           "__guid": "3beadc15-fd7d-4683-87ef-52a7bcac6607",
+          "__version": 1,
           "Flags": 0,
           "Name": "Body",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.SkinnedModelRenderer",
@@ -1121,6 +1414,7 @@
                 "vectors": {},
                 "rotations": {}
               },
+              "PlaybackRate": 1,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -1129,18 +1423,30 @@
               },
               "RenderType": "On",
               "Sequence": {
-                "Name": null
+                "Name": null,
+                "Looping": true,
+                "Blending": false
               },
               "Tint": "1,1,1,1",
               "UseAnimGraph": true
             }
-          ]
+          ],
+          "Children": []
         },
         {
           "__guid": "f9ef3556-9e11-4575-8a44-69ec00fb817e",
+          "__version": 1,
           "Flags": 1,
           "Name": "Colliders",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.CapsuleCollider",
@@ -1185,18 +1491,25 @@
               "Surface": null,
               "SurfaceVelocity": "0,0,0"
             }
-          ]
+          ],
+          "Children": []
         }
       ]
     },
     {
       "__guid": "b5b4e75a-a637-4f35-b051-8ccede5d5f6b",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sun",
       "Position": "525.7495,-195.8709,195.8083",
       "Rotation": "-0.8453928,0.3860874,0.1071982,0.3532082",
+      "Scale": "1,1,1",
       "Tags": "light_directional,light",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.DirectionalLight",
@@ -1213,14 +1526,23 @@
           "Shadows": true,
           "SkyColor": "0.34202,0.39634,0.43256,0"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "5c63d2e1-dc47-411e-9025-124b3ac80e0c",
+      "__version": 1,
       "Flags": 0,
       "Name": "rock_cliff_a",
       "Position": "-247.9603,-157.3831,14.88486",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1241,15 +1563,23 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "3d0da920-3954-411e-9799-b589e0595ab5",
+      "__version": 1,
       "Flags": 0,
       "Name": "rock_cliff_a (1)",
       "Position": "-247.9603,-137.9426,191.8196",
       "Rotation": "0,0,0.1305262,0.9914449",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1270,15 +1600,23 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "75380c06-01eb-4beb-8db1-74d0274631dc",
+      "__version": 1,
       "Flags": 0,
       "Name": "rock_cliff_a (6)",
       "Position": "-564.2266,-1181.227,43.18587",
       "Rotation": "0,0,0.1305262,0.9914449",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1299,15 +1637,23 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "5ae00500-7f29-4a5c-92bb-809e7e084547",
+      "__version": 1,
       "Flags": 0,
       "Name": "rock_cliff_a (7)",
       "Position": "-1209.481,-801.6177,19.27531",
       "Rotation": "0.6035534,0.07945932,0.1035534,0.7865661",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -1352,15 +1698,23 @@
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "f236bc70-1e84-4e2a-b360-05a5ea02b4fb",
+      "__version": 1,
       "Flags": 0,
       "Name": "rock_cliff_a (2)",
       "Position": "203.1964,513.835,-72.37051",
       "Rotation": "-0.1294095,0.2241439,0.4829629,0.8365164",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1381,15 +1735,23 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "46fd39f1-3f29-424f-bc45-fe9ca84eddd3",
+      "__version": 1,
       "Flags": 0,
       "Name": "rock_cliff_a (5)",
       "Position": "17634.73,237.3227,-1470.742",
+      "Rotation": "0,0,0,1",
       "Scale": "10,10,10",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1410,22 +1772,31 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "5401e83c-5eff-4729-b23a-26ea17018549",
+      "__version": 1,
       "Flags": 0,
       "Name": "rock_cliff_a (3)",
       "Position": "142.457,-106.9091,-190.7625",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
-          "__type": "Sandbox.Prop",
-          "__guid": "01dc0bfc-88ed-4657-91ea-8a6962c9afec",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "aaa9926f-823d-4952-9edd-81be88ca0600",
           "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
+          "CreateAttachments": false,
           "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -1433,20 +1804,52 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "OnPropBreak": null,
-          "OnPropTakeDamage": null,
-          "StartAsleep": false,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "b133a607-7b0e-423f-83a7-18c621338c76",
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "ce5e89c8-ee23-440a-baf1-1ec81f8bda5d",
+      "__version": 1,
       "Flags": 0,
       "Name": "rock_cliff_a (8)",
       "Position": "868.9539,-399.8786,-190.7625",
       "Rotation": "0,0,-0.8660254,0.5000001",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1467,15 +1870,23 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "c62529d9-a88f-41d2-9a05-40d9f87a442a",
+      "__version": 1,
       "Flags": 0,
       "Name": "rock_cliff_a (9)",
       "Position": "1008.42,-541.9977,-190.7625",
       "Rotation": "0,0,-0.8660254,0.5000001",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1496,15 +1907,23 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "9bb58446-9cbe-423f-937b-c293bd67e1ff",
+      "__version": 1,
       "Flags": 0,
       "Name": "rock_cliff_a (10)",
       "Position": "1228.227,-553.7698,-190.7622",
       "Rotation": "0,0,-0.7071067,0.7071068",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1525,22 +1944,31 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "67091ebd-d52f-4e8e-99ab-977da0ca17a3",
+      "__version": 1,
       "Flags": 0,
       "Name": "rock_cliff_a (4)",
       "Position": "328.407,89.67372,-219.5582",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
-          "__type": "Sandbox.Prop",
-          "__guid": "5034e5e2-6e36-4d92-abf0-ad6c009a6d36",
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "16888196-7287-4658-b6ff-067ffb89faf4",
           "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
+          "CreateAttachments": false,
           "MaterialGroup": null,
+          "MaterialOverride": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -1548,24 +1976,56 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "OnPropBreak": null,
-          "OnPropTakeDamage": null,
-          "StartAsleep": false,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
           "Tint": "0.7814,0.62312,0.05088,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "48694734-b0da-4694-b246-46e9369b1e58",
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "47264ee0-7838-4b85-8f89-4a0f4668053b",
+      "__version": 1,
       "Flags": 0,
       "Name": "Envmap Probe",
       "Position": "62.39173,-67.2616,193.1714",
-      "Enabled": true,
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": false,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.EnvmapProbe",
           "__guid": "ef8764eb-dfe4-443f-b2a4-cfd6558d5a0b",
-          "__enabled": false,
           "Bounds": {
             "Mins": "-1000,-1000,-1000",
             "Maxs": "1000,1000,1000"
@@ -1583,20 +2043,30 @@
           "OnComponentUpdate": null,
           "Projection": "Box",
           "RenderDynamically": true,
+          "Resolution": "Small",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1",
           "UpdateStrategy": "EveryFrame",
           "ZFar": 4096,
           "ZNear": 16
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "912e7069-eb1d-4483-b248-0311972f4724",
+      "__version": 1,
       "Flags": 0,
       "Name": "woodcrate",
       "Position": "347.2171,167.8026,0.000005722046",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1617,14 +2087,23 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "bc103cfb-d530-4dbd-af08-5d1f5afae297",
+      "__version": 1,
       "Flags": 0,
       "Name": "woodcrate (1)",
       "Position": "279.9888,167.8026,0.000005722046",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1645,14 +2124,23 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "230b0f53-25aa-4f4a-b649-fda0846192ff",
+      "__version": 1,
       "Flags": 0,
       "Name": "woodcrate (2)",
       "Position": "245.6218,167.8026,50.27642",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1673,14 +2161,23 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "1fcaee34-102e-404d-8d56-4b2b49610b9a",
+      "__version": 1,
       "Flags": 0,
       "Name": "woodcrate (3)",
       "Position": "376.9847,167.8026,50.27642",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1701,14 +2198,23 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "21302b6a-e71c-4dcc-9113-ce71d0a8f9e7",
+      "__version": 1,
       "Flags": 0,
       "Name": "oil_drum_explosive",
       "Position": "92.22604,125.844,0.04252011",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.Prop",
@@ -1729,15 +2235,23 @@
           "StartAsleep": false,
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "7e6d5615-2445-42da-a455-0fedaa2b0a32",
+      "__version": 1,
       "Flags": 0,
       "Name": "2D Skybox",
       "Position": "487.7079,-335.9561,276.3315",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
       "Tags": "skybox",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SkyBox2D",
@@ -1752,10 +2266,12 @@
           "SkyMaterial": "materials/skybox/skybox_dark_01.vmat",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "d63c5a92-0da9-4822-995e-06de917602aa",
+      "__version": 1,
       "Flags": 0,
       "Name": "Point Light",
       "Position": "-103.204,-357.9289,70.17323",
@@ -1763,6 +2279,10 @@
       "Scale": "2,2,2",
       "Tags": "light_point,light",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.PointLight",
@@ -1784,11 +2304,18 @@
       "Children": [
         {
           "__guid": "5b180985-6270-4847-9ad8-32a3f8ef89ab",
+          "__version": 1,
           "Flags": 0,
           "Name": "Sphere",
           "Position": "-0.00005028397,-0.04611394,-0.00002288818",
+          "Rotation": "0,0,0,1",
           "Scale": "0.02,0.02,0.02",
+          "Tags": "",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.ModelRenderer",
@@ -1813,18 +2340,25 @@
               "RenderType": "Off",
               "Tint": "0.86434,0.18605,1,1"
             }
-          ]
+          ],
+          "Children": []
         }
       ]
     },
     {
       "__guid": "103d9276-71b6-459f-918a-6288b5531526",
+      "__version": 1,
       "Flags": 0,
       "Name": "Text",
       "Position": "359.9189,-624.4525,151.3876",
       "Rotation": "0.000000002267813,0.000000002955472,-0.6087614,0.7933534",
       "Scale": "2,2,2",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.TextRenderer",
@@ -1879,16 +2413,23 @@
             }
           }
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "7f3a30d1-d331-40d5-9db3-76ad4dd1ea0e",
+      "__version": 1,
       "Flags": 0,
       "Name": "fire_fast",
       "Position": "-148.4305,246.5322,211.2261",
       "Rotation": "-0.09334949,-0.02687779,0.9564157,-0.2753772",
+      "Scale": "1,1,1",
       "Tags": "particles",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ParticleEffect",
@@ -2032,9 +2573,16 @@
           "Bumpiness": 0,
           "Collision": false,
           "CollisionIgnore": null,
+          "CollisionPrefab": null,
+          "CollisionPrefabAlign": false,
+          "CollisionPrefabChance": 1,
+          "CollisionPrefabRotation": 0,
           "CollisionRadius": 1,
           "Damping": 0,
           "DieOnCollisionChance": 0,
+          "FollowerPrefab": null,
+          "FollowerPrefabChance": 1,
+          "FollowerPrefabKill": true,
           "Force": true,
           "ForceDirection": "0,0,30",
           "ForceScale": 1,
@@ -2266,6 +2814,7 @@
           },
           "TimeScale": 1,
           "Tint": "1,1,1,1",
+          "UsePrefabFeature": false,
           "Yaw": 0
         },
         {
@@ -2325,10 +2874,18 @@
       "Children": [
         {
           "__guid": "92bd978b-f696-473e-a59e-a4f9e4a3d334",
+          "__version": 1,
           "Flags": 0,
           "Name": "Point Light",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
           "Tags": "light_point,light",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.PointLight",
@@ -2346,18 +2903,25 @@
               "Radius": 400,
               "Shadows": true
             }
-          ]
+          ],
+          "Children": []
         }
       ]
     },
     {
       "__guid": "7b6a74f7-7f75-4969-ab69-939ff72074df",
+      "__version": 1,
       "Flags": 0,
       "Name": "farm_house",
       "Position": "17296.16,-1567.387,1010.831",
       "Rotation": "0.000000006623857,-0.000000001774857,-0.258819,0.9659258",
       "Scale": "20,20,20",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -2382,13 +2946,23 @@
           "RenderType": "On",
           "Tint": "1,1,1,1"
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "667f6f20-721d-4623-a935-5b84a6db2a6c",
+      "__version": 1,
       "Flags": 0,
       "Name": "Gradient Fog",
       "Position": "137.3472,60.49779,0.1333513",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": false,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.GradientFog",
@@ -2406,13 +2980,23 @@
           "StartDistance": 1,
           "VerticalFalloffExponent": 0.001
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "41e2bc6b-f6a6-4563-904b-5f52cbef121c",
+      "__version": 1,
       "Flags": 0,
       "Name": "Envmap Probe",
       "Position": "452.8821,-164.845,519.6954",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": false,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.EnvmapProbe",
@@ -2434,24 +3018,626 @@
           "OnComponentUpdate": null,
           "Projection": "Box",
           "RenderDynamically": true,
+          "Resolution": "Small",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1",
           "UpdateStrategy": "EveryFrame",
           "ZFar": 4096,
           "ZNear": 16
         }
-      ]
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "10a52738-7143-4d7c-838b-aba3f1fe0675",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Spray",
+      "Position": "4.83934,-300.5625,181.8694",
+      "Rotation": "0,0,0.9238796,0.3826835",
+      "Scale": "1,1,1",
+      "Tags": "particles",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.ParticleEffect",
+          "__guid": "5cc40cb5-be43-4000-8738-db0c6a730978",
+          "__version": 1,
+          "Alpha": {
+            "Type": "Curve",
+            "Evaluation": "Life",
+            "CurveA": [
+              {
+                "x": 0,
+                "y": 1,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              },
+              {
+                "x": 0.48029557,
+                "y": 1,
+                "in": 1.5365853,
+                "out": -1.5365853,
+                "mode": "Mirrored"
+              },
+              {
+                "x": 1,
+                "y": 0,
+                "in": 1.312303,
+                "out": -1.312303,
+                "mode": "Mirrored"
+              }
+            ],
+            "CurveB": [
+              {
+                "x": 0.5,
+                "y": 0.5,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ],
+            "Constants": "1,0,0,0"
+          },
+          "ApplyAlpha": true,
+          "ApplyColor": true,
+          "ApplyRotation": false,
+          "ApplyShape": true,
+          "Bounce": 0.2,
+          "Brightness": 1,
+          "Bumpiness": 0,
+          "Collision": true,
+          "CollisionIgnore": null,
+          "CollisionPrefab": null,
+          "CollisionPrefabAlign": false,
+          "CollisionPrefabChance": 1,
+          "CollisionPrefabRotation": 0,
+          "CollisionRadius": 1,
+          "Damping": 0,
+          "DieOnCollisionChance": 0,
+          "FollowerPrefab": null,
+          "FollowerPrefabChance": 1,
+          "FollowerPrefabKill": true,
+          "Force": true,
+          "ForceDirection": "0,0,-400",
+          "ForceScale": 1,
+          "ForceSpace": "World",
+          "Friction": 0.2,
+          "Gradient": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "GradientA": {
+              "blend": "Linear",
+              "color": [
+                {
+                  "t": 0.5,
+                  "c": "1,1,1,1"
+                }
+              ],
+              "alpha": []
+            },
+            "GradientB": {
+              "blend": "Linear",
+              "color": [
+                {
+                  "t": 0.5,
+                  "c": "1,1,1,1"
+                }
+              ],
+              "alpha": []
+            },
+            "ConstantA": "0.98515,0.92604,0,1",
+            "ConstantB": "1,0.22,0,1"
+          },
+          "Lifetime": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "CurveA": [
+              {
+                "x": 0.5,
+                "y": 0.5,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ],
+            "CurveB": [
+              {
+                "x": 0.5,
+                "y": 0.5,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ],
+            "Constants": "1,2,0,0"
+          },
+          "MaxParticles": 5000,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnParticleCreated": null,
+          "OnParticleDestroyed": null,
+          "OrbitalForce": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
+          "OrbitalPull": 0,
+          "PerParticleTimeScale": 1,
+          "Pitch": 0,
+          "PreWarm": 0,
+          "PushStrength": 0,
+          "Roll": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "CurveA": [
+              {
+                "x": 0.5,
+                "y": 0.5,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ],
+            "CurveB": [
+              {
+                "x": 0.5,
+                "y": 0.5,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ],
+            "Constants": "0,360,0,0"
+          },
+          "Scale": {
+            "Type": "Curve",
+            "Evaluation": "Life",
+            "CurveA": {
+              "rangey": "0,3",
+              "frames": [
+                {
+                  "x": 0,
+                  "y": 0,
+                  "in": -9.333329,
+                  "out": 9.333329,
+                  "mode": "Mirrored"
+                },
+                {
+                  "x": 0.03325123,
+                  "y": 1,
+                  "in": -0.056075174,
+                  "out": 0.056075174,
+                  "mode": "Mirrored"
+                },
+                {
+                  "x": 1,
+                  "y": 0,
+                  "in": 2.9152544,
+                  "out": -2.9152544,
+                  "mode": "Mirrored"
+                }
+              ]
+            },
+            "CurveB": [
+              {
+                "x": 0.5,
+                "y": 0.5,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ],
+            "Constants": "1,0,0,0"
+          },
+          "SequenceId": 0,
+          "SequenceSpeed": 1,
+          "SequenceTime": 1,
+          "SheetSequence": false,
+          "Space": "World",
+          "StartDelay": 0,
+          "StartVelocity": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "CurveA": [
+              {
+                "x": 0.5,
+                "y": 0.5,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ],
+            "CurveB": [
+              {
+                "x": 0.5,
+                "y": 0.5,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ],
+            "Constants": "100,200,0,0"
+          },
+          "Stretch": 0,
+          "TimeScale": 1,
+          "Tint": "1,1,1,1",
+          "UsePrefabFeature": false,
+          "Yaw": 0
+        },
+        {
+          "__type": "Sandbox.ParticleSpriteRenderer",
+          "__guid": "32826f31-a9f5-4200-9921-b39e91ad5e9b",
+          "Additive": false,
+          "Alignment": "LookAtCamera",
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.91,
+          "BlurSpacing": 0.73,
+          "DepthFeather": 0,
+          "FaceVelocity": false,
+          "FogStrength": 1,
+          "LeadingTrail": true,
+          "Lighting": false,
+          "MotionBlur": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Opaque": false,
+          "Pivot": "0.5,0.5",
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RotationOffset": 0,
+          "Scale": 1,
+          "Shadows": false,
+          "SortMode": "Unsorted",
+          "Texture": "materials/particles/shapes/star1.vtex"
+        },
+        {
+          "__type": "Sandbox.ParticleConeEmitter",
+          "__guid": "1959b643-b55f-4b88-ba13-0e95be90cb3a",
+          "Burst": 0,
+          "CenterBias": 1,
+          "CenterBiasVelocity": 0,
+          "ConeAngle": 1,
+          "ConeFar": 50,
+          "ConeNear": 1,
+          "Delay": 0,
+          "DestroyOnEnd": false,
+          "Duration": 3,
+          "InVolume": false,
+          "Loop": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnEdge": false,
+          "Rate": 500,
+          "RateOverDistance": 0,
+          "VelocityMultiplier": 1,
+          "VelocityRandom": 0
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "e9507db3-97bd-42d9-90f4-6e7ab580e280",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "eastern european building",
+      "Position": "-867.6213,4442.059,44.73424",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "06200ba3-92a3-4928-81a2-4078959068a2",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "MaterialGroup": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "c1b37e4a-523c-46be-b57a-f7a893a65288",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "eastern european building (3)",
+      "Position": "-681.5515,4542.242,613.8074",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "d8a14d62-1d56-42f3-9cd5-07387e232186",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "MaterialGroup": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "4e42d8e4-673d-4916-a31c-ea29306d497a",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "eastern european building (5)",
+      "Position": "-757.9899,4530.999,925.7856",
+      "Rotation": "0,0,-0.7071068,-0.7071068",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "846312e8-5e88-4c46-bf0e-f4086e0dad85",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "MaterialGroup": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "2f7f809c-7e38-4b20-af9d-fa1b5d978493",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "eastern european building (4)",
+      "Position": "-686.3842,4539.527,300.0777",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "1f17fc68-9381-4876-9298-dc8c48c71c82",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "MaterialGroup": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "847b59d8-b585-4e65-a17b-319131110602",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "eastern european building (1)",
+      "Position": "-545.8398,4343.046,44.7345",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "16bd7167-6248-4cd7-ae53-31d8e7b2afe5",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "MaterialGroup": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "09dedca1-7b53-4f20-8735-a0ba83083107",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "eastern european building (2)",
+      "Position": "-225.4443,4595.29,37.19461",
+      "Rotation": "0,0,-0.7071067,0.7071068",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "aa34cc74-1ac5-40d2-ac41-74002e871740",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "MaterialGroup": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "6a6afb9d-7b56-4652-9af8-f62d66b35061",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "cruiser",
+      "Position": "-7518.165,7605.356,6.001815",
+      "Rotation": "0,0,-0.258819,0.9659258",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "69db9b97-2ac6-4295-b279-fb01b6c6ed18",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "MaterialGroup": null,
+          "Model": "cruiser/cruiser.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "a5a20fdd-9d0b-46ef-89dc-2bab4e5bdb83",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "8hu_kultiras_rowboat02",
+      "Position": "799.246,1138.959,45.50166",
+      "Rotation": "0,0,-0.7933533,0.6087615",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "b708d720-70de-44b2-b660-9e2dba832cad",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "MaterialGroup": null,
+          "Model": "models/8hu_kultiras_rowboat02.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {
-    "FixedUpdateFrequency": 50,
-    "MaxFixedUpdates": 5,
-    "NetworkFrequency": 30,
     "NetworkInterpolation": true,
-    "PhysicsSubSteps": 1,
-    "ThreadedAnimation": true,
     "TimeScale": 1,
-    "UseFixedUpdate": true,
+    "WantsSystemScene": true,
     "Metadata": {
       "Title": "Water",
       "Description": "Water shader",
@@ -2470,15 +3656,18 @@
       "IncludedBodies": ""
     }
   },
-  "ResourceVersion": 2,
+  "ResourceVersion": 3,
   "Title": "Water",
   "Description": "Water shader",
   "__references": [
+    "boggy.easterneuropeanbuilding#88738",
     "facepunch.fire_particle_fast#60123",
     "facepunch.oildrumexplosive#26722",
+    "gamers.cruiser#13656",
+    "orus.8hu_kultiras_rowboat02#33962",
     "peter.woodcrate#73673",
     "rust.rock_cliff_a#25118",
     "tfassets.farm_house#22777"
   ],
-  "__version": 2
+  "__version": 3
 }

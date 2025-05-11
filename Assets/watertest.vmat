@@ -5,51 +5,50 @@ Layer0
 	shader "shaders/water_8.shader"
 
 	//---- Rendering ----
-	F_RENDER_BACKFACES 1
+	F_DO_NOT_CAST_SHADOWS 1
 
 	//---- Big Wave ----
 	BigWaveScale "91.700"
 	BigWaveSize "1.522"
-	BigWaveTime "2.372"
-
-	//---- Edge Foam ----
-	EdgeFoam "materials/water/water-edge-foam.png"
+	BigWaveTime "2.016"
 
 	//---- Flow ----
 	FlowSize "20.000"
-	FlowSpeed "0.040"
+	FlowSpeed "0.010"
 
 	//---- Fog ----
 	g_bFogEnabled "1"
 
 	//---- Material ----
 	g_flTintColor "[1.000000 1.000000 1.000000 0.000000]"
-	TextureAmbientOcclusion "[1.000000 1.000000 1.000000 0.000000]"
-	TextureBlendMask "[1.000000 1.000000 1.000000 0.000000]"
-	TextureColor "[0.082353 0.282353 0.337255 1.000000]"
-	TextureMetalness "[0.201000 0.201000 0.201000 0.000000]"
-	TextureNormal "materials/water/water.normal.wave.png"
-	TextureRoughness "[0.036000 0.036000 0.036000 0.000000]"
+	TextureColor "materials/water/sea.color.png"
+	TextureNormal "materials/water/water.normal.pillow.png"
 	TextureTintMask "[1.000000 1.000000 1.000000 0.000000]"
 	TextureTranslucency "[1.000000 1.000000 1.000000 0.000000]"
 
-	//---- Small Wave ----
-	SmallWaveScale "3.557"
-	SmallWaveSize "0.100"
-	SmallWaveTime "20.000"
+	//---- Reflection ----
+	ReflectionFresnal "0.500"
+	ReflectionTint "[0.415686 0.537255 0.639216 1.000000]"
+	RelectionNormalScale "0.376"
 
-	//---- Translucent ----
-	g_flOpacityScale "1.000"
+	//---- Refraction ----
+	RefractionNormalScale "0.010"
+
+	//---- Small Wave ----
+	SmallWaveScale "9.684"
+	SmallWaveSize "0.553"
+	SmallWaveTime "2.727"
 
 	//---- Tweaks ----
-	NormalScale "1.051"
-	TextureScale "128.000"
+	g_fAmbientOcclusion "0.288"
+	g_fMetalness "1.000"
+	g_fRoughness "0.110"
+	NormalScale "0.079"
+	TextureScale "182.134"
 
 	//---- Water ----
-	DepthColor "[0.035294 0.039216 0.003922 1.000000]"
-	MaxDepth "75.889"
-	Refraction "0.287"
-	SurfaceColor "[0.094118 0.109804 0.047059 0.474510]"
+	ReflectionRefraction "1.000"
+	Refraction "1.000"
 
 	SystemAttributes
 	{
