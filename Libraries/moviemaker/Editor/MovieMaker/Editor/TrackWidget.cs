@@ -292,7 +292,7 @@ file sealed class LockButton : Button
 			Theme.ControlBackground.Lighten( 0.5f ), Theme.Primary ) );
 		Paint.DrawRect( LocalRect, 4f );
 
-		Paint.SetPen( Theme.ControlText );
+		Paint.SetPen( Theme.TextControl );
 		Paint.DrawIcon( LocalRect, TrackWidget.View.IsLockedSelf ? "lock" : "lock_open", 12f );
 	}
 
@@ -319,7 +319,7 @@ file sealed class CollapseButton : Button
 			Theme.ControlBackground.Lighten( 0.5f ), Theme.Primary ) );
 		Paint.DrawRect( LocalRect, 4f );
 
-		Paint.SetPen( Theme.ControlText );
+		Paint.SetPen( Theme.TextControl );
 		Paint.DrawIcon( LocalRect, Track.View.IsExpanded ? "remove" : "add", 12f );
 	}
 

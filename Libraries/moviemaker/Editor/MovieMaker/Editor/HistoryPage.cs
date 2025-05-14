@@ -40,7 +40,7 @@ public sealed class HistoryPage : ListView, IListPanelPage
 		if ( item.Object is not IHistoryItem historyItem )
 			return;
 
-		var col = Theme.ControlText;
+		var col = Theme.TextControl;
 
 		if ( Paint.HasPressed ) col = Theme.Yellow;
 		else if ( historyItem.Index == Session.History.Index ) col = Theme.Blue;

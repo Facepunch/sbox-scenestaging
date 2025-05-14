@@ -319,7 +319,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		}
 
 		Paint.ClearBrush();
-		Paint.SetPen( Theme.ControlText.Darken( isLocked ? 0.25f : 0f ) );
+		Paint.SetPen( Theme.TextControl.Darken( isLocked ? 0.25f : 0f ) );
 
 		var textRect = new Rect( minX + 4f, LocalRect.Top + 4f, maxX - minX - 8f, LocalRect.Height - 4f );
 		var fullTimeRange = FullTimeRange;

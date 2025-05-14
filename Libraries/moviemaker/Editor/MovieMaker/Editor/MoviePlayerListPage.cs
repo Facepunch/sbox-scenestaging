@@ -51,7 +51,7 @@ public sealed class MoviePlayerListPage : ListView, IListPanelPage
 		if ( item.Object is not MoviePlayer player )
 			return;
 
-		var col = Theme.ControlText;
+		var col = Theme.TextControl;
 
 		if ( Paint.HasPressed ) col = Theme.Yellow;
 		else if ( player == Session.Player ) col = Theme.Blue;

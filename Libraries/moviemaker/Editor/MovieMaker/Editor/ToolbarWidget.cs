@@ -75,7 +75,7 @@ public sealed class ToolBarWidget : Widget
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( Theme.WidgetBackground );
+		Paint.SetBrushAndPen( Theme.TabBackground );
 		Paint.DrawRect( LocalRect );
 	}
 }
@@ -110,7 +110,7 @@ public sealed class ToolBarGroup : Widget
 	protected override void OnPaint()
 	{
 		Paint.ClearPen();
-		Paint.SetBrush( Theme.ControlBackground.LerpTo( Theme.WidgetBackground, 0.5f ) );
+		Paint.SetBrush( Theme.SidebarBackground );
 		Paint.DrawRect( LocalRect, 3f );
 	}
 

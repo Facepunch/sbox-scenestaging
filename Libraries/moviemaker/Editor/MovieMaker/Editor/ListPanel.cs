@@ -164,4 +164,10 @@ public sealed class ListPanel : MovieEditorPanel
 			? $"{GetFullPath( parent )} → {name}"
 			: name;
 	}
+
+	protected override void OnPaint()
+	{
+		Paint.SetBrushAndPen( Theme.TabBackground );
+		Paint.DrawRect( LocalRect );
+	}
 }

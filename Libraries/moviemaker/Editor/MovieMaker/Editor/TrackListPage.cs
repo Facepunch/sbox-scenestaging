@@ -388,7 +388,7 @@ file sealed class DragTargetWidget : Widget
 file sealed class Icon : Widget
 {
 	public TextFlag Alignment { get; set; } = TextFlag.Center;
-	public Color Color { get; set; } = Theme.ControlText;
+	public Color Color { get; set; } = Theme.TextControl;
 	public string IconName { get; set; }
 	public float PixelHeight { get; set; } = 16f;
 
