@@ -1026,7 +1026,7 @@
       "__version": 1,
       "Flags": 0,
       "Name": "Ground Plane",
-      "Position": "0,0,0",
+      "Position": "0,0,-181.1411",
       "Rotation": "0,0,0,1",
       "Scale": "100,100,100",
       "Tags": "",
@@ -1874,6 +1874,43 @@
       "Children": []
     },
     {
+      "__guid": "6d868e8d-3195-4fd9-a768-daf2273e90d6",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "rock_cliff_a (11)",
+      "Position": "-165.4781,64.5267,-250.0242",
+      "Rotation": "0,0,-0.9999999,0.0000002235174",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "f1c18bb6-4358-4fbf-9025-cea68090abd0",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "MaterialGroup": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnPropBreak": null,
+          "OnPropTakeDamage": null,
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
+    },
+    {
       "__guid": "c62529d9-a88f-41d2-9a05-40d9f87a442a",
       "__version": 1,
       "Flags": 0,
@@ -2049,154 +2086,6 @@
           "UpdateStrategy": "EveryFrame",
           "ZFar": 4096,
           "ZNear": 16
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "912e7069-eb1d-4483-b248-0311972f4724",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "woodcrate",
-      "Position": "347.2171,167.8026,0.000005722046",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "54f8bc25-142a-4ada-a291-b0b6e701479c",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": false,
-          "MaterialGroup": null,
-          "Model": "models/woodcrate/woodcrate.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnPropBreak": null,
-          "OnPropTakeDamage": null,
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "bc103cfb-d530-4dbd-af08-5d1f5afae297",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "woodcrate (1)",
-      "Position": "279.9888,167.8026,0.000005722046",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "77db937f-1ee2-43cd-9d19-e36b5f8007b8",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": false,
-          "MaterialGroup": null,
-          "Model": "models/woodcrate/woodcrate.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnPropBreak": null,
-          "OnPropTakeDamage": null,
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "230b0f53-25aa-4f4a-b649-fda0846192ff",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "woodcrate (2)",
-      "Position": "245.6218,167.8026,50.27642",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "3eb7bf79-2196-4dbe-a2f5-de56a198a18c",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": false,
-          "MaterialGroup": null,
-          "Model": "models/woodcrate/woodcrate.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnPropBreak": null,
-          "OnPropTakeDamage": null,
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "1fcaee34-102e-404d-8d56-4b2b49610b9a",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "woodcrate (3)",
-      "Position": "376.9847,167.8026,50.27642",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "6d6b9975-9515-4079-b852-fca84a61e5c4",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": false,
-          "MaterialGroup": null,
-          "Model": "models/woodcrate/woodcrate.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnPropBreak": null,
-          "OnPropTakeDamage": null,
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
         }
       ],
       "Children": []
@@ -2813,6 +2702,7 @@
             "Constants": "1,0,0,0"
           },
           "TimeScale": 1,
+          "Timing": "GameTime",
           "Tint": "1,1,1,1",
           "UsePrefabFeature": false,
           "Yaw": 0
@@ -3270,6 +3160,7 @@
           },
           "Stretch": 0,
           "TimeScale": 1,
+          "Timing": "GameTime",
           "Tint": "1,1,1,1",
           "UsePrefabFeature": false,
           "Yaw": 0
@@ -3632,6 +3523,45 @@
         }
       ],
       "Children": []
+    },
+    {
+      "__guid": "ee1b1618-d8d1-4a9e-ac2e-e3ca9063f305",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Water Trigger",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "water",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "62212b6f-9be0-41c9-ae03-d24a80f61be8",
+          "Center": "0,0,-89.87564",
+          "Friction": null,
+          "IsTrigger": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "Scale": "5000,5000,287.9107",
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {
@@ -3665,7 +3595,6 @@
     "facepunch.oildrumexplosive#26722",
     "gamers.cruiser#13656",
     "orus.8hu_kultiras_rowboat02#33962",
-    "peter.woodcrate#73673",
     "rust.rock_cliff_a#25118",
     "tfassets.farm_house#22777"
   ],
