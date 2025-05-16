@@ -1,0 +1,493 @@
+﻿using System.Collections.Immutable;
+using System.Linq;
+using Sandbox.MovieMaker;
+
+namespace Editor.MovieMaker;
+
+#nullable enable
+
+public class Timeline : GraphicsView
+{
+	public const float TrackHeight = 32f;
+	public const float RootTrackSpacing = 8f;
+
+	public static class Colors
+	{
+		public static Color Background => Theme.ControlBackground.Lighten( 0.1f );
+		public static Color ChannelBackground => Theme.ControlBackground.Darken( 0.1f );
+		public static Color HandleSelected => Color.White;
+	}
+
+	public Session Session { get; }
+
+	private readonly BackgroundItem _backgroundItem;
+	private readonly GridItem _gridItem;
+	private readonly SynchronizedSet<TrackView, TimelineTrack> _tracks;
+
+	private readonly CurrentPointerItem _currentPointerItem;
+	private readonly CurrentPointerItem _previewPointerItem;
+
+	public ScrubberItem ScrubBarTop { get; }
+	public ScrubberItem ScrubBarBottom { get; }
+
+	public IEnumerable<TimelineTrack> Tracks => _tracks;
+
+	public Rect VisibleRect
+	{
+		get
+		{
+			var screenRect = ScreenRect;
+			var topLeft = FromScreen( screenRect.TopLeft );
+			var bottomRight = FromScreen( screenRect.BottomRight );
+
+			return ToScene( new Rect( topLeft, bottomRight - topLeft ) );
+		}
+	}
+
+	public Timeline( Session session )
+	{
+		Session = session;
+		MinimumWidth = 256;
+
+		_tracks = new SynchronizedSet<TrackView, TimelineTrack>(
+			AddTrack, RemoveTrack, UpdateTrack );
+
+		_backgroundItem = new BackgroundItem( Session );
+		Add( _backgroundItem );
+
+		_gridItem = new GridItem( Session );
+		Add( _gridItem );
+
+		_currentPointerItem = new CurrentPointerItem( Theme.Yellow );
+		Add( _currentPointerItem );
+
+		_previewPointerItem = new CurrentPointerItem( Theme.Blue );
+		Add( _previewPointerItem );
+
+		ScrubBarTop = new ScrubberItem( Session.Editor, true ) { Size = new Vector2( Width, 24f ) };
+		Add( ScrubBarTop );
+		ScrubBarBottom = new ScrubberItem( Session.Editor, false ) { Size = new Vector2( Width, 24f ) };
+		Add( ScrubBarBottom );
+
+		Session.PointerChanged += UpdateCurrentPosition;
+		Session.PreviewChanged += UpdatePreviewPosition;
+		Session.ViewChanged += UpdateView;
+
+		FocusMode = FocusMode.TabOrClickOrWheel;
+
+		AcceptDrops = true;
+
+		var bg = new Pixmap( 8 );
+		bg.Clear( Colors.Background );
+
+		SetBackgroundImage( bg );
+
+		Antialiasing = true;
+	}
+
+	public override void OnDestroyed()
+	{
+		DeleteAllItems();
+
+		Session.PointerChanged -= UpdateCurrentPosition;
+		Session.PreviewChanged -= UpdatePreviewPosition;
+		Session.ViewChanged -= UpdateView;
+	}
+
+	private int _lastState;
+	private int _lastVisibleRectHash;
+
+	[EditorEvent.Frame]
+	public void Frame()
+	{
+		UpdateScrubBars();
+		UpdateTracksIfNeeded();
+
+		var visibleRectHash = VisibleRect.GetHashCode();
+
+		if ( visibleRectHash != _lastVisibleRectHash )
+		{
+			Session.DispatchViewChanged();
+		}
+
+		_lastVisibleRectHash = visibleRectHash;
+
+		if ( Session.PreviewPointer is not null
+			&& (Application.KeyboardModifiers & KeyboardModifiers.Shift) == 0
+			&& (Application.MouseButtons & MouseButtons.Left) == 0 )
+		{
+			Session.ClearPreviewPointer();
+		}
+	}
+
+	private void UpdateTracksIfNeeded()
+	{
+		var state = HashCode.Combine( Session.PixelsPerSecond, Session.TimeOffset, Session.FrameRate, Session.TrackList.StateHash );
+
+		if ( state == _lastState ) return;
+
+		_lastState = state;
+
+		UpdateTracks();
+		Update();
+	}
+
+	private void UpdateView()
+	{
+		UpdateSceneFrame();
+		UpdateScrubBars();
+
+		UpdateCurrentPosition( Session.CurrentPointer );
+		UpdatePreviewPosition( Session.PreviewPointer );
+
+		UpdateTracksIfNeeded();
+	}
+
+	private void UpdateScrubBars()
+	{
+		_backgroundItem.Update();
+
+		ScrubBarTop.PrepareGeometryChange();
+		ScrubBarBottom.PrepareGeometryChange();
+
+		var visibleRect = VisibleRect;
+
+		ScrubBarTop.Position = visibleRect.TopLeft;
+		ScrubBarBottom.Position = visibleRect.BottomLeft - new Vector2( 0f, ScrubBarBottom.Height );
+
+		ScrubBarTop.Width = Width;
+		ScrubBarBottom.Width = Width;
+	}
+
+	protected override void OnResize()
+	{
+		base.OnResize();
+
+		UpdateScrubBars();
+		UpdateTracks();
+	}
+
+	private void UpdateCurrentPosition( MovieTime time )
+	{
+		_currentPointerItem.PrepareGeometryChange();
+
+		_currentPointerItem.Position = new Vector2( Session.TimeToPixels( time ), VisibleRect.Top + 12f );
+		_currentPointerItem.Size = new Vector2( 1, VisibleRect.Height - 24f );
+	}
+
+	private void UpdatePreviewPosition( MovieTime? time )
+	{
+		_previewPointerItem.PrepareGeometryChange();
+
+		if ( time is not null )
+		{
+			_previewPointerItem.Position = new Vector2( Session.TimeToPixels( time.Value ), VisibleRect.Top + 12f );
+			_previewPointerItem.Size = new Vector2( 1, VisibleRect.Height - 24f );
+		}
+		else
+		{
+			_previewPointerItem.Position = new Vector2( -50000f, 0f );
+		}
+	}
+
+	void UpdateSceneFrame()
+	{
+		Session.TrackListViewHeight = Height - 64f;
+
+		var x = Session.TimeToPixels( Session.TimeOffset );
+		SceneRect = new Rect( x - 8, Session.TrackListScrollPosition - Session.TrackListScrollOffset, Width - 4, Height - 4 ); // I don't know where the fuck this 4 comes from, but it stops it having some scroll
+
+		_backgroundItem.PrepareGeometryChange();
+		_backgroundItem.SceneRect = SceneRect;
+		_backgroundItem.Update();
+
+		_gridItem.PrepareGeometryChange();
+		_gridItem.SceneRect = SceneRect;
+		_gridItem.Update();
+
+		UpdateCurrentPosition( Session.CurrentPointer );
+		UpdatePreviewPosition( Session.PreviewPointer );
+	}
+
+	public void UpdateTracks()
+	{
+		UpdateSceneFrame();
+
+		_tracks.Update( Session.TrackList.VisibleTracks );
+
+		Update();
+	}
+
+	private TimelineTrack AddTrack( TrackView source )
+	{
+		var item = new TimelineTrack( this, source );
+
+		Add( item );
+
+		return item;
+	}
+
+	private void RemoveTrack( TimelineTrack item ) => item.Destroy();
+	private bool UpdateTrack( TrackView source, TimelineTrack item )
+	{
+		item.UpdateLayout();
+
+		return true;
+	}
+
+	protected override void OnWheel( WheelEvent e )
+	{
+		base.OnWheel( e );
+
+		Session.EditMode?.MouseWheel( e );
+
+		if ( e.Accepted ) return;
+
+		// scoll
+		if ( e.HasShift )
+		{
+			Session.ScrollBy( -e.Delta / 10.0f * (Session.PixelsPerSecond / 10.0f), true );
+			e.Accept();
+			return;
+		}
+
+		// zoom
+		if ( e.HasCtrl )
+		{
+			Session.Zoom( e.Delta / 10.0f, _lastMouseTime );
+			e.Accept();
+			return;
+		}
+
+		Session.TrackListScrollPosition -= e.Delta / 5f;
+		e.Accept();
+	}
+
+	private Vector2 _lastMouseLocalPos;
+	private MovieTime _lastMouseTime;
+
+	protected override void OnMouseMove( MouseEvent e )
+	{
+		base.OnMouseMove( e );
+
+		var delta = e.LocalPosition - _lastMouseLocalPos;
+
+		if ( e.ButtonState == MouseButtons.Middle )
+		{
+			Session.ScrollBy( delta.x, false );
+		}
+
+		if ( e.ButtonState == MouseButtons.Right )
+		{
+			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
+		}
+
+		if ( e.HasShift )
+		{
+			Session.SetPreviewPointer( e.ButtonState != 0
+				? Session.ScenePositionToTime( ToScene( e.LocalPosition ) )
+				: Session.PixelsToTime( ToScene( e.LocalPosition ).x ) );
+		}
+
+		_lastMouseLocalPos = e.LocalPosition;
+		_lastMouseTime = Session.PixelsToTime( ToScene( e.LocalPosition ).x );
+
+		Session.EditMode?.MouseMove( e );
+	}
+
+	public new GraphicsItem? GetItemAt( Vector2 scenePosition )
+	{
+		// TODO: Is there a nicer way?
+
+		var oldGridZIndex = _gridItem.ZIndex;
+
+		_gridItem.ZIndex = -1000;
+
+		var item = base.GetItemAt( scenePosition );
+
+		_gridItem.ZIndex = oldGridZIndex;
+
+		return item;
+	}
+
+	protected override void OnMousePress( MouseEvent e )
+	{
+		base.OnMousePress( e );
+
+		DragType = DragTypes.None;
+
+		var scenePos = ToScene( e.LocalPosition );
+
+		if ( GetItemAt( scenePos ) is { Selectable: true } ) return;
+
+		Session.EditMode?.MousePress( e );
+
+		if ( e.Accepted ) return;
+
+		if ( e.LeftMouseButton )
+		{
+			DragType = DragTypes.SelectionRect;
+			return;
+		}
+
+		if ( e.RightMouseButton )
+		{
+			e.Accepted = true;
+			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
+			return;
+		}
+	}
+
+	protected override void OnMouseReleased( MouseEvent e )
+	{
+		base.OnMouseReleased( e );
+
+		Session.EditMode?.MouseRelease( e );
+	}
+
+	public void DeselectAll()
+	{
+		Session.TrackList.DeselectAll();
+
+		foreach ( var item in SelectedItems.ToArray() )
+		{
+			item.Selected = false;
+		}
+	}
+
+	protected override void OnKeyPress( KeyEvent e )
+	{
+		base.OnKeyPress( e );
+
+		Session.EditMode?.KeyPress( e );
+
+		if ( e.Accepted ) return;
+
+		if ( e.Key == KeyCode.Shift )
+		{
+			e.Accepted = true;
+			Session.SetPreviewPointer( Session.ScenePositionToTime( ToScene( _lastMouseLocalPos ) ) );
+		}
+	}
+
+	protected override void OnKeyRelease( KeyEvent e )
+	{
+		base.OnKeyRelease( e );
+
+		Session.EditMode?.KeyRelease( e );
+	}
+
+	private MovieResource? GetDraggedClip( DragData data )
+	{
+		if ( data.Assets.FirstOrDefault( x => x.AssetPath?.EndsWith( ".movie" ) ?? false ) is not { } assetData )
+		{
+			return null;
+		}
+
+		var assetTask = assetData.GetAssetAsync();
+
+		if ( !assetTask.IsCompleted ) return null;
+		if ( assetTask.Result?.LoadResource<MovieResource>() is not { } resource ) return null;
+
+		if ( !Session.CanReferenceMovie( resource ) ) return null;
+
+		return resource;
+	}
+
+	private ProjectSequenceTrack? _draggedTrack;
+	private ProjectSequenceBlock? _draggedBlock;
+
+	public override void OnDragHover( DragEvent ev )
+	{
+		if ( _draggedBlock is null || _draggedTrack is null )
+		{
+			if ( GetDraggedClip( ev.Data ) is not { } resource )
+			{
+				ev.Action = DropAction.Ignore;
+				return;
+			}
+
+			var clip = resource.GetCompiled();
+
+			_draggedTrack = Session.GetOrCreateTrack( resource );
+			_draggedBlock = _draggedTrack.AddBlock( (0d, clip.Duration), default, resource );
+
+			Session.TrackList.Update();
+			UpdateTracksIfNeeded();
+		}
+
+		var time = Session.ScenePositionToTime( ToScene( ev.LocalPosition ),
+			new SnapOptions( IgnoreBlock: _draggedBlock ) );
+
+		_draggedBlock.TimeRange = (time, time + _draggedBlock.TimeRange.Duration);
+		_draggedBlock.Transform = new MovieTransform( -time );
+
+		Session.TrackList.Find( _draggedTrack )?.MarkValueChanged();
+
+		Log.Info( time );
+
+		ev.Action = DropAction.Link;
+	}
+
+	public override void OnDragLeave()
+	{
+		base.OnDragLeave();
+
+		if ( _draggedBlock is { } block && _draggedTrack is { } track )
+		{
+			track.RemoveBlock( block );
+
+			if ( track.IsEmpty )
+			{
+				track.Remove();
+			}
+
+			_draggedTrack = null;
+			_draggedBlock = null;
+		}
+	}
+
+	public override void OnDragDrop( DragEvent ev )
+	{
+		if ( GetDraggedClip( ev.Data ) is not { } movie )
+		{
+			return;
+		}
+
+		_draggedTrack = null;
+		_draggedBlock = null;
+	}
+
+	public void GetSnapTimes( ref TimeSnapHelper snap )
+	{
+		var mouseScenePos = ToScene( _lastMouseLocalPos );
+
+		if ( mouseScenePos.y <= ScrubBarTop.SceneRect.Bottom || mouseScenePos.y >= ScrubBarBottom.SceneRect.Top )
+		{
+			snap.Add( SnapFlag.MinorTick, snap.Time.Round( Session.MinorTick.Interval ), -2, force: true );
+			snap.Add( SnapFlag.MajorTick, snap.Time.Round( Session.MajorTick.Interval ), -1 );
+		}
+
+		if ( Session.EditMode?.SourceTimeRange is { } pasteRange )
+		{
+			snap.Add( SnapFlag.PasteBlock, pasteRange.Start );
+			snap.Add( SnapFlag.PasteBlock, pasteRange.End );
+		}
+
+		foreach ( var dopeTrack in _tracks )
+		{
+			if ( dopeTrack.View == snap.Options.IgnoreTrack ) continue;
+			if ( dopeTrack.View.IsLocked ) continue;
+			if ( mouseScenePos.y < dopeTrack.SceneRect.Top ) continue;
+			if ( mouseScenePos.y > dopeTrack.SceneRect.Bottom ) continue;
+
+			foreach ( var block in dopeTrack.View.Blocks )
+			{
+				if ( block == snap.Options.IgnoreBlock ) continue;
+
+				snap.Add( SnapFlag.TrackBlock, block.TimeRange.Start );
+				snap.Add( SnapFlag.TrackBlock, block.TimeRange.End );
+			}
+		}
+	}
+}
