@@ -30,7 +30,7 @@ partial class MotionEditMode
 			var t = MathF.Pow( Math.Clamp( 1f - _lastActionTime, 0f, 1f ), 8f );
 			var color = (HasChanges ? Theme.Yellow : Theme.Blue).WithAlpha( 0.25f );
 
-			return Color.Lerp( color, Theme.White.WithAlpha( 0.5f ), t );
+			return Color.Lerp( color, Color.White.WithAlpha( 0.5f ), t );
 		}
 	}
 

@@ -59,7 +59,7 @@ public class GridItem : GraphicsItem
 			var dx = Session.TimeToPixels( interval );
 			var offset = SceneRect.Left % dx;
 
-			Paint.SetPen( Theme.ControlText.WithAlpha( 0.02f ), style == TickStyle.Minor ? 0 : 2 );
+			Paint.SetPen( Theme.TextControl.WithAlpha( 0.02f ), style == TickStyle.Minor ? 0 : 2 );
 
 			for ( var x = 0f; x < Size.x + dx; x += dx )
 			{
