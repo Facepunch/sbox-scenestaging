@@ -15,7 +15,7 @@ public class Timeline : GraphicsView
 	{
 		public static Color Background => Theme.ControlBackground.Lighten( 0.1f );
 		public static Color ChannelBackground => Theme.ControlBackground.Darken( 0.1f );
-		public static Color HandleSelected => Theme.White;
+		public static Color HandleSelected => Color.White;
 	}
 
 	public Session Session { get; }

@@ -124,7 +124,7 @@ public sealed class Vector4BlockItem() : CurveBlockItem<Vector4>(
 	new Element( "X", Theme.Red ),
 	new Element( "Y", Theme.Green ),
 	new Element( "Z", Theme.Blue ),
-	new Element( "W", Theme.White ) )
+	new Element( "W", Color.White ) )
 {
 	protected override void Decompose( Vector4 value, Span<float> result )
 	{
@@ -156,7 +156,7 @@ public sealed class RotationBlockItem() : CurveBlockItem<Rotation>(
 	new Element( "X", Theme.Red, -1f, 1f ),
 	new Element( "Y", Theme.Green, -1f, 1f ),
 	new Element( "Z", Theme.Blue, -1f, 1f ),
-	new Element( "W", Theme.White, -1f, 1f ) )
+	new Element( "W", Color.White, -1f, 1f ) )
 {
 	protected override void Decompose( Rotation value, Span<float> result )
 	{

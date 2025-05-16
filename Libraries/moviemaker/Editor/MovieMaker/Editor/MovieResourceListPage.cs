@@ -55,7 +55,7 @@ public sealed class MovieResourceListPage : ListView, IListPanelPage
 	{
 		if ( item.Object is not MovieResource resource ) return;
 
-		var col = Theme.White.WithAlpha( 0.7f );
+		var col = Color.White.WithAlpha( 0.7f );
 
 		if ( resource == Session.Resource )
 		{
