@@ -1,0 +1,99 @@
+BeforeAfterTest
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #444;
+	justify-content: center;
+	align-items: center;
+	font-weight: 600;
+	flex-wrap: wrap;
+	gap: 20px;
+	padding: 100px;
+	color: white;
+	pointer-events: all;
+
+	> *
+	{
+		background-color: #333a;
+		padding: 10px;
+	}
+
+}
+
+.test1::before
+{
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	border-radius: 5px;
+}
+
+.test2::after
+{
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	border-radius: 5px;
+}
+
+.test3::after, .test3::before
+{
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	border-radius: 5px;
+}
+
+.test4:hover::before
+{
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	border-radius: 5px;
+}
+
+.test5:not(:hover)::before
+{
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	border-radius: 5px;
+}
+
+.test6::before
+{
+	content: "Apple";
+	margin-right: 10px;
+	padding: 1px 3px;
+	background-color: red;
+	border-radius: 5px;
+}
+
+.test7::before
+{
+	content: "people";
+	font-family: "Material Icons";
+	margin-right: 10px;
+	padding: 1px 3px;
+	background-color: red;
+	border-radius: 5px;
+}
+
+.test8
+{
+	:last-child
+	{
+		> &::before
+		{
+			width: 20px;
+			height: 20px;
+			background-color: red;
+			border-radius: 5px;
+		}
+
+		color: yellow;
+	}
+}

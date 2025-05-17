@@ -1,0 +1,35 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
+
+<root>
+	
+	<div class="test1">Red Square Before</div>
+
+	<div class="test2">Red Square After</div>
+
+	<div class="test3">Red Square Before And After</div>
+
+	<div class="test4">Red Square On Hover</div>
+
+	<div class="test5">Red Square On Blur</div>
+
+	<div class="test6">Content</div>
+
+	<div class="test7">Icon Content</div>
+
+	<div class="test8" tooltip="Should correctly have Child highlighted in yellow - rather than the before"><div>With</div><div>Last</div><div>Child</div></div>
+
+</root>
+
+@code
+{
+
+	[Property, TextArea] public string MyStringValue { get; set; } = "Hello World!";
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( MyStringValue );
+}
