@@ -8,10 +8,11 @@ SceneButton
 	justify-content: flex-start;
 	transition: all 0.1s ease-out;
 	padding: 10px 20px;
-	width: 300px;
+	width: 250px;
 	background-color: #0006;
 	color: #aaa;
 	border-radius: 8px;
+	opacity: 1;
 
 	.title
 	{
@@ -40,5 +41,19 @@ SceneButton
 		background-color: #fff;
 		color: #666;
 		sound-in: ui.button.press;
+	}
+
+	&:outro
+	{
+		opacity: 0;
+		transition: all 0.2s ease;
+		transform: scale( 0.8 ) translateY( 50px );
+	}
+
+	&:intro
+	{
+		opacity: 0;
+		transition: all 0.1s ease-out;
+		transform: scale( 1.2 ) translateY( -50px );
 	}
 }

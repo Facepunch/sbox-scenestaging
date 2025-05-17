@@ -20,6 +20,7 @@ SceneMenuPanel
 	flex-direction: column;
 	padding: 5rem;
 	padding-bottom: 0;
+	flex-shrink: 0;
 
 	.title
 	{
@@ -87,5 +88,6 @@ SceneMenuPanel
 	background-color: #0006;
 	flex-grow: 1;
 	border-radius: 8px;
+	overflow: scroll;
 }
 
