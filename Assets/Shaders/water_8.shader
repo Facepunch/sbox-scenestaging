@@ -51,8 +51,8 @@ PS
 	float RefractionNormalScale < Default(0.5f); Range(0.01f, 1.0f); UiGroup("Refraction"); > ;
 	
 
-	bool g_bReflection < Default(0.0f); Attribute( "g_bReflection" ); > ;
-	CreateTexture2D( g_ReflectionTexture ) < Attribute("g_ReflectionTexture");   SrgbRead( false ); Filter(MIN_MAG_MIP_LINEAR);    AddressU( CLAMP );     AddressV( CLAMP ); > ;    
+	bool g_bReflection < Default(0.0f); Attribute( "HasReflectionTexture" ); > ;
+	CreateTexture2D( g_ReflectionTexture ) < Attribute("ReflectionTexture");   SrgbRead( false ); Filter(MIN_MAG_MIP_LINEAR);    AddressU( CLAMP );     AddressV( CLAMP ); > ;    
 	float RelectionNormalScale < Default(0.5f); Range(0.01f, 1.0f); UiGroup("Reflection"); > ;
 	float ReflectionFresnal < Default(0.5f); Range(0.0f, 10.0f); UiGroup("Reflection"); > ;
 	float4 ReflectionTint < UiType(Color); Default4(1.0, 1.0, 1.0, 1.0); UiGroup("Reflection"); > ;

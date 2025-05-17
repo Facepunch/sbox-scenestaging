@@ -84,9 +84,11 @@ BeforeAfterTest
 
 .test8
 {
-	:last-child
+	> :last-child
 	{
-		> &::before
+		color: yellow;
+
+		&::before
 		{
 			width: 20px;
 			height: 20px;
@@ -94,6 +96,22 @@ BeforeAfterTest
 			border-radius: 5px;
 		}
 
-		color: yellow;
+		&::after
+		{
+			width: 20px;
+			height: 20px;
+			background-color: green;
+			border-radius: 5px;
+		}
+	}
+
+	&::before
+	{
+		content: "people";
+		font-family: "Material Icons";
+		margin-right: 10px;
+		padding: 1px 3px;
+		background-color: red;
+		border-radius: 5px;
 	}
 }

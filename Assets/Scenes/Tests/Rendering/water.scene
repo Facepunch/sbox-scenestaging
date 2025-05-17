@@ -1122,25 +1122,31 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "WaterPlane",
-          "__guid": "411ba524-f42e-4e5a-a99e-06a674d99e55",
-          "DynamicReflections": true,
-          "DynamicRefraction": true,
+          "__type": "PlaneReflection",
+          "__guid": "d9b5a8cf-021c-47fb-9e87-300a0ec0d325",
+          "OffsettingEnabled": false,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "ReflectionSurfaceOffset": 5,
-          "ReflectionTexture": null,
-          "RefractionTexture": null,
-          "WaterRenderer": {
+          "OverlayTexture": false,
+          "PlaneNormal": "0,0,1",
+          "ReflectionCamera": {
+            "_type": "component",
+            "component_id": "fff29efe-7688-4c95-97a0-4ea9002c91e9",
+            "go": "3c27073d-d6c4-4bf1-ac53-13470bde0d7a",
+            "component_type": "CameraComponent"
+          },
+          "ReflectionSurfaceOffset": 0,
+          "TargetRenderer": {
             "_type": "component",
             "component_id": "3527e7b9-4409-44bb-8c55-5e60c6518e8c",
             "go": "cae86d62-9cad-4f23-9b80-47aea5f419bd",
             "component_type": "ModelRenderer"
-          }
+          },
+          "TextureResolution": 0
         }
       ],
       "Children": [
