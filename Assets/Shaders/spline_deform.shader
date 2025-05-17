@@ -7,7 +7,6 @@ MODES
 {
 	VrForward();
 	Depth();
-	ToolsVis( S_MODE_TOOLS_VIS );
 }
 
 FEATURES

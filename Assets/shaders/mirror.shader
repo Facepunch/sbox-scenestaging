@@ -13,9 +13,6 @@ MODES
 {
 	VrForward();
 	Depth(); 
-	ToolsVis( S_MODE_TOOLS_VIS );
-	ToolsWireframe( "vr_tools_wireframe.shader" );
-	ToolsShadingComplexity( "tools_shading_complexity.shader" );
 }
 
 COMMON
@@ -63,7 +60,7 @@ PS
 	#include "common/pixel.hlsl"
 	
 	SamplerState g_sSampler0 < Filter( ANISO ); AddressU( WRAP ); AddressV( WRAP ); >;
-	Texture2D g_tReflection < Attribute( "Reflection" ); SrgbRead( true ); >;
+	Texture2D g_tReflection < Attribute( "Reflection" ); SrgbRead( false ); >;
 
 	float4 MainPs( PixelInput i ) : SV_Target0
 	{
