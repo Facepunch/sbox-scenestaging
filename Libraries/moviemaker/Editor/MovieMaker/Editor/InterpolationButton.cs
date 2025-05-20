@@ -41,6 +41,7 @@ public abstract class IconComboBox<T> : IconButton
 
 	public IconComboBox() : base( "" )
 	{
+		IconSize = 10f;
 		IconAspect = 1f;
 	}
 
@@ -86,12 +87,7 @@ public abstract class IconComboBox<T> : IconButton
 		var bg = active ? BackgroundActive : Background;
 		var fg = active ? ForegroundActive : Foreground;
 
-		float alpha = Paint.HasMouseOver ? 0.5f : 0.25f;
-
-		if ( !Enabled )
-			alpha = 0.1f;
-
-		Paint.SetBrush( bg.WithAlphaMultiplied( alpha ) );
+		Paint.SetBrush( bg.WithAlphaMultiplied( Enabled ? 1f : 0.25f ) );
 		Paint.DrawRect( LocalRect, 2.0f );
 
 		Paint.ClearBrush();
