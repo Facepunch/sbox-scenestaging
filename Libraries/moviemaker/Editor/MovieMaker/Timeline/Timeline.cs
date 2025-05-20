@@ -13,8 +13,8 @@ public class Timeline : GraphicsView
 
 	public static class Colors
 	{
-		public static Color Background => Theme.ControlBackground.Lighten( 0.1f );
-		public static Color ChannelBackground => Theme.ControlBackground.Darken( 0.1f );
+		public static Color Background => Theme.WidgetBackground;
+		public static Color ChannelBackground => Theme.ControlBackground;
 		public static Color HandleSelected => Color.White;
 	}
 

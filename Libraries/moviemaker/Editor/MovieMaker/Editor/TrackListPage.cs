@@ -79,7 +79,7 @@ public sealed class TrackListPage : Widget, IListPanelPage
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( Theme.SidebarBackground );
+		Paint.SetBrushAndPen( Theme.ControlBackground );
 		Paint.DrawRect( LocalRect );
 	}
 

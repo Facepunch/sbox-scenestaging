@@ -189,8 +189,8 @@ public partial class TrackWidget : Widget
 		{
 			var canModify = !View.IsLocked;
 
-			var defaultColor = Theme.ControlBackground.LerpTo( Theme.WidgetBackground, canModify ? 0.5f : 1f );
-			var hoveredColor = defaultColor.Darken( 0.1f );
+			var defaultColor = Theme.WidgetBackground.LerpTo( Theme.ControlBackground, canModify ? 0f : 0.5f );
+			var hoveredColor = defaultColor.Lighten( 0.25f );
 			var selectedColor = Color.Lerp( defaultColor, Theme.Primary, canModify ? 0.5f : 0.2f );
 
 			var isHovered = canModify && IsUnderMouse;
