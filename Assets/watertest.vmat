@@ -8,13 +8,13 @@ Layer0
 	F_DO_NOT_CAST_SHADOWS 1
 
 	//---- Big Wave ----
-	BigWaveScale "91.700"
-	BigWaveSize "1.522"
-	BigWaveTime "2.016"
+	BigWaveScale "82.213"
+	BigWaveSize "1.858"
+	BigWaveTime "4.585"
 
 	//---- Flow ----
 	FlowSize "20.000"
-	FlowSpeed "0.010"
+	FlowSpeed "0.028"
 
 	//---- Fog ----
 	g_bFogEnabled "1"
@@ -27,24 +27,23 @@ Layer0
 	TextureTranslucency "[1.000000 1.000000 1.000000 0.000000]"
 
 	//---- Reflection ----
-	ReflectionFresnal "0.500"
-	ReflectionTint "[0.415686 0.537255 0.639216 1.000000]"
-	RelectionNormalScale "0.376"
+	ReflectionTint "[0.894118 1.000000 0.756863 1.000000]"
+	RelectionNormalScale "0.094"
 
 	//---- Refraction ----
-	RefractionNormalScale "0.010"
+	RefractionNormalScale "0.073"
 
 	//---- Small Wave ----
 	SmallWaveScale "9.684"
-	SmallWaveSize "0.553"
-	SmallWaveTime "2.727"
+	SmallWaveSize "3.162"
+	SmallWaveTime "12.292"
 
 	//---- Tweaks ----
-	g_fAmbientOcclusion "0.288"
-	g_fMetalness "1.000"
-	g_fRoughness "0.110"
-	NormalScale "0.079"
-	TextureScale "182.134"
+	g_fAmbientOcclusion "0.753"
+	g_fMetalness "0.466"
+	g_fRoughness "0.151"
+	NormalScale "0.051"
+	TextureScale "137.613"
 
 	//---- Water ----
 	ReflectionRefraction "1.000"

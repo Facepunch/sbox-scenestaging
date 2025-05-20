@@ -46,8 +46,8 @@ PS
 {
 	#include "common/pixel.hlsl"
     
-	bool g_bRefraction < Default(0.0f); Attribute( "g_bRefraction" ); > ;
-	CreateTexture2D( g_RefractionTexture ) < Attribute("g_RefractionTexture");   SrgbRead( false ); Filter(MIN_MAG_MIP_LINEAR);    AddressU( CLAMP );     AddressV( CLAMP ); > ;    
+	bool g_bRefraction < Default(0.0f); Attribute( "HasRefractionTexture" ); > ;
+	CreateTexture2D( g_RefractionTexture ) < Attribute("RefractionTexture");   SrgbRead( false ); Filter(MIN_MAG_MIP_LINEAR);    AddressU( CLAMP );     AddressV( CLAMP ); > ;    
 	float RefractionNormalScale < Default(0.5f); Range(0.01f, 1.0f); UiGroup("Refraction"); > ;
 	
 
@@ -176,6 +176,8 @@ PS
 		m.Metalness = g_fMetalness;
 		m.AmbientOcclusion = g_fAmbientOcclusion;
 
+		float4 outCol = ShadingModelStandard::Shade( i, m );
+
 		//
 		// Add refraction
 		//
@@ -185,11 +187,8 @@ PS
 			uv += -normal.xy * Refraction * 0.1 * RefractionNormalScale;
 
            	float3 col = Tex2DLevel( g_RefractionTexture, uv, 0 ).rgb;
-			m.Albedo.rgb = lerp( m.Albedo.rgb, col, 1 - fresnel );
+			outCol.rgb = lerp( col, outCol.rgb, pow( fresnel, 1 ) );
 		}
-
-		float4 outCol = ShadingModelStandard::Shade( i, m );
-
 
 
 		//
@@ -209,10 +208,10 @@ PS
 			float3 col = g_ReflectionTexture.SampleLevel(g_ReflectionTexture_sampler, uv, 0).rgb;
 			col *= ReflectionTint.rgb;
 
-			outCol.rgb = lerp( outCol.rgb, col, pow( fresnel, ReflectionFresnal ) );
+			outCol.rgb = lerp( outCol.rgb, col, pow( fresnel, 1 ) );
         }
 
-
+		outCol.rgb = Fog::Apply( worldPos, i.vPositionSs.xy, outCol.rgb );
 
 		return outCol;
 	}
