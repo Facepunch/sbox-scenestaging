@@ -77,6 +77,12 @@ public sealed class TrackListPage : Widget, IListPanelPage
 		}
 	}
 
+	protected override void OnPaint()
+	{
+		Paint.SetBrushAndPen( Theme.SidebarBackground );
+		Paint.DrawRect( LocalRect );
+	}
+
 	public override void OnDestroyed()
 	{
 		if ( _trackList is not null )
