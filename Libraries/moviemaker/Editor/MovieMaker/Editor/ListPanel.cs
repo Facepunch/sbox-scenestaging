@@ -27,8 +27,6 @@ public sealed class ListPanel : MovieEditorPanel
 {
 	private const string PageCookieName = "moviemaker.listpage";
 
-	public const float TitleHeight = 32f;
-
 	public TrackListPage TrackList { get; }
 	public MovieResourceListPage MovieList { get; }
 	public MoviePlayerListPage PlayerList { get; }

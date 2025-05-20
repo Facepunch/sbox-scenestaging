@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Linq;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -110,14 +111,30 @@ public sealed class TimelinePanel : MovieEditorPanel
 
 		snapGroup.AddSpacingCell();
 
-		var rate = new ComboBox { ToolTip = "Snap Frame Rate" };
+		var rate = new FpsComboBox { ToolTip = "Snap Frame Rate" };
 
-		foreach ( var frameRate in MovieTime.SupportedFrameRates )
-		{
-			rate.AddItem( $"{frameRate} FPS", onSelected: () => session.FrameRate = frameRate,
-				selected: session.FrameRate == frameRate );
-		}
+		rate.Bind( "Value" ).From(
+			() => session.FrameRate,
+			value => session.FrameRate = value );
 
 		snapGroup.Layout.Add( rate );
+	}
+}
+
+file class FpsComboBox : IconComboBox<int>
+{
+	public FpsComboBox()
+	{
+		IconAspect = 5f;
+	}
+
+	protected override IEnumerable<int> OnGetOptions() => MovieTime.SupportedFrameRates
+		.Intersect( [1, 2, 4, 5, 10, 15, 20, 24, 30, 48, 60, 90, 100, 120] );
+
+	protected override string OnGetOptionTitle( int option ) => $"{option} FPS";
+
+	protected override void OnPaintOptionIcon( int option, Rect rect )
+	{
+		Paint.DrawText( rect, $"{option} FPS" );
 	}
 }

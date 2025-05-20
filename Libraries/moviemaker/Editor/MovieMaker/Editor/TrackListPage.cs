@@ -151,7 +151,7 @@ public sealed class TrackListPage : Widget, IListPanelPage
 			return;
 		}
 
-		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition - ListPanel.TitleHeight );
+		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition );
 		_trackContainer.FixedWidth = Width;
 		_trackContainer.FixedHeight = _rootTracks
 			.Select( x => x.View.Position + x.View.Height + Timeline.RootTrackSpacing )
