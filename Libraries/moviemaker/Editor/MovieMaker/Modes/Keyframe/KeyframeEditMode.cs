@@ -12,6 +12,7 @@ namespace Editor.MovieMaker;
 public sealed partial class KeyframeEditMode : EditMode
 {
 	public bool AutoCreateTracks { get; set; }
+	public bool CreateKeyframeOnClick { get; set; }
 
 	public KeyframeInterpolation DefaultInterpolation { get; set; } = KeyframeInterpolation.Cubic;
 
@@ -25,6 +26,11 @@ public sealed partial class KeyframeEditMode : EditMode
 				"When enabled, tracks will be automatically created when making changes in the scene." ),
 			() => AutoCreateTracks,
 			value => AutoCreateTracks = value );
+
+		changesGroup.AddToggle( new( "Create Keyframe on Click", "edit",
+			"When enabled, clicking on a track in the timeline will create a keyframe." ),
+			() => CreateKeyframeOnClick,
+			value => CreateKeyframeOnClick = value );
 
 		var selectionGroup = ToolBar.AddGroup();
 
@@ -168,9 +174,35 @@ public sealed partial class KeyframeEditMode : EditMode
 				.Any() )
 	];
 
+	protected override void OnKeyPress( KeyEvent e )
+	{
+		base.OnKeyPress( e );
+
+		if ( e.Key == KeyCode.Shift )
+		{
+			CreateKeyframeOnClick = true;
+		}
+	}
+
+	protected override void OnKeyRelease( KeyEvent e )
+	{
+		base.OnKeyRelease( e );
+
+		if ( e.Key == KeyCode.Shift )
+		{
+			CreateKeyframeOnClick = false;
+		}
+
+		if ( e.Key == KeyCode.Escape )
+		{
+			AutoCreateTracks = false;
+			CreateKeyframeOnClick = false;
+		}
+	}
+
 	protected override void OnMouseRelease( MouseEvent e )
 	{
-		if ( !e.LeftMouseButton || !e.HasShift ) return;
+		if ( !e.LeftMouseButton || !CreateKeyframeOnClick ) return;
 
 		var scenePos = Timeline.ToScene( e.LocalPosition );
 
