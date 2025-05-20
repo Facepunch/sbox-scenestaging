@@ -52,6 +52,9 @@ public partial class MovieEditor : Widget, IHotloadManaged
 
 	public override void OnDestroyed()
 	{
+		Session?.Deactivate();
+		Session = null;
+
 		_editors.Remove( this );
 
 		base.OnDestroyed();
@@ -94,7 +97,7 @@ public partial class MovieEditor : Widget, IHotloadManaged
 		Session.Activate();
 	}
 
-	void CloseSession()
+	public void CloseSession()
 	{
 		Layout.Clear( true );
 

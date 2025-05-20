@@ -20,6 +20,7 @@ public class MovieMakerDock : Widget
 	{
 		var sessions = _editor?.Sessions;
 
+		_editor?.CloseSession();
 		_editor?.Destroy();
 
 		Layout.Clear( true );
