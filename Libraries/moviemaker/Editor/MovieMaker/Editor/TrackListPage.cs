@@ -59,6 +59,11 @@ public sealed class TrackListPage : Widget, IListPanelPage
 		Load( Session.TrackList );
 	}
 
+	protected override void OnResize()
+	{
+		_trackContainer.FixedWidth = Width;
+	}
+
 	private TrackWidget AddRootTrack( TrackView source ) => _trackContainer.Layout.Add( new TrackWidget( this, null, source ) );
 	private void RemoveRootTrack( TrackWidget item ) => item.Destroy();
 	private bool UpdateChildTrack( TrackView source, TrackWidget item ) => item.UpdateLayout();
