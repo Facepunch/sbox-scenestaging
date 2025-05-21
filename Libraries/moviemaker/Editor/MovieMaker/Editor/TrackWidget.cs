@@ -260,81 +260,68 @@ public partial class TrackWidget : Widget
 
 		_menu.OpenAtCursor();
 	}
+	private record AvailableTrackProperty( string Name, string Category, Type Type, Action Create );
 
 	public void ShowAddMenu( Vector2 openPos )
 	{
 		_menu = new Menu( this );
 
 		var session = TrackList.Session;
+		var availableTracks = new List<AvailableTrackProperty>();
 
 		if ( View.Target is ITrackReference<GameObject> { IsBound: true, Value: { Components.Count: > 0 } go } )
 		{
-			const string categoryName = "Components";
-
-			_menu.AddHeading( "Components" );
-
 			foreach ( var component in go.Components.GetAll() )
 			{
 				var type = component.GetType();
-				var typeDesc = TypeLibrary.GetType( component.GetType() );
 
-				var existing = View.Children.FirstOrDefault( x => x.Track.Name == type.Name );
-
-				var option = _menu.AddOption( typeDesc.Title, typeDesc.Icon, action: () =>
-				{
-					using var scope = session.History.Push( $"{(existing is null ? "Create" : "Remove")} Track ({type.Name})" );
-
-					if ( existing is not null )
-					{
-						existing.Remove();
-					}
-					else
-					{
-						session.GetOrCreateTrack( component );
-					}
-
-					session.TrackList.Update();
-					session.ClipModified();
-
-					ShowAddMenu( openPos );
-				} );
-
-				option.Checkable = true;
-				option.Checked = View.Children.Any( x => x.Track.Name == type.Name );
+				availableTracks.Add( new AvailableTrackProperty( type.Name, "Components", type,
+					() => session.GetOrCreateTrack( component ) ) );
 			}
 		}
 
-		var availableTracks = TrackProperty.GetAll( View.Target );
-
-		foreach ( var type in availableTracks.GroupBy( x => x.Type.ToSimpleString( false ) ) )
+		foreach ( var property in TrackProperty.GetAll( View.Target ) )
 		{
-			_menu.AddHeading( type.Key );
+			availableTracks.Add( new AvailableTrackProperty( property.Name, property.Category, property.Type,
+				() => session.GetOrCreateTrack( View.Track, property.Name ) ) );
+		}
 
-			foreach ( var (name, _, _) in type )
+		var categories = availableTracks.GroupBy( x => x.Category ).ToArray();
+
+		foreach ( var category in categories )
+		{
+			var subMenu = categories.Length == 1 ? _menu : _menu.AddMenu( category.Key );
+
+			foreach ( var type in category.GroupBy( x => x.Type.ToSimpleString( false ) ) )
 			{
-				var existing = View.Children.FirstOrDefault( x => x.Track.Name == name );
-
-				var option = _menu.AddOption( name, action: () =>
+				if ( category.Key != "Components" )
 				{
-					using var scope = session.History.Push( $"{(existing is null ? "Create" : "Remove")} Track ({name})" );
+					subMenu.AddHeading( type.Key ).Color = Theme.TextDisabled;
+				}
 
-					if ( existing is not null )
+				foreach ( var item in type )
+				{
+					var option = new ToggleOption( item.Name, View.Children.Any( x => x.Track.Name == item.Name ), create =>
 					{
-						existing.Remove();
-					}
-					else
-					{
-						session.GetOrCreateTrack( View.Track, name );
-					}
+						using var scope = session.History.Push( $"{(create ? "Create" : "Remove")} Track ({item.Name})" );
 
-					session.TrackList.Update();
-					session.ClipModified();
+						if ( create )
+						{
+							item.Create();
+						}
+						else
+						{
+							View.Children
+								.FirstOrDefault( x => x.Track.Name == item.Name )?
+								.Remove();
+						}
 
-					ShowAddMenu( openPos );
-				} );
+						session.TrackList.Update();
+						session.ClipModified();
+					} );
 
-				option.Checkable = true;
-				option.Checked = existing is not null;
+					subMenu.AddWidget( option );
+				}
 			}
 		}
 
@@ -369,6 +356,78 @@ public partial class TrackWidget : Widget
 	void UnlockChildren()
 	{
 		throw new NotImplementedException();
+	}
+}
+
+// TODO: surely there's an easier way to stop Menus from closing
+file sealed class ToggleOption : Widget
+{
+	private readonly Label _label;
+	private readonly Action<bool> _toggled;
+
+	private bool _isActive;
+
+	public bool IsActive
+	{
+		get => _isActive;
+		set
+		{
+			_isActive = value;
+
+			_label.SetStyles( value ? "font-weight: bold;" : "font-weight: regular;" );
+		}
+	}
+
+	protected override Vector2 SizeHint()
+	{
+		// So there's enough space for the label to become bold
+
+		return base.SizeHint() * new Vector2( 1.1f, 1f );
+	}
+
+	public ToggleOption( string title, bool active, Action<bool> toggled )
+	{
+		Layout = Layout.Row();
+		Layout.Margin = new Margin( 40f, 5f, 16f, 5f );
+
+		_label = new Label( title, this );
+		_toggled = toggled;
+
+		MinimumWidth = 120f;
+
+		Layout.Add( _label );
+
+		IsActive = active;
+	}
+
+	protected override void OnPaint()
+	{
+		if ( Paint.HasMouseOver )
+		{
+			Paint.SetBrushAndPen( Theme.SurfaceBackground );
+			Paint.DrawRect( LocalRect.Shrink( IsActive ? 0f : 4f, 0f, 4f, 0f ), 3f );
+		}
+
+		if ( IsActive )
+		{
+			Paint.SetBrushAndPen( Theme.Primary );
+			Paint.DrawRect( LocalRect.Contain( new Vector2( 3f, LocalRect.Height ), TextFlag.LeftCenter ) );
+
+			Paint.SetPen( Theme.Text );
+			Paint.DrawIcon( LocalRect.Shrink( 16f ), "done", 13f, TextFlag.LeftCenter );
+		}
+	}
+
+	protected override void OnMouseReleased( MouseEvent e )
+	{
+		base.OnMouseReleased( e );
+
+		IsActive = !IsActive;
+
+		e.Accepted = true;
+
+		_toggled.Invoke( IsActive );
+		Update();
 	}
 }
 
