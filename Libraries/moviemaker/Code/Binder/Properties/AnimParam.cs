@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 using static Sandbox.SkinnedModelRenderer;
 
 namespace Sandbox.MovieMaker.Properties;
@@ -32,6 +33,20 @@ file sealed record AnimParamProperty<T>( ITrackProperty<ParameterAccessor?> Pare
 
 file sealed class AnimParamPropertyFactory : ITrackPropertyFactory<ITrackProperty<ParameterAccessor?>>
 {
+	string ITrackPropertyFactory.CategoryName => "Anim Graph";
+
+	public IEnumerable<string> GetPropertyNames( ITrackProperty<ParameterAccessor?> parent )
+	{
+		var graph = parent is { IsBound: true } ? parent.Value?.Graph : null;
+
+		if ( graph is null ) yield break;
+
+		for ( var i = 0; i < graph.ParamCount; ++i )
+		{
+			yield return graph.GetParameterName( i );
+		}
+	}
+
 	/// <summary>
 	/// Any property in a <see cref="ParameterAccessor"/> is an anim graph parameter, but we
 	/// can only determine the type if it actually exists.

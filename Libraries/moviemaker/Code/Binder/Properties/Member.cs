@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Numerics;
+using System.Xml.Linq;
 
 namespace Sandbox.MovieMaker.Properties;
 
@@ -76,14 +78,27 @@ file sealed record MemberProperty<T>( ITrackTarget Parent, MemberDescription Mem
 
 file sealed class MemberPropertyFactory : ITrackPropertyFactory
 {
+	string ITrackPropertyFactory.CategoryName => "Members";
+
 	int ITrackPropertyFactory.Order => 0x4000_0000;
+
+	IEnumerable<string> ITrackPropertyFactory.GetPropertyNames( ITrackTarget parent )
+	{
+		if ( TypeLibrary.GetType( parent.TargetType ) is not { } typeDesc ) return Enumerable.Empty<string>();
+		if ( !CanMakeTrackFromProperties( typeDesc.TargetType ) ) return Enumerable.Empty<string>();
+
+		return typeDesc.Members
+			.Where( x => x is { IsPublic: true } and (FieldDescription or PropertyDescription) )
+			.Select( x => x.Name );
+	}
 
 	private MemberDescription? GetMember( ITrackTarget parent, string name )
 	{
 		if ( TypeLibrary.GetType( parent.TargetType ) is not { } typeDesc ) return null;
+		if ( !CanMakeTrackFromProperties( typeDesc.TargetType ) ) return null;
 
 		return typeDesc.Members
-			.Where( x => x is FieldDescription or PropertyDescription )
+			.Where( CanMakeTrackFromMember )
 			.FirstOrDefault( m => m.Name == name );
 	}
 
@@ -100,5 +115,88 @@ file sealed class MemberPropertyFactory : ITrackPropertyFactory
 	public ITrackProperty<T> CreateProperty<T>( ITrackTarget parent, string name )
 	{
 		return new MemberProperty<T>( parent, GetMember( parent, name )! );
+	}
+
+	// TODO: Because Type.IsPrimitive isn't allowed
+	private static HashSet<Type> PrimitiveTypes { get; } = new()
+	{
+		typeof(bool),
+		typeof(byte),
+		typeof(sbyte),
+		typeof(char),
+		typeof(decimal),
+		typeof(double),
+		typeof(float),
+		typeof(int),
+		typeof(uint),
+		typeof(long),
+		typeof(ulong),
+		typeof(short),
+		typeof(ushort)
+	};
+
+	private static HashSet<Type> MathPrimitiveTypes { get; } = new()
+	{
+		typeof(Color),
+		typeof(Color32),
+		typeof(ColorHsv),
+
+		typeof(Vector2),
+		typeof(Vector3),
+		typeof(Vector4),
+
+		typeof(Vector2Int),
+		typeof(Vector3Int),
+
+		typeof(Angles),
+		typeof(Rotation)
+	};
+
+	private static bool CanMakeTrackFromProperties( Type type )
+	{
+		if ( type.IsAssignableTo( typeof(GameObject) ) ) return true;
+		if ( type.IsAssignableTo( typeof(Component) ) ) return true;
+
+		if ( PrimitiveTypes.Contains( type ) ) return false;
+		if ( MathPrimitiveTypes.Contains( type ) ) return type != typeof(Rotation);
+
+		return false;
+	}
+
+	private static bool CanMakeTrackFromMember( MemberDescription member )
+	{
+		Type valueType;
+
+		switch ( member )
+		{
+			case FieldDescription { IsInitOnly: false, IsPublic: true } field:
+				valueType = field.FieldType;
+				break;
+			case PropertyDescription { CanRead: true, CanWrite: true, IsGetMethodPublic: true, IsSetMethodPublic: true, IsIndexer: false } property:
+				valueType = property.PropertyType;
+				break;
+			default:
+				return false;
+		}
+
+		if ( member.TypeDescription.TargetType.IsAssignableTo( typeof(Component) ) )
+		{
+			if ( !member.HasAttribute( typeof(PropertyAttribute) ) ) return false;
+		}
+
+		return IsValidPropertyType( valueType );
+	}
+
+	private static bool IsValidPropertyType( Type type )
+	{
+		if ( PrimitiveTypes.Contains( type ) ) return true;
+		if ( MathPrimitiveTypes.Contains( type ) ) return true;
+		if ( TypeLibrary.GetType( type ) is null ) return false;
+		if ( type.IsAssignableTo( typeof(Component) ) ) return true;
+		if ( type.IsAssignableTo( typeof(Resource) ) ) return true;
+		if ( type == typeof(GameObject) ) return true;
+		if ( type == typeof(string) ) return true;
+
+		return false;
 	}
 }

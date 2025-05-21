@@ -1,12 +1,17 @@
-﻿using Editor.NodeEditor;
+﻿using System.Linq;
+using Editor.NodeEditor;
 using Sandbox.MovieMaker;
 using Sandbox.UI;
 using System.Reflection;
+using Sandbox.MovieMaker.Properties;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
+/// <summary>
+/// An item in the <see cref="TrackListPage"/>, showing the name of a track with buttons to configure it.
+/// </summary>
 public partial class TrackWidget : Widget
 {
 	public TrackListPage TrackList { get; }
@@ -20,6 +25,7 @@ public partial class TrackWidget : Widget
 
 	private readonly Label? _label;
 	private readonly Button _collapseButton;
+	private readonly Button _addButton;
 	private readonly Button _lockButton;
 	private readonly Layout _childLayout;
 	private readonly SynchronizedSet<TrackView, TrackWidget> _children;
@@ -64,6 +70,12 @@ public partial class TrackWidget : Widget
 		}
 
 		row.AddStretchCell();
+
+		if ( view.Track is not ProjectSequenceTrack && TrackProperty.GetAll( View.Target ).Any() )
+		{
+			_addButton = row.Add( new AddButton( this ) );
+		}
+
 		_lockButton = row.Add( new LockButton( this ) );
 
 		View_Changed( view );
@@ -189,7 +201,7 @@ public partial class TrackWidget : Widget
 		{
 			var canModify = !View.IsLocked;
 
-			var defaultColor = Theme.WidgetBackground.LerpTo( Theme.ControlBackground, canModify ? 0f : 0.5f );
+			var defaultColor = Theme.SurfaceBackground.LerpTo( Theme.ControlBackground, canModify ? 0f : 0.5f );
 			var hoveredColor = defaultColor.Lighten( 0.25f );
 			var selectedColor = Color.Lerp( defaultColor, Theme.Primary, canModify ? 0.5f : 0.2f );
 
@@ -222,6 +234,11 @@ public partial class TrackWidget : Widget
 	{
 		e.Accepted = true;
 
+		ShowContextMenu();
+	}
+
+	public void ShowContextMenu()
+	{
 		_menu = new Menu( this );
 
 		if ( View.Track is ProjectSequenceTrack sequenceTrack )
@@ -242,6 +259,86 @@ public partial class TrackWidget : Widget
 		}
 
 		_menu.OpenAtCursor();
+	}
+
+	public void ShowAddMenu( Vector2 openPos )
+	{
+		_menu = new Menu( this );
+
+		var session = TrackList.Session;
+
+		if ( View.Target is ITrackReference<GameObject> { IsBound: true, Value: { Components.Count: > 0 } go } )
+		{
+			const string categoryName = "Components";
+
+			_menu.AddHeading( "Components" );
+
+			foreach ( var component in go.Components.GetAll() )
+			{
+				var type = component.GetType();
+				var typeDesc = TypeLibrary.GetType( component.GetType() );
+
+				var existing = View.Children.FirstOrDefault( x => x.Track.Name == type.Name );
+
+				var option = _menu.AddOption( typeDesc.Title, typeDesc.Icon, action: () =>
+				{
+					using var scope = session.History.Push( $"{(existing is null ? "Create" : "Remove")} Track ({type.Name})" );
+
+					if ( existing is not null )
+					{
+						existing.Remove();
+					}
+					else
+					{
+						session.GetOrCreateTrack( component );
+					}
+
+					session.TrackList.Update();
+					session.ClipModified();
+
+					ShowAddMenu( openPos );
+				} );
+
+				option.Checkable = true;
+				option.Checked = View.Children.Any( x => x.Track.Name == type.Name );
+			}
+		}
+
+		var availableTracks = TrackProperty.GetAll( View.Target );
+
+		foreach ( var type in availableTracks.GroupBy( x => x.Type.ToSimpleString( false ) ) )
+		{
+			_menu.AddHeading( type.Key );
+
+			foreach ( var (name, _, _) in type )
+			{
+				var existing = View.Children.FirstOrDefault( x => x.Track.Name == name );
+
+				var option = _menu.AddOption( name, action: () =>
+				{
+					using var scope = session.History.Push( $"{(existing is null ? "Create" : "Remove")} Track ({name})" );
+
+					if ( existing is not null )
+					{
+						existing.Remove();
+					}
+					else
+					{
+						session.GetOrCreateTrack( View.Track, name );
+					}
+
+					session.TrackList.Update();
+					session.ClipModified();
+
+					ShowAddMenu( openPos );
+				} );
+
+				option.Checkable = true;
+				option.Checked = existing is not null;
+			}
+		}
+
+		_menu.OpenAt( openPos, false );
 	}
 
 	private void OnRename( string name )
@@ -284,12 +381,14 @@ file sealed class LockButton : Button
 		TrackWidget = trackWidget;
 
 		FixedSize = 24f;
+
+		ToolTip = "Toggle lock";
 	}
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor( Timeline.Colors.Background,
-			Theme.ControlBackground.Lighten( 0.5f ), Theme.Primary ) );
+		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor( Theme.ControlBackground,
+			Theme.ControlBackground.Darken( 0.5f ), Theme.Primary ) );
 		Paint.DrawRect( LocalRect, 4f );
 
 		Paint.SetPen( Theme.TextControl );
@@ -311,12 +410,14 @@ file sealed class CollapseButton : Button
 	{
 		Track = track;
 		FixedSize = 24f;
+
+		ToolTip = "Toggle expanded";
 	}
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor( Timeline.Colors.Background,
-			Theme.ControlBackground.Lighten( 0.5f ), Theme.Primary ) );
+		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor( Theme.ControlBackground,
+			Theme.ControlBackground.Darken( 0.5f ), Theme.Primary ) );
 		Paint.DrawRect( LocalRect, 4f );
 
 		Paint.SetPen( Theme.TextControl );
@@ -326,6 +427,34 @@ file sealed class CollapseButton : Button
 	protected override void OnClicked()
 	{
 		Track.View.IsExpanded = !Track.View.IsExpanded;
+	}
+}
+
+file sealed class AddButton : Button
+{
+	public TrackWidget Track { get; }
+
+	public AddButton( TrackWidget track )
+	{
+		Track = track;
+		FixedSize = 24f;
+
+		ToolTip = "Add sub-track";
+	}
+
+	protected override void OnPaint()
+	{
+		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor(Theme.ControlBackground,
+			Theme.ControlBackground.Darken( 0.5f ), Theme.Primary ) );
+		Paint.DrawRect( LocalRect, 4f );
+
+		Paint.SetPen( Theme.TextControl );
+		Paint.DrawIcon( LocalRect, "playlist_add", 12f );
+	}
+
+	protected override void OnClicked()
+	{
+		Track.ShowAddMenu( Application.CursorPosition );
 	}
 }
 

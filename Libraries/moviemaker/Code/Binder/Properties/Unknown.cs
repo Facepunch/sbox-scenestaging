@@ -24,6 +24,8 @@ file sealed class UnknownPropertyFactory : ITrackPropertyFactory<ITrackTarget>
 {
 	int ITrackPropertyFactory.Order => int.MaxValue;
 
+	public IEnumerable<string> GetPropertyNames( ITrackTarget parent ) => Enumerable.Empty<string>();
+
 	public Type GetTargetType( ITrackTarget parent, string name ) => typeof(Unknown);
 
 	public ITrackProperty<T> CreateProperty<T>( ITrackTarget parent, string name ) =>
