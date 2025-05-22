@@ -50,7 +50,13 @@ public sealed partial class KeyframeEditMode : EditMode
 		}, value =>
 		{
 			DefaultInterpolation = value;
-			ApplyChangeToSelection( new KeyframeSetInterpolation( [], value ) );
+
+			foreach ( var handle in SelectedKeyframes )
+			{
+				handle.Keyframe = handle.Keyframe with { Interpolation = value };
+			}
+
+			UpdateTracksFromHandles( SelectedKeyframes );
 		} );
 	}
 
@@ -85,55 +91,117 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	protected override bool OnPreChange( TrackView view )
 	{
-		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return false;
-		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } ) return false;
+		// Touching a property should create a keyframe
 
-		using var scope = GetKeyframeChangeScope( "Set", view );
-
-		return propertyTrack.AddKeyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation );
+		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation ) );
 	}
 
 	protected override bool OnPostChange( TrackView view )
 	{
+		// We've finished changing a property, update the keyframe we created in OnPreChange
+
+		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation ) );
+	}
+
+	private readonly Dictionary<TimelineTrack, List<KeyframeHandle>> _keyframeHandles = new();
+
+	/// <summary>
+	/// Creates or updates the <see cref="KeyframeHandle"/> for a given <paramref name="keyframe"/>.
+	/// </summary>
+	private bool CreateOrUpdateKeyframeHandle( TrackView view, Keyframe keyframe )
+	{
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return false;
 		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } ) return false;
 
 		using var scope = GetKeyframeChangeScope( "Set", view );
 
-		return propertyTrack.AddKeyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation );
+		if ( Timeline.Tracks.FirstOrDefault( x => x.View == view ) is not { } timelineTrack ) return false;
+
+		// Handle list should already exist from OnUpdateTimelineItems
+
+		if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) ) return false;
+
+		if ( handles.FirstOrDefault( x => x.Time == keyframe.Time ) is { } handle )
+		{
+			if ( handle.Keyframe.Equals( keyframe ) ) return false;
+
+			handle.Keyframe = keyframe;
+		}
+		else
+		{
+			handles.Add( new KeyframeHandle( timelineTrack, keyframe ) );
+			handles.Sort();
+		}
+
+		return true;
 	}
 
-	private readonly Dictionary<TimelineTrack, SynchronizedList<Keyframe, KeyframeHandle>> _keyframeHandles = new();
+	protected override void OnPreRestore()
+	{
+		foreach ( var timelineTrack in Timeline.Tracks )
+		{
+			ClearTimelineItems( timelineTrack );
+		}
+	}
 
 	protected override void OnUpdateTimelineItems( TimelineTrack timelineTrack )
 	{
-		if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) )
+		if ( _keyframeHandles.ContainsKey( timelineTrack ) )
 		{
-			_keyframeHandles[timelineTrack] = handles = new SynchronizedList<Keyframe, KeyframeHandle>(
-				time => new KeyframeHandle( timelineTrack, time ),
-				handle => handle.Destroy(),
-				UpdateHandle );
+			return;
 		}
 
-		// Only update handles if we're not previewing a drag, otherwise the dragged handle might get deleted!
+		// Only update handles if they don't exist yet, because handles are authoritative
 
-		if ( !_isDraggingKeyframes )
+		_keyframeHandles.Add( timelineTrack, new List<KeyframeHandle>() );
+
+		UpdateKeyframeHandles( timelineTrack );
+	}
+
+	private void UpdateKeyframeHandles( TimelineTrack timelineTrack )
+	{
+		if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) ) return;
+
+		foreach ( var handle in handles )
 		{
-			handles.Update( timelineTrack.View.Keyframes );
+			handle.Destroy();
 		}
+
+		handles.Clear();
+
+		foreach ( var keyframe in timelineTrack.View.Keyframes )
+		{
+			handles.Add( new KeyframeHandle( timelineTrack, keyframe ) );
+		}
+	}
+
+	private void UpdateTracksFromHandles( IEnumerable<KeyframeHandle> handles )
+	{
+		var tracks = handles
+			.Select( x => x.Parent )
+			.Distinct();
+
+		foreach ( var timelineTrack in tracks )
+		{
+			UpdateTrackFromHandles( timelineTrack );
+		}
+	}
+
+	private void UpdateTrackFromHandles( TimelineTrack timelineTrack )
+	{
+		if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) ) return;
+
+		// TODO
 	}
 
 	protected override void OnClearTimelineItems( TimelineTrack timelineTrack )
 	{
 		if ( !_keyframeHandles.Remove( timelineTrack, out var handles ) ) return;
 
-		handles.Clear();
-	}
-
-	private bool UpdateHandle( Keyframe src, ref KeyframeHandle dst )
-	{
-		dst.Keyframe = dst.OriginalKeyframe = src;
-		return true;
+		foreach ( var handle in handles )
+		{
+			handle.Destroy();
+		}
 	}
 
 	private IEnumerable<IGrouping<TrackView, KeyframeHandle>> GetSelectedKeyframes( KeyframeHandle? include = null )
@@ -202,15 +270,18 @@ public sealed partial class KeyframeEditMode : EditMode
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return;
 		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } target ) return;
 
+		if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) ) return;
+		if ( handles.Any( x => x.Time == time ) ) return;
+
 		var value = propertyTrack.TryGetValue( time, out var val ) ? val : target.Value;
 
 		ClearKeyframeChangeScope();
 
 		using var scope = Session.History.Push( "Add Keyframe" );
 
-		if ( !propertyTrack.AddKeyframe( time, value, DefaultInterpolation ) ) return;
+		handles.Add( new KeyframeHandle( timelineTrack, new Keyframe( time, value, DefaultInterpolation ) ) );
 
-		view.MarkValueChanged();
+		UpdateTrackFromHandles( timelineTrack );
 	}
 
 	internal void KeyframeDragStart( KeyframeHandle handle, GraphicsMouseEvent e )

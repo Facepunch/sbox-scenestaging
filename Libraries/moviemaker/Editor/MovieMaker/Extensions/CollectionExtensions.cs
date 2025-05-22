@@ -8,6 +8,20 @@ namespace Editor.MovieMaker;
 #nullable enable
 public static class CollectionExtensions
 {
+	public static T? FirstOrNull<T>( this IEnumerable<T> enumerable, Func<T, bool> predicate )
+		where T : struct
+	{
+		foreach ( var item in enumerable )
+		{
+			if ( predicate( item ) )
+			{
+				return item;
+			}
+		}
+
+		return null;
+	}
+
 	public static IReadOnlyList<T> Slice<T>( this IReadOnlyList<T> list, int offset, int count )
 	{
 		if ( offset < 0 )
@@ -198,6 +212,8 @@ public sealed class SynchronizedList<TSrc, TItem> : ISynchronizedList<TSrc, TIte
 	private readonly Func<TSrc, TItem> _addFunc;
 	private readonly Action<TItem>? _removeAction;
 	private readonly UpdateItemDelegate? _updateAction;
+
+	public IEnumerable<TSrc> Sources => _sources;
 
 	public delegate bool UpdateItemDelegate( TSrc source, ref TItem item );
 
