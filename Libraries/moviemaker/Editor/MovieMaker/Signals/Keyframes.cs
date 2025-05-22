@@ -16,7 +16,14 @@ public enum KeyframeInterpolation
 	Cubic
 }
 
-public readonly record struct Keyframe( MovieTime Time, object? Value, KeyframeInterpolation Interpolation ) : IComparable<Keyframe>
+public interface IKeyframe
+{
+	MovieTime Time { get; }
+	object? Value { get; }
+	KeyframeInterpolation Interpolation { get; }
+}
+
+public readonly record struct Keyframe( MovieTime Time, object? Value, KeyframeInterpolation Interpolation ) : IKeyframe, IComparable<Keyframe>
 {
 	public int CompareTo( Keyframe other ) => Time.CompareTo( other.Time );
 
@@ -138,12 +145,14 @@ public sealed record KeyframeSetInterpolation(
 public readonly record struct Keyframe<T>(
 	MovieTime Time,
 	T Value,
-	KeyframeInterpolation Interpolation ) : IComparable<Keyframe<T>>
+	KeyframeInterpolation Interpolation ) : IKeyframe, IComparable<Keyframe<T>>
 {
 	public static implicit operator Keyframe( Keyframe<T> keyframe ) =>
 		new ( keyframe.Time, keyframe.Value, keyframe.Interpolation );
 
 	public int CompareTo( Keyframe<T> other ) => Time.CompareTo( other.Time );
+
+	object? IKeyframe.Value => Value;
 }
 
 [JsonDiscriminator( "Keyframes" )]

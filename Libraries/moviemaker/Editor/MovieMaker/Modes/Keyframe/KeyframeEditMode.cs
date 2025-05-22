@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using Sandbox.MovieMaker;
 
@@ -20,6 +19,8 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnEnable()
 	{
+		AddClipboardToolbarGroup();
+
 		var changesGroup = ToolBar.AddGroup();
 
 		changesGroup.AddToggle( new( "Automatic Track Creation", "playlist_add",
@@ -59,8 +60,6 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	private MovieTime _dragStartTime;
 	private readonly Dictionary<TrackView, KeyframeModification> _modifications = new();
-
-	private TangentControl? _tangentControl;
 
 	private sealed record KeyframeChangeScope( string Name, TrackView? TrackView, IHistoryScope HistoryScope ) : IDisposable
 	{
@@ -122,21 +121,10 @@ public sealed partial class KeyframeEditMode : EditMode
 		{
 			handles.Update( timelineTrack.View.Keyframes );
 		}
-
-		if ( _tangentControl?.Target.Parent == timelineTrack )
-		{
-			_tangentControl.UpdatePosition();
-		}
 	}
 
 	protected override void OnClearTimelineItems( TimelineTrack timelineTrack )
 	{
-		if ( _tangentControl?.Target.Parent == timelineTrack )
-		{
-			_tangentControl.Destroy();
-			_tangentControl = null;
-		}
-
 		if ( !_keyframeHandles.Remove( timelineTrack, out var handles ) ) return;
 
 		handles.Clear();
@@ -241,9 +229,6 @@ public sealed partial class KeyframeEditMode : EditMode
 		{
 			_modifications.Add( group.Key, new KeyframeModification( group.Key, group ) );
 		}
-
-		_tangentControl?.Destroy();
-		// _tangentControl = new TangentControl( handle );
 	}
 
 	internal void KeyframeDragMove( KeyframeHandle handle, GraphicsMouseEvent e )
@@ -266,8 +251,6 @@ public sealed partial class KeyframeEditMode : EditMode
 		{
 			modification.Update( transform );
 		}
-
-		_tangentControl?.UpdatePosition();
 
 		Session.SetCurrentPointer( time );
 	}
