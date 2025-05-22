@@ -118,7 +118,9 @@ partial class KeyframeEditMode
 				.FirstOrDefault( x => x.Track.Id == trackId );
 
 			if ( view is null ) continue;
-			if ( view.Track is not IProjectPropertyTrack { TargetType: { } propertyType } track ) continue;
+			if ( view.Track is not IProjectPropertyTrack { TargetType: { } propertyType } ) continue;
+			if ( GetTimelineTrack( view ) is not { } timelineTrack ) continue;
+			if ( GetHandles( timelineTrack ) is not { } handles ) continue;
 
 			var keyframeType = typeof(Keyframe<>).MakeGenericType( propertyType );
 			var arrayType = typeof(ImmutableArray<>).MakeGenericType( keyframeType );
@@ -126,7 +128,13 @@ partial class KeyframeEditMode
 
 			foreach ( var keyframe in keyframes.Cast<IKeyframe>() )
 			{
-				track.AddKeyframe( keyframe.Time + headTime, keyframe.Value, keyframe.Interpolation );
+				var kf = new Keyframe( keyframe.Time + headTime, keyframe.Value, keyframe.Interpolation );
+
+				var handle = new KeyframeHandle( timelineTrack, kf );
+
+				handles.Add( handle );
+
+				handle.Selected = true;
 			}
 
 			view.MarkValueChanged();

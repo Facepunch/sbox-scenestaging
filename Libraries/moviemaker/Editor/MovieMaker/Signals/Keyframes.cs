@@ -2,6 +2,7 @@
 using Sandbox.UI;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.Marshalling;
 using System.Text.Json.Serialization;
 
@@ -53,6 +54,21 @@ partial record PropertySignal
 		.TakeWhile( x => x.Time <= timeRange.End );
 
 	protected virtual IEnumerable<Keyframe> OnGetKeyframes() => [];
+
+	private static MethodInfo FromKeyframesCoreMethod { get; } = typeof(PropertySignal)
+		.GetMethod( nameof(FromKeyframesCore), BindingFlags.Static | BindingFlags.NonPublic )!;
+
+	public static PropertySignal FromKeyframes( Type propertyType, IEnumerable<Keyframe> keyframes )
+	{
+		var method = FromKeyframesCoreMethod.MakeGenericMethod( propertyType );
+
+		return (PropertySignal)method.Invoke( null, [keyframes] )!;
+	}
+
+	private static PropertySignal FromKeyframesCore<T>( IEnumerable<Keyframe> keyframes )
+	{
+		return new KeyframeSignal<T>( [..keyframes.Select( x => (Keyframe<T>)x )] );
+	}
 }
 
 partial record PropertySignal<T>
@@ -109,6 +125,8 @@ public readonly record struct Keyframe<T>(
 {
 	public static implicit operator Keyframe( Keyframe<T> keyframe ) =>
 		new ( keyframe.Time, keyframe.Value, keyframe.Interpolation );
+	public static explicit operator Keyframe<T>( Keyframe keyframe ) =>
+		new( keyframe.Time, (T)keyframe.Value!, keyframe.Interpolation );
 
 	public int CompareTo( Keyframe<T> other ) => Time.CompareTo( other.Time );
 

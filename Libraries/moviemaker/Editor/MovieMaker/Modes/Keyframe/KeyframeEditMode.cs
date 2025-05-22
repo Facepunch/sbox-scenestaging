@@ -1,6 +1,8 @@
-﻿using System.Collections.Immutable;
+﻿using Sandbox.MovieMaker;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -63,9 +65,7 @@ public sealed partial class KeyframeEditMode : EditMode
 	public override bool AllowTrackCreation => AutoCreateTracks;
 
 	private bool _isDraggingKeyframes;
-
-	private MovieTime _dragStartTime;
-	private readonly Dictionary<TrackView, KeyframeModification> _modifications = new();
+	private MovieTime _lastDragTime;
 
 	private sealed record KeyframeChangeScope( string Name, TrackView? TrackView, IHistoryScope HistoryScope ) : IDisposable
 	{
@@ -105,21 +105,34 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	private readonly Dictionary<TimelineTrack, List<KeyframeHandle>> _keyframeHandles = new();
 
+	private TimelineTrack? GetTimelineTrack( TrackView view )
+	{
+		if ( view.Track is not IProjectPropertyTrack ) return null;
+		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } ) return null;
+
+		return Timeline.Tracks.FirstOrDefault( x => x.View == view );
+	}
+
+	private List<KeyframeHandle>? GetHandles( TrackView view )
+	{
+		return GetTimelineTrack( view ) is { } timelineTrack ? GetHandles( timelineTrack ) : null;
+	}
+
+	private List<KeyframeHandle>? GetHandles( TimelineTrack timelineTrack )
+	{
+		// Handle list should already exist from OnUpdateTimelineItems
+
+		return _keyframeHandles.GetValueOrDefault( timelineTrack );
+	}
+
 	/// <summary>
 	/// Creates or updates the <see cref="KeyframeHandle"/> for a given <paramref name="keyframe"/>.
+	/// Will update a keyframe that already exists if it has the exact same <see cref="Keyframe.Time"/>.
 	/// </summary>
 	private bool CreateOrUpdateKeyframeHandle( TrackView view, Keyframe keyframe )
 	{
-		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return false;
-		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } ) return false;
-
-		using var scope = GetKeyframeChangeScope( "Set", view );
-
-		if ( Timeline.Tracks.FirstOrDefault( x => x.View == view ) is not { } timelineTrack ) return false;
-
-		// Handle list should already exist from OnUpdateTimelineItems
-
-		if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) ) return false;
+		if ( GetTimelineTrack( view ) is not { } timelineTrack ) return false;
+		if ( GetHandles( timelineTrack ) is not { } handles ) return false;
 
 		if ( handles.FirstOrDefault( x => x.Time == keyframe.Time ) is { } handle )
 		{
@@ -190,8 +203,37 @@ public sealed partial class KeyframeEditMode : EditMode
 	private void UpdateTrackFromHandles( TimelineTrack timelineTrack )
 	{
 		if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) ) return;
+		if ( timelineTrack.View.Track is not IProjectPropertyTrack track ) return;
 
-		// TODO
+		handles.Sort();
+
+		var block = new List<Keyframe>();
+		var blocks = new List<IProjectPropertyBlock>();
+
+		foreach ( var handle in handles )
+		{
+			block.Add( handle.Keyframe );
+
+			if ( handle.EndBlock || handle == handles[^1] )
+			{
+				blocks.Add( FinishBlock( timelineTrack.View.Track.TargetType, block ) );
+				block.Clear();
+			}
+		}
+
+		track.SetBlocks( blocks );
+
+		timelineTrack.View.MarkValueChanged();
+	}
+
+	private IProjectPropertyBlock FinishBlock( Type propertyType, IReadOnlyList<Keyframe> keyframes )
+	{
+		var start = keyframes[0].Time;
+		var end = keyframes[^1].Time;
+
+		var signal = PropertySignal.FromKeyframes( propertyType, keyframes );
+
+		return PropertyBlock.FromSignal( signal, (start, end) );
 	}
 
 	protected override void OnClearTimelineItems( TimelineTrack timelineTrack )
@@ -292,14 +334,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		handle.View.InspectProperty();
 
-		_dragStartTime = handle.Time;
-
-		_modifications.Clear();
-
-		foreach ( var group in GetSelectedKeyframes( handle ) )
-		{
-			_modifications.Add( group.Key, new KeyframeModification( group.Key, group ) );
-		}
+		_lastDragTime = handle.Time;
 	}
 
 	internal void KeyframeDragMove( KeyframeHandle handle, GraphicsMouseEvent e )
@@ -316,14 +351,18 @@ public sealed partial class KeyframeEditMode : EditMode
 		using var scope = GetKeyframeChangeScope( "Move", view );
 
 		var time = Session.ScenePositionToTime( e.ScenePosition, new SnapOptions( SnapFlag.PlayHead ) );
-		var transform = new MovieTransform( time - _dragStartTime );
+		var transform = new MovieTransform( time - _lastDragTime );
 
-		foreach ( var modification in _modifications.Values )
-		{
-			modification.Update( transform );
-		}
+		_lastDragTime = time;
 
 		Session.SetCurrentPointer( time );
+
+		foreach ( var keyframe in SelectedKeyframes )
+		{
+			keyframe.Time = transform * keyframe.Time;
+		}
+
+		UpdateTracksFromHandles( SelectedKeyframes );
 	}
 
 	internal void KeyframeDragEnd( KeyframeHandle handle, GraphicsMouseEvent e )
@@ -334,21 +373,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		_isDraggingKeyframes = false;
 
-		var view = SelectedKeyframes.GroupBy( x => x.View )
-			.Count() == 1
-			? handle.View
-			: null;
-
-		using var scope = GetKeyframeChangeScope( "Move", view );
-
-		foreach ( var modification in _modifications.Values )
-		{
-			modification.Commit();
-		}
-
 		ClearKeyframeChangeScope();
-
-		_modifications.Clear();
 	}
 
 	protected override void OnSelectAll()
@@ -361,107 +386,26 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnDelete()
 	{
-		ApplyChangeToSelection( new KeyframeDeletion( [] ) );
-	}
+		var selected = SelectedKeyframes
+			.ToImmutableHashSet();
 
-	public bool ApplyChangeToSelection( KeyframeChanges change )
-	{
-		var anyChanges = false;
+		var tracks = SelectedKeyframes
+			.Select( x => x.Parent )
+			.Distinct()
+			.ToArray();
 
-		ClearKeyframeChangeScope();
-
-		using var scope = Session.History.Push( $"{change.Name} Keyframes" );
-
-		foreach ( var group in GetSelectedKeyframes() )
+		foreach ( var timelineTrack in tracks )
 		{
-			var keyframeTimes = GetKeyframeTimes( group );
-			var blocks = GetAffectedBlocks( group.Key, keyframeTimes );
+			if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) ) continue;
 
-			var trackChange = change with { KeyframeTimes = [..keyframeTimes] };
+			handles.RemoveAll( selected.Contains );
 
-			anyChanges |= ApplyChange( group.Key, blocks, trackChange );
+			UpdateTrackFromHandles( timelineTrack );
 		}
 
-		return anyChanges;
-	}
-
-	public static bool ApplyChange( TrackView view, IReadOnlyList<IProjectPropertyBlock> blocks, KeyframeChanges changes )
-	{
-		if ( view.Track is not IProjectPropertyTrack propertyTrack || blocks.Count <= 0 ) return false;
-
-		foreach ( var block in blocks )
+		foreach ( var keyframe in SelectedKeyframes )
 		{
-			propertyTrack.Remove( block.TimeRange );
-		}
-
-		foreach ( var block in blocks )
-		{
-			if ( block.WithKeyframeChanges( changes ) is { } changed )
-			{
-				propertyTrack.Add( changed );
-			}
-		}
-
-		view.MarkValueChanged();
-
-		return true;
-	}
-
-	private sealed class KeyframeModification
-	{
-		private readonly ImmutableHashSet<MovieTime> _times;
-
-		private readonly ImmutableArray<KeyframeHandle> _handles;
-		private readonly ImmutableArray<IProjectPropertyBlock> _blocks;
-
-		private KeyframeChanges? _changes;
-
-		public TrackView View { get; }
-
-		public KeyframeModification( TrackView view, IEnumerable<KeyframeHandle> handles )
-		{
-			View = view;
-
-			_handles = [..handles.OrderBy( x => x.Time )];
-
-			foreach ( var handle in _handles )
-			{
-				handle.OriginalKeyframe = handle.Keyframe;
-			}
-
-			_times = GetKeyframeTimes( _handles ).ToImmutableHashSet();
-			_blocks = [..GetAffectedBlocks( view, _times )];
-		}
-
-		public void Update( MovieTransform transform ) =>
-			Update( transform == MovieTransform.Identity ? null : new KeyframeTransform( _times, transform ) );
-
-		public void Update( KeyframeChanges? changes )
-		{
-			_changes = changes;
-
-			foreach ( var handle in _handles )
-			{
-				handle.Time = _changes?.Apply( handle.OriginalKeyframe.Time ) ?? handle.OriginalKeyframe.Time;
-			}
-
-			View.SetPreviewBlocks( _blocks, changes is not null
-				? _blocks.Select( x => x.WithKeyframeChanges( changes ) ).OfType<ITrackBlock>()
-				: _blocks );
-		}
-
-		public bool Commit()
-		{
-			if ( _changes is not { } changes ) return false;
-
-			View.ClearPreviewBlocks();
-
-			return ApplyChange( View, _blocks, changes );
-		}
-
-		public void Clear()
-		{
-			View.ClearPreviewBlocks();
+			keyframe.Destroy();
 		}
 	}
 

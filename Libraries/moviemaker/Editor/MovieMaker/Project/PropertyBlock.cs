@@ -38,6 +38,17 @@ public interface IProjectPropertyBlock : IPropertyBlock, IPaintHintBlock
 	PropertySignal Signal { get; }
 }
 
+public static class PropertyBlock
+{
+	public static IProjectPropertyBlock FromSignal( PropertySignal signal, MovieTimeRange timeRange )
+	{
+		var propertyType = signal.PropertyType;
+		var blockType = typeof(PropertyBlock<>).MakeGenericType( propertyType );
+
+		return (IProjectPropertyBlock)Activator.CreateInstance( blockType, signal, timeRange )!;
+	}
+}
+
 public sealed partial record PropertyBlock<T>( [property: JsonPropertyOrder( 100 )] PropertySignal<T> Signal, MovieTimeRange TimeRange )
 	: IPropertyBlock<T>, IProjectPropertyBlock
 {
