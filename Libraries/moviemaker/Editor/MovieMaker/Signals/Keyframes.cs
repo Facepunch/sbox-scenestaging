@@ -1,7 +1,9 @@
-﻿using System.Collections.Immutable;
+﻿using Sandbox.MovieMaker;
+using Sandbox.UI;
+using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text.Json.Serialization;
-using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -55,91 +57,49 @@ partial record PropertySignal
 
 partial record PropertySignal<T>
 {
-	public PropertySignal<T> WithKeyframe( MovieTime time, T value, KeyframeInterpolation interpolation ) => OnWithKeyframe( time, value, interpolation );
-	public PropertySignal<T> WithKeyframeChanges( KeyframeChanges changes ) =>
-		HasKeyframes ? OnWithKeyframeChanges( changes ) : this;
-
-	protected virtual PropertySignal<T> OnWithKeyframe( MovieTime time, T value, KeyframeInterpolation interpolation )
+	/// <summary>
+	/// Replace the keyframes in this signal with the given sequence.
+	/// </summary>
+	public PropertySignal<T> WithKeyframes( IReadOnlyList<Keyframe<T>> keyframes )
 	{
+		if ( !AreOrdered( keyframes ) )
+		{
+			throw new ArgumentException( "Keyframes must be in ascending time order.", nameof( keyframes ) );
+		}
+
+		return OnWithKeyframes( keyframes );
+	}
+
+	protected virtual PropertySignal<T> OnWithKeyframes( IReadOnlyList<Keyframe<T>> keyframes )
+	{
+		if ( keyframes.Count == 0 ) return this;
+
 		if ( Transformer.GetDefault<T>() is not { } transformer )
 		{
 			// If we can't do additive blending, replace this signal with the new keyframe signal.
 
-			return new KeyframeSignal<T>( [new Keyframe<T>( time, value, interpolation )] );
+			return new KeyframeSignal<T>( [..keyframes] );
 		}
 
-		var relative = transformer.Difference( GetValue( time ), value );
-
-		return this + new KeyframeSignal<T>( [new Keyframe<T>( time, relative, interpolation )] );
+		return this + new KeyframeSignal<T>( [..keyframes.Select( x =>
+			x with { Value = transformer.Difference( GetValue( x.Time ), x.Value ) } )] );
 	}
 
-	protected virtual PropertySignal<T> OnWithKeyframeChanges( KeyframeChanges changes ) => this;
-}
-
-partial interface IProjectPropertyTrack
-{
-	bool AddKeyframe( MovieTime time, object? value, KeyframeInterpolation interpolation );
-}
-
-partial class ProjectPropertyTrack<T>
-{
-	public bool AddKeyframe( MovieTime time, T value, KeyframeInterpolation interpolation )
+	private static bool AreOrdered( IReadOnlyList<Keyframe<T>> keyframes )
 	{
-		time = MovieTime.Max( 0d, time );
+		if ( keyframes.Count < 2 ) return true;
 
-		if ( Blocks.Count == 0 )
+		var prev = keyframes[0];
+
+		foreach ( var next in keyframes.Skip( 1 ) )
 		{
-			return Add( time, new KeyframeSignal<T>( [new Keyframe<T>( time, value, interpolation )] ) );
+			if ( prev.Time > next.Time ) return false;
+
+			prev = next;
 		}
 
-		var block = Blocks.GetLastBlock( time );
-
-		return Add( block.TimeRange.Union( time ), block.Signal.WithKeyframe( time, value, interpolation ) );
+		return true;
 	}
-
-	bool IProjectPropertyTrack.AddKeyframe( MovieTime time, object? value, KeyframeInterpolation interpolation ) =>
-		AddKeyframe( time, (T)value!, interpolation );
-}
-
-public abstract record KeyframeChanges( ImmutableHashSet<MovieTime> KeyframeTimes )
-{
-	public abstract string Name { get; }
-
-	public virtual MovieTime? Apply( MovieTime time ) => time;
-
-	public virtual IEnumerable<MovieTime> Apply( IEnumerable<MovieTime> keyframeTimes ) => keyframeTimes;
-}
-
-public sealed record KeyframeTransform( ImmutableHashSet<MovieTime> KeyframeTimes, MovieTransform Transform )
-	: KeyframeChanges( KeyframeTimes )
-{
-	public override string Name => "Move";
-
-	public override MovieTime? Apply( MovieTime time ) => KeyframeTimes.Contains( time ) ? Transform * time : time;
-
-	public override IEnumerable<MovieTime> Apply( IEnumerable<MovieTime> keyframeTimes ) => keyframeTimes
-		.Select( x => KeyframeTimes.Contains( x ) ? Transform * x : x )
-		.Order()
-		.Distinct();
-}
-
-public sealed record KeyframeDeletion( ImmutableHashSet<MovieTime> KeyframeTimes )
-	: KeyframeChanges( KeyframeTimes )
-{
-	public override string Name => "Delete";
-
-	public override MovieTime? Apply( MovieTime time ) => KeyframeTimes.Contains( time ) ? null : time;
-
-	public override IEnumerable<MovieTime> Apply( IEnumerable<MovieTime> keyframeTimes ) => keyframeTimes
-		.Except( KeyframeTimes );
-}
-
-public sealed record KeyframeSetInterpolation(
-	ImmutableHashSet<MovieTime> KeyframeTimes,
-	KeyframeInterpolation Interpolation )
-	: KeyframeChanges( KeyframeTimes )
-{
-	public override string Name => "Modify";
 }
 
 public readonly record struct Keyframe<T>(
@@ -160,10 +120,10 @@ file sealed record KeyframeSignal<T>( ImmutableArray<Keyframe<T>> Keyframes ) : 
 {
 	private readonly ImmutableArray<Keyframe<T>> _keyframes = ValidateKeyframes( Keyframes );
 
-	public ImmutableArray<Keyframe<T>> Keyframes
+	public new ImmutableArray<Keyframe<T>> Keyframes
 	{
 		get => _keyframes;
-		init => _keyframes = ValidateKeyframes( value );
+		private init => _keyframes = ValidateKeyframes( value );
 	}
 
 	[JsonIgnore]
@@ -266,72 +226,21 @@ file sealed record KeyframeSignal<T>( ImmutableArray<Keyframe<T>> Keyframes ) : 
 		return null;
 	}
 
-	protected override PropertySignal<T> OnWithKeyframe( MovieTime time, T value, KeyframeInterpolation interpolation )
+	protected override PropertySignal<T> OnWithKeyframes( IReadOnlyList<Keyframe<T>> keyframes )
 	{
-		var keyframe = new Keyframe<T>( time, value, interpolation );
-
-		if ( time < Keyframes[0].Time )
+		if ( keyframes.Count == 0 )
 		{
-			return this with { Keyframes = [keyframe, ..Keyframes] };
+			if ( _transformer is { } transformer )
+			{
+				return transformer.Identity.AsSignal();
+			}
+
+			// TODO: is this a sensible default?
+
+			return Keyframes[0].Value.AsSignal();
 		}
 
-		if ( time > Keyframes[^1].Time )
-		{
-			return this with { Keyframes = [..Keyframes, keyframe] };
-		}
-
-		if ( FindIndexExact( time ) is { } index )
-		{
-			return this with { Keyframes = [..Keyframes[..index], keyframe, ..Keyframes[(index + 1)..]] };
-		}
-
-		var prevIndex = FindIndex( time );
-
-		return this with { Keyframes = [..Keyframes[..(prevIndex + 1)], keyframe, ..Keyframes[(prevIndex + 1)..]] };
-	}
-
-	protected override PropertySignal<T> OnWithKeyframeChanges( KeyframeChanges changes )
-	{
-		switch ( changes )
-		{
-			case KeyframeDeletion:
-				if ( Keyframes.All( x => changes.KeyframeTimes.Contains( x.Time ) ) )
-				{
-					// All keyframes deleted: return a constant signal of the first keyframe's value
-
-					return Keyframes[0].Value;
-				}
-
-				return this with { Keyframes = [..Keyframes.Where( x => !changes.KeyframeTimes.Contains( x.Time ) )] };
-
-			case KeyframeTransform { Transform: var transform }:
-				return this with
-				{
-					Keyframes = [..Keyframes
-						.Select( x => changes.KeyframeTimes.Contains( x.Time )
-							? x with { Time = transform * x.Time }
-							: x )
-						
-						// If keyframes start overlapping, we only care about the first and last in each overlap
-						.GroupBy( x => x.Time )
-						.SelectMany( x => x.Count() < 2 ? x.AsEnumerable() : [x.First(), x.Last()] )
-						.Order()
-					]
-				};
-
-			case KeyframeSetInterpolation { Interpolation: var interpolation }:
-				return this with
-				{
-					Keyframes =
-					[
-						..Keyframes.Select( x => changes.KeyframeTimes.Contains( x.Time )
-							? x with { Interpolation = interpolation } : x )
-					]
-				};
-
-			default:
-				throw new NotImplementedException();
-		}
+		return this with { Keyframes = [..keyframes] };
 	}
 
 	protected override PropertySignal<T> OnReduce( MovieTime? start, MovieTime? end )

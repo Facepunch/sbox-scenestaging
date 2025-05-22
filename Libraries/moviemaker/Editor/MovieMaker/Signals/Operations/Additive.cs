@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.Json.Serialization;
 using Sandbox.MovieMaker;
 
@@ -51,27 +52,12 @@ file sealed record ToGlobalOperation<T>( PropertySignal<T> First, PropertySignal
 
 	protected override IEnumerable<Keyframe> OnGetKeyframes() => Second.Keyframes;
 
-	protected override PropertySignal<T> OnWithKeyframe( MovieTime time, T value, KeyframeInterpolation interpolation )
+	protected override PropertySignal<T> OnWithKeyframes( IReadOnlyList<Keyframe<T>> keyframes )
 	{
-		if ( !Second.HasKeyframes ) return base.OnWithKeyframe( time, value, interpolation );
+		var second = Second.WithKeyframes( [..keyframes.Select( x =>
+			x with { Value = _transformer.Difference( First.GetValue( x.Time ), x.Value ) } )] );
 
-		var local = _transformer.Difference( First.GetValue( time ), value );
-
-		return First + Second.WithKeyframe( time, local, interpolation );
-	}
-
-	protected override PropertySignal<T> OnWithKeyframeChanges( KeyframeChanges changes )
-	{
-		if ( !Second.HasKeyframes ) return this;
-
-		var changed = Second.WithKeyframeChanges( changes );
-
-		if ( !changed.HasKeyframes )
-		{
-			return First;
-		}
-
-		return First + changed;
+		return second.IsIdentity ? First : First + second;
 	}
 
 	private static ITransformer<T> _transformer = Transformer.GetDefaultOrThrow<T>();
