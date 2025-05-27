@@ -214,8 +214,6 @@ public sealed partial class KeyframeEditMode : EditMode
 	{
 		if ( !e.LeftMouseButton || !CreateKeyframeOnClick ) return;
 
-		Log.Info( "OnMouseRelease" );
-
 		var scenePos = Timeline.ToScene( e.LocalPosition );
 
 		if ( Timeline.Tracks.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) ) is not { } timelineTrack ) return;
