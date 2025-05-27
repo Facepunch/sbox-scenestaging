@@ -1,9 +1,7 @@
-﻿using Sandbox;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
 using System.Collections;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading.Tasks.Dataflow;
 
 namespace Editor.MovieMaker;
 
@@ -136,9 +134,7 @@ public sealed partial class KeyframeEditMode : EditMode
 		if ( GetTimelineTrack( view ) is not { } timelineTrack ) return false;
 		if ( GetHandles( timelineTrack ) is not { } handles ) return false;
 
-		handles.AddOrUpdate( keyframe );
-
-		return true;
+		return handles.AddOrUpdate( keyframe );
 	}
 
 	protected override void OnPreRestore()
@@ -240,6 +236,8 @@ public sealed partial class KeyframeEditMode : EditMode
 		using var scope = Session.History.Push( "Add Keyframe" );
 
 		handles.AddOrUpdate( new Keyframe( time, value, DefaultInterpolation ) );
+
+		Session.SetCurrentPointer( time );
 	}
 
 	internal void KeyframeDragStart( KeyframeHandle handle, GraphicsMouseEvent e )
@@ -364,6 +362,9 @@ public sealed partial class KeyframeEditMode : EditMode
 		}
 	}
 
+	/// <summary>
+	/// Manages the keyframe handles for a particular <see cref="TimelineTrack"/>.
+	/// </summary>
 	private sealed class TrackKeyframeHandles : IEnumerable<KeyframeHandle>
 	{
 		private readonly TimelineTrack _timelineTrack;
@@ -520,6 +521,18 @@ public sealed partial class KeyframeEditMode : EditMode
 			{
 				blocks.Add( FinishBlock( block ) );
 			}
+
+			// Re-add any source blocks that don't have keyframes in them
+
+			foreach ( var sourceBlock in _sourceBlocks )
+			{
+				if ( blocks.Any( x => x.TimeRange == sourceBlock.TimeRange ) ) continue;
+
+				blocks.Add( sourceBlock );
+			}
+
+			blocks.Sort( ( a, b ) =>
+				a.TimeRange.Start.CompareTo( b.TimeRange.Start ) );
 
 			Track.SetBlocks( blocks );
 			View.MarkValueChanged();
