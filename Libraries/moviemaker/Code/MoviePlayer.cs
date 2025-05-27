@@ -106,6 +106,10 @@ public sealed class MoviePlayer : Component
 		{
 			UpdateAnimationPlaybackRate( clip );
 		}
+		else
+		{
+			StopControllingRigidBodies();
+		}
 	}
 
 	protected override void OnEnabled()
@@ -137,15 +141,35 @@ public sealed class MoviePlayer : Component
 		UpdatePosition();
 	}
 
+	private readonly HashSet<Rigidbody> _controlledBodies = new();
+	private readonly HashSet<Rigidbody> _currentControlledBodies = new();
+
 	/// <summary>
 	/// Set the <see cref="SkinnedModelRenderer.PlaybackRate"/> of all bound renderers.
 	/// </summary>
 	private void UpdateAnimationPlaybackRate( IClip clip )
 	{
+		_currentControlledBodies.Clear();
+
 		foreach ( var rigidbody in Binder.GetComponents<Rigidbody>( clip ) )
 		{
-			rigidbody.MotionEnabled = false;
+			_currentControlledBodies.Add( rigidbody );
+
+			if ( rigidbody.MotionEnabled && _controlledBodies.Add( rigidbody ) )
+			{
+				rigidbody.MotionEnabled = false;
+			}
 		}
+
+		foreach ( var rigidbody in _controlledBodies )
+		{
+			if ( !_currentControlledBodies.Contains( rigidbody ) )
+			{
+				rigidbody.MotionEnabled = true;
+			}
+		}
+
+		_controlledBodies.RemoveWhere( x => !_currentControlledBodies.Contains( x ) );
 
 		foreach ( var controller in Binder.GetComponents<PlayerController>( clip ) )
 		{
@@ -159,6 +183,21 @@ public sealed class MoviePlayer : Component
 		{
 			UpdateAnimationPlaybackRate( renderer );
 		}
+	}
+
+	private void StopControllingRigidBodies()
+	{
+		foreach ( var rigidbody in _controlledBodies )
+		{
+			rigidbody.MotionEnabled = true;
+		}
+
+		_controlledBodies.Clear();
+	}
+
+	protected override void OnDisabled()
+	{
+		StopControllingRigidBodies();
 	}
 
 	private void UpdateAnimationPlaybackRate( SkinnedModelRenderer renderer )
