@@ -106,7 +106,6 @@ public sealed partial class KeyframeEditMode : EditMode
 		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation ) );
 	}
 
-
 	private TimelineTrack? GetTimelineTrack( TrackView view )
 	{
 		if ( view.Track is not IProjectPropertyTrack ) return null;
@@ -214,6 +213,8 @@ public sealed partial class KeyframeEditMode : EditMode
 	protected override void OnMouseRelease( MouseEvent e )
 	{
 		if ( !e.LeftMouseButton || !CreateKeyframeOnClick ) return;
+
+		Log.Info( "OnMouseRelease" );
 
 		var scenePos = Timeline.ToScene( e.LocalPosition );
 
@@ -395,6 +396,19 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		public bool AddOrUpdate( Keyframe keyframe )
 		{
+			if ( _sourceBlocks.FirstOrDefault( x => x.TimeRange.Contains( keyframe.Time ) ) is { } sourceBlock )
+			{
+				// If keyframe is inside a source block, make its value relative
+
+				if ( Transformer.GetDefault( Track.TargetType ) is { } transformer )
+				{
+					keyframe = keyframe with
+					{
+						Value = transformer.Difference( sourceBlock.GetValue( keyframe.Time ), keyframe.Value )
+					};
+				}
+			}
+
 			if ( _handles.FirstOrDefault( x => x.Time == keyframe.Time ) is { } handle )
 			{
 				if ( handle.Keyframe.Equals( keyframe ) ) return false;

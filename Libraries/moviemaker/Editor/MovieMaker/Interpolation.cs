@@ -48,6 +48,25 @@ public interface ITransformer<T>
 
 public static class Transformer
 {
+	private static Dictionary<Type, ITransformer<object?>?> Cache { get; } = new();
+
+	public static ITransformer<object?>? GetDefault( Type type )
+	{
+		if ( Cache.TryGetValue( type, out var cached ) ) return cached;
+
+		try
+		{
+			var transformerType = typeof(LocalTransformerWrapper<>)
+				.MakeGenericType( type );
+
+			return Cache[type] = (ITransformer<object?>?)Activator.CreateInstance( transformerType );
+		}
+		catch
+		{
+			return Cache[type] = null;
+		}
+	}
+
 	public static ITransformer<T>? GetDefault<T>()
 	{
 		// TODO: type library lookup?
@@ -101,8 +120,7 @@ file sealed class LocalTransformerWrapper<T> : ITransformer<object?>
 
 	public LocalTransformerWrapper()
 	{
-		_inner = Transformer.GetDefault<T>()
-			?? throw new Exception( $"Can't transform type '{typeof(T)}'." );
+		_inner = Transformer.GetDefaultOrThrow<T>();
 	}
 
 	public object? Invert( object? value )
