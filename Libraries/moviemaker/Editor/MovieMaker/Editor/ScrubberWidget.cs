@@ -77,6 +77,33 @@ public class ScrubberItem : GraphicsItem
 			Paint.DrawIcon( rect, "content_paste", 16f );
 		}
 
+		// Loop time range
+
+		if ( Session.LoopTimeRange is { } loopRange )
+		{
+			var startX = FromScene( Session.TimeToPixels( loopRange.Start ) ).x;
+			var endX = FromScene( Session.TimeToPixels( loopRange.End ) ).x;
+
+			var rect = new Rect( new Vector2( startX, LocalRect.Top ), new Vector2( endX - startX, LocalRect.Height ) );
+
+			Paint.SetBrushAndPen( Color.White.WithAlpha( 0.05f ) );
+			Paint.DrawRect( rect );
+
+			Paint.ClearBrush();
+			Paint.SetPen( Color.White );
+			Paint.DrawLine( rect.TopLeft, rect.BottomLeft );
+			Paint.DrawLine( rect.TopRight, rect.BottomRight );
+
+			var top = IsTop ? rect.Bottom : rect.Top;
+			var up = IsTop ? new Vector2( 0f, -1f ) : new Vector2( 0f, 1f );
+			var leftCorner = new Vector2( rect.Left, top );
+			var rightCorner = new Vector2( rect.Right, top );
+
+			Paint.SetBrush( Color.White.WithAlpha( 0.5f ) );
+			Paint.DrawPolygon( leftCorner, leftCorner + up * 6f, leftCorner + new Vector2( 6f, 0f ) );
+			Paint.DrawPolygon( rightCorner, rightCorner + up * 6f, rightCorner - new Vector2( 6f, 0f ) );
+		}
+
 		var range = Session.VisibleTimeRange;
 
 		Paint.PenSize = 2;

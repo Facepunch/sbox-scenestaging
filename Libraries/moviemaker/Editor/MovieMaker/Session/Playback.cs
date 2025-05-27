@@ -70,18 +70,29 @@ public sealed partial class Session
 		{
 			var targetTime = CurrentPointer + MovieTime.FromSeconds( RealTime.Delta * TimeScale );
 
-			// got to the end
-			if ( !IsRecording && targetTime >= Project.Duration && Project.Duration.IsPositive )
-			{
-				if ( IsLooping )
-				{
-					targetTime = MovieTime.Zero;
-				}
-				else
-				{
-					targetTime = Project.Duration;
+			// Handle looping / reaching end
 
-					IsPlaying = false;
+			if ( !IsRecording )
+			{
+				if ( LoopTimeRange is { } loopRange )
+				{
+					if ( targetTime >= loopRange.End )
+					{
+						targetTime = loopRange.Start;
+					}
+				}
+				else if ( targetTime >= Project.Duration && Project.Duration.IsPositive )
+				{
+					if ( IsLooping )
+					{
+						targetTime = MovieTime.Zero;
+					}
+					else
+					{
+						targetTime = Project.Duration;
+
+						IsPlaying = false;
+					}
 				}
 			}
 
