@@ -261,7 +261,15 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		using var scope = GetKeyframeChangeScope( "Move", view );
 
+		var minDelta = SelectedKeyframes
+			.Select( x => -x.Time )
+			.DefaultIfEmpty( 0d )
+			.Max();
+
 		var time = Session.ScenePositionToTime( e.ScenePosition, new SnapOptions( SnapFlag.PlayHead ) );
+
+		time = MovieTime.Max( _lastDragTime + minDelta, time );
+
 		var transform = new MovieTransform( time - _lastDragTime );
 
 		_lastDragTime = time;

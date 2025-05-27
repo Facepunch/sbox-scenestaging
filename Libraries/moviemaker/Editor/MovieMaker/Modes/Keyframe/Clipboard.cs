@@ -117,8 +117,7 @@ partial class KeyframeEditMode
 			var view = Session.TrackList.EditableTracks
 				.FirstOrDefault( x => x.Track.Id == trackId );
 
-			if ( view is null ) continue;
-			if ( view.Track is not IProjectPropertyTrack { TargetType: { } propertyType } ) continue;
+			if ( view?.Track is not IProjectPropertyTrack { TargetType: { } propertyType } ) continue;
 			if ( GetTimelineTrack( view ) is not { } timelineTrack ) continue;
 			if ( GetHandles( timelineTrack ) is not { } handles ) continue;
 
