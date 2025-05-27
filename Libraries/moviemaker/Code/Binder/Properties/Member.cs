@@ -181,7 +181,7 @@ file sealed class MemberPropertyFactory : ITrackPropertyFactory
 
 		if ( member.TypeDescription.TargetType.IsAssignableTo( typeof(Component) ) )
 		{
-			if ( !member.HasAttribute( typeof(PropertyAttribute) ) ) return false;
+			// if ( !member.HasAttribute( typeof(PropertyAttribute) ) ) return false;
 		}
 
 		return IsValidPropertyType( valueType );
