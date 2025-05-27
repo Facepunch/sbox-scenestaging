@@ -53,7 +53,7 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 		UpdatePosition();
 	}
 
-	private void UpdatePosition()
+	public void UpdatePosition()
 	{
 		PrepareGeometryChange();
 

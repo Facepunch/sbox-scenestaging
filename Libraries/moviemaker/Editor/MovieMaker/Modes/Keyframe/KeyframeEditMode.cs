@@ -146,12 +146,17 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnUpdateTimelineItems( TimelineTrack timelineTrack )
 	{
-		// Only update handles if they don't exist yet, because handles are authoritative
+		if ( _trackKeyframeHandles.TryGetValue( timelineTrack, out var handles ) )
+		{
+			handles.UpdatePositions();
+			return;
+		}
 
-		if ( _trackKeyframeHandles.ContainsKey( timelineTrack ) ) return;
+		// Only create / remove / modify handles if they don't exist yet, because handles are authoritative
+
 		if ( timelineTrack.View.Track is not IProjectPropertyTrack ) return;
 
-		var handles = new TrackKeyframeHandles( timelineTrack );
+		handles = new TrackKeyframeHandles( timelineTrack );
 
 		_trackKeyframeHandles.Add( timelineTrack, handles );
 
@@ -404,6 +409,14 @@ public sealed partial class KeyframeEditMode : EditMode
 
 			WriteToTrack();
 			return true;
+		}
+
+		public void UpdatePositions()
+		{
+			foreach ( var handle in _handles )
+			{
+				handle.UpdatePosition();
+			}
 		}
 
 		public void ReadFromTrack()
