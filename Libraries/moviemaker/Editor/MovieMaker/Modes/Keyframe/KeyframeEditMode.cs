@@ -33,7 +33,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		changesGroup.AddToggle( new( "Create Keyframe on Click", "edit",
 			"When enabled, clicking on a track in the timeline will create a keyframe." ),
-			() => CreateKeyframeOnClick,
+			() => CreateKeyframeOnClick || (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0,
 			value => CreateKeyframeOnClick = value );
 
 		var deleteGroup = ToolBar.AddGroup();
@@ -186,27 +186,18 @@ public sealed partial class KeyframeEditMode : EditMode
 		}
 	}
 
-	protected override void OnKeyPress( KeyEvent e )
-	{
-		base.OnKeyPress( e );
-
-		if ( e.Key == KeyCode.Shift )
-		{
-			CreateKeyframeOnClick = true;
-		}
-	}
-
 	protected override void OnKeyRelease( KeyEvent e )
 	{
 		base.OnKeyRelease( e );
 
-		if ( e.Key == KeyCode.Shift )
-		{
-			CreateKeyframeOnClick = false;
-		}
-
 		if ( e.Key == KeyCode.Escape )
 		{
+			if ( SelectedKeyframes.Any() )
+			{
+				Timeline.DeselectAll();
+				return;
+			}
+
 			AutoCreateTracks = false;
 			CreateKeyframeOnClick = false;
 		}
@@ -214,7 +205,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnMouseRelease( MouseEvent e )
 	{
-		if ( !e.LeftMouseButton || !CreateKeyframeOnClick ) return;
+		if ( !e.LeftMouseButton || !CreateKeyframeOnClick && (e.KeyboardModifiers & KeyboardModifiers.Shift) == 0 ) return;
 
 		var scenePos = Timeline.ToScene( e.LocalPosition );
 
