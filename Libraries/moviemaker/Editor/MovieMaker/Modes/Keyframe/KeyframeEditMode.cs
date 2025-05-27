@@ -38,6 +38,12 @@ public sealed partial class KeyframeEditMode : EditMode
 			() => CreateKeyframeOnClick,
 			value => CreateKeyframeOnClick = value );
 
+		var deleteGroup = ToolBar.AddGroup();
+
+		deleteGroup.AddAction( new ToolBarItemDisplay( "Delete Selection", "delete",
+				"Delete all selected keyframes." ),
+			Delete, () => SelectedKeyframes.Any() );
+
 		var selectionGroup = ToolBar.AddGroup();
 
 		selectionGroup.AddInterpolationSelector( () =>
