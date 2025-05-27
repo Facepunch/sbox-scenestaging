@@ -32,6 +32,12 @@ partial record PropertySignal<T>
 	public virtual bool IsIdentity => false;
 }
 
+public interface IAdditiveSignal : IPropertySignal
+{
+	PropertySignal First { get; }
+	PropertySignal Second { get; }
+}
+
 [JsonDiscriminator( "ToLocal" )]
 file sealed record ToLocalOperation<T>( PropertySignal<T> First, PropertySignal<T> Second )
 	: BinaryOperation<T>( First, Second )
@@ -45,7 +51,7 @@ file sealed record ToLocalOperation<T>( PropertySignal<T> First, PropertySignal<
 
 [JsonDiscriminator( "ToGlobal" )]
 file sealed record ToGlobalOperation<T>( PropertySignal<T> First, PropertySignal<T> Second )
-	: BinaryOperation<T>( First, Second )
+	: BinaryOperation<T>( First, Second ), IAdditiveSignal
 {
 	public override T GetValue( MovieTime time ) => _transformer.Apply(
 		First.GetValue( time ), Second.GetValue( time ) );
@@ -59,6 +65,9 @@ file sealed record ToGlobalOperation<T>( PropertySignal<T> First, PropertySignal
 
 		return second.IsIdentity ? First : First + second;
 	}
+
+	PropertySignal IAdditiveSignal.First => First;
+	PropertySignal IAdditiveSignal.Second => Second;
 
 	private static ITransformer<T> _transformer = Transformer.GetDefaultOrThrow<T>();
 }

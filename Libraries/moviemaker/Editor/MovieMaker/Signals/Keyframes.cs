@@ -58,16 +58,20 @@ partial record PropertySignal
 	private static MethodInfo FromKeyframesCoreMethod { get; } = typeof(PropertySignal)
 		.GetMethod( nameof(FromKeyframesCore), BindingFlags.Static | BindingFlags.NonPublic )!;
 
-	public static PropertySignal FromKeyframes( Type propertyType, IEnumerable<Keyframe> keyframes )
+	public static PropertySignal FromKeyframes( Type propertyType, IEnumerable<Keyframe> keyframes, PropertySignal? baseSignal = null )
 	{
 		var method = FromKeyframesCoreMethod.MakeGenericMethod( propertyType );
 
-		return (PropertySignal)method.Invoke( null, [keyframes] )!;
+		return (PropertySignal)method.Invoke( null, [keyframes, baseSignal] )!;
 	}
 
-	private static PropertySignal FromKeyframesCore<T>( IEnumerable<Keyframe> keyframes )
+	private static PropertySignal FromKeyframesCore<T>( IEnumerable<Keyframe> keyframes, PropertySignal<T>? baseSignal = null )
 	{
-		return new KeyframeSignal<T>( [..keyframes.Select( x => (Keyframe<T>)x )] );
+		var keyframeSignal = new KeyframeSignal<T>( [..keyframes.Select( x => (Keyframe<T>)x )] );
+
+		return baseSignal is not null
+			? baseSignal + keyframeSignal
+			: keyframeSignal;
 	}
 }
 
@@ -133,8 +137,10 @@ public readonly record struct Keyframe<T>(
 	object? IKeyframe.Value => Value;
 }
 
+public interface IKeyframeSignal : IPropertySignal;
+
 [JsonDiscriminator( "Keyframes" )]
-file sealed record KeyframeSignal<T>( ImmutableArray<Keyframe<T>> Keyframes ) : PropertySignal<T>
+file sealed record KeyframeSignal<T>( ImmutableArray<Keyframe<T>> Keyframes ) : PropertySignal<T>, IKeyframeSignal
 {
 	private readonly ImmutableArray<Keyframe<T>> _keyframes = ValidateKeyframes( Keyframes );
 

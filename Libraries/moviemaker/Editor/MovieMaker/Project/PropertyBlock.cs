@@ -34,6 +34,7 @@ public interface IProjectPropertyBlock : IPropertyBlock, IPaintHintBlock
 {
 	IProjectPropertyBlock? Slice( MovieTimeRange timeRange );
 	IProjectPropertyBlock Shift( MovieTime offset );
+	IProjectPropertyBlock WithSignal( PropertySignal signal );
 
 	PropertySignal Signal { get; }
 }
@@ -71,6 +72,9 @@ public sealed partial record PropertyBlock<T>( [property: JsonPropertyOrder( 100
 
 	IProjectPropertyBlock? IProjectPropertyBlock.Slice( MovieTimeRange timeRange ) => Slice( timeRange );
 	IProjectPropertyBlock IProjectPropertyBlock.Shift( MovieTime offset ) => new MovieTransform( offset ) * this;
+
+	public IProjectPropertyBlock WithSignal( PropertySignal signal ) => this with { Signal = (PropertySignal<T>)signal };
+
 	PropertySignal IProjectPropertyBlock.Signal => Signal;
 
 	public ICompiledPropertyBlock<T> Compile( ProjectPropertyTrack<T> track )

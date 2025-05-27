@@ -13,8 +13,6 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 	public Session Session { get; }
 	public TrackView View { get; }
 
-	public bool EndBlock { get; set; }
-
 	public KeyframeEditMode? EditMode => Session.EditMode as KeyframeEditMode;
 
 	public Keyframe Keyframe
@@ -139,11 +137,6 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 			return 1;
 		}
 
-		var timeCompare = _keyframe.Time.CompareTo( other._keyframe.Time );
-		if ( timeCompare != 0 ) return timeCompare;
-
-		// We want to sort EndBlock first for keyframes with overlapping times
-
-		return other.EndBlock.CompareTo( EndBlock );
+		return _keyframe.CompareTo( other.Keyframe );
 	}
 }

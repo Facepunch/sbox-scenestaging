@@ -126,18 +126,7 @@ partial class KeyframeEditMode
 			var arrayType = typeof(ImmutableArray<>).MakeGenericType( keyframeType );
 			var keyframes = (IEnumerable)array.Deserialize( arrayType, EditorJsonOptions )!;
 
-			foreach ( var keyframe in keyframes.Cast<IKeyframe>() )
-			{
-				var kf = new Keyframe( keyframe.Time + headTime, keyframe.Value, keyframe.Interpolation );
-
-				var handle = new KeyframeHandle( timelineTrack, kf );
-
-				handles.Add( handle );
-
-				handle.Selected = true;
-			}
-
-			view.MarkValueChanged();
+			handles.AddRange( keyframes.Cast<IKeyframe>(), headTime );
 		}
 	}
 }

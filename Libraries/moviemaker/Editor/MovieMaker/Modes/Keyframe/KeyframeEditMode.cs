@@ -1,8 +1,9 @@
-﻿using Sandbox.MovieMaker;
-using System.Collections.Generic;
+﻿using Sandbox;
+using Sandbox.MovieMaker;
+using System.Collections;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks.Dataflow;
 
 namespace Editor.MovieMaker;
 
@@ -18,6 +19,8 @@ public sealed partial class KeyframeEditMode : EditMode
 	public KeyframeInterpolation DefaultInterpolation { get; set; } = KeyframeInterpolation.Cubic;
 
 	public IEnumerable<KeyframeHandle> SelectedKeyframes => Timeline.SelectedItems.OfType<KeyframeHandle>();
+
+	private readonly Dictionary<TimelineTrack, TrackKeyframeHandles> _trackKeyframeHandles = new();
 
 	protected override void OnEnable()
 	{
@@ -103,7 +106,6 @@ public sealed partial class KeyframeEditMode : EditMode
 		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation ) );
 	}
 
-	private readonly Dictionary<TimelineTrack, List<KeyframeHandle>> _keyframeHandles = new();
 
 	private TimelineTrack? GetTimelineTrack( TrackView view )
 	{
@@ -113,16 +115,11 @@ public sealed partial class KeyframeEditMode : EditMode
 		return Timeline.Tracks.FirstOrDefault( x => x.View == view );
 	}
 
-	private List<KeyframeHandle>? GetHandles( TrackView view )
-	{
-		return GetTimelineTrack( view ) is { } timelineTrack ? GetHandles( timelineTrack ) : null;
-	}
-
-	private List<KeyframeHandle>? GetHandles( TimelineTrack timelineTrack )
+	private TrackKeyframeHandles? GetHandles( TimelineTrack timelineTrack )
 	{
 		// Handle list should already exist from OnUpdateTimelineItems
 
-		return _keyframeHandles.GetValueOrDefault( timelineTrack );
+		return _trackKeyframeHandles.GetValueOrDefault( timelineTrack );
 	}
 
 	/// <summary>
@@ -134,17 +131,7 @@ public sealed partial class KeyframeEditMode : EditMode
 		if ( GetTimelineTrack( view ) is not { } timelineTrack ) return false;
 		if ( GetHandles( timelineTrack ) is not { } handles ) return false;
 
-		if ( handles.FirstOrDefault( x => x.Time == keyframe.Time ) is { } handle )
-		{
-			if ( handle.Keyframe.Equals( keyframe ) ) return false;
-
-			handle.Keyframe = keyframe;
-		}
-		else
-		{
-			handles.Add( new KeyframeHandle( timelineTrack, keyframe ) );
-			handles.Sort();
-		}
+		handles.AddOrUpdate( keyframe );
 
 		return true;
 	}
@@ -159,33 +146,16 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnUpdateTimelineItems( TimelineTrack timelineTrack )
 	{
-		if ( _keyframeHandles.ContainsKey( timelineTrack ) )
-		{
-			return;
-		}
-
 		// Only update handles if they don't exist yet, because handles are authoritative
 
-		_keyframeHandles.Add( timelineTrack, new List<KeyframeHandle>() );
+		if ( _trackKeyframeHandles.ContainsKey( timelineTrack ) ) return;
+		if ( timelineTrack.View.Track is not IProjectPropertyTrack ) return;
 
-		UpdateKeyframeHandles( timelineTrack );
-	}
+		var handles = new TrackKeyframeHandles( timelineTrack );
 
-	private void UpdateKeyframeHandles( TimelineTrack timelineTrack )
-	{
-		if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) ) return;
+		_trackKeyframeHandles.Add( timelineTrack, handles );
 
-		foreach ( var handle in handles )
-		{
-			handle.Destroy();
-		}
-
-		handles.Clear();
-
-		foreach ( var keyframe in timelineTrack.View.Keyframes )
-		{
-			handles.Add( new KeyframeHandle( timelineTrack, keyframe ) );
-		}
+		handles.ReadFromTrack();
 	}
 
 	private void UpdateTracksFromHandles( IEnumerable<KeyframeHandle> handles )
@@ -196,81 +166,19 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		foreach ( var timelineTrack in tracks )
 		{
-			UpdateTrackFromHandles( timelineTrack );
+			GetHandles( timelineTrack )?.WriteToTrack();
 		}
-	}
-
-	private void UpdateTrackFromHandles( TimelineTrack timelineTrack )
-	{
-		if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) ) return;
-		if ( timelineTrack.View.Track is not IProjectPropertyTrack track ) return;
-
-		handles.Sort();
-
-		var block = new List<Keyframe>();
-		var blocks = new List<IProjectPropertyBlock>();
-
-		foreach ( var handle in handles )
-		{
-			block.Add( handle.Keyframe );
-
-			if ( handle.EndBlock || handle == handles[^1] )
-			{
-				blocks.Add( FinishBlock( timelineTrack.View.Track.TargetType, block ) );
-				block.Clear();
-			}
-		}
-
-		track.SetBlocks( blocks );
-
-		timelineTrack.View.MarkValueChanged();
-	}
-
-	private IProjectPropertyBlock FinishBlock( Type propertyType, IReadOnlyList<Keyframe> keyframes )
-	{
-		var start = keyframes[0].Time;
-		var end = keyframes[^1].Time;
-
-		var signal = PropertySignal.FromKeyframes( propertyType, keyframes );
-
-		return PropertyBlock.FromSignal( signal, (start, end) );
 	}
 
 	protected override void OnClearTimelineItems( TimelineTrack timelineTrack )
 	{
-		if ( !_keyframeHandles.Remove( timelineTrack, out var handles ) ) return;
+		if ( !_trackKeyframeHandles.Remove( timelineTrack, out var handles ) ) return;
 
 		foreach ( var handle in handles )
 		{
 			handle.Destroy();
 		}
 	}
-
-	private IEnumerable<IGrouping<TrackView, KeyframeHandle>> GetSelectedKeyframes( KeyframeHandle? include = null )
-	{
-		var handles = SelectedKeyframes;
-
-		if ( include is not null )
-		{
-			handles = handles.Union( [include] );
-		}
-
-		return handles.GroupBy( x => x.Parent.View );
-	}
-
-	private static IReadOnlySet<MovieTime> GetKeyframeTimes( IEnumerable<KeyframeHandle> handles ) =>
-		handles.Select( x => x.Time ).ToImmutableHashSet();
-
-	private static IReadOnlyList<IProjectPropertyBlock> GetAffectedBlocks( TrackView view, IReadOnlySet<MovieTime> keyframeTimes ) =>
-	[
-		..view.Blocks
-			.OfType<IProjectPropertyBlock>()
-			.Where( x => x.Signal.HasKeyframes )
-			.Where( x => x.Signal.GetKeyframes( x.TimeRange )
-				.Select( y => y.Time )
-				.Intersect( keyframeTimes )
-				.Any() )
-	];
 
 	protected override void OnKeyPress( KeyEvent e )
 	{
@@ -312,7 +220,7 @@ public sealed partial class KeyframeEditMode : EditMode
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return;
 		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } target ) return;
 
-		if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) ) return;
+		if ( GetHandles( timelineTrack ) is not { } handles ) return;
 		if ( handles.Any( x => x.Time == time ) ) return;
 
 		var value = propertyTrack.TryGetValue( time, out var val ) ? val : target.Value;
@@ -321,9 +229,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		using var scope = Session.History.Push( "Add Keyframe" );
 
-		handles.Add( new KeyframeHandle( timelineTrack, new Keyframe( time, value, DefaultInterpolation ) ) );
-
-		UpdateTrackFromHandles( timelineTrack );
+		handles.AddOrUpdate( new Keyframe( time, value, DefaultInterpolation ) );
 	}
 
 	internal void KeyframeDragStart( KeyframeHandle handle, GraphicsMouseEvent e )
@@ -378,7 +284,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnSelectAll()
 	{
-		foreach ( var handle in _keyframeHandles.SelectMany( x => x.Value ) )
+		foreach ( var handle in _trackKeyframeHandles.SelectMany( x => x.Value ) )
 		{
 			handle.Selected = true;
 		}
@@ -396,11 +302,9 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		foreach ( var timelineTrack in tracks )
 		{
-			if ( !_keyframeHandles.TryGetValue( timelineTrack, out var handles ) ) continue;
+			if ( GetHandles( timelineTrack ) is not { } handles ) continue;
 
 			handles.RemoveAll( selected.Contains );
-
-			UpdateTrackFromHandles( timelineTrack );
 		}
 
 		foreach ( var keyframe in SelectedKeyframes )
@@ -440,5 +344,169 @@ public sealed partial class KeyframeEditMode : EditMode
 				Session.SetCurrentPointer( keyframe.Time );
 			}
 		}
+	}
+
+	private sealed class TrackKeyframeHandles : IEnumerable<KeyframeHandle>
+	{
+		private readonly TimelineTrack _timelineTrack;
+		private readonly List<KeyframeHandle> _handles = new();
+
+		private readonly List<IProjectPropertyBlock> _sourceBlocks = new();
+		private readonly List<MovieTime> _cutTimes = new();
+
+		public TrackView View => _timelineTrack.View;
+		public IProjectPropertyTrack Track => (IProjectPropertyTrack)View.Track;
+
+		public TrackKeyframeHandles( TimelineTrack timelineTrack )
+		{
+			_timelineTrack = timelineTrack;
+		}
+
+		public void AddRange( IEnumerable<IKeyframe> keyframes, MovieTime timeOffset )
+		{
+			foreach ( var keyframe in keyframes )
+			{
+				var kf = new Keyframe( keyframe.Time + timeOffset, keyframe.Value, keyframe.Interpolation );
+
+				var handle = new KeyframeHandle( _timelineTrack, kf );
+
+				_handles.Add( handle );
+
+				handle.Selected = true;
+			}
+
+			_handles.Sort();
+
+			WriteToTrack();
+		}
+
+		public bool AddOrUpdate( Keyframe keyframe )
+		{
+			if ( _handles.FirstOrDefault( x => x.Time == keyframe.Time ) is { } handle )
+			{
+				if ( handle.Keyframe.Equals( keyframe ) ) return false;
+
+				handle.Keyframe = keyframe;
+			}
+			else
+			{
+				_handles.Add( new KeyframeHandle( _timelineTrack, keyframe ) );
+				_handles.Sort();
+			}
+
+			WriteToTrack();
+			return true;
+		}
+
+		public bool RemoveAll( Predicate<KeyframeHandle> match )
+		{
+			if ( _handles.RemoveAll( match ) <= 0 ) return false;
+
+			WriteToTrack();
+			return true;
+		}
+
+		public void ReadFromTrack()
+		{
+			foreach ( var handle in _handles )
+			{
+				handle.Destroy();
+			}
+
+			_handles.Clear();
+
+			foreach ( var keyframe in View.Keyframes )
+			{
+				_handles.Add( new KeyframeHandle( _timelineTrack, keyframe ) );
+			}
+
+			_handles.Sort();
+
+			// Blocks that keyframes could apply a local (additive editing) effect to
+
+			_sourceBlocks.Clear();
+			_sourceBlocks.AddRange( Track.Blocks
+				.Where( x => x.Signal is not IKeyframeSignal )
+				.Select( GetBlockWithoutKeyframes ) );
+
+			// Keyframe blocks must be cut by these times
+			// Offset start by epsilon so keyframes at the very start of an additive block won't
+			// be included in that block, letting you join non-additive and additive keyframe blocks
+
+			_cutTimes.Clear();
+			_cutTimes.AddRange( _sourceBlocks
+				.SelectMany( x => new[] { x.TimeRange.Start + MovieTime.Epsilon, x.TimeRange.End } )
+				.Distinct() );
+		}
+
+		[field: ThreadStatic]
+		private static List<Keyframe>? WriteToTrack_Block { get; set; }
+
+		[field: ThreadStatic]
+		private static List<IProjectPropertyBlock>? WriteToTrack_Blocks { get; set; }
+
+		public void WriteToTrack()
+		{
+			// Handles might have moved, re-sort them
+
+			_handles.Sort();
+
+			// Keyframes inside a source block will be an additive operation on that block,
+			// otherwise they'll produce a new keyframe-only block
+
+			var block = WriteToTrack_Block ??= new List<Keyframe>();
+			var blocks = WriteToTrack_Blocks ??= new List<IProjectPropertyBlock>();
+
+			block.Clear();
+			blocks.Clear();
+
+			var prevCutTime = MovieTime.Zero;
+
+			foreach ( var handle in _handles )
+			{
+				var cutTime = _cutTimes.LastOrDefault( x => x <= handle.Time );
+
+				if ( cutTime != prevCutTime && block.Count > 0 )
+				{
+					blocks.Add( FinishBlock( block ) );
+					block.Clear();
+
+					prevCutTime = cutTime;
+				}
+
+				block.Add( handle.Keyframe );
+			}
+
+			if ( block.Count > 0 )
+			{
+				blocks.Add( FinishBlock( block ) );
+			}
+
+			Track.SetBlocks( blocks );
+			View.MarkValueChanged();
+		}
+
+		private static IProjectPropertyBlock GetBlockWithoutKeyframes( IProjectPropertyBlock block )
+		{
+			return block.Signal is IAdditiveSignal { First: { } source, Second: IKeyframeSignal }
+				? block.WithSignal( source )
+				: block;
+		}
+
+		private IProjectPropertyBlock FinishBlock( IReadOnlyList<Keyframe> keyframes )
+		{
+			var start = keyframes[0].Time;
+			var end = keyframes[^1].Time;
+
+			var sourceBlock = _sourceBlocks.FirstOrDefault( x => x.TimeRange.Grow( -MovieTime.Epsilon ).Contains( start ) );
+			var propertyType = Track.TargetType;
+
+			return sourceBlock?.WithSignal( PropertySignal.FromKeyframes( propertyType, keyframes, sourceBlock.Signal ) )
+				?? PropertyBlock.FromSignal( PropertySignal.FromKeyframes( propertyType, keyframes ), (start, end) );
+		}
+
+		public IEnumerator<KeyframeHandle> GetEnumerator() => _handles.GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }
