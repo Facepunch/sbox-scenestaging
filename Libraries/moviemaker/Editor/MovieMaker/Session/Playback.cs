@@ -76,7 +76,7 @@ public sealed partial class Session
 			{
 				if ( LoopTimeRange is { } loopRange )
 				{
-					if ( targetTime >= loopRange.End )
+					if ( targetTime <= loopRange.Start || targetTime >= loopRange.End )
 					{
 						targetTime = loopRange.Start;
 					}

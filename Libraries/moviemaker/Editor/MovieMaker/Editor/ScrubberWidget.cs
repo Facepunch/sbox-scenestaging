@@ -23,20 +23,39 @@ public class ScrubberItem : GraphicsItem
 		HoverEvents = true;
 	}
 
+	private MovieTime _dragStartTime;
+
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
 		base.OnMousePressed( e );
 
-		Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
+		_dragStartTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ) );
+
+		Session.LoopTimeRange = null;
 
 		e.Accepted = true;
+
+		Update();
 	}
 
 	protected override void OnMouseMove( GraphicsMouseEvent e )
 	{
 		base.OnMouseMove( e );
 
-		Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
+		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ) );
+
+		if ( time != _dragStartTime )
+		{
+			Session.LoopTimeRange = new MovieTimeRange(
+				MovieTime.Min( time, _dragStartTime ),
+				MovieTime.Max( time, _dragStartTime ) );
+		}
+		else
+		{
+			Session.LoopTimeRange = null;
+		}
+
+		Update();
 	}
 
 	protected override void OnPaint()
