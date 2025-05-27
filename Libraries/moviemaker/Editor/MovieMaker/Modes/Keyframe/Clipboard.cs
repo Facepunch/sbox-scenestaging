@@ -117,19 +117,15 @@ partial class KeyframeEditMode
 			var view = Session.TrackList.EditableTracks
 				.FirstOrDefault( x => x.Track.Id == trackId );
 
-			if ( view is null ) continue;
-			if ( view.Track is not IProjectPropertyTrack { TargetType: { } propertyType } track ) continue;
+			if ( view?.Track is not IProjectPropertyTrack { TargetType: { } propertyType } ) continue;
+			if ( GetTimelineTrack( view ) is not { } timelineTrack ) continue;
+			if ( GetHandles( timelineTrack ) is not { } handles ) continue;
 
 			var keyframeType = typeof(Keyframe<>).MakeGenericType( propertyType );
 			var arrayType = typeof(ImmutableArray<>).MakeGenericType( keyframeType );
 			var keyframes = (IEnumerable)array.Deserialize( arrayType, EditorJsonOptions )!;
 
-			foreach ( var keyframe in keyframes.Cast<IKeyframe>() )
-			{
-				track.AddKeyframe( keyframe.Time + headTime, keyframe.Value, keyframe.Interpolation );
-			}
-
-			view.MarkValueChanged();
+			handles.AddRange( keyframes.Cast<IKeyframe>(), headTime );
 		}
 	}
 }

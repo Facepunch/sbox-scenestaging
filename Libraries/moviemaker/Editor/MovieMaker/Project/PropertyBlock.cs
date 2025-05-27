@@ -34,9 +34,20 @@ public interface IProjectPropertyBlock : IPropertyBlock, IPaintHintBlock
 {
 	IProjectPropertyBlock? Slice( MovieTimeRange timeRange );
 	IProjectPropertyBlock Shift( MovieTime offset );
+	IProjectPropertyBlock WithSignal( PropertySignal signal );
 
 	PropertySignal Signal { get; }
-	IProjectPropertyBlock? WithKeyframeChanges( KeyframeChanges changes );
+}
+
+public static class PropertyBlock
+{
+	public static IProjectPropertyBlock FromSignal( PropertySignal signal, MovieTimeRange timeRange )
+	{
+		var propertyType = signal.PropertyType;
+		var blockType = typeof(PropertyBlock<>).MakeGenericType( propertyType );
+
+		return (IProjectPropertyBlock)Activator.CreateInstance( blockType, signal, timeRange )!;
+	}
 }
 
 public sealed partial record PropertyBlock<T>( [property: JsonPropertyOrder( 100 )] PropertySignal<T> Signal, MovieTimeRange TimeRange )
@@ -61,6 +72,9 @@ public sealed partial record PropertyBlock<T>( [property: JsonPropertyOrder( 100
 
 	IProjectPropertyBlock? IProjectPropertyBlock.Slice( MovieTimeRange timeRange ) => Slice( timeRange );
 	IProjectPropertyBlock IProjectPropertyBlock.Shift( MovieTime offset ) => new MovieTransform( offset ) * this;
+
+	public IProjectPropertyBlock WithSignal( PropertySignal signal ) => this with { Signal = (PropertySignal<T>)signal };
+
 	PropertySignal IProjectPropertyBlock.Signal => Signal;
 
 	public ICompiledPropertyBlock<T> Compile( ProjectPropertyTrack<T> track )
@@ -75,38 +89,5 @@ public sealed partial record PropertyBlock<T>( [property: JsonPropertyOrder( 100
 		}
 
 		return new CompiledSampleBlock<T>( TimeRange, 0d, sampleRate, [..samples] );
-	}
-
-	public IProjectPropertyBlock? WithKeyframeChanges( KeyframeChanges changes )
-	{
-		if ( !Signal.HasKeyframes ) return this;
-
-		var changed = Signal.WithKeyframeChanges( changes );
-
-		if ( changed == Signal ) return this;
-
-		var originalKeyframes = Signal.GetKeyframes( TimeRange ).Select( x => x.Time ).ToImmutableArray();
-		var modifiedKeyframes = changes.Apply( originalKeyframes ).ToImmutableArray();
-
-		var timeRange = TimeRange;
-
-		if ( modifiedKeyframes.Length == 0 )
-		{
-			// If all keyframes were deleted, delete this block if its start / end were keyframes
-
-			return originalKeyframes[0] == timeRange.Start && originalKeyframes[^1] == timeRange.End ? null : this with { Signal = changed };
-		}
-
-		if ( originalKeyframes[0] == timeRange.Start || modifiedKeyframes[0] < timeRange.Start )
-		{
-			timeRange = timeRange with { Start = modifiedKeyframes[0] };
-		}
-
-		if ( originalKeyframes[^1] == timeRange.End || modifiedKeyframes[^1] > timeRange.End )
-		{
-			timeRange = timeRange with { End = modifiedKeyframes[^1] };
-		}
-
-		return new PropertyBlock<T>( Signal: changed, TimeRange: timeRange );
 	}
 }

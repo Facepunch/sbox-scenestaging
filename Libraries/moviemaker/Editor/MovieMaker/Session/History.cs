@@ -152,6 +152,8 @@ partial class Session
 
 		TrackList.Update();
 
+		EditMode?.PostRestore();
+
 		return true;
 	}
 }
@@ -164,6 +166,12 @@ partial class EditMode
 
 	protected virtual ISnapshot? OnSnapshot() => null;
 
+	internal void PreRestore() => OnPreRestore();
+	protected virtual void OnPreRestore() { }
+
 	internal void Restore( ISnapshot snapshot ) => OnRestore( snapshot );
 	protected virtual void OnRestore( ISnapshot snapshot ) { }
+
+	internal void PostRestore() => OnPostRestore();
+	protected virtual void OnPostRestore() { }
 }
