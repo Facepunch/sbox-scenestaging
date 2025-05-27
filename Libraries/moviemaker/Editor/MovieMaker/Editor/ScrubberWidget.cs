@@ -21,6 +21,8 @@ public class ScrubberItem : GraphicsItem
 		ZIndex = 5000;
 
 		HoverEvents = true;
+
+		ToolTip = "Click and drag to define a time range to loop when previewing.";
 	}
 
 	private MovieTime _dragStartTime;
