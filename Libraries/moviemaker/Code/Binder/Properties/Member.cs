@@ -152,6 +152,13 @@ file sealed class MemberPropertyFactory : ITrackPropertyFactory
 		typeof(Rotation)
 	};
 
+	private static HashSet<Type> AccessorTypes { get; } = new()
+	{
+		typeof(SkinnedModelRenderer.MorphAccessor),
+		typeof(SkinnedModelRenderer.ParameterAccessor),
+		typeof(SkinnedModelRenderer.SequenceAccessor)
+	};
+
 	private static bool CanMakeTrackFromProperties( Type type )
 	{
 		if ( type.IsAssignableTo( typeof(GameObject) ) ) return true;
@@ -160,6 +167,10 @@ file sealed class MemberPropertyFactory : ITrackPropertyFactory
 		if ( PrimitiveTypes.Contains( type ) ) return false;
 		if ( MathPrimitiveTypes.Contains( type ) ) return type != typeof(Rotation);
 
+		// TODO: not hard-code these
+
+		if ( AccessorTypes.Contains( type ) ) return true;
+
 		return false;
 	}
 
@@ -167,13 +178,17 @@ file sealed class MemberPropertyFactory : ITrackPropertyFactory
 	{
 		Type valueType;
 
+		var canWrite = false;
+
 		switch ( member )
 		{
 			case FieldDescription { IsPublic: true } field:
 				valueType = field.FieldType;
+				canWrite = !field.IsInitOnly;
 				break;
 			case PropertyDescription { CanRead: true, IsGetMethodPublic: true, IsIndexer: false } property:
 				valueType = property.PropertyType;
+				canWrite = property is { CanWrite: true, IsSetMethodPublic: true };
 				break;
 			default:
 				return false;
@@ -184,6 +199,14 @@ file sealed class MemberPropertyFactory : ITrackPropertyFactory
 			// if ( !member.HasAttribute( typeof(PropertyAttribute) ) ) return false;
 		}
 
+		if ( !canWrite && valueType.IsValueType )
+		{
+			// Allow readonly members only if they're a reference type,
+			// because we can modify its properties
+
+			return false;
+		}
+
 		return IsValidPropertyType( valueType );
 	}
 
@@ -191,11 +214,15 @@ file sealed class MemberPropertyFactory : ITrackPropertyFactory
 	{
 		if ( PrimitiveTypes.Contains( type ) ) return true;
 		if ( MathPrimitiveTypes.Contains( type ) ) return true;
+		if ( TypeLibrary.GetType( type ) is null ) return false;
 		if ( type.IsAssignableTo( typeof(Component) ) ) return true;
 		if ( type.IsAssignableTo( typeof(Resource) ) ) return true;
 		if ( type == typeof(GameObject) ) return true;
 		if ( type == typeof(string) ) return true;
 
-		return TypeLibrary.GetType( type ) is not null;
+		// For any other type not covered above,
+		// only support it if it has sub-properties we can control
+
+		return CanMakeTrackFromProperties( type );
 	}
 }
