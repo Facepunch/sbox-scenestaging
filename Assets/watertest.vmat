@@ -27,11 +27,11 @@ Layer0
 	TextureTranslucency "[1.000000 1.000000 1.000000 0.000000]"
 
 	//---- Reflection ----
-	ReflectionTint "[0.894118 1.000000 0.756863 1.000000]"
-	RelectionNormalScale "0.094"
+	ReflectionTint "[1.000000 1.000000 1.000000 1.000000]"
+	RelectionNormalScale "0.384"
 
 	//---- Refraction ----
-	RefractionNormalScale "0.073"
+	RefractionNormalScale "0.045"
 
 	//---- Small Wave ----
 	SmallWaveScale "9.684"
@@ -39,11 +39,11 @@ Layer0
 	SmallWaveTime "12.292"
 
 	//---- Tweaks ----
-	g_fAmbientOcclusion "0.753"
-	g_fMetalness "0.466"
-	g_fRoughness "0.151"
-	NormalScale "0.051"
-	TextureScale "137.613"
+	g_fAmbientOcclusion "0.755"
+	g_fMetalness "0.384"
+	g_fRoughness "0.182"
+	NormalScale "0.213"
+	TextureScale "167.968"
 
 	//---- Water ----
 	ReflectionRefraction "1.000"

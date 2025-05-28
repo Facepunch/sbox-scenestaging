@@ -30,6 +30,29 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 	[Feature( "Offsetting" )]
 	public float ReflectionSurfaceOffset { get; set; } = 4;
 
+	[FeatureEnabled( "Refraction" ), Property]
+	public bool IncludeRefraction { get; set; }
+
+	[Feature( "Refraction" )]
+	[ToggleGroup( "RefractionFog" ), Property]
+	public bool RefractionFog { get; set; }
+
+	[Feature( "Refraction" )]
+	[ToggleGroup( "RefractionFog" ), Property]
+	public Color RefractionFogColor { get; set; } = Color.White;
+
+	[Feature( "Refraction" )]
+	[ToggleGroup( "RefractionFog" ), Property, Range( -100, 100 )]
+	public float RefractionFogHeight { get; set; } = 0;
+
+	[Feature( "Refraction" )]
+	[ToggleGroup( "RefractionFog" ), Property, Range( 0, 1000 )]
+	public float RefractionFogDepth { get; set; } = 20;
+
+	[Feature( "Refraction" )]
+	[ToggleGroup( "RefractionFog" ), Property, Range( 0, 1000 )]
+	public float RefractionFogDistance { get; set; } = 100;
+
 
 	CommandList _drawReflection = new();
 
@@ -90,28 +113,46 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 		ReflectionCamera.WorldTransform = Scene.Camera.WorldTransform;
 
 		// Refract
+		if ( IncludeRefraction )
 		{
+			var refractionSetup = new RefractionSetup();
+			refractionSetup.ClipOffset = ReflectionSurfaceOffset;
+
+			if ( RefractionFog )
+			{
+				refractionSetup.ViewSetup.GradientFog = new GradientFogSetup
+				{
+					Enabled = true,
+					Color = RefractionFogColor,
+					StartDistance = -0.1f,
+					EndDistance = RefractionFogDistance,
+					StartHeight = WorldPosition.z + RefractionFogHeight - 0.1f - RefractionFogDepth,
+					EndHeight = WorldPosition.z + RefractionFogHeight,
+					MaximumOpacity = 1,
+					DistanceFalloffExponent = 1,
+					VerticalFalloffExponent = 1,
+				};
+			}
+
 			var renderTarget = _drawReflection.GetRenderTarget( "refract", ImageFormat.RGBA16161616F, 1, TextureResolution.Clamp( 1, 8 ) );
-			_drawReflection.DrawRefraction( ReflectionCamera, reflectPlane, renderTarget );
+			_drawReflection.DrawRefraction( ReflectionCamera, reflectPlane, renderTarget, refractionSetup );
 			_drawReflection.Attributes.Set( "HasRefractionTexture", true );
 			_drawReflection.Attributes.Set( "RefractionTexture", renderTarget.ColorTexture );
 		}
 
 		// Reflect
+		if ( true )
 		{
+			var reflectSetup = new ReflectionSetup();
+			reflectSetup.ClipOffset = ReflectionSurfaceOffset;
+
 			var renderTarget = _drawReflection.GetRenderTarget( "reflect", ImageFormat.RGBA16161616F, 1, TextureResolution.Clamp( 1, 8 ) );
-			_drawReflection.DrawReflection( ReflectionCamera, reflectPlane, renderTarget );
+			_drawReflection.DrawReflection( ReflectionCamera, reflectPlane, renderTarget, reflectSetup );
 			_drawReflection.Attributes.Set( "HasReflectionTexture", true );
 			_drawReflection.Attributes.Set( "ReflectionTexture", renderTarget.ColorTexture );
 		}
 
-		// render the reflection to the target
-		//	_drawReflection.DrawReflection( ReflectionCamera, reflectPlane, rt );
-		//_drawReflection.DrawRefraction( ReflectionCamera, reflectPlane, rt );
-
-		// set attributes that will be used to render the sceneobject
-
-
+		TargetRenderer.ExecuteBefore = _drawReflection;
 
 	}
 

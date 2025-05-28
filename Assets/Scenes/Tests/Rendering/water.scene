@@ -19,6 +19,7 @@
         {
           "__type": "Sandbox.SceneInformation",
           "__guid": "ce8c67e2-a487-4fae-8077-0d0f3eac4c7c",
+          "__enabled": true,
           "Author": null,
           "Changes": "",
           "Description": "Water shader",
@@ -54,6 +55,7 @@
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "fea599fc-84a1-4454-92fe-3688642d39c0",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
@@ -95,6 +97,7 @@
         {
           "__type": "Sandbox.CameraComponent",
           "__guid": "127348f1-d28a-4370-9b4c-01654c327635",
+          "__enabled": true,
           "BackgroundColor": "0.2167,0.5304,0.73953,1",
           "ClearFlags": "All",
           "FieldOfView": 106.18,
@@ -119,8 +122,8 @@
         {
           "__type": "Sandbox.AmbientOcclusion",
           "__guid": "e862a54c-07dd-4a32-a7b4-0048b492750e",
-          "__version": 1,
           "__enabled": false,
+          "__version": 1,
           "DenoiseMode": "Temporal",
           "FalloffRange": 1,
           "Intensity": 1,
@@ -137,6 +140,7 @@
         {
           "__type": "Sandbox.Bloom",
           "__guid": "f09bf1e7-67d9-4ea6-8e03-24294a4638eb",
+          "__enabled": true,
           "__version": 1,
           "Gamma": 2.2,
           "Mode": "Additive",
@@ -178,7 +182,7 @@
       "__version": 1,
       "Flags": 0,
       "Name": "Water Plane",
-      "Position": "0,0,891.4903",
+      "Position": "0,0,926.6888",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,10",
       "Tags": "planereflect",
@@ -191,6 +195,7 @@
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "3527e7b9-4409-44bb-8c55-5e60c6518e8c",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
@@ -214,7 +219,9 @@
         {
           "__type": "PlaneReflection",
           "__guid": "d9b5a8cf-021c-47fb-9e87-300a0ec0d325",
-          "OffsettingEnabled": false,
+          "__enabled": true,
+          "IncludeRefraction": true,
+          "OffsettingEnabled": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -229,14 +236,19 @@
             "go": "32d09441-d43d-4011-860f-1ea45143708f",
             "component_type": "CameraComponent"
           },
-          "ReflectionSurfaceOffset": 0,
+          "ReflectionSurfaceOffset": 3,
+          "RefractionFog": true,
+          "RefractionFogColor": "0.05088,0.09767,0.0657,1",
+          "RefractionFogDepth": 56.7,
+          "RefractionFogDistance": 0,
+          "RefractionFogHeight": 15.12,
           "TargetRenderer": {
             "_type": "component",
             "component_id": "3527e7b9-4409-44bb-8c55-5e60c6518e8c",
             "go": "cae86d62-9cad-4f23-9b80-47aea5f419bd",
             "component_type": "ModelRenderer"
           },
-          "TextureResolution": 1
+          "TextureResolution": 3
         }
       ],
       "Children": [
@@ -258,6 +270,7 @@
             {
               "__type": "Sandbox.GradientFog",
               "__guid": "625adb2e-a2c1-42f6-9b72-411fa4966a3b",
+              "__enabled": true,
               "Color": "1,1,1,1",
               "EndDistance": 10,
               "FalloffExponent": 1,
@@ -279,8 +292,8 @@
           "__version": 1,
           "Flags": 4096,
           "Name": "Reflections Camera",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
+          "Position": "451.5583,-7.18688,222.3877",
+          "Rotation": "-0.1080475,-0.000000004722905,0.9941458,-0.00000004345549",
           "Scale": "1,1,1",
           "Tags": "",
           "Enabled": true,
@@ -293,7 +306,7 @@
               "__type": "Sandbox.CameraComponent",
               "__guid": "9e2373ce-0e9c-4d2c-89e6-a420a10032b4",
               "__enabled": false,
-              "BackgroundColor": "0.33333,0.46275,0.52157,1",
+              "BackgroundColor": "1,1,1,1",
               "ClearFlags": "All",
               "FieldOfView": 60,
               "FovAxis": "Horizontal",
@@ -324,7 +337,7 @@
       "__version": 1,
       "Flags": 0,
       "Name": "Regular Plane",
-      "Position": "0,0,56.01484",
+      "Position": "0,0,80.01482",
       "Rotation": "0,0,0,1",
       "Scale": "100,100,100",
       "Tags": "",
@@ -337,6 +350,7 @@
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "a3082df2-0f50-4aea-9b9c-8ee8c3b556bb",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
@@ -378,6 +392,7 @@
         {
           "__type": "Sandbox.PlayerController",
           "__guid": "30c4ff99-f5a3-4ae3-9f7d-3906c627609e",
+          "__enabled": true,
           "AccelerationTime": 0,
           "AimStrengthBody": 1,
           "AimStrengthEyes": 1,
@@ -448,6 +463,7 @@
         {
           "__type": "Sandbox.Rigidbody",
           "__guid": "a2c6f8fa-ce20-484b-8791-8bea86278bb2",
+          "__enabled": true,
           "AngularDamping": 1,
           "Gravity": true,
           "LinearDamping": 0.1,
@@ -475,6 +491,7 @@
         {
           "__type": "Sandbox.Movement.MoveModeWalk",
           "__guid": "c76868e9-6bdf-438f-9026-8a01739ed9bd",
+          "__enabled": true,
           "GroundAngle": 45,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -489,6 +506,7 @@
         {
           "__type": "Sandbox.Movement.MoveModeSwim",
           "__guid": "4cd557b8-5a47-4b4e-ba28-21d36c6416fc",
+          "__enabled": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -501,6 +519,7 @@
         {
           "__type": "Sandbox.Movement.MoveModeLadder",
           "__guid": "c80bac13-13b3-4b8e-99cf-a6bd2015f35f",
+          "__enabled": true,
           "ClimbableTags": "ladder",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -531,6 +550,7 @@
             {
               "__type": "Sandbox.SkinnedModelRenderer",
               "__guid": "5a71cc7e-eec7-4c74-be9a-172135376d4d",
+              "__enabled": true,
               "AnimationGraph": null,
               "BodyGroups": 341,
               "BoneMergeTarget": null,
@@ -590,6 +610,7 @@
             {
               "__type": "Sandbox.CapsuleCollider",
               "__guid": "10027361-3213-4200-9c07-c26f42be0549",
+              "__enabled": true,
               "End": "0,0,45.05097",
               "Friction": 0,
               "IsTrigger": false,
@@ -612,6 +633,7 @@
             {
               "__type": "Sandbox.BoxCollider",
               "__guid": "774143ff-b49f-44b3-8629-b75b4027ab47",
+              "__enabled": true,
               "Center": "0,0,18",
               "Friction": 0,
               "IsTrigger": false,
@@ -644,7 +666,7 @@
       "Rotation": "-0.8453928,0.3860874,0.1071982,0.3532082",
       "Scale": "1,1,1",
       "Tags": "light_directional,light",
-      "Enabled": true,
+      "Enabled": false,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
@@ -653,6 +675,7 @@
         {
           "__type": "Sandbox.DirectionalLight",
           "__guid": "2fec98ab-ea60-493a-a0d3-46d16de5bd62",
+          "__enabled": true,
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.56924,0.69651,0.83256,1",
@@ -686,6 +709,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "88b368ec-65ed-4c5a-afec-d2445d8e9d33",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -723,6 +747,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "64dcc910-e2f8-4984-a162-d495e7fa5af2",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -760,6 +785,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "f5aa6960-bccb-4ace-982c-6d7805ceae7f",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -797,6 +823,7 @@
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "205543e0-8df6-409c-955c-935dff7dcfae",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
@@ -820,6 +847,7 @@
         {
           "__type": "Sandbox.ModelCollider",
           "__guid": "a18f607f-1f6e-4181-9d63-619df64c8af5",
+          "__enabled": true,
           "Friction": null,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
@@ -858,6 +886,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "df282614-26fb-4847-98c5-f3c604acfa2c",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -895,6 +924,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "fad93422-443f-42d8-8ea4-e00b21633f74",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -932,6 +962,7 @@
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "aaa9926f-823d-4952-9edd-81be88ca0600",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
@@ -955,6 +986,7 @@
         {
           "__type": "Sandbox.ModelCollider",
           "__guid": "b133a607-7b0e-423f-83a7-18c621338c76",
+          "__enabled": true,
           "Friction": null,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
@@ -993,6 +1025,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "68317dad-b447-4595-a6ce-964985cfdf0e",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -1030,6 +1063,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "f1c18bb6-4358-4fbf-9025-cea68090abd0",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -1067,6 +1101,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "62e48020-2399-4ca8-a06c-0d9ed5d29f61",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -1104,6 +1139,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "a6eb6552-f557-47c8-b113-33937e7eb310",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -1141,6 +1177,7 @@
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "16888196-7287-4658-b6ff-067ffb89faf4",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
@@ -1164,6 +1201,7 @@
         {
           "__type": "Sandbox.ModelCollider",
           "__guid": "48694734-b0da-4694-b246-46e9369b1e58",
+          "__enabled": true,
           "Friction": null,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
@@ -1202,6 +1240,7 @@
         {
           "__type": "Sandbox.EnvmapProbe",
           "__guid": "ef8764eb-dfe4-443f-b2a4-cfd6558d5a0b",
+          "__enabled": true,
           "Bounds": {
             "Mins": "-1000,-1000,-1000",
             "Maxs": "1000,1000,1000"
@@ -1247,6 +1286,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "cb59989b-139f-4ebb-afd8-e8e767b69898",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 60,
           "IsStatic": false,
@@ -1284,6 +1324,7 @@
         {
           "__type": "Sandbox.SkyBox2D",
           "__guid": "b04bbfb1-ddc2-4342-aefd-13477cc75440",
+          "__enabled": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -1315,6 +1356,7 @@
         {
           "__type": "Sandbox.PointLight",
           "__guid": "ce08eb9b-514f-4770-becf-ac94c1f5e42a",
+          "__enabled": true,
           "Attenuation": 8.39,
           "FogMode": "Enabled",
           "FogStrength": 1,
@@ -1348,6 +1390,7 @@
             {
               "__type": "Sandbox.ModelRenderer",
               "__guid": "ea85d193-b17d-43fb-a0d9-05dfbeab931f",
+              "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
               "MaterialGroup": null,
@@ -1391,6 +1434,7 @@
         {
           "__type": "Sandbox.TextRenderer",
           "__guid": "a5e19075-892f-4d69-a4d6-4b62dcc56119",
+          "__enabled": true,
           "__version": 1,
           "BlendMode": "Normal",
           "OnComponentDestroy": null,
@@ -1462,6 +1506,7 @@
         {
           "__type": "Sandbox.ParticleEffect",
           "__guid": "28769398-fa9f-4078-a4e4-aa76b8fa386c",
+          "__enabled": true,
           "__version": 1,
           "Alpha": {
             "Type": "CurveRange",
@@ -1849,6 +1894,7 @@
         {
           "__type": "Sandbox.ParticleSpriteRenderer",
           "__guid": "04ac9790-c668-4963-9070-8545b804bede",
+          "__enabled": true,
           "Additive": true,
           "Alignment": "LookAtCamera",
           "BlurAmount": 0.5,
@@ -1883,6 +1929,7 @@
         {
           "__type": "Sandbox.ParticleBoxEmitter",
           "__guid": "9f0b8b85-0910-4798-b3b7-23406bf33b20",
+          "__enabled": true,
           "Burst": 0,
           "Delay": 0,
           "DestroyOnEnd": false,
@@ -1919,6 +1966,7 @@
             {
               "__type": "Sandbox.PointLight",
               "__guid": "18e73582-f51e-4b8e-9990-a2fa91097543",
+              "__enabled": true,
               "Attenuation": 1,
               "FogMode": "Enabled",
               "FogStrength": 1,
@@ -1955,6 +2003,7 @@
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "32cd4aef-fd2f-4796-a0e3-43b997c4967b",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
@@ -1996,6 +2045,7 @@
         {
           "__type": "Sandbox.GradientFog",
           "__guid": "16a3a690-c304-4241-8c39-e4f3ae35cc7d",
+          "__enabled": true,
           "Color": "0.10132,0.10233,0.04188,1",
           "EndDistance": 256,
           "FalloffExponent": 1,
@@ -2030,6 +2080,7 @@
         {
           "__type": "Sandbox.EnvmapProbe",
           "__guid": "371f4bce-bd5f-4e00-b2ef-27726b655b44",
+          "__enabled": true,
           "Bounds": {
             "Mins": "-10000,-10000,-10000",
             "Maxs": "10000,10000,10000"
@@ -2075,6 +2126,7 @@
         {
           "__type": "Sandbox.ParticleEffect",
           "__guid": "5cc40cb5-be43-4000-8738-db0c6a730978",
+          "__enabled": true,
           "__version": 1,
           "Alpha": {
             "Type": "Curve",
@@ -2307,6 +2359,7 @@
         {
           "__type": "Sandbox.ParticleSpriteRenderer",
           "__guid": "32826f31-a9f5-4200-9921-b39e91ad5e9b",
+          "__enabled": true,
           "Additive": false,
           "Alignment": "LookAtCamera",
           "BlurAmount": 0.5,
@@ -2341,6 +2394,7 @@
         {
           "__type": "Sandbox.ParticleConeEmitter",
           "__guid": "1959b643-b55f-4b88-ba13-0e95be90cb3a",
+          "__enabled": true,
           "Burst": 0,
           "CenterBias": 1,
           "CenterBiasVelocity": 0,
@@ -2385,6 +2439,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "06200ba3-92a3-4928-81a2-4078959068a2",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -2422,6 +2477,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "d8a14d62-1d56-42f3-9cd5-07387e232186",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -2459,6 +2515,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "846312e8-5e88-4c46-bf0e-f4086e0dad85",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -2496,6 +2553,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "1f17fc68-9381-4876-9298-dc8c48c71c82",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -2533,6 +2591,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "16bd7167-6248-4cd7-ae53-31d8e7b2afe5",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -2570,6 +2629,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "aa34cc74-1ac5-40d2-ac41-74002e871740",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -2607,6 +2667,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "69db9b97-2ac6-4295-b279-fb01b6c6ed18",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -2644,6 +2705,7 @@
         {
           "__type": "Sandbox.Prop",
           "__guid": "b708d720-70de-44b2-b660-9e2dba832cad",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "Health": 0,
           "IsStatic": true,
@@ -2681,6 +2743,7 @@
         {
           "__type": "Sandbox.BoxCollider",
           "__guid": "62212b6f-9be0-41c9-ae03-d24a80f61be8",
+          "__enabled": true,
           "Center": "0,0,-89.87564",
           "Friction": null,
           "IsTrigger": true,
@@ -2720,6 +2783,7 @@
         {
           "__type": "Sandbox.ParticleEffect",
           "__guid": "a767c164-99f4-4a6d-807c-939411762385",
+          "__enabled": true,
           "__version": 1,
           "Alpha": {
             "Type": "Curve",
@@ -3033,6 +3097,7 @@
         {
           "__type": "Sandbox.ParticleSpriteRenderer",
           "__guid": "d38a7d00-e3f9-445d-a7ca-db0a45b7dffb",
+          "__enabled": true,
           "Additive": true,
           "Alignment": "LookAtCamera",
           "BlurAmount": 1,
@@ -3067,6 +3132,7 @@
         {
           "__type": "Sandbox.ParticleSphereEmitter",
           "__guid": "6d421e00-9c8e-4643-ae1c-64552c2bc709",
+          "__enabled": true,
           "Burst": 1000,
           "Delay": 0,
           "DestroyOnEnd": false,
@@ -3181,6 +3247,7 @@
         {
           "__type": "Sandbox.ParticleEffect",
           "__guid": "9031cceb-f52d-4501-9c08-57ac0422efe4",
+          "__enabled": true,
           "__version": 1,
           "Alpha": {
             "Type": "Curve",
@@ -3494,6 +3561,7 @@
         {
           "__type": "Sandbox.ParticleSpriteRenderer",
           "__guid": "5e4e29e6-8197-4c7a-b529-2689e6551522",
+          "__enabled": true,
           "Additive": true,
           "Alignment": "LookAtCamera",
           "BlurAmount": 1,
@@ -3528,6 +3596,7 @@
         {
           "__type": "Sandbox.ParticleSphereEmitter",
           "__guid": "d960e209-3273-4b0d-852a-e88d7694b981",
+          "__enabled": true,
           "Burst": 888.75,
           "Delay": 2,
           "DestroyOnEnd": false,
@@ -3642,6 +3711,7 @@
         {
           "__type": "Sandbox.ParticleEffect",
           "__guid": "d0d56279-3d7a-4580-9c75-568348aac557",
+          "__enabled": true,
           "__version": 1,
           "Alpha": {
             "Type": "Curve",
@@ -3955,6 +4025,7 @@
         {
           "__type": "Sandbox.ParticleSpriteRenderer",
           "__guid": "6d0e5c83-dc0c-420e-a0b7-4e3cab689988",
+          "__enabled": true,
           "Additive": true,
           "Alignment": "LookAtCamera",
           "BlurAmount": 1,
@@ -3989,6 +4060,7 @@
         {
           "__type": "Sandbox.ParticleSphereEmitter",
           "__guid": "5668c5a9-04c6-48d3-bfc2-6e7fe3a23d25",
+          "__enabled": true,
           "Burst": 411.98,
           "Delay": 3,
           "DestroyOnEnd": false,
@@ -4103,6 +4175,7 @@
         {
           "__type": "Sandbox.MapInstance",
           "__guid": "0c81792c-f856-43f4-83b1-c0fe8b59a720",
+          "__enabled": true,
           "__version": 1,
           "EnableCollision": true,
           "MapName": "facepunch.depot",
