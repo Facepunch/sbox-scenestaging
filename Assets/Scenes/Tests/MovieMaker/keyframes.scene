@@ -42,8 +42,8 @@
       "__version": 1,
       "Flags": 0,
       "Name": "Camera",
-      "Position": "873.1158,333.3303,-175.252",
-      "Rotation": "-0.6041095,-0.02426703,-0.7958899,0.03197083",
+      "Position": "1030.409,129.3151,-155.0819",
+      "Rotation": "-0.1272205,0.05459519,0.9099359,0.3909616",
       "Scale": "1,1,1",
       "Tags": "maincamera",
       "Enabled": true,
@@ -103,12 +103,41 @@
             "GameObjects": [
               {
                 "Track": "a352fb59-987a-42ad-9aaf-a77787933900",
+                "Reference": "be13e68a-e157-4847-b880-804e249490b3"
+              },
+              {
+                "Track": "0984e54f-3bb3-4263-b675-c457b70aab3b",
+                "Reference": "be13e68a-e157-4847-b880-804e249490b3"
+              },
+              {
+                "Track": "4d56d18b-b24a-43bd-a81a-a4d84a3cb4ac",
+                "Reference": "be13e68a-e157-4847-b880-804e249490b3"
+              },
+              {
+                "Track": "924a1045-e855-4a11-acf1-dea62114641a",
                 "Reference": "831971db-3937-47b0-b489-73f0167e04d4"
               }
             ],
-            "Components": []
+            "Components": [
+              {
+                "Track": "3a6e37d1-49bf-4c8d-b147-1265925ddadc",
+                "Reference": "86153a4b-6a0b-4cc5-9290-f274d61d428e"
+              },
+              {
+                "Track": "560fac51-2fbb-47ce-8dd1-5183e32c8aa3",
+                "Reference": "86153a4b-6a0b-4cc5-9290-f274d61d428e"
+              },
+              {
+                "Track": "6db6e6c8-218d-40d8-a250-7949fe26e01d",
+                "Reference": "86153a4b-6a0b-4cc5-9290-f274d61d428e"
+              },
+              {
+                "Track": "b50b09b2-5aef-4c83-9e9a-683688d59a5f",
+                "Reference": "86153a4b-6a0b-4cc5-9290-f274d61d428e"
+              }
+            ]
           },
-          "IsLooping": true,
+          "IsLooping": false,
           "IsPlaying": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -117,8 +146,68 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "PositionSeconds": 0,
-          "Resource": "movies/camera_keyframes.movie",
+          "Resource": "movies/walking.movie",
           "TimeScale": 1
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "be13e68a-e157-4847-b880-804e249490b3",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Body",
+      "Position": "150.4211,402.0502,-255.6524",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "86153a4b-6a0b-4cc5-9290-f274d61d428e",
+          "__enabled": true,
+          "AnimationGraph": null,
+          "BodyGroups": 341,
+          "BoneMergeTarget": null,
+          "CreateAttachments": false,
+          "CreateBoneObjects": false,
+          "MaterialGroup": "default",
+          "MaterialOverride": null,
+          "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "PlaybackRate": 1,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Sequence": {
+            "Name": "bindPose",
+            "Looping": true,
+            "Blending": false
+          },
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": false
         }
       ],
       "Children": []

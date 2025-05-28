@@ -134,4 +134,13 @@ public partial class TimelineTrack : GraphicsItem
 
 		return true;
 	}
+
+	protected override void OnPaint()
+	{
+		if ( Hovered )
+		{
+			Paint.SetBrushAndPen( Color.White.WithAlpha( 0.02f ) );
+			Paint.DrawRect( LocalRect );
+		}
+	}
 }

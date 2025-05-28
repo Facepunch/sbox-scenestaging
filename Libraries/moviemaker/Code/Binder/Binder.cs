@@ -82,6 +82,21 @@ public sealed partial class TrackBinder( Scene? scene = null ) : IEnumerable<Key
 		};
 	}
 
+	public IEnumerable<ITrackReference<T>> GetReferences<T>( IClip clip )
+		where T : Component
+	{
+		return clip.Tracks
+			.OfType<IReferenceTrack<T>>()
+			.Select( Get );
+	}
+
+	public IEnumerable<ITrackProperty<T>> GetProperties<T>( IClip clip )
+	{
+		return clip.Tracks
+			.OfType<IPropertyTrack<T>>()
+			.Select( Get );
+	}
+
 	public IEnumerable<T> GetComponents<T>( IClip clip )
 		where T : Component
 	{

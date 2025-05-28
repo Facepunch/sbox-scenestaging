@@ -186,8 +186,6 @@ partial class Session
 
 		var dt = Math.Min( (float)deltaTime.Absolute.TotalSeconds, 1f );
 
-		using var sceneScope = Player.Scene.Push();
-
 		foreach ( var controller in Binder.GetComponents<PlayerController>( Project ) )
 		{
 			((IScenePhysicsEvents)controller).PrePhysicsStep();

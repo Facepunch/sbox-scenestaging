@@ -1,6 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Sandbox.MovieMaker;
+﻿using Sandbox.MovieMaker;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Sandbox.MovieMaker.Properties;
 
 namespace Editor.MovieMaker;
 
@@ -80,6 +81,14 @@ public sealed partial class TrackView : IComparable<TrackView>
 
 	public int StateHash { get; private set; }
 	public bool IsEmpty => _children.Count == 0 && Track.IsEmpty;
+
+	public bool IsBoneTransform => Track is IPropertyTrack<Transform> && Parent is
+		{ Track.Name: "Bones", Parent.Track: IReferenceTrack<SkinnedModelRenderer> };
+
+	public BoneCollection.Bone? Bone =>
+		Parent?.Parent?.Target is ITrackReference<SkinnedModelRenderer> { Value.Model: { } model }
+			? model.Bones.GetBone( Track.Name )
+			: null;
 
 	/// <summary>
 	/// Invoked when properties of this track are changed.
@@ -326,6 +335,12 @@ public sealed partial class TrackView : IComparable<TrackView>
 
 				if ( _previewBlocks.GetBlock( time ) is IPropertySignal block )
 				{
+					if ( block is IDynamicBlock )
+					{
+						// Don't preview while recording
+						break;
+					}
+
 					property.Value = block.GetValue( time + TrackList.PreviewOffset );
 				}
 				else
@@ -356,6 +371,11 @@ public sealed partial class TrackView : IComparable<TrackView>
 
 	private IPropertyTrack<Transform> CreateTransformTrack()
 	{
+		if ( IsBoneTransform )
+		{
+			return new BoneTransformTrack( Parent!, Track.Name );
+		}
+
 		if ( Track is not IReferenceTrack<GameObject> )
 		{
 			return Parent?.TransformTrack ?? new TransformTrack( this );
@@ -436,5 +456,79 @@ file sealed class TransformTrack : IPropertyTrack<Transform>
 		}
 
 		return enabled;
+	}
+}
+
+file sealed class BoneTransformTrack : IPropertyTrack<Transform>
+{
+	public string Name { get; }
+	public ITrack Parent { get; }
+
+	private readonly TrackView _boneAccessorView;
+
+	public BoneTransformTrack( TrackView boneAccessorView, string boneName )
+	{
+		_boneAccessorView = boneAccessorView;
+
+		Name = boneName;
+		Parent = boneAccessorView.Track;
+	}
+
+	public bool TryGetValue( MovieTime time, out Transform value )
+	{
+		value = default;
+
+		if ( _boneAccessorView.Parent?.Target is not ITrackReference<SkinnedModelRenderer> { Value: { } renderer } )
+		{
+			return false;
+		}
+
+		if ( renderer.Model is not { } model )
+		{
+			return false;
+		}
+
+		if ( model.Bones.GetBone( Name ) is not { } bone )
+		{
+			return false;
+		}
+
+		if ( GetBoneTransform( renderer, bone, time ) is { } transform )
+		{
+			value = transform;
+
+			if ( _boneAccessorView.Parent?.TransformTrack.TryGetValue( time, out var parentTransform ) is true )
+			{
+				value = parentTransform.ToWorld( value );
+				return true;
+			}
+
+			return false;
+		}
+
+		return false;
+	}
+
+	private Transform? GetBoneTransform( SkinnedModelRenderer renderer, BoneCollection.Bone bone, MovieTime time )
+	{
+		var parentTransform = bone.Parent is { } parent
+			? GetBoneTransform( renderer, parent, time ) ?? Transform.Zero
+			: Transform.Zero;
+
+		Transform localTransform;
+
+		if ( _boneAccessorView.Children.FirstOrDefault( x => x.Track.Name == bone.Name ) is { } boneView )
+		{
+			if ( !boneView.TryGetValue( time, out localTransform ) )
+			{
+				return null;
+			}
+		}
+		else
+		{
+			localTransform = renderer.GetParentSpaceBone( bone );
+		}
+
+		return parentTransform.ToWorld( localTransform );
 	}
 }

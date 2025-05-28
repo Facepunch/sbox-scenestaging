@@ -140,7 +140,7 @@ public sealed class Vector4BlockItem() : CurveBlockItem<Vector4>(
 #region Rotation
 
 public sealed class AnglesBlockItem() : CurveBlockItem<Angles>(
-	new Element( "P", Theme.Red, -180f, 180f ),
+	new Element( "P", Theme.Yellow, -180f, 180f ),
 	new Element( "Y", Theme.Green, -180f, 180f ),
 	new Element( "R", Theme.Blue, -180f, 180f ) )
 {
@@ -170,6 +170,32 @@ public sealed class RotationBlockItem() : CurveBlockItem<Rotation>(
 		result[1] = forward.y;
 		result[2] = forward.z;
 		result[3] = right.z;
+	}
+}
+
+#endregion
+
+#region Transform
+
+public sealed class TransformBlockItem() : CurveBlockItem<Transform>(
+	new Element( "X", Theme.Red ),
+	new Element( "Y", Theme.Green ),
+	new Element( "Z", Theme.Blue ),
+	new Element( "P", Theme.Red.Lighten( 0.25f ), -180f, 180f ),
+	new Element( "Y", Theme.Green.Lighten( 0.25f ), -180f, 180f ),
+	new Element( "R", Theme.Blue.Lighten( 0.25f ), -180f, 180f ) )
+{
+	protected override void Decompose( Transform value, Span<float> result )
+	{
+		var angles = value.Rotation.Angles();
+
+		result[0] = value.Position.x;
+		result[1] = value.Position.y;
+		result[2] = value.Position.z;
+
+		result[3] = angles.pitch;
+		result[4] = angles.roll;
+		result[5] = angles.yaw;
 	}
 }
 

@@ -1,6 +1,7 @@
-﻿using System.Collections.Immutable;
+﻿using Sandbox.MovieMaker;
+using System.Collections.Immutable;
 using System.Linq;
-using Sandbox.MovieMaker;
+using static Sandbox.SandboxToolExtensions;
 
 namespace Editor.MovieMaker;
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Immutable;
 using System.Linq;
+using static Sandbox.Resources.ResourceCompileContext;
 
 namespace Editor.MovieMaker;
 
@@ -205,30 +206,58 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnMouseRelease( MouseEvent e )
 	{
-		if ( !e.LeftMouseButton || !CreateKeyframeOnClick && (e.KeyboardModifiers & KeyboardModifiers.Shift) == 0 ) return;
+		if ( !e.LeftMouseButton ) return;
 
 		var scenePos = Timeline.ToScene( e.LocalPosition );
-
-		if ( Timeline.Tracks.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) ) is not { } timelineTrack ) return;
-
-		var view = timelineTrack.View;
 		var time = Session.ScenePositionToTime( scenePos );
 
-		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return;
-		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } target ) return;
+		if ( !CreateKeyframeOnClick && (e.KeyboardModifiers & KeyboardModifiers.Shift) == 0 ) return;
+		if ( Timeline.Tracks.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) ) is not { } parentTimelineTrack ) return;
 
-		if ( GetHandles( timelineTrack ) is not { } handles ) return;
-		if ( handles.Any( x => x.Time == time ) ) return;
+		var writeableViews = GetWritableDescendantTrackViews( parentTimelineTrack.View ).ToImmutableArray();
 
-		var value = propertyTrack.TryGetValue( time, out var val ) ? val : target.Value;
+		if ( writeableViews.Length == 0 ) return;
 
 		ClearKeyframeChangeScope();
 
-		using var scope = Session.History.Push( "Add Keyframe" );
+		using var scope = Session.History.Push( $"Add {(writeableViews.Length > 1 ? $"{writeableViews.Length} " : "")}" +
+			$"Keyframe{(writeableViews.Length > 1 ? "s" : "")}" );
 
-		handles.AddOrUpdate( new Keyframe( time, value, DefaultInterpolation ) );
+		foreach ( var view in writeableViews )
+		{
+			if ( Timeline.Tracks.FirstOrDefault( x => x.View == view ) is not { } timelineTrack ) continue;
+			if ( view.Track is not IProjectPropertyTrack propertyTrack ) continue;
+			if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } target ) continue;
+
+			if ( GetHandles( timelineTrack ) is not { } handles ) return;
+			if ( handles.Any( x => x.Time == time ) ) return;
+
+			var value = propertyTrack.TryGetValue( time, out var val ) ? val : target.Value;
+
+			handles.AddOrUpdate( new Keyframe( time, value, DefaultInterpolation ) );
+		}
 
 		Session.SetCurrentPointer( time );
+	}
+
+	private IEnumerable<TrackView> GetWritableDescendantTrackViews( TrackView parentView )
+	{
+		if ( !parentView.Target.IsBound ) yield break;
+		if ( parentView.IsLocked ) yield break;
+
+		if ( parentView is { Track: IProjectPropertyTrack, Target: ITrackProperty { CanWrite: true } } )
+		{
+			yield return parentView;
+			yield break;
+		}
+
+		foreach ( var child in parentView.Children )
+		{
+			foreach ( var childView in GetWritableDescendantTrackViews( child ) )
+			{
+				yield return childView;
+			}
+		}
 	}
 
 	internal void KeyframeDragStart( KeyframeHandle handle, GraphicsMouseEvent e )

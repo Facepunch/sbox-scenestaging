@@ -149,7 +149,8 @@ file sealed class MemberPropertyFactory : ITrackPropertyFactory
 		typeof(Vector3Int),
 
 		typeof(Angles),
-		typeof(Rotation)
+		typeof(Rotation),
+		typeof(Transform)
 	};
 
 	private static HashSet<Type> AccessorTypes { get; } = new()
