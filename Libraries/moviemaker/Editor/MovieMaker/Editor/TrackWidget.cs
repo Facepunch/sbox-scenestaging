@@ -288,18 +288,18 @@ public partial class TrackWidget : Widget
 
 		var categories = availableTracks.GroupBy( x => x.Category ).ToArray();
 
-		foreach ( var category in categories )
+		foreach ( var category in categories.OrderBy( x => x.Key ) )
 		{
 			var subMenu = categories.Length == 1 ? _menu : _menu.AddMenu( category.Key );
 
-			foreach ( var type in category.GroupBy( x => x.Type.ToSimpleString( false ) ) )
+			foreach ( var type in category.GroupBy( x => x.Type.ToSimpleString( false ) ).OrderBy( x => x.Key ) )
 			{
 				if ( category.Key != "Components" )
 				{
 					subMenu.AddHeading( type.Key ).Color = Theme.TextDisabled;
 				}
 
-				foreach ( var item in type )
+				foreach ( var item in type.OrderBy( x => x.Name ) )
 				{
 					var option = new ToggleOption( item.Name, View.Children.Any( x => x.Track.Name == item.Name ), create =>
 					{
