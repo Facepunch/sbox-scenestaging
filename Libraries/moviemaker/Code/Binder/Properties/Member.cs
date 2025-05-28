@@ -169,10 +169,10 @@ file sealed class MemberPropertyFactory : ITrackPropertyFactory
 
 		switch ( member )
 		{
-			case FieldDescription { IsInitOnly: false, IsPublic: true } field:
+			case FieldDescription { IsPublic: true } field:
 				valueType = field.FieldType;
 				break;
-			case PropertyDescription { CanRead: true, CanWrite: true, IsGetMethodPublic: true, IsSetMethodPublic: true, IsIndexer: false } property:
+			case PropertyDescription { CanRead: true, IsGetMethodPublic: true, IsIndexer: false } property:
 				valueType = property.PropertyType;
 				break;
 			default:
@@ -191,12 +191,11 @@ file sealed class MemberPropertyFactory : ITrackPropertyFactory
 	{
 		if ( PrimitiveTypes.Contains( type ) ) return true;
 		if ( MathPrimitiveTypes.Contains( type ) ) return true;
-		if ( TypeLibrary.GetType( type ) is null ) return false;
 		if ( type.IsAssignableTo( typeof(Component) ) ) return true;
 		if ( type.IsAssignableTo( typeof(Resource) ) ) return true;
 		if ( type == typeof(GameObject) ) return true;
 		if ( type == typeof(string) ) return true;
 
-		return false;
+		return TypeLibrary.GetType( type ) is not null;
 	}
 }
