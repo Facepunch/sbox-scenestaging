@@ -199,10 +199,19 @@ file sealed class MemberPropertyFactory : ITrackPropertyFactory
 			// if ( !member.HasAttribute( typeof(PropertyAttribute) ) ) return false;
 		}
 
-		if ( !canWrite && valueType.IsValueType )
+		if ( !canWrite )
 		{
 			// Allow readonly members only if they're a reference type,
 			// because we can modify its properties
+
+			if ( valueType.IsValueType ) return false;
+
+			// Filtering out scene object stuff to avoid the list getting cluttered
+
+			// TODO: should we support this kind of indirection?
+
+			if ( valueType == typeof(GameObject) ) return false;
+			if ( valueType.IsAssignableTo( typeof( Component ) ) ) return false;
 
 			return false;
 		}
