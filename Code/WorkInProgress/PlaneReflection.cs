@@ -93,16 +93,16 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 		{
 			var renderTarget = _drawReflection.GetRenderTarget( "refract", ImageFormat.RGBA16161616F, 1, TextureResolution.Clamp( 1, 8 ) );
 			_drawReflection.DrawRefraction( ReflectionCamera, reflectPlane, renderTarget );
-			_drawReflection.Local.Set( "HasRefractionTexture", true );
-			_drawReflection.Local.Set( "RefractionTexture", renderTarget.ColorTexture );
+			_drawReflection.Attributes.Set( "HasRefractionTexture", true );
+			_drawReflection.Attributes.Set( "RefractionTexture", renderTarget.ColorTexture );
 		}
 
 		// Reflect
 		{
 			var renderTarget = _drawReflection.GetRenderTarget( "reflect", ImageFormat.RGBA16161616F, 1, TextureResolution.Clamp( 1, 8 ) );
 			_drawReflection.DrawReflection( ReflectionCamera, reflectPlane, renderTarget );
-			_drawReflection.Local.Set( "HasReflectionTexture", true );
-			_drawReflection.Local.Set( "ReflectionTexture", renderTarget.ColorTexture );
+			_drawReflection.Attributes.Set( "HasReflectionTexture", true );
+			_drawReflection.Attributes.Set( "ReflectionTexture", renderTarget.ColorTexture );
 		}
 
 		// render the reflection to the target
