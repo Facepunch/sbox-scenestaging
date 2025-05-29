@@ -54,8 +54,6 @@ PS
 	bool g_bReflection < Default(0.0f); Attribute( "HasReflectionTexture" ); > ;
 	CreateTexture2D( g_ReflectionTexture ) < Attribute("ReflectionTexture");   SrgbRead( false ); Filter(MIN_MAG_MIP_LINEAR);    AddressU( CLAMP );     AddressV( CLAMP ); > ;    
 	float RelectionNormalScale < Default(0.5f); Range(0.01f, 1.0f); UiGroup("Reflection"); > ;
-	float ReflectionFresnal < Default(0.5f); Range(0.0f, 10.0f); UiGroup("Reflection"); > ;
-	float4 ReflectionTint < UiType(Color); Default4(1.0, 1.0, 1.0, 1.0); UiGroup("Reflection"); > ;
 
 	float4 SurfaceColor < UiType(Color); Default4(0.0, 0.5, 0.6, 0.5); UiGroup("Water"); > ;
 
@@ -118,7 +116,7 @@ PS
 
 		Material m2 = Material::From( i );
 
-		i.vTextureCoords.xy = i.vTextureCoords.xy * -10.0;
+		i.vTextureCoords.xy = i.vTextureCoords.xy * -1.1;
 		i.vTextureCoords.x -= sin( g_flTime * moveSpeed * FlowSpeed / FlowSize ) * FlowSize * moveSpeed;
 		i.vTextureCoords.y -= cos( g_flTime * moveSpeed * FlowSpeed / FlowSize ) * FlowSize * moveSpeed;
 
@@ -129,9 +127,9 @@ PS
 		Material m = Material::From( i );
 
 		float3 camdir = CalculatePositionToCameraDirWs( i.vPositionWithOffsetWs.xyz + g_vHighPrecisionLightingOffsetWs.xyz );
-		float fresnel = pow( 1.0 - dot( ( i.vNormalWs ),  camdir ), 5 );
 
-		m = Material::lerp( m, m2, 1-fresnel );
+
+		m = Material::lerp( m, m2, 0.5 );
 
 		float3 normal = normalize( m.Normal );
 
@@ -170,28 +168,35 @@ PS
 			m.Normal = normalize( lerp( m.Normal, float3( 0, 0, 1 ), lval ) ); 
 		}
 
-		m.Normal = normalize( lerp( float3( 0, 0, 1 ), m.Normal, 6 ) ); 
+		
+		m.Normal = normalize( lerp( float3( 0, 0, 1 ), m.Normal, 1 ) ); 
 		m.Opacity = 1;
 		m.Roughness = g_fRoughness;
 		m.Metalness = g_fMetalness;
 		m.AmbientOcclusion = g_fAmbientOcclusion;
 
-		float4 outCol = ShadingModelStandard::Shade( i, m );
+		float3 worldNormal = TransformNormal( m.Normal, i.vNormalWs, i.vTangentUWs, i.vTangentVWs );
+		float fresnel = pow( 1.0 - dot( ( worldNormal ), camdir ), 5 );
 
 		//
 		// Add refraction
 		//
 		if ( g_bRefraction )
 		{
+			float colorSplit = 1;
 			float2 uv = i.vPositionSs.xy * g_vInvViewportSize; 
 			uv += -normal.xy * Refraction * 0.1 * RefractionNormalScale;
 
            	float3 col = Tex2DLevel( g_RefractionTexture, uv, 0 ).rgb;
-			outCol.rgb = lerp( col, outCol.rgb, pow( fresnel, 1 ) );
+
+			uv -= -normal.yx * Refraction * 0.1 * RefractionNormalScale * colorSplit;
+			col.g = Tex2DLevel( g_RefractionTexture, uv, 0 ).g;
+			uv += -normal.xy * Refraction * 0.1 * RefractionNormalScale * colorSplit;
+			col.b = Tex2DLevel( g_RefractionTexture, uv, 0 ).b;
+			m.Emission.rgb += col;
 		}
 
-
-		//
+		// 
 		// Add reflection
 		//
 		if ( g_bReflection )
@@ -203,14 +208,15 @@ PS
 			float2 uv = i.vPositionSs.xy * g_vInvViewportSize; 
 
 			uv.x = 1 - uv.x;
-			uv.x += normal.x * ReflectionRefraction * 0.1 * RelectionNormalScale; //only refract on x to avoid tear-away
+			uv.x += normal.x * ReflectionRefraction * -0.1 * RelectionNormalScale; //only refract on x to avoid tear-away
 
 			float3 col = g_ReflectionTexture.SampleLevel(g_ReflectionTexture_sampler, uv, 0).rgb;
-			col *= ReflectionTint.rgb;
 
-			outCol.rgb = lerp( outCol.rgb, col, pow( fresnel, 1 ) );
+			m.Emission.rgb += col * fresnel;
+			//outCol.rgb += pow( col, 1 ) * fresnel;
         }
 
+		float4 outCol = ShadingModelStandard::Shade( i, m );
 		outCol.rgb = Fog::Apply( worldPos, i.vPositionSs.xy, outCol.rgb );
 
 		return outCol;

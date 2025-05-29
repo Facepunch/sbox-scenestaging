@@ -10,7 +10,7 @@ Layer0
 	//---- Big Wave ----
 	BigWaveScale "82.213"
 	BigWaveSize "1.858"
-	BigWaveTime "4.585"
+	BigWaveTime "1.542"
 
 	//---- Flow ----
 	FlowSize "20.000"
@@ -23,31 +23,30 @@ Layer0
 	g_flTintColor "[1.000000 1.000000 1.000000 0.000000]"
 	TextureColor "materials/water/sea.color.png"
 	TextureNormal "materials/water/water.normal.pillow.png"
-	TextureTintMask "[1.000000 1.000000 1.000000 0.000000]"
+	TextureTintMask "[0.998000 0.998000 0.998000 0.000000]"
 	TextureTranslucency "[1.000000 1.000000 1.000000 0.000000]"
 
 	//---- Reflection ----
-	ReflectionTint "[1.000000 1.000000 1.000000 1.000000]"
-	RelectionNormalScale "0.384"
+	RelectionNormalScale "0.153"
 
 	//---- Refraction ----
-	RefractionNormalScale "0.045"
+	RefractionNormalScale "0.080"
 
 	//---- Small Wave ----
-	SmallWaveScale "9.684"
-	SmallWaveSize "3.162"
-	SmallWaveTime "12.292"
+	SmallWaveScale "7.905"
+	SmallWaveSize "0.395"
+	SmallWaveTime "8.458"
 
 	//---- Tweaks ----
-	g_fAmbientOcclusion "0.755"
-	g_fMetalness "0.384"
-	g_fRoughness "0.182"
-	NormalScale "0.213"
+	g_fAmbientOcclusion "0.010"
+	g_fMetalness "0.873"
+	g_fRoughness "0.141"
+	NormalScale "0.277"
 	TextureScale "167.968"
 
 	//---- Water ----
-	ReflectionRefraction "1.000"
-	Refraction "1.000"
+	ReflectionRefraction "0.480"
+	Refraction "0.419"
 
 	SystemAttributes
 	{

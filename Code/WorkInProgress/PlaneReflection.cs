@@ -62,7 +62,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 
 		_target.Init( x => x.ExecuteBefore = _drawReflection, x => x.ExecuteBefore = null );
 
-		Tags.Add( "planereflect" );
+		//Tags.Add( "planereflect" );
 	}
 
 	protected override void OnDisabled()
@@ -85,7 +85,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 		ReflectionCamera = go.AddComponent<CameraComponent>( true );
 		ReflectionCamera.Priority = -100;
 		ReflectionCamera.IsMainCamera = false;
-		ReflectionCamera.RenderExcludeTags.Add( "planereflect" );
+		//	ReflectionCamera.RenderExcludeTags.Add( "planereflect" );
 		ReflectionCamera.RenderExcludeTags.Add( "debugoverlay" );
 		ReflectionCamera.Enabled = false;
 	}
