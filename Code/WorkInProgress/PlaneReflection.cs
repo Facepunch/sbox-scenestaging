@@ -112,10 +112,11 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 
 		ReflectionCamera.WorldTransform = Scene.Camera.WorldTransform;
 
-#if false
+
 		// Refract
 		if ( IncludeRefraction )
 		{
+			/*
 			var refractionSetup = new RefractionSetup();
 			refractionSetup.ClipOffset = ReflectionSurfaceOffset;
 
@@ -134,9 +135,10 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 					VerticalFalloffExponent = 1,
 				};
 			}
+			*/
 
 			var renderTarget = _drawReflection.GetRenderTarget( "refract", ImageFormat.RGBA16161616F, 1, TextureResolution.Clamp( 1, 8 ) );
-			_drawReflection.DrawRefraction( ReflectionCamera, reflectPlane, renderTarget, refractionSetup );
+			_drawReflection.DrawRefraction( ReflectionCamera, reflectPlane, renderTarget );
 			_drawReflection.Attributes.Set( "HasRefractionTexture", true );
 			_drawReflection.Attributes.Set( "RefractionTexture", renderTarget.ColorTexture );
 		}
@@ -144,14 +146,16 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 		// Reflect
 		if ( true )
 		{
+			/*
 			var reflectSetup = new ReflectionSetup();
 			reflectSetup.ClipOffset = ReflectionSurfaceOffset;
 			reflectSetup.FallbackColor = Color.White * 0.2f;
 			reflectSetup.ViewSetup.ZNear = 0.001f;
+			*/
 
 			var renderTarget = _drawReflection.GetRenderTarget( "reflect", ImageFormat.RGBA16161616F, 1, TextureResolution.Clamp( 1, 8 ) );
 
-			_drawReflection.DrawReflection( ReflectionCamera, reflectPlane, renderTarget, reflectSetup );
+			_drawReflection.DrawReflection( ReflectionCamera, reflectPlane, renderTarget );
 
 			_drawReflection.Attributes.Set( "HasReflectionTexture", true );
 			_drawReflection.Attributes.Set( "ReflectionTexture", renderTarget.ColorTexture );
@@ -159,7 +163,6 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 
 		TargetRenderer.ExecuteBefore = _drawReflection;
 
-#endif
 
 	}
 
