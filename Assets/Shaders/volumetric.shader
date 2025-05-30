@@ -131,6 +131,8 @@ PS
         const float3 ambientLight = SampleEnvironmentMapLevel( -WorldRay, 1.0f, 0); // Global skybox
         const float3 atmosphereScatter = float3(0.5, 0.7, 1.0);
 
+        float shadowStep = 1.0f; 
+
         // Main volume traversal loop
         while (pnanovdb_hdda_step(hdda))
         {
@@ -183,8 +185,9 @@ PS
                     CreateShadowRay(posLocal, light.Direction),
                     sampler,
                     medium,
-                    8.0f
+                    shadowStep
                 );
+
 
                 // Calculate multiple scattering
                 float powder = 1.0 - exp(-density * MULTI_SCATTER_SCALE);

@@ -394,11 +394,16 @@ float GetTransmittance(
 		return 1.0f;
 
 	float densityMaxInv = 1.0f / medium.densityMax;
-	float densityMaxInvMultStep = densityMaxInv * StepMultiplier;
+	
 	float transmittance = 1.f;
 	float t = ray.TMin;
+
 	while (true) 
 	{
+		// Nearest strides have more detail
+		StepMultiplier *= 2;
+		const float densityMaxInvMultStep = densityMaxInv * StepMultiplier;
+
 		t += densityMaxInvMultStep;
 		if (t >= ray.TMax)
 			break;
