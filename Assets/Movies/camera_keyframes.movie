@@ -1,0 +1,198 @@
+{
+  "EditorData": {
+    "SampleRate": 30,
+    "Duration": 68760,
+    "Tracks": {
+      "a352fb59-987a-42ad-9aaf-a77787933900": {
+        "$type": "Reference",
+        "ReferenceId": null,
+        "Name": "Camera",
+        "TargetType": "Sandbox.GameObject"
+      },
+      "d7d3a10a-4e18-45b3-bc3e-e9c33dc645f3": {
+        "$type": "Property",
+        "Name": "LocalPosition",
+        "TargetType": "Vector3",
+        "ParentId": "a352fb59-987a-42ad-9aaf-a77787933900",
+        "Blocks": [
+          {
+            "TimeRange": {
+              "Start": 0,
+              "End": 68760
+            },
+            "Signal": {
+              "$id": 1,
+              "$type": "Keyframes",
+              "Keyframes": [
+                {
+                  "Time": 0,
+                  "Value": "873.1158,333.3303,-175.252",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 3600,
+                  "Value": "873.1158,333.3303,-175.252",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 7200,
+                  "Value": "218.7857,104.6672,-158.6412",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 10800,
+                  "Value": "-155.3693,-228.4841,-127.9964",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 14400,
+                  "Value": "-94.33537,-574.6807,-21.439",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 18000,
+                  "Value": "178.8581,-510.7802,55.79042",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 20520,
+                  "Value": "176.6964,-384.7069,126.9505",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 25200,
+                  "Value": "423.5545,-42.3311,203.1824",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 32400,
+                  "Value": "201.9075,639.903,253.1184",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 39600,
+                  "Value": "-232.4694,287.361,112.7309",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 47160,
+                  "Value": "-692.0994,29.89288,308.3744",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 54360,
+                  "Value": "-1122.51,-834.0101,448.2166",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 61560,
+                  "Value": "443.8044,-1642.539,885.4194",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 68760,
+                  "Value": "1808.805,-316.3905,1051.375",
+                  "Interpolation": "Cubic"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "85341719-9f34-45d2-b1b2-06639c3483e9": {
+        "$type": "Property",
+        "Name": "LocalRotation",
+        "TargetType": "Rotation",
+        "ParentId": "a352fb59-987a-42ad-9aaf-a77787933900",
+        "Blocks": [
+          {
+            "TimeRange": {
+              "Start": 0,
+              "End": 68760
+            },
+            "Signal": {
+              "$id": 1,
+              "$type": "Keyframes",
+              "Keyframes": [
+                {
+                  "Time": 0,
+                  "Value": "-0.6041095,-0.02426703,-0.7958899,0.03197083",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 3600,
+                  "Value": "-0.00348469,-0.0001582575,-0.9989643,0.04536803",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 7200,
+                  "Value": "0.005958322,0.001359206,-0.9749361,0.2224013",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 10800,
+                  "Value": "-0.1120516,-0.1091575,-0.7074783,0.689205",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 14400,
+                  "Value": "-0.003725083,-0.1581113,-0.02325691,0.9871404",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 18000,
+                  "Value": "0.02064326,-0.02130191,0.6956113,0.7178057",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 20520,
+                  "Value": "-0.06252318,0.0582012,0.7292773,0.6788653",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 25200,
+                  "Value": "-0.1127249,0.03009823,0.9595547,0.2562069",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 32400,
+                  "Value": "0.0821986,0.06027145,-0.8022401,0.588236",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 39600,
+                  "Value": "0.001747943,0.00004883874,-0.9996083,0.02792976",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 47160,
+                  "Value": "-0.02319478,-0.01390951,-0.8572993,0.5141075",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 54360,
+                  "Value": "-0.008545724,0.1163611,0.07274393,0.9905026",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 61560,
+                  "Value": "-0.1731692,0.1181265,0.8077478,0.551001",
+                  "Interpolation": "Cubic"
+                },
+                {
+                  "Time": 68760,
+                  "Value": "-0.2674183,0.04139677,0.9513595,0.1472719",
+                  "Interpolation": "Cubic"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "Sources": {},
+    "References": []
+  },
+  "__references": [],
+  "__version": 0
+}
