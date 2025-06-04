@@ -56,7 +56,7 @@ PS
 		float3 worldPos = g_vCameraPositionWs + i.vPositionWithOffsetWs;
 		float3 op = worldPos;
 		Material m = Material::From( i );
-
+		float4 outCol = ShadingModelStandard::Shade( i, m );
 		// 
 		// Add reflection
 		//
@@ -66,14 +66,14 @@ PS
 
 			float2 uv = i.vPositionSs.xy * g_vInvViewportSize; 
 
-			uv.x = 1 - uv.x;
+			float3 reflectColor = g_ReflectionTexture.SampleLevel(g_ReflectionTexture_sampler, uv, 0).rgb;
 
-			float3 col = g_ReflectionTexture.SampleLevel(g_ReflectionTexture_sampler, uv, 0).rgb;
+			float3 burned = pow( outCol.rgb * reflectColor, 0.66 );
 
-			m.Emission.rgb += col;
+			outCol.rgb = lerp(reflectColor, burned, 0.2);
         }
 
-		float4 outCol = ShadingModelStandard::Shade( i, m );
+
 		outCol.rgb = Fog::Apply( worldPos, i.vPositionSs.xy, outCol.rgb );
 
 		return outCol;

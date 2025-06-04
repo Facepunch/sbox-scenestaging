@@ -2,10 +2,10 @@ using Sandbox.Rendering;
 
 public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 {
-	Relationship<ModelRenderer> _target;
+	Relationship<Renderer> _target;
 
 	[Property]
-	public ModelRenderer TargetRenderer
+	public Renderer TargetRenderer
 	{
 		get => _target.Value;
 		set => _target.Value = value;
@@ -98,7 +98,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 
 		CreateCamera();
 
-		if ( !TargetRenderer.IsValid() || !TargetRenderer.SceneObject.IsValid() )
+		if ( !TargetRenderer.IsValid() )
 			return;
 
 		//
@@ -116,7 +116,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 		// Refract
 		if ( IncludeRefraction )
 		{
-			/*
+
 			var refractionSetup = new RefractionSetup();
 			refractionSetup.ClipOffset = ReflectionSurfaceOffset;
 
@@ -135,38 +135,36 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 					VerticalFalloffExponent = 1,
 				};
 			}
-			*/
+
 
 			var renderTarget = _drawReflection.GetRenderTarget( "refract", ImageFormat.RGBA16161616F, 1, TextureResolution.Clamp( 1, 8 ) );
-			_drawReflection.DrawRefraction( ReflectionCamera, reflectPlane, renderTarget );
+			_drawReflection.DrawRefraction( ReflectionCamera, reflectPlane, renderTarget, refractionSetup );
 			_drawReflection.Attributes.Set( "HasRefractionTexture", true );
 			_drawReflection.Attributes.Set( "RefractionTexture", renderTarget.ColorTexture );
+
 		}
 
 		// Reflect
 		if ( true )
 		{
-			/*
 			var reflectSetup = new ReflectionSetup();
 			reflectSetup.ClipOffset = ReflectionSurfaceOffset;
 			reflectSetup.FallbackColor = Color.White * 0.2f;
 			reflectSetup.ViewSetup.ZNear = 0.001f;
-			*/
+			reflectSetup.ViewSetup.FlipX = true;
+			//reflectSetup.ViewSetup.ClipSpaceBounds = new Vector4( 1, -1, -1, 1 );
 
 			var renderTarget = _drawReflection.GetRenderTarget( "reflect", ImageFormat.RGBA16161616F, 1, TextureResolution.Clamp( 1, 8 ) );
 
-			_drawReflection.DrawReflection( ReflectionCamera, reflectPlane, renderTarget );
+			_drawReflection.DrawReflection( ReflectionCamera, reflectPlane, renderTarget, reflectSetup );
 
-			_drawReflection.Attributes.Set( "HasReflectionTexture", true );
-			_drawReflection.Attributes.Set( "ReflectionTexture", renderTarget.ColorTexture );
+			_drawReflection.GlobalAttributes.Set( "HasReflectionTexture", true );
+			_drawReflection.GlobalAttributes.Set( "ReflectionTexture", renderTarget.ColorTexture );
+			_drawReflection.GlobalAttributes.Set( "ReflectionColorIndex", renderTarget.ColorIndex );
 		}
 
 		TargetRenderer.ExecuteBefore = _drawReflection;
-
-
 	}
-
-
 }
 
 

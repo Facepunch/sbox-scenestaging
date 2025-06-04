@@ -2,6 +2,42 @@
   "__guid": "3d42037e-924f-4666-919f-1d98ee9889f3",
   "GameObjects": [
     {
+      "__guid": "a6f0e670-b4ed-4ad7-af50-7986991de772",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "5de46c20-4c24-4559-99e2-9973efd24ea2",
+          "__enabled": true,
+          "Author": null,
+          "Changes": "",
+          "Description": "Rendering to a texture using Camera.RenderToTexture",
+          "Group": "Rendering",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneTags": "",
+          "Title": "Camera.RenderToTexture",
+          "Version": null
+        }
+      ],
+      "Children": []
+    },
+    {
       "__guid": "fa63df8a-14c6-48df-8d29-4962bebeb03b",
       "__version": 1,
       "Flags": 0,
@@ -440,7 +476,7 @@
           ],
           "Children": [
             {
-              "__guid": "2fb35704-30e7-4a74-afb2-051a98e1db23",
+              "__guid": "49fc367f-d872-43dc-bfb9-4ca9df6ba65e",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - plump_lips_03",
@@ -456,7 +492,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "c6aa17c8-bea3-4d09-bb9b-e8c67275b014",
+                  "__guid": "2198e2a0-8e1a-499b-bc5c-b145b1dbaf80",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -505,7 +541,7 @@
               "Children": []
             },
             {
-              "__guid": "cb613eb6-9fae-437e-acfa-05777efbc00d",
+              "__guid": "336bb46f-2006-4cfd-b219-9848f17f74f0",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - hair_shortscruffy_brown",
@@ -521,7 +557,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "d949a9ce-9fa5-419d-ae41-1713ac6f3a3d",
+                  "__guid": "83b16adc-bdf6-4395-a19d-501fef8dd23f",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -570,7 +606,7 @@
               "Children": []
             },
             {
-              "__guid": "0983def7-88f3-4a68-8d1c-9b8fe2ebc347",
+              "__guid": "9f7bf439-6f85-4da3-8d7c-1788d9adfc96",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - y_front_pants_white",
@@ -586,7 +622,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "fc67d135-d6d9-4a8e-87eb-9d9d1a1a1c2c",
+                  "__guid": "1544e68e-b745-4662-8430-14b681d7bf63",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -635,7 +671,7 @@
               "Children": []
             },
             {
-              "__guid": "28510fe2-d6a3-45a9-85c1-5cdb4ad4554d",
+              "__guid": "cce6bf73-6dc1-4ed0-9083-e11c7f0220d6",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - blue_sneakers",
@@ -651,7 +687,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "65bd5dc7-be40-41ec-ac3a-4fb47cffc5af",
+                  "__guid": "fe2c4f46-721e-4eb7-8bf3-a7f7062ef2d0",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -700,7 +736,7 @@
               "Children": []
             },
             {
-              "__guid": "54b31a39-f5a9-4ccd-9fa2-cb97c86b034c",
+              "__guid": "639d80fb-c56c-4a89-89e4-3bf3fa591562",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - moustache",
@@ -716,7 +752,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "2f7afadb-fb89-44c6-a80c-361738b1fdb1",
+                  "__guid": "eab250c4-e9d9-4fd7-980b-f1b2a2349596",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -765,7 +801,7 @@
               "Children": []
             },
             {
-              "__guid": "d1ba9c12-ec92-4b5f-ac05-2604024fd968",
+              "__guid": "2ead9b79-d3f5-43ae-9f38-fb59171e1369",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - eyebrows",
@@ -781,7 +817,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "76c8ccde-52d3-4b32-8bb7-de291a84c8f3",
+                  "__guid": "0e14cc83-9f43-4906-82fd-5218b607d852",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -1610,7 +1646,8 @@
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
-          "OnComponentUpdate": null
+          "OnComponentUpdate": null,
+          "UseRenderTextureProperty": false
         }
       ],
       "Children": [
@@ -1736,7 +1773,11 @@
     "NetworkInterpolation": true,
     "TimeScale": 1,
     "WantsSystemScene": true,
-    "Metadata": {},
+    "Metadata": {
+      "Title": "Camera.RenderToTexture",
+      "Description": "Rendering to a texture using Camera.RenderToTexture",
+      "Group": "Rendering"
+    },
     "NavMesh": {
       "Enabled": false,
       "IncludeStaticBodies": true,
@@ -1751,8 +1792,8 @@
     }
   },
   "ResourceVersion": 3,
-  "Title": null,
-  "Description": null,
+  "Title": "Camera.RenderToTexture",
+  "Description": "Rendering to a texture using Camera.RenderToTexture",
   "__references": [
     "baik.soccerball#19459",
     "facepunch.beech_hedge_40x128#29090",
