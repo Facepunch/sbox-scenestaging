@@ -158,9 +158,9 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 
 			_drawReflection.DrawReflection( ReflectionCamera, reflectPlane, renderTarget, reflectSetup );
 
-			_drawReflection.GlobalAttributes.Set( "HasReflectionTexture", true );
-			_drawReflection.GlobalAttributes.Set( "ReflectionTexture", renderTarget.ColorTexture );
-			_drawReflection.GlobalAttributes.Set( "ReflectionColorIndex", renderTarget.ColorIndex );
+			_drawReflection.Attributes.Set( "HasReflectionTexture", true );
+			_drawReflection.Attributes.Set( "ReflectionTexture", renderTarget.ColorTexture );
+			_drawReflection.Attributes.Set( "ReflectionColorIndex", renderTarget.ColorIndex );
 		}
 
 		TargetRenderer.ExecuteBefore = _drawReflection;
