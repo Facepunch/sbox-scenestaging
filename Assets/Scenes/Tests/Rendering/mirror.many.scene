@@ -1538,13 +1538,13 @@
               "__guid": "5a71cc7e-eec7-4c74-be9a-172135376d4d",
               "__enabled": true,
               "AnimationGraph": null,
-              "BodyGroups": 138,
+              "BodyGroups": 69,
               "BoneMergeTarget": null,
               "CreateAttachments": false,
               "CreateBoneObjects": false,
-              "MaterialGroup": "skin_light",
+              "MaterialGroup": "default",
               "MaterialOverride": null,
-              "Model": "models/citizen_human/citizen_human_female.vmdl",
+              "Model": "models/citizen/citizen.vmdl",
               "Morphs": {},
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -1578,7 +1578,72 @@
           ],
           "Children": [
             {
-              "__guid": "b6426e50-6701-4980-81e2-fa4ab88a3a27",
+              "__guid": "1ff197b8-4300-4d5a-9a49-3a8928eef269",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Clothing - plump_lips_03",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "clothing",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.SkinnedModelRenderer",
+                  "__guid": "585c06fd-ace9-4873-9d41-486aa8d0cd6f",
+                  "__enabled": true,
+                  "AnimationGraph": null,
+                  "BodyGroups": 18446744073709551615,
+                  "BoneMergeTarget": {
+                    "_type": "component",
+                    "component_id": "5a71cc7e-eec7-4c74-be9a-172135376d4d",
+                    "go": "3beadc15-fd7d-4683-87ef-52a7bcac6607",
+                    "component_type": "SkinnedModelRenderer"
+                  },
+                  "CreateAttachments": false,
+                  "CreateBoneObjects": false,
+                  "MaterialGroup": null,
+                  "MaterialOverride": null,
+                  "Model": "models/citizen_clothes/makeup/plump_lips/models/plump_lips_03.vmdl",
+                  "Morphs": {},
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "Parameters": {
+                    "bools": {},
+                    "ints": {},
+                    "floats": {},
+                    "vectors": {},
+                    "rotations": {}
+                  },
+                  "PlaybackRate": 1,
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Sequence": {
+                    "Name": null,
+                    "Looping": true,
+                    "Blending": false
+                  },
+                  "Tint": "1,1,1,1",
+                  "UseAnimGraph": true
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "bfec4087-6b89-45fe-9e57-01ac8f76659d",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - hair_shortscruffy_brown",
@@ -1594,7 +1659,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "63e26826-6fc7-46a7-93b4-e46a7dcf7c5e",
+                  "__guid": "5b3cd5b0-4892-43bb-92d7-be7e98feb9c5",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -1608,7 +1673,7 @@
                   "CreateBoneObjects": false,
                   "MaterialGroup": null,
                   "MaterialOverride": null,
-                  "Model": "models/citizen_clothes/hair/hair_shortscruffy/models/hair_shortscruffy_m_human.vmdl",
+                  "Model": "models/citizen_clothes/hair/hair_shortscruffy/models/hair_shortscruffy.vmdl",
                   "Morphs": {},
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
@@ -1643,7 +1708,7 @@
               "Children": []
             },
             {
-              "__guid": "b9c7e89b-4723-46ba-b97c-a9332d76596b",
+              "__guid": "8e0ac018-01e2-4734-a62b-5bf3101135e9",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - y_front_pants_white",
@@ -1659,7 +1724,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "5c2b902d-d792-4e77-ada3-f86727c626b5",
+                  "__guid": "b77c4e1e-9791-416b-b9a6-4c5858827206",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -1673,7 +1738,7 @@
                   "CreateBoneObjects": false,
                   "MaterialGroup": null,
                   "MaterialOverride": null,
-                  "Model": "models/citizen_clothes/underwear/y_front_pants/models/y_front_pants_f_human.vmdl",
+                  "Model": "models/citizen_clothes/underwear/y_front_pants/models/y_front_pants.vmdl",
                   "Morphs": {},
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
@@ -1708,7 +1773,7 @@
               "Children": []
             },
             {
-              "__guid": "5d4c127c-78be-415a-ad9d-6afd80137f2c",
+              "__guid": "b3f43921-8aca-4bdd-aa15-aed522060553",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - blue_sneakers",
@@ -1724,7 +1789,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "4b72d238-6311-4296-9f7e-c522b40e25a9",
+                  "__guid": "8cc183a7-aec2-45c1-a6b2-6490b53e18c7",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -1738,7 +1803,7 @@
                   "CreateBoneObjects": false,
                   "MaterialGroup": null,
                   "MaterialOverride": null,
-                  "Model": "models/citizen_clothes/shoes/sneakers/models/blue_sneakers_m_human.vmdl",
+                  "Model": "models/citizen_clothes/shoes/sneakers/models/blue_sneakers.vmdl",
                   "Morphs": {},
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
@@ -1773,7 +1838,7 @@
               "Children": []
             },
             {
-              "__guid": "c16fff60-228b-41bc-ac4c-153a6520db4a",
+              "__guid": "eb256a34-5f59-43d5-b31d-7b830ce5ed63",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - moustache",
@@ -1789,7 +1854,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "3baec7c4-383f-4887-a22d-d9fcd145ba90",
+                  "__guid": "1919ceb9-dc05-4e18-b57b-3c174c2d66a6",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -1803,7 +1868,7 @@
                   "CreateBoneObjects": false,
                   "MaterialGroup": null,
                   "MaterialOverride": null,
-                  "Model": "models/citizen_clothes/hair/moustache/models/moustache_m_human.vmdl",
+                  "Model": "models/citizen_clothes/hair/moustache/models/moustache.vmdl",
                   "Morphs": {},
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
@@ -1832,6 +1897,71 @@
                     "Blending": false
                   },
                   "Tint": "0.12825,0.08657,0.06413,1",
+                  "UseAnimGraph": true
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "bf55e924-8053-4444-8341-b72ff4b46bca",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Clothing - eyebrows",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "clothing",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.SkinnedModelRenderer",
+                  "__guid": "0a2e24d6-5127-4248-bcd5-56ccdd6cc40f",
+                  "__enabled": true,
+                  "AnimationGraph": null,
+                  "BodyGroups": 18446744073709551615,
+                  "BoneMergeTarget": {
+                    "_type": "component",
+                    "component_id": "5a71cc7e-eec7-4c74-be9a-172135376d4d",
+                    "go": "3beadc15-fd7d-4683-87ef-52a7bcac6607",
+                    "component_type": "SkinnedModelRenderer"
+                  },
+                  "CreateAttachments": false,
+                  "CreateBoneObjects": false,
+                  "MaterialGroup": null,
+                  "MaterialOverride": null,
+                  "Model": "models/citizen_clothes/hair/eyebrows/models/eyebrows.vmdl",
+                  "Morphs": {},
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "Parameters": {
+                    "bools": {},
+                    "ints": {},
+                    "floats": {},
+                    "vectors": {},
+                    "rotations": {}
+                  },
+                  "PlaybackRate": 1,
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Sequence": {
+                    "Name": null,
+                    "Looping": true,
+                    "Blending": false
+                  },
+                  "Tint": "0.18419,0.12385,0.0921,1",
                   "UseAnimGraph": true
                 }
               ],
@@ -3368,7 +3498,7 @@
       "Rotation": "0,0,0,1",
       "Scale": "10,10,10",
       "Tags": "",
-      "Enabled": true,
+      "Enabled": false,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,

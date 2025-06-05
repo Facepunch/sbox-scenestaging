@@ -120,7 +120,7 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "Projection": "Sphere",
-          "RenderDynamically": false,
+          "RenderDynamically": true,
           "Resolution": "Small",
           "Texture": "textures/cubemaps/default2.vtex",
           "TintColor": "1,1,1,1",
@@ -919,8 +919,8 @@
           "__version": 1,
           "Flags": 4096,
           "Name": "Reflections Camera",
-          "Position": "-175.9839,-0.00000240686,101.3764",
-          "Rotation": "0,0,0,1",
+          "Position": "96.18484,28.91813,455.7156",
+          "Rotation": "-0.06948625,-0.1651049,-0.3816328,0.9067902",
           "Scale": "1,1,1",
           "Tags": "",
           "Enabled": true,
@@ -1420,8 +1420,8 @@
       "__version": 1,
       "Flags": 0,
       "Name": "Main Camera",
-      "Position": "-175.9839,-0.00000240686,101.3764",
-      "Rotation": "0,0,0,1",
+      "Position": "96.18484,28.91813,455.7156",
+      "Rotation": "-0.06948625,-0.1651049,-0.3816328,0.9067902",
       "Scale": "1,1,1",
       "Tags": "",
       "Enabled": true,
@@ -1707,7 +1707,7 @@
           ],
           "Children": [
             {
-              "__guid": "ea70464d-dda9-443a-a38b-14d0645cf11e",
+              "__guid": "6d7631f6-7a66-403c-8ecc-f20aeb6dc5cb",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - plump_lips_03",
@@ -1723,7 +1723,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "b4fe1de6-3228-4b47-9599-b7b7f898da80",
+                  "__guid": "436c081e-b3d8-486b-b92e-50bab7434d10",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -1772,7 +1772,7 @@
               "Children": []
             },
             {
-              "__guid": "a04cae63-4d91-4e9f-8dea-83094c5a4b13",
+              "__guid": "b491cfd8-03b8-42e4-92d3-d8e61d488091",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - hair_shortscruffy_brown",
@@ -1788,7 +1788,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "6ca622fa-e696-41bd-bd6e-e6ee9dca719a",
+                  "__guid": "d7971f1e-8698-4caf-b7b2-cd35aeca9405",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -1837,7 +1837,7 @@
               "Children": []
             },
             {
-              "__guid": "104994a8-ebf6-4e12-b90b-bdd70731805a",
+              "__guid": "b0f8962b-044f-4206-b684-6a075c9fe312",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - y_front_pants_white",
@@ -1853,7 +1853,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "403d83b7-905c-4cb4-a2e9-06a1cb6bf936",
+                  "__guid": "7da95fb4-3b85-4405-ba44-240e99423c5a",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -1902,7 +1902,7 @@
               "Children": []
             },
             {
-              "__guid": "0f92ca9f-502e-41ae-9a23-09c743901397",
+              "__guid": "3bdb2a40-9e80-416a-ad36-3bf1f389e074",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - blue_sneakers",
@@ -1918,7 +1918,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "b277f730-40a8-4701-b2ef-8aa4c7f40bb1",
+                  "__guid": "9b7e9668-4721-4c5c-8a19-2b468e4733f2",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -1967,7 +1967,7 @@
               "Children": []
             },
             {
-              "__guid": "715f4de5-8370-4da2-b643-a1678452355b",
+              "__guid": "667ee288-75ce-4a09-a375-9ac8064a4ed1",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - moustache",
@@ -1983,7 +1983,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "d3c0e177-8061-4b19-8d59-68f63c7f5f33",
+                  "__guid": "8dec7760-adbe-43bb-a9d0-3dab4825e77a",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
@@ -2032,7 +2032,7 @@
               "Children": []
             },
             {
-              "__guid": "1ba5944c-4fbc-48be-ac35-0747d640362c",
+              "__guid": "d61960e3-024a-48c9-8ad2-0749a42f3d2c",
               "__version": 1,
               "Flags": 0,
               "Name": "Clothing - eyebrows",
@@ -2048,7 +2048,7 @@
               "Components": [
                 {
                   "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "9cc124fa-6f55-4407-9f6a-6bdee3a3ceaa",
+                  "__guid": "5a58bd23-f638-4ef8-bf2c-183d95fb507b",
                   "__enabled": true,
                   "AnimationGraph": null,
                   "BodyGroups": 18446744073709551615,
