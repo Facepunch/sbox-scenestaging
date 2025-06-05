@@ -350,12 +350,18 @@ public partial class TrackWidget : Widget
 
 	void LockChildren()
 	{
-		throw new NotImplementedException();
+		foreach ( var child in View.Children )
+		{
+			child.IsLockedSelf = true;
+		}
 	}
 
 	void UnlockChildren()
 	{
-		throw new NotImplementedException();
+		foreach ( var child in View.Children )
+		{
+			child.IsLockedSelf = false;
+		}
 	}
 }
 
