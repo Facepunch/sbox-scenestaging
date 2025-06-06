@@ -130,8 +130,12 @@ public sealed partial class MotionEditMode : EditMode
 
 		if ( Timeline.GetItemAt( scenePos ) is TimeSelectionItem && !e.HasShift ) return;
 
+		var time = Session.ScenePositionToTime( scenePos );
+
 		_selectionStartTime = Session.ScenePositionToTime( scenePos );
 		_newTimeSelection = false;
+
+		Session.SetCurrentPointer( time );
 
 		e.Accepted = true;
 	}
@@ -178,6 +182,11 @@ public sealed partial class MotionEditMode : EditMode
 
 	protected override void OnMouseWheel( WheelEvent e )
 	{
+		if ( TimeSelection is not { } oldSelection || !oldSelection.PeakTimeRange.Contains( Session.CurrentPointer ) )
+		{
+			TimeSelection = new TimeSelection( Session.CurrentPointer, DefaultInterpolation );
+		}
+
 		if ( TimeSelection is { } selection && e.HasShift )
 		{
 			var delta = Math.Sign( e.Delta ) * Session.MinorTick.Interval;
