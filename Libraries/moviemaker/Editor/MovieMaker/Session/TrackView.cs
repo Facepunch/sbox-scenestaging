@@ -27,6 +27,7 @@ public sealed partial class TrackView : IComparable<TrackView>
 
 	private bool _isExpanded;
 	private bool _isLockedSelf;
+	private bool _isBoneLocked;
 
 	private bool _wasExpanded;
 
@@ -56,6 +57,20 @@ public sealed partial class TrackView : IComparable<TrackView>
 			_isLockedSelf = value;
 
 			SetCookie( nameof( IsLockedSelf ), value );
+			DispatchChanged( true );
+		}
+	}
+
+	public bool IsBoneLocked
+	{
+		get => _isBoneLocked;
+		set
+		{
+			if ( _isBoneLocked == value ) return;
+
+			_isBoneLocked = value;
+
+			SetCookie( nameof( IsBoneLocked ), value );
 			DispatchChanged( true );
 		}
 	}

@@ -110,18 +110,18 @@ file sealed record BoneProperty( ITrackProperty<BoneAccessor?> Parent, string Na
 	}
 }
 
-file sealed class BonePropertyFactory : ITrackPropertyFactory<ITrackProperty<BoneAccessor>, Transform>
+file sealed class BonePropertyFactory : ITrackPropertyFactory<ITrackProperty<BoneAccessor?>, Transform>
 {
 	string ITrackPropertyFactory.CategoryName => "Bones";
 
 	/// <summary>
 	/// Any property inside a <see cref="BoneAccessor"/> is a bone.
 	/// </summary>
-	public bool PropertyExists( ITrackProperty<BoneAccessor> parent, string name ) => true;
+	public bool PropertyExists( ITrackProperty<BoneAccessor?> parent, string name ) => true;
 
-	public ITrackProperty<Transform> CreateProperty( ITrackProperty<BoneAccessor> parent, string name ) => new BoneProperty( parent, name );
+	public ITrackProperty<Transform> CreateProperty( ITrackProperty<BoneAccessor?> parent, string name ) => new BoneProperty( parent, name );
 
-	public IEnumerable<string> GetPropertyNames( ITrackProperty<BoneAccessor> parent )
+	public IEnumerable<string> GetPropertyNames( ITrackProperty<BoneAccessor?> parent )
 	{
 		return parent is { IsBound: true, Value.Renderer.Model: { } model }
 			? model.Bones.AllBones.Select( x => x.Name )

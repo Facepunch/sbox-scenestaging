@@ -10,88 +10,142 @@ namespace Editor.MovieMaker;
 
 partial class Session
 {
-	private Vector3 _boneDragStart;
+	private Transform _boneDragStart;
+	private bool _wasRotating;
 
 	private void DrawBoneGizmos( TrackView trackView, MovieTime time )
 	{
-		if ( trackView.Parent?.Parent?.Target is not ITrackReference<SkinnedModelRenderer> { Value: { } renderer } )
+		TrackView bonesTrackView;
+
+		if ( trackView.Track.Name == "Bones" && trackView.Parent?.Track is IReferenceTrack<SkinnedModelRenderer> )
+		{
+			bonesTrackView = trackView;
+		}
+		else if ( trackView.Parent?.Track.Name == "Bones" && trackView.Parent.Parent?.Track is IReferenceTrack<SkinnedModelRenderer> )
+		{
+			bonesTrackView = trackView.Parent;
+		}
+		else
 		{
 			return;
 		}
 
-		if ( !trackView.IsBoneTransform || !trackView.TransformTrack.TryGetValue( time, out var handleTransform ) )
+		if ( bonesTrackView.Parent?.Target is not ITrackReference<SkinnedModelRenderer> { Value: { } renderer } )
 		{
 			return;
 		}
 
-		if ( _draggedBone == trackView )
-		{
-			using var scope = Gizmo.Scope( "IKChain", renderer.WorldTransform );
+		//if ( _draggedBoneTrackView?.Parent == bonesTrackView )
+		//{
+		//	using var scope = Gizmo.Scope( "IKChain", renderer.WorldTransform );
 
-			foreach ( var body in _boneBodies )
+		//	foreach ( var body in _boneBodies )
+		//	{
+		//		Gizmo.Draw.Color = body.Value.BodyType == PhysicsBodyType.Static ? Color.Red : Color.White;
+		//		Gizmo.Draw.SolidSphere( body.Value.Position, 1f );
+		//	}
+		//}
+
+		TrackView? draggedBoneTrackView = null;
+		Transform localDragTarget = default;
+
+		foreach ( var boneTrackView in bonesTrackView.Children )
+		{
+			if ( boneTrackView.Bone is not { } bone ) continue;
+			if ( !renderer.TryGetBoneTransform( bone, out var boneTransform ) ) continue;
+
+			if ( bone.Parent is null || !renderer.TryGetBoneTransform( bone.Parent, out var parentTransform ) )
 			{
-				Gizmo.Draw.Color = body.Value.BodyType == PhysicsBodyType.Static ? Color.Red : Color.White;
-				Gizmo.Draw.SolidSphere( body.Value.Position, 1f );
+				parentTransform = renderer.WorldTransform;
 			}
-		}
 
-		{
-			using var scope = Gizmo.Scope( "BoneHandle", handleTransform );
-			
+			using var scope = Gizmo.Scope( $"BoneHandle{bone.Index}", boneTransform );
+
 			var handleSphere = new Sphere( 0f, 1f );
 			var baseTransform = renderer.WorldTransform;
 
-			Gizmo.Draw.Color = (trackView.IsLocked ? Color.Red : Color.White).WithAlpha( Gizmo.IsHovered ? 1f : 0.5f );
-			Gizmo.Draw.LineCircle( handleSphere.Center, 1f );
+			var isLocked = boneTrackView.IsBoneLocked;
+			var hasBody = _draggedBoneTrackView is not null && _boneBodies.ContainsKey( bone );
 
-			if ( Gizmo.IsHovered )
+			Gizmo.Draw.Color = (hasBody ? Color.Yellow : Color.White).WithAlpha( Gizmo.IsHovered ? 1f : 0.5f );
+			Gizmo.Draw.Line( 0f, boneTransform.PointToLocal( parentTransform.Position ) );
+
+			if ( isLocked || Gizmo.IsShiftPressed && Gizmo.IsHovered )
 			{
-				Gizmo.Draw.SolidSphere( handleSphere.Center, handleSphere.Radius * 0.5f, 6, 6 );
+				Gizmo.Draw.Sprite( handleSphere.Center, 4f, "https://files.facepunch.com/ziks/2025-06-06/lock.png" );
+			}
+			else
+			{
+				Gizmo.Draw.LineCircle( handleSphere.Center, 1f );
+
+				if ( Gizmo.IsHovered )
+				{
+					Gizmo.Draw.SolidSphere( handleSphere.Center, handleSphere.Radius * 0.5f, 6, 6 );
+				}
 			}
 
 			Gizmo.Hitbox.DepthBias = 0.01f;
 			Gizmo.Hitbox.Sphere( handleSphere );
 
-			if ( Gizmo.IsLeftMouseDown && Gizmo.IsHovered )
+			if ( !Gizmo.IsHovered ) continue;
+
+			if ( Gizmo.IsShiftPressed && Gizmo.WasLeftMouseReleased )
 			{
-				if ( Gizmo.WasLeftMousePressed )
-				{
-					_boneDragStart = Gizmo.Transform.Position;
-				}
-
-				var plane = new Plane( _boneDragStart, Gizmo.CameraTransform.Forward );
-				var ray = Gizmo.CurrentRay;
-
-				if ( plane.TryTrace( ray, out var hit, true ) )
-				{
-					var localTarget = baseTransform.PointToLocal( hit );
-
-					Gizmo.Draw.Arrow( 0f, Gizmo.Transform.PointToLocal( hit ), 1f, 0.4f );
-
-					DragBone( renderer, trackView, localTarget );
-				}
+				boneTrackView.IsBoneLocked = !boneTrackView.IsBoneLocked;
+				continue;
 			}
-			else
+
+			if ( !Gizmo.IsLeftMouseDown || Gizmo.IsShiftPressed ) continue;
+
+			var rotating = Application.IsKeyDown( KeyCode.E );
+
+			if ( Gizmo.WasLeftMousePressed || rotating != _wasRotating )
 			{
-				StopDraggingBone();
+				_boneDragStart = boneTransform;
+				_wasRotating = rotating;
 			}
+
+			var plane = new Plane( _boneDragStart.Position, Gizmo.CameraTransform.Forward );
+			var ray = Gizmo.CurrentRay;
+
+			if ( !plane.TryTrace( ray, out var hit, true ) ) continue;
+
+			Gizmo.Draw.Arrow( 0f, Gizmo.Transform.PointToLocal( hit ), 1f, 0.4f );
+
+			var right = Vector3.Cross( Gizmo.CameraTransform.Forward, _boneDragStart.Forward ).Normal;
+			var delta = right.Dot( hit - _boneDragStart.Position );
+			var localTransform = baseTransform.ToLocal( boneTransform );
+
+			draggedBoneTrackView = boneTrackView;
+			localDragTarget = Application.IsKeyDown( KeyCode.E )
+				? localTransform with { Rotation = baseTransform.RotationToLocal( _boneDragStart.Rotation * Rotation.FromRoll( delta * 5f ) ) }
+				: localTransform with { Position = baseTransform.PointToLocal( hit ) };
+		}
+
+		if ( draggedBoneTrackView is not null )
+		{
+			DragBone( renderer, draggedBoneTrackView, localDragTarget );
+		}
+		else
+		{
+			StopDraggingBone();
 		}
 	}
 
 	private PhysicsWorld? _ikWorld;
-	private TrackView? _draggedBone;
+	private TrackView? _draggedBoneTrackView;
 	private readonly HashSet<BoneCollection.Bone> _unlockedBones = new();
 	private readonly HashSet<BoneCollection.Bone> _lockedBones = new();
 	private readonly Dictionary<BoneCollection.Bone, PhysicsBody> _boneBodies = new();
 
-	private void DragBone( SkinnedModelRenderer renderer, TrackView boneTrackView, Vector3 localTarget )
+	private void DragBone( SkinnedModelRenderer renderer, TrackView boneTrackView, Transform localTarget )
 	{
-		if ( _draggedBone != boneTrackView )
+		if ( _draggedBoneTrackView != boneTrackView )
 		{
 			StopDraggingBone();
 		}
 
-		_draggedBone = boneTrackView;
+		_draggedBoneTrackView = boneTrackView;
 
 		Assert.True( boneTrackView.IsBoneTransform );
 
@@ -202,7 +256,7 @@ partial class Session
 
 	private void AddBone( BoneCollection.Bone bone, TrackView? boneTrackView )
 	{
-		if ( boneTrackView?.IsLocked is not false )
+		if ( boneTrackView?.IsBoneLocked is not false )
 		{
 			_lockedBones.Add( bone );
 
@@ -221,7 +275,7 @@ partial class Session
 			AddBone( parent, boneTrackView?.Parent?.Children.FirstOrDefault( x => x.Track.Name == parent.Name ) );
 		}
 
-		if ( boneTrackView?.IsLocked is false )
+		if ( boneTrackView?.IsBoneLocked is false )
 		{
 			foreach ( var child in bone.Children )
 			{
@@ -294,8 +348,8 @@ partial class Session
 
 						if ( jointDesc.EnableTwistLimit )
 						{
-							hingeJoint.MinAngle = jointDesc.TwistMin;
-							hingeJoint.MaxAngle = jointDesc.TwistMax;
+							hingeJoint.MinAngle = jointDesc.TwistMin - 30f;
+							hingeJoint.MaxAngle = jointDesc.TwistMax + 30f;
 						}
 
 						break;
@@ -307,13 +361,13 @@ partial class Session
 						if ( jointDesc.EnableSwingLimit )
 						{
 							ballJoint.SwingLimitEnabled = true;
-							ballJoint.SwingLimit = new Vector2( jointDesc.SwingMin, jointDesc.SwingMax );
+							ballJoint.SwingLimit = new Vector2( jointDesc.SwingMin - 30f, jointDesc.SwingMax + 30f );
 						}
 
 						if ( jointDesc.EnableTwistLimit )
 						{
 							ballJoint.TwistLimitEnabled = true;
-							ballJoint.TwistLimit = new Vector2( jointDesc.TwistMin, jointDesc.TwistMax );
+							ballJoint.TwistLimit = new Vector2( jointDesc.TwistMin - 30f, jointDesc.TwistMax + 30f );
 						}
 
 						break;
@@ -342,7 +396,7 @@ partial class Session
 
 	private void StopDraggingBone()
 	{
-		_draggedBone = null;
+		_draggedBoneTrackView = null;
 
 		_boneBodies.Clear();
 
