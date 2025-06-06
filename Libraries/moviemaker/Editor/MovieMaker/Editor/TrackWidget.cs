@@ -345,7 +345,30 @@ public partial class TrackWidget : Widget
 
 	void RemoveEmptyChildren()
 	{
-		throw new NotImplementedException();
+		foreach ( var child in View.Children.ToArray() )
+		{
+			RemoveEmptyCore( child );
+		}
+
+		TrackList.Session.TrackList.Update();
+	}
+
+	private static bool RemoveEmptyCore( TrackView view )
+	{
+		var allChildrenRemoved = true;
+
+		foreach ( var child in view.Children.ToArray() )
+		{
+			allChildrenRemoved &= RemoveEmptyCore( child );
+		}
+
+		if ( allChildrenRemoved && view.IsEmpty )
+		{
+			view.Remove();
+			return true;
+		}
+
+		return false;
 	}
 
 	void LockChildren()

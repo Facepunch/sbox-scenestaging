@@ -79,6 +79,7 @@ public sealed partial class TrackView : IComparable<TrackView>
 	public IReadOnlyList<TrackView> Children => _children;
 
 	public int StateHash { get; private set; }
+	public bool IsEmpty => _children.Count == 0 && Track.IsEmpty;
 
 	/// <summary>
 	/// Invoked when properties of this track are changed.
