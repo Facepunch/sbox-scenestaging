@@ -207,7 +207,6 @@ PS
             float2 vPositionSs = i.vPositionSs.xy;
 			float2 uv = i.vPositionSs.xy * g_vInvViewportSize; 
 
-			uv.x = 1 - uv.x;
 			uv.x += normal.x * ReflectionRefraction * -0.1 * RelectionNormalScale; //only refract on x to avoid tear-away
 
 			float3 col = g_ReflectionTexture.SampleLevel(g_ReflectionTexture_sampler, uv, 0).rgb;
