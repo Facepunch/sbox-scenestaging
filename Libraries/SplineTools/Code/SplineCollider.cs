@@ -1,10 +1,6 @@
-﻿using Sandbox.Diagnostics;
-using System.Collections.Concurrent;
-using System.Diagnostics.Contracts;
-using System.Threading;
+﻿using System;
 
-using Sandbox;
-using System;
+namespace Sandbox;
 
 public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 {
