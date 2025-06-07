@@ -18,6 +18,16 @@ public interface ITrackPropertyFactory
 	public int Order => 0;
 
 	/// <summary>
+	/// When listing properties to add, what category should we use for properties from this factory?
+	/// </summary>
+	public string CategoryName => "Other";
+
+	/// <summary>
+	/// Lists all available property names provided by this factory from a given <paramref name="parent"/>.
+	/// </summary>
+	IEnumerable<string> GetPropertyNames( ITrackTarget parent );
+
+	/// <summary>
 	/// Decides if this factory can create a property given a <paramref name="parent"/> target and <paramref name="name"/>.
 	/// Returns any non-<see langword="null"/> type if this factory can create such a property, after which <see cref="CreateProperty{T}"/>
 	/// will be called using that type.
@@ -39,11 +49,18 @@ public interface ITrackPropertyFactory
 public interface ITrackPropertyFactory<in TParent> : ITrackPropertyFactory
 	where TParent : ITrackTarget
 {
+	IEnumerable<string> GetPropertyNames( TParent parent );
+
 	/// <inheritdoc cref="ITrackPropertyFactory.GetTargetType"/>
 	Type? GetTargetType( TParent parent, string name );
 
 	/// <inheritdoc cref="ITrackPropertyFactory.CreateProperty{T}"/>
 	ITrackProperty<T> CreateProperty<T>( TParent parent, string name );
+
+	IEnumerable<string> ITrackPropertyFactory.GetPropertyNames( ITrackTarget parent ) =>
+		parent is TParent typedParent
+			? GetPropertyNames( typedParent )
+			: Enumerable.Empty<string>();
 
 	Type? ITrackPropertyFactory.GetTargetType( ITrackTarget parent, string name ) =>
 		parent is TParent typedParent
@@ -112,6 +129,14 @@ public static class TrackProperty
 
 		return GenericHelper.Get( targetType )
 			.CreateProperty( factory, parent, name );
+	}
+
+	public static IEnumerable<(string Name, string Category, Type Type)> GetAll( ITrackTarget parent )
+	{
+		return Factories.SelectMany( x => x.GetPropertyNames( parent )
+				.Select( y => (Name: y, Category: x.CategoryName, Type: x.GetTargetType( parent, y )) )
+				.Where( y => y.Type is not null && y.Type != typeof(Unknown) ) )
+			.DistinctBy( x => x.Name )!;
 	}
 
 	public static ITrackProperty<T> Create<T>( ITrackTarget parent, string name ) =>

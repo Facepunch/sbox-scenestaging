@@ -1,6 +1,6 @@
-﻿using Editor.MovieMaker.BlockDisplays;
+﻿using System.Linq;
+using Editor.MovieMaker.BlockDisplays;
 using Sandbox.MovieMaker;
-using System.Linq;
 
 namespace Editor.MovieMaker;
 
@@ -50,7 +50,7 @@ public partial class TimelineTrack : GraphicsItem
 		HoverEvents = true;
 		ToolTip = view.Description;
 
-		HandleColor = HandleColors.TryGetValue( view.Track.TargetType, out var color ) ? color : Color.White;
+		HandleColor = HandleColors.TryGetValue( view.Track.TargetType, out var color ) ? color : Color.Gray;
 
 		_blockItems = new SynchronizedList<BlockItemKey, BlockItem>(
 			AddBlockItem, RemoveBlockItem, UpdateBlockItem );

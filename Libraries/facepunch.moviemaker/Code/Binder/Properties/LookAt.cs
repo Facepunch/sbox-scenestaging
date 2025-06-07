@@ -33,4 +33,5 @@ file sealed class LookAtPropertyFactory : ITrackPropertyFactory<ITrackReference<
 {
 	public bool PropertyExists( ITrackReference<GameObject> parent, string name ) => name == LookAtProperty.PropertyName;
 	public ITrackProperty<Vector3> CreateProperty( ITrackReference<GameObject> parent, string name ) => new LookAtProperty( parent );
+	public IEnumerable<string> GetPropertyNames( ITrackReference<GameObject> parent ) => [LookAtProperty.PropertyName];
 }

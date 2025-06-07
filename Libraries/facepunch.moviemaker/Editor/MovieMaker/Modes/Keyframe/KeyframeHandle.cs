@@ -5,7 +5,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed class KeyframeHandle : GraphicsItem
+public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 {
 	private Keyframe _keyframe;
 
@@ -31,8 +31,6 @@ public sealed class KeyframeHandle : GraphicsItem
 		set => Keyframe = Keyframe with { Time = value };
 	}
 
-	public Keyframe OriginalKeyframe { get; set; }
-
 	public KeyframeHandle( TimelineTrack parent, Keyframe keyframe )
 		: base( parent )
 	{
@@ -40,7 +38,7 @@ public sealed class KeyframeHandle : GraphicsItem
 		Session = parent.Session;
 		View = parent.View;
 
-		_keyframe = OriginalKeyframe = keyframe;
+		_keyframe = keyframe;
 
 		HandlePosition = new Vector2( 0.5f, 0f );
 		ZIndex = 100;
@@ -55,7 +53,7 @@ public sealed class KeyframeHandle : GraphicsItem
 		UpdatePosition();
 	}
 
-	private void UpdatePosition()
+	public void UpdatePosition()
 	{
 		PrepareGeometryChange();
 
@@ -125,5 +123,20 @@ public sealed class KeyframeHandle : GraphicsItem
 		if ( !e.LeftMouseButton ) return;
 
 		EditMode?.KeyframeDragEnd( this, e );
+	}
+
+	public int CompareTo( KeyframeHandle? other )
+	{
+		if ( ReferenceEquals( this, other ) )
+		{
+			return 0;
+		}
+
+		if ( other is null )
+		{
+			return 1;
+		}
+
+		return _keyframe.CompareTo( other.Keyframe );
 	}
 }

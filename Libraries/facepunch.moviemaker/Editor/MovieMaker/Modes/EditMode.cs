@@ -75,14 +75,7 @@ public abstract partial class EditMode
 
 		foreach ( var track in Timeline.Tracks )
 		{
-			if ( track.View.IsLocked )
-			{
-				ClearTimelineItems( track );
-			}
-			else
-			{
-				UpdateTimelineItems( track );
-			}
+			UpdateTimelineItems( track );
 		}
 	}
 
@@ -119,7 +112,18 @@ public abstract partial class EditMode
 
 	protected virtual bool OnPostChange( TrackView view ) => false;
 
-	internal void UpdateTimelineItems( TimelineTrack timelineTrack ) => OnUpdateTimelineItems( timelineTrack );
+	internal void UpdateTimelineItems( TimelineTrack timelineTrack )
+	{
+		if ( timelineTrack.View.IsLocked )
+		{
+			OnClearTimelineItems( timelineTrack );
+		}
+		else
+		{
+			OnUpdateTimelineItems( timelineTrack );
+		}
+	}
+
 	protected virtual void OnUpdateTimelineItems( TimelineTrack timelineTrack ) { }
 
 	internal void ClearTimelineItems( TimelineTrack timelineTrack ) => OnClearTimelineItems( timelineTrack );

@@ -27,13 +27,11 @@ public sealed class ListPanel : MovieEditorPanel
 {
 	private const string PageCookieName = "moviemaker.listpage";
 
-	public const float TitleHeight = 32f;
-
-	private readonly Label _pageTitle;
-
 	public TrackListPage TrackList { get; }
 	public MovieResourceListPage MovieList { get; }
 	public MoviePlayerListPage PlayerList { get; }
+
+	private readonly Label _pageTitle;
 
 	private readonly ImmutableArray<IListPanelPage> _pages;
 
@@ -48,16 +46,9 @@ public sealed class ListPanel : MovieEditorPanel
 			new HistoryPage( this, session )
 		];
 
-		_pageTitle = new Label.Header( this );
-		_pageTitle.Alignment = TextFlag.Center;
-		_pageTitle.FixedHeight = TitleHeight;
-		_pageTitle.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
-
 		var initialPageTypeName = Cookie.Get<string>( PageCookieName, null! );
 		var initialPage = _pages.FirstOrDefault( x => x.GetType().Name == initialPageTypeName )
 			?? _pages.First();
-
-		SetPage( initialPage );
 
 		MinimumWidth = 300;
 
@@ -126,11 +117,10 @@ public sealed class ListPanel : MovieEditorPanel
 
 		var resourceGroup = ToolBar.AddGroup( true );
 
-		var label = resourceGroup.AddLabel( GetFullPath( session ) );
+		_pageTitle = resourceGroup.AddLabel( GetFullPath( session ) );
 
-		label.Alignment = TextFlag.Center;
-		label.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
-		label.ToolTip = session.Resource is MovieResource res ? res.ResourcePath : "";
+		_pageTitle.Alignment = TextFlag.Center;
+		_pageTitle.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
 
 		// Navigation buttons
 
@@ -139,6 +129,8 @@ public sealed class ListPanel : MovieEditorPanel
 
 		navigateGroup.AddAction( backDisplay, parent.ExitSequence,
 			() => parent.Session?.Parent is not null );
+
+		SetPage( initialPage );
 	}
 
 	public void SetPage( IListPanelPage page )
@@ -150,7 +142,6 @@ public sealed class ListPanel : MovieEditorPanel
 
 		Layout.Clear( false );
 		Layout.Add( ToolBar );
-		Layout.Add( _pageTitle );
 		Layout.Add( (Widget)page );
 
 		_pageTitle.Text = page.Display.Title;

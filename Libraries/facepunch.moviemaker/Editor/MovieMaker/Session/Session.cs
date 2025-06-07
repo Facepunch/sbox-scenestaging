@@ -35,6 +35,11 @@ public sealed partial class Session
 	/// </summary>
 	public MovieTimeRange? SequenceTimeRange => Context?.TimeRange;
 
+	/// <summary>
+	/// When previewing playback, what time range to loop within.
+	/// </summary>
+	public MovieTimeRange? LoopTimeRange { get; set; }
+
 	public Session Root => Context?.Parent.Root ?? this;
 	public IMovieResource Resource { get; }
 

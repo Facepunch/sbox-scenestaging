@@ -32,12 +32,22 @@ public interface IMovieResource
 public sealed class MovieResource : GameResource, IMovieResource
 {
 	/// <inheritdoc />
-	[Hide, JsonIgnore]
+	[Hide]
 	public MovieClip? Compiled { get; set; }
 
 	/// <inheritdoc />
 	[Hide]
 	public JsonNode? EditorData { get; set; }
+
+	protected override void OnJsonSerialize( JsonObject node )
+	{
+		// Here we're writing the .movie, not the .movie_c
+
+		// We only want EditorData to be written here,
+		// MovieCompiler will handle writing Compiled to the .movie_c
+
+		node.Remove( nameof(Compiled) );
+	}
 }
 
 /// <summary>

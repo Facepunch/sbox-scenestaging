@@ -1,5 +1,4 @@
-﻿using Sandbox.MovieMaker;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Editor.MovieMaker;
 

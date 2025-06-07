@@ -1,5 +1,5 @@
-﻿using Sandbox.MovieMaker;
-using System.Text.Json;
+﻿using System.Text.Json;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -13,7 +13,7 @@ public sealed class MovieResourceListPage : ListView, IListPanelPage
 	public Session Session { get; }
 
 	public MovieResourceListPage( ListPanel parent, Session session )
-		: base( parent )
+		: base( parent)
 	{
 		Session = session;
 
@@ -105,14 +105,11 @@ public sealed class MovieResourceListPage : ListView, IListPanelPage
 		if ( !Session.CanReferenceMovie( resource ) ) return false;
 
 		var asset = AssetSystem.FindByPath( resource.ResourcePath );
-		var drag = new Drag( this )
-		{
-			Data =
+		var drag = new Drag( this ) { Data =
 		{
 			Text = resource.ResourcePath,
 			Url = new System.Uri( $"file://{asset.AbsolutePath}" )
-		}
-		};
+		} };
 
 		drag.Execute();
 

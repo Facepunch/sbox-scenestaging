@@ -59,6 +59,11 @@ public sealed class TrackListPage : Widget, IListPanelPage
 		Load( Session.TrackList );
 	}
 
+	protected override void OnResize()
+	{
+		_trackContainer.FixedWidth = Width;
+	}
+
 	private TrackWidget AddRootTrack( TrackView source ) => _trackContainer.Layout.Add( new TrackWidget( this, null, source ) );
 	private void RemoveRootTrack( TrackWidget item ) => item.Destroy();
 	private bool UpdateChildTrack( TrackView source, TrackWidget item ) => item.UpdateLayout();
@@ -75,6 +80,12 @@ public sealed class TrackListPage : Widget, IListPanelPage
 		{
 			scrollArea.MakeVisible( track );
 		}
+	}
+
+	protected override void OnPaint()
+	{
+		Paint.SetBrushAndPen( Theme.ControlBackground );
+		Paint.DrawRect( LocalRect );
 	}
 
 	public override void OnDestroyed()
@@ -145,7 +156,7 @@ public sealed class TrackListPage : Widget, IListPanelPage
 			return;
 		}
 
-		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition - ListPanel.TitleHeight );
+		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition );
 		_trackContainer.FixedWidth = Width;
 		_trackContainer.FixedHeight = _rootTracks
 			.Select( x => x.View.Position + x.View.Height + Timeline.RootTrackSpacing )

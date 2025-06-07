@@ -4,8 +4,8 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public class IconComboBox<T> : IconButton
-	where T : struct, Enum
+public abstract class IconComboBox<T> : IconButton
+	where T : struct
 {
 	private T _value;
 
@@ -22,32 +22,34 @@ public class IconComboBox<T> : IconButton
 		}
 	}
 
+	private float _iconAspect;
+
+	public float IconAspect
+	{
+		get => _iconAspect;
+		set
+		{
+			_iconAspect = value;
+
+			var margin = (FixedHeight - IconSize) * 0.5f;
+
+			// Add 0.5 for the dropdown arrow
+
+			FixedWidth = IconSize * (IconAspect + 0.5f) + margin * 2.5f;
+		}
+	}
+
 	public IconComboBox() : base( "" )
 	{
-		FixedWidth = FixedHeight * 1.5f;
+		IconSize = 10f;
+		IconAspect = 1f;
 	}
 
-	protected virtual IEnumerable<T> OnGetOptions() => Enum.GetValues<T>().Where( x => Convert.ToInt64( x ) >= 0 );
+	protected abstract IEnumerable<T> OnGetOptions();
 
-	private static EnumDescription.Entry GetEntry( T option )
-	{
-		var typeDesc = EditorTypeLibrary.GetEnumDescription( typeof( T ) );
-		return typeDesc.GetEntry( option );
-	}
+	protected abstract string OnGetOptionTitle( T option );
 
-	protected virtual string OnGetOptionTitle( T option )
-	{
-		var entry = GetEntry( option );
-
-		return entry.Title ?? entry.Name.ToTitleCase();
-	}
-
-	protected virtual void OnPaintOptionIcon( T option, Rect rect )
-	{
-		var entry = GetEntry( option );
-
-		Paint.DrawIcon( rect, entry.Icon, IconSize );
-	}
+	protected abstract void OnPaintOptionIcon( T option, Rect rect );
 
 	protected override void OnMousePress( MouseEvent e )
 	{
@@ -85,12 +87,7 @@ public class IconComboBox<T> : IconButton
 		var bg = active ? BackgroundActive : Background;
 		var fg = active ? ForegroundActive : Foreground;
 
-		float alpha = Paint.HasMouseOver ? 0.5f : 0.25f;
-
-		if ( !Enabled )
-			alpha = 0.1f;
-
-		Paint.SetBrush( bg.WithAlphaMultiplied( alpha ) );
+		Paint.SetBrush( bg.WithAlphaMultiplied( Enabled ? 1f : 0.25f ) );
 		Paint.DrawRect( LocalRect, 2.0f );
 
 		Paint.ClearBrush();
@@ -100,8 +97,9 @@ public class IconComboBox<T> : IconButton
 			? fg.WithAlphaMultiplied( Paint.HasMouseOver ? 1.0f : 0.7f )
 			: fg.WithAlphaMultiplied( 0.25f );
 
+		var iconSize = new Vector2( IconSize * IconAspect, IconSize );
 
-		var iconRect = LocalRect.Contain( FixedHeight, TextFlag.LeftCenter ).Contain( IconSize );
+		var iconRect = LocalRect.Shrink( 0f, 0f, 0.5f * FixedHeight, 0f ).Contain( iconSize );
 		var arrowRect = LocalRect.Contain( FixedHeight * 0.625f, TextFlag.RightCenter ).Contain( IconSize );
 
 		Paint.SetPen( fg );
@@ -112,7 +110,33 @@ public class IconComboBox<T> : IconButton
 	}
 }
 
-public class FunctionSelector<T> : IconComboBox<T>
+public class EnumIconComboBox<T> : IconComboBox<T>
+	where T : struct, Enum
+{
+	protected override IEnumerable<T> OnGetOptions() => Enum.GetValues<T>().Where( x => Convert.ToInt64( x ) >= 0 );
+
+	private static EnumDescription.Entry GetEntry( T option )
+	{
+		var typeDesc = EditorTypeLibrary.GetEnumDescription( typeof( T ) );
+		return typeDesc.GetEntry( option );
+	}
+
+	protected override string OnGetOptionTitle( T option )
+	{
+		var entry = GetEntry( option );
+
+		return entry.Title ?? entry.Name.ToTitleCase();
+	}
+
+	protected override void OnPaintOptionIcon( T option, Rect rect )
+	{
+		var entry = GetEntry( option );
+
+		Paint.DrawIcon( rect, entry.Icon, IconSize );
+	}
+}
+
+public class FunctionSelector<T> : EnumIconComboBox<T>
 	where T : struct, Enum
 {
 	private readonly Func<T, Func<float, float>?> _getFunc;
