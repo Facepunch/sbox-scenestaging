@@ -267,10 +267,13 @@ public sealed class SplineModelRenderer : ModelRenderer
 			customMesh.CreateIndexBuffer( totalIndices, deformedIndices.AsSpan( 0, totalIndices ) );
 		}
 
+		// Calculate the mesh bounds, SceneObject will calculate worldspace bounds from this when setting the model.
+		// TODO can this be done faster? Can't do it in the parallel for?
+		customMesh.Bounds = BBox.FromPoints( deformedVertices.Select( x => x.Position ) );
+
 		customModel = Model.Builder.AddMesh( customMesh ).Create();
 		// TODO use modelsystem.ChangeModel
 		SceneObject.Model = customModel;
-		SceneObject.LocalBounds = customModel.Bounds;
 	}
 
 	// TODO Has there ever been a function with more args?
