@@ -10,10 +10,19 @@
         {
           "__type": "Sandbox.SceneInformation",
           "__guid": "e3cf14df-6fbc-4f09-9c98-85918f2fae8b",
-          "Description": "Translucents are still drawn the same was as your granddad\u0027s PSX",
+          "Author": null,
+          "Changes": null,
+          "Description": "Translucents are still drawn the same was as your granddad's PSX",
           "Group": "Rendering",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "SceneTags": "",
-          "Title": "Sorting"
+          "Title": "Sorting",
+          "Version": null
         }
       ]
     },
@@ -30,7 +39,14 @@
           "BackgroundColor": "0.16741,0.1907,0.13482,1",
           "ClearFlags": "All",
           "FieldOfView": 60,
+          "FovAxis": "Horizontal",
           "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
@@ -58,6 +74,12 @@
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.91373,0.98039,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Shadows": true,
           "SkyColor": "0,0,0,0"
         }
@@ -75,6 +97,12 @@
           "__type": "Sandbox.SkyBox2D",
           "__guid": "04526389-be05-4d9c-afbf-cebab0fd111b",
           "__enabled": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "SkyIndirectLighting": true,
           "SkyMaterial": "materials/skybox/skybox_overcast_02.vmat",
           "Tint": "1,1,1,1"
@@ -91,8 +119,10 @@
           "__type": "ColorOverTime",
           "__guid": "f64dffe1-3278-41e2-881d-e29a5332e5cf",
           "Gradient": {
+            "blend": "Linear",
             "color": [
               {
+                "t": 0,
                 "c": "0,1,1,1"
               },
               {
@@ -102,11 +132,23 @@
             ],
             "alpha": []
           },
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Speed": 1
         },
         {
           "__type": "SpinComponent",
           "__guid": "d9f16585-100a-499d-a193-265fe8b4461f",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "SpinAngles": "0,50,0"
         }
       ],
@@ -123,8 +165,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "49c13589-7d15-4216-ae76-10d7bb598be2",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -141,6 +191,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -149,9 +200,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -161,14 +219,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -188,8 +252,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "922b23e8-5bea-4a53-a3ac-5c246eeee41c",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -206,6 +278,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -214,9 +287,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -226,14 +306,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -253,8 +339,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "7d2dfbb6-20db-4272-9b67-89434269feda",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -271,6 +365,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -279,9 +374,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -291,14 +393,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -318,8 +426,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "43af4074-96c2-4499-98ab-f30fbcd8552a",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -336,6 +452,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -344,9 +461,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -356,14 +480,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -383,8 +513,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "7d5dfcff-c23a-4b63-9444-327636b34d0d",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -401,6 +539,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -409,9 +548,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -421,14 +567,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -448,8 +600,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "d6774651-383c-49f1-ac7c-4d3c48f3a715",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -466,6 +626,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -474,9 +635,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -486,14 +654,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -513,8 +687,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "adba3b98-7896-4096-97ee-0d149c67baf8",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -531,6 +713,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -539,9 +722,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -551,14 +741,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -578,8 +774,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "d5d85e09-2fa7-41e1-a035-b85abb048af3",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -596,6 +800,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -604,9 +809,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -616,14 +828,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -643,8 +861,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "2a2845da-2f6f-49bb-bb68-16e821eab99a",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -661,6 +887,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -669,9 +896,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -681,14 +915,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -708,8 +948,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "a046fbd0-8637-4d1c-9440-0cf0773cf2ef",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -726,6 +974,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -734,9 +983,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -746,14 +1002,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -773,8 +1035,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "923e042a-eb1d-488b-ad93-c567ea42f531",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -791,6 +1061,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -799,9 +1070,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -811,14 +1089,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -838,8 +1122,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "b604c9a6-48e0-40c8-b3ee-780926a88df1",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -856,6 +1148,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -864,9 +1157,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -876,14 +1176,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -903,8 +1209,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "db5fc0a2-dc9e-4315-944a-3a81ac89e8d1",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -921,6 +1235,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -929,9 +1244,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -941,14 +1263,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -968,8 +1296,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "6974cb7d-4d68-489a-a2bf-db0b73290bd6",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -986,6 +1322,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -994,9 +1331,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -1006,14 +1350,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -1033,8 +1383,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "b3f25dd2-71fe-4e4e-8fde-30426ea365cb",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -1051,6 +1409,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -1059,9 +1418,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -1071,14 +1437,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -1098,8 +1470,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "d9a2dc3e-ddb0-44e3-973a-2e2d60fb14f3",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -1116,6 +1496,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -1124,9 +1505,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -1136,14 +1524,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -1163,8 +1557,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "7876539d-08b1-4449-82ef-375da4c7ba50",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -1181,6 +1583,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -1189,9 +1592,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -1201,14 +1611,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -1228,8 +1644,16 @@
               "__type": "Sandbox.ModelRenderer",
               "__guid": "f047d2df-eb7f-42de-904e-4f33128ed709",
               "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
               "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "RenderOptions": {
                 "GameLayer": true,
                 "OverlayLayer": false,
@@ -1246,6 +1670,7 @@
               "BlendMode": "Normal",
               "CastShadows": false,
               "Color": {
+                "blend": "Linear",
                 "color": [
                   {
                     "t": 0.5,
@@ -1254,9 +1679,16 @@
                 ],
                 "alpha": []
               },
+              "Emitting": true,
               "Face": "Camera",
               "LifeTime": 1,
               "MaxPoints": 8,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
               "Opaque": false,
               "PointDistance": 8,
               "RenderOptions": {
@@ -1266,14 +1698,20 @@
                 "AfterUILayer": false
               },
               "Texturing": {
+                "Texture": null,
                 "WorldSpace": true,
                 "UnitsPerTexture": 10,
-                "Scale": 1
+                "Scale": 1,
+                "Offset": 0,
+                "Scroll": 0
               },
               "Width": [
                 {
                   "x": 0.5,
-                  "y": 5
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
                 }
               ],
               "Wireframe": false
@@ -1292,8 +1730,16 @@
           "__type": "Sandbox.ModelRenderer",
           "__guid": "0d07d58a-0c7d-4be8-b142-554812fd9381",
           "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -1308,8 +1754,10 @@
           "__guid": "1bc9d17c-d4c3-409f-bf17-b348e1446906",
           "__enabled": false,
           "Gradient": {
+            "blend": "Linear",
             "color": [
               {
+                "t": 0,
                 "c": "1,1,1,0"
               },
               {
@@ -1323,51 +1771,12 @@
             ],
             "alpha": []
           },
-          "Speed": 1
-        }
-      ]
-    },
-    {
-      "__guid": "2a9f68e7-ece2-4bad-9a41-897b777f07e9",
-      "Flags": 0,
-      "Name": "Sphere (1)",
-      "Position": "104.7469,104.747,0",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "cb3bd514-3bf9-4301-b9f7-cba0273db0d8",
-          "BodyGroups": 18446744073709551615,
-          "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
-          "Model": "models/dev/sphere.vmdl",
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,0.8"
-        },
-        {
-          "__type": "ColorOverTime",
-          "__guid": "c0fbbe1f-9fed-4419-8460-26c0ec7a3a53",
-          "Gradient": {
-            "color": [
-              {
-                "c": "1,1,1,0"
-              },
-              {
-                "t": 0.43589744,
-                "c": "0.4359,0.5641,0.5641,1"
-              },
-              {
-                "t": 1,
-                "c": "1,1,1,0"
-              }
-            ],
-            "alpha": []
-          },
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Speed": 1
         }
       ]
@@ -1384,8 +1793,49 @@
           "__type": "Sandbox.ModelRenderer",
           "__guid": "8a536316-b731-4a39-950c-6ca393c6903c",
           "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "materials/dev/primary_white_vertexcolor_trans.vmat",
           "Model": "models/dev/plane.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,0.83"
+        }
+      ]
+    },
+    {
+      "__guid": "75cdbb44-aff9-4eae-9fe4-411fcd3d8189",
+      "Flags": 0,
+      "Name": "Plane (1)",
+      "Position": "0.00001192093,188.4164,14.86507",
+      "Rotation": "-0,0.7071068,-0,-0.7071068",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "44eeab91-88d3-4d17-8ae2-74024087eda8",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/glass.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -1409,7 +1859,7 @@
     "UseFixedUpdate": true,
     "Metadata": {
       "Title": "Sorting",
-      "Description": "Translucents are still drawn the same was as your granddad\u0027s PSX",
+      "Description": "Translucents are still drawn the same was as your granddad's PSX",
       "Group": "Rendering"
     },
     "NavMesh": {
@@ -1427,7 +1877,7 @@
   },
   "ResourceVersion": 2,
   "Title": "Sorting",
-  "Description": "Translucents are still drawn the same was as your granddad\u0027s PSX",
+  "Description": "Translucents are still drawn the same was as your granddad's PSX",
   "__references": [],
   "__version": 2
 }

@@ -1,0 +1,29 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/mirror_8.shader"
+
+	//---- Rendering ----
+	F_DO_NOT_CAST_SHADOWS 1
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Material ----
+	g_flTintColor "[1.000000 1.000000 1.000000 0.000000]"
+	TextureAmbientOcclusion "[1.000000 1.000000 1.000000 0.000000]"
+	TextureBlendMask "[1.000000 1.000000 1.000000 0.000000]"
+	TextureColor "models/citizen_clothes/seasonal/2024/santa/furnoise.png"
+	TextureMetalness "[0.976000 0.976000 0.976000 0.000000]"
+	TextureNormal "[0.501961 0.501961 1.000000 0.000000]"
+	TextureRoughness "[0.019000 0.019000 0.019000 0.000000]"
+	TextureTintMask "[0.998000 0.998000 0.998000 0.000000]"
+	TextureTranslucency "[0.460000 0.460000 0.460000 0.000000]"
+
+	SystemAttributes
+	{
+		WorldMappingWidth "64"
+		WorldMappingHeight "64"
+	}
+}

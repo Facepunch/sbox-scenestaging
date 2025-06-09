@@ -41,6 +41,7 @@
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
           "ClearFlags": "All",
           "FieldOfView": 80,
+          "FovAxis": "Horizontal",
           "IsMainCamera": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -266,7 +267,7 @@
             ],
             "Links": [
               {
-                "Id": 19,
+                "Id": 47,
                 "Value": "attack1",
                 "DstId": 13,
                 "DstName": "action"
@@ -345,7 +346,7 @@
                 "DstIndex": 0
               },
               {
-                "Id": 41,
+                "Id": 48,
                 "Value": "Clicks: {0}",
                 "DstId": 30,
                 "DstName": "format"
@@ -437,6 +438,31 @@
           }
         }
       ]
+    },
+    {
+      "__guid": "c358df95-9839-462d-8bd5-22586ccef477",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "886a1bfa-b9cb-4fe7-b6b7-1e6551c4fc7f",
+          "Author": null,
+          "Changes": "",
+          "Description": "LOL yeah right",
+          "Group": "Action Graph",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneTags": "",
+          "Title": "Properties",
+          "Version": null
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -448,7 +474,11 @@
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
-    "Metadata": {},
+    "Metadata": {
+      "Title": "Properties",
+      "Description": "LOL yeah right",
+      "Group": "Action Graph"
+    },
     "NavMesh": {
       "Enabled": false,
       "IncludeStaticBodies": true,
@@ -463,8 +493,8 @@
     }
   },
   "ResourceVersion": 2,
-  "Title": null,
-  "Description": null,
+  "Title": "Properties",
+  "Description": "LOL yeah right",
   "__references": [],
   "__version": 2
 }

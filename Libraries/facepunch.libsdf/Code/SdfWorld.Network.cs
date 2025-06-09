@@ -35,7 +35,7 @@ public partial class SdfWorld<TWorld, TChunk, TResource, TChunkKey, TArray, TSdf
 		byteStream.Dispose();
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void Rpc_RequestMissing( int clearCount, int modificationCount )
 	{
 		var conn = Rpc.Caller;
@@ -46,15 +46,15 @@ public partial class SdfWorld<TWorld, TChunk, TResource, TChunkKey, TArray, TSdf
 			return;
 		}
 
-		if (state.clearCount != clearCount || state.modificationCount <= modificationCount)
+		if ( state.clearCount != clearCount || state.modificationCount <= modificationCount )
 			return;
-		
+
 		ConnectionStates[conn] = state with { modificationCount = modificationCount };
 	}
 
 	private TimeSince _notifiedMissingModifications = float.PositiveInfinity;
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void Rpc_SendModifications( byte[] bytes )
 	{
 		var byteStream = ByteStream.CreateReader( bytes );

@@ -15,7 +15,14 @@
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
           "ClearFlags": "All",
           "FieldOfView": 60,
+          "FovAxis": "Horizontal",
           "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
@@ -42,6 +49,14 @@
           "EnableCollision": true,
           "MapName": "maps/hammer-gameobjects.vmap",
           "NoOrigin": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnMapLoaded": null,
+          "OnMapUnloaded": null,
           "UseMapFromLaunch": false
         }
       ],
@@ -59,8 +74,15 @@
           "__guid": "59b63413-1ab5-4f1b-866e-fc89798865be",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "scenes/tests/rendering/shader_classes_test.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -84,8 +106,15 @@
           "__guid": "0edcb994-bc84-4afa-b834-63626aef419b",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "scenes/tests/rendering/shader_classes_test.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -109,8 +138,15 @@
           "__guid": "87920f4c-3ba7-4803-af54-2428e089ecbd",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "scenes/tests/rendering/shader_classes_test.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -134,8 +170,15 @@
           "__guid": "5f6677fe-bb45-4b29-849c-43523c551318",
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
+          "MaterialGroup": null,
           "MaterialOverride": "scenes/tests/rendering/shader_classes_test.vmat",
           "Model": "models/dev/sphere.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -162,6 +205,12 @@
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0,1.53333,2,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Radius": 122.3201,
           "Shadows": true
         }
@@ -180,6 +229,12 @@
           "__guid": "f1a0c511-8627-4cb6-9b2c-35af3ce57bc1",
           "__version": 1,
           "BlendMode": "Normal",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -237,6 +292,12 @@
           "__guid": "3c69219d-e1d9-4bcf-acd2-d751a925af67",
           "__version": 1,
           "BlendMode": "Normal",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -294,6 +355,12 @@
           "__guid": "4c8a0034-e367-45db-bb1c-f513c63fbd0f",
           "__version": 1,
           "BlendMode": "Normal",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -351,6 +418,12 @@
           "__guid": "90800032-a66c-481e-94a7-7245f438ab97",
           "__version": 1,
           "BlendMode": "Normal",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "RenderOptions": {
             "GameLayer": true,
             "OverlayLayer": false,
@@ -406,6 +479,12 @@
         {
           "__type": "Sandbox.SkyBox2D",
           "__guid": "f2e91406-2721-4c44-bf85-df193a2cb53c",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "SkyIndirectLighting": true,
           "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
           "Tint": "1,1,1,1"
@@ -427,6 +506,12 @@
             "Maxs": "150,150,150"
           },
           "FalloffExponent": 1,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "Strength": 1000
         }
       ]
@@ -441,10 +526,19 @@
         {
           "__type": "Sandbox.SceneInformation",
           "__guid": "02b3f56c-7aa9-4e9e-851b-d173ae92a678",
+          "Author": null,
           "Changes": "",
-          "Description": "Tests a few components from shaders to see if they\u0027re rendering properly",
+          "Description": "Tests a few components from shaders to see if they're rendering properly",
+          "Group": "Rendering",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
           "SceneTags": "",
-          "Title": "Shader Classes"
+          "Title": "Shader Classes",
+          "Version": null
         }
       ]
     }
@@ -460,7 +554,8 @@
     "UseFixedUpdate": true,
     "Metadata": {
       "Title": "Shader Classes",
-      "Description": "Tests a few components from shaders to see if they\u0027re rendering properly"
+      "Description": "Tests a few components from shaders to see if they're rendering properly",
+      "Group": "Rendering"
     },
     "NavMesh": {
       "Enabled": false,
@@ -477,7 +572,7 @@
   },
   "ResourceVersion": 2,
   "Title": "Shader Classes",
-  "Description": "Tests a few components from shaders to see if they\u0027re rendering properly",
+  "Description": "Tests a few components from shaders to see if they're rendering properly",
   "__references": [],
   "__version": 2
 }

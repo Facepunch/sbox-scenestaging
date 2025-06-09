@@ -1,0 +1,305 @@
+{
+  "__guid": "a8ca976b-12e5-4fc2-8652-b637fd581131",
+  "GameObjects": [
+    {
+      "__guid": "5420595f-463b-4f27-911a-beec49815b7e",
+      "Flags": 0,
+      "Name": "Main Camera (1)",
+      "Position": "-300,0,100",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "c37fcefd-c98a-40fa-acf5-1f7d245fc764",
+          "BackgroundColor": "0,0,0,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "FovAxis": "Horizontal",
+          "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "Sandbox.Bloom2",
+          "__guid": "c6dde4af-3199-4416-9399-a156ce00487c",
+          "__enabled": false,
+          "Gamma": 1.5,
+          "Mode": "Screen",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Strength": 5,
+          "Threshold": 0,
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.Tonemapping",
+          "__guid": "20f74e9c-91b3-4c8b-9e57-200a07f0ace6",
+          "__version": 3,
+          "AutoExposureEnabled": true,
+          "ExposureCompensation": 0,
+          "ExposureMethod": "RGB",
+          "MaximumExposure": 3,
+          "MinimumExposure": 1,
+          "Mode": "ACES",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Rate": 1
+        },
+        {
+          "__type": "Sandbox.ChromaticAberration",
+          "__guid": "b7e9acb4-bb1d-4ef1-b619-7441d3bde1bf",
+          "__enabled": false,
+          "Offset": "4,6,0",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Scale": 1
+        },
+        {
+          "__type": "Sandbox.Bloom",
+          "__guid": "c8d37d39-1771-42b4-af6d-09589f373747",
+          "__version": 1,
+          "Gamma": 1.5,
+          "Mode": "Additive",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Strength": 3.93,
+          "Threshold": 0.5,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "752c3a9b-0c54-4639-91e1-13064d6cc0ee",
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "0,0,55.63734",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "ff21add2-03cc-4e46-8ad4-b79241b07e09",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/dev/primary_white_emissive.vmat",
+          "Model": "models/editor/playerstart.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.45,1,0,1"
+        },
+        {
+          "__type": "SpinComponent",
+          "__guid": "f2181984-dd4b-4b4e-acd9-56a99ad376f2",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SpinAngles": "0,15,0"
+        }
+      ]
+    },
+    {
+      "__guid": "5b352a18-486b-41d6-bb37-7ef447e20425",
+      "Flags": 0,
+      "Name": "Cube (1)",
+      "Position": "0,90,64.70661",
+      "Scale": "2,2,2",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "989037eb-52e8-4c77-95c8-1c2fa7e2a565",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/dev/primary_white_emissive.vmat",
+          "Model": "models/citizen_props/balloonears01.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,0.16667,0,1"
+        },
+        {
+          "__type": "SpinComponent",
+          "__guid": "b4e7d4e0-91a2-47d7-bdd4-c4c0fcf32dd2",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SpinAngles": "0,10,0"
+        }
+      ]
+    },
+    {
+      "__guid": "352d6610-ed0f-43d7-b5dd-9829ae3018f1",
+      "Flags": 0,
+      "Name": "Cube (2)",
+      "Position": "0,-90,57.46019",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "4b6cfebc-b366-43ed-a449-d262b2f9f70d",
+          "AnimationGraph": null,
+          "BodyGroups": 341,
+          "BoneMergeTarget": null,
+          "CreateAttachments": false,
+          "CreateBoneObjects": false,
+          "MaterialGroup": null,
+          "MaterialOverride": "materials/dev/primary_white_emissive.vmat",
+          "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "PlaybackRate": 1,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Sequence": {
+            "Name": "AvatarMenu_Entry_Wave_01"
+          },
+          "Tint": "0,0.88333,1,1",
+          "UseAnimGraph": false
+        },
+        {
+          "__type": "SpinComponent",
+          "__guid": "0621b0bd-75e4-4bdf-9d51-c7ff6adcce8f",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SpinAngles": "0,20,0"
+        }
+      ]
+    },
+    {
+      "__guid": "e560ed0f-9ff8-4a46-84e1-18fdb319f299",
+      "Flags": 0,
+      "Name": "Description",
+      "Position": "114.2373,9.409906,105.5908",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "f123ba36-4ffc-4499-9a4a-31197faa00ce",
+          "Author": null,
+          "Changes": "",
+          "Description": "Tests both bloom techniques",
+          "Group": "Rendering",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneTags": "",
+          "Title": "Bloom",
+          "Version": null
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Bloom",
+      "Description": "Tests both bloom techniques",
+      "Group": "Rendering"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "Bloom",
+  "Description": "Tests both bloom techniques",
+  "__references": [],
+  "__version": 2
+}

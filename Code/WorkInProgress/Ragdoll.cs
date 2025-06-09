@@ -52,7 +52,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 			_model = value;
 
-			CreatePhysics();
+			OnModelChanged();
 		}
 	}
 
@@ -198,6 +198,15 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 				joint.Component.Flags = joint.Component.Flags.WithFlag( ComponentFlags.Hidden, !value );
 			}
 		}
+	}
+
+	private void OnModelChanged()
+	{
+		if ( _rootBody is null )
+			return;
+
+		// Only recreate physics if it has already been created
+		CreatePhysics();
 	}
 
 	private void CreatePhysics()
@@ -416,6 +425,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			if ( !body.Component.IsValid() )
 				continue;
 
+			body.Component.GameObject.Flags &= ~GameObjectFlags.Absolute;
 			body.Component.Destroy();
 		}
 

@@ -1,0 +1,292 @@
+{
+  "__guid": "a866884c-454f-4ddb-83fa-f9df603f35a7",
+  "GameObjects": [
+    {
+      "__guid": "fcd70732-df07-4578-b601-ab604cf06cc6",
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-849.0325,0,293.523",
+      "Rotation": "0,0.1305262,0,0.9914449",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "71179a94-6b5f-4ff5-8c40-6064b192f200",
+          "BackgroundColor": "0,0,0,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "FovAxis": "Horizontal",
+          "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        }
+      ]
+    },
+    {
+      "__guid": "8f680997-d5f1-461b-a5c8-bccac529297e",
+      "Flags": 0,
+      "Name": "Plane",
+      "Scale": "8,8,8",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "60d5d94f-90b8-4532-9395-4fce987b3174",
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/dev/plane.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "1ad4701d-30fb-4bc3-930a-379bda3f947d",
+      "Flags": 0,
+      "Name": "Sun",
+      "Rotation": "-0.09960051,0.5648625,0.1422443,0.8067073",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "c8ee369b-f634-4dac-a2bb-8c94279d03f4",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Shadows": true,
+          "SkyColor": "0,0,0,0"
+        }
+      ]
+    },
+    {
+      "__guid": "ea03b447-f7d3-457b-8177-fd1fe5c74b1c",
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "0,300,25",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/physics/dampen_test.prefab",
+      "__PrefabVariables": {
+        "Update Rate": 60,
+        "Variance": 0
+      }
+    },
+    {
+      "__guid": "d3e0f3ae-3574-405b-9ca9-5036ad26fb53",
+      "Flags": 0,
+      "Name": "Cube (1)",
+      "Position": "0,200,25",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/physics/dampen_test.prefab",
+      "__PrefabVariables": {
+        "Update Rate": 45,
+        "Variance": 0
+      }
+    },
+    {
+      "__guid": "863cb7e2-bb67-44db-98a4-5c7f45a2db38",
+      "Flags": 0,
+      "Name": "Cube (2)",
+      "Position": "0,100,25",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/physics/dampen_test.prefab",
+      "__PrefabVariables": {
+        "Update Rate": 30,
+        "Variance": 0
+      }
+    },
+    {
+      "__guid": "3e577e2b-cbfe-43c5-b9d0-4aa79a11f7e2",
+      "Flags": 0,
+      "Name": "Cube (3)",
+      "Position": "0,0,25",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/physics/dampen_test.prefab",
+      "__PrefabVariables": {
+        "Update Rate": 20,
+        "Variance": 0
+      }
+    },
+    {
+      "__guid": "b398dc46-b0b1-4bd3-a019-cfe4071c28cf",
+      "Flags": 0,
+      "Name": "Cube (4)",
+      "Position": "0,-100,25",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/physics/dampen_test.prefab",
+      "__PrefabVariables": {
+        "Update Rate": 15,
+        "Variance": 0
+      }
+    },
+    {
+      "__guid": "95d91255-469a-4bea-964d-8096c3fbc2b0",
+      "Flags": 0,
+      "Name": "Cube (5)",
+      "Position": "0,-200,25",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/physics/dampen_test.prefab",
+      "__PrefabVariables": {
+        "Update Rate": 10,
+        "Variance": 0
+      }
+    },
+    {
+      "__guid": "3f338f2d-7a2f-40d8-bb16-43732943202c",
+      "Flags": 0,
+      "Name": "Cube (6)",
+      "Position": "0,-300,25",
+      "Enabled": true,
+      "__Prefab": "scenes/tests/physics/dampen_test.prefab",
+      "__PrefabVariables": {
+        "Update Rate": 5,
+        "Variance": 0
+      }
+    },
+    {
+      "__guid": "586837ac-5fcb-4ac6-b45a-b00f3554808a",
+      "Flags": 0,
+      "Name": "2D Skybox",
+      "Position": "-263.5615,-4.377548,188.7497",
+      "Tags": "skybox",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "475842c6-bbf6-46ba-bc55-478bc64739d1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SkyIndirectLighting": true,
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "330d6f6a-3eba-4617-985d-47048e6883b3",
+      "Flags": 0,
+      "Name": "Manager",
+      "Position": "-1536,1024,0",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "DampenTestManager",
+          "__guid": "9eaae853-a8b3-4a3a-b35e-76f91e25d6ce",
+          "Damping": 0.2,
+          "FrameRate": 120,
+          "Frequency": 0.34,
+          "InitialPosition": 128,
+          "InitialVelocity": 48,
+          "KickAction": "Jump",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        }
+      ]
+    },
+    {
+      "__guid": "b16cc73d-1a0f-4714-91a0-ed21063f7052",
+      "Flags": 0,
+      "Name": "GameObject",
+      "Enabled": true
+    },
+    {
+      "__guid": "54cafc91-4fa9-43ef-9870-46a853bca7e9",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "9954b4dd-e215-4b07-b583-e3168d46fdb0",
+          "Author": null,
+          "Changes": "",
+          "Description": "Test to make sure our dampening functions work correctly at any timestep",
+          "Group": "Debug",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneTags": "",
+          "Title": "Dampening",
+          "Version": null
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "Dampening",
+      "Description": "Test to make sure our dampening functions work correctly at any timestep",
+      "Group": "Debug"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "Dampening",
+  "Description": "Test to make sure our dampening functions work correctly at any timestep",
+  "__references": [],
+  "__version": 2
+}

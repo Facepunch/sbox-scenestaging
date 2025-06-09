@@ -1,0 +1,243 @@
+{
+  "EditorData": {
+    "SampleRate": 30,
+    "Tracks": {
+      "66f32592-c184-4526-b9f1-644511bd8ab2": {
+        "$type": "Property",
+        "Name": "Enabled",
+        "TargetType": "System.Boolean",
+        "ParentId": "7d2af0e2-aa99-4530-b4f3-293d7363144a",
+        "Blocks": [
+          {
+            "TimeRange": {
+              "Start": 0,
+              "End": 50280
+            },
+            "Signal": {
+              "$id": 1,
+              "$type": "Constant",
+              "Value": true,
+              "IsIdentity": false
+            }
+          }
+        ]
+      },
+      "92ef8678-dd6e-4d5d-bf42-f11224b68f32": {
+        "$type": "Property",
+        "Name": "LocalPosition",
+        "TargetType": "Vector3",
+        "ParentId": "7d2af0e2-aa99-4530-b4f3-293d7363144a",
+        "Blocks": [
+          {
+            "TimeRange": {
+              "Start": 0,
+              "End": 50280
+            },
+            "Signal": {
+              "$id": 1,
+              "$type": "Source",
+              "Source": "e893b7d1-25c7-44c4-9f5a-67beb966fb4c",
+              "TrackIndex": 2,
+              "BlockIndex": 0
+            }
+          }
+        ]
+      },
+      "c0c5ee2e-4a09-44b9-9619-eaeafad26c73": {
+        "$type": "Property",
+        "Name": "LocalRotation",
+        "TargetType": "Rotation",
+        "ParentId": "7d2af0e2-aa99-4530-b4f3-293d7363144a",
+        "Blocks": [
+          {
+            "TimeRange": {
+              "Start": 0,
+              "End": 50280
+            },
+            "Signal": {
+              "$id": 1,
+              "$type": "Constant",
+              "Value": "0,0,0,1",
+              "IsIdentity": true
+            }
+          }
+        ]
+      },
+      "7d2af0e2-aa99-4530-b4f3-293d7363144a": {
+        "$type": "Reference",
+        "Name": "Player Controller",
+        "TargetType": "Sandbox.GameObject"
+      }
+    },
+    "Sources": {
+      "e893b7d1-25c7-44c4-9f5a-67beb966fb4c": {
+        "Metadata": {
+          "Date": "2025-04-04T10:18:33.5526268Z",
+          "IsEditor": false,
+          "SceneSource": null,
+          "MoviePlayer": "25dd9580-4ff4-4b07-a35e-49928c11ac76"
+        },
+        "Clip": {
+          "Tracks": [
+            {
+              "Kind": "Reference",
+              "Name": "Player Controller",
+              "Type": "Sandbox.GameObject",
+              "Id": "7d2af0e2-aa99-4530-b4f3-293d7363144a",
+              "Children": [
+                {
+                  "Kind": "Property",
+                  "Name": "Enabled",
+                  "Type": "System.Boolean",
+                  "Blocks": [
+                    {
+                      "TimeRange": {
+                        "Start": 0,
+                        "End": 50280
+                      },
+                      "Value": true
+                    }
+                  ]
+                },
+                {
+                  "Kind": "Property",
+                  "Name": "LocalPosition",
+                  "Type": "Vector3",
+                  "Blocks": [
+                    {
+                      "TimeRange": {
+                        "Start": 0,
+                        "End": 50280
+                      },
+                      "SampleRate": 30,
+                      "Samples": "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"
+                    }
+                  ]
+                },
+                {
+                  "Kind": "Property",
+                  "Name": "LocalRotation",
+                  "Type": "Rotation",
+                  "Blocks": [
+                    {
+                      "TimeRange": {
+                        "Start": 0,
+                        "End": 50280
+                      },
+                      "Value": "0,0,0,1"
+                    }
+                  ]
+                },
+                {
+                  "Kind": "Reference",
+                  "Name": "PlayerController",
+                  "Type": "Sandbox.PlayerController",
+                  "Id": "40ada9c0-c0d8-44b3-a83c-80c6837e6afb",
+                  "Children": [
+                    {
+                      "Kind": "Property",
+                      "Name": "EyeAngles",
+                      "Type": "Angles",
+                      "Blocks": [
+                        {
+                          "TimeRange": {
+                            "Start": 0,
+                            "End": 50280
+                          },
+                          "SampleRate": 30,
+                          "Samples": "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"
+                        }
+                      ]
+                    },
+                    {
+                      "Kind": "Property",
+                      "Name": "IsClimbing",
+                      "Type": "System.Boolean",
+                      "Blocks": [
+                        {
+                          "TimeRange": {
+                            "Start": 0,
+                            "End": 50280
+                          },
+                          "Value": false
+                        }
+                      ]
+                    },
+                    {
+                      "Kind": "Property",
+                      "Name": "IsDucking",
+                      "Type": "System.Boolean",
+                      "Blocks": [
+                        {
+                          "TimeRange": {
+                            "Start": 0,
+                            "End": 50280
+                          },
+                          "Value": false
+                        }
+                      ]
+                    },
+                    {
+                      "Kind": "Property",
+                      "Name": "IsSwimming",
+                      "Type": "System.Boolean",
+                      "Blocks": [
+                        {
+                          "TimeRange": {
+                            "Start": 0,
+                            "End": 50280
+                          },
+                          "Value": false
+                        }
+                      ]
+                    },
+                    {
+                      "Kind": "Property",
+                      "Name": "WishVelocity",
+                      "Type": "Vector3",
+                      "Blocks": [
+                        {
+                          "TimeRange": {
+                            "Start": 0,
+                            "End": 50280
+                          },
+                          "SampleRate": 30,
+                          "Samples": "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"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Kind": "Reference",
+                  "Name": "Rigidbody",
+                  "Type": "Sandbox.Rigidbody",
+                  "Id": "47bfb59b-d0ef-47fd-8fea-c29e356960d5",
+                  "Children": [
+                    {
+                      "Kind": "Property",
+                      "Name": "Velocity",
+                      "Type": "Vector3",
+                      "Blocks": [
+                        {
+                          "TimeRange": {
+                            "Start": 0,
+                            "End": 50280
+                          },
+                          "SampleRate": 30,
+                          "Samples": "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"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "__references": [],
+  "__version": 0
+}

@@ -6,8 +6,6 @@ FEATURES
 MODES
 {
     VrForward();                                               // Indicates this shader will be used for main rendering
-    ToolsVis( S_MODE_TOOLS_VIS );                                // Ability to see in the editor
-    ToolsShadingComplexity("tools_shading_complexity.shader"); // Shows how expensive drawing is in debug view
 }
 
 COMMON
