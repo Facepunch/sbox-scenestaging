@@ -1,13 +1,23 @@
 {
   "RootObject": {
     "__guid": "fe397676-8fd2-4485-8a26-a012aba851fe",
+    "__version": 1,
     "Flags": 0,
     "Name": "wanderer",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
     "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
     "Components": [
       {
         "__type": "NavigationTargetWanderer",
         "__guid": "bb987e63-c5ef-42bd-a52b-be9eb4616917",
+        "__enabled": true,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -19,6 +29,7 @@
       {
         "__type": "NavigationLinkTraversal",
         "__guid": "70cbf856-d778-4ab6-84d9-ce7820b7fd76",
+        "__enabled": true,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -29,8 +40,9 @@
       {
         "__type": "Sandbox.NavMeshAgent",
         "__guid": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2",
-        "Acceleration": 100000,
-        "AutoTraverseLinks": true,
+        "__enabled": true,
+        "Acceleration": 120,
+        "AutoTraverseLinks": false,
         "Height": 128,
         "MaxSpeed": 150,
         "OnComponentDestroy": null,
@@ -47,6 +59,7 @@
       {
         "__type": "Sandbox.SkinnedModelRenderer",
         "__guid": "b609ad45-dab2-4d7d-acb9-c153a8cdf22d",
+        "__enabled": true,
         "AnimationGraph": null,
         "BodyGroups": 341,
         "BoneMergeTarget": null,
@@ -78,7 +91,9 @@
         },
         "RenderType": "On",
         "Sequence": {
-          "Name": null
+          "Name": null,
+          "Looping": true,
+          "Blending": false
         },
         "Tint": "1,1,1,1",
         "UseAnimGraph": true
@@ -86,6 +101,7 @@
       {
         "__type": "Sandbox.SkinnedModelRenderer",
         "__guid": "0ff2da3d-247d-4d7d-8028-1a369a1dac48",
+        "__enabled": true,
         "AnimationGraph": null,
         "BodyGroups": 18446744073709551615,
         "BoneMergeTarget": {
@@ -122,7 +138,9 @@
         },
         "RenderType": "On",
         "Sequence": {
-          "Name": null
+          "Name": null,
+          "Looping": true,
+          "Blending": false
         },
         "Tint": "1,1,1,1",
         "UseAnimGraph": true
@@ -130,6 +148,7 @@
       {
         "__type": "Sandbox.Rigidbody",
         "__guid": "af2510ff-00b3-445b-b09c-ff2ff36999aa",
+        "__enabled": true,
         "AngularDamping": 0,
         "Gravity": true,
         "LinearDamping": 0,
@@ -157,6 +176,7 @@
       {
         "__type": "Sandbox.CapsuleCollider",
         "__guid": "ba36710a-79d8-4f17-92af-a5eaecd3965a",
+        "__enabled": true,
         "End": "0,0,60",
         "Friction": null,
         "IsTrigger": false,
@@ -178,6 +198,24 @@
       }
     ],
     "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
     "__variables": [
       {
         "Id": "Potential Targets",
@@ -192,36 +230,13 @@
           }
         ]
       }
-    ],
-    "__properties": {
-      "FixedUpdateFrequency": 50,
-      "MaxFixedUpdates": 5,
-      "NetworkFrequency": 30,
-      "NetworkInterpolation": true,
-      "PhysicsSubSteps": 1,
-      "ThreadedAnimation": true,
-      "TimeScale": 1,
-      "UseFixedUpdate": true,
-      "Metadata": {},
-      "NavMesh": {
-        "Enabled": false,
-        "IncludeStaticBodies": true,
-        "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
-        "AgentHeight": 64,
-        "AgentRadius": 16,
-        "AgentStepSize": 18,
-        "AgentMaxSlope": 40,
-        "ExcludedBodies": "",
-        "IncludedBodies": ""
-      }
-    }
+    ]
   },
+  "ResourceVersion": 2,
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "ResourceVersion": 1,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }
