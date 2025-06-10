@@ -41,26 +41,33 @@ public class ScrubberItem : GraphicsItem
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
-		base.OnMousePressed( e );
-
 		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ) );
 
 		if ( e.MiddleMouseButton )
 		{
+			// Panning handled by timeline
+
 			return;
 		}
 
 		if ( e.RightMouseButton )
 		{
 			// TODO: context menu
+
+			return;
 		}
-		else if ( e.HasAlt )
+
+		if ( e.HasAlt )
 		{
+			// Alt+Click: set loop time range
+
 			_dragStartTime = time;
 			Session.LoopTimeRange = null;
 		}
 		else
 		{
+			// Click: set playhead time
+
 			Session.PlayheadTime = time;
 		}
 
@@ -71,7 +78,10 @@ public class ScrubberItem : GraphicsItem
 
 	protected override void OnMouseMove( GraphicsMouseEvent e )
 	{
-		base.OnMouseMove( e );
+		if ( !e.LeftMouseButton )
+		{
+			return;
+		}
 
 		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ) );
 
@@ -79,17 +89,23 @@ public class ScrubberItem : GraphicsItem
 		{
 			if ( time != _dragStartTime )
 			{
+				// Alt+Click+Drag: set loop time range
+
 				Session.LoopTimeRange = new MovieTimeRange(
 					MovieTime.Min( time, _dragStartTime ),
 					MovieTime.Max( time, _dragStartTime ) );
 			}
 			else
 			{
+				// Alt+Click: clear loop time range
+
 				Session.LoopTimeRange = null;
 			}
 		}
 		else
 		{
+			// Click: set playhead time
+
 			Session.PlayheadTime = time;
 		}
 
