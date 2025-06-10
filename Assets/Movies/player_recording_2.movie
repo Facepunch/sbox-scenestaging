@@ -1,6 +1,7 @@
 {
   "EditorData": {
     "SampleRate": 30,
+    "Duration": 50280,
     "Tracks": {
       "b845e43e-df55-4234-97aa-889c34ae3bf0": {
         "$type": "Property",
@@ -325,7 +326,10 @@
           ]
         }
       }
-    }
+    },
+    "References": [
+      "movies/player_transform_recording.movie"
+    ]
   },
   "__references": [],
   "__version": 0
