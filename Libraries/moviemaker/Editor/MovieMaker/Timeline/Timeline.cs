@@ -157,6 +157,9 @@ public class Timeline : GraphicsView
 
 		ScrubBarTop.Width = Width;
 		ScrubBarBottom.Width = Width;
+
+		ScrubBarTop.UpdateCursor();
+		ScrubBarBottom.UpdateCursor();
 	}
 
 	protected override void OnResize()

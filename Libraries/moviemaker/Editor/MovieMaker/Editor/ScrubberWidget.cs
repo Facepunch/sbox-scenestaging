@@ -22,18 +22,47 @@ public class ScrubberItem : GraphicsItem
 
 		HoverEvents = true;
 
-		ToolTip = "Click and drag to define a time range to loop when previewing.";
+		ToolTip =
+			"""
+			<h3>Scrubber</h3>
+			<p><b>Click</b> to set playhead time, <b>Drag</b> to scrub.</p>
+			<p><b>Alt+Click+Drag</b> to set a loop time range for previewing playback, <b>Alt+Click</b> to clear loop.</p>
+			""";
 	}
 
 	private MovieTime _dragStartTime;
+
+	public void UpdateCursor()
+	{
+		Cursor = (Application.KeyboardModifiers & KeyboardModifiers.Alt) != 0
+			? CursorShape.IBeam
+			: CursorShape.Finger;
+	}
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
 		base.OnMousePressed( e );
 
-		_dragStartTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ) );
+		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ) );
 
-		Session.LoopTimeRange = null;
+		if ( e.MiddleMouseButton )
+		{
+			return;
+		}
+
+		if ( e.RightMouseButton )
+		{
+			// TODO: context menu
+		}
+		else if ( e.HasAlt )
+		{
+			_dragStartTime = time;
+			Session.LoopTimeRange = null;
+		}
+		else
+		{
+			Session.PlayheadTime = time;
+		}
 
 		e.Accepted = true;
 
@@ -46,15 +75,22 @@ public class ScrubberItem : GraphicsItem
 
 		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ) );
 
-		if ( time != _dragStartTime )
+		if ( e.HasAlt )
 		{
-			Session.LoopTimeRange = new MovieTimeRange(
-				MovieTime.Min( time, _dragStartTime ),
-				MovieTime.Max( time, _dragStartTime ) );
+			if ( time != _dragStartTime )
+			{
+				Session.LoopTimeRange = new MovieTimeRange(
+					MovieTime.Min( time, _dragStartTime ),
+					MovieTime.Max( time, _dragStartTime ) );
+			}
+			else
+			{
+				Session.LoopTimeRange = null;
+			}
 		}
 		else
 		{
-			Session.LoopTimeRange = null;
+			Session.PlayheadTime = time;
 		}
 
 		Update();
