@@ -53,6 +53,10 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 	[ToggleGroup( "RefractionFog" ), Property, Range( 0, 1000 )]
 	public float RefractionFogDistance { get; set; } = 100;
 
+	[Feature( "Reflection" )]
+	[Property]
+	public bool RoughSurfaceReflections { get; set; } = false;
+
 
 	CommandList _drawReflection = new();
 
@@ -154,13 +158,16 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 			reflectSetup.ViewSetup.FlipX = true;
 			//reflectSetup.ViewSetup.ClipSpaceBounds = new Vector4( 1, -1, -1, 1 );
 
-			var renderTarget = _drawReflection.GetRenderTarget( "reflect", ImageFormat.RGBA16161616F, 1, TextureResolution.Clamp( 1, 8 ) );
+			var renderTarget = _drawReflection.GetRenderTarget( "reflect", ImageFormat.RGBA16161616F, RoughSurfaceReflections ? int.MaxValue : 1, TextureResolution.Clamp( 1, 8 ) );
 
 			_drawReflection.DrawReflection( ReflectionCamera, reflectPlane, renderTarget, reflectSetup );
 
 			_drawReflection.Attributes.Set( "HasReflectionTexture", true );
 			_drawReflection.Attributes.Set( "ReflectionTexture", renderTarget.ColorTexture );
 			_drawReflection.Attributes.Set( "ReflectionColorIndex", renderTarget.ColorIndex );
+
+			if ( RoughSurfaceReflections )
+				_drawReflection.GenerateMipMaps( renderTarget );
 		}
 
 		TargetRenderer.ExecuteBefore = _drawReflection;
