@@ -108,6 +108,11 @@ public class Timeline : GraphicsView
 		if ( visibleRectHash != _lastVisibleRectHash )
 		{
 			Session.DispatchViewChanged();
+
+			if ( (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0 )
+			{
+				UpdatePreviewTime( _lastMouseLocalPos );
+			}
 		}
 
 		_lastVisibleRectHash = visibleRectHash;
@@ -298,15 +303,20 @@ public class Timeline : GraphicsView
 
 		if ( e.HasShift )
 		{
-			Session.PreviewTime = e.ButtonState != 0
-				? Session.ScenePositionToTime( ToScene( e.LocalPosition ) )
-				: Session.PixelsToTime( ToScene( e.LocalPosition ).x );
+			UpdatePreviewTime( e.LocalPosition );
 		}
 
 		_lastMouseLocalPos = e.LocalPosition;
 		_lastMouseTime = Session.PixelsToTime( ToScene( e.LocalPosition ).x );
 
 		Session.EditMode?.MouseMove( e );
+	}
+
+	private void UpdatePreviewTime( Vector2 localPos )
+	{
+		Session.PreviewTime = Application.MouseButtons != 0
+			? Session.ScenePositionToTime( ToScene( localPos ) )
+			: Session.PixelsToTime( ToScene( localPos ).x );
 	}
 
 	public new GraphicsItem? GetItemAt( Vector2 scenePosition )
