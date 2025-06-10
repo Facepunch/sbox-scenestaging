@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using Editor.MovieMaker.BlockDisplays;
 using Sandbox.MovieMaker;
+using System.Collections.Immutable;
+using System.Linq;
+using static Sandbox.PhysicsGroupDescription.BodyPart;
 
 namespace Editor.MovieMaker;
 
@@ -159,7 +162,36 @@ public abstract partial class EditMode
 	internal void Backspace() => OnBackspace();
 	protected virtual void OnBackspace() { }
 
-	internal void Delete() => OnDelete();
+	internal void Delete()
+	{
+		var sequenceBlocks = Timeline.SelectedItems
+			.OfType<SequenceBlockItem>()
+			.ToImmutableArray();
+
+		if ( sequenceBlocks.Length > 0 )
+		{
+			using var historyScope = Session.History.Push( $"Delete Sequence{(sequenceBlocks.Length == 1 ? "" : "s")}" );
+
+			foreach ( var blockItem in sequenceBlocks )
+			{
+				blockItem.Track.RemoveBlock( blockItem.Block );
+
+				if ( blockItem.Track.IsEmpty )
+				{
+					blockItem.Parent.View.Remove();
+				}
+				else
+				{
+					blockItem.Parent.View.MarkValueChanged();
+				}
+			}
+
+			return;
+		}
+
+		OnDelete();
+	}
+
 	protected virtual void OnDelete() { }
 
 	internal void Insert() => OnInsert();
@@ -202,7 +234,7 @@ public abstract partial class EditMode
 			if ( trackView.TransformTrack.TryGetValue( t, out var next ) )
 			{
 				var alpha = Session.GetGizmoAlpha( t, timeRange );
-				var dist = Gizmo.CameraTransform.Position.Distance( next.Position );
+				var dist = Gizmo.Camera.Ortho ? Gizmo.Camera.OrthoHeight : Gizmo.CameraTransform.Position.Distance( next.Position );
 				var scale = dist / 64f;
 
 				if ( trackView.Track is IPropertyTrack<Rotation> rotationTrack && rotationTrack.TryGetValue( t, out var rotation ) )

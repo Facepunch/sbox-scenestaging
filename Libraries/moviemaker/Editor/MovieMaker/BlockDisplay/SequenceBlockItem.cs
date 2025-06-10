@@ -1,4 +1,6 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Collections.Immutable;
+using System.Linq;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker.BlockDisplays;
 
@@ -19,6 +21,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 	private EditMode _editMode;
 	private float _dragOffset;
+	private bool _dragged;
 	private MovieTimeRange _originalTimeRange;
 	private MovieTransform _originalTransform;
 
@@ -43,29 +46,53 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		_ghost = null;
 	}
 
+	private readonly HashSet<SequenceBlockItem> _draggedItems = new();
+	private readonly HashSet<ITrackBlock> _draggedBlocks = new();
+
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
+		_dragged = false;
+
 		if ( Parent.View.IsLocked ) return;
 		if ( !e.LeftMouseButton && !e.RightMouseButton ) return;
 
-		e.Accepted = true;
+		// e.Accepted = true;
 
 		var time = Parent.Session.ScenePositionToTime( e.ScenePosition );
 
 		if ( e.RightMouseButton )
 		{
-			Parent.Session.SetCurrentPointer( time );
+			Parent.Session.PlayheadTime = time;
 		}
 
 		if ( !e.LeftMouseButton ) return;
 
-		if ( !e.HasShift )
-		{
-			Parent.Timeline.DeselectAll();
-		}
-
 		Selected = true;
 
+		_draggedItems.Clear();
+		_draggedBlocks.Clear();
+
+		foreach ( var item in Parent.Timeline.SelectedItems.OfType<SequenceBlockItem>() )
+		{
+			_draggedItems.Add( item );
+			_draggedBlocks.Add( item.Block );
+		}
+
+		foreach ( var item in _draggedItems )
+		{
+			item.OnDragStart( e, time );
+		}
+
+		var fullSceneRect = FullSceneRect;
+
+		_ghost = new FullBlockGhostItem();
+		_ghost.Position = new Vector2( fullSceneRect.Left, Position.y );
+		_ghost.Size = new Vector2( fullSceneRect.Width, Height );
+		_ghost.Parent = Parent;
+	}
+
+	private void OnDragStart( GraphicsMouseEvent e, MovieTime time )
+	{
 		_editMode = GetEditMode( e.LocalPosition );
 		_dragOffset = e.ScenePosition.x - SceneRect.Left;
 		_originalTimeRange = Block.TimeRange;
@@ -77,13 +104,6 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 			_editMode = EditMode.None;
 			return;
 		}
-
-		var fullSceneRect = FullSceneRect;
-
-		_ghost = new FullBlockGhostItem();
-		_ghost.Position = new Vector2( fullSceneRect.Left, Position.y );
-		_ghost.Size = new Vector2( fullSceneRect.Width, Height );
-		_ghost.Parent = Parent;
 	}
 
 	private MovieTimeRange FullTimeRange
@@ -114,27 +134,46 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		e.Accepted = true;
 
-		// To avoid double-click
-		_lastClick = 1f;
-
 		switch ( _editMode )
 		{
 			case EditMode.MoveStart or EditMode.MoveEnd:
 				var end = _editMode is EditMode.MoveStart ? "Start" : "End";
 				_historyScope ??= Parent.Session.History.Push( $"Move Sequence {end} ({BlockTitle})" );
-				OnDragStartEnd( e.ScenePosition );
 				break;
 
 			case EditMode.Translate:
 				_historyScope ??= Parent.Session.History.Push( $"Move Sequence ({BlockTitle})" );
-				OnTranslate( e.ScenePosition );
+				break;
+		}
+
+		foreach ( var item in _draggedItems )
+		{
+			item.OnDrag( e, _draggedBlocks );
+		}
+
+		foreach ( var trackView in _draggedItems.Select( x => x.Parent.View ).Distinct() )
+		{
+			trackView.MarkValueChanged();
+			trackView.ApplyFrame( Parent.Session.PlayheadTime );
+		}
+	}
+
+	private void OnDrag( GraphicsMouseEvent e, IReadOnlySet<ITrackBlock> snapIgnore )
+	{
+		_dragged = true;
+
+		switch ( _editMode )
+		{
+			case EditMode.MoveStart or EditMode.MoveEnd:
+				OnDragStartEnd( e.ScenePosition, snapIgnore );
+				break;
+
+			case EditMode.Translate:
+				OnTranslate( e.ScenePosition, snapIgnore );
 				break;
 		}
 
 		Layout();
-
-		Parent.View.MarkValueChanged();
-		Parent.View.ApplyFrame( Parent.Session.CurrentPointer );
 	}
 
 	private void OnSplit( MovieTime time )
@@ -154,9 +193,9 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		Parent.View.MarkValueChanged();
 	}
 
-	private void OnDragStartEnd( Vector2 scenePosition )
+	private void OnDragStartEnd( Vector2 scenePosition, IReadOnlySet<ITrackBlock> snapIgnore )
 	{
-		var time = Parent.Session.ScenePositionToTime( scenePosition, new SnapOptions( IgnoreBlock: Block ) );
+		var time = Parent.Session.ScenePositionToTime( scenePosition, new SnapOptions( IgnoreBlocks: snapIgnore ) );
 		var minDuration = MovieTime.FromFrames( 1, Parent.Session.FrameRate );
 
 		Block.TimeRange = FullTimeRange.Clamp( _editMode switch
@@ -167,13 +206,13 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		} );
 	}
 
-	private void OnTranslate( Vector2 scenePosition )
+	private void OnTranslate( Vector2 scenePosition, IReadOnlySet<ITrackBlock> snapIgnore )
 	{
 		scenePosition.x -= _dragOffset;
 
 		var fullTimeRange = FullTimeRange;
 		var time = Parent.Session.ScenePositionToTime( scenePosition,
-			new SnapOptions( IgnoreBlock: Block, SnapOffsets: [TimeRange.Duration, fullTimeRange.Start - TimeRange.Start, fullTimeRange.End - TimeRange.End] ) );
+			new SnapOptions( IgnoreBlocks: snapIgnore, SnapOffsets: [TimeRange.Duration, fullTimeRange.Start - TimeRange.Start, fullTimeRange.End - TimeRange.End] ) );
 
 		var difference = time - _originalTimeRange.Start;
 
@@ -200,7 +239,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		if ( !e.LeftMouseButton ) return;
 
-		if ( _lastClick < 0.5f )
+		if ( !_dragged && _lastClick < 0.5f )
 		{
 			OnEdit();
 		}
@@ -213,8 +252,6 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		_ghost?.Destroy();
 		_ghost = null;
 
-		e.Accepted = true;
-
 		Layout();
 	}
 
@@ -224,7 +261,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		Selected = true;
 
-		var time = Parent.Session.CurrentPointer;
+		var time = Parent.Session.PlayheadTime;
 
 		var menu = new Menu();
 
@@ -247,6 +284,11 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		using ( Parent.Session.History.Push( "Sequence Deleted" ) )
 		{
 			Track.RemoveBlock( Block );
+
+			if ( Track.IsEmpty )
+			{
+				Parent.View.Remove();
+			}
 		}
 
 		Parent.View.MarkValueChanged();
@@ -304,12 +346,10 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		var isHovered = !isLocked && Paint.HasMouseOver;
 
 		Paint.SetBrushAndPen( Theme.Primary.Desaturate( isLocked ? 0.25f : 0f ).Darken( isLocked ? 0.5f : isSelected ? 0f : isHovered ? 0.1f : 0.25f ) );
-		Paint.DrawRect( LocalRect, 2 );
+		Paint.DrawRect( LocalRect.Shrink( 0f, 0f, 1f, 0f ), 2 );
 
-		var viewMin = FromScene( Parent.GraphicsView.SceneRect.TopLeft );
-		var viewMax = FromScene( Parent.GraphicsView.SceneRect.BottomRight );
-		var minX = Math.Max( LocalRect.Left, viewMin.x );
-		var maxX = Math.Min( LocalRect.Right, viewMax.x );
+		var minX = LocalRect.Left;
+		var maxX = LocalRect.Right;
 
 		Paint.SetBrush( Theme.ControlBackground );
 
@@ -321,7 +361,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		Paint.ClearBrush();
 		Paint.SetPen( Theme.TextControl.Darken( isLocked ? 0.25f : 0f ) );
 
-		var textRect = new Rect( minX + 4f, LocalRect.Top + 4f, maxX - minX - 8f, LocalRect.Height - 4f );
+		var textRect = new Rect( minX + 8f, LocalRect.Top + 4f, maxX - minX - 16f, LocalRect.Height - 4f );
 		var fullTimeRange = FullTimeRange;
 
 		if ( _editMode == EditMode.MoveEnd )
@@ -329,13 +369,15 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
 			TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
 		}
-		else if ( _editMode != EditMode.None )
+		else if ( _editMode == EditMode.MoveStart )
 		{
 			TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
 			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
 		}
-
-		TryDrawText( ref textRect, BlockTitle, icon: "movie" );
+		else
+		{
+			TryDrawText( ref textRect, BlockTitle, icon: "movie", flags: TextFlag.LeftCenter );
+		}
 	}
 
 	private void TryDrawText( ref Rect rect, string text, TextFlag flags = TextFlag.Center, string? icon = null, float iconSize = 16f )

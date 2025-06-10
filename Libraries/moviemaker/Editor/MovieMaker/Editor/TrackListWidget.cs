@@ -11,14 +11,11 @@ namespace Editor.MovieMaker;
 /// <summary>
 /// Lists tracks in the current movie, and allows you to add or remove them.
 /// </summary>
-public sealed class TrackListPage : Widget, IListPanelPage
+public sealed class TrackListWidget : Widget
 {
 	public Session Session { get; }
 
 	private SceneEditorSession SceneEditorSession { get; }
-
-	public ToolBarItemDisplay Display { get; } = new( "Track List", "list_alt",
-		"Lists tracks in the current movie, and allows you to add or remove them." );
 
 	public IEnumerable<TrackWidget> RootTracks => _rootTracks;
 	public IEnumerable<TrackWidget> Tracks => RootTracks.SelectMany( EnumerateDescendants );
@@ -33,7 +30,7 @@ public sealed class TrackListPage : Widget, IListPanelPage
 	private readonly Widget _dragTarget;
 	private Widget? _placeholder;
 
-	public TrackListPage( ListPanel parent, Session session )
+	public TrackListWidget( ListPanel parent, Session session )
 		: base( parent )
 	{
 		Session = session;
@@ -49,7 +46,7 @@ public sealed class TrackListPage : Widget, IListPanelPage
 
 		_trackContainer.Layout.Margin = new Margin( 4f, 0f );
 
-		_dragTarget = new DragTargetWidget( this ) { FixedWidth = Width };
+		_dragTarget = new DragTargetWidget( this ) { FixedWidth = Width, Visible = false };
 
 		_rootTracks = new SynchronizedSet<TrackView, TrackWidget>(
 			AddRootTrack, RemoveRootTrack, UpdateChildTrack );
@@ -323,9 +320,9 @@ file sealed class DragTargetWidget : Widget
 {
 	public bool HasDrag { get; private set; }
 
-	public new TrackListPage Parent { get; }
+	public new TrackListWidget Parent { get; }
 
-	public DragTargetWidget( TrackListPage parent )
+	public DragTargetWidget( TrackListWidget parent )
 		: base( parent )
 	{
 		Parent = parent;
@@ -378,7 +375,7 @@ file sealed class DragTargetWidget : Widget
 	{
 		HasDrag = true;
 
-		ev.Action = TrackListPage.HasDraggedTracks( ev.Data )
+		ev.Action = TrackListWidget.HasDraggedTracks( ev.Data )
 			? DropAction.Link
 			: DropAction.Ignore;
 	}

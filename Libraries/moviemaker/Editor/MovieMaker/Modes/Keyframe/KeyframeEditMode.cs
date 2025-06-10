@@ -22,8 +22,6 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnEnable()
 	{
-		AddClipboardToolbarGroup();
-
 		var changesGroup = ToolBar.AddGroup();
 
 		changesGroup.AddToggle( new( "Automatic Track Creation", "playlist_add",
@@ -35,12 +33,6 @@ public sealed partial class KeyframeEditMode : EditMode
 			"When enabled, clicking on a track in the timeline will create a keyframe." ),
 			() => CreateKeyframeOnClick || (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0,
 			value => CreateKeyframeOnClick = value );
-
-		var deleteGroup = ToolBar.AddGroup();
-
-		deleteGroup.AddAction( new ToolBarItemDisplay( "Delete Selection", "delete",
-				"Delete all selected keyframes." ),
-			Delete, () => SelectedKeyframes.Any() );
 
 		var selectionGroup = ToolBar.AddGroup();
 
@@ -100,14 +92,14 @@ public sealed partial class KeyframeEditMode : EditMode
 	{
 		// Touching a property should create a keyframe
 
-		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation ) );
+		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.PlayheadTime, view.Target.Value, DefaultInterpolation ) );
 	}
 
 	protected override bool OnPostChange( TrackView view )
 	{
 		// We've finished changing a property, update the keyframe we created in OnPreChange
 
-		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation ) );
+		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.PlayheadTime, view.Target.Value, DefaultInterpolation ) );
 	}
 
 	private TimelineTrack? GetTimelineTrack( TrackView view )
@@ -164,7 +156,7 @@ public sealed partial class KeyframeEditMode : EditMode
 		handles.ReadFromTrack();
 	}
 
-	private void UpdateTracksFromHandles( IEnumerable<KeyframeHandle> handles )
+	public void UpdateTracksFromHandles( IEnumerable<KeyframeHandle> handles )
 	{
 		var tracks = handles
 			.Select( x => x.Parent )
@@ -203,16 +195,62 @@ public sealed partial class KeyframeEditMode : EditMode
 		}
 	}
 
+	private Vector2 _mouseDownLocalPos;
+
+	protected override void OnMousePress( MouseEvent e )
+	{
+		base.OnMousePress(e);
+
+		_mouseDownLocalPos = e.LocalPosition;
+	}
+
 	protected override void OnMouseRelease( MouseEvent e )
 	{
-		if ( !e.LeftMouseButton || !CreateKeyframeOnClick && (e.KeyboardModifiers & KeyboardModifiers.Shift) == 0 ) return;
+		if ( !_mouseDownLocalPos.AlmostEqual( e.LocalPosition ) )
+		{
+			// Don't show context menu / create keyframe if we click and drag
+			return;
+		}
 
 		var scenePos = Timeline.ToScene( e.LocalPosition );
-
-		if ( Timeline.Tracks.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) ) is not { } timelineTrack ) return;
-
-		var view = timelineTrack.View;
 		var time = Session.ScenePositionToTime( scenePos );
+		var timelineTrack = Timeline.Tracks.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) );
+
+		if ( e.RightMouseButton )
+		{
+			OpenContextMenu( timelineTrack, time );
+			return;
+		}
+
+		if ( !e.LeftMouseButton ) return;
+		if ( !CreateKeyframeOnClick && (e.KeyboardModifiers & KeyboardModifiers.Shift) == 0 ) return;
+		if ( timelineTrack is null ) return;
+
+		CreateKeyframe( timelineTrack, time );
+	}
+
+	private void OpenContextMenu( TimelineTrack? timelineTrack, MovieTime time )
+	{
+		var menu = new Menu();
+
+		if ( Clipboard is { } clipboard )
+		{
+			menu.AddHeading( "Clipboard" );
+			menu.AddOption( "Paste Keyframes", "content_paste", Paste );
+		}
+
+		if ( timelineTrack is not null )
+		{
+			menu.AddHeading( timelineTrack.View.Track.Name );
+			menu.AddOption( "Create Keyframe", "key", () => CreateKeyframe( timelineTrack, time ) );
+		}
+
+		menu.OpenAtCursor();
+	}
+
+	private void CreateKeyframe( TimelineTrack timelineTrack, MovieTime time )
+	{
+		var view = timelineTrack.View;
 
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return;
 		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } target ) return;
@@ -228,14 +266,14 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		handles.AddOrUpdate( new Keyframe( time, value, DefaultInterpolation ) );
 
-		Session.SetCurrentPointer( time );
+		Session.PlayheadTime = time;
 	}
 
 	internal void KeyframeDragStart( KeyframeHandle handle, GraphicsMouseEvent e )
 	{
 		DefaultInterpolation = handle.Keyframe.Interpolation;
 
-		Session.SetCurrentPointer( handle.Time );
+		Session.PlayheadTime = handle.Time;
 
 		handle.View.InspectProperty();
 
@@ -260,7 +298,7 @@ public sealed partial class KeyframeEditMode : EditMode
 			.DefaultIfEmpty( 0d )
 			.Max();
 
-		var time = Session.ScenePositionToTime( e.ScenePosition, new SnapOptions( SnapFlag.PlayHead ) );
+		var time = Session.ScenePositionToTime( e.ScenePosition, new SnapOptions( SnapFlag.Playhead ) );
 
 		time = MovieTime.Max( _lastDragTime + minDelta, time );
 
@@ -268,7 +306,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		_lastDragTime = time;
 
-		Session.SetCurrentPointer( time );
+		Session.PlayheadTime = time;
 
 		foreach ( var keyframe in SelectedKeyframes )
 		{
@@ -331,11 +369,11 @@ public sealed partial class KeyframeEditMode : EditMode
 			if ( keyframe.Time < clampedTimeRange.Start ) continue;
 			if ( keyframe.Time > clampedTimeRange.End ) break;
 
-			if ( keyframe.Time == Session.CurrentPointer ) continue;
+			if ( keyframe.Time == Session.PlayheadTime ) continue;
 
 			if ( !trackView.TransformTrack.TryGetValue( keyframe.Time, out var transform ) ) continue;
 
-			var dist = Gizmo.CameraTransform.Position.Distance( transform.Position );
+			var dist = Gizmo.Camera.Ortho ? Gizmo.Camera.OrthoHeight : Gizmo.CameraTransform.Position.Distance( transform.Position );
 			var scale = Session.GetGizmoAlpha( keyframe.Time, timeRange ) * dist / 256f;
 
 			using var scope = Gizmo.Scope( keyframe.Time.ToString(), transform );
@@ -348,7 +386,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 			if ( Gizmo.HasClicked && Gizmo.Pressed.This )
 			{
-				Session.SetCurrentPointer( keyframe.Time );
+				Session.PlayheadTime = keyframe.Time;
 			}
 		}
 	}

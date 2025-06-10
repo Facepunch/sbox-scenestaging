@@ -73,14 +73,6 @@ public sealed class TimelinePanel : MovieEditorPanel
 
 		playbackGroup.Layout.Add( speed );
 
-		var undoGroup = ToolBar.AddGroup( true );
-
-		var undoDisplay = new ToolBarItemDisplay( "Undo", "undo", "Revert the last change made to the movie clip." );
-		var redoDisplay = new ToolBarItemDisplay( "Redo", "redo", "Reapply the last undone change made to the movie clip." );
-
-		undoGroup.AddAction( undoDisplay, session.Undo, () => session.History.CanUndo );
-		undoGroup.AddAction( redoDisplay, session.Redo, () => session.History.CanRedo );
-
 		if ( EditMode.AllTypes is { Count: > 1 } editModes )
 		{
 			var editModeGroup = ToolBar.AddGroup( true );
@@ -118,6 +110,19 @@ public sealed class TimelinePanel : MovieEditorPanel
 			value => session.FrameRate = value );
 
 		snapGroup.Layout.Add( rate );
+
+		var showHistoryGroup = ToolBar.AddGroup( true, true );
+		var showHistoryDisplay = new ToolBarItemDisplay( "Show History", "schedule",
+			"Show the edit history panel.",
+			Background: false );
+
+		showHistoryGroup.Bind( "Visible" )
+			.ReadOnly()
+			.From( () => !parent.ShowHistory, null );
+
+		showHistoryGroup.AddToggle( showHistoryDisplay,
+			() => false,
+			value => parent.ShowHistory = true );
 	}
 }
 

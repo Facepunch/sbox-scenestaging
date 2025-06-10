@@ -186,7 +186,7 @@ partial class MotionEditMode
 		if ( TimeSelection is not { } selection ) return;
 
 		var timeRange = selection.TotalTimeRange;
-		var offset = Session.CurrentPointer;
+		var offset = Session.PlayheadTime;
 		var tracks = new Dictionary<Guid, IReadOnlyList<IProjectPropertyBlock>>();
 		var slicedBlocks = new List<IProjectPropertyBlock>();
 
@@ -227,7 +227,7 @@ partial class MotionEditMode
 
 		ClearChanges();
 
-		var selection = clipboard.Selection + Session.CurrentPointer;
+		var selection = clipboard.Selection + Session.PlayheadTime;
 		var pasteTime = selection.TotalStart;
 
 		TimeSelection = selection;

@@ -7,48 +7,20 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public interface IListPanelPage
-{
-	ToolBarItemDisplay Display { get; }
-	bool Visible { get; set; }
-}
-
-file sealed class DummyPage( ToolBarItemDisplay display ) : Widget, IListPanelPage
-{
-	public ToolBarItemDisplay Display => display;
-
-	public bool Visible { get; set; }
-}
-
 /// <summary>
 /// Panel containing the track list.
 /// </summary>
 public sealed class ListPanel : MovieEditorPanel
 {
-	private const string PageCookieName = "moviemaker.listpage";
+	public TrackListWidget TrackList { get; }
 
-	public TrackListPage TrackList { get; }
-	public MovieResourceListPage MovieList { get; }
-	public MoviePlayerListPage PlayerList { get; }
-
-	private readonly Label _pageTitle;
-
-	private readonly ImmutableArray<IListPanelPage> _pages;
+	private readonly Label _projectTitle;
 
 	public ListPanel( MovieEditor parent, Session session )
 		: base( parent )
 	{
-		_pages =
-		[
-			TrackList = new TrackListPage( this, session ),
-			MovieList = new MovieResourceListPage( this, session ),
-			PlayerList = new MoviePlayerListPage( this, session ),
-			new HistoryPage( this, session )
-		];
-
-		var initialPageTypeName = Cookie.Get<string>( PageCookieName, null! );
-		var initialPage = _pages.FirstOrDefault( x => x.GetType().Name == initialPageTypeName )
-			?? _pages.First();
+		TrackList = new TrackListWidget( this, session );
+		Layout.Add( TrackList );
 
 		MinimumWidth = 300;
 
@@ -69,17 +41,22 @@ public sealed class ListPanel : MovieEditorPanel
 
 			menu.AddSeparator();
 
-			var openMenu = menu.AddMenu( "Open Movie", "folder_open" );
+			var openMenu = menu.AddMenu( "Open Movie", "file_open" );
 
 			var movies = ResourceLibrary.GetAll<MovieResource>().ToArray();
 
 			openMenu.AddOptions( movies, x => $"{x.ResourcePath}:{resourceIcon}", Editor.SwitchResource );
 
-			var importMenu = menu.AddMenu( "Import Movie", "folder_open" );
+			var importMenu = menu.AddMenu( "Import Movie", "sim_card_download" );
 
 			importMenu.AddOptions( movies, x => $"{x.ResourcePath}:{resourceIcon}", x =>
 			{
-				session.GetOrCreateTrack( x );
+				using var historyScope = session.History.Push( $"Import {x.ResourceName.ToTitleCase()}" );
+
+				var track = session.GetOrCreateTrack( x );
+
+				track.AddBlock( (0, x.GetCompiled().Duration), MovieTransform.Identity, x );
+
 				session.TrackList.Update();
 			} );
 
@@ -97,30 +74,31 @@ public sealed class ListPanel : MovieEditorPanel
 
 			saveAsMenu.AddOption( "New Movie Resource", resourceIcon, parent.SaveFileAs );
 
+			menu.AddSeparator();
+
+			var playerMenu = menu.AddMenu( "Switch Movie Player", "switch_video" );
+
+			foreach ( var player in session.Player.Scene.GetAllComponents<MoviePlayer>() )
+			{
+				var option = playerMenu.AddOption( player.GameObject.Name, "live_tv", () => Editor.Switch( player ) );
+
+				option.Checkable = true;
+				option.Checked = session.Player == player;
+			}
+
 			menu.OpenAt( fileGroup.ScreenRect.BottomLeft );
 		} );
 
 		fileAction.ToolTip = "File menu for opening, importing, or saving movie projects.";
 
-		foreach ( var page in _pages )
-		{
-			fileGroup.AddToggle( page.Display,
-				() => page.Visible,
-				_ =>
-				{
-					Cookie.Set( PageCookieName, page.GetType().Name );
-					SetPage( page );
-				} );
-		}
-
 		// File name label
 
 		var resourceGroup = ToolBar.AddGroup( true );
 
-		_pageTitle = resourceGroup.AddLabel( GetFullPath( session ) );
+		_projectTitle = resourceGroup.AddLabel( GetFullPath( session ) );
 
-		_pageTitle.Alignment = TextFlag.Center;
-		_pageTitle.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
+		_projectTitle.Alignment = TextFlag.Center;
+		_projectTitle.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
 
 		// Navigation buttons
 
@@ -129,27 +107,11 @@ public sealed class ListPanel : MovieEditorPanel
 
 		navigateGroup.AddAction( backDisplay, parent.ExitSequence,
 			() => parent.Session?.Parent is not null );
-
-		SetPage( initialPage );
-	}
-
-	public void SetPage( IListPanelPage page )
-	{
-		foreach ( var widget in _pages )
-		{
-			widget.Visible = widget == page;
-		}
-
-		Layout.Clear( false );
-		Layout.Add( ToolBar );
-		Layout.Add( (Widget)page );
-
-		_pageTitle.Text = page.Display.Title;
 	}
 
 	private static string GetFullPath( Session session )
 	{
-		var name = session.Resource is MovieResource res ? res.ResourceName.ToTitleCase() : "Embedded";
+		var name = session.Resource is MovieResource res ? res.ResourceName.ToTitleCase() : session.Player.GameObject.Name;
 
 		return session.Parent is { } parent
 			? $"{GetFullPath( parent )} → {name}"

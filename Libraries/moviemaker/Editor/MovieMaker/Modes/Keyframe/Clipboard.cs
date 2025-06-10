@@ -63,27 +63,10 @@ partial class KeyframeEditMode
 		}
 	}
 
-	private void AddClipboardToolbarGroup()
-	{
-		var clipboardGroup = ToolBar.AddGroup();
-
-		var cutDisplay = new ToolBarItemDisplay( "Cut", "content_cut",
-			"Copy the selected keyframes to the clipboard." );
-
-		var copyDisplay = new ToolBarItemDisplay( "Copy", "content_copy",
-			"Copy the selected time range to be a pending modification." );
-
-		var pasteDisplay = new ToolBarItemDisplay( "Paste", "content_paste",
-			"Load the most recently copied time range to be a pending modification." );
-
-		clipboardGroup.AddAction( cutDisplay, Cut, () => SelectedKeyframes.Any() );
-		clipboardGroup.AddAction( copyDisplay, Copy, () => SelectedKeyframes.Any() );
-		clipboardGroup.AddAction( pasteDisplay, Paste, () => Clipboard is not null );
-	}
-
 	protected override void OnCut()
 	{
-		base.OnCut();
+		Copy();
+		Delete();
 	}
 
 	protected override void OnCopy()
@@ -91,7 +74,7 @@ partial class KeyframeEditMode
 		var groupedByTrack = SelectedKeyframes
 			.GroupBy( x => x.View.Track );
 
-		var headTime = Session.CurrentPointer;
+		var headTime = Session.PlayheadTime;
 
 		var data = new ClipboardData( groupedByTrack.ToImmutableDictionary(
 			x => x.Key.Id,
@@ -110,7 +93,7 @@ partial class KeyframeEditMode
 
 		Timeline.DeselectAll();
 
-		var headTime = Session.CurrentPointer;
+		var headTime = Session.PlayheadTime;
 
 		foreach ( var (trackId, array) in data.Keyframes )
 		{
