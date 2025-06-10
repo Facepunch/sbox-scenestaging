@@ -262,6 +262,17 @@ public class Timeline : GraphicsView
 			return;
 		}
 
+		// scrub
+		if ( e.HasAlt )
+		{
+			var dt = MovieTime.FromFrames( 1, Session.FrameRate );
+			var nextTime = Session.PlayheadTime.Round( dt ) + Math.Sign( e.Delta ) * dt;
+
+			Session.PlayheadTime = nextTime;
+			e.Accept();
+			return;
+		}
+
 		Session.TrackListScrollPosition -= e.Delta / 5f;
 		e.Accept();
 	}
