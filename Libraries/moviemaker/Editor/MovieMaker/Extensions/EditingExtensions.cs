@@ -1,4 +1,5 @@
-﻿using Sandbox.MovieMaker;
+﻿using System.Collections.Immutable;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -13,7 +14,7 @@ public enum SnapFlag
 	Frame = 1,
 	MinorTick = 2,
 	MajorTick = 4,
-	PlayHead = 8,
+	Playhead = 8,
 	TrackBlock = 0x10,
 	PasteBlock = 0x20,
 
@@ -34,7 +35,7 @@ public enum SnapFlag
 public readonly record struct SnapOptions(
 	SnapFlag IgnoreFlags = SnapFlag.None,
 	TrackView? IgnoreTrack = null,
-	ITrackBlock? IgnoreBlock = null,
+	IReadOnlySet<ITrackBlock>? IgnoreBlocks = null,
 	params MovieTime[] SnapOffsets )
 {
 	public static implicit operator SnapOptions( SnapFlag flags ) => new( flags );

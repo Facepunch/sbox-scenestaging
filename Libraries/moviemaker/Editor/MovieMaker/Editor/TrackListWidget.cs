@@ -11,14 +11,11 @@ namespace Editor.MovieMaker;
 /// <summary>
 /// Lists tracks in the current movie, and allows you to add or remove them.
 /// </summary>
-public sealed class TrackListPage : Widget, IListPanelPage
+public sealed class TrackListWidget : Widget
 {
 	public Session Session { get; }
 
 	private SceneEditorSession SceneEditorSession { get; }
-
-	public ToolBarItemDisplay Display { get; } = new( "Track List", "list_alt",
-		"Lists tracks in the current movie, and allows you to add or remove them." );
 
 	public IEnumerable<TrackWidget> RootTracks => _rootTracks;
 	public IEnumerable<TrackWidget> Tracks => RootTracks.SelectMany( EnumerateDescendants );
@@ -27,13 +24,14 @@ public sealed class TrackListPage : Widget, IListPanelPage
 		[track, .. track.Children.SelectMany( EnumerateDescendants )];
 
 	private TrackListView? _trackList;
+	private readonly ImmutableArray<ProjectNavigationWidget> _projectNavWidgets;
 	private readonly SynchronizedSet<TrackView, TrackWidget> _rootTracks;
 
 	private readonly Widget _trackContainer;
 	private readonly Widget _dragTarget;
 	private Widget? _placeholder;
 
-	public TrackListPage( ListPanel parent, Session session )
+	public TrackListWidget( ListPanel parent, Session session )
 		: base( parent )
 	{
 		Session = session;
@@ -48,8 +46,24 @@ public sealed class TrackListPage : Widget, IListPanelPage
 		};
 
 		_trackContainer.Layout.Margin = new Margin( 4f, 0f );
+		_trackContainer.Layout.Spacing = 0f;
 
-		_dragTarget = new DragTargetWidget( this ) { FixedWidth = Width };
+		var navWidgets = new List<ProjectNavigationWidget>();
+
+		var parentSession = session;
+
+		while ( parentSession is not null )
+		{
+			navWidgets.Add( new ProjectNavigationWidget( this, parentSession, parentSession == session ) );
+
+			parentSession = parentSession.Parent;
+		}
+
+		navWidgets.Reverse();
+
+		_projectNavWidgets = [..navWidgets];
+
+		_dragTarget = new DragTargetWidget( this ) { FixedWidth = Width, Visible = false };
 
 		_rootTracks = new SynchronizedSet<TrackView, TrackWidget>(
 			AddRootTrack, RemoveRootTrack, UpdateChildTrack );
@@ -156,12 +170,18 @@ public sealed class TrackListPage : Widget, IListPanelPage
 			return;
 		}
 
-		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition );
-		_trackContainer.FixedWidth = Width;
-		_trackContainer.FixedHeight = _rootTracks
+		var tracksHeight = _rootTracks
 			.Select( x => x.View.Position + x.View.Height + Timeline.RootTrackSpacing )
 			.DefaultIfEmpty( 64f )
-			.Max();
+			.Max() - Timeline.RootTrackSpacing;
+
+		var headerHeight = _projectNavWidgets.Sum( x => x.Height ) + Timeline.RootTrackSpacing;
+
+		Session.TrackListHeaderHeight = headerHeight;
+
+		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition - headerHeight );
+		_trackContainer.FixedWidth = Width;
+		_trackContainer.FixedHeight = tracksHeight + headerHeight;
 	}
 
 	private void TrackList_Changed( TrackListView trackList )
@@ -171,10 +191,15 @@ public sealed class TrackListPage : Widget, IListPanelPage
 
 		_trackContainer.Layout.Clear( false );
 
+		foreach ( var navWidget in _projectNavWidgets )
+		{
+			_trackContainer.Layout.Add( navWidget );
+		}
+
 		foreach ( var track in _rootTracks )
 		{
-			_trackContainer.Layout.Add( track );
 			_trackContainer.Layout.AddSpacingCell( Timeline.RootTrackSpacing );
+			_trackContainer.Layout.Add( track );
 		}
 
 		if ( _rootTracks.Count == 0 )
@@ -323,9 +348,9 @@ file sealed class DragTargetWidget : Widget
 {
 	public bool HasDrag { get; private set; }
 
-	public new TrackListPage Parent { get; }
+	public new TrackListWidget Parent { get; }
 
-	public DragTargetWidget( TrackListPage parent )
+	public DragTargetWidget( TrackListWidget parent )
 		: base( parent )
 	{
 		Parent = parent;
@@ -378,7 +403,7 @@ file sealed class DragTargetWidget : Widget
 	{
 		HasDrag = true;
 
-		ev.Action = TrackListPage.HasDraggedTracks( ev.Data )
+		ev.Action = TrackListWidget.HasDraggedTracks( ev.Data )
 			? DropAction.Link
 			: DropAction.Ignore;
 	}

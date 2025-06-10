@@ -92,6 +92,28 @@ public sealed class MoviePlayer : Component
 	}
 
 	/// <summary>
+	/// Play the current movie from the start.
+	/// </summary>
+	public void Play()
+	{
+		_position = 0;
+		_isPlaying = true;
+
+		UpdatePosition();
+	}
+
+	/// <summary>
+	/// Play the specified movie from the start.
+	/// </summary>
+	public void Play( MovieResource movie )
+	{
+		_position = 0;
+		_isPlaying = true;
+
+		Resource = movie;
+	}
+
+	/// <summary>
 	/// Apply the movie clip to the scene at the current time position.
 	/// </summary>
 	private void UpdatePosition()

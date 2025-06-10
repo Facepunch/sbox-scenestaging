@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -63,27 +64,10 @@ partial class KeyframeEditMode
 		}
 	}
 
-	private void AddClipboardToolbarGroup()
-	{
-		var clipboardGroup = ToolBar.AddGroup();
-
-		var cutDisplay = new ToolBarItemDisplay( "Cut", "content_cut",
-			"Copy the selected keyframes to the clipboard." );
-
-		var copyDisplay = new ToolBarItemDisplay( "Copy", "content_copy",
-			"Copy the selected time range to be a pending modification." );
-
-		var pasteDisplay = new ToolBarItemDisplay( "Paste", "content_paste",
-			"Load the most recently copied time range to be a pending modification." );
-
-		clipboardGroup.AddAction( cutDisplay, Cut, () => SelectedKeyframes.Any() );
-		clipboardGroup.AddAction( copyDisplay, Copy, () => SelectedKeyframes.Any() );
-		clipboardGroup.AddAction( pasteDisplay, Paste, () => Clipboard is not null );
-	}
-
 	protected override void OnCut()
 	{
-		base.OnCut();
+		Copy();
+		Delete();
 	}
 
 	protected override void OnCopy()
@@ -91,12 +75,10 @@ partial class KeyframeEditMode
 		var groupedByTrack = SelectedKeyframes
 			.GroupBy( x => x.View.Track );
 
-		var headTime = Session.CurrentPointer;
-
 		var data = new ClipboardData( groupedByTrack.ToImmutableDictionary(
 			x => x.Key.Id,
 			x => JsonSerializer.SerializeToNode(
-				x.Select( y => y.Keyframe with { Time = y.Keyframe.Time - headTime } ).ToImmutableArray(),
+				x.Select( x => x.Keyframe ).ToImmutableArray(),
 				EditorJsonOptions )!.AsArray() ) );
 
 		if ( data.Keyframes.Count == 0 ) return;
@@ -109,8 +91,6 @@ partial class KeyframeEditMode
 		if ( Clipboard is not { } data ) return;
 
 		Timeline.DeselectAll();
-
-		var headTime = Session.CurrentPointer;
 
 		foreach ( var (trackId, array) in data.Keyframes )
 		{
@@ -125,7 +105,7 @@ partial class KeyframeEditMode
 			var arrayType = typeof(ImmutableArray<>).MakeGenericType( keyframeType );
 			var keyframes = (IEnumerable)array.Deserialize( arrayType, EditorJsonOptions )!;
 
-			handles.AddRange( keyframes.Cast<IKeyframe>(), headTime );
+			handles.AddRange( keyframes.Cast<IKeyframe>(), MovieTime.Zero );
 		}
 	}
 }

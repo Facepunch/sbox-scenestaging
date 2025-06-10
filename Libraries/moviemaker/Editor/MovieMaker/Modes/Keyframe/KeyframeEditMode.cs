@@ -22,8 +22,6 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnEnable()
 	{
-		AddClipboardToolbarGroup();
-
 		var changesGroup = ToolBar.AddGroup();
 
 		changesGroup.AddToggle( new( "Automatic Track Creation", "playlist_add",
@@ -35,12 +33,6 @@ public sealed partial class KeyframeEditMode : EditMode
 			"When enabled, clicking on a track in the timeline will create a keyframe." ),
 			() => CreateKeyframeOnClick || (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0,
 			value => CreateKeyframeOnClick = value );
-
-		var deleteGroup = ToolBar.AddGroup();
-
-		deleteGroup.AddAction( new ToolBarItemDisplay( "Delete Selection", "delete",
-				"Delete all selected keyframes." ),
-			Delete, () => SelectedKeyframes.Any() );
 
 		var selectionGroup = ToolBar.AddGroup();
 
@@ -67,12 +59,16 @@ public sealed partial class KeyframeEditMode : EditMode
 
 			UpdateTracksFromHandles( SelectedKeyframes );
 		} );
+
+		Timeline.OnSelectionChanged += OnSelectionChanged;
+	}
+
+	protected override void OnDisable()
+	{
+		Timeline.OnSelectionChanged -= OnSelectionChanged;
 	}
 
 	public override bool AllowTrackCreation => AutoCreateTracks;
-
-	private bool _isDraggingKeyframes;
-	private MovieTime _lastDragTime;
 
 	private sealed record KeyframeChangeScope( string Name, TrackView? TrackView, IHistoryScope HistoryScope ) : IDisposable
 	{
@@ -100,14 +96,24 @@ public sealed partial class KeyframeEditMode : EditMode
 	{
 		// Touching a property should create a keyframe
 
-		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation ) );
+		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.PlayheadTime, view.Target.Value, DefaultInterpolation ) );
 	}
 
 	protected override bool OnPostChange( TrackView view )
 	{
 		// We've finished changing a property, update the keyframe we created in OnPreChange
 
-		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation ) );
+		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.PlayheadTime, view.Target.Value, DefaultInterpolation ) );
+	}
+
+	private void OnSelectionChanged()
+	{
+		// When deselecting keyframes, get rid of overlapping duplicates
+
+		foreach ( var (_, handles) in _trackKeyframeHandles )
+		{
+			handles.CleanUpKeyframes();
+		}
 	}
 
 	private TimelineTrack? GetTimelineTrack( TrackView view )
@@ -164,7 +170,7 @@ public sealed partial class KeyframeEditMode : EditMode
 		handles.ReadFromTrack();
 	}
 
-	private void UpdateTracksFromHandles( IEnumerable<KeyframeHandle> handles )
+	public void UpdateTracksFromHandles( IEnumerable<KeyframeHandle> handles )
 	{
 		var tracks = handles
 			.Select( x => x.Parent )
@@ -186,6 +192,23 @@ public sealed partial class KeyframeEditMode : EditMode
 		}
 	}
 
+	protected override void OnKeyPress( KeyEvent e )
+	{
+		base.OnKeyPress(e);
+
+		var nudgeDelta = MovieTime.FromFrames( e.HasShift ? 10 : 1, Session.FrameRate );
+
+		switch ( e.Key )
+		{
+			case KeyCode.Right:
+				Nudge( nudgeDelta );
+				break;
+			case KeyCode.Left:
+				Nudge( -nudgeDelta );
+				break;
+		}
+	}
+
 	protected override void OnKeyRelease( KeyEvent e )
 	{
 		base.OnKeyRelease( e );
@@ -203,16 +226,62 @@ public sealed partial class KeyframeEditMode : EditMode
 		}
 	}
 
+	private Vector2 _mouseDownLocalPos;
+
+	protected override void OnMousePress( MouseEvent e )
+	{
+		base.OnMousePress(e);
+
+		_mouseDownLocalPos = e.LocalPosition;
+	}
+
 	protected override void OnMouseRelease( MouseEvent e )
 	{
-		if ( !e.LeftMouseButton || !CreateKeyframeOnClick && (e.KeyboardModifiers & KeyboardModifiers.Shift) == 0 ) return;
+		if ( !_mouseDownLocalPos.AlmostEqual( e.LocalPosition ) )
+		{
+			// Don't show context menu / create keyframe if we click and drag
+			return;
+		}
 
 		var scenePos = Timeline.ToScene( e.LocalPosition );
-
-		if ( Timeline.Tracks.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) ) is not { } timelineTrack ) return;
-
-		var view = timelineTrack.View;
 		var time = Session.ScenePositionToTime( scenePos );
+		var timelineTrack = Timeline.Tracks.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) );
+
+		if ( e.RightMouseButton )
+		{
+			OpenContextMenu( timelineTrack, time );
+			return;
+		}
+
+		if ( !e.LeftMouseButton ) return;
+		if ( !CreateKeyframeOnClick && (e.KeyboardModifiers & KeyboardModifiers.Shift) == 0 ) return;
+		if ( timelineTrack is null ) return;
+
+		CreateKeyframe( timelineTrack, time );
+	}
+
+	private void OpenContextMenu( TimelineTrack? timelineTrack, MovieTime time )
+	{
+		var menu = new Menu();
+
+		if ( Clipboard is { } clipboard )
+		{
+			menu.AddHeading( "Clipboard" );
+			menu.AddOption( "Paste Keyframes", "content_paste", Paste );
+		}
+
+		if ( timelineTrack is not null )
+		{
+			menu.AddHeading( timelineTrack.View.Track.Name );
+			menu.AddOption( "Create Keyframe", "key", () => CreateKeyframe( timelineTrack, time ) );
+		}
+
+		menu.OpenAtCursor();
+	}
+
+	private void CreateKeyframe( TimelineTrack timelineTrack, MovieTime time )
+	{
+		var view = timelineTrack.View;
 
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return;
 		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } target ) return;
@@ -228,65 +297,34 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		handles.AddOrUpdate( new Keyframe( time, value, DefaultInterpolation ) );
 
-		Session.SetCurrentPointer( time );
+		Session.PlayheadTime = time;
 	}
 
-	internal void KeyframeDragStart( KeyframeHandle handle, GraphicsMouseEvent e )
+	protected override void OnDragItems( IReadOnlyList<IMovieDraggable> items, MovieTime delta )
 	{
-		DefaultInterpolation = handle.Keyframe.Interpolation;
-
-		Session.SetCurrentPointer( handle.Time );
-
-		handle.View.InspectProperty();
-
-		_lastDragTime = handle.Time;
+		UpdateTracksFromHandles( items.OfType<KeyframeHandle>() );
 	}
 
-	internal void KeyframeDragMove( KeyframeHandle handle, GraphicsMouseEvent e )
+	private MovieTime ClampKeyframeDelta( MovieTime delta )
 	{
-		e.Accepted = true;
-
-		_isDraggingKeyframes = true;
-
-		var view = SelectedKeyframes.GroupBy( x => x.View )
-			.Count() == 1
-			? handle.View
-			: null;
-
-		using var scope = GetKeyframeChangeScope( "Move", view );
-
 		var minDelta = SelectedKeyframes
 			.Select( x => -x.Time )
 			.DefaultIfEmpty( 0d )
 			.Max();
 
-		var time = Session.ScenePositionToTime( e.ScenePosition, new SnapOptions( SnapFlag.PlayHead ) );
+		return MovieTime.Max( delta, minDelta );
+	}
 
-		time = MovieTime.Max( _lastDragTime + minDelta, time );
-
-		var transform = new MovieTransform( time - _lastDragTime );
-
-		_lastDragTime = time;
-
-		Session.SetCurrentPointer( time );
+	private void Nudge( MovieTime delta )
+	{
+		delta = ClampKeyframeDelta( delta );
 
 		foreach ( var keyframe in SelectedKeyframes )
 		{
-			keyframe.Time = transform * keyframe.Time;
+			keyframe.Time += delta;
 		}
 
 		UpdateTracksFromHandles( SelectedKeyframes );
-	}
-
-	internal void KeyframeDragEnd( KeyframeHandle handle, GraphicsMouseEvent e )
-	{
-		if ( !_isDraggingKeyframes ) return;
-
-		e.Accepted = true;
-
-		_isDraggingKeyframes = false;
-
-		ClearKeyframeChangeScope();
 	}
 
 	protected override void OnSelectAll()
@@ -331,11 +369,11 @@ public sealed partial class KeyframeEditMode : EditMode
 			if ( keyframe.Time < clampedTimeRange.Start ) continue;
 			if ( keyframe.Time > clampedTimeRange.End ) break;
 
-			if ( keyframe.Time == Session.CurrentPointer ) continue;
+			if ( keyframe.Time == Session.PlayheadTime ) continue;
 
 			if ( !trackView.TransformTrack.TryGetValue( keyframe.Time, out var transform ) ) continue;
 
-			var dist = Gizmo.CameraTransform.Position.Distance( transform.Position );
+			var dist = Gizmo.Camera.Ortho ? Gizmo.Camera.OrthoHeight : Gizmo.CameraTransform.Position.Distance( transform.Position );
 			var scale = Session.GetGizmoAlpha( keyframe.Time, timeRange ) * dist / 256f;
 
 			using var scope = Gizmo.Scope( keyframe.Time.ToString(), transform );
@@ -348,7 +386,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 			if ( Gizmo.HasClicked && Gizmo.Pressed.This )
 			{
-				Session.SetCurrentPointer( keyframe.Time );
+				Session.PlayheadTime = keyframe.Time;
 			}
 		}
 	}
@@ -437,6 +475,29 @@ public sealed partial class KeyframeEditMode : EditMode
 			}
 		}
 
+		/// <summary>
+		/// Remove overlapping unselected keyframes.
+		/// We keep selected ones in case they're being dragged.
+		/// </summary>
+		public void CleanUpKeyframes()
+		{
+			var changed = false;
+
+			for ( var i = _handles.Count - 1; i >= 1; --i )
+			{
+				var prev = _handles[i - 1];
+				var next = _handles[i];
+
+				if ( prev.Selected || next.Selected ) continue;
+				if ( prev.Time != next.Time ) continue;
+
+				_handles.RemoveAt( i );
+
+				next.Destroy();
+				changed = true;
+			}
+		}
+
 		public void ReadFromTrack()
 		{
 			foreach ( var handle in _handles )
@@ -503,6 +564,12 @@ public sealed partial class KeyframeEditMode : EditMode
 					block.Clear();
 
 					prevCutTime = cutTime;
+				}
+
+				if ( block.Count > 0 && block[^1].Time == handle.Time )
+				{
+					// Use first when overlapping, which will be a selected keyframe
+					continue;
 				}
 
 				block.Add( handle.Keyframe );

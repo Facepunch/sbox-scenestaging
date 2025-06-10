@@ -1,4 +1,5 @@
 ﻿using Sandbox.MovieMaker;
+using Sandbox.UI;
 
 namespace Editor.MovieMaker;
 
@@ -89,6 +90,47 @@ internal static class PaintExtensions
 
 			points.Add( start + new Vector2( t * (end.x - start.x), v * (end.y - start.y) ) );
 		}
+	}
+
+	[SkipHotload]
+	private static Pixmap? _filmStripImage;
+
+	public static Pixmap FilmStripImage => _filmStripImage ??= GenerateFilmStripImage();
+
+	public static void PaintFilmStrip( Rect rect, Color color )
+	{
+		if ( rect.Height > 30f )
+		{
+			rect = rect.Contain( new Vector2( rect.Width, 30f ) );
+		}
+
+		Paint.ClearPen();
+		Paint.SetBrush( FilmStripImage );
+		Paint.Translate( rect.TopLeft );
+		Paint.DrawRect( new Rect( 0f, 0f, rect.Width, rect.Height ), 2 );
+		Paint.Translate( -rect.TopLeft );
+
+		Paint.RenderMode = RenderMode.Multiply;
+		Paint.SetBrush( color );
+		Paint.DrawRect( rect, 2 );
+
+		Paint.RenderMode = RenderMode.Normal;
+	}
+
+	private static Pixmap GenerateFilmStripImage()
+	{
+		var image = new Pixmap( 3, 30 );
+
+		image.Clear( Color.White );
+
+		using ( Paint.ToPixmap( image ) )
+		{
+			Paint.SetBrushAndPen( Color.White.Darken( 0.5f ) );
+			Paint.DrawRect( new Rect( 1f, 1f, 2f, 3f ) );
+			Paint.DrawRect( new Rect( 1f, 30 - 4f, 2f, 3f ) );
+		}
+
+		return image;
 	}
 }
 

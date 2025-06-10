@@ -1,11 +1,14 @@
 ﻿
+using Editor.MapEditor;
 using Sandbox.MovieMaker;
+using System.Collections.Immutable;
+using System.Linq;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
+public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>, IMovieDraggable
 {
 	private Keyframe _keyframe;
 
@@ -67,6 +70,8 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 	{
 		base.OnSelectionChanged();
 		UpdatePosition();
+
+		ZIndex = Selected ? 101 : 100;
 	}
 
 	protected override void OnPaint()
@@ -106,23 +111,64 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
-		if ( !e.LeftMouseButton ) return;
+		if ( e.RightMouseButton )
+		{
+			ShowContextMenu();
 
-		EditMode?.KeyframeDragStart( this, e );
+			e.Accepted = true;
+		}
 	}
 
-	protected override void OnMouseMove( GraphicsMouseEvent e )
+	private void ShowContextMenu()
 	{
-		if ( !e.LeftMouseButton ) return;
+		if ( EditMode is not { } editMode ) return;
 
-		EditMode?.KeyframeDragMove( this, e );
+		var menu = new Menu();
+
+		Selected = true;
+		editMode.Session.PlayheadTime = Keyframe.Time;
+
+		var selection = GraphicsView.SelectedItems
+			.OfType<KeyframeHandle>()
+			.ToImmutableArray();
+
+		menu.AddHeading( $"Selected Keyframe{(selection.Length > 1 ? "s" : "")}" );
+
+		CreateInterpolationMenu( selection, menu );
+
+		menu.AddSeparator();
+
+		menu.AddOption( "Copy", "content_copy", () => editMode.Copy() );
+		menu.AddOption( "Cut", "content_cut", () => editMode.Cut() );
+		menu.AddOption( "Delete", "delete", () => editMode.Delete() );
+
+		menu.OpenAtCursor();
 	}
 
-	protected override void OnMouseReleased( GraphicsMouseEvent e )
+	private void CreateInterpolationMenu( IReadOnlyList<KeyframeHandle> selection, Menu parent )
 	{
-		if ( !e.LeftMouseButton ) return;
+		var menu = parent.AddMenu( "Interpolation Mode", "gradient" );
+		var currentMode = selection.All( x => x.Keyframe.Interpolation == selection[0].Keyframe.Interpolation )
+			? selection[0].Keyframe.Interpolation
+			: KeyframeInterpolation.Unknown;
 
-		EditMode?.KeyframeDragEnd( this, e );
+		foreach ( var value in Enum.GetValues<KeyframeInterpolation>() )
+		{
+			if ( value < 0 ) continue;
+
+			var option = menu.AddOption( value.ToString().ToTitleCase(), action: () =>
+			{
+				foreach ( var handle in selection )
+				{
+					handle.Keyframe = handle.Keyframe with { Interpolation = value };
+				}
+
+				EditMode?.UpdateTracksFromHandles( selection );
+			} );
+
+			option.Checkable = true;
+			option.Checked = value == currentMode;
+		}
 	}
 
 	public int CompareTo( KeyframeHandle? other )
@@ -137,6 +183,24 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 			return 1;
 		}
 
-		return _keyframe.CompareTo( other.Keyframe );
+		var timeCompare = Time.CompareTo( other.Time );
+
+		if ( timeCompare != 0 )
+		{
+			return timeCompare;
+		}
+
+		// When overlapping, put selected first
+
+		return -Selected.CompareTo( other.Selected );
+	}
+
+	ITrackBlock? IMovieTrackItem.Block => null;
+
+	MovieTimeRange IMovieTrackItem.TimeRange => Keyframe.Time;
+
+	void IMovieDraggable.Drag( MovieTime delta )
+	{
+		Time += delta;
 	}
 }

@@ -1,29 +1,13 @@
 ﻿using Sandbox.MovieMaker;
+using System.Linq;
 
 namespace Editor.MovieMaker.BlockDisplays;
 
 #nullable enable
 
-public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
+public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>, IMovieDraggable, IMovieResizable
 {
 	private RealTimeSince _lastClick;
-
-	private enum EditMode
-	{
-		None,
-		Translate,
-		MoveStart,
-		MoveEnd,
-		Split
-	}
-
-	private EditMode _editMode;
-	private float _dragOffset;
-	private MovieTimeRange _originalTimeRange;
-	private MovieTransform _originalTransform;
-
-	private GraphicsItem? _ghost;
-	private IHistoryScope? _historyScope;
 
 	public new ProjectSequenceTrack Track => (ProjectSequenceTrack)Parent.View.Track;
 
@@ -37,53 +21,20 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		Cursor = CursorShape.Finger;
 	}
 
-	protected override void OnDestroy()
-	{
-		_ghost?.Destroy();
-		_ghost = null;
-	}
-
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
 		if ( Parent.View.IsLocked ) return;
 		if ( !e.LeftMouseButton && !e.RightMouseButton ) return;
 
-		e.Accepted = true;
+		// e.Accepted = true;
 
 		var time = Parent.Session.ScenePositionToTime( e.ScenePosition );
 
 		if ( e.RightMouseButton )
 		{
-			Parent.Session.SetCurrentPointer( time );
+			Parent.Session.PlayheadTime = time;
+			e.Accepted = true;
 		}
-
-		if ( !e.LeftMouseButton ) return;
-
-		if ( !e.HasShift )
-		{
-			Parent.Timeline.DeselectAll();
-		}
-
-		Selected = true;
-
-		_editMode = GetEditMode( e.LocalPosition );
-		_dragOffset = e.ScenePosition.x - SceneRect.Left;
-		_originalTimeRange = Block.TimeRange;
-		_originalTransform = Block.Transform;
-
-		if ( _editMode == EditMode.Split )
-		{
-			OnSplit( time );
-			_editMode = EditMode.None;
-			return;
-		}
-
-		var fullSceneRect = FullSceneRect;
-
-		_ghost = new FullBlockGhostItem();
-		_ghost.Position = new Vector2( fullSceneRect.Left, Position.y );
-		_ghost.Size = new Vector2( fullSceneRect.Width, Height );
-		_ghost.Parent = Parent;
 	}
 
 	private MovieTimeRange FullTimeRange
@@ -95,53 +46,10 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		}
 	}
 
-	public Rect FullSceneRect
-	{
-		get
-		{
-			var fullTimeRange = FullTimeRange.ClampStart( 0d );
-
-			var min = Parent.Session.TimeToPixels( fullTimeRange.Start );
-			var max = Parent.Session.TimeToPixels( fullTimeRange.End );
-
-			return SceneRect with { Left = min, Right = max };
-		}
-	}
-
-	protected override void OnMouseMove( GraphicsMouseEvent e )
-	{
-		if ( _editMode == EditMode.None ) return;
-
-		e.Accepted = true;
-
-		// To avoid double-click
-		_lastClick = 1f;
-
-		switch ( _editMode )
-		{
-			case EditMode.MoveStart or EditMode.MoveEnd:
-				var end = _editMode is EditMode.MoveStart ? "Start" : "End";
-				_historyScope ??= Parent.Session.History.Push( $"Move Sequence {end} ({BlockTitle})" );
-				OnDragStartEnd( e.ScenePosition );
-				break;
-
-			case EditMode.Translate:
-				_historyScope ??= Parent.Session.History.Push( $"Move Sequence ({BlockTitle})" );
-				OnTranslate( e.ScenePosition );
-				break;
-		}
-
-		Layout();
-
-		Parent.View.MarkValueChanged();
-		Parent.View.ApplyFrame( Parent.Session.CurrentPointer );
-	}
-
 	private void OnSplit( MovieTime time )
 	{
 		if ( time <= TimeRange.Start ) return;
 		if ( time >= TimeRange.End ) return;
-
 
 		using ( Parent.Session.History.Push( $"Split Sequence ({BlockTitle})" ) )
 		{
@@ -152,42 +60,6 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		Layout();
 		Parent.View.MarkValueChanged();
-	}
-
-	private void OnDragStartEnd( Vector2 scenePosition )
-	{
-		var time = Parent.Session.ScenePositionToTime( scenePosition, new SnapOptions( IgnoreBlock: Block ) );
-		var minDuration = MovieTime.FromFrames( 1, Parent.Session.FrameRate );
-
-		Block.TimeRange = FullTimeRange.Clamp( _editMode switch
-		{
-			EditMode.MoveStart => (MovieTime.Min( time, _originalTimeRange.End - minDuration ), _originalTimeRange.End),
-			EditMode.MoveEnd => (_originalTimeRange.Start, MovieTime.Max( time, _originalTimeRange.Start + minDuration )),
-			_ => null
-		} );
-	}
-
-	private void OnTranslate( Vector2 scenePosition )
-	{
-		scenePosition.x -= _dragOffset;
-
-		var fullTimeRange = FullTimeRange;
-		var time = Parent.Session.ScenePositionToTime( scenePosition,
-			new SnapOptions( IgnoreBlock: Block, SnapOffsets: [TimeRange.Duration, fullTimeRange.Start - TimeRange.Start, fullTimeRange.End - TimeRange.End] ) );
-
-		var difference = time - _originalTimeRange.Start;
-
-		Block.TimeRange = _originalTimeRange + difference;
-		Block.Transform = _originalTransform + difference;
-
-		if ( _ghost is not { } ghost ) return;
-
-		ghost.PrepareGeometryChange();
-
-		var fullSceneRect = FullSceneRect;
-
-		_ghost.Position = new Vector2( FullSceneRect.Left, Position.y );
-		_ghost.Width = fullSceneRect.Width;
 	}
 
 	protected override void OnMouseReleased( GraphicsMouseEvent e )
@@ -205,17 +77,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 			OnEdit();
 		}
 
-		_historyScope?.Dispose();
-		_historyScope = null;
-
 		_lastClick = 0f;
-		_editMode = EditMode.None;
-		_ghost?.Destroy();
-		_ghost = null;
-
-		e.Accepted = true;
-
-		Layout();
 	}
 
 	private void OnOpenContextMenu( GraphicsMouseEvent e )
@@ -224,7 +86,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		Selected = true;
 
-		var time = Parent.Session.CurrentPointer;
+		var time = Parent.Session.PlayheadTime;
 
 		var menu = new Menu();
 
@@ -247,6 +109,11 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		using ( Parent.Session.History.Push( "Sequence Deleted" ) )
 		{
 			Track.RemoveBlock( Block );
+
+			if ( Track.IsEmpty )
+			{
+				Parent.View.Remove();
+			}
 		}
 
 		Parent.View.MarkValueChanged();
@@ -260,82 +127,39 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		}
 	}
 
-	private EditMode GetEditMode( Vector2 localMousePos )
-	{
-		if ( localMousePos.x <= 8f ) return EditMode.MoveStart;
-		if ( localMousePos.x >= LocalRect.Width - 8f ) return EditMode.MoveEnd;
-		// if ( (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0 ) return EditMode.Split;
-
-		return EditMode.Translate;
-	}
-
-	private void UpdateCursor( Vector2 localMousePos )
-	{
-		if ( Parent.View.IsLocked )
-		{
-			Cursor = CursorShape.Arrow;
-			return;
-		}
-
-		Cursor = GetEditMode( localMousePos ) switch
-		{
-			EditMode.MoveStart or EditMode.MoveEnd => CursorShape.SizeH,
-			EditMode.Split => CursorShape.SplitH,
-			_ => CursorShape.Finger
-		};
-	}
-
-	protected override void OnHoverEnter( GraphicsHoverEvent e )
-	{
-		base.OnHoverEnter( e );
-		UpdateCursor( e.LocalPosition );
-	}
-
-	protected override void OnHoverMove( GraphicsHoverEvent e )
-	{
-		base.OnHoverMove( e );
-		UpdateCursor( e.LocalPosition );
-	}
-
 	protected override void OnPaint()
 	{
 		var isLocked = Parent.View.IsLocked;
 		var isSelected = !isLocked && Selected;
 		var isHovered = !isLocked && Paint.HasMouseOver;
 
-		Paint.SetBrushAndPen( Theme.Primary.Desaturate( isLocked ? 0.25f : 0f ).Darken( isLocked ? 0.5f : isSelected ? 0f : isHovered ? 0.1f : 0.25f ) );
-		Paint.DrawRect( LocalRect, 2 );
+		var color = Theme.Primary.Desaturate( isLocked ? 0.25f : 0f ).Darken( isLocked ? 0.5f : isSelected ? 0f : isHovered ? 0.1f : 0.25f );
 
-		var viewMin = FromScene( Parent.GraphicsView.SceneRect.TopLeft );
-		var viewMax = FromScene( Parent.GraphicsView.SceneRect.BottomRight );
-		var minX = Math.Max( LocalRect.Left, viewMin.x );
-		var maxX = Math.Min( LocalRect.Right, viewMax.x );
+		PaintExtensions.PaintFilmStrip( LocalRect.Shrink( 0f, 0f, 1f, 0f ), color );
 
-		Paint.SetBrush( Theme.ControlBackground );
-
-		for ( var x = minX.SnapToGrid( 8f ); x <= maxX; x += 8f )
-		{
-			Paint.DrawRect( new Rect( x - 2f, LocalRect.Top + 2f, 4f, 6f ) );
-		}
+		var minX = LocalRect.Left;
+		var maxX = LocalRect.Right;
 
 		Paint.ClearBrush();
 		Paint.SetPen( Theme.TextControl.Darken( isLocked ? 0.25f : 0f ) );
 
-		var textRect = new Rect( minX + 4f, LocalRect.Top + 4f, maxX - minX - 8f, LocalRect.Height - 4f );
+		var textRect = new Rect( minX + 8f, LocalRect.Top, maxX - minX - 16f, LocalRect.Height );
 		var fullTimeRange = FullTimeRange;
 
-		if ( _editMode == EditMode.MoveEnd )
+		//if ( _editMode == EditMode.MoveEnd )
+		//{
+		//	TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
+		//	TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
+		//}
+		//else if ( _editMode == EditMode.MoveStart )
+		//{
+		//	TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
+		//	TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
+		//}
+		//else
 		{
-			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
-			TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
+			TryDrawText( ref textRect, BlockTitle, icon: "movie", flags: TextFlag.LeftCenter );
 		}
-		else if ( _editMode != EditMode.None )
-		{
-			TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
-			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
-		}
-
-		TryDrawText( ref textRect, BlockTitle, icon: "movie" );
 	}
 
 	private void TryDrawText( ref Rect rect, string text, TextFlag flags = TextFlag.Center, string? icon = null, float iconSize = 16f )
@@ -377,6 +201,28 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		{
 			rect.Right = textRect.Left;
 		}
+	}
+
+	ITrackBlock IMovieTrackItem.Block => Block;
+	MovieTimeRange IMovieTrackItem.TimeRange => Block.TimeRange;
+	MovieTimeRange? IMovieResizable.FullTimeRange => FullTimeRange;
+
+	void IMovieDraggable.Drag( MovieTime delta )
+	{
+		Block.TimeRange += delta;
+		Block.Transform += delta;
+
+		Layout();
+	}
+
+	void IMovieResizable.Drag( BlockEdge edge, MovieTime delta )
+	{
+		Block.TimeRange = 
+			edge == BlockEdge.Start
+				? Block.TimeRange with { Start = Block.TimeRange.Start + delta }
+				: Block.TimeRange with { End = Block.TimeRange.End + delta };
+
+		Layout();
 	}
 }
 

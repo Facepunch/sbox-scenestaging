@@ -43,6 +43,10 @@ public sealed partial class Session
 	public Session Root => Context?.Parent.Root ?? this;
 	public IMovieResource Resource { get; }
 
+	public string Title => Resource is MovieResource res
+		? res.ResourceName.ToTitleCase()
+		: Player.GameObject.Name;
+
 	private int _frameRate = 10;
 	private bool _frameSnap;
 	private bool _objectSnap;
@@ -82,22 +86,76 @@ public sealed partial class Session
 		private set => _pixelsPerSecond = Cookies.PixelsPerSecond = value;
 	}
 
+	private MovieTime _playheadTime;
+	private MovieTime? _previewTime;
+
 	/// <summary>
 	/// Current time being edited. In play mode, this is the current playback time.
 	/// </summary>
-	public MovieTime CurrentPointer { get; private set; }
+	public MovieTime PlayheadTime
+	{
+		get => _playheadTime;
+		set
+		{
+			value = MovieTime.Max( value, MovieTime.Zero );
+
+			if ( PlayheadTime == value ) return;
+
+			_playheadTime = value;
+			PlayheadChanged?.Invoke( value );
+
+			if ( IsEditorScene )
+			{
+				ApplyFrame( value );
+			}
+			else
+			{
+				_applyNextFrame = false;
+				_lastPlayerPosition = null;
+
+				Player.Position = value;
+			}
+		}
+	}
 
 	/// <summary>
 	/// What time are we previewing (when holding shift and moving mouse over timeline).
 	/// </summary>
-	public MovieTime? PreviewPointer { get; private set; }
+	public MovieTime? PreviewTime
+	{
+		get => _previewTime;
+		set
+		{
+			if ( value is { } time )
+			{
+				time = time.Clamp( (MovieTime.Zero, Project.Duration) );
+
+				if ( PreviewTime == time ) return;
+
+				_previewTime = time;
+				PreviewChanged?.Invoke( time );
+
+				ApplyFrame( time );
+			}
+			else if ( PreviewTime is not null )
+			{
+				_previewTime = null;
+				PreviewChanged?.Invoke( null );
+
+				ApplyFrame( PlayheadTime );
+			}
+		}
+	}
+
+	public event Action<MovieTime>? PlayheadChanged;
+	public event Action<MovieTime?>? PreviewChanged;
 
 	public bool HasUnsavedChanges { get; private set; }
 
 	public EditMode? EditMode { get; private set; }
 
-	SmoothDeltaFloat SmoothZoom = new SmoothDeltaFloat { Value = 100.0f, Target = 100.0f, SmoothTime = 0.3f };
-	SmoothDeltaFloat SmoothPan = new SmoothDeltaFloat { Value = 0.0f, Target = 0f, SmoothTime = 0.3f };
+	private SmoothDeltaFloat _smoothZoom = new () { Value = 100.0f, Target = 100.0f, SmoothTime = 0.3f };
+	private SmoothDeltaFloat _smoothPan = new () { Value = 0.0f, Target = 0f, SmoothTime = 0.3f };
 
 	public MovieTimeRange VisibleTimeRange
 	{
@@ -138,6 +196,11 @@ public sealed partial class Session
 		Context = context;
 
 		Player.Clip = Root.Project;
+
+		if ( context is { TimeRange: var range } )
+		{
+			LoopTimeRange = range;
+		}
 	}
 
 	internal void Activate()
@@ -261,7 +324,7 @@ public sealed partial class Session
 
 		if ( ObjectSnap )
 		{
-			snapHelper.Add( SnapFlag.PlayHead, CurrentPointer );
+			snapHelper.Add( SnapFlag.Playhead, PlayheadTime );
 
 			EditMode?.GetSnapTimes( ref snapHelper );
 			Editor.TimelinePanel?.Timeline.GetSnapTimes( ref snapHelper );
@@ -285,58 +348,16 @@ public sealed partial class Session
 
 		var time = PixelsToTime( x );
 
-		SmoothPan.Target -= (float)time.TotalSeconds;
+		_smoothPan.Target -= (float)time.TotalSeconds;
 
 		if ( !smooth )
 		{
-			SmoothPan.Value = SmoothPan.Target;
-			SmoothPan.Velocity = 0;
-			TimeOffset = MovieTime.FromSeconds( SmoothPan.Target );
+			_smoothPan.Value = _smoothPan.Target;
+			_smoothPan.Velocity = 0;
+			TimeOffset = MovieTime.FromSeconds( _smoothPan.Target );
 		}
 
 		ViewChanged?.Invoke();
-	}
-
-	public event Action<MovieTime>? PointerChanged;
-	public event Action<MovieTime?>? PreviewChanged;
-
-	public void SetCurrentPointer( MovieTime time )
-	{
-		time = MovieTime.Max( time, MovieTime.Zero );
-
-		if ( CurrentPointer == time ) return;
-
-		CurrentPointer = time;
-		PointerChanged?.Invoke( CurrentPointer );
-
-		if ( IsEditorScene )
-		{
-			ApplyFrame( CurrentPointer );
-		}
-		else
-		{
-			_applyNextFrame = false;
-			_lastPlayerPosition = null;
-
-			Player.Position = CurrentPointer;
-		}
-	}
-
-	public void SetPreviewPointer( MovieTime time )
-	{
-		PreviewPointer = MovieTime.Max( time, MovieTime.Zero );
-		PreviewChanged?.Invoke( PreviewPointer );
-
-		ApplyFrame( PreviewPointer.Value );
-	}
-
-	public void ClearPreviewPointer()
-	{
-		PreviewPointer = null;
-
-		PreviewChanged?.Invoke( PreviewPointer );
-
-		ApplyFrame( CurrentPointer );
 	}
 
 	public void SetView( MovieTime timeOffset, float pixelsPerSecond )
@@ -344,8 +365,8 @@ public sealed partial class Session
 		_timeOffset = timeOffset;
 		_pixelsPerSecond = pixelsPerSecond;
 
-		SmoothPan.Target = SmoothPan.Value = (float)TimeOffset.TotalSeconds;
-		SmoothZoom.Target = SmoothZoom.Value = PixelsPerSecond;
+		_smoothPan.Target = _smoothPan.Value = (float)TimeOffset.TotalSeconds;
+		_smoothZoom.Target = _smoothZoom.Value = PixelsPerSecond;
 
 		ViewChanged?.Invoke();
 	}
@@ -355,20 +376,20 @@ public sealed partial class Session
 		TrackFrame();
 		PlaybackFrame();
 
-		if ( SmoothZoom.Update( RealTime.Delta ) )
+		if ( _smoothZoom.Update( RealTime.Delta ) )
 		{
 			var d = TimeToPixels( TimeOffset ) - TimeToPixels( _zoomOrigin );
 
-			PixelsPerSecond = SmoothZoom.Value;
+			PixelsPerSecond = _smoothZoom.Value;
 			PixelsPerSecond = PixelsPerSecond.Clamp( 5, 1024 );
 
 			var nd = TimeToPixels( TimeOffset ) - TimeToPixels( _zoomOrigin );
 			ScrollBy( nd - d, false );
 		}
 
-		if ( SmoothPan.Update( RealTime.Delta ) )
+		if ( _smoothPan.Update( RealTime.Delta ) )
 		{
-			TimeOffset = MovieTime.FromSeconds( SmoothPan.Value );
+			TimeOffset = MovieTime.FromSeconds( _smoothPan.Value );
 			ViewChanged?.Invoke();
 		}
 
@@ -376,7 +397,7 @@ public sealed partial class Session
 
 		if ( _applyNextFrame )
 		{
-			ApplyFrame( PreviewPointer ?? CurrentPointer );
+			ApplyFrame( PreviewTime ?? PlayheadTime );
 		}
 
 		return true;
@@ -388,8 +409,8 @@ public sealed partial class Session
 	{
 		_zoomOrigin = origin;
 
-		SmoothZoom.Target = SmoothZoom.Target += (v * SmoothZoom.Target) * 0.01f;
-		SmoothZoom.Target = SmoothZoom.Target.Clamp( 5, 1024 );
+		_smoothZoom.Target = _smoothZoom.Target += (v * _smoothZoom.Target) * 0.01f;
+		_smoothZoom.Target = _smoothZoom.Target.Clamp( 5, 1024 );
 	}
 
 	internal void ClipModified()
@@ -472,7 +493,7 @@ public sealed partial class Session
 
 		Gizmo.Draw.IgnoreDepth = true;
 
-		var timeRange = new MovieTimeRange( CurrentPointer - 5d, CurrentPointer + 5d );
+		var timeRange = new MovieTimeRange( PlayheadTime - 5d, PlayheadTime + 5d );
 		var clampedTimeRange = timeRange.Clamp( (0d, Project.Duration) );
 
 		EditMode?.DrawGizmos( selectedTrackView, timeRange );
@@ -487,8 +508,8 @@ public sealed partial class Session
 
 			if ( !transformTrack.TryGetValue( t, out var transform ) ) continue;
 
-			var dist = Gizmo.CameraTransform.Position.Distance( transform.Position );
-			var scale = GetGizmoAlpha( t, timeRange ) * dist / 512f;
+			var dist = Gizmo.Camera.Ortho ? Gizmo.Camera.OrthoHeight : Gizmo.CameraTransform.Position.Distance( transform.Position );
+			var scale = GetGizmoAlpha( t, timeRange ) * dist / 256f;
 
 			var length = 16f * scale;
 			var arrowLength = 3f * scale;

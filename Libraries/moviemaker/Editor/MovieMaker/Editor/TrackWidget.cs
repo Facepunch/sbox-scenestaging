@@ -10,11 +10,11 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 /// <summary>
-/// An item in the <see cref="TrackListPage"/>, showing the name of a track with buttons to configure it.
+/// An item in the <see cref="TrackListWidget"/>, showing the name of a track with buttons to configure it.
 /// </summary>
 public partial class TrackWidget : Widget
 {
-	public TrackListPage TrackList { get; }
+	public TrackListWidget TrackList { get; }
 	public new TrackWidget? Parent { get; }
 
 	public new IEnumerable<TrackWidget> Children => _children;
@@ -25,14 +25,13 @@ public partial class TrackWidget : Widget
 
 	private readonly Label? _label;
 	private readonly Button _collapseButton;
-	private readonly Button _addButton;
 	private readonly Button _lockButton;
 	private readonly Layout _childLayout;
 	private readonly SynchronizedSet<TrackView, TrackWidget> _children;
 
 	private ControlWidget? _controlWidget;
 
-	public TrackWidget( TrackListPage trackList, TrackWidget? parent, TrackView view )
+	public TrackWidget( TrackListWidget trackList, TrackWidget? parent, TrackView view )
 		: base( (Widget?)parent ?? trackList )
 	{
 		TrackList = trackList;
@@ -70,11 +69,7 @@ public partial class TrackWidget : Widget
 		}
 
 		row.AddStretchCell();
-
-		if ( view.Track is not ProjectSequenceTrack && TrackProperty.GetAll( View.Target ).Any() )
-		{
-			_addButton = row.Add( new AddButton( this ) );
-		}
+		row.AddSpacingCell( 24f );
 
 		_lockButton = row.Add( new LockButton( this ) );
 
@@ -248,6 +243,12 @@ public partial class TrackWidget : Widget
 			rename.AddLineEdit( "Name", sequenceTrack.Name, autoFocus: true, onSubmit: OnRename );
 		}
 
+		if ( View.Track is not ProjectSequenceTrack && TrackProperty.GetAll( View.Target ).Any() )
+		{
+			CreateAddMenu( _menu );
+			_menu.AddSeparator();
+		}
+
 		_menu.AddOption( "Delete", "delete", Remove );
 
 		if ( View.Children.Count > 0 )
@@ -262,9 +263,9 @@ public partial class TrackWidget : Widget
 	}
 	private record AvailableTrackProperty( string Name, string Category, Type Type, Action Create );
 
-	public void ShowAddMenu( Vector2 openPos )
+	public Menu CreateAddMenu( Menu parent )
 	{
-		_menu = new Menu( this );
+		var menu = parent.AddMenu( "Add Sub-Track", "playlist_add" );
 
 		var session = TrackList.Session;
 		var availableTracks = new List<AvailableTrackProperty>();
@@ -290,7 +291,7 @@ public partial class TrackWidget : Widget
 
 		foreach ( var category in categories.OrderBy( x => x.Key ) )
 		{
-			var subMenu = categories.Length == 1 ? _menu : _menu.AddMenu( category.Key );
+			var subMenu = categories.Length == 1 ? menu : menu.AddMenu( category.Key );
 
 			foreach ( var type in category.GroupBy( x => x.Type.ToSimpleString( false ) ).OrderBy( x => x.Key ) )
 			{
@@ -325,7 +326,7 @@ public partial class TrackWidget : Widget
 			}
 		}
 
-		_menu.OpenAt( openPos, false );
+		return menu;
 	}
 
 	private void OnRename( string name )
@@ -515,34 +516,6 @@ file sealed class CollapseButton : Button
 	protected override void OnClicked()
 	{
 		Track.View.IsExpanded = !Track.View.IsExpanded;
-	}
-}
-
-file sealed class AddButton : Button
-{
-	public TrackWidget Track { get; }
-
-	public AddButton( TrackWidget track )
-	{
-		Track = track;
-		FixedSize = 24f;
-
-		ToolTip = "Add sub-track";
-	}
-
-	protected override void OnPaint()
-	{
-		Paint.SetBrushAndPen( PaintExtensions.PaintSelectColor(Theme.ControlBackground,
-			Theme.ControlBackground.Darken( 0.5f ), Theme.Primary ) );
-		Paint.DrawRect( LocalRect, 4f );
-
-		Paint.SetPen( Theme.TextControl );
-		Paint.DrawIcon( LocalRect, "playlist_add", 12f );
-	}
-
-	protected override void OnClicked()
-	{
-		Track.ShowAddMenu( Application.CursorPosition );
 	}
 }
 

@@ -28,27 +28,8 @@ public sealed partial class MotionEditMode : EditMode
 
 	protected override void OnEnable()
 	{
-		var clipboardGroup = ToolBar.AddGroup();
-
-		var cutDisplay = new ToolBarItemDisplay( "Cut", "content_cut",
-			"Copy the selected time range to be a pending modification, and clear the copied tracks in that range." );
-
-		var copyDisplay = new ToolBarItemDisplay( "Copy", "content_copy",
-			"Copy the selected time range to be a pending modification." );
-
-		var pasteDisplay = new ToolBarItemDisplay( "Paste", "content_paste",
-			"Load the most recently copied time range to be a pending modification." );
-
 		var saveSequenceDisplay = new ToolBarItemDisplay( "Save As Sequence..", "theaters",
 			"Save the time selection as a new movie project, and reference it in this timeline as a sequence block." );
-
-		clipboardGroup.AddAction( cutDisplay, Cut, () => TimeSelection is not null );
-		clipboardGroup.AddAction( copyDisplay, Copy, () => TimeSelection is not null );
-		clipboardGroup.AddAction( pasteDisplay, Paste, () => Clipboard is not null );
-		clipboardGroup.AddAction( saveSequenceDisplay,
-			() => Session.Editor.SaveAsDialog( "Save As Sequence..",
-				() => CreateSequence( TimeSelection!.Value.TotalTimeRange ) ),
-				() => TimeSelection is not null );
 
 		var editGroup = ToolBar.AddGroup();
 
@@ -64,6 +45,10 @@ public sealed partial class MotionEditMode : EditMode
 		editGroup.AddAction( insertDisplay, Insert, () => TimeSelection is not null );
 		editGroup.AddAction( removeDisplay, () => Delete( true ), () => TimeSelection is not null );
 		editGroup.AddAction( clearDisplay, () => Delete( false ), () => TimeSelection is not null );
+
+		editGroup.AddAction( saveSequenceDisplay,
+			() => Session.Editor.SaveAsDialog( "Save As Sequence..", () => CreateSequence( TimeSelection!.Value.TotalTimeRange ) ),
+			() => TimeSelection is not null );
 
 		ToolBarGroup? customGroup = null;
 
@@ -135,7 +120,7 @@ public sealed partial class MotionEditMode : EditMode
 		_selectionStartTime = Session.ScenePositionToTime( scenePos );
 		_newTimeSelection = false;
 
-		Session.SetCurrentPointer( time );
+		Session.PlayheadTime = time;
 
 		e.Accepted = true;
 	}
@@ -161,7 +146,7 @@ public sealed partial class MotionEditMode : EditMode
 		TimeSelection = new TimeSelection( (MovieTime.Min( time, dragStartTime ), MovieTime.Max( time, dragStartTime )), DefaultInterpolation );
 		_newTimeSelection = true;
 
-		Session.SetPreviewPointer( time );
+		Session.PreviewTime = time;
 	}
 
 	protected override void OnMouseRelease( MouseEvent e )
@@ -176,25 +161,24 @@ public sealed partial class MotionEditMode : EditMode
 
 		var timeRange = selection.PeakTimeRange.Clamp( Session.VisibleTimeRange );
 
-		Session.SetCurrentPointer( MovieTime.FromTicks( (timeRange.Start.Ticks + timeRange.End.Ticks) / 2 ) );
-		Session.ClearPreviewPointer();
+		Session.PlayheadTime = MovieTime.FromTicks( (timeRange.Start.Ticks + timeRange.End.Ticks) / 2 );
+		Session.PreviewTime = null;
 	}
 
 	protected override void OnMouseWheel( WheelEvent e )
 	{
-		if ( TimeSelection is not { } oldSelection || !oldSelection.PeakTimeRange.Contains( Session.CurrentPointer ) )
+		if ( !e.HasShift ) return;
+
+		if ( TimeSelection is not { } selection || !selection.PeakTimeRange.Contains( Session.PlayheadTime ) )
 		{
-			TimeSelection = new TimeSelection( Session.CurrentPointer, DefaultInterpolation );
+			selection = new TimeSelection( Session.PlayheadTime, DefaultInterpolation );
 		}
 
-		if ( TimeSelection is { } selection && e.HasShift )
-		{
-			var delta = Math.Sign( e.Delta ) * Session.MinorTick.Interval;
+		var delta = Math.Sign( e.Delta ) * Session.MinorTick.Interval;
 
-			TimeSelection = selection.WithFadeDurationDelta( delta );
+		TimeSelection = selection.WithFadeDurationDelta( delta );
 
-			e.Accept();
-		}
+		e.Accept();
 	}
 
 	private void SetInterpolation( InterpolationMode mode )

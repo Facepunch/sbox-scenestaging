@@ -21,40 +21,122 @@ public class ScrubberItem : GraphicsItem
 		ZIndex = 5000;
 
 		HoverEvents = true;
+		Selectable = true;
 
-		ToolTip = "Click and drag to define a time range to loop when previewing.";
+		ToolTip =
+			"""
+			<h3>Scrubber</h3>
+			<p><b>Click</b> to set playhead time, <b>Drag</b> to scrub.</p>
+			<p><b>Alt+Click+Drag</b> to set a loop time range for previewing playback, <b>Alt+Click</b> to clear loop.</p>
+			""";
 	}
 
 	private MovieTime _dragStartTime;
 
+	public void UpdateCursor()
+	{
+		Cursor = (Application.KeyboardModifiers & KeyboardModifiers.Alt) != 0
+			? CursorShape.IBeam
+			: CursorShape.Finger;
+	}
+
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
-		base.OnMousePressed( e );
+		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ), new SnapOptions( SnapFlag.Playhead ) );
 
-		_dragStartTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ) );
+		if ( e.MiddleMouseButton )
+		{
+			// Panning handled by timeline
 
-		Session.LoopTimeRange = null;
+			return;
+		}
+
+		if ( e.RightMouseButton )
+		{
+			ShowContextMenu( time );
+
+			e.Accepted = true;
+			return;
+		}
+
+		if ( e.HasAlt )
+		{
+			// Alt+Click: set loop time range
+
+			_dragStartTime = time;
+			Session.LoopTimeRange = null;
+		}
+		else
+		{
+			// Click: set playhead time
+
+			Session.PlayheadTime = time;
+		}
 
 		e.Accepted = true;
 
 		Update();
 	}
 
+	private void ShowContextMenu( MovieTime time )
+	{
+		var menu = new Menu();
+
+		menu.AddHeading( "Preview Loop" );
+
+		menu.AddOption( "Set Start", "start", () =>
+		{
+			Session.LoopTimeRange = Session.LoopTimeRange is not { } range || range.End <= time
+				? (time, Session.Project.Duration)
+				: (time, range.End);
+		} ).Enabled = Session.LoopTimeRange is null || Session.LoopTimeRange.Value.End > time;
+
+		menu.AddOption( "Set End", "last_page", () =>
+		{
+			Session.LoopTimeRange = Session.LoopTimeRange is not { } range || range.Start >= time
+				? (0d, time)
+				: (range.Start, time);
+		} ).Enabled = Session.LoopTimeRange is null || Session.LoopTimeRange.Value.Start < time;
+
+		menu.AddOption( "Clear", "clear", () =>
+		{
+			Session.LoopTimeRange = null;
+		} ).Enabled = Session.LoopTimeRange is not null;
+
+		menu.OpenAtCursor();
+	}
+
 	protected override void OnMouseMove( GraphicsMouseEvent e )
 	{
-		base.OnMouseMove( e );
-
-		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ) );
-
-		if ( time != _dragStartTime )
+		if ( !e.LeftMouseButton )
 		{
-			Session.LoopTimeRange = new MovieTimeRange(
-				MovieTime.Min( time, _dragStartTime ),
-				MovieTime.Max( time, _dragStartTime ) );
+			return;
+		}
+
+		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ), new SnapOptions( SnapFlag.Playhead ) );
+
+		if ( e.HasAlt )
+		{
+			if ( time != _dragStartTime )
+			{
+				// Alt+Click+Drag: set loop time range
+
+				Session.LoopTimeRange = new MovieTimeRange(
+					MovieTime.Min( time, _dragStartTime ),
+					MovieTime.Max( time, _dragStartTime ) );
+			}
+			else
+			{
+				// Alt+Click: clear loop time range
+
+				Session.LoopTimeRange = null;
+			}
 		}
 		else
 		{
-			Session.LoopTimeRange = null;
+			// Click: set playhead time
+
+			Session.PlayheadTime = time;
 		}
 
 		Update();
@@ -69,14 +151,18 @@ public class ScrubberItem : GraphicsItem
 
 		// Darker background for the clip duration
 
+		if ( Session.SequenceTimeRange is { } sequenceRange )
 		{
-			var timeRange = Session.SequenceTimeRange ?? (MovieTime.Zero, duration);
-
-			var startX = FromScene( Session.TimeToPixels( timeRange.Start ) ).x;
-			var endX = FromScene( Session.TimeToPixels( timeRange.End ) ).x;
+			Paint.SetBrushAndPen( Theme.ControlBackground.LerpTo( Timeline.Colors.Background, 0.5f ) );
+			DrawTimeRangeRect( (MovieTime.Zero, duration) );
 
 			Paint.SetBrushAndPen( Timeline.Colors.Background );
-			Paint.DrawRect( new Rect( new Vector2( startX, LocalRect.Top ), new Vector2( endX - startX, LocalRect.Height ) ) );
+			DrawTimeRangeRect( sequenceRange );
+		}
+		else
+		{
+			Paint.SetBrushAndPen( Timeline.Colors.Background );
+			DrawTimeRangeRect( (MovieTime.Zero, duration) );
 		}
 
 		// Paste time range
@@ -188,6 +274,14 @@ public class ScrubberItem : GraphicsItem
 				}
 			}
 		}
+	}
+
+	private void DrawTimeRangeRect( MovieTimeRange timeRange )
+	{
+		var startX = FromScene( Session.TimeToPixels( timeRange.Start ) ).x;
+		var endX = FromScene( Session.TimeToPixels( timeRange.End ) ).x;
+
+		Paint.DrawRect( new Rect( new Vector2( startX, LocalRect.Top ), new Vector2( endX - startX, LocalRect.Height ) ) );
 	}
 
 	private static string TimeToString( MovieTime time, MovieTime interval )

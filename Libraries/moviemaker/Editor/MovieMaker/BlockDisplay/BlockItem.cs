@@ -69,7 +69,7 @@ public abstract partial class BlockItem : GraphicsItem
 
 	protected override void OnPaint()
 	{
-		Paint.SetBrushAndPen( Timeline.Colors.ChannelBackground.Lighten( Parent.View.IsLocked ? 0.2f : 0f ) );
+		Paint.SetBrushAndPen( Timeline.Colors.ChannelBackground.Lighten( Parent.View.IsLocked ? 0.2f : 0f ).WithAlpha( 0.75f ) );
 		Paint.DrawRect( LocalRect );
 
 		if ( Parent.View.IsLocked ) return;

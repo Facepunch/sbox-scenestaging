@@ -1,17 +1,57 @@
 ﻿using System.Linq;
+using Editor.MapEditor;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed class HistoryPage : ListView, IListPanelPage
+public sealed class HistoryPanel : MovieEditorPanel
+{
+	public HistoryView HistoryView { get; }
+
+	public HistoryPanel( MovieEditor parent, Session session )
+		: base( parent )
+	{
+		MinimumWidth = 300;
+
+		HistoryView = new HistoryView( this, session );
+
+		Layout.Add( HistoryView );
+
+		var undoGroup = ToolBar.AddGroup( permanent: true );
+
+		var undoDisplay = new ToolBarItemDisplay( "Undo", "undo", "Revert the last change made to the movie clip." );
+		var redoDisplay = new ToolBarItemDisplay( "Redo", "redo", "Reapply the last undone change made to the movie clip." );
+
+		undoGroup.AddAction( undoDisplay, session.Undo, () => session.History.CanUndo );
+		undoGroup.AddAction( redoDisplay, session.Redo, () => session.History.CanRedo );
+
+		var titleGroup = ToolBar.AddGroup( permanent: true );
+
+		var title = titleGroup.AddLabel( "History" );
+
+		title.Alignment = TextFlag.Center;
+		title.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
+
+		var hideHistoryGroup = ToolBar.AddGroup( true );
+		var hideHistoryDisplay = new ToolBarItemDisplay( "Hide History", "schedule",
+			"Hide the edit history panel.",
+			Background: false );
+
+		hideHistoryGroup.AddToggle( hideHistoryDisplay,
+			() => true,
+			value => parent.ShowHistory = false );
+	}
+}
+
+public sealed class HistoryView : ListView
 {
 	public ToolBarItemDisplay Display { get; } = new( "History", "history",
 		"Lists changes made in this editor session, and lets you revert or reapply them." );
 
 	public Session Session { get; }
 
-	public HistoryPage( ListPanel parent, Session session )
+	public HistoryView( HistoryPanel parent, Session session )
 		: base( parent )
 	{
 		Session = session;

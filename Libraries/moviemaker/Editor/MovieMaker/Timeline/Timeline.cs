@@ -1,12 +1,11 @@
-﻿using System.Collections.Immutable;
-using System.Linq;
+﻿using System.Linq;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
-public class Timeline : GraphicsView
+public partial class Timeline : GraphicsView
 {
 	public const float TrackHeight = 32f;
 	public const float RootTrackSpacing = 8f;
@@ -69,7 +68,7 @@ public class Timeline : GraphicsView
 		ScrubBarBottom = new ScrubberItem( Session.Editor, false ) { Size = new Vector2( Width, 24f ) };
 		Add( ScrubBarBottom );
 
-		Session.PointerChanged += UpdateCurrentPosition;
+		Session.PlayheadChanged += UpdateCurrentPosition;
 		Session.PreviewChanged += UpdatePreviewPosition;
 		Session.ViewChanged += UpdateView;
 
@@ -83,13 +82,23 @@ public class Timeline : GraphicsView
 		SetBackgroundImage( bg );
 
 		Antialiasing = true;
+
+		ToolTip =
+			"""
+			<h3>Timeline</h3>
+			<p><b>Scroll</b> to scroll vertically through track list.</p>
+			<p><b>Shift+Scroll</b> or <b>Middle-Click+Drag</b> to pan horizontally.</p>
+			<p><b>Ctrl+Scroll</b> to zoom in / out.</p>
+			<p><b>Alt+Scroll</b> to scrub forwards / backwards by a frame.</p>
+			<p><b>Hold Shift</b> to smoothly preview the time under the mouse cursor.</p>
+			""";
 	}
 
 	public override void OnDestroyed()
 	{
 		DeleteAllItems();
 
-		Session.PointerChanged -= UpdateCurrentPosition;
+		Session.PlayheadChanged -= UpdateCurrentPosition;
 		Session.PreviewChanged -= UpdatePreviewPosition;
 		Session.ViewChanged -= UpdateView;
 	}
@@ -108,15 +117,20 @@ public class Timeline : GraphicsView
 		if ( visibleRectHash != _lastVisibleRectHash )
 		{
 			Session.DispatchViewChanged();
+
+			if ( (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0 )
+			{
+				UpdatePreviewTime( _lastMouseLocalPos );
+			}
 		}
 
 		_lastVisibleRectHash = visibleRectHash;
 
-		if ( Session.PreviewPointer is not null
+		if ( Session.PreviewTime is not null
 			&& (Application.KeyboardModifiers & KeyboardModifiers.Shift) == 0
 			&& (Application.MouseButtons & MouseButtons.Left) == 0 )
 		{
-			Session.ClearPreviewPointer();
+			Session.PreviewTime = null;
 		}
 	}
 
@@ -137,8 +151,8 @@ public class Timeline : GraphicsView
 		UpdateSceneFrame();
 		UpdateScrubBars();
 
-		UpdateCurrentPosition( Session.CurrentPointer );
-		UpdatePreviewPosition( Session.PreviewPointer );
+		UpdateCurrentPosition( Session.PlayheadTime );
+		UpdatePreviewPosition( Session.PreviewTime );
 
 		UpdateTracksIfNeeded();
 	}
@@ -157,6 +171,9 @@ public class Timeline : GraphicsView
 
 		ScrubBarTop.Width = Width;
 		ScrubBarBottom.Width = Width;
+
+		ScrubBarTop.UpdateCursor();
+		ScrubBarBottom.UpdateCursor();
 	}
 
 	protected override void OnResize()
@@ -205,8 +222,8 @@ public class Timeline : GraphicsView
 		_gridItem.SceneRect = SceneRect;
 		_gridItem.Update();
 
-		UpdateCurrentPosition( Session.CurrentPointer );
-		UpdatePreviewPosition( Session.PreviewPointer );
+		UpdateCurrentPosition( Session.PlayheadTime );
+		UpdatePreviewPosition( Session.PreviewTime );
 	}
 
 	public void UpdateTracks()
@@ -259,6 +276,17 @@ public class Timeline : GraphicsView
 			return;
 		}
 
+		// scrub
+		if ( e.HasAlt )
+		{
+			var dt = MovieTime.FromFrames( 1, Session.FrameRate );
+			var nextTime = Session.PlayheadTime.Round( dt ) + Math.Sign( e.Delta ) * dt;
+
+			Session.PlayheadTime = nextTime;
+			e.Accept();
+			return;
+		}
+
 		Session.TrackListScrollPosition -= e.Delta / 5f;
 		e.Accept();
 	}
@@ -271,6 +299,20 @@ public class Timeline : GraphicsView
 		base.OnMouseMove( e );
 
 		var delta = e.LocalPosition - _lastMouseLocalPos;
+		var scenePos = ToScene( e.LocalPosition );
+
+		if ( e.ButtonState == MouseButtons.Left && IsDragging )
+		{
+			Drag( ToScene( e.LocalPosition ) );
+			e.Accepted = true;
+			return;
+		}
+
+		if ( e.ButtonState == 0 && !e.HasCtrl && GetItemAt( scenePos ) is { Selectable: true } item )
+		{
+			UpdateCursor( scenePos, item );
+			return;
+		}
 
 		if ( e.ButtonState == MouseButtons.Middle )
 		{
@@ -279,20 +321,25 @@ public class Timeline : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
+			Session.PlayheadTime = Session.ScenePositionToTime( scenePos, SnapFlag.Playhead );
 		}
 
 		if ( e.HasShift )
 		{
-			Session.SetPreviewPointer( e.ButtonState != 0
-				? Session.ScenePositionToTime( ToScene( e.LocalPosition ) )
-				: Session.PixelsToTime( ToScene( e.LocalPosition ).x ) );
+			UpdatePreviewTime( e.LocalPosition );
 		}
 
 		_lastMouseLocalPos = e.LocalPosition;
 		_lastMouseTime = Session.PixelsToTime( ToScene( e.LocalPosition ).x );
 
 		Session.EditMode?.MouseMove( e );
+	}
+
+	private void UpdatePreviewTime( Vector2 localPos )
+	{
+		Session.PreviewTime = Application.MouseButtons != 0
+			? Session.ScenePositionToTime( ToScene( localPos ) )
+			: Session.PixelsToTime( ToScene( localPos ).x );
 	}
 
 	public new GraphicsItem? GetItemAt( Vector2 scenePosition )
@@ -316,9 +363,23 @@ public class Timeline : GraphicsView
 
 		DragType = DragTypes.None;
 
+		if ( e.ButtonState == MouseButtons.Middle )
+		{
+			e.Accepted = true;
+			return;
+		}
+
 		var scenePos = ToScene( e.LocalPosition );
 
-		if ( GetItemAt( scenePos ) is { Selectable: true } ) return;
+		if ( GetItemAt( scenePos ) is { Selectable: true } item )
+		{
+			if ( e.LeftMouseButton && !e.HasCtrl )
+			{
+				e.Accepted = StartDragging( scenePos, item );
+			}
+
+			return;
+		}
 
 		Session.EditMode?.MousePress( e );
 
@@ -333,7 +394,7 @@ public class Timeline : GraphicsView
 		if ( e.RightMouseButton )
 		{
 			e.Accepted = true;
-			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
+			Session.PlayheadTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.Playhead );
 			return;
 		}
 	}
@@ -341,6 +402,13 @@ public class Timeline : GraphicsView
 	protected override void OnMouseReleased( MouseEvent e )
 	{
 		base.OnMouseReleased( e );
+
+		if ( IsDragging )
+		{
+			StopDragging();
+			e.Accepted = true;
+			return;
+		}
 
 		Session.EditMode?.MouseRelease( e );
 	}
@@ -366,7 +434,7 @@ public class Timeline : GraphicsView
 		if ( e.Key == KeyCode.Shift )
 		{
 			e.Accepted = true;
-			Session.SetPreviewPointer( Session.ScenePositionToTime( ToScene( _lastMouseLocalPos ) ) );
+			Session.PreviewTime = Session.ScenePositionToTime( ToScene( _lastMouseLocalPos ) );
 		}
 	}
 
@@ -396,6 +464,7 @@ public class Timeline : GraphicsView
 
 	private ProjectSequenceTrack? _draggedTrack;
 	private ProjectSequenceBlock? _draggedBlock;
+	private readonly HashSet<ITrackBlock> _draggedBlocks = new();
 
 	public override void OnDragHover( DragEvent ev )
 	{
@@ -416,8 +485,11 @@ public class Timeline : GraphicsView
 			UpdateTracksIfNeeded();
 		}
 
+		_draggedBlocks.Clear();
+		_draggedBlocks.Add( _draggedBlock );
+
 		var time = Session.ScenePositionToTime( ToScene( ev.LocalPosition ),
-			new SnapOptions( IgnoreBlock: _draggedBlock ) );
+			new SnapOptions( IgnoreBlocks: _draggedBlocks ) );
 
 		_draggedBlock.TimeRange = (time, time + _draggedBlock.TimeRange.Duration);
 		_draggedBlock.Transform = new MovieTransform( -time );
@@ -483,7 +555,7 @@ public class Timeline : GraphicsView
 
 			foreach ( var block in dopeTrack.View.Blocks )
 			{
-				if ( block == snap.Options.IgnoreBlock ) continue;
+				if ( snap.Options.IgnoreBlocks?.Contains( block ) is true ) continue;
 
 				snap.Add( SnapFlag.TrackBlock, block.TimeRange.Start );
 				snap.Add( SnapFlag.TrackBlock, block.TimeRange.End );
