@@ -68,7 +68,7 @@ public sealed partial class Session
 	{
 		if ( IsPlaying && IsEditorScene )
 		{
-			var targetTime = CurrentPointer + MovieTime.FromSeconds( RealTime.Delta * TimeScale );
+			var targetTime = PlayheadTime + MovieTime.FromSeconds( RealTime.Delta * TimeScale );
 
 			// Handle looping / reaching end
 
@@ -96,12 +96,15 @@ public sealed partial class Session
 				}
 			}
 
-			SetCurrentPointer( targetTime );
+			PlayheadTime = targetTime;
 		}
 		else if ( _lastPlayerPosition is { } lastPlayerPosition && lastPlayerPosition != Player.Position )
 		{
-			CurrentPointer = lastPlayerPosition;
-			PointerChanged?.Invoke( CurrentPointer );
+			// We're setting the backing field here because we don't want to call ApplyFrame / set the Player position,
+			// since we're reacting to the Player advancing time.
+
+			_playheadTime = lastPlayerPosition;
+			PlayheadChanged?.Invoke( PlayheadTime );
 		}
 
 		_lastPlayerPosition = Player.Position;

@@ -135,7 +135,7 @@ public sealed partial class MotionEditMode : EditMode
 		_selectionStartTime = Session.ScenePositionToTime( scenePos );
 		_newTimeSelection = false;
 
-		Session.SetCurrentPointer( time );
+		Session.PlayheadTime = time;
 
 		e.Accepted = true;
 	}
@@ -161,7 +161,7 @@ public sealed partial class MotionEditMode : EditMode
 		TimeSelection = new TimeSelection( (MovieTime.Min( time, dragStartTime ), MovieTime.Max( time, dragStartTime )), DefaultInterpolation );
 		_newTimeSelection = true;
 
-		Session.SetPreviewPointer( time );
+		Session.PreviewTime = time;
 	}
 
 	protected override void OnMouseRelease( MouseEvent e )
@@ -176,15 +176,15 @@ public sealed partial class MotionEditMode : EditMode
 
 		var timeRange = selection.PeakTimeRange.Clamp( Session.VisibleTimeRange );
 
-		Session.SetCurrentPointer( MovieTime.FromTicks( (timeRange.Start.Ticks + timeRange.End.Ticks) / 2 ) );
-		Session.ClearPreviewPointer();
+		Session.PlayheadTime = MovieTime.FromTicks( (timeRange.Start.Ticks + timeRange.End.Ticks) / 2 );
+		Session.PreviewTime = null;
 	}
 
 	protected override void OnMouseWheel( WheelEvent e )
 	{
-		if ( TimeSelection is not { } oldSelection || !oldSelection.PeakTimeRange.Contains( Session.CurrentPointer ) )
+		if ( TimeSelection is not { } oldSelection || !oldSelection.PeakTimeRange.Contains( Session.PlayheadTime ) )
 		{
-			TimeSelection = new TimeSelection( Session.CurrentPointer, DefaultInterpolation );
+			TimeSelection = new TimeSelection( Session.PlayheadTime, DefaultInterpolation );
 		}
 
 		if ( TimeSelection is { } selection && e.HasShift )

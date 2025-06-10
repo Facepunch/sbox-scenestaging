@@ -45,7 +45,7 @@ partial class MotionEditMode
 
 		_recorder = new MovieClipRecorder( Session.Binder, options );
 		_stopPlayingAfterRecording = !Session.IsPlaying;
-		_recordingStartTime = Session.CurrentPointer;
+		_recordingStartTime = Session.PlayheadTime;
 		_recordingLastTime = _recordingStartTime;
 
 		foreach ( var view in Session.TrackList.EditableTracks )
@@ -100,7 +100,7 @@ partial class MotionEditMode
 			.OfType<IProjectPropertyTrack>()
 			.ToImmutableDictionary( x => x.Id, x => x.CreateSourceBlocks( sourceClip ) ) );
 
-		Session.SetCurrentPointer( _recordingStartTime );
+		Session.PlayheadTime = _recordingStartTime;
 
 		if ( LoadChangesFromClipboard() )
 		{
@@ -112,7 +112,7 @@ partial class MotionEditMode
 	{
 		if ( !Session.IsRecording ) return;
 
-		var time = Session.CurrentPointer;
+		var time = Session.PlayheadTime;
 		var deltaTime = MovieTime.Max( time - _recordingLastTime, 0d );
 
 		Session.TrackList.PreviewOffset = _recordingStartTime;

@@ -100,14 +100,14 @@ public sealed partial class KeyframeEditMode : EditMode
 	{
 		// Touching a property should create a keyframe
 
-		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation ) );
+		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.PlayheadTime, view.Target.Value, DefaultInterpolation ) );
 	}
 
 	protected override bool OnPostChange( TrackView view )
 	{
 		// We've finished changing a property, update the keyframe we created in OnPreChange
 
-		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.CurrentPointer, view.Target.Value, DefaultInterpolation ) );
+		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.PlayheadTime, view.Target.Value, DefaultInterpolation ) );
 	}
 
 	private TimelineTrack? GetTimelineTrack( TrackView view )
@@ -228,14 +228,14 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		handles.AddOrUpdate( new Keyframe( time, value, DefaultInterpolation ) );
 
-		Session.SetCurrentPointer( time );
+		Session.PlayheadTime = time;
 	}
 
 	internal void KeyframeDragStart( KeyframeHandle handle, GraphicsMouseEvent e )
 	{
 		DefaultInterpolation = handle.Keyframe.Interpolation;
 
-		Session.SetCurrentPointer( handle.Time );
+		Session.PlayheadTime = handle.Time;
 
 		handle.View.InspectProperty();
 
@@ -268,7 +268,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		_lastDragTime = time;
 
-		Session.SetCurrentPointer( time );
+		Session.PlayheadTime = time;
 
 		foreach ( var keyframe in SelectedKeyframes )
 		{
@@ -331,7 +331,7 @@ public sealed partial class KeyframeEditMode : EditMode
 			if ( keyframe.Time < clampedTimeRange.Start ) continue;
 			if ( keyframe.Time > clampedTimeRange.End ) break;
 
-			if ( keyframe.Time == Session.CurrentPointer ) continue;
+			if ( keyframe.Time == Session.PlayheadTime ) continue;
 
 			if ( !trackView.TransformTrack.TryGetValue( keyframe.Time, out var transform ) ) continue;
 
@@ -348,7 +348,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 			if ( Gizmo.HasClicked && Gizmo.Pressed.This )
 			{
-				Session.SetCurrentPointer( keyframe.Time );
+				Session.PlayheadTime = keyframe.Time;
 			}
 		}
 	}

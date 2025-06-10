@@ -69,7 +69,7 @@ public class Timeline : GraphicsView
 		ScrubBarBottom = new ScrubberItem( Session.Editor, false ) { Size = new Vector2( Width, 24f ) };
 		Add( ScrubBarBottom );
 
-		Session.PointerChanged += UpdateCurrentPosition;
+		Session.PlayheadChanged += UpdateCurrentPosition;
 		Session.PreviewChanged += UpdatePreviewPosition;
 		Session.ViewChanged += UpdateView;
 
@@ -89,7 +89,7 @@ public class Timeline : GraphicsView
 	{
 		DeleteAllItems();
 
-		Session.PointerChanged -= UpdateCurrentPosition;
+		Session.PlayheadChanged -= UpdateCurrentPosition;
 		Session.PreviewChanged -= UpdatePreviewPosition;
 		Session.ViewChanged -= UpdateView;
 	}
@@ -112,11 +112,11 @@ public class Timeline : GraphicsView
 
 		_lastVisibleRectHash = visibleRectHash;
 
-		if ( Session.PreviewPointer is not null
+		if ( Session.PreviewTime is not null
 			&& (Application.KeyboardModifiers & KeyboardModifiers.Shift) == 0
 			&& (Application.MouseButtons & MouseButtons.Left) == 0 )
 		{
-			Session.ClearPreviewPointer();
+			Session.PreviewTime = null;
 		}
 	}
 
@@ -137,8 +137,8 @@ public class Timeline : GraphicsView
 		UpdateSceneFrame();
 		UpdateScrubBars();
 
-		UpdateCurrentPosition( Session.CurrentPointer );
-		UpdatePreviewPosition( Session.PreviewPointer );
+		UpdateCurrentPosition( Session.PlayheadTime );
+		UpdatePreviewPosition( Session.PreviewTime );
 
 		UpdateTracksIfNeeded();
 	}
@@ -205,8 +205,8 @@ public class Timeline : GraphicsView
 		_gridItem.SceneRect = SceneRect;
 		_gridItem.Update();
 
-		UpdateCurrentPosition( Session.CurrentPointer );
-		UpdatePreviewPosition( Session.PreviewPointer );
+		UpdateCurrentPosition( Session.PlayheadTime );
+		UpdatePreviewPosition( Session.PreviewTime );
 	}
 
 	public void UpdateTracks()
@@ -279,14 +279,14 @@ public class Timeline : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
+			Session.PlayheadTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead );
 		}
 
 		if ( e.HasShift )
 		{
-			Session.SetPreviewPointer( e.ButtonState != 0
+			Session.PreviewTime = e.ButtonState != 0
 				? Session.ScenePositionToTime( ToScene( e.LocalPosition ) )
-				: Session.PixelsToTime( ToScene( e.LocalPosition ).x ) );
+				: Session.PixelsToTime( ToScene( e.LocalPosition ).x );
 		}
 
 		_lastMouseLocalPos = e.LocalPosition;
@@ -333,7 +333,7 @@ public class Timeline : GraphicsView
 		if ( e.RightMouseButton )
 		{
 			e.Accepted = true;
-			Session.SetCurrentPointer( Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead ) );
+			Session.PlayheadTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead );
 			return;
 		}
 	}
@@ -366,7 +366,7 @@ public class Timeline : GraphicsView
 		if ( e.Key == KeyCode.Shift )
 		{
 			e.Accepted = true;
-			Session.SetPreviewPointer( Session.ScenePositionToTime( ToScene( _lastMouseLocalPos ) ) );
+			Session.PreviewTime = Session.ScenePositionToTime( ToScene( _lastMouseLocalPos ) );
 		}
 	}
 

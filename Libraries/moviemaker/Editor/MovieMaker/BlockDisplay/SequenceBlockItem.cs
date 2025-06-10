@@ -54,7 +54,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		if ( e.RightMouseButton )
 		{
-			Parent.Session.SetCurrentPointer( time );
+			Parent.Session.PlayheadTime = time;
 		}
 
 		if ( !e.LeftMouseButton ) return;
@@ -134,7 +134,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		Layout();
 
 		Parent.View.MarkValueChanged();
-		Parent.View.ApplyFrame( Parent.Session.CurrentPointer );
+		Parent.View.ApplyFrame( Parent.Session.PlayheadTime );
 	}
 
 	private void OnSplit( MovieTime time )
@@ -224,7 +224,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		Selected = true;
 
-		var time = Parent.Session.CurrentPointer;
+		var time = Parent.Session.PlayheadTime;
 
 		var menu = new Menu();
 

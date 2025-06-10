@@ -91,7 +91,7 @@ partial class KeyframeEditMode
 		var groupedByTrack = SelectedKeyframes
 			.GroupBy( x => x.View.Track );
 
-		var headTime = Session.CurrentPointer;
+		var headTime = Session.PlayheadTime;
 
 		var data = new ClipboardData( groupedByTrack.ToImmutableDictionary(
 			x => x.Key.Id,
@@ -110,7 +110,7 @@ partial class KeyframeEditMode
 
 		Timeline.DeselectAll();
 
-		var headTime = Session.CurrentPointer;
+		var headTime = Session.PlayheadTime;
 
 		foreach ( var (trackId, array) in data.Keyframes )
 		{
