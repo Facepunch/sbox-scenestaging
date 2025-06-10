@@ -28,27 +28,8 @@ public sealed partial class MotionEditMode : EditMode
 
 	protected override void OnEnable()
 	{
-		var clipboardGroup = ToolBar.AddGroup();
-
-		var cutDisplay = new ToolBarItemDisplay( "Cut", "content_cut",
-			"Copy the selected time range to be a pending modification, and clear the copied tracks in that range." );
-
-		var copyDisplay = new ToolBarItemDisplay( "Copy", "content_copy",
-			"Copy the selected time range to be a pending modification." );
-
-		var pasteDisplay = new ToolBarItemDisplay( "Paste", "content_paste",
-			"Load the most recently copied time range to be a pending modification." );
-
 		var saveSequenceDisplay = new ToolBarItemDisplay( "Save As Sequence..", "theaters",
 			"Save the time selection as a new movie project, and reference it in this timeline as a sequence block." );
-
-		clipboardGroup.AddAction( cutDisplay, Cut, () => TimeSelection is not null );
-		clipboardGroup.AddAction( copyDisplay, Copy, () => TimeSelection is not null );
-		clipboardGroup.AddAction( pasteDisplay, Paste, () => Clipboard is not null );
-		clipboardGroup.AddAction( saveSequenceDisplay,
-			() => Session.Editor.SaveAsDialog( "Save As Sequence..",
-				() => CreateSequence( TimeSelection!.Value.TotalTimeRange ) ),
-				() => TimeSelection is not null );
 
 		var editGroup = ToolBar.AddGroup();
 
@@ -64,6 +45,10 @@ public sealed partial class MotionEditMode : EditMode
 		editGroup.AddAction( insertDisplay, Insert, () => TimeSelection is not null );
 		editGroup.AddAction( removeDisplay, () => Delete( true ), () => TimeSelection is not null );
 		editGroup.AddAction( clearDisplay, () => Delete( false ), () => TimeSelection is not null );
+
+		editGroup.AddAction( saveSequenceDisplay,
+			() => Session.Editor.SaveAsDialog( "Save As Sequence..", () => CreateSequence( TimeSelection!.Value.TotalTimeRange ) ),
+			() => TimeSelection is not null );
 
 		ToolBarGroup? customGroup = null;
 

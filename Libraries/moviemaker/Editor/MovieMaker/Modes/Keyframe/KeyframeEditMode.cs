@@ -22,8 +22,6 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	protected override void OnEnable()
 	{
-		AddClipboardToolbarGroup();
-
 		var changesGroup = ToolBar.AddGroup();
 
 		changesGroup.AddToggle( new( "Automatic Track Creation", "playlist_add",

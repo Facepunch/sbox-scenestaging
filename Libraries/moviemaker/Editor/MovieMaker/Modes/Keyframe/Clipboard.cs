@@ -63,24 +63,6 @@ partial class KeyframeEditMode
 		}
 	}
 
-	private void AddClipboardToolbarGroup()
-	{
-		var clipboardGroup = ToolBar.AddGroup();
-
-		var cutDisplay = new ToolBarItemDisplay( "Cut", "content_cut",
-			"Copy the selected keyframes to the clipboard." );
-
-		var copyDisplay = new ToolBarItemDisplay( "Copy", "content_copy",
-			"Copy the selected time range to be a pending modification." );
-
-		var pasteDisplay = new ToolBarItemDisplay( "Paste", "content_paste",
-			"Load the most recently copied time range to be a pending modification." );
-
-		clipboardGroup.AddAction( cutDisplay, Cut, () => SelectedKeyframes.Any() );
-		clipboardGroup.AddAction( copyDisplay, Copy, () => SelectedKeyframes.Any() );
-		clipboardGroup.AddAction( pasteDisplay, Paste, () => Clipboard is not null );
-	}
-
 	protected override void OnCut()
 	{
 		base.OnCut();
