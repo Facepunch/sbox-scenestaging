@@ -83,6 +83,16 @@ public class Timeline : GraphicsView
 		SetBackgroundImage( bg );
 
 		Antialiasing = true;
+
+		ToolTip =
+			"""
+			<h3>Timeline</h3>
+			<p><b>Scroll</b> to scroll vertically through track list.</p>
+			<p><b>Shift+Scroll</b> or <b>Middle-Click+Drag</b> to pan horizontally.</p>
+			<p><b>Ctrl+Scroll</b> to zoom in / out.</p>
+			<p><b>Alt+Scroll</b> to scrub forwards / backwards by a frame.</p>
+			<p><b>Hold Shift</b> to smoothly preview the time under the mouse cursor.</p>
+			""";
 	}
 
 	public override void OnDestroyed()
