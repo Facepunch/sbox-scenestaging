@@ -195,8 +195,23 @@ public sealed partial class KeyframeEditMode : EditMode
 		}
 	}
 
+	private Vector2 _mouseDownLocalPos;
+
+	protected override void OnMousePress( MouseEvent e )
+	{
+		base.OnMousePress(e);
+
+		_mouseDownLocalPos = e.LocalPosition;
+	}
+
 	protected override void OnMouseRelease( MouseEvent e )
 	{
+		if ( !_mouseDownLocalPos.AlmostEqual( e.LocalPosition ) )
+		{
+			// Don't show context menu / create keyframe if we click and drag
+			return;
+		}
+
 		var scenePos = Timeline.ToScene( e.LocalPosition );
 		var time = Session.ScenePositionToTime( scenePos );
 		var timelineTrack = Timeline.Tracks.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) );
