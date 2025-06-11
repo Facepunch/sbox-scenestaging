@@ -201,16 +201,34 @@ public sealed partial class KeyframeEditMode : EditMode
 		}
 	}
 
-	protected override void OnMouseRelease( MouseEvent e )
+	private MovieTime _mouseDownTime;
+
+	protected override void OnMousePress( MouseEvent e )
 	{
-		if ( !e.LeftMouseButton || !CreateKeyframeOnClick && (e.KeyboardModifiers & KeyboardModifiers.Shift) == 0 ) return;
+		if ( !e.LeftMouseButton ) return;
 
 		var scenePos = Timeline.ToScene( e.LocalPosition );
+		var time = Session.ScenePositionToTime( scenePos );
 
+		_mouseDownTime = time;
+	}
+
+	protected override void OnMouseRelease( MouseEvent e )
+	{
+		if ( !e.LeftMouseButton ) return;
+
+		var scenePos = Timeline.ToScene( e.LocalPosition );
+		var time = Session.ScenePositionToTime( scenePos );
+
+		if ( _mouseDownTime == time )
+		{
+			Session.PlayheadTime = time;
+		}
+
+		if ( !CreateKeyframeOnClick && (e.KeyboardModifiers & KeyboardModifiers.Shift) == 0 ) return;
 		if ( Timeline.Tracks.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) ) is not { } timelineTrack ) return;
 
 		var view = timelineTrack.View;
-		var time = Session.ScenePositionToTime( scenePos );
 
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return;
 		if ( view.Target is not ITrackProperty { IsBound: true, CanWrite: true } target ) return;
