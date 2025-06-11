@@ -65,7 +65,8 @@ partial class KeyframeEditMode
 
 	protected override void OnCut()
 	{
-		base.OnCut();
+		Copy();
+		Delete();
 	}
 
 	protected override void OnCopy()

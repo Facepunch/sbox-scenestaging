@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Immutable;
+using System.Linq;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
@@ -106,9 +108,39 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
+		if ( e.RightMouseButton )
+		{
+			ShowContextMenu();
+
+			e.Accepted = true;
+			return;
+		}
+
 		if ( !e.LeftMouseButton ) return;
 
 		EditMode?.KeyframeDragStart( this, e );
+	}
+
+	private void ShowContextMenu()
+	{
+		if ( EditMode is not { } editMode ) return;
+
+		var menu = new Menu();
+
+		Selected = true;
+		editMode.Session.PlayheadTime = Keyframe.Time;
+
+		var selection = GraphicsView.SelectedItems
+			.OfType<KeyframeHandle>()
+			.ToImmutableArray();
+
+		menu.AddHeading( $"Selected Keyframe{(selection.Length > 1 ? "s" : "")}" );
+
+		menu.AddOption( "Copy", "content_copy", () => editMode.Copy() );
+		menu.AddOption( "Cut", "content_cut", () => editMode.Cut() );
+		menu.AddOption( "Delete", "delete", () => editMode.Delete() );
+
+		menu.OpenAtCursor();
 	}
 
 	protected override void OnMouseMove( GraphicsMouseEvent e )

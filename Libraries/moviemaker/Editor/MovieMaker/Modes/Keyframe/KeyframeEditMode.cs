@@ -34,12 +34,6 @@ public sealed partial class KeyframeEditMode : EditMode
 			() => CreateKeyframeOnClick || (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0,
 			value => CreateKeyframeOnClick = value );
 
-		var deleteGroup = ToolBar.AddGroup();
-
-		deleteGroup.AddAction( new ToolBarItemDisplay( "Delete Selection", "delete",
-				"Delete all selected keyframes." ),
-			Delete, () => SelectedKeyframes.Any() );
-
 		var selectionGroup = ToolBar.AddGroup();
 
 		selectionGroup.AddInterpolationSelector( () =>
@@ -201,33 +195,46 @@ public sealed partial class KeyframeEditMode : EditMode
 		}
 	}
 
-	private MovieTime _mouseDownTime;
-
-	protected override void OnMousePress( MouseEvent e )
-	{
-		if ( !e.LeftMouseButton ) return;
-
-		var scenePos = Timeline.ToScene( e.LocalPosition );
-		var time = Session.ScenePositionToTime( scenePos );
-
-		_mouseDownTime = time;
-	}
-
 	protected override void OnMouseRelease( MouseEvent e )
 	{
-		if ( !e.LeftMouseButton ) return;
-
 		var scenePos = Timeline.ToScene( e.LocalPosition );
 		var time = Session.ScenePositionToTime( scenePos );
+		var timelineTrack = Timeline.Tracks.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) );
 
-		if ( _mouseDownTime == time )
+		if ( e.RightMouseButton )
 		{
-			Session.PlayheadTime = time;
+			OpenContextMenu( timelineTrack, time );
+			return;
 		}
 
+		if ( !e.LeftMouseButton ) return;
 		if ( !CreateKeyframeOnClick && (e.KeyboardModifiers & KeyboardModifiers.Shift) == 0 ) return;
-		if ( Timeline.Tracks.FirstOrDefault( x => x.SceneRect.IsInside( scenePos ) ) is not { } timelineTrack ) return;
+		if ( timelineTrack is null ) return;
 
+		CreateKeyframe( timelineTrack, time );
+	}
+
+	private void OpenContextMenu( TimelineTrack? timelineTrack, MovieTime time )
+	{
+		var menu = new Menu();
+
+		if ( Clipboard is { } clipboard )
+		{
+			menu.AddHeading( "Clipboard" );
+			menu.AddOption( "Paste Keyframes", "content_paste", Paste );
+		}
+
+		if ( timelineTrack is not null )
+		{
+			menu.AddHeading( timelineTrack.View.Track.Name );
+			menu.AddOption( "Create Keyframe", "key", () => CreateKeyframe( timelineTrack, time ) );
+		}
+
+		menu.OpenAtCursor();
+	}
+
+	private void CreateKeyframe( TimelineTrack timelineTrack, MovieTime time )
+	{
 		var view = timelineTrack.View;
 
 		if ( view.Track is not IProjectPropertyTrack propertyTrack ) return;
