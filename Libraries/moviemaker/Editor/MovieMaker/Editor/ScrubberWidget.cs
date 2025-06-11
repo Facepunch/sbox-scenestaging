@@ -41,7 +41,7 @@ public class ScrubberItem : GraphicsItem
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
-		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ) );
+		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ), new SnapOptions( SnapFlag.Playhead ) );
 
 		if ( e.MiddleMouseButton )
 		{
