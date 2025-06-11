@@ -308,7 +308,7 @@ public class Timeline : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.PlayheadTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead );
+			Session.PlayheadTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.Playhead );
 		}
 
 		if ( e.HasShift )
@@ -367,7 +367,7 @@ public class Timeline : GraphicsView
 		if ( e.RightMouseButton )
 		{
 			e.Accepted = true;
-			Session.PlayheadTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.PlayHead );
+			Session.PlayheadTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.Playhead );
 			return;
 		}
 	}

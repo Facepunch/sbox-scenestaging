@@ -315,7 +315,7 @@ public sealed partial class Session
 
 		if ( ObjectSnap )
 		{
-			snapHelper.Add( SnapFlag.PlayHead, PlayheadTime );
+			snapHelper.Add( SnapFlag.Playhead, PlayheadTime );
 
 			EditMode?.GetSnapTimes( ref snapHelper );
 			Editor.TimelinePanel?.Timeline.GetSnapTimes( ref snapHelper );

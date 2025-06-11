@@ -13,7 +13,7 @@ public enum SnapFlag
 	Frame = 1,
 	MinorTick = 2,
 	MajorTick = 4,
-	PlayHead = 8,
+	Playhead = 8,
 	TrackBlock = 0x10,
 	PasteBlock = 0x20,
 

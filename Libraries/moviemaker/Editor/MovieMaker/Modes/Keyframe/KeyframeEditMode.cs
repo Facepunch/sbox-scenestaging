@@ -298,7 +298,7 @@ public sealed partial class KeyframeEditMode : EditMode
 			.DefaultIfEmpty( 0d )
 			.Max();
 
-		var time = Session.ScenePositionToTime( e.ScenePosition, new SnapOptions( SnapFlag.PlayHead ) );
+		var time = Session.ScenePositionToTime( e.ScenePosition, new SnapOptions( SnapFlag.Playhead ) );
 
 		time = MovieTime.Max( _lastDragTime + minDelta, time );
 
