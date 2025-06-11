@@ -46,7 +46,7 @@ public sealed class ListPanel : MovieEditorPanel
 			new HistoryPage( this, session )
 		];
 
-		var initialPageTypeName = Cookie.Get<string>( PageCookieName, null! );
+		var initialPageTypeName = EditorCookie.Get<string>( PageCookieName, null! );
 		var initialPage = _pages.FirstOrDefault( x => x.GetType().Name == initialPageTypeName )
 			?? _pages.First();
 
@@ -108,7 +108,7 @@ public sealed class ListPanel : MovieEditorPanel
 				() => page.Visible,
 				_ =>
 				{
-					Cookie.Set( PageCookieName, page.GetType().Name );
+					EditorCookie.Set( PageCookieName, page.GetType().Name );
 					SetPage( page );
 				} );
 		}
