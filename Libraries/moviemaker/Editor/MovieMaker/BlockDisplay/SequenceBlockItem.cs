@@ -304,7 +304,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		var isHovered = !isLocked && Paint.HasMouseOver;
 
 		Paint.SetBrushAndPen( Theme.Primary.Desaturate( isLocked ? 0.25f : 0f ).Darken( isLocked ? 0.5f : isSelected ? 0f : isHovered ? 0.1f : 0.25f ) );
-		Paint.DrawRect( LocalRect, 2 );
+		Paint.DrawRect( LocalRect.Shrink( 0f, 0f, 1f, 0f ), 2 );
 
 		var minX = LocalRect.Left;
 		var maxX = LocalRect.Right;
