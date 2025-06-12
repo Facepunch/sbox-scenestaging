@@ -113,7 +113,7 @@ public class ScrubberItem : GraphicsItem
 			return;
 		}
 
-		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ) );
+		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ), new SnapOptions( SnapFlag.Playhead ) );
 
 		if ( e.HasAlt )
 		{
