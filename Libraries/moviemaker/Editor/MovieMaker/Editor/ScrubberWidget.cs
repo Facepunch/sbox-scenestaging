@@ -21,6 +21,7 @@ public class ScrubberItem : GraphicsItem
 		ZIndex = 5000;
 
 		HoverEvents = true;
+		Selectable = true;
 
 		ToolTip =
 			"""
@@ -52,8 +53,9 @@ public class ScrubberItem : GraphicsItem
 
 		if ( e.RightMouseButton )
 		{
-			// TODO: context menu
+			ShowContextMenu( time );
 
+			e.Accepted = true;
 			return;
 		}
 
@@ -74,6 +76,34 @@ public class ScrubberItem : GraphicsItem
 		e.Accepted = true;
 
 		Update();
+	}
+
+	private void ShowContextMenu( MovieTime time )
+	{
+		var menu = new Menu();
+
+		menu.AddHeading( "Preview Loop" );
+
+		menu.AddOption( "Set Start", "start", () =>
+		{
+			Session.LoopTimeRange = Session.LoopTimeRange is not { } range || range.End <= time
+				? (time, Session.Project.Duration)
+				: (time, range.End);
+		} ).Enabled = Session.LoopTimeRange is null || Session.LoopTimeRange.Value.End > time;
+
+		menu.AddOption( "Set End", "last_page", () =>
+		{
+			Session.LoopTimeRange = Session.LoopTimeRange is not { } range || range.Start >= time
+				? (0d, time)
+				: (range.Start, time);
+		} ).Enabled = Session.LoopTimeRange is null || Session.LoopTimeRange.Value.Start < time;
+
+		menu.AddOption( "Clear", "clear", () =>
+		{
+			Session.LoopTimeRange = null;
+		} ).Enabled = Session.LoopTimeRange is not null;
+
+		menu.OpenAtCursor();
 	}
 
 	protected override void OnMouseMove( GraphicsMouseEvent e )
