@@ -306,10 +306,8 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		Paint.SetBrushAndPen( Theme.Primary.Desaturate( isLocked ? 0.25f : 0f ).Darken( isLocked ? 0.5f : isSelected ? 0f : isHovered ? 0.1f : 0.25f ) );
 		Paint.DrawRect( LocalRect, 2 );
 
-		var viewMin = FromScene( Parent.GraphicsView.SceneRect.TopLeft );
-		var viewMax = FromScene( Parent.GraphicsView.SceneRect.BottomRight );
-		var minX = Math.Max( LocalRect.Left, viewMin.x );
-		var maxX = Math.Min( LocalRect.Right, viewMax.x );
+		var minX = LocalRect.Left;
+		var maxX = LocalRect.Right;
 
 		Paint.SetBrush( Theme.ControlBackground );
 
@@ -321,7 +319,7 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		Paint.ClearBrush();
 		Paint.SetPen( Theme.TextControl.Darken( isLocked ? 0.25f : 0f ) );
 
-		var textRect = new Rect( minX + 4f, LocalRect.Top + 4f, maxX - minX - 8f, LocalRect.Height - 4f );
+		var textRect = new Rect( minX + 8f, LocalRect.Top + 4f, maxX - minX - 16f, LocalRect.Height - 4f );
 		var fullTimeRange = FullTimeRange;
 
 		if ( _editMode == EditMode.MoveEnd )
@@ -329,13 +327,15 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
 			TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
 		}
-		else if ( _editMode != EditMode.None )
+		else if ( _editMode == EditMode.MoveStart )
 		{
 			TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
 			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
 		}
-
-		TryDrawText( ref textRect, BlockTitle, icon: "movie" );
+		else
+		{
+			TryDrawText( ref textRect, BlockTitle, icon: "movie", flags: TextFlag.LeftCenter );
+		}
 	}
 
 	private void TryDrawText( ref Rect rect, string text, TextFlag flags = TextFlag.Center, string? icon = null, float iconSize = 16f )

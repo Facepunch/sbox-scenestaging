@@ -57,7 +57,7 @@ public partial class TrackWidget : Widget
 		row.Margin = 4f;
 
 		_childLayout = Layout.Add( Layout.Column() );
-		_childLayout.Margin = new Margin( 0f, 0f, 0f, 0f );
+		_childLayout.Margin = new Margin( 8f, 0f, 0f, 0f );
 
 		_collapseButton = new CollapseButton( this );
 		row.Add( _collapseButton );
