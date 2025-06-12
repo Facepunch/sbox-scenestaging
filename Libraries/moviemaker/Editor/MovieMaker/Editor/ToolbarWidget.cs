@@ -247,7 +247,7 @@ public sealed class ToolBarGroup : Widget
 		return MathX.Lerp( b0, b1, t );
 	}
 
-	private static Func<float, float>? GetInterpolationFunc( KeyframeInterpolation interpolation )
+	public static Func<float, float>? GetInterpolationFunc( KeyframeInterpolation interpolation )
 	{
 		return interpolation switch
 		{

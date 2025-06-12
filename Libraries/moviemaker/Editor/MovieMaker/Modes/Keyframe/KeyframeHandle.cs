@@ -1,7 +1,8 @@
 ﻿
+using Editor.MapEditor;
+using Sandbox.MovieMaker;
 using System.Collections.Immutable;
 using System.Linq;
-using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -136,11 +137,39 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 
 		menu.AddHeading( $"Selected Keyframe{(selection.Length > 1 ? "s" : "")}" );
 
+		CreateInterpolationMenu( selection, menu );
+
+		menu.AddSeparator();
+
 		menu.AddOption( "Copy", "content_copy", () => editMode.Copy() );
 		menu.AddOption( "Cut", "content_cut", () => editMode.Cut() );
 		menu.AddOption( "Delete", "delete", () => editMode.Delete() );
 
 		menu.OpenAtCursor();
+	}
+
+	private void CreateInterpolationMenu( IReadOnlyList<KeyframeHandle> selection, Menu parent )
+	{
+		var menu = parent.AddMenu( "Interpolation Mode", "gradient" );
+		var currentMode = selection.All( x => x.Keyframe.Interpolation == selection[0].Keyframe.Interpolation )
+			? selection[0].Keyframe.Interpolation
+			: KeyframeInterpolation.Unknown;
+
+		foreach ( var value in Enum.GetValues<KeyframeInterpolation>() )
+		{
+			if ( value < 0 ) continue;
+
+			var option = menu.AddOption( value.ToString().ToTitleCase(), action: () =>
+			{
+				foreach ( var handle in selection )
+				{
+					handle.Keyframe = handle.Keyframe with { Interpolation = value };
+				}
+			} );
+
+			option.Checkable = true;
+			option.Checked = value == currentMode;
+		}
 	}
 
 	protected override void OnMouseMove( GraphicsMouseEvent e )
