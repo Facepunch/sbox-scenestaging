@@ -29,6 +29,7 @@ public partial class MovieEditor : Widget, IHotloadManaged
 
 	public ListPanel? ListPanel { get; private set; }
 	public TimelinePanel? TimelinePanel { get; private set; }
+	public BrowserPanel? BrowserPanel { get; private set; }
 
 	public MovieEditor( Widget parent, IReadOnlyDictionary<SessionKey, Session>? sessions = null ) : base( parent )
 	{
@@ -85,9 +86,11 @@ public partial class MovieEditor : Widget, IHotloadManaged
 
 		ListPanel = new ListPanel( this, Session );
 		TimelinePanel = new TimelinePanel( this, Session );
+		BrowserPanel = new BrowserPanel( this, Session );
 
 		splitter.AddWidget( ListPanel );
 		splitter.AddWidget( TimelinePanel );
+		splitter.AddWidget( BrowserPanel );
 
 		splitter.SetCollapsible( 0, false );
 		splitter.SetStretch( 0, 1 );
@@ -106,6 +109,7 @@ public partial class MovieEditor : Widget, IHotloadManaged
 
 		ListPanel = null;
 		TimelinePanel = null;
+		BrowserPanel = null;
 
 		CreateStartupHelper();
 	}

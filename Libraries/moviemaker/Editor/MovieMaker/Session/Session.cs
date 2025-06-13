@@ -192,6 +192,11 @@ public sealed partial class Session
 		Context = context;
 
 		Player.Clip = Root.Project;
+
+		if ( context is { TimeRange: var range } )
+		{
+			LoopTimeRange = range;
+		}
 	}
 
 	internal void Activate()

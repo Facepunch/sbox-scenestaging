@@ -1,4 +1,5 @@
 ﻿using Sandbox.MovieMaker;
+using Sandbox.Services;
 
 namespace Editor.MovieMaker;
 
@@ -17,12 +18,26 @@ public class BackgroundItem : GraphicsItem
 		Paint.SetBrushAndPen( Theme.ControlBackground );
 		Paint.DrawRect( LocalRect );
 
-		var timeRange = Session.SequenceTimeRange ?? (MovieTime.Zero, Session.Project.Duration);
+		if ( Session.SequenceTimeRange is { } sequenceRange )
+		{
+			Paint.SetBrushAndPen( Theme.ControlBackground.LerpTo( Timeline.Colors.Background, 0.5f ) );
+			DrawTimeRangeRect( (MovieTime.Zero, Session.Project.Duration) );
 
+			Paint.SetBrushAndPen( Timeline.Colors.Background );
+			DrawTimeRangeRect( sequenceRange );
+		}
+		else
+		{
+			Paint.SetBrushAndPen( Timeline.Colors.Background );
+			DrawTimeRangeRect( (MovieTime.Zero, Session.Project.Duration) );
+		}
+	}
+
+	private void DrawTimeRangeRect( MovieTimeRange timeRange )
+	{
 		var startX = FromScene( Session.TimeToPixels( timeRange.Start ) ).x;
 		var endX = FromScene( Session.TimeToPixels( timeRange.End ) ).x;
 
-		Paint.SetBrushAndPen( Timeline.Colors.Background );
 		Paint.DrawRect( new Rect( new Vector2( startX, LocalRect.Top ), new Vector2( endX - startX, LocalRect.Height ) ) );
 	}
 

@@ -5,14 +5,14 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed class MovieResourceListPage : ListView, IListPanelPage
+public sealed class MovieResourceListPage : ListView, IBrowserPanelPage
 {
 	public ToolBarItemDisplay Display { get; } = new( "Movie Clips", "movie",
 		"Lists movie clips in the current project, letting you load or import them." );
 
 	public Session Session { get; }
 
-	public MovieResourceListPage( ListPanel parent, Session session )
+	public MovieResourceListPage( BrowserPanel parent, Session session )
 		: base( parent)
 	{
 		Session = session;

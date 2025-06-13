@@ -4,14 +4,14 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed class MoviePlayerListPage : ListView, IListPanelPage
+public sealed class MoviePlayerListPage : ListView, IBrowserPanelPage
 {
 	public ToolBarItemDisplay Display { get; } = new( "Movie Players", "live_tv",
 		"Lists movie playback components in the scene, so you can switch between them." );
 
 	public Session Session { get; }
 
-	public MoviePlayerListPage( ListPanel parent, Session session )
+	public MoviePlayerListPage( BrowserPanel parent, Session session )
 		: base( parent )
 	{
 		Session = session;

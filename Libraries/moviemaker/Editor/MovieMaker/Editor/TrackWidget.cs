@@ -10,11 +10,11 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 /// <summary>
-/// An item in the <see cref="TrackListPage"/>, showing the name of a track with buttons to configure it.
+/// An item in the <see cref="TrackListWidget"/>, showing the name of a track with buttons to configure it.
 /// </summary>
 public partial class TrackWidget : Widget
 {
-	public TrackListPage TrackList { get; }
+	public TrackListWidget TrackList { get; }
 	public new TrackWidget? Parent { get; }
 
 	public new IEnumerable<TrackWidget> Children => _children;
@@ -31,7 +31,7 @@ public partial class TrackWidget : Widget
 
 	private ControlWidget? _controlWidget;
 
-	public TrackWidget( TrackListPage trackList, TrackWidget? parent, TrackView view )
+	public TrackWidget( TrackListWidget trackList, TrackWidget? parent, TrackView view )
 		: base( (Widget?)parent ?? trackList )
 	{
 		TrackList = trackList;
