@@ -430,6 +430,7 @@ public class Timeline : GraphicsView
 
 	private ProjectSequenceTrack? _draggedTrack;
 	private ProjectSequenceBlock? _draggedBlock;
+	private readonly HashSet<ITrackBlock> _draggedBlocks = new();
 
 	public override void OnDragHover( DragEvent ev )
 	{
@@ -450,8 +451,11 @@ public class Timeline : GraphicsView
 			UpdateTracksIfNeeded();
 		}
 
+		_draggedBlocks.Clear();
+		_draggedBlocks.Add( _draggedBlock );
+
 		var time = Session.ScenePositionToTime( ToScene( ev.LocalPosition ),
-			new SnapOptions( IgnoreBlock: _draggedBlock ) );
+			new SnapOptions( IgnoreBlocks: _draggedBlocks ) );
 
 		_draggedBlock.TimeRange = (time, time + _draggedBlock.TimeRange.Duration);
 		_draggedBlock.Transform = new MovieTransform( -time );
@@ -517,7 +521,7 @@ public class Timeline : GraphicsView
 
 			foreach ( var block in dopeTrack.View.Blocks )
 			{
-				if ( block == snap.Options.IgnoreBlock ) continue;
+				if ( snap.Options.IgnoreBlocks?.Contains( block ) is true ) continue;
 
 				snap.Add( SnapFlag.TrackBlock, block.TimeRange.Start );
 				snap.Add( SnapFlag.TrackBlock, block.TimeRange.End );
