@@ -151,14 +151,18 @@ public class ScrubberItem : GraphicsItem
 
 		// Darker background for the clip duration
 
+		if ( Session.SequenceTimeRange is { } sequenceRange )
 		{
-			var timeRange = Session.SequenceTimeRange ?? (MovieTime.Zero, duration);
-
-			var startX = FromScene( Session.TimeToPixels( timeRange.Start ) ).x;
-			var endX = FromScene( Session.TimeToPixels( timeRange.End ) ).x;
+			Paint.SetBrushAndPen( Theme.ControlBackground.LerpTo( Timeline.Colors.Background, 0.5f ) );
+			DrawTimeRangeRect( (MovieTime.Zero, duration) );
 
 			Paint.SetBrushAndPen( Timeline.Colors.Background );
-			Paint.DrawRect( new Rect( new Vector2( startX, LocalRect.Top ), new Vector2( endX - startX, LocalRect.Height ) ) );
+			DrawTimeRangeRect( sequenceRange );
+		}
+		else
+		{
+			Paint.SetBrushAndPen( Timeline.Colors.Background );
+			DrawTimeRangeRect( (MovieTime.Zero, duration) );
 		}
 
 		// Paste time range
@@ -270,6 +274,14 @@ public class ScrubberItem : GraphicsItem
 				}
 			}
 		}
+	}
+
+	private void DrawTimeRangeRect( MovieTimeRange timeRange )
+	{
+		var startX = FromScene( Session.TimeToPixels( timeRange.Start ) ).x;
+		var endX = FromScene( Session.TimeToPixels( timeRange.End ) ).x;
+
+		Paint.DrawRect( new Rect( new Vector2( startX, LocalRect.Top ), new Vector2( endX - startX, LocalRect.Height ) ) );
 	}
 
 	private static string TimeToString( MovieTime time, MovieTime interval )
