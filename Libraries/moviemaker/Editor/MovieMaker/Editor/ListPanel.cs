@@ -51,7 +51,12 @@ public sealed class ListPanel : MovieEditorPanel
 
 			importMenu.AddOptions( movies, x => $"{x.ResourcePath}:{resourceIcon}", x =>
 			{
-				session.GetOrCreateTrack( x );
+				using var historyScope = session.History.Push( $"Import {x.ResourceName.ToTitleCase()}" );
+
+				var track = session.GetOrCreateTrack( x );
+
+				track.AddBlock( (0, x.GetCompiled().Duration), MovieTransform.Identity, x );
+
 				session.TrackList.Update();
 			} );
 
