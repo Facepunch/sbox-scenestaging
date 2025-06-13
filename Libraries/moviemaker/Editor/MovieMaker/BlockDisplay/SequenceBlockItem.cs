@@ -247,6 +247,11 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		using ( Parent.Session.History.Push( "Sequence Deleted" ) )
 		{
 			Track.RemoveBlock( Block );
+
+			if ( Track.IsEmpty )
+			{
+				Parent.View.Remove();
+			}
 		}
 
 		Parent.View.MarkValueChanged();
