@@ -99,7 +99,7 @@ public sealed class ListPanel : MovieEditorPanel
 
 	private static string GetFullPath( Session session )
 	{
-		var name = session.Resource is MovieResource res ? res.ResourceName.ToTitleCase() : "Embedded";
+		var name = session.Resource is MovieResource res ? res.ResourceName.ToTitleCase() : session.Player.GameObject.Name;
 
 		return session.Parent is { } parent
 			? $"{GetFullPath( parent )} → {name}"
