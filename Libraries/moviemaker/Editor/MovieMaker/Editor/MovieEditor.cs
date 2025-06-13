@@ -31,6 +31,18 @@ public partial class MovieEditor : Widget, IHotloadManaged
 	public TimelinePanel? TimelinePanel { get; private set; }
 	public HistoryPanel? HistoryPanel { get; private set; }
 
+	public bool ShowHistory
+	{
+		get => HistoryPanel is { Visible: true };
+		set
+		{
+			if ( HistoryPanel is not { } history ) return;
+
+			EditorCookie.Set( "moviemaker.showhistory", value );
+			history.Visible = value;
+		}
+	}
+
 	public MovieEditor( Widget parent, IReadOnlyDictionary<SessionKey, Session>? sessions = null ) : base( parent )
 	{
 		_editors.Add( this, null );
@@ -96,6 +108,8 @@ public partial class MovieEditor : Widget, IHotloadManaged
 		splitter.SetStretch( 0, 1 );
 		splitter.SetCollapsible( 1, false );
 		splitter.SetStretch( 1, 3 );
+
+		HistoryPanel.Visible = EditorCookie.Get( "moviemaker.showhistory", false );
 
 		Session.Activate();
 	}

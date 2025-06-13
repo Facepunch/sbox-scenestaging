@@ -40,7 +40,7 @@ public sealed class HistoryPanel : MovieEditorPanel
 
 		hideHistoryGroup.AddToggle( hideHistoryDisplay,
 			() => true,
-			value => Visible = false );
+			value => parent.ShowHistory = false );
 	}
 }
 

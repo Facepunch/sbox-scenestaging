@@ -118,17 +118,11 @@ public sealed class TimelinePanel : MovieEditorPanel
 
 		showHistoryGroup.Bind( "Visible" )
 			.ReadOnly()
-			.From( () => parent.HistoryPanel is { Visible: false }, null );
+			.From( () => !parent.ShowHistory, null );
 
 		showHistoryGroup.AddToggle( showHistoryDisplay,
 			() => false,
-			value =>
-			{
-				if ( parent.HistoryPanel is { } historyPanel )
-				{
-					historyPanel.Visible = true;
-				}
-			} );
+			value => parent.ShowHistory = true );
 	}
 }
 
