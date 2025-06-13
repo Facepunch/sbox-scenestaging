@@ -202,7 +202,7 @@ public abstract partial class EditMode
 			if ( trackView.TransformTrack.TryGetValue( t, out var next ) )
 			{
 				var alpha = Session.GetGizmoAlpha( t, timeRange );
-				var dist = Gizmo.CameraTransform.Position.Distance( next.Position );
+				var dist = Gizmo.Camera.Ortho ? Gizmo.Camera.OrthoHeight : Gizmo.CameraTransform.Position.Distance( next.Position );
 				var scale = dist / 64f;
 
 				if ( trackView.Track is IPropertyTrack<Rotation> rotationTrack && rotationTrack.TryGetValue( t, out var rotation ) )

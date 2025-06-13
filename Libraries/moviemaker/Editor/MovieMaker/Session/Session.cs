@@ -499,8 +499,8 @@ public sealed partial class Session
 
 			if ( !transformTrack.TryGetValue( t, out var transform ) ) continue;
 
-			var dist = Gizmo.CameraTransform.Position.Distance( transform.Position );
-			var scale = GetGizmoAlpha( t, timeRange ) * dist / 512f;
+			var dist = Gizmo.Camera.Ortho ? Gizmo.Camera.OrthoHeight : Gizmo.CameraTransform.Position.Distance( transform.Position );
+			var scale = GetGizmoAlpha( t, timeRange ) * dist / 256f;
 
 			var length = 16f * scale;
 			var arrowLength = 3f * scale;

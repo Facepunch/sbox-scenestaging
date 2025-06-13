@@ -373,7 +373,7 @@ public sealed partial class KeyframeEditMode : EditMode
 
 			if ( !trackView.TransformTrack.TryGetValue( keyframe.Time, out var transform ) ) continue;
 
-			var dist = Gizmo.CameraTransform.Position.Distance( transform.Position );
+			var dist = Gizmo.Camera.Ortho ? Gizmo.Camera.OrthoHeight : Gizmo.CameraTransform.Position.Distance( transform.Position );
 			var scale = Session.GetGizmoAlpha( keyframe.Time, timeRange ) * dist / 256f;
 
 			using var scope = Gizmo.Scope( keyframe.Time.ToString(), transform );
