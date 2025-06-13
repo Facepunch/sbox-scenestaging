@@ -156,7 +156,7 @@ public sealed partial class KeyframeEditMode : EditMode
 		handles.ReadFromTrack();
 	}
 
-	private void UpdateTracksFromHandles( IEnumerable<KeyframeHandle> handles )
+	public void UpdateTracksFromHandles( IEnumerable<KeyframeHandle> handles )
 	{
 		var tracks = handles
 			.Select( x => x.Parent )

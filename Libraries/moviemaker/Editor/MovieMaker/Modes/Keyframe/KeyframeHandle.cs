@@ -165,6 +165,8 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 				{
 					handle.Keyframe = handle.Keyframe with { Interpolation = value };
 				}
+
+				EditMode?.UpdateTracksFromHandles( selection );
 			} );
 
 			option.Checkable = true;
