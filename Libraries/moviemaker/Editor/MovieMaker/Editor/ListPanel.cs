@@ -41,13 +41,13 @@ public sealed class ListPanel : MovieEditorPanel
 
 			menu.AddSeparator();
 
-			var openMenu = menu.AddMenu( "Open Movie", "folder_open" );
+			var openMenu = menu.AddMenu( "Open Movie", "file_open" );
 
 			var movies = ResourceLibrary.GetAll<MovieResource>().ToArray();
 
 			openMenu.AddOptions( movies, x => $"{x.ResourcePath}:{resourceIcon}", Editor.SwitchResource );
 
-			var importMenu = menu.AddMenu( "Import Movie", "folder_open" );
+			var importMenu = menu.AddMenu( "Import Movie", "sim_card_download" );
 
 			importMenu.AddOptions( movies, x => $"{x.ResourcePath}:{resourceIcon}", x =>
 			{
@@ -73,6 +73,18 @@ public sealed class ListPanel : MovieEditorPanel
 			embed.ToolTip = "Store the movie inside this Movie Player component, embedded in the current scene or prefab.";
 
 			saveAsMenu.AddOption( "New Movie Resource", resourceIcon, parent.SaveFileAs );
+
+			menu.AddSeparator();
+
+			var playerMenu = menu.AddMenu( "Switch Movie Player", "switch_video" );
+
+			foreach ( var player in session.Player.Scene.GetAllComponents<MoviePlayer>() )
+			{
+				var option = playerMenu.AddOption( player.GameObject.Name, "live_tv", () => Editor.Switch( player ) );
+
+				option.Checkable = true;
+				option.Checked = session.Player == player;
+			}
 
 			menu.OpenAt( fileGroup.ScreenRect.BottomLeft );
 		} );
