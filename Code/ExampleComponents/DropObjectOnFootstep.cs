@@ -26,6 +26,7 @@ public sealed class DropObjectOnFootstep : Component
 
 		var tr = Scene.Trace
 			.Ray( e.Transform.Position + Vector3.Up * 20, e.Transform.Position + Vector3.Up * -20 )
+			.IgnoreGameObject( GameObject )
 			.Run();
 
 		if ( !tr.Hit )
