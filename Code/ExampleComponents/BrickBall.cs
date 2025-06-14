@@ -16,9 +16,9 @@ public sealed class BrickBall : Component, Component.ICollisionListener
 
 	float StartX;
 
-	protected override void OnEnabled()
+	protected override void OnStart()
 	{
-		base.OnEnabled();
+		base.OnStart();
 
 		StartX = WorldPosition.x;
 
