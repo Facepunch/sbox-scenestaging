@@ -29,6 +29,7 @@ public sealed class TrackListWidget : Widget
 	private readonly Widget _trackContainer;
 	private readonly Widget _dragTarget;
 	private Widget? _placeholder;
+	private ParentProjectWidget? _parentProjectWidget;
 
 	public TrackListWidget( ListPanel parent, Session session )
 		: base( parent )
@@ -43,6 +44,11 @@ public sealed class TrackListWidget : Widget
 			Layout = Layout.Column(),
 			FixedWidth = Width
 		};
+
+		if ( session.Parent is { } parentSession )
+		{
+			_parentProjectWidget = new ParentProjectWidget( this, parentSession );
+		}
 
 		_trackContainer.Layout.Margin = new Margin( 4f, 0f );
 
@@ -153,12 +159,18 @@ public sealed class TrackListWidget : Widget
 			return;
 		}
 
-		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition );
-		_trackContainer.FixedWidth = Width;
-		_trackContainer.FixedHeight = _rootTracks
+		var tracksHeight = _rootTracks
 			.Select( x => x.View.Position + x.View.Height + Timeline.RootTrackSpacing )
 			.DefaultIfEmpty( 64f )
 			.Max();
+
+		var headerHeight = _parentProjectWidget is not null
+			? _parentProjectWidget.Height + Timeline.RootTrackSpacing
+			: 0f;
+
+		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition - headerHeight );
+		_trackContainer.FixedWidth = Width;
+		_trackContainer.FixedHeight = tracksHeight + headerHeight;
 	}
 
 	private void TrackList_Changed( TrackListView trackList )
@@ -167,6 +179,12 @@ public sealed class TrackListWidget : Widget
 		_rootTracks.Update( trackList.RootTracks );
 
 		_trackContainer.Layout.Clear( false );
+
+		if ( _parentProjectWidget is not null )
+		{
+			_trackContainer.Layout.Add( _parentProjectWidget );
+			_trackContainer.Layout.AddSpacingCell( Timeline.RootTrackSpacing );
+		}
 
 		foreach ( var track in _rootTracks )
 		{

@@ -43,6 +43,10 @@ public sealed partial class Session
 	public Session Root => Context?.Parent.Root ?? this;
 	public IMovieResource Resource { get; }
 
+	public string Title => Resource is MovieResource res
+		? res.ResourceName.ToTitleCase()
+		: Player.GameObject.Name;
+
 	private int _frameRate = 10;
 	private bool _frameSnap;
 	private bool _objectSnap;

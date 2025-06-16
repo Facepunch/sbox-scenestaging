@@ -111,7 +111,7 @@ public sealed class ListPanel : MovieEditorPanel
 
 	private static string GetFullPath( Session session )
 	{
-		var name = session.Resource is MovieResource res ? res.ResourceName.ToTitleCase() : session.Player.GameObject.Name;
+		var name = session.Title;
 
 		return session.Parent is { } parent
 			? $"{GetFullPath( parent )} → {name}"
