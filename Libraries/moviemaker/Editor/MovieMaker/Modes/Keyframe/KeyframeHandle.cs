@@ -70,6 +70,8 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 	{
 		base.OnSelectionChanged();
 		UpdatePosition();
+
+		ZIndex = Selected ? 101 : 100;
 	}
 
 	protected override void OnPaint()
@@ -200,6 +202,15 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 			return 1;
 		}
 
-		return _keyframe.CompareTo( other.Keyframe );
+		var timeCompare = Time.CompareTo( other.Time );
+
+		if ( timeCompare != 0 )
+		{
+			return timeCompare;
+		}
+
+		// When overlapping, put selected first
+
+		return -Selected.CompareTo( other.Selected );
 	}
 }

@@ -59,6 +59,13 @@ public sealed partial class KeyframeEditMode : EditMode
 
 			UpdateTracksFromHandles( SelectedKeyframes );
 		} );
+
+		Timeline.OnSelectionChanged += OnSelectionChanged;
+	}
+
+	protected override void OnDisable()
+	{
+		Timeline.OnSelectionChanged -= OnSelectionChanged;
 	}
 
 	public override bool AllowTrackCreation => AutoCreateTracks;
@@ -100,6 +107,16 @@ public sealed partial class KeyframeEditMode : EditMode
 		// We've finished changing a property, update the keyframe we created in OnPreChange
 
 		return CreateOrUpdateKeyframeHandle( view, new Keyframe( Session.PlayheadTime, view.Target.Value, DefaultInterpolation ) );
+	}
+
+	private void OnSelectionChanged()
+	{
+		// When deselecting keyframes, get rid of overlapping duplicates
+
+		foreach ( var (_, handles) in _trackKeyframeHandles )
+		{
+			handles.CleanUpKeyframes();
+		}
 	}
 
 	private TimelineTrack? GetTimelineTrack( TrackView view )
@@ -475,6 +492,29 @@ public sealed partial class KeyframeEditMode : EditMode
 			}
 		}
 
+		/// <summary>
+		/// Remove overlapping unselected keyframes.
+		/// We keep selected ones in case they're being dragged.
+		/// </summary>
+		public void CleanUpKeyframes()
+		{
+			var changed = false;
+
+			for ( var i = _handles.Count - 1; i >= 1; --i )
+			{
+				var prev = _handles[i - 1];
+				var next = _handles[i];
+
+				if ( prev.Selected || next.Selected ) continue;
+				if ( prev.Time != next.Time ) continue;
+
+				_handles.RemoveAt( i );
+
+				next.Destroy();
+				changed = true;
+			}
+		}
+
 		public void ReadFromTrack()
 		{
 			foreach ( var handle in _handles )
@@ -541,6 +581,12 @@ public sealed partial class KeyframeEditMode : EditMode
 					block.Clear();
 
 					prevCutTime = cutTime;
+				}
+
+				if ( block.Count > 0 && block[^1].Time == handle.Time )
+				{
+					// Use first when overlapping, which will be a selected keyframe
+					continue;
 				}
 
 				block.Add( handle.Keyframe );
