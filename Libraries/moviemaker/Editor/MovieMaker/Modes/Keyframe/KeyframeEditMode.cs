@@ -195,6 +195,23 @@ public sealed partial class KeyframeEditMode : EditMode
 		}
 	}
 
+	protected override void OnKeyPress( KeyEvent e )
+	{
+		base.OnKeyPress(e);
+
+		var nudgeDelta = MovieTime.FromFrames( e.HasShift ? 10 : 1, Session.FrameRate );
+
+		switch ( e.Key )
+		{
+			case KeyCode.Right:
+				Nudge( nudgeDelta );
+				break;
+			case KeyCode.Left:
+				Nudge( -nudgeDelta );
+				break;
+		}
+	}
+
 	protected override void OnKeyRelease( KeyEvent e )
 	{
 		base.OnKeyRelease( e );
@@ -310,20 +327,13 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		using var scope = GetKeyframeChangeScope( "Move", view );
 
-		var minDelta = SelectedKeyframes
-			.Select( x => -x.Time )
-			.DefaultIfEmpty( 0d )
-			.Max();
-
 		var time = Session.ScenePositionToTime( e.ScenePosition, new SnapOptions( SnapFlag.Playhead ) );
+		var delta = ClampKeyframeDelta( time - _lastDragTime );
+		var transform = new MovieTransform( delta );
 
-		time = MovieTime.Max( _lastDragTime + minDelta, time );
+		_lastDragTime += delta;
 
-		var transform = new MovieTransform( time - _lastDragTime );
-
-		_lastDragTime = time;
-
-		Session.PlayheadTime = time;
+		Session.PlayheadTime = _lastDragTime;
 
 		foreach ( var keyframe in SelectedKeyframes )
 		{
@@ -342,6 +352,28 @@ public sealed partial class KeyframeEditMode : EditMode
 		_isDraggingKeyframes = false;
 
 		ClearKeyframeChangeScope();
+	}
+
+	private MovieTime ClampKeyframeDelta( MovieTime delta )
+	{
+		var minDelta = SelectedKeyframes
+			.Select( x => -x.Time )
+			.DefaultIfEmpty( 0d )
+			.Max();
+
+		return MovieTime.Max( delta, minDelta );
+	}
+
+	private void Nudge( MovieTime delta )
+	{
+		delta = ClampKeyframeDelta( delta );
+
+		foreach ( var keyframe in SelectedKeyframes )
+		{
+			keyframe.Time += delta;
+		}
+
+		UpdateTracksFromHandles( SelectedKeyframes );
 	}
 
 	protected override void OnSelectAll()
