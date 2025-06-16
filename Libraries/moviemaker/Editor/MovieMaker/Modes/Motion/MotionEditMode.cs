@@ -167,19 +167,18 @@ public sealed partial class MotionEditMode : EditMode
 
 	protected override void OnMouseWheel( WheelEvent e )
 	{
-		if ( TimeSelection is not { } oldSelection || !oldSelection.PeakTimeRange.Contains( Session.PlayheadTime ) )
+		if ( !e.HasShift ) return;
+
+		if ( TimeSelection is not { } selection || !selection.PeakTimeRange.Contains( Session.PlayheadTime ) )
 		{
-			TimeSelection = new TimeSelection( Session.PlayheadTime, DefaultInterpolation );
+			selection = new TimeSelection( Session.PlayheadTime, DefaultInterpolation );
 		}
 
-		if ( TimeSelection is { } selection && e.HasShift )
-		{
-			var delta = Math.Sign( e.Delta ) * Session.MinorTick.Interval;
+		var delta = Math.Sign( e.Delta ) * Session.MinorTick.Interval;
 
-			TimeSelection = selection.WithFadeDurationDelta( delta );
+		TimeSelection = selection.WithFadeDurationDelta( delta );
 
-			e.Accept();
-		}
+		e.Accept();
 	}
 
 	private void SetInterpolation( InterpolationMode mode )
