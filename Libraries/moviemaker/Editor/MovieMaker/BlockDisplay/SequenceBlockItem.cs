@@ -63,6 +63,8 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		if ( e.RightMouseButton )
 		{
 			Parent.Session.PlayheadTime = time;
+			e.Accepted = true;
+			return;
 		}
 
 		if ( !e.LeftMouseButton ) return;
