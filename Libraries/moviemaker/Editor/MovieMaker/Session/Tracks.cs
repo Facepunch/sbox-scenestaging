@@ -20,11 +20,11 @@ partial class Session
 		{
 			var viewHeight = TrackListViewHeight;
 			var contentsHeight = TrackList.Height;
+			var headerOffset = -TrackListHeaderHeight + 28f;
 
-			var min = Math.Min( -TrackListHeaderHeight + 24f, contentsHeight - viewHeight );
-			var max = Math.Max( -TrackListHeaderHeight + 24f, contentsHeight - viewHeight );
+			var max = Math.Max( headerOffset, contentsHeight - viewHeight );
 
-			return Math.Clamp( _trackListScrollPosition, min, max );
+			return Math.Clamp( _trackListScrollPosition, headerOffset, max );
 		}
 		set
 		{

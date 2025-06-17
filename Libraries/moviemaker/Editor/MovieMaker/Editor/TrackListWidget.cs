@@ -24,12 +24,12 @@ public sealed class TrackListWidget : Widget
 		[track, .. track.Children.SelectMany( EnumerateDescendants )];
 
 	private TrackListView? _trackList;
+	private readonly ImmutableArray<ProjectNavigationWidget> _projectNavWidgets;
 	private readonly SynchronizedSet<TrackView, TrackWidget> _rootTracks;
 
 	private readonly Widget _trackContainer;
 	private readonly Widget _dragTarget;
 	private Widget? _placeholder;
-	private ProjectNavigationWidget _projectNavWidget;
 
 	public TrackListWidget( ListPanel parent, Session session )
 		: base( parent )
@@ -46,20 +46,22 @@ public sealed class TrackListWidget : Widget
 		};
 
 		_trackContainer.Layout.Margin = new Margin( 4f, 0f );
+		_trackContainer.Layout.Spacing = 0f;
 
-		_projectNavWidget = new ProjectNavigationWidget( this, session );
+		var navWidgets = new List<ProjectNavigationWidget>();
 
-		var parentSession = session.Parent;
+		var parentSession = session;
 
 		while ( parentSession is not null )
 		{
-			var childNav = _projectNavWidget;
-
-			_projectNavWidget = new ProjectNavigationWidget( this, parentSession );
-			_projectNavWidget.SetChild( childNav );
+			navWidgets.Add( new ProjectNavigationWidget( this, parentSession, parentSession == session ) );
 
 			parentSession = parentSession.Parent;
 		}
+
+		navWidgets.Reverse();
+
+		_projectNavWidgets = [..navWidgets];
 
 		_dragTarget = new DragTargetWidget( this ) { FixedWidth = Width, Visible = false };
 
@@ -171,9 +173,9 @@ public sealed class TrackListWidget : Widget
 		var tracksHeight = _rootTracks
 			.Select( x => x.View.Position + x.View.Height + Timeline.RootTrackSpacing )
 			.DefaultIfEmpty( 64f )
-			.Max();
+			.Max() - Timeline.RootTrackSpacing;
 
-		var headerHeight = _projectNavWidget.Height + Timeline.RootTrackSpacing;
+		var headerHeight = _projectNavWidgets.Sum( x => x.Height ) + Timeline.RootTrackSpacing;
 
 		Session.TrackListHeaderHeight = headerHeight;
 
@@ -189,13 +191,15 @@ public sealed class TrackListWidget : Widget
 
 		_trackContainer.Layout.Clear( false );
 
-		_trackContainer.Layout.Add( _projectNavWidget );
-		_trackContainer.Layout.AddSpacingCell( Timeline.RootTrackSpacing );
+		foreach ( var navWidget in _projectNavWidgets )
+		{
+			_trackContainer.Layout.Add( navWidget );
+		}
 
 		foreach ( var track in _rootTracks )
 		{
-			_trackContainer.Layout.Add( track );
 			_trackContainer.Layout.AddSpacingCell( Timeline.RootTrackSpacing );
+			_trackContainer.Layout.Add( track );
 		}
 
 		if ( _rootTracks.Count == 0 )

@@ -95,27 +95,10 @@ public sealed class ListPanel : MovieEditorPanel
 
 		var resourceGroup = ToolBar.AddGroup( true );
 
-		_projectTitle = resourceGroup.AddLabel( GetFullPath( session ) );
+		_projectTitle = resourceGroup.AddLabel( session.Player.GameObject.Name );
 
 		_projectTitle.Alignment = TextFlag.Center;
 		_projectTitle.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
-
-		// Navigation buttons
-
-		var navigateGroup = ToolBar.AddGroup( true );
-		var backDisplay = new ToolBarItemDisplay( "Back", "arrow_back", "Return to the parent Movie project." );
-
-		navigateGroup.AddAction( backDisplay, parent.ExitSequence,
-			() => parent.Session?.Parent is not null );
-	}
-
-	private static string GetFullPath( Session session )
-	{
-		var name = session.Title;
-
-		return session.Parent is { } parent
-			? $"{GetFullPath( parent )} → {name}"
-			: name;
 	}
 
 	protected override void OnPaint()

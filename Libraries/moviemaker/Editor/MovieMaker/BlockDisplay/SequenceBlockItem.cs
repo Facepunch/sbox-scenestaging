@@ -345,7 +345,9 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		var isSelected = !isLocked && Selected;
 		var isHovered = !isLocked && Paint.HasMouseOver;
 
-		PaintExtensions.PaintFilmStrip( LocalRect.Shrink( 0f, 0f, 1f, 0f ), isLocked, isHovered, isSelected );
+		var color = Theme.Primary.Desaturate( isLocked ? 0.25f : 0f ).Darken( isLocked ? 0.5f : isSelected ? 0f : isHovered ? 0.1f : 0.25f );
+
+		PaintExtensions.PaintFilmStrip( LocalRect.Shrink( 0f, 0f, 1f, 0f ), color );
 
 		var minX = LocalRect.Left;
 		var maxX = LocalRect.Right;

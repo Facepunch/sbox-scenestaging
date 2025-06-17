@@ -97,7 +97,7 @@ internal static class PaintExtensions
 
 	public static Pixmap FilmStripImage => _filmStripImage ??= GenerateFilmStripImage();
 
-	public static void PaintFilmStrip( Rect rect, bool isLocked, bool isHovered, bool isSelected )
+	public static void PaintFilmStrip( Rect rect, Color color )
 	{
 		if ( rect.Height > 30f )
 		{
@@ -111,7 +111,7 @@ internal static class PaintExtensions
 		Paint.Translate( -rect.TopLeft );
 
 		Paint.RenderMode = RenderMode.Multiply;
-		Paint.SetBrush( Theme.Primary.Desaturate( isLocked ? 0.25f : 0f ).Darken( isLocked ? 0.5f : isSelected ? 0f : isHovered ? 0.1f : 0.25f ) );
+		Paint.SetBrush( color );
 		Paint.DrawRect( rect, 2 );
 
 		Paint.RenderMode = RenderMode.Normal;

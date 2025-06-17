@@ -8,47 +8,56 @@ namespace Editor.MovieMaker;
 
 public sealed class ProjectNavigationWidget : Widget
 {
-	private ProjectNavigationWidget? _child;
-
 	public TrackListWidget TrackList { get; }
+	public Session Session { get; }
 
-	protected override Vector2 SizeHint() => 32f + (_child is { } child ? child.SizeHint() : 0f);
+	public bool IsActive { get; }
 
-	public ProjectNavigationWidget( TrackListWidget trackList, Session session )
+	protected override Vector2 SizeHint() => 32f;
+
+	public ProjectNavigationWidget( TrackListWidget trackList, Session session, bool isActive )
 		: base( trackList )
 	{
 		TrackList = trackList;
+		Session = session;
+		IsActive = isActive;
 
-		Layout = Layout.Column();
-		Layout.Margin = 0f;
-		Layout.Spacing = 0f;
+		FixedHeight = 32f;
 
-		VerticalSizeMode = SizeMode.CanGrow;
-
-		var titleRow = Layout.AddRow();
-
-		titleRow.Spacing = 4f;
-		titleRow.Margin = new Margin( 12f, 4f );
-		titleRow.Add( new Label( session.Title ) );
-		titleRow.AddStretchCell();
+		Cursor = IsActive ? CursorShape.Arrow : CursorShape.Finger;
 	}
 
-	public void SetChild( ProjectNavigationWidget child )
+	protected override void OnMouseClick( MouseEvent e )
 	{
-		Assert.IsNull( _child );
+		base.OnMouseClick(e);
 
-		var childContainer = Layout.Add( Layout.Column() );
+		if ( IsActive ) return;
 
-		childContainer.Margin = new Margin( 8f, 0f, 0f, 0f );
-		childContainer.Spacing = 0f;
-		childContainer.Add( child );
-
-		_child = child;
+		while ( Session.Editor.Session != Session && Session.Editor.Session?.Parent is not null )
+		{
+			Session.Editor.ExitSequence();
+		}
 	}
 
 	protected override void OnPaint()
 	{
 		Paint.Antialiasing = false;
-		PaintExtensions.PaintFilmStrip( new Rect( 0f, 0f, LocalRect.Width, 30f ), false, Paint.HasMouseOver, false );
+
+		var color = IsActive ? Theme.SurfaceLightBackground : Paint.HasMouseOver ? Theme.SelectedBackground : Theme.SurfaceBackground;
+
+		PaintExtensions.PaintFilmStrip( new Rect( 0f, 1f, LocalRect.Width, 30f ), color );
+
+		Paint.ClearBrush();
+		Paint.SetPen( Theme.TextControl.Darken( IsActive ? 0f : Paint.HasMouseOver ? 0.1f : 0.25f ) );
+
+		Paint.DrawText( LocalRect.Shrink( 12f, 4f ), Session.Title );
+
+		if ( Session.Context is { } context )
+		{
+			Paint.SetPen( Paint.Pen.WithAlpha( 0.8f ) );
+			Paint.SetFont( null, 7f );
+			Paint.DrawText( LocalRect.Shrink( 4f, 4f ), context.TimeRange.Start.ToString(), TextFlag.LeftCenter );
+			Paint.DrawText( LocalRect.Shrink( 4f, 4f ), context.TimeRange.End.ToString(), TextFlag.RightCenter );
+		}
 	}
 }
