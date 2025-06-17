@@ -21,8 +21,8 @@ partial class Session
 			var viewHeight = TrackListViewHeight;
 			var contentsHeight = TrackList.Height;
 
-			var min = Math.Min( 0f, contentsHeight - viewHeight );
-			var max = Math.Max( 0f, contentsHeight - viewHeight );
+			var min = Math.Min( -TrackListHeaderHeight + 24f, contentsHeight - viewHeight );
+			var max = Math.Max( -TrackListHeaderHeight + 24f, contentsHeight - viewHeight );
 
 			return Math.Clamp( _trackListScrollPosition, min, max );
 		}
@@ -37,6 +37,7 @@ partial class Session
 		}
 	}
 
+	public float TrackListHeaderHeight { get; set; } = 0f;
 	public float TrackListViewHeight { get; set; } = float.PositiveInfinity;
 
 	private void TrackFrame()

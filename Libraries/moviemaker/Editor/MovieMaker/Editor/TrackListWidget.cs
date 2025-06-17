@@ -29,7 +29,7 @@ public sealed class TrackListWidget : Widget
 	private readonly Widget _trackContainer;
 	private readonly Widget _dragTarget;
 	private Widget? _placeholder;
-	private ParentProjectWidget? _parentProjectWidget;
+	private ProjectNavigationWidget _projectNavWidget;
 
 	public TrackListWidget( ListPanel parent, Session session )
 		: base( parent )
@@ -45,12 +45,21 @@ public sealed class TrackListWidget : Widget
 			FixedWidth = Width
 		};
 
-		if ( session.Parent is { } parentSession )
-		{
-			_parentProjectWidget = new ParentProjectWidget( this, parentSession );
-		}
-
 		_trackContainer.Layout.Margin = new Margin( 4f, 0f );
+
+		_projectNavWidget = new ProjectNavigationWidget( this, session );
+
+		var parentSession = session.Parent;
+
+		while ( parentSession is not null )
+		{
+			var childNav = _projectNavWidget;
+
+			_projectNavWidget = new ProjectNavigationWidget( this, parentSession );
+			_projectNavWidget.SetChild( childNav );
+
+			parentSession = parentSession.Parent;
+		}
 
 		_dragTarget = new DragTargetWidget( this ) { FixedWidth = Width, Visible = false };
 
@@ -164,9 +173,9 @@ public sealed class TrackListWidget : Widget
 			.DefaultIfEmpty( 64f )
 			.Max();
 
-		var headerHeight = _parentProjectWidget is not null
-			? _parentProjectWidget.Height + Timeline.RootTrackSpacing
-			: 0f;
+		var headerHeight = _projectNavWidget.Height + Timeline.RootTrackSpacing;
+
+		Session.TrackListHeaderHeight = headerHeight;
 
 		_trackContainer.Position = new Vector2( 0f, Session.TrackListScrollOffset - Session.TrackListScrollPosition - headerHeight );
 		_trackContainer.FixedWidth = Width;
@@ -180,11 +189,8 @@ public sealed class TrackListWidget : Widget
 
 		_trackContainer.Layout.Clear( false );
 
-		if ( _parentProjectWidget is not null )
-		{
-			_trackContainer.Layout.Add( _parentProjectWidget );
-			_trackContainer.Layout.AddSpacingCell( Timeline.RootTrackSpacing );
-		}
+		_trackContainer.Layout.Add( _projectNavWidget );
+		_trackContainer.Layout.AddSpacingCell( Timeline.RootTrackSpacing );
 
 		foreach ( var track in _rootTracks )
 		{
