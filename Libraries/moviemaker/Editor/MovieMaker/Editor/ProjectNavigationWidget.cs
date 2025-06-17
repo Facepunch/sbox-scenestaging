@@ -1,5 +1,7 @@
 ﻿
+using System.IO;
 using Sandbox.Diagnostics;
+using Sandbox.MovieMaker;
 using Sandbox.UI;
 
 namespace Editor.MovieMaker;
@@ -25,6 +27,17 @@ public sealed class ProjectNavigationWidget : Widget
 		FixedHeight = 32f;
 
 		Cursor = IsActive ? CursorShape.Arrow : CursorShape.Finger;
+
+		var location = session.Resource switch
+		{
+			EmbeddedMovieResource => "Embedded Movie Clip",
+			MovieResource res => $"<code>{Path.GetFileName( res.ResourcePath )}</code>",
+			_ => "[unknown]"
+		};
+
+		var description = IsActive ? "Currently open movie clip." : "Parent movie clip containing the currently open one.";
+
+		ToolTip = $"<p>{description}</p><p>{location}</p>";
 	}
 
 	protected override void OnMouseClick( MouseEvent e )
