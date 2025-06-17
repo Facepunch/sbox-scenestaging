@@ -49,7 +49,6 @@ public sealed class ProjectNavigationWidget : Widget
 	protected override void OnPaint()
 	{
 		Paint.Antialiasing = false;
-		Paint.SetBrushAndPen( Theme.Primary );
-		Paint.DrawRect( new Rect( LocalRect.Left + 1f, LocalRect.Top + 1f, LocalRect.Width - 2f, Timeline.TrackHeight - 2f ), 4 );
+		PaintExtensions.PaintFilmStrip( new Rect( 0f, 0f, LocalRect.Width, 30f ), false, Paint.HasMouseOver, false );
 	}
 }

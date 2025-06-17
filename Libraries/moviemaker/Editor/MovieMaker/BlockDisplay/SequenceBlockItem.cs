@@ -345,23 +345,15 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		var isSelected = !isLocked && Selected;
 		var isHovered = !isLocked && Paint.HasMouseOver;
 
-		Paint.SetBrushAndPen( Theme.Primary.Desaturate( isLocked ? 0.25f : 0f ).Darken( isLocked ? 0.5f : isSelected ? 0f : isHovered ? 0.1f : 0.25f ) );
-		Paint.DrawRect( LocalRect.Shrink( 0f, 0f, 1f, 0f ), 2 );
+		PaintExtensions.PaintFilmStrip( LocalRect.Shrink( 0f, 0f, 1f, 0f ), isLocked, isHovered, isSelected );
 
 		var minX = LocalRect.Left;
 		var maxX = LocalRect.Right;
 
-		Paint.SetBrush( Theme.ControlBackground );
-
-		for ( var x = minX.SnapToGrid( 8f ); x <= maxX; x += 8f )
-		{
-			Paint.DrawRect( new Rect( x - 2f, LocalRect.Top + 2f, 4f, 6f ) );
-		}
-
 		Paint.ClearBrush();
 		Paint.SetPen( Theme.TextControl.Darken( isLocked ? 0.25f : 0f ) );
 
-		var textRect = new Rect( minX + 8f, LocalRect.Top + 4f, maxX - minX - 16f, LocalRect.Height - 4f );
+		var textRect = new Rect( minX + 8f, LocalRect.Top, maxX - minX - 16f, LocalRect.Height );
 		var fullTimeRange = FullTimeRange;
 
 		if ( _editMode == EditMode.MoveEnd )
