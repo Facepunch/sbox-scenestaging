@@ -6,6 +6,7 @@ FEATURES
 MODES
 {
     VrForward();
+    Depth();
 }
 
 COMMON
@@ -37,7 +38,7 @@ VS
 
         if ( g_flBlendEnabled )
         {
-            float h = Terrain::GetHeight( o.vPositionWs ) * 20000.0f; // !
+            float h = Terrain::GetHeight( o.vPositionWs ); // !
             float dist = distance( h, o.vPositionWs.z );
 
             float blend = smoothstep( 0.0, 1.0, dist / g_flBlendLength );
@@ -96,7 +97,7 @@ PS
         if ( !g_flBlendEnabled )
             return;
 
-        float h = Terrain::GetHeight( material.WorldPosition.xy ) * 20000.0f; // !
+        float h = Terrain::GetHeight( material.WorldPosition.xy ); // !
 
         float diff = ( material.WorldPosition.z - h ) / g_flBlendLength;
         float blend = 1 - saturate( diff );
@@ -113,7 +114,7 @@ PS
         // normal = TransformNormal( normal, material.GeometricNormal, i.vTangentUWs, i.vTangentVWs );
 
         material.Albedo = lerp( material.Albedo, albedo, blend );
-        // material.Normal = lerp( material.Normal, normal, blend );
+        material.Normal = normalize( lerp( material.Normal, normal, blend ) );
         material.Roughness = lerp( material.Roughness, roughness, blend );
         material.AmbientOcclusion = lerp( material.AmbientOcclusion, ao, blend );
         material.Metalness = lerp( material.Metalness, metal, blend );
