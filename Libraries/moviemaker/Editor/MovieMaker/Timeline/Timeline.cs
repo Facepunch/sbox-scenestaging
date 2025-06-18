@@ -412,7 +412,7 @@ public class Timeline : GraphicsView
 			item.Selected = true;
 		}
 
-		_dragScope = Session.History.Push( "Drag Selection" );
+		_dragScope = null;
 
 		_draggedItems.Clear();
 		_draggedItems.AddRange( SelectedItems.OfType<IMovieDraggable>() );
@@ -446,6 +446,8 @@ public class Timeline : GraphicsView
 		if ( delta.IsZero ) return;
 
 		_lastDragTime = time;
+
+		_dragScope ??= Session.History.Push( "Drag Selection" );
 
 		foreach ( var item in _draggedItems )
 		{
