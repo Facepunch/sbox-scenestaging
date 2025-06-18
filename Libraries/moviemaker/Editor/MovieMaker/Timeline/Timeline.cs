@@ -350,6 +350,12 @@ public class Timeline : GraphicsView
 
 		DragType = DragTypes.None;
 
+		if ( e.ButtonState == MouseButtons.Middle )
+		{
+			e.Accepted = true;
+			return;
+		}
+
 		var scenePos = ToScene( e.LocalPosition );
 
 		if ( GetItemAt( scenePos ) is { Selectable: true } ) return;
