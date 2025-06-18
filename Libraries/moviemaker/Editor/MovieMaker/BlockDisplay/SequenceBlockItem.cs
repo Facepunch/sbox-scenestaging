@@ -1,12 +1,11 @@
-﻿using System.Collections.Immutable;
+﻿using Sandbox.MovieMaker;
 using System.Linq;
-using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker.BlockDisplays;
 
 #nullable enable
 
-public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
+public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>, IMovieDraggable
 {
 	private RealTimeSince _lastClick;
 
@@ -69,7 +68,18 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 
 		if ( !e.LeftMouseButton ) return;
 
-		Selected = true;
+		if ( !Selected )
+		{
+			if ( !e.HasCtrl )
+			{
+				Parent.Timeline.DeselectAll();
+				Selected = true;
+			}
+			else
+			{
+				Selected = !Selected;
+			}
+		}
 
 		_draggedItems.Clear();
 		_draggedBlocks.Clear();
@@ -415,6 +425,17 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>
 		{
 			rect.Right = textRect.Left;
 		}
+	}
+
+	ITrackBlock IMovieDraggable.Block => Block;
+	MovieTimeRange IMovieDraggable.TimeRange => Block.TimeRange;
+
+	void IMovieDraggable.Drag( MovieTime delta )
+	{
+		Block.TimeRange += delta;
+		Block.Transform += delta;
+
+		Layout();
 	}
 }
 

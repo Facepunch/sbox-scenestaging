@@ -301,6 +301,13 @@ public class Timeline : GraphicsView
 
 		var delta = e.LocalPosition - _lastMouseLocalPos;
 
+		if ( e.ButtonState == MouseButtons.Left && IsDragging )
+		{
+			Drag( ToScene( e.LocalPosition ) );
+			e.Accepted = true;
+			return;
+		}
+
 		if ( e.ButtonState == MouseButtons.Middle )
 		{
 			Session.ScrollBy( delta.x, false );
@@ -344,6 +351,13 @@ public class Timeline : GraphicsView
 		return item;
 	}
 
+	private readonly List<IMovieDraggable> _draggedItems = new();
+	private IMovieDraggable? _primaryDraggedItem;
+	private MovieTime _lastDragTime;
+	private SnapOptions _dragSnapOptions;
+
+	public bool IsDragging => _primaryDraggedItem is not null;
+
 	protected override void OnMousePress( MouseEvent e )
 	{
 		base.OnMousePress( e );
@@ -358,7 +372,15 @@ public class Timeline : GraphicsView
 
 		var scenePos = ToScene( e.LocalPosition );
 
-		if ( GetItemAt( scenePos ) is { Selectable: true } ) return;
+		if ( GetItemAt( scenePos ) is { Selectable: true } item )
+		{
+			if ( e.LeftMouseButton && !e.HasCtrl && item is IMovieDraggable draggable )
+			{
+				e.Accepted = StartDragging( scenePos, draggable );
+			}
+
+			return;
+		}
 
 		Session.EditMode?.MousePress( e );
 
@@ -378,9 +400,70 @@ public class Timeline : GraphicsView
 		}
 	}
 
+	private bool StartDragging( Vector2 scenePos, IMovieDraggable draggable )
+	{
+		if ( draggable is not GraphicsItem item ) return false;
+
+		if ( !item.Selected )
+		{
+			DeselectAll();
+			item.Selected = true;
+		}
+
+		_draggedItems.Clear();
+		_draggedItems.AddRange( SelectedItems.OfType<IMovieDraggable>() );
+
+		var ignoreBlocks = _draggedItems
+			.Select( x => x.Block )
+			.OfType<ITrackBlock>()
+			.Distinct()
+			.ToImmutableHashSet();
+
+		_primaryDraggedItem = draggable;
+		_lastDragTime = Session.ScenePositionToTime( scenePos, new SnapOptions( SnapFlag.TrackBlock ) );
+
+		var snapOffsets = _draggedItems
+			.SelectMany( x => new [] { x.TimeRange.Start - _lastDragTime, x.TimeRange.End - _lastDragTime } )
+			.Order()
+			.Distinct()
+			.ToArray();
+
+		_dragSnapOptions = new SnapOptions( IgnoreBlocks: ignoreBlocks, SnapOffsets: snapOffsets );
+
+		return true;
+	}
+
+	private void Drag( Vector2 scenePos )
+	{
+		var time = Session.ScenePositionToTime( scenePos, _dragSnapOptions );
+		var delta = time - _lastDragTime;
+
+		if ( delta.IsZero ) return;
+
+		_lastDragTime = time;
+
+		foreach ( var item in _draggedItems )
+		{
+			item.Drag( delta );
+		}
+	}
+
+	private void StopDragging()
+	{
+		_draggedItems.Clear();
+		_primaryDraggedItem = null;
+	}
+
 	protected override void OnMouseReleased( MouseEvent e )
 	{
 		base.OnMouseReleased( e );
+
+		if ( _primaryDraggedItem is not null )
+		{
+			StopDragging();
+			e.Accepted = true;
+			return;
+		}
 
 		Session.EditMode?.MouseRelease( e );
 	}
