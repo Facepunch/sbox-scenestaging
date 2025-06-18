@@ -356,6 +356,7 @@ public class Timeline : GraphicsView
 	private MovieTime _lastDragTime;
 	private MovieTime _minDragTime;
 	private SnapOptions _dragSnapOptions;
+	private IHistoryScope? _dragScope;
 
 	public bool IsDragging => _primaryDraggedItem is not null;
 
@@ -411,6 +412,8 @@ public class Timeline : GraphicsView
 			item.Selected = true;
 		}
 
+		_dragScope = Session.History.Push( "Drag Selection" );
+
 		_draggedItems.Clear();
 		_draggedItems.AddRange( SelectedItems.OfType<IMovieDraggable>() );
 
@@ -450,10 +453,14 @@ public class Timeline : GraphicsView
 		}
 
 		Session.EditMode?.DragItems( _draggedItems, delta );
+
+		_dragScope?.PostChange();
 	}
 
 	private void StopDragging()
 	{
+		_dragScope?.Dispose();
+
 		_draggedItems.Clear();
 		_primaryDraggedItem = null;
 	}
