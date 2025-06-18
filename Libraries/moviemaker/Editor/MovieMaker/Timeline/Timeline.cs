@@ -354,6 +354,7 @@ public class Timeline : GraphicsView
 	private readonly List<IMovieDraggable> _draggedItems = new();
 	private IMovieDraggable? _primaryDraggedItem;
 	private MovieTime _lastDragTime;
+	private MovieTime _minDragTime;
 	private SnapOptions _dragSnapOptions;
 
 	public bool IsDragging => _primaryDraggedItem is not null;
@@ -429,13 +430,14 @@ public class Timeline : GraphicsView
 			.ToArray();
 
 		_dragSnapOptions = new SnapOptions( IgnoreBlocks: ignoreBlocks, SnapOffsets: snapOffsets );
+		_minDragTime = -snapOffsets[0];
 
 		return true;
 	}
 
 	private void Drag( Vector2 scenePos )
 	{
-		var time = Session.ScenePositionToTime( scenePos, _dragSnapOptions );
+		var time = MovieTime.Max( _minDragTime, Session.ScenePositionToTime( scenePos, _dragSnapOptions ) );
 		var delta = time - _lastDragTime;
 
 		if ( delta.IsZero ) return;
