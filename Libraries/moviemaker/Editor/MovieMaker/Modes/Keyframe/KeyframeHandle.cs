@@ -8,7 +8,7 @@ namespace Editor.MovieMaker;
 
 #nullable enable
 
-public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
+public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>, IMovieDraggable
 {
 	private Keyframe _keyframe;
 
@@ -116,12 +116,7 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 			ShowContextMenu();
 
 			e.Accepted = true;
-			return;
 		}
-
-		if ( !e.LeftMouseButton ) return;
-
-		EditMode?.KeyframeDragStart( this, e );
 	}
 
 	private void ShowContextMenu()
@@ -176,20 +171,6 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 		}
 	}
 
-	protected override void OnMouseMove( GraphicsMouseEvent e )
-	{
-		if ( !e.LeftMouseButton ) return;
-
-		EditMode?.KeyframeDragMove( this, e );
-	}
-
-	protected override void OnMouseReleased( GraphicsMouseEvent e )
-	{
-		if ( !e.LeftMouseButton ) return;
-
-		EditMode?.KeyframeDragEnd( this, e );
-	}
-
 	public int CompareTo( KeyframeHandle? other )
 	{
 		if ( ReferenceEquals( this, other ) )
@@ -212,5 +193,14 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>
 		// When overlapping, put selected first
 
 		return -Selected.CompareTo( other.Selected );
+	}
+
+	ITrackBlock? IMovieDraggable.Block => null;
+
+	MovieTimeRange IMovieDraggable.TimeRange => Keyframe.Time;
+
+	void IMovieDraggable.Drag( MovieTime delta )
+	{
+		Time += delta;
 	}
 }

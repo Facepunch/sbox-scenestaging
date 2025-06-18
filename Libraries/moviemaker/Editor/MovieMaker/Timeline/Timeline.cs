@@ -448,6 +448,8 @@ public class Timeline : GraphicsView
 		{
 			item.Drag( delta );
 		}
+
+		Session.EditMode?.DragItems( _draggedItems, delta );
 	}
 
 	private void StopDragging()

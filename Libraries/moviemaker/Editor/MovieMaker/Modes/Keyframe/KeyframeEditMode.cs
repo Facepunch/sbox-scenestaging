@@ -70,9 +70,6 @@ public sealed partial class KeyframeEditMode : EditMode
 
 	public override bool AllowTrackCreation => AutoCreateTracks;
 
-	private bool _isDraggingKeyframes;
-	private MovieTime _lastDragTime;
-
 	private sealed record KeyframeChangeScope( string Name, TrackView? TrackView, IHistoryScope HistoryScope ) : IDisposable
 	{
 		public void Dispose() => HistoryScope.Dispose();
@@ -303,55 +300,9 @@ public sealed partial class KeyframeEditMode : EditMode
 		Session.PlayheadTime = time;
 	}
 
-	internal void KeyframeDragStart( KeyframeHandle handle, GraphicsMouseEvent e )
+	protected override void OnDragItems( IReadOnlyList<IMovieDraggable> items, MovieTime delta )
 	{
-		DefaultInterpolation = handle.Keyframe.Interpolation;
-
-		Session.PlayheadTime = handle.Time;
-
-		handle.View.InspectProperty();
-
-		_lastDragTime = handle.Time;
-	}
-
-	internal void KeyframeDragMove( KeyframeHandle handle, GraphicsMouseEvent e )
-	{
-		e.Accepted = true;
-
-		_isDraggingKeyframes = true;
-
-		var view = SelectedKeyframes.GroupBy( x => x.View )
-			.Count() == 1
-			? handle.View
-			: null;
-
-		using var scope = GetKeyframeChangeScope( "Move", view );
-
-		var time = Session.ScenePositionToTime( e.ScenePosition, new SnapOptions( SnapFlag.Playhead ) );
-		var delta = ClampKeyframeDelta( time - _lastDragTime );
-		var transform = new MovieTransform( delta );
-
-		_lastDragTime += delta;
-
-		Session.PlayheadTime = _lastDragTime;
-
-		foreach ( var keyframe in SelectedKeyframes )
-		{
-			keyframe.Time = transform * keyframe.Time;
-		}
-
-		UpdateTracksFromHandles( SelectedKeyframes );
-	}
-
-	internal void KeyframeDragEnd( KeyframeHandle handle, GraphicsMouseEvent e )
-	{
-		if ( !_isDraggingKeyframes ) return;
-
-		e.Accepted = true;
-
-		_isDraggingKeyframes = false;
-
-		ClearKeyframeChangeScope();
+		UpdateTracksFromHandles( items.OfType<KeyframeHandle>() );
 	}
 
 	private MovieTime ClampKeyframeDelta( MovieTime delta )
