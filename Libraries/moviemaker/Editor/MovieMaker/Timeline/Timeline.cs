@@ -123,7 +123,7 @@ public partial class Timeline : GraphicsView
 
 			if ( (Application.KeyboardModifiers & KeyboardModifiers.Shift) != 0 )
 			{
-				UpdatePreviewTime( _lastMouseLocalPos );
+				UpdatePreviewTime( ToScene( _lastMouseLocalPos ) );
 			}
 		}
 
@@ -301,6 +301,11 @@ public partial class Timeline : GraphicsView
 		var delta = e.LocalPosition - _lastMouseLocalPos;
 		var scenePos = ToScene( e.LocalPosition );
 
+		if ( e.HasShift )
+		{
+			UpdatePreviewTime( scenePos );
+		}
+
 		if ( e.ButtonState == MouseButtons.Left && IsDragging )
 		{
 			Drag( ToScene( e.LocalPosition ) );
@@ -324,22 +329,17 @@ public partial class Timeline : GraphicsView
 			ScrubBarTop.Scrub( e.KeyboardModifiers, scenePos );
 		}
 
-		if ( e.HasShift )
-		{
-			UpdatePreviewTime( e.LocalPosition );
-		}
-
 		_lastMouseLocalPos = e.LocalPosition;
 		_lastMouseTime = Session.PixelsToTime( ToScene( e.LocalPosition ).x );
 
 		Session.EditMode?.MouseMove( e );
 	}
 
-	private void UpdatePreviewTime( Vector2 localPos )
+	public void UpdatePreviewTime( Vector2 scenePos )
 	{
 		Session.PreviewTime = Application.MouseButtons != 0
-			? Session.ScenePositionToTime( ToScene( localPos ) )
-			: Session.PixelsToTime( ToScene( localPos ).x );
+			? Session.ScenePositionToTime( scenePos )
+			: Session.PixelsToTime( scenePos.x );
 	}
 
 	public new GraphicsItem? GetItemAt( Vector2 scenePosition )
