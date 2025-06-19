@@ -1,12 +1,11 @@
-﻿using System.Collections.Immutable;
-using System.Linq;
+﻿using System.Linq;
 using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
 #nullable enable
 
-public class Timeline : GraphicsView
+public partial class Timeline : GraphicsView
 {
 	public const float TrackHeight = 32f;
 	public const float RootTrackSpacing = 8f;
@@ -300,11 +299,18 @@ public class Timeline : GraphicsView
 		base.OnMouseMove( e );
 
 		var delta = e.LocalPosition - _lastMouseLocalPos;
+		var scenePos = ToScene( e.LocalPosition );
 
 		if ( e.ButtonState == MouseButtons.Left && IsDragging )
 		{
 			Drag( ToScene( e.LocalPosition ) );
 			e.Accepted = true;
+			return;
+		}
+
+		if ( e.ButtonState == 0 && !e.HasCtrl && GetItemAt( scenePos ) is { Selectable: true } item )
+		{
+			UpdateCursor( scenePos, item );
 			return;
 		}
 
@@ -315,7 +321,7 @@ public class Timeline : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.PlayheadTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.Playhead );
+			Session.PlayheadTime = Session.ScenePositionToTime( scenePos, SnapFlag.Playhead );
 		}
 
 		if ( e.HasShift )
@@ -351,15 +357,6 @@ public class Timeline : GraphicsView
 		return item;
 	}
 
-	private readonly List<IMovieDraggable> _draggedItems = new();
-	private IMovieDraggable? _primaryDraggedItem;
-	private MovieTime _lastDragTime;
-	private MovieTime _minDragTime;
-	private SnapOptions _dragSnapOptions;
-	private IHistoryScope? _dragScope;
-
-	public bool IsDragging => _primaryDraggedItem is not null;
-
 	protected override void OnMousePress( MouseEvent e )
 	{
 		base.OnMousePress( e );
@@ -376,9 +373,9 @@ public class Timeline : GraphicsView
 
 		if ( GetItemAt( scenePos ) is { Selectable: true } item )
 		{
-			if ( e.LeftMouseButton && !e.HasCtrl && item is IMovieDraggable draggable )
+			if ( e.LeftMouseButton && !e.HasCtrl )
 			{
-				e.Accepted = StartDragging( scenePos, draggable );
+				e.Accepted = StartDragging( scenePos, item );
 			}
 
 			return;
@@ -402,76 +399,11 @@ public class Timeline : GraphicsView
 		}
 	}
 
-	private bool StartDragging( Vector2 scenePos, IMovieDraggable draggable )
-	{
-		if ( draggable is not GraphicsItem item ) return false;
-
-		if ( !item.Selected )
-		{
-			DeselectAll();
-			item.Selected = true;
-		}
-
-		_dragScope = null;
-
-		_draggedItems.Clear();
-		_draggedItems.AddRange( SelectedItems.OfType<IMovieDraggable>() );
-
-		var ignoreBlocks = _draggedItems
-			.Select( x => x.Block )
-			.OfType<ITrackBlock>()
-			.Distinct()
-			.ToImmutableHashSet();
-
-		_primaryDraggedItem = draggable;
-		_lastDragTime = Session.ScenePositionToTime( scenePos, new SnapOptions( SnapFlag.TrackBlock ) );
-
-		var snapOffsets = _draggedItems
-			.SelectMany( x => new [] { x.TimeRange.Start - _lastDragTime, x.TimeRange.End - _lastDragTime } )
-			.Order()
-			.Distinct()
-			.ToArray();
-
-		_dragSnapOptions = new SnapOptions( IgnoreBlocks: ignoreBlocks, SnapOffsets: snapOffsets );
-		_minDragTime = -snapOffsets[0];
-
-		return true;
-	}
-
-	private void Drag( Vector2 scenePos )
-	{
-		var time = MovieTime.Max( _minDragTime, Session.ScenePositionToTime( scenePos, _dragSnapOptions ) );
-		var delta = time - _lastDragTime;
-
-		if ( delta.IsZero ) return;
-
-		_lastDragTime = time;
-
-		_dragScope ??= Session.History.Push( "Drag Selection" );
-
-		foreach ( var item in _draggedItems )
-		{
-			item.Drag( delta );
-		}
-
-		Session.EditMode?.DragItems( _draggedItems, delta );
-
-		_dragScope?.PostChange();
-	}
-
-	private void StopDragging()
-	{
-		_dragScope?.Dispose();
-
-		_draggedItems.Clear();
-		_primaryDraggedItem = null;
-	}
-
 	protected override void OnMouseReleased( MouseEvent e )
 	{
 		base.OnMouseReleased( e );
 
-		if ( _primaryDraggedItem is not null )
+		if ( IsDragging )
 		{
 			StopDragging();
 			e.Accepted = true;

@@ -195,9 +195,9 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>, 
 		return -Selected.CompareTo( other.Selected );
 	}
 
-	ITrackBlock? IMovieDraggable.Block => null;
+	ITrackBlock? IMovieTrackItem.Block => null;
 
-	MovieTimeRange IMovieDraggable.TimeRange => Keyframe.Time;
+	MovieTimeRange IMovieTrackItem.TimeRange => Keyframe.Time;
 
 	void IMovieDraggable.Drag( MovieTime delta )
 	{
