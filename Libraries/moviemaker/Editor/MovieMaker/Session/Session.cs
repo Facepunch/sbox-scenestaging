@@ -77,7 +77,7 @@ public sealed partial class Session
 	public MovieTime TimeOffset
 	{
 		get => _timeOffset;
-		private set => _timeOffset = Cookies.TimeOffset = value;
+		private set => _timeOffset = Cookies.TimeOffset = MovieTime.Max( value, default );
 	}
 
 	public float PixelsPerSecond
@@ -349,6 +349,7 @@ public sealed partial class Session
 		var time = PixelsToTime( x );
 
 		_smoothPan.Target -= (float)time.TotalSeconds;
+		_smoothPan.Target = Math.Max( 0f, _smoothPan.Target );
 
 		if ( !smooth )
 		{
@@ -362,7 +363,7 @@ public sealed partial class Session
 
 	public void SetView( MovieTime timeOffset, float pixelsPerSecond )
 	{
-		_timeOffset = timeOffset;
+		_timeOffset = MovieTime.Max( timeOffset, default );
 		_pixelsPerSecond = pixelsPerSecond;
 
 		_smoothPan.Target = _smoothPan.Value = (float)TimeOffset.TotalSeconds;
