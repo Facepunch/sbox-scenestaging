@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Sandbox.MovieMaker;
 
 namespace Editor.MovieMaker;
 
@@ -74,12 +75,10 @@ partial class KeyframeEditMode
 		var groupedByTrack = SelectedKeyframes
 			.GroupBy( x => x.View.Track );
 
-		var headTime = Session.PlayheadTime;
-
 		var data = new ClipboardData( groupedByTrack.ToImmutableDictionary(
 			x => x.Key.Id,
 			x => JsonSerializer.SerializeToNode(
-				x.Select( y => y.Keyframe with { Time = y.Keyframe.Time - headTime } ).ToImmutableArray(),
+				x.Select( x => x.Keyframe ).ToImmutableArray(),
 				EditorJsonOptions )!.AsArray() ) );
 
 		if ( data.Keyframes.Count == 0 ) return;
@@ -92,8 +91,6 @@ partial class KeyframeEditMode
 		if ( Clipboard is not { } data ) return;
 
 		Timeline.DeselectAll();
-
-		var headTime = Session.PlayheadTime;
 
 		foreach ( var (trackId, array) in data.Keyframes )
 		{
@@ -108,7 +105,7 @@ partial class KeyframeEditMode
 			var arrayType = typeof(ImmutableArray<>).MakeGenericType( keyframeType );
 			var keyframes = (IEnumerable)array.Deserialize( arrayType, EditorJsonOptions )!;
 
-			handles.AddRange( keyframes.Cast<IKeyframe>(), headTime );
+			handles.AddRange( keyframes.Cast<IKeyframe>(), MovieTime.Zero );
 		}
 	}
 }
