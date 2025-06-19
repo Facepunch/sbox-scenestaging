@@ -36,6 +36,7 @@ partial class Timeline
 	private readonly List<(IMovieResizable Item, BlockEdge Edge)> _resizedItems = new();
 	private MovieTime _lastDragTime;
 	private MovieTime _minDragTime;
+	private MovieTime? _maxDragTime;
 	private SnapOptions _dragSnapOptions;
 	private IHistoryScope? _dragScope;
 
@@ -85,6 +86,7 @@ partial class Timeline
 	private bool StartDragging( Vector2 scenePos, GraphicsItem item )
 	{
 		_dragScope = null;
+
 		_lastDragTime = Session.ScenePositionToTime( scenePos, new SnapOptions( SnapFlag.TrackBlock ) );
 
 		_draggedItems.Clear();
@@ -105,9 +107,16 @@ partial class Timeline
 
 		_draggedItems.AddRange( SelectedItems.OfType<IMovieDraggable>() );
 
-		PostStartDragging( _draggedItems );
+		_dragSnapOptions = new SnapOptions(
+			IgnoreBlocks: _draggedItems.Select( x => x.Block )
+				.OfType<ITrackBlock>()
+				.ToImmutableHashSet(),
+			SnapOffsets: _draggedItems.Select( x => x.TimeRange.Start - _lastDragTime )
+				.Concat( _draggedItems.Select( x => x.TimeRange.End - _lastDragTime ) )
+				.Order().Distinct().ToArray() );
 
-		_backgroundItem.Cursor = CursorShape.Finger;
+		_minDragTime = -_dragSnapOptions.SnapOffsets[0];
+		_maxDragTime = null;
 
 		return _draggedItems.Count > 0;
 	}
@@ -136,36 +145,47 @@ partial class Timeline
 			.Where( x => x.TimeRange.Start == _lastDragTime || x.TimeRange.End == _lastDragTime )
 			.Select( x => (x, x.TimeRange.Start == _lastDragTime ? BlockEdge.Start : BlockEdge.End) ) );
 
-		PostStartDragging( _resizedItems.Select( x => x.Item ) );
+		_dragSnapOptions = new SnapOptions(
+			IgnoreBlocks: _resizedItems.Select( x => x.Item.Block )
+				.OfType<ITrackBlock>()
+				.ToImmutableHashSet() );
 
-		_backgroundItem.Cursor = CursorShape.SizeH;
+		var min = MovieTime.Zero;
+		var max = MovieTime.MaxValue;
 
-		return _resizedItems.Count > 0;
-	}
-
-	private void PostStartDragging( IEnumerable<IMovieTrackItem> items )
-	{
-		var ignoreBlocks = new HashSet<ITrackBlock>();
-		var snapOffsets = new HashSet<MovieTime>();
-
-		foreach ( var item in items )
+		foreach ( var resized in _resizedItems )
 		{
-			if ( item.Block is { } block )
+			if ( resized.Item.FullTimeRange is { } fullRange )
 			{
-				ignoreBlocks.Add( block );
+				min = MovieTime.Max( min, fullRange.Start );
+				max = MovieTime.Min( max, fullRange.End );
 			}
 
-			snapOffsets.Add( item.TimeRange.Start - _lastDragTime );
-			snapOffsets.Add( item.TimeRange.End - _lastDragTime );
+			if ( resized.Edge == BlockEdge.Start )
+			{
+				max = MovieTime.Min( max, resized.Item.TimeRange.End );
+			}
+			else
+			{
+				min = MovieTime.Max( min, resized.Item.TimeRange.Start );
+			}
 		}
 
-		_dragSnapOptions = new SnapOptions( IgnoreBlocks: ignoreBlocks, SnapOffsets: snapOffsets.Order().ToArray() );
-		_minDragTime = -_dragSnapOptions.SnapOffsets[0];
+		_minDragTime = min;
+		_maxDragTime = max;
+
+		return _resizedItems.Count > 0;
 	}
 
 	private void Drag( Vector2 scenePos )
 	{
 		var time = MovieTime.Max( _minDragTime, Session.ScenePositionToTime( scenePos, _dragSnapOptions ) );
+
+		if ( _maxDragTime is { } maxTime )
+		{
+			time = MovieTime.Min( time, maxTime );
+		}
+
 		var delta = time - _lastDragTime;
 
 		if ( delta.IsZero ) return;
@@ -200,6 +220,7 @@ partial class Timeline
 	{
 		_dragScope?.Dispose();
 		_draggedItems.Clear();
+		_resizedItems.Clear();
 
 		Cursor = CursorShape.Arrow;
 	}

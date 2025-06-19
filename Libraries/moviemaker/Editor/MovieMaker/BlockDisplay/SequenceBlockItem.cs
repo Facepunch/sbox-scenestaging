@@ -51,7 +51,6 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>, IMovieD
 		if ( time <= TimeRange.Start ) return;
 		if ( time >= TimeRange.End ) return;
 
-
 		using ( Parent.Session.History.Push( $"Split Sequence ({BlockTitle})" ) )
 		{
 			Track.AddBlock( (time, Block.TimeRange.End), Block.Transform, Block.Resource );
