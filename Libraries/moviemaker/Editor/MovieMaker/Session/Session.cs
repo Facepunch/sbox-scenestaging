@@ -128,7 +128,7 @@ public sealed partial class Session
 		{
 			if ( value is { } time )
 			{
-				time = MovieTime.Max( time, MovieTime.Zero );
+				time = time.Clamp( (MovieTime.Zero, Project.Duration) );
 
 				if ( PreviewTime == time ) return;
 
