@@ -109,6 +109,9 @@ public partial class Timeline : GraphicsView
 	[EditorEvent.Frame]
 	public void Frame()
 	{
+		ScrubBarTop.Frame();
+		ScrubBarBottom.Frame();
+
 		UpdateScrubBars();
 		UpdateTracksIfNeeded();
 
@@ -171,9 +174,6 @@ public partial class Timeline : GraphicsView
 
 		ScrubBarTop.Width = Width;
 		ScrubBarBottom.Width = Width;
-
-		ScrubBarTop.UpdateCursor();
-		ScrubBarBottom.UpdateCursor();
 	}
 
 	protected override void OnResize()
@@ -375,7 +375,7 @@ public partial class Timeline : GraphicsView
 		{
 			if ( e.LeftMouseButton && !e.HasCtrl )
 			{
-				e.Accepted = StartDragging( scenePos, item );
+				StartDragging( scenePos, item );
 			}
 
 			return;
@@ -406,7 +406,6 @@ public partial class Timeline : GraphicsView
 		if ( IsDragging )
 		{
 			StopDragging();
-			e.Accepted = true;
 			return;
 		}
 

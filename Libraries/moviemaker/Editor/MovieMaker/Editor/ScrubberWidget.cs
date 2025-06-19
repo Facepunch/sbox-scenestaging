@@ -32,12 +32,24 @@ public class ScrubberItem : GraphicsItem
 	}
 
 	private MovieTime _dragStartTime;
+	private float _panSpeed;
 
-	public void UpdateCursor()
+	public void Frame()
 	{
 		Cursor = (Application.KeyboardModifiers & KeyboardModifiers.Alt) != 0
 			? CursorShape.IBeam
 			: CursorShape.Finger;
+
+		if ( !_panSpeed.AlmostEqual( 0f ) )
+		{
+			var delta = -_panSpeed * RealTime.Delta;
+
+			Session.ScrollBy( delta, false );
+
+			_lastMouseEvent.ScenePos -= delta;
+
+			OnMouseMove();
+		}
 	}
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
@@ -75,7 +87,16 @@ public class ScrubberItem : GraphicsItem
 
 		e.Accepted = true;
 
+		_panSpeed = 0f;
+
 		Update();
+	}
+
+	protected override void OnMouseReleased( GraphicsMouseEvent e )
+	{
+		base.OnMouseReleased(e);
+
+		_panSpeed = 0f;
 	}
 
 	private void ShowContextMenu( MovieTime time )
@@ -106,16 +127,44 @@ public class ScrubberItem : GraphicsItem
 		menu.OpenAtCursor();
 	}
 
+	private (MouseButtons Buttons, KeyboardModifiers KeyboardModifiers, Vector2 ScenePos) _lastMouseEvent;
+
 	protected override void OnMouseMove( GraphicsMouseEvent e )
 	{
-		if ( !e.LeftMouseButton )
+		_lastMouseEvent = (e.Buttons, e.KeyboardModifiers, ToScene( e.LocalPosition ));
+
+		OnMouseMove();
+	}
+
+	private void OnMouseMove()
+	{
+		var (buttons, modifiers, scenePos) = _lastMouseEvent;
+
+		if ( (buttons & MouseButtons.Left) == 0 )
 		{
 			return;
 		}
 
-		var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ), new SnapOptions( SnapFlag.Playhead ) );
+		var sceneView = GraphicsView.SceneRect;
 
-		if ( e.HasAlt )
+		if ( scenePos.x > sceneView.Right )
+		{
+			_panSpeed = (scenePos.x - sceneView.Right) * 5f;
+			scenePos.x = sceneView.Right;
+		}
+		else if ( scenePos.x < sceneView.Left )
+		{
+			_panSpeed = (scenePos.x - sceneView.Left) * 5f;
+			scenePos.x = sceneView.Left;
+		}
+		else
+		{
+			_panSpeed = 0f;
+		}
+
+		var time = Session.ScenePositionToTime( scenePos, new SnapOptions( SnapFlag.Playhead ) );
+
+		if ( (modifiers & KeyboardModifiers.Alt) != 0 )
 		{
 			if ( time != _dragStartTime )
 			{
