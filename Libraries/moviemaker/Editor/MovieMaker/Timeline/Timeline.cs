@@ -422,6 +422,8 @@ public partial class Timeline : GraphicsView
 
 		foreach ( var item in SelectedItems.ToArray() )
 		{
+			if ( !item.IsValid() ) continue;
+
 			item.Selected = false;
 		}
 	}

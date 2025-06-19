@@ -1,10 +1,11 @@
-﻿using System.Collections.Immutable;
+﻿using Sandbox.MovieMaker;
+using Sandbox.UI;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Sandbox.MovieMaker;
-using Sandbox.UI;
 
 namespace Editor.MovieMaker;
 
@@ -537,14 +538,19 @@ public sealed partial class Session
 
 		while ( refQueue.TryDequeue( out var next ) )
 		{
-			var refs = next.EditorData?["References"]?.Deserialize<ImmutableHashSet<MovieResource>>()
-				?? ImmutableHashSet<MovieResource>.Empty;
+			var refs = next.EditorData?["References"]?.Deserialize<ImmutableHashSet<string>>()
+				?? ImmutableHashSet<string>.Empty;
 
-			foreach ( var @ref in refs )
+			foreach ( var moviePath in refs )
 			{
-				if ( references.Add( @ref ) )
+				if ( ResourceLibrary.Get<MovieResource>( moviePath ) is not { } reference )
 				{
-					refQueue.Enqueue( @ref );
+					continue;
+				}
+
+				if ( references.Add( reference ) )
+				{
+					refQueue.Enqueue( reference );
 				}
 			}
 		}
@@ -559,5 +565,40 @@ public sealed partial class Session
 		if ( references.Contains( Resource ) ) return false;
 
 		return Parent?.CanReferenceMovieCore( references ) ?? true;
+	}
+
+	private void ImportMovie( MovieResource resource, MovieTime time = default )
+	{
+		if ( !CanReferenceMovie( resource ) ) return;
+
+		using var historyScope = History.Push( $"Import {resource.ResourceName.ToTitleCase()}" );
+
+		var track = GetOrCreateTrack( resource );
+
+		var start = time;
+		var end = time + resource.GetCompiled().Duration;
+
+		track.AddBlock( (start, end), new MovieTransform( -start ), resource );
+
+		if ( track.Blocks.Count == 1 )
+		{
+			TrackList.Update();
+		}
+		else
+		{
+			TrackList.Find( track )?.MarkValueChanged();
+		}
+	}
+
+	public void CreateImportMenu( Menu parent, MovieTime time = default )
+	{
+		var movies = ResourceLibrary.GetAll<MovieResource>().ToArray();
+		var resourceIcon = typeof( MovieResource ).GetCustomAttribute<GameResourceAttribute>()!.Icon;
+
+		var importMenu = parent.AddMenu( "Import Movie", "sim_card_download" );
+
+		importMenu.AddOptions( movies.Where( CanReferenceMovie ),
+			x => $"{x.ResourcePath}:{resourceIcon}",
+			x => ImportMovie( x, time ) );
 	}
 }

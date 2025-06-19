@@ -264,6 +264,10 @@ public sealed partial class KeyframeEditMode : EditMode
 	{
 		var menu = new Menu();
 
+		menu.AddHeading( time.ToString() );
+
+		Session.CreateImportMenu( menu, time );
+
 		if ( Clipboard is { } clipboard )
 		{
 			menu.AddHeading( "Clipboard" );

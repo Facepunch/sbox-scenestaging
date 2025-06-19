@@ -47,18 +47,7 @@ public sealed class ListPanel : MovieEditorPanel
 
 			openMenu.AddOptions( movies, x => $"{x.ResourcePath}:{resourceIcon}", Editor.SwitchResource );
 
-			var importMenu = menu.AddMenu( "Import Movie", "sim_card_download" );
-
-			importMenu.AddOptions( movies, x => $"{x.ResourcePath}:{resourceIcon}", x =>
-			{
-				using var historyScope = session.History.Push( $"Import {x.ResourceName.ToTitleCase()}" );
-
-				var track = session.GetOrCreateTrack( x );
-
-				track.AddBlock( (0, x.GetCompiled().Duration), MovieTransform.Identity, x );
-
-				session.TrackList.Update();
-			} );
+			session.CreateImportMenu( menu );
 
 			menu.AddSeparator();
 
