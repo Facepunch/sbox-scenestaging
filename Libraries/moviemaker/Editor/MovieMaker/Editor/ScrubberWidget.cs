@@ -46,9 +46,9 @@ public class ScrubberItem : GraphicsItem
 
 			Session.ScrollBy( delta, false );
 
-			_lastMouseEvent.ScenePos -= delta;
+			_lastScrub.ScenePos -= delta;
 
-			OnMouseMove();
+			OnScrubUpdate();
 		}
 	}
 
@@ -71,7 +71,13 @@ public class ScrubberItem : GraphicsItem
 			return;
 		}
 
-		if ( e.HasAlt )
+		StartScrubbing( time, e.KeyboardModifiers );
+		e.Accepted = true;
+	}
+
+	public void StartScrubbing( MovieTime time, KeyboardModifiers modifiers )
+	{
+		if ( (modifiers & KeyboardModifiers.Alt) != 0 )
 		{
 			// Alt+Click: set loop time range
 
@@ -85,8 +91,6 @@ public class ScrubberItem : GraphicsItem
 			Session.PlayheadTime = time;
 		}
 
-		e.Accepted = true;
-
 		_panSpeed = 0f;
 
 		Update();
@@ -96,6 +100,11 @@ public class ScrubberItem : GraphicsItem
 	{
 		base.OnMouseReleased(e);
 
+		StopScrubbing();
+	}
+
+	public void StopScrubbing()
+	{
 		_panSpeed = 0f;
 	}
 
@@ -127,23 +136,25 @@ public class ScrubberItem : GraphicsItem
 		menu.OpenAtCursor();
 	}
 
-	private (MouseButtons Buttons, KeyboardModifiers KeyboardModifiers, Vector2 ScenePos) _lastMouseEvent;
+	private (KeyboardModifiers KeyboardModifiers, Vector2 ScenePos) _lastScrub;
 
 	protected override void OnMouseMove( GraphicsMouseEvent e )
 	{
-		_lastMouseEvent = (e.Buttons, e.KeyboardModifiers, ToScene( e.LocalPosition ));
+		if ( !e.LeftMouseButton ) return;
 
-		OnMouseMove();
+		Scrub( e.KeyboardModifiers, ToScene( e.LocalPosition ) );
 	}
 
-	private void OnMouseMove()
+	public void Scrub( KeyboardModifiers modifiers, Vector2 scenePos )
 	{
-		var (buttons, modifiers, scenePos) = _lastMouseEvent;
+		_lastScrub = (modifiers, scenePos);
 
-		if ( (buttons & MouseButtons.Left) == 0 )
-		{
-			return;
-		}
+		OnScrubUpdate();
+	}
+
+	private void OnScrubUpdate()
+	{
+		var (modifiers, scenePos) = _lastScrub;
 
 		var sceneView = GraphicsView.SceneRect;
 

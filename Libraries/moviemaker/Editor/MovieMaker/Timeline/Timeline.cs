@@ -321,7 +321,7 @@ public partial class Timeline : GraphicsView
 
 		if ( e.ButtonState == MouseButtons.Right )
 		{
-			Session.PlayheadTime = Session.ScenePositionToTime( scenePos, SnapFlag.Playhead );
+			ScrubBarTop.Scrub( e.KeyboardModifiers, scenePos );
 		}
 
 		if ( e.HasShift )
@@ -393,8 +393,10 @@ public partial class Timeline : GraphicsView
 
 		if ( e.RightMouseButton )
 		{
-			e.Accepted = true;
-			Session.PlayheadTime = Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.Playhead );
+			var time = Session.ScenePositionToTime( ToScene( e.LocalPosition ), SnapFlag.Playhead );
+
+			ScrubBarTop.StartScrubbing( time, e.KeyboardModifiers );
+			Session.PlayheadTime = time;
 			return;
 		}
 	}
@@ -402,6 +404,8 @@ public partial class Timeline : GraphicsView
 	protected override void OnMouseReleased( MouseEvent e )
 	{
 		base.OnMouseReleased( e );
+
+		ScrubBarTop.StopScrubbing();
 
 		if ( IsDragging )
 		{
