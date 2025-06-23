@@ -204,6 +204,7 @@ public sealed partial class TrackView : IComparable<TrackView>
 
 		Parent?.MarkValueChanged();
 		TrackList.Session.ClipModified();
+		TrackList.Session.RefreshNextFrame();
 
 		return true;
 	}
