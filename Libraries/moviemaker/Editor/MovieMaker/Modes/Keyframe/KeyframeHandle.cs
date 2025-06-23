@@ -111,12 +111,23 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>, 
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
 	{
+		base.OnMousePressed( e );
+
+		e.Accepted = true;
+	}
+
+	protected override void OnMouseReleased( GraphicsMouseEvent e )
+	{
+		base.OnMouseReleased( e );
+
+		Session.PlayheadTime = Time;
+
 		if ( e.RightMouseButton )
 		{
 			ShowContextMenu();
-
-			e.Accepted = true;
 		}
+
+		e.Accepted = true;
 	}
 
 	private void ShowContextMenu()

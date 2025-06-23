@@ -249,6 +249,8 @@ public sealed partial class KeyframeEditMode : EditMode
 
 		if ( e.RightMouseButton )
 		{
+			Session.PlayheadTime = time;
+
 			OpenContextMenu( timelineTrack, time );
 			return;
 		}
