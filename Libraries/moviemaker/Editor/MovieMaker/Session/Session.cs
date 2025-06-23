@@ -196,6 +196,7 @@ public sealed partial class Session
 		Player = player;
 		Context = context;
 
+		Player.Resource = Root.Resource;
 		Player.Clip = Root.Project;
 
 		if ( context is { TimeRange: var range } )
