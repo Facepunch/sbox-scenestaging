@@ -1,0 +1,336 @@
+{
+  "RootObject": {
+    "__guid": "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "Animated Platform 1",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.MovieMaker.MoviePlayer",
+        "__guid": "3607d222-656d-44cc-aadf-afb9706cf68a",
+        "__enabled": true,
+        "Binder": {
+          "GameObjects": [
+            {
+              "Track": "407b7d44-7feb-4d43-b9ea-11f73bf77d4c",
+              "Reference": "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3"
+            },
+            {
+              "Track": "d420367f-fe63-4892-a0e9-1a17a7eb4599",
+              "Reference": "9dd975c5-da9e-4360-a4c9-063afa7cba1e"
+            },
+            {
+              "Track": "4e197b66-dd24-439d-8b29-262c8ef5667d",
+              "Reference": "7face7e6-5563-48c0-a59d-d24ff5d51973"
+            },
+            {
+              "Track": "f3dede71-f6e1-4e60-9a7a-2fc82c054f2e",
+              "Reference": "7face7e6-5563-48c0-a59d-d24ff5d51973"
+            },
+            {
+              "Track": "a217e839-ca7f-43bc-9118-7f355eb3276e",
+              "Reference": "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3"
+            },
+            {
+              "Track": "eed13a8d-c175-4d6e-ba91-b5c9fc3e98dd",
+              "Reference": "7face7e6-5563-48c0-a59d-d24ff5d51973"
+            },
+            {
+              "Track": "00fc0759-3408-4b6d-aea6-fe0bc1aa4dec",
+              "Reference": "67d8de05-6a80-4a37-9dc5-d420ce8f1436"
+            }
+          ],
+          "Components": []
+        },
+        "IsLooping": true,
+        "IsPlaying": true,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "PositionSeconds": 0,
+        "Resource": {
+          "Compiled": {
+            "Tracks": [
+              {
+                "Kind": "Reference",
+                "Name": "Animated Platform",
+                "Type": "Sandbox.GameObject",
+                "Id": "eed13a8d-c175-4d6e-ba91-b5c9fc3e98dd",
+                "ReferenceId": "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3",
+                "Children": [
+                  {
+                    "Kind": "Property",
+                    "Name": "LocalPosition",
+                    "Type": "Vector3",
+                    "Blocks": [
+                      {
+                        "TimeRange": {
+                          "Start": 0,
+                          "End": 46800
+                        },
+                        "SampleRate": 30,
+                        "Samples": "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"
+                      }
+                    ]
+                  },
+                  {
+                    "Kind": "Property",
+                    "Name": "LocalRotation",
+                    "Type": "Rotation",
+                    "Blocks": [
+                      {
+                        "TimeRange": {
+                          "Start": 0,
+                          "End": 46800
+                        },
+                        "SampleRate": 30,
+                        "Samples": "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"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "EditorData": {
+            "SampleRate": 30,
+            "Duration": 46800,
+            "Tracks": {
+              "eed13a8d-c175-4d6e-ba91-b5c9fc3e98dd": {
+                "$type": "Reference",
+                "ReferenceId": "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3",
+                "Name": "Animated Platform",
+                "TargetType": "Sandbox.GameObject"
+              },
+              "7bccfc24-2bfc-47e0-bc7f-318cffa10097": {
+                "$type": "Property",
+                "Name": "LocalPosition",
+                "TargetType": "Vector3",
+                "ParentId": "eed13a8d-c175-4d6e-ba91-b5c9fc3e98dd",
+                "Blocks": [
+                  {
+                    "TimeRange": {
+                      "Start": 0,
+                      "End": 46800
+                    },
+                    "Signal": {
+                      "$id": 1,
+                      "$type": "Keyframes",
+                      "Keyframes": [
+                        {
+                          "Time": 0,
+                          "Value": "0,0,0",
+                          "Interpolation": "Quadratic"
+                        },
+                        {
+                          "Time": 10800,
+                          "Value": "0,0,0",
+                          "Interpolation": "Quadratic"
+                        },
+                        {
+                          "Time": 18000,
+                          "Value": "-189.7043,-429.1198,34.0188",
+                          "Interpolation": "Quadratic"
+                        },
+                        {
+                          "Time": 32400,
+                          "Value": "-1466.279,340.0786,243.7454",
+                          "Interpolation": "Quadratic"
+                        },
+                        {
+                          "Time": 46800,
+                          "Value": "0,0,0",
+                          "Interpolation": "Quadratic"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "122f81ad-140e-4584-b246-f1c53ce21ea0": {
+                "$type": "Property",
+                "Name": "LocalRotation",
+                "TargetType": "Rotation",
+                "ParentId": "eed13a8d-c175-4d6e-ba91-b5c9fc3e98dd",
+                "Blocks": [
+                  {
+                    "TimeRange": {
+                      "Start": 0,
+                      "End": 46800
+                    },
+                    "Signal": {
+                      "$id": 1,
+                      "$type": "Keyframes",
+                      "Keyframes": [
+                        {
+                          "Time": 0,
+                          "Value": "0,0,0.1305262,0.9914449",
+                          "Interpolation": "Quadratic"
+                        },
+                        {
+                          "Time": 10800,
+                          "Value": "0,0,0.1305262,0.9914449",
+                          "Interpolation": "Quadratic"
+                        },
+                        {
+                          "Time": 18000,
+                          "Value": "0,0,-0.258819,0.965926",
+                          "Interpolation": "Quadratic"
+                        },
+                        {
+                          "Time": 32400,
+                          "Value": "0,0,0.00000002980232,1",
+                          "Interpolation": "Quadratic"
+                        },
+                        {
+                          "Time": 46800,
+                          "Value": "0,0,0.1305262,0.9914449",
+                          "Interpolation": "Quadratic"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "Sources": {},
+            "References": []
+          }
+        },
+        "TimeScale": 0.3
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "7face7e6-5563-48c0-a59d-d24ff5d51973",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Platform",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0.1305262,0.9914449",
+        "Scale": "2,2,0.1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "539640b4-f742-448d-bb4b-5daa5fa87078",
+            "__enabled": true,
+            "BodyGroups": 18446744073709551615,
+            "CreateAttachments": false,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": "models/dev/box.vmdl",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "1,1,1,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "e616f8e3-a1d0-4580-bd0a-ac8d1deb4a9b",
+            "__enabled": true,
+            "Center": "0,0,0",
+            "Elasticity": null,
+            "Friction": null,
+            "IsTrigger": false,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnObjectTriggerEnter": null,
+            "OnObjectTriggerExit": null,
+            "OnTriggerEnter": null,
+            "OnTriggerExit": null,
+            "RollingResistance": null,
+            "Scale": "50,50,50",
+            "Static": false,
+            "Surface": null,
+            "SurfaceVelocity": "0,0,0"
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "9dd975c5-da9e-4360-a4c9-063afa7cba1e",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Cube",
+            "Position": "21,21,100",
+            "Rotation": "0,0,0,1",
+            "Scale": "0.15,0.15,3",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.ModelRenderer",
+                "__guid": "00136b04-a14f-4313-af14-6c2437818789",
+                "__enabled": true,
+                "BodyGroups": 18446744073709551615,
+                "CreateAttachments": false,
+                "MaterialGroup": null,
+                "MaterialOverride": null,
+                "Materials": null,
+                "Model": "models/dev/box.vmdl",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "RenderOptions": {
+                  "GameLayer": true,
+                  "OverlayLayer": false,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderType": "On",
+                "Tint": "1,1,1,1"
+              }
+            ],
+            "Children": []
+          }
+        ]
+      }
+    ]
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

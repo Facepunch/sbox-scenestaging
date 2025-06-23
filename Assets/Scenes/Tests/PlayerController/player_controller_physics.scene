@@ -502,265 +502,118 @@
     {
       "__guid": "7ab7713e-4bb1-43e4-b373-d7b006452393",
       "__version": 1,
-      "Flags": 0,
-      "Name": "Animated Platform",
-      "Position": "1361.198,1204.793,-1626",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.MovieMaker.MoviePlayer",
-          "__guid": "48feb1b9-04ac-407e-b113-005e007df9a9",
-          "__enabled": true,
-          "Binder": {
-            "GameObjects": [
-              {
-                "Track": "407b7d44-7feb-4d43-b9ea-11f73bf77d4c",
-                "Reference": "7ab7713e-4bb1-43e4-b373-d7b006452393"
-              },
-              {
-                "Track": "d420367f-fe63-4892-a0e9-1a17a7eb4599",
-                "Reference": "4e25e73a-0c7d-441d-afb0-d6cd1d2a6275"
-              },
-              {
-                "Track": "4e197b66-dd24-439d-8b29-262c8ef5667d",
-                "Reference": "47904971-21ac-40e2-846b-0ebb9c73eca3"
-              },
-              {
-                "Track": "f3dede71-f6e1-4e60-9a7a-2fc82c054f2e",
-                "Reference": "47904971-21ac-40e2-846b-0ebb9c73eca3"
-              },
-              {
-                "Track": "a217e839-ca7f-43bc-9118-7f355eb3276e",
-                "Reference": "7ab7713e-4bb1-43e4-b373-d7b006452393"
-              },
-              {
-                "Track": "eed13a8d-c175-4d6e-ba91-b5c9fc3e98dd",
-                "Reference": "7ab7713e-4bb1-43e4-b373-d7b006452393"
-              }
-            ],
-            "Components": []
-          },
-          "IsLooping": true,
-          "IsPlaying": true,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "PositionSeconds": 0,
-          "Resource": {
-            "Compiled": {
-              "Tracks": [
-                {
-                  "Kind": "Reference",
-                  "Name": "Animated Platform",
-                  "Type": "Sandbox.GameObject",
-                  "Id": "eed13a8d-c175-4d6e-ba91-b5c9fc3e98dd",
-                  "ReferenceId": "7ab7713e-4bb1-43e4-b373-d7b006452393",
-                  "Children": [
-                    {
-                      "Kind": "Property",
-                      "Name": "LocalPosition",
-                      "Type": "Vector3",
-                      "Blocks": [
-                        {
-                          "TimeRange": {
-                            "Start": 0,
-                            "End": 28800
-                          },
-                          "SampleRate": 30,
-                          "Samples": "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"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+      "__Prefab": "prefabs/test/animated platform 1.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3"
             },
-            "EditorData": {
-              "SampleRate": 30,
-              "Duration": 28800,
-              "Tracks": {
-                "eed13a8d-c175-4d6e-ba91-b5c9fc3e98dd": {
-                  "$type": "Reference",
-                  "ReferenceId": "7ab7713e-4bb1-43e4-b373-d7b006452393",
-                  "Name": "Animated Platform",
-                  "TargetType": "Sandbox.GameObject"
-                },
-                "7bccfc24-2bfc-47e0-bc7f-318cffa10097": {
-                  "$type": "Property",
-                  "Name": "LocalPosition",
-                  "TargetType": "Vector3",
-                  "ParentId": "eed13a8d-c175-4d6e-ba91-b5c9fc3e98dd",
-                  "Blocks": [
-                    {
-                      "TimeRange": {
-                        "Start": 0,
-                        "End": 28800
-                      },
-                      "Signal": {
-                        "$id": 1,
-                        "$type": "Keyframes",
-                        "Keyframes": [
-                          {
-                            "Time": 0,
-                            "Value": "1361.198,1204.793,-1626",
-                            "Interpolation": "Quadratic"
-                          },
-                          {
-                            "Time": 7200,
-                            "Value": "1160.029,1518.899,-1626",
-                            "Interpolation": "Quadratic"
-                          },
-                          {
-                            "Time": 14400,
-                            "Value": "921.4133,1139.704,-1416.119",
-                            "Interpolation": "Quadratic"
-                          },
-                          {
-                            "Time": 21600,
-                            "Value": "1175.859,934.7346,-1626",
-                            "Interpolation": "Quadratic"
-                          },
-                          {
-                            "Time": 28800,
-                            "Value": "1361.198,1204.793,-1626",
-                            "Interpolation": "Quadratic"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              },
-              "Sources": {},
-              "References": []
-            }
-          },
-          "TimeScale": 0.3
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "47904971-21ac-40e2-846b-0ebb9c73eca3",
-          "__version": 1,
-          "Flags": 0,
-          "Name": "Platform",
-          "Position": "-14,-16,-8",
-          "Rotation": "0,0,0,1",
-          "Scale": "2,2,0.1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "4af13266-8c33-40da-b683-ee49c3371be5",
-              "__enabled": true,
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
-              "Materials": null,
-              "Model": "models/dev/box.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
+            "Property": "Position",
+            "Value": "1361.198,1204.793,-1626"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3": "7ab7713e-4bb1-43e4-b373-d7b006452393",
+        "3607d222-656d-44cc-aadf-afb9706cf68a": "48feb1b9-04ac-407e-b113-005e007df9a9",
+        "7face7e6-5563-48c0-a59d-d24ff5d51973": "47904971-21ac-40e2-846b-0ebb9c73eca3",
+        "539640b4-f742-448d-bb4b-5daa5fa87078": "4af13266-8c33-40da-b683-ee49c3371be5",
+        "e616f8e3-a1d0-4580-bd0a-ac8d1deb4a9b": "8b67a358-0fae-4908-9b32-ddbb0d694560",
+        "9dd975c5-da9e-4360-a4c9-063afa7cba1e": "4e25e73a-0c7d-441d-afb0-d6cd1d2a6275",
+        "00136b04-a14f-4313-af14-6c2437818789": "4f64470b-52c7-4a2f-9335-c7ee91799d9e"
+      }
+    },
+    {
+      "__guid": "d2211e67-411c-472e-ac12-4d5915fed631",
+      "__version": 1,
+      "__Prefab": "prefabs/test/animated platform 1.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3"
             },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "8b67a358-0fae-4908-9b32-ddbb0d694560",
-              "__enabled": true,
-              "Center": "0,0,0",
-              "Elasticity": null,
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "RollingResistance": null,
-              "Scale": "50,50,50",
-              "Static": false,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            }
-          ],
-          "Children": [
-            {
-              "__guid": "4e25e73a-0c7d-441d-afb0-d6cd1d2a6275",
-              "__version": 1,
-              "Flags": 0,
-              "Name": "Cube",
-              "Position": "21,21,100",
-              "Rotation": "0,0,0,1",
-              "Scale": "0.15,0.15,3",
-              "Tags": "",
-              "Enabled": true,
-              "NetworkMode": 2,
-              "NetworkInterpolation": true,
-              "NetworkOrphaned": 0,
-              "OwnerTransfer": 1,
-              "Components": [
-                {
-                  "__type": "Sandbox.ModelRenderer",
-                  "__guid": "4f64470b-52c7-4a2f-9335-c7ee91799d9e",
-                  "__enabled": true,
-                  "BodyGroups": 18446744073709551615,
-                  "CreateAttachments": false,
-                  "MaterialGroup": null,
-                  "MaterialOverride": null,
-                  "Materials": null,
-                  "Model": "models/dev/box.vmdl",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "RenderOptions": {
-                    "GameLayer": true,
-                    "OverlayLayer": false,
-                    "BloomLayer": false,
-                    "AfterUILayer": false
-                  },
-                  "RenderType": "On",
-                  "Tint": "1,1,1,1"
-                }
-              ],
-              "Children": []
-            }
-          ]
-        }
-      ]
+            "Property": "Position",
+            "Value": "1288.55,1044.402,-1626"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3": "d2211e67-411c-472e-ac12-4d5915fed631",
+        "3607d222-656d-44cc-aadf-afb9706cf68a": "2c0eed24-4080-4375-bd03-4a782a53c176",
+        "7face7e6-5563-48c0-a59d-d24ff5d51973": "b8376e16-87d1-4ab4-969c-67f436f9d169",
+        "539640b4-f742-448d-bb4b-5daa5fa87078": "bfe817e6-483e-47e7-9de9-77cdb4dbdbe9",
+        "e616f8e3-a1d0-4580-bd0a-ac8d1deb4a9b": "bd231e19-4919-48e7-9b33-8ed198eb22e2",
+        "9dd975c5-da9e-4360-a4c9-063afa7cba1e": "778fda48-d32b-4f25-b85f-7a378ecf60da",
+        "00136b04-a14f-4313-af14-6c2437818789": "86976b66-8875-49bd-bfd1-35e6f27a743c"
+      }
+    },
+    {
+      "__guid": "aa0bd945-edc6-46db-810c-f0788750383f",
+      "__version": 1,
+      "__Prefab": "prefabs/test/animated platform 1.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3"
+            },
+            "Property": "Position",
+            "Value": "1152.435,1194.305,-1626"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3": "aa0bd945-edc6-46db-810c-f0788750383f",
+        "3607d222-656d-44cc-aadf-afb9706cf68a": "8aebf74d-e066-4a77-a6ac-26615bd8a8c5",
+        "7face7e6-5563-48c0-a59d-d24ff5d51973": "8191576d-8bea-409c-8df0-b79b3cb7863b",
+        "539640b4-f742-448d-bb4b-5daa5fa87078": "20229f59-3fa8-40a8-bbd8-a886aaeb4b6f",
+        "e616f8e3-a1d0-4580-bd0a-ac8d1deb4a9b": "9351e298-b5d9-43a5-b19c-1553778c1612",
+        "9dd975c5-da9e-4360-a4c9-063afa7cba1e": "bc8043a3-11dd-4759-adb8-d6e7b11c65c6",
+        "00136b04-a14f-4313-af14-6c2437818789": "9b544057-4ce0-4074-8e4c-a37cb642bf8c"
+      }
+    },
+    {
+      "__guid": "a41b9f1a-94f9-4865-91c1-00059a1d247f",
+      "__version": 1,
+      "__Prefab": "prefabs/test/animated platform 1.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3"
+            },
+            "Property": "Position",
+            "Value": "1291.206,1366.028,-1626"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "10b2b392-18ac-4a12-bfb5-f77a0eafe3e3": "a41b9f1a-94f9-4865-91c1-00059a1d247f",
+        "3607d222-656d-44cc-aadf-afb9706cf68a": "d9b80605-adbb-43ff-beab-1d0f94003a90",
+        "7face7e6-5563-48c0-a59d-d24ff5d51973": "1f74d24d-85dd-403d-9706-0039a87538a0",
+        "539640b4-f742-448d-bb4b-5daa5fa87078": "85f740fb-0dd0-4871-b8e7-03d66f3ab64c",
+        "e616f8e3-a1d0-4580-bd0a-ac8d1deb4a9b": "a85c632a-911b-41b2-bc8d-aa7bdc2abdf2",
+        "9dd975c5-da9e-4360-a4c9-063afa7cba1e": "b959ba3d-5bdc-4547-bb9e-924b9de99921",
+        "00136b04-a14f-4313-af14-6c2437818789": "01340f06-6a35-46b8-8214-159da7fe3959"
+      }
     },
     {
       "__guid": "1ba81285-4cbf-4490-93dc-860855204d3d",
