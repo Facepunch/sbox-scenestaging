@@ -8,10 +8,48 @@ namespace Editor.MovieMaker.BlockDisplays;
 public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>, IMovieDraggable, IMovieResizable
 {
 	private RealTimeSince _lastClick;
+	private GraphicsItem? _ghost;
+	private BlockEdge? _resizeEdge;
 
 	public new ProjectSequenceTrack Track => (ProjectSequenceTrack)Parent.View.Track;
 
 	public string BlockTitle => Block.Resource.ResourceName.ToTitleCase();
+
+	public Rect FullSceneRect
+	{
+		get
+		{
+			var fullTimeRange = FullTimeRange.ClampStart( 0d );
+
+			var min = Parent.Session.TimeToPixels( fullTimeRange.Start );
+			var max = Parent.Session.TimeToPixels( fullTimeRange.End );
+
+			return SceneRect with { Left = min, Right = max };
+		}
+	}
+
+	public bool ShowFullTimeRange
+	{
+		get => _ghost.IsValid();
+		set
+		{
+			if ( _ghost.IsValid() == value ) return;
+
+			if ( !value )
+			{
+				_ghost?.Destroy();
+				_ghost = null;
+				return;
+			}
+
+			var fullSceneRect = FullSceneRect;
+
+			_ghost = new FullBlockGhostItem();
+			_ghost.Position = new Vector2( fullSceneRect.Left, Position.y );
+			_ghost.Size = new Vector2( fullSceneRect.Width, Height );
+			_ghost.Parent = Parent;
+		}
+	}
 
 	public SequenceBlockItem()
 	{
@@ -19,6 +57,14 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>, IMovieD
 		Selectable = true;
 
 		Cursor = CursorShape.Finger;
+	}
+
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		_ghost?.Destroy();
+		_ghost = null;
 	}
 
 	protected override void OnMousePressed( GraphicsMouseEvent e )
@@ -146,17 +192,17 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>, IMovieD
 		var textRect = new Rect( minX + 8f, LocalRect.Top, maxX - minX - 16f, LocalRect.Height );
 		var fullTimeRange = FullTimeRange;
 
-		//if ( _editMode == EditMode.MoveEnd )
-		//{
-		//	TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
-		//	TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
-		//}
-		//else if ( _editMode == EditMode.MoveStart )
-		//{
-		//	TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
-		//	TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
-		//}
-		//else
+		if ( _resizeEdge is BlockEdge.Start )
+		{
+			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
+			TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
+		}
+		else if ( _resizeEdge is BlockEdge.End )
+		{
+			TryDrawText( ref textRect, $"{Block.TimeRange.Start - fullTimeRange.Start}", TextFlag.LeftCenter );
+			TryDrawText( ref textRect, $"{Block.TimeRange.End - fullTimeRange.Start}", TextFlag.RightCenter );
+		}
+		else
 		{
 			TryDrawText( ref textRect, BlockTitle, icon: "movie", flags: TextFlag.LeftCenter );
 		}
@@ -215,7 +261,14 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>, IMovieD
 		Layout();
 	}
 
-	void IMovieResizable.Drag( BlockEdge edge, MovieTime delta )
+	void IMovieResizable.StartResize( BlockEdge edge )
+	{
+		ShowFullTimeRange = true;
+
+		_resizeEdge = edge;
+	}
+
+	void IMovieResizable.Resize( BlockEdge edge, MovieTime delta )
 	{
 		Block.TimeRange = 
 			edge == BlockEdge.Start
@@ -223,6 +276,13 @@ public sealed class SequenceBlockItem : BlockItem<ProjectSequenceBlock>, IMovieD
 				: Block.TimeRange with { End = Block.TimeRange.End + delta };
 
 		Layout();
+	}
+
+	void IMovieResizable.EndResize()
+	{
+		ShowFullTimeRange = false;
+
+		_resizeEdge = null;
 	}
 }
 

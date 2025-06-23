@@ -14,7 +14,9 @@ public interface IMovieTrackItem
 
 public interface IMovieDraggable : IMovieTrackItem
 {
+	void StartDrag() { }
 	void Drag( MovieTime delta );
+	void EndDrag() { }
 }
 
 public enum BlockEdge
@@ -27,7 +29,9 @@ public interface IMovieResizable : IMovieTrackItem
 {
 	MovieTimeRange? FullTimeRange { get; }
 
-	void Drag( BlockEdge edge, MovieTime delta );
+	void StartResize( BlockEdge edge ) { }
+	void Resize( BlockEdge edge, MovieTime delta );
+	void EndResize() { }
 }
 
 partial class Timeline
@@ -118,6 +122,11 @@ partial class Timeline
 		_minDragTime = -_dragSnapOptions.SnapOffsets[0];
 		_maxDragTime = null;
 
+		foreach ( var dragged in _draggedItems )
+		{
+			dragged.StartDrag();
+		}
+
 		return _draggedItems.Count > 0;
 	}
 
@@ -169,6 +178,8 @@ partial class Timeline
 			{
 				min = MovieTime.Max( min, resized.Item.TimeRange.Start );
 			}
+
+			resized.Item.StartResize( resized.Edge );
 		}
 
 		_minDragTime = min;
@@ -200,7 +211,7 @@ partial class Timeline
 		{
 			foreach ( var (item, edge) in _resizedItems )
 			{
-				item.Drag( edge, delta );
+				item.Resize( edge, delta );
 			}
 		}
 		else
@@ -218,6 +229,16 @@ partial class Timeline
 
 	private void StopDragging()
 	{
+		foreach ( var item in _draggedItems )
+		{
+			item.EndDrag();
+		}
+
+		foreach ( var (item, _) in _resizedItems )
+		{
+			item.EndResize();
+		}
+
 		_dragScope?.Dispose();
 		_draggedItems.Clear();
 		_resizedItems.Clear();
