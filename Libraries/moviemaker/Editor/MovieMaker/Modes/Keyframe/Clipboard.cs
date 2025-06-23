@@ -11,12 +11,12 @@ namespace Editor.MovieMaker;
 
 partial class KeyframeEditMode
 {
-	public record ClipboardData( IReadOnlyDictionary<Guid, JsonArray> Keyframes );
+	public record ClipboardData( MovieTime Time, IReadOnlyDictionary<Guid, JsonArray> Keyframes );
 
 	private ClipboardData? _clipboardData;
 	private int _clipboardHash;
 
-	private ClipboardData? Clipboard
+	public ClipboardData? Clipboard
 	{
 		get
 		{
@@ -75,11 +75,16 @@ partial class KeyframeEditMode
 		var groupedByTrack = SelectedKeyframes
 			.GroupBy( x => x.View.Track );
 
-		var data = new ClipboardData( groupedByTrack.ToImmutableDictionary(
-			x => x.Key.Id,
-			x => JsonSerializer.SerializeToNode(
-				x.Select( x => x.Keyframe ).ToImmutableArray(),
-				EditorJsonOptions )!.AsArray() ) );
+		var time = SelectedKeyframes.Select( x => x.Time )
+			.DefaultIfEmpty( MovieTime.Zero )
+			.Min();
+
+		var data = new ClipboardData( time,
+			groupedByTrack.ToImmutableDictionary(
+				x => x.Key.Id,
+				x => JsonSerializer.SerializeToNode(
+					x.Select( x => x.Keyframe ).ToImmutableArray(),
+					EditorJsonOptions )!.AsArray() ) );
 
 		if ( data.Keyframes.Count == 0 ) return;
 
@@ -88,8 +93,14 @@ partial class KeyframeEditMode
 
 	protected override void OnPaste()
 	{
-		if ( Clipboard is not { } data ) return;
+		if ( Clipboard is { } data )
+		{
+			Paste( data, MovieTime.Zero );
+		}
+	}
 
+	public void Paste( ClipboardData data, MovieTime offset )
+	{
 		Timeline.DeselectAll();
 
 		foreach ( var (trackId, array) in data.Keyframes )
@@ -101,11 +112,13 @@ partial class KeyframeEditMode
 			if ( GetTimelineTrack( view ) is not { } timelineTrack ) continue;
 			if ( GetHandles( timelineTrack ) is not { } handles ) continue;
 
-			var keyframeType = typeof(Keyframe<>).MakeGenericType( propertyType );
-			var arrayType = typeof(ImmutableArray<>).MakeGenericType( keyframeType );
+			var keyframeType = typeof( Keyframe<> ).MakeGenericType( propertyType );
+			var arrayType = typeof( ImmutableArray<> ).MakeGenericType( keyframeType );
 			var keyframes = (IEnumerable)array.Deserialize( arrayType, EditorJsonOptions )!;
 
-			handles.AddRange( keyframes.Cast<IKeyframe>(), MovieTime.Zero );
+			handles.AddRange( keyframes.Cast<IKeyframe>(), offset );
+
+			view.MarkValueChanged();
 		}
 	}
 }

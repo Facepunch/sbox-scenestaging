@@ -273,7 +273,7 @@ public sealed partial class KeyframeEditMode : EditMode
 		if ( Clipboard is { } clipboard )
 		{
 			menu.AddHeading( "Clipboard" );
-			menu.AddOption( "Paste Keyframes", "content_paste", Paste );
+			menu.AddOption( "Paste Keyframes", "content_paste", () => Paste( clipboard, time - clipboard.Time ) );
 		}
 
 		if ( timelineTrack is not null )

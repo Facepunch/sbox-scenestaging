@@ -151,9 +151,27 @@ public sealed class KeyframeHandle : GraphicsItem, IComparable<KeyframeHandle>, 
 
 		menu.AddOption( "Copy", "content_copy", () => editMode.Copy() );
 		menu.AddOption( "Cut", "content_cut", () => editMode.Cut() );
+
+		if ( GetOverlappingClipboard( selection ) is { } clipboard )
+		{
+			menu.AddOption( "Paste", "content_paste", () => editMode.Paste( clipboard, Time - clipboard.Time ) );
+		}
+
 		menu.AddOption( "Delete", "delete", () => editMode.Delete() );
 
 		menu.OpenAtCursor();
+	}
+
+	private KeyframeEditMode.ClipboardData? GetOverlappingClipboard( IReadOnlyList<KeyframeHandle> selection )
+	{
+		if ( EditMode?.Clipboard is not { } clipboard ) return null;
+
+		if ( !selection.Any( x => clipboard.Keyframes.ContainsKey( x.View.Track.Id ) ) )
+		{
+			return null;
+		}
+
+		return clipboard;
 	}
 
 	private void CreateInterpolationMenu( IReadOnlyList<KeyframeHandle> selection, Menu parent )
