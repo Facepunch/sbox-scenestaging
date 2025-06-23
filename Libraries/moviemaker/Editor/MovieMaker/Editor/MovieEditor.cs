@@ -59,6 +59,8 @@ public partial class MovieEditor : Widget, IHotloadManaged
 		{
 			CreateStartupHelper();
 		}
+
+		EditorUtility.OnInspect += EditorUtility_OnInspect;
 	}
 
 	internal IReadOnlyDictionary<SessionKey, Session> Sessions => _sessions.ToImmutableDictionary();
@@ -70,7 +72,27 @@ public partial class MovieEditor : Widget, IHotloadManaged
 
 		_editors.Remove( this );
 
+		EditorUtility.OnInspect -= EditorUtility_OnInspect;
+
 		base.OnDestroyed();
+	}
+
+	private void EditorUtility_OnInspect( EditorUtility.OnInspectArgs ev )
+	{
+		if ( GetMoviePlayer( ev.Object ) is { } player && Session?.Player != player )
+		{
+			Switch( player );
+		}
+	}
+
+	private MoviePlayer? GetMoviePlayer( object? obj )
+	{
+		if ( obj is Array { Length: > 0 } array )
+		{
+			obj = array.GetValue( 0 );
+		}
+
+		return (obj as GameObject)?.GetComponent<MoviePlayer>();
 	}
 
 	private void Initialize( MoviePlayer player, IMovieResource? resource, SessionContext? context )
