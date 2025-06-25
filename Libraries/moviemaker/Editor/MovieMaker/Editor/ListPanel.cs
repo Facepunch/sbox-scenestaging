@@ -1,6 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using Sandbox.MovieMaker;
 using System.Linq;
-using Sandbox.MovieMaker;
 using System.Reflection;
 
 namespace Editor.MovieMaker;
@@ -13,8 +12,6 @@ namespace Editor.MovieMaker;
 public sealed class ListPanel : MovieEditorPanel
 {
 	public TrackListWidget TrackList { get; }
-
-	private readonly Label _projectTitle;
 
 	public ListPanel( MovieEditor parent, Session session )
 		: base( parent )
@@ -63,36 +60,57 @@ public sealed class ListPanel : MovieEditorPanel
 
 			saveAsMenu.AddOption( "New Movie Resource", resourceIcon, parent.SaveFileAs );
 
-			menu.AddSeparator();
-
-			var playerMenu = menu.AddMenu( "Switch Movie Player", "switch_video" );
-
-			foreach ( var player in session.Player.Scene.GetAllComponents<MoviePlayer>() )
-			{
-				var option = playerMenu.AddOption( player.GameObject.Name, "live_tv", () => Editor.Switch( player ) );
-
-				option.Checkable = true;
-				option.Checked = session.Player == player;
-			}
-
 			menu.OpenAt( fileGroup.ScreenRect.BottomLeft );
 		} );
 
 		fileAction.ToolTip = "File menu for opening, importing, or saving movie projects.";
 
-		// File name label
+		// MoviePlayer selection
 
-		var resourceGroup = ToolBar.AddGroup( true );
+		var playerGroup = ToolBar.AddGroup( true );
+		var playerCombo = playerGroup.Layout.Add( new PlayerComboBox( session ) );
 
-		_projectTitle = resourceGroup.AddLabel( session.Player.GameObject.Name );
+		playerCombo.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
 
-		_projectTitle.Alignment = TextFlag.Center;
-		_projectTitle.HorizontalSizeMode = SizeMode.CanGrow | SizeMode.Expand;
+		playerCombo.Bind( "Value" ).From(
+			() => session.Player,
+			value => session.Editor.Switch( value ) );
 	}
 
 	protected override void OnPaint()
 	{
 		Paint.SetBrushAndPen( Theme.TabBackground );
 		Paint.DrawRect( LocalRect );
+	}
+}
+
+file class PlayerComboBox : IconComboBox<MoviePlayer?>
+{
+	private readonly Session _session;
+
+	public PlayerComboBox( Session session )
+	{
+		_session = session;
+
+		IconAspect = null;
+	}
+
+	protected override IEnumerable<MoviePlayer?> OnGetOptions() =>
+		_session.Player.Scene.GetAllComponents<MoviePlayer>();
+
+	protected override string OnGetOptionTitle( MoviePlayer? option ) => option?.GameObject.Name ?? "None";
+
+	protected override void OnPaintOptionIcon( MoviePlayer? option, Rect rect )
+	{
+		Paint.DrawText( rect, OnGetOptionTitle( option ) );
+	}
+
+	protected override void OnCreateMenu( Menu menu )
+	{
+		base.OnCreateMenu( menu );
+
+		menu.AddSeparator();
+
+		menu.AddOption( "Create New Movie Player", "live_tv", _session.Editor.CreateNewPlayer );
 	}
 }

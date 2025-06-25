@@ -5,7 +5,6 @@ namespace Editor.MovieMaker;
 #nullable enable
 
 public abstract class IconComboBox<T> : IconButton
-	where T : struct
 {
 	private T _value;
 
@@ -22,20 +21,28 @@ public abstract class IconComboBox<T> : IconButton
 		}
 	}
 
-	private float _iconAspect;
+	private float? _iconAspect;
 
-	public float IconAspect
+	public float? IconAspect
 	{
 		get => _iconAspect;
 		set
 		{
 			_iconAspect = value;
 
-			var margin = (FixedHeight - IconSize) * 0.5f;
+			if ( value is { } aspect )
+			{
+				var margin = (FixedHeight - IconSize) * 0.5f;
 
-			// Add 0.5 for the dropdown arrow
+				// Add 0.5 for the dropdown arrow
 
-			FixedWidth = IconSize * (IconAspect + 0.5f) + margin * 2.5f;
+				FixedWidth = IconSize * (aspect + 0.5f) + margin * 2.5f;
+			}
+			else
+			{
+				MinimumSize = IconSize;
+				MaximumSize = 65536f;
+			}
 		}
 	}
 
@@ -59,13 +66,7 @@ public abstract class IconComboBox<T> : IconButton
 
 		var menu = new Menu( this );
 
-		foreach ( var value in OnGetOptions() )
-		{
-			var option = menu.AddOption( OnGetOptionTitle( value ), action: () => Value = value );
-
-			option.Checkable = true;
-			option.Checked = Equals( Value, value );
-		}
+		OnCreateMenu( menu );
 
 		menu.AboutToHide += () =>
 		{
@@ -73,6 +74,17 @@ public abstract class IconComboBox<T> : IconButton
 		};
 
 		menu.OpenAt( ScreenRect.BottomLeft );
+	}
+
+	protected virtual void OnCreateMenu( Menu menu )
+	{
+		foreach ( var value in OnGetOptions() )
+		{
+			var option = menu.AddOption( OnGetOptionTitle( value ), action: () => Value = value );
+
+			option.Checkable = true;
+			option.Checked = Equals( Value, value );
+		}
 	}
 
 	protected override void OnPaint()
@@ -97,7 +109,9 @@ public abstract class IconComboBox<T> : IconButton
 			? fg.WithAlphaMultiplied( Paint.HasMouseOver ? 1.0f : 0.7f )
 			: fg.WithAlphaMultiplied( 0.25f );
 
-		var iconSize = new Vector2( IconSize * IconAspect, IconSize );
+		var iconSize = IconAspect is { } aspect
+			? new Vector2( IconSize * aspect, IconSize )
+			: new Vector2( Width - IconSize * 0.5f, IconSize );
 
 		var iconRect = LocalRect.Shrink( 0f, 0f, 0.5f * FixedHeight, 0f ).Contain( iconSize );
 		var arrowRect = LocalRect.Contain( FixedHeight * 0.625f, TextFlag.RightCenter ).Contain( IconSize );
