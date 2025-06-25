@@ -55,7 +55,6 @@ public sealed class TimelinePanel : MovieEditorPanel
 			.From( () => session.TimeScale, value => session.TimeScale = value );
 
 		playbackGroup.Layout.Add( slider );
-
 		var speed = new Label( null )
 		{
 			Color = Color.White.Darken( 0.5f ),
@@ -72,6 +71,12 @@ public sealed class TimelinePanel : MovieEditorPanel
 		speed.MouseRightClick += () => session.TimeScale = 1f;
 
 		playbackGroup.Layout.Add( speed );
+
+		var syncDisplay = new ToolBarItemDisplay( "Toggle Playback Sync", "sync_lock",
+			"When enabled, all MoviePlayers in the scene will sync with the currently open one when previewing a frame.",
+			Background: false );
+
+		playbackGroup.AddToggle( syncDisplay, () => session.SyncPlayback, x => session.SyncPlayback = x );
 
 		if ( EditMode.AllTypes is { Count: > 1 } editModes )
 		{

@@ -38,6 +38,12 @@ partial class Session
 			set => session.SetCookie( nameof(TimeScale), value );
 		}
 
+		public bool SyncPlayback
+		{
+			get => session.GetCookie( nameof( SyncPlayback ), true );
+			set => session.SetCookie( nameof( SyncPlayback ), value );
+		}
+
 		public int FrameRate
 		{
 			get => session.GetCookie( nameof( FrameRate ), 10 );

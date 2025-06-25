@@ -8,10 +8,13 @@ public sealed partial class Session
 	private bool _isPlaying;
 	private bool _isLooping = true;
 	private float _timeScale = 1f;
+	private bool _syncPlayback = true;
 
 	private MovieTime? _lastPlayerPosition;
 	private bool _applyNextFrame;
 	private MovieTime _lastAppliedTime;
+
+	public bool IsOpenInEditor => Editor.Session == this;
 
 	public bool IsPlaying
 	{
@@ -33,6 +36,12 @@ public sealed partial class Session
 		}
 	}
 
+	public bool SyncPlayback
+	{
+		get => _syncPlayback;
+		set => _syncPlayback = Cookies.SyncPlayback = value;
+	}
+
 	public float TimeScale
 	{
 		get => IsEditorScene ? _timeScale : Player.TimeScale;
@@ -47,7 +56,22 @@ public sealed partial class Session
 	{
 		_applyNextFrame = false;
 
-		Parent?.ApplyFrame( SequenceTransform * time );
+		if ( IsOpenInEditor && SyncPlayback )
+		{
+			foreach ( var player in Player.Scene.GetAllComponents<MoviePlayer>() )
+			{
+				if ( player == Player ) continue;
+
+				player.Position = time;
+			}
+		}
+
+		ApplyFrameCore( time );
+	}
+
+	private void ApplyFrameCore( MovieTime time )
+	{
+		Parent?.ApplyFrameCore( SequenceTransform * time );
 
 		foreach ( var view in TrackList.AllTracks )
 		{
