@@ -579,7 +579,7 @@ public sealed partial class Session
 		var start = time;
 		var end = time + resource.GetCompiled().Duration;
 
-		track.AddBlock( (start, end), new MovieTransform( -start ), resource );
+		track.AddBlock( (start, end), new MovieTransform( start ), resource );
 
 		if ( track.Blocks.Count == 1 )
 		{
