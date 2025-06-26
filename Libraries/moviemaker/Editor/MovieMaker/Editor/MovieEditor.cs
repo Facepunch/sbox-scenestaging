@@ -163,8 +163,9 @@ public partial class MovieEditor : Widget, IHotloadManaged
 		col.AddSpacingCell( 32 );
 
 		var button = col.Add( new Button.Primary( "Create Player Component", "add_circle" ) );
-		button.Clicked = CreateNewPlayer;
 
+		button.Clicked = CreateNewPlayer;
+		button.Enabled = SceneEditorSession.Active is { Scene.IsValid: true };
 
 		col.AddStretchCell();
 
