@@ -96,7 +96,7 @@ file class PlayerComboBox : IconComboBox<MoviePlayer?>
 	}
 
 	protected override IEnumerable<MoviePlayer?> OnGetOptions() =>
-		_session.Player.Scene.GetAllComponents<MoviePlayer>();
+		_session.Player.Scene.IsValid ? _session.Player.Scene.GetAllComponents<MoviePlayer>() : [];
 
 	protected override string OnGetOptionTitle( MoviePlayer? option ) => option?.GameObject.Name ?? "None";
 
