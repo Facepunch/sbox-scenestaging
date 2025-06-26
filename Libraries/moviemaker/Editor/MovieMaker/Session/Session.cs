@@ -46,7 +46,7 @@ public sealed partial class Session
 
 	public string Title => Resource is MovieResource res
 		? res.ResourceName.ToTitleCase()
-		: Player.GameObject.Name;
+		: "Embedded Movie Clip";
 
 	private int _frameRate = 10;
 	private bool _frameSnap;

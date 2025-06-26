@@ -30,14 +30,13 @@ public sealed class ProjectNavigationWidget : Widget
 
 		var location = session.Resource switch
 		{
-			EmbeddedMovieResource => "Embedded Movie Clip",
-			MovieResource res => $"<code>{Path.GetFileName( res.ResourcePath )}</code>",
-			_ => "[unknown]"
+			MovieResource res => $"<p><code>{Path.GetFileName( res.ResourcePath )}</code></p>",
+			_ => ""
 		};
 
 		var description = IsActive ? "Currently open movie clip." : "Parent movie clip containing the currently open one.";
 
-		ToolTip = $"<p>{description}</p><p>{location}</p>";
+		ToolTip = $"<p>{description}</p>{location}";
 	}
 
 	protected override void OnMouseClick( MouseEvent e )
