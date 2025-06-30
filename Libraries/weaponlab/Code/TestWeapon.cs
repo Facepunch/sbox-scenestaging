@@ -24,6 +24,12 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 	[Property]
 	public AnimationGraph GraphOverride { get; set; }
 
+	[Property]
+	public int Ammo { get; set; } = 30;
+
+	[Property]
+	public int MaxAmmo { get; set; } = 30;
+
 	/// <summary>
 	/// Will copy some parameters from the body renderer
 	/// </summary>
@@ -101,9 +107,10 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 		var wantsSprint = Input.Down( controller.AltMoveButton );
 
 		vm.Set( "ironsights", isAiming && !wantsSprint ? 1 : 0 );
-		vm.Set( "b_sprint", wantsSprint );
+		vm.Set( "b_sprint", wantsSprint && vel.Length > 0f );
 		vm.Set( "b_lower_weapon", lower );
 		vm.Set( "firing_mode", (int)fireMode );
+		vm.Set( "b_empty", Ammo < 1 );
 
 		{
 			var smoothed = wishVel;
@@ -124,7 +131,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 			vm.Set( "move_z", smoothed.z );
 		}
 
-		vm.Set( "attack_hold", Input.Down( "Attack1" ) ? timeSincePrimaryAttackStarted : 0 );
+		vm.Set( "attack_hold", CanShoot() && Input.Down( "Attack1" ) ? timeSincePrimaryAttackStarted : 0 );
 
 		var rotationDelta = Rotation.Difference( lastRot, Scene.Camera.WorldRotation );
 		lastRot = Scene.Camera.WorldRotation;
@@ -164,6 +171,26 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 		viewmodel?.Destroy();
 	}
 
+	bool CanShoot()
+	{
+		if ( !PrimaryAutomatic && !Input.Pressed( "attack1" ) )
+			return false;
+
+		if ( timeSinceLastShoot < PrimaryDelay )
+			return false;
+
+		if ( Ammo < 1 ) return false;
+
+		if ( lower )
+		{
+			ToggleLower();
+		}
+
+		if ( timeSinceLowered < 0.35f ) return false;
+
+		return true;
+	}
+
 	protected override void OnFixedUpdate()
 	{
 		if ( Input.Pressed( "Flashlight" ) )
@@ -174,21 +201,29 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 			Log.Info( fireMode );
 		}
 
+		var pressedFire = Input.Pressed( "attack1" );
+
 		if ( Input.Down( "attack1" ) )
 		{
-			if ( lower )
+			if ( CanShoot() )
 			{
-				ToggleLower();
+				RunAttack();
+
+				if ( pressedFire )
+				{
+					timeSincePrimaryAttackStarted = 0.0f;
+				}
 			}
-
-			if ( timeSinceLowered < 0.35f ) return;
-
-			RunAttack();
-		}
-
-		if ( Input.Pressed( "attack1" ) )
-		{
-			timeSincePrimaryAttackStarted = 0.0f;
+			else
+			{
+				if ( pressedFire && Ammo < 1 )
+				{
+					if ( viewmodel.Components.TryGet<SkinnedModelRenderer>( out var vm ) )
+					{
+						vm.Set( "b_attack_dry", true );
+					}
+				}
+			}
 		}
 
 		if ( Input.Down( "reload" ) )
@@ -196,6 +231,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 			if ( viewmodel.Components.TryGet<SkinnedModelRenderer>( out var vm ) )
 			{
 				vm.Set( "b_reload", true );
+				Invoke( 0.5f, () => Ammo = MaxAmmo );
 			}
 		}
 
@@ -209,13 +245,9 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 
 	void RunAttack()
 	{
-		if ( !PrimaryAutomatic && !Input.Pressed( "attack1" ) )
-			return;
-
-		if ( timeSinceLastShoot < PrimaryDelay )
-			return;
-
 		timeSinceLastShoot = 0;
+
+		Ammo--;
 
 		Vector3 shootPosition = WorldPosition;
 
