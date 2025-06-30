@@ -1,0 +1,51 @@
+WeaponSwitcher {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	font-weight: bold;
+	border-radius: 20px;
+	align-items: flex-start;
+	justify-content: flex-start;
+	flex-direction: column;
+	padding: 32px;
+
+	label
+	{
+		font-family: Roboto;
+	}
+
+	.weapons {
+		gap: 8px;
+	}
+
+	.weapon {
+		border: 1px solid rgba( white, 0.75 );
+		padding: 16px;
+		justify-content: center;
+		align-items: center;
+		background-color: rgba( black, 0.25 );
+		border-radius: 2px;
+		gap: 8px;
+
+		label {
+			color: white;
+		}
+
+		.ammo {
+			color: rgba( white, 0.8 );
+		}
+
+		&.equipped {
+			padding: 16px 32px;
+			background-image: linear-gradient( to right, rgba( black, 0.7 ), rgba( black, 0.3 ) );
+		}
+	}
+
+	.title {
+		font-size: 20px;
+		padding-bottom: 8px;
+		color: #fff;
+	}
+}

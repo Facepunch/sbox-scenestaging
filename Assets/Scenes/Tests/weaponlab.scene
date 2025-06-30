@@ -2385,6 +2385,53 @@
             }
           ],
           "Children": []
+        },
+        {
+          "__guid": "7dc46834-6357-4d49-8e04-ad37a1a5a3a1",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Weapon Switcher",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.WeaponSwitcher",
+              "__guid": "2bc12bc8-cc01-4023-9583-f87f9f63f665",
+              "__enabled": true,
+              "MyStringValue": "Hello World!",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "Sandbox.ScreenPanel",
+              "__guid": "8d3b60af-5eda-44a8-ac18-bf670603acad",
+              "__enabled": true,
+              "AutoScreenScale": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Opacity": 1,
+              "Scale": 1,
+              "ScaleStrategy": "ConsistentHeight",
+              "TargetCamera": null,
+              "ZIndex": 100
+            }
+          ],
+          "Children": []
         }
       ]
     },
