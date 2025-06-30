@@ -2257,6 +2257,8 @@
               "PrimaryAutomatic": true,
               "PrimaryDelay": 0.5,
               "RayDistance": 128,
+              "ReloadTime": 1.5,
+              "SingularReload": false,
               "UseGrabAction": "PushButton",
               "UseMuzzleFlash": false,
               "ViewModel": "models/weapons/sbox_melee_crowbar/v_crowbar.vmdl"
@@ -2303,6 +2305,8 @@
               "PrimaryAutomatic": true,
               "PrimaryDelay": 0.15,
               "RayDistance": 4096,
+              "ReloadTime": 1.5,
+              "SingularReload": false,
               "UseGrabAction": "PushButton",
               "UseMuzzleFlash": true,
               "ViewModel": "models/weapons/sbox_smg_mp5/v_mp5.vmdl"
@@ -2349,6 +2353,8 @@
               "PrimaryAutomatic": true,
               "PrimaryDelay": 0.08,
               "RayDistance": 4096,
+              "ReloadTime": 1.5,
+              "SingularReload": false,
               "UseGrabAction": "PushButton",
               "UseMuzzleFlash": true,
               "ViewModel": "models/weapons/sbox_assault_m4a1/v_m4a1.vmdl"
@@ -2395,9 +2401,59 @@
               "PrimaryAutomatic": false,
               "PrimaryDelay": 1,
               "RayDistance": 4096,
+              "ReloadTime": 1.5,
+              "SingularReload": false,
               "UseGrabAction": "PushButton",
               "UseMuzzleFlash": true,
               "ViewModel": "models/weapons/sbox_sniper_m700/v_m700.vmdl"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "f14c0932-4310-493e-8fe6-43bc3cef54d6",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "spaghelli",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": false,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "TestWeapon",
+              "__guid": "685dbd05-7b7b-4de8-9246-9faa7da67e2d",
+              "__enabled": true,
+              "Ammo": 6,
+              "BodyRenderer": {
+                "_type": "component",
+                "component_id": "ee79fa43-5795-4eed-bc8e-a704cd936199",
+                "go": "903760a6-8c94-4885-bfc6-255275a9a5df",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "GraphOverride": null,
+              "IsBoltAction": false,
+              "MaxAmmo": 6,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PrimaryAttackSound": "weapons/sounds/mp5-attack.sound",
+              "PrimaryAutomatic": false,
+              "PrimaryDelay": 0.5,
+              "RayDistance": 4096,
+              "ReloadTime": 0.5,
+              "SingularReload": true,
+              "UseGrabAction": "PushButton",
+              "UseMuzzleFlash": true,
+              "ViewModel": "models/weapons/sbox_shotgun_spaghellim4/v_spaghellim4.vmdl"
             }
           ],
           "Children": []
@@ -2441,6 +2497,8 @@
               "PrimaryAutomatic": false,
               "PrimaryDelay": 0.05,
               "RayDistance": 4096,
+              "ReloadTime": 1.5,
+              "SingularReload": false,
               "UseGrabAction": "SweepLeft",
               "UseMuzzleFlash": true,
               "ViewModel": "models/weapons/sbox_pistol_usp/v_usp.vmdl"
@@ -3544,6 +3602,7 @@
     "facepunch.v_m4a1#109633",
     "facepunch.v_m700#109632",
     "facepunch.v_mp5#109629",
+    "facepunch.v_spaghellim4#109631",
     "facepunch.v_usp#109630"
   ],
   "__version": 3

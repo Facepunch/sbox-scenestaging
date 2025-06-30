@@ -27,6 +27,9 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 	[Property, Group( "Ammo" )]
 	public int MaxAmmo { get; set; } = 30;
 
+	[Property, Group( "Ammo" )]
+	public float ReloadTime { get; set; } = 1.5f;
+
 	[Property, Group( "View Model" )]
 	public GrabAction UseGrabAction { get; set; }
 
@@ -35,6 +38,9 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 
 	[Property, Group( "Weapon-Specific" )]
 	public bool UseMuzzleFlash { get; set; } = true;
+
+	[Property, Group( "Weapon-Specific" )]
+	public bool SingularReload { get; set; } = false;
 
 	/// <summary>
 	/// Will copy some parameters from the body renderer
@@ -60,6 +66,9 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 	}
 
 	FireMode fireMode = FireMode.Off;
+
+	bool isReloading = false;
+	TimeSince timeSinceReload = 0.0f;
 
 	void PlayerController.IEvents.StartPressing( Component target )
 	{
@@ -129,7 +138,6 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 		vm.Set( "b_lower_weapon", lower );
 		vm.Set( "firing_mode", (int)fireMode );
 		vm.Set( "b_empty", Ammo < 1 );
-
 
 		//
 		// Bolt action
@@ -203,6 +211,8 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 
 	bool CanShoot()
 	{
+		if ( isReloading ) return false;
+
 		if ( !PrimaryAutomatic && !Input.Pressed( "attack1" ) )
 			return false;
 
@@ -254,12 +264,50 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 			}
 		}
 
-		if ( Input.Down( "reload" ) )
+		if ( Input.Pressed( "reload" ) )
 		{
+			if ( Ammo >= MaxAmmo ) return; // Don't reload if we're full
+
+			// Start the reload sequence
 			if ( viewmodel.Components.TryGet<SkinnedModelRenderer>( out var vm ) )
 			{
-				vm.Set( "b_reload", true );
-				Invoke( 0.5f, () => Ammo = MaxAmmo );
+				isReloading = true;
+
+				if ( !SingularReload )
+				{
+					vm.Set( "b_reload", true );
+
+					Invoke( ReloadTime, () =>
+					{
+						Ammo = MaxAmmo;
+						isReloading = false;
+					} );
+				}
+				else
+				{
+					vm.Set( "b_reloading", true );
+				}
+
+				timeSinceReload = 0;
+			}
+		}
+
+		if ( isReloading && SingularReload )
+		{
+			if ( timeSinceReload >= ReloadTime )
+			{
+				if ( viewmodel.Components.TryGet<SkinnedModelRenderer>( out var vm ) )
+				{
+					vm.Set( "b_reloading_shell", true );
+					timeSinceReload = 0;
+					Ammo = Math.Min( Ammo + 1, MaxAmmo );
+
+					if ( Ammo >= MaxAmmo )
+					{
+						isReloading = false;
+						vm.Set( "b_reloading", false );
+					}
+				}
 			}
 		}
 

@@ -7,7 +7,7 @@
 <root>
 	<label class="title">Weapons</label>
 	<div class="weapons">
-		@foreach (var weapon in GameObject.Root.GetComponentsInChildren<TestWeapon>( true ).OrderByDescending( x => x.Active ) )
+		@foreach (var weapon in GameObject.Root.GetComponentsInChildren<TestWeapon>( true ) )
 		{
 			<div class="weapon @GetClass( weapon )">
 				<label class="name">@weapon.GameObject.Name.ToUpperInvariant()</label>
@@ -40,7 +40,7 @@
 	{
 		if ( Input.MouseWheel.y == 0 ) return;
 
-		var wheelDir = Input.MouseWheel.y;
+		var wheelDir = -Input.MouseWheel.y;
 		var weapons = GameObject.Root.GetComponentsInChildren<TestWeapon>( true ).ToList();
 
 		var currentIndex = weapons.FindIndex( x => x.Active );
