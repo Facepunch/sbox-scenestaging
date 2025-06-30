@@ -1,12 +1,10 @@
 using Sandbox;
+using System;
 
 public sealed class TestWeapon : Component
 {
 	[Property, Group( "View Model" )]
 	public Model ViewModel { get; set; }
-
-	[Property, Group( "View Model" )]
-	public Vector3 ViewModelOffset { get; set; }
 
 	[Property, Group( "Primary" )]
 	public bool PrimaryAutomatic { get; set; } = true;
@@ -32,8 +30,6 @@ public sealed class TestWeapon : Component
 	[Property]
 	public SkinnedModelRenderer BodyRenderer { get; set; }
 
-	float ironsights;
-
 	protected override void OnUpdate()
 	{
 		PositionViewmodel();
@@ -43,16 +39,57 @@ public sealed class TestWeapon : Component
 
 	Rotation lastRot;
 
+	Vector3.SmoothDamped smoothedWish = new Vector3.SmoothDamped( 0, 0, 0.5f );
+
+	private static Vector3 GetLocalVelocity( Rotation rotation, Vector3 worldVelocity )
+	{
+		// TODO: this could be rotation.Inverse * worldVelocity
+
+		var forward = rotation.Forward.Dot( worldVelocity );
+		var sideward = rotation.Right.Dot( worldVelocity );
+
+		return new Vector3( forward, sideward, worldVelocity.z );
+	}
+
+	private static float GetAngle( Vector3 localVelocity )
+	{
+		return MathF.Atan2( localVelocity.y, localVelocity.x ).RadianToDegree().NormalizeDegrees();
+	}
+
 	void AnimationThink()
 	{
 		if ( !(viewmodel?.Components.TryGet<SkinnedModelRenderer>( out var vm ) ?? false) )
 			return;
 
-		var cc = Components.Get<CharacterController>( FindMode.InAncestors );
+		var controller = Components.Get<PlayerController>( FindMode.InAncestors );
 
-		ironsights = ironsights.LerpTo( Input.Down( "attack2" ) ? 1 : 0, Time.Delta * 5.0f );
-		vm.Set( "iconsights", ironsights );
-		vm.Set( "move_bob", 1 );
+		var vel = controller.Velocity;
+		var wishVel = controller.WishVelocity;
+		var rot = vm.WorldRotation;
+		var isAiming = Input.Down( "attack2" );
+		var wantsSprint = Input.Down( controller.AltMoveButton );
+
+		vm.Set( "ironsights", isAiming && !wantsSprint ? 1 : 0 );
+		vm.Set( "b_sprint", wantsSprint );
+
+		{
+			var smoothed = wishVel;
+			{
+				smoothedWish.Target = smoothed;
+				smoothedWish.SmoothTime = 0.1f;
+				smoothedWish.Update( Time.Delta );
+				smoothed = smoothedWish.Current;
+			}
+
+			smoothed = GetLocalVelocity( rot, smoothed );
+
+			vm.Set( "move_direction", GetAngle( smoothed ) );
+			vm.Set( "move_bob", smoothed.Length.Remap( 0, 300, 0, 1 ) );
+			vm.Set( "move_groundspeed", smoothed.WithZ( 0f ).Length );
+			vm.Set( "move_x", smoothed.x );
+			vm.Set( "move_y", smoothed.y );
+			vm.Set( "move_z", smoothed.z );
+		}
 
 		var rotationDelta = Rotation.Difference( lastRot, Scene.Camera.WorldRotation );
 		lastRot = Scene.Camera.WorldRotation;
@@ -67,9 +104,9 @@ public sealed class TestWeapon : Component
 
 		if ( BodyRenderer.IsValid() )
 		{
-			vm.Set( "jump", BodyRenderer.GetBool( "jump" ) );
+			vm.Set( "b_jump", BodyRenderer.GetBool( "b_jump" ) );
 			vm.Set( "move_groundspeed", BodyRenderer.GetFloat( "move_groundspeed" ) );
-			vm.Set( "b_grounded", BodyRenderer.GetFloat( "b_grounded" ) );
+			vm.Set( "b_grounded", controller.IsOnGround );
 			vm.Set( "move_x", BodyRenderer.GetFloat( "move_x" ) );
 			vm.Set( "move_y", BodyRenderer.GetFloat( "move_y" ) );
 			vm.Set( "move_z", BodyRenderer.GetFloat( "move_z" ) );
@@ -210,9 +247,6 @@ public sealed class TestWeapon : Component
 		if ( viewmodel is null ) return;
 
 		var targetPos = Scene.Camera.WorldTransform;
-
-		targetPos.Position += targetPos.Rotation * ViewModelOffset;
-
 		viewmodel.WorldTransform = targetPos;
 	}
 }
