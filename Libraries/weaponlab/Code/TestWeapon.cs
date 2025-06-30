@@ -16,12 +16,6 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 	public SoundEvent PrimaryAttackSound { get; set; }
 
 	[Property, Group( "Config" )]
-	public GameObject MuzzlePrefab { get; set; }
-
-	[Property, Group( "Config" )]
-	public GameObject WeaponPrefab { get; set; }
-
-	[Property, Group( "Config" )]
 	public AnimationGraph GraphOverride { get; set; }
 
 	[Property, Group( "Ammo" )]

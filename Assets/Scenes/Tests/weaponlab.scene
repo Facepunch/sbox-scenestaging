@@ -2201,7 +2201,6 @@
               "GraphOverride": null,
               "IsBoltAction": false,
               "MaxAmmo": 30,
-              "MuzzlePrefab": null,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -2212,11 +2211,51 @@
               "PrimaryAutomatic": true,
               "PrimaryDelay": 0.15,
               "UseGrabAction": "PushButton",
-              "ViewModel": "models/weapons/sbox_smg_mp5/v_mp5.vmdl",
-              "WeaponPrefab": {
-                "_type": "gameobject",
-                "prefab": "weapons/mp5_wm.prefab"
-              }
+              "ViewModel": "models/weapons/sbox_smg_mp5/v_mp5.vmdl"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "60cf43ea-b62d-42ac-a172-dc922c72d12c",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "m4",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": false,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "TestWeapon",
+              "__guid": "5a0fc32e-24b5-4c81-a806-eb5f6802c15a",
+              "__enabled": true,
+              "Ammo": 30,
+              "BodyRenderer": {
+                "_type": "component",
+                "component_id": "ee79fa43-5795-4eed-bc8e-a704cd936199",
+                "go": "903760a6-8c94-4885-bfc6-255275a9a5df",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "GraphOverride": null,
+              "IsBoltAction": false,
+              "MaxAmmo": 30,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PrimaryAttackSound": "weapons/sounds/mp5-attack.sound",
+              "PrimaryAutomatic": true,
+              "PrimaryDelay": 0.08,
+              "UseGrabAction": "PushButton",
+              "ViewModel": "models/weapons/sbox_assault_m4a1/v_m4a1.vmdl"
             }
           ],
           "Children": []
@@ -2250,7 +2289,6 @@
               "GraphOverride": null,
               "IsBoltAction": true,
               "MaxAmmo": 5,
-              "MuzzlePrefab": null,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -2261,11 +2299,7 @@
               "PrimaryAutomatic": false,
               "PrimaryDelay": 1,
               "UseGrabAction": "PushButton",
-              "ViewModel": "models/weapons/sbox_sniper_m700/v_m700.vmdl",
-              "WeaponPrefab": {
-                "_type": "gameobject",
-                "prefab": "weapons/mp5_wm.prefab"
-              }
+              "ViewModel": "models/weapons/sbox_sniper_m700/v_m700.vmdl"
             }
           ],
           "Children": []
@@ -2299,7 +2333,6 @@
               "GraphOverride": null,
               "IsBoltAction": false,
               "MaxAmmo": 30,
-              "MuzzlePrefab": null,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -2310,11 +2343,7 @@
               "PrimaryAutomatic": false,
               "PrimaryDelay": 0.05,
               "UseGrabAction": "SweepLeft",
-              "ViewModel": "models/weapons/sbox_pistol_usp/v_usp.vmdl",
-              "WeaponPrefab": {
-                "_type": "gameobject",
-                "prefab": "weapons/mp5_wm.prefab"
-              }
+              "ViewModel": "models/weapons/sbox_pistol_usp/v_usp.vmdl"
             }
           ],
           "Children": []
@@ -2405,7 +2434,6 @@
               "__type": "Sandbox.WeaponSwitcher",
               "__guid": "2bc12bc8-cc01-4023-9583-f87f9f63f665",
               "__enabled": true,
-              "MyStringValue": "Hello World!",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -3458,6 +3486,7 @@
   "Description": null,
   "__references": [
     "facepunch.big_button_2#44604",
+    "facepunch.v_m4a1#109633",
     "facepunch.v_m700#109632",
     "facepunch.v_mp5#109629",
     "facepunch.v_usp#109630"
