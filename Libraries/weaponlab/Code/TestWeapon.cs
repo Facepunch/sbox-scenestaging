@@ -15,25 +15,28 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 	[Property, Group( "Primary" )]
 	public SoundEvent PrimaryAttackSound { get; set; }
 
-	[Property]
+	[Property, Group( "Config" )]
 	public GameObject MuzzlePrefab { get; set; }
 
-	[Property]
+	[Property, Group( "Config" )]
 	public GameObject WeaponPrefab { get; set; }
 
-	[Property]
+	[Property, Group( "Config" )]
 	public AnimationGraph GraphOverride { get; set; }
 
-	[Property]
+	[Property, Group( "Ammo" )]
 	public int Ammo { get; set; } = 30;
 
-	[Property]
+	[Property, Group( "Ammo" )]
 	public int MaxAmmo { get; set; } = 30;
+
+	[Property, Group( "View Model" )]
+	public GrabAction UseGrabAction { get; set; }
 
 	/// <summary>
 	/// Will copy some parameters from the body renderer
 	/// </summary>
-	[Property]
+	[Property, Group( "Config" )]
 	public SkinnedModelRenderer BodyRenderer { get; set; }
 
 	private enum FireMode
@@ -44,6 +47,15 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 		FullAuto
 	}
 
+	public enum GrabAction
+	{
+		None,
+		SweepDown,
+		SweepRight,
+		SweepLeft,
+		PushButton
+	}
+
 	FireMode fireMode = FireMode.Off;
 
 	void PlayerController.IEvents.StartPressing( Component target )
@@ -51,7 +63,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 		if ( !(viewmodel?.Components.TryGet<SkinnedModelRenderer>( out var vm ) ?? false) )
 			return;
 
-		vm.Set( "grab_action", 4 ); // Push button action
+		vm.Set( "grab_action", (int)UseGrabAction ); // Push button action
 	}
 
 	protected override void OnUpdate()
@@ -197,8 +209,6 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 		{
 			// Cycle through to the next fire mode, wrapping around using modulo
 			fireMode = (FireMode)(((int)fireMode + 1) % Enum.GetValues<FireMode>().Length);
-
-			Log.Info( fireMode );
 		}
 
 		var pressedFire = Input.Pressed( "attack1" );
