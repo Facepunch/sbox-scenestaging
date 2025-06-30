@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-public sealed class TestWeapon : Component
+public sealed class TestWeapon : Component, PlayerController.IEvents
 {
 	[Property, Group( "View Model" )]
 	public Model ViewModel { get; set; }
@@ -30,11 +30,29 @@ public sealed class TestWeapon : Component
 	[Property]
 	public SkinnedModelRenderer BodyRenderer { get; set; }
 
+	private enum FireMode
+	{
+		Off,
+		Single,
+		Burst,
+		FullAuto
+	}
+
+	FireMode fireMode = FireMode.Off;
+
+	void PlayerController.IEvents.StartPressing( Component target )
+	{
+		if ( !(viewmodel?.Components.TryGet<SkinnedModelRenderer>( out var vm ) ?? false) )
+			return;
+
+		vm.Set( "grab_action", 4 ); // Push button action
+	}
+
 	protected override void OnUpdate()
 	{
 		PositionViewmodel();
 
-		if ( Input.Pressed( "Use" ) )
+		if ( Input.Pressed( "Drop" ) )
 		{
 			ToggleLower();
 		}
@@ -85,6 +103,7 @@ public sealed class TestWeapon : Component
 		vm.Set( "ironsights", isAiming && !wantsSprint ? 1 : 0 );
 		vm.Set( "b_sprint", wantsSprint );
 		vm.Set( "b_lower_weapon", lower );
+		vm.Set( "firing_mode", (int)fireMode );
 
 		{
 			var smoothed = wishVel;
@@ -147,6 +166,14 @@ public sealed class TestWeapon : Component
 
 	protected override void OnFixedUpdate()
 	{
+		if ( Input.Pressed( "Flashlight" ) )
+		{
+			// Cycle through to the next fire mode, wrapping around using modulo
+			fireMode = (FireMode)(((int)fireMode + 1) % Enum.GetValues<FireMode>().Length);
+
+			Log.Info( fireMode );
+		}
+
 		if ( Input.Down( "attack1" ) )
 		{
 			if ( lower )
