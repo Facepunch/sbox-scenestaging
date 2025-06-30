@@ -18,6 +18,9 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 	[Property, Group( "Config" )]
 	public AnimationGraph GraphOverride { get; set; }
 
+	[Property, Group( "Config" )]
+	public float RayDistance { get; set; } = 4096;
+
 	[Property, Group( "Ammo" )]
 	public int Ammo { get; set; } = 30;
 
@@ -303,7 +306,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 		var ray = Scene.Camera.WorldTransform.ForwardRay;
 		ray.Forward += Vector3.Random * 0.01f;
 
-		var tr = Scene.Trace.Ray( ray, 4096 )
+		var tr = Scene.Trace.Ray( ray, RayDistance )
 					.IgnoreGameObjectHierarchy( GameObject.Parent )
 					.Run();
 
