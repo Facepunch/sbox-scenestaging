@@ -38,7 +38,7 @@ public sealed class TestWeapon : Component
 	}
 
 	Rotation lastRot;
-
+	TimeSince timeSincePrimaryAttackStarted = 0.0f;
 	Vector3.SmoothDamped smoothedWish = new Vector3.SmoothDamped( 0, 0, 0.5f );
 
 	private static Vector3 GetLocalVelocity( Rotation rotation, Vector3 worldVelocity )
@@ -91,6 +91,8 @@ public sealed class TestWeapon : Component
 			vm.Set( "move_z", smoothed.z );
 		}
 
+		vm.Set( "attack_hold", Input.Down( "Attack1" ) ? timeSincePrimaryAttackStarted : 0 );
+
 		var rotationDelta = Rotation.Difference( lastRot, Scene.Camera.WorldRotation );
 		lastRot = Scene.Camera.WorldRotation;
 
@@ -134,6 +136,11 @@ public sealed class TestWeapon : Component
 		if ( Input.Down( "attack1" ) )
 		{
 			RunAttack();
+		}
+
+		if ( Input.Pressed( "attack1" ) )
+		{
+			timeSincePrimaryAttackStarted = 0.0f;
 		}
 
 		if ( Input.Down( "reload" ) )
