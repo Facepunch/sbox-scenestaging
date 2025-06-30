@@ -198,13 +198,25 @@ public sealed class TestWeapon : Component
 		if ( !tr.Hit || tr.GameObject is null )
 			return;
 
-		GameObject.Clone( "/effects/impact_default.prefab", new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( tr.Normal ) ) );
-
+		if ( tr.Surface is not null )
 		{
-			var go = GameObject.Clone( "/effects/decal_bullet_default.prefab" );
-			go.WorldTransform = new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( -tr.Normal, Vector3.Random ), System.Random.Shared.Float( 0.8f, 1.2f ) );
-			go.SetParent( tr.GameObject );
+			var prefab = tr.Surface.PrefabCollection.BulletImpact ?? tr.Surface.GetBaseSurface()?.PrefabCollection.BulletImpact;
+			if ( prefab is not null )
+			{
+				prefab?.Clone( new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( -tr.Normal ) ) );
+			}
 		}
+		else
+		{
+			GameObject.Clone( "/effects/impact_default.prefab", new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( tr.Normal ) ) );
+
+			{
+				var go = GameObject.Clone( "/effects/decal_bullet_default.prefab" );
+				go.WorldTransform = new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( -tr.Normal, Vector3.Random ), System.Random.Shared.Float( 0.8f, 1.2f ) );
+				go.SetParent( tr.GameObject );
+			}
+		}
+
 
 		if ( tr.Body.IsValid() )
 		{
