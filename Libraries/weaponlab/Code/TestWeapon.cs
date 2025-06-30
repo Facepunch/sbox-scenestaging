@@ -34,9 +34,22 @@ public sealed class TestWeapon : Component
 	{
 		PositionViewmodel();
 
+		if ( Input.Pressed( "Use" ) )
+		{
+			ToggleLower();
+		}
+
 		AnimationThink();
 	}
 
+	void ToggleLower()
+	{
+		lower = !lower;
+		timeSinceLowered = 0;
+	}
+
+	bool lower = false;
+	TimeSince timeSinceLowered = 0.0f;
 	Rotation lastRot;
 	TimeSince timeSincePrimaryAttackStarted = 0.0f;
 	Vector3.SmoothDamped smoothedWish = new Vector3.SmoothDamped( 0, 0, 0.5f );
@@ -71,6 +84,7 @@ public sealed class TestWeapon : Component
 
 		vm.Set( "ironsights", isAiming && !wantsSprint ? 1 : 0 );
 		vm.Set( "b_sprint", wantsSprint );
+		vm.Set( "b_lower_weapon", lower );
 
 		{
 			var smoothed = wishVel;
@@ -135,6 +149,13 @@ public sealed class TestWeapon : Component
 	{
 		if ( Input.Down( "attack1" ) )
 		{
+			if ( lower )
+			{
+				ToggleLower();
+			}
+
+			if ( timeSinceLowered < 0.35f ) return;
+
 			RunAttack();
 		}
 
