@@ -33,6 +33,9 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 	[Property, Group( "View Model" )]
 	public GrabAction UseGrabAction { get; set; }
 
+	[Property, Group( "Config" )]
+	public bool IsBoltAction { get; set; } = false;
+
 	/// <summary>
 	/// Will copy some parameters from the body renderer
 	/// </summary>
@@ -118,12 +121,27 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 		var isAiming = Input.Down( "attack2" );
 		var wantsSprint = Input.Down( controller.AltMoveButton );
 
+		//
+		// General states
+		//
 		vm.Set( "ironsights", isAiming && !wantsSprint ? 1 : 0 );
 		vm.Set( "b_sprint", wantsSprint && vel.Length > 0f );
 		vm.Set( "b_lower_weapon", lower );
 		vm.Set( "firing_mode", (int)fireMode );
 		vm.Set( "b_empty", Ammo < 1 );
 
+
+		//
+		// Bolt action
+		//
+		if ( Input.Released( "Attack1" ) && IsBoltAction )
+		{
+			vm.Set( "b_reload_bolt", true );
+		}
+
+		//
+		// Movement
+		//
 		{
 			var smoothed = wishVel;
 			{
@@ -337,6 +355,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 		var modelRender = viewmodel.Components.Create<SkinnedModelRenderer>();
 		modelRender.Model = ViewModel;
 		modelRender.CreateBoneObjects = true;
+		modelRender.RenderType = ModelRenderer.ShadowRenderType.Off;
 
 		if ( GraphOverride is not null )
 			modelRender.AnimationGraph = GraphOverride;
@@ -348,12 +367,15 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 			var model = arms.Components.Create<SkinnedModelRenderer>();
 			model.Model = Model.Load( "models/first_person/first_person_arms.vmdl" );
 			model.BoneMergeTarget = modelRender;
+			model.RenderType = ModelRenderer.ShadowRenderType.Off;
 		}
 	}
 
 	void PositionViewmodel()
 	{
 		if ( viewmodel is null ) return;
+
+		viewmodel.Tags.Set( "viewer", !BodyRenderer.Tags.Has( "viewer" ) );
 
 		var targetPos = Scene.Camera.WorldTransform;
 		viewmodel.WorldTransform = targetPos;

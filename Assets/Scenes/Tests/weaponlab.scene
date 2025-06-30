@@ -172,7 +172,7 @@
       "Position": "0,0,0",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
-      "Tags": "red,green",
+      "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
@@ -344,7 +344,7 @@
                 "BloomLayer": false,
                 "AfterUILayer": false
               },
-              "RenderType": "ShadowsOnly",
+              "RenderType": "On",
               "Sequence": {
                 "Name": null,
                 "Looping": true,
@@ -352,6 +352,25 @@
               },
               "Tint": "1,1,1,1",
               "UseAnimGraph": true
+            },
+            {
+              "__type": "Sandbox.Dresser",
+              "__guid": "720dede9-6aba-49c0-a691-11fc4b455603",
+              "__enabled": true,
+              "ApplyHeightScale": true,
+              "BodyTarget": null,
+              "Clothing": [],
+              "ManualAge": 0.5,
+              "ManualHeight": 0.5,
+              "ManualTint": 0.5,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Source": "LocalUser",
+              "WorkshopItems": []
             }
           ],
           "Children": [
@@ -2154,199 +2173,6 @@
           "Children": []
         },
         {
-          "__guid": "e879fbec-d046-4753-964d-3025cfd3ea42",
-          "__version": 1,
-          "Flags": 0,
-          "Name": "Coat",
-          "Position": "-25.08072,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "ff86245a-90fa-4a11-8b06-f1350825955d",
-              "__enabled": true,
-              "AnimationGraph": null,
-              "BodyGroups": 18446744073709551615,
-              "BoneMergeTarget": {
-                "_type": "component",
-                "component_id": "ee79fa43-5795-4eed-bc8e-a704cd936199",
-                "go": "903760a6-8c94-4885-bfc6-255275a9a5df",
-                "component_type": "SkinnedModelRenderer"
-              },
-              "CreateAttachments": false,
-              "CreateBoneObjects": false,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
-              "Materials": null,
-              "Model": "models/citizen_clothes/shirt/polo_shirt/models/binman_shirt.vmdl",
-              "Morphs": {},
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Parameters": {
-                "bools": {},
-                "ints": {},
-                "floats": {},
-                "vectors": {},
-                "rotations": {}
-              },
-              "PlaybackRate": 1,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "ShadowsOnly",
-              "Sequence": {
-                "Name": null,
-                "Looping": true,
-                "Blending": false
-              },
-              "Tint": "1,1,1,1",
-              "UseAnimGraph": true
-            }
-          ],
-          "Children": []
-        },
-        {
-          "__guid": "bb0b7a8f-b10e-4d73-abef-e751ec2f3479",
-          "__version": 1,
-          "Flags": 0,
-          "Name": "Apron",
-          "Position": "-25.08069,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": false,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "77f00e96-3222-4e0b-bcfe-db8593a7346c",
-              "__enabled": true,
-              "AnimationGraph": null,
-              "BodyGroups": 18446744073709551615,
-              "BoneMergeTarget": null,
-              "CreateAttachments": false,
-              "CreateBoneObjects": false,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
-              "Materials": null,
-              "Model": "models/citizen_clothes/vest/chefs_apron/models/chefs_apron.vmdl",
-              "Morphs": {},
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Parameters": {
-                "bools": {},
-                "ints": {},
-                "floats": {},
-                "vectors": {},
-                "rotations": {}
-              },
-              "PlaybackRate": 1,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "ShadowsOnly",
-              "Sequence": {
-                "Name": null,
-                "Looping": true,
-                "Blending": false
-              },
-              "Tint": "1,1,1,1",
-              "UseAnimGraph": true
-            }
-          ],
-          "Children": []
-        },
-        {
-          "__guid": "c4e3dae4-440f-4274-8ce6-6fb380862ccb",
-          "__version": 1,
-          "Flags": 0,
-          "Name": "Shorts",
-          "Position": "-25.08069,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "0861f825-9e2f-4939-b4dd-b3f2a0fcd5d8",
-              "__enabled": true,
-              "AnimationGraph": null,
-              "BodyGroups": 18446744073709551615,
-              "BoneMergeTarget": {
-                "_type": "component",
-                "component_id": "ee79fa43-5795-4eed-bc8e-a704cd936199",
-                "go": "903760a6-8c94-4885-bfc6-255275a9a5df",
-                "component_type": "SkinnedModelRenderer"
-              },
-              "CreateAttachments": false,
-              "CreateBoneObjects": false,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
-              "Materials": null,
-              "Model": "models/citizen_clothes/shorts/boxing_shorts/models/boxing_shorts.vmdl",
-              "Morphs": {},
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Parameters": {
-                "bools": {},
-                "ints": {},
-                "floats": {},
-                "vectors": {},
-                "rotations": {}
-              },
-              "PlaybackRate": 1,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "ShadowsOnly",
-              "Sequence": {
-                "Name": null,
-                "Looping": true,
-                "Blending": false
-              },
-              "Tint": "1,1,1,1",
-              "UseAnimGraph": true
-            }
-          ],
-          "Children": []
-        },
-        {
           "__guid": "99408a64-1609-40d1-b76f-93277fe03a99",
           "__version": 1,
           "Flags": 0,
@@ -2355,7 +2181,7 @@
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
-          "Enabled": true,
+          "Enabled": false,
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
@@ -2373,6 +2199,7 @@
                 "component_type": "SkinnedModelRenderer"
               },
               "GraphOverride": null,
+              "IsBoltAction": false,
               "MaxAmmo": 30,
               "MuzzlePrefab": null,
               "OnComponentDestroy": null,
@@ -2383,9 +2210,58 @@
               "OnComponentUpdate": null,
               "PrimaryAttackSound": "weapons/sounds/mp5-attack.sound",
               "PrimaryAutomatic": true,
-              "PrimaryDelay": 0.05,
+              "PrimaryDelay": 0.15,
               "UseGrabAction": "PushButton",
               "ViewModel": "models/weapons/sbox_smg_mp5/v_mp5.vmdl",
+              "WeaponPrefab": {
+                "_type": "gameobject",
+                "prefab": "weapons/mp5_wm.prefab"
+              }
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "eb67a06c-7617-46b3-83a9-3f0bd90f84bd",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "m700",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "TestWeapon",
+              "__guid": "fb1af7fe-b57f-410e-aac3-50a8f5273b9e",
+              "__enabled": true,
+              "Ammo": 5,
+              "BodyRenderer": {
+                "_type": "component",
+                "component_id": "ee79fa43-5795-4eed-bc8e-a704cd936199",
+                "go": "903760a6-8c94-4885-bfc6-255275a9a5df",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "GraphOverride": null,
+              "IsBoltAction": true,
+              "MaxAmmo": 5,
+              "MuzzlePrefab": null,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PrimaryAttackSound": "weapons/sounds/mp5-attack.sound",
+              "PrimaryAutomatic": false,
+              "PrimaryDelay": 1,
+              "UseGrabAction": "PushButton",
+              "ViewModel": "models/weapons/sbox_sniper_m700/v_m700.vmdl",
               "WeaponPrefab": {
                 "_type": "gameobject",
                 "prefab": "weapons/mp5_wm.prefab"
@@ -2421,6 +2297,7 @@
                 "component_type": "SkinnedModelRenderer"
               },
               "GraphOverride": null,
+              "IsBoltAction": false,
               "MaxAmmo": 30,
               "MuzzlePrefab": null,
               "OnComponentDestroy": null,
@@ -3534,6 +3411,7 @@
   "Description": null,
   "__references": [
     "facepunch.big_button_2#44604",
+    "facepunch.v_m700#109632",
     "facepunch.v_mp5#109629",
     "facepunch.v_usp#109630"
   ],
