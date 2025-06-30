@@ -27,8 +27,11 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 	[Property, Group( "View Model" )]
 	public GrabAction UseGrabAction { get; set; }
 
-	[Property, Group( "Config" )]
+	[Property, Group( "Weapon-Specific" )]
 	public bool IsBoltAction { get; set; } = false;
+
+	[Property, Group( "Weapon-Specific" )]
+	public bool UseMuzzleFlash { get; set; } = true;
 
 	/// <summary>
 	/// Will copy some parameters from the body renderer
@@ -205,7 +208,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 
 		if ( Ammo < 1 ) return false;
 
-		if ( lower )
+		if ( lower && Input.Down( "Attack1" ) )
 		{
 			ToggleLower();
 		}
@@ -277,10 +280,12 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 		{
 			vm.Set( "b_attack", true );
 
-			var muzzle = vm.GetBoneObject( vm.Model.Bones.GetBone( "muzzle" ) ) ?? vm.GameObject;
-
-			shootPosition = muzzle.WorldPosition;
-			GameObject.Clone( "/effects/muzzle.prefab", global::Transform.Zero, muzzle );
+			if ( UseMuzzleFlash )
+			{
+				var muzzle = vm.GetBoneObject( vm.Model.Bones.GetBone( "muzzle" ) ) ?? vm.GameObject;
+				shootPosition = muzzle.WorldPosition;
+				GameObject.Clone( "/effects/muzzle.prefab", global::Transform.Zero, muzzle );
+			}
 		}
 
 		Sound.Play( PrimaryAttackSound, shootPosition );

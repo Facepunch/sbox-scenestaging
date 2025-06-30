@@ -2156,6 +2156,52 @@
           ]
         },
         {
+          "__guid": "7dc46834-6357-4d49-8e04-ad37a1a5a3a1",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Weapon Switcher",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.WeaponSwitcher",
+              "__guid": "2bc12bc8-cc01-4023-9583-f87f9f63f665",
+              "__enabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "Sandbox.ScreenPanel",
+              "__guid": "8d3b60af-5eda-44a8-ac18-bf670603acad",
+              "__enabled": true,
+              "AutoScreenScale": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Opacity": 1,
+              "Scale": 1,
+              "ScaleStrategy": "ConsistentHeight",
+              "TargetCamera": null,
+              "ZIndex": 100
+            }
+          ],
+          "Children": []
+        },
+        {
           "__guid": "dccd2ba2-b747-41b3-a252-c4d8e4d6a5d0",
           "__version": 1,
           "Flags": 0,
@@ -2170,6 +2216,51 @@
           "NetworkOrphaned": 0,
           "OwnerTransfer": 1,
           "Components": [],
+          "Children": []
+        },
+        {
+          "__guid": "93d8c8a3-4a57-4cf4-b8fb-d22931b914d6",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "crowbar",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "TestWeapon",
+              "__guid": "058184eb-5d02-43fc-9316-b5b7b71a13ed",
+              "__enabled": true,
+              "Ammo": 5,
+              "BodyRenderer": {
+                "_type": "component",
+                "component_id": "ee79fa43-5795-4eed-bc8e-a704cd936199",
+                "go": "903760a6-8c94-4885-bfc6-255275a9a5df",
+                "component_type": "SkinnedModelRenderer"
+              },
+              "GraphOverride": null,
+              "IsBoltAction": false,
+              "MaxAmmo": 5,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PrimaryAttackSound": null,
+              "PrimaryAutomatic": true,
+              "PrimaryDelay": 1,
+              "UseGrabAction": "PushButton",
+              "UseMuzzleFlash": false,
+              "ViewModel": "models/weapons/sbox_melee_crowbar/v_crowbar.vmdl"
+            }
+          ],
           "Children": []
         },
         {
@@ -2211,6 +2302,7 @@
               "PrimaryAutomatic": true,
               "PrimaryDelay": 0.15,
               "UseGrabAction": "PushButton",
+              "UseMuzzleFlash": true,
               "ViewModel": "models/weapons/sbox_smg_mp5/v_mp5.vmdl"
             }
           ],
@@ -2255,6 +2347,7 @@
               "PrimaryAutomatic": true,
               "PrimaryDelay": 0.08,
               "UseGrabAction": "PushButton",
+              "UseMuzzleFlash": true,
               "ViewModel": "models/weapons/sbox_assault_m4a1/v_m4a1.vmdl"
             }
           ],
@@ -2269,7 +2362,7 @@
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
           "Tags": "",
-          "Enabled": true,
+          "Enabled": false,
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
@@ -2299,6 +2392,7 @@
               "PrimaryAutomatic": false,
               "PrimaryDelay": 1,
               "UseGrabAction": "PushButton",
+              "UseMuzzleFlash": true,
               "ViewModel": "models/weapons/sbox_sniper_m700/v_m700.vmdl"
             }
           ],
@@ -2343,6 +2437,7 @@
               "PrimaryAutomatic": false,
               "PrimaryDelay": 0.05,
               "UseGrabAction": "SweepLeft",
+              "UseMuzzleFlash": true,
               "ViewModel": "models/weapons/sbox_pistol_usp/v_usp.vmdl"
             }
           ],
@@ -2411,52 +2506,6 @@
               "Static": false,
               "Surface": null,
               "SurfaceVelocity": "0,0,0"
-            }
-          ],
-          "Children": []
-        },
-        {
-          "__guid": "7dc46834-6357-4d49-8e04-ad37a1a5a3a1",
-          "__version": 1,
-          "Flags": 0,
-          "Name": "Weapon Switcher",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.WeaponSwitcher",
-              "__guid": "2bc12bc8-cc01-4023-9583-f87f9f63f665",
-              "__enabled": true,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null
-            },
-            {
-              "__type": "Sandbox.ScreenPanel",
-              "__guid": "8d3b60af-5eda-44a8-ac18-bf670603acad",
-              "__enabled": true,
-              "AutoScreenScale": true,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Opacity": 1,
-              "Scale": 1,
-              "ScaleStrategy": "ConsistentHeight",
-              "TargetCamera": null,
-              "ZIndex": 100
             }
           ],
           "Children": []
@@ -3486,6 +3535,7 @@
   "Description": null,
   "__references": [
     "facepunch.big_button_2#44604",
+    "facepunch.v_crowbar#109627",
     "facepunch.v_m4a1#109633",
     "facepunch.v_m700#109632",
     "facepunch.v_mp5#109629",
