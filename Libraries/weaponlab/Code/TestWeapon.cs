@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-public sealed class TestWeapon : Component, PlayerController.IEvents
+public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSetup
 {
 	[Property, Group( "View Model" )]
 	public Model ViewModel { get; set; }
@@ -80,8 +80,6 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 
 	protected override void OnUpdate()
 	{
-		PositionViewmodel();
-
 		if ( Input.Pressed( "Drop" ) )
 		{
 			ToggleLower();
@@ -421,13 +419,22 @@ public sealed class TestWeapon : Component, PlayerController.IEvents
 		}
 	}
 
-	void PositionViewmodel()
+	void ICameraSetup.Setup( CameraComponent cc )
 	{
 		if ( viewmodel is null ) return;
 
 		viewmodel.Tags.Set( "viewer", !BodyRenderer.Tags.Has( "viewer" ) );
 
-		var targetPos = Scene.Camera.WorldTransform;
-		viewmodel.WorldTransform = targetPos;
+		viewmodel.WorldPosition = cc.WorldPosition;
+		viewmodel.WorldRotation = cc.WorldRotation;
+
+		if ( viewmodel.Components.TryGet<SkinnedModelRenderer>( out var vm ) )
+		{
+			var bone = vm.GetBoneObject( "camera" );
+			var scale = 1;
+
+			cc.LocalPosition += bone.LocalPosition * scale;
+			cc.LocalRotation *= bone.LocalRotation * scale;
+		}
 	}
 }
