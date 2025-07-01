@@ -1,6 +1,24 @@
 using Sandbox;
 using System;
 
+
+public enum GrabAction
+{
+	None,
+	SweepDown,
+	SweepRight,
+	SweepLeft,
+	PushButton
+}
+
+public interface IGrabAction
+{
+	/// <summary>
+	/// Returns the grab action for this component
+	/// </summary>
+	GrabAction GrabAction { get; }
+}
+
 public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSetup
 {
 	[Property, Group( "View Model" )]
@@ -8,6 +26,12 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 
 	[Property, Group( "View Model" ), Model.BodyGroupMask( ModelParameter = "ViewModel" )]
 	public ulong Bodygroups { get; set; }
+
+	[Property, Group( "View Model" )]
+	public Vector3 ViewModelLocalOffset { get; set; }
+
+	[Property, Group( "View Model" )]
+	public Angles ViewModelLocalRotation { get; set; }
 
 	[Property, Group( "Primary" )]
 	public bool PrimaryAutomatic { get; set; } = true;
@@ -54,6 +78,18 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 	[Property, Group( "Weapon-Specific" ), Range( 0, 2, 0.05f )]
 	public float IronsightsFireScale { get; set; } = 0.5f;
 
+	[Property, Group( "Recoil" )]
+	public RangedFloat PitchRecoil { get; set; } = new RangedFloat( -0.25f, -0.5f );
+
+	[Property, Group( "Recoil" )]
+	public RangedFloat YawRecoil { get; set; } = new RangedFloat( -0.4f, 0.4f );
+
+	[Property, Group( "Recoil" )]
+	public float RecoilNoiseScale { get; set; } = 1.0f;
+
+	[Property, Group( "Recoil" )]
+	public float RecoilNoiseSpeed { get; set; } = 0.3f;
+
 	/// <summary>
 	/// Will copy some parameters from the body renderer
 	/// </summary>
@@ -68,17 +104,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 		FullAuto
 	}
 
-	public enum GrabAction
-	{
-		None,
-		SweepDown,
-		SweepRight,
-		SweepLeft,
-		PushButton
-	}
-
 	FireMode fireMode = FireMode.Off;
-
 	bool isReloading = false;
 	TimeSince timeSinceReload = 0.0f;
 
@@ -87,7 +113,9 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 		if ( !(viewmodel?.Components.TryGet<SkinnedModelRenderer>( out var vm ) ?? false) )
 			return;
 
-		vm.Set( "grab_action", (int)UseGrabAction ); // Push button action
+		if ( target is not IGrabAction grabber ) return;
+
+		vm.Set( "grab_action", (int)grabber.GrabAction );
 	}
 
 	protected override void OnUpdate()
@@ -369,6 +397,11 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 		{
 			vm.Set( "b_attack", true );
 
+			var controller = Components.Get<PlayerController>( FindMode.InAncestors );
+			controller.EyeAngles += new Angles( PitchRecoil.GetValue(), YawRecoil.GetValue(), 0 );
+
+			_ = new Sandbox.CameraNoise.Recoil( RecoilNoiseScale, RecoilNoiseSpeed );
+
 			if ( UseMuzzleFlash )
 			{
 				var muzzle = vm.GetBoneObject( vm.Model.Bones.GetBone( "muzzle" ) ) ?? vm.GameObject;
@@ -469,6 +502,10 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 
 		viewmodel.WorldPosition = cc.WorldPosition;
 		viewmodel.WorldRotation = cc.WorldRotation;
+
+		viewmodel.LocalRotation *= ViewModelLocalRotation.ToRotation();
+
+		viewmodel.LocalPosition += viewmodel.WorldRotation * ViewModelLocalOffset;
 
 		if ( viewmodel.Components.TryGet<SkinnedModelRenderer>( out var vm ) )
 		{

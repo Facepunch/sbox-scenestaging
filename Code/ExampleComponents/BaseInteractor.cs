@@ -1,6 +1,7 @@
-public class BaseInteractor : Component, Component.IPressable
+public class BaseInteractor : Component, Component.IPressable, IGrabAction
 {
 	[Property] public virtual Action OnUse { get; set; }
+	[Property] public GrabAction GrabAction { get; set; } = GrabAction.PushButton;
 
 	protected override void OnUpdate()
 	{
