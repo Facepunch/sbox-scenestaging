@@ -233,7 +233,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 			smoothed = GetLocalVelocity( rot, smoothed );
 
 			vm.Set( "move_direction", GetAngle( smoothed ) );
-			vm.Set( "move_bob", smoothed.Length.Remap( 0, 300, 0, 1 ) );
+			vm.Set( "move_bob", smoothed.Length.Remap( 0, 150, 0, 1 ) );
 			vm.Set( "move_groundspeed", smoothed.WithZ( 0f ).Length );
 			vm.Set( "move_x", smoothed.x );
 			vm.Set( "move_y", smoothed.y );
@@ -444,7 +444,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 			var prefab = tr.Surface.PrefabCollection.BulletImpact ?? tr.Surface.GetBaseSurface()?.PrefabCollection.BulletImpact;
 			if ( prefab is not null )
 			{
-				prefab?.Clone( new Transform( tr.HitPosition + tr.Normal * 2.0f, Rotation.LookAt( -tr.Normal ) ) );
+				prefab?.Clone( new Transform( tr.HitPosition + tr.Normal, Rotation.LookAt( -tr.Normal ) ) );
 			}
 		}
 		else
@@ -481,6 +481,8 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 		var modelRender = viewmodel.Components.Create<SkinnedModelRenderer>();
 		modelRender.Model = ViewModel;
 		modelRender.BodyGroups |= Bodygroups;
+		modelRender.RenderOptions.Overlay = true;
+		modelRender.RenderOptions.Game = false;
 
 		modelRender.CreateBoneObjects = true;
 		modelRender.RenderType = ModelRenderer.ShadowRenderType.Off;
@@ -495,6 +497,8 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 			var model = arms.Components.Create<SkinnedModelRenderer>();
 			model.Model = Model.Load( "models/first_person/first_person_arms.vmdl" );
 			model.BoneMergeTarget = modelRender;
+			model.RenderOptions.Overlay = true;
+			model.RenderOptions.Game = false;
 			model.RenderType = ModelRenderer.ShadowRenderType.Off;
 		}
 	}
