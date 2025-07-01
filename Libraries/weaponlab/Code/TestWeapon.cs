@@ -1,6 +1,7 @@
 using Sandbox;
 using Sandbox.Rendering;
 using System;
+using System.Threading.Tasks;
 
 
 public enum GrabAction
@@ -524,6 +525,33 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 			cc.LocalPosition += bone.LocalPosition * scale;
 			cc.LocalRotation *= bone.LocalRotation * scale;
 		}
+	}
+
+	public float HolsterTime => 1.2f;
+
+	private TaskCompletionSource<bool> holsterTask;
+
+	public async Task Holster()
+	{
+		if ( !GameObject.Active )
+			return;
+
+		// Already holstering
+		if ( holsterTask is not null )
+			await holsterTask.Task;
+
+		holsterTask = new TaskCompletionSource<bool>();
+
+		if ( viewmodel?.Components.TryGet<SkinnedModelRenderer>( out var vm ) ?? false )
+		{
+			vm.Set( "b_holster", true );
+		}
+
+		// Wait for holster time
+		await GameTask.DelaySeconds( HolsterTime );
+
+		holsterTask.SetResult( true );
+		holsterTask = null;
 	}
 
 	void DrawHud( HudPainter hud, Vector2 center )

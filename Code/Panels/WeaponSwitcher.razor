@@ -44,33 +44,54 @@
 		return string.Empty;
 	}
 
+	private bool isSwitching = false;
+
+	private async Task Switch(TestWeapon newWeapon)
+	{
+		if (isSwitching) return;
+
+		isSwitching = true;
+
+		var weapons = GameObject.Root.GetComponentsInChildren<TestWeapon>(true);
+		var currentWeapon = weapons.FirstOrDefault(x => x.Active);
+
+		if (currentWeapon is not null)
+		{
+			await currentWeapon.Holster();
+			currentWeapon.GameObject.Enabled = false;
+		}
+
+		newWeapon.GameObject.Enabled = true;
+		isSwitching = false;
+	}
+
 	protected override void OnUpdate()
 	{
-		var weapons = GameObject.Root.GetComponentsInChildren<TestWeapon>(true).ToList();
-		var currentIndex = weapons.FindIndex( x => x.Active );
-		if ( currentIndex == -1 ) return;
+		if (isSwitching) return;
 
-		for ( int i = 0; i < weapons.Count; i++ )
+		var weapons = GameObject.Root.GetComponentsInChildren<TestWeapon>(true).ToList();
+		var currentIndex = weapons.FindIndex(x => x.Active);
+		if (currentIndex == -1) return;
+
+		for (int i = 0; i < weapons.Count; i++)
 		{
-			if ( Input.Pressed( $"Slot{i+1}" ) )
+			if (Input.Pressed($"Slot{i + 1}"))
 			{
-				var w = weapons[i];
-				weapons[currentIndex].GameObject.Enabled = false;
-				w.GameObject.Enabled = true;
+				_ = Switch(weapons[i]);
+				return;
 			}
 		}
 
-		if ( Input.MouseWheel.y == 0 ) return;
+		if (Input.MouseWheel.y == 0) return;
 
 		var wheelDir = -Input.MouseWheel.y;
-
 		var nextIndex = currentIndex;
-		if ( wheelDir > 0 )
+
+		if (wheelDir > 0)
 			nextIndex = (currentIndex + 1) % weapons.Count;
 		else
 			nextIndex = (currentIndex - 1 + weapons.Count) % weapons.Count;
 
-		weapons[currentIndex].GameObject.Enabled = false;
-		weapons[nextIndex].GameObject.Enabled = true;
+		_ = Switch(weapons[nextIndex]);
 	}
 }
