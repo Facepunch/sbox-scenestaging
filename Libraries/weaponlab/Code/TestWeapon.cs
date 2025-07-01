@@ -128,6 +128,10 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 		var isAiming = Input.Down( "attack2" );
 		var wantsSprint = Input.Down( controller.AltMoveButton );
 
+		var isHovering = controller.Hovered.IsValid() && controller.Hovered.WorldPosition.Distance( WorldPosition ) < 128;
+
+		vm.Set( "b_grab", isHovering );
+
 		//
 		// General states
 		//
