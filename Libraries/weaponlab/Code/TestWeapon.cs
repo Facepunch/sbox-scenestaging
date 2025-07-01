@@ -42,6 +42,12 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 	[Property, Group( "Weapon-Specific" )]
 	public bool SingularReload { get; set; } = false;
 
+	[Property, Group( "Weapon-Specific" )]
+	public bool TwoHanded { get; set; } = false;
+
+	[Property, Group( "Weapon-Specific" )]
+	public bool UseJoystick { get; set; } = false;
+
 	/// <summary>
 	/// Will copy some parameters from the body renderer
 	/// </summary>
@@ -99,6 +105,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 	Rotation lastRot;
 	TimeSince timeSincePrimaryAttackStarted = 0.0f;
 	Vector3.SmoothDamped smoothedWish = new Vector3.SmoothDamped( 0, 0, 0.5f );
+	Vector3.SmoothDamped smoothedJoystick = new Vector3.SmoothDamped( 0, 0, 0.5f );
 
 	private static Vector3 GetLocalVelocity( Rotation rotation, Vector3 worldVelocity )
 	{
@@ -115,6 +122,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 		return MathF.Atan2( localVelocity.y, localVelocity.x ).RadianToDegree().NormalizeDegrees();
 	}
 
+
 	void AnimationThink()
 	{
 		if ( !(viewmodel?.Components.TryGet<SkinnedModelRenderer>( out var vm ) ?? false) )
@@ -125,7 +133,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 		var vel = controller.Velocity;
 		var wishVel = controller.WishVelocity;
 		var rot = vm.WorldRotation;
-		var isAiming = Input.Down( "attack2" );
+		var isAiming = Input.Down( "attack2" ) && !UseJoystick;
 		var wantsSprint = Input.Down( controller.AltMoveButton );
 
 		var isHovering = controller.Hovered.IsValid() && controller.Hovered.WorldPosition.Distance( WorldPosition ) < 128;
@@ -140,6 +148,27 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 		vm.Set( "b_lower_weapon", lower );
 		vm.Set( "firing_mode", (int)fireMode );
 		vm.Set( "b_empty", Ammo < 1 );
+		vm.Set( "b_twohanded", TwoHanded );
+
+		controller.UseLookControls = !(UseJoystick && Input.Down( "Attack2" ));
+
+		//
+		// Joystick
+		//
+		{
+			vm.Set( "b_joystick", UseJoystick && Input.Down( "Attack2" ) );
+
+			var smoothed = Mouse.Delta * 0.1f;
+			{
+				smoothedJoystick.Target = smoothed;
+				smoothedJoystick.SmoothTime = 0.1f;
+				smoothedJoystick.Update( Time.Delta );
+				smoothed = smoothedJoystick.Current;
+			}
+
+			vm.Set( "joystick_x", UseJoystick ? smoothed.y : 0f );
+			vm.Set( "joystick_y", UseJoystick ? -smoothed.x : 0f );
+		}
 
 		//
 		// Bolt action
