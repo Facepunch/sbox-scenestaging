@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Rendering;
 using System;
 
 
@@ -108,6 +109,8 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 	bool isReloading = false;
 	TimeSince timeSinceReload = 0.0f;
 
+	public bool IsAiming => Input.Down( "attack2" ) && !UseJoystick;
+
 	void PlayerController.IEvents.StartPressing( Component target )
 	{
 		if ( !(viewmodel?.Components.TryGet<SkinnedModelRenderer>( out var vm ) ?? false) )
@@ -125,6 +128,8 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 			ToggleLower();
 		}
 
+		var aimPos = Screen.Size * 0.5f;
+		DrawHud( Scene.Camera.Hud, aimPos );
 		AnimationThink();
 	}
 
@@ -167,7 +172,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 		var vel = controller.Velocity;
 		var wishVel = controller.WishVelocity;
 		var rot = vm.WorldRotation;
-		var isAiming = Input.Down( "attack2" ) && !UseJoystick;
+		var isAiming = IsAiming;
 		var wantsSprint = Input.Down( controller.AltMoveButton );
 
 		var isHovering = controller.Hovered.IsValid() && controller.Hovered.WorldPosition.Distance( WorldPosition ) < 128;
@@ -515,5 +520,22 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 			cc.LocalPosition += bone.LocalPosition * scale;
 			cc.LocalRotation *= bone.LocalRotation * scale;
 		}
+	}
+
+	void DrawHud( HudPainter hud, Vector2 center )
+	{
+		if ( IsAiming )
+			return;
+
+		var gap = 8;
+		var len = 12;
+		var w = 2f;
+		var color = Color.White.WithAlpha( 0.5f );
+
+		hud.SetBlendMode( BlendMode.Lighten );
+		hud.DrawLine( center + Vector2.Left * (len + gap), center + Vector2.Left * gap, w, color );
+		hud.DrawLine( center - Vector2.Left * (len + gap), center - Vector2.Left * gap, w, color );
+		hud.DrawLine( center + Vector2.Up * (len + gap), center + Vector2.Up * gap, w, color );
+		hud.DrawLine( center - Vector2.Up * (len + gap), center - Vector2.Up * gap, w, color );
 	}
 }
