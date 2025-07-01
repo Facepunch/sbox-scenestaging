@@ -290,7 +290,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 		if ( timeSinceLastShoot < PrimaryDelay )
 			return false;
 
-		if ( Ammo < 1 ) return false;
+		if ( MaxAmmo > 0 && Ammo < 1 ) return false;
 
 		if ( lower && Input.Down( "Attack1" ) )
 		{
@@ -337,7 +337,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 
 		if ( Input.Pressed( "reload" ) )
 		{
-			if ( Ammo >= MaxAmmo ) return; // Don't reload if we're full
+			if ( MaxAmmo > 0 && Ammo >= MaxAmmo ) return; // Don't reload if we're full
 
 			// Start the reload sequence
 			if ( viewmodel.Components.TryGet<SkinnedModelRenderer>( out var vm ) )

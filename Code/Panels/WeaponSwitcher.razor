@@ -19,7 +19,7 @@
 					<label class="number">@i</label>
 					<label class="name">@weapon.GameObject.Name.ToUpperInvariant()</label>
 
-					@if (weapon.Active)
+					@if (weapon.Active && weapon.MaxAmmo > 0)
 					{
 						<label class="ammo">@(weapon.Ammo) / @(weapon.MaxAmmo)</label>
 					}
