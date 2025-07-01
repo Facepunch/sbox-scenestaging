@@ -6,6 +6,9 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 	[Property, Group( "View Model" )]
 	public Model ViewModel { get; set; }
 
+	[Property, Group( "View Model" ), Model.BodyGroupMask( ModelParameter = "ViewModel" )]
+	public ulong Bodygroups { get; set; }
+
 	[Property, Group( "Primary" )]
 	public bool PrimaryAutomatic { get; set; } = true;
 
@@ -47,6 +50,9 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 
 	[Property, Group( "Weapon-Specific" )]
 	public bool UseJoystick { get; set; } = false;
+
+	[Property, Group( "Weapon-Specific" ), Range( 0, 2, 0.05f )]
+	public float IronsightsFireScale { get; set; } = 0.5f;
 
 	/// <summary>
 	/// Will copy some parameters from the body renderer
@@ -149,6 +155,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 		vm.Set( "firing_mode", (int)fireMode );
 		vm.Set( "b_empty", Ammo < 1 );
 		vm.Set( "b_twohanded", TwoHanded );
+		vm.Set( "ironsights_fire_scale", IronsightsFireScale );
 
 		controller.UseLookControls = !(UseJoystick && Input.Down( "Attack2" ));
 
@@ -435,6 +442,8 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 
 		var modelRender = viewmodel.Components.Create<SkinnedModelRenderer>();
 		modelRender.Model = ViewModel;
+		modelRender.BodyGroups |= Bodygroups;
+
 		modelRender.CreateBoneObjects = true;
 		modelRender.RenderType = ModelRenderer.ShadowRenderType.Off;
 
