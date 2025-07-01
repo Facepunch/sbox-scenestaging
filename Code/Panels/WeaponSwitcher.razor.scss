@@ -11,8 +11,7 @@ WeaponSwitcher {
 	flex-direction: column;
 	padding: 32px;
 
-	label
-	{
+	label {
 		font-family: Roboto;
 	}
 
@@ -31,6 +30,11 @@ WeaponSwitcher {
 
 		label {
 			color: white;
+		}
+
+		.number {
+			color: rgba( #fff, 0.8 );
+			font-size: 20px;
 		}
 
 		.ammo {

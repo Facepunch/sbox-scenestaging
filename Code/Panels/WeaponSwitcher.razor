@@ -7,16 +7,24 @@
 <root>
 	<label class="title">Weapons</label>
 	<div class="weapons">
-		@foreach (var weapon in GameObject.Root.GetComponentsInChildren<TestWeapon>( true ) )
-		{
-			<div class="weapon @GetClass( weapon )">
-				<label class="name">@weapon.GameObject.Name.ToUpperInvariant()</label>
 
-				@if ( weapon.Active )
-				{
-					<label class="ammo">@(weapon.Ammo) / @(weapon.MaxAmmo)</label>
-				}
-			</div>
+		@{
+			var i = 0;
+
+			@foreach (var weapon in GameObject.Root.GetComponentsInChildren<TestWeapon>(true))
+			{
+				i++;
+
+				<div class="weapon @GetClass(weapon)">
+					<label class="number">@i</label>
+					<label class="name">@weapon.GameObject.Name.ToUpperInvariant()</label>
+
+					@if (weapon.Active)
+					{
+						<label class="ammo">@(weapon.Ammo) / @(weapon.MaxAmmo)</label>
+					}
+				</div>
+			}
 		}
 	</div>
 
@@ -38,13 +46,23 @@
 
 	protected override void OnUpdate()
 	{
+		var weapons = GameObject.Root.GetComponentsInChildren<TestWeapon>(true).ToList();
+		var currentIndex = weapons.FindIndex( x => x.Active );
+		if ( currentIndex == -1 ) return;
+
+		for ( int i = 0; i < weapons.Count; i++ )
+		{
+			if ( Input.Pressed( $"Slot{i+1}" ) )
+			{
+				var w = weapons[i];
+				weapons[currentIndex].GameObject.Enabled = false;
+				w.GameObject.Enabled = true;
+			}
+		}
+
 		if ( Input.MouseWheel.y == 0 ) return;
 
 		var wheelDir = -Input.MouseWheel.y;
-		var weapons = GameObject.Root.GetComponentsInChildren<TestWeapon>( true ).ToList();
-
-		var currentIndex = weapons.FindIndex( x => x.Active );
-		if ( currentIndex == -1 ) return;
 
 		var nextIndex = currentIndex;
 		if ( wheelDir > 0 )
