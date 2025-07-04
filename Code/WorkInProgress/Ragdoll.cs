@@ -38,9 +38,19 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	private readonly List<Joint> _joints = new();
 	private readonly List<Collider> _colliders = new();
 
+	/// <summary>
+	/// Access to all bodies.
+	/// </summary>
 	public IReadOnlyList<Body> Bodies => _bodies;
+
+	/// <summary>
+	/// Access to all joints.
+	/// </summary>
 	public IReadOnlyList<Joint> Joints => _joints;
 
+	/// <summary>
+	/// The model used to generate physics bodies, collision shapes, and joints.
+	/// </summary>
 	[Property]
 	public Model Model
 	{
@@ -56,6 +66,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
+	/// <summary>
+	/// The renderer that receives transform updates from physics bodies.
+	/// </summary>
 	[Property]
 	public SkinnedModelRenderer Renderer
 	{
@@ -74,9 +87,15 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
+	/// <summary>
+	/// If true, the root physics body will not drive this component's transform.
+	/// </summary>
 	[Property]
 	public bool IgnoreRoot { get; set; }
 
+	/// <summary>
+	/// Rigidbody flags applied to all bodies.
+	/// </summary>
 	[Property, Group( "Physics" )]
 	public RigidbodyFlags RigidbodyFlags
 	{
@@ -98,6 +117,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
+	/// <summary>
+	/// Rigidbody locking applied to all bodies.
+	/// </summary>
 	[Property, Group( "Physics" )]
 	public PhysicsLock Locking
 	{
@@ -146,6 +168,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
+	/// <summary>
+	/// Show or hide rigidbody components this component creates.
+	/// </summary>
 	[Property, Group( "Components" )]
 	public bool ShowRigidbodies
 	{
@@ -164,6 +189,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
+	/// <summary>
+	/// Show or hide collider components this component creates.
+	/// </summary>
 	[Property, Group( "Components" )]
 	public bool ShowColliders
 	{
@@ -182,6 +210,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
+	/// <summary>
+	/// Show or hide joint components this component creates.
+	/// </summary>
 	[Property, Group( "Components" )]
 	public bool ShowJoints
 	{
@@ -205,10 +236,13 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		if ( _rootBody is null )
 			return;
 
-		// Only recreate physics if it has already been created
+		// Only recreate physics if it has already been created.
 		CreatePhysics();
 	}
 
+	/// <summary>
+	/// Create all the bodies, colliders and joints.
+	/// </summary>
 	private void CreatePhysics()
 	{
 		if ( !Active )
@@ -410,6 +444,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
+	/// <summary>
+	/// Destroy all the bodies, colliders and joints.
+	/// </summary>
 	private void DestroyPhysics()
 	{
 		foreach ( var joint in _joints )
@@ -450,23 +487,24 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
+	/// <summary>
+	/// Apply body transforms to renderer bones.
+	/// </summary>
 	private void PositionRendererBonesFromPhysics()
 	{
 		if ( !Renderer.IsValid() )
 			return;
 
+		// Clear all bone overrides first.
 		Renderer.ClearPhysicsBones();
 
-		if ( Scene.IsEditor )
+		// Apply the root physics body's transform in the editor or when not ignoring the root.
+		if ( _rootBody.IsValid() )
 		{
-			if ( _rootBody.IsValid() && _rootBody.PhysicsBody.MotionEnabled )
+			if ( Scene.IsEditor || !IgnoreRoot )
 			{
 				WorldTransform = _rootBody.WorldTransform;
 			}
-		}
-		else if ( !IgnoreRoot && _rootBody.IsValid() && _rootBody.MotionEnabled )
-		{
-			WorldTransform = _rootBody.WorldTransform;
 		}
 
 		var world = WorldTransform;
@@ -476,31 +514,15 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			if ( !body.Component.IsValid() )
 				continue;
 
+			// Bone overrides are in modelspace, strip off our world transform from body world transform.
 			var local = world.ToLocal( body.Component.WorldTransform );
 			Renderer.SetBoneTransform( body.Bone, local );
 		}
 	}
 
-	private void PositionPhysicsFromAnimation()
-	{
-		if ( Scene.IsEditor )
-			return;
-
-		foreach ( var body in _bodies )
-		{
-			if ( !body.Component.IsValid() )
-				continue;
-
-			if ( body.Component.MotionEnabled )
-				continue;
-
-			if ( Renderer.TryGetBoneTransformAnimation( body.Bone, out var boneWorld ) )
-			{
-				body.Component.SmoothMove( boneWorld, 0.01f, Time.Delta );
-			}
-		}
-	}
-
+	/// <summary>
+	/// Adjust joint points for body scaling.
+	/// </summary>
 	private void UpdateJointScale()
 	{
 		foreach ( var joint in _joints )
@@ -518,6 +540,9 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 	}
 
+	/// <summary>
+	/// Put all bodies to sleep.
+	/// </summary>
 	private void Sleep()
 	{
 		foreach ( var body in _bodies )
@@ -535,6 +560,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 
 		_renderer ??= GetComponent<SkinnedModelRenderer>();
 
+		// Auto set the model using the renderer model if it's not already set.
 		if ( _model is null && _renderer.IsValid() )
 		{
 			_model = _renderer.Model;
@@ -545,6 +571,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	{
 		base.OnUpdate();
 
+		// Model reloaded, recreate physics.
 		if ( _bones != Model?.Bones )
 		{
 			CreatePhysics();
@@ -561,34 +588,12 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 
 		PositionRendererBonesFromPhysics();
-
-		if ( Scene.IsEditor )
-		{
-			foreach ( var body in _bodies )
-			{
-				if ( !body.Component.IsValid() )
-					continue;
-
-				if ( body.Component.PhysicsBody.MotionEnabled )
-				{
-					body.LocalTransform = WorldTransform.ToLocal( body.Component.WorldTransform );
-
-					continue;
-				}
-
-				if ( Renderer.IsValid() && Renderer.TryGetBoneTransform( body.Bone, out var boneWorld ) )
-				{
-					body.Component.WorldTransform = WorldTransform.ToWorld( body.LocalTransform );
-				}
-			}
-		}
 	}
 
 	protected override void OnFixedUpdate()
 	{
 		base.OnFixedUpdate();
 
-		PositionPhysicsFromAnimation();
 		UpdateJointScale();
 	}
 
