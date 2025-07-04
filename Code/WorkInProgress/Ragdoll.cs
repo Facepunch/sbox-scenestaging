@@ -22,7 +22,7 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 	{
 		public Rigidbody Component { get; init; } = Component;
 		public BoneCollection.Bone Bone { get; init; } = Bone;
-		public Transform LocalTransform { get; set; } = LocalTransform;
+		internal Transform LocalTransform { get; set; } = LocalTransform;
 	}
 
 	public record Joint( Sandbox.Joint Component, Body Body1, Body Body2, Transform Frame1, Transform Frame2 )
@@ -498,13 +498,16 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		// Clear all bone overrides first.
 		Renderer.ClearPhysicsBones();
 
-		// Apply the root physics body's transform in the editor or when not ignoring the root.
-		if ( _rootBody.IsValid() )
+		if ( Scene.IsEditor )
 		{
-			if ( Scene.IsEditor || !IgnoreRoot )
+			if ( _rootBody.IsValid() && _rootBody.PhysicsBody.MotionEnabled )
 			{
 				WorldTransform = _rootBody.WorldTransform;
 			}
+		}
+		else if ( !IgnoreRoot && _rootBody.IsValid() && _rootBody.MotionEnabled )
+		{
+			WorldTransform = _rootBody.WorldTransform;
 		}
 
 		var world = WorldTransform;
@@ -517,6 +520,29 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 			// Bone overrides are in modelspace, strip off our world transform from body world transform.
 			var local = world.ToLocal( body.Component.WorldTransform );
 			Renderer.SetBoneTransform( body.Bone, local );
+		}
+	}
+
+	/// <summary>
+	/// Move bodies to animated bone transforms for bodies that have motion disabled.
+	/// </summary>
+	private void PositionPhysicsFromAnimation()
+	{
+		if ( Scene.IsEditor )
+			return;
+
+		foreach ( var body in _bodies )
+		{
+			if ( !body.Component.IsValid() )
+				continue;
+
+			if ( body.Component.MotionEnabled )
+				continue;
+
+			if ( Renderer.TryGetBoneTransformAnimation( body.Bone, out var boneWorld ) )
+			{
+				body.Component.SmoothMove( boneWorld, 0.01f, Time.Delta );
+			}
 		}
 	}
 
@@ -588,6 +614,27 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		}
 
 		PositionRendererBonesFromPhysics();
+
+		// In editor we need to move the bodies with this transform while keeping the local pose.
+		if ( Scene.IsEditor )
+		{
+			foreach ( var body in _bodies )
+			{
+				if ( !body.Component.IsValid() )
+					continue;
+
+				if ( body.Component.PhysicsBody.MotionEnabled )
+				{
+					// Update local transform pose when simulating physics in editor.
+					body.LocalTransform = WorldTransform.ToLocal( body.Component.WorldTransform );
+				}
+				else
+				{
+					// Move body when moving this gameobject in editor.
+					body.Component.WorldTransform = WorldTransform.ToWorld( body.LocalTransform );
+				}
+			}
+		}
 	}
 
 	protected override void OnFixedUpdate()
@@ -595,6 +642,12 @@ public sealed class Ragdoll : Component, Component.ExecuteInEditor
 		base.OnFixedUpdate();
 
 		UpdateJointScale();
+
+		// Only drive physics from animation if we have motion disabled.
+		if ( !MotionEnabled )
+		{
+			PositionPhysicsFromAnimation();
+		}
 	}
 
 	protected override void OnEnabled()
