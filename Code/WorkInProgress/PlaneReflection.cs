@@ -59,6 +59,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 
 
 	CommandList _drawReflection = new();
+	CommandList _clearReflection = new();
 
 	protected override void OnEnabled()
 	{
@@ -108,6 +109,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 		//
 		// Create a command list that runs immediately before the sceneobject is rendered
 		//
+		_clearReflection.Reset();
 		_drawReflection.Reset();
 
 		// work out the reflection plane
@@ -168,9 +170,14 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 
 			if ( RoughSurfaceReflections )
 				_drawReflection.GenerateMipMaps( renderTarget );
+
+			_clearReflection.Attributes.Set( "ReflectionColorIndex", -1);	
 		}
 
+
 		TargetRenderer.ExecuteBefore = _drawReflection;
+
+		TargetRenderer.ExecuteAfter = _clearReflection;
 	}
 }
 
