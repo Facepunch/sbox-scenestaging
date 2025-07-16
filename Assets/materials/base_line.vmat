@@ -1,0 +1,16 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/line.shader"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Material ----
+	TextureAmbientOcclusion "materials/rope_ao.png"
+	TextureColor "materials/rope_color.png"
+	TextureMetalness "materials/default/default_metal.tga"
+	TextureNormal "materials/rope_normal.png"
+	TextureRoughness "materials/rope_rough.png"
+}
