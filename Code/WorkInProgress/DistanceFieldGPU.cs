@@ -1,6 +1,5 @@
 using Sandbox.Rendering;
 using System.Numerics;
-using static Sandbox.Ragdoll;
 
 namespace Sandbox;
 
