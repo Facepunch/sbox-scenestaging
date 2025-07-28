@@ -60,6 +60,7 @@
           "CreateAttachments": false,
           "MaterialGroup": null,
           "MaterialOverride": "watertest.vmat",
+          "Materials": null,
           "Model": "models/dev/sphere.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -173,6 +174,19 @@
           "Sky": null,
           "StartDistance": 1024,
           "Tint": "0.88837,0.88837,0.88837,1"
+        },
+        {
+          "__type": "Sandbox.ScreenSpaceReflections",
+          "__guid": "f272ed4f-312a-46c8-be73-17a3cab15a10",
+          "__enabled": true,
+          "Denoise": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RoughnessCutoff": 0.5
         }
       ],
       "Children": []
@@ -182,7 +196,7 @@
       "__version": 1,
       "Flags": 0,
       "Name": "Water Plane",
-      "Position": "0,0,926.6888",
+      "Position": "0,0,14",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,10",
       "Tags": "planereflect",
@@ -200,6 +214,7 @@
           "CreateAttachments": false,
           "MaterialGroup": null,
           "MaterialOverride": "watertest.vmat",
+          "Materials": null,
           "Model": "models/dev/plane_large.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -219,8 +234,8 @@
         {
           "__type": "PlaneReflection",
           "__guid": "d9b5a8cf-021c-47fb-9e87-300a0ec0d325",
-          "__enabled": true,
-          "IncludeRefraction": true,
+          "__enabled": false,
+          "IncludeRefraction": false,
           "OffsettingEnabled": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -237,11 +252,12 @@
             "component_type": "CameraComponent"
           },
           "ReflectionSurfaceOffset": 3,
-          "RefractionFog": true,
+          "RefractionFog": false,
           "RefractionFogColor": "0.05088,0.09767,0.0657,1",
           "RefractionFogDepth": 56.7,
           "RefractionFogDistance": 0,
           "RefractionFogHeight": 15.12,
+          "RoughSurfaceReflections": false,
           "TargetRenderer": {
             "_type": "component",
             "component_id": "3527e7b9-4409-44bb-8c55-5e60c6518e8c",
@@ -337,11 +353,11 @@
       "__version": 1,
       "Flags": 0,
       "Name": "Regular Plane",
-      "Position": "0,0,80.01482",
+      "Position": "0,0,-126",
       "Rotation": "0,0,0,1",
       "Scale": "100,100,100",
       "Tags": "",
-      "Enabled": false,
+      "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
@@ -355,6 +371,7 @@
           "CreateAttachments": false,
           "MaterialGroup": null,
           "MaterialOverride": "materials/shine.vmat",
+          "Materials": null,
           "Model": "models/dev/plane.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -363,13 +380,37 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "RenderOptions": {
-            "GameLayer": false,
+            "GameLayer": true,
             "OverlayLayer": false,
             "BloomLayer": false,
             "AfterUILayer": false
           },
           "RenderType": "On",
-          "Tint": "0,0,0,1"
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.PlaneCollider",
+          "__guid": "628dcb54-abb4-4326-b651-f60169994721",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Scale": "50,50",
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -379,7 +420,7 @@
       "__version": 1,
       "Flags": 0,
       "Name": "Player Controller",
-      "Position": "163.9197,88.3167,1072.405",
+      "Position": "159.4471,-38.58269,51.9999",
       "Rotation": "0,0,0.9914448,0.1305264",
       "Scale": "1,1,1",
       "Tags": "",
@@ -558,6 +599,7 @@
               "CreateBoneObjects": false,
               "MaterialGroup": null,
               "MaterialOverride": null,
+              "Materials": null,
               "Model": "models/citizen/citizen.vmdl",
               "Morphs": {},
               "OnComponentDestroy": null,
@@ -611,6 +653,7 @@
               "__type": "Sandbox.CapsuleCollider",
               "__guid": "10027361-3213-4200-9c07-c26f42be0549",
               "__enabled": true,
+              "Elasticity": null,
               "End": "0,0,45.05097",
               "Friction": 0,
               "IsTrigger": false,
@@ -625,6 +668,7 @@
               "OnTriggerEnter": null,
               "OnTriggerExit": null,
               "Radius": 11.313708,
+              "RollingResistance": null,
               "Start": "0,0,60.68629",
               "Static": false,
               "Surface": null,
@@ -635,6 +679,7 @@
               "__guid": "774143ff-b49f-44b3-8629-b75b4027ab47",
               "__enabled": true,
               "Center": "0,0,18",
+              "Elasticity": null,
               "Friction": 0,
               "IsTrigger": false,
               "OnComponentDestroy": null,
@@ -647,6 +692,7 @@
               "OnObjectTriggerExit": null,
               "OnTriggerEnter": null,
               "OnTriggerExit": null,
+              "RollingResistance": null,
               "Scale": "16,16,36",
               "Static": false,
               "Surface": null,
@@ -725,6 +771,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "c26c5902-6703-43fa-9e6c-e64de8b7e0c0",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "8a6b0f05-69c6-4296-8419-2143a0c36c6f",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -763,6 +857,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "130c1644-5755-48d9-b5c9-58d35853f9bc",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "cd02046b-171c-4b10-80ac-68adc23e4fe8",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -801,6 +943,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "847e6c87-0160-49e6-ba4d-f43e42222433",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "5c07743d-8d9c-4ebb-a94d-09f7eb4d7a4b",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -828,6 +1018,7 @@
           "CreateAttachments": false,
           "MaterialGroup": null,
           "MaterialOverride": "materials/shine.vmat",
+          "Materials": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -848,6 +1039,7 @@
           "__type": "Sandbox.ModelCollider",
           "__guid": "a18f607f-1f6e-4181-9d63-619df64c8af5",
           "__enabled": true,
+          "Elasticity": null,
           "Friction": null,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
@@ -861,6 +1053,7 @@
           "OnObjectTriggerExit": null,
           "OnTriggerEnter": null,
           "OnTriggerExit": null,
+          "RollingResistance": null,
           "Static": true,
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
@@ -902,6 +1095,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "5aeca7ef-dade-49bd-b9f6-a192cd48e0cd",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "aeeef873-2266-4c91-9f95-b89068daeb66",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -940,6 +1181,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "1cb83a70-6720-48e7-a4bb-0db677f2811d",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "556c4e5c-8fc3-4a11-929d-06e8779f3274",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -967,6 +1256,7 @@
           "CreateAttachments": false,
           "MaterialGroup": null,
           "MaterialOverride": null,
+          "Materials": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -987,6 +1277,7 @@
           "__type": "Sandbox.ModelCollider",
           "__guid": "b133a607-7b0e-423f-83a7-18c621338c76",
           "__enabled": true,
+          "Elasticity": null,
           "Friction": null,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
@@ -1000,6 +1291,7 @@
           "OnObjectTriggerExit": null,
           "OnTriggerEnter": null,
           "OnTriggerExit": null,
+          "RollingResistance": null,
           "Static": true,
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
@@ -1041,6 +1333,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "0e05577e-b8f6-45df-9ca1-5f3b0d0b5cd2",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "61b402ec-0e9c-4efa-bdbf-a9b603266c7e",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -1079,6 +1419,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "86e17bbf-8ddf-408e-8191-9b138cdf5baa",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "b94e821f-a583-47de-a646-209319ad3124",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -1117,6 +1505,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "37db271e-52d7-4aac-a929-7b8e0da042b1",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "361d94d1-997b-47bb-bebd-2a9500c32e2e",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -1155,6 +1591,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "34be4acf-441e-443b-98b3-ec97f072647f",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "48a1b74b-95b5-4621-b2f7-346c92a7b8fb",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -1182,6 +1666,7 @@
           "CreateAttachments": false,
           "MaterialGroup": null,
           "MaterialOverride": null,
+          "Materials": null,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -1202,6 +1687,7 @@
           "__type": "Sandbox.ModelCollider",
           "__guid": "48694734-b0da-4694-b246-46e9369b1e58",
           "__enabled": true,
+          "Elasticity": null,
           "Friction": null,
           "IsTrigger": false,
           "Model": "models/rust_nature/rocks/rock_cliff_a.vmdl",
@@ -1215,6 +1701,7 @@
           "OnObjectTriggerExit": null,
           "OnTriggerEnter": null,
           "OnTriggerExit": null,
+          "RollingResistance": null,
           "Static": true,
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
@@ -1302,6 +1789,82 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "0a543d83-5b59-462d-9a00-d694eea5efd0",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/sbox_props/oil_drum/oil_drum_explosive.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "3dc76f01-2002-46e0-85e2-85ecdbc0ec4e",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/sbox_props/oil_drum/oil_drum_explosive.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Sandbox.Rigidbody",
+          "__guid": "b11079de-91b2-4f28-95a4-6ae6e68c928d",
+          "__enabled": true,
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {
+            "X": false,
+            "Y": false,
+            "Z": false,
+            "Pitch": false,
+            "Yaw": false,
+            "Roll": false
+          },
+          "MassCenterOverride": "0,0,0",
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OverrideMassCenter": false,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
         }
       ],
       "Children": []
@@ -1395,6 +1958,7 @@
               "CreateAttachments": false,
               "MaterialGroup": null,
               "MaterialOverride": "materials/dev/primary_white_emissive.vmat",
+              "Materials": null,
               "Model": "models/dev/sphere.vmdl",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -1437,6 +2001,8 @@
           "__enabled": true,
           "__version": 1,
           "BlendMode": "Normal",
+          "FogStrength": 1,
+          "HorizontalAlignment": "Center",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -1450,7 +2016,6 @@
             "AfterUILayer": false
           },
           "Scale": 0.74,
-          "TextAlignment": "Center",
           "TextScope": {
             "Text": "WATER",
             "TextColor": "1,0,0.93333,1",
@@ -1483,7 +2048,8 @@
               "Color": "0,0,0,1",
               "Offset": "4,4"
             }
-          }
+          },
+          "VerticalAlignment": "Center"
         }
       ],
       "Children": []
@@ -1507,7 +2073,7 @@
           "__type": "Sandbox.ParticleEffect",
           "__guid": "28769398-fa9f-4078-a4e4-aa76b8fa386c",
           "__enabled": true,
-          "__version": 1,
+          "__version": 2,
           "Alpha": {
             "Type": "CurveRange",
             "Evaluation": "Life",
@@ -1570,8 +2136,7 @@
                 "out": -0.5945947,
                 "mode": "Mirrored"
               }
-            ],
-            "Constants": "1,0,0,0"
+            ]
           },
           "ApplyAlpha": true,
           "ApplyColor": true,
@@ -1580,67 +2145,7 @@
           "Bounce": 1,
           "Brightness": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0,
-                "y": 0,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.21192053,
-                "y": 0.9734849,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.51986754,
-                "y": 0.9315907,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 1,
-                "y": 0,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0,
-                "y": 0,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.0513245,
-                "y": 1,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.61754966,
-                "y": 1,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 1,
-                "y": 0,
-                "in": 3.1034486,
-                "out": -3.1034486,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "5,20,0,0"
           },
           "Bumpiness": 0,
@@ -1651,6 +2156,11 @@
           "CollisionPrefabChance": 1,
           "CollisionPrefabRotation": 0,
           "CollisionRadius": 1,
+          "ConstantMovement": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
           "Damping": 0,
           "DieOnCollisionChance": 0,
           "FollowerPrefab": null,
@@ -1687,29 +2197,17 @@
             "ConstantA": "0.91163,0.39801,0.24169,1",
             "ConstantB": "0.90233,0.75012,0.36513,1"
           },
+          "InitialVelocity": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
           "Lifetime": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "0.8,1.5,0,0"
           },
+          "LocalSpace": 0,
           "MaxParticles": 40,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -1728,24 +2226,6 @@
           "PerParticleTimeScale": {
             "Type": "Range",
             "Evaluation": "Frame",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
             "Constants": "1,2,0,0"
           },
           "Pitch": 0,
@@ -1753,99 +2233,26 @@
           "PushStrength": 0,
           "Roll": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "-8,8,0,0"
           },
           "Scale": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "50,20,0,0"
           },
           "SequenceId": 0,
           "SequenceSpeed": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "0.5,1.5,0,0"
           },
           "SequenceTime": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "0,10,0,0"
           },
           "SheetSequence": true,
-          "Space": "World",
           "StartDelay": 0,
           "StartVelocity": 0,
           "Stretch": {
@@ -1882,8 +2289,7 @@
                 "out": 0,
                 "mode": "Mirrored"
               }
-            ],
-            "Constants": "1,0,0,0"
+            ]
           },
           "TimeScale": 1,
           "Timing": "GameTime",
@@ -1924,7 +2330,8 @@
           "Scale": 1,
           "Shadows": false,
           "SortMode": "Unsorted",
-          "Texture": "particles/fire/flame001_side.vtex"
+          "Texture": "particles/fire/flame001_side.vtex",
+          "TextureFilter": "Bilinear"
         },
         {
           "__type": "Sandbox.ParticleBoxEmitter",
@@ -2008,6 +2415,7 @@
           "CreateAttachments": false,
           "MaterialGroup": null,
           "MaterialOverride": null,
+          "Materials": null,
           "Model": "models/props_skybox/farm_house.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -2127,7 +2535,7 @@
           "__type": "Sandbox.ParticleEffect",
           "__guid": "5cc40cb5-be43-4000-8738-db0c6a730978",
           "__enabled": true,
-          "__version": 1,
+          "__version": 2,
           "Alpha": {
             "Type": "Curve",
             "Evaluation": "Life",
@@ -2162,8 +2570,7 @@
                 "out": 0,
                 "mode": "Mirrored"
               }
-            ],
-            "Constants": "1,0,0,0"
+            ]
           },
           "ApplyAlpha": true,
           "ApplyColor": true,
@@ -2179,6 +2586,11 @@
           "CollisionPrefabChance": 1,
           "CollisionPrefabRotation": 0,
           "CollisionRadius": 1,
+          "ConstantMovement": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
           "Damping": 0,
           "DieOnCollisionChance": 0,
           "FollowerPrefab": null,
@@ -2215,29 +2627,17 @@
             "ConstantA": "0.98515,0.92604,0,1",
             "ConstantB": "1,0.22,0,1"
           },
+          "InitialVelocity": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
           "Lifetime": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "1,2,0,0"
           },
+          "LocalSpace": 0,
           "MaxParticles": 5000,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -2259,25 +2659,7 @@
           "PushStrength": 0,
           "Roll": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "0,360,0,0"
           },
           "Scale": {
@@ -2317,36 +2699,16 @@
                 "out": 0,
                 "mode": "Mirrored"
               }
-            ],
-            "Constants": "1,0,0,0"
+            ]
           },
           "SequenceId": 0,
           "SequenceSpeed": 1,
           "SequenceTime": 1,
           "SheetSequence": false,
-          "Space": "World",
           "StartDelay": 0,
           "StartVelocity": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "100,200,0,0"
           },
           "Stretch": 0,
@@ -2389,7 +2751,8 @@
           "Scale": 1,
           "Shadows": false,
           "SortMode": "Unsorted",
-          "Texture": "materials/particles/shapes/star1.vtex"
+          "Texture": "materials/particles/shapes/star1.vtex",
+          "TextureFilter": "Bilinear"
         },
         {
           "__type": "Sandbox.ParticleConeEmitter",
@@ -2455,6 +2818,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "433b9d4a-82e3-45e5-a928-77293541540d",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "dc2a1477-5262-4865-90f1-5e815373a42e",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -2493,6 +2904,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "0f18ea34-b1e3-4cdb-a01a-2c91ca2f26ef",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "ae44c317-bc83-4804-bd01-dd394cb295dd",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -2531,6 +2990,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "2e9b5823-98d7-43f1-a5b3-1f0bfc387eb3",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "fe3e82d0-bc57-402b-aab2-ae07837e5cd4",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -2569,6 +3076,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "7b6b9922-b222-438c-8707-232ce2248fd9",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "2944d69c-69f8-44c4-8192-0f909fc53216",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -2607,6 +3162,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "aaec3b18-97a2-4a4e-9e12-a164a93b882e",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "090b7b54-0d9c-4bc7-8dfb-740e3752d0d5",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -2645,6 +3248,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "cc9d445c-05aa-49ed-941e-6c87bebb7a3c",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "24c0cf88-f1e4-41fd-9fb9-ded3da5ef52d",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "eastern european building.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -2683,6 +3334,72 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "2864dccd-163c-4292-b040-6154ef11955c",
+          "__enabled": true,
+          "AnimationGraph": null,
+          "BodyGroups": 18446744073709551615,
+          "BoneMergeTarget": null,
+          "CreateAttachments": false,
+          "CreateBoneObjects": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "cruiser/cruiser.vmdl",
+          "Morphs": {},
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "PlaybackRate": 1,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Sequence": {
+            "Name": null,
+            "Looping": true,
+            "Blending": false
+          },
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "3368bdc1-39b1-4834-a942-d934e4f329cb",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "cruiser/cruiser.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -2721,6 +3438,54 @@
           "OnPropTakeDamage": null,
           "StartAsleep": false,
           "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "c5b98e80-fb34-4849-b893-7879a4ce7873",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/8hu_kultiras_rowboat02.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.ModelCollider",
+          "__guid": "f8526c7d-b6ed-497b-8976-29f0a0b5db06",
+          "__enabled": true,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Model": "models/8hu_kultiras_rowboat02.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []
@@ -2745,6 +3510,7 @@
           "__guid": "62212b6f-9be0-41c9-ae03-d24a80f61be8",
           "__enabled": true,
           "Center": "0,0,-89.87564",
+          "Elasticity": null,
           "Friction": null,
           "IsTrigger": true,
           "OnComponentDestroy": null,
@@ -2757,6 +3523,7 @@
           "OnObjectTriggerExit": null,
           "OnTriggerEnter": null,
           "OnTriggerExit": null,
+          "RollingResistance": null,
           "Scale": "5000,5000,287.9107",
           "Static": false,
           "Surface": null,
@@ -2784,7 +3551,7 @@
           "__type": "Sandbox.ParticleEffect",
           "__guid": "a767c164-99f4-4a6d-807c-939411762385",
           "__enabled": true,
-          "__version": 1,
+          "__version": 2,
           "Alpha": {
             "Type": "Curve",
             "Evaluation": "Life",
@@ -2819,8 +3586,7 @@
                 "out": 0,
                 "mode": "Mirrored"
               }
-            ],
-            "Constants": "1,0,0,0"
+            ]
           },
           "ApplyAlpha": true,
           "ApplyColor": true,
@@ -2828,25 +3594,7 @@
           "ApplyShape": true,
           "Bounce": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "0.1,0.5,0,0"
           },
           "Brightness": 600,
@@ -2858,6 +3606,11 @@
           "CollisionPrefabChance": 1,
           "CollisionPrefabRotation": 0,
           "CollisionRadius": 1,
+          "ConstantMovement": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
           "Damping": 1,
           "DieOnCollisionChance": 0,
           "FollowerPrefab": null,
@@ -2894,29 +3647,17 @@
             "ConstantA": "1,0.3003,0.05446,1",
             "ConstantB": "1,0.71891,0.17327,1"
           },
+          "InitialVelocity": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
           "Lifetime": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "2,3,0,0"
           },
+          "LocalSpace": 0,
           "MaxParticles": 10000,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -2940,151 +3681,16 @@
           "Scale": {
             "Type": "Range",
             "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0,
-                "y": 0,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.06280788,
-                "y": 1,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.15640394,
-                "y": 0.067664884,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.24507388,
-                "y": 0.80151117,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.3004926,
-                "y": 0.10999663,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.3817734,
-                "y": 0.6617586,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.4359606,
-                "y": 0.08971601,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.51600987,
-                "y": 0.5303103,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.57758623,
-                "y": 0.10129062,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.6514778,
-                "y": 0.39363855,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.7093596,
-                "y": 0.08596241,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.77093595,
-                "y": 0.81999165,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.82389164,
-                "y": 0.13258635,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.8940887,
-                "y": 0.3859684,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 1,
-                "y": 0,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
             "Constants": "3,0,0,0"
           },
           "SequenceId": 0,
           "SequenceSpeed": 1,
           "SequenceTime": 1,
           "SheetSequence": false,
-          "Space": "World",
           "StartDelay": 0,
           "StartVelocity": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "2000,-800,0,0"
           },
           "Stretch": 0,
@@ -3127,7 +3733,8 @@
           "Scale": 2,
           "Shadows": true,
           "SortMode": "ByDistance",
-          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex",
+          "TextureFilter": "Bilinear"
         },
         {
           "__type": "Sandbox.ParticleSphereEmitter",
@@ -3185,8 +3792,7 @@
                 "out": 0,
                 "mode": "Mirrored"
               }
-            ],
-            "Constants": "10,0,0,0"
+            ]
           },
           "CastShadows": true,
           "LightColor": {
@@ -3248,7 +3854,7 @@
           "__type": "Sandbox.ParticleEffect",
           "__guid": "9031cceb-f52d-4501-9c08-57ac0422efe4",
           "__enabled": true,
-          "__version": 1,
+          "__version": 2,
           "Alpha": {
             "Type": "Curve",
             "Evaluation": "Life",
@@ -3283,8 +3889,7 @@
                 "out": 0,
                 "mode": "Mirrored"
               }
-            ],
-            "Constants": "1,0,0,0"
+            ]
           },
           "ApplyAlpha": true,
           "ApplyColor": true,
@@ -3292,25 +3897,7 @@
           "ApplyShape": true,
           "Bounce": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "0.1,0.5,0,0"
           },
           "Brightness": 600,
@@ -3322,6 +3909,11 @@
           "CollisionPrefabChance": 1,
           "CollisionPrefabRotation": 0,
           "CollisionRadius": 1,
+          "ConstantMovement": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
           "Damping": 2,
           "DieOnCollisionChance": 0,
           "FollowerPrefab": null,
@@ -3358,29 +3950,17 @@
             "ConstantA": "1,0.29804,0.05098,1",
             "ConstantB": "1,1,1,1"
           },
+          "InitialVelocity": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
           "Lifetime": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "2,3,0,0"
           },
+          "LocalSpace": 0,
           "MaxParticles": 10000,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -3404,151 +3984,16 @@
           "Scale": {
             "Type": "Range",
             "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0,
-                "y": 0,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.06280788,
-                "y": 1,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.15640394,
-                "y": 0.067664884,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.24507388,
-                "y": 0.80151117,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.3004926,
-                "y": 0.10999663,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.3817734,
-                "y": 0.6617586,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.4359606,
-                "y": 0.08971601,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.51600987,
-                "y": 0.5303103,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.57758623,
-                "y": 0.10129062,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.6514778,
-                "y": 0.39363855,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.7093596,
-                "y": 0.08596241,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.77093595,
-                "y": 0.81999165,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.82389164,
-                "y": 0.13258635,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.8940887,
-                "y": 0.3859684,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 1,
-                "y": 0,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
             "Constants": "3,0,0,0"
           },
           "SequenceId": 0,
           "SequenceSpeed": 1,
           "SequenceTime": 1,
           "SheetSequence": false,
-          "Space": "World",
           "StartDelay": 0,
           "StartVelocity": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "2000,-800,0,0"
           },
           "Stretch": 0,
@@ -3591,7 +4036,8 @@
           "Scale": 2,
           "Shadows": false,
           "SortMode": "ByDistance",
-          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex",
+          "TextureFilter": "Bilinear"
         },
         {
           "__type": "Sandbox.ParticleSphereEmitter",
@@ -3649,8 +4095,7 @@
                 "out": 0,
                 "mode": "Mirrored"
               }
-            ],
-            "Constants": "10,0,0,0"
+            ]
           },
           "CastShadows": true,
           "LightColor": {
@@ -3712,7 +4157,7 @@
           "__type": "Sandbox.ParticleEffect",
           "__guid": "d0d56279-3d7a-4580-9c75-568348aac557",
           "__enabled": true,
-          "__version": 1,
+          "__version": 2,
           "Alpha": {
             "Type": "Curve",
             "Evaluation": "Life",
@@ -3747,8 +4192,7 @@
                 "out": 0,
                 "mode": "Mirrored"
               }
-            ],
-            "Constants": "1,0,0,0"
+            ]
           },
           "ApplyAlpha": true,
           "ApplyColor": true,
@@ -3756,25 +4200,7 @@
           "ApplyShape": true,
           "Bounce": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "0.1,0.5,0,0"
           },
           "Brightness": 600,
@@ -3786,6 +4212,11 @@
           "CollisionPrefabChance": 1,
           "CollisionPrefabRotation": 0,
           "CollisionRadius": 1,
+          "ConstantMovement": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
           "Damping": 3,
           "DieOnCollisionChance": 0,
           "FollowerPrefab": null,
@@ -3822,29 +4253,17 @@
             "ConstantA": "1,0.14588,0.05098,1",
             "ConstantB": "1,1,1,1"
           },
+          "InitialVelocity": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
           "Lifetime": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "2,3,0,0"
           },
+          "LocalSpace": 0,
           "MaxParticles": 10000,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -3868,151 +4287,16 @@
           "Scale": {
             "Type": "Range",
             "Evaluation": "Life",
-            "CurveA": [
-              {
-                "x": 0,
-                "y": 0,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.06280788,
-                "y": 1,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.15640394,
-                "y": 0.067664884,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.24507388,
-                "y": 0.80151117,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.3004926,
-                "y": 0.10999663,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.3817734,
-                "y": 0.6617586,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.4359606,
-                "y": 0.08971601,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.51600987,
-                "y": 0.5303103,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.57758623,
-                "y": 0.10129062,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.6514778,
-                "y": 0.39363855,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.7093596,
-                "y": 0.08596241,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.77093595,
-                "y": 0.81999165,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.82389164,
-                "y": 0.13258635,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.8940887,
-                "y": 0.3859684,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 1,
-                "y": 0,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
             "Constants": "3,0,0,0"
           },
           "SequenceId": 0,
           "SequenceSpeed": 1,
           "SequenceTime": 1,
           "SheetSequence": false,
-          "Space": "World",
           "StartDelay": 0,
           "StartVelocity": {
             "Type": "Range",
-            "Evaluation": "Particle",
-            "CurveA": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
-            "CurveB": [
-              {
-                "x": 0.5,
-                "y": 0.5,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Evaluation": "Seed",
             "Constants": "2000,-800,0,0"
           },
           "Stretch": 0,
@@ -4055,7 +4339,8 @@
           "Scale": 2,
           "Shadows": false,
           "SortMode": "ByDistance",
-          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex"
+          "Texture": "materials/tools/handle_circle_color_tga_f67bf942.generated.vtex",
+          "TextureFilter": "Bilinear"
         },
         {
           "__type": "Sandbox.ParticleSphereEmitter",
@@ -4113,8 +4398,7 @@
                 "out": 0,
                 "mode": "Mirrored"
               }
-            ],
-            "Constants": "10,0,0,0"
+            ]
           },
           "CastShadows": true,
           "LightColor": {
@@ -4153,42 +4437,6 @@
           "Ratio": 1,
           "Scale": 4096,
           "UseParticleColor": true
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "cf59d25e-795d-490c-8e87-a377602abe36",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "Object",
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.MapInstance",
-          "__guid": "0c81792c-f856-43f4-83b1-c0fe8b59a720",
-          "__enabled": true,
-          "__version": 1,
-          "EnableCollision": true,
-          "MapName": "facepunch.depot",
-          "NoOrigin": false,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnMapLoaded": null,
-          "OnMapUnloaded": null,
-          "UseMapFromLaunch": false
         }
       ],
       "Children": []
