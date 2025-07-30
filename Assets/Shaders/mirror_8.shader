@@ -65,6 +65,7 @@ PS
             const float3 vRayWs = CalculateCameraToPositionDirWs( m.WorldPosition );
 
 			float2 uv = i.vPositionSs.xy * g_vInvViewportSize; 
+			uv.y = uv.y - 0.5;
 
 			float3 reflectColor = g_ReflectionTexture.SampleLevel(g_ReflectionTexture_sampler, uv, 0).rgb;
 

@@ -14,14 +14,14 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 	[Property] public Vector3 PlaneNormal { get; set; } = Vector3.Up;
 	[Property] public CameraComponent ReflectionCamera { get; set; }
 
+	[Feature( "Reflection" )]
+	[Property] public bool IncludeReflection { get; set; } = true;
+
 	/// <summary>
 	/// Texture size divider. 0 = screen, 1 = screen/2, 2 = screen/4, 3 = screen/8
 	/// </summary>
-	[Range( 1, 8 )]
+	[Range( 1, 8 ), Feature( "Reflection" )]
 	[Property] public int TextureResolution { get; set; } = 1;
-
-	[Feature( "Debug" )]
-	[Property] public bool OverlayTexture { get; set; }
 
 	[FeatureEnabled( "Offsetting" ), Property]
 	public bool OffsettingEnabled { get; set; }
@@ -39,7 +39,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 
 	[Feature( "Refraction" )]
 	[ToggleGroup( "RefractionFog" ), Property]
-	public Color RefractionFogColor { get; set; } = Color.White;
+	public Color RefractionFogColor { get; set; } = Color.Black;
 
 	[Feature( "Refraction" )]
 	[ToggleGroup( "RefractionFog" ), Property, Range( -100, 100 )]
@@ -47,15 +47,11 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 
 	[Feature( "Refraction" )]
 	[ToggleGroup( "RefractionFog" ), Property, Range( 0, 1000 )]
-	public float RefractionFogDepth { get; set; } = 20;
+	public float RefractionFogDepth { get; set; } = 128;
 
 	[Feature( "Refraction" )]
 	[ToggleGroup( "RefractionFog" ), Property, Range( 0, 1000 )]
-	public float RefractionFogDistance { get; set; } = 100;
-
-	[Feature( "Reflection" )]
-	[Property]
-	public bool RoughSurfaceReflections { get; set; } = false;
+	public float RefractionFogDistance { get; set; } = 0;
 
 
 	CommandList _drawReflection = new();
@@ -67,7 +63,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 
 		_target.Init( x => x.ExecuteBefore = _drawReflection, x => x.ExecuteBefore = null );
 
-		//Tags.Add( "planereflect" );
+		Tags.Add( "reflection" );
 	}
 
 	protected override void OnDisabled()
@@ -90,7 +86,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 		ReflectionCamera = go.AddComponent<CameraComponent>( true );
 		ReflectionCamera.Priority = -100;
 		ReflectionCamera.IsMainCamera = false;
-		//	ReflectionCamera.RenderExcludeTags.Add( "planereflect" );
+		ReflectionCamera.RenderExcludeTags.Add( "reflection" );
 		ReflectionCamera.RenderExcludeTags.Add( "debugoverlay" );
 		ReflectionCamera.Enabled = false;
 	}
@@ -122,9 +118,8 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 		// Refract
 		if ( IncludeRefraction )
 		{
-
 			var refractionSetup = new RefractionSetup();
-			refractionSetup.ClipOffset = ReflectionSurfaceOffset;
+			refractionSetup.ClipOffset = 5; // This stops the refraction bleeding over the edges
 
 			if ( RefractionFog )
 			{
@@ -151,7 +146,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 		}
 
 		// Reflect
-		if ( true )
+		if ( IncludeReflection )
 		{
 			var reflectSetup = new ReflectionSetup();
 			reflectSetup.ClipOffset = ReflectionSurfaceOffset;
@@ -160,7 +155,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 			reflectSetup.ViewSetup.FlipX = true;
 			//reflectSetup.ViewSetup.ClipSpaceBounds = new Vector4( 1, -1, -1, 1 );
 
-			var renderTarget = _drawReflection.GetRenderTarget( "reflect", ImageFormat.RGBA16161616F, RoughSurfaceReflections ? int.MaxValue : 1, TextureResolution.Clamp( 1, 8 ) );
+			var renderTarget = _drawReflection.GetRenderTarget( "reflect", ImageFormat.RGBA16161616F, 1, TextureResolution.Clamp( 1, 8 ) );
 
 			_drawReflection.DrawReflection( ReflectionCamera, reflectPlane, renderTarget, reflectSetup );
 
@@ -168,10 +163,7 @@ public sealed class PlaneReflection : Component, Component.ExecuteInEditor
 			_drawReflection.Attributes.Set( "ReflectionTexture", renderTarget.ColorTexture );
 			_drawReflection.Attributes.Set( "ReflectionColorIndex", renderTarget.ColorIndex );
 
-			if ( RoughSurfaceReflections )
-				_drawReflection.GenerateMipMaps( renderTarget );
-
-			_clearReflection.Attributes.Set( "ReflectionColorIndex", -1);	
+			_clearReflection.Attributes.Set( "ReflectionColorIndex", -1 );
 		}
 
 
