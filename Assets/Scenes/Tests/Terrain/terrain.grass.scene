@@ -283,7 +283,7 @@
           "EnableCollision": true,
           "Friction": null,
           "IsTrigger": false,
-          "MaterialOverride": null,
+          "MaterialOverride": "materials/terrain_grass.vmat",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -677,7 +677,7 @@
         },
         {
           "__type": "Sandbox.ModelRenderer",
-          "__guid": "d3676b8c-5a82-4db3-9240-b96bed312be4",
+          "__guid": "ae914cde-0482-47e2-80fb-e0b62479ee8b",
           "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
@@ -703,7 +703,7 @@
         },
         {
           "__type": "Sandbox.ModelCollider",
-          "__guid": "28592e05-6151-4ac2-ab79-2d1ec749e994",
+          "__guid": "51d0f21c-763c-48e3-ac74-5c318b9460a4",
           "__enabled": true,
           "Elasticity": null,
           "Friction": null,
