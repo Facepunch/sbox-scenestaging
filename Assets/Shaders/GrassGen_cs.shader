@@ -114,27 +114,41 @@ CS
         if (height < 0.5f)
             return b;
 
+
         // ---- albedo, color ----------------------------------------------
         Texture2D tAlbedo = Bindless::GetTexture2D(g_TerrainMaterials[splat].bcr_texid);
-        float4 albedo = tAlbedo.SampleLevel(g_sPointWrap, 0.0f, 0.0f);
+        
+        float4 albedo = pow( tAlbedo.SampleLevel(g_sBilinearWrap, pos.xy / 1024, 2.0f), 2.2f);
 
-        // ----- vectors -----------------------------------------------------------
+        // ----- vectors (Ghost of Tsushima clustering approach) -------------------
         float facingAngle = Hash02(seed * 128u).x * 6.28318; // 0‑2π
         float2 facing = float2(cos(facingAngle), sin(facingAngle));
+        
+        // Add clumping behavior - grass tends to grow in similar directions locally
+        float2 clumpCenter = floor(pos.xy / 2.0) * 2.0; // 2m clumps
+        uint clumpSeed = Hash(uint(clumpCenter.x * 1000 + clumpCenter.y));
+        float clumpAngle = Hash01(clumpSeed) * 6.28318;
+        float2 clumpFacing = float2(cos(clumpAngle), sin(clumpAngle));
+        
+        // Blend individual and clump facing (more clumped look)
+        float clumpStrength = 0.4; // How much grass follows clump direction
+        facing = normalize(lerp(facing, clumpFacing, clumpStrength));
 
         // ----- assemble struct ---------------------------------------------------
         b.Position = pos;
         b.Facing = facing;
-        b.Wind = SampleWind(pos) * (height * height);
+        b.Wind = SampleWind(pos) * 50;
         b.Hash = seed;
         b.GrassType = 0;
-        b.ClumpFacing = facing;
+        b.ClumpFacing = clumpFacing;
         b.Color = albedo.xyz;
-        b.Height = lerp(0.5, 1.3, rHeight) * height;
-        b.Width = lerp(0.03, 0.06, rWidth);
-        b.Tilt = lerp(-8.0, 8.0, rTilt);
-        b.Bend = rBend;
-        b.SideCurve = rCurve;
+        
+        // Ghost of Tsushima style parameters (keeping original height)
+        b.Height = lerp(0.5, 1.0, rHeight) * height;
+        b.Width = lerp(1.5, 3.0, rWidth);
+        b.Tilt = lerp(-12.0, 12.0, rTilt) * (1.0 - height * 0.5); // More tilt in sparse areas
+        b.Bend = rBend * rBend; // Quadratic bend for more natural distribution
+        b.SideCurve = (rCurve - 0.5) * 2.0 * saturate(rHeight * 2.0); // More curve on taller grass
 
         isVisible = true;
         return b;
