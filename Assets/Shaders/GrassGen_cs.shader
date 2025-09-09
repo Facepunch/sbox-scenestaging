@@ -82,8 +82,6 @@ CS
         return true;
 	}
 
-    #define NUM_THREADS 256
-
     Blade GenerateGrassBlade(uint idx, out bool isVisible)
     {
         isVisible = false;
@@ -142,17 +140,59 @@ CS
         return b;
     }
 
-    [numthreads(NUM_THREADS, 1, 1)]
-    void MainCs(uint3 id: SV_DispatchThreadID, uint3 groupThreadID: SV_GroupThreadID, uint3 groupID: SV_GroupID)
-    {
-        if (id.x >= NumBladesWanted)
-            return;
-            
-        // I removed the code to join interlocked threads in this release, it's way too much of a mess for now
-        bool isVisible;
-        g_OutBlades[id.x] = GenerateGrassBlade(id.x, isVisible);
+    
+    // Main -------------------------------------------------------------------------
 
-        if (isVisible)
-            g_BladeCounter.InterlockedAdd(0, 1, id.x);
+    #define NUM_THREADS 64
+
+    // Needed as InterlockedAdd isn't thread group safe
+    groupshared uint  gWriteSize[NUM_THREADS];
+    groupshared uint  gWriteOffset[NUM_THREADS];
+    groupshared uint  gGroupBase;
+
+    [numthreads(NUM_THREADS, 1, 1)]
+    void MainCs(uint3 id: SV_DispatchThreadID,
+                uint3 groupThreadID: SV_GroupThreadID,
+                uint3 groupID: SV_GroupID)
+    {
+        const uint lane = groupThreadID.x;
+        const bool isValid = (id.x < NumBladesWanted);
+
+        // Generate and decide visibility (only if valid)
+        bool isVisible = false;
+        Blade blade = (Blade)0;
+        if (isValid)
+        {
+            blade = GenerateGrassBlade(id.x, isVisible);
+        }
+
+        // Each thread contributes 1 if visible, else 0
+        gWriteSize[lane] = (isValid && isVisible) ? 1u : 0u;
+        GroupMemoryBarrierWithGroupSync();
+
+        // Join logic 
+        if (lane == 0)
+        {
+            uint run = 0u;
+            [unroll]
+            for (uint i = 0; i < NUM_THREADS; ++i)
+            {
+                gWriteOffset[i] = run;
+                run += gWriteSize[i];
+            }
+
+            // Reserve a contiguous block for the whole group with ONE atomic
+            const uint totalGroup = gWriteOffset[NUM_THREADS - 1] + gWriteSize[NUM_THREADS - 1];
+
+            g_BladeCounter.InterlockedAdd(0, totalGroup, gGroupBase);
+        }
+        GroupMemoryBarrierWithGroupSync();
+
+        // Write only if visible into tightly-packed region
+        if (isValid && isVisible)
+        {
+            const uint outIndex = gGroupBase + gWriteOffset[lane];
+            g_OutBlades[outIndex] = blade;
+        }
     }
 }
