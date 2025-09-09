@@ -143,7 +143,7 @@ VS
 		
 		// Ambient occlusion based on height and blade density
 		// Lower parts of grass get more AO, thinner blades get less AO
-		float baseAO = 1.0 - heightT * 0.5; // More AO at base
+		float baseAO = 1.0 - heightT; // More AO at base
 		float widthAO = saturate(blade.Width * 0.5); // Wider blades cast more shadow
 		o.Normal.w = baseAO * widthAO;
 		
