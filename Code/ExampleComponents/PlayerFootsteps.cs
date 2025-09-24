@@ -37,7 +37,7 @@ public sealed class PlayerFootsteps : Component
 
 		timeSinceStep = 0;
 
-		var sound = e.FootId == 0 ? tr.Surface.Sounds.FootLeft : tr.Surface.Sounds.FootRight;
+		var sound = e.FootId == 0 ? tr.Surface.SoundCollection.FootLeft : tr.Surface.SoundCollection.FootRight;
 		if ( sound is null ) return;
 
 		var handle = Sound.Play( sound, tr.HitPosition + tr.Normal * 5 );

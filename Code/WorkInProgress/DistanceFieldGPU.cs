@@ -84,8 +84,8 @@ public sealed partial class DistanceFieldGPU : PostProcess, Component.ExecuteInE
 		Buffer.SetData( Shapes );
 
 		Commands.Reset();
-		Commands.SetGlobal( "HitboxBuffer", Buffer );
-		Commands.SetGlobal( "HitboxCount", Shapes.Count );
+		Commands.GlobalAttributes.Set( "HitboxBuffer", Buffer );
+		Commands.GlobalAttributes.Set( "HitboxCount", Shapes.Count );
 	}
 
 	protected override void DrawGizmos()

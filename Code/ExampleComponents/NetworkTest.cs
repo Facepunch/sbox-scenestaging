@@ -77,7 +77,7 @@ public sealed class NetworkTest : Component
 		var tr = Scene.Trace.WithoutTags( "player" ).Sphere( 16, eyePos, eyePos + lookDir.Forward * 100 ).Run();
 		if ( !tr.Hit ) return;
 
-		if ( tr.Body.GetGameObject() is not GameObject go )
+		if ( tr.Body.GameObject is not GameObject go )
 			return;
 
 		if ( !go.Tags.Has( "pickup" ) )

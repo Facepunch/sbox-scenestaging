@@ -258,7 +258,7 @@ public sealed class Glass : Component, Component.ExecuteInEditor, Component.IDam
 		shape.Tags.SetFrom( GameObject.Tags );
 		shape.Surface = Surface;
 
-		body.SetComponentSource( this );
+		body.Component = this;
 		body.EnableCollisionSounds = false;
 		body.OnIntersectionStart += OnPhysicsTouchStart;
 		body.BodyType = PhysicsBodyType.Keyframed;

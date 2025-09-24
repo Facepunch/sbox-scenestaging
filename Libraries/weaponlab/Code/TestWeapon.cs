@@ -77,7 +77,7 @@ public sealed class TestWeapon : Component, PlayerController.IEvents, ICameraSet
 	[Property, Group( "Weapon-Specific" )]
 	public bool UseJoystick { get; set; } = false;
 
-	[Property, Group( "Weapon-Specific" ), Range( 0, 2, 0.05f )]
+	[Property, Group( "Weapon-Specific" ), Range( 0, 2 ), Step( 0.05f )]
 	public float IronsightsFireScale { get; set; } = 0.5f;
 
 	[Property, Group( "Recoil" )]
