@@ -236,7 +236,8 @@
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "Scale": 1
+              "Scale": 1,
+              "TexelSize": 1
             }
           ],
           "Children": []
@@ -889,7 +890,8 @@
               "Mins": "-128,-128,-50.00002",
               "Maxs": "128,128,256"
             }
-          }
+          },
+          "Weight": 10
         },
         {
           "__type": "Sandbox.Sharpen2",
@@ -901,7 +903,8 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Scale": 5
+          "Scale": 5,
+          "TexelSize": 1
         }
       ],
       "Children": [
@@ -923,6 +926,373 @@
             {
               "__type": "Sandbox.ModelRenderer",
               "__guid": "dba0265e-0205-489c-9e2c-d974b8efd222",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "4fd15d97-f9bf-49b2-a7c8-a17782bd9d41",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Object",
+      "Position": "-64,-384,171.2377",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.PostProcessVolume",
+          "__guid": "0c1d3802-a978-4d6a-9ae3-31fdf3e38686",
+          "__enabled": true,
+          "BlendDistance": 50,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Priority": 0,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-128,-128,-50.00002",
+              "Maxs": "128,128,256"
+            }
+          },
+          "Weight": 10
+        },
+        {
+          "__type": "Sandbox.Sharpen2",
+          "__guid": "785f7e4f-517d-4e8c-9536-68eae2d02b23",
+          "__enabled": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Scale": 5,
+          "TexelSize": 1
+        },
+        {
+          "__type": "Sandbox.ChromaticAberration2",
+          "__guid": "a6f95b35-4133-4ebe-835e-0b8ed998df7f",
+          "__enabled": false,
+          "Offset": "4,6,0",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Scale": 0.33
+        },
+        {
+          "__type": "Sandbox.Pixelate2",
+          "__guid": "eb700bbf-eeac-46db-a0f4-ddbe7c11b695",
+          "__enabled": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Scale": 10
+        },
+        {
+          "__type": "Sandbox.Blur2",
+          "__guid": "0ea29e6f-e99b-4944-bd77-87ed51b4175f",
+          "__enabled": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Size": 0.44963145
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "a6af33a5-dac5-4c0b-ac31-c718a88b274a",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "0,0,-64",
+          "Rotation": "0,0,0,1",
+          "Scale": "5,5,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "02a8e8fd-0bd7-4c9a-8c68-67e1cdb5c7e6",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "8fc360bc-d12c-4472-9270-5ad7823866f3",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Object",
+      "Position": "-384,-256,171.2377",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.PostProcessVolume",
+          "__guid": "a48102eb-cfe6-4bc0-aeb8-ddf4343aae47",
+          "__enabled": true,
+          "BlendDistance": 50,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Priority": 0,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-128,-128,-50.00002",
+              "Maxs": "128,128,256"
+            }
+          },
+          "Weight": 10
+        },
+        {
+          "__type": "Sandbox.ColorGrading2",
+          "__guid": "46112153-aa7e-4472-bef3-554d3d27d4e1",
+          "__enabled": true,
+          "BlendFactor": 1,
+          "BlueCurve": [
+            {
+              "x": 0,
+              "y": 0,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "in": -3.1415927,
+              "out": 3.1415927,
+              "mode": "Mirrored"
+            }
+          ],
+          "ColorSpace": "None",
+          "ColorTempK": 22227.848,
+          "GradingMethod": "LUT",
+          "GreenCurve": [
+            {
+              "x": 0,
+              "y": 0.5,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            }
+          ],
+          "HueCurve": [
+            {
+              "x": 0,
+              "y": 0,
+              "in": -1,
+              "out": 1,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "in": -1,
+              "out": 1,
+              "mode": "Mirrored"
+            }
+          ],
+          "LookupTexture": {
+            "$compiler": "texture",
+            "$source": "imagefile",
+            "data": {
+              "FilePath": "textures/lut/hard-warmer.png",
+              "MaxSize": 4096,
+              "ConvertHeightToNormals": false,
+              "NormalScale": 1,
+              "Rotate": 0,
+              "FlipVertical": false,
+              "FlipHorizontal": false,
+              "Cropping": {
+                "Left": 0,
+                "Top": 0,
+                "Right": 0,
+                "Bottom": 0
+              },
+              "Padding": {
+                "Left": 0,
+                "Top": 0,
+                "Right": 0,
+                "Bottom": 0
+              },
+              "InvertColor": false,
+              "Tint": "1,1,1,1",
+              "Blur": 0,
+              "Sharpen": 0,
+              "Brightness": 1,
+              "Contrast": 1,
+              "Saturation": 1,
+              "Hue": 0,
+              "Colorize": false,
+              "TargetColor": "1,1,1,1",
+              "CacheToDisk": true
+            },
+            "compiled": "textures/generated/imagefile/d42f5f03c13105fd.vtex"
+          },
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RedCurve": [
+            {
+              "x": 0,
+              "y": 0,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "in": -3.1415927,
+              "out": 3.1415927,
+              "mode": "Mirrored"
+            }
+          ],
+          "SaturationCurve": [
+            {
+              "x": 0.4578125,
+              "y": 0.17777777,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            }
+          ],
+          "ValueCurve": [
+            {
+              "x": 0,
+              "y": 0,
+              "in": -0.119047925,
+              "out": 0.119047925,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "in": -3.2666662,
+              "out": 3.2666662,
+              "mode": "Mirrored"
+            }
+          ]
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "1eb3f393-7f66-48ec-b57e-fc9fd0642d30",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "0,0,-64",
+          "Rotation": "0,0,0,1",
+          "Scale": "5,5,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "998ddeff-7e8c-4f85-8062-83b98c8e4c87",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
@@ -988,7 +1358,8 @@
               "Mins": "-128,-128,-50.00002",
               "Maxs": "128,128,256"
             }
-          }
+          },
+          "Weight": 10
         },
         {
           "__type": "Sandbox.Sharpen2",
@@ -1000,7 +1371,21 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Scale": 50
+          "Scale": 50,
+          "TexelSize": 1
+        },
+        {
+          "__type": "Sandbox.ChromaticAberration2",
+          "__guid": "1f57ac56-b6b5-4b78-82b2-7f43c983d434",
+          "__enabled": true,
+          "Offset": "4,6,0",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Scale": 1
         }
       ],
       "Children": [

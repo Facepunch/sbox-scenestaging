@@ -11,6 +11,13 @@ public class PostProcessVolume : VolumeComponent, Component.ExecuteInEditor
 	public int Priority { get; set; } = 0;
 
 	/// <summary>
+	/// Allows fading in and out
+	/// </summary>
+	[Property]
+	[Range( 0, 1 )]
+	public float Weight { get; set; } = 10.0f;
+
+	/// <summary>
 	/// Distance from the edge of the volume where blending starts.
 	/// 0 means hard edge, higher values create softer transitions.
 	/// </summary>

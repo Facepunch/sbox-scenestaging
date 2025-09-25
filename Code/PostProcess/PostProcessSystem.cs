@@ -1,3 +1,4 @@
+using Sandbox.MovieMaker;
 using Sandbox.Rendering;
 using Sandbox.Volumes;
 using System.Runtime.CompilerServices;
@@ -83,12 +84,12 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, ISc
 		{
 			text += $" VOLUME: {volume} ({volume.WorldPosition}, {volume.WorldScale})\n";
 
-			var weight = volume.GetWeight( pos );
+			var weight = volume.GetWeight( pos ) * volume.Weight.Clamp( 0, 1 );
 
 			data.Effects.AddRange( volume.GetComponentsInChildren<BasePostProcess>().Select( x => new WeightedEffect { Effect = x, Weight = weight } ) );
 		}
 
-		foreach ( var group in data.Effects.GroupBy( x => x.GetType() ) )
+		foreach ( var group in data.Effects.GroupBy( x => x.Effect.GetType() ) )
 		{
 			text += $" EFFECT: {group.Key}\n";
 
@@ -98,7 +99,7 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, ISc
 			}
 		}
 
-		foreach ( var group in data.Effects.GroupBy( x => x.GetType() ) )
+		foreach ( var group in data.Effects.GroupBy( x => x.Effect.GetType() ) )
 		{
 			var effect = group.First();
 
@@ -139,7 +140,7 @@ public ref struct PostProcessContext
 		bucket.InsertList( cl );
 	}
 
-	public float GetFloat<T>( Func<T, float> value, float defaultVal = 0 ) where T: BasePostProcess
+	public float GetBlended<T>( Func<T, float> value, float defaultVal = 0 ) where T: BasePostProcess
 	{
 		float v = defaultVal;
 
@@ -149,7 +150,19 @@ public ref struct PostProcessContext
 			v = v.LerpTo( target, e.Weight );
 		}
 
+		return v;
+	}
 
+	public U GetBlended<T, U>( Func<T, U> value, U defaultVal = default ) where T : BasePostProcess
+	{
+		U v = defaultVal;
+		var lerper = Interpolator.GetDefault<U>();
+
+		foreach ( var e in Components )
+		{
+			var target = value( (T)e.Effect );
+			v = lerper.Interpolate( v, target, e.Weight );
+		}
 
 		return v;
 	}
