@@ -1221,7 +1221,7 @@
               "TargetColor": "1,1,1,1",
               "CacheToDisk": true
             },
-            "compiled": null
+            "compiled": "textures/generated/imagefile/d42f5f03c13105fd.vtex"
           },
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -2116,6 +2116,185 @@
               "Scale": 0.26576576,
               "TextScope": {
                 "Text": "DepthOfField",
+                "TextColor": "0.45103,0.47149,0.5297,0.41",
+                "FontName": "Poppins",
+                "FontSize": 64,
+                "FontWeight": 800,
+                "FontItalic": false,
+                "LineHeight": 1,
+                "LetterSpacing": 0,
+                "WordSpacing": 0,
+                "FilterMode": "Bilinear",
+                "Outline": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,1,1"
+                },
+                "Shadow": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                },
+                "OutlineUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,1,0,1"
+                },
+                "ShadowUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                }
+              },
+              "VerticalAlignment": "Center"
+            }
+          ],
+          "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "45c26915-25ba-477b-a542-91513078a5c0",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "ColorAdjustments",
+      "Position": "192,128,171.2377",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.PostProcessVolume",
+          "__guid": "35ee0e60-a603-4c3a-b2e7-b5dca1da154d",
+          "__enabled": true,
+          "BlendDistance": 50,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Priority": 0,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-128,-128,-50.00002",
+              "Maxs": "128,128,256"
+            }
+          },
+          "Weight": 10
+        },
+        {
+          "__type": "Sandbox.ColorAdjustments2",
+          "__guid": "704f6a35-009d-4265-8dad-8fcbc4a4de44",
+          "__enabled": true,
+          "Blend": 1,
+          "Brightness": 0.518018,
+          "Contrast": 1.5135136,
+          "HueRotate": 138.64865,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Saturation": 0.6891892
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "7ee70940-88cf-4fb0-a2b7-0661a456f206",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "0,0,-64",
+          "Rotation": "0,0,0,1",
+          "Scale": "5,5,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "ac0cc16e-365c-4048-8c99-6c3e7fc6ae9f",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "75fb7ecd-2630-4100-9838-005e88d7b15a",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Text",
+          "Position": "-0.00003051758,0,-38.41032",
+          "Rotation": "0.7071066,0.0000001369772,-0.7071068,0.0000001369773",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.TextRenderer",
+              "__guid": "3692257c-f931-471f-9281-bf9e41397d34",
+              "__enabled": true,
+              "__version": 2,
+              "BlendMode": "Multiply",
+              "FogStrength": 1,
+              "HorizontalAlignment": "Center",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "Scale": 0.26576576,
+              "TextScope": {
+                "Text": "ColorAdjustments",
                 "TextColor": "0.45103,0.47149,0.5297,0.41",
                 "FontName": "Poppins",
                 "FontSize": 64,

@@ -20,7 +20,7 @@ public class BasePostProcess<T> : BasePostProcess where T: BasePostProcess
 
 		public CameraComponent Camera => ctx.Camera;
 
-		public U GetWeighted<U>( System.Func<T, U> selector, U defaultValue = default ) => ctx.GetBlended( selector, defaultValue );
+		public U GetWeighted<U>( System.Func<T, U> selector, U defaultValue = default, bool onlyLerpBetweenVolumes = false ) => ctx.GetBlended( selector, defaultValue, onlyLerpBetweenVolumes );
 		public float GetWeighted( System.Func<T, float> selector ) => ctx.GetBlended( selector );
 		
 

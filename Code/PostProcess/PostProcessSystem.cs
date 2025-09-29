@@ -140,28 +140,40 @@ public ref struct PostProcessContext
 		bucket.InsertList( cl );
 	}
 
-	public float GetBlended<T>( Func<T, float> value, float defaultVal = 0 ) where T: BasePostProcess
+	public float GetBlended<T>( Func<T, float> value, float defaultVal = 0, bool onlyLerpBetweenVolumes = false ) where T: BasePostProcess
 	{
 		float v = defaultVal;
 
+		int i = 0;
 		foreach ( var e in Components )
 		{
 			var target = value( (T)e.Effect );
 			v = v.LerpTo( target, e.Weight );
+
+			if ( onlyLerpBetweenVolumes && i == 0 )
+				v = target;
+
+			i++;
 		}
 
 		return v;
 	}
 
-	public U GetBlended<T, U>( Func<T, U> value, U defaultVal = default ) where T : BasePostProcess
+	public U GetBlended<T, U>( Func<T, U> value, U defaultVal = default, bool onlyLerpBetweenVolumes = false ) where T : BasePostProcess
 	{
 		U v = defaultVal;
 		var lerper = Interpolator.GetDefault<U>();
 
+		int i = 0;
 		foreach ( var e in Components )
 		{
 			var target = value( (T)e.Effect );
 			v = lerper.Interpolate( v, target, e.Weight );
+
+			if ( onlyLerpBetweenVolumes && i == 0 )
+				v = target;
+
+			i++;
 		}
 
 		return v;
