@@ -1,24 +1,17 @@
 using Sandbox.MovieMaker;
 using Sandbox.Rendering;
+using Sandbox.Utility;
 using Sandbox.Volumes;
 using System.Runtime.CompilerServices;
-using static PostProcessSystem;
-using static Sandbox.Component;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, ISceneStage
+public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Component.ISceneStage
 {
 
 	ConditionalWeakTable<CameraComponent, CameraData> cache = new();
 
-	public class CameraData
+	internal class CameraData
 	{
-		public CameraData()
-		{
-
-		}
-
-		public CameraData( CameraComponent cc )
+		internal CameraData( CameraComponent cc )
 		{
 			Camera = cc;
 		}
@@ -26,15 +19,15 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, ISc
 		public CameraComponent Camera { get; set; }
 		public List<WeightedEffect> Effects { get; set; } = new();
 
-		Dictionary<Sandbox.Rendering.Stage, CommandList> commands = new();
+		Dictionary<(Sandbox.Rendering.Stage stage, int order), CommandList> commands = new();
 
-		public CommandList Get( Sandbox.Rendering.Stage stage )
+		public CommandList Get( Sandbox.Rendering.Stage stage, int order )
 		{
-			if ( commands.TryGetValue( stage, out var cl ) )
+			if ( commands.TryGetValue( (stage, order), out var cl ) )
 				return cl;
 
-			commands[stage] = cl = new CommandList( $"Post Process - {stage}" );
-			Camera.AddCommandList( cl, stage, 0 );
+			commands[(stage, order)] = cl = new CommandList( $"Post Process - {stage}" );
+			Camera.AddCommandList( cl, stage, order );
 			return cl;
 		}
 
@@ -60,8 +53,53 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, ISc
 	
 	}
 
-	void ISceneStage.End()
+	void UpdateEditorScene()
 	{
+		if ( Scene.Camera is null )
+			return;
+
+		Scene.Camera.AutoExposure.Enabled = true;
+		Scene.Camera.AutoExposure.Compensation = 0;
+		Scene.Camera.AutoExposure.Rate = 20;
+		Scene.Camera.AutoExposure.MinimumExposure = 1;
+		Scene.Camera.AutoExposure.MaximumExposure = 2;
+
+		// Clear all
+		foreach ( var v in cache )
+		{
+			v.Value.Clear();
+		}
+
+		if ( EditorTools.InspectorObject is object[] oo )
+		{
+			foreach ( var o in oo )
+			{
+				if ( o is GameObject go )
+				{
+					if ( go.GetComponentInParent<CameraComponent>( false, true ) is CameraComponent cc )
+					{
+						UpdateCamera( cc );
+						return;
+					}
+
+					if ( go.GetComponentInParent<PostProcessVolume>( false, true ) is PostProcessVolume volume )
+					{
+						UpdateCamera( volume );
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	void Component.ISceneStage.End()
+	{
+		if ( Scene.IsEditor )
+		{
+			UpdateEditorScene();
+			return;
+		}
+
 		foreach ( var cc in Scene.GetAll<CameraComponent>() )
 		{
 			UpdateCamera( cc );
@@ -115,6 +153,29 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, ISc
 		Scene.DebugOverlay.ScreenText( 200, text, flags: TextFlag.LeftTop );
 	}
 
+	private void UpdateCamera( PostProcessVolume volume )
+	{
+		CameraData data = GetOrAdd( Scene.Camera );
+		data.Clear();
+
+		var pos = volume.WorldPosition;
+
+		data.Effects.AddRange( volume.GetComponentsInChildren<BasePostProcess>().Select( x => new WeightedEffect { Effect = x, Weight = 1 } ) );
+
+		foreach ( var group in data.Effects.GroupBy( x => x.Effect.GetType() ) )
+		{
+			var effect = group.First();
+
+			var ctx = new PostProcessContext()
+			{
+				_context = data,
+				Components = group.ToArray()
+			};
+
+			effect.Effect.Build( ctx );
+		}
+	}
+
 	private CameraData GetOrAdd( CameraComponent cc )
 	{
 		if ( !cache.TryGetValue( cc, out CameraData data ) )
@@ -132,11 +193,11 @@ public ref struct PostProcessContext
 {
 	internal PostProcessSystem.CameraData _context;
 	public CameraComponent Camera => _context.Camera;
-	public WeightedEffect[] Components;
+	public PostProcessSystem.WeightedEffect[] Components;
 
 	public void Add( CommandList cl, Sandbox.Rendering.Stage stage, int order = 0 )
 	{
-		var bucket = _context.Get( stage );
+		var bucket = _context.Get( stage, order );
 		bucket.InsertList( cl );
 	}
 

@@ -35,6 +35,6 @@ public sealed class Sharpen2 : BasePostProcess<Sharpen2>
 		cl.Attributes.GrabFrameTexture( "ColorBuffer" );
 		cl.Blit( shader, attr );
 
-		ctx.Add( cl, Stage.AfterPostProcess );
+		ctx.Add( cl, Stage.BeforePostProcess, 100 );
 	}
 }
