@@ -189,25 +189,6 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "RoughnessCutoff": 0.9
-        },
-        {
-          "__type": "Sandbox.Tonemapping",
-          "__guid": "11427668-ed0e-4633-a0ea-1ab98c7137d6",
-          "__enabled": true,
-          "__version": 3,
-          "AutoExposureEnabled": true,
-          "ExposureCompensation": 0,
-          "ExposureMethod": "RGB",
-          "MaximumExposure": 3,
-          "MinimumExposure": 1,
-          "Mode": "Linear",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "Rate": 1
         }
       ],
       "Children": [
@@ -238,6 +219,24 @@
               "OnComponentUpdate": null,
               "Scale": 1,
               "TexelSize": 1
+            },
+            {
+              "__type": "Sandbox.Tonemapping2",
+              "__guid": "66d1f6ed-39a7-4d74-b346-bde3e3199224",
+              "__enabled": true,
+              "AutoExposureEnabled": true,
+              "ExposureCompensation": 0,
+              "ExposureMethod": "RGB",
+              "MaximumExposure": 3,
+              "MinimumExposure": 1,
+              "Mode": "Linear",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Rate": 5
             }
           ],
           "Children": []
@@ -320,7 +319,7 @@
           "RunSpeed": 320,
           "ShowColliderComponents": false,
           "ShowRigidbodyComponent": false,
-          "ThirdPerson": true,
+          "ThirdPerson": false,
           "ToggleCameraModeButton": "view",
           "UseAnimatorControls": true,
           "UseButton": "use",
@@ -1223,7 +1222,7 @@
               "TargetColor": "1,1,1,1",
               "CacheToDisk": true
             },
-            "compiled": "textures/generated/imagefile/d42f5f03c13105fd.vtex"
+            "compiled": null
           },
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -1429,6 +1428,187 @@
               },
               "RenderType": "On",
               "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "79334680-9661-43e2-828c-6ad8ee96d69e",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Tonemapping",
+      "Position": "-192,448,171.2377",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.PostProcessVolume",
+          "__guid": "631601c4-393f-430a-b361-50dd11cef4bf",
+          "__enabled": true,
+          "BlendDistance": 50,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Priority": 0,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-128,-128,-50.00002",
+              "Maxs": "128,128,256"
+            }
+          },
+          "Weight": 10
+        },
+        {
+          "__type": "Sandbox.Tonemapping2",
+          "__guid": "901c1b32-eaa1-45f2-8afa-cf9ccc38e490",
+          "__enabled": true,
+          "AutoExposureEnabled": true,
+          "ExposureCompensation": 5,
+          "ExposureMethod": "RGB",
+          "MaximumExposure": 5,
+          "MinimumExposure": 0,
+          "Mode": "Linear",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Rate": 10
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "ef21ce01-13e9-4f64-947a-477ee3185583",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "0,0,-64",
+          "Rotation": "0,0,0,1",
+          "Scale": "5,5,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "70f3734b-7d88-4d0e-a765-c2337a8016b2",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "ac1f39fe-87ca-4f05-8eac-540c7639fbe2",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Text",
+          "Position": "-0.00003051758,0,-38.41032",
+          "Rotation": "0.7071066,0.0000001369772,-0.7071068,0.0000001369773",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.TextRenderer",
+              "__guid": "a4a22b3f-0a6b-462f-a5ed-921263ef1f29",
+              "__enabled": true,
+              "__version": 2,
+              "BlendMode": "Multiply",
+              "FogStrength": 1,
+              "HorizontalAlignment": "Center",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "Scale": 0.26576576,
+              "TextScope": {
+                "Text": "Tonemapping",
+                "TextColor": "0.45103,0.47149,0.5297,0.41",
+                "FontName": "Poppins",
+                "FontSize": 64,
+                "FontWeight": 800,
+                "FontItalic": false,
+                "LineHeight": 1,
+                "LetterSpacing": 0,
+                "WordSpacing": 0,
+                "FilterMode": "Bilinear",
+                "Outline": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,1,1"
+                },
+                "Shadow": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                },
+                "OutlineUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,1,0,1"
+                },
+                "ShadowUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                }
+              },
+              "VerticalAlignment": "Center"
             }
           ],
           "Children": []

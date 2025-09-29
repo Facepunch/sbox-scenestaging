@@ -18,6 +18,8 @@ public class BasePostProcess<T> : BasePostProcess where T: BasePostProcess
 	{
 		internal PostProcessContext ctx;
 
+		public CameraComponent Camera => ctx.Camera;
+
 		public U GetWeighted<U>( System.Func<T, U> selector, U defaultValue = default ) => ctx.GetBlended( selector, defaultValue );
 		public float GetWeighted( System.Func<T, float> selector ) => ctx.GetBlended( selector );
 		
