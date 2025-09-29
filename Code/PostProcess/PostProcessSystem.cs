@@ -134,7 +134,7 @@ public ref struct PostProcessContext
 	public CameraComponent Camera => _context.Camera;
 	public WeightedEffect[] Components;
 
-	public void Add( CommandList cl, Sandbox.Rendering.Stage stage )
+	public void Add( CommandList cl, Sandbox.Rendering.Stage stage, int order = 0 )
 	{
 		var bucket = _context.Get( stage );
 		bucket.InsertList( cl );

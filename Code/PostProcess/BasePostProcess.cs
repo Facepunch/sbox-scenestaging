@@ -24,7 +24,7 @@ public class BasePostProcess<T> : BasePostProcess where T: BasePostProcess
 		public float GetWeighted( System.Func<T, float> selector ) => ctx.GetBlended( selector );
 		
 
-		public void Add( CommandList cl, Sandbox.Rendering.Stage stage ) => ctx.Add( cl, stage );
+		public void Add( CommandList cl, Sandbox.Rendering.Stage stage, int order = 0 ) => ctx.Add( cl, stage, order );
 	}
 
 	public override void Build( PostProcessContext ctx )
