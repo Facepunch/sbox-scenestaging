@@ -108,7 +108,7 @@ public sealed partial class AmbientOcclusion2 : BasePostProcess<AmbientOcclusion
 		DenoiseTemporal
 	}
 
-	GTAOConstants GetGTAOConstants( Context ctx )
+	GTAOConstants GetGTAOConstants()
 	{
 		var consts = new GTAOConstants();
 
@@ -123,14 +123,14 @@ public sealed partial class AmbientOcclusion2 : BasePostProcess<AmbientOcclusion
 		consts.NDCToViewMul_x_PixelSize = Vector2.Zero;
 
 		//-------------------------------------------------------------------------
-		consts.EffectRadius = ctx.GetWeighted( x => x.Radius, 128.0f );
+		consts.EffectRadius = GetWeighted( x => x.Radius, 128.0f );
 
-		consts.EffectFalloffRange = ctx.GetWeighted( x => x.FalloffRange, 1.0f );
+		consts.EffectFalloffRange = GetWeighted( x => x.FalloffRange, 1.0f );
 		consts.DenoiseBlurBeta = 1.2f; // Used only on Spatial denoising
 
 		consts.NoiseIndex = DenoiseMode == DenoiseModes.Temporal ? Frame % 64 : 0;
 		consts.ThinOccluderCompensation = ThinCompensation;
-		consts.FinalValuePower = ctx.GetWeighted( x => x.Intensity, 1.0f ) * 5.0f;
+		consts.FinalValuePower = GetWeighted( x => x.Intensity, 1.0f ) * 5.0f;
 
 		switch ( Quality )
 		{
@@ -168,7 +168,7 @@ public sealed partial class AmbientOcclusion2 : BasePostProcess<AmbientOcclusion
 
 	CommandList commands = new CommandList( "Ambient Occlusion" );
 
-	public override void Build( Context ctx )
+	public override void Render()
 	{
 		commands.Reset();
 
@@ -185,7 +185,7 @@ public sealed partial class AmbientOcclusion2 : BasePostProcess<AmbientOcclusion
 
 		var csAO = new ComputeShader( "gtao_cs" );
 
-		commands.Attributes.SetData( "GTAOConstants", GetGTAOConstants( ctx ) );
+		commands.Attributes.SetData( "GTAOConstants", GetGTAOConstants() );
 
 		// 
 		// Bind textures to the compute shader
@@ -227,7 +227,7 @@ public sealed partial class AmbientOcclusion2 : BasePostProcess<AmbientOcclusion
 		//
 		commands.GlobalAttributes.Set( "ScreenSpaceAmbientOcclusionTexture", AOTextureCurrent.ColorIndex );
 
-		ctx.Add( commands, Stage.AfterDepthPrepass, 0 );
+		AddCommandList( commands, Stage.AfterDepthPrepass, 0 );
 	}
 
 }

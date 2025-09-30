@@ -56,24 +56,16 @@ public class Tonemapping2 : BasePostProcess<Tonemapping2>
 	[ShowIf( nameof( Mode ), TonemappingMode.HableFilmic )]
 	[Property, MakeDirty] public ExposureColorSpaceEnum ExposureMethod { get; set; } = ExposureColorSpaceEnum.RGB;
 
-	CommandList cl = new CommandList( "ChromaticAberration" );
-	RenderAttributes attr = new();
-
-	public override void Build( Context ctx )
+	public override void Render()
 	{
+		UpdateExposure( Camera );
+
 		var shader = Material.FromShader( "shaders/tonemapping/tonemapping.shader" );
 
-		cl.Reset();
+		Attributes.SetComboEnum( "D_TONEMAPPING", Mode );
+		Attributes.SetComboEnum( "D_EXPOSUREMETHOD", ExposureMethod );
 
-		attr.SetComboEnum( "D_TONEMAPPING", Mode );
-		attr.SetComboEnum( "D_EXPOSUREMETHOD", ExposureMethod );
-
-		cl.Attributes.GrabFrameTexture( "ColorBuffer" );
-		cl.Blit( shader, attr );
-
-		ctx.Add( cl, Stage.Tonemapping );
-
-		UpdateExposure( ctx.Camera, ctx );
+		Blit( shader, Stage.Tonemapping, 0 );
 	}
 
 	//
@@ -95,15 +87,15 @@ public class Tonemapping2 : BasePostProcess<Tonemapping2>
 	[Property, Group( "Auto Exposure" ), Range( 1.0f, 10.0f ), ShowIf( nameof( AutoExposureEnabled ), true )]
 	public float Rate { get; set; } = 1.0f;
 
-	void UpdateExposure( CameraComponent camera, Context ctx )
+	void UpdateExposure( CameraComponent camera )
 	{
 		if ( !camera.IsValid() ) return;
 
 		camera.AutoExposure.Enabled = AutoExposureEnabled;
-		camera.AutoExposure.Compensation = ctx.GetWeighted( x => x.ExposureCompensation, 0 );
-		camera.AutoExposure.MinimumExposure = ctx.GetWeighted( x => x.MinimumExposure, 1 );
-		camera.AutoExposure.MaximumExposure = ctx.GetWeighted( x => x.MaximumExposure, 3 );
-		camera.AutoExposure.Rate = ctx.GetWeighted( x => x.Rate, 1 );
+		camera.AutoExposure.Compensation = GetWeighted( x => x.ExposureCompensation, 0 );
+		camera.AutoExposure.MinimumExposure = GetWeighted( x => x.MinimumExposure, 1 );
+		camera.AutoExposure.MaximumExposure = GetWeighted( x => x.MaximumExposure, 3 );
+		camera.AutoExposure.Rate = GetWeighted( x => x.Rate, 1 );
 	}
 
 }

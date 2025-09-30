@@ -77,50 +77,42 @@ public sealed class ColorGrading2 : BasePostProcess<ColorGrading2>
 	[ShowIf( nameof( ColorSpace ), ColorSpaceEnum.HSV )]
 	public Curve ValueCurve { get; set; } = new Curve( new Curve.Frame( 0.0f, 0.5f ), new Curve.Frame( 1.0f, 1.0f ) );
 
-	CommandList cl = new CommandList( "ColorGrading" );
-	RenderAttributes attr = new();
-
-	public override void Build( Context ctx )
+	public override void Render()
 	{
-		var blendFactor = ctx.GetWeighted( x => x.BlendFactor );
-		var colorTempK = ctx.GetWeighted( x => x.ColorTempK );
+		var blendFactor = GetWeighted( x => x.BlendFactor );
+		var colorTempK = GetWeighted( x => x.ColorTempK );
 
 		if ( blendFactor <= 0f )
 			return;
 
-		cl.Reset();
+		Attributes.Set( "BlendFactor", blendFactor );
+		Attributes.Set( "ColorTempK", colorTempK );
 
-		cl.Attributes.GrabFrameTexture( "ColorBuffer" );
-
-		attr.Set( "BlendFactor", blendFactor );
-		attr.Set( "ColorTempK", colorTempK );
-
-		attr.SetComboEnum( "D_CGRAD_PASS", GradingMethod );
+		Attributes.SetComboEnum( "D_CGRAD_PASS", GradingMethod );
 
 		if ( GradingMethod == GradingType.LUT )
 		{
-			attr.Set( "LookupTexture", LookupTexture );
+			Attributes.Set( "LookupTexture", LookupTexture );
 		}
 
-		attr.SetComboEnum( "D_COLORSPACE", ColorSpace );
+		Attributes.SetComboEnum( "D_COLORSPACE", ColorSpace );
 
 		if ( ColorSpace == ColorSpaceEnum.RGB )
 		{
-			ProcessCurve( RedCurve, "R", attr );
-			ProcessCurve( GreenCurve, "G", attr );
-			ProcessCurve( BlueCurve, "B", attr );
+			ProcessCurve( RedCurve, "R", Attributes );
+			ProcessCurve( GreenCurve, "G", Attributes );
+			ProcessCurve( BlueCurve, "B", Attributes );
 		}
 		if ( ColorSpace == ColorSpaceEnum.HSV )
 		{
-			ProcessCurve( HueCurve, "H", attr );
-			ProcessCurve( SaturationCurve, "S", attr );
-			ProcessCurve( ValueCurve, "V", attr );
+			ProcessCurve( HueCurve, "H", Attributes );
+			ProcessCurve( SaturationCurve, "S", Attributes );
+			ProcessCurve( ValueCurve, "V", Attributes );
 		}
 
 		var material = Material.FromShader( "ColorGrading.shader" );
-		cl.Blit( material, attr );
 
-		ctx.Add( cl, Stage.AfterPostProcess );
+		Blit( material, Stage.AfterPostProcess, 4000 );
 	}
 
 	/// <summary>

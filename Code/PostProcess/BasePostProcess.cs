@@ -5,7 +5,9 @@ namespace Sandbox;
 
 public class BasePostProcess : Component, Component.ExecuteInEditor
 {
-	public virtual void Build( PostProcessContext ctx )
+
+
+	internal virtual void Build( PostProcessContext ctx )
 	{
 		
 	}
@@ -14,27 +16,68 @@ public class BasePostProcess : Component, Component.ExecuteInEditor
 
 public class BasePostProcess<T> : BasePostProcess where T: BasePostProcess
 {
-	public ref struct Context
+	PostProcessContext? _currentContext;
+
+	PostProcessContext context
 	{
-		internal PostProcessContext ctx;
-
-		public CameraComponent Camera => ctx.Camera;
-
-		public U GetWeighted<U>( System.Func<T, U> selector, U defaultValue = default, bool onlyLerpBetweenVolumes = false ) => ctx.GetBlended( selector, defaultValue, onlyLerpBetweenVolumes );
-		public float GetWeighted( System.Func<T, float> selector ) => ctx.GetBlended( selector );
-		
-
-		public void Add( CommandList cl, Sandbox.Rendering.Stage stage, int order = 0 ) => ctx.Add( cl, stage, order );
+		get
+		{
+			if ( !_currentContext.HasValue ) throw new System.Exception( "Should only be called during build" );
+			return _currentContext.Value;
+		}
 	}
 
-	public override void Build( PostProcessContext ctx )
+	protected readonly RenderAttributes Attributes = new();
+	protected CameraComponent Camera => context.Camera;
+
+	internal override void Build( PostProcessContext ctx )
 	{
-		Context context = new Context() { ctx = ctx };
-		Build( context );
+		_currentContext = ctx;
+
+		try
+		{
+			// always cleared before build
+			Attributes.Clear();
+			Render();
+		}
+		finally
+		{
+			_currentContext = default;
+		}
 	}
 
-	public virtual void Build( Context ctx )
+	public virtual void Render()
 	{
 
+	}
+
+	protected void Blit( Material shader, Stage stage, int order )
+	{
+		Blit( shader, Attributes, stage, order );
+	}
+
+	protected void Blit( Material shader, RenderAttributes attr, Stage stage, int order )
+	{
+		CommandList cl = new CommandList( shader.Name );
+
+		cl.Attributes.GrabFrameTexture( "ColorBuffer", true );
+		cl.Blit( shader, attr );
+
+		AddCommandList( cl, Stage.AfterPostProcess, order );
+	}
+
+	protected void AddCommandList( CommandList cl, Sandbox.Rendering.Stage stage, int order = 0 )
+	{
+		context.Add( cl, stage, order );
+	}
+
+	protected U GetWeighted<U>( System.Func<T, U> selector, U defaultValue = default, bool onlyLerpBetweenVolumes = false )
+	{
+		return context.GetBlended( selector, defaultValue, onlyLerpBetweenVolumes );
+	}
+
+	protected float GetWeighted( System.Func<T, float> selector )
+	{
+		return context.GetBlended( selector );
 	}
 }

@@ -36,7 +36,7 @@ public class Bloom2 : BasePostProcess<Bloom2>
 
 	CommandList command = new CommandList();
 
-	public override void Build( Context ctx )
+	public override void Render()
 	{
 		if ( Strength == 0.0f )
 			return;
@@ -53,10 +53,10 @@ public class Bloom2 : BasePostProcess<Bloom2>
 		command.Attributes.Set( "Color", colorHandle.ColorTexture );
 
 		// Parameters
-		command.Attributes.Set( "Strength", ctx.GetWeighted( x=> x.Strength, 0 ) );
-		command.Attributes.Set( "Threshold", ctx.GetWeighted( x => x.Threshold, 0 ) );
-		command.Attributes.Set( "Gamma", ctx.GetWeighted( x => x.Gamma, 0 ) );
-		command.Attributes.Set( "Tint", ctx.GetWeighted( x => x.Tint, Color.White ) );
+		command.Attributes.Set( "Strength", GetWeighted( x=> x.Strength, 0 ) );
+		command.Attributes.Set( "Threshold", GetWeighted( x => x.Threshold, 0 ) );
+		command.Attributes.Set( "Gamma", GetWeighted( x => x.Gamma, 0 ) );
+		command.Attributes.Set( "Tint", GetWeighted( x => x.Tint, Color.White ) );
 		command.Attributes.Set( "InvDimensions", new Vector2( 2.0f / Screen.Width, 2.0f / Screen.Height ) );
 		command.Attributes.SetCombo( "D_FILTER", Filter );
 
@@ -71,9 +71,8 @@ public class Bloom2 : BasePostProcess<Bloom2>
 		command.Attributes.Set( "BloomTexture", bloomRt.ColorTexture );
 		command.Attributes.Set( "CompositeMode", (int)Mode );
 
-		var composite = Material.FromShader( "postprocess_bloom.shader" );
-		command.Blit( composite );
+		command.Blit( Material.FromShader( "postprocess_bloom.shader" ) );
 
-		ctx.Add( command, Stage.BeforePostProcess, 100 );
+		AddCommandList( command, Stage.BeforePostProcess, 100 );
 	}
 }

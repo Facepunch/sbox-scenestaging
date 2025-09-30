@@ -24,29 +24,19 @@ public sealed class ChromaticAberration2 : BasePostProcess<ChromaticAberration2>
 	/// </summary>
 	[Property] public Vector3 Offset { get; set; } = new Vector3( 4f, 6f, 0.0f );
 
-
-	CommandList cl = new CommandList( "ChromaticAberration" );
-	RenderAttributes attr = new();
-
-	public override void Build( Context ctx )
+	public override void Render()
 	{
 		var shader = Material.FromShader( "shaders/postprocess/pp_chromaticaberration.shader" );
 
-		float scale = ctx.GetWeighted( x => x.Scale );
-		Vector3 offset = ctx.GetWeighted( x => x.Offset );
+		float scale = GetWeighted( x => x.Scale );
+		Vector3 offset = GetWeighted( x => x.Offset );
 
 		if ( scale <= 0f )
 			return;
 
-		cl.Reset();
-		var attributes = cl.Attributes;
+		Attributes.Set( "scale", scale );
+		Attributes.Set( "amount", offset / 1000.0f );
 
-		attr.Set( "scale", scale );
-		attr.Set( "amount", offset / 1000.0f );
-
-		cl.Attributes.GrabFrameTexture( "ColorBuffer" );
-		cl.Blit( shader, attr );
-
-		ctx.Add( cl, Stage.AfterPostProcess );
+		Blit( shader, Stage.AfterPostProcess, 1000 );
 	}
 }

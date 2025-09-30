@@ -1,0 +1,9 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/postprocess/pp_blitoverlay.shader"
+
+	//---- Material A ----
+	ColorTexture "materials/blitoverlay/snowy_color.png"
+}

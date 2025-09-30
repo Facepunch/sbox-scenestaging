@@ -58,19 +58,18 @@ public sealed class DepthOfField2 : BasePostProcess<DepthOfField2>
 	[Property, Group( "Properties" ), Icon( "flip_to_front" ), Hide]
 	public bool BackBlur { get; set; } = true;
 
-
 	CommandList command = new CommandList( "Depth Of Field" );
 
-	public override void Build( Context ctx )
+	public override void Render()
 	{
 		if ( !BackBlur && !FrontBlur )
 			return;
 
-		float blurSize = ctx.GetWeighted( x => x.BlurSize, 0.0f );
+		float blurSize = GetWeighted( x => x.BlurSize, 0.0f );
 		if ( blurSize < 0.5f ) return;
 
-		float focalDistance = ctx.GetWeighted( x => x.FocalDistance, 200.0f );
-		float focalLength = ctx.GetWeighted( x => x.FocusRange, 500.0f );
+		float focalDistance = GetWeighted( x => x.FocalDistance, 200.0f );
+		float focalLength = GetWeighted( x => x.FocusRange, 500.0f );
 
 		command.Reset();
 
@@ -113,7 +112,6 @@ public sealed class DepthOfField2 : BasePostProcess<DepthOfField2>
 			if ( !FrontBlur && type == DoFTypes.FrontBlur )
 				continue;
 
-
 			command.Attributes.Set( "FocusPlane", focalDistance.Clamp( 0, 5000 ) );
 			command.Attributes.Set( "FocalLength", focalLength );
 			command.Attributes.SetCombo( "D_DOF_TYPE", type );
@@ -134,7 +132,7 @@ public sealed class DepthOfField2 : BasePostProcess<DepthOfField2>
 			command.Blit( composite );
 		}
 
-		ctx.Add( command, Stage.AfterTransparent, 100 );
+		AddCommandList( command, Stage.AfterTransparent, 100 );
 	}
 
 	private enum BlurPasses

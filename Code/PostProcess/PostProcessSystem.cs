@@ -167,7 +167,7 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Com
 	}
 }
 
-public ref struct PostProcessContext
+internal struct PostProcessContext
 {
 	internal PostProcessSystem.CameraData _context;
 	public CameraComponent Camera => _context.Camera;

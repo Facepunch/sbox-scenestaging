@@ -36,29 +36,24 @@ public sealed class Vignette2 : BasePostProcess<Vignette2>
 	/// </summary>
 	[Property] public Vector2 Center { get; set; } = new Vector2( 0.5f, 0.5f );
 
-	CommandList cl = new CommandList( "ChromaticAberration" );
-	RenderAttributes attr = new();
 
-	public override void Build( Context ctx )
+	public override void Render()
 	{
 		var shader = Material.FromShader( "shaders/postprocess/pp_vignette.shader" );
 
-		float intensity = ctx.GetWeighted( x => x.Intensity );
+		float intensity = GetWeighted( x => x.Intensity );
 		if ( intensity.AlmostEqual( 0.0f ) ) return;
 
-		var color = ctx.GetWeighted( x => x.Color );
+		var color = GetWeighted( x => x.Color );
 		if ( color.a.AlmostEqual( 0.0f ) ) return;
 
-		cl.Reset();
 
-		attr.Set( "color", color );
-		attr.Set( "intensity", intensity );
-		attr.Set( "smoothness", ctx.GetWeighted( x => x.Smoothness ) );
-		attr.Set( "roundness", ctx.GetWeighted( x => x.Roundness ) );
-		attr.Set( "center", ctx.GetWeighted( x => x.Center ) );
+		Attributes.Set( "color", color );
+		Attributes.Set( "intensity", intensity );
+		Attributes.Set( "smoothness", GetWeighted( x => x.Smoothness, onlyLerpBetweenVolumes: true ) );
+		Attributes.Set( "roundness", GetWeighted( x => x.Roundness, onlyLerpBetweenVolumes: true ) );
+		Attributes.Set( "center", GetWeighted( x => x.Center, onlyLerpBetweenVolumes: true ) );
 
-		cl.Blit( shader, attr );
-
-		ctx.Add( cl, Stage.AfterPostProcess );
+		Blit( shader, Stage.AfterPostProcess, 5000 );
 	}
 }
