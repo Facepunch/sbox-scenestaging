@@ -106,8 +106,6 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Com
 		CameraData data = GetOrAdd( cc );
 		data.Clear();
 
-		var text = $"{cc.GameObject} / {cc.WorldPosition}\n";
-
 		var pos = cc.WorldPosition;
 
 		data.Effects.AddRange( cc.GetComponentsInChildren<BasePostProcess>().Select( x => new WeightedEffect {  Effect = x, Weight = 1 } ) );
@@ -115,21 +113,8 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Com
 		var volumes = Scene.GetSystem<VolumeSystem>()?.FindAll<PostProcessVolume>( pos );
 		foreach ( var volume in volumes.OrderBy( x => x.Priority ) )
 		{
-			text += $" VOLUME: {volume} ({volume.WorldPosition}, {volume.WorldScale})\n";
-
-			var weight = volume.GetWeight( pos ) * volume.Weight.Clamp( 0, 1 );
-
+			var weight = volume.GetWeight( pos );
 			data.Effects.AddRange( volume.GetComponentsInChildren<BasePostProcess>().Select( x => new WeightedEffect { Effect = x, Weight = weight } ) );
-		}
-
-		foreach ( var group in data.Effects.GroupBy( x => x.Effect.GetType() ) )
-		{
-			text += $" EFFECT: {group.Key}\n";
-
-			foreach ( var effect in group )
-			{
-				text += $"    {effect.Effect.GameObject} - {effect.Weight} \n";
-			}
 		}
 
 		foreach ( var group in data.Effects.GroupBy( x => x.Effect.GetType() ) )
@@ -144,8 +129,6 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Com
 
 			effect.Effect.Build( ctx );
 		}
-
-		Scene.DebugOverlay.ScreenText( 200, text, flags: TextFlag.LeftTop );
 	}
 
 	private void UpdateCamera( PostProcessVolume volume )
@@ -219,6 +202,7 @@ public ref struct PostProcessContext
 	{
 		U v = defaultVal;
 		var lerper = Interpolator.GetDefault<U>();
+		
 
 		int i = 0;
 		foreach ( var e in Components )
