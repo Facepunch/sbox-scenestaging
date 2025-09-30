@@ -1,4 +1,5 @@
 using Sandbox.Volumes;
+using static Sandbox.Volumes.SceneVolume;
 
 namespace Sandbox;
 
@@ -25,14 +26,8 @@ public class PostProcessVolume : VolumeComponent, Component.ExecuteInEditor
 	/// </summary>
 	[Property]
 	[Range( 0, 500 )]
-	[HideIf( "IsGlobal", true )]
+	[HideIf( "IsInfinite", true )]
 	public float BlendDistance { get; set; } = 50.0f;
-
-	/// <summary>
-	/// This is global. Always apply, regardless of the volume bounds.
-	/// </summary>
-	[Property]
-	public bool IsGlobal { get; set; } = false;
 
 	/// <summary>
 	/// Preview the post processing when this object is selected in the editor, or when the editor camera is inside the volume.
@@ -41,16 +36,11 @@ public class PostProcessVolume : VolumeComponent, Component.ExecuteInEditor
 	public bool EditorPreview { get; set; } = true;
 
 	/// <summary>
-	/// Override to make infinite if needed
-	/// </summary>
-	protected override bool IsInfiniteExtents => IsGlobal;
-
-	/// <summary>
 	/// Get weight based on position
 	/// </summary>
 	public float GetWeight( Vector3 pos )
 	{
-		if ( IsGlobal )
+		if ( IsInfinite )
 		{
 			return BlendWeight;
 		}
