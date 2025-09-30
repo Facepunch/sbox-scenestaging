@@ -70,24 +70,18 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Com
 			v.Value.Clear();
 		}
 
-		if ( EditorTools.InspectorObject is object[] oo )
+		if ( Scene.Editor.SelectedGameObject is GameObject go )
 		{
-			foreach ( var o in oo )
+			if ( go.GetComponentInParent<CameraComponent>( false, true ) is CameraComponent cc )
 			{
-				if ( o is GameObject go )
-				{
-					if ( go.GetComponentInParent<CameraComponent>( false, true ) is CameraComponent cc )
-					{
-						UpdateCamera( cc );
-						return;
-					}
+				UpdateCamera( cc );
+				return;
+			}
 
-					if ( go.GetComponentInParent<PostProcessVolume>( false, true ) is PostProcessVolume volume )
-					{
-						UpdateCamera( volume );
-						return;
-					}
-				}
+			if ( go.GetComponentInParent<PostProcessVolume>( false, true ) is PostProcessVolume volume && volume.EditorPreview )
+			{
+				UpdateCamera( volume );
+				return;
 			}
 		}
 	}
