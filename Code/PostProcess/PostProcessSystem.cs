@@ -3,51 +3,14 @@ using Sandbox.Rendering;
 using Sandbox.Utility;
 using Sandbox.Volumes;
 using System.Runtime.CompilerServices;
+namespace Sandbox;
 
-public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Component.ISceneStage
+public sealed partial class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Component.ISceneStage, Component.IRenderThread
 {
 
-	ConditionalWeakTable<CameraComponent, CameraData> cache = new();
+	ConditionalWeakTable<CameraComponent, PostProcessCamera> cache = new();
 
-	internal class CameraData
-	{
-		internal CameraData( CameraComponent cc )
-		{
-			Camera = cc;
-		}
 
-		public CameraComponent Camera { get; set; }
-		public List<WeightedEffect> Effects { get; set; } = new();
-
-		Dictionary<(Sandbox.Rendering.Stage stage, int order), CommandList> commands = new();
-
-		public CommandList Get( Sandbox.Rendering.Stage stage, int order )
-		{
-			if ( commands.TryGetValue( (stage, order), out var cl ) )
-				return cl;
-
-			commands[(stage, order)] = cl = new CommandList( $"Post Process - {stage}" );
-			cl.Flags |= CommandList.Flag.PostProcess;
-			Camera.AddCommandList( cl, stage, order );
-			return cl;
-		}
-
-		internal void Clear()
-		{
-			Effects.Clear();
-
-			foreach( var c in commands.Values )
-			{
-				c.Reset();
-			}
-		}
-	}
-
-	public record struct WeightedEffect
-	{
-		public BasePostProcess Effect;
-		public float Weight;
-	}
 
 	public PostProcessSystem( Scene scene ) : base( scene )
 	{
@@ -103,7 +66,7 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Com
 
 	private void UpdateCamera( CameraComponent cc )
 	{
-		CameraData data = GetOrAdd( cc );
+		PostProcessCamera data = GetOrAdd( cc );
 		data.Clear();
 
 		var pos = cc.WorldPosition;
@@ -133,7 +96,7 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Com
 
 	private void UpdateCamera( PostProcessVolume volume )
 	{
-		CameraData data = GetOrAdd( Scene.Camera );
+		PostProcessCamera data = GetOrAdd( Scene.Camera );
 		data.Clear();
 
 		var pos = volume.WorldPosition;
@@ -154,29 +117,37 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Com
 		}
 	}
 
-	private CameraData GetOrAdd( CameraComponent cc )
+	private PostProcessCamera GetOrAdd( CameraComponent cc )
 	{
-		if ( !cache.TryGetValue( cc, out CameraData data ) )
+		if ( !cache.TryGetValue( cc, out PostProcessCamera data ) )
 		{
-			data = new CameraData( cc );
+			data = new PostProcessCamera( cc );
 
 			cache.Add( cc, data );
 		}
 
 		return data;
 	}
+
+	public void OnRenderStage( CameraComponent camera, Sandbox.Rendering.Stage stage )
+	{
+		if ( !cache.TryGetValue( camera, out PostProcessCamera data ) )
+			return;
+
+		data.OnRenderStage( stage );
+	}
 }
 
 internal struct PostProcessContext
 {
-	internal PostProcessSystem.CameraData _context;
+	internal PostProcessCamera _context;
 	public CameraComponent Camera => _context.Camera;
-	public PostProcessSystem.WeightedEffect[] Components;
+	public WeightedEffect[] Components;
 
 	public void Add( CommandList cl, Sandbox.Rendering.Stage stage, int order = 0 )
 	{
-		var bucket = _context.Get( stage, order );
-		bucket.InsertList( cl );
+		var layer = _context.Get( stage, order );
+		layer.CommandList = cl;
 	}
 
 	public float GetBlended<T>( Func<T, float> value, float defaultVal = 0, bool onlyLerpBetweenVolumes = false ) where T: BasePostProcess
