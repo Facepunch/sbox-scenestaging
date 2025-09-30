@@ -30,6 +30,6 @@ public sealed class Pixelate2 : BasePostProcess<Pixelate2>
 		cl.Attributes.GrabFrameTexture( "ColorBuffer" );
 		cl.Blit( shader, attr );
 
-		ctx.Add( cl, Stage.AfterPostProcess );
+		ctx.Add( cl, Stage.AfterPostProcess, 10000 );
 	}
 }
