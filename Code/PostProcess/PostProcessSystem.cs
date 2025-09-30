@@ -27,6 +27,7 @@ public sealed class PostProcessSystem : GameObjectSystem<PostProcessSystem>, Com
 				return cl;
 
 			commands[(stage, order)] = cl = new CommandList( $"Post Process - {stage}" );
+			cl.Flags |= CommandList.Flag.PostProcess;
 			Camera.AddCommandList( cl, stage, order );
 			return cl;
 		}
