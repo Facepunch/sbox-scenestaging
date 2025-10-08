@@ -1,30 +1,65 @@
 {
   "RootObject": {
     "__guid": "905a5318-cc16-4db3-b142-6306cee9d6b3",
+    "__version": 1,
     "Flags": 0,
     "Name": "rotatingwall",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
     "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
     "Components": [
       {
         "__type": "SpinComponent",
         "__guid": "87abf404-7210-4a0e-a7dc-eb0916e2133c",
+        "__enabled": true,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
         "SpinAngles": "0,45,0"
       }
     ],
     "Children": [
       {
         "__guid": "69e72f63-41f4-40fa-8c4e-8de2eb6b2813",
+        "__version": 1,
         "Flags": 0,
         "Name": "Wall",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
         "Scale": "0.8,0.8,0.8",
+        "Tags": "",
         "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.ModelRenderer",
             "__guid": "e9760581-2cde-49cd-b208-6596754c50d0",
+            "__enabled": true,
             "BodyGroups": 18446744073709551615,
             "CreateAttachments": false,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": "materials/rough.vmat",
+            "Materials": null,
             "Model": "models/rocks/rock_cliff_a_hull_physiscs.vmdl",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
             "RenderOptions": {
               "GameLayer": true,
               "OverlayLayer": false,
@@ -34,48 +69,73 @@
             "RenderType": "On",
             "Tint": "1,1,1,1"
           }
-        ]
+        ],
+        "Children": []
       },
       {
         "__guid": "afe4208e-c29d-4387-9801-95102d30f696",
+        "__version": 1,
         "Flags": 0,
         "Name": "navblocker",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
         "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.NavMeshArea",
             "__guid": "9b7c628b-9d28-4b0b-804c-23cf774671f0",
+            "__enabled": true,
             "IsBlocker": true,
             "LinkedCollider": {
               "_type": "component",
               "component_id": "b61023e4-c04e-4f0e-b0a2-83cfa70b7767",
               "go": "afe4208e-c29d-4387-9801-95102d30f696",
               "component_type": "ModelCollider"
-            }
+            },
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
           },
           {
             "__type": "Sandbox.ModelCollider",
             "__guid": "b61023e4-c04e-4f0e-b0a2-83cfa70b7767",
+            "__enabled": true,
+            "Elasticity": null,
+            "Friction": null,
             "IsTrigger": true,
             "Model": "models/rocks/rock_cliff_a_hull_physiscs.vmdl",
+            "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnObjectTriggerEnter": null,
+            "OnObjectTriggerExit": null,
+            "OnTriggerEnter": null,
+            "OnTriggerExit": null,
+            "RollingResistance": null,
             "Static": false,
+            "Surface": null,
             "SurfaceVelocity": "0,0,0"
           }
-        ]
+        ],
+        "Children": []
       }
     ],
-    "__variables": [],
     "__properties": {
-      "FixedUpdateFrequency": 50,
-      "MaxFixedUpdates": 5,
-      "NetworkFrequency": 30,
       "NetworkInterpolation": true,
-      "PhysicsSubSteps": 1,
-      "ThreadedAnimation": true,
       "TimeScale": 1,
-      "UseFixedUpdate": true,
+      "WantsSystemScene": true,
       "Metadata": {},
       "NavMesh": {
         "Enabled": false,
@@ -89,13 +149,14 @@
         "ExcludedBodies": "",
         "IncludedBodies": ""
       }
-    }
+    },
+    "__variables": []
   },
+  "ResourceVersion": 2,
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "ResourceVersion": 1,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }
