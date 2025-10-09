@@ -2576,6 +2576,67 @@
         }
       ],
       "Children": []
+    },
+    {
+      "__guid": "1546f51d-ac8e-4671-bec1-2a5e79d196f4",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "PlaneCollider",
+      "Position": "-545.8137,2781.163,26.32097",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.PlaneCollider",
+          "__guid": "ac250828-e57e-4e12-bbd6-b469bc7bd01d",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "Normal": "0,0,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Scale": "200,50",
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "efe17fe8-e0c1-4833-97d8-b17f44a64e69",
+          "__enabled": true,
+          "IsBlocker": true,
+          "LinkedCollider": {
+            "_type": "component",
+            "component_id": "ac250828-e57e-4e12-bbd6-b469bc7bd01d",
+            "go": "1546f51d-ac8e-4671-bec1-2a5e79d196f4",
+            "component_type": "PlaneCollider"
+          },
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        }
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {
