@@ -40,12 +40,12 @@ public class InspectorSettings
 				return;
 			}
 
-			var scattererType = Game.TypeLibrary.GetTypes<IProceduralScatterer>()
+			var scattererType = Game.TypeLibrary.GetTypes<ScattererBase>()
 				.FirstOrDefault( t => !t.IsAbstract && !t.IsInterface && t.Name == value );
 
 			if ( scattererType != null )
 			{
-				_scatterer = scattererType.Create<IProceduralScatterer>();
+				_scatterer = scattererType.Create<ScattererBase>();
 
 				// Try to load saved settings for this scatterer type
 				LoadScattererSettings();
@@ -56,7 +56,7 @@ public class InspectorSettings
 	}
 
 	[Property]
-	public IProceduralScatterer Scatterer
+	public ScattererBase Scatterer
 	{
 		get => _scatterer;
 		set
@@ -66,7 +66,7 @@ public class InspectorSettings
 		}
 	}
 
-	private IProceduralScatterer _scatterer;
+	private ScattererBase _scatterer;
 
 	public InspectorSettings()
 	{
@@ -74,10 +74,10 @@ public class InspectorSettings
 		var savedScattererType = EditorCookie.Get<string>( CookiePrefix + "ScattererType", null );
 		if ( !string.IsNullOrEmpty( savedScattererType ) )
 		{
-			var scattererType = Game.TypeLibrary.GetTypes<IProceduralScatterer>()
+			var scattererType = Game.TypeLibrary.GetTypes<ScattererBase>()
 				.FirstOrDefault( t => !t.IsAbstract && !t.IsInterface && t.Name == savedScattererType );
 
-			_scatterer = scattererType?.Create<IProceduralScatterer>() ?? new DefaultScatterer();
+			_scatterer = scattererType?.Create<ScattererBase>() ?? new DefaultScatterer();
 			LoadScattererSettings();
 		}
 		else

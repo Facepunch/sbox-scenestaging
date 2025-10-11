@@ -496,7 +496,7 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	internal ClutterCell GetCell( Vector2 cellPosition, bool createIfMissing = true )
 	{
 		var hash = Hash( cellPosition );
-		if ( !WorldGrid.ContainsKey( Hash( cellPosition ) ) )
+		if ( !WorldGrid.ContainsKey( hash ) )
 		{
 			if ( !createIfMissing ) return null;
 			WorldGrid[hash] = new ClutterCell( _scene, cellPosition, CellSize );

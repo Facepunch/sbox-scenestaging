@@ -11,7 +11,7 @@ namespace Editor;
 public sealed class ClutterScatterer( Scene scene )
 {
 	private Scene _scene = scene;
-	private IProceduralScatterer _scatterer;
+	private ScattererBase _scatterer;
 
 	private bool _isErase;
 	private bool _shouldClear;
@@ -30,7 +30,7 @@ public sealed class ClutterScatterer( Scene scene )
 	/// <summary>
 	/// Sets the procedural scatterer to use for generating points and scattering objects
 	/// </summary>
-	public ClutterScatterer WithScatterer( IProceduralScatterer scatterer )
+	public ClutterScatterer WithScatterer( ScattererBase scatterer )
 	{
 		_scatterer = scatterer;
 		return this;
@@ -223,7 +223,7 @@ public sealed class ClutterScatterer( Scene scene )
 
 			foreach ( var layer in _layers )
 			{
-				if ( layer.Objects.Count == 0 )
+				if ( !layer.HasObjects )
 					continue;
 
 				var instance = _scatterer.Scatter( ctx with { Layer = layer } );

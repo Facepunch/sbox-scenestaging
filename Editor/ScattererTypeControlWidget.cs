@@ -21,12 +21,12 @@ public class ScattererTypeControlWidget : DropdownControlWidget
 		string displayText = "None";
 		if ( !string.IsNullOrEmpty( currentValue ) )
 		{
-			var scattererType = Game.TypeLibrary.GetTypes<IProceduralScatterer>()
+			var scattererType = Game.TypeLibrary.GetTypes<ScattererBase>()
 				.FirstOrDefault( t => !t.IsAbstract && !t.IsInterface && t.Name == currentValue );
 
 			if ( scattererType != null )
 			{
-				var instance = scattererType.Create<IProceduralScatterer>();
+				var instance = scattererType.Create<ScattererBase>();
 				displayText = instance?.ToString() ?? currentValue;
 			}
 			else
@@ -43,8 +43,8 @@ public class ScattererTypeControlWidget : DropdownControlWidget
 	{
 		var currentValue = SerializedProperty.GetValue<string>();
 
-		// Get all IScatterer types from TypeLibrary
-		var scattererTypes = Game.TypeLibrary.GetTypes<IProceduralScatterer>()
+		// Get all ScattererBase types from TypeLibrary
+		var scattererTypes = Game.TypeLibrary.GetTypes<ScattererBase>()
 			.Where( t => !t.IsAbstract && !t.IsInterface )
 			.OrderBy( t => t.Name )
 			.ToList();
@@ -59,7 +59,7 @@ public class ScattererTypeControlWidget : DropdownControlWidget
 		foreach ( var type in scattererTypes )
 		{
 			var typeName = type.Name;
-			var instance = type.Create<IProceduralScatterer>();
+			var instance = type.Create<ScattererBase>();
 			var displayName = instance?.ToString() ?? typeName;
 
 			AddMenuOption( canvas, displayName, "forest",

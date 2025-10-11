@@ -1,5 +1,4 @@
 using System.Text.Json.Nodes;
-using static Sandbox.ClutterInstance;
 
 namespace Sandbox;
 
@@ -29,12 +28,12 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 				return;
 			}
 
-			var scattererType = Game.TypeLibrary.GetTypes<IProceduralScatterer>()
+			var scattererType = Game.TypeLibrary.GetTypes<ScattererBase>()
 				.FirstOrDefault( t => !t.IsAbstract && !t.IsInterface && t.Name == value );
 
 			if ( scattererType != null )
 			{
-				_scatterer = scattererType.Create<IProceduralScatterer>();
+				_scatterer = scattererType.Create<ScattererBase>();
 				_settingsHaveBeenLoaded = false; // Reset flag when type changes
 			}
 		}
@@ -46,10 +45,10 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 	/// <summary>
 	///  The procedural scatterer to use for this volume.
 	/// </summary>
-	private IProceduralScatterer _scatterer;
+	private ScattererBase _scatterer;
 
 	[Property]
-	public IProceduralScatterer Scatterer
+	public ScattererBase Scatterer
 	{
 		get => _scatterer;
 		set
@@ -155,14 +154,7 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 		{
 			if ( SelectedLayerNames?.Count > 0 )
 			{
-				// Get all layers from all ClutterComponents in the scene
-				var allLayers = new List<ClutterLayer>();
-				var clutterComponents = Scene.GetAllComponents<ClutterComponent>();
-				foreach ( var component in clutterComponents )
-				{
-					allLayers.AddRange( component.Layers );
-				}
-
+				var allLayers = GetAllSceneLayers();
 				_selectedLayers = allLayers
 					.Where( l => SelectedLayerNames.Contains( l.Name ) )
 					.ToList();
@@ -182,39 +174,34 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 	public List<string> SelectedLayerNames { get; set; } = [];
 
 	/// <summary>
-	/// Gets the active layers for this volume based on selection
+	/// Gets all layers from all ClutterComponents in the scene
 	/// </summary>
-	public List<ClutterLayer> GetActiveLayers()
+	private List<ClutterLayer> GetAllSceneLayers()
 	{
-		var activeLayers = new List<ClutterLayer>();
-
-		// Get all layers from all ClutterComponents in the scene
 		var allLayers = new List<ClutterLayer>();
 		var clutterComponents = Scene.GetAllComponents<ClutterComponent>();
 		foreach ( var component in clutterComponents )
 		{
 			allLayers.AddRange( component.Layers );
 		}
+		return allLayers;
+	}
 
-		// If specific layers are selected, use them (if they exist and are enabled)
+	/// <summary>
+	/// Gets the active layers for this volume based on selection
+	/// </summary>
+	public List<ClutterLayer> GetActiveLayers()
+	{
+		var allLayers = GetAllSceneLayers();
+
+		// If specific layers are selected, use them (if they exist)
 		if ( SelectedLayers?.Count > 0 )
 		{
-			foreach ( var selectedLayer in SelectedLayers )
-			{
-				if ( allLayers.Contains( selectedLayer ) )
-				{
-					activeLayers.Add( selectedLayer );
-				}
-			}
+			return SelectedLayers.Where( l => allLayers.Contains( l ) ).ToList();
 		}
 
-		// If no valid selected layers, fall back to all enabled layers from all components
-		if ( activeLayers.Count == 0 )
-		{
-			activeLayers.AddRange( allLayers );
-		}
-
-		return activeLayers;
+		// If no valid selected layers, fall back to all layers from all components
+		return allLayers;
 	}
 
 	[Property]

@@ -2,16 +2,16 @@ using Editor;
 
 namespace Editor.Inspectors;
 
-[Inspector( typeof( IProceduralScatterer ) )]
+[Inspector( typeof( ScattererBase ) )]
 public class ScattererInspector : InspectorWidget
 {
 	const float HeaderHeight = 64 + 8 + 8;
 
-	public IProceduralScatterer Scatterer { get; set; }
+	public ScattererBase Scatterer { get; set; }
 
 	public ScattererInspector( SerializedObject so ) : base( so )
 	{
-		Scatterer = so.Targets.Cast<IProceduralScatterer>().First();
+		Scatterer = so.Targets.Cast<ScattererBase>().First();
 
 		Layout = Layout.Column();
 		Layout.Margin = new( 0, HeaderHeight + 8, 0, 0 );
