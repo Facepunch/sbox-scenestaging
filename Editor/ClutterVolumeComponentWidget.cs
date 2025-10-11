@@ -22,24 +22,15 @@ partial class ClutterVolumeComponentWidget : ComponentEditorWidget
 	{
 		Layout.Clear( true );
 
-		var sheet = new ControlSheet
-		{
-			Margin = 8
-		};
+		// Add ScattererName with settings button outside the sheet
+		var scattererRow = Layout.AddRow();
+		scattererRow.Margin = new Sandbox.UI.Margin( 8, 8, 8, 0 );
+		scattererRow.Spacing = 0;
 
-		// Add basic properties
-		sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.SelectedLayers ) ) );
-
-		// Add ScattererName with settings button in a row
-		var scattererRow = sheet.AddRow();
-		scattererRow.Spacing = 4;
-
-		var scattererLabel = new Label( "Scatterer Type" );
-		scattererLabel.MinimumWidth = 120;
-		scattererRow.Add( scattererLabel );
-
-		scattererControlWidget = ControlWidget.Create( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.ScattererName ) ) );
-		scattererRow.Add( scattererControlWidget, 1 );
+		var scattererSheet = new ControlSheet();
+		scattererSheet.Margin = 0;
+		scattererControlWidget = scattererSheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.ScattererName ) ) );
+		scattererRow.Add( scattererSheet, 1 );
 
 		if ( Volume != null && !string.IsNullOrEmpty( Volume.ScattererName ) )
 		{
@@ -52,6 +43,13 @@ partial class ClutterVolumeComponentWidget : ComponentEditorWidget
 			};
 			scattererRow.Add( settingsButton );
 		}
+
+		// Add other properties in their own sheet
+		var sheet = new ControlSheet
+		{
+			Margin = new Sandbox.UI.Margin( 8, 0, 8, 8 )
+		};
+		sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.SelectedLayers ) ) );
 		sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.Density ) ) );
 		sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.Scale ) ) );
 		Layout.Add( sheet );

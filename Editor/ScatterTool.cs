@@ -531,7 +531,7 @@ public class ScatterToolOverlay : WidgetWindow
 
 		// Create horizontal row for dropdown and button
 		var scattererRow = Layout.AddRow();
-		scattererRow.Spacing = 4;
+		scattererRow.Spacing = 0;
 
 		// Add the dropdown control
 		var scattererCs = new ControlSheet();
