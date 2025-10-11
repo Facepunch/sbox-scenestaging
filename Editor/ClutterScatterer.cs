@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using Sandbox;
 using Sandbox.Utility;
-using static Sandbox.ClutterInstance;
 
 namespace Editor;
 
