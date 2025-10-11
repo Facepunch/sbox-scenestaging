@@ -140,45 +140,40 @@ public struct ClutterInstance
 		}
 
 		/// <summary>
-		/// Returns a random object from the list taking it account the weigth of each tiem
+		/// Returns a random object from the list taking it account the weight of each item
 		/// </summary>
 		/// <returns></returns>
 		public ClutterObject? GetRandomObject()
 		{
+			return GetWeightedObject( Game.Random );
+		}
+
+		/// <summary>
+		/// Gets a weighted random object from this layer using a specific random instance
+		/// </summary>
+		public ClutterObject? GetWeightedObject( Random random )
+		{
 			if ( Objects.Count == 0 )
 				return null;
 
-			// Calculate total weight
-			float totalWeight = 0f;
-			foreach ( var clutterObject in Objects )
+			var totalWeight = Objects.Sum( o => o.Weight );
+			if ( totalWeight > 0 )
 			{
-				totalWeight += clutterObject.Weight;
-			}
-
-			if ( totalWeight <= 0f )
-			{
-				// Fallback to equal weights if all weights are 0
-				var randomIndex = Game.Random.Int( 0, Objects.Count - 1 );
-				var randomClutterObject = Objects[randomIndex];
-				return randomClutterObject;
-			}
-
-			// Generate random number between 0 and total weight
-			float randomValue = Game.Random.Float( 0f, totalWeight );
-
-			// Find the object corresponding to this weight
-			float currentWeight = 0f;
-			foreach ( var clutterObject in Objects )
-			{
-				currentWeight += clutterObject.Weight;
-				if ( randomValue <= currentWeight )
+				var randomValue = random.Float( 0f, totalWeight );
+				float currentWeight = 0f;
+				foreach ( var obj in Objects )
 				{
-					return clutterObject;
+					currentWeight += obj.Weight;
+					if ( randomValue <= currentWeight )
+					{
+						return obj;
+					}
 				}
 			}
 
-			// Fallback (should never reach here)
-			return Objects.Last();
+			// Equal weights fallback
+			var index = random.Int( 0, Objects.Count - 1 );
+			return Objects[index];
 		}
 
 		public void AddInstance( ClutterInstance instance )
@@ -198,34 +193,6 @@ public struct ClutterInstance
 		public static void AddTrackerComponent( ClutterInstance? instance )
 		{
 
-		}
-
-		/// <summary>
-		/// Gets a weighted random object from a layer using a specific random instance
-		/// </summary>
-		public static ClutterObject? GetWeightedObject( ClutterLayer layer, Random random )
-		{
-			if ( layer.Objects.Count == 0 )
-				return null;
-
-			var totalWeight = layer.Objects.Sum( o => o.Weight );
-			if ( totalWeight > 0 )
-			{
-				var randomValue = random.Float( 0f, totalWeight );
-				float currentWeight = 0f;
-				foreach ( var obj in layer.Objects )
-				{
-					currentWeight += obj.Weight;
-					if ( randomValue <= currentWeight )
-					{
-						return obj;
-					}
-				}
-			}
-
-			// Equal weights fallback
-			var index = random.Int( 0, layer.Objects.Count - 1 );
-			return layer.Objects[index];
 		}
 
 		/// <summary>
