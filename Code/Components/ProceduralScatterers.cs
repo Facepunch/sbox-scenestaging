@@ -12,7 +12,7 @@ public record struct ScatterContext
 {
 	public SceneTraceResult HitTest;
 	public ClutterLayer Layer;
-	public Dictionary<string, object> ResourceCache;
+	public ClutterResources Resources;
 	public float Density;
 }
 
@@ -125,10 +125,8 @@ public class DefaultScatterer : IProceduralScatterer
 		var scale = Game.Random.Float( MinScale, MaxScale );
 		transform.Scale = Vector3.One * scale;
 
-		// Load and instantiate the object using helper for efficiency
-		var clutterInstance = ClutterLayer.CreateInstance( clutterObject.Value, transform, context.ResourceCache );
-		ClutterHelper.AddTrackerComponent( clutterInstance );
-		return clutterInstance;
+		// Load and instantiate the object
+		return context.Resources.CreateInstance( clutterObject.Value, transform );
 	}
 }
 
@@ -260,10 +258,8 @@ public class PoissonDiskScatterer : IProceduralScatterer
 
 		var transform = new Transform( context.HitTest.HitPosition, rotation, scale );
 
-		// Load and instantiate the object using helper for efficiency
-		var clutterInstance = ClutterLayer.CreateInstance( clutterObject.Value, transform, context.ResourceCache );
-		ClutterHelper.AddTrackerComponent( clutterInstance );
-		return clutterInstance;
+		// Load and instantiate the object
+		return context.Resources.CreateInstance( clutterObject.Value, transform );
 	}
 }
 
@@ -384,8 +380,6 @@ public class SlopeBasedScatterer : IProceduralScatterer
 		transform.Scale = Vector3.One * scale;
 
 		// Load and instantiate the object
-		var clutterInstance = ClutterLayer.CreateInstance(clutterObject.Value, transform, context.ResourceCache );
-		ClutterHelper.AddTrackerComponent( clutterInstance );
-		return clutterInstance;
+		return context.Resources.CreateInstance( clutterObject.Value, transform );
 	}
 }

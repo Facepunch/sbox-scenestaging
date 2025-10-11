@@ -8,7 +8,7 @@ namespace Sandbox;
 /// </summary>
 public sealed class ClutterComponent : Component, Component.ExecuteInEditor
 {
-	[Property] public List<ClutterLayer> Layers { get; set; } = new();
+	[Property] public List<ClutterLayer> Layers { get; set; } = [];
 
 	[Property, Hide]
 	public string SerializedData { get; set; }
@@ -22,8 +22,7 @@ public sealed class ClutterComponent : Component, Component.ExecuteInEditor
 		{
 			try
 			{
-				JsonObject json = JsonNode.Parse( SerializedData ) as JsonObject;
-				if ( json != null )
+				if ( JsonNode.Parse( SerializedData ) is JsonObject json )
 				{
 					ClutterSerializer.Deserialize( this, json );
 				}
@@ -126,7 +125,7 @@ public struct ClutterInstance
 	public class ClutterLayer
 	{
 		public string Name { get; set; } = "New Layer";
-		public List<ClutterObject> Objects { get; set; } = new();
+		public List<ClutterObject> Objects { get; set; } = [];
 		public ClutterComponent Parent { get; private set; }
 		public override string ToString() => Name;
 
@@ -145,153 +144,42 @@ public struct ClutterInstance
 		/// <returns></returns>
 		public ClutterObject? GetRandomObject()
 		{
-			return GetWeightedObject( Game.Random );
-		}
-
-		/// <summary>
-		/// Gets a weighted random object from this layer using a specific random instance
-		/// </summary>
-		public ClutterObject? GetWeightedObject( Random random )
-		{
 			if ( Objects.Count == 0 )
 				return null;
 
 			var totalWeight = Objects.Sum( o => o.Weight );
-			if ( totalWeight > 0 )
+			if ( totalWeight == 0 )
 			{
-				var randomValue = random.Float( 0f, totalWeight );
-				float currentWeight = 0f;
-				foreach ( var obj in Objects )
+				var index = Game.Random.Int( 0, Objects.Count - 1 );
+				return Objects[index];
+			}
+
+			var randomValue = Game.Random.Float( 0f, totalWeight );
+			float currentWeight = 0f;
+			foreach ( var obj in Objects )
+			{
+				currentWeight += obj.Weight;
+				if ( randomValue <= currentWeight )
 				{
-					currentWeight += obj.Weight;
-					if ( randomValue <= currentWeight )
-					{
-						return obj;
-					}
+					return obj;
 				}
 			}
 
-			// Equal weights fallback
-			var index = random.Int( 0, Objects.Count - 1 );
-			return Objects[index];
+			return null;
 		}
+
 
 		public void AddInstance( ClutterInstance instance )
 		{
 			Instances.Add( instance );
 		}
-
-		/// <summary>
-		/// Create a clutter instance from a ClutterObject with optional resource caching
-		/// </summary>
-		public static ClutterInstance? CreateInstance( ClutterObject clutterObject, Transform transform, Dictionary<string, object> resourceCache = null )
-		{
-			return CreateInstance( clutterObject.Path, transform, resourceCache, clutterObject.IsSmall );
-		}
-
-		/// <summary>
-		/// Create a clutter instance from a path with optional resource caching
-		/// </summary>
-		public static ClutterInstance? CreateInstance( string path, Transform transform, Dictionary<string, object> resourceCache = null, bool isSmall = false )
-		{
-			// Try to get from cache first
-			if ( resourceCache != null && resourceCache.TryGetValue( path, out var cachedResource ) )
-			{
-				return CreateInstanceFromResource( cachedResource, transform, isSmall );
-			}
-
-			// Load the resource
-			object resource = TryLoadPrefab( path ) ?? TryLoadModel( path );
-
-			if ( resource is null )
-			{
-				Log.Warning( $"Failed to load resource at path: {path}" );
-				return null;
-			}
-
-			// Cache it
-			CacheResource( path, resource, resourceCache );
-
-			// Create instance
-			return CreateInstanceFromResource( resource, transform, isSmall );
-		}
-
-		private static object TryLoadPrefab( string path )
-		{
-			// Try prefab if path ends with .prefab or has no extension
-			if ( path.EndsWith( ".vmdl", StringComparison.OrdinalIgnoreCase ) )
-				return null;
-
-			return ResourceLibrary.Get<PrefabFile>( path );
-		}
-
-		private static object TryLoadModel( string path )
-		{
-			// Try model if path ends with .vmdl or has no extension (after prefab failed)
-			if ( path.EndsWith( ".prefab", StringComparison.OrdinalIgnoreCase ) )
-				return null;
-
-			return Model.Load( path );
-		}
-
-		private static void CacheResource( string path, object resource, Dictionary<string, object> resourceCache )
-		{
-			if ( resourceCache == null )
-				return;
-
-			resourceCache[path] = resource;
-
-			// Also cache models by their ResourcePath if different
-			if ( resource is Model model && model.ResourcePath != null && model.ResourcePath != path )
-			{
-				resourceCache[model.ResourcePath] = model;
-			}
-		}
-
-		private static ClutterInstance? CreateInstanceFromResource( object resource, Transform transform, bool isSmall )
-		{
-			if ( resource is PrefabFile prefab )
-			{
-				var prefabScene = SceneUtility.GetPrefabScene( prefab );
-				var go = prefabScene.Clone( transform );
-				return new ClutterInstance( go, transform, isSmall );
-			}
-
-			if ( resource is Model model )
-			{
-				return new ClutterInstance( model, transform, isSmall );
-			}
-
-			return null;
-		}
 	}
 
-	/// <summary>
-	/// Helper class for efficient clutter object creation
-	/// </summary>
-	public static class ClutterHelper
+	[Serializable]
+	public struct ClutterObject( string path, float weight = 0.5f, bool isSmall = false )
 	{
-		/// <summary>
-		/// Adds a tracking component to a clutter instance if it's a prefab GameObject
-		/// </summary>
-		public static void AddTrackerComponent( ClutterInstance? instance )
-		{
-
-		}
-	}
-
-	[System.Serializable]
-	public struct ClutterObject
-	{
-		public string Path { get; set; }
-		public float Weight { get; set; }
-		public bool IsSmall { get; set; }
-
-		public ClutterObject( string path, float weight = 0.5f, bool isSmall = false )
-		{
-			Path = path;
-			Weight = weight;
-			IsSmall = isSmall;
-		}
+		public string Path { get; set; } = path;
+		public float Weight { get; set; } = weight;
+		public bool IsSmall { get; set; } = isSmall;
 	}
 }

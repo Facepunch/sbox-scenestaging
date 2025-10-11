@@ -25,7 +25,7 @@ public sealed class ClutterScatterer( Scene scene )
 	private float _brushDensity;
 
 	private List<ClutterLayer> _layers = [];
-	private readonly Dictionary<string, object> _resourceCache = [];
+	private readonly ClutterResources _resources = new();
 	private readonly Dictionary<ClutterLayer, GameObject> _layerParentCache = [];
 
 	/// <summary>
@@ -218,7 +218,7 @@ public sealed class ClutterScatterer( Scene scene )
 			ScatterContext ctx = new()
 			{
 				HitTest = trace,
-				ResourceCache = _resourceCache,
+				Resources = _resources,
 				Density = _useVolume ? _volume!.Density : _brushDensity
 			};
 
@@ -257,7 +257,7 @@ public sealed class ClutterScatterer( Scene scene )
 			{
 				bool matches = inst.ClutterType == ClutterInstance.Type.Model
 					? layer.Objects.Any( o => o.Path == inst.model?.ResourcePath )
-					: layer.Objects.Any( o => _resourceCache.ContainsKey( o.Path ) );
+					: layer.Objects.Any( o => o.Path != null );
 
 				if ( matches )
 				{
@@ -288,37 +288,8 @@ public sealed class ClutterScatterer( Scene scene )
 	/// </summary>
 	private void PreloadResources( IEnumerable<ClutterLayer> layers )
 	{
-		foreach ( var layer in layers )
-		{
-			foreach ( var obj in layer.Objects )
-			{
-				if ( _resourceCache.ContainsKey( obj.Path ) )
-					continue;
-
-				// Try loading as Prefab first
-				var prefab = ResourceLibrary.Get<PrefabFile>( obj.Path );
-				if ( prefab != null )
-				{
-					_resourceCache[obj.Path] = prefab;
-					continue;
-				}
-
-				// Try loading as Model
-				var model = Model.Load( obj.Path );
-				if ( model != null )
-				{
-					_resourceCache[obj.Path] = model;
-
-					// Also cache by ResourcePath if different
-					if ( model.ResourcePath != null && model.ResourcePath != obj.Path )
-						_resourceCache[model.ResourcePath] = model;
-
-					continue;
-				}
-
-				throw new Exception( $"Failed to load resource: {obj.Path}" );
-			}
-		}
+		var paths = layers.SelectMany( l => l.Objects.Select( o => o.Path ) ).Distinct();
+		_resources.Preload( paths );
 	}
 
 	private void EraseInstances( Vector3[] points )
@@ -344,7 +315,7 @@ public sealed class ClutterScatterer( Scene scene )
 				// Check if instance belongs to one of our target layers
 				foreach ( var layer in _layers )
 				{
-					bool isInLayer = layer.Instances?.Any( i => i.InstanceId == inst.InstanceId ) ?? false;
+					bool isInLayer = layer.Instances.Any( i => i.InstanceId == inst.InstanceId );
 					if ( isInLayer )
 					{
 						instancesToErase.Add( inst );
@@ -358,8 +329,6 @@ public sealed class ClutterScatterer( Scene scene )
 			// Volume mode - erase based on generated points
 			foreach ( var layer in _layers )
 			{
-				if ( layer.Instances == null ) continue;
-
 				foreach ( var inst in layer.Instances.ToList() )
 				{
 					bool shouldErase = points.Any( p => (inst.transform.Position - p).Length <= _brushRadius );
@@ -380,7 +349,7 @@ public sealed class ClutterScatterer( Scene scene )
 			// Remove from layers and track which components need serialization
 			foreach ( var layer in _layers )
 			{
-				var removed = layer.Instances?.RemoveAll( i => i.InstanceId == instance.InstanceId ) ?? 0;
+				var removed = layer.Instances.RemoveAll( i => i.InstanceId == instance.InstanceId );
 				if ( removed > 0 )
 				{
 					componentsToSerialize.Add( layer.Parent );
