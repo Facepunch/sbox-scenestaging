@@ -89,15 +89,9 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 		var clutterComponents = _scene.GetAllComponents<ClutterComponent>();
 		foreach ( var clutterComponent in clutterComponents )
 		{
-			if ( clutterComponent?.Layers == null )
-				continue;
-
 			// Register all instances with the grid
 			foreach ( var layer in clutterComponent.Layers )
 			{
-				if ( layer?.Instances == null )
-					continue;
-
 				foreach ( var instance in layer.Instances )
 				{
 					RegisterClutter( instance );
@@ -136,9 +130,6 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 
 			foreach ( var layer in clutterComponent.Layers )
 			{
-				if ( layer?.Instances == null )
-					continue;
-
 				// Find instances that belong to volumes and register them
 				foreach ( var instance in layer.Instances )
 				{
@@ -281,16 +272,13 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 		var clutterComponents = Scene.GetAllComponents<ClutterComponent>();
 		foreach ( var component in clutterComponents )
 		{
-			if ( component.Layers != null )
+			foreach ( var layer in component.Layers )
 			{
-				foreach ( var layer in component.Layers )
-				{
-					layer.Instances?.RemoveAll( instance => myInstanceIds.Contains( instance.InstanceId ) );
-				}
-
-				// Serialize the changes to the component (this will rebuild the serialized data)
-				component.SerializeToProperty();
+				layer.Instances.RemoveAll( instance => myInstanceIds.Contains( instance.InstanceId ) );
 			}
+
+			// Serialize the changes to the component (this will rebuild the serialized data)
+			component.SerializeToProperty();
 		}
 
 		// Clear tracking data
@@ -450,17 +438,14 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 		int maxX = (int)MathF.Floor( bounds.Maxs.x / CellSize );
 		int maxY = (int)MathF.Floor( bounds.Maxs.y / CellSize );
 
-		// Get cells in this range (don't create if missing)
+		// Get cells in this range
 		for ( int x = minX; x <= maxX; x++ )
 		{
 			for ( int y = minY; y <= maxY; y++ )
 			{
 				var cellPos = new Vector2( x, y );
 				var cell = GetCell( cellPos, createIfMissing: true );
-				if ( cell != null )
-				{
-					cells.Add( cell );
-				}
+				cells.Add( cell );
 			}
 		}
 

@@ -69,7 +69,7 @@ public sealed class ClutterComponent : Component, Component.ExecuteInEditor
 	{
 		foreach ( var layer in layers )
 		{
-			layer.Instances?.RemoveAll( i => i.InstanceId == instance.InstanceId );
+			layer.Instances.RemoveAll( i => i.InstanceId == instance.InstanceId );
 		}
 	}
 }

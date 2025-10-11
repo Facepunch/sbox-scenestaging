@@ -100,9 +100,7 @@ internal static class ClutterSerializer
 		var modelPalette = new List<string>();
 		var compressedInstances = new List<CompressedModelInstance>();
 
-		if ( layer.Instances != null )
-		{
-			foreach ( var instance in layer.Instances )
+		foreach ( var instance in layer.Instances )
 			{
 				// Only serialize model instances
 				if ( instance.ClutterType != ClutterInstance.Type.Model || instance.model == null )
@@ -125,16 +123,15 @@ internal static class ClutterSerializer
 				Guid volumeId = Guid.Empty;
 				instanceToVolumeMap?.TryGetValue( instance.InstanceId, out volumeId );
 
-				compressedInstances.Add( new CompressedModelInstance
-				{
-					ModelIndex = modelIndex,
-					Position = instance.transform.Position,
-					Rotation = new Vector4( instance.transform.Rotation.x, instance.transform.Rotation.y, instance.transform.Rotation.z, instance.transform.Rotation.w ),
-					Scale = instance.transform.Scale.x,
-					VolumeId = volumeId,
-					IsSmall = instance.IsSmall
-				} );
-			}
+			compressedInstances.Add( new CompressedModelInstance
+			{
+				ModelIndex = modelIndex,
+				Position = instance.transform.Position,
+				Rotation = new Vector4( instance.transform.Rotation.x, instance.transform.Rotation.y, instance.transform.Rotation.z, instance.transform.Rotation.w ),
+				Scale = instance.transform.Scale.x,
+				VolumeId = volumeId,
+				IsSmall = instance.IsSmall
+			} );
 		}
 
 		// Serialize model palette
@@ -271,10 +268,9 @@ internal static class ClutterSerializer
 	/// </summary>
 	private static void RebuildLayerRuntimeInstances( ClutterLayer layer, List<string> modelPalette, List<CompressedModelInstance> compressedInstances )
 	{
-		layer.Instances ??= [];
 		layer.Instances.Clear();
 
-		if ( compressedInstances == null || compressedInstances.Count == 0 )
+		if ( compressedInstances.Count == 0 )
 			return;
 
 		// Preload all unique models from palette (much faster than loading per-instance)
