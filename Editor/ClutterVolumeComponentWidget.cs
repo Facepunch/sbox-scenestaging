@@ -31,26 +31,19 @@ partial class ClutterVolumeComponentWidget : ComponentEditorWidget
 		sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.SelectedLayers ) ) );
 
 		// Add ScattererName with settings button
-		var scattererRow = Layout.Row();
-		scattererRow.Spacing = 0;
+		scattererControlWidget = sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.ScattererName ) ) );
 
-		var scattererSheet = new ControlSheet();
-		scattererSheet.Margin = 0;
-		scattererControlWidget = scattererSheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.ScattererName ) ) );
-		scattererRow.Add( scattererSheet );
-
-		if ( Volume != null && !string.IsNullOrEmpty( Volume.ScattererName ) )
+		if ( Volume != null && !string.IsNullOrEmpty( Volume.ScattererName ) && scattererControlWidget != null )
 		{
-			var settingsButton = new Button( "", "settings" )
+			var settingsButton = new IconButton( "settings" )
 			{
 				ToolTip = "Configure Scatterer Settings",
-				Clicked = () => OpenScattererSettings( Volume )
+				OnClick = () => OpenScattererSettings( Volume ),
+				FixedWidth = 20,
+				FixedHeight = 20
 			};
-			scattererRow.Add( settingsButton );
+			scattererControlWidget.Layout.Add( settingsButton );
 		}
-
-		scattererRow.AddStretchCell();
-		sheet.AddLayout( scattererRow );
 		sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.Density ) ) );
 		sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.Scale ) ) );
 		Layout.Add( sheet );
