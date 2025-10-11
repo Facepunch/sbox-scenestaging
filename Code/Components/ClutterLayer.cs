@@ -18,13 +18,17 @@ public class ClutterLayer
 	}
 
 	/// <summary>
+	/// Returns true if this layer has any objects
+	/// </summary>
+	public bool HasObjects => Objects.Count > 0;
+
+	/// <summary>
 	/// Returns a random object from the list taking it account the weight of each item
 	/// </summary>
-	/// <returns></returns>
-	public ClutterObject? GetRandomObject()
+	public ClutterObject GetRandomObject()
 	{
 		if ( Objects.Count == 0 )
-			return null;
+			return new ClutterObject();
 
 		var totalWeight = Objects.Sum( o => o.Weight );
 		if ( totalWeight == 0 )
@@ -44,7 +48,8 @@ public class ClutterLayer
 			}
 		}
 
-		return null;
+		// Fallback to last object (should rarely happen due to floating point precision)
+		return Objects[^1];
 	}
 
 	public void AddInstance( ClutterInstance instance )

@@ -16,7 +16,6 @@ public sealed class ClutterComponent : Component, Component.ExecuteInEditor
 
 	protected override void OnEnabled()
 	{
-		// Deserialize when component is enabled (before scene systems initialize)
 		if ( !string.IsNullOrEmpty( SerializedData ) )
 		{
 			try
