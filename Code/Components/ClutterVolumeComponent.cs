@@ -235,6 +235,28 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 	}
 
 	/// <summary>
+	/// Gets or creates a parent GameObject for the specified layer.
+	/// Layer parent GameObjects are children of this volume's GameObject.
+	/// </summary>
+	public GameObject GetOrCreateLayerParent( ClutterLayer layer )
+	{
+		// Look for existing layer parent by name
+		var existingParent = GameObject.Children.FirstOrDefault( c => c.Name == layer.Name );
+		if ( existingParent != null )
+		{
+			return existingParent;
+		}
+
+		// Create new layer parent GameObject
+		var parentGameObject = Scene.CreateObject();
+		parentGameObject.Name = layer.Name;
+		parentGameObject.SetParent( GameObject, false );
+		parentGameObject.Tags.Add( "clutter_layer" );
+
+		return parentGameObject;
+	}
+
+	/// <summary>
 	/// Draw the BBox gizmo of the volume in the editor
 	/// </summary>
 	protected override void DrawGizmos()

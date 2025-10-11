@@ -25,7 +25,6 @@ public sealed class ClutterScatterer( Scene scene )
 
 	private List<ClutterLayer> _layers = [];
 	private readonly ClutterResources _resources = new();
-	private readonly Dictionary<ClutterLayer, GameObject> _layerParentCache = [];
 
 	/// <summary>
 	/// Sets the procedural scatterer to use for generating points and scattering objects
@@ -132,34 +131,14 @@ public sealed class ClutterScatterer( Scene scene )
 		// Preload
 		PreloadResources( _layers );
 
-		// Create parent game objects
+		// Ensure layer parent GameObjects exist if using a volume
 		if ( _volume != null )
 		{
 			foreach ( var layer in _layers )
 			{
-
-				if ( _layerParentCache.ContainsKey( layer ) ) continue;
-
-				// If we already have a parent object in the scene, use that
-				var parent = _volume.GameObject.Children.FirstOrDefault( c => c.Name == layer.Name );
-				if ( parent != null )
-				{
-					_layerParentCache[layer] = parent;
-				}
-				else
-				{
-					// If not, create one
-					var parentGameObject = _volume.Scene.CreateObject();
-					parentGameObject.Name = layer.Name;
-					parentGameObject.SetParent( _volume.GameObject, false );
-					parentGameObject.Tags.Add( "clutter_layer" );
-
-					_layerParentCache[layer] = parentGameObject;
-				}
+				_volume.GetOrCreateLayerParent( layer );
 			}
 		}
-
-
 
 		// Scatter
 		var allInstances = ScatterPoints( points );
