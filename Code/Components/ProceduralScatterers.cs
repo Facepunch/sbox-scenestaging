@@ -1,6 +1,7 @@
 using static Sandbox.ClutterInstance;
 
 using System.Text.Json.Nodes;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Sandbox;
 
@@ -125,7 +126,7 @@ public class DefaultScatterer : IProceduralScatterer
 		transform.Scale = Vector3.One * scale;
 
 		// Load and instantiate the object using helper for efficiency
-		var clutterInstance = ClutterHelper.CreateClutterObject( clutterObject.Value, transform, context.ResourceCache );
+		var clutterInstance = ClutterLayer.CreateInstance( clutterObject.Value, transform, context.ResourceCache );
 		ClutterHelper.AddTrackerComponent( clutterInstance );
 		return clutterInstance;
 	}
@@ -260,7 +261,7 @@ public class PoissonDiskScatterer : IProceduralScatterer
 		var transform = new Transform( context.HitTest.HitPosition, rotation, scale );
 
 		// Load and instantiate the object using helper for efficiency
-		var clutterInstance = ClutterHelper.CreateClutterObject( clutterObject.Value, transform, context.ResourceCache );
+		var clutterInstance = ClutterLayer.CreateInstance( clutterObject.Value, transform, context.ResourceCache );
 		ClutterHelper.AddTrackerComponent( clutterInstance );
 		return clutterInstance;
 	}
@@ -383,7 +384,7 @@ public class SlopeBasedScatterer : IProceduralScatterer
 		transform.Scale = Vector3.One * scale;
 
 		// Load and instantiate the object
-		var clutterInstance = ClutterHelper.CreateClutterObject( clutterObject.Value, transform, context.ResourceCache );
+		var clutterInstance = ClutterLayer.CreateInstance(clutterObject.Value, transform, context.ResourceCache );
 		ClutterHelper.AddTrackerComponent( clutterInstance );
 		return clutterInstance;
 	}

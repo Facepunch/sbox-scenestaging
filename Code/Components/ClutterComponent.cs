@@ -180,6 +180,90 @@ public struct ClutterInstance
 		{
 			Instances.Add( instance );
 		}
+
+		/// <summary>
+		/// Create a clutter instance from a ClutterObject with optional resource caching
+		/// </summary>
+		public static ClutterInstance? CreateInstance( ClutterObject clutterObject, Transform transform, Dictionary<string, object> resourceCache = null )
+		{
+			return CreateInstance( clutterObject.Path, transform, resourceCache, clutterObject.IsSmall );
+		}
+
+		/// <summary>
+		/// Create a clutter instance from a path with optional resource caching
+		/// </summary>
+		public static ClutterInstance? CreateInstance( string path, Transform transform, Dictionary<string, object> resourceCache = null, bool isSmall = false )
+		{
+			// Try to get from cache first
+			if ( resourceCache != null && resourceCache.TryGetValue( path, out var cachedResource ) )
+			{
+				return CreateInstanceFromResource( cachedResource, transform, isSmall );
+			}
+
+			// Load the resource
+			object resource = TryLoadPrefab( path ) ?? TryLoadModel( path );
+
+			if ( resource is null )
+			{
+				Log.Warning( $"Failed to load resource at path: {path}" );
+				return null;
+			}
+
+			// Cache it
+			CacheResource( path, resource, resourceCache );
+
+			// Create instance
+			return CreateInstanceFromResource( resource, transform, isSmall );
+		}
+
+		private static object TryLoadPrefab( string path )
+		{
+			// Try prefab if path ends with .prefab or has no extension
+			if ( path.EndsWith( ".vmdl", StringComparison.OrdinalIgnoreCase ) )
+				return null;
+
+			return ResourceLibrary.Get<PrefabFile>( path );
+		}
+
+		private static object TryLoadModel( string path )
+		{
+			// Try model if path ends with .vmdl or has no extension (after prefab failed)
+			if ( path.EndsWith( ".prefab", StringComparison.OrdinalIgnoreCase ) )
+				return null;
+
+			return Model.Load( path );
+		}
+
+		private static void CacheResource( string path, object resource, Dictionary<string, object> resourceCache )
+		{
+			if ( resourceCache == null )
+				return;
+
+			resourceCache[path] = resource;
+
+			// Also cache models by their ResourcePath if different
+			if ( resource is Model model && model.ResourcePath != null && model.ResourcePath != path )
+			{
+				resourceCache[model.ResourcePath] = model;
+			}
+		}
+
+		private static ClutterInstance? CreateInstanceFromResource( object resource, Transform transform, bool isSmall )
+		{
+			if ( resource is PrefabFile prefab )
+			{
+				var prefabScene = SceneUtility.GetPrefabScene( prefab );
+				var go = prefabScene.Clone( transform );
+				return new ClutterInstance( go, transform, isSmall );
+			}
+
+			if ( resource is Model model )
+			{
+				return new ClutterInstance( model, transform, isSmall );
+			}
+
+			return null;
+		}
 	}
 
 	/// <summary>
@@ -193,120 +277,6 @@ public struct ClutterInstance
 		public static void AddTrackerComponent( ClutterInstance? instance )
 		{
 
-		}
-
-		/// <summary>
-		/// Create objects efficiently using cached resources from a ClutterObject
-		/// </summary>
-		public static ClutterInstance? CreateClutterObject( ClutterObject clutterObject, Transform transform, Dictionary<string, object> resourceCache = null )
-		{
-			return CreateClutterObject( clutterObject.Path, transform, resourceCache, clutterObject.IsSmall );
-		}
-
-		/// <summary>
-		/// Create objects efficiently using cached resources from a path
-		/// </summary>
-		public static ClutterInstance? CreateClutterObject( string path, Transform transform, Dictionary<string, object> resourceCache = null, bool isSmall = false )
-		{
-			// Use cache if available
-			if ( resourceCache != null && resourceCache.TryGetValue( path, out var cachedResource ) )
-			{
-				if ( cachedResource is PrefabFile prefab )
-				{
-					var prefabScene = SceneUtility.GetPrefabScene( prefab );
-					var go = prefabScene.Clone( transform );
-					return new ClutterInstance( go, transform, isSmall );
-				}
-				else if ( cachedResource is Model model )
-				{
-					return new ClutterInstance( model, transform, isSmall );
-				}
-			}
-			else if ( resourceCache != null )
-			{
-				// Log cache miss for debugging
-				Log.Info( $"Cache miss for: {path}. Cache has {resourceCache.Count} entries" );
-				if ( resourceCache.Count > 0 && resourceCache.Count < 20 )
-				{
-					Log.Info( $"Cache keys: {string.Join( ", ", resourceCache.Keys )}" );
-				}
-			}
-			else
-			{
-				// Fallback to loading directly - check file extension to determine type
-				if ( path.EndsWith( ".prefab", StringComparison.OrdinalIgnoreCase ) )
-				{
-					var prefab = ResourceLibrary.Get<PrefabFile>( path );
-					if ( prefab != null )
-					{
-						// Add to cache if cache is provided
-						if ( resourceCache != null )
-							resourceCache[path] = prefab;
-
-						var prefabScene = SceneUtility.GetPrefabScene( prefab );
-						var go = prefabScene.Clone( transform );
-						return new ClutterInstance( go, transform, isSmall );
-					}
-					else
-					{
-						Log.Warning( $"Failed to load prefab: {path}" );
-					}
-				}
-				else if ( path.EndsWith( ".vmdl", StringComparison.OrdinalIgnoreCase ) )
-				{
-					// Try loading the model
-					var model = ResourceLibrary.Get<Model>( path );
-
-					if ( model != null )
-					{
-						// Add to cache if cache is provided
-						if ( resourceCache != null )
-						{
-							resourceCache[path] = model;
-							// Also cache by ResourcePath if different
-							if ( model.ResourcePath != null && model.ResourcePath != path )
-							{
-								resourceCache[model.ResourcePath] = model;
-							}
-						}
-
-						return new ClutterInstance( model, transform, isSmall );
-					}
-					else
-					{
-						Log.Warning( $"Failed to load model: {path}" );
-					}
-				}
-				else
-				{
-					// Try both types if extension is unclear
-					var prefab = ResourceLibrary.Get<PrefabFile>( path );
-					if ( prefab != null )
-					{
-						// Add to cache if cache is provided
-						if ( resourceCache != null )
-							resourceCache[path] = prefab;
-
-						var prefabScene = SceneUtility.GetPrefabScene( prefab );
-						var go = prefabScene.Clone( transform );
-						return new ClutterInstance( go, transform, isSmall );
-					}
-
-					var model = ResourceLibrary.Get<Model>( path );
-					if ( model != null )
-					{
-						// Add to cache if cache is provided
-						if ( resourceCache != null )
-							resourceCache[path] = model;
-
-						return new ClutterInstance( model, transform, isSmall );
-					}
-				}
-			}
-
-			// Failed to load resource
-			Log.Warning( $"ClutterHelper.CreateClutterObject failed to load resource at path: {path}" );
-			return null;
 		}
 	}
 
