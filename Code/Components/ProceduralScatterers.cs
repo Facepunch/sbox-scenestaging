@@ -5,15 +5,31 @@ namespace Sandbox;
 /// <summary>
 /// This is what is given to custom scatter functions.
 /// </summary>
-public record struct ScatterContext
+public class ScatterContext
 {
-	public SceneTraceResult HitTest;
-	public ClutterLayer Layer;
-	public ClutterResources Resources;
-	public float Density;
+	public SceneTraceResult HitTest { get; init; }
+	public ClutterLayer Layer { get; init; }
+	public ClutterResources Resources { get; init; }
+	public float Density { get; init; }
+
+	// Surface info
+	public Vector3 Position => HitTest.HitPosition;
+	public Vector3 Normal => HitTest.Normal;
+	public float SlopeAngle => Normal.Angle( Vector3.Up );
+
+	// Layer helpers
+	public bool CanScatter => Layer.HasObjects;
+	public ClutterObject RandomObject => Layer.GetRandomObject();
+
+	// Convenience methods
+	public ClutterInstance? CreateInstance( ClutterObject obj, Transform transform )
+		=> Resources.CreateInstance( obj, transform );
+
+	public Transform CreateTransform( Vector3? position = null, Rotation? rotation = null, float scale = 1f )
+		=> new( position ?? Position, rotation ?? Rotation.Identity, scale );
 }
 
-public class IProceduralScatterer
+public class ScattererBase
 {
 	public virtual ClutterInstance? Scatter( ScatterContext context ) { return null; }
 
@@ -84,7 +100,7 @@ public class IProceduralScatterer
 /// <summary>
 /// Basic scatter that picks a random object from the layer. Can align to surface and have a slope threshold as well as a random scale.
 /// </summary>
-public class DefaultScatterer : IProceduralScatterer
+public class DefaultScatterer : ScattererBase
 {
 	[Property] public float MinScale { get; set; } = 0.8f;
 	[Property] public float MaxScale { get; set; } = 1.2f;
@@ -95,42 +111,30 @@ public class DefaultScatterer : IProceduralScatterer
 
 	public override ClutterInstance? Scatter( ScatterContext context )
 	{
-		// Use density to randomly skip some spawn points
 		if ( Game.Random.Float( 0f, 1f ) > context.Density )
 			return null;
 
-		// Don't spawn on steep slopes
-		var normal = context.HitTest.Normal;
-		var angle = normal.Angle( Vector3.Up );
-		if ( angle > MaxSlope )
+		if ( context.SlopeAngle > MaxSlope )
 			return null;
 
-		// Get random object from layer
-		var clutterObject = context.Layer.GetRandomObject();
-		if ( clutterObject == null )
+		if ( !context.CanScatter )
 			return null;
 
-		var transform = new Transform( context.HitTest.HitPosition );
+		var transform = context.CreateTransform( scale: Game.Random.Float( MinScale, MaxScale ) );
 
-		// Align to surface if enabled
 		if ( AlignToSurface )
 		{
-			transform.Rotation.SlerpTo( Rotation.LookAt( Vector3.Forward, normal ), 0.5f );
+			transform.Rotation.SlerpTo( Rotation.LookAt( Vector3.Forward, context.Normal ), 0.5f );
 		}
 
-		// Random scale
-		var scale = Game.Random.Float( MinScale, MaxScale );
-		transform.Scale = Vector3.One * scale;
-
-		// Load and instantiate the object
-		return context.Resources.CreateInstance( clutterObject.Value, transform );
+		return context.CreateInstance( context.RandomObject, transform );
 	}
 }
 
 /// <summary>
 /// Poisson disc pattern scatterer keeping a uniform distance between each point
 /// </summary>
-public class PoissonDiskScatterer : IProceduralScatterer
+public class PoissonDiskScatterer : ScattererBase
 {
 	[Property] public float MinDistance { get; set; } = 50f;
 	[Property] public int MaxAttempts { get; set; } = 30;
@@ -235,28 +239,26 @@ public class PoissonDiskScatterer : IProceduralScatterer
 			return null;
 
 		// Simple scatter - just place object at hit position
-		var clutterObject = context.Layer.GetRandomObject();
-		if ( clutterObject == null )
+		if ( !context.CanScatter )
 			return null;
 
-		var scale = Game.Random.Float( MinScale, MaxScale );
 		var rotation = Rotation.Identity;
 
 		// Align to surface normal if enabled (Z is up)
 		if ( AlignToSurface )
 		{
 			// Create rotation that aligns Z-axis with surface normal
-			rotation = Rotation.LookAt( Vector3.Forward, context.HitTest.Normal );
+			rotation = Rotation.LookAt( Vector3.Forward, context.Normal );
 		}
 
 		// Apply Z rotation
 		var zRotation = ZRotation.Evaluate( Game.Random.Float( 0f, 1f ), Game.Random.Float( 0f, 1f ) );
 		rotation *= Rotation.FromAxis( Vector3.Up, zRotation );
 
-		var transform = new Transform( context.HitTest.HitPosition, rotation, scale );
+		var transform = context.CreateTransform( rotation: rotation, scale: Game.Random.Float( MinScale, MaxScale ) );
 
 		// Load and instantiate the object
-		return context.Resources.CreateInstance( clutterObject.Value, transform );
+		return context.CreateInstance( context.RandomObject, transform );
 	}
 }
 
@@ -264,7 +266,7 @@ public class PoissonDiskScatterer : IProceduralScatterer
 /// <summary>
 /// A more advanced scatterer which allows to use elevation and slop level as control points. it can transition between layers depending on slope angle.
 /// </summary>
-public class SlopeBasedScatterer : IProceduralScatterer
+public class SlopeBasedScatterer : ScattererBase
 {
 	[Property, Title( "Slope Angle Threshold" )]
 	public float SlopeAngle { get; set; } = 30f;
@@ -313,9 +315,7 @@ public class SlopeBasedScatterer : IProceduralScatterer
 	public override ClutterInstance? Scatter( ScatterContext context )
 	{
 		// Calculate slope angle from surface normal (Z is up)
-		var normal = context.HitTest.Normal;
-		var angle = normal.Angle( Vector3.Up );
-		var normalizedAngle = angle / 90f;
+		var normalizedAngle = context.SlopeAngle / 90f;
 
 		// Apply density over slope curve
 		var slopeDensity = DensityOverSlope.Evaluate( normalizedAngle, Game.Random.Float( 0f, 1f ) );
@@ -324,7 +324,7 @@ public class SlopeBasedScatterer : IProceduralScatterer
 		// Apply altitude-based density if enabled
 		if ( UseAltitude )
 		{
-			var altitude = context.HitTest.HitPosition.z;
+			var altitude = context.Position.z;
 			var normalizedAltitude = MathX.Remap( altitude, MinAltitude, MaxAltitude, 0f, 1f, true );
 			var altitudeDensity = DensityOverAltitude.Evaluate( normalizedAltitude, Game.Random.Float( 0f, 1f ) );
 			finalDensity *= altitudeDensity;
@@ -335,28 +335,24 @@ public class SlopeBasedScatterer : IProceduralScatterer
 			return null;
 
 		// Determine which layer to use based on slope
-		var targetLayer = angle > SlopeAngle ? SteepSlopeLayer : GentleSlopeLayer;
+		var targetLayer = context.SlopeAngle > SlopeAngle ? SteepSlopeLayer : GentleSlopeLayer;
 
 		// Only scatter if current layer matches the target layer
 		if ( targetLayer == null || context.Layer != targetLayer )
 			return null;
 
 		// Get random object from the matched layer
-		var clutterObject = context.Layer.GetRandomObject();
-		if ( clutterObject == null )
+		if ( !context.CanScatter )
 			return null;
 
-		var transform = new Transform( context.HitTest.HitPosition );
-
-		// Align to surface if enabled
+		var rotation = Rotation.Identity;
 		if ( AlignToSurface )
 		{
-			transform.Rotation = Rotation.LookAt( Vector3.Forward, normal );
+			rotation = Rotation.LookAt( Vector3.Forward, context.Normal );
 		}
 
-		// Apply Z rotation
 		var zRotation = ZRotation.Evaluate( Game.Random.Float( 0f, 1f ), Game.Random.Float( 0f, 1f ) );
-		transform.Rotation *= Rotation.FromAxis( Vector3.Up, zRotation );
+		rotation *= Rotation.FromAxis( Vector3.Up, zRotation );
 
 		// Calculate base scale
 		var baseScale = Game.Random.Float( MinScale, MaxScale );
@@ -365,18 +361,17 @@ public class SlopeBasedScatterer : IProceduralScatterer
 		var slopeScaleMultiplier = ScaleOverSlope.Evaluate( normalizedAngle, Game.Random.Float( 0f, 1f ) );
 		var scale = baseScale * slopeScaleMultiplier;
 
-		// Apply altitude-based scale if enabled
 		if ( UseAltitude )
 		{
-			var altitude = context.HitTest.HitPosition.z;
+			var altitude = context.Position.z;
 			var normalizedAltitude = MathX.Remap( altitude, MinAltitude, MaxAltitude, 0f, 1f, true );
 			var altitudeScaleMultiplier = ScaleOverAltitude.Evaluate( normalizedAltitude, Game.Random.Float( 0f, 1f ) );
 			scale *= altitudeScaleMultiplier;
 		}
 
-		transform.Scale = Vector3.One * scale;
+		var transform = context.CreateTransform( rotation: rotation, scale: scale );
 
 		// Load and instantiate the object
-		return context.Resources.CreateInstance( clutterObject.Value, transform );
+		return context.CreateInstance( context.RandomObject, transform );
 	}
 }
