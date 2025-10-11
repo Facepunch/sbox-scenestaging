@@ -110,16 +110,19 @@ partial class ClutterVolumeComponentWidget : ComponentEditorWidget
 			WindowFlags = WindowFlags.Dialog,
 			WindowTitle = $"{volume.ScattererName} Settings",
 			DeleteOnClose = true,
-			MinimumSize = new Vector2( 400, 300 ),
+			MinimumWidth = 250,
+			MaximumWidth = 350,
 
 			Layout = Layout.Column()
 		};
-		dialog.Layout.Margin = 16;
-		dialog.Layout.Spacing = 8;
+		dialog.Layout.Margin = 8;
+		dialog.Layout.Spacing = 4;
+		dialog.SetStyles( "background-color: #2b2b2b;" );
 
 		// Serialize the scatterer directly using TypeLibrary
 		var scattererSo = volume.Scatterer.GetSerialized();
 		var settingsSheet = new ControlSheet();
+		settingsSheet.Margin = 8;
 		settingsSheet.AddObject( scattererSo );
 
 		dialog.Layout.Add( settingsSheet, 1 );
