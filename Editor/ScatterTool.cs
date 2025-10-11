@@ -525,21 +525,28 @@ public class ScatterToolOverlay : WidgetWindow
 		Layout.AddSeparator();
 
 		// Scatterer type
+		var scattererLabel = new Label( "Scatterer Type" );
+		scattererLabel.SetStyles( "font-weight: bold;" );
+		Layout.Add( scattererLabel );
+
+		// Create horizontal row for dropdown and button
+		var scattererRow = Layout.AddRow();
+		scattererRow.Spacing = 4;
+
+		// Add the dropdown control
 		var scattererCs = new ControlSheet();
-		var scattererControl = scattererCs.AddRow( so.GetProperty( nameof( InspectorSettings.ScattererName ) ) );
+		scattererCs.AddRow( so.GetProperty( nameof( InspectorSettings.ScattererName ) ) );
+		scattererRow.Add( scattererCs, 1 );
 
-		// Add settings button inline with the control
-		if ( scattererControl != null )
+		// Add settings button
+		var settingsButton = new IconButton( "settings" )
 		{
-			var scattererSettingsButton = new IconButton( "settings" )
-			{
-				StatusTip = "Configure scatterer settings",
-				OnClick = () => OpenScattererSettings()
-			};
-			scattererControl.AddTrailingIcon( scattererSettingsButton );
-		}
-
-		Layout.Add( scattererCs );
+			StatusTip = "Configure scatterer settings",
+			OnClick = () => OpenScattererSettings(),
+			FixedWidth = 24,
+			FixedHeight = 24
+		};
+		scattererRow.Add( settingsButton );
 
 		Layout.AddSeparator();
 
