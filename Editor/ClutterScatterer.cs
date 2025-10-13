@@ -282,7 +282,7 @@ public sealed class ClutterScatterer( Scene scene )
 				_brushPosition + new Vector3( _brushRadius )
 			);
 
-			var overlappingCells = system.GetOverlappingCells( brushBounds );
+			var overlappingCells = system.GetOverlappingCells( brushBounds, createIfMissing: false );
 			foreach ( var cell in overlappingCells )
 			{
 				foreach ( var inst in cell.GetAllInstances() )
