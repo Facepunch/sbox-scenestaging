@@ -164,7 +164,7 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 			// Avoid subscribing multiple time
 			if ( !MoniteredTerrains.Contains( terrain ) )
 			{
-				terrain.OnTerrainModified += OnTerrainModified;
+				terrain.OnTerrainModified += ( flags, region ) => OnTerrainModified( terrain, flags, region );
 				MoniteredTerrains.Add( terrain );
 			}
 		}
@@ -173,15 +173,12 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	/// <summary>
 	/// Triggered when a terrain has been modified. We can reposition the clutter to follow the terrain
 	/// </summary>
-	private void OnTerrainModified( Terrain.SyncFlags flags, RectInt region )
+	private void OnTerrainModified( Terrain terrain, Terrain.SyncFlags flags, RectInt region )
 	{
 		// Only respond to height changes
 		if ( !flags.HasFlag( Terrain.SyncFlags.Height ) )
 			return;
 
-		// Todo: we dont know which terrain has triggered the update. We should fix that.
-		// NOTE: temporarely use the first monitored terrain (we need terrain info for world space conversion)
-		var terrain = MoniteredTerrains.FirstOrDefault();
 		if ( terrain?.Storage == null )
 			return;
 
@@ -245,7 +242,6 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	public void ClearVolume( ClutterVolumeComponent volume )
 	{
 		var volumeId = volume.Id;
-		var activeLayers = volume.GetActiveLayers();
 
 		// Get instances from volume map
 		var volumeInstances = GetVolumeInstances( volumeId );
@@ -417,15 +413,6 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	}
 
 	/// <summary>
-	/// Gets instances near a world position by querying the cell at that position
-	/// </summary>
-	public List<ClutterInstance> GetNearbyInstances( Vector3 worldPosition )
-	{
-		var cell = GetCellFromWorldPosition( worldPosition );
-		return cell == null ? [] : cell.GetAllInstances();
-	}
-
-	/// <summary>
 	/// Gets the cells that overlap with the given bounds
 	/// </summary>
 	public List<ClutterCell> GetOverlappingCells( BBox bounds, bool createIfMissing = true )
@@ -453,14 +440,6 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 		}
 
 		return cells;
-	}
-
-	/// <summary>
-	/// Removes all instances within the specified bounds from the grid
-	/// </summary>
-	public void ClearInstancesInBounds( BBox bounds )
-	{
-		// TODO: Implement this method
 	}
 
 	/// <summary>
@@ -506,15 +485,6 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 		}
 
 		return WorldGrid[hash];
-	}
-
-	/// <summary>
-	/// Returns a cell at the given world position. Creates it if it doesn't exist.
-	/// </summary>
-	internal ClutterCell GetCellFromWorldPosition( Vector3 worldPosition )
-	{
-		var cellPosition = GetCellPositionFromWorld( worldPosition );
-		return GetCell( cellPosition );
 	}
 
 	/// <summary>
