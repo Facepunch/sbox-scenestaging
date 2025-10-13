@@ -104,18 +104,24 @@ public class ClutterResources
 	{
 		return resource switch
 		{
-			PrefabFile prefab => CreatePrefabInstanceData( prefab, transform, isSmall, parent ),
+			PrefabFile prefab => CreatePrefabInstance( prefab, transform, isSmall, parent ),
 			Model model => new ClutterInstance( model, transform, isSmall ),
 			_ => null
 		};
 	}
 
 	/// <summary>
-	/// Creates a clutter instance data for a prefab. The actual GameObject instantiation happens later on the main thread.
+	/// Creates a clutter instance from a prefab by instantiating it immediately.
 	/// </summary>
-	private ClutterInstance CreatePrefabInstanceData( PrefabFile prefab, Transform transform, bool isSmall, GameObject? parent )
+	private ClutterInstance CreatePrefabInstance( PrefabFile prefab, Transform transform, bool isSmall, GameObject? parent )
 	{
-		// Store prefab reference and parent for later instantiation on main thread
-		return new ClutterInstance( prefab, transform, isSmall, parent );
+		var gameObject = SceneUtility.GetPrefabScene( prefab ).Clone( transform );
+
+		if ( parent != null )
+			gameObject.SetParent( parent, true );
+
+		gameObject.Tags.Add( "scattered" );
+
+		return new ClutterInstance( gameObject, transform, isSmall );
 	}
 }

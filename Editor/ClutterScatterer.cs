@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using Sandbox;
 using Sandbox.Utility;
 
@@ -139,12 +138,6 @@ public sealed class ClutterScatterer( Scene scene )
 		// Scatter
 		var allInstances = ScatterPoints( points );
 
-		// Instantiate any deferred prefabs on the main thread
-		foreach ( var instance in allInstances )
-		{
-			instance.InstantiatePrefab();
-		}
-
 		// Register new instances with clutter system, layers and volume
 		ProcessInstances( system, allInstances );
 	}
@@ -171,11 +164,10 @@ public sealed class ClutterScatterer( Scene scene )
 	/// <returns></returns>
 	private List<ClutterInstance> ScatterPoints( Vector3[] points )
 	{
-		var instances = new ConcurrentBag<ClutterInstance>();
+		var instances = new List<ClutterInstance>();
 
-		Parallel.For( 0, points.Length, i =>
+		foreach ( var point in points )
 		{
-			var point = points[i];
 			var trace = _scene.Trace
 				.Ray( point + Vector3.Up * 1000, point + Vector3.Down * 1000 )
 				.UseRenderMeshes( true )
@@ -184,7 +176,7 @@ public sealed class ClutterScatterer( Scene scene )
 				.Run();
 
 			if ( !trace.Hit )
-				return;
+				continue;
 
 			ScatterContext ctx = new()
 			{
@@ -206,9 +198,9 @@ public sealed class ClutterScatterer( Scene scene )
 					break;
 				}
 			}
-		} );
+		}
 
-		return [.. instances];
+		return instances;
 	}
 
 	/// <summary>
