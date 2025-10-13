@@ -11,14 +11,14 @@ namespace Editor;
 public sealed class ClutterScatterer( Scene scene )
 {
 	private Scene _scene = scene;
-	private ScattererBase _scatterer;
+	private ScattererBase _scatterer = new DefaultScatterer();
 
 	private bool _isErase;
 	private bool _shouldClear;
 	private bool _useVolume;
 	private bool _useBrush;
 
-	private ClutterVolumeComponent _volume;
+	private ClutterVolumeComponent? _volume;
 	private Vector3 _brushPosition;
 	private float _brushRadius;
 	private float _brushDensity;
@@ -96,27 +96,29 @@ public sealed class ClutterScatterer( Scene scene )
 	/// </summary>
 	public void Run()
 	{
+		var system = _scene.GetSystem<ClutterSystem>();
+
 		Vector3[] points = _useVolume
-				? (_scatterer?.GeneratePoints( _volume!.GetScatterBounds(), _volume.Density ).ToArray() ?? [])
+				? _scatterer.GeneratePoints( _volume!.GetScatterBounds(), _volume.Density ).ToArray()
 				: GenerateBrushPoints();
 
 		// For erase mode, we only need layers
 		if ( _isErase )
 		{
-			EraseInstances( points );
+			EraseInstances( system, points );
 			return;
 		}
 
-		// For scatter mode, we need both scatterer and layers
-		if ( _scatterer is null || _layers.Count == 0 )
+		// For scatter mode, we need layers
+		if ( _layers.Count == 0 )
 		{
-			Log.Warning( "ClutterScatterer: Missing scatterer or layers" );
+			Log.Warning( "ClutterScatterer: Missing layers" );
 			return;
 		}
 
-		if ( _shouldClear && _volume is not null )
+		if ( _shouldClear && _useVolume )
 		{
-			_scene.GetSystem<ClutterSystem>()?.ClearVolume( _volume );
+			system.ClearVolume( _volume! );
 		}
 
 		if ( points.Length == 0 )
@@ -126,33 +128,32 @@ public sealed class ClutterScatterer( Scene scene )
 		PreloadResources( _layers );
 
 		// Ensure layer parent GameObjects exist if using a volume
-		if ( _volume != null )
+		if ( _useVolume )
 		{
 			foreach ( var layer in _layers )
 			{
-				_volume.GetOrCreateLayerParent( layer );
+				_volume!.GetOrCreateLayerParent( layer );
 			}
 		}
 
 		// Scatter
 		var allInstances = ScatterPoints( points );
 
+		// Instantiate any deferred prefabs on the main thread
+		foreach ( var instance in allInstances )
+		{
+			instance.InstantiatePrefab();
+		}
+
 		// Register new instances with clutter system, layers and volume
-		ProcessInstances( allInstances );
+		ProcessInstances( system, allInstances );
 	}
 
 	/// <summary>
 	/// Basic position generator for a brush
 	/// </summary>
-	/// <returns></returns>
 	private Vector3[] GenerateBrushPoints()
 	{
-		// If no scatterer provided, return just the brush center point (for erase operations)
-		if ( _scatterer == null )
-		{
-			return [_brushPosition];
-		}
-
 		var bounds = new BBox(
 			_brushPosition - new Vector3( _brushRadius ),
 			_brushPosition + new Vector3( _brushRadius ) );
@@ -197,7 +198,8 @@ public sealed class ClutterScatterer( Scene scene )
 				if ( !layer.HasObjects )
 					continue;
 
-				var instance = _scatterer.Scatter( ctx with { Layer = layer } );
+				var layerParent = _useVolume ? _volume!.GetOrCreateLayerParent( layer ) : null;
+				var instance = _scatterer.Scatter( ctx with { Layer = layer, LayerParent = layerParent } );
 				if ( instance is { } valid )
 				{
 					instances.Add( valid );
@@ -213,12 +215,8 @@ public sealed class ClutterScatterer( Scene scene )
 	/// After scattering new instances, we need to update the book keeping of the clutter associations. Volumes, Clutter and Cells(ClutterSystem).
 	/// This will register all newly created instances with the clutter system and the layers and volume.
 	/// </summary>
-	/// <param name="instances"></param>
-	private void ProcessInstances( List<ClutterInstance> instances )
+	private void ProcessInstances( ClutterSystem system, List<ClutterInstance> instances )
 	{
-		var system = _scene.GetSystem<ClutterSystem>();
-		if ( system == null ) return;
-
 		var instancesByLayer = _layers.ToDictionary( l => l, _ => new List<ClutterInstance>() );
 
 		foreach ( var inst in instances )
@@ -245,9 +243,9 @@ public sealed class ClutterScatterer( Scene scene )
 			foreach ( var inst in layerInstances )
 				layer.AddInstance( inst );
 
-			if ( _volume != null )
+			if ( _useVolume )
 			{
-				system.RegisterVolumeInstances( _volume.Id, layerInstances );
+				system.RegisterVolumeInstances( _volume!.Id, layerInstances );
 				layer.Parent.SerializeData();
 			}
 		}
@@ -266,11 +264,8 @@ public sealed class ClutterScatterer( Scene scene )
 		_resources.Preload( paths );
 	}
 
-	private void EraseInstances( Vector3[] points )
+	private void EraseInstances( ClutterSystem system, Vector3[] points )
 	{
-		var system = _scene.GetSystem<ClutterSystem>();
-		if ( system == null ) return;
-
 		var componentsToSerialize = new HashSet<ClutterComponent>();
 		var instancesToErase = new List<ClutterInstance>();
 
@@ -342,10 +337,10 @@ public sealed class ClutterScatterer( Scene scene )
 		}
 
 		// Update volume instances if using a volume
-		if ( _volume != null )
+		if ( _useVolume )
 		{
 			system.RegisterVolumeInstances(
-				_volume.Id,
+				_volume!.Id,
 				[.. _layers.SelectMany( l => l.Instances )]
 			);
 		}

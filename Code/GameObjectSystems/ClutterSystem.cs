@@ -496,7 +496,7 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	/// <summary>
 	/// Returns a cell at the given cell position. Creates it if it doesn't exist and createIfMissing is true.
 	/// </summary>
-	internal ClutterCell GetCell( Vector2 cellPosition, bool createIfMissing = true )
+	internal ClutterCell? GetCell( Vector2 cellPosition, bool createIfMissing = true )
 	{
 		var hash = Hash( cellPosition );
 		if ( !WorldGrid.ContainsKey( hash ) )

@@ -11,6 +11,7 @@ public record class ScatterContext
 	public ClutterLayer Layer { get; init; }
 	public ClutterResources Resources { get; init; }
 	public float Density { get; init; }
+	public GameObject? LayerParent { get; init; }
 
 	// Surface info
 	public Vector3 Position => HitTest.HitPosition;
@@ -22,7 +23,7 @@ public record class ScatterContext
 
 	// Convenience methods
 	public ClutterInstance? CreateInstance( ClutterObject obj, Transform transform )
-		=> Resources.CreateInstance( obj, transform );
+		=> Resources.CreateInstance( obj, transform, LayerParent );
 
 	public Transform CreateTransform( Vector3? position = null, Rotation? rotation = null, float scale = 1f )
 		=> new( position ?? Position, rotation ?? Rotation.Identity, scale );

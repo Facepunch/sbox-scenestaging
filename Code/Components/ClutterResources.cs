@@ -10,36 +10,31 @@ public class ClutterResources
 	/// <summary>
 	/// Creates a clutter instance from a ClutterObject
 	/// </summary>
-	public ClutterInstance? CreateInstance( ClutterObject clutterObject, Transform transform )
+	public ClutterInstance? CreateInstance( ClutterObject clutterObject, Transform transform, GameObject? parent = null )
 	{
-		return CreateInstance( clutterObject.Path, transform, clutterObject.IsSmall );
+		return CreateInstance( clutterObject.Path, transform, clutterObject.IsSmall, parent );
 	}
 
 	/// <summary>
-	/// Creates a clutter instance from a path
+	/// Creates a clutter instance from a path. Returns null if the resource fails to load.
 	/// </summary>
-	public ClutterInstance? CreateInstance( string path, Transform transform, bool isSmall = false )
+	public ClutterInstance? CreateInstance( string path, Transform transform, bool isSmall = false, GameObject? parent = null )
 	{
-		var resource = LoadResource( path );
-		if ( resource == null )
-			return null;
-
-		return CreateInstanceFromResource( resource, transform, isSmall );
+		var resource = TryLoadResource( path );
+		return resource != null ? CreateInstanceFromResource( resource, transform, isSmall, parent ) : null;
 	}
 
 	/// <summary>
 	/// Loads a resource from the given path, using cache if available
 	/// </summary>
-	public object LoadResource( string path )
+	public object? TryLoadResource( string path )
 	{
 		// Try to get from cache first
 		if ( _cache.TryGetValue( path, out var cachedResource ) )
-		{
 			return cachedResource;
-		}
 
 		// Load the resource
-		object resource = TryLoadPrefab( path ) ?? TryLoadModel( path );
+		var resource = TryLoadPrefab( path ) ?? TryLoadModel( path );
 
 		if ( resource == null )
 		{
@@ -47,9 +42,8 @@ public class ClutterResources
 			return null;
 		}
 
-		// Cache it
+		// Cache and return
 		CacheResource( path, resource );
-
 		return resource;
 	}
 
@@ -60,7 +54,7 @@ public class ClutterResources
 	{
 		foreach ( var path in paths.Where( p => !_cache.ContainsKey( p ) ) )
 		{
-			LoadResource( path );
+			TryLoadResource( path );
 		}
 	}
 
@@ -106,13 +100,22 @@ public class ClutterResources
 		}
 	}
 
-	private ClutterInstance? CreateInstanceFromResource( object resource, Transform transform, bool isSmall )
+	private ClutterInstance? CreateInstanceFromResource( object resource, Transform transform, bool isSmall, GameObject? parent )
 	{
 		return resource switch
 		{
-			PrefabFile prefab => new ClutterInstance( SceneUtility.GetPrefabScene( prefab ).Clone( transform ), transform, isSmall ),
+			PrefabFile prefab => CreatePrefabInstanceData( prefab, transform, isSmall, parent ),
 			Model model => new ClutterInstance( model, transform, isSmall ),
 			_ => null
 		};
+	}
+
+	/// <summary>
+	/// Creates a clutter instance data for a prefab. The actual GameObject instantiation happens later on the main thread.
+	/// </summary>
+	private ClutterInstance CreatePrefabInstanceData( PrefabFile prefab, Transform transform, bool isSmall, GameObject? parent )
+	{
+		// Store prefab reference and parent for later instantiation on main thread
+		return new ClutterInstance( prefab, transform, isSmall, parent );
 	}
 }
