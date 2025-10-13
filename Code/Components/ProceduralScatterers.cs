@@ -17,7 +17,6 @@ public record class ScatterContext
 	public Vector3 Normal => HitTest.Normal;
 	public float SlopeAngle => Normal.Angle( Vector3.Up );
 
-	// Layer helpers
 	public bool CanScatter => Layer.HasObjects;
 	public ClutterObject RandomObject => Layer.GetRandomObject();
 

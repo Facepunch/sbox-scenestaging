@@ -237,7 +237,7 @@ public class ClutterLayersList : ListView
 				layer.Instances.Clear();
 
 				// Serialize the changes
-				clutterComponent.SerializeToProperty();
+				clutterComponent.SerializeData();
 
 				Log.Info( $"Purged all instances from layer '{layer.Name}'" );
 				BuildItems();

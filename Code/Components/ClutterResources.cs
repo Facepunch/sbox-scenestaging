@@ -58,12 +58,9 @@ public class ClutterResources
 	/// </summary>
 	public void Preload( IEnumerable<string> paths )
 	{
-		foreach ( var path in paths )
+		foreach ( var path in paths.Where( p => !_cache.ContainsKey( p ) ) )
 		{
-			if ( !_cache.ContainsKey( path ) )
-			{
-				LoadResource( path );
-			}
+			LoadResource( path );
 		}
 	}
 
@@ -111,18 +108,11 @@ public class ClutterResources
 
 	private ClutterInstance? CreateInstanceFromResource( object resource, Transform transform, bool isSmall )
 	{
-		if ( resource is PrefabFile prefab )
+		return resource switch
 		{
-			var prefabScene = SceneUtility.GetPrefabScene( prefab );
-			var go = prefabScene.Clone( transform );
-			return new ClutterInstance( go, transform, isSmall );
-		}
-
-		if ( resource is Model model )
-		{
-			return new ClutterInstance( model, transform, isSmall );
-		}
-
-		return null;
+			PrefabFile prefab => new ClutterInstance( SceneUtility.GetPrefabScene( prefab ).Clone( transform ), transform, isSmall ),
+			Model model => new ClutterInstance( model, transform, isSmall ),
+			_ => null
+		};
 	}
 }

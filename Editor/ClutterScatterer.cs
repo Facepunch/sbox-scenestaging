@@ -92,19 +92,18 @@ public sealed class ClutterScatterer( Scene scene )
 	}
 
 	/// <summary>
-	/// Executes the built scatter operation, instances will be registered with the clutter syste
+	/// Executes the built scatter operation, instances will be registered with the clutter system
 	/// </summary>
 	public void Run()
 	{
-		// For erase mode, we only need layers
-		if ( _isErase )
-		{
-			// Generate points for erase pattern (or use brush center if no scatterer)
-			Vector3[] pointss = _useVolume
+		Vector3[] points = _useVolume
 				? (_scatterer?.GeneratePoints( _volume!.GetScatterBounds(), _volume.Density ).ToArray() ?? [])
 				: GenerateBrushPoints();
 
-			EraseInstances( pointss );
+		// For erase mode, we only need layers
+		if ( _isErase )
+		{
+			EraseInstances( points );
 			return;
 		}
 
@@ -119,11 +118,6 @@ public sealed class ClutterScatterer( Scene scene )
 		{
 			_scene.GetSystem<ClutterSystem>()?.ClearVolume( _volume );
 		}
-
-		// Generate positions
-		Vector3[] points = _useVolume
-			? _scatterer.GeneratePoints( _volume!.GetScatterBounds(), _volume.Density ).ToArray()
-			: GenerateBrushPoints();
 
 		if ( points.Length == 0 )
 			return;
@@ -164,11 +158,9 @@ public sealed class ClutterScatterer( Scene scene )
 			_brushPosition + new Vector3( _brushRadius ) );
 
 		// Keep the points within the brush radius
-		var points = _scatterer.GeneratePoints( bounds, _brushDensity )
+		return _scatterer.GeneratePoints( bounds, _brushDensity )
 			.Where( p => (p - _brushPosition).Length <= _brushRadius )
 			.ToArray();
-
-		return points;
 	}
 
 	/// <summary>
@@ -219,7 +211,7 @@ public sealed class ClutterScatterer( Scene scene )
 
 	/// <summary>
 	/// After scattering new instances, we need to update the book keeping of the clutter associations. Volumes, Clutter and Cells(ClutterSystem).
-	/// This will register all newly created instances wit the clutter system and the layers and volume.
+	/// This will register all newly created instances with the clutter system and the layers and volume.
 	/// </summary>
 	/// <param name="instances"></param>
 	private void ProcessInstances( List<ClutterInstance> instances )
@@ -256,7 +248,7 @@ public sealed class ClutterScatterer( Scene scene )
 			if ( _volume != null )
 			{
 				system.RegisterVolumeInstances( _volume.Id, layerInstances );
-				layer.Parent.SerializeToProperty();
+				layer.Parent.SerializeData();
 			}
 		}
 	}
@@ -266,7 +258,11 @@ public sealed class ClutterScatterer( Scene scene )
 	/// </summary>
 	private void PreloadResources( IEnumerable<ClutterLayer> layers )
 	{
-		var paths = layers.SelectMany( l => l.Objects.Select( o => o.Path ) ).Distinct();
+		var paths = layers
+			.SelectMany( l => l.Objects )
+			.Select( o => o.Path )
+			.Distinct();
+
 		_resources.Preload( paths );
 	}
 
@@ -278,26 +274,33 @@ public sealed class ClutterScatterer( Scene scene )
 		var componentsToSerialize = new HashSet<ClutterComponent>();
 		var instancesToErase = new List<ClutterInstance>();
 
-		// For brush mode, get instances directly from the ClutterSystem within brush radius
+		// For brush mode, get instances from all cells that overlap with brush bounds
 		if ( _useBrush )
 		{
-			var nearbyInstances = system.GetNearbyInstances( _brushPosition );
+			var brushBounds = new BBox(
+				_brushPosition - new Vector3( _brushRadius ),
+				_brushPosition + new Vector3( _brushRadius )
+			);
 
-			foreach ( var inst in nearbyInstances )
+			var overlappingCells = system.GetOverlappingCells( brushBounds );
+			foreach ( var cell in overlappingCells )
 			{
-				// Check if instance is within brush radius
-				var distance = Vector3.DistanceBetween( _brushPosition, inst.transform.Position );
-				if ( distance > _brushRadius )
-					continue;
-
-				// Check if instance belongs to one of our target layers
-				foreach ( var layer in _layers )
+				foreach ( var inst in cell.GetAllInstances() )
 				{
-					bool isInLayer = layer.Instances.Any( i => i.InstanceId == inst.InstanceId );
-					if ( isInLayer )
+					// Check if instance is within brush radius
+					var distance = Vector3.DistanceBetween( _brushPosition, inst.transform.Position );
+					if ( distance > _brushRadius )
+						continue;
+
+					// Check if instance belongs to one of our target layers
+					foreach ( var layer in _layers )
 					{
-						instancesToErase.Add( inst );
-						break;
+						bool isInLayer = layer.Instances.Any( i => i.InstanceId == inst.InstanceId );
+						if ( isInLayer )
+						{
+							instancesToErase.Add( inst );
+							break;
+						}
 					}
 				}
 			}
@@ -332,10 +335,10 @@ public sealed class ClutterScatterer( Scene scene )
 				{
 					componentsToSerialize.Add( layer.Parent );
 				}
-
-				// Unregister from grid
-				system.UnregisterClutter( instance );
 			}
+
+			// Unregister from grid
+			system.UnregisterClutter( instance );
 		}
 
 		// Update volume instances if using a volume
@@ -350,7 +353,7 @@ public sealed class ClutterScatterer( Scene scene )
 		// Serialize all modified components
 		foreach ( var component in componentsToSerialize )
 		{
-			component.SerializeToProperty();
+			component.SerializeData();
 		}
 	}
 }

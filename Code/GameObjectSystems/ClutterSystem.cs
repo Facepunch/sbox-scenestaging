@@ -277,8 +277,8 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 				layer.Instances.RemoveAll( instance => myInstanceIds.Contains( instance.InstanceId ) );
 			}
 
-			// Serialize the changes to the component (this will rebuild the serialized data)
-			component.SerializeToProperty();
+			// Serialize the changes to the component
+			component.SerializeData();
 		}
 
 		// Clear tracking data
@@ -426,9 +426,9 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	}
 
 	/// <summary>
-	/// Gets the cells that overlap with the given bounds as a span
+	/// Gets the cells that overlap with the given bounds
 	/// </summary>
-	public List<ClutterCell> GetOverlappingCells( BBox bounds )
+	public List<ClutterCell> GetOverlappingCells( BBox bounds, bool createIfMissing = true )
 	{
 		var cells = new List<ClutterCell>();
 
@@ -444,8 +444,11 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 			for ( int y = minY; y <= maxY; y++ )
 			{
 				var cellPos = new Vector2( x, y );
-				var cell = GetCell( cellPos, createIfMissing: true );
-				cells.Add( cell );
+				var cell = GetCell( cellPos, createIfMissing );
+				if ( cell != null )
+				{
+					cells.Add( cell );
+				}
 			}
 		}
 

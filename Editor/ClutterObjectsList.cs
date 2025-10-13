@@ -518,7 +518,7 @@ public class ClutterObjectsList : ListView
 		// Update the cell instances and rebuild
 		// Get the component from the serialized object to access its scene
 		var clutterComponent = _serializedObject?.Targets?.FirstOrDefault() as ClutterComponent;
-		clutterComponent.SerializeToProperty();
+		clutterComponent.SerializeData();
 	}
 
 	private void ShowItemContext( object obj )

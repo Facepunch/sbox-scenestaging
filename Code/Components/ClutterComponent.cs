@@ -14,36 +14,31 @@ public sealed class ClutterComponent : Component, Component.ExecuteInEditor
 
 	public override string ToString() => GameObject.Name;
 
-	protected override void OnEnabled()
-	{
-		if ( !string.IsNullOrEmpty( SerializedData ) )
-		{
-			try
-			{
-				if ( JsonNode.Parse( SerializedData ) is JsonObject json )
-				{
-					ClutterSerializer.Deserialize( this, json );
-				}
-			}
-			catch ( Exception ex )
-			{
-				Log.Warning( $"Failed to deserialize ClutterComponent: {ex.Message}" );
-			}
-		}
-	}
-
-	protected override void OnDestroy()
-	{
-		SerializeToProperty();
-	}
+	protected override void OnEnabled() => DeserializeData();
+	protected override void OnDestroy() => SerializeData();
 
 	/// <summary>
 	/// Serializes the current state to the SerializedData property
 	/// </summary>
-	public void SerializeToProperty()
+	public void SerializeData()
 	{
 		var json = ClutterSerializer.Serialize( this );
 		SerializedData = json.ToJsonString();
+	}
+
+	private void DeserializeData()
+	{
+		try
+		{
+			if ( JsonNode.Parse( SerializedData ) is JsonObject json )
+			{
+				ClutterSerializer.Deserialize( this, json );
+			}
+		}
+		catch ( Exception ex )
+		{
+			Log.Warning( $"Failed to deserialize ClutterComponent: {ex.Message}" );
+		}
 	}
 
 	/// <summary>

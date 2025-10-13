@@ -55,6 +55,8 @@ public class InspectorSettings
 		}
 	}
 
+	private ScattererBase _scatterer;
+
 	[Property]
 	public ScattererBase Scatterer
 	{
@@ -66,11 +68,8 @@ public class InspectorSettings
 		}
 	}
 
-	private ScattererBase _scatterer;
-
 	public InspectorSettings()
 	{
-		// Load scatterer from cookie
 		var savedScattererType = EditorCookie.Get<string>( CookiePrefix + "ScattererType", null );
 		if ( !string.IsNullOrEmpty( savedScattererType ) )
 		{
@@ -115,7 +114,6 @@ public sealed class ScatterTool : EditorTool
 {
 	private bool _dragging = false;
 	internal InspectorSettings _settings = new();
-	private float _lastScatterTime = 0f;
 	private IDisposable _undoScope;
 	private ScatterToolOverlay _overlay;
 	private Dictionary<string, object> _globalResourceCache = new();
@@ -133,11 +131,9 @@ public sealed class ScatterTool : EditorTool
 		_overlay?.Close();
 		_overlay = null;
 
-		// Clean up brush preview
 		_previewObject?.Delete();
 		_previewObject = null;
 
-		// Clear caches to prevent memory leaks
 		_globalResourceCache.Clear();
 		_assetBoundsCache.Clear();
 
@@ -147,24 +143,20 @@ public sealed class ScatterTool : EditorTool
 
 	public override void OnUpdate()
 	{
-		// Temporarily toggle erase mode when Ctrl is held (like terrain tool)
 		var ctlrHeld = Gizmo.IsCtrlPressed;
 		if ( Gizmo.IsCtrlPressed && !_settings.EraseMode )
 		{
 			_settings.EraseMode = true;
 		}
 
-		// Draw brush preview - this also captures mouse events to prevent selection
 		DrawBrushPreview();
 
-		// Create an invisible hitbox to capture all mouse events and prevent entity selection
+		// Hitbox to capture all mouse events and prevent entity selection
 		Gizmo.Hitbox.BBox( BBox.FromPositionAndSize( Vector3.Zero, 999999 ) );
 
-		// Use the gizmo system to capture mouse events and prevent object selection
 		if ( Gizmo.IsLeftMouseDown )
 		{
 			bool shouldSculpt = !_dragging || !Application.CursorDelta.IsNearZeroLength;
-
 			if ( shouldSculpt )
 			{
 				_dragging = true;
@@ -198,17 +190,12 @@ public sealed class ScatterTool : EditorTool
 
 		var brushRadius = _settings.BrushSize * 50f;
 
-		// Set brush preview style - different colors for scatter vs erase
+		// Set brush color, red for erase, blue for scatter
 		var color = _settings.EraseMode ? Color.FromBytes( 250, 150, 150 ) : Color.FromBytes( 150, 150, 250 );
 		color.a = _settings.BrushOpacity;
 
-		// Get the selected brush texture from the terrain system
-		var brush = Editor.TerrainEditor.TerrainEditorTool.Brush;
-
-		// Position slightly above the surface to avoid z-fighting
+		var brush = TerrainEditorTool.Brush;
 		var previewPosition = tr.HitPosition + tr.Normal * 1f;
-
-		// Create rotation to align circle with surface normal
 		var surfaceRotation = Rotation.LookAt( tr.Normal );
 
 		_previewObject.RenderLayer = SceneRenderLayer.OverlayWithDepth;
@@ -227,15 +214,6 @@ public sealed class ScatterTool : EditorTool
 
 	void OnPaintUpdate()
 	{
-		// Use opacity to control scatter/erase rate
-		var actionInterval = 1.0f / Math.Max( 0.1f, _settings.BrushOpacity * 10f );
-		var currentTime = Time.Now;
-
-		if ( currentTime - _lastScatterTime < actionInterval )
-			return;
-
-		_lastScatterTime = currentTime;
-
 		var tr = Trace.UseRenderMeshes( true ).WithTag( "solid" ).WithoutTags( "scattered_object" ).Run();
 		if ( !tr.Hit )
 			return;
@@ -243,20 +221,17 @@ public sealed class ScatterTool : EditorTool
 		var brushRadius = _settings.BrushSize * 50f;
 		var brushCenter = tr.HitPosition;
 
-		// Handle erasing mode
 		if ( _settings.EraseMode )
 		{
-			// Get layers to erase from
-			var layersToErase = new List<ClutterLayer>();
+			List<ClutterLayer> layersToErase = [];
 
-			if ( _settings.SelectedClutterLayers != null && _settings.SelectedClutterLayers.Count > 0 )
+			// Erase only from those layers
+			if ( _settings.SelectedClutterLayers.Count > 0 )
 			{
-				// Specific layers selected - erase only from those layers
 				layersToErase.AddRange( _settings.SelectedClutterLayers );
 			}
 			else
 			{
-				// Nothing selected - erase from all layers in all components
 				var allComponents = Scene.GetAllComponents<ClutterComponent>();
 				foreach ( var component in allComponents )
 				{
@@ -276,7 +251,7 @@ public sealed class ScatterTool : EditorTool
 		}
 
 		// Scattering mode - requires at least one selected layer
-		if ( _settings.SelectedClutterLayers == null || _settings.SelectedClutterLayers.Count == 0 )
+		if ( _settings.SelectedClutterLayers.Count == 0 )
 		{
 			Log.Warning( "Please select at least one Clutter Layer to scatter objects" );
 			return;
@@ -284,12 +259,10 @@ public sealed class ScatterTool : EditorTool
 
 		var layersToUse = _settings.SelectedClutterLayers;
 
-		// Use ClutterScatterer API
 		var scatterer = new ClutterScatterer( Scene )
 			.WithBrush( brushCenter, brushRadius, _settings.BrushOpacity )
 			.WithLayers( layersToUse );
 
-		// Add procedural scatterer if available
 		if ( _settings.Scatterer != null )
 		{
 			scatterer.WithScatterer( _settings.Scatterer );
@@ -310,15 +283,12 @@ public sealed class ScatterTool : EditorTool
 
 		foreach ( var component in serializedComponents )
 		{
-			component.SerializeToProperty();
+			component.SerializeData();
 		}
 	}
 
 	void OnPaintEnded()
 	{
-		Log.Info( "Paint End" );
-
-		// Close undo scope to finalize the undoable action
 		_undoScope?.Dispose();
 		_undoScope = null;
 	}
@@ -573,11 +543,8 @@ public class ScatterToolOverlay : WidgetWindow
 		var scatterer = Tool._settings.Scatterer;
 		if ( scatterer == null ) return;
 
-		// Save settings when inspector is opened (in case user modifies and doesn't close tool properly)
-		// We'll hook into the inspector's OnDestroy or update cycle
 		Tool._settings.SaveScattererSettings();
 
-		// Set the scatterer as the inspector object
 		EditorUtility.InspectorObject = scatterer;
 	}
 }
