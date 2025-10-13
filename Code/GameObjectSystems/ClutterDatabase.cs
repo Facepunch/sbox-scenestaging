@@ -127,10 +127,13 @@ internal class ClutterDatabase
 
 					// Update position to new terrain height
 					transform.Position = trace.HitPosition;
+					instance.transform = transform;
 
 					// Update the instance in the tier list
-					instance.transform = transform;
 					tierInstances[i] = instance;
+
+					// Update the instance in all layers that contain it
+					UpdateInstanceInLayers( instance );
 				}
 
 				renderBatch[instance.model][i] = transform;
@@ -144,5 +147,28 @@ internal class ClutterDatabase
 	public Dictionary<Model, Transform[]> GetRenderBatches( int tier )
 	{
 		return renderbatches[tier];
+	}
+
+	/// <summary>
+	/// Updates an instance in all layers that contain it
+	/// </summary>
+	private void UpdateInstanceInLayers( ClutterInstance updatedInstance )
+	{
+		var clutterComponents = _scene.GetAllComponents<ClutterComponent>();
+		foreach ( var component in clutterComponents )
+		{
+			foreach ( var layer in component.Layers )
+			{
+				// Find and update the instance in the layer by InstanceId
+				for ( int i = 0; i < layer.Instances.Count; i++ )
+				{
+					if ( layer.Instances[i].InstanceId == updatedInstance.InstanceId )
+					{
+						layer.Instances[i] = updatedInstance;
+						break;
+					}
+				}
+			}
+		}
 	}
 }
