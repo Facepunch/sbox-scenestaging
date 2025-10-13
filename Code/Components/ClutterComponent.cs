@@ -58,15 +58,4 @@ public sealed class ClutterComponent : Component, Component.ExecuteInEditor
 			instance.gameObject.Destroy();
 		}
 	}
-
-	/// <summary>
-	/// Removes an instance from the given layers by InstanceId
-	/// </summary>
-	public static void RemoveInstanceFromLayers( ClutterInstance instance, List<ClutterLayer> layers )
-	{
-		foreach ( var layer in layers )
-		{
-			layer.Instances.RemoveAll( i => i.InstanceId == instance.InstanceId );
-		}
-	}
 }

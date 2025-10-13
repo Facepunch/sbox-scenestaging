@@ -5,7 +5,7 @@ namespace Sandbox;
 /// <summary>
 /// This is what is given to custom scatter functions.
 /// </summary>
-public class ScatterContext
+public record class ScatterContext
 {
 	public SceneTraceResult HitTest { get; init; }
 	public ClutterLayer Layer { get; init; }
