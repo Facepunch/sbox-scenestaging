@@ -29,9 +29,9 @@ public record class ScatterContext
 		=> new( position ?? Position, rotation ?? Rotation.Identity, scale );
 }
 
-public class ScattererBase
+public abstract class ScattererBase
 {
-	public virtual ClutterInstance? Scatter( ScatterContext context ) { return null; }
+	public abstract ClutterInstance? Scatter( ScatterContext context );
 
 	/// <summary>
 	/// Default implementation generates random points within bounds based on density.
