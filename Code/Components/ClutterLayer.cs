@@ -1,21 +1,35 @@
 namespace Sandbox;
 
+
+/// <summary>
+/// Each clutter instance is sorted into a layer for organizational purposes. Each layer can be drawn/erased separately.
+/// </summary>
 [Serializable]
-public class ClutterLayer
+public class ClutterLayer( ClutterComponent parent )
 {
 	public string Name { get; set; } = "New Layer";
+
+	/// <summary>
+	/// List of objects that can be scattered in this layer
+	/// </summary>
 	public List<ClutterObject> Objects { get; set; } = [];
-	public ClutterComponent Parent { get; private set; }
+
+	/// <summary>
+	/// The owner of this layer
+	/// </summary>
+	public ClutterComponent Parent { get; private set; } = parent;
+
+	/// <summary>
+	/// Used for display name
+	/// </summary>
+	/// <returns></returns>
 	public override string ToString() => Name;
 
-	// not serialized
+	/// <summary>
+	/// Transient runtime instances. not serialized
+	/// </summary>
 	[Hide]
 	public List<ClutterInstance> Instances = [];
-
-	public ClutterLayer( ClutterComponent parent )
-	{
-		Parent = parent;
-	}
 
 	/// <summary>
 	/// Returns true if this layer has any objects

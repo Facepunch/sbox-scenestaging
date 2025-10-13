@@ -63,7 +63,7 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 	}
 
 	/// <summary>
-	/// Serialized settings for the procedural scatterer
+	/// Serialized settings for the procedural scatterer, this can store any data the scatterer wants
 	/// </summary>
 	[Property, Hide]
 	public JsonObject ScattererSettings { get; set; }
@@ -126,7 +126,7 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 
 			_settingsHaveBeenLoaded = true;
 		}
-		catch ( System.Exception ex )
+		catch ( Exception ex )
 		{
 			Log.Warning( $"[{GameObject?.Name ?? "ClutterVolume"}] Failed to deserialize scatterer settings: {ex.Message}\n{ex.StackTrace}" );
 		}

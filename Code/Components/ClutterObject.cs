@@ -1,5 +1,8 @@
 namespace Sandbox;
 
+/// <summary>
+/// Represents a single type of object that can be scattered in the world
+/// </summary>
 [Serializable]
 public struct ClutterObject
 {
