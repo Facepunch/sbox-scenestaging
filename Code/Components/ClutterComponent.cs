@@ -26,6 +26,9 @@ public sealed class ClutterComponent : Component, Component.ExecuteInEditor
 		SerializedData = json.ToJsonString();
 	}
 
+	/// <summary>
+	/// Deserializes the clutter data
+	/// </summary>
 	private void DeserializeData()
 	{
 		try
