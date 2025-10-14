@@ -38,6 +38,7 @@
           "Priority": 1,
           "RenderExcludeTags": "",
           "RenderTags": "",
+          "RenderTexture": null,
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
           "ZFar": 10000,
@@ -651,7 +652,7 @@
             "$compiler": "texture",
             "$source": "rendertexture",
             "data": {
-              "Asset": "textures/rendertextures/rendertexture.rtt"
+              "Asset": "textures/rendertextures/rendertexture.rtex"
             },
             "compiled": null
           },
@@ -977,6 +978,7 @@
           "Priority": 1,
           "RenderExcludeTags": "",
           "RenderTags": "",
+          "RenderTexture": "textures/rendertextures/rendertexture.rtex",
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
           "ZFar": 10000,
