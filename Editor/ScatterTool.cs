@@ -270,21 +270,7 @@ public sealed class ScatterTool : EditorTool
 
 		scatterer.Run();
 
-		// Serialize the components that own these layers (brush mode needs manual serialization)
-		var serializedComponents = new HashSet<ClutterComponent>();
-		foreach ( var layer in layersToUse )
-		{
-			var owningComponent = GetComponentForLayer( layer );
-			if ( owningComponent != null )
-			{
-				serializedComponents.Add( owningComponent );
-			}
-		}
-
-		foreach ( var component in serializedComponents )
-		{
-			component.SerializeData();
-		}
+		// Serialization now happens automatically through ClutterSystem metadata
 	}
 
 	void OnPaintEnded()

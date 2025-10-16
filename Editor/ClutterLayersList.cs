@@ -236,8 +236,7 @@ public class ClutterLayersList : ListView
 				// Clear the instances list
 				layer.Instances.Clear();
 
-				// Serialize the changes
-				clutterComponent.SerializeData();
+				// Serialization now happens automatically through ClutterSystem metadata
 
 				Log.Info( $"Purged all instances from layer '{layer.Name}'" );
 				BuildItems();

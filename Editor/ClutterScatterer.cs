@@ -238,7 +238,7 @@ public sealed class ClutterScatterer( Scene scene )
 			if ( _useVolume )
 			{
 				system.RegisterVolumeInstances( _volume!.Id, layerInstances );
-				layer.Parent.SerializeData();
+				// Serialization now happens automatically through ClutterSystem metadata
 			}
 		}
 	}
@@ -337,10 +337,6 @@ public sealed class ClutterScatterer( Scene scene )
 			);
 		}
 
-		// Serialize all modified components
-		foreach ( var component in componentsToSerialize )
-		{
-			component.SerializeData();
-		}
+		// Serialization now happens automatically through ClutterSystem metadata
 	}
 }
