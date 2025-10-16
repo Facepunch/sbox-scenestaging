@@ -309,19 +309,34 @@ internal static class ClutterSerializer
 	}
 
 	/// <summary>
-	/// Builds a mapping of instance positions to VolumeIds from the serialized data.
+	/// Builds a mapping of instance positions to VolumeIds from scene metadata.
 	/// This is used to rebuild volume instance lists after scene load.
 	/// </summary>
 	public static Dictionary<Vector3, Guid> GetInstanceVolumeMapping( ClutterComponent clutterComponent )
 	{
 		var mapping = new Dictionary<Vector3, Guid>();
 
-		if ( string.IsNullOrEmpty( clutterComponent.SerializedData ) )
+		// Get metadata from scene
+		var sceneFile = clutterComponent.Scene?.Source as SceneFile;
+		if ( sceneFile?.SceneProperties == null )
 			return mapping;
 
 		try
 		{
-			var json = JsonNode.Parse( clutterComponent.SerializedData ) as JsonObject;
+			// Navigate to metadata
+			if ( !sceneFile.SceneProperties.TryGetPropertyValue( "Metadata", out var metadataNode ) || metadataNode is not JsonObject metadata )
+				return mapping;
+
+			// Get ClutterSystem data
+			if ( !metadata.TryGetPropertyValue( "ClutterSystem_data", out var dataNode ) )
+				return mapping;
+
+			var dataString = dataNode?.GetValue<string>();
+			if ( string.IsNullOrEmpty( dataString ) )
+				return mapping;
+
+			// Parse the clutter data
+			var json = JsonNode.Parse( dataString ) as JsonObject;
 			if ( json == null )
 				return mapping;
 
