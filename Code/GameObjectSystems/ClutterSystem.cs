@@ -4,7 +4,7 @@ namespace Sandbox;
 /// The clutter system holds a world grid which indexes every clutter instance into its own cell optimized for rendering.
 /// It monitors terrain changes to update instances as needed. It is the main API to interact with clutter instances at runtime
 /// </summary>
-public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.ExecuteInEditor
+public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.ExecuteInEditor, ISceneMetadata
 {
 	private readonly Scene _scene;
 	private bool _hasInitialized = false;
@@ -508,5 +508,15 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	private static string Hash( Vector2 position )
 	{
 		return position.GetHashCode().ToString();
+	}
+
+	public Dictionary<string, string> GetMetadata()
+	{
+		return new()
+		{
+			{ "testing", "test" },
+			{ "ClutterSystem_CellCount", Count.ToString() },
+			{ "ClutterSystem_VolumeCount", VolumeInstances.Count.ToString() }
+		};
 	}
 }
