@@ -54,8 +54,61 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 		if ( !_hasInitialized )
 		{
 			_hasInitialized = true;
+			LoadFromMetadata();
 			RebuildClutterMapping();
 			SubscribeToTerrains();
+		}
+	}
+
+	/// <summary>
+	/// Loads clutter data from scene metadata stored in the scene file
+	/// </summary>
+	private void LoadFromMetadata()
+	{
+		// Get the scene file source
+		var sceneFile = _scene.Source as SceneFile;
+
+		// Navigate to the Metadata section in scene properties
+		if ( !sceneFile.SceneProperties.TryGetPropertyValue( "Metadata", out var metadataNode ) || metadataNode is not JsonObject metadata )
+		{
+			Log.Info( "ClutterSystem: No metadata found in scene properties" );
+			return;
+		}
+
+		// Extract the ClutterSystem_data key
+		if ( !metadata.TryGetPropertyValue( "ClutterSystem_data", out var dataNode ) )
+		{
+			Log.Info( "ClutterSystem: No ClutterSystem_data found in metadata" );
+			return;
+		}
+
+		var dataString = dataNode?.GetValue<string>();
+		if ( string.IsNullOrEmpty( dataString ) )
+		{
+			Log.Info( "ClutterSystem: ClutterSystem_data is empty" );
+			return;
+		}
+
+		// Parse and deserialize the clutter data
+		try
+		{
+			if ( JsonNode.Parse( dataString ) is JsonObject json )
+			{
+				var clutterComponent = _scene.GetComponent<ClutterComponent>( true );
+				if ( clutterComponent != null )
+				{
+					ClutterSerializer.Deserialize( clutterComponent, json );
+					Log.Info( $"ClutterSystem: Successfully loaded clutter data from metadata" );
+				}
+				else
+				{
+					Log.Warning( "ClutterSystem: No ClutterComponent found in scene" );
+				}
+			}
+		}
+		catch ( Exception ex )
+		{
+			Log.Warning( $"ClutterSystem: Failed to deserialize metadata: {ex.Message}" );
 		}
 	}
 
@@ -509,12 +562,24 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	{
 		return position.GetHashCode().ToString();
 	}
+	
 
+
+	/// <summary>
+	/// This is where we will store our system specific stuff
+	/// </summary>
+	/// <returns></returns>
 	public Dictionary<string, string> GetMetadata()
 	{
+		// Serialize the single ClutterComponent in the scene
+		var clutterComponent = _scene.GetComponent<ClutterComponent>( true );
+		var serializedData = clutterComponent != null
+			? ClutterSerializer.Serialize( clutterComponent ).ToJsonString()
+			: "{}";
+
 		return new()
 		{
-			{ "testing", "test" },
+			{ "ClutterSystem_data", serializedData },
 			{ "ClutterSystem_CellCount", Count.ToString() },
 			{ "ClutterSystem_VolumeCount", VolumeInstances.Count.ToString() }
 		};
