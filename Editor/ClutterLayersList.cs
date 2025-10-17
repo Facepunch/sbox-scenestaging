@@ -207,7 +207,7 @@ public class ClutterLayersList : ListView
 	{
 		if ( _collection == null ) return;
 
-		var newLayer = new ClutterLayer( layer.Parent )
+		var newLayer = new ClutterLayer()
 		{
 			Name = $"{layer.Name} Copy",
 			Objects = [.. layer.Objects]
@@ -230,7 +230,7 @@ public class ClutterLayersList : ListView
 				foreach ( var instance in layer.Instances.ToList() )
 				{
 					clutterSystem?.UnregisterClutter( instance );
-					ClutterComponent.DestroyInstance( instance );
+					ClutterSystem.DestroyInstance( instance );
 				}
 
 				// Clear the instances list

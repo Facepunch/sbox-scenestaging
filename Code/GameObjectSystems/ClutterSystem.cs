@@ -42,6 +42,14 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	/// </summary>
 	private Dictionary<Guid, List<ClutterInstance>> VolumeInstances = [];
 
+	/// <summary>
+	/// Stores all clutter layers managed by this system
+	/// </summary>
+	private List<ClutterLayer> Layers = [];
+
+	private int ClutterInstanceCount = 0;
+	private ClutterInstance[] ClutterInstances = [];
+
 	public ClutterSystem( Scene scene ) : base( scene )
 	{
 		_scene = scene;
@@ -63,54 +71,59 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	}
 
 	/// <summary>
-	/// Loads clutter data from scene metadata stored in the scene file
+	/// Loads clutter data from scene metadata stored in the scene file.
+	/// The data is stored in the system and available through GetAllLayers().
+	/// Falls back to loading from ClutterComponent for backward compatibility.
 	/// </summary>
 	private void LoadFromMetadata()
 	{
-		// Get the scene file source
+		bool loadedFromMetadata = false;
+
+		// Try to load from scene metadata first
 		var sceneFile = _scene.Source as SceneFile;
-
-		// Navigate to the Metadata section in scene properties
-		if ( !sceneFile.SceneProperties.TryGetPropertyValue( "Metadata", out var metadataNode ) || metadataNode is not JsonObject metadata )
+		if ( sceneFile?.SceneProperties != null )
 		{
-			Log.Info( "ClutterSystem: No metadata found in scene properties" );
-			return;
-		}
-
-		// Extract the ClutterSystem_data key
-		if ( !metadata.TryGetPropertyValue( "ClutterSystem_data", out var dataNode ) )
-		{
-			Log.Info( "ClutterSystem: No ClutterSystem_data found in metadata" );
-			return;
-		}
-
-		var dataString = dataNode?.GetValue<string>();
-		if ( string.IsNullOrEmpty( dataString ) )
-		{
-			Log.Info( "ClutterSystem: ClutterSystem_data is empty" );
-			return;
-		}
-
-		// Parse and deserialize the clutter data
-		try
-		{
-			if ( JsonNode.Parse( dataString ) is JsonObject json )
+			if ( sceneFile.SceneProperties.TryGetPropertyValue( "Metadata", out var metadataNode ) && metadataNode is JsonObject metadata )
 			{
-				var clutterComponent = _scene.GetComponent<ClutterComponent>( true );
-				if ( clutterComponent != null )
+				if ( metadata.TryGetPropertyValue( "ClutterSystem_data", out var dataNode ) )
 				{
-					ClutterSerializer.Deserialize( clutterComponent, json );
-					Log.Info( $"ClutterSystem: Successfully loaded clutter data from metadata" );
-				}
-				else
-				{
-					Log.Warning( "ClutterSystem: No ClutterComponent found in scene" );
+					var dataString = dataNode?.GetValue<string>();
+					if ( !string.IsNullOrEmpty( dataString ) )
+					{
+						try
+						{
+							if ( JsonNode.Parse( dataString ) is JsonObject json )
+							{
+								ClutterSerializer.DeserializeToSystem( this, json );
+								loadedFromMetadata = true;
+								Log.Info( $"ClutterSystem: Successfully loaded clutter data from metadata" );
+							}
+						}
+						catch ( Exception ex )
+						{
+							Log.Warning( $"ClutterSystem: Failed to deserialize metadata: {ex.Message}" );
+						}
+					}
 				}
 			}
 		}
-		catch ( Exception ex )
+
+		// Fallback: migrate data from ClutterComponent if no metadata was found
+		if ( !loadedFromMetadata )
 		{
-			Log.Warning( $"ClutterSystem: Failed to deserialize metadata: {ex.Message}" );
+			var clutterComponents = _scene.GetAllComponents<ClutterComponent>();
+			foreach ( var component in clutterComponents )
+			{
+				foreach ( var layer in component.Layers )
+				{
+					AddLayer( layer );
+				}
+			}
+
+			if ( Layers.Count > 0 )
+			{
+				Log.Info( $"ClutterSystem: Migrated {Layers.Count} layers from ClutterComponent" );
+			}
 		}
 	}
 
@@ -131,7 +144,7 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	}
 
 	/// <summary>
-	/// Rebuilds the spatial grid by doing BBox traces to find objects with clutter tags/components
+	/// Rebuilds the spatial grid from the layers stored in the system
 	/// This is called when the system starts up to restore the grid from serialized data
 	/// </summary>
 	private void RebuildGridFromExistingInstances()
@@ -140,18 +153,13 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 
 		int registeredCount = 0;
 
-		// Register all clutter instances with the grid
-		var clutterComponents = _scene.GetAllComponents<ClutterComponent>();
-		foreach ( var clutterComponent in clutterComponents )
+		// Register all clutter instances with the grid from system layers
+		foreach ( var layer in Layers )
 		{
-			// Register all instances with the grid
-			foreach ( var layer in clutterComponent.Layers )
+			foreach ( var instance in layer.Instances )
 			{
-				foreach ( var instance in layer.Instances )
-				{
-					RegisterClutter( instance );
-					registeredCount++;
-				}
+				RegisterClutter( instance );
+				registeredCount++;
 			}
 		}
 
@@ -160,7 +168,7 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 
 	/// <summary>
 	/// Rebuilds the instance lists for all ClutterVolumeComponents after deserialization.
-	/// Maps compressed instances back to their originating volumes based on component Id.
+	/// Maps compressed instances back to their originating volumes based on metadata.
 	/// </summary>
 	private void RebuildVolumeInstanceLists()
 	{
@@ -174,35 +182,31 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 			VolumeInstances[volume.Id] = [];
 		}
 
-		// Let's iterate over all clutter instances and add them to their volume association map.
+		// Get instance-to-volume mapping from metadata
+		var instanceVolumeMapping = ClutterSerializer.GetInstanceVolumeMappingFromSystem( this );
+
+		// Let's iterate over all clutter instances and add them to their volume association map
 		int totalRegistered = 0;
 
-		var clutterComponents = _scene.GetAllComponents<ClutterComponent>();
-		foreach ( var clutterComponent in clutterComponents )
+		foreach ( var layer in Layers )
 		{
-			// Get instance-to-volume mapping from serialized data
-			var instanceVolumeMapping = ClutterSerializer.GetInstanceVolumeMapping( clutterComponent );
-
-			foreach ( var layer in clutterComponent.Layers )
+			// Find instances that belong to volumes and register them
+			foreach ( var instance in layer.Instances )
 			{
-				// Find instances that belong to volumes and register them
-				foreach ( var instance in layer.Instances )
-				{
-					// Skip if not a model instance
-					if ( instance.ClutterType != ClutterInstance.Type.Model )
-						continue;
+				// Skip if not a model instance
+				if ( instance.ClutterType != ClutterInstance.Type.Model )
+					continue;
 
-					// Check if this instance has a volume mapping
-					if ( !instanceVolumeMapping.TryGetValue( instance.transform.Position, out var volumeId ) )
-						continue;
+				// Check if this instance has a volume mapping
+				if ( !instanceVolumeMapping.TryGetValue( instance.transform.Position, out var volumeId ) )
+					continue;
 
-					// Check if this volume still exists
-					if ( !volumeIds.Contains( volumeId ) )
-						continue;
+				// Check if this volume still exists
+				if ( !volumeIds.Contains( volumeId ) )
+					continue;
 
-					VolumeInstances[volumeId].Add( instance );
-					totalRegistered++;
-				}
+				VolumeInstances[volumeId].Add( instance );
+				totalRegistered++;
 			}
 		}
 
@@ -316,7 +320,7 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 		// Destroy and remove from layers
 		foreach ( var instance in volumeInstances )
 		{
-			ClutterComponent.DestroyInstance( instance );
+			DestroyInstance( instance );
 		}
 
 		// Clear runtime instances from ALL layers in all ClutterComponents
@@ -327,9 +331,6 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 			{
 				layer.Instances.RemoveAll( instance => myInstanceIds.Contains( instance.InstanceId ) );
 			}
-
-			// Serialize the changes to the component
-			component.SerializeData();
 		}
 
 		// Clear tracking data
@@ -568,16 +569,50 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 
 
 	/// <summary>
+	/// Gets all layers managed by this system
+	/// </summary>
+	public IReadOnlyList<ClutterLayer> GetAllLayers() => Layers;
+
+	/// <summary>
+	/// Adds a layer to the system
+	/// </summary>
+	public void AddLayer( ClutterLayer layer )
+	{
+		if ( !Layers.Contains( layer ) )
+		{
+			Layers.Add( layer );
+		}
+	}
+
+	/// <summary>
+	/// Removes a layer from the system
+	/// </summary>
+	public void RemoveLayer( ClutterLayer layer )
+	{
+		Layers.Remove( layer );
+	}
+
+	/// <summary>
+	/// Destroys a clutter instance if it's a valid prefab GameObject
+	/// </summary>
+	public static void DestroyInstance( ClutterInstance instance )
+	{
+		if ( instance.ClutterType == ClutterInstance.Type.Prefab &&
+			 instance.gameObject != null &&
+			 instance.gameObject.IsValid() )
+		{
+			instance.gameObject.Destroy();
+		}
+	}
+
+	/// <summary>
 	/// This is where we will store our system specific stuff
 	/// </summary>
 	/// <returns></returns>
 	public Dictionary<string, string> GetMetadata()
 	{
-		// Serialize the single ClutterComponent in the scene
-		var clutterComponent = _scene.GetComponent<ClutterComponent>( true );
-		var serializedData = clutterComponent != null
-			? ClutterSerializer.Serialize( clutterComponent ).ToJsonString()
-			: "{}";
+		// Serialize all layers managed by this system
+		var serializedData = ClutterSerializer.SerializeFromSystem( this ).ToJsonString();
 
 		return new()
 		{

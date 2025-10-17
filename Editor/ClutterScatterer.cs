@@ -312,16 +312,12 @@ public sealed class ClutterScatterer( Scene scene )
 		foreach ( var instance in instancesToErase )
 		{
 			// Destroy prefab GameObjects
-			ClutterComponent.DestroyInstance( instance );
+			ClutterSystem.DestroyInstance( instance );
 
-			// Remove from layers and track which components need serialization
+			// Remove from layers
 			foreach ( var layer in _layers )
 			{
-				var removed = layer.Instances.RemoveAll( i => i.InstanceId == instance.InstanceId );
-				if ( removed > 0 )
-				{
-					componentsToSerialize.Add( layer.Parent );
-				}
+				layer.Instances.RemoveAll( i => i.InstanceId == instance.InstanceId );
 			}
 
 			// Unregister from grid
