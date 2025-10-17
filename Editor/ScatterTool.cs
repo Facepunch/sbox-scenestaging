@@ -232,10 +232,10 @@ public sealed class ScatterTool : EditorTool
 			}
 			else
 			{
-				var allComponents = Scene.GetAllComponents<ClutterComponent>();
-				foreach ( var component in allComponents )
+				var clutterSystem = Scene.GetSystem<ClutterSystem>();
+				if ( clutterSystem != null )
 				{
-					layersToErase.AddRange( component.Layers );
+					layersToErase.AddRange( clutterSystem.GetAllLayers() );
 				}
 			}
 
@@ -279,23 +279,6 @@ public sealed class ScatterTool : EditorTool
 		_undoScope = null;
 	}
 
-	/// <summary>
-	/// Find the ClutterComponent that contains the specified layer
-	/// </summary>
-	private ClutterComponent GetComponentForLayer( ClutterLayer layer )
-	{
-		if ( layer == null ) return null;
-
-		var allComponents = Scene.GetAllComponents<ClutterComponent>();
-		foreach ( var component in allComponents )
-		{
-			if ( component.Layers.Contains( layer ) )
-			{
-				return component;
-			}
-		}
-		return null;
-	}
 
 	/// <summary>
 	/// Get all assets from a clutter layer as a simple list (for validation)
@@ -355,29 +338,6 @@ public sealed class ScatterTool : EditorTool
 		return AssetSystem.FindByPath( layer.Objects.Last().Path );
 	}
 
-	/// <summary>
-	/// Get or create a parent GameObject for the specified layer under the clutter component
-	/// </summary>
-	private GameObject GetOrCreateLayerParent( ClutterComponent clutterComponent, ClutterLayer layer )
-	{
-		// Look for existing layer parent by name
-		var clutterGameObject = clutterComponent.GameObject;
-		foreach ( var child in clutterGameObject.Children )
-		{
-			if ( child.Name == layer.Name )
-			{
-				return child;
-			}
-		}
-
-		// Create new layer parent GameObject
-		var layerParent = new GameObject();
-		layerParent.Name = layer.Name;
-		layerParent.Parent = clutterGameObject;
-		layerParent.Tags.Add( "clutter_layer" );
-
-		return layerParent;
-	}
 
 	/// <summary>
 	/// Get cached bounds for an asset, calculating and caching if not already cached

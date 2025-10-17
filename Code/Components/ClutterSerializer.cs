@@ -70,6 +70,7 @@ internal static class ClutterSerializer
 	/// Serializes a ClutterComponent's layers to JSON, building model palettes for each layer.
 	/// Only serializes the compressed layer data - other properties are handled by normal component serialization.
 	/// </summary>
+	[Obsolete( "Use SerializeFromSystem instead. ClutterComponent is being removed." )]
 	public static JsonObject Serialize( ClutterComponent clutterComponent )
 	{
 		var json = new JsonObject();
@@ -92,6 +93,7 @@ internal static class ClutterSerializer
 	/// <summary>
 	/// Builds a map of InstanceId to VolumeId by querying the ClutterSystem
 	/// </summary>
+	[Obsolete( "Use BuildInstanceToVolumeMapFromSystem instead. ClutterComponent is being removed." )]
 	private static Dictionary<Guid, Guid> BuildInstanceToVolumeMap( ClutterComponent clutterComponent )
 	{
 		var map = new Dictionary<Guid, Guid>();
@@ -227,7 +229,7 @@ internal static class ClutterSerializer
 	/// </summary>
 	private static ClutterLayer DeserializeLayerForSystem( ClutterSystem clutterSystem, JsonObject layerJson )
 	{
-		var layer = new ClutterLayer( null ); // No parent component
+		var layer = new ClutterLayer();
 
 		if ( layerJson.TryGetPropertyValue( "Name", out var nameNode ) )
 		{
@@ -306,6 +308,7 @@ internal static class ClutterSerializer
 	/// Deserializes JSON into a ClutterComponent, rebuilding all layers and instances.
 	/// Only deserializes the compressed layer data - other properties are handled by normal component serialization.
 	/// </summary>
+	[Obsolete( "Use DeserializeToSystem instead. ClutterComponent is being removed." )]
 	public static void Deserialize( ClutterComponent clutterComponent, JsonObject json )
 	{
 		clutterComponent.Layers.Clear();
@@ -326,9 +329,10 @@ internal static class ClutterSerializer
 	/// <summary>
 	/// Deserializes a single ClutterLayer from JSON.
 	/// </summary>
+	[Obsolete( "Use DeserializeLayerForSystem instead. ClutterComponent is being removed." )]
 	private static ClutterLayer DeserializeLayer( ClutterComponent clutterComponent, JsonObject layerJson )
 	{
-		var layer = new ClutterLayer( clutterComponent );
+		var layer = new ClutterLayer();
 
 		if ( layerJson.TryGetPropertyValue( "Name", out var nameNode ) )
 		{
@@ -530,6 +534,7 @@ internal static class ClutterSerializer
 	/// Builds a mapping of instance positions to VolumeIds from scene metadata.
 	/// This is used to rebuild volume instance lists after scene load.
 	/// </summary>
+	[Obsolete( "Use GetInstanceVolumeMappingFromSystem instead. ClutterComponent is being removed." )]
 	public static Dictionary<Vector3, Guid> GetInstanceVolumeMapping( ClutterComponent clutterComponent )
 	{
 		var mapping = new Dictionary<Vector3, Guid>();

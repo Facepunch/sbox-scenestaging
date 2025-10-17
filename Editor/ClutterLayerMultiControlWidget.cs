@@ -23,15 +23,15 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 	{
 		var currentValue = SerializedProperty.GetValue<List<ClutterLayer>>() ?? [];
 
-		// Get all layers from all ClutterComponents in the scene
+		// Get all layers from the ClutterSystem
 		var activeScene = SceneEditorSession.Active?.Scene;
 		List<ClutterLayer> enabledLayers = [];
 		if ( activeScene != null )
 		{
-			var clutterComponents = activeScene.GetAllComponents<ClutterComponent>();
-			foreach ( var component in clutterComponents )
+			var clutterSystem = activeScene.GetSystem<ClutterSystem>();
+			if ( clutterSystem != null )
 			{
-				enabledLayers.AddRange( component.Layers );
+				enabledLayers.AddRange( clutterSystem.GetAllLayers() );
 			}
 		}
 
@@ -125,15 +125,15 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 
 		var currentValue = SerializedProperty.GetValue<List<ClutterLayer>>() ?? new List<ClutterLayer>();
 
-		// Get all layers from all ClutterComponents in the scene
+		// Get all layers from the ClutterSystem
 		var activeScene = SceneEditorSession.Active?.Scene;
 		var enabledLayers = new List<ClutterLayer>();
 		if ( activeScene != null )
 		{
-			var clutterComponents = activeScene.GetAllComponents<ClutterComponent>();
-			foreach ( var component in clutterComponents )
+			var clutterSystem = activeScene.GetSystem<ClutterSystem>();
+			if ( clutterSystem != null )
 			{
-				enabledLayers.AddRange( component.Layers );
+				enabledLayers.AddRange( clutterSystem.GetAllLayers() );
 			}
 		}
 

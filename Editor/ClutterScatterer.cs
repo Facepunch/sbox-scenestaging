@@ -258,7 +258,6 @@ public sealed class ClutterScatterer( Scene scene )
 
 	private void EraseInstances( ClutterSystem system, Vector3[] points )
 	{
-		var componentsToSerialize = new HashSet<ClutterComponent>();
 		var instancesToErase = new List<ClutterInstance>();
 
 		// For brush mode, get instances from all cells that overlap with brush bounds

@@ -27,14 +27,14 @@ public class ClutterLayerControlWidget : ControlWidget
 			onSelected: () => SerializedProperty.SetValue( (ClutterLayer)null ),
 			selected: currentValue == null );
 
-		// Get all layers from all ClutterComponents in the scene
+		// Get all layers from the ClutterSystem
 		var activeScene = SceneEditorSession.Active?.Scene;
 		if ( activeScene != null )
 		{
-			var clutterComponents = activeScene.GetAllComponents<ClutterComponent>();
-			foreach ( var component in clutterComponents )
+			var clutterSystem = activeScene.GetSystem<ClutterSystem>();
+			if ( clutterSystem != null )
 			{
-				foreach ( var layer in component.Layers )
+				foreach ( var layer in clutterSystem.GetAllLayers() )
 				{
 					var layerName = layer.Name;
 					var objectCount = layer.Objects?.Count ?? 0;

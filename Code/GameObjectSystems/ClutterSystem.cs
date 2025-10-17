@@ -323,14 +323,10 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 			DestroyInstance( instance );
 		}
 
-		// Clear runtime instances from ALL layers in all ClutterComponents
-		var clutterComponents = Scene.GetAllComponents<ClutterComponent>();
-		foreach ( var component in clutterComponents )
+		// Clear runtime instances from all layers
+		foreach ( var layer in Layers )
 		{
-			foreach ( var layer in component.Layers )
-			{
-				layer.Instances.RemoveAll( instance => myInstanceIds.Contains( instance.InstanceId ) );
-			}
+			layer.Instances.RemoveAll( instance => myInstanceIds.Contains( instance.InstanceId ) );
 		}
 
 		// Clear tracking data

@@ -174,17 +174,16 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 	public List<string> SelectedLayerNames { get; set; } = [];
 
 	/// <summary>
-	/// Gets all layers from all ClutterComponents in the scene
+	/// Gets all layers from the ClutterSystem
 	/// </summary>
 	private List<ClutterLayer> GetAllSceneLayers()
 	{
-		var allLayers = new List<ClutterLayer>();
-		var clutterComponents = Scene.GetAllComponents<ClutterComponent>();
-		foreach ( var component in clutterComponents )
+		var clutterSystem = Scene?.GetSystem<ClutterSystem>();
+		if ( clutterSystem != null )
 		{
-			allLayers.AddRange( component.Layers );
+			return clutterSystem.GetAllLayers().ToList();
 		}
-		return allLayers;
+		return new List<ClutterLayer>();
 	}
 
 	/// <summary>

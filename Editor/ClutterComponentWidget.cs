@@ -87,7 +87,7 @@ partial class ClutterComponentWidget : ComponentEditorWidget
 		container.Layout.Add( paletteLabel );
 
 		var clutter = SerializedObject.Targets.FirstOrDefault() as ClutterComponent;
-		var palette = new ObjectPalette( container, clutter );
+		var palette = new ObjectPalette( container, clutter.Scene );
 		palette.SetTargetObjectsList( objectsList );
 		container.Layout.Add( palette );
 
@@ -135,7 +135,7 @@ partial class ClutterComponentWidget : ComponentEditorWidget
 		var clutter = SerializedObject.Targets.FirstOrDefault() as ClutterComponent;
 		if ( clutter == null ) return;
 
-		var newLayer = new ClutterLayer( clutter )
+		var newLayer = new ClutterLayer()
 		{
 			Name = $"Layer {clutter.Layers.Count + 1}",
 			Objects = []

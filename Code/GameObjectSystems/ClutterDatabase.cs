@@ -154,10 +154,10 @@ internal class ClutterDatabase
 	/// </summary>
 	private void UpdateInstanceInLayers( ClutterInstance updatedInstance )
 	{
-		var clutterComponents = _scene.GetAllComponents<ClutterComponent>();
-		foreach ( var component in clutterComponents )
+		var clutterSystem = _scene.GetSystem<ClutterSystem>();
+		if ( clutterSystem != null )
 		{
-			foreach ( var layer in component.Layers )
+			foreach ( var layer in clutterSystem.GetAllLayers() )
 			{
 				// Find and update the instance in the layer by InstanceId
 				for ( int i = 0; i < layer.Instances.Count; i++ )

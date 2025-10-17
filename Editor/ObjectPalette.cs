@@ -8,13 +8,13 @@ namespace Editor;
 public class ObjectPalette : ListView
 {
 	private List<Asset> PaletteAssets = new();
-	private ClutterComponent _clutterComponent;
+	private Scene _scene;
 
 	private ClutterObjectsList _targetObjectsList;
 
-	public ObjectPalette( Widget parent, ClutterComponent clutterComponent ) : base( parent )
+	public ObjectPalette( Widget parent, Scene scene ) : base( parent )
 	{
-		_clutterComponent = clutterComponent;
+		_scene = scene;
 		Margin = 8;
 		ItemSpacing = 4;
 		AcceptDrops = true;
@@ -28,10 +28,11 @@ public class ObjectPalette : ListView
 
 		PaletteAssets.Clear();
 
-		// Populate palette from all assets in all layers
-		if ( _clutterComponent?.Layers != null )
+		// Populate palette from all assets in all layers from ClutterSystem
+		var clutterSystem = _scene?.GetSystem<ClutterSystem>();
+		if ( clutterSystem != null )
 		{
-			foreach ( var layer in _clutterComponent.Layers )
+			foreach ( var layer in clutterSystem.GetAllLayers() )
 			{
 				if ( layer.Objects != null )
 				{

@@ -5,7 +5,7 @@ namespace Sandbox;
 /// Each clutter instance is sorted into a layer for organizational purposes. Each layer can be drawn/erased separately.
 /// </summary>
 [Serializable]
-public class ClutterLayer( ClutterComponent? parent = null )
+public class ClutterLayer
 {
 	public string Name { get; set; } = "New Layer";
 
