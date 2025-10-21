@@ -43,6 +43,7 @@ public class ScatterBrushResourceEditor : BaseResourceEditor<ScatterBrush>
 		leftColumn.Add( layersLabel );
 
 		_layersList = new ClutterLayersList( this, _serializedBrush );
+		_layersList.OnChanged = () => NoteChanged(); // Hook up change notification
 		leftColumn.Add( _layersList );
 
 		var layerActionsRow = leftColumn.AddRow();
@@ -67,6 +68,7 @@ public class ScatterBrushResourceEditor : BaseResourceEditor<ScatterBrush>
 		rightColumn.Add( objectsLabel );
 
 		_objectsList = new ClutterObjectsList( this, _serializedBrush );
+		_objectsList.OnChanged = () => NoteChanged(); // Hook up change notification
 		_objectsList.SetLayersList( _layersList );
 		_layersList.SetObjectsList( _objectsList );
 		rightColumn.Add( _objectsList );
@@ -118,6 +120,7 @@ public class ScatterBrushResourceEditor : BaseResourceEditor<ScatterBrush>
 		};
 
 		Resource.Layers.Add( newLayer );
+		NoteChanged(); // Notify the editor that changes were made
 
 		_layersList?.BuildItems();
 		_layersList?.SelectLayerByInstance( newLayer );
@@ -135,6 +138,8 @@ public class ScatterBrushResourceEditor : BaseResourceEditor<ScatterBrush>
 			Resource.Layers.Remove( layer );
 		}
 
+		NoteChanged(); // Notify the editor that changes were made
+
 		_layersList.BuildItems();
 		_layersList.SelectNextAfterDeletion( firstSelectedIndex );
 	}
@@ -148,6 +153,7 @@ public class ScatterBrushResourceEditor : BaseResourceEditor<ScatterBrush>
 			{
 				_palette?.AddAssetToPaletteIfNotExists( asset );
 			}
+			NoteChanged(); // Notify the editor that changes were made
 		};
 		picker.Show();
 	}
@@ -160,6 +166,7 @@ public class ScatterBrushResourceEditor : BaseResourceEditor<ScatterBrush>
 			if ( selectedAsset != null )
 			{
 				_objectsList.AddAssetFromPalette( selectedAsset );
+				NoteChanged(); // Notify the editor that changes were made
 				Log.Info( $"Added {selectedAsset.Name} to layer objects" );
 			}
 			else
@@ -258,6 +265,7 @@ public class ScatterBrushEditorWindow : Dialog
 		leftColumn.Add( layersLabel );
 
 		_layersList = new ClutterLayersList( this, _serializedBrush );
+		// Note: EditorWindow doesn't have NoteChanged, so no callback here
 		leftColumn.Add( _layersList );
 
 		var layerActionsRow = leftColumn.AddRow();
@@ -282,6 +290,7 @@ public class ScatterBrushEditorWindow : Dialog
 		rightColumn.Add( objectsLabel );
 
 		_objectsList = new ClutterObjectsList( this, _serializedBrush );
+		// Note: EditorWindow doesn't have NoteChanged, so no callback here
 		_objectsList.SetLayersList( _layersList );
 		_layersList.SetObjectsList( _objectsList );
 		rightColumn.Add( _objectsList );

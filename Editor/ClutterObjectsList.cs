@@ -13,6 +13,10 @@ public class ClutterObjectsList : ListView
 	private ClutterLayersList _layersList;
 	private List<Asset> _currentLayerAssets = new();
 
+	/// <summary>
+	/// Called when the list is modified (for notifying parent editors)
+	/// </summary>
+	public Action OnChanged { get; set; }
 
 	private bool _isDraggingSlider = false;
 	private Asset _draggedSliderAsset = null;
@@ -163,6 +167,7 @@ public class ClutterObjectsList : ListView
 						var clutterObj = selectedLayer.Objects[i];
 						clutterObj.Weight = Math.Clamp( weight, 0.0f, 1.0f );
 						selectedLayer.Objects[i] = clutterObj;
+						OnChanged?.Invoke(); // Notify parent editor of changes
 						Update(); // Repaint to show new weight
 						break;
 					}
@@ -433,6 +438,7 @@ public class ClutterObjectsList : ListView
 							Log.Info( $"Added clutter object with path: {assetPath}" );
 						}
 
+						OnChanged?.Invoke(); // Notify parent editor of changes
 						UpdateForSelectedLayer();
 					}
 				}
@@ -475,6 +481,7 @@ public class ClutterObjectsList : ListView
 						// Update existing instances with the new IsSmall flag
 						UpdateExistingInstancesSmallFlag( asset.Path, newIsSmall, selectedLayer );
 
+						OnChanged?.Invoke(); // Notify parent editor of changes
 						Update();
 						break;
 					}
@@ -542,6 +549,7 @@ public class ClutterObjectsList : ListView
 				{
 					var selectedLayer = selectedLayers.First();
 					selectedLayer.Objects.RemoveAll( obj => obj.Path == asset.Path );
+					OnChanged?.Invoke(); // Notify parent editor of changes
 					UpdateForSelectedLayer();
 				}
 			}

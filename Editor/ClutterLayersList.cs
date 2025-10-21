@@ -16,6 +16,11 @@ public class ClutterLayersList : ListView
 	private ClutterObjectsList _objectsList;
 	private bool _isScatterBrushMode;
 
+	/// <summary>
+	/// Called when the list is modified (for notifying parent editors)
+	/// </summary>
+	public Action OnChanged { get; set; }
+
 	public ClutterLayersList( Widget parent, SerializedObject serializedObject ) : base( parent )
 	{
 		_serializedObject = serializedObject;
@@ -209,6 +214,7 @@ public class ClutterLayersList : ListView
 					}
 				}
 
+				OnChanged?.Invoke(); // Notify parent editor of changes
 				BuildItems();
 			},
 			"Enter new layer name:",
@@ -230,6 +236,7 @@ public class ClutterLayersList : ListView
 		};
 
 		_collection.Add( newLayer );
+		OnChanged?.Invoke(); // Notify parent editor of changes
 	}
 
 	private void PurgeLayer( ClutterLayer layer )
@@ -262,6 +269,7 @@ public class ClutterLayersList : ListView
 				// Serialization now happens automatically through ClutterSystem metadata
 
 				Log.Info( $"Purged all instances from layer '{layer.Name}'" );
+				OnChanged?.Invoke(); // Notify parent editor of changes
 				BuildItems();
 			}
 		}
@@ -278,6 +286,7 @@ public class ClutterLayersList : ListView
 			if ( existingLayer == layer )
 			{
 				_collection.RemoveAt( index );
+				OnChanged?.Invoke(); // Notify parent editor of changes
 				break;
 			}
 			index++;
