@@ -7,7 +7,7 @@ namespace Editor;
 /// </summary>
 public class ObjectPalette : ListView
 {
-	private List<Asset> PaletteAssets = new();
+	protected List<Asset> PaletteAssets = new();
 	private Scene _scene;
 
 	private ClutterObjectsList _targetObjectsList;

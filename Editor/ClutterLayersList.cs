@@ -14,11 +14,18 @@ public class ClutterLayersList : ListView
 	private List<ClutterLayer> _selectedLayers = [];
 	private SerializedObject _serializedObject;
 	private ClutterObjectsList _objectsList;
+	private bool _isScatterBrushMode;
 
 	public ClutterLayersList( Widget parent, SerializedObject serializedObject ) : base( parent )
 	{
 		_serializedObject = serializedObject;
-		_layersProperty = serializedObject.GetProperty( nameof( ClutterComponent.Layers ) );
+
+		// Check if this is a ScatterBrush or ClutterComponent
+		var firstTarget = serializedObject.Targets.FirstOrDefault();
+		_isScatterBrushMode = firstTarget is ScatterBrush;
+
+		// Get the Layers property (both types have it)
+		_layersProperty = serializedObject.GetProperty( "Layers" );
 
 		if ( _layersProperty.TryGetAsObject( out var obj ) && obj is SerializedCollection sc )
 		{
@@ -164,7 +171,13 @@ public class ClutterLayersList : ListView
 		m.AddOption( "Rename", "edit", () => RenameLayer( layer ) );
 		m.AddOption( "Duplicate", "content_copy", () => DuplicateLayer( layer ) );
 		m.AddSeparator();
-		m.AddOption( "Purge Instances", "delete_sweep", () => PurgeLayer( layer ) );
+
+		// Only show Purge Instances for ClutterComponent (not ScatterBrush)
+		if ( !_isScatterBrushMode )
+		{
+			m.AddOption( "Purge Instances", "delete_sweep", () => PurgeLayer( layer ) );
+		}
+
 		m.AddOption( "Remove", "delete", () => RemoveLayer( layer ) );
 
 		m.OpenAtCursor();
@@ -179,16 +192,19 @@ public class ClutterLayersList : ListView
 				// Update the layer name
 				layer.Name = newName;
 
-				// Find and update the corresponding GameObject name
-				var clutterComponent = _serializedObject.Targets.FirstOrDefault() as ClutterComponent;
-				if ( clutterComponent != null )
+				// Find and update the corresponding GameObject name (only for ClutterComponent)
+				if ( !_isScatterBrushMode )
 				{
-					foreach ( var child in clutterComponent.GameObject.Children )
+					var clutterComponent = _serializedObject.Targets.FirstOrDefault() as ClutterComponent;
+					if ( clutterComponent != null )
 					{
-						if ( child.Name == oldName && child.Tags.Contains( "clutter_layer" ) )
+						foreach ( var child in clutterComponent.GameObject.Children )
 						{
-							child.Name = newName;
-							break;
+							if ( child.Name == oldName && child.Tags.Contains( "clutter_layer" ) )
+							{
+								child.Name = newName;
+								break;
+							}
 						}
 					}
 				}
@@ -218,6 +234,13 @@ public class ClutterLayersList : ListView
 
 	private void PurgeLayer( ClutterLayer layer )
 	{
+		// Only available for ClutterComponent (ScatterBrush doesn't have runtime instances)
+		if ( _isScatterBrushMode )
+		{
+			Log.Warning( "Cannot purge instances from ScatterBrush (use this feature in-scene)" );
+			return;
+		}
+
 		// Clear all instances from the layer
 		if ( layer.Instances != null && layer.Instances.Count > 0 )
 		{
