@@ -23,9 +23,18 @@ public class InspectorSettings
 	}
 	public bool EraseMode { get; set; } = false;
 
-	// Clutter system integration
-	[Editor( "clutter_layer_multi" )]
+	// Scatter brush resource
+	[Property, Group( "Source" )]
+	public ScatterBrush Brush { get; set; }
+
+	// Clutter system integration (only shown if no brush is selected)
+	[Editor( "clutter_layer_multi" ), Group( "Source" ), ShowIf( nameof( ShouldShowLayerSelection ), true )]
 	public List<ClutterLayer> SelectedClutterLayers { get; set; } = [];
+
+	/// <summary>
+	/// Only show layer selection if no brush is assigned
+	/// </summary>
+	private bool ShouldShowLayerSelection => Brush == null;
 
 	// Procedural scatterer selection (like in ClutterVolumeComponent)
 	[Title( "Scatterer Type" ), Editor( "scatterer_type" )]
@@ -250,14 +259,24 @@ public sealed class ScatterTool : EditorTool
 			return;
 		}
 
-		// Scattering mode - requires at least one selected layer
-		if ( _settings.SelectedClutterLayers.Count == 0 )
+		// Get layers from brush or selection
+		List<ClutterLayer> layersToUse;
+
+		if ( _settings.Brush != null && _settings.Brush.Layers?.Count > 0 )
 		{
-			Log.Warning( "Please select at least one Clutter Layer to scatter objects" );
+			// Use layers from the brush
+			layersToUse = _settings.Brush.Layers;
+		}
+		else if ( _settings.SelectedClutterLayers.Count > 0 )
+		{
+			// Use manually selected layers
+			layersToUse = _settings.SelectedClutterLayers;
+		}
+		else
+		{
+			Log.Warning( "Please select a Scatter Brush or at least one Clutter Layer to scatter objects" );
 			return;
 		}
-
-		var layersToUse = _settings.SelectedClutterLayers;
 
 		var scatterer = new ClutterScatterer( Scene )
 			.WithBrush( brushCenter, brushRadius, _settings.BrushOpacity )
@@ -466,14 +485,15 @@ public class ScatterToolOverlay : WidgetWindow
 
 		Layout.AddSeparator();
 
-		// Clutter layer
-		var layerLabel = new Label( "Clutter Layers" );
-		layerLabel.SetStyles( "font-weight: bold;" );
-		Layout.Add( layerLabel );
+		// Source section (Brush or Layers)
+		var sourceLabel = new Label( "Layer Source" );
+		sourceLabel.SetStyles( "font-weight: bold;" );
+		Layout.Add( sourceLabel );
 
-		var clutterLayerCs = new ControlSheet();
-		clutterLayerCs.AddRow( so.GetProperty( nameof( InspectorSettings.SelectedClutterLayers ) ) );
-		Layout.Add( clutterLayerCs );
+		var sourceCs = new ControlSheet();
+		sourceCs.AddRow( so.GetProperty( nameof( InspectorSettings.Brush ) ) );
+		sourceCs.AddRow( so.GetProperty( nameof( InspectorSettings.SelectedClutterLayers ) ) );
+		Layout.Add( sourceCs );
 
 		Layout.AddSeparator();
 
