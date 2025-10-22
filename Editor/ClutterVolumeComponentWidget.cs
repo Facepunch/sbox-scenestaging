@@ -49,6 +49,7 @@ partial class ClutterVolumeComponentWidget : ComponentEditorWidget
 		{
 			Margin = new Sandbox.UI.Margin( 8, 0, 8, 8 )
 		};
+		sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.Brush ) ) );
 		sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.SelectedLayers ) ) );
 		sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.Density ) ) );
 		sheet.AddRow( SerializedObject.GetProperty( nameof( ClutterVolumeComponent.Scale ) ) );
