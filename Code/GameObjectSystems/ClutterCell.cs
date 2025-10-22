@@ -121,7 +121,7 @@ public class ClutterCell : SceneCustomObject
 		var cameraPos = Graphics.CameraPosition;
 		var distanceToCamera = Vector3.DistanceBetween( cameraPos, cellBounds.Center );
 
-		bool isCellVisible = Graphics.Frustum.IsInside( cellBounds, true );
+		bool isCellVisible = true;// Graphics.Frustum.IsInside( cellBounds, true );
 		if ( Graphics.LayerType == SceneLayerType.Opaque && isCellVisible )
 		{
 			// Disable shadows for distant cells (beyond 4096 units)
