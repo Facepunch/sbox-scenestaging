@@ -15,8 +15,12 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 	bool _needsRebuild = true;
 	ScatterBrush _lastBrush;
 
-	// Access to the internal _selectedLayerIds field for stable persistence
+	// Access to the internal _selectedLayerIds field for stable persistence (ClutterVolumeComponent)
+	// Returns null if it doesn't exist (ScatterTool)
 	SerializedProperty InternalIdsProperty => SerializedProperty.Parent?.GetProperty( "_selectedLayerIds" );
+
+	// Whether we're using the internal IDs approach (true) or direct layer list (false)
+	bool UseInternalIds => InternalIdsProperty != null;
 
 	public ClutterLayerMultiControlWidget( SerializedProperty property ) : base( property )
 	{
@@ -41,6 +45,10 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 			if ( targetObject is ClutterVolumeComponent volume )
 			{
 				currentBrush = volume.Brush;
+			}
+			else if ( targetObject is Editor.TerrainTool.InspectorSettings inspectorSettings )
+			{
+				currentBrush = inspectorSettings.Brush;
 			}
 		}
 
@@ -68,7 +76,7 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 			}
 		}
 
-		// Also include layers from brush resource if this is on a ClutterVolumeComponent
+		// Also include layers from brush resource
 		if ( currentBrush != null )
 		{
 			if ( currentBrush.Layers != null )
@@ -91,9 +99,19 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 
 	protected override void PaintControl()
 	{
-		// Get the internal IDs list
-		var selectedIds = InternalIdsProperty?.GetValue<List<Guid>>() ?? [];
 		var enabledLayers = GetAvailableLayers();
+
+		// Get selected layer IDs - either from internal storage or from the layer list itself
+		List<Guid> selectedIds;
+		if ( UseInternalIds )
+		{
+			selectedIds = InternalIdsProperty.GetValue<List<Guid>>() ?? [];
+		}
+		else
+		{
+			var layers = SerializedProperty.GetValue<List<ClutterLayer>>() ?? [];
+			selectedIds = layers.Select( l => l.Id ).ToList();
+		}
 
 		var color = IsControlHovered ? Theme.Blue : Theme.TextControl;
 		if ( IsControlDisabled ) color = color.WithAlpha( 0.5f );
@@ -158,21 +176,46 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 
 	void ToggleLayer( Guid layerId )
 	{
-		if ( InternalIdsProperty == null ) return;
-
-		var currentIds = InternalIdsProperty.GetValue<List<Guid>>() ?? new List<Guid>();
-
-		if ( currentIds.Contains( layerId ) )
+		if ( UseInternalIds )
 		{
-			currentIds.Remove( layerId );
+			// Use internal IDs storage (ClutterVolumeComponent)
+			var currentIds = InternalIdsProperty.GetValue<List<Guid>>() ?? new List<Guid>();
+
+			if ( currentIds.Contains( layerId ) )
+			{
+				currentIds.Remove( layerId );
+			}
+			else
+			{
+				currentIds.Add( layerId );
+			}
+
+			InternalIdsProperty.SetValue( currentIds );
 		}
 		else
 		{
-			currentIds.Add( layerId );
-		}
+			// Use direct layer list (ScatterTool)
+			var currentLayers = SerializedProperty.GetValue<List<ClutterLayer>>() ?? new List<ClutterLayer>();
+			var allLayers = GetAvailableLayers();
 
-		// SetValue on the internal IDs field directly - this is what gets serialized
-		InternalIdsProperty.SetValue( currentIds );
+			// Find the layer by ID
+			var existingLayer = currentLayers.FirstOrDefault( l => l.Id == layerId );
+
+			if ( existingLayer != null )
+			{
+				currentLayers.Remove( existingLayer );
+			}
+			else
+			{
+				var layerToAdd = allLayers.FirstOrDefault( l => l.Id == layerId );
+				if ( layerToAdd != null )
+				{
+					currentLayers.Add( layerToAdd );
+				}
+			}
+
+			SerializedProperty.SetValue( currentLayers );
+		}
 	}
 
 	void OpenMenu()
@@ -204,12 +247,21 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 		{
 			var option = scroller.Canvas.Layout.Add( new LayerMenuOption( layer, () =>
 			{
-				var currentIds = InternalIdsProperty?.GetValue<List<Guid>>() ?? [];
+				// Get selected IDs based on storage type
+				List<Guid> currentIds;
+				if ( UseInternalIds )
+				{
+					currentIds = InternalIdsProperty?.GetValue<List<Guid>>() ?? [];
+				}
+				else
+				{
+					var layers = SerializedProperty.GetValue<List<ClutterLayer>>() ?? [];
+					currentIds = layers.Select( l => l.Id ).ToList();
+				}
 				return currentIds.Contains( layer.Id );
 			} ) );
 			option.MouseClick = () =>
 			{
-				Log.Info( "press" );
 				ToggleLayer( layer.Id );
 				_menu.Update();
 			};

@@ -28,7 +28,7 @@ public class InspectorSettings
 	public ScatterBrush Brush { get; set; }
 
 	// Clutter system integration (only shown if no brush is selected)
-	[Editor( "clutter_layer_multi" ), Group( "Source" ), ShowIf( nameof( ShouldShowLayerSelection ), true )]
+	[Property, Editor( "clutter_layer_multi" ), Group( "Source" ), ShowIf( nameof( ShouldShowLayerSelection ), true )]
 	public List<ClutterLayer> SelectedClutterLayers { get; set; } = [];
 
 	/// <summary>
