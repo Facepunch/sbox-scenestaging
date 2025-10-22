@@ -11,6 +11,11 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 	public override bool IsControlHovered => base.IsControlHovered || _menu.IsValid();
 
 	PopupWidget _menu;
+	List<ClutterLayer> _cachedLayers;
+	bool _needsRebuild = true;
+
+	// Access to the internal _selectedLayerIds field for stable persistence
+	SerializedProperty InternalIdsProperty => SerializedProperty.Parent?.GetProperty( "_selectedLayerIds" );
 
 	public ClutterLayerMultiControlWidget( SerializedProperty property ) : base( property )
 	{
@@ -19,11 +24,20 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 		Layout.Spacing = 2;
 	}
 
-	protected override void PaintControl()
+	public void InvalidateCache()
 	{
-		var currentValue = SerializedProperty.GetValue<List<ClutterLayer>>() ?? [];
+		_needsRebuild = true;
+		_cachedLayers = null;
+	}
 
-		// Get all layers from the ClutterSystem
+	List<ClutterLayer> GetAvailableLayers()
+	{
+		if ( _cachedLayers != null && !_needsRebuild )
+		{
+			return _cachedLayers;
+		}
+
+		// Get all layers from the ClutterSystem and any assigned brush
 		var activeScene = SceneEditorSession.Active?.Scene;
 		List<ClutterLayer> enabledLayers = [];
 		if ( activeScene != null )
@@ -35,6 +49,38 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 			}
 		}
 
+		// Also include layers from brush resource if this is on a ClutterVolumeComponent
+		if ( SerializedProperty.Parent != null )
+		{
+			var targetObject = SerializedProperty.Parent.Targets.FirstOrDefault();
+			if ( targetObject is ClutterVolumeComponent volume && volume.Brush != null )
+			{
+				if ( volume.Brush.Layers != null )
+				{
+					// Add brush layers that aren't already in the list (by ID)
+					foreach ( var brushLayer in volume.Brush.Layers )
+					{
+						if ( !enabledLayers.Any( l => l.Id == brushLayer.Id ) )
+						{
+							Log.Info( "Added layers: " + brushLayer.Name );
+							enabledLayers.Add( brushLayer );
+						}
+					}
+				}
+			}
+		}
+
+		_cachedLayers = enabledLayers;
+		_needsRebuild = false;
+		return _cachedLayers;
+	}
+
+	protected override void PaintControl()
+	{
+		// Get the internal IDs list
+		var selectedIds = InternalIdsProperty?.GetValue<List<Guid>>() ?? [];
+		var enabledLayers = GetAvailableLayers();
+
 		var color = IsControlHovered ? Theme.Blue : Theme.TextControl;
 		if ( IsControlDisabled ) color = color.WithAlpha( 0.5f );
 
@@ -42,7 +88,8 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 
 		if ( enabledLayers.Count > 0 )
 		{
-			var selectedLayers = currentValue.Where( l => enabledLayers.Contains( l ) ).ToList();
+			// Match by ID
+			var selectedLayers = enabledLayers.Where( l => selectedIds.Contains( l.Id ) ).ToList();
 
 			string displayText;
 			if ( selectedLayers.Count == 0 )
@@ -59,15 +106,7 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 			}
 			else
 			{
-				displayText = string.Empty;
-				for ( int i = 0; i < selectedLayers.Count; i++ )
-				{
-					displayText += selectedLayers[i].Name;
-					if ( i != selectedLayers.Count - 1 )
-					{
-						displayText += ", ";
-					}
-				}
+				displayText = string.Join( ", ", selectedLayers.Select( l => l.Name ) );
 			}
 
 			Paint.SetPen( color );
@@ -103,39 +142,30 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 		}
 	}
 
-	void ToggleLayer( ClutterLayer layer )
+	void ToggleLayer( Guid layerId )
 	{
-		var currentValue = SerializedProperty.GetValue<List<ClutterLayer>>() ?? new List<ClutterLayer>();
+		if ( InternalIdsProperty == null ) return;
 
-		if ( currentValue.Contains( layer ) )
+		var currentIds = InternalIdsProperty.GetValue<List<Guid>>() ?? new List<Guid>();
+
+		if ( currentIds.Contains( layerId ) )
 		{
-			currentValue.Remove( layer );
+			currentIds.Remove( layerId );
 		}
 		else
 		{
-			currentValue.Add( layer );
+			currentIds.Add( layerId );
 		}
 
-		SerializedProperty.SetValue( currentValue );
+		// SetValue on the internal IDs field directly - this is what gets serialized
+		InternalIdsProperty.SetValue( currentIds );
 	}
 
 	void OpenMenu()
 	{
 		PropertyStartEdit();
 
-		var currentValue = SerializedProperty.GetValue<List<ClutterLayer>>() ?? new List<ClutterLayer>();
-
-		// Get all layers from the ClutterSystem
-		var activeScene = SceneEditorSession.Active?.Scene;
-		var enabledLayers = new List<ClutterLayer>();
-		if ( activeScene != null )
-		{
-			var clutterSystem = activeScene.GetSystem<ClutterSystem>();
-			if ( clutterSystem != null )
-			{
-				enabledLayers.AddRange( clutterSystem.GetAllLayers() );
-			}
-		}
+		var enabledLayers = GetAvailableLayers();
 
 		if ( enabledLayers.Count == 0 )
 		{
@@ -160,12 +190,13 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 		{
 			var option = scroller.Canvas.Layout.Add( new LayerMenuOption( layer, () =>
 			{
-				var current = SerializedProperty.GetValue<List<ClutterLayer>>() ?? [];
-				return current.Contains( layer );
+				var currentIds = InternalIdsProperty?.GetValue<List<Guid>>() ?? [];
+				return currentIds.Contains( layer.Id );
 			} ) );
-			option.MouseLeftPress = () =>
+			option.MouseClick = () =>
 			{
-				ToggleLayer( layer );
+				Log.Info( "press" );
+				ToggleLayer( layer.Id );
 				_menu.Update();
 			};
 		}
@@ -203,8 +234,11 @@ file class LayerMenuOption : Widget
 		Layout = Layout.Row();
 		Layout.Margin = 8;
 		VerticalSizeMode = SizeMode.CanGrow;
+		Cursor = CursorShape.Finger;
 
-		Layout.Add( new IconButton( "layers" ) { Background = Color.Transparent, TransparentForMouseEvents = true, IconSize = 18 } );
+		var icon = new IconButton( "layers" ) { Background = Color.Transparent, TransparentForMouseEvents = true, IconSize = 18 };
+		icon.Cursor = CursorShape.Finger;
+		Layout.Add( icon );
 		Layout.AddSpacingCell( 8 );
 
 		var c = Layout.AddColumn();
@@ -214,6 +248,18 @@ file class LayerMenuOption : Widget
 		var objectCount = layer.Objects?.Count ?? 0;
 		var desc = c.Add( new Label( $"{objectCount} objects" ) );
 		desc.SetStyles( $"font-size: 11px; font-family: {Theme.DefaultFont}; color: #aaa;" );
+	}
+
+	protected override void OnMouseClick( MouseEvent e )
+	{
+		if ( e.LeftMouseButton )
+		{
+			MouseLeftPress?.Invoke();
+			e.Accepted = true;
+			Update();
+		}
+
+		base.OnMouseClick( e );
 	}
 
 	protected override void OnPaint()
