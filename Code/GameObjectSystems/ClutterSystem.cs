@@ -114,7 +114,7 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 			var clutterComponents = _scene.GetAllComponents<ClutterComponent>();
 			foreach ( var component in clutterComponents )
 			{
-				foreach ( var layer in component.Layers )
+				foreach ( var layer in component.ActiveLayers )
 				{
 					AddLayer( layer );
 				}
