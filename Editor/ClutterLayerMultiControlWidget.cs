@@ -13,6 +13,7 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 	PopupWidget _menu;
 	List<ClutterLayer> _cachedLayers;
 	bool _needsRebuild = true;
+	ScatterBrush _lastBrush;
 
 	// Access to the internal _selectedLayerIds field for stable persistence
 	SerializedProperty InternalIdsProperty => SerializedProperty.Parent?.GetProperty( "_selectedLayerIds" );
@@ -32,6 +33,24 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 
 	List<ClutterLayer> GetAvailableLayers()
 	{
+		// Check if brush changed
+		ScatterBrush currentBrush = null;
+		if ( SerializedProperty.Parent != null )
+		{
+			var targetObject = SerializedProperty.Parent.Targets.FirstOrDefault();
+			if ( targetObject is ClutterVolumeComponent volume )
+			{
+				currentBrush = volume.Brush;
+			}
+		}
+
+		// Invalidate cache if brush changed
+		if ( currentBrush != _lastBrush )
+		{
+			_needsRebuild = true;
+			_lastBrush = currentBrush;
+		}
+
 		if ( _cachedLayers != null && !_needsRebuild )
 		{
 			return _cachedLayers;
@@ -50,21 +69,16 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 		}
 
 		// Also include layers from brush resource if this is on a ClutterVolumeComponent
-		if ( SerializedProperty.Parent != null )
+		if ( currentBrush != null )
 		{
-			var targetObject = SerializedProperty.Parent.Targets.FirstOrDefault();
-			if ( targetObject is ClutterVolumeComponent volume && volume.Brush != null )
+			if ( currentBrush.Layers != null )
 			{
-				if ( volume.Brush.Layers != null )
+				// Add brush layers that aren't already in the list (by ID)
+				foreach ( var brushLayer in currentBrush.Layers )
 				{
-					// Add brush layers that aren't already in the list (by ID)
-					foreach ( var brushLayer in volume.Brush.Layers )
+					if ( !enabledLayers.Any( l => l.Id == brushLayer.Id ) )
 					{
-						if ( !enabledLayers.Any( l => l.Id == brushLayer.Id ) )
-						{
-							Log.Info( "Added layers: " + brushLayer.Name );
-							enabledLayers.Add( brushLayer );
-						}
+						enabledLayers.Add( brushLayer );
 					}
 				}
 			}
