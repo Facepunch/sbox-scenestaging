@@ -147,31 +147,40 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 		}
 	}
 
-	[Property, Editor( "clutter_layer_multi" )]
+	/// <summary>
+	/// Optional scatter brush resource to use for this volume
+	/// </summary>
+	[Property, Group( "Source" )]
+	public ScatterBrush Brush { get; set; }
+
+	/// <summary>
+	/// Selected layers for this volume
+	/// </summary>
+	[Property, Editor( "clutter_layer_multi" ), Group( "Source" ), Title( "Layers" )]
 	public List<ClutterLayer> SelectedLayers
 	{
 		get
 		{
-			if ( SelectedLayerNames?.Count > 0 )
+			// Reconstruct from IDs
+			if ( _selectedLayerIds?.Count > 0 )
 			{
 				var allLayers = GetAllSceneLayers();
-				_selectedLayers = allLayers
-					.Where( l => SelectedLayerNames.Contains( l.Name ) )
-					.ToList();
+				return allLayers.Where( l => _selectedLayerIds.Contains( l.Id ) ).ToList();
 			}
-			return _selectedLayers;
+			return new List<ClutterLayer>();
 		}
 		set
 		{
-			_selectedLayers = value;
-			SelectedLayerNames = value?.Select( l => l.Name ).ToList() ?? [];
+			// Store as IDs
+			_selectedLayerIds = value?.Select( l => l.Id ).ToList() ?? [];
 		}
 	}
-	private List<ClutterLayer> _selectedLayers = [];
 
-	// Serialized layer names for persistence
+	/// <summary>
+	/// Internal storage - IDs of selected layers (stable across renames)
+	/// </summary>
 	[Property, Hide]
-	public List<string> SelectedLayerNames { get; set; } = [];
+	private List<Guid> _selectedLayerIds { get; set; } = [];
 
 	/// <summary>
 	/// Gets all layers from the ClutterSystem
@@ -191,12 +200,18 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 	/// </summary>
 	public List<ClutterLayer> GetActiveLayers()
 	{
+		// If a brush is assigned, use its layers
+		if ( Brush != null && Brush.Layers?.Count > 0 )
+		{
+			return Brush.Layers;
+		}
+
 		var allLayers = GetAllSceneLayers();
 
-		// If specific layers are selected, use them (if they exist)
-		if ( SelectedLayers?.Count > 0 )
+		// If specific layers are selected by ID, use them (if they exist)
+		if ( _selectedLayerIds?.Count > 0 )
 		{
-			return SelectedLayers.Where( l => allLayers.Contains( l ) ).ToList();
+			return allLayers.Where( l => _selectedLayerIds.Contains( l.Id ) ).ToList();
 		}
 
 		// If no valid selected layers, fall back to all layers from all components
