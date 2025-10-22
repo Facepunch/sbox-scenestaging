@@ -7,6 +7,11 @@ namespace Sandbox;
 [Serializable]
 public class ClutterLayer
 {
+	/// <summary>
+	/// Unique identifier for this layer, persists across renames
+	/// </summary>
+	public Guid Id { get; set; } = Guid.NewGuid();
+
 	public string Name { get; set; } = "New Layer";
 
 	/// <summary>
