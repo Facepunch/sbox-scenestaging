@@ -72,14 +72,10 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 
 	/// <summary>
 	/// Loads clutter data from scene metadata stored in the scene file.
-	/// The data is stored in the system and available through GetAllLayers().
-	/// Falls back to loading from ClutterComponent for backward compatibility.
 	/// </summary>
 	private void LoadFromMetadata()
 	{
-		bool loadedFromMetadata = false;
-
-		// Try to load from scene metadata first
+		// Load from scene metadata
 		var sceneFile = _scene.Source as SceneFile;
 		if ( sceneFile?.SceneProperties != null )
 		{
@@ -95,7 +91,6 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 							if ( JsonNode.Parse( dataString ) is JsonObject json )
 							{
 								ClutterSerializer.DeserializeToSystem( this, json );
-								loadedFromMetadata = true;
 								Log.Info( $"ClutterSystem: Successfully loaded clutter data from metadata" );
 							}
 						}
@@ -105,24 +100,6 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 						}
 					}
 				}
-			}
-		}
-
-		// Fallback: migrate data from ClutterComponent if no metadata was found
-		if ( !loadedFromMetadata )
-		{
-			var clutterComponents = _scene.GetAllComponents<ClutterComponent>();
-			foreach ( var component in clutterComponents )
-			{
-				foreach ( var layer in component.ActiveLayers )
-				{
-					AddLayer( layer );
-				}
-			}
-
-			if ( Layers.Count > 0 )
-			{
-				Log.Info( $"ClutterSystem: Migrated {Layers.Count} layers from ClutterComponent" );
 			}
 		}
 	}
@@ -570,11 +547,12 @@ public sealed class ClutterSystem : GameObjectSystem<ClutterSystem>, Component.E
 	public IReadOnlyList<ClutterLayer> GetAllLayers() => Layers;
 
 	/// <summary>
-	/// Adds a layer to the system
+	/// Adds a layer to the system if it doesn't already exist (matched by ID)
 	/// </summary>
 	public void AddLayer( ClutterLayer layer )
 	{
-		if ( !Layers.Contains( layer ) )
+		// Check if a layer with the same ID already exists
+		if ( !Layers.Any( l => l.Id == layer.Id ) )
 		{
 			Layers.Add( layer );
 		}

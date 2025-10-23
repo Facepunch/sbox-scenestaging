@@ -25,11 +25,11 @@ public class ClutterLayersList : ListView
 	{
 		_serializedObject = serializedObject;
 
-		// Check if this is a ScatterBrush or ClutterComponent
+		// Check if this is a ScatterBrush
 		var firstTarget = serializedObject.Targets.FirstOrDefault();
 		_isScatterBrushMode = firstTarget is ScatterBrush;
 
-		// Get the Layers property (both types have it)
+		// Get the Layers property
 		_layersProperty = serializedObject.GetProperty( "Layers" );
 
 		if ( _layersProperty.TryGetAsObject( out var obj ) && obj is SerializedCollection sc )
@@ -176,13 +176,6 @@ public class ClutterLayersList : ListView
 		m.AddOption( "Rename", "edit", () => RenameLayer( layer ) );
 		m.AddOption( "Duplicate", "content_copy", () => DuplicateLayer( layer ) );
 		m.AddSeparator();
-
-		// Only show Purge Instances for ClutterComponent (not ScatterBrush)
-		if ( !_isScatterBrushMode )
-		{
-			m.AddOption( "Purge Instances", "delete_sweep", () => PurgeLayer( layer ) );
-		}
-
 		m.AddOption( "Remove", "delete", () => RemoveLayer( layer ) );
 
 		m.OpenAtCursor();
@@ -190,29 +183,11 @@ public class ClutterLayersList : ListView
 
 	private void RenameLayer( ClutterLayer layer )
 	{
-		var oldName = layer.Name;
 		Dialog.AskString(
 			newName =>
 			{
 				// Update the layer name
 				layer.Name = newName;
-
-				// Find and update the corresponding GameObject name (only for ClutterComponent)
-				if ( !_isScatterBrushMode )
-				{
-					var clutterComponent = _serializedObject.Targets.FirstOrDefault() as ClutterComponent;
-					if ( clutterComponent != null )
-					{
-						foreach ( var child in clutterComponent.GameObject.Children )
-						{
-							if ( child.Name == oldName && child.Tags.Contains( "clutter_layer" ) )
-							{
-								child.Name = newName;
-								break;
-							}
-						}
-					}
-				}
 
 				OnChanged?.Invoke(); // Notify parent editor of changes
 				BuildItems();
@@ -239,41 +214,6 @@ public class ClutterLayersList : ListView
 		OnChanged?.Invoke(); // Notify parent editor of changes
 	}
 
-	private void PurgeLayer( ClutterLayer layer )
-	{
-		// Only available for ClutterComponent (ScatterBrush doesn't have runtime instances)
-		if ( _isScatterBrushMode )
-		{
-			Log.Warning( "Cannot purge instances from ScatterBrush (use this feature in-scene)" );
-			return;
-		}
-
-		// Clear all instances from the layer
-		if ( layer.Instances != null && layer.Instances.Count > 0 )
-		{
-			var clutterComponent = _serializedObject.Targets.FirstOrDefault() as ClutterComponent;
-			if ( clutterComponent?.Scene != null )
-			{
-				var clutterSystem = clutterComponent.Scene.GetSystem<ClutterSystem>();
-
-				// Unregister all instances from the system
-				foreach ( var instance in layer.Instances.ToList() )
-				{
-					clutterSystem?.UnregisterClutter( instance );
-					ClutterSystem.DestroyInstance( instance );
-				}
-
-				// Clear the instances list
-				layer.Instances.Clear();
-
-				// Serialization now happens automatically through ClutterSystem metadata
-
-				Log.Info( $"Purged all instances from layer '{layer.Name}'" );
-				OnChanged?.Invoke(); // Notify parent editor of changes
-				BuildItems();
-			}
-		}
-	}
 
 	private void RemoveLayer( ClutterLayer layer )
 	{

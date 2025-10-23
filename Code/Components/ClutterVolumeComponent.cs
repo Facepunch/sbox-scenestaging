@@ -154,9 +154,9 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 	public ScatterBrush Brush { get; set; }
 
 	/// <summary>
-	/// Selected layers for this volume
+	/// Selected layers for this volume (only shown when no brush is assigned)
 	/// </summary>
-	[Property, Editor( "clutter_layer_multi" ), Group( "Source" ), Title( "Layers" )]
+	[Property, Editor( "clutter_layer_multi" ), Group( "Source" ), Title( "Layers" ), ShowIf( nameof( ShouldShowLayerSelection ), true )]
 	public List<ClutterLayer> SelectedLayers
 	{
 		get
@@ -181,6 +181,11 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 	/// </summary>
 	[Property, Hide]
 	private List<Guid> _selectedLayerIds { get; set; } = [];
+
+	/// <summary>
+	/// Only show layer selection if no brush is assigned
+	/// </summary>
+	private bool ShouldShowLayerSelection => Brush == null;
 
 	/// <summary>
 	/// Gets all layers from the ClutterSystem
