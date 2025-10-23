@@ -543,32 +543,62 @@ public class ScatterToolOverlay : WidgetWindow
 			return;
 		}
 
-		// Create layer management dialog
-		var dialog = new LayerManagementDialog( scene, clutterSystem );
-		dialog.Show();
+		// Open layer management in inspector (just like scatterer settings)
+		var layerManager = new LayerManagementObject( scene, clutterSystem );
+		EditorUtility.InspectorObject = layerManager;
 	}
 }
 
 /// <summary>
-/// Dialog for managing clutter layers in the scene
+/// Dummy type to trigger our custom editor
 /// </summary>
-public class LayerManagementDialog : Widget
+public class LayerManagementData
 {
+	public Scene Scene { get; set; }
+	public ClutterSystem ClutterSystem { get; set; }
+}
+
+/// <summary>
+/// Object for managing clutter layers - displayed in inspector
+/// </summary>
+public class LayerManagementObject
+{
+	[Hide]
+	public Scene Scene { get; set; }
+
+	[Hide]
+	public ClutterSystem ClutterSystem { get; set; }
+
+	[Property, Editor( "layer_management" )]
+	public LayerManagementData Data { get; set; }
+
+	public LayerManagementObject( Scene scene, ClutterSystem clutterSystem )
+	{
+		Scene = scene;
+		ClutterSystem = clutterSystem;
+		Data = new LayerManagementData { Scene = scene, ClutterSystem = clutterSystem };
+	}
+
+	public override string ToString() => "Layer Management";
+}
+
+/// <summary>
+/// Custom widget for layer management in the inspector
+/// </summary>
+[CustomEditor( typeof( LayerManagementData ), NamedEditor = "layer_management" )]
+public class LayerManagementWidget : ControlWidget
+{
+	private LayerManagementData _data;
 	private Scene _scene;
 	private ClutterSystem _clutterSystem;
-	private ListView _layerList;
+	private ClutterLayersList _layerList;
 	private Label _statsLabel;
 
-	public LayerManagementDialog( Scene scene, ClutterSystem clutterSystem ) : base( null )
+	public LayerManagementWidget( SerializedProperty property ) : base( property )
 	{
-		_scene = scene;
-		_clutterSystem = clutterSystem;
-
-		WindowFlags = WindowFlags.Dialog;
-		WindowTitle = "Layer Management";
-		DeleteOnClose = true;
-		MinimumWidth = 400;
-		MinimumHeight = 500;
+		_data = property.GetValue<LayerManagementData>();
+		_scene = _data.Scene;
+		_clutterSystem = _data.ClutterSystem;
 
 		Layout = Layout.Column();
 		Layout.Margin = 8;
@@ -589,84 +619,23 @@ public class LayerManagementDialog : Widget
 		_statsLabel.SetStyles( "font-size: 11px; color: #888; margin-bottom: 8px;" );
 		Layout.Add( _statsLabel );
 
-		// Layer list
-		_layerList = new ListView( this );
-		_layerList.ItemSize = new Vector2( 0, 48 );
-		_layerList.ItemAlign = Sandbox.UI.Align.FlexStart;
+		// Use ClutterLayersList which already has nice formatting
+		var serializedSystem = EditorTypeLibrary.GetSerializedObject( _clutterSystem );
+		_layerList = new ClutterLayersList( this, serializedSystem );
+		_layerList.MinimumHeight = 300;
 		_layerList.ItemContextMenu = ShowLayerContext;
 		Layout.Add( _layerList, 1 );
 
-		// Refresh button
-		var buttonRow = Layout.AddRow();
-		buttonRow.Spacing = 8;
-		buttonRow.AddStretchCell();
-
-		var refreshButton = new Button( "Refresh", "refresh" )
-		{
-			Clicked = () => RefreshLayers()
-		};
-		buttonRow.Add( refreshButton );
-
-		var closeButton = new Button( "Close" )
-		{
-			Clicked = () => Close()
-		};
-		buttonRow.Add( closeButton );
-
-		RefreshLayers();
+		RefreshStats();
 	}
 
-	private void RefreshLayers()
+	private void RefreshStats()
 	{
-		var layers = _clutterSystem.GetAllLayers().ToList();
+		if ( _clutterSystem == null ) return;
 
-		// Update stats
+		var layers = _clutterSystem.GetAllLayers().ToList();
 		var totalInstances = layers.Sum( l => l.Instances?.Count ?? 0 );
 		_statsLabel.Text = $"{layers.Count} layers, {totalInstances} total instances";
-
-		// Build items
-		var items = new List<object>();
-		foreach ( var layer in layers )
-		{
-			items.Add( layer );
-		}
-
-		_layerList.SetItems( items );
-		_layerList.ItemPaint = PaintLayerItem;
-	}
-
-	private void PaintLayerItem( VirtualWidget item )
-	{
-		if ( item.Object is not ClutterLayer layer )
-			return;
-
-		var rect = item.Rect;
-
-		// Background
-		if ( item.Selected || Paint.HasMouseOver )
-		{
-			Paint.SetBrush( Theme.Blue.WithAlpha( item.Selected ? 0.3f : 0.1f ) );
-			Paint.ClearPen();
-			Paint.DrawRect( rect, 2 );
-		}
-
-		// Icon
-		var iconRect = new Rect( rect.Left + 8, rect.Top, 32, rect.Height );
-		Paint.SetPen( Theme.Text );
-		Paint.DrawIcon( iconRect, "layers", 24, TextFlag.LeftCenter );
-
-		// Layer name
-		var nameRect = new Rect( rect.Left + 48, rect.Top, rect.Right - 48, rect.Height * 0.5f );
-		Paint.SetDefaultFont();
-		Paint.SetPen( Theme.Text );
-		Paint.DrawText( nameRect, layer.Name, TextFlag.LeftCenter );
-
-		// Stats
-		var instanceCount = layer.Instances?.Count ?? 0;
-		var objectCount = layer.Objects?.Count ?? 0;
-		var statsRect = new Rect( rect.Left + 48, rect.Top + rect.Height * 0.5f, rect.Right - 48, rect.Height * 0.5f );
-		Paint.SetPen( Theme.Text.WithAlpha( 0.6f ) );
-		Paint.DrawText( statsRect, $"{instanceCount} instances • {objectCount} objects", TextFlag.LeftTop );
 	}
 
 	private void ShowLayerContext( object obj )
@@ -675,7 +644,10 @@ public class LayerManagementDialog : Widget
 
 		var menu = new ContextMenu( this );
 
-		menu.AddOption( "Purge Instances", "delete_sweep", () => PurgeLayer( layer ) );
+		var instanceCount = layer.Instances?.Count ?? 0;
+		menu.AddOption( $"Purge ({instanceCount} instances)", "delete_sweep", () => PurgeLayer( layer ) )
+			.Enabled = instanceCount > 0;
+
 		menu.AddSeparator();
 		menu.AddOption( "Remove Layer", "delete", () => RemoveLayer( layer ) );
 
@@ -698,13 +670,19 @@ public class LayerManagementDialog : Widget
 		confirmDialog.Layout.Spacing = 12;
 		confirmDialog.MinimumWidth = 300;
 
-		var messageLabel = new Label( $"Are you sure you want to purge {instanceCount} instances from layer '{layer.Name}'?" );
+		var messageLabel = new Label( $"Delete {instanceCount} instances from layer '{layer.Name}'?" );
 		messageLabel.WordWrap = true;
 		confirmDialog.Layout.Add( messageLabel );
 
 		var buttonRow = confirmDialog.Layout.AddRow();
 		buttonRow.Spacing = 8;
 		buttonRow.AddStretchCell();
+
+		var cancelButton = new Button( "Cancel" )
+		{
+			Clicked = () => confirmDialog.Close()
+		};
+		buttonRow.Add( cancelButton );
 
 		var confirmButton = new Button( "Purge", "delete_sweep" )
 		{
@@ -724,27 +702,23 @@ public class LayerManagementDialog : Widget
 				layer.Instances.Clear();
 
 				Log.Info( $"Purged {instanceCount} instances from layer '{layer.Name}'" );
-				RefreshLayers();
+				RefreshStats();
+				_layerList?.BuildItems();
 				confirmDialog.Close();
 			}
 		};
 		buttonRow.Add( confirmButton );
 
-		var cancelButton = new Button( "Cancel" )
-		{
-			Clicked = () => confirmDialog.Close()
-		};
-		buttonRow.Add( cancelButton );
-
-		confirmDialog.Position = ScreenRect.Center - confirmDialog.Size / 2;
+		confirmDialog.Position = ScreenRect.Center - new Vector2( 150, 75 );
 		confirmDialog.Visible = true;
+		confirmDialog.ConstrainToScreen();
 	}
 
 	private void RemoveLayer( ClutterLayer layer )
 	{
 		var instanceCount = layer.Instances?.Count ?? 0;
 		var message = instanceCount > 0
-			? $"Remove layer '{layer.Name}' and purge {instanceCount} instances?"
+			? $"Remove layer '{layer.Name}' and delete {instanceCount} instances?"
 			: $"Remove layer '{layer.Name}'?";
 
 		// Confirm dialog
@@ -761,6 +735,12 @@ public class LayerManagementDialog : Widget
 		var buttonRow = confirmDialog.Layout.AddRow();
 		buttonRow.Spacing = 8;
 		buttonRow.AddStretchCell();
+
+		var cancelButton = new Button( "Cancel" )
+		{
+			Clicked = () => confirmDialog.Close()
+		};
+		buttonRow.Add( cancelButton );
 
 		var confirmButton = new Button( "Remove", "delete" )
 		{
@@ -784,19 +764,15 @@ public class LayerManagementDialog : Widget
 				_clutterSystem.RemoveLayer( layer );
 
 				Log.Info( $"Removed layer '{layer.Name}'" );
-				RefreshLayers();
+				RefreshStats();
+				_layerList?.BuildItems();
 				confirmDialog.Close();
 			}
 		};
 		buttonRow.Add( confirmButton );
 
-		var cancelButton = new Button( "Cancel" )
-		{
-			Clicked = () => confirmDialog.Close()
-		};
-		buttonRow.Add( cancelButton );
-
-		confirmDialog.Position = ScreenRect.Center - confirmDialog.Size / 2;
+		confirmDialog.Position = ScreenRect.Center - new Vector2( 150, 75 );
 		confirmDialog.Visible = true;
+		confirmDialog.ConstrainToScreen();
 	}
 }
