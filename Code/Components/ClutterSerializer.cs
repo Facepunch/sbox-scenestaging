@@ -75,6 +75,7 @@ internal static class ClutterSerializer
 	{
 		JsonObject layerJson = new();
 
+		layerJson["Id"] = layer.Id.ToString();
 		layerJson["Name"] = layer.Name;
 
 		// Serialize ClutterObjects
@@ -181,6 +182,16 @@ internal static class ClutterSerializer
 	private static ClutterLayer DeserializeLayerForSystem( ClutterSystem clutterSystem, JsonObject layerJson )
 	{
 		var layer = new ClutterLayer();
+
+		// Deserialize the GUID first so it's stable across serialization
+		if ( layerJson.TryGetPropertyValue( "Id", out var idNode ) )
+		{
+			var idString = idNode.GetValue<string>();
+			if ( Guid.TryParse( idString, out var guid ) )
+			{
+				layer.Id = guid;
+			}
+		}
 
 		if ( layerJson.TryGetPropertyValue( "Name", out var nameNode ) )
 		{
