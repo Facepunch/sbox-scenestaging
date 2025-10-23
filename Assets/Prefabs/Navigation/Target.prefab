@@ -1,42 +1,163 @@
 {
   "RootObject": {
     "__guid": "7e0459c3-a303-4744-b2c9-a808c711a8f5",
+    "__version": 1,
     "Flags": 0,
     "Name": "target",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
     "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [],
     "Children": [
       {
         "__guid": "da7b0c96-6cd4-4ac6-8c60-07b4e49293c6",
+        "__version": 1,
         "Flags": 0,
         "Name": "Srpite",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
         "Scale": "10,10,10",
+        "Tags": "",
         "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.SpriteRenderer",
             "__guid": "ce1039c1-687b-4d25-8a05-da92fe013ae2",
+            "__enabled": true,
+            "__version": 2,
             "Additive": true,
-            "CastShadows": false,
+            "Billboard": "Always",
             "Color": "0.31188,0.06176,0.06176,1",
             "DepthFeather": 0,
             "FlipHorizontal": false,
             "FlipVertical": false,
             "FogStrength": 1,
+            "IsSorted": false,
             "Lighting": false,
+            "OnAnimationEnd": null,
+            "OnAnimationStart": null,
+            "OnBroadcastMessage": null,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
             "Opaque": true,
-            "Pivot": "0.5,0.5",
+            "PlaybackSpeed": 1,
             "RenderOptions": {
               "GameLayer": true,
               "OverlayLayer": false,
               "BloomLayer": false,
               "AfterUILayer": false
             },
-            "Size": "10,10",
-            "Texture": "materials/particles/shapes/star1.vtex"
+            "Shadows": false,
+            "Size": "20,20",
+            "Sprite": {
+              "$compiler": "embed",
+              "$source": null,
+              "data": {
+                "Animations": [
+                  {
+                    "Name": "Default",
+                    "FrameRate": 15,
+                    "Origin": "0.5,0.5",
+                    "LoopMode": "Loop",
+                    "Frames": [
+                      {
+                        "Texture": {
+                          "$compiler": "texture",
+                          "$source": "text",
+                          "data": {
+                            "Size": "128,128",
+                            "Margin": {
+                              "Left": 0,
+                              "Top": 0,
+                              "Right": 0,
+                              "Bottom": 0
+                            },
+                            "TextFlags": "CenterHorizontally, CenterVertically, DontClip",
+                            "TextScope": {
+                              "Text": "⭐",
+                              "TextColor": "1,1,1,1",
+                              "FontName": "Roboto",
+                              "FontSize": 64,
+                              "FontWeight": 400,
+                              "FontItalic": false,
+                              "LineHeight": 1,
+                              "LetterSpacing": 0,
+                              "WordSpacing": 0,
+                              "FilterMode": "Bilinear",
+                              "Outline": {
+                                "Enabled": false,
+                                "Size": 4,
+                                "Color": "0,0,1,1"
+                              },
+                              "Shadow": {
+                                "Enabled": false,
+                                "Size": 4,
+                                "Color": "0,0,0,1",
+                                "Offset": "4,4"
+                              },
+                              "OutlineUnder": {
+                                "Enabled": false,
+                                "Size": 4,
+                                "Color": "0,1,0,1"
+                              },
+                              "ShadowUnder": {
+                                "Enabled": false,
+                                "Size": 4,
+                                "Color": "0,0,0,1",
+                                "Offset": "4,4"
+                              }
+                            }
+                          },
+                          "compiled": null
+                        },
+                        "BroadcastMessages": []
+                      }
+                    ]
+                  }
+                ],
+                "__references": []
+              },
+              "compiled": null
+            },
+            "StartingAnimationName": "Default",
+            "TextureFilter": "Bilinear"
           }
-        ]
+        ],
+        "Children": []
       }
     ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
     "__variables": [
       {
         "Id": "Color",
@@ -51,36 +172,13 @@
           }
         ]
       }
-    ],
-    "__properties": {
-      "FixedUpdateFrequency": 50,
-      "MaxFixedUpdates": 5,
-      "NetworkFrequency": 30,
-      "NetworkInterpolation": true,
-      "PhysicsSubSteps": 1,
-      "ThreadedAnimation": true,
-      "TimeScale": 1,
-      "UseFixedUpdate": true,
-      "Metadata": {},
-      "NavMesh": {
-        "Enabled": false,
-        "IncludeStaticBodies": true,
-        "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
-        "AgentHeight": 64,
-        "AgentRadius": 16,
-        "AgentStepSize": 18,
-        "AgentMaxSlope": 40,
-        "ExcludedBodies": "",
-        "IncludedBodies": ""
-      }
-    }
+    ]
   },
+  "ResourceVersion": 2,
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "ResourceVersion": 1,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }

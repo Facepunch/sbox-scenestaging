@@ -91,19 +91,27 @@
             "__type": "Sandbox.NavMeshArea",
             "__guid": "9b7c628b-9d28-4b0b-804c-23cf774671f0",
             "__enabled": true,
+            "Area": null,
             "IsBlocker": true,
-            "LinkedCollider": {
-              "_type": "component",
-              "component_id": "b61023e4-c04e-4f0e-b0a2-83cfa70b7767",
-              "go": "afe4208e-c29d-4387-9801-95102d30f696",
-              "component_type": "ModelCollider"
-            },
+            "LinkedCollider": null,
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
-            "OnComponentUpdate": null
+            "OnComponentUpdate": null,
+            "SceneVolume": {
+              "Type": "Box",
+              "Sphere": {
+                "Center": "0,0,0",
+                "Radius": 10
+              },
+              "Box": {
+                "Mins": "-140.999,-338.0184,-85.66461",
+                "Maxs": "155.6937,334.2386,255.4865"
+              },
+              "Capsule": {}
+            }
           },
           {
             "__type": "Sandbox.ModelCollider",

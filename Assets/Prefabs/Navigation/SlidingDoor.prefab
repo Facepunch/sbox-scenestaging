@@ -1,23 +1,52 @@
 {
   "RootObject": {
     "__guid": "7af974b8-fa8b-4e3c-8bc1-f463fd6812f3",
+    "__version": 1,
     "Flags": 0,
     "Name": "slidingdoor",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
     "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [],
     "Children": [
       {
         "__guid": "e07b6481-f80e-4c3a-ae0f-ac3afc09a106",
+        "__version": 1,
         "Flags": 0,
         "Name": "DoorModel",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
         "Scale": "12,0.3999998,4.000001",
+        "Tags": "",
         "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.ModelRenderer",
             "__guid": "b541e376-133e-4af0-b960-8fc377d3e5ee",
+            "__enabled": true,
             "BodyGroups": 18446744073709551615,
             "CreateAttachments": false,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
             "Model": "models/dev/box.vmdl",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
             "RenderOptions": {
               "GameLayer": true,
               "OverlayLayer": false,
@@ -27,18 +56,28 @@
             "RenderType": "On",
             "Tint": "0.20155,0,0.46512,1"
           }
-        ]
+        ],
+        "Children": []
       },
       {
         "__guid": "6fbc6150-3b84-456c-818b-f98d10d39dd8",
+        "__version": 1,
         "Flags": 0,
         "Name": "DoorLogic",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
         "Scale": "12,0.3999998,10",
+        "Tags": "",
         "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "NavigationSlidingDoor",
             "__guid": "99698d3c-3fd4-4bfe-aa4a-ed800cf2b9c2",
+            "__enabled": true,
             "Blocker": {
               "_type": "component",
               "component_id": "3b71aca4-58e7-48d3-9738-cdbebd4b7341",
@@ -48,52 +87,90 @@
             "DoorModel": {
               "_type": "gameobject",
               "go": "e07b6481-f80e-4c3a-ae0f-ac3afc09a106"
-            }
+            },
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
           }
-        ]
+        ],
+        "Children": []
       },
       {
         "__guid": "4ceb7763-997c-48e2-b597-60b4a6604bb5",
+        "__version": 1,
         "Flags": 0,
         "Name": "DoorBlocker",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
         "Scale": "12,0.3999998,10",
+        "Tags": "",
         "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.NavMeshArea",
             "__guid": "3b71aca4-58e7-48d3-9738-cdbebd4b7341",
+            "__enabled": true,
+            "Area": null,
             "IsBlocker": true,
-            "LinkedCollider": {
-              "_type": "component",
-              "component_id": "18c9ce1f-b856-4f76-af31-902ee1779716",
-              "go": "4ceb7763-997c-48e2-b597-60b4a6604bb5",
-              "component_type": "BoxCollider"
+            "LinkedCollider": null,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "SceneVolume": {
+              "Type": "Box",
+              "Sphere": {
+                "Center": "0,0,0",
+                "Radius": 10
+              },
+              "Box": {
+                "Mins": "-30,-75,-16",
+                "Maxs": "30,75,16"
+              },
+              "Capsule": {}
             }
           },
           {
             "__type": "Sandbox.BoxCollider",
             "__guid": "18c9ce1f-b856-4f76-af31-902ee1779716",
+            "__enabled": true,
             "Center": "0,0,0",
+            "Elasticity": null,
+            "Friction": null,
             "IsTrigger": true,
+            "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnObjectTriggerEnter": null,
+            "OnObjectTriggerExit": null,
+            "OnTriggerEnter": null,
+            "OnTriggerExit": null,
+            "RollingResistance": null,
             "Scale": "60,150,32",
             "Static": false,
+            "Surface": null,
             "SurfaceVelocity": "0,0,0"
           }
-        ]
+        ],
+        "Children": []
       }
     ],
-    "__variables": [],
     "__properties": {
-      "FixedUpdateFrequency": 50,
-      "MaxFixedUpdates": 5,
-      "NetworkFrequency": 30,
       "NetworkInterpolation": true,
-      "PhysicsSubSteps": 1,
-      "ThreadedAnimation": true,
       "TimeScale": 1,
-      "UseFixedUpdate": true,
+      "WantsSystemScene": true,
       "Metadata": {},
       "NavMesh": {
         "Enabled": false,
@@ -107,13 +184,14 @@
         "ExcludedBodies": "",
         "IncludedBodies": ""
       }
-    }
+    },
+    "__variables": []
   },
+  "ResourceVersion": 2,
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "ResourceVersion": 1,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }

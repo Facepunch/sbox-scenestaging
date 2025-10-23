@@ -1,0 +1,3389 @@
+{
+  "__guid": "45aa11f0-c63b-412f-a695-ce90fdf12948",
+  "GameObjects": [
+    {
+      "__guid": "72a7ecc6-9b94-430d-a169-19620b1f9b35",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Main Plattform",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "120,120,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "ca082dc6-4e0d-4ccd-a896-8dbb35997dec",
+          "__enabled": true,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "e6c44e3a-6332-40fe-a911-928234799197",
+          "__enabled": true,
+          "Center": "0,0,0",
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "6b5d940c-b4b5-4906-83e6-3571d6fedf08",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "7713789e-f3f9-4a7a-8813-187bc1a179be",
+          "__enabled": true,
+          "Author": null,
+          "Changes": "",
+          "Description": "Navmesh areas with different costs",
+          "Group": "Navigation",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneTags": "",
+          "Title": "Area Costs",
+          "Version": null
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "b0b4a22c-96de-41c8-b264-a87ab4dad65a",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Directional Light",
+      "Position": "0,0,200",
+      "Rotation": "0.1597522,0.2488411,-0.5160785,0.8038784",
+      "Scale": "1,1,1",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.DirectionalLight",
+          "__guid": "e8d1df23-3293-49b9-b237-e1ca95bfa550",
+          "__enabled": true,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Shadows": true,
+          "SkyColor": "0.05882,0.07451,0.08235,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "b39a2777-66c8-41a6-baca-68b493f307cb",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "SkyBox",
+      "Position": "1252.565,134.7641,-1378.779",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "skybox",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "8df8dd2f-0d68-4ec4-b4ea-a3586e1c8c55",
+          "__enabled": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SkyIndirectLighting": true,
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "c7d567a1-aa54-4149-acc2-d1e8eeed65c4",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "1574.102,2116.687,589.5245",
+      "Rotation": "-0.04462518,-0.01883296,0.9202332,-0.3883617",
+      "Scale": "1,1,1",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "2ef62bcf-6ff8-434d-88f9-c76e852d4590",
+          "__enabled": true,
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "EnablePostProcessing": true,
+          "FieldOfView": 84.96,
+          "FovAxis": "Horizontal",
+          "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "PostProcessAnchor": null,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "RenderTexture": null,
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "NoClip",
+          "__guid": "82932bd4-e2c3-4f3a-87f6-10343200eb4d",
+          "__enabled": true,
+          "MoveSpeed": 600,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "1546f51d-ac8e-4671-bec1-2a5e79d196f4",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder",
+      "Position": "28.26253,1101.242,26.32097",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "efe17fe8-e0c1-4833-97d8-b17f44a64e69",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-300,-10,-16",
+              "Maxs": "300,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "0f8603a9-eff1-400b-9bc0-3a9759ca26be",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (40)",
+      "Position": "28.26253,2058.318,26.32097",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "420f99a7-ca4b-4b1e-ba8e-0284ebc12d56",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-300,-10,-16",
+              "Maxs": "300,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "daa91827-43c2-48ba-a13a-4c59d48af1c0",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (43)",
+      "Position": "28.26253,1852.992,26.32097",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "e6b017ca-f165-4a8c-af31-34dff3bcbe42",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/cheap.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-206.9024,-30,-16",
+              "Maxs": "216.265,30,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "a66a9204-52dd-4f38-96af-7086dd3a4ee1",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (44)",
+      "Position": "28.26253,1300.432,26.32097",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "1e737655-8595-428f-a50d-db41b340c1e2",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/expensive.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-206.9024,-30,-16",
+              "Maxs": "216.265,30,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "bd3347dc-0a3c-4903-ae26-38c313ee1865",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (1)",
+      "Position": "-1128.871,115.7681,26.32097",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "118bcd9e-c11e-425d-a873-3867e437ce4f",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-300,-10,-16",
+              "Maxs": "258.1981,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "80302791-6641-4c40-9f83-b39b2c867d09",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (41)",
+      "Position": "-1128.871,1468.948,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "d3d01dff-7d73-4b17-b0b3-0d2eea9cb5ba",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-150,-10,-16",
+              "Maxs": "150,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "24efa17c-06a4-4ddb-a936-ea31b02918c0",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (42)",
+      "Position": "1170.238,1576.894,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "addc37c8-2acf-4aa2-9f1c-efb79c259cae",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-130,-10,-16",
+              "Maxs": "130,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "bd56cc29-c0a6-4578-acdc-4e6c2bea146e",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (2)",
+      "Position": "25.16751,-1035.417,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "beefa203-de8c-482a-a60f-cc2259484e24",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-300,-10,-16",
+              "Maxs": "300,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "f0fab791-334a-46c7-8a68-14bd305d4f85",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (3)",
+      "Position": "1170.18,-82.15881,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "71360274-be9c-46a1-aad2-62b77cc7c8ae",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-250,-10,-16",
+              "Maxs": "250,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "fcf89803-424f-4dc6-972d-9a944c274287",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (4)",
+      "Position": "213.7089,857.838,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "0e51f001-93dc-4e9f-a073-5f59c704b99b",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-250,-10,-16",
+              "Maxs": "250,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "422b46d6-bdc9-4199-994d-73b576a08e38",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (5)",
+      "Position": "-738.5955,107.7396,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "0f168bd5-0c5f-477b-82b8-e8f5f31d118b",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-200,-10,-16",
+              "Maxs": "200,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "7bfc42f4-1f2b-466b-b255-9d1c2406bc06",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (6)",
+      "Position": "-548.8815,-642.6625,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "4dc36b3f-5a60-4291-8b1e-acd9ace3563a",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-59,-10,-16",
+              "Maxs": "59,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "b1e70b22-911f-4e1c-b46f-0385bd55929c",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (7)",
+      "Position": "82.24622,-642.903,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "77634860-16c9-4352-8126-3afe0d111f3a",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-59,-10,-16",
+              "Maxs": "59,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "f3ef111d-5af6-40e7-aeb9-2757438aadb2",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (8)",
+      "Position": "746.0276,-642.8945,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "88785767-86f2-4688-a9e0-413048521686",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-59,-10,-16",
+              "Maxs": "59,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "a9ccc043-3779-455c-a9bf-f3be8b718e1a",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (9)",
+      "Position": "884.1473,-425.2029,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "b4b03f80-1def-4360-90aa-9f6c67b3145d",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-59,-10,-16",
+              "Maxs": "59,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "f1b1ba6d-4615-42f0-bd43-6c252348faf2",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (10)",
+      "Position": "488.6068,-456.7593,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "f50d9030-da29-4473-a2b9-8e7ae81393bf",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-59,-10,-16",
+              "Maxs": "59,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "66a31110-b043-42bf-9e75-c9a3d031390b",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (11)",
+      "Position": "678.3922,-229.705,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "8b7003ea-cf16-4905-a8bc-f86d9d90fd03",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-59,-10,-16",
+              "Maxs": "59,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "f61ecc8c-babd-4557-bbae-0c54c314daa7",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (12)",
+      "Position": "-216.9138,-441.2176,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "d089df20-0f87-487b-b46a-89c6e1c03890",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-80,-10,-16",
+              "Maxs": "80,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "cb6f056b-2eb1-4737-a709-ad74b2d4ca21",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (14)",
+      "Position": "-490.7537,-98.02821,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "dd4a8e02-2a06-4f0f-85c6-bab2f7ecd958",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-80,-10,-16",
+              "Maxs": "80,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "ee8b7513-1534-4a15-932a-31a449cd6a18",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (15)",
+      "Position": "-491.0477,369.4253,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "93ba962e-5cb3-4571-9344-7668d9e30182",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-80,-10,-16",
+              "Maxs": "80,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "2baa6cc2-60c7-497a-9429-4be57a4f8ee4",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (16)",
+      "Position": "-288.5279,519.7443,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "6e364e53-af63-4d3b-821e-9cd004a62fa8",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-80,-10,-16",
+              "Maxs": "80,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "7014f0c6-eff0-404f-bf84-feab0b2a811a",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (24)",
+      "Position": "-359.8925,-752.0629,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "36c256ee-3d7d-43d6-a16c-41a9df2a8a06",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "f39a6065-30a3-4acc-9957-209cc40baa0c",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (31)",
+      "Position": "277.6002,-772.923,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "b5dac1c4-1b8c-43c8-bb62-fd301fcb1c09",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "6c37c153-b25e-416f-bdfa-6fba0c8bca05",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (37)",
+      "Position": "424.7008,332.2983,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "ef06c0a6-5821-4dd5-bc84-ef2f9c24b513",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "64544908-e268-4a8b-8c9d-23583dca6abd",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (36)",
+      "Position": "-650.2655,260.3574,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "03e85afa-1857-471e-ad5b-5aa86c84f28c",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "c6e7cff5-9e3e-48c7-9b31-f9d0c81886ac",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (32)",
+      "Position": "930.2584,-740.5494,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "d7a23355-cf2d-413e-9775-d9035abbb648",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "fa08ab4c-ec23-4843-9556-c77359329993",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (25)",
+      "Position": "-284.1902,-835.3024,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "94d59da7-7e52-4f94-bbcd-774ec637d545",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "c0f0030d-fdf4-4a06-b290-8595b29da034",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (26)",
+      "Position": "-52.70132,-835.8764,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "c33ce99f-1caf-4633-b990-b97b244431ca",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "f8c0e50a-3514-4c86-9422-3258151c6c12",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (38)",
+      "Position": "433.0964,-835.8764,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "e225aa56-7b5d-4788-b0df-aa3f49f8f67d",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "66b8398a-da99-4a25-b7c2-3be6fdca1426",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (39)",
+      "Position": "653.2392,-835.8764,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "3d8613a3-2d0d-4b9b-be7a-48279344e81c",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "a12a495f-56b6-4034-9343-795806b459c4",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (28)",
+      "Position": "-826.1273,-635.8277,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "d9123573-291e-42e6-86f7-a2a4ce1dc32b",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "aa4eec12-f242-4f1d-a470-0c8885a70247",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (29)",
+      "Position": "-1053.432,-383.6277,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "97d81ce1-324f-44a7-a4ff-daaa779c1d12",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "af7323f0-167e-4a21-b6c3-a98a614463af",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (35)",
+      "Position": "-859.7407,618.2449,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "979df02d-2e88-4e19-b0d3-2c0562fec634",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-30,-10,-16",
+              "Maxs": "30,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "cebc8b64-3a93-4bef-ace9-30abb74a05f0",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (30)",
+      "Position": "-934.0867,308.1884,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "96757942-889e-42d4-8496-9d1dc1099fc4",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-90,-10,-16",
+              "Maxs": "90,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "d9791e3e-db20-401b-809e-e92bc7eb9eeb",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (27)",
+      "Position": "-842.3685,-833.7863,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "9d2937fb-e2ae-4c72-8a77-f20d120eea6e",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-60,-10,-16",
+              "Maxs": "60,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "796a0b8a-2218-4604-9d1e-6992a0d7c3c4",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (17)",
+      "Position": "16.62534,-256.6681,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "3174183e-f459-4c86-9a87-d6444722733a",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-80,-10,-16",
+              "Maxs": "80,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "450746eb-7d7e-42a3-99ec-6641b178be84",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (18)",
+      "Position": "-259.7558,-54.87466,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "094b31c4-937c-4980-9d93-6b13dcc0d7d7",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-70,-10,-16",
+              "Maxs": "70,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "96c72d11-7292-463e-8f56-9c38994f2c4c",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (21)",
+      "Position": "495.5207,-35.81584,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "dfd08efa-376c-4583-9125-43014d2a97c3",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-70,-10,-16",
+              "Maxs": "70,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "f54a027d-1290-4ed4-8516-365cfea21122",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (22)",
+      "Position": "904.5573,179.1002,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "4601eb66-606a-4de5-aeea-2a1ba4bee4e2",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-70,-10,-16",
+              "Maxs": "70,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "07cd256b-02b0-49b7-ae3b-04501394c471",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (23)",
+      "Position": "617.8329,484.7949,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "f0fc7b71-3629-4566-b677-618c932e9c5a",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-60,-10,-16",
+              "Maxs": "60,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "dd30efad-228d-437f-9b37-bcfd2bac2249",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (33)",
+      "Position": "824.6799,666.9568,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "100019ca-85f6-45d6-8940-ff886b506cd8",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-60,-10,-16",
+              "Maxs": "60,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "829610c5-8b7d-47ce-ac59-fd2d9a47f7bf",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (34)",
+      "Position": "433.1585,669.777,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "dda398aa-a35b-4bf1-9a37-0a638c69d5b7",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-60,-10,-16",
+              "Maxs": "60,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "dec3ce54-8a62-4f23-8c2b-123f48a3aef9",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (19)",
+      "Position": "196.3045,55.66803,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "522b13d0-8796-4c2b-8cc7-2020fd8db4c5",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-70,-10,-16",
+              "Maxs": "70,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "6b30b5d2-e72a-48d7-bade-8b5fc586d3da",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (20)",
+      "Position": "-30.64725,272.5966,26.32099",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "3e50817f-8c04-4e6c-a5df-52034d036ce9",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-70,-10,-16",
+              "Maxs": "70,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "f91c9288-383b-48dc-bf60-8d01134183a6",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeBorder (13)",
+      "Position": "284.0501,-452.2662,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "5466f94e-1d5f-46f6-8892-39408f9952e2",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/blocked.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-59,-10,-16",
+              "Maxs": "59,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "bac3d06e-4255-4f8c-bb00-33589fc0bc0c",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeShotcut",
+      "Position": "-357.6285,-732.1111,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "cd0b62ec-d52c-4f17-8981-810c9c827ed0",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/cheap.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-10,-10,-16",
+              "Maxs": "10,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "a8ae9f94-a91f-41b5-b3f9-8c2ea59050d1",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeShotcut (1)",
+      "Position": "198.9902,-149.7163,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "98605626-88a2-44b4-b6b9-554b9086de1a",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/cheap.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-10,-10,-16",
+              "Maxs": "10,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "56eb6a5f-9c93-4e58-9bfa-3b8421b39d10",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeShotcut (5)",
+      "Position": "65.19547,-256.1295,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "120321ff-98cf-4d69-8bd3-cabf747bb977",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/cheap.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-10,-10,-16",
+              "Maxs": "10,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "7a3ffa97-1268-45c8-93a5-20ea348b5190",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeShotcut (2)",
+      "Position": "1030.053,176.8826,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "b250daa9-8130-48ab-93c8-05f4026fb8b5",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/cheap.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-10,-10,-16",
+              "Maxs": "10,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "beeca052-66b5-4acb-a3c8-f55cb118d1f4",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeShotcut (3)",
+      "Position": "-739.6222,-269.1575,26.32098",
+      "Rotation": "0,0,0.7071068,0.7071068",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "d5dec9b7-cc25-409a-9ca0-aa5e23478000",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/cheap.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-10,-10,-16",
+              "Maxs": "10,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "cac0b022-247e-4a3f-9a78-df36694056e7",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "MazeShotcut (4)",
+      "Position": "-832.42,619.2173,26.32098",
+      "Rotation": "0,0,0,1",
+      "Scale": "4,5,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.NavMeshArea",
+          "__guid": "a6eaa203-636d-4da9-bfd8-2ddaa3f318a9",
+          "__enabled": true,
+          "Area": "scenes/tests/navigation/cheap.navarea",
+          "IsBlocker": false,
+          "LinkedCollider": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneVolume": {
+            "Type": "Box",
+            "Sphere": {
+              "Center": "0,0,0",
+              "Radius": 10
+            },
+            "Box": {
+              "Mins": "-10,-10,-16",
+              "Maxs": "10,10,16"
+            },
+            "Capsule": {}
+          }
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "f5d6f7f7-c838-4aa4-9a75-b287160bf69e",
+      "__version": 1,
+      "__Prefab": "prefabs/navigation/target.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7e0459c3-a303-4744-b2c9-a808c711a8f5"
+            },
+            "Property": "Position",
+            "Value": "961.394,675.7947,261.4186"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "7e0459c3-a303-4744-b2c9-a808c711a8f5": "f5d6f7f7-c838-4aa4-9a75-b287160bf69e",
+        "da7b0c96-6cd4-4ac6-8c60-07b4e49293c6": "a92cec78-3fc0-4f31-a6d4-cd9f666a32cb",
+        "ce1039c1-687b-4d25-8a05-da92fe013ae2": "105c8cda-eab6-4bb2-9210-1615de29bed1"
+      }
+    },
+    {
+      "__guid": "0a40786a-7229-424e-a8dd-741369fc7b76",
+      "__version": 1,
+      "__Prefab": "prefabs/navigation/target.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7e0459c3-a303-4744-b2c9-a808c711a8f5"
+            },
+            "Property": "Name",
+            "Value": "target (1)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7e0459c3-a303-4744-b2c9-a808c711a8f5"
+            },
+            "Property": "Position",
+            "Value": "1355.121,947.9069,249.6601"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "7e0459c3-a303-4744-b2c9-a808c711a8f5": "0a40786a-7229-424e-a8dd-741369fc7b76",
+        "da7b0c96-6cd4-4ac6-8c60-07b4e49293c6": "0ca83db8-0e8a-46bf-87dd-4c52500d2e10",
+        "ce1039c1-687b-4d25-8a05-da92fe013ae2": "fc2a8368-3713-4320-ba70-6ee956f20af2"
+      }
+    },
+    {
+      "__guid": "cb6d4b7b-05d8-40b4-ba18-af4010d5564e",
+      "__version": 1,
+      "__Prefab": "prefabs/navigation/target.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7e0459c3-a303-4744-b2c9-a808c711a8f5"
+            },
+            "Property": "Name",
+            "Value": "target (3)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7e0459c3-a303-4744-b2c9-a808c711a8f5"
+            },
+            "Property": "Position",
+            "Value": "916.3615,1318.312,261.4186"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "7e0459c3-a303-4744-b2c9-a808c711a8f5": "cb6d4b7b-05d8-40b4-ba18-af4010d5564e",
+        "da7b0c96-6cd4-4ac6-8c60-07b4e49293c6": "bb4eb27f-24d0-497f-b417-167da52f3787",
+        "ce1039c1-687b-4d25-8a05-da92fe013ae2": "fbd5627e-6b5e-4515-8f86-da1eaab7986d"
+      }
+    },
+    {
+      "__guid": "2e7d356b-1adb-442c-92f7-0c516fb7e20d",
+      "__version": 1,
+      "__Prefab": "prefabs/navigation/target.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7e0459c3-a303-4744-b2c9-a808c711a8f5"
+            },
+            "Property": "Name",
+            "Value": "target (2)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "7e0459c3-a303-4744-b2c9-a808c711a8f5"
+            },
+            "Property": "Position",
+            "Value": "-931.0423,1322.253,261.4186"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "7e0459c3-a303-4744-b2c9-a808c711a8f5": "2e7d356b-1adb-442c-92f7-0c516fb7e20d",
+        "da7b0c96-6cd4-4ac6-8c60-07b4e49293c6": "892b6958-86f1-43e5-842a-af946eafa8f6",
+        "ce1039c1-687b-4d25-8a05-da92fe013ae2": "89fcc915-d1de-42d4-b0c0-9d7028761e9d"
+      }
+    },
+    {
+      "__guid": "92b80152-ae0b-44ab-ac60-3c536d8e6b60",
+      "__version": 1,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "7c0f19ef-11a0-4859-a465-d1af56d8ce8e"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "7c0f19ef-11a0-4859-a465-d1af56d8ce8e",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Text",
+              "Position": "0,0,90.22003",
+              "Rotation": "0,0.7071068,0,0.7071068",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "8a817daf-9e8b-4d35-8cda-b031d6e5887f"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "7c0f19ef-11a0-4859-a465-d1af56d8ce8e"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "Sandbox.TextRenderer",
+              "__guid": "8a817daf-9e8b-4d35-8cda-b031d6e5887f",
+              "__enabled": true,
+              "__version": 2,
+              "BlendMode": "Normal",
+              "FogStrength": 1,
+              "HorizontalAlignment": "Center",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "Scale": 1,
+              "TextScope": {
+                "Text": "Regular\n",
+                "TextColor": "0,0,0,1",
+                "FontName": "Poppins",
+                "FontSize": 64,
+                "FontWeight": 800,
+                "FontItalic": false,
+                "LineHeight": 1,
+                "LetterSpacing": 0,
+                "WordSpacing": 0,
+                "FilterMode": "Bilinear",
+                "Outline": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1"
+                },
+                "Shadow": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                },
+                "OutlineUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,1,0,1"
+                },
+                "ShadowUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                }
+              },
+              "VerticalAlignment": "Center"
+            }
+          }
+        ],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "Property": "Name",
+            "Value": "regular"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "Property": "Position",
+            "Value": "1416.015,910.4797,28.75327"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "bb987e63-c5ef-42bd-a52b-be9eb4616917"
+            },
+            "Property": "PotentialTargets",
+            "Value": [
+              {
+                "_type": "gameobject",
+                "go": "f5d6f7f7-c838-4aa4-9a75-b287160bf69e"
+              },
+              {
+                "_type": "gameobject",
+                "go": "0a40786a-7229-424e-a8dd-741369fc7b76"
+              }
+            ]
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "Acceleration",
+            "Value": 2400
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "ForbiddenAreas",
+            "Value": [
+              "scenes/tests/navigation/blocked.navarea",
+              "scenes/tests/navigation/cheap.navarea"
+            ]
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "MaxSpeed",
+            "Value": 500
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "Radius",
+            "Value": 24
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "fe397676-8fd2-4485-8a26-a012aba851fe": "92b80152-ae0b-44ab-ac60-3c536d8e6b60",
+        "bb987e63-c5ef-42bd-a52b-be9eb4616917": "57669022-1d92-4db0-b6ee-364cd68e1d9e",
+        "70cbf856-d778-4ab6-84d9-ce7820b7fd76": "c128b1cc-a644-40cf-b13a-44343478e707",
+        "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2": "6c004a06-5c33-43a9-95ef-ce707ce3aa6c",
+        "b609ad45-dab2-4d7d-acb9-c153a8cdf22d": "da18f9ce-f648-4682-bdb0-4d1c4ecc4a3f",
+        "0ff2da3d-247d-4d7d-8028-1a369a1dac48": "f805db42-ca51-449a-98a9-759100e7b6ba",
+        "af2510ff-00b3-445b-b09c-ff2ff36999aa": "6a602922-4530-4aa8-b5be-c91e30716dc9",
+        "ba36710a-79d8-4f17-92af-a5eaecd3965a": "d01f7dbf-1852-434e-a0db-e89b6aa824c9"
+      }
+    },
+    {
+      "__guid": "1a73dcc8-74dc-465d-9a5b-649e8c7e9da5",
+      "__version": 1,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "182f76b3-e40a-4be2-8237-7404cddc06b6"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "182f76b3-e40a-4be2-8237-7404cddc06b6",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Text",
+              "Position": "0,0,90.22003",
+              "Rotation": "0,0.7071068,0,0.7071068",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "32d28ae1-7b21-469a-b76e-7ad173692941"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "182f76b3-e40a-4be2-8237-7404cddc06b6"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "Sandbox.TextRenderer",
+              "__guid": "32d28ae1-7b21-469a-b76e-7ad173692941",
+              "__enabled": true,
+              "__version": 2,
+              "BlendMode": "Normal",
+              "FogStrength": 1,
+              "HorizontalAlignment": "Center",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "Scale": 1,
+              "TextScope": {
+                "Text": "Trapped",
+                "TextColor": "0,0,0,1",
+                "FontName": "Poppins",
+                "FontSize": 64,
+                "FontWeight": 800,
+                "FontItalic": false,
+                "LineHeight": 1,
+                "LetterSpacing": 0,
+                "WordSpacing": 0,
+                "FilterMode": "Bilinear",
+                "Outline": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1"
+                },
+                "Shadow": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                },
+                "OutlineUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,1,0,1"
+                },
+                "ShadowUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                }
+              },
+              "VerticalAlignment": "Center"
+            }
+          }
+        ],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "Property": "Name",
+            "Value": "trapped"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "Property": "Position",
+            "Value": "610.2527,680.5978,28.75327"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "bb987e63-c5ef-42bd-a52b-be9eb4616917"
+            },
+            "Property": "PotentialTargets",
+            "Value": [
+              {
+                "_type": "gameobject",
+                "go": "f5d6f7f7-c838-4aa4-9a75-b287160bf69e"
+              },
+              {
+                "_type": "gameobject",
+                "go": "0a40786a-7229-424e-a8dd-741369fc7b76"
+              }
+            ]
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "Acceleration",
+            "Value": 2400
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "ForbiddenAreas",
+            "Value": [
+              "scenes/tests/navigation/blocked.navarea"
+            ]
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "MaxSpeed",
+            "Value": 500
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "Radius",
+            "Value": 24
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "fe397676-8fd2-4485-8a26-a012aba851fe": "1a73dcc8-74dc-465d-9a5b-649e8c7e9da5",
+        "bb987e63-c5ef-42bd-a52b-be9eb4616917": "28c66b20-21d8-472d-b4f6-5077c35fb2bb",
+        "70cbf856-d778-4ab6-84d9-ce7820b7fd76": "715546dc-6dbe-4cb3-b870-a1fe8e8cf10f",
+        "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2": "ee89ab3b-e8df-4a94-b89d-5cf3759358f3",
+        "b609ad45-dab2-4d7d-acb9-c153a8cdf22d": "34d25757-f139-4c79-8fdb-d5f71bdec9fd",
+        "0ff2da3d-247d-4d7d-8028-1a369a1dac48": "e9f5a6f2-8d78-4936-af56-8f03d01a2954",
+        "af2510ff-00b3-445b-b09c-ff2ff36999aa": "2ba1f062-7cbe-43fa-a7c0-d9199221c2c7",
+        "ba36710a-79d8-4f17-92af-a5eaecd3965a": "3007eaf8-bd6e-4667-9ec1-756b5371e322"
+      }
+    },
+    {
+      "__guid": "b51d7116-c5cc-45d9-953d-55a197c72e1a",
+      "__version": 1,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "ca2d6de9-60da-43cd-a44d-cc57b88c28d2"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "ca2d6de9-60da-43cd-a44d-cc57b88c28d2",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Text",
+              "Position": "0,0,90.22003",
+              "Rotation": "0,0.7071068,0,0.7071068",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "863232dc-23a8-4994-a07a-c33f74f86de7"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "ca2d6de9-60da-43cd-a44d-cc57b88c28d2"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "Sandbox.TextRenderer",
+              "__guid": "863232dc-23a8-4994-a07a-c33f74f86de7",
+              "__enabled": true,
+              "__version": 2,
+              "BlendMode": "Normal",
+              "FogStrength": 1,
+              "HorizontalAlignment": "Center",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "Scale": 1,
+              "TextScope": {
+                "Text": "Shortcutter\n",
+                "TextColor": "0,0,0,1",
+                "FontName": "Poppins",
+                "FontSize": 64,
+                "FontWeight": 800,
+                "FontItalic": false,
+                "LineHeight": 1,
+                "LetterSpacing": 0,
+                "WordSpacing": 0,
+                "FilterMode": "Bilinear",
+                "Outline": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1"
+                },
+                "Shadow": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                },
+                "OutlineUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,1,0,1"
+                },
+                "ShadowUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                }
+              },
+              "VerticalAlignment": "Center"
+            }
+          }
+        ],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "Property": "Name",
+            "Value": "shortcutter"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "Property": "Position",
+            "Value": "1670.736,1021.976,28.95584"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "bb987e63-c5ef-42bd-a52b-be9eb4616917"
+            },
+            "Property": "PotentialTargets",
+            "Value": [
+              {
+                "_type": "gameobject",
+                "go": "f5d6f7f7-c838-4aa4-9a75-b287160bf69e"
+              },
+              {
+                "_type": "gameobject",
+                "go": "0a40786a-7229-424e-a8dd-741369fc7b76"
+              }
+            ]
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "Acceleration",
+            "Value": 2400
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "ForbiddenAreas",
+            "Value": [
+              "scenes/tests/navigation/blocked.navarea"
+            ]
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "MaxSpeed",
+            "Value": 500
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "Radius",
+            "Value": 24
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "fe397676-8fd2-4485-8a26-a012aba851fe": "b51d7116-c5cc-45d9-953d-55a197c72e1a",
+        "bb987e63-c5ef-42bd-a52b-be9eb4616917": "e75e879b-409a-41b5-bd05-d81b0afe47ef",
+        "70cbf856-d778-4ab6-84d9-ce7820b7fd76": "573d1f20-9532-4735-a54a-75d10a0abdf0",
+        "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2": "9e6f7a8f-41be-4922-aeca-0c5f80737ef8",
+        "b609ad45-dab2-4d7d-acb9-c153a8cdf22d": "d6f76e89-d487-4a24-9b22-f832d555005e",
+        "0ff2da3d-247d-4d7d-8028-1a369a1dac48": "efb24ff5-8200-4ef8-bca4-ec351b31c125",
+        "af2510ff-00b3-445b-b09c-ff2ff36999aa": "5bb2812c-8d7e-4b64-8311-6902110b0af6",
+        "ba36710a-79d8-4f17-92af-a5eaecd3965a": "bdd0d220-3b0f-4941-ab91-c1be930fdf94"
+      }
+    },
+    {
+      "__guid": "cdabb70e-5eae-469e-8bd4-ceeee0f86deb",
+      "__version": 1,
+      "__Prefab": "prefabs/navigation/wanderer.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "03ade212-cbee-4bfa-9006-fbe5a607dae5"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "03ade212-cbee-4bfa-9006-fbe5a607dae5",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Text",
+              "Position": "0,0,90.22003",
+              "Rotation": "0,0.7071068,0,0.7071068",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "ad197402-96cf-49ac-a335-952c7355f836"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "03ade212-cbee-4bfa-9006-fbe5a607dae5"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "Sandbox.TextRenderer",
+              "__guid": "ad197402-96cf-49ac-a335-952c7355f836",
+              "__enabled": true,
+              "__version": 2,
+              "BlendMode": "Normal",
+              "FogStrength": 1,
+              "HorizontalAlignment": "Center",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "Scale": 1,
+              "TextScope": {
+                "Text": "Cheapskate",
+                "TextColor": "0,0,0,1",
+                "FontName": "Poppins",
+                "FontSize": 64,
+                "FontWeight": 800,
+                "FontItalic": false,
+                "LineHeight": 1,
+                "LetterSpacing": 0,
+                "WordSpacing": 0,
+                "FilterMode": "Bilinear",
+                "Outline": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1"
+                },
+                "Shadow": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                },
+                "OutlineUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,1,0,1"
+                },
+                "ShadowUnder": {
+                  "Enabled": false,
+                  "Size": 4,
+                  "Color": "0,0,0,1",
+                  "Offset": "4,4"
+                }
+              },
+              "VerticalAlignment": "Center"
+            }
+          }
+        ],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "Property": "Name",
+            "Value": "cheapskate"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "fe397676-8fd2-4485-8a26-a012aba851fe"
+            },
+            "Property": "Position",
+            "Value": "-964.4497,1544.769,28.95584"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "bb987e63-c5ef-42bd-a52b-be9eb4616917"
+            },
+            "Property": "PotentialTargets",
+            "Value": [
+              {
+                "_type": "gameobject",
+                "go": "cb6d4b7b-05d8-40b4-ba18-af4010d5564e"
+              },
+              {
+                "_type": "gameobject",
+                "go": "2e7d356b-1adb-442c-92f7-0c516fb7e20d"
+              }
+            ]
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "Acceleration",
+            "Value": 2400
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "ForbiddenAreas",
+            "Value": [
+              "scenes/tests/navigation/blocked.navarea"
+            ]
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "MaxSpeed",
+            "Value": 500
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2"
+            },
+            "Property": "Radius",
+            "Value": 24
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "fe397676-8fd2-4485-8a26-a012aba851fe": "cdabb70e-5eae-469e-8bd4-ceeee0f86deb",
+        "bb987e63-c5ef-42bd-a52b-be9eb4616917": "bc584f41-f1fa-405c-b6a5-2efbf491f8c7",
+        "70cbf856-d778-4ab6-84d9-ce7820b7fd76": "77cef6bd-7def-439d-bb14-42ae47a5fa19",
+        "88cc62a9-8ad0-43aa-a9e7-6ab2e131b3b2": "b8f03b18-03f9-49fb-97f2-3a221e6b78d4",
+        "b609ad45-dab2-4d7d-acb9-c153a8cdf22d": "f92f1b92-8893-468a-80d7-69bfcb05e498",
+        "0ff2da3d-247d-4d7d-8028-1a369a1dac48": "3bb6fb32-aa8e-4f82-862b-bc6cf101d0d9",
+        "af2510ff-00b3-445b-b09c-ff2ff36999aa": "64b9db5f-a264-47c8-ae46-b17062065feb",
+        "ba36710a-79d8-4f17-92af-a5eaecd3965a": "9178d749-36cb-4c80-a638-336fa903e6ba"
+      }
+    }
+  ],
+  "SceneProperties": {
+    "NetworkInterpolation": true,
+    "TimeScale": 1,
+    "WantsSystemScene": true,
+    "Metadata": {
+      "Title": "Area Costs",
+      "Description": "Navmesh areas with different costs",
+      "Group": "Navigation"
+    },
+    "NavMesh": {
+      "Enabled": true,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 2,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 3,
+  "Title": "Area Costs",
+  "Description": "Navmesh areas with different costs",
+  "__references": [],
+  "__version": 3
+}
