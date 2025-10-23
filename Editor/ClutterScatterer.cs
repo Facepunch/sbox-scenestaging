@@ -231,6 +231,9 @@ public sealed class ClutterScatterer( Scene scene )
 		{
 			if ( layerInstances.Count == 0 ) continue;
 
+			// Ensure layer is registered with the system so it gets serialized
+			system.AddLayer( layer );
+
 			system.RegisterClutters( layerInstances.ToArray() );
 			foreach ( var inst in layerInstances )
 				layer.AddInstance( inst );
