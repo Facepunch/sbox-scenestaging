@@ -486,9 +486,22 @@ public class ScatterToolOverlay : WidgetWindow
 		Layout.AddSeparator();
 
 		// Source section (Brush or Layers)
+		var sourceLabelRow = Layout.AddRow();
+		sourceLabelRow.Spacing = 8;
+
 		var sourceLabel = new Label( "Layer Source" );
 		sourceLabel.SetStyles( "font-weight: bold;" );
-		Layout.Add( sourceLabel );
+		sourceLabelRow.Add( sourceLabel, 1 );
+
+		// Add layer management button
+		var layerManageButton = new IconButton( "layers" )
+		{
+			StatusTip = "Manage scene layers",
+			OnClick = () => OpenLayerManagement(),
+			FixedWidth = 24,
+			FixedHeight = 24
+		};
+		sourceLabelRow.Add( layerManageButton );
 
 		var sourceCs = new ControlSheet();
 		sourceCs.AddRow( so.GetProperty( nameof( InspectorSettings.Brush ) ) );
@@ -512,5 +525,278 @@ public class ScatterToolOverlay : WidgetWindow
 		Tool._settings.SaveScattererSettings();
 
 		EditorUtility.InspectorObject = scatterer;
+	}
+
+	private void OpenLayerManagement()
+	{
+		var scene = Tool.Scene;
+		if ( scene == null )
+		{
+			Log.Warning( "No scene available" );
+			return;
+		}
+
+		var clutterSystem = scene.GetSystem<ClutterSystem>();
+		if ( clutterSystem == null )
+		{
+			Log.Warning( "No ClutterSystem found in scene" );
+			return;
+		}
+
+		// Create layer management dialog
+		var dialog = new LayerManagementDialog( scene, clutterSystem );
+		dialog.Show();
+	}
+}
+
+/// <summary>
+/// Dialog for managing clutter layers in the scene
+/// </summary>
+public class LayerManagementDialog : Widget
+{
+	private Scene _scene;
+	private ClutterSystem _clutterSystem;
+	private ListView _layerList;
+	private Label _statsLabel;
+
+	public LayerManagementDialog( Scene scene, ClutterSystem clutterSystem ) : base( null )
+	{
+		_scene = scene;
+		_clutterSystem = clutterSystem;
+
+		WindowFlags = WindowFlags.Dialog;
+		WindowTitle = "Layer Management";
+		DeleteOnClose = true;
+		MinimumWidth = 400;
+		MinimumHeight = 500;
+
+		Layout = Layout.Column();
+		Layout.Margin = 8;
+		Layout.Spacing = 8;
+
+		BuildUI();
+	}
+
+	private void BuildUI()
+	{
+		// Header
+		var headerLabel = new Label( "Scene Clutter Layers" );
+		headerLabel.SetStyles( "font-size: 14px; font-weight: bold; margin-bottom: 8px;" );
+		Layout.Add( headerLabel );
+
+		// Stats
+		_statsLabel = new Label( "" );
+		_statsLabel.SetStyles( "font-size: 11px; color: #888; margin-bottom: 8px;" );
+		Layout.Add( _statsLabel );
+
+		// Layer list
+		_layerList = new ListView( this );
+		_layerList.ItemSize = new Vector2( 0, 48 );
+		_layerList.ItemAlign = Sandbox.UI.Align.FlexStart;
+		_layerList.ItemContextMenu = ShowLayerContext;
+		Layout.Add( _layerList, 1 );
+
+		// Refresh button
+		var buttonRow = Layout.AddRow();
+		buttonRow.Spacing = 8;
+		buttonRow.AddStretchCell();
+
+		var refreshButton = new Button( "Refresh", "refresh" )
+		{
+			Clicked = () => RefreshLayers()
+		};
+		buttonRow.Add( refreshButton );
+
+		var closeButton = new Button( "Close" )
+		{
+			Clicked = () => Close()
+		};
+		buttonRow.Add( closeButton );
+
+		RefreshLayers();
+	}
+
+	private void RefreshLayers()
+	{
+		var layers = _clutterSystem.GetAllLayers().ToList();
+
+		// Update stats
+		var totalInstances = layers.Sum( l => l.Instances?.Count ?? 0 );
+		_statsLabel.Text = $"{layers.Count} layers, {totalInstances} total instances";
+
+		// Build items
+		var items = new List<object>();
+		foreach ( var layer in layers )
+		{
+			items.Add( layer );
+		}
+
+		_layerList.SetItems( items );
+		_layerList.ItemPaint = PaintLayerItem;
+	}
+
+	private void PaintLayerItem( VirtualWidget item )
+	{
+		if ( item.Object is not ClutterLayer layer )
+			return;
+
+		var rect = item.Rect;
+
+		// Background
+		if ( item.Selected || Paint.HasMouseOver )
+		{
+			Paint.SetBrush( Theme.Blue.WithAlpha( item.Selected ? 0.3f : 0.1f ) );
+			Paint.ClearPen();
+			Paint.DrawRect( rect, 2 );
+		}
+
+		// Icon
+		var iconRect = new Rect( rect.Left + 8, rect.Top, 32, rect.Height );
+		Paint.SetPen( Theme.Text );
+		Paint.DrawIcon( iconRect, "layers", 24, TextFlag.LeftCenter );
+
+		// Layer name
+		var nameRect = new Rect( rect.Left + 48, rect.Top, rect.Right - 48, rect.Height * 0.5f );
+		Paint.SetDefaultFont();
+		Paint.SetPen( Theme.Text );
+		Paint.DrawText( nameRect, layer.Name, TextFlag.LeftCenter );
+
+		// Stats
+		var instanceCount = layer.Instances?.Count ?? 0;
+		var objectCount = layer.Objects?.Count ?? 0;
+		var statsRect = new Rect( rect.Left + 48, rect.Top + rect.Height * 0.5f, rect.Right - 48, rect.Height * 0.5f );
+		Paint.SetPen( Theme.Text.WithAlpha( 0.6f ) );
+		Paint.DrawText( statsRect, $"{instanceCount} instances • {objectCount} objects", TextFlag.LeftTop );
+	}
+
+	private void ShowLayerContext( object obj )
+	{
+		if ( obj is not ClutterLayer layer ) return;
+
+		var menu = new ContextMenu( this );
+
+		menu.AddOption( "Purge Instances", "delete_sweep", () => PurgeLayer( layer ) );
+		menu.AddSeparator();
+		menu.AddOption( "Remove Layer", "delete", () => RemoveLayer( layer ) );
+
+		menu.OpenAtCursor();
+	}
+
+	private void PurgeLayer( ClutterLayer layer )
+	{
+		var instanceCount = layer.Instances?.Count ?? 0;
+		if ( instanceCount == 0 )
+		{
+			Log.Info( $"Layer '{layer.Name}' has no instances to purge" );
+			return;
+		}
+
+		// Confirm dialog
+		var confirmDialog = new PopupWidget( this );
+		confirmDialog.Layout = Layout.Column();
+		confirmDialog.Layout.Margin = 16;
+		confirmDialog.Layout.Spacing = 12;
+		confirmDialog.MinimumWidth = 300;
+
+		var messageLabel = new Label( $"Are you sure you want to purge {instanceCount} instances from layer '{layer.Name}'?" );
+		messageLabel.WordWrap = true;
+		confirmDialog.Layout.Add( messageLabel );
+
+		var buttonRow = confirmDialog.Layout.AddRow();
+		buttonRow.Spacing = 8;
+		buttonRow.AddStretchCell();
+
+		var confirmButton = new Button( "Purge", "delete_sweep" )
+		{
+			Clicked = () =>
+			{
+				// Unregister all instances from the system
+				var instancesToRemove = layer.Instances.ToList();
+				_clutterSystem.UnregisterClutters( instancesToRemove );
+
+				// Destroy prefab instances
+				foreach ( var instance in instancesToRemove )
+				{
+					ClutterSystem.DestroyInstance( instance );
+				}
+
+				// Clear the instances list
+				layer.Instances.Clear();
+
+				Log.Info( $"Purged {instanceCount} instances from layer '{layer.Name}'" );
+				RefreshLayers();
+				confirmDialog.Close();
+			}
+		};
+		buttonRow.Add( confirmButton );
+
+		var cancelButton = new Button( "Cancel" )
+		{
+			Clicked = () => confirmDialog.Close()
+		};
+		buttonRow.Add( cancelButton );
+
+		confirmDialog.Position = ScreenRect.Center - confirmDialog.Size / 2;
+		confirmDialog.Visible = true;
+	}
+
+	private void RemoveLayer( ClutterLayer layer )
+	{
+		var instanceCount = layer.Instances?.Count ?? 0;
+		var message = instanceCount > 0
+			? $"Remove layer '{layer.Name}' and purge {instanceCount} instances?"
+			: $"Remove layer '{layer.Name}'?";
+
+		// Confirm dialog
+		var confirmDialog = new PopupWidget( this );
+		confirmDialog.Layout = Layout.Column();
+		confirmDialog.Layout.Margin = 16;
+		confirmDialog.Layout.Spacing = 12;
+		confirmDialog.MinimumWidth = 300;
+
+		var messageLabel = new Label( message );
+		messageLabel.WordWrap = true;
+		confirmDialog.Layout.Add( messageLabel );
+
+		var buttonRow = confirmDialog.Layout.AddRow();
+		buttonRow.Spacing = 8;
+		buttonRow.AddStretchCell();
+
+		var confirmButton = new Button( "Remove", "delete" )
+		{
+			Clicked = () =>
+			{
+				// Purge instances first if any
+				if ( instanceCount > 0 )
+				{
+					var instancesToRemove = layer.Instances.ToList();
+					_clutterSystem.UnregisterClutters( instancesToRemove );
+
+					foreach ( var instance in instancesToRemove )
+					{
+						ClutterSystem.DestroyInstance( instance );
+					}
+
+					layer.Instances.Clear();
+				}
+
+				// Remove layer from system
+				_clutterSystem.RemoveLayer( layer );
+
+				Log.Info( $"Removed layer '{layer.Name}'" );
+				RefreshLayers();
+				confirmDialog.Close();
+			}
+		};
+		buttonRow.Add( confirmButton );
+
+		var cancelButton = new Button( "Cancel" )
+		{
+			Clicked = () => confirmDialog.Close()
+		};
+		buttonRow.Add( cancelButton );
+
+		confirmDialog.Position = ScreenRect.Center - confirmDialog.Size / 2;
+		confirmDialog.Visible = true;
 	}
 }

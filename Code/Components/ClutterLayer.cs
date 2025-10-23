@@ -10,8 +10,10 @@ public class ClutterLayer
 	/// <summary>
 	/// Unique identifier for this layer, persists across renames
 	/// </summary>
+	[Property]
 	public Guid Id { get; set; } = Guid.NewGuid();
 
+	[Property]
 	public string Name { get; set; } = "New Layer";
 
 	/// <summary>
