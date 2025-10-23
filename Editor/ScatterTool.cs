@@ -569,7 +569,7 @@ public class LayerManagementObject
 	[Hide]
 	public ClutterSystem ClutterSystem { get; set; }
 
-	[Property, Editor( "layer_management" )]
+	[Property, Editor( "layer_management" ), Title( "Layers" )]
 	public LayerManagementData Data { get; set; }
 
 	public LayerManagementObject( Scene scene, ClutterSystem clutterSystem )
@@ -583,6 +583,81 @@ public class LayerManagementObject
 }
 
 /// <summary>
+/// TreeNode for displaying a ClutterLayer in the hierarchy
+/// </summary>
+public class ClutterLayerNode : TreeNode<ClutterLayer>
+{
+	public ClutterLayerNode( ClutterLayer layer ) : base( layer )
+	{
+		Height = 24;
+	}
+
+	public override string Name
+	{
+		get => Value.Name;
+		set => Value.Name = value;
+	}
+
+	public override bool CanEdit => false;
+
+	protected override void BuildChildren()
+	{
+		// Layers don't have children for now
+	}
+
+	public override int ValueHash
+	{
+		get
+		{
+			HashCode hc = new HashCode();
+			hc.Add( Value.Name );
+			hc.Add( Value.Instances?.Count ?? 0 );
+			hc.Add( Value.Objects?.Count ?? 0 );
+			return hc.ToHashCode();
+		}
+	}
+
+	public override void OnPaint( VirtualWidget item )
+	{
+		var rect = item.Rect;
+		var fullSpanRect = rect;
+		fullSpanRect.Left = 0;
+		fullSpanRect.Right = TreeView.Width;
+
+		var selected = item.Selected || item.Pressed;
+
+		// Background
+		if ( selected )
+		{
+			Paint.ClearPen();
+			Paint.SetBrush( Theme.Blue.WithAlpha( 0.1f ) );
+			Paint.DrawRect( fullSpanRect );
+		}
+
+		// Icon - pushed further left
+		var iconRect = new Rect( rect.Left - 8, rect.Top, 16, rect.Height );
+		Paint.SetPen( Theme.Text.WithAlpha( 0.7f ) );
+		Paint.DrawIcon( iconRect, "layers", 16, TextFlag.LeftCenter );
+
+		// Layer name - immediately after icon
+		var nameRect = new Rect( rect.Left + 10, rect.Top, rect.Right - 120, rect.Height );
+		Paint.SetDefaultFont();
+		Paint.SetPen( Theme.Text );
+		Paint.DrawText( nameRect, Value.Name, TextFlag.LeftCenter );
+
+		// Instance count badge
+		var instanceCount = Value.Instances?.Count ?? 0;
+		var objectCount = Value.Objects?.Count ?? 0;
+		var statsText = $"{instanceCount} instances";
+
+		var statsRect = new Rect( rect.Right - 110, rect.Top, 100, rect.Height );
+		Paint.SetPen( Theme.Text.WithAlpha( 0.5f ) );
+		Paint.SetDefaultFont( 9 );
+		Paint.DrawText( statsRect, statsText, TextFlag.RightCenter );
+	}
+}
+
+/// <summary>
 /// Custom widget for layer management in the inspector
 /// </summary>
 [CustomEditor( typeof( LayerManagementData ), NamedEditor = "layer_management" )]
@@ -591,8 +666,7 @@ public class LayerManagementWidget : ControlWidget
 	private LayerManagementData _data;
 	private Scene _scene;
 	private ClutterSystem _clutterSystem;
-	private ClutterLayersList _layerList;
-	private Label _statsLabel;
+	private TreeView _treeView;
 
 	public LayerManagementWidget( SerializedProperty property ) : base( property )
 	{
@@ -600,6 +674,7 @@ public class LayerManagementWidget : ControlWidget
 		_scene = _data.Scene;
 		_clutterSystem = _data.ClutterSystem;
 
+		SetSizeMode( SizeMode.Default, SizeMode.Default );
 		Layout = Layout.Column();
 		Layout.Margin = 8;
 		Layout.Spacing = 8;
@@ -609,38 +684,37 @@ public class LayerManagementWidget : ControlWidget
 
 	private void BuildUI()
 	{
-		// Header
-		var headerLabel = new Label( "Scene Clutter Layers" );
-		headerLabel.SetStyles( "font-size: 14px; font-weight: bold; margin-bottom: 8px;" );
-		Layout.Add( headerLabel );
+		// Use TreeView like the scene hierarchy
+		_treeView = new TreeView( this );
+		_treeView.MinimumHeight = 300;
+		_treeView.ItemContextMenu = ShowLayerContext;
+		_treeView.Margin = 0;
+		Layout.Add( _treeView, 1 );
 
-		// Stats
-		_statsLabel = new Label( "" );
-		_statsLabel.SetStyles( "font-size: 11px; color: #888; margin-bottom: 8px;" );
-		Layout.Add( _statsLabel );
-
-		// Use ClutterLayersList which already has nice formatting
-		var serializedSystem = EditorTypeLibrary.GetSerializedObject( _clutterSystem );
-		_layerList = new ClutterLayersList( this, serializedSystem );
-		_layerList.MinimumHeight = 300;
-		_layerList.ItemContextMenu = ShowLayerContext;
-		Layout.Add( _layerList, 1 );
-
-		RefreshStats();
+		RefreshLayers();
 	}
 
-	private void RefreshStats()
+	private void RefreshLayers()
 	{
 		if ( _clutterSystem == null ) return;
 
 		var layers = _clutterSystem.GetAllLayers().ToList();
-		var totalInstances = layers.Sum( l => l.Instances?.Count ?? 0 );
-		_statsLabel.Text = $"{layers.Count} layers, {totalInstances} total instances";
+
+		// Build tree nodes
+		var nodes = layers.Select( l => new ClutterLayerNode( l ) ).Cast<object>().ToList();
+		_treeView.SetItems( nodes );
 	}
 
 	private void ShowLayerContext( object obj )
 	{
-		if ( obj is not ClutterLayer layer ) return;
+		ClutterLayer layer = null;
+
+		if ( obj is ClutterLayerNode node )
+			layer = node.Value;
+		else if ( obj is ClutterLayer l )
+			layer = l;
+
+		if ( layer == null ) return;
 
 		var menu = new ContextMenu( this );
 
@@ -702,8 +776,7 @@ public class LayerManagementWidget : ControlWidget
 				layer.Instances.Clear();
 
 				Log.Info( $"Purged {instanceCount} instances from layer '{layer.Name}'" );
-				RefreshStats();
-				_layerList?.BuildItems();
+				RefreshLayers();
 				confirmDialog.Close();
 			}
 		};
@@ -764,8 +837,7 @@ public class LayerManagementWidget : ControlWidget
 				_clutterSystem.RemoveLayer( layer );
 
 				Log.Info( $"Removed layer '{layer.Name}'" );
-				RefreshStats();
-				_layerList?.BuildItems();
+				RefreshLayers();
 				confirmDialog.Close();
 			}
 		};
