@@ -261,16 +261,11 @@ public sealed class ScatterTool : EditorTool
 
 		// Get layers from brush or selection
 		List<ClutterLayer> layersToUse;
-
-		if ( _settings.Brush != null && _settings.Brush.Layers?.Count > 0 )
-		{
-			// Use layers from the brush
-			layersToUse = _settings.Brush.Layers;
-		}
-		else if ( _settings.SelectedClutterLayers.Count > 0 )
+		if ( _settings.SelectedClutterLayers.Count > 0 )
 		{
 			// Use manually selected layers
 			layersToUse = _settings.SelectedClutterLayers;
+			Log.Info( $"Using {layersToUse.Count} selected layers: {string.Join( ", ", layersToUse.Select( l => l.Name ) )}" );
 		}
 		else
 		{
@@ -288,8 +283,6 @@ public sealed class ScatterTool : EditorTool
 		}
 
 		scatterer.Run();
-
-		// Serialization now happens automatically through ClutterSystem metadata
 	}
 
 	void OnPaintEnded()
@@ -544,7 +537,7 @@ public class ScatterToolOverlay : WidgetWindow
 		}
 
 		// Open layer management in inspector (just like scatterer settings)
-		var layerManager = new LayerManagementObject( scene, clutterSystem );
+		var layerManager = new LayerManagementObject( scene, clutterSystem, Tool );
 		EditorUtility.InspectorObject = layerManager;
 	}
 }
@@ -556,6 +549,7 @@ public class LayerManagementData
 {
 	public Scene Scene { get; set; }
 	public ClutterSystem ClutterSystem { get; set; }
+	public ScatterTool Tool { get; set; }
 }
 
 /// <summary>
@@ -572,11 +566,11 @@ public class LayerManagementObject
 	[Property, Editor( "layer_management" ), Title( "Layers" )]
 	public LayerManagementData Data { get; set; }
 
-	public LayerManagementObject( Scene scene, ClutterSystem clutterSystem )
+	public LayerManagementObject( Scene scene, ClutterSystem clutterSystem, ScatterTool tool )
 	{
 		Scene = scene;
 		ClutterSystem = clutterSystem;
-		Data = new LayerManagementData { Scene = scene, ClutterSystem = clutterSystem };
+		Data = new LayerManagementData { Scene = scene, ClutterSystem = clutterSystem, Tool = tool };
 	}
 
 	public override string ToString() => "Layer Management";
@@ -666,6 +660,7 @@ public class LayerManagementWidget : ControlWidget
 	private LayerManagementData _data;
 	private Scene _scene;
 	private ClutterSystem _clutterSystem;
+	private ScatterTool _tool;
 	private TreeView _treeView;
 
 	public LayerManagementWidget( SerializedProperty property ) : base( property )
@@ -673,6 +668,7 @@ public class LayerManagementWidget : ControlWidget
 		_data = property.GetValue<LayerManagementData>();
 		_scene = _data.Scene;
 		_clutterSystem = _data.ClutterSystem;
+		_tool = _data.Tool;
 
 		SetSizeMode( SizeMode.Default, SizeMode.Default );
 		Layout = Layout.Column();
@@ -688,10 +684,31 @@ public class LayerManagementWidget : ControlWidget
 		_treeView = new TreeView( this );
 		_treeView.MinimumHeight = 300;
 		_treeView.ItemContextMenu = ShowLayerContext;
+		_treeView.OnSelectionChanged = OnLayerSelectionChanged;
 		_treeView.Margin = 0;
 		Layout.Add( _treeView, 1 );
 
 		RefreshLayers();
+	}
+
+	private void OnLayerSelectionChanged( object[] selection )
+	{
+		// Update the scatter tool's selected layers
+		if ( _tool == null ) return;
+
+		var selectedLayers = new List<ClutterLayer>();
+		foreach ( var item in selection )
+		{
+			if ( item is ClutterLayerNode node )
+			{
+				selectedLayers.Add( node.Value );
+				Log.Info( $"Selected layer: {node.Value.Name}" );
+			}
+		}
+
+		_tool._settings.SelectedClutterLayers = selectedLayers;
+		_tool._settings.Brush = null; // Clear the brush so it uses the selected layers
+		Log.Info( $"Updated tool with {selectedLayers.Count} selected layers" );
 	}
 
 	private void RefreshLayers()
