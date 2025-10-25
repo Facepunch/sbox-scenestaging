@@ -41,7 +41,7 @@ public abstract class ScattererBase
 	{
 		// Calculate number of points based on area and density
 		var area = bounds.Size.x * bounds.Size.y;
-		var pointCount = (int)(area * density / 10000f); // Adjust divisor for desired spacing
+		var pointCount = (int)(area * density / 10000f);
 
 		var points = new List<Vector3>();
 		for ( int i = 0; i < pointCount; i++ )
@@ -62,7 +62,6 @@ public abstract class ScattererBase
 		var settings = new JsonObject();
 		var typeDesc = TypeLibrary.GetType( GetType() );
 
-		// Serialize all properties marked with [Property]
 		foreach ( var prop in typeDesc.Properties )
 		{
 			if ( !prop.HasAttribute<PropertyAttribute>() )
@@ -81,8 +80,6 @@ public abstract class ScattererBase
 			return;
 
 		var typeDesc = TypeLibrary.GetType( GetType() );
-
-		// Deserialize all properties marked with [Property]
 		foreach ( var prop in typeDesc.Properties )
 		{
 			if ( !prop.HasAttribute<PropertyAttribute>() )
@@ -234,30 +231,28 @@ public class PoissonDiskScatterer : ScattererBase
 
 	public override ClutterInstance? Scatter( ScatterContext context )
 	{
-		// Use density to randomly skip some spawn points
 		if ( Game.Random.Float( 0f, 1f ) > context.Density )
 			return null;
 
-		// Simple scatter - just place object at hit position
 		if ( !context.CanScatter )
 			return null;
 
 		var rotation = Rotation.Identity;
 
-		// Align to surface normal if enabled (Z is up)
 		if ( AlignToSurface )
 		{
-			// Create rotation that aligns Z-axis with surface normal
-			rotation = Rotation.LookAt( Vector3.Forward, context.Normal );
+			var forward = Vector3.Cross( context.Normal, Vector3.Forward );
+			forward = forward.Normal;
+
+			rotation = rotation.LerpTo( Rotation.LookAt( forward, context.Normal ), 0.3f );
 		}
 
-		// Apply Z rotation
 		var zRotation = ZRotation.Evaluate( Game.Random.Float( 0f, 1f ), Game.Random.Float( 0f, 1f ) );
-		rotation *= Rotation.FromAxis( Vector3.Up, zRotation );
+		var rotationAxis = AlignToSurface ? context.Normal : Vector3.Up;
+		rotation *= Rotation.FromAxis( rotationAxis, zRotation );
 
 		var transform = context.CreateTransform( rotation: rotation, scale: Game.Random.Float( MinScale, MaxScale ) );
 
-		// Load and instantiate the object
 		return context.CreateInstance( context.RandomObject, transform );
 	}
 }
