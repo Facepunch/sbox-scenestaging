@@ -4,7 +4,7 @@ using static Sandbox.ClutterInstance;
 namespace Editor;
 
 [CustomEditor( typeof( List<ClutterLayer> ), NamedEditor = "clutter_layer_multi" )]
-public class ClutterLayerMultiControlWidget : ControlWidget
+public class ClutterLayerMultiControlWidget : ControlWidget, AssetSystem.IEventListener
 {
 	public override bool IsControlActive => base.IsControlActive || _menu.IsValid();
 	public override bool IsControlButton => true;
@@ -14,6 +14,33 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 	List<ClutterLayer> _cachedLayers;
 	bool _needsRebuild = true;
 	ScatterBrush _lastBrush;
+
+	// IEventListener implementation
+	void AssetSystem.IEventListener.OnAssetChanged( Asset asset )
+	{
+		// Invalidate cache if the ScatterBrush asset was changed
+		if ( _lastBrush != null && asset.AbsolutePath == _lastBrush.ResourcePath )
+		{
+			// Force reload the brush resource from disk
+			if ( asset.TryLoadResource<ScatterBrush>( out var reloadedBrush ) )
+			{
+				// Update the property with the reloaded resource
+				var brushProperty = SerializedProperty.Parent?.GetProperty( "Brush" );
+				if ( brushProperty != null )
+				{
+					brushProperty.SetValue( reloadedBrush );
+				}
+
+				_lastBrush = reloadedBrush;
+			}
+
+			_needsRebuild = true;
+			Update(); // Force a repaint
+		}
+	}
+
+	void AssetSystem.IEventListener.OnAssetSystemChanges() { }
+	void AssetSystem.IEventListener.OnAssetTagsChanged() { }
 
 	// Access to the internal _selectedLayerIds field for stable persistence (ClutterVolumeComponent)
 	// Returns null if it doesn't exist (ScatterTool)
@@ -59,11 +86,6 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 			_lastBrush = currentBrush;
 		}
 
-		if ( _cachedLayers != null && !_needsRebuild )
-		{
-			return _cachedLayers;
-		}
-
 		// Get all layers from the ClutterSystem and any assigned brush
 		var activeScene = SceneEditorSession.Active?.Scene;
 		List<ClutterLayer> enabledLayers = [];
@@ -90,6 +112,38 @@ public class ClutterLayerMultiControlWidget : ControlWidget
 					}
 				}
 			}
+		}
+
+		// Check if layer names or objects have changed by comparing with cache
+		if ( _cachedLayers != null && !_needsRebuild )
+		{
+			// Check if counts match
+			if ( _cachedLayers.Count != enabledLayers.Count )
+			{
+				_needsRebuild = true;
+			}
+			else
+			{
+				// Check if any layer names or object counts changed
+				for ( int i = 0; i < enabledLayers.Count; i++ )
+				{
+					var newLayer = enabledLayers[i];
+					var cachedLayer = _cachedLayers.FirstOrDefault( l => l.Id == newLayer.Id );
+
+					if ( cachedLayer == null ||
+					     cachedLayer.Name != newLayer.Name ||
+					     cachedLayer.Objects?.Count != newLayer.Objects?.Count )
+					{
+						_needsRebuild = true;
+						break;
+					}
+				}
+			}
+		}
+
+		if ( _cachedLayers != null && !_needsRebuild )
+		{
+			return _cachedLayers;
 		}
 
 		_cachedLayers = enabledLayers;
