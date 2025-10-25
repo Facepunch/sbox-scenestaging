@@ -82,10 +82,11 @@ partial class ClutterVolumeComponentWidget : ComponentEditorWidget
 		// Clear
 		var clearButton = new Button( "Clear", "delete" )
 		{
-			Clicked = () => 
+			Clicked = () =>
 			{
 				var clutterSystem = Volume.Scene.GetSystem<ClutterSystem>();
 				clutterSystem.ClearVolume( Volume );
+				SceneEditorSession.Active.HasUnsavedChanges = true;
 			},
 			MaximumWidth = 200
 		};
@@ -139,6 +140,17 @@ partial class ClutterVolumeComponentWidget : ComponentEditorWidget
 			{
 				// Serialize the scatterer settings before closing
 				volume.SerializeScattererSettings();
+
+				// Re-scatter with the new settings
+				var clutterSystem = Volume.Scene.GetSystem<ClutterSystem>();
+				clutterSystem.QueueScatterRequest( () =>
+				{
+					new ClutterScatterer( Volume.Scene )
+						.WithVolume( Volume )
+						.WithClear( true )
+						.Run();
+				} );
+
 				dialog.Close();
 			}
 		};
