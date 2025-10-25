@@ -16,7 +16,7 @@ public class ScatterBrushResourceEditor : BaseResourceEditor<ScatterBrush>
 	{
 		Layout = Layout.Column();
 		MinimumHeight = 600;
-		MinimumWidth = 800;
+		MinimumWidth = 400;
 	}
 
 	protected override void Initialize( Asset asset, ScatterBrush resource )
