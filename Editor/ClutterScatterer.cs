@@ -70,8 +70,8 @@ public sealed class ClutterScatterer( Scene scene )
 		_scene = volume.Scene;
 		_useVolume = true;
 
-		// Unsure if we like automatically grabbing these. It's "hidden" behavior..
-		_scatterer ??= volume.Scatterer;
+		// Use the volume's scatterer
+		_scatterer = volume.Scatterer;
 
 		_layers = [.. volume.GetActiveLayers()];
 
@@ -105,6 +105,7 @@ public sealed class ClutterScatterer( Scene scene )
 		if ( _isErase )
 		{
 			EraseInstances( system, points );
+			MarkSceneAsDirty();
 			return;
 		}
 
@@ -140,6 +141,18 @@ public sealed class ClutterScatterer( Scene scene )
 
 		// Register new instances with clutter system, layers and volume
 		ProcessInstances( system, allInstances );
+
+		// Mark scene as having unsaved changes so metadata gets saved
+		MarkSceneAsDirty();
+	}
+
+	/// <summary>
+	/// Marks the scene as having unsaved changes so it will save the clutter metadata
+	/// </summary>
+	private void MarkSceneAsDirty()
+	{
+		// Editor session will mark the scene as having unsaved changes
+		SceneEditorSession.Active.HasUnsavedChanges = true;
 	}
 
 	/// <summary>
