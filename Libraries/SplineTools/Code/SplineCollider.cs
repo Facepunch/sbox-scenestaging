@@ -234,7 +234,7 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 		IsDirty = false;
 	}
 
-	protected override IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody )
+	protected override IEnumerable<PhysicsShape> CreatePhysicsShapes( PhysicsBody targetBody, Transform local )
 	{
 		if ( Model is null || Model.Physics is null )
 			yield break;
@@ -250,12 +250,10 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 
 		_physicPartBounds = null;
 
-		var bodyTransform = targetBody.Transform.ToLocal( WorldTransform );
-
 		foreach ( var part in Model.Physics.Parts )
 		{
 			// Bone transform
-			var bx = bodyTransform.ToWorld( part.Transform );
+			var bx = local.ToWorld( part.Transform );
 
 			foreach ( var sphere in part.Spheres )
 			{
@@ -276,12 +274,12 @@ public sealed class SplineCollider : ModelCollider, Component.ExecuteInEditor
 				SubdivideCapsule( 4 + Subdivision, rotatedCenterA, rotatedCenterB, capsule.Capsule.Radius, capsule.Surface );
 
 				var capsuleBounds = BBox.FromPoints(
-					new Vector3[] {
+					[
 						rotatedCenterA - new Vector3( capsule.Capsule.Radius ),
 						rotatedCenterA + new Vector3( capsule.Capsule.Radius ),
 						rotatedCenterB - new Vector3( capsule.Capsule.Radius ),
 						rotatedCenterB + new Vector3( capsule.Capsule.Radius )
-					} );
+					] );
 
 				_physicPartBounds = _physicPartBounds?.AddBBox( capsuleBounds ) ?? capsuleBounds;
 			}
