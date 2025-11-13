@@ -1,0 +1,227 @@
+{
+  "DisplayName": "New Scatter Brush",
+  "Layers": [
+    {
+      "Id": "a331edf7-3ae2-497a-aa58-f8a33a1e13f6",
+      "Name": "Rocks",
+      "Objects": [
+        {
+          "Path": "models/props/rock_scatter/rock_scatter_pile_02.vmdl",
+          "Weight": 1,
+          "IsSmall": false
+        },
+        {
+          "Path": "models/props/rock_scatter/rock_scatter_01.vmdl",
+          "Weight": 1,
+          "IsSmall": false
+        }
+      ],
+      "HasObjects": true
+    },
+    {
+      "Id": "e59315af-2438-4af2-a325-7e15e43edcb2",
+      "Name": "2",
+      "Objects": [
+        {
+          "Path": "models/forest/tree_5.vmdl",
+          "Weight": 0.3409091,
+          "IsSmall": false
+        },
+        {
+          "Path": "models/forest/tree_4.vmdl",
+          "Weight": 0.36363637,
+          "IsSmall": false
+        },
+        {
+          "Path": "models/forest/tree_2.vmdl",
+          "Weight": 0.45454547,
+          "IsSmall": false
+        },
+        {
+          "Path": "models/forest/tree_6.vmdl",
+          "Weight": 1,
+          "IsSmall": false
+        }
+      ],
+      "HasObjects": true
+    },
+    {
+      "Id": "605027fb-7eb0-457c-af5e-01f21aaa0ff3",
+      "Name": "adad",
+      "Objects": [],
+      "HasObjects": false
+    },
+    {
+      "Id": "63309c31-dcc6-4deb-aad9-e32035de73ae",
+      "Name": "Layer 4",
+      "Objects": [],
+      "HasObjects": false
+    },
+    {
+      "Id": "0f2820d1-e8c1-456e-99b7-680fc540fbac",
+      "Name": "Layer 5",
+      "Objects": [],
+      "HasObjects": false
+    },
+    {
+      "Id": "7780c732-65b8-4d27-b14b-323c35c2b5ba",
+      "Name": "Layer 6",
+      "Objects": [
+        {
+          "Path": "models/rock_moss_set_02/rock_moss_02a.vmdl",
+          "Weight": 1,
+          "IsSmall": true
+        },
+        {
+          "Path": "models/rock_moss_set_02/rock_moss_02d.vmdl",
+          "Weight": 1,
+          "IsSmall": true
+        },
+        {
+          "Path": "models/rock_moss_set_02/rock_moss_02f.vmdl",
+          "Weight": 1,
+          "IsSmall": true
+        },
+        {
+          "Path": "models/rock_moss_set_02/rock_moss_02c.vmdl",
+          "Weight": 1,
+          "IsSmall": true
+        }
+      ],
+      "HasObjects": true
+    },
+    {
+      "Id": "bd30f488-810d-4031-8c4c-cc2ccf4ec524",
+      "Name": "Layer 7",
+      "Objects": [
+        {
+          "Path": "models/sbox_props/trees/oak/tree_oak_small_a.vmdl",
+          "Weight": 1,
+          "IsSmall": false
+        }
+      ],
+      "HasObjects": true
+    },
+    {
+      "Id": "d1085993-aca0-43a3-827f-0cb9244aadcc",
+      "Name": "Layer 8",
+      "Objects": [
+        {
+          "Path": "terrain/tree.prefab",
+          "Weight": 1,
+          "IsSmall": false
+        },
+        {
+          "Path": "tree.prefab",
+          "Weight": 1,
+          "IsSmall": false
+        }
+      ],
+      "HasObjects": true
+    },
+    {
+      "Id": "54e28cde-401c-433b-8b4b-e44c6aec62fe",
+      "Name": "Layer 9",
+      "Objects": [
+        {
+          "Path": "bush.prefab",
+          "Weight": 1,
+          "IsSmall": false
+        }
+      ],
+      "HasObjects": true
+    },
+    {
+      "Id": "f1d0a5d3-c590-4e4d-8269-24662794f2a1",
+      "Name": "Layer 10",
+      "Objects": [
+        {
+          "Path": "models/rock_moss_set_02/rock_moss_02a.vmdl",
+          "Weight": 1,
+          "IsSmall": false
+        },
+        {
+          "Path": "models/rock_moss_set_02/rock_moss_02d.vmdl",
+          "Weight": 1,
+          "IsSmall": false
+        },
+        {
+          "Path": "models/rock_moss_set_02/rock_moss_02c.vmdl",
+          "Weight": 1,
+          "IsSmall": false
+        },
+        {
+          "Path": "models/rock_moss_set_02/rock_moss_02f.vmdl",
+          "Weight": 1,
+          "IsSmall": false
+        }
+      ],
+      "HasObjects": true
+    },
+    {
+      "Id": "864a9301-0063-4ae5-958a-4050f9aebe9f",
+      "Name": "Layer 11",
+      "Objects": [
+        {
+          "Path": "models/props/rock_scatter/rock_scatter_pile_02.vmdl",
+          "Weight": 1,
+          "IsSmall": true
+        },
+        {
+          "Path": "models/props/rock_scatter/rock_scatter_01.vmdl",
+          "Weight": 1,
+          "IsSmall": true
+        }
+      ],
+      "HasObjects": true
+    },
+    {
+      "Id": "249fc748-35d4-427d-8ded-4227074857ac",
+      "Name": "Layer 12",
+      "Objects": [
+        {
+          "Path": "tree.prefab",
+          "Weight": 1,
+          "IsSmall": false
+        }
+      ],
+      "HasObjects": true
+    },
+    {
+      "Id": "50e74b7c-f19e-4ba3-91bd-e7a148211f8c",
+      "Name": "Layer 13",
+      "Objects": [],
+      "HasObjects": false
+    },
+    {
+      "Id": "3f4b846a-abd6-4e9d-b551-81f71d5fddc5",
+      "Name": "Layer 14",
+      "Objects": [],
+      "HasObjects": false
+    },
+    {
+      "Id": "3e24c7c4-00fc-4792-8e35-e2dbeba06c3b",
+      "Name": "Layer 15",
+      "Objects": [],
+      "HasObjects": false
+    },
+    {
+      "Id": "03bf555c-8702-4906-a9e2-0ca9dd8b8f7b",
+      "Name": "Layer 16",
+      "Objects": [],
+      "HasObjects": false
+    }
+  ],
+  "__references": [
+    "ambi.tree_2#50280",
+    "ambi.tree_4#50282",
+    "ambi.tree_5#50283",
+    "ambi.tree_6#50284",
+    "facepunch.tree_oak_small_a#33693",
+    "polyhaven.rock_moss_02a#20425",
+    "polyhaven.rock_moss_02c#20427",
+    "polyhaven.rock_moss_02d#20428",
+    "polyhaven.rock_moss_02f#20430"
+  ],
+  "__version": 0
+}
