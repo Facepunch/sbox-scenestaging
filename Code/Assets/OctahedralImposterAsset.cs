@@ -11,43 +11,71 @@ namespace SceneStaging;
 public sealed class OctahedralImposterAsset : GameResource
 {
 	/// <summary>
-	/// Atlas texture containing 8 octahedral views in a 2x4 grid.
+	/// Atlas texture containing 8 octahedral views in a 4x2 grid.
 	/// </summary>
 	[Header( "Textures" )]
+	[Description( "The octahedral atlas texture (4x2 grid of 8 views)" )]
 	public Texture ColorAtlas { get; set; }
 
 	/// <summary>
 	/// Optional normal map atlas for improved lighting.
 	/// </summary>
+	[Sandbox.ReadOnly]
 	public Texture NormalAtlas { get; set; }
 
 	/// <summary>
 	/// Optional depth atlas for parallax effects.
 	/// </summary>
+	[Sandbox.ReadOnly]
 	public Texture DepthAtlas { get; set; }
 
 	/// <summary>
-	/// Bounding box of the source object.
+	/// Bounding box of the object represented by this imposter.
 	/// </summary>
 	[Header( "Metadata" )]
+	[Description( "Bounding box of the object this imposter represents" )]
 	public BBox Bounds { get; set; }
 
 	/// <summary>
-	/// Path to the source prefab that this imposter represents.
+	/// Pivot offset from bounds center to prefab origin.
+	/// This is applied to the sprite position to match the original prefab's pivot point.
 	/// </summary>
-	public string SourcePrefabPath { get; set; }
+	[Description( "Pivot offset from bounds center to prefab origin" )]
+	public Vector3 PivotOffset { get; set; }
 
 	/// <summary>
-	/// Total resolution of the atlas texture (e.g., 1024x2048 for 512x512 per view).
+	/// Resolution per view (width and height of each of the 8 views in the atlas).
 	/// </summary>
-	public Vector2Int AtlasResolution { get; set; } = new Vector2Int( 1024, 2048 );
+	[Description( "Resolution of each individual view in the atlas" )]
+	public int ResolutionPerView { get; set; } = 512;
 
 	/// <summary>
-	/// UV rectangles for each of the 8 octahedral views.
-	/// Layout: 2 columns, 4 rows (indices 0-7).
+	/// UV rectangles for each of the 24 octahedral views.
+	/// Layout: 8 columns (horizontal directions), 3 rows (vertical angles).
+	/// Row 0: Views from above (-30° pitch)
+	/// Row 1: Horizontal views (0° pitch)
+	/// Row 2: Views from below (+30° pitch)
+	/// Automatically calculated based on 8×3 grid.
 	/// </summary>
 	[Hide]
-	public Rect[] UVRects { get; set; } = new Rect[8];
+	public Rect[] UVRects
+	{
+		get
+		{
+			var rects = new Rect[24];
+			var uvWidth = 1.0f / 8.0f;   // 8 columns
+			var uvHeight = 1.0f / 3.0f;  // 3 rows
+
+			for ( int i = 0; i < 24; i++ )
+			{
+				int col = i % 8;
+				int row = i / 8;
+				rects[i] = new Rect( col * uvWidth, row * uvHeight, uvWidth, uvHeight );
+			}
+
+			return rects;
+		}
+	}
 
 	protected override Bitmap CreateAssetTypeIcon( int width, int height )
 	{
