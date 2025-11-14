@@ -14,6 +14,72 @@ internal class ImposterPicker : SimplePicker
 }
 
 /// <summary>
+/// Widget for displaying the generated atlas texture.
+/// </summary>
+internal class AtlasPreviewWidget : Widget
+{
+	private Pixmap _atlasPixmap;
+
+	public AtlasPreviewWidget( Widget parent ) : base( parent )
+	{
+		MinimumHeight = 200;
+	}
+
+	public void SetAtlas( Pixmap pixmap )
+	{
+		_atlasPixmap = pixmap;
+		Update();
+	}
+
+	public void Clear()
+	{
+		_atlasPixmap = null;
+		Update();
+	}
+
+	protected override void OnPaint()
+	{
+		base.OnPaint();
+
+		// Draw background
+		Paint.ClearPen();
+		Paint.SetBrush( new Color( 0.1f, 0.1f, 0.1f ) );
+		Paint.DrawRect( LocalRect );
+
+		if ( _atlasPixmap != null )
+		{
+			// Scale to fit while maintaining aspect ratio
+			var atlasAspect = (float)_atlasPixmap.Width / _atlasPixmap.Height;
+			var widgetAspect = Width / Height;
+
+			Rect destRect;
+			if ( atlasAspect > widgetAspect )
+			{
+				// Atlas is wider, fit to width
+				var scaledHeight = Width / atlasAspect;
+				var yOffset = (Height - scaledHeight) / 2;
+				destRect = new Rect( 0, yOffset, Width, scaledHeight );
+			}
+			else
+			{
+				// Atlas is taller, fit to height
+				var scaledWidth = Height * atlasAspect;
+				var xOffset = (Width - scaledWidth) / 2;
+				destRect = new Rect( xOffset, 0, scaledWidth, Height );
+			}
+
+			Paint.Draw( destRect, _atlasPixmap );
+		}
+		else
+		{
+			// Show placeholder text
+			Paint.SetPen( Color.White.WithAlpha( 0.3f ) );
+			Paint.DrawText( LocalRect, "No atlas generated", TextFlag.Center );
+		}
+	}
+}
+
+/// <summary>
 /// Preview widget with orbit camera controls.
 /// </summary>
 internal class ImposterPreviewWidget : SceneRenderingWidget
@@ -106,50 +172,59 @@ internal class ImposterPreviewWidget : SceneRenderingWidget
 		var boundsSize = _objectBounds.Size.Length;
 		var cameraDistance = Math.Max( 16f, boundsSize * 0.5f ) * 2f;
 
-		// 8 octahedral directions (4 cardinal + 4 diagonal, all at same elevation)
-		var cameraPositions = new[]
+		// 24 camera positions: 3 vertical angles × 8 horizontal directions
+		float[] verticalAngles = new[] { -30f, 0f, 30f };
+		float[] horizontalAngles = new[] { 0f, 45f, 90f, 135f, 180f, 225f, 270f, 315f };
+
+		// Color per vertical angle for visual distinction
+		Color[] verticalColors = new[]
 		{
-			Rotation.From( 30f, 0f, 0f ),    // Front
-			Rotation.From( 30f, 45f, 0f ),   // Front-Right
-			Rotation.From( 30f, 90f, 0f ),   // Right
-			Rotation.From( 30f, 135f, 0f ),  // Back-Right
-			Rotation.From( 30f, 180f, 0f ),  // Back
-			Rotation.From( 30f, 225f, 0f ),  // Back-Left
-			Rotation.From( 30f, 270f, 0f ),  // Left
-			Rotation.From( 30f, 315f, 0f )   // Front-Left
+			Color.Cyan.WithAlpha( 0.7f ),   // Top row (-30°)
+			Color.Yellow.WithAlpha( 0.7f ), // Middle row (0°)
+			Color.Magenta.WithAlpha( 0.7f ) // Bottom row (+30°)
 		};
 
-		foreach ( var rotation in cameraPositions )
+		for ( int vIdx = 0; vIdx < verticalAngles.Length; vIdx++ )
 		{
-			var cameraPos = _origin - rotation.Forward * cameraDistance;
+			float pitch = verticalAngles[vIdx];
+			var color = verticalColors[vIdx];
 
-			// Draw camera icon
-			Gizmo.Draw.Color = Color.Yellow.WithAlpha( 0.7f );
-			Gizmo.Draw.LineThickness = 2f;
+			for ( int hIdx = 0; hIdx < horizontalAngles.Length; hIdx++ )
+			{
+				float yaw = horizontalAngles[hIdx];
 
-			// Draw camera pyramid/frustum
-			var forward = rotation.Forward;
-			var right = rotation.Right;
-			var up = rotation.Up;
-			var size = cameraDistance * 0.1f;
+				// Create rotation with pitch and yaw
+				var rotation = Rotation.From( pitch, yaw, 0f );
+				var cameraPos = _origin - rotation.Forward * cameraDistance;
 
-			var nearCenter = cameraPos + forward * size * 0.5f;
-			var farTL = nearCenter + up * size * 0.3f - right * size * 0.3f;
-			var farTR = nearCenter + up * size * 0.3f + right * size * 0.3f;
-			var farBL = nearCenter - up * size * 0.3f - right * size * 0.3f;
-			var farBR = nearCenter - up * size * 0.3f + right * size * 0.3f;
+				// Draw camera icon
+				Gizmo.Draw.Color = color;
+				Gizmo.Draw.LineThickness = 2f;
 
-			// Draw pyramid from camera position to frustum
-			Gizmo.Draw.Line( cameraPos, farTL );
-			Gizmo.Draw.Line( cameraPos, farTR );
-			Gizmo.Draw.Line( cameraPos, farBL );
-			Gizmo.Draw.Line( cameraPos, farBR );
+				// Draw camera pyramid/frustum
+				var forward = rotation.Forward;
+				var right = rotation.Right;
+				var up = rotation.Up;
+				var size = cameraDistance * 0.1f;
 
-			// Draw frustum rectangle
-			Gizmo.Draw.Line( farTL, farTR );
-			Gizmo.Draw.Line( farTR, farBR );
-			Gizmo.Draw.Line( farBR, farBL );
-			Gizmo.Draw.Line( farBL, farTL );
+				var nearCenter = cameraPos + forward * size * 0.5f;
+				var farTL = nearCenter + up * size * 0.3f - right * size * 0.3f;
+				var farTR = nearCenter + up * size * 0.3f + right * size * 0.3f;
+				var farBL = nearCenter - up * size * 0.3f - right * size * 0.3f;
+				var farBR = nearCenter - up * size * 0.3f + right * size * 0.3f;
+
+				// Draw pyramid from camera position to frustum
+				Gizmo.Draw.Line( cameraPos, farTL );
+				Gizmo.Draw.Line( cameraPos, farTR );
+				Gizmo.Draw.Line( cameraPos, farBL );
+				Gizmo.Draw.Line( cameraPos, farBR );
+
+				// Draw frustum rectangle
+				Gizmo.Draw.Line( farTL, farTR );
+				Gizmo.Draw.Line( farTR, farBR );
+				Gizmo.Draw.Line( farBR, farBL );
+				Gizmo.Draw.Line( farBL, farTL );
+			}
 		}
 	}
 
@@ -235,12 +310,14 @@ public class ImposterEditorWindow : BaseWindow
 	private int resolutionPerView = 512;
 	private bool includeNormals = false;
 	private bool includeDepth = false;
+	private float cameraDistanceMultiplier = 1.0f;
 
 	private Button bakeButton;
 	private Label statusLabel;
 
 	private Scene previewScene;
 	private ImposterPreviewWidget previewWidget;
+	private AtlasPreviewWidget atlasWidget;
 	private CameraComponent previewCamera;
 	private GameObject prefabInstance;
 	private GameObject lightObject;
@@ -318,6 +395,7 @@ public class ImposterEditorWindow : BaseWindow
 			selectedPrefab = assets.FirstOrDefault();
 			UpdateBakeButton();
 			UpdatePreview();
+			RegeneratePreview();
 		};
 		prefabRow.Add( prefabPicker, 1 );
 
@@ -327,14 +405,42 @@ public class ImposterEditorWindow : BaseWindow
 		resRow.Add( new Label( "Resolution:" ) { MinimumWidth = 100 } );
 
 		var resCombo = new ComboBox( this );
-		resCombo.AddItem( "256x256", null, () => { resolutionPerView = 256; } );
-		resCombo.AddItem( "512x512", null, () => { resolutionPerView = 512; } );
-		resCombo.AddItem( "1024x1024", null, () => { resolutionPerView = 1024; } );
-		resCombo.AddItem( "2048x2048", null, () => { resolutionPerView = 2048; } );
+		resCombo.AddItem( "256x256", null, () => { resolutionPerView = 256; RegeneratePreview(); } );
+		resCombo.AddItem( "512x512", null, () => { resolutionPerView = 512; RegeneratePreview(); } );
+		resCombo.AddItem( "1024x1024", null, () => { resolutionPerView = 1024; RegeneratePreview(); } );
+		resCombo.AddItem( "2048x2048", null, () => { resolutionPerView = 2048; RegeneratePreview(); } );
 		resCombo.CurrentIndex = 1;
 		resCombo.MinimumWidth = 150;
 		resRow.Add( resCombo );
 		resRow.AddStretchCell();
+
+		// Camera Distance Multiplier
+		var distRow = leftPanel.AddRow();
+		distRow.Spacing = 8;
+		distRow.Add( new Label( "Camera Distance:" ) { MinimumWidth = 100 } );
+
+		var distLabel = new Label( $"{cameraDistanceMultiplier:F2}x" );
+		distLabel.MinimumWidth = 40;
+
+		var distSlider = new FloatSlider( this )
+		{
+			Minimum = 0.5f,
+			Maximum = 2.0f,
+			Step = 0.05f,
+			MinimumWidth = 150
+		};
+
+		distSlider.Bind( nameof( FloatSlider.Value ) )
+			.From( () => cameraDistanceMultiplier, value =>
+			{
+				cameraDistanceMultiplier = value;
+				distLabel.Text = $"{value:F2}x";
+				RegeneratePreview();
+			} );
+
+		distRow.Add( distSlider );
+		distRow.Add( distLabel );
+		distRow.AddStretchCell();
 
 		leftPanel.AddSeparator();
 
@@ -343,11 +449,11 @@ public class ImposterEditorWindow : BaseWindow
 
 		var normalsCheckbox = leftPanel.Add( new Checkbox( "Include Normal Maps" ) );
 		normalsCheckbox.Value = includeNormals;
-		normalsCheckbox.StateChanged = ( value ) => includeNormals = value == CheckState.On;
+		normalsCheckbox.StateChanged = ( value ) => { includeNormals = value == CheckState.On; RegeneratePreview(); };
 
 		var depthCheckbox = leftPanel.Add( new Checkbox( "Include Depth Maps" ) );
 		depthCheckbox.Value = includeDepth;
-		depthCheckbox.StateChanged = ( value ) => includeDepth = value == CheckState.On;
+		depthCheckbox.StateChanged = ( value ) => { includeDepth = value == CheckState.On; RegeneratePreview(); };
 
 		leftPanel.AddStretchCell();
 
@@ -376,6 +482,12 @@ public class ImposterEditorWindow : BaseWindow
 		previewWidget.Scene = previewScene;
 		previewWidget.MinimumSize = new Vector2( 300, 300 );
 		rightPanel.Add( previewWidget, 1 );
+
+		rightPanel.AddSeparator();
+		rightPanel.Add( new Label.Subtitle( "Atlas Preview" ) );
+
+		atlasWidget = new AtlasPreviewWidget( this );
+		rightPanel.Add( atlasWidget, 1 );
 	}
 
 	private void UpdateBakeButton()
@@ -423,18 +535,78 @@ public class ImposterEditorWindow : BaseWindow
 		}
 	}
 
-	private void OnBakeClicked()
+	private async void RegeneratePreview()
+	{
+		if ( selectedPrefab == null )
+			return;
+
+		atlasWidget.Clear();
+
+		try
+		{
+			// Use the texture generator to create the atlas
+			var generator = new OctahedralImposterTextureGenerator
+			{
+				PrefabPath = selectedPrefab.Path,
+				ResolutionPerView = resolutionPerView,
+				IncludeNormals = includeNormals,
+				IncludeDepth = includeDepth,
+				CameraDistanceMultiplier = cameraDistanceMultiplier
+			};
+
+			var texture = await generator.CreateAsync( new Sandbox.Resources.ResourceGenerator<Texture>.Options(), default );
+
+			if ( texture != null )
+			{
+				// Convert texture to pixmap for display
+				var pixmap = Pixmap.FromTexture( texture, withAlpha: true );
+				atlasWidget.SetAtlas( pixmap );
+			}
+		}
+		catch ( Exception ex )
+		{
+			Log.Error( ex );
+		}
+	}
+
+	private async void OnBakeClicked()
 	{
 		if ( selectedPrefab == null )
 			return;
 
 		bakeButton.Enabled = false;
 		statusLabel.Text = "Baking imposter...";
+		atlasWidget.Clear();
 
 		try
 		{
-			ImposterBaker.BakeImposter( selectedPrefab, resolutionPerView );
-			statusLabel.Text = $"✓ Successfully baked imposter for {selectedPrefab.Name}";
+			// Use the texture generator to create the atlas
+			var generator = new OctahedralImposterTextureGenerator
+			{
+				PrefabPath = selectedPrefab.Path,
+				ResolutionPerView = resolutionPerView,
+				IncludeNormals = includeNormals,
+				IncludeDepth = includeDepth,
+				CameraDistanceMultiplier = cameraDistanceMultiplier
+			};
+
+			var texture = await generator.CreateAsync( new Sandbox.Resources.ResourceGenerator<Texture>.Options(), default );
+
+			if ( texture != null )
+			{
+				// Convert texture to pixmap for display
+				var pixmap = Pixmap.FromTexture( texture, withAlpha: true );
+				atlasWidget.SetAtlas( pixmap );
+
+				// Show success message with asset path
+				var basePath = System.IO.Path.ChangeExtension( selectedPrefab.Path, null );
+				var oimpRelativePath = $"{basePath}.oimp";
+				statusLabel.Text = $"✓ Successfully created:\n{oimpRelativePath}";
+			}
+			else
+			{
+				statusLabel.Text = "Error: Failed to generate atlas texture";
+			}
 		}
 		catch ( Exception ex )
 		{
