@@ -10,17 +10,11 @@ namespace SceneStaging;
 [AssetType( Name = "Octahedral Imposter", Extension = "oimp", Category = "Rendering" )]
 public sealed class OctahedralImposterAsset : GameResource
 {
-	/// <summary>
-	/// Atlas texture containing 8 octahedral views in a 4x2 grid.
-	/// </summary>
 	[Header( "Textures" )]
-	[Description( "The octahedral atlas texture (4x2 grid of 8 views)" )]
+	[Description( "The octahedral atlas texture (8×3 grid)" )]
 	public Texture ColorAtlas { get; set; }
 
-	/// <summary>
-	/// Optional normal map atlas for improved lighting.
-	/// </summary>
-	[Sandbox.ReadOnly]
+	[Description( "Optional normal map atlas (8×3 grid matching ColorAtlas)" )]
 	public Texture NormalAtlas { get; set; }
 
 	/// <summary>
