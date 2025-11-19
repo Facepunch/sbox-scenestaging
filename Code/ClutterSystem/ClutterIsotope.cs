@@ -25,6 +25,49 @@ public class ClutterIsotope : GameResource
 	public int ValidEntryCount => Entries.Count( e => e is not null && e.HasAsset && e.Weight > 0 );
 
 	/// <summary>
+	/// Gets the total weight of all valid entries.
+	/// </summary>
+	public float TotalWeight => Entries
+		.Where( e => e is not null && e.HasAsset && e.Weight > 0 )
+		.Sum( e => e.Weight );
+
+	/// <summary>
+	/// Selects a random entry based on weighted probability.
+	/// Entries with higher weights have a proportionally higher chance of being selected.
+	/// </summary>
+	/// <returns>A random weighted entry, or null if no valid entries exist.</returns>
+	public IsotopeEntry GetRandomEntry()
+	{
+		// Filter to valid entries only
+		var validEntries = Entries
+			.Where( e => e is not null && e.HasAsset && e.Weight > 0 )
+			.ToList();
+
+		if ( validEntries.Count == 0 )
+			return null;
+
+		// Calculate total weight
+		var totalWeight = validEntries.Sum( e => e.Weight );
+		
+		// Generate random value between 0 and total weight
+		var randomValue = Game.Random.Float( 0f, totalWeight );
+
+		// Find the entry that corresponds to this random value
+		float cumulativeWeight = 0f;
+		foreach ( var entry in validEntries )
+		{
+			cumulativeWeight += entry.Weight;
+			if ( randomValue <= cumulativeWeight )
+			{
+				return entry;
+			}
+		}
+
+		// Fallback (should never happen due to floating point precision)
+		return validEntries[^1];
+	}
+
+	/// <summary>
 	/// Validates all entries and returns a list of warnings/errors.
 	/// Useful for editor validation.
 	/// </summary>
