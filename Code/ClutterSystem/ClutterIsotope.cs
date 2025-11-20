@@ -71,7 +71,7 @@ public class ClutterIsotope : GameResource
 		}
 		catch ( Exception e )
 		{
-			Log.Error( e, $"Failed to create scatterer of type '{typeName}'" );
+			Log.Error( e, $"Failed to create scatterer of type '{typeName}'. Using SimpleScatterer" );
 			return new SimpleScatterer();
 		}
 	}
@@ -140,6 +140,35 @@ public class ClutterIsotope : GameResource
 		{
 			Log.Info( $"Isotope '{ResourceName}': {invalidCount} invalid entries (missing assets or zero weight)" );
 		}
+	}
+
+	/// <summary>
+	/// Generates a hash from all isotope properties including entries and scatterer settings.
+	/// </summary>
+	public override int GetHashCode()
+	{
+		var hash = new HashCode();
+		
+		// Hash entry count and each entry's properties
+		hash.Add( Entries?.Count ?? 0 );
+		if ( Entries != null )
+		{
+			foreach ( var entry in Entries )
+			{
+				if ( entry != null )
+				{
+					hash.Add( entry.Weight );
+					hash.Add( entry.Model?.GetHashCode() ?? 0 );
+					hash.Add( entry.Prefab?.GetHashCode() ?? 0 );
+				}
+			}
+		}
+		
+		// Hash scatterer type and settings
+		hash.Add( ScattererTypeName?.GetHashCode() ?? 0 );
+		hash.Add( Scatterer?.GetHashCode() ?? 0 );
+		
+		return hash.ToHashCode();
 	}
 
 	protected override void PostLoad()

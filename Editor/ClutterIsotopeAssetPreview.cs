@@ -135,8 +135,6 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 			
 			// Update state
 			UpdateIsotopeState();
-			
-			Log.Info( "Isotope preview regenerated due to changes" );
 		}
 	}
 
@@ -174,8 +172,6 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 		try
 		{
 			_currentIsotope.Scatterer.ScatterInVolume( bounds, _currentIsotope, _previewContainer, random );
-			
-			Log.Info( $"Isotope preview generated: {_previewContainer.Children.Count()} objects spawned" );
 		}
 		catch ( Exception e )
 		{
@@ -195,7 +191,6 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 			// Default bounds if nothing spawned
 			SceneCenter = new Vector3( 0, 0, 50 );
 			SceneSize = new Vector3( 100, 100, 100 );
-			Log.Warning( "No objects spawned in isotope preview" );
 			return;
 		}
 
@@ -228,8 +223,6 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 
 		SceneCenter = bbox.Center;
 		SceneSize = bbox.Size;
-		
-		Log.Info( $"Preview bounds - Center: {SceneCenter}, Size: {SceneSize}" );
 	}
 
 	public override void Dispose()
