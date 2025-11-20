@@ -31,6 +31,23 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	[Property]
 	public ClutterIsotope Isotope { get; set; }
 
+	/// <summary>
+	/// Random seed for deterministic generation. Change to get different variations.
+	/// </summary>
+	[Property]
+	public int RandomSeed
+	{
+		get => field;
+		set
+		{
+			if ( field != value )
+			{
+				field = value;
+				OnSeedChanged();
+			}
+		}
+	}
+
 	protected override void OnEnabled()
 	{
 		base.OnEnabled();
