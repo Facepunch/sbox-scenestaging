@@ -12,20 +12,53 @@ public sealed class ClutterScattererComponent : Component, Component.ExecuteInEd
 	/// The isotope containing objects to scatter and scatter settings.
 	/// </summary>
 	[Property, Group( "Clutter" )]
-	public ClutterIsotope Isotope { get; set; }
+	public ClutterIsotope Isotope
+	{
+		get => field;
+		set
+		{
+			if ( field != value )
+			{
+				field = value;
+				OnIsotopeChanged();
+			}
+		}
+	}
 
 	/// <summary>
 	/// Size of each tile in the grid (world units).
 	/// </summary>
 	[Property, Group( "Grid Settings" )]
-	public float TileSize { get; set; } = 512f;
+	public float TileSize
+	{
+		get => field = 512f;
+		set
+		{
+			if ( field != value )
+			{
+				field = value;
+				OnGridSettingsChanged();
+			}
+		}
+	}
 
 	/// <summary>
 	/// How many tiles to extend the grid in each direction from the center.
 	/// Total grid size = (Radius * 2 + 1) tiles.
 	/// </summary>
 	[Property, Group( "Grid Settings" )]
-	public int TileRadius { get; set; } = 4;
+	public int TileRadius
+	{
+		get => field = 4;
+		set
+		{
+			if ( field != value )
+			{
+				field = value;
+				OnGridSettingsChanged();
+			}
+		}
+	}
 
 	/// <summary>
 	/// If true, the scatterer will follow this GameObject's position instead of the camera.
