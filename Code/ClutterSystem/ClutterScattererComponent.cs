@@ -3,10 +3,10 @@ using Sandbox;
 namespace Sandbox;
 
 /// <summary>
-/// Component that automatically registers itself with the ClutterGridSystem.
-/// Simply add this to a GameObject and assign an Isotope to scatter clutter around the scene.
+/// Component that automatically registers with the ClutterGridSystem for infinite/streaming clutter.
+/// The system manages tile generation and cleanup around the camera.
 /// </summary>
-public sealed class ClutterScattererComponent : Component
+public sealed class ClutterScattererComponent : Component, Component.ExecuteInEditor
 {
 	/// <summary>
 	/// The isotope containing objects to scatter and scatter settings.
