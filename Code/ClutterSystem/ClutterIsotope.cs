@@ -27,18 +27,17 @@ public class ClutterIsotope : GameResource
 	[Editor( "ScattererTypeSelector" )]
 	public string ScattererTypeName
 	{
-		get => _scattererTypeName;
+		get => field;
 		set
 		{
-			if ( _scattererTypeName != value )
+			if ( field != value )
 			{
-				_scattererTypeName = value;
+				field = value;
 				// Recreate scatterer when type changes
 				Scatterer = CreateScatterer( value ?? nameof(SimpleScatterer) );
 			}
 		}
-	}
-	private string _scattererTypeName = nameof(SimpleScatterer);
+	} = nameof(SimpleScatterer);
 
 	/// <summary>
 	/// The scatterer instance that defines how objects from this isotope are placed.
