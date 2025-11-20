@@ -132,7 +132,7 @@ public class SimpleScatterer : Scatterer
 	public override void Scatter( BBox bounds, ClutterIsotope isotope, ClutterTile tile = null, GameObject parentObject = null )
 	{
 		var seed = tile != null 
-			? HashCode.Combine( tile.Coordinates.x, tile.Coordinates.y )
+			? HashCode.Combine( tile.Coordinates.x, tile.Coordinates.y, tile.SeedOffset )
 			: HashCode.Combine( bounds.Center.x, bounds.Center.y );
 		
 		var random = new Random( seed );

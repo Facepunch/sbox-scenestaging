@@ -20,6 +20,11 @@ public class ClutterTile
 	public BBox Bounds { get; set; }
 
 	/// <summary>
+	/// Random seed offset for deterministic generation.
+	/// </summary>
+	public int SeedOffset { get; set; }
+
+	/// <summary>
 	/// Whether this tile has been populated with clutter.
 	/// </summary>
 	public bool IsPopulated { get; set; }

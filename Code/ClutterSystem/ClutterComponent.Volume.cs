@@ -14,9 +14,6 @@ public sealed partial class ClutterComponent
 	[Property, Group( "Volume" ), ShowIf( nameof(Infinite), false )]
 	public float CellSize { get; set; } = 512f;
 
-	[Property, Group( "Volume" ), ShowIf( nameof(Infinite), false )]
-	public int RandomSeed { get; set; } = 12345;
-
 	[Property, Group( "Volume Info" ), ShowIf( nameof(Infinite), false ), ReadOnly]
 	public int SpawnedCount { get; private set; }
 

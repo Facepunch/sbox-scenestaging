@@ -84,7 +84,9 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 		if ( Infinite && _infiniteData != null )
 		{
 			// Check if settings changed and update immediately
-			if ( _infiniteData.TileSize != TileSize || _infiniteData.TileRadius != TileRadius )
+			if ( _infiniteData.TileSize != TileSize || 
+			     _infiniteData.TileRadius != TileRadius ||
+			     _infiniteData.RandomSeed != RandomSeed )
 			{
 				OnInfiniteSettingsChanged();
 			}
@@ -96,6 +98,14 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 		if ( !Infinite )
 		{
 			DrawVolumeGizmos();
+		}
+	}
+
+	private void OnSeedChanged()
+	{
+		if ( Infinite && _infiniteData != null )
+		{
+			OnInfiniteSettingsChanged();
 		}
 	}
 

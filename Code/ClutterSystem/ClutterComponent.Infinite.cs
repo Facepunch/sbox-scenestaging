@@ -12,9 +12,6 @@ public sealed partial class ClutterComponent
 	public int TileRadius { get; set; } = 4;
 
 	[Property, Group( "Infinite" ), ShowIf( nameof(Infinite), true )]
-	public int RandomSeed { get; set; } = 0;
-
-	[Property, Group( "Infinite" ), ShowIf( nameof(Infinite), true )]
 	public bool UseThisAsCenter { get; set; }
 
 	[Property, Group( "Infinite" ), ShowIf( nameof(Infinite), true ), Range( 1, 50 )]

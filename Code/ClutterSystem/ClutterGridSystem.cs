@@ -16,6 +16,7 @@ public sealed class ClutterGridSystem : GameObjectSystem
 	{
 		public float TileSize { get; set; } = 512f;
 		public int TileRadius { get; set; } = 4;
+		public int RandomSeed { get; set; } = 0;
 		public ClutterIsotope Isotope { get; set; }
 		public Scatterer Scatterer { get; set; }
 		public Vector3 Center { get; set; }
@@ -39,11 +40,7 @@ public sealed class ClutterGridSystem : GameObjectSystem
 		Listen( Stage.FinishUpdate, 0, OnUpdate, "ClutterGridSystem.Update" );
 	}
 
-	/// <summary>
-	/// Registers clutter data with the system.
-	/// </summary>
-	/// <returns>The registered data object that can be modified or unregistered later</returns>
-	public ClutterData Register( ClutterIsotope isotope, Scatterer scatterer, GameObject parentObject, float tileSize = 512f, int tileRadius = 4 )
+	public ClutterData Register( ClutterIsotope isotope, Scatterer scatterer, GameObject parentObject, float tileSize = 512f, int tileRadius = 4, int randomSeed = 0 )
 	{
 		var data = new ClutterData
 		{
@@ -51,7 +48,8 @@ public sealed class ClutterGridSystem : GameObjectSystem
 			Scatterer = scatterer,
 			ParentObject = parentObject,
 			TileSize = tileSize,
-			TileRadius = tileRadius
+			TileRadius = tileRadius,
+			RandomSeed = randomSeed
 		};
 
 		RegisteredData.Add( data );
