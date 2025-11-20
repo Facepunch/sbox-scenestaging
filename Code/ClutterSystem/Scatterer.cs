@@ -1,5 +1,6 @@
 ﻿using Sandbox.Sdf;
 using System;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Sandbox;
@@ -44,7 +45,6 @@ public abstract class Scatterer
 		if ( typeDesc == null )
 			return base.GetHashCode();
 
-		// Hash all properties with [Property] attribute
 		foreach ( var property in typeDesc.Properties )
 		{
 			if ( property.HasAttribute<PropertyAttribute>() )
@@ -67,15 +67,34 @@ public class SimpleScatterer : Scatterer
 	public bool PlaceOnGround { get; set; } = true;
 	
 	[Property, Group( "Placement" ), ShowIf( nameof(PlaceOnGround), true )]
-	public float TraceDistance { get; set; } = 5000f;
-	
-	[Property, Group( "Placement" ), ShowIf( nameof(PlaceOnGround), true )]
 	public float HeightOffset { get; set; } = 0f;
 	
 	[Property, Group( "Placement" ), ShowIf( nameof(PlaceOnGround), true )]
 	public bool AlignToNormal { get; set; } = false;
 
 	public override void ScatterInVolume( BBox bounds, ClutterIsotope isotope, GameObject parentObject, Random random )
+	{
+		// Volume mode uses the provided random instance
+		ScatterInternal( bounds, isotope, null, parentObject, random );
+	}
+
+	public override void Scatter( BBox bounds, ClutterIsotope isotope, ClutterTile tile = null, GameObject parentObject = null )
+	{
+		// Use stable hash instead of HashCode.Combine which varies across sessions
+		int seed = 0;
+		if ( tile != null )
+		{
+			// Stable deterministic seed from tile coordinates
+			seed = tile.Coordinates.x;
+			seed = (seed * 397) ^ tile.Coordinates.y;
+			seed = (seed * 397) ^ tile.SeedOffset;
+		}
+		
+		var random = new Random( seed );
+		ScatterInternal( bounds, isotope, tile, parentObject, random );
+	}
+
+	private void ScatterInternal( BBox bounds, ClutterIsotope isotope, ClutterTile tile, GameObject parentObject, Random random )
 	{
 		if ( isotope == null || parentObject == null )
 			return;
@@ -84,16 +103,19 @@ public class SimpleScatterer : Scatterer
 
 		for ( int i = 0; i < PointCount; i++ )
 		{
+			var randomX = random.Float( 0f, 1f );
+			var randomY = random.Float( 0f, 1f );
+			
 			var point = new Vector3(
-				random.Float( bounds.Mins.x, bounds.Maxs.x ),
-				random.Float( bounds.Mins.y, bounds.Maxs.y ),
-				random.Float( bounds.Mins.z, bounds.Maxs.z )
+				bounds.Mins.x + randomX * bounds.Size.x,
+				bounds.Mins.y + randomY * bounds.Size.y,
+				0f
 			);
 
 			if ( PlaceOnGround && scene != null )
 			{
-				var traceStart = new Vector3( point.x, point.y, bounds.Maxs.z + TraceDistance * 0.5f );
-				var traceEnd = new Vector3( point.x, point.y, bounds.Mins.z - TraceDistance * 0.5f );
+				var traceStart = new Vector3( point.x, point.y, 10000f );
+				var traceEnd = new Vector3( point.x, point.y, -10000f );
 
 				var trace = scene.Trace
 					.Ray( traceStart, traceEnd )
@@ -103,76 +125,9 @@ public class SimpleScatterer : Scatterer
 				if ( trace.Hit )
 				{
 					point = trace.HitPosition + trace.Normal * HeightOffset;
-					
-					var yaw = random.Float( 0f, 360f );
-					Rotation rotation;
-					
-					if ( AlignToNormal && trace.Normal != Vector3.Zero )
-					{
-						rotation = Rotation.From( new Angles( 0, yaw, 0 ) ) * Rotation.FromToRotation( Vector3.Up, trace.Normal );
-					}
-					else
-					{
-						rotation = Rotation.FromYaw( yaw );
-					}
-					
+					var rotation = CalculateRotation( random, trace.Normal );
 					var scale = random.Float( Scale.x, Scale.y );
-					SpawnObjectSimple( point, rotation, scale, isotope, random, parentObject );
-				}
-			}
-			else
-			{
-				var rotation = Rotation.FromYaw( random.Float( 0f, 360f ) );
-				var scale = random.Float( Scale.x, Scale.y );
-				SpawnObjectSimple( point, rotation, scale, isotope, random, parentObject );
-			}
-		}
-	}
-
-	public override void Scatter( BBox bounds, ClutterIsotope isotope, ClutterTile tile = null, GameObject parentObject = null )
-	{
-		var seed = tile != null 
-			? HashCode.Combine( tile.Coordinates.x, tile.Coordinates.y, tile.SeedOffset )
-			: HashCode.Combine( bounds.Center.x, bounds.Center.y );
-		
-		var random = new Random( seed );
-		var scene = parentObject?.Scene ?? Game.ActiveScene;
-
-		for ( int i = 0; i < PointCount; i++ )
-		{
-			var point = new Vector3(
-				random.Float( bounds.Mins.x, bounds.Maxs.x ),
-				random.Float( bounds.Mins.y, bounds.Maxs.y ),
-				bounds.Center.z
-			);
-
-			if ( PlaceOnGround && scene != null )
-			{
-				var traceStart = new Vector3( point.x, point.y, bounds.Maxs.z + TraceDistance * 0.5f );
-				var traceEnd = new Vector3( point.x, point.y, bounds.Mins.z - TraceDistance * 0.5f );
-
-				var trace = scene.Trace
-					.Ray( traceStart, traceEnd )
-					.WithoutTags( "player", "trigger", "clutter" )
-					.Run();
-
-				if ( trace.Hit )
-				{
-					point = trace.HitPosition + trace.Normal * HeightOffset;
 					
-					var yaw = random.Float( 0f, 360f );
-					Rotation rotation;
-					
-					if ( AlignToNormal && trace.Normal != Vector3.Zero )
-					{
-						rotation = Rotation.From( new Angles( 0, yaw, 0 ) ) * Rotation.FromToRotation( Vector3.Up, trace.Normal );
-					}
-					else
-					{
-						rotation = Rotation.FromYaw( yaw );
-					}
-					
-					var scale = random.Float( Scale.x, Scale.y );
 					SpawnObject( point, rotation, scale, isotope, random, tile, parentObject );
 				}
 			}
@@ -185,53 +140,25 @@ public class SimpleScatterer : Scatterer
 		}
 	}
 
+	private Rotation CalculateRotation( Random random, Vector3 surfaceNormal )
+	{
+		var yaw = random.Float( 0f, 360f );
+		
+		if ( AlignToNormal )
+		{
+			return Rotation.From( new Angles( 0, yaw, 0 ) ) * Rotation.FromToRotation( Vector3.Up, surfaceNormal );
+		}
+		
+		return Rotation.FromYaw( yaw );
+	}
+
 	private void SpawnObject( Vector3 position, Rotation rotation, float scale, ClutterIsotope isotope, Random random, ClutterTile tile, GameObject parentObject )
 	{
 		var entry = GetRandomEntry( isotope, random );
 		if ( entry == null )
 			return;
 
-		var transform = new Transform( position, rotation, scale );
-		GameObject spawnedObject = null;
-
-		if ( entry.Prefab != null )
-		{
-			spawnedObject = entry.Prefab.Clone( transform );
-		}
-		else if ( entry.Model != null )
-		{
-			var go = new GameObject( true, $"Clutter_{entry.Model.Name}" );
-			go.WorldTransform = transform;
-			
-			var renderer = go.Components.Create<ModelRenderer>();
-			renderer.Model = entry.Model;
-			
-			spawnedObject = go;
-		}
-
-		if ( spawnedObject != null )
-		{
-			spawnedObject.Tags.Add( "clutter" );
-			
-			if ( parentObject != null )
-			{
-				spawnedObject.SetParent( parentObject );
-			}
-		}
-
-		if ( spawnedObject != null && tile != null )
-		{
-			tile.AddObject( spawnedObject );
-		}
-	}
-
-	private void SpawnObjectSimple( Vector3 position, Rotation rotation, float scale, ClutterIsotope isotope, Random random, GameObject parentObject )
-	{
-		var entry = GetRandomEntry( isotope, random );
-		if ( entry == null )
-			return;
-
-		var transform = new Transform( position, rotation, scale );
+		Transform transform = new ( position, rotation, scale );
 		GameObject spawnedObject = null;
 
 		if ( entry.Prefab != null )
@@ -254,6 +181,8 @@ public class SimpleScatterer : Scatterer
 			{
 				spawnedObject.SetParent( parentObject );
 			}
+			
+			tile.AddObject( spawnedObject );
 		}
 	}
 
@@ -261,6 +190,7 @@ public class SimpleScatterer : Scatterer
 	{
 		var validEntries = isotope.Entries
 			.Where( e => e is not null && e.HasAsset && e.Weight > 0 )
+			.OrderBy( e => isotope.Entries.IndexOf( e ) )
 			.ToList();
 
 		if ( validEntries.Count == 0 )
