@@ -15,24 +15,4 @@ public sealed partial class ClutterComponent
 	{
 		return new ClutterSettings( TileSize, TileRadius, RandomSeed, Isotope );
 	}
-
-	private void EnableInfinite()
-	{
-		// Component is now passive - grid system will find it
-	}
-
-	private void DisableInfinite()
-	{
-		// Component is now passive - grid system will clean up
-	}
-
-	private void UpdateInfinite()
-	{
-		// Component is now passive - grid system handles updates
-	}
-
-	private void RegenerateAllTiles()
-	{
-		// Trigger handled by OnValidate -> grid system will detect change
-	}
 }

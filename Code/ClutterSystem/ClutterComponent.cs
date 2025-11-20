@@ -25,75 +25,13 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	/// Disable for baked volume mode - generates once within bounds.
 	/// </summary>
 	[Property]
-	public bool Infinite
-	{
-		get => field;
-		set
-		{
-			if ( field != value )
-			{
-				field = value;
-				OnModeChanged();
-			}
-		}
-	}
-
-	protected override void OnEnabled()
-	{
-		base.OnEnabled();
-
-		if ( Infinite )
-		{
-			EnableInfinite();
-		}
-	}
-
-	protected override void OnDisabled()
-	{
-		base.OnDisabled();
-
-		if ( Infinite )
-		{
-			DisableInfinite();
-		}
-	}
-
-	protected override void OnUpdate()
-	{
-		if ( Infinite )
-		{
-			UpdateInfinite();
-		}
-	}
-
-	protected override void OnValidate()
-	{
-		base.OnValidate();
-
-		if ( Infinite )
-		{
-			RegenerateAllTiles();
-		}
-	}
+	public bool Infinite { get; set; }
 
 	protected override void DrawGizmos()
 	{
 		if ( !Infinite )
 		{
 			DrawVolumeGizmos();
-		}
-	}
-
-	private void OnModeChanged()
-	{
-		if ( Infinite )
-		{
-			ClearVolume();
-			EnableInfinite();
-		}
-		else
-		{
-			DisableInfinite();
 		}
 	}
 }
