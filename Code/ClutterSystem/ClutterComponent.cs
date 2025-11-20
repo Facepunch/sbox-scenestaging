@@ -70,7 +70,7 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	{
 		base.OnValidate();
 
-		if ( Infinite && _infiniteData != null )
+		if ( Infinite && _layer != null )
 		{
 			RegenerateAllTiles();
 		}

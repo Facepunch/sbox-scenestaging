@@ -11,9 +11,8 @@ public sealed partial class ClutterComponent
 	[Property, Group( "Infinite" ), ShowIf( nameof(Infinite), true )]
 	public int TileRadius { get; set; } = 4;
 
-	private ClutterGridSystem.ClutterRegistration _infiniteData;
+	private ClutterLayer _layer;
 	private ClutterGridSystem _gridSystem;
-	private int _lastSettingsHash;
 
 	private ClutterSettings GetCurrentSettings()
 	{
@@ -30,41 +29,31 @@ public sealed partial class ClutterComponent
 		}
 
 		_gridSystem = Scene.GetSystem<ClutterGridSystem>();
-		_infiniteData = _gridSystem.Register( settings, GameObject );
-		_lastSettingsHash = settings.GetHashCode();
+		_layer = _gridSystem.Register( settings, GameObject );
 	}
 
 	private void DisableInfinite()
 	{
-		if ( _infiniteData == null )
+		if ( _layer == null )
 			return;
 
-		_gridSystem.Unregister( _infiniteData );
-		_infiniteData = null;
+		_gridSystem.Unregister( _layer );
+		_layer = null;
 	}
 
 	private void UpdateInfinite()
 	{
-		if ( _infiniteData == null )
+		if ( _layer == null )
 			return;
 
-		var currentHash = GetCurrentSettings().GetHashCode();
-		if ( currentHash != _lastSettingsHash )
-		{
-			RegenerateAllTiles();
-		}
+		_layer.UpdateSettings( GetCurrentSettings() );
 	}
 
 	private void RegenerateAllTiles()
 	{
-		foreach ( var tile in _infiniteData.Tiles.Values.ToArray() )
-		{
-			tile.Destroy();
-		}
-		_infiniteData.Tiles.Clear();
+		if ( _layer == null )
+			return;
 
-		var settings = GetCurrentSettings();
-		_infiniteData.Settings = settings;
-		_lastSettingsHash = settings.GetHashCode();
+		_layer.UpdateSettings( GetCurrentSettings() );
 	}
 }
