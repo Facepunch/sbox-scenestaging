@@ -80,11 +80,9 @@ public class SimpleScatterer : Scatterer
 
 	public override void Scatter( BBox bounds, ClutterIsotope isotope, ClutterTile tile = null, GameObject parentObject = null )
 	{
-		// Use stable hash instead of HashCode.Combine which varies across sessions
 		int seed = 0;
 		if ( tile != null )
 		{
-			// Stable deterministic seed from tile coordinates
 			seed = tile.Coordinates.x;
 			seed = (seed * 397) ^ tile.Coordinates.y;
 			seed = (seed * 397) ^ tile.SeedOffset;
@@ -176,13 +174,8 @@ public class SimpleScatterer : Scatterer
 		if ( spawnedObject != null )
 		{
 			spawnedObject.Tags.Add( "clutter" );
-			
-			if ( parentObject != null )
-			{
-				spawnedObject.SetParent( parentObject );
-			}
-			
-			tile.AddObject( spawnedObject );
+			spawnedObject.SetParent( parentObject );
+			tile?.AddObject( spawnedObject );
 		}
 	}
 
