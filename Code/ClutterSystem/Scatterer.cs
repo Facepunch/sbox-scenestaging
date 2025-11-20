@@ -84,13 +84,21 @@ public class SimpleScatterer : Scatterer
 				{
 					point = trace.HitPosition + trace.Normal * HeightOffset;
 					
-					// Calculate rotation
-					var rotation = Rotation.FromYaw( random.Float( 0f, 360f ) );
+					// Calculate rotation with random yaw
+					var yaw = random.Float( 0f, 360f );
+					Rotation rotation;
 					
-					// Optionally align to surface normal
-					if ( AlignToNormal )
+					// Optionally align to surface normal (Z is up in s&box)
+					if ( AlignToNormal && trace.Normal != Vector3.Zero )
 					{
-						rotation = Rotation.LookAt( trace.Normal ) * Rotation.FromYaw( random.Float( 0f, 360f ) );
+						// Create rotation where object's Z-axis (up) aligns with surface normal
+						// and apply random yaw around that normal
+						rotation = Rotation.From( new Angles( 0, yaw, 0 ) ) * Rotation.FromToRotation( Vector3.Up, trace.Normal );
+					}
+					else
+					{
+						// Just random yaw, stay upright
+						rotation = Rotation.FromYaw( yaw );
 					}
 					
 					var scale = random.Float( Scale.x, Scale.y );
@@ -145,13 +153,21 @@ public class SimpleScatterer : Scatterer
 				{
 					point = trace.HitPosition + trace.Normal * HeightOffset;
 					
-					// Calculate rotation
-					var rotation = Rotation.FromYaw( random.Float( 0f, 360f ) );
+					// Calculate rotation with random yaw
+					var yaw = random.Float( 0f, 360f );
+					Rotation rotation;
 					
-					// Optionally align to surface normal
-					if ( AlignToNormal )
+					// Optionally align to surface normal (Z is up in s&box)
+					if ( AlignToNormal && trace.Normal != Vector3.Zero )
 					{
-						rotation = Rotation.LookAt( trace.Normal ) * Rotation.FromYaw( random.Float( 0f, 360f ) );
+						// Create rotation where object's Z-axis (up) aligns with surface normal
+						// and apply random yaw around that normal
+						rotation = Rotation.From( new Angles( 0, yaw, 0 ) ) * Rotation.FromToRotation( Vector3.Up, trace.Normal );
+					}
+					else
+					{
+						// Just random yaw, stay upright
+						rotation = Rotation.FromYaw( yaw );
 					}
 					
 					var scale = random.Float( Scale.x, Scale.y );
