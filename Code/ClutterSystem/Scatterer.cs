@@ -77,7 +77,7 @@ public class SimpleScatterer : Scatterer
 
 				var trace = scene.Trace
 					.Ray( traceStart, traceEnd )
-					.WithoutTags( "player", "trigger" )
+					.WithoutTags( "player", "trigger", "clutter" )
 					.Run();
 
 				if ( trace.Hit )
@@ -146,7 +146,7 @@ public class SimpleScatterer : Scatterer
 
 				var trace = scene.Trace
 					.Ray( traceStart, traceEnd )
-					.WithoutTags( "player", "trigger" )
+					.WithoutTags( "player", "trigger", "clutter" )
 					.Run();
 
 				if ( trace.Hit )
@@ -212,10 +212,16 @@ public class SimpleScatterer : Scatterer
 			spawnedObject = go;
 		}
 
-		// Parent to the scatterer's GameObject
-		if ( spawnedObject != null && parentObject != null )
+		// Tag spawned object as clutter so traces ignore it
+		if ( spawnedObject != null )
 		{
-			spawnedObject.SetParent( parentObject );
+			spawnedObject.Tags.Add( "clutter" );
+			
+			// Parent to the scatterer's GameObject
+			if ( parentObject != null )
+			{
+				spawnedObject.SetParent( parentObject );
+			}
 		}
 
 		// Track the spawned object in the tile
@@ -249,9 +255,15 @@ public class SimpleScatterer : Scatterer
 			spawnedObject = go;
 		}
 
-		if ( spawnedObject != null && parentObject != null )
+		// Tag spawned object as clutter so traces ignore it
+		if ( spawnedObject != null )
 		{
-			spawnedObject.SetParent( parentObject );
+			spawnedObject.Tags.Add( "clutter" );
+			
+			if ( parentObject != null )
+			{
+				spawnedObject.SetParent( parentObject );
+			}
 		}
 	}
 
