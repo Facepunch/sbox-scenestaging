@@ -25,43 +25,28 @@ public class ClutterIsotope : GameResource
 	/// </summary>
 	[Property, Title( "Scatterer Type" ), Description( "Select the scatterer type from the dropdown" )]
 	[Editor( "ScattererTypeSelector" )]
-	public string ScattererTypeName { get; set; } = nameof(SimpleScatterer);
-
-	/// <summary>
-	/// Serialized scatterer settings (stored as JSON).
-	/// </summary>
-	[Property, Hide]
-	public Dictionary<string, object> ScattererSettings { get; set; } = new();
-
-	private Scatterer _scatterer;
+	public string ScattererTypeName
+	{
+		get => _scattererTypeName;
+		set
+		{
+			if ( _scattererTypeName != value )
+			{
+				_scattererTypeName = value;
+				// Recreate scatterer when type changes
+				Scatterer = CreateScatterer( value ?? nameof(SimpleScatterer) );
+			}
+		}
+	}
+	private string _scattererTypeName = nameof(SimpleScatterer);
 
 	/// <summary>
 	/// The scatterer instance that defines how objects from this isotope are placed.
 	/// Automatically recreated when ScattererTypeName changes.
 	/// </summary>
-	[Property, InlineEditor]
-	[JsonIgnore] // Don't serialize - we reconstruct from ScattererTypeName
-	public Scatterer Scatterer
-	{
-		get
-		{
-			// Rebuild if type changed or scatterer is null
-			if ( _scatterer == null || _scatterer.GetType().Name != ScattererTypeName )
-			{
-				_scatterer = CreateScatterer( ScattererTypeName );
-				ApplySettings( _scatterer );
-			}
-			return _scatterer;
-		}
-		set
-		{
-			_scatterer = value;
-			if ( _scatterer != null )
-			{
-				SaveSettings( _scatterer );
-			}
-		}
-	}
+	[Property, Title( "Scatterer Settings" )]
+	[Editor( "ScattererSettings" )]
+	public Scatterer Scatterer { get; set; } = new SimpleScatterer();
 
 	private static Scatterer CreateScatterer( string typeName )
 	{
@@ -88,52 +73,6 @@ public class ClutterIsotope : GameResource
 		{
 			Log.Error( e, $"Failed to create scatterer of type '{typeName}'" );
 			return new SimpleScatterer();
-		}
-	}
-
-	private void ApplySettings( Scatterer scatterer )
-	{
-		if ( scatterer == null || ScattererSettings == null || ScattererSettings.Count == 0 )
-			return;
-
-		var serialized = scatterer.GetSerialized();
-		foreach ( var property in serialized )
-		{
-			if ( ScattererSettings.TryGetValue( property.Name, out var value ) )
-			{
-				try
-				{
-					property.SetValue( value );
-				}
-				catch ( Exception e )
-				{
-					Log.Warning( $"Failed to apply scatterer setting '{property.Name}': {e.Message}" );
-				}
-			}
-		}
-	}
-
-	private void SaveSettings( Scatterer scatterer )
-	{
-		if ( scatterer == null )
-			return;
-
-		ScattererSettings.Clear();
-		var serialized = scatterer.GetSerialized();
-		foreach ( var property in serialized )
-		{
-			try
-			{
-				var value = property.GetValue<object>();
-				if ( value != null )
-				{
-					ScattererSettings[property.Name] = value;
-				}
-			}
-			catch ( Exception e )
-			{
-				Log.Warning( $"Failed to save scatterer setting '{property.Name}': {e.Message}" );
-			}
 		}
 	}
 
@@ -207,20 +146,10 @@ public class ClutterIsotope : GameResource
 	{
 		base.PostLoad();
 		
-		// Ensure scatterer exists and type name is set
-		ScattererTypeName ??= nameof(SimpleScatterer);
-		_scatterer = CreateScatterer( ScattererTypeName );
-		ApplySettings( _scatterer );
-	}
-
-	protected override void PostSave()
-	{
-		base.PostSave();
-		
-		// Save scatterer settings before saving
-		if ( _scatterer != null )
+		// If no scatterer or type name changed, recreate it
+		if ( Scatterer == null || Scatterer.GetType().Name != ScattererTypeName )
 		{
-			SaveSettings( _scatterer );
+			Scatterer = CreateScatterer( ScattererTypeName ?? nameof(SimpleScatterer) );
 		}
 	}
 }
