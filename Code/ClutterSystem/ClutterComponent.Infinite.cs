@@ -11,49 +11,28 @@ public sealed partial class ClutterComponent
 	[Property, Group( "Infinite" ), ShowIf( nameof(Infinite), true )]
 	public int TileRadius { get; set; } = 4;
 
-	private ClutterLayer _layer;
-	private ClutterGridSystem _gridSystem;
-
-	private ClutterSettings GetCurrentSettings()
+	internal ClutterSettings GetCurrentSettings()
 	{
 		return new ClutterSettings( TileSize, TileRadius, RandomSeed, Isotope );
 	}
 
 	private void EnableInfinite()
 	{
-		var settings = GetCurrentSettings();
-		if ( !settings.IsValid )
-		{
-			Log.Warning( $"{GameObject.Name}: No isotope/scatterer assigned" );
-			return;
-		}
-
-		_gridSystem = Scene.GetSystem<ClutterGridSystem>();
-		_layer = _gridSystem.Register( settings, GameObject );
+		// Component is now passive - grid system will find it
 	}
 
 	private void DisableInfinite()
 	{
-		if ( _layer == null )
-			return;
-
-		_gridSystem.Unregister( _layer );
-		_layer = null;
+		// Component is now passive - grid system will clean up
 	}
 
 	private void UpdateInfinite()
 	{
-		if ( _layer == null )
-			return;
-
-		_layer.UpdateSettings( GetCurrentSettings() );
+		// Component is now passive - grid system handles updates
 	}
 
 	private void RegenerateAllTiles()
 	{
-		if ( _layer == null )
-			return;
-
-		_layer.UpdateSettings( GetCurrentSettings() );
+		// Trigger handled by OnValidate -> grid system will detect change
 	}
 }

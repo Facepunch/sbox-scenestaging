@@ -42,14 +42,14 @@ public class ClutterLayer
 	/// <summary>
 	/// Updates tiles around a center point (usually camera position).
 	/// </summary>
-	public void UpdateTiles( Vector3 center, System.Func<Vector3, float, Vector2Int> worldToTile )
+	public void UpdateTiles( Vector3 center )
 	{
 		if ( !Settings.IsValid )
 			return;
 
 		Center = center;
 
-		var centerTile = worldToTile( Center, Settings.TileSize );
+		var centerTile = WorldToTile( Center );
 		var activeCoords = new HashSet<Vector2Int>();
 
 		for ( int x = -Settings.TileRadius; x <= Settings.TileRadius; x++ )
@@ -74,6 +74,14 @@ public class ClutterLayer
 		{
 			RemoveTile( coord );
 		}
+	}
+
+	private Vector2Int WorldToTile( Vector3 worldPos )
+	{
+		return new Vector2Int(
+			(int)MathF.Floor( worldPos.x / Settings.TileSize ),
+			(int)MathF.Floor( worldPos.y / Settings.TileSize )
+		);
 	}
 
 	/// <summary>

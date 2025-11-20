@@ -6,42 +6,19 @@ namespace Sandbox;
 
 /// <summary>
 /// Game object system that manages a spatial grid for clutter placement.
-/// Components can register their clutter configuration, and the system handles the rest.
+/// Automatically discovers and manages ClutterComponent instances in the scene.
 /// </summary>
 public sealed class ClutterGridSystem : GameObjectSystem
 {
-	private List<ClutterLayer> Layers { get; set; } = [];
+	private Dictionary<ClutterComponent, ClutterLayer> ComponentToLayer { get; set; } = new();
 
 	public ClutterGridSystem( Scene scene ) : base( scene )
 	{
 		Listen( Stage.FinishUpdate, 0, OnUpdate, "ClutterGridSystem.Update" );
 	}
 
-	public ClutterLayer Register( ClutterSettings settings, GameObject parentObject )
-	{
-		var layer = new ClutterLayer( settings, parentObject );
-		Layers.Add( layer );
-		return layer;
-	}
-
-	public void Unregister( ClutterLayer layer )
-	{
-		Layers.Remove( layer );
-	}
-
-	private Vector2Int WorldToTile( Vector3 worldPos, float tileSize )
-	{
-		return new Vector2Int(
-			(int)MathF.Floor( worldPos.x / tileSize ),
-			(int)MathF.Floor( worldPos.y / tileSize )
-		);
-	}
-
 	private void OnUpdate()
 	{
-		if ( Layers.Count == 0 )
-			return;
-
 		var camera = Scene.IsEditor
 			? Scene.GetAllObjects( true ).FirstOrDefault( x => x.Name == "editor_camera" )?.Components.Get<CameraComponent>()
 			: Scene.Camera;
@@ -49,12 +26,40 @@ public sealed class ClutterGridSystem : GameObjectSystem
 		if ( camera == null )
 			return;
 
-		foreach ( var layer in Layers )
+		// Find all ClutterComponents in the scene
+		var components = Scene.GetAllComponents<ClutterComponent>()
+			.Where( c => c.Enabled && c.Infinite )
+			.ToList();
+
+		// Remove layers for components that no longer exist or are disabled
+		var componentsToRemove = ComponentToLayer.Keys
+			.Where( c => !components.Contains( c ) )
+			.ToList();
+
+		foreach ( var component in componentsToRemove )
 		{
-			if ( !layer.IsActive )
+			ComponentToLayer[component].ClearAllTiles();
+			ComponentToLayer.Remove( component );
+		}
+
+		// Update or create layers for active components
+		foreach ( var component in components )
+		{
+			var settings = component.GetCurrentSettings();
+			
+			if ( !settings.IsValid )
 				continue;
 
-			layer.UpdateTiles( camera.WorldPosition, WorldToTile );
+			// Get or create layer for this component
+			if ( !ComponentToLayer.TryGetValue( component, out var layer ) )
+			{
+				layer = new ClutterLayer( settings, component.GameObject );
+				ComponentToLayer[component] = layer;
+			}
+
+			// Update layer with current settings and camera position
+			layer.UpdateSettings( settings );
+			layer.UpdateTiles( camera.WorldPosition );
 		}
 	}
 }
