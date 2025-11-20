@@ -31,6 +31,31 @@ public abstract class Scatterer
 		// Default implementation calls regular Scatter
 		Scatter( bounds, isotope, null, parentObject );
 	}
+
+	/// <summary>
+	/// Generates a hash from all serializable fields and properties using TypeLibrary.
+	/// Override this if you need custom hash generation logic.
+	/// </summary>
+	public override int GetHashCode()
+	{
+		var hash = new HashCode();
+		var typeDesc = TypeLibrary.GetType( GetType() );
+		
+		if ( typeDesc == null )
+			return base.GetHashCode();
+
+		// Hash all properties with [Property] attribute
+		foreach ( var property in typeDesc.Properties )
+		{
+			if ( property.HasAttribute<PropertyAttribute>() )
+			{
+				var value = property.GetValue( this );
+				hash.Add( value?.GetHashCode() ?? 0 );
+			}
+		}
+
+		return hash.ToHashCode();
+	}
 }
 
 public class SimpleScatterer : Scatterer
@@ -42,7 +67,7 @@ public class SimpleScatterer : Scatterer
 	public bool PlaceOnGround { get; set; } = true;
 	
 	[Property, Group( "Placement" ), ShowIf( nameof(PlaceOnGround), true )]
-	public float TraceDistance { get; set; } = 2000f;
+	public float TraceDistance { get; set; } = 5000f;
 	
 	[Property, Group( "Placement" ), ShowIf( nameof(PlaceOnGround), true )]
 	public float HeightOffset { get; set; } = 0f;
@@ -50,9 +75,6 @@ public class SimpleScatterer : Scatterer
 	[Property, Group( "Placement" ), ShowIf( nameof(PlaceOnGround), true )]
 	public bool AlignToNormal { get; set; } = false;
 
-	/// <summary>
-	/// Scatters clutter in a volume without tiles. Used for baked/volume-based clutter.
-	/// </summary>
 	public override void ScatterInVolume( BBox bounds, ClutterIsotope isotope, GameObject parentObject, Random random )
 	{
 		if ( isotope == null || parentObject == null )
@@ -60,7 +82,6 @@ public class SimpleScatterer : Scatterer
 
 		var scene = parentObject.Scene ?? Game.ActiveScene;
 
-		// Generate random spawn points in the volume
 		for ( int i = 0; i < PointCount; i++ )
 		{
 			var point = new Vector3(
@@ -69,11 +90,10 @@ public class SimpleScatterer : Scatterer
 				random.Float( bounds.Mins.z, bounds.Maxs.z )
 			);
 
-			// Trace to ground if enabled
 			if ( PlaceOnGround && scene != null )
 			{
-				var traceStart = point + Vector3.Up * (TraceDistance * 0.5f);
-				var traceEnd = point + Vector3.Down * (TraceDistance * 0.5f);
+				var traceStart = new Vector3( point.x, point.y, bounds.Maxs.z + TraceDistance * 0.5f );
+				var traceEnd = new Vector3( point.x, point.y, bounds.Mins.z - TraceDistance * 0.5f );
 
 				var trace = scene.Trace
 					.Ray( traceStart, traceEnd )
@@ -84,32 +104,24 @@ public class SimpleScatterer : Scatterer
 				{
 					point = trace.HitPosition + trace.Normal * HeightOffset;
 					
-					// Calculate rotation with random yaw
 					var yaw = random.Float( 0f, 360f );
 					Rotation rotation;
 					
-					// Optionally align to surface normal (Z is up in s&box)
 					if ( AlignToNormal && trace.Normal != Vector3.Zero )
 					{
-						// Create rotation where object's Z-axis (up) aligns with surface normal
-						// and apply random yaw around that normal
 						rotation = Rotation.From( new Angles( 0, yaw, 0 ) ) * Rotation.FromToRotation( Vector3.Up, trace.Normal );
 					}
 					else
 					{
-						// Just random yaw, stay upright
 						rotation = Rotation.FromYaw( yaw );
 					}
 					
 					var scale = random.Float( Scale.x, Scale.y );
-					
-					// Spawn object at traced position
 					SpawnObjectSimple( point, rotation, scale, isotope, random, parentObject );
 				}
 			}
 			else
 			{
-				// No ground tracing, spawn at generated point
 				var rotation = Rotation.FromYaw( random.Float( 0f, 360f ) );
 				var scale = random.Float( Scale.x, Scale.y );
 				SpawnObjectSimple( point, rotation, scale, isotope, random, parentObject );
@@ -119,17 +131,13 @@ public class SimpleScatterer : Scatterer
 
 	public override void Scatter( BBox bounds, ClutterIsotope isotope, ClutterTile tile = null, GameObject parentObject = null )
 	{
-		// Create a deterministic random generator based on tile coordinates
 		var seed = tile != null 
 			? HashCode.Combine( tile.Coordinates.x, tile.Coordinates.y )
 			: HashCode.Combine( bounds.Center.x, bounds.Center.y );
 		
 		var random = new Random( seed );
-
-		// Get scene for tracing
 		var scene = parentObject?.Scene ?? Game.ActiveScene;
 
-		// Generate random spawn points
 		for ( int i = 0; i < PointCount; i++ )
 		{
 			var point = new Vector3(
@@ -138,11 +146,10 @@ public class SimpleScatterer : Scatterer
 				bounds.Center.z
 			);
 
-			// Trace to ground if enabled
 			if ( PlaceOnGround && scene != null )
 			{
-				var traceStart = point + Vector3.Up * (TraceDistance * 0.5f);
-				var traceEnd = point + Vector3.Down * (TraceDistance * 0.5f);
+				var traceStart = new Vector3( point.x, point.y, bounds.Maxs.z + TraceDistance * 0.5f );
+				var traceEnd = new Vector3( point.x, point.y, bounds.Mins.z - TraceDistance * 0.5f );
 
 				var trace = scene.Trace
 					.Ray( traceStart, traceEnd )
@@ -153,32 +160,24 @@ public class SimpleScatterer : Scatterer
 				{
 					point = trace.HitPosition + trace.Normal * HeightOffset;
 					
-					// Calculate rotation with random yaw
 					var yaw = random.Float( 0f, 360f );
 					Rotation rotation;
 					
-					// Optionally align to surface normal (Z is up in s&box)
 					if ( AlignToNormal && trace.Normal != Vector3.Zero )
 					{
-						// Create rotation where object's Z-axis (up) aligns with surface normal
-						// and apply random yaw around that normal
 						rotation = Rotation.From( new Angles( 0, yaw, 0 ) ) * Rotation.FromToRotation( Vector3.Up, trace.Normal );
 					}
 					else
 					{
-						// Just random yaw, stay upright
 						rotation = Rotation.FromYaw( yaw );
 					}
 					
 					var scale = random.Float( Scale.x, Scale.y );
-					
-					// Spawn object at traced position
 					SpawnObject( point, rotation, scale, isotope, random, tile, parentObject );
 				}
 			}
 			else
 			{
-				// No ground tracing, spawn at generated point
 				var rotation = Rotation.FromYaw( random.Float( 0f, 360f ) );
 				var scale = random.Float( Scale.x, Scale.y );
 				SpawnObject( point, rotation, scale, isotope, random, tile, parentObject );
@@ -188,7 +187,6 @@ public class SimpleScatterer : Scatterer
 
 	private void SpawnObject( Vector3 position, Rotation rotation, float scale, ClutterIsotope isotope, Random random, ClutterTile tile, GameObject parentObject )
 	{
-		// Get a random weighted entry from the isotope using our seeded random
 		var entry = GetRandomEntry( isotope, random );
 		if ( entry == null )
 			return;
@@ -196,7 +194,6 @@ public class SimpleScatterer : Scatterer
 		var transform = new Transform( position, rotation, scale );
 		GameObject spawnedObject = null;
 
-		// Spawn prefab or model
 		if ( entry.Prefab != null )
 		{
 			spawnedObject = entry.Prefab.Clone( transform );
@@ -212,28 +209,22 @@ public class SimpleScatterer : Scatterer
 			spawnedObject = go;
 		}
 
-		// Tag spawned object as clutter so traces ignore it
 		if ( spawnedObject != null )
 		{
 			spawnedObject.Tags.Add( "clutter" );
 			
-			// Parent to the scatterer's GameObject
 			if ( parentObject != null )
 			{
 				spawnedObject.SetParent( parentObject );
 			}
 		}
 
-		// Track the spawned object in the tile
 		if ( spawnedObject != null && tile != null )
 		{
 			tile.AddObject( spawnedObject );
 		}
 	}
 
-	/// <summary>
-	/// Simplified spawn without tile tracking. Used for volume-based scatter.
-	/// </summary>
 	private void SpawnObjectSimple( Vector3 position, Rotation rotation, float scale, ClutterIsotope isotope, Random random, GameObject parentObject )
 	{
 		var entry = GetRandomEntry( isotope, random );
@@ -255,7 +246,6 @@ public class SimpleScatterer : Scatterer
 			spawnedObject = go;
 		}
 
-		// Tag spawned object as clutter so traces ignore it
 		if ( spawnedObject != null )
 		{
 			spawnedObject.Tags.Add( "clutter" );
@@ -269,7 +259,6 @@ public class SimpleScatterer : Scatterer
 
 	private IsotopeEntry GetRandomEntry( ClutterIsotope isotope, Random random )
 	{
-		// Filter to valid entries only
 		var validEntries = isotope.Entries
 			.Where( e => e is not null && e.HasAsset && e.Weight > 0 )
 			.ToList();
@@ -277,13 +266,9 @@ public class SimpleScatterer : Scatterer
 		if ( validEntries.Count == 0 )
 			return null;
 
-		// Calculate total weight
 		var totalWeight = validEntries.Sum( e => e.Weight );
-		
-		// Generate random value between 0 and total weight using our seeded random
 		var randomValue = random.Float( 0f, totalWeight );
 
-		// Find the entry that corresponds to this random value
 		float cumulativeWeight = 0f;
 		foreach ( var entry in validEntries )
 		{
@@ -294,7 +279,6 @@ public class SimpleScatterer : Scatterer
 			}
 		}
 
-		// Fallback
 		return validEntries[^1];
 	}
 }
