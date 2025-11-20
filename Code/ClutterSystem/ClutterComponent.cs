@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sandbox;
 
@@ -7,6 +8,18 @@ namespace Sandbox;
 /// </summary>
 public sealed partial class ClutterComponent : Component, Component.ExecuteInEditor
 {
+	/// <summary>
+	/// The isotope containing objects to scatter and scatter settings.
+	/// </summary>
+	[Property]
+	public ClutterIsotope Isotope { get; set; }
+
+	/// <summary>
+	/// Random seed for deterministic generation. Change to get different variations.
+	/// </summary>
+	[Property]
+	public int RandomSeed { get; set; }
+
 	/// <summary>
 	/// Enable infinite streaming mode - generates tiles around camera.
 	/// Disable for baked volume mode - generates once within bounds.
@@ -21,29 +34,6 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 			{
 				field = value;
 				OnModeChanged();
-			}
-		}
-	}
-
-	/// <summary>
-	/// The isotope containing objects to scatter and scatter settings.
-	/// </summary>
-	[Property]
-	public ClutterIsotope Isotope { get; set; }
-
-	/// <summary>
-	/// Random seed for deterministic generation. Change to get different variations.
-	/// </summary>
-	[Property]
-	public int RandomSeed
-	{
-		get => field;
-		set
-		{
-			if ( field != value )
-			{
-				field = value;
-				OnSeedChanged();
 			}
 		}
 	}
@@ -79,17 +69,10 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	protected override void OnValidate()
 	{
 		base.OnValidate();
-		
-		// Called when properties change in the inspector
+
 		if ( Infinite && _infiniteData != null )
 		{
-			// Check if settings changed and update immediately
-			if ( _infiniteData.TileSize != TileSize || 
-			     _infiniteData.TileRadius != TileRadius ||
-			     _infiniteData.RandomSeed != RandomSeed )
-			{
-				OnInfiniteSettingsChanged();
-			}
+			RegenerateAllTiles();
 		}
 	}
 
@@ -101,25 +84,15 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 		}
 	}
 
-	private void OnSeedChanged()
-	{
-		if ( Infinite && _infiniteData != null )
-		{
-			OnInfiniteSettingsChanged();
-		}
-	}
-
 	private void OnModeChanged()
 	{
 		if ( Infinite )
 		{
-			// Switching TO Infinite mode - clean up volume and enable infinite
 			ClearVolume();
 			EnableInfinite();
 		}
 		else
 		{
-			// Switching TO Volume mode - disable infinite
 			DisableInfinite();
 		}
 	}
