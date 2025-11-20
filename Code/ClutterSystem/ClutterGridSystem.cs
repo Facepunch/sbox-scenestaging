@@ -167,14 +167,32 @@ public sealed class ClutterGridSystem : GameObjectSystem
 		if ( RegisteredData.Count == 0 )
 			return;
 
+		// Get camera - in editor mode, look for editor_camera GameObject
+		CameraComponent camera = null;
+		
+		if ( Scene.IsEditor )
+		{
+			// In editor, find the editor_camera GameObject
+			var editorCamGo = Scene.GetAllObjects( true ).FirstOrDefault( x => x.Name == "editor_camera" );
+			camera = editorCamGo?.Components.Get<CameraComponent>();
+		}
+		else
+		{
+			// At runtime, use Scene.Camera
+			camera = Scene.Camera;
+		}
+
+		if ( camera == null )
+			return;
+
 		// Process each registered clutter data
 		foreach ( var data in RegisteredData )
 		{
 			if ( !data.IsActive || data.Isotope == null || data.Scatterer == null )
 				continue;
 
-			// Update center (follow camera by default)
-			data.Center = Scene.Camera?.WorldPosition ?? Vector3.Zero;
+			// Update center (follow camera)
+			data.Center = camera.WorldPosition;
 
 			var centerTile = WorldToTile( data.Center, data.TileSize );
 
