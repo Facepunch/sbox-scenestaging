@@ -12,6 +12,7 @@ namespace Editor;
 public class ScattererSettingsControlWidget : ControlWidget
 {
 	private ControlSheet _sheet;
+	private string _lastSerializedState;
 
 	public override bool SupportsMultiEdit => false;
 
@@ -21,6 +22,9 @@ public class ScattererSettingsControlWidget : ControlWidget
 		Layout.Spacing = 2;
 
 		RebuildSheet();
+		
+		// Store initial state
+		_lastSerializedState = SerializeScatterer();
 	}
 
 	private void RebuildSheet()
@@ -53,15 +57,34 @@ public class ScattererSettingsControlWidget : ControlWidget
 		Layout.Add( _sheet );
 	}
 
+	private string SerializeScatterer()
+	{
+		var scatterer = SerializedProperty.GetValue<Scatterer>();
+		if ( scatterer == null ) return null;
+		
+		try
+		{
+			return Json.Serialize( scatterer );
+		}
+		catch
+		{
+			return null;
+		}
+	}
+
 	protected override void OnPaint()
 	{
 		base.OnPaint();
 
-		// Check if scatterer type changed and rebuild if needed
-		var currentScatterer = SerializedProperty.GetValue<Scatterer>();
-		if ( currentScatterer != null && _sheet != null )
+		// Check if the scatterer has changed
+		var currentState = SerializeScatterer();
+		if ( currentState != _lastSerializedState )
 		{
-			// Optionally refresh the sheet here if values change
+			_lastSerializedState = currentState;
+			
+			// Trigger a change by re-setting the value
+			var scatterer = SerializedProperty.GetValue<Scatterer>();
+			SerializedProperty.SetValue( scatterer );
 		}
 	}
 }
