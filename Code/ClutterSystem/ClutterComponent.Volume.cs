@@ -1,58 +1,33 @@
-using Sandbox;
+using System;
+using System.Linq;
 
 namespace Sandbox;
 
 /// <summary>
-/// Scatters clutter within a defined volume bounds. Objects are spawned once and saved in the scene.
-/// Use for forests, fields, or any static scattered area.
-/// This is BAKED clutter - generated in editor and saved in the scene.
+/// Volume/baked clutter mode - generates once within bounds
 /// </summary>
-public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEditor
+public sealed partial class ClutterComponent
 {
-	/// <summary>
-	/// The isotope containing objects to scatter and scatter settings.
-	/// </summary>
-	[Property, Group( "Clutter" )]
-	public ClutterIsotope Isotope { get; set; }
-
-	/// <summary>
-	/// Local-space bounds where clutter will be scattered.
-	/// </summary>
-	[Property, Group( "Volume" )]
+	[Property, Group( "Volume" ), ShowIf( nameof(Infinite), false )]
 	public BBox Bounds { get; set; } = new BBox( -100, 100 );
 
-	/// <summary>
-	/// Size of each cell/tile within the volume. Should match the grid system's tile size for consistent density.
-	/// </summary>
-	[Property, Group( "Volume" )]
+	[Property, Group( "Volume" ), ShowIf( nameof(Infinite), false )]
 	public float CellSize { get; set; } = 512f;
 
-	/// <summary>
-	/// Random seed for deterministic generation. Change to get different layouts.
-	/// </summary>
-	[Property, Group( "Volume" )]
+	[Property, Group( "Volume" ), ShowIf( nameof(Infinite), false )]
 	public int RandomSeed { get; set; } = 12345;
 
-	/// <summary>
-	/// Number of objects currently spawned in this volume (read-only).
-	/// </summary>
-	[Property, Group( "Info" ), ReadOnly]
+	[Property, Group( "Volume Info" ), ShowIf( nameof(Infinite), false ), ReadOnly]
 	public int SpawnedCount { get; private set; }
 
-	/// <summary>
-	/// Number of cells in this volume (read-only).
-	/// </summary>
-	[Property, Group( "Info" ), ReadOnly]
+	[Property, Group( "Volume Info" ), ShowIf( nameof(Infinite), false ), ReadOnly]
 	public int CellCount { get; private set; }
 
-	/// <summary>
-	/// Generates clutter in the volume. Clears existing clutter first.
-	/// </summary>
-	[Button( "Generate Clutter" )]
+	[Button( "Generate Clutter" ), Group( "Volume" ), ShowIf( nameof(Infinite), false )]
 	[Icon( "scatter_plot" )]
-	public void Generate()
+	public void GenerateVolume()
 	{
-		Clear();
+		ClearVolume();
 
 		if ( Isotope == null )
 		{
@@ -66,19 +41,14 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 			return;
 		}
 
-		// Transform bounds to world space
 		var worldBounds = Bounds.Transform( WorldTransform );
 
-		// Calculate cell grid dimensions
 		var cellsX = (int)MathF.Max( 1, MathF.Ceiling( worldBounds.Size.x / CellSize ) );
 		var cellsY = (int)MathF.Max( 1, MathF.Ceiling( worldBounds.Size.y / CellSize ) );
 		var cellsZ = (int)MathF.Max( 1, MathF.Ceiling( worldBounds.Size.z / CellSize ) );
 
 		CellCount = cellsX * cellsY * cellsZ;
 
-		Log.Info( $"{GameObject.Name}: Generating clutter in {cellsX}x{cellsY}x{cellsZ} = {CellCount} cells" );
-
-		// Scatter in each cell
 		int totalSpawned = 0;
 		for ( int x = 0; x < cellsX; x++ )
 		{
@@ -86,7 +56,6 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 			{
 				for ( int z = 0; z < cellsZ; z++ )
 				{
-					// Calculate cell bounds
 					var cellMin = new Vector3(
 						worldBounds.Mins.x + (x * CellSize),
 						worldBounds.Mins.y + (y * CellSize),
@@ -100,36 +69,24 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 					);
 
 					var cellBounds = new BBox( cellMin, cellMax );
-
-					// Create deterministic random for this cell (like tiles in grid system)
 					var cellSeed = HashCode.Combine( RandomSeed, x, y, z );
 					var random = new Random( cellSeed );
-
-					// Track objects spawned before
 					var countBefore = GameObject.Children.Count;
 
-					// Scatter in this cell
 					Isotope.Scatterer.ScatterInVolume( cellBounds, Isotope, GameObject, random );
 
-					// Count objects spawned in this cell
 					totalSpawned += GameObject.Children.Count - countBefore;
 				}
 			}
 		}
 
 		SpawnedCount = totalSpawned;
-
-		Log.Info( $"{GameObject.Name}: Generated {SpawnedCount} clutter objects in {CellCount} cells (avg {SpawnedCount / (float)CellCount:F1} per cell)" );
 	}
 
-	/// <summary>
-	/// Clears all spawned clutter from this volume.
-	/// </summary>
-	[Button( "Clear Clutter" )]
+	[Button( "Clear Clutter" ), Group( "Volume" ), ShowIf( nameof(Infinite), false )]
 	[Icon( "delete" )]
-	public void Clear()
+	public void ClearVolume()
 	{
-		// Destroy all children
 		var children = GameObject.Children.ToArray();
 		foreach ( var child in children )
 		{
@@ -140,9 +97,8 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 		CellCount = 0;
 	}
 
-	protected override void DrawGizmos()
+	private void DrawVolumeGizmos()
 	{
-		// Draw in local space since Bounds is a local-space BBox
 		using ( Gizmo.Scope( "volume" ) )
 		{
 			Gizmo.Draw.Color = Color.Green.WithAlpha( 0.3f );
