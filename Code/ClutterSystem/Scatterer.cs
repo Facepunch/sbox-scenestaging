@@ -1,11 +1,13 @@
 ﻿using Sandbox.Sdf;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Sandbox;
 
 /// <summary>
 /// Base class to override if you want to create custom scatterer logic.
 /// </summary>
+[JsonDerivedType( typeof(SimpleScatterer), "SimpleScatterer" )]
 public abstract class Scatterer
 {
 	/// <summary>
