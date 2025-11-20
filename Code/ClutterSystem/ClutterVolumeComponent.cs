@@ -22,6 +22,12 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 	public BBox Bounds { get; set; } = new BBox( -100, 100 );
 
 	/// <summary>
+	/// Size of each cell/tile within the volume. Should match the grid system's tile size for consistent density.
+	/// </summary>
+	[Property, Group( "Volume" )]
+	public float CellSize { get; set; } = 512f;
+
+	/// <summary>
 	/// Random seed for deterministic generation. Change to get different layouts.
 	/// </summary>
 	[Property, Group( "Volume" )]
@@ -32,6 +38,12 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 	/// </summary>
 	[Property, Group( "Info" ), ReadOnly]
 	public int SpawnedCount { get; private set; }
+
+	/// <summary>
+	/// Number of cells in this volume (read-only).
+	/// </summary>
+	[Property, Group( "Info" ), ReadOnly]
+	public int CellCount { get; private set; }
 
 	/// <summary>
 	/// Generates clutter in the volume. Clears existing clutter first.
@@ -125,6 +137,7 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 		}
 
 		SpawnedCount = 0;
+		CellCount = 0;
 	}
 
 	protected override void DrawGizmos()
