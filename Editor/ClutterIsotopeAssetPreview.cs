@@ -17,8 +17,7 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 	private ClutterIsotope _currentIsotope;
 	private GameObject _previewContainer;
 	private GameObject _groundPlane;
-	private string _lastIsotopeState;
-	private int _lastEntryCount;
+	private int _lastIsotopeHash;
 	private float _previewTileSize = 512f; // Larger default for better preview
 
 	public ClutterIsotopeAssetPreview( Asset asset ) : base( asset )
@@ -61,7 +60,7 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 
 	public override void UpdateScene( float cycle, float timeStep )
 	{
-		// Check if isotope has changed and regenerate if needed
+		// Check if isotope has changed and regenerate if needed (immediate check)
 		if ( CheckForChanges() )
 		{
 			RegeneratePreview();
@@ -75,16 +74,8 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 		if ( _currentIsotope == null )
 			return false;
 
-		// Check if entry count changed
-		if ( _currentIsotope.Entries.Count != _lastEntryCount )
-			return true;
-
-		// Check if scatterer settings changed
-		var currentState = SerializeIsotope();
-		if ( currentState != _lastIsotopeState )
-			return true;
-
-		return false;
+		var currentHash = GetIsotopeHash();
+		return currentHash != _lastIsotopeHash;
 	}
 
 	private void UpdateIsotopeState()
@@ -92,28 +83,33 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 		if ( _currentIsotope == null )
 			return;
 
-		_lastEntryCount = _currentIsotope.Entries.Count;
-		_lastIsotopeState = SerializeIsotope();
+		_lastIsotopeHash = GetIsotopeHash();
 	}
 
-	private string SerializeIsotope()
+	private int GetIsotopeHash()
 	{
 		if ( _currentIsotope == null )
-			return null;
+			return 0;
 
-		try
+		// Generate hash from all relevant isotope properties
+		var hash = new HashCode();
+		
+		hash.Add( _currentIsotope.Entries.Count );
+		
+		foreach ( var entry in _currentIsotope.Entries )
 		{
-			// Serialize the isotope to detect changes
-			return Json.Serialize( new
+			if ( entry != null )
 			{
-				Entries = _currentIsotope.Entries.Select( e => new { e.Weight, Model = e.Model?.Name, Prefab = e.Prefab?.Name } ),
-				Scatterer = _currentIsotope.Scatterer
-			} );
+				hash.Add( entry.Weight );
+				hash.Add( entry.Model?.GetHashCode() ?? 0 );
+				hash.Add( entry.Prefab?.GetHashCode() ?? 0 );
+			}
 		}
-		catch
-		{
-			return null;
-		}
+		
+		// Add scatterer hash
+		hash.Add( _currentIsotope.Scatterer?.GetHashCode() ?? 0 );
+		
+		return hash.ToHashCode();
 	}
 
 	private void RegeneratePreview()
