@@ -54,19 +54,60 @@ public sealed class ClutterVolumeComponent : Component, Component.ExecuteInEdito
 			return;
 		}
 
-		// Bounds are in local space, transform to world space for scattering
+		// Transform bounds to world space
 		var worldBounds = Bounds.Transform( WorldTransform );
 
-		// Use deterministic random seed
-		var random = new Random( RandomSeed );
+		// Calculate cell grid dimensions
+		var cellsX = (int)MathF.Max( 1, MathF.Ceiling( worldBounds.Size.x / CellSize ) );
+		var cellsY = (int)MathF.Max( 1, MathF.Ceiling( worldBounds.Size.y / CellSize ) );
+		var cellsZ = (int)MathF.Max( 1, MathF.Ceiling( worldBounds.Size.z / CellSize ) );
 
-		// Scatter in volume using the isotope's scatterer
-		Isotope.Scatterer.ScatterInVolume( worldBounds, Isotope, GameObject, random );
+		CellCount = cellsX * cellsY * cellsZ;
 
-		// Count spawned objects
-		SpawnedCount = GameObject.Children.Count;
+		Log.Info( $"{GameObject.Name}: Generating clutter in {cellsX}x{cellsY}x{cellsZ} = {CellCount} cells" );
 
-		Log.Info( $"{GameObject.Name}: Generated {SpawnedCount} clutter objects in volume" );
+		// Scatter in each cell
+		int totalSpawned = 0;
+		for ( int x = 0; x < cellsX; x++ )
+		{
+			for ( int y = 0; y < cellsY; y++ )
+			{
+				for ( int z = 0; z < cellsZ; z++ )
+				{
+					// Calculate cell bounds
+					var cellMin = new Vector3(
+						worldBounds.Mins.x + (x * CellSize),
+						worldBounds.Mins.y + (y * CellSize),
+						worldBounds.Mins.z + (z * CellSize)
+					);
+
+					var cellMax = new Vector3(
+						MathF.Min( worldBounds.Maxs.x, cellMin.x + CellSize ),
+						MathF.Min( worldBounds.Maxs.y, cellMin.y + CellSize ),
+						MathF.Min( worldBounds.Maxs.z, cellMin.z + CellSize )
+					);
+
+					var cellBounds = new BBox( cellMin, cellMax );
+
+					// Create deterministic random for this cell (like tiles in grid system)
+					var cellSeed = HashCode.Combine( RandomSeed, x, y, z );
+					var random = new Random( cellSeed );
+
+					// Track objects spawned before
+					var countBefore = GameObject.Children.Count;
+
+					// Scatter in this cell
+					Isotope.Scatterer.ScatterInVolume( cellBounds, Isotope, GameObject, random );
+
+					// Count objects spawned in this cell
+					totalSpawned += GameObject.Children.Count - countBefore;
+				}
+			}
+		}
+
+		SpawnedCount = totalSpawned;
+
+		Log.Info( $"{GameObject.Name}: Generated {SpawnedCount} clutter objects in {CellCount} cells (avg {SpawnedCount / (float)CellCount:F1} per cell)" );
 	}
 
 	/// <summary>
