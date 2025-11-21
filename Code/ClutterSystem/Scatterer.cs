@@ -165,7 +165,7 @@ public class SimpleScatterer : Scatterer
 		}
 		else if ( entry.Model != null )
 		{
-			var go = new GameObject( true, $"Clutter_{entry.Model.Name}" );
+			var go = new GameObject( true );
 			go.WorldTransform = transform;
 			go.Components.Create<ModelRenderer>().Model = entry.Model;
 			spawnedObject = go;

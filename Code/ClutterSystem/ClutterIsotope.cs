@@ -19,6 +19,20 @@ public class ClutterIsotope : GameResource
 	public List<IsotopeEntry> Entries { get; set; } = new();
 
 	/// <summary>
+	/// Size of each tile in world units for infinite streaming mode.
+	/// Smaller values = more frequent updates, larger values = better performance.
+	/// </summary>
+	[Property, Group( "Streaming" )]
+	public float TileSize { get; set; } = 512f;
+
+	/// <summary>
+	/// Number of tiles to generate around the camera in each direction.
+	/// Higher values = more visible range but more memory usage.
+	/// </summary>
+	[Property, Group( "Streaming" ), Range( 1, 10 )]
+	public int TileRadius { get; set; } = 4;
+
+	/// <summary>
 	/// Type name of the scatterer to use (e.g., "SimpleScatterer", "PoissonScatterer").
 	/// Change this to switch between different scatterer implementations.
 	/// Available types will be shown when you click the property.
@@ -147,6 +161,10 @@ public class ClutterIsotope : GameResource
 	public override int GetHashCode()
 	{
 		var hash = new HashCode();
+		
+		// Hash streaming settings
+		hash.Add( TileSize );
+		hash.Add( TileRadius );
 		
 		// Hash entry count and each entry's properties
 		hash.Add( Entries?.Count ?? 0 );
