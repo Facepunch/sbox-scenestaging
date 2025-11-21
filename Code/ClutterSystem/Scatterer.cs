@@ -173,6 +173,7 @@ public class SimpleScatterer : Scatterer
 
 		if ( spawnedObject != null )
 		{
+			spawnedObject.Flags |= GameObjectFlags.NotSaved;
 			spawnedObject.Tags.Add( "clutter" );
 			spawnedObject.SetParent( parentObject );
 			tile?.AddObject( spawnedObject );
