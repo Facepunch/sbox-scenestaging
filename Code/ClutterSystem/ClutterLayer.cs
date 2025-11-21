@@ -45,11 +45,14 @@ public class ClutterLayer
 
 	/// <summary>
 	/// Updates tiles around a center point (usually camera position).
+	/// Returns a list of generation jobs for tiles that need to be populated.
 	/// </summary>
-	public void UpdateTiles( Vector3 center )
+	public List<ClutterGenerationJob> UpdateTiles( Vector3 center )
 	{
+		var jobs = new List<ClutterGenerationJob>();
+
 		if ( !Settings.IsValid )
-			return;
+			return jobs;
 
 		Center = center;
 
@@ -65,7 +68,9 @@ public class ClutterLayer
 
 				if ( !HasTile( coord ) )
 				{
-					PopulateTile( coord );
+					var job = CreateTileJob( coord );
+					if ( job != null )
+						jobs.Add( job );
 				}
 			}
 		}
@@ -78,6 +83,8 @@ public class ClutterLayer
 		{
 			RemoveTile( coord );
 		}
+
+		return jobs;
 	}
 
 	private Vector2Int WorldToTile( Vector3 worldPos )
@@ -85,6 +92,25 @@ public class ClutterLayer
 		return new Vector2Int(
 			(int)MathF.Floor( worldPos.x / Settings.TileSize ),
 			(int)MathF.Floor( worldPos.y / Settings.TileSize )
+		);
+	}
+
+	/// <summary>
+	/// Creates a generation job for a tile at the specified coordinates.
+	/// </summary>
+	private ClutterGenerationJob CreateTileJob( Vector2Int coord )
+	{
+		var tile = GetOrCreateTile( coord );
+		
+		if ( tile.IsPopulated || !Settings.IsValid )
+			return null;
+
+		return ClutterGenerationJob.Tile(
+			tile.Bounds,
+			tile,
+			Settings.RandomSeed,
+			Settings.Isotope,
+			ParentObject
 		);
 	}
 
@@ -149,23 +175,6 @@ public class ClutterLayer
 	/// Checks if a tile exists at the specified coordinates.
 	/// </summary>
 	public bool HasTile( Vector2Int coord ) => Tiles.ContainsKey( coord );
-
-	/// <summary>
-	/// Populates a tile with scattered objects.
-	/// </summary>
-	private void PopulateTile( Vector2Int coord )
-	{
-		var tile = GetOrCreateTile( coord );
-		
-		if ( tile.IsPopulated )
-			return;
-
-		if ( !Settings.IsValid )
-			return;
-
-		Settings.Scatterer.Scatter( tile.Bounds, Settings.Isotope, tile, ParentObject );
-		tile.IsPopulated = true;
-	}
 
 	private BBox GetTileBounds( Vector2Int coord )
 	{

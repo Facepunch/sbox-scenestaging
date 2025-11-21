@@ -74,7 +74,13 @@ public sealed class ClutterGridSystem : GameObjectSystem
 			}
 
 			layer.UpdateSettings( settings );
-			layer.UpdateTiles( camera.WorldPosition );
+			
+			// Get jobs from layer and queue them
+			var jobs = layer.UpdateTiles( camera.WorldPosition );
+			foreach ( var job in jobs )
+			{
+				QueueJob( job );
+			}
 		}
 	}
 

@@ -32,7 +32,7 @@ public class ClutterTile
 	/// <summary>
 	/// Objects spawned in this tile. Tracked for cleanup purposes.
 	/// </summary>
-	internal List<GameObject> SpawnedObjects { get; } = new();
+	internal List<GameObject> SpawnedObjects { get; } = [];
 
 	/// <summary>
 	/// Adds a spawned object to this tile's tracking for cleanup.

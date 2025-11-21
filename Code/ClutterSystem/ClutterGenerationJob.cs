@@ -58,14 +58,18 @@ public class ClutterGenerationJob
 	/// </summary>
 	internal async Task ExecuteAsync()
 	{
-		var initialChildCount = ParentObject?.Children.Count ?? 0;
+		List<ClutterInstance> allInstances = new();
 
 		if ( TileData != null )
 		{
 			// Tile mode - generate entire tile
 			await GameTask.WorkerThread();
-			Isotope.Scatterer.Scatter( Bounds, Isotope, TileData, ParentObject );
+			
+			int seed = Scatterer.GenerateSeed( TileData.SeedOffset, TileData.Coordinates.x, TileData.Coordinates.y );
+			allInstances = Isotope.Scatterer.Scatter( Bounds, Isotope, seed );
+			
 			await GameTask.MainThread();
+			SpawnInstances( allInstances, ParentObject, TileData );
 		}
 		else
 		{
@@ -83,10 +87,15 @@ public class ClutterGenerationJob
 					for ( int z = 0; z < cellsZ; z++ )
 					{
 						var cellBounds = GetCellBounds( Bounds, CellSize, x, y, z );
-						var cellSeed = GetCellSeed( RandomSeed, x, y, z );
-						var random = new Random( cellSeed );
+						
+						// Combine x, y, z into single seed using same pattern as 2D
+						int cellSeed = RandomSeed;
+						cellSeed = (cellSeed * 397) ^ x;
+						cellSeed = (cellSeed * 397) ^ y;
+						cellSeed = (cellSeed * 397) ^ z;
 
-						Isotope.Scatterer.ScatterInVolume( cellBounds, Isotope, ParentObject, random );
+						var cellInstances = Isotope.Scatterer.Scatter( cellBounds, Isotope, cellSeed );
+						allInstances.AddRange( cellInstances );
 					}
 				}
 			}
