@@ -13,6 +13,9 @@ public sealed partial class ClutterComponent
 
 	internal ClutterSettings GetCurrentSettings()
 	{
-		return new ClutterSettings( TileSize, TileRadius, RandomSeed, Isotope );
+		if ( Isotope == null )
+			return default;
+
+		return new ClutterSettings( Isotope.TileSize, Isotope.TileRadius, RandomSeed, Isotope );
 	}
 }
