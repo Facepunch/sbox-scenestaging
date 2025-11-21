@@ -1,36 +1,55 @@
 ﻿using Sandbox.Sdf;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Sandbox;
 
 /// <summary>
+/// Represents a single clutter instance to be spawned.
+/// </summary>
+public struct ClutterInstance
+{
+	public Transform Transform { get; set; }
+	public IsotopeEntry Entry { get; set; }
+
+	public readonly bool IsModel => Entry?.Model != null && Entry?.Prefab == null;
+}
+
+/// <summary>
 /// Base class to override if you want to create custom scatterer logic.
+/// Provides utility methods for entry selection and common operations.
 /// </summary>
 [JsonDerivedType( typeof(SimpleScatterer), "SimpleScatterer" )]
 public abstract class Scatterer
 {
 	/// <summary>
-	/// Will be executed for each tile during scattering. Do whatever you want.
+	/// Random instance for this scattering operation.
+	/// </summary>
+	protected Random Random { get; private set; }
+
+	/// <summary>
+	/// Generates clutter instances for the given bounds.
+	/// The Random property is initialized before this is called.
 	/// </summary>
 	/// <param name="bounds">World-space bounds to scatter within</param>
 	/// <param name="isotope">The isotope containing objects to scatter</param>
-	/// <param name="tile">Optional tile reference to track spawned objects</param>
-	/// <param name="parentObject">GameObject to parent spawned objects to</param>
-	public virtual void Scatter( BBox bounds, ClutterIsotope isotope, ClutterTile tile = null, GameObject parentObject = null )
-	{
-		// Override this to implement custom scattering logic
-	}
+	/// <returns>Collection of clutter instances to spawn</returns>
+	protected abstract List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope );
 
 	/// <summary>
-	/// Scatters clutter in a volume without tiles. Used for baked/volume-based clutter.
-	/// Override this if your scatterer needs custom volume scattering logic.
+	/// Public entry point for scattering. Creates Random from seed and calls Generate().
 	/// </summary>
-	public virtual void ScatterInVolume( BBox bounds, ClutterIsotope isotope, GameObject parentObject, Random random )
+	/// <param name="bounds">World-space bounds to scatter within</param>
+	/// <param name="isotope">The isotope containing objects to scatter</param>
+	/// <param name="seed">Seed for deterministic random generation</param>
+	/// <returns>Collection of clutter instances to spawn</returns>
+	public List<ClutterInstance> Scatter( BBox bounds, ClutterIsotope isotope, int seed )
 	{
-		// Default implementation calls regular Scatter
-		Scatter( bounds, isotope, null, parentObject );
+		// Let's make a deterministic Random object for scatterer to use.
+		Random = new Random( seed );
+
+		return Generate( bounds, isotope );
 	}
 
 	/// <summary>
@@ -39,7 +58,7 @@ public abstract class Scatterer
 	/// </summary>
 	public override int GetHashCode()
 	{
-		var hash = new HashCode();
+		HashCode hash = new ();
 		var typeDesc = TypeLibrary.GetType( GetType() );
 		
 		if ( typeDesc == null )
@@ -47,14 +66,81 @@ public abstract class Scatterer
 
 		foreach ( var property in typeDesc.Properties )
 		{
-			if ( property.HasAttribute<PropertyAttribute>() )
-			{
-				var value = property.GetValue( this );
-				hash.Add( value?.GetHashCode() ?? 0 );
-			}
+			// We only want [Property] stuff
+			if ( !property.HasAttribute<PropertyAttribute>() )
+				continue;
+
+			var value = property.GetValue( this );
+			hash.Add( value?.GetHashCode() ?? 0 );
 		}
 
 		return hash.ToHashCode();
+	}
+
+	/// <summary>
+	/// Selects a random entry from the isotope based on weights.
+	/// Returns null if no valid entries exist.
+	/// </summary>
+	protected IsotopeEntry GetRandomEntry( ClutterIsotope isotope )
+	{
+		if ( isotope?.Entries == null || isotope.Entries.Count == 0 )
+			return null;
+
+		float totalWeight = 0f;
+		foreach ( var entry in isotope.Entries )
+		{
+			if ( entry?.HasAsset == true && entry.Weight > 0 )
+				totalWeight += entry.Weight;
+		}
+
+		if ( totalWeight <= 0 )
+			return null;
+
+		var randomValue = Random.Float( 0f, totalWeight );
+		float currentWeight = 0f;
+
+		foreach ( var entry in isotope.Entries )
+		{
+			if ( entry?.HasAsset != true || entry.Weight <= 0 )
+				continue;
+
+			currentWeight += entry.Weight;
+			if ( randomValue <= currentWeight )
+				return entry;
+		}
+
+		return null; // Should never reach here if totalWeight > 0
+	}
+
+	/// <summary>
+	/// Helper to perform a ground trace at a position.
+	/// Returns the trace result, or null if no scene is available.
+	/// </summary>
+	protected static SceneTraceResult? TraceGround( Scene scene, Vector3 position )
+	{
+		if ( scene == null )
+			return null;
+
+		// Unsure about this limit.... just needs to be high enough to not miss the scene
+		var traceStart = new Vector3( position.x, position.y, 10000f );
+		var traceEnd = new Vector3( position.x, position.y, -10000f );
+
+		return scene.Trace
+			.Ray( traceStart, traceEnd )
+			.WithoutTags( "player", "trigger", "clutter" )
+			.Run();
+	}
+
+	/// <summary>
+	/// Generates a deterministic seed from tile coordinates and base seed.
+	/// Use this to create unique seeds for different tiles.
+	/// </summary>
+	public static int GenerateSeed( int baseSeed, int x, int y )
+	{
+		int seed = baseSeed;
+		seed = (seed * 397) ^ x;
+		seed = (seed * 397) ^ y;
+		return seed;
 	}
 }
 
@@ -72,75 +158,58 @@ public class SimpleScatterer : Scatterer
 	[Property, Group( "Placement" ), ShowIf( nameof(PlaceOnGround), true )]
 	public bool AlignToNormal { get; set; } = false;
 
-	public override void ScatterInVolume( BBox bounds, ClutterIsotope isotope, GameObject parentObject, Random random )
+	protected override List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope )
 	{
-		// Volume mode uses the provided random instance
-		ScatterInternal( bounds, isotope, null, parentObject, random );
-	}
-
-	public override void Scatter( BBox bounds, ClutterIsotope isotope, ClutterTile tile = null, GameObject parentObject = null )
-	{
-		int seed = 0;
-		if ( tile != null )
-		{
-			seed = tile.Coordinates.x;
-			seed = (seed * 397) ^ tile.Coordinates.y;
-			seed = (seed * 397) ^ tile.SeedOffset;
-		}
+		var instances = new List<ClutterInstance>( PointCount );
 		
-		var random = new Random( seed );
-		ScatterInternal( bounds, isotope, tile, parentObject, random );
-	}
+		if ( isotope == null )
+			return instances;
 
-	private void ScatterInternal( BBox bounds, ClutterIsotope isotope, ClutterTile tile, GameObject parentObject, Random random )
-	{
-		if ( isotope == null || parentObject == null )
-			return;
-
-		var scene = parentObject.Scene ?? Game.ActiveScene;
+		var scene = Game.ActiveScene;
 
 		for ( int i = 0; i < PointCount; i++ )
 		{
-			var randomX = random.Float( 0f, 1f );
-			var randomY = random.Float( 0f, 1f );
-			
+			// Random point in bounds
 			var point = new Vector3(
-				bounds.Mins.x + randomX * bounds.Size.x,
-				bounds.Mins.y + randomY * bounds.Size.y,
+				bounds.Mins.x + Random.Float( bounds.Size.x ),
+				bounds.Mins.y + Random.Float( bounds.Size.y ),
 				0f
 			);
 
-			if ( PlaceOnGround && scene != null )
+			Rotation rotation;
+			float scale = Random.Float( Scale.Min, Scale.Max );
+
+			if ( PlaceOnGround )
 			{
-				var traceStart = new Vector3( point.x, point.y, 10000f );
-				var traceEnd = new Vector3( point.x, point.y, -10000f );
+				var trace = TraceGround( scene, point );
+				if ( trace?.Hit != true )
+					continue;
 
-				var trace = scene.Trace
-					.Ray( traceStart, traceEnd )
-					.WithoutTags( "player", "trigger", "clutter" )
-					.Run();
-
-				if ( trace.Hit )
-				{
-					point = trace.HitPosition + trace.Normal * HeightOffset;
-					var rotation = CalculateRotation( random, trace.Normal );
-					var scale = random.Float( Scale.x, Scale.y );
-					
-					SpawnObject( point, rotation, scale, isotope, random, tile, parentObject );
-				}
+				point = trace.Value.HitPosition + trace.Value.Normal * HeightOffset;
+				rotation = CalculateRotation( trace.Value.Normal );
 			}
 			else
 			{
-				var rotation = Rotation.FromYaw( random.Float( 0f, 360f ) );
-				var scale = random.Float( Scale.x, Scale.y );
-				SpawnObject( point, rotation, scale, isotope, random, tile, parentObject );
+				rotation = Rotation.FromYaw( Random.Float( 0f, 360f ) );
+			}
+
+			var entry = GetRandomEntry( isotope );
+			if ( entry != null )
+			{
+				instances.Add( new ClutterInstance
+				{
+					Transform = new Transform( point, rotation, scale ),
+					Entry = entry
+				} );
 			}
 		}
+
+		return instances;
 	}
 
-	private Rotation CalculateRotation( Random random, Vector3 surfaceNormal )
+	private Rotation CalculateRotation( Vector3 surfaceNormal )
 	{
-		var yaw = random.Float( 0f, 360f );
+		var yaw = Random.Float( 0f, 360f );
 		
 		if ( AlignToNormal )
 		{
@@ -148,61 +217,5 @@ public class SimpleScatterer : Scatterer
 		}
 		
 		return Rotation.FromYaw( yaw );
-	}
-
-	private void SpawnObject( Vector3 position, Rotation rotation, float scale, ClutterIsotope isotope, Random random, ClutterTile tile, GameObject parentObject )
-	{
-		var entry = GetRandomEntry( isotope, random );
-		if ( entry == null )
-			return;
-
-		Transform transform = new ( position, rotation, scale );
-		GameObject spawnedObject = null;
-
-		if ( entry.Prefab != null )
-		{
-			spawnedObject = entry.Prefab.Clone( transform );
-		}
-		else if ( entry.Model != null )
-		{
-			var go = new GameObject( true );
-			go.WorldTransform = transform;
-			go.Components.Create<ModelRenderer>().Model = entry.Model;
-			spawnedObject = go;
-		}
-
-		if ( spawnedObject != null )
-		{
-			spawnedObject.Flags |= GameObjectFlags.NotSaved;
-			spawnedObject.Tags.Add( "clutter" );
-			spawnedObject.SetParent( parentObject );
-			tile?.AddObject( spawnedObject );
-		}
-	}
-
-	private IsotopeEntry GetRandomEntry( ClutterIsotope isotope, Random random )
-	{
-		var validEntries = isotope.Entries
-			.Where( e => e is not null && e.HasAsset && e.Weight > 0 )
-			.OrderBy( e => isotope.Entries.IndexOf( e ) )
-			.ToList();
-
-		if ( validEntries.Count == 0 )
-			return null;
-
-		var totalWeight = validEntries.Sum( e => e.Weight );
-		var randomValue = random.Float( 0f, totalWeight );
-
-		float cumulativeWeight = 0f;
-		foreach ( var entry in validEntries )
-		{
-			cumulativeWeight += entry.Weight;
-			if ( randomValue <= cumulativeWeight )
-			{
-				return entry;
-			}
-		}
-
-		return validEntries[^1];
 	}
 }
