@@ -1,23 +1,43 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Sandbox;
 
 /// <summary>
-/// Game object system that manages a spatial grid for clutter placement.
-/// Automatically discovers and manages ClutterComponent instances in the scene.
+/// Game object system that manages clutter generation.
+/// Handles infinite streaming layers and executes generation jobs.
 /// </summary>
 public sealed class ClutterGridSystem : GameObjectSystem
 {
 	private Dictionary<ClutterComponent, ClutterLayer> ComponentToLayer { get; set; } = new();
+	private Queue<ClutterGenerationJob> JobQueue { get; set; } = new();
+	private List<Task> ActiveJobs { get; set; } = new();
 
 	public ClutterGridSystem( Scene scene ) : base( scene )
 	{
 		Listen( Stage.FinishUpdate, 0, OnUpdate, "ClutterGridSystem.Update" );
 	}
 
+	/// <summary>
+	/// Queues a generation job for processing.
+	/// </summary>
+	public void QueueJob( ClutterGenerationJob job )
+	{
+		if ( job?.Isotope?.Scatterer == null || job.ParentObject == null )
+			return;
+
+		JobQueue.Enqueue( job );
+	}
+
 	private void OnUpdate()
+	{
+		UpdateInfiniteLayers();
+		ProcessJobs();
+	}
+
+	private void UpdateInfiniteLayers()
 	{
 		var camera = Scene.IsEditor
 			? Scene.GetAllObjects( true ).FirstOrDefault( x => x.Name == "editor_camera" )?.Components.Get<CameraComponent>()
@@ -26,12 +46,10 @@ public sealed class ClutterGridSystem : GameObjectSystem
 		if ( camera == null )
 			return;
 
-		// Find all ClutterComponents in the scene
 		var components = Scene.GetAllComponents<ClutterComponent>()
 			.Where( c => c.Enabled && c.Infinite )
 			.ToList();
 
-		// Remove layers for components that no longer exist or are disabled
 		var componentsToRemove = ComponentToLayer.Keys
 			.Where( c => !components.Contains( c ) )
 			.ToList();
@@ -42,7 +60,6 @@ public sealed class ClutterGridSystem : GameObjectSystem
 			ComponentToLayer.Remove( component );
 		}
 
-		// Update or create layers for active components
 		foreach ( var component in components )
 		{
 			var settings = component.GetCurrentSettings();
@@ -50,16 +67,30 @@ public sealed class ClutterGridSystem : GameObjectSystem
 			if ( !settings.IsValid )
 				continue;
 
-			// Get or create layer for this component
 			if ( !ComponentToLayer.TryGetValue( component, out var layer ) )
 			{
 				layer = new ClutterLayer( settings, component.GameObject );
 				ComponentToLayer[component] = layer;
 			}
 
-			// Update layer with current settings and camera position
 			layer.UpdateSettings( settings );
 			layer.UpdateTiles( camera.WorldPosition );
+		}
+	}
+
+	private void ProcessJobs()
+	{
+		const int MAX_CONCURRENT_JOBS = 8;
+		
+		// Remove completed jobs
+		ActiveJobs.RemoveAll( job => job.IsCompleted );
+		
+		// Start new jobs up to the limit
+		while ( ActiveJobs.Count < MAX_CONCURRENT_JOBS && JobQueue.Count > 0 )
+		{
+			var job = JobQueue.Dequeue();
+			var task = job.ExecuteAsync();
+			ActiveJobs.Add( task );
 		}
 	}
 }
