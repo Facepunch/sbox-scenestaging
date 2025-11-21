@@ -69,7 +69,7 @@ public class ClutterGenerationJob
 			allInstances = Isotope.Scatterer.Scatter( Bounds, Isotope, seed );
 			
 			await GameTask.MainThread();
-			SpawnInstances( allInstances, ParentObject, TileData );
+			SpawnInstances( allInstances, TileData );
 		}
 		else
 		{
@@ -101,10 +101,46 @@ public class ClutterGenerationJob
 			}
 
 			await GameTask.MainThread();
+			SpawnInstances( allInstances, null );
 		}
 
-		var spawnedCount = (ParentObject?.Children.Count ?? 0) - initialChildCount;
-		OnComplete?.Invoke( spawnedCount );
+		OnComplete?.Invoke( allInstances.Count );
+	}
+
+	/// <summary>
+	/// Spawns clutter instances as GameObjects.
+	/// Routes Models and Prefabs to their appropriate spawn paths.
+	/// </summary>
+	private void SpawnInstances( List<ClutterInstance> instances, ClutterTile tile )
+	{
+		foreach ( var instance in instances )
+		{
+			GameObject spawnedObject = null;
+
+			// Route to appropriate spawn path
+			if ( instance.Entry.Prefab != null )
+			{
+				// Prefab path: spawn as full GameObject with components
+				spawnedObject = instance.Entry.Prefab.Clone( instance.Transform );
+			}
+			else if ( instance.Entry.Model != null )
+			{
+				// Model path: spawn as simple GameObject with ModelRenderer
+				var go = new GameObject( true );
+				go.WorldTransform = instance.Transform;
+				go.Components.Create<ModelRenderer>().Model = instance.Entry.Model;
+				spawnedObject = go;
+			}
+
+			// Common setup for all spawned objects
+			if ( spawnedObject != null )
+			{
+				spawnedObject.Flags |= GameObjectFlags.NotSaved;
+				spawnedObject.Tags.Add( "clutter" );
+				spawnedObject.SetParent( ParentObject );
+				tile?.AddObject( spawnedObject );
+			}
+		}
 	}
 
 	private static BBox GetCellBounds( BBox volumeBounds, float cellSize, int x, int y, int z )
@@ -122,14 +158,5 @@ public class ClutterGenerationJob
 		);
 
 		return new BBox( cellMin, cellMax );
-	}
-
-	private static int GetCellSeed( int randomSeed, int x, int y, int z )
-	{
-		int seed = randomSeed;
-		seed = (seed * 397) ^ x;
-		seed = (seed * 397) ^ y;
-		seed = (seed * 397) ^ z;
-		return seed;
 	}
 }
