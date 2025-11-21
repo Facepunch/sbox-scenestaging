@@ -15,6 +15,7 @@ public class ClutterLayer
 	public GameObject ParentObject { get; set; }
 	
 	private Dictionary<Vector2Int, ClutterTile> Tiles { get; } = new();
+	private ClutterBatch Batch { get; set; }
 	private const float TileHeight = 10000f;
 	private int _lastSettingsHash;
 
@@ -23,6 +24,9 @@ public class ClutterLayer
 		Settings = settings;
 		ParentObject = parentObject;
 		_lastSettingsHash = settings.GetHashCode();
+		
+		// Create owned ClutterBatch
+		Batch = new ClutterBatch( parentObject.Scene.SceneWorld );
 	}
 
 	/// <summary>
@@ -126,6 +130,14 @@ public class ClutterLayer
 			tile.Destroy();
 		}
 		Tiles.Clear();
+	}
+	
+	/// <summary>
+	/// Disposes this layer and cleans up resources.
+	/// </summary>
+	public void Dispose()
+	{
+		ClearAllTiles();
 	}
 
 	/// <summary>
