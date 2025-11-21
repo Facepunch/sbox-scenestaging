@@ -9,16 +9,16 @@ namespace Editor;
 
 /// <summary>
 /// Custom 3D asset preview for ClutterIsotope resources.
-/// Shows a preview of what a single tile would look like with the isotope's scatterer settings.
+/// Uses the actual clutter system to generate a realistic preview.
 /// </summary>
 [AssetPreview( "isotope" )]
 public class ClutterIsotopeAssetPreview : AssetPreview
 {
 	private ClutterIsotope _currentIsotope;
-	private GameObject _previewContainer;
+	private GameObject _clutterObject;
 	private GameObject _groundPlane;
 	private int _lastIsotopeHash;
-	private float _previewTileSize = 512f; // Larger default for better preview
+	private float _previewTileSize = 512f;
 
 	public ClutterIsotopeAssetPreview( Asset asset ) : base( asset )
 	{
@@ -40,27 +40,26 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 
 		using ( Scene.Push() )
 		{
-			// Create ground plane first
+			// Create ground plane for collision
 			CreateGroundPlane();
 
-			// Create container for clutter objects
-			_previewContainer = new GameObject( true, "Clutter Preview" );
-			PrimaryObject = _previewContainer;
-
-			// Generate clutter
-			GeneratePreviewTile();
-			
-			// Calculate bounds after generation
-			CalculateSceneBounds();
+			// Create clutter object with component - let the system handle generation
+			CreateClutterObject();
 			
 			// Store initial state
 			UpdateIsotopeState();
+			
+			// Wait a bit for generation to happen
+			await Task.Delay( 100 );
+			
+			// Calculate bounds after generation
+			CalculateSceneBounds();
 		}
 	}
 
 	public override void UpdateScene( float cycle, float timeStep )
 	{
-		// Check if isotope has changed and regenerate if needed (immediate check)
+		// Check if isotope has changed and regenerate if needed
 		if ( CheckForChanges() )
 		{
 			RegeneratePreview();
@@ -112,81 +111,68 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 		return hash.ToHashCode();
 	}
 
-	private void RegeneratePreview()
+	private async void RegeneratePreview()
 	{
 		using ( Scene.Push() )
 		{
-			// Clear old clutter objects
-			if ( _previewContainer.IsValid() )
+			// Destroy and recreate the clutter object
+			if ( _clutterObject.IsValid() )
 			{
-				foreach ( var child in _previewContainer.Children.ToArray() )
-				{
-					child.Destroy();
-				}
+				_clutterObject.Destroy();
 			}
 
-			// Regenerate
-			GeneratePreviewTile();
-			CalculateSceneBounds();
+			// Recreate with the clutter system
+			CreateClutterObject();
 			
 			// Update state
 			UpdateIsotopeState();
+			
+			// Wait for generation
+			await Task.Delay( 100 );
+			
+			CalculateSceneBounds();
 		}
+	}
+
+	private void CreateClutterObject()
+	{
+		// Create clutter object with component - let the system handle generation
+		_clutterObject = new GameObject( true, "Clutter Preview" );
+		PrimaryObject = _clutterObject;
+		
+		var clutterComponent = _clutterObject.Components.Create<ClutterComponent>();
+		clutterComponent.Infinite = true;
+		clutterComponent.Isotope = _currentIsotope;
+		clutterComponent.TileSize = _previewTileSize;
+		clutterComponent.TileRadius = 0; // Just 1 tile (center only)
+		clutterComponent.RandomSeed = 42; // Fixed seed for consistent preview
 	}
 
 	private void CreateGroundPlane()
 	{
-		// Create a simple ground plane for collision only
+		// Create a simple ground plane for collision
 		_groundPlane = new GameObject( true, "Ground" );
 		
-		// Add collider for trace testing - no visual model needed
+		// Add collider for trace testing
 		var collider = _groundPlane.Components.Create<BoxCollider>();
 		collider.Scale = new Vector3( 5000, 5000, 10 );
 		collider.Center = new Vector3( 0, 0, -5 );
 		_groundPlane.WorldPosition = new Vector3( 0, 0, 0 );
 	}
 
-	private void GeneratePreviewTile()
-	{
-		if ( _currentIsotope == null || _currentIsotope.Scatterer == null )
-			return;
-
-		if ( _currentIsotope.ValidEntryCount == 0 )
-			return;
-
-		// Create bounds centered at origin, extending upward
-		// This ensures objects can be scattered above ground and traced down
-		var bounds = new BBox(
-			new Vector3( -_previewTileSize / 2, -_previewTileSize / 2, -10 ),
-			new Vector3( _previewTileSize / 2, _previewTileSize / 2, 200 )
-		);
-
-		// Use a fixed seed for consistent preview
-		var random = new Random( 42 );
-
-		// Scatter using the isotope's scatterer
-		try
-		{
-			_currentIsotope.Scatterer.ScatterInVolume( bounds, _currentIsotope, _previewContainer, random );
-		}
-		catch ( Exception e )
-		{
-			Log.Warning( $"Failed to generate isotope preview: {e.Message}" );
-		}
-	}
-
 	private void CalculateSceneBounds()
 	{
-		if ( !_previewContainer.IsValid() )
+		if ( !_clutterObject.IsValid() )
 			return;
 
-		var allObjects = _previewContainer.Children.ToList();
+		// Get all spawned clutter objects
+		var allObjects = _clutterObject.Children.ToList();
 		
 		if ( allObjects.Count == 0 )
 		{
-			// Default bounds if nothing spawned
+			// Default bounds if nothing spawned yet
 			SceneCenter = new Vector3( 0, 0, 50 );
-			SceneSize = new Vector3( 100, 100, 100 );
+			SceneSize = new Vector3( 200, 200, 100 );
 			return;
 		}
 
@@ -226,8 +212,8 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 		_groundPlane?.Destroy();
 		_groundPlane = null;
 		
-		_previewContainer?.Destroy();
-		_previewContainer = null;
+		_clutterObject?.Destroy();
+		_clutterObject = null;
 		
 		base.Dispose();
 	}
@@ -244,26 +230,21 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 
 		// Randomize button - generate with new random seed
 		var randomizeBtn = new Button( "Randomize", "casino" );
-		randomizeBtn.Clicked += () =>
+		randomizeBtn.Clicked += async () =>
 		{
 			using ( Scene.Push() )
 			{
-				if ( _previewContainer.IsValid() )
+				if ( _clutterObject.IsValid() )
 				{
-					foreach ( var child in _previewContainer.Children.ToArray() )
+					var clutterComponent = _clutterObject.Components.Get<ClutterComponent>();
+					if ( clutterComponent != null )
 					{
-						child.Destroy();
+						// Change the seed to get a different scatter
+						clutterComponent.RandomSeed = DateTime.Now.Ticks.GetHashCode();
+						
+						// Force regeneration by destroying and recreating
+						RegeneratePreview();
 					}
-
-					var bounds = new BBox(
-						new Vector3( -_previewTileSize / 2, -_previewTileSize / 2, -10 ),
-						new Vector3( _previewTileSize / 2, _previewTileSize / 2, 200 )
-					);
-
-					var random = new Random( DateTime.Now.Ticks.GetHashCode() );
-					_currentIsotope.Scatterer.ScatterInVolume( bounds, _currentIsotope, _previewContainer, random );
-					
-					CalculateSceneBounds();
 				}
 			}
 		};

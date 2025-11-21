@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sandbox;
 
@@ -115,31 +117,21 @@ public class ClutterGenerationJob
 	{
 		foreach ( var instance in instances )
 		{
-			GameObject spawnedObject = null;
-
-			// Route to appropriate spawn path
 			if ( instance.Entry.Prefab != null )
 			{
-				// Prefab path: spawn as full GameObject with components
-				spawnedObject = instance.Entry.Prefab.Clone( instance.Transform );
-			}
-			else if ( instance.Entry.Model != null )
-			{
-				// Model path: spawn as simple GameObject with ModelRenderer
-				var go = new GameObject( true );
-				go.WorldTransform = instance.Transform;
-				go.Components.Create<ModelRenderer>().Model = instance.Entry.Model;
-				spawnedObject = go;
-			}
-
-			// Common setup for all spawned objects
-			if ( spawnedObject != null )
-			{
+				GameObject spawnedObject = instance.Entry.Prefab.Clone( instance.Transform );
 				spawnedObject.Flags |= GameObjectFlags.NotSaved;
 				spawnedObject.Tags.Add( "clutter" );
 				spawnedObject.SetParent( ParentObject );
 				tile?.AddObject( spawnedObject );
 			}
+			else if ( instance.Entry.Model != null )
+			{
+				
+			}
+
+				
+			
 		}
 	}
 
