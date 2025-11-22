@@ -119,7 +119,7 @@ public class ClutterGenerationJob
 		{
 			if ( instance.Entry.Prefab != null )
 			{
-				GameObject spawnedObject = instance.Entry.Prefab.Clone( instance.Transform );
+				GameObject spawnedObject = instance.Entry.Prefab.Clone( instance.Transform, ParentObject.Scene );
 				spawnedObject.Flags |= GameObjectFlags.NotSaved;
 				spawnedObject.Tags.Add( "clutter" );
 				spawnedObject.SetParent( ParentObject );
@@ -129,9 +129,6 @@ public class ClutterGenerationJob
 			{
 				
 			}
-
-				
-			
 		}
 	}
 
