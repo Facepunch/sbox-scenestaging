@@ -23,9 +23,8 @@ public sealed partial class ClutterComponent
 	{
 		ClearVolume();
 
-		{
+		if ( Isotope == null || Isotope.Scatterer == null )
 			return;
-		}
 
 		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
 		var worldBounds = Bounds.Transform( WorldTransform );
