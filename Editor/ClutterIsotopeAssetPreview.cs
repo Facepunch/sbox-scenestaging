@@ -43,16 +43,13 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 			// Create ground plane for collision
 			CreateGroundPlane();
 
-			// Create clutter object with component - let the system handle generation
+			// Create clutter object and scatter immediately
 			CreateClutterObject();
 			
 			// Store initial state
 			UpdateIsotopeState();
 			
-			// Wait a bit for generation to happen
-			await Task.Delay( 100 );
-			
-			// Calculate bounds after generation
+			// Calculate bounds immediately after generation
 			CalculateSceneBounds();
 		}
 	}
@@ -121,14 +118,14 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 				_clutterObject.Destroy();
 			}
 
-			// Recreate with the clutter system
+			// Recreate and manually scatter
 			CreateClutterObject();
 			
 			// Update state
 			UpdateIsotopeState();
 			
-			// Wait for generation
-			await Task.Delay( 100 );
+			// Small delay for scene to update
+			await Task.Delay( 50 );
 			
 			CalculateSceneBounds();
 		}
@@ -136,16 +133,30 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 
 	private void CreateClutterObject()
 	{
-		// Create clutter object with component - let the system handle generation
+		// Create clutter object for preview
 		_clutterObject = new GameObject( true, "Clutter Preview" );
 		PrimaryObject = _clutterObject;
 		
-		var clutterComponent = _clutterObject.Components.Create<ClutterComponent>();
-		clutterComponent.Infinite = true;
-		clutterComponent.Isotope = _currentIsotope;
-		clutterComponent.TileSize = _previewTileSize;
-		clutterComponent.TileRadius = 0; // Just 1 tile (center only)
-		clutterComponent.RandomSeed = 42; // Fixed seed for consistent preview
+		// Manually generate preview scatter instead of relying on system
+		if ( _currentIsotope?.Scatterer != null )
+		{
+			var bounds = new BBox( 
+				new Vector3( -_previewTileSize / 2, -_previewTileSize / 2, -100 ), 
+				new Vector3( _previewTileSize / 2, _previewTileSize / 2, 100 ) 
+			);
+			
+			var job = ClutterGenerationJob.Volume(
+				bounds: bounds,
+				cellSize: _previewTileSize,
+				randomSeed: 42, // Fixed seed for consistent preview
+				isotope: _currentIsotope,
+				parentObject: _clutterObject,
+				onComplete: null
+			);
+			
+			// Execute immediately, synchronously
+			job.Execute();
+		}
 	}
 
 	private void CreateGroundPlane()
@@ -236,15 +247,34 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 			{
 				if ( _clutterObject.IsValid() )
 				{
-					var clutterComponent = _clutterObject.Components.Get<ClutterComponent>();
-					if ( clutterComponent != null )
+					// Destroy current clutter
+					_clutterObject.Destroy();
+					
+					// Create new with random seed
+					_clutterObject = new GameObject( true, "Clutter Preview" );
+					PrimaryObject = _clutterObject;
+					
+					if ( _currentIsotope?.Scatterer != null )
 					{
-						// Change the seed to get a different scatter
-						clutterComponent.RandomSeed = DateTime.Now.Ticks.GetHashCode();
+						var bounds = new BBox( 
+							new Vector3( -_previewTileSize / 2, -_previewTileSize / 2, -100 ), 
+							new Vector3( _previewTileSize / 2, _previewTileSize / 2, 100 ) 
+						);
 						
-						// Force regeneration by destroying and recreating
-						RegeneratePreview();
+						var job = ClutterGenerationJob.Volume(
+							bounds: bounds,
+							cellSize: _previewTileSize,
+							randomSeed: DateTime.Now.Ticks.GetHashCode(), // Random seed
+							isotope: _currentIsotope,
+							parentObject: _clutterObject,
+							onComplete: null
+						);
+						
+						job.Execute();
 					}
+					
+					await Task.Delay( 50 );
+					CalculateSceneBounds();
 				}
 			}
 		};
