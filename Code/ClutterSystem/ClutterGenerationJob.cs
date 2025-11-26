@@ -106,6 +106,60 @@ public class ClutterGenerationJob
 			SpawnInstances( allInstances, null );
 		}
 
+	public void Execute()
+	{
+		if ( ParentObject == null || !ParentObject.IsValid || ParentObject.Scene == null )
+		{
+			Log.Warning( "ClutterGenerationJob: Invalid parent object or scene" );
+			OnComplete?.Invoke( 0 );
+			return;
+		}
+
+		var scene = ParentObject.Scene;
+		List<ClutterInstance> allInstances = new();
+
+		if ( TileData != null )
+		{
+			int seed = Scatterer.GenerateSeed( TileData.SeedOffset, TileData.Coordinates.x, TileData.Coordinates.y );
+			allInstances = Isotope.Scatterer.Scatter( Bounds, Isotope, seed );
+			
+			using ( scene.Push() )
+			{
+				SpawnInstances( allInstances, TileData );
+			}
+		}
+		else
+		{
+			var cellsX = (int)MathF.Max( 1, MathF.Ceiling( Bounds.Size.x / CellSize ) );
+			var cellsY = (int)MathF.Max( 1, MathF.Ceiling( Bounds.Size.y / CellSize ) );
+			var cellsZ = (int)MathF.Max( 1, MathF.Ceiling( Bounds.Size.z / CellSize ) );
+
+			for ( int x = 0; x < cellsX; x++ )
+			{
+				for ( int y = 0; y < cellsY; y++ )
+				{
+					for ( int z = 0; z < cellsZ; z++ )
+					{
+						var cellBounds = GetCellBounds( Bounds, CellSize, x, y, z );
+						
+						int cellSeed = RandomSeed;
+						cellSeed = (cellSeed * 397) ^ x;
+						cellSeed = (cellSeed * 397) ^ y;
+						cellSeed = (cellSeed * 397) ^ z;
+
+						var cellInstances = Isotope.Scatterer.Scatter( cellBounds, Isotope, cellSeed );
+						allInstances.AddRange( cellInstances );
+					}
+				}
+			}
+
+			using ( scene.Push() )
+			{
+				SpawnInstances( allInstances, null );
+			}
+		}
+
+		Log.Info( $"ClutterGenerationJob: Spawned {allInstances.Count} instances" );
 		OnComplete?.Invoke( allInstances.Count );
 	}
 
