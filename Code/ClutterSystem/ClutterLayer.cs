@@ -14,9 +14,11 @@ public class ClutterLayer
 	public bool IsActive { get; set; } = true;
 	public GameObject ParentObject { get; set; }
 	
-	private Dictionary<Vector2Int, ClutterTile> Tiles { get; } = new();
+	private Dictionary<Vector2Int, ClutterTile> Tiles { get; } = [];
 	private ClutterBatch Batch { get; set; }
+
 	private const float TileHeight = 10000f;
+
 	private int _lastSettingsHash;
 
 	public ClutterLayer( ClutterSettings settings, GameObject parentObject )
@@ -49,7 +51,7 @@ public class ClutterLayer
 	/// </summary>
 	public List<ClutterGenerationJob> UpdateTiles( Vector3 center )
 	{
-		var jobs = new List<ClutterGenerationJob>();
+		List<ClutterGenerationJob> jobs = [];
 
 		if ( !Settings.IsValid )
 			return jobs;
@@ -57,7 +59,7 @@ public class ClutterLayer
 		Center = center;
 
 		var centerTile = WorldToTile( Center );
-		var activeCoords = new HashSet<Vector2Int>();
+		HashSet<Vector2Int> activeCoords = [];
 
 		for ( int x = -Settings.TileRadius; x <= Settings.TileRadius; x++ )
 		{
@@ -75,10 +77,12 @@ public class ClutterLayer
 			}
 		}
 
+		// Remove tiles that are no longer active
 		var tilesToRemove = GetTileCoordinates()
 			.Where( coord => !activeCoords.Contains( coord ) )
 			.ToList();
 
+		// Clean em up
 		foreach ( var coord in tilesToRemove )
 		{
 			RemoveTile( coord );

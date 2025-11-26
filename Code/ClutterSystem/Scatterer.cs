@@ -83,16 +83,10 @@ public abstract class Scatterer
 	/// </summary>
 	protected IsotopeEntry GetRandomEntry( ClutterIsotope isotope )
 	{
-		if ( isotope?.Entries == null || isotope.Entries.Count == 0 )
+		if ( isotope.IsEmpty )
 			return null;
 
-		float totalWeight = 0f;
-		foreach ( var entry in isotope.Entries )
-		{
-			if ( entry?.HasAsset == true && entry.Weight > 0 )
-				totalWeight += entry.Weight;
-		}
-
+		float totalWeight = isotope.Entries.Sum( e => e.Weight );
 		if ( totalWeight <= 0 )
 			return null;
 
@@ -109,7 +103,7 @@ public abstract class Scatterer
 				return entry;
 		}
 
-		return null; // Should never reach here if totalWeight > 0
+		return null;
 	}
 
 	/// <summary>

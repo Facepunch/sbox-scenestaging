@@ -16,7 +16,7 @@ public class ClutterIsotope : GameResource
 	/// List of weighted entries (Prefabs or Models with weights).
 	/// </summary>
 	[Property]
-	public List<IsotopeEntry> Entries { get; set; } = new();
+	public List<IsotopeEntry> Entries { get; set; } = [];
 
 	/// <summary>
 	/// Size of each tile in world units for infinite streaming mode.
