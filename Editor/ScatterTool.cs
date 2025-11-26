@@ -145,7 +145,12 @@ public sealed class ScatterTool : EditorTool
 
 	private void DrawBrushPreview()
 	{
-		var tr = Trace.UseRenderMeshes( true ).WithTag( "solid" ).WithoutTags( "scattered_object" ).Run();
+		var tr = Scene.Trace.Ray( Gizmo.CurrentRay, 50000 )
+			.UseRenderMeshes( true )
+			.WithTag( "solid" )
+			.WithoutTags( "scattered_object" )
+			.Run();
+
 		if ( !tr.Hit )
 			return;
 
