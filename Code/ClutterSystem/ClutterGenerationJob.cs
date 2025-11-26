@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Sandbox;
 
@@ -106,6 +107,8 @@ public class ClutterGenerationJob
 			SpawnInstances( allInstances, null );
 		}
 
+		OnComplete?.Invoke( allInstances.Count );
+	}
 	public void Execute()
 	{
 		if ( ParentObject == null || !ParentObject.IsValid || ParentObject.Scene == null )
