@@ -20,7 +20,7 @@ public struct ClutterInstance
 /// Base class to override if you want to create custom scatterer logic.
 /// Provides utility methods for entry selection and common operations.
 /// </summary>
-[JsonDerivedType( typeof(SimpleScatterer), "SimpleScatterer" )]
+[JsonDerivedType( typeof( SimpleScatterer ), "SimpleScatterer" )]
 public abstract class Scatterer
 {
 	/// <summary>
@@ -58,9 +58,9 @@ public abstract class Scatterer
 	/// </summary>
 	public override int GetHashCode()
 	{
-		HashCode hash = new ();
+		HashCode hash = new();
 		var typeDesc = TypeLibrary.GetType( GetType() );
-		
+
 		if ( typeDesc == null )
 			return base.GetHashCode();
 
@@ -142,20 +142,20 @@ public class SimpleScatterer : Scatterer
 {
 	[Property] public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
 	[Property] public int PointCount { get; set; } = 10;
-	
+
 	[Property, Group( "Placement" )]
 	public bool PlaceOnGround { get; set; } = true;
-	
-	[Property, Group( "Placement" ), ShowIf( nameof(PlaceOnGround), true )]
+
+	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )]
 	public float HeightOffset { get; set; } = 0f;
-	
-	[Property, Group( "Placement" ), ShowIf( nameof(PlaceOnGround), true )]
+
+	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )]
 	public bool AlignToNormal { get; set; } = false;
 
 	protected override List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope )
 	{
 		var instances = new List<ClutterInstance>( PointCount );
-		
+
 		if ( isotope == null )
 			return instances;
 
@@ -204,12 +204,12 @@ public class SimpleScatterer : Scatterer
 	private Rotation CalculateRotation( Vector3 surfaceNormal )
 	{
 		var yaw = Random.Float( 0f, 360f );
-		
+
 		if ( AlignToNormal )
 		{
 			return Rotation.From( new Angles( 0, yaw, 0 ) ) * Rotation.FromToRotation( Vector3.Up, surfaceNormal );
 		}
-		
+
 		return Rotation.FromYaw( yaw );
 	}
 }

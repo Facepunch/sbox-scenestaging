@@ -14,12 +14,12 @@ public class ClutterGenerationJob
 	public ClutterIsotope Isotope { get; init; }
 	public GameObject ParentObject { get; init; }
 	public Action<int> OnComplete { get; init; }
-	
+
 	// Volume-specific
 	public BBox Bounds { get; init; }
 	public float CellSize { get; init; }
 	public int RandomSeed { get; init; }
-	
+
 	// Tile-specific  
 	public ClutterTile TileData { get; init; }
 
@@ -65,12 +65,11 @@ public class ClutterGenerationJob
 
 		if ( TileData != null )
 		{
-			// Tile mode - generate entire tile
 			await GameTask.WorkerThread();
-			
+
 			int seed = Scatterer.GenerateSeed( TileData.SeedOffset, TileData.Coordinates.x, TileData.Coordinates.y );
 			allInstances = Isotope.Scatterer.Scatter( Bounds, Isotope, seed );
-			
+
 			await GameTask.MainThread();
 			SpawnInstances( allInstances, TileData );
 		}
@@ -90,8 +89,7 @@ public class ClutterGenerationJob
 					for ( int z = 0; z < cellsZ; z++ )
 					{
 						var cellBounds = GetCellBounds( Bounds, CellSize, x, y, z );
-						
-						// Combine x, y, z into single seed using same pattern as 2D
+
 						int cellSeed = RandomSeed;
 						cellSeed = (cellSeed * 397) ^ x;
 						cellSeed = (cellSeed * 397) ^ y;
@@ -109,6 +107,7 @@ public class ClutterGenerationJob
 
 		OnComplete?.Invoke( allInstances.Count );
 	}
+
 	public void Execute()
 	{
 		if ( ParentObject == null || !ParentObject.IsValid || ParentObject.Scene == null )
@@ -125,7 +124,7 @@ public class ClutterGenerationJob
 		{
 			int seed = Scatterer.GenerateSeed( TileData.SeedOffset, TileData.Coordinates.x, TileData.Coordinates.y );
 			allInstances = Isotope.Scatterer.Scatter( Bounds, Isotope, seed );
-			
+
 			using ( scene.Push() )
 			{
 				SpawnInstances( allInstances, TileData );
@@ -144,7 +143,7 @@ public class ClutterGenerationJob
 					for ( int z = 0; z < cellsZ; z++ )
 					{
 						var cellBounds = GetCellBounds( Bounds, CellSize, x, y, z );
-						
+
 						int cellSeed = RandomSeed;
 						cellSeed = (cellSeed * 397) ^ x;
 						cellSeed = (cellSeed * 397) ^ y;
@@ -184,7 +183,7 @@ public class ClutterGenerationJob
 			}
 			else if ( instance.Entry.Model != null )
 			{
-				
+
 			}
 		}
 	}

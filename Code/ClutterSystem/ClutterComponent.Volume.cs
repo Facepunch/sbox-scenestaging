@@ -8,16 +8,16 @@ namespace Sandbox;
 /// </summary>
 public sealed partial class ClutterComponent
 {
-	[Property, Group( "Volume" ), ShowIf( nameof(Infinite), false )]
+	[Property, Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
 	public BBox Bounds { get; set; } = new BBox( -100, 100 );
 
-	[Property, Group( "Volume" ), ShowIf( nameof(Infinite), false )]
+	[Property, Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
 	public float CellSize { get; set; } = 512f;
 
-	[Property, Group( "Volume Info" ), ShowIf( nameof(Infinite), false ), ReadOnly]
+	[Property, Group( "Volume Info" ), ShowIf( nameof( Infinite ), false ), ReadOnly]
 	public int SpawnedCount { get; private set; }
 
-	[Button( "Generate Clutter" ), Group( "Volume" ), ShowIf( nameof(Infinite), false )]
+	[Button( "Generate Clutter" ), Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
 	[Icon( "scatter_plot" )]
 	public void GenerateVolume()
 	{
@@ -28,7 +28,7 @@ public sealed partial class ClutterComponent
 
 		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
 		var worldBounds = Bounds.Transform( WorldTransform );
-		
+
 		var job = ClutterGenerationJob.Volume(
 			bounds: worldBounds,
 			cellSize: CellSize,
@@ -44,7 +44,7 @@ public sealed partial class ClutterComponent
 		gridSystem.QueueJob( job );
 	}
 
-	[Button( "Clear Clutter" ), Group( "Volume" ), ShowIf( nameof(Infinite), false )]
+	[Button( "Clear Clutter" ), Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
 	[Icon( "delete" )]
 	public void ClearVolume()
 	{

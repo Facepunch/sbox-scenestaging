@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Sandbox;
 
@@ -63,7 +62,7 @@ public sealed class ClutterGridSystem : GameObjectSystem
 		foreach ( var component in components )
 		{
 			var settings = component.GetCurrentSettings();
-			
+
 			if ( !settings.IsValid )
 				continue;
 
@@ -74,7 +73,7 @@ public sealed class ClutterGridSystem : GameObjectSystem
 			}
 
 			layer.UpdateSettings( settings );
-			
+
 			// Get jobs from layer and queue them
 			var jobs = layer.UpdateTiles( camera.WorldPosition );
 			foreach ( var job in jobs )
@@ -87,10 +86,10 @@ public sealed class ClutterGridSystem : GameObjectSystem
 	private void ProcessJobs()
 	{
 		const int MAX_CONCURRENT_JOBS = 8;
-		
+
 		// Remove completed jobs
 		ActiveJobs.RemoveAll( job => job.IsCompleted );
-		
+
 		// Start new jobs up to the limit
 		while ( ActiveJobs.Count < MAX_CONCURRENT_JOBS && JobQueue.Count > 0 )
 		{

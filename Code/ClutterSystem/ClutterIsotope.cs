@@ -48,10 +48,10 @@ public class ClutterIsotope : GameResource
 			{
 				field = value;
 				// Recreate scatterer when type changes
-				Scatterer = CreateScatterer( value ?? nameof(SimpleScatterer) );
+				Scatterer = CreateScatterer( value ?? nameof( SimpleScatterer ) );
 			}
 		}
-	} = nameof(SimpleScatterer);
+	} = nameof( SimpleScatterer );
 
 	/// <summary>
 	/// The scatterer instance that defines how objects from this isotope are placed.
@@ -70,7 +70,7 @@ public class ClutterIsotope : GameResource
 
 		// Try to find the type by name
 		var type = TypeLibrary.GetTypes()
-			.FirstOrDefault( t => t.Name == typeName && t.TargetType?.IsAssignableTo( typeof(Scatterer) ) == true );
+			.FirstOrDefault( t => t.Name == typeName && t.TargetType?.IsAssignableTo( typeof( Scatterer ) ) == true );
 
 		if ( type == null )
 		{
@@ -161,11 +161,11 @@ public class ClutterIsotope : GameResource
 	public override int GetHashCode()
 	{
 		var hash = new HashCode();
-		
+
 		// Hash streaming settings
 		hash.Add( TileSize );
 		hash.Add( TileRadius );
-		
+
 		// Hash entry count and each entry's properties
 		hash.Add( Entries?.Count ?? 0 );
 		if ( Entries != null )
@@ -180,22 +180,22 @@ public class ClutterIsotope : GameResource
 				}
 			}
 		}
-		
+
 		// Hash scatterer type and settings
 		hash.Add( ScattererTypeName?.GetHashCode() ?? 0 );
 		hash.Add( Scatterer?.GetHashCode() ?? 0 );
-		
+
 		return hash.ToHashCode();
 	}
 
 	protected override void PostLoad()
 	{
 		base.PostLoad();
-		
+
 		// If no scatterer or type name changed, recreate it
 		if ( Scatterer == null || Scatterer.GetType().Name != ScattererTypeName )
 		{
-			Scatterer = CreateScatterer( ScattererTypeName ?? nameof(SimpleScatterer) );
+			Scatterer = CreateScatterer( ScattererTypeName ?? nameof( SimpleScatterer ) );
 		}
 	}
 }

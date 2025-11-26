@@ -13,7 +13,7 @@ public class ClutterLayer
 	public Vector3 Center { get; set; }
 	public bool IsActive { get; set; } = true;
 	public GameObject ParentObject { get; set; }
-	
+
 	private Dictionary<Vector2Int, ClutterTile> Tiles { get; } = [];
 	private ClutterBatch Batch { get; set; }
 
@@ -26,7 +26,7 @@ public class ClutterLayer
 		Settings = settings;
 		ParentObject = parentObject;
 		_lastSettingsHash = settings.GetHashCode();
-		
+
 		// Create owned ClutterBatch
 		Batch = new ClutterBatch( parentObject.Scene.SceneWorld );
 	}
@@ -105,7 +105,7 @@ public class ClutterLayer
 	private ClutterGenerationJob CreateTileJob( Vector2Int coord )
 	{
 		var tile = GetOrCreateTile( coord );
-		
+
 		if ( tile.IsPopulated || !Settings.IsValid )
 			return null;
 
@@ -131,7 +131,7 @@ public class ClutterLayer
 				Bounds = GetTileBounds( coord ),
 				SeedOffset = Settings.RandomSeed
 			};
-			
+
 			Tiles[coord] = tile;
 		}
 
@@ -161,7 +161,7 @@ public class ClutterLayer
 		}
 		Tiles.Clear();
 	}
-	
+
 	/// <summary>
 	/// Disposes this layer and cleans up resources.
 	/// </summary>
