@@ -1,0 +1,55 @@
+@using Sandbox
+@using Sandbox.UI
+@namespace Sandbox.UI.Tests.Basics
+@inherits PanelComponent
+
+
+@code
+{
+    (string css, string subtext)[] TransitionFunctions =
+    {
+        ("transform 2s", "property name | duration"),
+        ("transform 2s 1s", "property name | duration | delay"),
+        ("transform 2s ease-in-out 1s", "property name | duration | easing function | delay"),
+        ("all 2s", "all | duration"),
+        ("transform 2s ease", "ease"),
+        ("transform 2s ease-in", "ease-in"),
+        ("transform 2s ease-out", "ease-out"),
+        ("transform 2s ease-in-out", "ease-in-out"),
+        ("transform 2s linear", "linear"),
+        ("transform 2s bounce-in", "bounce-in"),
+        ("transform 2s bounce-out", "bounce-out"),
+        ("transform 2s bounce-in-out", "bounce-in-out"),
+        ("transform 2s sin-ease-in", "sin-ease-in"),
+        ("transform 2s sin-ease-out", "sin-ease-out"),
+        ("transform 2s bounce-in-out", "sin-ease-in-out"),
+    };
+}
+
+<root>
+
+    <BaseTestPanel Title="Transition Tests" subtitle="A bunch of CSS transition tests">
+        <Body>
+
+            @foreach ((string css, string subtext) in TransitionFunctions)
+            {
+                <div class="example_panel" style="transition: @css;">
+                    <text style="color: red;">Hover over me!</text>
+                    <text>@css</text>
+                    <text class="little">@subtext</text>
+                </div>
+            }
+
+            <div class="scale_panel" style="transition: transform 2s ease;">
+                <text style="color: red;">Hover over me!</text>
+                <text>scale( 1.5 )</text>
+            </div>
+
+            <div class="scale_panel" style="transition: all 0.1s ease;">
+                <text style="color: red;">Hover over me!</text>
+                <text>scale( 1.5 )</text>
+            </div>
+        </Body>
+    </BaseTestPanel>
+
+</root>

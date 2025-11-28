@@ -1,0 +1,39 @@
+﻿@namespace Sandbox.UI.Tests.Elements
+@attribute [StyleSheet]
+@inherits Sandbox.UI.Panel
+
+<div class="root">
+
+    <box class="blurred">
+        <label>Box With Filters</label>
+        <div>backdrop-filter</div>
+    </box>
+
+    <box class="withvideo">
+        <label>A Video Background</label>
+        <div>background-image</div>
+    </box>
+
+    <box class="bordered">
+        <label>Border Image</label>
+        <div>border-image</div>
+    </box>
+
+    <box class="masked">
+        <label>Mask Image</label>
+        <div>mask-image</div>
+    </box>
+
+    <box class="hovermode">
+        <label>Hover Me</label>
+        <div>Video on hover</div>
+    </box>
+
+</div>
+
+@code 
+{
+    Panel Pauser;
+
+    float floatValue;
+}

@@ -1,0 +1,127 @@
+.body {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.example_panel {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: white;
+    color: #222;
+    margin: 40px;
+    font-size: 15px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: Poppins;
+    font-weight: bold;
+}
+
+.example_panel.rotation {
+    animation-name: rotation;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+}
+
+.example_panel.rotation.fast {
+    animation-duration: 0.5s;
+}
+
+.example_panel.rotation.bounce {
+    animation-duration: 1.5s;
+    animation-timing-function: bounce-out;
+}
+
+.example_panel.rotation-fill-mode {
+    animation-name: rotationShort;
+    animation-duration: 1s;
+    animation-delay: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate( 0deg );
+    }
+
+    100% {
+        transform: rotate( 360deg );
+    }
+}
+
+@keyframes rotationShort {
+    0% {
+        transform: rotate( 90deg );
+    }
+
+    100% {
+        transform: rotate( 180deg );
+    }
+}
+
+.example_panel.scale {
+    animation-name: scale;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+}
+
+@keyframes scale {
+    0% {
+        transform: scale( 0.5 );
+        background-color: white;
+        color: black;
+    }
+
+    50% {
+        transform: scale( 1.1 );
+        background-color: #0094ff;
+        color: white;
+    }
+
+    100% {
+        background-color: white;
+        transform: scale( 0.5 );
+        color: black;
+    }
+}
+
+
+.example_panel.rainbow {
+    animation-name: rainbow;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+}
+
+@keyframes rainbow {
+    0% {
+        background-color: red;
+    }
+
+    20% {
+        background-color: yellow;
+    }
+
+    40% {
+        background-color: deeppink;
+    }
+
+    60% {
+        background-color: lawngreen;
+    }
+
+    80% {
+        background-color: purple;
+    }
+
+    100% {
+        background-color: red;
+    }
+}
+
+.onhover:not( :hover ) {
+    animation-name: none;
+}

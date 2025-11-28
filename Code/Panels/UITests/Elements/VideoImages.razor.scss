@@ -1,0 +1,66 @@
+﻿
+.root
+{
+    background-color: red;
+    width: 100%;
+    background: url( /content/boxes.webm );
+    background-position: center;
+    background-size: cover;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+box
+{
+    width: 200px;
+    height: 200px;
+    flex-direction: column;
+    margin: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 100px rgba( black, 0.8 );
+    background-position: center;
+    background-size: cover;
+    justify-content: space-between;
+
+    &.blurred
+    {
+        backdrop-filter: blur( 10px ) saturate( 0.3 );
+        border: 1px solid #fff2;
+    }
+
+    &.withvideo
+    {
+        background-image: url( https://files.facepunch.com/garry/7ae9e5b4-e630-4f68-9e40-a88ca6db9dd8.mp4 );
+    }
+
+    &.bordered
+    {
+        border-image: url( https://files.facepunch.com/garry/7ae9e5b4-e630-4f68-9e40-a88ca6db9dd8.mp4 ) 10;
+    }
+
+    &.masked
+    {
+        mask-image: url( https://files.facepunch.com/garry/fbac4427-306e-4510-8e8e-780f573e8277.mp4 );
+        mask-size: cover;
+        mask-position: center;
+        background-image: url( /content/background.png );
+        mask-size: cover;
+        box-shadow: none;
+    }
+
+    &.hovermode
+    {
+        &:hover
+        {
+            background-image: url( https://files.facepunch.com/garry/b8858590-adc6-417f-9750-0ddbe75a831b.mp4 );
+        }
+    }
+
+    > label
+    {
+        font-size: 20px;
+        font-weight: bolder;
+        font-family: Poppins;
+    }
+}

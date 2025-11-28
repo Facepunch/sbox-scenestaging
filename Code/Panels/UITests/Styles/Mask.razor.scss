@@ -1,0 +1,141 @@
+.gradient-mask {
+    mask-image: linear-gradient( to right, white 0%, black 90% );
+}
+
+.gradient-mask-left {
+    mask-image: linear-gradient( to left, white 0%, black 90% );
+}
+
+.gradient-mask-bottom {
+    mask-image: linear-gradient( to bottom, white 0%, black 90% );
+}
+
+.dual-gradient-mask {
+    mask-image: linear-gradient( 0%, black 0%, rgba( white, 0.9 ) 20%, white 80%, black 100% );
+}
+
+.scroll-background {
+    animation-name: scroll;
+}
+
+.shorthand {
+    mask: url( /UI/alpha.png ) 0 0 / 32px 32px repeat alpha;
+}
+
+.mask-scope {
+    mask-image: url( /UI/alpha-inv.png );
+    mask-mode: alpha;
+    mask-scope: filter;
+    filter-blur: 10px;
+    filter-brightness: 0.25;
+    mask-size: cover;
+}
+
+.luminance-mask {
+    mask-image: url( /UI/background.png );
+    mask-mode: luminance;
+    background-color: #fff;
+    mask-size: 256px;
+}
+
+.alpha-mask {
+    mask-mode: alpha;
+    mask-image: url( /UI/alpha.png );
+
+    & p {
+        top: 32px;
+        left: 32px;
+    }
+
+    &.mask-repeat {
+        mask-size: 128px;
+    }
+
+    &.mask-position {
+        mask-size: 512px;
+        mask-position: center;
+    }
+}
+
+.background {
+    background-image: url( /UI/background.png );
+}
+
+MaskImage {
+    align-items: stretch;
+    flex-direction: row;
+    gap: 10px;
+}
+
+// --------------------------------------------------------------------------------
+
+p {
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+item {
+    flex-direction: column;
+    gap: 5px;
+}
+
+column {
+    padding: 128px 64px;
+    gap: 10px;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: scroll;
+    width: 50%;
+
+    &:last-child {
+        flex-basis: 33%;
+        width: 33%;
+        background-image: url( /UI/background.png );
+        background-position: center;
+        background-size: cover;
+    }
+
+    & p {
+        flex-shrink: 0;
+        flex-grow: 1;
+    }
+}
+
+row {
+    width: 100%;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.image {
+    flex-shrink: 0;
+    width: 128px;
+    height: 128px;
+    aspect-ratio: 1;
+    font-size: 10px;
+    padding: 10px;
+    color: white;
+    transition: all 500ms ease;
+
+    &:hover {
+        width: 256px;
+        height: 256px;
+    }
+}
+
+stretch {
+    flex-grow: 1;
+    width: 100%;
+}
+
+@keyframes scroll {
+    0% {
+        background-position: 0px 0px;
+    }
+
+    100% {
+        background-position: 256px 256px;
+    }
+}

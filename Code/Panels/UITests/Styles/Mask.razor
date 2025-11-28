@@ -1,0 +1,93 @@
+@using Sandbox
+@using Sandbox.UI
+@namespace Sandbox.UI.Tests.Basics
+@inherits PanelComponent
+
+<root>
+
+    <BaseTestPanel Title="Mask Tests" subtitle="Ways to mask UI elements">
+        <Body>
+            <column>
+
+                <row>
+                    <item>
+                        <p>Image</p>
+                        <div class="image background gradient-mask">
+                        </div>
+                    </item>
+
+                    <item>
+                        <p>Scrolling Image</p>
+                        <div class="image background gradient-mask scroll-background">
+                        </div>
+                    </item>
+
+                    <item>
+                        <p>Luminance mask</p>
+                        <div class="image luminance-mask">
+                        </div>
+                    </item>
+
+                    <stretch></stretch>
+
+                    <item>
+                        <p>Alpha Mask</p>
+                        <div class="image background alpha-mask">
+                        </div>
+                    </item>
+
+                    <item>
+                        <p>Repeating Mask</p>
+                        <div class="image background alpha-mask mask-repeat">
+                        </div>
+                    </item>
+
+                    <item>
+                        <p>Mask Position</p>
+                        <div class="image background alpha-mask mask-position">
+                        </div>
+                    </item>
+
+                    <stretch></stretch>
+
+                    <item>
+                        <p>Gradient Left</p>
+                        <div class="image background gradient-mask-left">
+                        </div>
+                    </item>
+
+                    <item>
+                        <p>Gradient Bottom</p>
+                        <div class="image background gradient-mask-bottom">
+                        </div>
+                    </item>
+
+                    <item>
+                        <p>Shorthand</p>
+                        <div class="image background shorthand">
+                        </div>
+                    </item>
+
+                    <stretch></stretch>
+
+                    <item>
+                        <p>Mask Scope</p>
+                        <div class="image background mask-scope">
+                        </div>
+                    </item>
+                </row>
+
+            </column>
+
+            <column class="dual-gradient-mask">
+
+                @for (int i = 0; i < 100; ++i)
+                {
+                    <p>Lorem ipsum dolor sit amet</p>
+                }
+
+            </column>
+        </Body>
+    </BaseTestPanel>
+
+</root>

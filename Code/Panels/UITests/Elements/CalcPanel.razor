@@ -1,0 +1,54 @@
+﻿@using System
+
+@namespace Sandbox.UI
+@inherits Sandbox.UI.Panel
+
+<style>
+	CalcPanel {
+		flex-direction: column;
+	}
+
+	div {
+		display: flex;
+		height: 100px;
+		border: 1px solid red;
+	}
+
+	label {
+		margin-bottom: 16px;
+	}
+</style>
+
+<root>
+	<label>@Title()</label>
+	<div @ref="InnerPanel"></div>
+	<label>@Text()</label>
+</root>
+
+@code {
+	public string Calc { get; set; }
+	private Panel InnerPanel { get; set; }
+
+	protected override void OnAfterTreeRender(bool firstTime)
+	{
+		base.OnAfterTreeRender(firstTime);
+
+		var style = $"div {{ width: {Calc}; }}";
+		StyleSheet.Parse(style);
+	}
+
+	public string Title()
+	{
+		return $"{Calc}";
+	}
+
+	public string Text()
+	{
+		return $"Width: {InnerPanel.Box.Rect.Width}px";
+	}
+
+	protected override int BuildHash()
+	{
+		return HashCode.Combine(Time.Now);
+	}
+}

@@ -1,0 +1,55 @@
+﻿
+@namespace Sandbox.UI.Tests.Elements
+@attribute [StyleSheet]
+@inherits Sandbox.UI.Panel
+
+<div class="root">
+
+    <row>
+        <label>Slider</label>
+        <SliderControl Value:bind="@floatValue"></SliderControl>
+        <output>
+            Value is @floatValue.ToString( "0.00" )
+        </output>
+    </row>
+
+    <row>
+        <label>Slider with Step 10</label>
+        <SliderControl Value:bind="@floatValue" Step="@(10)"></SliderControl>
+        <output>
+            Value is @floatValue.ToString( "0.00" )
+        </output>
+    </row>
+
+    <row>
+        <label>Slider - float</label>
+        <SliderControl Value:bind="@floatValue" Min="@(1)" Max="@(2)" Step="@(0.001f)"></SliderControl>
+        <output>
+            Value is @floatValue.ToString( "0.00" )
+        </output>
+    </row>
+
+    <row>
+        <label>Slider - with range</label>
+        <SliderControl Value:bind="@floatValue" ShowRange="@true"></SliderControl>
+        <output>
+            Value is @floatValue.ToString( "0.00" )
+        </output>
+    </row>
+
+    <row>
+        <label>Slider - with text input</label>
+        <SliderControl Value:bind="@floatValue" ShowRange="@true" ShowTextEntry="@true"></SliderControl>
+        <output>
+            Value is @floatValue.ToString( "0.00" )
+        </output>
+    </row>
+
+</div>
+
+@code 
+{
+    Panel Pauser;
+
+    float floatValue;
+}

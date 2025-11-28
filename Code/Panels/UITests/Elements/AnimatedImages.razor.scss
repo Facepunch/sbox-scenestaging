@@ -1,0 +1,41 @@
+﻿
+.root {
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+box {
+    width: 200px;
+    height: 200px;
+    flex-direction: column;
+    margin: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 100px rgba( black, 0.8 );
+    background-position: center;
+    background-size: cover;
+    justify-content: space-between;
+
+    &.background {
+        background-image: url( https://files.facepunch.com/layla/1b0911b1/bg.webp );
+    }
+
+    &.bordered {
+        border-image: url( https://files.facepunch.com/layla/1b0911b1/bg.webp ) 10;
+    }
+
+    &.hovermode {
+        &:hover {
+            background-image: url( https://files.facepunch.com/layla/1b0911b1/ape.webp );
+        }
+    }
+
+    > label {
+        font-size: 20px;
+        font-weight: bolder;
+        font-family: Poppins;
+    }
+}

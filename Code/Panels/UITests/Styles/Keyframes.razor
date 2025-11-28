@@ -1,0 +1,86 @@
+@using Sandbox
+@using Sandbox.UI
+@namespace Sandbox.UI.Tests.Basics
+@inherits PanelComponent
+
+<root>
+
+    <BaseTestPanel Title="Animation Tests" subtitle="Moving panels with keyframes">
+        <Body>
+            <div class="example_panel rotation">
+                <text>Rotation</text>
+            </div>
+
+            <div class="example_panel rotation fast">
+                <text>Rotation FAST</text>
+            </div>
+
+
+            <div class="example_panel rotation bounce">
+                <text>Rotation BOUNCE</text>
+            </div>
+
+            <div class="example_panel scale">
+                <text>Scale</text>
+            </div>
+
+            <div class="example_panel rainbow">
+                <text>Rainbow</text>
+            </div>
+
+            <div class="example_panel rotation" style="animation-iteration-count: 1;">
+                <text>One Iteration</text>
+            </div>
+
+            <div class="example_panel rotation" style="animation-iteration-count: 2">
+                <text>Two Iteration</text>
+            </div>
+
+            <div class="example_panel rotation" style="animation-iteration-count: 1.5">
+                <text>1.5 Iteration</text>
+            </div>
+
+            <div class="example_panel rotation onhover">
+                <text>On Hover</text>
+            </div>
+
+            <div class="example_panel rotation" style="animation-delay: 2s;">
+                <text>Delay 2s</text>
+            </div>
+
+            <div class="example_panel rotation" style="animation-direction: alternate;">
+                <text>animation-direction</text>
+                <text>alternate</text>
+            </div>
+
+            <div class="example_panel rotation" style="animation-direction: alternate-reverse;">
+                <text>animation-direction</text>
+                <text>alternate-reverse</text>
+            </div>
+
+            <div class="example_panel rotation" style="animation-direction: reverse;">
+                <text>animation-direction</text>
+                <text>reverse</text>
+            </div>
+
+            <div @ref="Pauser" class="example_panel rotation"
+                onmousedown=@(() => {
+                    var paused = Pauser.Style.AnimationPlayState == "paused";
+                    Pauser.Style.AnimationPlayState = paused ? "running" : "paused";
+                })>
+                <text>animation-play-state</text>
+                <text>click me</text>
+	        </div>
+
+	        <div class="example_panel rotation-fill-mode" style="animation-fill-mode: both">
+		        <text>animation-fill-mode</text>
+		        <text>both</text>
+	        </div>
+        </Body>
+    </BaseTestPanel>
+
+</root>
+
+@code {
+    Panel Pauser;
+}

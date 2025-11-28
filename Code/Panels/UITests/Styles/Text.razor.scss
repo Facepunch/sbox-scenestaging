@@ -1,0 +1,37 @@
+Text {
+    .body {
+        flex-direction: column;
+    }
+
+    .row {
+        padding: 10px;
+        margin-bottom: 5px;
+        background-color: #3472e6;
+        font-size: 18px;
+        color: #FFF;
+        transition: width 1s linear, height .5s linear;
+        text-shadow: 1px 1px 1px black;
+    }
+
+    .row:hover {
+        background-color: #2b2b2b;
+        width: 500px;
+    }
+
+    .short {
+        width: 200px;
+    }
+
+    .long {
+        width: 350px;
+    }
+
+    .big-box {
+        width: 500px;
+        height: 138px;
+
+        &:hover {
+            height: 215px;
+        }
+    }
+}

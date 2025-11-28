@@ -1,0 +1,25 @@
+﻿@using Sandbox
+@using Sandbox.UI
+@namespace Sandbox.UI.Tests.Basics
+@inherits Panel
+
+<root>
+
+    <div class="header">
+        <label class="title">@Title</label>
+        <label class="subtitle">@Subtitle</label>
+    </div>
+
+    <div class="body">
+        @Body
+    </div>
+
+</root>
+
+@code {
+    public virtual string Title { get; set; } = "Title";
+    public virtual string Subtitle { get; set; } = "Subtitle";
+
+    [Parameter]
+    public RenderFragment Body { get; set; }
+}

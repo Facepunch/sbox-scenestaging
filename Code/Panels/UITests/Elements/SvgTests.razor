@@ -1,0 +1,62 @@
+
+@namespace Sandbox.UI.Tests.Elements
+
+<style>
+    SvgTests {
+        gap: 40px;
+    }
+
+    .svg-test {
+        width: 384px;
+        height: 184px;
+        background-size: 100%;
+        transition: all .45s ease;
+        padding: 10px;
+        border: 1px solid #959596;
+        cursor: pointer;
+    }
+
+    .svg-test:hover {
+        width: 768px;
+        height: 368px;
+    }
+
+    .svg-test:active {
+        background-tint: yellow;
+        border-color: yellow;
+    }
+
+    .svg-icon {
+        width: 64px;
+        height: 64px;
+        background-size: 100%;
+        transition: all .45s ease;
+        border: 1px solid #959596;
+    }
+
+    .svg-icon:hover {
+        width: 512px;
+        height: 512px;
+    }
+
+    .svg-icon-repeat {
+        width: 128px;
+        height: 128px;
+        background-size: 100%;
+        border: 1px solid #959596;
+        transition: all .45s linear;
+        background-tint: dodgerblue;
+    }
+
+    .svg-icon-repeat:hover {
+        width: 756px;
+        height: 756px;
+        background-size: 50%;
+    }
+</style>
+
+<root>
+    <svg class="svg-test" Src="content/svg-1.svg"></svg>
+    <svg class="svg-icon" Src="content/svg-2.svg" Color=@Color.White.Hex></svg>
+    <svg class="svg-icon-repeat" Src="content/svg-2.svg" Color=@Color.White.Hex></svg>
+</root>

@@ -1,0 +1,43 @@
+BaseTestPanel {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    pointer-events: all;
+    background-color: #333;
+    flex-direction: column;
+    color: #ccc;
+    font-family: Poppins;
+    font-size: 14px;
+    padding: 0px 60px;
+
+    .header {
+        flex-direction: column;
+        padding: 5rem;
+        padding-bottom: 0;
+        flex-shrink: 0;
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+        }
+    }
+
+    .body {
+        flex-direction: row;
+        margin: 4rem;
+        flex-grow: 1;
+        gap: 2rem;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        flex-wrap: wrap;
+        padding: 60px;
+
+        background-color: rgba( black, 0.1 );
+        border-radius: 4px;
+    }
+}

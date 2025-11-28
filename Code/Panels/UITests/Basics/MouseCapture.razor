@@ -1,0 +1,53 @@
+@using Sandbox
+@using Sandbox.UI
+@namespace Sandbox.UI.Tests.Basics
+@inherits PanelComponent
+
+<root>
+
+    <BaseTestPanel Title="Mouse Capture Tests" subtitle="Tests for capturing the mouse">
+        <Body>
+            <label @ref="label">Click on bg</label>
+        </Body>
+    </BaseTestPanel>
+
+</root>
+
+@code
+{
+    Label label;
+    Vector2 position;
+
+    protected override void OnUpdate()
+    {
+        if (Panel.HasMouseCapture)
+        {
+            position += Mouse.Delta;
+
+            label.Text = $"{position.x}\n{position.y}";
+
+            label.Style.Left = position.x;
+            label.Style.Top = position.y;
+            label.Style.Dirty();
+
+            // When the mouse becomes visible again,
+            // we'll put the cursor in the middle of this box
+            Mouse.Position = label.Box.Rect.Position + label.Box.Rect.Size * 0.5f;
+        }
+    }
+
+    protected override void OnMouseDown(MousePanelEvent e)
+    {
+        e.StopPropagation();
+
+        Panel.SetMouseCapture(true);
+    }
+
+    protected override void OnMouseUp(MousePanelEvent e)
+    {
+        if ( e.Button == "mouseleft" )
+        {
+            Panel.SetMouseCapture(false);
+        }
+    }
+}

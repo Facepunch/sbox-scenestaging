@@ -1,0 +1,17 @@
+.body {
+    overflow: hidden;
+    position: relative;
+
+    label {
+        background-color: white;
+        color: black;
+        font-weight: bold;
+        border-radius: 20px;
+        width: 100px;
+        height: 100px;
+        padding: 20px;
+        text-align: center;
+        align-items: center;
+        position: absolute;
+    }
+}

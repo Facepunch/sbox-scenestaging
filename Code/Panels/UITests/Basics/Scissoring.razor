@@ -1,0 +1,89 @@
+@using Sandbox
+@using Sandbox.UI
+@namespace Sandbox.UI.Tests.Basics
+@inherits PanelComponent
+
+<style>
+    Scissoring {
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+    }
+
+    .scissored {
+        border: 2px solid red;
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+        margin: 10px;
+    }
+
+    .content {
+        background-color: green;
+        width: 200px;
+        height: 200px;
+        background-image: url( /content/background.png );
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .wide-load {
+        background-color: green;
+        width: 200px;
+        height: 75px;
+        background-image: url( /content/background.png );
+        background-size: cover;
+        background-position: center center;
+    }
+</style>
+
+<root>
+
+    <BaseTestPanel Title="Scissoring Tests" subtitle="Tests for how things are clipped">
+        <Body>
+            <div class="flex-column">
+
+                <div class="flex-row">
+
+                    <div class="scissored">
+                        <div class="content"></div>
+                    </div>
+
+                    <div class="scissored" style="transform: translateY( -40px )">
+                        <div class="content"></div>
+                    </div>
+
+                    <div class="scissored" style="transform: rotateZ( 20deg )">
+                        <div class="content"></div>
+                    </div>
+
+                    <div class="scissored" style="transform: scale( 0.5 )">
+                        <div class="content"></div>
+                    </div>
+
+                    <div class="scissored" style="border-radius: 8px 32px 0px 16px;">
+                        <div class="content"></div>
+                    </div>
+
+                </div>
+
+                <div class="flex-row" style="margin-top: 100px">
+                    <div class="scissored" style="width: 200px; transform: rotate(15deg); justify-content: center; align-items: center; border-radius: 32px;">
+                        <div class="wide-load" style="transform: translateX( -50px )"></div>
+                    </div>
+
+                    <div class="scissored" style="width: 200px; justify-content: center; align-items: center;">
+                        <div class="wide-load" style="transform: rotate(-90deg)"></div>
+                    </div>
+
+                    <div class="scissored" style="width: 200px; justify-content: center; align-items: center;">
+                        <div class="wide-load" style="position: absolute; left: -100px; transform: translateX( 50px );"></div>
+                    </div>
+                </div>
+
+            </div>
+        </Body>
+    </BaseTestPanel>
+
+</root>

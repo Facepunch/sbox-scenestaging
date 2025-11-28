@@ -1,0 +1,68 @@
+﻿filters {
+    .body {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    example {
+        width: 256px;
+        aspect-ratio: 1;
+        flex-shrink: 0;
+        flex-grow: 0;
+        background-image: url( /UI/fp.png );
+        background-position: center;
+        background-size: cover;
+
+        &.drop-shadow {
+            filter: drop-shadow( 5px 5px 10px rgba( black, 0.5 ) );
+        }
+
+        &.drop-shadow-multiple {
+            filter: drop-shadow( -5px -5px 10px rgba( red, 0.5 ), 5px 5px 10px rgba( blue, 0.5 ), 5px -5px 10px rgba( yellow, 0.5 ), -5px 5px 10px rgba( green, 0.5 ) );
+        }
+
+        &.glow {
+            filter: drop-shadow( 0px 0px 10px rgba( red, 0.5 ) );
+        }
+
+        &.blur {
+            filter-blur: 5px;
+        }
+
+        &.mask {
+            mask-image: linear-gradient( 0%, black 0%, rgba( white, 0.9 ) 20%, white 80%, black 100% );
+        }
+
+        &.multiple-filters {
+            filter: blur(20px) saturate(200%) brightness(50%);
+        }
+
+        &.border {
+            filter: border-wrap( 5px red );
+            transition: all 150ms ease;
+
+            &.border-big {
+                filter: border-wrap( 10px purple );
+
+                &:hover {
+                    filter: border-wrap( 20px blue );
+                }
+            }
+
+            &:hover {
+                filter: border-wrap( 10px green );
+            }
+        }
+
+        &.no-bg {
+            justify-content: center;
+            align-items: center;
+            font-weight: bolder;
+            font-size: 48px;
+            background-image: none;
+        }
+    }
+}

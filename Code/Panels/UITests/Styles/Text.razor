@@ -1,0 +1,121 @@
+﻿@using Sandbox
+@using Sandbox.UI
+@namespace Sandbox.UI.Tests.Basics
+@inherits PanelComponent
+
+<root>
+
+    <BaseTestPanel Title="Text Tests" subtitle="Loads of text styles">
+        <Body>
+            <div class="row short">
+                This row has nothing special
+            </div>
+
+            <div class="row short" style="white-space: nowrap; overflow: hidden;">
+                This row has overflow: hidden and white-space: nowrap
+            </div>
+
+            <div class="row short" style="white-space: nowrap; text-overflow: ellipsis;">
+                Nowrap and overflow set to `ellipsis`
+            </div>
+
+            <div class="row short" style="white-space: nowrap; text-overflow: clip;">
+                Nowrap and overflow set to `clip`
+            </div>
+
+            <div class="row long" style="height: 70px; text-overflow: ellipsis;">
+                This is a tall one 🥳, it should have
+                an ellipsis at the end of the second line but not the first
+            </div>
+
+            <div class="row short" style="max-height: 44px; white-space: nowrap; text-overflow: ellipsis;">
+                This one has two lines but the 2nd is out of sight
+                an ellipsis at the end of the first line but definitely not on the second line
+            </div>
+
+            <div class="row long" style="letter-spacing: 3px; white-space: nowrap; text-overflow: ellipsis;">
+                This is a long one with letter-spacing applied to it
+            </div>
+
+            <div class="row short" style="white-space: nowrap;">
+                This one has no text-overflow, just a nowrap
+            </div>
+
+            <div class="row short" style="white-space: nowrap; overflow: hidden;">
+                This one has no text-overflow, just a nowrap and overflow: hidden
+            </div>
+
+            <div class="row big-box" style="word-break: break-all; text-overflow: ellipsis;">
+                This box has break-all with ellipsis overflow
+
+                Lorem ipsum dolor sit amet, consectetur a😀dipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Diam maecenas ultricies mi eget mauris p😢haretra et. Turpis nunc eget lorem dolor sed viverra ipsum. Nullam ac to👻rtor vitae purus faucibus ornare. Fusce id velit ut tortor. Sed faucibus turpis in eu mi bibendum. Convallis tellus id interdum velit laoreet id donec ultrices. Id leo in vitae turpis. Sed libero enim sed faucibus turpis in. Etiam sit amet nisl purus in mollis nunc sed. Nisi lacus sed viverra tellus in hac habitasse. Sed elementum tempus egestas sed. Viverra adipiscing at in tellus integer feugiat.
+            </div>
+
+            <div class="row short" style="max-height: 44px;">
+                <label style="text-overflow: ellipsis">Text that shoulllld clip early</label>
+                <label style="flex-shrink: 0;">Sibling</label>
+            </div>
+
+
+            <text style="">Normal Style</text>
+            <text style="text-decoration: underline;">Underline Style using text-decoration: underline</text>
+            <text style="text-decoration: line-through;">Strike Through Text using text-decoration: line-through</text>
+            <text style="text-decoration: overline;">Overline Style using text-decoration: overline</text>
+            <text style="text-decoration: underline line-through overline;">Both Overline, Underline & Line-Through Style using text-decoration: underline line-through overline</text>
+            <text style="text-decoration: line-through 8px red;">Text decoration colors!</text>
+
+            <text style="text-decoration: underline 3px green; text-decoration-skip-ink: all;">Text decoration ink skipping all!</text>
+            <text style="text-decoration: underline 3px pink; text-decoration-skip-ink: none;">Text decoration ink skipping none!</text>
+
+            <text style="text-decoration: underline 4px pink wavy; text-underline-offset: 2px;">The quick brown fox jumps over the lazy dog: wavy</text>
+            <text style="text-decoration: underline 4px pink dashed; text-underline-offset: 2px;">The quick brown fox jumps over the lazy dog: dashed</text>
+            <text style="text-decoration: underline 4px pink dotted; text-underline-offset: 2px;">The quick brown fox jumps over the lazy dog: dotted</text>
+            <text style="text-decoration: underline 2px pink double; text-underline-offset: 2px;">The quick brown fox jumps over the lazy dog: double</text>
+
+            <text style="text-decoration: underline 4px green wavy line-through overline; text-underline-offset: 2px; text-line-through-offset: 8px; text-overline-offset: 29px; text-decoration-skip-ink: none;">Text decoration offsets</text>
+
+            <text style="font-style: italic;">Italic style using font-style: italic</text>
+            <text style="font-weight: bolder;">Bold style using font-weight: bolder</text>
+            <text style="font-weight: lighter;">Light style using font-weight: lighter</text>
+            <text style="letter-spacing: 10px;">Letter spacing using letter-spacing: 10px</text>
+            <text style="letter-spacing: 1px;">Letter spacing using letter-spacing: 1px</text>
+            <text style="letter-spacing: -1px;">Letter spacing using letter-spacing: letter-spacing: -1px</text>
+            <text style="letter-spacing: -3px;">Letter spacing using letter-spacing: letter-spacing: -3px</text>
+            <text style="letter-spacing: -6px;">Letter spacing using letter-spacing: letter-spacing: -6px</text>
+
+            <text style="text-transform: none;">This text has NO text transform!</text>
+            <text style="text-transform: uppercase;">This text has text transform: uppercase</text>
+            <text style="text-transform: lowercase;">This text has text transform: lowercase</text>
+            <text style="text-transform: capitalize;">This text has text transform: capitalize</text>
+
+            <text style="word-spacing: 10px;">Word spacing using word-spacing: 10px</text>
+            <text style="word-spacing: 30px;">Word spacing using word-spacing: 30px</text>
+            <text style="word-spacing: -6px;">Word spacing using word-spacing: -6px</text>
+            <text style="word-spacing: 100vw; color: #e3d9d0; font-size: 80px; line-height: 75%; font-weight: 800;">EXPLORE BUILD SURVIVE</text>
+
+            <text style="white-space:normal; margin-top: 10px; margin-bottom: 10px;">
+                `white-space: normal` is the
+                default behaviour, it should collapse
+                all whitespaces including linebreaks
+                and tabs
+            </text>
+
+            <text text="@($"C# defined string with a linebreak\nusing white-space: pre-line")" style="white-space: pre-line; margin-top: 10px; margin-bottom: 10px;" />
+
+            <text style="white-space:pre-line; margin-bottom: 30px;">
+                `white-space: pre-line` should collapse
+                spaces, tabs, but preserve
+                linebreaks
+            </text>
+
+            <text style="">Tab stops with `white-space: pre`</text>
+            <text style="white-space: pre; font-size: 24px; margin-bottom: 30px;">@("VELOCITY\t\t\t320\t\t\t\t0\nORIGIN\t\t\t\t88,64,254\t\t1\nANGLES\t\t\t\t0,90,0\t\t\t2")</text>
+
+            <text style="font-family: Courier New; font-smooth: never;">font-smooth: never;</text>
+            <text style="font-family: Courier New; font-smooth: always;">font-smooth: always;</text>
+
+            <div style="margin-bottom: 100px;" />
+        </Body>
+    </BaseTestPanel>
+
+</root>

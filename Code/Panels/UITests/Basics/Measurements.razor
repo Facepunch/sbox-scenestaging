@@ -1,0 +1,19 @@
+﻿@using Sandbox
+@using Sandbox.UI
+@namespace Sandbox.UI.Tests.Basics
+@inherits PanelComponent
+
+<root>
+
+    <BaseTestPanel Title="Measurement Tests" subtitle="A bunch of UI measurement tests">
+        <Body>
+            <CalcPanel @Calc="calc( 50% + 500px )"></CalcPanel>
+            <CalcPanel @Calc="calc( 25vw + 100px )"></CalcPanel>
+            <CalcPanel @Calc="25em"></CalcPanel>
+            <CalcPanel @Calc="25rem"></CalcPanel>
+            <CalcPanel @Calc="25vw"></CalcPanel>
+            <CalcPanel @Calc="50vw"></CalcPanel>
+        </Body>
+    </BaseTestPanel>
+    
+</root>
