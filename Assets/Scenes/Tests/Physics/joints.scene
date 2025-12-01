@@ -14,6 +14,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -50,6 +51,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -84,6 +86,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -144,6 +147,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": []
@@ -161,6 +165,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -231,6 +236,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -324,8 +330,10 @@
           "__guid": "550ccb9c-cbd1-4be3-8d8c-ed8e65ea3837",
           "__enabled": true,
           "AngularDamping": 1,
+          "EnableImpactDamage": true,
           "Gravity": true,
           "GravityScale": 1,
+          "ImpactDamage": 0,
           "LinearDamping": 0.1,
           "Locking": {
             "X": false,
@@ -337,6 +345,7 @@
           },
           "MassCenterOverride": "0,0,32",
           "MassOverride": 500,
+          "MinImpactDamageSpeed": 500,
           "MotionEnabled": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -426,6 +435,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [],
           "Children": []
@@ -443,6 +453,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -505,6 +516,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -513,7 +525,7 @@
               "__enabled": true,
               "ColliderFlags": 0,
               "Elasticity": null,
-              "End": "0,0,41.05097",
+              "End": "0,0,32",
               "Friction": 0,
               "IsTrigger": false,
               "OnComponentDestroy": null,
@@ -576,6 +588,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
         {
@@ -622,6 +635,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": [
@@ -638,6 +652,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -671,8 +686,10 @@
               "__guid": "975b38eb-6022-4cbb-95d8-71459e3de943",
               "__enabled": true,
               "AngularDamping": 1,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -684,6 +701,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -734,6 +752,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [
                 {
@@ -868,6 +887,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -936,6 +956,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [],
               "Children": []
@@ -955,6 +976,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -1032,6 +1054,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": [
@@ -1048,6 +1071,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -1081,8 +1105,10 @@
               "__guid": "993dbd09-33fb-451c-92f3-c7fb9cfa08a5",
               "__enabled": true,
               "AngularDamping": 1,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -1094,6 +1120,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -1144,6 +1171,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [
                 {
@@ -1278,6 +1306,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -1346,6 +1375,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [],
               "Children": []
@@ -1365,6 +1395,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -1442,6 +1473,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": [
@@ -1458,6 +1490,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -1491,8 +1524,10 @@
               "__guid": "6e42d5f6-2670-4dfb-be4e-9108de5951fa",
               "__enabled": true,
               "AngularDamping": 1,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -1504,6 +1539,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -1554,6 +1590,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [
                 {
@@ -1688,6 +1725,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -1756,6 +1794,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [],
               "Children": []
@@ -1775,6 +1814,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -1840,299 +1880,6 @@
       ]
     },
     {
-      "__guid": "d33dc15e-9492-42ab-891d-cb7d2a6b80ca",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "Control Example",
-      "Position": "0.01265664,285.7732,44.99999",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [],
-      "Children": [
-        {
-          "__guid": "47b8f195-53d3-4b38-817f-1b1ce4d20c17",
-          "__version": 1,
-          "Flags": 0,
-          "Name": "Cube",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "bd1c3c5f-7c6a-4bc1-8060-0464bc882958",
-              "__enabled": true,
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "LodOverride": null,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
-              "Materials": null,
-              "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            },
-            {
-              "__type": "Sandbox.Rigidbody",
-              "__guid": "688732ca-7e0c-43f6-880c-c2c983a7ede8",
-              "__enabled": true,
-              "AngularDamping": 1,
-              "Gravity": true,
-              "GravityScale": 1,
-              "LinearDamping": 0,
-              "Locking": {
-                "X": false,
-                "Y": false,
-                "Z": false,
-                "Pitch": false,
-                "Yaw": false,
-                "Roll": false
-              },
-              "MassCenterOverride": "0,0,0",
-              "MassOverride": 0,
-              "MotionEnabled": true,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OverrideMassCenter": false,
-              "RigidbodyFlags": 0,
-              "StartAsleep": false
-            },
-            {
-              "__type": "Sandbox.ModelCollider",
-              "__guid": "95938a0d-a1b7-484a-8f93-96a3352fecfb",
-              "__enabled": true,
-              "ColliderFlags": 0,
-              "Elasticity": null,
-              "Friction": null,
-              "IsTrigger": false,
-              "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "RollingResistance": null,
-              "Static": false,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            }
-          ],
-          "Children": []
-        },
-        {
-          "__guid": "a2a2c085-63d8-4a97-aa03-71685a224fe0",
-          "__version": 1,
-          "Flags": 0,
-          "Name": "Cube (1)",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "MoveSinComponent",
-              "__guid": "f9eabc19-1ec6-4ea6-aac8-56a7f5d233f5",
-              "__enabled": true,
-              "Height": 50,
-              "Offset": 0,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Scale": "100,100,50",
-              "Speed": 0.5
-            },
-            {
-              "__type": "Sandbox.ControlJoint",
-              "__guid": "cba443e0-876b-4105-aa6f-2fe23d21616b",
-              "__enabled": true,
-              "AngularSpring": {
-                "Frequency": 32,
-                "Damping": 4,
-                "Maximum": 100000000
-              },
-              "AngularVelocity": "0,0,0",
-              "Attachment": "Auto",
-              "Body": {
-                "_type": "gameobject",
-                "go": "47b8f195-53d3-4b38-817f-1b1ce4d20c17"
-              },
-              "BreakForce": 0,
-              "BreakTorque": 0,
-              "EnableCollision": false,
-              "LinearSpring": {
-                "Frequency": 32,
-                "Damping": 4,
-                "Maximum": 100000000
-              },
-              "LinearVelocity": "0,0,0",
-              "LocalFrame1": {
-                "Position": "0,0,0",
-                "Scale": "0,0,0",
-                "Rotation": "0,0,0,0"
-              },
-              "LocalFrame2": {
-                "Position": "0,0,0",
-                "Scale": "0,0,0",
-                "Rotation": "0,0,0,0"
-              },
-              "MaxVelocityForce": 100000000,
-              "MaxVelocityTorque": 100000000,
-              "OnBreak": null,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "StartBroken": false
-            },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "6f935b77-125c-454c-9c1e-dd946bcdb373",
-              "__enabled": true,
-              "Center": "0,0,0",
-              "ColliderFlags": 0,
-              "Elasticity": null,
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "RollingResistance": null,
-              "Scale": "1,1,1",
-              "Static": false,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            }
-          ],
-          "Children": []
-        },
-        {
-          "__guid": "b9d28c41-7de1-42cf-81bf-4e1dab09f690",
-          "__version": 1,
-          "Flags": 0,
-          "Name": "Control",
-          "Position": "0,0,150",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.TextRenderer",
-              "__guid": "5153b2b7-7f6d-40c1-8b47-56ee772e51ca",
-              "__enabled": true,
-              "__version": 2,
-              "BlendMode": "Normal",
-              "FogStrength": 1,
-              "HorizontalAlignment": "Center",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "Scale": 0.25,
-              "TextScope": {
-                "Text": "Control",
-                "TextColor": "1,1,1,1",
-                "FontName": "Poppins",
-                "FontSize": 128,
-                "FontWeight": 400,
-                "FontItalic": false,
-                "LineHeight": 1,
-                "LetterSpacing": 0,
-                "WordSpacing": 0,
-                "FilterMode": "Bilinear",
-                "Outline": {
-                  "Enabled": true,
-                  "Size": 4,
-                  "Color": "0,0,0,1"
-                },
-                "Shadow": {
-                  "Enabled": true,
-                  "Size": 4,
-                  "Color": "0,0,0,1",
-                  "Offset": "4,4"
-                },
-                "OutlineUnder": {
-                  "Enabled": false,
-                  "Size": 4,
-                  "Color": "0,1,0,1"
-                },
-                "ShadowUnder": {
-                  "Enabled": false,
-                  "Size": 4,
-                  "Color": "0,0,0,1",
-                  "Offset": "4,4"
-                }
-              },
-              "VerticalAlignment": "Center"
-            }
-          ],
-          "Children": []
-        }
-      ]
-    },
-    {
       "__guid": "5f80171c-f990-4fa5-be7d-7861aeb76351",
       "__version": 1,
       "Flags": 0,
@@ -2145,6 +1892,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": [
@@ -2161,6 +1909,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -2229,6 +1978,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [
                 {
@@ -2363,6 +2113,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -2438,6 +2189,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -2532,6 +2284,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [],
               "Children": [
@@ -2548,6 +2301,7 @@
                   "NetworkMode": 2,
                   "NetworkInterpolation": true,
                   "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": [
@@ -2564,6 +2318,7 @@
                       "NetworkMode": 2,
                       "NetworkInterpolation": true,
                       "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
                       "OwnerTransfer": 1,
                       "Components": [],
                       "Children": [
@@ -2580,6 +2335,7 @@
                           "NetworkMode": 2,
                           "NetworkInterpolation": true,
                           "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
                           "OwnerTransfer": 1,
                           "Components": [],
                           "Children": [
@@ -2596,6 +2352,7 @@
                               "NetworkMode": 2,
                               "NetworkInterpolation": true,
                               "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
                               "OwnerTransfer": 1,
                               "Components": [],
                               "Children": [
@@ -2612,6 +2369,7 @@
                                   "NetworkMode": 2,
                                   "NetworkInterpolation": true,
                                   "NetworkOrphaned": 0,
+                                  "NetworkTransmit": true,
                                   "OwnerTransfer": 1,
                                   "Components": [],
                                   "Children": [
@@ -2628,6 +2386,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -2645,6 +2404,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -2662,6 +2422,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -2679,6 +2440,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -2696,6 +2458,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -2713,6 +2476,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -2730,6 +2494,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -2747,6 +2512,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -2768,6 +2534,7 @@
                               "NetworkMode": 2,
                               "NetworkInterpolation": true,
                               "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
                               "OwnerTransfer": 1,
                               "Components": [],
                               "Children": [
@@ -2784,6 +2551,7 @@
                                   "NetworkMode": 2,
                                   "NetworkInterpolation": true,
                                   "NetworkOrphaned": 0,
+                                  "NetworkTransmit": true,
                                   "OwnerTransfer": 1,
                                   "Components": [],
                                   "Children": [
@@ -2800,6 +2568,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -2817,6 +2586,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": [
@@ -2833,6 +2603,7 @@
                                           "NetworkMode": 2,
                                           "NetworkInterpolation": true,
                                           "NetworkOrphaned": 0,
+                                          "NetworkTransmit": true,
                                           "OwnerTransfer": 1,
                                           "Components": [],
                                           "Children": []
@@ -2850,6 +2621,7 @@
                                           "NetworkMode": 2,
                                           "NetworkInterpolation": true,
                                           "NetworkOrphaned": 0,
+                                          "NetworkTransmit": true,
                                           "OwnerTransfer": 1,
                                           "Components": [],
                                           "Children": [
@@ -2866,6 +2638,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": []
@@ -2883,6 +2656,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": []
@@ -2900,6 +2674,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": [
@@ -2916,6 +2691,7 @@
                                                   "NetworkMode": 2,
                                                   "NetworkInterpolation": true,
                                                   "NetworkOrphaned": 0,
+                                                  "NetworkTransmit": true,
                                                   "OwnerTransfer": 1,
                                                   "Components": [],
                                                   "Children": [
@@ -2932,6 +2708,7 @@
                                                       "NetworkMode": 2,
                                                       "NetworkInterpolation": true,
                                                       "NetworkOrphaned": 0,
+                                                      "NetworkTransmit": true,
                                                       "OwnerTransfer": 1,
                                                       "Components": [],
                                                       "Children": []
@@ -2953,6 +2730,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": [
@@ -2969,6 +2747,7 @@
                                                   "NetworkMode": 2,
                                                   "NetworkInterpolation": true,
                                                   "NetworkOrphaned": 0,
+                                                  "NetworkTransmit": true,
                                                   "OwnerTransfer": 1,
                                                   "Components": [],
                                                   "Children": [
@@ -2985,6 +2764,7 @@
                                                       "NetworkMode": 2,
                                                       "NetworkInterpolation": true,
                                                       "NetworkOrphaned": 0,
+                                                      "NetworkTransmit": true,
                                                       "OwnerTransfer": 1,
                                                       "Components": [],
                                                       "Children": [
@@ -3001,6 +2781,7 @@
                                                           "NetworkMode": 2,
                                                           "NetworkInterpolation": true,
                                                           "NetworkOrphaned": 0,
+                                                          "NetworkTransmit": true,
                                                           "OwnerTransfer": 1,
                                                           "Components": [],
                                                           "Children": []
@@ -3024,6 +2805,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": [
@@ -3040,6 +2822,7 @@
                                                   "NetworkMode": 2,
                                                   "NetworkInterpolation": true,
                                                   "NetworkOrphaned": 0,
+                                                  "NetworkTransmit": true,
                                                   "OwnerTransfer": 1,
                                                   "Components": [],
                                                   "Children": [
@@ -3056,6 +2839,7 @@
                                                       "NetworkMode": 2,
                                                       "NetworkInterpolation": true,
                                                       "NetworkOrphaned": 0,
+                                                      "NetworkTransmit": true,
                                                       "OwnerTransfer": 1,
                                                       "Components": [],
                                                       "Children": [
@@ -3072,6 +2856,7 @@
                                                           "NetworkMode": 2,
                                                           "NetworkInterpolation": true,
                                                           "NetworkOrphaned": 0,
+                                                          "NetworkTransmit": true,
                                                           "OwnerTransfer": 1,
                                                           "Components": [],
                                                           "Children": []
@@ -3095,6 +2880,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": [
@@ -3111,6 +2897,7 @@
                                                   "NetworkMode": 2,
                                                   "NetworkInterpolation": true,
                                                   "NetworkOrphaned": 0,
+                                                  "NetworkTransmit": true,
                                                   "OwnerTransfer": 1,
                                                   "Components": [],
                                                   "Children": [
@@ -3127,6 +2914,7 @@
                                                       "NetworkMode": 2,
                                                       "NetworkInterpolation": true,
                                                       "NetworkOrphaned": 0,
+                                                      "NetworkTransmit": true,
                                                       "OwnerTransfer": 1,
                                                       "Components": [],
                                                       "Children": [
@@ -3143,6 +2931,7 @@
                                                           "NetworkMode": 2,
                                                           "NetworkInterpolation": true,
                                                           "NetworkOrphaned": 0,
+                                                          "NetworkTransmit": true,
                                                           "OwnerTransfer": 1,
                                                           "Components": [],
                                                           "Children": []
@@ -3168,6 +2957,7 @@
                                           "NetworkMode": 2,
                                           "NetworkInterpolation": true,
                                           "NetworkOrphaned": 0,
+                                          "NetworkTransmit": true,
                                           "OwnerTransfer": 1,
                                           "Components": [],
                                           "Children": []
@@ -3185,6 +2975,7 @@
                                           "NetworkMode": 2,
                                           "NetworkInterpolation": true,
                                           "NetworkOrphaned": 0,
+                                          "NetworkTransmit": true,
                                           "OwnerTransfer": 1,
                                           "Components": [],
                                           "Children": []
@@ -3204,6 +2995,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -3225,6 +3017,7 @@
                               "NetworkMode": 2,
                               "NetworkInterpolation": true,
                               "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
                               "OwnerTransfer": 1,
                               "Components": [],
                               "Children": [
@@ -3241,6 +3034,7 @@
                                   "NetworkMode": 2,
                                   "NetworkInterpolation": true,
                                   "NetworkOrphaned": 0,
+                                  "NetworkTransmit": true,
                                   "OwnerTransfer": 1,
                                   "Components": [],
                                   "Children": [
@@ -3257,6 +3051,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": [
@@ -3273,6 +3068,7 @@
                                           "NetworkMode": 2,
                                           "NetworkInterpolation": true,
                                           "NetworkOrphaned": 0,
+                                          "NetworkTransmit": true,
                                           "OwnerTransfer": 1,
                                           "Components": [],
                                           "Children": [
@@ -3289,6 +3085,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": []
@@ -3308,6 +3105,7 @@
                                           "NetworkMode": 2,
                                           "NetworkInterpolation": true,
                                           "NetworkOrphaned": 0,
+                                          "NetworkTransmit": true,
                                           "OwnerTransfer": 1,
                                           "Components": [],
                                           "Children": [
@@ -3324,6 +3122,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": []
@@ -3341,6 +3140,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": []
@@ -3358,6 +3158,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": [
@@ -3374,6 +3175,7 @@
                                                   "NetworkMode": 2,
                                                   "NetworkInterpolation": true,
                                                   "NetworkOrphaned": 0,
+                                                  "NetworkTransmit": true,
                                                   "OwnerTransfer": 1,
                                                   "Components": [],
                                                   "Children": [
@@ -3390,6 +3192,7 @@
                                                       "NetworkMode": 2,
                                                       "NetworkInterpolation": true,
                                                       "NetworkOrphaned": 0,
+                                                      "NetworkTransmit": true,
                                                       "OwnerTransfer": 1,
                                                       "Components": [],
                                                       "Children": []
@@ -3411,6 +3214,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": [
@@ -3427,6 +3231,7 @@
                                                   "NetworkMode": 2,
                                                   "NetworkInterpolation": true,
                                                   "NetworkOrphaned": 0,
+                                                  "NetworkTransmit": true,
                                                   "OwnerTransfer": 1,
                                                   "Components": [],
                                                   "Children": [
@@ -3443,6 +3248,7 @@
                                                       "NetworkMode": 2,
                                                       "NetworkInterpolation": true,
                                                       "NetworkOrphaned": 0,
+                                                      "NetworkTransmit": true,
                                                       "OwnerTransfer": 1,
                                                       "Components": [],
                                                       "Children": [
@@ -3459,6 +3265,7 @@
                                                           "NetworkMode": 2,
                                                           "NetworkInterpolation": true,
                                                           "NetworkOrphaned": 0,
+                                                          "NetworkTransmit": true,
                                                           "OwnerTransfer": 1,
                                                           "Components": [],
                                                           "Children": []
@@ -3482,6 +3289,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": [
@@ -3498,6 +3306,7 @@
                                                   "NetworkMode": 2,
                                                   "NetworkInterpolation": true,
                                                   "NetworkOrphaned": 0,
+                                                  "NetworkTransmit": true,
                                                   "OwnerTransfer": 1,
                                                   "Components": [],
                                                   "Children": [
@@ -3514,6 +3323,7 @@
                                                       "NetworkMode": 2,
                                                       "NetworkInterpolation": true,
                                                       "NetworkOrphaned": 0,
+                                                      "NetworkTransmit": true,
                                                       "OwnerTransfer": 1,
                                                       "Components": [],
                                                       "Children": [
@@ -3530,6 +3340,7 @@
                                                           "NetworkMode": 2,
                                                           "NetworkInterpolation": true,
                                                           "NetworkOrphaned": 0,
+                                                          "NetworkTransmit": true,
                                                           "OwnerTransfer": 1,
                                                           "Components": [],
                                                           "Children": []
@@ -3553,6 +3364,7 @@
                                               "NetworkMode": 2,
                                               "NetworkInterpolation": true,
                                               "NetworkOrphaned": 0,
+                                              "NetworkTransmit": true,
                                               "OwnerTransfer": 1,
                                               "Components": [],
                                               "Children": [
@@ -3569,6 +3381,7 @@
                                                   "NetworkMode": 2,
                                                   "NetworkInterpolation": true,
                                                   "NetworkOrphaned": 0,
+                                                  "NetworkTransmit": true,
                                                   "OwnerTransfer": 1,
                                                   "Components": [],
                                                   "Children": [
@@ -3585,6 +3398,7 @@
                                                       "NetworkMode": 2,
                                                       "NetworkInterpolation": true,
                                                       "NetworkOrphaned": 0,
+                                                      "NetworkTransmit": true,
                                                       "OwnerTransfer": 1,
                                                       "Components": [],
                                                       "Children": [
@@ -3601,6 +3415,7 @@
                                                           "NetworkMode": 2,
                                                           "NetworkInterpolation": true,
                                                           "NetworkOrphaned": 0,
+                                                          "NetworkTransmit": true,
                                                           "OwnerTransfer": 1,
                                                           "Components": [],
                                                           "Children": []
@@ -3626,6 +3441,7 @@
                                           "NetworkMode": 2,
                                           "NetworkInterpolation": true,
                                           "NetworkOrphaned": 0,
+                                          "NetworkTransmit": true,
                                           "OwnerTransfer": 1,
                                           "Components": [],
                                           "Children": []
@@ -3645,6 +3461,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -3662,6 +3479,7 @@
                                       "NetworkMode": 2,
                                       "NetworkInterpolation": true,
                                       "NetworkOrphaned": 0,
+                                      "NetworkTransmit": true,
                                       "OwnerTransfer": 1,
                                       "Components": [],
                                       "Children": []
@@ -3683,6 +3501,7 @@
                               "NetworkMode": 2,
                               "NetworkInterpolation": true,
                               "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
                               "OwnerTransfer": 1,
                               "Components": [],
                               "Children": []
@@ -3706,6 +3525,7 @@
                   "NetworkMode": 2,
                   "NetworkInterpolation": true,
                   "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": [
@@ -3722,6 +3542,7 @@
                       "NetworkMode": 2,
                       "NetworkInterpolation": true,
                       "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
                       "OwnerTransfer": 1,
                       "Components": [],
                       "Children": [
@@ -3738,6 +3559,7 @@
                           "NetworkMode": 2,
                           "NetworkInterpolation": true,
                           "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
                           "OwnerTransfer": 1,
                           "Components": [],
                           "Children": [
@@ -3754,6 +3576,7 @@
                               "NetworkMode": 2,
                               "NetworkInterpolation": true,
                               "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
                               "OwnerTransfer": 1,
                               "Components": [],
                               "Children": []
@@ -3773,6 +3596,7 @@
                           "NetworkMode": 2,
                           "NetworkInterpolation": true,
                           "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
                           "OwnerTransfer": 1,
                           "Components": [],
                           "Children": []
@@ -3790,6 +3614,7 @@
                           "NetworkMode": 2,
                           "NetworkInterpolation": true,
                           "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
                           "OwnerTransfer": 1,
                           "Components": [],
                           "Children": []
@@ -3807,6 +3632,7 @@
                           "NetworkMode": 2,
                           "NetworkInterpolation": true,
                           "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
                           "OwnerTransfer": 1,
                           "Components": [],
                           "Children": []
@@ -3826,6 +3652,7 @@
                       "NetworkMode": 2,
                       "NetworkInterpolation": true,
                       "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
                       "OwnerTransfer": 1,
                       "Components": [],
                       "Children": []
@@ -3843,6 +3670,7 @@
                       "NetworkMode": 2,
                       "NetworkInterpolation": true,
                       "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
                       "OwnerTransfer": 1,
                       "Components": [],
                       "Children": []
@@ -3860,6 +3688,7 @@
                       "NetworkMode": 2,
                       "NetworkInterpolation": true,
                       "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
                       "OwnerTransfer": 1,
                       "Components": [],
                       "Children": []
@@ -3879,6 +3708,7 @@
                   "NetworkMode": 2,
                   "NetworkInterpolation": true,
                   "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": [
@@ -3895,6 +3725,7 @@
                       "NetworkMode": 2,
                       "NetworkInterpolation": true,
                       "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
                       "OwnerTransfer": 1,
                       "Components": [],
                       "Children": [
@@ -3911,6 +3742,7 @@
                           "NetworkMode": 2,
                           "NetworkInterpolation": true,
                           "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
                           "OwnerTransfer": 1,
                           "Components": [],
                           "Children": [
@@ -3927,6 +3759,7 @@
                               "NetworkMode": 2,
                               "NetworkInterpolation": true,
                               "NetworkOrphaned": 0,
+                              "NetworkTransmit": true,
                               "OwnerTransfer": 1,
                               "Components": [],
                               "Children": []
@@ -3946,6 +3779,7 @@
                           "NetworkMode": 2,
                           "NetworkInterpolation": true,
                           "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
                           "OwnerTransfer": 1,
                           "Components": [],
                           "Children": []
@@ -3963,6 +3797,7 @@
                           "NetworkMode": 2,
                           "NetworkInterpolation": true,
                           "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
                           "OwnerTransfer": 1,
                           "Components": [],
                           "Children": []
@@ -3980,6 +3815,7 @@
                           "NetworkMode": 2,
                           "NetworkInterpolation": true,
                           "NetworkOrphaned": 0,
+                          "NetworkTransmit": true,
                           "OwnerTransfer": 1,
                           "Components": [],
                           "Children": []
@@ -3999,6 +3835,7 @@
                       "NetworkMode": 2,
                       "NetworkInterpolation": true,
                       "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
                       "OwnerTransfer": 1,
                       "Components": [],
                       "Children": []
@@ -4016,6 +3853,7 @@
                       "NetworkMode": 2,
                       "NetworkInterpolation": true,
                       "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
                       "OwnerTransfer": 1,
                       "Components": [],
                       "Children": []
@@ -4033,6 +3871,7 @@
                       "NetworkMode": 2,
                       "NetworkInterpolation": true,
                       "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
                       "OwnerTransfer": 1,
                       "Components": [],
                       "Children": []
@@ -4054,6 +3893,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [],
               "Children": [
@@ -4070,6 +3910,7 @@
                   "NetworkMode": 2,
                   "NetworkInterpolation": true,
                   "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": []
@@ -4087,6 +3928,7 @@
                   "NetworkMode": 2,
                   "NetworkInterpolation": true,
                   "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": []
@@ -4104,6 +3946,7 @@
                   "NetworkMode": 2,
                   "NetworkInterpolation": true,
                   "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": [
@@ -4120,6 +3963,7 @@
                       "NetworkMode": 2,
                       "NetworkInterpolation": true,
                       "NetworkOrphaned": 0,
+                      "NetworkTransmit": true,
                       "OwnerTransfer": 1,
                       "Components": [],
                       "Children": []
@@ -4139,6 +3983,7 @@
                   "NetworkMode": 2,
                   "NetworkInterpolation": true,
                   "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": []
@@ -4156,6 +4001,7 @@
                   "NetworkMode": 2,
                   "NetworkInterpolation": true,
                   "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": []
@@ -4173,6 +4019,7 @@
                   "NetworkMode": 2,
                   "NetworkInterpolation": true,
                   "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": []
@@ -4196,6 +4043,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": [
@@ -4212,6 +4060,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -4245,8 +4094,10 @@
               "__guid": "eff213dc-9a4f-4cb3-b04d-096a928d04ff",
               "__enabled": true,
               "AngularDamping": 1,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -4258,6 +4109,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -4308,6 +4160,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [
                 {
@@ -4369,6 +4222,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -4437,6 +4291,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [],
               "Children": []
@@ -4456,6 +4311,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -4533,6 +4389,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": [
@@ -4549,6 +4406,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -4624,6 +4482,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -4691,6 +4550,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [],
               "Children": []
@@ -4708,6 +4568,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [],
               "Children": []
@@ -4727,6 +4588,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -4785,8 +4647,10 @@
               "__guid": "823d3625-9046-4b35-9190-4aab2813d79b",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -4798,6 +4662,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -4824,6 +4689,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [
                 {
@@ -4883,6 +4749,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [
                 {
@@ -4946,6 +4813,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": [
@@ -4962,6 +4830,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -5037,6 +4906,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -5044,8 +4914,10 @@
               "__guid": "a0034764-8168-4420-87f8-8f9c8c58ac56",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -5057,6 +4929,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -5134,6 +5007,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -5141,8 +5015,10 @@
               "__guid": "5b587ba4-db8e-499c-837f-0ea0b49bc932",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -5154,6 +5030,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -5266,6 +5143,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -5273,8 +5151,10 @@
               "__guid": "4a2f8e76-7726-45ff-b002-cde069d3ef4c",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -5286,6 +5166,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -5398,6 +5279,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -5405,8 +5287,10 @@
               "__guid": "bc822413-f767-4175-a11d-ddc07a585703",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -5418,6 +5302,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -5532,6 +5417,7 @@
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
       "Children": [
@@ -5548,6 +5434,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -5623,6 +5510,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -5690,6 +5578,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [
                 {
@@ -5744,6 +5633,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -5801,8 +5691,10 @@
               "__guid": "62c20252-6f53-4f85-a35e-f96fd71d280a",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -5814,6 +5706,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -5840,6 +5733,7 @@
               "NetworkMode": 2,
               "NetworkInterpolation": true,
               "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
               "OwnerTransfer": 1,
               "Components": [],
               "Children": []
@@ -5859,6 +5753,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -5936,8 +5831,10 @@
               "__guid": "840dee31-9bee-4954-acf1-0eadd2bd230a",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -5949,6 +5846,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -5976,6 +5874,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -6053,8 +5952,10 @@
               "__guid": "f8c672ed-c82b-49d8-a1a4-6aec8a83d117",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -6066,6 +5967,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -6093,6 +5995,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -6170,8 +6073,10 @@
               "__guid": "a4a0ead4-1805-470b-8d90-2423a13ebdd8",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -6183,6 +6088,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -6210,6 +6116,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -6287,8 +6194,10 @@
               "__guid": "1604b636-307b-446d-82c2-2b521cae003e",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -6300,6 +6209,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -6327,6 +6237,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -6404,8 +6315,10 @@
               "__guid": "7c1fbcd4-4f6e-4ea4-8193-11ee3a160e27",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -6417,6 +6330,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -6444,6 +6358,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -6521,8 +6436,10 @@
               "__guid": "6605f227-e227-48e9-99ef-bcc6d58fb030",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -6534,6 +6451,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -6561,6 +6479,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -6638,8 +6557,10 @@
               "__guid": "e5b90a4f-e33f-4c13-9ef0-a21c8db95c60",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -6651,6 +6572,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -6678,6 +6600,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -6755,8 +6678,10 @@
               "__guid": "2e49e54f-a987-4da7-87c6-877f1466cfdf",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -6768,6 +6693,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -6795,6 +6721,7 @@
           "NetworkMode": 2,
           "NetworkInterpolation": true,
           "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
           "OwnerTransfer": 1,
           "Components": [
             {
@@ -6872,8 +6799,10 @@
               "__guid": "78ebba3d-44a4-49e2-b97d-babb9b987727",
               "__enabled": true,
               "AngularDamping": 0,
+              "EnableImpactDamage": true,
               "Gravity": true,
               "GravityScale": 1,
+              "ImpactDamage": 0,
               "LinearDamping": 0,
               "Locking": {
                 "X": false,
@@ -6885,6 +6814,7 @@
               },
               "MassCenterOverride": "0,0,0",
               "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
               "MotionEnabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -6898,6 +6828,1930 @@
             }
           ],
           "Children": []
+        }
+      ]
+    },
+    {
+      "__guid": "2f10ab64-08ed-4cad-a7aa-1ac040c7b027",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "wheel_car",
+      "Position": "-224,-176,64.00001",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "251654ad-765f-4389-bd55-bbe0d5749484",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "wheel01",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "5cd802fd-49cf-4eb8-b5cc-848e570e4c72",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "da9de2e4-da46-4c81-94ce-4eb680a520d1",
+              "__enabled": false,
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "baa7dfdf-8f24-4924-8d9d-09c7da7717f7",
+              "__enabled": true,
+              "AngularDamping": 0,
+              "EnableImpactDamage": true,
+              "Gravity": true,
+              "GravityScale": 1,
+              "ImpactDamage": 0,
+              "LinearDamping": 0,
+              "Locking": {
+                "X": false,
+                "Y": false,
+                "Z": false,
+                "Pitch": false,
+                "Yaw": false,
+                "Roll": false
+              },
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0.5,
+              "MinImpactDamageSpeed": 500,
+              "MotionEnabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OverrideMassCenter": false,
+              "RigidbodyFlags": 0,
+              "StartAsleep": false
+            },
+            {
+              "__type": "Sandbox.SphereCollider",
+              "__guid": "793b73c7-50a6-41cf-aa0c-044f8a142815",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "Radius": 21,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "b0b37ddd-c2c8-4f91-9287-7cac7e5ab270",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "0,0,0",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "6959d7fe-6f31-4a6d-b041-fd1515fe45a9",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "wheel01 (1)",
+          "Position": "0,64,0",
+          "Rotation": "0,0,1,-0.00000004371139",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "b845300f-54dd-40b1-abe0-52857a817b57",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "352f9c59-11cb-4d92-b6c2-16085cc6670c",
+              "__enabled": false,
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "e8c63616-cbf4-4a0e-987f-4736094b0028",
+              "__enabled": true,
+              "AngularDamping": 0,
+              "EnableImpactDamage": true,
+              "Gravity": true,
+              "GravityScale": 1,
+              "ImpactDamage": 0,
+              "LinearDamping": 0,
+              "Locking": {
+                "X": false,
+                "Y": false,
+                "Z": false,
+                "Pitch": false,
+                "Yaw": false,
+                "Roll": false
+              },
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0.5,
+              "MinImpactDamageSpeed": 500,
+              "MotionEnabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OverrideMassCenter": false,
+              "RigidbodyFlags": 0,
+              "StartAsleep": false
+            },
+            {
+              "__type": "Sandbox.SphereCollider",
+              "__guid": "03220040-d593-4bf6-b02e-4dde447b773a",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "Radius": 21,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "e07134d7-7983-4111-88e0-10df07b34b5d",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "0,0,0",
+              "Rotation": "0.5,0.5,-0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "e8a1120c-d480-425c-90be-2545ea811c20",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "wheel01 (2)",
+          "Position": "64,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "f652c275-32f3-4cde-99ae-c49076ad4706",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "604e04cf-a52c-4aab-a61e-b06b4adf4ca2",
+              "__enabled": false,
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "e3503e10-aec0-4b33-bfe4-60e73f478f9d",
+              "__enabled": true,
+              "AngularDamping": 0,
+              "EnableImpactDamage": true,
+              "Gravity": true,
+              "GravityScale": 1,
+              "ImpactDamage": 0,
+              "LinearDamping": 0,
+              "Locking": {
+                "X": false,
+                "Y": false,
+                "Z": false,
+                "Pitch": false,
+                "Yaw": false,
+                "Roll": false
+              },
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0.5,
+              "MinImpactDamageSpeed": 500,
+              "MotionEnabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OverrideMassCenter": false,
+              "RigidbodyFlags": 0,
+              "StartAsleep": false
+            },
+            {
+              "__type": "Sandbox.SphereCollider",
+              "__guid": "392e3056-2194-48d8-9b54-054eb47ad5b5",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "Radius": 21,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "e6ff3495-4ca8-4359-8274-997f90ce559b",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "0,0,0",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "e97c20ad-9e73-4a04-a122-c6174de6802a",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "wheel01 (3)",
+          "Position": "64,64,0",
+          "Rotation": "0,0,1,-0.00000004371139",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "95a4198b-76b4-4938-8e71-3b442a32285d",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "88ca3d89-c6a2-4241-974d-273abb6078b2",
+              "__enabled": false,
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "bb6e16fa-6910-46e0-a0c3-6c2f320c6f05",
+              "__enabled": true,
+              "AngularDamping": 0,
+              "EnableImpactDamage": true,
+              "Gravity": true,
+              "GravityScale": 1,
+              "ImpactDamage": 0,
+              "LinearDamping": 0,
+              "Locking": {
+                "X": false,
+                "Y": false,
+                "Z": false,
+                "Pitch": false,
+                "Yaw": false,
+                "Roll": false
+              },
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0.5,
+              "MinImpactDamageSpeed": 500,
+              "MotionEnabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OverrideMassCenter": false,
+              "RigidbodyFlags": 0,
+              "StartAsleep": false
+            },
+            {
+              "__type": "Sandbox.SphereCollider",
+              "__guid": "f12de56f-7fe8-487e-9825-98d8fa9833b0",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "Radius": 21,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "6107c025-a422-4bbc-b409-8229d76dc758",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "0,0,0",
+              "Rotation": "0.5,0.5,-0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "b75fabd3-f8f8-4cf6-8d74-7fcfd915f052",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "32,32,15.99999",
+          "Rotation": "0,0,0,1",
+          "Scale": "2,1,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "779e6bd8-fbaa-4a3c-b371-e94f0f2aaaf2",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "a8bb3b56-9e0e-48b6-bd33-b7c0fa9fe0f1",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "d87904e2-2a9f-49f3-bdaa-f90cec809b94",
+              "__enabled": true,
+              "AngularDamping": 0,
+              "EnableImpactDamage": true,
+              "Gravity": true,
+              "GravityScale": 1,
+              "ImpactDamage": 0,
+              "LinearDamping": 0,
+              "Locking": {
+                "X": false,
+                "Y": false,
+                "Z": false,
+                "Pitch": false,
+                "Yaw": false,
+                "Roll": false
+              },
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 1,
+              "MinImpactDamageSpeed": 500,
+              "MotionEnabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OverrideMassCenter": false,
+              "RigidbodyFlags": 0,
+              "StartAsleep": false
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "80e00526-35ac-4e5f-a063-a6cdf3f2d05d",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "16,32,-32",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.WheelJoint",
+                  "__guid": "8d7996af-e705-4900-9b82-587cef5dffd2",
+                  "__enabled": true,
+                  "Attachment": "Auto",
+                  "Body": {
+                    "_type": "gameobject",
+                    "go": "6107c025-a422-4bbc-b409-8229d76dc758"
+                  },
+                  "BreakForce": 0,
+                  "BreakTorque": 0,
+                  "EnableCollision": false,
+                  "EnableSpinMotor": true,
+                  "EnableSteering": true,
+                  "EnableSteeringLimit": true,
+                  "EnableSuspension": true,
+                  "EnableSuspensionLimit": true,
+                  "LocalFrame1": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "LocalFrame2": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "MaxSpinTorque": 100,
+                  "MaxSteeringTorque": 10000,
+                  "OnBreak": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "SpinMotorSpeed": 1000,
+                  "StartBroken": false,
+                  "SteeringDampingRatio": 1,
+                  "SteeringHertz": 4,
+                  "SteeringLimits": "-20,20",
+                  "SuspensionDampingRatio": 0.5,
+                  "SuspensionHertz": 4,
+                  "SuspensionLimits": "-25,25",
+                  "TargetSteeringAngle": -180
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "27b54c47-3f8a-4591-97ec-bad4645dafe5",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "-15.99998,32,-31.99997",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.WheelJoint",
+                  "__guid": "820a8d7b-f03f-43c2-ba82-e912f0d87b8a",
+                  "__enabled": true,
+                  "Attachment": "Auto",
+                  "Body": {
+                    "_type": "gameobject",
+                    "go": "e07134d7-7983-4111-88e0-10df07b34b5d"
+                  },
+                  "BreakForce": 0,
+                  "BreakTorque": 0,
+                  "EnableCollision": false,
+                  "EnableSpinMotor": true,
+                  "EnableSteering": false,
+                  "EnableSteeringLimit": false,
+                  "EnableSuspension": true,
+                  "EnableSuspensionLimit": true,
+                  "LocalFrame1": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "LocalFrame2": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "MaxSpinTorque": 100,
+                  "MaxSteeringTorque": 0,
+                  "OnBreak": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "SpinMotorSpeed": 1000,
+                  "StartBroken": false,
+                  "SteeringDampingRatio": 0,
+                  "SteeringHertz": 0,
+                  "SteeringLimits": "0,0",
+                  "SuspensionDampingRatio": 0.5,
+                  "SuspensionHertz": 4,
+                  "SuspensionLimits": "-25,25",
+                  "TargetSteeringAngle": 0
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "ecbf872c-abb2-41d7-926f-c83417384d53",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object (1)",
+              "Position": "16,-32,-32",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.WheelJoint",
+                  "__guid": "512c9fda-4ce2-4d0f-ac88-4a080ebfc8ec",
+                  "__enabled": true,
+                  "Attachment": "Auto",
+                  "Body": {
+                    "_type": "gameobject",
+                    "go": "e6ff3495-4ca8-4359-8274-997f90ce559b"
+                  },
+                  "BreakForce": 0,
+                  "BreakTorque": 0,
+                  "EnableCollision": false,
+                  "EnableSpinMotor": true,
+                  "EnableSteering": true,
+                  "EnableSteeringLimit": true,
+                  "EnableSuspension": true,
+                  "EnableSuspensionLimit": true,
+                  "LocalFrame1": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "LocalFrame2": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "MaxSpinTorque": 100,
+                  "MaxSteeringTorque": 10000,
+                  "OnBreak": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "SpinMotorSpeed": 1000,
+                  "StartBroken": false,
+                  "SteeringDampingRatio": 1,
+                  "SteeringHertz": 4,
+                  "SteeringLimits": "-20,20",
+                  "SuspensionDampingRatio": 0.5,
+                  "SuspensionHertz": 4,
+                  "SuspensionLimits": "-25,25",
+                  "TargetSteeringAngle": -180
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "c8a62bea-ca34-46d5-9f7a-d9bbebdb7bc6",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object (1)",
+              "Position": "-15.99998,-32,-31.99997",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.WheelJoint",
+                  "__guid": "1b6c28ed-3e74-422c-8be4-5a38d29648b4",
+                  "__enabled": true,
+                  "Attachment": "Auto",
+                  "Body": {
+                    "_type": "gameobject",
+                    "go": "b0b37ddd-c2c8-4f91-9287-7cac7e5ab270"
+                  },
+                  "BreakForce": 0,
+                  "BreakTorque": 0,
+                  "EnableCollision": false,
+                  "EnableSpinMotor": true,
+                  "EnableSteering": false,
+                  "EnableSteeringLimit": false,
+                  "EnableSuspension": true,
+                  "EnableSuspensionLimit": true,
+                  "LocalFrame1": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "LocalFrame2": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "MaxSpinTorque": 100,
+                  "MaxSteeringTorque": 0,
+                  "OnBreak": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "SpinMotorSpeed": 1000,
+                  "StartBroken": false,
+                  "SteeringDampingRatio": 0,
+                  "SteeringHertz": 0,
+                  "SteeringLimits": "0,0",
+                  "SuspensionDampingRatio": 0.5,
+                  "SuspensionHertz": 4,
+                  "SuspensionLimits": "-25,25",
+                  "TargetSteeringAngle": 0
+                }
+              ],
+              "Children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "ab6aace6-e54e-4c28-806a-b69e66bf1666",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "wheel_car (1)",
+      "Position": "-317.251,-191.6137,64",
+      "Rotation": "0,0,0.9999998,0.0006089965",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "f94431a9-eaa3-4026-961a-c8f0bf97ac83",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "wheel01",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "dc6975a6-f7ee-451c-a603-645946a6b91f",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "fa8424c6-0b5a-45b2-a19c-d74850973ce6",
+              "__enabled": false,
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "18821144-8dec-41b2-8a65-f60f64609a74",
+              "__enabled": true,
+              "AngularDamping": 0,
+              "EnableImpactDamage": true,
+              "Gravity": true,
+              "GravityScale": 1,
+              "ImpactDamage": 0,
+              "LinearDamping": 0,
+              "Locking": {
+                "X": false,
+                "Y": false,
+                "Z": false,
+                "Pitch": false,
+                "Yaw": false,
+                "Roll": false
+              },
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0.5,
+              "MinImpactDamageSpeed": 500,
+              "MotionEnabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OverrideMassCenter": false,
+              "RigidbodyFlags": 0,
+              "StartAsleep": false
+            },
+            {
+              "__type": "Sandbox.SphereCollider",
+              "__guid": "7f426d8a-0cb7-45f2-86be-72db5dde93f7",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "Radius": 21,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "13105bb8-2145-496d-9399-e31c459bccc7",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "0,0,0",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "e5a78037-90af-40fa-a612-fef8bcd2dfb6",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "wheel01 (1)",
+          "Position": "0,64,0",
+          "Rotation": "0,0,1,-0.00000004371139",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "91fb7afa-1c88-4c54-9cbe-6b2c1886c54c",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "1288d802-d1b8-4bad-9cca-4c3855825cd4",
+              "__enabled": false,
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "5103ada2-58fa-4e61-95b3-bc3cbe0ca114",
+              "__enabled": true,
+              "AngularDamping": 0,
+              "EnableImpactDamage": true,
+              "Gravity": true,
+              "GravityScale": 1,
+              "ImpactDamage": 0,
+              "LinearDamping": 0,
+              "Locking": {
+                "X": false,
+                "Y": false,
+                "Z": false,
+                "Pitch": false,
+                "Yaw": false,
+                "Roll": false
+              },
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0.5,
+              "MinImpactDamageSpeed": 500,
+              "MotionEnabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OverrideMassCenter": false,
+              "RigidbodyFlags": 0,
+              "StartAsleep": false
+            },
+            {
+              "__type": "Sandbox.SphereCollider",
+              "__guid": "c90cdca4-d50c-4417-99c8-1ac4f8e13985",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "Radius": 21,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "c237a5a3-f443-4233-b335-a957a818a827",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "0,0,0",
+              "Rotation": "0.5,0.5,-0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "57d03eff-550b-4d46-b2b4-71148dc7f992",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "wheel01 (2)",
+          "Position": "64,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "a3fa254d-95fd-44f4-9267-eeec9d70264b",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "016ad211-20f4-4c0f-927e-cfc1225b7f0d",
+              "__enabled": false,
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "08b75af7-7b40-4e13-acbc-97639c0d80fd",
+              "__enabled": true,
+              "AngularDamping": 0,
+              "EnableImpactDamage": true,
+              "Gravity": true,
+              "GravityScale": 1,
+              "ImpactDamage": 0,
+              "LinearDamping": 0,
+              "Locking": {
+                "X": false,
+                "Y": false,
+                "Z": false,
+                "Pitch": false,
+                "Yaw": false,
+                "Roll": false
+              },
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0.5,
+              "MinImpactDamageSpeed": 500,
+              "MotionEnabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OverrideMassCenter": false,
+              "RigidbodyFlags": 0,
+              "StartAsleep": false
+            },
+            {
+              "__type": "Sandbox.SphereCollider",
+              "__guid": "527c8453-4e3a-4b8d-b86a-79ef8b202d97",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "Radius": 21,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "d22bddeb-3d35-41dd-8b76-faa360bc4af5",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "0,0,0",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "cc1b27b6-c2ef-4863-a8e2-ae371d41d645",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "wheel01 (3)",
+          "Position": "64,64,0",
+          "Rotation": "0,0,1,-0.00000004371139",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "129c45e7-8212-40d8-a044-db1c0585985c",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "c09b588e-6704-4fc0-9c45-f071ff478d74",
+              "__enabled": false,
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "Model": "models/citizen_props/wheel01.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "7c7cebc0-b9b7-4a26-ac19-827ab513a5e3",
+              "__enabled": true,
+              "AngularDamping": 0,
+              "EnableImpactDamage": true,
+              "Gravity": true,
+              "GravityScale": 1,
+              "ImpactDamage": 0,
+              "LinearDamping": 0,
+              "Locking": {
+                "X": false,
+                "Y": false,
+                "Z": false,
+                "Pitch": false,
+                "Yaw": false,
+                "Roll": false
+              },
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0.5,
+              "MinImpactDamageSpeed": 500,
+              "MotionEnabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OverrideMassCenter": false,
+              "RigidbodyFlags": 0,
+              "StartAsleep": false
+            },
+            {
+              "__type": "Sandbox.SphereCollider",
+              "__guid": "1b474b00-cedd-4b5d-803f-161b8bd4b36f",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "Radius": 21,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "c376b127-8fe7-4435-afaa-81b8c7298e72",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "0,0,0",
+              "Rotation": "0.5,0.5,-0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "2bcb3f15-5c14-499a-8c57-f8097038fa5f",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Cube",
+          "Position": "32,32,15.99999",
+          "Rotation": "0,0,0,1",
+          "Scale": "2,1,0.5",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "f70b94ab-d655-4c2d-9288-f577f1589d5d",
+              "__enabled": true,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "8d7c1e6f-3e0f-4ee5-b570-7fe3485bd832",
+              "__enabled": true,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "7fbd9f2e-6985-45a7-9a57-7b320b9967bc",
+              "__enabled": true,
+              "AngularDamping": 0,
+              "EnableImpactDamage": true,
+              "Gravity": true,
+              "GravityScale": 1,
+              "ImpactDamage": 0,
+              "LinearDamping": 0,
+              "Locking": {
+                "X": false,
+                "Y": false,
+                "Z": false,
+                "Pitch": false,
+                "Yaw": false,
+                "Roll": false
+              },
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 1,
+              "MinImpactDamageSpeed": 500,
+              "MotionEnabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OverrideMassCenter": false,
+              "RigidbodyFlags": 0,
+              "StartAsleep": false
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "6d4dd330-6a96-467e-b229-e7010c1f3834",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "16,32,-32",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.WheelJoint",
+                  "__guid": "50f89aa1-785b-4288-b24c-5b8fb65e356a",
+                  "__enabled": true,
+                  "Attachment": "Auto",
+                  "Body": {
+                    "_type": "gameobject",
+                    "go": "c376b127-8fe7-4435-afaa-81b8c7298e72"
+                  },
+                  "BreakForce": 0,
+                  "BreakTorque": 0,
+                  "EnableCollision": false,
+                  "EnableSpinMotor": false,
+                  "EnableSteering": false,
+                  "EnableSteeringLimit": true,
+                  "EnableSuspension": true,
+                  "EnableSuspensionLimit": true,
+                  "LocalFrame1": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "LocalFrame2": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "MaxSpinTorque": 100,
+                  "MaxSteeringTorque": 10000,
+                  "OnBreak": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "SpinMotorSpeed": 1000,
+                  "StartBroken": false,
+                  "SteeringDampingRatio": 1,
+                  "SteeringHertz": 4,
+                  "SteeringLimits": "-20,20",
+                  "SuspensionDampingRatio": 0.5,
+                  "SuspensionHertz": 4,
+                  "SuspensionLimits": "-25,25",
+                  "TargetSteeringAngle": -180
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "f3fdb58a-17bd-425e-ab73-c2fb1e70cf14",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object",
+              "Position": "-15.99998,32,-31.99997",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.WheelJoint",
+                  "__guid": "9d6e2312-5c45-4f3a-958c-38888577bd5b",
+                  "__enabled": true,
+                  "Attachment": "Auto",
+                  "Body": {
+                    "_type": "gameobject",
+                    "go": "c237a5a3-f443-4233-b335-a957a818a827"
+                  },
+                  "BreakForce": 0,
+                  "BreakTorque": 0,
+                  "EnableCollision": false,
+                  "EnableSpinMotor": false,
+                  "EnableSteering": false,
+                  "EnableSteeringLimit": false,
+                  "EnableSuspension": true,
+                  "EnableSuspensionLimit": true,
+                  "LocalFrame1": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "LocalFrame2": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "MaxSpinTorque": 100,
+                  "MaxSteeringTorque": 0,
+                  "OnBreak": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "SpinMotorSpeed": 1000,
+                  "StartBroken": false,
+                  "SteeringDampingRatio": 0,
+                  "SteeringHertz": 0,
+                  "SteeringLimits": "0,0",
+                  "SuspensionDampingRatio": 0.5,
+                  "SuspensionHertz": 4,
+                  "SuspensionLimits": "-25,25",
+                  "TargetSteeringAngle": 0
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "e7480816-faad-4cb0-9c55-6be4a0521634",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object (1)",
+              "Position": "16,-32,-32",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.WheelJoint",
+                  "__guid": "3af547d0-dcd9-43f8-8da6-9d54d4e22df9",
+                  "__enabled": true,
+                  "Attachment": "Auto",
+                  "Body": {
+                    "_type": "gameobject",
+                    "go": "d22bddeb-3d35-41dd-8b76-faa360bc4af5"
+                  },
+                  "BreakForce": 0,
+                  "BreakTorque": 0,
+                  "EnableCollision": false,
+                  "EnableSpinMotor": false,
+                  "EnableSteering": false,
+                  "EnableSteeringLimit": true,
+                  "EnableSuspension": true,
+                  "EnableSuspensionLimit": true,
+                  "LocalFrame1": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "LocalFrame2": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "MaxSpinTorque": 100,
+                  "MaxSteeringTorque": 10000,
+                  "OnBreak": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "SpinMotorSpeed": 1000,
+                  "StartBroken": false,
+                  "SteeringDampingRatio": 1,
+                  "SteeringHertz": 4,
+                  "SteeringLimits": "-20,20",
+                  "SuspensionDampingRatio": 0.5,
+                  "SuspensionHertz": 4,
+                  "SuspensionLimits": "-25,25",
+                  "TargetSteeringAngle": -180
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "fd34ed69-ede1-4eaf-84e7-43cf70a17726",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Object (1)",
+              "Position": "-15.99998,-32,-31.99997",
+              "Rotation": "-0.5,0.5,0.5,0.5",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.WheelJoint",
+                  "__guid": "e640e07a-3aa8-4227-a913-b4dc7dc28906",
+                  "__enabled": true,
+                  "Attachment": "Auto",
+                  "Body": {
+                    "_type": "gameobject",
+                    "go": "13105bb8-2145-496d-9399-e31c459bccc7"
+                  },
+                  "BreakForce": 0,
+                  "BreakTorque": 0,
+                  "EnableCollision": false,
+                  "EnableSpinMotor": false,
+                  "EnableSteering": false,
+                  "EnableSteeringLimit": false,
+                  "EnableSuspension": true,
+                  "EnableSuspensionLimit": true,
+                  "LocalFrame1": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "LocalFrame2": {
+                    "Position": "0,0,0",
+                    "Scale": "0,0,0",
+                    "Rotation": "0,0,0,0"
+                  },
+                  "MaxSpinTorque": 100,
+                  "MaxSteeringTorque": 0,
+                  "OnBreak": null,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "SpinMotorSpeed": 1000,
+                  "StartBroken": false,
+                  "SteeringDampingRatio": 0,
+                  "SteeringHertz": 0,
+                  "SteeringLimits": "0,0",
+                  "SuspensionDampingRatio": 0.5,
+                  "SuspensionHertz": 4,
+                  "SuspensionLimits": "-25,25",
+                  "TargetSteeringAngle": 0
+                }
+              ],
+              "Children": []
+            }
+          ]
         }
       ]
     }
