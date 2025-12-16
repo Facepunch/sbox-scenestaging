@@ -12,6 +12,7 @@ public sealed class ScatterTool : EditorTool
 {
 	BrushPreviewSceneObject brushPreview;
 	IsotopeList isotopeList;
+	public BrushSettings BrushSettings { get; private set; } = new();
 
 	[Property] public float BrushSize { get; set; } = 1f;
 	[Property] public float BrushOpacity { get; set; } = 0.5f;
@@ -24,45 +25,34 @@ public sealed class ScatterTool : EditorTool
 
 	public override Widget CreateToolSidebar()
 	{
-		var widget = new Widget( null );
-		widget.Layout = Layout.Column();
-		widget.Layout.Margin = 8;
-		widget.Layout.Spacing = 8;
-		widget.MinimumWidth = 250;
-		widget.MaximumWidth = 300;
-	
-		var brushGroupLabel = new Label( "Brush Settings" );
-		brushGroupLabel.SetStyles( "font-weight: bold; font-size: 14px; margin-bottom: 4px;" );
-		widget.Layout.Add( brushGroupLabel );
-	
-		var sizeSheet = new ControlSheet();
-		sizeSheet.AddRow( this.GetSerialized().GetProperty( nameof( BrushSize ) ) );
-		widget.Layout.Add( sizeSheet );
-	
-		var opacitySheet = new ControlSheet();
-		opacitySheet.AddRow( this.GetSerialized().GetProperty( nameof( BrushOpacity ) ) );
-		widget.Layout.Add( opacitySheet );
-	
-		var separator = new Widget( null );
-		separator.FixedHeight = 1;
-		separator.SetStyles( "background-color: rgba(255, 255, 255, 0.2); margin: 8px 0px;" );
-		widget.Layout.Add( separator );
-	
-		var isotopeGroupLabel = new Label( "Select Isotope" );
-		isotopeGroupLabel.SetStyles( "font-weight: bold; font-size: 14px; margin-bottom: 8px;" );
-		widget.Layout.Add( isotopeGroupLabel );
-	
-		isotopeList = new IsotopeList( null );
-		isotopeList.MinimumHeight = 300;
-		isotopeList.OnIsotopeSelected = ( isotope ) =>
+		var sidebar = new ToolSidebarWidget();
+		sidebar.AddTitle( "Brush Settings", "brush" );
+		sidebar.MinimumWidth = 300;
+
+		// Brush Properties
 		{
-			SelectedIsotope = isotope;
-		};
-		widget.Layout.Add( isotopeList );
-	
-		widget.Layout.AddStretchCell();
-	
-		return widget;
+			var group = sidebar.AddGroup( "Brush Properties" );
+			var so = BrushSettings.GetSerialized();
+			group.Add( ControlSheet.CreateRow( so.GetProperty( nameof( BrushSettings.Size ) ) ) );
+			group.Add( ControlSheet.CreateRow( so.GetProperty( nameof( BrushSettings.Opacity ) ) ) );
+		}
+
+		// Isotope Selection
+		{
+			var group = sidebar.AddGroup( "Isotopes", SizeMode.Flexible );
+			isotopeList = new IsotopeList( sidebar );
+			isotopeList.MinimumHeight = 300;
+			isotopeList.OnIsotopeSelected = ( isotope ) =>
+			{
+				SelectedIsotope = isotope;
+			};
+
+			isotopeList.BuildItems();
+			group.Add( isotopeList );
+
+		}
+		
+		return sidebar;
 	}
 
 	public override void OnUpdate()
