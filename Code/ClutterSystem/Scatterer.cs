@@ -26,6 +26,7 @@ public abstract class Scatterer
 	/// <summary>
 	/// Random instance for this scattering operation.
 	/// </summary>
+	[JsonIgnore]
 	protected Random Random { get; private set; }
 
 	/// <summary>
