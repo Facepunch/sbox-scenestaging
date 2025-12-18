@@ -24,39 +24,22 @@ public class ClutterTile
 	/// </summary>
 	public int SeedOffset { get; set; }
 
-	/// <summary>
-	/// Whether this tile has been populated with clutter.
-	/// </summary>
-	public bool IsPopulated { get; set; }
-
-	/// <summary>
-	/// Objects spawned in this tile. Tracked for cleanup purposes.
-	/// </summary>
+	public bool IsPopulated { get; internal set; }
+	
 	internal List<GameObject> SpawnedObjects { get; } = [];
 
-	/// <summary>
-	/// Adds a spawned object to this tile's tracking for cleanup.
-	/// </summary>
 	internal void AddObject( GameObject obj )
 	{
-		if ( obj != null && obj.IsValid() )
-		{
+		if ( obj.IsValid() )
 			SpawnedObjects.Add( obj );
-		}
 	}
 
-	/// <summary>
-	/// Destroys all objects spawned in this tile.
-	/// </summary>
 	internal void Destroy()
 	{
 		foreach ( var obj in SpawnedObjects )
-		{
-			if ( obj.IsValid() )
-			{
-				obj.Destroy();
-			}
-		}
+			if ( obj.IsValid() ) obj.Destroy();
+		
 		SpawnedObjects.Clear();
+		IsPopulated = false;
 	}
 }
