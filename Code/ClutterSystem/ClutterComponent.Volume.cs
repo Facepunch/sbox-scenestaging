@@ -44,15 +44,13 @@ public sealed partial class ClutterComponent
 		gridSystem.QueueJob( job );
 	}
 
-	[Button( "Clear Clutter" ), Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
+	[Button( "Clear Clutter" )]
 	[Icon( "delete" )]
 	public void ClearVolume()
 	{
-		var children = GameObject.Children.ToArray();
+		var children = GameObject.Children.Where( c => c.Tags.Has( "clutter" ) ).ToArray();
 		foreach ( var child in children )
-		{
 			child.Destroy();
-		}
 
 		SpawnedCount = 0;
 	}

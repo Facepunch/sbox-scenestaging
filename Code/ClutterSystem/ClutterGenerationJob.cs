@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Sandbox;
 
@@ -56,152 +54,70 @@ public class ClutterGenerationJob
 		};
 	}
 
-	/// <summary>
-	/// Executes the job immediately.
-	/// </summary>
-	internal async Task ExecuteAsync()
-	{
-		List<ClutterInstance> allInstances = new();
-
-		if ( TileData != null )
-		{
-			await GameTask.WorkerThread();
-
-			int seed = Scatterer.GenerateSeed( TileData.SeedOffset, TileData.Coordinates.x, TileData.Coordinates.y );
-			allInstances = Isotope.Scatterer.Scatter( Bounds, Isotope, seed );
-
-			await GameTask.MainThread();
-			SpawnInstances( allInstances, TileData );
-		}
-		else
-		{
-			// Volume mode - generate all cells
-			var cellsX = (int)MathF.Max( 1, MathF.Ceiling( Bounds.Size.x / CellSize ) );
-			var cellsY = (int)MathF.Max( 1, MathF.Ceiling( Bounds.Size.y / CellSize ) );
-			var cellsZ = (int)MathF.Max( 1, MathF.Ceiling( Bounds.Size.z / CellSize ) );
-
-			await GameTask.WorkerThread();
-
-			for ( int x = 0; x < cellsX; x++ )
-			{
-				for ( int y = 0; y < cellsY; y++ )
-				{
-					for ( int z = 0; z < cellsZ; z++ )
-					{
-						var cellBounds = GetCellBounds( Bounds, CellSize, x, y, z );
-
-						int cellSeed = RandomSeed;
-						cellSeed = (cellSeed * 397) ^ x;
-						cellSeed = (cellSeed * 397) ^ y;
-						cellSeed = (cellSeed * 397) ^ z;
-
-						var cellInstances = Isotope.Scatterer.Scatter( cellBounds, Isotope, cellSeed );
-						allInstances.AddRange( cellInstances );
-					}
-				}
-			}
-
-			await GameTask.MainThread();
-			SpawnInstances( allInstances, null );
-		}
-
-		OnComplete?.Invoke( allInstances.Count );
-	}
-
 	public void Execute()
 	{
-		if ( ParentObject == null || !ParentObject.IsValid || ParentObject.Scene == null )
-		{
-			Log.Warning( "ClutterGenerationJob: Invalid parent object or scene" );
-			OnComplete?.Invoke( 0 );
+		if ( !ParentObject.IsValid() || Isotope?.Scatterer == null )
 			return;
-		}
 
-		var scene = ParentObject.Scene;
-		List<ClutterInstance> allInstances = new();
+		var instances = TileData != null 
+			? ScatterTile() 
+			: ScatterVolume();
 
+		SpawnInstances( instances );
+		
 		if ( TileData != null )
-		{
-			int seed = Scatterer.GenerateSeed( TileData.SeedOffset, TileData.Coordinates.x, TileData.Coordinates.y );
-			allInstances = Isotope.Scatterer.Scatter( Bounds, Isotope, seed );
-
-			using ( scene.Push() )
-			{
-				SpawnInstances( allInstances, TileData );
-			}
-		}
-		else
-		{
-			var cellsX = (int)MathF.Max( 1, MathF.Ceiling( Bounds.Size.x / CellSize ) );
-			var cellsY = (int)MathF.Max( 1, MathF.Ceiling( Bounds.Size.y / CellSize ) );
-			var cellsZ = (int)MathF.Max( 1, MathF.Ceiling( Bounds.Size.z / CellSize ) );
-
-			for ( int x = 0; x < cellsX; x++ )
-			{
-				for ( int y = 0; y < cellsY; y++ )
-				{
-					for ( int z = 0; z < cellsZ; z++ )
-					{
-						var cellBounds = GetCellBounds( Bounds, CellSize, x, y, z );
-
-						int cellSeed = RandomSeed;
-						cellSeed = (cellSeed * 397) ^ x;
-						cellSeed = (cellSeed * 397) ^ y;
-						cellSeed = (cellSeed * 397) ^ z;
-
-						var cellInstances = Isotope.Scatterer.Scatter( cellBounds, Isotope, cellSeed );
-						allInstances.AddRange( cellInstances );
-					}
-				}
-			}
-
-			using ( scene.Push() )
-			{
-				SpawnInstances( allInstances, null );
-			}
-		}
-
-		Log.Info( $"ClutterGenerationJob: Spawned {allInstances.Count} instances" );
-		OnComplete?.Invoke( allInstances.Count );
+			TileData.IsPopulated = true;
+			
+		OnComplete?.Invoke( instances.Count );
 	}
 
-	/// <summary>
-	/// Spawns clutter instances as GameObjects.
-	/// Routes Models and Prefabs to their appropriate spawn paths.
-	/// </summary>
-	private void SpawnInstances( List<ClutterInstance> instances, ClutterTile tile )
+	private List<ClutterInstance> ScatterTile()
 	{
-		foreach ( var instance in instances )
-		{
-			if ( instance.Entry.Prefab != null )
-			{
-				GameObject spawnedObject = instance.Entry.Prefab.Clone( instance.Transform, ParentObject.Scene );
-				spawnedObject.Flags |= GameObjectFlags.NotSaved;
-				spawnedObject.Tags.Add( "clutter" );
-				spawnedObject.SetParent( ParentObject );
-				tile?.AddObject( spawnedObject );
-			}
-			else if ( instance.Entry.Model != null )
-			{
+		var seed = Scatterer.GenerateSeed( TileData.SeedOffset, TileData.Coordinates.x, TileData.Coordinates.y );
+		return Isotope.Scatterer.Scatter( Bounds, Isotope, seed, ParentObject.Scene );
+	}
 
+	private List<ClutterInstance> ScatterVolume()
+	{
+		var instances = new List<ClutterInstance>();
+		var cellsX = (int)MathF.Ceiling( Bounds.Size.x / CellSize );
+		var cellsY = (int)MathF.Ceiling( Bounds.Size.y / CellSize );
+		var cellsZ = (int)MathF.Ceiling( Bounds.Size.z / CellSize );
+
+		for ( int x = 0; x < cellsX; x++ )
+		for ( int y = 0; y < cellsY; y++ )
+		for ( int z = 0; z < cellsZ; z++ )
+		{
+			var cellBounds = GetCellBounds( x, y, z );
+			var cellSeed = HashCode.Combine( RandomSeed, x, y, z );
+			instances.AddRange( Isotope.Scatterer.Scatter( cellBounds, Isotope, cellSeed, ParentObject.Scene ) );
+		}
+
+		return instances;
+	}
+
+	private void SpawnInstances( List<ClutterInstance> instances )
+	{
+		using ( ParentObject.Scene.Push() )
+		{
+			foreach ( var instance in instances )
+			{
+				if ( instance.Entry.Prefab == null ) 
+					continue;
+
+				var obj = instance.Entry.Prefab.Clone( instance.Transform, ParentObject.Scene );
+				obj.Flags |= GameObjectFlags.NotSaved;
+				obj.Tags.Add( "clutter" );
+				obj.SetParent( ParentObject );
+				TileData?.AddObject( obj );
 			}
 		}
 	}
 
-	private static BBox GetCellBounds( BBox volumeBounds, float cellSize, int x, int y, int z )
+	private BBox GetCellBounds( int x, int y, int z )
 	{
-		var cellMin = new Vector3(
-			volumeBounds.Mins.x + (x * cellSize),
-			volumeBounds.Mins.y + (y * cellSize),
-			volumeBounds.Mins.z + (z * cellSize)
-		);
-
-		var cellMax = new Vector3(
-			MathF.Min( volumeBounds.Maxs.x, cellMin.x + cellSize ),
-			MathF.Min( volumeBounds.Maxs.y, cellMin.y + cellSize ),
-			MathF.Min( volumeBounds.Maxs.z, cellMin.z + cellSize )
-		);
-
-		return new BBox( cellMin, cellMax );
+		var min = Bounds.Mins + new Vector3( x, y, z ) * CellSize;
+		var max = Vector3.Min( Bounds.Maxs, min + CellSize );
+		return new BBox( min, max );
 	}
 }

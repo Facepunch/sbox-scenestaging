@@ -18,6 +18,8 @@ public class ClutterIsotope : GameResource
 	[Property]
 	public List<IsotopeEntry> Entries { get; set; } = [];
 
+	public bool IsEmpty => Entries.Count == 0;
+
 	/// <summary>
 	/// Size of each tile in world units for infinite streaming mode.
 	/// Smaller values = more frequent updates, larger values = better performance.
@@ -32,6 +34,8 @@ public class ClutterIsotope : GameResource
 	[Property, Group( "Streaming" ), Range( 1, 10 )]
 	public int TileRadius { get; set; } = 4;
 
+	private string _scattererTypeName = nameof( SimpleScatterer );
+
 	/// <summary>
 	/// Type name of the scatterer to use (e.g., "SimpleScatterer", "PoissonScatterer").
 	/// Change this to switch between different scatterer implementations.
@@ -41,17 +45,17 @@ public class ClutterIsotope : GameResource
 	[Editor( "ScattererTypeSelector" )]
 	public string ScattererTypeName
 	{
-		get => field;
+		get => _scattererTypeName;
 		set
 		{
-			if ( field != value )
+			if ( _scattererTypeName != value )
 			{
-				field = value;
+				_scattererTypeName = value ?? nameof( SimpleScatterer );
 				// Recreate scatterer when type changes
-				Scatterer = CreateScatterer( value ?? nameof( SimpleScatterer ) );
+				Scatterer = CreateScatterer( _scattererTypeName );
 			}
 		}
-	} = nameof( SimpleScatterer );
+	}
 
 	/// <summary>
 	/// The scatterer instance that defines how objects from this isotope are placed.

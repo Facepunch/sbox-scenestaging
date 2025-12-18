@@ -27,6 +27,15 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	[Property]
 	public bool Infinite { get; set; }
 
+	protected override void OnDisabled()
+	{
+		// For volume mode, clean up immediately
+		if ( !Infinite )
+			ClearVolume();
+
+		base.OnDisabled();
+	}
+
 	protected override void DrawGizmos()
 	{
 		if ( !Infinite )

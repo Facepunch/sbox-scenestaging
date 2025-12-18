@@ -1,4 +1,4 @@
-﻿using Sandbox.Sdf;
+using Sandbox.Sdf;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -34,8 +34,9 @@ public abstract class Scatterer
 	/// </summary>
 	/// <param name="bounds">World-space bounds to scatter within</param>
 	/// <param name="isotope">The isotope containing objects to scatter</param>
+	/// <param name="scene">Scene to use for tracing (null falls back to Game.ActiveScene)</param>
 	/// <returns>Collection of clutter instances to spawn</returns>
-	protected abstract List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope );
+	protected abstract List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope, Scene scene = null );
 
 	/// <summary>
 	/// Public entry point for scattering. Creates Random from seed and calls Generate().
@@ -43,13 +44,14 @@ public abstract class Scatterer
 	/// <param name="bounds">World-space bounds to scatter within</param>
 	/// <param name="isotope">The isotope containing objects to scatter</param>
 	/// <param name="seed">Seed for deterministic random generation</param>
+	/// <param name="scene">Scene to use for tracing (required in editor mode)</param>
 	/// <returns>Collection of clutter instances to spawn</returns>
-	public List<ClutterInstance> Scatter( BBox bounds, ClutterIsotope isotope, int seed )
+	public List<ClutterInstance> Scatter( BBox bounds, ClutterIsotope isotope, int seed, Scene scene = null )
 	{
 		// Let's make a deterministic Random object for scatterer to use.
 		Random = new Random( seed );
 
-		return Generate( bounds, isotope );
+		return Generate( bounds, isotope, scene );
 	}
 
 	/// <summary>
@@ -87,7 +89,7 @@ public abstract class Scatterer
 			return null;
 
 		float totalWeight = isotope.Entries.Sum( e => e.Weight );
-		if ( totalWeight <= 0 )
+		if ( totalWeight == 0 )
 			return null;
 
 		var randomValue = Random.Float( 0f, totalWeight );
@@ -116,8 +118,8 @@ public abstract class Scatterer
 			return null;
 
 		// Unsure about this limit.... just needs to be high enough to not miss the scene
-		var traceStart = new Vector3( position.x, position.y, 10000f );
-		var traceEnd = new Vector3( position.x, position.y, -10000f );
+		var traceStart = new Vector3( position.x, position.y, 50000f );
+		var traceEnd = new Vector3( position.x, position.y, -50000f );
 
 		return scene.Trace
 			.Ray( traceStart, traceEnd )
@@ -142,36 +144,28 @@ public class SimpleScatterer : Scatterer
 {
 	[Property] public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
 	[Property] public int PointCount { get; set; } = 10;
+	[Property, Group( "Placement" )] public bool PlaceOnGround { get; set; } = true;
+	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] public float HeightOffset { get; set; }
+	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] public bool AlignToNormal { get; set; }
 
-	[Property, Group( "Placement" )]
-	public bool PlaceOnGround { get; set; } = true;
-
-	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )]
-	public float HeightOffset { get; set; } = 0f;
-
-	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )]
-	public bool AlignToNormal { get; set; } = false;
-
-	protected override List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope )
+	protected override List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope, Scene scene = null )
 	{
+		scene ??= Game.ActiveScene;
+		if ( scene == null || isotope == null )
+			return [];
+
 		var instances = new List<ClutterInstance>( PointCount );
-
-		if ( isotope == null )
-			return instances;
-
-		var scene = Game.ActiveScene;
 
 		for ( int i = 0; i < PointCount; i++ )
 		{
-			// Random point in bounds
 			var point = new Vector3(
 				bounds.Mins.x + Random.Float( bounds.Size.x ),
 				bounds.Mins.y + Random.Float( bounds.Size.y ),
 				0f
 			);
 
-			Rotation rotation;
-			float scale = Random.Float( Scale.Min, Scale.Max );
+			var scale = Random.Float( Scale.Min, Scale.Max );
+			var rotation = Rotation.FromYaw( Random.Float( 0f, 360f ) );
 
 			if ( PlaceOnGround )
 			{
@@ -180,36 +174,22 @@ public class SimpleScatterer : Scatterer
 					continue;
 
 				point = trace.Value.HitPosition + trace.Value.Normal * HeightOffset;
-				rotation = CalculateRotation( trace.Value.Normal );
-			}
-			else
-			{
-				rotation = Rotation.FromYaw( Random.Float( 0f, 360f ) );
+				rotation = AlignToNormal 
+					? Rotation.From( new Angles( 0, Random.Float( 0f, 360f ), 0 ) ) * Rotation.FromToRotation( Vector3.Up, trace.Value.Normal )
+					: Rotation.FromYaw( Random.Float( 0f, 360f ) );
 			}
 
 			var entry = GetRandomEntry( isotope );
-			if ( entry != null )
+			if ( entry == null )
+				continue;
+
+			instances.Add( new ClutterInstance
 			{
-				instances.Add( new ClutterInstance
-				{
-					Transform = new Transform( point, rotation, scale ),
-					Entry = entry
-				} );
-			}
+				Transform = new Transform( point, rotation, scale ),
+				Entry = entry
+			} );
 		}
 
 		return instances;
-	}
-
-	private Rotation CalculateRotation( Vector3 surfaceNormal )
-	{
-		var yaw = Random.Float( 0f, 360f );
-
-		if ( AlignToNormal )
-		{
-			return Rotation.From( new Angles( 0, yaw, 0 ) ) * Rotation.FromToRotation( Vector3.Up, surfaceNormal );
-		}
-
-		return Rotation.FromYaw( yaw );
 	}
 }
