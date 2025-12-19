@@ -12,9 +12,9 @@ namespace Editor;
 public class ScattererSettingsControlWidget : ControlWidget
 {
 	private ControlSheet _sheet;
-	private string _lastSerializedState;
 
 	public override bool SupportsMultiEdit => false;
+	public override bool IncludeLabel => false;
 
 	public ScattererSettingsControlWidget( SerializedProperty property ) : base( property )
 	{
@@ -22,21 +22,17 @@ public class ScattererSettingsControlWidget : ControlWidget
 		Layout.Spacing = 2;
 
 		RebuildSheet();
-		
-		// Store initial state
-		_lastSerializedState = SerializeScatterer();
 	}
 
 	private void RebuildSheet()
 	{
-		// Clear existing sheet
-		_sheet?.Destroy();
+		// Clear everything
+		Layout.Clear( true );
 
 		var scatterer = SerializedProperty.GetValue<Scatterer>();
 		if ( scatterer == null )
 		{
-			var label = new Label( "No scatterer configured" );
-			Layout.Add( label );
+			Layout.Add( new Label( "No scatterer configured" ) );
 			return;
 		}
 
@@ -55,36 +51,5 @@ public class ScattererSettingsControlWidget : ControlWidget
 		}
 
 		Layout.Add( _sheet );
-	}
-
-	private string SerializeScatterer()
-	{
-		var scatterer = SerializedProperty.GetValue<Scatterer>();
-		if ( scatterer == null ) return null;
-		
-		try
-		{
-			return Json.Serialize( scatterer );
-		}
-		catch
-		{
-			return null;
-		}
-	}
-
-	protected override void OnPaint()
-	{
-		base.OnPaint();
-
-		// Check if the scatterer has changed
-		var currentState = SerializeScatterer();
-		if ( currentState != _lastSerializedState )
-		{
-			_lastSerializedState = currentState;
-			
-			// Trigger a change by re-setting the value
-			var scatterer = SerializedProperty.GetValue<Scatterer>();
-			SerializedProperty.SetValue( scatterer );
-		}
 	}
 }
