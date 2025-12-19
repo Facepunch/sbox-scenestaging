@@ -13,9 +13,6 @@ public sealed class ScatterTool : EditorTool
 	BrushPreviewSceneObject brushPreview;
 	IsotopeList isotopeList;
 	public BrushSettings BrushSettings { get; private set; } = new();
-
-	[Property] public float BrushSize { get; set; } = 1f;
-	[Property] public float BrushOpacity { get; set; } = 0.5f;
 	[Property] public ClutterIsotope SelectedIsotope { get; set; }
 
 	private bool Erasing = false;
@@ -104,7 +101,7 @@ public sealed class ScatterTool : EditorTool
 		if ( SelectedIsotope == null || SelectedIsotope.Scatterer == null )
 			return;
 
-		var tr = Scene.Trace.Ray( Gizmo.CurrentRay, 10000 )
+		var tr = Scene.Trace.Ray( Gizmo.CurrentRay, 100000 )
 			.UseRenderMeshes( true )
 			.WithTag( "solid" )
 			.WithoutTags( "scattered_object" )
@@ -124,7 +121,7 @@ public sealed class ScatterTool : EditorTool
 		}
 		else
 		{
-			ScatterAtPosition( tr.HitPosition, tr.Normal );
+			ScatterAtPosition( tr.HitPosition );
 		}
 	}
 
@@ -146,9 +143,9 @@ public sealed class ScatterTool : EditorTool
 
 		brushPreview ??= new BrushPreviewSceneObject( Gizmo.World );
 
-		var brushRadius = BrushSize * 50f;
+		var brushRadius = BrushSettings.Size;
 		var color = Erasing ? Color.FromBytes( 250, 150, 150 ) : Color.FromBytes( 150, 150, 250 );
-		color.a = BrushOpacity;
+		color.a = BrushSettings.Opacity;
 
 		var brush = TerrainEditorTool.Brush;
 		var previewPosition = tr.HitPosition + tr.Normal * 1f;
@@ -162,12 +159,12 @@ public sealed class ScatterTool : EditorTool
 		brushPreview.Color = color;
 	}
 
-	private void ScatterAtPosition( Vector3 position, Vector3 normal )
+	private void ScatterAtPosition( Vector3 position )
 	{
 		if ( SelectedIsotope == null || SelectedIsotope.Scatterer == null )
 			return;
 
-		var brushRadius = BrushSize * 50f;
+		var brushRadius = BrushSettings.Size;
 		var bounds = new BBox(
 			position + new Vector3( -brushRadius, -brushRadius, -100 ),
 			position + new Vector3( brushRadius, brushRadius, 100 )
@@ -176,7 +173,7 @@ public sealed class ScatterTool : EditorTool
 		var seed = System.DateTime.Now.Ticks.GetHashCode();
 		var instances = SelectedIsotope.Scatterer.Scatter( bounds, SelectedIsotope, seed );
 
-		int targetCount = (int)MathF.Ceiling( instances.Count * BrushOpacity );
+		int targetCount = (int)MathF.Ceiling( instances.Count * BrushSettings.Opacity );
 		var filteredInstances = instances.Take( targetCount ).ToList();
 
 		foreach ( var instance in filteredInstances )
@@ -192,8 +189,8 @@ public sealed class ScatterTool : EditorTool
 
 	private void EraseScatteredObjects( Vector3 position )
 	{
-		var brushRadius = BrushSize * 50f;
-		var allObjects = SceneEditorSession.Active?.Scene?.GetAllObjects( false ) ?? Enumerable.Empty<GameObject>();
+		var brushRadius = BrushSettings.Size;
+		var allObjects = SceneEditorSession.Active?.Scene?.GetAllObjects( false ) ?? [];
 		
 		var objectsToErase = allObjects
 			.Where( obj => obj.Tags.Has( "scattered_object" ) )
