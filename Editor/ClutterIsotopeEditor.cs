@@ -12,27 +12,32 @@ public class ClutterIsotopeEditor : BaseResourceEditor<ClutterIsotope>
 	protected override void Initialize( Asset asset, ClutterIsotope resource )
 	{
 		Layout = Layout.Column();
+		Layout.Spacing = 0;
 		Layout.Margin = 0;
+		
+		// Enable drag & drop on the editor window
+		AcceptDrops = true;
 		
 		var serialized = resource.GetSerialized();
 		
-		// Create main control sheet
+		// Create main control sheet with standard layout
 		var sheet = new ControlSheet();
+		sheet.Margin = new Sandbox.UI.Margin( 8 );
 		
-		// Entries Group
+		// Entries List (standard list, no custom widget)
 		var entriesProperty = serialized.GetProperty( nameof( ClutterIsotope.Entries ) );
 		if ( entriesProperty != null )
 		{
-			sheet.AddGroup( "Entries", [entriesProperty] );
+			sheet.AddGroup( "Entries", new[] { entriesProperty } );
 		}
 		
 		// Scatterer Group
 		var scattererTypeProperty = serialized.GetProperty( nameof( ClutterIsotope.ScattererTypeName ) );
 		var scattererProperty = serialized.GetProperty( nameof( ClutterIsotope.Scatterer ) );
-		var scattererPropertyTitle = ControlSheet.CreateLabel( serialized.GetProperty( nameof( ClutterIsotope.Scatterer ) ) );
+		
 		if ( scattererTypeProperty != null && scattererProperty != null )
 		{
-			sheet.AddGroup( "Scatterer", [scattererTypeProperty, scattererPropertyTitle, scattererProperty] );
+			sheet.AddGroup( "Scatterer", new[] { scattererTypeProperty, scattererProperty } );
 		}
 		
 		// Streaming Group
@@ -41,7 +46,7 @@ public class ClutterIsotopeEditor : BaseResourceEditor<ClutterIsotope>
 		
 		if ( tileSizeProperty != null && tileRadiusProperty != null )
 		{
-			sheet.AddGroup( "Streaming", [tileSizeProperty, tileRadiusProperty] );
+			sheet.AddGroup( "Streaming", new[] { tileSizeProperty, tileRadiusProperty } );
 		}
 		
 		Layout.Add( sheet );

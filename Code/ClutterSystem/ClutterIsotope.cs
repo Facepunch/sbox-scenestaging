@@ -16,6 +16,7 @@ public class ClutterIsotope : GameResource
 	/// List of weighted entries (Prefabs or Models with weights).
 	/// </summary>
 	[Property]
+	[Editor( "IsotopeEntriesGrid" )]
 	public List<IsotopeEntry> Entries { get; set; } = [];
 
 	public bool IsEmpty => Entries.Count == 0;
@@ -34,10 +35,10 @@ public class ClutterIsotope : GameResource
 	[Property, Group( "Streaming" ), Range( 1, 10 )]
 	public int TileRadius { get; set; } = 4;
 
-	private string _scattererTypeName = nameof( SimpleScatterer );
+	private string _scattererTypeName;
 
 	/// <summary>
-	/// Type name of the scatterer to use (e.g., "SimpleScatterer", "PoissonScatterer").
+	/// Type name of the scatterer to use (e.g., "SimpleScatterer", "SlopeScatterer").
 	/// Change this to switch between different scatterer implementations.
 	/// Available types will be shown when you click the property.
 	/// </summary>
@@ -45,14 +46,17 @@ public class ClutterIsotope : GameResource
 	[Editor( "ScattererTypeSelector" )]
 	public string ScattererTypeName
 	{
-		get => _scattererTypeName;
+		get => _scattererTypeName ?? nameof( SimpleScatterer );
 		set
 		{
-			if ( _scattererTypeName != value )
+			var normalizedValue = value ?? nameof( SimpleScatterer );
+
+			if ( _scattererTypeName != normalizedValue )
 			{
-				_scattererTypeName = value ?? nameof( SimpleScatterer );
-				// Recreate scatterer when type changes
-				Scatterer = CreateScatterer( _scattererTypeName );
+				_scattererTypeName = normalizedValue;
+				
+				// Always create a new scatterer when type changes
+				Scatterer = CreateScatterer( normalizedValue );
 			}
 		}
 	}
@@ -63,7 +67,7 @@ public class ClutterIsotope : GameResource
 	/// </summary>
 	[Property, Title( "Scatterer Settings" )]
 	[Editor( "ScattererSettings" )]
-	public Scatterer Scatterer { get; set; } = new SimpleScatterer();
+	public Scatterer Scatterer { get; set; }
 
 	private static Scatterer CreateScatterer( string typeName )
 	{
@@ -196,10 +200,16 @@ public class ClutterIsotope : GameResource
 	{
 		base.PostLoad();
 
-		// If no scatterer or type name changed, recreate it
-		if ( Scatterer == null || Scatterer.GetType().Name != ScattererTypeName )
+		// Ensure we have a valid scatterer after loading
+		if ( Scatterer == null )
 		{
-			Scatterer = CreateScatterer( ScattererTypeName ?? nameof( SimpleScatterer ) );
+			// No scatterer was deserialized, create one based on type name
+			Scatterer = CreateScatterer( _scattererTypeName ?? nameof( SimpleScatterer ) );
+		}
+		else
+		{
+			// Scatterer was loaded, sync the type name to match
+			_scattererTypeName = Scatterer.GetType().Name;
 		}
 	}
 }
