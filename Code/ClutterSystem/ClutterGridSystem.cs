@@ -13,6 +13,7 @@ public sealed class ClutterGridSystem : GameObjectSystem
 	private Dictionary<ClutterComponent, ClutterLayer> ComponentToLayer { get; set; } = [];
 	private List<ClutterGenerationJob> PendingJobs { get; set; } = [];
 	private HashSet<ClutterTile> PendingTiles { get; set; } = [];
+	private HashSet<Terrain> SubscribedTerrains { get; set; } = [];
 	private Vector3 LastCameraPosition { get; set; }
 	private const int MAX_JOBS_PER_FRAME = 8;
 
@@ -61,6 +62,40 @@ public sealed class ClutterGridSystem : GameObjectSystem
 		}
 	}
 
+	/// <summary>
+	/// Invalidates the tile at the given world position for a component, causing it to regenerate.
+	/// </summary>
+	public void InvalidateTileAt( ClutterComponent component, Vector3 worldPosition )
+	{
+		if ( ComponentToLayer.TryGetValue( component, out var layer ) )
+		{
+			layer.InvalidateTile( worldPosition );
+		}
+	}
+
+	/// <summary>
+	/// Invalidates all tiles within the given bounds for a component, causing them to regenerate.
+	/// </summary>
+	public void InvalidateTilesInBounds( ClutterComponent component, BBox bounds )
+	{
+		if ( ComponentToLayer.TryGetValue( component, out var layer ) )
+		{
+			layer.InvalidateTilesInBounds( bounds );
+		}
+	}
+
+	/// <summary>
+	/// Invalidates all tiles within the given bounds for ALL infinite clutter components.
+	/// Useful for terrain painting where you want to refresh all clutter layers.
+	/// </summary>
+	public void InvalidateTilesInBounds( BBox bounds )
+	{
+		foreach ( var layer in ComponentToLayer.Values )
+		{
+			layer.InvalidateTilesInBounds( bounds );
+		}
+	}
+
 	private void OnUpdate()
 	{
 		var camera = GetActiveCamera();
@@ -69,8 +104,69 @@ public sealed class ClutterGridSystem : GameObjectSystem
 
 		LastCameraPosition = camera.WorldPosition;
 
+		SubscribeToTerrains();
 		UpdateInfiniteLayers( LastCameraPosition );
 		ProcessJobs();
+	}
+
+	private void SubscribeToTerrains()
+	{
+		var terrains = Scene.GetAllComponents<Terrain>();
+
+		foreach ( var terrain in terrains )
+		{
+			if ( SubscribedTerrains.Add( terrain ) )
+			{
+				terrain.OnTerrainModified += OnTerrainModified;
+			}
+		}
+
+		// Clean up removed terrains
+		var toRemove = SubscribedTerrains.Where( t => !t.IsValid() ).ToList();
+		foreach ( var terrain in toRemove )
+		{
+			SubscribedTerrains.Remove( terrain );
+		}
+	}
+
+	private void OnTerrainModified( Terrain.SyncFlags flags, RectInt region )
+	{
+		// Only care about control map changes (material painting)
+		//if ( !flags.HasFlag( Terrain.SyncFlags.Control ) )
+		//	return;
+
+		// Convert terrain region to world bounds
+		var bounds = TerrainRegionToWorldBounds( SubscribedTerrains.First(), region );
+
+		// Invalidate all clutter tiles in this region
+		InvalidateTilesInBounds( bounds );
+	}
+
+	private BBox TerrainRegionToWorldBounds( Terrain terrain, RectInt region )
+	{
+		var terrainTransform = terrain.WorldTransform;
+		var storage = terrain.Storage;
+
+		// Convert pixel coordinates to normalized (0-1) coordinates
+		var minNorm = new Vector2(
+			(float)region.Left / storage.Resolution,
+			(float)region.Top / storage.Resolution
+		);
+		var maxNorm = new Vector2(
+			(float)region.Right / storage.Resolution,
+			(float)region.Bottom / storage.Resolution
+		);
+
+		// Convert to world position relative to terrain
+		var terrainSize = storage.TerrainSize;
+		var minLocal = new Vector3( minNorm.x * terrainSize, minNorm.y * terrainSize, -1000f );
+		var maxLocal = new Vector3( maxNorm.x * terrainSize, maxNorm.y * terrainSize, 1000f );
+
+		// Transform to world space
+		var minWorld = terrainTransform.PointToWorld( minLocal );
+		var maxWorld = terrainTransform.PointToWorld( maxLocal );
+
+		return new BBox( minWorld, maxWorld );
 	}
 
 	private CameraComponent GetActiveCamera()

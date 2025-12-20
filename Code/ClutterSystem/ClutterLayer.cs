@@ -42,8 +42,8 @@ public class ClutterLayer
 		var jobs = new List<ClutterGenerationJob>();
 
 		// Find tiles that should exist
-		for ( int x = -Settings.TileRadius; x <= Settings.TileRadius; x++ )
-		for ( int y = -Settings.TileRadius; y <= Settings.TileRadius; y++ )
+		for ( int x = -Settings.Clutter.TileRadius; x <= Settings.Clutter.TileRadius; x++ )
+		for ( int y = -Settings.Clutter.TileRadius; y <= Settings.Clutter.TileRadius; y++ )
 		{
 			var coord = new Vector2Int( centerTile.x + x, centerTile.y + y );
 			activeCoords.Add( coord );
@@ -67,7 +67,7 @@ public class ClutterLayer
 					tile.Bounds,
 					tile,
 					Settings.RandomSeed,
-					Settings.clutter,
+					Settings.Clutter,
 					ParentObject
 				) );
 			}
@@ -88,6 +88,39 @@ public class ClutterLayer
 		return jobs;
 	}
 
+	/// <summary>
+	/// Invalidates the tile at the given world position, causing it to regenerate.
+	/// </summary>
+	public void InvalidateTile( Vector3 worldPosition )
+	{
+		var coord = WorldToTile( worldPosition );
+		if ( Tiles.TryGetValue( coord, out var tile ) )
+		{
+			GridSystem?.RemovePendingTile( tile );
+			tile.Destroy();
+		}
+	}
+
+	/// <summary>
+	/// Invalidates all tiles that intersect the given bounds, causing them to regenerate.
+	/// </summary>
+	public void InvalidateTilesInBounds( BBox bounds )
+	{
+		var minTile = WorldToTile( bounds.Mins );
+		var maxTile = WorldToTile( bounds.Maxs );
+
+		for ( int x = minTile.x; x <= maxTile.x; x++ )
+		for ( int y = minTile.y; y <= maxTile.y; y++ )
+		{
+			var coord = new Vector2Int( x, y );
+			if ( Tiles.TryGetValue( coord, out var tile ) )
+			{
+				GridSystem?.RemovePendingTile( tile );
+				tile.Destroy();
+			}
+		}
+	}
+
 	public void ClearAllTiles()
 	{
 		foreach ( var tile in Tiles.Values )
@@ -100,12 +133,12 @@ public class ClutterLayer
 	}
 
 	private Vector2Int WorldToTile( Vector3 worldPos ) => new(
-		(int)MathF.Floor( worldPos.x / Settings.TileSize ),
-		(int)MathF.Floor( worldPos.y / Settings.TileSize )
+		(int)MathF.Floor( worldPos.x / Settings.Clutter.TileSize ),
+		(int)MathF.Floor( worldPos.y / Settings.Clutter.TileSize )
 	);
 
 	private BBox GetTileBounds( Vector2Int coord ) => new(
-		new Vector3( coord.x * Settings.TileSize, coord.y * Settings.TileSize, -TileHeight ),
-		new Vector3( (coord.x + 1) * Settings.TileSize, (coord.y + 1) * Settings.TileSize, TileHeight )
+		new Vector3( coord.x * Settings.Clutter.TileSize, coord.y * Settings.Clutter.TileSize, -TileHeight ),
+		new Vector3( (coord.x + 1) * Settings.Clutter.TileSize, (coord.y + 1) * Settings.Clutter.TileSize, TileHeight )
 	);
 }

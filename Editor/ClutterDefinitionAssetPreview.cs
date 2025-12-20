@@ -150,8 +150,7 @@ public class ClutterDefinitionAssetPreview : AssetPreview
 				cellSize: _previewTileSize,
 				randomSeed: 42, // Fixed seed for consistent preview
 				clutter: _currentclutter,
-				parentObject: _clutterObject,
-				onComplete: null
+				parentObject: _clutterObject
 			);
 			
 			// Execute immediately, synchronously
@@ -266,8 +265,7 @@ public class ClutterDefinitionAssetPreview : AssetPreview
 							cellSize: _previewTileSize,
 							randomSeed: DateTime.Now.Ticks.GetHashCode(), // Random seed
 							clutter: _currentclutter,
-							parentObject: _clutterObject,
-							onComplete: null
+							parentObject: _clutterObject
 						);
 						
 						job.Execute();

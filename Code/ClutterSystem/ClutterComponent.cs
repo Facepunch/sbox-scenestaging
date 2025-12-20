@@ -49,6 +49,30 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 		gridSystem?.ClearComponent( this );
 	}
 
+	/// <summary>
+	/// Invalidates the tile at the given world position, causing it to regenerate.
+	/// Only works in infinite mode.
+	/// </summary>
+	public void InvalidateTileAt( Vector3 worldPosition )
+	{
+		if ( !Infinite ) return;
+
+		var gridSystem = Scene?.GetSystem<ClutterGridSystem>();
+		gridSystem?.InvalidateTileAt( this, worldPosition );
+	}
+
+	/// <summary>
+	/// Invalidates all tiles within the given bounds, causing them to regenerate.
+	/// Only works in infinite mode.
+	/// </summary>
+	public void InvalidateTilesInBounds( BBox bounds )
+	{
+		if ( !Infinite ) return;
+
+		var gridSystem = Scene?.GetSystem<ClutterGridSystem>();
+		gridSystem?.InvalidateTilesInBounds( this, bounds );
+	}
+
 	protected override void OnDisabled()
 	{
 		Clear();
