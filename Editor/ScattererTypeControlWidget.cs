@@ -21,4 +21,10 @@ public class ScattererTypeControlWidget : DropdownControlWidget<string>
 
 		return scattererTypes.Select( s => s.Name );
 	}
+
+	protected override void OnValueChanged()
+	{
+		base.OnValueChanged();
+		SerializedProperty.Parent?.NoteChanged( SerializedProperty );
+	}
 }

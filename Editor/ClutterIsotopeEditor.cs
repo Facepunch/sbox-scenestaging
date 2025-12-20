@@ -14,11 +14,14 @@ public class ClutterIsotopeEditor : BaseResourceEditor<ClutterIsotope>
 		Layout = Layout.Column();
 		Layout.Spacing = 0;
 		Layout.Margin = 0;
-		
+
 		// Enable drag & drop on the editor window
 		AcceptDrops = true;
-		
+
 		var serialized = resource.GetSerialized();
+
+		// Subscribe to property changes to mark resource as dirty
+		serialized.OnPropertyChanged += _ => resource.StateHasChanged();
 		
 		// Create main control sheet with standard layout
 		var sheet = new ControlSheet();

@@ -12,6 +12,8 @@ namespace Editor;
 public class ScattererSettingsControlWidget : ControlWidget
 {
 	private ControlSheet _sheet;
+	private SerializedObject _serializedScatterer;
+	private Scatterer _currentScatterer;
 
 	public override bool SupportsMultiEdit => false;
 	public override bool IncludeLabel => false;
@@ -29,8 +31,14 @@ public class ScattererSettingsControlWidget : ControlWidget
 		// Clear everything
 		Layout.Clear( true );
 
-		var scatterer = SerializedProperty.GetValue<Scatterer>();
-		if ( scatterer == null )
+		// Unsubscribe from old serialized object
+		if ( _serializedScatterer != null )
+		{
+			_serializedScatterer.OnPropertyChanged -= OnScattererPropertyChanged;
+		}
+
+		_currentScatterer = SerializedProperty.GetValue<Scatterer>();
+		if ( _currentScatterer == null )
 		{
 			Layout.Add( new Label( "No scatterer configured" ) );
 			return;
@@ -40,16 +48,37 @@ public class ScattererSettingsControlWidget : ControlWidget
 		_sheet = new ControlSheet();
 
 		// Get the serialized object for the scatterer
-		var serializedScatterer = EditorTypeLibrary.GetSerializedObject( scatterer );
-		if ( serializedScatterer != null )
+		_serializedScatterer = EditorTypeLibrary.GetSerializedObject( _currentScatterer );
+		if ( _serializedScatterer != null )
 		{
+			// Subscribe to property changes
+			_serializedScatterer.OnPropertyChanged += OnScattererPropertyChanged;
+
 			// Add all properties from the scatterer
-			foreach ( var prop in serializedScatterer.Where( p => !p.HasAttribute<HideAttribute>() ) )
+			foreach ( var prop in _serializedScatterer.Where( p => !p.HasAttribute<HideAttribute>() ) )
 			{
 				_sheet.AddRow( prop );
 			}
 		}
 
 		Layout.Add( _sheet );
+	}
+
+	private void OnScattererPropertyChanged( SerializedProperty prop )
+	{
+		// When any scatterer property changes, notify the parent
+		SerializedProperty.Parent?.NoteChanged( SerializedProperty );
+	}
+
+	protected override void OnValueChanged()
+	{
+		base.OnValueChanged();
+
+		// Only rebuild if the scatterer instance actually changed
+		var newScatterer = SerializedProperty.GetValue<Scatterer>();
+		if ( newScatterer != _currentScatterer )
+		{
+			RebuildSheet();
+		}
 	}
 }

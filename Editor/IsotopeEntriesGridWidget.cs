@@ -45,6 +45,8 @@ public class IsotopeEntriesGridWidget : ControlWidget
 	{
 		base.OnDragHover( e );
 
+		if ( e.Data.Assets == null ) return;
+
 		foreach ( var dragAsset in e.Data.Assets )
 		{
 			var path = dragAsset.AssetPath;
@@ -64,7 +66,8 @@ public class IsotopeEntriesGridWidget : ControlWidget
 	public override void OnDragDrop( DragEvent e )
 	{
 		base.OnDragDrop( e );
-		AddAssetsFromDrop( e.Data.Assets );
+		if ( e.Data.Assets != null )
+			AddAssetsFromDrop( e.Data.Assets );
 	}
 
 	internal async void AddAssetsFromDrop( IEnumerable<DragAssetData> draggedAssets )
@@ -109,10 +112,9 @@ public class IsotopeEntriesGridWidget : ControlWidget
 			}
 
 			// Add to list and notify property system
-			_listProperty.Parent?.NoteStartEdit( _listProperty );
 			entries.Add( newEntry );
 			_listProperty.SetValue( entries );
-			_listProperty.Parent?.NoteFinishEdit( _listProperty );
+			_listProperty.Parent?.NoteChanged( _listProperty );
 		}
 
 		RebuildList();
@@ -133,9 +135,9 @@ public class IsotopeEntriesGridWidget : ControlWidget
 
 			ItemSpacing = 4;
 			Margin = 8;
-			MinimumHeight = 120;
+			MinimumHeight = 90;
 			ItemSize = new Vector2( 86, 86 + 16 );
-			ItemAlign = Sandbox.UI.Align.FlexStart;
+			ItemAlign = Align.FlexStart;
 			ItemContextMenu = ShowItemContext;
 			AcceptDrops = true;
 
@@ -244,10 +246,9 @@ public class IsotopeEntriesGridWidget : ControlWidget
 				slider.MinimumWidth = 150;
 				slider.OnValueEdited += () =>
 				{
-					_listProperty.Parent?.NoteStartEdit( _listProperty );
 					entry.Weight = slider.Value;
 					_listProperty.SetValue( entries );
-					_listProperty.Parent?.NoteFinishEdit( _listProperty );
+					_listProperty.Parent?.NoteChanged( _listProperty );
 					Update();
 				};
 				popup.Layout.Add( slider );
@@ -259,10 +260,9 @@ public class IsotopeEntriesGridWidget : ControlWidget
 
 			menu.AddOption( "Remove Entry", "close", () =>
 			{
-				_listProperty.Parent?.NoteStartEdit( _listProperty );
 				entries.RemoveAt( index );
 				_listProperty.SetValue( entries );
-				_listProperty.Parent?.NoteFinishEdit( _listProperty );
+				_listProperty.Parent?.NoteChanged( _listProperty );
 				OnRebuildNeeded?.Invoke();
 			} );
 
@@ -296,13 +296,11 @@ public class IsotopeEntriesGridWidget : ControlWidget
 					var entries = _listProperty.GetValue<List<IsotopeEntry>>();
 					if ( entries != null && oldIndex >= 0 && newIndex >= 0 && oldIndex != newIndex && oldIndex < entries.Count && newIndex < entries.Count )
 					{
-						_listProperty.Parent?.NoteStartEdit( _listProperty );
-
 						// Swap positions
 						(entries[oldIndex], entries[newIndex]) = (entries[newIndex], entries[oldIndex]);
 
 						_listProperty.SetValue( entries );
-						_listProperty.Parent?.NoteFinishEdit( _listProperty );
+						_listProperty.Parent?.NoteChanged( _listProperty );
 						BuildItems();
 					}
 				}
@@ -311,6 +309,8 @@ public class IsotopeEntriesGridWidget : ControlWidget
 			}
 
 			// Find which item was dropped on
+			if ( e.Data.Assets == null ) return;
+
 			var targetItem = GetItemAt( e.LocalPosition );
 			if ( targetItem?.Object is IsotopeEntry entry )
 			{
@@ -343,8 +343,6 @@ public class IsotopeEntriesGridWidget : ControlWidget
 				if ( asset == null ) continue;
 
 				// Replace the entry's asset
-				_listProperty.Parent?.NoteStartEdit( _listProperty );
-
 				if ( isModel )
 				{
 					if ( asset.TryLoadResource<Model>( out var model ) )
@@ -365,7 +363,7 @@ public class IsotopeEntriesGridWidget : ControlWidget
 
 				var entries = _listProperty.GetValue<IList<IsotopeEntry>>();
 				_listProperty.SetValue( entries );
-				_listProperty.Parent?.NoteFinishEdit( _listProperty );
+				_listProperty.Parent?.NoteChanged( _listProperty );
 
 				OnRebuildNeeded?.Invoke();
 				return; // Only replace with first valid asset
@@ -382,6 +380,8 @@ public class IsotopeEntriesGridWidget : ControlWidget
 				e.Action = DropAction.Move;
 				return;
 			}
+
+			if ( e.Data.Assets == null ) return;
 
 			foreach ( var dragAsset in e.Data.Assets )
 			{
