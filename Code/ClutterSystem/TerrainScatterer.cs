@@ -1,0 +1,348 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
+
+namespace Sandbox;
+
+/// <summary>
+/// Maps an isotope entry to a slope angle range.
+/// </summary>
+public class SlopeMapping
+{
+	[Property, Range( 0, 90 )]
+	[Description( "Minimum slope angle (degrees) for this entry" )]
+	public float MinAngle { get; set; } = 0f;
+
+	[Property, Range( 0, 90 )]
+	[Description( "Maximum slope angle (degrees) for this entry" )]
+	public float MaxAngle { get; set; } = 45f;
+
+	[Property]
+	[Title( "Entry" )]
+	[Editor( "IsotopeEntryPicker" )]
+	[Description( "Which isotope entry to use for this slope range" )]
+	public int EntryIndex { get; set; } = 0;
+}
+
+/// <summary>
+/// Scatterer that filters and selects assets based on the slope angle of the surface.
+/// Useful for placing different vegetation or rocks on flat vs steep terrain.
+/// </summary>
+public class SlopeScatterer : Scatterer
+{
+	[Property]
+	[Description( "Scale range for spawned objects" )]
+	public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
+
+	[Property]
+	[Description( "Number of points to attempt to scatter per bounds" )]
+	public int PointCount { get; set; } = 10;
+
+	[Property, Group( "Placement" )]
+	[Description( "Offset from ground surface" )]
+	public float HeightOffset { get; set; } = 0f;
+
+	[Property, Group( "Placement" )]
+	[Description( "Align objects to surface normal" )]
+	public bool AlignToNormal { get; set; } = false;
+
+	[Property, Group( "Slope Mappings" )]
+	[Description( "Define which entries spawn at which slope angles" )]
+	public List<SlopeMapping> Mappings { get; set; } = new();
+
+	protected override List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope, Scene scene = null )
+	{
+		scene ??= Game.ActiveScene;
+		if ( scene == null || isotope == null || isotope.IsEmpty )
+			return [];
+
+		var instances = new List<ClutterInstance>( PointCount );
+
+		for ( int i = 0; i < PointCount; i++ )
+		{
+			var point = new Vector3(
+				bounds.Mins.x + Random.Float( bounds.Size.x ),
+				bounds.Mins.y + Random.Float( bounds.Size.y ),
+				0f
+			);
+
+			// Trace to ground
+			var trace = TraceGround( scene, point );
+			if ( trace?.Hit != true )
+				continue;
+
+			// Calculate slope angle
+			var normal = trace.Value.Normal;
+			var slopeAngle = Vector3.GetAngle( Vector3.Up, normal );
+
+			// Find matching entry from slope mappings
+			var entry = GetEntryForSlope( isotope, slopeAngle );
+			if ( entry == null )
+				continue;
+
+			// Setup transform
+			var scale = Random.Float( Scale.Min, Scale.Max );
+			var rotation = AlignToNormal
+				? Rotation.From( new Angles( 0, Random.Float( 0f, 360f ), 0 ) ) * Rotation.FromToRotation( Vector3.Up, normal )
+				: Rotation.FromYaw( Random.Float( 0f, 360f ) );
+
+			var position = trace.Value.HitPosition + normal * HeightOffset;
+
+			instances.Add( new ClutterInstance
+			{
+				Transform = new Transform( position, rotation, scale ),
+				Entry = entry
+			} );
+		}
+
+		return instances;
+	}
+
+	/// <summary>
+	/// Finds an entry that matches the given slope angle based on mappings.
+	/// </summary>
+	private IsotopeEntry GetEntryForSlope( ClutterIsotope isotope, float slopeAngle )
+	{
+		if ( Mappings == null || Mappings.Count == 0 )
+			return GetRandomEntry( isotope );
+
+		// Find all mappings that match this slope angle
+		var matchingMappings = Mappings
+			.Where( m => slopeAngle >= m.MinAngle && slopeAngle <= m.MaxAngle )
+			.ToList();
+
+		if ( matchingMappings.Count == 0 )
+			return null;
+
+		// Pick a random matching mapping
+		var mapping = matchingMappings[Random.Int( 0, matchingMappings.Count - 1 )];
+
+		// Get the entry at that index
+		if ( mapping.EntryIndex >= 0 && mapping.EntryIndex < isotope.Entries.Count )
+		{
+			var entry = isotope.Entries[mapping.EntryIndex];
+			if ( entry?.HasAsset == true )
+				return entry;
+		}
+
+		return null;
+	}
+}
+
+/// <summary>
+/// Maps a terrain material to a list of isotope entries that can spawn on it.
+/// </summary>
+public class TerrainMaterialMapping
+{
+	[Property]
+	[Description( "The terrain material to match" )]
+	public TerrainMaterial Material { get; set; }
+
+	[Property]
+	[Description( "Isotope entries that can spawn on this material (picked randomly by weight)" )]
+	public List<WeightedEntry> Entries { get; set; } = new();
+}
+
+/// <summary>
+/// A weighted reference to an isotope entry.
+/// </summary>
+public class WeightedEntry
+{
+	[Property]
+	[Description( "Index of the entry in the isotope" )]
+	public int EntryIndex { get; set; } = 0;
+
+	[Property, Range( 0, 1 )]
+	[Description( "Weight for random selection (higher = more likely)" )]
+	public float Weight { get; set; } = 1f;
+}
+
+/// <summary>
+/// Scatterer that selects assets based on the terrain material at the hit position.
+/// Useful for placing different vegetation on different terrain textures (grass, dirt, rock, etc).
+/// </summary>
+public class TerrainMaterialScatterer : Scatterer
+{
+	[Property]
+	[Description( "Scale range for spawned objects" )]
+	public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
+
+	[Property]
+	[Description( "Number of points to attempt to scatter per bounds" )]
+	public int PointCount { get; set; } = 10;
+
+	[Property, Group( "Placement" )]
+	[Description( "Offset from ground surface" )]
+	public float HeightOffset { get; set; } = 0f;
+
+	[Property, Group( "Placement" )]
+	[Description( "Align objects to surface normal" )]
+	public bool AlignToNormal { get; set; } = false;
+
+	[Property, Group( "Material Mappings" )]
+	[Description( "Define which entries spawn on which terrain materials" )]
+	public List<TerrainMaterialMapping> Mappings { get; set; } = new();
+
+	[Property, Group( "Fallback" )]
+	[Description( "Use random isotope entry if no material mapping matches" )]
+	public bool UseFallback { get; set; } = false;
+
+	/// <summary>
+	/// Cached terrain reference to avoid repeated GetComponent calls within same tile.
+	/// </summary>
+	[JsonIgnore, Hide]
+	private Terrain _cachedTerrain;
+
+	[JsonIgnore, Hide]
+	private GameObject _cachedTerrainObject;
+
+	protected override List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope, Scene scene = null )
+	{
+		scene ??= Game.ActiveScene;
+		if ( scene == null || isotope == null || isotope.IsEmpty )
+			return [];
+
+		// Clear terrain cache for new generation
+		_cachedTerrain = null;
+		_cachedTerrainObject = null;
+
+		var instances = new List<ClutterInstance>( PointCount );
+
+		for ( int i = 0; i < PointCount; i++ )
+		{
+			var point = new Vector3(
+				bounds.Mins.x + Random.Float( bounds.Size.x ),
+				bounds.Mins.y + Random.Float( bounds.Size.y ),
+				0f
+			);
+
+			// Trace to ground
+			var trace = TraceGround( scene, point );
+			if ( trace?.Hit != true )
+				continue;
+
+			// Try to get terrain material at this position
+			var terrain = GetTerrainFromTrace( trace.Value );
+			if ( terrain == null )
+			{
+				// Not hitting terrain - use fallback if enabled
+				if ( UseFallback )
+				{
+					var fallbackEntry = GetRandomEntry( isotope );
+					if ( fallbackEntry != null )
+					{
+						instances.Add( CreateInstance( trace.Value, fallbackEntry ) );
+					}
+				}
+				continue;
+			}
+
+			// Query terrain material at hit position
+			var materialInfo = terrain.GetMaterialAtWorldPosition( trace.Value.HitPosition );
+			if ( !materialInfo.HasValue || materialInfo.Value.IsHole )
+				continue;
+
+			// Find matching entry from material mappings
+			var entry = GetEntryForMaterial( isotope, materialInfo.Value );
+			if ( entry == null )
+			{
+				if ( UseFallback )
+				{
+					entry = GetRandomEntry( isotope );
+				}
+				if ( entry == null )
+					continue;
+			}
+
+			instances.Add( CreateInstance( trace.Value, entry ) );
+		}
+
+		return instances;
+	}
+
+	private ClutterInstance CreateInstance( SceneTraceResult trace, IsotopeEntry entry )
+	{
+		var scale = Random.Float( Scale.Min, Scale.Max );
+		var normal = trace.Normal;
+		var rotation = AlignToNormal
+			? Rotation.From( new Angles( 0, Random.Float( 0f, 360f ), 0 ) ) * Rotation.FromToRotation( Vector3.Up, normal )
+			: Rotation.FromYaw( Random.Float( 0f, 360f ) );
+
+		var position = trace.HitPosition + normal * HeightOffset;
+
+		return new ClutterInstance
+		{
+			Transform = new Transform( position, rotation, scale ),
+			Entry = entry
+		};
+	}
+
+	/// <summary>
+	/// Gets the Terrain component from a trace result, with caching.
+	/// </summary>
+	private Terrain GetTerrainFromTrace( SceneTraceResult trace )
+	{
+		var hitObject = trace.GameObject;
+		if ( hitObject == null )
+			return null;
+
+		// Use cached terrain if hitting same object
+		if ( _cachedTerrainObject == hitObject )
+			return _cachedTerrain;
+
+		// Cache the terrain lookup
+		_cachedTerrainObject = hitObject;
+		_cachedTerrain = hitObject.Components.Get<Terrain>();
+
+		return _cachedTerrain;
+	}
+
+	/// <summary>
+	/// Finds an entry that matches the terrain material at the given position.
+	/// </summary>
+	private IsotopeEntry GetEntryForMaterial( ClutterIsotope isotope, Terrain.TerrainMaterialInfo materialInfo )
+	{
+		if ( Mappings == null || Mappings.Count == 0 )
+			return null;
+
+		// Get the dominant material
+		var dominantMaterial = materialInfo.GetDominantMaterial();
+		if ( dominantMaterial == null )
+			return null;
+
+		// Find mapping for this material
+		var mapping = Mappings.FirstOrDefault( m => m.Material == dominantMaterial );
+		if ( mapping == null || mapping.Entries == null || mapping.Entries.Count == 0 )
+			return null;
+
+		// Pick a weighted random entry from the mapping
+		var totalWeight = mapping.Entries.Sum( e => e.Weight );
+		if ( totalWeight <= 0 )
+			return null;
+
+		var randomValue = Random.Float( 0f, totalWeight );
+		float currentWeight = 0f;
+
+		foreach ( var weightedEntry in mapping.Entries )
+		{
+			if ( weightedEntry.Weight <= 0 )
+				continue;
+
+			currentWeight += weightedEntry.Weight;
+			if ( randomValue <= currentWeight )
+			{
+				// Get the actual isotope entry
+				if ( weightedEntry.EntryIndex >= 0 && weightedEntry.EntryIndex < isotope.Entries.Count )
+				{
+					var entry = isotope.Entries[weightedEntry.EntryIndex];
+					if ( entry?.HasAsset == true )
+						return entry;
+				}
+				break;
+			}
+		}
+
+		return null;
+	}
+}
