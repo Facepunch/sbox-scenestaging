@@ -11,7 +11,6 @@ public class ClutterGenerationJob
 {
 	public ClutterDefinition Clutter { get; init; }
 	public GameObject ParentObject { get; init; }
-	public Action<int> OnComplete { get; init; }
 
 	// Volume-specific
 	public BBox Bounds { get; init; }
@@ -26,7 +25,7 @@ public class ClutterGenerationJob
 	/// <summary>
 	/// Creates a job for volume generation.
 	/// </summary>
-	public static ClutterGenerationJob Volume( BBox bounds, float cellSize, int randomSeed, ClutterDefinition clutter, GameObject parentObject, Action<int> onComplete = null )
+	public static ClutterGenerationJob Volume( BBox bounds, float cellSize, int randomSeed, ClutterDefinition clutter, GameObject parentObject )
 	{
 		return new ClutterGenerationJob
 		{
@@ -34,8 +33,7 @@ public class ClutterGenerationJob
 			CellSize = cellSize,
 			RandomSeed = randomSeed,
 			Clutter = clutter,
-			ParentObject = parentObject,
-			OnComplete = onComplete
+			ParentObject = parentObject
 		};
 	}
 
@@ -64,11 +62,9 @@ public class ClutterGenerationJob
 			: ScatterVolume();
 
 		SpawnInstances( instances );
-		
+
 		if ( TileData != null )
 			TileData.IsPopulated = true;
-			
-		OnComplete?.Invoke( instances.Count );
 	}
 
 	private List<ClutterInstance> ScatterTile()
@@ -107,6 +103,7 @@ public class ClutterGenerationJob
 
 				var obj = instance.Entry.Prefab.Clone( instance.Transform, ParentObject.Scene );
 				obj.Flags |= GameObjectFlags.NotSaved;
+				obj.Flags |= GameObjectFlags.Hidden;
 				obj.Tags.Add( "clutter" );
 				obj.SetParent( ParentObject );
 				TileData?.AddObject( obj );

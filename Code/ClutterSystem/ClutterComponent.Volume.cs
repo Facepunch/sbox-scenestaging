@@ -11,45 +11,48 @@ public sealed partial class ClutterComponent
 	[Property, Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
 	public BBox Bounds { get; set; } = new BBox( -100, 100 );
 
-	[Property, Group( "Volume Info" ), ShowIf( nameof( Infinite ), false ), ReadOnly]
-	public int SpawnedCount { get; private set; }
-
-	[Button( "Generate Clutter" ), Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
+	[Button( "Generate" )]
 	[Icon( "scatter_plot" )]
-	public void GenerateVolume()
+	public void Generate()
 	{
-		ClearVolume();
+		Clear();
 
-		if ( !IsValid )
+		if ( Clutter == null || Clutter.Scatterer == null )
 			return;
 
 		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
-		var worldBounds = Bounds.Transform( WorldTransform );
 
-		var job = ClutterGenerationJob.Volume(
-			bounds: worldBounds,
-			cellSize: Clutter.TileSize,
-			randomSeed: RandomSeed,
-			clutter: Clutter,
-			parentObject: GameObject,
-			onComplete: count =>
-			{
-				SpawnedCount = count;
-			}
-		);
+		if ( Infinite )
+		{
+			// For infinite mode, clearing triggers regeneration on next update
+		}
+		else
+		{
+			var worldBounds = Bounds.Transform( WorldTransform );
 
-		gridSystem.QueueJob( job );
+			var job = ClutterGenerationJob.Volume(
+				bounds: worldBounds,
+				cellSize: Clutter.TileSize,
+				randomSeed: RandomSeed,
+				clutter: Clutter,
+				parentObject: GameObject
+			);
+
+			gridSystem.QueueJob( job );
+		}
 	}
 
-	[Button( "Clear Clutter" )]
+	[Button( "Clear" )]
 	[Icon( "delete" )]
-	public void ClearVolume()
+	public void Clear()
 	{
+		// Clear infinite tiles
+		ClearInfinite();
+
+		// Clear volume children
 		var children = GameObject.Children.Where( c => c.Tags.Has( "clutter" ) ).ToArray();
 		foreach ( var child in children )
 			child.Destroy();
-
-		SpawnedCount = 0;
 	}
 
 	private void DrawVolumeGizmos()

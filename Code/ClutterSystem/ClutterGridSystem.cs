@@ -45,9 +45,20 @@ public sealed class ClutterGridSystem : GameObjectSystem
 	internal void RemovePendingTile( ClutterTile tile )
 	{
 		PendingTiles.Remove( tile );
-		
+
 		// Remove any pending jobs for this tile
 		PendingJobs.RemoveAll( job => job.TileData == tile );
+	}
+
+	/// <summary>
+	/// Clears all tiles for a specific component.
+	/// </summary>
+	public void ClearComponent( ClutterComponent component )
+	{
+		if ( ComponentToLayer.Remove( component, out var layer ) )
+		{
+			layer.ClearAllTiles();
+		}
 	}
 
 	private void OnUpdate()
@@ -57,7 +68,7 @@ public sealed class ClutterGridSystem : GameObjectSystem
 			return;
 
 		LastCameraPosition = camera.WorldPosition;
-		
+
 		UpdateInfiniteLayers( LastCameraPosition );
 		ProcessJobs();
 	}
@@ -82,7 +93,7 @@ public sealed class ClutterGridSystem : GameObjectSystem
 	private void RemoveInactiveComponents( List<ClutterComponent> activeComponents )
 	{
 		var toRemove = ComponentToLayer.Keys.Except( activeComponents ).ToList();
-		
+
 		foreach ( var component in toRemove )
 		{
 			ComponentToLayer[component].ClearAllTiles();
@@ -122,18 +133,18 @@ public sealed class ClutterGridSystem : GameObjectSystem
 			return;
 
 		// Remove invalid jobs
-		PendingJobs.RemoveAll( job => 
-			!job.ParentObject.IsValid() || 
-			job.TileData?.IsPopulated == true 
+		PendingJobs.RemoveAll( job =>
+			!job.ParentObject.IsValid() ||
+			job.TileData?.IsPopulated == true
 		);
 
 		// Sort by distance to camera (nearest first)
 		PendingJobs.Sort( ( a, b ) =>
 		{
-			var distA = a.TileData != null 
+			var distA = a.TileData != null
 				? a.TileData.Bounds.Center.Distance( LastCameraPosition )
 				: float.MaxValue;
-			var distB = b.TileData != null 
+			var distB = b.TileData != null
 				? b.TileData.Bounds.Center.Distance( LastCameraPosition )
 				: float.MaxValue;
 			return distA.CompareTo( distB );

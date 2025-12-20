@@ -42,8 +42,8 @@ public class ClutterLayer
 		var jobs = new List<ClutterGenerationJob>();
 
 		// Find tiles that should exist
-		for ( int x = -Settings.Clutter.TileRadius; x <= Settings.Clutter.TileRadius; x++ )
-		for ( int y = -Settings.Clutter.TileRadius; y <= Settings.Clutter.TileRadius; y++ )
+		for ( int x = -Settings.TileRadius; x <= Settings.TileRadius; x++ )
+		for ( int y = -Settings.TileRadius; y <= Settings.TileRadius; y++ )
 		{
 			var coord = new Vector2Int( centerTile.x + x, centerTile.y + y );
 			activeCoords.Add( coord );
@@ -67,7 +67,7 @@ public class ClutterLayer
 					tile.Bounds,
 					tile,
 					Settings.RandomSeed,
-					Settings.Clutter,
+					Settings.clutter,
 					ParentObject
 				) );
 			}
@@ -95,17 +95,17 @@ public class ClutterLayer
 			GridSystem?.RemovePendingTile( tile );
 			tile.Destroy();
 		}
-		
+
 		Tiles.Clear();
 	}
 
 	private Vector2Int WorldToTile( Vector3 worldPos ) => new(
-		(int)MathF.Floor( worldPos.x / Settings.Clutter.TileSize ),
-		(int)MathF.Floor( worldPos.y / Settings.Clutter.TileSize )
+		(int)MathF.Floor( worldPos.x / Settings.TileSize ),
+		(int)MathF.Floor( worldPos.y / Settings.TileSize )
 	);
 
 	private BBox GetTileBounds( Vector2Int coord ) => new(
-		new Vector3( coord.x * Settings.Clutter.TileSize, coord.y * Settings.Clutter.TileSize, -TileHeight ),
-		new Vector3( (coord.x + 1) * Settings.Clutter.TileSize, (coord.y + 1) * Settings.Clutter.TileSize, TileHeight )
+		new Vector3( coord.x * Settings.TileSize, coord.y * Settings.TileSize, -TileHeight ),
+		new Vector3( (coord.x + 1) * Settings.TileSize, (coord.y + 1) * Settings.TileSize, TileHeight )
 	);
 }

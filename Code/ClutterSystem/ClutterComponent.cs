@@ -20,19 +20,40 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	[Property]
 	public int RandomSeed { get; set; }
 
+	private bool _infinite;
+
 	/// <summary>
 	/// Enable infinite streaming mode - generates tiles around camera.
 	/// Disable for baked volume mode - generates once within bounds.
 	/// </summary>
 	[Property]
-	public bool Infinite { get; set; }
+	public bool Infinite
+	{
+		get => _infinite;
+		set
+		{
+			if ( _infinite == value )
+				return;
+
+			// Clear all clutter before switching modes
+			Clear();
+
+			_infinite = value;
+		}
+	}
+
+	/// <summary>
+	/// Clears all infinite mode tiles for this component.
+	/// </summary>
+	public void ClearInfinite()
+	{
+		var gridSystem = Scene?.GetSystem<ClutterGridSystem>();
+		gridSystem?.ClearComponent( this );
+	}
 
 	protected override void OnDisabled()
 	{
-		// For volume mode, clean up immediately
-		if ( !Infinite )
-			ClearVolume();
-
+		Clear();
 		base.OnDisabled();
 	}
 
