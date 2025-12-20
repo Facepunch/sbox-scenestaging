@@ -3,14 +3,14 @@ using System;
 namespace Editor;
 
 /// <summary>
-/// Grid-based list view for ClutterIsotope resources, similar to TerrainMaterialList.
+/// Grid-based list view for ClutterDefinition resources, similar to TerrainMaterialList.
 /// </summary>
-public class IsotopeList : ListView
+public class ClutterList : ListView
 {
-	public ClutterIsotope SelectedIsotope { get; private set; }
-	public Action<ClutterIsotope> OnIsotopeSelected { get; set; }
+	public ClutterDefinition SelectedClutter { get; private set; }
+	public Action<ClutterDefinition> OnclutterSelected { get; set; }
 
-	public IsotopeList( Widget parent ) : base( parent )
+	public ClutterList( Widget parent ) : base( parent )
 	{
 		ItemSelected = OnItemClicked;
 		ItemActivated = OnItemDoubleClicked;
@@ -27,37 +27,37 @@ public class IsotopeList : ListView
 
 	protected void OnItemClicked( object value )
 	{
-		if ( value is not ClutterIsotope isotope )
+		if ( value is not ClutterDefinition clutter )
 			return;
 
-		SelectedIsotope = isotope;
-		OnIsotopeSelected?.Invoke( isotope );
+		SelectedClutter = clutter;
+		OnclutterSelected?.Invoke( clutter );
 	}
 
 	protected void OnItemDoubleClicked( object obj )
 	{
-		if ( obj is not ClutterIsotope isotope )
+		if ( obj is not ClutterDefinition clutter )
 			return;
 
-		var asset = AssetSystem.FindByPath( isotope.ResourcePath );
+		var asset = AssetSystem.FindByPath( clutter.ResourcePath );
 		asset?.OpenInEditor();
 	}
 
 	private void ShowItemContext( object obj )
 	{
-		if ( obj is not ClutterIsotope isotope )
+		if ( obj is not ClutterDefinition clutter )
 			return;
 
 		var m = new ContextMenu( this );
 		m.AddOption( "Open In Editor", "edit", () =>
 		{
-			var asset = AssetSystem.FindByPath( isotope.ResourcePath );
+			var asset = AssetSystem.FindByPath( clutter.ResourcePath );
 			asset?.OpenInEditor();
 		} );
 
 		m.AddOption( "Show In Asset Browser", "folder_open", () =>
 		{
-			var asset = AssetSystem.FindByPath( isotope.ResourcePath );
+			var asset = AssetSystem.FindByPath( clutter.ResourcePath );
 			if ( asset != null )
 			{
 				MainAssetBrowser.Instance?.Local.FocusOnAsset( asset );
@@ -69,8 +69,8 @@ public class IsotopeList : ListView
 
 	public void BuildItems()
 	{
-		var isotopes = ResourceLibrary.GetAll<ClutterIsotope>().ToList();
-		SetItems( isotopes.Cast<object>() );
+		var clutters = ResourceLibrary.GetAll<ClutterDefinition>().ToList();
+		SetItems( clutters.Cast<object>() );
 	}
 
 	public void Refresh()
@@ -82,10 +82,10 @@ public class IsotopeList : ListView
 	{
 		var rect = item.Rect.Shrink( 0, 0, 0, 16 );
 
-		if ( item.Object is not ClutterIsotope isotope )
+		if ( item.Object is not ClutterDefinition clutter )
 			return;
 
-		var asset = AssetSystem.FindByPath( isotope.ResourcePath );
+		var asset = AssetSystem.FindByPath( clutter.ResourcePath );
 
 		if ( asset is null )
 		{
@@ -96,7 +96,7 @@ public class IsotopeList : ListView
 		}
 
 		// Selection/hover highlight
-		var isSelected = isotope == SelectedIsotope || item.Selected;
+		var isSelected = clutter == SelectedClutter || item.Selected;
 		if ( isSelected || Paint.HasMouseOver )
 		{
 			Paint.SetBrush( Theme.Blue.WithAlpha( isSelected ? 0.5f : 0.2f ) );
@@ -122,7 +122,7 @@ public class IsotopeList : ListView
 		}
 
 		// Entry count badge
-		var entryCount = isotope.Entries?.Count ?? 0;
+		var entryCount = clutter.Entries?.Count ?? 0;
 		if ( entryCount > 0 )
 		{
 			var badgeRect = new Rect( rect.Right - 18, rect.Top + 4, 16, 16 );
@@ -138,7 +138,7 @@ public class IsotopeList : ListView
 		// Name label
 		Paint.SetDefaultFont();
 		Paint.SetPen( Theme.Text );
-		Paint.DrawText( item.Rect.Shrink( 2 ), isotope.ResourceName, TextFlag.CenterBottom );
+		Paint.DrawText( item.Rect.Shrink( 2 ), clutter.ResourceName, TextFlag.CenterBottom );
 	}
 
 	protected override void OnPaint()

@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace Sandbox;
 
 /// <summary>
-/// Maps an isotope entry to a slope angle range.
+/// Maps an clutter entry to a slope angle range.
 /// </summary>
 public class SlopeMapping
 {
@@ -20,8 +20,8 @@ public class SlopeMapping
 
 	[Property]
 	[Title( "Entry" )]
-	[Editor( "IsotopeEntryPicker" )]
-	[Description( "Which isotope entry to use for this slope range" )]
+	[Editor( "ClutterEntryPicker" )]
+	[Description( "Which clutter entry to use for this slope range" )]
 	public int EntryIndex { get; set; } = 0;
 }
 
@@ -51,10 +51,10 @@ public class SlopeScatterer : Scatterer
 	[Description( "Define which entries spawn at which slope angles" )]
 	public List<SlopeMapping> Mappings { get; set; } = new();
 
-	protected override List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope, Scene scene = null )
+	protected override List<ClutterInstance> Generate( BBox bounds, ClutterDefinition clutter, Scene scene = null )
 	{
 		scene ??= Game.ActiveScene;
-		if ( scene == null || isotope == null || isotope.IsEmpty )
+		if ( scene == null || clutter == null || clutter.IsEmpty )
 			return [];
 
 		var instances = new List<ClutterInstance>( PointCount );
@@ -77,7 +77,7 @@ public class SlopeScatterer : Scatterer
 			var slopeAngle = Vector3.GetAngle( Vector3.Up, normal );
 
 			// Find matching entry from slope mappings
-			var entry = GetEntryForSlope( isotope, slopeAngle );
+			var entry = GetEntryForSlope( clutter, slopeAngle );
 			if ( entry == null )
 				continue;
 
@@ -102,10 +102,10 @@ public class SlopeScatterer : Scatterer
 	/// <summary>
 	/// Finds an entry that matches the given slope angle based on mappings.
 	/// </summary>
-	private IsotopeEntry GetEntryForSlope( ClutterIsotope isotope, float slopeAngle )
+	private ClutterEntry GetEntryForSlope( ClutterDefinition clutter, float slopeAngle )
 	{
 		if ( Mappings == null || Mappings.Count == 0 )
-			return GetRandomEntry( isotope );
+			return GetRandomEntry( clutter );
 
 		// Find all mappings that match this slope angle
 		var matchingMappings = Mappings
@@ -119,9 +119,9 @@ public class SlopeScatterer : Scatterer
 		var mapping = matchingMappings[Random.Int( 0, matchingMappings.Count - 1 )];
 
 		// Get the entry at that index
-		if ( mapping.EntryIndex >= 0 && mapping.EntryIndex < isotope.Entries.Count )
+		if ( mapping.EntryIndex >= 0 && mapping.EntryIndex < clutter.Entries.Count )
 		{
-			var entry = isotope.Entries[mapping.EntryIndex];
+			var entry = clutter.Entries[mapping.EntryIndex];
 			if ( entry?.HasAsset == true )
 				return entry;
 		}
@@ -131,7 +131,7 @@ public class SlopeScatterer : Scatterer
 }
 
 /// <summary>
-/// Maps a terrain material to a list of isotope entries that can spawn on it.
+/// Maps a terrain material to a list of clutter entries that can spawn on it.
 /// </summary>
 public class TerrainMaterialMapping
 {
@@ -140,17 +140,17 @@ public class TerrainMaterialMapping
 	public TerrainMaterial Material { get; set; }
 
 	[Property]
-	[Description( "Isotope entries that can spawn on this material (picked randomly by weight)" )]
+	[Description( "clutter entries that can spawn on this material (picked randomly by weight)" )]
 	public List<WeightedEntry> Entries { get; set; } = new();
 }
 
 /// <summary>
-/// A weighted reference to an isotope entry.
+/// A weighted reference to an clutter entry.
 /// </summary>
 public class WeightedEntry
 {
 	[Property]
-	[Description( "Index of the entry in the isotope" )]
+	[Description( "Index of the entry in the clutter" )]
 	public int EntryIndex { get; set; } = 0;
 
 	[Property, Range( 0, 1 )]
@@ -185,7 +185,7 @@ public class TerrainMaterialScatterer : Scatterer
 	public List<TerrainMaterialMapping> Mappings { get; set; } = new();
 
 	[Property, Group( "Fallback" )]
-	[Description( "Use random isotope entry if no material mapping matches" )]
+	[Description( "Use random clutter entry if no material mapping matches" )]
 	public bool UseFallback { get; set; } = false;
 
 	/// <summary>
@@ -197,10 +197,10 @@ public class TerrainMaterialScatterer : Scatterer
 	[JsonIgnore, Hide]
 	private GameObject _cachedTerrainObject;
 
-	protected override List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope, Scene scene = null )
+	protected override List<ClutterInstance> Generate( BBox bounds, ClutterDefinition clutter, Scene scene = null )
 	{
 		scene ??= Game.ActiveScene;
-		if ( scene == null || isotope == null || isotope.IsEmpty )
+		if ( scene == null || clutter == null || clutter.IsEmpty )
 			return [];
 
 		// Clear terrain cache for new generation
@@ -229,7 +229,7 @@ public class TerrainMaterialScatterer : Scatterer
 				// Not hitting terrain - use fallback if enabled
 				if ( UseFallback )
 				{
-					var fallbackEntry = GetRandomEntry( isotope );
+					var fallbackEntry = GetRandomEntry( clutter );
 					if ( fallbackEntry != null )
 					{
 						instances.Add( CreateInstance( trace.Value, fallbackEntry ) );
@@ -244,12 +244,12 @@ public class TerrainMaterialScatterer : Scatterer
 				continue;
 
 			// Find matching entry from material mappings
-			var entry = GetEntryForMaterial( isotope, materialInfo.Value );
+			var entry = GetEntryForMaterial( clutter, materialInfo.Value );
 			if ( entry == null )
 			{
 				if ( UseFallback )
 				{
-					entry = GetRandomEntry( isotope );
+					entry = GetRandomEntry( clutter );
 				}
 				if ( entry == null )
 					continue;
@@ -261,7 +261,7 @@ public class TerrainMaterialScatterer : Scatterer
 		return instances;
 	}
 
-	private ClutterInstance CreateInstance( SceneTraceResult trace, IsotopeEntry entry )
+	private ClutterInstance CreateInstance( SceneTraceResult trace, ClutterEntry entry )
 	{
 		var scale = Random.Float( Scale.Min, Scale.Max );
 		var normal = trace.Normal;
@@ -301,7 +301,7 @@ public class TerrainMaterialScatterer : Scatterer
 	/// <summary>
 	/// Finds an entry that matches the terrain material at the given position.
 	/// </summary>
-	private IsotopeEntry GetEntryForMaterial( ClutterIsotope isotope, Terrain.TerrainMaterialInfo materialInfo )
+	private ClutterEntry GetEntryForMaterial( ClutterDefinition clutter, Terrain.TerrainMaterialInfo materialInfo )
 	{
 		if ( Mappings == null || Mappings.Count == 0 )
 			return null;
@@ -332,10 +332,10 @@ public class TerrainMaterialScatterer : Scatterer
 			currentWeight += weightedEntry.Weight;
 			if ( randomValue <= currentWeight )
 			{
-				// Get the actual isotope entry
-				if ( weightedEntry.EntryIndex >= 0 && weightedEntry.EntryIndex < isotope.Entries.Count )
+				// Get the actual clutter entry
+				if ( weightedEntry.EntryIndex >= 0 && weightedEntry.EntryIndex < clutter.Entries.Count )
 				{
-					var entry = isotope.Entries[weightedEntry.EntryIndex];
+					var entry = clutter.Entries[weightedEntry.EntryIndex];
 					if ( entry?.HasAsset == true )
 						return entry;
 				}

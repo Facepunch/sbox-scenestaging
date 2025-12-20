@@ -1,10 +1,10 @@
 namespace Sandbox;
 
 /// <summary>
-/// Represents a single weighted entry in a <see cref="ClutterIsotope"/>.
+/// Represents a single weighted entry in a <see cref="ClutterDefinition"/>.
 /// Contains either a Prefab or Model reference along with spawn parameters.
 /// </summary>
-public class IsotopeEntry
+public class ClutterEntry
 {
 	/// <summary>
 	/// Prefab to spawn. If set, this takes priority over <see cref="Model"/>.

@@ -67,7 +67,7 @@ public class ClutterLayer
 					tile.Bounds,
 					tile,
 					Settings.RandomSeed,
-					Settings.Isotope,
+					Settings.clutter,
 					ParentObject
 				) );
 			}

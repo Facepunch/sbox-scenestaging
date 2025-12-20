@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 namespace Editor;
 
 /// <summary>
-/// Custom 3D asset preview for ClutterIsotope resources.
+/// Custom 3D asset preview for ClutterDefinition resources.
 /// Uses the actual clutter system to generate a realistic preview.
 /// </summary>
-[AssetPreview( "isotope" )]
-public class ClutterIsotopeAssetPreview : AssetPreview
+[AssetPreview( "clutter" )]
+public class ClutterDefinitionAssetPreview : AssetPreview
 {
-	private ClutterIsotope _currentIsotope;
+	private ClutterDefinition _currentclutter;
 	private GameObject _clutterObject;
 	private GameObject _groundPlane;
-	private int _lastIsotopeHash;
+	private int _lastclutterHash;
 	private float _previewTileSize = 512f;
 
-	public ClutterIsotopeAssetPreview( Asset asset ) : base( asset )
+	public ClutterDefinitionAssetPreview( Asset asset ) : base( asset )
 	{
 	}
 
@@ -33,9 +33,9 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 	{
 		await base.InitializeAsset();
 
-		_currentIsotope = Asset.LoadResource<ClutterIsotope>();
+		_currentclutter = Asset.LoadResource<ClutterDefinition>();
 		
-		if ( _currentIsotope == null )
+		if ( _currentclutter == null )
 			return;
 
 		using ( Scene.Push() )
@@ -47,7 +47,7 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 			CreateClutterObject();
 			
 			// Store initial state
-			UpdateIsotopeState();
+			UpdateclutterState();
 			
 			// Calculate bounds immediately after generation
 			CalculateSceneBounds();
@@ -56,7 +56,7 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 
 	public override void UpdateScene( float cycle, float timeStep )
 	{
-		// Check if isotope has changed and regenerate if needed
+		// Check if clutter has changed and regenerate if needed
 		if ( CheckForChanges() )
 		{
 			RegeneratePreview();
@@ -67,32 +67,32 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 
 	private bool CheckForChanges()
 	{
-		if ( _currentIsotope == null )
+		if ( _currentclutter == null )
 			return false;
 
-		var currentHash = GetIsotopeHash();
-		return currentHash != _lastIsotopeHash;
+		var currentHash = GetclutterHash();
+		return currentHash != _lastclutterHash;
 	}
 
-	private void UpdateIsotopeState()
+	private void UpdateclutterState()
 	{
-		if ( _currentIsotope == null )
+		if ( _currentclutter == null )
 			return;
 
-		_lastIsotopeHash = GetIsotopeHash();
+		_lastclutterHash = GetclutterHash();
 	}
 
-	private int GetIsotopeHash()
+	private int GetclutterHash()
 	{
-		if ( _currentIsotope == null )
+		if ( _currentclutter == null )
 			return 0;
 
-		// Generate hash from all relevant isotope properties
+		// Generate hash from all relevant clutter properties
 		var hash = new HashCode();
 		
-		hash.Add( _currentIsotope.Entries.Count );
+		hash.Add( _currentclutter.Entries.Count );
 		
-		foreach ( var entry in _currentIsotope.Entries )
+		foreach ( var entry in _currentclutter.Entries )
 		{
 			if ( entry != null )
 			{
@@ -103,7 +103,7 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 		}
 		
 		// Add scatterer hash
-		hash.Add( _currentIsotope.Scatterer?.GetHashCode() ?? 0 );
+		hash.Add( _currentclutter.Scatterer?.GetHashCode() ?? 0 );
 		
 		return hash.ToHashCode();
 	}
@@ -122,7 +122,7 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 			CreateClutterObject();
 			
 			// Update state
-			UpdateIsotopeState();
+			UpdateclutterState();
 			
 			// Small delay for scene to update
 			await Task.Delay( 50 );
@@ -138,7 +138,7 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 		PrimaryObject = _clutterObject;
 		
 		// Manually generate preview scatter instead of relying on system
-		if ( _currentIsotope?.Scatterer != null )
+		if ( _currentclutter?.Scatterer != null )
 		{
 			var bounds = new BBox( 
 				new Vector3( -_previewTileSize / 2, -_previewTileSize / 2, -100 ), 
@@ -149,7 +149,7 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 				bounds: bounds,
 				cellSize: _previewTileSize,
 				randomSeed: 42, // Fixed seed for consistent preview
-				isotope: _currentIsotope,
+				clutter: _currentclutter,
 				parentObject: _clutterObject,
 				onComplete: null
 			);
@@ -254,7 +254,7 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 					_clutterObject = new GameObject( true, "Clutter Preview" );
 					PrimaryObject = _clutterObject;
 					
-					if ( _currentIsotope?.Scatterer != null )
+					if ( _currentclutter?.Scatterer != null )
 					{
 						var bounds = new BBox( 
 							new Vector3( -_previewTileSize / 2, -_previewTileSize / 2, -100 ), 
@@ -265,7 +265,7 @@ public class ClutterIsotopeAssetPreview : AssetPreview
 							bounds: bounds,
 							cellSize: _previewTileSize,
 							randomSeed: DateTime.Now.Ticks.GetHashCode(), // Random seed
-							isotope: _currentIsotope,
+							clutter: _currentclutter,
 							parentObject: _clutterObject,
 							onComplete: null
 						);

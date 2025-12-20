@@ -11,7 +11,7 @@ namespace Sandbox;
 public struct ClutterInstance
 {
 	public Transform Transform { get; set; }
-	public IsotopeEntry Entry { get; set; }
+	public ClutterEntry Entry { get; set; }
 
 	public readonly bool IsModel => Entry?.Model != null && Entry?.Prefab == null;
 }
@@ -21,6 +21,8 @@ public struct ClutterInstance
 /// Provides utility methods for entry selection and common operations.
 /// </summary>
 [JsonDerivedType( typeof( SimpleScatterer ), "SimpleScatterer" )]
+[JsonDerivedType( typeof( SlopeScatterer ), "SlopeScatterer" )]
+[JsonDerivedType( typeof( TerrainMaterialScatterer ), "TerrainMaterialScatterer" )]
 public abstract class Scatterer
 {
 	/// <summary>
@@ -35,25 +37,25 @@ public abstract class Scatterer
 	/// The Random property is initialized before this is called.
 	/// </summary>
 	/// <param name="bounds">World-space bounds to scatter within</param>
-	/// <param name="isotope">The isotope containing objects to scatter</param>
+	/// <param name="clutter">The clutter containing objects to scatter</param>
 	/// <param name="scene">Scene to use for tracing (null falls back to Game.ActiveScene)</param>
 	/// <returns>Collection of clutter instances to spawn</returns>
-	protected abstract List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope, Scene scene = null );
+	protected abstract List<ClutterInstance> Generate( BBox bounds, ClutterDefinition clutter, Scene scene = null );
 
 	/// <summary>
 	/// Public entry point for scattering. Creates Random from seed and calls Generate().
 	/// </summary>
 	/// <param name="bounds">World-space bounds to scatter within</param>
-	/// <param name="isotope">The isotope containing objects to scatter</param>
+	/// <param name="clutter">The clutter containing objects to scatter</param>
 	/// <param name="seed">Seed for deterministic random generation</param>
 	/// <param name="scene">Scene to use for tracing (required in editor mode)</param>
 	/// <returns>Collection of clutter instances to spawn</returns>
-	public List<ClutterInstance> Scatter( BBox bounds, ClutterIsotope isotope, int seed, Scene scene = null )
+	public List<ClutterInstance> Scatter( BBox bounds, ClutterDefinition clutter, int seed, Scene scene = null )
 	{
 		// Let's make a deterministic Random object for scatterer to use.
 		Random = new Random( seed );
 
-		return Generate( bounds, isotope, scene );
+		return Generate( bounds, clutter, scene );
 	}
 
 	/// <summary>
@@ -82,22 +84,22 @@ public abstract class Scatterer
 	}
 
 	/// <summary>
-	/// Selects a random entry from the isotope based on weights.
+	/// Selects a random entry from the clutter based on weights.
 	/// Returns null if no valid entries exist.
 	/// </summary>
-	protected IsotopeEntry GetRandomEntry( ClutterIsotope isotope )
+	protected ClutterEntry GetRandomEntry( ClutterDefinition clutter )
 	{
-		if ( isotope.IsEmpty )
+		if ( clutter.IsEmpty )
 			return null;
 
-		float totalWeight = isotope.Entries.Sum( e => e.Weight );
+		float totalWeight = clutter.Entries.Sum( e => e.Weight );
 		if ( totalWeight == 0 )
 			return null;
 
 		var randomValue = Random.Float( 0f, totalWeight );
 		float currentWeight = 0f;
 
-		foreach ( var entry in isotope.Entries )
+		foreach ( var entry in clutter.Entries )
 		{
 			if ( entry?.HasAsset != true || entry.Weight <= 0 )
 				continue;
@@ -150,10 +152,10 @@ public class SimpleScatterer : Scatterer
 	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] public float HeightOffset { get; set; }
 	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] public bool AlignToNormal { get; set; }
 
-	protected override List<ClutterInstance> Generate( BBox bounds, ClutterIsotope isotope, Scene scene = null )
+	protected override List<ClutterInstance> Generate( BBox bounds, ClutterDefinition clutter, Scene scene = null )
 	{
 		scene ??= Game.ActiveScene;
-		if ( scene == null || isotope == null )
+		if ( scene == null || clutter == null )
 			return [];
 
 		var instances = new List<ClutterInstance>( PointCount );
@@ -181,7 +183,7 @@ public class SimpleScatterer : Scatterer
 					: Rotation.FromYaw( Random.Float( 0f, 360f ) );
 			}
 
-			var entry = GetRandomEntry( isotope );
+			var entry = GetRandomEntry( clutter );
 			if ( entry == null )
 				continue;
 

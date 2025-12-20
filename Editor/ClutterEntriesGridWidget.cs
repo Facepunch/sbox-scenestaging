@@ -8,19 +8,19 @@ using System.Linq;
 namespace Editor;
 
 /// <summary>
-/// Custom control widget for editing IsotopeEntry list in a grid layout.
-/// Shows entries in a visual grid similar to IsotopeList.
+/// Custom control widget for editing ClutterEntry list in a grid layout.
+/// Shows entries in a visual grid similar to ClutterList.
 /// Supports drag & drop of Prefabs and Models to add entries.
 /// </summary>
-[CustomEditor( typeof( List<IsotopeEntry> ), NamedEditor = "IsotopeEntriesGrid" )]
-public class IsotopeEntriesGridWidget : ControlWidget
+[CustomEditor( typeof( List<ClutterEntry> ), NamedEditor = "ClutterEntriesGrid" )]
+public class ClutterEntriesGridWidget : ControlWidget
 {
 	private SerializedProperty _listProperty;
-	private IsotopeListView _listView;
+	private ClutterListView _listView;
 
 	public override bool SupportsMultiEdit => false;
 
-	public IsotopeEntriesGridWidget( SerializedProperty property ) : base( property )
+	public ClutterEntriesGridWidget( SerializedProperty property ) : base( property )
 	{
 		_listProperty = property;
 
@@ -30,7 +30,7 @@ public class IsotopeEntriesGridWidget : ControlWidget
 		// Enable drag & drop on the parent widget
 		AcceptDrops = true;
 
-		_listView = new IsotopeListView( this, _listProperty );
+		_listView = new ClutterListView( this, _listProperty );
 		_listView.OnRebuildNeeded = () => RebuildList();
 		Layout.Add( _listView );
 	}
@@ -86,14 +86,14 @@ public class IsotopeEntriesGridWidget : ControlWidget
 			if ( asset == null ) continue;
 
 			// Get or create the list
-			var entries = _listProperty.GetValue<IList<IsotopeEntry>>();
+			var entries = _listProperty.GetValue<IList<ClutterEntry>>();
 			if ( entries == null )
 			{
-				entries = new List<IsotopeEntry>();
+				entries = new List<ClutterEntry>();
 			}
 
 			// Create new entry
-			var newEntry = new IsotopeEntry();
+			var newEntry = new ClutterEntry();
 
 			if ( isModel )
 			{
@@ -121,15 +121,15 @@ public class IsotopeEntriesGridWidget : ControlWidget
 	}
 
 	/// <summary>
-	/// ListView for displaying isotope entries in a grid
+	/// ListView for displaying clutter entries in a grid
 	/// </summary>
-	private class IsotopeListView : ListView
+	private class ClutterListView : ListView
 	{
 		private SerializedProperty _listProperty;
 		public Action OnRebuildNeeded;
 		private int _dragOverIndex = -1;
 
-		public IsotopeListView( Widget parent, SerializedProperty listProperty ) : base( parent )
+		public ClutterListView( Widget parent, SerializedProperty listProperty ) : base( parent )
 		{
 			_listProperty = listProperty;
 
@@ -146,9 +146,9 @@ public class IsotopeEntriesGridWidget : ControlWidget
 
 		protected override bool OnDragItem( VirtualWidget item )
 		{
-			if ( item.Object is not IsotopeEntry entry ) return false;
+			if ( item.Object is not ClutterEntry entry ) return false;
 
-			var entries = _listProperty.GetValue<List<IsotopeEntry>>();
+			var entries = _listProperty.GetValue<List<ClutterEntry>>();
 			if ( entries == null ) return false;
 
 			var index = entries.IndexOf( entry );
@@ -165,7 +165,7 @@ public class IsotopeEntriesGridWidget : ControlWidget
 			_dragOverIndex = -1;
 
 			// Handle reordering visual feedback
-			if ( e.Data.Object is int && e.Item.Object is IsotopeEntry )
+			if ( e.Data.Object is int && e.Item.Object is ClutterEntry )
 			{
 				// Find target index for highlight
 				var idx = 0;
@@ -207,7 +207,7 @@ public class IsotopeEntriesGridWidget : ControlWidget
 
 		public void BuildItems()
 		{
-			var entries = _listProperty.GetValue<IList<IsotopeEntry>>();
+			var entries = _listProperty.GetValue<IList<ClutterEntry>>();
 			if ( entries != null && entries.Count > 0 )
 			{
 				SetItems( entries.Cast<object>() );
@@ -220,10 +220,10 @@ public class IsotopeEntriesGridWidget : ControlWidget
 
 		private void ShowItemContext( object obj )
 		{
-			if ( obj is not IsotopeEntry entry )
+			if ( obj is not ClutterEntry entry )
 				return;
 
-			var entries = _listProperty.GetValue<IList<IsotopeEntry>>();
+			var entries = _listProperty.GetValue<IList<ClutterEntry>>();
 			if ( entries == null ) return;
 
 			var index = entries.IndexOf( entry );
@@ -278,7 +278,7 @@ public class IsotopeEntriesGridWidget : ControlWidget
 			if ( e.Data.Object is int oldIndex )
 			{
 				var hoveredItem = GetItemAt( e.LocalPosition );
-				if ( hoveredItem?.Object is IsotopeEntry )
+				if ( hoveredItem?.Object is ClutterEntry )
 				{
 					// Find the target index
 					var newIndex = -1;
@@ -293,7 +293,7 @@ public class IsotopeEntriesGridWidget : ControlWidget
 						idx++;
 					}
 
-					var entries = _listProperty.GetValue<List<IsotopeEntry>>();
+					var entries = _listProperty.GetValue<List<ClutterEntry>>();
 					if ( entries != null && oldIndex >= 0 && newIndex >= 0 && oldIndex != newIndex && oldIndex < entries.Count && newIndex < entries.Count )
 					{
 						// Swap positions
@@ -312,7 +312,7 @@ public class IsotopeEntriesGridWidget : ControlWidget
 			if ( e.Data.Assets == null ) return;
 
 			var targetItem = GetItemAt( e.LocalPosition );
-			if ( targetItem?.Object is IsotopeEntry entry )
+			if ( targetItem?.Object is ClutterEntry entry )
 			{
 				// Dropped on an existing item - replace its asset
 				ReplaceEntryAsset( entry, e.Data.Assets );
@@ -320,14 +320,14 @@ public class IsotopeEntriesGridWidget : ControlWidget
 			else
 			{
 				// Dropped on empty space - add new entry via parent
-				if ( Parent is IsotopeEntriesGridWidget parent )
+				if ( Parent is ClutterEntriesGridWidget parent )
 				{
 					parent.AddAssetsFromDrop( e.Data.Assets );
 				}
 			}
 		}
 
-		private async void ReplaceEntryAsset( IsotopeEntry entry, IEnumerable<DragAssetData> draggedAssets )
+		private async void ReplaceEntryAsset( ClutterEntry entry, IEnumerable<DragAssetData> draggedAssets )
 		{
 			foreach ( var dragAsset in draggedAssets )
 			{
@@ -361,7 +361,7 @@ public class IsotopeEntriesGridWidget : ControlWidget
 					}
 				}
 
-				var entries = _listProperty.GetValue<IList<IsotopeEntry>>();
+				var entries = _listProperty.GetValue<IList<ClutterEntry>>();
 				_listProperty.SetValue( entries );
 				_listProperty.Parent?.NoteChanged( _listProperty );
 
@@ -401,7 +401,7 @@ public class IsotopeEntriesGridWidget : ControlWidget
 
 		protected override void PaintItem( VirtualWidget item )
 		{
-			if ( item.Object is not IsotopeEntry entry )
+			if ( item.Object is not ClutterEntry entry )
 				return;
 
 			var rect = item.Rect.Shrink( 0, 0, 0, 16 ); // Reserve space for weight label
@@ -429,7 +429,7 @@ public class IsotopeEntriesGridWidget : ControlWidget
 			}
 
 			// Drag-over highlight
-			var entries = _listProperty.GetValue<IList<IsotopeEntry>>();
+			var entries = _listProperty.GetValue<IList<ClutterEntry>>();
 			if ( entries != null && _dragOverIndex >= 0 && _dragOverIndex < entries.Count )
 			{
 				if ( entries[_dragOverIndex] == entry )
@@ -514,7 +514,7 @@ public class IsotopeEntriesGridWidget : ControlWidget
 			Paint.DrawRect( LocalRect, 4 );
 
 			// Show hint text when empty
-			var entries = _listProperty.GetValue<IList<IsotopeEntry>>();
+			var entries = _listProperty.GetValue<IList<ClutterEntry>>();
 			if ( entries == null || entries.Count == 0 )
 			{
 				Paint.SetDefaultFont( 11 );

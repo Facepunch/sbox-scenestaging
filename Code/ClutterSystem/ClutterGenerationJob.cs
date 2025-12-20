@@ -9,7 +9,7 @@ namespace Sandbox;
 /// </summary>
 public class ClutterGenerationJob
 {
-	public ClutterIsotope Isotope { get; init; }
+	public ClutterDefinition Clutter { get; init; }
 	public GameObject ParentObject { get; init; }
 	public Action<int> OnComplete { get; init; }
 
@@ -26,14 +26,14 @@ public class ClutterGenerationJob
 	/// <summary>
 	/// Creates a job for volume generation.
 	/// </summary>
-	public static ClutterGenerationJob Volume( BBox bounds, float cellSize, int randomSeed, ClutterIsotope isotope, GameObject parentObject, Action<int> onComplete = null )
+	public static ClutterGenerationJob Volume( BBox bounds, float cellSize, int randomSeed, ClutterDefinition clutter, GameObject parentObject, Action<int> onComplete = null )
 	{
 		return new ClutterGenerationJob
 		{
 			Bounds = bounds,
 			CellSize = cellSize,
 			RandomSeed = randomSeed,
-			Isotope = isotope,
+			Clutter = clutter,
 			ParentObject = parentObject,
 			OnComplete = onComplete
 		};
@@ -42,21 +42,21 @@ public class ClutterGenerationJob
 	/// <summary>
 	/// Creates a job for tile generation.
 	/// </summary>
-	public static ClutterGenerationJob Tile( BBox bounds, ClutterTile tile, int randomSeed, ClutterIsotope isotope, GameObject parentObject )
+	public static ClutterGenerationJob Tile( BBox bounds, ClutterTile tile, int randomSeed, ClutterDefinition clutter, GameObject parentObject )
 	{
 		return new ClutterGenerationJob
 		{
 			Bounds = bounds,
 			TileData = tile,
 			RandomSeed = randomSeed,
-			Isotope = isotope,
+			Clutter = clutter,
 			ParentObject = parentObject
 		};
 	}
 
 	public void Execute()
 	{
-		if ( !ParentObject.IsValid() || Isotope?.Scatterer == null )
+		if ( !ParentObject.IsValid() || Clutter?.Scatterer == null )
 			return;
 
 		var instances = TileData != null 
@@ -74,7 +74,7 @@ public class ClutterGenerationJob
 	private List<ClutterInstance> ScatterTile()
 	{
 		var seed = Scatterer.GenerateSeed( TileData.SeedOffset, TileData.Coordinates.x, TileData.Coordinates.y );
-		return Isotope.Scatterer.Scatter( Bounds, Isotope, seed, ParentObject.Scene );
+		return Clutter.Scatterer.Scatter( Bounds, Clutter, seed, ParentObject.Scene );
 	}
 
 	private List<ClutterInstance> ScatterVolume()
@@ -90,7 +90,7 @@ public class ClutterGenerationJob
 		{
 			var cellBounds = GetCellBounds( x, y, z );
 			var cellSeed = HashCode.Combine( RandomSeed, x, y, z );
-			instances.AddRange( Isotope.Scatterer.Scatter( cellBounds, Isotope, cellSeed, ParentObject.Scene ) );
+			instances.AddRange( Clutter.Scatterer.Scatter( cellBounds, Clutter, cellSeed, ParentObject.Scene ) );
 		}
 
 		return instances;

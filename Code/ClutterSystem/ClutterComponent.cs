@@ -9,10 +9,10 @@ namespace Sandbox;
 public sealed partial class ClutterComponent : Component, Component.ExecuteInEditor
 {
 	/// <summary>
-	/// The isotope containing objects to scatter and scatter settings.
+	/// The clutter containing objects to scatter and scatter settings.
 	/// </summary>
 	[Property]
-	public ClutterIsotope Isotope { get; set; }
+	public ClutterDefinition clutter { get; set; }
 
 	/// <summary>
 	/// Random seed for deterministic generation. Change to get different variations.

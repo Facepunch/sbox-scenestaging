@@ -4,15 +4,15 @@ namespace Sandbox;
 /// A weighted collection of Prefabs and Models for random selection during clutter placement.
 /// Think of it as a "palette" of variants that can be randomly selected.
 /// </summary>
-[GameResource( "Clutter Isotope", "isotope", "A weighted collection of objects for clutter scattering", Icon = "grass" )]
-public class ClutterIsotope : GameResource
+[GameResource( "Clutter Definition", "clutter", "A weighted collection of objects for clutter scattering", Icon = "grass" )]
+public class ClutterDefinition : GameResource
 {
 	/// <summary>
 	/// List of weighted entries (Prefabs or Models with weights).
 	/// </summary>
 	[Property]
-	[Editor( "IsotopeEntriesGrid" )]
-	public List<IsotopeEntry> Entries { get; set; } = [];
+	[Editor( "ClutterEntriesGrid" )]
+	public List<ClutterEntry> Entries { get; set; } = [];
 
 	public bool IsEmpty => Entries.Count == 0;
 
@@ -57,7 +57,7 @@ public class ClutterIsotope : GameResource
 	}
 
 	/// <summary>
-	/// The scatterer instance that defines how objects from this isotope are placed.
+	/// The scatterer instance that defines how objects from this clutter definition are placed.
 	/// Automatically recreated when ScattererTypeName changes.
 	/// </summary>
 	[Property, Title( "Scatterer Settings" )]
@@ -108,7 +108,7 @@ public class ClutterIsotope : GameResource
 	/// Selects a random entry based on weights using Game.Random.
 	/// Returns null if no valid entries exist.
 	/// </summary>
-	public IsotopeEntry GetRandomEntry()
+	public ClutterEntry GetRandomEntry()
 	{
 		var validEntries = Entries
 			.Where( e => e is not null && e.HasAsset && e.Weight > 0 )
@@ -135,31 +135,31 @@ public class ClutterIsotope : GameResource
 	}
 
 	/// <summary>
-	/// Validates the isotope configuration and logs warnings if issues are found.
+	/// Validates the clutter definition configuration and logs warnings if issues are found.
 	/// </summary>
 	public void Validate()
 	{
 		if ( Entries == null || Entries.Count == 0 )
 		{
-			Log.Warning( $"Isotope '{ResourceName}': No entries defined" );
+			Log.Warning( $"ClutterDefinition '{ResourceName}': No entries defined" );
 			return;
 		}
 
 		if ( ValidEntryCount == 0 )
 		{
-			Log.Warning( $"Isotope '{ResourceName}': No valid entries (all weights are 0 or no assets assigned)" );
+			Log.Warning( $"ClutterDefinition '{ResourceName}': No valid entries (all weights are 0 or no assets assigned)" );
 			return;
 		}
 
 		var invalidCount = Entries.Count - ValidEntryCount;
 		if ( invalidCount > 0 )
 		{
-			Log.Info( $"Isotope '{ResourceName}': {invalidCount} invalid entries (missing assets or zero weight)" );
+			Log.Info( $"ClutterDefinition '{ResourceName}': {invalidCount} invalid entries (missing assets or zero weight)" );
 		}
 	}
 
 	/// <summary>
-	/// Generates a hash from all isotope properties including entries and scatterer settings.
+	/// Generates a hash from all clutter definition properties including entries and scatterer settings.
 	/// </summary>
 	public override int GetHashCode()
 	{

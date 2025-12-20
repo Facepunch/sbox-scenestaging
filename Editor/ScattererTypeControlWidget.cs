@@ -1,7 +1,7 @@
 namespace Editor;
 
 /// <summary>
-/// Custom control widget for the ScattererTypeName property in ClutterIsotope.
+/// Custom control widget for the ScattererTypeName property in ClutterDefinition.
 /// Provides a dropdown/combobox to select scatterer types.
 /// </summary>
 [CustomEditor( typeof( string ), NamedEditor = "ScattererTypeSelector" )]

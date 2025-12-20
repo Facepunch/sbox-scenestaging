@@ -11,9 +11,9 @@ namespace Sandbox;
 public sealed class ScatterTool : EditorTool
 {
 	BrushPreviewSceneObject brushPreview;
-	IsotopeList isotopeList;
+	ClutterList ClutterList;
 	public BrushSettings BrushSettings { get; private set; } = new();
-	[Property] public ClutterIsotope SelectedIsotope { get; set; }
+	[Property] public ClutterDefinition SelectedClutter { get; set; }
 
 	private bool Erasing = false;
 	private bool _dragging = false;
@@ -34,18 +34,18 @@ public sealed class ScatterTool : EditorTool
 			group.Add( ControlSheet.CreateRow( so.GetProperty( nameof( BrushSettings.Opacity ) ) ) );
 		}
 
-		// Isotope Selection
+		// clutter Selection
 		{
-			var group = sidebar.AddGroup( "Isotopes", SizeMode.Flexible );
-			isotopeList = new IsotopeList( sidebar );
-			isotopeList.MinimumHeight = 300;
-			isotopeList.OnIsotopeSelected = ( isotope ) =>
+			var group = sidebar.AddGroup( "clutters", SizeMode.Flexible );
+			ClutterList = new ClutterList( sidebar );
+			ClutterList.MinimumHeight = 300;
+			ClutterList.OnclutterSelected = ( clutter ) =>
 			{
-				SelectedIsotope = isotope;
+				SelectedClutter = clutter;
 			};
 
-			isotopeList.BuildItems();
-			group.Add( isotopeList );
+			ClutterList.BuildItems();
+			group.Add( ClutterList );
 
 		}
 		
@@ -98,7 +98,7 @@ public sealed class ScatterTool : EditorTool
 
 	private void OnPaintUpdate()
 	{
-		if ( SelectedIsotope == null || SelectedIsotope.Scatterer == null )
+		if ( SelectedClutter == null || SelectedClutter.Scatterer == null )
 			return;
 
 		var tr = Scene.Trace.Ray( Gizmo.CurrentRay, 100000 )
@@ -161,7 +161,7 @@ public sealed class ScatterTool : EditorTool
 
 	private void ScatterAtPosition( Vector3 position )
 	{
-		if ( SelectedIsotope == null || SelectedIsotope.Scatterer == null )
+		if ( SelectedClutter == null || SelectedClutter.Scatterer == null )
 			return;
 
 		var brushRadius = BrushSettings.Size;
@@ -171,7 +171,7 @@ public sealed class ScatterTool : EditorTool
 		);
 
 		var seed = System.DateTime.Now.Ticks.GetHashCode();
-		var instances = SelectedIsotope.Scatterer.Scatter( bounds, SelectedIsotope, seed );
+		var instances = SelectedClutter.Scatterer.Scatter( bounds, SelectedClutter, seed );
 
 		int targetCount = (int)MathF.Ceiling( instances.Count * BrushSettings.Opacity );
 		var filteredInstances = instances.Take( targetCount ).ToList();

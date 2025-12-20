@@ -26,7 +26,7 @@ public sealed class ClutterGridSystem : GameObjectSystem
 	/// </summary>
 	public void QueueJob( ClutterGenerationJob job )
 	{
-		if ( job?.Isotope?.Scatterer == null || !job.ParentObject.IsValid() )
+		if ( job?.Clutter?.Scatterer == null || !job.ParentObject.IsValid() )
 			return;
 
 		// Prevent duplicate jobs for the same tile

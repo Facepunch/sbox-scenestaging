@@ -4,12 +4,12 @@ using Sandbox;
 namespace Editor;
 
 /// <summary>
-/// Custom editor for ClutterIsotope resources.
-/// Provides a specialized interface for editing isotope settings.
+/// Custom editor for ClutterDefinition resources.
+/// Provides a specialized interface for editing clutter settings.
 /// </summary>
-public class ClutterIsotopeEditor : BaseResourceEditor<ClutterIsotope>
+public class ClutterDefinitionEditor : BaseResourceEditor<ClutterDefinition>
 {
-	protected override void Initialize( Asset asset, ClutterIsotope resource )
+	protected override void Initialize( Asset asset, ClutterDefinition resource )
 	{
 		Layout = Layout.Column();
 		Layout.Spacing = 0;
@@ -28,15 +28,15 @@ public class ClutterIsotopeEditor : BaseResourceEditor<ClutterIsotope>
 		sheet.Margin = new Sandbox.UI.Margin( 8 );
 		
 		// Entries List (standard list, no custom widget)
-		var entriesProperty = serialized.GetProperty( nameof( ClutterIsotope.Entries ) );
+		var entriesProperty = serialized.GetProperty( nameof( ClutterDefinition.Entries ) );
 		if ( entriesProperty != null )
 		{
 			sheet.AddGroup( "Entries", new[] { entriesProperty } );
 		}
 		
 		// Scatterer Group
-		var scattererTypeProperty = serialized.GetProperty( nameof( ClutterIsotope.ScattererTypeName ) );
-		var scattererProperty = serialized.GetProperty( nameof( ClutterIsotope.Scatterer ) );
+		var scattererTypeProperty = serialized.GetProperty( nameof( ClutterDefinition.ScattererTypeName ) );
+		var scattererProperty = serialized.GetProperty( nameof( ClutterDefinition.Scatterer ) );
 		
 		if ( scattererTypeProperty != null && scattererProperty != null )
 		{
@@ -44,8 +44,8 @@ public class ClutterIsotopeEditor : BaseResourceEditor<ClutterIsotope>
 		}
 		
 		// Streaming Group
-		var tileSizeProperty = serialized.GetProperty( nameof( ClutterIsotope.TileSize ) );
-		var tileRadiusProperty = serialized.GetProperty( nameof( ClutterIsotope.TileRadius ) );
+		var tileSizeProperty = serialized.GetProperty( nameof( ClutterDefinition.TileSize ) );
+		var tileRadiusProperty = serialized.GetProperty( nameof( ClutterDefinition.TileRadius ) );
 		
 		if ( tileSizeProperty != null && tileRadiusProperty != null )
 		{

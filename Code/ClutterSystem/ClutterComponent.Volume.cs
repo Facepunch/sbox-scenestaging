@@ -23,7 +23,7 @@ public sealed partial class ClutterComponent
 	{
 		ClearVolume();
 
-		if ( Isotope == null || Isotope.Scatterer == null )
+		if ( clutter == null || clutter.Scatterer == null )
 			return;
 
 		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
@@ -33,7 +33,7 @@ public sealed partial class ClutterComponent
 			bounds: worldBounds,
 			cellSize: CellSize,
 			randomSeed: RandomSeed,
-			isotope: Isotope,
+			clutter: clutter,
 			parentObject: GameObject,
 			onComplete: count =>
 			{
