@@ -12,13 +12,13 @@ public readonly record struct ClutterSettings
 	public ClutterDefinition clutter { get; init; }
 	public Scatterer Scatterer { get; init; }
 
-	public ClutterSettings( float tileSize, int tileRadius, int randomSeed, ClutterDefinition clutter )
+	public ClutterSettings( float tileSize, int tileRadius, int randomSeed, ClutterDefinition definition )
 	{
 		TileSize = tileSize;
 		TileRadius = tileRadius;
 		RandomSeed = randomSeed;
-		clutter = clutter;
-		Scatterer = clutter?.Scatterer;
+		clutter = definition;
+		Scatterer = definition?.Scatterer;
 	}
 
 	/// <summary>
