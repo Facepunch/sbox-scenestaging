@@ -7,9 +7,9 @@ public sealed partial class ClutterComponent
 {
 	internal ClutterSettings GetCurrentSettings()
 	{
-		if ( clutter == null )
+		if ( Clutter == null )
 			return default;
 
-		return new ClutterSettings( clutter.TileSize, clutter.TileRadius, RandomSeed, clutter );
+		return new ClutterSettings( RandomSeed, Clutter );
 	}
 }

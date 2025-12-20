@@ -12,7 +12,7 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	/// The clutter containing objects to scatter and scatter settings.
 	/// </summary>
 	[Property]
-	public ClutterDefinition clutter { get; set; }
+	public ClutterDefinition Clutter { get; set; }
 
 	/// <summary>
 	/// Random seed for deterministic generation. Change to get different variations.
