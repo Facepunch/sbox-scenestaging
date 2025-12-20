@@ -20,8 +20,6 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	[Property]
 	public int RandomSeed { get; set; }
 
-	private bool _infinite;
-
 	/// <summary>
 	/// Enable infinite streaming mode - generates tiles around camera.
 	/// Disable for baked volume mode - generates once within bounds.
@@ -29,16 +27,16 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	[Property]
 	public bool Infinite
 	{
-		get => _infinite;
+		get => field;
 		set
 		{
-			if ( _infinite == value )
+			if ( field == value )
 				return;
 
 			// Clear all clutter before switching modes
 			Clear();
 
-			_infinite = value;
+			field = value;
 		}
 	}
 
