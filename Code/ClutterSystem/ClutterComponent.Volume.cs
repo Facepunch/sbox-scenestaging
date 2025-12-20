@@ -11,9 +11,6 @@ public sealed partial class ClutterComponent
 	[Property, Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
 	public BBox Bounds { get; set; } = new BBox( -100, 100 );
 
-	[Property, Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
-	public float CellSize { get; set; } = 512f;
-
 	[Property, Group( "Volume Info" ), ShowIf( nameof( Infinite ), false ), ReadOnly]
 	public int SpawnedCount { get; private set; }
 
@@ -31,7 +28,7 @@ public sealed partial class ClutterComponent
 
 		var job = ClutterGenerationJob.Volume(
 			bounds: worldBounds,
-			cellSize: CellSize,
+			cellSize: Clutter.TileSize,
 			randomSeed: RandomSeed,
 			clutter: Clutter,
 			parentObject: GameObject,
