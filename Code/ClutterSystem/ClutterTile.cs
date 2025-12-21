@@ -24,8 +24,14 @@ public class ClutterTile
 	/// </summary>
 	public int SeedOffset { get; set; }
 
+	/// <summary>
+	/// Whether this tile has been populated with clutter instances.
+	/// </summary>
 	public bool IsPopulated { get; internal set; }
 	
+	/// <summary>
+	/// GameObjects spawned from prefab entries.
+	/// </summary>
 	internal List<GameObject> SpawnedObjects { get; } = [];
 
 	internal void AddObject( GameObject obj )
