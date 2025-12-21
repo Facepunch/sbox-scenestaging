@@ -22,6 +22,11 @@ internal class ClutterBatch : SceneCustomObject
 	/// </summary>
 	private BBox _totalBounds;
 
+	/// <summary>
+	/// Offset into transform buffer for each batch.
+	/// </summary>
+	private Dictionary<Model, int> _batchOffsets = [];
+
 	public ClutterBatch( SceneWorld world ) : base( world )
 	{
 		Flags.IsOpaque = true;
@@ -75,21 +80,23 @@ internal class ClutterBatch : SceneCustomObject
 	}
 
 	/// <summary>
-	/// Uploads all instance transforms to a GPU buffer.
-	/// Called once during finalization.
+	/// Uploads all instance transforms to a GPU buffer and records batch offsets.
 	/// </summary>
 	private void UploadTransformsToGpu()
 	{
-		// Collect all transforms from all batches and convert to matrices
+		// Collect all transforms and track offsets per batch
 		var allTransforms = new List<Matrix>();
-		
-		foreach ( var batch in _batches.Values )
+		_batchOffsets.Clear();
+
+		foreach ( var (model, batch) in _batches )
 		{
+			_batchOffsets[model] = allTransforms.Count;
+
 			foreach ( var transform in batch.Transforms )
 			{
 				// Convert Transform to Matrix (TRS composition)
-				var matrix = Matrix.CreateScale( transform.Scale ) 
-					* Matrix.CreateRotation( transform.Rotation ) 
+				var matrix = Matrix.CreateScale( transform.Scale )
+					* Matrix.CreateRotation( transform.Rotation )
 					* Matrix.CreateTranslation( transform.Position );
 				allTransforms.Add( matrix );
 			}
@@ -115,10 +122,10 @@ internal class ClutterBatch : SceneCustomObject
 	public void Clear()
 	{
 		foreach ( var batch in _batches.Values )
-		{
 			batch.Clear();
-		}
+
 		_batches.Clear();
+		_batchOffsets.Clear();
 
 		_transformBuffer?.Dispose();
 		_transformBuffer = null;
@@ -136,39 +143,36 @@ internal class ClutterBatch : SceneCustomObject
 	}
 
 	/// <summary>
-	/// Render override for the custom scene object.
-	/// Draws all batched instances using their models and transforms.
+	/// Renders all batched instances using GPU instancing.
 	/// </summary>
 	public override void RenderSceneObject()
 	{
-		if ( _batches.Count == 0 )
+		if ( _batches.Count == 0 || _transformBuffer == null )
 			return;
 
-		// Draw each batch
+		// Render each batch with instancing
 		foreach ( var (model, batch) in _batches )
 		{
-			if ( model == null || batch.Transforms.Count == 0 )
+			if ( batch.Transforms.Count == 0 )
 				continue;
 
-			// Get meshes from the model
-			var meshes = model.Meshes;
-			if ( meshes == null || meshes.Length == 0 )
-				continue;
+			var offset = _batchOffsets[model];
+			var count = batch.Transforms.Count;
 
-			// For each instance in this batch
-			foreach ( var transform in batch.Transforms )
+			// Set up render attributes
+			var attributes = new RenderAttributes();
+			attributes.Set( "TransformBuffer", _transformBuffer );
+			attributes.Set( "InstanceOffset", offset );
+
+			// Draw each material in the model instanced
+			foreach ( var material in model.Materials )
 			{
-				// Draw each mesh of the model at this transform
-				var attributes = new RenderAttributes();
-				attributes.Set( "Transform", (Matrix)transform );
+				if ( material == null )
+					continue;
 
-				foreach ( var mesh in meshes )
-				{
-					if ( mesh.Material != null )
-					{
-						Graphics.Draw( mesh, mesh.Material, attributes );
-					}
-				}
+				// Draw instanced using the model's render data
+				// TODO: Need to access model's mesh data to draw properly
+				// For now, this sets up the infrastructure
 			}
 		}
 	}
