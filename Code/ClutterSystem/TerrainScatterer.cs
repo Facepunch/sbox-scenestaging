@@ -35,7 +35,7 @@ public class SlopeScatterer : Scatterer
 	[Description( "Scale range for spawned objects" )]
 	public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
 
-	[Property]
+	[Property, Range( 0, 10000 )]
 	[Description( "Number of points to attempt to scatter per bounds" )]
 	public int PointCount { get; set; } = 10;
 
@@ -168,7 +168,7 @@ public class TerrainMaterialScatterer : Scatterer
 	[Description( "Scale range for spawned objects" )]
 	public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
 
-	[Property]
+	[Property, Range( 0, 10000 )]
 	[Description( "Number of points to attempt to scatter per bounds" )]
 	public int PointCount { get; set; } = 10;
 
