@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 /// <summary>
 /// Game object system that manages clutter generation.

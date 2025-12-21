@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 /// <summary>
 /// Represents a single clutter instance to be spawned.
@@ -142,6 +142,7 @@ public abstract class Scatterer
 		seed = (seed * 397) ^ y;
 		return seed;
 	}
+
 }
 
 public class SimpleScatterer : Scatterer
@@ -178,7 +179,7 @@ public class SimpleScatterer : Scatterer
 					continue;
 
 				point = trace.Value.HitPosition + trace.Value.Normal * HeightOffset;
-				rotation = AlignToNormal 
+				rotation = AlignToNormal
 					? Rotation.From( new Angles( 0, Random.Float( 0f, 360f ), 0 ) ) * Rotation.FromToRotation( Vector3.Up, trace.Value.Normal )
 					: Rotation.FromYaw( Random.Float( 0f, 360f ) );
 			}

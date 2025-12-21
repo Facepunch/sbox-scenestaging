@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 /// <summary>
 /// Maps an clutter entry to a slope angle range.

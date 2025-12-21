@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 /// <summary>
 /// Volume/baked clutter mode - generates once within bounds

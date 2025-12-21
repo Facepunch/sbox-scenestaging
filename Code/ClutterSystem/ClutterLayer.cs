@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 public class ClutterLayer
 {

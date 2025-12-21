@@ -1,4 +1,4 @@
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 /// <summary>
 /// Immutable settings for clutter generation.

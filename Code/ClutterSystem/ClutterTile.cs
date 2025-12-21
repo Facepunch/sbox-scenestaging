@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 /// <summary>
 /// Represents a single tile in the clutter spatial grid.

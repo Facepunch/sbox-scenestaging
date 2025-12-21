@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 /// <summary>
 /// Simple job for clutter generation work.

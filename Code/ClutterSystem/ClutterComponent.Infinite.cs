@@ -1,4 +1,4 @@
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 /// <summary>
 /// Infinite/streaming clutter mode - generates tiles around camera

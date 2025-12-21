@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 /// <summary>
 /// Unified clutter scattering component supporting both infinite streaming and baked volumes.

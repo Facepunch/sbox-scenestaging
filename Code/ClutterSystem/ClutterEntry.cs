@@ -1,4 +1,4 @@
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 /// <summary>
 /// Represents a single weighted entry in a <see cref="ClutterDefinition"/>.

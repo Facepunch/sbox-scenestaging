@@ -1,4 +1,4 @@
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 public class ClutterBatch : SceneCustomObject
 {

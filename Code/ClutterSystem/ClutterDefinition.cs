@@ -1,4 +1,4 @@
-namespace Sandbox;
+namespace Sandbox.Clutter;
 
 /// <summary>
 /// A weighted collection of Prefabs and Models for random selection during clutter placement.
