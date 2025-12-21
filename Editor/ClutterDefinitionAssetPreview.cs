@@ -1,8 +1,6 @@
-using Editor;
 using Editor.Assets;
-using Sandbox;
+using Sandbox.Clutter;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Editor;
@@ -12,17 +10,13 @@ namespace Editor;
 /// Uses the actual clutter system to generate a realistic preview.
 /// </summary>
 [AssetPreview( "clutter" )]
-public class ClutterDefinitionAssetPreview : AssetPreview
+public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset )
 {
 	private ClutterDefinition _currentclutter;
 	private GameObject _clutterObject;
 	private GameObject _groundPlane;
 	private int _lastclutterHash;
 	private float _previewTileSize = 512f;
-
-	public ClutterDefinitionAssetPreview( Asset asset ) : base( asset )
-	{
-	}
 
 	/// <summary>
 	/// Slow down the rotation speed for a better view of the scattered objects
@@ -125,7 +119,7 @@ public class ClutterDefinitionAssetPreview : AssetPreview
 			UpdateclutterState();
 			
 			// Small delay for scene to update
-			await Task.Delay( 50 );
+			await Task.Delay( 8 );
 			
 			CalculateSceneBounds();
 		}
@@ -271,7 +265,7 @@ public class ClutterDefinitionAssetPreview : AssetPreview
 						job.Execute();
 					}
 					
-					await Task.Delay( 50 );
+					await Task.Delay( 8 );
 					CalculateSceneBounds();
 				}
 			}
