@@ -131,10 +131,6 @@ public sealed class ClutterGridSystem : GameObjectSystem
 
 	private void OnTerrainModified( Terrain.SyncFlags flags, RectInt region )
 	{
-		// Only care about control map changes (material painting)
-		//if ( !flags.HasFlag( Terrain.SyncFlags.Control ) )
-		//	return;
-
 		// Convert terrain region to world bounds
 		var bounds = TerrainRegionToWorldBounds( SubscribedTerrains.First(), region );
 
@@ -142,7 +138,7 @@ public sealed class ClutterGridSystem : GameObjectSystem
 		InvalidateTilesInBounds( bounds );
 	}
 
-	private BBox TerrainRegionToWorldBounds( Terrain terrain, RectInt region )
+	private static BBox TerrainRegionToWorldBounds( Terrain terrain, RectInt region )
 	{
 		var terrainTransform = terrain.WorldTransform;
 		var storage = terrain.Storage;
@@ -228,6 +224,9 @@ public sealed class ClutterGridSystem : GameObjectSystem
 		if ( PendingJobs.Count == 0 )
 			return;
 
+		// Track which layers had tiles populated
+		var layersToRebuild = new HashSet<ClutterLayer>();
+
 		// Remove invalid jobs
 		PendingJobs.RemoveAll( job =>
 			!job.ParentObject.IsValid() ||
@@ -262,7 +261,17 @@ public sealed class ClutterGridSystem : GameObjectSystem
 			{
 				job.Execute();
 				processed++;
+
+				// Track layer for batch rebuild
+				if ( job.Layer != null )
+					layersToRebuild.Add( job.Layer );
 			}
+		}
+
+		// Rebuild batches for layers that had tiles populated
+		foreach ( var layer in layersToRebuild )
+		{
+			layer.RebuildBatches();
 		}
 
 		// If we still have too many jobs, cull the furthest ones
@@ -276,6 +285,7 @@ public sealed class ClutterGridSystem : GameObjectSystem
 				if ( job.TileData != null )
 					PendingTiles.Remove( job.TileData );
 			}
+			
 			PendingJobs.RemoveRange( MAX_PENDING_JOBS, PendingJobs.Count - MAX_PENDING_JOBS );
 		}
 	}

@@ -19,6 +19,7 @@ public class ClutterGenerationJob
 
 	// Tile-specific  
 	public ClutterTile TileData { get; init; }
+	public ClutterLayer Layer { get; init; }
 
 	private ClutterGenerationJob() { }
 
@@ -40,7 +41,7 @@ public class ClutterGenerationJob
 	/// <summary>
 	/// Creates a job for tile generation.
 	/// </summary>
-	public static ClutterGenerationJob Tile( BBox bounds, ClutterTile tile, int randomSeed, ClutterDefinition clutter, GameObject parentObject )
+	public static ClutterGenerationJob Tile( BBox bounds, ClutterTile tile, int randomSeed, ClutterDefinition clutter, GameObject parentObject, ClutterLayer layer = null )
 	{
 		return new ClutterGenerationJob
 		{
@@ -48,7 +49,8 @@ public class ClutterGenerationJob
 			TileData = tile,
 			RandomSeed = randomSeed,
 			Clutter = clutter,
-			ParentObject = parentObject
+			ParentObject = parentObject,
+			Layer = layer
 		};
 	}
 
@@ -64,7 +66,11 @@ public class ClutterGenerationJob
 		SpawnInstances( instances );
 
 		if ( TileData != null )
+		{
 			TileData.IsPopulated = true;
+			// Notify layer that tile is populated so it can rebuild batches
+			Layer?.OnTilePopulated( TileData );
+		}
 	}
 
 	private List<ClutterInstance> ScatterTile()
@@ -98,6 +104,14 @@ public class ClutterGenerationJob
 		{
 			foreach ( var instance in instances )
 			{
+				// Models are stored in tile for batch rendering
+				if ( instance.IsModel && instance.Entry.Model != null )
+				{
+					TileData.AddModelInstance( instance );
+					continue;
+				}
+
+				// Prefabs are spawned as GameObjects
 				if ( instance.Entry.Prefab == null ) 
 					continue;
 
