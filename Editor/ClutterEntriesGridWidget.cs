@@ -1,9 +1,6 @@
-using Editor;
-using Sandbox;
+using Sandbox.Clutter;
 using Sandbox.UI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Editor;
 

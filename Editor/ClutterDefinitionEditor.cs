@@ -1,5 +1,4 @@
-using Editor;
-using Sandbox;
+using Sandbox.Clutter;
 
 namespace Editor;
 
