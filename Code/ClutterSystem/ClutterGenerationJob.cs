@@ -104,10 +104,10 @@ public class ClutterGenerationJob
 		{
 			foreach ( var instance in instances )
 			{
-				// Models are stored in tile for batch rendering
+				// Models are stored in layer for batch rendering
 				if ( instance.IsModel && instance.Entry.Model != null )
 				{
-					TileData.AddModelInstance( instance );
+					Layer?.AddModelInstance( TileData.Coordinates, instance );
 					continue;
 				}
 

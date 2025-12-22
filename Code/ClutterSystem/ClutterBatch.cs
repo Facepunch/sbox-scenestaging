@@ -2,7 +2,7 @@ namespace Sandbox.Clutter;
 
 /// <summary>
 /// Custom scene object for rendering batched clutter models.
-/// Groups instances by model type for efficient rendering.
+/// Groups instances by model type for efficient GPU instanced rendering.
 /// </summary>
 internal class ClutterBatch : SceneCustomObject
 {
@@ -13,7 +13,6 @@ internal class ClutterBatch : SceneCustomObject
 
 	/// <summary>
 	/// GPU buffer containing all instance transforms.
-	/// Uploaded once during Finalize().
 	/// </summary>
 	private GpuBuffer<Matrix> _transformBuffer;
 
@@ -134,7 +133,7 @@ internal class ClutterBatch : SceneCustomObject
 	}
 
 	/// <summary>
-	/// Called when the batch is deleted. Cleans up GPU resources.
+	/// Called when the batch is deleted. Cleans up resources.
 	/// </summary>
 	public new void Delete()
 	{

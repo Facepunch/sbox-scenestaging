@@ -7,15 +7,20 @@ public class ClutterLayer
 	public ClutterGridSystem GridSystem { get; set; }
 
 	private Dictionary<Vector2Int, ClutterTile> Tiles { get; } = [];
-	
+
+	/// <summary>
+	/// Model instances organized by tile coordinate.
+	/// </summary>
+	private Dictionary<Vector2Int, List<ClutterInstance>> ModelInstancesByTile { get; } = [];
+
 	/// <summary>
 	/// Batches organized by model, containing all instances across all tiles in this layer.
 	/// </summary>
 	private Dictionary<Model, ClutterBatch> _batches = [];
-	
+
 	private int _lastSettingsHash;
 	private const float TileHeight = 50000f;
-	
+
 	/// <summary>
 	/// Flag to indicate batches need to be rebuilt.
 	/// </summary>
@@ -93,6 +98,9 @@ public class ClutterLayer
 					// Remove from pending set first to prevent queue buildup
 					GridSystem?.RemovePendingTile( tile );
 					tile.Destroy();
+
+					// Remove model instances for this tile
+					ModelInstancesByTile.Remove( coord );
 				}
 			}
 			_batchesDirty = true;
@@ -117,6 +125,23 @@ public class ClutterLayer
 	}
 
 	/// <summary>
+	/// Adds a model instance for a specific tile.
+	/// </summary>
+	public void AddModelInstance( Vector2Int tileCoord, ClutterInstance instance )
+	{
+		if ( instance.Entry?.Model == null )
+			return;
+
+		if ( !ModelInstancesByTile.TryGetValue( tileCoord, out var instances ) )
+		{
+			instances = [];
+			ModelInstancesByTile[tileCoord] = instances;
+		}
+
+		instances.Add( instance );
+	}
+
+	/// <summary>
 	/// Rebuilds all batches from scratch using all populated tiles.
 	/// </summary>
 	public void RebuildBatches()
@@ -124,20 +149,19 @@ public class ClutterLayer
 		// Clear existing batches
 		foreach ( var batch in _batches.Values )
 			batch.Delete();
-		
+
 		_batches.Clear();
 
-		// Early exit if no tiles
-		if ( Tiles.Count == 0 )
+		// Early exit if no model instances
+		if ( ModelInstancesByTile.Count == 0 )
 		{
 			_batchesDirty = false;
 			return;
 		}
 
 		// Group instances by model in a single pass
-		var instancesByModel = Tiles.Values
-			.Where( t => t.IsPopulated )
-			.SelectMany( t => t.ModelInstances )
+		var instancesByModel = ModelInstancesByTile.Values
+			.SelectMany( instances => instances )
 			.Where( i => i.Entry?.Model != null )
 			.GroupBy( i => i.Entry.Model )
 			.ToDictionary( g => g.Key, g => g.ToList() );
@@ -146,10 +170,10 @@ public class ClutterLayer
 		foreach ( var (model, instances) in instancesByModel )
 		{
 			var batch = new ClutterBatch( ParentObject.Scene.SceneWorld );
-			
+
 			foreach ( var instance in instances )
 				batch.AddInstance( instance );
-			
+
 			batch.Finalize();
 			_batches[model] = batch;
 		}
@@ -167,6 +191,7 @@ public class ClutterLayer
 		{
 			GridSystem?.RemovePendingTile( tile );
 			tile.Destroy();
+			ModelInstancesByTile.Remove( coord );
 			_batchesDirty = true;
 		}
 	}
@@ -187,6 +212,7 @@ public class ClutterLayer
 			{
 				GridSystem?.RemovePendingTile( tile );
 				tile.Destroy();
+				ModelInstancesByTile.Remove( coord );
 				_batchesDirty = true;
 			}
 		}
@@ -201,6 +227,7 @@ public class ClutterLayer
 		}
 
 		Tiles.Clear();
+		ModelInstancesByTile.Clear();
 
 		// Clear all batches
 		foreach ( var batch in _batches.Values )
