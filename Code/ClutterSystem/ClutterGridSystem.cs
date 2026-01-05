@@ -8,28 +8,31 @@ namespace Sandbox.Clutter;
 /// Game object system that manages clutter generation.
 /// Handles infinite streaming layers and executes generation jobs.
 /// </summary>
-public sealed class ClutterGridSystem : GameObjectSystem
+public sealed partial class ClutterGridSystem : GameObjectSystem
 {
 	/// <summary>
 	/// Mapping of clutter components to their respective layers
 	/// </summary>
 	private Dictionary<ClutterComponent, ClutterLayer> ComponentToLayer { get; set; } = [];
 
-
 	private const int MAX_JOBS_PER_FRAME = 8;
+	private const int MAX_PENDING_JOBS = 100;
+
 	private List<ClutterGenerationJob> PendingJobs { get; set; } = [];
 	private HashSet<ClutterTile> PendingTiles { get; set; } = [];
-
-	/// <summary>
-	/// Terrain modified event bookkeeping
-	/// </summary>
 	private HashSet<Terrain> SubscribedTerrains { get; set; } = [];
 
 	private Vector3 LastCameraPosition { get; set; }
 
+	// Painted instance management
+	private ClutterStorage _storage;
+	private ClutterLayer _painted;
+
 	public ClutterGridSystem( Scene scene ) : base( scene )
 	{
+		_storage = new ClutterStorage( scene );
 		Listen( Stage.FinishUpdate, 0, OnUpdate, "ClutterGridSystem.Update" );
+		Listen( Stage.SceneLoaded, 0, Deserialize, "ClutterGridSystem.RestorePainted" );
 	}
 
 	/// <summary>
@@ -299,7 +302,6 @@ public sealed class ClutterGridSystem : GameObjectSystem
 		}
 
 		// If we still have too many jobs, cull the furthest ones
-		const int MAX_PENDING_JOBS = 100;
 		if ( PendingJobs.Count > MAX_PENDING_JOBS )
 		{
 			// Keep only the nearest 100 jobs
@@ -309,8 +311,82 @@ public sealed class ClutterGridSystem : GameObjectSystem
 				if ( job.TileData != null )
 					PendingTiles.Remove( job.TileData );
 			}
-			
+
 			PendingJobs.RemoveRange( MAX_PENDING_JOBS, PendingJobs.Count - MAX_PENDING_JOBS );
 		}
 	}
+
+	/// <summary>
+	/// Paint instance. Call Flush() when stroke ends.
+	/// </summary>
+	public void Paint( Model model, Vector3 pos, Rotation rot, float scale = 1f )
+	{
+		if ( model == null ) return;
+		_storage.AddInstance( model.ResourcePath, pos, rot, scale );
+	}
+
+	/// <summary>
+	/// Erase instances. Call Flush() when stroke ends.
+	/// </summary>
+	public void Erase( Vector3 pos, float radius )
+	{
+		_storage.Erase( pos, radius );
+	}
+
+	/// <summary>
+	/// Flush changes - saves and rebuilds batches.
+	/// </summary>
+	public void Serialize()
+	{
+		_storage.Save();
+		Deserialize();
+	}
+
+	/// <summary>
+	/// Restore painted instances from metadata.
+	/// </summary>
+	private void Deserialize()
+	{
+		if ( _storage.TotalCount == 0 )
+		{
+			_painted?.ClearAllTiles();
+			return;
+		}
+
+		_painted ??= new( new() { Clutter = new() }, null, this );
+		_painted.ClearAllTiles();
+
+		foreach ( var modelPath in _storage.ModelPaths )
+		{
+			var model = ResourceLibrary.Get<Model>( modelPath );
+			if ( model == null ) continue;
+
+			foreach ( var instance in _storage.GetInstances( modelPath ) )
+			{
+				_painted.AddModelInstance( Vector2Int.Zero, new()
+				{
+					Transform = new( instance.Position, instance.Rotation, instance.Scale ),
+					Entry = new() { Model = model }
+				} );
+			}
+		}
+
+		_painted.RebuildBatches();
+	}
+
+	/// <summary>
+	/// Clear all painted instances.
+	/// </summary>
+	public void ClearPainted()
+	{
+		_storage.ClearAll();
+		_storage.Save();
+		_painted?.ClearAllTiles();
+	}
+
+	/// <summary>
+	/// Get painted instance count.
+	/// </summary>
+	public int PaintedCount => _storage.TotalCount;
+
 }
