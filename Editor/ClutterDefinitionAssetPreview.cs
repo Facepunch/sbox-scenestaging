@@ -16,7 +16,7 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 	private GameObject _clutterObject;
 	private GameObject _groundPlane;
 	private int _lastclutterHash;
-	private float _previewTileSize = 512f;
+	private float _previewVolumeSize = 512f;
 
 	/// <summary>
 	/// Slow down the rotation speed for a better view of the scattered objects
@@ -37,13 +37,16 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 			// Create ground plane for collision
 			CreateGroundPlane();
 
-			// Create clutter object and scatter immediately
+			// Create clutter object with component using regular pipeline
 			CreateClutterObject();
 			
 			// Store initial state
 			UpdateclutterState();
 			
-			// Calculate bounds immediately after generation
+			// Small delay for system to generate
+			await Task.Delay( 50 );
+			
+			// Calculate bounds after generation
 			CalculateSceneBounds();
 		}
 	}
@@ -112,14 +115,14 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 				_clutterObject.Destroy();
 			}
 
-			// Recreate and manually scatter
+			// Recreate using regular pipeline
 			CreateClutterObject();
 			
 			// Update state
 			UpdateclutterState();
 			
-			// Small delay for scene to update
-			await Task.Delay( 8 );
+			// Small delay for system to generate
+			await Task.Delay( 50 );
 			
 			CalculateSceneBounds();
 		}
@@ -131,24 +134,20 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 		_clutterObject = new GameObject( true, "Clutter Preview" );
 		PrimaryObject = _clutterObject;
 		
-		// Manually generate preview scatter instead of relying on system
-		if ( _currentclutter?.Scatterer != null )
+		// Use ClutterComponent with Volume mode - this goes through the regular pipeline
+		if ( _currentclutter != null )
 		{
-			var bounds = new BBox( 
-				new Vector3( -_previewTileSize / 2, -_previewTileSize / 2, -100 ), 
-				new Vector3( _previewTileSize / 2, _previewTileSize / 2, 100 ) 
+			var component = _clutterObject.Components.Create<ClutterComponent>();
+			component.Clutter = _currentclutter;
+			component.Infinite = false; // Use volume mode
+			component.Bounds = new BBox(
+				new Vector3( -_previewVolumeSize / 2, -_previewVolumeSize / 2, -100 ),
+				new Vector3( _previewVolumeSize / 2, _previewVolumeSize / 2, 100 )
 			);
+			component.RandomSeed = 42; // Fixed seed for consistent preview
 			
-			var job = ClutterGenerationJob.Volume(
-				bounds: bounds,
-				cellSize: _previewTileSize,
-				randomSeed: 42, // Fixed seed for consistent preview
-				clutter: _currentclutter,
-				parentObject: _clutterObject
-			);
-			
-			// Execute immediately, synchronously
-			job.Execute();
+			// Generate immediately
+			component.Generate();
 		}
 	}
 
@@ -169,28 +168,24 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 		if ( !_clutterObject.IsValid() )
 			return;
 
-		// Get all spawned clutter objects
+		// Get all spawned clutter objects (prefabs only - models are in batches)
 		var allObjects = _clutterObject.Children.ToList();
 		
-		if ( allObjects.Count == 0 )
-		{
-			// Default bounds if nothing spawned yet
-			SceneCenter = new Vector3( 0, 0, 50 );
-			SceneSize = new Vector3( 200, 200, 100 );
-			return;
-		}
+		// Start with volume bounds as base
+		var bbox = new BBox(
+			new Vector3( -_previewVolumeSize / 2, -_previewVolumeSize / 2, -100 ),
+			new Vector3( _previewVolumeSize / 2, _previewVolumeSize / 2, 100 )
+		);
 
-		// Find bounding box of all objects
-		var bbox = new BBox();
-		bool hasValidBounds = false;
+		bool hasValidBounds = true;
 
+		// Expand bounds to include spawned objects
 		foreach ( var obj in allObjects )
 		{
 			if ( obj.Components.TryGet<ModelRenderer>( out var renderer ) && renderer.Model != null )
 			{
 				var objBounds = renderer.Model.Bounds.Transform( obj.WorldTransform );
 				bbox = bbox.AddBBox( objBounds );
-				hasValidBounds = true;
 			}
 			else
 			{
@@ -238,34 +233,14 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 		{
 			using ( Scene.Push() )
 			{
-				if ( _clutterObject.IsValid() )
+				if ( _clutterObject.IsValid() && _clutterObject.Components.TryGet<ClutterComponent>( out var component ) )
 				{
-					// Destroy current clutter
-					_clutterObject.Destroy();
+					// Change seed and regenerate
+					component.RandomSeed = Random.Shared.Next();
+					component.Clear();
+					component.Generate();
 					
-					// Create new with random seed
-					_clutterObject = new GameObject( true, "Clutter Preview" );
-					PrimaryObject = _clutterObject;
-					
-					if ( _currentclutter?.Scatterer != null )
-					{
-						var bounds = new BBox( 
-							new Vector3( -_previewTileSize / 2, -_previewTileSize / 2, -100 ), 
-							new Vector3( _previewTileSize / 2, _previewTileSize / 2, 100 ) 
-						);
-						
-						var job = ClutterGenerationJob.Volume(
-							bounds: bounds,
-							cellSize: _previewTileSize,
-							randomSeed: DateTime.Now.Ticks.GetHashCode(), // Random seed
-							clutter: _currentclutter,
-							parentObject: _clutterObject
-						);
-						
-						job.Execute();
-					}
-					
-					await Task.Delay( 8 );
+					await Task.Delay( 50 );
 					CalculateSceneBounds();
 				}
 			}
@@ -274,14 +249,5 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 		toolbar.Layout.Add( randomizeBtn );
 
 		return toolbar;
-	}
-
-	/// <summary>
-	/// Create widgets that are always visible in the preview
-	/// </summary>
-	public override Widget CreateWidget( Widget parent )
-	{
-		// Don't add any overlays - keep the 3D preview clean
-		return null;
 	}
 }
