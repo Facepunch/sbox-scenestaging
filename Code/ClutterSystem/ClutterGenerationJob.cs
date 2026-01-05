@@ -26,7 +26,7 @@ public class ClutterGenerationJob
 	/// <summary>
 	/// Creates a job for volume generation.
 	/// </summary>
-	public static ClutterGenerationJob Volume( BBox bounds, float cellSize, int randomSeed, ClutterDefinition clutter, GameObject parentObject )
+	public static ClutterGenerationJob Volume( BBox bounds, float cellSize, int randomSeed, ClutterDefinition clutter, GameObject parentObject, ClutterLayer layer = null )
 	{
 		return new ClutterGenerationJob
 		{
@@ -34,7 +34,8 @@ public class ClutterGenerationJob
 			CellSize = cellSize,
 			RandomSeed = randomSeed,
 			Clutter = clutter,
-			ParentObject = parentObject
+			ParentObject = parentObject,
+			Layer = layer
 		};
 	}
 
@@ -71,6 +72,11 @@ public class ClutterGenerationJob
 			// Notify layer that tile is populated so it can rebuild batches
 			Layer?.OnTilePopulated( TileData );
 		}
+		else if ( Layer != null )
+		{
+			// For volume mode, rebuild batches immediately after all instances are added
+			Layer.RebuildBatches();
+		}
 	}
 
 	private List<ClutterInstance> ScatterTile()
@@ -100,6 +106,7 @@ public class ClutterGenerationJob
 
 	private void SpawnInstances( List<ClutterInstance> instances )
 	{
+
 		using ( ParentObject.Scene.Push() )
 		{
 			foreach ( var instance in instances )
@@ -107,7 +114,13 @@ public class ClutterGenerationJob
 				// Models are stored in layer for batch rendering
 				if ( instance.IsModel && instance.Entry.Model != null )
 				{
-					Layer?.AddModelInstance( TileData.Coordinates, instance );
+					if ( Layer != null )
+					{
+						// For tile mode, use tile coordinates
+						// For volume mode, use a dummy coordinate (0,0) since there's only one "tile"
+						var coord = TileData?.Coordinates ?? Vector2Int.Zero;
+						Layer.AddModelInstance( coord, instance );
+					}
 					continue;
 				}
 

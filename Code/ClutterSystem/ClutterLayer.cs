@@ -174,7 +174,7 @@ public class ClutterLayer
 			foreach ( var instance in instances )
 				batch.AddInstance( instance );
 
-			batch.Finalize();
+			batch.Build();
 			_batches[model] = batch;
 		}
 
@@ -220,6 +220,7 @@ public class ClutterLayer
 
 	public void ClearAllTiles()
 	{
+		// Remove any pending tiles from the grid system
 		foreach ( var tile in Tiles.Values )
 		{
 			GridSystem?.RemovePendingTile( tile );

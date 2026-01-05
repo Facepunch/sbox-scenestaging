@@ -10,16 +10,98 @@ namespace Sandbox.Clutter;
 /// </summary>
 public sealed class ClutterGridSystem : GameObjectSystem
 {
+	/// <summary>
+	/// Mapping of clutter components to their respective layers
+	/// </summary>
 	private Dictionary<ClutterComponent, ClutterLayer> ComponentToLayer { get; set; } = [];
+
+
+	private const int MAX_JOBS_PER_FRAME = 8;
 	private List<ClutterGenerationJob> PendingJobs { get; set; } = [];
 	private HashSet<ClutterTile> PendingTiles { get; set; } = [];
+
+	/// <summary>
+	/// Terrain modified event bookkeeping
+	/// </summary>
 	private HashSet<Terrain> SubscribedTerrains { get; set; } = [];
+
 	private Vector3 LastCameraPosition { get; set; }
-	private const int MAX_JOBS_PER_FRAME = 8;
 
 	public ClutterGridSystem( Scene scene ) : base( scene )
 	{
 		Listen( Stage.FinishUpdate, 0, OnUpdate, "ClutterGridSystem.Update" );
+	}
+
+	/// <summary>
+	/// Check for new terrains, queue generation/cleanup jobs, and process pending jobs.
+	/// </summary>
+	private void OnUpdate()
+	{
+		var camera = GetActiveCamera();
+		if ( camera == null )
+			return;
+
+		LastCameraPosition = camera.WorldPosition;
+
+		SubscribeToTerrains();
+		UpdateInfiniteLayers( LastCameraPosition );
+		ProcessJobs();
+	}
+
+	private void SubscribeToTerrains()
+	{
+		foreach ( var terrain in Scene.GetAllComponents<Terrain>() )
+		{
+			if ( SubscribedTerrains.Add( terrain ) )
+			{
+				terrain.OnTerrainModified += OnTerrainModified;
+			}
+		}
+
+		// Clean up removed terrains
+		SubscribedTerrains.RemoveWhere( t => !t.IsValid() );
+	}
+
+	private void UpdateActiveComponents( List<ClutterComponent> components, Vector3 cameraPosition )
+	{
+		foreach ( var component in components )
+		{
+			var settings = component.GetCurrentSettings();
+			if ( !settings.IsValid )
+				continue;
+
+			var layer = GetOrCreateLayer( component, settings );
+			layer.UpdateSettings( settings );
+
+			foreach ( var job in layer.UpdateTiles( cameraPosition ) )
+				QueueJob( job );
+		}
+	}
+
+	private void RemoveInactiveComponents( List<ClutterComponent> activeInfiniteComponents )
+	{
+		// Only remove components that are:
+		// 1. Infinite mode AND not in the active list, OR
+		// 2. Invalid/destroyed
+		var toRemove = ComponentToLayer.Keys
+			.Where( c => !c.IsValid() || (c.Infinite && !activeInfiniteComponents.Contains( c )) )
+			.ToList();
+
+		foreach ( var component in toRemove )
+		{
+			ComponentToLayer[component].ClearAllTiles();
+			ComponentToLayer.Remove( component );
+		}
+	}
+
+	private void UpdateInfiniteLayers( Vector3 cameraPosition )
+	{
+		var activeComponents = Scene.GetAllComponents<ClutterComponent>()
+			.Where( c => c.Active && c.Infinite )
+			.ToList();
+
+		RemoveInactiveComponents( activeComponents );
+		UpdateActiveComponents( activeComponents, cameraPosition );
 	}
 
 	/// <summary>
@@ -56,6 +138,9 @@ public sealed class ClutterGridSystem : GameObjectSystem
 	/// </summary>
 	public void ClearComponent( ClutterComponent component )
 	{
+		// Remove any pending jobs for this component (both tile and volume jobs)
+		PendingJobs.RemoveAll( job => job.ParentObject == component.GameObject );
+
 		if ( ComponentToLayer.Remove( component, out var layer ) )
 		{
 			layer.ClearAllTiles();
@@ -93,39 +178,6 @@ public sealed class ClutterGridSystem : GameObjectSystem
 		foreach ( var layer in ComponentToLayer.Values )
 		{
 			layer.InvalidateTilesInBounds( bounds );
-		}
-	}
-
-	private void OnUpdate()
-	{
-		var camera = GetActiveCamera();
-		if ( camera == null )
-			return;
-
-		LastCameraPosition = camera.WorldPosition;
-
-		SubscribeToTerrains();
-		UpdateInfiniteLayers( LastCameraPosition );
-		ProcessJobs();
-	}
-
-	private void SubscribeToTerrains()
-	{
-		var terrains = Scene.GetAllComponents<Terrain>();
-
-		foreach ( var terrain in terrains )
-		{
-			if ( SubscribedTerrains.Add( terrain ) )
-			{
-				terrain.OnTerrainModified += OnTerrainModified;
-			}
-		}
-
-		// Clean up removed terrains
-		var toRemove = SubscribedTerrains.Where( t => !t.IsValid() ).ToList();
-		foreach ( var terrain in toRemove )
-		{
-			SubscribedTerrains.Remove( terrain );
 		}
 	}
 
@@ -172,43 +224,6 @@ public sealed class ClutterGridSystem : GameObjectSystem
 			: Scene.Camera; // Figure out a way to grab editor camera
 	}
 
-	private void UpdateInfiniteLayers( Vector3 cameraPosition )
-	{
-		var activeComponents = Scene.GetAllComponents<ClutterComponent>()
-			.Where( c => c.Active && c.Infinite )
-			.ToList();
-
-		RemoveInactiveComponents( activeComponents );
-		UpdateActiveComponents( activeComponents, cameraPosition );
-	}
-
-	private void RemoveInactiveComponents( List<ClutterComponent> activeComponents )
-	{
-		var toRemove = ComponentToLayer.Keys.Except( activeComponents ).ToList();
-
-		foreach ( var component in toRemove )
-		{
-			ComponentToLayer[component].ClearAllTiles();
-			ComponentToLayer.Remove( component );
-		}
-	}
-
-	private void UpdateActiveComponents( List<ClutterComponent> components, Vector3 cameraPosition )
-	{
-		foreach ( var component in components )
-		{
-			var settings = component.GetCurrentSettings();
-			if ( !settings.IsValid )
-				continue;
-
-			var layer = GetOrCreateLayer( component, settings );
-			layer.UpdateSettings( settings );
-
-			foreach ( var job in layer.UpdateTiles( cameraPosition ) )
-				QueueJob( job );
-		}
-	}
-
 	private ClutterLayer GetOrCreateLayer( ClutterComponent component, ClutterSettings settings )
 	{
 		if ( ComponentToLayer.TryGetValue( component, out var layer ) )
@@ -217,6 +232,15 @@ public sealed class ClutterGridSystem : GameObjectSystem
 		layer = new ClutterLayer( settings, component.GameObject, this );
 		ComponentToLayer[component] = layer;
 		return layer;
+	}
+
+	/// <summary>
+	/// Public accessor for getting or creating a layer for a component.
+	/// Used by volume mode to create layers for batching.
+	/// </summary>
+	public ClutterLayer GetOrCreateLayerForComponent( ClutterComponent component, ClutterSettings settings )
+	{
+		return GetOrCreateLayer( component, settings );
 	}
 
 	private void ProcessJobs()

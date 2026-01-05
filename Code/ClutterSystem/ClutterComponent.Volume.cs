@@ -28,6 +28,10 @@ public sealed partial class ClutterComponent
 		}
 		else
 		{
+			// Get or create layer for volume mode (needed for model batching)
+			var settings = GetCurrentSettings();
+			var layer = gridSystem.GetOrCreateLayerForComponent( this, settings );
+
 			var worldBounds = Bounds.Transform( WorldTransform );
 
 			var job = ClutterGenerationJob.Volume(
@@ -35,7 +39,8 @@ public sealed partial class ClutterComponent
 				cellSize: Clutter.TileSize,
 				randomSeed: RandomSeed,
 				clutter: Clutter,
-				parentObject: GameObject
+				parentObject: GameObject,
+				layer: layer
 			);
 
 			gridSystem.QueueJob( job );
@@ -46,10 +51,11 @@ public sealed partial class ClutterComponent
 	[Icon( "delete" )]
 	public void Clear()
 	{
-		// Clear infinite tiles
+		// Clear infinite tiles and batches (also works for volume mode)
+		// This removes the component from the layer system and cleans up all batches
 		ClearInfinite();
 
-		// Clear volume children
+		// Clear volume children (prefab instances)
 		var children = GameObject.Children.Where( c => c.Tags.Has( "clutter" ) ).ToArray();
 		foreach ( var child in children )
 			child.Destroy();
