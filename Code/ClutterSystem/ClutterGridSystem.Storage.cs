@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -11,9 +12,8 @@ public sealed partial class ClutterGridSystem
 	/// <summary>
 	/// Manages storage and serialization of painted clutter instances.
 	/// </summary>
-	private sealed class ClutterStorage
+	private sealed class ClutterStorage : BinarySerializable
 	{
-		private const string METADATA_KEY = "ClutterStorage";
 		private readonly Scene _scene;
 
 		public record Instance( Vector3 Position, Rotation Rotation, float Scale = 1f );
@@ -24,7 +24,6 @@ public sealed partial class ClutterGridSystem
 		public ClutterStorage( Scene scene )
 		{
 			_scene = scene;
-			Load();
 		}
 
 		/// <summary>
@@ -144,88 +143,76 @@ public sealed partial class ClutterGridSystem
 			HasChanged = true;
 		}
 
-		/// <summary>
-		/// Saves changes to Scene.Metadata if there are any.
-		/// </summary>
-		public void Save()
+		public override void Serialize( BinaryWriter writer )
 		{
-			if ( !HasChanged ) return;
+			writer.Write( _instances.Count );
 
-			// Remove empty model entries
-			var emptyKeys = new List<string>();
-			foreach ( var kvp in _instances )
+			foreach ( var (modelPath, instances) in _instances )
 			{
-				if ( kvp.Value.Count == 0 )
-					emptyKeys.Add( kvp.Key );
+				// Write model path
+				writer.Write( modelPath );
+				writer.Write( instances.Count );
+
+				foreach ( var instance in instances )
+				{
+					// Position
+					writer.Write( instance.Position.x );
+					writer.Write( instance.Position.y );
+					writer.Write( instance.Position.z );
+
+					// Rotation
+					writer.Write( instance.Rotation.x );
+					writer.Write( instance.Rotation.y );
+					writer.Write( instance.Rotation.z );
+					writer.Write( instance.Rotation.w );
+
+					// Scale
+					writer.Write( instance.Scale );
+				}
+			}
+		}
+
+		public override void Deserialize( BinaryReader reader )
+		{
+			// Read number of model paths
+			var modelCount = reader.ReadInt32();
+
+			_instances.Clear();
+
+			// Read each model path and its instances
+			for ( int i = 0; i < modelCount; i++ )
+			{
+				var modelPath = reader.ReadString();
+				var instanceCount = reader.ReadInt32();
+
+				List<Instance> instanceList = [];
+
+				// Read each instance
+				for ( int j = 0; j < instanceCount; j++ )
+				{
+					// position
+					var posX = reader.ReadSingle();
+					var posY = reader.ReadSingle();
+					var posZ = reader.ReadSingle();
+					var position = new Vector3( posX, posY, posZ );
+
+					// rotation
+					var rotX = reader.ReadSingle();
+					var rotY = reader.ReadSingle();
+					var rotZ = reader.ReadSingle();
+					var rotW = reader.ReadSingle();
+					var rotation = new Rotation( rotX, rotY, rotZ, rotW );
+
+					// uniform scale
+					var scale = reader.ReadSingle();
+
+					instanceList.Add( new ( position, rotation, scale ) );
+				}
+
+				_instances[modelPath] = instanceList;
 			}
 
-			foreach ( var key in emptyKeys )
-				_instances.Remove( key );
-
-			// Save to metadata
-			if ( _instances.Count == 0 )
-				_scene.Metadata.Remove( METADATA_KEY );
-			else
-				_scene.Metadata[METADATA_KEY] = Pack( _instances );
-
 			HasChanged = false;
-		}
-
-		/// <summary>
-		/// Loads data from Scene.Metadata.
-		/// </summary>
-		public void Load()
-		{
-			_instances = LoadFromScene();
-			HasChanged = false;
-		}
-
-		private Dictionary<string, List<Instance>> LoadFromScene()
-		{
-			if ( !_scene.Metadata.TryGetValue( METADATA_KEY, out var metadataValue ) )
-				return [];
-
-			return Unpack( metadataValue as string );
-		}
-
-		private static string Pack( Dictionary<string, List<Instance>> data )
-		{
-			var json = JsonSerializer.Serialize( data );
-			var bytes = Encoding.UTF8.GetBytes( json );
-
-			using var mem = new MemoryStream();
-			using ( var zip = new GZipStream( mem, CompressionLevel.Optimal ) )
-			{
-				zip.Write( bytes );
-			}
-
-			var base64 = Convert.ToBase64String( mem.ToArray() );
-			base64 = base64.Replace( '+', '-' );
-			base64 = base64.Replace( '/', '_' );
-			base64 = base64.TrimEnd( '=' );
-
-			return base64;
-		}
-
-		private static Dictionary<string, List<Instance>> Unpack( string data )
-		{
-			if ( string.IsNullOrEmpty( data ) )
-				return [];
-
-			var base64 = data.Replace( '-', '+' ).Replace( '_', '/' );
-			var padding = (4 - base64.Length % 4) % 4;
-			base64 = base64.PadRight( base64.Length + padding, '=' );
-
-			var compressed = Convert.FromBase64String( base64 );
-
-			using var mem = new MemoryStream( compressed );
-			using var zip = new GZipStream( mem, CompressionMode.Decompress );
-			using var reader = new StreamReader( zip, Encoding.UTF8 );
-
-			var json = reader.ReadToEnd();
-			var result = JsonSerializer.Deserialize<Dictionary<string, List<Instance>>>( json );
-
-			return result ?? new();
 		}
 	}
 }
