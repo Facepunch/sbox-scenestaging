@@ -1,4 +1,4 @@
-using Editor.TerrainEditor;
+﻿using Editor.TerrainEditor;
 using Sandbox.Clutter;
 using System;
 
@@ -16,6 +16,7 @@ public sealed class ScatterTool : EditorTool
 
 	private bool Erasing = false;
 	private bool _dragging = false;
+	private bool _painting = false;
 	private Vector3 _lastPaintPosition;
 	private float _paintDistanceThreshold = 50f;
 
@@ -97,36 +98,57 @@ public sealed class ScatterTool : EditorTool
 
 	private void OnPaintUpdate()
 	{
-		if ( SelectedClutter == null || SelectedClutter.Scatterer == null )
-			return;
+		if ( SelectedClutter?.Scatterer == null ) return;
 
 		var tr = Scene.Trace.Ray( Gizmo.CurrentRay, 100000 )
 			.UseRenderMeshes( true )
 			.WithTag( "solid" )
-			.WithoutTags( "scattered_object" )
 			.Run();
 
-		if ( !tr.Hit )
-			return;
-
-		if ( _lastPaintPosition != Vector3.Zero && Vector3.DistanceBetween( tr.HitPosition, _lastPaintPosition ) < _paintDistanceThreshold )
+		if ( !tr.Hit ) return;
+		if ( _lastPaintPosition != Vector3.Zero && 
+			Vector3.DistanceBetween( tr.HitPosition, _lastPaintPosition ) < _paintDistanceThreshold )
 			return;
 
 		_lastPaintPosition = tr.HitPosition;
 
+		var system = Scene.GetSystem<ClutterGridSystem>();
+		var brushRadius = BrushSettings.Size;
+		var bounds = BBox.FromPositionAndSize( tr.HitPosition, brushRadius * 2 );
+
 		if ( Erasing )
 		{
-			EraseScatteredObjects( tr.HitPosition );
+			system.Erase( tr.HitPosition, brushRadius );
 		}
 		else
 		{
-			ScatterAtPosition( tr.HitPosition );
+			var instances = SelectedClutter.Scatterer.Scatter( bounds, SelectedClutter, Random.Shared.Next(), Scene );
+			var count = (int)(instances.Count * BrushSettings.Opacity);
+
+			foreach ( var instance in instances.Take( count ) )
+			{
+				if ( instance.IsModel && instance.Entry?.Model != null )
+				{
+					var t = instance.Transform;
+					system.Paint( instance.Entry.Model, t.Position, t.Rotation, t.Scale.x );
+				}
+			}
 		}
+
+		_painting = true;
 	}
 
 	private void OnPaintEnded()
 	{
 		_lastPaintPosition = Vector3.Zero;
+		
+		if ( _painting )
+		{
+			var system = Scene.GetSystem<ClutterGridSystem>();
+			system.Flush();
+		}
+		
+		_painting = false;
 	}
 
 	private void DrawBrushPreview()
@@ -157,48 +179,5 @@ public sealed class ScatterTool : EditorTool
 		brushPreview.Texture = brush?.Texture;
 		brushPreview.Color = color;
 	}
-
-	private void ScatterAtPosition( Vector3 position )
-	{
-		if ( SelectedClutter == null || SelectedClutter.Scatterer == null )
-			return;
-
-		var brushRadius = BrushSettings.Size;
-		var bounds = new BBox(
-			position + new Vector3( -brushRadius, -brushRadius, -100 ),
-			position + new Vector3( brushRadius, brushRadius, 100 )
-		);
-
-		var seed = System.DateTime.Now.Ticks.GetHashCode();
-		var instances = SelectedClutter.Scatterer.Scatter( bounds, SelectedClutter, seed );
-
-		int targetCount = (int)MathF.Ceiling( instances.Count * BrushSettings.Opacity );
-		var filteredInstances = instances.Take( targetCount ).ToList();
-
-		foreach ( var instance in filteredInstances )
-		{
-			if ( instance.Entry.Prefab != null )
-			{
-				var spawnedObject = instance.Entry.Prefab.Clone();
-				spawnedObject.WorldTransform = instance.Transform;
-				spawnedObject.Tags.Add( "scattered_object" );
-			}
-		}
-	}
-
-	private void EraseScatteredObjects( Vector3 position )
-	{
-		var brushRadius = BrushSettings.Size;
-		var allObjects = SceneEditorSession.Active?.Scene?.GetAllObjects( false ) ?? [];
-		
-		var objectsToErase = allObjects
-			.Where( obj => obj.Tags.Has( "scattered_object" ) )
-			.Where( obj => Vector3.DistanceBetween( obj.WorldPosition, position ) <= brushRadius )
-			.ToList();
-
-		foreach ( var obj in objectsToErase )
-		{
-			obj.Destroy();
-		}
-	}
 }
+
