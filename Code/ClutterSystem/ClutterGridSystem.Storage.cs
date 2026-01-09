@@ -14,16 +14,13 @@ public sealed partial class ClutterGridSystem
 	/// </summary>
 	private sealed class ClutterStorage : BinarySerializable
 	{
-		private readonly Scene _scene;
-
 		public record Instance( Vector3 Position, Rotation Rotation, float Scale = 1f );
 
 		private Dictionary<string, List<Instance>> _instances = [];
 		private bool HasChanged = false;
 
-		public ClutterStorage( Scene scene )
+		public ClutterStorage( )
 		{
-			_scene = scene;
 		}
 
 		/// <summary>
@@ -143,9 +140,9 @@ public sealed partial class ClutterGridSystem
 			HasChanged = true;
 		}
 
-		public override void Serialize( BinaryWriter writer )
-		{
-			writer.Write( _instances.Count );
+	public override void Serialize( BinaryWriter writer )
+	{
+		writer.Write( _instances.Count );
 
 			foreach ( var (modelPath, instances) in _instances )
 			{
