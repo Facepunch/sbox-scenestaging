@@ -32,9 +32,8 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 
 	public ClutterGridSystem( Scene scene ) : base( scene )
 	{
-		_storage = new ClutterStorage( scene );
 		Listen( Stage.FinishUpdate, 0, OnUpdate, "ClutterGridSystem.Update" );
-		Listen( Stage.SceneLoaded, 0, Deserialize, "ClutterGridSystem.RestorePainted" );
+		Listen( Stage.SceneLoaded, 0, RebuildPaintedLayer, "ClutterGridSystem.RestorePainted" );
 	}
 
 	/// <summary>
@@ -336,18 +335,19 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 	}
 
 	/// <summary>
-	/// Flush changes - saves and rebuilds batches.
+	/// Flush painted changes and rebuild visual batches.
+	/// Call this after painting strokes to make changes visible.
 	/// </summary>
-	public void Serialize()
+	public void Flush()
 	{
-		_storage.Save();
-		Deserialize();
+		RebuildPaintedLayer();
 	}
 
 	/// <summary>
-	/// Restore painted instances from metadata.
+	/// Rebuild the painted clutter layer from stored instances.
+	/// Called automatically on scene load and after painting.
 	/// </summary>
-	private void Deserialize()
+	private void RebuildPaintedLayer()
 	{
 		if ( _storage.TotalCount == 0 )
 		{
@@ -355,7 +355,7 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 			return;
 		}
 
-		_painted ??= new( new() { Clutter = new() }, null, this );
+		_painted ??= new( new() { Clutter = new() }, Scene, this );
 		_painted.ClearAllTiles();
 
 		foreach ( var modelPath in _storage.ModelPaths )
@@ -382,7 +382,6 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 	public void ClearPainted()
 	{
 		_storage.ClearAll();
-		_storage.Save();
 		_painted?.ClearAllTiles();
 	}
 
