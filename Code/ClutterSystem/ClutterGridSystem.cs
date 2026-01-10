@@ -26,7 +26,6 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 
 	// Painted instance management
 	[Property]
-	[JsonInclude]
 	private ClutterStorage _storage { get; set; } = new();
 
 	[Property]
