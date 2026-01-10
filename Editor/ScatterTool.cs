@@ -127,10 +127,11 @@ public sealed class ScatterTool : EditorTool
 
 			foreach ( var instance in instances.Take( count ) )
 			{
-				if ( instance.IsModel && instance.Entry?.Model != null )
+				// Paint both models and prefabs
+				if ( instance.Entry != null && instance.Entry.HasAsset )
 				{
 					var t = instance.Transform;
-					system.Paint( instance.Entry.Model, t.Position, t.Rotation, t.Scale.x );
+					system.Paint( instance.Entry, t.Position, t.Rotation, t.Scale.x );
 				}
 			}
 		}

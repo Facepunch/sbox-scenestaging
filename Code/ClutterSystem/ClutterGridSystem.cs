@@ -27,8 +27,8 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 	[Property]
 	private ClutterStorage _storage { get; set; } = new();
 
-
 	private ClutterLayer _painted;
+	private bool _dirty = false;
 
 	public ClutterGridSystem( Scene scene ) : base( scene )
 	{
@@ -50,6 +50,13 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 		SubscribeToTerrains();
 		UpdateInfiniteLayers( LastCameraPosition );
 		ProcessJobs();
+
+		// Rebuild painted layer if needed (during painting)
+		if ( _dirty )
+		{
+			RebuildPaintedLayer();
+			_dirty = false;
+		}
 	}
 
 	private void SubscribeToTerrains()
@@ -318,29 +325,65 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 	}
 
 	/// <summary>
-	/// Paint instance. Call Flush() when stroke ends.
+	/// Paint instance. Rebuilds on next frame update.
+	/// Models are batched, Prefabs become GameObjects.
 	/// </summary>
-	public void Paint( Model model, Vector3 pos, Rotation rot, float scale = 1f )
+	public void Paint( ClutterEntry entry, Vector3 pos, Rotation rot, float scale = 1f )
 	{
-		if ( model == null ) return;
-		_storage.AddInstance( model.ResourcePath, pos, rot, scale );
+		if ( entry == null || !entry.HasAsset ) return;
+		
+		// Prefabs create real GameObjects
+		if ( entry.Prefab != null )
+		{
+			var go = entry.Prefab.Clone( pos, rot );
+			go.WorldScale = scale;
+			go.SetParent( Scene );
+			go.Tags.Add( "clutter" );
+		}
+		// Models are batched & stored
+		else if ( entry.Model != null )
+		{
+			_storage.AddModelInstance( entry.Model.ResourcePath, pos, rot, scale );
+			_dirty = true;
+		}
 	}
 
 	/// <summary>
-	/// Erase instances. Call Flush() when stroke ends.
+	/// Erase instances. Rebuilds on next frame update.
+	/// Erases both model batches and prefab GameObjects.
 	/// </summary>
 	public void Erase( Vector3 pos, float radius )
 	{
-		_storage.Erase( pos, radius );
+		var radiusSquared = radius * radius;
+		var erased = false;
+
+		// Erase model instances from storage
+		if ( _storage.Erase( pos, radius ) > 0 )
+		{
+			_dirty = true;
+			erased = true;
+		}
+
+		// Erase prefab GameObjects tagged as clutter
+		var clutterObjects = Scene.GetAllObjects( true )
+			.Where( go => go.Tags.Has( "clutter" ) && 
+			              go.WorldPosition.DistanceSquared( pos ) <= radiusSquared )
+			.ToList();
+
+		foreach ( var go in clutterObjects )
+		{
+			go.Destroy();
+			erased = true;
+		}
 	}
 
 	/// <summary>
-	/// Flush painted changes and rebuild visual batches.
-	/// Call this after painting strokes to make changes visible.
+	/// Flush painted changes and rebuild visual batches immediately.
 	/// </summary>
 	public void Flush()
 	{
 		RebuildPaintedLayer();
+		_dirty = false;
 	}
 
 	/// <summary>
