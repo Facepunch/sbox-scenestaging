@@ -24,12 +24,9 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 
 	private Vector3 LastCameraPosition { get; set; }
 
-	// Painted instance management
 	[Property]
 	private ClutterStorage _storage { get; set; } = new();
 
-	[Property]
-	private bool _testingBool { get; set; } = false;
 
 	private ClutterLayer _painted;
 
