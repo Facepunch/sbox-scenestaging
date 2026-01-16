@@ -343,7 +343,7 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 		// Models are batched & stored
 		else if ( entry.Model != null )
 		{
-			_storage.AddModelInstance( entry.Model.ResourcePath, pos, rot, scale );
+			_storage.AddInstance( entry.Model.ResourcePath, pos, rot, scale );
 			_dirty = true;
 		}
 	}
