@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
-using System.Text.Json;
+using System.Linq;
 
 namespace Sandbox.Clutter;
 
@@ -17,11 +14,8 @@ public sealed partial class ClutterGridSystem
 		public record Instance( Vector3 Position, Rotation Rotation, float Scale = 1f );
 
 		private Dictionary<string, List<Instance>> _instances = [];
-		private bool HasChanged = false;
 
-		public ClutterStorage( )
-		{
-		}
+		public ClutterStorage() { }
 
 		/// <summary>
 		/// Gets the total number of instances across all models.
@@ -56,10 +50,7 @@ public sealed partial class ClutterGridSystem
 		/// <summary>
 		/// Gets all instances grouped by model path.
 		/// </summary>
-		public IReadOnlyDictionary<string, List<Instance>> GetAllInstances()
-		{
-			return _instances;
-		}
+		public IReadOnlyDictionary<string, List<Instance>> GetAllInstances() => _instances;
 
 		/// <summary>
 		/// Adds a single instance for a model.
@@ -75,7 +66,6 @@ public sealed partial class ClutterGridSystem
 			}
 
 			list.Add( new Instance( position, rotation, scale ) );
-			HasChanged = true;
 		}
 
 		/// <summary>
@@ -88,12 +78,11 @@ public sealed partial class ClutterGridSystem
 
 			if ( !_instances.TryGetValue( modelPath, out var list ) )
 			{
-				list = new();
+				list = [];
 				_instances[modelPath] = list;
 			}
 
 			list.AddRange( instances );
-			HasChanged = true;
 		}
 
 		/// <summary>
@@ -112,9 +101,6 @@ public sealed partial class ClutterGridSystem
 				totalRemoved += removed;
 			}
 
-			if ( totalRemoved > 0 )
-				HasChanged = true;
-
 			return totalRemoved;
 		}
 
@@ -123,12 +109,7 @@ public sealed partial class ClutterGridSystem
 		/// </summary>
 		public bool ClearModel( string modelPath )
 		{
-			if ( _instances.Remove( modelPath ) )
-			{
-				HasChanged = true;
-				return true;
-			}
-			return false;
+			return _instances.Remove( modelPath );
 		}
 
 		/// <summary>
@@ -137,50 +118,49 @@ public sealed partial class ClutterGridSystem
 		public void ClearAll()
 		{
 			_instances.Clear();
-			HasChanged = true;
 		}
 
-	public override void Serialize( BinaryWriter writer )
-	{
-		writer.Write( _instances.Count );
+		public override void Serialize( ref BlobWriter writer )
+		{
+			writer.Write( _instances.Count );
 
 			foreach ( var (modelPath, instances) in _instances )
 			{
 				// Write model path
-				writer.Write( modelPath );
-				writer.Write( instances.Count );
+				writer.Stream.Write( modelPath );
+				writer.Stream.Write( instances.Count );
 
 				foreach ( var instance in instances )
 				{
 					// Position
-					writer.Write( instance.Position.x );
-					writer.Write( instance.Position.y );
-					writer.Write( instance.Position.z );
+					writer.Stream.Write( instance.Position.x );
+					writer.Stream.Write( instance.Position.y );
+					writer.Stream.Write( instance.Position.z );
 
 					// Rotation
-					writer.Write( instance.Rotation.x );
-					writer.Write( instance.Rotation.y );
-					writer.Write( instance.Rotation.z );
-					writer.Write( instance.Rotation.w );
+					writer.Stream.Write( instance.Rotation.x );
+					writer.Stream.Write( instance.Rotation.y );
+					writer.Stream.Write( instance.Rotation.z );
+					writer.Stream.Write( instance.Rotation.w );
 
 					// Scale
-					writer.Write( instance.Scale );
+					writer.Stream.Write( instance.Scale );
 				}
 			}
 		}
 
-		public override void Deserialize( BinaryReader reader )
+		public override void Deserialize( ref BlobReader reader )
 		{
 			// Read number of model paths
-			var modelCount = reader.ReadInt32();
+			var modelCount = reader.Read<int>();
 
 			_instances.Clear();
 
 			// Read each model path and its instances
 			for ( int i = 0; i < modelCount; i++ )
 			{
-				var modelPath = reader.ReadString();
-				var instanceCount = reader.ReadInt32();
+				var modelPath = reader.Stream.Read<string>();
+				var instanceCount = reader.Stream.Read<int>();
 
 				List<Instance> instanceList = [];
 
@@ -188,28 +168,26 @@ public sealed partial class ClutterGridSystem
 				for ( int j = 0; j < instanceCount; j++ )
 				{
 					// position
-					var posX = reader.ReadSingle();
-					var posY = reader.ReadSingle();
-					var posZ = reader.ReadSingle();
+					var posX = reader.Stream.Read<float>();
+					var posY = reader.Stream.Read<float>();
+					var posZ = reader.Stream.Read<float>();
 					var position = new Vector3( posX, posY, posZ );
 
 					// rotation
-					var rotX = reader.ReadSingle();
-					var rotY = reader.ReadSingle();
-					var rotZ = reader.ReadSingle();
-					var rotW = reader.ReadSingle();
+					var rotX = reader.Stream.Read<float>();
+					var rotY = reader.Stream.Read<float>();
+					var rotZ = reader.Stream.Read<float>();
+					var rotW = reader.Stream.Read<float>();
 					var rotation = new Rotation( rotX, rotY, rotZ, rotW );
 
 					// uniform scale
-					var scale = reader.ReadSingle();
+					var scale = reader.Stream.Read<float>();
 
-					instanceList.Add( new ( position, rotation, scale ) );
+					instanceList.Add( new( position, rotation, scale ) );
 				}
 
 				_instances[modelPath] = instanceList;
 			}
-
-			HasChanged = false;
 		}
 	}
 }
