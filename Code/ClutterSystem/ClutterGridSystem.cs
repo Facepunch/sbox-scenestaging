@@ -418,19 +418,4 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 
 		_painted.RebuildBatches();
 	}
-
-	/// <summary>
-	/// Clear all painted instances.
-	/// </summary>
-	public void ClearPainted()
-	{
-		_storage.ClearAll();
-		_painted?.ClearAllTiles();
-	}
-
-	/// <summary>
-	/// Get painted instance count.
-	/// </summary>
-	public int PaintedCount => _storage.TotalCount;
-
 }
