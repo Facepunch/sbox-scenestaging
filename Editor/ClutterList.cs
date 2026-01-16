@@ -90,14 +90,6 @@ public class ClutterList : ListView
 
 		var asset = AssetSystem.FindByPath( clutter.ResourcePath );
 
-		if ( asset is null )
-		{
-			Paint.SetDefaultFont();
-			Paint.SetPen( Color.Red );
-			Paint.DrawText( item.Rect.Shrink( 2 ), "<ERROR>", TextFlag.Center );
-			return;
-		}
-
 		// Selection/hover highlight
 		var isSelected = clutter == SelectedClutter || item.Selected;
 		if ( isSelected || Paint.HasMouseOver )
@@ -108,7 +100,7 @@ public class ClutterList : ListView
 		}
 
 		// Thumbnail
-		var pixmap = asset.GetAssetThumb();
+		var pixmap = asset?.GetAssetThumb();
 		if ( pixmap != null )
 		{
 			Paint.Draw( rect.Shrink( 2 ), pixmap );
