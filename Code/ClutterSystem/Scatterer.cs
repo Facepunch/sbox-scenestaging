@@ -1,6 +1,3 @@
-using Sandbox.Sdf;
-using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Sandbox.Clutter;
@@ -20,9 +17,6 @@ public struct ClutterInstance
 /// Base class to override if you want to create custom scatterer logic.
 /// Provides utility methods for entry selection and common operations.
 /// </summary>
-[JsonDerivedType( typeof( SimpleScatterer ), "SimpleScatterer" )]
-[JsonDerivedType( typeof( SlopeScatterer ), "SlopeScatterer" )]
-[JsonDerivedType( typeof( TerrainMaterialScatterer ), "TerrainMaterialScatterer" )]
 public abstract class Scatterer
 {
 	/// <summary>
