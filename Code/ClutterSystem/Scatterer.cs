@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Sandbox.Clutter;
 
 /// <summary>
@@ -22,7 +20,6 @@ public abstract class Scatterer
 	/// <summary>
 	/// Random instance for this scattering operation.
 	/// </summary>
-	[JsonIgnore]
 	[Hide]
 	protected Random Random { get; private set; }
 

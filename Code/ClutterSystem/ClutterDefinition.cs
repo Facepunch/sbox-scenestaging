@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Sandbox.Clutter;
 
 /// <summary>
@@ -51,18 +53,84 @@ public class ClutterDefinition : GameResource
 				_scattererTypeName = normalizedValue;
 				
 				// Always create a new scatterer when type changes
-				Scatterer = CreateScatterer( normalizedValue );
+				_scatterer = CreateScatterer( normalizedValue );
+				
+				// Save the new scatterer's default data
+				SaveScattererData();
 			}
 		}
 	}
 
 	/// <summary>
-	/// The scatterer instance that defines how objects from this clutter definition are placed.
-	/// Automatically recreated when ScattererTypeName changes.
+	/// JSON string storing the scatterer's property values.
 	/// </summary>
-	[Property, Title( "Scatterer Settings" )]
+	[Property, Hide]
+	public string ScattererData { get; set; }
+
+	private Scatterer _scatterer;
+
+	/// <summary>
+	/// The scatterer instance that defines how objects from this clutter definition are placed.
+	/// Not serialized - created from ScattererTypeName and ScattererData on load.
+	/// </summary>
+	[JsonIgnore]
 	[Editor( "ScattererSettings" )]
-	public Scatterer Scatterer { get; set; }
+	[Property, Title( "Scatterer Settings" )]
+	public Scatterer Scatterer
+	{
+		get
+		{
+			if ( _scatterer == null )
+			{
+				_scatterer = CreateScatterer( ScattererTypeName );
+				ApplyScattererData();
+			}
+			return _scatterer;
+		}
+		set => _scatterer = value;
+	}
+
+	/// <summary>
+	/// Applies stored ScattererData to the current scatterer instance.
+	/// </summary>
+	private void ApplyScattererData()
+	{
+		if ( _scatterer == null || string.IsNullOrEmpty( ScattererData ) )
+			return;
+
+		try
+		{
+			var loaded = Json.Deserialize( ScattererData, _scatterer.GetType() ) as Scatterer;
+			if ( loaded != null )
+			{
+				_scatterer = loaded;
+			}
+		}
+		catch ( Exception e )
+		{
+			Log.Warning( $"Failed to apply scatterer data: {e.Message}" );
+		}
+	}
+
+	/// <summary>
+	/// Saves the current scatterer's properties to ScattererData.
+	/// </summary>
+	public void SaveScattererData()
+	{
+		if ( _scatterer != null )
+		{
+			ScattererData = Json.Serialize( _scatterer );
+		}
+	}
+
+	protected override void PostLoad()
+	{
+		base.PostLoad();
+
+		// Scatterer is lazily created when first accessed via the getter
+		// Just reset the backing field so it gets recreated with fresh data
+		_scatterer = null;
+	}
 
 	private static Scatterer CreateScatterer( string typeName )
 	{
@@ -189,22 +257,5 @@ public class ClutterDefinition : GameResource
 		hash.Add( Scatterer?.GetHashCode() ?? 0 );
 
 		return hash.ToHashCode();
-	}
-
-	protected override void PostLoad()
-	{
-		base.PostLoad();
-
-		// Ensure we have a valid scatterer after loading
-		if ( Scatterer == null )
-		{
-			// No scatterer was deserialized, create one based on type name
-			Scatterer = CreateScatterer( _scattererTypeName ?? nameof( SimpleScatterer ) );
-		}
-		else
-		{
-			// Scatterer was loaded, sync the type name to match
-			_scattererTypeName = Scatterer.GetType().Name;
-		}
 	}
 }
