@@ -6,7 +6,7 @@ namespace Sandbox.Clutter;
 public sealed partial class ClutterComponent
 {
 	[Property, Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
-	public BBox Bounds { get; set; } = new BBox( new Vector3( -512, -512, -128 ), new Vector3( 512, 512, 128 ) );
+	public BBox Bounds { get; set; } = new BBox( new Vector3( -1024, -512, -1024 ), new Vector3( 1024, 512, 1024 ) );
 
 	[Button( "Generate" )]
 	[Icon( "scatter_plot" )]
