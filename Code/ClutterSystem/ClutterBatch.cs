@@ -34,7 +34,7 @@ internal class ClutterBatch : SceneCustomObject
 
 		if ( !_batches.TryGetValue( model, out var batch ) )
 		{
-			batch = new ClutterModelBatch { Model = model };
+			batch = new ClutterModelBatch( model );
 			_batches[model] = batch;
 		}
 
