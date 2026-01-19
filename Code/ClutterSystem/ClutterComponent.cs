@@ -1,7 +1,7 @@
 namespace Sandbox.Clutter;
 
 /// <summary>
-/// Unified clutter scattering component supporting both infinite streaming and baked volumes.
+/// Clutter scattering component supporting both infinite and volumes.
 /// </summary>
 public sealed partial class ClutterComponent : Component, Component.ExecuteInEditor
 {
@@ -12,14 +12,14 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	public ClutterDefinition Clutter { get; set; }
 
 	/// <summary>
-	/// Random seed for deterministic generation. Change to get different variations.
+	/// Seed for deterministic generation. Change to get different variations.
 	/// </summary>
 	[Property]
-	public int RandomSeed { get; set; }
+	public int Seed { get; set; }
 
 	/// <summary>
-	/// Enable infinite streaming mode - generates tiles around camera.
-	/// Disable for baked volume mode - generates once within bounds.
+	/// Enable infinite streaming mode
+	/// Disable for baked volume mode
 	/// </summary>
 	[Property]
 	public bool Infinite
@@ -30,7 +30,6 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 			if ( field == value )
 				return;
 
-			// Clear all clutter before switching modes
 			Clear();
 
 			field = value;
@@ -42,38 +41,35 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	/// </summary>
 	public void ClearInfinite()
 	{
-		var gridSystem = Scene?.GetSystem<ClutterGridSystem>();
-		gridSystem?.ClearComponent( this );
+		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
+		gridSystem.ClearComponent( this );
 	}
 
 	/// <summary>
 	/// Invalidates the tile at the given world position, causing it to regenerate.
-	/// Only works in infinite mode.
 	/// </summary>
 	public void InvalidateTileAt( Vector3 worldPosition )
 	{
 		if ( !Infinite ) return;
 
-		var gridSystem = Scene?.GetSystem<ClutterGridSystem>();
-		gridSystem?.InvalidateTileAt( this, worldPosition );
+		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
+		gridSystem.InvalidateTileAt( this, worldPosition );
 	}
 
 	/// <summary>
 	/// Invalidates all tiles within the given bounds, causing them to regenerate.
-	/// Only works in infinite mode.
 	/// </summary>
 	public void InvalidateTilesInBounds( BBox bounds )
 	{
 		if ( !Infinite ) return;
 
-		var gridSystem = Scene?.GetSystem<ClutterGridSystem>();
-		gridSystem?.InvalidateTilesInBounds( this, bounds );
+		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
+		gridSystem.InvalidateTilesInBounds( this, bounds );
 	}
 
 	protected override void OnDisabled()
 	{
 		Clear();
-		base.OnDisabled();
 	}
 
 	protected override void DrawGizmos()

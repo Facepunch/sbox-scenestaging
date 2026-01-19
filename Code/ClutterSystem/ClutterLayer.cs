@@ -2,11 +2,16 @@ namespace Sandbox.Clutter;
 
 public class ClutterLayer
 {
-	public ClutterSettings Settings { get; set; }
-	public GameObject ParentObject { get; set; }
-	public ClutterGridSystem GridSystem { get; set; }
-
 	private Dictionary<Vector2Int, ClutterTile> Tiles { get; } = [];
+
+	public ClutterSettings Settings { get; set; }
+
+	/// <summary>
+	/// Game object clutter will be placed under this parent
+	/// </summary>
+	public GameObject ParentObject { get; set; }
+
+	public ClutterGridSystem GridSystem { get; set; }
 
 	/// <summary>
 	/// Model instances organized by tile coordinate.

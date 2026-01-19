@@ -29,7 +29,7 @@ public sealed partial class ClutterComponent
 			var job = ClutterGenerationJob.Volume(
 				bounds: worldBounds,
 				cellSize: Clutter.TileSize,
-				randomSeed: RandomSeed,
+				randomSeed: Seed,
 				clutter: Clutter,
 				parentObject: GameObject,
 				layer: layer

@@ -1,7 +1,7 @@
 namespace Sandbox.Clutter;
 
 /// <summary>
-/// Infinite/streaming clutter mode - generates tiles around camera
+/// Infinite/streaming clutter mode
 /// </summary>
 public sealed partial class ClutterComponent
 {
@@ -10,6 +10,6 @@ public sealed partial class ClutterComponent
 		if ( Clutter == null )
 			return default;
 
-		return new ClutterSettings( RandomSeed, Clutter );
+		return new ClutterSettings( Seed, Clutter );
 	}
 }
