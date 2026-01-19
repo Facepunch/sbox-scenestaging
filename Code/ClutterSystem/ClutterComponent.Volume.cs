@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 namespace Sandbox.Clutter;
 
 /// <summary>
@@ -22,13 +19,8 @@ public sealed partial class ClutterComponent
 
 		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
 
-		if ( Infinite )
+		if ( !Infinite )
 		{
-			// For infinite mode, clearing triggers regeneration on next update
-		}
-		else
-		{
-			// Get or create layer for volume mode (needed for model batching)
 			var settings = GetCurrentSettings();
 			var layer = gridSystem.GetOrCreateLayerForComponent( this, settings );
 
@@ -51,11 +43,8 @@ public sealed partial class ClutterComponent
 	[Icon( "delete" )]
 	public void Clear()
 	{
-		// Clear infinite tiles and batches (also works for volume mode)
-		// This removes the component from the layer system and cleans up all batches
 		ClearInfinite();
 
-		// Clear volume children (prefab instances)
 		var children = GameObject.Children.Where( c => c.Tags.Has( "clutter" ) ).ToArray();
 		foreach ( var child in children )
 			child.Destroy();

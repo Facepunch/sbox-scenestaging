@@ -7,14 +7,9 @@ namespace Sandbox.Clutter;
 internal class ClutterBatch : SceneCustomObject
 {
 	/// <summary>
-	/// Batches organized by model.
+	/// Batches by model
 	/// </summary>
 	private Dictionary<Model, ClutterModelBatch> _batches = [];
-
-	/// <summary>
-	/// Combined bounds of all batches for coarse frustum culling.
-	/// </summary>
-	private BBox _totalBounds;
 
 	public ClutterBatch( SceneWorld world ) : base( world )
 	{
@@ -42,29 +37,6 @@ internal class ClutterBatch : SceneCustomObject
 	}
 
 	/// <summary>
-	/// Builds all batches and calculates total bounds.
-	/// Call this after adding all instances.
-	/// </summary>
-	public void Build()
-	{
-		if ( _batches.Count == 0 )
-		{
-			Bounds = default;
-			return;
-		}
-
-		// Calculate combined bounds
-		_totalBounds = _batches.Values.First().Bounds;
-		foreach ( var batch in _batches.Values.Skip( 1 ) )
-		{
-			_totalBounds = _totalBounds.AddBBox( batch.Bounds );
-		}
-
-		// Set bounds for frustum culling
-		Bounds = _totalBounds;
-	}
-
-	/// <summary>
 	/// Clears all batches.
 	/// </summary>
 	public void Clear()
@@ -73,7 +45,6 @@ internal class ClutterBatch : SceneCustomObject
 			batch.Clear();
 
 		_batches.Clear();
-		_totalBounds = default;
 		Bounds = default;
 	}
 
@@ -94,11 +65,11 @@ internal class ClutterBatch : SceneCustomObject
 		if ( _batches.Count == 0 )
 			return;
 
-		// Render each batch with instancing
 		foreach ( var (model, batch) in _batches )
 		{
 			if ( batch.Transforms.Count == 0 || model == null )
 				continue;
+
 			Graphics.DrawModelInstanced( model, [.. batch.Transforms] );
 		}
 	}

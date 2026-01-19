@@ -22,9 +22,9 @@ public class ClutterLayer
 	private const float TileHeight = 50000f;
 
 	/// <summary>
-	/// Flag to indicate batches need to be rebuilt.
+	/// batches need to be rebuilt
 	/// </summary>
-	private bool _batchesDirty = false;
+	private bool _dirty = false;
 
 	public ClutterLayer( ClutterSettings settings, GameObject parentObject, ClutterGridSystem gridSystem )
 	{
@@ -54,7 +54,6 @@ public class ClutterLayer
 		var activeCoords = new HashSet<Vector2Int>();
 		var jobs = new List<ClutterGenerationJob>();
 
-		// Find tiles that should exist
 		for ( int x = -Settings.Clutter.TileRadius; x <= Settings.Clutter.TileRadius; x++ )
 		for ( int y = -Settings.Clutter.TileRadius; y <= Settings.Clutter.TileRadius; y++ )
 		{
@@ -82,7 +81,7 @@ public class ClutterLayer
 					Settings.RandomSeed,
 					Settings.Clutter,
 					ParentObject,
-					this // Pass layer reference
+					this
 				) );
 			}
 		}
@@ -103,11 +102,11 @@ public class ClutterLayer
 					ModelInstancesByTile.Remove( coord );
 				}
 			}
-			_batchesDirty = true;
+			_dirty = true;
 		}
 
-		// Rebuild batches if needed (only when no jobs are pending)
-		if ( _batchesDirty && jobs.Count == 0 )
+		// Rebuild batches if needed
+		if ( _dirty && jobs.Count == 0 )
 		{
 			RebuildBatches();
 		}
@@ -121,7 +120,7 @@ public class ClutterLayer
 	/// </summary>
 	public void OnTilePopulated( ClutterTile tile )
 	{
-		_batchesDirty = true;
+		_dirty = true;
 	}
 
 	/// <summary>
@@ -155,7 +154,7 @@ public class ClutterLayer
 		// Early exit if no model instances
 		if ( ModelInstancesByTile.Count == 0 )
 		{
-			_batchesDirty = false;
+			_dirty = false;
 			return;
 		}
 
@@ -174,11 +173,10 @@ public class ClutterLayer
 			foreach ( var instance in instances )
 				batch.AddInstance( instance );
 
-			batch.Build();
 			_batches[model] = batch;
 		}
 
-		_batchesDirty = false;
+		_dirty = false;
 	}
 
 	/// <summary>
@@ -192,7 +190,7 @@ public class ClutterLayer
 			GridSystem?.RemovePendingTile( tile );
 			tile.Destroy();
 			ModelInstancesByTile.Remove( coord );
-			_batchesDirty = true;
+			_dirty = true;
 		}
 	}
 
@@ -213,7 +211,7 @@ public class ClutterLayer
 				GridSystem?.RemovePendingTile( tile );
 				tile.Destroy();
 				ModelInstancesByTile.Remove( coord );
-				_batchesDirty = true;
+					_dirty = true;
 			}
 		}
 	}
@@ -236,7 +234,7 @@ public class ClutterLayer
 			batch.Delete();
 		}
 		_batches.Clear();
-		_batchesDirty = false;
+		_dirty = false;
 	}
 
 	private Vector2Int WorldToTile( Vector3 worldPos ) => new(

@@ -8,7 +8,7 @@ namespace Sandbox.Clutter;
 public class ClutterDefinition : GameResource
 {
 	/// <summary>
-	/// List of weighted entries (Prefabs or Models with weights).
+	/// List of weighted entries
 	/// </summary>
 	[Property]
 	[Editor( "ClutterEntriesGrid" )]
