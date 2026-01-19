@@ -107,6 +107,18 @@ public abstract class Scatterer
 	}
 
 	/// <summary>
+	/// Creates a rotation aligned to a surface normal with random yaw.
+	/// </summary>
+	protected Rotation GetAlignedRotation( Vector3 normal, float yawDegrees )
+	{
+		// First align to the surface normal
+		var alignToSurface = Rotation.FromToRotation( Vector3.Up, normal ) * 0.5f;
+		// Then apply yaw rotation around the new up axis (the normal)
+		var yawRotation = Rotation.FromAxis( -normal, yawDegrees );
+		return alignToSurface;
+	}
+
+	/// <summary>
 	/// Helper to perform a ground trace at a position.
 	/// Returns the trace result, or null if no scene is available.
 	/// </summary>
@@ -164,7 +176,8 @@ public class SimpleScatterer : Scatterer
 			);
 
 			var scale = Random.Float( Scale.Min, Scale.Max );
-			var rotation = Rotation.FromYaw( Random.Float( 0f, 360f ) );
+			var yaw = Random.Float( 0f, 360f );
+			var rotation = Rotation.FromYaw( yaw );
 
 			if ( PlaceOnGround )
 			{
@@ -174,8 +187,8 @@ public class SimpleScatterer : Scatterer
 
 				point = trace.Value.HitPosition + trace.Value.Normal * HeightOffset;
 				rotation = AlignToNormal
-					? Rotation.From( new Angles( 0, Random.Float( 0f, 360f ), 0 ) ) * Rotation.FromToRotation( Vector3.Up, trace.Value.Normal )
-					: Rotation.FromYaw( Random.Float( 0f, 360f ) );
+					? GetAlignedRotation( trace.Value.Normal, yaw )
+					: Rotation.FromYaw( yaw );
 			}
 
 			var entry = GetRandomEntry( clutter );

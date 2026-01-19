@@ -83,9 +83,10 @@ public class SlopeScatterer : Scatterer
 
 			// Setup transform
 			var scale = Random.Float( Scale.Min, Scale.Max );
+			var yaw = Random.Float( 0f, 360f );
 			var rotation = AlignToNormal
-				? Rotation.From( new Angles( 0, Random.Float( 0f, 360f ), 0 ) ) * Rotation.FromToRotation( Vector3.Up, normal )
-				: Rotation.FromYaw( Random.Float( 0f, 360f ) );
+				? GetAlignedRotation( normal, yaw )
+				: Rotation.FromYaw( yaw );
 
 			var position = trace.Value.HitPosition + normal * HeightOffset;
 
@@ -265,9 +266,10 @@ public class TerrainMaterialScatterer : Scatterer
 	{
 		var scale = Random.Float( Scale.Min, Scale.Max );
 		var normal = trace.Normal;
+		var yaw = Random.Float( 0f, 360f );
 		var rotation = AlignToNormal
-			? Rotation.From( new Angles( 0, Random.Float( 0f, 360f ), 0 ) ) * Rotation.FromToRotation( Vector3.Up, normal )
-			: Rotation.FromYaw( Random.Float( 0f, 360f ) );
+			? GetAlignedRotation( normal, yaw )
+			: Rotation.FromYaw( yaw );
 
 		var position = trace.HitPosition + normal * HeightOffset;
 
