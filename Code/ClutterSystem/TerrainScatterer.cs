@@ -141,22 +141,9 @@ public class TerrainMaterialMapping
 	public TerrainMaterial Material { get; set; }
 
 	[Property]
-	[Description( "clutter entries that can spawn on this material (picked randomly by weight)" )]
-	public List<WeightedEntry> Entries { get; set; } = new();
-}
-
-/// <summary>
-/// A weighted reference to an clutter entry.
-/// </summary>
-public class WeightedEntry
-{
-	[Property]
-	[Description( "Index of the entry in the clutter" )]
-	public int EntryIndex { get; set; } = 0;
-
-	[Property, Range( 0, 1 )]
-	[Description( "Weight for random selection (higher = more likely)" )]
-	public float Weight { get; set; } = 1f;
+	[Title( "Entry Indices" )]
+	[Description( "Indices of clutter entries that can spawn on this material (uses entry weights for selection)" )]
+	public List<int> EntryIndices { get; set; } = new();
 }
 
 /// <summary>
@@ -315,36 +302,40 @@ public class TerrainMaterialScatterer : Scatterer
 
 		// Find mapping for this material
 		var mapping = Mappings.FirstOrDefault( m => m.Material == dominantMaterial );
-		if ( mapping == null || mapping.Entries == null || mapping.Entries.Count == 0 )
+		if ( mapping == null || mapping.EntryIndices == null || mapping.EntryIndices.Count == 0 )
 			return null;
 
-		// Pick a weighted random entry from the mapping
-		var totalWeight = mapping.Entries.Sum( e => e.Weight );
-		if ( totalWeight <= 0 )
-			return null;
+		// Get valid entries from the mapping indices and calculate total weight
+		var validEntries = new List<ClutterEntry>();
+		float totalWeight = 0f;
 
-		var randomValue = Random.Float( 0f, totalWeight );
-		float currentWeight = 0f;
-
-		foreach ( var weightedEntry in mapping.Entries )
+		foreach ( var index in mapping.EntryIndices )
 		{
-			if ( weightedEntry.Weight <= 0 )
-				continue;
-
-			currentWeight += weightedEntry.Weight;
-			if ( randomValue <= currentWeight )
+			if ( index >= 0 && index < clutter.Entries.Count )
 			{
-				// Get the actual clutter entry
-				if ( weightedEntry.EntryIndex >= 0 && weightedEntry.EntryIndex < clutter.Entries.Count )
+				var entry = clutter.Entries[index];
+				if ( entry?.HasAsset == true && entry.Weight > 0 )
 				{
-					var entry = clutter.Entries[weightedEntry.EntryIndex];
-					if ( entry?.HasAsset == true )
-						return entry;
+					validEntries.Add( entry );
+					totalWeight += entry.Weight;
 				}
-				break;
 			}
 		}
 
-		return null;
+		if ( validEntries.Count == 0 || totalWeight <= 0 )
+			return null;
+
+		// Pick a weighted random entry using the entry's own weight
+		var randomValue = Random.Float( 0f, totalWeight );
+		float currentWeight = 0f;
+
+		foreach ( var entry in validEntries )
+		{
+			currentWeight += entry.Weight;
+			if ( randomValue <= currentWeight )
+				return entry;
+		}
+
+		return validEntries[^1];
 	}
 }

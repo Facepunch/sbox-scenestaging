@@ -7,7 +7,6 @@ public struct ClutterInstance
 {
 	public Transform Transform { get; set; }
 	public ClutterEntry Entry { get; set; }
-
 	public readonly bool IsModel => Entry?.Model != null && Entry?.Prefab == null;
 }
 
@@ -17,9 +16,6 @@ public struct ClutterInstance
 /// </summary>
 public abstract class Scatterer
 {
-	/// <summary>
-	/// Random instance for this scattering operation.
-	/// </summary>
 	[Hide]
 	protected Random Random { get; private set; }
 
@@ -43,7 +39,6 @@ public abstract class Scatterer
 	/// <returns>Collection of clutter instances to spawn</returns>
 	public List<ClutterInstance> Scatter( BBox bounds, ClutterDefinition clutter, int seed, Scene scene = null )
 	{
-		// Let's make a deterministic Random object for scatterer to use.
 		Random = new Random( seed );
 
 		return Generate( bounds, clutter, scene );
@@ -63,7 +58,6 @@ public abstract class Scatterer
 
 		foreach ( var property in typeDesc.Properties )
 		{
-			// We only want [Property] stuff
 			if ( !property.HasAttribute<PropertyAttribute>() )
 				continue;
 
