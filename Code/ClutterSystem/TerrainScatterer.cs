@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Sandbox.Clutter;
@@ -142,8 +139,8 @@ public class TerrainMaterialMapping
 
 	[Property]
 	[Title( "Entry Indices" )]
-	[Description( "Indices of clutter entries that can spawn on this material (uses entry weights for selection)" )]
-	public List<int> EntryIndices { get; set; } = new();
+	[Description( "Indices of clutter entries that can spawn on this material" )]
+	public List<int> EntryIndices { get; set; } = [];
 }
 
 /// <summary>
