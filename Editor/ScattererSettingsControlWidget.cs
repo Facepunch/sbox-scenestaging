@@ -65,6 +65,10 @@ public class ScattererSettingsControlWidget : ControlWidget
 	private void OnScattererPropertyChanged( SerializedProperty prop )
 	{
 		// When any scatterer property changes, notify the parent
+		if ( SerializedProperty.Parent?.Targets?.FirstOrDefault() is ClutterDefinition clutterDefinition )
+		{
+			clutterDefinition.SaveScattererData();
+		}
 		SerializedProperty.Parent?.NoteChanged( SerializedProperty );
 	}
 

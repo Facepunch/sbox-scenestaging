@@ -59,7 +59,19 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 			RegeneratePreview();
 		}
 
-		base.UpdateScene( cycle, timeStep );
+		using ( Scene.Push() )
+		{
+			// Orbit camera around the scene center
+			var angle = cycle * 360.0f;
+			var distance = MathX.SphereCameraDistance( SceneSize.Length * 0.5f, Camera.FieldOfView );
+			var aspect = (float)ScreenSize.x / ScreenSize.y;
+			if ( aspect > 1 ) distance *= aspect;
+
+			// Calculate camera position orbiting around SceneCenter
+			var rotation = new Angles( 20, 180 + 45 + angle, 0 ).ToRotation();
+			Camera.WorldRotation = rotation;
+			Camera.WorldPosition = SceneCenter + rotation.Forward * -distance;
+		}
 	}
 
 	private bool CheckForChanges()
@@ -132,19 +144,18 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 	{
 		// Create clutter object for preview
 		_clutterObject = new GameObject( true, "Clutter Preview" );
-		PrimaryObject = _clutterObject;
 		
 		// Use ClutterComponent with Volume mode - this goes through the regular pipeline
 		if ( _currentclutter != null )
 		{
 			var component = _clutterObject.Components.Create<ClutterComponent>();
 			component.Clutter = _currentclutter;
-			component.Infinite = false; // Use volume mode
+			component.Infinite = false;
 			component.Bounds = new BBox(
 				new Vector3( -_previewVolumeSize / 2, -_previewVolumeSize / 2, -100 ),
 				new Vector3( _previewVolumeSize / 2, _previewVolumeSize / 2, 100 )
 			);
-			component.RandomSeed = 42; // Fixed seed for consistent preview
+			component.Seed = 1337;
 			
 			// Generate immediately
 			component.Generate();
@@ -236,7 +247,7 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 				if ( _clutterObject.IsValid() && _clutterObject.Components.TryGet<ClutterComponent>( out var component ) )
 				{
 					// Change seed and regenerate
-					component.RandomSeed = Random.Shared.Next();
+					component.Seed = Random.Shared.Next();
 					component.Clear();
 					component.Generate();
 					
