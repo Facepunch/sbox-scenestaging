@@ -164,9 +164,9 @@ public class TerrainMaterialScatterer : Scatterer
 	[Description( "Scale range for spawned objects" )]
 	public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
 
-	[Property, Range( 0, 10000 )]
-	[Description( "Number of points to attempt to scatter per bounds" )]
-	public int PointCount { get; set; } = 10;
+	[Property, Range( 1, 1000 )]
+	[Description( "Number of points to attempt to scatter per tile" )]
+	public int PointCount { get; set; } = 100;
 
 	[Property, Group( "Placement" )]
 	[Description( "Offset from ground surface" )]
@@ -175,6 +175,10 @@ public class TerrainMaterialScatterer : Scatterer
 	[Property, Group( "Placement" )]
 	[Description( "Align objects to surface normal" )]
 	public bool AlignToNormal { get; set; } = false;
+
+	[Property, Group( "Placement" )]
+	[Description( "Apply random rotation around vertical axis" )]
+	public bool RandomYaw { get; set; } = true;
 
 	[Property, Group( "Material Mappings" )]
 	[Description( "Define which entries spawn on which terrain materials" )]
@@ -192,6 +196,7 @@ public class TerrainMaterialScatterer : Scatterer
 
 	[JsonIgnore, Hide]
 	private GameObject _cachedTerrainObject;
+
 
 	protected override List<ClutterInstance> Generate( BBox bounds, ClutterDefinition clutter, Scene scene = null )
 	{
