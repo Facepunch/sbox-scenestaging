@@ -398,7 +398,14 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 			return;
 		}
 
-		_painted ??= new( new() { Clutter = new() }, Scene, this );
+		// Create or reuse painted layer with minimal settings
+		if ( _painted == null )
+		{
+			var dummyClutter = new ClutterDefinition();
+			var settings = new ClutterSettings { Clutter = dummyClutter };
+			_painted = new ClutterLayer( settings, Scene, this );
+		}
+		
 		_painted.ClearAllTiles();
 
 		foreach ( var modelPath in _storage.ModelPaths )

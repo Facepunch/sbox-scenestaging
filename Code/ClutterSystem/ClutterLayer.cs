@@ -45,7 +45,12 @@ public class ClutterLayer
 		if ( newHash == _lastSettingsHash )
 			return;
 
-		ClearAllTiles();
+		// Mark all tiles as needing regeneration (keeps old content visible)
+		foreach ( var tile in Tiles.Values )
+		{
+			tile.IsPopulated = false;
+		}
+		
 		Settings = newSettings;
 		_lastSettingsHash = newHash;
 	}
@@ -126,6 +131,14 @@ public class ClutterLayer
 	public void OnTilePopulated( ClutterTile tile )
 	{
 		_dirty = true;
+	}
+
+	/// <summary>
+	/// Clears model instances for a specific tile coordinate.
+	/// </summary>
+	public void ClearTileModelInstances( Vector2Int tileCoord )
+	{
+		ModelInstancesByTile.Remove( tileCoord );
 	}
 
 	/// <summary>
@@ -216,7 +229,7 @@ public class ClutterLayer
 				GridSystem?.RemovePendingTile( tile );
 				tile.Destroy();
 				ModelInstancesByTile.Remove( coord );
-					_dirty = true;
+				_dirty = true;
 			}
 		}
 	}

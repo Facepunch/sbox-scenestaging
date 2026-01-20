@@ -52,13 +52,19 @@ public class ClutterGenerationJob
 			Clutter = clutter,
 			ParentObject = parentObject,
 			Layer = layer
-		};
+	};
 	}
 
 	public void Execute()
 	{
 		if ( !ParentObject.IsValid() || Clutter?.Scatterer == null )
 			return;
+
+		if ( TileData != null )
+		{
+			TileData.Destroy();
+			Layer?.ClearTileModelInstances( TileData.Coordinates );
+		}
 
 		var instances = TileData != null 
 			? ScatterTile() 

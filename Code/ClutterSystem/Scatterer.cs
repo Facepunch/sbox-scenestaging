@@ -56,16 +56,43 @@ public abstract class Scatterer
 		if ( typeDesc == null )
 			return base.GetHashCode();
 
+		// Include type name in hash
+		hash.Add( GetType().Name );
+
 		foreach ( var property in typeDesc.Properties )
 		{
 			if ( !property.HasAttribute<PropertyAttribute>() )
 				continue;
 
 			var value = property.GetValue( this );
-			hash.Add( value?.GetHashCode() ?? 0 );
+			HashValue( ref hash, value );
 		}
 
 		return hash.ToHashCode();
+	}
+
+	/// <summary>
+	/// Hashes a value, handling collections properly.
+	/// </summary>
+	private static void HashValue( ref HashCode hash, object value )
+	{
+		if ( value == null )
+		{
+			hash.Add( 0 );
+			return;
+		}
+
+		// Handle collections by hashing their contents
+		if ( value is System.Collections.IEnumerable enumerable && value is not string )
+		{
+			foreach ( var item in enumerable )
+			{
+				HashValue( ref hash, item );
+			}
+			return;
+		}
+
+		hash.Add( value.GetHashCode() );
 	}
 
 	/// <summary>
@@ -103,10 +130,10 @@ public abstract class Scatterer
 	protected Rotation GetAlignedRotation( Vector3 normal, float yawDegrees )
 	{
 		// First align to the surface normal
-		var alignToSurface = Rotation.FromToRotation( Vector3.Up, normal ) * 0.5f;
+		var alignToSurface = Rotation.FromToRotation( Vector3.Up, normal );
 		// Then apply yaw rotation around the new up axis (the normal)
-		var yawRotation = Rotation.FromAxis( -normal, yawDegrees );
-		return alignToSurface;
+		var yawRotation = Rotation.FromAxis( normal, yawDegrees );
+		return yawRotation * alignToSurface;
 	}
 
 	/// <summary>

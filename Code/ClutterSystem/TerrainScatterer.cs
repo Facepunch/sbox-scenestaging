@@ -20,6 +20,8 @@ public class SlopeMapping
 	[Editor( "ClutterEntryPicker" )]
 	[Description( "Which clutter entry to use for this slope range" )]
 	public int EntryIndex { get; set; } = 0;
+
+	public override int GetHashCode() => HashCode.Combine( MinAngle, MaxAngle, EntryIndex );
 }
 
 /// <summary>
@@ -141,6 +143,15 @@ public class TerrainMaterialMapping
 	[Title( "Entry Indices" )]
 	[Description( "Indices of clutter entries that can spawn on this material" )]
 	public List<int> EntryIndices { get; set; } = [];
+
+	public override int GetHashCode()
+	{
+		var hash = new HashCode();
+		hash.Add( Material?.GetHashCode() ?? 0 );
+		foreach ( var index in EntryIndices )
+			hash.Add( index );
+		return hash.ToHashCode();
+	}
 }
 
 /// <summary>
@@ -250,10 +261,17 @@ public class TerrainMaterialScatterer : Scatterer
 	{
 		var scale = Random.Float( Scale.Min, Scale.Max );
 		var normal = trace.Normal;
-		var yaw = Random.Float( 0f, 360f );
-		var rotation = AlignToNormal
-			? GetAlignedRotation( normal, yaw )
-			: Rotation.FromYaw( yaw );
+		var yaw = RandomYaw ? Random.Float( 0f, 360f ) : 0f;
+		
+		Rotation rotation;
+		if ( AlignToNormal )
+		{
+			rotation = GetAlignedRotation( normal, yaw );
+		}
+		else
+		{
+			rotation = Rotation.FromYaw( yaw );
+		}
 
 		var position = trace.HitPosition + normal * HeightOffset;
 
