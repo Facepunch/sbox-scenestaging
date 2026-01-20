@@ -32,9 +32,9 @@ public class SlopeScatterer : Scatterer
 	[Description( "Scale range for spawned objects" )]
 	public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
 
-	[Property, Range( 0, 10000 )]
-	[Description( "Number of points to attempt to scatter per bounds" )]
-	public int PointCount { get; set; } = 10;
+	[Property, Range( 1, 1000 )]
+	[Description( "Number of points to attempt to scatter per tile" )]
+	public int PointCount { get; set; } = 100;
 
 	[Property, Group( "Placement" )]
 	[Description( "Offset from ground surface" )]

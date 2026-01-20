@@ -145,7 +145,7 @@ public abstract class Scatterer
 public class SimpleScatterer : Scatterer
 {
 	[Property] public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
-	[Property, Range( 0, 10000 )] public int PointCount { get; set; } = 10;
+	[Property, Range( 1, 1000 )] public int PointCount { get; set; } = 100;
 	[Property, Group( "Placement" )] public bool PlaceOnGround { get; set; } = true;
 	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] public float HeightOffset { get; set; }
 	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] public bool AlignToNormal { get; set; }
