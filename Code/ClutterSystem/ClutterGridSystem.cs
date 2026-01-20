@@ -260,9 +260,8 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 			return;
 
 		// Track which layers had tiles populated
-		var layersToRebuild = new HashSet<ClutterLayer>();
+		HashSet<ClutterLayer> layersToRebuild = [];
 
-		// Remove invalid jobs
 		PendingJobs.RemoveAll( job =>
 			!job.ParentObject.IsValid() ||
 			job.TileData?.IsPopulated == true
