@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Sandbox.Clutter;
 
@@ -8,10 +7,13 @@ public sealed partial class ClutterGridSystem
 {
 	/// <summary>
 	/// Manages storage and serialization of painted clutter instances.
+	/// Uses binary serialization via BlobData for efficient storage.
 	/// </summary>
-	private sealed class ClutterStorage : BinarySerializable
+	public sealed class ClutterStorage : BlobData
 	{
-		public record Instance( Vector3 Position, Rotation Rotation, float Scale = 1f );
+		public override int Version => 1;
+
+		public record struct Instance( Vector3 Position, Rotation Rotation, float Scale = 1f );
 
 		private Dictionary<string, List<Instance>> _instances = [];
 
@@ -120,73 +122,66 @@ public sealed partial class ClutterGridSystem
 			_instances.Clear();
 		}
 
-		public override void Serialize( ref BlobWriter writer )
+		/// <summary>
+		/// Serialize to binary format.
+		/// </summary>
+		public override void Serialize( ref Writer writer )
 		{
-			writer.Write( _instances.Count );
+			// Write model count
+			writer.Stream.Write( _instances.Count );
 
 			foreach ( var (modelPath, instances) in _instances )
 			{
 				// Write model path
 				writer.Stream.Write( modelPath );
+
+				// Write instance count
 				writer.Stream.Write( instances.Count );
 
+				// Write each instance
 				foreach ( var instance in instances )
 				{
-					// Position
-					writer.Stream.Write( instance.Position.x );
-					writer.Stream.Write( instance.Position.y );
-					writer.Stream.Write( instance.Position.z );
-
-					// Rotation
-					writer.Stream.Write( instance.Rotation.x );
-					writer.Stream.Write( instance.Rotation.y );
-					writer.Stream.Write( instance.Rotation.z );
-					writer.Stream.Write( instance.Rotation.w );
-
-					// Scale
+					writer.Stream.Write( instance.Position );
+					writer.Stream.Write( instance.Rotation );
 					writer.Stream.Write( instance.Scale );
 				}
 			}
 		}
 
-		public override void Deserialize( ref BlobReader reader )
+		/// <summary>
+		/// Deserialize from binary format.
+		/// </summary>
+		public override void Deserialize( ref Reader reader )
 		{
-			// Read number of model paths
-			var modelCount = reader.Read<int>();
-
 			_instances.Clear();
 
-			// Read each model path and its instances
-			for ( int i = 0; i < modelCount; i++ )
+			// Read model count
+			var modelCount = reader.Stream.Read<int>();
+
+			for ( int m = 0; m < modelCount; m++ )
 			{
+				// Read model path
 				var modelPath = reader.Stream.Read<string>();
+
+				// Read instance count
 				var instanceCount = reader.Stream.Read<int>();
 
-				List<Instance> instanceList = [];
+				var instances = new List<Instance>( instanceCount );
 
 				// Read each instance
-				for ( int j = 0; j < instanceCount; j++ )
+				for ( int i = 0; i < instanceCount; i++ )
 				{
-					// position
-					var posX = reader.Stream.Read<float>();
-					var posY = reader.Stream.Read<float>();
-					var posZ = reader.Stream.Read<float>();
-					var position = new Vector3( posX, posY, posZ );
-
-					// rotation
-					var rotX = reader.Stream.Read<float>();
-					var rotY = reader.Stream.Read<float>();
-					var rotZ = reader.Stream.Read<float>();
-					var rotW = reader.Stream.Read<float>();
-					var rotation = new Rotation( rotX, rotY, rotZ, rotW );
-
-					// uniform scale
+					var position = reader.Stream.Read<Vector3>();
+					var rotation = reader.Stream.Read<Rotation>();
 					var scale = reader.Stream.Read<float>();
 
-					instanceList.Add( new( position, rotation, scale ) );
+					instances.Add( new Instance( position, rotation, scale ) );
 				}
 
-				_instances[modelPath] = instanceList;
+				if ( !string.IsNullOrEmpty( modelPath ) && instances.Count > 0 )
+				{
+					_instances[modelPath] = instances;
+				}
 			}
 		}
 	}
