@@ -1,0 +1,53 @@
+{
+  "Entries": [
+    {
+      "Prefab": null,
+      "Model": "models/props/rock_scatter/rock_scatter_pile_05.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/props/rock_scatter/rock_scatter_pile_05.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/props/rock_scatter/rock_scatter_pile_03.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/props/rock_scatter/rock_scatter_pile_03.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/props/rock_scatter/rock_scatter_pile_05.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/props/rock_scatter/rock_scatter_pile_05.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/dead_tree_trunk.vmdl",
+      "Weight": 0.23,
+      "HasAsset": true,
+      "AssetName": "models/dead_tree_trunk.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/sbox_props/nature/grass_clumps/grass_clump_a.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/sbox_props/nature/grass_clumps/grass_clump_a.vmdl"
+    }
+  ],
+  "IsEmpty": false,
+  "TileSize": 1024,
+  "TileRadius": 2,
+  "ScattererTypeName": "TerrainMaterialScatterer",
+  "ScattererData": "{\r\n  \"Scale\": \"0.8 1.2\",\r\n  \"PointCount\": 8,\r\n  \"HeightOffset\": -2.2999988,\r\n  \"AlignToNormal\": true,\r\n  \"RandomYaw\": true,\r\n  \"Mappings\": [\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_a.tmat\",\r\n      \"EntryIndices\": [\r\n        3,\r\n        4\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_a.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_b.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_b.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2,\r\n        3\r\n      ]\r\n    }\r\n  ],\r\n  \"UseFallback\": false\r\n}",
+  "ValidEntryCount": 5,
+  "TotalWeight": 4.23,
+  "__references": [
+    "facepunch.grass_clump_a#126338",
+    "facepunch.rock_scatter_pile_03#116946",
+    "facepunch.rock_scatter_pile_05#116942",
+    "polyhaven.dead_tree_trunk#19506"
+  ],
+  "__version": 0
+}

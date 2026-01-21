@@ -1,0 +1,33 @@
+{
+  "Entries": [
+    {
+      "Prefab": {
+        "_type": "gameobject",
+        "prefab": "scenes/tests/terrain/rock_moss_01d.prefab"
+      },
+      "Model": null,
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "rock_moss_01d"
+    },
+    {
+      "Prefab": {
+        "_type": "gameobject",
+        "prefab": "scenes/tests/terrain/rock_moss_01e.prefab"
+      },
+      "Model": null,
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "rock_moss_01e"
+    }
+  ],
+  "IsEmpty": false,
+  "TileSize": 512,
+  "TileRadius": 4,
+  "ScattererTypeName": "SimpleScatterer",
+  "ScattererData": "{\r\n  \"Scale\": \"0.8 1.2\",\r\n  \"PointCount\": 15,\r\n  \"PlaceOnGround\": true,\r\n  \"HeightOffset\": 0,\r\n  \"AlignToNormal\": true\r\n}",
+  "ValidEntryCount": 2,
+  "TotalWeight": 2,
+  "__references": [],
+  "__version": 0
+}

@@ -1,0 +1,57 @@
+{
+  "Entries": [
+    {
+      "Prefab": null,
+      "Model": "models/sbox_props/shrubs/beech/beech_bush_medium_wall_corner.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/sbox_props/shrubs/beech/beech_bush_medium_wall_corner.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/sbox_props/shrubs/beech/beech_bush_medium.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/sbox_props/shrubs/beech/beech_bush_medium.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/sbox_props/shrubs/beech/beech_bush_medium_wall_corner.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/sbox_props/shrubs/beech/beech_bush_medium_wall_corner.vmdl"
+    },
+    {
+      "Prefab": {
+        "_type": "gameobject",
+        "prefab": "scenes/tests/terrain/rock_moss_01d.prefab"
+      },
+      "Model": null,
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "rock_moss_01d"
+    },
+    {
+      "Prefab": {
+        "_type": "gameobject",
+        "prefab": "scenes/tests/terrain/rock_moss_01e.prefab"
+      },
+      "Model": null,
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "rock_moss_01e"
+    }
+  ],
+  "IsEmpty": false,
+  "TileSize": 2048,
+  "TileRadius": 2,
+  "ScattererTypeName": "TerrainMaterialScatterer",
+  "ScattererData": "{\r\n  \"Scale\": \"0.8 1.2\",\r\n  \"PointCount\": 16,\r\n  \"HeightOffset\": 0,\r\n  \"AlignToNormal\": false,\r\n  \"RandomYaw\": true,\r\n  \"Mappings\": [\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_a.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_a.tmat\",\r\n      \"EntryIndices\": [\r\n        3,\r\n        4\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_b.tmat\",\r\n      \"EntryIndices\": [\r\n        3,\r\n        4\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_b.tmat\",\r\n      \"EntryIndices\": [\r\n        3,\r\n        4\r\n      ]\r\n    }\r\n  ],\r\n  \"UseFallback\": false\r\n}",
+  "ValidEntryCount": 5,
+  "TotalWeight": 5,
+  "__references": [
+    "facepunch.beech_bush_medium_wall_corner#108291",
+    "facepunch.beech_bush_medium#60671"
+  ],
+  "__version": 0
+}

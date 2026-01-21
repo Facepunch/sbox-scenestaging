@@ -1,0 +1,43 @@
+{
+  "Entries": [
+    {
+      "Prefab": {
+        "_type": "gameobject",
+        "prefab": "scenes/tests/terrain/tree_oak_big_b.prefab"
+      },
+      "Model": null,
+      "Weight": 0.35,
+      "HasAsset": true,
+      "AssetName": "tree_oak_big_b"
+    },
+    {
+      "Prefab": {
+        "_type": "gameobject",
+        "prefab": "scenes/tests/terrain/tree_oak_medium_a.prefab"
+      },
+      "Model": null,
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "tree_oak_medium_a"
+    },
+    {
+      "Prefab": {
+        "_type": "gameobject",
+        "prefab": "scenes/tests/terrain/tree_oak_small_a.prefab"
+      },
+      "Model": null,
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "tree_oak_small_a"
+    }
+  ],
+  "IsEmpty": false,
+  "TileSize": 8096,
+  "TileRadius": 4,
+  "ScattererTypeName": "TerrainMaterialScatterer",
+  "ScattererData": "{\r\n  \"Scale\": \"0.8 1.2\",\r\n  \"PointCount\": 57,\r\n  \"HeightOffset\": 0.04,\r\n  \"AlignToNormal\": true,\r\n  \"RandomYaw\": true,\r\n  \"Mappings\": [\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_a.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2\r\n      ]\r\n    }\r\n  ],\r\n  \"UseFallback\": false\r\n}",
+  "ValidEntryCount": 3,
+  "TotalWeight": 2.35,
+  "__references": [],
+  "__version": 0
+}
