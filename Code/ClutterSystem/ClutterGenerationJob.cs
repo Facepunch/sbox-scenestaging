@@ -112,6 +112,7 @@ public class ClutterGenerationJob
 
 	private void SpawnInstances( List<ClutterInstance> instances )
 	{
+		var isVolumeMode = TileData == null;
 
 		using ( ParentObject.Scene.Push() )
 		{
@@ -135,11 +136,14 @@ public class ClutterGenerationJob
 					continue;
 
 				var obj = instance.Entry.Prefab.Clone( instance.Transform, ParentObject.Scene );
-				obj.Flags |= GameObjectFlags.NotSaved;
-				obj.Flags |= GameObjectFlags.Hidden;
 				obj.Tags.Add( "clutter" );
 				obj.SetParent( ParentObject );
-				TileData?.AddObject( obj );
+				if ( !isVolumeMode )
+				{
+					obj.Flags |= GameObjectFlags.NotSaved;
+					obj.Flags |= GameObjectFlags.Hidden;
+					TileData?.AddObject( obj );
+				}
 			}
 		}
 	}
