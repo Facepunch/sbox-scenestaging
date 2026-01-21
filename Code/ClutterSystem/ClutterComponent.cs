@@ -67,6 +67,14 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 		gridSystem.InvalidateTilesInBounds( this, bounds );
 	}
 
+	protected override void OnEnabled()
+	{
+		if ( !Infinite )
+		{
+			RebuildVolumeLayer();
+		}
+	}
+
 	protected override void OnDisabled()
 	{
 		Clear();
