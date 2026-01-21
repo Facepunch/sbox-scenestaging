@@ -391,6 +391,11 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 	/// </summary>
 	private void RebuildPaintedLayer()
 	{
+		if ( _storage is null )
+		{
+			_storage = new ClutterStorage();
+		}
+
 		if ( _storage.TotalCount == 0 )
 		{
 			_painted?.ClearAllTiles();
