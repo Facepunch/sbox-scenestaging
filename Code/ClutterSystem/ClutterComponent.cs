@@ -42,7 +42,7 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	public void ClearInfinite()
 	{
 		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
-		gridSystem.ClearComponent( this );
+		gridSystem?.ClearComponent( this );
 	}
 
 	/// <summary>
