@@ -8,6 +8,15 @@ public sealed partial class ClutterComponent
 	[Property, Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
 	public BBox Bounds { get; set; } = new BBox( new Vector3( -1024, -512, -1024 ), new Vector3( 1024, 512, 1024 ) );
 
+	/// Storage for volume model instances. Serialized with component.
+	/// </summary>
+	[Property, Hide]
+	public ClutterGridSystem.ClutterStorage Storage { get; set; } = new();
+
+	/// <summary>
+	/// Layer used for rendering volume model instances.
+	/// </summary>
+	private ClutterLayer _volumeLayer;
 	[Button( "Generate" )]
 	[Icon( "scatter_plot" )]
 	public void Generate()
