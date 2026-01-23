@@ -45,8 +45,9 @@
   "IsEmpty": false,
   "TileSize": 2048,
   "TileRadius": 2,
+  "PreviewMaxInstances": 100,
   "ScattererTypeName": "TerrainMaterialScatterer",
-  "ScattererData": "{\r\n  \"Scale\": \"0.8 1.2\",\r\n  \"PointCount\": 16,\r\n  \"HeightOffset\": 0,\r\n  \"AlignToNormal\": false,\r\n  \"RandomYaw\": true,\r\n  \"Mappings\": [\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_a.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_a.tmat\",\r\n      \"EntryIndices\": [\r\n        3,\r\n        4\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_b.tmat\",\r\n      \"EntryIndices\": [\r\n        3,\r\n        4\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_b.tmat\",\r\n      \"EntryIndices\": [\r\n        3,\r\n        4\r\n      ]\r\n    }\r\n  ],\r\n  \"UseFallback\": false\r\n}",
+  "ScattererData": "{\r\n  \"Scale\": \"1.8699995 1.2\",\r\n  \"Density\": 4.4418964,\r\n  \"HeightOffset\": 0,\r\n  \"AlignToNormal\": false,\r\n  \"RandomYaw\": true,\r\n  \"Mappings\": [\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_a.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_a.tmat\",\r\n      \"EntryIndices\": [\r\n        3,\r\n        4\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_b.tmat\",\r\n      \"EntryIndices\": [\r\n        3,\r\n        4\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_b.tmat\",\r\n      \"EntryIndices\": [\r\n        3,\r\n        4\r\n      ]\r\n    }\r\n  ],\r\n  \"UseFallback\": false\r\n}",
   "ValidEntryCount": 5,
   "TotalWeight": 5,
   "__references": [
