@@ -82,18 +82,20 @@ public class ClutterLayer
 				Tiles[coord] = tile;
 			}
 
-			// Queue job if not populated
-			if ( !tile.IsPopulated )
+		// Queue job if not populated
+		if ( !tile.IsPopulated )
+		{
+			jobs.Add( new ClutterGenerationJob
 			{
-				jobs.Add( ClutterGenerationJob.Tile(
-					tile.Bounds,
-					tile,
-					Settings.RandomSeed,
-					Settings.Clutter,
-					ParentObject,
-					this
-				) );
-			}
+				Clutter = Settings.Clutter,
+				Parent = ParentObject,
+				Bounds = tile.Bounds,
+				Seed = Settings.RandomSeed,
+				Ownership = ClutterOwnership.GridSystem,
+				Layer = this,
+				Tile = tile
+			} );
+		}
 		}
 
 		// Remove out-of-range tiles

@@ -6,8 +6,9 @@ namespace Sandbox.Clutter;
 public sealed partial class ClutterComponent
 {
 	[Property, Group( "Volume" ), ShowIf( nameof( Infinite ), false )]
-	public BBox Bounds { get; set; } = new BBox( new Vector3( -1024, -512, -1024 ), new Vector3( 1024, 512, 1024 ) );
+	public BBox Bounds { get; set; } = new BBox( new Vector3( -512, -512, -512 ), new Vector3( 512, 512, 512 ) );
 
+	/// <summary>
 	/// Storage for volume model instances. Serialized with component.
 	/// </summary>
 	[Property, Hide]
@@ -17,6 +18,12 @@ public sealed partial class ClutterComponent
 	/// Layer used for rendering volume model instances.
 	/// </summary>
 	private ClutterLayer _volumeLayer;
+
+	/// <summary>
+	/// Tracks pending tile count for progressive volume generation.
+	/// </summary>
+	private int _pendingVolumeTiles;
+
 	[Button( "Generate" )]
 	[Icon( "scatter_plot" )]
 	public void Generate()
@@ -28,37 +35,63 @@ public sealed partial class ClutterComponent
 		if ( Clutter == null || Clutter.Scatterer == null )
 			return;
 
-		var worldBounds = Bounds.Transform( WorldTransform );
-		var instances = Clutter.Scatterer.Scatter( worldBounds, Clutter, Seed, Scene );
-		if ( instances == null || instances.Count == 0 )
-			return;
+		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
+		if ( gridSystem == null ) return;
 
+		var settings = GetCurrentSettings();
+		_volumeLayer ??= gridSystem.GetOrCreateLayerForComponent( this, settings );
+		
 		Storage ??= new();
 		Storage.ClearAll();
-		
-		foreach ( var instance in instances )
+
+		var worldBounds = Bounds.Transform( WorldTransform );
+		var tileSize = Clutter.TileSize;
+
+		// Calculate tile grid covering the volume
+		var minTile = new Vector2Int(
+			(int)Math.Floor( worldBounds.Mins.x / tileSize ),
+			(int)Math.Floor( worldBounds.Mins.y / tileSize )
+		);
+		var maxTile = new Vector2Int(
+			(int)Math.Floor( worldBounds.Maxs.x / tileSize ),
+			(int)Math.Floor( worldBounds.Maxs.y / tileSize )
+		);
+
+		_pendingVolumeTiles = 0;
+
+		// Queue generation jobs for each tile (progressive generation)
+		for ( int x = minTile.x; x <= maxTile.x; x++ )
+		for ( int y = minTile.y; y <= maxTile.y; y++ )
 		{
-			if ( !worldBounds.Contains( instance.Transform.Position ) )
+			var tileBounds = new BBox(
+				new Vector3( x * tileSize, y * tileSize, worldBounds.Mins.z ),
+				new Vector3( (x + 1) * tileSize, (y + 1) * tileSize, worldBounds.Maxs.z )
+			);
+
+			// Skip tiles that don't overlap the volume
+			if ( !tileBounds.Overlaps( worldBounds ) )
 				continue;
 
-			if ( instance.Entry?.Model != null )
-			{
-				Storage.AddInstance(
-					instance.Entry.Model.ResourcePath,
-					instance.Transform.Position,
-					instance.Transform.Rotation,
-					instance.Transform.Scale.x
-				);
-			}
-			else if ( instance.Entry?.Prefab != null )
-			{
-				var obj = instance.Entry.Prefab.Clone( instance.Transform, Scene );
-				obj.Tags.Add( "clutter" );
-				obj.SetParent( GameObject );
-			}
-		}
+			// Intersect tile bounds with volume bounds to avoid scattering outside
+			var scatterBounds = new BBox(
+				Vector3.Max( tileBounds.Mins, worldBounds.Mins ),
+				Vector3.Min( tileBounds.Maxs, worldBounds.Maxs )
+			);
 
-		RebuildVolumeLayer();
+			var job = new ClutterGenerationJob
+			{
+				Clutter = Clutter,
+				Parent = GameObject,
+				Bounds = scatterBounds, // Scatter only in intersection
+				Seed = Seed + x * 1000 + y,
+				Ownership = ClutterOwnership.Component,
+				Layer = _volumeLayer,
+				Storage = Storage
+			};
+
+			gridSystem.QueueJob( job );
+			_pendingVolumeTiles++;
+		}
 	}
 
 	/// <summary>
@@ -80,17 +113,11 @@ public sealed partial class ClutterComponent
 		_volumeLayer ??= gridSystem.GetOrCreateLayerForComponent( this, settings );
 		_volumeLayer.ClearAllTiles();
 
-		int addedCount = 0;
-
 		// Rebuild model instances from storage
 		foreach ( var modelPath in Storage.ModelPaths )
 		{
 			var model = ResourceLibrary.Get<Model>( modelPath );
-			if ( model == null )
-			{
-				Log.Warning( $"ClutterComponent: Failed to load model: {modelPath}" );
-				continue;
-			}
+			if ( model == null ) continue;
 
 			foreach ( var instance in Storage.GetInstances( modelPath ) )
 			{
@@ -99,14 +126,10 @@ public sealed partial class ClutterComponent
 					Transform = new Transform( instance.Position, instance.Rotation, instance.Scale ),
 					Entry = new ClutterEntry { Model = model }
 				} );
-				addedCount++;
 			}
 		}
 
-		if ( addedCount > 0 )
-		{
-			_volumeLayer.RebuildBatches();
-		}
+		_volumeLayer.RebuildBatches();
 	}
 
 	[Button( "Clear" )]
@@ -119,13 +142,11 @@ public sealed partial class ClutterComponent
 
 	private void ClearVolume()
 	{
-		// Clear storage
 		Storage?.ClearAll();
-		
-		// Clear layer batches
 		_volumeLayer?.ClearAllTiles();
+		_pendingVolumeTiles = 0;
 
-		// Destroy prefab children immediately
+		// Destroy prefab children
 		var children = GameObject.Children.Where( c => c.Tags.Has( "clutter" ) ).ToArray();
 		foreach ( var child in children )
 			child.Destroy();

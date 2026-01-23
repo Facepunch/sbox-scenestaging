@@ -1,155 +1,143 @@
-using System;
-using System.Collections.Generic;
-
 namespace Sandbox.Clutter;
 
 /// <summary>
-/// Simple job for clutter generation work.
-/// Executes synchronously when processed.
+/// Defines who owns the generated clutter instances.
+/// </summary>
+public enum ClutterOwnership
+{
+	/// <summary>
+	/// Component owns instances. Models stored in component's Storage, prefabs saved with scene.
+	/// Used for volume mode.
+	/// </summary>
+	Component,
+	
+	/// <summary>
+	/// GridSystem owns instances. Prefabs are unsaved/hidden, tiles manage cleanup.
+	/// Used for infinite streaming mode.
+	/// </summary>
+	GridSystem
+}
+
+/// <summary>
+/// Unified job for clutter generation.
 /// </summary>
 public class ClutterGenerationJob
 {
-	public ClutterDefinition Clutter { get; init; }
-	public GameObject ParentObject { get; init; }
-
-	// Volume-specific
-	public BBox Bounds { get; init; }
-	public float CellSize { get; init; }
-	public int RandomSeed { get; init; }
-
-	// Tile-specific  
-	public ClutterTile TileData { get; init; }
+	/// <summary>
+	/// The clutter definition containing entries and scatterer.
+	/// </summary>
+	public required ClutterDefinition Clutter { get; init; }
+	
+	/// <summary>
+	/// Parent GameObject for spawned prefabs.
+	/// </summary>
+	public required GameObject Parent { get; init; }
+	
+	/// <summary>
+	/// Bounds to scatter within.
+	/// </summary>
+	public required BBox Bounds { get; init; }
+	
+	/// <summary>
+	/// Random seed for deterministic generation.
+	/// </summary>
+	public required int Seed { get; init; }
+	
+	/// <summary>
+	/// Who owns the generated instances.
+	/// </summary>
+	public required ClutterOwnership Ownership { get; init; }
+	
+	/// <summary>
+	/// Layer for batched model rendering.
+	/// </summary>
 	public ClutterLayer Layer { get; init; }
-
-	private ClutterGenerationJob() { }
-
+	
 	/// <summary>
-	/// Creates a job for volume generation.
+	/// Tile data for infinite mode (null for volume mode).
 	/// </summary>
-	public static ClutterGenerationJob Volume( BBox bounds, float cellSize, int randomSeed, ClutterDefinition clutter, GameObject parentObject, ClutterLayer layer = null )
-	{
-		return new ClutterGenerationJob
-		{
-			Bounds = bounds,
-			CellSize = cellSize,
-			RandomSeed = randomSeed,
-			Clutter = clutter,
-			ParentObject = parentObject,
-			Layer = layer
-		};
-	}
-
+	public ClutterTile Tile { get; init; }
+	
 	/// <summary>
-	/// Creates a job for tile generation.
+	/// Storage for component-owned model instances
 	/// </summary>
-	public static ClutterGenerationJob Tile( BBox bounds, ClutterTile tile, int randomSeed, ClutterDefinition clutter, GameObject parentObject, ClutterLayer layer = null )
-	{
-		return new ClutterGenerationJob
-		{
-			Bounds = bounds,
-			TileData = tile,
-			RandomSeed = randomSeed,
-			Clutter = clutter,
-			ParentObject = parentObject,
-			Layer = layer
-	};
-	}
-
+	public ClutterGridSystem.ClutterStorage Storage { get; init; }
+	
+	/// <summary>
+	/// Execute the generation job.
+	/// </summary>
 	public void Execute()
 	{
-		if ( !ParentObject.IsValid() || Clutter?.Scatterer == null )
+		if ( !Parent.IsValid() || Clutter?.Scatterer == null )
 			return;
 
-		if ( TileData != null )
+		if ( Tile != null )
 		{
-			TileData.Destroy();
-			Layer?.ClearTileModelInstances( TileData.Coordinates );
+			Tile.Destroy();
+			Layer?.ClearTileModelInstances( Tile.Coordinates );
 		}
 
-		var instances = TileData != null 
-			? ScatterTile() 
-			: ScatterVolume();
+		var seed = Tile != null 
+			? Scatterer.GenerateSeed( Tile.SeedOffset, Tile.Coordinates.x, Tile.Coordinates.y )
+			: Seed;
+			
+		var instances = Clutter.Scatterer.Scatter( Bounds, Clutter, seed, Parent.Scene );
+		if ( instances == null || instances.Count == 0 )
+			return;
 
 		SpawnInstances( instances );
 
-		if ( TileData != null )
+		if ( Tile != null )
 		{
-			TileData.IsPopulated = true;
-			Layer?.OnTilePopulated( TileData );
+			Tile.IsPopulated = true;
+			Layer?.OnTilePopulated( Tile );
 		}
-		else if ( Layer != null )
+		else
 		{
-			Layer.RebuildBatches();
+			Layer?.RebuildBatches();
 		}
-	}
-
-	private List<ClutterInstance> ScatterTile()
-	{
-		var seed = Scatterer.GenerateSeed( TileData.SeedOffset, TileData.Coordinates.x, TileData.Coordinates.y );
-		return Clutter.Scatterer.Scatter( Bounds, Clutter, seed, ParentObject.Scene );
-	}
-
-	private List<ClutterInstance> ScatterVolume()
-	{
-		var instances = new List<ClutterInstance>();
-		var cellsX = (int)MathF.Ceiling( Bounds.Size.x / CellSize );
-		var cellsY = (int)MathF.Ceiling( Bounds.Size.y / CellSize );
-		var cellsZ = (int)MathF.Ceiling( Bounds.Size.z / CellSize );
-
-		for ( int x = 0; x < cellsX; x++ )
-		for ( int y = 0; y < cellsY; y++ )
-		for ( int z = 0; z < cellsZ; z++ )
-		{
-			var cellBounds = GetCellBounds( x, y, z );
-			var cellSeed = HashCode.Combine( RandomSeed, x, y, z );
-			instances.AddRange( Clutter.Scatterer.Scatter( cellBounds, Clutter, cellSeed, ParentObject.Scene ) );
-		}
-
-		return instances;
 	}
 
 	private void SpawnInstances( List<ClutterInstance> instances )
 	{
-		var isVolumeMode = TileData == null;
+		var isComponentOwned = Ownership == ClutterOwnership.Component;
+		var tileCoord = Tile?.Coordinates ?? Vector2Int.Zero;
 
-		using ( ParentObject.Scene.Push() )
+		using ( Parent.Scene.Push() )
 		{
 			foreach ( var instance in instances )
 			{
-				// Models are stored in layer for batch rendering
-				if ( instance.IsModel && instance.Entry.Model != null )
+				if ( instance.IsModel && instance.Entry?.Model != null )
 				{
-					if ( Layer != null )
+					Layer?.AddModelInstance( tileCoord, instance );
+					
+					// Component ownership: also store in component's storage for persistence
+					if ( isComponentOwned && Storage != null )
 					{
-						// For tile mode, use tile coordinates
-						// For volume mode, use a dummy coordinate (0,0) since there's only one "tile"
-						var coord = TileData?.Coordinates ?? Vector2Int.Zero;
-						Layer.AddModelInstance( coord, instance );
+						Storage.AddInstance(
+							instance.Entry.Model.ResourcePath,
+							instance.Transform.Position,
+							instance.Transform.Rotation,
+							instance.Transform.Scale.x
+						);
 					}
 					continue;
 				}
 
-				// Prefabs are spawned as GameObjects
-				if ( instance.Entry.Prefab == null ) 
+				if ( instance.Entry?.Prefab == null )
 					continue;
 
-				var obj = instance.Entry.Prefab.Clone( instance.Transform, ParentObject.Scene );
+				var obj = instance.Entry.Prefab.Clone( instance.Transform, Parent.Scene );
 				obj.Tags.Add( "clutter" );
-				obj.SetParent( ParentObject );
-				if ( !isVolumeMode )
+				obj.SetParent( Parent );
+
+				if ( !isComponentOwned )
 				{
 					obj.Flags |= GameObjectFlags.NotSaved;
 					obj.Flags |= GameObjectFlags.Hidden;
-					TileData?.AddObject( obj );
+					Tile?.AddObject( obj );
 				}
 			}
 		}
-	}
-
-	private BBox GetCellBounds( int x, int y, int z )
-	{
-		var min = Bounds.Mins + new Vector3( x, y, z ) * CellSize;
-		var max = Vector3.Min( Bounds.Maxs, min + CellSize );
-		return new BBox( min, max );
 	}
 }
