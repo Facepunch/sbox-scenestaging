@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Sandbox.Clutter;
 
 /// <summary>
@@ -24,10 +20,19 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 
 	private Vector3 LastCameraPosition { get; set; }
 
+	/// <summary>
+	/// Storage for painted clutter model instances.
+	/// Serialized with the scene - this is the source of truth for painted clutter.
+	/// </summary>
 	[Property]
 	public ClutterStorage _storage { get; set; } = new();
 
+	/// <summary>
+	/// Layer for rendering painted model instances from _storage.
+	/// This is transient - rebuilt from _storage on scene load.
+	/// </summary>
 	private ClutterLayer _painted;
+	
 	private bool _dirty = false;
 
 	public ClutterGridSystem( Scene scene ) : base( scene )
@@ -51,7 +56,6 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 		UpdateInfiniteLayers( LastCameraPosition );
 		ProcessJobs();
 
-		// Rebuild painted layer if needed (during painting)
 		if ( _dirty )
 		{
 			RebuildPaintedLayer();
@@ -69,7 +73,6 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 			}
 		}
 
-		// Clean up removed terrains
 		SubscribedTerrains.RemoveWhere( t => !t.IsValid() );
 	}
 
@@ -91,9 +94,6 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 
 	private void RemoveInactiveComponents( List<ClutterComponent> activeInfiniteComponents )
 	{
-		// Only remove components that are:
-		// 1. Infinite mode AND not in the active list, OR
-		// 2. Invalid/destroyed
 		var toRemove = ComponentToLayer.Keys
 			.Where( c => !c.IsValid() || (c.Infinite && !activeInfiniteComponents.Contains( c )) )
 			.ToList();
@@ -120,13 +120,13 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 	/// </summary>
 	public void QueueJob( ClutterGenerationJob job )
 	{
-		if ( job?.Clutter?.Scatterer == null || !job.ParentObject.IsValid() )
+		if ( job?.Clutter?.Scatterer == null || !job.Parent.IsValid() )
 			return;
 
 		// Prevent duplicate jobs for the same tile
-		if ( job.TileData != null )
+		if ( job.Tile != null )
 		{
-			if ( !PendingTiles.Add( job.TileData ) )
+			if ( !PendingTiles.Add( job.Tile ) )
 				return;
 		}
 
@@ -139,9 +139,7 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 	internal void RemovePendingTile( ClutterTile tile )
 	{
 		PendingTiles.Remove( tile );
-
-		// Remove any pending jobs for this tile
-		PendingJobs.RemoveAll( job => job.TileData == tile );
+		PendingJobs.RemoveAll( job => job.Tile == tile );
 	}
 
 	/// <summary>
@@ -150,7 +148,7 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 	public void ClearComponent( ClutterComponent component )
 	{
 		// Remove any pending jobs for this component (both tile and volume jobs)
-		PendingJobs.RemoveAll( job => job.ParentObject == component.GameObject );
+		PendingJobs.RemoveAll( job => job.Parent == component.GameObject );
 
 		if ( ComponentToLayer.Remove( component, out var layer ) )
 		{
@@ -194,10 +192,7 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 
 	private void OnTerrainModified( Terrain.SyncFlags flags, RectInt region )
 	{
-		// Convert terrain region to world bounds
 		var bounds = TerrainRegionToWorldBounds( SubscribedTerrains.First(), region );
-
-		// Invalidate all clutter tiles in this region
 		InvalidateTilesInBounds( bounds );
 	}
 
@@ -215,13 +210,11 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 			(float)region.Right / storage.Resolution,
 			(float)region.Bottom / storage.Resolution
 		);
-
-		// Convert to world position relative to terrain
+		
 		var terrainSize = storage.TerrainSize;
 		var minLocal = new Vector3( minNorm.x * terrainSize, minNorm.y * terrainSize, -1000f );
 		var maxLocal = new Vector3( maxNorm.x * terrainSize, maxNorm.y * terrainSize, 1000f );
 
-		// Transform to world space
 		var minWorld = terrainTransform.PointToWorld( minLocal );
 		var maxWorld = terrainTransform.PointToWorld( maxLocal );
 
@@ -263,18 +256,17 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 		HashSet<ClutterLayer> layersToRebuild = [];
 
 		PendingJobs.RemoveAll( job =>
-			!job.ParentObject.IsValid() ||
-			job.TileData?.IsPopulated == true
+			!job.Parent.IsValid() ||
+			job.Tile?.IsPopulated == true
 		);
 
-		// Sort by distance to camera (nearest first)
 		PendingJobs.Sort( ( a, b ) =>
 		{
-			var distA = a.TileData != null
-				? a.TileData.Bounds.Center.Distance( LastCameraPosition )
+			var distA = a.Tile != null
+				? a.Tile.Bounds.Center.Distance( LastCameraPosition )
 				: float.MaxValue;
-			var distB = b.TileData != null
-				? b.TileData.Bounds.Center.Distance( LastCameraPosition )
+			var distB = b.Tile != null
+				? b.Tile.Bounds.Center.Distance( LastCameraPosition )
 				: float.MaxValue;
 			return distA.CompareTo( distB );
 		} );
@@ -286,17 +278,15 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 			var job = PendingJobs[0];
 			PendingJobs.RemoveAt( 0 );
 
-			// Remove from pending set
-			if ( job.TileData != null )
-				PendingTiles.Remove( job.TileData );
+			if ( job.Tile != null )
+				PendingTiles.Remove( job.Tile );
 
 			// Execute if still valid and not populated
-			if ( job.ParentObject.IsValid() && job.TileData?.IsPopulated != true )
+			if ( job.Parent.IsValid() && job.Tile?.IsPopulated != true )
 			{
 				job.Execute();
 				processed++;
 
-				// Track layer for batch rebuild
 				if ( job.Layer != null )
 					layersToRebuild.Add( job.Layer );
 			}
@@ -315,8 +305,8 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 			var toRemove = PendingJobs.Skip( MAX_PENDING_JOBS ).ToList();
 			foreach ( var job in toRemove )
 			{
-				if ( job.TileData != null )
-					PendingTiles.Remove( job.TileData );
+				if ( job.Tile != null )
+					PendingTiles.Remove( job.Tile );
 			}
 
 			PendingJobs.RemoveRange( MAX_PENDING_JOBS, PendingJobs.Count - MAX_PENDING_JOBS );
@@ -331,7 +321,6 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 	{
 		if ( entry == null || !entry.HasAsset ) return;
 		
-		// Prefabs create real GameObjects
 		if ( entry.Prefab != null )
 		{
 			var go = entry.Prefab.Clone( pos, rot );
@@ -339,7 +328,6 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 			go.SetParent( Scene );
 			go.Tags.Add( "clutter" );
 		}
-		// Models are batched & stored
 		else if ( entry.Model != null )
 		{
 			_storage.AddInstance( entry.Model.ResourcePath, pos, rot, scale );
@@ -354,16 +342,11 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 	public void Erase( Vector3 pos, float radius )
 	{
 		var radiusSquared = radius * radius;
-		var erased = false;
-
-		// Erase model instances from storage
 		if ( _storage.Erase( pos, radius ) > 0 )
 		{
 			_dirty = true;
-			erased = true;
 		}
 
-		// Erase prefab GameObjects tagged as clutter
 		var clutterObjects = Scene.GetAllObjects( true )
 			.Where( go => go.Tags.Has( "clutter" ) && 
 			              go.WorldPosition.DistanceSquared( pos ) <= radiusSquared )
@@ -372,7 +355,6 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 		foreach ( var go in clutterObjects )
 		{
 			go.Destroy();
-			erased = true;
 		}
 	}
 
@@ -386,8 +368,7 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 	}
 
 	/// <summary>
-	/// Rebuild the painted clutter layer from stored instances.
-	/// Called automatically on scene load and after painting.
+	/// Rebuild the painted clutter layer from stored instances in _storage.
 	/// </summary>
 	private void RebuildPaintedLayer()
 	{
@@ -402,12 +383,11 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 			return;
 		}
 
-		// Create or reuse painted layer with minimal settings
+		// Create or reuse painted layer
 		if ( _painted == null )
 		{
-			var dummyClutter = new ClutterDefinition();
-			var settings = new ClutterSettings { Clutter = dummyClutter };
-			_painted = new ClutterLayer( settings, Scene, this );
+			var settings = new ClutterSettings( 0, new ClutterDefinition() );
+			_painted = new ClutterLayer( settings, null, this );
 		}
 		
 		_painted.ClearAllTiles();

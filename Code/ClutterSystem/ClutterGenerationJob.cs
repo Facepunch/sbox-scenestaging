@@ -75,12 +75,10 @@ public class ClutterGenerationJob
 		if ( TileData != null )
 		{
 			TileData.IsPopulated = true;
-			// Notify layer that tile is populated so it can rebuild batches
 			Layer?.OnTilePopulated( TileData );
 		}
 		else if ( Layer != null )
 		{
-			// For volume mode, rebuild batches immediately after all instances are added
 			Layer.RebuildBatches();
 		}
 	}
