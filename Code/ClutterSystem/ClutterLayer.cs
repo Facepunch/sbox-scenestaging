@@ -186,9 +186,17 @@ public class ClutterLayer
 			.ToDictionary( g => g.Key, g => g.ToList() );
 
 		// Create and finalize batches
+		// Use ParentObject scene if available, otherwise use GridSystem scene (for painted clutter)
+		var sceneWorld = ParentObject?.Scene?.SceneWorld ?? GridSystem?.Scene?.SceneWorld;
+		if ( sceneWorld == null )
+		{
+			_dirty = false;
+			return;
+		}
+
 		foreach ( var (model, instances) in instancesByModel )
 		{
-			var batch = new ClutterBatch( ParentObject.Scene.SceneWorld );
+			var batch = new ClutterBatch( sceneWorld );
 
 			foreach ( var instance in instances )
 				batch.AddInstance( instance );
