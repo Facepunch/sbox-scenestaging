@@ -167,15 +167,49 @@ public abstract class Scatterer
 		return seed;
 	}
 
+	/// <summary>
+	/// Calculates the number of points to scatter based on density and area.
+	/// Caps at maxPoints to prevent engine freezing.
+	/// </summary>
+	/// <param name="bounds">Bounds to scatter in</param>
+	/// <param name="density">Points per square meter</param>
+	/// <param name="maxPoints">Maximum points to cap at (default 10000)</param>
+	/// <returns>Number of points to generate</returns>
+	protected int CalculatePointCount( BBox bounds, float density, int maxPoints = 10000 )
+	{
+		const float PointsPerUnit = 512f;
+		var area = (bounds.Size.x / PointsPerUnit) * ( bounds.Size.y / PointsPerUnit);
+		var desiredCount = (int)(area * density);
+		var clampedCount = Math.Clamp( desiredCount, 1, maxPoints );
+		
+		if ( desiredCount > maxPoints )
+		{
+			Log.Warning( $"Scatterer: Density would generate {desiredCount} points, capped to {maxPoints} to prevent freezing. " +
+			            $"Area: {area:F1}m�, Density: {density:F3}/m�. Consider reducing density or using smaller bounds." );
+		}
+		
+		return clampedCount;
+	}
 }
 
 public class SimpleScatterer : Scatterer
 {
-	[Property] public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
-	[Property, Range( 1, 1000 )] public int PointCount { get; set; } = 100;
-	[Property, Group( "Placement" )] public bool PlaceOnGround { get; set; } = true;
-	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] public float HeightOffset { get; set; }
-	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] public bool AlignToNormal { get; set; }
+	[Property] 
+	[Description( "Scale range for spawned objects" )]
+	public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
+	
+	[Property, Range( 0.001f, 10f )]
+	[Description( "Points per square meter (density)" )]
+	public float Density { get; set; } = 0.1f;
+	
+	[Property, Group( "Placement" )] 
+	public bool PlaceOnGround { get; set; } = true;
+	
+	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] 
+	public float HeightOffset { get; set; }
+	
+	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] 
+	public bool AlignToNormal { get; set; }
 
 	protected override List<ClutterInstance> Generate( BBox bounds, ClutterDefinition clutter, Scene scene = null )
 	{
@@ -183,9 +217,10 @@ public class SimpleScatterer : Scatterer
 		if ( scene == null || clutter == null )
 			return [];
 
-		var instances = new List<ClutterInstance>( PointCount );
+		var pointCount = CalculatePointCount( bounds, Density );
+		var instances = new List<ClutterInstance>( pointCount );
 
-		for ( int i = 0; i < PointCount; i++ )
+		for ( int i = 0; i < pointCount; i++ )
 		{
 			var point = new Vector3(
 				bounds.Mins.x + Random.Float( bounds.Size.x ),

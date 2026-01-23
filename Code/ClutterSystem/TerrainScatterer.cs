@@ -34,9 +34,9 @@ public class SlopeScatterer : Scatterer
 	[Description( "Scale range for spawned objects" )]
 	public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
 
-	[Property, Range( 1, 1000 )]
-	[Description( "Number of points to attempt to scatter per tile" )]
-	public int PointCount { get; set; } = 100;
+	[Property, Range( 0.001f, 10f )]
+	[Description( "Points per square meter (density)" )]
+	public float Density { get; set; } = 0.1f;
 
 	[Property, Group( "Placement" )]
 	[Description( "Offset from ground surface" )]
@@ -56,9 +56,10 @@ public class SlopeScatterer : Scatterer
 		if ( scene == null || clutter == null || clutter.IsEmpty )
 			return [];
 
-		var instances = new List<ClutterInstance>( PointCount );
+		var pointCount = CalculatePointCount( bounds, Density );
+		var instances = new List<ClutterInstance>( pointCount );
 
-		for ( int i = 0; i < PointCount; i++ )
+		for ( int i = 0; i < pointCount; i++ )
 		{
 			var point = new Vector3(
 				bounds.Mins.x + Random.Float( bounds.Size.x ),
@@ -164,9 +165,9 @@ public class TerrainMaterialScatterer : Scatterer
 	[Description( "Scale range for spawned objects" )]
 	public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
 
-	[Property, Range( 1, 1000 )]
-	[Description( "Number of points to attempt to scatter per tile" )]
-	public int PointCount { get; set; } = 100;
+	[Property, Range( 0.001f, 10f )]
+	[Description( "Points per square meter (density)" )]
+	public float Density { get; set; } = 0.1f;
 
 	[Property, Group( "Placement" )]
 	[Description( "Offset from ground surface" )]
@@ -197,7 +198,6 @@ public class TerrainMaterialScatterer : Scatterer
 	[JsonIgnore, Hide]
 	private GameObject _cachedTerrainObject;
 
-
 	protected override List<ClutterInstance> Generate( BBox bounds, ClutterDefinition clutter, Scene scene = null )
 	{
 		scene ??= Game.ActiveScene;
@@ -208,9 +208,10 @@ public class TerrainMaterialScatterer : Scatterer
 		_cachedTerrain = null;
 		_cachedTerrainObject = null;
 
-		var instances = new List<ClutterInstance>( PointCount );
+		var pointCount = CalculatePointCount( bounds, Density );
+		var instances = new List<ClutterInstance>( pointCount );
 
-		for ( int i = 0; i < PointCount; i++ )
+		for ( int i = 0; i < pointCount; i++ )
 		{
 			var point = new Vector3(
 				bounds.Mins.x + Random.Float( bounds.Size.x ),
