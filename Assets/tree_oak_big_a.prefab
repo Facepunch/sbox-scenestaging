@@ -1,0 +1,131 @@
+{
+  "RootObject": {
+    "__guid": "630cd893-b990-4c00-91e7-d9a177a61d1c",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "tree_oak_big_a",
+    "Position": "0,0,0",
+    "Rotation": "-0.004227325,0.01020494,0.3826603,0.9238231",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.Prop",
+        "__guid": "7280b036-9fd0-46a4-ac82-1ef04a244165",
+        "__enabled": true,
+        "Flags": 0,
+        "BodyGroups": 18446744073709551615,
+        "Health": 0,
+        "IsStatic": true,
+        "MaterialGroup": null,
+        "Model": "models/sbox_props/trees/oak/tree_oak_big_a.vmdl",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OnPropBreak": null,
+        "OnPropTakeDamage": null,
+        "StartAsleep": false,
+        "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "b3ba0718-0fa4-40c5-abde-64504fcbd700",
+        "__enabled": true,
+        "Flags": 0,
+        "BodyGroups": 18446744073709551615,
+        "CreateAttachments": false,
+        "LodOverride": null,
+        "MaterialGroup": null,
+        "MaterialOverride": null,
+        "Materials": null,
+        "Model": "models/sbox_props/trees/oak/tree_oak_big_a.vmdl",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "Sandbox.ModelCollider",
+        "__guid": "2241c3ae-dfab-432c-9743-e1355fc17c95",
+        "__enabled": false,
+        "Flags": 0,
+        "ColliderFlags": 0,
+        "Elasticity": null,
+        "Friction": null,
+        "IsTrigger": false,
+        "Model": "models/sbox_props/trees/oak/tree_oak_big_a.vmdl",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OnObjectTriggerEnter": null,
+        "OnObjectTriggerExit": null,
+        "OnTriggerEnter": null,
+        "OnTriggerExit": null,
+        "RollingResistance": null,
+        "Static": true,
+        "Surface": null,
+        "SurfaceVelocity": "0,0,0"
+      }
+    ],
+    "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      },
+      "GameObjectSystems": [
+        {
+          "_storage": {
+            "$blob": "00000000-0000-0000-0000-000000000000"
+          },
+          "__type": "ClutterGridSystem",
+          "__guid": "4a7c0a70-3299-45a3-a862-6d0654b7255c"
+        }
+      ]
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [
+    "facepunch.tree_oak_big_a#117390"
+  ],
+  "__version": 2
+}
