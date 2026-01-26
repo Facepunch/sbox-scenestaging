@@ -226,9 +226,37 @@ public class ClutterEntriesGridWidget : ControlWidget
 			var index = entries.IndexOf( entry );
 			if ( index < 0 ) return;
 
-			var menu = new Menu( this );
+		var menu = new Menu( this );
 
-			menu.AddOption( "Set Weight...", "balance", () =>
+		// Find in Asset Browser
+		if ( entry.Model != null || entry.Prefab != null )
+		{
+			menu.AddOption( "Find in Asset Browser", "search", () =>
+			{
+				Asset asset = null;
+				
+			if ( entry.Prefab != null )
+			{
+				if ( entry.Prefab is PrefabScene prefabScene && prefabScene.Source != null )
+				{
+					asset = AssetSystem.FindByPath( prefabScene.Source.ResourcePath );
+				}
+			}
+				else if ( entry.Model != null )
+				{
+					asset = AssetSystem.FindByPath( entry.Model.ResourcePath );
+				}
+
+				if ( asset != null )
+				{
+					LocalAssetBrowser.OpenTo( asset, true );
+				}
+			} );
+
+			menu.AddSeparator();
+		}
+
+		menu.AddOption( "Set Weight...", "balance", () =>
 			{
 				var popup = new PopupWidget( this );
 				popup.Layout = Layout.Row();
