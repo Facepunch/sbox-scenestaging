@@ -73,6 +73,8 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 		using ( Scene.Push() )
 		{
 			_clutterObject?.Destroy();
+			_tileBounds?.Delete();
+			CreateTileBounds();
 			CreateClutter();
 			
 			await Task.Delay( 50 );
@@ -169,6 +171,9 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 			{
 				_currentSeed = Game.Random.Next();
 				_clutterObject?.Destroy();
+				_tileBounds?.Delete();
+				
+				CreateTileBounds();
 				CreateClutter();
 				
 				await Task.Delay( 50 );
