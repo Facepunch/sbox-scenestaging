@@ -298,18 +298,15 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 			layer.RebuildBatches();
 		}
 
-		// If we still have too many jobs, cull the furthest ones
-		if ( PendingJobs.Count > MAX_PENDING_JOBS )
+		var infiniteJobs = PendingJobs.Where( j => j.Tile != null ).ToList();
+		if ( infiniteJobs.Count > MAX_PENDING_JOBS )
 		{
-			// Keep only the nearest 100 jobs
-			var toRemove = PendingJobs.Skip( MAX_PENDING_JOBS ).ToList();
+			var toRemove = infiniteJobs.Skip( MAX_PENDING_JOBS ).ToList();
 			foreach ( var job in toRemove )
 			{
-				if ( job.Tile != null )
-					PendingTiles.Remove( job.Tile );
+				PendingTiles.Remove( job.Tile );
+				PendingJobs.Remove( job );
 			}
-
-			PendingJobs.RemoveRange( MAX_PENDING_JOBS, PendingJobs.Count - MAX_PENDING_JOBS );
 		}
 	}
 
