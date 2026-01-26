@@ -50,6 +50,10 @@ public class SlopeScatterer : Scatterer
 	[Description( "Define which entries spawn at which slope angles" )]
 	public List<SlopeMapping> Mappings { get; set; } = new();
 
+	[Property, Group( "Fallback" )]
+	[Description( "Use random clutter entry if no slope mapping matches" )]
+	public bool UseFallback { get; set; } = true;
+
 	protected override List<ClutterInstance> Generate( BBox bounds, ClutterDefinition clutter, Scene scene = null )
 	{
 		scene ??= Game.ActiveScene;
@@ -78,8 +82,16 @@ public class SlopeScatterer : Scatterer
 
 			// Find matching entry from slope mappings
 			var entry = GetEntryForSlope( clutter, slopeAngle );
+		var entry = GetEntryForSlope( clutter, slopeAngle );
+		if ( entry == null )
+		{
+			if ( UseFallback )
+			{
+				entry = GetRandomEntry( clutter );
+			}
 			if ( entry == null )
 				continue;
+		}
 
 			// Setup transform
 			var scale = Random.Float( Scale.Min, Scale.Max );
@@ -188,6 +200,8 @@ public class TerrainMaterialScatterer : Scatterer
 	[Property, Group( "Fallback" )]
 	[Description( "Use random clutter entry if no material mapping matches" )]
 	public bool UseFallback { get; set; } = false;
+	[Description( "Use random clutter entry if no material mapping matches or no terrain is present" )]
+	public bool UseFallback { get; set; } = true;
 
 	/// <summary>
 	/// Cached terrain reference to avoid repeated GetComponent calls within same tile.
@@ -227,18 +241,27 @@ public class TerrainMaterialScatterer : Scatterer
 			// Try to get terrain material at this position
 			var terrain = GetTerrainFromTrace( trace.Value );
 			if ( terrain == null )
+		var terrain = GetTerrainFromTrace( trace.Value );
+		if ( terrain == null )
+		{
+			if ( UseFallback )
 			{
 				// Not hitting terrain - use fallback if enabled
 				if ( UseFallback )
+				var fallbackEntry = GetRandomEntry( clutter );
+				if ( fallbackEntry != null )
 				{
 					var fallbackEntry = GetRandomEntry( clutter );
 					if ( fallbackEntry != null )
 					{
 						instances.Add( CreateInstance( trace.Value, fallbackEntry ) );
 					}
+					instances.Add( CreateInstance( trace.Value, fallbackEntry ) );
 				}
 				continue;
 			}
+			continue;
+		}
 
 			// Query terrain material at hit position
 			var materialInfo = terrain.GetMaterialAtWorldPosition( trace.Value.HitPosition );
