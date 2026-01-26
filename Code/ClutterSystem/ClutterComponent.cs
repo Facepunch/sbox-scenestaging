@@ -3,6 +3,7 @@ namespace Sandbox.Clutter;
 /// <summary>
 /// Clutter scattering component supporting both infinite and volumes.
 /// </summary>
+[Icon( "forest" )]
 public sealed partial class ClutterComponent : Component, Component.ExecuteInEditor
 {
 	/// <summary>
