@@ -7,6 +7,18 @@ namespace Sandbox.Clutter;
 public sealed partial class ClutterComponent : Component, Component.ExecuteInEditor
 {
 	/// <summary>
+	/// Clutter generation mode.
+	/// </summary>
+	public enum ClutterMode
+	{
+		[Icon( "inventory_2" ), Description( "Scatter clutter within a defined volume" )]
+		Volume,
+		
+		[Icon( "all_inclusive" ), Description( "Stream clutter infinitely around the camera" )]
+		Infinite
+	}
+
+	/// <summary>
 	/// The clutter containing objects to scatter and scatter settings.
 	/// </summary>
 	[Property]
@@ -19,23 +31,25 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	public int Seed { get; set; }
 
 	/// <summary>
-	/// Enable infinite streaming mode
-	/// Disable for baked volume mode
+	/// Clutter generation mode - Volume or Infinite streaming.
 	/// </summary>
 	[Property]
-	public bool Infinite
+	public ClutterMode Mode
 	{
 		get => field;
 		set
 		{
-			if ( field == value )
-				return;
-
+			if ( field == value ) return;
 			Clear();
-
 			field = value;
 		}
 	}
+
+	/// <summary>
+	/// Enable infinite streaming mode.
+	/// </summary>
+	[Hide]
+	public bool Infinite => Mode == ClutterMode.Infinite;
 
 	/// <summary>
 	/// Clears all infinite mode tiles for this component.
@@ -51,7 +65,7 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	/// </summary>
 	public void InvalidateTileAt( Vector3 worldPosition )
 	{
-		if ( !Infinite ) return;
+		if ( Mode != ClutterMode.Infinite ) return;
 
 		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
 		gridSystem.InvalidateTileAt( this, worldPosition );
@@ -62,7 +76,7 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 	/// </summary>
 	public void InvalidateTilesInBounds( BBox bounds )
 	{
-		if ( !Infinite ) return;
+		if ( Mode != ClutterMode.Infinite ) return;
 
 		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
 		gridSystem.InvalidateTilesInBounds( this, bounds );
@@ -70,7 +84,7 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 
 	protected override void OnEnabled()
 	{
-		if ( !Infinite )
+		if ( Mode == ClutterMode.Volume )
 		{
 			RebuildVolumeLayer();
 		}
@@ -83,7 +97,7 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 
 	protected override void DrawGizmos()
 	{
-		if ( !Infinite )
+		if ( Mode == ClutterMode.Volume )
 		{
 			DrawVolumeGizmos();
 		}

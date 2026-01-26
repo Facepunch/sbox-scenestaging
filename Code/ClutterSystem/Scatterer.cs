@@ -179,8 +179,6 @@ public abstract class Scatterer
 	{
 		const float PointsPerUnit = 512f;
 		var area = (bounds.Size.x / PointsPerUnit) * ( bounds.Size.y / PointsPerUnit);
-		var desiredCount = (int)(area * density);
-		var clampedCount = Math.Clamp( desiredCount, 1, maxPoints );
 		var desiredCount = area * density;
 		
 		// Handle fractional points probabilistically

@@ -10,6 +10,18 @@ namespace Sandbox.Clutter;
 public class ClutterDefinition : GameResource
 {
 	/// <summary>
+	/// Tile size options for streaming mode.
+	/// </summary>
+	public enum TileSizeOption
+	{
+		[Title( "256" )] Size256 = 256,
+		[Title( "512" )] Size512 = 512,
+		[Title( "1024" )] Size1024 = 1024,
+		[Title( "2048" )] Size2048 = 2048,
+		[Title( "4096" )] Size4096 = 4096
+	}
+
+	/// <summary>
 	/// List of weighted entries
 	/// </summary>
 	[Property]
@@ -23,7 +35,36 @@ public class ClutterDefinition : GameResource
 	/// Smaller values = more frequent updates, larger values = better performance.
 	/// </summary>
 	[Property, Group( "Streaming" )]
-	public float TileSize { get; set; } = 512f;
+	[Title( "Tile Size" )]
+	public TileSizeOption TileSizeEnum { get; set; } = TileSizeOption.Size512;
+
+	/// <summary>
+	/// Gets the tile size as a float value.
+	/// </summary>
+	[Hide, JsonIgnore]
+	public float TileSize => (float)TileSizeEnum;
+
+	/// <summary>
+	/// Legacy TileSize property for backward compatibility with old save files.
+	/// Migrates old float values to the new enum.
+	/// </summary>
+	[Hide, JsonPropertyName( "TileSize" )]
+	public float TileSizeLegacy
+	{
+		get => TileSize;
+		set
+		{
+			// Migrate old float value to closest enum value
+			TileSizeEnum = value switch
+			{
+				<= 256 => TileSizeOption.Size256,
+				<= 512 => TileSizeOption.Size512,
+				<= 1024 => TileSizeOption.Size1024,
+				<= 2048 => TileSizeOption.Size2048,
+				_ => TileSizeOption.Size4096
+			};
+		}
+	}
 
 	/// <summary>
 	/// Number of tiles to generate around the camera in each direction.

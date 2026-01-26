@@ -88,7 +88,7 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 		
 		var component = _clutterObject.Components.Create<ClutterComponent>();
 		component.Clutter = _clutter;
-		component.Infinite = false;
+		component.Mode = ClutterComponent.ClutterMode.Volume;
 		component.Seed = _currentSeed;
 		
 		var tileSize = _clutter.TileSize;
