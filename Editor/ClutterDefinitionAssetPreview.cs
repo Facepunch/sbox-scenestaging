@@ -1,264 +1,216 @@
 using Editor.Assets;
 using Sandbox.Clutter;
-using System;
 using System.Threading.Tasks;
 
 namespace Editor;
 
 /// <summary>
-/// Custom 3D asset preview for ClutterDefinition resources.
-/// Uses the actual clutter system to generate a realistic preview.
+/// Preview for ClutterDefinition using the actual clutter system.
 /// </summary>
 [AssetPreview( "clutter" )]
 public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset )
 {
-	private ClutterDefinition _currentclutter;
+	private ClutterDefinition _clutter;
 	private GameObject _clutterObject;
-	private GameObject _groundPlane;
-	private int _lastclutterHash;
-	private float _previewVolumeSize = 512f;
+	private GameObject _ground;
+	private TileBoundsGrid _tileBounds;
+	private int _lastHash;
+	private int _currentSeed = 1337;
 
-	/// <summary>
-	/// Slow down the rotation speed for a better view of the scattered objects
-	/// </summary>
 	public override float PreviewWidgetCycleSpeed => 0.15f;
 
 	public override async Task InitializeAsset()
 	{
 		await base.InitializeAsset();
 
-		_currentclutter = Asset.LoadResource<ClutterDefinition>();
-		
-		if ( _currentclutter == null )
-			return;
+		_clutter = Asset.LoadResource<ClutterDefinition>();
+		if ( _clutter == null ) return;
 
 		using ( Scene.Push() )
 		{
-			// Create ground plane for collision
-			CreateGroundPlane();
-
-			// Create clutter object with component using regular pipeline
-			CreateClutterObject();
+			CreateGround();
+			CreateTileBounds();
+			CreateClutter();
+			_lastHash = GetHash();
 			
-			// Store initial state
-			UpdateclutterState();
-			
-			// Small delay for system to generate
 			await Task.Delay( 50 );
-			
-			// Calculate bounds after generation
 			CalculateSceneBounds();
 		}
 	}
 
 	public override void UpdateScene( float cycle, float timeStep )
 	{
-		// Check if clutter has changed and regenerate if needed
-		if ( CheckForChanges() )
+		// Check for changes and regenerate if needed
+		if ( _clutter != null )
 		{
-			RegeneratePreview();
+			var currentHash = GetHash();
+			if ( currentHash != _lastHash )
+			{
+				_lastHash = currentHash;
+				RegenerateAsync();
+			}
 		}
 
+		// Position camera manually - orbit around center
 		using ( Scene.Push() )
 		{
-			// Orbit camera around the scene center
 			var angle = cycle * 360.0f;
 			var distance = MathX.SphereCameraDistance( SceneSize.Length * 0.5f, Camera.FieldOfView );
 			var aspect = (float)ScreenSize.x / ScreenSize.y;
 			if ( aspect > 1 ) distance *= aspect;
 
-			// Calculate camera position orbiting around SceneCenter
 			var rotation = new Angles( 20, 180 + 45 + angle, 0 ).ToRotation();
 			Camera.WorldRotation = rotation;
 			Camera.WorldPosition = SceneCenter + rotation.Forward * -distance;
 		}
+
+		// Tick the scene to process jobs (critical!)
+		TickScene( timeStep );
 	}
 
-	private bool CheckForChanges()
-	{
-		if ( _currentclutter == null )
-			return false;
-
-		var currentHash = GetclutterHash();
-		return currentHash != _lastclutterHash;
-	}
-
-	private void UpdateclutterState()
-	{
-		if ( _currentclutter == null )
-			return;
-
-		_lastclutterHash = GetclutterHash();
-	}
-
-	private int GetclutterHash()
-	{
-		if ( _currentclutter == null )
-			return 0;
-
-		// Generate hash from all relevant clutter properties
-		var hash = new HashCode();
-		
-		hash.Add( _currentclutter.Entries.Count );
-		
-		foreach ( var entry in _currentclutter.Entries )
-		{
-			if ( entry != null )
-			{
-				hash.Add( entry.Weight );
-				hash.Add( entry.Model?.GetHashCode() ?? 0 );
-				hash.Add( entry.Prefab?.GetHashCode() ?? 0 );
-			}
-		}
-		
-		// Add scatterer hash
-		hash.Add( _currentclutter.Scatterer?.GetHashCode() ?? 0 );
-		
-		return hash.ToHashCode();
-	}
-
-	private async void RegeneratePreview()
+	private async void RegenerateAsync()
 	{
 		using ( Scene.Push() )
 		{
-			// Destroy and recreate the clutter object
-			if ( _clutterObject.IsValid() )
-			{
-				_clutterObject.Destroy();
-			}
-
-			// Recreate using regular pipeline
-			CreateClutterObject();
+			_clutterObject?.Destroy();
+			CreateClutter();
 			
-			// Update state
-			UpdateclutterState();
-			
-			// Small delay for system to generate
 			await Task.Delay( 50 );
-			
 			CalculateSceneBounds();
 		}
 	}
 
-	private void CreateClutterObject()
+	private void CreateClutter()
 	{
-		// Create clutter object for preview
-		_clutterObject = new GameObject( true, "Clutter Preview" );
+		_clutterObject = new GameObject( true, "ClutterPreview" );
 		
-		// Use ClutterComponent with Volume mode - this goes through the regular pipeline
-		if ( _currentclutter != null )
-		{
-			var component = _clutterObject.Components.Create<ClutterComponent>();
-			component.Clutter = _currentclutter;
-			component.Infinite = false;
-			component.Bounds = new BBox(
-				new Vector3( -_previewVolumeSize / 2, -_previewVolumeSize / 2, -100 ),
-				new Vector3( _previewVolumeSize / 2, _previewVolumeSize / 2, 100 )
-			);
-			component.Seed = 1337;
-			
-			// Generate immediately
-			component.Generate();
-		}
+		var component = _clutterObject.Components.Create<ClutterComponent>();
+		component.Clutter = _clutter;
+		component.Infinite = false;
+		component.Seed = _currentSeed;
+		
+		var tileSize = _clutter.TileSize;
+		component.Bounds = new BBox(
+			new Vector3( -tileSize / 2, -tileSize / 2, -100 ),
+			new Vector3( tileSize / 2, tileSize / 2, 100 )
+		);
+		component.Generate();
 	}
 
-	private void CreateGroundPlane()
+	private void CreateGround()
 	{
-		// Create a simple ground plane for collision
-		_groundPlane = new GameObject( true, "Ground" );
-		
-		// Add collider for trace testing
-		var collider = _groundPlane.Components.Create<BoxCollider>();
+		_ground = new GameObject( true, "Ground" );
+		var collider = _ground.Components.Create<BoxCollider>();
 		collider.Scale = new Vector3( 5000, 5000, 10 );
 		collider.Center = new Vector3( 0, 0, -5 );
-		_groundPlane.WorldPosition = new Vector3( 0, 0, 0 );
+	}
+
+	private void CreateTileBounds()
+	{
+		_tileBounds = new TileBoundsGrid( Scene.SceneWorld, _clutter.TileSize );
 	}
 
 	private void CalculateSceneBounds()
 	{
-		if ( !_clutterObject.IsValid() )
-			return;
-
-		// Get all spawned clutter objects (prefabs only - models are in batches)
-		var allObjects = _clutterObject.Children.ToList();
+		if ( _clutter == null ) return;
 		
-		// Start with volume bounds as base
+		var tileSize = _clutter.TileSize;
 		var bbox = new BBox(
-			new Vector3( -_previewVolumeSize / 2, -_previewVolumeSize / 2, -100 ),
-			new Vector3( _previewVolumeSize / 2, _previewVolumeSize / 2, 100 )
+			new Vector3( -tileSize / 2, -tileSize / 2, -100 ),
+			new Vector3( tileSize / 2, tileSize / 2, 100 )
 		);
-
-		bool hasValidBounds = true;
-
-		// Expand bounds to include spawned objects
-		foreach ( var obj in allObjects )
-		{
-			if ( obj.Components.TryGet<ModelRenderer>( out var renderer ) && renderer.Model != null )
-			{
-				var objBounds = renderer.Model.Bounds.Transform( obj.WorldTransform );
-				bbox = bbox.AddBBox( objBounds );
-			}
-			else
-			{
-				bbox = bbox.AddPoint( obj.WorldPosition );
-			}
-		}
-
-		if ( !hasValidBounds || bbox.Size.Length < 1 )
-		{
-			// Fallback to a reasonable size
-			bbox = BBox.FromPositionAndSize( Vector3.Zero, 200 );
-		}
-
-		// Include ground in bounds
-		bbox = bbox.AddPoint( new Vector3( 0, 0, 0 ) );
+		
+		bbox = bbox.AddPoint( Vector3.Zero );
 
 		SceneCenter = bbox.Center;
 		SceneSize = bbox.Size;
 	}
 
+	private int GetHash()
+	{
+		if ( _clutter == null ) return 0;
+
+		var hash = new System.HashCode();
+		hash.Add( _clutter.Entries?.Count ?? 0 );
+		hash.Add( _clutter.TileSize );
+		hash.Add( _clutter.Scatterer?.GetHashCode() ?? 0 );
+		
+		if ( _clutter.Entries != null )
+		{
+			foreach ( var entry in _clutter.Entries )
+			{
+				hash.Add( entry?.Weight ?? 0 );
+				hash.Add( entry?.Model?.ResourcePath ?? "" );
+				hash.Add( entry?.Prefab?.GetHashCode() ?? 0 );
+			}
+		}
+
+		return hash.ToHashCode();
+	}
+
 	public override void Dispose()
 	{
-		_groundPlane?.Destroy();
-		_groundPlane = null;
-		
 		_clutterObject?.Destroy();
-		_clutterObject = null;
-		
+		_ground?.Destroy();
+		_tileBounds?.Delete();
 		base.Dispose();
 	}
 
-	/// <summary>
-	/// Create a toolbar with interactive buttons shown when hovering
-	/// </summary>
 	public override Widget CreateToolbar()
 	{
-		var toolbar = new Widget();
-		toolbar.Layout = Layout.Row();
+		var toolbar = new Widget { Layout = Layout.Row() };
 		toolbar.Layout.Spacing = 8;
 		toolbar.Layout.Margin = 8;
 
-		// Randomize button - generate with new random seed
-		var randomizeBtn = new Button( "Randomize", "casino" );
-		randomizeBtn.Clicked += async () =>
+		var randomBtn = new Button( "Randomize", "casino" );
+		randomBtn.Clicked += async () =>
 		{
 			using ( Scene.Push() )
 			{
-				if ( _clutterObject.IsValid() && _clutterObject.Components.TryGet<ClutterComponent>( out var component ) )
-				{
-					// Change seed and regenerate
-					component.Seed = Random.Shared.Next();
-					component.Clear();
-					component.Generate();
-					
-					await Task.Delay( 50 );
-					CalculateSceneBounds();
-				}
+				_currentSeed = Game.Random.Next();
+				_clutterObject?.Destroy();
+				CreateClutter();
+				
+				await Task.Delay( 50 );
+				CalculateSceneBounds();
 			}
 		};
-		randomizeBtn.ToolTip = "Generate with a random seed to see variations";
-		toolbar.Layout.Add( randomizeBtn );
+		randomBtn.ToolTip = "Randomize seed";
+		toolbar.Layout.Add( randomBtn );
 
 		return toolbar;
+	}
+}
+
+/// <summary>
+/// Custom scene object that renders tile bounds
+/// </summary>
+internal class TileBoundsGrid : SceneCustomObject
+{
+	private readonly Vector3[] _corners;
+
+	public TileBoundsGrid( SceneWorld world, float tileSize ) : base( world )
+	{
+		var halfSize = tileSize / 2f;
+		_corners =
+		[
+			new Vector3( -halfSize, -halfSize, 0.5f ),
+			new Vector3(  halfSize, -halfSize, 0.5f ),
+			new Vector3(  halfSize,  halfSize, 0.5f ),
+			new Vector3( -halfSize,  halfSize, 0.5f )
+		];
+
+		RenderingEnabled = true;
+		Bounds = new BBox( new Vector3( -halfSize, -halfSize, 0 ), new Vector3( halfSize, halfSize, 10 ) );
+	}
+
+	public override void RenderSceneObject()
+	{
+		Gizmo.Draw.Color = Color.Gray.WithAlpha( 0.5f );
+		Gizmo.Draw.LineThickness = 2;
+		for ( int i = 0; i < 4; i++ )
+		{
+			Gizmo.Draw.Line( _corners[i], _corners[(i + 1) % 4] );
+		}
 	}
 }
