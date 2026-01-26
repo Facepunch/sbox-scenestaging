@@ -80,8 +80,6 @@ public class SlopeScatterer : Scatterer
 			var normal = trace.Value.Normal;
 			var slopeAngle = Vector3.GetAngle( Vector3.Up, normal );
 
-			// Find matching entry from slope mappings
-			var entry = GetEntryForSlope( clutter, slopeAngle );
 		var entry = GetEntryForSlope( clutter, slopeAngle );
 		if ( entry == null )
 		{
@@ -198,8 +196,6 @@ public class TerrainMaterialScatterer : Scatterer
 	public List<TerrainMaterialMapping> Mappings { get; set; } = new();
 
 	[Property, Group( "Fallback" )]
-	[Description( "Use random clutter entry if no material mapping matches" )]
-	public bool UseFallback { get; set; } = false;
 	[Description( "Use random clutter entry if no material mapping matches or no terrain is present" )]
 	public bool UseFallback { get; set; } = true;
 
@@ -238,27 +234,16 @@ public class TerrainMaterialScatterer : Scatterer
 			if ( trace?.Hit != true )
 				continue;
 
-			// Try to get terrain material at this position
-			var terrain = GetTerrainFromTrace( trace.Value );
-			if ( terrain == null )
 		var terrain = GetTerrainFromTrace( trace.Value );
 		if ( terrain == null )
 		{
 			if ( UseFallback )
 			{
-				// Not hitting terrain - use fallback if enabled
-				if ( UseFallback )
 				var fallbackEntry = GetRandomEntry( clutter );
 				if ( fallbackEntry != null )
 				{
-					var fallbackEntry = GetRandomEntry( clutter );
-					if ( fallbackEntry != null )
-					{
-						instances.Add( CreateInstance( trace.Value, fallbackEntry ) );
-					}
 					instances.Add( CreateInstance( trace.Value, fallbackEntry ) );
 				}
-				continue;
 			}
 			continue;
 		}
