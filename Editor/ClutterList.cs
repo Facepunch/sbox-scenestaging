@@ -30,6 +30,10 @@ public class ClutterList : ListView
 
 	protected void OnItemClicked( object value )
 	{
+		if ( value is null && SelectedClutter != null )
+		{
+			return;
+		}
 		if ( value is not ClutterDefinition clutter )
 			return;
 
@@ -74,6 +78,13 @@ public class ClutterList : ListView
 	{
 		var clutters = ResourceLibrary.GetAll<ClutterDefinition>().ToList();
 		SetItems( clutters.Cast<object>() );
+		// Auto-select first item if nothing is selected
+		if ( SelectedClutter == null && clutters.Count > 0 )
+		{
+			var firstClutter = clutters[0];
+			SelectedClutter = firstClutter;
+			OnclutterSelected?.Invoke( firstClutter );
+		}
 	}
 
 	public void Refresh()
