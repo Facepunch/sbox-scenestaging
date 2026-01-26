@@ -45,28 +45,6 @@ public class ClutterDefinition : GameResource
 	public float TileSize => (float)TileSizeEnum;
 
 	/// <summary>
-	/// Legacy TileSize property for backward compatibility with old save files.
-	/// Migrates old float values to the new enum.
-	/// </summary>
-	[Hide, JsonPropertyName( "TileSize" )]
-	public float TileSizeLegacy
-	{
-		get => TileSize;
-		set
-		{
-			// Migrate old float value to closest enum value
-			TileSizeEnum = value switch
-			{
-				<= 256 => TileSizeOption.Size256,
-				<= 512 => TileSizeOption.Size512,
-				<= 1024 => TileSizeOption.Size1024,
-				<= 2048 => TileSizeOption.Size2048,
-				_ => TileSizeOption.Size4096
-			};
-		}
-	}
-
-	/// <summary>
 	/// Number of tiles to generate around the camera in each direction.
 	/// Higher values = more visible range but more memory usage.
 	/// </summary>

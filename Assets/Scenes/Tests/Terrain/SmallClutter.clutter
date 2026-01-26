@@ -24,7 +24,7 @@
     {
       "Prefab": null,
       "Model": "models/dead_tree_trunk.vmdl",
-      "Weight": 0.23,
+      "Weight": 0.01,
       "HasAsset": true,
       "AssetName": "models/dead_tree_trunk.vmdl"
     },
@@ -37,12 +37,12 @@
     }
   ],
   "IsEmpty": false,
-  "TileSize": 1024,
+  "TileSizeEnum": "Size2048",
   "TileRadius": 2,
   "ScattererTypeName": "TerrainMaterialScatterer",
-  "ScattererData": "{\r\n  \"Scale\": \"0.8 1.2\",\r\n  \"PointCount\": 8,\r\n  \"HeightOffset\": -2.2999988,\r\n  \"AlignToNormal\": true,\r\n  \"RandomYaw\": true,\r\n  \"Mappings\": [\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_a.tmat\",\r\n      \"EntryIndices\": [\r\n        3,\r\n        4\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_a.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_b.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_b.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2,\r\n        3\r\n      ]\r\n    }\r\n  ],\r\n  \"UseFallback\": false\r\n}",
+  "ScattererData": "{\r\n  \"Scale\": \"1.06 2\",\r\n  \"Density\": 2.1516228,\r\n  \"HeightOffset\": -1.4699959,\r\n  \"AlignToNormal\": true,\r\n  \"RandomYaw\": true,\r\n  \"Mappings\": [\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_a.tmat\",\r\n      \"EntryIndices\": [\r\n        4,\r\n        3\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_a.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2\r\n      ]\r\n    }\r\n  ],\r\n  \"UseFallback\": true\r\n}",
   "ValidEntryCount": 5,
-  "TotalWeight": 4.23,
+  "TotalWeight": 4.01,
   "__references": [
     "facepunch.grass_clump_a#126338",
     "facepunch.rock_scatter_pile_03#116946",

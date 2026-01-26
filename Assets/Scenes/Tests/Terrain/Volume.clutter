@@ -16,19 +16,18 @@
         "prefab": "scenes/tests/terrain/rock_moss_01e.prefab"
       },
       "Model": null,
-      "Weight": 1,
+      "Weight": 0.98,
       "HasAsset": true,
       "AssetName": "rock_moss_01e"
     }
   ],
   "IsEmpty": false,
-  "TileSize": 511.81003,
+  "TileSizeEnum": "Size512",
   "TileRadius": 4,
-  "PreviewMaxInstances": 100,
   "ScattererTypeName": "SimpleScatterer",
-  "ScattererData": "{\r\n  \"Scale\": \"1.2299998 1.2\",\r\n  \"Density\": 5.08429,\r\n  \"PlaceOnGround\": true,\r\n  \"HeightOffset\": 0,\r\n  \"AlignToNormal\": false\r\n}",
+  "ScattererData": "{\r\n  \"Scale\": \"0.940001 1.0499984\",\r\n  \"Density\": 10,\r\n  \"PlaceOnGround\": true,\r\n  \"HeightOffset\": 48.49999,\r\n  \"AlignToNormal\": false\r\n}",
   "ValidEntryCount": 2,
-  "TotalWeight": 1.55,
+  "TotalWeight": 1.53,
   "__references": [],
   "__version": 0
 }
