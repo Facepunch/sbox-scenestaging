@@ -247,6 +247,8 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 		return GetOrCreateLayer( component, settings );
 	}
 
+	private int _lastSortedJobCount = 0;
+
 	private void ProcessJobs()
 	{
 		if ( PendingJobs.Count == 0 )
@@ -260,16 +262,22 @@ public sealed partial class ClutterGridSystem : GameObjectSystem
 			job.Tile?.IsPopulated == true
 		);
 
-		PendingJobs.Sort( ( a, b ) =>
+		// Only sort when job count changes significantly (avoid sorting every frame)
+		if ( Math.Abs( PendingJobs.Count - _lastSortedJobCount ) > 50 || _lastSortedJobCount == 0 )
 		{
-			var distA = a.Tile != null
-				? a.Tile.Bounds.Center.Distance( LastCameraPosition )
-				: float.MaxValue;
-			var distB = b.Tile != null
-				? b.Tile.Bounds.Center.Distance( LastCameraPosition )
-				: float.MaxValue;
-			return distA.CompareTo( distB );
-		} );
+			PendingJobs.Sort( ( a, b ) =>
+			{
+				// Use tile bounds for infinite mode, job bounds for volume mode
+				var distA = a.Tile != null
+					? a.Tile.Bounds.Center.Distance( LastCameraPosition )
+					: a.Bounds.Center.Distance( LastCameraPosition );
+				var distB = b.Tile != null
+					? b.Tile.Bounds.Center.Distance( LastCameraPosition )
+					: b.Bounds.Center.Distance( LastCameraPosition );
+				return distA.CompareTo( distB );
+			} );
+			_lastSortedJobCount = PendingJobs.Count;
+		}
 
 		// Process nearest tiles first
 		int processed = 0;

@@ -24,6 +24,13 @@ public sealed partial class ClutterComponent
 	/// </summary>
 	private int _pendingVolumeTiles;
 
+	/// <summary>
+	/// Total tiles queued for current generation.
+	/// </summary>
+	private int _totalVolumeTiles;
+
+	private Editor.IProgressSection _progressSection;
+
 	[Button( "Generate" )]
 	[Icon( "scatter_plot" )]
 	public void Generate()
@@ -57,41 +64,113 @@ public sealed partial class ClutterComponent
 			(int)Math.Floor( worldBounds.Maxs.y / tileSize )
 		);
 
+
 		_pendingVolumeTiles = 0;
+		_totalVolumeTiles = 0;
 
-		// Queue generation jobs for each tile (progressive generation)
+		// Queue generation jobs for each tile
 		for ( int x = minTile.x; x <= maxTile.x; x++ )
-		for ( int y = minTile.y; y <= maxTile.y; y++ )
-		{
-			var tileBounds = new BBox(
-				new Vector3( x * tileSize, y * tileSize, worldBounds.Mins.z ),
-				new Vector3( (x + 1) * tileSize, (y + 1) * tileSize, worldBounds.Maxs.z )
-			);
-
-			// Skip tiles that don't overlap the volume
-			if ( !tileBounds.Overlaps( worldBounds ) )
-				continue;
-
-			// Intersect tile bounds with volume bounds to avoid scattering outside
-			var scatterBounds = new BBox(
-				Vector3.Max( tileBounds.Mins, worldBounds.Mins ),
-				Vector3.Min( tileBounds.Maxs, worldBounds.Maxs )
-			);
-
-			var job = new ClutterGenerationJob
+			for ( int y = minTile.y; y <= maxTile.y; y++ )
 			{
-				Clutter = Clutter,
-				Parent = GameObject,
-				Bounds = scatterBounds, // Scatter only in intersection
-				Seed = Seed + x * 1000 + y,
-				Ownership = ClutterOwnership.Component,
-				Layer = _volumeLayer,
-				Storage = Storage
-			};
+				var tileBounds = new BBox(
+					new Vector3( x * tileSize, y * tileSize, worldBounds.Mins.z ),
+					new Vector3( (x + 1) * tileSize, (y + 1) * tileSize, worldBounds.Maxs.z )
+				);
 
-			gridSystem.QueueJob( job );
-			_pendingVolumeTiles++;
+				if ( !tileBounds.Overlaps( worldBounds ) )
+					continue;
+
+				var scatterBounds = new BBox(
+					Vector3.Max( tileBounds.Mins, worldBounds.Mins ),
+					Vector3.Min( tileBounds.Maxs, worldBounds.Maxs )
+				);
+
+				var job = new ClutterGenerationJob
+				{
+					Clutter = Clutter,
+					Parent = GameObject,
+					Bounds = scatterBounds,
+					Seed = Scatterer.GenerateSeed( Seed, x, y ),
+					Ownership = ClutterOwnership.Component,
+					Layer = _volumeLayer,
+					Storage = Storage,
+					OnComplete = () => _pendingVolumeTiles--
+				};
+
+				gridSystem.QueueJob( job );
+				_pendingVolumeTiles++;
+				_totalVolumeTiles++;
+			}
+
+
+		if ( _totalVolumeTiles > 8 && Scene.IsEditor )
+		{
+			_progressSection = Application.Editor.ProgressSection();
 		}
+	}
+
+	internal void UpdateVolumeProgress()
+	{
+		// Only track progress if we have pending tiles and we're in editor
+		if ( _totalVolumeTiles == 0 || !Scene.IsEditor )
+		{
+			if ( _progressSection != null )
+			{
+				_progressSection.Dispose();
+				_progressSection = null;
+			}
+			return;
+		}
+
+		// Show progress for larger generations
+		if ( _totalVolumeTiles > 8 )
+		{
+			var processed = _totalVolumeTiles - _pendingVolumeTiles;
+
+			if ( _progressSection == null )
+			{
+				_progressSection = Application.Editor.ProgressSection();
+			}
+
+			if ( _progressSection.GetCancel().IsCancellationRequested )
+			{
+				CancelGeneration();
+				return;
+			}
+
+			_progressSection.Title = "Generating Clutter";
+			_progressSection.Subtitle = $"Processing tile {processed}/{_totalVolumeTiles}";
+			_progressSection.TotalCount = _totalVolumeTiles;
+			_progressSection.Current = processed;
+			if ( _pendingVolumeTiles == 0 )
+			{
+				_totalVolumeTiles = 0;
+				_progressSection?.Dispose();
+				_progressSection = null;
+			}
+		}
+	}
+
+	/// <summary>
+	/// Cancels ongoing volume generation.
+	/// </summary>
+	private void CancelGeneration()
+	{
+		var gridSystem = Scene.GetSystem<ClutterGridSystem>();
+		if ( gridSystem != null )
+		{
+			gridSystem.ClearComponent( this );
+		}
+
+		// Reset tracking
+		_pendingVolumeTiles = 0;
+		_totalVolumeTiles = 0;
+		if ( _progressSection != null )
+		{
+			_progressSection.Dispose();
+			_progressSection = null;
+		}
+
 	}
 
 	/// <summary>

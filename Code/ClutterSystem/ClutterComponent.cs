@@ -95,6 +95,14 @@ public sealed partial class ClutterComponent : Component, Component.ExecuteInEdi
 		Clear();
 	}
 
+	protected override void OnUpdate()
+	{
+		if ( Mode == ClutterMode.Volume )
+		{
+			UpdateVolumeProgress();
+		}
+	}
+
 	protected override void DrawGizmos()
 	{
 		if ( Mode == ClutterMode.Volume )
