@@ -64,6 +64,11 @@ public class ClutterGenerationJob
 	public ClutterGridSystem.ClutterStorage Storage { get; init; }
 	
 	/// <summary>
+	/// Optional callback when job completes (for volume mode progress tracking).
+	/// </summary>
+	public Action OnComplete { get; init; }
+	
+	/// <summary>
 	/// Execute the generation job.
 	/// </summary>
 	public void Execute()
@@ -83,7 +88,10 @@ public class ClutterGenerationJob
 			
 		var instances = Clutter.Scatterer.Scatter( Bounds, Clutter, seed, Parent.Scene );
 		if ( instances == null || instances.Count == 0 )
+		{
+			OnComplete?.Invoke();
 			return;
+		}
 
 		SpawnInstances( instances );
 
@@ -92,10 +100,8 @@ public class ClutterGenerationJob
 			Tile.IsPopulated = true;
 			Layer?.OnTilePopulated( Tile );
 		}
-		else
-		{
-			Layer?.RebuildBatches();
-		}
+		
+		OnComplete?.Invoke();
 	}
 
 	private void SpawnInstances( List<ClutterInstance> instances )
