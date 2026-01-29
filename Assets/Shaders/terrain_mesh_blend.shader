@@ -1,12 +1,19 @@
+HEADER
+{
+    Description = "Terrain Mesh Blend";
+}
+
 FEATURES
 {
     #include "common/features.hlsl"
+    Feature( F_ALPHA_TEST, 0..1, "Rendering" );
 }
 
 MODES
 {
-    VrForward();
-    Depth();
+    Forward();
+    Depth( S_MODE_DEPTH );
+    ToolsShadingComplexity( "vr_tools_shading_complexity.shader" );
 }
 
 COMMON
@@ -15,7 +22,7 @@ COMMON
     #include "terrain/TerrainCommon.hlsl"
 
     bool g_flBlendEnabled < Default( 1 ); UiGroup( "Terrain Blending"); >;
-    float g_flBlendLength < Default( 25f ); Range( 0.0f, 100.0f ); UiGroup( "Terrain Blending"); >;    
+    float g_flBlendLength < Default( 25f ); Range( 0.0f, 100.0f ); UiGroup( "Terrain Blending"); >;
 }
 
 struct VertexInput
@@ -36,15 +43,13 @@ VS
 	{
 		PixelInput o = ProcessVertex( i );
 
-        if ( g_flBlendEnabled )
+        if ( g_flBlendEnabled && Terrain::IsInBounds( o.vPositionWs.xyz ) )
         {
-            float h = Terrain::GetHeight( o.vPositionWs ); // !
-            float dist = distance( h, o.vPositionWs.z );
-
-            float blend = smoothstep( 0.0, 1.0, dist / g_flBlendLength );
+            float h = Terrain::GetWorldHeight( o.vPositionWs.xyz );
+            float blend = smoothstep( 0.0, 1.0, abs( o.vPositionWs.z - h ) / g_flBlendLength );
 
             o.vPositionWs.z = lerp( h, o.vPositionWs.z, blend );
-            o.vPositionPs.xyzw = Position3WsToPs( o.vPositionWs.xyz );            
+            o.vPositionPs.xyzw = Position3WsToPs( o.vPositionWs.xyz );
         }
 
 		return FinalizeVertex( o );
@@ -53,56 +58,88 @@ VS
 
 PS
 {
+    #include "common/utils/Material.CommonInputs.hlsl"
     #include "common/pixel.hlsl"
 
-    void GetMaterial( float3 worldPos, float3 n, float diff, out float3 albedo, out float3 normal, out float roughness, out float ao, out float metal )
+    StaticCombo( S_ALPHA_TEST, F_ALPHA_TEST, Sys( ALL ) );
+
+    void SampleTerrainMaterial( TerrainMaterial mat, float2 texUV, out float3 albedo, out float3 normal, out float roughness, out float height, out float ao, out float metal )
     {
+        float4 bcr = GetBindlessTexture2D( mat.bcr_texid ).Sample( g_sAnisotropic, texUV * mat.uvscale );
+        float4 nho = GetBindlessTexture2D( mat.nho_texid ).Sample( g_sAnisotropic, texUV * mat.uvscale );
+
+        normal = ComputeNormalFromRGTexture( nho.rg );
+        normal.xz *= mat.normalstrength;
+        normal = normalize( normal );
+
+        albedo = SrgbGammaToLinear( bcr.rgb );
+        roughness = bcr.a;
+        height = nho.b * mat.heightstrength;
+        ao = nho.a;
+        metal = mat.metalness;
+    }
+
+    void GetMaterial( float3 worldPos, float3 worldNormal, float diff, out float3 albedo, out float3 normal, out float roughness, out float ao, out float metal )
+    {
+        float3 localPos = Terrain::WorldToLocal( worldPos );
+
         Texture2D tControlMap = Terrain::GetControlMap();
-        float2 texSize = TextureDimensions2D( tControlMap, 0 ); // todo: store me in the struct...
+        float2 texSize = TextureDimensions2D( tControlMap, 0 );
 
-        float2 uv = ( worldPos.xy ) / ( texSize * Terrain::Get().Resolution );
-        float4 control = Tex2DS( Terrain::GetControlMap(), g_sBilinearBorder, uv );
+        float2 uv = localPos.xy / ( texSize * Terrain::Get().Resolution );
 
-        float2 texUV = worldPos.xy / 32;
-        // texUV =  lerp(saturate( worldPos.xy - n.xy * diff ), texUV, saturate(n.z)); 
+        CompactTerrainMaterial controlData = CompactTerrainMaterial::DecodeFromFloat( tControlMap.SampleLevel( g_sPointClamp, uv, 0 ).r );
 
-        float3 albedos[4], normals[4];
-        float heights[4], roughnesses[4], aos[4], metalness[4];
-        for ( int i = 0; i < 4; i++ )
+        float2 texUV = localPos.xy / 32.0;
+
+        // Sample base material
+        TerrainMaterial baseMat = g_TerrainMaterials[controlData.BaseTextureId];
+
+        float3 baseNormal;
+        float baseHeight;
+        SampleTerrainMaterial( baseMat, texUV, albedo, baseNormal, roughness, baseHeight, ao, metal );
+        normal = baseNormal;
+
+        // Blend with overlay material
+        float materialBlend = controlData.GetNormalizedBlend();
+        TerrainMaterial overlayMat = g_TerrainMaterials[controlData.OverlayTextureId];
+
+        if ( materialBlend > 0.01 && overlayMat.bcr_texid > 0 )
         {
-            float4 bcr = GetBindlessTexture2D( g_TerrainMaterials[ i ].bcr_texid ).Sample( g_sAnisotropic, texUV * g_TerrainMaterials[ i ].uvscale );
-            float4 nho = GetBindlessTexture2D( g_TerrainMaterials[ i ].nho_texid ).Sample( g_sAnisotropic, texUV * g_TerrainMaterials[ i ].uvscale );
+            float3 overlayAlbedo, overlayNormal;
+            float overlayRoughness, overlayHeight, overlayAo, overlayMetal;
+            SampleTerrainMaterial( overlayMat, texUV, overlayAlbedo, overlayNormal, overlayRoughness, overlayHeight, overlayAo, overlayMetal );
 
-            float3 normal = ComputeNormalFromRGTexture( nho.rg );
-            normal.xz *= g_TerrainMaterials[ i ].normalstrength;
-            normal = normalize( normal );
+            // Height blending if enabled
+            float blend = materialBlend;
+            if ( Terrain::Get().HeightBlending )
+            {
+                float sharpness = Terrain::Get().HeightBlendSharpness;
+                float ha = baseHeight + ( 1.0 - materialBlend );
+                float hb = overlayHeight + materialBlend;
+                float maxH = max( ha, hb ) - ( 1.0 / sharpness );
+                float wa = max( ha - maxH, 0 );
+                float wb = max( hb - maxH, 0 );
+                blend = wb / max( wa + wb, 0.001 );
+            }
 
-            albedos[i] = SrgbGammaToLinear( bcr.rgb );
-            normals[i] = normal;
-            roughnesses[i] = bcr.a;
-            heights[i] = nho.b * g_TerrainMaterials[ i ].heightstrength;
-            aos[i] = nho.a;
-            metalness[i] = g_TerrainMaterials[ i ].metalness;
+            albedo = lerp( albedo, overlayAlbedo, blend );
+            normal = normalize( lerp( normal, overlayNormal, blend ) );
+            roughness = lerp( roughness, overlayRoughness, blend );
+            ao = lerp( ao, overlayAo, blend );
+            metal = lerp( metal, overlayMetal, blend );
         }
-
-        albedo = albedos[0] * control.r + albedos[1] * control.g + albedos[2] * control.b + albedos[3] * control.a;
-        normal = normals[0] * control.r + normals[1] * control.g + normals[2] * control.b + normals[3] * control.a; // additive?
-        roughness = roughnesses[0] * control.r + roughnesses[1] * control.g + roughnesses[2] * control.b + roughnesses[3] * control.a;
-        ao = aos[0] * control.r + aos[1] * control.g + aos[2] * control.b + aos[3] * control.a;
-        metal = metalness[0] * control.r + metalness[1] * control.g + metalness[2] * control.b + metalness[3] * control.a;
     }
 
     void Terrain_MeshBlend( in out Material material )
     {
-        if ( !g_flBlendEnabled )
+        if ( !g_flBlendEnabled || !Terrain::IsInBounds( material.WorldPosition ) )
             return;
 
-        float h = Terrain::GetHeight( material.WorldPosition.xy ); // !
-
-        float diff = ( material.WorldPosition.z - h ) / g_flBlendLength;
-        float blend = 1 - saturate( diff );
-
+        float blend = Terrain::GetBlendFactor( material.WorldPosition, g_flBlendLength );
         blend = pow( blend, 2 );
+
+        float diff = Terrain::GetDistanceToSurface( material.WorldPosition ) / g_flBlendLength;
 
         float3 albedo;
         float3 normal;
@@ -110,8 +147,6 @@ PS
         float ao;
         float metal;
         GetMaterial( material.WorldPosition.xyz, material.GeometricNormal, diff, albedo, normal, roughness, ao, metal );
-
-        // normal = TransformNormal( normal, material.GeometricNormal, i.vTangentUWs, i.vTangentVWs );
 
         material.Albedo = lerp( material.Albedo, albedo, blend );
         material.Normal = normalize( lerp( material.Normal, normal, blend ) );
