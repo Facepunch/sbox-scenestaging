@@ -50,7 +50,7 @@ public class SlopeScatterer : Scatterer
 	[Description( "Define which entries spawn at which slope angles" )]
 	public List<SlopeMapping> Mappings { get; set; } = new();
 
-	[Property, Group( "Fallback" )]
+	[Property]
 	[Description( "Use random clutter entry if no slope mapping matches" )]
 	public bool UseFallback { get; set; } = true;
 
