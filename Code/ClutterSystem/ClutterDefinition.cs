@@ -6,6 +6,7 @@ namespace Sandbox.Clutter;
 /// A weighted collection of Prefabs and Models for random selection during clutter placement.
 /// Think of it as a "palette" of variants that can be randomly selected.
 /// </summary>
+[Icon( "grass" )]
 [AssetType( Name = "Clutter Definition", Extension = "clutter", Category = "Clutter" )]
 public class ClutterDefinition : GameResource
 {
