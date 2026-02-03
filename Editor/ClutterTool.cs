@@ -4,10 +4,10 @@ using System;
 
 namespace Sandbox;
 
-[EditorTool( "scatter" )]
-[Title( "Scatter Tool" )]
+[EditorTool( "clutter" )]
+[Title( "Clutter Tool" )]
 [Icon( "forest" )]
-public sealed class ScatterTool : EditorTool
+public sealed class ClutterTool : EditorTool
 {
 	BrushPreviewSceneObject brushPreview;
 	ClutterList ClutterList;
@@ -23,7 +23,7 @@ public sealed class ScatterTool : EditorTool
 	public override Widget CreateToolSidebar()
 	{
 		var sidebar = new ToolSidebarWidget();
-		sidebar.AddTitle( "Brush Settings", "brush" );
+		sidebar.AddTitle( "Clutter Brush Settings", "brush" );
 		sidebar.MinimumWidth = 300;
 
 		// Brush Properties
@@ -34,9 +34,9 @@ public sealed class ScatterTool : EditorTool
 			group.Add( ControlSheet.CreateRow( so.GetProperty( nameof( BrushSettings.Opacity ) ) ) );
 		}
 
-		// clutter Selection
+		// Clutter Selection
 		{
-			var group = sidebar.AddGroup( "clutters", SizeMode.Flexible );
+			var group = sidebar.AddGroup( "Clutter Definitions", SizeMode.Flexible );
 			ClutterList = new ClutterList( sidebar );
 			ClutterList.MinimumHeight = 300;
 			ClutterList.OnclutterSelected = ( clutter ) =>
