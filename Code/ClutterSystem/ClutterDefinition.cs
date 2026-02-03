@@ -74,6 +74,7 @@ public class ClutterDefinition : GameResource
 	[Property]
 	public Scatterer Scatterer { get; set; } = new SimpleScatterer();
 
+
 	/// <summary>
 	/// Creates a new scatterer instance based on the type name.
 	/// </summary>
@@ -97,6 +98,18 @@ public class ClutterDefinition : GameResource
 			Log.Error( e, $"Failed to create scatterer of type '{typeName}'" );
 			return new SimpleScatterer();
 		}
+	}
+
+	/// <summary>
+	/// Called after the resource is loaded from JSON.
+	/// Ensures the scatterer instance matches the scatterer type name.
+	/// </summary>
+	protected override void PostLoad()
+	{
+		base.PostLoad();
+
+		if ( Scatterer is null )
+			Scatterer = CreateScattererInstance( ScattererTypeName );
 	}
 
 	/// <summary>
@@ -129,3 +142,4 @@ public class ClutterDefinition : GameResource
 		return hash.ToHashCode();
 	}
 }
+
