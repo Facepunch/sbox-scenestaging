@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace Sandbox.Clutter;
 
 /// <summary>
@@ -15,6 +17,8 @@ internal class ClutterBatch : SceneCustomObject
 	{
 		Flags.IsOpaque = true;
 		Flags.IsTranslucent = false;
+		Flags.CastShadows = true;
+		Flags.WantsPrePass = true;
 	}
 
 	/// <summary>
@@ -70,7 +74,7 @@ internal class ClutterBatch : SceneCustomObject
 			if ( batch.Transforms.Count == 0 || model == null )
 				continue;
 
-			Graphics.DrawModelInstanced( model, [.. batch.Transforms] );
+			Graphics.DrawModelInstanced( model, CollectionsMarshal.AsSpan(batch.Transforms) );
 		}
 	}
 }
