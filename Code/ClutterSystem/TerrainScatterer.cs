@@ -115,26 +115,39 @@ public class SlopeScatterer : Scatterer
 	/// </summary>
 	private ClutterEntry GetEntryForSlope( ClutterDefinition clutter, float slopeAngle )
 	{
-		if ( Mappings == null || Mappings.Count == 0 )
+		if ( Mappings is null or { Count: 0 } )
 			return GetRandomEntry( clutter );
 
-		// Find all mappings that match this slope angle
-		var matchingMappings = Mappings
-			.Where( m => slopeAngle >= m.MinAngle && slopeAngle <= m.MaxAngle )
-			.ToList();
+		var matchCount = 0;
+		foreach ( var m in Mappings )
+		{
+			if ( slopeAngle >= m.MinAngle && slopeAngle <= m.MaxAngle )
+				matchCount++;
+		}
 
-		if ( matchingMappings.Count == 0 )
+		if ( matchCount is 0 )
 			return null;
 
-		// Pick a random matching mapping
-		var mapping = matchingMappings[Random.Int( 0, matchingMappings.Count - 1 )];
+		// Pick a random index within matching mappings
+		var randomIndex = Random.Int( 0, matchCount - 1 );
+		var currentIndex = 0;
 
-		// Get the entry at that index
-		if ( mapping.EntryIndex >= 0 && mapping.EntryIndex < clutter.Entries.Count )
+		foreach ( var m in Mappings )
 		{
-			var entry = clutter.Entries[mapping.EntryIndex];
-			if ( entry?.HasAsset == true )
-				return entry;
+			if ( slopeAngle >= m.MinAngle && slopeAngle <= m.MaxAngle )
+			{
+				if ( currentIndex == randomIndex )
+				{
+					if ( m.EntryIndex >= 0 && m.EntryIndex < clutter.Entries.Count )
+					{
+						var entry = clutter.Entries[m.EntryIndex];
+						if ( entry?.HasAsset is true )
+							return entry;
+					}
+					break;
+				}
+				currentIndex++;
+			}
 		}
 
 		return null;
@@ -321,50 +334,63 @@ public class TerrainMaterialScatterer : Scatterer
 	/// </summary>
 	private ClutterEntry GetEntryForMaterial( ClutterDefinition clutter, Terrain.TerrainMaterialInfo materialInfo )
 	{
-		if ( Mappings == null || Mappings.Count == 0 )
+		if ( Mappings is null or { Count: 0 } )
 			return null;
 
 		// Get the dominant material
 		var dominantMaterial = materialInfo.GetDominantMaterial();
-		if ( dominantMaterial == null )
+		if ( dominantMaterial is null )
 			return null;
 
 		// Find mapping for this material
 		var mapping = Mappings.FirstOrDefault( m => m.Material == dominantMaterial );
-		if ( mapping == null || mapping.EntryIndices == null || mapping.EntryIndices.Count == 0 )
+		if ( mapping is null || mapping.EntryIndices is null or { Count: 0 } )
 			return null;
 
-		// Get valid entries from the mapping indices and calculate total weight
-		var validEntries = new List<ClutterEntry>();
-		float totalWeight = 0f;
+		var totalWeight = 0f;
+		foreach ( var index in mapping.EntryIndices )
+		{
+			if ( index >= 0 && index < clutter.Entries.Count )
+			{
+				var entry = clutter.Entries[index];
+				if ( entry?.HasAsset is true && entry.Weight > 0 )
+					totalWeight += entry.Weight;
+			}
+		}
+
+		if ( totalWeight <= 0 )
+			return null;
+
+		// Pick a weighted random entry
+		var randomValue = Random.Float( 0f, totalWeight );
+		var currentWeight = 0f;
 
 		foreach ( var index in mapping.EntryIndices )
 		{
 			if ( index >= 0 && index < clutter.Entries.Count )
 			{
 				var entry = clutter.Entries[index];
-				if ( entry?.HasAsset == true && entry.Weight > 0 )
+				if ( entry?.HasAsset is true && entry.Weight > 0 )
 				{
-					validEntries.Add( entry );
-					totalWeight += entry.Weight;
+					currentWeight += entry.Weight;
+					if ( randomValue <= currentWeight )
+						return entry;
 				}
 			}
 		}
 
-		if ( validEntries.Count == 0 || totalWeight <= 0 )
-			return null;
-
-		// Pick a weighted random entry using the entry's own weight
-		var randomValue = Random.Float( 0f, totalWeight );
-		float currentWeight = 0f;
-
-		foreach ( var entry in validEntries )
+		// Fallback: return last valid entry
+		for ( var i = mapping.EntryIndices.Count - 1; i >= 0; i-- )
 		{
-			currentWeight += entry.Weight;
-			if ( randomValue <= currentWeight )
-				return entry;
+			var index = mapping.EntryIndices[i];
+			if ( index >= 0 && index < clutter.Entries.Count )
+			{
+				var entry = clutter.Entries[index];
+				if ( entry?.HasAsset is true && entry.Weight > 0 )
+					return entry;
+			}
 		}
 
-		return validEntries[^1];
+		return null;
 	}
 }
