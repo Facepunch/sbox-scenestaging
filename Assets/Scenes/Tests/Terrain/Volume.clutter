@@ -6,28 +6,27 @@
         "prefab": "scenes/tests/terrain/rock_moss_01d.prefab"
       },
       "Model": null,
-      "Weight": 0.55,
-      "HasAsset": true,
-      "AssetName": "rock_moss_01d"
+      "Weight": 0.55
     },
     {
-      "Prefab": {
-        "_type": "gameobject",
-        "prefab": "scenes/tests/terrain/rock_moss_01e.prefab"
-      },
-      "Model": null,
-      "Weight": 0.98,
-      "HasAsset": true,
-      "AssetName": "rock_moss_01e"
+      "Prefab": null,
+      "Model": "models/rust_ground_plants/agave_a.vmdl",
+      "Weight": 1
     }
   ],
-  "IsEmpty": false,
   "TileSizeEnum": "Size512",
   "TileRadius": 4,
   "ScattererTypeName": "SimpleScatterer",
-  "ScattererData": "{\r\n  \"Scale\": \"0.940001 1.0499984\",\r\n  \"Density\": 10,\r\n  \"PlaceOnGround\": true,\r\n  \"HeightOffset\": 48.49999,\r\n  \"AlignToNormal\": false\r\n}",
-  "ValidEntryCount": 2,
-  "TotalWeight": 1.53,
-  "__references": [],
+  "Scatterer": {
+    "$type": "SimpleScatterer",
+    "Scale": "0.8 1.2",
+    "Density": 0.1,
+    "PlaceOnGround": true,
+    "HeightOffset": 0,
+    "AlignToNormal": false
+  },
+  "__references": [
+    "rust.agavea#146330"
+  ],
   "__version": 0
 }

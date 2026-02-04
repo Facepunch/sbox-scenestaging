@@ -23,31 +23,91 @@
     },
     {
       "Prefab": null,
-      "Model": "models/dead_tree_trunk.vmdl",
+      "Model": "models/rust_ground_plants/beach_grass_b.vmdl",
       "Weight": 0.01,
       "HasAsset": true,
-      "AssetName": "models/dead_tree_trunk.vmdl"
+      "AssetName": "models/rust_ground_plants/beach_grass_b.vmdl"
     },
     {
       "Prefab": null,
-      "Model": "models/sbox_props/nature/grass_clumps/grass_clump_a.vmdl",
+      "Model": "models/rust_ground_plants/beach_grass_c.vmdl",
       "Weight": 1,
       "HasAsset": true,
-      "AssetName": "models/sbox_props/nature/grass_clumps/grass_clump_a.vmdl"
+      "AssetName": "models/rust_ground_plants/beach_grass_c.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/rust_ground_plants/cats_foot_grass_e.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/rust_ground_plants/cats_foot_grass_e.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/rust_ground_plants/crowberry_a.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/rust_ground_plants/crowberry_a.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/rust_ground_plants/crowberry_b.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/rust_ground_plants/crowberry_b.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/rust_ground_plants/moss_a.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/rust_ground_plants/moss_a.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/rust_ground_plants/temperate_grass_a.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/rust_ground_plants/temperate_grass_a.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/rust_ground_plants/temperate_grass_b.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/rust_ground_plants/temperate_grass_b.vmdl"
+    },
+    {
+      "Prefab": null,
+      "Model": "models/rust_ground_plants/tundra_grass_mid_a.vmdl",
+      "Weight": 1,
+      "HasAsset": true,
+      "AssetName": "models/rust_ground_plants/tundra_grass_mid_a.vmdl"
     }
   ],
   "IsEmpty": false,
-  "TileSizeEnum": "Size2048",
+  "TileSizeEnum": "Size1024",
   "TileRadius": 2,
-  "ScattererTypeName": "TerrainMaterialScatterer",
-  "ScattererData": "{\r\n  \"Scale\": \"1.06 2\",\r\n  \"Density\": 2.1516228,\r\n  \"HeightOffset\": -1.4699959,\r\n  \"AlignToNormal\": true,\r\n  \"RandomYaw\": true,\r\n  \"Mappings\": [\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_grass_a.tmat\",\r\n      \"EntryIndices\": [\r\n        4,\r\n        3\r\n      ]\r\n    },\r\n    {\r\n      \"Material\": \"terrain/materials/terrain_rock_a.tmat\",\r\n      \"EntryIndices\": [\r\n        0,\r\n        1,\r\n        2\r\n      ]\r\n    }\r\n  ],\r\n  \"UseFallback\": true\r\n}",
-  "ValidEntryCount": 5,
-  "TotalWeight": 4.01,
+  "Scatterer": {
+    "__type": "SimpleScatterer",
+    "Scale": "0.8 1.2",
+    "Density": 0.14454521,
+    "PlaceOnGround": true,
+    "HeightOffset": 0,
+    "AlignToNormal": false
+  },
   "__references": [
-    "facepunch.grass_clump_a#126338",
     "facepunch.rock_scatter_pile_03#116946",
     "facepunch.rock_scatter_pile_05#116942",
-    "polyhaven.dead_tree_trunk#19506"
+    "rust.beachgrassb#146652",
+    "rust.beachgrassc#146653",
+    "rust.catsfootgrasse#146663",
+    "rust.crowberrya#146670",
+    "rust.crowberryb#146671",
+    "rust.mossa#146680",
+    "rust.temperategrassa#146685",
+    "rust.temperategrassb#146686",
+    "rust.tundragrassmida#146690"
   ],
   "__version": 0
 }
