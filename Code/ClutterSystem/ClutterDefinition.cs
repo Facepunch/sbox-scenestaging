@@ -6,7 +6,6 @@ namespace Sandbox.Clutter;
 /// A weighted collection of Prefabs and Models for random selection during clutter placement.
 /// Think of it as a "palette" of variants that can be randomly selected.
 /// </summary>
-[Icon( "grass" )]
 [AssetType( Name = "Clutter Definition", Extension = "clutter", Category = "Clutter" )]
 public class ClutterDefinition : GameResource
 {
@@ -74,7 +73,6 @@ public class ClutterDefinition : GameResource
 	[Property]
 	public Scatterer Scatterer { get; set; } = new SimpleScatterer();
 
-
 	/// <summary>
 	/// Creates a new scatterer instance based on the type name.
 	/// </summary>
@@ -140,6 +138,11 @@ public class ClutterDefinition : GameResource
 		hash.Add( Scatterer?.GetHashCode() ?? 0 );
 
 		return hash.ToHashCode();
+	}
+
+	protected override Bitmap CreateAssetTypeIcon( int width, int height )
+	{
+		return CreateSimpleAssetTypeIcon( "forest", width, height );
 	}
 }
 
