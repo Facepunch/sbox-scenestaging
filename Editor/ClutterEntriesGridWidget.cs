@@ -40,14 +40,14 @@ public class ClutterEntriesGridWidget : ControlWidget
 	private void AddNewEntry()
 	{
 		var picker = AssetPicker.Create( this, null );
-		
+
 		picker.OnAssetPicked = ( assets ) =>
 		{
 			var entries = _listProperty.GetValue<IList<ClutterEntry>>() ?? [];
 			foreach ( var asset in assets )
 			{
 				ClutterEntry newEntry = new();
-				
+
 				if ( asset.AssetType.FileExtension == "vmdl" && asset.TryLoadResource<Model>( out var model ) )
 				{
 					newEntry.Model = model;
@@ -176,29 +176,29 @@ public class ClutterEntriesGridWidget : ControlWidget
 				return;
 
 			var entries = _listProperty.GetValue<IList<ClutterEntry>>();
-			if ( entries == null ) return;
+			if ( entries is null ) return;
 
 			var index = entries.IndexOf( entry );
 			if ( index < 0 ) return;
 
 			var menu = new Menu( this );
 
-			if ( entry.Model != null || entry.Prefab != null )
+			if ( entry.Model is not null || entry.Prefab is not null )
 			{
 				menu.AddOption( "Find in Asset Browser", "search", () =>
 				{
 					Asset asset = null;
 
-					if ( entry.Prefab != null && entry.Prefab is PrefabScene prefabScene && prefabScene.Source != null )
+					if ( entry.Prefab is PrefabScene prefabScene && prefabScene.Source is not null )
 					{
 						asset = AssetSystem.FindByPath( prefabScene.Source.ResourcePath );
 					}
-					else if ( entry.Model != null )
+					else if ( entry.Model is not null )
 					{
 						asset = AssetSystem.FindByPath( entry.Model.ResourcePath );
 					}
 
-					if ( asset != null )
+					if ( asset is not null )
 					{
 						LocalAssetBrowser.OpenTo( asset, true );
 					}
@@ -255,7 +255,7 @@ public class ClutterEntriesGridWidget : ControlWidget
 				return;
 			}
 
-			if ( e.Data.Assets == null ) return;
+			if ( e.Data.Assets is null ) return;
 
 			foreach ( var dragAsset in e.Data.Assets )
 			{
@@ -299,7 +299,7 @@ public class ClutterEntriesGridWidget : ControlWidget
 					}
 
 					var entries = _listProperty.GetValue<List<ClutterEntry>>();
-					if ( entries != null && oldIndex >= 0 && newIndex >= 0 && oldIndex != newIndex && oldIndex < entries.Count && newIndex < entries.Count )
+					if ( entries is not null && oldIndex >= 0 && newIndex >= 0 && oldIndex != newIndex && oldIndex < entries.Count && newIndex < entries.Count )
 					{
 						// Move entry from oldIndex to newIndex
 						var entry = entries[oldIndex];
@@ -334,7 +334,7 @@ public class ClutterEntriesGridWidget : ControlWidget
 				if ( !isModel && !isPrefab ) continue;
 
 				var asset = await dragAsset.GetAssetAsync();
-				if ( asset == null ) continue;
+				if ( asset is null ) continue;
 
 				var newEntry = new ClutterEntry();
 
@@ -374,11 +374,11 @@ public class ClutterEntriesGridWidget : ControlWidget
 
 			// Get asset for thumbnail
 			Asset asset = null;
-			if ( entry.Prefab != null && entry.Prefab is PrefabScene prefabScene && prefabScene.Source != null )
+			if ( entry.Prefab is PrefabScene prefabScene && prefabScene.Source is not null )
 			{
 				asset = AssetSystem.FindByPath( prefabScene.Source.ResourcePath );
 			}
-			else if ( entry.Model != null )
+			else if ( entry.Model is not null )
 			{
 				asset = AssetSystem.FindByPath( entry.Model.ResourcePath );
 			}
@@ -393,7 +393,7 @@ public class ClutterEntriesGridWidget : ControlWidget
 
 			// Drag-over highlight
 			var entries = _listProperty.GetValue<IList<ClutterEntry>>();
-			if ( entries != null && _dragOverIndex >= 0 && _dragOverIndex < entries.Count )
+			if ( entries is not null && _dragOverIndex >= 0 && _dragOverIndex < entries.Count )
 			{
 				if ( entries[_dragOverIndex] == entry )
 				{
@@ -408,10 +408,10 @@ public class ClutterEntriesGridWidget : ControlWidget
 			Paint.DrawRect( rect.Shrink( 2 ), 4 );
 
 			// Draw thumbnail
-			if ( asset != null )
+			if ( asset is not null )
 			{
 				var pixmap = asset.GetAssetThumb( true );
-				if ( pixmap != null )
+				if ( pixmap is not null )
 				{
 					Paint.Draw( rect.Shrink( 2 ), pixmap );
 				}
@@ -437,13 +437,13 @@ public class ClutterEntriesGridWidget : ControlWidget
 			var weightRect = new Rect( item.Rect.Left, rect.Bottom + 2, item.Rect.Width, 28 );
 			Paint.SetDefaultFont( 9 );
 			Paint.SetPen( Theme.Text.WithAlpha( 0.8f ) );
-			
+
 			var weightText = $"Weight: {entry.Weight:F2}";
-			if ( asset != null )
+			if ( asset is not null )
 			{
 				weightText = $"{asset.Name}\n{weightText}";
 			}
-			
+
 			Paint.DrawText( weightRect, weightText, TextFlag.CenterTop );
 		}
 
@@ -455,7 +455,7 @@ public class ClutterEntriesGridWidget : ControlWidget
 			Paint.DrawRect( LocalRect, 4 );
 
 			var entries = _listProperty.GetValue<IList<ClutterEntry>>();
-			if ( entries == null || entries.Count == 0 )
+			if ( entries is null or { Count: 0 } )
 			{
 				Paint.SetDefaultFont( 11 );
 				Paint.SetPen( Theme.Text.WithAlpha( 0.4f ) );

@@ -40,7 +40,6 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 
 	public override void UpdateScene( float cycle, float timeStep )
 	{
-		// Check for changes and regenerate if needed
 		if ( _clutter != null )
 		{
 			var currentHash = GetHash();
@@ -51,7 +50,6 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 			}
 		}
 
-		// Position camera manually - orbit around center
 		using ( Scene.Push() )
 		{
 			var angle = cycle * 360.0f;
@@ -64,7 +62,6 @@ public class ClutterDefinitionAssetPreview( Asset asset ) : AssetPreview( asset 
 			Camera.WorldPosition = SceneCenter + rotation.Forward * -distance;
 		}
 
-		// Tick the scene to process jobs (critical!)
 		TickScene( timeStep );
 	}
 
@@ -205,7 +202,6 @@ internal class TileBoundsGrid : SceneCustomObject
 			new Vector3( -halfSize,  halfSize, 0.5f )
 		];
 
-		RenderingEnabled = true;
 		Bounds = new BBox( new Vector3( -halfSize, -halfSize, 0 ), new Vector3( halfSize, halfSize, 10 ) );
 	}
 
