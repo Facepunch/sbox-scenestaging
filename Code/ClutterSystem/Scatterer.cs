@@ -14,7 +14,7 @@ public struct ClutterInstance
 /// Base class to override if you want to create custom scatterer logic.
 /// Provides utility methods for entry selection and common operations.
 /// </summary>
-public abstract class Scatterer
+public abstract class Scatterer : ScattererJsonConverter
 {
 	[Hide]
 	protected Random Random { get; private set; }
@@ -104,16 +104,21 @@ public abstract class Scatterer
 		if ( clutter.IsEmpty )
 			return null;
 
-		float totalWeight = clutter.Entries.Sum( e => e.Weight );
-		if ( totalWeight == 0 )
-			return null;
+		var totalWeight = 0f;
+		foreach ( var entry in clutter.Entries )
+		{
+			if ( entry?.HasAsset is true && entry.Weight > 0 )
+				totalWeight += entry.Weight;
+		}
+
+		if ( totalWeight is 0 ) return null;
 
 		var randomValue = Random.Float( 0f, totalWeight );
-		float currentWeight = 0f;
+		var currentWeight = 0f;
 
 		foreach ( var entry in clutter.Entries )
 		{
-			if ( entry?.HasAsset != true || entry.Weight <= 0 )
+			if ( entry?.HasAsset is not true || entry.Weight <= 0 )
 				continue;
 
 			currentWeight += entry.Weight;
@@ -129,9 +134,7 @@ public abstract class Scatterer
 	/// </summary>
 	protected Rotation GetAlignedRotation( Vector3 normal, float yawDegrees )
 	{
-		// First align to the surface normal
 		var alignToSurface = Rotation.FromToRotation( Vector3.Up, normal );
-		// Then apply yaw rotation around the new up axis (the normal)
 		var yawRotation = Rotation.FromAxis( normal, yawDegrees );
 		return yawRotation * alignToSurface;
 	}
@@ -142,12 +145,13 @@ public abstract class Scatterer
 	/// </summary>
 	protected static SceneTraceResult? TraceGround( Scene scene, Vector3 position )
 	{
-		if ( scene == null )
+		if ( scene is null )
 			return null;
 
-		// Unsure about this limit.... just needs to be high enough to not miss the scene
-		var traceStart = new Vector3( position.x, position.y, 50000f );
-		var traceEnd = new Vector3( position.x, position.y, -50000f );
+		// Use scene bounds to determine trace extent
+		var sceneBounds = scene.GetBounds();
+		var traceStart = position.WithZ( sceneBounds.Maxs.z );
+		var traceEnd = position.WithZ( sceneBounds.Mins.z );
 
 		return scene.Trace
 			.Ray( traceStart, traceEnd )
@@ -178,49 +182,49 @@ public abstract class Scatterer
 	protected int CalculatePointCount( BBox bounds, float density, int maxPoints = 10000 )
 	{
 		const float PointsPerUnit = 512f;
-		var area = (bounds.Size.x / PointsPerUnit) * ( bounds.Size.y / PointsPerUnit);
+		var area = (bounds.Size.x / PointsPerUnit) * (bounds.Size.y / PointsPerUnit);
 		var desiredCount = area * density;
-		
+
 		// Handle fractional points probabilistically
-		// e.g., 1.3 points = 1 guaranteed + 30% chance of 1 more
+		// 1.3 points = 1 guaranteed + 30% chance of 1 more
 		var guaranteedPoints = (int)desiredCount;
 		var fractionalPart = desiredCount - guaranteedPoints;
-		
+
 		var finalCount = guaranteedPoints;
 		if ( Random.Float( 0f, 1f ) < fractionalPart )
 		{
 			finalCount++;
 		}
-		
+
 		var clampedCount = Math.Clamp( finalCount, 0, maxPoints );
-		
+
 		if ( desiredCount > maxPoints )
 		{
 			Log.Warning( $"Scatterer: Density would generate {desiredCount} points, capped to {maxPoints} to prevent freezing. " +
-			            $"Area: {area:F1}m�, Density: {density:F3}/m�. Consider reducing density or using smaller bounds." );
+						$"Area: {area:F1}m�, Density: {density:F3}/m�. Consider reducing density or using smaller bounds." );
 		}
-		
+
 		return clampedCount;
 	}
 }
 
 public class SimpleScatterer : Scatterer
 {
-	[Property] 
+	[Property]
 	[Description( "Scale range for spawned objects" )]
 	public RangedFloat Scale { get; set; } = new RangedFloat( 0.8f, 1.2f );
-	
+
 	[Property, Range( 0.001f, 10f )]
 	[Description( "Points per square meter (density)" )]
 	public float Density { get; set; } = 0.1f;
-	
-	[Property, Group( "Placement" )] 
+
+	[Property, Group( "Placement" )]
 	public bool PlaceOnGround { get; set; } = true;
-	
-	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] 
+
+	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )]
 	public float HeightOffset { get; set; }
-	
-	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )] 
+
+	[Property, Group( "Placement" ), ShowIf( nameof( PlaceOnGround ), true )]
 	public bool AlignToNormal { get; set; }
 
 	protected override List<ClutterInstance> Generate( BBox bounds, ClutterDefinition clutter, Scene scene = null )
