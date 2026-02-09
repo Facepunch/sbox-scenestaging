@@ -126,6 +126,7 @@ PS
         float currentDepth = length( worldPos - g_vCameraPositionWs );
         
         // Weight each gathered sample by region match and depth proximity
+        // Color averaged equally, depth weight only affects final blend strength.
         for ( uint j = 0; j < 4; j++ )
         {
             float sampleId = gatheredIds[j];
@@ -139,18 +140,13 @@ PS
                 float2 samplePixel = mirrorBase + gatherOffsets[j];
                 float3 sampleWorldPos = Depth::GetWorldPosition( samplePixel );
                 
-                // Linear depth weighting
-                float depth_sample = length( p0 - g_vCameraPositionWs );
-                float diff = abs( depth_sample - depth_current );
-                float sample_weight = saturate( 1.0 - diff / distance_falloff );
+                // Linear depth weighting (only used for final blend strength)
+                float sampleDepth = length( sampleWorldPos - g_vCameraPositionWs );
+                float depthDiff = abs( sampleDepth - currentDepth );
+                depthWeight += saturate( 1.0 - depthDiff / depthThreshold );
                 
-                if ( sample_weight <= 0 )
-                    continue;
-                
-                dweight += sample_weight;
-                
-                other_color += float3( rrrr[j], gggg[j], bbbb[j] ) * sample_weight;
-                sum += sample_weight;
+                mirrorColor += float3( gatheredRed[j], gatheredGreen[j], gatheredBlue[j] );
+                validSamples += 1.0;
             }
         }
         
@@ -160,11 +156,11 @@ PS
         mirrorColor /= validSamples;
         depthWeight /= validSamples;
         
-        // Scale blend radius by depth for constant world-space width
-        float depth = length( P - g_vCameraPositionWs );
-        float depth_scale = 50.0 / max( depth, 1.0 );
-        
-        float adjusted_radius = ScreenBlendRadius * depth_scale * blend_factor;
+        // Screen-space blend radius, scaled by depth so it shrinks when zoomed out.
+        // Clamped to avoid excessive radius at close range.
+        float viewDist = length( worldPos - g_vCameraPositionWs );
+        float distanceScale = min( 50.0 / max( viewDist, 1.0 ), 1.0 );
+        float adjustedRadius = ScreenBlendRadius * distanceScale * blendFactor;
         
         // Strongest at edge (0.5), falls off with distance
         float blendWeight = saturate( 0.5 - edgeDist / max( adjustedRadius, 0.001 ) ) * depthWeight;
