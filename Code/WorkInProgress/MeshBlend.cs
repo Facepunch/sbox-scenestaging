@@ -3,6 +3,23 @@ using Sandbox.Rendering;
 namespace Sandbox;
 
 /// <summary>
+/// Which intermediate buffer to visualize for debugging.
+/// </summary>
+public enum MeshBlendDebugView
+{
+	/// <summary>No debug overlay — normal resolve output.</summary>
+	None,
+	/// <summary>Pass 1: Region mask (R = region ID, G = blend falloff).</summary>
+	Mask,
+	/// <summary>Pass 2: Edge detection output.</summary>
+	Edges,
+	/// <summary>Pass 3: JFA expansion result.</summary>
+	JFA,
+	/// <summary>Pass 4: Final resolve (same as None but explicit).</summary>
+	Resolve
+}
+
+/// <summary>
 /// Camera post-process that smoothly blends seams between objects with <see cref="MeshBlendTarget"/>.
 /// Pipeline: mask rasterization → edge detection → JFA expansion → UV-mirror resolve.
 /// </summary>
@@ -12,10 +29,15 @@ namespace Sandbox;
 public sealed class MeshBlend : BasePostProcess<MeshBlend>
 {
 	/// <summary>
-	/// Max JFA step size. Must match ScreenBlendRadius in the resolve shader.
-	/// Determines number of JFA passes (log2 steps).
+	/// Visualize an intermediate pass for debugging. Leave as None for normal rendering.
 	/// </summary>
-	private const int MaxJfaDistance = 64;
+	[Property, Title( "Debug View" )]
+	public MeshBlendDebugView DebugView { get; set; } = MeshBlendDebugView.None;
+	/// <summary>
+	/// Max JFA step size. Only needs to cover half of ScreenBlendRadius because
+	/// the resolve weight hits zero at 0.5 * ScreenBlendRadius. Fewer steps = fewer dispatches.
+	/// </summary>
+	private const int MaxJfaDistance = 32;
 
 	CommandList commands = new( "Mesh Blend" );
 
@@ -23,6 +45,7 @@ public sealed class MeshBlend : BasePostProcess<MeshBlend>
 	private static readonly ComputeShader PrepareCs = new( "meshblend_prepare_cs" );
 	private static readonly ComputeShader ExpandCs = new( "meshblend_expand_cs" );
 	private static readonly Material ResolveShader = Material.FromShader( "meshblend_resolve.shader" );
+	private static readonly Material DebugShader = Material.FromShader( "meshblend_debug.shader" );
 
 	public override void Render()
 	{
@@ -83,7 +106,17 @@ public sealed class MeshBlend : BasePostProcess<MeshBlend>
 		commands.Attributes.Set( "ColorBuffer", colorHandle.ColorTexture );
 		commands.Attributes.Set( "MaskTexture", maskRt.ColorTexture );
 		commands.Attributes.Set( "EdgeMap", finalEdgeMap.ColorTexture );
-		commands.Blit( ResolveShader );
+
+		if ( DebugView != MeshBlendDebugView.None && DebugView != MeshBlendDebugView.Resolve )
+		{
+			// Debug visualization of intermediate buffers
+			commands.Attributes.Set( "DebugMode", (int)DebugView );
+			commands.Blit( DebugShader );
+		}
+		else
+		{
+			commands.Blit( ResolveShader );
+		}
 
 		InsertCommandList( commands, Stage.BeforePostProcess, 50, "Mesh Blend" );
 	}
