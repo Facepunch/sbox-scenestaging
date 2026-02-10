@@ -59,13 +59,12 @@ PS
 
     // Color buffer to blend
     Texture2D g_tColorBuffer < Attribute( "ColorBuffer" ); SrgbRead( false ); >;
-    SamplerState g_sLinearClamp < Filter( BILINEAR ); AddressU( CLAMP ); AddressV( CLAMP ); >;
+    SamplerState g_sLinearClamp < Filter( MIN_MAG_MIP_LINEAR ); AddressU( CLAMP ); AddressV( CLAMP ); >;
     Texture2D<float2> g_tMask < Attribute( "MaskTexture" ); >;
     Texture2D<uint2> g_tEdgeMap < Attribute( "EdgeMap" ); >;
     
     static const uint INVALID_EDGE_VALUE = 0xFFFFFFFF;
     static const float ScreenBlendRadius = 64.0;
-    static const float ID_EPSILON = 0.001;
 
     // Gather sample positions: (0,1), (1,1), (1,0), (0,0)
     static const float2 gatherOffsets[4] = {
@@ -123,8 +122,6 @@ PS
         float validSamples = 0;
         float depthWeight = 0;
         
-        float currentDepth = length( worldPos - g_vCameraPositionWs );
-        
         // Weight each gathered sample by region match and depth proximity
         // Color averaged equally, depth weight only affects final blend strength.
         for ( uint j = 0; j < 4; j++ )
@@ -132,18 +129,18 @@ PS
             float sampleId = gatheredIds[j];
             
             // Only blend from the matching edge region
-            bool isDifferentRegion = abs( sampleId - currentRegionId ) > ID_EPSILON;
-            bool matchesEdgeRegion = abs( sampleId - edgeRegionId ) < ID_EPSILON;
+            bool isDifferentRegion = sampleId != currentRegionId;
+            bool matchesEdgeRegion = sampleId == edgeRegionId;
             
             if ( isDifferentRegion && matchesEdgeRegion )
             {
                 float2 samplePixel = mirrorBase + gatherOffsets[j];
                 float3 sampleWorldPos = Depth::GetWorldPosition( samplePixel );
                 
-                // Linear depth weighting (only used for final blend strength)
-                float sampleDepth = length( sampleWorldPos - g_vCameraPositionWs );
-                float depthDiff = abs( sampleDepth - currentDepth );
-                depthWeight += saturate( 1.0 - depthDiff / depthThreshold );
+                // Full 3D world-space distance catches lateral separation that
+                // linear depth comparison misses, reducing incorrect blending.
+                float diff = length( sampleWorldPos - worldPos );
+                depthWeight += saturate( 1.0 - diff / depthThreshold );
                 
                 mirrorColor += float3( gatheredRed[j], gatheredGreen[j], gatheredBlue[j] );
                 validSamples += 1.0;
