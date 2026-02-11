@@ -59,6 +59,7 @@ PS
     Texture2D<float2> g_tMask < Attribute( "MaskTexture" ); >;
     Texture2D<uint2> g_tEdgeMap < Attribute( "EdgeMap" ); >;
     int g_nDebugMode < Attribute( "DebugMode" ); Default( 0 ); >;
+    int ResolutionScale < Attribute( "ResolutionScale" ); Default( 1 ); >;
 
     static const uint INVALID_EDGE_VALUE = 0xFFFFFFFF;
 
@@ -80,13 +81,16 @@ PS
     float4 MainPs( PixelInput input ) : SV_Target0
     {
         uint2 pixelCoord = uint2( input.vPositionSs.xy );
+        uint2 maskPixel = pixelCoord / uint2( max( ResolutionScale, 1 ), max( ResolutionScale, 1 ) );
+        float flScale = float( max( ResolutionScale, 1 ) );
+
         float3 originalColor = g_tColorBuffer.Load( int3( pixelCoord, 0 ) ).rgb;
 
         // 1 = Mask, 2 = Edges, 3 = JFA
         if ( g_nDebugMode == 1 )
         {
             // Mask: show region ID as color, blend falloff as brightness
-            float2 maskData = g_tMask.Load( int3( pixelCoord, 0 ) );
+            float2 maskData = g_tMask.Load( int3( maskPixel, 0 ) );
             float regionId = maskData.r;
             float falloff = maskData.g;
 
@@ -99,18 +103,19 @@ PS
         else if ( g_nDebugMode == 2 )
         {
             // Edges: highlight pixels that have a valid nearest edge
-            uint2 nearestEdge = g_tEdgeMap.Load( int3( pixelCoord, 0 ) );
+            uint2 nearestEdge = g_tEdgeMap.Load( int3( maskPixel, 0 ) );
             bool hasEdge = !any( nearestEdge == INVALID_EDGE_VALUE );
 
-            float2 maskData = g_tMask.Load( int3( pixelCoord, 0 ) );
+            float2 maskData = g_tMask.Load( int3( maskPixel, 0 ) );
             bool hasMask = maskData.r > 0;
 
             if ( !hasEdge )
                 return float4( originalColor * 0.3, 1 );
 
-            // Show edge pixels in bright yellow, nearby influence in orange
-            float edgeDist = length( float2( nearestEdge ) - float2( pixelCoord ) );
-            if ( edgeDist < 1.5 )
+            // Convert edge distance to full-res space
+            float2 nearestEdgeFullRes = ( float2( nearestEdge ) + 0.5 ) * flScale - 0.5;
+            float edgeDist = length( nearestEdgeFullRes - float2( pixelCoord ) );
+            if ( edgeDist < 1.5 * flScale )
                 return float4( 1.0, 1.0, 0.0, 1 ); // Edge pixel itself
 
             float3 edgeColor = hasMask ? float3( 1.0, 0.5, 0.0 ) : float3( 0.0, 0.5, 1.0 );
@@ -119,12 +124,13 @@ PS
         else if ( g_nDebugMode == 3 )
         {
             // JFA: visualize distance to nearest edge as smooth gradient
-            uint2 nearestEdge = g_tEdgeMap.Load( int3( pixelCoord, 0 ) );
+            uint2 nearestEdge = g_tEdgeMap.Load( int3( maskPixel, 0 ) );
 
             if ( any( nearestEdge == INVALID_EDGE_VALUE ) )
                 return float4( originalColor * 0.3, 1 );
 
-            float edgeDist = length( float2( nearestEdge ) - float2( pixelCoord ) );
+            float2 nearestEdgeFullRes = ( float2( nearestEdge ) + 0.5 ) * flScale - 0.5;
+            float edgeDist = length( nearestEdgeFullRes - float2( pixelCoord ) );
             float normalizedDist = saturate( edgeDist / 32.0 );
 
             // Smooth white-to-black ramp so any JFA errors are obvious
