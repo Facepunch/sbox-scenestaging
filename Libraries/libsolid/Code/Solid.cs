@@ -96,20 +96,31 @@ public sealed partial class Solid
 
 	public void DrawGizmos( int shift )
 	{
-		foreach ( var cell in _cells )
+		foreach ( var triangle in GetSurfaceTriangles( _cells.Select( x => x.Shape ) ) )
 		{
-			var a = cell.Shape.A.FromFixed( shift );
-			var b = cell.Shape.B.FromFixed( shift );
-			var c = cell.Shape.C.FromFixed( shift );
-			var d = cell.Shape.D.FromFixed( shift );
+			var a = triangle.A.FromFixed( shift );
+			var b = triangle.B.FromFixed( shift );
+			var c = triangle.C.FromFixed( shift );
 
 			Gizmo.Draw.Line( a, b );
 			Gizmo.Draw.Line( a, c );
-			Gizmo.Draw.Line( a, d );
 			Gizmo.Draw.Line( b, c );
-			Gizmo.Draw.Line( b, d );
-			Gizmo.Draw.Line( c, d );
 		}
+
+		//foreach ( var cell in _cells )
+		//{
+		//	var a = cell.Shape.A.FromFixed( shift );
+		//	var b = cell.Shape.B.FromFixed( shift );
+		//	var c = cell.Shape.C.FromFixed( shift );
+		//	var d = cell.Shape.D.FromFixed( shift );
+
+		//	Gizmo.Draw.Line( a, b );
+		//	Gizmo.Draw.Line( a, c );
+		//	Gizmo.Draw.Line( a, d );
+		//	Gizmo.Draw.Line( b, c );
+		//	Gizmo.Draw.Line( b, d );
+		//	Gizmo.Draw.Line( c, d );
+		//}
 	}
 
 	public static Solid Tetrahedron( Vertex a, Vertex b, Vertex c, Vertex d, SolidMaterial material )
@@ -119,14 +130,23 @@ public sealed partial class Solid
 
 	public static Solid Box( Vertex min, Vertex max, SolidMaterial material )
 	{
-		var v0 = new Vertex( min.X, min.Y, min.Z );
-		var v1 = new Vertex( max.X, min.Y, min.Z );
-		var v2 = new Vertex( min.X, max.Y, min.Z );
-		var v3 = new Vertex( max.X, max.Y, min.Z );
-		var v4 = new Vertex( min.X, min.Y, max.Z );
-		var v5 = new Vertex( max.X, min.Y, max.Z );
-		var v6 = new Vertex( min.X, max.Y, max.Z );
-		var v7 = new Vertex( max.X, max.Y, max.Z );
+		return Cuboid( min,
+			new Vertex( (short)(max.X - min.X), 0, 0 ),
+			new Vertex( 0, (short)(max.Y - min.Y), 0 ),
+			new Vertex( 0, 0, (short)(max.Z - min.Z) ),
+			material);
+	}
+
+	public static Solid Cuboid( Vertex origin, Vertex unitX, Vertex unitY, Vertex unitZ, SolidMaterial material )
+	{
+		var v0 = origin;
+		var v1 = (Vertex)(origin + unitX);
+		var v2 = (Vertex)(origin + unitY);
+		var v3 = (Vertex)(origin + unitX + unitY);
+		var v4 = (Vertex)(origin + unitZ);
+		var v5 = (Vertex)(origin + unitX + unitZ);
+		var v6 = (Vertex)(origin + unitY + unitZ);
+		var v7 = (Vertex)(origin + unitX + unitY + unitZ);
 
 		var cells = new Cell[]
 		{

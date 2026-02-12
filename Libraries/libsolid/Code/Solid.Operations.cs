@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sandbox.Solids;
 
@@ -10,9 +11,116 @@ partial class Solid
 		throw new NotImplementedException();
 	}
 
-	public Solid Subtract( Solid other )
+	public Solid? Subtract( Solid other )
 	{
-		throw new NotImplementedException();
+		var cells = new List<Cell>( _cells );
+
+		Split( cells, other.Cells.Select( x => x.Shape ) );
+		RemoveOverlapping( cells, other.Cells.Select( x => x.Shape ) );
+
+		return cells.Count == 0 ? null : new Solid( cells );
+	}
+
+	private static void Split( List<Cell> cells, IEnumerable<Simplex4> shapes )
+	{
+		Split( cells, GetSurfaceTriangles( shapes ) );
+	}
+
+	private static IEnumerable<Simplex3> GetSurfaceTriangles( IEnumerable<Simplex4> shapes )
+	{
+		var uniqueTriangles = new HashSet<Simplex3>();
+
+		foreach ( var shape in shapes )
+		{
+			uniqueTriangles.Add( shape.ABC );
+			uniqueTriangles.Add( shape.ACD );
+			uniqueTriangles.Add( shape.ADB );
+			uniqueTriangles.Add( shape.BDC );
+		}
+
+		foreach ( var triangle in uniqueTriangles )
+		{
+			if ( !uniqueTriangles.Contains( triangle.Reverse ) )
+			{
+				yield return triangle;
+			}
+		}
+	}
+
+	private static void Split( List<Cell> cells, IEnumerable<Simplex3> triangles )
+	{
+		var shapes = new List<Simplex4>();
+		var splitCount = 0;
+
+		foreach ( var triangle in triangles )
+		{
+			var anySplits = false;
+
+			for ( var i = cells.Count - 1; i >= 0; i-- )
+			{
+				var cell = cells[i];
+
+				shapes.Clear();
+
+				if ( !cell.Shape.Split( triangle, shapes ) ) continue;
+
+				anySplits = true;
+
+				cells.RemoveAt( i );
+
+				foreach ( var shape in shapes )
+				{
+					cells.Add( cell with { Shape = shape } );
+				}
+			}
+
+			if ( anySplits ) splitCount++;
+
+			if ( splitCount >= 2 ) break;
+		}
+	}
+
+	private readonly record struct Simplex4Planes( IntPlane A, IntPlane B, IntPlane C, IntPlane D )
+	{
+		public Simplex4Planes( Simplex4 tetra )
+			: this( tetra.ABC.Plane, tetra.ACD.Plane, tetra.ADB.Plane, tetra.BDC.Plane )
+		{
+
+		}
+
+		public Sign Intersects( Vertex point )
+		{
+			var result = Sign.Negative;
+
+			if ( SimplexExtensions.UpdateMax( ref result, A.GetSide( point ) ) ) return result;
+			if ( SimplexExtensions.UpdateMax( ref result, B.GetSide( point ) ) ) return result;
+			if ( SimplexExtensions.UpdateMax( ref result, C.GetSide( point ) ) ) return result;
+			if ( SimplexExtensions.UpdateMax( ref result, D.GetSide( point ) ) ) return result;
+
+			return result;
+		}
+	}
+
+	private static void RemoveOverlapping( List<Cell> cells, IEnumerable<Simplex4> mask )
+	{
+		var maskPlanes = mask
+			.Select( x => new Simplex4Planes( x ) )
+			.ToArray();
+
+		cells.RemoveAll( x =>
+		{
+			var center = (Vertex)((x.Shape.A + x.Shape.B + x.Shape.C + x.Shape.D) / 4);
+
+			foreach ( var planes in maskPlanes )
+			{
+				if ( planes.Intersects( center ) <= Sign.Zero )
+				{
+					return true;
+				}
+			}
+
+			return false;
+		} );
 	}
 
 	public Solid Split( Vertex a, Vertex b, Vertex c ) =>
@@ -35,7 +143,7 @@ partial class Solid
 
 		if ( minSide >= Sign.Zero || maxSide <= Sign.Zero ) return this;
 
-		var newCells = new List<Cell>();
+		var cells = new List<Cell>();
 		var shapes = new List<Simplex4>();
 
 		foreach ( var cell in _cells )
@@ -44,17 +152,17 @@ partial class Solid
 
 			if ( !cell.Shape.Split( triangle, shapes ) )
 			{
-				newCells.Add( cell );
+				cells.Add( cell );
 				continue;
 			}
 
 			foreach ( var shape in shapes )
 			{
-				newCells.Add( cell with { Shape = shape } );
+				cells.Add( cell with { Shape = shape } );
 			}
 		}
 
-		return new Solid( newCells );
+		return new Solid( cells );
 	}
 }
 

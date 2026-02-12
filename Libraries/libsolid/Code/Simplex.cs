@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Sandbox.Diagnostics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sandbox.Diagnostics;
+using System.Numerics;
 
 namespace Sandbox.Solids;
 
@@ -62,7 +63,14 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 		return new Simplex3( a, b, c );
 	}
 
-	public IntPlane Plane => new( A, Vector3Long.Cross( B - A, C - A ) );
+	public IntPlane Plane
+	{
+		get
+		{
+			var cross = Vector3Long.Cross( B - A, C - A );
+			return new( cross, Vector3Long.Dot( cross, (Vector3Int)A ) );
+		}
+	}
 
 	public Vertex A { get; }
 	public Vertex B { get; }
@@ -96,7 +104,7 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 		}
 	}
 
-	public Sign GetSign( Vertex point ) => Plane.GetSide( point );
+	public Sign GetSide( Vertex point ) => Plane.GetSide( point );
 
 	public Sign Intersects( Simplex3 other )
 	{
@@ -121,7 +129,9 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 		var sideA = plane.GetSide( line.A );
 		var sideB = plane.GetSide( line.B );
 
-		if ( sideA == sideB && sideA != Sign.Zero ) return Sign.Positive;
+		if ( sideA == Sign.Zero || sideB == Sign.Zero ) return Sign.Zero;
+
+		if ( sideA == sideB ) return Sign.Positive;
 
 		if ( sideA == Sign.Positive )
 		{
@@ -130,9 +140,13 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 
 		var result = Sign.Negative;
 
-		if ( SimplexExtensions.UpdateMax( ref result, Create( A, B, line.B ).GetSign( line.A ) ) ) return result;
-		if ( SimplexExtensions.UpdateMax( ref result, Create( B, C, line.B ).GetSign( line.A ) ) ) return result;
-		if ( SimplexExtensions.UpdateMax( ref result, Create( C, A, line.B ).GetSign( line.A ) ) ) return result;
+		if ( A == line.A || A == line.B ) return Sign.Zero;
+		if ( B == line.A || B == line.B ) return Sign.Zero;
+		if ( C == line.A || C == line.B ) return Sign.Zero;
+
+		if ( SimplexExtensions.UpdateMax( ref result, Create( A, B, line.B ).GetSide( line.A ) ) ) return result;
+		if ( SimplexExtensions.UpdateMax( ref result, Create( B, C, line.B ).GetSide( line.A ) ) ) return result;
+		if ( SimplexExtensions.UpdateMax( ref result, Create( C, A, line.B ).GetSide( line.A ) ) ) return result;
 
 		return result;
 	}
@@ -163,7 +177,7 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 	}
 }
 
-internal readonly record struct Vector3Long( long X, long Y, long Z )
+public readonly record struct Vector3Long( long X, long Y, long Z )
 {
 	public static implicit operator Vector3Long( Vector3Int vector ) => new( vector.x, vector.y, vector.z );
 
@@ -183,6 +197,9 @@ internal readonly record struct Vector3Long( long X, long Y, long Z )
 		}
 	}
 
+	public long LengthSquared => X * X + Y * Y + Z * Z;
+	public double Length => Math.Sqrt( LengthSquared );
+
 	public static Vector3Long operator *( Vector3Long vector, long scalar ) =>
 		new( vector.X * scalar, vector.Y * scalar, vector.Z * scalar );
 
@@ -200,19 +217,33 @@ internal readonly record struct Vector3Long( long X, long Y, long Z )
 	}
 }
 
-internal readonly record struct IntPlane( Vector3Int Origin, Vector3Long Cross )
+public readonly record struct IntPlane( Vector3Long Cross, long Offset )
 {
-	public Sign GetSide( Vertex point )
+	public Plane Plane
+	{
+		get
+		{
+			var invLength = 1d / Cross.Length;
+
+			var normalX = Cross.X * invLength;
+			var normalY = Cross.Y * invLength;
+			var normalZ = Cross.Z * invLength;
+
+			return new Plane( new Vector3( (float)normalX, (float)normalY, (float)normalZ ), (float)(Offset * invLength) );
+		}
+	}
+
+	internal Sign GetSide( Vertex point )
 	{
 		return (Sign)Math.Sign( Dot( point ) );
 	}
 
 	public long Dot( Vertex point )
 	{
-		return Vector3Long.Dot( Cross, point - Origin );
+		return Vector3Long.Dot( Cross, (Vector3Int)point ) - Offset;
 	}
 
-	public Vertex? Intersect( Simplex2 line )
+	internal Vertex? Intersect( Simplex2 line )
 	{
 		var aDot = Dot( line.A );
 		var bDot = Dot( line.B );
@@ -278,7 +309,7 @@ internal readonly struct Simplex4 : IEquatable<Simplex4>
 
 		var abc = new Simplex3( a, b, c );
 
-		if ( abc.GetSign( d ) == Sign.Zero )
+		if ( abc.GetSide( d ) == Sign.Zero )
 		{
 			return null;
 		}
@@ -309,13 +340,15 @@ internal readonly struct Simplex4 : IEquatable<Simplex4>
 	public Simplex3 ADB => new( A, D, B );
 	public Simplex3 BDC => new( B, D, C );
 
+	public IEnumerable<Simplex3> Faces => [ABC, ACD, ADB, BDC];
+
 	internal Simplex4( Vertex a, Vertex b, Vertex c, Vertex d )
 	{
 		(a, b, c, d) = (a, b, c, d).Sort();
 
 		var abc = new Simplex3( a, b, c );
 
-		switch ( abc.GetSign( d ) )
+		switch ( abc.GetSide( d ) )
 		{
 			case Sign.Positive:
 				abc = abc.Reverse;
@@ -325,7 +358,7 @@ internal readonly struct Simplex4 : IEquatable<Simplex4>
 				throw new ArgumentException( "Vertices can't be coplanar." );
 		}
 
-		if ( abc.GetSign( d ) is Sign.Positive )
+		if ( abc.GetSide( d ) is Sign.Positive )
 		{
 			abc = abc.Reverse;
 		}
@@ -340,10 +373,10 @@ internal readonly struct Simplex4 : IEquatable<Simplex4>
 	{
 		var result = Sign.Negative;
 
-		if ( SimplexExtensions.UpdateMax( ref result, ABC.GetSign( point ) ) ) return result;
-		if ( SimplexExtensions.UpdateMax( ref result, ACD.GetSign( point ) ) ) return result;
-		if ( SimplexExtensions.UpdateMax( ref result, ADB.GetSign( point ) ) ) return result;
-		if ( SimplexExtensions.UpdateMax( ref result, BDC.GetSign( point ) ) ) return result;
+		if ( SimplexExtensions.UpdateMax( ref result, ABC.GetSide( point ) ) ) return result;
+		if ( SimplexExtensions.UpdateMax( ref result, ACD.GetSide( point ) ) ) return result;
+		if ( SimplexExtensions.UpdateMax( ref result, ADB.GetSide( point ) ) ) return result;
+		if ( SimplexExtensions.UpdateMax( ref result, BDC.GetSide( point ) ) ) return result;
 
 		return result;
 	}

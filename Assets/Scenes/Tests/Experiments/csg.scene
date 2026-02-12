@@ -55,7 +55,7 @@
       "Flags": 0,
       "Name": "Directional Light",
       "Position": "0,0,200",
-      "Rotation": "-0.2459842,0.5938582,0.2931525,0.7077327",
+      "Rotation": "0.4393849,0.368688,-0.6275067,0.5265409",
       "Scale": "1,1,1",
       "Tags": "light_directional,light",
       "Enabled": true,
@@ -106,20 +106,6 @@
           "__guid": "a90567a3-09d5-4c04-a0da-ed2c8f08f7e2",
           "__enabled": true,
           "Flags": 0,
-          "IntersectTest": [
-            {
-              "_type": "gameobject",
-              "go": "1fa3c9ba-5741-40da-913e-991a4cf783d1"
-            },
-            {
-              "_type": "gameobject",
-              "go": "cae9dc8d-baf6-42e9-b588-681db1b4407c"
-            },
-            {
-              "_type": "gameobject",
-              "go": "7d2bfc04-8458-4bae-9ce6-00d18c157b72"
-            }
-          ],
           "Material": "materials/example.smat",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -127,8 +113,40 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Shift": 4,
-          "Size": "256,256,256"
+          "PlaceholderMaterial": "materials/white.vmat",
+          "Shift": 0,
+          "Size": "256,256,256",
+          "Subtract": {
+            "_type": "gameobject",
+            "go": "1fa3c9ba-5741-40da-913e-991a4cf783d1"
+          }
+        },
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "a13a3710-96fc-42bb-8972-906ca2c63756",
+          "__enabled": true,
+          "Flags": 0,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "sbox_procedural_model.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
         }
       ],
       "Children": []
@@ -137,10 +155,10 @@
       "__guid": "1fa3c9ba-5741-40da-913e-991a4cf783d1",
       "__version": 2,
       "Flags": 0,
-      "Name": "A",
-      "Position": "-66.58297,152.9317,-13.00287",
-      "Rotation": "0.9998925,0,0,-0.01466726",
-      "Scale": "1,1,1",
+      "Name": "Mask",
+      "Position": "-49.13125,-35.19533,51.01422",
+      "Rotation": "0,0,0,1",
+      "Scale": "64,64,64",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -152,39 +170,37 @@
       "Children": []
     },
     {
-      "__guid": "cae9dc8d-baf6-42e9-b588-681db1b4407c",
+      "__guid": "d1db266c-075c-4e68-a6d0-010b722c18cf",
       "__version": 2,
       "Flags": 0,
-      "Name": "B",
-      "Position": "12.4095,-102.2681,-20.49146",
-      "Rotation": "0.9998925,0,0,-0.01466726",
+      "Name": "2D Skybox",
+      "Position": "374.5451,393.4366,269.4266",
+      "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
-      "Tags": "",
+      "Tags": "skybox",
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkFlags": 0,
       "NetworkOrphaned": 0,
       "NetworkTransmit": true,
       "OwnerTransfer": 1,
-      "Components": [],
-      "Children": []
-    },
-    {
-      "__guid": "7d2bfc04-8458-4bae-9ce6-00d18c157b72",
-      "__version": 2,
-      "Flags": 0,
-      "Name": "C",
-      "Position": "81.91626,95.49479,-14.6883",
-      "Rotation": "0.9998925,0,0,-0.01466726",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkFlags": 0,
-      "NetworkOrphaned": 0,
-      "NetworkTransmit": true,
-      "OwnerTransfer": 1,
-      "Components": [],
+      "Components": [
+        {
+          "__type": "Sandbox.SkyBox2D",
+          "__guid": "df19d11f-0168-4a50-b838-3f6f619bd14b",
+          "__enabled": true,
+          "Flags": 0,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SkyIndirectLighting": true,
+          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "Tint": "1,1,1,1"
+        }
+      ],
       "Children": []
     }
   ],
