@@ -50,12 +50,9 @@ partial class Solid
 	private static void Split( List<Cell> cells, IEnumerable<Simplex3> triangles )
 	{
 		var shapes = new List<Simplex4>();
-		var splitCount = 0;
 
 		foreach ( var triangle in triangles )
 		{
-			var anySplits = false;
-
 			for ( var i = cells.Count - 1; i >= 0; i-- )
 			{
 				var cell = cells[i];
@@ -64,8 +61,6 @@ partial class Solid
 
 				if ( !cell.Shape.Split( triangle, shapes ) ) continue;
 
-				anySplits = true;
-
 				cells.RemoveAt( i );
 
 				foreach ( var shape in shapes )
@@ -73,14 +68,10 @@ partial class Solid
 					cells.Add( cell with { Shape = shape } );
 				}
 			}
-
-			if ( anySplits ) splitCount++;
-
-			if ( splitCount >= 2 ) break;
 		}
 	}
 
-	private readonly record struct Simplex4Planes( IntPlane A, IntPlane B, IntPlane C, IntPlane D )
+	private readonly record struct Simplex4Planes( Plane A, Plane B, Plane C, Plane D )
 	{
 		public Simplex4Planes( Simplex4 tetra )
 			: this( tetra.ABC.Plane, tetra.ACD.Plane, tetra.ADB.Plane, tetra.BDC.Plane )
@@ -174,6 +165,23 @@ internal static class SimplexExtensions
 		return best == Sign.Negative;
 	}
 
+	public static bool UpdateMin( ref Sign best, ref int zeroCount, Sign result )
+	{
+		best = Min( best, result );
+
+		if ( result == Sign.Zero )
+		{
+			zeroCount++;
+
+			if ( zeroCount == 2 )
+			{
+				best = Sign.Negative;
+			}
+		}
+
+		return best == Sign.Negative;
+	}
+
 	public static bool UpdateMax( ref Sign best, Sign result )
 	{
 		best = Max( best, result );
@@ -212,29 +220,48 @@ internal static class SimplexExtensions
 			list.Add( tetra.Value );
 		}
 	}
-}
 
-internal ref struct SpanList<T>( Span<T> span )
-{
-	private readonly Span<T> _span = span;
-	private int _count;
+	public const float DistanceEpsilon = 1.5f;
 
-	public int Count => _count;
-	public int Capacity => _span.Length;
-
-	public T this[ int index ] => _span[index];
-
-	public void Add( T value )
+	public static Sign GetSide( this Plane plane, Vertex point )
 	{
-		if ( Count >= Capacity )
-		{
-			throw new InvalidOperationException( "Exceeded capacity." );
-		}
+		var dist = plane.GetDistance( point );
 
-		_span[_count++] = value;
+		return dist switch
+		{
+			<= -DistanceEpsilon => Sign.Negative,
+			>= DistanceEpsilon => Sign.Positive,
+			_ => Sign.Zero
+		};
 	}
 
-	public Span<T> AsSpan() => _span[.._count];
+	public static Vertex? Intersect( this Plane plane, Simplex2 line )
+	{
+		var aDot = plane.GetDistance( line.A );
+		var bDot = plane.GetDistance( line.B );
+
+		if ( aDot.AlmostEqual( 0f, DistanceEpsilon ) && bDot.AlmostEqual( 0f, DistanceEpsilon ) ) return null;
+
+		if ( aDot.AlmostEqual( 0f, DistanceEpsilon ) ) return line.A;
+		if ( bDot.AlmostEqual( 0f, DistanceEpsilon ) ) return line.B;
+
+		if ( aDot < -DistanceEpsilon && bDot < -DistanceEpsilon ) return null;
+		if ( aDot > DistanceEpsilon && bDot > DistanceEpsilon ) return null;
+
+		if ( aDot > bDot )
+		{
+			(aDot, bDot) = (bDot, aDot);
+			line = line.Reverse;
+		}
+
+		var numer = -aDot;
+		var denom = bDot - aDot;
+
+		var ab = line.B - line.A;
+		var ac = ab * numer / denom;
+
+		return (Vertex)(line.A + new Vector3Int( (int)MathF.Round( ac.x ), (int)MathF.Round( ac.y ), (int)MathF.Round( ac.z ) ));
+	}
 }
 
 internal enum Sign

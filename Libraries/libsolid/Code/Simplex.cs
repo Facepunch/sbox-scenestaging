@@ -21,6 +21,8 @@ internal readonly struct Simplex2 : IEquatable<Simplex2>, IComparable<Simplex2>
 	public Vertex A { get; }
 	public Vertex B { get; }
 
+	public Vertex MidPoint => (Vertex)((A + B) / 2);
+
 	public Simplex2 Reverse => new( B, A );
 
 	internal Simplex2( Vertex a, Vertex b )
@@ -63,12 +65,12 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 		return new Simplex3( a, b, c );
 	}
 
-	public IntPlane Plane
+	public Plane Plane
 	{
 		get
 		{
-			var cross = Vector3Long.Cross( B - A, C - A );
-			return new( cross, Vector3Long.Dot( cross, (Vector3Int)A ) );
+			var normal = Vector3.Cross( B - A, C - A ).Normal;
+			return new( normal, normal.Dot( (Vector3Int)A ) );
 		}
 	}
 
@@ -76,11 +78,15 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 	public Vertex B { get; }
 	public Vertex C { get; }
 
-	public Simplex2 AB => new Simplex2( A, B );
-	public Simplex2 BC => new Simplex2( B, C );
-	public Simplex2 CA => new Simplex2( C, A );
+	public Simplex2 AB => new( A, B );
+	public Simplex2 BC => new( B, C );
+	public Simplex2 CA => new( C, A );
 
-	public Simplex3 Reverse => new Simplex3( A, C, B );
+	public Simplex2 AChord => new( A, BC.MidPoint );
+	public Simplex2 BChord => new( B, CA.MidPoint );
+	public Simplex2 CChord => new( C, AB.MidPoint );
+
+	public Simplex3 Reverse => new( A, C, B );
 
 	internal Simplex3( Vertex a, Vertex b, Vertex c )
 	{
@@ -111,21 +117,24 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 		// Triangles intersect if an edge of one passes through the other
 
 		var result = Sign.Positive;
+		var plane = Plane;
+		var otherPlane = other.Plane;
 
-		if ( SimplexExtensions.UpdateMin( ref result, Intersects( other.AB ) ) ) return result;
-		if ( SimplexExtensions.UpdateMin( ref result, Intersects( other.BC ) ) ) return result;
-		if ( SimplexExtensions.UpdateMin( ref result, Intersects( other.CA ) ) ) return result;
+		if ( SimplexExtensions.UpdateMin( ref result, Intersects( other.AB, plane ) ) ) return result;
+		if ( SimplexExtensions.UpdateMin( ref result, Intersects( other.BC, plane ) ) ) return result;
+		if ( SimplexExtensions.UpdateMin( ref result, Intersects( other.CA, plane ) ) ) return result;
 
-		if ( SimplexExtensions.UpdateMin( ref result, other.Intersects( AB ) ) ) return result;
-		if ( SimplexExtensions.UpdateMin( ref result, other.Intersects( BC ) ) ) return result;
-		if ( SimplexExtensions.UpdateMin( ref result, other.Intersects( CA ) ) ) return result;
+		if ( SimplexExtensions.UpdateMin( ref result, other.Intersects( AB, otherPlane ) ) ) return result;
+		if ( SimplexExtensions.UpdateMin( ref result, other.Intersects( BC, otherPlane ) ) ) return result;
+		if ( SimplexExtensions.UpdateMin( ref result, other.Intersects( CA, otherPlane ) ) ) return result;
 
 		return result;
 	}
 
-	public Sign Intersects( Simplex2 line )
+	public Sign Intersects( Simplex2 line ) => Intersects( line, Plane );
+
+	private Sign Intersects( Simplex2 line, Plane plane )
 	{
-		var plane = Plane;
 		var sideA = plane.GetSide( line.A );
 		var sideB = plane.GetSide( line.B );
 
@@ -138,11 +147,11 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 			line = line.Reverse;
 		}
 
-		var result = Sign.Negative;
-
 		if ( A == line.A || A == line.B ) return Sign.Zero;
 		if ( B == line.A || B == line.B ) return Sign.Zero;
 		if ( C == line.A || C == line.B ) return Sign.Zero;
+
+		var result = Sign.Negative;
 
 		if ( SimplexExtensions.UpdateMax( ref result, Create( A, B, line.B ).GetSide( line.A ) ) ) return result;
 		if ( SimplexExtensions.UpdateMax( ref result, Create( B, C, line.B ).GetSide( line.A ) ) ) return result;
@@ -150,6 +159,7 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 
 		return result;
 	}
+
 	public bool Equals( Simplex3 other )
 	{
 		return A.Equals( other.A ) && B.Equals( other.B ) && C.Equals( other.C );
@@ -174,110 +184,6 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 		if ( bCompare != 0 ) return bCompare;
 
 		return C.CompareTo( other.C );
-	}
-}
-
-public readonly record struct Vector3Long( long X, long Y, long Z )
-{
-	public static implicit operator Vector3Long( Vector3Int vector ) => new( vector.x, vector.y, vector.z );
-
-	public static explicit operator Vector3Int( Vector3Long vector )
-	{
-		checked
-		{
-			return new Vector3Int( (int)vector.X, (int)vector.Y, (int)vector.Z );
-		}
-	}
-
-	public static explicit operator Vertex( Vector3Long vector )
-	{
-		checked
-		{
-			return new Vertex( (short)vector.X, (short)vector.Y, (short)vector.Z );
-		}
-	}
-
-	public long LengthSquared => X * X + Y * Y + Z * Z;
-	public double Length => Math.Sqrt( LengthSquared );
-
-	public static Vector3Long operator *( Vector3Long vector, long scalar ) =>
-		new( vector.X * scalar, vector.Y * scalar, vector.Z * scalar );
-
-	public static Vector3Long operator /( Vector3Long vector, long scalar ) =>
-		new( vector.X / scalar, vector.Y / scalar, vector.Z / scalar );
-
-	public static long Dot( Vector3Long a, Vector3Long b )
-	{
-		return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
-	}
-
-	public static Vector3Long Cross( Vector3Long a, Vector3Long b )
-	{
-		return new Vector3Long( a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X );
-	}
-}
-
-public readonly record struct IntPlane( Vector3Long Cross, long Offset )
-{
-	public Plane Plane
-	{
-		get
-		{
-			var invLength = 1d / Cross.Length;
-
-			var normalX = Cross.X * invLength;
-			var normalY = Cross.Y * invLength;
-			var normalZ = Cross.Z * invLength;
-
-			return new Plane( new Vector3( (float)normalX, (float)normalY, (float)normalZ ), (float)(Offset * invLength) );
-		}
-	}
-
-	internal Sign GetSide( Vertex point )
-	{
-		return (Sign)Math.Sign( Dot( point ) );
-	}
-
-	public long Dot( Vertex point )
-	{
-		return Vector3Long.Dot( Cross, (Vector3Int)point ) - Offset;
-	}
-
-	internal Vertex? Intersect( Simplex2 line )
-	{
-		var aDot = Dot( line.A );
-		var bDot = Dot( line.B );
-
-		if ( aDot == 0 && bDot == 0 ) return null;
-
-		if ( aDot == 0 ) return line.A;
-		if ( bDot == 0 ) return line.B;
-
-		if ( aDot < 0 && bDot < 0 ) return null;
-		if ( aDot > 0 && bDot > 0 ) return null;
-
-		if ( aDot > bDot )
-		{
-			(aDot, bDot) = (bDot, aDot);
-			line = line.Reverse;
-		}
-
-		var numer = -aDot;
-		var denom = bDot - aDot;
-
-		var ab = line.B - line.A;
-		var ac = (Vector3Int)((Vector3Long)ab * numer / denom);
-
-		return (Vertex)(line.A + ac);
-	}
-
-	public IComparer<Vertex> VertexComparer
-	{
-		get
-		{
-			var copy = this;
-			return Comparer<Vertex>.Create( ( a, b ) => Math.Sign( copy.Dot( a ) - copy.Dot( b ) ) );
-		}
 	}
 }
 
@@ -306,10 +212,23 @@ internal readonly struct Simplex4 : IEquatable<Simplex4>
 		{
 			return null;
 		}
+		
+		if ( new Simplex3( a, b, c ).GetSide( d ) == Sign.Zero )
+		{
+			return null;
+		}
 
-		var abc = new Simplex3( a, b, c );
+		if ( new Simplex3( a, c, d ).GetSide( b ) == Sign.Zero )
+		{
+			return null;
+		}
 
-		if ( abc.GetSide( d ) == Sign.Zero )
+		if ( new Simplex3( a, b, d ).GetSide( c ) == Sign.Zero )
+		{
+			return null;
+		}
+
+		if ( new Simplex3( b, c, d ).GetSide( a ) == Sign.Zero )
 		{
 			return null;
 		}
@@ -384,14 +303,14 @@ internal readonly struct Simplex4 : IEquatable<Simplex4>
 	public Sign Intersects( Simplex3 triangle )
 	{
 		// triangle intersects a tetrahedron if:
-		// a. at least one point of the triangle is inside
+		// a. center of the triangle is inside
 		// b. triangle intersects one or more faces
 
 		var result = Sign.Positive;
 
-		if ( SimplexExtensions.UpdateMin( ref result, Intersects( triangle.A ) ) ) return result;
-		if ( SimplexExtensions.UpdateMin( ref result, Intersects( triangle.B ) ) ) return result;
-		if ( SimplexExtensions.UpdateMin( ref result, Intersects( triangle.C ) ) ) return result;
+		var center = (triangle.A + triangle.B + triangle.C) / 3;
+
+		if ( SimplexExtensions.UpdateMin( ref result, Intersects( (Vertex)center ) ) ) return result;
 
 		if ( SimplexExtensions.UpdateMin( ref result, ABC.Intersects( triangle ) ) ) return result;
 		if ( SimplexExtensions.UpdateMin( ref result, ACD.Intersects( triangle ) ) ) return result;
@@ -402,7 +321,7 @@ internal readonly struct Simplex4 : IEquatable<Simplex4>
 	}
 
 	public bool Split( Simplex3 tringle, List<Simplex4> result ) => Split( tringle, result, result );
-	public void Split( IntPlane plane, List<Simplex4> result ) => Split( plane, result, result );
+	public void Split( Plane plane, List<Simplex4> result ) => Split( plane, result, result );
 
 	public bool Split( Simplex3 tringle, List<Simplex4>? negative, List<Simplex4>? positive )
 	{
@@ -415,24 +334,24 @@ internal readonly struct Simplex4 : IEquatable<Simplex4>
 		return true;
 	}
 
-	public void Split( IntPlane plane, List<Simplex4>? negative, List<Simplex4>? positive )
+	public void Split( Plane plane, List<Simplex4>? negative, List<Simplex4>? positive )
 	{
-		Span<(Vertex Vertex, long Dot)> sorted = stackalloc (Vertex, long)[4];
+		Span<(Vertex Vertex, float Distance)> sorted = stackalloc (Vertex, float)[4];
 
-		sorted[0] = (A, plane.Dot( A ));
-		sorted[1] = (B, plane.Dot( B ));
-		sorted[2] = (C, plane.Dot( C ));
-		sorted[3] = (D, plane.Dot( D ));
+		sorted[0] = (A, plane.GetDistance( A ));
+		sorted[1] = (B, plane.GetDistance( B ));
+		sorted[2] = (C, plane.GetDistance( C ));
+		sorted[3] = (D, plane.GetDistance( D ));
 
-		sorted.Sort( static ( a, b ) => Math.Sign( a.Dot - b.Dot ) );
+		sorted.Sort( static ( a, b ) => Math.Sign( a.Distance - b.Distance ) );
 
 		var negativeCount = 0;
 		var positiveCount = 0;
 
 		foreach ( var vertex in sorted )
 		{
-			if ( vertex.Dot < 0 ) negativeCount++;
-			if ( vertex.Dot > 0 ) positiveCount++;
+			if ( vertex.Distance <= SimplexExtensions.DistanceEpsilon ) negativeCount++;
+			if ( vertex.Distance >= SimplexExtensions.DistanceEpsilon ) positiveCount++;
 		}
 
 		if ( negativeCount == 0 )

@@ -22,7 +22,7 @@ public sealed class SolidTestComponent : Component
 	[Property]
 	public Material? PlaceholderMaterial { get; set; }
 
-	[Property] public GameObject? Subtract { get; set; }
+	[Property] public List<GameObject?> Subtractions { get; set; } = new();
 
 	private readonly MeshWriter _writer = new();
 	
@@ -37,18 +37,21 @@ public sealed class SolidTestComponent : Component
 		var min = (-Size * 0.5f).ToFixed( Shift );
 		var max = (Size * 0.5f).ToFixed( Shift );
 
-		Solid = Solid.Tetrahedron(
-			new Vertex( min.X, min.Y, min.Z ),
-			new Vertex( max.X, max.Y, min.Z ),
-			new Vertex( min.X, max.Y, max.Z ),
-			new Vertex( max.X, min.Y, max.Z ),
-			material );
+		//Solid = Solid.Tetrahedron(
+		//	new Vertex( min.X, min.Y, min.Z ),
+		//	new Vertex( max.X, max.Y, min.Z ),
+		//	new Vertex( min.X, max.Y, max.Z ),
+		//	new Vertex( max.X, min.Y, max.Z ),
+		//	material );
 
-		//Solid = Solid.Box( min, max, material );
+		Solid = Solid.Box( min, max, material );
 
-		if ( Subtract is { } subtract )
+		foreach ( var subtraction in Subtractions )
 		{
-			Solid = Solid.Subtract( CreateSubtractMask( subtract.WorldTransform ) )!;
+			if ( subtraction is null ) continue;
+			if ( !subtraction.Enabled ) continue;
+
+			Solid = Solid?.Subtract( CreateSubtractMask( subtraction.WorldTransform ) )!;
 		}
 
 		_writer.Clear();
@@ -72,12 +75,14 @@ public sealed class SolidTestComponent : Component
 		var unitY = transform.PointToWorld( new Vector3( 0f, 1f, 0f ) ) - origin;
 		var unitZ = transform.PointToWorld( new Vector3( 0f, 0f, 1f ) ) - origin;
 
-		var a = origin - unitX - unitY - unitZ;
-		var b = origin + unitX + unitY - unitZ;
-		var c = origin - unitX + unitY + unitZ;
-		var d = origin + unitX - unitY + unitZ;
+		return Solid.Cuboid( origin.ToFixed( Shift ), unitX.ToFixed( Shift ), unitY.ToFixed( Shift ), unitZ.ToFixed( Shift ), Material! );
 
-		return Solid.Tetrahedron( a.ToFixed( Shift ), b.ToFixed( Shift ), c.ToFixed( Shift ), d.ToFixed( Shift ), Material! );
+		//var a = origin - unitX - unitY - unitZ;
+		//var b = origin + unitX + unitY - unitZ;
+		//var c = origin - unitX + unitY + unitZ;
+		//var d = origin + unitX - unitY + unitZ;
+
+		//return Solid.Tetrahedron( a.ToFixed( Shift ), b.ToFixed( Shift ), c.ToFixed( Shift ), d.ToFixed( Shift ), Material! );
 	}
 
 	protected override void DrawGizmos()
@@ -88,10 +93,13 @@ public sealed class SolidTestComponent : Component
 			solid.DrawGizmos( Shift );
 		}
 
-		if ( Subtract is { } subtract )
+		foreach ( var subtraction in Subtractions )
 		{
+			if ( subtraction is null ) continue;
+			if ( !subtraction.Enabled ) continue;
+
 			Gizmo.Draw.Color = Color.Green;
-			CreateSubtractMask( subtract.WorldTransform ).DrawGizmos( Shift );
+			CreateSubtractMask( subtraction.WorldTransform ).DrawGizmos( Shift );
 		}
 	}
 }

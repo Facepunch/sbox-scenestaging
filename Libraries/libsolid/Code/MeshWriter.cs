@@ -52,7 +52,7 @@ public sealed class MeshWriter
 
 	internal void Write( Simplex3 triangle, SolidMaterial material, int shift )
 	{
-		var normal = triangle.Plane.Plane.Normal;
+		var normal = triangle.Plane.Normal;
 		var tangent = new Vector4( (triangle.B - triangle.A).Normal, 1f );
 
 		var index = _vertices.Count;

@@ -114,12 +114,18 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "PlaceholderMaterial": "materials/white.vmat",
-          "Shift": 0,
+          "Shift": 4,
           "Size": "256,256,256",
-          "Subtract": {
-            "_type": "gameobject",
-            "go": "1fa3c9ba-5741-40da-913e-991a4cf783d1"
-          }
+          "Subtractions": [
+            {
+              "_type": "gameobject",
+              "go": "1fa3c9ba-5741-40da-913e-991a4cf783d1"
+            },
+            {
+              "_type": "gameobject",
+              "go": "9fd183af-5fc9-429d-9792-096ded3e59fb"
+            }
+          ]
         },
         {
           "__type": "Sandbox.ModelRenderer",
@@ -155,12 +161,30 @@
       "__guid": "1fa3c9ba-5741-40da-913e-991a4cf783d1",
       "__version": 2,
       "Flags": 0,
-      "Name": "Mask",
-      "Position": "-49.13125,-35.19533,51.01422",
-      "Rotation": "0,0,0,1",
-      "Scale": "64,64,64",
+      "Name": "A",
+      "Position": "-72.94347,8.815792,11.37844",
+      "Rotation": "0.1757185,-0.2554806,-0.783318,0.538763",
+      "Scale": "128,128,128",
       "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": []
+    },
+    {
+      "__guid": "9fd183af-5fc9-429d-9792-096ded3e59fb",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "B",
+      "Position": "-157.5055,176.3993,-72.65233",
+      "Rotation": "-0.04253945,0.1409526,-0.6055961,0.7820331",
+      "Scale": "192,192,192",
+      "Tags": "",
+      "Enabled": false,
       "NetworkMode": 2,
       "NetworkFlags": 0,
       "NetworkOrphaned": 0,

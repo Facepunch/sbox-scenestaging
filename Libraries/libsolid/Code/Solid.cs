@@ -21,6 +21,9 @@ public readonly record struct Vertex( short X, short Y, short Z ) : IComparable<
 	public static implicit operator Vector3Int( Vertex vertex ) =>
 		new( vertex.X, vertex.Y, vertex.Z );
 
+	public static implicit operator Vector3( Vertex vertex ) =>
+		new( vertex.X, vertex.Y, vertex.Z );
+
 	public static Vector3Int operator +( Vertex a, Vertex b ) => new( a.X + b.X, a.Y + b.Y, a.Z + b.Z );
 	public static Vector3Int operator -( Vertex a, Vertex b ) => new( a.X - b.X, a.Y - b.Y, a.Z - b.Z );
 
