@@ -120,13 +120,17 @@ internal readonly struct Simplex3 : IEquatable<Simplex3>, IComparable<Simplex3>
 		var plane = Plane;
 		var otherPlane = other.Plane;
 
-		if ( SimplexExtensions.UpdateMin( ref result, Intersects( other.AB, plane ) ) ) return result;
-		if ( SimplexExtensions.UpdateMin( ref result, Intersects( other.BC, plane ) ) ) return result;
-		if ( SimplexExtensions.UpdateMin( ref result, Intersects( other.CA, plane ) ) ) return result;
+		var zeroCount = 0;
 
-		if ( SimplexExtensions.UpdateMin( ref result, other.Intersects( AB, otherPlane ) ) ) return result;
-		if ( SimplexExtensions.UpdateMin( ref result, other.Intersects( BC, otherPlane ) ) ) return result;
-		if ( SimplexExtensions.UpdateMin( ref result, other.Intersects( CA, otherPlane ) ) ) return result;
+		if ( SimplexExtensions.UpdateMin( ref result, ref zeroCount, Intersects( other.AB, plane ) ) ) return result;
+		if ( SimplexExtensions.UpdateMin( ref result, ref zeroCount, Intersects( other.BC, plane ) ) ) return result;
+		if ( SimplexExtensions.UpdateMin( ref result, ref zeroCount, Intersects( other.CA, plane ) ) ) return result;
+
+		zeroCount = 0;
+
+		if ( SimplexExtensions.UpdateMin( ref result, ref zeroCount, other.Intersects( AB, otherPlane ) ) ) return result;
+		if ( SimplexExtensions.UpdateMin( ref result, ref zeroCount, other.Intersects( BC, otherPlane ) ) ) return result;
+		if ( SimplexExtensions.UpdateMin( ref result, ref zeroCount, other.Intersects( CA, otherPlane ) ) ) return result;
 
 		return result;
 	}
